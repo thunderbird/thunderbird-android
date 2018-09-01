@@ -35,7 +35,7 @@ public interface MessagingListener {
             int numNewMessages);
     void synchronizeMailboxProgress(Account account, String folderServerId, int completed, int total);
     void synchronizeMailboxNewMessage(Account account, String folderServerId, Message message);
-    void synchronizeMailboxRemovedMessage(Account account, String folderServerId, Message message);
+    void synchronizeMailboxRemovedMessage(Account account, String folderServerId, String messageServerId);
     void synchronizeMailboxFinished(Account account, String folderServerId, int totalMessagesInMailbox, int numNewMessages);
     void synchronizeMailboxFailed(Account account, String folderServerId, String message);
 
@@ -54,7 +54,7 @@ public interface MessagingListener {
     void folderStatusChanged(Account account, String folderServerId, int unreadMessageCount);
     void systemStatusChanged();
 
-    void messageDeleted(Account account, String folderServerId, Message message);
+    void messageDeleted(Account account, String folderServerId, String messageServerId);
     void messageUidChanged(Account account, String folderServerId, String oldUid, String newUid);
 
     void setPushActive(Account account, String folderServerId, boolean enabled);

@@ -11,11 +11,12 @@ import timber.log.Timber
 
 class BroadcastSenderListener(private val context: Context) : SimpleMessagingListener() {
 
-    private fun broadcastIntent(action: String, account: Account, folder: String, message: Message) {
-        val uri = Uri.parse("email://messages/" + account.accountNumber + "/" + Uri.encode(folder) + "/" + Uri.encode(message.uid))
-        val intent = Intent(action, uri)
+    private fun broadcastReceivedIntent(account: Account, folderServerId: String, message: Message) {
+        val uri = Uri.parse("email://messages/" + account.accountNumber + "/" +
+                Uri.encode(folderServerId) + "/" + Uri.encode(message.uid))
+        val intent = Intent(BroadcastIntents.ACTION_EMAIL_RECEIVED, uri)
         intent.putExtra(BroadcastIntents.EXTRA_ACCOUNT, account.description)
-        intent.putExtra(BroadcastIntents.EXTRA_FOLDER, folder)
+        intent.putExtra(BroadcastIntents.EXTRA_FOLDER, folderServerId)
         intent.putExtra(BroadcastIntents.EXTRA_SENT_DATE, message.sentDate)
         intent.putExtra(BroadcastIntents.EXTRA_FROM, Address.toString(message.from))
         intent.putExtra(BroadcastIntents.EXTRA_TO, Address.toString(message.getRecipients(Message.RecipientType.TO)))
@@ -25,23 +26,36 @@ class BroadcastSenderListener(private val context: Context) : SimpleMessagingLis
         intent.putExtra(BroadcastIntents.EXTRA_FROM_SELF, account.isAnIdentity(message.from))
         context.sendBroadcast(intent)
 
-        Timber.d("Broadcasted: action=%s account=%s folder=%s message uid=%s",
-                action,
+        Timber.d("Broadcasted: action=ACTION_EMAIL_RECEIVED account=%s folder=%s message uid=%s",
                 account.description,
-                folder,
+                folderServerId,
                 message.uid)
     }
 
-    override fun synchronizeMailboxRemovedMessage(account: Account, folderServerId: String, message: Message) {
-        broadcastIntent(BroadcastIntents.ACTION_EMAIL_DELETED, account, folderServerId, message)
+    private fun broadcastDeletedIntent(account: Account, folderServerId: String, messageServerId: String) {
+        val uri = Uri.parse("email://messages/" + account.accountNumber + "/" +
+                Uri.encode(folderServerId) + "/" + Uri.encode(messageServerId))
+        val intent = Intent(BroadcastIntents.ACTION_EMAIL_DELETED, uri)
+        intent.putExtra(BroadcastIntents.EXTRA_ACCOUNT, account.description)
+        intent.putExtra(BroadcastIntents.EXTRA_FOLDER, folderServerId)
+        context.sendBroadcast(intent)
+
+        Timber.d("Broadcasted: action=ACTION_EMAIL_DELETED account=%s folder=%s message uid=%s",
+                account.description,
+                folderServerId,
+                messageServerId)
     }
 
-    override fun messageDeleted(account: Account, folderServerId: String, message: Message) {
-        broadcastIntent(BroadcastIntents.ACTION_EMAIL_DELETED, account, folderServerId, message)
+    override fun synchronizeMailboxRemovedMessage(account: Account, folderServerId: String, messageServerId: String) {
+        broadcastDeletedIntent(account, folderServerId, messageServerId)
+    }
+
+    override fun messageDeleted(account: Account, folderServerId: String, messageServerId: String) {
+        broadcastDeletedIntent(account, folderServerId, messageServerId)
     }
 
     override fun synchronizeMailboxNewMessage(account: Account, folderServerId: String, message: Message) {
-        broadcastIntent(BroadcastIntents.ACTION_EMAIL_RECEIVED, account, folderServerId, message)
+        broadcastReceivedIntent(account, folderServerId, message)
     }
 
     override fun folderStatusChanged(account: Account, folderServerId: String, unreadMessageCount: Int) {

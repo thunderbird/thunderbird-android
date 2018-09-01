@@ -2145,8 +2145,9 @@ public class MessagingController {
             //We need to make these callbacks before moving the messages to the trash
             //as messages get a new UID after being moved
             for (Message message : messages) {
+                String messageServerId = message.getUid();
                 for (MessagingListener l : getListeners(listener)) {
-                    l.messageDeleted(account, folder, message);
+                    l.messageDeleted(account, folder, messageServerId);
                 }
             }
 
@@ -3129,10 +3130,8 @@ public class MessagingController {
 
         @Override
         public void syncRemovedMessage(@NotNull String folderServerId, @NotNull String messageServerId) {
-            // FIXME: This is kind of expensive. Get rid of the need to call synchronizeMailboxRemovedMessage()
-            LocalMessage message = loadMessage(folderServerId, messageServerId);
             for (MessagingListener messagingListener : getListeners(listener)) {
-                messagingListener.synchronizeMailboxRemovedMessage(account, folderServerId, message);
+                messagingListener.synchronizeMailboxRemovedMessage(account, folderServerId, messageServerId);
             }
         }
 
