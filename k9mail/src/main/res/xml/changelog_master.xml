@@ -8,6 +8,10 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.600" versioncode="26000">
+        <change>Allow some outdated HTML attributes so emails from popular internet services are displayed as intended</change>
+        <change>Fixed bug when moving or copying message (IMAP)</change>
+    </release>
     <release version="5.503" versioncode="25030">
         <change>Fixed bug with some soft keyboards when auto-completing recipients</change>
         <change>Fixed crash when decrypting messages</change>
