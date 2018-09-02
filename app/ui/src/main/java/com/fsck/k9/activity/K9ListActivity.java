@@ -81,14 +81,14 @@ public abstract class K9ListActivity extends K9Activity implements K9ActivityMag
 
     protected ListView getListView() {
         if (list == null) {
-            list = (ListView) findViewById(android.R.id.list);
+            list = findViewById(android.R.id.list);
         }
         return list;
     }
 
     protected void setListAdapter(ListAdapter listAdapter) {
         if (list == null) {
-            list = (ListView) findViewById(android.R.id.list);
+            list = findViewById(android.R.id.list);
         }
         list.setAdapter(listAdapter);
         adapter = listAdapter;

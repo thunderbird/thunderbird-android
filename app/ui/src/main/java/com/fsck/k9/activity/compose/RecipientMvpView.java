@@ -54,17 +54,17 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
     public RecipientMvpView(MessageCompose activity) {
         this.activity = activity;
 
-        toView = (RecipientSelectView) activity.findViewById(R.id.to);
-        ccView = (RecipientSelectView) activity.findViewById(R.id.cc);
-        bccView = (RecipientSelectView) activity.findViewById(R.id.bcc);
+        toView = activity.findViewById(R.id.to);
+        ccView = activity.findViewById(R.id.cc);
+        bccView = activity.findViewById(R.id.bcc);
         ccWrapper = activity.findViewById(R.id.cc_wrapper);
         ccDivider = activity.findViewById(R.id.cc_divider);
         bccWrapper = activity.findViewById(R.id.bcc_wrapper);
         bccDivider = activity.findViewById(R.id.bcc_divider);
-        recipientExpanderContainer = (ViewAnimator) activity.findViewById(R.id.recipient_expander_container);
-        cryptoStatusView = (ToolableViewAnimator) activity.findViewById(R.id.crypto_status);
+        recipientExpanderContainer = activity.findViewById(R.id.recipient_expander_container);
+        cryptoStatusView = activity.findViewById(R.id.crypto_status);
         cryptoStatusView.setOnClickListener(this);
-        cryptoSpecialModeIndicator = (ToolableViewAnimator) activity.findViewById(R.id.crypto_special_mode);
+        cryptoSpecialModeIndicator = activity.findViewById(R.id.crypto_special_mode);
         cryptoSpecialModeIndicator.setOnClickListener(this);
 
         toView.setOnFocusChangeListener(this);

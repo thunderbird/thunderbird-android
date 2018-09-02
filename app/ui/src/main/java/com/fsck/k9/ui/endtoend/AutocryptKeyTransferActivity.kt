@@ -42,7 +42,7 @@ class AutocryptKeyTransferActivity : K9Activity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item?.itemId == android.R.id.home) {
-            presenter.onClickHome();
+            presenter.onClickHome()
             return true
         } else {
             return super.onOptionsItemSelected(item)

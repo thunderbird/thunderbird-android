@@ -50,11 +50,11 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_setup_options);
 
-        mCheckFrequencyView = (Spinner)findViewById(R.id.account_check_frequency);
-        mDisplayCountView = (Spinner)findViewById(R.id.account_display_count);
-        mNotifyView = (CheckBox)findViewById(R.id.account_notify);
-        mNotifySyncView = (CheckBox)findViewById(R.id.account_notify_sync);
-        mPushEnable = (CheckBox)findViewById(R.id.account_enable_push);
+        mCheckFrequencyView = findViewById(R.id.account_check_frequency);
+        mDisplayCountView = findViewById(R.id.account_display_count);
+        mNotifyView = findViewById(R.id.account_notify);
+        mNotifySyncView = findViewById(R.id.account_notify_sync);
+        mPushEnable = findViewById(R.id.account_enable_push);
 
         findViewById(R.id.next).setOnClickListener(this);
 

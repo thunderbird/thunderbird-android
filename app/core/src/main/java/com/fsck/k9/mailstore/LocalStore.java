@@ -775,9 +775,7 @@ public class LocalStore {
             Body body = part.getBody();
             if (body instanceof Multipart) {
                 Multipart innerMultipart = (Multipart) body;
-                for (BodyPart innerPart : innerMultipart.getBodyParts()) {
-                    partStack.add(innerPart);
-                }
+                partStack.addAll(innerMultipart.getBodyParts());
             }
 
             if (body instanceof Part) {

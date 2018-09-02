@@ -118,9 +118,7 @@ class DataSet {
     public String[] getUids() {
         List<String> uids = new ArrayList<String>();
 
-        for (String uid : mData.keySet()) {
-            uids.add(uid);
-        }
+        uids.addAll(mData.keySet());
 
         return uids.toArray(WebDavConstants.EMPTY_STRING_ARRAY);
     }

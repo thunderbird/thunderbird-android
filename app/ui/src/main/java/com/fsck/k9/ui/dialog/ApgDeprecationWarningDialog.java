@@ -23,7 +23,7 @@ public class ApgDeprecationWarningDialog extends AlertDialog {
         @SuppressLint("InflateParams")
         View contentView = inflater.inflate(R.layout.dialog_apg_deprecated, null);
 
-        TextView textViewLearnMore = (TextView) contentView.findViewById(R.id.apg_learn_more);
+        TextView textViewLearnMore = contentView.findViewById(R.id.apg_learn_more);
         makeTextViewLinksClickable(textViewLearnMore);
 
         setIcon(R.drawable.ic_apg_small);

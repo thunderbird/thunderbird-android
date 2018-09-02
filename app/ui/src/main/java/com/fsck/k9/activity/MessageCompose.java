@@ -278,7 +278,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         contacts = Contacts.getInstance(MessageCompose.this);
 
-        chooseIdentityButton = (TextView) findViewById(R.id.identity);
+        chooseIdentityButton = findViewById(R.id.identity);
         chooseIdentityButton.setOnClickListener(this);
 
         RecipientMvpView recipientMvpView = new RecipientMvpView(this);
@@ -292,21 +292,21 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         recipientPresenter.asyncUpdateCryptoStatus();
 
 
-        subjectView = (EditText) findViewById(R.id.subject);
+        subjectView = findViewById(R.id.subject);
         subjectView.getInputExtras(true).putBoolean("allowEmoji", true);
 
-        EolConvertingEditText upperSignature = (EolConvertingEditText) findViewById(R.id.upper_signature);
-        EolConvertingEditText lowerSignature = (EolConvertingEditText) findViewById(R.id.lower_signature);
+        EolConvertingEditText upperSignature = findViewById(R.id.upper_signature);
+        EolConvertingEditText lowerSignature = findViewById(R.id.lower_signature);
 
         QuotedMessageMvpView quotedMessageMvpView = new QuotedMessageMvpView(this);
         quotedMessagePresenter = new QuotedMessagePresenter(this, quotedMessageMvpView, account);
         attachmentPresenter = new AttachmentPresenter(getApplicationContext(), attachmentMvpView,
                 getSupportLoaderManager(), this);
 
-        messageContentView = (EolConvertingEditText) findViewById(R.id.message_content);
+        messageContentView = findViewById(R.id.message_content);
         messageContentView.getInputExtras(true).putBoolean("allowEmoji", true);
 
-        attachmentsView = (LinearLayout) findViewById(R.id.attachments);
+        attachmentsView = findViewById(R.id.attachments);
 
         TextWatcher draftNeedsChangingTextWatcher = new SimpleTextWatcher() {
             @Override
@@ -1733,7 +1733,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 throw new IllegalArgumentException();
             }
 
-            TextView nameView = (TextView) view.findViewById(R.id.attachment_name);
+            TextView nameView = view.findViewById(R.id.attachment_name);
             boolean hasMetadata = (attachment.state != Attachment.LoadingState.URI_ONLY);
             if (hasMetadata) {
                 nameView.setText(attachment.name);
