@@ -661,42 +661,6 @@ public class MimeMessage extends Message {
         }
     }
 
-    /**
-     * Copy the contents of this object into another {@code MimeMessage} object.
-     *
-     * @param destination The {@code MimeMessage} object to receive the contents of this instance.
-     */
-    protected void copy(MimeMessage destination) {
-        super.copy(destination);
-
-        destination.mHeader = mHeader.clone();
-
-        destination.mBody = mBody;
-        destination.mMessageId = mMessageId;
-        destination.mSentDate = mSentDate;
-        destination.mDateFormat = mDateFormat;
-        destination.mSize = mSize;
-
-        // These arrays are not supposed to be modified, so it's okay to reuse the references
-        destination.mFrom = mFrom;
-        destination.mTo = mTo;
-        destination.mCc = mCc;
-        destination.mBcc = mBcc;
-        destination.mReplyTo = mReplyTo;
-        destination.mReferences = mReferences;
-        destination.mInReplyTo = mInReplyTo;
-        destination.xOriginalTo = xOriginalTo;
-        destination.deliveredTo = deliveredTo;
-        destination.xEnvelopeTo = xEnvelopeTo;
-    }
-
-    @Override
-    public MimeMessage clone() {
-        MimeMessage message = new MimeMessage();
-        copy(message);
-        return message;
-    }
-
     @Override
     public boolean hasAttachments() {
         return false;

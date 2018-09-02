@@ -404,26 +404,6 @@ public class LocalMessage extends MimeMessage {
         getFolder().destroyMessage(this);
     }
 
-    @Override
-    public LocalMessage clone() {
-        LocalMessage message = new LocalMessage(localStore);
-        super.copy(message);
-
-        message.messageReference = messageReference;
-        message.databaseId = databaseId;
-        message.attachmentCount = attachmentCount;
-        message.subject = subject;
-        message.preview = preview;
-        message.threadId = threadId;
-        message.rootId = rootId;
-        message.messagePartId = messagePartId;
-        message.mimeType = mimeType;
-        message.previewType = previewType;
-        message.headerNeedsUpdating = headerNeedsUpdating;
-
-        return message;
-    }
-
     public long getThreadId() {
         return threadId;
     }

@@ -208,27 +208,4 @@ public abstract class Message implements Part, Body {
         }
         return 0;
     }
-
-    /**
-     * Copy the contents of this object into another {@code Message} object.
-     *
-     * @param destination The {@code Message} object to receive the contents of this instance.
-     */
-    protected void copy(Message destination) {
-        destination.mUid = mUid;
-        destination.mInternalDate = mInternalDate;
-        destination.mFolder = mFolder;
-
-        // mFlags contents can change during the object lifetime, so copy the Set
-        destination.mFlags = EnumSet.copyOf(mFlags);
-    }
-
-    /**
-     * Creates a new {@code Message} object with the same content as this object.
-     *
-     * FIXME: Remove this method because it is no longer used.
-     */
-    @Override
-    public abstract Message clone();
-
 }
