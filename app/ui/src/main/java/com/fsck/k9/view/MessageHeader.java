@@ -354,10 +354,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         Address[] from = message.getFrom();
         Address[] sender = message.getSender();
 
-        if (sender == null || sender.length == 0) {
-            return false;
-        }
-        return !Arrays.equals(from, sender);
+        return sender != null && sender.length != 0 && !Arrays.equals(from, sender);
     }
 
     public void hideCryptoStatus() {

@@ -36,10 +36,7 @@ public abstract class Message implements Part, Body {
         if (myDate == null) {
             myDate = getInternalDate();
         }
-        if (myDate != null) {
-            return myDate.before(earliestDate);
-        }
-        return false;
+        return myDate != null && myDate.before(earliestDate);
     }
 
     @Override
