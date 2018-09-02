@@ -27,7 +27,7 @@ class NewMailNotifications {
     private final NotificationContentCreator contentCreator;
     private final DeviceNotifications deviceNotifications;
     private final WearNotifications wearNotifications;
-    private final SparseArray<NotificationData> notifications = new SparseArray<NotificationData>();
+    private final SparseArray<NotificationData> notifications = new SparseArray<>();
     private final Object lock = new Object();
 
 

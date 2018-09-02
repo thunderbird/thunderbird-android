@@ -60,7 +60,7 @@ public class NonLockingScrollView extends ScrollView {
     /**
      * The list of children who should always receive touch events, and not have them intercepted.
      */
-    private final List<View> mChildrenNeedingAllTouches = new ArrayList<View>();
+    private final List<View> mChildrenNeedingAllTouches = new ArrayList<>();
 
     private boolean mSkipWebViewScroll = true;
 

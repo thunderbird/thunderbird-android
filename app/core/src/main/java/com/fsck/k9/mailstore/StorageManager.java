@@ -412,19 +412,19 @@ public class StorageManager {
     /**
      * The active storage providers.
      */
-    private final Map<String, StorageProvider> mProviders = new LinkedHashMap<String, StorageProvider>();
+    private final Map<String, StorageProvider> mProviders = new LinkedHashMap<>();
 
     /**
      * Locking data for the active storage providers.
      */
-    private final Map<StorageProvider, SynchronizationAid> mProviderLocks = new IdentityHashMap<StorageProvider, SynchronizationAid>();
+    private final Map<StorageProvider, SynchronizationAid> mProviderLocks = new IdentityHashMap<>();
 
     protected final Context context;
 
     /**
      * Listener to be notified for storage related events.
      */
-    private List<StorageListener> mListeners = new ArrayList<StorageListener>();
+    private List<StorageListener> mListeners = new ArrayList<>();
 
     private static transient StorageManager instance;
 
@@ -554,7 +554,7 @@ public class StorageManager {
      * @see StorageProvider#isSupported(Context)
      */
     public Map<String, String> getAvailableProviders() {
-        final Map<String, String> result = new LinkedHashMap<String, String>();
+        final Map<String, String> result = new LinkedHashMap<>();
         for (final Map.Entry<String, StorageProvider> entry : mProviders.entrySet()) {
             result.put(entry.getKey(), entry.getValue().getName(context));
         }

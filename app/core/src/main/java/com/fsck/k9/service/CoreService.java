@@ -59,8 +59,7 @@ public abstract class CoreService extends Service {
 
     public static final String WAKE_LOCK_ID = "com.fsck.k9.service.CoreService.wakeLockId";
 
-    private static ConcurrentHashMap<Integer, TracingWakeLock> sWakeLocks =
-        new ConcurrentHashMap<Integer, TracingWakeLock>();
+    private static ConcurrentHashMap<Integer, TracingWakeLock> sWakeLocks = new ConcurrentHashMap<>();
     private static AtomicInteger sWakeLockSeq = new AtomicInteger(0);
 
     /**

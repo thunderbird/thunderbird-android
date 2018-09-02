@@ -50,7 +50,7 @@ class ImapUtility {
      *         list is returned.
      */
     public static List<String> getImapSequenceValues(String set) {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         if (set != null) {
             String[] setItems = set.split(",");
             for (String item : setItems) {
@@ -85,7 +85,7 @@ class ImapUtility {
      *         is returned.
      */
     public static List<String> getImapRangeValues(String range) {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         try {
             if (range != null) {
                 int colonPos = range.indexOf(':');
@@ -159,7 +159,7 @@ class ImapUtility {
     }
 
     public static String combineFlags(Iterable<Flag> flags, boolean canCreateForwardedFlag) {
-        List<String> flagNames = new ArrayList<String>();
+        List<String> flagNames = new ArrayList<>();
         for (Flag flag : flags) {
             if (flag == Flag.SEEN) {
                 flagNames.add("\\Seen");

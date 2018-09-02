@@ -86,7 +86,7 @@ class ImapConnection {
     private OutputStream outputStream;
     private ImapResponseParser responseParser;
     private int nextCommandTag;
-    private Set<String> capabilities = new HashSet<String>();
+    private Set<String> capabilities = new HashSet<>();
     private ImapSettings settings;
     private Exception stacktraceForClose;
     private boolean open = false;

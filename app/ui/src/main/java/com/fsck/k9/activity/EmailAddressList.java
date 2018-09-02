@@ -30,7 +30,7 @@ public class EmailAddressList extends K9ListActivity implements OnItemClickListe
             return;
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 R.layout.email_address_list_item, contact.emailAddresses);
 
         ListView listView = getListView();

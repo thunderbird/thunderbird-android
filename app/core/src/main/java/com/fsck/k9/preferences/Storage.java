@@ -21,19 +21,16 @@ import com.fsck.k9.mail.filter.Base64;
 import timber.log.Timber;
 
 public class Storage {
-    private static ConcurrentMap<Context, Storage> storages =
-        new ConcurrentHashMap<Context, Storage>();
+    private static ConcurrentMap<Context, Storage> storages = new ConcurrentHashMap<>();
 
-    private volatile ConcurrentMap<String, String> storage = new ConcurrentHashMap<String, String>();
+    private volatile ConcurrentMap<String, String> storage = new ConcurrentHashMap<>();
 
     private static final int DB_VERSION = 2;
     private static final String DB_NAME = "preferences_storage";
 
-    private ThreadLocal<ConcurrentMap<String, String>> workingStorage
-    = new ThreadLocal<ConcurrentMap<String, String>>();
-    private ThreadLocal<SQLiteDatabase> workingDB =
-        new ThreadLocal<SQLiteDatabase>();
-    private ThreadLocal<List<String>> workingChangedKeys = new ThreadLocal<List<String>>();
+    private ThreadLocal<ConcurrentMap<String, String>> workingStorage = new ThreadLocal<>();
+    private ThreadLocal<SQLiteDatabase> workingDB = new ThreadLocal<>();
+    private ThreadLocal<List<String>> workingChangedKeys = new ThreadLocal<>();
 
 
     private Context context = null;
@@ -225,13 +222,13 @@ public class Storage {
     }
 
     void doInTransaction(Runnable dbWork) {
-        ConcurrentMap<String, String> newStorage = new ConcurrentHashMap<String, String>(storage);
+        ConcurrentMap<String, String> newStorage = new ConcurrentHashMap<>(storage);
         workingStorage.set(newStorage);
 
         SQLiteDatabase mDb = openDB();
         workingDB.set(mDb);
 
-        List<String> changedKeys = new ArrayList<String>();
+        List<String> changedKeys = new ArrayList<>();
         workingChangedKeys.set(changedKeys);
 
         mDb.beginTransaction();

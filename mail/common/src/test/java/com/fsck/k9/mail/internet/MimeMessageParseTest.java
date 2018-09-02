@@ -256,7 +256,7 @@ public class MimeMessageParseTest {
 
     private static List<Body> getLeafParts(Body body) {
         if (body instanceof Multipart) {
-            List<Body> ret = new ArrayList<Body>();
+            List<Body> ret = new ArrayList<>();
             for (BodyPart child : ((Multipart) body).getBodyParts()) {
                 ret.addAll(getLeafParts(child.getBody()));
             }
@@ -267,7 +267,7 @@ public class MimeMessageParseTest {
     }
 
     private static void checkLeafParts(MimeMessage msg, String... expectedParts) throws Exception {
-        List<String> actual = new ArrayList<String>();
+        List<String> actual = new ArrayList<>();
         for (Body leaf : getLeafParts(msg.getBody())) {
             actual.add(streamToString(MimeUtility.decodeBody(leaf)));
         }
