@@ -13,8 +13,6 @@ public class OpenPgpApiHelper {
      *
      * @return A string with the following format:
      *         <code>display name &lt;user@example.com&gt;</code>
-     *
-     * @see org.openintents.openpgp.util.OpenPgpApi#EXTRA_ACCOUNT_NAME
      */
     public static String buildUserId(Identity identity) {
         StringBuilder sb = new StringBuilder();

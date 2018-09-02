@@ -20,8 +20,6 @@ public class ImapStoreUriCreator {
      *         The {@link ServerSettings} object that holds the server settings.
      *
      * @return An ImapStore URI that holds the same information as the {@code server} parameter.
-     *
-     * @see com.fsck.k9.mail.store.StoreConfig#getStoreUri()
      */
     public static String create(ServerSettings server) {
         String userEnc = encodeUtf8(server.username);

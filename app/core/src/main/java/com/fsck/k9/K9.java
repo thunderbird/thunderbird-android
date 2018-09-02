@@ -359,7 +359,7 @@ public class K9 {
      * Using {@code SharedPreferences} should be a lot faster than opening all SQLite databases to
      * get the current database version.
      * </p><p>
-     * See {@link UpgradeDatabases} for a detailed explanation of the database upgrade process.
+     * See the class {@code UpgradeDatabases} for a detailed explanation of the database upgrade process.
      * </p>
      *
      * @see #areDatabasesUpToDate()
