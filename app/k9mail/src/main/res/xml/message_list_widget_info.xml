@@ -10,6 +10,5 @@
     android:previewImage="@drawable/message_list_widget_preview"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="86400000"
-    android:widgetCategory="home_screen|keyguard"
-    tools:targetApi="jelly_bean_mr1">
+    android:widgetCategory="home_screen|keyguard">
 </appwidget-provider>

@@ -34,7 +34,7 @@ Kavet e vez e-touez e geweriusterioù:
   <li>Enrollañ kenstagadennoù d’ar gartenn SD</li>
   <li>Goullonderiñ ar c’hest</li>
   <li>Urzhiañ ar c’hemennadennoù</li>
-  <li>…ha muioc’h c’hoazh</li>
+  <li>...ha muioc’h c’hoazh</li>
 </ul>
 <p>
 K- ne skor ket lodenn vrasañ ar c’hontoù Hotmail digoust hag evel loden vrasañ an arvaloù postel eo diaes dezhañ eskemm gant Microsoft Exchange.
@@ -102,8 +102,8 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="forward_action">Treuzkas</string>
   <string name="forward_as_attachment_action">Treuzkas evel stagadenn</string>
   <string name="move_action">Dilec’hiañ</string>
-  <string name="single_message_options_action">Kas…</string>
-  <string name="refile_action">Kemman ar rummad…</string>
+  <string name="single_message_options_action">Kas...</string>
+  <string name="refile_action">Kemman ar rummad...</string>
   <string name="done_action">Graet</string>
   <string name="discard_action">Dilezel</string>
   <string name="save_draft_action">Enrollañ evel brouilhed</string>
@@ -637,7 +637,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="sort_unread_last">Kemennadennoù lennet da gentañ</string>
   <string name="sort_attach_first">Kemennadennoù gant stagadennoù da gentañ</string>
   <string name="sort_unattached_first">Kemennadennoù hep stagadenn da gentañ</string>
-  <string name="sort_by">Urzhiañ dre…</string>
+  <string name="sort_by">Urzhiañ dre...</string>
   <string name="sort_by_date">Deiziad</string>
   <string name="sort_by_arrival">Degouezh</string>
   <string name="sort_by_subject">Danvez</string>
@@ -802,9 +802,9 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="settings_import">Enporzhiañ an arventennoù</string>
   <string name="settings_import_selection">Enporzhiañ an diuzadenn</string>
   <string name="settings_import_global_settings">Arventennoù hollek</string>
-  <string name="settings_exporting">Oc’h ezporzhiañ an arventennoù…</string>
-  <string name="settings_importing">Oc’h enporzhiañ an arventennoù…</string>
-  <string name="settings_import_scanning_file">O c’hwilerviñ ar restr…</string>
+  <string name="settings_exporting">Oc’h ezporzhiañ an arventennoù...</string>
+  <string name="settings_importing">Oc’h enporzhiañ an arventennoù...</string>
+  <string name="settings_import_scanning_file">O c’hwilerviñ ar restr...</string>
   <string name="settings_export_success">Enrollet an arventennoù ezporzhiet da  <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_generic">Arventennoù ezporzhiet gant berzh</string>
   <string name="settings_import_global_settings_success">Enporzhiet an arventennoù hollek adalek <xliff:g id="filename">%s</xliff:g></string>
@@ -829,19 +829,19 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="settings_import_incoming_server">Dafariad degemer (<xliff:g id="hostname">%s</xliff:g>):</string>
   <string name="settings_import_outgoing_server">Dafariad kas (<xliff:g id="hostname">%s</xliff:g>):</string>
   <plurals name="settings_import_setting_passwords">
-    <item quantity="one">Oc’h arventennañ ar ger-tremen…</item>
-    <item quantity="other">Oc’h arventennañ ar gerioù-tremen…</item>
+    <item quantity="one">Oc’h arventennañ ar ger-tremen...</item>
+    <item quantity="other">Oc’h arventennañ ar gerioù-tremen...</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">Arverañ ger-tremen an dafariad degemer</string>
   <string name="activate_account_action">Gweredekaat</string>
   <string name="account_unavailable">Dihegerz eo ar gont \"<xliff:g id="account">%s</xliff:g>\" ; Gwiriit ar c’hadaviñ</string>
-  <string name="settings_attachment_default_path">Enrollañ ar c’henstagadennoù e…</string>
+  <string name="settings_attachment_default_path">Enrollañ ar c’henstagadennoù e...</string>
   <string name="attachment_save_title">Enrollañ ar genstagadenn</string>
   <string name="attachment_save_desc">Merdeer restroù ebet kavet. Pelec’h e fell deoc’h enrollañ ar genstagadenn-mañ?</string>
   <string name="manage_accounts_move_up_action">Dilec’hiañ d’ar c’hrec’h</string>
   <string name="manage_accounts_move_down_action">Dilec’hiañ d’an traoñ</string>
-  <string name="manage_accounts_moving_message">O tilec’hiañ ar gont…</string>
-  <string name="unread_widget_select_account">Diskouez an niver a bosteloù anlennet evit…</string>
+  <string name="manage_accounts_moving_message">O tilec’hiañ ar gont...</string>
+  <string name="unread_widget_select_account">Diskouez an niver a bosteloù anlennet evit...</string>
   <string name="unread_widget_account_title">Kont</string>
   <string name="unread_widget_account_summary">Ar gont implijet evit diskouez an niver a gemennadennoù anlennet</string>
   <string name="unread_widget_unified_inbox_account_summary">Boest degemer unanet</string>
@@ -901,17 +901,17 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="account_settings_remote_search_enabled">Gweredekaat klask war an dafariad</string>
   <string name="account_settings_remote_search_enabled_summary">Klask kemennadennoù war an dafariad ouzhpenn d’ar re war ho trevnad</string>
   <string name="action_remote_search">Klask kemennadennoù war an dafariad</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_pull">Sachit da glask war an dafariad…</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_release">Laoskit da glask war an dafariad…</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_pull">Sachit da glask war an dafariad...</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_release">Laoskit da glask war an dafariad...</string>
   <string name="remote_search_unavailable_no_network">Ret eo deoc’h bezañ kennasket evit klask war an dafariad</string>
   <string name="global_settings_background_as_unread_indicator_label">Kemmañ al liv p’eo lennet</string>
   <string name="global_settings_background_as_unread_indicator_summary">Un drekleur disheñvel a vo skrammet pa vo bet kennet ar gemennadenn </string>
   <string name="global_settings_threaded_view_label">Gwell e neudennoù</string>
   <string name="global_settings_threaded_view_summary">Strollañ ar c’hemennadennoù dre gaozeadenn</string>
   <string name="upgrade_databases_title">Oc’h hizivaat ar stlennvon</string>
-  <string name="upgrade_databases_unspecified">Oc’h hizivaat ar stlennvonioù…</string>
+  <string name="upgrade_databases_unspecified">Oc’h hizivaat ar stlennvonioù...</string>
   <string name="upgrade_database_format">Oc’h hizivaat stlennvon ar gont \"<xliff:g id="account">%s</xliff:g>\"</string>
-  <string name="message_list_loading">O kargañ…</string>
+  <string name="message_list_loading">O kargañ...</string>
   <string name="global_settings_splitview_mode_label">Diskouez ar skramm disrannet</string>
   <string name="global_settings_splitview_always">Atav</string>
   <string name="global_settings_splitview_never">Morse</string>
@@ -927,10 +927,10 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="global_settings_colorize_missing_contact_pictures_summary">Livañ skeudennoù an darempredoù a vank</string>
   <string name="global_settings_messageview_visible_refile_actions_title">Gweredoù kemennadennoù gwelus</string>
   <string name="global_settings_messageview_visible_refile_actions_summary">Diskouez ar gweredoù diuzet el lañser gwel kemennadenn</string>
-  <string name="loading_attachment">O kargañ ar genstagadenn…</string>
+  <string name="loading_attachment">O kargañ ar genstagadenn...</string>
   <string name="fetching_attachment_dialog_title_send">O kas ar gemennadenn</string>
   <string name="fetching_attachment_dialog_title_save">Oc’h enrollañ ar brouilhed</string>
-  <string name="fetching_attachment_dialog_message">O kerc’hat ar genstagadenn…</string>
+  <string name="fetching_attachment_dialog_message">O kerc’hat ar genstagadenn...</string>
   <string name="auth_external_error">N’haller ket dilesa. N’eo ket brudet ar varregezh SASL EXTERNAL gant an dafariad. Gallout a ra bezañ abalamour d’ur gudenn gant testeni an arval (diamzeret, aotrouniezh testeni dianav) pe ur gudenn kefluniadur all. </string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Arverañ testeni an arval</string>
@@ -989,7 +989,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="locked_attach_unlock">Dibrennañ</string>
   <string name="locked_attach_unencrypted">N’eo ket enrineget al lodenn-mañ ha marteze n’eo ket diogel.</string>
   <string name="locked_attach_title">N’eo ket gwarezet ar genstagadenn</string>
-  <string name="message_progress_text">O kargañ…</string>
+  <string name="message_progress_text">O kargañ...</string>
   <string name="messageview_decrypt_cancelled">Nullet eo bet an ezrinegañ.</string>
   <string name="messageview_decrypt_retry">Adklask</string>
   <string name="messageview_decrypt_incomplete">Ar c’hemennadennoù enrineget a rank bezañ pellgarget evit o ezrinegañ.</string>
@@ -1014,7 +1014,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="crypto_no_provider_message">Enrineget eo bet ar postel-mañ gant OpenPGP.\nEvit gallout e lenn e rankit staliañ ha kefluniañ un arload OpenPGP keverlec’h.</string>
   <string name="crypto_no_provider_button">Dibab an arload OpenPGP</string>
   <string name="mail_list_widget_text">Roll kemennadennoù K-9</string>
-  <string name="mail_list_widget_loading">O kargañ kemennadennoù…</string>
+  <string name="mail_list_widget_loading">O kargañ kemennadennoù...</string>
   <string name="fetching_folders_failed">C’hwitadenn en ur gerc’hat roll an teuliadoù</string>
   <string name="messageview_crypto_warning_details">Diskouez ar munudoù</string>
   <string name="error_recipient_crypto_retrieve">Fazi en ur adkavout statud an degemerer digant ar pourchaser OpenPGP!</string>

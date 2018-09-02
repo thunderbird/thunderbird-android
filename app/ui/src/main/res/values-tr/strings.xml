@@ -34,7 +34,7 @@ Geliştirilmiş özellikler içerir:
 <li>Eklentileri SD karta kaydetme</li>
 <li>Çöpü Boşalt</li>
 <li>İleti sıralama</li>
-<li>…ve daha fazlası</li>
+<li>...ve daha fazlası</li>
 </ul>
 <p>
 Lütfen K-9\'un çoğu ücretsiz Hotmail hesabını desteklemediğini ve pekçok eposta istemcisi gibi
@@ -102,8 +102,8 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="forward_action">İlet</string>
   <string name="forward_as_attachment_action">Ek olarak ilet</string>
   <string name="move_action">Taşı</string>
-  <string name="single_message_options_action">Gönder…</string>
-  <string name="refile_action">Yeniden işlem…</string>
+  <string name="single_message_options_action">Gönder...</string>
+  <string name="refile_action">Yeniden işlem...</string>
   <string name="done_action">Tamam</string>
   <string name="discard_action">Çıkart</string>
   <string name="save_draft_action">Taslak olarak Kaydet</string>
@@ -637,7 +637,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="sort_unread_last">Önce okunmuş iletiler</string>
   <string name="sort_attach_first">Önce ekli iletiler</string>
   <string name="sort_unattached_first">Önce eksiz iletiler</string>
-  <string name="sort_by">Şuna göre sırala…</string>
+  <string name="sort_by">Şuna göre sırala...</string>
   <string name="sort_by_date">Tarih</string>
   <string name="sort_by_arrival">Varış</string>
   <string name="sort_by_subject">Konu</string>
@@ -658,7 +658,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="message_list_help_key">Del (veya D) - Sil\nC - Oluştur\nM - Taşı\nV - Arşiv\nY - Kopyala\nZ - Okun(ma)dı\nG - Yıldız\nO - Sıralama türü\nI - Sıralama düzeni\nQ - Klasörlere Geri Dön\nS - Seç/seçimi kaldır</string>
   <string name="folder_list_help_key">1 – Yalnız 1. sınıf klasörleri göster\n2 - Yalnız 1. ve 2. sınıf klasörleri göster\n3 - 2. Sınıf klasörler hariç hepsini göster\n4 - Bütün klasörleri göster\nQ - Hesaplara dön\nS - Hesap ayarlarını düzenle</string>
   <string name="folder_list_filter_hint">Klasör adı içeriği</string>
-  <string name="folder_list_display_mode_label">Klasörleri göster…</string>
+  <string name="folder_list_display_mode_label">Klasörleri göster...</string>
   <string name="folder_list_display_mode_all">Bütün klasörleri göster</string>
   <string name="folder_list_display_mode_first_class">1. Sınıf klasörler</string>
   <string name="folder_list_display_mode_first_and_second_class">1. ve 2. Sınıf klasörler</string>
@@ -802,9 +802,9 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="settings_import">İçe Aktarma ayarları</string>
   <string name="settings_import_selection">Seçimi içe aktar</string>
   <string name="settings_import_global_settings">Genel ayarlar</string>
-  <string name="settings_exporting">Dışa aktarma ayarları…</string>
-  <string name="settings_importing">İçe aktarma ayarları…</string>
-  <string name="settings_import_scanning_file">Dosya taranıyor…</string>
+  <string name="settings_exporting">Dışa aktarma ayarları...</string>
+  <string name="settings_importing">İçe aktarma ayarları...</string>
+  <string name="settings_import_scanning_file">Dosya taranıyor...</string>
   <string name="settings_export_success">Dışarı aktarılan ayarlar <xliff:g id="filename">%s</xliff:g> olarak kaydedildi.</string>
   <string name="settings_export_success_generic">Ayarlar başarıyla dışa aktarıldı</string>
   <string name="settings_import_global_settings_success">Genel ayarlar <xliff:g id="filename">%s</xliff:g> dosyasından alındı</string>
@@ -829,19 +829,19 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="settings_import_incoming_server">Gelen sunucu (<xliff:g id="hostname">%s</xliff:g>):</string>
   <string name="settings_import_outgoing_server">Giden sunucu (<xliff:g id="hostname">%s</xliff:g>):</string>
   <plurals name="settings_import_setting_passwords">
-    <item quantity="one">Şifreyi ayarlıyor…</item>
-    <item quantity="other">Parolalar ayarlanıyor…</item>
+    <item quantity="one">Şifreyi ayarlıyor...</item>
+    <item quantity="other">Parolalar ayarlanıyor...</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">Gelen sunucu parolasını kullan</string>
   <string name="activate_account_action">Etkinleştir</string>
   <string name="account_unavailable">Hesap \"<xliff:g id="account">%s</xliff:g>\" mevcut değil; depolamayı kontrol et</string>
-  <string name="settings_attachment_default_path">Ekleri şuraya kaydet…</string>
+  <string name="settings_attachment_default_path">Ekleri şuraya kaydet...</string>
   <string name="attachment_save_title">Ekleri kaydet</string>
   <string name="attachment_save_desc">Dosya gezgini bulunamadı. Bu eki nereye kaydetmek istersiniz?</string>
   <string name="manage_accounts_move_up_action">Yukarı taşı</string>
   <string name="manage_accounts_move_down_action">Aşağı taşı</string>
-  <string name="manage_accounts_moving_message">Hesap taşınıyor…</string>
-  <string name="unread_widget_select_account">Şunun için okunmadı sayısını göster…</string>
+  <string name="manage_accounts_moving_message">Hesap taşınıyor...</string>
+  <string name="unread_widget_select_account">Şunun için okunmadı sayısını göster...</string>
   <string name="unread_widget_account_title">Hesap</string>
   <string name="unread_widget_account_summary">Okunmamış ileti sayısının görüntüleneceği hesap</string>
   <string name="unread_widget_unified_inbox_account_summary">Birleşik Gelen Kutusu</string>
@@ -902,16 +902,16 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_settings_remote_search_enabled_summary">Cihazınıza ek olarak sunucu üzerinde mesaj ara</string>
   <string name="action_remote_search">Sunucuda mesaj ara</string>
   <string name="pull_to_refresh_remote_search_from_local_search_pull">Sunucuda arama için çekin</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_release">Arama sunucusunda bırak…</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_release">Arama sunucusunda bırak...</string>
   <string name="remote_search_unavailable_no_network">Sunucuda arama için ağ bağlantısı gereklidir.</string>
   <string name="global_settings_background_as_unread_indicator_label">Okunduğunda rengi değiştir</string>
   <string name="global_settings_background_as_unread_indicator_summary">İleti okunduğunda farklı bir arkaplan gösterilecek</string>
   <string name="global_settings_threaded_view_label">Konu görünümü</string>
   <string name="global_settings_threaded_view_summary">Konuşma tarafından grup mesajları</string>
   <string name="upgrade_databases_title">Veri tabanı güncelleniyor</string>
-  <string name="upgrade_databases_unspecified">Veri tabanı güncelleniyor…</string>
+  <string name="upgrade_databases_unspecified">Veri tabanı güncelleniyor...</string>
   <string name="upgrade_database_format">\"<xliff:g id="account">%s</xliff:g>\" hesabı veri tabanı güncelleniyor</string>
-  <string name="message_list_loading">Yükleniyor…</string>
+  <string name="message_list_loading">Yükleniyor...</string>
   <string name="global_settings_splitview_mode_label">Bölünmüş ekran göster</string>
   <string name="global_settings_splitview_always">Her zaman</string>
   <string name="global_settings_splitview_never">Hiçbir zaman</string>
@@ -927,10 +927,10 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="global_settings_colorize_missing_contact_pictures_summary">Eksik kişi resimlerini renklendir</string>
   <string name="global_settings_messageview_visible_refile_actions_title">Mesaj eylemlerini görünür yap</string>
   <string name="global_settings_messageview_visible_refile_actions_summary">Mesajda görünüm menüsünde seçilen eylemleri görüntüler</string>
-  <string name="loading_attachment">Ekler yükleniyor…</string>
+  <string name="loading_attachment">Ekler yükleniyor...</string>
   <string name="fetching_attachment_dialog_title_send">Mesaj gönderiliyor</string>
   <string name="fetching_attachment_dialog_title_save">Taslak kaydediliyor</string>
-  <string name="fetching_attachment_dialog_message">Ekler alınıyor…</string>
+  <string name="fetching_attachment_dialog_message">Ekler alınıyor...</string>
   <string name="auth_external_error">Yetkilendirme yapılamıyor. Sunucu SASL EXTERNAL kabiliyeti olduğunu bildirmedi. Bu istemci sertifikasıyla ilgili bir sorun (tarihi geçmiş, bilinmeyen sertifika otoritesi) veya yapılandırma sorunu olabilir.</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">İstemci sertifikası kullan</string>
@@ -1020,7 +1020,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="locked_attach_unlock">Kilidi aç</string>
   <string name="locked_attach_unencrypted">Bu bölüm şifreli değil, güvensiz olabilir.</string>
   <string name="locked_attach_title">Korunmasız Eklenti</string>
-  <string name="message_progress_text">Yükleniyor…</string>
+  <string name="message_progress_text">Yükleniyor...</string>
   <string name="messageview_decrypt_cancelled">Şifre çözme iptal edildi</string>
   <string name="messageview_decrypt_retry">Tekrar dene</string>
   <string name="messageview_decrypt_incomplete">Şifre çözümü için şifreli iletiler indirilmelidir.</string>
@@ -1045,7 +1045,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="crypto_no_provider_message">Bu eposta OpenPGP ile şifrelendi. On okumak için uyumlu bir OpenPGP uygulaması kurup yapılandırmanız gerekir.</string>
   <string name="crypto_no_provider_button">OpenPGP uygulaması seçimi</string>
   <string name="mail_list_widget_text">K-9 İleti Listesi</string>
-  <string name="mail_list_widget_loading">İletiler Yükleniyor…</string>
+  <string name="mail_list_widget_loading">İletiler Yükleniyor...</string>
   <string name="fetching_folders_failed">Klasör listesi alınırken başarısız oldu</string>
   <string name="messageview_crypto_warning_details">Ayrıntıları Göster</string>
   <string name="error_recipient_crypto_retrieve">OpenPGP sağlayıcıdan alıcı durumu alınırken hata oluştu!</string>
