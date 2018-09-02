@@ -117,7 +117,7 @@ public class Address implements Serializable {
      * @return An array of 0 or more Addresses.
      */
     public static Address[] parseUnencoded(String addressList) {
-        List<Address> addresses = new ArrayList<Address>();
+        List<Address> addresses = new ArrayList<>();
         if (!TextUtils.isEmpty(addressList)) {
             Rfc822Token[] tokens = Rfc822Tokenizer.tokenize(addressList);
             for (Rfc822Token token : tokens) {
@@ -236,7 +236,7 @@ public class Address implements Serializable {
         if (addressList == null) {
             return new Address[] { };
         }
-        List<Address> addresses = new ArrayList<Address>();
+        List<Address> addresses = new ArrayList<>();
         int length = addressList.length();
         int pairStartIndex = 0;
         int pairEndIndex = 0;

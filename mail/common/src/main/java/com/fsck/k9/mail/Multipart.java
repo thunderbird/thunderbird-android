@@ -13,7 +13,7 @@ import com.fsck.k9.mail.internet.TextBody;
 public abstract class Multipart implements Body {
     private Part mParent;
 
-    private final List<BodyPart> mParts = new ArrayList<BodyPart>();
+    private final List<BodyPart> mParts = new ArrayList<>();
 
     public void addBodyPart(BodyPart part) {
         mParts.add(part);

@@ -133,7 +133,7 @@ public final class MailTo {
         }
 
         public List<String> getQueryParameters(String key) {
-            List<String> params = new ArrayList<String>();
+            List<String> params = new ArrayList<>();
             for (String paramName : uri.getQueryParameterNames()) {
                 if (paramName.equalsIgnoreCase(key)) {
                     params.addAll(uri.getQueryParameters(paramName));

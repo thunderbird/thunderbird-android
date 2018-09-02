@@ -139,8 +139,7 @@ public class ServerSettings {
         this.username = username;
         this.password = password;
         this.clientCertificateAlias = clientCertificateAlias;
-        this.extra = (extra != null) ?
-                Collections.unmodifiableMap(new HashMap<String, String>(extra)) : null;
+        this.extra = (extra != null) ? Collections.unmodifiableMap(new HashMap<>(extra)) : null;
     }
 
     /**

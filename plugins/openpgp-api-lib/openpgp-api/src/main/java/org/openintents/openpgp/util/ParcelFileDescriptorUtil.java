@@ -94,8 +94,7 @@ public class ParcelFileDescriptorUtil {
     public static <T> DataSinkTransferThread<T> asyncPipeToDataSink(
             OpenPgpDataSink<T> dataSink, ParcelFileDescriptor output) {
         InputStream inputStream = new BufferedInputStream(new AutoCloseInputStream(output));
-        DataSinkTransferThread<T> dataSinkTransferThread =
-                new DataSinkTransferThread<T>(dataSink, inputStream);
+        DataSinkTransferThread<T> dataSinkTransferThread = new DataSinkTransferThread<>(dataSink, inputStream);
         dataSinkTransferThread.start();
         return dataSinkTransferThread;
     }

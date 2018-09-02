@@ -120,9 +120,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     /*
      * Must be serializable hence implementation class used for declaration.
      */
-    private ConcurrentHashMap<String, AccountStats> accountStats = new ConcurrentHashMap<String, AccountStats>();
+    private ConcurrentHashMap<String, AccountStats> accountStats = new ConcurrentHashMap<>();
 
-    private ConcurrentMap<BaseAccount, String> pendingWork = new ConcurrentHashMap<BaseAccount, String>();
+    private ConcurrentMap<BaseAccount, String> pendingWork = new ConcurrentHashMap<>();
 
     private BaseAccount selectedContextAccount;
 
@@ -517,7 +517,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         return retain;
     }
 
-    private List<BaseAccount> accounts = new ArrayList<BaseAccount>();
+    private List<BaseAccount> accounts = new ArrayList<>();
     private enum ACCOUNT_LOCATION {
         TOP, MIDDLE, BOTTOM
     }
@@ -553,12 +553,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 createSpecialAccounts();
             }
 
-            newAccounts = new ArrayList<BaseAccount>(accounts.size() +
+            newAccounts = new ArrayList<>(accounts.size() +
                     SPECIAL_ACCOUNTS_COUNT);
             newAccounts.add(unifiedInboxAccount);
             newAccounts.add(allMessagesAccount);
         } else {
-            newAccounts = new ArrayList<BaseAccount>(accounts.size());
+            newAccounts = new ArrayList<>(accounts.size());
         }
 
         newAccounts.addAll(accounts);
@@ -663,7 +663,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     }
 
     private void onActivateAccount(Account account) {
-        List<Account> disabledAccounts = new ArrayList<Account>();
+        List<Account> disabledAccounts = new ArrayList<>();
         disabledAccounts.add(account);
         promptForServerPasswords(disabledAccounts);
     }
@@ -1447,7 +1447,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         protected void okayAction(Accounts activity) {
             Context context = activity.getApplicationContext();
             Preferences preferences = Preferences.getPreferences(context);
-            List<Account> disabledAccounts = new ArrayList<Account>();
+            List<Account> disabledAccounts = new ArrayList<>();
             for (AccountDescriptionPair accountPair : mImportResults.importedAccounts) {
                 Account account = preferences.getAccount(accountPair.imported.uuid);
                 if (account != null && !account.isEnabled()) {
@@ -1515,7 +1515,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
 
         public void show(final Accounts activity, SparseBooleanArray selection) {
-            List<String> contents = new ArrayList<String>();
+            List<String> contents = new ArrayList<>();
 
             if (mImportContents.globalSettings) {
                 contents.add(activity.getString(R.string.settings_import_global_settings));
@@ -1561,7 +1561,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                     SparseBooleanArray pos = listView.getCheckedItemPositions();
 
                     boolean includeGlobals = mImportContents.globalSettings && pos.get(0);
-                    List<String> accountUuids = new ArrayList<String>();
+                    List<String> accountUuids = new ArrayList<>();
                     int start = mImportContents.globalSettings ? 1 : 0;
                     for (int i = start, end = listView.getCount(); i < end; i++) {
                         if (pos.get(i)) {
