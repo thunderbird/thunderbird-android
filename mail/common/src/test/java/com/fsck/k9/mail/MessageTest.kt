@@ -67,7 +67,8 @@ class MessageTest {
             Subject: Test Message
             Date: Wed, 28 Aug 2013 08:51:09 -0400
             MIME-Version: 1.0
-            Content-Type: multipart/mixed; boundary="----Boundary103"
+            Content-Type: multipart/mixed;
+             boundary=----Boundary103
             Content-Transfer-Encoding: 7bit
 
             ------Boundary103
@@ -96,7 +97,8 @@ class MessageTest {
             Subject: Test Message
             Date: Wed, 28 Aug 2013 08:51:09 -0400
             MIME-Version: 1.0
-            Content-Type: multipart/mixed; boundary="----Boundary102"
+            Content-Type: multipart/mixed;
+             boundary=----Boundary102
             Content-Transfer-Encoding: 7bit
 
             ------Boundary102
@@ -125,7 +127,8 @@ class MessageTest {
             Subject: Test Message
             Date: Wed, 28 Aug 2013 08:51:09 -0400
             MIME-Version: 1.0
-            Content-Type: multipart/mixed; boundary="----Boundary101"
+            Content-Type: multipart/mixed;
+             boundary=----Boundary101
             Content-Transfer-Encoding: 7bit
 
             ------Boundary101
@@ -163,7 +166,8 @@ class MessageTest {
         bodyPart.writeTo(out)
 
         assertThat(out.toString()).isEqualTo("""
-            Content-Type: multipart/mixed; boundary="----Boundary103"
+            Content-Type: multipart/mixed;
+             boundary=----Boundary103
             Content-Transfer-Encoding: 7bit
 
             ------Boundary103
@@ -192,7 +196,8 @@ class MessageTest {
             Subject: Test Message
             Date: Wed, 28 Aug 2013 08:51:09 -0400
             MIME-Version: 1.0
-            Content-Type: multipart/mixed; boundary="----Boundary102"
+            Content-Type: multipart/mixed;
+             boundary=----Boundary102
             Content-Transfer-Encoding: 7bit
 
             ------Boundary102
@@ -221,7 +226,8 @@ class MessageTest {
             Subject: Test Message
             Date: Wed, 28 Aug 2013 08:51:09 -0400
             MIME-Version: 1.0
-            Content-Type: multipart/mixed; boundary="----Boundary101"
+            Content-Type: multipart/mixed;
+             boundary=----Boundary101
             Content-Transfer-Encoding: 7bit
 
             ------Boundary101

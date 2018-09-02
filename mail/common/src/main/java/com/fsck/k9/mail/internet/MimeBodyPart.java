@@ -13,6 +13,8 @@ import java.io.OutputStreamWriter;
 
 import android.support.annotation.NonNull;
 
+import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;
+
 
 /**
  * TODO this is a close approximation of Message, need to update along with
@@ -95,12 +97,14 @@ public class MimeBodyPart extends BodyPart {
     public String getContentType() {
         String contentType = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
         if (contentType != null) {
-            return MimeUtility.unfoldAndDecode(contentType);
+            return contentType;
         }
+
         Multipart parent = getParent();
-        if (parent != null && "multipart/digest".equals(parent.getMimeType())) {
+        if (parent != null && isSameMimeType(parent.getMimeType(), "multipart/digest")) {
             return "message/rfc822";
         }
+
         return "text/plain";
     }
 

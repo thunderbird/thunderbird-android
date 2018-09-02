@@ -11,21 +11,6 @@ object MimeParameterEncoder {
     // RFC 5322, section 2.1.1
     private const val MAX_LINE_LENGTH = 78
 
-    // RFC 5234: CRLF = %d13.10
-    private const val CRLF = "\r\n"
-
-    // RFC 5234: HTAB = %x09
-    private const val HTAB = '\t'
-
-    // RFC 5234: SP = %x20
-    private const val SPACE = ' '
-
-    // RFC 5234: DQUOTE = %x22
-    private const val DQUOTE = '"'
-
-    // RFC 2045: tspecials :=  "(" / ")" / "<" / ">" / "@" / "," / ";" / ":" / "\" / <"> / "/" / "[" / "]" / "?" / "="
-    private val TSPECIALS = charArrayOf('(', ')', '<', '>', '@', ',', ';', ':', '\\', '"', '/', '[', ']', '?', '=')
-
     private const val ENCODED_VALUE_PREFIX = "UTF-8''"
 
 
@@ -200,12 +185,6 @@ object MimeParameterEncoder {
         else -> false
     }
 
-    private fun Char.isTSpecial() = this in TSPECIALS
-
-    // RFC 2045: token := 1*<any (US-ASCII) CHAR except SPACE, CTLs, or tspecials>
-    // RFC 5234: CTL = %x00-1F / %x7F
-    private fun Char.isTokenChar() = isVChar() && !isTSpecial()
-
     // RFC 5322: qtext = %d33 / %d35-91 / %d93-126 / obs-qtext
     private fun Char.isQText() = when (toInt()) {
         33 -> true
@@ -213,13 +192,4 @@ object MimeParameterEncoder {
         in 93..126 -> true
         else -> false
     }
-
-    // RFC 5234: VCHAR = %x21-7E
-    private fun Char.isVChar() = toInt() in 33..126
-
-    // RFC 5234: WSP =  SP / HTAB
-    private fun Char.isWsp() = this == SPACE || this == HTAB
-
-    // RFC 2231: attribute-char := <any (US-ASCII) CHAR except SPACE, CTLs, "*", "'", "%", or tspecials>
-    private fun Char.isAttributeChar() = isVChar() && this != '*' && this != '\'' && this != '%' && !isTSpecial()
 }

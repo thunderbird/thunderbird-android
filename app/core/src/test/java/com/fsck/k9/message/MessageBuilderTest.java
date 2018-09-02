@@ -84,7 +84,8 @@ public class MessageBuilderTest extends RobolectricTest {
             "text =E2=98=AD";
 
     private static final String MESSAGE_CONTENT_WITH_ATTACH = "" +
-            "Content-Type: multipart/mixed; boundary=\"" + BOUNDARY_1 + "\"\r\n" +
+            "Content-Type: multipart/mixed;\r\n" +
+            " boundary=" + BOUNDARY_1 + "\r\n" +
             "Content-Transfer-Encoding: 7bit\r\n" +
             "\r\n" +
             "--" + BOUNDARY_1 + "\r\n" +
@@ -107,7 +108,8 @@ public class MessageBuilderTest extends RobolectricTest {
             "--" + BOUNDARY_1 + "--\r\n";
 
     private static final String MESSAGE_CONTENT_WITH_LONG_FILE_NAME =
-            "Content-Type: multipart/mixed; boundary=\"" + BOUNDARY_1 + "\"\r\n" +
+            "Content-Type: multipart/mixed;\r\n" +
+            " boundary=" + BOUNDARY_1 + "\r\n" +
             "Content-Transfer-Encoding: 7bit\r\n" +
             "\r\n" +
             "--" + BOUNDARY_1 + "\r\n" +
@@ -133,7 +135,8 @@ public class MessageBuilderTest extends RobolectricTest {
 
     private static final String ATTACHMENT_FILENAME_NON_ASCII = "テスト文書.txt";
     private static final String MESSAGE_CONTENT_WITH_ATTACH_NON_ASCII_FILENAME = "" +
-            "Content-Type: multipart/mixed; boundary=\"" + BOUNDARY_1 + "\"\r\n" +
+            "Content-Type: multipart/mixed;\r\n" +
+            " boundary=" + BOUNDARY_1 + "\r\n" +
             "Content-Transfer-Encoding: 7bit\r\n" +
             "\r\n" +
             "--" + BOUNDARY_1 + "\r\n" +
@@ -156,7 +159,8 @@ public class MessageBuilderTest extends RobolectricTest {
             "--" + BOUNDARY_1 + "--\r\n";
 
     private static final String MESSAGE_CONTENT_WITH_MESSAGE_ATTACH = "" +
-            "Content-Type: multipart/mixed; boundary=\"" + BOUNDARY_1 + "\"\r\n" +
+            "Content-Type: multipart/mixed;\r\n" +
+            " boundary=" + BOUNDARY_1 + "\r\n" +
             "Content-Transfer-Encoding: 7bit\r\n" +
             "\r\n" +
             "--" + BOUNDARY_1 + "\r\n" +

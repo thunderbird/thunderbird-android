@@ -105,13 +105,12 @@ public class AttachmentInfoExtractor {
     }
 
     @WorkerThread
-    private AttachmentViewInfo extractAttachmentInfo(Part part, Uri uri, long size, boolean isContentAvailable)
-            throws MessagingException {
+    private AttachmentViewInfo extractAttachmentInfo(Part part, Uri uri, long size, boolean isContentAvailable) {
         boolean inlineAttachment = false;
 
         String mimeType = part.getMimeType();
-        String contentTypeHeader = MimeUtility.unfoldAndDecode(part.getContentType());
-        String contentDisposition = MimeUtility.unfoldAndDecode(part.getDisposition());
+        String contentTypeHeader = part.getContentType();
+        String contentDisposition = part.getDisposition();
 
         String name = MimeUtility.getHeaderParameter(contentDisposition, "filename");
         if (name == null) {
