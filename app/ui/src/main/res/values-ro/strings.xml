@@ -34,7 +34,7 @@ Facilitățile sale îmbunătățite includ:
 <li>Salvare atașamente pe cardul SD</li>
 <li>Golire Coș de gunoi</li>
 <li>Sortare mesaje</li>
-<li>...și multe altele</li>
+<li>…și multe altele</li>
 </ul>
 <p>
 Rețineți, K-9 nu oferă suport pentru mare parte din conturile gratuite de Hotmail și, precum alți clienți de email, poate avea dificultăți cînd se conectează la Microsoft Exchange.
@@ -102,8 +102,8 @@ Vă rugăm să ne raportați defecte, să contribuiți cu funcționalități noi
   <string name="forward_action">Redirecționează</string>
   <string name="forward_as_attachment_action">Trimite atașat</string>
   <string name="move_action">Mută</string>
-  <string name="single_message_options_action">Trimite...</string>
-  <string name="refile_action">Reîndosariază...</string>
+  <string name="single_message_options_action">Trimite…</string>
+  <string name="refile_action">Reîndosariază…</string>
   <string name="done_action">Realizat</string>
   <string name="discard_action">Renunță</string>
   <string name="save_draft_action">Salvează ca ciornă</string>
@@ -639,7 +639,7 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="sort_unread_last">Mesaje citite primele</string>
   <string name="sort_attach_first">Mesaje cu anexe primele</string>
   <string name="sort_unattached_first">Mesaje fără anexe primele</string>
-  <string name="sort_by">Sortează după...</string>
+  <string name="sort_by">Sortează după…</string>
   <string name="sort_by_date">Dată</string>
   <string name="sort_by_arrival">Sosire</string>
   <string name="sort_by_subject">Subiect</string>
@@ -660,7 +660,7 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="message_list_help_key">Del (sau D) - Șterge\nR - Răspunde\nA - Răspunde tuturor\nC - Compune\nF - Forward\nM - Mută\nV - Arhivează\nY - Copiază\nZ - Marchează (Ne)citit\nG - Stea\nO - Tip sortare\nI - Ordine sortare\nQ - Întoarcere la dosare\nS - Selectează/deselectează\nJ sau P - Mesaj anterior\nK sau N - Mesaj următor</string>
   <string name="folder_list_help_key">1 - Arată doar dosare de Nivel 1\n2 - Arată dosare de Nivel 1 și 2\n3 - Arată toate mai puțin dosarele de Nivel 2\n4 - Arată toate dosarele\nQ - Înapoi la conturi\nS - Modifică setările contului</string>
   <string name="folder_list_filter_hint">Numele dosarului conține</string>
-  <string name="folder_list_display_mode_label">Afișează dosare...</string>
+  <string name="folder_list_display_mode_label">Afișează dosare…</string>
   <string name="folder_list_display_mode_all">Toate dosarele</string>
   <string name="folder_list_display_mode_first_class">Dosare de Nivel 1</string>
   <string name="folder_list_display_mode_first_and_second_class">Dosare de Nivel 1 și 2</string>
@@ -806,9 +806,9 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="settings_import">Setări importare</string>
   <string name="settings_import_selection">Selecție import</string>
   <string name="settings_import_global_settings">Setări globale</string>
-  <string name="settings_exporting">Se exportă setările...</string>
-  <string name="settings_importing">Se importă setările...</string>
-  <string name="settings_import_scanning_file">Se scanează fișierul...</string>
+  <string name="settings_exporting">Se exportă setările…</string>
+  <string name="settings_importing">Se importă setările…</string>
+  <string name="settings_import_scanning_file">Se scanează fișierul…</string>
   <string name="settings_export_success">S-au salvat setările exportate în <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_generic">Setările au fost exportate cu succes</string>
   <string name="settings_import_global_settings_success">S-au importat setările globale din <xliff:g id="filename">%s</xliff:g></string>
@@ -837,18 +837,18 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <plurals name="settings_import_setting_passwords">
     <item quantity="one">Setare parolă...</item>
     <item quantity="few">Setare parole...</item>
-    <item quantity="other">Setare parole...</item>
+    <item quantity="other">Setare parole…</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">Folosește parola serverului de primire</string>
   <string name="activate_account_action">Activează</string>
   <string name="account_unavailable">Contul \"<xliff:g id="account">%s</xliff:g>\" este indisponibil ; verificați stocarea</string>
-  <string name="settings_attachment_default_path">Salvează anexe în...</string>
+  <string name="settings_attachment_default_path">Salvează anexe în…</string>
   <string name="attachment_save_title">Salvează anexa</string>
   <string name="attachment_save_desc">Nu s-a găsit un explorator de fișiere. Unde doriți salvarea anexei?</string>
   <string name="manage_accounts_move_up_action">Mută mai sus</string>
   <string name="manage_accounts_move_down_action">Mută mai jos</string>
-  <string name="manage_accounts_moving_message">Se mută contul...</string>
-  <string name="unread_widget_select_account">Arată număr necitite pentru...</string>
+  <string name="manage_accounts_moving_message">Se mută contul…</string>
+  <string name="unread_widget_select_account">Arată număr necitite pentru…</string>
   <string name="unread_widget_account_title">Cont</string>
   <string name="unread_widget_account_summary">Contul pentru care trebuie afișat totalul mesajelor necitite</string>
   <string name="unread_widget_unified_inbox_account_summary">Inbox unificat</string>
@@ -910,17 +910,17 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="account_settings_remote_search_enabled">Activează căutarea pe server</string>
   <string name="account_settings_remote_search_enabled_summary">Caută în mesajele de pe server în plus față de cele de pe dispozitiv</string>
   <string name="action_remote_search">Caută în mesajele de pe server</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_pull">Trageți pentru a căuta pe server...</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_release">Eliberați pentru a căuta pe server...</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_pull">Trageți pentru a căuta pe server…</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_release">Eliberați pentru a căuta pe server…</string>
   <string name="remote_search_unavailable_no_network">Este necesară conexiunea la rețea pentru căutarea pe server.</string>
   <string name="global_settings_background_as_unread_indicator_label">Schimbă culoarea după citire</string>
   <string name="global_settings_background_as_unread_indicator_summary">O culoare diferită de fundal va arăta că mesajul a fost citit</string>
   <string name="global_settings_threaded_view_label">Vizualizare grupată</string>
   <string name="global_settings_threaded_view_summary">Grupează mesajele în conversații</string>
   <string name="upgrade_databases_title">Se actualizează bazele de date</string>
-  <string name="upgrade_databases_unspecified">Se actualizează bazele de date...</string>
+  <string name="upgrade_databases_unspecified">Se actualizează bazele de date…</string>
   <string name="upgrade_database_format">Se actualizează baza de date a contului \"<xliff:g id="account">%s</xliff:g>\"</string>
-  <string name="message_list_loading">Se încarcă...</string>
+  <string name="message_list_loading">Se încarcă…</string>
   <string name="global_settings_splitview_mode_label">Arată ecranul împărțit</string>
   <string name="global_settings_splitview_always">Întotdeauna</string>
   <string name="global_settings_splitview_never">Niciodată</string>
@@ -936,10 +936,10 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="global_settings_colorize_missing_contact_pictures_summary">Colorează pozele contactelor lipsă</string>
   <string name="global_settings_messageview_visible_refile_actions_title">Acțiuni pentru mesaj vizibile</string>
   <string name="global_settings_messageview_visible_refile_actions_summary">Arată acțiunile selectate în meniul de vizualizare mesaj</string>
-  <string name="loading_attachment">Se încarcă anexa...</string>
+  <string name="loading_attachment">Se încarcă anexa…</string>
   <string name="fetching_attachment_dialog_title_send">Se trimite mesajul</string>
   <string name="fetching_attachment_dialog_title_save">Se salvează ciorna</string>
-  <string name="fetching_attachment_dialog_message">Se preia anexa...</string>
+  <string name="fetching_attachment_dialog_message">Se preia anexa…</string>
   <string name="auth_external_error">Autentificare imposibilă. Serverul nu publică funcția SASL EXTERNAL. Aceasta se poate datora unei probleme cu certificatul clientului (expirat, autoritate de certificare necunoscută) sau a unei alte probleme de configurare.</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Folosește certificat client</string>
@@ -1029,7 +1029,7 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="locked_attach_unlock">Deblochează</string>
   <string name="locked_attach_unencrypted">Această parte nu a fost criptată și poate fi nesigură.</string>
   <string name="locked_attach_title">Anexă neprotejată</string>
-  <string name="message_progress_text">Se încarcă...</string>
+  <string name="message_progress_text">Se încarcă…</string>
   <string name="messageview_decrypt_cancelled">Decriptarea a fost întreruptă.</string>
   <string name="messageview_decrypt_retry">Reîncearcă</string>
   <string name="messageview_decrypt_incomplete">Mesajul criptat trebuie descărcat pentru decriptare.</string>
@@ -1054,7 +1054,7 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="crypto_no_provider_message">Acest mesaj a fost criptat cu OpenPGP.\nPentru a-l citi trebuie să instalați și să configurați o aplicație OpenPGP compatibilă.</string>
   <string name="crypto_no_provider_button">Alegeți aplicația OpenPGP</string>
   <string name="mail_list_widget_text">Listă mesaje K-9</string>
-  <string name="mail_list_widget_loading">Se încarcă mesajele...</string>
+  <string name="mail_list_widget_loading">Se încarcă mesajele…</string>
   <string name="fetching_folders_failed">Preluarea listei de dosare a eșuat</string>
   <string name="messageview_crypto_warning_details">Arată detaliile</string>
   <string name="error_recipient_crypto_retrieve">Eroare la extragerea stării destinatarului din furnizorul openPGP!</string>

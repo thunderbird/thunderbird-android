@@ -60,8 +60,7 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.K9.Startup"
         android:resizeableActivity="true"
-        android:allowBackup="false"
-        tools:targetApi="n">
+        android:allowBackup="false">
 
         <meta-data
             android:name="android.app.default_searchable"
@@ -461,11 +460,11 @@
             android:authorities="${applicationId}.attachmentprovider"
             android:exported="false"
             android:grantUriPermissions="true">
-            
+
             <meta-data
                 android:name="de.cketti.safecontentresolver.ALLOW_INTERNAL_ACCESS"
                 android:value="true" />
-        
+
         </provider>
 
         <provider

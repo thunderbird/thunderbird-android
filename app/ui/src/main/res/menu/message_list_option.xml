@@ -16,28 +16,28 @@
         android:id="@+id/previous_message"
         android:title="@string/previous_action"
         android:icon="?attr/iconActionPreviousMessage"
-        app:showAsAction="alway" />
+        app:showAsAction="always" />
 
     <!-- MessageView -->
     <item
         android:id="@+id/next_message"
         android:title="@string/next_action"
         android:icon="?attr/iconActionNextMessage"
-        app:showAsAction="alway"
+        app:showAsAction="always"
     />
 
     <!-- MessageList -->
     <item
         android:id="@+id/search"
         android:icon="?attr/iconActionSearch"
-        app:showAsAction="alway"
+        app:showAsAction="always"
         android:title="@string/search_action"/>
 
     <!-- MessageList -->
     <item
         android:id="@+id/search_remote"
         android:icon="?attr/iconActionRemoteSearch"
-        app:showAsAction="alway"
+        app:showAsAction="always"
         android:title="@string/action_remote_search"
         android:visible="false"/>
 
@@ -46,7 +46,7 @@
         android:id="@+id/check_mail"
         android:alphabeticShortcut="r"
         android:icon="?attr/iconActionRefresh"
-        app:showAsAction="alway"
+        app:showAsAction="always"
         android:title="@string/check_mail_action"/>
 
     <!-- MessageView -->
@@ -54,7 +54,7 @@
         android:id="@+id/delete"
         android:alphabeticShortcut="q"
         android:icon="?attr/iconActionDelete"
-        app:showAsAction="alway"
+        app:showAsAction="always"
         android:title="@string/delete_action"/>
     <!-- MessageView -->
     <item

@@ -34,7 +34,7 @@ K-9 Mail は Android 向けの強力なフリーのメールクライアント�
   <li>添付ファイルをSDカードに保存</li>
   <li>ゴミ箱を空にする機能</li>
   <li>メッセージのソート</li>
-  <li>...他にもたくさんあります</li>
+  <li>…他にもたくさんあります</li>
 </ul>
 <p>
 K-9 は大多数のメールクライアントと同様に、ほとんどのフリー Hotmail アカウントをサポートしていません。
@@ -103,8 +103,8 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="forward_action">転送</string>
   <string name="forward_as_attachment_action">添付として転送</string>
   <string name="move_action">移動</string>
-  <string name="single_message_options_action">メッセージ操作...</string>
-  <string name="refile_action">整理...</string>
+  <string name="single_message_options_action">メッセージ操作…</string>
+  <string name="refile_action">整理…</string>
   <string name="done_action">完了</string>
   <string name="discard_action">破棄</string>
   <string name="save_draft_action">下書きへ保存</string>
@@ -636,7 +636,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="sort_unread_last">既読メール順</string>
   <string name="sort_attach_first">添付メール順</string>
   <string name="sort_unattached_first">添付メール逆順</string>
-  <string name="sort_by">並べ替え...</string>
+  <string name="sort_by">並べ替え…</string>
   <string name="sort_by_date">日付</string>
   <string name="sort_by_arrival">受信順</string>
   <string name="sort_by_subject">件名</string>
@@ -657,7 +657,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="message_list_help_key">Del (または D) - 削除\nC - 作成\nM - 移動\nV - アーカイブ\nY - コピー\nZ - 既(未)読のマーク\nG - スター\nO - ソート種別\nI - ソート順\nQ - フォルダ一覧に戻る\nS - 選択/選択解除</string>
   <string name="folder_list_help_key">1 – 1st ｸﾗｽﾌｫﾙﾀﾞｰ表示\n2 - 1st と 2nd ｸﾗｽﾌｫﾙﾀﾞｰ表示\n3 - 2nd ｸﾗｽﾌｫﾙﾀﾞｰ以外を表示\n4 - 全ﾌｫﾙﾀﾞｰ表示\nQ - ｱｶｳﾝﾄ設定に戻る\nS - ｱｶｳﾝﾄ設定編集</string>
   <string name="folder_list_filter_hint">フォルダ名が含む</string>
-  <string name="folder_list_display_mode_label">フォルダ表示...</string>
+  <string name="folder_list_display_mode_label">フォルダ表示…</string>
   <string name="folder_list_display_mode_all">全フォルダ</string>
   <string name="folder_list_display_mode_first_class">1st クラスフォルダ</string>
   <string name="folder_list_display_mode_first_and_second_class">1st と 2nd クラスフォルダ</string>
@@ -800,9 +800,9 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="settings_import">設定をインポート</string>
   <string name="settings_import_selection">インポート項目の選択</string>
   <string name="settings_import_global_settings">グローバル設定</string>
-  <string name="settings_exporting">設定をエクスポートしています...</string>
-  <string name="settings_importing">設定をインポートしています...</string>
-  <string name="settings_import_scanning_file">ファイルを調べています...</string>
+  <string name="settings_exporting">設定をエクスポートしています…</string>
+  <string name="settings_importing">設定をインポートしています…</string>
+  <string name="settings_import_scanning_file">ファイルを調べています…</string>
   <string name="settings_export_success">設定を <xliff:g id="filename">%s</xliff:g> に保存しました。</string>
   <string name="settings_export_success_generic">設定を正常にエクスポートしました</string>
   <string name="settings_import_global_settings_success">グローバル設定を <xliff:g id="filename">%s</xliff:g> からインポートしました。</string>
@@ -894,17 +894,17 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_settings_remote_search_enabled">サーバでの検索を有効にする</string>
   <string name="account_settings_remote_search_enabled_summary">デバイス内での検索に加え、サーバでメッセージを検索する</string>
   <string name="action_remote_search">サーバでメッセージを検索する</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server...</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server...</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>
   <string name="remote_search_unavailable_no_network">サーバでの検索にはネットワーク接続が必要</string>
   <string name="global_settings_background_as_unread_indicator_label">既読の色を変更</string>
   <string name="global_settings_background_as_unread_indicator_summary">背景色を変えて、メッセージが既読であることを示します</string>
   <string name="global_settings_threaded_view_label">スレッドビュー</string>
   <string name="global_settings_threaded_view_summary">会話をグループにまとめる</string>
   <string name="upgrade_databases_title">Upgrading databases</string>
-  <string name="upgrade_databases_unspecified">Upgrading databases...</string>
+  <string name="upgrade_databases_unspecified">Upgrading databases…</string>
   <string name="upgrade_database_format">Upgrading database of account \"<xliff:g id="account">%s</xliff:g>\"</string>
-  <string name="message_list_loading">Loading...</string>
+  <string name="message_list_loading">Loading…</string>
   <string name="global_settings_splitview_mode_label">画面分割</string>
   <string name="global_settings_splitview_always">常に分割</string>
   <string name="global_settings_splitview_never">常に分割しない</string>
@@ -920,10 +920,10 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="global_settings_colorize_missing_contact_pictures_summary">連絡先に写真がない場合に頭文字の画像に色を付ける</string>
   <string name="global_settings_messageview_visible_refile_actions_title">表示するアクションの選択</string>
   <string name="global_settings_messageview_visible_refile_actions_summary">メッセージビューのメニューに選択したアクションを表示する</string>
-  <string name="loading_attachment">添付ファイル読み込み中...</string>
+  <string name="loading_attachment">添付ファイル読み込み中…</string>
   <string name="fetching_attachment_dialog_title_send">メッセージ送信</string>
   <string name="fetching_attachment_dialog_title_save">下書き保存</string>
-  <string name="fetching_attachment_dialog_message">添付ファイル取得中...</string>
+  <string name="fetching_attachment_dialog_message">添付ファイル取得中…</string>
   <string name="auth_external_error">認証できません｡ｻｰﾊﾞｰはSASL EXTERNALが利用できることを示していません｡これはｸﾗｲｱﾝﾄ証明書の問題(期限切れ､未知の認証局)又は何らかの設定の為です｡</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">ｸﾗｲｱﾝﾄ証明書を使う</string>
@@ -1013,7 +1013,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="locked_attach_unlock">ロック解除</string>
   <string name="locked_attach_unencrypted">この部分は暗号化されていません。安全ではない可能性があります。</string>
   <string name="locked_attach_title">保護されていない添付ファイル</string>
-  <string name="message_progress_text">読み込み中...</string>
+  <string name="message_progress_text">読み込み中…</string>
   <string name="messageview_decrypt_cancelled">復号化をキャンセルしました。</string>
   <string name="messageview_decrypt_retry">再実行</string>
   <string name="messageview_decrypt_incomplete">暗号化されたメールは、復号化するためにダウンロードする必要があります。</string>
@@ -1038,7 +1038,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="crypto_no_provider_message">このメールは OpenPGP で暗号化されました。\n読むためには、OpenPGP と互換のアプリをインストールして設定する必要があります。</string>
   <string name="crypto_no_provider_button">OpenPGP アプリを選択</string>
   <string name="mail_list_widget_text">K-9 メッセージ一覧</string>
-  <string name="mail_list_widget_loading">メッセージ読み込み中...</string>
+  <string name="mail_list_widget_loading">メッセージ読み込み中…</string>
   <string name="fetching_folders_failed">フォルダ一覧の取得に失敗しました</string>
   <string name="messageview_crypto_warning_details">詳細を表示</string>
   <string name="error_recipient_crypto_retrieve">OpenPGPプロバイダから受信者ステータスを取得中にエラーが発生しました!</string>

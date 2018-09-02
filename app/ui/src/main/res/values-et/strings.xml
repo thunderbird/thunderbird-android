@@ -71,8 +71,8 @@
   <string name="spam_action">Rämpspost</string>
   <string name="forward_action">Saada edasi</string>
   <string name="move_action">Teisalda</string>
-  <string name="single_message_options_action">Saada...</string>
-  <string name="refile_action">Paiguta ümber...</string>
+  <string name="single_message_options_action">Saada…</string>
+  <string name="refile_action">Paiguta ümber…</string>
   <string name="done_action">Tehtud</string>
   <string name="discard_action">Loobu</string>
   <string name="save_draft_action">Salvesta mustandina</string>
@@ -605,7 +605,7 @@
   <string name="sort_unread_last">Loetud sõnumid esimesena</string>
   <string name="sort_attach_first">Manustega sõnumid esimestena</string>
   <string name="sort_unattached_first">Manusteta sõnumid esimestena</string>
-  <string name="sort_by">Sorteeri kasutades...</string>
+  <string name="sort_by">Sorteeri kasutades…</string>
   <string name="sort_by_date">Kuupäev</string>
   <string name="sort_by_arrival">Saabumine</string>
   <string name="sort_by_subject">Teema</string>
@@ -623,7 +623,7 @@
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Aktsepteeri võti</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Keeldu võtmest</string>
   <string name="folder_list_filter_hint">Kausta nimi sisaldab</string>
-  <string name="folder_list_display_mode_label">Näita kaustu...</string>
+  <string name="folder_list_display_mode_label">Näita kaustu…</string>
   <string name="folder_list_display_mode_all">Kõik kaustad</string>
   <string name="folder_list_display_mode_first_class">1. klassi kaustad</string>
   <string name="folder_list_display_mode_first_and_second_class">1. ja 2. klassi kaustad</string>
@@ -766,9 +766,9 @@
   <string name="settings_import">Impordi sätted</string>
   <string name="settings_import_selection">Impordi valitu</string>
   <string name="settings_import_global_settings">Üldised sätted</string>
-  <string name="settings_exporting">Ekspordib sätteid...</string>
-  <string name="settings_importing">Impordib sätteid...</string>
-  <string name="settings_import_scanning_file">Skanneerib faili...</string>
+  <string name="settings_exporting">Ekspordib sätteid…</string>
+  <string name="settings_importing">Impordib sätteid…</string>
+  <string name="settings_import_scanning_file">Skanneerib faili…</string>
   <string name="settings_export_success">Salvestas eksporditud sätted <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_generic">Seaded edukalt eksporditud</string>
   <string name="settings_import_global_settings_success">Impordi üldised sätted <xliff:g id="filename">%s</xliff:g></string>
@@ -792,18 +792,18 @@
   <string name="settings_import_incoming_server">Sissetuleva posti server (<xliff:g id="hostname">%s</xliff:g>):</string>
   <string name="settings_import_outgoing_server">Väljuva posti server (<xliff:g id="hostname">%s</xliff:g>):</string>
   <plurals name="settings_import_setting_passwords">
-    <item quantity="one">Määra salasõna...</item>
-    <item quantity="other">Määra salasõnad...</item>
+    <item quantity="one">Määra salasõna…</item>
+    <item quantity="other">Määra salasõnad…</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">Kasuta sissetuleva serveri parooli</string>
   <string name="activate_account_action">Aktiveeri</string>
   <string name="account_unavailable">Konto \"<xliff:g id="account">%s</xliff:g>\" ei ole saadaval; kontrolli mälu</string>
-  <string name="settings_attachment_default_path">Kuhu salvestada manused...</string>
+  <string name="settings_attachment_default_path">Kuhu salvestada manused…</string>
   <string name="attachment_save_title">Salvesta manus</string>
   <string name="attachment_save_desc">Failibrauserit ei leitud. Kuhu sooviksid selle manuse salvestada?</string>
   <string name="manage_accounts_move_up_action">Liiguta ülesse</string>
   <string name="manage_accounts_move_down_action">Liiguta alla</string>
-  <string name="manage_accounts_moving_message">Teisaldab kontot...</string>
+  <string name="manage_accounts_moving_message">Teisaldab kontot…</string>
   <string name="import_dialog_error_title">Puudub failide haldamise rakendus</string>
   <string name="close">Sulge</string>
   <string name="webview_empty_message">Teksti ei ole</string>
@@ -851,7 +851,7 @@
   <string name="account_settings_remote_search_enabled">Luba serverist otsimine</string>
   <string name="account_settings_remote_search_enabled_summary">Lisaks seadmes olevatele sõnumitele otsi ka serveris olevatest sõnumitest</string>
   <string name="action_remote_search">Otsi serveris olevaist sõnumitest</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_pull">Käivita serverist otsimine...</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_pull">Käivita serverist otsimine…</string>
   <string name="pull_to_refresh_remote_search_from_local_search_release">Vabasta serverist otsimiseks...</string>
   <string name="remote_search_unavailable_no_network">Võrguühendus on vajalik serverist otsimiseks.</string>
   <string name="global_settings_background_as_unread_indicator_label">Muuda lugemisel värvi</string>
@@ -859,9 +859,9 @@
   <string name="global_settings_threaded_view_label">Lõimestatud vaade</string>
   <string name="global_settings_threaded_view_summary">Grupeeri sõnumid vestluste järgi</string>
   <string name="upgrade_databases_title">Uuendab andmebaase</string>
-  <string name="upgrade_databases_unspecified">Uuendab andmebaase...</string>
+  <string name="upgrade_databases_unspecified">Uuendab andmebaase…</string>
   <string name="upgrade_database_format">Uuendab konto  \"<xliff:g id="account">%s</xliff:g>\" andmebaase</string>
-  <string name="message_list_loading">Laeb...</string>
+  <string name="message_list_loading">Laeb…</string>
   <string name="global_settings_splitview_mode_label">Näita jagatud ekraani</string>
   <string name="global_settings_splitview_always">Alati</string>
   <string name="global_settings_splitview_never">Mitte kunagi</string>
@@ -877,10 +877,10 @@
   <string name="global_settings_colorize_missing_contact_pictures_summary">Tooni puuduvate kontaktide pildid</string>
   <string name="global_settings_messageview_visible_refile_actions_title">Nähtavad sõnumi tegevused</string>
   <string name="global_settings_messageview_visible_refile_actions_summary">Näita valitud tegevusi sõnumi vaate menüüs</string>
-  <string name="loading_attachment">Laeb manust...</string>
+  <string name="loading_attachment">Laeb manust…</string>
   <string name="fetching_attachment_dialog_title_send">Saadab sõnumit</string>
   <string name="fetching_attachment_dialog_title_save">Salvestab mustandit</string>
-  <string name="fetching_attachment_dialog_message">Toob manust...</string>
+  <string name="fetching_attachment_dialog_message">Toob manust…</string>
   <string name="auth_external_error">Ei suuda autentida. Server ei kuuluta SASL EXTERNAL võimekust. See võib olla kliendi sertifikaadi (aegunud, võõras sertifitseerimisasutus) või mõne muu konfiguratsiooni probleemi tõttu.</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Kasuta kliendi sertifikaati</string>
@@ -912,6 +912,6 @@
   <string name="error_crypto_provider_connect">Ei suuda ühenduda krüpto pakkujaga, kontrolli oma seadeid või klikka uuesti proovimiseks krüpto ikoonil!</string>
   <string name="error_crypto_provider_ui_required">Krüpto pakkuja ligipääs puudub, klikka uuesti proovimiseks krüpto ikoonil!</string>
   <string name="crypto_info_ok">OK</string>
-  <string name="message_progress_text">Laeb...</string>
+  <string name="message_progress_text">Laeb…</string>
   <string name="openpgp_enabled_error_back">Tagasi</string>
 </resources>

@@ -34,7 +34,7 @@ Dens forbedrede funktioner omfatter:
   <li>Gemning af vedhæftninger på SD-kort</li>
   <li>Tømning af papirkurv</li>
   <li>Sortering af meddelelser</li>
-  <li>...og mere</li>
+  <li>…og mere</li>
 </ul>
 <p>
 Bemærk, at K-9 ikke understøtter de fleste gratis Hotmail-konti, og ligesom mange mail-klienter, har nogle uhensigtsmæssigheder, når den kommunikerer med Microsoft Exchange.
@@ -95,8 +95,8 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="spam_action">Spam</string>
   <string name="forward_action">Videresend</string>
   <string name="move_action">Flyt</string>
-  <string name="single_message_options_action">Send...</string>
-  <string name="refile_action">Genarkivering...</string>
+  <string name="single_message_options_action">Send…</string>
+  <string name="refile_action">Genarkivering…</string>
   <string name="done_action">Afslut</string>
   <string name="discard_action">Slet</string>
   <string name="save_draft_action">Gem som kladde</string>
@@ -618,7 +618,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="sort_unread_last">Læste mails først</string>
   <string name="sort_attach_first">Mail med vedhæftede filer først</string>
   <string name="sort_unattached_first">Mail uden vedhæftede filer først</string>
-  <string name="sort_by">Sorter efter...</string>
+  <string name="sort_by">Sorter efter…</string>
   <string name="sort_by_date">Dato</string>
   <string name="sort_by_arrival">Modtagelsestidspunkt</string>
   <string name="sort_by_subject">Emne</string>
@@ -779,9 +779,9 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="settings_import">Importer indstillinger</string>
   <string name="settings_import_selection">Importer det valgte</string>
   <string name="settings_import_global_settings">Globale indstillinger</string>
-  <string name="settings_exporting">Ekporterer indstillinger...</string>
-  <string name="settings_importing">Importerer indstillinger...</string>
-  <string name="settings_import_scanning_file">Skanner fil...</string>
+  <string name="settings_exporting">Ekporterer indstillinger…</string>
+  <string name="settings_importing">Importerer indstillinger…</string>
+  <string name="settings_import_scanning_file">Skanner fil…</string>
   <string name="settings_export_success">Indstillinger gemt som <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_global_settings_success">Importerede globale indstillinger fra <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_success">Importerede <xliff:g id="accounts">%s</xliff:g> fra <xliff:g id="filename">%s</xliff:g></string>
@@ -804,19 +804,19 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="settings_import_incoming_server">Indgående server (<xliff:g id="hostname">%s</xliff:g>):</string>
   <string name="settings_import_outgoing_server">Udgående server (<xliff:g id="hostname">%s</xliff:g>):</string>
   <plurals name="settings_import_setting_passwords">
-    <item quantity="one">Angiver password...</item>
-    <item quantity="other">Angiver passwords...</item>
+    <item quantity="one">Angiver password…</item>
+    <item quantity="other">Angiver passwords…</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">Benyt samme password som benyttes til indgående server</string>
   <string name="activate_account_action">Aktiver</string>
   <string name="account_unavailable">Konto \"<xliff:g id="account">%s</xliff:g>\" kunne ikke findes; kontroller lager</string>
-  <string name="settings_attachment_default_path">Gem vedhæftning ...</string>
+  <string name="settings_attachment_default_path">Gem vedhæftning …</string>
   <string name="attachment_save_title">Gem vedhæftning</string>
   <string name="attachment_save_desc">Kunne ikke finde en Stifinder. Hvor ønsker du gemme denne vedhæftning?</string>
   <string name="manage_accounts_move_up_action">Flyt op</string>
   <string name="manage_accounts_move_down_action">Flyt ned</string>
-  <string name="manage_accounts_moving_message">Flytter konto...</string>
-  <string name="unread_widget_select_account">Vis antal ulæste for...</string>
+  <string name="manage_accounts_moving_message">Flytter konto…</string>
+  <string name="unread_widget_select_account">Vis antal ulæste for…</string>
   <string name="import_dialog_error_title">Manglende File Manager program</string>
   <string name="close">Luk</string>
   <string name="webview_empty_message">Ingen tekst</string>
@@ -856,15 +856,15 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_settings_remote_search_enabled">Aktiver søgning på server</string>
   <string name="account_settings_remote_search_enabled_summary">Søg meddelelser på både enhed og server</string>
   <string name="action_remote_search">Søg i meddelelser på server</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_pull">Træ for at søge på server...</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_release">Slip for at søge på server...</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_pull">Træ for at søge på server…</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_release">Slip for at søge på server…</string>
   <string name="remote_search_unavailable_no_network">En netværksforbindelse er nødvendig når der søges på server.</string>
   <string name="global_settings_threaded_view_label">Visning i tråd</string>
   <string name="global_settings_threaded_view_summary">Grupper meddelelser i tråde</string>
   <string name="upgrade_databases_title">Opdaterer databaser</string>
-  <string name="upgrade_databases_unspecified">Opdaterer databaser...</string>
+  <string name="upgrade_databases_unspecified">Opdaterer databaser…</string>
   <string name="upgrade_database_format">Opdaterer databaser for konto \"<xliff:g id="account">%s</xliff:g>\"</string>
-  <string name="message_list_loading">Indlæser...</string>
+  <string name="message_list_loading">Indlæser…</string>
   <string name="global_settings_splitview_mode_label">Vis delt skærm</string>
   <string name="global_settings_splitview_always">Altid</string>
   <string name="global_settings_splitview_never">Aldrig</string>
@@ -880,10 +880,10 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="global_settings_colorize_missing_contact_pictures_summary">Benyt farver hvis der ikke findes billede af kontakter</string>
   <string name="global_settings_messageview_visible_refile_actions_title">Visning af handlinger for valgte meddelelses</string>
   <string name="global_settings_messageview_visible_refile_actions_summary">Vis handlinger for valgte meddelelser i Visnings menu</string>
-  <string name="loading_attachment">Henter vedhæftning...</string>
+  <string name="loading_attachment">Henter vedhæftning…</string>
   <string name="fetching_attachment_dialog_title_send">Sender meddelelse</string>
   <string name="fetching_attachment_dialog_title_save">Gemmer kladde</string>
-  <string name="fetching_attachment_dialog_message">Henter vedhæftning...</string>
+  <string name="fetching_attachment_dialog_message">Henter vedhæftning…</string>
   <string name="auth_external_error">Ikke i stand til at autentificere. Serveren annoncerer ikke at den er i stand til at udføre SASL EXTERNAL. Dette kan være et problem med klientcertifikatet (udløbet, ukendt certifikatudsteder) eller et andet konfigurationsproblem.</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Brug klientcertifikat</string>
@@ -938,7 +938,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="locked_attach_unlock">Lås op</string>
   <string name="locked_attach_unencrypted">Denne del var ikke krypteret og kan være usikker.</string>
   <string name="locked_attach_title">Ubeskyttet vedhæftning</string>
-  <string name="message_progress_text">Indlæser...</string>
+  <string name="message_progress_text">Indlæser…</string>
   <string name="messageview_decrypt_cancelled">Dekryptering blev afbrudt.</string>
   <string name="messageview_decrypt_retry">Prøv igen</string>
   <string name="messageview_decrypt_incomplete">Krypteret meddelelse skal downloades for dekryptering.</string>
@@ -960,6 +960,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="crypto_no_provider_message">Denne email er krypteret med OpenPGP.\nFor at læse den skal du installere en kompatibel OpenPGP applikation.</string>
   <string name="crypto_no_provider_button">Vælg OpenPGP-applikation</string>
   <string name="mail_list_widget_text">K-9 Meddelelsesliste</string>
-  <string name="mail_list_widget_loading">Indlæser meddelelser...</string>
+  <string name="mail_list_widget_loading">Indlæser meddelelser…</string>
   <string name="openpgp_enabled_error_back">Tilbage</string>
 </resources>

@@ -34,7 +34,7 @@ Chaidh na gleusan a leanas a chur ris o chionn goirid:
   <li>Sàbhaladh de cheanglaichean air SD</li>
   <li>Falamhachadh an sgudail</li>
   <li>Seòrsachadh theachdaireachdan</li>
-  <li>...is mòran a bharrachd</li>
+  <li>…is mòran a bharrachd</li>
 </ul>
 <p>
 Thoir an aire nach cuir K-9 taic ri cuid mhòr de chunntasan saor Hotmail agus mar iomadh prògram puist-d
@@ -100,8 +100,8 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="spam_action">Spama</string>
   <string name="forward_action">Sìn air adhart</string>
   <string name="move_action">Gluais</string>
-  <string name="single_message_options_action">Cuir...</string>
-  <string name="refile_action">Ath-fhaidhlich...</string>
+  <string name="single_message_options_action">Cuir…</string>
+  <string name="refile_action">Ath-fhaidhlich…</string>
   <string name="done_action">Deiseil</string>
   <string name="discard_action">Tilg air falbh</string>
   <string name="save_draft_action">Sàbhail mar dhreachd</string>
@@ -151,7 +151,7 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="general_no_subject">(Gun chuspair)</string>
   <string name="general_no_sender">Gun seòladair</string>
   <string name="status_loading">Ceasnachadh</string>
-  <string name="status_loading_more">A’ luchdadh nan teachdaireachdan...</string>
+  <string name="status_loading_more">A’ luchdadh nan teachdaireachdan…</string>
   <string name="status_network_error">Mearachd leis a’ cheangal</string>
   <string name="status_invalid_id_error">Cha deach an teachdaireachd a lorg</string>
   <string name="status_loading_error">Mearachd a’ luchdadh na teachdaireachd</string>
@@ -312,12 +312,12 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="account_setup_basics_show_password">Seall am facal-faire</string>
   <string name="account_setup_basics_manual_setup_action">Suidheachadh de làimh</string>
   <string name="account_setup_check_settings_title"/>
-  <string name="account_setup_check_settings_retr_info_msg">A’ faighinn fiosrachadh a’ chunntais...</string>
-  <string name="account_setup_check_settings_check_incoming_msg">A’ sgrùdadh roghainnean an fhrithealaiche a-steach...</string>
-  <string name="account_setup_check_settings_check_outgoing_msg">A’ sgrùdadh roghainnean an fhrithealaiche a-mach...</string>
-  <string name="account_setup_check_settings_authenticate">’Ga dhearbhadh...</string>
-  <string name="account_setup_check_settings_fetch">A’ faighinn roghainnean a’ chunntais...</string>
-  <string name="account_setup_check_settings_canceling_msg">A’ sgur dheth...</string>
+  <string name="account_setup_check_settings_retr_info_msg">A’ faighinn fiosrachadh a’ chunntais…</string>
+  <string name="account_setup_check_settings_check_incoming_msg">A’ sgrùdadh roghainnean an fhrithealaiche a-steach…</string>
+  <string name="account_setup_check_settings_check_outgoing_msg">A’ sgrùdadh roghainnean an fhrithealaiche a-mach…</string>
+  <string name="account_setup_check_settings_authenticate">’Ga dhearbhadh…</string>
+  <string name="account_setup_check_settings_fetch">A’ faighinn roghainnean a’ chunntais…</string>
+  <string name="account_setup_check_settings_canceling_msg">A’ sgur dheth…</string>
   <string name="account_setup_names_title">Cha mhòr deiseil!</string>
   <string name="account_setup_names_account_name_label">Thoir ainm air a’ chunntas seo (roghainneil):</string>
   <string name="account_setup_names_user_name_label">Cuir a-steach d’ ainm (chithear seo ann an teachdaireachdan a thèid a-mach):</string>
@@ -634,7 +634,7 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="sort_unread_last">Teachdaireachdan a chaidh an leughadh an toiseach</string>
   <string name="sort_attach_first">Teachdaireachdan le ceanglachain an toiseach</string>
   <string name="sort_unattached_first">Teachdaireachdan gun cheanglachain an toiseach</string>
-  <string name="sort_by">Seòrsaich a-rèir...</string>
+  <string name="sort_by">Seòrsaich a-rèir…</string>
   <string name="sort_by_date">Ceann-là</string>
   <string name="sort_by_arrival">Ruigsinn</string>
   <string name="sort_by_subject">Cuspair</string>
@@ -652,7 +652,7 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Gach ris an iuchair</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Diùlt an iuchair</string>
   <string name="folder_list_help_key">1 - Na seall ach pasganan na 1ad ìre\n2 - Seall pasganan na 1ad is na 2na ìre\n3 - Seall na h-uile ach pasganan na 2na ìre\n4 - Seall a h-uile pasgan\nQ - Till gu na cunntasan\nS - Deasaich roghainnean a’ chunntais</string>
-  <string name="folder_list_display_mode_label">Seall pasganan...</string>
+  <string name="folder_list_display_mode_label">Seall pasganan…</string>
   <string name="folder_list_display_mode_all">Na h-uile pasgan</string>
   <string name="folder_list_display_mode_first_class">Pasganan na 1ad ìre</string>
   <string name="folder_list_display_mode_first_and_second_class">Pasganan na 1ad ⁊ na 2na ìre</string>
@@ -785,9 +785,9 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="settings_import">Ion-phortaich na roghainnean</string>
   <string name="settings_import_selection">Tagh na thèid ion-phortadh</string>
   <string name="settings_import_global_settings">Roghainnean uile-choitcheann</string>
-  <string name="settings_exporting">Ag às-phortadh nan roghainnean...</string>
-  <string name="settings_importing">Ag ion-phortadh nan roghainnean...</string>
-  <string name="settings_import_scanning_file">A’ sganadh an fhaidhle...</string>
+  <string name="settings_exporting">Ag às-phortadh nan roghainnean…</string>
+  <string name="settings_importing">Ag ion-phortadh nan roghainnean…</string>
+  <string name="settings_import_scanning_file">A’ sganadh an fhaidhle…</string>
   <string name="settings_export_success">Chaidh na roghainnean a shàbhaladh ann an: <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_generic">Chaidh na roghainnean às-phortadh</string>
   <string name="settings_import_global_settings_success">Chaidh na roghainnean uile-choitcheann ion-phortadh o: <xliff:g id="filename">%s</xliff:g></string>
@@ -812,18 +812,18 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
     <item quantity="one">Faclan-faire nan roghainnean...</item>
     <item quantity="two">Faclan-faire nan roghainnean...</item>
     <item quantity="few">Faclan-faire nan roghainnean...</item>
-    <item quantity="other">Faclan-faire nan roghainnean...</item>
+    <item quantity="other">Faclan-faire nan roghainnean…</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">Cleachd facal-faire an fhrithealaiche a-steach</string>
   <string name="activate_account_action">Cuir an gnìomh</string>
   <string name="account_unavailable">Cha ruig sinn an cunntas “<xliff:g id="account">%s</xliff:g>”, thoir sùil air an stòras</string>
-  <string name="settings_attachment_default_path">Sàbhail na ceanglachain an-seo...</string>
+  <string name="settings_attachment_default_path">Sàbhail na ceanglachain an-seo…</string>
   <string name="attachment_save_title">Sàbhail an ceanglachan</string>
   <string name="attachment_save_desc">Cha deach brabhsair fhaidhlichean a lorg. Càit an sàbhail sinn an ceanglachan seo dhut?</string>
   <string name="manage_accounts_move_up_action">Gluais suas</string>
   <string name="manage_accounts_move_down_action">Gluais sìos</string>
-  <string name="manage_accounts_moving_message">A’ gluasad a’ chunntais...</string>
-  <string name="unread_widget_select_account">Seall na tha gun leughadh ann an...</string>
+  <string name="manage_accounts_moving_message">A’ gluasad a’ chunntais…</string>
+  <string name="unread_widget_select_account">Seall na tha gun leughadh ann an…</string>
   <string name="import_dialog_error_title">Aplacaid manaidsear nam faidhle a dhìth</string>
   <string name="close">Dùin</string>
   <string name="webview_empty_message">Gun teacsa</string>
@@ -875,17 +875,17 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="account_settings_remote_search_enabled">Cuir an comas lorg air an fhrithealaiche</string>
   <string name="account_settings_remote_search_enabled_summary">Lorg teachdaireachdan air an fhrithealaiche a bharrachd air an fheadhainn air an uidheam agad</string>
   <string name="action_remote_search">Lorg teachdaireachdan air an fhrithealaiche</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_pull">Grad-shlaighd a-nuas airson lorg air an fhrithealaiche...</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_release">Leig às airson lorg air an fhrithealaiche...</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_pull">Grad-shlaighd a-nuas airson lorg air an fhrithealaiche…</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_release">Leig às airson lorg air an fhrithealaiche…</string>
   <string name="remote_search_unavailable_no_network">Feumaidh tu ceangal ris an lìonra mus urrainn dhut lorg a dhèanamh air an fhrithealaiche.</string>
   <string name="global_settings_background_as_unread_indicator_label">Atharraich an dath nuair a chaidh a leughadh</string>
   <string name="global_settings_background_as_unread_indicator_summary">Nochdaidh cùlaibh eile a sheallas gun deach an teachdaireachd a leughadh</string>
   <string name="global_settings_threaded_view_label">Sealladh ann an snàithleanan</string>
   <string name="global_settings_threaded_view_summary">Buidhnich teachdaireachdan ann an còmhraidhean</string>
   <string name="upgrade_databases_title">Ag àrdachadh nan stòr-dàta</string>
-  <string name="upgrade_databases_unspecified">Ag àrdachadh nan stòr-dàta...</string>
+  <string name="upgrade_databases_unspecified">Ag àrdachadh nan stòr-dàta…</string>
   <string name="upgrade_database_format">Ag àrdachadh nan stòr-dàta aig a’ chunntas “<xliff:g id="account">%s</xliff:g>”</string>
-  <string name="message_list_loading">’Ga luchdadh...</string>
+  <string name="message_list_loading">’Ga luchdadh…</string>
   <string name="global_settings_splitview_mode_label">Seall air sgrìn sgoilte</string>
   <string name="global_settings_splitview_always">An-còmhnaidh</string>
   <string name="global_settings_splitview_never">Chan ann idir</string>
@@ -901,10 +901,10 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="global_settings_colorize_missing_contact_pictures_summary">Cuir dathan air dealbhan an luchd-aithne a tha a dhìth</string>
   <string name="global_settings_messageview_visible_refile_actions_title">Gnìomhan theachdaireachdan ri fhaicinn</string>
   <string name="global_settings_messageview_visible_refile_actions_summary">Seall na gnìomhan a thagh thu ann an clàr-taice sealladh na teachdaireachd</string>
-  <string name="loading_attachment">A’ luchdadh a’ cheanglachain...</string>
+  <string name="loading_attachment">A’ luchdadh a’ cheanglachain…</string>
   <string name="fetching_attachment_dialog_title_send">A’ cur na teachdaireachd</string>
   <string name="fetching_attachment_dialog_title_save">A’ sàbhaladh an dreachd</string>
-  <string name="fetching_attachment_dialog_message">A’ faighinn a’ cheanglachain...</string>
+  <string name="fetching_attachment_dialog_message">A’ faighinn a’ cheanglachain…</string>
   <string name="auth_external_error">Cha b’ urrainn dhuinn dearbhadh a dhèanamh. Chan eil am frithealaiche a’ leigeil ris a bheil e comasach air SASL EXTERNAL. Dh’fhaoidte gu bheil duilgheadas le teisteanas a’ chliant (ro aosta, ùghdarras neo-aithnichte) no duilgheadas eile leis an rèiteachadh.</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Cleachd teisteanas a’ chliant</string>
@@ -960,7 +960,7 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="locked_attach_unlock">Thoir a’ ghlas dheth</string>
   <string name="locked_attach_unencrypted">Cha deach a’ phàirt seo a chrioptachadh is dh’fhaoidte gu bheil e neo-thèarainte.</string>
   <string name="locked_attach_title">Ceanglachan gun dìon</string>
-  <string name="message_progress_text">’Ga luchdadh...</string>
+  <string name="message_progress_text">’Ga luchdadh…</string>
   <string name="messageview_decrypt_cancelled">Sguireadh dhen dì-chrioptachadh.</string>
   <string name="messageview_decrypt_retry">Feuch ris a-rithist</string>
   <string name="messageview_decrypt_incomplete">Feumaidh tu an teachdaireachd chrioptaichte a luchdadh a-nuas mus gabh a dhì-chrioptachadh.</string>
@@ -982,7 +982,7 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="crypto_no_provider_message">Chaidh am post-d seo a chrioptachadh le OpenPGP.\nFeumaidh tu aplacaid a tha comasach air OpenPGP a stàladh is a rèiteachadh mus urrainn dhut a leughadh.</string>
   <string name="crypto_no_provider_button">Tagh aplacaid OpenPGP</string>
   <string name="mail_list_widget_text">Liosta theachdaireachdan L-9</string>
-  <string name="mail_list_widget_loading">A’ luchdadh nan teachdaireachdan...</string>
+  <string name="mail_list_widget_loading">A’ luchdadh nan teachdaireachdan…</string>
   <string name="fetching_folders_failed">Cha b’ urrainn dhuinn liosta nam pasgan fhaighinn</string>
   <string name="messageview_crypto_warning_details">Seall am mion-fhiosrachadh</string>
 </resources>

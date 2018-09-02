@@ -34,7 +34,7 @@ Meðal bættra eiginleika þess eru:
   <li>Vistun viðhengja á SD</li>
   <li>Tæming á rusli</li>
   <li>Röðun skilaboða</li>
-  <li>...og margt fleira</li>
+  <li>…og margt fleira</li>
 </ul>
 <p>
 Taktu eftir því að K-9 gengur ekki með flestum Hotmail aðgöngum og, rétt eins og mörg önnur tölvupóstforrit, á í nokkrum erfiðleikum með að hafa samskipti við Microsoft Exchange.
@@ -102,8 +102,8 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="forward_action">Framsenda</string>
   <string name="forward_as_attachment_action">Áframsenda sem viðhengi</string>
   <string name="move_action">Færa</string>
-  <string name="single_message_options_action">Senda...</string>
-  <string name="refile_action">Endurraða...</string>
+  <string name="single_message_options_action">Senda…</string>
+  <string name="refile_action">Endurraða…</string>
   <string name="done_action">Búið</string>
   <string name="discard_action">Henda</string>
   <string name="save_draft_action">Vista sem drög</string>
@@ -638,7 +638,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="sort_unread_last">Lesin skilaboð fyrst</string>
   <string name="sort_attach_first">Skilaboð með viðhengi fyrst</string>
   <string name="sort_unattached_first">Skilaboð án viðhengis fyrst</string>
-  <string name="sort_by">Raða eftir...</string>
+  <string name="sort_by">Raða eftir…</string>
   <string name="sort_by_date">Dagsetning</string>
   <string name="sort_by_arrival">Hvenær barst</string>
   <string name="sort_by_subject">Viðfangsefni</string>
@@ -659,7 +659,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="message_list_help_key">Del (eða D) - Eyða\nC - Skrifa\nM - Færa\nV - Geymsla\nY - Afrita\nZ - Merkja (ó)lesið\nG - Stjörnumerkja\nO - Gerð röðunar\nQ - Fara í möppur\nS - Velja/afvelja</string>
   <string name="folder_list_help_key">1 - Birta einungis 1. flokks möppur\n2 - Birta 1. og 2. flokks möppur\n3 - Birta allt nema 2. flokks möppur\n4 - Birta allar möppur\nQ - Fara til baka í Aðgangar\nS - Breyta stillingum aðgangs</string>
   <string name="folder_list_filter_hint">Nafn möppu inniheldur</string>
-  <string name="folder_list_display_mode_label">Birta möppur...</string>
+  <string name="folder_list_display_mode_label">Birta möppur…</string>
   <string name="folder_list_display_mode_all">Allar möppur</string>
   <string name="folder_list_display_mode_first_class">1. flokks möppur</string>
   <string name="folder_list_display_mode_first_and_second_class">1. og 2. flokks möppur</string>
@@ -803,9 +803,9 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="settings_import">Flytja inn stillingar</string>
   <string name="settings_import_selection">Flytja inn valið</string>
   <string name="settings_import_global_settings">Víðværar stillingar</string>
-  <string name="settings_exporting">Flytja út stillingar...</string>
-  <string name="settings_importing">Flytja inn stillingar...</string>
-  <string name="settings_import_scanning_file">Skanna skrá...</string>
+  <string name="settings_exporting">Flytja út stillingar…</string>
+  <string name="settings_importing">Flytja inn stillingar…</string>
+  <string name="settings_import_scanning_file">Skanna skrá…</string>
   <string name="settings_export_success">Vistaði útfluttar stillingar í <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_generic">Tókst að flytja út stillingar</string>
   <string name="settings_import_global_settings_success">Flutti inn víðværar stillingar úr <xliff:g id="filename">%s</xliff:g></string>
@@ -830,19 +830,19 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="settings_import_incoming_server">Inn-póstþjónn (<xliff:g id="hostname">%s</xliff:g>):</string>
   <string name="settings_import_outgoing_server">Út-póstþjónn (<xliff:g id="hostname">%s</xliff:g>):</string>
   <plurals name="settings_import_setting_passwords">
-    <item quantity="one">Set lykilorð...</item>
-    <item quantity="other">Set lykilorð...</item>
+    <item quantity="one">Set lykilorð…</item>
+    <item quantity="other">Set lykilorð…</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">Nota lykilorð móttöku-póstþjóns</string>
   <string name="activate_account_action">Virkja</string>
   <string name="account_unavailable">Aðgangurinn \"<xliff:g id="account">%s</xliff:g>\" er ekki tiltækur; athugaðu með gagnageymslur</string>
-  <string name="settings_attachment_default_path">Vista viðhengi í...</string>
+  <string name="settings_attachment_default_path">Vista viðhengi í…</string>
   <string name="attachment_save_title">Vista viðhengið</string>
   <string name="attachment_save_desc">Enginn skráavafri fannst. Hvar viltu vista þetta viðhengi?</string>
   <string name="manage_accounts_move_up_action">Færa upp</string>
   <string name="manage_accounts_move_down_action">Færa niður</string>
-  <string name="manage_accounts_moving_message">Færi aðgang...</string>
-  <string name="unread_widget_select_account">Sýna fjölda ólesins fyrir...</string>
+  <string name="manage_accounts_moving_message">Færi aðgang…</string>
+  <string name="unread_widget_select_account">Sýna fjölda ólesins fyrir…</string>
   <string name="unread_widget_account_title">Aðgangur</string>
   <string name="unread_widget_account_summary">Aðgangurinn sem birting fjöldi ólesinna skilaboða tilheyrir</string>
   <string name="unread_widget_unified_inbox_account_summary">Sameinað innhólf</string>
@@ -910,9 +910,9 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="global_settings_threaded_view_label">Hópuð sýn</string>
   <string name="global_settings_threaded_view_summary">Hópa skilaboð eftir samtölum</string>
   <string name="upgrade_databases_title">Uppfæri gagnagrunna</string>
-  <string name="upgrade_databases_unspecified">Uppfæri gagnagrunna...</string>
+  <string name="upgrade_databases_unspecified">Uppfæri gagnagrunna…</string>
   <string name="upgrade_database_format">Uppfæri gagnagrunn \"<xliff:g id="account">%s</xliff:g>\" aðgangsins</string>
-  <string name="message_list_loading">Hleður...</string>
+  <string name="message_list_loading">Hleður…</string>
   <string name="global_settings_splitview_mode_label">Birta klofinn skjá</string>
   <string name="global_settings_splitview_always">Alltaf</string>
   <string name="global_settings_splitview_never">Aldrei</string>
@@ -927,10 +927,10 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="global_settings_colorize_missing_contact_pictures_label">Lita myndir tengiliða</string>
   <string name="global_settings_colorize_missing_contact_pictures_summary">Lita myndir tengiliða sem vantar</string>
   <string name="global_settings_messageview_visible_refile_actions_title">Aðgerðir á sýnileg skilaboð</string>
-  <string name="loading_attachment">Hleð inn viðhengi...</string>
+  <string name="loading_attachment">Hleð inn viðhengi…</string>
   <string name="fetching_attachment_dialog_title_send">Sendi skilaboð</string>
   <string name="fetching_attachment_dialog_title_save">Vista drög</string>
-  <string name="fetching_attachment_dialog_message">Næ í viðhengi...</string>
+  <string name="fetching_attachment_dialog_message">Næ í viðhengi…</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Nota skilríki forritsins</string>
   <string name="client_certificate_spinner_empty">Ekkert skilríki forrits</string>
@@ -986,7 +986,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="locked_attach_unlock">Aflæsa</string>
   <string name="locked_attach_unencrypted">Þessi hluti var ekki dulritaður og gæti því verið óöruggur.</string>
   <string name="locked_attach_title">Óvarið viðhengi</string>
-  <string name="message_progress_text">Hleður...</string>
+  <string name="message_progress_text">Hleður…</string>
   <string name="messageview_decrypt_cancelled">Hætt var við afkóðun.</string>
   <string name="messageview_decrypt_retry">Reyna aftur</string>
   <string name="messageview_decrypt_incomplete">Það verður að sækja dulrituð skilaboð svo hægt sé að afkóða þau.</string>
@@ -1007,7 +1007,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="crypto_no_provider_message">Þessi tölvupóstur var dulritaður með OpenPGP.\nTil að lesa hann verður þú að setja upp og stilla samhæft OpenPGP-forrit.</string>
   <string name="crypto_no_provider_button">Veldu OpenPGP-forrit</string>
   <string name="mail_list_widget_text">Skilaboðalisti K-9</string>
-  <string name="mail_list_widget_loading">Hleður skilaboð...</string>
+  <string name="mail_list_widget_loading">Hleður skilaboð…</string>
   <string name="fetching_folders_failed">Mistókst að sækja möppulista</string>
   <string name="messageview_crypto_warning_details">Birta ítarlegra</string>
   <string name="openpgp_enabled_error_title">Dulritun er ekki möguleg</string>
