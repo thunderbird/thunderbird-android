@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:initialKeyguardLayout="@layout/message_list_widget_layout"
     android:initialLayout="@layout/message_list_widget_layout"
     android:minHeight="180dp"

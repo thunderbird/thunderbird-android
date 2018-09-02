@@ -38,7 +38,7 @@ K-9 Mail は Android 向けの強力なフリーのメールクライアント�
 </ul>
 <p>
 K-9 は大多数のメールクライアントと同様に、ほとんどのフリー Hotmail アカウントをサポートしていません。
-また、 Microsoft Exchange との通信において少し癖があることに注意してください。 
+また、 Microsoft Exchange との通信において少し癖があることに注意してください。
 </p><p>
 バグレポートや新機能の貢献、質問は <a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a> にお願いします。
 日本語で質問などがある場合は <a href="http://groups.google.co.jp/group/k9mail_ja/">http://groups.google.co.jp/group/k9mail_ja/</a> を参照してください。
@@ -655,7 +655,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_setup_failed_dlg_invalid_certificate_reject">拒否</string>
   <string name="message_view_help_key">Del (または D) - 削除\nR - 返信\nA - 全員に返信\nC - 作成\nF - 転送\nM - 移動\nV - アーカイブ\nY - コピー\nZ - 既(未)読のマーク\nG - スター\nO - ソート種別\nI - ソート順\nQ - フォルダ一覧に戻る\nS - 選択/選択解除\nJ または P - 前のメッセージへ\nK または N - 次のメッセージへ</string>
   <string name="message_list_help_key">Del (または D) - 削除\nC - 作成\nM - 移動\nV - アーカイブ\nY - コピー\nZ - 既(未)読のマーク\nG - スター\nO - ソート種別\nI - ソート順\nQ - フォルダ一覧に戻る\nS - 選択/選択解除</string>
-  <string name="folder_list_help_key">1 - 1st ｸﾗｽﾌｫﾙﾀﾞｰ表示\n2 - 1st と 2nd ｸﾗｽﾌｫﾙﾀﾞｰ表示\n3 - 2nd ｸﾗｽﾌｫﾙﾀﾞｰ以外を表示\n4 - 全ﾌｫﾙﾀﾞｰ表示\nQ - ｱｶｳﾝﾄ設定に戻る\nS - ｱｶｳﾝﾄ設定編集</string>
+  <string name="folder_list_help_key">1 – 1st ｸﾗｽﾌｫﾙﾀﾞｰ表示\n2 - 1st と 2nd ｸﾗｽﾌｫﾙﾀﾞｰ表示\n3 - 2nd ｸﾗｽﾌｫﾙﾀﾞｰ以外を表示\n4 - 全ﾌｫﾙﾀﾞｰ表示\nQ - ｱｶｳﾝﾄ設定に戻る\nS - ｱｶｳﾝﾄ設定編集</string>
   <string name="folder_list_filter_hint">フォルダ名が含む</string>
   <string name="folder_list_display_mode_label">フォルダ表示…</string>
   <string name="folder_list_display_mode_all">全フォルダ</string>

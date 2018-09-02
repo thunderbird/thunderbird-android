@@ -519,7 +519,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
     private List<BaseAccount> accounts = new ArrayList<BaseAccount>();
     private enum ACCOUNT_LOCATION {
-        TOP, MIDDLE, BOTTOM;
+        TOP, MIDDLE, BOTTOM
     }
     private EnumSet<ACCOUNT_LOCATION> accountLocation(BaseAccount account) {
         EnumSet<ACCOUNT_LOCATION> accountLocation = EnumSet.of(ACCOUNT_LOCATION.MIDDLE);

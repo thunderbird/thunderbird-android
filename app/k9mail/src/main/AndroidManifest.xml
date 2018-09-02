@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:installLocation="auto"
     package="com.fsck.k9">
 
@@ -459,11 +460,11 @@
             android:authorities="${applicationId}.attachmentprovider"
             android:exported="false"
             android:grantUriPermissions="true">
-            
+
             <meta-data
                 android:name="de.cketti.safecontentresolver.ALLOW_INTERNAL_ACCESS"
                 android:value="true" />
-        
+
         </provider>
 
         <provider

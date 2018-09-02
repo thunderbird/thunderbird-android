@@ -517,7 +517,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         UNDEFINED,
         UNAVAILABLE,
         AVAILABLE_UNTRUSTED,
-        AVAILABLE_TRUSTED;
+        AVAILABLE_TRUSTED
     }
 
     public interface TokenListener<T> extends TokenCompleteTextView.TokenListener<T> {

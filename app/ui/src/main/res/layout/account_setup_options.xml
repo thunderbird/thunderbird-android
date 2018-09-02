@@ -15,7 +15,7 @@
     android:scrollbarStyle="outsideInset">
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
             android:text="@string/account_setup_options_mail_check_frequency_label"
@@ -63,7 +63,7 @@
             android:text="@string/account_setup_options_notify_sync_label" />
         <View
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="0dp"
             android:layout_weight="1" />
     </LinearLayout>
 </ScrollView>
