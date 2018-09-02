@@ -19,7 +19,6 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
-import org.apache.james.mime4j.util.MimeUtil;
 
 
 public class ReconstructMessageFromDatabaseTest extends ApplicationTestCase<K9> {
@@ -126,11 +125,8 @@ public class ReconstructMessageFromDatabaseTest extends ApplicationTestCase<K9> 
     }
 
     protected MimeMessage parseMessage() throws IOException, MessagingException {
-        InputStream messageInputStream = new ByteArrayInputStream(MESSAGE_SOURCE.getBytes());
-        try {
+        try (InputStream messageInputStream = new ByteArrayInputStream(MESSAGE_SOURCE.getBytes())) {
             return MimeMessage.parseMimeMessage(messageInputStream, true);
-        } finally {
-            messageInputStream.close();
         }
     }
 

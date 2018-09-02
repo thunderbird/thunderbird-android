@@ -67,10 +67,9 @@ class MigrationTo51 {
                 account.getUuid(), account.getLocalStorageProviderId());
         attachmentDirOld = renameOldAttachmentDirAndCreateNew(account, attachmentDirNew);
 
-        Cursor msgCursor = db.query("messages_old",
-                new String[] { "id", "flags", "html_content", "text_content", "mime_type", "attachment_count" },
-                null, null, null, null, null);
-        try {
+        try (Cursor msgCursor = db.query("messages_old",
+                new String[]{"id", "flags", "html_content", "text_content", "mime_type", "attachment_count"},
+                null, null, null, null, null)) {
             Timber.d("migrating %d messages", msgCursor.getCount());
             ContentValues cv = new ContentValues();
             while (msgCursor.moveToNext()) {
@@ -120,14 +119,12 @@ class MigrationTo51 {
                     cv.put("mime_type", mimeType);
                     cv.put("message_part_id", structureState.rootPartId);
                     cv.put("attachment_count", attachmentCount);
-                    db.update("messages", cv, "id = ?", new String[] { Long.toString(messageId) });
+                    db.update("messages", cv, "id = ?", new String[]{Long.toString(messageId)});
                 } catch (IOException e) {
                     Timber.e(e, "error inserting into database");
                 }
             }
 
-        } finally {
-            msgCursor.close();
         }
 
         cleanUpOldAttachmentDirectory(attachmentDirOld);
@@ -258,14 +255,13 @@ class MigrationTo51 {
         // we only handle attachment count == 2 here, so simply sorting application/pgp-encrypted
         // to the front (and application/octet-stream second) should suffice.
         String orderBy = "(mime_type LIKE 'application/pgp-encrypted') DESC";
-        Cursor cursor = db.query("attachments",
-                new String[] {
+
+        try (Cursor cursor = db.query("attachments",
+                new String[]{
                         "id", "size", "name", "mime_type", "store_data",
                         "content_uri", "content_id", "content_disposition"
                 },
-                "message_id = ?", new String[] { Long.toString(messageId) }, null, null, orderBy);
-
-        try {
+                "message_id = ?", new String[]{Long.toString(messageId)}, null, null, orderBy)) {
             if (cursor.getCount() != 2) {
                 Timber.e("Found multipart/encrypted but bad number of attachments, handling as regular mail");
                 return null;
@@ -328,8 +324,6 @@ class MigrationTo51 {
                     insertMimeAttachmentPart(db, attachmentDirOld, attachmentDirNew, structureState, secondPartId,
                             secondPartSize, secondPartName, "application/octet-stream", secondPartStoreData,
                             secondPartContentUriString, null, null);
-        } finally {
-            cursor.close();
         }
 
         return structureState;
@@ -380,10 +374,9 @@ class MigrationTo51 {
 
     private static String replaceContentUriWithContentIdInHtmlPart(
             SQLiteDatabase db, long messageId, String htmlContent) {
-        Cursor cursor = db.query("attachments", new String[] { "content_uri", "content_id" },
-                "content_id IS NOT NULL AND message_id = ?", new String[] { Long.toString(messageId) }, null, null, null);
 
-        try {
+        try (Cursor cursor = db.query("attachments", new String[]{"content_uri", "content_id"},
+                "content_id IS NOT NULL AND message_id = ?", new String[]{Long.toString(messageId)}, null, null, null)) {
             while (cursor.moveToNext()) {
                 String contentUriString = cursor.getString(0);
                 String contentId = cursor.getString(1);
@@ -391,8 +384,6 @@ class MigrationTo51 {
                 // this is not super efficient, but occurs only once or twice
                 htmlContent = htmlContent.replace(contentUriString, "cid:" + contentId);
             }
-        } finally {
-            cursor.close();
         }
 
         return htmlContent;
@@ -416,14 +407,13 @@ class MigrationTo51 {
 
     private static MimeStructureState insertAttachments(SQLiteDatabase db, File attachmentDirOld, File attachmentDirNew,
             long messageId, MimeStructureState structureState) {
-        Cursor cursor = db.query("attachments",
-                new String[] {
+
+        try (Cursor cursor = db.query("attachments",
+                new String[]{
                         "id", "size", "name", "mime_type", "store_data",
                         "content_uri", "content_id", "content_disposition"
                 },
-                "message_id = ?", new String[] { Long.toString(messageId) }, null, null, null);
-
-        try {
+                "message_id = ?", new String[]{Long.toString(messageId)}, null, null, null)) {
             while (cursor.moveToNext()) {
                 long id = cursor.getLong(0);
                 int size = cursor.getInt(1);
@@ -439,8 +429,6 @@ class MigrationTo51 {
                                 mimeType, storeData, contentUriString, contentId, contentDisposition);
 
             }
-        } finally {
-            cursor.close();
         }
 
         return structureState;
@@ -635,10 +623,9 @@ class MigrationTo51 {
     }
 
     private static MimeHeader loadHeaderFromHeadersTable(SQLiteDatabase db, long messageId) {
-        Cursor headersCursor = db.query("headers",
-                new String[] { "name", "value" },
-                "message_id = ?", new String[] { Long.toString(messageId) }, null, null, null);
-        try {
+        try (Cursor headersCursor = db.query("headers",
+                new String[]{"name", "value"},
+                "message_id = ?", new String[]{Long.toString(messageId)}, null, null, null)) {
             MimeHeader mimeHeader = new MimeHeader();
             while (headersCursor.moveToNext()) {
                 String name = headersCursor.getString(0);
@@ -646,8 +633,6 @@ class MigrationTo51 {
                 mimeHeader.addHeader(name, value);
             }
             return mimeHeader;
-        } finally {
-            headersCursor.close();
         }
     }
 

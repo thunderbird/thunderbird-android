@@ -14,7 +14,7 @@ import com.fsck.k9.mail.internet.MimeBodyPart;
 public class MessageHelper {
 
     public static boolean isCompletePartAvailable(Part part) {
-        Stack<Part> partsToCheck = new Stack<Part>();
+        Stack<Part> partsToCheck = new Stack<>();
         partsToCheck.push(part);
 
         while (!partsToCheck.isEmpty()) {

@@ -114,9 +114,7 @@ public class Utility {
                 s.length() <= 253) {
                 return true;
             }
-            if (s.matches("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$")) {
-                return true;
-            }
+            return s.matches("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$");
         }
         return false;
     }
@@ -405,11 +403,7 @@ public class Utility {
             return false;
         }
         final NetworkInfo netInfo = connectivityManager.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.getState() == NetworkInfo.State.CONNECTED) {
-            return true;
-        } else {
-            return false;
-        }
+        return netInfo != null && netInfo.getState() == NetworkInfo.State.CONNECTED;
     }
 
     private static final Pattern MESSAGE_ID = Pattern.compile("<" +
@@ -429,7 +423,7 @@ public class Utility {
             ">");
 
     public static List<String> extractMessageIds(final String text) {
-        List<String> messageIds = new ArrayList<String>();
+        List<String> messageIds = new ArrayList<>();
         Matcher matcher = MESSAGE_ID.matcher(text);
 
         int start = 0;

@@ -56,7 +56,7 @@ public class HtmlConverter {
         // List of tags whose content should be ignored.
         private static final Set<String> TAGS_WITH_IGNORED_CONTENT;
         static {
-            Set<String> set = new HashSet<String>();
+            Set<String> set = new HashSet<>();
             set.add("style");
             set.add("script");
             set.add("title");

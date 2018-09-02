@@ -27,11 +27,8 @@ public class DefaultBodyFactory implements BodyFactory {
             tempBody = new BinaryTempFileBody(contentTransferEncoding);
         }
 
-        OutputStream outputStream = tempBody.getOutputStream();
-        try {
+        try (OutputStream outputStream = tempBody.getOutputStream()) {
             copyData(inputStream, outputStream);
-        } finally {
-            outputStream.close();
         }
 
         return tempBody;

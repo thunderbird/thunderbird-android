@@ -60,16 +60,10 @@ public class AttachmentContentLoader extends AsyncTaskLoader<Attachment> {
             Timber.v("Saving attachment to %s", file.getAbsolutePath());
 
             SafeContentResolver safeContentResolver = SafeContentResolverCompat.newInstance(context);
-            InputStream in = safeContentResolver.openInputStream(sourceAttachment.uri);
-            try {
-                FileOutputStream out = new FileOutputStream(file);
-                try {
+            try (InputStream in = safeContentResolver.openInputStream(sourceAttachment.uri)) {
+                try (FileOutputStream out = new FileOutputStream(file)) {
                     IOUtils.copy(in, out);
-                } finally {
-                    out.close();
                 }
-            } finally {
-                in.close();
             }
 
             cachedResultAttachment = sourceAttachment.deriveWithLoadComplete(file.getAbsolutePath());

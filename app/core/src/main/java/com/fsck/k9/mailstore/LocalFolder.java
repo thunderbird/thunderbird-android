@@ -345,16 +345,13 @@ public class LocalFolder extends Folder<LocalMessage> {
                 @Override
                 public Integer doDbWork(final SQLiteDatabase db) throws WrappedException {
                     int unreadMessageCount = 0;
-                    Cursor cursor = db.query("messages", new String[] { "COUNT(id)" },
-                            "folder_id = ? AND empty = 0 AND deleted = 0 AND read=0",
-                            new String[] { Long.toString(databaseId) }, null, null, null);
 
-                    try {
+                    try (Cursor cursor = db.query("messages", new String[]{"COUNT(id)"},
+                            "folder_id = ? AND empty = 0 AND deleted = 0 AND read=0",
+                            new String[]{Long.toString(databaseId)}, null, null, null)) {
                         if (cursor.moveToFirst()) {
                             unreadMessageCount = cursor.getInt(0);
                         }
-                    } finally {
-                        cursor.close();
                     }
 
                     return unreadMessageCount;
@@ -376,16 +373,13 @@ public class LocalFolder extends Folder<LocalMessage> {
                 @Override
                 public Integer doDbWork(final SQLiteDatabase db) throws WrappedException {
                     int flaggedMessageCount = 0;
-                    Cursor cursor = db.query("messages", new String[] { "COUNT(id)" },
-                            "folder_id = ? AND empty = 0 AND deleted = 0 AND flagged = 1",
-                            new String[] { Long.toString(databaseId) }, null, null, null);
 
-                    try {
+                    try (Cursor cursor = db.query("messages", new String[]{"COUNT(id)"},
+                            "folder_id = ? AND empty = 0 AND deleted = 0 AND flagged = 1",
+                            new String[]{Long.toString(databaseId)}, null, null, null)) {
                         if (cursor.moveToFirst()) {
                             flaggedMessageCount = cursor.getInt(0);
                         }
-                    } finally {
-                        cursor.close();
                     }
 
                     return flaggedMessageCount;
@@ -756,14 +750,11 @@ public class LocalFolder extends Folder<LocalMessage> {
                 "content_id",           // 14
                 "server_extra",         // 15
         };
-        Cursor cursor = db.query("message_parts", columns, "root = ?",
-                new String[] { String.valueOf(message.getMessagePartId()) }, null, null, "seq");
-        try {
+        try (Cursor cursor = db.query("message_parts", columns, "root = ?",
+                new String[]{String.valueOf(message.getMessagePartId())}, null, null, "seq")) {
             while (cursor.moveToNext()) {
                 loadMessagePart(message, partById, cursor);
             }
-        } finally {
-            cursor.close();
         }
     }
 
@@ -1605,11 +1596,8 @@ public class LocalFolder extends Folder<LocalMessage> {
 
     private File writeBodyToDisk(Body body) throws IOException, MessagingException {
         File file = File.createTempFile("body", null, BinaryTempFileBody.getTempDirectory());
-        OutputStream out = new FileOutputStream(file);
-        try {
+        try (OutputStream out = new FileOutputStream(file)) {
             body.writeTo(out);
-        } finally {
-            out.close();
         }
 
         return file;
@@ -1622,11 +1610,8 @@ public class LocalFolder extends Folder<LocalMessage> {
 
     private long decodeAndCountBytes(File file, String encoding, long fallbackValue)
             throws IOException {
-        InputStream inputStream = new FileInputStream(file);
-        try {
+        try (InputStream inputStream = new FileInputStream(file)) {
             return decodeAndCountBytes(inputStream, encoding, fallbackValue);
-        } finally {
-            inputStream.close();
         }
     }
 
@@ -1701,17 +1686,14 @@ public class LocalFolder extends Folder<LocalMessage> {
             public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                 long messagePartId;
 
-                Cursor cursor = db.query("message_parts", new String[] { "id" }, "root = ? AND server_extra = ?",
-                        new String[] { Long.toString(message.getMessagePartId()), part.getServerExtra() },
-                        null, null, null);
-                try {
+                try (Cursor cursor = db.query("message_parts", new String[]{"id"}, "root = ? AND server_extra = ?",
+                        new String[]{Long.toString(message.getMessagePartId()), part.getServerExtra()},
+                        null, null, null)) {
                     if (!cursor.moveToFirst()) {
                         throw new IllegalStateException("Message part not found");
                     }
 
                     messagePartId = cursor.getLong(0);
-                } finally {
-                    cursor.close();
                 }
 
                 try {
@@ -1818,16 +1800,13 @@ public class LocalFolder extends Folder<LocalMessage> {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
                     try {
-                        Cursor cursor = db.query("messages", new String[] { "message_part_id" },
+                        try (Cursor cursor = db.query("messages", new String[]{"message_part_id"},
                                 "folder_id = ? AND empty = 0",
-                                folderIdArg, null, null, null);
-                        try {
+                                folderIdArg, null, null, null)) {
                             while (cursor.moveToNext()) {
                                 long messagePartId = cursor.getLong(0);
                                 deleteMessageDataFromDisk(messagePartId);
                             }
-                        } finally {
-                            cursor.close();
                         }
 
                         db.execSQL("DELETE FROM threads WHERE message_id IN " +
@@ -1974,17 +1953,14 @@ public class LocalFolder extends Folder<LocalMessage> {
      * @return {@code true} if the message has children. {@code false} otherwise.
      */
     private boolean hasThreadChildren(SQLiteDatabase db, long messageId) {
-        Cursor cursor = db.rawQuery(
+
+        try (Cursor cursor = db.rawQuery(
                 "SELECT COUNT(t2.id) " +
                         "FROM threads t1 " +
                         "JOIN threads t2 ON (t2.parent = t1.id) " +
                         "WHERE t1.message_id = ?",
-                new String[] { Long.toString(messageId) });
-
-        try {
+                new String[]{Long.toString(messageId)})) {
             return (cursor.moveToFirst() && !cursor.isNull(0) && cursor.getLong(0) > 0L);
-        } finally {
-            cursor.close();
         }
     }
 
@@ -2000,18 +1976,15 @@ public class LocalFolder extends Folder<LocalMessage> {
      *         Otherwise {@code -1}.
      */
     private long getEmptyThreadParent(SQLiteDatabase db, long messageId) {
-        Cursor cursor = db.rawQuery(
+
+        try (Cursor cursor = db.rawQuery(
                 "SELECT m.id " +
                         "FROM threads t1 " +
                         "JOIN threads t2 ON (t1.parent = t2.id) " +
                         "LEFT JOIN messages m ON (t2.message_id = m.id) " +
                         "WHERE t1.message_id = ? AND m.empty = 1",
-                new String[] { Long.toString(messageId) });
-
-        try {
+                new String[]{Long.toString(messageId)})) {
             return (cursor.moveToFirst() && !cursor.isNull(0)) ? cursor.getLong(0) : -1;
-        } finally {
-            cursor.close();
         }
     }
 
@@ -2065,10 +2038,9 @@ public class LocalFolder extends Folder<LocalMessage> {
     }
 
     private void deleteMessagePartsFromDisk(SQLiteDatabase db, long rootMessagePartId) {
-        Cursor cursor = db.query("message_parts", new String[] { "id" },
+        try (Cursor cursor = db.query("message_parts", new String[]{"id"},
                 "root = ? AND data_location = " + DataLocation.ON_DISK,
-                new String[] { Long.toString(rootMessagePartId) }, null, null, null);
-        try {
+                new String[]{Long.toString(rootMessagePartId)}, null, null, null)) {
             while (cursor.moveToNext()) {
                 String messagePartId = cursor.getString(0);
                 File file = localStore.getAttachmentFile(messagePartId);
@@ -2078,8 +2050,6 @@ public class LocalFolder extends Folder<LocalMessage> {
                     }
                 }
             }
-        } finally {
-            cursor.close();
         }
     }
 

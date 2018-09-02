@@ -11,7 +11,7 @@ import java.util.LinkedList;
  */
 class WebDavHandler extends DefaultHandler {
     private DataSet mDataSet = new DataSet();
-    private final LinkedList<String> mOpenTags = new LinkedList<String>();
+    private final LinkedList<String> mOpenTags = new LinkedList<>();
 
     public DataSet getDataSet() {
         return this.mDataSet;

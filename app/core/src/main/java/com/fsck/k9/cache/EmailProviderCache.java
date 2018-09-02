@@ -21,7 +21,7 @@ public class EmailProviderCache {
 
     private static Context sContext;
     private static Map<String, EmailProviderCache> sInstances =
-            new HashMap<String, EmailProviderCache>();
+            new HashMap<>();
 
     public static synchronized EmailProviderCache getCache(String accountUuid, Context context) {
 
@@ -40,9 +40,9 @@ public class EmailProviderCache {
 
 
     private String mAccountUuid;
-    private final Map<Long, Map<String, String>> mMessageCache = new HashMap<Long, Map<String, String>>();
-    private final Map<Long, Map<String, String>> mThreadCache = new HashMap<Long, Map<String, String>>();
-    private final Map<Long, Long> mHiddenMessageCache = new HashMap<Long, Long>();
+    private final Map<Long, Map<String, String>> mMessageCache = new HashMap<>();
+    private final Map<Long, Map<String, String>> mThreadCache = new HashMap<>();
+    private final Map<Long, Long> mHiddenMessageCache = new HashMap<>();
 
 
     private EmailProviderCache(String accountUuid) {
@@ -68,7 +68,7 @@ public class EmailProviderCache {
             for (Long messageId : messageIds) {
                 Map<String, String> map = mMessageCache.get(messageId);
                 if (map == null) {
-                    map = new HashMap<String, String>();
+                    map = new HashMap<>();
                     mMessageCache.put(messageId, map);
                 }
                 map.put(columnName, value);
@@ -83,7 +83,7 @@ public class EmailProviderCache {
             for (Long threadRootId : threadRootIds) {
                 Map<String, String> map = mThreadCache.get(threadRootId);
                 if (map == null) {
-                    map = new HashMap<String, String>();
+                    map = new HashMap<>();
                     mThreadCache.put(threadRootId, map);
                 }
                 map.put(columnName, value);

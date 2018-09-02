@@ -59,7 +59,7 @@ public class ConditionsTreeNode implements Parcelable {
      * @return A condition tree.
      */
     public static ConditionsTreeNode buildTreeFromDB(Cursor cursor) {
-        Stack<ConditionsTreeNode> stack = new Stack<ConditionsTreeNode>();
+        Stack<ConditionsTreeNode> stack = new Stack<>();
         ConditionsTreeNode tmp = null;
 
         // root node
@@ -246,7 +246,7 @@ public class ConditionsTreeNode implements Parcelable {
      * @return Set of all the leaves.
      */
     public Set<ConditionsTreeNode> getLeafSet() {
-        Set<ConditionsTreeNode> leafSet = new HashSet<ConditionsTreeNode>();
+        Set<ConditionsTreeNode> leafSet = new HashSet<>();
         return getLeafSet(leafSet);
     }
 
@@ -257,8 +257,8 @@ public class ConditionsTreeNode implements Parcelable {
      * @return List of all nodes in subtree in preorder.
      */
     public List<ConditionsTreeNode> preorder() {
-        List<ConditionsTreeNode> result = new ArrayList<ConditionsTreeNode>();
-        Stack<ConditionsTreeNode> stack = new Stack<ConditionsTreeNode>();
+        List<ConditionsTreeNode> result = new ArrayList<>();
+        Stack<ConditionsTreeNode> stack = new Stack<>();
         stack.push(this);
 
         while (!stack.isEmpty()) {

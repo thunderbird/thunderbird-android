@@ -234,12 +234,9 @@ public class StoreSchemaDefinitionTest extends K9RobolectricTest {
     }
 
     private void assertMessageWithSubjectExists(SQLiteDatabase database, String subject) {
-        Cursor cursor = database.query("messages", new String[] { "subject" }, null, null, null, null, null);
-        try {
+        try (Cursor cursor = database.query("messages", new String[]{"subject"}, null, null, null, null, null)) {
             assertTrue(cursor.moveToFirst());
             assertEquals(subject, cursor.getString(0));
-        } finally {
-            cursor.close();
         }
     }
 
@@ -287,16 +284,13 @@ public class StoreSchemaDefinitionTest extends K9RobolectricTest {
 
     private List<String> objectsInDatabase(SQLiteDatabase db, String type) {
         List<String> databaseObjects = new ArrayList<>();
-        Cursor cursor = db.rawQuery("SELECT sql FROM sqlite_master WHERE type = ? AND sql IS NOT NULL",
-                new String[] { type });
-        try {
+        try (Cursor cursor = db.rawQuery("SELECT sql FROM sqlite_master WHERE type = ? AND sql IS NOT NULL",
+                new String[]{type})) {
             while (cursor.moveToNext()) {
                 String sql = cursor.getString(cursor.getColumnIndex("sql"));
                 String resortedSql = "table".equals(type) ? sortTableColumns(sql) : sql;
                 databaseObjects.add(resortedSql);
             }
-        } finally {
-            cursor.close();
         }
 
         return databaseObjects;
