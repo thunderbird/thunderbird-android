@@ -5,5 +5,4 @@ class AuthenticationFailedException @JvmOverloads constructor(
         throwable: Throwable? = null,
         val messageFromServer: String? = null
 ) : MessagingException(message, throwable) {
-    val isMessageFromServerAvailable = messageFromServer != null
 }

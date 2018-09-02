@@ -121,8 +121,8 @@ public abstract class AccountList extends K9ListActivity implements OnItemClickL
             AccountViewHolder holder = (AccountViewHolder) view.getTag();
             if (holder == null) {
                 holder = new AccountViewHolder();
-                holder.description = (TextView) view.findViewById(R.id.description);
-                holder.email = (TextView) view.findViewById(R.id.email);
+                holder.description = view.findViewById(R.id.description);
+                holder.email = view.findViewById(R.id.email);
                 holder.chip = view.findViewById(R.id.chip);
 
                 view.setTag(holder);

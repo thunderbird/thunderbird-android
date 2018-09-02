@@ -46,7 +46,7 @@ public class ClientCertificateSpinner extends LinearLayout {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.client_certificate_spinner, this, true);
 
-        mSelection = (Button) findViewById(R.id.client_certificate_spinner_button);
+        mSelection = findViewById(R.id.client_certificate_spinner_button);
         mSelection.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,7 +54,7 @@ public class ClientCertificateSpinner extends LinearLayout {
             }
         });
 
-        mDeleteButton = (ImageButton) findViewById(R.id.client_certificate_spinner_delete);
+        mDeleteButton = findViewById(R.id.client_certificate_spinner_delete);
         mDeleteButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

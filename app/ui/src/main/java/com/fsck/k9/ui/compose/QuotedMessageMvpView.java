@@ -31,14 +31,14 @@ public class QuotedMessageMvpView {
 
 
     public QuotedMessageMvpView(MessageCompose messageCompose) {
-        mQuotedTextShow = (Button) messageCompose.findViewById(R.id.quoted_text_show);
+        mQuotedTextShow = messageCompose.findViewById(R.id.quoted_text_show);
         mQuotedTextBar = messageCompose.findViewById(R.id.quoted_text_bar);
-        mQuotedTextEdit = (ImageButton) messageCompose.findViewById(R.id.quoted_text_edit);
-        mQuotedTextDelete = (ImageButton) messageCompose.findViewById(R.id.quoted_text_delete);
-        mQuotedText = (EolConvertingEditText) messageCompose.findViewById(R.id.quoted_text);
+        mQuotedTextEdit = messageCompose.findViewById(R.id.quoted_text_edit);
+        mQuotedTextDelete = messageCompose.findViewById(R.id.quoted_text_delete);
+        mQuotedText = messageCompose.findViewById(R.id.quoted_text);
         mQuotedText.getInputExtras(true).putBoolean("allowEmoji", true);
 
-        mQuotedHTML = (MessageWebView) messageCompose.findViewById(R.id.quoted_html);
+        mQuotedHTML = messageCompose.findViewById(R.id.quoted_html);
         mQuotedHTML.configure();
         // Disable the ability to click links in the quoted HTML page. I think this is a nice feature, but if someone
         // feels this should be a preference (or should go away all together), I'm ok with that too. -achen 20101130
@@ -49,7 +49,7 @@ public class QuotedMessageMvpView {
             }
         });
 
-        mMessageContentView = (EolConvertingEditText) messageCompose.findViewById(R.id.message_content);
+        mMessageContentView = messageCompose.findViewById(R.id.message_content);
     }
 
     public void setOnClickPresenter(final QuotedMessagePresenter presenter) {

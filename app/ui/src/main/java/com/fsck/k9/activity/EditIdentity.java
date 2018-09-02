@@ -53,24 +53,24 @@ public class EditIdentity extends K9Activity {
             mIdentity = (Identity)savedInstanceState.getSerializable(EXTRA_IDENTITY);
         }
 
-        mDescriptionView = (EditText)findViewById(R.id.description);
+        mDescriptionView = findViewById(R.id.description);
         mDescriptionView.setText(mIdentity.getDescription());
 
-        mNameView = (EditText)findViewById(R.id.name);
+        mNameView = findViewById(R.id.name);
         mNameView.setText(mIdentity.getName());
 
-        mEmailView = (EditText)findViewById(R.id.email);
+        mEmailView = findViewById(R.id.email);
         mEmailView.setText(mIdentity.getEmail());
 
-        mReplyTo = (EditText) findViewById(R.id.reply_to);
+        mReplyTo = findViewById(R.id.reply_to);
         mReplyTo.setText(mIdentity.getReplyTo());
 
 //      mAccountAlwaysBcc = (EditText)findViewById(R.id.bcc);
 //      mAccountAlwaysBcc.setText(mIdentity.getAlwaysBcc());
 
-        mSignatureLayout = (LinearLayout)findViewById(R.id.signature_layout);
-        mSignatureUse = (CheckBox)findViewById(R.id.signature_use);
-        mSignatureView = (EditText)findViewById(R.id.signature);
+        mSignatureLayout = findViewById(R.id.signature_layout);
+        mSignatureUse = findViewById(R.id.signature_use);
+        mSignatureView = findViewById(R.id.signature);
         mSignatureUse.setChecked(mIdentity.getSignatureUse());
         mSignatureUse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
