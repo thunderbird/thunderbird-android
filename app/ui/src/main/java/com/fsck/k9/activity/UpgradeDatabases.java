@@ -127,7 +127,7 @@ public class UpgradeDatabases extends K9Activity {
     private void initializeLayout() {
         setContentView(R.layout.upgrade_databases);
 
-        mUpgradeText = (TextView) findViewById(R.id.databaseUpgradeText);
+        mUpgradeText = findViewById(R.id.databaseUpgradeText);
     }
 
     /**

@@ -70,7 +70,7 @@ public final class PRNGFixes {
             // Mix in the device- and invocation-specific seed.
             Class.forName("org.apache.harmony.xnet.provider.jsse.NativeCrypto")
                     .getMethod("RAND_seed", byte[].class)
-                    .invoke(null, generateSeed());
+                    .invoke(null, (Object) generateSeed());
 
             // Mix output of Linux PRNG into OpenSSL's PRNG
             int bytesRead = (Integer) Class.forName(
