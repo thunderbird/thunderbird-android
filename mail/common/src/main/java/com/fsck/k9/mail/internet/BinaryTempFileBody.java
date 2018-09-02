@@ -58,12 +58,15 @@ public class BinaryTempFileBody implements RawDataBody, SizeAware {
             final OutputStream out = new FileOutputStream(newFile);
             try {
                 OutputStream wrappedOut;
-                if (MimeUtil.ENC_QUOTED_PRINTABLE.equals(encoding)) {
-                    wrappedOut = new QuotedPrintableOutputStream(out, false);
-                } else if (MimeUtil.ENC_BASE64.equals(encoding)) {
-                    wrappedOut = new Base64OutputStream(out);
-                } else {
-                    throw new RuntimeException("Target encoding not supported: " + encoding);
+                switch (encoding) {
+                    case MimeUtil.ENC_QUOTED_PRINTABLE:
+                        wrappedOut = new QuotedPrintableOutputStream(out, false);
+                        break;
+                    case MimeUtil.ENC_BASE64:
+                        wrappedOut = new Base64OutputStream(out);
+                        break;
+                    default:
+                        throw new RuntimeException("Target encoding not supported: " + encoding);
                 }
 
                 InputStream in = getInputStream();

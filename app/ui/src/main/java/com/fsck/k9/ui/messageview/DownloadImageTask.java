@@ -80,15 +80,12 @@ class DownloadImageTask extends AsyncTask<String, Void, String> {
         URL url = new URL(urlString);
         URLConnection conn = url.openConnection();
 
-        InputStream in = conn.getInputStream();
-        try {
+        try (InputStream in = conn.getInputStream()) {
             String fileName = getFileNameFromUrl(url);
             String mimeType = getMimeType(conn, fileName);
 
             String fileNameWithExtension = getFileNameWithExtension(fileName, mimeType);
             return writeFileToStorage(fileNameWithExtension, in);
-        } finally {
-            in.close();
         }
     }
 
@@ -122,12 +119,9 @@ class DownloadImageTask extends AsyncTask<String, Void, String> {
         String fileName = getFileNameFromContentProvider(contentResolver, uri);
         String mimeType = getMimeType(contentResolver, uri, fileName);
 
-        InputStream in = contentResolver.openInputStream(uri);
-        try {
+        try (InputStream in = contentResolver.openInputStream(uri)) {
             String fileNameWithExtension = getFileNameWithExtension(fileName, mimeType);
             return writeFileToStorage(fileNameWithExtension, in);
-        } finally {
-            in.close();
         }
     }
 
@@ -180,12 +174,9 @@ class DownloadImageTask extends AsyncTask<String, Void, String> {
         File directory = new File(K9.getAttachmentDefaultPath());
         File file = FileHelper.createUniqueFile(directory, sanitized);
 
-        FileOutputStream out = new FileOutputStream(file);
-        try {
+        try (FileOutputStream out = new FileOutputStream(file)) {
             IOUtils.copy(in, out);
             out.flush();
-        } finally {
-            out.close();
         }
 
         return file.getName();

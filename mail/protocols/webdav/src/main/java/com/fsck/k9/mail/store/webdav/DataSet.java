@@ -16,9 +16,9 @@ import timber.log.Timber;
  * Maintains WebDAV data
  */
 class DataSet {
-    private Map<String, Map<String, String>> mData = new HashMap<String, Map<String, String>>();
+    private Map<String, Map<String, String>> mData = new HashMap<>();
     private StringBuilder mUid = new StringBuilder();
-    private Map<String, String> mTempData = new HashMap<String, String>();
+    private Map<String, String> mTempData = new HashMap<>();
 
     public void addValue(String value, String tagName) {
         if (tagName.equals("uid")) {
@@ -45,7 +45,7 @@ class DataSet {
         }
 
         mUid = new StringBuilder();
-        mTempData = new HashMap<String, String>();
+        mTempData = new HashMap<>();
     }
 
     /**
@@ -60,7 +60,7 @@ class DataSet {
      * Returns a hashmap of Message UID => Message Url
      */
     public Map<String, String> getUidToUrl() {
-        Map<String, String> uidToUrl = new HashMap<String, String>();
+        Map<String, String> uidToUrl = new HashMap<>();
 
         for (String uid : mData.keySet()) {
             Map<String, String> data = mData.get(uid);
@@ -78,7 +78,7 @@ class DataSet {
      * Returns a hashmap of Message UID => Read Status
      */
     public Map<String, Boolean> getUidToRead() {
-        Map<String, Boolean> uidToRead = new HashMap<String, Boolean>();
+        Map<String, Boolean> uidToRead = new HashMap<>();
 
         for (String uid : mData.keySet()) {
             Map<String, String> data = mData.get(uid);
@@ -101,7 +101,7 @@ class DataSet {
      * Returns an array of all hrefs (urls) that were received
      */
     public String[] getHrefs() {
-        List<String> hrefs = new ArrayList<String>();
+        List<String> hrefs = new ArrayList<>();
 
         for (String uid : mData.keySet()) {
             Map<String, String> data = mData.get(uid);
@@ -116,11 +116,9 @@ class DataSet {
      * Return an array of all Message UIDs that were received
      */
     public String[] getUids() {
-        List<String> uids = new ArrayList<String>();
+        List<String> uids = new ArrayList<>();
 
-        for (String uid : mData.keySet()) {
-            uids.add(uid);
-        }
+        uids.addAll(mData.keySet());
 
         return uids.toArray(WebDavConstants.EMPTY_STRING_ARRAY);
     }
@@ -154,7 +152,7 @@ class DataSet {
      * Returns a Map of message UID => ParsedMessageEnvelope
      */
     public Map<String, ParsedMessageEnvelope> getMessageEnvelopes() {
-        Map<String, ParsedMessageEnvelope> envelopes = new HashMap<String, ParsedMessageEnvelope>();
+        Map<String, ParsedMessageEnvelope> envelopes = new HashMap<>();
 
         for (String uid : mData.keySet()) {
             ParsedMessageEnvelope envelope = new ParsedMessageEnvelope();
@@ -163,33 +161,37 @@ class DataSet {
             if (data != null) {
                 for (Map.Entry<String, String> entry : data.entrySet()) {
                     String header = entry.getKey();
-                    if (header.equals("read")) {
-                        String read = entry.getValue();
-                        boolean readStatus = !read.equals("0");
+                    switch (header) {
+                        case "read":
+                            String read = entry.getValue();
+                            boolean readStatus = !read.equals("0");
 
-                        envelope.setReadStatus(readStatus);
-                    } else if (header.equals("date")) {
-                        /**
-                         * Exchange doesn't give us rfc822 dates like it claims. The date is in the format:
-                         * yyyy-MM-dd'T'HH:mm:ss.SSS<Single digit representation of timezone, so far, all instances
-                         * are Z>
-                         */
-                        String date = entry.getValue();
-                        date = date.substring(0, date.length() - 1);
+                            envelope.setReadStatus(readStatus);
+                            break;
+                        case "date":
+                            /**
+                             * Exchange doesn't give us rfc822 dates like it claims. The date is in the format:
+                             * yyyy-MM-dd'T'HH:mm:ss.SSS<Single digit representation of timezone, so far, all instances
+                             * are Z>
+                             */
+                            String date = entry.getValue();
+                            date = date.substring(0, date.length() - 1);
 
-                        DateFormat dfInput = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
-                        DateFormat dfOutput = new SimpleDateFormat("EEE, d MMM yy HH:mm:ss Z", Locale.US);
-                        String tempDate = "";
+                            DateFormat dfInput = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
+                            DateFormat dfOutput = new SimpleDateFormat("EEE, d MMM yy HH:mm:ss Z", Locale.US);
+                            String tempDate = "";
 
-                        try {
-                            Date parsedDate = dfInput.parse(date);
-                            tempDate = dfOutput.format(parsedDate);
-                        } catch (java.text.ParseException pe) {
-                            Timber.e(pe, "Error parsing date: %s", date);
-                        }
-                        envelope.addHeader(header, tempDate);
-                    } else {
-                        envelope.addHeader(header, entry.getValue());
+                            try {
+                                Date parsedDate = dfInput.parse(date);
+                                tempDate = dfOutput.format(parsedDate);
+                            } catch (java.text.ParseException pe) {
+                                Timber.e(pe, "Error parsing date: %s", date);
+                            }
+                            envelope.addHeader(header, tempDate);
+                            break;
+                        default:
+                            envelope.addHeader(header, entry.getValue());
+                            break;
                     }
                 }
             }

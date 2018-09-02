@@ -115,16 +115,19 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
 
     @SuppressWarnings("UnusedParameters") // for consistency with Activity.onActivityResult
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_UNKNOWN_KEY) {
-            if (resultCode != Activity.RESULT_OK) {
-                return;
-            }
+        switch (requestCode) {
+            case REQUEST_CODE_UNKNOWN_KEY:
+                if (resultCode != Activity.RESULT_OK) {
+                    return;
+                }
 
-            messageCryptoMvpView.restartMessageCryptoProcessing();
-        } else if (requestCode == REQUEST_CODE_SECURITY_WARNING) {
-            messageCryptoMvpView.redisplayMessage();
-        } else {
-            throw new IllegalStateException("got an activity result that wasn't meant for us. this is a bug!");
+                messageCryptoMvpView.restartMessageCryptoProcessing();
+                break;
+            case REQUEST_CODE_SECURITY_WARNING:
+                messageCryptoMvpView.redisplayMessage();
+                break;
+            default:
+                throw new IllegalStateException("got an activity result that wasn't meant for us. this is a bug!");
         }
     }
 

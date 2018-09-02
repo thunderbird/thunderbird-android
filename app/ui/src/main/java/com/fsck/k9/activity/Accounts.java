@@ -120,9 +120,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     /*
      * Must be serializable hence implementation class used for declaration.
      */
-    private ConcurrentHashMap<String, AccountStats> accountStats = new ConcurrentHashMap<String, AccountStats>();
+    private ConcurrentHashMap<String, AccountStats> accountStats = new ConcurrentHashMap<>();
 
-    private ConcurrentMap<BaseAccount, String> pendingWork = new ConcurrentHashMap<BaseAccount, String>();
+    private ConcurrentMap<BaseAccount, String> pendingWork = new ConcurrentHashMap<>();
 
     private BaseAccount selectedContextAccount;
 
@@ -517,7 +517,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         return retain;
     }
 
-    private List<BaseAccount> accounts = new ArrayList<BaseAccount>();
+    private List<BaseAccount> accounts = new ArrayList<>();
     private enum ACCOUNT_LOCATION {
         TOP, MIDDLE, BOTTOM;
     }
@@ -553,12 +553,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 createSpecialAccounts();
             }
 
-            newAccounts = new ArrayList<BaseAccount>(accounts.size() +
+            newAccounts = new ArrayList<>(accounts.size() +
                     SPECIAL_ACCOUNTS_COUNT);
             newAccounts.add(unifiedInboxAccount);
             newAccounts.add(allMessagesAccount);
         } else {
-            newAccounts = new ArrayList<BaseAccount>(accounts.size());
+            newAccounts = new ArrayList<>(accounts.size());
         }
 
         newAccounts.addAll(accounts);
@@ -663,7 +663,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     }
 
     private void onActivateAccount(Account account) {
-        List<Account> disabledAccounts = new ArrayList<Account>();
+        List<Account> disabledAccounts = new ArrayList<>();
         disabledAccounts.add(account);
         promptForServerPasswords(disabledAccounts);
     }
@@ -813,7 +813,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             View layout = mDialog.getLayoutInflater().inflate(R.layout.accounts_password_prompt, scrollView);
 
             // Set the intro text that tells the user what to do
-            TextView intro = (TextView) layout.findViewById(R.id.password_prompt_intro);
+            TextView intro = layout.findViewById(R.id.password_prompt_intro);
             String serverPasswords = activity.getResources().getQuantityString(
                     R.plurals.settings_import_server_passwords,
                     (configureIncomingServer && configureOutgoingServer) ? 2 : 1);
@@ -822,12 +822,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
             if (configureIncomingServer) {
                 // Display the hostname of the incoming server
-                TextView incomingText = (TextView) layout.findViewById(
+                TextView incomingText = layout.findViewById(
                                             R.id.password_prompt_incoming_server);
                 incomingText.setText(activity.getString(R.string.settings_import_incoming_server,
                                                         incoming.host));
 
-                mIncomingPasswordView = (EditText) layout.findViewById(R.id.incoming_server_password);
+                mIncomingPasswordView = layout.findViewById(R.id.incoming_server_password);
                 mIncomingPasswordView.addTextChangedListener(this);
             } else {
                 layout.findViewById(R.id.incoming_server_prompt).setVisibility(View.GONE);
@@ -835,16 +835,16 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
             if (configureOutgoingServer) {
                 // Display the hostname of the outgoing server
-                TextView outgoingText = (TextView) layout.findViewById(
+                TextView outgoingText = layout.findViewById(
                                             R.id.password_prompt_outgoing_server);
                 outgoingText.setText(activity.getString(R.string.settings_import_outgoing_server,
                                                         outgoing.host));
 
-                mOutgoingPasswordView = (EditText) layout.findViewById(
+                mOutgoingPasswordView = layout.findViewById(
                                             R.id.outgoing_server_password);
                 mOutgoingPasswordView.addTextChangedListener(this);
 
-                mUseIncomingView = (CheckBox) layout.findViewById(
+                mUseIncomingView = layout.findViewById(
                         R.id.use_incoming_server_password);
 
                 if (configureIncomingServer) {
@@ -1447,7 +1447,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         protected void okayAction(Accounts activity) {
             Context context = activity.getApplicationContext();
             Preferences preferences = Preferences.getPreferences(context);
-            List<Account> disabledAccounts = new ArrayList<Account>();
+            List<Account> disabledAccounts = new ArrayList<>();
             for (AccountDescriptionPair accountPair : mImportResults.importedAccounts) {
                 Account account = preferences.getAccount(accountPair.imported.uuid);
                 if (account != null && !account.isEnabled()) {
@@ -1515,7 +1515,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
 
         public void show(final Accounts activity, SparseBooleanArray selection) {
-            List<String> contents = new ArrayList<String>();
+            List<String> contents = new ArrayList<>();
 
             if (mImportContents.globalSettings) {
                 contents.add(activity.getString(R.string.settings_import_global_settings));
@@ -1561,7 +1561,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                     SparseBooleanArray pos = listView.getCheckedItemPositions();
 
                     boolean includeGlobals = mImportContents.globalSettings && pos.get(0);
-                    List<String> accountUuids = new ArrayList<String>();
+                    List<String> accountUuids = new ArrayList<>();
                     int start = mImportContents.globalSettings ? 1 : 0;
                     for (int i = start, end = listView.getCount(); i < end; i++) {
                         if (pos.get(i)) {
@@ -1626,19 +1626,19 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             AccountViewHolder holder = (AccountViewHolder) view.getTag();
             if (holder == null) {
                 holder = new AccountViewHolder();
-                holder.description = (TextView) view.findViewById(R.id.description);
-                holder.email = (TextView) view.findViewById(R.id.email);
-                holder.newMessageCount = (TextView) view.findViewById(R.id.new_message_count);
-                holder.flaggedMessageCount = (TextView) view.findViewById(R.id.flagged_message_count);
+                holder.description = view.findViewById(R.id.description);
+                holder.email = view.findViewById(R.id.email);
+                holder.newMessageCount = view.findViewById(R.id.new_message_count);
+                holder.flaggedMessageCount = view.findViewById(R.id.flagged_message_count);
                 holder.newMessageCountWrapper = view.findViewById(R.id.new_message_count_wrapper);
                 holder.flaggedMessageCountWrapper = view.findViewById(R.id.flagged_message_count_wrapper);
                 holder.newMessageCountIcon = view.findViewById(R.id.new_message_count_icon);
                 holder.flaggedMessageCountIcon = view.findViewById(R.id.flagged_message_count_icon);
-                holder.activeIcons = (RelativeLayout) view.findViewById(R.id.active_icons);
+                holder.activeIcons = view.findViewById(R.id.active_icons);
 
                 holder.chip = view.findViewById(R.id.chip);
-                holder.folders = (ImageButton) view.findViewById(R.id.folders);
-                holder.accountsItemLayout = (LinearLayout)view.findViewById(R.id.accounts_item_layout);
+                holder.folders = view.findViewById(R.id.folders);
+                holder.accountsItemLayout = view.findViewById(R.id.accounts_item_layout);
 
                 view.setTag(holder);
             }

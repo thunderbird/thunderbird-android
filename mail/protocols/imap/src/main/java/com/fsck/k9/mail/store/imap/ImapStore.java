@@ -51,7 +51,7 @@ public class ImapStore extends RemoteStore {
     private String pathPrefix;
     private String combinedPrefix = null;
     private String pathDelimiter = null;
-    private final Deque<ImapConnection> connections = new LinkedList<ImapConnection>();
+    private final Deque<ImapConnection> connections = new LinkedList<>();
     private FolderNameCodec folderNameCodec;
 
     /**
@@ -60,7 +60,7 @@ public class ImapStore extends RemoteStore {
      * requests. This cache lets us make sure we always reuse, if possible, for a given
      * folder name.
      */
-    private final Map<String, ImapFolder> folderCache = new HashMap<String, ImapFolder>();
+    private final Map<String, ImapFolder> folderCache = new HashMap<>();
 
 
     public ImapStore(ImapStoreSettings serverSettings, StoreConfig storeConfig,

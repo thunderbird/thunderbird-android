@@ -24,14 +24,12 @@ class AutocryptGossipHeader {
     }
 
     String toRawHeaderString() {
-        StringBuilder builder = new StringBuilder();
+        String builder = AutocryptGossipHeader.AUTOCRYPT_GOSSIP_HEADER + ": " +
+                AutocryptGossipHeader.AUTOCRYPT_PARAM_ADDR + '=' + addr + "; " +
+                AutocryptGossipHeader.AUTOCRYPT_PARAM_KEY_DATA + '=' +
+                AutocryptHeader.createFoldedBase64KeyData(keyData);
 
-        builder.append(AutocryptGossipHeader.AUTOCRYPT_GOSSIP_HEADER).append(": ");
-        builder.append(AutocryptGossipHeader.AUTOCRYPT_PARAM_ADDR).append('=').append(addr).append("; ");
-        builder.append(AutocryptGossipHeader.AUTOCRYPT_PARAM_KEY_DATA).append('=');
-        builder.append(AutocryptHeader.createFoldedBase64KeyData(keyData));
-
-        return builder.toString();
+        return builder;
     }
 
     @Override
@@ -48,11 +46,7 @@ class AutocryptGossipHeader {
         if (!Arrays.equals(keyData, that.keyData)) {
             return false;
         }
-        if (!addr.equals(that.addr)) {
-            return false;
-        }
-
-        return true;
+        return addr.equals(that.addr);
     }
 
     @Override

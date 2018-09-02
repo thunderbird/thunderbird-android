@@ -36,10 +36,7 @@ public abstract class Message implements Part, Body {
         if (myDate == null) {
             myDate = getInternalDate();
         }
-        if (myDate != null) {
-            return myDate.before(earliestDate);
-        }
-        return false;
+        return myDate != null && myDate.before(earliestDate);
     }
 
     @Override
@@ -233,7 +230,7 @@ public abstract class Message implements Part, Body {
      * <strong>Note:</strong>
      * This method was introduced as a hack to prevent {@code ConcurrentModificationException}s. It
      * shouldn't be used unless absolutely necessary. See the comment in
-     * {@link com.fsck.k9.activity.MessageView.Listener#loadMessageForViewHeadersAvailable(com.fsck.k9.Account, String, String, Message)}
+     *
      * for more information.
      * </p>
      */

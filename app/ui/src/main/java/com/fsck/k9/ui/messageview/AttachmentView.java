@@ -59,8 +59,8 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
     }
 
     private void displayAttachmentInformation() {
-        viewButton = (Button) findViewById(R.id.view);
-        downloadButton = (Button) findViewById(R.id.download);
+        viewButton = findViewById(R.id.view);
+        downloadButton = findViewById(R.id.download);
 
         if (attachment.size > K9.MAX_ATTACHMENT_DOWNLOAD_SIZE) {
             viewButton.setVisibility(View.GONE);
@@ -71,7 +71,7 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         downloadButton.setOnClickListener(this);
         downloadButton.setOnLongClickListener(this);
 
-        TextView attachmentName = (TextView) findViewById(R.id.attachment_name);
+        TextView attachmentName = findViewById(R.id.attachment_name);
         attachmentName.setText(attachment.displayName);
 
         setAttachmentSize(attachment.size);
@@ -80,7 +80,7 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
     }
 
     private void setAttachmentSize(long size) {
-        TextView attachmentSize = (TextView) findViewById(R.id.attachment_info);
+        TextView attachmentSize = findViewById(R.id.attachment_info);
         if (size == AttachmentViewInfo.UNKNOWN_SIZE) {
             attachmentSize.setText("");
         } else {
@@ -126,7 +126,7 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
     }
 
     public void refreshThumbnail() {
-        ImageView thumbnailView = (ImageView) findViewById(R.id.attachment_icon);
+        ImageView thumbnailView = findViewById(R.id.attachment_icon);
         Glide.with(getContext())
                 .load(attachment.internalUri)
                 .placeholder(R.drawable.attached_image_placeholder)

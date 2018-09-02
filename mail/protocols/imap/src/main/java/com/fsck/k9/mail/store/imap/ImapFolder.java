@@ -56,7 +56,7 @@ public class ImapFolder extends Folder<ImapMessage> {
     protected volatile long uidNext = -1L;
     protected volatile ImapConnection connection;
     protected ImapStore store = null;
-    protected Map<Long, String> msgSeqUidMap = new ConcurrentHashMap<Long, String>();
+    protected Map<Long, String> msgSeqUidMap = new ConcurrentHashMap<>();
     private final FolderNameCodec folderNameCodec;
     private final String name;
     private int mode;

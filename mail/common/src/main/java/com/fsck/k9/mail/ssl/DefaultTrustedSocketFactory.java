@@ -137,7 +137,7 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
     }
 
     protected static String[] reorder(String[] enabled, String[] known, String[] blacklisted) {
-        List<String> unknown = new ArrayList<String>();
+        List<String> unknown = new ArrayList<>();
         Collections.addAll(unknown, enabled);
 
         // Remove blacklisted items
@@ -148,7 +148,7 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
         }
 
         // Order known items
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         for (String item : known) {
             if (unknown.remove(item)) {
                 result.add(item);
@@ -163,7 +163,7 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
     }
 
     protected static String[] remove(String[] enabled, String[] blacklisted) {
-        List<String> items = new ArrayList<String>();
+        List<String> items = new ArrayList<>();
         Collections.addAll(items, enabled);
 
         // Remove blacklisted items

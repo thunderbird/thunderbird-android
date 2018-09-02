@@ -136,16 +136,22 @@ public class NotificationActionService extends CoreService {
         MessagingController controller = MessagingController.getInstance(getApplication());
 
         String action = intent.getAction();
-        if (ACTION_MARK_AS_READ.equals(action)) {
-            markMessagesAsRead(intent, account, controller);
-        } else if (ACTION_DELETE.equals(action)) {
-            deleteMessages(intent, controller);
-        } else if (ACTION_ARCHIVE.equals(action)) {
-            archiveMessages(intent, account, controller);
-        } else if (ACTION_SPAM.equals(action)) {
-            markMessageAsSpam(intent, account, controller);
-        } else if (ACTION_DISMISS.equals(action)) {
-            Timber.i("Notification dismissed");
+        switch (action) {
+            case ACTION_MARK_AS_READ:
+                markMessagesAsRead(intent, account, controller);
+                break;
+            case ACTION_DELETE:
+                deleteMessages(intent, controller);
+                break;
+            case ACTION_ARCHIVE:
+                archiveMessages(intent, account, controller);
+                break;
+            case ACTION_SPAM:
+                markMessageAsSpam(intent, account, controller);
+                break;
+            case ACTION_DISMISS:
+                Timber.i("Notification dismissed");
+                break;
         }
 
         cancelNotifications(intent, account, controller);

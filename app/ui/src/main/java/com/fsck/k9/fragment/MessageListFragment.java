@@ -717,8 +717,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     private void initializePullToRefresh(View layout) {
-        swipeRefreshLayout = (SwipeRefreshLayout) layout.findViewById(R.id.swiperefresh);
-        listView = (ListView) layout.findViewById(R.id.message_list);
+        swipeRefreshLayout = layout.findViewById(R.id.swiperefresh);
+        listView = layout.findViewById(R.id.message_list);
 
         if (isRemoteSearchAllowed()) {
             swipeRefreshLayout.setOnRefreshListener(
@@ -1341,7 +1341,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         if (footerView == null) {
             footerView = layoutInflater.inflate(R.layout.message_list_item_footer, parent, false);
             FooterViewHolder holder = new FooterViewHolder();
-            holder.main = (TextView) footerView.findViewById(R.id.main_text);
+            holder.main = footerView.findViewById(R.id.main_text);
             footerView.setTag(holder);
         }
 
@@ -2404,12 +2404,9 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             return false;
         }
 
-        if (!messagingController.isMoveCapable(account)) {
-            // For POP3 accounts only the Inbox is a remote folder.
-            return (folderServerId != null && folderServerId.equals(account.getInboxFolder()));
-        }
+        // For POP3 accounts only the Inbox is a remote folder.
+        return messagingController.isMoveCapable(account) || (folderServerId != null && folderServerId.equals(account.getInboxFolder()));
 
-        return true;
     }
 
     public boolean isManualSearch() {

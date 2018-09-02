@@ -17,7 +17,6 @@ public class WebDavStoreUriCreator {
      *
      * @param server The {@link ServerSettings} object that holds the server settings.
      * @return A WebDavStore URI that holds the same information as the {@code server} parameter.
-     * @see StoreConfig#getStoreUri()
      */
     public static String create(ServerSettings server) {
         String userEnc = encodeUtf8(server.username);

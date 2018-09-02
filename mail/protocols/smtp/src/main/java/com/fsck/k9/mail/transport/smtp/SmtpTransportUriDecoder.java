@@ -77,22 +77,26 @@ public class SmtpTransportUriDecoder {
 
         if (smtpUri.getUserInfo() != null) {
             String[] userInfoParts = smtpUri.getUserInfo().split(":");
-            if (userInfoParts.length == 1) {
-                authType = AuthType.PLAIN;
-                username = decodeUtf8(userInfoParts[0]);
-            } else if (userInfoParts.length == 2) {
-                authType = AuthType.PLAIN;
-                username = decodeUtf8(userInfoParts[0]);
-                password = decodeUtf8(userInfoParts[1]);
-            } else if (userInfoParts.length == 3) {
-                // NOTE: In SmtpTransport URIs, the authType comes last!
-                authType = AuthType.valueOf(userInfoParts[2]);
-                username = decodeUtf8(userInfoParts[0]);
-                if (authType == AuthType.EXTERNAL) {
-                    clientCertificateAlias = decodeUtf8(userInfoParts[1]);
-                } else {
+            switch (userInfoParts.length) {
+                case 1:
+                    authType = AuthType.PLAIN;
+                    username = decodeUtf8(userInfoParts[0]);
+                    break;
+                case 2:
+                    authType = AuthType.PLAIN;
+                    username = decodeUtf8(userInfoParts[0]);
                     password = decodeUtf8(userInfoParts[1]);
-                }
+                    break;
+                case 3:
+                    // NOTE: In SmtpTransport URIs, the authType comes last!
+                    authType = AuthType.valueOf(userInfoParts[2]);
+                    username = decodeUtf8(userInfoParts[0]);
+                    if (authType == AuthType.EXTERNAL) {
+                        clientCertificateAlias = decodeUtf8(userInfoParts[1]);
+                    } else {
+                        password = decodeUtf8(userInfoParts[1]);
+                    }
+                    break;
             }
         }
 

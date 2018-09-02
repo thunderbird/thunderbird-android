@@ -70,25 +70,20 @@ public abstract class K9ListActivity extends K9Activity implements K9ActivityMag
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         // Swallow these events too to avoid the audible notification of a volume change
-        if (K9.useVolumeKeysForListNavigationEnabled() &&
-                (keyCode == KeyEvent.KEYCODE_VOLUME_UP ||
-                keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
-            return true;
-        }
+        return K9.useVolumeKeysForListNavigationEnabled() && (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) || super.onKeyUp(keyCode, event);
 
-        return super.onKeyUp(keyCode, event);
     }
 
     protected ListView getListView() {
         if (list == null) {
-            list = (ListView) findViewById(android.R.id.list);
+            list = findViewById(android.R.id.list);
         }
         return list;
     }
 
     protected void setListAdapter(ListAdapter listAdapter) {
         if (list == null) {
-            list = (ListView) findViewById(android.R.id.list);
+            list = findViewById(android.R.id.list);
         }
         list.setAdapter(listAdapter);
         adapter = listAdapter;

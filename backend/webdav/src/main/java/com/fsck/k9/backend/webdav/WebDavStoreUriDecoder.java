@@ -88,21 +88,25 @@ public class WebDavStoreUriDecoder {
 
         String[] pathParts = webDavUri.getPath().split("\\|");
         for (int i = 0, count = pathParts.length; i < count; i++) {
-            if (i == 0) {
-                if (pathParts[0] != null &&
-                        pathParts[0].length() > 1) {
-                    path = pathParts[0];
-                }
-            } else if (i == 1) {
-                if (pathParts[1] != null &&
-                        pathParts[1].length() > 1) {
-                    authPath = pathParts[1];
-                }
-            } else if (i == 2) {
-                if (pathParts[2] != null &&
-                        pathParts[2].length() > 1) {
-                    mailboxPath = pathParts[2];
-                }
+            switch (i) {
+                case 0:
+                    if (pathParts[0] != null &&
+                            pathParts[0].length() > 1) {
+                        path = pathParts[0];
+                    }
+                    break;
+                case 1:
+                    if (pathParts[1] != null &&
+                            pathParts[1].length() > 1) {
+                        authPath = pathParts[1];
+                    }
+                    break;
+                case 2:
+                    if (pathParts[2] != null &&
+                            pathParts[2].length() > 1) {
+                        mailboxPath = pathParts[2];
+                    }
+                    break;
             }
         }
 
