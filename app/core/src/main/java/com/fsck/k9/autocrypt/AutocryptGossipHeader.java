@@ -48,11 +48,7 @@ class AutocryptGossipHeader {
         if (!Arrays.equals(keyData, that.keyData)) {
             return false;
         }
-        if (!addr.equals(that.addr)) {
-            return false;
-        }
-
-        return true;
+        return addr.equals(that.addr);
     }
 
     @Override

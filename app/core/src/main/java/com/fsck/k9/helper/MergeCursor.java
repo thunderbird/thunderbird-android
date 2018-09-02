@@ -224,20 +224,14 @@ public class MergeCursor implements Cursor {
     @Override
     public boolean isAfterLast() {
         int count = getCount();
-        if (count == 0) {
-            return true;
-        }
+        return count == 0 || mPosition == count;
 
-        return (mPosition == count);
     }
 
     @Override
     public boolean isBeforeFirst() {
-        if (getCount() == 0) {
-            return true;
-        }
+        return getCount() == 0 || mPosition == -1;
 
-        return (mPosition == -1);
     }
 
     @Override
@@ -247,21 +241,15 @@ public class MergeCursor implements Cursor {
 
     @Override
     public boolean isFirst() {
-        if (getCount() == 0) {
-            return false;
-        }
+        return getCount() != 0 && mPosition == 0;
 
-        return (mPosition == 0);
     }
 
     @Override
     public boolean isLast() {
         int count = getCount();
-        if (count == 0) {
-            return false;
-        }
+        return count != 0 && mPosition == count - 1;
 
-        return (mPosition == (count - 1));
     }
 
     @Override
