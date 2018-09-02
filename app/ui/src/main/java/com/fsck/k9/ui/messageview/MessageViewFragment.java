@@ -168,7 +168,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View view = layoutInflater.inflate(R.layout.message, container, false);
 
-        mMessageView = (MessageTopView) view.findViewById(R.id.message_view);
+        mMessageView = view.findViewById(R.id.message_view);
         mMessageView.setAttachmentCallback(this);
         mMessageView.setMessageCryptoPresenter(messageCryptoPresenter);
 

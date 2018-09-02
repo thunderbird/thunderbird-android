@@ -2268,7 +2268,7 @@ public class MessagingController {
                 LocalFolder localFolder = null;
                 try {
                     LocalStore localStore = account.getLocalStore();
-                    localFolder = (LocalFolder) localStore.getFolder(account.getTrashFolder());
+                    localFolder = localStore.getFolder(account.getTrashFolder());
                     localFolder.open(Folder.OPEN_MODE_RW);
 
                     boolean isTrashLocalOnly = isTrashLocalOnly(account);
