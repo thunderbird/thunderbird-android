@@ -412,11 +412,7 @@ public class OpenPgpApi {
 
         // don't serialize async tasks!
         // http://commonsware.com/blog/2012/04/20/asynctask-threading-regression-confirmed.html
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
-        } else {
-            task.execute((Void[]) null);
-        }
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
 
         return task;
     }
@@ -426,11 +422,7 @@ public class OpenPgpApi {
 
         // don't serialize async tasks!
         // http://commonsware.com/blog/2012/04/20/asynctask-threading-regression-confirmed.html
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
-        } else {
-            task.execute((Void[]) null);
-        }
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
 
         return task;
     }
@@ -440,11 +432,7 @@ public class OpenPgpApi {
 
         // don't serialize async tasks!
         // http://commonsware.com/blog/2012/04/20/asynctask-threading-regression-confirmed.html
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
-        } else {
-            task.execute((Void[]) null);
-        }
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, (Void[]) null);
     }
 
     public static class OpenPgpDataResult<T> {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:initialKeyguardLayout="@layout/message_list_widget_layout"
     android:initialLayout="@layout/message_list_widget_layout"
     android:minHeight="180dp"
@@ -9,5 +10,6 @@
     android:previewImage="@drawable/message_list_widget_preview"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="86400000"
-    android:widgetCategory="home_screen|keyguard">
+    android:widgetCategory="home_screen|keyguard"
+    tools:targetApi="jelly_bean_mr1">
 </appwidget-provider>

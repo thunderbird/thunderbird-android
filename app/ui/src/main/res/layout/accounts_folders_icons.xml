@@ -7,7 +7,8 @@
     android:gravity="center_vertical"
     android:paddingLeft="2dip"
     android:paddingRight="2dip"
-    android:clickable="true">
+    android:clickable="true"
+    android:focusable="true">
 
     <LinearLayout
         android:id="@+id/flagged_message_count_wrapper"
@@ -17,7 +18,8 @@
         android:gravity="center_vertical"
         android:clickable="true"
         android:paddingLeft="4dip"
-        android:paddingRight="4dip">
+        android:paddingRight="4dip"
+        android:focusable="true">
 
         <View
             android:id="@+id/flagged_message_count_icon"
@@ -43,7 +45,8 @@
         android:gravity="center_vertical"
         android:clickable="true"
         android:paddingLeft="4dip"
-        android:paddingRight="4dip">
+        android:paddingRight="4dip"
+        android:focusable="true">
 
         <View
             android:id="@+id/new_message_count_icon"
