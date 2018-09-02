@@ -19,7 +19,6 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
-import org.apache.james.mime4j.util.MimeUtil;
 
 
 public class ReconstructMessageFromDatabaseTest extends ApplicationTestCase<K9> {
