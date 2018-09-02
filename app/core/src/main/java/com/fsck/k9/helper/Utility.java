@@ -429,7 +429,7 @@ public class Utility {
             ">");
 
     public static List<String> extractMessageIds(final String text) {
-        List<String> messageIds = new ArrayList<String>();
+        List<String> messageIds = new ArrayList<>();
         Matcher matcher = MESSAGE_ID.matcher(text);
 
         int start = 0;

@@ -22,7 +22,7 @@ public class SleepService extends CoreService {
     private static final String LATCH_ID = "com.fsck.k9.service.SleepService.LATCH_ID_EXTRA";
 
 
-    private static ConcurrentHashMap<Integer, SleepDatum> sleepData = new ConcurrentHashMap<Integer, SleepDatum>();
+    private static ConcurrentHashMap<Integer, SleepDatum> sleepData = new ConcurrentHashMap<>();
 
     private static AtomicInteger latchId = new AtomicInteger();
 

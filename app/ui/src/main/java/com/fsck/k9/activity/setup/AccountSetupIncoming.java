@@ -573,13 +573,13 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
             Map<String, String> extra = null;
             if (mStoreType.equals(Protocols.IMAP)) {
-                extra = new HashMap<String, String>();
+                extra = new HashMap<>();
                 extra.put(ImapStoreSettings.AUTODETECT_NAMESPACE_KEY,
                         Boolean.toString(mImapAutoDetectNamespaceView.isChecked()));
                 extra.put(ImapStoreSettings.PATH_PREFIX_KEY,
                         mImapPathPrefixView.getText().toString());
             } else if (mStoreType.equals(Protocols.WEBDAV)) {
-                extra = new HashMap<String, String>();
+                extra = new HashMap<>();
                 extra.put(WebDavStoreSettings.PATH_KEY,
                         mWebdavPathPrefixView.getText().toString());
                 extra.put(WebDavStoreSettings.AUTH_PATH_KEY,

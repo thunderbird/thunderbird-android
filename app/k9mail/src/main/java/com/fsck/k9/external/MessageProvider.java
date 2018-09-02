@@ -77,7 +77,7 @@ public class MessageProvider extends ContentProvider {
 
 
     private UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-    private List<QueryHandler> queryHandlers = new ArrayList<QueryHandler>();
+    private List<QueryHandler> queryHandlers = new ArrayList<>();
 
     /**
      * How many simultaneous cursors we can afford to expose at once
@@ -484,7 +484,7 @@ public class MessageProvider extends ContentProvider {
         }
 
         protected MatrixCursor getMessages(String[] projection) throws InterruptedException {
-            BlockingQueue<List<MessageInfoHolder>> queue = new SynchronousQueue<List<MessageInfoHolder>>();
+            BlockingQueue<List<MessageInfoHolder>> queue = new SynchronousQueue<>();
 
             // new code for integrated inbox, only execute this once as it will be processed afterwards via the listener
             SearchAccount integratedInboxAccount = SearchAccount.createUnifiedInboxAccount();
@@ -530,7 +530,7 @@ public class MessageProvider extends ContentProvider {
         protected LinkedHashMap<String, FieldExtractor<MessageInfoHolder, ?>> resolveMessageExtractors(
                 String[] projection, int count) {
             LinkedHashMap<String, FieldExtractor<MessageInfoHolder, ?>> extractors =
-                    new LinkedHashMap<String, FieldExtractor<MessageInfoHolder, ?>>();
+                    new LinkedHashMap<>();
 
             for (String field : projection) {
                 if (extractors.containsKey(field)) {
@@ -1030,7 +1030,7 @@ public class MessageProvider extends ContentProvider {
             MonitoredCursor wrapped = new MonitoredCursor((CrossProcessCursor) cursor, semaphore);
 
             // Use a weak reference not to actively prevent garbage collection
-            final WeakReference<MonitoredCursor> weakReference = new WeakReference<MonitoredCursor>(wrapped);
+            final WeakReference<MonitoredCursor> weakReference = new WeakReference<>(wrapped);
 
             // Make sure the cursor is closed after 30 seconds
             scheduledPool.schedule(new Runnable() {
@@ -1058,7 +1058,7 @@ public class MessageProvider extends ContentProvider {
      */
     protected class MessageInfoHolderRetrieverListener extends SimpleMessagingListener {
         private final BlockingQueue<List<MessageInfoHolder>> queue;
-        private List<MessageInfoHolder> holders = new ArrayList<MessageInfoHolder>();
+        private List<MessageInfoHolder> holders = new ArrayList<>();
 
 
         public MessageInfoHolderRetrieverListener(BlockingQueue<List<MessageInfoHolder>> queue) {

@@ -28,9 +28,9 @@ public class LocalSearch implements SearchSpecification {
     private boolean mManualSearch = false;
 
     // since the uuid isn't in the message table it's not in the tree neither
-    private Set<String> mAccountUuids = new HashSet<String>();
+    private Set<String> mAccountUuids = new HashSet<>();
     private ConditionsTreeNode mConditions = null;
-    private Set<ConditionsTreeNode> mLeafSet = new HashSet<ConditionsTreeNode>();
+    private Set<ConditionsTreeNode> mLeafSet = new HashSet<>();
 
 
     ///////////////////////////////////////////////////////////////
@@ -64,7 +64,7 @@ public class LocalSearch implements SearchSpecification {
         this(name);
         mConditions = searchConditions;
         mPredefined = predefined;
-        mLeafSet = new HashSet<ConditionsTreeNode>();
+        mLeafSet = new HashSet<>();
         if (mConditions != null) {
             mLeafSet.addAll(mConditions.getLeafSet());
         }
@@ -85,7 +85,7 @@ public class LocalSearch implements SearchSpecification {
 
         LocalSearch copy = new LocalSearch(mName, conditions, null, mPredefined);
         copy.mManualSearch = mManualSearch;
-        copy.mAccountUuids = new HashSet<String>(mAccountUuids);
+        copy.mAccountUuids = new HashSet<>(mAccountUuids);
 
         return copy;
     }
@@ -250,7 +250,7 @@ public class LocalSearch implements SearchSpecification {
      * real searches because of possible extra conditions to a folder requirement.
      */
     public List<String> getFolderServerIds() {
-        List<String> results = new ArrayList<String>();
+        List<String> results = new ArrayList<>();
         for (ConditionsTreeNode node : mLeafSet) {
             if (node.mCondition.field == SearchField.FOLDER &&
                     node.mCondition.attribute == Attribute.EQUALS) {
@@ -367,7 +367,7 @@ public class LocalSearch implements SearchSpecification {
         dest.writeString(mName);
         dest.writeByte((byte) (mPredefined ? 1 : 0));
         dest.writeByte((byte) (mManualSearch ? 1 : 0));
-        dest.writeStringList(new ArrayList<String>(mAccountUuids));
+        dest.writeStringList(new ArrayList<>(mAccountUuids));
         dest.writeParcelable(mConditions, flags);
     }
 

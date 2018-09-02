@@ -14,10 +14,10 @@ import timber.log.Timber;
 
 public class StorageEditor {
     private Storage storage;
-    private Map<String, String> changes = new HashMap<String, String>();
-    private List<String> removals = new ArrayList<String>();
+    private Map<String, String> changes = new HashMap<>();
+    private List<String> removals = new ArrayList<>();
 
-    Map<String, String> snapshot = new HashMap<String, String>();
+    Map<String, String> snapshot = new HashMap<>();
 
 
     StorageEditor(Storage storage) {
@@ -57,7 +57,7 @@ public class StorageEditor {
                 for (String removeKey : removals) {
                     storage.remove(removeKey);
                 }
-                Map<String, String> insertables = new HashMap<String, String>();
+                Map<String, String> insertables = new HashMap<>();
                 for (Entry<String, String> entry : changes.entrySet()) {
                     String key = entry.getKey();
                     String newValue = entry.getValue();
