@@ -25,7 +25,7 @@ import com.fsck.k9.search.SearchSpecification.SearchField;
 public class ConditionsTreeNode implements Parcelable {
 
     public enum Operator {
-        AND, OR, CONDITION;
+        AND, OR, CONDITION
     }
 
     public ConditionsTreeNode mLeft;
