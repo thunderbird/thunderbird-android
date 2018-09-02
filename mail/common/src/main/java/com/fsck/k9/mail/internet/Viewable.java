@@ -6,9 +6,6 @@ import com.fsck.k9.mail.Part;
 import java.util.List;
 
 /**
- * Empty marker class interface the class hierarchy used by
- *
- *
  * @see Viewable.Text
  * @see Viewable.Html
  * @see Viewable.MessageHeader
