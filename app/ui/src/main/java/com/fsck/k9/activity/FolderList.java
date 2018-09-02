@@ -1108,8 +1108,8 @@ public class FolderList extends K9ListActivity {
                         }
                         final String valueText = value.displayName.toLowerCase(locale);
 
-                        for (int k = 0; k < wordCount; k++) {
-                            if (valueText.contains(words[k])) {
+                        for (String word : words) {
+                            if (valueText.contains(word)) {
                                 newValues.add(value);
                                 break;
                             }

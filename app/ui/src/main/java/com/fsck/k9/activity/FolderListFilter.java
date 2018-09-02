@@ -75,8 +75,8 @@ public class FolderListFilter<T> extends Filter {
             for (final T value : values) {
                 final String valueText = value.toString().toLowerCase(locale);
 
-                for (int k = 0; k < wordCount; k++) {
-                    if (valueText.contains(words[k])) {
+                for (String word : words) {
+                    if (valueText.contains(word)) {
                         newValues.add(value);
                         break;
                     }

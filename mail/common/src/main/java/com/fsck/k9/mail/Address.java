@@ -169,11 +169,8 @@ public class Address implements Serializable {
 
         Address address = (Address) o;
 
-        if (mAddress != null ? !mAddress.equals(address.mAddress) : address.mAddress != null) {
-            return false;
-        }
+        return (mAddress != null ? mAddress.equals(address.mAddress) : address.mAddress == null) && (mPersonal != null ? mPersonal.equals(address.mPersonal) : address.mPersonal == null);
 
-        return mPersonal != null ? mPersonal.equals(address.mPersonal) : address.mPersonal == null;
     }
 
     @Override
