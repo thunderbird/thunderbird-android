@@ -194,12 +194,12 @@ public class RecipientAdapter extends BaseAdapter implements Filterable {
 
 
         RecipientTokenHolder(View view) {
-            name = (TextView) view.findViewById(R.id.text1);
-            email = (TextView) view.findViewById(R.id.text2);
-            photo = (ImageView) view.findViewById(R.id.contact_photo);
+            name = view.findViewById(R.id.text1);
+            email = view.findViewById(R.id.text2);
+            photo = view.findViewById(R.id.contact_photo);
             cryptoStatus = view.findViewById(R.id.contact_crypto_status);
-            cryptoStatusIcon = (ImageView) view.findViewById(R.id.contact_crypto_status_icon);
-            cryptoStatusSimple = (ImageView) view.findViewById(R.id.contact_crypto_status_icon_simple);
+            cryptoStatusIcon = view.findViewById(R.id.contact_crypto_status_icon);
+            cryptoStatusSimple = view.findViewById(R.id.contact_crypto_status_icon_simple);
         }
     }
 

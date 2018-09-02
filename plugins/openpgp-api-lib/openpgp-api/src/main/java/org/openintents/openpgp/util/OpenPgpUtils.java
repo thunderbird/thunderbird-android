@@ -119,9 +119,6 @@ public class OpenPgpUtils {
     /**
      * Returns a composed user id. Returns null if name is null!
      *
-     * @param name
-     * @param email
-     * @param comment
      * @return
      */
     public static String createUserId(UserId userId) {

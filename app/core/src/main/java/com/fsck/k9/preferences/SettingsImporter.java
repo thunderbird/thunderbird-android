@@ -693,31 +693,35 @@ public class SettingsImporter {
         while (!(eventType == XmlPullParser.END_TAG && SettingsExporter.ROOT_ELEMENT.equals(xpp.getName()))) {
             if (eventType == XmlPullParser.START_TAG) {
                 String element = xpp.getName();
-                if (SettingsExporter.GLOBAL_ELEMENT.equals(element)) {
-                    if (overview || globalSettings) {
-                        if (result.globalSettings == null) {
-                            if (overview) {
-                                result.globalSettings = new ImportedSettings();
-                                skipToEndTag(xpp, SettingsExporter.GLOBAL_ELEMENT);
+                switch (element) {
+                    case SettingsExporter.GLOBAL_ELEMENT:
+                        if (overview || globalSettings) {
+                            if (result.globalSettings == null) {
+                                if (overview) {
+                                    result.globalSettings = new ImportedSettings();
+                                    skipToEndTag(xpp, SettingsExporter.GLOBAL_ELEMENT);
+                                } else {
+                                    result.globalSettings = parseSettings(xpp, SettingsExporter.GLOBAL_ELEMENT);
+                                }
                             } else {
-                                result.globalSettings = parseSettings(xpp, SettingsExporter.GLOBAL_ELEMENT);
+                                skipToEndTag(xpp, SettingsExporter.GLOBAL_ELEMENT);
+                                Timber.w("More than one global settings element. Only using the first one!");
                             }
                         } else {
                             skipToEndTag(xpp, SettingsExporter.GLOBAL_ELEMENT);
-                            Timber.w("More than one global settings element. Only using the first one!");
+                            Timber.i("Skipping global settings");
                         }
-                    } else {
-                        skipToEndTag(xpp, SettingsExporter.GLOBAL_ELEMENT);
-                        Timber.i("Skipping global settings");
-                    }
-                } else if (SettingsExporter.ACCOUNTS_ELEMENT.equals(element)) {
-                    if (result.accounts == null) {
-                        result.accounts = parseAccounts(xpp, accountUuids, overview);
-                    } else {
-                        Timber.w("More than one accounts element. Only using the first one!");
-                    }
-                } else {
-                    Timber.w("Unexpected start tag: %s", xpp.getName());
+                        break;
+                    case SettingsExporter.ACCOUNTS_ELEMENT:
+                        if (result.accounts == null) {
+                            result.accounts = parseAccounts(xpp, accountUuids, overview);
+                        } else {
+                            Timber.w("More than one accounts element. Only using the first one!");
+                        }
+                        break;
+                    default:
+                        Timber.w("Unexpected start tag: %s", xpp.getName());
+                        break;
                 }
             }
             eventType = xpp.next();
@@ -851,36 +855,44 @@ public class SettingsImporter {
             while (!(eventType == XmlPullParser.END_TAG && SettingsExporter.ACCOUNT_ELEMENT.equals(xpp.getName()))) {
                 if (eventType == XmlPullParser.START_TAG) {
                     String element = xpp.getName();
-                    if (SettingsExporter.NAME_ELEMENT.equals(element)) {
-                        account.name = getText(xpp);
-                    } else if (SettingsExporter.INCOMING_SERVER_ELEMENT.equals(element)) {
-                        if (overview) {
-                            skipToEndTag(xpp, SettingsExporter.INCOMING_SERVER_ELEMENT);
-                        } else {
-                            account.incoming = parseServerSettings(xpp, SettingsExporter.INCOMING_SERVER_ELEMENT);
-                        }
-                    } else if (SettingsExporter.OUTGOING_SERVER_ELEMENT.equals(element)) {
-                        if (overview) {
-                            skipToEndTag(xpp, SettingsExporter.OUTGOING_SERVER_ELEMENT);
-                        } else {
-                            account.outgoing = parseServerSettings(xpp, SettingsExporter.OUTGOING_SERVER_ELEMENT);
-                        }
-                    } else if (SettingsExporter.SETTINGS_ELEMENT.equals(element)) {
-                        if (overview) {
-                            skipToEndTag(xpp, SettingsExporter.SETTINGS_ELEMENT);
-                        } else {
-                            account.settings = parseSettings(xpp, SettingsExporter.SETTINGS_ELEMENT);
-                        }
-                    } else if (SettingsExporter.IDENTITIES_ELEMENT.equals(element)) {
-                        account.identities = parseIdentities(xpp);
-                    } else if (SettingsExporter.FOLDERS_ELEMENT.equals(element)) {
-                        if (overview) {
-                            skipToEndTag(xpp, SettingsExporter.FOLDERS_ELEMENT);
-                        } else {
-                            account.folders = parseFolders(xpp);
-                        }
-                    } else {
-                        Timber.w("Unexpected start tag: %s", xpp.getName());
+                    switch (element) {
+                        case SettingsExporter.NAME_ELEMENT:
+                            account.name = getText(xpp);
+                            break;
+                        case SettingsExporter.INCOMING_SERVER_ELEMENT:
+                            if (overview) {
+                                skipToEndTag(xpp, SettingsExporter.INCOMING_SERVER_ELEMENT);
+                            } else {
+                                account.incoming = parseServerSettings(xpp, SettingsExporter.INCOMING_SERVER_ELEMENT);
+                            }
+                            break;
+                        case SettingsExporter.OUTGOING_SERVER_ELEMENT:
+                            if (overview) {
+                                skipToEndTag(xpp, SettingsExporter.OUTGOING_SERVER_ELEMENT);
+                            } else {
+                                account.outgoing = parseServerSettings(xpp, SettingsExporter.OUTGOING_SERVER_ELEMENT);
+                            }
+                            break;
+                        case SettingsExporter.SETTINGS_ELEMENT:
+                            if (overview) {
+                                skipToEndTag(xpp, SettingsExporter.SETTINGS_ELEMENT);
+                            } else {
+                                account.settings = parseSettings(xpp, SettingsExporter.SETTINGS_ELEMENT);
+                            }
+                            break;
+                        case SettingsExporter.IDENTITIES_ELEMENT:
+                            account.identities = parseIdentities(xpp);
+                            break;
+                        case SettingsExporter.FOLDERS_ELEMENT:
+                            if (overview) {
+                                skipToEndTag(xpp, SettingsExporter.FOLDERS_ELEMENT);
+                            } else {
+                                account.folders = parseFolders(xpp);
+                            }
+                            break;
+                        default:
+                            Timber.w("Unexpected start tag: %s", xpp.getName());
+                            break;
                     }
                 }
                 eventType = xpp.next();
@@ -908,25 +920,35 @@ public class SettingsImporter {
         while (!(eventType == XmlPullParser.END_TAG && endTag.equals(xpp.getName()))) {
             if (eventType == XmlPullParser.START_TAG) {
                 String element = xpp.getName();
-                if (SettingsExporter.HOST_ELEMENT.equals(element)) {
-                    server.host = getText(xpp);
-                } else if (SettingsExporter.PORT_ELEMENT.equals(element)) {
-                    server.port = getText(xpp);
-                } else if (SettingsExporter.CONNECTION_SECURITY_ELEMENT.equals(element)) {
-                    server.connectionSecurity = getText(xpp);
-                } else if (SettingsExporter.AUTHENTICATION_TYPE_ELEMENT.equals(element)) {
-                    String text = getText(xpp);
-                    server.authenticationType = AuthType.valueOf(text);
-                } else if (SettingsExporter.USERNAME_ELEMENT.equals(element)) {
-                    server.username = getText(xpp);
-                } else if (SettingsExporter.CLIENT_CERTIFICATE_ALIAS_ELEMENT.equals(element)) {
-                    server.clientCertificateAlias = getText(xpp);
-                } else if (SettingsExporter.PASSWORD_ELEMENT.equals(element)) {
-                    server.password = getText(xpp);
-                } else if (SettingsExporter.EXTRA_ELEMENT.equals(element)) {
-                    server.extras = parseSettings(xpp, SettingsExporter.EXTRA_ELEMENT);
-                } else {
-                    Timber.w("Unexpected start tag: %s", xpp.getName());
+                switch (element) {
+                    case SettingsExporter.HOST_ELEMENT:
+                        server.host = getText(xpp);
+                        break;
+                    case SettingsExporter.PORT_ELEMENT:
+                        server.port = getText(xpp);
+                        break;
+                    case SettingsExporter.CONNECTION_SECURITY_ELEMENT:
+                        server.connectionSecurity = getText(xpp);
+                        break;
+                    case SettingsExporter.AUTHENTICATION_TYPE_ELEMENT:
+                        String text = getText(xpp);
+                        server.authenticationType = AuthType.valueOf(text);
+                        break;
+                    case SettingsExporter.USERNAME_ELEMENT:
+                        server.username = getText(xpp);
+                        break;
+                    case SettingsExporter.CLIENT_CERTIFICATE_ALIAS_ELEMENT:
+                        server.clientCertificateAlias = getText(xpp);
+                        break;
+                    case SettingsExporter.PASSWORD_ELEMENT:
+                        server.password = getText(xpp);
+                        break;
+                    case SettingsExporter.EXTRA_ELEMENT:
+                        server.extras = parseSettings(xpp, SettingsExporter.EXTRA_ELEMENT);
+                        break;
+                    default:
+                        Timber.w("Unexpected start tag: %s", xpp.getName());
+                        break;
                 }
             }
             eventType = xpp.next();
@@ -968,16 +990,22 @@ public class SettingsImporter {
 
             if (eventType == XmlPullParser.START_TAG) {
                 String element = xpp.getName();
-                if (SettingsExporter.NAME_ELEMENT.equals(element)) {
-                    identity.name = getText(xpp);
-                } else if (SettingsExporter.EMAIL_ELEMENT.equals(element)) {
-                    identity.email = getText(xpp);
-                } else if (SettingsExporter.DESCRIPTION_ELEMENT.equals(element)) {
-                    identity.description = getText(xpp);
-                } else if (SettingsExporter.SETTINGS_ELEMENT.equals(element)) {
-                    identity.settings = parseSettings(xpp, SettingsExporter.SETTINGS_ELEMENT);
-                } else {
-                    Timber.w("Unexpected start tag: %s", xpp.getName());
+                switch (element) {
+                    case SettingsExporter.NAME_ELEMENT:
+                        identity.name = getText(xpp);
+                        break;
+                    case SettingsExporter.EMAIL_ELEMENT:
+                        identity.email = getText(xpp);
+                        break;
+                    case SettingsExporter.DESCRIPTION_ELEMENT:
+                        identity.description = getText(xpp);
+                        break;
+                    case SettingsExporter.SETTINGS_ELEMENT:
+                        identity.settings = parseSettings(xpp, SettingsExporter.SETTINGS_ELEMENT);
+                        break;
+                    default:
+                        Timber.w("Unexpected start tag: %s", xpp.getName());
+                        break;
                 }
             }
             eventType = xpp.next();

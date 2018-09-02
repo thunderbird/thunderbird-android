@@ -2201,19 +2201,23 @@ public class MessagingController {
                 }
                 processPendingCommands(account);
             } else if (!syncedMessageUids.isEmpty()) {
-                if (account.getDeletePolicy() == DeletePolicy.ON_DELETE) {
-                    if (folder.equals(account.getTrashFolder())) {
-                        queueSetFlag(account, folder, true, Flag.DELETED, syncedMessageUids);
-                    } else {
-                        queueMoveOrCopy(account, folder, account.getTrashFolder(), false,
+                switch (account.getDeletePolicy()) {
+                    case ON_DELETE:
+                        if (folder.equals(account.getTrashFolder())) {
+                            queueSetFlag(account, folder, true, Flag.DELETED, syncedMessageUids);
+                        } else {
+                            queueMoveOrCopy(account, folder, account.getTrashFolder(), false,
                                     syncedMessageUids, uidMap);
-                    }
-                    processPendingCommands(account);
-                } else if (account.getDeletePolicy() == DeletePolicy.MARK_AS_READ) {
-                    queueSetFlag(account, folder, true, Flag.SEEN, syncedMessageUids);
-                    processPendingCommands(account);
-                } else {
-                    Timber.d("Delete policy %s prevents delete from server", account.getDeletePolicy());
+                        }
+                        processPendingCommands(account);
+                        break;
+                    case MARK_AS_READ:
+                        queueSetFlag(account, folder, true, Flag.SEEN, syncedMessageUids);
+                        processPendingCommands(account);
+                        break;
+                    default:
+                        Timber.d("Delete policy %s prevents delete from server", account.getDeletePolicy());
+                        break;
                 }
             }
 
@@ -2268,7 +2272,7 @@ public class MessagingController {
                 LocalFolder localFolder = null;
                 try {
                     LocalStore localStore = account.getLocalStore();
-                    localFolder = (LocalFolder) localStore.getFolder(account.getTrashFolder());
+                    localFolder = localStore.getFolder(account.getTrashFolder());
                     localFolder.open(Folder.OPEN_MODE_RW);
 
                     boolean isTrashLocalOnly = isTrashLocalOnly(account);

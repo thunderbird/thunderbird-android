@@ -109,14 +109,19 @@ public class AttachmentProvider extends ContentProvider {
         Object[] values = new Object[columnNames.length];
         for (int i = 0, count = columnNames.length; i < count; i++) {
             String column = columnNames[i];
-            if (AttachmentProviderColumns._ID.equals(column)) {
-                values[i] = id;
-            } else if (AttachmentProviderColumns.DATA.equals(column)) {
-                values[i] = uri.toString();
-            } else if (AttachmentProviderColumns.DISPLAY_NAME.equals(column)) {
-                values[i] = attachmentInfo.name;
-            } else if (AttachmentProviderColumns.SIZE.equals(column)) {
-                values[i] = attachmentInfo.size;
+            switch (column) {
+                case AttachmentProviderColumns._ID:
+                    values[i] = id;
+                    break;
+                case AttachmentProviderColumns.DATA:
+                    values[i] = uri.toString();
+                    break;
+                case AttachmentProviderColumns.DISPLAY_NAME:
+                    values[i] = attachmentInfo.name;
+                    break;
+                case AttachmentProviderColumns.SIZE:
+                    values[i] = attachmentInfo.size;
+                    break;
             }
         }
         ret.addRow(values);

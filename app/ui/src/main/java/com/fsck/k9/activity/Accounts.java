@@ -813,7 +813,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             View layout = mDialog.getLayoutInflater().inflate(R.layout.accounts_password_prompt, scrollView);
 
             // Set the intro text that tells the user what to do
-            TextView intro = (TextView) layout.findViewById(R.id.password_prompt_intro);
+            TextView intro = layout.findViewById(R.id.password_prompt_intro);
             String serverPasswords = activity.getResources().getQuantityString(
                     R.plurals.settings_import_server_passwords,
                     (configureIncomingServer && configureOutgoingServer) ? 2 : 1);
@@ -822,12 +822,12 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
             if (configureIncomingServer) {
                 // Display the hostname of the incoming server
-                TextView incomingText = (TextView) layout.findViewById(
+                TextView incomingText = layout.findViewById(
                                             R.id.password_prompt_incoming_server);
                 incomingText.setText(activity.getString(R.string.settings_import_incoming_server,
                                                         incoming.host));
 
-                mIncomingPasswordView = (EditText) layout.findViewById(R.id.incoming_server_password);
+                mIncomingPasswordView = layout.findViewById(R.id.incoming_server_password);
                 mIncomingPasswordView.addTextChangedListener(this);
             } else {
                 layout.findViewById(R.id.incoming_server_prompt).setVisibility(View.GONE);
@@ -835,16 +835,16 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
             if (configureOutgoingServer) {
                 // Display the hostname of the outgoing server
-                TextView outgoingText = (TextView) layout.findViewById(
+                TextView outgoingText = layout.findViewById(
                                             R.id.password_prompt_outgoing_server);
                 outgoingText.setText(activity.getString(R.string.settings_import_outgoing_server,
                                                         outgoing.host));
 
-                mOutgoingPasswordView = (EditText) layout.findViewById(
+                mOutgoingPasswordView = layout.findViewById(
                                             R.id.outgoing_server_password);
                 mOutgoingPasswordView.addTextChangedListener(this);
 
-                mUseIncomingView = (CheckBox) layout.findViewById(
+                mUseIncomingView = layout.findViewById(
                         R.id.use_incoming_server_password);
 
                 if (configureIncomingServer) {
@@ -1626,19 +1626,19 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             AccountViewHolder holder = (AccountViewHolder) view.getTag();
             if (holder == null) {
                 holder = new AccountViewHolder();
-                holder.description = (TextView) view.findViewById(R.id.description);
-                holder.email = (TextView) view.findViewById(R.id.email);
-                holder.newMessageCount = (TextView) view.findViewById(R.id.new_message_count);
-                holder.flaggedMessageCount = (TextView) view.findViewById(R.id.flagged_message_count);
+                holder.description = view.findViewById(R.id.description);
+                holder.email = view.findViewById(R.id.email);
+                holder.newMessageCount = view.findViewById(R.id.new_message_count);
+                holder.flaggedMessageCount = view.findViewById(R.id.flagged_message_count);
                 holder.newMessageCountWrapper = view.findViewById(R.id.new_message_count_wrapper);
                 holder.flaggedMessageCountWrapper = view.findViewById(R.id.flagged_message_count_wrapper);
                 holder.newMessageCountIcon = view.findViewById(R.id.new_message_count_icon);
                 holder.flaggedMessageCountIcon = view.findViewById(R.id.flagged_message_count_icon);
-                holder.activeIcons = (RelativeLayout) view.findViewById(R.id.active_icons);
+                holder.activeIcons = view.findViewById(R.id.active_icons);
 
                 holder.chip = view.findViewById(R.id.chip);
-                holder.folders = (ImageButton) view.findViewById(R.id.folders);
-                holder.accountsItemLayout = (LinearLayout)view.findViewById(R.id.accounts_item_layout);
+                holder.folders = view.findViewById(R.id.folders);
+                holder.accountsItemLayout = view.findViewById(R.id.accounts_item_layout);
 
                 view.setTag(holder);
             }

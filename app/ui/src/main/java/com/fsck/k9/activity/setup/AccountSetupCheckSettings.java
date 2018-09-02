@@ -104,8 +104,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_setup_check_settings);
-        mMessageView = (TextView)findViewById(R.id.message);
-        mProgressBar = (ProgressBar)findViewById(R.id.progress);
+        mMessageView = findViewById(R.id.message);
+        mProgressBar = findViewById(R.id.progress);
         findViewById(R.id.cancel).setOnClickListener(this);
 
         setMessage(R.string.account_setup_check_settings_retr_info_msg);

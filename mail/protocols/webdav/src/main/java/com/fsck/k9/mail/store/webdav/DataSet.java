@@ -118,9 +118,7 @@ class DataSet {
     public String[] getUids() {
         List<String> uids = new ArrayList<>();
 
-        for (String uid : mData.keySet()) {
-            uids.add(uid);
-        }
+        uids.addAll(mData.keySet());
 
         return uids.toArray(WebDavConstants.EMPTY_STRING_ARRAY);
     }
@@ -163,33 +161,37 @@ class DataSet {
             if (data != null) {
                 for (Map.Entry<String, String> entry : data.entrySet()) {
                     String header = entry.getKey();
-                    if (header.equals("read")) {
-                        String read = entry.getValue();
-                        boolean readStatus = !read.equals("0");
+                    switch (header) {
+                        case "read":
+                            String read = entry.getValue();
+                            boolean readStatus = !read.equals("0");
 
-                        envelope.setReadStatus(readStatus);
-                    } else if (header.equals("date")) {
-                        /**
-                         * Exchange doesn't give us rfc822 dates like it claims. The date is in the format:
-                         * yyyy-MM-dd'T'HH:mm:ss.SSS<Single digit representation of timezone, so far, all instances
-                         * are Z>
-                         */
-                        String date = entry.getValue();
-                        date = date.substring(0, date.length() - 1);
+                            envelope.setReadStatus(readStatus);
+                            break;
+                        case "date":
+                            /**
+                             * Exchange doesn't give us rfc822 dates like it claims. The date is in the format:
+                             * yyyy-MM-dd'T'HH:mm:ss.SSS<Single digit representation of timezone, so far, all instances
+                             * are Z>
+                             */
+                            String date = entry.getValue();
+                            date = date.substring(0, date.length() - 1);
 
-                        DateFormat dfInput = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
-                        DateFormat dfOutput = new SimpleDateFormat("EEE, d MMM yy HH:mm:ss Z", Locale.US);
-                        String tempDate = "";
+                            DateFormat dfInput = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US);
+                            DateFormat dfOutput = new SimpleDateFormat("EEE, d MMM yy HH:mm:ss Z", Locale.US);
+                            String tempDate = "";
 
-                        try {
-                            Date parsedDate = dfInput.parse(date);
-                            tempDate = dfOutput.format(parsedDate);
-                        } catch (java.text.ParseException pe) {
-                            Timber.e(pe, "Error parsing date: %s", date);
-                        }
-                        envelope.addHeader(header, tempDate);
-                    } else {
-                        envelope.addHeader(header, entry.getValue());
+                            try {
+                                Date parsedDate = dfInput.parse(date);
+                                tempDate = dfOutput.format(parsedDate);
+                            } catch (java.text.ParseException pe) {
+                                Timber.e(pe, "Error parsing date: %s", date);
+                            }
+                            envelope.addHeader(header, tempDate);
+                            break;
+                        default:
+                            envelope.addHeader(header, entry.getValue());
+                            break;
                     }
                 }
             }

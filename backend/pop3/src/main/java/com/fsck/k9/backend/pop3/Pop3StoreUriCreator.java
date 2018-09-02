@@ -20,7 +20,6 @@ public class Pop3StoreUriCreator {
      *
      * @return A Pop3Store URI that holds the same information as the {@code server} parameter.
      *
-     * @see StoreConfig#getStoreUri()
      */
     public static String create(ServerSettings server) {
         String userEnc = encodeUtf8(server.username);

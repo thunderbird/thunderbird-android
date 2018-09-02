@@ -85,13 +85,13 @@ public class AccountSetupBasics extends K9Activity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_setup_basics);
-        mEmailView = (EditText)findViewById(R.id.account_email);
-        mPasswordView = (EditText)findViewById(R.id.account_password);
-        mClientCertificateCheckBox = (CheckBox)findViewById(R.id.account_client_certificate);
-        mClientCertificateSpinner = (ClientCertificateSpinner)findViewById(R.id.account_client_certificate_spinner);
-        mNextButton = (Button)findViewById(R.id.next);
-        mManualSetupButton = (Button)findViewById(R.id.manual_setup);
-        mShowPasswordCheckBox = (CheckBox) findViewById(R.id.show_password);
+        mEmailView = findViewById(R.id.account_email);
+        mPasswordView = findViewById(R.id.account_password);
+        mClientCertificateCheckBox = findViewById(R.id.account_client_certificate);
+        mClientCertificateSpinner = findViewById(R.id.account_client_certificate_spinner);
+        mNextButton = findViewById(R.id.next);
+        mManualSetupButton = findViewById(R.id.manual_setup);
+        mShowPasswordCheckBox = findViewById(R.id.show_password);
         mNextButton.setOnClickListener(this);
         mManualSetupButton.setOnClickListener(this);
     }

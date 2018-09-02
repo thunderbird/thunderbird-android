@@ -373,14 +373,17 @@ class Pop3Connection {
         if (d == -1) {
             throw new IOException("End of stream reached while trying to read line.");
         }
+        label:
         do {
-            if (((char)d) == '\r') {
-                //noinspection UnnecessaryContinue Makes it easier to follow
-                continue;
-            } else if (((char)d) == '\n') {
-                break;
-            } else {
-                sb.append((char)d);
+            switch ((char) d) {
+                case '\r':
+                    //noinspection UnnecessaryContinue Makes it easier to follow
+                    continue;
+                case '\n':
+                    break label;
+                default:
+                    sb.append((char) d);
+                    break;
             }
         } while ((d = in.read()) != -1);
         String ret = sb.toString();

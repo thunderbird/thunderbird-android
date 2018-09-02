@@ -292,8 +292,6 @@ public class ConditionsTreeNode implements Parcelable {
      *
      * This method only supports node arguments with a null parent node.
      *
-     * @param Node to add.
-     * @param Operator that will connect the new node with this one.
      * @return New parent node, containing the operator.
      * @throws Exception Throws when the provided new node does not have a null parent.
      */

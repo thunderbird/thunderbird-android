@@ -26,48 +26,60 @@ public class BootReceiver extends CoreReceiver {
         Timber.i("BootReceiver.onReceive %s", intent);
 
         final String action = intent.getAction();
-        if (Intent.ACTION_BOOT_COMPLETED.equals(action)) {
-            //K9.setServicesEnabled(context, tmpWakeLockId);
-            //tmpWakeLockId = null;
-        } else if (Intent.ACTION_DEVICE_STORAGE_LOW.equals(action)) {
-            MailService.actionCancel(context, tmpWakeLockId);
-            tmpWakeLockId = null;
-        } else if (Intent.ACTION_DEVICE_STORAGE_OK.equals(action)) {
-            MailService.actionReset(context, tmpWakeLockId);
-            tmpWakeLockId = null;
-        } else if (ConnectivityManager.CONNECTIVITY_ACTION.equals(action)) {
-            MailService.connectivityChange(context, tmpWakeLockId);
-            tmpWakeLockId = null;
-        } else if ("com.android.sync.SYNC_CONN_STATUS_CHANGED".equals(action)) {
-            K9.BACKGROUND_OPS bOps = K9.getBackgroundOps();
-            if (bOps == K9.BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC) {
+        switch (action) {
+            case Intent.ACTION_BOOT_COMPLETED:
+                //K9.setServicesEnabled(context, tmpWakeLockId);
+                //tmpWakeLockId = null;
+                break;
+            case Intent.ACTION_DEVICE_STORAGE_LOW:
+                MailService.actionCancel(context, tmpWakeLockId);
+                tmpWakeLockId = null;
+                break;
+            case Intent.ACTION_DEVICE_STORAGE_OK:
                 MailService.actionReset(context, tmpWakeLockId);
                 tmpWakeLockId = null;
+                break;
+            case ConnectivityManager.CONNECTIVITY_ACTION:
+                MailService.connectivityChange(context, tmpWakeLockId);
+                tmpWakeLockId = null;
+                break;
+            case "com.android.sync.SYNC_CONN_STATUS_CHANGED":
+                K9.BACKGROUND_OPS bOps = K9.getBackgroundOps();
+                if (bOps == K9.BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC) {
+                    MailService.actionReset(context, tmpWakeLockId);
+                    tmpWakeLockId = null;
+                }
+                break;
+            case FIRE_INTENT: {
+                Intent alarmedIntent = intent.getParcelableExtra(ALARMED_INTENT);
+                String alarmedAction = alarmedIntent.getAction();
+                Timber.i("BootReceiver Got alarm to fire alarmedIntent %s", alarmedAction);
+                alarmedIntent.putExtra(WAKE_LOCK_ID, tmpWakeLockId);
+                tmpWakeLockId = null;
+                context.startService(alarmedIntent);
+                break;
             }
-        } else if (FIRE_INTENT.equals(action)) {
-            Intent alarmedIntent = intent.getParcelableExtra(ALARMED_INTENT);
-            String alarmedAction = alarmedIntent.getAction();
-            Timber.i("BootReceiver Got alarm to fire alarmedIntent %s", alarmedAction);
-            alarmedIntent.putExtra(WAKE_LOCK_ID, tmpWakeLockId);
-            tmpWakeLockId = null;
-            context.startService(alarmedIntent);
-        } else if (SCHEDULE_INTENT.equals(action)) {
-            long atTime = intent.getLongExtra(AT_TIME, -1);
-            Intent alarmedIntent = intent.getParcelableExtra(ALARMED_INTENT);
-            Timber.i("BootReceiver Scheduling intent %s for %tc", alarmedIntent, atTime);
+            case SCHEDULE_INTENT: {
+                long atTime = intent.getLongExtra(AT_TIME, -1);
+                Intent alarmedIntent = intent.getParcelableExtra(ALARMED_INTENT);
+                Timber.i("BootReceiver Scheduling intent %s for %tc", alarmedIntent, atTime);
 
-            PendingIntent pi = buildPendingIntent(context, intent);
-            K9AlarmManager alarmMgr = K9AlarmManager.getAlarmManager(context);
+                PendingIntent pi = buildPendingIntent(context, intent);
+                K9AlarmManager alarmMgr = K9AlarmManager.getAlarmManager(context);
 
-            alarmMgr.set(AlarmManager.RTC_WAKEUP, atTime, pi);
-        } else if (CANCEL_INTENT.equals(action)) {
-            Intent alarmedIntent = intent.getParcelableExtra(ALARMED_INTENT);
-            Timber.i("BootReceiver Canceling alarmedIntent %s", alarmedIntent);
+                alarmMgr.set(AlarmManager.RTC_WAKEUP, atTime, pi);
+                break;
+            }
+            case CANCEL_INTENT: {
+                Intent alarmedIntent = intent.getParcelableExtra(ALARMED_INTENT);
+                Timber.i("BootReceiver Canceling alarmedIntent %s", alarmedIntent);
 
-            PendingIntent pi = buildPendingIntent(context, intent);
+                PendingIntent pi = buildPendingIntent(context, intent);
 
-            K9AlarmManager alarmMgr = K9AlarmManager.getAlarmManager(context);
-            alarmMgr.cancel(pi);
+                K9AlarmManager alarmMgr = K9AlarmManager.getAlarmManager(context);
+                alarmMgr.cancel(pi);
+                break;
+            }
         }
 
 

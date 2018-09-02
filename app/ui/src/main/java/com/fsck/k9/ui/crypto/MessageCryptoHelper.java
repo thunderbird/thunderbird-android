@@ -436,14 +436,17 @@ public class MessageCryptoHelper {
                 Part part = currentCryptoPart.part;
                 CryptoPartType cryptoPartType = currentCryptoPart.type;
                 Body body;
-                if (cryptoPartType == CryptoPartType.PGP_ENCRYPTED) {
-                    Multipart multipartEncryptedMultipart = (Multipart) part.getBody();
-                    BodyPart encryptionPayloadPart = multipartEncryptedMultipart.getBodyPart(1);
-                    body = encryptionPayloadPart.getBody();
-                } else if (cryptoPartType == CryptoPartType.PGP_INLINE) {
-                    body = part.getBody();
-                } else {
-                    throw new IllegalStateException("part to stream must be encrypted or inline!");
+                switch (cryptoPartType) {
+                    case PGP_ENCRYPTED:
+                        Multipart multipartEncryptedMultipart = (Multipart) part.getBody();
+                        BodyPart encryptionPayloadPart = multipartEncryptedMultipart.getBodyPart(1);
+                        body = encryptionPayloadPart.getBody();
+                        break;
+                    case PGP_INLINE:
+                        body = part.getBody();
+                        break;
+                    default:
+                        throw new IllegalStateException("part to stream must be encrypted or inline!");
                 }
                 if (body instanceof SizeAware) {
                     return ((SizeAware) body).getSize();
@@ -457,16 +460,19 @@ public class MessageCryptoHelper {
                 try {
                     Part part = currentCryptoPart.part;
                     CryptoPartType cryptoPartType = currentCryptoPart.type;
-                    if (cryptoPartType == CryptoPartType.PGP_ENCRYPTED) {
-                        Multipart multipartEncryptedMultipart = (Multipart) part.getBody();
-                        BodyPart encryptionPayloadPart = multipartEncryptedMultipart.getBodyPart(1);
-                        Body encryptionPayloadBody = encryptionPayloadPart.getBody();
-                        encryptionPayloadBody.writeTo(os);
-                    } else if (cryptoPartType == CryptoPartType.PGP_INLINE) {
-                        String text = MessageExtractor.getTextFromPart(part);
-                        os.write(text.getBytes());
-                    } else {
-                        throw new IllegalStateException("part to stream must be encrypted or inline!");
+                    switch (cryptoPartType) {
+                        case PGP_ENCRYPTED:
+                            Multipart multipartEncryptedMultipart = (Multipart) part.getBody();
+                            BodyPart encryptionPayloadPart = multipartEncryptedMultipart.getBodyPart(1);
+                            Body encryptionPayloadBody = encryptionPayloadPart.getBody();
+                            encryptionPayloadBody.writeTo(os);
+                            break;
+                        case PGP_INLINE:
+                            String text = MessageExtractor.getTextFromPart(part);
+                            os.write(text.getBytes());
+                            break;
+                        default:
+                            throw new IllegalStateException("part to stream must be encrypted or inline!");
                     }
                 } catch (MessagingException e) {
                     Timber.e(e, "MessagingException while writing message to crypto provider");
