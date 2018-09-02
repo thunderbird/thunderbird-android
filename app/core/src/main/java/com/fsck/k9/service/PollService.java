@@ -74,7 +74,7 @@ public class PollService extends CoreService {
     }
 
     class Listener extends SimpleMessagingListener {
-        Map<String, Integer> accountsChecked = new HashMap<String, Integer>();
+        Map<String, Integer> accountsChecked = new HashMap<>();
         private TracingWakeLock wakeLock = null;
         private int startId = -1;
 

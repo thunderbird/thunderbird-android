@@ -79,7 +79,7 @@ class ImapResponseParser {
     List<ImapResponse> readStatusResponse(String tag, String commandToLog, String logId,
             UntaggedHandler untaggedHandler) throws IOException, NegativeImapResponseException {
 
-        List<ImapResponse> responses = new ArrayList<ImapResponse>();
+        List<ImapResponse> responses = new ArrayList<>();
 
         ImapResponse response;
         do {
