@@ -830,7 +830,7 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="settings_import_outgoing_server">Utgående server (<xliff:g id="hostname">%s</xliff:g>):</string>
   <plurals name="settings_import_setting_passwords">
     <item quantity="one">Byt lösenord…</item>
-    <item quantity="other">Ställer in lösenord...</item>
+    <item quantity="other">Ställer in lösenord…</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">Använd lösenordet för inkommande server</string>
   <string name="activate_account_action">Aktivera</string>

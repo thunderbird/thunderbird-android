@@ -126,6 +126,6 @@ public class AutocryptPeerUpdate implements Parcelable {
     };
 
     public enum PreferEncrypt {
-        NOPREFERENCE, MUTUAL;
+        NOPREFERENCE, MUTUAL
     }
 }

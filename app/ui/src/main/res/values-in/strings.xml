@@ -34,7 +34,7 @@ Fitur yang disempurnakan meliputi:
 <li>Menyimpan lampiran ke SD</li>
 <li>Sampah kosong</li>
 <li>Penyortiran pesan</li>
-<li>... dan banyak lagi</li>
+<li>… dan banyak lagi</li>
 </ul>
 <p>
 Harap dicatat bahwa K-9 tidak mendukung sebagian besar akun Hotmail gratis dan, seperti banyak klien email lainnya
@@ -102,7 +102,7 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="forward_action">Teruskan</string>
   <string name="move_action">Pindah</string>
   <string name="single_message_options_action">Kirim…</string>
-  <string name="refile_action">File kan kembali...</string>
+  <string name="refile_action">File kan kembali…</string>
   <string name="done_action">Selesai</string>
   <string name="discard_action">Batalkan</string>
   <string name="save_draft_action">Simpan sebagai draf</string>
@@ -631,7 +631,7 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="sort_unread_last">Pesan terbaca dulu</string>
   <string name="sort_attach_first">Pesan dengan lampiran dulu</string>
   <string name="sort_unattached_first">Pesan tanpa lampiran dulu</string>
-  <string name="sort_by">Sortir berdasar...</string>
+  <string name="sort_by">Sortir berdasar…</string>
   <string name="sort_by_date">Tanggal</string>
   <string name="sort_by_arrival">Kedatangan</string>
   <string name="sort_by_subject">Subyek</string>
@@ -652,7 +652,7 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="message_list_help_key">Del (atau D) - Hapus\nC - Tulis\nM - Pindah\nV - Arsipkan\nY - Copy\nZ - Tandai (belum) baca\nG - Star\nO - Urutkan jenis\nI - Urutan sortir\nQ - Kembali ke Folder\nS - Pilih/batalkan pilihan</string>
   <string name="folder_list_help_key">1 - Tampilkan hanya folder Kelas 1 \n2 - Menampilkan folder Kelas 1 dan 2 \n3 - Menampilkan semua kecuali folder Kelas 2 \n4 - Menampilkan semua folder \nQ - Kembali ke Akun \nS - Edit Pengaturan Akun</string>
   <string name="folder_list_filter_hint">Nama folder mengandung</string>
-  <string name="folder_list_display_mode_label">Perlihatkan folder...</string>
+  <string name="folder_list_display_mode_label">Perlihatkan folder…</string>
   <string name="folder_list_display_mode_all">Semua folder</string>
   <string name="folder_list_display_mode_first_class">Folder kelas 1</string>
   <string name="folder_list_display_mode_first_and_second_class">Folder kelas 1 &amp; 2</string>
@@ -793,9 +793,9 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="settings_import">Impor pengaturan</string>
   <string name="settings_import_selection">Impor pilihan</string>
   <string name="settings_import_global_settings">Pengaturan global</string>
-  <string name="settings_exporting">Mengekspor pengaturan...</string>
-  <string name="settings_importing">Mengimpor pengaturan...</string>
-  <string name="settings_import_scanning_file">Memindai file...</string>
+  <string name="settings_exporting">Mengekspor pengaturan…</string>
+  <string name="settings_importing">Mengimpor pengaturan…</string>
+  <string name="settings_import_scanning_file">Memindai file…</string>
   <string name="settings_export_success">Menyimpan ekspor pengaturan ke <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_generic">Pengaturan berhasil diekspor</string>
   <string name="settings_import_global_settings_success">Impor pengaturan global dari <xliff:g id="filename">%s</xliff:g></string>
@@ -818,18 +818,18 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="settings_import_incoming_server">Server masuk (<xliff:g id="hostname">%s</xliff:g>):</string>
   <string name="settings_import_outgoing_server">Server keluar (<xliff:g id="hostname">%s</xliff:g>):</string>
   <plurals name="settings_import_setting_passwords">
-    <item quantity="other">Menetapkan kata sandi ...</item>
+    <item quantity="other">Menetapkan kata sandi …</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">Gunakan kata kunci server masuk</string>
   <string name="activate_account_action">Aktifkan</string>
   <string name="account_unavailable">Akun \"<xliff:g id="account">%s</xliff:g>\" tidak tersedia; cek penyimpanan</string>
-  <string name="settings_attachment_default_path">Simpan lampiran ke...</string>
+  <string name="settings_attachment_default_path">Simpan lampiran ke…</string>
   <string name="attachment_save_title">Simpan lampiran</string>
   <string name="attachment_save_desc">Tidak ditemukan browser file. Di mana Anda ingin menyimpan lampiran ini?</string>
   <string name="manage_accounts_move_up_action">Pindah keatas</string>
   <string name="manage_accounts_move_down_action">Pindah kebawah</string>
-  <string name="manage_accounts_moving_message">Memindahkan akun...</string>
-  <string name="unread_widget_select_account">Perlihatkan jumlah belum terbaca untuk...</string>
+  <string name="manage_accounts_moving_message">Memindahkan akun…</string>
+  <string name="unread_widget_select_account">Perlihatkan jumlah belum terbaca untuk…</string>
   <string name="unread_widget_account_title">Akun</string>
   <string name="unread_widget_account_summary">Akun yang jumlah yang belum dibaca harus ditampilkan</string>
   <string name="unread_widget_unified_inbox_account_summary">Inbox terpadu</string>
@@ -887,17 +887,17 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="account_settings_remote_search_enabled">Aktifkan pencarian server</string>
   <string name="account_settings_remote_search_enabled_summary">Cari pesan di server selain yang ada di perangkat Anda</string>
   <string name="action_remote_search">Cari pesan di server</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_pull">Tarik untuk mencari server...</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_release">Lepaskan untuk mencari server...</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_pull">Tarik untuk mencari server…</string>
+  <string name="pull_to_refresh_remote_search_from_local_search_release">Lepaskan untuk mencari server…</string>
   <string name="remote_search_unavailable_no_network">Sambungan jaringan diperlukan untuk pencarian server.</string>
   <string name="global_settings_background_as_unread_indicator_label">Ubah warna saat dibaca</string>
   <string name="global_settings_background_as_unread_indicator_summary">Latar belakang yang berbeda akan menunjukkan bahwa pesan telah dibaca</string>
   <string name="global_settings_threaded_view_label">Tampilan berulir</string>
   <string name="global_settings_threaded_view_summary">Kelompokkan pesan menurut percakapan</string>
   <string name="upgrade_databases_title">Mengupgrade database</string>
-  <string name="upgrade_databases_unspecified">Mengupgrade database...</string>
+  <string name="upgrade_databases_unspecified">Mengupgrade database…</string>
   <string name="upgrade_database_format">Mengupgrade database untuk akun \"<xliff:g id="account">%s</xliff:g>\"</string>
-  <string name="message_list_loading">Memuat...</string>
+  <string name="message_list_loading">Memuat…</string>
   <string name="global_settings_splitview_mode_label">Tampilkan layar terpisah</string>
   <string name="global_settings_splitview_always">Selalu</string>
   <string name="global_settings_splitview_never">Tidak pernah</string>
@@ -913,10 +913,10 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="global_settings_colorize_missing_contact_pictures_summary">Warnai gambar kontak yang hilang</string>
   <string name="global_settings_messageview_visible_refile_actions_title">Tindakan pesan terlihat</string>
   <string name="global_settings_messageview_visible_refile_actions_summary">Tampilkan tindakan yang dipilih di menu tampilan pesan</string>
-  <string name="loading_attachment">Memuat lampiran...</string>
+  <string name="loading_attachment">Memuat lampiran…</string>
   <string name="fetching_attachment_dialog_title_send">Mengirim pesan</string>
   <string name="fetching_attachment_dialog_title_save">Menyimpan draf</string>
-  <string name="fetching_attachment_dialog_message">Mengambil lampiran...</string>
+  <string name="fetching_attachment_dialog_message">Mengambil lampiran…</string>
   <string name="auth_external_error">Tidak dapat melakukan otentikasi. Server tidak mengiklankan kemampuan SASL EXTERNAL. Ini bisa jadi karena masalah dengan sertifikat klien (kadaluarsa, otoritas sertifikat tidak diketahui) atau masalah konfigurasi lainnya.</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Gunakan sertifikat klien</string>
@@ -974,7 +974,7 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="locked_attach_unlock">Buka kunci</string>
   <string name="locked_attach_unencrypted">Bagian ini tidak dienkripsi, dan mungkin tidak aman.</string>
   <string name="locked_attach_title">Lampiran tidak terlindungi</string>
-  <string name="message_progress_text">Memuat...</string>
+  <string name="message_progress_text">Memuat…</string>
   <string name="messageview_decrypt_cancelled">Dekripsi dibatalkan</string>
   <string name="messageview_decrypt_retry">Lanjut</string>
   <string name="messageview_decrypt_incomplete">Pesan terenkripsi harus diunduh untuk dekripsi.</string>
@@ -999,7 +999,7 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="crypto_no_provider_message">Email ini telah dienkripsi dengan OpenPGP. \nUntuk membacanya, Anda perlu menginstal dan mengkonfigurasi Aplikasi OpenPGP yang kompatibel.</string>
   <string name="crypto_no_provider_button">Pilih Aplikasi OpenPGP</string>
   <string name="mail_list_widget_text">Daftar pesan K-9</string>
-  <string name="mail_list_widget_loading">Memuat pesan...</string>
+  <string name="mail_list_widget_loading">Memuat pesan…</string>
   <string name="fetching_folders_failed">Mengambil daftar folder gagal</string>
   <string name="messageview_crypto_warning_details">Perlihatkan detail</string>
   <string name="error_recipient_crypto_retrieve">Terjadi kesalahan saat mengambil status penerima dari penyedia OpenPGP!</string>
