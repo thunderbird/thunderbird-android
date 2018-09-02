@@ -4,14 +4,14 @@ import java.util.List;
 
 
 public interface Pusher {
-    public void start(List<String> folderServerIds);
-    public void refresh();
-    public void stop();
+    void start(List<String> folderServerIds);
+    void refresh();
+    void stop();
     /**
      *
      * @return milliseconds of required refresh interval
      */
-    public int getRefreshInterval();
-    public void setLastRefresh(long lastRefresh);
-    public long getLastRefresh();
+    int getRefreshInterval();
+    void setLastRefresh(long lastRefresh);
+    long getLastRefresh();
 }
