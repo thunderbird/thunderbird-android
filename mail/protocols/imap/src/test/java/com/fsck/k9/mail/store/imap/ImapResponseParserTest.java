@@ -133,7 +133,7 @@ public class ImapResponseParserTest {
 
         try {
             List<ImapResponse> responses = parser.readStatusResponse("A2", null, null, untaggedHandler);
-        } catch (NegativeImapResponseException e) {
+        } catch (NegativeImapResponseException ignored) {
         }
 
         assertEquals(1, untaggedHandler.responses.size());
