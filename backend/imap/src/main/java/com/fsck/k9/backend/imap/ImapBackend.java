@@ -83,6 +83,11 @@ public class ImapBackend implements Backend {
     }
 
     @Override
+    public boolean getSupportsUpload() {
+        return true;
+    }
+
+    @Override
     public boolean getSupportsTrashFolder() {
         return true;
     }

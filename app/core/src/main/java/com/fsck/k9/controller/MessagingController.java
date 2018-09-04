@@ -1823,6 +1823,10 @@ public class MessagingController {
         return getBackend(account).getSupportsSearchByDate();
     }
 
+    public boolean supportsUpload(Account account) {
+        return getBackend(account).getSupportsUpload();
+    }
+
     public void checkIncomingServerSettings(Account account) throws MessagingException {
         getBackend(account).checkIncomingServerSettings();
     }

@@ -31,6 +31,7 @@ class Pop3Backend(
     override val supportsExpunge = false
     override val supportsMove = false
     override val supportsCopy = false
+    override val supportsUpload = false
     override val supportsTrashFolder = false
     override val supportsSearchByDate = false
     override val isPushCapable = false
