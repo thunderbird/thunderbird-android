@@ -31,6 +31,8 @@ import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.backend.api.MessageRemovalListener;
+import com.fsck.k9.crypto.EncryptionExtractor;
+import com.fsck.k9.crypto.EncryptionResult;
 import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
@@ -77,6 +79,7 @@ public class LocalFolder extends Folder<LocalMessage> {
     private final SearchStatusManager searchStatusManager = DI.get(SearchStatusManager.class);
     private final LocalStore localStore;
     private final AttachmentInfoExtractor attachmentInfoExtractor;
+    private final EncryptionExtractor encryptionExtractor = DI.get(EncryptionExtractor.class);
 
 
     private String serverId = null;
@@ -1379,16 +1382,33 @@ public class LocalFolder extends Folder<LocalMessage> {
         }
 
         try {
-            MessagePreviewCreator previewCreator = localStore.getMessagePreviewCreator();
-            PreviewResult previewResult = previewCreator.createPreview(message);
+            String encryptionType;
+            PreviewResult previewResult;
+            int attachmentCount;
+            String fulltext;
+            ContentValues extraContentValues;
+
+            EncryptionResult encryptionResult = encryptionExtractor.extractEncryption(message);
+            if (encryptionResult != null) {
+                encryptionType = encryptionResult.getEncryptionType();
+                previewResult = encryptionResult.getPreviewResult();
+                attachmentCount = encryptionResult.getAttachmentCount();
+                fulltext = encryptionResult.getTextForSearchIndex();
+                extraContentValues = encryptionResult.getExtraContentValues();
+            } else {
+                MessagePreviewCreator previewCreator = localStore.getMessagePreviewCreator();
+                MessageFulltextCreator fulltextCreator = localStore.getMessageFulltextCreator();
+                AttachmentCounter attachmentCounter = localStore.getAttachmentCounter();
+
+                encryptionType = null;
+                previewResult = previewCreator.createPreview(message);
+                attachmentCount = attachmentCounter.getAttachmentCount(message);
+                fulltext = fulltextCreator.createFulltext(message);
+                extraContentValues = null;
+            }
+
             PreviewType previewType = previewResult.getPreviewType();
             DatabasePreviewType databasePreviewType = DatabasePreviewType.fromPreviewType(previewType);
-
-            MessageFulltextCreator fulltextCreator = localStore.getMessageFulltextCreator();
-            String fulltext = fulltextCreator.createFulltext(message);
-
-            AttachmentCounter attachmentCounter = localStore.getAttachmentCounter();
-            int attachmentCount = attachmentCounter.getAttachmentCount(message);
 
             long rootMessagePartId = saveMessageParts(db, message);
 
@@ -1415,6 +1435,7 @@ public class LocalFolder extends Folder<LocalMessage> {
                     ? System.currentTimeMillis() : message.getInternalDate().getTime());
             cv.put("mime_type", message.getMimeType());
             cv.put("empty", 0);
+            cv.put("encryption_type", encryptionType);
 
             cv.put("preview_type", databasePreviewType.getDatabaseValue());
             if (previewResult.isPreviewTextAvailable()) {
@@ -1426,6 +1447,10 @@ public class LocalFolder extends Folder<LocalMessage> {
             String messageId = message.getMessageId();
             if (messageId != null) {
                 cv.put("message_id", messageId);
+            }
+
+            if (extraContentValues != null) {
+                cv.putAll(extraContentValues);
             }
 
             if (oldMessageId == -1) {

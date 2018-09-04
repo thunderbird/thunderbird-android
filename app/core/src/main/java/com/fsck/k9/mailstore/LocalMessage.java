@@ -188,7 +188,7 @@ public class LocalMessage extends MimeMessage {
         return (attachmentCount > 0);
     }
 
-    int getAttachmentCount() {
+    public int getAttachmentCount() {
         return attachmentCount;
     }
 

@@ -26,7 +26,7 @@ import org.koin.standalone.inject
 class K9BackendFolderTest : K9RobolectricTest() {
     val preferences: Preferences by inject()
 
-    val account: Account = preferences.newAccount()
+    val account: Account = createAccount()
     val backendFolder = createBackendFolder()
     val database: LockableDatabase = account.localStore.database
 
@@ -73,6 +73,13 @@ class K9BackendFolderTest : K9RobolectricTest() {
         assertEquals(flags, messageFlags)
     }
 
+
+    fun createAccount(): Account {
+        //FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()
+        preferences.loadAccounts()
+
+        return preferences.newAccount()
+    }
 
     fun createBackendFolder(): BackendFolder {
         val localStore: LocalStore = account.localStore
