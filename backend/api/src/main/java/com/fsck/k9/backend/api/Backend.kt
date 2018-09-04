@@ -17,6 +17,7 @@ interface Backend {
     val supportsExpunge: Boolean
     val supportsMove: Boolean
     val supportsCopy: Boolean
+    val supportsUpload: Boolean
     val supportsTrashFolder: Boolean
     val supportsSearchByDate: Boolean
     val isPushCapable: Boolean

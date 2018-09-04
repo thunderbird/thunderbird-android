@@ -1680,8 +1680,8 @@ public class MessagingController {
 
     private void moveOrDeleteSentMessage(Account account, LocalStore localStore,
             LocalFolder localFolder, LocalMessage message) throws MessagingException {
-        if (!account.hasSentFolder()) {
-            Timber.i("Account does not have a sent mail folder; deleting sent message");
+        if (!account.hasSentFolder() || !account.isUploadSentMessages()) {
+            Timber.i("Not uploading sent message; deleting local message");
             message.setFlag(Flag.DELETED, true);
         } else {
             LocalFolder localSentFolder = localStore.getFolder(account.getSentFolder());
@@ -1821,6 +1821,10 @@ public class MessagingController {
 
     public boolean supportsSearchByDate(Account account) {
         return getBackend(account).getSupportsSearchByDate();
+    }
+
+    public boolean supportsUpload(Account account) {
+        return getBackend(account).getSupportsUpload();
     }
 
     public void checkIncomingServerSettings(Account account) throws MessagingException {

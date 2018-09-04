@@ -36,6 +36,7 @@ class AccountSettingsDataStore(
             "openpgp_hide_sign_only" -> account.openPgpHideSignOnly
             "openpgp_encrypt_subject" -> account.openPgpEncryptSubject
             "autocrypt_prefer_encrypt" -> account.autocryptPreferEncryptMutual
+            "upload_sent_messages" -> account.isUploadSentMessages
             else -> defValue
         }
     }
@@ -67,6 +68,7 @@ class AccountSettingsDataStore(
             "openpgp_hide_sign_only" -> account.openPgpHideSignOnly = value
             "openpgp_encrypt_subject" -> account.openPgpEncryptSubject = value
             "autocrypt_prefer_encrypt" -> account.autocryptPreferEncryptMutual = value
+            "upload_sent_messages" -> account.isUploadSentMessages = value
             else -> return
         }
 
