@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
+
 import timber.log.Timber;
 
 import com.fsck.k9.Account;
@@ -32,7 +33,7 @@ public class NotificationActionService extends CoreService {
     private static final String EXTRA_MESSAGE_REFERENCES = "messageReferences";
 
 
-    static Intent createMarkMessageAsReadIntent(Context context, MessageReference messageReference) {
+    public static Intent createMarkMessageAsReadIntent(Context context, MessageReference messageReference) {
         Intent intent = new Intent(context, NotificationActionService.class);
         intent.setAction(ACTION_MARK_AS_READ);
         intent.putExtra(EXTRA_ACCOUNT_UUID, messageReference.getAccountUuid());
@@ -41,7 +42,7 @@ public class NotificationActionService extends CoreService {
         return intent;
     }
 
-    static Intent createMarkAllAsReadIntent(Context context, String accountUuid,
+    public static Intent createMarkAllAsReadIntent(Context context, String accountUuid,
             List<MessageReference> messageReferences) {
         Intent intent = new Intent(context, NotificationActionService.class);
         intent.setAction(ACTION_MARK_AS_READ);
@@ -51,7 +52,7 @@ public class NotificationActionService extends CoreService {
         return intent;
     }
 
-    static Intent createDismissMessageIntent(Context context, MessageReference messageReference) {
+    public static Intent createDismissMessageIntent(Context context, MessageReference messageReference) {
         Intent intent = new Intent(context, NotificationActionService.class);
         intent.setAction(ACTION_DISMISS);
         intent.putExtra(EXTRA_ACCOUNT_UUID, messageReference.getAccountUuid());
@@ -60,7 +61,7 @@ public class NotificationActionService extends CoreService {
         return intent;
     }
 
-    static Intent createDismissAllMessagesIntent(Context context, Account account) {
+    public static Intent createDismissAllMessagesIntent(Context context, Account account) {
         Intent intent = new Intent(context, NotificationActionService.class);
         intent.setAction(ACTION_DISMISS);
         intent.putExtra(EXTRA_ACCOUNT_UUID, account.getUuid());
@@ -68,7 +69,7 @@ public class NotificationActionService extends CoreService {
         return intent;
     }
 
-    static Intent createDeleteMessageIntent(Context context, MessageReference messageReference) {
+    public static Intent createDeleteMessageIntent(Context context, MessageReference messageReference) {
         Intent intent = new Intent(context, NotificationActionService.class);
         intent.setAction(ACTION_DELETE);
         intent.putExtra(EXTRA_ACCOUNT_UUID, messageReference.getAccountUuid());
@@ -87,7 +88,7 @@ public class NotificationActionService extends CoreService {
         return intent;
     }
 
-    static Intent createArchiveMessageIntent(Context context, MessageReference messageReference) {
+    public static Intent createArchiveMessageIntent(Context context, MessageReference messageReference) {
         Intent intent = new Intent(context, NotificationActionService.class);
         intent.setAction(ACTION_ARCHIVE);
         intent.putExtra(EXTRA_ACCOUNT_UUID, messageReference.getAccountUuid());
@@ -96,7 +97,8 @@ public class NotificationActionService extends CoreService {
         return intent;
     }
 
-    static Intent createArchiveAllIntent(Context context, Account account, List<MessageReference> messageReferences) {
+    public static Intent createArchiveAllIntent(Context context, Account account,
+            List<MessageReference> messageReferences) {
         Intent intent = new Intent(context, NotificationActionService.class);
         intent.setAction(ACTION_ARCHIVE);
         intent.putExtra(EXTRA_ACCOUNT_UUID, account.getUuid());
@@ -105,7 +107,7 @@ public class NotificationActionService extends CoreService {
         return intent;
     }
 
-    static Intent createMarkMessageAsSpamIntent(Context context, MessageReference messageReference) {
+    public static Intent createMarkMessageAsSpamIntent(Context context, MessageReference messageReference) {
         Intent intent = new Intent(context, NotificationActionService.class);
         intent.setAction(ACTION_SPAM);
         intent.putExtra(EXTRA_ACCOUNT_UUID, messageReference.getAccountUuid());
