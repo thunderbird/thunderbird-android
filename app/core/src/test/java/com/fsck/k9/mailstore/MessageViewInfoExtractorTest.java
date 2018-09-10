@@ -379,6 +379,7 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
                 bodypart("text/plain", "text"),
                 attachmentPart
         ));
+        message.setSubject(SUBJECT);
         AttachmentViewInfo attachmentViewInfo = mock(AttachmentViewInfo.class);
         setupAttachmentInfoForPart(attachmentPart, attachmentViewInfo);
 
@@ -391,6 +392,7 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
         assertSame(attachmentViewInfo, messageViewInfo.attachments.get(0));
         assertNull(messageViewInfo.cryptoResultAnnotation);
         assertTrue(messageViewInfo.extraAttachments.isEmpty());
+        assertEquals(SUBJECT, messageViewInfo.subject);
     }
 
     @Test
