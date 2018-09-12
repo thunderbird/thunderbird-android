@@ -19,6 +19,8 @@ dependencies {
     implementation project(':plugins:openpgp-api-lib:openpgp-api')
 
     implementation "com.android.support:appcompat-v7:${versions.supportLibrary}"
+    implementation "com.android.support:preference-v14:${versions.supportLibrary}"
+    implementation "com.android.support:cardview-v7:${versions.supportLibrary}"
     implementation "com.takisoft.fix:preference-v7:${versions.preferencesFix}"
     implementation "com.takisoft.fix:preference-v7-datetimepicker:${versions.preferencesFix}"
     implementation "com.takisoft.fix:preference-v7-colorpicker:${versions.preferencesFix}"
@@ -33,6 +35,7 @@ dependencies {
     implementation "com.xwray:groupie:2.1.0"
     implementation "com.xwray:groupie-kotlin-android-extensions:2.1.0"
     implementation 'com.mikepenz:materialdrawer:6.0.7'
+    implementation 'com.github.ByteHamster:SearchPreference:v1.1.4'
 
     implementation "commons-io:commons-io:${versions.commonsIo}"
     implementation "androidx.core:core-ktx:${versions.coreKtx}"
