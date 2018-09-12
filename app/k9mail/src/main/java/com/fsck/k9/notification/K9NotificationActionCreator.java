@@ -112,15 +112,10 @@ class K9NotificationActionCreator implements NotificationActionCreator {
     @Override
     public PendingIntent createMarkAllAsReadPendingIntent(Account account, List<MessageReference> messageReferences,
             int notificationId) {
-        return getMarkAsReadPendingIntent(account, messageReferences, notificationId, context,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-    }
+        String accountUuid = account.getUuid();
+        Intent intent = NotificationActionService.createMarkAllAsReadIntent(context, accountUuid, messageReferences);
 
-    @Override
-    public PendingIntent getMarkAllAsReadPendingIntent(Account account, List<MessageReference> messageReferences,
-            int notificationId) {
-        return getMarkAsReadPendingIntent(account, messageReferences, notificationId, context,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getService(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override
@@ -137,14 +132,6 @@ class K9NotificationActionCreator implements NotificationActionCreator {
 
         return PendingIntent.getActivity(context, account.getAccountNumber(), intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
-    private PendingIntent getMarkAsReadPendingIntent(Account account, List<MessageReference> messageReferences,
-            int notificationId, Context context, int flags) {
-        String accountUuid = account.getUuid();
-        Intent intent = NotificationActionService.createMarkAllAsReadIntent(context, accountUuid, messageReferences);
-
-        return PendingIntent.getService(context, notificationId, intent, flags);
     }
 
     @Override
@@ -172,40 +159,26 @@ class K9NotificationActionCreator implements NotificationActionCreator {
     public PendingIntent createDeleteAllPendingIntent(Account account, List<MessageReference> messageReferences,
             int notificationId) {
         if (K9.confirmDeleteFromNotification()) {
-            return getDeleteAllConfirmationPendingIntent(messageReferences, notificationId,
-                    PendingIntent.FLAG_CANCEL_CURRENT);
+            return getDeleteAllConfirmationPendingIntent(messageReferences, notificationId);
         } else {
-            return getDeleteAllServicePendingIntent(account, messageReferences, notificationId,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
-        }
-    }
-
-    @Override
-    public PendingIntent getDeleteAllPendingIntent(Account account, List<MessageReference> messageReferences,
-            int notificationId) {
-        if (K9.confirmDeleteFromNotification()) {
-            return getDeleteAllConfirmationPendingIntent(messageReferences, notificationId,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
-        } else {
-            return getDeleteAllServicePendingIntent(account, messageReferences, notificationId,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
+            return getDeleteAllServicePendingIntent(account, messageReferences, notificationId);
         }
     }
 
     private PendingIntent getDeleteAllConfirmationPendingIntent(List<MessageReference> messageReferences,
-            int notificationId, int flags) {
+            int notificationId) {
         Intent intent = NotificationDeleteConfirmation.getIntent(context, messageReferences);
 
-        return PendingIntent.getActivity(context, notificationId, intent, flags);
+        return PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
     }
 
     private PendingIntent getDeleteAllServicePendingIntent(Account account, List<MessageReference> messageReferences,
-            int notificationId, int flags) {
+            int notificationId) {
         String accountUuid = account.getUuid();
         Intent intent = NotificationActionService.createDeleteAllMessagesIntent(
                 context, accountUuid, messageReferences);
 
-        return PendingIntent.getService(context, notificationId, intent, flags);
+        return PendingIntent.getService(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override

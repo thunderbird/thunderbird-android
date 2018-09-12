@@ -32,9 +32,6 @@ public interface NotificationActionCreator {
     PendingIntent createMarkAllAsReadPendingIntent(Account account, List<MessageReference> messageReferences,
             int notificationId);
 
-    PendingIntent getMarkAllAsReadPendingIntent(Account account, List<MessageReference> messageReferences,
-            int notificationId);
-
     PendingIntent getEditIncomingServerSettingsIntent(Account account);
 
     PendingIntent getEditOutgoingServerSettingsIntent(Account account);
@@ -42,9 +39,6 @@ public interface NotificationActionCreator {
     PendingIntent createDeleteMessagePendingIntent(MessageReference messageReference, int notificationId);
 
     PendingIntent createDeleteAllPendingIntent(Account account, List<MessageReference> messageReferences,
-            int notificationId);
-
-    PendingIntent getDeleteAllPendingIntent(Account account, List<MessageReference> messageReferences,
             int notificationId);
 
     PendingIntent createArchiveMessagePendingIntent(MessageReference messageReference, int notificationId);
