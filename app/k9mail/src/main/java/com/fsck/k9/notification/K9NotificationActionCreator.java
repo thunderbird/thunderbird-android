@@ -44,13 +44,13 @@ class K9NotificationActionCreator implements NotificationActionCreator {
     @Override
     public PendingIntent createViewMessagePendingIntent(MessageReference messageReference, int notificationId) {
         TaskStackBuilder stack = buildMessageViewBackStack(messageReference);
-        return stack.getPendingIntent(notificationId, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+        return stack.getPendingIntent(notificationId, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override
     public PendingIntent createViewFolderPendingIntent(Account account, String folderServerId, int notificationId) {
         TaskStackBuilder stack = buildMessageListBackStack(account, folderServerId);
-        return stack.getPendingIntent(notificationId, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+        return stack.getPendingIntent(notificationId, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override
@@ -70,21 +70,20 @@ class K9NotificationActionCreator implements NotificationActionCreator {
             }
         }
 
-        return stack.getPendingIntent(notificationId, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+        return stack.getPendingIntent(notificationId, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override
     public PendingIntent createViewFolderListPendingIntent(Account account, int notificationId) {
         TaskStackBuilder stack = buildFolderListBackStack(account);
-        return stack.getPendingIntent(notificationId, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+        return stack.getPendingIntent(notificationId, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override
     public PendingIntent createDismissAllMessagesPendingIntent(Account account, int notificationId) {
         Intent intent = NotificationActionService.createDismissAllMessagesIntent(context, account);
 
-        return PendingIntent.getService(context, notificationId, intent,
-                PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+        return PendingIntent.getService(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override
@@ -93,38 +92,35 @@ class K9NotificationActionCreator implements NotificationActionCreator {
 
         Intent intent = NotificationActionService.createDismissMessageIntent(context, messageReference);
 
-        return PendingIntent.getService(context, notificationId, intent,
-                PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+        return PendingIntent.getService(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override
     public PendingIntent createReplyPendingIntent(MessageReference messageReference, int notificationId) {
         Intent intent = MessageActions.getActionReplyIntent(context, messageReference);
 
-        return PendingIntent.getActivity(context, notificationId, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+        return PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override
     public PendingIntent createMarkMessageAsReadPendingIntent(MessageReference messageReference, int notificationId) {
         Intent intent = NotificationActionService.createMarkMessageAsReadIntent(context, messageReference);
 
-        return PendingIntent.getService(context, notificationId, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+        return PendingIntent.getService(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override
     public PendingIntent createMarkAllAsReadPendingIntent(Account account, List<MessageReference> messageReferences,
             int notificationId) {
         return getMarkAsReadPendingIntent(account, messageReferences, notificationId, context,
-                PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+                PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override
     public PendingIntent getMarkAllAsReadPendingIntent(Account account, List<MessageReference> messageReferences,
             int notificationId) {
         return getMarkAsReadPendingIntent(account, messageReferences, notificationId, context,
-                PendingIntent.FLAG_NO_CREATE);
+                PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override
@@ -163,8 +159,7 @@ class K9NotificationActionCreator implements NotificationActionCreator {
     private PendingIntent createDeleteServicePendingIntent(MessageReference messageReference, int notificationId) {
         Intent intent = NotificationActionService.createDeleteMessageIntent(context, messageReference);
 
-        return PendingIntent.getService(context, notificationId, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+        return PendingIntent.getService(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private PendingIntent createDeleteConfirmationPendingIntent(MessageReference messageReference, int notificationId) {
@@ -181,7 +176,7 @@ class K9NotificationActionCreator implements NotificationActionCreator {
                     PendingIntent.FLAG_CANCEL_CURRENT);
         } else {
             return getDeleteAllServicePendingIntent(account, messageReferences, notificationId,
-                    PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+                    PendingIntent.FLAG_UPDATE_CURRENT);
         }
     }
 
@@ -190,10 +185,10 @@ class K9NotificationActionCreator implements NotificationActionCreator {
             int notificationId) {
         if (K9.confirmDeleteFromNotification()) {
             return getDeleteAllConfirmationPendingIntent(messageReferences, notificationId,
-                    PendingIntent.FLAG_NO_CREATE);
+                    PendingIntent.FLAG_UPDATE_CURRENT);
         } else {
             return getDeleteAllServicePendingIntent(account, messageReferences, notificationId,
-                    PendingIntent.FLAG_NO_CREATE);
+                    PendingIntent.FLAG_UPDATE_CURRENT);
         }
     }
 
@@ -217,8 +212,7 @@ class K9NotificationActionCreator implements NotificationActionCreator {
     public PendingIntent createArchiveMessagePendingIntent(MessageReference messageReference, int notificationId) {
         Intent intent = NotificationActionService.createArchiveMessageIntent(context, messageReference);
 
-        return PendingIntent.getService(context, notificationId, intent,
-                PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+        return PendingIntent.getService(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override
@@ -226,16 +220,14 @@ class K9NotificationActionCreator implements NotificationActionCreator {
             int notificationId) {
         Intent intent = NotificationActionService.createArchiveAllIntent(context, account, messageReferences);
 
-        return PendingIntent.getService(context, notificationId, intent,
-                PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+        return PendingIntent.getService(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override
     public PendingIntent createMarkMessageAsSpamPendingIntent(MessageReference messageReference, int notificationId) {
         Intent intent = NotificationActionService.createMarkMessageAsSpamIntent(context, messageReference);
 
-        return PendingIntent.getService(context, notificationId, intent,
-                PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+        return PendingIntent.getService(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private TaskStackBuilder buildAccountsBackStack() {
