@@ -143,7 +143,7 @@ public class WearNotificationsTest extends RobolectricTest {
         ArrayList<MessageReference> messageReferences = createMessageReferenceList();
         NotificationData notificationData = createNotificationData(messageReferences);
         PendingIntent markAllAsReadPendingIntent = createFakePendingIntent(1);
-        when(actionCreator.getMarkAllAsReadPendingIntent(account, messageReferences, notificationId))
+        when(actionCreator.createMarkAllAsReadPendingIntent(account, messageReferences, notificationId))
                 .thenReturn(markAllAsReadPendingIntent);
 
         wearNotifications.addSummaryActions(builder, notificationData);
@@ -160,7 +160,7 @@ public class WearNotificationsTest extends RobolectricTest {
         ArrayList<MessageReference> messageReferences = createMessageReferenceList();
         NotificationData notificationData = createNotificationData(messageReferences);
         PendingIntent deletePendingIntent = createFakePendingIntent(1);
-        when(actionCreator.getDeleteAllPendingIntent(account, messageReferences, notificationId))
+        when(actionCreator.createDeleteAllPendingIntent(account, messageReferences, notificationId))
                 .thenReturn(deletePendingIntent);
 
         wearNotifications.addSummaryActions(builder, notificationData);
