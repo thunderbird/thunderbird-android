@@ -19,8 +19,6 @@ dependencies {
     implementation project(':plugins:openpgp-api-lib:openpgp-api')
 
     implementation "com.android.support:appcompat-v7:${versions.supportLibrary}"
-    implementation "com.android.support:preference-v14:${versions.supportLibrary}"
-    implementation "com.android.support:cardview-v7:${versions.supportLibrary}"
     implementation "com.takisoft.fix:preference-v7:${versions.preferencesFix}"
     implementation "com.takisoft.fix:preference-v7-datetimepicker:${versions.preferencesFix}"
     implementation "com.takisoft.fix:preference-v7-colorpicker:${versions.preferencesFix}"
