@@ -181,7 +181,7 @@ public class K9 {
     private static boolean hideHostnameWhenConnecting = false;
 
     private static SortType sortType;
-    private static Map<SortType, Boolean> sortAscending = new HashMap<SortType, Boolean>();
+    private static Map<SortType, Boolean> sortAscending = new HashMap<>();
 
     private static boolean useBackgroundAsUnreadIndicator = true;
     private static boolean threadedViewEnabled = true;
@@ -354,12 +354,12 @@ public class K9 {
      * {@code SharedPreference}.
      *
      * <p>
-     * If the stored version matches {@link LocalStore#DB_VERSION} we know that the databases are
+     * If the stored version matches {@link LocalStore#getDbVersion()} we know that the databases are
      * up to date.<br>
      * Using {@code SharedPreferences} should be a lot faster than opening all SQLite databases to
      * get the current database version.
      * </p><p>
-     * See {@link UpgradeDatabases} for a detailed explanation of the database upgrade process.
+     * See the class {@code UpgradeDatabases} for a detailed explanation of the database upgrade process.
      * </p>
      *
      * @see #areDatabasesUpToDate()
@@ -369,7 +369,7 @@ public class K9 {
 
         int cachedVersion = databaseVersionCache.getInt(KEY_LAST_ACCOUNT_DATABASE_VERSION, 0);
 
-        if (cachedVersion >= LocalStore.DB_VERSION) {
+        if (cachedVersion >= LocalStore.getDbVersion()) {
             K9.setDatabasesUpToDate(false);
         }
         if (cachedVersion < VERSION_MIGRATE_OPENPGP_TO_ACCOUNTS) {
@@ -1073,7 +1073,7 @@ public class K9 {
 
         if (save) {
             Editor editor = databaseVersionCache.edit();
-            editor.putInt(KEY_LAST_ACCOUNT_DATABASE_VERSION, LocalStore.DB_VERSION);
+            editor.putInt(KEY_LAST_ACCOUNT_DATABASE_VERSION, LocalStore.getDbVersion());
             editor.apply();
         }
     }

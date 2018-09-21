@@ -13,10 +13,9 @@ class FolderRepository(private val account: Account) {
 
     fun getRemoteFolders(): List<Folder> {
         val folders = account.localStore.getPersonalNamespaces(false)
-        val outbox = account.outboxFolder
 
         return folders
-                .filter { it.serverId != outbox }
+                .filterNot { it.isLocalOnly }
                 .map(::createFolderFromLocalFolder)
     }
 

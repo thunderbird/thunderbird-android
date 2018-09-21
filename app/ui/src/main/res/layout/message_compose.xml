@@ -64,7 +64,7 @@
                 class="com.fsck.k9.ui.EolConvertingEditText"
                 android:id="@+id/message_content"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_weight="1"
                 android:gravity="top"
                 android:hint="@string/message_compose_content_hint"

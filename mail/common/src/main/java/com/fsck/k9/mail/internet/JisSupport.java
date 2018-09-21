@@ -107,10 +107,6 @@ class JisSupport {
         }
 
         char c = address.charAt(index);
-        if (c != '@' && c != '.') {
-            return false;
-        }
-
-        return address.endsWith(domain);
+        return (c == '@' || c == '.') && address.endsWith(domain);
     }
 }

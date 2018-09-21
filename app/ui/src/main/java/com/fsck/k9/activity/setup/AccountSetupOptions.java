@@ -50,11 +50,11 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_setup_options);
 
-        mCheckFrequencyView = (Spinner)findViewById(R.id.account_check_frequency);
-        mDisplayCountView = (Spinner)findViewById(R.id.account_display_count);
-        mNotifyView = (CheckBox)findViewById(R.id.account_notify);
-        mNotifySyncView = (CheckBox)findViewById(R.id.account_notify_sync);
-        mPushEnable = (CheckBox)findViewById(R.id.account_enable_push);
+        mCheckFrequencyView = findViewById(R.id.account_check_frequency);
+        mDisplayCountView = findViewById(R.id.account_display_count);
+        mNotifyView = findViewById(R.id.account_notify);
+        mNotifySyncView = findViewById(R.id.account_notify_sync);
+        mPushEnable = findViewById(R.id.account_enable_push);
 
         findViewById(R.id.next).setOnClickListener(this);
 
@@ -86,7 +86,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
 
         };
 
-        ArrayAdapter<SpinnerOption> checkFrequenciesAdapter = new ArrayAdapter<SpinnerOption>(this,
+        ArrayAdapter<SpinnerOption> checkFrequenciesAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, checkFrequencies);
         checkFrequenciesAdapter
         .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -102,7 +102,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
             new SpinnerOption(1000, getString(R.string.account_setup_options_mail_display_count_1000)),
         };
 
-        ArrayAdapter<SpinnerOption> displayCountsAdapter = new ArrayAdapter<SpinnerOption>(this,
+        ArrayAdapter<SpinnerOption> displayCountsAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, displayCounts);
         displayCountsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mDisplayCountView.setAdapter(displayCountsAdapter);

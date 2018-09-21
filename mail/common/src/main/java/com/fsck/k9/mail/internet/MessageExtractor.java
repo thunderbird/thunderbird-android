@@ -285,7 +285,7 @@ public class MessageExtractor {
      */
     private static List<Viewable> findTextPart(Multipart multipart, boolean directChild)
             throws MessagingException {
-        List<Viewable> viewables = new ArrayList<Viewable>();
+        List<Viewable> viewables = new ArrayList<>();
 
         for (Part part : multipart.getBodyParts()) {
             Body body = part.getBody();
@@ -450,11 +450,8 @@ public class MessageExtractor {
         }
 
         boolean isAttachmentDisposition = "attachment".equalsIgnoreCase(dispositionType) || dispositionFilename != null;
-        if (isAttachmentDisposition) {
-            return false;
-        }
-
-        return part.isMimeType("text/html") || part.isMimeType("text/plain") || part.isMimeType("application/pgp");
+        return !isAttachmentDisposition &&
+                (part.isMimeType("text/html") || part.isMimeType("text/plain") || part.isMimeType("application/pgp"));
 
     }
 

@@ -119,26 +119,26 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.account_setup_incoming);
 
-        mUsernameView = (EditText)findViewById(R.id.account_username);
-        mPasswordView = (EditText)findViewById(R.id.account_password);
-        mClientCertificateSpinner = (ClientCertificateSpinner)findViewById(R.id.account_client_certificate_spinner);
-        mClientCertificateLabelView = (TextView)findViewById(R.id.account_client_certificate_label);
-        mPasswordLabelView = (TextView)findViewById(R.id.account_password_label);
-        TextView serverLabelView = (TextView) findViewById(R.id.account_server_label);
-        mServerView = (EditText)findViewById(R.id.account_server);
-        mPortView = (EditText)findViewById(R.id.account_port);
-        mSecurityTypeView = (Spinner)findViewById(R.id.account_security_type);
-        mAuthTypeView = (Spinner)findViewById(R.id.account_auth_type);
-        mImapAutoDetectNamespaceView = (CheckBox)findViewById(R.id.imap_autodetect_namespace);
-        mImapPathPrefixView = (EditText)findViewById(R.id.imap_path_prefix);
-        mWebdavPathPrefixView = (EditText)findViewById(R.id.webdav_path_prefix);
-        mWebdavAuthPathView = (EditText)findViewById(R.id.webdav_auth_path);
-        mWebdavMailboxPathView = (EditText)findViewById(R.id.webdav_mailbox_path);
-        mNextButton = (Button)findViewById(R.id.next);
-        mCompressionMobile = (CheckBox)findViewById(R.id.compression_mobile);
-        mCompressionWifi = (CheckBox)findViewById(R.id.compression_wifi);
-        mCompressionOther = (CheckBox)findViewById(R.id.compression_other);
-        mSubscribedFoldersOnly = (CheckBox)findViewById(R.id.subscribed_folders_only);
+        mUsernameView = findViewById(R.id.account_username);
+        mPasswordView = findViewById(R.id.account_password);
+        mClientCertificateSpinner = findViewById(R.id.account_client_certificate_spinner);
+        mClientCertificateLabelView = findViewById(R.id.account_client_certificate_label);
+        mPasswordLabelView = findViewById(R.id.account_password_label);
+        TextView serverLabelView = findViewById(R.id.account_server_label);
+        mServerView = findViewById(R.id.account_server);
+        mPortView = findViewById(R.id.account_port);
+        mSecurityTypeView = findViewById(R.id.account_security_type);
+        mAuthTypeView = findViewById(R.id.account_auth_type);
+        mImapAutoDetectNamespaceView = findViewById(R.id.imap_autodetect_namespace);
+        mImapPathPrefixView = findViewById(R.id.imap_path_prefix);
+        mWebdavPathPrefixView = findViewById(R.id.webdav_path_prefix);
+        mWebdavAuthPathView = findViewById(R.id.webdav_auth_path);
+        mWebdavMailboxPathView = findViewById(R.id.webdav_mailbox_path);
+        mNextButton = findViewById(R.id.next);
+        mCompressionMobile = findViewById(R.id.compression_mobile);
+        mCompressionWifi = findViewById(R.id.compression_wifi);
+        mCompressionOther = findViewById(R.id.compression_other);
+        mSubscribedFoldersOnly = findViewById(R.id.subscribed_folders_only);
 
         mNextButton.setOnClickListener(this);
 
@@ -573,13 +573,13 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
             Map<String, String> extra = null;
             if (mStoreType.equals(Protocols.IMAP)) {
-                extra = new HashMap<String, String>();
+                extra = new HashMap<>();
                 extra.put(ImapStoreSettings.AUTODETECT_NAMESPACE_KEY,
                         Boolean.toString(mImapAutoDetectNamespaceView.isChecked()));
                 extra.put(ImapStoreSettings.PATH_PREFIX_KEY,
                         mImapPathPrefixView.getText().toString());
             } else if (mStoreType.equals(Protocols.WEBDAV)) {
-                extra = new HashMap<String, String>();
+                extra = new HashMap<>();
                 extra.put(WebDavStoreSettings.PATH_KEY,
                         mWebdavPathPrefixView.getText().toString());
                 extra.put(WebDavStoreSettings.AUTH_PATH_KEY,

@@ -79,7 +79,7 @@ class ImapResponseParser {
     List<ImapResponse> readStatusResponse(String tag, String commandToLog, String logId,
             UntaggedHandler untaggedHandler) throws IOException, NegativeImapResponseException {
 
-        List<ImapResponse> responses = new ArrayList<ImapResponse>();
+        List<ImapResponse> responses = new ArrayList<>();
 
         ImapResponse response;
         do {
@@ -473,11 +473,8 @@ class ImapResponseParser {
     }
 
     public static boolean equalsIgnoreCase(Object token, String symbol) {
-        if (token == null || !(token instanceof String)) {
-            return false;
-        }
+        return token instanceof String && symbol.equalsIgnoreCase((String) token);
 
-        return symbol.equalsIgnoreCase((String) token);
     }
 
     private void checkTokenIsString(Object token) throws IOException {

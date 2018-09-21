@@ -91,7 +91,7 @@ public class SwipeGestureDetector extends SimpleOnGestureListener {
      */
     public interface OnSwipeGestureListener {
         /**
-         * Called when a swipe from right to left is handled by {@link MyGestureDetector}.
+         * Called when a swipe from right to left is handled by {@link SwipeGestureDetector}.
          *
          * <p>See {@link OnGestureListener#onFling(MotionEvent, MotionEvent, float, float)}
          * for more information on the {@link MotionEvent}s being passed.</p>
@@ -104,7 +104,7 @@ public class SwipeGestureDetector extends SimpleOnGestureListener {
         void onSwipeRightToLeft(final MotionEvent e1, final MotionEvent e2);
 
         /**
-         * Called when a swipe from left to right is handled by {@link MyGestureDetector}.
+         * Called when a swipe from left to right is handled by {@link SwipeGestureDetector}.
          *
          * <p>See {@link OnGestureListener#onFling(MotionEvent, MotionEvent, float, float)}
          * for more information on the {@link MotionEvent}s being passed.</p>

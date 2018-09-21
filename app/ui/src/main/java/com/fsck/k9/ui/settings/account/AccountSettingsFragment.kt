@@ -52,6 +52,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
         initializeIncomingServer()
         initializeComposition()
         initializeManageIdentities()
+        initializeUploadSentMessages(account)
         initializeOutgoingServer()
         initializeQuoteStyle()
         initializeDeletePolicy(account)
@@ -83,6 +84,14 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
     private fun initializeManageIdentities() {
         findPreference(PREFERENCE_MANAGE_IDENTITIES)?.onClick {
             ManageIdentities.start(requireActivity(), accountUuid)
+        }
+    }
+
+    private fun initializeUploadSentMessages(account: Account) {
+        findPreference(PREFERENCE_UPLOAD_SENT_MESSAGES)?.apply {
+            if (!messagingController.supportsUpload(account)) {
+                remove()
+            }
         }
     }
 
@@ -261,6 +270,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
         private const val PREFERENCE_COMPOSITION = "composition"
         private const val PREFERENCE_MANAGE_IDENTITIES = "manage_identities"
         private const val PREFERENCE_OUTGOING_SERVER = "outgoing"
+        private const val PREFERENCE_UPLOAD_SENT_MESSAGES = "upload_sent_messages"
         private const val PREFERENCE_QUOTE_STYLE = "quote_style"
         private const val PREFERENCE_DELETE_POLICY = "delete_policy"
         private const val PREFERENCE_EXPUNGE_POLICY = "expunge_policy"

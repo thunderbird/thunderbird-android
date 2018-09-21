@@ -36,6 +36,7 @@ import org.apache.james.mime4j.parser.MimeStreamParser;
 import org.apache.james.mime4j.stream.BodyDescriptor;
 import org.apache.james.mime4j.stream.Field;
 import org.apache.james.mime4j.stream.MimeConfig;
+import timber.log.Timber;
 
 
 /**
@@ -126,12 +127,16 @@ public class MimeMessage extends Message {
     @Override
     public Date getSentDate() {
         if (mSentDate == null) {
+            String dateHeaderBody = getFirstHeader("Date");
+            if (dateHeaderBody == null) {
+                return null;
+            }
+
             try {
-                DateTimeField field = (DateTimeField)DefaultFieldParser.parse("Date: "
-                                      + MimeUtility.unfoldAndDecode(getFirstHeader("Date")));
+                DateTimeField field = (DateTimeField) DefaultFieldParser.parse("Date: " + dateHeaderBody);
                 mSentDate = field.getDate();
             } catch (Exception e) {
-
+                Timber.d(e, "Couldn't parse Date header field");
             }
         }
         return mSentDate;
@@ -171,12 +176,12 @@ public class MimeMessage extends Message {
     @Override
     public String getContentType() {
         String contentType = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
-        return (contentType == null) ? "text/plain" : MimeUtility.unfoldAndDecode(contentType);
+        return (contentType == null) ? "text/plain" : contentType;
     }
 
     @Override
     public String getDisposition() {
-        return MimeUtility.unfoldAndDecode(getFirstHeader(MimeHeader.HEADER_CONTENT_DISPOSITION));
+        return getFirstHeader(MimeHeader.HEADER_CONTENT_DISPOSITION);
     }
 
     @Override
@@ -654,42 +659,6 @@ public class MimeMessage extends Message {
             String raw = parsedField.getRaw().toString();
             ((Part) stack.peek()).addRawHeader(name, raw);
         }
-    }
-
-    /**
-     * Copy the contents of this object into another {@code MimeMessage} object.
-     *
-     * @param destination The {@code MimeMessage} object to receive the contents of this instance.
-     */
-    protected void copy(MimeMessage destination) {
-        super.copy(destination);
-
-        destination.mHeader = mHeader.clone();
-
-        destination.mBody = mBody;
-        destination.mMessageId = mMessageId;
-        destination.mSentDate = mSentDate;
-        destination.mDateFormat = mDateFormat;
-        destination.mSize = mSize;
-
-        // These arrays are not supposed to be modified, so it's okay to reuse the references
-        destination.mFrom = mFrom;
-        destination.mTo = mTo;
-        destination.mCc = mCc;
-        destination.mBcc = mBcc;
-        destination.mReplyTo = mReplyTo;
-        destination.mReferences = mReferences;
-        destination.mInReplyTo = mInReplyTo;
-        destination.xOriginalTo = xOriginalTo;
-        destination.deliveredTo = deliveredTo;
-        destination.xEnvelopeTo = xEnvelopeTo;
-    }
-
-    @Override
-    public MimeMessage clone() {
-        MimeMessage message = new MimeMessage();
-        copy(message);
-        return message;
     }
 
     @Override

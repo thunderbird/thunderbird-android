@@ -12,7 +12,7 @@ import com.fsck.k9.mail.Part;
 import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;
 
 
-class TextPartFinder {
+public class TextPartFinder {
     @Nullable
     public Part findFirstTextPart(@NonNull Part part) {
         String mimeType = part.getMimeType();

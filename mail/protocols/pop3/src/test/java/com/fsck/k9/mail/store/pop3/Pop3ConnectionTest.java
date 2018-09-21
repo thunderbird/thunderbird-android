@@ -233,7 +233,7 @@ public class Pop3ConnectionTest {
 
     @Test
     public void open_withStartTLS_withSTLSerr_doesntCreateSocket() throws Exception {
-        MockPop3Server server = setupFailedStartTLSConnection();;
+        MockPop3Server server = setupFailedStartTLSConnection();
 
         when(mockTrustedSocketFactory.createSocket(
                 any(Socket.class), eq(server.getHost()), eq(server.getPort()), eq((String) null)))

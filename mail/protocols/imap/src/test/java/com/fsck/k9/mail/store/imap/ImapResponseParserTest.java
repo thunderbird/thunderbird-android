@@ -542,7 +542,7 @@ public class ImapResponseParserTest {
     } 
     
     static class TestUntaggedHandler implements UntaggedHandler {
-        public final List<ImapResponse> responses = new ArrayList<ImapResponse>();
+        public final List<ImapResponse> responses = new ArrayList<>();
 
         @Override
         public void handleAsyncUntaggedResponse(ImapResponse response) {

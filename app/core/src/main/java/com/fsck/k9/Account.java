@@ -215,6 +215,7 @@ public class Account implements BaseAccount, StoreConfig {
     private boolean allowRemoteSearch;
     private boolean remoteSearchFullText;
     private int remoteSearchNumResults;
+    private boolean uploadSentMessages;
 
 
     /**
@@ -301,6 +302,7 @@ public class Account implements BaseAccount, StoreConfig {
         allowRemoteSearch = false;
         remoteSearchFullText = false;
         remoteSearchNumResults = DEFAULT_REMOTE_SEARCH_NUM_RESULTS;
+        uploadSentMessages = true;
         isEnabled = true;
         markMessageAsReadOnView = true;
         alwaysShowCcBcc = false;
@@ -436,6 +438,7 @@ public class Account implements BaseAccount, StoreConfig {
         allowRemoteSearch = storage.getBoolean(accountUuid + ".allowRemoteSearch", false);
         remoteSearchFullText = storage.getBoolean(accountUuid + ".remoteSearchFullText", false);
         remoteSearchNumResults = storage.getInt(accountUuid + ".remoteSearchNumResults", DEFAULT_REMOTE_SEARCH_NUM_RESULTS);
+        uploadSentMessages = storage.getBoolean(accountUuid + ".uploadSentMessages", true);
 
         isEnabled = storage.getBoolean(accountUuid + ".enabled", true);
         markMessageAsReadOnView = storage.getBoolean(accountUuid + ".markMessageAsReadOnView", true);
@@ -531,6 +534,7 @@ public class Account implements BaseAccount, StoreConfig {
         editor.remove(accountUuid + ".allowRemoteSearch");
         editor.remove(accountUuid + ".remoteSearchFullText");
         editor.remove(accountUuid + ".remoteSearchNumResults");
+        editor.remove(accountUuid + ".uploadSentMessages");
         editor.remove(accountUuid + ".defaultQuotedTextShown");
         editor.remove(accountUuid + ".displayCount");
         editor.remove(accountUuid + ".inboxFolderName");
@@ -1047,10 +1051,7 @@ public class Account implements BaseAccount, StoreConfig {
         if (syncMode == FolderMode.NONE && oldSyncMode != FolderMode.NONE) {
             return true;
         }
-        if (syncMode != FolderMode.NONE && oldSyncMode == FolderMode.NONE) {
-            return true;
-        }
-        return false;
+        return syncMode != FolderMode.NONE && oldSyncMode == FolderMode.NONE;
     }
 
     public synchronized FolderMode getFolderPushMode() {
@@ -1537,6 +1538,14 @@ public class Account implements BaseAccount, StoreConfig {
 
     public void setRemoteSearchNumResults(int val) {
         remoteSearchNumResults = (val >= 0 ? val : 0);
+    }
+
+    public boolean isUploadSentMessages() {
+        return uploadSentMessages;
+    }
+
+    public void setUploadSentMessages(boolean uploadSentMessages) {
+        this.uploadSentMessages = uploadSentMessages;
     }
 
     public String getInboxFolder() {

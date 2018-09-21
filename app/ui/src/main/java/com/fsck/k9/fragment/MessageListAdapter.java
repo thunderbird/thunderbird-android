@@ -76,28 +76,27 @@ public class MessageListAdapter extends CursorAdapter {
         View view = fragment.getK9LayoutInflater().inflate(R.layout.message_list_item, parent, false);
 
         MessageViewHolder holder = new MessageViewHolder(fragment);
-        holder.date = (TextView) view.findViewById(R.id.date);
+        holder.date = view.findViewById(R.id.date);
         holder.chip = view.findViewById(R.id.chip);
 
 
         if (fragment.previewLines == 0 && fragment.contactsPictureLoader == null) {
             view.findViewById(R.id.preview).setVisibility(View.GONE);
-            holder.preview = (TextView) view.findViewById(R.id.sender_compact);
-            holder.flagged = (CheckBox) view.findViewById(R.id.flagged_center_right);
+            holder.preview = view.findViewById(R.id.sender_compact);
+            holder.flagged = view.findViewById(R.id.flagged_center_right);
             view.findViewById(R.id.flagged_bottom_right).setVisibility(View.GONE);
 
 
 
         } else {
             view.findViewById(R.id.sender_compact).setVisibility(View.GONE);
-            holder.preview = (TextView) view.findViewById(R.id.preview);
-            holder.flagged = (CheckBox) view.findViewById(R.id.flagged_bottom_right);
+            holder.preview = view.findViewById(R.id.preview);
+            holder.flagged = view.findViewById(R.id.flagged_bottom_right);
             view.findViewById(R.id.flagged_center_right).setVisibility(View.GONE);
 
         }
 
-        ContactBadge contactBadge =
-                (ContactBadge) view.findViewById(R.id.contact_badge);
+        ContactBadge contactBadge = view.findViewById(R.id.contact_badge);
         if (fragment.contactsPictureLoader != null) {
             holder.contactBadge = contactBadge;
         } else {
@@ -105,11 +104,11 @@ public class MessageListAdapter extends CursorAdapter {
         }
 
         if (fragment.senderAboveSubject) {
-            holder.from = (TextView) view.findViewById(R.id.subject);
+            holder.from = view.findViewById(R.id.subject);
             fontSizes.setViewTextSize(holder.from, fontSizes.getMessageListSender());
 
         } else {
-            holder.subject = (TextView) view.findViewById(R.id.subject);
+            holder.subject = view.findViewById(R.id.subject);
             fontSizes.setViewTextSize(holder.subject, fontSizes.getMessageListSubject());
 
         }
@@ -120,7 +119,7 @@ public class MessageListAdapter extends CursorAdapter {
         // 1 preview line is needed even if it is set to 0, because subject is part of the same text view
         holder.preview.setLines(Math.max(fragment.previewLines,1));
         fontSizes.setViewTextSize(holder.preview, fontSizes.getMessageListPreview());
-        holder.threadCount = (TextView) view.findViewById(R.id.thread_count);
+        holder.threadCount = view.findViewById(R.id.thread_count);
         fontSizes.setViewTextSize(holder.threadCount, fontSizes.getMessageListSubject()); // thread count is next to subject
         view.findViewById(R.id.selected_checkbox_wrapper).setVisibility((fragment.checkboxes) ? View.VISIBLE : View.GONE);
 
@@ -128,7 +127,7 @@ public class MessageListAdapter extends CursorAdapter {
         holder.flagged.setOnClickListener(holder);
 
 
-        holder.selected = (CheckBox) view.findViewById(R.id.selected_checkbox);
+        holder.selected = view.findViewById(R.id.selected_checkbox);
         holder.selected.setOnClickListener(holder);
 
 

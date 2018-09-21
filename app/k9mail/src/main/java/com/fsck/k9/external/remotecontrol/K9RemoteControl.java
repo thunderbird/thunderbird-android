@@ -3,6 +3,7 @@ package com.fsck.k9.external.remotecontrol;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 
 import com.fsck.k9.BuildConfig;
@@ -29,7 +30,7 @@ public class K9RemoteControl {
      */
     public static String K9_REMOTE_CONTROL_PERMISSION = BuildConfig.APPLICATION_ID + ".permission.REMOTE_CONTROL";
     /**
-     * {@link Intent} Action to be sent to K-9 using {@link ContextWrapper.sendOrderedBroadcast} in order to fetch the list of configured Accounts.
+     * {@link Intent} Action to be sent to K-9 using {@link ContextWrapper#sendBroadcast(Intent)} in order to fetch the list of configured Accounts.
      * The responseData will contain two String[] with keys K9_ACCOUNT_UUIDS and K9_ACCOUNT_DESCRIPTIONS
      */
     public static String K9_REQUEST_ACCOUNTS = BuildConfig.APPLICATION_ID + ".K9RemoteControl.requestAccounts";

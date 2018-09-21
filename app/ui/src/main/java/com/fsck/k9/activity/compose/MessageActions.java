@@ -7,22 +7,29 @@ import android.os.Parcelable;
 import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.MessageCompose;
+import com.fsck.k9.activity.setup.AccountSetupBasics;
 import com.fsck.k9.controller.MessageReference;
 
 public class MessageActions {
     /**
      * Compose a new message using the given account. If account is null the default account
-     * will be used.
+     * will be used. If there is no default account set, user will be sent to AccountSetupBasics
+     * activity.
      */
     public static void actionCompose(Context context, Account account) {
-        String accountUuid = (account == null) ?
-                Preferences.getPreferences(context).getDefaultAccount().getUuid() :
-                account.getUuid();
+        Account defaultAccount = Preferences.getPreferences(context).getDefaultAccount();
+        if (account == null && defaultAccount == null) {
+            AccountSetupBasics.actionNewAccount(context);
+        } else {
+            String accountUuid = (account == null) ?
+                    defaultAccount.getUuid() :
+                    account.getUuid();
 
-        Intent i = new Intent(context, MessageCompose.class);
-        i.putExtra(MessageCompose.EXTRA_ACCOUNT, accountUuid);
-        i.setAction(MessageCompose.ACTION_COMPOSE);
-        context.startActivity(i);
+            Intent i = new Intent(context, MessageCompose.class);
+            i.putExtra(MessageCompose.EXTRA_ACCOUNT, accountUuid);
+            i.setAction(MessageCompose.ACTION_COMPOSE);
+            context.startActivity(i);
+        }
     }
 
     /**

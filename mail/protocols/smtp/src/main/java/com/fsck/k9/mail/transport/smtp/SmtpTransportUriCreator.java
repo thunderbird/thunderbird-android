@@ -19,8 +19,6 @@ public class SmtpTransportUriCreator {
      *         The {@link ServerSettings} object that holds the server settings.
      *
      * @return A SmtpTransport URI that holds the same information as the {@code server} parameter.
-     *
-     * @see com.fsck.k9.mail.store.StoreConfig#getTransportUri()
      */
     public static String createSmtpUri(ServerSettings server) {
         String userEnc = (server.username != null) ?

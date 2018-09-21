@@ -45,6 +45,7 @@ dependencies {
     implementation "org.jetbrains.anko:anko-coroutines:0.10.4"
 
     testImplementation project(':mail:testing')
+    testImplementation project(':app:storage')
     testImplementation "org.robolectric:robolectric:${versions.robolectric}"
     testImplementation "junit:junit:${versions.junit}"
     testImplementation "com.google.truth:truth:${versions.truth}"

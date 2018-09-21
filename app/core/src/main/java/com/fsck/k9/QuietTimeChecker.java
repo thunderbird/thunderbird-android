@@ -36,15 +36,9 @@ class QuietTimeChecker {
         int minutesSinceMidnight = (calendar.get(Calendar.HOUR_OF_DAY) * 60) + calendar.get(Calendar.MINUTE);
 
         if (quietTimeStart > quietTimeEnd) {
-            if (minutesSinceMidnight >= quietTimeStart || minutesSinceMidnight <= quietTimeEnd) {
-                return true;
-            }
+            return minutesSinceMidnight >= quietTimeStart || minutesSinceMidnight <= quietTimeEnd;
         } else {
-            if (minutesSinceMidnight >= quietTimeStart && minutesSinceMidnight <= quietTimeEnd) {
-                return true;
-            }
+            return minutesSinceMidnight >= quietTimeStart && minutesSinceMidnight <= quietTimeEnd;
         }
-
-        return false;
     }
 }

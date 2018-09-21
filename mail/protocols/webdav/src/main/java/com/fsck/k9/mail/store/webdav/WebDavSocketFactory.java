@@ -1,11 +1,5 @@
 package com.fsck.k9.mail.store.webdav;
 
-import com.fsck.k9.mail.ssl.DefaultTrustedSocketFactory;
-import org.apache.http.conn.ConnectTimeoutException;
-import org.apache.http.conn.scheme.LayeredSocketFactory;
-import org.apache.http.params.HttpParams;
-
-import com.fsck.k9.mail.ssl.TrustManagerFactory;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -13,10 +7,14 @@ import java.net.Socket;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 
+import com.fsck.k9.mail.ssl.DefaultTrustedSocketFactory;
+import com.fsck.k9.mail.ssl.TrustManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
+import org.apache.http.conn.scheme.LayeredSocketFactory;
+import org.apache.http.params.HttpParams;
 
 
 /*

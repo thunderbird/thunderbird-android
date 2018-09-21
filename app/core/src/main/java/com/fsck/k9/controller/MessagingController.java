@@ -37,6 +37,7 @@ import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.Account.Expunge;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.CoreResourceProvider;
+import com.fsck.k9.controller.ControllerExtension.ControllerInternals;
 import com.fsck.k9.core.BuildConfig;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
@@ -83,6 +84,7 @@ import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
 import com.fsck.k9.search.SearchSpecification;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import timber.log.Timber;
 
 import static com.fsck.k9.K9.MAX_SEND_ATTEMPTS;
@@ -109,13 +111,10 @@ public class MessagingController {
     public static final Set<Flag> SYNC_FLAGS = EnumSet.of(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED);
 
 
-    private static MessagingController inst = null;
-
-
     private final Context context;
     private final Contacts contacts;
     private final NotificationController notificationController;
-    private final BackendManager backendManager = DI.get(BackendManager.class);
+    private final BackendManager backendManager;
 
     private final Thread controllerThread;
 
@@ -133,28 +132,20 @@ public class MessagingController {
     private volatile boolean stopped = false;
 
 
-    public static synchronized MessagingController getInstance(Context context) {
-        if (inst == null) {
-            Context appContext = context.getApplicationContext();
-            NotificationController notificationController = DI.get(NotificationController.class);
-            Contacts contacts = Contacts.getInstance(context);
-            AccountStatsCollector accountStatsCollector = new DefaultAccountStatsCollector(context);
-            CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
-            inst = new MessagingController(appContext, notificationController, contacts,
-                    accountStatsCollector, resourceProvider);
-        }
-        return inst;
+    public static MessagingController getInstance(Context context) {
+        return DI.get(MessagingController.class);
     }
 
 
-    @VisibleForTesting
     MessagingController(Context context, NotificationController notificationController, Contacts contacts,
-            AccountStatsCollector accountStatsCollector, CoreResourceProvider resourceProvider) {
+            AccountStatsCollector accountStatsCollector, CoreResourceProvider resourceProvider,
+            BackendManager backendManager, List<ControllerExtension> controllerExtensions) {
         this.context = context;
         this.notificationController = notificationController;
         this.contacts = contacts;
         this.accountStatsCollector = accountStatsCollector;
         this.resourceProvider = resourceProvider;
+        this.backendManager = backendManager;
 
         controllerThread = new Thread(new Runnable() {
             @Override
@@ -165,6 +156,32 @@ public class MessagingController {
         controllerThread.setName("MessagingController");
         controllerThread.start();
         addListener(memorizingMessagingListener);
+
+        initializeControllerExtensions(controllerExtensions);
+    }
+
+    private void initializeControllerExtensions(List<ControllerExtension> controllerExtensions) {
+        if (controllerExtensions.isEmpty()) {
+            return;
+        }
+
+        ControllerInternals internals = new ControllerInternals() {
+            @Override
+            public void put(@NotNull String description, @Nullable MessagingListener listener,
+                    @NotNull Runnable runnable) {
+                MessagingController.this.put(description, listener, runnable);
+            }
+
+            @Override
+            public void putBackground(@NotNull String description, @Nullable MessagingListener listener,
+                    @NotNull Runnable runnable) {
+                MessagingController.this.putBackground(description, listener, runnable);
+            }
+        };
+
+        for (ControllerExtension extension : controllerExtensions) {
+            extension.init(this, backendManager, internals);
+        }
     }
 
     @VisibleForTesting
@@ -1663,8 +1680,8 @@ public class MessagingController {
 
     private void moveOrDeleteSentMessage(Account account, LocalStore localStore,
             LocalFolder localFolder, LocalMessage message) throws MessagingException {
-        if (!account.hasSentFolder()) {
-            Timber.i("Account does not have a sent mail folder; deleting sent message");
+        if (!account.hasSentFolder() || !account.isUploadSentMessages()) {
+            Timber.i("Not uploading sent message; deleting local message");
             message.setFlag(Flag.DELETED, true);
         } else {
             LocalFolder localSentFolder = localStore.getFolder(account.getSentFolder());
@@ -1804,6 +1821,10 @@ public class MessagingController {
 
     public boolean supportsSearchByDate(Account account) {
         return getBackend(account).getSupportsSearchByDate();
+    }
+
+    public boolean supportsUpload(Account account) {
+        return getBackend(account).getSupportsUpload();
     }
 
     public void checkIncomingServerSettings(Account account) throws MessagingException {
@@ -2128,8 +2149,9 @@ public class MessagingController {
             //We need to make these callbacks before moving the messages to the trash
             //as messages get a new UID after being moved
             for (Message message : messages) {
+                String messageServerId = message.getUid();
                 for (MessagingListener l : getListeners(listener)) {
-                    l.messageDeleted(account, folder, message);
+                    l.messageDeleted(account, folder, messageServerId);
                 }
             }
 
@@ -2250,7 +2272,7 @@ public class MessagingController {
                 LocalFolder localFolder = null;
                 try {
                     LocalStore localStore = account.getLocalStore();
-                    localFolder = (LocalFolder) localStore.getFolder(account.getTrashFolder());
+                    localFolder = localStore.getFolder(account.getTrashFolder());
                     localFolder.open(Folder.OPEN_MODE_RW);
 
                     boolean isTrashLocalOnly = isTrashLocalOnly(account);
@@ -2715,11 +2737,7 @@ public class MessagingController {
             return false;
         }
 
-        if (account.isNotifyContactsMailOnly() && !contacts.isAnyInContacts(message.getFrom())) {
-            return false;
-        }
-
-        return true;
+        return !account.isNotifyContactsMailOnly() || contacts.isAnyInContacts(message.getFrom());
     }
 
     public void deleteAccount(Account account) {
@@ -3112,10 +3130,8 @@ public class MessagingController {
 
         @Override
         public void syncRemovedMessage(@NotNull String folderServerId, @NotNull String messageServerId) {
-            // FIXME: This is kind of expensive. Get rid of the need to call synchronizeMailboxRemovedMessage()
-            LocalMessage message = loadMessage(folderServerId, messageServerId);
             for (MessagingListener messagingListener : getListeners(listener)) {
-                messagingListener.synchronizeMailboxRemovedMessage(account, folderServerId, message);
+                messagingListener.synchronizeMailboxRemovedMessage(account, folderServerId, messageServerId);
             }
         }
 

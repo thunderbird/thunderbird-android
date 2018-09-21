@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:focusable="true">
 
         <ImageView
             android:id="@+id/foldableIcon"

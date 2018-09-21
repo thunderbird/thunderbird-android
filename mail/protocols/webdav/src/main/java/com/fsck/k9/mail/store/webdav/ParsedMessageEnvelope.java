@@ -12,7 +12,7 @@ import java.util.Map;
 class ParsedMessageEnvelope {
     private static final Map<String, String> HEADER_MAPPINGS;
     static {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put("mime-version", "MIME-Version");
         map.put("content-type", "Content-Type");
         map.put("subject", "Subject");
@@ -29,8 +29,8 @@ class ParsedMessageEnvelope {
 
     private boolean mReadStatus = false;
     private String mUid = "";
-    private Map<String, String> mMessageHeaders = new HashMap<String, String>();
-    private List<String> mHeaders = new ArrayList<String>();
+    private Map<String, String> mMessageHeaders = new HashMap<>();
+    private List<String> mHeaders = new ArrayList<>();
 
     public void addHeader(String field, String value) {
         String headerName = HEADER_MAPPINGS.get(field);

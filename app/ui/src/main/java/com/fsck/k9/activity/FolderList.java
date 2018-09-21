@@ -52,7 +52,6 @@ import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.ui.helper.SizeFormatter;
 import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Message;
 import com.fsck.k9.power.TracingPowerManager;
 import com.fsck.k9.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.mailstore.LocalFolder;
@@ -591,7 +590,7 @@ public class FolderList extends K9ListActivity {
     }
 
     class FolderListAdapter extends BaseAdapter implements Filterable {
-        private List<FolderInfoHolder> mFolders = new ArrayList<FolderInfoHolder>();
+        private List<FolderInfoHolder> mFolders = new ArrayList<>();
         private List<FolderInfoHolder> mFilteredFolders = Collections.unmodifiableList(mFolders);
         private Filter mFilter = new FolderListFilter();
 
@@ -669,8 +668,8 @@ public class FolderList extends K9ListActivity {
             public void listFolders(Account account, List<LocalFolder> folders) {
                 if (account.equals(FolderList.this.account)) {
 
-                    List<FolderInfoHolder> newFolders = new LinkedList<FolderInfoHolder>();
-                    List<FolderInfoHolder> topFolders = new LinkedList<FolderInfoHolder>();
+                    List<FolderInfoHolder> newFolders = new LinkedList<>();
+                    List<FolderInfoHolder> topFolders = new LinkedList<>();
 
                     Account.FolderMode aMode = account.getFolderDisplayMode();
                     for (LocalFolder folder : folders) {
@@ -804,8 +803,8 @@ public class FolderList extends K9ListActivity {
 
 
             @Override
-            public void messageDeleted(Account account, String folderServerId, Message message) {
-                synchronizeMailboxRemovedMessage(account, folderServerId, message);
+            public void messageDeleted(Account account, String folderServerId, String messageServerId) {
+                synchronizeMailboxRemovedMessage(account, folderServerId, messageServerId);
             }
 
             @Override
@@ -898,18 +897,18 @@ public class FolderList extends K9ListActivity {
 
             if (holder == null) {
                 holder = new FolderViewHolder();
-                holder.folderName = (TextView) view.findViewById(R.id.folder_name);
-                holder.newMessageCount = (TextView) view.findViewById(R.id.new_message_count);
-                holder.flaggedMessageCount = (TextView) view.findViewById(R.id.flagged_message_count);
+                holder.folderName = view.findViewById(R.id.folder_name);
+                holder.newMessageCount = view.findViewById(R.id.new_message_count);
+                holder.flaggedMessageCount = view.findViewById(R.id.flagged_message_count);
                 holder.newMessageCountWrapper = view.findViewById(R.id.new_message_count_wrapper);
                 holder.flaggedMessageCountWrapper = view.findViewById(R.id.flagged_message_count_wrapper);
                 holder.newMessageCountIcon = view.findViewById(R.id.new_message_count_icon);
                 holder.flaggedMessageCountIcon = view.findViewById(R.id.flagged_message_count_icon);
 
-                holder.folderStatus = (TextView) view.findViewById(R.id.folder_status);
-                holder.activeIcons = (RelativeLayout) view.findViewById(R.id.active_icons);
+                holder.folderStatus = view.findViewById(R.id.folder_status);
+                holder.activeIcons = view.findViewById(R.id.active_icons);
                 holder.chip = view.findViewById(R.id.chip);
-                holder.folderListItemLayout = (LinearLayout)view.findViewById(R.id.folder_list_item_layout);
+                holder.folderListItemLayout = view.findViewById(R.id.folder_list_item_layout);
                 holder.folderServerId = folder.serverId;
 
                 view.setTag(holder);
@@ -1093,7 +1092,7 @@ public class FolderList extends K9ListActivity {
 
                 Locale locale = Locale.getDefault();
                 if ((searchTerm == null) || (searchTerm.length() == 0)) {
-                    List<FolderInfoHolder> list = new ArrayList<FolderInfoHolder>(mFolders);
+                    List<FolderInfoHolder> list = new ArrayList<>(mFolders);
                     results.values = list;
                     results.count = list.size();
                 } else {
@@ -1101,7 +1100,7 @@ public class FolderList extends K9ListActivity {
                     final String[] words = searchTermString.split(" ");
                     final int wordCount = words.length;
 
-                    final List<FolderInfoHolder> newValues = new ArrayList<FolderInfoHolder>();
+                    final List<FolderInfoHolder> newValues = new ArrayList<>();
 
                     for (final FolderInfoHolder value : mFolders) {
                         if (value.displayName == null) {

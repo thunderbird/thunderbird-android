@@ -68,7 +68,8 @@ public class MessageViewInfoExtractor {
             if (cryptoAnnotations != null && !cryptoAnnotations.isEmpty()) {
                 Timber.e("Got crypto message cryptoContentAnnotations but no crypto root part!");
             }
-            return extractSimpleMessageForView(message, message);
+            MessageViewInfo messageViewInfo = extractSimpleMessageForView(message, message);
+            return messageViewInfo.withSubject(message.getSubject(), false);
         }
 
         boolean isOpenPgpEncrypted = (MessageCryptoStructureDetector.isPartMultipartEncrypted(cryptoContentPart) &&

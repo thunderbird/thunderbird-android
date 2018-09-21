@@ -27,7 +27,7 @@ public class Pop3Store extends RemoteStore {
     private final AuthType authType;
     private final ConnectionSecurity connectionSecurity;
 
-    private Map<String, Pop3Folder> mFolders = new HashMap<String, Pop3Folder>();
+    private Map<String, Pop3Folder> mFolders = new HashMap<>();
 
     public Pop3Store(ServerSettings serverSettings, StoreConfig storeConfig, TrustedSocketFactory socketFactory) {
         super(storeConfig, socketFactory);

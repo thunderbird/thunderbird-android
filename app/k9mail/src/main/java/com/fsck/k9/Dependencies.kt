@@ -1,10 +1,14 @@
 package com.fsck.k9
 
 import com.fsck.k9.backends.backendsModule
+import com.fsck.k9.controller.ControllerExtension
+import com.fsck.k9.crypto.EncryptionExtractor
+import com.fsck.k9.crypto.openpgp.OpenPgpEncryptionExtractor
 import com.fsck.k9.external.BroadcastSenderListener
 import com.fsck.k9.external.externalModule
 import com.fsck.k9.notification.notificationModule
 import com.fsck.k9.resources.resourcesModule
+import com.fsck.k9.storage.storageModule
 import com.fsck.k9.widget.list.MessageListWidgetUpdateListener
 import com.fsck.k9.widget.list.messageListWidgetModule
 import com.fsck.k9.widget.unread.UnreadWidgetUpdateListener
@@ -20,6 +24,8 @@ private val mainAppModule = applicationContext {
                     get<BroadcastSenderListener>()
             ))
     }
+    bean("controllerExtensions") { emptyList<ControllerExtension>() }
+    bean { OpenPgpEncryptionExtractor.newInstance() as EncryptionExtractor }
 }
 
 val appModules = listOf(
@@ -29,5 +35,6 @@ val appModules = listOf(
         unreadWidgetModule,
         notificationModule,
         resourcesModule,
-        backendsModule
+        backendsModule,
+        storageModule
 )

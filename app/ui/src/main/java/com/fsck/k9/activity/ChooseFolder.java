@@ -107,7 +107,7 @@ public class ChooseFolder extends K9ListActivity {
             @Override
             public Filter getFilter() {
                 if (myFilter == null) {
-                    myFilter = new FolderListFilter<FolderDisplayData>(this);
+                    myFilter = new FolderListFilter<>(this);
                 }
                 return myFilter;
             }
