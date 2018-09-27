@@ -1,6 +1,11 @@
 package com.fsck.k9.activity;
 
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.arch.lifecycle.Observer;
@@ -10,15 +15,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -268,6 +276,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         if (cl.isFirstRun()) {
             cl.getLogDialog().show();
         }
+
+        checkPerms();
     }
 
     @Override
@@ -504,6 +514,23 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         }
 
         return true;
+    }
+
+
+    private void checkPerms() {
+        Timber.i("response " + ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_CONTACTS));
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED) {
+            Timber.i("req");
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_CONTACTS},
+                    K9Activity.PERMISSIONS_REQUEST_READ_CONTACTS);
+        } else  {
+            Timber.i("already granted");
+        }
     }
 
     @Override

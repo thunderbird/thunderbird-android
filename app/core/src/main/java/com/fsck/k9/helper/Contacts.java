@@ -1,14 +1,18 @@
 package com.fsck.k9.helper;
 
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.AbstractCursor;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import timber.log.Timber;
 import android.provider.ContactsContract.CommonDataKinds.Photo;
+import android.support.v4.content.ContextCompat;
 
 import com.fsck.k9.mail.Address;
 
@@ -263,6 +267,14 @@ public class Contacts {
         }
     }
 
+    private Boolean hasPerm() {
+        return
+                ((ContextCompat.checkSelfPermission(mContext,
+                        Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED)
+                        && ((ContextCompat.checkSelfPermission(mContext,
+                        Manifest.permission.WRITE_CONTACTS) == PackageManager.PERMISSION_GRANTED)));
+    }
+
     /**
      * Return a {@link Cursor} instance that can be used to fetch information
      * about the contact with the given email address.
@@ -273,12 +285,64 @@ public class Contacts {
      */
     private Cursor getContactByAddress(final String address) {
         final Uri uri = Uri.withAppendedPath(ContactsContract.CommonDataKinds.Email.CONTENT_LOOKUP_URI, Uri.encode(address));
-        return mContentResolver.query(
-                uri,
-                PROJECTION,
-                null,
-                null,
-                SORT_ORDER);
+
+        if (!hasPerm()) {
+            // return blank cursor
+            return new AbstractCursor() {
+                @Override
+                public int getCount() {
+                    return 0;
+                }
+
+                @Override
+                public String[] getColumnNames() {
+                    return new String[0];
+                }
+
+                @Override
+                public String getString(int column) {
+                    return null;
+                }
+
+                @Override
+                public short getShort(int column) {
+                    return 0;
+                }
+
+                @Override
+                public int getInt(int column) {
+                    return 0;
+                }
+
+                @Override
+                public long getLong(int column) {
+                    return 0;
+                }
+
+                @Override
+                public float getFloat(int column) {
+                    return 0;
+                }
+
+                @Override
+                public double getDouble(int column) {
+                    return 0;
+                }
+
+                @Override
+                public boolean isNull(int column) {
+                    return false;
+                }
+            };
+        } else {
+            return mContentResolver.query(
+                    uri,
+                    PROJECTION,
+                    null,
+                    null,
+                    SORT_ORDER);
+        }
+
     }
 
     /**
