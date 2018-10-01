@@ -75,27 +75,27 @@ public class ReplyToParserTest extends RobolectricTest {
     }
 
     @Test
-    public void getRecipientsToReplyTo_should_prefer_listPost_over_from_field() throws Exception {
+    public void getRecipientsToReplyTo_should_prefer_from_over_listPost_field() throws Exception {
         when(message.getReplyTo()).thenReturn(EMPTY_ADDRESSES);
         when(message.getHeader(ListHeaders.LIST_POST_HEADER)).thenReturn(LIST_POST_HEADER_VALUES);
         when(message.getFrom()).thenReturn(FROM_ADDRESSES);
 
         ReplyToAddresses result = replyToParser.getRecipientsToReplyTo(message, account);
 
-        assertArrayEquals(LIST_POST_ADDRESSES, result.to);
+        assertArrayEquals(FROM_ADDRESSES, result.to);
         assertArrayEquals(EMPTY_ADDRESSES, result.cc);
         verify(account).isAnIdentity(result.to);
     }
 
     @Test
-    public void getRecipientsToReplyTo_should_return_from_otherwise() throws Exception {
+    public void getRecipientsToReplyTo_should_return_listPost_otherwise() throws Exception {
         when(message.getReplyTo()).thenReturn(EMPTY_ADDRESSES);
-        when(message.getHeader(ListHeaders.LIST_POST_HEADER)).thenReturn(new String[0]);
-        when(message.getFrom()).thenReturn(FROM_ADDRESSES);
+        when(message.getHeader(ListHeaders.LIST_POST_HEADER)).thenReturn(LIST_POST_HEADER_VALUES);
+        when(message.getFrom()).thenReturn(EMPTY_ADDRESSES);
 
         ReplyToAddresses result = replyToParser.getRecipientsToReplyTo(message, account);
 
-        assertArrayEquals(FROM_ADDRESSES, result.to);
+        assertArrayEquals(LIST_POST_ADDRESSES, result.to);
         assertArrayEquals(EMPTY_ADDRESSES, result.cc);
         verify(account).isAnIdentity(result.to);
     }

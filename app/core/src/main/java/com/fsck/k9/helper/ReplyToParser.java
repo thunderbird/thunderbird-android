@@ -26,10 +26,10 @@ public class ReplyToParser {
 
         if (replyToAddresses.length > 0) {
             candidateAddress = replyToAddresses;
-        } else if (listPostAddresses.length > 0) {
-            candidateAddress = listPostAddresses;
-        } else {
+        } else if (fromAddresses.length > 0) {
             candidateAddress = fromAddresses;
+        } else {
+            candidateAddress = listPostAddresses;
         }
 
         boolean replyToAddressIsUserIdentity = account.isAnIdentity(candidateAddress);
