@@ -1,37 +1,23 @@
-package com.fsck.k9.helper;
+package com.fsck.k9.helper
 
-import android.content.ClipData;
-import android.content.Context;
+import android.content.ClipData
+import android.content.Context
 
 
 /**
- * Access the system clipboard using the new {@link ClipboardManager} introduced with API 11
+ * Access the system clipboard
  */
-public class ClipboardManager {
-    public static ClipboardManager getInstance(Context context) {
-        Context appContext = context.getApplicationContext();
-        return new ClipboardManager(appContext);
-    }
-
-
-    private Context context;
-
-    private ClipboardManager(Context context) {
-        this.context = context;
-    }
+class ClipboardManager(private val context: Context) {
 
     /**
      * Copy a text string to the system clipboard
      *
-     * @param label
-     *         User-visible label for the content.
-     * @param text
-     *         The actual text to be copied to the clipboard.
+     * @param label User-visible label for the content.
+     * @param text The actual text to be copied to the clipboard.
      */
-    public void setText(String label, String text) {
-        android.content.ClipboardManager clipboardManager =
-                (android.content.ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText(label, text);
-        clipboardManager.setPrimaryClip(clip);
+    fun setText(label: String, text: String) {
+        val clipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+        val clip = ClipData.newPlainText(label, text)
+        clipboardManager.primaryClip = clip
     }
 }
