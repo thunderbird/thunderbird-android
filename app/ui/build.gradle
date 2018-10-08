@@ -40,6 +40,7 @@ dependencies {
     implementation "net.jcip:jcip-annotations:1.0"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
     implementation "org.apache.james:apache-mime4j-core:${versions.mime4j}"
+    implementation "org.apache.james:apache-mime4j-dom:${versions.mime4j}"
     implementation "org.jetbrains.anko:anko-coroutines:0.10.4"
 
     testImplementation project(':mail:testing')
@@ -60,7 +61,7 @@ android {
     defaultConfig {
         minSdkVersion buildConfig.minSdk
         // For Robolectric tests
-        targetSdkVersion 22
+        targetSdkVersion 23
     }
 
     lintOptions {
