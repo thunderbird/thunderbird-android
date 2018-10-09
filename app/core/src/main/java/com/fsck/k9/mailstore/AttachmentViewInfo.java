@@ -5,6 +5,8 @@ import android.net.Uri;
 
 import com.fsck.k9.mail.Part;
 
+import java.net.URI;
+
 
 public class AttachmentViewInfo {
     public static final long UNKNOWN_SIZE = -1;
@@ -19,6 +21,8 @@ public class AttachmentViewInfo {
      * Note: All content providers must support an alternative MIME type appended as last URI segment.
      */
     public final Uri internalUri;
+    public final Uri outputUri;
+
     public final boolean inlineAttachment;
     public final Part part;
     private boolean contentAvailable;

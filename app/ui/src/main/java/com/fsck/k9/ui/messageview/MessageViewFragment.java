@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -32,6 +33,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.K9ActivityCommon;
+import com.fsck.k9.preferences.SettingsExporter;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.MessageLoaderHelper;
@@ -64,8 +66,13 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
     private static final int ACTIVITY_CHOOSE_DIRECTORY = 3;
 
+    private static final int ACTIVITY_SAVE_ATTACHMENT = 3;
+
     public static final int REQUEST_MASK_LOADER_HELPER = (1 << 8);
     public static final int REQUEST_MASK_CRYPTO_PRESENTER = (1 << 9);
+
+
+
 
     public static final int PROGRESS_THRESHOLD_MILLIS = 500 * 1000;
 
@@ -808,10 +815,21 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         getAttachmentController(attachment).viewAttachment();
     }
 
+
     @Override
     public void onSaveAttachment(AttachmentViewInfo attachment) {
         currentAttachmentViewInfo = attachment;
-        getAttachmentController(attachment).saveAttachment();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType(mimeType);
+            intent.putExtra(Intent.EXTRA_TITLE, fileName);
+
+            startActivityForResult(intent, ACTIVITY_SAVE_ATTACHMENT);
+        } else {
+            getAttachmentController(attachment).saveAttachment();
+        }
     }
 
     @Override

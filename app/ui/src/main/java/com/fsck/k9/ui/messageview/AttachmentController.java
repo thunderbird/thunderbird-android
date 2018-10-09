@@ -145,6 +145,8 @@ public class AttachmentController {
         String filename = FileHelper.sanitizeFilename(attachment.displayName);
         File file = FileHelper.createUniqueFile(directory, filename);
 
+        //TODO: LOL
+
         writeAttachmentToStorage(file);
 
         addSavedAttachmentToDownloadsDatabase(file);
@@ -156,6 +158,22 @@ public class AttachmentController {
         InputStream in = context.getContentResolver().openInputStream(attachment.internalUri);
         try {
             OutputStream out = new FileOutputStream(file);
+            try {
+                IOUtils.copy(in, out);
+                out.flush();
+            } finally {
+                out.close();
+            }
+        } finally {
+            in.close();
+        }
+    }
+
+    private void writeAttachmentToStorage(Uri file_uri) throws IOException {
+        InputStream in = context.getContentResolver().openInputStream(attachment.internalUri);
+        context.getContentResolver().open
+        try {
+            OutputStream out = context.getContentResolver().openOutputStream(file_uri);
             try {
                 IOUtils.copy(in, out);
                 out.flush();
