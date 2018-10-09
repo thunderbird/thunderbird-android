@@ -34,7 +34,6 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.K9ActivityCommon;
-import com.fsck.k9.preferences.SettingsExporter;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.MessageLoaderHelper;
@@ -55,6 +54,7 @@ import com.fsck.k9.ui.messageview.MessageCryptoPresenter.MessageCryptoMvpView;
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity;
 import com.fsck.k9.view.MessageCryptoDisplayStatus;
 import com.fsck.k9.view.MessageHeader;
+
 import timber.log.Timber;
 
 
@@ -67,12 +67,11 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
     private static final int ACTIVITY_CHOOSE_DIRECTORY = 3;
 
-    private static final int ACTIVITY_SAVE_ATTACHMENT = 4;
+    private static final int ACTIVITY_SAVE_ATTACHMENT_SINGLE = 4;
+    private static final int ACTIVITY_SAVE_ATTACHMENT_TREE = 5;
 
     public static final int REQUEST_MASK_LOADER_HELPER = (1 << 8);
     public static final int REQUEST_MASK_CRYPTO_PRESENTER = (1 << 9);
-
-
 
 
     public static final int PROGRESS_THRESHOLD_MILLIS = 500 * 1000;
@@ -170,7 +169,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         Context context = new ContextThemeWrapper(inflater.getContext(),
                 K9ActivityCommon.getK9ThemeResourceId(K9.getK9MessageViewTheme()));
         LayoutInflater layoutInflater = LayoutInflater.from(context);
@@ -480,14 +479,30 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                 break;
             }
 
-            case ACTIVITY_SAVE_ATTACHMENT:
+
+            case ACTIVITY_SAVE_ATTACHMENT_SINGLE: {
                 Uri documentsUri = data.getData();
                 DocumentFile file = DocumentFile.fromSingleUri(getApplicationContext(), documentsUri);
 
-                Timber.i("ACTIVITY_SAVE_ATTACHMENT uri " + documentsUri.getPath());
+                Timber.i("ACTIVITY_SAVE_ATTACHMENT_SINGLE uri " + documentsUri.getPath());
                 getAttachmentController(currentAttachmentViewInfo).saveAttachmentTo(file);
 
                 break;
+            }
+
+            case ACTIVITY_SAVE_ATTACHMENT_TREE:
+                Uri uriTree = data.getData();
+                DocumentFile documentFile = DocumentFile.fromTreeUri(getApplicationContext(), uriTree);
+                final int takeFlags = data.getFlags()
+                        & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    getApplicationContext().getContentResolver().takePersistableUriPermission(uriTree, takeFlags);
+                }
+
+                Timber.i("ACTIVITY_SAVE_ATTACHMENT_TREE uri " + uriTree.getPath());
+
         }
     }
 
@@ -681,7 +696,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
         @Override
         public void startPendingIntentForCryptoPresenter(IntentSender si, Integer requestCode, Intent fillIntent,
-                int flagsMask, int flagValues, int extraFlags) throws SendIntentException {
+                                                         int flagsMask, int flagValues, int extraFlags) throws SendIntentException {
             if (requestCode == null) {
                 getActivity().startIntentSender(si, fillIntent, flagsMask, flagValues, extraFlags);
                 return;
@@ -728,19 +743,28 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     public interface MessageViewFragmentListener {
         void onForward(MessageReference messageReference, Parcelable decryptionResultForReply);
+
         void onForwardAsAttachment(MessageReference messageReference, Parcelable decryptionResultForReply);
+
         void disableDeleteAction();
+
         void onReplyAll(MessageReference messageReference, Parcelable decryptionResultForReply);
+
         void onReply(MessageReference messageReference, Parcelable decryptionResultForReply);
+
         void displayMessageSubject(String title);
+
         void setProgress(boolean b);
+
         void showNextMessageOrReturn();
+
         void messageHeaderViewAvailable(MessageHeader messageHeaderView);
+
         void updateMenu();
     }
 
     public boolean isInitialized() {
-        return mInitialized ;
+        return mInitialized;
     }
 
 
@@ -806,7 +830,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
         @Override
         public void startIntentSenderForMessageLoaderHelper(IntentSender si, int requestCode, Intent fillIntent,
-                int flagsMask, int flagValues, int extraFlags) {
+                                                            int flagsMask, int flagValues, int extraFlags) {
             showProgressThreshold = null;
             try {
                 requestCode |= REQUEST_MASK_LOADER_HELPER;
@@ -830,14 +854,21 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     public void onSaveAttachment(AttachmentViewInfo attachment) {
         currentAttachmentViewInfo = attachment;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            //Save to SAF Dir
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+            startActivityForResult(intent, ACTIVITY_SAVE_ATTACHMENT_TREE);
+
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            //Use SAF to select a distinct path to save
             Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType(currentAttachmentViewInfo.mimeType);
             intent.putExtra(Intent.EXTRA_TITLE, currentAttachmentViewInfo.displayName);
 
-            startActivityForResult(intent, ACTIVITY_SAVE_ATTACHMENT);
+            startActivityForResult(intent, ACTIVITY_SAVE_ATTACHMENT_SINGLE);
         } else {
+            //Legacy, direct save
             getAttachmentController(attachment).saveAttachment();
         }
     }
@@ -845,18 +876,31 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     @Override
     public void onSaveAttachmentToUserProvidedDirectory(final AttachmentViewInfo attachment) {
         currentAttachmentViewInfo = attachment;
-        FileBrowserHelper.getInstance().showFileBrowserActivity(MessageViewFragment.this, null,
-                ACTIVITY_CHOOSE_DIRECTORY, new FileBrowserFailOverCallback() {
-                    @Override
-                    public void onPathEntered(String path) {
-                        getAttachmentController(attachment).saveAttachmentTo(path);
-                    }
 
-                    @Override
-                    public void onCancel() {
-                        // Do nothing
-                    }
-                });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            //Use SAF to select a distinct path to save
+            Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType(currentAttachmentViewInfo.mimeType);
+            intent.putExtra(Intent.EXTRA_TITLE, currentAttachmentViewInfo.displayName);
+
+            startActivityForResult(intent, ACTIVITY_SAVE_ATTACHMENT_SINGLE);
+
+        } else {
+            //Legacy
+            FileBrowserHelper.getInstance().showFileBrowserActivity(MessageViewFragment.this, null,
+                    ACTIVITY_CHOOSE_DIRECTORY, new FileBrowserFailOverCallback() {
+                        @Override
+                        public void onPathEntered(String path) {
+                            getAttachmentController(attachment).saveAttachmentTo(path);
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            // Do nothing
+                        }
+                    });
+        }
     }
 
     private AttachmentController getAttachmentController(AttachmentViewInfo attachment) {

@@ -1,6 +1,8 @@
 package com.fsck.k9.helper;
 
 
+import android.support.v4.provider.DocumentFile;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -61,6 +63,35 @@ public class FileHelper {
         }
         for (int i = 2; i < Integer.MAX_VALUE; i++) {
             file = new File(directory, String.format(Locale.US, "%s-%d%s", name, i, extension));
+            if (!file.exists()) {
+                return file;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Creates a unique file in the given directory by appending a hyphen
+     * and a number to the given filename.
+     */
+    public static DocumentFile createUniqueFile(DocumentFile directory, String filename, String mimeType) {
+        DocumentFile file = directory.createFile(mimeType, filename);
+        if (!file.exists()) {
+            return file;
+        }
+        // Get the extension of the file, if any.
+        int index = filename.lastIndexOf('.');
+        String name;
+        String extension;
+        if (index != -1) {
+            name = filename.substring(0, index);
+            extension = filename.substring(index);
+        } else {
+            name = filename;
+            extension = "";
+        }
+        for (int i = 2; i < Integer.MAX_VALUE; i++) {
+            file = directory.createFile(mimeType, String.format(Locale.US, "%s-%d%s", name, i, extension));
             if (!file.exists()) {
                 return file;
             }

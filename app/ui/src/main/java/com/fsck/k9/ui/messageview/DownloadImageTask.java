@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -14,6 +15,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import timber.log.Timber;
+
+import android.os.Build;
+import android.support.v4.provider.DocumentFile;
 import android.widget.Toast;
 
 import com.fsck.k9.K9;
@@ -86,7 +90,7 @@ class DownloadImageTask extends AsyncTask<String, Void, String> {
             String mimeType = getMimeType(conn, fileName);
 
             String fileNameWithExtension = getFileNameWithExtension(fileName, mimeType);
-            return writeFileToStorage(fileNameWithExtension, in);
+            return writeFileToStorage(fileNameWithExtension, in, mimeType);
         } finally {
             in.close();
         }
@@ -125,7 +129,7 @@ class DownloadImageTask extends AsyncTask<String, Void, String> {
         InputStream in = contentResolver.openInputStream(uri);
         try {
             String fileNameWithExtension = getFileNameWithExtension(fileName, mimeType);
-            return writeFileToStorage(fileNameWithExtension, in);
+            return writeFileToStorage(fileNameWithExtension, in, mimeType);
         } finally {
             in.close();
         }
@@ -174,13 +178,28 @@ class DownloadImageTask extends AsyncTask<String, Void, String> {
         return fileName + "." + extension;
     }
 
-    private String writeFileToStorage(String fileName, InputStream in) throws IOException {
+    private String writeFileToStorage(String fileName, InputStream in, String mimeType) throws IOException {
         String sanitized = FileHelper.sanitizeFilename(fileName);
+        OutputStream out;
+        String name;
 
-        File directory = new File(K9.getAttachmentDefaultPath());
-        File file = FileHelper.createUniqueFile(directory, sanitized);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            DocumentFile pickedDir = DocumentFile.fromTreeUri(context, Uri.parse(K9.getAttachmentDefaultPath()));
+            DocumentFile newFile = FileHelper.createUniqueFile(pickedDir, sanitized, mimeType);
 
-        FileOutputStream out = new FileOutputStream(file);
+            out = context.getContentResolver().openOutputStream(newFile.getUri());
+            name = newFile.getName();
+
+
+        } else {
+            File directory = new File(K9.getAttachmentDefaultPath());
+            File file = FileHelper.createUniqueFile(directory, sanitized);
+
+            out = new FileOutputStream(file);
+            name = file.getName();
+        }
+
+
         try {
             IOUtils.copy(in, out);
             out.flush();
@@ -188,6 +207,6 @@ class DownloadImageTask extends AsyncTask<String, Void, String> {
             out.close();
         }
 
-        return file.getName();
+        return name;
     }
 }
