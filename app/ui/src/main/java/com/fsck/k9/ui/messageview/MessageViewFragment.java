@@ -19,6 +19,7 @@ import android.os.SystemClock;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.provider.DocumentFile;
 import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
@@ -66,7 +67,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
     private static final int ACTIVITY_CHOOSE_DIRECTORY = 3;
 
-    private static final int ACTIVITY_SAVE_ATTACHMENT = 3;
+    private static final int ACTIVITY_SAVE_ATTACHMENT = 4;
 
     public static final int REQUEST_MASK_LOADER_HELPER = (1 << 8);
     public static final int REQUEST_MASK_CRYPTO_PRESENTER = (1 << 9);
@@ -478,6 +479,15 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                 }
                 break;
             }
+
+            case ACTIVITY_SAVE_ATTACHMENT:
+                Uri documentsUri = data.getData();
+                DocumentFile file = DocumentFile.fromSingleUri(getApplicationContext(), documentsUri);
+
+                Timber.i("ACTIVITY_SAVE_ATTACHMENT uri " + documentsUri.getPath());
+                getAttachmentController(currentAttachmentViewInfo).saveAttachmentTo(file);
+
+                break;
         }
     }
 
@@ -823,8 +833,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType(mimeType);
-            intent.putExtra(Intent.EXTRA_TITLE, fileName);
+            intent.setType(currentAttachmentViewInfo.mimeType);
+            intent.putExtra(Intent.EXTRA_TITLE, currentAttachmentViewInfo.displayName);
 
             startActivityForResult(intent, ACTIVITY_SAVE_ATTACHMENT);
         } else {

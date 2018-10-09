@@ -19,6 +19,8 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.annotation.WorkerThread;
 import timber.log.Timber;
+
+import android.support.v4.provider.DocumentFile;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
@@ -72,6 +74,10 @@ public class AttachmentController {
         saveAttachmentTo(new File(directory));
     }
 
+
+
+
+
     private void downloadAndViewAttachment(LocalPart localPart) {
         downloadAttachment(localPart, new Runnable() {
             @Override
@@ -81,15 +87,16 @@ public class AttachmentController {
         });
     }
 
-    private void downloadAndSaveAttachmentTo(LocalPart localPart, final File directory) {
+    private void downloadAndSaveAttachmentTo(LocalPart localPart, final DocumentFile fileUri) {
         downloadAttachment(localPart, new Runnable() {
             @Override
             public void run() {
                 messageViewFragment.refreshAttachmentThumbnail(attachment);
-                saveLocalAttachmentTo(directory);
+                saveLocalAttachmentTo(fileUri);
             }
         });
     }
+
 
     private void downloadAttachment(LocalPart localPart, final Runnable attachmentDownloadedCallback) {
         String accountUuid = localPart.getAccountUuid();
@@ -130,34 +137,43 @@ public class AttachmentController {
             return;
         }
 
-        if (!attachment.isContentAvailable()) {
-            downloadAndSaveAttachmentTo((LocalPart) attachment.part, directory);
-        } else {
-            saveLocalAttachmentTo(directory);
-        }
-    }
-
-    private void saveLocalAttachmentTo(File directory) {
-        new SaveAttachmentAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, directory);
-    }
-
-    private File saveAttachmentWithUniqueFileName(File directory) throws IOException {
+        //Create unique file
         String filename = FileHelper.sanitizeFilename(attachment.displayName);
         File file = FileHelper.createUniqueFile(directory, filename);
 
-        //TODO: LOL
-
-        writeAttachmentToStorage(file);
-
-        addSavedAttachmentToDownloadsDatabase(file);
-
-        return file;
+        if (!attachment.isContentAvailable()) {
+            downloadAndSaveAttachmentTo((LocalPart) attachment.part, DocumentFile.fromFile(file));
+        } else {
+            saveLocalAttachmentTo(DocumentFile.fromFile(file));
+        }
     }
 
-    private void writeAttachmentToStorage(File file) throws IOException {
+    public void saveAttachmentTo(DocumentFile fileUri) {
+        if (!attachment.isContentAvailable()) {
+            downloadAndSaveAttachmentTo((LocalPart) attachment.part,fileUri);
+        } else {
+            saveLocalAttachmentTo(fileUri);
+        }
+    }
+
+    private void saveLocalAttachmentTo(DocumentFile fileUri) {
+        new SaveAttachmentAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, fileUri);
+    }
+
+
+
+    private DocumentFile saveAttachmentWithUniqueFileName(DocumentFile fileUri) throws IOException {
+        writeAttachmentToStorage(fileUri);
+        addSavedAttachmentToDownloadsDatabase(fileUri);
+
+        return fileUri;
+    }
+
+    private void writeAttachmentToStorage(DocumentFile file_uri) throws IOException {
         InputStream in = context.getContentResolver().openInputStream(attachment.internalUri);
+
         try {
-            OutputStream out = new FileOutputStream(file);
+            OutputStream out = context.getContentResolver().openOutputStream(file_uri.getUri());
             try {
                 IOUtils.copy(in, out);
                 out.flush();
@@ -169,29 +185,14 @@ public class AttachmentController {
         }
     }
 
-    private void writeAttachmentToStorage(Uri file_uri) throws IOException {
-        InputStream in = context.getContentResolver().openInputStream(attachment.internalUri);
-        context.getContentResolver().open
-        try {
-            OutputStream out = context.getContentResolver().openOutputStream(file_uri);
-            try {
-                IOUtils.copy(in, out);
-                out.flush();
-            } finally {
-                out.close();
-            }
-        } finally {
-            in.close();
-        }
-    }
-
-    private void addSavedAttachmentToDownloadsDatabase(File file) {
+    private void addSavedAttachmentToDownloadsDatabase(DocumentFile file) {
         String fileName = file.getName();
-        String path = file.getAbsolutePath();
+        String path = file.getUri().toString();
         long fileLength = file.length();
         String mimeType = attachment.mimeType;
 
         downloadManager.addCompletedDownload(fileName, fileName, true, mimeType, path, fileLength, true);
+
     }
 
     @WorkerThread
@@ -227,7 +228,7 @@ public class AttachmentController {
         if (resolvedIntentInfo.hasResolvedActivities() && resolvedIntentInfo.containsFileUri()) {
             try {
                 File tempFile = TemporaryAttachmentStore.getFileForWriting(context, displayName);
-                writeAttachmentToStorage(tempFile);
+                writeAttachmentToStorage(DocumentFile.fromFile(tempFile));
                 viewIntent = createViewIntentForFileUri(resolvedIntentInfo.getMimeType(), Uri.fromFile(tempFile));
             } catch (IOException e) {
                 Timber.e(e, "Error while saving attachment to use file:// URI with ACTION_VIEW Intent");
@@ -357,7 +358,7 @@ public class AttachmentController {
         }
     }
 
-    private class SaveAttachmentAsyncTask extends AsyncTask<File, Void, File> {
+    private class SaveAttachmentAsyncTask extends AsyncTask<DocumentFile, Void, DocumentFile> {
 
         @Override
         protected void onPreExecute() {
@@ -365,10 +366,10 @@ public class AttachmentController {
         }
 
         @Override
-        protected File doInBackground(File... params) {
+        protected DocumentFile doInBackground(DocumentFile... params) {
             try {
-                File directory = params[0];
-                return saveAttachmentWithUniqueFileName(directory);
+                DocumentFile fileUri = params[0];
+                return saveAttachmentWithUniqueFileName(fileUri);
             } catch (IOException e) {
                 Timber.e(e, "Error saving attachment");
                 return null;
@@ -376,9 +377,9 @@ public class AttachmentController {
         }
 
         @Override
-        protected void onPostExecute(File file) {
+        protected void onPostExecute(DocumentFile file) {
             messageViewFragment.enableAttachmentButtons(attachment);
-            if (file == null) {
+            if (file == null || !file.exists()) {
                 displayAttachmentNotSavedMessage();
             }
         }
