@@ -1,6 +1,10 @@
 package com.fsck.k9.helper;
 
 
+import android.content.Context;
+import android.content.UriPermission;
+import android.net.Uri;
+import android.os.Build;
 import android.support.v4.provider.DocumentFile;
 
 import java.io.File;
@@ -76,7 +80,7 @@ public class FileHelper {
      */
     public static DocumentFile createUniqueFile(DocumentFile directory, String filename, String mimeType) {
         DocumentFile file = directory.createFile(mimeType, filename);
-        if (!file.exists()) {
+        if (file != null && file.exists()) {
             return file;
         }
         // Get the extension of the file, if any.
@@ -92,7 +96,7 @@ public class FileHelper {
         }
         for (int i = 2; i < Integer.MAX_VALUE; i++) {
             file = directory.createFile(mimeType, String.format(Locale.US, "%s-%d%s", name, i, extension));
-            if (!file.exists()) {
+            if (file != null && file.exists()) {
                 return file;
             }
         }
@@ -243,4 +247,25 @@ public class FileHelper {
     public static String sanitizeFilename(String filename) {
         return filename.replaceAll(INVALID_CHARACTERS, REPLACEMENT_CHARACTER);
     }
+
+
+    /**
+     * Checks if the given uri is present in getContentResolver().getPersistedUriPermissions()
+     *
+     * @param context A context
+     * @param dirUri The uri to check
+     * @return True if the uri is present
+     */
+    public static boolean isDocumentTreePermissionGranted(Context context, Uri dirUri) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
+            return false;
+
+
+        for (UriPermission permission : context.getContentResolver().getPersistedUriPermissions()) {
+            if (permission.isWritePermission() && permission.getUri().equals(dirUri))
+                return true;
+        }
+        return false;
+    }
+
 }

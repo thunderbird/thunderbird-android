@@ -34,6 +34,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.K9ActivityCommon;
+import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.MessageLoaderHelper;
@@ -447,7 +448,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                     if (fileUri != null) {
                         String filePath = fileUri.getPath();
                         if (filePath != null) {
-                            getAttachmentController(currentAttachmentViewInfo).saveAttachmentTo(filePath);
+                            getAttachmentController(currentAttachmentViewInfo).saveAttachmentToFolder(filePath);
                         }
                     }
                 }
@@ -485,7 +486,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                 DocumentFile file = DocumentFile.fromSingleUri(getApplicationContext(), documentsUri);
 
                 Timber.i("ACTIVITY_SAVE_ATTACHMENT_SINGLE uri " + documentsUri.getPath());
-                getAttachmentController(currentAttachmentViewInfo).saveAttachmentTo(file);
+                getAttachmentController(currentAttachmentViewInfo).saveAttachmentToFile(file);
 
                 break;
             }
@@ -856,8 +857,17 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             //Save to SAF Dir
-            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
-            startActivityForResult(intent, ACTIVITY_SAVE_ATTACHMENT_TREE);
+            if (FileHelper.isDocumentTreePermissionGranted(getApplicationContext(), Uri.parse(K9.getAttachmentDefaultPath()))){
+                getAttachmentController(attachment).saveAttachmentToFolder();
+            } else {
+                //Request a new (peristent) folder
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+                startActivityForResult(intent, ACTIVITY_SAVE_ATTACHMENT_TREE);
+            }
+
+
 
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             //Use SAF to select a distinct path to save
@@ -869,7 +879,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             startActivityForResult(intent, ACTIVITY_SAVE_ATTACHMENT_SINGLE);
         } else {
             //Legacy, direct save
-            getAttachmentController(attachment).saveAttachment();
+            getAttachmentController(attachment).saveAttachmentToFolderLegacy();
         }
     }
 
@@ -892,7 +902,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                     ACTIVITY_CHOOSE_DIRECTORY, new FileBrowserFailOverCallback() {
                         @Override
                         public void onPathEntered(String path) {
-                            getAttachmentController(attachment).saveAttachmentTo(path);
+                            getAttachmentController(attachment).saveAttachmentToFolder(path);
                         }
 
                         @Override

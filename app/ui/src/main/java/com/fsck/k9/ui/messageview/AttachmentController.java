@@ -66,12 +66,27 @@ public class AttachmentController {
         }
     }
 
-    public void saveAttachment() {
-        saveAttachmentTo(K9.getAttachmentDefaultPath());
+    public void saveAttachmentToFolderLegacy() {
+        //Save to default directory
+        saveAttachmentToFolder(K9.getAttachmentDefaultPath());
     }
 
-    public void saveAttachmentTo(String directory) {
+    public void saveAttachmentToFolder(String directory) {
         saveAttachmentTo(new File(directory));
+    }
+
+
+    public void saveAttachmentToFile(DocumentFile fileUri) {
+        saveAttachmentTo(fileUri);
+    }
+
+    public void saveAttachmentToFolder() {
+        //create file
+        String filename = FileHelper.sanitizeFilename(attachment.displayName);
+        DocumentFile pickedDir = DocumentFile.fromTreeUri(context, Uri.parse(K9.getAttachmentDefaultPath()));
+        DocumentFile newFile = FileHelper.createUniqueFile(pickedDir, filename, attachment.mimeType);
+
+        saveAttachmentTo(newFile);
     }
 
 
@@ -148,7 +163,7 @@ public class AttachmentController {
         }
     }
 
-    public void saveAttachmentTo(DocumentFile fileUri) {
+    private void saveAttachmentTo(DocumentFile fileUri) {
         if (!attachment.isContentAvailable()) {
             downloadAndSaveAttachmentTo((LocalPart) attachment.part,fileUri);
         } else {
@@ -164,7 +179,10 @@ public class AttachmentController {
 
     private DocumentFile saveAttachmentWithUniqueFileName(DocumentFile fileUri) throws IOException {
         writeAttachmentToStorage(fileUri);
-        addSavedAttachmentToDownloadsDatabase(fileUri);
+        if (fileUri.isFile()) {
+            addSavedAttachmentToDownloadsDatabase(fileUri);
+        }
+
 
         return fileUri;
     }

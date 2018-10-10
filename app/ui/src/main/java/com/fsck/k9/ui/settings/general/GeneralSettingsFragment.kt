@@ -120,12 +120,6 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
             REQUEST_PICK_DIRECTORY_URI_TREE -> {
                 val uriTree = result.getData()
                 val documentFile = DocumentFile.fromTreeUri(getContext(), uriTree)
-                val takeFlags = result.getFlags() and (Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    getContext()!!.getContentResolver().takePersistableUriPermission(uriTree, takeFlags)
-
-                }
 
                 Timber.i("ACTIVITY_SAVE_ATTACHMENT_TREE uri " + uriTree.toString())
                 setAttachmentDefaultPath(uriTree.toString())
