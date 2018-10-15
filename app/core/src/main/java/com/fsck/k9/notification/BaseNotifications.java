@@ -53,7 +53,7 @@ abstract class BaseNotifications {
     }
 
     protected NotificationCompat.Builder createAndInitializeNotificationBuilder(Account account) {
-        return notificationHelper.createNotificationBuilder()
+        return notificationHelper.createNotificationBuilder(account, NotificationChannelUtils.Type.MESSAGES)
                 .setSmallIcon(getNewMailNotificationIcon())
                 .setColor(account.getChipColor())
                 .setWhen(System.currentTimeMillis())

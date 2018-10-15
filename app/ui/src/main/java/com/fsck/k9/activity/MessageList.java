@@ -1,9 +1,6 @@
 package com.fsck.k9.activity;
 
 
-import java.util.Collection;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.arch.lifecycle.Observer;
@@ -53,6 +50,7 @@ import com.fsck.k9.helper.ParcelableUtil;
 import com.fsck.k9.mailstore.Folder;
 import com.fsck.k9.mailstore.SearchStatusManager;
 import com.fsck.k9.mailstore.StorageManager;
+import com.fsck.k9.notification.NotificationChannelUtils;
 import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
@@ -72,6 +70,10 @@ import com.fsck.k9.view.MessageTitleView;
 import com.fsck.k9.view.ViewSwitcher;
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener;
 import com.mikepenz.materialdrawer.Drawer.OnDrawerListener;
+
+import java.util.Collection;
+import java.util.List;
+
 import de.cketti.library.changelog.ChangeLog;
 import timber.log.Timber;
 
@@ -259,6 +261,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         initializeLayout();
         initializeFragments();
         displayViews();
+        NotificationChannelUtils.updateChannels(this);
 
         ChangeLog cl = new ChangeLog(this);
         if (cl.isFirstRun()) {
