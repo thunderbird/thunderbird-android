@@ -65,6 +65,7 @@ import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.ui.folders.FolderNameFormatter;
+import com.fsck.k9.notification.NotificationChannelUtils;
 import com.fsck.k9.ui.messagelist.MessageListViewModel;
 import com.fsck.k9.ui.messagelist.MessageListViewModelFactory;
 import com.fsck.k9.ui.messageview.MessageViewFragment;
@@ -278,6 +279,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         initializeLayout();
         initializeFragments();
         displayViews();
+        NotificationChannelUtils.updateChannels(this);
 
         ChangeLog cl = new ChangeLog(this);
         if (cl.isFirstRun()) {

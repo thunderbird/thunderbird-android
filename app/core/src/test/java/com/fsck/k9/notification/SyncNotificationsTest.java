@@ -122,7 +122,7 @@ public class SyncNotificationsTest extends RobolectricTest {
         NotificationHelper notificationHelper = mock(NotificationHelper.class);
         when(notificationHelper.getContext()).thenReturn(RuntimeEnvironment.application);
         when(notificationHelper.getNotificationManager()).thenReturn(notificationManager);
-        when(notificationHelper.createNotificationBuilder()).thenReturn(builder);
+        when(notificationHelper.createNotificationBuilder(mock(Account.class), NotificationChannelUtils.Type.OTHER)).thenReturn(builder);
         when(notificationHelper.getAccountName(any(Account.class))).thenReturn(ACCOUNT_NAME);
         return notificationHelper;
     }

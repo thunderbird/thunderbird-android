@@ -31,7 +31,8 @@ class CertificateErrorNotifications {
         String title = resourceProvider.certificateErrorTitle(account.getDescription());
         String text = resourceProvider.certificateErrorBody();
 
-        NotificationCompat.Builder builder = notificationHelper.createNotificationBuilder()
+        NotificationCompat.Builder builder = notificationHelper
+                .createNotificationBuilder(account, NotificationChannelUtils.Type.OTHER)
                 .setSmallIcon(resourceProvider.getIconWarning())
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)

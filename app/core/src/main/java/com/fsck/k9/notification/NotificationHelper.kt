@@ -57,8 +57,8 @@ class NotificationHelper(
         return notificationManager
     }
 
-    fun createNotificationBuilder(): NotificationCompat.Builder {
-        return NotificationCompat.Builder(context)
+    fun createNotificationBuilder(account: Account, type: NotificationChannelUtils.Type): NotificationCompat.Builder {
+        return NotificationCompat.Builder(context, NotificationChannelUtils.getChannelIdFor(account, type))
     }
 
 
