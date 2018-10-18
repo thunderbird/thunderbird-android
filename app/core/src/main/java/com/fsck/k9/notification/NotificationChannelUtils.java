@@ -9,6 +9,7 @@ import android.support.annotation.RequiresApi;
 import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -28,8 +29,8 @@ public class NotificationChannelUtils {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (notificationManager != null) {
             List<Account> accounts = Preferences.getPreferences(context).getAccounts();
+            removeChannelsForNonExistingOrChangedAccounts(notificationManager, accounts);
             addChannelsForAccounts(context, notificationManager, accounts);
-            removeChannelsForNonExistingAccounts(notificationManager, accounts);
         }
     }
 
@@ -51,16 +52,25 @@ public class NotificationChannelUtils {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private static void removeChannelsForNonExistingAccounts(NotificationManager notificationManager, List<Account> accounts) {
-        HashSet<String> existingAccounts = new HashSet<>();
+    private static void removeChannelsForNonExistingOrChangedAccounts(NotificationManager notificationManager, List<Account> accounts) {
+        HashMap<String, Account> existingAccounts = new HashMap<>();
         for (Account account : accounts) {
-            existingAccounts.add(account.getUuid());
+            existingAccounts.put(account.getUuid(), account);
         }
 
         List<NotificationChannelGroup> groups = notificationManager.getNotificationChannelGroups();
         for (NotificationChannelGroup group : groups) {
             final String groupId = group.getId();
-            if (!existingAccounts.contains(groupId)) {
+
+            boolean shouldDelete = false;
+            if (!existingAccounts.containsKey(groupId)) {
+                shouldDelete = true;
+            } else if (!existingAccounts.get(groupId).getName().equals(group.getName().toString())) {
+                // There is no way to change group names. Deleting group, so it is re-generated.
+                shouldDelete = true;
+            }
+
+            if (shouldDelete) {
                 notificationManager.deleteNotificationChannelGroup(groupId);
                 notificationManager.deleteNotificationChannel(PREFIX_MESSAGES + groupId);
                 notificationManager.deleteNotificationChannel(PREFIX_OTHER + groupId);
