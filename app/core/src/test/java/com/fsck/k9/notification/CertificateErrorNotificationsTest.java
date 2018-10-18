@@ -122,6 +122,7 @@ public class CertificateErrorNotificationsTest extends RobolectricTest {
         Account account = mock(Account.class);
         when(account.getAccountNumber()).thenReturn(ACCOUNT_NUMBER);
         when(account.getDescription()).thenReturn(ACCOUNT_NAME);
+        when(account.getUuid()).thenReturn("test-uuid");
 
         return account;
     }
