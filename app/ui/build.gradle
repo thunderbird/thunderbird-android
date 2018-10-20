@@ -33,6 +33,7 @@ dependencies {
     implementation "com.xwray:groupie:2.1.0"
     implementation "com.xwray:groupie-kotlin-android-extensions:2.1.0"
     implementation 'com.mikepenz:materialdrawer:6.0.7'
+    implementation 'com.github.ByteHamster:SearchPreference:v1.1.4'
 
     implementation "commons-io:commons-io:${versions.commonsIo}"
     implementation "androidx.core:core-ktx:${versions.coreKtx}"

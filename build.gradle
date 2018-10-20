@@ -46,6 +46,7 @@ subprojects {
     repositories {
         jcenter()
         google()
+        maven { url 'https://jitpack.io' }
     }
 
     configurations.all {
@@ -55,6 +56,8 @@ subprojects {
             force "com.android.support:support-annotations:${versions.supportLibrary}"
             force "com.android.support:design:${versions.supportLibrary}"
             force "com.android.support:support-fragment:${versions.supportLibrary}"
+            force "com.android.support:preference-v14:${versions.supportLibrary}"
+            force "com.android.support:cardview-v7:${versions.supportLibrary}"
         }
     }
 }

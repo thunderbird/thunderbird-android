@@ -3,12 +3,15 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:title="@string/general_settings_title">
+    xmlns:search="http://schemas.android.com/apk/com.bytehamster.lib.preferencesearch"
+    android:title="@string/general_settings_title"
+    search:ignore="true">
 
     <PreferenceScreen
         android:icon="?attr/iconPreferencesDisplay"
         android:key="display_preferences"
-        android:title="@string/display_preferences">
+        android:title="@string/display_preferences"
+        search:ignore="true">
 
         <PreferenceCategory
             android:key="global_preferences"
@@ -20,6 +23,7 @@
                 android:entryValues="@array/language_values"
                 android:key="language"
                 android:summary="%s"
+                search:summary=""
                 android:title="@string/settings_language_label" />
 
             <ListPreference
@@ -28,12 +32,14 @@
                 android:entryValues="@array/theme_values"
                 android:key="theme"
                 android:summary="%s"
+                search:summary=""
                 android:title="@string/settings_theme_label" />
 
             <CheckBoxPreference
                 android:key="fixed_message_view_theme"
                 android:summaryOff="@string/settings_message_theme_selection_summary_off"
                 android:summaryOn="@string/settings_message_theme_selection_summary_on"
+                search:summary=""
                 android:title="@string/settings_message_theme_selection_label" />
 
             <ListPreference
@@ -43,6 +49,7 @@
                 android:entryValues="@array/message_theme_values"
                 android:key="messageViewTheme"
                 android:summary="%s"
+                search:summary=""
                 android:title="@string/settings_message_theme_label" />
 
             <ListPreference
@@ -51,6 +58,7 @@
                 android:entryValues="@array/message_theme_values"
                 android:key="message_compose_theme"
                 android:summary="%s"
+                search:summary=""
                 android:title="@string/settings_compose_theme_label" />
 
             <Preference
@@ -114,6 +122,7 @@
                 android:entryValues="@array/preview_lines_values"
                 android:key="messagelist_preview_lines"
                 android:summary="%s"
+                search:summary=""
                 android:title="@string/global_settings_preview_lines_label" />
 
             <CheckBoxPreference
@@ -180,6 +189,7 @@
                 android:entryValues="@array/splitview_mode_values"
                 android:key="splitview_mode"
                 android:summary="%s"
+                search:summary=""
                 android:title="@string/global_settings_splitview_mode_label" />
 
         </PreferenceCategory>
@@ -213,7 +223,8 @@
     <PreferenceScreen
         android:icon="?attr/iconPreferencesInteraction"
         android:key="interaction_preferences"
-        android:title="@string/interaction_preferences">
+        android:title="@string/interaction_preferences"
+        search:ignore="true">
 
         <CheckBoxPreference
             android:key="start_integrated_inbox"
@@ -254,7 +265,8 @@
     <PreferenceScreen
         android:icon="?attr/iconPreferencesNotifications"
         android:key="notification_preferences"
-        android:title="@string/notifications_title">
+        android:title="@string/notifications_title"
+        search:ignore="true">
 
         <CheckBoxPreference
             android:key="quiet_time_enabled"
@@ -272,6 +284,7 @@
             android:key="quiet_time_starts"
             android:title="@string/quiet_time_starts"
             app:pref_hourFormat="h24"
+            search:summary=""
             app:pref_summaryHasTime="%s" />
 
         <com.takisoft.fix.support.v7.preference.TimePickerPreference
@@ -279,6 +292,7 @@
             android:key="quiet_time_ends"
             android:title="@string/quiet_time_ends"
             app:pref_hourFormat="h24"
+            search:summary=""
             app:pref_summaryHasTime="%s" />
 
         <ListPreference
@@ -287,6 +301,7 @@
             android:entryValues="@array/notification_quick_delete_values"
             android:key="notification_quick_delete"
             android:summary="%s"
+            search:summary=""
             android:title="@string/global_settings_notification_quick_delete_title" />
 
         <ListPreference
@@ -295,6 +310,7 @@
             android:entryValues="@array/lock_screen_notification_visibility_values"
             android:key="lock_screen_notification_visibility"
             android:summary="%s"
+            search:summary=""
             android:title="@string/global_settings_lock_screen_notification_visibility_title" />
 
     </PreferenceScreen>
@@ -302,7 +318,8 @@
     <PreferenceScreen
         android:icon="?attr/iconPreferencesNetwork"
         android:key="network_preferences"
-        android:title="@string/network_preferences">
+        android:title="@string/network_preferences"
+        search:ignore="true">
 
         <ListPreference
             android:dialogTitle="@string/background_ops_label"
@@ -310,6 +327,7 @@
             android:entryValues="@array/background_ops_values"
             android:key="background_ops"
             android:summary="%s"
+            search:summary=""
             android:title="@string/background_ops_label" />
 
     </PreferenceScreen>
@@ -317,7 +335,8 @@
     <PreferenceScreen
         android:icon="?attr/iconPreferencesVarious"
         android:key="misc_preferences"
-        android:title="@string/miscellaneous_preferences">
+        android:title="@string/miscellaneous_preferences"
+        search:ignore="true">
 
         <Preference
             android:key="attachment_default_path"
@@ -328,13 +347,15 @@
     <PreferenceScreen
         android:icon="?attr/iconPreferencesPrivacy"
         android:key="privacy_preferences"
-        android:title="@string/privacy_preferences">
+        android:title="@string/privacy_preferences"
+        search:ignore="true">
 
         <ListPreference
             android:entries="@array/notification_hide_subject_entries"
             android:entryValues="@array/notification_hide_subject_values"
             android:key="notification_hide_subject"
             android:summary="%s"
+            search:summary=""
             android:title="@string/global_settings_notification_hide_subject_title" />
 
         <CheckBoxPreference
@@ -357,7 +378,8 @@
     <PreferenceScreen
         android:icon="?attr/iconPreferencesDebug"
         android:key="debug_preferences"
-        android:title="@string/debug_preferences">
+        android:title="@string/debug_preferences"
+        search:ignore="true">
 
         <CheckBoxPreference
             android:key="debug_logging"

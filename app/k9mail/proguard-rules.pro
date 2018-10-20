@@ -23,3 +23,7 @@
 -dontnote com.fsck.k9.view.**
 
 -keep public class org.openintents.openpgp.**
+
+-keepclassmembers class * extends android.support.v7.widget.SearchView {
+   public <init>(android.content.Context);
+}
