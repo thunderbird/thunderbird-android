@@ -11,6 +11,7 @@ import android.util.TypedValue;
 import android.view.View;
 
 import com.fsck.k9.DI;
+import com.fsck.k9.K9;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.mailstore.Folder;
 import com.fsck.k9.ui.folders.FolderNameFormatter;
@@ -23,14 +24,16 @@ import com.mikepenz.materialdrawer.model.BaseDrawerItem;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import timber.log.Timber;
 
 public class K9Drawer {
     // Bit shift for identifiers of user folders items, to leave space for other items
     private static final short DRAWER_FOLDER_SHIFT = 2;
 
     // Identifiers of static drawer items
-    private static final long DRAWER_ID_PREFERENCES = 0;
+    private static final long DRAWER_ID_UNIFIED_INBOX = 0;
+    private static final long DRAWER_ID_PREFERENCES = 1;
+
+    private int headerCount = 0;
 
     // Resources
     private int iconFolderInboxResId;
@@ -63,6 +66,17 @@ public class K9Drawer {
                 .withOnDrawerListener(parent.createOnDrawerListener())
                 .withSavedInstance(savedInstanceState)
                 .build();
+
+        // header
+        if (!K9.isHideSpecialAccounts()) {
+            drawer.addItems(new PrimaryDrawerItem()
+                    .withName(R.string.integrated_inbox_title)
+                    .withIcon(getResId(R.attr.iconUnifiedInbox))
+                    .withIdentifier(DRAWER_ID_UNIFIED_INBOX),
+                    new DividerDrawerItem());
+
+            headerCount += 2;
+        }
 
         // footer
         drawer.addItems(new DividerDrawerItem(),
@@ -117,7 +131,10 @@ public class K9Drawer {
             @Override
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                 long id = drawerItem.getIdentifier();
-                if (id == DRAWER_ID_PREFERENCES) {
+                if (id == DRAWER_ID_UNIFIED_INBOX) {
+                    parent.openUnifiedInbox();
+                    return false;
+                } else if (id == DRAWER_ID_PREFERENCES) {
                     SettingsActivity.launch(parent);
                     return false;
                 }
@@ -152,7 +169,7 @@ public class K9Drawer {
                     .withIdentifier(id)
                     .withTag(folder)
                     .withName(getFolderDisplayName(folder)),
-                    0);
+                    headerCount);
 
             userFolderIds.add(id);
 
@@ -182,6 +199,10 @@ public class K9Drawer {
                 return;
             }
         }
+    }
+
+    public void selectUnifiedInbox() {
+        drawer.setSelection(DRAWER_ID_UNIFIED_INBOX, false);
     }
 
     public DrawerLayout getLayout() {

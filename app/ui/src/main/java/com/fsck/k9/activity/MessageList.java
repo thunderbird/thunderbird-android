@@ -619,10 +619,19 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
     public void openFolder(String folderName) {
-        search = new LocalSearch(folderName);
+        LocalSearch search = new LocalSearch(folderName);
         search.addAccountUuid(account.getUuid());
         search.addAllowedFolder(folderName);
 
+        performSearch(search);
+    }
+
+    public void openUnifiedInbox() {
+        drawer.selectUnifiedInbox();
+        performSearch(SearchAccount.createUnifiedInboxAccount().getRelatedSearch());
+    }
+
+    private void performSearch(LocalSearch search) {
         initializeFromLocalSearch(search);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
