@@ -26,6 +26,12 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import timber.log.Timber;
 
 public class K9Drawer {
+    // Bit shift for identifiers of user folders items, to leave space for other items
+    private static final short DRAWER_FOLDER_SHIFT = 2;
+
+    // Identifiers of static drawer items
+    private static final long DRAWER_ID_PREFERENCES = 0;
+
     // Resources
     private int iconFolderInboxResId;
     private int iconFolderOutbotResId;
@@ -57,6 +63,14 @@ public class K9Drawer {
                 .withOnDrawerListener(parent.createOnDrawerListener())
                 .withSavedInstance(savedInstanceState)
                 .build();
+
+        // footer
+        drawer.addItems(new DividerDrawerItem(),
+                new PrimaryDrawerItem()
+                .withName(R.string.preferences_action)
+                .withIcon(getResId(R.attr.iconActionSettings))
+                .withIdentifier(DRAWER_ID_PREFERENCES)
+                .withSelectable(false));
 
         initializeFolderIcons();
     }
@@ -102,6 +116,12 @@ public class K9Drawer {
         return new OnDrawerItemClickListener() {
             @Override
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                long id = drawerItem.getIdentifier();
+                if (id == DRAWER_ID_PREFERENCES) {
+                    SettingsActivity.launch(parent);
+                    return false;
+                }
+
                 Folder folder = (Folder) drawerItem.getTag();
                 parent.openFolder(folder.getServerId());
                 return false;
@@ -116,32 +136,41 @@ public class K9Drawer {
      *         Folder objects to use
      */
     public void setUserFolders(@Nullable List<Folder> folders) {
-        if (folders != null) {
-            List<IDrawerItem> drawerItems = new ArrayList<>(folders.size());
-            long openedFolderId = -1;
-            for (Folder folder : folders) {
-                PrimaryDrawerItem item = new PrimaryDrawerItem()
-                        .withIcon(getFolderIcon(folder))
-                        .withIdentifier(folder.getId())
-                        .withTag(folder)
-                        .withName(getFolderDisplayName(folder));
-                drawerItems.add(item);
-                userFolderIds.add(folder.getId());
+        clearUserFolders();
 
-                if (folder.getServerId().equals(openedFolder)) {
-                    openedFolderId = folder.getId();
-                }
-            }
-            drawer.setItems(drawerItems);
-
-            if (openedFolderId != -1) {
-                drawer.setSelection(openedFolderId, false);
-            }
-        } else {
-            Timber.d("clearing folders");
-            drawer.removeAllItems();
-            userFolderIds.clear();
+        if (folders == null) {
+            return;
         }
+
+        Collections.reverse(folders);
+
+        long openedFolderId = -1;
+        for (Folder folder : folders) {
+            long id = folder.getId() << DRAWER_FOLDER_SHIFT;
+            drawer.addItemAtPosition(new PrimaryDrawerItem()
+                    .withIcon(getFolderIcon(folder))
+                    .withIdentifier(id)
+                    .withTag(folder)
+                    .withName(getFolderDisplayName(folder)),
+                    0);
+
+            userFolderIds.add(id);
+
+            if (folder.getServerId().equals(openedFolder)) {
+                openedFolderId = id;
+            }
+        }
+
+        if (openedFolderId != -1) {
+            drawer.setSelection(openedFolderId, false);
+        }
+    }
+
+    private void clearUserFolders() {
+        for (long id : userFolderIds) {
+            drawer.removeItem(id);
+        }
+        userFolderIds.clear();
     }
 
     public void selectFolderId(String folderId) {
