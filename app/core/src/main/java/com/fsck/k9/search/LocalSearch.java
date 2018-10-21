@@ -23,6 +23,7 @@ import android.os.Parcelable;
 
 public class LocalSearch implements SearchSpecification {
 
+    private String id;
     private String mName;
     private boolean mPredefined;
     private boolean mManualSearch = false;
@@ -101,6 +102,16 @@ public class LocalSearch implements SearchSpecification {
      */
     public void setName(String name) {
         this.mName = name;
+    }
+
+    /**
+     * Set the ID of the search. This is used to identify a unified inbox
+     * search
+     *
+     * @param id ID to set
+     */
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**
@@ -302,6 +313,15 @@ public class LocalSearch implements SearchSpecification {
     }
 
     /**
+     * Returns the ID of the search
+     *
+     * @return The ID of the search
+     */
+    public String getId() {
+        return (id == null) ? "" : id;
+    }
+
+    /**
      * Checks if this search was hard coded and shipped with K-9
      *
      * @return True is search was shipped with K-9
@@ -364,6 +384,7 @@ public class LocalSearch implements SearchSpecification {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
         dest.writeString(mName);
         dest.writeByte((byte) (mPredefined ? 1 : 0));
         dest.writeByte((byte) (mManualSearch ? 1 : 0));
@@ -386,6 +407,7 @@ public class LocalSearch implements SearchSpecification {
     };
 
     public LocalSearch(Parcel in) {
+        id = in.readString();
         mName = in.readString();
         mPredefined = (in.readByte() == 1);
         mManualSearch = (in.readByte() == 1);

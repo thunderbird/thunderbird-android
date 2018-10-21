@@ -476,6 +476,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             // regular LocalSearch object was passed
             search = intent.hasExtra(EXTRA_SEARCH) ?
                     ParcelableUtil.unmarshall(intent.getByteArrayExtra(EXTRA_SEARCH), LocalSearch.CREATOR) : null;
+            if (search.getId().equals(SearchAccount.UNIFIED_INBOX)) {
+                drawer.selectUnifiedInbox();
+            }
             noThreading = intent.getBooleanExtra(EXTRA_NO_THREADING, false);
         }
 
