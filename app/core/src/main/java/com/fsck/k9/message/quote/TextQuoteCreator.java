@@ -46,8 +46,7 @@ public class TextQuoteCreator {
             final String escapedPrefix = prefix.replaceAll("(\\\\|\\$)", "\\\\$1");
             quotedText.append(wrappedText.replaceAll("(?m)^", escapedPrefix));
 
-            // TODO is this correct?
-            return quotedText.toString().replaceAll("\\\r", "");
+            return quotedText.toString();
         } else if (quoteStyle == QuoteStyle.HEADER) {
             StringBuilder quotedText = new StringBuilder(body.length() + QUOTE_BUFFER_LENGTH);
             quotedText.append("\r\n");
