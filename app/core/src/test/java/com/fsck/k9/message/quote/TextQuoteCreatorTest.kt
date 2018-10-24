@@ -4,7 +4,6 @@ package com.fsck.k9.message.quote
 import android.content.res.Configuration
 import android.content.res.Resources
 import com.fsck.k9.Account.QuoteStyle
-import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.K9
 import com.fsck.k9.RobolectricTest
 import com.fsck.k9.TestCoreResourceProvider
@@ -15,11 +14,8 @@ import com.fsck.k9.mail.Message.RecipientType
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
-import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.koin.dsl.module.applicationContext
-import org.koin.standalone.StandAloneContext
 import java.util.Date
 import java.util.Locale
 
@@ -35,21 +31,12 @@ class TextQuoteCreatorTest : RobolectricTest() {
         on { getRecipients(RecipientType.CC) } doReturn emptyArray<Address>()
         on { subject } doReturn "Message subject"
     }
+    val textQuoteCreator = TextQuoteCreator(QuoteHelper(resources), TestCoreResourceProvider())
 
 
     @Before
     fun setUp() {
         K9.setHideTimeZone(true)
-
-        val koinModule = applicationContext {
-            bean { TestCoreResourceProvider() } bind CoreResourceProvider::class
-        }
-        StandAloneContext.startKoin(listOf(koinModule))
-    }
-
-    @After
-    fun tearDown() {
-        StandAloneContext.closeKoin()
     }
 
     @Test
@@ -123,12 +110,6 @@ class TextQuoteCreatorTest : RobolectricTest() {
     }
 
     private fun createQuote(messageBody: String, quoteStyle: QuoteStyle, quotePrefix: String = ""): String {
-        return TextQuoteCreator.quoteOriginalTextMessage(
-                resources,
-                originalMessage,
-                messageBody,
-                quoteStyle,
-                quotePrefix
-        )
+        return textQuoteCreator.quoteOriginalTextMessage(originalMessage, messageBody, quoteStyle, quotePrefix)
     }
 }

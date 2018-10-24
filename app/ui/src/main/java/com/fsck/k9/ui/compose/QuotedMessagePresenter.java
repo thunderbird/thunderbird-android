@@ -5,6 +5,8 @@ import java.util.Map;
 
 import android.content.res.Resources;
 import android.os.Bundle;
+
+import com.fsck.k9.DI;
 import timber.log.Timber;
 
 import com.fsck.k9.Account;
@@ -39,7 +41,7 @@ public class QuotedMessagePresenter {
 
     private static final int UNKNOWN_LENGTH = 0;
 
-
+    private final TextQuoteCreator textQuoteCreator = DI.get(TextQuoteCreator.class);
     private final QuotedMessageMvpView view;
     private final MessageCompose messageCompose;
     private final Resources resources;
@@ -119,7 +121,7 @@ public class QuotedMessagePresenter {
                     AttachmentResolver.createFromPart(messageViewInfo.rootPart));
 
             // TODO: Also strip the signature from the text/plain part
-            view.setQuotedText(TextQuoteCreator.quoteOriginalTextMessage(resources, messageViewInfo.message,
+            view.setQuotedText(textQuoteCreator.quoteOriginalTextMessage(messageViewInfo.message,
                     BodyTextExtractor.getBodyTextFromMessage(messageViewInfo.rootPart, SimpleMessageFormat.TEXT),
                     quoteStyle, account.getQuotePrefix()));
 
@@ -128,8 +130,8 @@ public class QuotedMessagePresenter {
                 content = TextSignatureRemover.stripSignature(content);
             }
 
-            view.setQuotedText(TextQuoteCreator.quoteOriginalTextMessage(
-                    resources, messageViewInfo.message, content, quoteStyle, account.getQuotePrefix()));
+            view.setQuotedText(textQuoteCreator.quoteOriginalTextMessage(
+                    messageViewInfo.message, content, quoteStyle, account.getQuotePrefix()));
         }
 
         if (showQuotedText) {

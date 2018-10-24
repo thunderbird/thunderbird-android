@@ -3,11 +3,8 @@ package com.fsck.k9.message.quote;
 
 import java.util.regex.Matcher;
 
-import android.content.res.Resources;
-
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.CoreResourceProvider;
-import com.fsck.k9.DI;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
@@ -16,6 +13,15 @@ import static com.fsck.k9.message.quote.QuoteHelper.QUOTE_BUFFER_LENGTH;
 
 
 public class TextQuoteCreator {
+    private final QuoteHelper quoteHelper;
+    private final CoreResourceProvider resourceProvider;
+
+
+    public TextQuoteCreator(QuoteHelper quoteHelper, CoreResourceProvider resourceProvider) {
+        this.quoteHelper = quoteHelper;
+        this.resourceProvider = resourceProvider;
+    }
+
     /**
      * Add quoting markup to a text message.
      * @param originalMessage Metadata for message being quoted.
@@ -23,10 +29,10 @@ public class TextQuoteCreator {
      * @param quoteStyle Style of quoting.
      * @return Quoted text.
      */
-    public static String quoteOriginalTextMessage(Resources resources, Message originalMessage, String messageBody, QuoteStyle quoteStyle, String prefix) {
-        CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
+    public String quoteOriginalTextMessage(Message originalMessage, String messageBody, QuoteStyle quoteStyle,
+            String prefix) {
         String body = messageBody == null ? "" : messageBody;
-        String sentDate = new QuoteHelper(resources).getSentDateText(originalMessage);
+        String sentDate = quoteHelper.getSentDateText(originalMessage);
         if (quoteStyle == QuoteStyle.PREFIX) {
             String sender = Address.toString(originalMessage.getFrom());
             StringBuilder quotedText = new StringBuilder(body.length() + QUOTE_BUFFER_LENGTH);
