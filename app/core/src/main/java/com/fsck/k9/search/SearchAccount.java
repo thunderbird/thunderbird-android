@@ -34,6 +34,7 @@ public class SearchAccount implements BaseAccount {
         CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
         String name = resourceProvider.searchUnifiedInboxTitle();
         LocalSearch tmpSearch = new LocalSearch(name);
+        tmpSearch.setId(UNIFIED_INBOX);
         tmpSearch.and(SearchField.INTEGRATE, "1", Attribute.EQUALS);
         return new SearchAccount(UNIFIED_INBOX, tmpSearch, name, resourceProvider.searchUnifiedInboxDetail());
     }

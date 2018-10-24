@@ -2,6 +2,7 @@
 <resources>
 
     <declare-styleable name="K9Styles">
+        <attr name="iconUnifiedInbox" format="reference" />
         <attr name="iconFolder" format="reference" />
         <attr name="iconFolderInbox" format="reference" />
         <attr name="iconFolderOutbox" format="reference" />
