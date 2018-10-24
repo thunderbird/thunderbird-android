@@ -38,6 +38,7 @@ public class TextQuoteCreator {
                 String replyHeader = resourceProvider.replyHeader(sender);
                 quotedText.append(replyHeader);
             }
+            quotedText.append("\r\n");
 
             final String wrappedText = Utility.wrap(body, REPLY_WRAP_LINE_WIDTH - prefix.length());
 
