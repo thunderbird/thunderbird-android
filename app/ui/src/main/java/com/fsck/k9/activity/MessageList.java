@@ -1,7 +1,6 @@
 package com.fsck.k9.activity;
 
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -19,7 +18,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
@@ -27,7 +25,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -46,13 +43,12 @@ import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.controller.MessageReference;
-import com.fsck.k9.helper.Contacts;
-import com.fsck.k9.ui.R;
 import com.fsck.k9.activity.compose.MessageActions;
 import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
+import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.fragment.MessageListFragment;
 import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener;
+import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.ParcelableUtil;
 import com.fsck.k9.mailstore.Folder;
 import com.fsck.k9.mailstore.SearchStatusManager;
@@ -65,6 +61,7 @@ import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.ui.K9Drawer;
+import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.messagelist.MessageListViewModel;
 import com.fsck.k9.ui.messagelist.MessageListViewModelFactory;
 import com.fsck.k9.ui.messageview.MessageViewFragment;
@@ -177,15 +174,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     private TextView actionBarTitle;
     private TextView actionBarSubTitle;
     private Menu menu;
-
-    private int iconFolderInboxResId;
-    private int iconFolderOutbotResId;
-    private int iconFolderSentResId;
-    private int iconFolderTrashResId;
-    private int iconFolderDraftsResId;
-    private int iconFolderArchiveResId;
-    private int iconFolderSpamResId;
-    private int iconFolderResId;
 
     private ViewGroup messageViewContainer;
     private View messageViewPlaceHolder;
@@ -490,9 +478,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         if (messageReference != null) {
             search = new LocalSearch();
             search.addAccountUuid(messageReference.getAccountUuid());
-            String folderId = messageReference.getFolderServerId();
-            search.addAllowedFolder(folderId);
-            drawer.selectFolderId(folderId);
+            String folderServerId = messageReference.getFolderServerId();
+            search.addAllowedFolder(folderServerId);
+            drawer.selectFolder(folderServerId);
         }
 
         if (search == null) {
@@ -1711,9 +1699,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         List<String> folderServerIds = search.getFolderServerIds();
         singleFolderMode = singleAccountMode && folderServerIds.size() == 1;
         if (singleFolderMode) {
-            drawer.selectFolderId(folderServerIds.get(0));
+            drawer.selectFolder(folderServerIds.get(0));
         } else {
-            drawer.selectFolderId(null);
+            drawer.selectFolder(null);
         }
 
         // now we know if we are in single account mode and need a subtitle
