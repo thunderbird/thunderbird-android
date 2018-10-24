@@ -1,32 +1,17 @@
-package com.fsck.k9.message.quote;
+package com.fsck.k9.message.quote
 
 
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.text.DateFormat
+import java.util.Locale
+import java.util.TimeZone
 
-import android.content.res.Resources;
+import android.content.res.Resources
 
-import com.fsck.k9.K9;
-import com.fsck.k9.mail.Message;
-
-
-class QuoteHelper {
-    // amount of extra buffer to allocate to accommodate quoting headers or prefixes
-    static final int QUOTE_BUFFER_LENGTH = 512;
-
-    private static final int DATE_STYLE = DateFormat.LONG;
-    private static final int TIME_STYLE = DateFormat.LONG;
+import com.fsck.k9.K9
+import com.fsck.k9.mail.Message
 
 
-    private final Resources resources;
-
-
-    QuoteHelper(Resources resources) {
-        this.resources = resources;
-    }
-
+internal class QuoteHelper(private val resources: Resources) {
 
     /**
      * Extract the date from a message and convert it into a locale-specific
@@ -34,27 +19,34 @@ class QuoteHelper {
      *
      * @return A string with the formatted date/time
      */
-    String getSentDateText(Message message) {
-        try {
-            DateFormat dateFormat = createDateFormat();
-            Date date = message.getSentDate();
+    fun getSentDateText(message: Message): String {
+        return try {
+            val dateFormat = createDateFormat()
+            val date = message.sentDate
 
-            return dateFormat.format(date);
-        } catch (Exception e) {
-            return "";
+            dateFormat.format(date)
+        } catch (e: Exception) {
+            ""
         }
     }
 
-    private DateFormat createDateFormat() {
-        DateFormat dateFormat;
-        if (K9.hideTimeZone()) {
-            dateFormat = DateFormat.getDateTimeInstance(DATE_STYLE, TIME_STYLE, Locale.ROOT);
-            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+    private fun createDateFormat(): DateFormat {
+        return if (K9.hideTimeZone()) {
+            DateFormat.getDateTimeInstance(DATE_STYLE, TIME_STYLE, Locale.ROOT).apply {
+                timeZone = TimeZone.getTimeZone("UTC")
+            }
         } else {
-            Locale locale = resources.getConfiguration().locale;
-            dateFormat = DateFormat.getDateTimeInstance(DATE_STYLE, TIME_STYLE, locale);
+            val locale = resources.configuration.locale
+            DateFormat.getDateTimeInstance(DATE_STYLE, TIME_STYLE, locale)
         }
+    }
 
-        return dateFormat;
+
+    companion object {
+        // amount of extra buffer to allocate to accommodate quoting headers or prefixes
+        const val QUOTE_BUFFER_LENGTH = 512
+
+        private const val DATE_STYLE = DateFormat.LONG
+        private const val TIME_STYLE = DateFormat.LONG
     }
 }
