@@ -1,6 +1,8 @@
 package com.fsck.k9.message.quote;
 
 
+import java.util.regex.Matcher;
+
 import android.content.res.Resources;
 
 import com.fsck.k9.Account.QuoteStyle;
@@ -42,9 +44,7 @@ public class TextQuoteCreator {
 
             final String wrappedText = Utility.wrap(body, REPLY_WRAP_LINE_WIDTH - prefix.length());
 
-            // "$" and "\" in the quote prefix have to be escaped for
-            // the replaceAll() invocation.
-            final String escapedPrefix = prefix.replaceAll("(\\\\|\\$)", "\\\\$1");
+            final String escapedPrefix = Matcher.quoteReplacement(prefix);
             quotedText.append(wrappedText.replaceAll("(?m)^", escapedPrefix));
 
             return quotedText.toString();
