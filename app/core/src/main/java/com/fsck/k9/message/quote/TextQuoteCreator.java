@@ -26,7 +26,7 @@ public class TextQuoteCreator {
     public static String quoteOriginalTextMessage(Resources resources, Message originalMessage, String messageBody, QuoteStyle quoteStyle, String prefix) {
         CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
         String body = messageBody == null ? "" : messageBody;
-        String sentDate = QuoteHelper.getSentDateText(resources, originalMessage);
+        String sentDate = new QuoteHelper(resources).getSentDateText(originalMessage);
         if (quoteStyle == QuoteStyle.PREFIX) {
             String sender = Address.toString(originalMessage.getFrom());
             StringBuilder quotedText = new StringBuilder(body.length() + QUOTE_BUFFER_LENGTH);

@@ -49,7 +49,7 @@ public class HtmlQuoteCreator {
         CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
         InsertableHtmlContent insertable = findInsertionPoints(messageBody);
 
-        String sentDate = QuoteHelper.getSentDateText(resources, originalMessage);
+        String sentDate = new QuoteHelper(resources).getSentDateText(originalMessage);
         String fromAddress = Address.toString(originalMessage.getFrom());
         if (quoteStyle == QuoteStyle.PREFIX) {
             StringBuilder header = new StringBuilder(QuoteHelper.QUOTE_BUFFER_LENGTH);
