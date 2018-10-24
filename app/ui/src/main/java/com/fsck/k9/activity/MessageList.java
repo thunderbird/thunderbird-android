@@ -464,9 +464,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             // regular LocalSearch object was passed
             search = intent.hasExtra(EXTRA_SEARCH) ?
                     ParcelableUtil.unmarshall(intent.getByteArrayExtra(EXTRA_SEARCH), LocalSearch.CREATOR) : null;
-            if (search.getId().equals(SearchAccount.UNIFIED_INBOX)) {
-                drawer.selectUnifiedInbox();
-            }
             noThreading = intent.getBooleanExtra(EXTRA_NO_THREADING, false);
         }
 
@@ -480,7 +477,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             search.addAccountUuid(messageReference.getAccountUuid());
             String folderServerId = messageReference.getFolderServerId();
             search.addAllowedFolder(folderServerId);
-            drawer.selectFolder(folderServerId);
         }
 
         if (search == null) {
@@ -1700,6 +1696,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         singleFolderMode = singleAccountMode && folderServerIds.size() == 1;
         if (singleFolderMode) {
             drawer.selectFolder(folderServerIds.get(0));
+        } else if (search.getId().equals(SearchAccount.UNIFIED_INBOX)) {
+            drawer.selectUnifiedInbox();
         } else {
             drawer.selectFolder(null);
         }

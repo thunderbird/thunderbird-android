@@ -23,6 +23,7 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
+
 public class K9Drawer {
     // Bit shift for identifiers of user folders items, to leave space for other items
     private static final short DRAWER_FOLDER_SHIFT = 2;
@@ -47,6 +48,7 @@ public class K9Drawer {
     private int iconFolderResId;
 
     private final List<Long> userFolderDrawerIds = new ArrayList<>();
+    private boolean unifiedInboxSelected;
     private String openedFolderServerId;
 
 
@@ -175,6 +177,8 @@ public class K9Drawer {
 
         if (openedFolderDrawerId != -1) {
             drawer.setSelection(openedFolderDrawerId, false);
+        } else if (unifiedInboxSelected) {
+            selectUnifiedInbox();
         }
     }
 
@@ -186,6 +190,7 @@ public class K9Drawer {
     }
 
     public void selectFolder(String folderServerId) {
+        unifiedInboxSelected = false;
         openedFolderServerId = folderServerId;
         for (long drawerId : userFolderDrawerIds) {
             Folder folder = (Folder) drawer.getDrawerItem(drawerId).getTag();
@@ -197,6 +202,8 @@ public class K9Drawer {
     }
 
     public void selectUnifiedInbox() {
+        unifiedInboxSelected = true;
+        openedFolderServerId = null;
         drawer.setSelection(DRAWER_ID_UNIFIED_INBOX, false);
     }
 
