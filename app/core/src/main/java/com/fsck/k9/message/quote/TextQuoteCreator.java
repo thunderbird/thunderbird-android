@@ -8,7 +8,6 @@ import android.content.res.Resources;
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.DI;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
@@ -17,8 +16,6 @@ import static com.fsck.k9.message.quote.QuoteHelper.QUOTE_BUFFER_LENGTH;
 
 
 public class TextQuoteCreator {
-    private static final int REPLY_WRAP_LINE_WIDTH = 72;
-
     /**
      * Add quoting markup to a text message.
      * @param originalMessage Metadata for message being quoted.
@@ -42,10 +39,8 @@ public class TextQuoteCreator {
             }
             quotedText.append("\r\n");
 
-            final String wrappedText = Utility.wrap(body, REPLY_WRAP_LINE_WIDTH - prefix.length());
-
             final String escapedPrefix = Matcher.quoteReplacement(prefix);
-            quotedText.append(wrappedText.replaceAll("(?m)^", escapedPrefix));
+            quotedText.append(body.replaceAll("(?m)^", escapedPrefix));
 
             return quotedText.toString();
         } else if (quoteStyle == QuoteStyle.HEADER) {
