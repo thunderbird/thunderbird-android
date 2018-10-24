@@ -2,7 +2,6 @@ package com.fsck.k9.ui;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import android.os.Bundle;
@@ -156,10 +155,9 @@ public class K9Drawer {
             return;
         }
 
-        Collections.reverse(folders);
-
         long openedFolderDrawerId = -1;
-        for (Folder folder : folders) {
+        for (int i = folders.size() - 1; i >= 0; i--) {
+            Folder folder = folders.get(i);
             long drawerId = folder.getId() << DRAWER_FOLDER_SHIFT;
             drawer.addItemAtPosition(new PrimaryDrawerItem()
                     .withIcon(getFolderIcon(folder))
