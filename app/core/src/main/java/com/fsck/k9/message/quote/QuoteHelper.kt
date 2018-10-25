@@ -11,7 +11,7 @@ import com.fsck.k9.K9
 import com.fsck.k9.mail.Message
 
 
-internal class QuoteHelper(private val resources: Resources) {
+class QuoteHelper(private val resources: Resources) {
 
     /**
      * Extract the date from a message and convert it into a locale-specific
