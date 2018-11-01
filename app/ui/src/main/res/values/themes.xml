@@ -73,6 +73,10 @@
         <item name="iconPreferencesVarious">@drawable/ic_widgets_light</item>
         <item name="iconPreferencesPrivacy">@drawable/ic_shield_light</item>
         <item name="iconPreferencesDebug">@drawable/ic_bug_light</item>
+        <item name="iconSettingsAbout">@drawable/ic_info_outline_light</item>
+        <item name="iconSettingsGeneral">@drawable/ic_cog_light</item>
+        <item name="iconSettingsAccount">@drawable/ic_account_light</item>
+        <item name="iconSettingsAccountAdd">@drawable/ic_account_plus_light</item>
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_light</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_light</item>
         <item name="messageListSelectedBackgroundColor">#8038B8E2</item>
@@ -166,6 +170,10 @@
         <item name="iconPreferencesVarious">@drawable/ic_widgets_dark</item>
         <item name="iconPreferencesPrivacy">@drawable/ic_shield_dark</item>
         <item name="iconPreferencesDebug">@drawable/ic_bug_dark</item>
+        <item name="iconSettingsAbout">@drawable/ic_info_outline_dark</item>
+        <item name="iconSettingsGeneral">@drawable/ic_cog_dark</item>
+        <item name="iconSettingsAccount">@drawable/ic_account_dark</item>
+        <item name="iconSettingsAccountAdd">@drawable/ic_account_plus_dark</item>
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_dark</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_dark</item>
         <item name="messageListSelectedBackgroundColor">#8038B8E2</item>

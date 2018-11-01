@@ -53,6 +53,10 @@
         <attr name="iconPreferencesVarious" format="reference" />
         <attr name="iconPreferencesPrivacy" format="reference" />
         <attr name="iconPreferencesDebug" format="reference" />
+        <attr name="iconSettingsAbout" format="reference" />
+        <attr name="iconSettingsGeneral" format="reference" />
+        <attr name="iconSettingsAccount" format="reference" />
+        <attr name="iconSettingsAccountAdd" format="reference" />
         <attr name="textColorPrimaryRecipientDropdown" format="reference" />
         <attr name="textColorSecondaryRecipientDropdown" format="reference" />
         <attr name="backgroundColorChooseAccountHeader" format="color" />
