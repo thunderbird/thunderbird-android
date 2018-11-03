@@ -55,7 +55,7 @@
     <application
         android:name="com.fsck.k9.App"
         android:allowTaskReparenting="false"
-        android:icon="@drawable/icon"
+        android:icon="@mipmap/icon"
         android:label="@string/app_name"
         android:theme="@style/Theme.K9.Startup"
         android:resizeableActivity="true"
@@ -389,7 +389,7 @@
 
         <receiver
             android:name=".widget.unread.UnreadWidgetProvider"
-            android:icon="@drawable/icon"
+            android:icon="@mipmap/icon"
             android:label="@string/unread_widget_label">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
