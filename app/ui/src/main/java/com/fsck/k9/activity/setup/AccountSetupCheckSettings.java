@@ -29,7 +29,6 @@ import android.widget.TextView;
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.ui.R;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.fragment.ConfirmationDialogFragment;
@@ -37,12 +36,12 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmen
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.Folder.FolderClass;
-import com.fsck.k9.mail.Folder.FolderType;
 import com.fsck.k9.mail.MailServerDirection;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
+import com.fsck.k9.ui.R;
 import timber.log.Timber;
 
 
@@ -542,7 +541,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 
             LocalFolder folder = localStore.getFolder(internalId);
             if (!folder.exists()) {
-                folder.create(FolderType.HOLDS_MESSAGES);
+                folder.create();
             }
             folder.setName(folderName);
             folder.setInTopGroup(true);

@@ -281,7 +281,7 @@ public class LocalFolder extends Folder<LocalMessage> {
      * Creates a local-only folder.
      */
     @Override
-    public boolean create(FolderType type) throws MessagingException {
+    public boolean create() throws MessagingException {
         if (exists()) {
             throw new MessagingException("Folder " + serverId + " already exists.");
         }

@@ -17,7 +17,6 @@ import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.FetchProfile.Item;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Folder.FolderType;
 import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
@@ -259,7 +258,7 @@ public class ImapFolderTest {
         ImapFolder imapFolder = createFolder("Folder");
         when(imapStore.getConnection()).thenReturn(imapConnection);
 
-        imapFolder.create(FolderType.HOLDS_MESSAGES);
+        imapFolder.create();
 
         verify(imapConnection).executeSimpleCommand("CREATE \"Folder\"");
     }
@@ -269,7 +268,7 @@ public class ImapFolderTest {
         ImapFolder imapFolder = createFolder("Folder");
         when(imapStore.getConnection()).thenReturn(imapConnection);
 
-        boolean success = imapFolder.create(FolderType.HOLDS_MESSAGES);
+        boolean success = imapFolder.create();
 
         assertTrue(success);
     }
@@ -280,7 +279,7 @@ public class ImapFolderTest {
         when(imapStore.getConnection()).thenReturn(imapConnection);
         doThrow(NegativeImapResponseException.class).when(imapConnection).executeSimpleCommand("CREATE \"Folder\"");
 
-        boolean success = imapFolder.create(FolderType.HOLDS_MESSAGES);
+        boolean success = imapFolder.create();
 
         assertFalse(success);
     }

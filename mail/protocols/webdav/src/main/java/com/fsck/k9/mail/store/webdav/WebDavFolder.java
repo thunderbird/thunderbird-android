@@ -217,7 +217,7 @@ public class WebDavFolder extends Folder<WebDavMessage> {
     }
 
     @Override
-    public boolean create(FolderType type) throws MessagingException {
+    public boolean create() throws MessagingException {
         return true;
     }
 
