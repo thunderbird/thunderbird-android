@@ -22,10 +22,6 @@ public abstract class Folder<T extends Message> {
         NONE, NO_CLASS, INHERITED, FIRST_CLASS, SECOND_CLASS
     }
 
-    public enum FolderType {
-        HOLDS_FOLDERS, HOLDS_MESSAGES,
-    }
-
     /**
      * Forces an open of the MailProvider. If the provider is already open this
      * function returns without doing anything.
@@ -53,7 +49,7 @@ public abstract class Folder<T extends Message> {
      */
     public abstract int getMode();
 
-    public abstract boolean create(FolderType type) throws MessagingException;
+    public abstract boolean create() throws MessagingException;
 
     public abstract boolean exists() throws MessagingException;
 

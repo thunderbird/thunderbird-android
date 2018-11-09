@@ -11,7 +11,6 @@ import java.util.List;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.FetchProfile.Item;
 import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Folder.FolderType;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
@@ -58,7 +57,7 @@ public class Pop3FolderTest {
     public void create_withHoldsFoldersArgument_shouldDoNothing() throws Exception {
         Pop3Folder folder = new Pop3Folder(mockStore, "TestFolder");
 
-        boolean result = folder.create(FolderType.HOLDS_FOLDERS);
+        boolean result = folder.create();
 
         assertFalse(result);
         verifyZeroInteractions(mockConnection);
@@ -68,7 +67,7 @@ public class Pop3FolderTest {
     public void create_withHoldsMessagesArgument_shouldDoNothing() throws Exception {
         Pop3Folder folder = new Pop3Folder(mockStore, "TestFolder");
 
-        boolean result = folder.create(FolderType.HOLDS_MESSAGES);
+        boolean result = folder.create();
 
         assertFalse(result);
         verifyZeroInteractions(mockConnection);
