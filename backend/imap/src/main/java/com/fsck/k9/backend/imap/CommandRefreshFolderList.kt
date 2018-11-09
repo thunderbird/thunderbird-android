@@ -3,7 +3,6 @@ package com.fsck.k9.backend.imap
 
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.FolderInfo
-import com.fsck.k9.mail.Folder.FolderType
 import com.fsck.k9.mail.store.imap.ImapStore
 
 
@@ -17,11 +16,10 @@ internal class CommandRefreshFolderList(
 
         val foldersToCreate = mutableListOf<FolderInfo>()
         for (folder in foldersOnServer) {
-            //FIXME: Use correct folder type
             if (folder.serverId !in oldFolderServerIds) {
-                foldersToCreate.add(FolderInfo(folder.serverId, folder.name, FolderType.REGULAR))
+                foldersToCreate.add(FolderInfo(folder.serverId, folder.name, folder.type))
             } else {
-                backendStorage.changeFolder(folder.serverId, folder.name, FolderType.REGULAR)
+                backendStorage.changeFolder(folder.serverId, folder.name, folder.type)
             }
         }
         backendStorage.createFolders(foldersToCreate)

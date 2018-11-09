@@ -4,7 +4,6 @@ package com.fsck.k9.mail.store.imap;
 import java.io.IOException;
 import java.nio.charset.CharacterCodingException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Deque;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -20,6 +19,7 @@ import android.support.annotation.Nullable;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.Folder.FolderType;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
@@ -125,17 +125,16 @@ public class ImapStore extends RemoteStore {
         ImapConnection connection = getConnection();
 
         try {
-            Set<String> folderNames = listFolders(connection, false);
+            List<FolderListItem> folders = listFolders(connection, false);
 
             if (!mStoreConfig.subscribedFoldersOnly()) {
-                return getFolders(folderNames);
+                return getFolders(folders);
             }
 
-            Set<String> subscribedFolders = listFolders(connection, true);
+            List<FolderListItem> subscribedFolders = listFolders(connection, true);
 
-            folderNames.retainAll(subscribedFolders);
-
-            return getFolders(folderNames);
+            List<FolderListItem> filteredFolders = limitToSubscribedFolders(folders, subscribedFolders);
+            return getFolders(filteredFolders);
         } catch (IOException | MessagingException ioe) {
             connection.close();
             throw new MessagingException("Unable to get folder list.", ioe);
@@ -144,26 +143,50 @@ public class ImapStore extends RemoteStore {
         }
     }
 
-    private Set<String> listFolders(ImapConnection connection, boolean subscribedOnly) throws IOException,
-            MessagingException {
-        String commandResponse = subscribedOnly ? "LSUB" : "LIST";
+    private List<FolderListItem> limitToSubscribedFolders(List<FolderListItem> folders,
+            List<FolderListItem> subscribedFolders) {
+        Set<String> subscribedFolderNames = new HashSet<>(subscribedFolders.size());
+        for (FolderListItem subscribedFolder : subscribedFolders) {
+            subscribedFolderNames.add(subscribedFolder.getName());
+        }
 
-        List<ImapResponse> responses =
-                connection.executeSimpleCommand(String.format("%s \"\" %s", commandResponse,
-                        ImapUtility.encodeString(getCombinedPrefix() + "*")));
+        List<FolderListItem> filteredFolders = new ArrayList<>();
+        for (FolderListItem folder : folders) {
+            if (subscribedFolderNames.contains(folder.getName())) {
+                filteredFolders.add(folder);
+            }
+        }
+
+        return filteredFolders;
+    }
+
+    private List<FolderListItem> listFolders(ImapConnection connection, boolean subscribedOnly) throws IOException,
+            MessagingException {
+
+        String command;
+        if (subscribedOnly) {
+            command = "LSUB";
+        } else if (connection.hasCapability(Capabilities.SPECIAL_USE)) {
+            command = "LIST (SPECIAL-USE)";
+        } else {
+            command = "LIST";
+        }
+
+        String encodedListPrefix = ImapUtility.encodeString(getCombinedPrefix() + "*");
+        List<ImapResponse> responses = connection.executeSimpleCommand(
+                String.format("%s \"\" %s", command, encodedListPrefix));
 
         List<ListResponse> listResponses = (subscribedOnly) ?
-                ListResponse.parseLsub(responses) : ListResponse.parseList(responses);
+                ListResponse.parseLsub(responses) :
+                ListResponse.parseList(responses);
 
-        Set<String> folderNames = new HashSet<>(listResponses.size());
-
+        List<FolderListItem> folders = new ArrayList<>(listResponses.size());
         for (ListResponse listResponse : listResponses) {
             String decodedFolderName;
             try {
                 decodedFolderName = folderNameCodec.decode(listResponse.getName());
             } catch (CharacterCodingException e) {
-                Timber.w(e,
-                        "Folder name not correctly encoded with the UTF-7 variant  as defined by RFC 3501: %s",
+                Timber.w(e, "Folder name not correctly encoded with the UTF-7 variant as defined by RFC 3501: %s",
                         listResponse.getName());
 
                 //TODO: Use the raw name returned by the server for all commands that require
@@ -194,14 +217,31 @@ public class ImapStore extends RemoteStore {
             }
 
             folder = removePrefixFromFolderName(folder);
-            if (folder != null) {
-                folderNames.add(folder);
+            if (folder == null) {
+                continue;
             }
+
+            FolderType type;
+            if (listResponse.hasAttribute("\\Archive") || listResponse.hasAttribute("\\All")) {
+                type = FolderType.ARCHIVE;
+            } else if (listResponse.hasAttribute("\\Drafts")) {
+                type = FolderType.DRAFTS;
+            } else if (listResponse.hasAttribute("\\Sent")) {
+                type = FolderType.SENT;
+            } else if (listResponse.hasAttribute("\\Junk")) {
+                type = FolderType.SPAM;
+            } else if (listResponse.hasAttribute("\\Trash")) {
+                type = FolderType.TRASH;
+            } else {
+                type = FolderType.REGULAR;
+            }
+
+            folders.add(new FolderListItem(folder, type));
         }
 
-        folderNames.add(ImapFolder.INBOX);
+        folders.add(new FolderListItem(ImapFolder.INBOX, FolderType.INBOX));
 
-        return folderNames;
+        return folders;
     }
 
     void autoconfigureFolders(final ImapConnection connection) throws IOException, MessagingException {
@@ -347,15 +387,16 @@ public class ImapStore extends RemoteStore {
         return folderNameCodec;
     }
 
-    private List<ImapFolder> getFolders(Collection<String> folderNames) {
-        List<ImapFolder> folders = new ArrayList<>(folderNames.size());
+    private List<ImapFolder> getFolders(List<FolderListItem> folders) {
+        List<ImapFolder> imapFolders = new ArrayList<>(folders.size());
 
-        for (String folderName : folderNames) {
-            ImapFolder imapFolder = getFolder(folderName);
-            folders.add(imapFolder);
+        for (FolderListItem folder : folders) {
+            ImapFolder imapFolder = getFolder(folder.getName());
+            imapFolder.setType(folder.getType());
+            imapFolders.add(imapFolder);
         }
 
-        return folders;
+        return imapFolders;
     }
 
     @Override
