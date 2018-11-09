@@ -8,6 +8,7 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.FolderInfo
+import com.fsck.k9.mail.Folder.FolderType
 
 class K9BackendStorage(
         private val preferences: Preferences,
@@ -35,7 +36,7 @@ class K9BackendStorage(
     override fun createFolders(folders: List<FolderInfo>) {
         if (folders.isEmpty()) return
 
-        val localFolders = folders.map { localStore.getFolder(it.serverId, it.name) }
+        val localFolders = folders.map { localStore.getFolder(it.serverId, it.name, it.type) }
         localStore.createFolders(localFolders, account.displayCount)
     }
 
@@ -46,10 +47,11 @@ class K9BackendStorage(
                 .forEach { it.delete() }
     }
 
-    override fun changeFolder(folderServerId: String, name: String) {
+    override fun changeFolder(folderServerId: String, name: String, type: FolderType) {
         database.execute(false) { db ->
             val values = ContentValues().apply {
                 put("name", name)
+                put("type", type.toDatabaseFolderType())
             }
 
             db.update("folders", values, "server_id = ?", arrayOf(folderServerId))

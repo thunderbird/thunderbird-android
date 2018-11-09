@@ -10,6 +10,7 @@ import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Flag
+import com.fsck.k9.mail.Folder.FolderType
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.internet.MimeMessage
 import com.fsck.k9.mail.internet.MimeMessageHelper
@@ -84,7 +85,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
     fun createBackendFolder(): BackendFolder {
         val localStore: LocalStore = account.localStore
         val backendStorage = K9BackendStorage(preferences, account, localStore)
-        backendStorage.createFolders(listOf(FolderInfo(FOLDER_SERVER_ID, FOLDER_NAME)))
+        backendStorage.createFolders(listOf(FolderInfo(FOLDER_SERVER_ID, FOLDER_NAME, FOLDER_TYPE)))
 
         val folderServerIds = backendStorage.getFolderServerIds()
         assertTrue(FOLDER_SERVER_ID in folderServerIds)
@@ -127,6 +128,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
     companion object {
         const val FOLDER_SERVER_ID = "testFolder"
         const val FOLDER_NAME = "Test Folder"
+        val FOLDER_TYPE = FolderType.REGULAR
         const val MESSAGE_SERVER_ID = "msg001"
     }
 }

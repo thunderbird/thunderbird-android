@@ -43,6 +43,7 @@ import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.FetchProfile.Item;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.Folder.FolderType;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
@@ -405,8 +406,8 @@ public class LocalStore {
         return new LocalFolder(this, serverId);
     }
 
-    public LocalFolder getFolder(String serverId, String name) {
-        return new LocalFolder(this, serverId, name);
+    public LocalFolder getFolder(String serverId, String name, FolderType type) {
+        return new LocalFolder(this, serverId, name, type);
     }
 
     // TODO this takes about 260-300ms, seems slow.
