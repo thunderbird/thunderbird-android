@@ -9,6 +9,7 @@ import android.os.Build
 import android.support.annotation.RequiresApi
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
+import java.util.concurrent.Executors
 
 class NotificationChannelUtils(private val context: Context, private val preferences: Preferences) {
 
@@ -21,12 +22,14 @@ class NotificationChannelUtils(private val context: Context, private val prefere
             return
         }
 
-        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE)
-                as NotificationManager
-        val accounts = preferences.accounts
+        Executors.newSingleThreadExecutor().execute {
+            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE)
+                    as NotificationManager
+            val accounts = preferences.accounts
 
-        removeChannelsForNonExistingOrChangedAccounts(notificationManager, accounts)
-        addChannelsForAccounts(notificationManager, accounts)
+            removeChannelsForNonExistingOrChangedAccounts(notificationManager, accounts)
+            addChannelsForAccounts(notificationManager, accounts)
+        }
 
     }
 
