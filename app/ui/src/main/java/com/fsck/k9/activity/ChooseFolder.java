@@ -322,7 +322,7 @@ public class ChooseFolder extends K9ListActivity {
                     topFolders.size() + ((mShowOptionNone) ? 1 : 0));
 
             if (mShowOptionNone) {
-                folderList.add(new FolderDisplayData(0, K9.FOLDER_NONE, K9.FOLDER_NONE));
+                folderList.add(new FolderDisplayData(0, null, K9.FOLDER_NONE));
             }
 
             folderList.addAll(topFolders);

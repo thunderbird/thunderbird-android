@@ -197,11 +197,11 @@ public class WearNotificationsTest extends RobolectricTest {
     }
 
     private void disableArchiveAction() {
-        when(account.getArchiveFolder()).thenReturn(K9.FOLDER_NONE);
+        when(account.getArchiveFolder()).thenReturn(null);
     }
 
     private void disableSpamAction() {
-        when(account.getSpamFolder()).thenReturn(K9.FOLDER_NONE);
+        when(account.getSpamFolder()).thenReturn(null);
     }
 
     private void enableDeleteAction() {

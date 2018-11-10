@@ -59,7 +59,7 @@ class UnreadWidgetDataProvider(
     }
 
     private fun getClickIntentForAccount(account: Account): Intent {
-        if (K9.FOLDER_NONE == account.autoExpandFolder) {
+        if (account.autoExpandFolder == null) {
             return FolderList.actionHandleAccountIntent(context, account, false)
         }
 

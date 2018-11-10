@@ -307,11 +307,11 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             return;
         }
 
-        if (K9.FOLDER_NONE.equals(dstFolder)) {
+        if (dstFolder == null) {
             return;
         }
 
-        if (mAccount.getSpamFolder().equals(dstFolder) && K9.confirmSpam()) {
+        if (dstFolder.equals(mAccount.getSpamFolder()) && K9.confirmSpam()) {
             mDstFolder = dstFolder;
             showDialog(R.id.dialog_confirm_spam);
         } else {

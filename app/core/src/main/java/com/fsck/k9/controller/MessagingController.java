@@ -1713,6 +1713,11 @@ public class MessagingController {
 
     private void moveMessageToDraftsFolder(Account account, Folder localFolder, LocalStore localStore, Message message)
             throws MessagingException {
+        if (!account.hasDraftsFolder()) {
+            Timber.d("Can't move message to Drafts folder. No Drafts folder configured.");
+            return;
+        }
+
         LocalFolder draftsFolder = localStore.getFolder(account.getDraftsFolder());
         localFolder.moveMessages(Collections.singletonList(message), draftsFolder);
     }
@@ -2723,10 +2728,10 @@ public class MessagingController {
         if (folder != null) {
             String folderServerId = folder.getServerId();
             if (!account.getInboxFolder().equals(folderServerId) &&
-                    (account.getTrashFolder().equals(folderServerId)
-                            || account.getDraftsFolder().equals(folderServerId)
-                            || account.getSpamFolder().equals(folderServerId)
-                            || account.getSentFolder().equals(folderServerId))) {
+                    (folderServerId.equals(account.getTrashFolder())
+                            || folderServerId.equals(account.getDraftsFolder())
+                            || folderServerId.equals(account.getSpamFolder())
+                            || folderServerId.equals(account.getSentFolder()))) {
                 return false;
             }
         }
