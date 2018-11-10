@@ -19,6 +19,7 @@ import java.util.Map;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.Folder.FolderType;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
@@ -167,8 +168,7 @@ public class WebDavStore extends RemoteStore {
         getHttpClient();
 
         /*
-         *  Firstly we get the "special" folders list (inbox, outbox, etc)
-         *  and setup the account accordingly
+         *  First we get the "special" folders list (inbox, outbox, etc)
          */
         Map<String, String> headers = new HashMap<>();
         headers.put("Depth", "0");
@@ -176,38 +176,6 @@ public class WebDavStore extends RemoteStore {
         DataSet dataset = processRequest(this.baseUrl, "PROPFIND", getSpecialFoldersList(), headers);
 
         Map<String, String> specialFoldersMap = dataset.getSpecialFolderToUrl();
-        String folderName = getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_INBOX_FOLDER));
-        if (folderName != null) {
-            mStoreConfig.setAutoExpandFolder(folderName);
-            mStoreConfig.setInboxFolder(folderName);
-        }
-
-        folderName = getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_DRAFTS_FOLDER));
-        if (folderName != null) {
-            mStoreConfig.setDraftsFolder(folderName);
-        }
-
-        folderName = getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_TRASH_FOLDER));
-        if (folderName != null) {
-            mStoreConfig.setTrashFolder(folderName);
-        }
-
-        folderName = getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_SPAM_FOLDER));
-        if (folderName != null) {
-            mStoreConfig.setSpamFolder(folderName);
-        }
-
-        // K-9 Mail's outbox is a special local folder and different from Exchange/WebDAV's outbox.
-        /*
-        folderName = getFolderName(specialFoldersMap.get(DAV_MAIL_OUTBOX_FOLDER));
-        if (folderName != null)
-            mAccount.setOutboxFolderName(folderName);
-        */
-
-        folderName = getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_SENT_FOLDER));
-        if (folderName != null) {
-            mStoreConfig.setSentFolder(folderName);
-        }
 
         /*
          * Next we get all the folders (including "special" ones)
@@ -218,7 +186,7 @@ public class WebDavStore extends RemoteStore {
         String[] folderUrls = dataset.getHrefs();
 
         for (String tempUrl : folderUrls) {
-            WebDavFolder folder = createFolder(tempUrl);
+            WebDavFolder folder = createFolder(tempUrl, specialFoldersMap);
             if (folder != null) {
                 folderList.add(folder);
             }
@@ -228,15 +196,10 @@ public class WebDavStore extends RemoteStore {
     }
 
     /**
-     * Creates a folder using the URL passed as parameter (only if it has not been
-     * already created) and adds this to our store folder map.
-     *
-     * @param folderUrl
-     *         URL
-     *
-     * @return WebDAV remote folder
+     * Creates a folder using the URL passed as parameter (only if it has not been already created) and adds this to
+     * our store folder map.
      */
-    private WebDavFolder createFolder(String folderUrl) {
+    private WebDavFolder createFolder(String folderUrl, Map<String, String> specialFoldersMap) {
         if (folderUrl == null) {
             return null;
         }
@@ -247,11 +210,29 @@ public class WebDavStore extends RemoteStore {
             wdFolder = getFolder(folderName);
             if (wdFolder != null) {
                 wdFolder.setUrl(folderUrl);
+                FolderType type = getFolderType(folderName, specialFoldersMap);
+                wdFolder.setType(type);
             }
         }
         // else: Unknown URL format => NO Folder created
 
         return wdFolder;
+    }
+
+    private FolderType getFolderType(String folderName, Map<String, String> specialFoldersMap) {
+        if (folderName.equals(getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_INBOX_FOLDER)))) {
+            return FolderType.INBOX;
+        } else if (folderName.equals(getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_DRAFTS_FOLDER)))) {
+            return FolderType.DRAFTS;
+        } else if (folderName.equals(getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_TRASH_FOLDER)))) {
+            return FolderType.TRASH;
+        } else if (folderName.equals(getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_SPAM_FOLDER)))) {
+            return FolderType.SPAM;
+        } else if (folderName.equals(getFolderName(specialFoldersMap.get(WebDavConstants.DAV_MAIL_SENT_FOLDER)))) {
+            return FolderType.SENT;
+        } else {
+            return FolderType.REGULAR;
+        }
     }
 
     private String getFolderName(String folderUrl) {
