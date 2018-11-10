@@ -11,6 +11,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.MockHelper;
 import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.mail.Folder;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.robolectric.RuntimeEnvironment;
@@ -117,13 +118,16 @@ public class SyncNotificationsTest extends RobolectricTest {
         return builder;
     }
 
-    private NotificationHelper createFakeNotificationHelper(NotificationManagerCompat notificationManager,
-            Builder builder) {
+    private NotificationHelper createFakeNotificationHelper(
+            NotificationManagerCompat notificationManager, Builder builder) {
         NotificationHelper notificationHelper = mock(NotificationHelper.class);
         when(notificationHelper.getContext()).thenReturn(RuntimeEnvironment.application);
         when(notificationHelper.getNotificationManager()).thenReturn(notificationManager);
-        when(notificationHelper.createNotificationBuilder(mock(Account.class), NotificationChannelUtils.Type.OTHER)).thenReturn(builder);
+        when(notificationHelper.createNotificationBuilder(any(Account.class),
+                any(NotificationChannelUtils.ChannelType.class)))
+                .thenReturn(builder);
         when(notificationHelper.getAccountName(any(Account.class))).thenReturn(ACCOUNT_NAME);
+
         return notificationHelper;
     }
 

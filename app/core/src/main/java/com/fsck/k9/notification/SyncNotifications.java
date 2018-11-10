@@ -21,7 +21,7 @@ class SyncNotifications {
 
 
     public SyncNotifications(NotificationHelper notificationHelper, NotificationActionCreator actionBuilder,
-            NotificationResourceProvider resourceProvider) {
+                             NotificationResourceProvider resourceProvider) {
         this.notificationHelper = notificationHelper;
         this.actionBuilder = actionBuilder;
         this.resourceProvider = resourceProvider;
@@ -37,8 +37,8 @@ class SyncNotifications {
         PendingIntent showMessageListPendingIntent = actionBuilder.createViewFolderPendingIntent(
                 account, outboxFolder, notificationId);
 
-        NotificationCompat.Builder builder = notificationHelper
-                .createNotificationBuilder(account, NotificationChannelUtils.Type.OTHER)
+        NotificationCompat.Builder builder = notificationHelper.createNotificationBuilder(account,
+                NotificationChannelUtils.ChannelType.MISCELLANEOUS)
                 .setSmallIcon(resourceProvider.getIconSendingMail())
                 .setWhen(System.currentTimeMillis())
                 .setOngoing(true)
@@ -76,8 +76,8 @@ class SyncNotifications {
         PendingIntent showMessageListPendingIntent = actionBuilder.createViewFolderPendingIntent(
                 account, folderServerId, notificationId);
 
-        NotificationCompat.Builder builder = notificationHelper
-                .createNotificationBuilder(account, NotificationChannelUtils.Type.OTHER)
+        NotificationCompat.Builder builder = notificationHelper.createNotificationBuilder(account,
+                NotificationChannelUtils.ChannelType.MISCELLANEOUS)
                 .setSmallIcon(resourceProvider.getIconCheckingMail())
                 .setWhen(System.currentTimeMillis())
                 .setOngoing(true)

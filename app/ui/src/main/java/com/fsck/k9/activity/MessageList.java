@@ -165,6 +165,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     protected final SearchStatusManager searchStatusManager = DI.get(SearchStatusManager.class);
     private StorageManager.StorageListener mStorageListener = new StorageListenerImplementation();
     private final Preferences preferences = DI.get(Preferences.class);
+    private final NotificationChannelUtils channelUtils = DI.get(NotificationChannelUtils.class);
 
     private ActionBar actionBar;
     private ActionBarDrawerToggle drawerToggle;
@@ -261,7 +262,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         initializeLayout();
         initializeFragments();
         displayViews();
-        NotificationChannelUtils.updateChannels(this);
+        channelUtils.updateChannels();
 
         ChangeLog cl = new ChangeLog(this);
         if (cl.isFirstRun()) {

@@ -88,7 +88,8 @@ class LockScreenNotification {
         int unreadCount = notificationData.getUnreadMessageCount();
         String title = resourceProvider.newMessagesTitle(newMessages);
 
-        return notificationHelper.createNotificationBuilder(account, NotificationChannelUtils.Type.MESSAGES)
+        return notificationHelper.createNotificationBuilder(account,
+                NotificationChannelUtils.ChannelType.MESSAGES)
                 .setSmallIcon(resourceProvider.getIconNewMail())
                 .setColor(account.getChipColor())
                 .setNumber(unreadCount)

@@ -6,7 +6,8 @@ import org.koin.dsl.module.applicationContext
 val coreNotificationModule = applicationContext {
     bean { NotificationController(get(), get(), get(), get(), get()) }
     bean { NotificationManagerCompat.from(get()) }
-    bean { NotificationHelper(get(), get()) }
+    bean { NotificationHelper(get(), get(), get()) }
+    bean { NotificationChannelUtils(get(), get()) }
     bean { CertificateErrorNotifications(get(), get(), get()) }
     bean { AuthenticationErrorNotifications(get(), get(), get()) }
     bean { SyncNotifications(get(), get(), get()) }

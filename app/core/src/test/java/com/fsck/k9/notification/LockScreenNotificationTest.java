@@ -168,7 +168,8 @@ public class LockScreenNotificationTest extends RobolectricTest {
         NotificationHelper notificationHelper = mock(NotificationHelper.class);
         when(notificationHelper.getContext()).thenReturn(context);
         when(notificationHelper.getAccountName(any(Account.class))).thenReturn(ACCOUNT_NAME);
-        when(notificationHelper.createNotificationBuilder(mock(Account.class), NotificationChannelUtils.Type.OTHER)).thenReturn(builder);
+        when(notificationHelper.createNotificationBuilder(any(Account.class), any(NotificationChannelUtils
+                .ChannelType.class))).thenReturn(builder);
 
         return notificationHelper;
     }

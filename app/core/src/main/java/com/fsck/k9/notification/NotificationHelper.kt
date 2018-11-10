@@ -10,10 +10,15 @@ import com.fsck.k9.K9
 
 class NotificationHelper(
         private val context: Context,
-        private val notificationManager: NotificationManagerCompat
+        private val notificationManager: NotificationManagerCompat,
+        private val channelUtils: NotificationChannelUtils
 ) {
-    fun configureNotification(builder: NotificationCompat.Builder, ringtone: String?, vibrationPattern: LongArray?,
-                                       ledColor: Int?, ledSpeed: Int, ringAndVibrate: Boolean) {
+    fun configureNotification(
+            builder: NotificationCompat.Builder,
+            ringtone: String?,
+            vibrationPattern: LongArray?,
+            ledColor: Int?, ledSpeed: Int,
+            ringAndVibrate: Boolean) {
 
         if (K9.isQuietTime()) {
             return
@@ -57,8 +62,12 @@ class NotificationHelper(
         return notificationManager
     }
 
-    fun createNotificationBuilder(account: Account, type: NotificationChannelUtils.Type): NotificationCompat.Builder {
-        return NotificationCompat.Builder(context, NotificationChannelUtils.getChannelIdFor(account, type))
+    fun createNotificationBuilder(
+            account: Account,
+            channelType: NotificationChannelUtils.ChannelType
+    ): NotificationCompat.Builder {
+        return NotificationCompat.Builder(context,
+                channelUtils.getChannelIdFor(account, channelType))
     }
 
 

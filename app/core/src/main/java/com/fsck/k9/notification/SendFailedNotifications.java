@@ -34,7 +34,7 @@ class SendFailedNotifications {
                 account, notificationId);
 
         NotificationCompat.Builder builder = notificationHelper
-                .createNotificationBuilder(account, NotificationChannelUtils.Type.OTHER)
+                .createNotificationBuilder(account, NotificationChannelUtils.ChannelType.MISCELLANEOUS)
                 .setSmallIcon(resourceProvider.getIconWarning())
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)
