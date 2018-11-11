@@ -32,7 +32,8 @@ class AuthenticationErrorNotifications {
         String title = resourceProvider.authenticationErrorTitle();
         String text =  resourceProvider.authenticationErrorBody(account.getDescription());
 
-        NotificationCompat.Builder builder = notificationHelper.createNotificationBuilder()
+        NotificationCompat.Builder builder = notificationHelper
+                .createNotificationBuilder(account, NotificationChannelUtils.ChannelType.MISCELLANEOUS)
                 .setSmallIcon(resourceProvider.getIconWarning())
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)

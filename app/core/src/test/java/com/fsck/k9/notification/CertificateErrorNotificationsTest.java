@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.robolectric.RuntimeEnvironment;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -114,7 +115,10 @@ public class CertificateErrorNotificationsTest extends RobolectricTest {
         NotificationHelper notificationHelper = mock(NotificationHelper.class);
         when(notificationHelper.getContext()).thenReturn(RuntimeEnvironment.application);
         when(notificationHelper.getNotificationManager()).thenReturn(notificationManager);
-        when(notificationHelper.createNotificationBuilder()).thenReturn(builder);
+        when(notificationHelper.createNotificationBuilder(any(Account.class),
+                any(NotificationChannelUtils.ChannelType.class)))
+                .thenReturn(builder);
+
         return notificationHelper;
     }
 
@@ -122,6 +126,7 @@ public class CertificateErrorNotificationsTest extends RobolectricTest {
         Account account = mock(Account.class);
         when(account.getAccountNumber()).thenReturn(ACCOUNT_NUMBER);
         when(account.getDescription()).thenReturn(ACCOUNT_NAME);
+        when(account.getUuid()).thenReturn("test-uuid");
 
         return account;
     }
