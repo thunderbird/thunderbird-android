@@ -1,7 +1,6 @@
 package com.fsck.k9.preferences;
 
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,9 +14,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.os.SystemClock;
 
-import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.helper.Utility;
-import com.fsck.k9.mail.filter.Base64;
+import com.fsck.k9.preferences.migrations.StorageMigrations;
+import com.fsck.k9.preferences.migrations.StorageMigrationsHelper;
+import org.jetbrains.annotations.NotNull;
 import timber.log.Timber;
 
 public class Storage {
@@ -36,105 +36,37 @@ public class Storage {
     private Context context = null;
 
     private SQLiteDatabase openDB() {
-        SQLiteDatabase mDb = context.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
+        SQLiteDatabase db = context.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
 
-        if (mDb.getVersion() == 1) {
-            Timber.i("Updating preferences to urlencoded username/password");
-
-            String accountUuids = readValue(mDb, "accountUuids");
-            if (accountUuids != null && accountUuids.length() != 0) {
-                String[] uuids = accountUuids.split(",");
-                for (String uuid : uuids) {
-                    try {
-                        String storeUriStr = Base64.decode(readValue(mDb, uuid + ".storeUri"));
-                        String transportUriStr = Base64.decode(readValue(mDb, uuid + ".transportUri"));
-
-                        URI uri = new URI(transportUriStr);
-                        String newUserInfo = null;
-                        if (transportUriStr != null) {
-                            String[] userInfoParts = uri.getUserInfo().split(":");
-
-                            String usernameEnc = UrlEncodingHelper.encodeUtf8(userInfoParts[0]);
-                            String passwordEnc = "";
-                            String authType = "";
-                            if (userInfoParts.length > 1) {
-                                passwordEnc = ":" + UrlEncodingHelper.encodeUtf8(userInfoParts[1]);
-                            }
-                            if (userInfoParts.length > 2) {
-                                authType = ":" + userInfoParts[2];
-                            }
-
-                            newUserInfo = usernameEnc + passwordEnc + authType;
-                        }
-
-                        if (newUserInfo != null) {
-                            URI newUri = new URI(uri.getScheme(), newUserInfo, uri.getHost(), uri.getPort(), uri.getPath(), uri.getQuery(), uri.getFragment());
-                            String newTransportUriStr = Base64.encode(newUri.toString());
-                            writeValue(mDb, uuid + ".transportUri", newTransportUriStr);
-                        }
-
-                        uri = new URI(storeUriStr);
-                        newUserInfo = null;
-                        if (storeUriStr.startsWith("imap")) {
-                            String[] userInfoParts = uri.getUserInfo().split(":");
-                            if (userInfoParts.length == 2) {
-                                String usernameEnc = UrlEncodingHelper.encodeUtf8(userInfoParts[0]);
-                                String passwordEnc = UrlEncodingHelper.encodeUtf8(userInfoParts[1]);
-
-                                newUserInfo = usernameEnc + ":" + passwordEnc;
-                            } else {
-                                String authType = userInfoParts[0];
-                                String usernameEnc = UrlEncodingHelper.encodeUtf8(userInfoParts[1]);
-                                String passwordEnc = UrlEncodingHelper.encodeUtf8(userInfoParts[2]);
-
-                                newUserInfo = authType + ":" + usernameEnc + ":" + passwordEnc;
-                            }
-                        } else if (storeUriStr.startsWith("pop3")) {
-                            String[] userInfoParts = uri.getUserInfo().split(":", 2);
-                            String usernameEnc = UrlEncodingHelper.encodeUtf8(userInfoParts[0]);
-
-                            String passwordEnc = "";
-                            if (userInfoParts.length > 1) {
-                                passwordEnc = ":" + UrlEncodingHelper.encodeUtf8(userInfoParts[1]);
-                            }
-
-                            newUserInfo = usernameEnc + passwordEnc;
-                        } else if (storeUriStr.startsWith("webdav")) {
-                            String[] userInfoParts = uri.getUserInfo().split(":", 2);
-                            String usernameEnc = UrlEncodingHelper.encodeUtf8(userInfoParts[0]);
-
-                            String passwordEnc = "";
-                            if (userInfoParts.length > 1) {
-                                passwordEnc = ":" + UrlEncodingHelper.encodeUtf8(userInfoParts[1]);
-                            }
-
-                            newUserInfo = usernameEnc + passwordEnc;
-                        }
-
-                        if (newUserInfo != null) {
-                            URI newUri = new URI(uri.getScheme(), newUserInfo, uri.getHost(), uri.getPort(), uri.getPath(), uri.getQuery(), uri.getFragment());
-                            String newStoreUriStr = Base64.encode(newUri.toString());
-                            writeValue(mDb, uuid + ".storeUri", newStoreUriStr);
-                        }
-                    } catch (Exception e) {
-                        Timber.e(e, "ooops");
-                    }
-                }
+        db.beginTransaction();
+        try {
+            if (db.getVersion() < 1) {
+                createStorageDatabase(db);
+            } else {
+                StorageMigrations.upgradeDatabase(db, migrationsHelper);
             }
 
-            mDb.setVersion(DB_VERSION);
+            db.setVersion(DB_VERSION);
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
         }
 
-        if (mDb.getVersion() != DB_VERSION) {
-            Timber.i("Creating Storage database");
-            mDb.execSQL("DROP TABLE IF EXISTS preferences_storage");
-            mDb.execSQL("CREATE TABLE preferences_storage " +
-                        "(primkey TEXT PRIMARY KEY ON CONFLICT REPLACE, value TEXT)");
-            mDb.setVersion(DB_VERSION);
+        if (db.getVersion() != DB_VERSION) {
+            throw new RuntimeException("Storage database upgrade failed!");
         }
-        return mDb;
+
+        return db;
     }
 
+    private void createStorageDatabase(SQLiteDatabase db) {
+        Timber.i("Creating Storage database");
+
+        db.execSQL("DROP TABLE IF EXISTS preferences_storage");
+        db.execSQL("CREATE TABLE preferences_storage " +
+                    "(primkey TEXT PRIMARY KEY ON CONFLICT REPLACE, value TEXT)");
+        db.setVersion(DB_VERSION);
+    }
 
     public static Storage getStorage(Context context) {
         Storage tmpStorage = storages.get(context);
@@ -342,4 +274,16 @@ public class Storage {
             Timber.e("Error writing key '%s', value = '%s'", key, value);
         }
     }
+
+    private StorageMigrationsHelper migrationsHelper = new StorageMigrationsHelper() {
+        @Override
+        public void writeValue(@NotNull SQLiteDatabase db, @NotNull String key, String value) {
+            Storage.this.writeValue(db, key, value);
+        }
+
+        @Override
+        public String readValue(@NotNull SQLiteDatabase db, @NotNull String key) {
+            return Storage.this.readValue(db, key);
+        }
+    };
 }
