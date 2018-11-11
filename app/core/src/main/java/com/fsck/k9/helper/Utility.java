@@ -18,6 +18,9 @@ import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.common.net.InetAddresses;
+import com.google.common.net.InternetDomainName;
+
 import org.apache.james.mime4j.util.MimeUtil;
 import timber.log.Timber;
 
@@ -110,13 +113,9 @@ public class Utility {
     public static boolean domainFieldValid(EditText view) {
         if (view.getText() != null) {
             String s = view.getText().toString();
-            if (s.matches("^([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)*[a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?$") &&
-                s.length() <= 253) {
-                return true;
-            }
-            if (s.matches("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$")) {
-                return true;
-            }
+
+            return InternetDomainName.isValid(s)
+                    || InetAddresses.isInetAddress(s);
         }
         return false;
     }

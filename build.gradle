@@ -17,6 +17,7 @@ buildscript {
                 'commonsIo': '2.4',
                 'coreKtx': '0.3',
                 'mime4j': '0.8.1',
+                'guava' : '27.0-android',
 
                 'junit': '4.12',
                 'robolectric': '3.7.1',

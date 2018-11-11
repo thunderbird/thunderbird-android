@@ -22,6 +22,8 @@ dependencies {
     implementation "com.squareup.moshi:moshi:1.2.0"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
     implementation "org.apache.james:apache-mime4j-core:${versions.mime4j}"
+    implementation "com.google.guava:guava:${versions.guava}"
+    implementation "com.google.code.findbugs:jsr305:2.0.2" // needed for Guava
 
     testImplementation project(':mail:testing')
     testImplementation project(":backend:imap")
