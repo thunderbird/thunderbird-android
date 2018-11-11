@@ -25,7 +25,7 @@ public class Storage {
 
     private volatile ConcurrentMap<String, String> storage = new ConcurrentHashMap<>();
 
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 3;
     private static final String DB_NAME = "preferences_storage";
 
     private ThreadLocal<ConcurrentMap<String, String>> workingStorage = new ThreadLocal<>();
@@ -264,11 +264,16 @@ public class Storage {
     }
 
     private void writeValue(SQLiteDatabase mDb, String key, String value) {
+        if (value == null) {
+            mDb.delete("preferences_storage", "primkey = ?", new String[] { key });
+            return;
+        }
+
         ContentValues cv = new ContentValues();
         cv.put("primkey", key);
         cv.put("value", value);
 
-        long result = mDb.insert("preferences_storage", "primkey", cv);
+        long result = mDb.update("preferences_storage", cv, "primkey = ?", new String[] { key });
 
         if (result == -1) {
             Timber.e("Error writing key '%s', value = '%s'", key, value);
