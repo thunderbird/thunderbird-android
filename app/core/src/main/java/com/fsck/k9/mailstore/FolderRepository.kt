@@ -3,20 +3,37 @@ package com.fsck.k9.mailstore
 import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.mail.Folder.FolderClass
+import com.fsck.k9.mail.Folder.FolderType as RemoteFolderType
 
-class FolderRepository(private val account: Account) {
+class FolderRepository(
+        private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy,
+        private val account: Account
+) {
     private val sortForDisplay = compareByDescending<LocalFolder> { it.serverId == account.inboxFolder }
             .thenByDescending { it.serverId == account.outboxFolder }
             .thenByDescending { it.isInTopGroup }
             .thenBy(String.CASE_INSENSITIVE_ORDER) { it.name }
 
 
-    fun getRemoteFolders(): List<Folder> {
+    fun getRemoteFolderInfo(): RemoteFolderInfo {
+        val folders = getRemoteFolders()
+        val automaticSpecialFolders = mapOf(
+                FolderType.ARCHIVE to specialFolderSelectionStrategy.selectSpecialFolder(folders, FolderType.ARCHIVE),
+                FolderType.DRAFTS to specialFolderSelectionStrategy.selectSpecialFolder(folders, FolderType.DRAFTS),
+                FolderType.SENT to specialFolderSelectionStrategy.selectSpecialFolder(folders, FolderType.SENT),
+                FolderType.SPAM to specialFolderSelectionStrategy.selectSpecialFolder(folders, FolderType.SPAM),
+                FolderType.TRASH to specialFolderSelectionStrategy.selectSpecialFolder(folders, FolderType.TRASH)
+        )
+
+        return RemoteFolderInfo(folders, automaticSpecialFolders)
+    }
+
+    private fun getRemoteFolders(): List<Folder> {
         val folders = account.localStore.getPersonalNamespaces(false)
 
         return folders
                 .filterNot { it.isLocalOnly }
-                .map(::createFolderFromLocalFolder)
+                .map { Folder(it.databaseId, it.serverId, it.name, it.type.toFolderType()) }
     }
 
     fun getDisplayFolders(): List<Folder> {
@@ -55,9 +72,22 @@ class FolderRepository(private val account: Account) {
         account.spamFolder -> FolderType.SPAM
         else -> FolderType.REGULAR
     }
+
+    private fun RemoteFolderType.toFolderType(): FolderType = when (this) {
+        RemoteFolderType.REGULAR -> FolderType.REGULAR
+        RemoteFolderType.INBOX -> FolderType.INBOX
+        RemoteFolderType.OUTBOX -> FolderType.REGULAR   // We currently don't support remote Outbox folders
+        RemoteFolderType.DRAFTS -> FolderType.DRAFTS
+        RemoteFolderType.SENT -> FolderType.SENT
+        RemoteFolderType.TRASH -> FolderType.TRASH
+        RemoteFolderType.SPAM -> FolderType.SPAM
+        RemoteFolderType.ARCHIVE -> FolderType.ARCHIVE
+    }
 }
 
 data class Folder(val id: Long, val serverId: String, val name: String, val type: FolderType)
+
+data class RemoteFolderInfo(val folders: List<Folder>, val automaticSpecialFolders: Map<FolderType, Folder?>)
 
 enum class FolderType {
     REGULAR,
