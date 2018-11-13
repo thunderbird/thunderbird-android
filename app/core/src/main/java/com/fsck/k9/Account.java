@@ -40,6 +40,7 @@ import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.SearchField;
+import org.jetbrains.annotations.NotNull;
 import timber.log.Timber;
 
 import static com.fsck.k9.Preferences.getEnumStringPref;
@@ -1055,22 +1056,27 @@ public class Account implements BaseAccount, StoreConfig {
         return spamFolder != null;
     }
 
+    @NotNull
     public SpecialFolderSelection getDraftsFolderSelection() {
         return draftsFolderSelection;
     }
 
+    @NotNull
     public synchronized SpecialFolderSelection getSentFolderSelection() {
         return sentFolderSelection;
     }
 
+    @NotNull
     public synchronized SpecialFolderSelection getTrashFolderSelection() {
         return trashFolderSelection;
     }
 
+    @NotNull
     public synchronized SpecialFolderSelection getArchiveFolderSelection() {
         return archiveFolderSelection;
     }
 
+    @NotNull
     public synchronized SpecialFolderSelection getSpamFolderSelection() {
         return spamFolderSelection;
     }

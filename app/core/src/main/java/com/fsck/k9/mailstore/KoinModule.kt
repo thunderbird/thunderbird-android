@@ -8,4 +8,5 @@ val mailStoreModule = applicationContext {
     bean { StorageManager.getInstance(get()) }
     bean { SearchStatusManager() }
     bean { SpecialFolderSelectionStrategy() }
+    bean { K9BackendStorageFactory(get(), get()) }
 }
