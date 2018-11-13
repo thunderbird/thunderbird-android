@@ -11,6 +11,7 @@ class FolderRepository(
 ) {
     private val sortForDisplay = compareByDescending<LocalFolder> { it.serverId == account.inboxFolder }
             .thenByDescending { it.serverId == account.outboxFolder }
+            .thenByDescending { account.isSpecialFolder(it.serverId) }
             .thenByDescending { it.isInTopGroup }
             .thenBy(String.CASE_INSENSITIVE_ORDER) { it.name }
 
