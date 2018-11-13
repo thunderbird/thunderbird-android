@@ -20,7 +20,6 @@ import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder.FolderType;
-import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
@@ -244,75 +243,6 @@ public class ImapStore extends RemoteStore {
         return folders;
     }
 
-    void autoconfigureFolders(final ImapConnection connection) throws IOException, MessagingException {
-        mStoreConfig.setInboxFolder(ImapFolder.INBOX);
-
-        if (!connection.hasCapability(Capabilities.SPECIAL_USE)) {
-            if (K9MailLib.isDebug()) {
-                Timber.d("No detected folder auto-configuration methods.");
-            }
-            return;
-        }
-
-        if (K9MailLib.isDebug()) {
-            Timber.d("Folder auto-configuration: Using RFC6154/SPECIAL-USE.");
-        }
-
-        String command = String.format("LIST (SPECIAL-USE) \"\" %s", ImapUtility.encodeString(getCombinedPrefix() + "*"));
-        List<ImapResponse> responses = connection.executeSimpleCommand(command);
-
-        List<ListResponse> listResponses = ListResponse.parseList(responses);
-
-        for (ListResponse listResponse : listResponses) {
-            String decodedFolderName;
-            try {
-                decodedFolderName = folderNameCodec.decode(listResponse.getName());
-            } catch (CharacterCodingException e) {
-                Timber.w(e, "Folder name not correctly encoded with the UTF-7 variant as defined by RFC 3501: %s",
-                        listResponse.getName());
-                // We currently just skip folders with malformed names.
-                continue;
-            }
-
-            if (pathDelimiter == null) {
-                pathDelimiter = listResponse.getHierarchyDelimiter();
-                combinedPrefix = null;
-            }
-
-            decodedFolderName = removePrefixFromFolderName(decodedFolderName);
-            if (decodedFolderName == null) {
-                continue;
-            }
-
-            if (listResponse.hasAttribute("\\Archive") || listResponse.hasAttribute("\\All")) {
-                mStoreConfig.setArchiveFolder(decodedFolderName);
-                if (K9MailLib.isDebug()) {
-                    Timber.d("Folder auto-configuration detected Archive folder: %s", decodedFolderName);
-                }
-            } else if (listResponse.hasAttribute("\\Drafts")) {
-                mStoreConfig.setDraftsFolder(decodedFolderName);
-                if (K9MailLib.isDebug()) {
-                    Timber.d("Folder auto-configuration detected Drafts folder: %s", decodedFolderName);
-                }
-            } else if (listResponse.hasAttribute("\\Sent")) {
-                mStoreConfig.setSentFolder(decodedFolderName);
-                if (K9MailLib.isDebug()) {
-                    Timber.d("Folder auto-configuration detected Sent folder: %s", decodedFolderName);
-                }
-            } else if (listResponse.hasAttribute("\\Junk")) {
-                mStoreConfig.setSpamFolder(decodedFolderName);
-                if (K9MailLib.isDebug()) {
-                    Timber.d("Folder auto-configuration detected Spam folder: %s", decodedFolderName);
-                }
-            } else if (listResponse.hasAttribute("\\Trash")) {
-                mStoreConfig.setTrashFolder(decodedFolderName);
-                if (K9MailLib.isDebug()) {
-                    Timber.d("Folder auto-configuration detected Trash folder: %s", decodedFolderName);
-                }
-            }
-        }
-    }
-
     @Nullable
     private String removePrefixFromFolderName(String folderName) {
         String prefix = getCombinedPrefix();
@@ -336,7 +266,6 @@ public class ImapStore extends RemoteStore {
             ImapConnection connection = createImapConnection();
 
             connection.open();
-            autoconfigureFolders(connection);
             connection.close();
         } catch (IOException ioe) {
             throw new MessagingException("Unable to connect", ioe);

@@ -1851,29 +1851,4 @@ public class Account implements BaseAccount, StoreConfig {
             localKeyStore.deleteCertificate(uri.getHost(), uri.getPort());
         }
     }
-
-    @Override
-    public void setArchiveFolder(String name) {
-        setArchiveFolder(name, SpecialFolderSelection.AUTOMATIC);
-    }
-
-    @Override
-    public void setDraftsFolder(String name) {
-        setDraftsFolder(name, SpecialFolderSelection.AUTOMATIC);
-    }
-
-    @Override
-    public void setTrashFolder(String name) {
-        setTrashFolder(name, SpecialFolderSelection.AUTOMATIC);
-    }
-
-    @Override
-    public void setSpamFolder(String name) {
-        setSpamFolder(name, SpecialFolderSelection.AUTOMATIC);
-    }
-
-    @Override
-    public void setSentFolder(String name) {
-        setSentFolder(name, SpecialFolderSelection.AUTOMATIC);
-    }
 }

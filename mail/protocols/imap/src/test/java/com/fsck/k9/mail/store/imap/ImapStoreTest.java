@@ -6,8 +6,10 @@ import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import android.net.ConnectivityManager;
@@ -15,6 +17,7 @@ import android.net.ConnectivityManager;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.Folder.FolderType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
@@ -29,12 +32,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 
@@ -98,7 +99,7 @@ public class ImapStoreTest {
     }
 
     @Test
-    public void autoconfigureFolders_withSpecialUseCapability_shouldSetSpecialFolders() throws Exception {
+    public void getPersonalNamespaces_withSpecialUseCapability_shouldReturnSpecialFolderInfo() throws Exception {
         ImapConnection imapConnection = mock(ImapConnection.class);
         when(imapConnection.hasCapability(Capabilities.SPECIAL_USE)).thenReturn(true);
         List<ImapResponse> imapResponses = Arrays.asList(
@@ -114,50 +115,29 @@ public class ImapStoreTest {
                 createImapResponse("5 OK Success")
         );
         when(imapConnection.executeSimpleCommand("LIST (SPECIAL-USE) \"\" \"*\"")).thenReturn(imapResponses);
+        imapStore.enqueueImapConnection(imapConnection);
 
-        imapStore.autoconfigureFolders(imapConnection);
+        List<ImapFolder> folders = imapStore.getPersonalNamespaces();
 
-        verify(storeConfig).setDraftsFolder("[Gmail]/Drafts");
-        verify(storeConfig).setSentFolder("[Gmail]/Sent Mail");
-        verify(storeConfig).setSpamFolder("[Gmail]/Spam");
-        verify(storeConfig).setTrashFolder("[Gmail]/Trash");
-        verify(storeConfig).setArchiveFolder("[Gmail]/All Mail");
+        Map<String, ImapFolder> folderMap = toFolderMap(folders);
+        assertEquals(FolderType.INBOX, folderMap.get("INBOX").getType());
+        assertEquals(FolderType.DRAFTS, folderMap.get("[Gmail]/Drafts").getType());
+        assertEquals(FolderType.SENT, folderMap.get("[Gmail]/Sent Mail").getType());
+        assertEquals(FolderType.SPAM, folderMap.get("[Gmail]/Spam").getType());
+        assertEquals(FolderType.TRASH, folderMap.get("[Gmail]/Trash").getType());
+        assertEquals(FolderType.ARCHIVE, folderMap.get("[Gmail]/All Mail").getType());
     }
 
     @Test
-    public void autoconfigureFolders_withoutSpecialUseCapability_shouldNotIssueImapCommand() throws Exception {
+    public void getPersonalNamespaces_withoutSpecialUseCapability_shouldUseSimpleListCommand() throws Exception {
         ImapConnection imapConnection = mock(ImapConnection.class);
         when(imapConnection.hasCapability(Capabilities.SPECIAL_USE)).thenReturn(false);
+        imapStore.enqueueImapConnection(imapConnection);
 
-        imapStore.autoconfigureFolders(imapConnection);
+        imapStore.getPersonalNamespaces();
 
-        verify(imapConnection, atLeastOnce()).hasCapability(anyString());
-        verifyNoMoreInteractions(imapConnection);
-    }
-
-    @Test
-    public void autoconfigureFolders_removeNamespacePrefix() throws Exception {
-        ImapConnection imapConnection = mock(ImapConnection.class);
-        when(imapConnection.hasCapability(Capabilities.SPECIAL_USE)).thenReturn(true);
-        List<ImapResponse> imapResponses = Arrays.asList(
-                createImapResponse("* LIST (\\Drafts) \".\" \"INBOX.Drafts\""),
-                createImapResponse("* LIST (\\Sent) \".\" \"INBOX.Sent\""),
-                createImapResponse("* LIST (\\Junk) \".\" \"INBOX.Spam\""),
-                createImapResponse("* LIST (\\Trash) \".\" \"INBOX.Trash\""),
-                createImapResponse("* LIST (\\Archive) \".\" \"INBOX.Archive\""),
-                createImapResponse("5 OK Success")
-        );
-        when(imapConnection.executeSimpleCommand("LIST (SPECIAL-USE) \"\" \"INBOX.*\"")).thenReturn(imapResponses);
-
-        imapStore.setTestCombinedPrefix("INBOX.");
-        imapStore.autoconfigureFolders(imapConnection);
-
-        assertEquals("INBOX.", imapStore.getCombinedPrefix());
-        verify(storeConfig).setDraftsFolder("Drafts");
-        verify(storeConfig).setSentFolder("Sent");
-        verify(storeConfig).setSpamFolder("Spam");
-        verify(storeConfig).setTrashFolder("Trash");
-        verify(storeConfig).setArchiveFolder("Archive");
+        verify(imapConnection, never()).executeSimpleCommand("LIST (SPECIAL-USE) \"\" \"*\"");
+        verify(imapConnection).executeSimpleCommand("LIST \"\" \"*\"");
     }
 
     @Test
@@ -370,6 +350,15 @@ public class ImapStoreTest {
         }
 
         return folderNames;
+    }
+
+    private Map<String, ImapFolder> toFolderMap(List<ImapFolder> folders) {
+        Map<String, ImapFolder> folderMap = new HashMap<>();
+        for (ImapFolder folder : folders) {
+            folderMap.put(folder.getServerId(), folder);
+        }
+
+        return folderMap;
     }
 
 

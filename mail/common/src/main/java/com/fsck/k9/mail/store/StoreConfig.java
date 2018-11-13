@@ -11,14 +11,6 @@ public interface StoreConfig {
     String getOutboxFolder();
     String getDraftsFolder();
 
-    void setArchiveFolder(String name);
-    void setDraftsFolder(String name);
-    void setTrashFolder(String name);
-    void setSpamFolder(String name);
-    void setSentFolder(String name);
-    void setAutoExpandFolder(String name);
-    void setInboxFolder(String name);
-
     int getMaximumAutoDownloadMessageSize();
 
     boolean allowRemoteSearch();
