@@ -203,11 +203,6 @@ public class K9 {
      */
     private static boolean databasesUpToDate = false;
 
-    /**
-     * For use when displaying that no folder is selected
-     */
-    public static final String FOLDER_NONE = "-NONE-";
-
     public static final String LOCAL_UID_PREFIX = "K9LOCAL:";
 
     public static final String REMOTE_UID_PREFIX = "K9REMOTE:";

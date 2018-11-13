@@ -306,11 +306,11 @@ public class Account implements BaseAccount, StoreConfig {
         isEnabled = true;
         markMessageAsReadOnView = true;
         alwaysShowCcBcc = false;
-        archiveFolder = K9.FOLDER_NONE;
-        draftsFolder = K9.FOLDER_NONE;
-        sentFolder = K9.FOLDER_NONE;
-        spamFolder = K9.FOLDER_NONE;
-        trashFolder = K9.FOLDER_NONE;
+        archiveFolder = null;
+        draftsFolder = null;
+        sentFolder = null;
+        spamFolder = null;
+        trashFolder = null;
 
         searchableFolders = Searchable.ALL;
 
@@ -366,11 +366,11 @@ public class Account implements BaseAccount, StoreConfig {
         notifySync = storage.getBoolean(accountUuid + ".notifyMailCheck", false);
         deletePolicy =  DeletePolicy.fromInt(storage.getInt(accountUuid + ".deletePolicy", DeletePolicy.NEVER.setting));
         inboxFolder = storage.getString(accountUuid + ".inboxFolderName", INBOX);
-        draftsFolder = storage.getString(accountUuid + ".draftsFolderName", K9.FOLDER_NONE);
-        sentFolder = storage.getString(accountUuid + ".sentFolderName", K9.FOLDER_NONE);
-        trashFolder = storage.getString(accountUuid + ".trashFolderName", K9.FOLDER_NONE);
-        archiveFolder = storage.getString(accountUuid + ".archiveFolderName", K9.FOLDER_NONE);
-        spamFolder = storage.getString(accountUuid + ".spamFolderName", K9.FOLDER_NONE);
+        draftsFolder = storage.getString(accountUuid + ".draftsFolderName", null);
+        sentFolder = storage.getString(accountUuid + ".sentFolderName", null);
+        trashFolder = storage.getString(accountUuid + ".trashFolderName", null);
+        archiveFolder = storage.getString(accountUuid + ".archiveFolderName", null);
+        spamFolder = storage.getString(accountUuid + ".spamFolderName", null);
         expungePolicy = getEnumStringPref(storage, accountUuid + ".expungePolicy", Expunge.EXPUNGE_IMMEDIATELY);
         syncRemoteDeletions = storage.getBoolean(accountUuid + ".syncRemoteDeletions", true);
 
@@ -946,7 +946,7 @@ public class Account implements BaseAccount, StoreConfig {
      * @return true if account has a drafts folder set.
      */
     public synchronized boolean hasDraftsFolder() {
-        return !K9.FOLDER_NONE.equals(draftsFolder);
+        return draftsFolder != null;
     }
 
     public synchronized String getSentFolder() {
@@ -962,7 +962,7 @@ public class Account implements BaseAccount, StoreConfig {
      * @return true if account has a sent folder set.
      */
     public synchronized boolean hasSentFolder() {
-        return !K9.FOLDER_NONE.equals(sentFolder);
+        return sentFolder != null;
     }
 
 
@@ -979,7 +979,7 @@ public class Account implements BaseAccount, StoreConfig {
      * @return true if account has a trash folder set.
      */
     public synchronized boolean hasTrashFolder() {
-        return !K9.FOLDER_NONE.equals(trashFolder);
+        return trashFolder != null;
     }
 
     public synchronized String getArchiveFolder() {
@@ -995,7 +995,7 @@ public class Account implements BaseAccount, StoreConfig {
      * @return true if account has an archive folder set.
      */
     public synchronized boolean hasArchiveFolder() {
-        return !K9.FOLDER_NONE.equals(archiveFolder);
+        return archiveFolder != null;
     }
 
     public synchronized String getSpamFolder() {
@@ -1011,7 +1011,7 @@ public class Account implements BaseAccount, StoreConfig {
      * @return true if account has a spam folder set.
      */
     public synchronized boolean hasSpamFolder() {
-        return !K9.FOLDER_NONE.equals(spamFolder);
+        return spamFolder != null;
     }
 
     public String getOutboxFolder() {
@@ -1723,7 +1723,7 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     private void excludeSpecialFolder(LocalSearch search, String folderServerId) {
-        if (folderServerId != null && !K9.FOLDER_NONE.equals(folderServerId)) {
+        if (folderServerId != null) {
             search.and(SearchField.FOLDER, folderServerId, Attribute.NOT_EQUALS);
         }
     }

@@ -231,17 +231,15 @@ class WearNotifications extends BaseNotifications {
     }
 
     private boolean isArchiveActionAvailableForWear(Account account) {
-        String archiveFolderName = account.getArchiveFolder();
-        return archiveFolderName != null && isMovePossible(account, archiveFolderName);
+        return isMovePossible(account, account.getArchiveFolder());
     }
 
     private boolean isSpamActionAvailableForWear(Account account) {
-        String spamFolderName = account.getSpamFolder();
-        return spamFolderName != null && !K9.confirmSpam() && isMovePossible(account, spamFolderName);
+        return !K9.confirmSpam() && isMovePossible(account, account.getSpamFolder());
     }
 
     private boolean isMovePossible(Account account, String destinationFolderName) {
-        if (K9.FOLDER_NONE.equals(destinationFolderName)) {
+        if (destinationFolderName == null) {
             return false;
         }
 

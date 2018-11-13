@@ -1712,7 +1712,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             Account account = entry.getKey();
             String archiveFolder = account.getArchiveFolder();
 
-            if (!K9.FOLDER_NONE.equals(archiveFolder)) {
+            if (archiveFolder != null) {
                 move(entry.getValue(), archiveFolder);
             }
         }
@@ -1761,7 +1761,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             Account account = entry.getKey();
             String spamFolder = account.getSpamFolder();
 
-            if (!K9.FOLDER_NONE.equals(spamFolder)) {
+            if (spamFolder != null) {
                 move(entry.getValue(), spamFolder);
             }
         }
@@ -1842,7 +1842,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
      * @param messages
      *         The list of messages to copy or move. Never {@code null}.
      * @param destination
-     *         The name of the destination folder. Never {@code null} or {@link K9#FOLDER_NONE}.
+     *         The name of the destination folder. Never {@code null}.
      * @param operation
      *         Specifies what operation to perform. Never {@code null}.
      */

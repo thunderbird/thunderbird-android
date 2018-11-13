@@ -21,7 +21,6 @@ import android.widget.SearchView;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
-import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.ui.R;
@@ -39,7 +38,6 @@ public class ChooseFolder extends K9ListActivity {
     public static final String EXTRA_NEW_FOLDER = "com.fsck.k9.ChooseFolder_newfolder";
     public static final String EXTRA_MESSAGE = "com.fsck.k9.ChooseFolder_message";
     public static final String EXTRA_SHOW_CURRENT = "com.fsck.k9.ChooseFolder_showcurrent";
-    public static final String EXTRA_SHOW_FOLDER_NONE = "com.fsck.k9.ChooseFolder_showOptionNone";
     public static final String EXTRA_SHOW_DISPLAYABLE_ONLY = "com.fsck.k9.ChooseFolder_showDisplayableOnly";
     public static final String RESULT_FOLDER_DISPLAY_NAME = "folderDisplayName";
 
@@ -51,7 +49,6 @@ public class ChooseFolder extends K9ListActivity {
     ArrayAdapter<FolderDisplayData> mAdapter;
     private ChooseFolderHandler mHandler = new ChooseFolderHandler();
     boolean mHideCurrentFolder = true;
-    boolean mShowOptionNone = false;
     boolean mShowDisplayableOnly = false;
 
     /**
@@ -91,9 +88,6 @@ public class ChooseFolder extends K9ListActivity {
         mSelectFolder = intent.getStringExtra(EXTRA_SEL_FOLDER);
         if (intent.getStringExtra(EXTRA_SHOW_CURRENT) != null) {
             mHideCurrentFolder = false;
-        }
-        if (intent.getStringExtra(EXTRA_SHOW_FOLDER_NONE) != null) {
-            mShowOptionNone = true;
         }
         if (intent.getStringExtra(EXTRA_SHOW_DISPLAYABLE_ONLY) != null) {
             mShowDisplayableOnly = true;
@@ -318,12 +312,7 @@ public class ChooseFolder extends K9ListActivity {
             Collections.sort(topFolders, comparator);
             Collections.sort(newFolders, comparator);
 
-            final List<FolderDisplayData> folderList = new ArrayList<>(newFolders.size() +
-                    topFolders.size() + ((mShowOptionNone) ? 1 : 0));
-
-            if (mShowOptionNone) {
-                folderList.add(new FolderDisplayData(0, K9.FOLDER_NONE, K9.FOLDER_NONE));
-            }
+            final List<FolderDisplayData> folderList = new ArrayList<>(newFolders.size() + topFolders.size());
 
             folderList.addAll(topFolders);
             folderList.addAll(newFolders);
