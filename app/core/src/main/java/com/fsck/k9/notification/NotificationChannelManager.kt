@@ -11,7 +11,7 @@ import com.fsck.k9.Account
 import com.fsck.k9.Preferences
 import java.util.concurrent.Executors
 
-class NotificationChannelUtils(private val context: Context, private val preferences: Preferences) {
+class NotificationChannelManager(private val context: Context, private val preferences: Preferences) {
 
     enum class ChannelType {
         MESSAGES, MISCELLANEOUS

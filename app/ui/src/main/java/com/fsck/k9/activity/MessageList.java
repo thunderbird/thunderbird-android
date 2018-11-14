@@ -50,7 +50,7 @@ import com.fsck.k9.helper.ParcelableUtil;
 import com.fsck.k9.mailstore.Folder;
 import com.fsck.k9.mailstore.SearchStatusManager;
 import com.fsck.k9.mailstore.StorageManager;
-import com.fsck.k9.notification.NotificationChannelUtils;
+import com.fsck.k9.notification.NotificationChannelManager;
 import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
@@ -165,7 +165,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     protected final SearchStatusManager searchStatusManager = DI.get(SearchStatusManager.class);
     private StorageManager.StorageListener mStorageListener = new StorageListenerImplementation();
     private final Preferences preferences = DI.get(Preferences.class);
-    private final NotificationChannelUtils channelUtils = DI.get(NotificationChannelUtils.class);
+    private final NotificationChannelManager channelUtils = DI.get(NotificationChannelManager.class);
 
     private ActionBar actionBar;
     private ActionBarDrawerToggle drawerToggle;
