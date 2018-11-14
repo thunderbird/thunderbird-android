@@ -13,7 +13,8 @@ import java.util.concurrent.Executor
 class NotificationChannelManager(
         private val preferences: Preferences,
         private val backgroundExecutor: Executor,
-        private val notificationManager: NotificationManager
+        private val notificationManager: NotificationManager,
+        private val resourceProvider: NotificationResourceProvider
 ) {
 
     enum class ChannelType {
@@ -78,9 +79,8 @@ class NotificationChannelManager(
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private fun getChannelMessages(account: Account): NotificationChannel {
-        // TODO: Use String resource file to support language translations
-        val channelName = "Messages"
-        val channelDescription = "Notifications related to messages"
+        val channelName = resourceProvider.messagesChannelName
+        val channelDescription = resourceProvider.messagesChannelDescription
         val channelId = getChannelIdFor(account, ChannelType.MESSAGES)
         val importance = NotificationManager.IMPORTANCE_DEFAULT
         val channelGroupId = account.uuid
@@ -94,9 +94,8 @@ class NotificationChannelManager(
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private fun getChannelMiscellaneous(account: Account): NotificationChannel {
-        // TODO: Use String resource file to support language translations
-        val channelName = "Miscellaneous"
-        val channelDescription = "Miscellaneous notifications like errors etc."
+        val channelName = resourceProvider.miscellaneousChannelName
+        val channelDescription = resourceProvider.miscellaneousChannelDescription
         val channelId = getChannelIdFor(account, ChannelType.MISCELLANEOUS)
         val importance = NotificationManager.IMPORTANCE_DEFAULT
         val channelGroupId = account.uuid

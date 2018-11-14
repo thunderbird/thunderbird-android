@@ -235,6 +235,11 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="notification_bg_send_title">Sending mail</string>
     <string name="notification_bg_title_separator">:</string>
 
+    <string name="notification_channel_messages_title">Messages</string>
+    <string name="notification_channel_messages_description">Notifications related to messages</string>
+    <string name="notification_channel_miscellaneous_title">Miscellaneous</string>
+    <string name="notification_channel_miscellaneous_description">Miscellaneous notifications like errors etc.</string>
+
     <string name="special_mailbox_name_inbox">Inbox</string>
     <string name="special_mailbox_name_outbox">Outbox</string>
     <string name="special_mailbox_name_drafts">Drafts</string>
@@ -1343,5 +1348,4 @@ You can keep this message and use it as a backup for your secret key. If you wan
 
     <string name="navigation_drawer_open">Open</string>
     <string name="navigation_drawer_close">Close</string>
-
 </resources>

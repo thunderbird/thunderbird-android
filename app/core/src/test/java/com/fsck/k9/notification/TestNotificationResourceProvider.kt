@@ -14,6 +14,11 @@ class TestNotificationResourceProvider : NotificationResourceProvider {
     override val wearIconReplyAll: Int = 11
     override val wearIconMarkAsSpam: Int = 12
 
+    override val messagesChannelName = "Messages"
+    override val messagesChannelDescription = "Notifications related to messages"
+    override val miscellaneousChannelName = "Miscellaneous"
+    override val miscellaneousChannelDescription = "Miscellaneous notifications like errors etc."
+
     override fun authenticationErrorTitle(): String = "Authentication failed"
 
     override fun authenticationErrorBody(accountName: String): String =

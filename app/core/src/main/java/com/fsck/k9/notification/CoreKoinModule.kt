@@ -14,7 +14,8 @@ val coreNotificationModule = applicationContext {
         NotificationChannelManager(
                 get(),
                 Executors.newSingleThreadExecutor(),
-                get<Context>().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                get<Context>().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager,
+                get()
         )
     }
     bean { CertificateErrorNotifications(get(), get(), get()) }
