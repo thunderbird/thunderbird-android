@@ -4,14 +4,17 @@ package com.fsck.k9.notification
 import android.app.NotificationChannel
 import android.app.NotificationChannelGroup
 import android.app.NotificationManager
-import android.content.Context
 import android.os.Build
 import android.support.annotation.RequiresApi
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
-import java.util.concurrent.Executors
+import java.util.concurrent.Executor
 
-class NotificationChannelManager(private val context: Context, private val preferences: Preferences) {
+class NotificationChannelManager(
+        private val preferences: Preferences,
+        private val backgroundExecutor: Executor,
+        private val notificationManager: NotificationManager
+) {
 
     enum class ChannelType {
         MESSAGES, MISCELLANEOUS
@@ -22,9 +25,7 @@ class NotificationChannelManager(private val context: Context, private val prefe
             return
         }
 
-        Executors.newSingleThreadExecutor().execute {
-            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE)
-                    as NotificationManager
+        backgroundExecutor.execute {
             val accounts = preferences.accounts
 
             removeChannelsForNonExistingOrChangedAccounts(notificationManager, accounts)
