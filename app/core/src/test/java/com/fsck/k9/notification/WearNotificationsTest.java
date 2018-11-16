@@ -230,7 +230,7 @@ public class WearNotificationsTest extends RobolectricTest {
 
     private NotificationHelper createNotificationHelper(Context context, Builder builder) {
         NotificationHelper notificationHelper = mock(NotificationHelper.class);
-        when(notificationHelper.createNotificationBuilder(any(Account.class), any(NotificationChannelUtils
+        when(notificationHelper.createNotificationBuilder(any(Account.class), any(NotificationChannelManager
                 .ChannelType.class))).thenReturn(builder);
         when(notificationHelper.getAccountName(account)).thenReturn(ACCOUNT_NAME);
         when(notificationHelper.getContext()).thenReturn(context);

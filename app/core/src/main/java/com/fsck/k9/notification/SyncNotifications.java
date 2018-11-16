@@ -38,7 +38,7 @@ class SyncNotifications {
                 account, outboxFolder, notificationId);
 
         NotificationCompat.Builder builder = notificationHelper.createNotificationBuilder(account,
-                NotificationChannelUtils.ChannelType.MISCELLANEOUS)
+                NotificationChannelManager.ChannelType.MISCELLANEOUS)
                 .setSmallIcon(resourceProvider.getIconSendingMail())
                 .setWhen(System.currentTimeMillis())
                 .setOngoing(true)
@@ -77,7 +77,7 @@ class SyncNotifications {
                 account, folderServerId, notificationId);
 
         NotificationCompat.Builder builder = notificationHelper.createNotificationBuilder(account,
-                NotificationChannelUtils.ChannelType.MISCELLANEOUS)
+                NotificationChannelManager.ChannelType.MISCELLANEOUS)
                 .setSmallIcon(resourceProvider.getIconCheckingMail())
                 .setWhen(System.currentTimeMillis())
                 .setOngoing(true)

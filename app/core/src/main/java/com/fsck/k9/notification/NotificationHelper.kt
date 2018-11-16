@@ -11,7 +11,7 @@ import com.fsck.k9.K9
 class NotificationHelper(
         private val context: Context,
         private val notificationManager: NotificationManagerCompat,
-        private val channelUtils: NotificationChannelUtils
+        private val channelUtils: NotificationChannelManager
 ) {
     fun configureNotification(
             builder: NotificationCompat.Builder,
@@ -64,7 +64,7 @@ class NotificationHelper(
 
     fun createNotificationBuilder(
             account: Account,
-            channelType: NotificationChannelUtils.ChannelType
+            channelType: NotificationChannelManager.ChannelType
     ): NotificationCompat.Builder {
         return NotificationCompat.Builder(context,
                 channelUtils.getChannelIdFor(account, channelType))

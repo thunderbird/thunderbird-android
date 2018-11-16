@@ -112,7 +112,7 @@ public class BaseNotificationsTest {
     private NotificationHelper createFakeNotificationHelper() {
         Builder builder = MockHelper.mockBuilder(Builder.class);
         NotificationHelper notificationHelper = mock(NotificationHelper.class);
-        when(notificationHelper.createNotificationBuilder(any(Account.class), any(NotificationChannelUtils
+        when(notificationHelper.createNotificationBuilder(any(Account.class), any(NotificationChannelManager
                 .ChannelType.class))).thenReturn(builder);
         when(notificationHelper.getAccountName(any(Account.class))).thenReturn(ACCOUNT_NAME);
         return notificationHelper;

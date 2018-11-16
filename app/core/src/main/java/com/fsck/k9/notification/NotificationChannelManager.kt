@@ -4,14 +4,18 @@ package com.fsck.k9.notification
 import android.app.NotificationChannel
 import android.app.NotificationChannelGroup
 import android.app.NotificationManager
-import android.content.Context
 import android.os.Build
 import android.support.annotation.RequiresApi
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
-import java.util.concurrent.Executors
+import java.util.concurrent.Executor
 
-class NotificationChannelUtils(private val context: Context, private val preferences: Preferences) {
+class NotificationChannelManager(
+        private val preferences: Preferences,
+        private val backgroundExecutor: Executor,
+        private val notificationManager: NotificationManager,
+        private val resourceProvider: NotificationResourceProvider
+) {
 
     enum class ChannelType {
         MESSAGES, MISCELLANEOUS
@@ -22,9 +26,7 @@ class NotificationChannelUtils(private val context: Context, private val prefere
             return
         }
 
-        Executors.newSingleThreadExecutor().execute {
-            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE)
-                    as NotificationManager
+        backgroundExecutor.execute {
             val accounts = preferences.accounts
 
             removeChannelsForNonExistingOrChangedAccounts(notificationManager, accounts)
@@ -77,9 +79,8 @@ class NotificationChannelUtils(private val context: Context, private val prefere
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private fun getChannelMessages(account: Account): NotificationChannel {
-        // TODO: Use String resource file to support language translations
-        val channelName = "Messages"
-        val channelDescription = "Notifications related to messages"
+        val channelName = resourceProvider.messagesChannelName
+        val channelDescription = resourceProvider.messagesChannelDescription
         val channelId = getChannelIdFor(account, ChannelType.MESSAGES)
         val importance = NotificationManager.IMPORTANCE_DEFAULT
         val channelGroupId = account.uuid
@@ -93,9 +94,8 @@ class NotificationChannelUtils(private val context: Context, private val prefere
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private fun getChannelMiscellaneous(account: Account): NotificationChannel {
-        // TODO: Use String resource file to support language translations
-        val channelName = "Miscellaneous"
-        val channelDescription = "Miscellaneous notifications like errors etc."
+        val channelName = resourceProvider.miscellaneousChannelName
+        val channelDescription = resourceProvider.miscellaneousChannelDescription
         val channelId = getChannelIdFor(account, ChannelType.MISCELLANEOUS)
         val importance = NotificationManager.IMPORTANCE_DEFAULT
         val channelGroupId = account.uuid
