@@ -164,9 +164,8 @@ public class ConditionsTreeNode implements Parcelable {
      *
      * @param expr Expression to 'AND' with.
      * @return New top AND node.
-     * @throws Exception
      */
-    public ConditionsTreeNode and(ConditionsTreeNode expr) throws Exception {
+    public ConditionsTreeNode and(ConditionsTreeNode expr) {
         return add(expr, Operator.AND);
     }
 
@@ -179,13 +178,8 @@ public class ConditionsTreeNode implements Parcelable {
      * @return New top AND node, new root.
      */
     public ConditionsTreeNode and(SearchCondition condition) {
-        try {
-            ConditionsTreeNode tmp = new ConditionsTreeNode(condition);
-            return and(tmp);
-        } catch (Exception e) {
-            // impossible
-            return null;
-        }
+        ConditionsTreeNode tmp = new ConditionsTreeNode(condition);
+        return and(tmp);
     }
 
     /**
@@ -194,9 +188,8 @@ public class ConditionsTreeNode implements Parcelable {
      *
      * @param expr Expression to 'OR' with.
      * @return New top OR node.
-     * @throws Exception
      */
-    public ConditionsTreeNode or(ConditionsTreeNode expr) throws Exception {
+    public ConditionsTreeNode or(ConditionsTreeNode expr) {
         return add(expr, Operator.OR);
     }
 
@@ -209,13 +202,8 @@ public class ConditionsTreeNode implements Parcelable {
      * @return New top OR node, new root.
      */
     public ConditionsTreeNode or(SearchCondition condition) {
-        try {
-            ConditionsTreeNode tmp = new ConditionsTreeNode(condition);
-            return or(tmp);
-        } catch (Exception e) {
-            // impossible
-            return null;
-        }
+        ConditionsTreeNode tmp = new ConditionsTreeNode(condition);
+        return or(tmp);
     }
 
     /**
@@ -295,11 +283,11 @@ public class ConditionsTreeNode implements Parcelable {
      * @param node Node to add.
      * @param op Operator that will connect the new node with this one.
      * @return New parent node, containing the operator.
-     * @throws Exception Throws when the provided new node does not have a null parent.
+     * @throws IllegalArgumentException Throws when the provided new node does not have a null parent.
      */
-    private ConditionsTreeNode add(ConditionsTreeNode node, Operator op) throws Exception {
+    private ConditionsTreeNode add(ConditionsTreeNode node, Operator op) {
         if (node.mParent != null) {
-            throw new Exception("Can only add new expressions from root node down.");
+            throw new IllegalArgumentException("Can only add new expressions from root node down.");
         }
 
         ConditionsTreeNode tmpNode = new ConditionsTreeNode(mParent, op);

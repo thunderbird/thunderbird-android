@@ -170,13 +170,8 @@ public class LocalSearch implements SearchSpecification {
      * @return New top AND node, new root.
      */
     public ConditionsTreeNode and(SearchCondition condition) {
-        try {
-            ConditionsTreeNode tmp = new ConditionsTreeNode(condition);
-            return and(tmp);
-        } catch (Exception e) {
-            // impossible
-            return null;
-        }
+        ConditionsTreeNode tmp = new ConditionsTreeNode(condition);
+        return and(tmp);
     }
 
     /**
@@ -185,9 +180,8 @@ public class LocalSearch implements SearchSpecification {
      *
      * @param node Node to 'AND' with.
      * @return New top AND node, new root.
-     * @throws Exception
      */
-    public ConditionsTreeNode and(ConditionsTreeNode node) throws Exception {
+    public ConditionsTreeNode and(ConditionsTreeNode node) {
         mLeafSet.addAll(node.getLeafSet());
 
         if (mConditions == null) {
@@ -207,13 +201,8 @@ public class LocalSearch implements SearchSpecification {
      * @return New top OR node, new root.
      */
     public ConditionsTreeNode or(SearchCondition condition) {
-        try {
-            ConditionsTreeNode tmp = new ConditionsTreeNode(condition);
-            return or(tmp);
-        } catch (Exception e) {
-            // impossible
-            return null;
-        }
+        ConditionsTreeNode tmp = new ConditionsTreeNode(condition);
+        return or(tmp);
     }
 
     /**
@@ -222,9 +211,8 @@ public class LocalSearch implements SearchSpecification {
      *
      * @param node Node to 'OR' with.
      * @return New top OR node, new root.
-     * @throws Exception
      */
-    public ConditionsTreeNode or(ConditionsTreeNode node) throws Exception {
+    public ConditionsTreeNode or(ConditionsTreeNode node) {
         mLeafSet.addAll(node.getLeafSet());
 
         if (mConditions == null) {
