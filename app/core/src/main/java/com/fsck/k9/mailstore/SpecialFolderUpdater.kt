@@ -27,7 +27,7 @@ class SpecialFolderUpdater(
     }
 
     private fun updateInbox(folders: List<Folder>) {
-        account.inboxFolder = folders.first { it.type == FolderType.INBOX }.serverId
+        account.inboxFolder = folders.firstOrNull { it.type == FolderType.INBOX }?.serverId
     }
 
     private fun updateSpecialFolder(
