@@ -27,6 +27,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.Account.SpecialFolderSelection;
 import com.fsck.k9.DI;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.K9Activity;
@@ -531,9 +532,9 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
             createLocalFolder(localStore, sentFolderInternalId, getString(R.string.special_mailbox_name_sent));
             createLocalFolder(localStore, trashFolderInternalId, getString(R.string.special_mailbox_name_trash));
 
-            account.setDraftsFolder(draftsFolderInternalId);
-            account.setSentFolder(sentFolderInternalId);
-            account.setTrashFolder(trashFolderInternalId);
+            account.setDraftsFolder(draftsFolderInternalId, SpecialFolderSelection.MANUAL);
+            account.setSentFolder(sentFolderInternalId, SpecialFolderSelection.MANUAL);
+            account.setTrashFolder(trashFolderInternalId, SpecialFolderSelection.MANUAL);
         }
 
         private void createLocalFolder(LocalStore localStore, String internalId, String folderName)

@@ -109,9 +109,14 @@ public class LocalFolder extends Folder<LocalMessage> {
     }
 
     public LocalFolder(LocalStore localStore, String serverId, String name) {
+        this(localStore, serverId, name, FolderType.REGULAR);
+    }
+
+    public LocalFolder(LocalStore localStore, String serverId, String name, FolderType type) {
         this.localStore = localStore;
         this.serverId = serverId;
         this.name = name;
+        super.setType(type);
         attachmentInfoExtractor = localStore.getAttachmentInfoExtractor();
 
         if (getAccount().getInboxFolder().equals(getServerId())) {
@@ -218,6 +223,9 @@ public class LocalFolder extends Folder<LocalMessage> {
         moreMessages = MoreMessages.fromDatabaseName(moreMessagesValue);
         name = cursor.getString(LocalStore.FOLDER_NAME_INDEX);
         localOnly = cursor.getInt(LocalStore.LOCAL_ONLY_INDEX) == 1;
+        String typeString = cursor.getString(LocalStore.TYPE_INDEX);
+        FolderType folderType = FolderTypeConverter.fromDatabaseFolderType(typeString);
+        super.setType(folderType);
     }
 
     @Override
@@ -253,6 +261,16 @@ public class LocalFolder extends Folder<LocalMessage> {
             throw new WrappedException(e);
         }
         updateFolderColumn("name", name);
+    }
+
+    @Override
+    public void setType(FolderType type) {
+        super.setType(type);
+        try {
+            updateFolderColumn("type", FolderTypeConverter.toDatabaseFolderType(type));
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

@@ -18,6 +18,7 @@ import com.fsck.k9.helper.Utility;
 import com.fsck.k9.preferences.migrations.StorageMigrations;
 import com.fsck.k9.preferences.migrations.StorageMigrationsHelper;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import timber.log.Timber;
 
 public class Storage {
@@ -25,7 +26,7 @@ public class Storage {
 
     private volatile ConcurrentMap<String, String> storage = new ConcurrentHashMap<>();
 
-    private static final int DB_VERSION = 3;
+    private static final int DB_VERSION = 4;
     private static final String DB_NAME = "preferences_storage";
 
     private ThreadLocal<ConcurrentMap<String, String>> workingStorage = new ThreadLocal<>();
@@ -280,6 +281,22 @@ public class Storage {
         }
     }
 
+    private void insertValue(SQLiteDatabase mDb, String key, String value) {
+        if (value == null) {
+            return;
+        }
+
+        ContentValues cv = new ContentValues();
+        cv.put("primkey", key);
+        cv.put("value", value);
+
+        long result = mDb.insert("preferences_storage", null, cv);
+
+        if (result == -1) {
+            Timber.e("Error writing key '%s', value = '%s'", key, value);
+        }
+    }
+
     private StorageMigrationsHelper migrationsHelper = new StorageMigrationsHelper() {
         @Override
         public void writeValue(@NotNull SQLiteDatabase db, @NotNull String key, String value) {
@@ -289,6 +306,11 @@ public class Storage {
         @Override
         public String readValue(@NotNull SQLiteDatabase db, @NotNull String key) {
             return Storage.this.readValue(db, key);
+        }
+
+        @Override
+        public void insertValue(@NotNull SQLiteDatabase db, @NotNull String key, @Nullable String value) {
+            Storage.this.insertValue(db, key, value);
         }
     };
 }

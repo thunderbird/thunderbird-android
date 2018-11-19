@@ -43,6 +43,7 @@ import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.FetchProfile.Item;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.Folder.FolderType;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
@@ -132,7 +133,7 @@ public class LocalStore {
     static final String GET_FOLDER_COLS =
         "folders.id, name, visible_limit, last_updated, status, push_state, last_pushed, " +
         "integrate, top_group, poll_class, push_class, display_class, notify_class, more_messages, server_id, " +
-        "local_only";
+        "local_only, type";
 
     static final int FOLDER_ID_INDEX = 0;
     static final int FOLDER_NAME_INDEX = 1;
@@ -150,6 +151,7 @@ public class LocalStore {
     static final int MORE_MESSAGES_INDEX = 13;
     static final int FOLDER_SERVER_ID_INDEX = 14;
     static final int LOCAL_ONLY_INDEX = 15;
+    static final int TYPE_INDEX = 16;
 
     static final String[] UID_CHECK_PROJECTION = { "uid" };
 
@@ -404,8 +406,8 @@ public class LocalStore {
         return new LocalFolder(this, serverId);
     }
 
-    public LocalFolder getFolder(String serverId, String name) {
-        return new LocalFolder(this, serverId, name);
+    public LocalFolder getFolder(String serverId, String name, FolderType type) {
+        return new LocalFolder(this, serverId, name, type);
     }
 
     // TODO this takes about 260-300ms, seems slow.
@@ -911,6 +913,7 @@ public class LocalStore {
                     String serverId = folder.getServerId();
                     String name = folder.getName();
                     boolean localOnly = folder.isLocalOnly();
+                    String databaseFolderType = FolderTypeConverter.toDatabaseFolderType(folder.getType());
 
                     if (K9.DEVELOPER_MODE) {
                         Cursor cursor = db.query("folders", new String[] { "id", "server_id" },
@@ -953,7 +956,7 @@ public class LocalStore {
                     }
                     folder.refresh(serverId, prefHolder);   // Recover settings from Preferences
 
-                    db.execSQL("INSERT INTO folders (name, visible_limit, top_group, display_class, poll_class, notify_class, push_class, integrate, server_id, local_only) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", new Object[] {
+                    db.execSQL("INSERT INTO folders (name, visible_limit, top_group, display_class, poll_class, notify_class, push_class, integrate, server_id, local_only, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", new Object[] {
                                    name,
                                    visibleLimit,
                                    prefHolder.inTopGroup ? 1 : 0,
@@ -963,7 +966,8 @@ public class LocalStore {
                                    prefHolder.pushClass.name(),
                                    prefHolder.integrate ? 1 : 0,
                                    serverId,
-                                   localOnly ? 1 : 0
+                                   localOnly ? 1 : 0,
+                                   databaseFolderType
                                });
 
                 }

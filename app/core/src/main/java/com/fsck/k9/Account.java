@@ -40,6 +40,7 @@ import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.SearchField;
+import org.jetbrains.annotations.NotNull;
 import timber.log.Timber;
 
 import static com.fsck.k9.Preferences.getEnumStringPref;
@@ -172,6 +173,11 @@ public class Account implements BaseAccount, StoreConfig {
     private String trashFolder;
     private String archiveFolder;
     private String spamFolder;
+    private SpecialFolderSelection draftsFolderSelection;
+    private SpecialFolderSelection sentFolderSelection;
+    private SpecialFolderSelection trashFolderSelection;
+    private SpecialFolderSelection archiveFolderSelection;
+    private SpecialFolderSelection spamFolderSelection;
     private String autoExpandFolder;
     private FolderMode folderDisplayMode;
     private FolderMode folderSyncMode;
@@ -244,6 +250,11 @@ public class Account implements BaseAccount, StoreConfig {
         NONE, ALL, FIRST_CLASS, FIRST_AND_SECOND_CLASS, NOT_SECOND_CLASS
     }
 
+    public enum SpecialFolderSelection {
+        AUTOMATIC,
+        MANUAL
+    }
+
     public enum ShowPictures {
         NEVER, ALWAYS, ONLY_FROM_CONTACTS
     }
@@ -311,6 +322,11 @@ public class Account implements BaseAccount, StoreConfig {
         sentFolder = null;
         spamFolder = null;
         trashFolder = null;
+        archiveFolderSelection = SpecialFolderSelection.AUTOMATIC;
+        draftsFolderSelection = SpecialFolderSelection.AUTOMATIC;
+        sentFolderSelection = SpecialFolderSelection.AUTOMATIC;
+        spamFolderSelection = SpecialFolderSelection.AUTOMATIC;
+        trashFolderSelection = SpecialFolderSelection.AUTOMATIC;
 
         searchableFolders = Searchable.ALL;
 
@@ -371,6 +387,17 @@ public class Account implements BaseAccount, StoreConfig {
         trashFolder = storage.getString(accountUuid + ".trashFolderName", null);
         archiveFolder = storage.getString(accountUuid + ".archiveFolderName", null);
         spamFolder = storage.getString(accountUuid + ".spamFolderName", null);
+        archiveFolderSelection = getEnumStringPref(storage, accountUuid + ".archiveFolderSelection",
+                SpecialFolderSelection.AUTOMATIC);
+        draftsFolderSelection = getEnumStringPref(storage, accountUuid + ".draftsFolderSelection",
+                SpecialFolderSelection.AUTOMATIC);
+        sentFolderSelection = getEnumStringPref(storage, accountUuid + ".sentFolderSelection",
+                SpecialFolderSelection.AUTOMATIC);
+        spamFolderSelection = getEnumStringPref(storage, accountUuid + ".spamFolderSelection",
+                SpecialFolderSelection.AUTOMATIC);
+        trashFolderSelection = getEnumStringPref(storage, accountUuid + ".trashFolderSelection",
+                SpecialFolderSelection.AUTOMATIC);
+
         expungePolicy = getEnumStringPref(storage, accountUuid + ".expungePolicy", Expunge.EXPUNGE_IMMEDIATELY);
         syncRemoteDeletions = storage.getBoolean(accountUuid + ".syncRemoteDeletions", true);
 
@@ -491,6 +518,11 @@ public class Account implements BaseAccount, StoreConfig {
         editor.remove(accountUuid + ".trashFolderName");
         editor.remove(accountUuid + ".archiveFolderName");
         editor.remove(accountUuid + ".spamFolderName");
+        editor.remove(accountUuid + ".archiveFolderSelection");
+        editor.remove(accountUuid + ".draftsFolderSelection");
+        editor.remove(accountUuid + ".sentFolderSelection");
+        editor.remove(accountUuid + ".spamFolderSelection");
+        editor.remove(accountUuid + ".trashFolderSelection");
         editor.remove(accountUuid + ".autoExpandFolderName");
         editor.remove(accountUuid + ".accountNumber");
         editor.remove(accountUuid + ".vibrate");
@@ -665,6 +697,11 @@ public class Account implements BaseAccount, StoreConfig {
         editor.putString(accountUuid + ".trashFolderName", trashFolder);
         editor.putString(accountUuid + ".archiveFolderName", archiveFolder);
         editor.putString(accountUuid + ".spamFolderName", spamFolder);
+        editor.putString(accountUuid + ".archiveFolderSelection", archiveFolderSelection.name());
+        editor.putString(accountUuid + ".draftsFolderSelection", draftsFolderSelection.name());
+        editor.putString(accountUuid + ".sentFolderSelection", sentFolderSelection.name());
+        editor.putString(accountUuid + ".spamFolderSelection", spamFolderSelection.name());
+        editor.putString(accountUuid + ".trashFolderSelection", trashFolderSelection.name());
         editor.putString(accountUuid + ".autoExpandFolderName", autoExpandFolder);
         editor.putInt(accountUuid + ".accountNumber", accountNumber);
         editor.putString(accountUuid + ".sortTypeEnum", sortType.name());
@@ -937,8 +974,9 @@ public class Account implements BaseAccount, StoreConfig {
         return draftsFolder;
     }
 
-    public synchronized void setDraftsFolder(String name) {
+    public synchronized void setDraftsFolder(String name, SpecialFolderSelection selection) {
         draftsFolder = name;
+        draftsFolderSelection = selection;
     }
 
     /**
@@ -953,8 +991,9 @@ public class Account implements BaseAccount, StoreConfig {
         return sentFolder;
     }
 
-    public synchronized void setSentFolder(String name) {
+    public synchronized void setSentFolder(String name, SpecialFolderSelection selection) {
         sentFolder = name;
+        sentFolderSelection = selection;
     }
 
     /**
@@ -970,8 +1009,9 @@ public class Account implements BaseAccount, StoreConfig {
         return trashFolder;
     }
 
-    public synchronized void setTrashFolder(String name) {
+    public synchronized void setTrashFolder(String name, SpecialFolderSelection selection) {
         trashFolder = name;
+        trashFolderSelection = selection;
     }
 
     /**
@@ -986,8 +1026,9 @@ public class Account implements BaseAccount, StoreConfig {
         return archiveFolder;
     }
 
-    public synchronized void setArchiveFolder(String archiveFolder) {
+    public synchronized void setArchiveFolder(String archiveFolder, SpecialFolderSelection selection) {
         this.archiveFolder = archiveFolder;
+        archiveFolderSelection = selection;
     }
 
     /**
@@ -1002,8 +1043,9 @@ public class Account implements BaseAccount, StoreConfig {
         return spamFolder;
     }
 
-    public synchronized void setSpamFolder(String name) {
+    public synchronized void setSpamFolder(String name, SpecialFolderSelection selection) {
         spamFolder = name;
+        spamFolderSelection = selection;
     }
 
     /**
@@ -1012,6 +1054,31 @@ public class Account implements BaseAccount, StoreConfig {
      */
     public synchronized boolean hasSpamFolder() {
         return spamFolder != null;
+    }
+
+    @NotNull
+    public SpecialFolderSelection getDraftsFolderSelection() {
+        return draftsFolderSelection;
+    }
+
+    @NotNull
+    public synchronized SpecialFolderSelection getSentFolderSelection() {
+        return sentFolderSelection;
+    }
+
+    @NotNull
+    public synchronized SpecialFolderSelection getTrashFolderSelection() {
+        return trashFolderSelection;
+    }
+
+    @NotNull
+    public synchronized SpecialFolderSelection getArchiveFolderSelection() {
+        return archiveFolderSelection;
+    }
+
+    @NotNull
+    public synchronized SpecialFolderSelection getSpamFolderSelection() {
+        return spamFolderSelection;
     }
 
     public String getOutboxFolder() {

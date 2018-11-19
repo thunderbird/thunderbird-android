@@ -13,6 +13,7 @@ public abstract class Folder<T extends Message> {
     private String status = null;
     private long lastChecked = 0;
     private long lastPush = 0;
+    private FolderType type = FolderType.REGULAR;
 
     public static final int OPEN_MODE_RW=0;
     public static final int OPEN_MODE_RO=1;
@@ -20,6 +21,17 @@ public abstract class Folder<T extends Message> {
     // NONE is obsolete, it will be translated to NO_CLASS for display and to INHERITED for sync and push
     public enum FolderClass {
         NONE, NO_CLASS, INHERITED, FIRST_CLASS, SECOND_CLASS
+    }
+
+    public enum FolderType {
+        REGULAR,
+        INBOX,
+        OUTBOX,
+        DRAFTS,
+        SENT,
+        TRASH,
+        SPAM,
+        ARCHIVE
     }
 
     /**
@@ -200,5 +212,13 @@ public abstract class Folder<T extends Message> {
     public List<T> search(String queryString, final Set<Flag> requiredFlags, final Set<Flag> forbiddenFlags)
         throws MessagingException {
         throw new MessagingException("K-9 does not support searches on this folder type");
+    }
+
+    public FolderType getType() {
+        return type;
+    }
+
+    public void setType(FolderType type) {
+        this.type = type;
     }
 }

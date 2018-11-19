@@ -3,9 +3,9 @@ package com.fsck.k9.ui.settings.account
 import android.content.Context
 import android.support.v7.preference.PreferenceDataStore
 import com.fsck.k9.Account
+import com.fsck.k9.Account.SpecialFolderSelection
 import com.fsck.k9.Preferences
 import com.fsck.k9.service.MailService
-import com.fsck.k9.ui.settings.account.FolderListPreference.Companion.NO_FOLDER_SELECTED_VALUE
 import java.util.concurrent.ExecutorService
 
 class AccountSettingsDataStore(
@@ -127,15 +127,17 @@ class AccountSettingsDataStore(
             "message_format" -> account.messageFormat.name
             "quote_style" -> account.quoteStyle.name
             "account_quote_prefix" -> account.quotePrefix
-            "account_setup_auto_expand_folder" -> account.autoExpandFolder.toFolderPreferenceValue()
+            "account_setup_auto_expand_folder" -> {
+                loadSpecialFolder(account.autoExpandFolder, SpecialFolderSelection.MANUAL)
+            }
             "folder_display_mode" -> account.folderDisplayMode.name
             "folder_target_mode" -> account.folderTargetMode.name
             "searchable_folders" -> account.searchableFolders.name
-            "archive_folder" -> account.archiveFolder.toFolderPreferenceValue()
-            "drafts_folder" -> account.draftsFolder.toFolderPreferenceValue()
-            "sent_folder" -> account.sentFolder.toFolderPreferenceValue()
-            "spam_folder" -> account.spamFolder.toFolderPreferenceValue()
-            "trash_folder" -> account.trashFolder.toFolderPreferenceValue()
+            "archive_folder" -> loadSpecialFolder(account.archiveFolder, account.archiveFolderSelection)
+            "drafts_folder" -> loadSpecialFolder(account.draftsFolder, account.draftsFolderSelection)
+            "sent_folder" -> loadSpecialFolder(account.sentFolder, account.sentFolderSelection)
+            "spam_folder" -> loadSpecialFolder(account.spamFolder, account.spamFolderSelection)
+            "trash_folder" -> loadSpecialFolder(account.trashFolder, account.trashFolderSelection)
             "folder_notify_new_mail_mode" -> account.folderNotifyNewMailMode.name
             "account_vibrate_pattern" -> account.notificationSetting.vibratePattern.toString()
             "account_vibrate_times" -> account.notificationSetting.vibrateTimes.toString()
@@ -177,15 +179,15 @@ class AccountSettingsDataStore(
             "message_format" -> account.messageFormat = Account.MessageFormat.valueOf(value)
             "quote_style" -> account.quoteStyle = Account.QuoteStyle.valueOf(value)
             "account_quote_prefix" -> account.quotePrefix = value
-            "account_setup_auto_expand_folder" -> account.autoExpandFolder = value.toFolderStorageValue()
+            "account_setup_auto_expand_folder" -> account.autoExpandFolder = extractFolderName(value)
             "folder_display_mode" -> account.folderDisplayMode = Account.FolderMode.valueOf(value)
             "folder_target_mode" -> account.folderTargetMode = Account.FolderMode.valueOf(value)
             "searchable_folders" -> account.searchableFolders = Account.Searchable.valueOf(value)
-            "archive_folder" -> account.archiveFolder = value.toFolderStorageValue()
-            "drafts_folder" -> account.draftsFolder = value.toFolderStorageValue()
-            "sent_folder" -> account.sentFolder = value.toFolderStorageValue()
-            "spam_folder" -> account.spamFolder = value.toFolderStorageValue()
-            "trash_folder" -> account.trashFolder = value.toFolderStorageValue()
+            "archive_folder" -> saveSpecialFolderSelection(value, account::setArchiveFolder)
+            "drafts_folder" -> saveSpecialFolderSelection(value, account::setDraftsFolder)
+            "sent_folder" -> saveSpecialFolderSelection(value, account::setSentFolder)
+            "spam_folder" -> saveSpecialFolderSelection(value, account::setSpamFolder)
+            "trash_folder" -> saveSpecialFolderSelection(value, account::setTrashFolder)
             "folder_notify_new_mail_mode" -> account.folderNotifyNewMailMode = Account.FolderMode.valueOf(value)
             "account_vibrate_pattern" -> account.notificationSetting.vibratePattern = value.toInt()
             "account_vibrate_times" -> account.notificationSetting.vibrateTimes = value.toInt()
@@ -225,7 +227,32 @@ class AccountSettingsDataStore(
         MailService.actionRestartPushers(context, null)
     }
 
-    private fun String.toFolderStorageValue() = if (this == NO_FOLDER_SELECTED_VALUE) null else this
+    private fun extractFolderName(preferenceValue: String): String? {
+        val folderValue = preferenceValue.substringAfter(FolderListPreference.FOLDER_VALUE_DELIMITER)
+        return if (folderValue == FolderListPreference.NO_FOLDER_VALUE) null else folderValue
+    }
 
-    private fun String?.toFolderPreferenceValue() = this ?: NO_FOLDER_SELECTED_VALUE
+    private fun saveSpecialFolderSelection(
+            preferenceValue: String,
+            specialFolderSetter: (String?, SpecialFolderSelection) -> Unit
+    ) {
+        val specialFolder = extractFolderName(preferenceValue)
+
+        val specialFolderSelection = if (preferenceValue.startsWith(FolderListPreference.AUTOMATIC_PREFIX)) {
+            SpecialFolderSelection.AUTOMATIC
+        } else {
+            SpecialFolderSelection.MANUAL
+        }
+
+        specialFolderSetter(specialFolder, specialFolderSelection)
+    }
+
+    private fun loadSpecialFolder(specialFolder: String?, specialFolderSelection: SpecialFolderSelection): String {
+        val prefix =  when (specialFolderSelection) {
+            SpecialFolderSelection.AUTOMATIC -> FolderListPreference.AUTOMATIC_PREFIX
+            SpecialFolderSelection.MANUAL -> FolderListPreference.MANUAL_PREFIX
+        }
+
+        return prefix + (specialFolder ?: FolderListPreference.NO_FOLDER_VALUE)
+    }
 }

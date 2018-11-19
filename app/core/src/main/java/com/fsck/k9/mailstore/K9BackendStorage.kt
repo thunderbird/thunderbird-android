@@ -8,11 +8,13 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.FolderInfo
+import com.fsck.k9.mail.Folder.FolderType as RemoteFolderType
 
 class K9BackendStorage(
         private val preferences: Preferences,
         private val account: Account,
-        private val localStore: LocalStore
+        private val localStore: LocalStore,
+        private val specialFolderUpdater: SpecialFolderUpdater
 ) : BackendStorage {
     private val database = localStore.database
 
@@ -35,8 +37,12 @@ class K9BackendStorage(
     override fun createFolders(folders: List<FolderInfo>) {
         if (folders.isEmpty()) return
 
-        val localFolders = folders.map { localStore.getFolder(it.serverId, it.name) }
+        val localFolders = folders.map { localStore.getFolder(it.serverId, it.name, it.type) }
         localStore.createFolders(localFolders, account.displayCount)
+
+        if (folders.any { it.type != FolderType.REGULAR }) {
+            specialFolderUpdater.updateSpecialFolders()
+        }
     }
 
     override fun deleteFolders(folderServerIds: List<String>) {
@@ -44,16 +50,21 @@ class K9BackendStorage(
                 .filterNot { account.isSpecialFolder(it) }
                 .map { localStore.getFolder(it) }
                 .forEach { it.delete() }
+
+        specialFolderUpdater.updateSpecialFolders()
     }
 
-    override fun changeFolder(folderServerId: String, name: String) {
+    override fun changeFolder(folderServerId: String, name: String, type: RemoteFolderType) {
         database.execute(false) { db ->
             val values = ContentValues().apply {
                 put("name", name)
+                put("type", type.toDatabaseFolderType())
             }
 
             db.update("folders", values, "server_id = ?", arrayOf(folderServerId))
         }
+
+        specialFolderUpdater.updateSpecialFolders()
     }
 
     override fun getExtraString(name: String): String? {

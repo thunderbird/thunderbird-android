@@ -13,6 +13,9 @@ import com.fsck.k9.activity.setup.AccountSetupIncoming
 import com.fsck.k9.activity.setup.AccountSetupOutgoing
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.crypto.OpenPgpApiHelper
+import com.fsck.k9.mailstore.Folder
+import com.fsck.k9.mailstore.FolderType
+import com.fsck.k9.mailstore.RemoteFolderInfo
 import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity
 import com.fsck.k9.ui.settings.onClick
@@ -241,13 +244,28 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun loadFolders(account: Account) {
-        viewModel.getFolders(account).observe(this@AccountSettingsFragment) { folders ->
-            if (folders != null) {
-                FOLDER_LIST_PREFERENCES.forEach {
-                    (findPreference(it) as? FolderListPreference)?.folders = folders
-                }
+        viewModel.getFolders(account).observe(this@AccountSettingsFragment) { remoteFolderInfo ->
+            if (remoteFolderInfo != null) {
+                setFolders(PREFERENCE_AUTO_EXPAND_FOLDER, remoteFolderInfo.folders)
+                setFolders(PREFERENCE_ARCHIVE_FOLDER, remoteFolderInfo, FolderType.ARCHIVE)
+                setFolders(PREFERENCE_DRAFTS_FOLDER, remoteFolderInfo, FolderType.DRAFTS)
+                setFolders(PREFERENCE_SENT_FOLDER, remoteFolderInfo, FolderType.SENT)
+                setFolders(PREFERENCE_SPAM_FOLDER, remoteFolderInfo, FolderType.SPAM)
+                setFolders(PREFERENCE_TRASH_FOLDER, remoteFolderInfo, FolderType.TRASH)
             }
         }
+    }
+
+    private fun setFolders(preferenceKey: String, folders: List<Folder>) {
+        val folderListPreference = findPreference(preferenceKey) as? FolderListPreference ?: return
+        folderListPreference.setFolders(folders)
+    }
+
+    private fun setFolders(preferenceKey: String, remoteFolderInfo: RemoteFolderInfo, type: FolderType?) {
+        val folderListPreference = findPreference(preferenceKey) as? FolderListPreference ?: return
+
+        val automaticFolder = remoteFolderInfo.automaticSpecialFolders[type]
+        folderListPreference.setFolders(remoteFolderInfo.folders, automaticFolder)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -290,15 +308,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
         private const val PREFERENCE_SPAM_FOLDER = "spam_folder"
         private const val PREFERENCE_TRASH_FOLDER = "trash_folder"
         private const val DELETE_POLICY_MARK_AS_READ = "MARK_AS_READ"
-
-        private val FOLDER_LIST_PREFERENCES = listOf(
-                PREFERENCE_AUTO_EXPAND_FOLDER,
-                PREFERENCE_ARCHIVE_FOLDER,
-                PREFERENCE_DRAFTS_FOLDER,
-                PREFERENCE_SENT_FOLDER,
-                PREFERENCE_SPAM_FOLDER,
-                PREFERENCE_TRASH_FOLDER
-        )
 
         fun create(accountUuid: String, rootKey: String?) = AccountSettingsFragment().withArguments(
                 ARG_ACCOUNT_UUID to accountUuid,

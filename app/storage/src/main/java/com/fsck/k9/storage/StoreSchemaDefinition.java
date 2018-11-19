@@ -12,7 +12,7 @@ import timber.log.Timber;
 
 
 class StoreSchemaDefinition implements SchemaDefinition {
-    static final int DB_VERSION = 66;
+    static final int DB_VERSION = 67;
 
     private final MigrationsHelper migrationsHelper;
 
@@ -92,8 +92,9 @@ class StoreSchemaDefinition implements SchemaDefinition {
                 "display_class TEXT, " +
                 "notify_class TEXT default '"+ Folder.FolderClass.INHERITED.name() + "', " +
                 "more_messages TEXT default \"unknown\", " +
-                "server_id TEXT," +
-                "local_only INTEGER" +
+                "server_id TEXT, " +
+                "local_only INTEGER, " +
+                "type TEXT DEFAULT \"regular\"" +
                 ")");
 
         db.execSQL("DROP INDEX IF EXISTS folder_server_id");

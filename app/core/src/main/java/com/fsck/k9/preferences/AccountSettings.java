@@ -19,6 +19,7 @@ import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.Account.Searchable;
 import com.fsck.k9.Account.ShowPictures;
 import com.fsck.k9.Account.SortType;
+import com.fsck.k9.Account.SpecialFolderSelection;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.core.R;
@@ -244,6 +245,21 @@ public class AccountSettings {
         s.put("uploadSentMessages", Settings.versions(
                 new V(52, new BooleanSetting(true))
         ));
+        s.put("archiveFolderSelection", Settings.versions(
+                new V(54, new EnumSetting<>(SpecialFolderSelection.class, SpecialFolderSelection.AUTOMATIC))
+        ));
+        s.put("draftsFolderSelection", Settings.versions(
+                new V(54, new EnumSetting<>(SpecialFolderSelection.class, SpecialFolderSelection.AUTOMATIC))
+        ));
+        s.put("sentFolderSelection", Settings.versions(
+                new V(54, new EnumSetting<>(SpecialFolderSelection.class, SpecialFolderSelection.AUTOMATIC))
+        ));
+        s.put("spamFolderSelection", Settings.versions(
+                new V(54, new EnumSetting<>(SpecialFolderSelection.class, SpecialFolderSelection.AUTOMATIC))
+        ));
+        s.put("trashFolderSelection", Settings.versions(
+                new V(54, new EnumSetting<>(SpecialFolderSelection.class, SpecialFolderSelection.AUTOMATIC))
+        ));
         // note that there is no setting for openPgpProvider, because this will have to be set up together
         // with the actual provider after import anyways.
 
@@ -251,7 +267,8 @@ public class AccountSettings {
 
         Map<Integer, SettingsUpgrader> u = new HashMap<>();
         u.put(53, new SettingsUpgraderV53());
-        
+        u.put(54, new SettingsUpgraderV54());
+
         UPGRADERS = Collections.unmodifiableMap(u);
     }
 
@@ -429,6 +446,26 @@ public class AccountSettings {
             if (FOLDER_NONE.equals(archiveFolderName)) {
                 settings.put(key, null);
             }
+        }
+    }
+
+    /**
+     * Upgrades settings from version 53 to 54
+     *
+     * Inserts folder selection entries with a value of "MANUAL"
+     */
+    private static class SettingsUpgraderV54 implements SettingsUpgrader {
+        private static final String FOLDER_SELECTION_MANUAL = "MANUAL";
+
+        @Override
+        public Set<String> upgrade(Map<String, Object> settings) {
+            settings.put("archiveFolderSelection", FOLDER_SELECTION_MANUAL);
+            settings.put("draftsFolderSelection", FOLDER_SELECTION_MANUAL);
+            settings.put("sentFolderSelection", FOLDER_SELECTION_MANUAL);
+            settings.put("spamFolderSelection", FOLDER_SELECTION_MANUAL);
+            settings.put("trashFolderSelection", FOLDER_SELECTION_MANUAL);
+
+            return null;
         }
     }
 }

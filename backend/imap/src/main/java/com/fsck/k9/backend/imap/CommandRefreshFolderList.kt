@@ -17,9 +17,9 @@ internal class CommandRefreshFolderList(
         val foldersToCreate = mutableListOf<FolderInfo>()
         for (folder in foldersOnServer) {
             if (folder.serverId !in oldFolderServerIds) {
-                foldersToCreate.add(FolderInfo(folder.serverId, folder.name))
+                foldersToCreate.add(FolderInfo(folder.serverId, folder.name, folder.type))
             } else {
-                backendStorage.changeFolder(folder.serverId, folder.name)
+                backendStorage.changeFolder(folder.serverId, folder.name, folder.type)
             }
         }
         backendStorage.createFolders(foldersToCreate)

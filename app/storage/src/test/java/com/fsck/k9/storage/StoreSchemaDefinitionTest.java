@@ -14,6 +14,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.K9;
 import com.fsck.k9.core.BuildConfig;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.MessagingException;
@@ -371,6 +372,12 @@ public class StoreSchemaDefinitionTest extends K9RobolectricTest {
     private Account createAccount() {
         Account account = mock(Account.class);
         when(account.getInboxFolder()).thenReturn("Inbox");
+        when(account.getOutboxFolder()).thenReturn(Account.OUTBOX);
+        when(account.getTrashFolder()).thenReturn("Trash");
+        when(account.getDraftsFolder()).thenReturn("Drafts");
+        when(account.getSpamFolder()).thenReturn("Spam");
+        when(account.getSentFolder()).thenReturn("Sent");
+        when(account.getArchiveFolder()).thenReturn(null);
         when(account.getLocalStorageProviderId()).thenReturn(StorageManager.InternalStorageProvider.ID);
         when(account.getStoreUri()).thenReturn("dummy://");
         return account;
