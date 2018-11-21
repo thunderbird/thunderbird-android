@@ -6,6 +6,7 @@ import com.fsck.k9.AccountStats
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.search.AccountSearchConditions
 import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchAccount
 
@@ -16,7 +17,10 @@ interface AccountStatsCollector {
     fun getSearchAccountStats(searchAccount: SearchAccount): AccountStats
 }
 
-internal class DefaultAccountStatsCollector(private val context: Context) : AccountStatsCollector {
+internal class DefaultAccountStatsCollector(
+        private val context: Context,
+        private val accountSearchConditions: AccountSearchConditions
+) : AccountStatsCollector {
     private val preferences = Preferences.getPreferences(context)
 
 
@@ -28,8 +32,8 @@ internal class DefaultAccountStatsCollector(private val context: Context) : Acco
         val localStore = account.localStore
 
         val search = LocalSearch()
-        account.excludeSpecialFolders(search)
-        account.limitToDisplayableFolders(search)
+        accountSearchConditions.excludeSpecialFolders(account, search)
+        accountSearchConditions.limitToDisplayableFolders(account, search)
 
         val accountStats = localStore.getAccountStats(search)
         if (K9.measureAccounts()) {

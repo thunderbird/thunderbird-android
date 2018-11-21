@@ -2,8 +2,6 @@
 package com.fsck.k9;
 
 
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -15,30 +13,21 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.Folder.FolderClass;
-import com.fsck.k9.mail.MailServerDirection;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.filter.Base64;
-import com.fsck.k9.mail.ssl.LocalKeyStore;
 import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.mailstore.StorageManager.StorageProvider;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
-import com.fsck.k9.search.ConditionsTreeNode;
-import com.fsck.k9.search.LocalSearch;
-import com.fsck.k9.search.SearchSpecification.Attribute;
-import com.fsck.k9.search.SearchSpecification.SearchCondition;
-import com.fsck.k9.search.SearchSpecification.SearchField;
 import org.jetbrains.annotations.NotNull;
 import timber.log.Timber;
 
@@ -1428,151 +1417,4 @@ public class Account implements BaseAccount, StoreConfig {
         remoteSearchFullText = val;
     }
 
-    /**
-     * Modify the supplied {@link LocalSearch} instance to limit the search to displayable folders.
-     *
-     * <p>
-     * This method uses the current folder display mode to decide what folders to include/exclude.
-     * </p>
-     *
-     * @param search
-     *         The {@code LocalSearch} instance to modify.
-     *
-     * @see #getFolderDisplayMode()
-     */
-    public void limitToDisplayableFolders(LocalSearch search) {
-        final Account.FolderMode displayMode = getFolderDisplayMode();
-
-        switch (displayMode) {
-            case FIRST_CLASS: {
-                // Count messages in the INBOX and non-special first class folders
-                search.and(SearchField.DISPLAY_CLASS, FolderClass.FIRST_CLASS.name(),
-                        Attribute.EQUALS);
-                break;
-            }
-            case FIRST_AND_SECOND_CLASS: {
-                // Count messages in the INBOX and non-special first and second class folders
-                search.and(SearchField.DISPLAY_CLASS, FolderClass.FIRST_CLASS.name(),
-                        Attribute.EQUALS);
-
-                // TODO: Create a proper interface for creating arbitrary condition trees
-                SearchCondition searchCondition = new SearchCondition(SearchField.DISPLAY_CLASS,
-                        Attribute.EQUALS, FolderClass.SECOND_CLASS.name());
-                ConditionsTreeNode root = search.getConditions();
-                if (root.mRight != null) {
-                    root.mRight.or(searchCondition);
-                } else {
-                    search.or(searchCondition);
-                }
-                break;
-            }
-            case NOT_SECOND_CLASS: {
-                // Count messages in the INBOX and non-special non-second-class folders
-                search.and(SearchField.DISPLAY_CLASS, FolderClass.SECOND_CLASS.name(),
-                        Attribute.NOT_EQUALS);
-                break;
-            }
-            default:
-            case ALL: {
-                // Count messages in the INBOX and non-special folders
-                break;
-            }
-        }
-    }
-
-    /**
-     * Modify the supplied {@link LocalSearch} instance to exclude special folders.
-     *
-     * <p>
-     * Currently the following folders are excluded:
-     * <ul>
-     *   <li>Trash</li>
-     *   <li>Drafts</li>
-     *   <li>Spam</li>
-     *   <li>Outbox</li>
-     *   <li>Sent</li>
-     * </ul>
-     * The Inbox will always be included even if one of the special folders is configured to point
-     * to the Inbox.
-     * </p>
-     *
-     * @param search
-     *         The {@code LocalSearch} instance to modify.
-     */
-    public void excludeSpecialFolders(LocalSearch search) {
-        excludeSpecialFolder(search, getTrashFolder());
-        excludeSpecialFolder(search, getDraftsFolder());
-        excludeSpecialFolder(search, getSpamFolder());
-        excludeSpecialFolder(search, getOutboxFolder());
-        excludeSpecialFolder(search, getSentFolder());
-        search.or(new SearchCondition(SearchField.FOLDER, Attribute.EQUALS, getInboxFolder()));
-    }
-
-    /**
-     * Modify the supplied {@link LocalSearch} instance to exclude "unwanted" folders.
-     *
-     * <p>
-     * Currently the following folders are excluded:
-     * <ul>
-     *   <li>Trash</li>
-     *   <li>Spam</li>
-     *   <li>Outbox</li>
-     * </ul>
-     * The Inbox will always be included even if one of the special folders is configured to point
-     * to the Inbox.
-     * </p>
-     *
-     * @param search
-     *         The {@code LocalSearch} instance to modify.
-     */
-    public void excludeUnwantedFolders(LocalSearch search) {
-        excludeSpecialFolder(search, getTrashFolder());
-        excludeSpecialFolder(search, getSpamFolder());
-        excludeSpecialFolder(search, getOutboxFolder());
-        search.or(new SearchCondition(SearchField.FOLDER, Attribute.EQUALS, getInboxFolder()));
-    }
-
-    private void excludeSpecialFolder(LocalSearch search, String folderServerId) {
-        if (folderServerId != null) {
-            search.and(SearchField.FOLDER, folderServerId, Attribute.NOT_EQUALS);
-        }
-    }
-
-    /**
-     * Add a new certificate for the incoming or outgoing server to the local key store.
-     */
-    public void addCertificate(MailServerDirection direction, X509Certificate certificate) throws CertificateException {
-        Uri uri;
-        if (direction == MailServerDirection.INCOMING) {
-            uri = Uri.parse(getStoreUri());
-        } else {
-            uri = Uri.parse(getTransportUri());
-        }
-        LocalKeyStore localKeyStore = LocalKeyStore.getInstance();
-        localKeyStore.addCertificate(uri.getHost(), uri.getPort(), certificate);
-    }
-
-    /**
-     * Examine the existing settings for an account.  If the old host/port is different from the
-     * new host/port, then try and delete any (possibly non-existent) certificate stored for the
-     * old host/port.
-     */
-    public void deleteCertificate(String newHost, int newPort, MailServerDirection direction) {
-        Uri uri;
-        if (direction == MailServerDirection.INCOMING) {
-            uri = Uri.parse(getStoreUri());
-        } else {
-            uri = Uri.parse(getTransportUri());
-        }
-        String oldHost = uri.getHost();
-        int oldPort = uri.getPort();
-        if (oldPort == -1) {
-            // This occurs when a new account is created
-            return;
-        }
-        if (!newHost.equals(oldHost) || newPort != oldPort) {
-            LocalKeyStore localKeyStore = LocalKeyStore.getInstance();
-            localKeyStore.deleteCertificate(oldHost, oldPort);
-        }
-    }
 }

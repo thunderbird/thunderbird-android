@@ -1,17 +1,15 @@
 package com.fsck.k9
 
-import android.net.Uri
 import com.fsck.k9.helper.Utility
 import com.fsck.k9.mail.NetworkType
 import com.fsck.k9.mail.filter.Base64
-import com.fsck.k9.mail.ssl.LocalKeyStore
 import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
 import java.util.*
 
 class AccountManager(
         private val preferences: Preferences,
-        private val localKeyStore: LocalKeyStore
+        private val localKeyStoreManager: LocalKeyStoreManager
 ) {
     @Synchronized
     fun save(account: Account) {
@@ -134,7 +132,7 @@ class AccountManager(
             editor.putInt("$accountUuid.ledColor", notificationSetting.ledColor)
 
             for (type in NetworkType.values()) {
-                val useCompression = compressionMap[type]
+                val useCompression = compressionMap.get(type)
                 if (useCompression != null) {
                     editor.putBoolean("$accountUuid.useCompression.$type", useCompression)
                 }
@@ -149,7 +147,7 @@ class AccountManager(
 
     @Synchronized
     fun delete(account: Account) {
-        deleteCertificates(account)
+        localKeyStoreManager.deleteCertificates(account)
 
         val accountUuid = account.uuid
 
@@ -293,23 +291,6 @@ class AccountManager(
             }
             ident++
         } while (gotOne)
-    }
-
-    /**
-     * Examine the settings for the account and attempt to delete (possibly non-existent)
-     * certificates for the incoming and outgoing servers.
-     */
-    private fun deleteCertificates(account: Account) {
-        val storeUri = account.storeUri
-        if (storeUri != null) {
-            val uri = Uri.parse(storeUri)
-            localKeyStore.deleteCertificate(uri.host, uri.port)
-        }
-        val transportUri = account.transportUri
-        if (transportUri != null) {
-            val uri = Uri.parse(transportUri)
-            localKeyStore.deleteCertificate(uri.host, uri.port)
-        }
     }
 
 }
