@@ -19,6 +19,7 @@ import com.fsck.k9.message.html.htmlModule
 import com.fsck.k9.message.quote.quoteModule
 import com.fsck.k9.notification.coreNotificationModule
 import com.fsck.k9.power.DeviceIdleManager
+import com.fsck.k9.search.searchModule
 import com.fsck.k9.service.BootReceiver
 import com.fsck.k9.service.MailService
 import com.fsck.k9.service.ShutdownReceiver
@@ -39,6 +40,7 @@ object Core : KoinComponent {
             openPgpModule,
             autocryptModule,
             mailStoreModule,
+            searchModule,
             extractorModule,
             htmlModule,
             quoteModule,

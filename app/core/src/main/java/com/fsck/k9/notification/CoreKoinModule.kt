@@ -4,6 +4,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.support.v4.app.NotificationManagerCompat
 import com.fsck.k9.AccountManager
+import com.fsck.k9.LocalKeyStoreManager
 import com.fsck.k9.mail.ssl.LocalKeyStore
 import org.koin.dsl.module.applicationContext
 import java.util.concurrent.Executors
@@ -20,8 +21,9 @@ val coreNotificationModule = applicationContext {
                 get()
         )
     }
-    bean { LocalKeyStore.getInstance() }
     bean { AccountManager(get(), get()) }
+    bean { LocalKeyStore.getInstance() }
+    bean { LocalKeyStoreManager(get()) }
     bean { CertificateErrorNotifications(get(), get(), get()) }
     bean { AuthenticationErrorNotifications(get(), get(), get()) }
     bean { SyncNotifications(get(), get(), get()) }
