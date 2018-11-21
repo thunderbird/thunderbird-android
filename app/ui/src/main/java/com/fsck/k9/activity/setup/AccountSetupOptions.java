@@ -143,7 +143,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
             mAccount.setFolderPushMode(Account.FolderMode.NONE);
         }
 
-        mAccount.save(Preferences.getPreferences(this));
+        mAccount.save();
         if (mAccount.equals(Preferences.getPreferences(this).getDefaultAccount()) ||
                 getIntent().getBooleanExtra(EXTRA_MAKE_DEFAULT, false)) {
             Preferences.getPreferences(this).setDefaultAccount(mAccount);

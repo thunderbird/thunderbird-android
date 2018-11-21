@@ -300,7 +300,7 @@ public class MessageLoaderHelper {
             retainCryptoHelperFragment.setData(messageCryptoHelper);
         }
         messageCryptoHelper.asyncStartOrResumeProcessingMessage(
-                localMessage, messageCryptoCallback, cachedDecryptionResult, !account.getOpenPgpHideSignOnly());
+                localMessage, messageCryptoCallback, cachedDecryptionResult, !account.isOpenPgpHideSignOnly());
     }
 
     private void cancelAndClearCryptoOperation() {

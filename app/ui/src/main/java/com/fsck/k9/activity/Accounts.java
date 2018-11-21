@@ -988,7 +988,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 mAccount.setEnabled(true);
 
                 // Save the account settings
-                mAccount.save(Preferences.getPreferences(mContext));
+                mAccount.save();
 
                 // Start services if necessary
                 Core.setServicesEnabled(mContext);

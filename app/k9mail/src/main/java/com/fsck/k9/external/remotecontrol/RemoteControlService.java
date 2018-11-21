@@ -114,7 +114,7 @@ public class RemoteControlService extends CoreService {
                                         }
                                     }
                                 }
-                                account.save(Preferences.getPreferences(RemoteControlService.this));
+                                account.save();
                             }
                         }
 

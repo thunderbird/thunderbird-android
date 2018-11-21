@@ -1399,7 +1399,7 @@ public class ImapFolder extends Folder<ImapMessage> {
     public List<ImapMessage> search(final String queryString, final Set<Flag> requiredFlags,
             final Set<Flag> forbiddenFlags) throws MessagingException {
 
-        if (!store.getStoreConfig().allowRemoteSearch()) {
+        if (!store.getStoreConfig().isAllowRemoteSearch()) {
             throw new MessagingException("Your settings do not allow remote searching of this account");
         }
 

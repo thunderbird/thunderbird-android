@@ -726,7 +726,7 @@ public class MessagingController {
         return new SyncConfig(
                     account.getExpungePolicy().toBackendExpungePolicy(),
                     account.getEarliestPollDate(),
-                    account.syncRemoteDeletions(),
+                    account.isSyncRemoteDeletions(),
                     account.getMaximumAutoDownloadMessageSize(),
                     K9.DEFAULT_VISIBLE_LIMIT,
                     SYNC_FLAGS);

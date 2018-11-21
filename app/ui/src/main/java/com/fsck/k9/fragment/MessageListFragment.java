@@ -838,7 +838,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             account.setSortAscending(this.sortType, this.sortAscending);
             sortDateAscending = account.isSortAscending(SortType.SORT_DATE);
 
-            account.save(preferences);
+            account.save();
         } else {
             K9.setSortType(this.sortType);
 
@@ -2442,7 +2442,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         boolean allowRemoteSearch = false;
         final Account searchAccount = account;
         if (searchAccount != null) {
-            allowRemoteSearch = searchAccount.allowRemoteSearch();
+            allowRemoteSearch = searchAccount.isAllowRemoteSearch();
         }
 
         return allowRemoteSearch;

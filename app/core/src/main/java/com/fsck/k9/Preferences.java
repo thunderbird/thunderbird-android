@@ -135,7 +135,7 @@ public class Preferences {
         }
         LocalStore.removeAccount(account);
 
-        account.delete(this);
+        DI.get(AccountManager.class).delete(account);
 
         if (newAccount == account) {
             newAccount = null;

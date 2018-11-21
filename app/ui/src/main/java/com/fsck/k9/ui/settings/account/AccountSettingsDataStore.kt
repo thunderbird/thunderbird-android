@@ -19,7 +19,7 @@ class AccountSettingsDataStore(
         return when (key) {
             "account_default" -> account == preferences.defaultAccount
             "mark_message_as_read_on_view" -> account.isMarkMessageAsReadOnView
-            "account_sync_remote_deletetions" -> account.syncRemoteDeletions()
+            "account_sync_remote_deletetions" -> account.isSyncRemoteDeletions()
             "push_poll_on_connect" -> account.isPushPollOnConnect
             "always_show_cc_bcc" -> account.isAlwaysShowCcBcc
             "message_read_receipt" -> account.isMessageReadReceiptAlways
@@ -32,11 +32,11 @@ class AccountSettingsDataStore(
             "account_vibrate" -> account.notificationSetting.isVibrateEnabled
             "account_led" -> account.notificationSetting.isLedEnabled
             "account_notify_sync" -> account.isShowOngoing
-            "notification_opens_unread" -> account.goToUnreadMessageSearch()
-            "remote_search_enabled" -> account.allowRemoteSearch()
-            "openpgp_hide_sign_only" -> account.openPgpHideSignOnly
-            "openpgp_encrypt_subject" -> account.openPgpEncryptSubject
-            "openpgp_encrypt_all_drafts" -> account.openPgpEncryptAllDrafts
+            "notification_opens_unread" -> account.isGoToUnreadMessageSearch()
+            "remote_search_enabled" -> account.isAllowRemoteSearch()
+            "openpgp_hide_sign_only" -> account.isOpenPgpHideSignOnly
+            "openpgp_encrypt_subject" -> account.isOpenPgpEncryptSubject
+            "openpgp_encrypt_all_drafts" -> account.isOpenPgpEncryptAllDrafts
             "autocrypt_prefer_encrypt" -> account.autocryptPreferEncryptMutual
             "upload_sent_messages" -> account.isUploadSentMessages
             else -> defValue
@@ -67,9 +67,9 @@ class AccountSettingsDataStore(
             "account_notify_sync" -> account.isShowOngoing = value
             "notification_opens_unread" -> account.setGoToUnreadMessageSearch(value)
             "remote_search_enabled" -> account.setAllowRemoteSearch(value)
-            "openpgp_hide_sign_only" -> account.openPgpHideSignOnly = value
-            "openpgp_encrypt_subject" -> account.openPgpEncryptSubject = value
-            "openpgp_encrypt_all_drafts" -> account.openPgpEncryptAllDrafts = value
+            "openpgp_hide_sign_only" -> account.isOpenPgpHideSignOnly = value
+            "openpgp_encrypt_subject" -> account.isOpenPgpEncryptSubject = value
+            "openpgp_encrypt_all_drafts" -> account.isOpenPgpEncryptAllDrafts = value
             "autocrypt_prefer_encrypt" -> account.autocryptPreferEncryptMutual = value
             "upload_sent_messages" -> account.isUploadSentMessages = value
             else -> return
@@ -218,7 +218,7 @@ class AccountSettingsDataStore(
     }
 
     private fun saveSettings() {
-        account.save(preferences)
+        account.save()
     }
 
     private fun reschedulePoll() {

@@ -4,7 +4,7 @@ package com.fsck.k9.mail.store;
 import com.fsck.k9.mail.NetworkType;
 
 public interface StoreConfig {
-    boolean subscribedFoldersOnly();
+    boolean isSubscribedFoldersOnly();
     boolean useCompression(NetworkType type);
 
     String getInboxFolder();
@@ -13,7 +13,7 @@ public interface StoreConfig {
 
     int getMaximumAutoDownloadMessageSize();
 
-    boolean allowRemoteSearch();
+    boolean isAllowRemoteSearch();
     boolean isRemoteSearchFullText();
 
     boolean isPushPollOnConnect();

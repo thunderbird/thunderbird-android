@@ -77,6 +77,6 @@ class SpecialFolderUpdater(
     }
 
     private fun saveAccount() {
-        account.save(preferences)
+        account.save()
     }
 }

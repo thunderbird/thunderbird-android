@@ -230,7 +230,7 @@ class K9BackendFolder(
 
     override fun setLatestOldMessageSeenTime(date: Date) {
         account.latestOldMessageSeenTime = date.time
-        account.save(preferences)
+        account.save()
     }
 
     override fun getOldestMessageDate(): Date? {

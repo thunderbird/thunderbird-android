@@ -382,7 +382,7 @@ public class K9 {
         for (Account account : preferences.getAccounts()) {
             account.setOpenPgpProvider(openPgpProvider);
             account.setOpenPgpHideSignOnly(!openPgpSupportSignOnly);
-            account.save(preferences);
+            account.save();
         }
 
         storage.edit()

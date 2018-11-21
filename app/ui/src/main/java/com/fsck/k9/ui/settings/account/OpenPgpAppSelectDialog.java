@@ -332,7 +332,7 @@ public class OpenPgpAppSelectDialog extends FragmentActivity {
 
     private void persistOpenPgpProviderSetting(String selectedPackage) {
         account.setOpenPgpProvider(selectedPackage);
-        account.save(Preferences.getPreferences(this));
+        account.save();
     }
 
     public void onDismissApgDialog() {

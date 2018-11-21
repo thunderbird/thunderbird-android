@@ -126,7 +126,7 @@ public class ImapStore extends RemoteStore {
         try {
             List<FolderListItem> folders = listFolders(connection, false);
 
-            if (!mStoreConfig.subscribedFoldersOnly()) {
+            if (!mStoreConfig.isSubscribedFoldersOnly()) {
                 return getFolders(folders);
             }
 
