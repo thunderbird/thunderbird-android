@@ -16,6 +16,8 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -819,6 +821,15 @@ public class Account implements BaseAccount, StoreConfig {
 
     public String getDisplayName() {
         return description != null ? description : getEmail();
+    }
+
+    public Drawable getIcon() {
+        GradientDrawable shape = new GradientDrawable();
+        shape.setShape(GradientDrawable.RECTANGLE);
+        shape.setCornerRadii(new float[] { 8, 8, 8, 8, 0, 0, 0, 0 });
+        shape.setColor(chipColor);
+        shape.setStroke(3, chipColor);
+        return shape;
     }
 
     public synchronized String getName() {

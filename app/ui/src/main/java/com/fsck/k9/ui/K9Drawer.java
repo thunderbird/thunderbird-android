@@ -1,20 +1,24 @@
 package com.fsck.k9.ui;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.util.TypedValue;
 import android.view.View;
-
+import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
+import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.mailstore.Folder;
 import com.fsck.k9.ui.folders.FolderNameFormatter;
+import com.fsck.k9.ui.messagelist.MessageListViewModel;
+import com.fsck.k9.ui.messagelist.MessageListViewModelFactory;
 import com.fsck.k9.ui.settings.SettingsActivity;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.Drawer.OnDrawerItemClickListener;
@@ -23,10 +27,14 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class K9Drawer {
     // Bit shift for identifiers of user folders items, to leave space for other items
     private static final short DRAWER_FOLDER_SHIFT = 2;
+    private static final short DRAWER_ACCOUNT_SHIFT = 16;
 
     private static final long DRAWER_ID_UNIFIED_INBOX = 0;
     private static final long DRAWER_ID_PREFERENCES = 1;
@@ -48,9 +56,11 @@ public class K9Drawer {
     private int iconFolderResId;
 
     private final List<Long> userFolderDrawerIds = new ArrayList<>();
+    private final List<Long> userAccountDrawerIds = new ArrayList<>();
     private boolean unifiedInboxSelected;
     private String openedFolderServerId;
 
+    private final Preferences preferences = DI.get(Preferences.class);
 
     public K9Drawer(MessageList parent, Bundle savedInstanceState) {
         this.parent = parent;
@@ -130,6 +140,21 @@ public class K9Drawer {
         return folderNameFormatter.displayName(folder);
     }
 
+    public void showUserAccountsOrFolders(Account account) {
+        if (account == null) {
+            setUserAccounts(preferences.getAccounts());
+        } else {
+            ViewModelProvider viewModelProvider = ViewModelProviders.of(parent, new MessageListViewModelFactory());
+            MessageListViewModel viewModel = viewModelProvider.get(MessageListViewModel.class);
+            viewModel.getFolders(account).observe(parent, new Observer<List<Folder>>() {
+                @Override
+                public void onChanged(@Nullable List<Folder> folders) {
+                    setUserFolders(folders);
+                }
+            });
+        }
+    }
+
     private OnDrawerItemClickListener createItemClickListener() {
         return new OnDrawerItemClickListener() {
             @Override
@@ -141,10 +166,14 @@ public class K9Drawer {
                 } else if (id == DRAWER_ID_PREFERENCES) {
                     SettingsActivity.launch(parent);
                     return false;
+                } else if (id < (1 << DRAWER_ACCOUNT_SHIFT)) {
+                    Folder folder = (Folder) drawerItem.getTag();
+                    parent.openFolder(folder.getServerId());
+                    return false;
                 }
-
-                Folder folder = (Folder) drawerItem.getTag();
-                parent.openFolder(folder.getServerId());
+                Account account = (Account) drawerItem.getTag();
+                showUserAccountsOrFolders(account);
+                Accounts.openRealAccount(account, parent);
                 return false;
             }
         };
@@ -152,6 +181,7 @@ public class K9Drawer {
 
     public void setUserFolders(@Nullable List<Folder> folders) {
         clearUserFolders();
+        clearUserAccounts();
 
         if (folders == null) {
             return;
@@ -187,6 +217,36 @@ public class K9Drawer {
             drawer.removeItem(drawerId);
         }
         userFolderDrawerIds.clear();
+    }
+
+    private void clearUserAccounts() {
+        for (long drawerId : userAccountDrawerIds) {
+            drawer.removeItem(drawerId);
+        }
+        userAccountDrawerIds.clear();
+    }
+
+    public void setUserAccounts(@Nullable List<Account> accounts) {
+        clearUserFolders();
+        clearUserAccounts();
+
+        if (accounts == null) {
+            return;
+        }
+
+        for (int i = accounts.size() - 1; i >= 0; i--) {
+            Account account = accounts.get(i);
+            long drawerId = (account.getAccountNumber()+1) << DRAWER_ACCOUNT_SHIFT;
+
+            drawer.addItemAtPosition(new PrimaryDrawerItem()
+                            .withIcon(account.getIcon())
+                            .withIdentifier(drawerId)
+                            .withTag(account)
+                            .withName(account.getDisplayName()),
+                    headerItemCount);
+
+            userAccountDrawerIds.add(drawerId);
+        }
     }
 
     public void selectFolder(String folderServerId) {
