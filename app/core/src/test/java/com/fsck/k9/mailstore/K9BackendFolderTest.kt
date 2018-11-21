@@ -86,7 +86,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
     fun createBackendFolder(): BackendFolder {
         val localStore: LocalStore = account.localStore
         val folderRepository = folderRepositoryManager.getFolderRepository(account)
-        val specialFolderUpdater = SpecialFolderUpdater(preferences, folderRepository, account)
+        val specialFolderUpdater = SpecialFolderUpdater(folderRepository, account)
         val backendStorage = K9BackendStorage(preferences, account, localStore, specialFolderUpdater)
         backendStorage.createFolders(listOf(FolderInfo(FOLDER_SERVER_ID, FOLDER_NAME, FOLDER_TYPE)))
 

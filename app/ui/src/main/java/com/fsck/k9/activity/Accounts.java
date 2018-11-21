@@ -59,6 +59,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.AccountManager;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.BaseAccount;
 import com.fsck.k9.Core;
@@ -2030,7 +2031,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
         @Override
         protected Void doInBackground(Void... args) {
-            mAccount.move(Preferences.getPreferences(mContext), mUp);
+            AccountManager accountManager = DI.get(AccountManager.class);
+            accountManager.move(mAccount, mUp);
             return null;
         }
 

@@ -1,9 +1,7 @@
 package com.fsck.k9.helper
 
 
-import com.fsck.k9.Account
-import com.fsck.k9.Identity
-import com.fsck.k9.RobolectricTest
+import com.fsck.k9.*
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Message.RecipientType
@@ -11,9 +9,11 @@ import com.fsck.k9.mail.internet.MimeMessage
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockito_kotlin.mock
 import org.junit.Test
+import org.koin.standalone.inject
 import org.robolectric.RuntimeEnvironment
 
-class IdentityHelperTest : RobolectricTest() {
+class IdentityHelperTest : K9RobolectricTest() {
+    val accountManager: AccountManager by inject()
     private val account = createDummyAccount()
 
     @Test
@@ -109,8 +109,7 @@ class IdentityHelperTest : RobolectricTest() {
         assertThat(identity.email).isEqualTo(DEFAULT_ADDRESS)
     }
 
-
-    private fun createDummyAccount() = DummyAccount().apply {
+    private fun createDummyAccount() = accountManager.createAccountWithDefaults().apply {
         identities = listOf(
                 newIdentity("Default", DEFAULT_ADDRESS),
                 newIdentity("Identity 1", IDENTITY_1_ADDRESS),
@@ -142,7 +141,4 @@ class IdentityHelperTest : RobolectricTest() {
         const val IDENTITY_4_ADDRESS = "identity4@example.org"
         const val IDENTITY_5_ADDRESS = "identity5@example.org"
     }
-
-
-    class DummyAccount : Account(RuntimeEnvironment.application, mock())
 }

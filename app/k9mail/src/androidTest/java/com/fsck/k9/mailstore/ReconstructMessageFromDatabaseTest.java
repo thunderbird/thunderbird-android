@@ -69,11 +69,11 @@ public class ReconstructMessageFromDatabaseTest extends ApplicationTestCase<K9> 
 
         createApplication();
 
-        createDummyAccount(context);
+        createDummyAccount();
     }
 
-    private void createDummyAccount(Context context) {
-        account = new DummyAccount(context);
+    private void createDummyAccount() {
+        account = new Account("");
     }
 
     public void testThatByteIdenticalCopyOfMessageIsReconstructed() throws IOException, MessagingException {
@@ -165,12 +165,5 @@ public class ReconstructMessageFromDatabaseTest extends ApplicationTestCase<K9> 
         }
 
         return new String(messageOutputStream.toByteArray());
-    }
-
-    static class DummyAccount extends Account {
-
-        protected DummyAccount(Context context) {
-            super(context);
-        }
     }
 }

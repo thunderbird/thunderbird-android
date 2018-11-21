@@ -19,6 +19,8 @@ class AccountManager(
         val account = Account(accountUuid)
 
         return account.apply {
+            storeUri = ""
+            transportUri = ""
             localStorageProviderId = storageManager.defaultProviderId
             automaticCheckIntervalMinutes = -1
             idleRefreshMinutes = 24
@@ -543,7 +545,7 @@ class AccountManager(
         } while (gotOne)
     }
 
-    fun move(account: Account, preferences: Preferences, moveUp: Boolean) {
+    fun move(account: Account, moveUp: Boolean) {
         val uuids = preferences.storage.getString("accountUuids", "").split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
         val editor = preferences.storage.edit()
         val newUuids = arrayOfNulls<String>(uuids.size)

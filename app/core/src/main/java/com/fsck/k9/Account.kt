@@ -14,11 +14,7 @@ import timber.log.Timber
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
-/**
- * Account stores all of the settings for a single account defined by the user. It is able to save
- * and delete itself given a Preferences to work with. Each account is defined by a UUID.
- */
-open class Account internal constructor(override val uuid: String) : BaseAccount, StoreConfig {
+class Account internal constructor(override val uuid: String) : BaseAccount, StoreConfig {
     @get:Synchronized
     @set:Synchronized
     var deletePolicy = DeletePolicy.NEVER
@@ -33,8 +29,9 @@ open class Account internal constructor(override val uuid: String) : BaseAccount
      */
     var localStorageProviderId: String? = null
         set(value) {
-            if (field != value) {
-
+            if (field == null) {
+                field = value
+            } else if (field != value) {
                 var successful = false
                 try {
                     switchLocalStorage(value!!)
