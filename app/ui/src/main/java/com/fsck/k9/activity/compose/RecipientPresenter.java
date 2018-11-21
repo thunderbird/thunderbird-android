@@ -384,7 +384,7 @@ public class RecipientPresenter {
         OpenPgpProviderState openPgpProviderState = openPgpApiManager.getOpenPgpProviderState();
 
         Long accountCryptoKey = account.getOpenPgpKey();
-        if (accountCryptoKey == Account.NO_OPENPGP_KEY) {
+        if (accountCryptoKey == Account.Companion.getNO_OPENPGP_KEY()) {
             accountCryptoKey = null;
         }
 

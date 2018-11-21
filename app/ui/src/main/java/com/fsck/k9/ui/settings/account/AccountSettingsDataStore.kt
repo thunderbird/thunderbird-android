@@ -19,7 +19,7 @@ class AccountSettingsDataStore(
         return when (key) {
             "account_default" -> account == preferences.defaultAccount
             "mark_message_as_read_on_view" -> account.isMarkMessageAsReadOnView
-            "account_sync_remote_deletetions" -> account.isSyncRemoteDeletions()
+            "account_sync_remote_deletetions" -> account.isSyncRemoteDeletions
             "push_poll_on_connect" -> account.isPushPollOnConnect
             "always_show_cc_bcc" -> account.isAlwaysShowCcBcc
             "message_read_receipt" -> account.isMessageReadReceiptAlways
@@ -32,8 +32,8 @@ class AccountSettingsDataStore(
             "account_vibrate" -> account.notificationSetting.isVibrateEnabled
             "account_led" -> account.notificationSetting.isLedEnabled
             "account_notify_sync" -> account.isShowOngoing
-            "notification_opens_unread" -> account.isGoToUnreadMessageSearch()
-            "remote_search_enabled" -> account.isAllowRemoteSearch()
+            "notification_opens_unread" -> account.isGoToUnreadMessageSearch
+            "remote_search_enabled" -> account.isAllowRemoteSearch
             "openpgp_hide_sign_only" -> account.openPgpHideSignOnly
             "openpgp_encrypt_subject" -> account.openPgpEncryptSubject
             "autocrypt_prefer_encrypt" -> account.autocryptPreferEncryptMutual
@@ -51,7 +51,7 @@ class AccountSettingsDataStore(
                 return
             }
             "mark_message_as_read_on_view" -> account.isMarkMessageAsReadOnView = value
-            "account_sync_remote_deletetions" -> account.setSyncRemoteDeletions(value)
+            "account_sync_remote_deletetions" -> account.isSyncRemoteDeletions = value
             "push_poll_on_connect" -> account.isPushPollOnConnect = value
             "always_show_cc_bcc" -> account.isAlwaysShowCcBcc = value
             "message_read_receipt" -> account.setMessageReadReceipt(value)
@@ -64,8 +64,8 @@ class AccountSettingsDataStore(
             "account_vibrate" -> account.notificationSetting.setVibrate(value)
             "account_led" -> account.notificationSetting.setLed(value)
             "account_notify_sync" -> account.isShowOngoing = value
-            "notification_opens_unread" -> account.setGoToUnreadMessageSearch(value)
-            "remote_search_enabled" -> account.setAllowRemoteSearch(value)
+            "notification_opens_unread" -> account.isGoToUnreadMessageSearch = value
+            "remote_search_enabled" -> account.isAllowRemoteSearch = value
             "openpgp_hide_sign_only" -> account.openPgpHideSignOnly = value
             "openpgp_encrypt_subject" -> account.openPgpEncryptSubject = value
             "autocrypt_prefer_encrypt" -> account.autocryptPreferEncryptMutual = value
@@ -117,7 +117,7 @@ class AccountSettingsDataStore(
             "account_display_count" -> account.displayCount.toString()
             "account_message_age" -> account.maximumPolledMessageAge.toString()
             "account_autodownload_size" -> account.maximumAutoDownloadMessageSize.toString()
-            "account_check_frequency" -> account.automaticCheckIntervalMinutes.toString()
+            "account_check_frequency" -> account.getAutomaticCheckIntervalMinutes().toString()
             "folder_sync_mode" -> account.folderSyncMode.name
             "folder_push_mode" -> account.folderPushMode.name
             "delete_policy" -> account.deletePolicy.name
@@ -142,7 +142,7 @@ class AccountSettingsDataStore(
             "account_vibrate_pattern" -> account.notificationSetting.vibratePattern.toString()
             "account_vibrate_times" -> account.notificationSetting.vibrateTimes.toString()
             "account_remote_search_num_results" -> account.remoteSearchNumResults.toString()
-            "local_storage_provider" -> account.localStorageProviderId
+            "local_storage_provider" -> account.getLocalStorageProviderId()
             "account_ringtone" -> account.notificationSetting.ringtone
             else -> defValue
         }
@@ -163,12 +163,18 @@ class AccountSettingsDataStore(
                 }
             }
             "folder_sync_mode" -> {
-                if (account.setFolderSyncMode(Account.FolderMode.valueOf(value))) {
+                val oldMode = account.folderSyncMode
+                val newMode = Account.FolderMode.valueOf(value)
+                account.folderSyncMode = newMode
+                if (newMode != oldMode) {
                     reschedulePoll()
                 }
             }
             "folder_push_mode" -> {
-                if (account.setFolderPushMode(Account.FolderMode.valueOf(value))) {
+                val oldMode = account.folderPushMode
+                val newMode = Account.FolderMode.valueOf(value)
+                account.folderPushMode = newMode
+                if (newMode != oldMode) {
                     restartPushers()
                 }
             }
@@ -194,7 +200,7 @@ class AccountSettingsDataStore(
             "account_remote_search_num_results" -> account.remoteSearchNumResults = value.toInt()
             "local_storage_provider" -> {
                 executorService.execute {
-                    account.localStorageProviderId = value
+                    account.setLocalStorageProviderId(value)
                     saveSettings()
                 }
                 return

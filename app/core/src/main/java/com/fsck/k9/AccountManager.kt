@@ -50,11 +50,11 @@ class AccountManager(
 
         with (account) {
             editor.putString("$accountUuid.storeUri", Base64.encode(storeUri))
-            editor.putString("$accountUuid.localStorageProvider", localStorageProviderId)
+            editor.putString("$accountUuid.localStorageProvider", getLocalStorageProviderId())
             editor.putString("$accountUuid.transportUri", Base64.encode(transportUri))
             editor.putString("$accountUuid.description", description)
             editor.putString("$accountUuid.alwaysBcc", alwaysBcc)
-            editor.putInt("$accountUuid.automaticCheckIntervalMinutes", automaticCheckIntervalMinutes)
+            editor.putInt("$accountUuid.automaticCheckIntervalMinutes", getAutomaticCheckIntervalMinutes())
             editor.putInt("$accountUuid.idleRefreshMinutes", idleRefreshMinutes)
             editor.putBoolean("$accountUuid.pushPollOnConnect", isPushPollOnConnect)
             editor.putInt("$accountUuid.displayCount", displayCount)
@@ -259,7 +259,7 @@ class AccountManager(
         var ident = 0
 
         with (account) {
-            for (identity in identities) {
+            for (identity in getIdentities()) {
                 editor.putString("$uuid.${Account.IDENTITY_NAME_KEY}.$ident", identity.name)
                 editor.putString("$uuid.${Account.IDENTITY_EMAIL_KEY}.$ident", identity.email)
                 editor.putBoolean("$uuid.signatureUse.$ident", identity.signatureUse)

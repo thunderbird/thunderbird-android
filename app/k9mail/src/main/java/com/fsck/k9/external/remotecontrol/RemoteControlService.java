@@ -100,10 +100,16 @@ public class RemoteControlService extends CoreService {
                                     account.getNotificationSetting().setVibrate(Boolean.parseBoolean(vibrateEnabled));
                                 }
                                 if (pushClasses != null) {
-                                    needsPushRestart |= account.setFolderPushMode(FolderMode.valueOf(pushClasses));
+                                    FolderMode oldMode = account.getFolderPushMode();
+                                    FolderMode newMode = FolderMode.valueOf(pushClasses);
+                                    account.setFolderPushMode(newMode);
+                                    needsPushRestart |= newMode == oldMode;
                                 }
                                 if (pollClasses != null) {
-                                    needsReschedule |= account.setFolderSyncMode(FolderMode.valueOf(pollClasses));
+                                    FolderMode oldMode = account.getFolderSyncMode();
+                                    FolderMode newMode = FolderMode.valueOf(pollClasses);
+                                    account.setFolderSyncMode(newMode);
+                                    needsReschedule |= (newMode == FolderMode.NONE && oldMode != FolderMode.NONE);
                                 }
                                 if (pollFrequency != null) {
                                     String[] allowedFrequencies = getResources().getStringArray(R.array.check_frequency_values);

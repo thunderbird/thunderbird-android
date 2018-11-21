@@ -2,14 +2,12 @@ package com.fsck.k9.mailstore
 
 import com.fsck.k9.Account
 import com.fsck.k9.Account.SpecialFolderSelection
-import com.fsck.k9.Preferences
 
 /**
  * Updates special folders in [Account] if they are marked as [SpecialFolderSelection.AUTOMATIC] or if they are marked
  * as [SpecialFolderSelection.MANUAL] but have been deleted from the server.
  */
 class SpecialFolderUpdater(
-        private val preferences: Preferences,
         private val folderRepository: FolderRepository,
         private val account: Account
 ) {

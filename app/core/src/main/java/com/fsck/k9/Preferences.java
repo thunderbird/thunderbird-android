@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.mailstore.LocalStore;
@@ -170,6 +171,7 @@ public class Preferences {
         return storage;
     }
 
+    @NonNull
     static <T extends Enum<T>> T getEnumStringPref(Storage storage, String key, T defaultEnum) {
         String stringPref = storage.getString(key, null);
 

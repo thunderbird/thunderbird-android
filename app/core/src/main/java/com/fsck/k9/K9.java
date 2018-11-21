@@ -444,13 +444,13 @@ public class K9 {
         confirmMarkAllRead = storage.getBoolean("confirmMarkAllRead", true);
 
         try {
-            String value = storage.getString("sortTypeEnum", Account.DEFAULT_SORT_TYPE.name());
+            String value = storage.getString("sortTypeEnum", Account.Companion.getDEFAULT_SORT_TYPE().name());
             sortType = SortType.valueOf(value);
         } catch (Exception e) {
-            sortType = Account.DEFAULT_SORT_TYPE;
+            sortType = Account.Companion.getDEFAULT_SORT_TYPE();
         }
 
-        boolean sortAscending = storage.getBoolean("sortAscending", Account.DEFAULT_SORT_ASCENDING);
+        boolean sortAscending = storage.getBoolean("sortAscending", Account.Companion.getDEFAULT_SORT_ASCENDING());
         K9.sortAscending.put(sortType, sortAscending);
 
         String notificationHideSubject = storage.getString("notificationHideSubject", null);

@@ -191,10 +191,10 @@ public class GlobalSettings {
                 new V(1, new BooleanSetting(true))
         ));
         s.put("sortTypeEnum", Settings.versions(
-                new V(10, new EnumSetting<>(SortType.class, Account.DEFAULT_SORT_TYPE))
+                new V(10, new EnumSetting<>(SortType.class, Account.Companion.getDEFAULT_SORT_TYPE()))
         ));
         s.put("sortAscending", Settings.versions(
-                new V(10, new BooleanSetting(Account.DEFAULT_SORT_ASCENDING))
+                new V(10, new BooleanSetting(Account.Companion.getDEFAULT_SORT_ASCENDING()))
         ));
         s.put("startIntegratedInbox", Settings.versions(
                 new V(1, new BooleanSetting(false))

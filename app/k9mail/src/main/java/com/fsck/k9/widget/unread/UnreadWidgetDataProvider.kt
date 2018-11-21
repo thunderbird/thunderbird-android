@@ -3,7 +3,6 @@ package com.fsck.k9.widget.unread
 import android.content.Context
 import android.content.Intent
 import com.fsck.k9.Account
-import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import com.fsck.k9.R
 import com.fsck.k9.activity.FolderList
@@ -29,7 +28,7 @@ class UnreadWidgetDataProvider(
 
     private fun loadSearchAccountData(configuration: UnreadWidgetConfiguration): UnreadWidgetData {
         val searchAccount = getSearchAccount(configuration.accountUuid)
-        val title = searchAccount.description
+        val title = searchAccount.description ?: searchAccount.email
 
         val stats = messagingController.getSearchAccountStatsSynchronous(searchAccount, null)
         val unreadCount = stats.unreadMessageCount
@@ -48,7 +47,7 @@ class UnreadWidgetDataProvider(
     private fun loadAccountData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? {
         val account = preferences.getAccount(configuration.accountUuid) ?: return null
 
-        val title = account.description
+        val title = account.displayName
 
         val stats = messagingController.getAccountStats(account)
         val unreadCount = stats.unreadMessageCount

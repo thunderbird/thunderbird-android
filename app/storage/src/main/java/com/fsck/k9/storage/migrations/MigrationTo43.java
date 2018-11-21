@@ -15,8 +15,6 @@ import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.MigrationsHelper;
 import timber.log.Timber;
 
-import static com.fsck.k9.Account.OUTBOX;
-
 
 class MigrationTo43 {
     public static void fixOutboxFolders(SQLiteDatabase db, MigrationsHelper migrationsHelper) {
@@ -31,7 +29,7 @@ class MigrationTo43 {
                 ContentValues cv = new ContentValues();
                 cv.put("name", Account.OUTBOX);
                 db.update("folders", cv, "name = ?", new String[] { "OUTBOX" });
-                Timber.i("Renamed folder OUTBOX to %s", OUTBOX);
+                Timber.i("Renamed folder OUTBOX to %s", Account.OUTBOX);
             }
 
             // Check if old (pre v3.800) localized outbox folder exists

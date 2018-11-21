@@ -111,14 +111,14 @@ class IdentityHelperTest : RobolectricTest() {
 
 
     private fun createDummyAccount() = DummyAccount().apply {
-        identities = listOf(
+        setIdentities(listOf(
                 newIdentity("Default", DEFAULT_ADDRESS),
                 newIdentity("Identity 1", IDENTITY_1_ADDRESS),
                 newIdentity("Identity 2", IDENTITY_2_ADDRESS),
                 newIdentity("Identity 3", IDENTITY_3_ADDRESS),
                 newIdentity("Identity 4", IDENTITY_4_ADDRESS),
                 newIdentity("Identity 5", IDENTITY_5_ADDRESS)
-        )
+        ))
     }
 
     private fun newIdentity(name: String, email: String) = Identity().apply {
