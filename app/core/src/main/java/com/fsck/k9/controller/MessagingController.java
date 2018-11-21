@@ -971,7 +971,7 @@ public class MessagingController {
             remoteUidMap = backend.moveMessages(srcFolder, destFolder, uids);
         }
 
-        if (!isCopy && Expunge.EXPUNGE_IMMEDIATELY == account.getExpungePolicy()) {
+        if (!isCopy && backend.getSupportsExpunge() && account.getExpungePolicy() == Expunge.EXPUNGE_IMMEDIATELY) {
             Timber.i("processingPendingMoveOrCopy expunging folder %s:%s", account.getDescription(), srcFolder);
             backend.expungeMessages(srcFolder, uids);
         }
