@@ -2727,7 +2727,7 @@ public class MessagingController {
         Folder folder = message.getFolder();
         if (folder != null) {
             String folderServerId = folder.getServerId();
-            if (!account.getInboxFolder().equals(folderServerId) &&
+            if (!folderServerId.equals(account.getInboxFolder()) &&
                     (folderServerId.equals(account.getTrashFolder())
                             || folderServerId.equals(account.getDraftsFolder())
                             || folderServerId.equals(account.getSpamFolder())
