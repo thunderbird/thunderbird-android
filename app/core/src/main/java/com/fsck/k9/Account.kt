@@ -3,7 +3,6 @@ package com.fsck.k9
 
 import android.content.Context
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy
-import com.fsck.k9.helper.Utility
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.NetworkType
@@ -332,12 +331,8 @@ open class Account internal constructor(override val uuid: String) : BaseAccount
 
     /**
      * Indicates whether this account is enabled, i.e. ready for use, or not.
-     *
-     *
-     *
      * Right now newly imported accounts are disabled if the settings file didn't contain a
      * password for the incoming and/or outgoing server.
-     *
      */
     @get:Synchronized
     @set:Synchronized
@@ -345,9 +340,7 @@ open class Account internal constructor(override val uuid: String) : BaseAccount
 
     /**
      * Name of the folder that was last selected for a copy or move operation.
-     *
-     * Note: For now this value isn't persisted. So it will be reset when
-     * K-9 Mail is restarted.
+     * Note: For now this value isn't persisted. So it will be reset when K-9 Mail is restarted.
      */
     @get:Synchronized
     @set:Synchronized
@@ -482,35 +475,6 @@ open class Account internal constructor(override val uuid: String) : BaseAccount
 
     enum class MessageFormat {
         TEXT, HTML, AUTO
-    }
-
-    fun move(preferences: Preferences, moveUp: Boolean) {
-        val uuids = preferences.storage.getString("accountUuids", "").split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        val editor = preferences.storage.edit()
-        val newUuids = arrayOfNulls<String>(uuids.size)
-        if (moveUp) {
-            for (i in uuids.indices) {
-                if (i > 0 && uuids[i] == uuid) {
-                    newUuids[i] = newUuids[i - 1]
-                    newUuids[i - 1] = uuid
-                } else {
-                    newUuids[i] = uuids[i]
-                }
-            }
-        } else {
-            for (i in uuids.indices.reversed()) {
-                if (i < uuids.size - 1 && uuids[i] == uuid) {
-                    newUuids[i] = newUuids[i + 1]
-                    newUuids[i + 1] = uuid
-                } else {
-                    newUuids[i] = uuids[i]
-                }
-            }
-        }
-        val accountUuids = Utility.combine(newUuids, ',')
-        editor.putString("accountUuids", accountUuids)
-        editor.commit()
-        preferences.loadAccounts()
     }
 
     @Deprecated("Use AccountManager directly")
@@ -721,32 +685,6 @@ open class Account internal constructor(override val uuid: String) : BaseAccount
         val DEFAULT_SORT_TYPE = SortType.SORT_DATE
         const val DEFAULT_SORT_ASCENDING = false
         const val NO_OPENPGP_KEY: Long = 0
-
-        private fun findNewAccountNumber(accountNumbers: List<Int>): Int {
-            var newAccountNumber = -1
-            for (accountNumber in accountNumbers) {
-                if (accountNumber > newAccountNumber + 1) {
-                    break
-                }
-                newAccountNumber = accountNumber
-            }
-            newAccountNumber++
-            return newAccountNumber
-        }
-
-        private fun getExistingAccountNumbers(preferences: Preferences): List<Int> {
-            val accounts = preferences.accounts
-            val accountNumbers = ArrayList<Int>(accounts.size)
-            for (a in accounts) {
-                accountNumbers.add(a.accountNumber)
-            }
-            return accountNumbers.asSequence().sorted().toList()
-        }
-
-        fun generateAccountNumber(preferences: Preferences): Int {
-            val accountNumbers = getExistingAccountNumbers(preferences)
-            return findNewAccountNumber(accountNumbers)
-        }
     }
 
 }

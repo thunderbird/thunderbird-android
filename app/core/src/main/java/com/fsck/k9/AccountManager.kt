@@ -462,7 +462,7 @@ class AccountManager(
     }
 
     private fun loadIdentities(account: Account, storage: Storage): MutableList<Identity> {
-        val accountUuid = account.uuid;
+        val accountUuid = account.uuid
         val newIdentities = ArrayList<Identity>()
         var ident = 0
         var gotOne: Boolean
@@ -541,5 +541,51 @@ class AccountManager(
             }
             ident++
         } while (gotOne)
+    }
+
+    fun move(account: Account, preferences: Preferences, moveUp: Boolean) {
+        val uuids = preferences.storage.getString("accountUuids", "").split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val editor = preferences.storage.edit()
+        val newUuids = arrayOfNulls<String>(uuids.size)
+        if (moveUp) {
+            for (i in uuids.indices) {
+                if (i > 0 && uuids[i] == account.uuid) {
+                    newUuids[i] = newUuids[i - 1]
+                    newUuids[i - 1] = account.uuid
+                } else {
+                    newUuids[i] = uuids[i]
+                }
+            }
+        } else {
+            for (i in uuids.indices.reversed()) {
+                if (i < uuids.size - 1 && uuids[i] == account.uuid) {
+                    newUuids[i] = newUuids[i + 1]
+                    newUuids[i + 1] = account.uuid
+                } else {
+                    newUuids[i] = uuids[i]
+                }
+            }
+        }
+        val accountUuids = Utility.combine(newUuids, ',')
+        editor.putString("accountUuids", accountUuids)
+        editor.commit()
+        preferences.loadAccounts()
+    }
+
+    fun getNextFreeAccountNumber(): Int {
+        val accountNumbers = getExistingAccountNumbers()
+        var newAccountNumber = -1
+        for (accountNumber in accountNumbers) {
+            if (accountNumber > newAccountNumber + 1) {
+                break
+            }
+            newAccountNumber = accountNumber
+        }
+        newAccountNumber++
+        return newAccountNumber
+    }
+
+    private fun getExistingAccountNumbers(): List<Int> {
+        return preferences.accounts.map { it.accountNumber }.sorted()
     }
 }

@@ -18,6 +18,7 @@ import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.AccountManager;
 import com.fsck.k9.Core;
 import com.fsck.k9.DI;
 import com.fsck.k9.Identity;
@@ -307,7 +308,7 @@ public class SettingsImporter {
 
     private static AccountDescriptionPair importAccount(Context context, StorageEditor editor, int contentVersion,
             ImportedAccount account, boolean overwrite) throws InvalidSettingValueException {
-
+        AccountManager accountManager = DI.get(AccountManager.class);
         AccountDescription original = new AccountDescription(account.name, account.uuid);
 
         Preferences prefs = Preferences.getPreferences(context);
@@ -417,7 +418,7 @@ public class SettingsImporter {
 
         // If it's a new account generate and write a new "accountNumber"
         if (!mergeImportedAccount) {
-            int newAccountNumber = Account.Companion.generateAccountNumber(prefs);
+            int newAccountNumber = accountManager.getNextFreeAccountNumber();
             putString(editor, accountKeyPrefix + "accountNumber", Integer.toString(newAccountNumber));
         }
 
