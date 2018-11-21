@@ -142,7 +142,7 @@ public class ImapStoreTest {
 
     @Test
     public void getPersonalNamespaces_withoutSubscribedFoldersOnly() throws Exception {
-        when(storeConfig.subscribedFoldersOnly()).thenReturn(false);
+        when(storeConfig.isSubscribedFoldersOnly()).thenReturn(false);
         ImapConnection imapConnection = mock(ImapConnection.class);
         List<ImapResponse> imapResponses = Arrays.asList(
                 createImapResponse("* LIST (\\HasNoChildren) \".\" \"INBOX\""),
@@ -162,7 +162,7 @@ public class ImapStoreTest {
     @Test
     public void getPersonalNamespaces_withSubscribedFoldersOnly_shouldOnlyReturnExistingSubscribedFolders()
             throws Exception {
-        when(storeConfig.subscribedFoldersOnly()).thenReturn(true);
+        when(storeConfig.isSubscribedFoldersOnly()).thenReturn(true);
         ImapConnection imapConnection = mock(ImapConnection.class);
         List<ImapResponse> lsubResponses = Arrays.asList(
                 createImapResponse("* LSUB (\\HasNoChildren) \".\" \"INBOX\""),

@@ -55,7 +55,7 @@ public class MessageProviderTest extends ProviderTestCase2 {
         account.setDescription("TestAccount");
         account.setChipColor(10);
         account.setStoreUri("imap://user@domain.com/");
-        account.save(preferences);
+        account.save();
     }
 
     @Test

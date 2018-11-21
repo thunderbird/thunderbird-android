@@ -117,7 +117,7 @@ public class AccountSetupComposition extends K9Activity {
             mAccount.setSignatureBeforeQuotedText(isSignatureBeforeQuotedText);
         }
 
-        mAccount.save(Preferences.getPreferences(this));
+        mAccount.save();
     }
 
     @Override
@@ -134,7 +134,7 @@ public class AccountSetupComposition extends K9Activity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        mAccount.save(Preferences.getPreferences(this));
+        mAccount.save();
         finish();
     }
 }

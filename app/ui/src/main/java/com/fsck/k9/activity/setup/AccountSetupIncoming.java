@@ -304,7 +304,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             }
             mCurrentPortViewSetting = mPortView.getText().toString();
 
-            mSubscribedFoldersOnly.setChecked(mAccount.subscribedFoldersOnly());
+            mSubscribedFoldersOnly.setChecked(mAccount.isSubscribedFoldersOnly());
         } catch (Exception e) {
             failure(e);
         }
@@ -515,7 +515,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 if (isPushCapable && mAccount.getFolderPushMode() != FolderMode.NONE) {
                     MailService.actionRestartPushers(this, null);
                 }
-                mAccount.save(Preferences.getPreferences(this));
+                mAccount.save();
                 finish();
             } else {
                 /*

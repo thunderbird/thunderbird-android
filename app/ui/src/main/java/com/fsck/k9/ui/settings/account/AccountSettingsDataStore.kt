@@ -19,7 +19,7 @@ class AccountSettingsDataStore(
         return when (key) {
             "account_default" -> account == preferences.defaultAccount
             "mark_message_as_read_on_view" -> account.isMarkMessageAsReadOnView
-            "account_sync_remote_deletetions" -> account.syncRemoteDeletions()
+            "account_sync_remote_deletetions" -> account.isSyncRemoteDeletions()
             "push_poll_on_connect" -> account.isPushPollOnConnect
             "always_show_cc_bcc" -> account.isAlwaysShowCcBcc
             "message_read_receipt" -> account.isMessageReadReceiptAlways
@@ -32,8 +32,8 @@ class AccountSettingsDataStore(
             "account_vibrate" -> account.notificationSetting.isVibrateEnabled
             "account_led" -> account.notificationSetting.isLedEnabled
             "account_notify_sync" -> account.isShowOngoing
-            "notification_opens_unread" -> account.goToUnreadMessageSearch()
-            "remote_search_enabled" -> account.allowRemoteSearch()
+            "notification_opens_unread" -> account.isGoToUnreadMessageSearch()
+            "remote_search_enabled" -> account.isAllowRemoteSearch()
             "openpgp_hide_sign_only" -> account.openPgpHideSignOnly
             "openpgp_encrypt_subject" -> account.openPgpEncryptSubject
             "autocrypt_prefer_encrypt" -> account.autocryptPreferEncryptMutual
@@ -216,7 +216,7 @@ class AccountSettingsDataStore(
     }
 
     private fun saveSettings() {
-        account.save(preferences)
+        account.save()
     }
 
     private fun reschedulePoll() {

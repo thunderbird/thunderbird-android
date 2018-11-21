@@ -13,7 +13,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.fsck.k9.Identity;
-import com.fsck.k9.Preferences;
 import com.fsck.k9.ui.R;
 
 public class ManageIdentities extends ChooseIdentity {
@@ -129,7 +128,7 @@ public class ManageIdentities extends ChooseIdentity {
     private void saveIdentities() {
         if (mIdentitiesChanged) {
             mAccount.setIdentities(identities);
-            mAccount.save(Preferences.getPreferences(getApplication().getApplicationContext()));
+            mAccount.save();
         }
         finish();
     }

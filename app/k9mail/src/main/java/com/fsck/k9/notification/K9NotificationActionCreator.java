@@ -58,7 +58,7 @@ class K9NotificationActionCreator implements NotificationActionCreator {
             int notificationId) {
 
         TaskStackBuilder stack;
-        if (account.goToUnreadMessageSearch()) {
+        if (account.isGoToUnreadMessageSearch()) {
             stack = buildUnreadBackStack(account);
         } else {
             String folderServerId = getFolderServerIdOfAllMessages(messageReferences);
