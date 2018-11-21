@@ -47,7 +47,7 @@ class UnreadWidgetDataProvider(
     private fun loadAccountData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? {
         val account = preferences.getAccount(configuration.accountUuid) ?: return null
 
-        val title = account.displayName
+        val title = account.description ?: account.email
 
         val stats = messagingController.getAccountStats(account)
         val unreadCount = stats.unreadMessageCount

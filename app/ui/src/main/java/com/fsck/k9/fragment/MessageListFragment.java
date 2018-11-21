@@ -2442,7 +2442,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         boolean allowRemoteSearch = false;
         final Account searchAccount = account;
         if (searchAccount != null) {
-            allowRemoteSearch = searchAccount.isAllowRemoteSearch();
+            allowRemoteSearch = searchAccount.getAllowRemoteSearch();
         }
 
         return allowRemoteSearch;

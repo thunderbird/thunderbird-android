@@ -338,7 +338,7 @@ public class SettingsImporter {
 
         // Write account name
         String accountKeyPrefix = uuid + ".";
-        putString(editor, accountKeyPrefix + Account.Companion.getACCOUNT_DESCRIPTION_KEY(), accountName);
+        putString(editor, accountKeyPrefix + Account.ACCOUNT_DESCRIPTION_KEY, accountName);
 
         if (account.incoming == null) {
             // We don't import accounts without incoming server settings
@@ -349,7 +349,7 @@ public class SettingsImporter {
         ServerSettings incoming = new ImportedServerSettings(account.incoming);
         BackendManager backendManager = DI.get(BackendManager.class);
         String storeUri = backendManager.createStoreUri(incoming);
-        putString(editor, accountKeyPrefix + Account.Companion.getSTORE_URI_KEY(), Base64.encode(storeUri));
+        putString(editor, accountKeyPrefix + Account.STORE_URI_KEY, Base64.encode(storeUri));
 
         // Mark account as disabled if the AuthType isn't EXTERNAL and the
         // settings file didn't contain a password
@@ -366,7 +366,7 @@ public class SettingsImporter {
             // Write outgoing server settings (transportUri)
             ServerSettings outgoing = new ImportedServerSettings(account.outgoing);
             String transportUri = backendManager.createTransportUri(outgoing);
-            putString(editor, accountKeyPrefix + Account.Companion.getTRANSPORT_URI_KEY(), Base64.encode(transportUri));
+            putString(editor, accountKeyPrefix + Account.TRANSPORT_URI_KEY, Base64.encode(transportUri));
 
             /*
              * Mark account as disabled if the settings file contained a username but no password. However, no password
@@ -522,7 +522,7 @@ public class SettingsImporter {
 
             // Write name used in identity
             String identityName = (identity.name == null) ? "" : identity.name;
-            putString(editor, accountKeyPrefix + Account.Companion.getIDENTITY_NAME_KEY() + identitySuffix, identityName);
+            putString(editor, accountKeyPrefix + Account.IDENTITY_NAME_KEY + identitySuffix, identityName);
 
             // Validate email address
             if (!IdentitySettings.isEmailAddressValid(identity.email)) {
@@ -530,10 +530,10 @@ public class SettingsImporter {
             }
 
             // Write email address
-            putString(editor, accountKeyPrefix + Account.Companion.getIDENTITY_EMAIL_KEY() + identitySuffix, identity.email);
+            putString(editor, accountKeyPrefix + Account.IDENTITY_EMAIL_KEY + identitySuffix, identity.email);
 
             // Write identity description
-            putString(editor, accountKeyPrefix + Account.Companion.getIDENTITY_DESCRIPTION_KEY() + identitySuffix,
+            putString(editor, accountKeyPrefix + Account.IDENTITY_DESCRIPTION_KEY + identitySuffix,
                     identityDescription);
 
             if (identity.settings != null) {

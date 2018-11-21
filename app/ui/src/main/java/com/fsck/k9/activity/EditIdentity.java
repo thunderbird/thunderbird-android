@@ -10,6 +10,8 @@ import com.fsck.k9.Account;
 import com.fsck.k9.Identity;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.ui.R;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class EditIdentity extends K9Activity {
@@ -105,13 +107,14 @@ public class EditIdentity extends K9Activity {
             mIdentity.setReplyTo(mReplyTo.getText().toString());
         }
 
-        List<Identity> identities = mAccount.getIdentities();
+        List<Identity> identities = new ArrayList<>(mAccount.getIdentities());
         if (mIdentityIndex == -1) {
             identities.add(mIdentity);
         } else {
             identities.remove(mIdentityIndex);
             identities.add(mIdentityIndex, mIdentity);
         }
+        mAccount.setIdentities(identities);
 
         mAccount.save();
 

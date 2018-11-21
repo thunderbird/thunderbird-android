@@ -450,7 +450,7 @@ public class K9 {
             sortType = Account.Companion.getDEFAULT_SORT_TYPE();
         }
 
-        boolean sortAscending = storage.getBoolean("sortAscending", Account.Companion.getDEFAULT_SORT_ASCENDING());
+        boolean sortAscending = storage.getBoolean("sortAscending", Account.DEFAULT_SORT_ASCENDING);
         K9.sortAscending.put(sortType, sortAscending);
 
         String notificationHideSubject = storage.getString("notificationHideSubject", null);

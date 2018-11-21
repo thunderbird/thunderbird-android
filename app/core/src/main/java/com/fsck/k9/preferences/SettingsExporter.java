@@ -226,7 +226,7 @@ public class SettingsExporter {
         serializer.startTag(null, ACCOUNT_ELEMENT);
         serializer.attribute(null, UUID_ATTRIBUTE, accountUuid);
 
-        String name = (String) prefs.get(accountUuid + "." + Account.Companion.getACCOUNT_DESCRIPTION_KEY());
+        String name = (String) prefs.get(accountUuid + "." + Account.ACCOUNT_DESCRIPTION_KEY);
         if (name != null) {
             serializer.startTag(null, NAME_ELEMENT);
             serializer.text(name);
@@ -324,7 +324,7 @@ public class SettingsExporter {
                 String secondPart = keyPart.substring(0, indexOfLastDot);
                 String thirdPart = keyPart.substring(indexOfLastDot + 1);
 
-                if (Account.Companion.getIDENTITY_DESCRIPTION_KEY().equals(secondPart)) {
+                if (Account.IDENTITY_DESCRIPTION_KEY.equals(secondPart)) {
                     // This is an identity key. Save identity index for later...
                     try {
                         identities.add(Integer.parseInt(thirdPart));
@@ -393,19 +393,19 @@ public class SettingsExporter {
         String suffix = "." + identity;
 
         // Write name belonging to the identity
-        String name = (String) prefs.get(prefix + Account.Companion.getIDENTITY_NAME_KEY() + suffix);
+        String name = (String) prefs.get(prefix + Account.IDENTITY_NAME_KEY + suffix);
         serializer.startTag(null, NAME_ELEMENT);
         serializer.text(name);
         serializer.endTag(null, NAME_ELEMENT);
 
         // Write email address belonging to the identity
-        String email = (String) prefs.get(prefix + Account.Companion.getIDENTITY_EMAIL_KEY() + suffix);
+        String email = (String) prefs.get(prefix + Account.IDENTITY_EMAIL_KEY + suffix);
         serializer.startTag(null, EMAIL_ELEMENT);
         serializer.text(email);
         serializer.endTag(null, EMAIL_ELEMENT);
 
         // Write identity description
-        String description = (String) prefs.get(prefix + Account.Companion.getIDENTITY_DESCRIPTION_KEY() + suffix);
+        String description = (String) prefs.get(prefix + Account.IDENTITY_DESCRIPTION_KEY + suffix);
         if (description != null) {
             serializer.startTag(null, DESCRIPTION_ELEMENT);
             serializer.text(description);

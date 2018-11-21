@@ -80,7 +80,7 @@ class AccountSearchConditions {
         excludeSpecialFolder(search, account.spamFolder)
         excludeSpecialFolder(search, account.outboxFolder)
         excludeSpecialFolder(search, account.sentFolder)
-        search.or(SearchSpecification.SearchCondition(SearchSpecification.SearchField.FOLDER, SearchSpecification.Attribute.EQUALS, account.getInboxFolder()))
+        search.or(SearchSpecification.SearchCondition(SearchSpecification.SearchField.FOLDER, SearchSpecification.Attribute.EQUALS, account.inboxFolder))
     }
 
     /**

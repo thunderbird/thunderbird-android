@@ -36,8 +36,7 @@ public class IdentityAdapter extends BaseAdapter {
         Collection<Account> accounts = prefs.getAvailableAccounts();
         for (Account account : accounts) {
             items.add(account);
-            List<Identity> identities = account.getIdentities();
-            for (Identity identity : identities) {
+            for (Identity identity : account.getIdentities()) {
                 items.add(new IdentityContainer(identity, account));
             }
         }

@@ -390,7 +390,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             signatureView.setVisibility(View.GONE);
         }
 
-        requestReadReceipt = account.isMessageReadReceiptAlways();
+        requestReadReceipt = account.getMessageReadReceiptAlways();
 
         updateFrom();
 

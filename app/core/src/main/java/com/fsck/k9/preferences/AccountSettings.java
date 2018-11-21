@@ -68,7 +68,7 @@ public class AccountSettings {
                 new V(1, new ColorSetting(0xFF0000FF))
         ));
         s.put("defaultQuotedTextShown", Settings.versions(
-                new V(1, new BooleanSetting(Account.Companion.getDEFAULT_QUOTED_TEXT_SHOWN()))
+                new V(1, new BooleanSetting(Account.DEFAULT_QUOTED_TEXT_SHOWN))
         ));
         s.put("deletePolicy", Settings.versions(
                 new V(1, new DeletePolicySetting(DeletePolicy.NEVER))
@@ -131,10 +131,10 @@ public class AccountSettings {
                 new V(1, new EnumSetting<>(MessageFormat.class, Account.Companion.getDEFAULT_MESSAGE_FORMAT()))
         ));
         s.put("messageFormatAuto", Settings.versions(
-                new V(2, new BooleanSetting(Account.Companion.getDEFAULT_MESSAGE_FORMAT_AUTO()))
+                new V(2, new BooleanSetting(Account.DEFAULT_MESSAGE_FORMAT_AUTO))
         ));
         s.put("messageReadReceipt", Settings.versions(
-                new V(1, new BooleanSetting(Account.Companion.getDEFAULT_MESSAGE_READ_RECEIPT()))
+                new V(1, new BooleanSetting(Account.DEFAULT_MESSAGE_READ_RECEIPT))
         ));
         s.put("notifyMailCheck", Settings.versions(
                 new V(1, new BooleanSetting(false))
@@ -152,13 +152,13 @@ public class AccountSettings {
                 new V(1, new BooleanSetting(true))
         ));
         s.put("quotePrefix", Settings.versions(
-                new V(1, new StringSetting(Account.Companion.getDEFAULT_QUOTE_PREFIX()))
+                new V(1, new StringSetting(Account.DEFAULT_QUOTE_PREFIX))
         ));
         s.put("quoteStyle", Settings.versions(
                 new V(1, new EnumSetting<>(QuoteStyle.class, Account.Companion.getDEFAULT_QUOTE_STYLE()))
         ));
         s.put("replyAfterQuote", Settings.versions(
-                new V(1, new BooleanSetting(Account.Companion.getDEFAULT_REPLY_AFTER_QUOTE()))
+                new V(1, new BooleanSetting(Account.DEFAULT_REPLY_AFTER_QUOTE))
         ));
         s.put("ring", Settings.versions(
                 new V(1, new BooleanSetting(true))
@@ -177,7 +177,7 @@ public class AccountSettings {
                 new V(9, new EnumSetting<>(SortType.class, Account.Companion.getDEFAULT_SORT_TYPE()))
         ));
         s.put("sortAscending", Settings.versions(
-                new V(9, new BooleanSetting(Account.Companion.getDEFAULT_SORT_ASCENDING()))
+                new V(9, new BooleanSetting(Account.DEFAULT_SORT_ASCENDING))
         ));
         s.put("showPicturesEnum", Settings.versions(
                 new V(1, new EnumSetting<>(ShowPictures.class, ShowPictures.NEVER))
@@ -190,7 +190,7 @@ public class AccountSettings {
                 new V(53, new StringSetting(null))
         ));
         s.put("stripSignature", Settings.versions(
-                new V(2, new BooleanSetting(Account.Companion.getDEFAULT_STRIP_SIGNATURE()))
+                new V(2, new BooleanSetting(Account.DEFAULT_STRIP_SIGNATURE))
         ));
         s.put("subscribedFoldersOnly", Settings.versions(
                 new V(1, new BooleanSetting(false))
@@ -224,7 +224,7 @@ public class AccountSettings {
                 new V(18, new BooleanSetting(true))
         ));
         s.put("remoteSearchNumResults", Settings.versions(
-                new V(18, new IntegerResourceSetting(Account.Companion.getDEFAULT_REMOTE_SEARCH_NUM_RESULTS(),
+                new V(18, new IntegerResourceSetting(Account.DEFAULT_REMOTE_SEARCH_NUM_RESULTS,
                         R.array.remote_search_num_results_values))
         ));
         s.put("remoteSearchFullText", Settings.versions(

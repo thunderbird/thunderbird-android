@@ -1399,7 +1399,7 @@ public class ImapFolder extends Folder<ImapMessage> {
     public List<ImapMessage> search(final String queryString, final Set<Flag> requiredFlags,
             final Set<Flag> forbiddenFlags) throws MessagingException {
 
-        if (!store.getStoreConfig().isAllowRemoteSearch()) {
+        if (!store.getStoreConfig().getAllowRemoteSearch()) {
             throw new MessagingException("Your settings do not allow remote searching of this account");
         }
 
@@ -1411,7 +1411,7 @@ public class ImapFolder extends Folder<ImapMessage> {
 
             String searchCommand = new UidSearchCommandBuilder()
                     .queryString(queryString)
-                    .performFullTextSearch(store.getStoreConfig().isRemoteSearchFullText())
+                    .performFullTextSearch(store.getStoreConfig().getRemoteSearchFullText())
                     .requiredFlags(requiredFlags)
                     .forbiddenFlags(forbiddenFlags)
                     .build();

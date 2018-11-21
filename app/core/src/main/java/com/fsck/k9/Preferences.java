@@ -26,9 +26,8 @@ public class Preferences {
 
     public static synchronized Preferences getPreferences(Context context) {
         Context appContext = context.getApplicationContext();
-        CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
         if (preferences == null) {
-            preferences = new Preferences(appContext, resourceProvider);
+            preferences = new Preferences(appContext);
         }
         return preferences;
     }
@@ -38,12 +37,10 @@ public class Preferences {
     private List<Account> accountsInOrder = null;
     private Account newAccount;
     private Context context;
-    private final CoreResourceProvider resourceProvider;
 
-    private Preferences(Context context, CoreResourceProvider resourceProvider) {
+    private Preferences(Context context) {
         storage = Storage.getStorage(context);
         this.context = context;
-        this.resourceProvider = resourceProvider;
         if (storage.isEmpty()) {
             Timber.i("Preferences storage is zero-size, importing from Android-style preferences");
             StorageEditor editor = storage.edit();
@@ -53,13 +50,15 @@ public class Preferences {
     }
 
     public synchronized void loadAccounts() {
+        AccountManager accountManager = DI.get(AccountManager.class);
+
         accounts = new HashMap<>();
         accountsInOrder = new LinkedList<>();
         String accountUuids = getStorage().getString("accountUuids", null);
         if ((accountUuids != null) && (accountUuids.length() != 0)) {
             String[] uuids = accountUuids.split(",");
             for (String uuid : uuids) {
-                Account newAccount = new Account(this, uuid);
+                Account newAccount = accountManager.loadAccount(uuid);
                 accounts.put(uuid, newAccount);
                 accountsInOrder.add(newAccount);
             }
@@ -114,7 +113,9 @@ public class Preferences {
     }
 
     public synchronized Account newAccount() {
-        newAccount = new Account(context, resourceProvider);
+        AccountManager accountManager = DI.get(AccountManager.class);
+
+        newAccount = accountManager.createAccountWithDefaults();
         accounts.put(newAccount.getUuid(), newAccount);
         accountsInOrder.add(newAccount);
 

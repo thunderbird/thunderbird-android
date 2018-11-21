@@ -154,7 +154,7 @@ class ImapFolderPusher extends ImapFolder {
                         break;
                     }
 
-                    boolean pushPollOnConnect = store.getStoreConfig().isPushPollOnConnect();
+                    boolean pushPollOnConnect = store.getStoreConfig().getPushPollOnConnect();
                     if (pushPollOnConnect && (openedNewConnection || needsPoll)) {
                         needsPoll = false;
                         syncFolderOnConnect();

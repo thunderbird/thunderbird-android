@@ -115,8 +115,10 @@ public class RemoteControlService extends CoreService {
                                     String[] allowedFrequencies = getResources().getStringArray(R.array.check_frequency_values);
                                     for (String allowedFrequency : allowedFrequencies) {
                                         if (allowedFrequency.equals(pollFrequency)) {
-                                            Integer newInterval = Integer.parseInt(allowedFrequency);
-                                            needsReschedule |= account.setAutomaticCheckIntervalMinutes(newInterval);
+                                            int newInterval = Integer.parseInt(allowedFrequency);
+                                            int oldInterval = account.getAutomaticCheckIntervalMinutes();
+                                            account.setAutomaticCheckIntervalMinutes(newInterval);
+                                            needsReschedule |= newInterval != oldInterval;
                                         }
                                     }
                                 }

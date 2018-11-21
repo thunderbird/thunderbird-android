@@ -20,9 +20,9 @@ class AccountSettingsDataStore(
             "account_default" -> account == preferences.defaultAccount
             "mark_message_as_read_on_view" -> account.isMarkMessageAsReadOnView
             "account_sync_remote_deletetions" -> account.isSyncRemoteDeletions
-            "push_poll_on_connect" -> account.isPushPollOnConnect
+            "push_poll_on_connect" -> account.pushPollOnConnect
             "always_show_cc_bcc" -> account.isAlwaysShowCcBcc
-            "message_read_receipt" -> account.isMessageReadReceiptAlways
+            "message_read_receipt" -> account.messageReadReceiptAlways
             "default_quoted_text_shown" -> account.isDefaultQuotedTextShown
             "reply_after_quote" -> account.isReplyAfterQuote
             "strip_signature" -> account.isStripSignature
@@ -33,7 +33,7 @@ class AccountSettingsDataStore(
             "account_led" -> account.notificationSetting.isLedEnabled
             "account_notify_sync" -> account.isShowOngoing
             "notification_opens_unread" -> account.isGoToUnreadMessageSearch
-            "remote_search_enabled" -> account.isAllowRemoteSearch
+            "remote_search_enabled" -> account.allowRemoteSearch
             "openpgp_hide_sign_only" -> account.openPgpHideSignOnly
             "openpgp_encrypt_subject" -> account.openPgpEncryptSubject
             "autocrypt_prefer_encrypt" -> account.autocryptPreferEncryptMutual
@@ -52,9 +52,9 @@ class AccountSettingsDataStore(
             }
             "mark_message_as_read_on_view" -> account.isMarkMessageAsReadOnView = value
             "account_sync_remote_deletetions" -> account.isSyncRemoteDeletions = value
-            "push_poll_on_connect" -> account.isPushPollOnConnect = value
+            "push_poll_on_connect" -> account.pushPollOnConnect = value
             "always_show_cc_bcc" -> account.isAlwaysShowCcBcc = value
-            "message_read_receipt" -> account.setMessageReadReceipt(value)
+            "message_read_receipt" -> account.messageReadReceiptAlways = value
             "default_quoted_text_shown" -> account.isDefaultQuotedTextShown = value
             "reply_after_quote" -> account.isReplyAfterQuote = value
             "strip_signature" -> account.isStripSignature = value
@@ -65,7 +65,7 @@ class AccountSettingsDataStore(
             "account_led" -> account.notificationSetting.setLed(value)
             "account_notify_sync" -> account.isShowOngoing = value
             "notification_opens_unread" -> account.isGoToUnreadMessageSearch = value
-            "remote_search_enabled" -> account.isAllowRemoteSearch = value
+            "remote_search_enabled" -> account.allowRemoteSearch = value
             "openpgp_hide_sign_only" -> account.openPgpHideSignOnly = value
             "openpgp_encrypt_subject" -> account.openPgpEncryptSubject = value
             "autocrypt_prefer_encrypt" -> account.autocryptPreferEncryptMutual = value
@@ -117,7 +117,7 @@ class AccountSettingsDataStore(
             "account_display_count" -> account.displayCount.toString()
             "account_message_age" -> account.maximumPolledMessageAge.toString()
             "account_autodownload_size" -> account.maximumAutoDownloadMessageSize.toString()
-            "account_check_frequency" -> account.getAutomaticCheckIntervalMinutes().toString()
+            "account_check_frequency" -> account.automaticCheckIntervalMinutes.toString()
             "folder_sync_mode" -> account.folderSyncMode.name
             "folder_push_mode" -> account.folderPushMode.name
             "delete_policy" -> account.deletePolicy.name
@@ -142,7 +142,7 @@ class AccountSettingsDataStore(
             "account_vibrate_pattern" -> account.notificationSetting.vibratePattern.toString()
             "account_vibrate_times" -> account.notificationSetting.vibrateTimes.toString()
             "account_remote_search_num_results" -> account.remoteSearchNumResults.toString()
-            "local_storage_provider" -> account.getLocalStorageProviderId()
+            "local_storage_provider" -> account.localStorageProviderId
             "account_ringtone" -> account.notificationSetting.ringtone
             else -> defValue
         }
@@ -158,7 +158,10 @@ class AccountSettingsDataStore(
             "account_message_age" -> account.maximumPolledMessageAge = value.toInt()
             "account_autodownload_size" -> account.maximumAutoDownloadMessageSize = value.toInt()
             "account_check_frequency" -> {
-                if (account.setAutomaticCheckIntervalMinutes(value.toInt())) {
+                val oldValue = account.automaticCheckIntervalMinutes
+                val newValue = value.toInt()
+                account.automaticCheckIntervalMinutes = newValue
+                if (oldValue != newValue) {
                     reschedulePoll()
                 }
             }
@@ -200,7 +203,7 @@ class AccountSettingsDataStore(
             "account_remote_search_num_results" -> account.remoteSearchNumResults = value.toInt()
             "local_storage_provider" -> {
                 executorService.execute {
-                    account.setLocalStorageProviderId(value)
+                    account.localStorageProviderId = value
                     saveSettings()
                 }
                 return

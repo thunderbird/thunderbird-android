@@ -305,7 +305,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             }
             mCurrentPortViewSetting = mPortView.getText().toString();
 
-            mSubscribedFoldersOnly.setChecked(mAccount.isSubscribedFoldersOnly());
+            mSubscribedFoldersOnly.setChecked(mAccount.getSubscribedFoldersOnly());
         } catch (Exception e) {
             failure(e);
         }
