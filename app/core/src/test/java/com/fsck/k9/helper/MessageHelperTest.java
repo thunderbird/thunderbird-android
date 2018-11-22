@@ -88,6 +88,13 @@ public class MessageHelperTest extends RobolectricTest {
     }
 
     @Test
+    public void testToFriendlyWithoutAddressOrPersonal() throws Exception {
+        Address address = new Address("<>");
+        CharSequence friendly = MessageHelper.toFriendly(new Address[] { address }, contactsWithFakeContact);
+        assertEquals("", friendly.toString());
+    }
+
+    @Test
     public void toFriendly_spoofPreventionOverridesPersonal() {
         Address address = new Address("test@testor.com", "potus@whitehouse.gov");
         CharSequence friendly = MessageHelper.toFriendly(address, contacts);

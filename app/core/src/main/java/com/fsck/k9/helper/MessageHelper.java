@@ -133,8 +133,10 @@ public class MessageHelper {
 
         if (!TextUtils.isEmpty(address.getPersonal()) && !isSpoofAddress(address.getPersonal())) {
             return address.getPersonal();
-        } else {
+        } else if (address.getAddress() != null) {
             return address.getAddress();
+        } else {
+            return "";
         }
     }
 
