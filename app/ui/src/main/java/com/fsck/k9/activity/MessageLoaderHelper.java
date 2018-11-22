@@ -144,8 +144,8 @@ public class MessageLoaderHelper {
         cancelAndClearCryptoOperation();
         cancelAndClearDecodeLoader();
 
-        if (account.isOpenPgpProviderConfigured()) {
-            String openPgpProvider = account.getOpenPgpProvider();
+        String openPgpProvider = account.getOpenPgpProvider();
+        if (openPgpProvider != null) {
             startOrResumeCryptoOperation(openPgpProvider);
         } else {
             startOrResumeDecodeMessage();
@@ -232,8 +232,8 @@ public class MessageLoaderHelper {
             return;
         }
 
-        if (account.isOpenPgpProviderConfigured()) {
-            String openPgpProvider = account.getOpenPgpProvider();
+        String openPgpProvider = account.getOpenPgpProvider();
+        if (openPgpProvider != null) {
             startOrResumeCryptoOperation(openPgpProvider);
             return;
         }

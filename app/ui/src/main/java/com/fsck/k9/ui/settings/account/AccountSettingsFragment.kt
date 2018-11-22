@@ -72,6 +72,14 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
         requireActivity().title = title
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        // we might be returning from OpenPgpAppSelectDialog, make sure settings are up to date
+        val account = getAccount()
+        initializeCryptoSettings(account)
+    }
+
     private fun initializeIncomingServer() {
         findPreference(PREFERENCE_INCOMING_SERVER)?.onClick {
             AccountSetupIncoming.actionEditIncomingSettings(requireActivity(), accountUuid)
@@ -163,7 +171,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
     private fun configureCryptoPreferences(account: Account) {
         var pgpProviderName: String? = null
         var pgpProvider = account.openPgpProvider
-        var isPgpConfigured = account.isOpenPgpProviderConfigured
+        val isPgpConfigured = pgpProvider != null
 
         if (isPgpConfigured) {
             pgpProviderName = getOpenPgpProviderName(pgpProvider)
@@ -172,7 +180,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
 
                 account.openPgpProvider = null
                 pgpProvider = null
-                isPgpConfigured = false
             }
         }
 
@@ -198,6 +205,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
                         account.openPgpProvider = openPgpProviderPackages[0]
                         configureCryptoPreferences(account)
                     } else {
+                        summary = getString(R.string.account_settings_crypto_summary_config)
                         OpenPgpAppSelectDialog.startOpenPgpChooserActivity(requireActivity(), account)
                     }
                 }
