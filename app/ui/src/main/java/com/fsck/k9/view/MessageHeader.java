@@ -293,13 +293,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             counterpartyAddress = fromAddrs[0];
         }
 
-        /* We hide the subject by default for each new message, and MessageTitleView might show
-         * it later by calling showSubjectLine(). */
-        boolean newMessageShown = mMessage == null || !mMessage.getUid().equals(message.getUid());
-        if (newMessageShown) {
-            mSubjectView.setVisibility(GONE);
-        }
-
         mMessage = message;
         mAccount = account;
 
@@ -541,10 +534,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         if (mOnLayoutChangedListener != null) {
             mOnLayoutChangedListener.onLayoutChanged();
         }
-    }
-
-    public void showSubjectLine() {
-        mSubjectView.setVisibility(VISIBLE);
     }
 
     public void setOnCryptoClickListener(OnCryptoClickListener onCryptoClickListener) {

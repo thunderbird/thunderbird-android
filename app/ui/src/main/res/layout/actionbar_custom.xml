@@ -48,19 +48,4 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/actionbar_message_view"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone" >
-
-        <com.fsck.k9.view.MessageTitleView
-            android:id="@+id/message_title_view"
-            tools:text="MessageTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:includeFontPadding="false"
-            android:textSize="16sp" />
-    </LinearLayout>
-
 </FrameLayout>

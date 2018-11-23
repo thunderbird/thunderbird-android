@@ -23,19 +23,36 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/subject"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:textStyle="bold"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:padding="8dp"
-                android:visibility="gone"
-                tools:visibility="visible"
-                tools:text="(no subject)"
-                />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/subject"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:padding="8dp"
+                    tools:text="(no subject)"
+                    />
+
+                <CheckBox
+                    android:id="@+id/flagged"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:padding="4dp"
+                    android:focusable="false"
+                    android:checked="false"
+                    style="?android:attr/starStyle"
+                    />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -229,16 +246,6 @@
                         android:layout_centerVertical="true"
                         android:id="@+id/status_icon_strip"
                         >
-
-                        <!--
-                        <CheckBox
-                            android:id="@+id/flagged"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:focusable="false"
-                            style="?android:attr/starStyle"
-                            android:checked="false" />
-                        -->
 
                         <ImageView
                             android:id="@+id/icon_single_message_options"
