@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
 import android.content.res.Configuration;
+import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -1096,11 +1097,17 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             }
 
             // Set title of menu item to toggle the read state of the currently displayed message
+            int[] drawableAttr;
             if (messageViewFragment.isMessageRead()) {
                 menu.findItem(R.id.toggle_unread).setTitle(R.string.mark_as_unread_action);
+                drawableAttr = new int[] { R.attr.iconActionMarkAsUnread };
             } else {
                 menu.findItem(R.id.toggle_unread).setTitle(R.string.mark_as_read_action);
+                drawableAttr = new int[] { R.attr.iconActionMarkAsRead };
             }
+            TypedArray ta = obtainStyledAttributes(drawableAttr);
+            menu.findItem(R.id.toggle_unread).setIcon(ta.getDrawable(0));
+            ta.recycle();
 
             // Jellybean has built-in long press selection support
             menu.findItem(R.id.select_text).setVisible(Build.VERSION.SDK_INT < 16);
