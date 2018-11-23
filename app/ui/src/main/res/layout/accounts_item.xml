@@ -68,7 +68,7 @@
                 android:focusable="false"
                 android:layout_marginRight="3dip"
                 android:src="?attr/iconFolder"
-                android:background="?android:attr/selectableItemBackground"
+                android:background="?selectableItemBackground"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:padding="8dp"

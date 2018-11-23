@@ -19,7 +19,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/selectable_item_background"
+            android:background="?selectableItemBackground"
             android:text="@string/account_setup_basics_manual_setup_action" />
 
         <Button
@@ -28,7 +28,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/selectable_item_background"
+            android:background="?selectableItemBackground"
             android:text="@string/next_action" />
     </LinearLayout>
 
