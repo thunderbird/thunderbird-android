@@ -6,8 +6,9 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.os.Parcelable
 import com.fsck.k9.Account.QuoteStyle
+import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.Identity
-import com.fsck.k9.RobolectricTest
+import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.activity.compose.ComposeCryptoStatus
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode
 import com.fsck.k9.activity.misc.Attachment
@@ -31,6 +32,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import org.koin.standalone.inject
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito.*
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderState
@@ -44,7 +46,7 @@ import java.io.OutputStream
 import java.util.*
 
 
-class PgpMessageBuilderTest : RobolectricTest() {
+class PgpMessageBuilderTest : K9RobolectricTest() {
 
 
     private val defaultCryptoStatus = ComposeCryptoStatus(
@@ -58,9 +60,10 @@ class PgpMessageBuilderTest : RobolectricTest() {
             true,
             CryptoMode.NO_CHOICE
     )
+    private val resourceProvider: CoreResourceProvider by inject()
     private val openPgpApi = mock(OpenPgpApi::class.java)
     private val autocryptOpenPgpApiInteractor = mock(AutocryptOpenPgpApiInteractor::class.java)
-    private val pgpMessageBuilder = createDefaultPgpMessageBuilder(openPgpApi, autocryptOpenPgpApiInteractor)
+    private val pgpMessageBuilder = createDefaultPgpMessageBuilder(openPgpApi, autocryptOpenPgpApiInteractor, resourceProvider)
 
     @Before
     @Throws(Exception::class)
@@ -591,10 +594,11 @@ class PgpMessageBuilderTest : RobolectricTest() {
         private val SENDER_EMAIL = "test@example.org"
 
         private fun createDefaultPgpMessageBuilder(openPgpApi: OpenPgpApi,
-                                                   autocryptOpenPgpApiInteractor: AutocryptOpenPgpApiInteractor): PgpMessageBuilder {
+                                                   autocryptOpenPgpApiInteractor: AutocryptOpenPgpApiInteractor,
+                                                   resourceProvider: CoreResourceProvider): PgpMessageBuilder {
             val builder = PgpMessageBuilder(
-                    RuntimeEnvironment.application, MessageIdGenerator.getInstance(), BoundaryGenerator.getInstance(),
-                    AutocryptOperations.getInstance(), autocryptOpenPgpApiInteractor)
+                    MessageIdGenerator.getInstance(), BoundaryGenerator.getInstance(),
+                    AutocryptOperations.getInstance(), autocryptOpenPgpApiInteractor, resourceProvider)
             builder.setOpenPgpApi(openPgpApi)
 
             val identity = Identity()
@@ -678,9 +682,9 @@ class PgpMessageBuilderTest : RobolectricTest() {
                     Assert.fail("found null for an expected non-null extra: $key")
                 }
                 if (intentExtra is LongArray) {
-                    if (!Arrays.equals(intentExtra, expectedExtra as LongArray)) {
-                        Assert.assertArrayEquals("error in $key", expectedExtra, intentExtra)
-                    }
+                    Assert.assertArrayEquals("error in $key", expectedExtra as LongArray, intentExtra)
+                } else if (intentExtra is Array<*>) {
+                    Assert.assertArrayEquals("error in $key", expectedExtra as Array<*>, intentExtra)
                 } else {
                     if (intentExtra != expectedExtra) {
                         Assert.assertEquals("error in $key", expectedExtra, intentExtra)
