@@ -21,11 +21,11 @@ import android.text.format.DateUtils;
 import android.text.style.StyleSpan;
 import android.util.AttributeSet;
 import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,7 +60,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private TextView mBccView;
     private TextView mBccLabel;
     private TextView mSubjectView;
-    private MessageCryptoStatusView mCryptoStatusIcon;
+    private ImageView mCryptoStatusIcon;
 
     private View mChip;
     private CheckBox mFlagged;
@@ -376,21 +376,23 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     }
 
     public void setCryptoStatusLoading() {
-        mCryptoStatusIcon.setVisibility(View.VISIBLE);
-        mCryptoStatusIcon.setEnabled(false);
-        mCryptoStatusIcon.setCryptoDisplayStatus(MessageCryptoDisplayStatus.LOADING);
+        setCryptoDisplayStatus(MessageCryptoDisplayStatus.LOADING);
     }
 
     public void setCryptoStatusDisabled() {
-        mCryptoStatusIcon.setVisibility(View.VISIBLE);
-        mCryptoStatusIcon.setEnabled(false);
-        mCryptoStatusIcon.setCryptoDisplayStatus(MessageCryptoDisplayStatus.DISABLED);
+        setCryptoDisplayStatus(MessageCryptoDisplayStatus.DISABLED);
     }
 
     public void setCryptoStatus(MessageCryptoDisplayStatus displayStatus) {
+        setCryptoDisplayStatus(displayStatus);
+    }
+
+    private void setCryptoDisplayStatus(MessageCryptoDisplayStatus displayStatus) {
+        int color = ThemeUtils.getStyledColor(getContext(), displayStatus.colorAttr);
+        mCryptoStatusIcon.setEnabled(displayStatus.isEnabled);
         mCryptoStatusIcon.setVisibility(View.VISIBLE);
-        mCryptoStatusIcon.setEnabled(true);
-        mCryptoStatusIcon.setCryptoDisplayStatus(displayStatus);
+        mCryptoStatusIcon.setImageResource(displayStatus.statusIconRes);
+        mCryptoStatusIcon.setColorFilter(color);
     }
 
     public void onShowAdditionalHeaders() {

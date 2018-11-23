@@ -241,15 +241,24 @@
                         -->
 
                         <ImageView
+                            android:id="@+id/icon_single_message_options"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/icon_single_message_options"
                             android:src="?iconActionSingleMessageOptions"
                             android:padding="8dp"
                             android:background="?selectableItemBackground"
                             />
 
-                        <include layout="@layout/message_crypto_status_view" />
+                        <ImageView
+                            android:id="@+id/crypto_status_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:padding="8dp"
+                            android:src="@drawable/status_lock_disabled"
+                            android:tint="?attr/openpgp_grey"
+                            android:background="?selectableItemBackground"
+                            />
 
                     </LinearLayout>
 
