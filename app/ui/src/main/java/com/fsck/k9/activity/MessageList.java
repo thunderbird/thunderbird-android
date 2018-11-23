@@ -1698,6 +1698,10 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
         List<String> folderServerIds = search.getFolderServerIds();
         singleFolderMode = singleAccountMode && folderServerIds.size() == 1;
+
+        // now we know if we are in single account mode and need a subtitle
+        actionBarSubTitle.setVisibility((!singleFolderMode) ? View.GONE : View.VISIBLE);
+
         if (drawer == null) {
             return;
         } else if (singleFolderMode) {
@@ -1707,8 +1711,5 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         } else {
             drawer.selectFolder(null);
         }
-
-        // now we know if we are in single account mode and need a subtitle
-        actionBarSubTitle.setVisibility((!singleFolderMode) ? View.GONE : View.VISIBLE);
     }
 }
