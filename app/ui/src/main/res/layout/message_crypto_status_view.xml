@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/crypto_status_icon"
     android:layout_width="36dp"
-    android:layout_height="32dp"
+    android:layout_height="36dp"
     android:visibility="gone"
     custom:previewInitialChild="0"
     android:background="?selectableItemBackground"

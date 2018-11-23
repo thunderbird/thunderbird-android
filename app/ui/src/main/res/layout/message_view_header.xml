@@ -230,6 +230,7 @@
                         android:id="@+id/status_icon_strip"
                         >
 
+                        <!--
                         <CheckBox
                             android:id="@+id/flagged"
                             android:layout_width="wrap_content"
@@ -237,6 +238,16 @@
                             android:focusable="false"
                             style="?android:attr/starStyle"
                             android:checked="false" />
+                        -->
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/icon_single_message_options"
+                            android:src="?iconActionSingleMessageOptions"
+                            android:padding="8dp"
+                            android:background="?selectableItemBackground"
+                            />
 
                         <include layout="@layout/message_crypto_status_view" />
 

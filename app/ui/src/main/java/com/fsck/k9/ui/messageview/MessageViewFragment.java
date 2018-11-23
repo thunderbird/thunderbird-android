@@ -18,10 +18,12 @@ import android.os.SystemClock;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.PopupMenu.OnMenuItemClickListener;
 import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -176,6 +178,30 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             @Override
             public void onClick(View v) {
                 onToggleFlagged();
+            }
+        });
+
+        mMessageView.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.reply) {
+                    onReply();
+                    return true;
+                } else if (id == R.id.reply_all) {
+                    onReplyAll();
+                    return true;
+                } else if (id == R.id.forward) {
+                    onForward();
+                    return true;
+                } else if (id == R.id.forward_as_attachment) {
+                    onForwardAsAttachment();
+                    return true;
+                } else if (id == R.id.share) {
+                    onSendAlternate();
+                    return true;
+                }
+                return false;
             }
         });
 

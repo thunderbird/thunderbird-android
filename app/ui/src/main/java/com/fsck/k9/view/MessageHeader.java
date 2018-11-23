@@ -12,6 +12,8 @@ import android.graphics.Typeface;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.PopupMenu;
+import android.support.v7.widget.PopupMenu.OnMenuItemClickListener;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -19,6 +21,7 @@ import android.text.format.DateUtils;
 import android.text.style.StyleSpan;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -32,7 +35,6 @@ import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.activity.misc.ContactPicture;
 import com.fsck.k9.contacts.ContactPictureLoader;
-import com.fsck.k9.ui.R;
 import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MessageHelper;
@@ -41,6 +43,7 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.ui.ContactBadge;
+import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.messageview.OnCryptoClickListener;
 import timber.log.Timber;
 
@@ -63,6 +66,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private CheckBox mFlagged;
     private int defaultSubjectColor;
     private TextView mAdditionalHeadersView;
+    private View singleMessageOptionIcon;
     private View mAnsweredIcon;
     private View mForwardedIcon;
     private Message mMessage;
@@ -77,6 +81,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
     private OnLayoutChangedListener mOnLayoutChangedListener;
     private OnCryptoClickListener onCryptoClickListener;
+    private OnMenuItemClickListener onMenuItemClickListener;
 
     /**
      * Pair class is only available since API Level 5, so we need
@@ -115,6 +120,8 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
         mContactBadge = findViewById(R.id.contact_badge);
 
+        singleMessageOptionIcon = findViewById(R.id.icon_single_message_options);
+
         mSubjectView = findViewById(R.id.subject);
         mAdditionalHeadersView = findViewById(R.id.additional_headers_view);
         mChip = findViewById(R.id.chip);
@@ -133,6 +140,8 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mFontSizes.setViewTextSize(mCcLabel, mFontSizes.getMessageViewCC());
         mFontSizes.setViewTextSize(mBccView, mFontSizes.getMessageViewBCC());
         mFontSizes.setViewTextSize(mBccLabel, mFontSizes.getMessageViewBCC());
+
+        singleMessageOptionIcon.setOnClickListener(this);
 
         mFromView.setOnClickListener(this);
         mToView.setOnClickListener(this);
@@ -162,6 +171,11 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             layoutChanged();
         } else if (id == R.id.crypto_status_icon) {
             onCryptoClickListener.onCryptoClick();
+        } else if (id == R.id.icon_single_message_options) {
+            PopupMenu popupMenu = new PopupMenu(getContext(), view);
+            popupMenu.setOnMenuItemClickListener(onMenuItemClickListener);
+            popupMenu.inflate(R.menu.single_message_options);
+            popupMenu.show();
         }
     }
 
@@ -533,5 +547,9 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
     public void setOnCryptoClickListener(OnCryptoClickListener onCryptoClickListener) {
         this.onCryptoClickListener = onCryptoClickListener;
+    }
+
+    public void setOnMenuItemClickListener(OnMenuItemClickListener onMenuItemClickListener) {
+        this.onMenuItemClickListener = onMenuItemClickListener;
     }
 }
