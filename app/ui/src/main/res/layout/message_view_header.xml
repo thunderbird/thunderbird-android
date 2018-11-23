@@ -26,19 +26,33 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="8dp"
+                >
 
                 <TextView
                     android:id="@+id/subject"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
                     android:ellipsize="end"
                     android:maxLines="2"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:padding="8dp"
                     tools:text="(no subject)"
+                    />
+
+                <ImageView
+                    android:id="@+id/crypto_status_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="6dp"
+                    android:src="@drawable/status_lock_disabled"
+                    android:tint="?attr/openpgp_grey"
+                    android:background="?selectableItemBackground"
                     />
 
                 <CheckBox
@@ -46,7 +60,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:padding="4dp"
                     android:focusable="false"
                     android:checked="false"
                     style="?android:attr/starStyle"
@@ -253,17 +266,6 @@
                             android:layout_height="wrap_content"
                             android:src="?iconActionSingleMessageOptions"
                             android:padding="8dp"
-                            android:background="?selectableItemBackground"
-                            />
-
-                        <ImageView
-                            android:id="@+id/crypto_status_icon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:padding="8dp"
-                            android:src="@drawable/status_lock_disabled"
-                            android:tint="?attr/openpgp_grey"
                             android:background="?selectableItemBackground"
                             />
 
