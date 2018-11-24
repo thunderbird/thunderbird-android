@@ -100,6 +100,7 @@ public class K9Drawer {
                     .withNameShown(true)
                     .withName(R.string.integrated_inbox_title)
                     .withIcon(getResId(R.attr.iconUnifiedInbox))
+                    .withEmail(parent.getString(R.string.integrated_inbox_detail))
                     .withSetSelected(unifiedInboxSelected)
                     .withIdentifier(DRAWER_ID_UNIFIED_INBOX)
             );
