@@ -28,7 +28,6 @@ import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.Drawer.OnDrawerItemClickListener;
 import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.icons.MaterialDrawerFont;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
@@ -119,9 +118,9 @@ public class K9Drawer {
                     .withNameShown(true)
                     .withName(account.getDescription())
                     .withEmail(account.getEmail())
-                    .withIcon(new IconicsDrawable(parent, MaterialDrawerFont.Icon.mdf_person)
+                    .withIcon(new IconicsDrawable(parent, FontAwesome.Icon.faw_user_alt)
                             .colorRes(R.color.material_drawer_background).backgroundColor(account.getChipColor())
-                            .sizeDp(56).paddingDp(16))
+                            .sizeDp(56).paddingDp(14))
                     .withIdentifier(drawerId)
                     .withSetSelected(false)
                     .withTag(account)
