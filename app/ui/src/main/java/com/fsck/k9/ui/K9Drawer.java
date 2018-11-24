@@ -134,8 +134,8 @@ public class K9Drawer {
                             return false;
                         } else {
                             Account account = (Account) ((ProfileDrawerItem) profile).getTag();
-                            updateUserAccountsAndFolders(account);
                             Accounts.openRealAccount(account, parent);
+                            updateUserAccountsAndFolders(account);
                             return false;
                         }
                     }
@@ -194,6 +194,7 @@ public class K9Drawer {
         if (account == null) {
             selectUnifiedInbox();
         } else {
+            unifiedInboxSelected = false;
             accountHeader.setActiveProfile((account.getAccountNumber()+1) << DRAWER_ACCOUNT_SHIFT);
             ViewModelProvider viewModelProvider = ViewModelProviders.of(parent, new MessageListViewModelFactory());
             MessageListViewModel viewModel = viewModelProvider.get(MessageListViewModel.class);
@@ -250,8 +251,6 @@ public class K9Drawer {
 
         if (openedFolderDrawerId != -1) {
             drawer.setSelection(openedFolderDrawerId, false);
-        } else if (unifiedInboxSelected) {
-            selectUnifiedInbox();
         }
     }
 
