@@ -64,7 +64,6 @@ public class K9Drawer {
     private int iconFolderResId;
 
     private final List<Long> userFolderDrawerIds = new ArrayList<>();
-    private final List<Long> userAccountDrawerIds = new ArrayList<>();
     private boolean unifiedInboxSelected;
     private String openedFolderServerId;
 
@@ -93,7 +92,6 @@ public class K9Drawer {
     private AccountHeader buildAccountHeader() {
         AccountHeaderBuilder headerBuilder = new AccountHeaderBuilder()
                 .withActivity(parent)
-                //.withTextColorRes(R.color.primary_text_secondary_when_activated_material)
                 .withTranslucentStatusBar(false);
 
         if (!K9.isHideSpecialAccounts()) {
@@ -110,7 +108,7 @@ public class K9Drawer {
         }
 
         List <Account> accounts = preferences.getAccounts();
-        for (int i = preferences.getAccounts().size() - 1; i >= 0; i--) {
+        for (int i = 0; i < preferences.getAccounts().size(); i++) {
             Account account = accounts.get(i);
             long drawerId = (account.getAccountNumber()+1) << DRAWER_ACCOUNT_SHIFT;
 
