@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
@@ -16,6 +17,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.activity.MessageList;
+import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mailstore.Folder;
 import com.fsck.k9.ui.folders.FolderNameFormatter;
 import com.fsck.k9.ui.messagelist.MessageListViewModel;
@@ -35,6 +37,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -107,22 +110,30 @@ public class K9Drawer {
             );
         }
 
+        HashSet <Uri> photoUris = new HashSet<Uri>();
+
         List <Account> accounts = preferences.getAccounts();
         for (int i = 0; i < preferences.getAccounts().size(); i++) {
             Account account = accounts.get(i);
             long drawerId = (account.getAccountNumber()+1) << DRAWER_ACCOUNT_SHIFT;
 
-            headerBuilder.addProfiles(new ProfileDrawerItem()
+            ProfileDrawerItem  pdi = new ProfileDrawerItem()
                     .withNameShown(true)
                     .withName(account.getDescription())
                     .withEmail(account.getEmail())
-                    .withIcon(new IconicsDrawable(parent, FontAwesome.Icon.faw_user_alt)
-                            .colorRes(R.color.material_drawer_background).backgroundColor(account.getChipColor())
-                            .sizeDp(56).paddingDp(14))
                     .withIdentifier(drawerId)
                     .withSetSelected(false)
-                    .withTag(account)
-            );
+                    .withTag(account);
+
+            Uri photoUri = Contacts.getInstance(parent).getPhotoUri(account.getEmail());
+            if (photoUri != null && !photoUris.contains(photoUri)) {
+                photoUris.add(photoUri);
+            } else {
+                pdi.withIcon(new IconicsDrawable(parent, FontAwesome.Icon.faw_user_alt)
+                        .colorRes(R.color.material_drawer_background).backgroundColor(account.getChipColor())
+                        .sizeDp(56).paddingDp(14));
+            }
+            headerBuilder.addProfiles(pdi);
         }
 
         accountHeader = headerBuilder
