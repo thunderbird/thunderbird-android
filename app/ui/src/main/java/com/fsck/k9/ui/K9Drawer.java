@@ -128,6 +128,7 @@ public class K9Drawer {
             Uri photoUri = Contacts.getInstance(parent).getPhotoUri(account.getEmail());
             if (photoUri != null && !photoUris.contains(photoUri)) {
                 photoUris.add(photoUri);
+                pdi.withIcon(photoUri);
             } else {
                 pdi.withIcon(new IconicsDrawable(parent, FontAwesome.Icon.faw_user_alt)
                         .colorRes(R.color.material_drawer_background).backgroundColor(account.getChipColor())
