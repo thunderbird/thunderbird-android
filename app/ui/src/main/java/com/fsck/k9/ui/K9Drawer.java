@@ -4,6 +4,7 @@ package com.fsck.k9.ui;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
@@ -20,6 +21,7 @@ import com.fsck.k9.ui.folders.FolderNameFormatter;
 import com.fsck.k9.ui.messagelist.MessageListViewModel;
 import com.fsck.k9.ui.messagelist.MessageListViewModelFactory;
 import com.fsck.k9.ui.settings.SettingsActivity;
+import com.mikepenz.fontawesome_typeface_library.FontAwesome;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
@@ -99,8 +101,10 @@ public class K9Drawer {
             headerBuilder.addProfiles(new ProfileDrawerItem()
                     .withNameShown(true)
                     .withName(R.string.integrated_inbox_title)
-                    .withIcon(getResId(R.attr.iconUnifiedInbox))
                     .withEmail(parent.getString(R.string.integrated_inbox_detail))
+                    .withIcon(new IconicsDrawable(parent, FontAwesome.Icon.faw_users)
+                            .colorRes(R.color.material_drawer_background).backgroundColor(Color.GRAY)
+                            .sizeDp(56).paddingDp(8))
                     .withSetSelected(unifiedInboxSelected)
                     .withIdentifier(DRAWER_ID_UNIFIED_INBOX)
             );
