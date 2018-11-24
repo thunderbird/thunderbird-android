@@ -1698,15 +1698,18 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
         List<String> folderServerIds = search.getFolderServerIds();
         singleFolderMode = singleAccountMode && folderServerIds.size() == 1;
-        if (singleFolderMode) {
+
+        // now we know if we are in single account mode and need a subtitle
+        actionBarSubTitle.setVisibility((!singleFolderMode) ? View.GONE : View.VISIBLE);
+
+        if (drawer == null) {
+            return;
+        } else if (singleFolderMode) {
             drawer.selectFolder(folderServerIds.get(0));
         } else if (search.getId().equals(SearchAccount.UNIFIED_INBOX)) {
             drawer.selectUnifiedInbox();
         } else {
             drawer.selectFolder(null);
         }
-
-        // now we know if we are in single account mode and need a subtitle
-        actionBarSubTitle.setVisibility((!singleFolderMode) ? View.GONE : View.VISIBLE);
     }
 }
