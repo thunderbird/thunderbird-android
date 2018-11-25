@@ -12,10 +12,12 @@ import org.jetbrains.anko.coroutines.experimental.bg
 
 class MessageListViewModel(private val folderRepositoryManager: FolderRepositoryManager) : ViewModel() {
     private val foldersLiveData = MutableLiveData<List<Folder>>()
+    private var account: Account? = null
 
 
     fun getFolders(account: Account): LiveData<List<Folder>> {
-        if (foldersLiveData.value == null) {
+        if (foldersLiveData.value == null || this.account != account) {
+            this.account = account
             loadFolders(account)
         }
 
