@@ -3,8 +3,6 @@ package com.fsck.k9.activity;
 
 import android.annotation.SuppressLint;
 import android.app.SearchManager;
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -57,8 +55,6 @@ import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.ui.K9Drawer;
 import com.fsck.k9.ui.R;
-import com.fsck.k9.ui.messagelist.MessageListViewModel;
-import com.fsck.k9.ui.messagelist.MessageListViewModelFactory;
 import com.fsck.k9.ui.messageview.MessageViewFragment;
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener;
 import com.fsck.k9.ui.settings.SettingsActivity;
@@ -241,9 +237,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         if (!decodeExtras(getIntent())) {
             return;
         }
-
-        ViewModelProvider viewModelProvider = ViewModelProviders.of(this, new MessageListViewModelFactory());
-        MessageListViewModel viewModel = viewModelProvider.get(MessageListViewModel.class);
 
         if (isDrawerEnabled()) {
             drawer.updateUserAccountsAndFolders(account);
