@@ -666,17 +666,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         return true;
     }
 
-    public static void openRealAccount(Account realAccount, Context context) {
-        if (realAccount.getAutoExpandFolder() == null) {
-            FolderList.actionHandleAccount(context, realAccount);
-        } else {
-            LocalSearch search = new LocalSearch(realAccount.getAutoExpandFolder());
-            search.addAllowedFolder(realAccount.getAutoExpandFolder());
-            search.addAccountUuid(realAccount.getUuid());
-            MessageList.actionDisplaySearch(context, search, false, true);
-        }
-    }
-
     private void onActivateAccount(Account account) {
         List<Account> disabledAccounts = new ArrayList<>();
         disabledAccounts.add(account);

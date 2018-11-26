@@ -15,7 +15,6 @@ import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mailstore.Folder;
@@ -146,7 +145,7 @@ public class K9Drawer {
                             return false;
                         } else {
                             Account account = (Account) ((ProfileDrawerItem) profile).getTag();
-                            Accounts.openRealAccount(account, parent);
+                            parent.openRealAccount(account);
                             updateUserAccountsAndFolders(account);
                             return false;
                         }

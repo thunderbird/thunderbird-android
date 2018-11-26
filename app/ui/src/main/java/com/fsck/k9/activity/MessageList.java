@@ -607,6 +607,17 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         performSearch(SearchAccount.createUnifiedInboxAccount().getRelatedSearch());
     }
 
+    public void openRealAccount(Account realAccount) {
+        if (realAccount.getAutoExpandFolder() == null) {
+            FolderList.actionHandleAccount(this, realAccount);
+        } else {
+            LocalSearch search = new LocalSearch(realAccount.getAutoExpandFolder());
+            search.addAllowedFolder(realAccount.getAutoExpandFolder());
+            search.addAccountUuid(realAccount.getUuid());
+            performSearch(search);
+        }
+    }
+
     private void performSearch(LocalSearch search) {
         initializeFromLocalSearch(search);
 
