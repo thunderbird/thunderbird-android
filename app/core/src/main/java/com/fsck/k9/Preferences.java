@@ -22,13 +22,15 @@ import timber.log.Timber;
 public class Preferences {
 
     private static Preferences preferences;
+    private AccountPreferenceSerializer accountPreferenceSerializer;
 
     public static synchronized Preferences getPreferences(Context context) {
         Context appContext = context.getApplicationContext();
         CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
         LocalKeyStoreManager localKeyStoreManager = DI.get(LocalKeyStoreManager.class);
+        AccountPreferenceSerializer accountPreferenceSerializer = DI.get(AccountPreferenceSerializer.class);
         if (preferences == null) {
-            preferences = new Preferences(appContext, resourceProvider, localKeyStoreManager);
+            preferences = new Preferences(appContext, resourceProvider, localKeyStoreManager, accountPreferenceSerializer);
         }
         return preferences;
     }
@@ -41,11 +43,14 @@ public class Preferences {
     private final CoreResourceProvider resourceProvider;
     private final LocalKeyStoreManager localKeyStoreManager;
 
-    private Preferences(Context context, CoreResourceProvider resourceProvider, LocalKeyStoreManager localKeyStoreManager) {
+    private Preferences(Context context, CoreResourceProvider resourceProvider,
+            LocalKeyStoreManager localKeyStoreManager,
+            AccountPreferenceSerializer accountPreferenceSerializer) {
         storage = Storage.getStorage(context);
         this.context = context;
         this.resourceProvider = resourceProvider;
         this.localKeyStoreManager = localKeyStoreManager;
+        this.accountPreferenceSerializer = accountPreferenceSerializer;
         if (storage.isEmpty()) {
             Timber.i("Preferences storage is zero-size, importing from Android-style preferences");
             StorageEditor editor = storage.edit();
@@ -203,7 +208,7 @@ public class Preferences {
             account.setAccountNumber(accountNumber);
         }
 
-        DI.get(AccountPreferenceSerializer.class).save(storage, editor, account);
+        accountPreferenceSerializer.save(storage, editor, account);
     }
 
     public int generateAccountNumber() {
@@ -233,4 +238,8 @@ public class Preferences {
         return newAccountNumber;
     }
 
+    public void move(Account account, boolean mUp) {
+        accountPreferenceSerializer.move(account, storage, mUp);
+        loadAccounts();
+    }
 }

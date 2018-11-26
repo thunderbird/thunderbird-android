@@ -267,4 +267,31 @@ class AccountPreferenceSerializer {
         } while (gotOne)
     }
 
+    fun move(account: Account, storage: Storage, moveUp: Boolean) {
+        val uuids = storage.getString("accountUuids", "").split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val editor = storage.edit()
+        val newUuids = arrayOfNulls<String>(uuids.size)
+        if (moveUp) {
+            for (i in uuids.indices) {
+                if (i > 0 && uuids[i] == account.uuid) {
+                    newUuids[i] = newUuids[i - 1]
+                    newUuids[i - 1] = account.uuid
+                } else {
+                    newUuids[i] = uuids[i]
+                }
+            }
+        } else {
+            for (i in uuids.indices.reversed()) {
+                if (i < uuids.size - 1 && uuids[i] == account.uuid) {
+                    newUuids[i] = newUuids[i + 1]
+                    newUuids[i + 1] = account.uuid
+                } else {
+                    newUuids[i] = uuids[i]
+                }
+            }
+        }
+        val accountUuids = Utility.combine(newUuids, ',')
+        editor.putString("accountUuids", accountUuids)
+        editor.commit()
+    }
 }

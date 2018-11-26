@@ -2030,7 +2030,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
         @Override
         protected Void doInBackground(Void... args) {
-            mAccount.move(Preferences.getPreferences(mContext), mUp);
+            Preferences.getPreferences(mContext).move(mAccount, mUp);
             return null;
         }
 

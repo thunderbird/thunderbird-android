@@ -467,38 +467,6 @@ public class Account implements BaseAccount, StoreConfig {
         }
     }
 
-    public void move(Preferences preferences, boolean moveUp) {
-        String[] uuids = preferences.getStorage().getString("accountUuids", "").split(",");
-        StorageEditor editor = preferences.getStorage().edit();
-        String[] newUuids = new String[uuids.length];
-        if (moveUp) {
-            for (int i = 0; i < uuids.length; i++) {
-                if (i > 0 && uuids[i].equals(accountUuid)) {
-                    newUuids[i] = newUuids[i-1];
-                    newUuids[i-1] = accountUuid;
-                }
-                else {
-                    newUuids[i] = uuids[i];
-                }
-            }
-        }
-        else {
-            for (int i = uuids.length - 1; i >= 0; i--) {
-                if (i < uuids.length - 1 && uuids[i].equals(accountUuid)) {
-                    newUuids[i] = newUuids[i+1];
-                    newUuids[i+1] = accountUuid;
-                }
-                else {
-                    newUuids[i] = uuids[i];
-                }
-            }
-        }
-        String accountUuids = Utility.combine(newUuids, ',');
-        editor.putString("accountUuids", accountUuids);
-        editor.commit();
-        preferences.loadAccounts();
-    }
-
     public synchronized void save() {
         DI.get(Preferences.class).saveAccount(this);
     }
