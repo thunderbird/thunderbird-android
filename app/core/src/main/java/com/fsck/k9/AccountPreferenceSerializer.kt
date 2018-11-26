@@ -7,44 +7,14 @@ import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
 import java.util.*
 
-class AccountManager(
-        private val preferences: Preferences,
-        private val localKeyStoreManager: LocalKeyStoreManager
-) {
+class AccountPreferenceSerializer {
     @Synchronized
-    fun save(account: Account) {
+    fun save(storage: Storage, editor: StorageEditor, account: Account) {
         val accountUuid = account.uuid
 
-        val editor = preferences.storage.edit()
-
-        if (!preferences.storage.getString("accountUuids", "").contains(accountUuid)) {
-            /*
-             * When the account is first created we assign it a unique account number. The
-             * account number will be unique to that account for the lifetime of the account.
-             * So, we get all the existing account numbers, sort them ascending, loop through
-             * the list and check if the number is greater than 1 + the previous number. If so
-             * we use the previous number + 1 as the account number. This refills gaps.
-             * accountNumber starts as -1 on a newly created account. It must be -1 for this
-             * algorithm to work.
-             *
-             * I bet there is a much smarter way to do this. Anyone like to suggest it?
-             */
-            val accounts = preferences.accounts
-            val accountNumbers = IntArray(accounts.size)
-            for (i in accounts.indices) {
-                accountNumbers[i] = accounts[i].accountNumber
-            }
-            Arrays.sort(accountNumbers)
-            for (accountNumber in accountNumbers) {
-                if (accountNumber > account.accountNumber + 1) {
-                    break
-                }
-                account.accountNumber = accountNumber
-            }
-            account.accountNumber += 1
-
-            var accountUuids = preferences.storage.getString("accountUuids", "")
-            accountUuids += (if (accountUuids.isNotEmpty()) "," else "") + accountUuid
+        if (!storage.getString("accountUuids", "").contains(account.uuid)) {
+            var accountUuids = storage.getString("accountUuids", "")
+            accountUuids += (if (accountUuids.isNotEmpty()) "," else "") + account.uuid
             editor.putString("accountUuids", accountUuids)
         }
 
@@ -140,20 +110,18 @@ class AccountManager(
             }
         }
 
-        saveIdentities(account, preferences.storage, editor)
+        saveIdentities(account, storage, editor)
 
         editor.commit()
     }
 
 
     @Synchronized
-    fun delete(account: Account) {
-        localKeyStoreManager.deleteCertificates(account)
-
+    fun delete(storage: Storage, account: Account) {
         val accountUuid = account.uuid
 
         // Get the list of account UUIDs
-        val uuids = preferences.storage.getString("accountUuids", "").split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val uuids = storage.getString("accountUuids", "").split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
         // Create a list of all account UUIDs excluding this account
         val newUuids = ArrayList<String>(uuids.size)
@@ -163,7 +131,7 @@ class AccountManager(
             }
         }
 
-        val editor = preferences.storage.edit()
+        val editor = storage.edit()
 
         // Only change the 'accountUuids' value if this account's UUID was listed before
         if (newUuids.size < uuids.size) {
@@ -254,7 +222,7 @@ class AccountManager(
         for (type in NetworkType.values()) {
             editor.remove(accountUuid + ".useCompression." + type.name)
         }
-        deleteIdentities(account, preferences.storage, editor)
+        deleteIdentities(account, storage, editor)
         // TODO: Remove preference settings that may exist for individual folders in the account.
         editor.commit()
     }

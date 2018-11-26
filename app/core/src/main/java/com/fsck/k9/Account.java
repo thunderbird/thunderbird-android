@@ -467,32 +467,6 @@ public class Account implements BaseAccount, StoreConfig {
         }
     }
 
-    private static int findNewAccountNumber(List<Integer> accountNumbers) {
-        int newAccountNumber = -1;
-        Collections.sort(accountNumbers);
-        for (int accountNumber : accountNumbers) {
-            if (accountNumber > newAccountNumber + 1) {
-                break;
-            }
-            newAccountNumber = accountNumber;
-        }
-        newAccountNumber++;
-        return newAccountNumber;
-    }
-
-    private static List<Integer> getExistingAccountNumbers(Preferences preferences) {
-        List<Account> accounts = preferences.getAccounts();
-        List<Integer> accountNumbers = new ArrayList<>(accounts.size());
-        for (Account a : accounts) {
-            accountNumbers.add(a.getAccountNumber());
-        }
-        return accountNumbers;
-    }
-    public static int generateAccountNumber(Preferences preferences) {
-        List<Integer> accountNumbers = getExistingAccountNumbers(preferences);
-        return findNewAccountNumber(accountNumbers);
-    }
-
     public void move(Preferences preferences, boolean moveUp) {
         String[] uuids = preferences.getStorage().getString("accountUuids", "").split(",");
         StorageEditor editor = preferences.getStorage().edit();
@@ -526,7 +500,7 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public synchronized void save() {
-        DI.get(AccountManager.class).save(this);
+        DI.get(Preferences.class).saveAccount(this);
     }
 
     private void resetVisibleLimits() {

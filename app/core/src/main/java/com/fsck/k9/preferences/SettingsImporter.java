@@ -417,7 +417,7 @@ public class SettingsImporter {
 
         // If it's a new account generate and write a new "accountNumber"
         if (!mergeImportedAccount) {
-            int newAccountNumber = Account.generateAccountNumber(prefs);
+            int newAccountNumber = prefs.generateAccountNumber();
             putString(editor, accountKeyPrefix + "accountNumber", Integer.toString(newAccountNumber));
         }
 

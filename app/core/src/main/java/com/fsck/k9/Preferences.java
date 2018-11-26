@@ -26,8 +26,9 @@ public class Preferences {
     public static synchronized Preferences getPreferences(Context context) {
         Context appContext = context.getApplicationContext();
         CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
+        LocalKeyStoreManager localKeyStoreManager = DI.get(LocalKeyStoreManager.class);
         if (preferences == null) {
-            preferences = new Preferences(appContext, resourceProvider);
+            preferences = new Preferences(appContext, resourceProvider, localKeyStoreManager);
         }
         return preferences;
     }
@@ -38,11 +39,13 @@ public class Preferences {
     private Account newAccount;
     private Context context;
     private final CoreResourceProvider resourceProvider;
+    private final LocalKeyStoreManager localKeyStoreManager;
 
-    private Preferences(Context context, CoreResourceProvider resourceProvider) {
+    private Preferences(Context context, CoreResourceProvider resourceProvider, LocalKeyStoreManager localKeyStoreManager) {
         storage = Storage.getStorage(context);
         this.context = context;
         this.resourceProvider = resourceProvider;
+        this.localKeyStoreManager = localKeyStoreManager;
         if (storage.isEmpty()) {
             Timber.i("Preferences storage is zero-size, importing from Android-style preferences");
             StorageEditor editor = storage.edit();
@@ -135,7 +138,8 @@ public class Preferences {
         }
         LocalStore.removeAccount(account);
 
-        DI.get(AccountManager.class).delete(account);
+        DI.get(AccountPreferenceSerializer.class).delete(storage, account);
+        localKeyStoreManager.deleteCertificates(account);
 
         if (newAccount == account) {
             newAccount = null;
@@ -190,4 +194,43 @@ public class Preferences {
     private BackendManager getBackendManager() {
         return DI.get(BackendManager.class);
     }
+
+    public void saveAccount(Account account) {
+        StorageEditor editor = storage.edit();
+
+        if (!accounts.containsKey(account.getUuid())) {
+            int accountNumber = generateAccountNumber();
+            account.setAccountNumber(accountNumber);
+        }
+
+        DI.get(AccountPreferenceSerializer.class).save(storage, editor, account);
+    }
+
+    public int generateAccountNumber() {
+        List<Integer> accountNumbers = getExistingAccountNumbers();
+        return findNewAccountNumber(accountNumbers);
+    }
+
+    private List<Integer> getExistingAccountNumbers() {
+        List<Account> accounts = getAccounts();
+        List<Integer> accountNumbers = new ArrayList<>(accounts.size());
+        for (Account a : accounts) {
+            accountNumbers.add(a.getAccountNumber());
+        }
+        return accountNumbers;
+    }
+
+    private static int findNewAccountNumber(List<Integer> accountNumbers) {
+        int newAccountNumber = -1;
+        Collections.sort(accountNumbers);
+        for (int accountNumber : accountNumbers) {
+            if (accountNumber > newAccountNumber + 1) {
+                break;
+            }
+            newAccountNumber = accountNumber;
+        }
+        newAccountNumber++;
+        return newAccountNumber;
+    }
+
 }

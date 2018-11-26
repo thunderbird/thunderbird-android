@@ -3,7 +3,7 @@ package com.fsck.k9.notification
 import android.app.NotificationManager
 import android.content.Context
 import android.support.v4.app.NotificationManagerCompat
-import com.fsck.k9.AccountManager
+import com.fsck.k9.AccountPreferenceSerializer
 import com.fsck.k9.LocalKeyStoreManager
 import com.fsck.k9.mail.ssl.LocalKeyStore
 import org.koin.dsl.module.applicationContext
@@ -21,7 +21,7 @@ val coreNotificationModule = applicationContext {
                 get()
         )
     }
-    bean { AccountManager(get(), get()) }
+    bean { AccountPreferenceSerializer() }
     bean { LocalKeyStore.getInstance() }
     bean { LocalKeyStoreManager(get()) }
     bean { CertificateErrorNotifications(get(), get(), get()) }
