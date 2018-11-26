@@ -838,7 +838,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             account.setSortAscending(this.sortType, this.sortAscending);
             sortDateAscending = account.isSortAscending(SortType.SORT_DATE);
 
-            account.save();
+            Preferences.getPreferences(getContext()).saveAccount(account);
         } else {
             K9.setSortType(this.sortType);
 

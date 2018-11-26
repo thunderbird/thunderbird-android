@@ -218,7 +218,7 @@ class AccountSettingsDataStore(
     }
 
     private fun saveSettings() {
-        account.save()
+        preferences.saveAccount(account)
     }
 
     private fun reschedulePoll() {

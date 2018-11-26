@@ -17,7 +17,6 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy;
-import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
@@ -27,7 +26,6 @@ import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.mailstore.StorageManager.StorageProvider;
 import com.fsck.k9.preferences.Storage;
-import com.fsck.k9.preferences.StorageEditor;
 import org.jetbrains.annotations.NotNull;
 import timber.log.Timber;
 
@@ -260,7 +258,7 @@ public class Account implements BaseAccount, StoreConfig {
         TEXT, HTML, AUTO
     }
 
-    protected Account(Context context, CoreResourceProvider resourceProvider) {
+    public Account(Context context, CoreResourceProvider resourceProvider) {
         accountUuid = UUID.randomUUID().toString();
         localStorageProviderId = StorageManager.getInstance(context).getDefaultProviderId();
         automaticCheckIntervalMinutes = -1;
@@ -465,10 +463,6 @@ public class Account implements BaseAccount, StoreConfig {
         if (description == null) {
             description = getEmail();
         }
-    }
-
-    public synchronized void save() {
-        DI.get(Preferences.class).saveAccount(this);
     }
 
     private void resetVisibleLimits() {

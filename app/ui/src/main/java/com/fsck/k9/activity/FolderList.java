@@ -420,7 +420,7 @@ public class FolderList extends K9ListActivity {
 
     private void setDisplayMode(FolderMode newMode) {
         account.setFolderDisplayMode(newMode);
-        account.save();
+        Preferences.getPreferences(getApplicationContext()).saveAccount(account);
         if (account.getFolderPushMode() != FolderMode.NONE) {
             MailService.actionRestartPushers(this, null);
         }

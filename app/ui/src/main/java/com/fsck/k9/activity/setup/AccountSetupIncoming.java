@@ -516,7 +516,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 if (isPushCapable && mAccount.getFolderPushMode() != FolderMode.NONE) {
                     MailService.actionRestartPushers(this, null);
                 }
-                mAccount.save();
+                Preferences.getPreferences(getApplicationContext()).saveAccount(mAccount);
                 finish();
             } else {
                 /*
