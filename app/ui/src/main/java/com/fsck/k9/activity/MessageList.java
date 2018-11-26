@@ -604,7 +604,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     public void openUnifiedInbox() {
         drawer.selectUnifiedInbox();
-        performSearch(SearchAccount.createUnifiedInboxAccount().getRelatedSearch());
+        actionDisplaySearch(this, SearchAccount.createUnifiedInboxAccount().getRelatedSearch(), false, false);
     }
 
     public void openRealAccount(Account realAccount) {
@@ -614,7 +614,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             LocalSearch search = new LocalSearch(realAccount.getAutoExpandFolder());
             search.addAllowedFolder(realAccount.getAutoExpandFolder());
             search.addAccountUuid(realAccount.getUuid());
-            performSearch(search);
+            actionDisplaySearch(this, search, false, false);
         }
     }
 
