@@ -78,7 +78,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
 
     fun createAccount(): Account {
         //FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()
-        preferences.loadAccounts()
+        preferences.clearAccounts()
 
         return preferences.newAccount()
     }

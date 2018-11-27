@@ -111,7 +111,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
         mNotifyView.setChecked(mAccount.isNotifyNewMail());
-        mNotifySyncView.setChecked(mAccount.isShowOngoing());
+        mNotifySyncView.setChecked(mAccount.isNotifySync());
         SpinnerOption.setSpinnerOptionValue(mCheckFrequencyView, mAccount
                                             .getAutomaticCheckIntervalMinutes());
         SpinnerOption.setSpinnerOptionValue(mDisplayCountView, mAccount
@@ -131,7 +131,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
     private void onDone() {
         mAccount.setDescription(mAccount.getEmail());
         mAccount.setNotifyNewMail(mNotifyView.isChecked());
-        mAccount.setShowOngoing(mNotifySyncView.isChecked());
+        mAccount.setNotifySync(mNotifySyncView.isChecked());
         mAccount.setAutomaticCheckIntervalMinutes((Integer)((SpinnerOption)mCheckFrequencyView
                 .getSelectedItem()).value);
         mAccount.setDisplayCount((Integer)((SpinnerOption)mDisplayCountView

@@ -1506,13 +1506,13 @@ public class MessagingController {
     }
 
     private void showSendingNotificationIfNecessary(Account account) {
-        if (account.isShowOngoing()) {
+        if (account.isNotifySync()) {
             notificationController.showSendingNotification(account);
         }
     }
 
     private void clearSendingNotificationIfNecessary(Account account) {
-        if (account.isShowOngoing()) {
+        if (account.isNotifySync()) {
             notificationController.clearSendingNotification(account);
         }
     }
@@ -2600,13 +2600,13 @@ public class MessagingController {
     }
 
     private void showFetchingMailNotificationIfNecessary(Account account, Folder folder) {
-        if (account.isShowOngoing()) {
+        if (account.isNotifySync()) {
             notificationController.showFetchingMailNotification(account, folder);
         }
     }
 
     private void clearFetchingMailNotificationIfNecessary(Account account) {
-        if (account.isShowOngoing()) {
+        if (account.isNotifySync()) {
             notificationController.clearFetchingMailNotification(account);
         }
     }

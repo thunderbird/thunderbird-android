@@ -724,7 +724,7 @@ public class MigrationTest extends K9RobolectricTest {
         Preferences preferences = Preferences.getPreferences(RuntimeEnvironment.application);
 
         //FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()
-        preferences.loadAccounts();
+        preferences.clearAccounts();
 
         Account account = preferences.newAccount();
         account.setStoreUri("imap+tls+://user:password@imap.example.org");

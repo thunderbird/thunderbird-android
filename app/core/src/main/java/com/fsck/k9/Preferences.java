@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.support.annotation.RestrictTo;
+import android.support.annotation.RestrictTo.Scope;
 
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.mailstore.LocalStore;
@@ -59,6 +61,12 @@ public class Preferences {
         }
     }
 
+    @RestrictTo(Scope.TESTS)
+    public void clearAccounts() {
+        accounts = new HashMap<>();
+        accountsInOrder = new LinkedList<>();
+    }
+
     public synchronized void loadAccounts() {
         accounts = new HashMap<>();
         accountsInOrder = new LinkedList<>();
@@ -66,7 +74,8 @@ public class Preferences {
         if ((accountUuids != null) && (accountUuids.length() != 0)) {
             String[] uuids = accountUuids.split(",");
             for (String uuid : uuids) {
-                Account newAccount = new Account(this, uuid);
+                Account newAccount = new Account(uuid);
+                accountPreferenceSerializer.loadAccount(newAccount, storage);
                 accounts.put(uuid, newAccount);
                 accountsInOrder.add(newAccount);
             }
@@ -177,23 +186,6 @@ public class Preferences {
 
     public Storage getStorage() {
         return storage;
-    }
-
-    static <T extends Enum<T>> T getEnumStringPref(Storage storage, String key, T defaultEnum) {
-        String stringPref = storage.getString(key, null);
-
-        if (stringPref == null) {
-            return defaultEnum;
-        } else {
-            try {
-                return Enum.valueOf(defaultEnum.getDeclaringClass(), stringPref);
-            } catch (IllegalArgumentException ex) {
-                Timber.w(ex, "Unable to convert preference key [%s] value [%s] to enum of type %s",
-                        key, stringPref, defaultEnum.getDeclaringClass());
-
-                return defaultEnum;
-            }
-        }
     }
 
     private BackendManager getBackendManager() {

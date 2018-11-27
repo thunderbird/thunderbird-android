@@ -1,13 +1,193 @@
 package com.fsck.k9
 
+import com.fsck.k9.Account.*
 import com.fsck.k9.helper.Utility
 import com.fsck.k9.mail.NetworkType
 import com.fsck.k9.mail.filter.Base64
+import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
+import timber.log.Timber
 import java.util.*
 
-class AccountPreferenceSerializer {
+class AccountPreferenceSerializer(val storageManager: StorageManager) {
+
+    @Synchronized
+    fun loadAccount(account: Account, storage: Storage) {
+        val accountUuid = account.uuid
+        with (account) {
+            storeUri = Base64.decode(storage.getString("$accountUuid.storeUri", null))
+            localStorageProviderId = storage.getString("$accountUuid.localStorageProvider", storageManager.defaultProviderId)
+            transportUri = Base64.decode(storage.getString("$accountUuid.transportUri", null))
+            description = storage.getString("$accountUuid.description", null)
+            alwaysBcc = storage.getString("$accountUuid.alwaysBcc", alwaysBcc)
+            automaticCheckIntervalMinutes = storage.getInt("$accountUuid.automaticCheckIntervalMinutes", -1)
+            idleRefreshMinutes = storage.getInt("$accountUuid.idleRefreshMinutes", 24)
+            isPushPollOnConnect = storage.getBoolean("$accountUuid.pushPollOnConnect", true)
+            displayCount = storage.getInt("$accountUuid.displayCount", K9.DEFAULT_VISIBLE_LIMIT)
+            if (displayCount < 0) {
+                displayCount = K9.DEFAULT_VISIBLE_LIMIT
+            }
+            latestOldMessageSeenTime = storage.getLong("$accountUuid.latestOldMessageSeenTime", 0)
+            isNotifyNewMail = storage.getBoolean("$accountUuid.notifyNewMail", false)
+
+            folderNotifyNewMailMode = getEnumStringPref<FolderMode>(storage, "$accountUuid.folderNotifyNewMailMode", FolderMode.ALL)
+            isNotifySelfNewMail = storage.getBoolean("$accountUuid.notifySelfNewMail", true)
+            isNotifyContactsMailOnly = storage.getBoolean("$accountUuid.notifyContactsMailOnly", false)
+            isNotifySync = storage.getBoolean("$accountUuid.notifyMailCheck", false)
+            deletePolicy = DeletePolicy.fromInt(storage.getInt("$accountUuid.deletePolicy", DeletePolicy.NEVER.setting))
+            inboxFolder = storage.getString("$accountUuid.inboxFolderName", INBOX)
+
+            val draftsFolder = storage.getString("$accountUuid.draftsFolderName", null)
+            val draftsFolderSelection = getEnumStringPref<SpecialFolderSelection>(storage, "$accountUuid.draftsFolderSelection",
+                    SpecialFolderSelection.AUTOMATIC)
+            setDraftsFolder(draftsFolder, draftsFolderSelection)
+
+            val sentFolder = storage.getString("$accountUuid.sentFolderName", null)
+            val sentFolderSelection = getEnumStringPref<SpecialFolderSelection>(storage, "$accountUuid.sentFolderSelection",
+                    SpecialFolderSelection.AUTOMATIC)
+            setSentFolder(sentFolder, sentFolderSelection)
+
+            val trashFolder = storage.getString("$accountUuid.trashFolderName", null)
+            val trashFolderSelection = getEnumStringPref<SpecialFolderSelection>(storage, "$accountUuid.trashFolderSelection",
+                    SpecialFolderSelection.AUTOMATIC)
+            setTrashFolder(trashFolder, trashFolderSelection)
+
+            val archiveFolder = storage.getString("$accountUuid.archiveFolderName", null)
+            val archiveFolderSelection = getEnumStringPref<SpecialFolderSelection>(storage, "$accountUuid.archiveFolderSelection",
+                    SpecialFolderSelection.AUTOMATIC)
+            setArchiveFolder(archiveFolder, archiveFolderSelection)
+
+            val spamFolder = storage.getString("$accountUuid.spamFolderName", null)
+            val spamFolderSelection = getEnumStringPref<SpecialFolderSelection>(storage, "$accountUuid.spamFolderSelection",
+                    SpecialFolderSelection.AUTOMATIC)
+            setSpamFolder(spamFolder, spamFolderSelection)
+
+            expungePolicy = getEnumStringPref<Expunge>(storage, "$accountUuid.expungePolicy", Expunge.EXPUNGE_IMMEDIATELY)
+            isSyncRemoteDeletions = storage.getBoolean("$accountUuid.syncRemoteDeletions", true)
+
+            maxPushFolders = storage.getInt("$accountUuid.maxPushFolders", 10)
+            isGoToUnreadMessageSearch = storage.getBoolean("$accountUuid.goToUnreadMessageSearch", false)
+            isSubscribedFoldersOnly = storage.getBoolean("$accountUuid.subscribedFoldersOnly", false)
+            maximumPolledMessageAge = storage.getInt("$accountUuid.maximumPolledMessageAge", -1)
+            maximumAutoDownloadMessageSize = storage.getInt("$accountUuid.maximumAutoDownloadMessageSize", 32768)
+            messageFormat = getEnumStringPref<MessageFormat>(storage, "$accountUuid.messageFormat", DEFAULT_MESSAGE_FORMAT)
+            val messageFormatAuto = storage.getBoolean("$accountUuid.messageFormatAuto", DEFAULT_MESSAGE_FORMAT_AUTO)
+            if (messageFormatAuto && messageFormat == MessageFormat.TEXT) {
+                messageFormat = MessageFormat.AUTO
+            }
+            isMessageReadReceipt = storage.getBoolean("$accountUuid.messageReadReceipt", DEFAULT_MESSAGE_READ_RECEIPT)
+            quoteStyle = getEnumStringPref<QuoteStyle>(storage, "$accountUuid.quoteStyle", DEFAULT_QUOTE_STYLE)
+            quotePrefix = storage.getString("$accountUuid.quotePrefix", DEFAULT_QUOTE_PREFIX)
+            isDefaultQuotedTextShown = storage.getBoolean("$accountUuid.defaultQuotedTextShown", DEFAULT_QUOTED_TEXT_SHOWN)
+            isReplyAfterQuote = storage.getBoolean("$accountUuid.replyAfterQuote", DEFAULT_REPLY_AFTER_QUOTE)
+            isStripSignature = storage.getBoolean("$accountUuid.stripSignature", DEFAULT_STRIP_SIGNATURE)
+            for (type in NetworkType.values()) {
+                val useCompression = storage.getBoolean("$accountUuid.useCompression.$type",
+                        true)
+                setCompression(type, useCompression)
+            }
+
+            autoExpandFolder = storage.getString("$accountUuid.autoExpandFolderName", INBOX)
+
+            accountNumber = storage.getInt("$accountUuid.accountNumber", 0)
+
+            chipColor = storage.getInt("$accountUuid.chipColor", FALLBACK_ACCOUNT_COLOR)
+
+            sortType = getEnumStringPref<SortType>(storage, "$accountUuid.sortTypeEnum", SortType.SORT_DATE)
+
+            setSortAscending(sortType, storage.getBoolean("$accountUuid.sortAscending", false))
+
+            showPictures = getEnumStringPref<ShowPictures>(storage, "$accountUuid.showPicturesEnum", ShowPictures.NEVER)
+
+            notificationSetting.setVibrate(storage.getBoolean("$accountUuid.vibrate", false))
+            notificationSetting.vibratePattern = storage.getInt("$accountUuid.vibratePattern", 0)
+            notificationSetting.vibrateTimes = storage.getInt("$accountUuid.vibrateTimes", 5)
+            notificationSetting.isRingEnabled = storage.getBoolean("$accountUuid.ring", true)
+            notificationSetting.ringtone = storage.getString("$accountUuid.ringtone",
+                    "content://settings/system/notification_sound")
+            notificationSetting.setLed(storage.getBoolean("$accountUuid.led", true))
+            notificationSetting.ledColor = storage.getInt("$accountUuid.ledColor", chipColor)
+
+            folderDisplayMode = getEnumStringPref<FolderMode>(storage, "$accountUuid.folderDisplayMode", FolderMode.NOT_SECOND_CLASS)
+
+            folderSyncMode = getEnumStringPref<FolderMode>(storage, "$accountUuid.folderSyncMode", FolderMode.FIRST_CLASS)
+
+            folderPushMode = getEnumStringPref<FolderMode>(storage, "$accountUuid.folderPushMode", FolderMode.FIRST_CLASS)
+
+            folderTargetMode = getEnumStringPref<FolderMode>(storage, "$accountUuid.folderTargetMode", FolderMode.NOT_SECOND_CLASS)
+
+            searchableFolders = getEnumStringPref<Searchable>(storage, "$accountUuid.searchableFolders", Searchable.ALL)
+
+            isSignatureBeforeQuotedText = storage.getBoolean("$accountUuid.signatureBeforeQuotedText", false)
+            identities = loadIdentities(accountUuid, storage)
+
+            openPgpProvider = storage.getString("$accountUuid.openPgpProvider", "")
+            openPgpKey = storage.getLong("$accountUuid.cryptoKey", NO_OPENPGP_KEY)
+            isOpenPgpHideSignOnly = storage.getBoolean("$accountUuid.openPgpHideSignOnly", true)
+            isOpenPgpEncryptSubject = storage.getBoolean("$accountUuid.openPgpEncryptSubject", true)
+            isOpenPgpEncryptAllDrafts = storage.getBoolean("$accountUuid.openPgpEncryptAllDrafts", true)
+            autocryptPreferEncryptMutual = storage.getBoolean("$accountUuid.autocryptMutualMode", false)
+            isAllowRemoteSearch = storage.getBoolean("$accountUuid.allowRemoteSearch", false)
+            isRemoteSearchFullText = storage.getBoolean("$accountUuid.remoteSearchFullText", false)
+            remoteSearchNumResults = storage.getInt("$accountUuid.remoteSearchNumResults", DEFAULT_REMOTE_SEARCH_NUM_RESULTS)
+            isUploadSentMessages = storage.getBoolean("$accountUuid.uploadSentMessages", true)
+
+            isEnabled = storage.getBoolean("$accountUuid.enabled", true)
+            isMarkMessageAsReadOnView = storage.getBoolean("$accountUuid.markMessageAsReadOnView", true)
+            isAlwaysShowCcBcc = storage.getBoolean("$accountUuid.alwaysShowCcBcc", false)
+
+            // Use email address as account description if necessary
+            if (description == null) {
+                description = email
+            }
+        }
+    }
+
+    @Synchronized
+    private fun loadIdentities(accountUuid: String, storage: Storage): List<Identity> {
+        val newIdentities = ArrayList<Identity>()
+        var ident = 0
+        var gotOne: Boolean
+        do {
+            gotOne = false
+            val name = storage.getString("$accountUuid.$IDENTITY_NAME_KEY.$ident", null)
+            val email = storage.getString("$accountUuid.$IDENTITY_EMAIL_KEY.$ident", null)
+            val signatureUse = storage.getBoolean("$accountUuid.signatureUse.$ident", true)
+            val signature = storage.getString("$accountUuid.signature.$ident", null)
+            val description = storage.getString("$accountUuid.$IDENTITY_DESCRIPTION_KEY.$ident", null)
+            val replyTo = storage.getString("$accountUuid.replyTo.$ident", null)
+            if (email != null) {
+                val identity = Identity()
+                identity.name = name
+                identity.email = email
+                identity.signatureUse = signatureUse
+                identity.signature = signature
+                identity.description = description
+                identity.replyTo = replyTo
+                newIdentities.add(identity)
+                gotOne = true
+            }
+            ident++
+        } while (gotOne)
+
+        if (newIdentities.isEmpty()) {
+            val name = storage.getString("$accountUuid.name", null)
+            val email = storage.getString("$accountUuid.email", null)
+            val signatureUse = storage.getBoolean("$accountUuid.signatureUse", true)
+            val signature = storage.getString("$accountUuid.signature", null)
+            val identity = Identity()
+            identity.name = name
+            identity.email = email
+            identity.signatureUse = signatureUse
+            identity.signature = signature
+            identity.description = email
+            newIdentities.add(identity)
+        }
+
+        return newIdentities
+    }
+
     @Synchronized
     fun save(storage: Storage, editor: StorageEditor, account: Account) {
         val accountUuid = account.uuid
@@ -33,7 +213,7 @@ class AccountPreferenceSerializer {
             editor.putString("$accountUuid.folderNotifyNewMailMode", folderNotifyNewMailMode.name)
             editor.putBoolean("$accountUuid.notifySelfNewMail", isNotifySelfNewMail)
             editor.putBoolean("$accountUuid.notifyContactsMailOnly", isNotifyContactsMailOnly)
-            editor.putBoolean("$accountUuid.notifyMailCheck", isShowOngoing)
+            editor.putBoolean("$accountUuid.notifyMailCheck", isNotifySync)
             editor.putInt("$accountUuid.deletePolicy", deletePolicy.setting)
             editor.putString("$accountUuid.inboxFolderName", inboxFolder)
             editor.putString("$accountUuid.draftsFolderName", draftsFolder)
@@ -75,7 +255,7 @@ class AccountPreferenceSerializer {
                 false
             }
             editor.putBoolean("$accountUuid.messageFormatAuto", messageFormatAuto)
-            editor.putBoolean("$accountUuid.messageReadReceipt", isMessageReadReceiptAlways)
+            editor.putBoolean("$accountUuid.messageReadReceipt", isMessageReadReceipt)
             editor.putString("$accountUuid.quoteStyle", quoteStyle.name)
             editor.putString("$accountUuid.quotePrefix", quotePrefix)
             editor.putBoolean("$accountUuid.defaultQuotedTextShown", isDefaultQuotedTextShown)
@@ -103,7 +283,7 @@ class AccountPreferenceSerializer {
             editor.putInt("$accountUuid.ledColor", notificationSetting.ledColor)
 
             for (type in NetworkType.values()) {
-                val useCompression = compressionMap.get(type)
+                val useCompression = compressionMap[type]
                 if (useCompression != null) {
                     editor.putBoolean("$accountUuid.useCompression.$type", useCompression)
                 }
@@ -220,7 +400,7 @@ class AccountPreferenceSerializer {
         editor.remove("$accountUuid.messageReadReceipt")
         editor.remove("$accountUuid.notifyMailCheck")
         for (type in NetworkType.values()) {
-            editor.remove(accountUuid + ".useCompression." + type.name)
+            editor.remove("$accountUuid.useCompression." + type.name)
         }
         deleteIdentities(account, storage, editor)
         // TODO: Remove preference settings that may exist for individual folders in the account.
@@ -234,11 +414,11 @@ class AccountPreferenceSerializer {
 
         with (account) {
             for (identity in identities) {
-                editor.putString("$uuid.${Account.IDENTITY_NAME_KEY}.$ident", identity.name)
-                editor.putString("$uuid.${Account.IDENTITY_EMAIL_KEY}.$ident", identity.email)
+                editor.putString("$uuid.$IDENTITY_NAME_KEY.$ident", identity.name)
+                editor.putString("$uuid.$IDENTITY_EMAIL_KEY.$ident", identity.email)
                 editor.putBoolean("$uuid.signatureUse.$ident", identity.signatureUse)
                 editor.putString("$uuid.signature.$ident", identity.signature)
-                editor.putString("$uuid.${Account.IDENTITY_DESCRIPTION_KEY}.$ident", identity.description)
+                editor.putString("$uuid.$IDENTITY_DESCRIPTION_KEY.$ident", identity.description)
                 editor.putString("$uuid.replyTo.$ident", identity.replyTo)
                 ident++
             }
@@ -249,21 +429,21 @@ class AccountPreferenceSerializer {
     private fun deleteIdentities(account: Account, storage: Storage, editor: StorageEditor) {
         val accountUuid = account.uuid
 
-        var ident = 0
+        var identityIndex = 0
         var gotOne: Boolean
         do {
             gotOne = false
-            val email = storage.getString(accountUuid + "." + Account.IDENTITY_EMAIL_KEY + "." + ident, null)
+            val email = storage.getString("$accountUuid.$IDENTITY_EMAIL_KEY.$identityIndex", null)
             if (email != null) {
-                editor.remove("$accountUuid.${Account.IDENTITY_NAME_KEY}.$ident")
-                editor.remove("$accountUuid.${Account.IDENTITY_EMAIL_KEY}.$ident")
-                editor.remove("$accountUuid.signatureUse.$ident")
-                editor.remove("$accountUuid.signature.$ident")
-                editor.remove("$accountUuid.${Account.IDENTITY_DESCRIPTION_KEY}.$ident")
-                editor.remove("$accountUuid.replyTo.$ident")
+                editor.remove("$accountUuid.$IDENTITY_NAME_KEY.$identityIndex")
+                editor.remove("$accountUuid.$IDENTITY_EMAIL_KEY.$identityIndex")
+                editor.remove("$accountUuid.signatureUse.$identityIndex")
+                editor.remove("$accountUuid.signature.$identityIndex")
+                editor.remove("$accountUuid.$IDENTITY_DESCRIPTION_KEY.$identityIndex")
+                editor.remove("$accountUuid.replyTo.$identityIndex")
                 gotOne = true
             }
-            ident++
+            identityIndex++
         } while (gotOne)
     }
 
@@ -293,5 +473,35 @@ class AccountPreferenceSerializer {
         val accountUuids = Utility.combine(newUuids, ',')
         editor.putString("accountUuids", accountUuids)
         editor.commit()
+    }
+
+    private fun <T : Enum<T>> getEnumStringPref(storage: Storage, key: String, defaultEnum: T): T {
+        val stringPref = storage.getString(key, null)
+
+        return if (stringPref == null) {
+            defaultEnum
+        } else {
+            try {
+                java.lang.Enum.valueOf<T>(defaultEnum.declaringClass, stringPref)
+            } catch (ex: IllegalArgumentException) {
+                Timber.w(ex, "Unable to convert preference key [%s] value [%s] to enum of type %s",
+                        key, stringPref, defaultEnum.declaringClass)
+
+                defaultEnum
+            }
+
+        }
+    }
+
+    companion object {
+        const val ACCOUNT_DESCRIPTION_KEY = "description"
+        const val STORE_URI_KEY = "storeUri"
+        const val TRANSPORT_URI_KEY = "transportUri"
+
+        const val IDENTITY_NAME_KEY = "name"
+        const val IDENTITY_EMAIL_KEY = "email"
+        const val IDENTITY_DESCRIPTION_KEY = "description"
+
+        const val FALLBACK_ACCOUNT_COLOR = 0x0099CC
     }
 }

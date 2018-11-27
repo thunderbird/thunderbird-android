@@ -22,7 +22,7 @@ class AccountSettingsDataStore(
             "account_sync_remote_deletetions" -> account.isSyncRemoteDeletions()
             "push_poll_on_connect" -> account.isPushPollOnConnect
             "always_show_cc_bcc" -> account.isAlwaysShowCcBcc
-            "message_read_receipt" -> account.isMessageReadReceiptAlways
+            "message_read_receipt" -> account.isMessageReadReceipt
             "default_quoted_text_shown" -> account.isDefaultQuotedTextShown
             "reply_after_quote" -> account.isReplyAfterQuote
             "strip_signature" -> account.isStripSignature
@@ -31,7 +31,7 @@ class AccountSettingsDataStore(
             "account_notify_contacts_mail_only" -> account.isNotifyContactsMailOnly
             "account_vibrate" -> account.notificationSetting.isVibrateEnabled
             "account_led" -> account.notificationSetting.isLedEnabled
-            "account_notify_sync" -> account.isShowOngoing
+            "account_notify_sync" -> account.isNotifySync
             "notification_opens_unread" -> account.isGoToUnreadMessageSearch()
             "remote_search_enabled" -> account.isAllowRemoteSearch()
             "openpgp_hide_sign_only" -> account.isOpenPgpHideSignOnly
@@ -64,7 +64,7 @@ class AccountSettingsDataStore(
             "account_notify_contacts_mail_only" -> account.isNotifyContactsMailOnly = value
             "account_vibrate" -> account.notificationSetting.setVibrate(value)
             "account_led" -> account.notificationSetting.setLed(value)
-            "account_notify_sync" -> account.isShowOngoing = value
+            "account_notify_sync" -> account.isNotifySync = value
             "notification_opens_unread" -> account.setGoToUnreadMessageSearch(value)
             "remote_search_enabled" -> account.setAllowRemoteSearch(value)
             "openpgp_hide_sign_only" -> account.isOpenPgpHideSignOnly = value

@@ -20,16 +20,12 @@ import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
-import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.mailstore.StorageManager.StorageProvider;
-import com.fsck.k9.preferences.Storage;
 import org.jetbrains.annotations.NotNull;
 import timber.log.Timber;
-
-import static com.fsck.k9.Preferences.getEnumStringPref;
 
 /**
  * Account stores all of the settings for a single account defined by the user. It is able to save
@@ -39,14 +35,12 @@ public class Account implements BaseAccount, StoreConfig {
     /**
      * Default value for the inbox folder (never changes for POP3 and IMAP)
      */
-    private static final String INBOX = "INBOX";
+    public static final String INBOX = "INBOX";
 
     /**
      * This local folder is used to store messages to be sent.
      */
     public static final String OUTBOX = "K9MAIL_INTERNAL_OUTBOX";
-
-    private static final int FALLBACK_ACCOUNT_COLOR = 0x0099CC;
 
     public enum Expunge {
         EXPUNGE_IMMEDIATELY,
@@ -99,14 +93,6 @@ public class Account implements BaseAccount, StoreConfig {
     public static final boolean DEFAULT_REPLY_AFTER_QUOTE = false;
     public static final boolean DEFAULT_STRIP_SIGNATURE = true;
     public static final int DEFAULT_REMOTE_SEARCH_NUM_RESULTS = 25;
-
-    public static final String ACCOUNT_DESCRIPTION_KEY = "description";
-    public static final String STORE_URI_KEY = "storeUri";
-    public static final String TRANSPORT_URI_KEY = "transportUri";
-
-    public static final String IDENTITY_NAME_KEY = "name";
-    public static final String IDENTITY_EMAIL_KEY = "email";
-    public static final String IDENTITY_DESCRIPTION_KEY = "description";
 
     public enum SortType {
         SORT_DATE(false),
@@ -334,135 +320,8 @@ public class Account implements BaseAccount, StoreConfig {
         notificationSetting.setLedColor(chipColor);
     }
 
-    protected Account(Preferences preferences, String uuid) {
+    public Account(String uuid) {
         this.accountUuid = uuid;
-        loadAccount(preferences);
-    }
-
-    /**
-     * Load stored settings for this account.
-     */
-    private synchronized void loadAccount(Preferences preferences) {
-
-        Storage storage = preferences.getStorage();
-        StorageManager storageManager = DI.get(StorageManager.class);
-
-        storeUri = Base64.decode(storage.getString(accountUuid + ".storeUri", null));
-        localStorageProviderId = storage.getString(
-                accountUuid + ".localStorageProvider", storageManager.getDefaultProviderId());
-        transportUri = Base64.decode(storage.getString(accountUuid + ".transportUri", null));
-        description = storage.getString(accountUuid + ".description", null);
-        alwaysBcc = storage.getString(accountUuid + ".alwaysBcc", alwaysBcc);
-        automaticCheckIntervalMinutes = storage.getInt(accountUuid + ".automaticCheckIntervalMinutes", -1);
-        idleRefreshMinutes = storage.getInt(accountUuid + ".idleRefreshMinutes", 24);
-        pushPollOnConnect = storage.getBoolean(accountUuid + ".pushPollOnConnect", true);
-        displayCount = storage.getInt(accountUuid + ".displayCount", K9.DEFAULT_VISIBLE_LIMIT);
-        if (displayCount < 0) {
-            displayCount = K9.DEFAULT_VISIBLE_LIMIT;
-        }
-        latestOldMessageSeenTime = storage.getLong(accountUuid + ".latestOldMessageSeenTime", 0);
-        notifyNewMail = storage.getBoolean(accountUuid + ".notifyNewMail", false);
-
-        folderNotifyNewMailMode = getEnumStringPref(storage, accountUuid + ".folderNotifyNewMailMode", FolderMode.ALL);
-        notifySelfNewMail = storage.getBoolean(accountUuid + ".notifySelfNewMail", true);
-        notifyContactsMailOnly = storage.getBoolean(accountUuid + ".notifyContactsMailOnly", false);
-        notifySync = storage.getBoolean(accountUuid + ".notifyMailCheck", false);
-        deletePolicy =  DeletePolicy.fromInt(storage.getInt(accountUuid + ".deletePolicy", DeletePolicy.NEVER.setting));
-        inboxFolder = storage.getString(accountUuid + ".inboxFolderName", INBOX);
-        draftsFolder = storage.getString(accountUuid + ".draftsFolderName", null);
-        sentFolder = storage.getString(accountUuid + ".sentFolderName", null);
-        trashFolder = storage.getString(accountUuid + ".trashFolderName", null);
-        archiveFolder = storage.getString(accountUuid + ".archiveFolderName", null);
-        spamFolder = storage.getString(accountUuid + ".spamFolderName", null);
-        archiveFolderSelection = getEnumStringPref(storage, accountUuid + ".archiveFolderSelection",
-                SpecialFolderSelection.AUTOMATIC);
-        draftsFolderSelection = getEnumStringPref(storage, accountUuid + ".draftsFolderSelection",
-                SpecialFolderSelection.AUTOMATIC);
-        sentFolderSelection = getEnumStringPref(storage, accountUuid + ".sentFolderSelection",
-                SpecialFolderSelection.AUTOMATIC);
-        spamFolderSelection = getEnumStringPref(storage, accountUuid + ".spamFolderSelection",
-                SpecialFolderSelection.AUTOMATIC);
-        trashFolderSelection = getEnumStringPref(storage, accountUuid + ".trashFolderSelection",
-                SpecialFolderSelection.AUTOMATIC);
-
-        expungePolicy = getEnumStringPref(storage, accountUuid + ".expungePolicy", Expunge.EXPUNGE_IMMEDIATELY);
-        syncRemoteDeletions = storage.getBoolean(accountUuid + ".syncRemoteDeletions", true);
-
-        maxPushFolders = storage.getInt(accountUuid + ".maxPushFolders", 10);
-        goToUnreadMessageSearch = storage.getBoolean(accountUuid + ".goToUnreadMessageSearch", false);
-        subscribedFoldersOnly = storage.getBoolean(accountUuid + ".subscribedFoldersOnly", false);
-        maximumPolledMessageAge = storage.getInt(accountUuid + ".maximumPolledMessageAge", -1);
-        maximumAutoDownloadMessageSize = storage.getInt(accountUuid + ".maximumAutoDownloadMessageSize", 32768);
-        messageFormat =  getEnumStringPref(storage, accountUuid + ".messageFormat", DEFAULT_MESSAGE_FORMAT);
-        messageFormatAuto = storage.getBoolean(accountUuid + ".messageFormatAuto", DEFAULT_MESSAGE_FORMAT_AUTO);
-        if (messageFormatAuto && messageFormat == MessageFormat.TEXT) {
-            messageFormat = MessageFormat.AUTO;
-        }
-        messageReadReceipt = storage.getBoolean(accountUuid + ".messageReadReceipt", DEFAULT_MESSAGE_READ_RECEIPT);
-        quoteStyle = getEnumStringPref(storage, accountUuid + ".quoteStyle", DEFAULT_QUOTE_STYLE);
-        quotePrefix = storage.getString(accountUuid + ".quotePrefix", DEFAULT_QUOTE_PREFIX);
-        defaultQuotedTextShown = storage.getBoolean(accountUuid + ".defaultQuotedTextShown", DEFAULT_QUOTED_TEXT_SHOWN);
-        replyAfterQuote = storage.getBoolean(accountUuid + ".replyAfterQuote", DEFAULT_REPLY_AFTER_QUOTE);
-        stripSignature = storage.getBoolean(accountUuid + ".stripSignature", DEFAULT_STRIP_SIGNATURE);
-        for (NetworkType type : NetworkType.values()) {
-            Boolean useCompression = storage.getBoolean(accountUuid + ".useCompression." + type,
-                                     true);
-            compressionMap.put(type, useCompression);
-        }
-
-        autoExpandFolder = storage.getString(accountUuid + ".autoExpandFolderName", INBOX);
-
-        accountNumber = storage.getInt(accountUuid + ".accountNumber", 0);
-
-        chipColor = storage.getInt(accountUuid + ".chipColor", FALLBACK_ACCOUNT_COLOR);
-
-        sortType = getEnumStringPref(storage, accountUuid + ".sortTypeEnum", SortType.SORT_DATE);
-
-        sortAscending.put(sortType, storage.getBoolean(accountUuid + ".sortAscending", false));
-
-        showPictures = getEnumStringPref(storage, accountUuid + ".showPicturesEnum", ShowPictures.NEVER);
-
-        notificationSetting.setVibrate(storage.getBoolean(accountUuid + ".vibrate", false));
-        notificationSetting.setVibratePattern(storage.getInt(accountUuid + ".vibratePattern", 0));
-        notificationSetting.setVibrateTimes(storage.getInt(accountUuid + ".vibrateTimes", 5));
-        notificationSetting.setRingEnabled(storage.getBoolean(accountUuid + ".ring", true));
-        notificationSetting.setRingtone(storage.getString(accountUuid + ".ringtone",
-                                         "content://settings/system/notification_sound"));
-        notificationSetting.setLed(storage.getBoolean(accountUuid + ".led", true));
-        notificationSetting.setLedColor(storage.getInt(accountUuid + ".ledColor", chipColor));
-
-        folderDisplayMode = getEnumStringPref(storage, accountUuid + ".folderDisplayMode", FolderMode.NOT_SECOND_CLASS);
-
-        folderSyncMode = getEnumStringPref(storage, accountUuid + ".folderSyncMode", FolderMode.FIRST_CLASS);
-
-        folderPushMode = getEnumStringPref(storage, accountUuid + ".folderPushMode", FolderMode.FIRST_CLASS);
-
-        folderTargetMode = getEnumStringPref(storage, accountUuid + ".folderTargetMode", FolderMode.NOT_SECOND_CLASS);
-
-        searchableFolders = getEnumStringPref(storage, accountUuid + ".searchableFolders", Searchable.ALL);
-
-        isSignatureBeforeQuotedText = storage.getBoolean(accountUuid + ".signatureBeforeQuotedText", false);
-        identities = loadIdentities(storage);
-
-        openPgpProvider = storage.getString(accountUuid + ".openPgpProvider", "");
-        openPgpKey = storage.getLong(accountUuid + ".cryptoKey", NO_OPENPGP_KEY);
-        openPgpHideSignOnly = storage.getBoolean(accountUuid + ".openPgpHideSignOnly", true);
-        openPgpEncryptSubject = storage.getBoolean(accountUuid + ".openPgpEncryptSubject", true);
-        openPgpEncryptAllDrafts = storage.getBoolean(accountUuid + ".openPgpEncryptAllDrafts", true);
-        autocryptPreferEncryptMutual = storage.getBoolean(accountUuid + ".autocryptMutualMode", false);
-        allowRemoteSearch = storage.getBoolean(accountUuid + ".allowRemoteSearch", false);
-        remoteSearchFullText = storage.getBoolean(accountUuid + ".remoteSearchFullText", false);
-        remoteSearchNumResults = storage.getInt(accountUuid + ".remoteSearchNumResults", DEFAULT_REMOTE_SEARCH_NUM_RESULTS);
-        uploadSentMessages = storage.getBoolean(accountUuid + ".uploadSentMessages", true);
-
-        isEnabled = storage.getBoolean(accountUuid + ".enabled", true);
-        markMessageAsReadOnView = storage.getBoolean(accountUuid + ".markMessageAsReadOnView", true);
-        alwaysShowCcBcc = storage.getBoolean(accountUuid + ".alwaysShowCcBcc", false);
-
-        // Use email address as account description if necessary
-        if (description == null) {
-            description = getEmail();
-        }
     }
 
     private void resetVisibleLimits() {
@@ -574,7 +433,7 @@ public class Account implements BaseAccount, StoreConfig {
 
     public void setLocalStorageProviderId(String id) {
 
-        if (!localStorageProviderId.equals(id)) {
+        if (localStorageProviderId == null || !localStorageProviderId.equals(id)) {
 
             boolean successful = false;
             try {
@@ -832,12 +691,12 @@ public class Account implements BaseAccount, StoreConfig {
         return pushMode != oldPushMode;
     }
 
-    public synchronized boolean isShowOngoing() {
+    public synchronized boolean isNotifySync() {
         return notifySync;
     }
 
-    public synchronized void setShowOngoing(boolean showOngoing) {
-        this.notifySync = showOngoing;
+    public synchronized void setNotifySync(boolean notifySync) {
+        this.notifySync = notifySync;
     }
 
     public synchronized SortType getSortType() {
@@ -957,49 +816,6 @@ public class Account implements BaseAccount, StoreConfig {
         return accountUuid.hashCode();
     }
 
-    private synchronized List<Identity> loadIdentities(Storage storage) {
-        List<Identity> newIdentities = new ArrayList<>();
-        int ident = 0;
-        boolean gotOne;
-        do {
-            gotOne = false;
-            String name = storage.getString(accountUuid + "." + IDENTITY_NAME_KEY + "." + ident, null);
-            String email = storage.getString(accountUuid + "." + IDENTITY_EMAIL_KEY + "." + ident, null);
-            boolean signatureUse = storage.getBoolean(accountUuid + ".signatureUse." + ident, true);
-            String signature = storage.getString(accountUuid + ".signature." + ident, null);
-            String description = storage.getString(accountUuid + "." + IDENTITY_DESCRIPTION_KEY + "." + ident, null);
-            final String replyTo = storage.getString(accountUuid + ".replyTo." + ident, null);
-            if (email != null) {
-                Identity identity = new Identity();
-                identity.setName(name);
-                identity.setEmail(email);
-                identity.setSignatureUse(signatureUse);
-                identity.setSignature(signature);
-                identity.setDescription(description);
-                identity.setReplyTo(replyTo);
-                newIdentities.add(identity);
-                gotOne = true;
-            }
-            ident++;
-        } while (gotOne);
-
-        if (newIdentities.isEmpty()) {
-            String name = storage.getString(accountUuid + ".name", null);
-            String email = storage.getString(accountUuid + ".email", null);
-            boolean signatureUse = storage.getBoolean(accountUuid + ".signatureUse", true);
-            String signature = storage.getString(accountUuid + ".signature", null);
-            Identity identity = new Identity();
-            identity.setName(name);
-            identity.setEmail(email);
-            identity.setSignatureUse(signatureUse);
-            identity.setSignature(signature);
-            identity.setDescription(email);
-            newIdentities.add(identity);
-        }
-
-        return newIdentities;
-    }
-
     public synchronized List<Identity> getIdentities() {
         return identities;
     }
@@ -1082,6 +898,10 @@ public class Account implements BaseAccount, StoreConfig {
      * @throws MessagingException
      */
     private void switchLocalStorage(final String newStorageProviderId) throws MessagingException {
+        boolean isInMemoryStorage = localStorageProviderId == null;
+        if (isInMemoryStorage) {
+            return;
+        }
         if (!localStorageProviderId.equals(newStorageProviderId)) {
             getLocalStore().switchLocalStorage(newStorageProviderId);
         }
@@ -1161,7 +981,7 @@ public class Account implements BaseAccount, StoreConfig {
         this.messageFormat = messageFormat;
     }
 
-    public synchronized boolean isMessageReadReceiptAlways() {
+    public synchronized boolean isMessageReadReceipt() {
         return messageReadReceipt;
     }
 

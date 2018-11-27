@@ -566,13 +566,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
         accountsInOrder.set(Preferences.getPreferences(appContext), newAccountsInOrder);
     }
 
-    private void removeAccountsFromPreferences() throws Exception {
-        Field accounts = Preferences.class.getDeclaredField("accounts");
-        accounts.setAccessible(true);
-        accounts.set(Preferences.getPreferences(appContext), null);
-
-        Field accountsInOrder = Preferences.class.getDeclaredField("accountsInOrder");
-        accountsInOrder.setAccessible(true);
-        accountsInOrder.set(Preferences.getPreferences(appContext), null);
+    private void removeAccountsFromPreferences() {
+        Preferences.getPreferences(appContext).clearAccounts();
     }
 }
