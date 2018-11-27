@@ -21,9 +21,7 @@ public class AddressTest {
     public void parse_withMissingEmail__shouldSetPersonal() {
         Address[] addresses = Address.parse("NAME ONLY");
 
-        assertEquals(1, addresses.length);
-        assertEquals(null, addresses[0].getAddress());
-        assertEquals("NAME ONLY", addresses[0].getPersonal());
+        assertEquals(0, addresses.length);
     }
 
     /**
@@ -116,10 +114,9 @@ public class AddressTest {
 
     @Test
     public void hashCode_withoutAddress() throws Exception {
-        Address address = Address.parse("name only")[0];
-        assertNull(address.getAddress());
-        
-        address.hashCode();
+        Address[] addresses = Address.parse("name only");
+
+        assertEquals(0, addresses.length);
     }
 
     @Test
@@ -128,27 +125,6 @@ public class AddressTest {
         assertNull(address.getPersonal());
         
         address.hashCode();
-    }
-
-    @Test
-    public void equals_withoutAddress_matchesSame() throws Exception {
-        Address address = Address.parse("name only")[0];
-        Address address2 = Address.parse("name only")[0];
-        assertNull(address.getAddress());
-
-        boolean result = address.equals(address2);
-
-        assertTrue(result);
-    }
-
-    @Test
-    public void equals_withoutAddress_doesNotMatchWithAddress() throws Exception {
-        Address address = Address.parse("name only")[0];
-        Address address2 = Address.parse("name <alice.example.com>")[0];
-
-        boolean result = address.equals(address2);
-
-        assertFalse(result);
     }
 
     @Test
@@ -170,15 +146,6 @@ public class AddressTest {
         boolean result = address.equals(address2);
 
         assertFalse(result);
-    }
-
-    @Test
-    public void getHostname_withoutAddress_isNull() throws Exception {
-        Address address = Address.parse("Alice")[0];
-
-        String result = address.getHostname();
-
-        assertNull(result);
     }
 
     @Test
