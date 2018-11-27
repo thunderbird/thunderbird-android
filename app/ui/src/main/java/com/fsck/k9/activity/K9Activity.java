@@ -42,13 +42,9 @@ public abstract class K9Activity extends AppCompatActivity implements K9Activity
             case PERMISSIONS_REQUEST_READ_CONTACTS:
             case PERMISSIONS_REQUEST_WRITE_CONTACTS: {
                 // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    Toast.makeText(this, R.string.contact_permission_thanks,
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, R.string.contact_permission_request,
+                boolean permissionWasGranted = grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                if (!permissionWasGranted) {
+                    Toast.makeText(this, R.string.contact_permission_request_denied,
                             Toast.LENGTH_LONG).show();
                 }
             }

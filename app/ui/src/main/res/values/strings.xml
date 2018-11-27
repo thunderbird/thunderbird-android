@@ -1353,6 +1353,5 @@ You can keep this message and use it as a backup for your secret key. If you wan
 
 
     <!-- permissions -->
-    <string name="contact_permission_request">K-9 works best when this permission is granted.</string>
-    <string name="contact_permission_thanks">Your contact data is now available.</string>
+    <string name="contact_permission_request_denied">K-9 can\'t show you contact suggestions without this permission.</string>
 </resources>

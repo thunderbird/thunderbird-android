@@ -267,12 +267,12 @@ public class Contacts {
         }
     }
 
-    private Boolean hasPerm() {
-        return
-                ((ContextCompat.checkSelfPermission(mContext,
-                        Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED)
-                        && ((ContextCompat.checkSelfPermission(mContext,
-                        Manifest.permission.WRITE_CONTACTS) == PackageManager.PERMISSION_GRANTED)));
+    private boolean hasContactPermission() {
+        boolean canRead = ContextCompat.checkSelfPermission(mContext,
+                Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
+        boolean canWrite = ContextCompat.checkSelfPermission(mContext,
+                Manifest.permission.WRITE_CONTACTS) == PackageManager.PERMISSION_GRANTED;
+        return  canRead && canWrite;
     }
 
     /**
@@ -286,61 +286,16 @@ public class Contacts {
     private Cursor getContactByAddress(final String address) {
         final Uri uri = Uri.withAppendedPath(ContactsContract.CommonDataKinds.Email.CONTENT_LOOKUP_URI, Uri.encode(address));
 
-        if (!hasPerm()) {
-            // return blank cursor
-            return new AbstractCursor() {
-                @Override
-                public int getCount() {
-                    return 0;
-                }
-
-                @Override
-                public String[] getColumnNames() {
-                    return new String[0];
-                }
-
-                @Override
-                public String getString(int column) {
-                    return null;
-                }
-
-                @Override
-                public short getShort(int column) {
-                    return 0;
-                }
-
-                @Override
-                public int getInt(int column) {
-                    return 0;
-                }
-
-                @Override
-                public long getLong(int column) {
-                    return 0;
-                }
-
-                @Override
-                public float getFloat(int column) {
-                    return 0;
-                }
-
-                @Override
-                public double getDouble(int column) {
-                    return 0;
-                }
-
-                @Override
-                public boolean isNull(int column) {
-                    return false;
-                }
-            };
-        } else {
+        if (hasContactPermission()) {
             return mContentResolver.query(
                     uri,
                     PROJECTION,
                     null,
                     null,
                     SORT_ORDER);
+        } else {
+            // return blank cursor
+            return new EmptyCursor();
         }
 
     }
@@ -352,4 +307,54 @@ public class Contacts {
         nameCache.clear();
     }
 
+
+    /**
+     * A dummy class that provides a empty cursor
+     */
+    private class EmptyCursor extends AbstractCursor {
+        @Override
+        public int getCount() {
+            return 0;
+        }
+
+        @Override
+        public String[] getColumnNames() {
+            return new String[0];
+        }
+
+        @Override
+        public String getString(int column) {
+            return null;
+        }
+
+        @Override
+        public short getShort(int column) {
+            return 0;
+        }
+
+        @Override
+        public int getInt(int column) {
+            return 0;
+        }
+
+        @Override
+        public long getLong(int column) {
+            return 0;
+        }
+
+        @Override
+        public float getFloat(int column) {
+            return 0;
+        }
+
+        @Override
+        public double getDouble(int column) {
+            return 0;
+        }
+
+        @Override
+        public boolean isNull(int column) {
+            return false;
+        }
+    }
 }
