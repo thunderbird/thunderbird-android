@@ -144,5 +144,5 @@ class IdentityHelperTest : RobolectricTest() {
     }
 
 
-    class DummyAccount : Account(RuntimeEnvironment.application, mock())
+    class DummyAccount : Account("dummy-uuid")
 }

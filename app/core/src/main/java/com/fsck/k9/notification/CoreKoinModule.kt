@@ -21,7 +21,7 @@ val coreNotificationModule = applicationContext {
                 get()
         )
     }
-    bean { AccountPreferenceSerializer(get()) }
+    bean { AccountPreferenceSerializer(get(), get()) }
     bean { LocalKeyStore.getInstance() }
     bean { LocalKeyStoreManager(get()) }
     bean { CertificateErrorNotifications(get(), get(), get()) }

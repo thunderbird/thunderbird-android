@@ -10,7 +10,10 @@ import com.fsck.k9.preferences.StorageEditor
 import timber.log.Timber
 import java.util.*
 
-class AccountPreferenceSerializer(val storageManager: StorageManager) {
+class AccountPreferenceSerializer(
+        private val storageManager: StorageManager,
+        private val resourceProvider: CoreResourceProvider
+) {
 
     @Synchronized
     fun loadAccount(account: Account, storage: Storage) {
@@ -493,6 +496,79 @@ class AccountPreferenceSerializer(val storageManager: StorageManager) {
         }
     }
 
+    fun loadDefaults(account: Account) {
+        with (account) {
+            localStorageProviderId = storageManager.defaultProviderId
+            automaticCheckIntervalMinutes = -1
+            idleRefreshMinutes = 24
+            isPushPollOnConnect = true
+            displayCount = K9.DEFAULT_VISIBLE_LIMIT
+            accountNumber = -1
+            isNotifyNewMail = true
+            folderNotifyNewMailMode = FolderMode.ALL
+            isNotifySync = true
+            isNotifySelfNewMail = true
+            isNotifyContactsMailOnly = false
+            folderDisplayMode = FolderMode.NOT_SECOND_CLASS
+            folderSyncMode = FolderMode.FIRST_CLASS
+            folderPushMode = FolderMode.FIRST_CLASS
+            folderTargetMode = FolderMode.NOT_SECOND_CLASS
+            sortType = DEFAULT_SORT_TYPE
+            setSortAscending(DEFAULT_SORT_TYPE, DEFAULT_SORT_ASCENDING)
+            showPictures = ShowPictures.NEVER
+            isSignatureBeforeQuotedText = false
+            expungePolicy = Expunge.EXPUNGE_IMMEDIATELY
+            autoExpandFolder = INBOX
+            inboxFolder = INBOX
+            maxPushFolders = 10
+            isGoToUnreadMessageSearch = false
+            isSubscribedFoldersOnly = false
+            maximumPolledMessageAge = -1
+            maximumAutoDownloadMessageSize = 32768
+            messageFormat = DEFAULT_MESSAGE_FORMAT
+            isMessageFormatAuto = DEFAULT_MESSAGE_FORMAT_AUTO
+            isMessageReadReceipt = DEFAULT_MESSAGE_READ_RECEIPT
+            quoteStyle = DEFAULT_QUOTE_STYLE
+            quotePrefix = DEFAULT_QUOTE_PREFIX
+            isDefaultQuotedTextShown = DEFAULT_QUOTED_TEXT_SHOWN
+            isReplyAfterQuote = DEFAULT_REPLY_AFTER_QUOTE
+            isStripSignature = DEFAULT_STRIP_SIGNATURE
+            isSyncRemoteDeletions = true
+            openPgpKey = NO_OPENPGP_KEY
+            isAllowRemoteSearch = false
+            isRemoteSearchFullText = false
+            remoteSearchNumResults = DEFAULT_REMOTE_SEARCH_NUM_RESULTS
+            isUploadSentMessages = true
+            isEnabled = true
+            isMarkMessageAsReadOnView = true
+            isAlwaysShowCcBcc = false
+
+            setArchiveFolder(null, SpecialFolderSelection.AUTOMATIC)
+            setDraftsFolder(null, SpecialFolderSelection.AUTOMATIC)
+            setSentFolder(null, SpecialFolderSelection.AUTOMATIC)
+            setSpamFolder(null, SpecialFolderSelection.AUTOMATIC)
+            setTrashFolder(null, SpecialFolderSelection.AUTOMATIC)
+            setArchiveFolder(null, SpecialFolderSelection.AUTOMATIC)
+
+            searchableFolders = Searchable.ALL
+
+            identities = ArrayList<Identity>()
+
+            val identity = Identity()
+            identity.signatureUse = true
+            identity.signature = resourceProvider.defaultSignature()
+            identity.description = resourceProvider.defaultIdentityDescription()
+            identities.add(identity)
+
+            notificationSetting.setVibrate(false)
+            notificationSetting.setVibratePattern(0)
+            notificationSetting.setVibrateTimes(5)
+            notificationSetting.setRingEnabled(true)
+            notificationSetting.setRingtone("content://settings/system/notification_sound")
+            notificationSetting.setLedColor(chipColor)
+        }
+    }
+
     companion object {
         const val ACCOUNT_DESCRIPTION_KEY = "description"
         const val STORE_URI_KEY = "storeUri"
@@ -503,5 +579,17 @@ class AccountPreferenceSerializer(val storageManager: StorageManager) {
         const val IDENTITY_DESCRIPTION_KEY = "description"
 
         const val FALLBACK_ACCOUNT_COLOR = 0x0099CC
+
+        @JvmField
+        val DEFAULT_MESSAGE_FORMAT = MessageFormat.HTML
+        @JvmField
+        val DEFAULT_QUOTE_STYLE = QuoteStyle.PREFIX
+        const val DEFAULT_MESSAGE_FORMAT_AUTO = false
+        const val DEFAULT_MESSAGE_READ_RECEIPT = false
+        const val DEFAULT_QUOTE_PREFIX = ">"
+        const val DEFAULT_QUOTED_TEXT_SHOWN = true
+        const val DEFAULT_REPLY_AFTER_QUOTE = false
+        const val DEFAULT_STRIP_SIGNATURE = true
+        const val DEFAULT_REMOTE_SEARCH_NUM_RESULTS = 25
     }
 }

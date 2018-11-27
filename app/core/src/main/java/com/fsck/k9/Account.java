@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import android.content.Context;
@@ -83,16 +82,6 @@ public class Account implements BaseAccount, StoreConfig {
             throw new IllegalArgumentException("DeletePolicy " + initialSetting + " unknown");
         }
     }
-
-    public static final MessageFormat DEFAULT_MESSAGE_FORMAT = MessageFormat.HTML;
-    public static final boolean DEFAULT_MESSAGE_FORMAT_AUTO = false;
-    public static final boolean DEFAULT_MESSAGE_READ_RECEIPT = false;
-    public static final QuoteStyle DEFAULT_QUOTE_STYLE = QuoteStyle.PREFIX;
-    public static final String DEFAULT_QUOTE_PREFIX = ">";
-    public static final boolean DEFAULT_QUOTED_TEXT_SHOWN = true;
-    public static final boolean DEFAULT_REPLY_AFTER_QUOTE = false;
-    public static final boolean DEFAULT_STRIP_SIGNATURE = true;
-    public static final int DEFAULT_REMOTE_SEARCH_NUM_RESULTS = 25;
 
     public enum SortType {
         SORT_DATE(false),
@@ -244,81 +233,6 @@ public class Account implements BaseAccount, StoreConfig {
         TEXT, HTML, AUTO
     }
 
-    public Account(Context context, CoreResourceProvider resourceProvider) {
-        accountUuid = UUID.randomUUID().toString();
-        localStorageProviderId = StorageManager.getInstance(context).getDefaultProviderId();
-        automaticCheckIntervalMinutes = -1;
-        idleRefreshMinutes = 24;
-        pushPollOnConnect = true;
-        displayCount = K9.DEFAULT_VISIBLE_LIMIT;
-        accountNumber = -1;
-        notifyNewMail = true;
-        folderNotifyNewMailMode = FolderMode.ALL;
-        notifySync = true;
-        notifySelfNewMail = true;
-        notifyContactsMailOnly = false;
-        folderDisplayMode = FolderMode.NOT_SECOND_CLASS;
-        folderSyncMode = FolderMode.FIRST_CLASS;
-        folderPushMode = FolderMode.FIRST_CLASS;
-        folderTargetMode = FolderMode.NOT_SECOND_CLASS;
-        sortType = DEFAULT_SORT_TYPE;
-        sortAscending.put(DEFAULT_SORT_TYPE, DEFAULT_SORT_ASCENDING);
-        showPictures = ShowPictures.NEVER;
-        isSignatureBeforeQuotedText = false;
-        expungePolicy = Expunge.EXPUNGE_IMMEDIATELY;
-        autoExpandFolder = INBOX;
-        inboxFolder = INBOX;
-        maxPushFolders = 10;
-        goToUnreadMessageSearch = false;
-        subscribedFoldersOnly = false;
-        maximumPolledMessageAge = -1;
-        maximumAutoDownloadMessageSize = 32768;
-        messageFormat = DEFAULT_MESSAGE_FORMAT;
-        messageFormatAuto = DEFAULT_MESSAGE_FORMAT_AUTO;
-        messageReadReceipt = DEFAULT_MESSAGE_READ_RECEIPT;
-        quoteStyle = DEFAULT_QUOTE_STYLE;
-        quotePrefix = DEFAULT_QUOTE_PREFIX;
-        defaultQuotedTextShown = DEFAULT_QUOTED_TEXT_SHOWN;
-        replyAfterQuote = DEFAULT_REPLY_AFTER_QUOTE;
-        stripSignature = DEFAULT_STRIP_SIGNATURE;
-        syncRemoteDeletions = true;
-        openPgpKey = NO_OPENPGP_KEY;
-        allowRemoteSearch = false;
-        remoteSearchFullText = false;
-        remoteSearchNumResults = DEFAULT_REMOTE_SEARCH_NUM_RESULTS;
-        uploadSentMessages = true;
-        isEnabled = true;
-        markMessageAsReadOnView = true;
-        alwaysShowCcBcc = false;
-        archiveFolder = null;
-        draftsFolder = null;
-        sentFolder = null;
-        spamFolder = null;
-        trashFolder = null;
-        archiveFolderSelection = SpecialFolderSelection.AUTOMATIC;
-        draftsFolderSelection = SpecialFolderSelection.AUTOMATIC;
-        sentFolderSelection = SpecialFolderSelection.AUTOMATIC;
-        spamFolderSelection = SpecialFolderSelection.AUTOMATIC;
-        trashFolderSelection = SpecialFolderSelection.AUTOMATIC;
-
-        searchableFolders = Searchable.ALL;
-
-        identities = new ArrayList<>();
-
-        Identity identity = new Identity();
-        identity.setSignatureUse(true);
-        identity.setSignature(resourceProvider.defaultSignature());
-        identity.setDescription(resourceProvider.defaultIdentityDescription());
-        identities.add(identity);
-
-        notificationSetting = new NotificationSetting();
-        notificationSetting.setVibrate(false);
-        notificationSetting.setVibratePattern(0);
-        notificationSetting.setVibrateTimes(5);
-        notificationSetting.setRingEnabled(true);
-        notificationSetting.setRingtone("content://settings/system/notification_sound");
-        notificationSetting.setLedColor(chipColor);
-    }
 
     public Account(String uuid) {
         this.accountUuid = uuid;
@@ -979,6 +893,14 @@ public class Account implements BaseAccount, StoreConfig {
 
     public void setMessageFormat(MessageFormat messageFormat) {
         this.messageFormat = messageFormat;
+    }
+
+    public synchronized boolean isMessageFormatAuto() {
+        return messageFormatAuto;
+    }
+
+    public synchronized void setMessageFormatAuto(boolean messageFormatAuto) {
+        this.messageFormatAuto = messageFormatAuto;
     }
 
     public synchronized boolean isMessageReadReceipt() {

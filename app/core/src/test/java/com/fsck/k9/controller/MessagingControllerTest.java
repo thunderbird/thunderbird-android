@@ -12,12 +12,13 @@ import android.content.Context;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.SpecialFolderSelection;
+import com.fsck.k9.AccountPreferenceSerializer;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.CoreResourceProvider;
+import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9RobolectricTest;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.TestCoreResourceProvider;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.backend.api.Backend;
 import com.fsck.k9.helper.Contacts;
@@ -46,6 +47,7 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Captor;
 import org.mockito.InOrder;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -75,7 +77,6 @@ public class MessagingControllerTest extends K9RobolectricTest {
     private static final String SENT_FOLDER_NAME = "Sent";
     private static final int MAXIMUM_SMALL_MESSAGE_SIZE = 1000;
     private static final String ACCOUNT_UUID = "1";
-
 
     private MessagingController controller;
     private Account account;
@@ -539,12 +540,12 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
     private void configureAccount() throws MessagingException {
         // TODO use simple account object without mocks
-        account = spy(new Account(appContext, new TestCoreResourceProvider()));
+        account = spy(new Account(ACCOUNT_UUID));
+        DI.get(AccountPreferenceSerializer.class).loadDefaults(account);
         account.setMaximumAutoDownloadMessageSize(MAXIMUM_SMALL_MESSAGE_SIZE);
         account.setEmail("user@host.com");
-        when(account.getUuid()).thenReturn(ACCOUNT_UUID);
-        when(account.isAvailable(appContext)).thenReturn(true);
-        when(account.getLocalStore()).thenReturn(localStore);
+        Mockito.doReturn(true).when(account).isAvailable(appContext);
+        Mockito.doReturn(localStore).when(account).getLocalStore();
     }
 
     private void configureLocalStore() throws MessagingException {

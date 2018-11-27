@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import android.content.Context;
 import android.support.annotation.RestrictTo;
@@ -130,7 +131,9 @@ public class Preferences {
     }
 
     public synchronized Account newAccount() {
-        newAccount = new Account(context, resourceProvider);
+        String accountUuid = UUID.randomUUID().toString();
+        newAccount = new Account(accountUuid);
+        accountPreferenceSerializer.loadDefaults(newAccount);
         accounts.put(newAccount.getUuid(), newAccount);
         accountsInOrder.add(newAccount);
 
