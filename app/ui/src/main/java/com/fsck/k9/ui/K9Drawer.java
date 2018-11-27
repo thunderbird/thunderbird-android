@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -94,6 +95,7 @@ public class K9Drawer {
     private AccountHeader buildAccountHeader() {
         AccountHeaderBuilder headerBuilder = new AccountHeaderBuilder()
                 .withActivity(parent)
+                .withHeaderBackground(R.drawable.drawer_header_background)
                 .withTranslucentStatusBar(false);
 
         if (!K9.isHideSpecialAccounts()) {
@@ -207,6 +209,7 @@ public class K9Drawer {
         } else {
             unifiedInboxSelected = false;
             accountHeader.setActiveProfile((account.getAccountNumber()+1) << DRAWER_ACCOUNT_SHIFT);
+            accountHeader.getHeaderBackgroundView().setColorFilter(account.getChipColor(), PorterDuff.Mode.OVERLAY);
             ViewModelProvider viewModelProvider = ViewModelProviders.of(parent, new MessageListViewModelFactory());
             MessageListViewModel viewModel = viewModelProvider.get(MessageListViewModel.class);
             viewModel.getFolders(account).observe(parent, new Observer<List<Folder>>() {
@@ -288,6 +291,7 @@ public class K9Drawer {
         unifiedInboxSelected = true;
         openedFolderServerId = null;
         accountHeader.setActiveProfile(DRAWER_ID_UNIFIED_INBOX);
+        accountHeader.getHeaderBackgroundView().setColorFilter(0xFFFFFFFF, PorterDuff.Mode.MULTIPLY);
         clearUserFolders();
     }
 

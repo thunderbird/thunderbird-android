@@ -9,6 +9,4 @@
     <color name="status_ok_checkmark">#7bad45</color>
 
     <color name="drawer_background">#666666</color>
-
-    <color name="material_drawer_header_selection_text">@color/material_drawer_primary_text</color>
 </resources>
