@@ -1,6 +1,7 @@
 
 package com.fsck.k9.mail;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
 import java.io.Serializable;
@@ -28,6 +29,7 @@ public class Address implements Serializable {
      */
     private static final Address[] EMPTY_ADDRESS_ARRAY = new Address[0];
 
+    @NonNull
     private String mAddress;
 
     private String mPersonal;
@@ -46,10 +48,16 @@ public class Address implements Serializable {
     }
 
     private Address(String address, String personal, boolean parse) {
+        if (address == null) {
+            throw new IllegalArgumentException("address");
+        }
         if (parse) {
             Rfc822Token[] tokens =  Rfc822Tokenizer.tokenize(address);
             if (tokens.length > 0) {
                 Rfc822Token token = tokens[0];
+                if (token.getAddress() == null) {
+                    throw new IllegalArgumentException("token.getAddress()");
+                }
                 mAddress = token.getAddress();
                 String name = token.getName();
                 if (!TextUtils.isEmpty(name)) {
@@ -91,6 +99,9 @@ public class Address implements Serializable {
     }
 
     public void setAddress(String address) {
+        if (address == null) {
+            throw new IllegalArgumentException("address");
+        }
         this.mAddress = address;
     }
 
@@ -151,8 +162,7 @@ public class Address implements Serializable {
             }
         } catch (MimeException pe) {
             Timber.e(pe, "MimeException in Address.parse()");
-            //but we do an silent failover : we just use the given string as name with empty address
-            addresses.add(new Address(null, addressList, false));
+            // broken addresses are never added to the resulting array
         }
         return addresses.toArray(EMPTY_ADDRESS_ARRAY);
     }
