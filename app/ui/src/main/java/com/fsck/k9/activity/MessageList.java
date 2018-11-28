@@ -513,7 +513,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     private void checkAndRequestPermissions() {
         if (!hasPermission(Permission.READ_CONTACTS)) {
-            requestPermission(Permission.READ_CONTACTS);
+            requestPermissionOrShowRationale(Permission.READ_CONTACTS);
         }
     }
 

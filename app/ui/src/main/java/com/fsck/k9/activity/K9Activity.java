@@ -1,26 +1,30 @@
 package com.fsck.k9.activity;
 
+
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.StringRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
-import android.widget.Toast;
 
 import com.fsck.k9.activity.K9ActivityCommon.K9ActivityMagic;
 import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
 import com.fsck.k9.ui.R;
+import com.fsck.k9.ui.permissions.PermissionRationaleDialogFragment;
 import timber.log.Timber;
 
 
 public abstract class K9Activity extends AppCompatActivity implements K9ActivityMagic {
+    public static final int PERMISSIONS_REQUEST_READ_CONTACTS  = 1;
+    public static final int PERMISSIONS_REQUEST_WRITE_CONTACTS = 2;
+    private static final String FRAGMENT_TAG_RATIONALE = "rationale";
+
 
     private K9ActivityCommon mBase;
 
-    public static final int PERMISSIONS_REQUEST_READ_CONTACTS  = 1;
-    public static final int PERMISSIONS_REQUEST_WRITE_CONTACTS = 2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,24 +43,19 @@ public abstract class K9Activity extends AppCompatActivity implements K9Activity
         mBase.setupGestureDetector(listener);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSIONS_REQUEST_READ_CONTACTS:
-            case PERMISSIONS_REQUEST_WRITE_CONTACTS: {
-                // If request is cancelled, the result arrays are empty.
-                boolean permissionWasGranted = grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                if (!permissionWasGranted) {
-                    Toast.makeText(this, R.string.contact_permission_request_denied,
-                            Toast.LENGTH_LONG).show();
-                }
-            }
-        }
-    }
-
     public boolean hasPermission(Permission permission) {
         return ContextCompat.checkSelfPermission(this, permission.permission) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    public void requestPermissionOrShowRationale(Permission permission) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission.permission)) {
+            PermissionRationaleDialogFragment dialogFragment =
+                    PermissionRationaleDialogFragment.newInstance(permission);
+
+            dialogFragment.show(getSupportFragmentManager(), FRAGMENT_TAG_RATIONALE);
+        } else {
+            requestPermission(permission);
+        }
     }
 
     public void requestPermission(Permission permission) {
@@ -66,16 +65,30 @@ public abstract class K9Activity extends AppCompatActivity implements K9Activity
 
 
     public enum Permission {
-        READ_CONTACTS(Manifest.permission.READ_CONTACTS, PERMISSIONS_REQUEST_READ_CONTACTS),
-        WRITE_CONTACTS(Manifest.permission.WRITE_CONTACTS, PERMISSIONS_REQUEST_WRITE_CONTACTS);
+        READ_CONTACTS(
+                Manifest.permission.READ_CONTACTS,
+                PERMISSIONS_REQUEST_READ_CONTACTS,
+                R.string.permission_contacts_rationale_title,
+                R.string.permission_contacts_rationale_message
+        ),
+        WRITE_CONTACTS(
+                Manifest.permission.WRITE_CONTACTS,
+                PERMISSIONS_REQUEST_WRITE_CONTACTS,
+                R.string.permission_contacts_rationale_title,
+                R.string.permission_contacts_rationale_message
+        );
 
 
-        final String permission;
-        final int requestCode;
+        public final String permission;
+        public final int requestCode;
+        public final int rationaleTitle;
+        public final int rationaleMessage;
 
-        Permission(String permission, int requestCode) {
+        Permission(String permission, int requestCode, @StringRes int rationaleTitle, @StringRes int rationaleMessage) {
             this.permission = permission;
             this.requestCode = requestCode;
+            this.rationaleTitle = rationaleTitle;
+            this.rationaleMessage = rationaleMessage;
         }
     }
 }

@@ -1353,5 +1353,6 @@ You can keep this message and use it as a backup for your secret key. If you wan
 
 
     <!-- permissions -->
-    <string name="contact_permission_request_denied">K-9 can\'t show you contact suggestions without this permission.</string>
+    <string name="permission_contacts_rationale_title">Allow access to contacts</string>
+    <string name="permission_contacts_rationale_message">To be able to provide contact suggestions and to display contact names and photos, the app needs access to your contacts.</string>
 </resources>

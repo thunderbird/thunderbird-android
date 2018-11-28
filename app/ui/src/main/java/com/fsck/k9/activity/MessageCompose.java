@@ -645,7 +645,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private void checkAndRequestPermissions() {
         if (!hasPermission(Permission.READ_CONTACTS)) {
-            requestPermission(Permission.READ_CONTACTS);
+            requestPermissionOrShowRationale(Permission.READ_CONTACTS);
         }
     }
 
