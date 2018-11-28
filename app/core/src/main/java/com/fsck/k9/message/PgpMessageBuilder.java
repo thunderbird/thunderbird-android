@@ -112,7 +112,9 @@ public class PgpMessageBuilder extends MessageBuilder {
         }
 
         addAutocryptHeaderIfAvailable(openPgpKeyId);
-        addDraftStateHeader();
+        if (isDraft()) {
+            addDraftStateHeader();
+        }
 
         startOrContinueBuildMessage(null);
     }
