@@ -43,6 +43,13 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun initializeAttachmentDefaultPathPreference() {
+        //KITKAT does not support ACTION_OPEN_DOCUMENT_TREE, hide the category since attachmentDefaultPath is the only entry
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
+            findPreference(PREFERENCE_MISC_CATEGORY)?.apply {
+                isVisible = false;
+            }
+        }
+
         findPreference(PREFERENCE_ATTACHMENT_DEFAULT_PATH)?.apply {
             attachmentDefaultPathPreference = this
 
@@ -133,6 +140,7 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         private const val REQUEST_PICK_DIRECTORY_PATH = 1
         private const val REQUEST_PICK_DIRECTORY_URI_TREE = 2
 
+        private const val PREFERENCE_MISC_CATEGORY = "misc_preferences"
         private const val PREFERENCE_ATTACHMENT_DEFAULT_PATH = "attachment_default_path"
         private const val PREFERENCE_START_IN_UNIFIED_INBOX = "start_integrated_inbox"
         private const val PREFERENCE_HIDE_SPECIAL_ACCOUNTS = "hide_special_accounts"

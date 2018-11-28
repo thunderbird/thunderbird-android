@@ -77,6 +77,7 @@ public class AttachmentController {
         DocumentFile newFile = FileHelper.createUniqueFile(pickedDir, filename, attachment.mimeType);
 
         saveAttachmentTo(newFile);
+        Toast.makeText(context, context.getString(R.string.message_view_attachment_save_success, newFile.getName()),Toast.LENGTH_SHORT).show();
     }
 
     private void downloadAndViewAttachment(LocalPart localPart) {

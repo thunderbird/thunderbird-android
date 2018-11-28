@@ -478,16 +478,18 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
             case ACTIVITY_SAVE_ATTACHMENT_TREE:
                 Uri uriTree = data.getData();
-                DocumentFile documentFile = DocumentFile.fromTreeUri(getApplicationContext(), uriTree);
+                if (uriTree == null){
+                    Timber.i("ACTIVITY_SAVE_ATTACHMENT_TREE, uriTree is null");
+                    return;
+                }
+
                 final int takeFlags = data.getFlags()
                         & (Intent.FLAG_GRANT_READ_URI_PERMISSION
                         | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    getApplicationContext().getContentResolver().takePersistableUriPermission(uriTree, takeFlags);
-                }
 
-                K9.setAttachmentDefaultPath(documentFile.getUri().toString());
+                getApplicationContext().getContentResolver().takePersistableUriPermission(uriTree, takeFlags);
+                K9.setAttachmentDefaultPath(uriTree.toString());
                 K9.saveSettingsAsync();
 
                 Timber.i("ACTIVITY_SAVE_ATTACHMENT_TREE uri " + uriTree.getPath());
