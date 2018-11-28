@@ -284,6 +284,10 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             return;
         }
 
+        if(isDrawerEnabled()) {
+            drawer.updateUserAccountsAndFolders(account);
+        }
+
         initializeDisplayMode(null);
         initializeFragments();
         displayViews();
