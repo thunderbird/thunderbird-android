@@ -44,6 +44,7 @@ data class AutocryptDraftStateHeader(val isEncrypt: Boolean,
 
         const val VALUE_YES = "yes";
 
+        @JvmStatic
         fun fromCryptoStatus(cryptoStatus: CryptoStatus): AutocryptDraftStateHeader {
             if (cryptoStatus.isSignOnly) {
                 return AutocryptDraftStateHeader(false, true, cryptoStatus.isReplyToEncrypted,

@@ -15,16 +15,18 @@ import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderState
  * during email composition to apply cryptographic operations before sending
  * or saving as draft.
  */
-data class ComposeCryptoStatus(private val openPgpProviderState: OpenPgpProviderState,
-                               override val openPgpKeyId: Long?,
-                               val recipientAddresses: List<String>,
-                               override val isPgpInlineModeEnabled: Boolean,
-                               override val isSenderPreferEncryptMutual: Boolean,
-                               override val isReplyToEncrypted: Boolean,
-                               override val isEncryptAllDrafts: Boolean,
-                               override val isEncryptSubject: Boolean,
-                               private val cryptoMode: CryptoMode,
-                               private val recipientAutocryptStatus: RecipientAutocryptStatus? = null) : CryptoStatus {
+data class ComposeCryptoStatus(
+        private val openPgpProviderState: OpenPgpProviderState,
+        override val openPgpKeyId: Long?,
+        val recipientAddresses: List<String>,
+        override val isPgpInlineModeEnabled: Boolean,
+        override val isSenderPreferEncryptMutual: Boolean,
+        override val isReplyToEncrypted: Boolean,
+        override val isEncryptAllDrafts: Boolean,
+        override val isEncryptSubject: Boolean,
+        private val cryptoMode: CryptoMode,
+        private val recipientAutocryptStatus: RecipientAutocryptStatus? = null
+) : CryptoStatus {
 
     constructor(openPgpProviderState: OpenPgpProviderState,
                 openPgpKeyId: Long?,
@@ -143,7 +145,7 @@ data class ComposeCryptoStatus(private val openPgpProviderState: OpenPgpProvider
             isPgpInlineModeEnabled = isPgpInlineModeEnabled,
             isSenderPreferEncryptMutual = isSenderPreferEncryptMutual,
             isReplyToEncrypted = isReplyToEncrypted,
-            isEncryptAllDrafts=  isEncryptAllDrafts,
+            isEncryptAllDrafts = isEncryptAllDrafts,
             isEncryptSubject = isEncryptSubject,
             recipientAddresses = recipientAddresses,
             recipientAutocryptStatus = recipientAutocryptStatusType

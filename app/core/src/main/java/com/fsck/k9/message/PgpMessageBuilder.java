@@ -129,7 +129,7 @@ public class PgpMessageBuilder extends MessageBuilder {
 
     private void addDraftStateHeader() {
         AutocryptDraftStateHeader autocryptDraftStateHeader =
-                AutocryptDraftStateHeader.Companion.fromCryptoStatus(cryptoStatus);
+                AutocryptDraftStateHeader.fromCryptoStatus(cryptoStatus);
         currentProcessedMimeMessage.setHeader(AutocryptDraftStateHeader.AUTOCRYPT_DRAFT_STATE_HEADER,
                 autocryptDraftStateHeader.toHeaderValue());
     }
