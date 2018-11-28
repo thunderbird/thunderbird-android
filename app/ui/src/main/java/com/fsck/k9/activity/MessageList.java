@@ -4,7 +4,6 @@ package com.fsck.k9.activity;
 import java.util.Collection;
 import java.util.List;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.arch.lifecycle.Observer;
@@ -14,18 +13,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -77,7 +73,6 @@ import com.fsck.k9.view.MessageTitleView;
 import com.fsck.k9.view.ViewSwitcher;
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener;
 import com.mikepenz.materialdrawer.Drawer.OnDrawerListener;
-
 import de.cketti.library.changelog.ChangeLog;
 import timber.log.Timber;
 
@@ -517,14 +512,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
 
     private void checkAndRequestPermissions() {
-        boolean hasContactPermission = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
-
-        if (!hasContactPermission) {
-            Timber.i("requesting contact permission");
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_CONTACTS},
-                    K9Activity.PERMISSIONS_REQUEST_READ_CONTACTS);
+        if (!hasPermission(Permission.READ_CONTACTS)) {
+            requestPermission(Permission.READ_CONTACTS);
         }
     }
 

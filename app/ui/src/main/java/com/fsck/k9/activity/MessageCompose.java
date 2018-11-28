@@ -8,7 +8,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -20,7 +19,6 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,8 +26,6 @@ import android.os.Handler;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -52,8 +48,6 @@ import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.controller.MessageReference;
-import com.fsck.k9.ui.R;
 import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks;
 import com.fsck.k9.activity.compose.AttachmentPresenter;
 import com.fsck.k9.activity.compose.AttachmentPresenter.AttachmentMvpView;
@@ -69,6 +63,7 @@ import com.fsck.k9.activity.compose.RecipientMvpView;
 import com.fsck.k9.activity.compose.RecipientPresenter;
 import com.fsck.k9.activity.compose.SaveMessageTask;
 import com.fsck.k9.activity.misc.Attachment;
+import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.controller.SimpleMessagingListener;
@@ -102,6 +97,7 @@ import com.fsck.k9.message.SimpleMessageBuilder;
 import com.fsck.k9.message.SimpleMessageFormat;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.ui.EolConvertingEditText;
+import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.compose.QuotedMessageMvpView;
 import com.fsck.k9.ui.compose.QuotedMessagePresenter;
 import org.openintents.openpgp.OpenPgpApiManager;
@@ -648,14 +644,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void checkAndRequestPermissions() {
-        boolean hasContactPermission = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
-
-        if (!hasContactPermission) {
-            Timber.i("requesting contact permission");
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_CONTACTS},
-                    K9Activity.PERMISSIONS_REQUEST_READ_CONTACTS);
+        if (!hasPermission(Permission.READ_CONTACTS)) {
+            requestPermission(Permission.READ_CONTACTS);
         }
     }
 
