@@ -917,7 +917,7 @@ public class K9 {
     }
 
     /**
-     * @return Either a document uri on devices > Lollipop or a path on older devices
+     * @return A document uri on devices > Lollipop or a path on older devices
      */
     public static String getAttachmentDefaultPath() {
         return attachmentDefaultPath;

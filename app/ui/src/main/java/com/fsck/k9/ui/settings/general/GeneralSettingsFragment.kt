@@ -9,7 +9,6 @@ import android.support.v4.provider.DocumentFile
 import android.support.v7.preference.Preference
 import android.support.v7.preference.PreferenceGroup
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.helper.FileBrowserHelper
 import com.fsck.k9.notification.NotificationController
 import com.fsck.k9.ui.settings.onClick
 import com.fsck.k9.ui.settings.remove
@@ -22,7 +21,6 @@ import java.io.File
 
 class GeneralSettingsFragment : PreferenceFragmentCompat() {
     private val dataStore: GeneralSettingsDataStore by inject()
-    private val fileBrowserHelper: FileBrowserHelper by inject()
 
     private lateinit var attachmentDefaultPathPreference: Preference
 
@@ -56,20 +54,7 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
                     intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
                     startActivityForResult(intent, REQUEST_PICK_DIRECTORY_URI_TREE)
 
-                } else {
-                    fileBrowserHelper.showFileBrowserActivity(this@GeneralSettingsFragment,
-                            File(attachmentDefaultPath()), REQUEST_PICK_DIRECTORY_PATH,
-                            object : FileBrowserHelper.FileBrowserFailOverCallback {
-                                override fun onPathEntered(path: String) {
-                                    setAttachmentDefaultPath(path)
-                                }
-
-                                override fun onCancel() = Unit
-                            }
-                    )
                 }
-
-
             }
         }
     }

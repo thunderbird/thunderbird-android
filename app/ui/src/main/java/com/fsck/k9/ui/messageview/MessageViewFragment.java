@@ -44,8 +44,6 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.fragment.AttachmentDownloadDialogFragment;
 import com.fsck.k9.fragment.ConfirmationDialogFragment;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
-import com.fsck.k9.ui.helper.FileBrowserHelper;
-import com.fsck.k9.ui.helper.FileBrowserHelper.FileBrowserFailOverCallback;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.LocalMessage;
@@ -441,19 +439,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         // launched through the MessageList activity, and delivered back via onPendingIntentResult()
 
         switch (requestCode) {
-            case ACTIVITY_CHOOSE_DIRECTORY: {
-                if (data != null) {
-                    // obtain the filename
-                    Uri fileUri = data.getData();
-                    if (fileUri != null) {
-                        String filePath = fileUri.getPath();
-                        if (filePath != null) {
-                            getAttachmentController(currentAttachmentViewInfo).saveAttachmentToFolder(filePath);
-                        }
-                    }
-                }
-                break;
-            }
             case ACTIVITY_CHOOSE_FOLDER_MOVE:
             case ACTIVITY_CHOOSE_FOLDER_COPY: {
                 if (data == null) {
@@ -871,17 +856,14 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             }
 
 
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            //Use SAF to select a distinct path to save
+        } else {
+            //Use SAF to select a distinct path to save on KITKAT devices
             Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
             intent.setType(currentAttachmentViewInfo.mimeType);
             intent.putExtra(Intent.EXTRA_TITLE, currentAttachmentViewInfo.displayName);
 
             startActivityForResult(intent, ACTIVITY_SAVE_ATTACHMENT_SINGLE);
-        } else {
-            //Legacy, direct save
-            getAttachmentController(attachment).saveAttachmentToFolderLegacy();
         }
     }
 
@@ -889,30 +871,13 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     public void onSaveAttachmentToUserProvidedDirectory(final AttachmentViewInfo attachment) {
         currentAttachmentViewInfo = attachment;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            //Use SAF to select a distinct path to save
-            Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType(currentAttachmentViewInfo.mimeType);
-            intent.putExtra(Intent.EXTRA_TITLE, currentAttachmentViewInfo.displayName);
+        //Use SAF to select a distinct path to save
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType(currentAttachmentViewInfo.mimeType);
+        intent.putExtra(Intent.EXTRA_TITLE, currentAttachmentViewInfo.displayName);
 
-            startActivityForResult(intent, ACTIVITY_SAVE_ATTACHMENT_SINGLE);
-
-        } else {
-            //Legacy
-            FileBrowserHelper.getInstance().showFileBrowserActivity(MessageViewFragment.this, null,
-                    ACTIVITY_CHOOSE_DIRECTORY, new FileBrowserFailOverCallback() {
-                        @Override
-                        public void onPathEntered(String path) {
-                            getAttachmentController(attachment).saveAttachmentToFolder(path);
-                        }
-
-                        @Override
-                        public void onCancel() {
-                            // Do nothing
-                        }
-                    });
-        }
+        startActivityForResult(intent, ACTIVITY_SAVE_ATTACHMENT_SINGLE);
     }
 
     private AttachmentController getAttachmentController(AttachmentViewInfo attachment) {

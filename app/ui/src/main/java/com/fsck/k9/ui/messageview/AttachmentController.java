@@ -66,16 +66,6 @@ public class AttachmentController {
         }
     }
 
-    public void saveAttachmentToFolderLegacy() {
-        //Save to default directory
-        saveAttachmentToFolder(K9.getAttachmentDefaultPath());
-    }
-
-    public void saveAttachmentToFolder(String directory) {
-        saveAttachmentTo(new File(directory));
-    }
-
-
     public void saveAttachmentToFile(DocumentFile fileUri) {
         saveAttachmentTo(fileUri);
     }
@@ -88,10 +78,6 @@ public class AttachmentController {
 
         saveAttachmentTo(newFile);
     }
-
-
-
-
 
     private void downloadAndViewAttachment(LocalPart localPart) {
         downloadAttachment(localPart, new Runnable() {
@@ -138,31 +124,6 @@ public class AttachmentController {
         new ViewAttachmentAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
-    private void saveAttachmentTo(File directory) {
-        boolean isExternalStorageMounted = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
-        if (!isExternalStorageMounted) {
-            String message = context.getString(R.string.message_view_status_attachment_not_saved);
-            displayMessageToUser(message);
-            return;
-        }
-
-        if (attachment.size > directory.getFreeSpace()) {
-            String message = context.getString(R.string.message_view_status_no_space);
-            displayMessageToUser(message);
-            return;
-        }
-
-        //Create unique file
-        String filename = FileHelper.sanitizeFilename(attachment.displayName);
-        File file = FileHelper.createUniqueFile(directory, filename);
-
-        if (!attachment.isContentAvailable()) {
-            downloadAndSaveAttachmentTo((LocalPart) attachment.part, DocumentFile.fromFile(file));
-        } else {
-            saveLocalAttachmentTo(DocumentFile.fromFile(file));
-        }
-    }
-
     private void saveAttachmentTo(DocumentFile fileUri) {
         if (!attachment.isContentAvailable()) {
             downloadAndSaveAttachmentTo((LocalPart) attachment.part,fileUri);
@@ -174,7 +135,6 @@ public class AttachmentController {
     private void saveLocalAttachmentTo(DocumentFile fileUri) {
         new SaveAttachmentAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, fileUri);
     }
-
 
 
     private DocumentFile saveAttachmentWithUniqueFileName(DocumentFile fileUri) throws IOException {
