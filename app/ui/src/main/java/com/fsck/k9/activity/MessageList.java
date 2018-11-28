@@ -274,7 +274,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             cl.getLogDialog().show();
         }
 
-        checkAndRequestPermissions();
+        if (savedInstanceState == null) {
+            checkAndRequestPermissions();
+        }
     }
 
     @Override
