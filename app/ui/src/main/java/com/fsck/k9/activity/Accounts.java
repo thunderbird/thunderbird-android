@@ -1792,19 +1792,16 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             accountUuids.add(account.getUuid());
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            exportGlobalSettings = includeGlobals;
-            exportAccountUuids = accountUuids;
 
-            Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-            intent.setType("application/octet-stream");
-            intent.putExtra(Intent.EXTRA_TITLE, SettingsExporter.generateDatedExportFileName());
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
+        exportGlobalSettings = includeGlobals;
+        exportAccountUuids = accountUuids;
 
-            startActivityForResult(intent, ACTIVITY_REQUEST_SAVE_SETTINGS_FILE);
-        } else {
-            startExport(includeGlobals, accountUuids, null);
-        }
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        intent.setType("application/octet-stream");
+        intent.putExtra(Intent.EXTRA_TITLE, SettingsExporter.generateDatedExportFileName());
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        startActivityForResult(intent, ACTIVITY_REQUEST_SAVE_SETTINGS_FILE);
     }
 
     public void onExport(Intent intent) {
@@ -1848,12 +1845,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
-                if (mUri == null) {
-                    mFileName = SettingsExporter.exportToFile(mContext, mIncludeGlobals,
-                            mAccountUuids);
-                } else {
-                    SettingsExporter.exportToUri(mContext, mIncludeGlobals, mAccountUuids, mUri);
-                }
+                SettingsExporter.exportToUri(mContext, mIncludeGlobals, mAccountUuids, mUri);
 
             } catch (SettingsImportExportException e) {
                 Timber.w(e, "Exception during export");

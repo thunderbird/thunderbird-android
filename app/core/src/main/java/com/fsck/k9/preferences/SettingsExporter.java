@@ -80,31 +80,6 @@ public class SettingsExporter {
     static final String DESCRIPTION_ELEMENT = "description";
 
 
-    public static String exportToFile(Context context, boolean includeGlobals, Set<String> accountUuids)
-            throws SettingsImportExportException {
-
-        OutputStream os = null;
-        try {
-            File dir = new File(Environment.getExternalStorageDirectory() + File.separator + context.getPackageName());
-            if (!dir.mkdirs()) {
-                Timber.d("Unable to create directory: %s", dir.getAbsolutePath());
-            }
-
-            File file = FileHelper.createUniqueFile(dir, generateDatedExportFileName());
-            String filename = file.getAbsolutePath();
-            os = new FileOutputStream(filename);
-
-            exportPreferences(context, os, includeGlobals, accountUuids);
-
-            // If all went well, we return the name of the file just written.
-            return filename;
-        } catch (Exception e) {
-            throw new SettingsImportExportException(e);
-        } finally {
-            closeOrThrow(os);
-        }
-    }
-
     public static void exportToUri(Context context, boolean includeGlobals, Set<String> accountUuids, Uri uri)
             throws SettingsImportExportException {
 
