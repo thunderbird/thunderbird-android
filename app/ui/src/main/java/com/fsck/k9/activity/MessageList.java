@@ -3,9 +3,6 @@ package com.fsck.k9.activity;
 
 import android.annotation.SuppressLint;
 import android.app.SearchManager;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -15,7 +12,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v4.app.FragmentTransaction;
@@ -47,7 +43,6 @@ import com.fsck.k9.fragment.MessageListFragment;
 import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.ParcelableUtil;
-import com.fsck.k9.mailstore.Folder;
 import com.fsck.k9.mailstore.SearchStatusManager;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.notification.NotificationChannelManager;
@@ -60,8 +55,6 @@ import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.ui.K9Drawer;
 import com.fsck.k9.ui.R;
-import com.fsck.k9.ui.messagelist.MessageListViewModel;
-import com.fsck.k9.ui.messagelist.MessageListViewModelFactory;
 import com.fsck.k9.ui.messageview.MessageViewFragment;
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener;
 import com.fsck.k9.ui.settings.SettingsActivity;
@@ -245,16 +238,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             return;
         }
 
-        ViewModelProvider viewModelProvider = ViewModelProviders.of(this, new MessageListViewModelFactory());
-        MessageListViewModel viewModel = viewModelProvider.get(MessageListViewModel.class);
-
         if (isDrawerEnabled()) {
-            viewModel.getFolders(account).observe(this, new Observer<List<Folder>>() {
-                @Override
-                public void onChanged(@Nullable List<Folder> folders) {
-                    drawer.setUserFolders(folders);
-                }
-            });
+            drawer.updateUserAccountsAndFolders(account);
         }
 
         findFragments();
@@ -619,7 +604,18 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     public void openUnifiedInbox() {
         drawer.selectUnifiedInbox();
-        performSearch(SearchAccount.createUnifiedInboxAccount().getRelatedSearch());
+        actionDisplaySearch(this, SearchAccount.createUnifiedInboxAccount().getRelatedSearch(), false, false);
+    }
+
+    public void openRealAccount(Account realAccount) {
+        if (realAccount.getAutoExpandFolder() == null) {
+            FolderList.actionHandleAccount(this, realAccount);
+        } else {
+            LocalSearch search = new LocalSearch(realAccount.getAutoExpandFolder());
+            search.addAllowedFolder(realAccount.getAutoExpandFolder());
+            search.addAccountUuid(realAccount.getUuid());
+            actionDisplaySearch(this, search, false, false);
+        }
     }
 
     private void performSearch(LocalSearch search) {
