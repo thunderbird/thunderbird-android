@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 
 import timber.log.Timber;
@@ -79,8 +81,14 @@ public class FileHelper {
      * and a number to the given filename.
      */
     public static DocumentFile createUniqueFile(DocumentFile directory, String filename, String mimeType) {
+        DocumentFile[] folderFiles = directory.listFiles();
+        ArrayList<String> nameList = new ArrayList<String>();
+        for (DocumentFile file: folderFiles) {
+            nameList.add(file.getName());
+        }
+
         DocumentFile file = directory.createFile(mimeType, filename);
-        if (file != null && file.exists()) {
+        if (file != null && !nameList.contains(filename)) {
             return file;
         }
         // Get the extension of the file, if any.
@@ -95,8 +103,9 @@ public class FileHelper {
             extension = "";
         }
         for (int i = 2; i < Integer.MAX_VALUE; i++) {
-            file = directory.createFile(mimeType, String.format(Locale.US, "%s-%d%s", name, i, extension));
-            if (file != null && file.exists()) {
+            String newFilename = String.format(Locale.US, "%s-%d%s", name, i, extension);
+            file = directory.createFile(mimeType, newFilename);
+            if (file != null && !nameList.contains(newFilename)) {
                 return file;
             }
         }

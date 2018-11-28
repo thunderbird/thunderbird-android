@@ -502,8 +502,11 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                     getApplicationContext().getContentResolver().takePersistableUriPermission(uriTree, takeFlags);
                 }
 
-                Timber.i("ACTIVITY_SAVE_ATTACHMENT_TREE uri " + uriTree.getPath());
+                K9.setAttachmentDefaultPath(documentFile.getUri().toString());
+                K9.saveSettingsAsync();
 
+                Timber.i("ACTIVITY_SAVE_ATTACHMENT_TREE uri " + uriTree.getPath());
+                getAttachmentController(currentAttachmentViewInfo).saveAttachmentToFolder();
         }
     }
 
@@ -857,7 +860,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             //Save to SAF Dir
-            if (FileHelper.isDocumentTreePermissionGranted(getApplicationContext(), Uri.parse(K9.getAttachmentDefaultPath()))){
+            if (FileHelper.isDocumentTreePermissionGranted(getApplicationContext(), Uri.parse(K9.getAttachmentDefaultPath()))) {
                 getAttachmentController(attachment).saveAttachmentToFolder();
             } else {
                 //Request a new (peristent) folder
@@ -866,7 +869,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                 intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
                 startActivityForResult(intent, ACTIVITY_SAVE_ATTACHMENT_TREE);
             }
-
 
 
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
