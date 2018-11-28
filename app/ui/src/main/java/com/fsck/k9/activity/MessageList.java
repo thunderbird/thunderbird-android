@@ -1,7 +1,6 @@
 package com.fsck.k9.activity;
 
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -79,11 +78,9 @@ import com.fsck.k9.view.ViewSwitcher;
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener;
 import com.mikepenz.materialdrawer.Drawer.OnDrawerListener;
 
-import java.util.Collection;
-import java.util.List;
-
 import de.cketti.library.changelog.ChangeLog;
 import timber.log.Timber;
+
 
 
 /**
@@ -277,7 +274,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             cl.getLogDialog().show();
         }
 
-        checkPerms();
+        checkAndRequestPermissions();
     }
 
     @Override
@@ -517,19 +514,15 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
 
-    private void checkPerms() {
-        Timber.i("response " + ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_CONTACTS));
+    private void checkAndRequestPermissions() {
+        boolean hasContactPermission = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
 
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_CONTACTS)
-                != PackageManager.PERMISSION_GRANTED) {
-            Timber.i("req");
+        if (!hasContactPermission) {
+            Timber.i("requesting contact permission");
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_CONTACTS},
                     K9Activity.PERMISSIONS_REQUEST_READ_CONTACTS);
-        } else  {
-            Timber.i("already granted");
         }
     }
 

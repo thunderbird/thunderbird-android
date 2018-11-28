@@ -12,7 +12,6 @@ import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.database.AbstractCursor;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
@@ -24,6 +23,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.ContextCompat;
 
+import com.fsck.k9.helper.EmptyCursor;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
@@ -289,12 +289,12 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         return contactUri.getLastPathSegment();
     }
 
-    private Boolean hasPerm() {
-        return
-                ((ContextCompat.checkSelfPermission(getContext(),
-                        Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED)
-                        && ((ContextCompat.checkSelfPermission(getContext(),
-                        Manifest.permission.WRITE_CONTACTS) == PackageManager.PERMISSION_GRANTED)));
+    private boolean hasContactPermission() {
+        boolean canRead = ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
+        boolean canWrite = ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.WRITE_CONTACTS) == PackageManager.PERMISSION_GRANTED;
+        return  canRead && canWrite;
     }
 
     private Cursor getNicknameCursor(String nickname) {
@@ -303,54 +303,16 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         Uri queryUriForNickname = ContactsContract.Data.CONTENT_URI;
 
 
-        if (!hasPerm()) {
-            // return empty cursor
-            return new AbstractCursor() {
-                @Override
-                public int getCount() {
-                    return 0;
-                }
-                @Override
-                public String[] getColumnNames() {
-                    return new String[0];
-                }
-                @Override
-                public String getString(int column) {
-                    return null;
-                }
-                @Override
-                public short getShort(int column) {
-                    return 0;
-                }
-                @Override
-                public int getInt(int column) {
-                    return 0;
-                }
-                @Override
-                public long getLong(int column) {
-                    return 0;
-                }
-                @Override
-                public float getFloat(int column) {
-                    return 0;
-                }
-                @Override
-                public double getDouble(int column) {
-                    return 0;
-                }
-                @Override
-                public boolean isNull(int column) {
-                    return false;
-                }
-            };
+        if (hasContactPermission()) {
+            return contentResolver.query(queryUriForNickname,
+                    PROJECTION_NICKNAME,
+                    ContactsContract.CommonDataKinds.Nickname.NAME + " LIKE ? AND " +
+                            Data.MIMETYPE + " = ?",
+                    new String[] { nickname, ContactsContract.CommonDataKinds.Nickname.CONTENT_ITEM_TYPE },
+                    null);
+        } else {
+            return new EmptyCursor();
         }
-
-        return contentResolver.query(queryUriForNickname,
-                PROJECTION_NICKNAME,
-                ContactsContract.CommonDataKinds.Nickname.NAME + " LIKE ? AND " +
-                        Data.MIMETYPE + " = ?",
-                new String[] { nickname, ContactsContract.CommonDataKinds.Nickname.CONTENT_ITEM_TYPE },
-                null);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -414,7 +376,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         Uri queryUri = Email.CONTENT_URI;
 
         Cursor cursor = null;
-        if (hasPerm()) {
+        if (hasContactPermission()) {
             cursor = contentResolver.query(queryUri, PROJECTION, null, null, SORT_ORDER);
         }
 
@@ -440,7 +402,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         String[] selectionArgs = { query, query };
 
         Cursor cursor = null;
-        if (hasPerm()) {
+        if (hasContactPermission()) {
             cursor = contentResolver.query(queryUri, PROJECTION, selection, selectionArgs, SORT_ORDER);
         }
 

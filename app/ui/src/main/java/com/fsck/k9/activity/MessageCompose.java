@@ -461,7 +461,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             currentMessageBuilder.reattachCallback(this);
         }
 
-        checkPerms();
+        checkAndRequestPermissions();
     }
 
     /**
@@ -645,10 +645,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         updateMessageFormat();
     }
 
-    private void checkPerms() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_CONTACTS)
-                != PackageManager.PERMISSION_GRANTED) {
+    private void checkAndRequestPermissions() {
+        boolean hasContactPermission = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
+
+        if (!hasContactPermission) {
+            Timber.i("requesting contact permission");
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_CONTACTS},
                     K9Activity.PERMISSIONS_REQUEST_READ_CONTACTS);

@@ -51,7 +51,6 @@ dependencies {
     testImplementation "com.nhaarman:mockito-kotlin:${versions.mockitoKotlin}"
     testImplementation "org.jdom:jdom2:2.0.6"
     testImplementation "org.koin:koin-test:${versions.koin}"
-    testImplementation "org.apache.james:apache-mime4j-dom:${versions.mime4j}"
 }
 
 android {
