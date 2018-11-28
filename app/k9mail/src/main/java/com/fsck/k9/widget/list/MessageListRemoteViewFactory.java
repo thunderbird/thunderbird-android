@@ -18,7 +18,9 @@ import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.fsck.k9.Account;
 import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.external.MessageProvider;
 
@@ -85,7 +87,12 @@ public class MessageListRemoteViewFactory implements RemoteViewsService.RemoteVi
                 boolean hasAttachment = toBoolean(cursor.getString(5));
                 Uri viewUri = Uri.parse(cursor.getString(6));
 
-                mailItems.add(new MailItem(sender, date, subject, preview, unread, hasAttachment, viewUri));
+                String segment = viewUri.getPathSegments().get(0);
+                int index = Integer.parseInt(segment);
+                Account account = Preferences.getPreferences(context.getApplicationContext()).getAccounts().get(index);
+                int color = account.getChipColor();
+
+                mailItems.add(new MailItem(sender, date, subject, preview, unread, hasAttachment, viewUri, color));
             }
         } finally {
             cursor.close();
@@ -135,6 +142,9 @@ public class MessageListRemoteViewFactory implements RemoteViewsService.RemoteVi
         Intent intent = new Intent();
         intent.setData(item.uri);
         remoteView.setOnClickFillInIntent(R.id.mail_list_item, intent);
+
+        remoteView.setInt(R.id.chip, "setBackgroundColor", item.color);
+
         return remoteView;
     }
 
@@ -180,10 +190,11 @@ public class MessageListRemoteViewFactory implements RemoteViewsService.RemoteVi
         final boolean unread;
         final boolean hasAttachment;
         final Uri uri;
+        final int color;
 
 
         MailItem(String sender, long date, String subject, String preview, boolean unread, boolean hasAttachment,
-                Uri viewUri) {
+                Uri viewUri, int color) {
             this.sender = sender;
             this.date = date;
             this.preview = preview;
@@ -191,6 +202,7 @@ public class MessageListRemoteViewFactory implements RemoteViewsService.RemoteVi
             this.unread = unread;
             this.uri = viewUri;
             this.hasAttachment = hasAttachment;
+            this.color = color;
         }
 
         int getTextColor() {
