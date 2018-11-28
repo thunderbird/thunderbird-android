@@ -1,14 +1,18 @@
 package com.fsck.k9.helper;
 
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.AbstractCursor;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import timber.log.Timber;
 import android.provider.ContactsContract.CommonDataKinds.Photo;
+import android.support.v4.content.ContextCompat;
 
 import com.fsck.k9.mail.Address;
 
@@ -263,6 +267,14 @@ public class Contacts {
         }
     }
 
+    private boolean hasContactPermission() {
+        boolean canRead = ContextCompat.checkSelfPermission(mContext,
+                Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
+        boolean canWrite = ContextCompat.checkSelfPermission(mContext,
+                Manifest.permission.WRITE_CONTACTS) == PackageManager.PERMISSION_GRANTED;
+        return  canRead && canWrite;
+    }
+
     /**
      * Return a {@link Cursor} instance that can be used to fetch information
      * about the contact with the given email address.
@@ -273,12 +285,17 @@ public class Contacts {
      */
     private Cursor getContactByAddress(final String address) {
         final Uri uri = Uri.withAppendedPath(ContactsContract.CommonDataKinds.Email.CONTENT_LOOKUP_URI, Uri.encode(address));
-        return mContentResolver.query(
-                uri,
-                PROJECTION,
-                null,
-                null,
-                SORT_ORDER);
+
+        if (hasContactPermission()) {
+            return mContentResolver.query(
+                    uri,
+                    PROJECTION,
+                    null,
+                    null,
+                    SORT_ORDER);
+        } else {
+            return new EmptyCursor();
+        }
     }
 
     /**

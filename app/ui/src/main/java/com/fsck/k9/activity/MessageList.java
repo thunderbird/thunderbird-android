@@ -1,6 +1,9 @@
 package com.fsck.k9.activity;
 
 
+import java.util.Collection;
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
@@ -63,12 +66,9 @@ import com.fsck.k9.view.MessageTitleView;
 import com.fsck.k9.view.ViewSwitcher;
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener;
 import com.mikepenz.materialdrawer.Drawer.OnDrawerListener;
-
-import java.util.Collection;
-import java.util.List;
-
 import de.cketti.library.changelog.ChangeLog;
 import timber.log.Timber;
+
 
 
 /**
@@ -252,6 +252,10 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         ChangeLog cl = new ChangeLog(this);
         if (cl.isFirstRun()) {
             cl.getLogDialog().show();
+        }
+
+        if (savedInstanceState == null) {
+            checkAndRequestPermissions();
         }
     }
 
@@ -489,6 +493,13 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         }
 
         return true;
+    }
+
+
+    private void checkAndRequestPermissions() {
+        if (!hasPermission(Permission.READ_CONTACTS)) {
+            requestPermissionOrShowRationale(Permission.READ_CONTACTS);
+        }
     }
 
     @Override

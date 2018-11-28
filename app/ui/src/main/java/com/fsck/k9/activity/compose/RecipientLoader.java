@@ -8,8 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
@@ -19,7 +21,9 @@ import android.provider.ContactsContract.Contacts.Data;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.ContextCompat;
 
+import com.fsck.k9.helper.EmptyCursor;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
@@ -285,18 +289,30 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         return contactUri.getLastPathSegment();
     }
 
+    private boolean hasContactPermission() {
+        boolean canRead = ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
+        boolean canWrite = ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.WRITE_CONTACTS) == PackageManager.PERMISSION_GRANTED;
+        return  canRead && canWrite;
+    }
 
     private Cursor getNicknameCursor(String nickname) {
         nickname = "%" + nickname + "%";
 
         Uri queryUriForNickname = ContactsContract.Data.CONTENT_URI;
 
-        return contentResolver.query(queryUriForNickname,
-                PROJECTION_NICKNAME,
-                ContactsContract.CommonDataKinds.Nickname.NAME + " LIKE ? AND " +
-                        Data.MIMETYPE + " = ?",
-                new String[] { nickname, ContactsContract.CommonDataKinds.Nickname.CONTENT_ITEM_TYPE },
-                null);
+
+        if (hasContactPermission()) {
+            return contentResolver.query(queryUriForNickname,
+                    PROJECTION_NICKNAME,
+                    ContactsContract.CommonDataKinds.Nickname.NAME + " LIKE ? AND " +
+                            Data.MIMETYPE + " = ?",
+                    new String[] { nickname, ContactsContract.CommonDataKinds.Nickname.CONTENT_ITEM_TYPE },
+                    null);
+        } else {
+            return new EmptyCursor();
+        }
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -358,7 +374,11 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         List<Recipient> recipients = new ArrayList<>();
 
         Uri queryUri = Email.CONTENT_URI;
-        Cursor cursor = contentResolver.query(queryUri, PROJECTION, null, null, SORT_ORDER);
+
+        Cursor cursor = null;
+        if (hasContactPermission()) {
+            cursor = contentResolver.query(queryUri, PROJECTION, null, null, SORT_ORDER);
+        }
 
         if (cursor == null) {
             return recipients;
@@ -380,7 +400,11 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         String selection = Contacts.DISPLAY_NAME_PRIMARY + " LIKE ? " +
                 " OR (" + Email.ADDRESS + " LIKE ? AND " + Data.MIMETYPE + " = '" + Email.CONTENT_ITEM_TYPE + "')";
         String[] selectionArgs = { query, query };
-        Cursor cursor = contentResolver.query(queryUri, PROJECTION, selection, selectionArgs, SORT_ORDER);
+
+        Cursor cursor = null;
+        if (hasContactPermission()) {
+            cursor = contentResolver.query(queryUri, PROJECTION, selection, selectionArgs, SORT_ORDER);
+        }
 
         if (cursor == null) {
             return false;

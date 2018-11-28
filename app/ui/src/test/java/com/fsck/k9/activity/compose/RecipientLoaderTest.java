@@ -3,6 +3,7 @@ package com.fsck.k9.activity.compose;
 
 import java.util.List;
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.MatrixCursor;
@@ -16,7 +17,7 @@ import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 import org.junit.Before;
 import org.junit.Test;
-import org.robolectric.RuntimeEnvironment;
+import org.robolectric.shadows.ShadowApplication;
 
 import static android.provider.ContactsContract.CommonDataKinds.Email.TYPE_HOME;
 import static org.junit.Assert.assertEquals;
@@ -65,18 +66,21 @@ public class RecipientLoaderTest extends RobolectricTest {
 
     static final String QUERYSTRING = "querystring";
 
-
+    ShadowApplication shadowApp;
     Context context;
     ContentResolver contentResolver;
 
 
     @Before
     public void setUp() throws Exception {
+        shadowApp = ShadowApplication.getInstance();
+        shadowApp.grantPermissions(Manifest.permission.READ_CONTACTS);
+        shadowApp.grantPermissions(Manifest.permission.WRITE_CONTACTS);
+
         context = mock(Context.class);
         contentResolver = mock(ContentResolver.class);
 
-        when(context.getApplicationContext()).thenReturn(RuntimeEnvironment.application);
-
+        when(context.getApplicationContext()).thenReturn(shadowApp.getApplicationContext());
         when(context.getContentResolver()).thenReturn(contentResolver);
     }
 
@@ -213,6 +217,7 @@ public class RecipientLoaderTest extends RobolectricTest {
                         nullable(String.class))).thenReturn(cursor);
     }
 
+
     @Test
     public void queryContactProvider() throws Exception {
         RecipientLoader recipientLoader = new RecipientLoader(context, CRYPTO_PROVIDER, QUERYSTRING);
@@ -223,6 +228,20 @@ public class RecipientLoaderTest extends RobolectricTest {
         assertEquals(1, recipients.size());
         assertEquals("bob@host.com", recipients.get(0).address.getAddress());
         assertEquals(RecipientCryptoStatus.UNAVAILABLE, recipients.get(0).getCryptoStatus());
+    }
+
+
+    @Test
+    public void queryContactProviderWithoutPermission() throws Exception {
+        shadowApp.denyPermissions(Manifest.permission.READ_CONTACTS);
+        shadowApp.denyPermissions(Manifest.permission.WRITE_CONTACTS);
+
+        RecipientLoader recipientLoader = new RecipientLoader(context, CRYPTO_PROVIDER, QUERYSTRING);
+        setupContactProvider("%" + QUERYSTRING + "%", CONTACT_1);
+
+        List<Recipient> recipients = recipientLoader.loadInBackground();
+
+        assertEquals(0, recipients.size());
     }
 
     @Test
