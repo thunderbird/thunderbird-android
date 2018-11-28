@@ -294,10 +294,8 @@ public class Contacts {
                     null,
                     SORT_ORDER);
         } else {
-            // return blank cursor
             return new EmptyCursor();
         }
-
     }
 
     /**
