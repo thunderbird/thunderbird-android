@@ -8,10 +8,12 @@ import android.content.Context;
 import android.support.v4.app.LoaderManager;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.DI;
 import com.fsck.k9.K9RobolectricTest;
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoSpecialModeDisplayType;
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoStatusDisplayType;
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode;
+import com.fsck.k9.autocrypt.AutocryptDraftStateHeaderParser;
 import com.fsck.k9.helper.ReplyToParser;
 import com.fsck.k9.helper.ReplyToParser.ReplyToAddresses;
 import com.fsck.k9.mail.Address;
@@ -90,7 +92,8 @@ public class RecipientPresenterTest extends K9RobolectricTest {
 
         recipientPresenter = new RecipientPresenter(
                 context, loaderManager, openPgpApiManager, recipientMvpView, account, composePgpInlineDecider,
-                composePgpEnableByDefaultDecider, autocryptStatusInteractor, replyToParser, listener
+                composePgpEnableByDefaultDecider, autocryptStatusInteractor, replyToParser, listener,
+                DI.get(AutocryptDraftStateHeaderParser.class)
         );
 
         ArgumentCaptor<OpenPgpApiManagerCallback> callbackCaptor = ArgumentCaptor.forClass(OpenPgpApiManagerCallback.class);
@@ -147,11 +150,11 @@ public class RecipientPresenterTest extends K9RobolectricTest {
 
         ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
 
-        assertEquals(CryptoStatusDisplayType.UNCONFIGURED, status.getCryptoStatusDisplayType());
-        assertEquals(CryptoSpecialModeDisplayType.NONE, status.getCryptoSpecialModeDisplayType());
+        assertEquals(CryptoStatusDisplayType.UNCONFIGURED, status.getDisplayType());
+        assertEquals(CryptoSpecialModeDisplayType.NONE, status.getSpecialModeDisplayType());
         assertNull(status.getAttachErrorStateOrNull());
         assertFalse(status.isProviderStateOk());
-        assertFalse(status.shouldUsePgpMessageBuilder());
+        assertFalse(status.isOpenPgpConfigured());
     }
 
     @Test
@@ -160,9 +163,9 @@ public class RecipientPresenterTest extends K9RobolectricTest {
 
         ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
 
-        assertEquals(CryptoStatusDisplayType.UNAVAILABLE, status.getCryptoStatusDisplayType());
+        assertEquals(CryptoStatusDisplayType.UNAVAILABLE, status.getDisplayType());
         assertTrue(status.isProviderStateOk());
-        assertTrue(status.shouldUsePgpMessageBuilder());
+        assertTrue(status.isOpenPgpConfigured());
     }
 
     @Test
@@ -173,9 +176,9 @@ public class RecipientPresenterTest extends K9RobolectricTest {
 
         ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
 
-        assertEquals(CryptoStatusDisplayType.AVAILABLE, status.getCryptoStatusDisplayType());
+        assertEquals(CryptoStatusDisplayType.AVAILABLE, status.getDisplayType());
         assertTrue(status.isProviderStateOk());
-        assertTrue(status.shouldUsePgpMessageBuilder());
+        assertTrue(status.isOpenPgpConfigured());
     }
 
     @Test
@@ -186,9 +189,9 @@ public class RecipientPresenterTest extends K9RobolectricTest {
 
         ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
 
-        assertEquals(CryptoStatusDisplayType.AVAILABLE, status.getCryptoStatusDisplayType());
+        assertEquals(CryptoStatusDisplayType.AVAILABLE, status.getDisplayType());
         assertTrue(status.isProviderStateOk());
-        assertTrue(status.shouldUsePgpMessageBuilder());
+        assertTrue(status.isOpenPgpConfigured());
     }
 
     @Test
@@ -199,9 +202,9 @@ public class RecipientPresenterTest extends K9RobolectricTest {
 
         ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
 
-        assertEquals(CryptoStatusDisplayType.UNAVAILABLE, status.getCryptoStatusDisplayType());
+        assertEquals(CryptoStatusDisplayType.UNAVAILABLE, status.getDisplayType());
         assertTrue(status.isProviderStateOk());
-        assertTrue(status.shouldUsePgpMessageBuilder());
+        assertTrue(status.isOpenPgpConfigured());
     }
 
     @Test
@@ -214,9 +217,9 @@ public class RecipientPresenterTest extends K9RobolectricTest {
         runBackgroundTask();
         ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
 
-        assertEquals(CryptoStatusDisplayType.ENABLED_ERROR, status.getCryptoStatusDisplayType());
+        assertEquals(CryptoStatusDisplayType.ENABLED_ERROR, status.getDisplayType());
         assertTrue(status.isProviderStateOk());
-        assertTrue(status.shouldUsePgpMessageBuilder());
+        assertTrue(status.isOpenPgpConfigured());
     }
 
     @Test
@@ -229,9 +232,9 @@ public class RecipientPresenterTest extends K9RobolectricTest {
         runBackgroundTask();
         ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
 
-        assertEquals(CryptoStatusDisplayType.AVAILABLE, status.getCryptoStatusDisplayType());
+        assertEquals(CryptoStatusDisplayType.AVAILABLE, status.getDisplayType());
         assertTrue(status.isProviderStateOk());
-        assertTrue(status.shouldUsePgpMessageBuilder());
+        assertTrue(status.isOpenPgpConfigured());
     }
 
     @Test
@@ -244,9 +247,9 @@ public class RecipientPresenterTest extends K9RobolectricTest {
         runBackgroundTask();
         ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
 
-        assertEquals(CryptoStatusDisplayType.ENABLED, status.getCryptoStatusDisplayType());
+        assertEquals(CryptoStatusDisplayType.ENABLED, status.getDisplayType());
         assertTrue(status.isProviderStateOk());
-        assertTrue(status.shouldUsePgpMessageBuilder());
+        assertTrue(status.isOpenPgpConfigured());
     }
 
     @Test
@@ -257,7 +260,7 @@ public class RecipientPresenterTest extends K9RobolectricTest {
         runBackgroundTask();
         ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
 
-        assertEquals(CryptoStatusDisplayType.SIGN_ONLY, status.getCryptoStatusDisplayType());
+        assertEquals(CryptoStatusDisplayType.SIGN_ONLY, status.getDisplayType());
         assertTrue(status.isProviderStateOk());
         assertTrue(status.isSigningEnabled());
         assertTrue(status.isSignOnly());
@@ -271,7 +274,7 @@ public class RecipientPresenterTest extends K9RobolectricTest {
         runBackgroundTask();
         ComposeCryptoStatus status = recipientPresenter.getCurrentCachedCryptoStatus();
 
-        assertEquals(CryptoStatusDisplayType.UNAVAILABLE, status.getCryptoStatusDisplayType());
+        assertEquals(CryptoStatusDisplayType.UNAVAILABLE, status.getDisplayType());
         assertTrue(status.isProviderStateOk());
         assertTrue(status.isPgpInlineModeEnabled());
     }

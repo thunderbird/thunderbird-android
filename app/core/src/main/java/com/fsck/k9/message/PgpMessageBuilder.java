@@ -15,6 +15,8 @@ import android.support.annotation.VisibleForTesting;
 
 import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.DI;
+import com.fsck.k9.K9;
+import com.fsck.k9.autocrypt.AutocryptDraftStateHeader;
 import com.fsck.k9.autocrypt.AutocryptOpenPgpApiInteractor;
 import com.fsck.k9.autocrypt.AutocryptOperations;
 import com.fsck.k9.mail.Address;
@@ -109,6 +111,15 @@ public class PgpMessageBuilder extends MessageBuilder {
             return;
         }
 
+        addAutocryptHeaderIfAvailable(openPgpKeyId);
+        if (isDraft()) {
+            addDraftStateHeader();
+        }
+
+        startOrContinueBuildMessage(null);
+    }
+
+    private void addAutocryptHeaderIfAvailable(long openPgpKeyId) {
         Address address = currentProcessedMimeMessage.getFrom()[0];
         byte[] keyData = autocryptOpenPgpApiInteractor.getKeyMaterialForKeyId(
                 openPgpApi, openPgpKeyId, address.getAddress());
@@ -116,8 +127,13 @@ public class PgpMessageBuilder extends MessageBuilder {
             autocryptOperations.addAutocryptHeaderToMessage(currentProcessedMimeMessage, keyData,
                     address.getAddress(), cryptoStatus.isSenderPreferEncryptMutual());
         }
+    }
 
-        startOrContinueBuildMessage(null);
+    private void addDraftStateHeader() {
+        AutocryptDraftStateHeader autocryptDraftStateHeader =
+                AutocryptDraftStateHeader.fromCryptoStatus(cryptoStatus);
+        currentProcessedMimeMessage.setHeader(AutocryptDraftStateHeader.AUTOCRYPT_DRAFT_STATE_HEADER,
+                autocryptDraftStateHeader.toHeaderValue());
     }
 
     @Override
@@ -130,9 +146,9 @@ public class PgpMessageBuilder extends MessageBuilder {
 
     private void startOrContinueBuildMessage(@Nullable Intent pgpApiIntent) {
         try {
-            boolean shouldSign = cryptoStatus.isSigningEnabled();
-            boolean shouldEncrypt = cryptoStatus.isEncryptionEnabled();
-            boolean isPgpInlineMode = cryptoStatus.isPgpInlineModeEnabled();
+            boolean shouldSign = cryptoStatus.isSigningEnabled() && !isDraft();
+            boolean shouldEncrypt = cryptoStatus.isEncryptionEnabled() || (isDraft() && cryptoStatus.isEncryptAllDrafts());
+            boolean isPgpInlineMode = cryptoStatus.isPgpInlineModeEnabled() && !isDraft();
 
             if (!shouldSign && !shouldEncrypt) {
                 queueMessageBuildSuccess(currentProcessedMimeMessage);
@@ -145,21 +161,28 @@ public class PgpMessageBuilder extends MessageBuilder {
                 throw new MessagingException("Attachments are not supported in PGP/INLINE format!");
             }
 
-            if (shouldEncrypt && !cryptoStatus.hasRecipients()) {
+            if (shouldEncrypt && !isDraft() && !cryptoStatus.hasRecipients()) {
                 throw new MessagingException("Must have recipients to build message!");
             }
 
             if (messageContentBodyPart == null) {
                 messageContentBodyPart = createBodyPartFromMessageContent();
 
-                if (cryptoStatus.isEncryptSubject()) {
-                    encryptMessageSubject();
+                boolean payloadSupportsMimeHeaders = !isPgpInlineMode;
+                if (payloadSupportsMimeHeaders) {
+                    if (cryptoStatus.isEncryptSubject()) {
+                        moveSubjectIntoEncryptedPayload();
+                    }
+                    maybeAddGossipHeadersToBodyPart();
+
+                    // unfortuntately, we can't store the Autocrypt-Draft-State header in the payload
+                    // see https://github.com/autocrypt/autocrypt/pull/376#issuecomment-384293480
                 }
-                maybeAddGossipHeadersToBodyPart();
             }
 
             if (pgpApiIntent == null) {
-                pgpApiIntent = buildOpenPgpApiIntent(shouldSign, shouldEncrypt, isPgpInlineMode);
+                boolean encryptToSelfOnly = isDraft();
+                pgpApiIntent = buildOpenPgpApiIntent(shouldSign, shouldEncrypt, encryptToSelfOnly, isPgpInlineMode);
             }
 
             PendingIntent returnedPendingIntent = launchOpenPgpApiIntent(pgpApiIntent, messageContentBodyPart,
@@ -181,11 +204,16 @@ public class PgpMessageBuilder extends MessageBuilder {
         if (contentType.length > 0) {
             bodyPart.setHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType[0]);
         }
+        if (isDraft()) {
+            String[] identityHeader = currentProcessedMimeMessage.getHeader(K9.IDENTITY_HEADER);
+            bodyPart.setHeader(K9.IDENTITY_HEADER, identityHeader[0]);
+            currentProcessedMimeMessage.removeHeader(K9.IDENTITY_HEADER);
+        }
 
         return bodyPart;
     }
 
-    private void encryptMessageSubject() {
+    private void moveSubjectIntoEncryptedPayload() {
         String[] subjects = currentProcessedMimeMessage.getHeader(MimeHeader.SUBJECT);
         if (subjects.length > 0) {
             messageContentBodyPart.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
@@ -227,21 +255,18 @@ public class PgpMessageBuilder extends MessageBuilder {
     }
 
     @NonNull
-    private Intent buildOpenPgpApiIntent(boolean shouldSign, boolean shouldEncrypt, boolean isPgpInlineMode) {
+    private Intent buildOpenPgpApiIntent(boolean shouldSign, boolean shouldEncrypt, boolean encryptToSelfOnly,
+            boolean isPgpInlineMode) {
         Intent pgpApiIntent;
 
         Long openPgpKeyId = cryptoStatus.getOpenPgpKeyId();
         if (shouldEncrypt) {
-            if (!shouldSign) {
-                throw new IllegalStateException("encrypt-only is not supported at this point and should never happen!");
-            }
-            // pgpApiIntent = new Intent(shouldSign ? OpenPgpApi.ACTION_SIGN_AND_ENCRYPT : OpenPgpApi.ACTION_ENCRYPT);
-            pgpApiIntent = new Intent(OpenPgpApi.ACTION_SIGN_AND_ENCRYPT);
+            pgpApiIntent = new Intent(shouldSign ? OpenPgpApi.ACTION_SIGN_AND_ENCRYPT : OpenPgpApi.ACTION_ENCRYPT);
 
             long[] selfEncryptIds = { openPgpKeyId };
             pgpApiIntent.putExtra(OpenPgpApi.EXTRA_KEY_IDS, selfEncryptIds);
 
-            if(!isDraft()) {
+            if(!encryptToSelfOnly) {
                 pgpApiIntent.putExtra(OpenPgpApi.EXTRA_USER_IDS, cryptoStatus.getRecipientAddresses());
 //                pgpApiIntent.putExtra(OpenPgpApi.EXTRA_ENCRYPT_OPPORTUNISTIC, cryptoStatus.isEncryptionOpportunistic());
             }
@@ -347,7 +372,7 @@ public class PgpMessageBuilder extends MessageBuilder {
             return;
         }
 
-        if (cryptoStatus.isPgpInlineModeEnabled()) {
+        if (!isDraft() && cryptoStatus.isPgpInlineModeEnabled()) {
             mimeBuildInlineMessage(pgpResultTempBody);
             return;
         }
@@ -386,10 +411,6 @@ public class PgpMessageBuilder extends MessageBuilder {
     }
 
     private void mimeBuildEncryptedMessage(@NonNull Body encryptedBodyPart) throws MessagingException {
-        if (!cryptoStatus.isEncryptionEnabled()) {
-            throw new IllegalStateException("call to mimeBuildEncryptedMessage while encryption isn't enabled!");
-        }
-
         MimeMultipart multipartEncrypted = createMimeMultipart();
         multipartEncrypted.setSubType("encrypted");
         multipartEncrypted.addBodyPart(new MimeBodyPart(new TextBody("Version: 1"), "application/pgp-encrypted"));

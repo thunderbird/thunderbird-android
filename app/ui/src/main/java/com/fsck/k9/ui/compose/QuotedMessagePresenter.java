@@ -239,7 +239,7 @@ public class QuotedMessagePresenter {
             // composition window. If that's the case, try and convert it to text to
             // match the behavior in text mode.
             view.setMessageContentCharacters(
-                    BodyTextExtractor.getBodyTextFromMessage(messageViewInfo.message, SimpleMessageFormat.TEXT));
+                    BodyTextExtractor.getBodyTextFromMessage(messageViewInfo.rootPart, SimpleMessageFormat.TEXT));
             forcePlainText = true;
 
             showOrHideQuotedText(quotedMode);
@@ -248,7 +248,7 @@ public class QuotedMessagePresenter {
 
         if (messageFormat == MessageFormat.HTML) {
             String bodyText; // defaults to null
-            Part part = MimeUtility.findFirstPartByMimeType(messageViewInfo.message, "text/html");
+            Part part = MimeUtility.findFirstPartByMimeType(messageViewInfo.rootPart, "text/html");
             if (part != null) { // Shouldn't happen if we were the one who saved it.
                 quotedTextFormat = SimpleMessageFormat.HTML;
                 String text = MessageExtractor.getTextFromPart(part);

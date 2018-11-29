@@ -447,6 +447,14 @@
             android:summary="@string/account_settings_crypto_encrypt_subject_subtitle"
             android:title="@string/account_settings_crypto_encrypt_subject" />
 
+        <SwitchPreference
+            android:dependency="openpgp_key"
+            android:key="openpgp_encrypt_all_drafts"
+            android:title="@string/account_settings_crypto_encrypt_all_drafts"
+            android:summaryOn="@string/account_settings_crypto_encrypt_all_drafts_on"
+            android:summaryOff="@string/account_settings_crypto_encrypt_all_drafts_off"
+            />
+
         <Preference
             android:dependency="openpgp_key"
             android:key="autocrypt_transfer"

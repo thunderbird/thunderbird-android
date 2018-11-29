@@ -329,6 +329,10 @@ public abstract class MessageBuilder {
         return this;
     }
 
+    public String getSubject() {
+        return subject;
+    }
+
     public MessageBuilder setSentDate(Date sentDate) {
         this.sentDate = sentDate;
         return this;
