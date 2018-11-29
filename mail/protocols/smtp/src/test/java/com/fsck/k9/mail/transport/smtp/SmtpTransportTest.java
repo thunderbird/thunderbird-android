@@ -48,7 +48,7 @@ public class SmtpTransportTest {
     public void before() throws AuthenticationFailedException {
         socketFactory = TestTrustedSocketFactory.newInstance();
         oAuth2TokenProvider = mock(OAuth2TokenProvider.class);
-        when(oAuth2TokenProvider.getToken(eq(USERNAME), anyLong()))
+        when(oAuth2TokenProvider.getToken(eq(USERNAME)))
                 .thenReturn("oldToken").thenReturn("newToken");
     }
 
@@ -228,7 +228,7 @@ public class SmtpTransportTest {
         }
 
         InOrder inOrder = inOrder(oAuth2TokenProvider);
-        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong());
+        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME));
         inOrder.verify(oAuth2TokenProvider).invalidateToken(USERNAME);
         server.verifyConnectionClosed();
         server.verifyInteractionCompleted();
@@ -253,9 +253,9 @@ public class SmtpTransportTest {
         transport.open();
 
         InOrder inOrder = inOrder(oAuth2TokenProvider);
-        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong());
+        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME));
         inOrder.verify(oAuth2TokenProvider).invalidateToken(USERNAME);
-        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong());
+        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME));
         server.verifyConnectionStillOpen();
         server.verifyInteractionCompleted();
     }
@@ -279,9 +279,9 @@ public class SmtpTransportTest {
         transport.open();
 
         InOrder inOrder = inOrder(oAuth2TokenProvider);
-        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong());
+        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME));
         inOrder.verify(oAuth2TokenProvider).invalidateToken(USERNAME);
-        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong());
+        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME));
         server.verifyConnectionStillOpen();
         server.verifyInteractionCompleted();
     }
@@ -305,9 +305,9 @@ public class SmtpTransportTest {
         transport.open();
 
         InOrder inOrder = inOrder(oAuth2TokenProvider);
-        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong());
+        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME));
         inOrder.verify(oAuth2TokenProvider).invalidateToken(USERNAME);
-        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong());
+        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME));
         server.verifyConnectionStillOpen();
         server.verifyInteractionCompleted();
     }
@@ -357,7 +357,7 @@ public class SmtpTransportTest {
         server.output("250 AUTH XOAUTH2");
         server.expect("QUIT");
         server.output("221 BYE");
-        when(oAuth2TokenProvider.getToken(anyString(), anyLong()))
+        when(oAuth2TokenProvider.getToken(anyString()))
                 .thenThrow(new AuthenticationFailedException("Failed to fetch token"));
         SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.XOAUTH2, ConnectionSecurity.NONE);
 
@@ -523,7 +523,7 @@ public class SmtpTransportTest {
         }
 
         InOrder inOrder = inOrder(oAuth2TokenProvider);
-        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME), anyLong());
+        inOrder.verify(oAuth2TokenProvider).getToken(eq(USERNAME));
         inOrder.verify(oAuth2TokenProvider).invalidateToken(USERNAME);
         server.verifyConnectionClosed();
         server.verifyInteractionCompleted();

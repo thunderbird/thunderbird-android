@@ -4,6 +4,8 @@ import com.fsck.k9.backends.backendsModule
 import com.fsck.k9.controller.ControllerExtension
 import com.fsck.k9.crypto.EncryptionExtractor
 import com.fsck.k9.crypto.openpgp.OpenPgpEncryptionExtractor
+import com.fsck.k9.mail.oauth.AndroidAccountOAuth2TokenStore
+import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.notification.notificationModule
 import com.fsck.k9.preferences.K9StoragePersister
 import com.fsck.k9.preferences.StoragePersister
@@ -27,6 +29,7 @@ private val mainAppModule = module {
     single(named("controllerExtensions")) { emptyList<ControllerExtension>() }
     single<EncryptionExtractor> { OpenPgpEncryptionExtractor.newInstance() }
     single<StoragePersister> { K9StoragePersister(get()) }
+    single<OAuth2TokenProvider> { AndroidAccountOAuth2TokenStore(get()) as OAuth2TokenProvider }
 }
 
 val appModules = listOf(

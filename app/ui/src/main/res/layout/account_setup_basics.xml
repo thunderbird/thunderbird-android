@@ -65,6 +65,14 @@
                     android:text="@string/account_setup_basics_client_certificate" />
             </com.fsck.k9.view.FoldableLinearLayout>
 
+            <Button
+                android:id="@+id/account_manager_setup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:text="@string/account_setup_basics_account_manager_setup_action" />
+
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="0dip"

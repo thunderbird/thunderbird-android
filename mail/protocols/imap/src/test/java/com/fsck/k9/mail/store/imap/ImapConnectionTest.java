@@ -1047,12 +1047,16 @@ public class ImapConnectionTest {
 
     private OAuth2TokenProvider createOAuth2TokenProvider() {
         return new OAuth2TokenProvider() {
+            @Override
+            public String[] getSupportedAccountTypes() {
+                throw new UnsupportedOperationException();
+            }
+
             private int invalidationCount = 0;
 
             @Override
-            public String getToken(String username, long timeoutMillis) throws AuthenticationFailedException {
+            public String getToken(String username) throws AuthenticationFailedException {
                 assertEquals(USERNAME, username);
-                assertEquals(OAUTH2_TIMEOUT, timeoutMillis);
 
                 switch (invalidationCount) {
                     case 0: {
@@ -1071,11 +1075,6 @@ public class ImapConnectionTest {
             public void invalidateToken(String username) {
                 assertEquals(USERNAME, username);
                 invalidationCount++;
-            }
-
-            @Override
-            public List<String> getAccounts() {
-                throw new UnsupportedOperationException();
             }
 
             @Override

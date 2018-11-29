@@ -3,6 +3,9 @@ package com.fsck.k9.activity.setup;
 
 import android.content.Context;
 import android.content.Intent;
+
+import android.accounts.AccountManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -20,19 +23,21 @@ import com.fsck.k9.Core;
 import com.fsck.k9.DI;
 import com.fsck.k9.EmailAddressValidator;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.backend.BackendManager;
+import com.fsck.k9.mail.oauth.AuthorizationException;
+import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
+import com.fsck.k9.preferences.Protocols;
+import com.fsck.k9.ui.R;
 import com.fsck.k9.account.AccountCreator;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.autodiscovery.ConnectionSettings;
 import com.fsck.k9.autodiscovery.providersxml.ProvidersXmlDiscovery;
-import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.helper.EmailHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.preferences.Protocols;
-import com.fsck.k9.ui.R;
 import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
 import timber.log.Timber;
@@ -47,12 +52,17 @@ import timber.log.Timber;
 public class AccountSetupBasics extends K9Activity
     implements OnClickListener, TextWatcher, OnCheckedChangeListener, OnClientCertificateChangedListener {
     private final static String EXTRA_ACCOUNT = "com.fsck.k9.AccountSetupBasics.account";
+
     private final static String STATE_KEY_CHECKED_INCOMING = "com.fsck.k9.AccountSetupBasics.checkedIncoming";
 
+    private final static int CHOOSE_ACCOUNT = 462;
 
     private final BackendManager backendManager = DI.get(BackendManager.class);
+
     private final ProvidersXmlDiscovery providersXmlDiscovery = DI.get(ProvidersXmlDiscovery.class);
     private final AccountCreator accountCreator = DI.get(AccountCreator.class);
+
+    private final OAuth2TokenProvider oAuth2TokenProvider = DI.get(OAuth2TokenProvider.class);
 
     private EditText mEmailView;
     private EditText mPasswordView;
@@ -84,6 +94,13 @@ public class AccountSetupBasics extends K9Activity
         mShowPasswordCheckBox = findViewById(R.id.show_password);
         mNextButton.setOnClickListener(this);
         mManualSetupButton.setOnClickListener(this);
+        View mAccountManagerSetupButton = findViewById(R.id.account_manager_setup);
+        mAccountManagerSetupButton.setOnClickListener(this);
+
+        // devices without runtime permissions have "Use GMail account" button hidden
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            mAccountManagerSetupButton.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void initializeViewListeners() {
@@ -290,6 +307,27 @@ public class AccountSetupBasics extends K9Activity
         }
 
         if (resultCode == RESULT_OK) {
+            if (requestCode == CHOOSE_ACCOUNT) {
+                final String accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+                mEmailView.setText(accountName);
+                oAuth2TokenProvider.authorizeApi(accountName, this, new OAuth2TokenProvider.OAuth2TokenProviderAuthCallback() {
+                    @Override
+                    public void success(String storeServerHost, String transportServerHost) {
+                        ServerSettings storeServer = new ServerSettings(Protocols.IMAP, storeServerHost, -1,
+                                ConnectionSecurity.SSL_TLS_REQUIRED, AuthType.XOAUTH2, accountName, null, null);
+                        ServerSettings transportServer = new ServerSettings(Protocols.SMTP, transportServerHost, -1,
+                                ConnectionSecurity.SSL_TLS_REQUIRED, AuthType.XOAUTH2, accountName, null, null);
+                        ConnectionSettings connectionSettings = new ConnectionSettings(storeServer, transportServer);
+                        finishAutoSetup(connectionSettings);
+                    }
+
+                    @Override
+                    public void failure(AuthorizationException e) {
+                        Timber.e(e);
+                    }
+                });
+                return;
+            }
             if (!mCheckedIncoming) {
                 //We've successfully checked incoming.  Now check outgoing.
                 mCheckedIncoming = true;
@@ -349,6 +387,16 @@ public class AccountSetupBasics extends K9Activity
             onNext();
         } else if (id == R.id.manual_setup) {
             onManualSetup();
+        } else if (id == R.id.account_manager_setup) {
+            startAccountManagerSetup();
         }
     }
+
+    private void startAccountManagerSetup() {
+        Intent intent = AccountManager.newChooseAccountIntent(null, null,
+                oAuth2TokenProvider.getSupportedAccountTypes(), true, null, null,
+                null, null);
+        startActivityForResult(intent, CHOOSE_ACCOUNT);
+    }
+
 }

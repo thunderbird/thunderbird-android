@@ -790,7 +790,7 @@ public class SmtpTransport extends Transport {
     }
 
     private void attemptXoauth2(String username) throws MessagingException, IOException {
-        String token = oauthTokenProvider.getToken(username, OAuth2TokenProvider.OAUTH2_TIMEOUT);
+        String token = oauthTokenProvider.getToken(username);
         String authString = Authentication.computeXoauth(username, token);
         CommandResponse response = executeSensitiveCommand("AUTH XOAUTH2 %s", authString);
 

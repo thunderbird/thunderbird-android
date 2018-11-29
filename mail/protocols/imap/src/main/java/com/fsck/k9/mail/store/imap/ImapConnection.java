@@ -421,7 +421,7 @@ class ImapConnection {
     }
 
     private List<ImapResponse> attemptXOAuth2() throws MessagingException, IOException {
-        String token = oauthTokenProvider.getToken(settings.getUsername(), OAuth2TokenProvider.OAUTH2_TIMEOUT);
+        String token = oauthTokenProvider.getToken(settings.getUsername());
         String authString = Authentication.computeXoauth(settings.getUsername(), token);
         String tag = sendSaslIrCommand(Commands.AUTHENTICATE_XOAUTH2, authString, true);
 
