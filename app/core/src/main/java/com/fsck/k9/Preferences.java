@@ -16,6 +16,7 @@ import android.support.annotation.RestrictTo;
 import android.support.annotation.RestrictTo.Scope;
 
 import com.fsck.k9.backend.BackendManager;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
@@ -203,7 +204,29 @@ public class Preferences {
             account.setAccountNumber(accountNumber);
         }
 
+        processChangedValues(account);
+
         accountPreferenceSerializer.save(storage, editor, account);
+    }
+
+    private void processChangedValues(Account account) {
+        if (account.isChangedVisibleLimits()) {
+            try {
+                account.getLocalStore().resetVisibleLimits(account.getDisplayCount());
+            } catch (MessagingException e) {
+                Timber.e(e, "Failed to load LocalStore!");
+            }
+        }
+
+        if (account.isChangedLocalStorageProviderId()) {
+            try {
+                account.getLocalStore().switchLocalStorage(account.getLocalStorageProviderId());
+            } catch (MessagingException e) {
+                Timber.e(e, "Failed to load LocalStore!");
+            }
+        }
+
+        account.resetChangeMarkers();
     }
 
     public int generateAccountNumber() {

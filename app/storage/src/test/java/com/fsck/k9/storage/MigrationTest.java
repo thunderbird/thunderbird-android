@@ -8,13 +8,15 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.UUID;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.AccountPreferenceSerializer;
+import com.fsck.k9.DI;
 import com.fsck.k9.K9;
-import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Multipart;
@@ -721,14 +723,9 @@ public class MigrationTest extends K9RobolectricTest {
     }
 
     private Account getNewAccount() {
-        Preferences preferences = Preferences.getPreferences(RuntimeEnvironment.application);
-
-        //FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()
-        preferences.clearAccounts();
-
-        Account account = preferences.newAccount();
+        Account account = new Account(UUID.randomUUID().toString());
+        DI.get(AccountPreferenceSerializer.class).loadDefaults(account);
         account.setStoreUri("imap+tls+://user:password@imap.example.org");
-
         return account;
     }
 }

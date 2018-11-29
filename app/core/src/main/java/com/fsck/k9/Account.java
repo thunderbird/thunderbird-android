@@ -24,11 +24,9 @@ import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.mailstore.StorageManager.StorageProvider;
 import org.jetbrains.annotations.NotNull;
-import timber.log.Timber;
 
 /**
- * Account stores all of the settings for a single account defined by the user. It is able to save
- * and delete itself given a Preferences to work with. Each account is defined by a UUID.
+ * Account stores all of the settings for a single account defined by the user. Each account is defined by a UUID.
  */
 public class Account implements BaseAccount, StoreConfig {
     /**
@@ -185,6 +183,8 @@ public class Account implements BaseAccount, StoreConfig {
     private int remoteSearchNumResults;
     private boolean uploadSentMessages;
 
+    private boolean changedVisibleLimits = false;
+    private boolean changedLocalStorageProviderId = false;
 
     /**
      * Indicates whether this account is enabled, i.e. ready for use, or not.
@@ -236,15 +236,6 @@ public class Account implements BaseAccount, StoreConfig {
 
     public Account(String uuid) {
         this.accountUuid = uuid;
-    }
-
-    private void resetVisibleLimits() {
-        try {
-            getLocalStore().resetVisibleLimits(getDisplayCount());
-        } catch (MessagingException e) {
-            Timber.e(e, "Unable to reset visible limits");
-        }
-
     }
 
     public synchronized void setChipColor(int color) {
@@ -346,25 +337,10 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public void setLocalStorageProviderId(String id) {
-
         if (localStorageProviderId == null || !localStorageProviderId.equals(id)) {
-
-            boolean successful = false;
-            try {
-                switchLocalStorage(id);
-                successful = true;
-            } catch (MessagingException e) {
-                Timber.e(e, "Switching local storage provider from %s to %s failed.", localStorageProviderId, id);
-            }
-
-            // if migration to/from SD-card failed once, it will fail again.
-            if (!successful) {
-                return;
-            }
-
-            localStorageProviderId = id;
+            this.localStorageProviderId = id;
+            changedLocalStorageProviderId = true;
         }
-
     }
 
     /**
@@ -394,7 +370,8 @@ public class Account implements BaseAccount, StoreConfig {
         } else {
             this.displayCount = K9.DEFAULT_VISIBLE_LIMIT;
         }
-        resetVisibleLimits();
+
+        changedVisibleLimits = true;
     }
 
     public synchronized long getLatestOldMessageSeenTime() {
@@ -801,26 +778,6 @@ public class Account implements BaseAccount, StoreConfig {
         this.pushPollOnConnect = pushPollOnConnect;
     }
 
-    /**
-     * Are we storing out localStore on the SD-card instead of the local device
-     * memory?<br/>
-     * Only to be called during initial account-setup!<br/>
-     * Side-effect: changes {@link #localStorageProviderId}.
-     *
-     * @param newStorageProviderId
-     *            Never <code>null</code>.
-     * @throws MessagingException
-     */
-    private void switchLocalStorage(final String newStorageProviderId) throws MessagingException {
-        boolean isInMemoryStorage = localStorageProviderId == null;
-        if (isInMemoryStorage) {
-            return;
-        }
-        if (!localStorageProviderId.equals(newStorageProviderId)) {
-            getLocalStore().switchLocalStorage(newStorageProviderId);
-        }
-    }
-
     public synchronized boolean isGoToUnreadMessageSearch() {
         return goToUnreadMessageSearch;
     }
@@ -1103,6 +1060,19 @@ public class Account implements BaseAccount, StoreConfig {
 
     public void setRemoteSearchFullText(boolean val) {
         remoteSearchFullText = val;
+    }
+
+    boolean isChangedVisibleLimits() {
+        return changedVisibleLimits;
+    }
+
+    boolean isChangedLocalStorageProviderId() {
+        return changedLocalStorageProviderId;
+    }
+
+    void resetChangeMarkers() {
+        changedVisibleLimits = false;
+        changedLocalStorageProviderId = false;
     }
 
 }

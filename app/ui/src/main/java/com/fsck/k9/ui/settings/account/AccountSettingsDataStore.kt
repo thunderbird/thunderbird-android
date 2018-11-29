@@ -194,13 +194,7 @@ class AccountSettingsDataStore(
             "account_vibrate_pattern" -> account.notificationSetting.vibratePattern = value.toInt()
             "account_vibrate_times" -> account.notificationSetting.vibrateTimes = value.toInt()
             "account_remote_search_num_results" -> account.remoteSearchNumResults = value.toInt()
-            "local_storage_provider" -> {
-                executorService.execute {
-                    account.localStorageProviderId = value
-                    saveSettings()
-                }
-                return
-            }
+            "local_storage_provider" -> account.localStorageProviderId = value
             "account_ringtone" -> with(account.notificationSetting) {
                 isRingEnabled = true
                 ringtone = value
