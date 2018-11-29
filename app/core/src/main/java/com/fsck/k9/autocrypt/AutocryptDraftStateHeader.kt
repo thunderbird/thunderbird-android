@@ -37,7 +37,7 @@ data class AutocryptDraftStateHeader(val isEncrypt: Boolean,
 
         const val PARAM_ENCRYPT = "encrypt"
 
-        const val PARAM_IS_REPLY = "_is-reply"
+        const val PARAM_IS_REPLY = "_is-reply-to-encrypted"
         const val PARAM_BY_CHOICE = "_by-choice"
         const val PARAM_PGP_INLINE = "_pgp-inline"
         const val PARAM_SIGN_ONLY = "_sign-only"

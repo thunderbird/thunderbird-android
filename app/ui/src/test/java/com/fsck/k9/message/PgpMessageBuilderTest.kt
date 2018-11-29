@@ -336,7 +336,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         val mimeMessage = buildMessage()
 
-        assertEquals("encrypt=yes; _is-reply=yes; ", mimeMessage.getHeader("Autocrypt-Draft-State").get(0))
+        assertEquals("encrypt=yes; _is-reply-to-encrypted=yes; ", mimeMessage.getHeader("Autocrypt-Draft-State").get(0))
     }
 
     @Test
