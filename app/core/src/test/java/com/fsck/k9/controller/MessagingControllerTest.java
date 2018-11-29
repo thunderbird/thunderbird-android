@@ -32,6 +32,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
+import com.fsck.k9.mailstore.LocalStoreProvider;
 import com.fsck.k9.mailstore.UnavailableStorageException;
 import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.search.LocalSearch;
@@ -84,6 +85,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
     private BackendManager backendManager;
     @Mock
     private Backend backend;
+    @Mock
+    private LocalStoreProvider localStoreProvider;
     @Mock
     private Contacts contacts;
     @Mock
@@ -141,7 +144,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
         MockitoAnnotations.initMocks(this);
         appContext = RuntimeEnvironment.application;
 
-        controller = new MessagingController(appContext, notificationController, contacts,
+        controller = new MessagingController(appContext, notificationController, localStoreProvider, contacts,
                 accountStatsCollector, mock(CoreResourceProvider.class), backendManager,
                 Collections.<ControllerExtension>emptyList());
 
@@ -545,13 +548,13 @@ public class MessagingControllerTest extends K9RobolectricTest {
         account.setMaximumAutoDownloadMessageSize(MAXIMUM_SMALL_MESSAGE_SIZE);
         account.setEmail("user@host.com");
         Mockito.doReturn(true).when(account).isAvailable(appContext);
-        Mockito.doReturn(localStore).when(account).getLocalStore();
     }
 
     private void configureLocalStore() throws MessagingException {
         when(localStore.getFolder(FOLDER_NAME)).thenReturn(localFolder);
         when(localFolder.getServerId()).thenReturn(FOLDER_NAME);
         when(localStore.getPersonalNamespaces(false)).thenReturn(Collections.singletonList(localFolder));
+        when(localStoreProvider.getInstance(account)).thenReturn(localStore);
     }
 
     private void setAccountsInPreferences(Map<String, Account> newAccounts)

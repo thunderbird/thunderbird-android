@@ -17,10 +17,8 @@ import android.text.TextUtils;
 
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy;
 import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.store.StoreConfig;
-import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.mailstore.StorageManager.StorageProvider;
 import org.jetbrains.annotations.NotNull;
@@ -665,11 +663,6 @@ public class Account implements BaseAccount, StoreConfig {
         int oldMaxPushFolders = this.maxPushFolders;
         this.maxPushFolders = maxPushFolders;
         return oldMaxPushFolders != maxPushFolders;
-    }
-
-    public LocalStore getLocalStore() throws MessagingException {
-        Context context = DI.get(Context.class);
-        return LocalStore.getInstance(this, context);
     }
 
     @Override

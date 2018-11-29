@@ -18,6 +18,7 @@ import android.support.annotation.RestrictTo.Scope;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalStore;
+import com.fsck.k9.mailstore.LocalStoreProvider;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
 import timber.log.Timber;
@@ -33,8 +34,9 @@ public class Preferences {
         CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
         LocalKeyStoreManager localKeyStoreManager = DI.get(LocalKeyStoreManager.class);
         AccountPreferenceSerializer accountPreferenceSerializer = DI.get(AccountPreferenceSerializer.class);
+        LocalStoreProvider localStoreProvider = DI.get(LocalStoreProvider.class);
         if (preferences == null) {
-            preferences = new Preferences(appContext, resourceProvider, localKeyStoreManager, accountPreferenceSerializer);
+            preferences = new Preferences(appContext, resourceProvider, localStoreProvider, localKeyStoreManager, accountPreferenceSerializer);
         }
         return preferences;
     }
@@ -44,15 +46,17 @@ public class Preferences {
     private List<Account> accountsInOrder = null;
     private Account newAccount;
     private Context context;
+    private final LocalStoreProvider localStoreProvider;
     private final CoreResourceProvider resourceProvider;
     private final LocalKeyStoreManager localKeyStoreManager;
 
     private Preferences(Context context, CoreResourceProvider resourceProvider,
-            LocalKeyStoreManager localKeyStoreManager,
+            LocalStoreProvider localStoreProvider, LocalKeyStoreManager localKeyStoreManager,
             AccountPreferenceSerializer accountPreferenceSerializer) {
         storage = Storage.getStorage(context);
         this.context = context;
         this.resourceProvider = resourceProvider;
+        this.localStoreProvider = localStoreProvider;
         this.localKeyStoreManager = localKeyStoreManager;
         this.accountPreferenceSerializer = accountPreferenceSerializer;
         if (storage.isEmpty()) {
@@ -212,7 +216,7 @@ public class Preferences {
     private void processChangedValues(Account account) {
         if (account.isChangedVisibleLimits()) {
             try {
-                account.getLocalStore().resetVisibleLimits(account.getDisplayCount());
+                localStoreProvider.getInstance(account).resetVisibleLimits(account.getDisplayCount());
             } catch (MessagingException e) {
                 Timber.e(e, "Failed to load LocalStore!");
             }
@@ -220,7 +224,7 @@ public class Preferences {
 
         if (account.isChangedLocalStorageProviderId()) {
             try {
-                account.getLocalStore().switchLocalStorage(account.getLocalStorageProviderId());
+                localStoreProvider.getInstance(account).switchLocalStorage(account.getLocalStorageProviderId());
             } catch (MessagingException e) {
                 Timber.e(e, "Failed to load LocalStore!");
             }

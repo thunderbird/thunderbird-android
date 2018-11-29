@@ -28,6 +28,7 @@ import com.fsck.k9.mailstore.FileBackedBody;
 import com.fsck.k9.mailstore.LocalBodyPart;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
+import com.fsck.k9.mailstore.LocalStoreProvider;
 import com.fsck.k9.mailstore.StorageManager;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.util.MimeUtil;
@@ -161,7 +162,7 @@ public class MigrationTest extends K9RobolectricTest {
         insertSimplePlaintextMessage(db);
         db.close();
 
-        LocalStore localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
+        LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
 
         LocalMessage msg = localStore.getFolder("dev").getMessage("3");
         FetchProfile fp = new FetchProfile();
@@ -228,7 +229,7 @@ public class MigrationTest extends K9RobolectricTest {
         insertMixedWithAttachments(db);
         db.close();
 
-        LocalStore localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
+        LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
 
         LocalMessage msg = localStore.getFolder("dev").getMessage("4");
         FetchProfile fp = new FetchProfile();
@@ -300,7 +301,7 @@ public class MigrationTest extends K9RobolectricTest {
         insertPgpMimeSignedMessage(db);
         db.close();
 
-        LocalStore localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
+        LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
 
         LocalMessage msg = localStore.getFolder("dev").getMessage("5");
         FetchProfile fp = new FetchProfile();
@@ -359,7 +360,7 @@ public class MigrationTest extends K9RobolectricTest {
         insertPgpMimeEncryptedMessage(db);
         db.close();
 
-        LocalStore localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
+        LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
 
         LocalMessage msg = localStore.getFolder("dev").getMessage("6");
         FetchProfile fp = new FetchProfile();
@@ -477,7 +478,7 @@ public class MigrationTest extends K9RobolectricTest {
         insertPgpInlineEncryptedMessage(db);
         db.close();
 
-        LocalStore localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
+        LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
 
         LocalMessage msg = localStore.getFolder("dev").getMessage("7");
         FetchProfile fp = new FetchProfile();
@@ -564,7 +565,7 @@ public class MigrationTest extends K9RobolectricTest {
         insertPgpInlineClearsignedMessage(db);
         db.close();
 
-        LocalStore localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
+        LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
 
         LocalMessage msg = localStore.getFolder("dev").getMessage("8");
         FetchProfile fp = new FetchProfile();
@@ -622,7 +623,7 @@ public class MigrationTest extends K9RobolectricTest {
         insertMultipartAlternativeMessage(db);
         db.close();
 
-        LocalStore localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
+        LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
 
         LocalMessage msg = localStore.getFolder("dev").getMessage("9");
         FetchProfile fp = new FetchProfile();
@@ -687,7 +688,7 @@ public class MigrationTest extends K9RobolectricTest {
         insertHtmlWithRelatedMessage(db);
         db.close();
 
-        LocalStore localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
+        LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
 
         LocalMessage msg = localStore.getFolder("dev").getMessage("10");
         FetchProfile fp = new FetchProfile();

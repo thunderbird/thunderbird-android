@@ -75,6 +75,7 @@ import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mailstore.LocalStoreProvider;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.preferences.Protocols;
 import com.fsck.k9.preferences.SettingsExporter;
@@ -1028,7 +1029,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                     if (selectedContextAccount instanceof Account) {
                         Account realAccount = (Account) selectedContextAccount;
                         try {
-                            realAccount.getLocalStore().delete();
+                            DI.get(LocalStoreProvider.class).getInstance(realAccount).delete();
                         } catch (Exception e) {
                             // Ignore, this may lead to localStores on sd-cards that
                             // are currently not inserted to be left

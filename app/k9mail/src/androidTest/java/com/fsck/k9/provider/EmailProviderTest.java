@@ -13,10 +13,12 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.ProviderTestCase2;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.DI;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mailstore.LocalStoreProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -157,7 +159,7 @@ public class EmailProviderTest extends ProviderTestCase2<EmailProvider> {
     public void query_forMessagesWithAccountAndRequiredFieldsAndOrderBy_providesResult() throws MessagingException {
         Account account = Preferences.getPreferences(getContext()).newAccount();
         account.getUuid();
-        account.getLocalStore().getFolder("Inbox").appendMessages(Collections.singletonList(message));
+        DI.get(LocalStoreProvider.class).getInstance(account).getFolder("Inbox").appendMessages(Collections.singletonList(message));
 
         Cursor cursor = getProvider().query(
                 Uri.parse("content://" + EmailProvider.AUTHORITY + "/account/" + account.getUuid() + "/messages"),
@@ -179,7 +181,8 @@ public class EmailProviderTest extends ProviderTestCase2<EmailProvider> {
     public void query_forMessagesWithAccountAndRequiredFieldsAndOrderBy_sortsCorrectly() throws MessagingException {
         Account account = Preferences.getPreferences(getContext()).newAccount();
         account.getUuid();
-        account.getLocalStore().getFolder("Inbox").appendMessages(Arrays.asList(message, laterMessage));
+        DI.get(LocalStoreProvider.class).getInstance(account)
+                .getFolder("Inbox").appendMessages(Arrays.asList(message, laterMessage));
 
         Cursor cursor = getProvider().query(
                 Uri.parse("content://" + EmailProvider.AUTHORITY + "/account/" + account.getUuid() + "/messages"),
@@ -204,7 +207,8 @@ public class EmailProviderTest extends ProviderTestCase2<EmailProvider> {
     public void query_forThreadedMessages_sortsCorrectly() throws MessagingException {
         Account account = Preferences.getPreferences(getContext()).newAccount();
         account.getUuid();
-        account.getLocalStore().getFolder("Inbox").appendMessages(Arrays.asList(message, laterMessage));
+        DI.get(LocalStoreProvider.class).getInstance(account)
+                .getFolder("Inbox").appendMessages(Arrays.asList(message, laterMessage));
 
         Cursor cursor = getProvider().query(
                 Uri.parse("content://" + EmailProvider.AUTHORITY + "/account/" + account.getUuid() +
@@ -230,8 +234,8 @@ public class EmailProviderTest extends ProviderTestCase2<EmailProvider> {
     public void query_forThreadedMessages_showsThreadOfEmailOnce() throws MessagingException {
         Account account = Preferences.getPreferences(getContext()).newAccount();
         account.getUuid();
-        account.getLocalStore().getFolder("Inbox").appendMessages(Collections.singletonList(message));
-        account.getLocalStore().getFolder("Inbox").appendMessages(Collections.singletonList(reply));
+        DI.get(LocalStoreProvider.class).getInstance(account).getFolder("Inbox").appendMessages(Collections.singletonList(message));
+        DI.get(LocalStoreProvider.class).getInstance(account).getFolder("Inbox").appendMessages(Collections.singletonList(reply));
 
         Cursor cursor = getProvider().query(
                 Uri.parse("content://" + EmailProvider.AUTHORITY + "/account/" + account.getUuid() +
@@ -258,8 +262,8 @@ public class EmailProviderTest extends ProviderTestCase2<EmailProvider> {
     public void query_forThreadedMessages_showsThreadOfEmailWithSameSendTimeOnce() throws MessagingException {
         Account account = Preferences.getPreferences(getContext()).newAccount();
         account.getUuid();
-        account.getLocalStore().getFolder("Inbox").appendMessages(Collections.singletonList(message));
-        account.getLocalStore().getFolder("Inbox").appendMessages(Collections.singletonList(replyAtSameTime));
+        DI.get(LocalStoreProvider.class).getInstance(account).getFolder("Inbox").appendMessages(Collections.singletonList(message));
+        DI.get(LocalStoreProvider.class).getInstance(account).getFolder("Inbox").appendMessages(Collections.singletonList(replyAtSameTime));
 
         Cursor cursor = getProvider().query(
                 Uri.parse("content://" + EmailProvider.AUTHORITY + "/account/" + account.getUuid() +
@@ -289,7 +293,7 @@ public class EmailProviderTest extends ProviderTestCase2<EmailProvider> {
         Message message = new MimeMessage();
         message.setSubject("Test Subject");
         message.setSentDate(new GregorianCalendar(2016, 1, 2).getTime(), false);
-        account.getLocalStore().getFolder("Inbox").appendMessages(Collections.singletonList(message));
+        DI.get(LocalStoreProvider.class).getInstance(account).getFolder("Inbox").appendMessages(Collections.singletonList(message));
 
         //Now get the thread id we just put in.
         Cursor cursor = getProvider().query(

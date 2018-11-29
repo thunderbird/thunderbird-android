@@ -43,6 +43,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
+import com.fsck.k9.mailstore.LocalStoreProvider;
 import com.fsck.k9.ui.R;
 import timber.log.Timber;
 
@@ -518,7 +519,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                 return;
             }
 
-            LocalStore localStore = account.getLocalStore();
+            LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
             createLocalFolder(localStore, Account.OUTBOX, getString(R.string.special_mailbox_name_outbox));
 
             if  (!account.getStoreUri().startsWith("pop3")) {

@@ -3,6 +3,7 @@ package com.fsck.k9.search;
 import java.util.List;
 
 import com.fsck.k9.DI;
+import com.fsck.k9.mailstore.LocalStoreProvider;
 import timber.log.Timber;
 
 import com.fsck.k9.Account;
@@ -109,7 +110,7 @@ public class SqlQueryBuilder {
     private static long getFolderId(Account account, String folderServerId) {
         long folderId = 0;
         try {
-            LocalStore localStore = account.getLocalStore();
+            LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
             LocalFolder folder = localStore.getFolder(folderServerId);
             folder.open(Folder.OPEN_MODE_RO);
             folderId = folder.getDatabaseId();

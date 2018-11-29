@@ -13,6 +13,9 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import com.fsck.k9.DI;
+import com.fsck.k9.mailstore.LocalStoreProvider;
 import timber.log.Timber;
 
 import com.fsck.k9.Account;
@@ -94,7 +97,7 @@ public class AttachmentProvider extends ContentProvider {
         final AttachmentInfo attachmentInfo;
         try {
             final Account account = Preferences.getPreferences(getContext()).getAccount(accountUuid);
-            attachmentInfo = LocalStore.getInstance(account, getContext()).getAttachmentInfo(id);
+            attachmentInfo = DI.get(LocalStoreProvider.class).getInstance(account).getAttachmentInfo(id);
         } catch (MessagingException e) {
             Timber.e(e, "Unable to retrieve attachment info from local store for ID: %s", id);
             return null;
@@ -143,7 +146,7 @@ public class AttachmentProvider extends ContentProvider {
         final Account account = Preferences.getPreferences(getContext()).getAccount(accountUuid);
 
         try {
-            final LocalStore localStore = LocalStore.getInstance(account, getContext());
+            final LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
 
             AttachmentInfo attachmentInfo = localStore.getAttachmentInfo(id);
             if (mimeType != null) {
@@ -180,7 +183,7 @@ public class AttachmentProvider extends ContentProvider {
     @Nullable
     private OpenPgpDataSource getAttachmentDataSource(String accountUuid, String attachmentId) throws MessagingException {
         final Account account = Preferences.getPreferences(getContext()).getAccount(accountUuid);
-        LocalStore localStore = LocalStore.getInstance(account, getContext());
+        LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
         return localStore.getAttachmentDataSource(attachmentId);
     }
 }

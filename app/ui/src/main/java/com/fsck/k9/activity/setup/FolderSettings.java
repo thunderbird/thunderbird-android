@@ -12,6 +12,7 @@ import android.preference.Preference;
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.mailstore.LocalStoreProvider;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.activity.K9PreferenceActivity;
@@ -64,7 +65,7 @@ public class FolderSettings extends K9PreferenceActivity {
         Account mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
         try {
-            LocalStore localStore = mAccount.getLocalStore();
+            LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(mAccount);
             mFolder = localStore.getFolder(folderServerId);
             mFolder.open(Folder.OPEN_MODE_RW);
         } catch (MessagingException me) {
