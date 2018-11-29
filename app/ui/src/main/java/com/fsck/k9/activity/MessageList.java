@@ -1719,6 +1719,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         } else if (singleFolderMode) {
             drawer.selectFolder(folderServerIds.get(0));
         } else if (search.getId().equals(SearchAccount.UNIFIED_INBOX)) {
+            account = null;
             drawer.selectUnifiedInbox();
         } else {
             drawer.selectFolder(null);
