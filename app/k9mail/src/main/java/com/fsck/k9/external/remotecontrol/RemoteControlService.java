@@ -97,7 +97,7 @@ public class RemoteControlService extends CoreService {
                                     account.getNotificationSetting().setRingEnabled(Boolean.parseBoolean(ringEnabled));
                                 }
                                 if (vibrateEnabled != null) {
-                                    account.getNotificationSetting().setVibrate(Boolean.parseBoolean(vibrateEnabled));
+                                    account.getNotificationSetting().setVibrateEnabled(Boolean.parseBoolean(vibrateEnabled));
                                 }
                                 if (pushClasses != null) {
                                     needsPushRestart |= account.setFolderPushMode(FolderMode.valueOf(pushClasses));

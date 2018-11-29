@@ -103,7 +103,7 @@ class AccountPreferenceSerializer(
 
             showPictures = getEnumStringPref<ShowPictures>(storage, "$accountUuid.showPicturesEnum", ShowPictures.NEVER)
 
-            notificationSetting.setVibrate(storage.getBoolean("$accountUuid.vibrate", false))
+            notificationSetting.setVibrateEnabled(storage.getBoolean("$accountUuid.vibrate", false))
             notificationSetting.vibratePattern = storage.getInt("$accountUuid.vibratePattern", 0)
             notificationSetting.vibrateTimes = storage.getInt("$accountUuid.vibrateTimes", 5)
             notificationSetting.isRingEnabled = storage.getBoolean("$accountUuid.ring", true)
@@ -554,18 +554,21 @@ class AccountPreferenceSerializer(
 
             identities = ArrayList<Identity>()
 
-            val identity = Identity()
-            identity.signatureUse = true
-            identity.signature = resourceProvider.defaultSignature()
-            identity.description = resourceProvider.defaultIdentityDescription()
+            val identity = Identity().apply {
+                signatureUse = true
+                signature = resourceProvider.defaultSignature()
+                description = resourceProvider.defaultIdentityDescription()
+            }
             identities.add(identity)
 
-            notificationSetting.setVibrate(false)
-            notificationSetting.setVibratePattern(0)
-            notificationSetting.setVibrateTimes(5)
-            notificationSetting.setRingEnabled(true)
-            notificationSetting.setRingtone("content://settings/system/notification_sound")
-            notificationSetting.setLedColor(chipColor)
+            with (notificationSetting) {
+                isVibrateEnabled = false
+                vibratePattern = 0
+                vibrateTimes = 5
+                isRingEnabled = true
+                ringtone = "content://settings/system/notification_sound"
+                ledColor = chipColor
+            }
         }
     }
 

@@ -204,7 +204,7 @@ public class Account implements BaseAccount, StoreConfig {
 
     private List<Identity> identities;
 
-    private NotificationSetting notificationSetting = new NotificationSetting();
+    private final NotificationSetting notificationSetting = new NotificationSetting();
 
     public enum FolderMode {
         NONE, ALL, FIRST_CLASS, FIRST_AND_SECOND_CLASS, NOT_SECOND_CLASS

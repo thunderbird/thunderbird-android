@@ -63,7 +63,7 @@ public class NotificationSetting {
         return vibrateEnabled;
     }
 
-    public synchronized void setVibrate(boolean vibrate) {
+    public synchronized void setVibrateEnabled(boolean vibrate) {
         vibrateEnabled = vibrate;
     }
 

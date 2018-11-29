@@ -19,7 +19,7 @@ class AccountSettingsDataStore(
         return when (key) {
             "account_default" -> account == preferences.defaultAccount
             "mark_message_as_read_on_view" -> account.isMarkMessageAsReadOnView
-            "account_sync_remote_deletetions" -> account.isSyncRemoteDeletions()
+            "account_sync_remote_deletetions" -> account.isSyncRemoteDeletions
             "push_poll_on_connect" -> account.isPushPollOnConnect
             "always_show_cc_bcc" -> account.isAlwaysShowCcBcc
             "message_read_receipt" -> account.isMessageReadReceipt
@@ -32,11 +32,11 @@ class AccountSettingsDataStore(
             "account_vibrate" -> account.notificationSetting.isVibrateEnabled
             "account_led" -> account.notificationSetting.isLedEnabled
             "account_notify_sync" -> account.isNotifySync
-            "notification_opens_unread" -> account.isGoToUnreadMessageSearch()
-            "remote_search_enabled" -> account.isAllowRemoteSearch()
+            "notification_opens_unread" -> account.isGoToUnreadMessageSearch
             "openpgp_hide_sign_only" -> account.isOpenPgpHideSignOnly
             "openpgp_encrypt_subject" -> account.isOpenPgpEncryptSubject
             "openpgp_encrypt_all_drafts" -> account.isOpenPgpEncryptAllDrafts
+            "remote_search_enabled" -> account.isAllowRemoteSearch
             "autocrypt_prefer_encrypt" -> account.autocryptPreferEncryptMutual
             "upload_sent_messages" -> account.isUploadSentMessages
             else -> defValue
@@ -52,21 +52,21 @@ class AccountSettingsDataStore(
                 return
             }
             "mark_message_as_read_on_view" -> account.isMarkMessageAsReadOnView = value
-            "account_sync_remote_deletetions" -> account.setSyncRemoteDeletions(value)
+            "account_sync_remote_deletetions" -> account.isSyncRemoteDeletions = value
             "push_poll_on_connect" -> account.isPushPollOnConnect = value
             "always_show_cc_bcc" -> account.isAlwaysShowCcBcc = value
-            "message_read_receipt" -> account.setMessageReadReceipt(value)
+            "message_read_receipt" -> account.isMessageReadReceipt = value
             "default_quoted_text_shown" -> account.isDefaultQuotedTextShown = value
             "reply_after_quote" -> account.isReplyAfterQuote = value
             "strip_signature" -> account.isStripSignature = value
             "account_notify" -> account.isNotifyNewMail = value
             "account_notify_self" -> account.isNotifySelfNewMail = value
             "account_notify_contacts_mail_only" -> account.isNotifyContactsMailOnly = value
-            "account_vibrate" -> account.notificationSetting.setVibrate(value)
+            "account_vibrate" -> account.notificationSetting.isVibrateEnabled = value
             "account_led" -> account.notificationSetting.setLed(value)
             "account_notify_sync" -> account.isNotifySync = value
-            "notification_opens_unread" -> account.setGoToUnreadMessageSearch(value)
-            "remote_search_enabled" -> account.setAllowRemoteSearch(value)
+            "notification_opens_unread" -> account.isGoToUnreadMessageSearch = value
+            "remote_search_enabled" -> account.isAllowRemoteSearch = value
             "openpgp_hide_sign_only" -> account.isOpenPgpHideSignOnly = value
             "openpgp_encrypt_subject" -> account.isOpenPgpEncryptSubject = value
             "openpgp_encrypt_all_drafts" -> account.isOpenPgpEncryptAllDrafts = value
