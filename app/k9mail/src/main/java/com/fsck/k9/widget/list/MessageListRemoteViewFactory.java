@@ -18,9 +18,7 @@ import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
-import com.fsck.k9.Account;
 import com.fsck.k9.K9;
-import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.external.MessageProvider;
 
@@ -33,7 +31,8 @@ public class MessageListRemoteViewFactory implements RemoteViewsService.RemoteVi
             MessageProvider.MessageColumns.PREVIEW,
             MessageProvider.MessageColumns.UNREAD,
             MessageProvider.MessageColumns.HAS_ATTACHMENTS,
-            MessageProvider.MessageColumns.URI
+            MessageProvider.MessageColumns.URI,
+            MessageProvider.MessageColumns.ACCOUNT_COLOR,
     };
 
 
@@ -86,11 +85,7 @@ public class MessageListRemoteViewFactory implements RemoteViewsService.RemoteVi
                 boolean unread = toBoolean(cursor.getString(4));
                 boolean hasAttachment = toBoolean(cursor.getString(5));
                 Uri viewUri = Uri.parse(cursor.getString(6));
-
-                String segment = viewUri.getPathSegments().get(0);
-                int index = Integer.parseInt(segment);
-                Account account = Preferences.getPreferences(context.getApplicationContext()).getAccounts().get(index);
-                int color = account.getChipColor();
+                int color = cursor.getInt(7);
 
                 mailItems.add(new MailItem(sender, date, subject, preview, unread, hasAttachment, viewUri, color));
             }
