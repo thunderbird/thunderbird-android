@@ -31,7 +31,8 @@ public class MessageListRemoteViewFactory implements RemoteViewsService.RemoteVi
             MessageProvider.MessageColumns.PREVIEW,
             MessageProvider.MessageColumns.UNREAD,
             MessageProvider.MessageColumns.HAS_ATTACHMENTS,
-            MessageProvider.MessageColumns.URI
+            MessageProvider.MessageColumns.URI,
+            MessageProvider.MessageColumns.ACCOUNT_COLOR,
     };
 
 
@@ -84,8 +85,9 @@ public class MessageListRemoteViewFactory implements RemoteViewsService.RemoteVi
                 boolean unread = toBoolean(cursor.getString(4));
                 boolean hasAttachment = toBoolean(cursor.getString(5));
                 Uri viewUri = Uri.parse(cursor.getString(6));
+                int color = cursor.getInt(7);
 
-                mailItems.add(new MailItem(sender, date, subject, preview, unread, hasAttachment, viewUri));
+                mailItems.add(new MailItem(sender, date, subject, preview, unread, hasAttachment, viewUri, color));
             }
         } finally {
             cursor.close();
@@ -135,6 +137,9 @@ public class MessageListRemoteViewFactory implements RemoteViewsService.RemoteVi
         Intent intent = new Intent();
         intent.setData(item.uri);
         remoteView.setOnClickFillInIntent(R.id.mail_list_item, intent);
+
+        remoteView.setInt(R.id.chip, "setBackgroundColor", item.color);
+
         return remoteView;
     }
 
@@ -180,10 +185,11 @@ public class MessageListRemoteViewFactory implements RemoteViewsService.RemoteVi
         final boolean unread;
         final boolean hasAttachment;
         final Uri uri;
+        final int color;
 
 
         MailItem(String sender, long date, String subject, String preview, boolean unread, boolean hasAttachment,
-                Uri viewUri) {
+                Uri viewUri, int color) {
             this.sender = sender;
             this.date = date;
             this.preview = preview;
@@ -191,6 +197,7 @@ public class MessageListRemoteViewFactory implements RemoteViewsService.RemoteVi
             this.unread = unread;
             this.uri = viewUri;
             this.hasAttachment = hasAttachment;
+            this.color = color;
         }
 
         int getTextColor() {
