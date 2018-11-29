@@ -618,6 +618,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
     public void openUnifiedInbox() {
+        account = null;
         drawer.selectUnifiedInbox();
         actionDisplaySearch(this, SearchAccount.createUnifiedInboxAccount().getRelatedSearch(), false, false);
     }
