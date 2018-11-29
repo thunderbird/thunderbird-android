@@ -103,12 +103,6 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         }
 
         when(requestCode) {
-            REQUEST_PICK_DIRECTORY_PATH -> {
-                result.data?.path?.let {
-                    setAttachmentDefaultPath(it)
-                }
-            }
-
             REQUEST_PICK_DIRECTORY_URI_TREE -> {
                 val uriTree = result.getData()
                 val documentFile = DocumentFile.fromTreeUri(getContext(), uriTree)
@@ -117,12 +111,6 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
                 setAttachmentDefaultPath(uriTree.toString())
             }
         }
-    }
-
-    override fun onActivityResult(group: PreferenceGroup?, requestCode: Int, resultCode: Int, data: Intent?) {
-
-
-
     }
 
 
@@ -137,7 +125,6 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
 
 
     companion object {
-        private const val REQUEST_PICK_DIRECTORY_PATH = 1
         private const val REQUEST_PICK_DIRECTORY_URI_TREE = 2
 
         private const val PREFERENCE_MISC_CATEGORY = "misc_preferences"

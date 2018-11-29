@@ -35,6 +35,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.K9ActivityCommon;
 import com.fsck.k9.helper.FileHelper;
+import com.fsck.k9.helper.Utility;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.MessageLoaderHelper;
@@ -53,12 +54,11 @@ import com.fsck.k9.ui.messageview.MessageCryptoPresenter.MessageCryptoMvpView;
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity;
 import com.fsck.k9.view.MessageCryptoDisplayStatus;
 import com.fsck.k9.view.MessageHeader;
-
 import timber.log.Timber;
 
 
 public class MessageViewFragment extends Fragment implements ConfirmationDialogFragmentListener,
-        AttachmentViewCallback, OnClickShowCryptoKeyListener {
+        AttachmentViewCallback, OnClickShowCryptoKeyListener, DownloadImageCallback {
 
     private static final String ARG_REFERENCE = "reference";
 
@@ -68,10 +68,10 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     private static final int ACTIVITY_SAVE_ATTACHMENT_SINGLE = 4;
     private static final int ACTIVITY_SAVE_ATTACHMENT_TREE = 5;
+    private static final int ACTIVITY_SAVE_IMAGE = 6;
 
     public static final int REQUEST_MASK_LOADER_HELPER = (1 << 8);
     public static final int REQUEST_MASK_CRYPTO_PRESENTER = (1 << 9);
-
 
     public static final int PROGRESS_THRESHOLD_MILLIS = 500 * 1000;
 
@@ -115,6 +115,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private Context mContext;
 
     private AttachmentViewInfo currentAttachmentViewInfo;
+
+    private Uri currentDownloadImageUri;
 
     @Override
     public void onAttach(Context context) {
@@ -168,7 +170,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         Context context = new ContextThemeWrapper(inflater.getContext(),
                 K9ActivityCommon.getK9ThemeResourceId(K9.getK9MessageViewTheme()));
         LayoutInflater layoutInflater = LayoutInflater.from(context);
@@ -176,6 +178,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
         mMessageView = view.findViewById(R.id.message_view);
         mMessageView.setAttachmentCallback(this);
+        mMessageView.setDownloadImageCallback(this);
         mMessageView.setMessageCryptoPresenter(messageCryptoPresenter);
 
         mMessageView.setOnToggleFlagClickListener(new OnClickListener() {
@@ -494,7 +497,17 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
                 Timber.i("ACTIVITY_SAVE_ATTACHMENT_TREE uri " + uriTree.getPath());
                 getAttachmentController(currentAttachmentViewInfo).saveAttachmentToFolder();
+
+            case ACTIVITY_SAVE_IMAGE: {
+                Uri documentsUri = data.getData();
+                Timber.i("ACTIVITY_SAVE_IMAGE uri " + documentsUri.getPath());
+
+                new DownloadImageTask(getContext()).execute(currentDownloadImageUri, documentsUri);
+                break;
+            }
         }
+
+
     }
 
     public void onSendAlternate() {
@@ -687,7 +700,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
         @Override
         public void startPendingIntentForCryptoPresenter(IntentSender si, Integer requestCode, Intent fillIntent,
-                                                         int flagsMask, int flagValues, int extraFlags) throws SendIntentException {
+                int flagsMask, int flagValues, int extraFlags) throws SendIntentException {
             if (requestCode == null) {
                 getActivity().startIntentSender(si, fillIntent, flagsMask, flagValues, extraFlags);
                 return;
@@ -732,30 +745,41 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         messageCryptoPresenter.onClickShowCryptoKey();
     }
 
+    @Override
+    public void onSaveImage(Uri imageUri) {
+        if (getContext() == null)
+            return;
+
+        currentDownloadImageUri = imageUri;
+        String filename = Utility.getFileNameFromUri(imageUri, "saved_image");
+        String mimeType = Utility.getMimeTypeFromUri(imageUri, getContext());
+        if (mimeType == null)
+            mimeType = "*/*";
+
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType(mimeType);
+        intent.putExtra(Intent.EXTRA_TITLE, filename);
+
+
+        startActivityForResult(intent, ACTIVITY_SAVE_IMAGE);
+    }
+
     public interface MessageViewFragmentListener {
         void onForward(MessageReference messageReference, Parcelable decryptionResultForReply);
-
         void onForwardAsAttachment(MessageReference messageReference, Parcelable decryptionResultForReply);
-
         void disableDeleteAction();
-
         void onReplyAll(MessageReference messageReference, Parcelable decryptionResultForReply);
-
         void onReply(MessageReference messageReference, Parcelable decryptionResultForReply);
-
         void displayMessageSubject(String title);
-
         void setProgress(boolean b);
-
         void showNextMessageOrReturn();
-
         void messageHeaderViewAvailable(MessageHeader messageHeaderView);
-
         void updateMenu();
     }
 
     public boolean isInitialized() {
-        return mInitialized;
+        return mInitialized ;
     }
 
 
@@ -821,7 +845,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
         @Override
         public void startIntentSenderForMessageLoaderHelper(IntentSender si, int requestCode, Intent fillIntent,
-                                                            int flagsMask, int flagValues, int extraFlags) {
+                int flagsMask, int flagValues, int extraFlags) {
             showProgressThreshold = null;
             try {
                 requestCode |= REQUEST_MASK_LOADER_HELPER;
@@ -839,7 +863,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         currentAttachmentViewInfo = attachment;
         getAttachmentController(attachment).viewAttachment();
     }
-
 
     @Override
     public void onSaveAttachment(AttachmentViewInfo attachment) {
@@ -879,7 +902,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         intent.setType(currentAttachmentViewInfo.mimeType);
         intent.putExtra(Intent.EXTRA_TITLE, currentAttachmentViewInfo.displayName);
 
-        startActivityForResult(intent, ACTIVITY_SAVE_ATTACHMENT_SINGLE);
+        startActivityForResult(intent, ACTIVITY_SAVE_ATTACHMENT_TREE);
     }
 
     private AttachmentController getAttachmentController(AttachmentViewInfo attachment) {

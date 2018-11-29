@@ -266,7 +266,8 @@ public class FileHelper {
      * @return True if the uri is present
      */
     public static boolean isDocumentTreePermissionGranted(Context context, Uri dirUri) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT)
+        //SAF trees are not supported on KITKAT
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
             return false;
 
 

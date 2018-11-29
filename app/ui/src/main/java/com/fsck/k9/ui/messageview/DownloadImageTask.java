@@ -30,7 +30,7 @@ import org.apache.commons.io.IOUtils;
 
 
 @Deprecated
-class DownloadImageTask extends AsyncTask<String, Void, String> {
+class DownloadImageTask extends AsyncTask<Uri, Void, String> {
     private static final String[] ATTACHMENT_PROJECTION = new String[] {
             AttachmentProviderColumns._ID,
             AttachmentProviderColumns.DISPLAY_NAME
@@ -47,16 +47,18 @@ class DownloadImageTask extends AsyncTask<String, Void, String> {
     }
 
     @Override
-    protected String doInBackground(String... params) {
-        String url = params[0];
+    protected String doInBackground(Uri... params) {
+        String url = params[0].toString();
+        Uri outputFile = params[1];
+
         try {
             boolean isExternalImage = url.startsWith("http");
 
             String fileName;
             if (isExternalImage) {
-                fileName = downloadAndStoreImage(url);
+                fileName = downloadAndStoreImage(url, outputFile);
             } else {
-                fileName = fetchAndStoreImage(url);
+                fileName = fetchAndStoreImage(url, outputFile);
             }
 
             return fileName;
@@ -80,125 +82,33 @@ class DownloadImageTask extends AsyncTask<String, Void, String> {
         Toast.makeText(context, text, Toast.LENGTH_LONG).show();
     }
 
-    private String downloadAndStoreImage(String urlString) throws IOException {
+    private String downloadAndStoreImage(String urlString, Uri outputFile) throws IOException {
         URL url = new URL(urlString);
         URLConnection conn = url.openConnection();
 
-        InputStream in = conn.getInputStream();
-        try {
-            String fileName = getFileNameFromUrl(url);
-            String mimeType = getMimeType(conn, fileName);
-
-            String fileNameWithExtension = getFileNameWithExtension(fileName, mimeType);
-            return writeFileToStorage(fileNameWithExtension, in, mimeType);
-        } finally {
-            in.close();
+        try (InputStream in = conn.getInputStream()) {
+            return writeFileToStorage(in, outputFile);
         }
     }
 
-    private String getFileNameFromUrl(URL url) {
-        String fileName;
-
-        String path = url.getPath();
-        int start = path.lastIndexOf("/");
-        if (start != -1 && start + 1 < path.length()) {
-            fileName = UrlEncodingHelper.decodeUtf8(path.substring(start + 1));
-        } else {
-            fileName = DEFAULT_FILE_NAME;
-        }
-
-        return fileName;
-    }
-
-    private String getMimeType(URLConnection conn, String fileName) {
-        String mimeType = null;
-        if (fileName.indexOf('.') == -1) {
-            mimeType = conn.getContentType();
-        }
-
-        return mimeType;
-    }
-
-    private String fetchAndStoreImage(String urlString) throws IOException {
+    private String fetchAndStoreImage(String urlString, Uri outputFile) throws IOException {
         ContentResolver contentResolver = context.getContentResolver();
         Uri uri = Uri.parse(urlString);
 
-        String fileName = getFileNameFromContentProvider(contentResolver, uri);
-        String mimeType = getMimeType(contentResolver, uri, fileName);
-
-        InputStream in = contentResolver.openInputStream(uri);
-        try {
-            String fileNameWithExtension = getFileNameWithExtension(fileName, mimeType);
-            return writeFileToStorage(fileNameWithExtension, in, mimeType);
-        } finally {
-            in.close();
+        try (InputStream in = contentResolver.openInputStream(uri)) {
+            return writeFileToStorage(in, outputFile);
         }
     }
 
-    private String getMimeType(ContentResolver contentResolver, Uri uri, String fileName) {
-        String mimeType = null;
-        if (fileName.indexOf('.') == -1) {
-            mimeType = contentResolver.getType(uri);
+    private String writeFileToStorage(InputStream in, Uri outputFile) throws IOException {
+        DocumentFile file = DocumentFile.fromSingleUri(context, outputFile);
+        OutputStream out = context.getContentResolver().openOutputStream(outputFile);
+        String name = file.getName();
+
+        if (out == null) {
+            Timber.e("unable to open outputstream for %s", outputFile.toString());
+            return null;
         }
-
-        return mimeType;
-    }
-
-    private String getFileNameFromContentProvider(ContentResolver contentResolver, Uri uri) {
-        String displayName = DEFAULT_FILE_NAME;
-
-        Cursor cursor = contentResolver.query(uri, ATTACHMENT_PROJECTION, null, null, null);
-        if (cursor != null) {
-            try {
-                if (cursor.moveToNext() && !cursor.isNull(DISPLAY_NAME_INDEX)) {
-                    displayName = cursor.getString(DISPLAY_NAME_INDEX);
-                }
-            } finally {
-                cursor.close();
-            }
-        }
-
-        return displayName;
-    }
-
-    private String getFileNameWithExtension(String fileName, String mimeType) {
-        if (fileName.indexOf('.') != -1) {
-            return fileName;
-        }
-
-        // Use JPEG as fallback
-        String extension = "jpeg";
-        if (mimeType != null) {
-            String extensionFromMimeType = MimeUtility.getExtensionByMimeType(mimeType);
-            if (extensionFromMimeType != null) {
-                extension = extensionFromMimeType;
-            }
-        }
-
-        return fileName + "." + extension;
-    }
-
-    private String writeFileToStorage(String fileName, InputStream in, String mimeType) throws IOException {
-        String sanitized = FileHelper.sanitizeFilename(fileName);
-        OutputStream out;
-        String name;
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            DocumentFile pickedDir = DocumentFile.fromTreeUri(context, Uri.parse(K9.getAttachmentDefaultPath()));
-            DocumentFile newFile = FileHelper.createUniqueFile(pickedDir, sanitized, mimeType);
-
-            out = context.getContentResolver().openOutputStream(newFile.getUri());
-            name = newFile.getName();
-
-
-        } else {
-            File directory = new File(K9.getAttachmentDefaultPath());
-            File file = FileHelper.createUniqueFile(directory, sanitized);
-
-            out = new FileOutputStream(file);
-            name = file.getName();
-        }
-
 
         try {
             IOUtils.copy(in, out);

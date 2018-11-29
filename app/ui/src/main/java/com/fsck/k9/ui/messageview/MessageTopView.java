@@ -49,6 +49,7 @@ public class MessageTopView extends LinearLayout {
     private ViewGroup containerView;
     private Button mDownloadRemainder;
     private AttachmentViewCallback attachmentCallback;
+    private DownloadImageCallback imageCallback;
     private Button showPicturesButton;
     private boolean isShowingProgress;
     private boolean showPicturesButtonClicked;
@@ -124,7 +125,7 @@ public class MessageTopView extends LinearLayout {
             public void onLoadFinished() {
                 displayViewOnLoadFinished(true);
             }
-        }, loadPictures, hideUnsignedTextDivider, attachmentCallback);
+        }, loadPictures, hideUnsignedTextDivider, attachmentCallback, imageCallback);
 
         if (view.hasHiddenExternalImages() && !showPicturesButtonClicked) {
             showShowPicturesButton();
@@ -237,6 +238,10 @@ public class MessageTopView extends LinearLayout {
 
     public void setAttachmentCallback(AttachmentViewCallback callback) {
         attachmentCallback = callback;
+    }
+
+    public void setDownloadImageCallback(DownloadImageCallback callback) {
+        imageCallback = callback;
     }
 
     public void setMessageCryptoPresenter(MessageCryptoPresenter messageCryptoPresenter) {

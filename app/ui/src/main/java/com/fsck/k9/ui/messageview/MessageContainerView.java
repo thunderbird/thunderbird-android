@@ -66,6 +66,8 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
     private boolean showingPictures;
     private LayoutInflater mInflater;
     private AttachmentViewCallback attachmentCallback;
+    private DownloadImageCallback imageCallback;
+
     private ClipboardManager mClipboardManager;
     private Map<AttachmentViewInfo, AttachmentView> attachmentViewMap = new HashMap<>();
     private Map<Uri, AttachmentViewInfo> attachments = new HashMap<>();
@@ -187,8 +189,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
                                 if (inlineImage) {
                                     attachmentCallback.onSaveAttachment(attachmentViewInfo);
                                 } else {
-                                    //TODO: Use download manager
-                                    new DownloadImageTask(getContext()).execute(uri.toString());
+                                    imageCallback.onSaveImage(uri);
                                 }
                                 break;
                             }
@@ -369,9 +370,10 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
 
     public void displayMessageViewContainer(MessageViewInfo messageViewInfo,
             final OnRenderingFinishedListener onRenderingFinishedListener, boolean loadPictures,
-            boolean hideUnsignedTextDivider, AttachmentViewCallback attachmentCallback) {
+            boolean hideUnsignedTextDivider, AttachmentViewCallback attachmentCallback, DownloadImageCallback imageCallback) {
 
         this.attachmentCallback = attachmentCallback;
+        this.imageCallback = imageCallback;
 
         resetView();
 

@@ -2,19 +2,24 @@
 package com.fsck.k9.helper;
 
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.annotation.SuppressLint;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -322,5 +327,45 @@ public class Utility {
             sMainThreadHandler = new Handler(Looper.getMainLooper());
         }
         return sMainThreadHandler;
+    }
+
+    /**
+     * @return the filename or if no filenmame is found the defaultName
+     */
+    public static String getFileNameFromUri(Uri fileUri, String defaultName) {
+        String fileName;
+
+        String path = fileUri.getPath();
+        if (path == null)
+            return defaultName;
+
+        int start = path.lastIndexOf("/");
+        if (start != -1 && start + 1 < path.length()) {
+            fileName = UrlEncodingHelper.decodeUtf8(path.substring(start + 1));
+        } else {
+            fileName = defaultName;
+        }
+
+        return fileName;
+    }
+
+    /**
+     * @return the mime type for the related url
+     */
+    public static String getMimeTypeFromUri(Uri uri, Context context) {
+        if (uri == null || uri.getScheme() == null || context == null )
+            return null;
+
+        String mimeType;
+        if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
+            ContentResolver cr = context.getContentResolver();
+            mimeType = cr.getType(uri);
+        } else {
+            String fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri
+                    .toString());
+            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(
+                    fileExtension.toLowerCase());
+        }
+        return mimeType;
     }
 }
