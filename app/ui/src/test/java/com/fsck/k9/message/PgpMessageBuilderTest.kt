@@ -28,8 +28,7 @@ import org.apache.commons.io.Charsets
 import org.apache.commons.io.IOUtils
 import org.apache.james.mime4j.util.MimeUtil
 import org.junit.Assert
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.koin.standalone.inject
@@ -145,6 +144,7 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
         val message = captor.value
         assertMessageHasAutocryptHeader(message, SENDER_EMAIL, false, AUTOCRYPT_KEY_MATERIAL)
+        assertEquals(0, message.getHeader("Autocrypt-Draft-State").size)
     }
 
     @Test
@@ -310,6 +310,60 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         pgpMessageBuilder.setCryptoStatus(cryptoStatus)
         pgpMessageBuilder.isDraft = true
 
+        buildMessage()
+    }
+
+    @Test
+    @Throws(MessagingException::class)
+    fun buildDraft() {
+        pgpMessageBuilder.setCryptoStatus(defaultCryptoStatus)
+        pgpMessageBuilder.isDraft = true
+
+        val mimeMessage = buildMessage()
+
+        assertEquals("encrypt=no; ", mimeMessage.getHeader("Autocrypt-Draft-State").get(0))
+    }
+
+    @Test
+    @Throws(MessagingException::class)
+    fun buildDraft_replyToEncrypted() {
+        val cryptoStatus = defaultCryptoStatus.copy(
+                cryptoMode = CryptoMode.NO_CHOICE,
+                isReplyToEncrypted = true
+        )
+        pgpMessageBuilder.setCryptoStatus(cryptoStatus)
+        pgpMessageBuilder.isDraft = true
+
+        val mimeMessage = buildMessage()
+
+        assertEquals("encrypt=yes; _is-reply=yes; ", mimeMessage.getHeader("Autocrypt-Draft-State").get(0))
+    }
+
+    @Test
+    @Throws(MessagingException::class)
+    fun buildDraft_encrypt() {
+        val cryptoStatus = defaultCryptoStatus.copy(cryptoMode = CryptoMode.CHOICE_ENABLED)
+        pgpMessageBuilder.setCryptoStatus(cryptoStatus)
+        pgpMessageBuilder.isDraft = true
+
+        val mimeMessage = buildMessage()
+
+        assertEquals("encrypt=yes; _by-choice=yes; ", mimeMessage.getHeader("Autocrypt-Draft-State").get(0))
+    }
+
+    @Test
+    @Throws(MessagingException::class)
+    fun buildDraft_sign() {
+        val cryptoStatus = defaultCryptoStatus.copy(cryptoMode = CryptoMode.SIGN_ONLY)
+        pgpMessageBuilder.setCryptoStatus(cryptoStatus)
+        pgpMessageBuilder.isDraft = true
+
+        val mimeMessage = buildMessage()
+
+        assertEquals("encrypt=no; _sign-only=yes; _by-choice=yes; ", mimeMessage.getHeader("Autocrypt-Draft-State").get(0))
+    }
+
+    private fun buildMessage(): MimeMessage {
         val returnIntent = spy(Intent())
         returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS)
         `when`(openPgpApi.executeApi(any(Intent::class.java), any(OpenPgpDataSource::class.java), any(OutputStream::class.java)))
@@ -318,8 +372,12 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         val mockCallback = mock(Callback::class.java)
         pgpMessageBuilder.buildAsync(mockCallback)
 
-        verify(mockCallback).onMessageBuildSuccess(any<MimeMessage>(), eq(true))
+        val mimeMessageCaptor = ArgumentCaptor.forClass(MimeMessage::class.java)
+        verify(mockCallback).onMessageBuildSuccess(mimeMessageCaptor.capture(), eq(true))
         verifyNoMoreInteractions(mockCallback)
+
+        assertNotNull(mimeMessageCaptor.value)
+        return mimeMessageCaptor.value
     }
 
     @Test
