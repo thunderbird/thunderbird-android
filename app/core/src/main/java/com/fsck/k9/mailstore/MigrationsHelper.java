@@ -6,8 +6,8 @@ import java.util.List;
 import android.content.Context;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.preferences.Storage;
 
 
@@ -17,6 +17,7 @@ import com.fsck.k9.preferences.Storage;
 public interface MigrationsHelper {
     LocalStore getLocalStore();
     Storage getStorage();
+    Preferences getPreferences();
     Account getAccount();
     Context getContext();
     String serializeFlags(List<Flag> flags);

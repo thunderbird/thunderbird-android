@@ -139,9 +139,7 @@ public class RemoteControlService extends CoreService {
                             K9.setK9Theme(K9RemoteControl.K9_THEME_DARK.equals(theme) ? K9.Theme.DARK : K9.Theme.LIGHT);
                         }
 
-                        Storage storage = preferences.getStorage();
-
-                        StorageEditor editor = storage.edit();
+                        StorageEditor editor = preferences.createStorageEditor();
                         K9.save(editor);
                         editor.commit();
 

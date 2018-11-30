@@ -14,7 +14,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
 import com.fsck.k9.core.BuildConfig;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.MessagingException;
@@ -337,6 +337,11 @@ public class StoreSchemaDefinitionTest extends K9RobolectricTest {
             @Override
             public LocalStore getLocalStore() {
                 return localStore;
+            }
+
+            @Override
+            public Preferences getPreferences() {
+                return mock(Preferences.class);
             }
 
             @Override

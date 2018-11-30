@@ -18,10 +18,9 @@ class MigrationTo42 {
     public static void from41MoveFolderPreferences(MigrationsHelper migrationsHelper) {
         try {
             LocalStore localStore = migrationsHelper.getLocalStore();
-            Storage storage = migrationsHelper.getStorage();
 
             long startTime = SystemClock.elapsedRealtime();
-            StorageEditor editor = storage.edit();
+            StorageEditor editor = migrationsHelper.getPreferences().createStorageEditor();
 
             List<? extends Folder > folders = localStore.getPersonalNamespaces(true);
             for (Folder folder : folders) {

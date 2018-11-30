@@ -850,7 +850,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             K9.setSortAscending(this.sortType, this.sortAscending);
             sortDateAscending = K9.isSortAscending(SortType.SORT_DATE);
 
-            StorageEditor editor = preferences.getStorage().edit();
+            StorageEditor editor = preferences.createStorageEditor();
             K9.save(editor);
             editor.commit();
         }

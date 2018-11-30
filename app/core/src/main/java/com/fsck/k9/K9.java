@@ -383,7 +383,7 @@ public class K9 {
             preferences.saveAccount(account);
         }
 
-        storage.edit()
+        preferences.createStorageEditor()
                 .remove("openPgpProvider")
                 .remove("openPgpSupportSignOnly")
                 .commit();
@@ -1075,7 +1075,7 @@ public class K9 {
             @Override
             protected Void doInBackground(Void... voids) {
                 Preferences prefs = DI.get(Preferences.class);
-                StorageEditor editor = prefs.getStorage().edit();
+                StorageEditor editor = prefs.createStorageEditor();
                 save(editor);
                 editor.commit();
 

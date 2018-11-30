@@ -9,19 +9,23 @@ import java.util.Map.Entry;
 
 import android.os.SystemClock;
 
+import com.fsck.k9.preferences.StoragePersister.StoragePersistOperationCallback;
+import com.fsck.k9.preferences.StoragePersister.StoragePersistOperations;
 import timber.log.Timber;
 
 
 public class StorageEditor {
     private Storage storage;
+    private StoragePersister storagePersister;
+
     private Map<String, String> changes = new HashMap<>();
     private List<String> removals = new ArrayList<>();
+    private Map<String, String> snapshot = new HashMap<>();
 
-    Map<String, String> snapshot = new HashMap<>();
 
-
-    StorageEditor(Storage storage) {
+    public StorageEditor(Storage storage, StoragePersister storagePersister) {
         this.storage = storage;
+        this.storagePersister = storagePersister;
         snapshot.putAll(storage.getAll());
     }
 
@@ -52,10 +56,16 @@ public class StorageEditor {
     private void commitChanges() {
         long startTime = SystemClock.elapsedRealtime();
         Timber.i("Committing preference changes");
-        Runnable committer = new Runnable() {
-            public void run() {
+        StoragePersistOperationCallback committer = new StoragePersistOperationCallback() {
+            @Override
+            public void beforePersistTransaction(Map<String, String> workingStorage) {
+                workingStorage.putAll(storage.getAll());
+            }
+
+            @Override
+            public void persist(StoragePersistOperations ops) {
                 for (String removeKey : removals) {
-                    storage.remove(removeKey);
+                    ops.remove(removeKey);
                 }
                 Map<String, String> insertables = new HashMap<>();
                 for (Entry<String, String> entry : changes.entrySet()) {
@@ -66,13 +76,17 @@ public class StorageEditor {
                         insertables.put(key, newValue);
                     }
                 }
-                storage.put(insertables);
+                ops.put(insertables);
+            }
+
+            @Override
+            public void onPersistTransactionSuccess(Map<String, String> workingStorage) {
+                storage.replaceAll(workingStorage);
             }
         };
-        storage.doInTransaction(committer);
+        storagePersister.doInTransaction(committer);
         long endTime = SystemClock.elapsedRealtime();
         Timber.i("Preferences commit took %d ms", endTime - startTime);
-
     }
 
     public StorageEditor putBoolean(String key,

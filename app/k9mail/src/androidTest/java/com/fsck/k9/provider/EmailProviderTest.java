@@ -100,7 +100,7 @@ public class EmailProviderTest extends ProviderTestCase2<EmailProvider> {
 
     @Test(expected = IllegalArgumentException.class)
     public void query_forMessagesWithAccountAndWithoutRequiredFields_throwsIllegalArgumentException() {
-        Account account = Preferences.getPreferences(getContext()).newAccount();
+        Account account = Preferences.getPreferences(getContext()).createEmptyAccount();
         account.getUuid();
 
         Cursor cursor = getProvider().query(
@@ -116,7 +116,7 @@ public class EmailProviderTest extends ProviderTestCase2<EmailProvider> {
 
     @Test(expected = SQLException.class) //Handle this better?
     public void query_forMessagesWithAccountAndRequiredFieldsWithNoOrderBy_throwsSQLiteException() {
-        Account account = Preferences.getPreferences(getContext()).newAccount();
+        Account account = Preferences.getPreferences(getContext()).createEmptyAccount();
         account.getUuid();
 
         Cursor cursor = getProvider().query(
@@ -136,7 +136,7 @@ public class EmailProviderTest extends ProviderTestCase2<EmailProvider> {
 
     @Test
     public void query_forMessagesWithEmptyAccountAndRequiredFieldsAndOrderBy_providesEmptyResult() {
-        Account account = Preferences.getPreferences(getContext()).newAccount();
+        Account account = Preferences.getPreferences(getContext()).createEmptyAccount();
         account.getUuid();
 
         Cursor cursor = getProvider().query(
@@ -157,7 +157,7 @@ public class EmailProviderTest extends ProviderTestCase2<EmailProvider> {
 
     @Test
     public void query_forMessagesWithAccountAndRequiredFieldsAndOrderBy_providesResult() throws MessagingException {
-        Account account = Preferences.getPreferences(getContext()).newAccount();
+        Account account = Preferences.getPreferences(getContext()).createEmptyAccount();
         account.getUuid();
         DI.get(LocalStoreProvider.class).getInstance(account).getFolder("Inbox").appendMessages(Collections.singletonList(message));
 
@@ -179,7 +179,7 @@ public class EmailProviderTest extends ProviderTestCase2<EmailProvider> {
 
     @Test
     public void query_forMessagesWithAccountAndRequiredFieldsAndOrderBy_sortsCorrectly() throws MessagingException {
-        Account account = Preferences.getPreferences(getContext()).newAccount();
+        Account account = Preferences.getPreferences(getContext()).createEmptyAccount();
         account.getUuid();
         DI.get(LocalStoreProvider.class).getInstance(account)
                 .getFolder("Inbox").appendMessages(Arrays.asList(message, laterMessage));
@@ -205,7 +205,7 @@ public class EmailProviderTest extends ProviderTestCase2<EmailProvider> {
 
     @Test
     public void query_forThreadedMessages_sortsCorrectly() throws MessagingException {
-        Account account = Preferences.getPreferences(getContext()).newAccount();
+        Account account = Preferences.getPreferences(getContext()).createEmptyAccount();
         account.getUuid();
         DI.get(LocalStoreProvider.class).getInstance(account)
                 .getFolder("Inbox").appendMessages(Arrays.asList(message, laterMessage));
@@ -232,7 +232,7 @@ public class EmailProviderTest extends ProviderTestCase2<EmailProvider> {
 
     @Test
     public void query_forThreadedMessages_showsThreadOfEmailOnce() throws MessagingException {
-        Account account = Preferences.getPreferences(getContext()).newAccount();
+        Account account = Preferences.getPreferences(getContext()).createEmptyAccount();
         account.getUuid();
         DI.get(LocalStoreProvider.class).getInstance(account).getFolder("Inbox").appendMessages(Collections.singletonList(message));
         DI.get(LocalStoreProvider.class).getInstance(account).getFolder("Inbox").appendMessages(Collections.singletonList(reply));
@@ -260,7 +260,7 @@ public class EmailProviderTest extends ProviderTestCase2<EmailProvider> {
 
     @Test
     public void query_forThreadedMessages_showsThreadOfEmailWithSameSendTimeOnce() throws MessagingException {
-        Account account = Preferences.getPreferences(getContext()).newAccount();
+        Account account = Preferences.getPreferences(getContext()).createEmptyAccount();
         account.getUuid();
         DI.get(LocalStoreProvider.class).getInstance(account).getFolder("Inbox").appendMessages(Collections.singletonList(message));
         DI.get(LocalStoreProvider.class).getInstance(account).getFolder("Inbox").appendMessages(Collections.singletonList(replyAtSameTime));
@@ -288,7 +288,7 @@ public class EmailProviderTest extends ProviderTestCase2<EmailProvider> {
 
     @Test
     public void query_forAThreadOfMessages_returnsMessage() throws MessagingException {
-        Account account = Preferences.getPreferences(getContext()).newAccount();
+        Account account = Preferences.getPreferences(getContext()).createEmptyAccount();
         account.getUuid();
         Message message = new MimeMessage();
         message.setSubject("Test Subject");

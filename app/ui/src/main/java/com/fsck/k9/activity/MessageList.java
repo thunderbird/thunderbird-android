@@ -1611,7 +1611,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         new Thread(new Runnable() {
             @Override
             public void run() {
-                StorageEditor editor = preferences.getStorage().edit();
+                StorageEditor editor = preferences.createStorageEditor();
                 K9.save(editor);
                 editor.commit();
             }

@@ -244,6 +244,10 @@ public class LocalStore {
         return Preferences.getPreferences(context).getStorage();
     }
 
+    protected Preferences getPreferences() {
+        return Preferences.getPreferences(context);
+    }
+
     public long getSize() throws MessagingException {
 
         final StorageManager storageManager = StorageManager.getInstance(context);
@@ -1334,6 +1338,11 @@ public class LocalStore {
         @Override
         public Storage getStorage() {
             return LocalStore.this.getStorage();
+        }
+
+        @Override
+        public Preferences getPreferences() {
+            return LocalStore.this.getPreferences();
         }
 
         @Override
