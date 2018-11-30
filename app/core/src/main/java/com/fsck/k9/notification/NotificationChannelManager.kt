@@ -21,6 +21,10 @@ class NotificationChannelManager(
         MESSAGES, MISCELLANEOUS
     }
 
+    init {
+        preferences.addOnAccountsChangeListener(this::updateChannels)
+    }
+
     fun updateChannels() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             return

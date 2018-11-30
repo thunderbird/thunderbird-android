@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.RestrictTo.Scope;
 
@@ -48,7 +49,8 @@ public class Preferences {
     private Map<String, Account> accounts = null;
     private List<Account> accountsInOrder = null;
     private Account newAccount;
-    private Context context;
+    private final ArrayList<AccountsChangeListener> accountsChangeListeners = new ArrayList<>();
+    private final Context context;
     private final LocalStoreProvider localStoreProvider;
     private final CoreResourceProvider resourceProvider;
     private final LocalKeyStoreManager localKeyStoreManager;
@@ -182,6 +184,8 @@ public class Preferences {
         if (newAccount == account) {
             newAccount = null;
         }
+
+        notifyListeners();
     }
 
     /**
@@ -223,6 +227,8 @@ public class Preferences {
         StorageEditor editor = createStorageEditor();
         accountPreferenceSerializer.save(editor, storage, account);
         editor.commit();
+
+        notifyListeners();
     }
 
     private void ensureAssignedAccountNumber(Account account) {
@@ -286,5 +292,21 @@ public class Preferences {
         accountPreferenceSerializer.move(storageEditor, account, storage, mUp);
         storageEditor.commit();
         loadAccounts();
+
+        notifyListeners();
+    }
+
+    private void notifyListeners() {
+        for (AccountsChangeListener listener : accountsChangeListeners) {
+            listener.onAccountsChanged();
+        }
+    }
+
+    public void addOnAccountsChangeListener(@NonNull AccountsChangeListener accountsChangeListener) {
+        accountsChangeListeners.add(accountsChangeListener);
+    }
+
+    public void removeOnAccountsChangeListener(@NonNull AccountsChangeListener accountsChangeListener) {
+        accountsChangeListeners.remove(accountsChangeListener);
     }
 }
