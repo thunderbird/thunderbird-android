@@ -83,10 +83,10 @@ public class TrustManagerFactory {
 
         public void checkServerTrusted(X509Certificate[] chain, String authType)
                 throws CertificateException {
-            String message = null;
+            String message;
             X509Certificate certificate = chain[0];
 
-            Throwable cause = null;
+            Throwable cause;
 
             try {
                 defaultTrustManager.checkServerTrusted(chain, authType);
