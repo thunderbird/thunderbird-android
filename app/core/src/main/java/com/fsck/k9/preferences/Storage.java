@@ -1,13 +1,14 @@
 package com.fsck.k9.preferences;
 
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import timber.log.Timber;
 
 public class Storage {
-    private HashMap<String, String> storage = new HashMap<>();
+    private volatile Map<String, String> storage = Collections.emptyMap();
 
     public Storage() { }
 
@@ -66,7 +67,6 @@ public class Storage {
     }
 
     public void replaceAll(Map<String, String> workingStorage) {
-        storage.clear();
-        storage.putAll(workingStorage);
+        storage = new HashMap<>(workingStorage);
     }
 }
