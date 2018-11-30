@@ -9,11 +9,16 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import android.content.Context;
+import android.support.annotation.RestrictTo;
+import android.support.annotation.RestrictTo.Scope;
 
 import com.fsck.k9.backend.BackendManager;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalStore;
+import com.fsck.k9.mailstore.LocalStoreProvider;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
 import timber.log.Timber;
@@ -22,12 +27,16 @@ import timber.log.Timber;
 public class Preferences {
 
     private static Preferences preferences;
+    private AccountPreferenceSerializer accountPreferenceSerializer;
 
     public static synchronized Preferences getPreferences(Context context) {
         Context appContext = context.getApplicationContext();
         CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
+        LocalKeyStoreManager localKeyStoreManager = DI.get(LocalKeyStoreManager.class);
+        AccountPreferenceSerializer accountPreferenceSerializer = DI.get(AccountPreferenceSerializer.class);
+        LocalStoreProvider localStoreProvider = DI.get(LocalStoreProvider.class);
         if (preferences == null) {
-            preferences = new Preferences(appContext, resourceProvider);
+            preferences = new Preferences(appContext, resourceProvider, localStoreProvider, localKeyStoreManager, accountPreferenceSerializer);
         }
         return preferences;
     }
@@ -37,18 +46,31 @@ public class Preferences {
     private List<Account> accountsInOrder = null;
     private Account newAccount;
     private Context context;
+    private final LocalStoreProvider localStoreProvider;
     private final CoreResourceProvider resourceProvider;
+    private final LocalKeyStoreManager localKeyStoreManager;
 
-    private Preferences(Context context, CoreResourceProvider resourceProvider) {
+    private Preferences(Context context, CoreResourceProvider resourceProvider,
+            LocalStoreProvider localStoreProvider, LocalKeyStoreManager localKeyStoreManager,
+            AccountPreferenceSerializer accountPreferenceSerializer) {
         storage = Storage.getStorage(context);
         this.context = context;
         this.resourceProvider = resourceProvider;
+        this.localStoreProvider = localStoreProvider;
+        this.localKeyStoreManager = localKeyStoreManager;
+        this.accountPreferenceSerializer = accountPreferenceSerializer;
         if (storage.isEmpty()) {
             Timber.i("Preferences storage is zero-size, importing from Android-style preferences");
             StorageEditor editor = storage.edit();
             editor.copy(context.getSharedPreferences("AndroidMail.Main", Context.MODE_PRIVATE));
             editor.commit();
         }
+    }
+
+    @RestrictTo(Scope.TESTS)
+    public void clearAccounts() {
+        accounts = new HashMap<>();
+        accountsInOrder = new LinkedList<>();
     }
 
     public synchronized void loadAccounts() {
@@ -58,7 +80,8 @@ public class Preferences {
         if ((accountUuids != null) && (accountUuids.length() != 0)) {
             String[] uuids = accountUuids.split(",");
             for (String uuid : uuids) {
-                Account newAccount = new Account(this, uuid);
+                Account newAccount = new Account(uuid);
+                accountPreferenceSerializer.loadAccount(newAccount, storage);
                 accounts.put(uuid, newAccount);
                 accountsInOrder.add(newAccount);
             }
@@ -113,7 +136,9 @@ public class Preferences {
     }
 
     public synchronized Account newAccount() {
-        newAccount = new Account(context, resourceProvider);
+        String accountUuid = UUID.randomUUID().toString();
+        newAccount = new Account(accountUuid);
+        accountPreferenceSerializer.loadDefaults(newAccount);
         accounts.put(newAccount.getUuid(), newAccount);
         accountsInOrder.add(newAccount);
 
@@ -135,7 +160,8 @@ public class Preferences {
         }
         LocalStore.removeAccount(account);
 
-        account.delete(this);
+        DI.get(AccountPreferenceSerializer.class).delete(storage, account);
+        localKeyStoreManager.deleteCertificates(account);
 
         if (newAccount == account) {
             newAccount = null;
@@ -170,24 +196,72 @@ public class Preferences {
         return storage;
     }
 
-    static <T extends Enum<T>> T getEnumStringPref(Storage storage, String key, T defaultEnum) {
-        String stringPref = storage.getString(key, null);
-
-        if (stringPref == null) {
-            return defaultEnum;
-        } else {
-            try {
-                return Enum.valueOf(defaultEnum.getDeclaringClass(), stringPref);
-            } catch (IllegalArgumentException ex) {
-                Timber.w(ex, "Unable to convert preference key [%s] value [%s] to enum of type %s",
-                        key, stringPref, defaultEnum.getDeclaringClass());
-
-                return defaultEnum;
-            }
-        }
-    }
-
     private BackendManager getBackendManager() {
         return DI.get(BackendManager.class);
+    }
+
+    public void saveAccount(Account account) {
+        StorageEditor editor = storage.edit();
+
+        if (!accounts.containsKey(account.getUuid())) {
+            int accountNumber = generateAccountNumber();
+            account.setAccountNumber(accountNumber);
+        }
+
+        processChangedValues(account);
+
+        accountPreferenceSerializer.save(storage, editor, account);
+    }
+
+    private void processChangedValues(Account account) {
+        if (account.isChangedVisibleLimits()) {
+            try {
+                localStoreProvider.getInstance(account).resetVisibleLimits(account.getDisplayCount());
+            } catch (MessagingException e) {
+                Timber.e(e, "Failed to load LocalStore!");
+            }
+        }
+
+        if (account.isChangedLocalStorageProviderId()) {
+            try {
+                localStoreProvider.getInstance(account).switchLocalStorage(account.getLocalStorageProviderId());
+            } catch (MessagingException e) {
+                Timber.e(e, "Failed to load LocalStore!");
+            }
+        }
+
+        account.resetChangeMarkers();
+    }
+
+    public int generateAccountNumber() {
+        List<Integer> accountNumbers = getExistingAccountNumbers();
+        return findNewAccountNumber(accountNumbers);
+    }
+
+    private List<Integer> getExistingAccountNumbers() {
+        List<Account> accounts = getAccounts();
+        List<Integer> accountNumbers = new ArrayList<>(accounts.size());
+        for (Account a : accounts) {
+            accountNumbers.add(a.getAccountNumber());
+        }
+        return accountNumbers;
+    }
+
+    private static int findNewAccountNumber(List<Integer> accountNumbers) {
+        int newAccountNumber = -1;
+        Collections.sort(accountNumbers);
+        for (int accountNumber : accountNumbers) {
+            if (accountNumber > newAccountNumber + 1) {
+                break;
+            }
+            newAccountNumber = accountNumber;
+        }
+        newAccountNumber++;
+        return newAccountNumber;
+    }
+
+    public void move(Account account, boolean mUp) {
+        accountPreferenceSerializer.move(account, storage, mUp);
+        loadAccounts();
     }
 }

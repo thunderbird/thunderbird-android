@@ -12,6 +12,7 @@ import android.test.ApplicationTestCase;
 import android.test.RenamingDelegatingContext;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.FetchProfile;
@@ -134,7 +135,7 @@ public class ReconstructMessageFromDatabaseTest extends ApplicationTestCase<K9> 
     }
 
     protected LocalFolder createFolderInDatabase() throws MessagingException {
-        LocalStore localStore = LocalStore.getInstance(account, getApplication());
+        LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
         LocalFolder inbox = localStore.getFolder("INBOX");
         localStore.createFolders(Collections.singletonList(inbox), 10);
         return inbox;

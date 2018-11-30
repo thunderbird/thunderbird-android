@@ -20,6 +20,7 @@ import com.fsck.k9.Account.Searchable;
 import com.fsck.k9.Account.ShowPictures;
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.Account.SpecialFolderSelection;
+import com.fsck.k9.AccountPreferenceSerializer;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.core.R;
@@ -68,7 +69,7 @@ public class AccountSettings {
                 new V(1, new ColorSetting(0xFF0000FF))
         ));
         s.put("defaultQuotedTextShown", Settings.versions(
-                new V(1, new BooleanSetting(Account.DEFAULT_QUOTED_TEXT_SHOWN))
+                new V(1, new BooleanSetting(AccountPreferenceSerializer.DEFAULT_QUOTED_TEXT_SHOWN))
         ));
         s.put("deletePolicy", Settings.versions(
                 new V(1, new DeletePolicySetting(DeletePolicy.NEVER))
@@ -128,13 +129,13 @@ public class AccountSettings {
                 new V(1, new IntegerResourceSetting(-1, R.array.message_age_values))
         ));
         s.put("messageFormat", Settings.versions(
-                new V(1, new EnumSetting<>(MessageFormat.class, Account.DEFAULT_MESSAGE_FORMAT))
+                new V(1, new EnumSetting<>(MessageFormat.class, AccountPreferenceSerializer.DEFAULT_MESSAGE_FORMAT))
         ));
         s.put("messageFormatAuto", Settings.versions(
-                new V(2, new BooleanSetting(Account.DEFAULT_MESSAGE_FORMAT_AUTO))
+                new V(2, new BooleanSetting(AccountPreferenceSerializer.DEFAULT_MESSAGE_FORMAT_AUTO))
         ));
         s.put("messageReadReceipt", Settings.versions(
-                new V(1, new BooleanSetting(Account.DEFAULT_MESSAGE_READ_RECEIPT))
+                new V(1, new BooleanSetting(AccountPreferenceSerializer.DEFAULT_MESSAGE_READ_RECEIPT))
         ));
         s.put("notifyMailCheck", Settings.versions(
                 new V(1, new BooleanSetting(false))
@@ -152,13 +153,13 @@ public class AccountSettings {
                 new V(1, new BooleanSetting(true))
         ));
         s.put("quotePrefix", Settings.versions(
-                new V(1, new StringSetting(Account.DEFAULT_QUOTE_PREFIX))
+                new V(1, new StringSetting(AccountPreferenceSerializer.DEFAULT_QUOTE_PREFIX))
         ));
         s.put("quoteStyle", Settings.versions(
-                new V(1, new EnumSetting<>(QuoteStyle.class, Account.DEFAULT_QUOTE_STYLE))
+                new V(1, new EnumSetting<>(QuoteStyle.class, AccountPreferenceSerializer.DEFAULT_QUOTE_STYLE))
         ));
         s.put("replyAfterQuote", Settings.versions(
-                new V(1, new BooleanSetting(Account.DEFAULT_REPLY_AFTER_QUOTE))
+                new V(1, new BooleanSetting(AccountPreferenceSerializer.DEFAULT_REPLY_AFTER_QUOTE))
         ));
         s.put("ring", Settings.versions(
                 new V(1, new BooleanSetting(true))
@@ -190,7 +191,7 @@ public class AccountSettings {
                 new V(53, new StringSetting(null))
         ));
         s.put("stripSignature", Settings.versions(
-                new V(2, new BooleanSetting(Account.DEFAULT_STRIP_SIGNATURE))
+                new V(2, new BooleanSetting(AccountPreferenceSerializer.DEFAULT_STRIP_SIGNATURE))
         ));
         s.put("subscribedFoldersOnly", Settings.versions(
                 new V(1, new BooleanSetting(false))
@@ -224,7 +225,7 @@ public class AccountSettings {
                 new V(18, new BooleanSetting(true))
         ));
         s.put("remoteSearchNumResults", Settings.versions(
-                new V(18, new IntegerResourceSetting(Account.DEFAULT_REMOTE_SEARCH_NUM_RESULTS,
+                new V(18, new IntegerResourceSetting(AccountPreferenceSerializer.DEFAULT_REMOTE_SEARCH_NUM_RESULTS,
                         R.array.remote_search_num_results_values))
         ));
         s.put("remoteSearchFullText", Settings.versions(

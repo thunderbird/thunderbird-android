@@ -6,6 +6,7 @@ import com.fsck.k9.mail.Folder.FolderClass
 import com.fsck.k9.mail.Folder.FolderType as RemoteFolderType
 
 class FolderRepository(
+        private val localStoreProvider: LocalStoreProvider,
         private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy,
         private val account: Account
 ) {
@@ -30,7 +31,7 @@ class FolderRepository(
     }
 
     private fun getRemoteFolders(): List<Folder> {
-        val folders = account.localStore.getPersonalNamespaces(false)
+        val folders = localStoreProvider.getInstance(account).getPersonalNamespaces(false)
 
         return folders
                 .filterNot { it.isLocalOnly }
@@ -38,7 +39,7 @@ class FolderRepository(
     }
 
     fun getDisplayFolders(): List<Folder> {
-        val folders = account.localStore.getPersonalNamespaces(false)
+        val folders = localStoreProvider.getInstance(account).getPersonalNamespaces(false)
         return folders
                 .filter(::shouldDisplayFolder)
                 .sortedWith(sortForDisplay)

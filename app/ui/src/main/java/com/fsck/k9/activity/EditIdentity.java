@@ -113,7 +113,7 @@ public class EditIdentity extends K9Activity {
             identities.add(mIdentityIndex, mIdentity);
         }
 
-        mAccount.save(Preferences.getPreferences(getApplication().getApplicationContext()));
+        Preferences.getPreferences(getApplicationContext()).saveAccount(mAccount);
 
         finish();
     }

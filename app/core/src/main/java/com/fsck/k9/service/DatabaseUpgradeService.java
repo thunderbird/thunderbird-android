@@ -12,8 +12,10 @@ import android.os.PowerManager;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.mailstore.LocalStoreProvider;
 import com.fsck.k9.mailstore.UnavailableStorageException;
 import com.fsck.k9.power.TracingPowerManager;
 import com.fsck.k9.power.TracingPowerManager.TracingWakeLock;
@@ -192,7 +194,7 @@ public class DatabaseUpgradeService extends Service {
 
             try {
                 // Account.getLocalStore() is blocking and will upgrade the database if necessary
-                account.getLocalStore();
+                DI.get(LocalStoreProvider.class).getInstance(account);
             } catch (UnavailableStorageException e) {
                 Timber.e("Database unavailable");
             } catch (Exception e) {

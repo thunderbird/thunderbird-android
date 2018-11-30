@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.DI;
+import com.fsck.k9.LocalKeyStoreManager;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.preferences.Protocols;
@@ -304,7 +305,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             }
             mCurrentPortViewSetting = mPortView.getText().toString();
 
-            mSubscribedFoldersOnly.setChecked(mAccount.subscribedFoldersOnly());
+            mSubscribedFoldersOnly.setChecked(mAccount.isSubscribedFoldersOnly());
         } catch (Exception e) {
             failure(e);
         }
@@ -515,7 +516,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 if (isPushCapable && mAccount.getFolderPushMode() != FolderMode.NONE) {
                     MailService.actionRestartPushers(this, null);
                 }
-                mAccount.save(Preferences.getPreferences(this));
+                Preferences.getPreferences(getApplicationContext()).saveAccount(mAccount);
                 finish();
             } else {
                 /*
@@ -588,7 +589,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                         mWebdavMailboxPathView.getText().toString());
             }
 
-            mAccount.deleteCertificate(host, port, MailServerDirection.INCOMING);
+            DI.get(LocalKeyStoreManager.class).deleteCertificate(mAccount, host, port, MailServerDirection.INCOMING);
             ServerSettings settings = new ServerSettings(mStoreType, host, port,
                     connectionSecurity, authType, username, password, clientCertificateAlias, extra);
 

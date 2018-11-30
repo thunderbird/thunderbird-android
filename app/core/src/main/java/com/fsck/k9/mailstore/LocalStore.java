@@ -17,8 +17,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Stack;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -80,18 +78,6 @@ import timber.log.Timber;
 public class LocalStore {
     static final String[] EMPTY_STRING_ARRAY = new String[0];
     static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
-
-    /**
-     * Lock objects indexed by account UUID.
-     *
-     * @see #getInstance(Account, Context)
-     */
-    private static ConcurrentMap<String, Object> sAccountLocks = new ConcurrentHashMap<>();
-
-    /**
-     * Local stores indexed by UUID because the Uri may change due to migration to/from SD-card.
-     */
-    private static ConcurrentMap<String, LocalStore> sLocalStores = new ConcurrentHashMap<>();
 
     /*
      * a String containing the columns getMessages expects to work with
@@ -195,9 +181,13 @@ public class LocalStore {
     private final Account account;
     private final LockableDatabase database;
 
+    static LocalStore createInstance(Account account, Context context) throws MessagingException {
+        return new LocalStore(account, context);
+    }
+
     /**
      * local://localhost/path/to/database/uuid.db
-     * This constructor is only used by {@link LocalStore#getInstance(Account, Context)}
+     * This constructor is only used by {@link LocalStoreProvider#getInstance(Account)}
      * @throws UnavailableStorageException if not {@link StorageProvider#isReady(Context)}
      */
     private LocalStore(final Account account, final Context context) throws MessagingException {
@@ -221,37 +211,6 @@ public class LocalStore {
         database.open();
     }
 
-    /**
-     * Get an instance of a local mail store.
-     *
-     * @throws UnavailableStorageException
-     *          if not {@link StorageProvider#isReady(Context)}
-     */
-    public static LocalStore getInstance(Account account, Context context)
-            throws MessagingException {
-
-        String accountUuid = account.getUuid();
-
-        // Create new per-account lock object if necessary
-        sAccountLocks.putIfAbsent(accountUuid, new Object());
-
-        // Use per-account locks so DatabaseUpgradeService always knows which account database is
-        // currently upgraded.
-        synchronized (sAccountLocks.get(accountUuid)) {
-            LocalStore store = sLocalStores.get(accountUuid);
-
-            if (store == null) {
-                // Creating a LocalStore instance will create or upgrade the database if
-                // necessary. This could take some time.
-                store = new LocalStore(account, context);
-
-                sLocalStores.put(accountUuid, store);
-            }
-
-            return store;
-        }
-    }
-
     public static int getDbVersion() {
         SchemaDefinitionFactory schemaDefinitionFactory = DI.get(SchemaDefinitionFactory.class);
         return schemaDefinitionFactory.getDatabaseVersion();
@@ -266,8 +225,7 @@ public class LocalStore {
     }
 
     private static void removeInstance(Account account) {
-        String accountUuid = account.getUuid();
-        sLocalStores.remove(accountUuid);
+        DI.get(LocalStoreProvider.class).removeInstance(account);
     }
 
     public void switchLocalStorage(final String newStorageProviderId) throws MessagingException {

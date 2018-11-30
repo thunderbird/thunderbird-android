@@ -35,7 +35,6 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
-import com.fsck.k9.mail.Part;
 import com.fsck.k9.message.AutocryptStatusInteractor;
 import com.fsck.k9.message.AutocryptStatusInteractor.RecipientAutocryptStatus;
 import com.fsck.k9.message.ComposePgpEnableByDefaultDecider;
@@ -307,7 +306,7 @@ public class RecipientPresenter {
             menu.findItem(R.id.openpgp_encrypt_enable).setVisible(!isEncrypting);
             menu.findItem(R.id.openpgp_encrypt_disable).setVisible(isEncrypting);
 
-            boolean showSignOnly = !account.getOpenPgpHideSignOnly();
+            boolean showSignOnly = !account.isOpenPgpHideSignOnly();
             boolean isSignOnly = currentCryptoStatus.isSignOnly();
             menu.findItem(R.id.openpgp_sign_only).setVisible(showSignOnly && !isSignOnly);
             menu.findItem(R.id.openpgp_sign_only_disable).setVisible(showSignOnly && isSignOnly);
@@ -429,8 +428,8 @@ public class RecipientPresenter {
                 cryptoEnablePgpInline,
                 account.getAutocryptPreferEncryptMutual(),
                 isReplyToEncryptedMessage,
-                account.getOpenPgpEncryptAllDrafts(),
-                account.getOpenPgpEncryptSubject(),
+                account.isOpenPgpEncryptAllDrafts(),
+                account.isOpenPgpEncryptSubject(),
                 currentCryptoMode);
 
         if (openPgpProviderState != OpenPgpProviderState.OK) {

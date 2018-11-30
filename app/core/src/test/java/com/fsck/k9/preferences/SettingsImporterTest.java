@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.fsck.k9.Account;
 import com.fsck.k9.K9RobolectricTest;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.AuthType;
@@ -32,9 +31,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
 
     private void deletePreExistingAccounts() {
         Preferences preferences = Preferences.getPreferences(RuntimeEnvironment.application);
-        for (Account account : preferences.getAccounts()) {
-            preferences.deleteAccount(account);
-        }
+        preferences.clearAccounts();
     }
 
     @Test(expected = SettingsImportExportException.class)

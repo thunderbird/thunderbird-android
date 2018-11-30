@@ -1,13 +1,9 @@
 package com.fsck.k9
 
 class TestCoreResourceProvider : CoreResourceProvider {
-    override fun defaultSignature(): String {
-        throw UnsupportedOperationException("not implemented")
-    }
+    override fun defaultSignature() = "\n--\nbrevity!"
 
-    override fun defaultIdentityDescription(): String {
-        throw UnsupportedOperationException("not implemented")
-    }
+    override fun defaultIdentityDescription() = "initial identity"
 
     override fun sendAlternateChooserTitle(): String {
         throw UnsupportedOperationException("not implemented")

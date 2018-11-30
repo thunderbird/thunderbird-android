@@ -10,8 +10,10 @@ import android.support.v4.app.TaskStackBuilder;
 import android.text.TextUtils;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.R;
 import com.fsck.k9.activity.Accounts;
 import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.activity.MessageList;
@@ -20,6 +22,7 @@ import com.fsck.k9.activity.NotificationDeleteConfirmation;
 import com.fsck.k9.activity.compose.MessageActions;
 import com.fsck.k9.activity.setup.AccountSetupIncoming;
 import com.fsck.k9.activity.setup.AccountSetupOutgoing;
+import com.fsck.k9.search.AccountSearchConditions;
 import com.fsck.k9.search.LocalSearch;
 
 
@@ -35,6 +38,7 @@ import com.fsck.k9.search.LocalSearch;
  */
 class K9NotificationActionCreator implements NotificationActionCreator {
     private final Context context;
+    private final AccountSearchConditions accountSearchConditions = DI.get(AccountSearchConditions.class);
 
 
     public K9NotificationActionCreator(Context context) {
@@ -58,7 +62,7 @@ class K9NotificationActionCreator implements NotificationActionCreator {
             int notificationId) {
 
         TaskStackBuilder stack;
-        if (account.goToUnreadMessageSearch()) {
+        if (account.isGoToUnreadMessageSearch()) {
             stack = buildUnreadBackStack(account);
         } else {
             String folderServerId = getFolderServerIdOfAllMessages(messageReferences);
@@ -227,7 +231,8 @@ class K9NotificationActionCreator implements NotificationActionCreator {
     private TaskStackBuilder buildUnreadBackStack(final Account account) {
         TaskStackBuilder stack = buildAccountsBackStack();
 
-        LocalSearch search = Accounts.createUnreadSearch(context, account);
+        String searchTitle = context.getString(R.string.search_title, account.getDescription(), context.getString(R.string.unread_modifier));
+        LocalSearch search = accountSearchConditions.createUnreadSearch(account, searchTitle);
         Intent intent = MessageList.intentDisplaySearch(context, search, true, false, false);
 
         stack.addNextIntent(intent);

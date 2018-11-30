@@ -19,10 +19,10 @@ class AccountSettingsDataStore(
         return when (key) {
             "account_default" -> account == preferences.defaultAccount
             "mark_message_as_read_on_view" -> account.isMarkMessageAsReadOnView
-            "account_sync_remote_deletetions" -> account.syncRemoteDeletions()
+            "account_sync_remote_deletetions" -> account.isSyncRemoteDeletions
             "push_poll_on_connect" -> account.isPushPollOnConnect
             "always_show_cc_bcc" -> account.isAlwaysShowCcBcc
-            "message_read_receipt" -> account.isMessageReadReceiptAlways
+            "message_read_receipt" -> account.isMessageReadReceipt
             "default_quoted_text_shown" -> account.isDefaultQuotedTextShown
             "reply_after_quote" -> account.isReplyAfterQuote
             "strip_signature" -> account.isStripSignature
@@ -31,12 +31,12 @@ class AccountSettingsDataStore(
             "account_notify_contacts_mail_only" -> account.isNotifyContactsMailOnly
             "account_vibrate" -> account.notificationSetting.isVibrateEnabled
             "account_led" -> account.notificationSetting.isLedEnabled
-            "account_notify_sync" -> account.isShowOngoing
-            "notification_opens_unread" -> account.goToUnreadMessageSearch()
-            "remote_search_enabled" -> account.allowRemoteSearch()
-            "openpgp_hide_sign_only" -> account.openPgpHideSignOnly
-            "openpgp_encrypt_subject" -> account.openPgpEncryptSubject
-            "openpgp_encrypt_all_drafts" -> account.openPgpEncryptAllDrafts
+            "account_notify_sync" -> account.isNotifySync
+            "notification_opens_unread" -> account.isGoToUnreadMessageSearch
+            "openpgp_hide_sign_only" -> account.isOpenPgpHideSignOnly
+            "openpgp_encrypt_subject" -> account.isOpenPgpEncryptSubject
+            "openpgp_encrypt_all_drafts" -> account.isOpenPgpEncryptAllDrafts
+            "remote_search_enabled" -> account.isAllowRemoteSearch
             "autocrypt_prefer_encrypt" -> account.autocryptPreferEncryptMutual
             "upload_sent_messages" -> account.isUploadSentMessages
             else -> defValue
@@ -52,24 +52,24 @@ class AccountSettingsDataStore(
                 return
             }
             "mark_message_as_read_on_view" -> account.isMarkMessageAsReadOnView = value
-            "account_sync_remote_deletetions" -> account.setSyncRemoteDeletions(value)
+            "account_sync_remote_deletetions" -> account.isSyncRemoteDeletions = value
             "push_poll_on_connect" -> account.isPushPollOnConnect = value
             "always_show_cc_bcc" -> account.isAlwaysShowCcBcc = value
-            "message_read_receipt" -> account.setMessageReadReceipt(value)
+            "message_read_receipt" -> account.isMessageReadReceipt = value
             "default_quoted_text_shown" -> account.isDefaultQuotedTextShown = value
             "reply_after_quote" -> account.isReplyAfterQuote = value
             "strip_signature" -> account.isStripSignature = value
             "account_notify" -> account.isNotifyNewMail = value
             "account_notify_self" -> account.isNotifySelfNewMail = value
             "account_notify_contacts_mail_only" -> account.isNotifyContactsMailOnly = value
-            "account_vibrate" -> account.notificationSetting.setVibrate(value)
+            "account_vibrate" -> account.notificationSetting.isVibrateEnabled = value
             "account_led" -> account.notificationSetting.setLed(value)
-            "account_notify_sync" -> account.isShowOngoing = value
-            "notification_opens_unread" -> account.setGoToUnreadMessageSearch(value)
-            "remote_search_enabled" -> account.setAllowRemoteSearch(value)
-            "openpgp_hide_sign_only" -> account.openPgpHideSignOnly = value
-            "openpgp_encrypt_subject" -> account.openPgpEncryptSubject = value
-            "openpgp_encrypt_all_drafts" -> account.openPgpEncryptAllDrafts = value
+            "account_notify_sync" -> account.isNotifySync = value
+            "notification_opens_unread" -> account.isGoToUnreadMessageSearch = value
+            "remote_search_enabled" -> account.isAllowRemoteSearch = value
+            "openpgp_hide_sign_only" -> account.isOpenPgpHideSignOnly = value
+            "openpgp_encrypt_subject" -> account.isOpenPgpEncryptSubject = value
+            "openpgp_encrypt_all_drafts" -> account.isOpenPgpEncryptAllDrafts = value
             "autocrypt_prefer_encrypt" -> account.autocryptPreferEncryptMutual = value
             "upload_sent_messages" -> account.isUploadSentMessages = value
             else -> return
@@ -194,13 +194,7 @@ class AccountSettingsDataStore(
             "account_vibrate_pattern" -> account.notificationSetting.vibratePattern = value.toInt()
             "account_vibrate_times" -> account.notificationSetting.vibrateTimes = value.toInt()
             "account_remote_search_num_results" -> account.remoteSearchNumResults = value.toInt()
-            "local_storage_provider" -> {
-                executorService.execute {
-                    account.localStorageProviderId = value
-                    saveSettings()
-                }
-                return
-            }
+            "local_storage_provider" -> account.localStorageProviderId = value
             "account_ringtone" -> with(account.notificationSetting) {
                 isRingEnabled = true
                 ringtone = value
@@ -218,7 +212,7 @@ class AccountSettingsDataStore(
     }
 
     private fun saveSettings() {
-        account.save(preferences)
+        preferences.saveAccount(account)
     }
 
     private fun reschedulePoll() {

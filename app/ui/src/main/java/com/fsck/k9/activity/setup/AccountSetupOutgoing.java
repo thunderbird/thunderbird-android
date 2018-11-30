@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
+import com.fsck.k9.LocalKeyStoreManager;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.preferences.Protocols;
@@ -459,7 +460,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (Intent.ACTION_EDIT.equals(getIntent().getAction())) {
-                mAccount.save(Preferences.getPreferences(this));
+                Preferences.getPreferences(getApplicationContext()).saveAccount(mAccount);
                 finish();
             } else {
                 AccountSetupOptions.actionOptions(this, mAccount, mMakeDefault);
@@ -490,7 +491,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         int newPort = Integer.parseInt(mPortView.getText().toString());
         ServerSettings server = new ServerSettings(Protocols.SMTP, newHost, newPort, securityType, authType, username, password, clientCertificateAlias);
         uri = backendManager.createTransportUri(server);
-        mAccount.deleteCertificate(newHost, newPort, MailServerDirection.OUTGOING);
+        DI.get(LocalKeyStoreManager.class).deleteCertificate(mAccount, newHost, newPort, MailServerDirection.OUTGOING);
         mAccount.setTransportUri(uri);
         AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.OUTGOING);
     }

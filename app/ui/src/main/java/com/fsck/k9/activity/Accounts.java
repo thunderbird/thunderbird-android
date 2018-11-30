@@ -66,19 +66,18 @@ import com.fsck.k9.DI;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.backend.BackendManager;
-import com.fsck.k9.preferences.Protocols;
-import com.fsck.k9.ui.R;
 import com.fsck.k9.activity.compose.MessageActions;
 import com.fsck.k9.activity.misc.ExtendedAsyncTask;
 import com.fsck.k9.activity.misc.NonConfigurationInstance;
 import com.fsck.k9.activity.setup.AccountSetupBasics;
 import com.fsck.k9.activity.setup.WelcomeMessage;
+import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.ui.helper.SizeFormatter;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mailstore.LocalStoreProvider;
 import com.fsck.k9.mailstore.StorageManager;
+import com.fsck.k9.preferences.Protocols;
 import com.fsck.k9.preferences.SettingsExporter;
 import com.fsck.k9.preferences.SettingsImportExportException;
 import com.fsck.k9.preferences.SettingsImporter;
@@ -86,10 +85,13 @@ import com.fsck.k9.preferences.SettingsImporter.AccountDescription;
 import com.fsck.k9.preferences.SettingsImporter.AccountDescriptionPair;
 import com.fsck.k9.preferences.SettingsImporter.ImportContents;
 import com.fsck.k9.preferences.SettingsImporter.ImportResults;
+import com.fsck.k9.search.AccountSearchConditions;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchField;
+import com.fsck.k9.ui.R;
+import com.fsck.k9.ui.helper.SizeFormatter;
 import com.fsck.k9.ui.settings.SettingsActivity;
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity;
 import com.fsck.k9.view.ColorChip;
@@ -115,6 +117,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     private static final int DIALOG_NO_FILE_MANAGER = 4;
 
     private final ColorChipProvider colorChipProvider = DI.get(ColorChipProvider.class);
+    private final AccountSearchConditions accountSearchConditions = DI.get(AccountSearchConditions.class);
     private MessagingController controller;
 
     /*
@@ -339,28 +342,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         Intent intent = new Intent(context, Accounts.class);
         intent.setAction(ACTION_IMPORT_SETTINGS);
         context.startActivity(intent);
-    }
-
-    public static LocalSearch createUnreadSearch(Context context, BaseAccount account) {
-        String searchTitle = context.getString(R.string.search_title, account.getDescription(),
-                context.getString(R.string.unread_modifier));
-
-        LocalSearch search;
-        if (account instanceof SearchAccount) {
-            search = ((SearchAccount) account).getRelatedSearch().clone();
-            search.setName(searchTitle);
-        } else {
-            search = new LocalSearch(searchTitle);
-            search.addAccountUuid(account.getUuid());
-
-            Account realAccount = (Account) account;
-            realAccount.excludeSpecialFolders(search);
-            realAccount.limitToDisplayableFolders(search);
-        }
-
-        search.and(SearchField.READ, "1", Attribute.NOT_EQUALS);
-
-        return search;
     }
 
     @Override
@@ -988,7 +969,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 mAccount.setEnabled(true);
 
                 // Save the account settings
-                mAccount.save(Preferences.getPreferences(mContext));
+                Preferences.getPreferences(mContext).saveAccount(mAccount);
 
                 // Start services if necessary
                 Core.setServicesEnabled(mContext);
@@ -1048,7 +1029,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                     if (selectedContextAccount instanceof Account) {
                         Account realAccount = (Account) selectedContextAccount;
                         try {
-                            realAccount.getLocalStore().delete();
+                            DI.get(LocalStoreProvider.class).getInstance(realAccount).delete();
                         } catch (Exception e) {
                             // Ignore, this may lead to localStores on sd-cards that
                             // are currently not inserted to be left
@@ -1739,8 +1720,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 search.addAccountUuid(account.getUuid());
 
                 Account realAccount = (Account) account;
-                realAccount.excludeSpecialFolders(search);
-                realAccount.limitToDisplayableFolders(search);
+                accountSearchConditions.excludeSpecialFolders(realAccount, search);
+                accountSearchConditions.limitToDisplayableFolders(realAccount, search);
             }
 
             search.and(SearchField.FLAGGED, "1", Attribute.EQUALS);
@@ -1749,7 +1730,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
 
         private OnClickListener createUnreadSearchListener(BaseAccount account) {
-            LocalSearch search = createUnreadSearch(Accounts.this, account);
+            String searchTitle = getString(R.string.search_title, account.getDescription(), getString(R.string.unread_modifier));
+            LocalSearch search = accountSearchConditions.createUnreadSearch(account, searchTitle);
+
             return new AccountClickListener(search);
         }
 
@@ -2048,7 +2031,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
         @Override
         protected Void doInBackground(Void... args) {
-            mAccount.move(Preferences.getPreferences(mContext), mUp);
+            Preferences.getPreferences(mContext).move(mAccount, mUp);
             return null;
         }
 

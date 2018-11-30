@@ -8,13 +8,15 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.UUID;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.AccountPreferenceSerializer;
+import com.fsck.k9.DI;
 import com.fsck.k9.K9;
-import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Multipart;
@@ -26,6 +28,7 @@ import com.fsck.k9.mailstore.FileBackedBody;
 import com.fsck.k9.mailstore.LocalBodyPart;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
+import com.fsck.k9.mailstore.LocalStoreProvider;
 import com.fsck.k9.mailstore.StorageManager;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.util.MimeUtil;
@@ -159,7 +162,7 @@ public class MigrationTest extends K9RobolectricTest {
         insertSimplePlaintextMessage(db);
         db.close();
 
-        LocalStore localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
+        LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
 
         LocalMessage msg = localStore.getFolder("dev").getMessage("3");
         FetchProfile fp = new FetchProfile();
@@ -226,7 +229,7 @@ public class MigrationTest extends K9RobolectricTest {
         insertMixedWithAttachments(db);
         db.close();
 
-        LocalStore localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
+        LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
 
         LocalMessage msg = localStore.getFolder("dev").getMessage("4");
         FetchProfile fp = new FetchProfile();
@@ -298,7 +301,7 @@ public class MigrationTest extends K9RobolectricTest {
         insertPgpMimeSignedMessage(db);
         db.close();
 
-        LocalStore localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
+        LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
 
         LocalMessage msg = localStore.getFolder("dev").getMessage("5");
         FetchProfile fp = new FetchProfile();
@@ -357,7 +360,7 @@ public class MigrationTest extends K9RobolectricTest {
         insertPgpMimeEncryptedMessage(db);
         db.close();
 
-        LocalStore localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
+        LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
 
         LocalMessage msg = localStore.getFolder("dev").getMessage("6");
         FetchProfile fp = new FetchProfile();
@@ -475,7 +478,7 @@ public class MigrationTest extends K9RobolectricTest {
         insertPgpInlineEncryptedMessage(db);
         db.close();
 
-        LocalStore localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
+        LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
 
         LocalMessage msg = localStore.getFolder("dev").getMessage("7");
         FetchProfile fp = new FetchProfile();
@@ -562,7 +565,7 @@ public class MigrationTest extends K9RobolectricTest {
         insertPgpInlineClearsignedMessage(db);
         db.close();
 
-        LocalStore localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
+        LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
 
         LocalMessage msg = localStore.getFolder("dev").getMessage("8");
         FetchProfile fp = new FetchProfile();
@@ -620,7 +623,7 @@ public class MigrationTest extends K9RobolectricTest {
         insertMultipartAlternativeMessage(db);
         db.close();
 
-        LocalStore localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
+        LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
 
         LocalMessage msg = localStore.getFolder("dev").getMessage("9");
         FetchProfile fp = new FetchProfile();
@@ -685,7 +688,7 @@ public class MigrationTest extends K9RobolectricTest {
         insertHtmlWithRelatedMessage(db);
         db.close();
 
-        LocalStore localStore = LocalStore.getInstance(account, RuntimeEnvironment.application);
+        LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
 
         LocalMessage msg = localStore.getFolder("dev").getMessage("10");
         FetchProfile fp = new FetchProfile();
@@ -721,14 +724,9 @@ public class MigrationTest extends K9RobolectricTest {
     }
 
     private Account getNewAccount() {
-        Preferences preferences = Preferences.getPreferences(RuntimeEnvironment.application);
-
-        //FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()
-        preferences.loadAccounts();
-
-        Account account = preferences.newAccount();
+        Account account = new Account(UUID.randomUUID().toString());
+        DI.get(AccountPreferenceSerializer.class).loadDefaults(account);
         account.setStoreUri("imap+tls+://user:password@imap.example.org");
-
         return account;
     }
 }

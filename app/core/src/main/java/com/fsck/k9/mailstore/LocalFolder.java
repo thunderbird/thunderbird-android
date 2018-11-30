@@ -147,7 +147,7 @@ public class LocalFolder extends Folder<LocalMessage> {
     }
 
     public boolean syncRemoteDeletions() {
-        return getAccount().syncRemoteDeletions();
+        return getAccount().isSyncRemoteDeletions();
     }
 
     @Override

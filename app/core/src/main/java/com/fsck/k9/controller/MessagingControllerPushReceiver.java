@@ -1,31 +1,34 @@
 package com.fsck.k9.controller;
 
-import android.content.Context;
 
-import com.fsck.k9.mail.power.WakeLock;
-import timber.log.Timber;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+
+import android.content.Context;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.mail.Folder;
-
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.PushReceiver;
+import com.fsck.k9.mail.power.WakeLock;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
+import com.fsck.k9.mailstore.LocalStoreProvider;
 import com.fsck.k9.service.SleepService;
-
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
+import timber.log.Timber;
 
 public class MessagingControllerPushReceiver implements PushReceiver {
     final Account account;
     final MessagingController controller;
     final Context context;
+    final LocalStoreProvider localStoreProvider;
 
-    public MessagingControllerPushReceiver(Context context, Account nAccount, MessagingController nController) {
+    public MessagingControllerPushReceiver(Context context, LocalStoreProvider localStoreProvider,
+            Account nAccount, MessagingController nController) {
         account = nAccount;
         controller = nController;
+        this.localStoreProvider = localStoreProvider;
         this.context = context;
     }
 
@@ -90,7 +93,7 @@ public class MessagingControllerPushReceiver implements PushReceiver {
     public String getPushState(String folderServerId) {
         LocalFolder localFolder = null;
         try {
-            LocalStore localStore = account.getLocalStore();
+            LocalStore localStore = localStoreProvider.getInstance(account);
             localFolder = localStore.getFolder(folderServerId);
             localFolder.open(Folder.OPEN_MODE_RW);
             return localFolder.getPushState();

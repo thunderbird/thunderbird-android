@@ -2,6 +2,8 @@ package com.fsck.k9.search;
 
 import java.util.List;
 
+import com.fsck.k9.DI;
+import com.fsck.k9.mailstore.LocalStoreProvider;
 import timber.log.Timber;
 
 import com.fsck.k9.Account;
@@ -28,6 +30,7 @@ public class SqlQueryBuilder {
         }
 
         if (node.mLeft == null && node.mRight == null) {
+            AccountSearchConditions accountSearchConditions = DI.get(AccountSearchConditions.class);
             SearchCondition condition = node.mCondition;
             switch (condition.field) {
                 case FOLDER: {
@@ -48,7 +51,7 @@ public class SqlQueryBuilder {
                             LocalSearch tempSearch = new LocalSearch();
                             // ...the helper methods in Account to create the necessary conditions
                             // to exclude "unwanted" folders.
-                            account.excludeUnwantedFolders(tempSearch);
+                            accountSearchConditions.excludeUnwantedFolders(account, tempSearch);
 
                             buildWhereClauseInternal(account, tempSearch.getConditions(), query,
                                     selectionArgs);
@@ -59,8 +62,8 @@ public class SqlQueryBuilder {
                             LocalSearch tempSearch = new LocalSearch();
                             // ...the helper methods in Account to create the necessary conditions
                             // to limit the selection to displayable, non-special folders.
-                            account.excludeSpecialFolders(tempSearch);
-                            account.limitToDisplayableFolders(tempSearch);
+                            accountSearchConditions.excludeSpecialFolders(account, tempSearch);
+                            accountSearchConditions.limitToDisplayableFolders(account, tempSearch);
 
                             buildWhereClauseInternal(account, tempSearch.getConditions(), query,
                                     selectionArgs);
@@ -107,7 +110,7 @@ public class SqlQueryBuilder {
     private static long getFolderId(Account account, String folderServerId) {
         long folderId = 0;
         try {
-            LocalStore localStore = account.getLocalStore();
+            LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
             LocalFolder folder = localStore.getFolder(folderServerId);
             folder.open(Folder.OPEN_MODE_RO);
             folderId = folder.getDatabaseId();

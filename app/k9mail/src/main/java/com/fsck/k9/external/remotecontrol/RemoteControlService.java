@@ -97,7 +97,7 @@ public class RemoteControlService extends CoreService {
                                     account.getNotificationSetting().setRingEnabled(Boolean.parseBoolean(ringEnabled));
                                 }
                                 if (vibrateEnabled != null) {
-                                    account.getNotificationSetting().setVibrate(Boolean.parseBoolean(vibrateEnabled));
+                                    account.getNotificationSetting().setVibrateEnabled(Boolean.parseBoolean(vibrateEnabled));
                                 }
                                 if (pushClasses != null) {
                                     needsPushRestart |= account.setFolderPushMode(FolderMode.valueOf(pushClasses));
@@ -114,7 +114,7 @@ public class RemoteControlService extends CoreService {
                                         }
                                     }
                                 }
-                                account.save(Preferences.getPreferences(RemoteControlService.this));
+                                Preferences.getPreferences(getApplicationContext()).saveAccount(account);
                             }
                         }
 

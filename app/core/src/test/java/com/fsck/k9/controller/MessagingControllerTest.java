@@ -11,8 +11,11 @@ import java.util.Set;
 import android.content.Context;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.Account.SpecialFolderSelection;
+import com.fsck.k9.AccountPreferenceSerializer;
 import com.fsck.k9.AccountStats;
 import com.fsck.k9.CoreResourceProvider;
+import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9RobolectricTest;
 import com.fsck.k9.Preferences;
@@ -29,6 +32,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
+import com.fsck.k9.mailstore.LocalStoreProvider;
 import com.fsck.k9.mailstore.UnavailableStorageException;
 import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.search.LocalSearch;
@@ -44,6 +48,7 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Captor;
 import org.mockito.InOrder;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -61,6 +66,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
@@ -71,17 +77,18 @@ public class MessagingControllerTest extends K9RobolectricTest {
     private static final String FOLDER_NAME = "Folder";
     private static final String SENT_FOLDER_NAME = "Sent";
     private static final int MAXIMUM_SMALL_MESSAGE_SIZE = 1000;
-
+    private static final String ACCOUNT_UUID = "1";
 
     private MessagingController controller;
+    private Account account;
     @Mock
     private BackendManager backendManager;
     @Mock
     private Backend backend;
     @Mock
-    private Contacts contacts;
+    private LocalStoreProvider localStoreProvider;
     @Mock
-    private Account account;
+    private Contacts contacts;
     @Mock
     private AccountStats accountStats;
     @Mock
@@ -137,17 +144,18 @@ public class MessagingControllerTest extends K9RobolectricTest {
         MockitoAnnotations.initMocks(this);
         appContext = RuntimeEnvironment.application;
 
-        controller = new MessagingController(appContext, notificationController, contacts,
+        controller = new MessagingController(appContext, notificationController, localStoreProvider, contacts,
                 accountStatsCollector, mock(CoreResourceProvider.class), backendManager,
                 Collections.<ControllerExtension>emptyList());
 
-        configureBackendManager();
         configureAccount();
+        configureBackendManager();
         configureLocalStore();
     }
 
     @After
     public void tearDown() throws Exception {
+        removeAccountsFromPreferences();
         controller.stop();
         StandAloneContext.INSTANCE.closeKoin();
     }
@@ -258,7 +266,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     @Test
     public void searchLocalMessagesSynchronous_shouldCallSearchForMessagesOnLocalStore()
             throws Exception {
-        setAccountsInPreferences(Collections.singletonMap("1", account));
+        setAccountsInPreferences(Collections.singletonMap(ACCOUNT_UUID, account));
         when(search.getAccountUuids()).thenReturn(new String[]{"allAccounts"});
 
         controller.searchLocalMessagesSynchronous(search, listener);
@@ -269,7 +277,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     @Test
     public void searchLocalMessagesSynchronous_shouldNotifyWhenStoreFinishesRetrievingAMessage()
             throws Exception {
-        setAccountsInPreferences(Collections.singletonMap("1", account));
+        setAccountsInPreferences(Collections.singletonMap(ACCOUNT_UUID, account));
         LocalMessage localMessage = mock(LocalMessage.class);
         when(localMessage.getFolder()).thenReturn(localFolder);
         when(search.getAccountUuids()).thenReturn(new String[]{"allAccounts"});
@@ -285,7 +293,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     }
 
     private void setupRemoteSearch() throws Exception {
-        setAccountsInPreferences(Collections.singletonMap("1", account));
+        setAccountsInPreferences(Collections.singletonMap(ACCOUNT_UUID, account));
 
         remoteMessages = new ArrayList<>();
         Collections.addAll(remoteMessages, "oldMessageUid", "newMessageUid1", "newMessageUid2");
@@ -323,14 +331,14 @@ public class MessagingControllerTest extends K9RobolectricTest {
         reqFlags = Collections.singleton(Flag.ANSWERED);
         forbiddenFlags = Collections.singleton(Flag.DELETED);
 
-        when(account.getRemoteSearchNumResults()).thenReturn(50);
+        account.setRemoteSearchNumResults(50);
     }
 
     @Test
     public void searchRemoteMessagesSynchronous_shouldNotifyStartedListingRemoteMessages() throws Exception {
         setupRemoteSearch();
 
-        controller.searchRemoteMessagesSynchronous("1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
+        controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
 
         verify(listener).remoteSearchStarted(FOLDER_NAME);
     }
@@ -339,7 +347,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     public void searchRemoteMessagesSynchronous_shouldQueryRemoteFolder() throws Exception {
         setupRemoteSearch();
 
-        controller.searchRemoteMessagesSynchronous("1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
+        controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
 
         verify(backend).search(FOLDER_NAME, "query", reqFlags, forbiddenFlags);
     }
@@ -348,7 +356,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     public void searchRemoteMessagesSynchronous_shouldAskLocalFolderToDetermineNewMessages() throws Exception {
         setupRemoteSearch();
 
-        controller.searchRemoteMessagesSynchronous("1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
+        controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
 
         verify(localFolder).extractNewMessages(remoteMessages);
     }
@@ -357,7 +365,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     public void searchRemoteMessagesSynchronous_shouldTryAndGetNewMessages() throws Exception {
         setupRemoteSearch();
 
-        controller.searchRemoteMessagesSynchronous("1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
+        controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
 
         verify(localFolder).getMessage("newMessageUid1");
     }
@@ -366,7 +374,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     public void searchRemoteMessagesSynchronous_shouldNotTryAndGetOldMessages() throws Exception {
         setupRemoteSearch();
 
-        controller.searchRemoteMessagesSynchronous("1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
+        controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
 
         verify(localFolder, never()).getMessage("oldMessageUid");
     }
@@ -375,7 +383,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     public void searchRemoteMessagesSynchronous_shouldFetchNewMessages() throws Exception {
         setupRemoteSearch();
 
-        controller.searchRemoteMessagesSynchronous("1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
+        controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
 
         verify(backend).fetchMessage(eq(FOLDER_NAME), eq("newMessageUid2"), fetchProfileCaptor.capture());
     }
@@ -384,7 +392,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     public void searchRemoteMessagesSynchronous_shouldNotFetchExistingMessages() throws Exception {
         setupRemoteSearch();
 
-        controller.searchRemoteMessagesSynchronous("1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
+        controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
 
         verify(backend, never()).fetchMessage(eq(FOLDER_NAME), eq("newMessageUid1"), fetchProfileCaptor.capture());
     }
@@ -395,7 +403,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
         when(backend.search(anyString(), anyString(), nullable(Set.class), nullable(Set.class)))
                 .thenThrow(new MessagingException("Test"));
 
-        controller.searchRemoteMessagesSynchronous("1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
+        controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
 
         verify(listener).remoteSearchFailed(null, "Test");
     }
@@ -406,7 +414,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
         when(backend.search(anyString(), nullable(String.class), nullable(Set.class), nullable(Set.class)))
                 .thenThrow(new MessagingException("Test"));
 
-        controller.searchRemoteMessagesSynchronous("1", FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
+        controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
 
         verify(listener).remoteSearchFinished(FOLDER_NAME, 0, 50, Collections.<String>emptyList());
     }
@@ -519,8 +527,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
     private void setupAccountWithMessageToSend() throws MessagingException {
         when(account.getOutboxFolder()).thenReturn(FOLDER_NAME);
-        when(account.hasSentFolder()).thenReturn(true);
-        when(account.getSentFolder()).thenReturn(SENT_FOLDER_NAME);
+        account.setSentFolder(SENT_FOLDER_NAME, SpecialFolderSelection.AUTOMATIC);
         when(localStore.getFolder(SENT_FOLDER_NAME)).thenReturn(sentFolder);
         when(sentFolder.getDatabaseId()).thenReturn(1L);
         when(localFolder.exists()).thenReturn(true);
@@ -535,20 +542,24 @@ public class MessagingControllerTest extends K9RobolectricTest {
     }
 
     private void configureAccount() throws MessagingException {
-        when(account.isAvailable(appContext)).thenReturn(true);
-        when(account.getLocalStore()).thenReturn(localStore);
-        when(account.getMaximumAutoDownloadMessageSize()).thenReturn(MAXIMUM_SMALL_MESSAGE_SIZE);
-        when(account.getEmail()).thenReturn("user@host.com");
+        // TODO use simple account object without mocks
+        account = spy(new Account(ACCOUNT_UUID));
+        DI.get(AccountPreferenceSerializer.class).loadDefaults(account);
+        account.setMaximumAutoDownloadMessageSize(MAXIMUM_SMALL_MESSAGE_SIZE);
+        account.setEmail("user@host.com");
+        Mockito.doReturn(true).when(account).isAvailable(appContext);
     }
 
     private void configureLocalStore() throws MessagingException {
         when(localStore.getFolder(FOLDER_NAME)).thenReturn(localFolder);
         when(localFolder.getServerId()).thenReturn(FOLDER_NAME);
         when(localStore.getPersonalNamespaces(false)).thenReturn(Collections.singletonList(localFolder));
+        when(localStoreProvider.getInstance(account)).thenReturn(localStore);
     }
 
     private void setAccountsInPreferences(Map<String, Account> newAccounts)
             throws Exception {
+        // TODO this affects other tests, try to get rid of it
         Field accounts = Preferences.class.getDeclaredField("accounts");
         accounts.setAccessible(true);
         accounts.set(Preferences.getPreferences(appContext), newAccounts);
@@ -557,5 +568,9 @@ public class MessagingControllerTest extends K9RobolectricTest {
         accountsInOrder.setAccessible(true);
         ArrayList<Account> newAccountsInOrder = new ArrayList<>(newAccounts.values());
         accountsInOrder.set(Preferences.getPreferences(appContext), newAccountsInOrder);
+    }
+
+    private void removeAccountsFromPreferences() {
+        Preferences.getPreferences(appContext).clearAccounts();
     }
 }
