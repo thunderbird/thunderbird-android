@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.ViewAnimator;
 
@@ -42,6 +43,7 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
     private final View ccDivider;
     private final View bccWrapper;
     private final View bccDivider;
+    private final View recipientExpander;
     private final RecipientSelectView toView;
     private final RecipientSelectView ccView;
     private final RecipientSelectView bccView;
@@ -49,7 +51,6 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
     private final ViewAnimator recipientExpanderContainer;
     private final ToolableViewAnimator cryptoSpecialModeIndicator;
     private RecipientPresenter presenter;
-
 
     public RecipientMvpView(MessageCompose activity) {
         this.activity = activity;
@@ -71,7 +72,7 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         ccView.setOnFocusChangeListener(this);
         bccView.setOnFocusChangeListener(this);
 
-        View recipientExpander = activity.findViewById(R.id.recipient_expander);
+        recipientExpander = activity.findViewById(R.id.recipient_expander);
         recipientExpander.setOnClickListener(this);
 
         View toLabel = activity.findViewById(R.id.to_label);
@@ -80,6 +81,7 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         toLabel.setOnClickListener(this);
         ccLabel.setOnClickListener(this);
         bccLabel.setOnClickListener(this);
+
     }
 
     public void setPresenter(final RecipientPresenter presenter) {
@@ -213,6 +215,7 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         if (recipientExpanderContainer.getDisplayedChild() != childToDisplay) {
             recipientExpanderContainer.setDisplayedChild(childToDisplay);
         }
+        recipientExpander.setVisibility(View.VISIBLE);
     }
 
     public boolean isCcVisible() {

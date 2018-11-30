@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.view.Menu;
+import android.view.View;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Identity;
@@ -385,8 +386,14 @@ public class RecipientPresenter {
     }
 
     void onClickRecipientExpander() {
-        recipientMvpView.setCcVisibility(true);
-        recipientMvpView.setBccVisibility(true);
+        boolean bothAreVisible = recipientMvpView.isCcVisible() && recipientMvpView.isBccVisible();
+        if(!bothAreVisible){
+            recipientMvpView.setCcVisibility(true);
+            recipientMvpView.setBccVisibility(true);
+        }else{
+            recipientMvpView.setCcVisibility(false);
+            recipientMvpView.setBccVisibility(false);
+        }
         updateRecipientExpanderVisibility();
     }
 
