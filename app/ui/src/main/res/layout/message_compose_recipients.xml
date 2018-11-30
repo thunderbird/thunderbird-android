@@ -31,6 +31,7 @@
             />
 
         <TextView
+            android:paddingLeft="10dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -204,6 +205,7 @@
             style="@style/ComposeTextLabel" />
 
         <com.fsck.k9.view.RecipientSelectView
+            android:paddingLeft="10dp"
             android:id="@+id/to"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
