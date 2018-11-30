@@ -4,14 +4,11 @@
   Make sure to add android:persistent="false" to all preferences to disable saving
   the preference values to SharedPreferences. We use our own storage mechanism for
   the preferences. See com.fsck.k9.preferences.Storage.
-
-  Also note that every sub-PreferenceScreen needs an "android:key" parameter so the correct screen
-  can be displayed after the device has been rotated.
 -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceScreen
+    <PreferenceCategory
         android:title="@string/font_size_account_list"
         android:key="account_list_fonts">
 
@@ -31,9 +28,9 @@
             android:entryValues="@array/font_values"
             android:dialogTitle="@string/font_size_account_description" />
 
-    </PreferenceScreen>
+    </PreferenceCategory>
 
-    <PreferenceScreen
+    <PreferenceCategory
         android:title="@string/font_size_folder_list"
         android:key="folder_list_fonts">
 
@@ -53,9 +50,9 @@
             android:entryValues="@array/font_values"
             android:dialogTitle="@string/font_size_folder_status" />
 
-    </PreferenceScreen>
+    </PreferenceCategory>
 
-    <PreferenceScreen
+    <PreferenceCategory
         android:title="@string/font_size_message_list"
         android:key="message_list_fonts">
 
@@ -91,9 +88,9 @@
             android:entryValues="@array/font_values"
             android:dialogTitle="@string/font_size_message_list_preview" />
 
-    </PreferenceScreen>
+    </PreferenceCategory>
 
-    <PreferenceScreen
+    <PreferenceCategory
         android:title="@string/font_size_message_view"
         android:key="message_view_fonts">
 
@@ -159,9 +156,9 @@
             android:title="@string/font_size_message_view_content"
             android:dialogTitle="@string/font_size_message_view_content" />
 
-    </PreferenceScreen>
+    </PreferenceCategory>
 
-    <PreferenceScreen
+    <PreferenceCategory
         android:title="@string/font_size_message_compose"
         android:key="message_compose_fonts">
 
@@ -173,6 +170,6 @@
             android:entryValues="@array/font_values"
             android:dialogTitle="@string/font_size_message_compose_input" />
 
-    </PreferenceScreen>
+    </PreferenceCategory>
 
 </PreferenceScreen>
