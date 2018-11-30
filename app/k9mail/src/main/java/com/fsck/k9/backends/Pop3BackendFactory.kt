@@ -1,6 +1,5 @@
 package com.fsck.k9.backends
 
-import android.content.Context
 import com.fsck.k9.Account
 import com.fsck.k9.backend.BackendFactory
 import com.fsck.k9.backend.api.Backend
@@ -9,7 +8,7 @@ import com.fsck.k9.backend.pop3.Pop3StoreUriCreator
 import com.fsck.k9.backend.pop3.Pop3StoreUriDecoder
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
-import com.fsck.k9.mail.ssl.DefaultTrustedSocketFactory
+import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import com.fsck.k9.mail.store.pop3.Pop3Store
 import com.fsck.k9.mail.transport.smtp.SmtpTransport
 import com.fsck.k9.mail.transport.smtp.SmtpTransportUriCreator
@@ -17,8 +16,8 @@ import com.fsck.k9.mail.transport.smtp.SmtpTransportUriDecoder
 import com.fsck.k9.mailstore.K9BackendStorageFactory
 
 class Pop3BackendFactory(
-        private val context: Context,
-        private val backendStorageFactory: K9BackendStorageFactory
+        private val backendStorageFactory: K9BackendStorageFactory,
+        private val trustedSocketFactory: TrustedSocketFactory
 ) : BackendFactory {
     override val transportUriPrefix = "smtp"
 
@@ -32,13 +31,13 @@ class Pop3BackendFactory(
 
     private fun createPop3Store(account: Account): Pop3Store {
         val serverSettings = decodeStoreUri(account.storeUri)
-        return Pop3Store(serverSettings, account, DefaultTrustedSocketFactory(context))
+        return Pop3Store(serverSettings, account, trustedSocketFactory)
     }
 
     private fun createSmtpTransport(account: Account): SmtpTransport {
         val serverSettings = decodeTransportUri(account.transportUri)
         val oauth2TokenProvider: OAuth2TokenProvider? = null
-        return SmtpTransport(serverSettings, account, DefaultTrustedSocketFactory(context), oauth2TokenProvider)
+        return SmtpTransport(serverSettings, account, trustedSocketFactory, oauth2TokenProvider)
     }
 
     override fun decodeStoreUri(storeUri: String): ServerSettings {

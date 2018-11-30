@@ -24,6 +24,7 @@ import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.Base64;
+import com.fsck.k9.mail.ssl.TrustManagerFactory;
 import com.fsck.k9.mail.store.RemoteStore;
 import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mail.store.webdav.WebDavHttpClient.WebDavHttpClientFactory;
@@ -72,6 +73,7 @@ public class WebDavStore extends RemoteStore {
     private String formBasedAuthPath;
     private String mailboxPath;
 
+    private final TrustManagerFactory trustManagerFactory;
     private final WebDavHttpClient.WebDavHttpClientFactory httpClientFactory;
     private WebDavHttpClient httpClient = null;
     private HttpContext httpContext = null;
@@ -83,14 +85,15 @@ public class WebDavStore extends RemoteStore {
     private Folder sendFolder = null;
     private Map<String, WebDavFolder> folderList = new HashMap<>();
 
-    public WebDavStore(WebDavStoreSettings serverSettings, StoreConfig storeConfig) {
-        this(serverSettings, storeConfig, new WebDavHttpClient.WebDavHttpClientFactory());
+    public WebDavStore(TrustManagerFactory trustManagerFactory, WebDavStoreSettings serverSettings, StoreConfig storeConfig) {
+        this(trustManagerFactory, serverSettings, storeConfig, new WebDavHttpClient.WebDavHttpClientFactory());
     }
 
-    public WebDavStore(WebDavStoreSettings serverSettings, StoreConfig storeConfig,
+    public WebDavStore(TrustManagerFactory trustManagerFactory, WebDavStoreSettings serverSettings, StoreConfig storeConfig,
             WebDavHttpClientFactory clientFactory) {
         super(storeConfig, null);
         httpClientFactory = clientFactory;
+        this.trustManagerFactory = trustManagerFactory;
 
         hostname = serverSettings.host;
         port = serverSettings.port;
@@ -779,7 +782,7 @@ public class WebDavStore extends RemoteStore {
 
             SchemeRegistry reg = httpClient.getConnectionManager().getSchemeRegistry();
             try {
-                Scheme s = new Scheme("https", new WebDavSocketFactory(hostname, 443), 443);
+                Scheme s = new Scheme("https", new WebDavSocketFactory(trustManagerFactory, hostname, 443), 443);
                 reg.register(s);
             } catch (NoSuchAlgorithmException nsa) {
                 Timber.e(nsa, "NoSuchAlgorithmException in getHttpClient");

@@ -7,18 +7,17 @@ import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
 
 class LocalKeyStoreManager(
-        val localKeyStore: LocalKeyStore
+        private val localKeyStore: LocalKeyStore
 ) {
     /**
      * Add a new certificate for the incoming or outgoing server to the local key store.
      */
     @Throws(CertificateException::class)
     fun addCertificate(account: Account, direction: MailServerDirection, certificate: X509Certificate) {
-        val uri: Uri
-        if (direction === MailServerDirection.INCOMING) {
-            uri = Uri.parse(account.storeUri)
+        val uri = if (direction === MailServerDirection.INCOMING) {
+            Uri.parse(account.storeUri)
         } else {
-            uri = Uri.parse(account.transportUri)
+            Uri.parse(account.transportUri)
         }
         localKeyStore.addCertificate(uri.host, uri.port, certificate)
     }
@@ -29,11 +28,10 @@ class LocalKeyStoreManager(
      * old host/port.
      */
     fun deleteCertificate(account: Account, newHost: String, newPort: Int, direction: MailServerDirection) {
-        val uri: Uri
-        if (direction === MailServerDirection.INCOMING) {
-            uri = Uri.parse(account.storeUri)
+        val uri = if (direction === MailServerDirection.INCOMING) {
+            Uri.parse(account.storeUri)
         } else {
-            uri = Uri.parse(account.transportUri)
+            Uri.parse(account.transportUri)
         }
         val oldHost = uri.host
         val oldPort = uri.port

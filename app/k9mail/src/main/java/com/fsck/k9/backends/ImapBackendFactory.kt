@@ -12,6 +12,7 @@ import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.power.PowerManager
 import com.fsck.k9.mail.ssl.DefaultTrustedSocketFactory
+import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import com.fsck.k9.mail.store.imap.ImapStore
 import com.fsck.k9.mail.transport.smtp.SmtpTransport
 import com.fsck.k9.mail.transport.smtp.SmtpTransportUriCreator
@@ -21,7 +22,8 @@ import com.fsck.k9.mailstore.K9BackendStorageFactory
 class ImapBackendFactory(
         private val context: Context,
         private val powerManager: PowerManager,
-        private val backendStorageFactory: K9BackendStorageFactory
+        private val backendStorageFactory: K9BackendStorageFactory,
+        private val trustedSocketFactory: TrustedSocketFactory
 ) : BackendFactory {
     override val transportUriPrefix = "smtp"
 
@@ -39,7 +41,7 @@ class ImapBackendFactory(
         return ImapStore(
                 serverSettings,
                 account,
-                DefaultTrustedSocketFactory(context),
+                trustedSocketFactory,
                 context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager,
                 oAuth2TokenProvider
         )
@@ -48,7 +50,7 @@ class ImapBackendFactory(
     private fun createSmtpTransport(account: Account): SmtpTransport {
         val serverSettings = decodeTransportUri(account.transportUri)
         val oauth2TokenProvider: OAuth2TokenProvider? = null
-        return SmtpTransport(serverSettings, account, DefaultTrustedSocketFactory(context), oauth2TokenProvider)
+        return SmtpTransport(serverSettings, account, trustedSocketFactory, oauth2TokenProvider)
     }
 
     override fun decodeStoreUri(storeUri: String): ServerSettings {
