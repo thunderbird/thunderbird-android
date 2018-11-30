@@ -51,7 +51,7 @@ public class MessageProviderTest extends ProviderTestCase2 {
 
     private void createAccount() {
         Preferences preferences = Preferences.getPreferences(getMockContext());
-        Account account = preferences.createEmptyAccount();
+        Account account = preferences.newAccount();
         account.setDescription("TestAccount");
         account.setChipColor(10);
         account.setStoreUri("imap://user@domain.com/");
