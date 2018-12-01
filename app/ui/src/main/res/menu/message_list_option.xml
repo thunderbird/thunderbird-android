@@ -16,24 +16,21 @@
         android:id="@+id/previous_message"
         android:title="@string/previous_action"
         android:icon="?attr/iconActionPreviousMessage"
-        app:showAsAction="always"
-        android:orderInCategory="1"/>
+        app:showAsAction="always"/>
 
     <!-- MessageView -->
     <item
         android:id="@+id/next_message"
         android:title="@string/next_action"
         android:icon="?attr/iconActionNextMessage"
-        app:showAsAction="always"
-        android:orderInCategory="2"/>
+        app:showAsAction="always"/>
 
     <!-- MessageList -->
     <item
         android:id="@+id/search"
         android:icon="?attr/iconActionSearch"
         app:showAsAction="always"
-        android:title="@string/search_action"
-        android:orderInCategory="3"/>
+        android:title="@string/search_action"/>
 
     <!-- MessageList -->
     <item
@@ -49,8 +46,7 @@
         android:alphabeticShortcut="r"
         android:icon="?attr/iconActionRefresh"
         app:showAsAction="always"
-        android:title="@string/check_mail_action"
-        android:orderInCategory="4"/>
+        android:title="@string/check_mail_action"/>
 
     <!-- MessageView -->
     <item
@@ -58,26 +54,29 @@
         android:alphabeticShortcut="q"
         android:icon="?attr/iconActionDelete"
         app:showAsAction="always"
-        android:title="@string/delete_action"
-          android:orderInCategory="6"/>
+        android:title="@string/delete_action"/>
+    
     <!-- MessageView -->
     <item
         android:id="@+id/archive"
         android:icon="?attr/iconActionArchive"
         app:showAsAction="ifRoom"
         android:title="@string/archive_action"/>
+    
     <!-- MessageView -->
     <item
         android:id="@+id/spam"
         android:icon="?attr/iconActionSpam"
         app:showAsAction="ifRoom"
         android:title="@string/spam_action"/>
+    
     <!-- MessageView -->
     <item
         android:id="@+id/move"
         android:icon="?attr/iconActionMove"
         app:showAsAction="ifRoom"
         android:title="@string/move_action"/>
+
     <!-- MessageView -->
     <item
         android:id="@+id/copy"
@@ -90,8 +89,7 @@
         android:id="@+id/single_message_options"
         android:icon="?attr/iconActionSingleMessageOptions"
         app:showAsAction="ifRoom"
-        android:title="@string/single_message_options_action"
-          android:orderInCategory="7">
+        android:title="@string/single_message_options_action">
         <menu>
             <item
                 android:id="@+id/reply"
@@ -152,14 +150,21 @@
     <item android:id="@+id/hide_headers"
           app:showAsAction="never"
           android:title="@string/hide_headers_action"/>
-
+    
+    <!-- always -->
+    <item
+        android:id="@+id/compose"
+        android:alphabeticShortcut="c"
+        android:icon="?attr/iconActionCompose"
+        app:showAsAction="ifRoom"
+        android:title="@string/compose_action"/>
+    
     <!-- MessageList -->
     <item
         android:id="@+id/set_sort"
         android:icon="?attr/iconActionSort"
         app:showAsAction="ifRoom"
-        android:title="@string/sort_by"
-        android:orderInCategory="6">
+        android:title="@string/sort_by">
         <menu>
             <item
                 android:id="@+id/set_sort_date"
@@ -184,15 +189,6 @@
                 android:title="@string/sort_by_attach"/>
         </menu>
     </item>
-
-    <!-- always -->
-    <item
-        android:id="@+id/compose"
-        android:alphabeticShortcut="c"
-        android:icon="?attr/iconActionCompose"
-        app:showAsAction="ifRoom"
-        android:title="@string/compose_action"
-        android:orderInCategory="5"/>
 
     <!-- MessageList -->
     <item
