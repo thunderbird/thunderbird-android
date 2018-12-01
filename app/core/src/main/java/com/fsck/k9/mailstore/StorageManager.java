@@ -331,11 +331,6 @@ public class StorageManager {
         private final CoreResourceProvider resourceProvider;
 
         /**
-         * Root of the denoted storage.
-         */
-        private File mRoot;
-
-        /**
          * Chosen base directory.
          */
         private File mApplicationDirectory;
@@ -352,9 +347,7 @@ public class StorageManager {
 
         @Override
         public void init(Context context) {
-            mRoot = Environment.getExternalStorageDirectory();
-            mApplicationDirectory = new File(new File(new File(new File(mRoot, "Android"), "data"),
-                                             context.getPackageName()), "files");
+            mApplicationDirectory = context.getExternalFilesDir(null);
         }
 
         @Override
@@ -384,7 +377,7 @@ public class StorageManager {
 
         @Override
         public File getRoot(Context context) {
-            return mRoot;
+            return Environment.getExternalStorageDirectory();
         }
     }
 
