@@ -1,6 +1,7 @@
 package com.fsck.k9.ui.settings.account
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.support.v14.preference.SwitchPreference
 import android.support.v7.preference.ListPreference
@@ -65,6 +66,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
         initializeLocalStorageProvider()
         initializeCryptoSettings(account)
         initializeFolderSettings(account)
+        initializeNotifications()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -159,6 +161,14 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
             val providers = storageManager.availableProviders.entries
             entries = providers.map { it.value }.toTypedArray()
             entryValues = providers.map { it.key }.toTypedArray()
+        }
+    }
+
+    private fun initializeNotifications() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            PRE_SDK26_NOTIFICATION_PREFERENCES.forEach { findPreference(it).remove() }
+        } else {
+            findPreference(PREFERENCE_OPEN_NOTIFICATION_SETTINGS).remove()
         }
     }
 
@@ -315,7 +325,11 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
         private const val PREFERENCE_SENT_FOLDER = "sent_folder"
         private const val PREFERENCE_SPAM_FOLDER = "spam_folder"
         private const val PREFERENCE_TRASH_FOLDER = "trash_folder"
+        private const val PREFERENCE_OPEN_NOTIFICATION_SETTINGS = "open_notification_settings"
         private const val DELETE_POLICY_MARK_AS_READ = "MARK_AS_READ"
+        private val PRE_SDK26_NOTIFICATION_PREFERENCES = arrayOf("account_ringtone", "account_vibrate",
+                "account_vibrate_pattern", "account_vibrate_times", "account_led",
+                "led_color");
 
         fun create(accountUuid: String, rootKey: String?) = AccountSettingsFragment().withArguments(
                 ARG_ACCOUNT_UUID to accountUuid,
