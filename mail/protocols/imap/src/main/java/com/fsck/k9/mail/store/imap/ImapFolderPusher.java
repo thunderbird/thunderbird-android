@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.fsck.k9.mail.AuthenticationFailedException;
+import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
@@ -194,6 +195,12 @@ class ImapFolderPusher extends ImapFolder {
 
                     pushReceiver.authenticationFailed();
                     stop = true;
+                } catch (CertificateValidationException e) {
+                    reacquireWakeLockAndCleanUp();
+
+                    Timber.e(e, "Certificate check failed. Stopping ImapFolderPusher.");
+                    stop = true;
+                    pushReceiver.pushError("Push error for " + getServerId(), e);
                 } catch (Exception e) {
                     reacquireWakeLockAndCleanUp();
 
