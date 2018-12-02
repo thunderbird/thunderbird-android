@@ -1702,6 +1702,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 account = preferences.getAccount(accountUuids[0]);
                 List<String> folderServerIds = search.getFolderServerIds();
                 singleFolderMode = folderServerIds.size() == 1;
+            } else {
+                account = null;
             }
         }
 
