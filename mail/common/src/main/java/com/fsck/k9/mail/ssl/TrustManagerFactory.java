@@ -1,14 +1,6 @@
 
 package com.fsck.k9.mail.ssl;
 
-import com.fsck.k9.mail.CertificateChainException;
-
-import javax.net.ssl.SSLException;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-
-import org.apache.http.conn.ssl.StrictHostnameVerifier;
-import timber.log.Timber;
 
 import java.security.KeyStore;
 import java.security.KeyStoreException;
@@ -18,34 +10,70 @@ import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class TrustManagerFactory {
-    private static X509TrustManager defaultTrustManager;
+import com.fsck.k9.mail.CertificateChainException;
+import javax.net.ssl.SSLException;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import org.apache.http.conn.ssl.StrictHostnameVerifier;
+import timber.log.Timber;
 
-    private static LocalKeyStore keyStore;
+public class TrustManagerFactory {
+    public static TrustManagerFactory createInstance(LocalKeyStore localKeyStore) {
+        TrustManagerFactory trustManagerFactory = new TrustManagerFactory(localKeyStore);
+        try {
+            trustManagerFactory.initialize();
+        } catch (NoSuchAlgorithmException | KeyStoreException e) {
+            Timber.e(e, "Failed to initialize X509 Trust Manager!");
+            throw new IllegalStateException(e);
+        }
+        return trustManagerFactory;
+    }
 
 
-    private static class SecureX509TrustManager implements X509TrustManager {
-        private static final Map<String, SecureX509TrustManager> mTrustManager = new HashMap<>();
+    private X509TrustManager defaultTrustManager;
+    private LocalKeyStore keyStore;
+    private final Map<String, SecureX509TrustManager> cachedTrustManagers = new HashMap<>();
 
+
+    private TrustManagerFactory(LocalKeyStore localKeyStore) {
+        this.keyStore = localKeyStore;
+    }
+
+    private void initialize() throws KeyStoreException, NoSuchAlgorithmException {
+        javax.net.ssl.TrustManagerFactory tmf = javax.net.ssl.TrustManagerFactory.getInstance("X509");
+        tmf.init((KeyStore) null);
+
+        TrustManager[] tms = tmf.getTrustManagers();
+        if (tms != null) {
+            for (TrustManager tm : tms) {
+                if (tm instanceof X509TrustManager) {
+                    defaultTrustManager = (X509TrustManager) tm;
+                    break;
+                }
+            }
+        }
+    }
+
+    public X509TrustManager getTrustManagerForDomain(String host, int port) {
+        String key = host + ":" + port;
+        SecureX509TrustManager trustManager;
+        if (cachedTrustManagers.containsKey(key)) {
+            trustManager = cachedTrustManagers.get(key);
+        } else {
+            trustManager = new SecureX509TrustManager(host, port);
+            cachedTrustManagers.put(key, trustManager);
+        }
+
+        return trustManager;
+    }
+
+    private class SecureX509TrustManager implements X509TrustManager {
         private final String mHost;
         private final int mPort;
 
         private SecureX509TrustManager(String host, int port) {
             mHost = host;
             mPort = port;
-        }
-
-        public synchronized static X509TrustManager getInstance(String host, int port) {
-            String key = host + ":" + port;
-            SecureX509TrustManager trustManager;
-            if (mTrustManager.containsKey(key)) {
-                trustManager = mTrustManager.get(key);
-            } else {
-                trustManager = new SecureX509TrustManager(host, port);
-                mTrustManager.put(key, trustManager);
-            }
-
-            return trustManager;
         }
 
         public void checkClientTrusted(X509Certificate[] chain, String authType)
@@ -55,10 +83,10 @@ public final class TrustManagerFactory {
 
         public void checkServerTrusted(X509Certificate[] chain, String authType)
                 throws CertificateException {
-            String message = null;
+            String message;
             X509Certificate certificate = chain[0];
 
-            Throwable cause = null;
+            Throwable cause;
 
             try {
                 defaultTrustManager.checkServerTrusted(chain, authType);
@@ -85,35 +113,5 @@ public final class TrustManagerFactory {
             return defaultTrustManager.getAcceptedIssuers();
         }
 
-    }
-
-    static {
-        try {
-            keyStore = LocalKeyStore.getInstance();
-
-            javax.net.ssl.TrustManagerFactory tmf = javax.net.ssl.TrustManagerFactory.getInstance("X509");
-            tmf.init((KeyStore) null);
-
-            TrustManager[] tms = tmf.getTrustManagers();
-            if (tms != null) {
-                for (TrustManager tm : tms) {
-                    if (tm instanceof X509TrustManager) {
-                        defaultTrustManager = (X509TrustManager) tm;
-                        break;
-                    }
-                }
-            }
-        } catch (NoSuchAlgorithmException e) {
-            Timber.e(e, "Unable to get X509 Trust Manager ");
-        } catch (KeyStoreException e) {
-            Timber.e(e, "Key Store exception while initializing TrustManagerFactory");
-        }
-    }
-
-    private TrustManagerFactory() {
-    }
-
-    public static X509TrustManager get(String host, int port) {
-        return SecureX509TrustManager.getInstance(host, port);
     }
 }

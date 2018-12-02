@@ -65,7 +65,6 @@ object Core : KoinComponent {
 
     fun init(context: Context) {
         BinaryTempFileBody.setTempDirectory(context.cacheDir)
-        LocalKeyStore.setKeyStoreLocation(context.getDir("KeyStore", Context.MODE_PRIVATE).toString())
 
         setServicesEnabled(context)
         registerReceivers(context)

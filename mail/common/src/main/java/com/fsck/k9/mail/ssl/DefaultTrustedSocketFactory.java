@@ -31,10 +31,10 @@ import timber.log.Timber;
  * On more modern versions of Android we keep the system configuration.
  */
 public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
-    protected static final String[] ENABLED_CIPHERS;
-    protected static final String[] ENABLED_PROTOCOLS;
+    private static final String[] ENABLED_CIPHERS;
+    private static final String[] ENABLED_PROTOCOLS;
 
-    protected static final String[] ORDERED_KNOWN_CIPHERS = {
+    private static final String[] ORDERED_KNOWN_CIPHERS = {
             "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
             "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
             "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
@@ -61,7 +61,7 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
             "TLS_RSA_WITH_AES_128_CBC_SHA",
     };
 
-    protected static final String[] BLACKLISTED_CIPHERS = {
+    private static final String[] BLACKLISTED_CIPHERS = {
             "SSL_RSA_WITH_DES_CBC_SHA",
             "SSL_DHE_RSA_WITH_DES_CBC_SHA",
             "SSL_DHE_DSS_WITH_DES_CBC_SHA",
@@ -85,11 +85,11 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
             "TLS_RSA_WITH_NULL_SHA256"
     };
 
-    protected static final String[] ORDERED_KNOWN_PROTOCOLS = {
+    private static final String[] ORDERED_KNOWN_PROTOCOLS = {
             "TLSv1.2", "TLSv1.1", "TLSv1"
     };
 
-    protected static final String[] BLACKLISTED_PROTOCOLS = {
+    private static final String[] BLACKLISTED_PROTOCOLS = {
             "SSLv3"
     };
 
@@ -128,15 +128,19 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
 
     }
 
-    public DefaultTrustedSocketFactory(Context context) {
+    private final Context context;
+    private final TrustManagerFactory trustManagerFactory;
+
+    public DefaultTrustedSocketFactory(Context context, TrustManagerFactory trustManagerFactory) {
         this.context = context;
+        this.trustManagerFactory = trustManagerFactory;
     }
 
     private static boolean hasWeakSslImplementation() {
         return android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP;
     }
 
-    protected static String[] reorder(String[] enabled, String[] known, String[] blacklisted) {
+    private static String[] reorder(String[] enabled, String[] known, String[] blacklisted) {
         List<String> unknown = new ArrayList<>();
         Collections.addAll(unknown, enabled);
 
@@ -159,7 +163,7 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
         // start showing up in the future.
         result.addAll(unknown);
 
-        return result.toArray(new String[result.size()]);
+        return result.toArray(new String[0]);
     }
 
     protected static String[] remove(String[] enabled, String[] blacklisted) {
@@ -173,15 +177,13 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
             }
         }
 
-        return items.toArray(new String[items.size()]);
+        return items.toArray(new String[0]);
     }
-
-    private Context context;
 
     public Socket createSocket(Socket socket, String host, int port, String clientCertificateAlias)
             throws NoSuchAlgorithmException, KeyManagementException, MessagingException, IOException {
 
-        TrustManager[] trustManagers = new TrustManager[] { TrustManagerFactory.get(host, port) };
+        TrustManager[] trustManagers = new TrustManager[] { trustManagerFactory.getTrustManagerForDomain(host, port) };
         KeyManager[] keyManagers = null;
         if (!TextUtils.isEmpty(clientCertificateAlias)) {
             keyManagers = new KeyManager[] { new KeyChainKeyManager(context, clientCertificateAlias) };
