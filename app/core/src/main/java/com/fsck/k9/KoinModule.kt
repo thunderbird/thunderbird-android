@@ -25,4 +25,5 @@ val mainModule = applicationContext {
     bean { TrustManagerFactory.createInstance(get()) }
     bean { LocalKeyStoreManager(get()) }
     bean { DefaultTrustedSocketFactory(get(), get()) as TrustedSocketFactory }
+    bean { Clock.INSTANCE }
 }

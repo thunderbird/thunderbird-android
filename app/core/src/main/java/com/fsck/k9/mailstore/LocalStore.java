@@ -29,6 +29,7 @@ import android.text.TextUtils;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
+import com.fsck.k9.Clock;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
@@ -180,6 +181,7 @@ public class LocalStore {
 
     private final Account account;
     private final LockableDatabase database;
+    private final OutboxStateRepository outboxStateRepository;
 
     static LocalStore createInstance(Account account, Context context) throws MessagingException {
         return new LocalStore(account, context);
@@ -209,6 +211,9 @@ public class LocalStore {
         database = new LockableDatabase(context, account.getUuid(), schemaDefinition);
         database.setStorageProviderId(account.getLocalStorageProviderId());
         database.open();
+
+        Clock clock = DI.get(Clock.class);
+        outboxStateRepository = new OutboxStateRepository(database, clock);
     }
 
     public static int getDbVersion() {
@@ -246,6 +251,10 @@ public class LocalStore {
 
     protected Preferences getPreferences() {
         return Preferences.getPreferences(context);
+    }
+
+    public OutboxStateRepository getOutboxStateRepository() {
+        return outboxStateRepository;
     }
 
     public long getSize() throws MessagingException {
