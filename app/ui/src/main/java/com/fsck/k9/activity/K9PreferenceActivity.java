@@ -1,6 +1,5 @@
 package com.fsck.k9.activity;
 
-
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.Lifecycle.State;
 import android.arch.lifecycle.LifecycleOwner;
@@ -8,13 +7,12 @@ import android.arch.lifecycle.LifecycleRegistry;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
 import android.support.annotation.NonNull;
+import android.view.MenuItem;
 
 import com.fsck.k9.K9;
 
-
-public abstract class K9PreferenceActivity extends PreferenceActivity implements LifecycleOwner {
+public abstract class K9PreferenceActivity extends AppCompatPreferenceActivity implements LifecycleOwner {
     private LifecycleRegistry lifecycleRegistry;
 
     @Override
@@ -24,6 +22,17 @@ public abstract class K9PreferenceActivity extends PreferenceActivity implements
         super.onCreate(icicle);
         lifecycleRegistry = new LifecycleRegistry(this);
         lifecycleRegistry.markState(State.CREATED);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
