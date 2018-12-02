@@ -249,10 +249,9 @@ public class FolderList extends K9ListActivity {
             return;
         }
 
-        actionBarProgressView = getActionBarProgressView();
-        actionBar = getSupportActionBar();
+        setLayout(R.layout.folder_list);
         initializeActionBar();
-        setContentView(R.layout.folder_list);
+        actionBarProgressView = getActionBarProgressView();
         listView = getListView();
         listView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         listView.setLongClickable(true);
@@ -293,6 +292,7 @@ public class FolderList extends K9ListActivity {
     }
 
     private void initializeActionBar() {
+        actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 

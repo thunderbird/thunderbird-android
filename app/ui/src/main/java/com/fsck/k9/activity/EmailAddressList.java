@@ -21,7 +21,7 @@ public class EmailAddressList extends K9ListActivity implements OnItemClickListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.email_address_list);
+        setLayout(R.layout.email_address_list);
 
         Intent i = getIntent();
         ContactItem contact = (ContactItem) i.getSerializableExtra(EXTRA_CONTACT_ITEM);

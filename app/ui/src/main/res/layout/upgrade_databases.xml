@@ -5,6 +5,8 @@
     android:gravity="center_vertical|center_horizontal"
     android:orientation="vertical" >
 
+    <include layout="@layout/toolbar"/>
+
     <ProgressBar
         android:id="@+id/databaseUpgradeProgress"
         style="?android:attr/progressBarStyleLarge"

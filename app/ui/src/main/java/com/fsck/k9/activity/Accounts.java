@@ -385,9 +385,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
 
         requestWindowFeature(Window.FEATURE_PROGRESS);
-        actionBar = getSupportActionBar();
+        setLayout(R.layout.accounts);
         initializeActionBar();
-        setContentView(R.layout.accounts);
         ListView listView = getListView();
         listView.setOnItemClickListener(this);
         listView.setItemsCanFocus(false);
@@ -416,6 +415,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     }
 
     private void initializeActionBar() {
+        actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(false);
     }
 

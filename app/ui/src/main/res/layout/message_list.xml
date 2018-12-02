@@ -1,17 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.fsck.k9.view.ViewSwitcher xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/container"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/message_list_container"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+    <include layout="@layout/toolbar" />
 
-    <FrameLayout
-        android:id="@+id/message_view_container"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+    <com.fsck.k9.view.ViewSwitcher
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1">
 
-</com.fsck.k9.view.ViewSwitcher>
+        <FrameLayout
+                android:id="@+id/message_list_container"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"/>
+
+        <FrameLayout
+                android:id="@+id/message_view_container"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"/>
+
+    </com.fsck.k9.view.ViewSwitcher>
+
+</LinearLayout>

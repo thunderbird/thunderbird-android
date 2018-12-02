@@ -18,7 +18,7 @@ class AboutActivity : K9Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.about)
+        setLayout(R.layout.about)
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         webView = findViewById(R.id.about_view)

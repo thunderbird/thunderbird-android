@@ -25,7 +25,7 @@ class SettingsActivity : K9Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+        setLayout(R.layout.activity_settings)
 
         initializeActionBar()
         initializeSettingsList()

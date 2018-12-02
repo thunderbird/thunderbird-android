@@ -213,9 +213,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         }
 
         if (useSplitView()) {
-            setContentView(R.layout.split_message_list);
+            setLayout(R.layout.split_message_list);
         } else {
-            setContentView(R.layout.message_list);
+            setLayout(R.layout.message_list);
             viewSwitcher = findViewById(R.id.container);
             viewSwitcher.setFirstInAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_in_left));
             viewSwitcher.setFirstOutAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_out_right));
@@ -552,6 +552,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     private void initializeActionBar() {
         actionBar = getSupportActionBar();
 
+        actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setCustomView(R.layout.actionbar_custom);
 

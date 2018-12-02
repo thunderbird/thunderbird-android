@@ -10,6 +10,8 @@
     android:paddingLeft="12dp"
     android:paddingRight="12dp">
 
+    <include layout="@layout/toolbar" />
+
     <TextView
         style="?android:textAppearanceMedium"
         android:layout_width="wrap_content"

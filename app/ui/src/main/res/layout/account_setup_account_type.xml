@@ -4,8 +4,10 @@
     android:layout_height="fill_parent"
     android:padding="6dip"
     android:orientation="vertical"
-        android:layout_gravity="center_horizontal|center_vertical"
-      >
+    android:layout_gravity="center_horizontal|center_vertical" >
+
+    <include layout="@layout/toolbar" />
+
       <TextView
           android:text="@string/account_setup_account_type_instructions"
         android:layout_height="wrap_content"
