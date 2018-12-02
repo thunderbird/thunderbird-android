@@ -16,15 +16,14 @@
         android:id="@+id/previous_message"
         android:title="@string/previous_action"
         android:icon="?attr/iconActionPreviousMessage"
-        app:showAsAction="always" />
+        app:showAsAction="always"/>
 
     <!-- MessageView -->
     <item
         android:id="@+id/next_message"
         android:title="@string/next_action"
         android:icon="?attr/iconActionNextMessage"
-        app:showAsAction="always"
-    />
+        app:showAsAction="always"/>
 
     <!-- MessageList -->
     <item
@@ -56,24 +55,28 @@
         android:icon="?attr/iconActionDelete"
         app:showAsAction="always"
         android:title="@string/delete_action"/>
+    
     <!-- MessageView -->
     <item
         android:id="@+id/archive"
         android:icon="?attr/iconActionArchive"
         app:showAsAction="ifRoom"
         android:title="@string/archive_action"/>
+    
     <!-- MessageView -->
     <item
         android:id="@+id/spam"
         android:icon="?attr/iconActionSpam"
         app:showAsAction="ifRoom"
         android:title="@string/spam_action"/>
+    
     <!-- MessageView -->
     <item
         android:id="@+id/move"
         android:icon="?attr/iconActionMove"
         app:showAsAction="ifRoom"
         android:title="@string/move_action"/>
+
     <!-- MessageView -->
     <item
         android:id="@+id/copy"
@@ -147,7 +150,15 @@
     <item android:id="@+id/hide_headers"
           app:showAsAction="never"
           android:title="@string/hide_headers_action"/>
-
+    
+    <!-- always -->
+    <item
+        android:id="@+id/compose"
+        android:alphabeticShortcut="c"
+        android:icon="?attr/iconActionCompose"
+        app:showAsAction="ifRoom"
+        android:title="@string/compose_action"/>
+    
     <!-- MessageList -->
     <item
         android:id="@+id/set_sort"
@@ -178,14 +189,6 @@
                 android:title="@string/sort_by_attach"/>
         </menu>
     </item>
-
-    <!-- always -->
-    <item
-        android:id="@+id/compose"
-        android:alphabeticShortcut="c"
-        android:icon="?attr/iconActionCompose"
-        app:showAsAction="ifRoom"
-        android:title="@string/compose_action"/>
 
     <!-- MessageList -->
     <item
