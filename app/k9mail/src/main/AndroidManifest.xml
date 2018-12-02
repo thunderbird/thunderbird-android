@@ -332,15 +332,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.DEVICE_STORAGE_LOW"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.DEVICE_STORAGE_OK"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
-            </intent-filter>
-            <intent-filter>
                 <action android:name="android.net.conn.BACKGROUND_DATA_SETTING_CHANGED"/>
             </intent-filter>
             <intent-filter>
@@ -418,19 +409,11 @@
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
         <service
-            android:name=".service.MailService"
-            android:enabled="true"/>
-
-        <service
             android:name=".notification.NotificationActionService"
             android:enabled="true"/>
 
         <service
             android:name=".service.PushService"
-            android:enabled="true"/>
-
-        <service
-            android:name=".service.PollService"
             android:enabled="true"/>
 
         <service
@@ -460,11 +443,11 @@
             android:authorities="${applicationId}.attachmentprovider"
             android:exported="false"
             android:grantUriPermissions="true">
-            
+
             <meta-data
                 android:name="de.cketti.safecontentresolver.ALLOW_INTERNAL_ACCESS"
                 android:value="true" />
-        
+
         </provider>
 
         <provider

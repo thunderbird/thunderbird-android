@@ -1,17 +1,16 @@
 package com.fsck.k9.ui.settings.general
 
-import android.content.Context
 import android.support.v4.app.FragmentActivity
 import android.support.v7.preference.PreferenceDataStore
 import com.fsck.k9.K9
 import com.fsck.k9.K9.Theme
 import com.fsck.k9.Preferences
-import com.fsck.k9.service.MailService
+import com.fsck.k9.job.K9JobManager
 import java.util.concurrent.ExecutorService
 
 class GeneralSettingsDataStore(
-        private val context: Context,
         private val preferences: Preferences,
+        private val jobManager: K9JobManager,
         private val executorService: ExecutorService
 ) : PreferenceDataStore() {
     var activity: FragmentActivity? = null
@@ -243,12 +242,8 @@ class GeneralSettingsDataStore(
         val newBackgroundOps = K9.BACKGROUND_OPS.valueOf(value)
         if (newBackgroundOps != K9.getBackgroundOps()) {
             K9.setBackgroundOps(value)
-            resetMailService()
+            jobManager.scheduleAllMailJobs()
         }
-    }
-
-    private fun resetMailService() {
-        MailService.actionReset(context, null)
     }
 
     private fun recreateActivity() {

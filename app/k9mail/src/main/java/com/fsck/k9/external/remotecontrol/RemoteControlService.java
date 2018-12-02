@@ -1,23 +1,25 @@
 package com.fsck.k9.external.remotecontrol;
 
 
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
+import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.BACKGROUND_OPS;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
+import com.fsck.k9.job.K9JobManager;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.service.BootReceiver;
 import com.fsck.k9.service.CoreService;
-import com.fsck.k9.service.MailService;
+
+import java.util.List;
+
 import timber.log.Timber;
 
 import static com.fsck.k9.external.remotecontrol.K9RemoteControl.K9_ACCOUNT_UUID;
@@ -37,6 +39,9 @@ public class RemoteControlService extends CoreService {
 
     private final static String SET_ACTION = "com.fsck.k9.service.RemoteControlService.SET_ACTION";
 
+    private final Preferences preferences = DI.get(Preferences.class);
+    private final K9JobManager jobManager = DI.get(K9JobManager.class);
+
     public static void set(Context context, Intent i, Integer wakeLockId) {
         //  Intent i = new Intent();
         i.setClass(context, RemoteControlService.class);
@@ -50,15 +55,14 @@ public class RemoteControlService extends CoreService {
     @Override
     public int startService(final Intent intent, final int startId) {
         Timber.i("RemoteControlService started with startId = %d", startId);
-        final Preferences preferences = Preferences.getPreferences(this);
 
         if (RESCHEDULE_ACTION.equals(intent.getAction())) {
-            Timber.i("RemoteControlService requesting MailService poll reschedule");
-            MailService.actionReschedulePoll(this, null);
+            Timber.i("RemoteControlService requesting jobmanager mail poll reschedule");
+            jobManager.scheduleMailSync();
         }
         if (PUSH_RESTART_ACTION.equals(intent.getAction())) {
-            Timber.i("RemoteControlService requesting MailService push restart");
-            MailService.actionRestartPushers(this, null);
+            Timber.i("RemoteControlService requesting jobmanager push restart");
+            jobManager.schedulePusherRefresh();
         } else if (RemoteControlService.SET_ACTION.equals(intent.getAction())) {
             Timber.i("RemoteControlService got request to change settings");
             execute(getApplication(), new Runnable() {

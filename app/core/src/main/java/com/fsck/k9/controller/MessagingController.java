@@ -2862,6 +2862,10 @@ public class MessagingController {
         return pushers.values();
     }
 
+    public Pusher getPusher(Account account) {
+        return pushers.get(account);
+    }
+
     public boolean setupPushing(final Account account) {
         try {
             Pusher previousPusher = pushers.remove(account);
