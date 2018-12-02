@@ -1632,14 +1632,14 @@ public class MessagingController {
                         wasPermanentFailure = false;
 
                         handleAuthenticationFailure(account, false);
-                        handleSendFailure(account, localStore, localFolder, message, e, wasPermanentFailure);
+                        handleSendFailure(account, localFolder, message, e);
                     } catch (CertificateValidationException e) {
                         outboxStateRepository.decrementSendAttempts(messageId);
                         lastFailure = e;
                         wasPermanentFailure = false;
 
                         notifyUserIfCertificateProblem(account, e, false);
-                        handleSendFailure(account, localStore, localFolder, message, e, wasPermanentFailure);
+                        handleSendFailure(account, localFolder, message, e);
                     } catch (MessagingException e) {
                         lastFailure = e;
                         wasPermanentFailure = e.isPermanentFailure();
@@ -1651,12 +1651,12 @@ public class MessagingController {
                             outboxStateRepository.setSendAttemptsExceeded(messageId);
                         }
 
-                        handleSendFailure(account, localStore, localFolder, message, e, wasPermanentFailure);
+                        handleSendFailure(account, localFolder, message, e);
                     } catch (Exception e) {
                         lastFailure = e;
                         wasPermanentFailure = true;
 
-                        handleSendFailure(account, localStore, localFolder, message, e, wasPermanentFailure);
+                        handleSendFailure(account, localFolder, message, e);
                     }
                 } catch (Exception e) {
                     lastFailure = e;
@@ -1713,29 +1713,13 @@ public class MessagingController {
         }
     }
 
-    private void handleSendFailure(Account account, LocalStore localStore, Folder localFolder, Message message,
-            Exception exception, boolean permanentFailure) throws MessagingException {
+    private void handleSendFailure(Account account, Folder localFolder, Message message, Exception exception)
+            throws MessagingException {
 
         Timber.e(exception, "Failed to send message");
-
-        if (permanentFailure) {
-            moveMessageToDraftsFolder(account, localFolder, localStore, message);
-        }
-
         message.setFlag(Flag.X_SEND_FAILED, true);
 
         notifySynchronizeMailboxFailed(account, localFolder, exception);
-    }
-
-    private void moveMessageToDraftsFolder(Account account, Folder localFolder, LocalStore localStore, Message message)
-            throws MessagingException {
-        if (!account.hasDraftsFolder()) {
-            Timber.d("Can't move message to Drafts folder. No Drafts folder configured.");
-            return;
-        }
-
-        LocalFolder draftsFolder = localStore.getFolder(account.getDraftsFolder());
-        localFolder.moveMessages(Collections.singletonList(message), draftsFolder);
     }
 
     private void notifySynchronizeMailboxFailed(Account account, Folder localFolder, Exception exception) {
