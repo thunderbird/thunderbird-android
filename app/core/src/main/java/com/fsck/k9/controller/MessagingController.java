@@ -1698,7 +1698,7 @@ public class MessagingController {
             LocalFolder localFolder, LocalMessage message) throws MessagingException {
         if (!account.hasSentFolder() || !account.isUploadSentMessages()) {
             Timber.i("Not uploading sent message; deleting local message");
-            message.setFlag(Flag.DELETED, true);
+            message.destroy();
         } else {
             LocalFolder localSentFolder = localStore.getFolder(account.getSentFolder());
             Timber.i("Moving sent message to folder '%s' (%d)", account.getSentFolder(), localSentFolder.getDatabaseId());
