@@ -165,10 +165,12 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun initializeNotifications() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            PRE_SDK26_NOTIFICATION_PREFERENCES.forEach { findPreference(it).remove() }
-        } else {
-            findPreference(PREFERENCE_OPEN_NOTIFICATION_SETTINGS).remove()
+        findPreference(PREFERENCE_OPEN_NOTIFICATION_SETTINGS)?.let {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                PRE_SDK26_NOTIFICATION_PREFERENCES.forEach { findPreference(it).remove() }
+            } else {
+                it.remove()
+            }
         }
     }
 
