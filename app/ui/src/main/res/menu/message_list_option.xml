@@ -216,6 +216,13 @@
 
     <!-- MessageList -->
     <item
+        android:id="@+id/empty_trash"
+        android:alphabeticShortcut="e"
+        android:title="@string/empty_trash_action"
+        app:showAsAction="never" />
+
+    <!-- MessageList -->
+    <item
         android:id="@+id/expunge"
         app:showAsAction="never"
         android:title="@string/expunge_action"/>
