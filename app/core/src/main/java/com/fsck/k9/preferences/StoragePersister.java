@@ -73,6 +73,7 @@ public class StoragePersister {
             StoragePersistOperations storagePersistOperations = new StoragePersistOperations(workingStorage, workingDb);
             workingDb.beginTransaction();
             operationCallback.persist(storagePersistOperations);
+            storagePersistOperations.close();
             workingDb.setTransactionSuccessful();
 
             operationCallback.onPersistTransactionSuccess(workingStorage);
@@ -83,37 +84,39 @@ public class StoragePersister {
     }
 
     static class StoragePersistOperations {
-        private SQLiteDatabase workingDB;
         private Map<String, String> workingStorage;
+        private final SQLiteStatement deleteStatement;
+        private final SQLiteStatement insertStatement;
 
-        private StoragePersistOperations(Map<String, String> workingStorage, SQLiteDatabase workingDb) {
-            this.workingDB = workingDb;
+        private StoragePersistOperations(Map<String, String> workingStorage, SQLiteDatabase database) {
             this.workingStorage = workingStorage;
+
+            insertStatement = database.compileStatement(
+                    "INSERT INTO preferences_storage (primkey, value) VALUES (?, ?)");
+            deleteStatement = database.compileStatement(
+                    "DELETE FROM preferences_storage WHERE primkey = ?");
         }
 
-        void put(Map<String, String> insertables) {
-            String sql = "INSERT INTO preferences_storage (primkey, value) VALUES (?, ?)";
-            SQLiteStatement stmt = workingDB.compileStatement(sql);
+        void put(String key, String value) {
+            insertStatement.bindString(1, key);
+            insertStatement.bindString(2, value);
+            insertStatement.execute();
+            insertStatement.clearBindings();
 
-            for (Map.Entry<String, String> entry : insertables.entrySet()) {
-                String key = entry.getKey();
-                String value = entry.getValue();
-                stmt.bindString(1, key);
-                stmt.bindString(2, value);
-                stmt.execute();
-                stmt.clearBindings();
-                liveUpdate(key, value);
-            }
-            stmt.close();
-        }
-
-        private void liveUpdate(String key, String value) {
             workingStorage.put(key, value);
         }
 
         void remove(String key) {
-            workingDB.delete("preferences_storage", "primkey = ?", new String[] { key });
+            deleteStatement.bindString(1, key);
+            deleteStatement.executeUpdateDelete();
+            deleteStatement.clearBindings();
+
             workingStorage.remove(key);
+        }
+
+        private void close() {
+            insertStatement.close();
+            deleteStatement.close();
         }
     }
 

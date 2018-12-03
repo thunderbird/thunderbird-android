@@ -67,16 +67,14 @@ public class StorageEditor {
                 for (String removeKey : removals) {
                     ops.remove(removeKey);
                 }
-                Map<String, String> insertables = new HashMap<>();
                 for (Entry<String, String> entry : changes.entrySet()) {
                     String key = entry.getKey();
                     String newValue = entry.getValue();
                     String oldValue = snapshot.get(key);
                     if (removals.contains(key) || !newValue.equals(oldValue)) {
-                        insertables.put(key, newValue);
+                        ops.put(key, newValue);
                     }
                 }
-                ops.put(insertables);
             }
 
             @Override
