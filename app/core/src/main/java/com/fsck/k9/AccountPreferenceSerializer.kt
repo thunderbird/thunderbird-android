@@ -93,7 +93,7 @@ class AccountPreferenceSerializer(
 
             autoExpandFolder = storage.getString("$accountUuid.autoExpandFolderName", INBOX)
 
-            accountNumber = storage.getInt("$accountUuid.accountNumber", 0)
+            accountNumber = storage.getInt("$accountUuid.accountNumber", UNASSIGNED_ACCOUNT_NUMBER)
 
             chipColor = storage.getInt("$accountUuid.chipColor", FALLBACK_ACCOUNT_COLOR)
 
@@ -503,7 +503,7 @@ class AccountPreferenceSerializer(
             idleRefreshMinutes = 24
             isPushPollOnConnect = true
             displayCount = K9.DEFAULT_VISIBLE_LIMIT
-            accountNumber = -1
+            accountNumber = UNASSIGNED_ACCOUNT_NUMBER
             isNotifyNewMail = true
             folderNotifyNewMailMode = FolderMode.ALL
             isNotifySync = true
