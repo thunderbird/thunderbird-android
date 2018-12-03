@@ -53,6 +53,7 @@
                     android:src="@drawable/status_lock_disabled"
                     android:tint="?attr/openpgp_grey"
                     android:background="?selectableItemBackground"
+                    android:visibility="gone"
                     />
 
                 <CheckBox
