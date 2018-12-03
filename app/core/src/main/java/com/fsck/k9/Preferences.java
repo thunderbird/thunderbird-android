@@ -203,14 +203,18 @@ public class Preferences {
     public void saveAccount(Account account) {
         StorageEditor editor = storage.edit();
 
-        if (!accounts.containsKey(account.getUuid())) {
-            int accountNumber = generateAccountNumber();
-            account.setAccountNumber(accountNumber);
+        ensureAssignedAccountNumber(account);
+        processChangedValues(account);
+        accountPreferenceSerializer.save(storage, editor, account);
+    }
+
+    private void ensureAssignedAccountNumber(Account account) {
+        if (account.getAccountNumber() != Account.UNASSIGNED_ACCOUNT_NUMBER) {
+            return;
         }
 
-        processChangedValues(account);
-
-        accountPreferenceSerializer.save(storage, editor, account);
+        int accountNumber = generateAccountNumber();
+        account.setAccountNumber(accountNumber);
     }
 
     private void processChangedValues(Account account) {

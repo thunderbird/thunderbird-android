@@ -102,6 +102,7 @@ public class Account implements BaseAccount, StoreConfig {
     public static final SortType DEFAULT_SORT_TYPE = SortType.SORT_DATE;
     public static final boolean DEFAULT_SORT_ASCENDING = false;
     public static final long NO_OPENPGP_KEY = 0;
+    public static final int UNASSIGNED_ACCOUNT_NUMBER = -1;
 
     private DeletePolicy deletePolicy = DeletePolicy.NEVER;
 
