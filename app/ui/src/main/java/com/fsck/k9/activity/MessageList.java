@@ -181,7 +181,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     private Account account;
     private LocalSearch search;
     private boolean singleFolderMode;
-    private boolean singleAccountMode;
 
     private ProgressBar actionBarProgress;
     private MenuItem menuButtonCheckMail;
@@ -282,6 +281,10 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
         if (!decodeExtras(intent)) {
             return;
+        }
+
+        if(isDrawerEnabled()) {
+            drawer.updateUserAccountsAndFolders(account);
         }
 
         initializeDisplayMode(null);
@@ -486,7 +489,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
         initializeFromLocalSearch(search);
 
-        if (singleAccountMode && (account == null || !account.isAvailable(this))) {
+        if (account != null && !account.isAvailable(this)) {
             Timber.i("not opening MessageList of unavailable account");
             onAccountUnavailable();
             return false;
@@ -614,6 +617,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
     public void openUnifiedInbox() {
+        account = null;
         drawer.selectUnifiedInbox();
         actionDisplaySearch(this, SearchAccount.createUnifiedInboxAccount().getRelatedSearch(), false, false);
     }
@@ -1688,31 +1692,34 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     private void initializeFromLocalSearch(LocalSearch search) {
         this.search = search;
+        singleFolderMode = false;
 
         if (search.searchAllAccounts()) {
-            List<Account> accounts = preferences.getAccounts();
-            singleAccountMode = (accounts.size() == 1);
-            if (singleAccountMode) {
-                account = accounts.get(0);
-            }
+            account = null;
         } else {
             String[] accountUuids = search.getAccountUuids();
-            singleAccountMode = (accountUuids.length == 1);
-            if (singleAccountMode) {
+            if (accountUuids.length == 1) {
                 account = preferences.getAccount(accountUuids[0]);
+                List<String> folderServerIds = search.getFolderServerIds();
+                singleFolderMode = folderServerIds.size() == 1;
+            } else {
+                account = null;
             }
         }
 
-        List<String> folderServerIds = search.getFolderServerIds();
-        singleFolderMode = singleAccountMode && folderServerIds.size() == 1;
+        configureDrawer();
 
         // now we know if we are in single account mode and need a subtitle
         actionBarSubTitle.setVisibility((!singleFolderMode) ? View.GONE : View.VISIBLE);
 
-        if (drawer == null) {
+    }
+
+    private void configureDrawer() {
+        if (drawer == null)
             return;
-        } else if (singleFolderMode) {
-            drawer.selectFolder(folderServerIds.get(0));
+
+        if (singleFolderMode) {
+            drawer.selectFolder(search.getFolderServerIds().get(0));
         } else if (search.getId().equals(SearchAccount.UNIFIED_INBOX)) {
             drawer.selectUnifiedInbox();
         } else {
