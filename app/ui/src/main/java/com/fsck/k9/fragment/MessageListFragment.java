@@ -961,6 +961,16 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         messagingController.expunge(account, folderServerId);
     }
 
+    public void onEmptyTrash() {
+        if (isShowingTrashFolder()) {
+            messagingController.emptyTrash(account, null);
+        }
+    }
+
+    public boolean isShowingTrashFolder() {
+        return singleFolderMode && currentFolder != null && currentFolder.serverId.equals(account.getTrashFolder());
+    }
+
     private void showDialog(int dialogId) {
         DialogFragment fragment;
         if (dialogId == R.id.dialog_confirm_spam) {
