@@ -18,10 +18,12 @@ import android.os.SystemClock;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.PopupMenu.OnMenuItemClickListener;
 import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -31,9 +33,8 @@ import android.widget.Toast;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.activity.K9ActivityCommon;
-import com.fsck.k9.ui.R;
 import com.fsck.k9.activity.ChooseFolder;
+import com.fsck.k9.activity.K9ActivityCommon;
 import com.fsck.k9.activity.MessageLoaderHelper;
 import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks;
 import com.fsck.k9.controller.MessageReference;
@@ -41,17 +42,17 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.fragment.AttachmentDownloadDialogFragment;
 import com.fsck.k9.fragment.ConfirmationDialogFragment;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
-import com.fsck.k9.ui.helper.FileBrowserHelper;
-import com.fsck.k9.ui.helper.FileBrowserHelper.FileBrowserFailOverCallback;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfo;
+import com.fsck.k9.ui.R;
+import com.fsck.k9.ui.helper.FileBrowserHelper;
+import com.fsck.k9.ui.helper.FileBrowserHelper.FileBrowserFailOverCallback;
 import com.fsck.k9.ui.messageview.CryptoInfoDialog.OnClickShowCryptoKeyListener;
 import com.fsck.k9.ui.messageview.MessageCryptoPresenter.MessageCryptoMvpView;
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity;
 import com.fsck.k9.view.MessageCryptoDisplayStatus;
-import com.fsck.k9.view.MessageHeader;
 import timber.log.Timber;
 
 
@@ -179,6 +180,30 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             }
         });
 
+        mMessageView.setOnMenuItemClickListener(new OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.reply) {
+                    onReply();
+                    return true;
+                } else if (id == R.id.reply_all) {
+                    onReplyAll();
+                    return true;
+                } else if (id == R.id.forward) {
+                    onForward();
+                    return true;
+                } else if (id == R.id.forward_as_attachment) {
+                    onForwardAsAttachment();
+                    return true;
+                } else if (id == R.id.share) {
+                    onSendAlternate();
+                    return true;
+                }
+                return false;
+            }
+        });
+
         mMessageView.setOnDownloadButtonClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -186,8 +211,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                 messageLoaderHelper.downloadCompleteMessage();
             }
         });
-
-        mFragmentListener.messageHeaderViewAvailable(mMessageView.getMessageHeaderView());
 
         return view;
     }
@@ -264,7 +287,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         }
 
         mMessageView.setSubject(subject);
-        displayMessageSubject(subject);
     }
 
     /**
@@ -495,12 +517,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         }
     }
 
-    private void displayMessageSubject(String subject) {
-        if (mFragmentListener != null) {
-            mFragmentListener.displayMessageSubject(subject);
-        }
-    }
-
     public void moveMessage(MessageReference reference, String destFolderName) {
         mController.moveMessage(mAccount, mMessageReference.getFolderServerId(), reference, destFolderName);
     }
@@ -615,12 +631,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                 && mAccount.hasSpamFolder());
     }
 
-    public void updateTitle() {
-        if (mMessage != null) {
-            displayMessageSubject(mMessage.getSubject());
-        }
-    }
-
     public Context getApplicationContext() {
         return mContext;
     }
@@ -715,10 +725,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         void disableDeleteAction();
         void onReplyAll(MessageReference messageReference, Parcelable decryptionResultForReply);
         void onReply(MessageReference messageReference, Parcelable decryptionResultForReply);
-        void displayMessageSubject(String title);
         void setProgress(boolean b);
         void showNextMessageOrReturn();
-        void messageHeaderViewAvailable(MessageHeader messageHeaderView);
         void updateMenu();
     }
 

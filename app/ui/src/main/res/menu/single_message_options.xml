@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/reply"
+        android:title="@string/reply_action"/>
+    <item
+        android:id="@+id/reply_all"
+        android:title="@string/reply_all_action"/>
+    <item
+        android:id="@+id/forward"
+        android:title="@string/forward_action"/>
+    <item
+        android:id="@+id/forward_as_attachment"
+        android:title="@string/forward_as_attachment_action"/>
+    <item
+        android:id="@+id/share"
+        android:title="@string/send_alternate_action"/>
+</menu>
