@@ -7,6 +7,7 @@
     android:title="@string/account_settings_title_fmt">
 
     <PreferenceScreen
+        android:icon="?attr/iconSettingsGeneral"
         android:key="account_settings"
         android:title="@string/account_settings_general_title">
 
@@ -28,6 +29,7 @@
     </PreferenceScreen>
 
     <PreferenceScreen
+        android:icon="?attr/iconPreferencesReadMail"
         android:key="reading_mail"
         android:title="@string/account_settings_reading_mail">
 
@@ -47,6 +49,7 @@
     </PreferenceScreen>
 
     <PreferenceScreen
+        android:icon="?attr/iconPreferencesFetchMail"
         android:key="incoming_prefs"
         android:title="@string/account_settings_sync">
 
@@ -152,6 +155,7 @@
     </PreferenceScreen>
 
     <PreferenceScreen
+        android:icon="?attr/iconPreferencesCompose"
         android:key="composing"
         android:title="@string/account_settings_composition">
 
@@ -227,6 +231,7 @@
     </PreferenceScreen>
 
     <PreferenceScreen
+        android:icon="?attr/iconPreferencesFolders"
         android:key="folders"
         android:title="@string/account_settings_folders">
 
@@ -287,6 +292,7 @@
     </PreferenceScreen>
 
     <PreferenceScreen
+        android:icon="?attr/iconPreferencesStorage"
         android:key="storage_provider"
         android:title="@string/account_settings_storage_title">
 
@@ -299,6 +305,7 @@
     </PreferenceScreen>
 
     <PreferenceScreen
+        android:icon="?attr/iconPreferencesNotifications"
         android:key="notifications"
         android:title="@string/notifications_title">
 
@@ -400,6 +407,7 @@
     </PreferenceScreen>
 
     <PreferenceScreen
+        android:icon="?attr/iconPreferencesSearch"
         android:key="search"
         android:title="@string/account_settings_search">
 
@@ -420,6 +428,7 @@
     </PreferenceScreen>
 
     <PreferenceScreen
+        android:icon="?attr/iconPreferencesCrypto"
         android:key="openpgp"
         android:title="@string/account_settings_crypto">
 

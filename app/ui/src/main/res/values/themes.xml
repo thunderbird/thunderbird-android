@@ -73,6 +73,13 @@
         <item name="iconPreferencesVarious">@drawable/ic_widgets_light</item>
         <item name="iconPreferencesPrivacy">@drawable/ic_shield_light</item>
         <item name="iconPreferencesDebug">@drawable/ic_bug_light</item>
+        <item name="iconPreferencesFolders">@drawable/ic_folder_light</item>
+        <item name="iconPreferencesSearch">@drawable/ic_magnify_light</item>
+        <item name="iconPreferencesCrypto">@drawable/ic_preferences_crypto_light</item>
+        <item name="iconPreferencesFetchMail">@drawable/ic_preferences_check_mail_light</item>
+        <item name="iconPreferencesReadMail">@drawable/ic_opened_envelope_light</item>
+        <item name="iconPreferencesStorage">@drawable/ic_storage_light</item>
+        <item name="iconPreferencesCompose">@drawable/ic_pencil_light</item>
         <item name="iconSettingsAbout">@drawable/ic_info_outline_light</item>
         <item name="iconSettingsGeneral">@drawable/ic_cog_light</item>
         <item name="iconSettingsAccount">@drawable/ic_account_light</item>
@@ -170,6 +177,13 @@
         <item name="iconPreferencesVarious">@drawable/ic_widgets_dark</item>
         <item name="iconPreferencesPrivacy">@drawable/ic_shield_dark</item>
         <item name="iconPreferencesDebug">@drawable/ic_bug_dark</item>
+        <item name="iconPreferencesFolders">@drawable/ic_folder_dark</item>
+        <item name="iconPreferencesSearch">@drawable/ic_magnify_dark</item>
+        <item name="iconPreferencesCrypto">@drawable/ic_preferences_crypto_dark</item>
+        <item name="iconPreferencesFetchMail">@drawable/ic_preferences_check_mail_dark</item>
+        <item name="iconPreferencesReadMail">@drawable/ic_opened_envelope_dark</item>
+        <item name="iconPreferencesStorage">@drawable/ic_storage_dark</item>
+        <item name="iconPreferencesCompose">@drawable/ic_pencil_dark</item>
         <item name="iconSettingsAbout">@drawable/ic_info_outline_dark</item>
         <item name="iconSettingsGeneral">@drawable/ic_cog_dark</item>
         <item name="iconSettingsAccount">@drawable/ic_account_dark</item>
