@@ -693,9 +693,9 @@ public class FolderList extends K9ListActivity {
                         }
 
                         if (holder == null) {
-                            holder = new FolderInfoHolder(context, folder, FolderList.this.account, -1);
+                            holder = new FolderInfoHolder(folder, FolderList.this.account, -1);
                         } else {
-                            holder.populate(context, folder, FolderList.this.account, -1);
+                            holder.populate(folder, FolderList.this.account, -1);
 
                         }
                         if (folder.isInTopGroup()) {
@@ -748,7 +748,7 @@ public class FolderList extends K9ListActivity {
                         localFolder = DI.get(LocalStoreProvider.class).getInstance(account).getFolder(folderServerId);
                         FolderInfoHolder folderHolder = getFolder(folderServerId);
                         if (folderHolder != null) {
-                            folderHolder.populate(context, localFolder, FolderList.this.account, -1);
+                            folderHolder.populate(localFolder, FolderList.this.account, -1);
                             folderHolder.flaggedMessageCount = -1;
 
                             handler.dataChanged();

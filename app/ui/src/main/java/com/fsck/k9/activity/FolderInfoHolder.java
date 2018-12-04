@@ -1,14 +1,17 @@
 package com.fsck.k9.activity;
 
-import android.content.Context;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.ui.R;
-import com.fsck.k9.mail.Folder;
+import com.fsck.k9.DI;
+import com.fsck.k9.mailstore.Folder;
+import com.fsck.k9.mailstore.FolderType;
 import com.fsck.k9.mailstore.LocalFolder;
+import com.fsck.k9.ui.folders.FolderNameFormatter;
 
 
 public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
+    private final FolderNameFormatter folderNameFormatter = DI.get(FolderNameFormatter.class);
+
     public String serverId;
     public String displayName;
     public long lastChecked;
@@ -17,7 +20,7 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
     public boolean loading;
     public String status;
     public boolean lastCheckFailed;
-    public Folder folder;
+    public LocalFolder folder;
     public boolean pushActive;
     public boolean moreMessages;
 
@@ -55,64 +58,74 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
     public FolderInfoHolder() {
     }
 
-    public FolderInfoHolder(Context context, LocalFolder folder, Account account) {
-        if (context == null) {
-            throw new IllegalArgumentException("null context given");
-        }
-        populate(context, folder, account);
+    public FolderInfoHolder(LocalFolder folder, Account account) {
+        populate(folder, account);
     }
 
-    public FolderInfoHolder(Context context, LocalFolder folder, Account account, int unreadCount) {
-        populate(context, folder, account, unreadCount);
+    public FolderInfoHolder(LocalFolder folder, Account account, int unreadCount) {
+        populate(folder, account, unreadCount);
     }
 
-    public void populate(Context context, LocalFolder folder, Account account, int unreadCount) {
-        populate(context, folder, account);
+    public void populate(LocalFolder folder, Account account, int unreadCount) {
+        populate(folder, account);
         this.unreadMessageCount = unreadCount;
         folder.close();
-
     }
 
+    public void populate(LocalFolder localFolder, Account account) {
+        this.folder = localFolder;
+        this.serverId = localFolder.getServerId();
+        this.lastChecked = localFolder.getLastUpdate();
 
-    public void populate(Context context, LocalFolder folder, Account account) {
-        this.folder = folder;
-        this.serverId = folder.getServerId();
-        this.lastChecked = folder.getLastUpdate();
+        this.status = truncateStatus(localFolder.getStatus());
 
-        this.status = truncateStatus(folder.getStatus());
+        this.displayName = getDisplayName(account, localFolder);
+        setMoreMessagesFromFolder(localFolder);
+    }
 
-        this.displayName = getDisplayName(context, account, serverId, folder.getName());
-        setMoreMessagesFromFolder(folder);
+    private String getDisplayName(Account account, LocalFolder localFolder) {
+        String serverId = localFolder.getServerId();
+        Folder folder = new Folder(
+                localFolder.getDatabaseId(),
+                serverId,
+                localFolder.getName(),
+                getFolderType(account, serverId));
+
+        return folderNameFormatter.displayName(folder);
+    }
+
+    private static FolderType getFolderType(Account account, String serverId) {
+        if (serverId.equals(account.getInboxFolder())) {
+            return FolderType.INBOX;
+        } else if (serverId.equals(account.getOutboxFolder())) {
+            return FolderType.OUTBOX;
+        } else if (serverId.equals(account.getArchiveFolder())) {
+            return FolderType.ARCHIVE;
+        } else if (serverId.equals(account.getDraftsFolder())) {
+            return FolderType.DRAFTS;
+        } else if (serverId.equals(account.getSentFolder())) {
+            return FolderType.SENT;
+        } else if (serverId.equals(account.getSpamFolder())) {
+            return FolderType.SPAM;
+        } else if (serverId.equals(account.getTrashFolder())) {
+            return FolderType.TRASH;
+        } else {
+            return FolderType.REGULAR;
+        }
     }
 
     /**
      * Returns the display name for a folder.
      *
-     * <p>
-     * This will return localized strings for special folders like the Inbox or the Trash folder.
-     * </p>
+     * Deprecated. Use {@link FolderNameFormatter} instead.
      */
-    public static String getDisplayName(Context context, Account account, String serverId, String name) {
-        final String displayName;
-        if (serverId.equals(account.getSpamFolder())) {
-            displayName = context.getString(R.string.special_mailbox_name_spam_fmt, serverId);
-        } else if (serverId.equals(account.getArchiveFolder())) {
-            displayName = context.getString(R.string.special_mailbox_name_archive_fmt, serverId);
-        } else if (serverId.equals(account.getSentFolder())) {
-            displayName = context.getString(R.string.special_mailbox_name_sent_fmt, serverId);
-        } else if (serverId.equals(account.getTrashFolder())) {
-            displayName = context.getString(R.string.special_mailbox_name_trash_fmt, serverId);
-        } else if (serverId.equals(account.getDraftsFolder())) {
-            displayName = context.getString(R.string.special_mailbox_name_drafts_fmt, serverId);
-        } else if (serverId.equals(account.getOutboxFolder())) {
-            displayName = context.getString(R.string.special_mailbox_name_outbox);
-        } else if (serverId.equals(account.getInboxFolder())) {
-            displayName = context.getString(R.string.special_mailbox_name_inbox);
-        } else {
-            displayName = name;
-        }
+    @Deprecated
+    public static String getDisplayName(Account account, String serverId, String name) {
+        FolderNameFormatter folderNameFormatter = DI.get(FolderNameFormatter.class);
+        FolderType folderType = getFolderType(account, serverId);
+        Folder folder = new Folder(-1, serverId, name, folderType);
 
-        return displayName;
+        return folderNameFormatter.displayName(folder);
     }
 
     public void setMoreMessagesFromFolder(LocalFolder folder) {
