@@ -5,8 +5,8 @@ import org.koin.dsl.module.applicationContext
 
 val jobModule = applicationContext {
     bean { JobManager.create(get()) as JobManager }
-    bean { K9JobManager(get(), get(), get()) }
+    bean { K9JobManager(get(), get(), get(), get(), get()) }
     bean { K9JobCreator(get(), get()) }
-    bean { MailSyncJob(get(), get()) }
-    bean { PusherRefreshJob(get(), get()) }
+    factory { MailSyncJobManager(get(), get()) }
+    factory { PusherRefreshJobManager(get(), get(), get()) }
 }
