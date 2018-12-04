@@ -49,7 +49,7 @@
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:icon="?attr/iconPreferencesNetwork"
+        android:icon="?attr/iconPreferencesFetchMail"
         android:key="incoming_prefs"
         android:title="@string/account_settings_sync">
 

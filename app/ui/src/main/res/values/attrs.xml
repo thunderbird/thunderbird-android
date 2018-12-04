@@ -55,6 +55,7 @@
         <attr name="iconPreferencesDebug" format="reference" />
         <attr name="iconPreferencesFolders" format="reference" />
         <attr name="iconPreferencesCrypto" format="reference" />
+        <attr name="iconPreferencesFetchMail" format="reference" />
         <attr name="iconPreferencesSearch" format="reference" />
         <attr name="iconPreferencesReadMail" format="reference" />
         <attr name="iconPreferencesStorage" format="reference" />
