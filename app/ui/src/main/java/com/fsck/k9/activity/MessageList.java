@@ -30,8 +30,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
@@ -163,9 +161,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     private ActionBarDrawerToggle drawerToggle;
     private K9Drawer drawer;
     private FragmentTransaction openFolderTransaction;
-    private View actionBarMessageList;
-    private TextView actionBarTitle;
-    private TextView actionBarSubTitle;
     private Menu menu;
 
     private ViewGroup messageViewContainer;
@@ -179,7 +174,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     private LocalSearch search;
     private boolean singleFolderMode;
 
-    private ProgressBar actionBarProgress;
     private MenuItem menuButtonCheckMail;
     private View actionButtonIndeterminateProgress;
     private int lastDirection = (K9.messageViewShowNext()) ? NEXT : PREVIOUS;
@@ -551,19 +545,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     private void initializeActionBar() {
         actionBar = getSupportActionBar();
-
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setDisplayShowCustomEnabled(true);
-        actionBar.setCustomView(R.layout.actionbar_custom);
-
-        View customView = actionBar.getCustomView();
-        actionBarMessageList = customView.findViewById(R.id.actionbar_message_list);
-        actionBarTitle = customView.findViewById(R.id.actionbar_title_first);
-        actionBarSubTitle = customView.findViewById(R.id.actionbar_title_sub);
-        actionBarProgress = customView.findViewById(R.id.actionbar_progress);
-        actionButtonIndeterminateProgress = getActionButtonIndeterminateProgress();
-
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        actionButtonIndeterminateProgress = getActionButtonIndeterminateProgress();
     }
 
     private void initializeDrawer(Bundle savedInstanceState) {
@@ -1213,21 +1197,14 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
     public void setActionBarTitle(String title) {
-        actionBarTitle.setText(title);
-    }
-
-    public void setActionBarSubTitle(String subTitle) {
-        actionBarSubTitle.setText(subTitle);
+        actionBar.setTitle(title);
     }
 
     @Override
     public void setMessageListTitle(String title) {
-        setActionBarTitle(title);
-    }
-
-    @Override
-    public void setMessageListSubTitle(String subTitle) {
-        setActionBarSubTitle(subTitle);
+        if (displayMode != DisplayMode.MESSAGE_VIEW) {
+            setActionBarTitle(title);
+        }
     }
 
     @Override
@@ -1479,22 +1456,14 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     @Override
     public void enableActionBarProgress(boolean enable) {
-        if (menuButtonCheckMail != null && menuButtonCheckMail.isVisible()) {
-            actionBarProgress.setVisibility(ProgressBar.GONE);
-            if (enable) {
-                menuButtonCheckMail
-                        .setActionView(actionButtonIndeterminateProgress);
-            } else {
-                menuButtonCheckMail.setActionView(null);
-            }
+        if (menuButtonCheckMail == null) {
+            return;
+        }
+
+        if (menuButtonCheckMail.isVisible()) {
+            menuButtonCheckMail.setActionView(enable ? actionButtonIndeterminateProgress : null);
         } else {
-            if (menuButtonCheckMail != null)
-                menuButtonCheckMail.setActionView(null);
-            if (enable) {
-                actionBarProgress.setVisibility(ProgressBar.VISIBLE);
-            } else {
-                actionBarProgress.setVisibility(ProgressBar.GONE);
-            }
+            menuButtonCheckMail.setActionView(null);
         }
     }
 
@@ -1621,15 +1590,13 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
     private void showDefaultTitleView() {
-        actionBarMessageList.setVisibility(View.VISIBLE);
-
         if (messageListFragment != null) {
             messageListFragment.updateTitle();
         }
     }
 
     private void showMessageTitleView() {
-        actionBarMessageList.setVisibility(View.GONE);
+        setActionBarTitle("");
     }
 
     @Override
@@ -1691,10 +1658,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         }
 
         configureDrawer();
-
-        // now we know if we are in single account mode and need a subtitle
-        actionBarSubTitle.setVisibility((!singleFolderMode) ? View.GONE : View.VISIBLE);
-
     }
 
     private void configureDrawer() {

@@ -322,13 +322,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             String displayName = FolderInfoHolder.getDisplayName(activity, account, folderServerId, folderName);
 
             fragmentListener.setMessageListTitle(displayName);
-
-            String operation = activityListener.getOperation(activity);
-            if (operation.length() < 1) {
-                fragmentListener.setMessageListSubTitle(account.getEmail());
-            } else {
-                fragmentListener.setMessageListSubTitle(operation);
-            }
         } else {
             // query result display.  This may be for a search folder as opposed to a user-initiated search.
             if (title != null) {
@@ -338,8 +331,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 // This is a search result; set it to the default search result line.
                 fragmentListener.setMessageListTitle(getString(R.string.search_results));
             }
-
-            fragmentListener.setMessageListSubTitle(null);
         }
     }
 
@@ -2288,7 +2279,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         void onReplyAll(MessageReference message);
         void openMessage(MessageReference messageReference);
         void setMessageListTitle(String title);
-        void setMessageListSubTitle(String subTitle);
         void onCompose(Account account);
         boolean startSearch(Account account, String folderServerId);
         void remoteSearchStarted();
