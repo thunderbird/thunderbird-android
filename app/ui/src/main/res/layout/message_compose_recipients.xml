@@ -24,6 +24,7 @@
             android:layout_gravity="center_vertical"
             android:id="@+id/from_label"
             android:paddingTop="8dp"
+            android:paddingRight="8dp"
             android:paddingBottom="8dp"
             android:minWidth="50dp"
             android:text="@string/recipient_from"
@@ -31,7 +32,6 @@
             />
 
         <TextView
-            android:paddingLeft="10dp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -197,6 +197,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:paddingTop="8dp"
+            android:paddingRight="8dp"
             android:paddingBottom="8dp"
             android:id="@+id/to_label"
             android:labelFor="@+id/to"
@@ -205,7 +206,6 @@
             style="@style/ComposeTextLabel" />
 
         <com.fsck.k9.view.RecipientSelectView
-            android:paddingLeft="10dp"
             android:id="@+id/to"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
@@ -274,6 +274,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
+            android:paddingRight="8dp"
             android:paddingBottom="8dp"
             android:minWidth="50dp"
             android:id="@+id/cc_label"
@@ -319,6 +320,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
+            android:paddingRight="8dp"
             android:paddingBottom="8dp"
             android:minWidth="50dp"
             android:id="@+id/bcc_label"
