@@ -654,7 +654,7 @@ public class SmtpTransport extends Transport {
     private void readPipelinedResponse(Queue<String> pipelinedCommands) throws IOException, MessagingException {
         String responseLine;
         List<String> results = new ArrayList<>();
-        NegativeSmtpReplyException negativeRecipient = null;
+        NegativeSmtpReplyException firstNegativeResponse = null;
         for (String command : pipelinedCommands) {
             results.clear();
             responseLine = readCommandResponseLine(results);
@@ -665,18 +665,18 @@ public class SmtpTransport extends Transport {
                 if (command.equals("DATA")) {
                     throw exception;
                 }
-                if (command.startsWith("RCPT")) {
-                    negativeRecipient = (NegativeSmtpReplyException) exception;
+                if (command.startsWith("RCPT") && firstNegativeResponse == null) {
+                    firstNegativeResponse = (NegativeSmtpReplyException) exception;
                 }
             }
         }
 
-        if (negativeRecipient != null) {
+        if (firstNegativeResponse != null) {
             try {
                 executeCommand(".");
-                throw negativeRecipient;
+                throw firstNegativeResponse;
             } catch (NegativeSmtpReplyException e) {
-                throw negativeRecipient;
+                throw firstNegativeResponse;
             }
         }
 
