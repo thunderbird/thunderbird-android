@@ -12,7 +12,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.ViewAnimator;
 
@@ -44,12 +43,14 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
     private final View bccWrapper;
     private final View bccDivider;
     private final View recipientExpander;
+    private final View recipientCollapse;
     private final RecipientSelectView toView;
     private final RecipientSelectView ccView;
     private final RecipientSelectView bccView;
     private final ToolableViewAnimator cryptoStatusView;
     private final ViewAnimator recipientExpanderContainer;
     private final ToolableViewAnimator cryptoSpecialModeIndicator;
+
     private RecipientPresenter presenter;
 
     public RecipientMvpView(MessageCompose activity) {
@@ -74,6 +75,9 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
 
         recipientExpander = activity.findViewById(R.id.recipient_expander);
         recipientExpander.setOnClickListener(this);
+
+        recipientCollapse = activity.findViewById(R.id.recipient_collapse);
+        recipientCollapse.setOnClickListener(this);
 
         View toLabel = activity.findViewById(R.id.to_label);
         View ccLabel = activity.findViewById(R.id.cc_label);
@@ -215,7 +219,13 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         if (recipientExpanderContainer.getDisplayedChild() != childToDisplay) {
             recipientExpanderContainer.setDisplayedChild(childToDisplay);
         }
-        recipientExpander.setVisibility(View.VISIBLE);
+        if(isBccVisible() && isCcVisible()){
+            recipientCollapse.setVisibility(View.VISIBLE);
+            recipientExpander.setVisibility(View.GONE);
+        }else{
+            recipientExpander.setVisibility(View.VISIBLE);
+            recipientCollapse.setVisibility(View.GONE);
+        }
     }
 
     public boolean isCcVisible() {
@@ -387,6 +397,8 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
             presenter.onClickBccLabel();
         } else if (id == R.id.recipient_expander) {
             presenter.onClickRecipientExpander();
+        } else if(id == R.id.recipient_collapse){
+            presenter.onClickRecipientCollapse();
         } else if (id == R.id.crypto_status) {
             presenter.onClickCryptoStatus();
         } else if (id == R.id.crypto_special_mode) {
