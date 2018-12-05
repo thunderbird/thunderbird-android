@@ -46,7 +46,6 @@ import com.fsck.k9.mail.internet.CharsetSupport;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.oauth.XOAuth2ChallengeParser;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
-import com.fsck.k9.mail.store.StoreConfig;
 import javax.net.ssl.SSLException;
 import org.apache.commons.io.IOUtils;
 import timber.log.Timber;
@@ -79,10 +78,9 @@ public class SmtpTransport extends Transport {
     private int largestAcceptableMessage;
     private boolean retryXoauthWithNewToken;
     private boolean isPipeliningSupported;
-    private boolean shouldHideHostname;
 
 
-    public SmtpTransport(ServerSettings serverSettings, StoreConfig storeConfig,
+    public SmtpTransport(ServerSettings serverSettings,
             TrustedSocketFactory trustedSocketFactory, OAuth2TokenProvider oauthTokenProvider) {
         if (!serverSettings.type.equals("smtp")) {
             throw new IllegalArgumentException("Expected SMTP StoreConfig!");
@@ -100,7 +98,6 @@ public class SmtpTransport extends Transport {
 
         this.trustedSocketFactory = trustedSocketFactory;
         this.oauthTokenProvider = oauthTokenProvider;
-        this.shouldHideHostname = storeConfig.shouldHideHostname();
     }
 
     @Override
@@ -304,29 +301,15 @@ public class SmtpTransport extends Transport {
         }
     }
 
-    private String buildHostnameToReport() {
-        if (shouldHideHostname) {
-            return "localhost";
-        }
+    @VisibleForTesting
+    protected String buildHostnameToReport() {
         InetAddress localAddress = socket.getLocalAddress();
-        String localHostname = getCanonicalHostName(localAddress);
-        String ipAddr = getHostAddress(localAddress);
+        String ipAddr = localAddress.getHostAddress();
 
-        if (localHostname.equals("") || localHostname.equals(ipAddr) || localHostname.contains("_")) {
-            // We don't have a FQDN or the hostname contains invalid
-            // characters (see issue 2143), so use IP address.
-            if (!ipAddr.equals("")) {
-                if (localAddress instanceof Inet6Address) {
-                    return "[IPv6:" + ipAddr + "]";
-                } else {
-                    return "[" + ipAddr + "]";
-                }
-            } else {
-                // If the IP address is no good, set a sane default
-                return "android";
-            }
+        if (localAddress instanceof Inet6Address) {
+            return "[IPv6:" + ipAddr + "]";
         } else {
-            return localHostname;
+            return "[" + ipAddr + "]";
         }
     }
 
@@ -824,16 +807,6 @@ public class SmtpTransport extends Transport {
 
     private void saslAuthExternal() throws MessagingException, IOException {
         executeCommand("AUTH EXTERNAL %s", Base64.encode(username));
-    }
-
-    @VisibleForTesting
-    protected String getCanonicalHostName(InetAddress localAddress) {
-        return localAddress.getCanonicalHostName();
-    }
-
-    @VisibleForTesting
-    protected String getHostAddress(InetAddress localAddress) {
-        return localAddress.getHostAddress();
     }
 
     public void checkSettings() throws MessagingException {
