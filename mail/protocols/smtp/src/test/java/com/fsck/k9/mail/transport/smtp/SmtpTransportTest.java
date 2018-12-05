@@ -16,7 +16,6 @@ import com.fsck.k9.mail.helpers.TestTrustedSocketFactory;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
-import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mail.transport.mockServer.MockSmtpServer;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,7 +42,6 @@ public class SmtpTransportTest {
     
     private TrustedSocketFactory socketFactory;
     private OAuth2TokenProvider oAuth2TokenProvider;
-    private StoreConfig storeConfig = mock(StoreConfig.class);
 
 
     @Before
@@ -62,7 +60,7 @@ public class SmtpTransportTest {
         server.output("250-localhost Hello client.localhost");
         server.output("250 OK");
         SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.PLAIN, ConnectionSecurity.NONE,
-                null, "[127.0.0.1]");
+                null);
 
         transport.open();
 
@@ -861,18 +859,16 @@ public class SmtpTransportTest {
     }
 
     private SmtpTransport startServerAndCreateSmtpTransportWithoutPassword(MockSmtpServer server) throws Exception {
-        return startServerAndCreateSmtpTransport(server, AuthType.PLAIN, ConnectionSecurity.NONE, null,
-                "[127.0.0.1]");
+        return startServerAndCreateSmtpTransport(server, AuthType.PLAIN, ConnectionSecurity.NONE, null);
     }
 
     private SmtpTransport startServerAndCreateSmtpTransport(MockSmtpServer server, AuthType authenticationType,
             ConnectionSecurity connectionSecurity) throws Exception {
-        return startServerAndCreateSmtpTransport(server, authenticationType, connectionSecurity, PASSWORD,
-                "[127.0.0.1]");
+        return startServerAndCreateSmtpTransport(server, authenticationType, connectionSecurity, PASSWORD);
     }
 
     private SmtpTransport startServerAndCreateSmtpTransport(MockSmtpServer server, AuthType authenticationType,
-            ConnectionSecurity connectionSecurity, String password, String injectedHostname)
+            ConnectionSecurity connectionSecurity, String password)
             throws Exception {
         server.start();
 
@@ -888,7 +884,7 @@ public class SmtpTransportTest {
                 password,
                 CLIENT_CERTIFICATE_ALIAS);
 
-        return new TestSmtpTransport(serverSettings, socketFactory, oAuth2TokenProvider, injectedHostname);
+        return new SmtpTransport(serverSettings, socketFactory, oAuth2TokenProvider);
     }
 
     private TestMessageBuilder getDefaultMessageBuilder() {
@@ -924,22 +920,5 @@ public class SmtpTransportTest {
         server.output("235 2.7.0 Authentication successful");
         
         return server;
-    }
-    
-    
-    static class TestSmtpTransport extends SmtpTransport {
-        private final String injectedHostname;
-
-        TestSmtpTransport(ServerSettings serverSettings,
-                TrustedSocketFactory trustedSocketFactory, OAuth2TokenProvider oAuth2TokenProvider,
-                String injectedHostname)  {
-            super(serverSettings, trustedSocketFactory, oAuth2TokenProvider);
-            this.injectedHostname = injectedHostname;
-        }
-
-        @Override
-        protected String buildHostnameToReport() {
-            return injectedHostname;
-        }
     }
 }

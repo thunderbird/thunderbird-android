@@ -301,15 +301,14 @@ public class SmtpTransport extends Transport {
         }
     }
 
-    @VisibleForTesting
-    protected String buildHostnameToReport() {
+    private String buildHostnameToReport() {
         InetAddress localAddress = socket.getLocalAddress();
-        String ipAddr = localAddress.getHostAddress();
 
+        // we use local ip statically for privacy reasons, see https://github.com/k9mail/k-9/pull/3798
         if (localAddress instanceof Inet6Address) {
-            return "[IPv6:" + ipAddr + "]";
+            return "[IPv6:::1]";
         } else {
-            return "[" + ipAddr + "]";
+            return "[127.0.0.1]";
         }
     }
 
