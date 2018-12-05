@@ -61,7 +61,6 @@ public class SmtpTransportTest {
         server.expect("EHLO [127.0.0.1]");
         server.output("250-localhost Hello client.localhost");
         server.output("250 OK");
-        when(storeConfig.shouldHideHostname()).thenReturn(true);
         SmtpTransport transport = startServerAndCreateSmtpTransport(server, AuthType.PLAIN, ConnectionSecurity.NONE,
                 null, "[127.0.0.1]");
 
