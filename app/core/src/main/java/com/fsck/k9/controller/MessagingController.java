@@ -2442,7 +2442,7 @@ public class MessagingController {
         }
         final TracingWakeLock wakeLock = twakeLock;
 
-        for (MessagingListener l : getListeners()) {
+        for (MessagingListener l : getListeners(listener)) {
             l.checkMailStarted(context, account);
         }
         putBackground("checkMail", listener, new Runnable() {
@@ -2478,7 +2478,7 @@ public class MessagingController {
                                 if (wakeLock != null) {
                                     wakeLock.release();
                                 }
-                                for (MessagingListener l : getListeners()) {
+                                for (MessagingListener l : getListeners(listener)) {
                                     l.checkMailFinished(context, account);
                                 }
 
