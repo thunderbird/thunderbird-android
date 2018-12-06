@@ -16,13 +16,7 @@ class MailSyncJob(
                 ?.let { accountUuid ->
 
                     preferences.getAccount(accountUuid)?.let { account ->
-                        messagingController.checkMail(
-                                context,
-                                account,
-                                false,
-                                false,
-                                null
-                        )
+                        messagingController.checkMailBlocking(account)
                     }
                 }
 
