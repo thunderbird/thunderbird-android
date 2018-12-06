@@ -104,6 +104,8 @@ public class Account implements BaseAccount, StoreConfig {
     public static final long NO_OPENPGP_KEY = 0;
     public static final int UNASSIGNED_ACCOUNT_NUMBER = -1;
 
+    public static final int INTERVAL_MINUTES_NEVER = -1;
+
     private DeletePolicy deletePolicy = DeletePolicy.NEVER;
 
     private final String accountUuid;

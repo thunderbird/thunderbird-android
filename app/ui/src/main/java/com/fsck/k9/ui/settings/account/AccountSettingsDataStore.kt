@@ -1,18 +1,17 @@
 package com.fsck.k9.ui.settings.account
 
-import android.content.Context
 import android.support.v7.preference.PreferenceDataStore
 import com.fsck.k9.Account
 import com.fsck.k9.Account.SpecialFolderSelection
 import com.fsck.k9.Preferences
-import com.fsck.k9.service.MailService
+import com.fsck.k9.job.K9JobManager
 import java.util.concurrent.ExecutorService
 
 class AccountSettingsDataStore(
-        private val context: Context,
         private val preferences: Preferences,
         private val executorService: ExecutorService,
-        private val account: Account
+        private val account: Account,
+        private val jobManager: K9JobManager
 ) : PreferenceDataStore() {
 
     override fun getBoolean(key: String, defValue: Boolean): Boolean {
@@ -216,11 +215,11 @@ class AccountSettingsDataStore(
     }
 
     private fun reschedulePoll() {
-        MailService.actionReschedulePoll(context, null)
+        jobManager.scheduleMailSync()
     }
 
     private fun restartPushers() {
-        MailService.actionRestartPushers(context, null)
+        jobManager.schedulePusherRefresh()
     }
 
     private fun extractFolderName(preferenceValue: String): String? {

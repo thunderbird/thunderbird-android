@@ -24,7 +24,7 @@ class AccountPreferenceSerializer(
             transportUri = Base64.decode(storage.getString("$accountUuid.transportUri", null))
             description = storage.getString("$accountUuid.description", null)
             alwaysBcc = storage.getString("$accountUuid.alwaysBcc", alwaysBcc)
-            automaticCheckIntervalMinutes = storage.getInt("$accountUuid.automaticCheckIntervalMinutes", -1)
+            automaticCheckIntervalMinutes = storage.getInt("$accountUuid.automaticCheckIntervalMinutes", Account.INTERVAL_MINUTES_NEVER)
             idleRefreshMinutes = storage.getInt("$accountUuid.idleRefreshMinutes", 24)
             isPushPollOnConnect = storage.getBoolean("$accountUuid.pushPollOnConnect", true)
             displayCount = storage.getInt("$accountUuid.displayCount", K9.DEFAULT_VISIBLE_LIMIT)
@@ -499,7 +499,7 @@ class AccountPreferenceSerializer(
     fun loadDefaults(account: Account) {
         with (account) {
             localStorageProviderId = storageManager.defaultProviderId
-            automaticCheckIntervalMinutes = -1
+            automaticCheckIntervalMinutes = Account.INTERVAL_MINUTES_NEVER
             idleRefreshMinutes = 24
             isPushPollOnConnect = true
             displayCount = K9.DEFAULT_VISIBLE_LIMIT

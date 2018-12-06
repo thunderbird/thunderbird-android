@@ -2,11 +2,6 @@
 package com.fsck.k9.activity.setup;
 
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Map;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -32,14 +27,13 @@ import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.DI;
 import com.fsck.k9.LocalKeyStoreManager;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.backend.BackendManager;
-import com.fsck.k9.preferences.Protocols;
-import com.fsck.k9.ui.R;
 import com.fsck.k9.account.AccountCreator;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
+import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.Utility;
+import com.fsck.k9.job.K9JobManager;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.MailServerDirection;
@@ -47,9 +41,16 @@ import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.store.imap.ImapStoreSettings;
 import com.fsck.k9.mail.store.webdav.WebDavStoreSettings;
-import com.fsck.k9.service.MailService;
+import com.fsck.k9.preferences.Protocols;
+import com.fsck.k9.ui.R;
 import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
+
 import timber.log.Timber;
 
 public class AccountSetupIncoming extends K9Activity implements OnClickListener {
@@ -60,6 +61,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
     private final MessagingController messagingController = DI.get(MessagingController.class);
     private final BackendManager backendManager = DI.get(BackendManager.class);
+    private final K9JobManager jobManager = DI.get(K9JobManager.class);
 
     private String mStoreType;
     private EditText mUsernameView;
@@ -514,7 +516,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             if (Intent.ACTION_EDIT.equals(getIntent().getAction())) {
                 boolean isPushCapable = messagingController.isPushCapable(mAccount);
                 if (isPushCapable && mAccount.getFolderPushMode() != FolderMode.NONE) {
-                    MailService.actionRestartPushers(this, null);
+                    jobManager.schedulePusherRefresh();
                 }
                 Preferences.getPreferences(getApplicationContext()).saveAccount(mAccount);
                 finish();

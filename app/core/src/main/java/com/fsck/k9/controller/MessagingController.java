@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -2403,6 +2404,25 @@ public class MessagingController {
         context.startActivity(chooserIntent);
     }
 
+    public void checkMailBlocking(Account account) {
+        final CountDownLatch latch = new CountDownLatch(1);
+        checkMail(context, account, true, false, new SimpleMessagingListener() {
+            @Override
+            public void checkMailFinished(Context context, Account account) {
+                latch.countDown();
+            }
+        });
+
+        Timber.v("checkMailBlocking(%s) about to await latch release", account.getDescription());
+
+        try {
+            latch.await();
+            Timber.v("checkMailBlocking(%s) got latch release", account.getDescription());
+        } catch (Exception e) {
+            Timber.e(e, "Interrupted while awaiting latch release");
+        }
+    }
+
     /**
      * Checks mail for one or multiple accounts. If account is null all accounts
      * are checked.
@@ -2860,6 +2880,10 @@ public class MessagingController {
 
     public Collection<Pusher> getPushers() {
         return pushers.values();
+    }
+
+    public Pusher getPusher(Account account) {
+        return pushers.get(account);
     }
 
     public boolean setupPushing(final Account account) {
