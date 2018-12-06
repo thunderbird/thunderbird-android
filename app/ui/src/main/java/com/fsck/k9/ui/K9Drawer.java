@@ -9,6 +9,7 @@ import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.TypedValue;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mailstore.Folder;
 import com.fsck.k9.ui.folders.FolderNameFormatter;
 import com.fsck.k9.ui.messagelist.MessageListViewModel;
@@ -131,8 +133,19 @@ public class K9Drawer {
                 photoUris.add(photoUri);
                 pdi.withIcon(photoUri);
             } else {
+                int fg = ResourcesCompat.getColor(parent.getResources(), R.color.material_drawer_background, null),
+                    bg = account.getChipColor();
+
+                float[] hsv = new float[3];
+                Color.colorToHSV(bg, hsv);
+                while (Utility.contrastRatio(fg, bg) < 3) {
+                    hsv[2] *= .9f;
+                    bg = Color.HSVToColor(hsv);
+                }
+
                 pdi.withIcon(new IconicsDrawable(parent, FontAwesome.Icon.faw_user_alt)
-                        .colorRes(R.color.material_drawer_background).backgroundColor(account.getChipColor())
+                        .color(fg)
+                        .backgroundColor(bg)
                         .sizeDp(56).paddingDp(14));
             }
             headerBuilder.addProfiles(pdi);

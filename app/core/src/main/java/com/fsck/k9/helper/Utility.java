@@ -9,10 +9,12 @@ import java.util.regex.Pattern;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.ColorInt;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.widget.EditText;
@@ -322,5 +324,16 @@ public class Utility {
             sMainThreadHandler = new Handler(Looper.getMainLooper());
         }
         return sMainThreadHandler;
+    }
+
+    /**
+     * @return contrast ratio between the given colors
+     * @see <a href="https://www.w3.org/TR/WCAG20/#glossary">W3C's definition of contrast ratio</a>
+     */
+    public static float contrastRatio(@ColorInt int a, @ColorInt int b) {
+        float aLuminance = Color.luminance(a) + 0.05f,
+              bLuminance = Color.luminance(b) + 0.05f;
+
+        return Math.max(aLuminance, bLuminance) / Math.min(aLuminance, bLuminance);
     }
 }
