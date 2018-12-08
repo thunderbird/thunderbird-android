@@ -3,6 +3,7 @@ package com.fsck.k9.activity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -82,6 +83,10 @@ public abstract class K9ListActivity extends K9Activity implements K9ActivityMag
     protected ListView getListView() {
         if (list == null) {
             list = findViewById(android.R.id.list);
+            View emptyView = findViewById(android.R.id.empty);
+            if (emptyView != null) {
+                list.setEmptyView(emptyView);
+            }
         }
         return list;
     }
