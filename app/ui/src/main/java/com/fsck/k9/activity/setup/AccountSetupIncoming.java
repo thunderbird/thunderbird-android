@@ -120,7 +120,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.account_setup_incoming);
+        setLayout(R.layout.account_setup_incoming);
 
         mUsernameView = findViewById(R.id.account_username);
         mPasswordView = findViewById(R.id.account_password);

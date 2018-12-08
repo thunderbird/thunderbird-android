@@ -2,44 +2,53 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:padding="6dip"
-    android:orientation="vertical"
-        android:layout_gravity="center_horizontal|center_vertical"
-      >
-      <TextView
-          android:text="@string/account_setup_account_type_instructions"
-        android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="?android:attr/textColorPrimary"
-        android:paddingBottom="10dip"
-        android:focusable="true"
-          />
-    <Button
-        android:id="@+id/imap"
-        android:text="@string/account_setup_account_type_imap_action"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:minWidth="@dimen/button_minWidth"
-        android:layout_gravity="center_horizontal"
-        android:padding="10dip"
-        />
-    <Button
-        android:id="@+id/pop"
-        android:text="@string/account_setup_account_type_pop_action"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:minWidth="@dimen/button_minWidth"
-        android:layout_gravity="center_horizontal"
-        android:padding="10dip"
-        />
-    <Button
-        android:id="@+id/webdav"
-        android:text="@string/account_setup_account_type_webdav_action"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:minWidth="@dimen/button_minWidth"
-        android:layout_gravity="center_horizontal"
-        android:padding="10dip"
-        />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="6dip">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:paddingBottom="10dip"
+            android:text="@string/account_setup_account_type_instructions"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="?android:attr/textColorPrimary" />
+
+        <Button
+            android:id="@+id/imap"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:minWidth="@dimen/button_minWidth"
+            android:padding="10dip"
+            android:text="@string/account_setup_account_type_imap_action" />
+
+        <Button
+            android:id="@+id/pop"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:minWidth="@dimen/button_minWidth"
+            android:padding="10dip"
+            android:text="@string/account_setup_account_type_pop_action" />
+
+        <Button
+            android:id="@+id/webdav"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:minWidth="@dimen/button_minWidth"
+            android:padding="10dip"
+            android:text="@string/account_setup_account_type_webdav_action" />
+
+    </LinearLayout>
+
 </LinearLayout>

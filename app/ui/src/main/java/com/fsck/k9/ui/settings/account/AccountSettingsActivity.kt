@@ -25,7 +25,7 @@ class AccountSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_account_settings)
+        setLayout(R.layout.activity_account_settings)
 
         initializeActionBar()
 

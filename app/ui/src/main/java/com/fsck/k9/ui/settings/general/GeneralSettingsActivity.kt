@@ -27,7 +27,7 @@ class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, S
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.general_settings)
+        setLayout(R.layout.general_settings)
 
         initializeActionBar()
 

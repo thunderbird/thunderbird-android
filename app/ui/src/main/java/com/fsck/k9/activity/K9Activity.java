@@ -4,12 +4,15 @@ package com.fsck.k9.activity;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 
+import android.view.View;
 import com.fsck.k9.activity.K9ActivityCommon.K9ActivityMagic;
 import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
 import com.fsck.k9.ui.R;
@@ -41,6 +44,24 @@ public abstract class K9Activity extends AppCompatActivity implements K9Activity
     @Override
     public void setupGestureDetector(OnSwipeGestureListener listener) {
         mBase.setupGestureDetector(listener);
+    }
+
+    protected void setLayout(@LayoutRes int layoutResId) {
+        setContentView(layoutResId);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        if (toolbar == null) {
+            throw new IllegalArgumentException("K9 layouts must provide a toolbar with id='toolbar'.");
+        }
+        setSupportActionBar(toolbar);
+    }
+
+    protected void setLayout(View view) {
+        setContentView(view);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        if (toolbar == null) {
+            throw new IllegalArgumentException("K9 layouts must provide a toolbar with id='toolbar'.");
+        }
+        setSupportActionBar(toolbar);
     }
 
     public boolean hasPermission(Permission permission) {

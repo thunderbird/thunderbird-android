@@ -6,8 +6,8 @@
     </style>
 
     <!-- Empty base themes that can be easily replaced by RRO (Runtime Resource Overlay) themes -->
-    <style name="Theme.K9.Light.Base" parent="Theme.AppCompat.Light" />
-    <style name="Theme.K9.Dark.Base" parent="Theme.AppCompat" />
+    <style name="Theme.K9.Light.Base" parent="Theme.AppCompat.Light.NoActionBar" />
+    <style name="Theme.K9.Dark.Base" parent="Theme.AppCompat.NoActionBar" />
 
     <style name="Theme.K9.Light.Common" parent="Theme.K9.Light.Base">
         <item name="material_drawer_background">@color/material_drawer_background</item>
@@ -219,6 +219,16 @@
 
     <style name="Theme.K9.Light" parent="Theme.K9.Light.Common" />
     <style name="Theme.K9.Dark" parent="Theme.K9.Dark.Common" />
+
+    <style name="Theme.K9.Light.ActionBar" parent="Theme.K9.Light.Common" >
+        <item name="windowActionBar">true</item>
+        <item name="windowNoTitle">false</item>
+    </style>
+
+    <style name="Theme.K9.Dark.ActionBar" parent="Theme.K9.Dark.Common" >
+        <item name="windowActionBar">true</item>
+        <item name="windowNoTitle">false</item>
+    </style>
 
     <style name="Theme.K9.Dialog.Light" parent="Theme.K9.Light">
         <item name="backgroundColorChooseAccountHeader">#cccccc</item>

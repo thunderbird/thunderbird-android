@@ -18,7 +18,7 @@ public abstract class K9PreferenceActivity extends AppCompatPreferenceActivity i
     @Override
     public void onCreate(Bundle icicle) {
         K9ActivityCommon.setLanguage(this, K9.getK9Language());
-        setTheme(K9ActivityCommon.getK9ThemeResourceId());
+        setTheme(K9ActivityCommon.getK9ActionBarThemeResourceId());
         super.onCreate(icicle);
         lifecycleRegistry = new LifecycleRegistry(this);
         lifecycleRegistry.markState(State.CREATED);

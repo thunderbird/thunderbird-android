@@ -118,6 +118,11 @@ public class K9ActivityCommon {
         return (themeId == Theme.LIGHT) ? R.style.Theme_K9_Light : R.style.Theme_K9_Dark;
     }
 
+    public static int getK9ActionBarThemeResourceId() {
+        return (getK9ThemeResourceId() == R.style.Theme_K9_Light) ?
+                R.style.Theme_K9_Light_ActionBar : R.style.Theme_K9_Dark_ActionBar;
+    }
+
     public static int getK9ThemeResourceId() {
         return getK9ThemeResourceId(K9.getK9Theme());
     }

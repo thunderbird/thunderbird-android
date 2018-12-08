@@ -26,7 +26,7 @@ public class WelcomeMessage extends K9Activity implements OnClickListener{
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        setContentView(R.layout.welcome_message);
+        setLayout(R.layout.welcome_message);
 
         TextView welcome = findViewById(R.id.welcome_message);
         welcome.setText(HtmlConverter.htmlToSpanned(getString(R.string.accounts_welcome)));
