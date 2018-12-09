@@ -565,10 +565,10 @@ public class Pop3Folder extends Folder<Pop3Message> {
 
             Integer msgNum = uidToMsgNumMap.get(message.getUid());
             if (msgNum == null) {
-                MessagingException me = new MessagingException("Could not delete message " + message.getUid()
-                        + " because no msgNum found; permanent error");
-                me.setPermanentFailure(true);
-                throw me;
+                throw new MessagingException(
+                        "Could not delete message " + message.getUid() + " because no msgNum found; permanent error",
+                        true
+                );
             }
             open(Folder.OPEN_MODE_RW);
             connection.executeSimpleCommand(String.format(DELE_COMMAND + " %s", msgNum));
