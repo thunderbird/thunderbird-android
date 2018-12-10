@@ -74,7 +74,10 @@ import com.fsck.k9.activity.setup.WelcomeMessage;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.AuthType;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mailstore.LocalFolder;
+import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStoreProvider;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.preferences.Protocols;
@@ -636,6 +639,16 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 Timber.i("refusing to open account that is not available");
                 return false;
             }
+
+            // create outbox if not exists (e.g. imported settings file)
+            try {
+                LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(realAccount);
+                LocalFolder.createLocalFolder(localStore, Account.OUTBOX, getString(R.string.special_mailbox_name_outbox));
+            } catch (MessagingException e) {
+                Timber.e("problem creating outbox folder", e);
+                return false;
+            }
+
             if (realAccount.getAutoExpandFolder() == null) {
                 FolderList.actionHandleAccount(this, realAccount);
             } else {

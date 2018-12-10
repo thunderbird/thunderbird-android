@@ -312,6 +312,18 @@ public class LocalFolder extends Folder<LocalMessage> {
         return true;
     }
 
+    public static void createLocalFolder(LocalStore localStore, String internalId, String folderName)
+            throws MessagingException {
+        LocalFolder folder = localStore.getFolder(internalId);
+        if (!folder.exists()) {
+            folder.create();
+        }
+        folder.setName(folderName);
+        folder.setInTopGroup(true);
+        folder.setSyncClass(FolderClass.NONE);
+    }
+
+
     class PreferencesHolder {
         FolderClass displayClass = LocalFolder.this.displayClass;
         FolderClass syncClass = LocalFolder.this.syncClass;

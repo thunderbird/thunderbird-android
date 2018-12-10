@@ -542,13 +542,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
         private void createLocalFolder(LocalStore localStore, String internalId, String folderName)
                 throws MessagingException {
 
-            LocalFolder folder = localStore.getFolder(internalId);
-            if (!folder.exists()) {
-                folder.create();
-            }
-            folder.setName(folderName);
-            folder.setInTopGroup(true);
-            folder.setSyncClass(FolderClass.NONE);
+            LocalFolder.createLocalFolder(localStore, internalId, folderName);
         }
 
         @Override
