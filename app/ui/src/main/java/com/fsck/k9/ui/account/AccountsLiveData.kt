@@ -34,10 +34,12 @@ class AccountsLiveData(val preferences: Preferences) : LiveData<List<Account>>()
     override fun onActive() {
         super.onActive()
         preferences.addOnAccountsChangeListener(this)
+        loadAccountsAsync()
     }
 
     override fun onInactive() {
         super.onInactive()
         preferences.removeOnAccountsChangeListener(this)
+        value = null
     }
 }
