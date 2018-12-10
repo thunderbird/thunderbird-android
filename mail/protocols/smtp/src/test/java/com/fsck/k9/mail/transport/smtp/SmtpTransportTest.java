@@ -836,8 +836,8 @@ public class SmtpTransportTest {
             transport.sendMessage(message);
             fail("Expected exception");
         } catch (NegativeSmtpReplyException e) {
-            assertEquals(554, e.getReplyCode());
-            assertEquals("no valid recipients given", e.getReplyText());
+            assertEquals(550, e.getReplyCode());
+            assertEquals("remote mail to <user2@localhost> not allowed", e.getReplyText());
         }
 
         server.verifyConnectionClosed();
