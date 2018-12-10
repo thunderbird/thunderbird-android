@@ -205,7 +205,7 @@ class GeneralSettingsDataStore(
     }
 
     private fun saveSettings() {
-        val editor = preferences.storage.edit()
+        val editor = preferences.createStorageEditor()
         K9.save(editor)
 
         executorService.execute {

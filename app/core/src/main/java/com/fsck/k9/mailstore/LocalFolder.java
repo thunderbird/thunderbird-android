@@ -29,6 +29,7 @@ import android.support.annotation.NonNull;
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
+import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.backend.api.MessageRemovalListener;
 import com.fsck.k9.crypto.EncryptionExtractor;
@@ -630,7 +631,7 @@ public class LocalFolder extends Folder<LocalMessage> {
     public void delete() throws MessagingException {
         String id = getPrefId();
 
-        StorageEditor editor = this.localStore.getStorage().edit();
+        StorageEditor editor = localStore.getPreferences().createStorageEditor();
 
         editor.remove(id + ".displayMode");
         editor.remove(id + ".syncMode");
@@ -642,7 +643,7 @@ public class LocalFolder extends Folder<LocalMessage> {
     }
 
     public void save() throws MessagingException {
-        StorageEditor editor = this.localStore.getStorage().edit();
+        StorageEditor editor = localStore.getPreferences().createStorageEditor();
         save(editor);
         editor.commit();
     }

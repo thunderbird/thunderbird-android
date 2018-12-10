@@ -21,6 +21,7 @@ import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStoreProvider;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
+import com.fsck.k9.preferences.StoragePersister;
 import timber.log.Timber;
 
 
@@ -30,13 +31,15 @@ public class Preferences {
     private AccountPreferenceSerializer accountPreferenceSerializer;
 
     public static synchronized Preferences getPreferences(Context context) {
-        Context appContext = context.getApplicationContext();
-        CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
-        LocalKeyStoreManager localKeyStoreManager = DI.get(LocalKeyStoreManager.class);
-        AccountPreferenceSerializer accountPreferenceSerializer = DI.get(AccountPreferenceSerializer.class);
-        LocalStoreProvider localStoreProvider = DI.get(LocalStoreProvider.class);
         if (preferences == null) {
-            preferences = new Preferences(appContext, resourceProvider, localStoreProvider, localKeyStoreManager, accountPreferenceSerializer);
+            Context appContext = context.getApplicationContext();
+            CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
+            LocalKeyStoreManager localKeyStoreManager = DI.get(LocalKeyStoreManager.class);
+            AccountPreferenceSerializer accountPreferenceSerializer = DI.get(AccountPreferenceSerializer.class);
+            LocalStoreProvider localStoreProvider = DI.get(LocalStoreProvider.class);
+            StoragePersister storagePersister = DI.get(StoragePersister.class);
+
+            preferences = new Preferences(appContext, resourceProvider, storagePersister, localStoreProvider, localKeyStoreManager, accountPreferenceSerializer);
         }
         return preferences;
     }
@@ -49,22 +52,33 @@ public class Preferences {
     private final LocalStoreProvider localStoreProvider;
     private final CoreResourceProvider resourceProvider;
     private final LocalKeyStoreManager localKeyStoreManager;
+    private final StoragePersister storagePersister;
 
     private Preferences(Context context, CoreResourceProvider resourceProvider,
-            LocalStoreProvider localStoreProvider, LocalKeyStoreManager localKeyStoreManager,
+            StoragePersister storagePersister, LocalStoreProvider localStoreProvider,
+            LocalKeyStoreManager localKeyStoreManager,
             AccountPreferenceSerializer accountPreferenceSerializer) {
-        storage = Storage.getStorage(context);
+        this.storage = new Storage();
+        this.storagePersister = storagePersister;
         this.context = context;
         this.resourceProvider = resourceProvider;
         this.localStoreProvider = localStoreProvider;
         this.localKeyStoreManager = localKeyStoreManager;
         this.accountPreferenceSerializer = accountPreferenceSerializer;
+
+        Map<String, String> persistedStorageValues = storagePersister.loadValues();
+        storage.replaceAll(persistedStorageValues);
+
         if (storage.isEmpty()) {
             Timber.i("Preferences storage is zero-size, importing from Android-style preferences");
-            StorageEditor editor = storage.edit();
+            StorageEditor editor = createStorageEditor();
             editor.copy(context.getSharedPreferences("AndroidMail.Main", Context.MODE_PRIVATE));
             editor.commit();
         }
+    }
+
+    public StorageEditor createStorageEditor() {
+        return new StorageEditor(storage, storagePersister);
     }
 
     @RestrictTo(Scope.TESTS)
@@ -160,7 +174,9 @@ public class Preferences {
         }
         LocalStore.removeAccount(account);
 
-        DI.get(AccountPreferenceSerializer.class).delete(storage, account);
+        StorageEditor storageEditor = createStorageEditor();
+        accountPreferenceSerializer.delete(storageEditor, storage, account);
+        storageEditor.commit();
         localKeyStoreManager.deleteCertificates(account);
 
         if (newAccount == account) {
@@ -189,7 +205,7 @@ public class Preferences {
     }
 
     public void setDefaultAccount(Account account) {
-        getStorage().edit().putString("defaultAccountUuid", account.getUuid()).commit();
+        createStorageEditor().putString("defaultAccountUuid", account.getUuid()).commit();
     }
 
     public Storage getStorage() {
@@ -201,11 +217,12 @@ public class Preferences {
     }
 
     public void saveAccount(Account account) {
-        StorageEditor editor = storage.edit();
-
         ensureAssignedAccountNumber(account);
         processChangedValues(account);
-        accountPreferenceSerializer.save(storage, editor, account);
+
+        StorageEditor editor = createStorageEditor();
+        accountPreferenceSerializer.save(editor, storage, account);
+        editor.commit();
     }
 
     private void ensureAssignedAccountNumber(Account account) {
@@ -265,7 +282,9 @@ public class Preferences {
     }
 
     public void move(Account account, boolean mUp) {
-        accountPreferenceSerializer.move(account, storage, mUp);
+        StorageEditor storageEditor = createStorageEditor();
+        accountPreferenceSerializer.move(storageEditor, account, storage, mUp);
+        storageEditor.commit();
         loadAccounts();
     }
 }

@@ -28,6 +28,7 @@ dependencies {
     testImplementation project(":backend:imap")
     testImplementation project(":mail:protocols:smtp")
     testImplementation project(":app:storage")
+    testImplementation "org.jetbrains.kotlin:kotlin-reflect:${versions.kotlin}"
     testImplementation "org.robolectric:robolectric:${versions.robolectric}"
     testImplementation "junit:junit:${versions.junit}"
     testImplementation "com.google.truth:truth:${versions.truth}"

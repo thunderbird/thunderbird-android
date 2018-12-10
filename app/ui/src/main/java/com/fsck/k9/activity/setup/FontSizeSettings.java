@@ -11,9 +11,8 @@ import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.K9PreferenceActivity;
-import com.fsck.k9.ui.R;
-import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
+import com.fsck.k9.ui.R;
 
 
 /**
@@ -191,8 +190,7 @@ public class FontSizeSettings extends K9PreferenceActivity {
 
         fontSizes.setMessageComposeInput(Integer.parseInt(mMessageComposeInput.getValue()));
 
-        Storage storage = Preferences.getPreferences(this).getStorage();
-        StorageEditor editor = storage.edit();
+        StorageEditor editor = Preferences.getPreferences(this).createStorageEditor();
         fontSizes.save(editor);
         editor.commit();
     }

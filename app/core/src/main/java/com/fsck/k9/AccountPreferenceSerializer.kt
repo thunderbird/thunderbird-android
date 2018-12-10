@@ -192,7 +192,7 @@ class AccountPreferenceSerializer(
     }
 
     @Synchronized
-    fun save(storage: Storage, editor: StorageEditor, account: Account) {
+    fun save(editor: StorageEditor, storage: Storage, account: Account) {
         val accountUuid = account.uuid
 
         if (!storage.getString("accountUuids", "").contains(account.uuid)) {
@@ -294,13 +294,11 @@ class AccountPreferenceSerializer(
         }
 
         saveIdentities(account, storage, editor)
-
-        editor.commit()
     }
 
 
     @Synchronized
-    fun delete(storage: Storage, account: Account) {
+    fun delete(editor: StorageEditor, storage: Storage, account: Account) {
         val accountUuid = account.uuid
 
         // Get the list of account UUIDs
@@ -313,8 +311,6 @@ class AccountPreferenceSerializer(
                 newUuids.add(uuid)
             }
         }
-
-        val editor = storage.edit()
 
         // Only change the 'accountUuids' value if this account's UUID was listed before
         if (newUuids.size < uuids.size) {
@@ -407,7 +403,6 @@ class AccountPreferenceSerializer(
         }
         deleteIdentities(account, storage, editor)
         // TODO: Remove preference settings that may exist for individual folders in the account.
-        editor.commit()
     }
 
     @Synchronized
@@ -450,9 +445,8 @@ class AccountPreferenceSerializer(
         } while (gotOne)
     }
 
-    fun move(account: Account, storage: Storage, moveUp: Boolean) {
+    fun move(editor: StorageEditor, account: Account, storage: Storage, moveUp: Boolean) {
         val uuids = storage.getString("accountUuids", "").split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        val editor = storage.edit()
         val newUuids = arrayOfNulls<String>(uuids.size)
         if (moveUp) {
             for (i in uuids.indices) {
@@ -475,7 +469,6 @@ class AccountPreferenceSerializer(
         }
         val accountUuids = Utility.combine(newUuids, ',')
         editor.putString("accountUuids", accountUuids)
-        editor.commit()
     }
 
     private fun <T : Enum<T>> getEnumStringPref(storage: Storage, key: String, defaultEnum: T): T {
