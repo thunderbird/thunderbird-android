@@ -10,8 +10,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import android.content.Context;
+import android.support.annotation.GuardedBy;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.RestrictTo.Scope;
@@ -46,15 +48,21 @@ public class Preferences {
     }
 
     private Storage storage;
+    @GuardedBy("accountLock")
     private Map<String, Account> accounts = null;
+    @GuardedBy("accountLock")
     private List<Account> accountsInOrder = null;
+    @GuardedBy("accountLock")
     private Account newAccount;
-    private final ArrayList<AccountsChangeListener> accountsChangeListeners = new ArrayList<>();
+
+    private final List<AccountsChangeListener> accountsChangeListeners = new CopyOnWriteArrayList<>();
     private final Context context;
     private final LocalStoreProvider localStoreProvider;
     private final CoreResourceProvider resourceProvider;
     private final LocalKeyStoreManager localKeyStoreManager;
     private final StoragePersister storagePersister;
+
+    private final Object accountLock = new Object();
 
     private Preferences(Context context, CoreResourceProvider resourceProvider,
             StoragePersister storagePersister, LocalStoreProvider localStoreProvider,
@@ -85,29 +93,33 @@ public class Preferences {
 
     @RestrictTo(Scope.TESTS)
     public void clearAccounts() {
-        accounts = new HashMap<>();
-        accountsInOrder = new LinkedList<>();
+        synchronized (accountLock) {
+            accounts = new HashMap<>();
+            accountsInOrder = new LinkedList<>();
+        }
     }
 
-    public synchronized void loadAccounts() {
-        accounts = new HashMap<>();
-        accountsInOrder = new LinkedList<>();
-        String accountUuids = getStorage().getString("accountUuids", null);
-        if ((accountUuids != null) && (accountUuids.length() != 0)) {
-            String[] uuids = accountUuids.split(",");
-            for (String uuid : uuids) {
-                Account newAccount = new Account(uuid);
-                accountPreferenceSerializer.loadAccount(newAccount, storage);
-                accounts.put(uuid, newAccount);
-                accountsInOrder.add(newAccount);
+    public void loadAccounts() {
+        synchronized (accountLock) {
+            accounts = new HashMap<>();
+            accountsInOrder = new LinkedList<>();
+            String accountUuids = getStorage().getString("accountUuids", null);
+            if ((accountUuids != null) && (accountUuids.length() != 0)) {
+                String[] uuids = accountUuids.split(",");
+                for (String uuid : uuids) {
+                    Account newAccount = new Account(uuid);
+                    accountPreferenceSerializer.loadAccount(newAccount, storage);
+                    accounts.put(uuid, newAccount);
+                    accountsInOrder.add(newAccount);
+                }
             }
-        }
-        if ((newAccount != null) && newAccount.getAccountNumber() != -1) {
-            accounts.put(newAccount.getUuid(), newAccount);
-            if (!accountsInOrder.contains(newAccount)) {
-                accountsInOrder.add(newAccount);
+            if ((newAccount != null) && newAccount.getAccountNumber() != -1) {
+                accounts.put(newAccount.getUuid(), newAccount);
+                if (!accountsInOrder.contains(newAccount)) {
+                    accountsInOrder.add(newAccount);
+                }
+                newAccount = null;
             }
-            newAccount = null;
         }
     }
 
@@ -117,12 +129,14 @@ public class Preferences {
      *
      * @return all accounts
      */
-    public synchronized List<Account> getAccounts() {
-        if (accounts == null) {
-            loadAccounts();
-        }
+    public List<Account> getAccounts() {
+        synchronized (accountLock) {
+            if (accounts == null) {
+                loadAccounts();
+            }
 
-        return Collections.unmodifiableList(new ArrayList<>(accountsInOrder));
+            return Collections.unmodifiableList(new ArrayList<>(accountsInOrder));
+        }
     }
 
     /**
@@ -131,58 +145,64 @@ public class Preferences {
      *
      * @return all accounts with {@link Account#isAvailable(Context)}
      */
-    public synchronized Collection<Account> getAvailableAccounts() {
+    public Collection<Account> getAvailableAccounts() {
         List<Account> allAccounts = getAccounts();
-        Collection<Account> retval = new ArrayList<>(accounts.size());
+        Collection<Account> result = new ArrayList<>(allAccounts.size());
         for (Account account : allAccounts) {
             if (account.isEnabled() && account.isAvailable(context)) {
-                retval.add(account);
+                result.add(account);
             }
         }
 
-        return retval;
+        return result;
     }
 
-    public synchronized Account getAccount(String uuid) {
-        if (accounts == null) {
-            loadAccounts();
-        }
+    public Account getAccount(String uuid) {
+        synchronized (accountLock) {
+            if (accounts == null) {
+                loadAccounts();
+            }
 
-        return accounts.get(uuid);
+            return accounts.get(uuid);
+        }
     }
 
-    public synchronized Account newAccount() {
-        String accountUuid = UUID.randomUUID().toString();
-        newAccount = new Account(accountUuid);
-        accountPreferenceSerializer.loadDefaults(newAccount);
-        accounts.put(newAccount.getUuid(), newAccount);
-        accountsInOrder.add(newAccount);
+    public Account newAccount() {
+        synchronized (accountLock) {
+            String accountUuid = UUID.randomUUID().toString();
+            newAccount = new Account(accountUuid);
+            accountPreferenceSerializer.loadDefaults(newAccount);
+            accounts.put(newAccount.getUuid(), newAccount);
+            accountsInOrder.add(newAccount);
 
-        return newAccount;
+            return newAccount;
+        }
     }
 
-    public synchronized void deleteAccount(Account account) {
-        if (accounts != null) {
-            accounts.remove(account.getUuid());
-        }
-        if (accountsInOrder != null) {
-            accountsInOrder.remove(account);
-        }
+    public void deleteAccount(Account account) {
+        synchronized (accountLock) {
+            if (accounts != null) {
+                accounts.remove(account.getUuid());
+            }
+            if (accountsInOrder != null) {
+                accountsInOrder.remove(account);
+            }
 
-        try {
-            getBackendManager().removeBackend(account);
-        } catch (Exception e) {
-            Timber.e(e, "Failed to reset remote store for account %s", account.getUuid());
-        }
-        LocalStore.removeAccount(account);
+            try {
+                getBackendManager().removeBackend(account);
+            } catch (Exception e) {
+                Timber.e(e, "Failed to reset remote store for account %s", account.getUuid());
+            }
+            LocalStore.removeAccount(account);
 
-        StorageEditor storageEditor = createStorageEditor();
-        accountPreferenceSerializer.delete(storageEditor, storage, account);
-        storageEditor.commit();
-        localKeyStoreManager.deleteCertificates(account);
+            StorageEditor storageEditor = createStorageEditor();
+            accountPreferenceSerializer.delete(storageEditor, storage, account);
+            storageEditor.commit();
+            localKeyStoreManager.deleteCertificates(account);
 
-        if (newAccount == account) {
-            newAccount = null;
+            if (newAccount == account) {
+                newAccount = null;
+            }
         }
 
         notifyListeners();
@@ -194,8 +214,11 @@ public class Preferences {
      * there are no accounts on the system the method returns null.
      */
     public Account getDefaultAccount() {
-        String defaultAccountUuid = getStorage().getString("defaultAccountUuid", null);
-        Account defaultAccount = getAccount(defaultAccountUuid);
+        Account defaultAccount;
+        synchronized (accountLock) {
+            String defaultAccountUuid = getStorage().getString("defaultAccountUuid", null);
+            defaultAccount = getAccount(defaultAccountUuid);
+        }
 
         if (defaultAccount == null) {
             Collection<Account> accounts = getAvailableAccounts();
@@ -288,10 +311,12 @@ public class Preferences {
     }
 
     public void move(Account account, boolean mUp) {
-        StorageEditor storageEditor = createStorageEditor();
-        accountPreferenceSerializer.move(storageEditor, account, storage, mUp);
-        storageEditor.commit();
-        loadAccounts();
+        synchronized (accountLock) {
+            StorageEditor storageEditor = createStorageEditor();
+            accountPreferenceSerializer.move(storageEditor, account, storage, mUp);
+            storageEditor.commit();
+            loadAccounts();
+        }
 
         notifyListeners();
     }
