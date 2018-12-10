@@ -452,10 +452,7 @@ public class SmtpTransport extends Transport {
         } catch (NegativeSmtpReplyException e) {
             throw e;
         } catch (Exception e) {
-            MessagingException me = new MessagingException("Unable to send message", e);
-            me.setPermanentFailure(entireMessageSent);
-
-            throw me;
+            throw new MessagingException("Unable to send message", entireMessageSent, e);
         } finally {
             close();
         }
