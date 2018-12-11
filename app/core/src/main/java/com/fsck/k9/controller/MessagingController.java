@@ -1457,7 +1457,9 @@ public class MessagingController {
             localFolder.appendMessages(Collections.singletonList(message));
             LocalMessage localMessage = localFolder.getMessage(message.getUid());
             localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
-            localMessage.setCachedDecryptedSubject(plaintextSubject);
+            if (plaintextSubject != null) {
+                localMessage.setCachedDecryptedSubject(plaintextSubject);
+            }
             localFolder.close();
             sendPendingMessages(account, listener);
         } catch (Exception e) {
