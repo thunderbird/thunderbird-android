@@ -783,8 +783,8 @@ public class SmtpTransportTest {
             transport.sendMessage(message);
             fail("Expected exception");
         } catch (NegativeSmtpReplyException e) {
-            assertEquals(554, e.getReplyCode());
-            assertEquals("no valid recipients given", e.getReplyText());
+            assertEquals(550, e.getReplyCode());
+            assertEquals("remote mail to <user2@localhost> not allowed", e.getReplyText());
         }
 
         server.verifyConnectionClosed();
@@ -792,7 +792,7 @@ public class SmtpTransportTest {
     }
 
     @Test
-    public void sendMessagePipelining_with250and550ReplyforRecipients_shouldThrow() throws Exception {
+    public void sendMessagePipelining_with250and550ReplyforRecipients_shouldThrowFirst() throws Exception {
         Message message = getMessageWithTwoRecipients();
         MockSmtpServer server = createServerAndSetupForPlainAuthentication("PIPELINING");
         server.expect("MAIL FROM:<user@localhost>");
@@ -800,7 +800,7 @@ public class SmtpTransportTest {
         server.expect("RCPT TO:<user3@localhost>");
         server.expect("DATA");
         server.output("250 OK");
-        server.output("250 OK");
+        server.output("550 remote mail to <user2@localhost> not allowed");
         server.output("550 remote mail to <user3@localhost> not allowed");
         server.output("354 End data with <CR><LF>.<CR><LF>");
         server.expect(".");
@@ -815,7 +815,7 @@ public class SmtpTransportTest {
             fail("Expected exception");
         } catch (NegativeSmtpReplyException e) {
             assertEquals(550, e.getReplyCode());
-            assertEquals("remote mail to <user3@localhost> not allowed", e.getReplyText());
+            assertEquals("remote mail to <user2@localhost> not allowed", e.getReplyText());
         }
 
         server.verifyConnectionClosed();
