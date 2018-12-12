@@ -274,7 +274,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             return;
         }
 
-        if(isDrawerEnabled()) {
+        if (isDrawerEnabled()) {
             drawer.updateUserAccountsAndFolders(account);
         }
 
@@ -363,7 +363,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
         return (splitViewMode == SplitViewMode.ALWAYS ||
                 (splitViewMode == SplitViewMode.WHEN_IN_LANDSCAPE &&
-                orientation == Configuration.ORIENTATION_LANDSCAPE));
+                        orientation == Configuration.ORIENTATION_LANDSCAPE));
     }
 
     private void initializeLayout() {
@@ -600,6 +600,15 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         account = null;
         drawer.selectUnifiedInbox();
         actionDisplaySearch(this, SearchAccount.createUnifiedInboxAccount().getRelatedSearch(), false, false);
+    }
+
+    public void openFolderSettings() {
+        if (account == null) {
+            Timber.e("Tried to open account settings, but no account selected!");
+            return;
+        }
+
+        FolderList.actionHandleAccount(this, account);
     }
 
     public void openRealAccount(Account realAccount) {

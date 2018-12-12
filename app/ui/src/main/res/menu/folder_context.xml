@@ -10,6 +10,6 @@
     />
     <item
         android:id="@+id/folder_settings"
-        android:title="@string/folder_settings_action"
+        android:title="@string/folders_action"
     />
 </menu>

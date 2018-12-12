@@ -48,6 +48,7 @@ public class K9Drawer {
 
     private static final long DRAWER_ID_UNIFIED_INBOX = 0;
     private static final long DRAWER_ID_PREFERENCES = 1;
+    private static final long DRAWER_ID_FOLDERS = 2;
 
 
     private final FolderNameFormatter folderNameFormatter = DI.get(FolderNameFormatter.class);
@@ -75,6 +76,8 @@ public class K9Drawer {
     public K9Drawer(MessageList parent, Bundle savedInstanceState) {
         this.parent = parent;
 
+        initializeFolderIcons();
+
         drawer = new DrawerBuilder()
                 .withActivity(parent)
                 .withDisplayBelowStatusBar(false)
@@ -88,8 +91,6 @@ public class K9Drawer {
                 .build();
 
         addFooterItems();
-
-        initializeFolderIcons();
     }
 
     private AccountHeader buildAccountHeader() {
@@ -160,10 +161,16 @@ public class K9Drawer {
     private void addFooterItems() {
         drawer.addItems(new DividerDrawerItem(),
                 new PrimaryDrawerItem()
-                .withName(R.string.preferences_action)
-                .withIcon(getResId(R.attr.iconActionSettings))
-                .withIdentifier(DRAWER_ID_PREFERENCES)
-                .withSelectable(false));
+                        .withName(R.string.folders_action)
+                        .withIcon(iconFolderResId)
+                        .withIdentifier(DRAWER_ID_FOLDERS)
+                        .withSelectable(false),
+                new PrimaryDrawerItem()
+                        .withName(R.string.preferences_action)
+                        .withIcon(getResId(R.attr.iconActionSettings))
+                        .withIdentifier(DRAWER_ID_PREFERENCES)
+                        .withSelectable(false)
+        );
     }
 
     private void initializeFolderIcons() {
@@ -218,7 +225,14 @@ public class K9Drawer {
                     setUserFolders(folders);
                 }
             });
+            updateFolderSettingsItem();
         }
+    }
+
+    private void updateFolderSettingsItem() {
+        IDrawerItem drawerItem = drawer.getDrawerItem(DRAWER_ID_FOLDERS);
+        drawerItem.withEnabled(!unifiedInboxSelected);
+        drawer.updateItem(drawerItem);
     }
 
     private OnDrawerItemClickListener createItemClickListener() {
@@ -228,6 +242,9 @@ public class K9Drawer {
                 long id = drawerItem.getIdentifier();
                 if (id == DRAWER_ID_PREFERENCES) {
                     SettingsActivity.launch(parent);
+                    return false;
+                } else if (id == DRAWER_ID_FOLDERS) {
+                    parent.openFolderSettings();
                     return false;
                 } else {
                     Folder folder = (Folder) drawerItem.getTag();
@@ -285,6 +302,7 @@ public class K9Drawer {
                 return;
             }
         }
+        updateFolderSettingsItem();
     }
 
     public void selectUnifiedInbox() {
@@ -293,6 +311,7 @@ public class K9Drawer {
         accountHeader.setActiveProfile(DRAWER_ID_UNIFIED_INBOX);
         accountHeader.getHeaderBackgroundView().setColorFilter(0xFFFFFFFF, PorterDuff.Mode.MULTIPLY);
         clearUserFolders();
+        updateFolderSettingsItem();
     }
 
     public DrawerLayout getLayout() {
