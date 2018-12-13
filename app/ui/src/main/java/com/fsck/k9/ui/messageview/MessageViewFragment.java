@@ -817,13 +817,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     @Override
-    public void onSaveAttachment(AttachmentViewInfo attachment) {
-        currentAttachmentViewInfo = attachment;
-        getAttachmentController(attachment).saveAttachment();
-    }
-
-    @Override
-    public void onSaveAttachmentToUserProvidedDirectory(final AttachmentViewInfo attachment) {
+    public void onSaveAttachment(final AttachmentViewInfo attachment) {
         currentAttachmentViewInfo = attachment;
         FileBrowserHelper.getInstance().showFileBrowserActivity(MessageViewFragment.this, null,
                 ACTIVITY_CHOOSE_DIRECTORY, new FileBrowserFailOverCallback() {

@@ -22,7 +22,6 @@ import timber.log.Timber;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.cache.TemporaryAttachmentStore;
@@ -62,10 +61,6 @@ public class AttachmentController {
         } else {
             viewLocalAttachment();
         }
-    }
-
-    public void saveAttachment() {
-        saveAttachmentTo(K9.getAttachmentDefaultPath());
     }
 
     public void saveAttachmentTo(String directory) {
