@@ -33,6 +33,9 @@ import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStoreProvider;
+import com.fsck.k9.mailstore.OutboxState;
+import com.fsck.k9.mailstore.OutboxStateRepository;
+import com.fsck.k9.mailstore.SendState;
 import com.fsck.k9.mailstore.UnavailableStorageException;
 import com.fsck.k9.notification.NotificationController;
 import com.fsck.k9.search.LocalSearch;
@@ -533,7 +536,14 @@ public class MessagingControllerTest extends K9RobolectricTest {
         when(localFolder.exists()).thenReturn(true);
         when(localFolder.getMessages(null)).thenReturn(Collections.singletonList(localMessageToSend1));
         when(localMessageToSend1.getUid()).thenReturn("localMessageToSend1");
+        when(localMessageToSend1.getDatabaseId()).thenReturn(42L);
         when(localMessageToSend1.getHeader(K9.IDENTITY_HEADER)).thenReturn(new String[]{});
+
+        OutboxState outboxState = new OutboxState(SendState.READY, 0, null, 0);
+        OutboxStateRepository outboxStateRepository = mock(OutboxStateRepository.class);
+        when(outboxStateRepository.getOutboxState(42L)).thenReturn(outboxState);
+
+        when(localStore.getOutboxStateRepository()).thenReturn(outboxStateRepository);
         controller.addListener(listener);
     }
 

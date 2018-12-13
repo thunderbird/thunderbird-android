@@ -12,7 +12,7 @@ import timber.log.Timber;
 
 
 class StoreSchemaDefinition implements SchemaDefinition {
-    static final int DB_VERSION = 67;
+    static final int DB_VERSION = 68;
 
     private final MigrationsHelper migrationsHelper;
 
@@ -208,6 +208,14 @@ class StoreSchemaDefinition implements SchemaDefinition {
                 "BEGIN " +
                 "UPDATE threads SET root=id WHERE root IS NULL AND ROWID = NEW.ROWID; " +
                 "END");
+
+        db.execSQL("DROP TABLE IF EXISTS outbox_state");
+        db.execSQL("CREATE TABLE outbox_state (" +
+                "message_id INTEGER PRIMARY KEY NOT NULL REFERENCES messages(id) ON DELETE CASCADE," +
+                "send_state TEXT," +
+                "number_of_send_attempts INTEGER DEFAULT 0," +
+                "error_timestamp INTEGER DEFAULT 0," +
+                "error TEXT)");
 
         db.execSQL("DROP TABLE IF EXISTS pending_commands");
         db.execSQL("CREATE TABLE pending_commands " +

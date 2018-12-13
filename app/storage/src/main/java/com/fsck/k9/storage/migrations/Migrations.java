@@ -92,6 +92,8 @@ public class Migrations {
                 MigrationTo66.addEncryptionTypeColumnToMessagesTable(db);
             case 66:
                 MigrationTo67.addTypeColumnToFoldersTable(db, migrationsHelper);
+            case 67:
+                MigrationTo68.addOutboxStateTable(db);
         }
 
         if (shouldBuildFtsTable) {

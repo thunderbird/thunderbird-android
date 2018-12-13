@@ -378,6 +378,9 @@ public class LockableDatabase {
                 }
                 doOpenOrCreateDb(databaseFile);
             }
+
+            mDb.execSQL("PRAGMA foreign_keys = ON;");
+
             if (mDb.getVersion() != mSchemaDefinition.getVersion()) {
                 mSchemaDefinition.doDbUpgrade(mDb);
             }
