@@ -50,7 +50,6 @@
         <attr name="iconPreferencesInteraction" format="reference" />
         <attr name="iconPreferencesNotifications" format="reference" />
         <attr name="iconPreferencesNetwork" format="reference" />
-        <attr name="iconPreferencesVarious" format="reference" />
         <attr name="iconPreferencesPrivacy" format="reference" />
         <attr name="iconPreferencesDebug" format="reference" />
         <attr name="iconPreferencesFolders" format="reference" />

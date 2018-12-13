@@ -956,8 +956,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="font_size_large">Large</string>
     <string name="font_size_larger">Larger</string>
 
-    <string name="miscellaneous_preferences">Miscellaneous</string>
-
     <string name="error_activity_not_found">No suitable application for this action found.</string>
     <string name="send_failed_reason">Send failed: %s</string>
 
@@ -1043,7 +1041,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>
 
-    <string name="settings_attachment_default_path">Save attachments to…</string>
     <string name="attachment_save_title">Save attachment</string>
     <string name="attachment_save_desc">No file browser found. Where would you like to save this attachment?</string>
 
