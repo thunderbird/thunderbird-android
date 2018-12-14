@@ -8,11 +8,11 @@ import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.widget.EditText;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.ui.R;
 
 public class FileBrowserHelper {
@@ -77,7 +77,7 @@ public class FileBrowserHelper {
         boolean success = false;
 
         if (startPath == null) {
-            startPath = new File(K9.getAttachmentDefaultPath());
+            startPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         }
 
         int listIndex = 0;
@@ -109,7 +109,7 @@ public class FileBrowserHelper {
         boolean success = false;
 
         if (startPath == null) {
-            startPath = new File(K9.getAttachmentDefaultPath());
+            startPath = startPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         }
 
         int listIndex = 0;

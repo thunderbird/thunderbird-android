@@ -1,7 +1,6 @@
 package com.fsck.k9.preferences;
 
 
-import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,7 +10,6 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import android.content.Context;
-import android.os.Environment;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.SortType;
@@ -52,11 +50,6 @@ public class GlobalSettings {
 
         s.put("animations", Settings.versions(
                 new V(1, new BooleanSetting(false))
-        ));
-        s.put("attachmentdefaultpath", Settings.versions(
-                new V(1, new DirectorySetting(Environment.getExternalStorageDirectory())),
-                new V(41, new DirectorySetting(Environment.getExternalStoragePublicDirectory(
-                        Environment.DIRECTORY_DOWNLOADS)))
         ));
         s.put("backgroundOperations", Settings.versions(
                 new V(1, new EnumSetting<>(K9.BACKGROUND_OPS.class, K9.BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC))
@@ -560,23 +553,6 @@ public class GlobalSettings {
                 throw new InvalidSettingValueException();
             }
             return value;
-        }
-    }
-
-    private static class DirectorySetting extends SettingsDescription<String> {
-        DirectorySetting(File defaultPath) {
-            super(defaultPath.toString());
-        }
-
-        @Override
-        public String fromString(String value) throws InvalidSettingValueException {
-            try {
-                if (new File(value).isDirectory()) {
-                    return value;
-                }
-            } catch (Exception e) { /* do nothing */ }
-
-            throw new InvalidSettingValueException();
         }
     }
 }

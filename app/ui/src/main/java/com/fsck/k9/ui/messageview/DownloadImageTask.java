@@ -14,9 +14,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import timber.log.Timber;
+
+import android.os.Environment;
 import android.widget.Toast;
 
-import com.fsck.k9.K9;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.helper.UrlEncodingHelper;
@@ -177,7 +178,7 @@ class DownloadImageTask extends AsyncTask<String, Void, String> {
     private String writeFileToStorage(String fileName, InputStream in) throws IOException {
         String sanitized = FileHelper.sanitizeFilename(fileName);
 
-        File directory = new File(K9.getAttachmentDefaultPath());
+        File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         File file = FileHelper.createUniqueFile(directory, sanitized);
 
         FileOutputStream out = new FileOutputStream(file);

@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.AsyncTask;
-import android.os.Environment;
 
 import com.fsck.k9.Account.SortType;
 import com.fsck.k9.core.BuildConfig;
@@ -174,7 +173,6 @@ public class K9 {
     private static boolean notificationDuringQuietTimeEnabled = true;
     private static String quietTimeStarts = null;
     private static String quietTimeEnds = null;
-    private static String attachmentDefaultPath = "";
     private static boolean wrapFolderNames = false;
     private static boolean hideUserAgent = false;
     private static boolean hideTimeZone = false;
@@ -307,7 +305,6 @@ public class K9 {
         editor.putString("notificationQuickDelete", notificationQuickDelete.toString());
         editor.putString("lockScreenNotificationVisibility", sLockScreenNotificationVisibility.toString());
 
-        editor.putString("attachmentdefaultpath", attachmentDefaultPath);
         editor.putBoolean("useBackgroundAsUnreadIndicator", useBackgroundAsUnreadIndicator);
         editor.putBoolean("threadedView", threadedViewEnabled);
         editor.putString("splitViewMode", splitViewMode.name());
@@ -475,8 +472,6 @@ public class K9 {
             K9.splitViewMode = SplitViewMode.valueOf(splitViewMode);
         }
 
-        attachmentDefaultPath = storage.getString("attachmentdefaultpath",
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString());
         useBackgroundAsUnreadIndicator = storage.getBoolean("useBackgroundAsUnreadIndicator", true);
         threadedViewEnabled = storage.getBoolean("threadedView", true);
         fontSizes.load(storage);
@@ -903,14 +898,6 @@ public class K9 {
     }
     public static void setHideTimeZone(final boolean state) {
         hideTimeZone = state;
-    }
-
-    public static String getAttachmentDefaultPath() {
-        return attachmentDefaultPath;
-    }
-
-    public static void setAttachmentDefaultPath(String attachmentDefaultPath) {
-        K9.attachmentDefaultPath = attachmentDefaultPath;
     }
 
     public static synchronized SortType getSortType() {
