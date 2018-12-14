@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -47,8 +46,6 @@ import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.ui.R;
-import com.fsck.k9.ui.helper.FileBrowserHelper;
-import com.fsck.k9.ui.helper.FileBrowserHelper.FileBrowserFailOverCallback;
 import com.fsck.k9.ui.messageview.CryptoInfoDialog.OnClickShowCryptoKeyListener;
 import com.fsck.k9.ui.messageview.MessageCryptoPresenter.MessageCryptoMvpView;
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity;
@@ -63,7 +60,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
-    private static final int ACTIVITY_CHOOSE_DIRECTORY = 3;
+    private static final int REQUEST_CODE_CREATE_DOCUMENT = 3;
 
     public static final int REQUEST_MASK_LOADER_HELPER = (1 << 8);
     public static final int REQUEST_MASK_CRYPTO_PRESENTER = (1 << 9);
@@ -455,16 +452,9 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         // launched through the MessageList activity, and delivered back via onPendingIntentResult()
 
         switch (requestCode) {
-            case ACTIVITY_CHOOSE_DIRECTORY: {
-                if (data != null) {
-                    // obtain the filename
-                    Uri fileUri = data.getData();
-                    if (fileUri != null) {
-                        String filePath = fileUri.getPath();
-                        if (filePath != null) {
-                            getAttachmentController(currentAttachmentViewInfo).saveAttachmentTo(filePath);
-                        }
-                    }
+            case REQUEST_CODE_CREATE_DOCUMENT: {
+                if (data != null && data.getData() != null) {
+                    getAttachmentController(currentAttachmentViewInfo).saveAttachmentTo(data.getData());
                 }
                 break;
             }
@@ -819,21 +809,16 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     @Override
     public void onSaveAttachment(final AttachmentViewInfo attachment) {
         currentAttachmentViewInfo = attachment;
-        FileBrowserHelper.getInstance().showFileBrowserActivity(MessageViewFragment.this, null,
-                ACTIVITY_CHOOSE_DIRECTORY, new FileBrowserFailOverCallback() {
-                    @Override
-                    public void onPathEntered(String path) {
-                        getAttachmentController(attachment).saveAttachmentTo(path);
-                    }
 
-                    @Override
-                    public void onCancel() {
-                        // Do nothing
-                    }
-                });
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        intent.setType(attachment.mimeType);
+        intent.putExtra(Intent.EXTRA_TITLE, attachment.displayName);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        startActivityForResult(intent, REQUEST_CODE_CREATE_DOCUMENT);
     }
 
     private AttachmentController getAttachmentController(AttachmentViewInfo attachment) {
-        return new AttachmentController(mController, downloadManager, this, attachment);
+        return new AttachmentController(mController, this, attachment);
     }
 }
