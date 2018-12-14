@@ -5,7 +5,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -18,7 +17,7 @@ import com.fsck.k9.ui.helper.SizeFormatter;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 
 
-public class AttachmentView extends FrameLayout implements OnClickListener, OnLongClickListener {
+public class AttachmentView extends FrameLayout implements OnClickListener {
     private AttachmentViewInfo attachment;
     private AttachmentViewCallback callback;
 
@@ -69,7 +68,6 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
 
         viewButton.setOnClickListener(this);
         downloadButton.setOnClickListener(this);
-        downloadButton.setOnLongClickListener(this);
 
         TextView attachmentName = findViewById(R.id.attachment_name);
         attachmentName.setText(attachment.displayName);
@@ -99,26 +97,12 @@ public class AttachmentView extends FrameLayout implements OnClickListener, OnLo
         }
     }
 
-    @Override
-    public boolean onLongClick(View view) {
-        if (view.getId() == R.id.download) {
-            onSaveButtonLongClick();
-            return true;
-        }
-
-        return false;
-    }
-
     private void onViewButtonClick() {
         callback.onViewAttachment(attachment);
     }
 
     private void onSaveButtonClick() {
         callback.onSaveAttachment(attachment);
-    }
-
-    private void onSaveButtonLongClick() {
-        callback.onSaveAttachmentToUserProvidedDirectory(attachment);
     }
 
     public void setCallback(AttachmentViewCallback callback) {

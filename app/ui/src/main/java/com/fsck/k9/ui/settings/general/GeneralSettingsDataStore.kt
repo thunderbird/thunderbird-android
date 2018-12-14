@@ -114,7 +114,6 @@ class GeneralSettingsDataStore(
             "lock_screen_notification_visibility" -> K9.getLockScreenNotificationVisibility().name
             "background_ops" -> K9.getBackgroundOps().name
             "notification_hide_subject" -> K9.getNotificationHideSubject().name
-            "attachment_default_path" -> K9.getAttachmentDefaultPath()
             "quiet_time_starts" -> K9.getQuietTimeStarts()
             "quiet_time_ends" -> K9.getQuietTimeEnds()
             else -> defValue
@@ -136,7 +135,6 @@ class GeneralSettingsDataStore(
             "lock_screen_notification_visibility" -> K9.setLockScreenNotificationVisibility(K9.LockScreenNotificationVisibility.valueOf(value))
             "background_ops" -> setBackgroundOps(value)
             "notification_hide_subject" -> K9.setNotificationHideSubject(K9.NotificationHideSubject.valueOf(value))
-            "attachment_default_path" -> K9.setAttachmentDefaultPath(value)
             "quiet_time_starts" -> K9.setQuietTimeStarts(value)
             "quiet_time_ends" -> K9.setQuietTimeEnds(value)
             else -> return

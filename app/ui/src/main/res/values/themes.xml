@@ -70,7 +70,6 @@
         <item name="iconPreferencesInteraction">@drawable/ic_touch_light</item>
         <item name="iconPreferencesNotifications">@drawable/ic_notifications_light</item>
         <item name="iconPreferencesNetwork">@drawable/ic_arrow_up_down_light</item>
-        <item name="iconPreferencesVarious">@drawable/ic_widgets_light</item>
         <item name="iconPreferencesPrivacy">@drawable/ic_shield_light</item>
         <item name="iconPreferencesDebug">@drawable/ic_bug_light</item>
         <item name="iconPreferencesFolders">@drawable/ic_folder_light</item>
@@ -174,7 +173,6 @@
         <item name="iconPreferencesInteraction">@drawable/ic_touch_dark</item>
         <item name="iconPreferencesNotifications">@drawable/ic_notifications_dark</item>
         <item name="iconPreferencesNetwork">@drawable/ic_arrow_up_down_dark</item>
-        <item name="iconPreferencesVarious">@drawable/ic_widgets_dark</item>
         <item name="iconPreferencesPrivacy">@drawable/ic_shield_dark</item>
         <item name="iconPreferencesDebug">@drawable/ic_bug_dark</item>
         <item name="iconPreferencesFolders">@drawable/ic_folder_dark</item>
