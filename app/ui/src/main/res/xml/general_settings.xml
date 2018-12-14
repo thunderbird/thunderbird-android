@@ -333,18 +333,6 @@
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:icon="?attr/iconPreferencesVarious"
-        android:key="misc_preferences"
-        android:title="@string/miscellaneous_preferences"
-        search:ignore="true">
-
-        <Preference
-            android:key="attachment_default_path"
-            android:title="@string/settings_attachment_default_path" />
-
-    </PreferenceScreen>
-
-    <PreferenceScreen
         android:icon="?attr/iconPreferencesPrivacy"
         android:key="privacy_preferences"
         android:title="@string/privacy_preferences"
