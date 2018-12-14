@@ -37,7 +37,7 @@ class Pop3BackendFactory(
     private fun createSmtpTransport(account: Account): SmtpTransport {
         val serverSettings = decodeTransportUri(account.transportUri)
         val oauth2TokenProvider: OAuth2TokenProvider? = null
-        return SmtpTransport(serverSettings, account, trustedSocketFactory, oauth2TokenProvider)
+        return SmtpTransport(serverSettings, trustedSocketFactory, oauth2TokenProvider)
     }
 
     override fun decodeStoreUri(storeUri: String): ServerSettings {

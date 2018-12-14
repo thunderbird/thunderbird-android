@@ -182,7 +182,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
      * Stores the server ID of the folder that we want to open as soon as possible after load.
      */
     private String folderServerId;
-    private String folderName;
 
     private boolean remoteSearchPerformed = false;
     private Future<?> remoteSearchFuture = null;
@@ -318,17 +317,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private void setWindowTitle() {
         // regular folder content display
         if (!isManualSearch() && singleFolderMode) {
-            Activity activity = getActivity();
-            String displayName = FolderInfoHolder.getDisplayName(activity, account, folderServerId, folderName);
-
-            fragmentListener.setMessageListTitle(displayName);
-
-            String operation = activityListener.getOperation(activity);
-            if (operation.length() < 1) {
-                fragmentListener.setMessageListSubTitle(account.getEmail());
-            } else {
-                fragmentListener.setMessageListSubTitle(operation);
-            }
+            fragmentListener.setMessageListTitle(currentFolder.displayName);
         } else {
             // query result display.  This may be for a search folder as opposed to a user-initiated search.
             if (title != null) {
@@ -338,8 +327,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 // This is a search result; set it to the default search result line.
                 fragmentListener.setMessageListTitle(getString(R.string.search_results));
             }
-
-            fragmentListener.setMessageListSubTitle(null);
         }
     }
 
@@ -582,7 +569,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             singleFolderMode = true;
             folderServerId = search.getFolderServerIds().get(0);
             currentFolder = getFolderInfoHolder(folderServerId, account);
-            folderName = currentFolder.displayName;
         }
 
         allAccounts = false;
@@ -641,7 +627,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private FolderInfoHolder getFolderInfoHolder(String folderServerId, Account account) {
         try {
             LocalFolder localFolder = MlfUtils.getOpenFolder(folderServerId, account);
-            return new FolderInfoHolder(context, localFolder, account);
+            return new FolderInfoHolder(localFolder, account);
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
@@ -850,7 +836,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             K9.setSortAscending(this.sortType, this.sortAscending);
             sortDateAscending = K9.isSortAscending(SortType.SORT_DATE);
 
-            StorageEditor editor = preferences.getStorage().edit();
+            StorageEditor editor = preferences.createStorageEditor();
             K9.save(editor);
             editor.commit();
         }
@@ -959,6 +945,16 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     private void onExpunge(final Account account, String folderServerId) {
         messagingController.expunge(account, folderServerId);
+    }
+
+    public void onEmptyTrash() {
+        if (isShowingTrashFolder()) {
+            messagingController.emptyTrash(account, null);
+        }
+    }
+
+    public boolean isShowingTrashFolder() {
+        return singleFolderMode && currentFolder != null && currentFolder.serverId.equals(account.getTrashFolder());
     }
 
     private void showDialog(int dialogId) {
@@ -2278,7 +2274,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         void onReplyAll(MessageReference message);
         void openMessage(MessageReference messageReference);
         void setMessageListTitle(String title);
-        void setMessageListSubTitle(String subTitle);
         void onCompose(Account account);
         boolean startSearch(Account account, String folderServerId);
         void remoteSearchStarted();

@@ -5,14 +5,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.text.format.DateUtils;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
-import com.fsck.k9.K9;
-import com.fsck.k9.ui.R;
 import com.fsck.k9.controller.SimpleMessagingListener;
-import com.fsck.k9.service.MailService;
+import com.fsck.k9.service.CoreService;
+import com.fsck.k9.ui.R;
+
 import net.jcip.annotations.GuardedBy;
 
 
@@ -49,24 +48,7 @@ public class ActivityListener extends SimpleMessagingListener {
             }
         }
 
-        long nextPollTime = MailService.getNextPollTime();
-        if (nextPollTime != -1) {
-            CharSequence relativeTimeSpanString = DateUtils.getRelativeTimeSpanString(
-                    nextPollTime, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS, 0);
-            return context.getString(R.string.status_next_poll, relativeTimeSpanString);
-        } else if (K9.isDebug() && MailService.isSyncDisabled()) {
-            if (MailService.hasNoConnectivity()) {
-                return context.getString(R.string.status_no_network);
-            } else if (MailService.isSyncNoBackground()) {
-                return context.getString(R.string.status_no_background);
-            } else if (MailService.isSyncBlocked()) {
-                return context.getString(R.string.status_syncing_blocked);
-            } else if (MailService.isPollAndPushDisabled()) {
-                return context.getString(R.string.status_poll_and_push_disabled);
-            } else {
-                return context.getString(R.string.status_syncing_off);
-            }
-        } else if (MailService.isSyncDisabled()) {
+        if (CoreService.isMailSyncDisabled(context)) {
             return context.getString(R.string.status_syncing_off);
         } else {
             return "";

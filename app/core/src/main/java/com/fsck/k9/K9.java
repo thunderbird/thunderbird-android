@@ -178,7 +178,6 @@ public class K9 {
     private static boolean wrapFolderNames = false;
     private static boolean hideUserAgent = false;
     private static boolean hideTimeZone = false;
-    private static boolean hideHostnameWhenConnecting = false;
 
     private static SortType sortType;
     private static Map<SortType, Boolean> sortAscending = new HashMap<>();
@@ -287,7 +286,6 @@ public class K9 {
         editor.putBoolean("wrapFolderNames", wrapFolderNames);
         editor.putBoolean("hideUserAgent", hideUserAgent);
         editor.putBoolean("hideTimeZone", hideTimeZone);
-        editor.putBoolean("hideHostnameWhenConnecting", hideHostnameWhenConnecting);
 
         editor.putString("language", language);
         editor.putInt("theme", theme.ordinal());
@@ -385,7 +383,7 @@ public class K9 {
             preferences.saveAccount(account);
         }
 
-        storage.edit()
+        preferences.createStorageEditor()
                 .remove("openPgpProvider")
                 .remove("openPgpSupportSignOnly")
                 .commit();
@@ -434,7 +432,6 @@ public class K9 {
         wrapFolderNames = storage.getBoolean("wrapFolderNames", false);
         hideUserAgent = storage.getBoolean("hideUserAgent", false);
         hideTimeZone = storage.getBoolean("hideTimeZone", false);
-        hideHostnameWhenConnecting = storage.getBoolean("hideHostnameWhenConnecting", false);
 
         confirmDelete = storage.getBoolean("confirmDelete", false);
         confirmDiscardMessage = storage.getBoolean("confirmDiscardMessage", true);
@@ -908,14 +905,6 @@ public class K9 {
         hideTimeZone = state;
     }
 
-    public static boolean hideHostnameWhenConnecting() {
-        return hideHostnameWhenConnecting;
-    }
-
-    public static void setHideHostnameWhenConnecting(final boolean state) {
-        hideHostnameWhenConnecting = state;
-    }
-
     public static String getAttachmentDefaultPath() {
         return attachmentDefaultPath;
     }
@@ -1086,7 +1075,7 @@ public class K9 {
             @Override
             protected Void doInBackground(Void... voids) {
                 Preferences prefs = DI.get(Preferences.class);
-                StorageEditor editor = prefs.getStorage().edit();
+                StorageEditor editor = prefs.createStorageEditor();
                 save(editor);
                 editor.commit();
 

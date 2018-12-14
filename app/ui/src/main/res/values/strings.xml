@@ -145,6 +145,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="search_action">Search</string>
     <string name="search_results">Search results</string>
     <string name="preferences_action">Settings</string>
+    <string name="folders_action">Manage folders</string>
     <string name="account_settings_action">Account settings</string>
     <string name="folder_settings_action">Folder settings</string>
     <string name="global_settings_action">Global settings</string>
@@ -351,8 +352,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_privacy_hide_useragent_detail">Remove K-9 User-Agent from mail headers</string>
     <string name="global_settings_privacy_hide_timezone">Hide timezone</string>
     <string name="global_settings_privacy_hide_timezone_detail">Use UTC instead of local timezone in mail headers and reply header</string>
-    <string name="global_settings_privacy_hide_hostname_when_connecting">Hide hostname</string>
-    <string name="global_settings_privacy_hide_hostname_when_connecting_detail">Identify as \'localhost\' when connecting to SMTP servers</string>
     <string name="global_settings_notification_hide_subject_title">Hide subject in notifications</string>
     <string name="global_settings_notification_hide_subject_never">Never</string>
     <string name="global_settings_notification_hide_subject_when_locked">When device is locked</string>

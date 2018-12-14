@@ -28,7 +28,7 @@ class AutocryptKeyTransferActivity : K9Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.crypto_key_transfer)
+        setLayout(R.layout.crypto_key_transfer)
 
         val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT)
 

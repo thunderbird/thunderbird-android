@@ -14,6 +14,7 @@ import org.openintents.openpgp.OpenPgpSignatureResult;
 
 public enum MessageCryptoDisplayStatus {
     LOADING (
+            false,
             R.attr.openpgp_grey,
             R.drawable.status_lock_disabled
     ),
@@ -26,6 +27,7 @@ public enum MessageCryptoDisplayStatus {
     ),
 
     DISABLED (
+            false,
             R.attr.openpgp_grey,
             R.drawable.status_lock_disabled,
             R.string.crypto_msg_title_plaintext,
@@ -190,6 +192,7 @@ public enum MessageCryptoDisplayStatus {
     @DrawableRes public final int statusIconRes;
     @StringRes public final Integer titleTextRes;
     @StringRes public final Integer descriptionTextRes;
+    public boolean isEnabled;
 
     MessageCryptoDisplayStatus(@AttrRes int colorAttr, @DrawableRes int statusIconRes, @StringRes int titleTextRes,
             Integer descriptionTextRes) {
@@ -200,12 +203,20 @@ public enum MessageCryptoDisplayStatus {
         this.descriptionTextRes = descriptionTextRes;
     }
 
-    MessageCryptoDisplayStatus(@AttrRes int colorAttr, @DrawableRes int statusIconRes) {
+    MessageCryptoDisplayStatus(boolean isEnabled, @AttrRes int colorAttr, @DrawableRes int statusIconRes,
+            @StringRes int titleTextRes, Integer descriptionTextRes) {
+        this(colorAttr, statusIconRes, titleTextRes, descriptionTextRes);
+        this.isEnabled = isEnabled;
+    }
+
+    MessageCryptoDisplayStatus(boolean isEnabled, @AttrRes int colorAttr, @DrawableRes int statusIconRes) {
         this.colorAttr = colorAttr;
         this.statusIconRes = statusIconRes;
 
         this.titleTextRes = null;
         this.descriptionTextRes = null;
+
+        this.isEnabled = isEnabled;
     }
 
     @NonNull

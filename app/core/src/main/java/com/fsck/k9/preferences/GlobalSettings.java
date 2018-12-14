@@ -295,7 +295,8 @@ public class GlobalSettings {
                 new V(48, new FontSizeSetting(FontSizes.FONT_DEFAULT))
         ));
         s.put("hideHostnameWhenConnecting", Settings.versions(
-                new V(49, new BooleanSetting(false))
+                new V(49, new BooleanSetting(false)),
+                new V(56, null)
         ));
 
         SETTINGS = Collections.unmodifiableMap(s);

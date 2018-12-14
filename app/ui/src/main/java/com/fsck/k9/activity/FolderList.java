@@ -1,12 +1,6 @@
 package com.fsck.k9.activity;
 
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -51,17 +45,24 @@ import com.fsck.k9.activity.setup.FolderSettings;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.controller.SimpleMessagingListener;
-import com.fsck.k9.ui.helper.SizeFormatter;
+import com.fsck.k9.job.K9JobManager;
 import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.power.TracingPowerManager;
 import com.fsck.k9.power.TracingPowerManager.TracingWakeLock;
-import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchField;
-import com.fsck.k9.service.MailService;
+import com.fsck.k9.ui.helper.SizeFormatter;
 import com.fsck.k9.ui.settings.SettingsActivity;
 import com.fsck.k9.view.ColorChip;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+
 import de.cketti.library.changelog.ChangeLog;
 import timber.log.Timber;
 
@@ -78,6 +79,7 @@ public class FolderList extends K9ListActivity {
     private static final boolean REFRESH_REMOTE = true;
 
     private final ColorChipProvider colorChipProvider = DI.get(ColorChipProvider.class);
+    private final K9JobManager jobManager = DI.get(K9JobManager.class);
 
     private ListView listView;
 
@@ -247,10 +249,9 @@ public class FolderList extends K9ListActivity {
             return;
         }
 
-        actionBarProgressView = getActionBarProgressView();
-        actionBar = getSupportActionBar();
+        setLayout(R.layout.folder_list);
         initializeActionBar();
-        setContentView(R.layout.folder_list);
+        actionBarProgressView = getActionBarProgressView();
         listView = getListView();
         listView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         listView.setLongClickable(true);
@@ -291,6 +292,7 @@ public class FolderList extends K9ListActivity {
     }
 
     private void initializeActionBar() {
+        actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
@@ -423,7 +425,7 @@ public class FolderList extends K9ListActivity {
         account.setFolderDisplayMode(newMode);
         Preferences.getPreferences(getApplicationContext()).saveAccount(account);
         if (account.getFolderPushMode() != FolderMode.NONE) {
-            MailService.actionRestartPushers(this, null);
+            jobManager.schedulePusherRefresh();
         }
         adapter.getFilter().filter(null);
         onRefresh(false);
@@ -691,9 +693,9 @@ public class FolderList extends K9ListActivity {
                         }
 
                         if (holder == null) {
-                            holder = new FolderInfoHolder(context, folder, FolderList.this.account, -1);
+                            holder = new FolderInfoHolder(folder, FolderList.this.account, -1);
                         } else {
-                            holder.populate(context, folder, FolderList.this.account, -1);
+                            holder.populate(folder, FolderList.this.account, -1);
 
                         }
                         if (folder.isInTopGroup()) {
@@ -746,7 +748,7 @@ public class FolderList extends K9ListActivity {
                         localFolder = DI.get(LocalStoreProvider.class).getInstance(account).getFolder(folderServerId);
                         FolderInfoHolder folderHolder = getFolder(folderServerId);
                         if (folderHolder != null) {
-                            folderHolder.populate(context, localFolder, FolderList.this.account, -1);
+                            folderHolder.populate(localFolder, FolderList.this.account, -1);
                             folderHolder.flaggedMessageCount = -1;
 
                             handler.dataChanged();

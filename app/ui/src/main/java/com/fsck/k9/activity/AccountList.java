@@ -39,7 +39,7 @@ public abstract class AccountList extends K9ListActivity implements OnItemClickL
 
         setResult(RESULT_CANCELED);
 
-        setContentView(R.layout.account_list);
+        setLayout(R.layout.account_list);
 
         ListView listView = getListView();
         listView.setOnItemClickListener(this);

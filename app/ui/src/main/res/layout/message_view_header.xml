@@ -23,19 +23,50 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/subject"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:textStyle="bold"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:orientation="horizontal"
                 android:padding="8dp"
-                android:visibility="gone"
-                tools:visibility="visible"
-                tools:text="(no subject)"
-                />
+                >
+
+                <TextView
+                    android:id="@+id/subject"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    tools:text="(no subject)"
+                    />
+
+                <ImageView
+                    android:id="@+id/crypto_status_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="6dp"
+                    android:src="@drawable/status_lock_disabled"
+                    android:tint="?attr/openpgp_grey"
+                    android:background="?selectableItemBackground"
+                    android:visibility="gone"
+                    />
+
+                <CheckBox
+                    android:id="@+id/flagged"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:focusable="false"
+                    android:checked="false"
+                    style="?android:attr/starStyle"
+                    />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -230,15 +261,14 @@
                         android:id="@+id/status_icon_strip"
                         >
 
-                        <CheckBox
-                            android:id="@+id/flagged"
+                        <ImageView
+                            android:id="@+id/icon_single_message_options"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:focusable="false"
-                            style="?android:attr/starStyle"
-                            android:checked="false" />
-
-                        <include layout="@layout/message_crypto_status_view" />
+                            android:src="?iconActionSingleMessageOptions"
+                            android:padding="8dp"
+                            android:background="?selectableItemBackground"
+                            />
 
                     </LinearLayout>
 

@@ -179,7 +179,7 @@ public class SettingsImporter {
 
             if (globalSettings) {
                 try {
-                    StorageEditor editor = storage.edit();
+                    StorageEditor editor = preferences.createStorageEditor();
                     if (imported.globalSettings != null) {
                         importGlobalSettings(storage, editor, imported.contentVersion, imported.globalSettings);
                     } else {
@@ -202,7 +202,7 @@ public class SettingsImporter {
                         if (imported.accounts.containsKey(accountUuid)) {
                             ImportedAccount account = imported.accounts.get(accountUuid);
                             try {
-                                StorageEditor editor = storage.edit();
+                                StorageEditor editor = preferences.createStorageEditor();
 
                                 AccountDescriptionPair importResult = importAccount(context, editor,
                                         imported.contentVersion, account, overwrite);
@@ -214,7 +214,7 @@ public class SettingsImporter {
                                     // Add UUID of the account we just imported to the list of
                                     // account UUIDs
                                     if (!importResult.overwritten) {
-                                        editor = storage.edit();
+                                        editor = preferences.createStorageEditor();
 
                                         String newUuid = importResult.imported.uuid;
                                         String oldAccountUuids = storage.getString("accountUuids", "");
@@ -253,7 +253,7 @@ public class SettingsImporter {
                         }
                     }
 
-                    StorageEditor editor = storage.edit();
+                    StorageEditor editor = preferences.createStorageEditor();
 
                     String defaultAccountUuid = storage.getString("defaultAccountUuid", null);
                     if (defaultAccountUuid == null) {

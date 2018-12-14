@@ -17,12 +17,13 @@ import com.fsck.k9.ui.R;
 import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.controller.MessagingController;
+import com.fsck.k9.job.K9JobManager;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Folder.FolderClass;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
-import com.fsck.k9.service.MailService;
+
 import timber.log.Timber;
 
 public class FolderSettings extends K9PreferenceActivity {
@@ -39,6 +40,7 @@ public class FolderSettings extends K9PreferenceActivity {
     private static final String PREFERENCE_INTEGRATE = "folder_settings_include_in_integrated_inbox";
 
     private final MessagingController messagingController = DI.get(MessagingController.class);
+    private final K9JobManager jobManager = DI.get(K9JobManager.class);
 
     private LocalFolder mFolder;
 
@@ -78,7 +80,7 @@ public class FolderSettings extends K9PreferenceActivity {
         addPreferencesFromResource(R.xml.folder_settings_preferences);
 
         String folderName = mFolder.getName();
-        String displayName = FolderInfoHolder.getDisplayName(this, mAccount, folderServerId, folderName);
+        String displayName = FolderInfoHolder.getDisplayName(mAccount, folderServerId, folderName);
         Preference category = findPreference(PREFERENCE_TOP_CATERGORY);
         category.setTitle(displayName);
 
@@ -160,7 +162,7 @@ public class FolderSettings extends K9PreferenceActivity {
 
         if (oldPushClass != newPushClass
                 || (newPushClass != FolderClass.NO_CLASS && oldDisplayClass != newDisplayClass)) {
-            MailService.actionRestartPushers(getApplication(), null);
+            jobManager.schedulePusherRefresh();
         }
     }
 
