@@ -61,7 +61,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="read_messages_desc">Umožňuje tejto aplikácii čítať vaše e-maily.</string>
   <string name="delete_messages_label">Mazať správy</string>
   <string name="delete_messages_desc">Umožňuje tejto aplikácii mazať vaše e-maily.</string>
-  <string name="about_title_fmt">O aplikácii <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">O aplikácii K-9 Mail</string>
   <string name="accounts_title">Účty</string>
   <string name="folders_title">Priečinky</string>
   <string name="advanced">Pokročilé</string>

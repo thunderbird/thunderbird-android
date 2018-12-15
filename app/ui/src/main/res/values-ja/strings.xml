@@ -61,7 +61,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="read_messages_desc">このアプリケーションがメールを読むことを許可する</string>
   <string name="delete_messages_label">メールを削除</string>
   <string name="delete_messages_desc">このアプリケーションがメールを削除することを許可する</string>
-  <string name="about_title_fmt">About <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">About K-9 Mail</string>
   <string name="accounts_title">アカウント一覧</string>
   <string name="folders_title">フォルダ一覧</string>
   <string name="advanced">拡張機能</string>

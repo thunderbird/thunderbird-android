@@ -60,7 +60,7 @@ Lūdzu, iesniedziet kļūdu ziņojumus, ierosiniet jaunas iespējas un uzdodiet 
   <string name="read_messages_desc">Atļauj šai aplikācijai lasīt Jūsu e-pastus</string>
   <string name="delete_messages_label">Izdzēst e-pastus</string>
   <string name="delete_messages_desc">Atļauj šai aplikācijai izdzēst Jūsu e-pastus</string>
-  <string name="about_title_fmt">Par <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Par K-9 Mail</string>
   <string name="accounts_title">Konti</string>
   <string name="folders_title">Mapes</string>
   <string name="advanced">Detalizētāk</string>

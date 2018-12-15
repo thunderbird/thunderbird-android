@@ -31,7 +31,7 @@
   <string name="read_messages_desc">Permitir a este aplicativo ler os teus correos.</string>
   <string name="delete_messages_label">Eliminar correos</string>
   <string name="delete_messages_desc">Permitir a este aplicativo eliminar os teus correos.</string>
-  <string name="about_title_fmt">Acerca de <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Acerca de K-9 Mail</string>
   <string name="accounts_title">Contas</string>
   <string name="folders_title">Cartafoles</string>
   <string name="advanced">Avanzado</string>

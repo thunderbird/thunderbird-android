@@ -61,7 +61,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="read_messages_desc">I lejon këtij aplikacioni të lexojë email-et tuaj.</string>
   <string name="delete_messages_label">Fshiji Email-et</string>
   <string name="delete_messages_desc">I lejon këtij aplikacioni të fshijë email-et tuaj.</string>
-  <string name="about_title_fmt">Mbi <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Mbi K-9 Mail</string>
   <string name="accounts_title">Llogari</string>
   <string name="folders_title">Dosje</string>
   <string name="advanced">Të mëtejshme</string>

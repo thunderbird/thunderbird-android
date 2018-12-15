@@ -61,7 +61,7 @@
   <string name="read_messages_desc">Επιτρέπει στην εφαρμογή να διαβάζει τα email.</string>
   <string name="delete_messages_label">Διαγραφή μηνυμάτων</string>
   <string name="delete_messages_desc">Επιτρέπει στην εφαρμογή να σβήνει τα email.</string>
-  <string name="about_title_fmt">Περί του <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Περί του K-9 Mail</string>
   <string name="accounts_title">Λογαριασμοί</string>
   <string name="folders_title">Φάκελοι</string>
   <string name="advanced">Προχωρημένα</string>

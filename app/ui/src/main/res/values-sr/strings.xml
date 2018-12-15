@@ -60,7 +60,7 @@
   <string name="read_messages_desc">Дозвољава овој апликацији читање ваших е-порука.</string>
   <string name="delete_messages_label">брисање е-порука</string>
   <string name="delete_messages_desc">Дозвољава овој апликацији брисање ваших е-порука.</string>
-  <string name="about_title_fmt">О <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">О K-9 Mail</string>
   <string name="accounts_title">Налози</string>
   <string name="folders_title">Фасцикле</string>
   <string name="advanced">Напредно</string>

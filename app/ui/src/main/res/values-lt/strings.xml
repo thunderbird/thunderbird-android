@@ -30,7 +30,7 @@
   <string name="read_messages_desc">Leidžia programai skaityti jūsų laiškus.</string>
   <string name="delete_messages_label">Šalinti laiškus</string>
   <string name="delete_messages_desc">Leidžia programai šalinti jūsų laiškus.</string>
-  <string name="about_title_fmt">Apie <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Apie K-9 Mail</string>
   <string name="accounts_title">Paskyros</string>
   <string name="folders_title">Aplankai</string>
   <string name="advanced">Išplėstinis</string>

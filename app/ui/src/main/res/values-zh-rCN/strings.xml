@@ -56,7 +56,7 @@ https://github.com/k9mail/k-9/20
   <string name="read_messages_desc">允许该程序读取邮件。</string>
   <string name="delete_messages_label">删除邮件</string>
   <string name="delete_messages_desc">允许该程序删除邮件。</string>
-  <string name="about_title_fmt">关于 <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">关于 K-9 Mail</string>
   <string name="accounts_title">账户</string>
   <string name="folders_title">文件夹</string>
   <string name="advanced">高级</string>

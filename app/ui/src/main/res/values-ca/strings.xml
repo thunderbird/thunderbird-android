@@ -60,7 +60,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="read_messages_desc">Permet a aquesta aplicació llegir els correus.</string>
   <string name="delete_messages_label">Elimina correus</string>
   <string name="delete_messages_desc">Permet que aquesta aplicació elimini correus.</string>
-  <string name="about_title_fmt">Quant a <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Quant a K-9 Mail</string>
   <string name="accounts_title">Comptes</string>
   <string name="folders_title">Carpetes</string>
   <string name="advanced">Avançat</string>

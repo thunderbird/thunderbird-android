@@ -60,7 +60,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="read_messages_desc">Leyfa þessu forriti að lesa tölvupóstana mína.</string>
   <string name="delete_messages_label">Eyða tölvupóstum</string>
   <string name="delete_messages_desc">Leyfa þessu forriti að eyða tölvupóstum.</string>
-  <string name="about_title_fmt">Um <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Um K-9 Mail</string>
   <string name="accounts_title">Aðgangar</string>
   <string name="folders_title">Möppur</string>
   <string name="advanced">Ítarlegt</string>

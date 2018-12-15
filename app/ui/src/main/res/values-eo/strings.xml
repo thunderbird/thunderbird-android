@@ -59,7 +59,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="read_messages_desc">Permesas al tiu ĉi aplikaĵo legi viajn retleterojn.</string>
   <string name="delete_messages_label">Forigi retleterojn</string>
   <string name="delete_messages_desc">Permesas al tiu ĉi aplikaĵo forigi viajn retleterojn.</string>
-  <string name="about_title_fmt">Pri <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Pri K-9 Mail</string>
   <string name="accounts_title">Kontoj</string>
   <string name="folders_title">Mesaĝujoj</string>
   <string name="advanced">Spertaj</string>

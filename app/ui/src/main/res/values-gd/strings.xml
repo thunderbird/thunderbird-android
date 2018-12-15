@@ -61,7 +61,7 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="read_messages_desc">Leig leis an aplacaid seo na puist-d agad a leughadh.</string>
   <string name="delete_messages_label">Puist-d a sguabadh às</string>
   <string name="delete_messages_desc">Leig leis an aplacaid seo na puist-d agad a sguabadh às.</string>
-  <string name="about_title_fmt">Mu dhèidhinn <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Mu dhèidhinn K-9 Mail</string>
   <string name="accounts_title">Cunntasan</string>
   <string name="folders_title">Pasganan</string>
   <string name="advanced">Adhartach</string>

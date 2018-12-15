@@ -61,7 +61,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="read_messages_desc">Дозволити цій програмі читати ваші листи.</string>
   <string name="delete_messages_label">Видалити листи</string>
   <string name="delete_messages_desc">Дозволити цій програмі видаляти ваші листи.</string>
-  <string name="about_title_fmt">Про <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Про K-9 Mail</string>
   <string name="accounts_title">Облікові записи</string>
   <string name="folders_title">Теки</string>
   <string name="advanced">Додатково</string>

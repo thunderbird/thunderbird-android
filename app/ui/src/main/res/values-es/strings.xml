@@ -60,7 +60,7 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="read_messages_desc">Permitir a esta aplicación leer los correos.</string>
   <string name="delete_messages_label">Borrar correos</string>
   <string name="delete_messages_desc">Permitir a esta aplicación borrar los correos.</string>
-  <string name="about_title_fmt">Acerca de <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Acerca de K-9 Mail</string>
   <string name="accounts_title">Cuentas</string>
   <string name="folders_title">Carpetas</string>
   <string name="advanced">Avanzado</string>

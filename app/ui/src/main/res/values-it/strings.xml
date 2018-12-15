@@ -61,7 +61,7 @@ Per favore invia segnalazioni di errori, contribuisci con nuove funzionalità e 
   <string name="read_messages_desc">Consenti all\'applicazione di leggere i messaggi.</string>
   <string name="delete_messages_label">Elimina messaggi</string>
   <string name="delete_messages_desc">Permetti all\'applicazione di eliminare i messaggi.</string>
-  <string name="about_title_fmt">Informazioni su <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Informazioni su K-9 Mail</string>
   <string name="accounts_title">Account</string>
   <string name="folders_title">Cartelle</string>
   <string name="advanced">Avanzate</string>

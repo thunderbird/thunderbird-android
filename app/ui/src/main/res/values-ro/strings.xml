@@ -60,7 +60,7 @@ Vă rugăm să ne raportați defecte, să contribuiți cu funcționalități noi
   <string name="read_messages_desc">Permiteți acestei aplicații să vă citească emailurile.</string>
   <string name="delete_messages_label">Ștergere emailuri</string>
   <string name="delete_messages_desc">Permiteți acestei aplicații să vă șteargă emailurile.</string>
-  <string name="about_title_fmt">Despre <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Despre K-9 Mail</string>
   <string name="accounts_title">Conturi</string>
   <string name="folders_title">Dosare</string>
   <string name="advanced">Avansat</string>

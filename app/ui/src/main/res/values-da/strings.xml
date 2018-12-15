@@ -60,7 +60,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="read_messages_desc">Tillad dette program at læse dine mails.</string>
   <string name="delete_messages_label">Slet mails</string>
   <string name="delete_messages_desc">Tillad dette program at slette dine mails.</string>
-  <string name="about_title_fmt">Om <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Om K-9 Mail</string>
   <string name="accounts_title">Konti</string>
   <string name="folders_title">Mapper</string>
   <string name="advanced">Avanceret</string>

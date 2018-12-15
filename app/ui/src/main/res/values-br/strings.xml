@@ -60,7 +60,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="read_messages_desc">Aotren an arload-mañ da lenn ho posteloù.</string>
   <string name="delete_messages_label">Dilemel posteloù</string>
   <string name="delete_messages_desc">Aotren an arload-mañ da lenn ho posteloù.</string>
-  <string name="about_title_fmt">A-zivout <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">A-zivout K-9 Mail</string>
   <string name="accounts_title">Kontoù</string>
   <string name="folders_title">Teuliadoù</string>
   <string name="advanced">Kemplezhoc’h</string>

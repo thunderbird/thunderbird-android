@@ -60,7 +60,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="read_messages_desc">Разрешить программе чтение почты</string>
   <string name="delete_messages_label">Удаление почты</string>
   <string name="delete_messages_desc">Разрешить программе удаление почты</string>
-  <string name="about_title_fmt">K-9 Mail Team <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">K-9 Mail Team K-9 Mail</string>
   <string name="accounts_title">Ящики</string>
   <string name="folders_title">Папки</string>
   <string name="advanced">Дополнительно</string>

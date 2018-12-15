@@ -61,7 +61,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="read_messages_desc">Der Anwendung erlauben, Ihre E-Mails zu lesen.</string>
   <string name="delete_messages_label">E-Mails löschen</string>
   <string name="delete_messages_desc">Der Anwendung erlauben, Ihre E-Mails zu löschen.</string>
-  <string name="about_title_fmt">Über <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Über K-9 Mail</string>
   <string name="accounts_title">Konten</string>
   <string name="folders_title">Ordner</string>
   <string name="advanced">Erweitert</string>

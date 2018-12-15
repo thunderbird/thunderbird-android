@@ -61,7 +61,7 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="read_messages_desc">Izinkan aplikasi ini membaca Email Anda.</string>
   <string name="delete_messages_label">Hapus Email</string>
   <string name="delete_messages_desc">Izinkan aplikasi ini menghapus Email Anda.</string>
-  <string name="about_title_fmt">Tentang <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Tentang K-9 Mail</string>
   <string name="accounts_title">Akun</string>
   <string name="folders_title">Folder</string>
   <string name="advanced">Lanjutan</string>

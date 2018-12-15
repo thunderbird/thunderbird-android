@@ -60,7 +60,7 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="read_messages_desc">Ger applikationen tillåtelse att läsa din e-post.</string>
   <string name="delete_messages_label">Ta bort e-post</string>
   <string name="delete_messages_desc">Ger applikationen tillåtelse att radera din e-post.</string>
-  <string name="about_title_fmt">Om <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Om K-9 Mail</string>
   <string name="accounts_title">Konton</string>
   <string name="folders_title">Mappar</string>
   <string name="advanced">Avancerat</string>

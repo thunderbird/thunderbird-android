@@ -60,7 +60,7 @@ Poročila o napakah, predloge za nove funkcije in vprašanja lahko pošljete na
   <string name="read_messages_desc">Možnost omogoča programu branje elektronske pošte.</string>
   <string name="delete_messages_label">brisanje sporočil elektronske pošte</string>
   <string name="delete_messages_desc">Možnost omogoča programu brisanje sporočil elektronske pošte.</string>
-  <string name="about_title_fmt">O programu <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">O programu K-9 Mail</string>
   <string name="accounts_title">Računi</string>
   <string name="folders_title">Mape</string>
   <string name="advanced">Napredno</string>

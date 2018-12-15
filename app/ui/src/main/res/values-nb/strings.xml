@@ -61,7 +61,7 @@ Send feilmeldinger, bidra med nye funksjoner og still spørsmål her:
   <string name="read_messages_desc">Tillater denne applikasjonen å lese dine e-poster.</string>
   <string name="delete_messages_label">Slett e-poster</string>
   <string name="delete_messages_desc">Tillater dette programmet å slette dine e-poster.</string>
-  <string name="about_title_fmt">Om <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Om K-9 Mail</string>
   <string name="accounts_title">Kontoer</string>
   <string name="folders_title">Mapper</string>
   <string name="advanced">Avansert</string>

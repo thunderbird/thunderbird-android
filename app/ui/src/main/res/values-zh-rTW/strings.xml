@@ -30,7 +30,7 @@
   <string name="read_messages_desc">允許該程式讀取郵件。</string>
   <string name="delete_messages_label">刪除郵件</string>
   <string name="delete_messages_desc">允許該程式刪除郵件。</string>
-  <string name="about_title_fmt">關於<xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">關於K-9 Mail</string>
   <string name="accounts_title">帳戶</string>
   <string name="folders_title">信件匣</string>
   <string name="advanced">進階</string>

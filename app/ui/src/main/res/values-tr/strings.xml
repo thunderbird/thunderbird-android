@@ -60,7 +60,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="read_messages_desc">Bu uygulamaya E-postalarınızı okumaya izin ver.</string>
   <string name="delete_messages_label">E-postaları sil</string>
   <string name="delete_messages_desc">Bu uygulamaya E-postalarınızı silmeye izin ver.</string>
-  <string name="about_title_fmt">Hakkında <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Hakkında K-9 Mail</string>
   <string name="accounts_title">Hesaplar</string>
   <string name="folders_title">Klasörler</string>
   <string name="advanced">Gelişmiş</string>

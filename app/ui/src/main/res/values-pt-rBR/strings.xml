@@ -60,7 +60,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="read_messages_desc">Permite que esta aplicação leia seus e-mails.</string>
   <string name="delete_messages_label">Excluir e-mails</string>
   <string name="delete_messages_desc">Permite que o K-9 exclua seus e-mails.</string>
-  <string name="about_title_fmt">Sobre <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Sobre K-9 Mail</string>
   <string name="accounts_title">Contas</string>
   <string name="folders_title">Pastas</string>
   <string name="advanced">Avançado</string>

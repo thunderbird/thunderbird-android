@@ -60,7 +60,7 @@ Veuillez rapporter les bogues, recommander de nouvelles fonctions et poser vos q
   <string name="read_messages_desc">Permet à cette application de lire vos courriels.</string>
   <string name="delete_messages_label">Supprimer les courriels</string>
   <string name="delete_messages_desc">Permet à cette application de supprimer vos courriels</string>
-  <string name="about_title_fmt">À propos de <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">À propos de K-9 Mail</string>
   <string name="accounts_title">Comptes</string>
   <string name="folders_title">Dossiers</string>
   <string name="advanced">Avancé</string>

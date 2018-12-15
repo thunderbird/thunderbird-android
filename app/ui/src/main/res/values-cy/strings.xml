@@ -61,7 +61,7 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
   <string name="read_messages_desc">Galluogi\'r ap hwn i ddarllen dy e-bost.</string>
   <string name="delete_messages_label">Dileu E-bost</string>
   <string name="delete_messages_desc">Galluogi\'r ap hwn i ddileu dy negeseuon e-bost.</string>
-  <string name="about_title_fmt">Ynghylch <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Ynghylch K-9 Mail</string>
   <string name="accounts_title">Cyfrifon</string>
   <string name="folders_title">Ffolderi</string>
   <string name="advanced">Uwch</string>

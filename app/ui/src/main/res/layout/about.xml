@@ -25,7 +25,7 @@
                 android:paddingTop="16dp"
                 android:paddingBottom="16dp"
                 android:gravity="center_vertical"
-                android:text="@string/about_title_fmt"
+                android:text="@string/about_title"
                 android:textColor="?android:attr/textColorPrimary"
                 android:textSize="34sp"/>
 

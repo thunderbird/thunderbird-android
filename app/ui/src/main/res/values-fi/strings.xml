@@ -60,7 +60,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="read_messages_desc">Antaa sovellukselle luvan lukea sähköpostisi.</string>
   <string name="delete_messages_label">Poista sähköpostit</string>
   <string name="delete_messages_desc">Antaa sovellukselle luvan poistaa sähköposteja.</string>
-  <string name="about_title_fmt">Tietoja <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Tietoja K-9 Mail</string>
   <string name="accounts_title">Tilit</string>
   <string name="folders_title">Kansiot</string>
   <string name="advanced">Lisäasetukset</string>

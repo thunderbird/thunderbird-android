@@ -31,7 +31,7 @@
   <string name="read_messages_desc">Luba sellel appil lugeda meilisõnumeid.</string>
   <string name="delete_messages_label">Kustuta meilisõnumid</string>
   <string name="delete_messages_desc">Luba sellel appil kustutada oma meilisõnumeid</string>
-  <string name="about_title_fmt">Teave <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Teave K-9 Mail</string>
   <string name="accounts_title">Kontod</string>
   <string name="folders_title">Kaustad</string>
   <string name="advanced">Täpsemalt</string>

@@ -60,7 +60,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="read_messages_desc">Позволява на тази праграма да чете вашите Писма.</string>
   <string name="delete_messages_label">Изтрий Писмата</string>
   <string name="delete_messages_desc">Позволи на тази програма да изтрие Писма</string>
-  <string name="about_title_fmt">Относно <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Относно K-9 Mail</string>
   <string name="accounts_title">Профили</string>
   <string name="folders_title">Папки</string>
   <string name="advanced">Допълнителни</string>
