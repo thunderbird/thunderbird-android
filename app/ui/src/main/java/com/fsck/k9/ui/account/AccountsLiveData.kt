@@ -9,9 +9,6 @@ import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.coroutines.experimental.bg
 
 class AccountsLiveData(val preferences: Preferences) : LiveData<List<Account>>(), AccountsChangeListener {
-    init {
-        loadAccountsAsync()
-    }
 
     private fun loadAccountsAsync() {
         launch(UI) {
@@ -40,6 +37,5 @@ class AccountsLiveData(val preferences: Preferences) : LiveData<List<Account>>()
     override fun onInactive() {
         super.onInactive()
         preferences.removeOnAccountsChangeListener(this)
-        value = null
     }
 }
