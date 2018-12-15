@@ -1,17 +1,22 @@
 package com.fsck.k9.ui.settings
 
+import java.util.Calendar
+
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.webkit.WebView
+import android.widget.TextView
 import com.fsck.k9.activity.K9Activity
 import com.fsck.k9.ui.R
 import de.cketti.library.changelog.ChangeLog
+
 import timber.log.Timber
-import java.util.Calendar
 
 class AboutActivity : K9Activity() {
     private lateinit var webView: WebView
@@ -21,6 +26,16 @@ class AboutActivity : K9Activity() {
         setLayout(R.layout.about)
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
+        findViewById<TextView>(R.id.version).text = getVersionNumber()
+
+        val year = Integer.toString(Calendar.getInstance().get(Calendar.YEAR))
+        findViewById<TextView>(R.id.copyright).text = getString(R.string.app_copyright_fmt, year, year)
+
+        findViewById<View>(R.id.licenseLayout).setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_license_url))))
+        }
+
         webView = findViewById(R.id.about_view)
 
         val aboutHtml = buildHtml()
@@ -48,32 +63,13 @@ class AboutActivity : K9Activity() {
     }
 
     private fun buildHtml(): String {
-        val appName = getString(R.string.app_name)
-        val year = Calendar.getInstance().get(Calendar.YEAR)
-
         val html = StringBuilder()
                 .append("<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />")
-                .append("<img src=\"file:///android_asset/icon.png\" alt=\"").append(appName).append("\"/>")
-                .append("<h1>")
-                .append(getString(R.string.about_title_fmt,
-                        "<a href=\"${ getString(R.string.app_webpage_url) }\">"))
-                .append(appName)
-                .append("</a>")
-                .append("</h1><p>")
-                .append(appName)
-                .append(" ")
-                .append(getString(R.string.debug_version_fmt, getVersionNumber()))
-                .append("</p><p>")
-                .append(getString(R.string.app_authors_fmt, getString(R.string.app_authors)))
-                .append("</p><p>")
+                .append("<p>")
                 .append(getString(R.string.app_revision_fmt,
                         "<a href=\"${ getString(R.string.app_revision_url) }\">" +
                                 getString(R.string.app_revision_url) +
                                 "</a>"))
-                .append("</p><hr/><p>")
-                .append(getString(R.string.app_copyright_fmt, Integer.toString(year), Integer.toString(year)))
-                .append("</p><hr/><p>")
-                .append(getString(R.string.app_license))
                 .append("</p><hr/><p>")
 
         val libs = StringBuilder().append("<ul>")
