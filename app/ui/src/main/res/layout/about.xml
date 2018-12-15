@@ -138,8 +138,17 @@
                     android:id="@+id/source"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
                     android:background="?android:attr/selectableItemBackground"
                     android:text="@string/source_code"
+                    android:textAllCaps="true" />
+
+            <Button
+                    android:id="@+id/changelog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:text="@string/changelog_full_title"
                     android:textAllCaps="true" />
         </LinearLayout>
 

@@ -40,6 +40,10 @@ class AboutActivity : K9Activity() {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_source_url))))
         }
 
+        findViewById<View>(R.id.changelog).setOnClickListener {
+            displayChangeLog()
+        }
+
         webView = findViewById(R.id.about_view)
 
         val aboutHtml = buildHtml()
