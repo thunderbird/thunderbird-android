@@ -130,6 +130,19 @@
             </LinearLayout>
         </LinearLayout>
 
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+            <Button
+                    android:id="@+id/source"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:text="@string/source_code"
+                    android:textAllCaps="true" />
+        </LinearLayout>
+
         <TextView
                 android:id="@+id/copyright"
                 android:layout_width="match_parent"
