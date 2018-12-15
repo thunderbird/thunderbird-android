@@ -934,9 +934,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         } else if (id == R.id.mark_all_as_read) {
             messageListFragment.confirmMarkAllAsRead();
             return true;
-        } else if (id == R.id.show_folder_list) {
-            onShowFolderList();
-            return true;
         } else if (id == R.id.next_message) {   // MessageView
             showNextMessage();
             return true;
@@ -1168,7 +1165,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             menu.findItem(R.id.expunge).setVisible(false);
             menu.findItem(R.id.empty_trash).setVisible(false);
             menu.findItem(R.id.mark_all_as_read).setVisible(false);
-            menu.findItem(R.id.show_folder_list).setVisible(false);
         } else {
             menu.findItem(R.id.set_sort).setVisible(true);
             menu.findItem(R.id.select_all).setVisible(true);
@@ -1179,12 +1175,10 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             if (!messageListFragment.isSingleAccountMode()) {
                 menu.findItem(R.id.expunge).setVisible(false);
                 menu.findItem(R.id.send_messages).setVisible(false);
-                menu.findItem(R.id.show_folder_list).setVisible(false);
             } else {
                 menu.findItem(R.id.send_messages).setVisible(messageListFragment.isOutbox());
                 menu.findItem(R.id.expunge).setVisible(messageListFragment.isRemoteFolder() &&
                         messageListFragment.isAccountExpungeCapable());
-                menu.findItem(R.id.show_folder_list).setVisible(true);
             }
             menu.findItem(R.id.check_mail).setVisible(messageListFragment.isCheckMailSupported());
             menu.findItem(R.id.empty_trash).setVisible(messageListFragment.isShowingTrashFolder());
