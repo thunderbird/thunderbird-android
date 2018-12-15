@@ -202,7 +202,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arkisto)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Roskaposti)</string>
   <string name="send_failure_subject">Joidenkin viestien lähettäminen epäonnistui</string>
-  <string name="debug_version_fmt">Versio: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Versio</string>
   <string name="debug_enable_debug_logging_title">Käytä virheenkorjaustietojen  lokiinkirjausta</string>
   <string name="debug_enable_debug_logging_summary">Kirjoita lokiin laajempi kuvaus ongelmista</string>
   <string name="debug_enable_sensitive_logging_title">Kirjaa lokiin arkaluontoisia tietoja</string>

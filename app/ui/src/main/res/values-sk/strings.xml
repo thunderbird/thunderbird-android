@@ -202,7 +202,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archív)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Nevyžiadaná)</string>
   <string name="send_failure_subject">Nepodarilo sa odoslať niektoré správy</string>
-  <string name="debug_version_fmt">Verzia: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Verzia</string>
   <string name="debug_enable_debug_logging_title">Povoliť vytváranie záznamov pre ladenie</string>
   <string name="debug_enable_debug_logging_summary">Zaznamenávať rozšírené diagnostické informácie</string>
   <string name="debug_enable_sensitive_logging_title">Zaznamenávať citlivé informácie</string>

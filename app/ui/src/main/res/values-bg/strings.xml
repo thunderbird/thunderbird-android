@@ -202,7 +202,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Архив)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Спам)</string>
   <string name="send_failure_subject">Грешка при изпращане на някой съобщения</string>
-  <string name="debug_version_fmt">Версия: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Версия</string>
   <string name="debug_enable_debug_logging_title">Включете доклада за дебъгване</string>
   <string name="debug_enable_debug_logging_summary">Записвайте допълнителна диагностична информация</string>
   <string name="debug_enable_sensitive_logging_title">Записвайте поверителна информация</string>

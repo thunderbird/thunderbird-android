@@ -203,7 +203,7 @@
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Архива)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Нежељене)</string>
   <string name="send_failure_subject">Неуспех слања неких порука</string>
-  <string name="debug_version_fmt">Издање: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Издање</string>
   <string name="debug_enable_debug_logging_title">Укључи бележење за отклањање грешака</string>
   <string name="debug_enable_debug_logging_summary">Бележи додатне дијагностичке податке</string>
   <string name="debug_enable_sensitive_logging_title">Бележи осетљиве податке</string>

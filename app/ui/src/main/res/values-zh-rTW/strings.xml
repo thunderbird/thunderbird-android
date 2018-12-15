@@ -148,7 +148,7 @@
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g>（歸檔）</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g>（垃圾郵件）</string>
   <string name="send_failure_subject">部分郵件沒有成功寄送</string>
-  <string name="debug_version_fmt">版本：<xliff:g id="version">%s</xliff:g></string>
+  <string name="version">版本：<xliff:g id="version">%s</xliff:g></string>
   <string name="debug_enable_debug_logging_title">啟用除錯日誌</string>
   <string name="debug_enable_debug_logging_summary">記錄額外的除錯訊息</string>
   <string name="debug_enable_sensitive_logging_title">記錄敏感訊息</string>

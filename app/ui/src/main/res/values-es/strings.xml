@@ -199,7 +199,7 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archivo)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
   <string name="send_failure_subject">Error al enviar algunos mensajes</string>
-  <string name="debug_version_fmt">Versión: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Versión</string>
   <string name="debug_enable_debug_logging_title">Habilitar log de depuración</string>
   <string name="debug_enable_debug_logging_summary">Log con información ampliada</string>
   <string name="debug_enable_sensitive_logging_title">Incluir información sensible</string>

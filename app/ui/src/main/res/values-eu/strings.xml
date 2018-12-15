@@ -202,7 +202,7 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Artxiboa)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
   <string name="send_failure_subject">Mezu batzuen bidaltzeak huts egin du</string>
-  <string name="debug_version_fmt">Bertsioa: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Bertsioa</string>
   <string name="debug_enable_debug_logging_title">Arazketa erregistroa gaitu</string>
   <string name="debug_enable_debug_logging_summary">Diagnostikorako informazio gehigarria erregistratu</string>
   <string name="debug_enable_sensitive_logging_title">Bereziki babestutako informazioa erregistratu</string>

@@ -164,7 +164,7 @@
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (보관함)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (스팸함)</string>
   <string name="send_failure_subject">일부 메시지를 보내는 데 실패하였습니다</string>
-  <string name="debug_version_fmt">Version: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Version</string>
   <string name="debug_enable_debug_logging_title">버그 정보 기록</string>
   <string name="debug_enable_debug_logging_summary">부차적인 진단 정보를 기록합니다</string>
   <string name="debug_enable_sensitive_logging_title">중요 정보 기록</string>

@@ -201,7 +201,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (アーカイブ)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (迷惑メール)</string>
   <string name="send_failure_subject">メール送信に失敗しました</string>
-  <string name="debug_version_fmt">Version: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Version</string>
   <string name="debug_enable_debug_logging_title">拡張デバッグログ</string>
   <string name="debug_enable_debug_logging_summary">追加診断情報ログ</string>
   <string name="debug_enable_sensitive_logging_title">詳細情報ログ</string>

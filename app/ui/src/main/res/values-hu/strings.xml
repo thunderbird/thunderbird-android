@@ -203,7 +203,7 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archivált)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Levélszemét)</string>
   <string name="send_failure_subject">Néhány üzenetet nem sikerült elküldeni</string>
-  <string name="debug_version_fmt">Verzió: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Verzió</string>
   <string name="debug_enable_debug_logging_title">Hibakeresés</string>
   <string name="debug_enable_debug_logging_summary">Extra diagnosztikai naplózás</string>
   <string name="debug_enable_sensitive_logging_title">Személyes adatok naplózása</string>

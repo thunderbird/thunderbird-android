@@ -204,7 +204,7 @@ Chybová hlášení prosím posílejte, přispívejte novými funkcemi a ptejte 
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archív)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Nevyžádaná)</string>
   <string name="send_failure_subject">Selhalo odeslání některých zpráv</string>
-  <string name="debug_version_fmt">Verze: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Verze</string>
   <string name="debug_enable_debug_logging_title">Povolit ladící záznam</string>
   <string name="debug_enable_debug_logging_summary">Zaznamenávat rozšířené diagnostické informace</string>
   <string name="debug_enable_sensitive_logging_title">Záznamenávat citlivé informace</string>

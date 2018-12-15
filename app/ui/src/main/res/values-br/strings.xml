@@ -203,7 +203,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Dielloù)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Lastez)</string>
   <string name="send_failure_subject">C’hwitadenn en ur gas kemennadennoù ’zo</string>
-  <string name="debug_version_fmt">Handelv: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Handelv</string>
   <string name="debug_enable_debug_logging_title">Kerzhlevr diveugañ</string>
   <string name="debug_enable_debug_logging_summary">Enrollañ titouroù deznaouioù ouzhpenn</string>
   <string name="debug_enable_sensitive_logging_title">Enrollañ titouroù kizidik</string>

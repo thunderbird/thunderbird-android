@@ -200,7 +200,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archive)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
   <string name="send_failure_subject">Не вдалося надіслати повідомлення</string>
-  <string name="debug_version_fmt">Версія: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Версія</string>
   <string name="debug_enable_debug_logging_title">Увімкнути ведення журналу налагодження</string>
   <string name="debug_enable_debug_logging_summary">Запис додаткової діагностичної інформації</string>
   <string name="debug_enable_sensitive_logging_title">Запис конфіденційної інформації</string>

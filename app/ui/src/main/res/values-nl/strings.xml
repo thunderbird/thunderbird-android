@@ -198,7 +198,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archief)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
   <string name="send_failure_subject">Fout bij verzenden van berichten</string>
-  <string name="debug_version_fmt">Versie: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Versie</string>
   <string name="debug_enable_debug_logging_title">Debug log toestaan</string>
   <string name="debug_enable_debug_logging_summary">Log extra diagnostische informatie</string>
   <string name="debug_enable_sensitive_logging_title">Log gevoelige informatie</string>

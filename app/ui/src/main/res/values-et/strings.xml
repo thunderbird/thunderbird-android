@@ -172,7 +172,7 @@
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arhiiv)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Rämpspost)</string>
   <string name="send_failure_subject">Mõne kirja saatmine ebaõnnestus</string>
-  <string name="debug_version_fmt">Versioon: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Versioon</string>
   <string name="debug_enable_debug_logging_title">Luba silumiste logimine</string>
   <string name="debug_enable_debug_logging_summary">Logi täiendavat informatsiooni diagnostikaks</string>
   <string name="debug_enable_sensitive_logging_title">Logi sensitiivset informatsiooni</string>

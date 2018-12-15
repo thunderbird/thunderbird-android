@@ -154,7 +154,7 @@
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arquivo)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Correo lixo)</string>
   <string name="send_failure_subject">Erro ao enviar algunhas mensaxes</string>
-  <string name="debug_version_fmt">Versión: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Versión</string>
   <string name="debug_enable_debug_logging_title">Activar acceso a depurar</string>
   <string name="debug_enable_debug_logging_summary">Diagnóstico con información adicional</string>
   <string name="debug_enable_sensitive_logging_title">Información sensible</string>

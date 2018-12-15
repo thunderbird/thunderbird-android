@@ -260,7 +260,7 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="send_failure_subject">Failed to send some messages</string>
 
-    <string name="debug_version_fmt">Version: <xliff:g id="version">%s</xliff:g></string>
+    <string name="version">Version</string>
     <string name="debug_enable_debug_logging_title">Enable debug logging</string>
     <string name="debug_enable_debug_logging_summary">Log extra diagnostic information</string>
     <string name="debug_enable_sensitive_logging_title">Log sensitive information</string>

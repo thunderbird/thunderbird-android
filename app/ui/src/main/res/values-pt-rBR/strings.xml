@@ -200,7 +200,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arquivadas)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
   <string name="send_failure_subject">Algumas mensagens não foram enviadas</string>
-  <string name="debug_version_fmt">Versão: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Versão</string>
   <string name="debug_enable_debug_logging_title">Habilitar relatório de depuração</string>
   <string name="debug_enable_debug_logging_summary">Relatar informações de diagnósticos extras</string>
   <string name="debug_enable_sensitive_logging_title">Relatar informações confidencias</string>

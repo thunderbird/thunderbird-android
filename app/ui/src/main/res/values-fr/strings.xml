@@ -203,7 +203,7 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archive)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Pourriel)</string>
   <string name="send_failure_subject">Échec lors de l’envoi de certains courriels</string>
-  <string name="debug_version_fmt">Version\u00A0: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Version\u00A0</string>
   <string name="debug_enable_debug_logging_title">Activer le journal de débogage</string>
   <string name="debug_enable_debug_logging_summary">Journaliser les informations de diagnostic supplémentaires</string>
   <string name="debug_enable_sensitive_logging_title">Journaliser les informations délicates</string>

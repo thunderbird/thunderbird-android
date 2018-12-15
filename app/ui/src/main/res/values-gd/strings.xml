@@ -205,7 +205,7 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Tasg-lann)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spama)</string>
   <string name="send_failure_subject">Cha deach cuid dhe na teachdaireachdan a chur</string>
-  <string name="debug_version_fmt">Tionndadh: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Tionndadh</string>
   <string name="debug_enable_debug_logging_title">Cuir an comas logadh airson dì-bhugachadh</string>
   <string name="debug_enable_debug_logging_summary">Logaich fiosrachadh diagnosachd a bharrachd</string>
   <string name="debug_enable_sensitive_logging_title">Logaich fiosrachadh dìomhair</string>

@@ -205,7 +205,7 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arhivă)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
   <string name="send_failure_subject">Nu a reușit să trimită niște mesaje</string>
-  <string name="debug_version_fmt">Versiune: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Versiune</string>
   <string name="debug_enable_debug_logging_title">Activați jurnalul depanării</string>
   <string name="debug_enable_debug_logging_summary">Jurnal informații suplimentare diagnostic</string>
   <string name="debug_enable_sensitive_logging_title">Jurnal informații sensibile</string>

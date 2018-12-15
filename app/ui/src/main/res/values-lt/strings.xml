@@ -149,7 +149,7 @@
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archyvas)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Brukalas)</string>
   <string name="send_failure_subject">Kai kurių laiškų išsiųsti nepavyko</string>
-  <string name="debug_version_fmt">Versija: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Versija</string>
   <string name="debug_enable_debug_logging_title">Įjungti derinimo žurnalą</string>
   <string name="debug_enable_debug_logging_summary">Įrašyti papildomą diagnostinę informaciją</string>
   <string name="debug_enable_sensitive_logging_title">Įrašyti jautrią informaciją</string>

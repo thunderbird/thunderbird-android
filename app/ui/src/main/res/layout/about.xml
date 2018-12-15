@@ -48,7 +48,7 @@
                     android:orientation="vertical">
 
                 <TextView
-                        android:text="@string/debug_version_fmt"
+                        android:text="@string/version"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="?android:attr/textColorPrimary"

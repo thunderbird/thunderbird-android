@@ -157,7 +157,7 @@
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arhiva)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Neželjena pošta)</string>
   <string name="send_failure_subject">Slanje nekih poruka nije uspjelo</string>
-  <string name="debug_version_fmt">Inačica: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Inačica</string>
   <string name="debug_enable_debug_logging_title">Omogući zapisnik ispravljanja</string>
   <string name="debug_enable_debug_logging_summary">Zapisuj posebne informacije dijagnoze</string>
   <string name="debug_enable_sensitive_logging_title">Zapisnik osjetljivih informacija</string>

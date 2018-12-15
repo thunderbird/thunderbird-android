@@ -204,7 +204,7 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arkiv)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Søppel)</string>
   <string name="send_failure_subject">Mislyktes i å sende noen meldinger</string>
-  <string name="debug_version_fmt">Versjon: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Versjon</string>
   <string name="debug_enable_debug_logging_title">Aktiver feilsøkingslogg</string>
   <string name="debug_enable_debug_logging_summary">Logg ekstra diagnostisk informasjon</string>
   <string name="debug_enable_sensitive_logging_title">Logg sensitiv informasjon</string>

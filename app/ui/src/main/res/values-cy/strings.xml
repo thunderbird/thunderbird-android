@@ -208,7 +208,7 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archif)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Sbam)</string>
   <string name="send_failure_subject">Methwyd ag anfon rhai negeseuon</string>
-  <string name="debug_version_fmt">Fersiwn: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Fersiwn</string>
   <string name="debug_enable_debug_logging_title">Galluogi logio dadfygio</string>
   <string name="debug_enable_debug_logging_summary">Logio gwybodaeth ddiagnostig ychwanegol</string>
   <string name="debug_enable_sensitive_logging_title">Logio gwybodaeth sensitif</string>
