@@ -44,6 +44,10 @@ class AboutActivity : K9Activity() {
             displayChangeLog()
         }
 
+        findViewById<View>(R.id.revisions).setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_revision_url))))
+        }
+
         webView = findViewById(R.id.about_view)
 
         val aboutHtml = buildHtml()
@@ -73,12 +77,6 @@ class AboutActivity : K9Activity() {
     private fun buildHtml(): String {
         val html = StringBuilder()
                 .append("<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />")
-                .append("<p>")
-                .append(getString(R.string.app_revision_fmt,
-                        "<a href=\"${ getString(R.string.app_revision_url) }\">" +
-                                getString(R.string.app_revision_url) +
-                                "</a>"))
-                .append("</p><hr/><p>")
 
         val libs = StringBuilder().append("<ul>")
         for ((library, url) in USED_LIBRARIES) {

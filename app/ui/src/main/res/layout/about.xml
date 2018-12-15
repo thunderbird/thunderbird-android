@@ -147,8 +147,17 @@
                     android:id="@+id/changelog"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
                     android:background="?android:attr/selectableItemBackground"
                     android:text="@string/changelog_full_title"
+                    android:textAllCaps="true" />
+
+            <Button
+                    android:id="@+id/revisions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:text="@string/app_revision_fmt"
                     android:textAllCaps="true" />
         </LinearLayout>
 
