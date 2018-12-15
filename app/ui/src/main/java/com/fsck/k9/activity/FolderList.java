@@ -221,15 +221,13 @@ public class FolderList extends K9ListActivity {
         actionBarProgressView = getActionBarProgressView();
         listView = getListView();
         listView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        listView.setLongClickable(true);
         listView.setFastScrollEnabled(true);
         listView.setScrollingCacheEnabled(false);
         listView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                onOpenFolder(((FolderInfoHolder) adapter.getItem(position)).serverId);
+                FolderSettings.actionSettings(FolderList.this, account, ((FolderInfoHolder) adapter.getItem(position)).serverId);
             }
         });
-        registerForContextMenu(listView);
 
         listView.setSaveEnabled(true);
 
@@ -349,13 +347,11 @@ public class FolderList extends K9ListActivity {
             onAccounts();
             return true;
         }
-
         case KeyEvent.KEYCODE_H: {
             Toast toast = Toast.makeText(this, R.string.folder_list_help_key, Toast.LENGTH_LONG);
             toast.show();
             return true;
         }
-
         case KeyEvent.KEYCODE_1: {
             setDisplayMode(FolderMode.FIRST_CLASS);
             return true;
@@ -478,30 +474,6 @@ public class FolderList extends K9ListActivity {
                 return false;
             }
         });
-    }
-
-    @Override public boolean onContextItemSelected(android.view.MenuItem item) {
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) item .getMenuInfo();
-        FolderInfoHolder folder = (FolderInfoHolder) adapter.getItem(info.position);
-
-        int id = item.getItemId();
-        if (id == R.id.clear_local_folder) {
-            onClearFolder(account, folder.serverId);
-        } else if (id == R.id.folder_settings) {
-            FolderSettings.actionSettings(this, account, folder.serverId);
-        }
-
-        return super.onContextItemSelected(item);
-    }
-
-    @Override public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        getMenuInflater().inflate(R.menu.folder_context, menu);
-
-        FolderInfoHolder folder = (FolderInfoHolder) adapter.getItem(info.position);
-
-        menu.setHeaderTitle(folder.displayName);
     }
 
     class FolderListAdapter extends BaseAdapter implements Filterable {
