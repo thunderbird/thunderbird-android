@@ -190,39 +190,6 @@ public class FolderList extends K9ListActivity {
         }
     }
 
-    /**
-    * This class is responsible for reloading the list of local messages for a
-    * given folder, notifying the adapter that the message have been loaded and
-    * queueing up a remote update of the folder.
-     */
-
-    private void checkMail(FolderInfoHolder folder) {
-        TracingPowerManager pm = TracingPowerManager.getPowerManager(this);
-        final TracingWakeLock wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "FolderList checkMail");
-        wakeLock.setReferenceCounted(false);
-        wakeLock.acquire(K9.WAKE_LOCK_TIMEOUT);
-        MessagingListener listener = new SimpleMessagingListener() {
-            @Override
-            public void synchronizeMailboxFinished(Account account, String folderServerId, int totalMessagesInMailbox, int numNewMessages) {
-                if (!account.equals(FolderList.this.account)) {
-                    return;
-                }
-                wakeLock.release();
-            }
-
-            @Override
-            public void synchronizeMailboxFailed(Account account, String folderServerId,
-            String message) {
-                if (!account.equals(FolderList.this.account)) {
-                    return;
-                }
-                wakeLock.release();
-            }
-        };
-        MessagingController.getInstance(getApplication()).synchronizeMailbox(account, folder.serverId, listener, null);
-        sendMail(account);
-    }
-
     public static Intent actionHandleAccountIntent(Context context, Account account, boolean fromShortcut) {
         Intent intent = new Intent(context, FolderList.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -278,11 +245,6 @@ public class FolderList extends K9ListActivity {
              * result in a leaked window error.
              */
             return;
-        }
-
-        ChangeLog cl = new ChangeLog(this);
-        if (cl.isFirstRun()) {
-            cl.getLogDialog().show();
         }
     }
 
@@ -388,11 +350,6 @@ public class FolderList extends K9ListActivity {
             return true;
         }
 
-        case KeyEvent.KEYCODE_S: {
-            onEditSettings();
-            return true;
-        }
-
         case KeyEvent.KEYCODE_H: {
             Toast toast = Toast.makeText(this, R.string.folder_list_help_key, Toast.LENGTH_LONG);
             toast.show();
@@ -433,13 +390,7 @@ public class FolderList extends K9ListActivity {
 
 
     private void onRefresh(final boolean forceRemote) {
-
         MessagingController.getInstance(getApplication()).listFolders(account, forceRemote, adapter.mListener);
-
-    }
-
-    private void onEditSettings() {
-        SettingsActivity.launch(this);
     }
 
     private void onAccounts() {
@@ -447,18 +398,8 @@ public class FolderList extends K9ListActivity {
         finish();
     }
 
-    private void onEmptyTrash(final Account account) {
-        handler.dataChanged();
-
-        MessagingController.getInstance(getApplication()).emptyTrash(account, null);
-    }
-
     private void onClearFolder(Account account, String folderServerId) {
         MessagingController.getInstance(getApplication()).clearFolder(account, folderServerId, adapter.mListener);
-    }
-
-    private void sendMail(Account account) {
-        MessagingController.getInstance(getApplication()).sendPendingMessages(account, adapter.mListener);
     }
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
@@ -466,26 +407,8 @@ public class FolderList extends K9ListActivity {
         if (id == android.R.id.home) {
             onAccounts();
             return true;
-        } else if (id == R.id.search) {
-            onSearchRequested();
-            return true;
-        } else if (id == R.id.compose) {
-            MessageActions.actionCompose(this, account);
-            return true;
-        } else if (id == R.id.check_mail) {
-            MessagingController.getInstance(getApplication()).checkMail(this, account, true, true, adapter.mListener);
-            return true;
-        } else if (id == R.id.send_messages) {
-            MessagingController.getInstance(getApplication()).sendPendingMessages(account, null);
-            return true;
         } else if (id == R.id.list_folders) {
             onRefresh(REFRESH_REMOTE);
-            return true;
-        } else if (id == R.id.settings) {
-            onEditSettings();
-            return true;
-        } else if (id == R.id.empty_trash) {
-            onEmptyTrash(account);
             return true;
         } else if (id == R.id.compact) {
             onCompact(account);
@@ -506,14 +429,6 @@ public class FolderList extends K9ListActivity {
             return super.onOptionsItemSelected(item);
         }
     }
-
-    @Override
-    public boolean onSearchRequested() {
-         Bundle appData = new Bundle();
-         appData.putString(MessageList.EXTRA_SEARCH_ACCOUNT, account.getUuid());
-         startSearch(null, false, appData, false);
-         return true;
-     }
 
     private void onOpenFolder(String folder) {
         LocalSearch search = new LocalSearch(folder);
@@ -572,8 +487,6 @@ public class FolderList extends K9ListActivity {
         int id = item.getItemId();
         if (id == R.id.clear_local_folder) {
             onClearFolder(account, folder.serverId);
-        } else if (id == R.id.refresh_folder) {
-            checkMail(folder);
         } else if (id == R.id.folder_settings) {
             FolderSettings.actionSettings(this, account, folder.serverId);
         }
