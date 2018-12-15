@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, luchd-coiseachd nan con K-9</string>
   <string name="app_copyright_fmt">Còir-lethbhreac 2008-<xliff:g>%s</xliff:g> Luchd-coiseachd nan con K-9. Cuid dhen chòir-lethbhreac 2006-<xliff:g>%s</xliff:g> Android Open Source Project.</string>
-  <string name="app_license">Fo cheadachas Apache, tionndadh 2.0.</string>
+  <string name="app_license">Cheadachas Apache, tionndadh 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Fàilte gu post K-9</string>
   <string name="accounts_welcome"><![CDATA[

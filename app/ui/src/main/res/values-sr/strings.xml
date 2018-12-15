@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Гугл, К-9 Шетачи паса.</string>
   <string name="app_copyright_fmt">Ауторска права 2008-<xliff:g>%s</xliff:g> „K-9 Dog Walkers“. Део ауторских права 2006-<xliff:g>%s</xliff:g> Андроид пројекат отвореног ко̂да.</string>
-  <string name="app_license">Лиценцирано под Апачи лиценцом, издање 2.0.</string>
+  <string name="app_license">Апачи лиценцом, издање 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Добро дошли у К-9 Пошту</string>
   <string name="accounts_welcome"><![CDATA[

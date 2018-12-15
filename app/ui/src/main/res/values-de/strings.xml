@@ -12,7 +12,7 @@
   <string name="app_authors">Google, das K-9-Team und viele Weitere.</string>
   <string name="app_copyright_fmt">\u00a9 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers.
 Teile \u00a9 2006-<xliff:g>%s</xliff:g> Android Open Source Project.</string>
-  <string name="app_license">Lizenziert unter der Apache-Lizenz, Version 2.0.</string>
+  <string name="app_license">Apache-Lizenz, Version 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Willkommen bei K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[

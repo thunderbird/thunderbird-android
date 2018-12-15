@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, Baleer Ar C’hi K-9</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> Ar valeerien K-9 Dog. Lodennoù Copyright 2006-<xliff:g>%s</xliff:g> and Android Open Source Project.</string>
-  <string name="app_license">Dindan al lañvaz Apache, Handelv 2.0.</string>
+  <string name="app_license">Lañvaz Apache, Handelv 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Donemat war K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[

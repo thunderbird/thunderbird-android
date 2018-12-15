@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Hawlfraint 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Hawlfraint Cyfrannau 2006-<xliff:g>%s</xliff:g> Android Open Source Project.</string>
-  <string name="app_license">Trwyddedir dan yr Apache License, Fersiwn 2.0.</string>
+  <string name="app_license">Apache License, Fersiwn 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Croeso i K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[

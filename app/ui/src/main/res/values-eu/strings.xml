@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project-en zatiak.</string>
-  <string name="app_license">Lizentziaduna Apache Lizentziarekin, 2.0 Bertsioa</string>
+  <string name="app_license">Apache Lizentzia, 2.0 Bertsioa</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Ongi etorri K-9 Mail-era</string>
   <string name="accounts_welcome"><![CDATA[

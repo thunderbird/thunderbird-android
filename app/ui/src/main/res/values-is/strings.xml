@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, K-9 hundatemjararnir.</string>
   <string name="app_copyright_fmt">Höfundarréttur 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Höfundarréttur að hluta 2006-<xliff:g>%s</xliff:g> til Android Open Source verkefnisins.</string>
-  <string name="app_license">Gefið út með Apache notkunarleyfinu, útgáfu 2.0.</string>
+  <string name="app_license">Apache notkunarleyfinu, útgáfu 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Velkomin í K-9 póstinn</string>
   <string name="accounts_welcome"><![CDATA[
