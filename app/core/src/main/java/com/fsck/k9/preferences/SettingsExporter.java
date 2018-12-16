@@ -1,8 +1,6 @@
 package com.fsck.k9.preferences;
 
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
@@ -19,7 +17,6 @@ import java.util.TreeMap;
 
 import android.content.Context;
 import android.net.Uri;
-import android.os.Environment;
 import android.util.Xml;
 
 import com.fsck.k9.Account;
@@ -27,7 +24,6 @@ import com.fsck.k9.AccountPreferenceSerializer;
 import com.fsck.k9.DI;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.backend.BackendManager;
-import com.fsck.k9.helper.FileHelper;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
 import com.fsck.k9.preferences.Settings.SettingsDescription;
@@ -80,31 +76,6 @@ public class SettingsExporter {
     static final String EMAIL_ELEMENT = "email";
     static final String DESCRIPTION_ELEMENT = "description";
 
-
-    public static String exportToFile(Context context, boolean includeGlobals, Set<String> accountUuids)
-            throws SettingsImportExportException {
-
-        OutputStream os = null;
-        try {
-            File dir = new File(Environment.getExternalStorageDirectory() + File.separator + context.getPackageName());
-            if (!dir.mkdirs()) {
-                Timber.d("Unable to create directory: %s", dir.getAbsolutePath());
-            }
-
-            File file = FileHelper.createUniqueFile(dir, generateDatedExportFileName());
-            String filename = file.getAbsolutePath();
-            os = new FileOutputStream(filename);
-
-            exportPreferences(context, os, includeGlobals, accountUuids);
-
-            // If all went well, we return the name of the file just written.
-            return filename;
-        } catch (Exception e) {
-            throw new SettingsImportExportException(e);
-        } finally {
-            closeOrThrow(os);
-        }
-    }
 
     public static void exportToUri(Context context, boolean includeGlobals, Set<String> accountUuids, Uri uri)
             throws SettingsImportExportException {

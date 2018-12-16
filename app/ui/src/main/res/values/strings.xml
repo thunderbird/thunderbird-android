@@ -65,13 +65,6 @@ Please submit bug reports, contribute new features and ask questions at
 
 
 
-    <!-- === App Store-specific strings ======================================================= -->
-
-    <string name="import_dialog_error_message">Please install a file manager to continue with this import.</string>
-    <string name="open_market">Open Play Store</string>
-
-
-
     <!-- === General strings ================================================================== -->
 
     <string name="app_authors_fmt">Authors: <xliff:g id="app_authors">%s</xliff:g></string>
@@ -1008,17 +1001,16 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="settings_exporting">Exporting settings…</string>
     <string name="settings_importing">Importing settings…</string>
     <string name="settings_import_scanning_file">Scanning file…</string>
-    <string name="settings_export_success">Saved exported settings to <xliff:g id="filename">%s</xliff:g></string>
     <string name="settings_export_success_generic">Settings successfully exported</string>
-    <string name="settings_import_global_settings_success">Imported global settings from <xliff:g id="filename">%s</xliff:g></string>
-    <string name="settings_import_success">Imported <xliff:g id="accounts">%s</xliff:g> from <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_import_global_settings_success">Imported global settings</string>
+    <string name="settings_import_success">Imported <xliff:g id="accounts">%s</xliff:g></string>
     <string name="settings_import_account_imported_as">Imported <xliff:g id="original_account_name">%s</xliff:g> as <xliff:g id="account_name_after_import">%s</xliff:g></string>
     <plurals name="settings_import_accounts">
         <item quantity="one">1 account</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> accounts</item>
     </plurals>
     <string name="settings_export_failure">Failed to export settings</string>
-    <string name="settings_import_failure">Failed to import any settings from <xliff:g id="filename">%s</xliff:g></string>
+    <string name="settings_import_failure">Failed to import any settings</string>
     <string name="settings_export_success_header">Export succeeded</string>
     <string name="settings_export_failed_header">Export failed</string>
     <string name="settings_import_success_header">Import succeeded</string>
@@ -1061,7 +1053,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="unread_widget_account_not_selected">No account selected</string>
     <string name="unread_widget_folder_not_selected">No folder selected</string>
 
-    <string name="import_dialog_error_title">Missing File Manager Application</string>
     <string name="close">Close</string>
 
     <string name="webview_empty_message">No text</string>
