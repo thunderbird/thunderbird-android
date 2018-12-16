@@ -22,6 +22,7 @@
     <string name="app_source_url">https://github.com/k9mail/k-9</string>
     <string name="app_license">Apache License, Version 2.0</string>
     <string name="app_license_url">https://www.apache.org/licenses/LICENSE-2.0</string>
+    <string name="about_libraries">Libraries</string>
 
 
     <!-- Welcome message -->

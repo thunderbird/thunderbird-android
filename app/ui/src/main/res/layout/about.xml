@@ -6,180 +6,207 @@
 
     <include layout="@layout/toolbar" />
 
-    <ImageView
-            android:src="@mipmap/icon"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:layout_margin="16dp" />
-
-    <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
-            android:paddingLeft="16dp"
-            android:gravity="center_vertical"
-            android:text="@string/about_title"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textSize="34sp"/>
-
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
-            android:paddingLeft="16dp"
-            android:gravity="center_vertical">
-        <ImageView
-                android:src="?attr/iconSettingsAbout"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_gravity="center" />
+    <android.support.v4.widget.NestedScrollView
+              android:layout_height="fill_parent"
+              android:layout_width="fill_parent">
 
         <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="30dp"
-                android:orientation="vertical">
+                  android:orientation="vertical"
+                  android:layout_height="fill_parent"
+                  android:layout_width="fill_parent">
+
+            <ImageView
+                    android:src="@mipmap/icon"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="16dp" />
 
             <TextView
-                    android:text="@string/version"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:paddingLeft="16dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/about_title"
                     android:textColor="?android:attr/textColorPrimary"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textSize="34sp"/>
 
-            <TextView
-                    android:id="@+id/version"
-                    android:text="Version"
+            <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-        </LinearLayout>
-    </LinearLayout>
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:paddingLeft="16dp"
+                    android:gravity="center_vertical">
+                <ImageView
+                        android:src="?attr/iconSettingsAbout"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_gravity="center" />
 
-    <LinearLayout
-            android:id="@+id/authorsLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
-            android:paddingLeft="16dp"
-            android:gravity="center_vertical"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?attr/selectableItemBackground">
-        <ImageView
-                android:src="?attr/iconAboutAuthors"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_gravity="center" />
+                <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="30dp"
+                        android:orientation="vertical">
 
-        <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="30dp"
-                android:orientation="vertical">
+                    <TextView
+                            android:text="@string/version"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="?android:attr/textColorPrimary"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <TextView
-                    android:text="Authors"
+                    <TextView
+                            android:id="@+id/version"
+                            android:text="Version"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/authorsLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:paddingLeft="16dp"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
+                <ImageView
+                        android:src="?attr/iconAboutAuthors"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_gravity="center" />
+
+                <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="30dp"
+                        android:orientation="vertical">
+
+                    <TextView
+                            android:text="Authors"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="?android:attr/textColorPrimary"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <TextView
+                            android:text="@string/app_authors"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:id="@+id/licenseLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:paddingLeft="16dp"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
+                <ImageView
+                        android:src="?attr/iconAboutLicense"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:layout_gravity="center" />
+
+                <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="30dp"
+                        android:orientation="vertical">
+                    <TextView
+                            android:text="License"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="?android:attr/textColorPrimary"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <TextView
+                            android:text="@string/app_license"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="16dp"
+                    android:layout_gravity="center">
+                <Button
+                        android:id="@+id/source"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:text="@string/source_code"
+                        android:textAllCaps="true" />
+
+                <Button
+                        android:id="@+id/changelog"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:text="@string/changelog_full_title"
+                        android:textAllCaps="true" />
+
+                <Button
+                        android:id="@+id/revisions"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:text="@string/app_revision_fmt"
+                        android:textAllCaps="true" />
+            </LinearLayout>
+
+            <TextView
+                    android:id="@+id/copyright"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:gravity="center_vertical"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <View
+                    android:layout_height="2dp"
+                    android:layout_width="match_parent"
+                    android:background="?android:attr/listDivider" />
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:paddingLeft="16dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/about_libraries"
                     android:textColor="?android:attr/textColorPrimary"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textSize="34sp"/>
 
-            <TextView
-                    android:text="@string/app_authors"
+            <android.support.v7.widget.RecyclerView
+                    android:id="@+id/libraries"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:layout_height="wrap_content" />
+
         </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-            android:id="@+id/licenseLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
-            android:paddingLeft="16dp"
-            android:gravity="center_vertical"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?attr/selectableItemBackground">
-        <ImageView
-                android:src="?attr/iconAboutLicense"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_gravity="center" />
-
-        <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="30dp"
-                android:orientation="vertical">
-            <TextView
-                    android:text="License"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <TextView
-                    android:text="@string/app_license"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="16dp"
-            android:layout_gravity="center">
-        <Button
-                android:id="@+id/source"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:background="?android:attr/selectableItemBackground"
-                android:text="@string/source_code"
-                android:textAllCaps="true" />
-
-        <Button
-                android:id="@+id/changelog"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:background="?android:attr/selectableItemBackground"
-                android:text="@string/changelog_full_title"
-                android:textAllCaps="true" />
-
-        <Button
-                android:id="@+id/revisions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-                android:text="@string/app_revision_fmt"
-                android:textAllCaps="true" />
-    </LinearLayout>
-
-    <TextView
-            android:id="@+id/copyright"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:gravity="center_vertical"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <WebView
-            android:id="@+id/about_view"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+    </android.support.v4.widget.NestedScrollView>
 </LinearLayout>
