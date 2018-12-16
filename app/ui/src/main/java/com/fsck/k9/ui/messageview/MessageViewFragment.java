@@ -415,11 +415,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         onRefile(mAccount.getSpamFolder());
     }
 
-    public void onSelectText() {
-        // FIXME
-        // mMessageView.beginSelectingText();
-    }
-
     private void startRefileActivity(int activity) {
         Intent intent = new Intent(getActivity(), ChooseFolder.class);
         intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());

@@ -1,8 +1,6 @@
 package com.fsck.k9.helper;
 
 
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -54,7 +52,7 @@ public class RetainFragment<T> extends Fragment {
         data = null;
         cleared = true;
 
-        if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1 && fm.isDestroyed()) {
+        if (fm.isDestroyed()) {
             return;
         }
 

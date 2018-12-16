@@ -13,7 +13,6 @@ import android.content.IntentSender.SendIntentException;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
@@ -973,9 +972,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         } else if (id == R.id.copy || id == R.id.refile_copy) {
             messageViewFragment.onCopy();
             return true;
-        } else if (id == R.id.select_text) {
-            messageViewFragment.onSelectText();
-            return true;
         } else if (id == R.id.show_headers || id == R.id.hide_headers) {
             messageViewFragment.onToggleAllHeadersView();
             updateMenu();
@@ -1052,7 +1048,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             menu.findItem(R.id.spam).setVisible(false);
             menu.findItem(R.id.refile).setVisible(false);
             menu.findItem(R.id.toggle_unread).setVisible(false);
-            menu.findItem(R.id.select_text).setVisible(false);
             menu.findItem(R.id.toggle_message_view_theme).setVisible(false);
             menu.findItem(R.id.show_headers).setVisible(false);
             menu.findItem(R.id.hide_headers).setVisible(false);
@@ -1102,9 +1097,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             TypedArray ta = obtainStyledAttributes(drawableAttr);
             menu.findItem(R.id.toggle_unread).setIcon(ta.getDrawable(0));
             ta.recycle();
-
-            // Jellybean has built-in long press selection support
-            menu.findItem(R.id.select_text).setVisible(Build.VERSION.SDK_INT < 16);
 
             menu.findItem(R.id.delete).setVisible(K9.isMessageViewDeleteActionVisible());
 

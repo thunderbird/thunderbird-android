@@ -20,7 +20,6 @@ import com.fsck.k9.NotificationSetting;
 import com.fsck.k9.controller.MessageReference;
 
 import static com.fsck.k9.notification.NotificationHelper.NOTIFICATION_LED_BLINK_SLOW;
-import static com.fsck.k9.notification.NotificationController.platformSupportsExtendedNotifications;
 
 
 class DeviceNotifications extends BaseNotifications {
@@ -41,7 +40,7 @@ class DeviceNotifications extends BaseNotifications {
         int unreadMessageCount = notificationData.getUnreadMessageCount();
 
         NotificationCompat.Builder builder;
-        if (isPrivacyModeActive() || !platformSupportsExtendedNotifications()) {
+        if (isPrivacyModeActive()) {
             builder = createSimpleSummaryNotification(account, unreadMessageCount);
         } else if (notificationData.isSingleMessageNotification()) {
             NotificationHolder holder = notificationData.getHolderForLatestNotification();

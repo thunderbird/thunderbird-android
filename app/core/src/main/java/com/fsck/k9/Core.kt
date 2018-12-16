@@ -14,7 +14,6 @@ import com.fsck.k9.crypto.openPgpModule
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.job.jobModule
 import com.fsck.k9.mail.internet.BinaryTempFileBody
-import com.fsck.k9.mail.ssl.LocalKeyStore
 import com.fsck.k9.mailstore.mailStoreModule
 import com.fsck.k9.message.extractors.extractorModule
 import com.fsck.k9.message.html.htmlModule
@@ -58,8 +57,6 @@ object Core : KoinComponent {
         if (K9.DEVELOPER_MODE) {
             StrictMode.enableDefaults()
         }
-
-        PRNGFixes.apply()
 
         val packageName = context.packageName
         K9.Intents.init(packageName)

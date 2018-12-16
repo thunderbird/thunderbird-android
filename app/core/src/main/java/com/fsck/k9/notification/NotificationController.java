@@ -17,10 +17,6 @@ public class NotificationController {
     private final NewMailNotifications newMailNotifications;
 
 
-    public static boolean platformSupportsExtendedNotifications() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
-    }
-
     public static boolean platformSupportsLockScreenNotifications() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
