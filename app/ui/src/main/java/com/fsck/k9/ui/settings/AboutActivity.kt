@@ -32,6 +32,10 @@ class AboutActivity : K9Activity() {
         val year = Integer.toString(Calendar.getInstance().get(Calendar.YEAR))
         findViewById<TextView>(R.id.copyright).text = getString(R.string.app_copyright_fmt, year, year)
 
+        findViewById<View>(R.id.authorsLayout).setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_authors_url))))
+        }
+
         findViewById<View>(R.id.licenseLayout).setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_license_url))))
         }

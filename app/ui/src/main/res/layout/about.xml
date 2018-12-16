@@ -60,12 +60,16 @@
     </LinearLayout>
 
     <LinearLayout
+            android:id="@+id/authorsLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
             android:paddingLeft="16dp"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground">
         <ImageView
                 android:src="?attr/iconAboutAuthors"
                 android:layout_width="28dp"
