@@ -7,7 +7,8 @@
         android:minHeight="?android:attr/listPreferredItemHeight"
         android:paddingRight="4dip"
         android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:descendantFocusability="blocksDescendants">
 
     <View
             android:id="@+id/chip"
