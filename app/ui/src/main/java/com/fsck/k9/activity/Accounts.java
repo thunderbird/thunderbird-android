@@ -24,10 +24,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBar;
@@ -102,11 +99,6 @@ import timber.log.Timber;
 public class Accounts extends K9ListActivity implements OnItemClickListener {
 
     /**
-     * URL used to open Android Market application
-     */
-    private static final String ANDROID_MARKET_URL = "https://play.google.com/store/apps/details?id=org.openintents.filemanager";
-
-    /**
      * Number of special accounts ('Unified Inbox' and 'All Messages')
      */
     private static final int SPECIAL_ACCOUNTS_COUNT = 2;
@@ -114,7 +106,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     private static final int DIALOG_REMOVE_ACCOUNT = 1;
     private static final int DIALOG_CLEAR_ACCOUNT = 2;
     private static final int DIALOG_RECREATE_ACCOUNT = 3;
-    private static final int DIALOG_NO_FILE_MANAGER = 4;
 
     private final ColorChipProvider colorChipProvider = DI.get(ColorChipProvider.class);
     private final AccountSearchConditions accountSearchConditions = DI.get(AccountSearchConditions.class);
@@ -1092,21 +1083,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 }
             });
         }
-        case DIALOG_NO_FILE_MANAGER: {
-            return ConfirmationDialog.create(this, id,
-                                             R.string.import_dialog_error_title,
-                                             getString(R.string.import_dialog_error_message),
-                                             R.string.open_market,
-                                             R.string.close,
-            new Runnable() {
-                @Override
-                public void run() {
-                    Uri uri = Uri.parse(ANDROID_MARKET_URL);
-                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    startActivity(intent);
-                }
-            });
-        }
         }
 
         return super.onCreateDialog(id);
@@ -1267,15 +1243,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         i.addCategory(Intent.CATEGORY_OPENABLE);
         i.setType("*/*");
 
-        PackageManager packageManager = getPackageManager();
-        List<ResolveInfo> infos = packageManager.queryIntentActivities(i, 0);
-
-        if (infos.size() > 0) {
-            startActivityForResult(Intent.createChooser(i, null),
-                                   ACTIVITY_REQUEST_PICK_SETTINGS_FILE);
-        } else {
-            showDialog(DIALOG_NO_FILE_MANAGER);
-        }
+        startActivityForResult(Intent.createChooser(i, null), ACTIVITY_REQUEST_PICK_SETTINGS_FILE);
     }
 
     @Override
@@ -1385,11 +1353,9 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
      *
      * @param importResults
      *         The {@link ImportResults} instance returned by the {@link SettingsImporter}.
-     * @param filename
-     *         The name of the settings file that was imported.
      */
-    private void showAccountsImportedDialog(ImportResults importResults, String filename) {
-        AccountsImportedDialog dialog = new AccountsImportedDialog(importResults, filename);
+    private void showAccountsImportedDialog(ImportResults importResults) {
+        AccountsImportedDialog dialog = new AccountsImportedDialog(importResults);
         dialog.show(this);
         setNonConfigurationInstance(dialog);
     }
@@ -1399,12 +1365,10 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
      */
     private static class AccountsImportedDialog extends SimpleDialog {
         private ImportResults mImportResults;
-        private String mFilename;
 
-        AccountsImportedDialog(ImportResults importResults, String filename) {
+        AccountsImportedDialog(ImportResults importResults) {
             super(R.string.settings_import_success_header, R.string.settings_import_success);
             mImportResults = importResults;
-            mFilename = filename;
         }
 
         @Override
@@ -1420,7 +1384,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             int imported = mImportResults.importedAccounts.size();
             String accounts = activity.getResources().getQuantityString(
                                   R.plurals.settings_import_accounts, imported, imported);
-            result.append(activity.getString(R.string.settings_import_success, accounts, mFilename));
+            result.append(activity.getString(R.string.settings_import_success, accounts));
             return result.toString();
         }
 
@@ -1775,22 +1739,18 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             accountUuids.add(account.getUuid());
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            exportGlobalSettings = includeGlobals;
-            exportAccountUuids = accountUuids;
+        exportGlobalSettings = includeGlobals;
+        exportAccountUuids = accountUuids;
 
-            Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
-            intent.setType("application/octet-stream");
-            intent.putExtra(Intent.EXTRA_TITLE, SettingsExporter.generateDatedExportFileName());
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        intent.setType("application/octet-stream");
+        intent.putExtra(Intent.EXTRA_TITLE, SettingsExporter.generateDatedExportFileName());
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
 
-            startActivityForResult(intent, ACTIVITY_REQUEST_SAVE_SETTINGS_FILE);
-        } else {
-            startExport(includeGlobals, accountUuids, null);
-        }
+        startActivityForResult(intent, ACTIVITY_REQUEST_SAVE_SETTINGS_FILE);
     }
 
-    public void onExport(Intent intent) {
+    private void onExport(Intent intent) {
         Uri documentsUri = intent.getData();
         startExport(exportGlobalSettings, exportAccountUuids, documentsUri);
     }
@@ -1807,7 +1767,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
     private static class ExportAsyncTask extends ExtendedAsyncTask<Void, Void, Boolean> {
         private boolean mIncludeGlobals;
         private Set<String> mAccountUuids;
-        private String mFileName;
         private Uri mUri;
 
 
@@ -1831,13 +1790,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
-                if (mUri == null) {
-                    mFileName = SettingsExporter.exportToFile(mContext, mIncludeGlobals,
-                            mAccountUuids);
-                } else {
-                    SettingsExporter.exportToUri(mContext, mIncludeGlobals, mAccountUuids, mUri);
-                }
-
+                SettingsExporter.exportToUri(mContext, mIncludeGlobals, mAccountUuids, mUri);
             } catch (SettingsImportExportException e) {
                 Timber.w(e, "Exception during export");
                 return false;
@@ -1855,13 +1808,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             removeProgressDialog();
 
             if (success) {
-                if (mFileName != null) {
-                    activity.showSimpleDialog(R.string.settings_export_success_header,
-                            R.string.settings_export_success, mFileName);
-                } else {
-                    activity.showSimpleDialog(R.string.settings_export_success_header,
-                            R.string.settings_export_success_generic);
-                }
+                activity.showSimpleDialog(R.string.settings_export_success_header,
+                        R.string.settings_export_success_generic);
             } else {
                 //TODO: better error messages
                 activity.showSimpleDialog(R.string.settings_export_failed_header,
@@ -1932,22 +1880,20 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
             removeProgressDialog();
 
-            String filename = mUri.getLastPathSegment();
             boolean globalSettings = mImportResults.globalSettings;
             int imported = mImportResults.importedAccounts.size();
             if (success && (globalSettings || imported > 0)) {
                 if (imported == 0) {
                     activity.showSimpleDialog(R.string.settings_import_success_header,
-                                              R.string.settings_import_global_settings_success, filename);
+                            R.string.settings_import_global_settings_success);
                 } else {
-                    activity.showAccountsImportedDialog(mImportResults, filename);
+                    activity.showAccountsImportedDialog(mImportResults);
                 }
 
                 activity.refresh();
             } else {
                 //TODO: better error messages
-                activity.showSimpleDialog(R.string.settings_import_failed_header,
-                                          R.string.settings_import_failure, filename);
+                activity.showSimpleDialog(R.string.settings_import_failed_header, R.string.settings_import_failure);
             }
         }
     }
@@ -2005,10 +1951,8 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             if (success) {
                 activity.showImportSelectionDialog(mImportContents, mUri);
             } else {
-                String filename = mUri.getLastPathSegment();
                 //TODO: better error messages
-                activity.showSimpleDialog(R.string.settings_import_failed_header,
-                                          R.string.settings_import_failure, filename);
+                activity.showSimpleDialog(R.string.settings_import_failed_header, R.string.settings_import_failure);
             }
         }
     }
