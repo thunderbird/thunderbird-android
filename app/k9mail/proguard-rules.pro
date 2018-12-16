@@ -18,7 +18,6 @@
 -dontwarn com.squareup.moshi.**
 
 # Project specific rules
--dontnote com.fsck.k9.PRNGFixes
 -dontnote com.fsck.k9.ui.messageview.**
 -dontnote com.fsck.k9.view.**
 

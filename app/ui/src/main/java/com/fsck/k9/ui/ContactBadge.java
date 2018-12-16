@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Email;
@@ -25,7 +24,6 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.fsck.k9.ui.R;
 import com.fsck.k9.mail.Address;
 
 
@@ -179,13 +177,9 @@ public class ContactBadge extends ImageView implements OnClickListener {
      * @param address the address to look for a contact for.
      */
     public void setContact(Address address) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-            Bundle extraContactInfo = new Bundle();
-            extraContactInfo.putString(ContactsContract.Intents.Insert.NAME, address.getPersonal());
-            assignContactFromEmail(address.getAddress(), true, extraContactInfo);
-        } else {
-            assignContactFromEmail(address.getAddress(), true);
-        }
+        Bundle extraContactInfo = new Bundle();
+        extraContactInfo.putString(ContactsContract.Intents.Insert.NAME, address.getPersonal());
+        assignContactFromEmail(address.getAddress(), true, extraContactInfo);
     }
 
 

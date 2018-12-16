@@ -159,7 +159,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="flag_action">Add star</string>
     <string name="unflag_action">Remove star</string>
     <string name="copy_action">Copy</string>
-    <string name="select_text_action">Select text</string>
     <string name="show_headers_action">Show headers</string>
     <string name="hide_headers_action">Hide headers</string>
     <plurals name="copy_address_to_clipboard">

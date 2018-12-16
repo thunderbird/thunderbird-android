@@ -15,7 +15,6 @@ import javax.net.ssl.X509ExtendedKeyManager;
 import javax.security.auth.x500.X500Principal;
 
 import android.content.Context;
-import android.os.Build;
 import android.security.KeyChain;
 import android.security.KeyChainException;
 
@@ -31,17 +30,6 @@ import static com.fsck.k9.mail.CertificateValidationException.Reason.RetrievalFa
  * during the TLS handshake using the Android 4.0 KeyChain API.
  */
 class KeyChainKeyManager extends X509ExtendedKeyManager {
-
-    private static PrivateKey sClientCertificateReferenceWorkaround;
-
-
-    private static synchronized void savePrivateKeyReference(PrivateKey privateKey) {
-        if (sClientCertificateReferenceWorkaround == null) {
-            sClientCertificateReferenceWorkaround = privateKey;
-        }
-    }
-
-
     private final String mAlias;
     private final X509Certificate[] mChain;
     private final PrivateKey mPrivateKey;
@@ -91,16 +79,6 @@ class KeyChainKeyManager extends X509ExtendedKeyManager {
         PrivateKey privateKey = KeyChain.getPrivateKey(context, alias);
         if (privateKey == null) {
             throw new MessagingException("No private key found for: " + alias);
-        }
-
-        /*
-         * We need to keep reference to the first private key retrieved so
-         * it won't get garbage collected. If it will then the whole app
-         * will crash on Android < 4.2 with "Fatal signal 11 code=1". See
-         * https://code.google.com/p/android/issues/detail?id=62319
-         */
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            savePrivateKeyReference(privateKey);
         }
 
         return privateKey;

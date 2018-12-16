@@ -218,8 +218,7 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
     }
 
     public static void setSniHost(SSLSocketFactory factory, SSLSocket socket, String hostname) {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1 &&
-                factory instanceof android.net.SSLCertificateSocketFactory) {
+        if (factory instanceof android.net.SSLCertificateSocketFactory) {
             SSLCertificateSocketFactory sslCertificateSocketFactory = (SSLCertificateSocketFactory) factory;
             sslCertificateSocketFactory.setHostname(socket, hostname);
         } else {

@@ -229,12 +229,6 @@
 
     <!-- MessageView -->
     <item
-        android:id="@+id/select_text"
-        app:showAsAction="never"
-        android:title="@string/select_text_action"/>
-
-    <!-- MessageView -->
-    <item
         android:id="@+id/toggle_message_view_theme"
         app:showAsAction="never"
         android:title="@string/message_view_theme_action_dark"/>
