@@ -29,6 +29,9 @@ import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.filter.Base64;
+import com.fsck.k9.mailstore.LocalFolder;
+import com.fsck.k9.mailstore.LocalStore;
+import com.fsck.k9.mailstore.LocalStoreProvider;
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -157,6 +160,8 @@ public class SettingsImporter {
      *         same UUID is found in the settings file.<br>
      *         <strong>Note:</strong> This can have side-effects we currently don't handle, e.g.
      *         changing the account type from IMAP to POP3. So don't use this for now!
+     * @param outboxName
+     *         localised name of outbox folder
      *
      * @return An {@link ImportResults} instance containing information about errors and
      *         successfully imported accounts.
@@ -165,7 +170,7 @@ public class SettingsImporter {
      *         In case of an error.
      */
     public static ImportResults importSettings(Context context, InputStream inputStream, boolean globalSettings,
-            List<String> accountUuids, boolean overwrite) throws SettingsImportExportException {
+            List<String> accountUuids, boolean overwrite, String outboxName) throws SettingsImportExportException {
 
         try {
             boolean globalSettingsImported = false;
@@ -269,6 +274,15 @@ public class SettingsImporter {
             }
 
             preferences.loadAccounts();
+
+            // create missing OUTBOX folders
+            for (Account account: preferences.getAccounts()) {
+                if (accountUuids.contains(account.getUuid())) {
+                    LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
+                    LocalFolder.createLocalFolder(localStore, Account.OUTBOX, outboxName);
+                }
+            }
+
             K9.loadPrefs(preferences);
             Core.setServicesEnabled(context);
 
