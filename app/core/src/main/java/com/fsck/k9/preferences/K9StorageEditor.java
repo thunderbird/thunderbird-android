@@ -9,21 +9,21 @@ import java.util.Map.Entry;
 
 import android.os.SystemClock;
 
-import com.fsck.k9.preferences.StoragePersister.StoragePersistOperationCallback;
-import com.fsck.k9.preferences.StoragePersister.StoragePersistOperations;
+import com.fsck.k9.preferences.K9StoragePersister.StoragePersistOperationCallback;
+import com.fsck.k9.preferences.K9StoragePersister.StoragePersistOperations;
 import timber.log.Timber;
 
 
 public class K9StorageEditor implements StorageEditor {
     private Storage storage;
-    private StoragePersister storagePersister;
+    private K9StoragePersister storagePersister;
 
     private Map<String, String> changes = new HashMap<>();
     private List<String> removals = new ArrayList<>();
     private Map<String, String> snapshot = new HashMap<>();
 
 
-    public K9StorageEditor(Storage storage, StoragePersister storagePersister) {
+    public K9StorageEditor(Storage storage, K9StoragePersister storagePersister) {
         this.storage = storage;
         this.storagePersister = storagePersister;
         snapshot.putAll(storage.getAll());

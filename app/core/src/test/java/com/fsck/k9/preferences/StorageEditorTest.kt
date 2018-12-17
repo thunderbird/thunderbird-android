@@ -17,8 +17,8 @@ import org.mockito.MockitoAnnotations
 
 class StorageEditorTest : K9RobolectricTest() {
     @Mock private lateinit var storage: Storage
-    @Mock private lateinit var storagePersister: StoragePersister
-    @Mock private lateinit var storagePersisterOps: StoragePersister.StoragePersistOperations
+    @Mock private lateinit var storagePersister: K9StoragePersister
+    @Mock private lateinit var storagePersisterOps: K9StoragePersister.StoragePersistOperations
     private lateinit var editor: K9StorageEditor
 
     private val workingMap = mutableMapOf<String,String>()
@@ -168,7 +168,7 @@ class StorageEditorTest : K9RobolectricTest() {
         }
 
         whenever(storagePersister.doInTransaction(any())).then {
-            val operationCallback = it.getArgument<StoragePersister.StoragePersistOperationCallback>(0)
+            val operationCallback = it.getArgument<K9StoragePersister.StoragePersistOperationCallback>(0)
             operationCallback.beforePersistTransaction(workingMap)
             verify(storage, times(2)).all
             assertEquals(workingMap, storageMap)

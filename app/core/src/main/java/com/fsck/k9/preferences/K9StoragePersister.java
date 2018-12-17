@@ -20,13 +20,13 @@ import org.jetbrains.annotations.Nullable;
 import timber.log.Timber;
 
 
-public class StoragePersister {
+public class K9StoragePersister implements StoragePersister {
     private static final int DB_VERSION = 4;
     private static final String DB_NAME = "preferences_storage";
 
     private final Context context;
 
-    public StoragePersister(Context context) {
+    public K9StoragePersister(Context context) {
         this.context = context;
     }
 
@@ -83,6 +83,7 @@ public class StoragePersister {
         }
     }
 
+    @Override
     public StorageEditor createStorageEditor(Storage storage) {
         return new K9StorageEditor(storage, this);
     }
@@ -130,6 +131,7 @@ public class StoragePersister {
         void onPersistTransactionSuccess(Map<String, String> workingStorage);
     }
 
+    @Override
     @CheckResult
     public Map<String, String> loadValues() {
         long startTime = SystemClock.elapsedRealtime();
@@ -219,17 +221,17 @@ public class StoragePersister {
     private StorageMigrationsHelper migrationsHelper = new StorageMigrationsHelper() {
         @Override
         public void writeValue(@NotNull SQLiteDatabase db, @NotNull String key, String value) {
-            StoragePersister.this.writeValue(db, key, value);
+            K9StoragePersister.this.writeValue(db, key, value);
         }
 
         @Override
         public String readValue(@NotNull SQLiteDatabase db, @NotNull String key) {
-            return StoragePersister.this.readValue(db, key);
+            return K9StoragePersister.this.readValue(db, key);
         }
 
         @Override
         public void insertValue(@NotNull SQLiteDatabase db, @NotNull String key, @Nullable String value) {
-            StoragePersister.this.insertValue(db, key, value);
+            K9StoragePersister.this.insertValue(db, key, value);
         }
     };
 }
