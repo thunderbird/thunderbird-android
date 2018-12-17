@@ -8,8 +8,8 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -20,6 +20,8 @@ import android.widget.TextView
 import com.fsck.k9.activity.K9Activity
 import com.fsck.k9.ui.R
 import de.cketti.library.changelog.ChangeLog
+import kotlinx.android.synthetic.main.about.*
+import kotlinx.android.synthetic.main.about_library.view.*
 
 import timber.log.Timber
 
@@ -32,33 +34,30 @@ class AboutActivity : K9Activity() {
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        findViewById<TextView>(R.id.version).text = getVersionNumber()
+        version.text = getVersionNumber()
 
         val year = Integer.toString(Calendar.getInstance().get(Calendar.YEAR))
-        findViewById<TextView>(R.id.copyright).text = getString(R.string.app_copyright_fmt, year, year)
+        copyright.text = getString(R.string.app_copyright_fmt, year, year)
 
-        findViewById<View>(R.id.authorsLayout).setOnClickListener {
+        authorsLayout.setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_authors_url))))
         }
 
-        findViewById<View>(R.id.licenseLayout).setOnClickListener {
+        licenseLayout.setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_license_url))))
         }
 
-        findViewById<View>(R.id.source).setOnClickListener {
+        source.setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_source_url))))
         }
 
-        findViewById<View>(R.id.changelog).setOnClickListener {
-            displayChangeLog()
-        }
+        changelog.setOnClickListener { displayChangeLog() }
 
-        findViewById<View>(R.id.revisions).setOnClickListener {
+        revisions.setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_revision_url))))
         }
 
         val manager = LinearLayoutManager(this)
-        val libraries = findViewById<RecyclerView>(R.id.libraries)
         libraries.apply {
             layoutManager = manager
             adapter = LibrariesAdapter(USED_LIBRARIES)
@@ -135,8 +134,8 @@ private class LibrariesAdapter(private val dataset: Array<Library>)
 
     override fun onBindViewHolder(holder: ViewHolder, index: Int) {
         val library = dataset[index]
-        holder.view.findViewById<TextView>(R.id.name).text = library.name
-        holder.view.findViewById<TextView>(R.id.license).text = library.license
+        holder.view.name.text = library.name
+        holder.view.license.text = library.license
         holder.view.setOnClickListener {
             holder.view.getContext()
                 .startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(library.URL)))
