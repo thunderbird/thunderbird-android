@@ -83,6 +83,10 @@ public class StoragePersister {
         }
     }
 
+    public StorageEditor createStorageEditor(Storage storage) {
+        return new K9StorageEditor(storage, this);
+    }
+
     static class StoragePersistOperations {
         private Map<String, String> workingStorage;
         private final SQLiteStatement deleteStatement;
