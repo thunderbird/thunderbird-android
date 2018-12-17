@@ -1,6 +1,19 @@
 package com.fsck.k9
 
-import com.fsck.k9.Account.*
+import com.fsck.k9.Account.DEFAULT_SORT_ASCENDING
+import com.fsck.k9.Account.DEFAULT_SORT_TYPE
+import com.fsck.k9.Account.DeletePolicy
+import com.fsck.k9.Account.Expunge
+import com.fsck.k9.Account.FolderMode
+import com.fsck.k9.Account.INBOX
+import com.fsck.k9.Account.MessageFormat
+import com.fsck.k9.Account.NO_OPENPGP_KEY
+import com.fsck.k9.Account.QuoteStyle
+import com.fsck.k9.Account.Searchable
+import com.fsck.k9.Account.ShowPictures
+import com.fsck.k9.Account.SortType
+import com.fsck.k9.Account.SpecialFolderSelection
+import com.fsck.k9.Account.UNASSIGNED_ACCOUNT_NUMBER
 import com.fsck.k9.helper.Utility
 import com.fsck.k9.mail.NetworkType
 import com.fsck.k9.mail.filter.Base64
@@ -8,7 +21,7 @@ import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
 import timber.log.Timber
-import java.util.*
+import java.util.ArrayList
 
 class AccountPreferenceSerializer(
         private val storageManager: StorageManager,

@@ -22,6 +22,7 @@ import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStoreProvider;
+import com.fsck.k9.preferences.K9StorageEditor;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.preferences.StoragePersister;
@@ -88,7 +89,7 @@ public class Preferences {
     }
 
     public StorageEditor createStorageEditor() {
-        return new StorageEditor(storage, storagePersister);
+        return new K9StorageEditor(storage, storagePersister);
     }
 
     @RestrictTo(Scope.TESTS)

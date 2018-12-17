@@ -19,7 +19,7 @@ class StorageEditorTest : K9RobolectricTest() {
     @Mock private lateinit var storage: Storage
     @Mock private lateinit var storagePersister: StoragePersister
     @Mock private lateinit var storagePersisterOps: StoragePersister.StoragePersistOperations
-    private lateinit var editor: StorageEditor
+    private lateinit var editor: K9StorageEditor
 
     private val workingMap = mutableMapOf<String,String>()
     private val storageMap = mapOf(
@@ -31,7 +31,7 @@ class StorageEditorTest : K9RobolectricTest() {
         MockitoAnnotations.initMocks(this)
         whenever(storage.all).thenReturn(storageMap)
 
-        editor = StorageEditor(storage, storagePersister)
+        editor = K9StorageEditor(storage, storagePersister)
         verify(storage).all
     }
 

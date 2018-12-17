@@ -14,7 +14,7 @@ import com.fsck.k9.preferences.StoragePersister.StoragePersistOperations;
 import timber.log.Timber;
 
 
-public class StorageEditor {
+public class K9StorageEditor implements StorageEditor {
     private Storage storage;
     private StoragePersister storagePersister;
 
@@ -23,12 +23,13 @@ public class StorageEditor {
     private Map<String, String> snapshot = new HashMap<>();
 
 
-    public StorageEditor(Storage storage, StoragePersister storagePersister) {
+    public K9StorageEditor(Storage storage, StoragePersister storagePersister) {
         this.storage = storage;
         this.storagePersister = storagePersister;
         snapshot.putAll(storage.getAll());
     }
 
+    @Override
     public void copy(android.content.SharedPreferences input) {
         Map < String, ? > oldVals = input.getAll();
         for (Entry < String, ? > entry : oldVals.entrySet()) {
@@ -43,6 +44,7 @@ public class StorageEditor {
         }
     }
 
+    @Override
     public boolean commit() {
         try {
             commitChanges();
@@ -87,22 +89,26 @@ public class StorageEditor {
         Timber.i("Preferences commit took %d ms", endTime - startTime);
     }
 
+    @Override
     public StorageEditor putBoolean(String key,
             boolean value) {
         changes.put(key, "" + value);
         return this;
     }
 
+    @Override
     public StorageEditor putInt(String key, int value) {
         changes.put(key, "" + value);
         return this;
     }
 
+    @Override
     public StorageEditor putLong(String key, long value) {
         changes.put(key, "" + value);
         return this;
     }
 
+    @Override
     public StorageEditor putString(String key, String value) {
         if (value == null) {
             remove(key);
@@ -112,6 +118,7 @@ public class StorageEditor {
         return this;
     }
 
+    @Override
     public StorageEditor remove(String key) {
         removals.add(key);
         return this;
