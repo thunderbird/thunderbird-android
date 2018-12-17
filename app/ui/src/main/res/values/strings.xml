@@ -472,9 +472,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="account_setup_options_mail_check_frequency_label">Folder poll frequency</string>
     <string name="account_setup_options_mail_check_frequency_never">Never</string>
-    <string name="account_setup_options_mail_check_frequency_1min">Every minute</string>
-    <string name="account_setup_options_mail_check_frequency_5min">Every 5 minutes</string>
-    <string name="account_setup_options_mail_check_frequency_10min">Every 10 minutes</string>
     <string name="account_setup_options_mail_check_frequency_15min">Every 15 minutes</string>
     <string name="account_setup_options_mail_check_frequency_30min">Every 30 minutes</string>
     <string name="account_setup_options_mail_check_frequency_1hour">Every hour</string>
