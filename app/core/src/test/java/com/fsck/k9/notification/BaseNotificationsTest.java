@@ -7,7 +7,7 @@ import android.support.v4.app.NotificationCompat.Builder;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationQuickDelete;
-import com.fsck.k9.MockHelper;
+import com.fsck.k9.testing.MockHelper;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.fsck.k9;
+package com.fsck.k9.testing;
 
 
 import org.mockito.invocation.InvocationOnMock;

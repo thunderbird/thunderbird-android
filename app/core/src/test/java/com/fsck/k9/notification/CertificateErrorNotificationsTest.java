@@ -8,7 +8,7 @@ import android.support.v4.app.NotificationCompat.Builder;
 import android.support.v4.app.NotificationManagerCompat;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.MockHelper;
+import com.fsck.k9.testing.MockHelper;
 import com.fsck.k9.RobolectricTest;
 import org.junit.Before;
 import org.junit.Test;

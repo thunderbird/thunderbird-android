@@ -2,11 +2,19 @@ package com.fsck.k9.preferences
 
 
 import android.content.Context
-import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.preferences.K9StoragePersister.StoragePersistOperationCallback
 import com.fsck.k9.preferences.K9StoragePersister.StoragePersistOperations
-import com.nhaarman.mockito_kotlin.*
-import org.junit.Assert.*
+import com.fsck.k9.storage.K9RobolectricTest
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.inOrder
+import com.nhaarman.mockito_kotlin.never
+import com.nhaarman.mockito_kotlin.spy
+import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertSame
+import org.junit.Assert.assertTrue
+import org.junit.Assert.fail
 import org.junit.Test
 import org.robolectric.RuntimeEnvironment
 

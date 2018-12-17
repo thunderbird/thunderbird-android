@@ -1,18 +1,21 @@
 package com.fsck.k9.preferences
 
 
-import com.fsck.k9.K9RobolectricTest
-import com.fsck.k9.whenever
+import com.fsck.k9.storage.K9RobolectricTest
 import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mock
+import org.mockito.Mockito
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
+import org.mockito.stubbing.OngoingStubbing
 
 
 class StorageEditorTest : K9RobolectricTest() {
@@ -180,4 +183,6 @@ class StorageEditorTest : K9RobolectricTest() {
             verify(storage).replaceAll(eq(workingMap))
         }
     }
+
+    private fun <T> whenever(methodCall: T): OngoingStubbing<T> = Mockito.`when`(methodCall)
 }

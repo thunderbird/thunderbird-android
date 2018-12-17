@@ -14,6 +14,7 @@ dependencies {
     implementation "org.apache.james:apache-mime4j-core:${versions.mime4j}"
 
     testImplementation project(':mail:testing')
+    testImplementation project(':app:testing')
     testImplementation "org.robolectric:robolectric:${versions.robolectric}"
     testImplementation "junit:junit:${versions.junit}"
     testImplementation "org.mockito:mockito-core:${versions.mockito}"

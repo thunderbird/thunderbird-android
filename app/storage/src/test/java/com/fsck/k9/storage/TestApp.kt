@@ -7,6 +7,8 @@ import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.DI
 import com.fsck.k9.K9
 import com.fsck.k9.crypto.EncryptionExtractor
+import com.fsck.k9.preferences.K9StoragePersister
+import com.fsck.k9.preferences.StoragePersister
 import com.nhaarman.mockito_kotlin.mock
 import org.koin.dsl.module.applicationContext
 
@@ -26,4 +28,5 @@ val testModule = applicationContext {
     bean { AppConfig(emptyList()) }
     bean { mock<CoreResourceProvider>() }
     bean { mock<EncryptionExtractor>() }
+    bean { K9StoragePersister(get()) as StoragePersister }
 }
