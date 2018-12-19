@@ -193,7 +193,7 @@ https://github.com/k9mail/k-9/20
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g>（归档）</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g>（垃圾邮件）</string>
   <string name="send_failure_subject">一些邮件没有成功发送</string>
-  <string name="version">版本：<xliff:g id="version">%s</xliff:g></string>
+  <string name="version">版本：</string>
   <string name="debug_enable_debug_logging_title">启用调试日志</string>
   <string name="debug_enable_debug_logging_summary">记录额外的调试信息</string>
   <string name="debug_enable_sensitive_logging_title">记录敏感信息</string>

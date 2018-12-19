@@ -205,7 +205,7 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archiwum)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
   <string name="send_failure_subject">Niektóre wiadomości nie zostały wysłane</string>
-  <string name="version">Wersja <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Wersja</string>
   <string name="debug_enable_debug_logging_title">Włącz logowanie</string>
   <string name="debug_enable_debug_logging_summary">Loguj dodatkowe informacje diagnostyczne</string>
   <string name="debug_enable_sensitive_logging_title">Loguj poufne informacje</string>
