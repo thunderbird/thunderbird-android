@@ -35,6 +35,7 @@ class AboutActivity : K9Activity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         version.text = getVersionNumber()
+        versionLayout.setOnClickListener { displayChangeLog() }
 
         val year = Integer.toString(Calendar.getInstance().get(Calendar.YEAR))
         copyright.text = getString(R.string.app_copyright_fmt, year, year)
@@ -66,16 +67,9 @@ class AboutActivity : K9Activity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        super.onCreateOptionsMenu(menu)
-        menuInflater.inflate(R.menu.about_option, menu)
-        return true
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> onBackPressed()
-            R.id.changelog -> displayChangeLog()
             else -> return super.onOptionsItemSelected(item)
         }
 
