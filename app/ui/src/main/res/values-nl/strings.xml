@@ -50,7 +50,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="open_market">Open Play Store</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Auteurs: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Revisie Informatie: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Revisie Informatie</string>
   <string name="app_libraries">De volgende externe bibliotheken worden gebruikt: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">E-mails lezen</string>
   <string name="read_messages_desc">Sta deze appicatie toe om je e-mails te lezen.</string>

@@ -54,7 +54,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="open_market">Obre la Play Store</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Autors: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Informació de la revisió: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Informació de la revisió</string>
   <string name="app_libraries">Fem servir les següents biblioteques de tercers: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Llegeix els correus</string>
   <string name="read_messages_desc">Permet a aquesta aplicació llegir els correus.</string>

@@ -55,7 +55,7 @@
   <string name="open_market">Open Market</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Συγγραφείς: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Πληροφορίες αναθεωρήσεων: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Πληροφορίες αναθεωρήσεων</string>
   <string name="app_libraries">Χρησιμοποιούνται οι ακόλουθες βιβλιοθήκες τρίτων: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Ανάγνωση μηνυμάτων</string>
   <string name="read_messages_desc">Επιτρέπει στην εφαρμογή να διαβάζει τα email.</string>

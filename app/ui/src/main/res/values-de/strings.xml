@@ -55,7 +55,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="open_market">Play Store öffnen</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Autoren: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Versionsinformationen: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Versionsinformationen</string>
   <string name="app_libraries">Wir verwenden die folgenden externen Bibliotheken: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">E-Mails lesen</string>
   <string name="read_messages_desc">Der Anwendung erlauben, Ihre E-Mails zu lesen.</string>

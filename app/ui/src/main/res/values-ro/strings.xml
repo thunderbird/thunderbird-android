@@ -54,7 +54,7 @@ Vă rugăm să ne raportați defecte, să contribuiți cu funcționalități noi
   <string name="open_market">Deschide magazinul Play</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Autori: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Informații despre versiune: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Informații despre versiune</string>
   <string name="app_libraries">Folosim următoarele biblioteci externe: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Citire emailuri</string>
   <string name="read_messages_desc">Permiteți acestei aplicații să vă citească emailurile.</string>

@@ -54,7 +54,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="open_market">Opna Play Store</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Höfundar: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Upplýsingar útgáfu: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Upplýsingar útgáfu</string>
   <string name="app_libraries">Við erum að nota eftirfarandi aðgerðasöfn frá öðrum aðilum: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Lesa tölvupósta</string>
   <string name="read_messages_desc">Leyfa þessu forriti að lesa tölvupóstana mína.</string>

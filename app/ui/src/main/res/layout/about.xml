@@ -175,7 +175,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="?android:attr/selectableItemBackground"
-                        android:text="@string/app_revision_fmt"
+                        android:text="@string/app_revision"
                         android:textAllCaps="true" />
             </LinearLayout>
 

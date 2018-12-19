@@ -25,7 +25,7 @@
   <string name="open_market">Ava Play Store</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Autorid: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Parandusteave: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Parandusteave</string>
   <string name="app_libraries">me kasutame järgnevaid kolmanda osapoole teeke: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Loe meilisõnumeid</string>
   <string name="read_messages_desc">Luba sellel appil lugeda meilisõnumeid.</string>

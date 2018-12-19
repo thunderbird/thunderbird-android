@@ -55,7 +55,7 @@ Kérünk küldj hibajelentést, hozzájárulva az új verziókhoz, és tegyél f
   <string name="open_market">Play áruház megnyitása</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Készítők: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Verzió információk: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Verzió információk</string>
   <string name="app_libraries">A következő könyvtárakat használjuk: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Email-ek olvasása</string>
   <string name="read_messages_desc">Engedélyezi ennek az alkalmazásnak, hogy elolvassa az email-jeit.</string>

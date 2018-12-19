@@ -54,7 +54,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="open_market">Play Store\'u Aç</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Yazarlar: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Gözden Geçirme Bilgileri: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Gözden Geçirme Bilgileri</string>
   <string name="app_libraries">K-9 posta kaynak kodları içerir: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">E-postaları oku</string>
   <string name="read_messages_desc">Bu uygulamaya E-postalarınızı okumaya izin ver.</string>

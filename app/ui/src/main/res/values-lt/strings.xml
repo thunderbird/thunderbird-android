@@ -24,7 +24,7 @@
   <string name="open_market">Atverti „Play Store“</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Autoriai: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Laidos informacija: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Laidos informacija</string>
   <string name="app_libraries">Mes naudojame šias trečiųjų šalių bibliotekas: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Skaityti laiškus</string>
   <string name="read_messages_desc">Leidžia programai skaityti jūsų laiškus.</string>

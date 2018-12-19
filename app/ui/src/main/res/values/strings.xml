@@ -80,7 +80,7 @@ Please submit bug reports, contribute new features and ask questions at
     <!-- === General strings ================================================================== -->
 
     <string name="app_authors_fmt">Authors: <xliff:g id="app_authors">%s</xliff:g></string>
-    <string name="app_revision_fmt">Revision Information: <xliff:g id="app_revision_url">%s</xliff:g></string>
+    <string name="app_revision">Revision Information</string>
     <string name="app_libraries">We\'re using the following third-party libraries: <xliff:g id="app_libraries_list">%s</xliff:g></string>
 
     <string name="read_messages_label">Read Emails</string>

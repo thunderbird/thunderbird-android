@@ -25,7 +25,7 @@
   <string name="open_market">플레이 스토어 열기</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">작성자들: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">배포 정보: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">배포 정보</string>
   <string name="app_libraries">K-9 메일은 다음 제3자 라이브러리들을 이용합니다. <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">이메일 읽기</string>
   <string name="read_messages_desc">K-9이 이메일을 읽도록 합니다.</string>

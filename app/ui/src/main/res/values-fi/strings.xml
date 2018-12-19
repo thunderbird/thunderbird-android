@@ -54,7 +54,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="open_market">Avaa Play-kauppa</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Tekijät: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Versiotiedot: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Versiotiedot</string>
   <string name="app_libraries">Käytämme seuraavia kolmannen osapuolen kirjastoja: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Lue sähköpostit</string>
   <string name="read_messages_desc">Antaa sovellukselle luvan lukea sähköpostisi.</string>

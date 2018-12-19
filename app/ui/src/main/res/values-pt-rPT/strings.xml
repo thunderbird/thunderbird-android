@@ -55,7 +55,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="open_market">Abrir Play Store</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Autores: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Informação da revisão: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Informação da revisão</string>
   <string name="app_libraries">Estamos a usar as seguintes bibliotecas de terceiros: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Ler Emails</string>
   <string name="read_messages_desc">Permite que esta aplicação leia os seus emails.</string>

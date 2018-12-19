@@ -55,7 +55,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="open_market">Otvoriť Obchod Play</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Autori: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Informácie o revízii: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Informácie o revízii</string>
   <string name="app_libraries">Používame tieto knižnice tretích strán: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Čítať správy</string>
   <string name="read_messages_desc">Umožňuje tejto aplikácii čítať vaše e-maily.</string>

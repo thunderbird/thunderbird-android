@@ -55,7 +55,7 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="open_market">Otwórz Google Play</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Autorzy: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Historia zmian: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Historia zmian</string>
   <string name="app_libraries">K-9 mail zawiera kod źródłowy: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Czytaj pocztę</string>
   <string name="read_messages_desc">Zezwalaj tej aplikacji na czytanie Twoich wiadomości</string>

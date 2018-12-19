@@ -53,7 +53,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="open_market">Malfermi vendejon Play</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Aŭtoroj: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Informoj pri eldono: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Informoj pri eldono</string>
   <string name="app_libraries">La jenaj bibliotekoj de eksteraj liverantoj estas uzataj: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Legi retleterojn</string>
   <string name="read_messages_desc">Permesas al tiu ĉi aplikaĵo legi viajn retleterojn.</string>

@@ -54,7 +54,7 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="open_market">Ireki Play Store</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Egileak: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Berrikuspenaren Informazioa: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Berrikuspenaren Informazioa</string>
   <string name="app_libraries">Hirugarrenen liburutegi hauek erabiltzen ari gara: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Irakurri posta</string>
   <string name="read_messages_desc">Aplikazio honi zure posta irakurtzea onartzen dio.</string>

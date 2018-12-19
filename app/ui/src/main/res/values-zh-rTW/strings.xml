@@ -24,7 +24,7 @@
   <string name="open_market">開啟GOOGLE PLAY商店</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">作者: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">更新日誌: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">更新日誌</string>
   <string name="app_libraries">我們目前使用第三方的函式庫: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">顯示郵件</string>
   <string name="read_messages_desc">允許該程式讀取郵件。</string>

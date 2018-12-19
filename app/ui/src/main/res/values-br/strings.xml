@@ -54,7 +54,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="open_market">Digeriñ ar Play Store</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Aozerien: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">TItouroù an handelv: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">TItouroù an handelv</string>
   <string name="app_libraries">Arverañ a reomp al levraouegoù da-heul: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Lenn ar posteloù</string>
   <string name="read_messages_desc">Aotren an arload-mañ da lenn ho posteloù.</string>

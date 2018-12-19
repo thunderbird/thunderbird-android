@@ -54,7 +54,7 @@
   <string name="open_market">Отвори Плеј продавницу</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Аутори: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Подаци о ревизији: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Подаци о ревизији</string>
   <string name="app_libraries">Користимо следеће библиотеке треће стране: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">читање е-порука</string>
   <string name="read_messages_desc">Дозвољава овој апликацији читање ваших е-порука.</string>
