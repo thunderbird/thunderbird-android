@@ -2064,6 +2064,9 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 setFlagForSelected(Flag.FLAGGED, false);
             } else if (id == R.id.select_all) {
                 selectAll();
+            } else if(id == R.id.deselect_all){
+                DeselectAll();
+                return true;
             } else if (id == R.id.archive) {    // only if the account supports this
                 onArchive(getCheckedMessages());
                 selectedCount = 0;
@@ -2167,6 +2170,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     public void selectAll() {
         setSelectionState(true);
+    }
+
+    public void DeselectAll() {
+        setSelectionState(false);
     }
 
     public void onMoveUp() {

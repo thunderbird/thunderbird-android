@@ -852,6 +852,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>
 
     <string name="batch_select_all">Select all</string>
+    <string name="batch_deselect_all">Deselect all</string>
 
     <string name="account_setup_push_limit_label">Max folders to check with push</string>
     <string name="account_setup_push_limit_5">5 folders</string>

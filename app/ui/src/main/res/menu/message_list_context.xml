@@ -60,4 +60,10 @@
         app:showAsAction="never"
         android:title="@string/batch_select_all"
     />
+    <item
+        android:id="@+id/deselect_all"
+        android:icon="?attr/iconActionCancel"
+        app:showAsAction="never"
+        android:title="@string/batch_deselect_all"
+        />
 </menu>
