@@ -17,3 +17,5 @@ K-9 Mail version:
 Android version:
 
 Account type (IMAP, POP3, WebDAV/Exchange):
+
+Please take some time to [retrieve logs](https://github.com/k9mail/k-9/wiki/LoggingErrors) and attach them here:
