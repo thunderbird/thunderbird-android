@@ -20,6 +20,7 @@ public class WelcomeMessage extends K9Activity implements OnClickListener{
 
     public static void showWelcomeMessage(Context context) {
         Intent intent = new Intent(context, WelcomeMessage.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(intent);
     }
 

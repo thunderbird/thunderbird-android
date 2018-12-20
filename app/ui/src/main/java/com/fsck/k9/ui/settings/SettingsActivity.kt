@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
 import com.fsck.k9.Account
 import com.fsck.k9.activity.K9Activity
+import com.fsck.k9.activity.setup.WelcomeMessage
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.observeNotNull
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity
@@ -51,7 +52,11 @@ class SettingsActivity : K9Activity() {
 
     private fun populateSettingsList() {
         viewModel.accounts.observeNotNull(this) { accounts ->
-            populateSettingsList(accounts)
+            if (accounts.isEmpty()) {
+                launchWelcomeScreen()
+            } else {
+                populateSettingsList(accounts)
+            }
         }
     }
 
@@ -101,6 +106,11 @@ class SettingsActivity : K9Activity() {
 
     private fun launchAccountSettings(account: Account) {
         AccountSettingsActivity.start(this, account.uuid)
+    }
+
+    private fun launchWelcomeScreen() {
+        WelcomeMessage.showWelcomeMessage(this)
+        finish()
     }
 
 
