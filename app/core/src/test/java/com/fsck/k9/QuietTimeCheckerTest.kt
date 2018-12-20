@@ -1,11 +1,12 @@
 package com.fsck.k9
 
 
+import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.mockito.Mockito.mock
-import java.util.*
+import java.util.Calendar
 
 
 class QuietTimeCheckerTest {
