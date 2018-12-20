@@ -31,8 +31,9 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.text.TextUtils;
-import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -2693,8 +2694,12 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     private void startAndPrepareActionMode() {
-        actionMode = getActivity().startActionMode(actionModeCallback);
-        actionMode.invalidate();
+        AppCompatActivity activity = (AppCompatActivity) requireActivity();
+        ActionMode actionMode = activity.startSupportActionMode(actionModeCallback);
+        this.actionMode = actionMode;
+        if (actionMode != null) {
+            actionMode.invalidate();
+        }
     }
 
     /**
