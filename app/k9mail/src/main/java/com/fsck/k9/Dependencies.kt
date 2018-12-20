@@ -7,6 +7,8 @@ import com.fsck.k9.crypto.openpgp.OpenPgpEncryptionExtractor
 import com.fsck.k9.external.BroadcastSenderListener
 import com.fsck.k9.external.externalModule
 import com.fsck.k9.notification.notificationModule
+import com.fsck.k9.preferences.K9StoragePersister
+import com.fsck.k9.preferences.StoragePersister
 import com.fsck.k9.resources.resourcesModule
 import com.fsck.k9.storage.storageModule
 import com.fsck.k9.widget.list.MessageListWidgetUpdateListener
@@ -26,6 +28,7 @@ private val mainAppModule = applicationContext {
     }
     bean("controllerExtensions") { emptyList<ControllerExtension>() }
     bean { OpenPgpEncryptionExtractor.newInstance() as EncryptionExtractor }
+    bean { K9StoragePersister(get()) as StoragePersister }
 }
 
 val appModules = listOf(

@@ -1,10 +1,12 @@
 package com.fsck.k9.preferences
 
 
-import com.fsck.k9.K9RobolectricTest
-import com.fsck.k9.whenever
+import com.fsck.k9.storage.K9RobolectricTest
 import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions
-import org.junit.Assert.*
+import com.nhaarman.mockito_kotlin.whenever
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers.any
@@ -17,9 +19,9 @@ import org.mockito.MockitoAnnotations
 
 class StorageEditorTest : K9RobolectricTest() {
     @Mock private lateinit var storage: Storage
-    @Mock private lateinit var storagePersister: StoragePersister
-    @Mock private lateinit var storagePersisterOps: StoragePersister.StoragePersistOperations
-    private lateinit var editor: StorageEditor
+    @Mock private lateinit var storagePersister: K9StoragePersister
+    @Mock private lateinit var storagePersisterOps: K9StoragePersister.StoragePersistOperations
+    private lateinit var editor: K9StorageEditor
 
     private val workingMap = mutableMapOf<String,String>()
     private val storageMap = mapOf(
@@ -31,7 +33,7 @@ class StorageEditorTest : K9RobolectricTest() {
         MockitoAnnotations.initMocks(this)
         whenever(storage.all).thenReturn(storageMap)
 
-        editor = StorageEditor(storage, storagePersister)
+        editor = K9StorageEditor(storage, storagePersister)
         verify(storage).all
     }
 
@@ -168,7 +170,7 @@ class StorageEditorTest : K9RobolectricTest() {
         }
 
         whenever(storagePersister.doInTransaction(any())).then {
-            val operationCallback = it.getArgument<StoragePersister.StoragePersistOperationCallback>(0)
+            val operationCallback = it.getArgument<K9StoragePersister.StoragePersistOperationCallback>(0)
             operationCallback.beforePersistTransaction(workingMap)
             verify(storage, times(2)).all
             assertEquals(workingMap, storageMap)

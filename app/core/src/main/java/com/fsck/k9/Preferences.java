@@ -88,7 +88,7 @@ public class Preferences {
     }
 
     public StorageEditor createStorageEditor() {
-        return new StorageEditor(storage, storagePersister);
+        return storagePersister.createStorageEditor(storage);
     }
 
     @RestrictTo(Scope.TESTS)

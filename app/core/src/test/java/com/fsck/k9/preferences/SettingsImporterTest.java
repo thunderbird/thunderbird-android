@@ -19,7 +19,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 
-@SuppressWarnings("unchecked")
 public class SettingsImporterTest extends K9RobolectricTest {
 
     @Before

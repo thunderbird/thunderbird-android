@@ -12,7 +12,7 @@ import android.support.v4.app.NotificationCompat.WearableExtender;
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationQuickDelete;
-import com.fsck.k9.MockHelper;
+import com.fsck.k9.testing.MockHelper;
 import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.controller.MessagingController;
