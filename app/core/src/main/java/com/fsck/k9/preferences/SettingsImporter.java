@@ -271,10 +271,12 @@ public class SettingsImporter {
 
             preferences.loadAccounts();
 
+            LocalStoreProvider localStoreProvider = DI.get(LocalStoreProvider.class);
+
             // create missing OUTBOX folders
             for (Account account: preferences.getAccounts()) {
                 if (accountUuids.contains(account.getUuid())) {
-                    LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
+                    LocalStore localStore = localStoreProvider.getInstance(account);
                     localStore.createLocalFolder(Account.OUTBOX, Account.OUTBOX_NAME);
                 }
             }
