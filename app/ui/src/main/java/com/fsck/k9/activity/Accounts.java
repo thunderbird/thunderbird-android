@@ -1902,8 +1902,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 InputStream is = mContext.getContentResolver().openInputStream(mUri);
                 try {
                     mImportResults = SettingsImporter.importSettings(mContext, is,
-                                     mIncludeGlobals, mAccountUuids, mOverwrite,
-                                     mContext.getString(R.string.special_mailbox_name_outbox));
+                                     mIncludeGlobals, mAccountUuids, mOverwrite);
                 } finally {
                     try {
                         is.close();

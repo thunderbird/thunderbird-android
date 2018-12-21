@@ -39,7 +39,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
         InputStream inputStream = new StringInputStream("");
         List<String> accountUuids = new ArrayList<>();
 
-        SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true, "unused");
+        SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true);
     }
 
     @Test(expected = SettingsImportExportException.class)
@@ -47,7 +47,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
         InputStream inputStream = new StringInputStream("<k9settings version=\"1\"></k9settings>");
         List<String> accountUuids = new ArrayList<>();
 
-        SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true, "unused");
+        SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true);
     }
 
     @Test(expected = SettingsImportExportException.class)
@@ -55,7 +55,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
         InputStream inputStream = new StringInputStream("<k9settings version=\"1\" format=\"A\"></k9settings>");
         List<String> accountUuids = new ArrayList<>();
 
-        SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true, "unused");
+        SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true);
     }
 
     @Test(expected = SettingsImportExportException.class)
@@ -63,7 +63,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
         InputStream inputStream = new StringInputStream("<k9settings version=\"1\" format=\"0\"></k9settings>");
         List<String> accountUuids = new ArrayList<>();
 
-        SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true, "unused");
+        SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true);
     }
 
     @Test(expected = SettingsImportExportException.class)
@@ -71,7 +71,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
         InputStream inputStream = new StringInputStream("<k9settings format=\"1\"></k9settings>");
         List<String> accountUuids = new ArrayList<>();
 
-        SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true, "unused");
+        SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true);
     }
 
     @Test(expected = SettingsImportExportException.class)
@@ -79,7 +79,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
         InputStream inputStream = new StringInputStream("<k9settings format=\"1\" version=\"A\"></k9settings>");
         List<String> accountUuids = new ArrayList<>();
 
-        SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true, "unused");
+        SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true);
     }
 
     @Test(expected = SettingsImportExportException.class)
@@ -87,7 +87,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
         InputStream inputStream = new StringInputStream("<k9settings format=\"1\" version=\"0\"></k9settings>");
         List<String> accountUuids = new ArrayList<>();
 
-        SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true, "unused");
+        SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true);
     }
 
     @Test
@@ -165,7 +165,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
         accountUuids.add(validUUID);
 
         SettingsImporter.ImportResults results = SettingsImporter.importSettings(
-                RuntimeEnvironment.application, inputStream, true, accountUuids, false, "unused");
+                RuntimeEnvironment.application, inputStream, true, accountUuids, false);
 
         assertEquals(0, results.erroneousAccounts.size());
         assertEquals(1, results.importedAccounts.size());
