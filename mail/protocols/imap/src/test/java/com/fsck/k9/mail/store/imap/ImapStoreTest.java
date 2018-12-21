@@ -101,6 +101,7 @@ public class ImapStoreTest {
     @Test
     public void getPersonalNamespaces_withSpecialUseCapability_shouldReturnSpecialFolderInfo() throws Exception {
         ImapConnection imapConnection = mock(ImapConnection.class);
+        when(imapConnection.hasCapability(Capabilities.LIST_EXTENDED)).thenReturn(true);
         when(imapConnection.hasCapability(Capabilities.SPECIAL_USE)).thenReturn(true);
         List<ImapResponse> imapResponses = Arrays.asList(
                 createImapResponse("* LIST (\\HasNoChildren) \"/\" \"INBOX\""),
@@ -131,7 +132,21 @@ public class ImapStoreTest {
     @Test
     public void getPersonalNamespaces_withoutSpecialUseCapability_shouldUseSimpleListCommand() throws Exception {
         ImapConnection imapConnection = mock(ImapConnection.class);
+        when(imapConnection.hasCapability(Capabilities.LIST_EXTENDED)).thenReturn(true);
         when(imapConnection.hasCapability(Capabilities.SPECIAL_USE)).thenReturn(false);
+        imapStore.enqueueImapConnection(imapConnection);
+
+        imapStore.getPersonalNamespaces();
+
+        verify(imapConnection, never()).executeSimpleCommand("LIST (SPECIAL-USE) \"\" \"*\"");
+        verify(imapConnection).executeSimpleCommand("LIST \"\" \"*\"");
+    }
+
+    @Test
+    public void getPersonalNamespaces_withoutListExtendedCapability_shouldUseSimpleListCommand() throws Exception {
+        ImapConnection imapConnection = mock(ImapConnection.class);
+        when(imapConnection.hasCapability(Capabilities.LIST_EXTENDED)).thenReturn(false);
+        when(imapConnection.hasCapability(Capabilities.SPECIAL_USE)).thenReturn(true);
         imapStore.enqueueImapConnection(imapConnection);
 
         imapStore.getPersonalNamespaces();
