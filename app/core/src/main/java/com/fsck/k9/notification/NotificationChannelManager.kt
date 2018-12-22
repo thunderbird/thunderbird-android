@@ -101,7 +101,7 @@ class NotificationChannelManager(
         val channelName = resourceProvider.miscellaneousChannelName
         val channelDescription = resourceProvider.miscellaneousChannelDescription
         val channelId = getChannelIdFor(account, ChannelType.MISCELLANEOUS)
-        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val importance = NotificationManager.IMPORTANCE_LOW
         val channelGroupId = account.uuid
 
         val miscellaneousChannel = NotificationChannel(channelId, channelName, importance)
