@@ -24,13 +24,13 @@
   <string name="open_market">開啟GOOGLE PLAY商店</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">作者: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">更新日誌: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">更新日誌</string>
   <string name="app_libraries">我們目前使用第三方的函式庫: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">顯示郵件</string>
   <string name="read_messages_desc">允許該程式讀取郵件。</string>
   <string name="delete_messages_label">刪除郵件</string>
   <string name="delete_messages_desc">允許該程式刪除郵件。</string>
-  <string name="about_title_fmt">關於<xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">關於K-9 Mail</string>
   <string name="accounts_title">帳戶</string>
   <string name="folders_title">信件匣</string>
   <string name="advanced">進階</string>
@@ -148,7 +148,7 @@
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g>（歸檔）</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g>（垃圾郵件）</string>
   <string name="send_failure_subject">部分郵件沒有成功寄送</string>
-  <string name="debug_version_fmt">版本：<xliff:g id="version">%s</xliff:g></string>
+  <string name="version">版本：</string>
   <string name="debug_enable_debug_logging_title">啟用除錯日誌</string>
   <string name="debug_enable_debug_logging_summary">記錄額外的除錯訊息</string>
   <string name="debug_enable_sensitive_logging_title">記錄敏感訊息</string>

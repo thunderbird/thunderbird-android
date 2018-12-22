@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Opphavsrett 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Kopirett for noen deler 2006-<xliff:g>%s</xliff:g> Android Open Source Project.</string>
-  <string name="app_license">Utgitt med Apache-lisens, versjon 2.0.</string>
+  <string name="app_license">Apache-lisens, versjon 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Velkommen til K-9 e-post</string>
   <string name="accounts_welcome"><![CDATA[
@@ -55,13 +55,13 @@ Send feilmeldinger, bidra med nye funksjoner og still spørsmål her:
   <string name="open_market">Åpne Play-butikken</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Utviklere: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Revisjonsinformasjon: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Revisjonsinformasjon</string>
   <string name="app_libraries">Vi bruker følgende tredjepartsbiblioteker: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Les e-poster</string>
   <string name="read_messages_desc">Tillater denne applikasjonen å lese dine e-poster.</string>
   <string name="delete_messages_label">Slett e-poster</string>
   <string name="delete_messages_desc">Tillater dette programmet å slette dine e-poster.</string>
-  <string name="about_title_fmt">Om <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Om K-9 Mail</string>
   <string name="accounts_title">Kontoer</string>
   <string name="folders_title">Mapper</string>
   <string name="advanced">Avansert</string>
@@ -204,7 +204,7 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arkiv)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Søppel)</string>
   <string name="send_failure_subject">Mislyktes i å sende noen meldinger</string>
-  <string name="debug_version_fmt">Versjon: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Versjon</string>
   <string name="debug_enable_debug_logging_title">Aktiver feilsøkingslogg</string>
   <string name="debug_enable_debug_logging_summary">Logg ekstra diagnostisk informasjon</string>
   <string name="debug_enable_sensitive_logging_title">Logg sensitiv informasjon</string>

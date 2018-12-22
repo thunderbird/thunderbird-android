@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Autortiesības 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Daļējas autortiesības 2006-<xliff:g>%s</xliff:g> Android atvērtā koda projekts.</string>
-  <string name="app_license">Licencēts ar Apache License, versija 2.0.</string>
+  <string name="app_license">Apache License, versija 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Laipni lūdzam K-9 Pastā</string>
   <string name="accounts_welcome"><![CDATA[
@@ -54,13 +54,13 @@ Lūdzu, iesniedziet kļūdu ziņojumus, ierosiniet jaunas iespējas un uzdodiet 
   <string name="open_market">Atvērt Play veikalu</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Autori: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Revīzijas informācija: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Revīzijas informācija</string>
   <string name="app_libraries">Mēs izmantojam sekojošas trešo pušu bibliotēkas: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Izlasīt e-pastus</string>
   <string name="read_messages_desc">Atļauj šai aplikācijai lasīt Jūsu e-pastus</string>
   <string name="delete_messages_label">Izdzēst e-pastus</string>
   <string name="delete_messages_desc">Atļauj šai aplikācijai izdzēst Jūsu e-pastus</string>
-  <string name="about_title_fmt">Par <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Par K-9 Mail</string>
   <string name="accounts_title">Konti</string>
   <string name="folders_title">Mapes</string>
   <string name="advanced">Detalizētāk</string>
@@ -202,7 +202,7 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arhīvs)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Surogātpasts)</string>
   <string name="send_failure_subject">Neizdevās nosūtīt dažas vēstules</string>
-  <string name="debug_version_fmt">Versija: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Versija</string>
   <string name="debug_enable_debug_logging_title">Iestatīt programmas kļūdu reģistrēšanu</string>
   <string name="debug_enable_debug_logging_summary">Reģistrēt papildus diagnostisko informāciju</string>
   <string name="debug_enable_sensitive_logging_title">Reģistrēt slepeno informāciju</string>

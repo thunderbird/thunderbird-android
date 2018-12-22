@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Tekijänoikeudet 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Osittaiset tekijänoikeudet -<xliff:g>%s</xliff:g> Androidin avoimen lähdekoodin hanke.</string>
-  <string name="app_license">Lisensoitu Apache-lisenssin 2.0-versiolla.</string>
+  <string name="app_license">Apache-lisenssin 2.0-versiolla</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Tervetuloa K-9 Mailiin</string>
   <string name="accounts_welcome"><![CDATA[
@@ -54,13 +54,13 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="open_market">Avaa Play-kauppa</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Tekijät: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Versiotiedot: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Versiotiedot</string>
   <string name="app_libraries">Käytämme seuraavia kolmannen osapuolen kirjastoja: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Lue sähköpostit</string>
   <string name="read_messages_desc">Antaa sovellukselle luvan lukea sähköpostisi.</string>
   <string name="delete_messages_label">Poista sähköpostit</string>
   <string name="delete_messages_desc">Antaa sovellukselle luvan poistaa sähköposteja.</string>
-  <string name="about_title_fmt">Tietoja <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Tietoja K-9 Mail</string>
   <string name="accounts_title">Tilit</string>
   <string name="folders_title">Kansiot</string>
   <string name="advanced">Lisäasetukset</string>
@@ -202,7 +202,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arkisto)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Roskaposti)</string>
   <string name="send_failure_subject">Joidenkin viestien lähettäminen epäonnistui</string>
-  <string name="debug_version_fmt">Versio: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Versio</string>
   <string name="debug_enable_debug_logging_title">Käytä virheenkorjaustietojen  lokiinkirjausta</string>
   <string name="debug_enable_debug_logging_summary">Kirjoita lokiin laajempi kuvaus ongelmista</string>
   <string name="debug_enable_sensitive_logging_title">Kirjaa lokiin arkaluontoisia tietoja</string>

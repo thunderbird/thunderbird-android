@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Hawlfraint 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Hawlfraint Cyfrannau 2006-<xliff:g>%s</xliff:g> Android Open Source Project.</string>
-  <string name="app_license">Trwyddedir dan yr Apache License, Fersiwn 2.0.</string>
+  <string name="app_license">Apache License, Fersiwn 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Croeso i K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -55,13 +55,13 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
   <string name="open_market">Agor Play Store</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Awduron: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Gwybodaeth Adolygu: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Gwybodaeth Adolygu</string>
   <string name="app_libraries">Rydym yn defnyddio\'r llyfrgelloedd trydydd parti canlynol: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Darllen E-bost</string>
   <string name="read_messages_desc">Galluogi\'r ap hwn i ddarllen dy e-bost.</string>
   <string name="delete_messages_label">Dileu E-bost</string>
   <string name="delete_messages_desc">Galluogi\'r ap hwn i ddileu dy negeseuon e-bost.</string>
-  <string name="about_title_fmt">Ynghylch <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Ynghylch K-9 Mail</string>
   <string name="accounts_title">Cyfrifon</string>
   <string name="folders_title">Ffolderi</string>
   <string name="advanced">Uwch</string>
@@ -208,7 +208,7 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archif)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Sbam)</string>
   <string name="send_failure_subject">Methwyd ag anfon rhai negeseuon</string>
-  <string name="debug_version_fmt">Fersiwn: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Fersiwn</string>
   <string name="debug_enable_debug_logging_title">Galluogi logio dadfygio</string>
   <string name="debug_enable_debug_logging_summary">Logio gwybodaeth ddiagnostig ychwanegol</string>
   <string name="debug_enable_sensitive_logging_title">Logio gwybodaeth sensitif</string>

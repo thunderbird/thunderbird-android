@@ -16,8 +16,13 @@
 
     <!-- Used in the about dialog -->
     <string name="app_authors">The K-9 Dog Walkers</string>
+    <string name="app_authors_url">https://github.com/k9mail/k-9/graphs/contributors</string>
     <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-    <string name="app_license">Licensed under the Apache License, Version 2.0.</string>
+    <string name="source_code">Source</string>
+    <string name="app_source_url">https://github.com/k9mail/k-9</string>
+    <string name="app_license">Apache License, Version 2.0</string>
+    <string name="app_license_url">https://www.apache.org/licenses/LICENSE-2.0</string>
+    <string name="about_libraries">Libraries</string>
 
 
     <!-- Welcome message -->
@@ -68,7 +73,7 @@ Please submit bug reports, contribute new features and ask questions at
     <!-- === General strings ================================================================== -->
 
     <string name="app_authors_fmt">Authors: <xliff:g id="app_authors">%s</xliff:g></string>
-    <string name="app_revision_fmt">Revision Information: <xliff:g id="app_revision_url">%s</xliff:g></string>
+    <string name="app_revision">Revision Information</string>
     <string name="app_libraries">We\'re using the following third-party libraries: <xliff:g id="app_libraries_list">%s</xliff:g></string>
 
     <string name="read_messages_label">Read Emails</string>
@@ -76,7 +81,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="delete_messages_label">Delete Emails</string>
     <string name="delete_messages_desc">Allows this application to delete your Emails.</string>
 
-    <string name="about_title_fmt">About <xliff:g id="app_name">%s</xliff:g></string>
+    <string name="about_title">About K-9 Mail</string>
     <string name="accounts_title">Accounts</string>
     <string name="folders_title">Folders</string>
     <string name="advanced">Advanced</string>
@@ -249,7 +254,7 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="send_failure_subject">Failed to send some messages</string>
 
-    <string name="debug_version_fmt">Version: <xliff:g id="version">%s</xliff:g></string>
+    <string name="version">Version</string>
     <string name="debug_enable_debug_logging_title">Enable debug logging</string>
     <string name="debug_enable_debug_logging_summary">Log extra diagnostic information</string>
     <string name="debug_enable_sensitive_logging_title">Log sensitive information</string>
@@ -1150,7 +1155,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="fetching_attachment_dialog_message">Fetching attachment…</string>
 
     <string name="auth_external_error">Unable to authenticate.  The server does not advertise the SASL EXTERNAL capability.  This could be due to a problem with the client certificate (expired, unknown certificate authority) or some other configuration problem.</string>
-    
+
     <!-- === Client certificates specific ================================================================== -->
     <string name="account_setup_basics_client_certificate">Use client certificate</string>
     <string name="client_certificate_spinner_empty">No client certificate</string>

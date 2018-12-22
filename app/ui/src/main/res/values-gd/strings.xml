@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, luchd-coiseachd nan con K-9</string>
   <string name="app_copyright_fmt">Còir-lethbhreac 2008-<xliff:g>%s</xliff:g> Luchd-coiseachd nan con K-9. Cuid dhen chòir-lethbhreac 2006-<xliff:g>%s</xliff:g> Android Open Source Project.</string>
-  <string name="app_license">Fo cheadachas Apache, tionndadh 2.0.</string>
+  <string name="app_license">Cheadachas Apache, tionndadh 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Fàilte gu post K-9</string>
   <string name="accounts_welcome"><![CDATA[
@@ -55,13 +55,13 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="open_market">Fosgail Play Store</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Na h-ùghdaran: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Fiosrachadh mun lèireamhas: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Fiosrachadh mun lèireamhas</string>
   <string name="app_libraries">Tha sinn a’ cleachdadh na leabhar-lannan a leanas a tha le treas-phàrtaidhean: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Puist-d a leughadh</string>
   <string name="read_messages_desc">Leig leis an aplacaid seo na puist-d agad a leughadh.</string>
   <string name="delete_messages_label">Puist-d a sguabadh às</string>
   <string name="delete_messages_desc">Leig leis an aplacaid seo na puist-d agad a sguabadh às.</string>
-  <string name="about_title_fmt">Mu dhèidhinn <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Mu dhèidhinn K-9 Mail</string>
   <string name="accounts_title">Cunntasan</string>
   <string name="folders_title">Pasganan</string>
   <string name="advanced">Adhartach</string>
@@ -205,7 +205,7 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Tasg-lann)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spama)</string>
   <string name="send_failure_subject">Cha deach cuid dhe na teachdaireachdan a chur</string>
-  <string name="debug_version_fmt">Tionndadh: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Tionndadh</string>
   <string name="debug_enable_debug_logging_title">Cuir an comas logadh airson dì-bhugachadh</string>
   <string name="debug_enable_debug_logging_summary">Logaich fiosrachadh diagnosachd a bharrachd</string>
   <string name="debug_enable_sensitive_logging_title">Logaich fiosrachadh dìomhair</string>

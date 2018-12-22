@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Anumite porțiuni Copyright 2006-<xliff:g>%s</xliff:g> Proiectul Open Source Android.</string>
-  <string name="app_license">Licențiat sub licența Apache, versiunea 2.0.</string>
+  <string name="app_license">Licența Apache, versiunea 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Bun venit la K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -54,13 +54,13 @@ Vă rugăm să ne raportați defecte, să contribuiți cu funcționalități noi
   <string name="open_market">Deschide magazinul Play</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Autori: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Informații despre versiune: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Informații despre versiune</string>
   <string name="app_libraries">Folosim următoarele biblioteci externe: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Citire emailuri</string>
   <string name="read_messages_desc">Permiteți acestei aplicații să vă citească emailurile.</string>
   <string name="delete_messages_label">Ștergere emailuri</string>
   <string name="delete_messages_desc">Permiteți acestei aplicații să vă șteargă emailurile.</string>
-  <string name="about_title_fmt">Despre <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Despre K-9 Mail</string>
   <string name="accounts_title">Conturi</string>
   <string name="folders_title">Dosare</string>
   <string name="advanced">Avansat</string>
@@ -205,7 +205,7 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arhivă)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
   <string name="send_failure_subject">Nu a reușit să trimită niște mesaje</string>
-  <string name="debug_version_fmt">Versiune: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Versiune</string>
   <string name="debug_enable_debug_logging_title">Activați jurnalul depanării</string>
   <string name="debug_enable_debug_logging_summary">Jurnal informații suplimentare diagnostic</string>
   <string name="debug_enable_sensitive_logging_title">Jurnal informații sensibile</string>

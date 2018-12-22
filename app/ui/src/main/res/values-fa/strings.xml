@@ -127,7 +127,7 @@
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (آرشیو)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (هرزنامه)</string>
   <string name="send_failure_subject">ناموفق در ارسال برخی پیام ها</string>
-  <string name="debug_version_fmt">نسخه: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">نسخه</string>
   <string name="debug_enable_debug_logging_title">فعال سازی اشکال زدایی ثبت وقایع</string>
   <string name="debug_enable_debug_logging_summary">ثبت اطلاعات با تشخیص فوق العاده</string>
   <string name="debug_enable_sensitive_logging_title">ثبت اطلاعات حساس</string>

@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="app_license">Wszelkie prawa zastrzeżone</string>
+  <string name="app_license">Licencja Apache, wersja 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Witaj w K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -55,7 +55,7 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="open_market">Otwórz Google Play</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Autorzy: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Historia zmian: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Historia zmian</string>
   <string name="app_libraries">K-9 mail zawiera kod źródłowy: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Czytaj pocztę</string>
   <string name="read_messages_desc">Zezwalaj tej aplikacji na czytanie Twoich wiadomości</string>
@@ -205,7 +205,7 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archiwum)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
   <string name="send_failure_subject">Niektóre wiadomości nie zostały wysłane</string>
-  <string name="debug_version_fmt">Wersja <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Wersja</string>
   <string name="debug_enable_debug_logging_title">Włącz logowanie</string>
   <string name="debug_enable_debug_logging_summary">Loguj dodatkowe informacje diagnostyczne</string>
   <string name="debug_enable_sensitive_logging_title">Loguj poufne informacje</string>

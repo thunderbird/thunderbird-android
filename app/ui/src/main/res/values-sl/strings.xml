@@ -54,13 +54,13 @@ Poročila o napakah, predloge za nove funkcije in vprašanja lahko pošljete na
   <string name="open_market">Odpri Play Store</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Avtorstvo: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Podrobnosti različice: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Podrobnosti različice</string>
   <string name="app_libraries">Vključene so naslednje zunanje knjižnice: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Preberi pošto</string>
   <string name="read_messages_desc">Možnost omogoča programu branje elektronske pošte.</string>
   <string name="delete_messages_label">brisanje sporočil elektronske pošte</string>
   <string name="delete_messages_desc">Možnost omogoča programu brisanje sporočil elektronske pošte.</string>
-  <string name="about_title_fmt">O programu <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">O programu K-9 Mail</string>
   <string name="accounts_title">Računi</string>
   <string name="folders_title">Mape</string>
   <string name="advanced">Napredno</string>
@@ -207,7 +207,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arhivirano)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Neželena pošta)</string>
   <string name="send_failure_subject">Nekaterih sporočil ni bilo mogoče poslati!</string>
-  <string name="debug_version_fmt">Različica: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Različica</string>
   <string name="debug_enable_debug_logging_title">Omogoči beleženje razhroščevanja</string>
   <string name="debug_enable_debug_logging_summary">Beleženje dodatnih podrobnosti diagnostike</string>
   <string name="debug_enable_sensitive_logging_title">Beleženje občutljivih podrobnosti</string>

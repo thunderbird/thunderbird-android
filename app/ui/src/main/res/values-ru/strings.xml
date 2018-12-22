@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project</string>
-  <string name="app_license">Под лицензией Apache 2.0</string>
+  <string name="app_license">Лицензией Apache 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Добро пожаловать!</string>
   <string name="accounts_welcome"><![CDATA[
@@ -54,13 +54,13 @@ K-9 Mail — почтовый клиент для Android.
   <string name="open_market">Google Play</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Авторы: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Изменения: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Изменения</string>
   <string name="app_libraries">Сторонние компоненты: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Чтение почты</string>
   <string name="read_messages_desc">Разрешить программе чтение почты</string>
   <string name="delete_messages_label">Удаление почты</string>
   <string name="delete_messages_desc">Разрешить программе удаление почты</string>
-  <string name="about_title_fmt">K-9 Mail Team <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">K-9 Mail Team K-9 Mail</string>
   <string name="accounts_title">Ящики</string>
   <string name="folders_title">Папки</string>
   <string name="advanced">Дополнительно</string>
@@ -206,7 +206,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g></string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g></string>
   <string name="send_failure_subject">Сбой отправки почты</string>
-  <string name="debug_version_fmt">Версия: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Версия</string>
   <string name="debug_enable_debug_logging_title">Журнал отладки</string>
   <string name="debug_enable_debug_logging_summary">Запись диагностических сообщений</string>
   <string name="debug_enable_sensitive_logging_title">Личные данные</string>

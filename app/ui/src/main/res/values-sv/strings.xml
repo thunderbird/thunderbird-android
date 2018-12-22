@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Vissa delar har Copyright 2006-<xliff:g>%s</xliff:g> Android Open Source Project.</string>
-  <string name="app_license">Licensierat under Apache-licensen, version 2.0.</string>
+  <string name="app_license">Apache-licensen, Version 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Välkommen till K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -54,13 +54,13 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="open_market">Öppna Play butik</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Upphovsmän: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Revisionsinformation: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Revisionsinformation</string>
   <string name="app_libraries">Vi använder följande tredjepartsbibliotek: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Läs e-post</string>
   <string name="read_messages_desc">Ger applikationen tillåtelse att läsa din e-post.</string>
   <string name="delete_messages_label">Ta bort e-post</string>
   <string name="delete_messages_desc">Ger applikationen tillåtelse att radera din e-post.</string>
-  <string name="about_title_fmt">Om <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Om K-9 Mail</string>
   <string name="accounts_title">Konton</string>
   <string name="folders_title">Mappar</string>
   <string name="advanced">Avancerat</string>
@@ -203,7 +203,7 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arkiv)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Skräppost)</string>
   <string name="send_failure_subject">Misslyckades med att skicka några brev</string>
-  <string name="debug_version_fmt">Version: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Version</string>
   <string name="debug_enable_debug_logging_title">Aktivera felsöksloggning</string>
   <string name="debug_enable_debug_logging_summary">Logga extra diagnostisk information</string>
   <string name="debug_enable_sensitive_logging_title">Logga känslig information</string>

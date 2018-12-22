@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="app_license">Ліцензія Apache License, Version 2.0.</string>
+  <string name="app_license">Apache License, Version 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Ласкаво просимо до K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -55,13 +55,13 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="open_market">Відкрити Play Google</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Автори: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Інформація про зміни: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Інформація про зміни</string>
   <string name="app_libraries">Ми використовуємо такі бібліотеки сторонніх розробників: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">читати листи</string>
   <string name="read_messages_desc">Дозволити цій програмі читати ваші листи.</string>
   <string name="delete_messages_label">Видалити листи</string>
   <string name="delete_messages_desc">Дозволити цій програмі видаляти ваші листи.</string>
-  <string name="about_title_fmt">Про <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Про K-9 Mail</string>
   <string name="accounts_title">Облікові записи</string>
   <string name="folders_title">Теки</string>
   <string name="advanced">Додатково</string>
@@ -200,7 +200,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archive)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
   <string name="send_failure_subject">Не вдалося надіслати повідомлення</string>
-  <string name="debug_version_fmt">Версія: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Версія</string>
   <string name="debug_enable_debug_logging_title">Увімкнути ведення журналу налагодження</string>
   <string name="debug_enable_debug_logging_summary">Запис додаткової діагностичної інформації</string>
   <string name="debug_enable_sensitive_logging_title">Запис конфіденційної інформації</string>

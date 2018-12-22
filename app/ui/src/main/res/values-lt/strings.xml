@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Autorinės teisės 2008-<xliff:g>%s</xliff:g> K-9 Dog Walkers. Dalis autorinių teisių priklauso 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="app_license">Išleista pagal Apache License sąlygas, versija 2.</string>
+  <string name="app_license">Apache License, versija 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Sveiki atvykę į „K-9 Mail“</string>
   <!--Default signature-->
@@ -24,13 +24,13 @@
   <string name="open_market">Atverti „Play Store“</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Autoriai: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Laidos informacija: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Laidos informacija</string>
   <string name="app_libraries">Mes naudojame šias trečiųjų šalių bibliotekas: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Skaityti laiškus</string>
   <string name="read_messages_desc">Leidžia programai skaityti jūsų laiškus.</string>
   <string name="delete_messages_label">Šalinti laiškus</string>
   <string name="delete_messages_desc">Leidžia programai šalinti jūsų laiškus.</string>
-  <string name="about_title_fmt">Apie <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Apie K-9 Mail</string>
   <string name="accounts_title">Paskyros</string>
   <string name="folders_title">Aplankai</string>
   <string name="advanced">Išplėstinis</string>
@@ -149,7 +149,7 @@
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archyvas)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Brukalas)</string>
   <string name="send_failure_subject">Kai kurių laiškų išsiųsti nepavyko</string>
-  <string name="debug_version_fmt">Versija: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Versija</string>
   <string name="debug_enable_debug_logging_title">Įjungti derinimo žurnalą</string>
   <string name="debug_enable_debug_logging_summary">Įrašyti papildomą diagnostinę informaciją</string>
   <string name="debug_enable_sensitive_logging_title">Įrašyti jautrią informaciją</string>

@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="app_license">Licensed under the Apache License, Version 2.0.</string>
+  <string name="app_license">Apache License, Version 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">ברוך הבא אל דואר K-9</string>
   <!--Default signature-->
@@ -25,13 +25,13 @@
   <string name="open_market">פתח את חנות האפליקציות</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">מפתחים: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">מידע על גירסאות: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">מידע על גירסאות</string>
   <string name="app_libraries">אנחנו משתמשים בספריות הבאות של ספקים חיצוניים: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">קרא אימיילים</string>
   <string name="read_messages_desc">אפשר ליישום זה לקרוא את האימיילים שלכם.</string>
   <string name="delete_messages_label">מחק אימיילים</string>
   <string name="delete_messages_desc">אפשר ליישום זה למחוק את האימיילים שלכם.</string>
-  <string name="about_title_fmt">אודות <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">אודות K-9 Mail</string>
   <string name="accounts_title">חשבונות</string>
   <string name="folders_title">תיקיות</string>
   <string name="advanced">מתקדם</string>
@@ -168,7 +168,7 @@
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (ארכיון)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (דואר זבל)</string>
   <string name="send_failure_subject">נכשל בשליחת כמה הודעות</string>
-  <string name="debug_version_fmt">גרסא: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">גרסא</string>
   <string name="debug_enable_debug_logging_title">אפשר רישום איתור באגים</string>
   <string name="debug_enable_debug_logging_summary">יומן ניתוח מידע נוסף</string>
   <string name="debug_enable_sensitive_logging_title">יומן מידע רגיש</string>

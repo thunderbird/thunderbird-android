@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="app_license">Licensed under the Apache License, Version 2.0.</string>
+  <string name="app_license">Apache License, Version 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">K-9 메일을 사용하시게 된 것을 환영합니다</string>
   <!--Default signature-->
@@ -25,7 +25,7 @@
   <string name="open_market">플레이 스토어 열기</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">작성자들: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">배포 정보: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">배포 정보</string>
   <string name="app_libraries">K-9 메일은 다음 제3자 라이브러리들을 이용합니다. <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">이메일 읽기</string>
   <string name="read_messages_desc">K-9이 이메일을 읽도록 합니다.</string>
@@ -164,7 +164,7 @@
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (보관함)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (스팸함)</string>
   <string name="send_failure_subject">일부 메시지를 보내는 데 실패하였습니다</string>
-  <string name="debug_version_fmt">Version: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Version</string>
   <string name="debug_enable_debug_logging_title">버그 정보 기록</string>
   <string name="debug_enable_debug_logging_summary">부차적인 진단 정보를 기록합니다</string>
   <string name="debug_enable_sensitive_logging_title">중요 정보 기록</string>

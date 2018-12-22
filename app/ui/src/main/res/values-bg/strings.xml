@@ -54,13 +54,13 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="open_market">Отвори Play магазина</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Автори: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Информация за версиите: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Информация за версиите</string>
   <string name="app_libraries">Използваме следните библиотеки от трети страни: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Прочитане на имейли</string>
   <string name="read_messages_desc">Позволява на тази праграма да чете вашите Писма.</string>
   <string name="delete_messages_label">Изтрий Писмата</string>
   <string name="delete_messages_desc">Позволи на тази програма да изтрие Писма</string>
-  <string name="about_title_fmt">Относно <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Относно K-9 Mail</string>
   <string name="accounts_title">Профили</string>
   <string name="folders_title">Папки</string>
   <string name="advanced">Допълнителни</string>
@@ -202,7 +202,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Архив)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Спам)</string>
   <string name="send_failure_subject">Грешка при изпращане на някой съобщения</string>
-  <string name="debug_version_fmt">Версия: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Версия</string>
   <string name="debug_enable_debug_logging_title">Включете доклада за дебъгване</string>
   <string name="debug_enable_debug_logging_summary">Записвайте допълнителна диагностична информация</string>
   <string name="debug_enable_sensitive_logging_title">Записвайте поверителна информация</string>

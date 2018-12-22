@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="app_license">根据 Apache License 2.0 协议授权。</string>
+  <string name="app_license">Apache License 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">欢迎使用 K-9 Mail</string>
   <string name="accounts_welcome">
@@ -50,13 +50,13 @@ https://github.com/k9mail/k-9/20
   <string name="open_market">打开 Play Store</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">作者: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">更新日志: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">更新日志</string>
   <string name="app_libraries">我们是用了以下的第三方库： <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">显示邮件</string>
   <string name="read_messages_desc">允许该程序读取邮件。</string>
   <string name="delete_messages_label">删除邮件</string>
   <string name="delete_messages_desc">允许该程序删除邮件。</string>
-  <string name="about_title_fmt">关于 <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">关于 K-9 Mail</string>
   <string name="accounts_title">账户</string>
   <string name="folders_title">文件夹</string>
   <string name="advanced">高级</string>
@@ -193,7 +193,7 @@ https://github.com/k9mail/k-9/20
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g>（归档）</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g>（垃圾邮件）</string>
   <string name="send_failure_subject">一些邮件没有成功发送</string>
-  <string name="debug_version_fmt">版本：<xliff:g id="version">%s</xliff:g></string>
+  <string name="version">版本：</string>
   <string name="debug_enable_debug_logging_title">启用调试日志</string>
   <string name="debug_enable_debug_logging_summary">记录额外的调试信息</string>
   <string name="debug_enable_sensitive_logging_title">记录敏感信息</string>

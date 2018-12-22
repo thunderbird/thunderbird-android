@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Гугл, К-9 Шетачи паса.</string>
   <string name="app_copyright_fmt">Ауторска права 2008-<xliff:g>%s</xliff:g> „K-9 Dog Walkers“. Део ауторских права 2006-<xliff:g>%s</xliff:g> Андроид пројекат отвореног ко̂да.</string>
-  <string name="app_license">Лиценцирано под Апачи лиценцом, издање 2.0.</string>
+  <string name="app_license">Апачи лиценцом, издање 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Добро дошли у К-9 Пошту</string>
   <string name="accounts_welcome"><![CDATA[
@@ -54,13 +54,13 @@
   <string name="open_market">Отвори Плеј продавницу</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Аутори: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Подаци о ревизији: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Подаци о ревизији</string>
   <string name="app_libraries">Користимо следеће библиотеке треће стране: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">читање е-порука</string>
   <string name="read_messages_desc">Дозвољава овој апликацији читање ваших е-порука.</string>
   <string name="delete_messages_label">брисање е-порука</string>
   <string name="delete_messages_desc">Дозвољава овој апликацији брисање ваших е-порука.</string>
-  <string name="about_title_fmt">О <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">О K-9 Mail</string>
   <string name="accounts_title">Налози</string>
   <string name="folders_title">Фасцикле</string>
   <string name="advanced">Напредно</string>
@@ -203,7 +203,7 @@
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Архива)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Нежељене)</string>
   <string name="send_failure_subject">Неуспех слања неких порука</string>
-  <string name="debug_version_fmt">Издање: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Издање</string>
   <string name="debug_enable_debug_logging_title">Укључи бележење за отклањање грешака</string>
   <string name="debug_enable_debug_logging_summary">Бележи додатне дијагностичке податке</string>
   <string name="debug_enable_sensitive_logging_title">Бележи осетљиве податке</string>

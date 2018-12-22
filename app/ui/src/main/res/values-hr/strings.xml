@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="app_license">Licencirano pod Apache License, Version 2.0.</string>
+  <string name="app_license">Apache License, Version 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Dobrodošli u K-9 Mail</string>
   <!--Default signature-->
@@ -25,13 +25,13 @@
   <string name="open_market">Otvorite Trgovinu Play</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Autori: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Informacije Revizije: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Informacije Revizije</string>
   <string name="app_libraries">Mi koristimo slijedeće biblioteke treće strane: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Čitanje E-Pošte</string>
   <string name="read_messages_desc">Dopušta ovoj aplikaciji čitanje vaše E-Pošte</string>
   <string name="delete_messages_label">Brisanje E-Pošte</string>
   <string name="delete_messages_desc">Dopušta ovoj aplikaciji brisanje vaše E-Pošte.</string>
-  <string name="about_title_fmt">O <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">O K-9 Mail</string>
   <string name="accounts_title">Računi</string>
   <string name="folders_title">Mape</string>
   <string name="advanced">Napredno</string>
@@ -157,7 +157,7 @@
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arhiva)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Neželjena pošta)</string>
   <string name="send_failure_subject">Slanje nekih poruka nije uspjelo</string>
-  <string name="debug_version_fmt">Inačica: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Inačica</string>
   <string name="debug_enable_debug_logging_title">Omogući zapisnik ispravljanja</string>
   <string name="debug_enable_debug_logging_summary">Zapisuj posebne informacije dijagnoze</string>
   <string name="debug_enable_sensitive_logging_title">Zapisnik osjetljivih informacija</string>

@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Telif Hakkı 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Telif hakkı 2006-<xliff:g>%s</xliff:g> Android Açık Kaynak Projesi.</string>
-  <string name="app_license">Apache License, Sürüm 2.0 altında lisanslanmıştır.</string>
+  <string name="app_license">Apache License, Sürüm 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">K-9 Posta\'ya Hoşgeldiniz</string>
   <string name="accounts_welcome"><![CDATA[
@@ -54,13 +54,13 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="open_market">Play Store\'u Aç</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Yazarlar: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Gözden Geçirme Bilgileri: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Gözden Geçirme Bilgileri</string>
   <string name="app_libraries">K-9 posta kaynak kodları içerir: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">E-postaları oku</string>
   <string name="read_messages_desc">Bu uygulamaya E-postalarınızı okumaya izin ver.</string>
   <string name="delete_messages_label">E-postaları sil</string>
   <string name="delete_messages_desc">Bu uygulamaya E-postalarınızı silmeye izin ver.</string>
-  <string name="about_title_fmt">Hakkında <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Hakkında K-9 Mail</string>
   <string name="accounts_title">Hesaplar</string>
   <string name="folders_title">Klasörler</string>
   <string name="advanced">Gelişmiş</string>
@@ -202,7 +202,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arşiv)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
   <string name="send_failure_subject">Bazı iletilerin gönderilmesi başarısız</string>
-  <string name="debug_version_fmt">Sürüm: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Sürüm</string>
   <string name="debug_enable_debug_logging_title">Onarma günlüğünü etkinleştir</string>
   <string name="debug_enable_debug_logging_summary">Extra tanı bilgisini günlüğe kaydet</string>
   <string name="debug_enable_sensitive_logging_title">Hassas bilgi günlüğü tut</string>

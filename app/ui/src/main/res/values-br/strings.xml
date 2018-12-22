@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, Baleer Ar C’hi K-9</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> Ar valeerien K-9 Dog. Lodennoù Copyright 2006-<xliff:g>%s</xliff:g> and Android Open Source Project.</string>
-  <string name="app_license">Dindan al lañvaz Apache, Handelv 2.0.</string>
+  <string name="app_license">Lañvaz Apache, Handelv 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Donemat war K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -54,13 +54,13 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="open_market">Digeriñ ar Play Store</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Aozerien: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">TItouroù an handelv: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">TItouroù an handelv</string>
   <string name="app_libraries">Arverañ a reomp al levraouegoù da-heul: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Lenn ar posteloù</string>
   <string name="read_messages_desc">Aotren an arload-mañ da lenn ho posteloù.</string>
   <string name="delete_messages_label">Dilemel posteloù</string>
   <string name="delete_messages_desc">Aotren an arload-mañ da lenn ho posteloù.</string>
-  <string name="about_title_fmt">A-zivout <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">A-zivout K-9 Mail</string>
   <string name="accounts_title">Kontoù</string>
   <string name="folders_title">Teuliadoù</string>
   <string name="advanced">Kemplezhoc’h</string>
@@ -203,7 +203,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Dielloù)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Lastez)</string>
   <string name="send_failure_subject">C’hwitadenn en ur gas kemennadennoù ’zo</string>
-  <string name="debug_version_fmt">Handelv: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Handelv</string>
   <string name="debug_enable_debug_logging_title">Kerzhlevr diveugañ</string>
   <string name="debug_enable_debug_logging_summary">Enrollañ titouroù deznaouioù ouzhpenn</string>
   <string name="debug_enable_sensitive_logging_title">Enrollañ titouroù kizidik</string>

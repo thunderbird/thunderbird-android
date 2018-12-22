@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Kopirajto 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Parta kopirajto 2006-<xliff:g>%s</xliff:g> la Malfermkoda Projekto Android (AOSP).</string>
-  <string name="app_license">Eldonita laŭ la permesilo Apache, versio 2.0.</string>
+  <string name="app_license">Permesilo Apache, versio 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Bonvenon al K-9 Retpoŝtilo</string>
   <string name="accounts_welcome"><![CDATA[
@@ -53,13 +53,13 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="open_market">Malfermi vendejon Play</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Aŭtoroj: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Informoj pri eldono: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Informoj pri eldono</string>
   <string name="app_libraries">La jenaj bibliotekoj de eksteraj liverantoj estas uzataj: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Legi retleterojn</string>
   <string name="read_messages_desc">Permesas al tiu ĉi aplikaĵo legi viajn retleterojn.</string>
   <string name="delete_messages_label">Forigi retleterojn</string>
   <string name="delete_messages_desc">Permesas al tiu ĉi aplikaĵo forigi viajn retleterojn.</string>
-  <string name="about_title_fmt">Pri <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Pri K-9 Mail</string>
   <string name="accounts_title">Kontoj</string>
   <string name="folders_title">Mesaĝujoj</string>
   <string name="advanced">Spertaj</string>
@@ -201,7 +201,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arĥivo)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Trudmesaĝujo)</string>
   <string name="send_failure_subject">Malsukcesis sendi iujn mesaĝojn</string>
-  <string name="debug_version_fmt">Versio: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Versio</string>
   <string name="debug_enable_debug_logging_title">Aktivigi senerarigan protokoladon</string>
   <string name="debug_enable_debug_logging_summary">Protokolas aldonajn informojn pri senerarigo.</string>
   <string name="debug_enable_sensitive_logging_title">Protokoli konfidajn informojn</string>

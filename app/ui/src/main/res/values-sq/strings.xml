@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Të drejta kopjimi 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Të drejta kopjimi Mbi Pjesë 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="app_license">Licencuar sipas licencës Apache License, Version 2.0.</string>
+  <string name="app_license">Apache License, Version 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Mirë se vini te K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -55,13 +55,13 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="open_market">Hap Play Store</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Autorë: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Të dhëna versioni: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Të dhëna versioni</string>
   <string name="app_libraries">Përdorim libraritë vijuese nga palë të treta: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Lexoni Email-e</string>
   <string name="read_messages_desc">I lejon këtij aplikacioni të lexojë email-et tuaj.</string>
   <string name="delete_messages_label">Fshiji Email-et</string>
   <string name="delete_messages_desc">I lejon këtij aplikacioni të fshijë email-et tuaj.</string>
-  <string name="about_title_fmt">Mbi <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Mbi K-9 Mail</string>
   <string name="accounts_title">Llogari</string>
   <string name="folders_title">Dosje</string>
   <string name="advanced">Të mëtejshme</string>
@@ -204,7 +204,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arkiv)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Të padëshiruar)</string>
   <string name="send_failure_subject">Dështoi dërgimi i disa mesazhe</string>
-  <string name="debug_version_fmt">Version: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Version</string>
   <string name="debug_enable_debug_logging_title">Aktivizo regjistrim diagnostikimesh</string>
   <string name="debug_enable_debug_logging_summary">Regjistro të dhëna ekstra diagnostikimesh</string>
   <string name="debug_enable_sensitive_logging_title">Regjistro të dhëna konfidenciale</string>

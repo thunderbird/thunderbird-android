@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project-en zatiak.</string>
-  <string name="app_license">Lizentziaduna Apache Lizentziarekin, 2.0 Bertsioa</string>
+  <string name="app_license">Apache Lizentzia, 2.0 Bertsioa</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Ongi etorri K-9 Mail-era</string>
   <string name="accounts_welcome"><![CDATA[
@@ -54,7 +54,7 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="open_market">Ireki Play Store</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Egileak: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Berrikuspenaren Informazioa: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Berrikuspenaren Informazioa</string>
   <string name="app_libraries">Hirugarrenen liburutegi hauek erabiltzen ari gara: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Irakurri posta</string>
   <string name="read_messages_desc">Aplikazio honi zure posta irakurtzea onartzen dio.</string>
@@ -202,7 +202,7 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Artxiboa)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
   <string name="send_failure_subject">Mezu batzuen bidaltzeak huts egin du</string>
-  <string name="debug_version_fmt">Bertsioa: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Bertsioa</string>
   <string name="debug_enable_debug_logging_title">Arazketa erregistroa gaitu</string>
   <string name="debug_enable_debug_logging_summary">Diagnostikorako informazio gehigarria erregistratu</string>
   <string name="debug_enable_sensitive_logging_title">Bereziki babestutako informazioa erregistratu</string>

@@ -1,42 +1,75 @@
 package com.fsck.k9.ui.settings
 
+import java.util.Calendar
+
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.webkit.WebView
+import android.widget.TextView
 import com.fsck.k9.activity.K9Activity
 import com.fsck.k9.ui.R
 import de.cketti.library.changelog.ChangeLog
+import kotlinx.android.synthetic.main.about.*
+import kotlinx.android.synthetic.main.about_library.view.*
+
 import timber.log.Timber
-import java.util.Calendar
+
+private data class Library(val name: String, val URL: String, val license: String)
 
 class AboutActivity : K9Activity() {
-    private lateinit var webView: WebView
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setLayout(R.layout.about)
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        webView = findViewById(R.id.about_view)
 
-        val aboutHtml = buildHtml()
-        webView.loadDataWithBaseURL("file:///android_res/drawable/", aboutHtml, "text/html", "utf-8", null)
-    }
+        version.text = getVersionNumber()
+        versionLayout.setOnClickListener { displayChangeLog() }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        super.onCreateOptionsMenu(menu)
-        menuInflater.inflate(R.menu.about_option, menu)
-        return true
+        val year = Integer.toString(Calendar.getInstance().get(Calendar.YEAR))
+        copyright.text = getString(R.string.app_copyright_fmt, year, year)
+
+        authorsLayout.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_authors_url))))
+        }
+
+        licenseLayout.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_license_url))))
+        }
+
+        source.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_source_url))))
+        }
+
+        changelog.setOnClickListener { displayChangeLog() }
+
+        revisions.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_revision_url))))
+        }
+
+        val manager = LinearLayoutManager(this)
+        libraries.apply {
+            layoutManager = manager
+            adapter = LibrariesAdapter(USED_LIBRARIES)
+            setNestedScrollingEnabled(false)
+            setFocusable(false)
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> onBackPressed()
-            R.id.changelog -> displayChangeLog()
             else -> return super.onOptionsItemSelected(item)
         }
 
@@ -45,49 +78,6 @@ class AboutActivity : K9Activity() {
 
     private fun displayChangeLog() {
         ChangeLog(this).fullLogDialog.show()
-    }
-
-    private fun buildHtml(): String {
-        val appName = getString(R.string.app_name)
-        val year = Calendar.getInstance().get(Calendar.YEAR)
-
-        val html = StringBuilder()
-                .append("<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />")
-                .append("<img src=\"file:///android_asset/icon.png\" alt=\"").append(appName).append("\"/>")
-                .append("<h1>")
-                .append(getString(R.string.about_title_fmt,
-                        "<a href=\"${ getString(R.string.app_webpage_url) }\">"))
-                .append(appName)
-                .append("</a>")
-                .append("</h1><p>")
-                .append(appName)
-                .append(" ")
-                .append(getString(R.string.debug_version_fmt, getVersionNumber()))
-                .append("</p><p>")
-                .append(getString(R.string.app_authors_fmt, getString(R.string.app_authors)))
-                .append("</p><p>")
-                .append(getString(R.string.app_revision_fmt,
-                        "<a href=\"${ getString(R.string.app_revision_url) }\">" +
-                                getString(R.string.app_revision_url) +
-                                "</a>"))
-                .append("</p><hr/><p>")
-                .append(getString(R.string.app_copyright_fmt, Integer.toString(year), Integer.toString(year)))
-                .append("</p><hr/><p>")
-                .append(getString(R.string.app_license))
-                .append("</p><hr/><p>")
-
-        val libs = StringBuilder().append("<ul>")
-        for ((library, url) in USED_LIBRARIES) {
-            libs.append("<li><a href=\"").append(url).append("\">")
-                    .append(library)
-                    .append("</a></li>")
-        }
-        libs.append("</ul>")
-
-        html.append(getString(R.string.app_libraries, libs.toString()))
-                .append("</p>")
-
-        return html.toString()
     }
 
     private fun getVersionNumber(): String {
@@ -100,29 +90,51 @@ class AboutActivity : K9Activity() {
         }
     }
 
-
     companion object {
-        private val USED_LIBRARIES = mapOf(
-                "Android Support Library" to "https://developer.android.com/topic/libraries/support-library/index.html",
-                "Android-Support-Preference-V7-Fix" to "https://github.com/Gericop/Android-Support-Preference-V7-Fix",
-                "ckChangeLog" to "https://github.com/cketti/ckChangeLog",
-                "Commons IO" to "http://commons.apache.org/io/",
-                "Glide" to "https://github.com/bumptech/glide",
-                "HoloColorPicker" to "https://github.com/LarsWerkman/HoloColorPicker",
-                "jsoup" to "https://jsoup.org/",
-                "jutf7" to "http://jutf7.sourceforge.net/",
-                "JZlib" to "http://www.jcraft.com/jzlib/",
-                "Mime4j" to "http://james.apache.org/mime4j/",
-                "Moshi" to "https://github.com/square/moshi",
-                "Okio" to "https://github.com/square/okio",
-                "SafeContentResolver" to "https://github.com/cketti/SafeContentResolver",
-                "ShowcaseView" to "https://github.com/amlcurran/ShowcaseView",
-                "Timber" to "https://github.com/JakeWharton/timber",
-                "TokenAutoComplete" to "https://github.com/splitwise/TokenAutoComplete/")
+        private val USED_LIBRARIES = arrayOf(
+                Library("Android Support Library", "https://developer.android.com/topic/libraries/support-library/index.html", "Apache License, Version 2.0"),
+                Library("Android-Support-Preference-V7-Fix", "https://github.com/Gericop/Android-Support-Preference-V7-Fix", "Unlicense/Apache License, Version 2.0"),
+                Library("ckChangeLog", "https://github.com/cketti/ckChangeLog", "Apache License, Version 2.0"),
+                Library("Commons IO", "https://commons.apache.org/io/", "Apache License, Version 2.0"),
+                Library("Glide", "https://github.com/bumptech/glide", "Mixed License"),
+                Library("HoloColorPicker", "https://github.com/LarsWerkman/HoloColorPicker", "Apache License, Version 2.0"),
+                Library("jsoup", "https://jsoup.org/", "MIT License"),
+                Library("jutf7", "http://jutf7.sourceforge.net/", "MIT License"),
+                Library("JZlib", "http://www.jcraft.com/jzlib/", "BSD-style License"),
+                Library("Mime4j", "http://james.apache.org/mime4j/", "Apache License, Version 2.0"),
+                Library("Moshi", "https://github.com/square/moshi", "Apache License, Version 2.0"),
+                Library("Okio", "https://github.com/square/okio", "Apache License, Version 2.0"),
+                Library("SafeContentResolver", "https://github.com/cketti/SafeContentResolver", "Apache License, Version 2.0"),
+                Library("ShowcaseView", "https://github.com/amlcurran/ShowcaseView", "Apache License, Version 2.0"),
+                Library("Timber", "https://github.com/JakeWharton/timber", "Apache License, Version 2.0"),
+                Library("TokenAutoComplete", "https://github.com/splitwise/TokenAutoComplete/", "Apache License, Version 2.0"))
 
         fun start(context: Context) {
             val intent = Intent(context, AboutActivity::class.java)
             context.startActivity(intent)
         }
     }
+}
+
+private class LibrariesAdapter(private val dataset: Array<Library>)
+        : RecyclerView.Adapter<LibrariesAdapter.ViewHolder>() {
+
+    class ViewHolder(val view: View) : RecyclerView.ViewHolder(view)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : ViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.about_library, parent, false)
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, index: Int) {
+        val library = dataset[index]
+        holder.view.name.text = library.name
+        holder.view.license.text = library.license
+        holder.view.setOnClickListener {
+            holder.view.getContext()
+                .startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(library.URL)))
+        }
+    }
+
+    override fun getItemCount() = dataset.size
 }

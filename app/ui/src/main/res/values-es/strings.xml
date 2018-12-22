@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Partes del Copyright 2006-<xliff:g>%s</xliff:g> Android Open Source Project.</string>
-  <string name="app_license">Licenciado con Licencia Apache, Versión 2.0.</string>
+  <string name="app_license">Licencia Apache, Versión 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Bienvenido a K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -54,13 +54,13 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="open_market">Abrir Google Play Store</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Autores: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Información de la revisión: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Información de la revisión</string>
   <string name="app_libraries">Estamos usando las siguientes librerías de terceros: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Leer correos</string>
   <string name="read_messages_desc">Permitir a esta aplicación leer los correos.</string>
   <string name="delete_messages_label">Borrar correos</string>
   <string name="delete_messages_desc">Permitir a esta aplicación borrar los correos.</string>
-  <string name="about_title_fmt">Acerca de <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Acerca de K-9 Mail</string>
   <string name="accounts_title">Cuentas</string>
   <string name="folders_title">Carpetas</string>
   <string name="advanced">Avanzado</string>
@@ -199,7 +199,7 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archivo)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
   <string name="send_failure_subject">Error al enviar algunos mensajes</string>
-  <string name="debug_version_fmt">Versión: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Versión</string>
   <string name="debug_enable_debug_logging_title">Habilitar log de depuración</string>
   <string name="debug_enable_debug_logging_summary">Log con información ampliada</string>
   <string name="debug_enable_sensitive_logging_title">Incluir información sensible</string>

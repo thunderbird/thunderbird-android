@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Visse dele Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="app_license">Licenseret under the Apache License, Version 2.0.</string>
+  <string name="app_license">Apache License, Version 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Velkommen til K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -54,13 +54,13 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="open_market">Åben Play Store</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Ophavsmænd: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Revisions information: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Revisions information</string>
   <string name="app_libraries">Vi anvender følgende 3je parts biblioteker: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Læs mails</string>
   <string name="read_messages_desc">Tillad dette program at læse dine mails.</string>
   <string name="delete_messages_label">Slet mails</string>
   <string name="delete_messages_desc">Tillad dette program at slette dine mails.</string>
-  <string name="about_title_fmt">Om <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Om K-9 Mail</string>
   <string name="accounts_title">Konti</string>
   <string name="folders_title">Mapper</string>
   <string name="advanced">Avanceret</string>
@@ -196,7 +196,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arkiv)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
   <string name="send_failure_subject">Mislykkedes med at sende nogle mails</string>
-  <string name="debug_version_fmt">Version: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Version</string>
   <string name="debug_enable_debug_logging_title">Aktiver fejllogning</string>
   <string name="debug_enable_debug_logging_summary">Log ekstra diagnostik information</string>
   <string name="debug_enable_sensitive_logging_title">Log sensitiv information</string>

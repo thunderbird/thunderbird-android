@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="app_license">Licensed under the Apache License, Version 2.0.</string>
+  <string name="app_license">Apache License, Version 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Welkom bij K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[ <p> K-9 Mail is een krachtige e-mail cliënt voor Android. </p><p> De verbeterde mogelijkheden bestaan uit ondermeer:
@@ -50,13 +50,13 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="open_market">Open Play Store</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Auteurs: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Revisie Informatie: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Revisie Informatie</string>
   <string name="app_libraries">De volgende externe bibliotheken worden gebruikt: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">E-mails lezen</string>
   <string name="read_messages_desc">Sta deze appicatie toe om je e-mails te lezen.</string>
   <string name="delete_messages_label">Verwijder e-mails</string>
   <string name="delete_messages_desc">Sta deze applicatie toe om je e-mails te verwijderen.</string>
-  <string name="about_title_fmt">Over <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Over K-9 Mail</string>
   <string name="accounts_title">Accounts</string>
   <string name="folders_title">Mappen</string>
   <string name="advanced">Geavanceerd</string>
@@ -198,7 +198,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archief)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
   <string name="send_failure_subject">Fout bij verzenden van berichten</string>
-  <string name="debug_version_fmt">Versie: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Versie</string>
   <string name="debug_enable_debug_logging_title">Debug log toestaan</string>
   <string name="debug_enable_debug_logging_summary">Log extra diagnostische informatie</string>
   <string name="debug_enable_sensitive_logging_title">Log gevoelige informatie</string>

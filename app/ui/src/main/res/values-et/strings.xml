@@ -11,7 +11,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Google,  K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="app_license">Licensed under the Apache License, Version 2.0.</string>
+  <string name="app_license">Apache License, Version 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Tere kasutama K-9 Maili</string>
   <!--Default signature-->
@@ -25,13 +25,13 @@
   <string name="open_market">Ava Play Store</string>
   <!--=== General strings ==================================================================-->
   <string name="app_authors_fmt">Autorid: <xliff:g id="app_authors">%s</xliff:g></string>
-  <string name="app_revision_fmt">Parandusteave: <xliff:g id="app_revision_url">%s</xliff:g></string>
+  <string name="app_revision">Parandusteave</string>
   <string name="app_libraries">me kasutame järgnevaid kolmanda osapoole teeke: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Loe meilisõnumeid</string>
   <string name="read_messages_desc">Luba sellel appil lugeda meilisõnumeid.</string>
   <string name="delete_messages_label">Kustuta meilisõnumid</string>
   <string name="delete_messages_desc">Luba sellel appil kustutada oma meilisõnumeid</string>
-  <string name="about_title_fmt">Teave <xliff:g id="app_name">%s</xliff:g></string>
+  <string name="about_title">Teave K-9 Mail</string>
   <string name="accounts_title">Kontod</string>
   <string name="folders_title">Kaustad</string>
   <string name="advanced">Täpsemalt</string>
@@ -172,7 +172,7 @@
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arhiiv)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Rämpspost)</string>
   <string name="send_failure_subject">Mõne kirja saatmine ebaõnnestus</string>
-  <string name="debug_version_fmt">Versioon: <xliff:g id="version">%s</xliff:g></string>
+  <string name="version">Versioon</string>
   <string name="debug_enable_debug_logging_title">Luba silumiste logimine</string>
   <string name="debug_enable_debug_logging_summary">Logi täiendavat informatsiooni diagnostikaks</string>
   <string name="debug_enable_sensitive_logging_title">Logi sensitiivset informatsiooni</string>
