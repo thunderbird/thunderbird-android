@@ -37,6 +37,11 @@ public class Account implements BaseAccount, StoreConfig {
      */
     public static final String OUTBOX = "K9MAIL_INTERNAL_OUTBOX";
 
+    /**
+     * Fixed name of outbox - not actually displayed.
+     */
+    public static final String OUTBOX_NAME = "Outbox";
+
     public enum Expunge {
         EXPUNGE_IMMEDIATELY,
         EXPUNGE_MANUALLY,

@@ -37,11 +37,9 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
-import com.fsck.k9.mail.Folder.FolderClass;
 import com.fsck.k9.mail.MailServerDirection;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.Hex;
-import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStoreProvider;
 import com.fsck.k9.ui.R;
@@ -520,7 +518,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
             }
 
             LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
-            createLocalFolder(localStore, Account.OUTBOX, getString(R.string.special_mailbox_name_outbox));
+            localStore.createLocalFolder(Account.OUTBOX, Account.OUTBOX_NAME);
 
             if  (!account.getStoreUri().startsWith("pop3")) {
                 return;
@@ -530,25 +528,13 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
             String sentFolderInternalId = "Sent";
             String trashFolderInternalId = "Trash";
 
-            createLocalFolder(localStore, draftsFolderInternalId, getString(R.string.special_mailbox_name_drafts));
-            createLocalFolder(localStore, sentFolderInternalId, getString(R.string.special_mailbox_name_sent));
-            createLocalFolder(localStore, trashFolderInternalId, getString(R.string.special_mailbox_name_trash));
+            localStore.createLocalFolder(draftsFolderInternalId, getString(R.string.special_mailbox_name_drafts));
+            localStore.createLocalFolder(sentFolderInternalId, getString(R.string.special_mailbox_name_sent));
+            localStore.createLocalFolder(trashFolderInternalId, getString(R.string.special_mailbox_name_trash));
 
             account.setDraftsFolder(draftsFolderInternalId, SpecialFolderSelection.MANUAL);
             account.setSentFolder(sentFolderInternalId, SpecialFolderSelection.MANUAL);
             account.setTrashFolder(trashFolderInternalId, SpecialFolderSelection.MANUAL);
-        }
-
-        private void createLocalFolder(LocalStore localStore, String internalId, String folderName)
-                throws MessagingException {
-
-            LocalFolder folder = localStore.getFolder(internalId);
-            if (!folder.exists()) {
-                folder.create();
-            }
-            folder.setName(folderName);
-            folder.setInTopGroup(true);
-            folder.setSyncClass(FolderClass.NONE);
         }
 
         @Override

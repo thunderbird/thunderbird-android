@@ -947,6 +947,15 @@ public class LocalStore {
         });
     }
 
+    public void createLocalFolder(String internalId, String folderName)
+            throws MessagingException {
+        LocalFolder folder = getFolder(internalId);
+        if (!folder.exists()) {
+            folder.create();
+        }
+        folder.setName(folderName);
+        folder.setSyncClass(Folder.FolderClass.NONE);
+    }
 
     static String serializeFlags(Iterable<Flag> flags) {
         List<Flag> extraFlags = new ArrayList<>();

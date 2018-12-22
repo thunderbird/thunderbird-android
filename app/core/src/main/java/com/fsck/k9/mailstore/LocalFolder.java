@@ -313,6 +313,7 @@ public class LocalFolder extends Folder<LocalMessage> {
         return true;
     }
 
+
     class PreferencesHolder {
         FolderClass displayClass = LocalFolder.this.displayClass;
         FolderClass syncClass = LocalFolder.this.syncClass;
