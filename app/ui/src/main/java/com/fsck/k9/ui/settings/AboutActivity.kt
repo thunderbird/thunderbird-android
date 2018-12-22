@@ -25,7 +25,7 @@ import kotlinx.android.synthetic.main.about_library.view.*
 
 import timber.log.Timber
 
-private data class Library(val name: String, val URL: String, val license: String = "")
+private data class Library(val name: String, val URL: String, val license: String)
 
 class AboutActivity : K9Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
