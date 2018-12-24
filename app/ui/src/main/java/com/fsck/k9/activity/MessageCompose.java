@@ -1,6 +1,7 @@
 package com.fsck.k9.activity;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +14,7 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -40,6 +42,7 @@ import android.view.View.OnFocusChangeListener;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -303,7 +306,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         QuotedMessageMvpView quotedMessageMvpView = new QuotedMessageMvpView(this);
         quotedMessagePresenter = new QuotedMessagePresenter(this, quotedMessageMvpView, account);
-        attachmentPresenter = new AttachmentPresenter(getApplicationContext(), attachmentMvpView,
+        attachmentPresenter = new AttachmentPresenter(getApplicationContext(), attachmentMvpView, account,
                 getSupportLoaderManager(), this);
 
         messageContentView = findViewById(R.id.message_content);
@@ -657,7 +660,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     @Nullable
-    private MessageBuilder createMessageBuilder(boolean isDraft) {
+    private MessageBuilder createMessageBuilder(boolean isDraft, ArrayList<Attachment> attachments) {
         MessageBuilder builder;
 
         ComposeCryptoStatus cryptoStatus = recipientPresenter.getCurrentCachedCryptoStatus();
@@ -690,7 +693,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 .setIdentity(identity)
                 .setMessageFormat(currentMessageFormat)
                 .setText(messageContentView.getCharacters())
-                .setAttachments(attachmentPresenter.getAttachments())
+                .setAttachments(attachments)
                 .setSignature(signatureView.getCharacters())
                 .setSignatureBeforeQuotedText(account.isSignatureBeforeQuotedText())
                 .setIdentityChanged(identityChanged)
@@ -734,7 +737,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         finishAfterDraftSaved = true;
-        performSaveAfterChecks();
+        performSaveAfterChecksWithoutResizing();
     }
 
     private void checkToSaveDraftImplicitly() {
@@ -747,23 +750,67 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         finishAfterDraftSaved = false;
-        performSaveAfterChecks();
+        performSaveAfterChecksWithoutResizing();
     }
 
-    private void performSaveAfterChecks() {
-        currentMessageBuilder = createMessageBuilder(true);
+    private void performSaveAfterChecksWithoutResizing() {
+        currentMessageBuilder = createMessageBuilder(true, attachmentPresenter.createAttachmentListWithoutResizing());
         if (currentMessageBuilder != null) {
             setProgressBarIndeterminateVisibility(true);
             currentMessageBuilder.buildAsync(this);
         }
     }
 
-    public void performSendAfterChecks() {
-        currentMessageBuilder = createMessageBuilder(false);
+    public void performSendAfterChecksWithoutResizing() {
+        currentMessageBuilder = createMessageBuilder(false, attachmentPresenter.createAttachmentListWithoutResizing());
         if (currentMessageBuilder != null) {
             changesMadeSinceLastSave = false;
             setProgressBarIndeterminateVisibility(true);
             currentMessageBuilder.buildAsync(this);
+        }
+    }
+
+    public void performSendAfterChecks() {
+        ResizeImageAttachments resizeImageAttachments = new ResizeImageAttachments();
+        resizeImageAttachments.execute(false);
+    }
+
+    public class ResizeImageAttachments extends AsyncTask<Boolean, Void, ArrayList<Attachment>> {
+        ProgressDialog progressDialog;
+        boolean isDraft = false;
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(MessageCompose.this);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage("Resizing image attachments");
+            progressDialog.show();
+        }
+
+        @Override
+        protected ArrayList<Attachment> doInBackground(Boolean... params) {
+            isDraft = params[0];
+            return attachmentPresenter.createAttachmentList();
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Attachment> attachments) {
+            progressDialog.dismiss();
+            if (isDraft) {
+                currentMessageBuilder = createMessageBuilder(true, attachments);
+                if (currentMessageBuilder != null) {
+                    setProgressBarIndeterminateVisibility(true);
+                    currentMessageBuilder.buildAsync(MessageCompose.this);
+                }
+            } else {
+                currentMessageBuilder = createMessageBuilder(false, attachments);
+                if (currentMessageBuilder != null) {
+                    changesMadeSinceLastSave = false;
+                    setProgressBarIndeterminateVisibility(true);
+                    currentMessageBuilder.buildAsync(MessageCompose.this);
+                }
+            }
         }
     }
 
@@ -1164,6 +1211,54 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         return super.onCreateDialog(id);
     }
 
+    public void showResizeFactorDialog(final Attachment attachment) {
+
+        final TextView caption1 = new TextView(this);
+        final TextView caption2 = new TextView(this);
+        caption1.setText(getString(R.string.account_settings_resize_image_circumference));
+        caption2.setText(getString(R.string.account_settings_resize_image_quality));
+
+        final EditText circumferenceText = new EditText(this);
+        final EditText qualityText = new EditText(this);
+        circumferenceText.setSingleLine();
+        qualityText.setSingleLine();
+
+        if (attachment.resizeImageOverrideDefault) {
+            circumferenceText.setText(Integer.toString(attachment.resizeImageCircumference));
+            qualityText.setText(Integer.toString(attachment.resizeImageQuality));
+        } else {
+            circumferenceText.setText(Integer.toString(account.getResizeImageCircumference()));
+            qualityText.setText(Integer.toString(account.getResizeImageQuality()));
+        }
+
+        final TableLayout tl = new TableLayout(this);
+        tl.addView(caption1);
+        tl.addView(circumferenceText);
+        tl.addView(caption2);
+        tl.addView(qualityText);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.account_settings_resize_image_settings_label))
+                .setView(tl)
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        attachment.updateResizeInfo(Utility.convertResizeImageCircumference(circumferenceText.getText().toString()),
+                                Utility.convertResizeImageQuality(qualityText.getText().toString()), true);
+                        attachmentPresenter.updateAttachmentsList(attachment);
+
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton(getString(R.string.cancel_action), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        attachment.resizeImageOverrideDefault = false;
+                        dialog.dismiss();
+                    }
+                });
+        builder.create().show();
+    }
+
+
     public void saveDraftEventually() {
         changesMadeSinceLastSave = true;
     }
@@ -1423,6 +1518,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
 
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Utility.clearTemporaryAttachmentsCache(context);
         }
 
         /**
@@ -1740,6 +1841,17 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 }
             });
 
+            View resizeButton = view.findViewById(R.id.resize_image);
+            if (!Utility.isImage(MessageCompose.this, attachment.uri)) {
+                resizeButton.setVisibility(View.GONE);
+            }
+            resizeButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showResizeFactorDialog(attachment);
+                }
+            });
+
             updateAttachmentView(attachment);
             attachmentsView.addView(view);
         }
@@ -1773,12 +1885,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         @Override
         public void performSendAfterChecks() {
-            MessageCompose.this.performSendAfterChecks();
+            MessageCompose.this.performSendAfterChecksWithoutResizing();
         }
 
         @Override
         public void performSaveAfterChecks() {
-            MessageCompose.this.performSaveAfterChecks();
+            MessageCompose.this.performSaveAfterChecksWithoutResizing();
         }
 
         @Override

@@ -84,6 +84,10 @@ public class Account implements BaseAccount, StoreConfig {
         }
     }
 
+    public static final boolean DEFAULT_RESIZE_IMAGE_ENABLED = false;
+    public static final int DEFAULT_RESIZE_IMAGE_CIRCUMFERENCE = 2444;
+    public static final int DEFAULT_RESIZE_IMAGE_QUALITY = 90;
+
     public enum SortType {
         SORT_DATE(false),
         SORT_ARRIVAL(false),
@@ -191,6 +195,10 @@ public class Account implements BaseAccount, StoreConfig {
 
     private boolean changedVisibleLimits = false;
     private boolean changedLocalStorageProviderId = false;
+
+    private boolean resizeImageEnabled;
+    private int resizeImageCircumference;
+    private int resizeImageQuality;
 
     /**
      * Indicates whether this account is enabled, i.e. ready for use, or not.
@@ -1052,6 +1060,24 @@ public class Account implements BaseAccount, StoreConfig {
     public boolean isRemoteSearchFullText() {
         return false;   // Temporarily disabled
         //return remoteSearchFullText;
+    }
+
+    public boolean isResizeImageEnabled() { return resizeImageEnabled; }
+
+    public void setResizeImageEnabled(boolean resizeImageEnabled) {
+        this.resizeImageEnabled = resizeImageEnabled;
+    }
+
+    public int getResizeImageCircumference() { return resizeImageCircumference; }
+
+    public void setResizeImageCircumference(int resizeImageCircumference) {
+        this.resizeImageCircumference = resizeImageCircumference;
+    }
+
+    public int getResizeImageQuality() { return resizeImageQuality; }
+
+    public void setResizeImageQuality(int resizeImageQuality) {
+        this.resizeImageQuality = resizeImageQuality;
     }
 
     public void setRemoteSearchFullText(boolean val) {

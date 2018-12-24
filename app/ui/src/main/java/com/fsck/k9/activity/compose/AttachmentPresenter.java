@@ -1,9 +1,9 @@
 package com.fsck.k9.activity.compose;
 
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 import android.app.Activity;
 import android.content.ClipData;
@@ -15,11 +15,13 @@ import android.os.Handler;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
+import com.fsck.k9.Account;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.AttachErrorState;
 import com.fsck.k9.activity.loader.AttachmentContentLoader;
 import com.fsck.k9.activity.loader.AttachmentInfoLoader;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.controller.MessageReference;
+import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.LocalMessage;
@@ -42,6 +44,7 @@ public class AttachmentPresenter {
     // injected state
     private final Context context;
     private final AttachmentMvpView attachmentMvpView;
+    private final Account account;
     private final LoaderManager loaderManager;
     private final AttachmentsChangedListener listener;
 
@@ -51,10 +54,11 @@ public class AttachmentPresenter {
     private WaitingAction actionToPerformAfterWaiting = WaitingAction.NONE;
 
 
-    public AttachmentPresenter(Context context, AttachmentMvpView attachmentMvpView, LoaderManager loaderManager,
+    public AttachmentPresenter(Context context, AttachmentMvpView attachmentMvpView, Account account, LoaderManager loaderManager,
                                AttachmentsChangedListener listener) {
         this.context = context;
         this.attachmentMvpView = attachmentMvpView;
+        this.account = account;
         this.loaderManager = loaderManager;
         this.listener = listener;
 
@@ -63,7 +67,7 @@ public class AttachmentPresenter {
 
     public void onSaveInstanceState(Bundle outState) {
         outState.putString(STATE_KEY_WAITING_FOR_ATTACHMENTS, actionToPerformAfterWaiting.name());
-        outState.putParcelableArrayList(STATE_KEY_ATTACHMENTS, createAttachmentList());
+        outState.putParcelableArrayList(STATE_KEY_ATTACHMENTS, createAttachmentListWithoutResizing());
         outState.putInt(STATE_KEY_NEXT_LOADER_ID, nextLoaderId);
     }
 
@@ -110,7 +114,7 @@ public class AttachmentPresenter {
         return false;
     }
 
-    public ArrayList<Attachment> createAttachmentList() {
+    public ArrayList<Attachment> createAttachmentListWithoutResizing() {
         ArrayList<Attachment> result = new ArrayList<>();
         for (Attachment attachment : attachments.values()) {
             result.add(attachment);
@@ -118,8 +122,38 @@ public class AttachmentPresenter {
         return result;
     }
 
-    public List<com.fsck.k9.message.Attachment> getAttachments() {
-        return new ArrayList<com.fsck.k9.message.Attachment>(attachments.values());
+    public ArrayList<Attachment> createAttachmentList() {
+        ArrayList<Attachment> result = new ArrayList<>();
+        for (Attachment attachment : attachments.values()) {
+            int resizeCircumference;
+            int resizeQuality;
+            if (account.isResizeImageEnabled() && !attachment.resizeImageOverrideDefault && Utility.isImage(context, attachment.uri)) {
+                resizeCircumference = account.getResizeImageCircumference();
+                resizeQuality = account.getResizeImageQuality();
+            } else if (attachment.resizeImageOverrideDefault && Utility.isImage(context, attachment.uri)) {
+                resizeCircumference = attachment.resizeImageCircumference;
+                resizeQuality = attachment.resizeImageQuality;
+            } else {
+                resizeCircumference = 0;
+                resizeQuality = 0;
+            }
+
+            String newFilename;
+            if (resizeCircumference != 0) {
+                newFilename = Utility.getResizedImageFile(context, attachment.uri, resizeCircumference, resizeQuality);
+            } else {
+                newFilename = "";
+            }
+
+            if (!newFilename.equals("")) {
+                long size = (new File(newFilename)).length();
+                Attachment newAttachment = attachment.createResizedCopy(newFilename, size);
+                result.add(newAttachment);
+            } else {
+                result.add(attachment);
+            }
+        }
+        return result;
     }
 
     public void onClickAddAttachment(RecipientPresenter recipientPresenter) {
@@ -367,6 +401,11 @@ public class AttachmentPresenter {
         attachmentMvpView.removeAttachmentView(attachment);
         attachments.remove(uri);
         listener.onAttachmentRemoved();
+    }
+
+    public void updateAttachmentsList(Attachment attachment) {
+        Attachment originalAttachment = attachments.get(attachment.uri);
+        originalAttachment.updateResizeInfo(attachment.resizeImageCircumference, attachment.resizeImageQuality, attachment.resizeImageOverrideDefault);
     }
 
     public void onActivityResult(int resultCode, int requestCode, Intent data) {

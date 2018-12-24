@@ -4,6 +4,8 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fsck.k9.Account;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -63,6 +65,22 @@ public class Attachment implements Parcelable, com.fsck.k9.message.Attachment {
      * Valid iff {@link #state} is {@link LoadingState#COMPLETE}.
      */
     public final String filename;
+
+    /**
+     * The resize values: resizeImageCircumference and resizeImageQuality
+     *
+     * Valid iff {@link #state} is {@link LoadingState#COMPLETE}.
+     */
+    public int resizeImageCircumference = Account.DEFAULT_RESIZE_IMAGE_CIRCUMFERENCE;
+
+    public int resizeImageQuality = Account.DEFAULT_RESIZE_IMAGE_QUALITY;
+
+    /**
+     * Stores whether default resized settings need to be overridden.
+     * <p>
+     * Valid iff {@link #state} is {@link LoadingState#COMPLETE}.
+     */
+    public boolean resizeImageOverrideDefault = false;
 
     @NotNull
     @Override
@@ -150,6 +168,12 @@ public class Attachment implements Parcelable, com.fsck.k9.message.Attachment {
                 size, absolutePath);
     }
 
+    public void updateResizeInfo(int resizeCircumference, int resizeQuality, boolean overrideDefault) {
+        this.resizeImageCircumference = resizeCircumference;
+        this.resizeImageQuality = resizeQuality;
+        this.resizeImageOverrideDefault = overrideDefault;
+    }
+
     // === Parcelable ===
 
     @Override
@@ -186,4 +210,8 @@ public class Attachment implements Parcelable, com.fsck.k9.message.Attachment {
             return new Attachment[size];
         }
     };
+
+    public Attachment createResizedCopy(String newFilename, long newSize) {
+        return new Attachment(uri, LoadingState.COMPLETE, loaderId, contentType, allowMessageType, name, newSize, newFilename);
+    }
 }
