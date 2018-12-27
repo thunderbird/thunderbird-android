@@ -95,7 +95,7 @@
                         android:orientation="vertical">
 
                     <TextView
-                            android:text="Authors"
+                            android:text="@string/authors"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="?android:attr/textColorPrimary" />

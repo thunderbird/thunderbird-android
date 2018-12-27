@@ -53,7 +53,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="import_dialog_error_message">Settu upp skráastjóra til að halda áfram með innflutning á þessu.</string>
   <string name="open_market">Opna Play Store</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">Höfundar: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">Höfundar</string>
   <string name="app_revision">Upplýsingar útgáfu</string>
   <string name="app_libraries">Við erum að nota eftirfarandi aðgerðasöfn frá öðrum aðilum: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Lesa tölvupósta</string>

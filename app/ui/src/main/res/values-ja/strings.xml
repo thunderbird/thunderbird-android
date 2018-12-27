@@ -54,7 +54,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="import_dialog_error_message">設定をインポートするにはファイルマネージャをインストールしてください。</string>
   <string name="open_market">マーケット</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">Authors: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">Authors</string>
   <string name="app_revision">Revision Information</string>
   <string name="app_libraries">以下のライブラリを利用しています: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">メールを読む</string>

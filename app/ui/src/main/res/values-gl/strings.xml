@@ -54,7 +54,7 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="import_dialog_error_message">Por favor, instala un xestor de ficheiros para continuar coa importación.</string>
   <string name="open_market">Abrir Play Store</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">Autores: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">Autores</string>
   <string name="app_revision">Información da revisión</string>
   <string name="app_libraries">Usamos as seguintes librerías de terceiros: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Ler correos</string>

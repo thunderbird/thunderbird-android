@@ -53,7 +53,7 @@ Skicka gärna in rapporter om buggar, eller bidra med nya funktioner eller stäl
   <string name="import_dialog_error_message">Installera en filhanterare för att fortsätta med denna import.</string>
   <string name="open_market">Öppna Play butik</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">Upphovsmän: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">Upphovsmän</string>
   <string name="app_revision">Revisionsinformation</string>
   <string name="app_libraries">Vi använder följande tredjepartsbibliotek: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Läs e-post</string>

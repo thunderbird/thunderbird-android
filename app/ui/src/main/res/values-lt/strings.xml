@@ -23,7 +23,7 @@
   <string name="import_dialog_error_message">Norėdami tęsti importavimą turite įdiegti failų tvarkyklę.</string>
   <string name="open_market">Atverti „Play Store“</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">Autoriai: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">Autoriai</string>
   <string name="app_revision">Laidos informacija</string>
   <string name="app_libraries">Mes naudojame šias trečiųjų šalių bibliotekas: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Skaityti laiškus</string>

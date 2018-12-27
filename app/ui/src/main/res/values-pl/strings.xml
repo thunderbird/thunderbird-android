@@ -54,7 +54,7 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="import_dialog_error_message">Brak aplikacji do obsługi plików importu. Zainastaluj jakąś aplikację z Google Play.</string>
   <string name="open_market">Otwórz Google Play</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">Autorzy: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">Autorzy</string>
   <string name="app_revision">Historia zmian</string>
   <string name="app_libraries">K-9 mail zawiera kod źródłowy: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Czytaj pocztę</string>

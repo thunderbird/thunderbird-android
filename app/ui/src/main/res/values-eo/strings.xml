@@ -52,7 +52,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="import_dialog_error_message">Bonvolu instali dosier-esprolilon por pluigi enporti.</string>
   <string name="open_market">Malfermi vendejon Play</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">Aŭtoroj: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">Aŭtoroj</string>
   <string name="app_revision">Informoj pri eldono</string>
   <string name="app_libraries">La jenaj bibliotekoj de eksteraj liverantoj estas uzataj: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Legi retleterojn</string>

@@ -54,7 +54,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="import_dialog_error_message">Nainštalujte, prosím, správcu súborov pre pokračovanie v tomto importovaní.</string>
   <string name="open_market">Otvoriť Obchod Play</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">Autori: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">Autori</string>
   <string name="app_revision">Informácie o revízii</string>
   <string name="app_libraries">Používame tieto knižnice tretích strán: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Čítať správy</string>

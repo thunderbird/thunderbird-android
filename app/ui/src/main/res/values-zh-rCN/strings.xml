@@ -49,7 +49,7 @@ https://github.com/k9mail/k-9/20
   <string name="import_dialog_error_message">要继续导入，请先安装一款文件管理器。</string>
   <string name="open_market">打开 Play Store</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">作者: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">作者</string>
   <string name="app_revision">更新日志</string>
   <string name="app_libraries">我们是用了以下的第三方库： <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">显示邮件</string>

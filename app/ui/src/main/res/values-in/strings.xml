@@ -54,7 +54,7 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="import_dialog_error_message">Mohon pasang pengelola berkas untuk melanjutkan mengimpor.</string>
   <string name="open_market">Buka Play Store</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">Pengembang: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">Pengembang</string>
   <string name="app_revision">Informasi Revisi</string>
   <string name="app_libraries">Kami menggunakan pustaka pihak ketiga berikut: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Baca Email</string>

@@ -54,7 +54,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="import_dialog_error_message">Немає відповідної програми для завершення операції імпорту. Будь ласка інсталюйте файловий менеджер з Play Google.</string>
   <string name="open_market">Відкрити Play Google</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">Автори: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">Автори</string>
   <string name="app_revision">Інформація про зміни</string>
   <string name="app_libraries">Ми використовуємо такі бібліотеки сторонніх розробників: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">читати листи</string>
