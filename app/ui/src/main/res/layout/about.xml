@@ -131,7 +131,7 @@
                         android:paddingLeft="30dp"
                         android:orientation="vertical">
                     <TextView
-                            android:text="License"
+                            android:text="@string/license"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="?android:attr/textColorPrimary" />

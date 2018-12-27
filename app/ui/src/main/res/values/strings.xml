@@ -23,6 +23,7 @@
     <string name="app_license">Apache License, Version 2.0</string>
     <string name="app_license_url">https://www.apache.org/licenses/LICENSE-2.0</string>
     <string name="about_libraries">Libraries</string>
+    <string name="license">License</string>
 
 
     <!-- Welcome message -->
