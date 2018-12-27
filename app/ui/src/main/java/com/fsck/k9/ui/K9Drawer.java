@@ -80,10 +80,6 @@ public class K9Drawer {
 
         drawer = new DrawerBuilder()
                 .withActivity(parent)
-                .withDisplayBelowStatusBar(false)
-                .withTranslucentStatusBar(false)
-                .withDrawerLayout(R.layout.material_drawer_fits_not)
-                .withActionBarDrawerToggle(true)
                 .withOnDrawerItemClickListener(createItemClickListener())
                 .withOnDrawerListener(parent.createOnDrawerListener())
                 .withSavedInstance(savedInstanceState)
@@ -96,8 +92,7 @@ public class K9Drawer {
     private AccountHeader buildAccountHeader() {
         AccountHeaderBuilder headerBuilder = new AccountHeaderBuilder()
                 .withActivity(parent)
-                .withHeaderBackground(R.drawable.drawer_header_background)
-                .withTranslucentStatusBar(false);
+                .withHeaderBackground(R.drawable.drawer_header_background);
 
         if (!K9.isHideSpecialAccounts()) {
             headerBuilder.addProfiles(new ProfileDrawerItem()
@@ -216,7 +211,7 @@ public class K9Drawer {
         } else {
             unifiedInboxSelected = false;
             accountHeader.setActiveProfile((account.getAccountNumber()+1) << DRAWER_ACCOUNT_SHIFT);
-            accountHeader.getHeaderBackgroundView().setColorFilter(account.getChipColor(), PorterDuff.Mode.OVERLAY);
+            accountHeader.getHeaderBackgroundView().setColorFilter(account.getChipColor(), PorterDuff.Mode.MULTIPLY);
             ViewModelProvider viewModelProvider = ViewModelProviders.of(parent, new MessageListViewModelFactory());
             MessageListViewModel viewModel = viewModelProvider.get(MessageListViewModel.class);
             viewModel.getFolders(account).observe(parent, new Observer<List<Folder>>() {
