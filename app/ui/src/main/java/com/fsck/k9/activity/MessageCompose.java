@@ -1232,6 +1232,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         final TableLayout tl = new TableLayout(this);
+        tl.setPadding(50, 20, 50, 20);
         tl.addView(caption1);
         tl.addView(circumferenceText);
         tl.addView(caption2);

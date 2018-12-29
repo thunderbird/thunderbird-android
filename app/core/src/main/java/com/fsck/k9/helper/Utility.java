@@ -345,10 +345,24 @@ public class Utility {
             bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
 
             factor = (bitmap.getWidth() + bitmap.getHeight() + 0f) / circumference;
-            if (factor < 1.0f)
-                factor = 1.0f;
+            int newWidth;
+            int newHeight;
+            if (factor <= 1.0f) {
+                newWidth = bitmap.getWidth();
+                newHeight = bitmap.getHeight();
+            } else {
+                newWidth = (int) (bitmap.getWidth() / factor);
+                newHeight = (int) (bitmap.getHeight() / factor);
 
-            resized = Bitmap.createScaledBitmap(bitmap, (int) (bitmap.getWidth() / factor), (int) (bitmap.getHeight() / factor), true);
+                while (newWidth + newHeight < circumference) {
+                    if ((0f + bitmap.getWidth()) / newWidth >= (0f + bitmap.getHeight()) / newHeight)
+                        ++newWidth;
+                    else
+                        ++newHeight;
+                }
+            }
+
+            resized = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
             out = new FileOutputStream(tempFile);
             resized.compress(Bitmap.CompressFormat.JPEG, quality, out);
         } catch (IOException | OutOfMemoryError e) {
