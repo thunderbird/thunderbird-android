@@ -24,7 +24,7 @@
   <string name="import_dialog_error_message">Molimo vas instalirajte upravitelj datoteka za nastavak uvoza.</string>
   <string name="open_market">Otvorite Trgovinu Play</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">Autori: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">Autori</string>
   <string name="app_revision">Informacije Revizije</string>
   <string name="app_libraries">Mi koristimo slijedeće biblioteke treće strane: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Čitanje E-Pošte</string>

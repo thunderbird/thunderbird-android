@@ -23,6 +23,7 @@
     <string name="app_license">Apache License, Version 2.0</string>
     <string name="app_license_url">https://www.apache.org/licenses/LICENSE-2.0</string>
     <string name="about_libraries">Libraries</string>
+    <string name="license">License</string>
 
 
     <!-- Welcome message -->
@@ -72,7 +73,7 @@ Please submit bug reports, contribute new features and ask questions at
 
     <!-- === General strings ================================================================== -->
 
-    <string name="app_authors_fmt">Authors: <xliff:g id="app_authors">%s</xliff:g></string>
+    <string name="authors">Authors</string>
     <string name="app_revision">Revision Information</string>
     <string name="app_libraries">We\'re using the following third-party libraries: <xliff:g id="app_libraries_list">%s</xliff:g></string>
 

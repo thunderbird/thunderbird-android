@@ -53,7 +53,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="import_dialog_error_message">Por favor, instale um gerenciador de arquivos para continuar com essa importação.</string>
   <string name="open_market">Abrir a Play Store</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">Autores: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">Autores</string>
   <string name="app_revision">Informações da revisão</string>
   <string name="app_libraries">Estamos usando as seguintes bibliotecas de terceiros: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Ler e-mails</string>

@@ -24,7 +24,7 @@
   <string name="import_dialog_error_message">가져오기에 적합한 애플리케이션이 없습니다. 구글 플레이 스토어에서 파일 관리자를 설치하십시오.</string>
   <string name="open_market">플레이 스토어 열기</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">작성자들: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">작성자들</string>
   <string name="app_revision">배포 정보</string>
   <string name="app_libraries">K-9 메일은 다음 제3자 라이브러리들을 이용합니다. <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">이메일 읽기</string>

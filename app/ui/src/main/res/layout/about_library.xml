@@ -16,8 +16,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:text="Test"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textColor="?android:attr/textColorPrimary" />
 
         <TextView
                 android:id="@+id/license"
@@ -28,6 +27,5 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="Test"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textColor="?android:attr/textColorSecondary" />
 </LinearLayout>

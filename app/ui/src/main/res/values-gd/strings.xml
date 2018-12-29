@@ -54,7 +54,7 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="import_dialog_error_message">Stàlaich manaidsear fhaidhlichean mus lean thu air adhart leis an ion-phortadh seo.</string>
   <string name="open_market">Fosgail Play Store</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">Na h-ùghdaran: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">Na h-ùghdaran</string>
   <string name="app_revision">Fiosrachadh mun lèireamhas</string>
   <string name="app_libraries">Tha sinn a’ cleachdadh na leabhar-lannan a leanas a tha le treas-phàrtaidhean: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Puist-d a leughadh</string>

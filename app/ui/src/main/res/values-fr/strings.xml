@@ -53,7 +53,7 @@ Veuillez rapporter les bogues, recommander de nouvelles fonctions et poser vos q
   <string name="import_dialog_error_message">Veuillez installer un gestionnaire de fichiers pour continuer cette importation.</string>
   <string name="open_market">Ouvrir le Google Play Store</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">Auteurs\u00A0: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">Auteurs</string>
   <string name="app_revision">Informations de révision</string>
   <string name="app_libraries">Nous utilisons les bibliothèques tierces suivantes\u00A0: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Lire les courriels</string>

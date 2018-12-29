@@ -53,7 +53,7 @@
   <string name="import_dialog_error_message">Инсталирајте менаџер фајлова да бисте наставили овај увоз.</string>
   <string name="open_market">Отвори Плеј продавницу</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">Аутори: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">Аутори</string>
   <string name="app_revision">Подаци о ревизији</string>
   <string name="app_libraries">Користимо следеће библиотеке треће стране: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">читање е-порука</string>

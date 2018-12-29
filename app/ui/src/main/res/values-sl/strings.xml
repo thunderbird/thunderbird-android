@@ -53,7 +53,7 @@ Poročila o napakah, predloge za nove funkcije in vprašanja lahko pošljete na
   <string name="import_dialog_error_message">Za nadaljevanje uvažanja je treba namestiti upravljalnik datotek.</string>
   <string name="open_market">Odpri Play Store</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">Avtorstvo: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">Avtorstvo</string>
   <string name="app_revision">Podrobnosti različice</string>
   <string name="app_libraries">Vključene so naslednje zunanje knjižnice: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Preberi pošto</string>

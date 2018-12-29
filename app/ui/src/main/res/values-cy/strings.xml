@@ -54,7 +54,7 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
   <string name="import_dialog_error_message">Rhaid gosod rheolwr ffeiliau er mwyn parhau gyda\'r mewnforio.</string>
   <string name="open_market">Agor Play Store</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">Awduron: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">Awduron</string>
   <string name="app_revision">Gwybodaeth Adolygu</string>
   <string name="app_libraries">Rydym yn defnyddio\'r llyfrgelloedd trydydd parti canlynol: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Darllen E-bost</string>

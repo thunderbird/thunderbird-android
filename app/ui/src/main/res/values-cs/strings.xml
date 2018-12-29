@@ -53,7 +53,7 @@ Chybová hlášení prosím posílejte, přispívejte novými funkcemi a ptejte 
   <string name="import_dialog_error_message">Prosím nainstalujte nějaký file manager pro pokračování v importu.</string>
   <string name="open_market">Otevřít obchod Google Play</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">Autoři: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">Autoři</string>
   <string name="app_revision">Informace o revizi</string>
   <string name="app_libraries">Používáme tyto knihovny třetích stran: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Číst zprávy</string>

@@ -49,7 +49,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="import_dialog_error_message">Installeer een bestandsbeheer-app om verder te gaan met deze import.</string>
   <string name="open_market">Open Play Store</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">Auteurs: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">Auteurs</string>
   <string name="app_revision">Revisie Informatie</string>
   <string name="app_libraries">De volgende externe bibliotheken worden gebruikt: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">E-mails lezen</string>

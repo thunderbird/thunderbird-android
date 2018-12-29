@@ -24,7 +24,7 @@
   <string name="import_dialog_error_message">התקן מנהל קבצים כדי לבצע את הייבוא.</string>
   <string name="open_market">פתח את חנות האפליקציות</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">מפתחים: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">מפתחים</string>
   <string name="app_revision">מידע על גירסאות</string>
   <string name="app_libraries">אנחנו משתמשים בספריות הבאות של ספקים חיצוניים: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">קרא אימיילים</string>

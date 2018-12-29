@@ -53,7 +53,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="import_dialog_error_message">Si us plau, instal·leu un gestor de fitxers per continuar aquesta importació.</string>
   <string name="open_market">Obre la Play Store</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">Autors: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">Autors</string>
   <string name="app_revision">Informació de la revisió</string>
   <string name="app_libraries">Fem servir les següents biblioteques de tercers: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Llegeix els correus</string>
