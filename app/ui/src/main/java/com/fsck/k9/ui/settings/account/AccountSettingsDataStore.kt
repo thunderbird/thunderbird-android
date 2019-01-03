@@ -4,7 +4,7 @@ import android.support.v7.preference.PreferenceDataStore
 import com.fsck.k9.Account
 import com.fsck.k9.Account.SpecialFolderSelection
 import com.fsck.k9.Preferences
-import com.fsck.k9.helper.Utility
+import com.fsck.k9.helper.ImageResizer
 import com.fsck.k9.job.K9JobManager
 import java.util.concurrent.ExecutorService
 
@@ -203,8 +203,8 @@ class AccountSettingsDataStore(
                 isRingEnabled = true
                 ringtone = value
             }
-            "resize_image_circumference" -> account.resizeImageCircumference = Utility.convertResizeImageCircumference(value)
-            "resize_image_quality" -> account.resizeImageQuality = Utility.convertResizeImageQuality(value)
+            "resize_image_circumference" -> account.resizeImageCircumference = ImageResizer.convertResizeImageCircumference(value)
+            "resize_image_quality" -> account.resizeImageQuality = ImageResizer.convertResizeImageQuality(value)
             else -> return
         }
 

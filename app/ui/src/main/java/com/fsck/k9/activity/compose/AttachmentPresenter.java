@@ -2,6 +2,7 @@ package com.fsck.k9.activity.compose;
 
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
@@ -16,18 +17,21 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.DI;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.AttachErrorState;
 import com.fsck.k9.activity.loader.AttachmentContentLoader;
 import com.fsck.k9.activity.loader.AttachmentInfoLoader;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.controller.MessageReference;
-import com.fsck.k9.helper.Utility;
+import com.fsck.k9.helper.ImageResizer;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.message.Attachment.LoadingState;
 import com.fsck.k9.provider.RawMessageProvider;
+
+import timber.log.Timber;
 
 
 public class AttachmentPresenter {
@@ -53,6 +57,7 @@ public class AttachmentPresenter {
     private int nextLoaderId = 0;
     private WaitingAction actionToPerformAfterWaiting = WaitingAction.NONE;
 
+    private ImageResizer imageResizer;
 
     public AttachmentPresenter(Context context, AttachmentMvpView attachmentMvpView, Account account, LoaderManager loaderManager,
                                AttachmentsChangedListener listener) {
@@ -61,6 +66,7 @@ public class AttachmentPresenter {
         this.account = account;
         this.loaderManager = loaderManager;
         this.listener = listener;
+        this.imageResizer = DI.get(ImageResizer.class);
 
         attachments = new LinkedHashMap<>();
     }
@@ -127,10 +133,10 @@ public class AttachmentPresenter {
         for (Attachment attachment : attachments.values()) {
             int resizeCircumference;
             int resizeQuality;
-            if (account.isResizeImageEnabled() && !attachment.resizeImageOverrideDefault && Utility.isImage(context, attachment.uri)) {
+            if (account.isResizeImageEnabled() && !attachment.resizeImageOverrideDefault && ImageResizer.isImage(context, attachment.uri)) {
                 resizeCircumference = account.getResizeImageCircumference();
                 resizeQuality = account.getResizeImageQuality();
-            } else if (attachment.resizeImageOverrideDefault && Utility.isImage(context, attachment.uri)) {
+            } else if (attachment.resizeImageOverrideDefault && ImageResizer.isImage(context, attachment.uri)) {
                 resizeCircumference = attachment.resizeImageCircumference;
                 resizeQuality = attachment.resizeImageQuality;
             } else {
@@ -138,20 +144,19 @@ public class AttachmentPresenter {
                 resizeQuality = 0;
             }
 
-            String newFilename;
             if (resizeCircumference != 0) {
-                newFilename = Utility.getResizedImageFile(context, attachment.uri, resizeCircumference, resizeQuality);
-            } else {
-                newFilename = "";
+                try {
+                    String newFilename = imageResizer.getResizedImageFile(context, attachment.uri, resizeCircumference, resizeQuality);
+                    long size = (new File(newFilename)).length();
+                    Attachment newAttachment = attachment.createResizedCopy(newFilename, size);
+                    result.add(newAttachment);
+                    return result;
+                } catch (IOException ioe) {
+                    Timber.i("image resizing failed for " + attachment.uri + " circumference=" + resizeCircumference + ", quality=" + resizeQuality);
+                }
             }
 
-            if (!newFilename.equals("")) {
-                long size = (new File(newFilename)).length();
-                Attachment newAttachment = attachment.createResizedCopy(newFilename, size);
-                result.add(newAttachment);
-            } else {
-                result.add(attachment);
-            }
+            result.add(attachment);
         }
         return result;
     }

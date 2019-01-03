@@ -78,6 +78,7 @@ import com.fsck.k9.fragment.ProgressDialogFragment;
 import com.fsck.k9.fragment.ProgressDialogFragment.CancelListener;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.IdentityHelper;
+import com.fsck.k9.helper.ImageResizer;
 import com.fsck.k9.helper.MailTo;
 import com.fsck.k9.helper.ReplyToParser;
 import com.fsck.k9.helper.SimpleTextWatcher;
@@ -1243,8 +1244,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 .setView(tl)
                 .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        attachment.updateResizeInfo(Utility.convertResizeImageCircumference(circumferenceText.getText().toString()),
-                                Utility.convertResizeImageQuality(qualityText.getText().toString()), true);
+                        attachment.updateResizeInfo(ImageResizer.convertResizeImageCircumference(circumferenceText.getText().toString()),
+                                ImageResizer.convertResizeImageQuality(qualityText.getText().toString()), true);
                         attachmentPresenter.updateAttachmentsList(attachment);
 
                         dialog.dismiss();
@@ -1489,6 +1490,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         final Long draftId;
         final String plaintextSubject;
         final MessageReference messageReference;
+        final ImageResizer imageResizer;
 
         SendMessageTask(Context context, Account account, Contacts contacts, Message message,
                 Long draftId, String plaintextSubject, MessageReference messageReference) {
@@ -1499,6 +1501,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             this.draftId = draftId;
             this.plaintextSubject = plaintextSubject;
             this.messageReference = messageReference;
+            this.imageResizer = DI.get(ImageResizer.class);
         }
 
         @Override
@@ -1524,7 +1527,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            Utility.clearTemporaryAttachmentsCache(context);
+            imageResizer.clearTemporaryAttachmentsCache(context);
         }
 
         /**
@@ -1843,7 +1846,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             });
 
             View resizeButton = view.findViewById(R.id.resize_image);
-            if (!Utility.isImage(MessageCompose.this, attachment.uri)) {
+            if (!ImageResizer.isImage(MessageCompose.this, attachment.uri)) {
                 resizeButton.setVisibility(View.GONE);
             }
             resizeButton.setOnClickListener(new OnClickListener() {

@@ -49,12 +49,6 @@ public class Utility {
 
     private static Handler sMainThreadHandler;
 
-    /**
-     * The path of the temporary directory that is used to store resized image attachments.
-     * The directory is cleaned as soon as message is sent.
-     */
-    private static final String RESIZED_IMAGES_TEMPORARY_DIRECTORY = "/tempAttachments/";
-
     public static boolean arrayContains(Object[] a, Object o) {
         for (Object element : a) {
             if (element.equals(o)) {
@@ -326,95 +320,6 @@ public class Utility {
         }
 
         return null;
-    }
-
-    public static String getResizedImageFile(Context context, Uri uri, int circumference, int quality) {
-        File cacheDir = context.getCacheDir();
-        File tempAttachmentsDirectory = new File(cacheDir.getPath() + RESIZED_IMAGES_TEMPORARY_DIRECTORY);
-        tempAttachmentsDirectory.mkdirs();
-
-        File tempFile;
-        Bitmap bitmap = null;
-        Bitmap resized;
-        FileOutputStream out = null;
-
-        float factor = 0;
-
-        try {
-            tempFile = File.createTempFile("TempResizedAttachment", null, tempAttachmentsDirectory);
-            bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
-
-            factor = (bitmap.getWidth() + bitmap.getHeight() + 0f) / circumference;
-            int newWidth;
-            int newHeight;
-            if (factor <= 1.0f) {
-                newWidth = bitmap.getWidth();
-                newHeight = bitmap.getHeight();
-            } else {
-                newWidth = (int) (bitmap.getWidth() / factor);
-                newHeight = (int) (bitmap.getHeight() / factor);
-
-                while (newWidth + newHeight < circumference) {
-                    if ((0f + bitmap.getWidth()) / newWidth >= (0f + bitmap.getHeight()) / newHeight)
-                        ++newWidth;
-                    else
-                        ++newHeight;
-                }
-            }
-
-            resized = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
-            out = new FileOutputStream(tempFile);
-            resized.compress(Bitmap.CompressFormat.JPEG, quality, out);
-        } catch (IOException | OutOfMemoryError e) {
-            Timber.e(e, "Error while resizing image attachment: (" + bitmap.getWidth() + "," + bitmap.getHeight() + ") / " + factor);
-            return "";
-        } finally {
-            IOUtils.closeQuietly(out);
-        }
-
-        return tempFile.getAbsolutePath();
-    }
-
-    public static int convertResizeImageCircumference(String resizeCircumferenceS) {
-        int resizeCircumference = Account.DEFAULT_RESIZE_IMAGE_CIRCUMFERENCE;
-        try {
-            resizeCircumference = Integer.parseInt(resizeCircumferenceS);
-            if (resizeCircumference < 520)
-                resizeCircumference = 520;
-        } catch (Exception ex){
-            // ignore
-        }
-        return resizeCircumference;
-    }
-
-    public static int convertResizeImageQuality(String resizeQualityS) {
-        int resizeQuality = Account.DEFAULT_RESIZE_IMAGE_QUALITY;
-        try {
-            resizeQuality = Integer.parseInt(resizeQualityS);
-            if (resizeQuality < 10)
-                resizeQuality = 10;
-            else if (resizeQuality > 100)
-                resizeQuality = 100;
-        } catch (Exception ex){
-            // ignore
-        }
-        return resizeQuality;
-    }
-
-    public static void clearTemporaryAttachmentsCache(Context context) {
-        File cacheDir = context.getCacheDir();
-        File tempAttachmentsDirectory = new File(cacheDir.getPath() + RESIZED_IMAGES_TEMPORARY_DIRECTORY);
-        if (tempAttachmentsDirectory.exists()) {
-            try {
-                FileUtils.cleanDirectory(tempAttachmentsDirectory);
-            } catch (IOException e) {
-                Timber.e(e, "Error occurred while cleaning temporary directory for resized attachments");
-            }
-        }
-    }
-
-    public static boolean isImage(Context context, Uri uri) {
-        return context.getContentResolver().getType(uri).contains("image");
     }
 
     /**
