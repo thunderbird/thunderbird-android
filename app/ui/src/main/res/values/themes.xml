@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Theme.K9.Startup" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@android:color/black</item>
@@ -11,6 +11,9 @@
 
     <style name="Theme.K9.Light.Common" parent="Theme.K9.Light.Base">
         <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
+        <item name="colorPrimary">@color/md_grey_100</item>
+        <item name="colorPrimaryDark">@color/md_grey_100</item>
 
         <item name="material_drawer_background">@color/material_drawer_background</item>
         <item name="material_drawer_primary_text">@color/material_drawer_primary_text</item>
@@ -119,6 +122,9 @@
 
     <style name="Theme.K9.Dark.Common" parent="Theme.K9.Dark.Base">
         <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
+        <item name="colorPrimary">@color/md_grey_900</item>
+        <item name="colorPrimaryDark">@color/md_grey_900</item>
 
         <item name="material_drawer_background">@color/material_drawer_dark_background</item>
         <item name="material_drawer_primary_text">@color/material_drawer_dark_primary_text</item>
