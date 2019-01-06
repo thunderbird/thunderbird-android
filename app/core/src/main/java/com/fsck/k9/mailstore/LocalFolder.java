@@ -1906,7 +1906,7 @@ public class LocalFolder extends Folder<LocalMessage> {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     try {
-                        // We need to open the folder first to make sure we've got it's id
+                        // We need to open the folder first to make sure we've got its id
                         open(OPEN_MODE_RO);
                         List<LocalMessage> messages = getMessages(null);
                         for (LocalMessage message : messages) {
