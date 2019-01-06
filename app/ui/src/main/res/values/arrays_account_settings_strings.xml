@@ -3,9 +3,6 @@
 
     <string-array name="check_frequency_entries">
         <item>@string/account_setup_options_mail_check_frequency_never</item>
-        <item>@string/account_setup_options_mail_check_frequency_1min</item>
-        <item>@string/account_setup_options_mail_check_frequency_5min</item>
-        <item>@string/account_setup_options_mail_check_frequency_10min</item>
         <item>@string/account_setup_options_mail_check_frequency_15min</item>
         <item>@string/account_setup_options_mail_check_frequency_30min</item>
         <item>@string/account_setup_options_mail_check_frequency_1hour</item>
