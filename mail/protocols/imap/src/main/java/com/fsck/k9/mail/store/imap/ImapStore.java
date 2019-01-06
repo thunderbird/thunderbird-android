@@ -162,19 +162,18 @@ public class ImapStore extends RemoteStore {
     private List<FolderListItem> listFolders(ImapConnection connection, boolean subscribedOnly) throws IOException,
             MessagingException {
 
-        String command;
+        String commandFormat;
         if (subscribedOnly) {
-            command = "LSUB";
+            commandFormat = "LSUB \"\" %s";
         } else if (connection.hasCapability(Capabilities.SPECIAL_USE) &&
                 connection.hasCapability(Capabilities.LIST_EXTENDED)) {
-            command = "LIST (SPECIAL-USE)";
+            commandFormat = "LIST \"\" %s RETURN (SPECIAL-USE)";
         } else {
-            command = "LIST";
+            commandFormat = "LIST \"\" %s";
         }
 
         String encodedListPrefix = ImapUtility.encodeString(getCombinedPrefix() + "*");
-        List<ImapResponse> responses = connection.executeSimpleCommand(
-                String.format("%s \"\" %s", command, encodedListPrefix));
+        List<ImapResponse> responses = connection.executeSimpleCommand(String.format(commandFormat, encodedListPrefix));
 
         List<ListResponse> listResponses = (subscribedOnly) ?
                 ListResponse.parseLsub(responses) :
