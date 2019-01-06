@@ -5,8 +5,12 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v14.preference.SwitchPreference
 import android.support.v7.preference.ListPreference
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.widget.Toast
 import com.fsck.k9.Account
+import com.fsck.k9.account.BackgroundAccountRemover
 import com.fsck.k9.ui.R
 import com.fsck.k9.activity.ManageIdentities
 import com.fsck.k9.activity.setup.AccountSetupComposition
@@ -14,6 +18,8 @@ import com.fsck.k9.activity.setup.AccountSetupIncoming
 import com.fsck.k9.activity.setup.AccountSetupOutgoing
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.crypto.OpenPgpApiHelper
+import com.fsck.k9.fragment.ConfirmationDialogFragment
+import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
 import com.fsck.k9.mailstore.Folder
 import com.fsck.k9.mailstore.FolderType
 import com.fsck.k9.mailstore.RemoteFolderInfo
@@ -32,12 +38,13 @@ import org.openintents.openpgp.OpenPgpApiManager
 import org.openintents.openpgp.util.OpenPgpKeyPreference
 import org.openintents.openpgp.util.OpenPgpProviderUtil
 
-class AccountSettingsFragment : PreferenceFragmentCompat() {
+class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFragmentListener {
     private val viewModel: AccountSettingsViewModel by sharedViewModel()
     private val dataStoreFactory: AccountSettingsDataStoreFactory by inject()
     private val storageManager: StorageManager by inject()
     private val openPgpApiManager: OpenPgpApiManager by inject(parameters = { mapOf("lifecycleOwner" to this) })
     private val messagingController: MessagingController by inject()
+    private val accountRemover: BackgroundAccountRemover by inject()
 
     private val accountUuid: String by lazy {
         checkNotNull(arguments?.getString(ARG_ACCOUNT_UUID)) { "$ARG_ACCOUNT_UUID == null" }
@@ -52,6 +59,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
         preferenceManager.preferenceDataStore = dataStore
         setPreferencesFromResource(R.xml.account_settings, rootKey)
         title = preferenceScreen.title
+        setHasOptionsMenu(true)
 
         initializeIncomingServer()
         initializeComposition()
@@ -80,6 +88,21 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
         // we might be returning from OpenPgpAppSelectDialog, make sure settings are up to date
         val account = getAccount()
         initializeCryptoSettings(account)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.account_settings_option, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.delete_account -> {
+                onDeleteAccount()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun initializeIncomingServer() {
@@ -300,6 +323,31 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
         return viewModel.getAccountBlocking(accountUuid)
     }
 
+    private fun onDeleteAccount() {
+        val dialogFragment = ConfirmationDialogFragment.newInstance(
+                DIALOG_DELETE_ACCOUNT,
+                getString(R.string.account_delete_dlg_title),
+                getString(R.string.account_delete_dlg_instructions_fmt, getAccount().description),
+                getString(R.string.okay_action),
+                getString(R.string.cancel_action)
+        )
+        dialogFragment.setTargetFragment(this, REQUEST_DELETE_ACCOUNT)
+        dialogFragment.show(fragmentManager, TAG_DELETE_ACCOUNT_CONFIRMATION)
+    }
+
+    override fun doPositiveClick(dialogId: Int) {
+        accountRemover.removeAccountAsync(accountUuid)
+        closeAccountSettings()
+    }
+
+    override fun doNegativeClick(dialogId: Int) = Unit
+
+    override fun dialogCancelled(dialogId: Int) = Unit
+
+    private fun closeAccountSettings() {
+        requireActivity().finish()
+    }
+
 
     companion object {
         internal const val PREFERENCE_OPENPGP = "openpgp"
@@ -329,9 +377,19 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
         private const val PREFERENCE_TRASH_FOLDER = "trash_folder"
         private const val PREFERENCE_OPEN_NOTIFICATION_SETTINGS = "open_notification_settings"
         private const val DELETE_POLICY_MARK_AS_READ = "MARK_AS_READ"
-        private val PRE_SDK26_NOTIFICATION_PREFERENCES = arrayOf("account_ringtone", "account_vibrate",
-                "account_vibrate_pattern", "account_vibrate_times", "account_led",
-                "led_color");
+
+        private val PRE_SDK26_NOTIFICATION_PREFERENCES = arrayOf(
+                "account_ringtone",
+                "account_vibrate",
+                "account_vibrate_pattern",
+                "account_vibrate_times",
+                "account_led",
+                "led_color"
+        )
+
+        private const val DIALOG_DELETE_ACCOUNT = 1
+        private const val REQUEST_DELETE_ACCOUNT = 1
+        private const val TAG_DELETE_ACCOUNT_CONFIRMATION = "delete_account_confirmation"
 
         fun create(accountUuid: String, rootKey: String?) = AccountSettingsFragment().withArguments(
                 ARG_ACCOUNT_UUID to accountUuid,

@@ -29,6 +29,7 @@ import timber.log.Timber
 import java.util.concurrent.SynchronousQueue
 
 object Core : KoinComponent {
+    private val context: Context by inject()
     private val appConfig: AppConfig by inject()
     private val jobManager: K9JobManager by inject()
 
@@ -81,6 +82,10 @@ object Core : KoinComponent {
         val enable = acctLength > 0
 
         setServicesEnabled(appContext, enable)
+    }
+
+    fun setServicesEnabled() {
+        setServicesEnabled(context)
     }
 
     private fun setServicesEnabled(context: Context, enabled: Boolean) {
