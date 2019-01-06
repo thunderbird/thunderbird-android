@@ -165,7 +165,8 @@ public class ImapStore extends RemoteStore {
         String command;
         if (subscribedOnly) {
             command = "LSUB";
-        } else if (connection.hasCapability(Capabilities.SPECIAL_USE)) {
+        } else if (connection.hasCapability(Capabilities.SPECIAL_USE) &&
+                connection.hasCapability(Capabilities.LIST_EXTENDED)) {
             command = "LIST (SPECIAL-USE)";
         } else {
             command = "LIST";
