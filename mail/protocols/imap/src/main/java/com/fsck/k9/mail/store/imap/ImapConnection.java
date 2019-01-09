@@ -694,11 +694,15 @@ class ImapConnection {
         return isListResponse && hierarchyDelimiterValid;
     }
 
-    protected boolean hasCapability(String capability) {
+    protected boolean hasCapability(String capability) throws IOException, MessagingException {
+        if (!open) {
+            open();
+        }
+
         return capabilities.contains(capability.toUpperCase(Locale.US));
     }
 
-    public boolean isCondstoreCapable()  {
+    public boolean isCondstoreCapable() throws IOException, MessagingException {
         return hasCapability(Capabilities.CONDSTORE);
     }
 
@@ -886,7 +890,7 @@ class ImapConnection {
         return response;
     }
 
-    int getLineLengthLimit() {
+    int getLineLengthLimit() throws IOException, MessagingException {
         return isCondstoreCapable() ? LENGTH_LIMIT_WITH_CONDSTORE : LENGTH_LIMIT_WITHOUT_CONDSTORE;
     }
 }
