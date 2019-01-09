@@ -629,7 +629,7 @@ public class LocalFolder extends Folder<LocalMessage> {
         return getPrefId(serverId);
     }
 
-    public void delete() throws MessagingException {
+    public void deleteSettings() throws MessagingException {
         String id = getPrefId();
 
         StorageEditor editor = localStore.getPreferences().createStorageEditor();

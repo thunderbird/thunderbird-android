@@ -50,7 +50,7 @@ class MigrationTo43 {
                 }
 
                 // Now get rid of the localized outbox
-                obsoleteOutbox.delete();
+                obsoleteOutbox.deleteSettings();
                 obsoleteOutbox.delete(true);
             }
         } catch (Exception e) {

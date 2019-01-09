@@ -50,7 +50,7 @@ class K9BackendStorage(
                 .filterNot { account.isSpecialFolder(it) }
                 .map { localStore.getFolder(it) }
                 .forEach {
-                    it.delete()
+                    it.deleteSettings()
                     it.delete(true)
                 }
 
