@@ -49,7 +49,10 @@ class K9BackendStorage(
         folderServerIds.asSequence()
                 .filterNot { account.isSpecialFolder(it) }
                 .map { localStore.getFolder(it) }
-                .forEach { it.delete() }
+                .forEach {
+                    it.delete()
+                    it.delete(true)
+                }
 
         specialFolderUpdater.updateSpecialFolders()
     }
