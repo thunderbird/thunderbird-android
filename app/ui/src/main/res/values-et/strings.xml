@@ -24,7 +24,7 @@
   <string name="import_dialog_error_message">Selle impordi jätkamiseks installi failihaldur.</string>
   <string name="open_market">Ava Play Store</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">Autorid: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">Autorid</string>
   <string name="app_revision">Parandusteave</string>
   <string name="app_libraries">me kasutame järgnevaid kolmanda osapoole teeke: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Loe meilisõnumeid</string>

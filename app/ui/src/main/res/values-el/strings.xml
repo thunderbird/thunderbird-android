@@ -54,7 +54,7 @@
   <string name="import_dialog_error_message">Δεν υπάρχει κατάλληλη εφαρμογή για να χειριστεί την εισαγωγή. Εγκαταστήστε μια εφαρμογή επόπτη αρχείων από το Android Market</string>
   <string name="open_market">Open Market</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">Συγγραφείς: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">Συγγραφείς</string>
   <string name="app_revision">Πληροφορίες αναθεωρήσεων</string>
   <string name="app_libraries">Χρησιμοποιούνται οι ακόλουθες βιβλιοθήκες τρίτων: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Ανάγνωση μηνυμάτων</string>

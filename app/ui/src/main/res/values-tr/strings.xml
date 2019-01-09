@@ -53,7 +53,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="import_dialog_error_message">İçeri aktarma işlemini gerçekleştirebilecek uygun bir uygulama bulunamadı. Lütfen Google Play Store\'dan bir dosya yönetici uygulaması edinin.</string>
   <string name="open_market">Play Store\'u Aç</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">Yazarlar: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">Yazarlar</string>
   <string name="app_revision">Gözden Geçirme Bilgileri</string>
   <string name="app_libraries">K-9 posta kaynak kodları içerir: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">E-postaları oku</string>

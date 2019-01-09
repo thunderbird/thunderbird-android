@@ -54,7 +54,7 @@ Per favore invia segnalazioni di errori, contribuisci con nuove funzionalità e 
   <string name="import_dialog_error_message">Installa un gestore file per procedere con questa importazione.</string>
   <string name="open_market">Apri il Play Store</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">Autori: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">Autori</string>
   <string name="app_revision">Informazioni di versione</string>
   <string name="app_libraries">Ci avvaliamo delle seguenti librerie di terze parti: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Leggi i messaggi</string>

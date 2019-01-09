@@ -53,7 +53,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="import_dialog_error_message">Моля инсталирайте файлов менажер за да продължите с внасянето.</string>
   <string name="open_market">Отвори Play магазина</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">Автори: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">Автори</string>
   <string name="app_revision">Информация за версиите</string>
   <string name="app_libraries">Използваме следните библиотеки от трети страни: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Прочитане на имейли</string>

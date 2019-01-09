@@ -437,6 +437,10 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name="com.fsck.k9.account.AccountRemoverService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
+
         <provider
             android:name=".provider.AttachmentProvider"
             android:authorities="${applicationId}.attachmentprovider"

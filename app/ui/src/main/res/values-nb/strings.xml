@@ -54,7 +54,7 @@ Send feilmeldinger, bidra med nye funksjoner og still spørsmål her:
   <string name="import_dialog_error_message">Installer en filbehandler for å fortsette importeringen.</string>
   <string name="open_market">Åpne Play-butikken</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">Utviklere: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">Utviklere</string>
   <string name="app_revision">Revisjonsinformasjon</string>
   <string name="app_libraries">Vi bruker følgende tredjepartsbiblioteker: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Les e-poster</string>

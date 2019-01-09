@@ -53,7 +53,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="import_dialog_error_message">Для импорта необходим менеджер файлов</string>
   <string name="open_market">Google Play</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_authors_fmt">Авторы: <xliff:g id="app_authors">%s</xliff:g></string>
+  <string name="authors">Авторы</string>
   <string name="app_revision">Изменения</string>
   <string name="app_libraries">Сторонние компоненты: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Чтение почты</string>
