@@ -50,8 +50,7 @@ class MigrationTo43 {
                 }
 
                 // Now get rid of the localized outbox
-                obsoleteOutbox.deleteSettings();
-                obsoleteOutbox.delete(true);
+                obsoleteOutbox.delete();
             }
         } catch (Exception e) {
             Timber.e(e, "Error trying to fix the outbox folders");

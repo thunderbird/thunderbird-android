@@ -29,7 +29,6 @@ import android.support.annotation.NonNull;
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
-import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.backend.api.MessageRemovalListener;
 import com.fsck.k9.crypto.EncryptionExtractor;
@@ -629,7 +628,7 @@ public class LocalFolder extends Folder<LocalMessage> {
         return getPrefId(serverId);
     }
 
-    public void deleteSettings() throws MessagingException {
+    private void deleteSettings() throws MessagingException {
         String id = getPrefId();
 
         StorageEditor editor = localStore.getPreferences().createStorageEditor();
@@ -1899,7 +1898,7 @@ public class LocalFolder extends Folder<LocalMessage> {
         setVisibleLimit(getAccount().getDisplayCount());
     }
 
-    public void delete(final boolean recurse) throws MessagingException {
+    public void delete() throws MessagingException {
         try {
             this.localStore.getDatabase().execute(false, new DbCallback<Void>() {
                 @Override
@@ -1922,6 +1921,8 @@ public class LocalFolder extends Folder<LocalMessage> {
         } catch (WrappedException e) {
             throw(MessagingException) e.getCause();
         }
+
+        deleteSettings();
     }
 
     @Override
