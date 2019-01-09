@@ -138,8 +138,6 @@ public abstract class Folder<T extends Message> {
         Timber.d("fetchPart() not implemented.");
     }
 
-    public abstract void delete(boolean recurse) throws MessagingException;
-
     public abstract String getServerId();
 
     public abstract String getName();

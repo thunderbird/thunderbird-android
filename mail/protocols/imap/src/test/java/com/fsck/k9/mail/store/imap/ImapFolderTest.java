@@ -1102,13 +1102,6 @@ public class ImapFolderTest {
         }
     }
 
-    @Test(expected = Error.class)
-    public void delete_notImplemented() throws Exception {
-        ImapFolder folder = createFolder("Folder");
-
-        folder.delete(false);
-    }
-
     @Test
     public void getMessageByUid_returnsNewImapMessageWithUidInFolder() throws Exception {
         ImapFolder folder = createFolder("Folder");

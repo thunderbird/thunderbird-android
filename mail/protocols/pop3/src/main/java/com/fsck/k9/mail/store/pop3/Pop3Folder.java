@@ -524,10 +524,6 @@ public class Pop3Folder extends Folder<Pop3Message> {
     }
 
     @Override
-    public void delete(boolean recurse) throws MessagingException {
-    }
-
-    @Override
     public void delete(List<? extends Message> msgs, String trashFolder) throws MessagingException {
         setFlags(msgs, Collections.singleton(Flag.DELETED), true);
     }

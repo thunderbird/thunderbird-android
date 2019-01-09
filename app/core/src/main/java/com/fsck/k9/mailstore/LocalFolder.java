@@ -1899,7 +1899,6 @@ public class LocalFolder extends Folder<LocalMessage> {
         setVisibleLimit(getAccount().getDisplayCount());
     }
 
-    @Override
     public void delete(final boolean recurse) throws MessagingException {
         try {
             this.localStore.getDatabase().execute(false, new DbCallback<Void>() {
