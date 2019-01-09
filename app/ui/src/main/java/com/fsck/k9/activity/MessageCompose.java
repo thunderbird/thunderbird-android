@@ -1,7 +1,6 @@
 package com.fsck.k9.activity;
 
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +13,6 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -661,7 +659,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     @Nullable
-    private MessageBuilder createMessageBuilder(boolean isDraft, ArrayList<Attachment> attachments) {
+    private MessageBuilder createMessageBuilder(boolean isDraft, List<Attachment> attachments) {
         MessageBuilder builder;
 
         ComposeCryptoStatus cryptoStatus = recipientPresenter.getCurrentCachedCryptoStatus();
@@ -738,7 +736,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         finishAfterDraftSaved = true;
-        performSaveAfterChecksWithoutResizing();
+        performSaveAfterChecks();
     }
 
     private void checkToSaveDraftImplicitly() {
@@ -751,67 +749,23 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         finishAfterDraftSaved = false;
-        performSaveAfterChecksWithoutResizing();
+        performSaveAfterChecks();
     }
 
-    private void performSaveAfterChecksWithoutResizing() {
-        currentMessageBuilder = createMessageBuilder(true, attachmentPresenter.createAttachmentListWithoutResizing());
+    private void performSaveAfterChecks() {
+        currentMessageBuilder = createMessageBuilder(true, attachmentPresenter.createAttachmentList());
         if (currentMessageBuilder != null) {
-            setProgressBarIndeterminateVisibility(true);
-            currentMessageBuilder.buildAsync(this);
-        }
-    }
-
-    public void performSendAfterChecksWithoutResizing() {
-        currentMessageBuilder = createMessageBuilder(false, attachmentPresenter.createAttachmentListWithoutResizing());
-        if (currentMessageBuilder != null) {
-            changesMadeSinceLastSave = false;
             setProgressBarIndeterminateVisibility(true);
             currentMessageBuilder.buildAsync(this);
         }
     }
 
     public void performSendAfterChecks() {
-        ResizeImageAttachments resizeImageAttachments = new ResizeImageAttachments();
-        resizeImageAttachments.execute(false);
-    }
-
-    public class ResizeImageAttachments extends AsyncTask<Boolean, Void, ArrayList<Attachment>> {
-        ProgressDialog progressDialog;
-        boolean isDraft = false;
-
-        @Override
-        protected void onPreExecute() {
-            progressDialog = new ProgressDialog(MessageCompose.this);
-            progressDialog.setIndeterminate(true);
-            progressDialog.setCancelable(false);
-            progressDialog.setMessage("Resizing image attachments");
-            progressDialog.show();
-        }
-
-        @Override
-        protected ArrayList<Attachment> doInBackground(Boolean... params) {
-            isDraft = params[0];
-            return attachmentPresenter.createAttachmentList();
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<Attachment> attachments) {
-            progressDialog.dismiss();
-            if (isDraft) {
-                currentMessageBuilder = createMessageBuilder(true, attachments);
-                if (currentMessageBuilder != null) {
-                    setProgressBarIndeterminateVisibility(true);
-                    currentMessageBuilder.buildAsync(MessageCompose.this);
-                }
-            } else {
-                currentMessageBuilder = createMessageBuilder(false, attachments);
-                if (currentMessageBuilder != null) {
-                    changesMadeSinceLastSave = false;
-                    setProgressBarIndeterminateVisibility(true);
-                    currentMessageBuilder.buildAsync(MessageCompose.this);
-                }
-            }
+        currentMessageBuilder = createMessageBuilder(false, attachmentPresenter.createAttachmentListWithResizedImages());
+        if (currentMessageBuilder != null) {
+            changesMadeSinceLastSave = false;
+            setProgressBarIndeterminateVisibility(true);
+            currentMessageBuilder.buildAsync(this);
         }
     }
 
@@ -1214,10 +1168,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     public void showResizeFactorDialog(final Attachment attachment) {
 
-        final TextView caption1 = new TextView(this);
-        final TextView caption2 = new TextView(this);
-        caption1.setText(getString(R.string.account_settings_resize_image_circumference));
-        caption2.setText(getString(R.string.account_settings_resize_image_quality));
+        TextView circumferenceCaption = new TextView(this);
+        TextView qualityCaption = new TextView(this);
+        circumferenceCaption.setText(getString(R.string.account_settings_resize_image_circumference));
+        qualityCaption.setText(getString(R.string.account_settings_resize_image_quality));
 
         final EditText circumferenceText = new EditText(this);
         final EditText qualityText = new EditText(this);
@@ -1232,11 +1186,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             qualityText.setText(Integer.toString(account.getResizeImageQuality()));
         }
 
-        final TableLayout tl = new TableLayout(this);
+        TableLayout tl = new TableLayout(this);
         tl.setPadding(50, 20, 50, 20);
-        tl.addView(caption1);
+        tl.addView(circumferenceCaption);
         tl.addView(circumferenceText);
-        tl.addView(caption2);
+        tl.addView(qualityCaption);
         tl.addView(qualityText);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
@@ -1889,12 +1843,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         @Override
         public void performSendAfterChecks() {
-            MessageCompose.this.performSendAfterChecksWithoutResizing();
+            MessageCompose.this.performSendAfterChecks();
         }
 
         @Override
         public void performSaveAfterChecks() {
-            MessageCompose.this.performSaveAfterChecksWithoutResizing();
+            MessageCompose.this.performSaveAfterChecks();
         }
 
         @Override

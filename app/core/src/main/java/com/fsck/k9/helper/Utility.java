@@ -1,10 +1,6 @@
 
 package com.fsck.k9.helper;
 
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -12,22 +8,15 @@ import java.util.regex.Pattern;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
-import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.fsck.k9.Account;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.util.MimeUtil;
 import timber.log.Timber;
 

@@ -9,6 +9,8 @@ import com.fsck.k9.Account;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
+
 
 /**
  * Container class for information about an attachment.
@@ -211,7 +213,7 @@ public class Attachment implements Parcelable, com.fsck.k9.message.Attachment {
         }
     };
 
-    public Attachment createResizedCopy(String newFilename, long newSize) {
-        return new Attachment(uri, LoadingState.COMPLETE, loaderId, contentType, allowMessageType, name, newSize, newFilename);
+    public Attachment createResizedCopy(File newFile) {
+        return new Attachment(uri, LoadingState.COMPLETE, loaderId, contentType, allowMessageType, name, newFile.length(), newFile.getAbsolutePath());
     }
 }

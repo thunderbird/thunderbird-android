@@ -2,8 +2,8 @@ package com.fsck.k9.helper;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 
 import com.fsck.k9.Account;
@@ -14,6 +14,7 @@ import org.apache.commons.io.IOUtils;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Locale;
 
 import timber.log.Timber;
 
@@ -24,45 +25,37 @@ public class ImageResizer {
      */
     private static final String RESIZED_IMAGES_TEMPORARY_DIRECTORY = "/tempAttachments/";
 
-    public String getResizedImageFile(Context context, Uri uri, int circumference, int quality) throws IOException {
+    public File getResizedImageFile(Context context, String filename, int circumference, int quality) throws IOException {
         File tempAttachmentsDirectory = getTempAttachmentsDirectory(context);
         tempAttachmentsDirectory.mkdirs();
 
-        File tempFile;
-        Bitmap bitmap = null;
-        Bitmap resized;
-        FileOutputStream out = null;
+        File tempFile = File.createTempFile("TempResizedAttachment", null, tempAttachmentsDirectory);
+        Bitmap bitmap = BitmapFactory.decodeFile(filename);
 
-        float factor = 0;
+        int newWidth;
+        int newHeight;
+        float factor = (bitmap.getWidth() + bitmap.getHeight() + 0f) / circumference;
+        if (factor <= 1.0f) {
+            newWidth = bitmap.getWidth();
+            newHeight = bitmap.getHeight();
+        } else {
+            newWidth = (int) (bitmap.getWidth() / factor);
+            newHeight = (int) (bitmap.getHeight() / factor);
 
-        try {
-            tempFile = File.createTempFile("TempResizedAttachment", null, tempAttachmentsDirectory);
-            bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
-
-            int newWidth;
-            int newHeight;
-
-            factor = (bitmap.getWidth() + bitmap.getHeight() + 0f) / circumference;
-            if (factor <= 1.0f) {
-                newWidth = bitmap.getWidth();
-                newHeight = bitmap.getHeight();
-            } else {
-                newWidth = (int) (bitmap.getWidth() / factor);
-                newHeight = (int) (bitmap.getHeight() / factor);
-
-                while (newWidth + newHeight < circumference) {
-                    if ((0f + bitmap.getWidth()) / newWidth >= (0f + bitmap.getHeight()) / newHeight)
-                        ++newWidth;
-                    else
-                        ++newHeight;
-                }
+            while (newWidth + newHeight < circumference) {
+                if ((0f + bitmap.getWidth()) / newWidth >= (0f + bitmap.getHeight()) / newHeight)
+                    ++newWidth;
+                else
+                    ++newHeight;
             }
+        }
 
-            resized = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
+        Bitmap resized = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
+        FileOutputStream out = null;
+        try {
             out = new FileOutputStream(tempFile);
             resized.compress(Bitmap.CompressFormat.JPEG, quality, out);
-
-            return tempFile.getAbsolutePath();
+            return tempFile;
         } finally {
             IOUtils.closeQuietly(out);
         }
@@ -82,7 +75,7 @@ public class ImageResizer {
     @NonNull
     private File getTempAttachmentsDirectory(Context context) {
         File cacheDir = context.getCacheDir();
-        return new File(cacheDir.getPath() + RESIZED_IMAGES_TEMPORARY_DIRECTORY);
+        return new File(cacheDir.getPath(), RESIZED_IMAGES_TEMPORARY_DIRECTORY);
     }
 
     /* simple helper methods. */

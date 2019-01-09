@@ -73,7 +73,7 @@ public class AttachmentPresenter {
 
     public void onSaveInstanceState(Bundle outState) {
         outState.putString(STATE_KEY_WAITING_FOR_ATTACHMENTS, actionToPerformAfterWaiting.name());
-        outState.putParcelableArrayList(STATE_KEY_ATTACHMENTS, createAttachmentListWithoutResizing());
+        outState.putParcelableArrayList(STATE_KEY_ATTACHMENTS, createAttachmentList());
         outState.putInt(STATE_KEY_NEXT_LOADER_ID, nextLoaderId);
     }
 
@@ -120,43 +120,37 @@ public class AttachmentPresenter {
         return false;
     }
 
-    public ArrayList<Attachment> createAttachmentListWithoutResizing() {
-        ArrayList<Attachment> result = new ArrayList<>();
-        for (Attachment attachment : attachments.values()) {
-            result.add(attachment);
-        }
-        return result;
+    public ArrayList<Attachment> createAttachmentList() {
+        return new ArrayList<>(attachments.values());
     }
 
-    public ArrayList<Attachment> createAttachmentList() {
+    public ArrayList<Attachment> createAttachmentListWithResizedImages() {
         ArrayList<Attachment> result = new ArrayList<>();
         for (Attachment attachment : attachments.values()) {
-            int resizeCircumference;
-            int resizeQuality;
-            if (account.isResizeImageEnabled() && !attachment.resizeImageOverrideDefault && ImageResizer.isImage(context, attachment.uri)) {
-                resizeCircumference = account.getResizeImageCircumference();
-                resizeQuality = account.getResizeImageQuality();
-            } else if (attachment.resizeImageOverrideDefault && ImageResizer.isImage(context, attachment.uri)) {
-                resizeCircumference = attachment.resizeImageCircumference;
-                resizeQuality = attachment.resizeImageQuality;
-            } else {
-                resizeCircumference = 0;
-                resizeQuality = 0;
+            int resizeCircumference = 0;
+            int resizeQuality = 0;
+
+            if (ImageResizer.isImage(context, attachment.uri)) {
+                if (account.isResizeImageEnabled() && !attachment.resizeImageOverrideDefault) {
+                    resizeCircumference = account.getResizeImageCircumference();
+                    resizeQuality = account.getResizeImageQuality();
+                } else if (attachment.resizeImageOverrideDefault) {
+                    resizeCircumference = attachment.resizeImageCircumference;
+                    resizeQuality = attachment.resizeImageQuality;
+                }
             }
 
             if (resizeCircumference != 0) {
                 try {
-                    String newFilename = imageResizer.getResizedImageFile(context, attachment.uri, resizeCircumference, resizeQuality);
-                    long size = (new File(newFilename)).length();
-                    Attachment newAttachment = attachment.createResizedCopy(newFilename, size);
+                    File newFile = imageResizer.getResizedImageFile(context, attachment.filename, resizeCircumference, resizeQuality);
+                    Attachment newAttachment = attachment.createResizedCopy(newFile);
                     result.add(newAttachment);
-                    return result;
                 } catch (IOException ioe) {
                     Timber.i("image resizing failed for " + attachment.uri + " circumference=" + resizeCircumference + ", quality=" + resizeQuality);
                 }
+            } else {
+                result.add(attachment);
             }
-
-            result.add(attachment);
         }
         return result;
     }
