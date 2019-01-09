@@ -88,7 +88,8 @@ public class ImageResizer {
     /* simple helper methods. */
 
     public static boolean isImage(Context context, Uri uri) {
-        return context.getContentResolver().getType(uri).contains("image");
+        String mimeType = context.getContentResolver().getType(uri);
+        return mimeType != null && mimeType.toLowerCase(Locale.ROOT).startsWith("image/");
     }
 
     public static int convertResizeImageCircumference(String resizeCircumferenceS) {
