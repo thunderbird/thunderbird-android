@@ -222,11 +222,6 @@ public class WebDavFolder extends Folder<WebDavMessage> {
     }
 
     @Override
-    public void delete(boolean recursive) throws MessagingException {
-        throw new Error("WebDavFolder.delete() not implemeneted");
-    }
-
-    @Override
     public WebDavMessage getMessage(String uid) throws MessagingException {
         return new WebDavMessage(uid, this);
     }
