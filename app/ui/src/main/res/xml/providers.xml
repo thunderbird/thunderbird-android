@@ -748,4 +748,136 @@
         <incoming uri="imap+ssl+://imap.bestpractical.com"  username="$user" />
         <outgoing uri="smtp+tls+://smtp.bestpractical.com:2525" />
     </provider>
+
+    <!-- EMEA -->
+    <!-- Wittmer eMail -->
+    <provider id="wittmer.email" label="Wittmer eMail" domain="wittmer.email">
+        <incoming uri="imap+tls+:imap.wittmer.email" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.email" username="$email" />
+    </provider>
+    <provider id="wittmer.de" label="Wittmer" domain="wittmer.de">
+        <incoming uri="imap+tls+:imap.wittmer.email" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.email" username="$email" />
+    </provider>
+    <provider id="wittmer.hosting" label="Wittmer Hosting" domain="wittmer.hosting">
+        <incoming uri="imap+tls+:imap.wittmer.email" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.email" username="$email" />
+    </provider>
+    <provider id="computersalat" label="computersalat" domain="computersalat.de">
+        <incoming uri="imap+tls+:imap.wittmer.email" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.email" username="$email" />
+    </provider>
+    <provider id="sitcom" label="sitcom" domain="scorpio-it.com">
+        <incoming uri="imap+tls+:imap.wittmer.email" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.email" username="$email" />
+    </provider>
+    <provider id="sitde" label="sitde" domain="scorpio-it.de">
+        <incoming uri="imap+tls+:imap.wittmer.email" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.email" username="$email" />
+    </provider>
+    <provider id="sitnet" label="sitnet" domain="scorpio-it.net">
+        <incoming uri="imap+tls+:imap.wittmer.email" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.email" username="$email" />
+    </provider>
+    <!-- Wittmer MX -->
+    <provider id="aid" label="aid" domain="aid-stuttgart.de">
+        <incoming uri="imap+tls+:imap.wittmer.mx" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.mx" username="$email" />
+    </provider>
+    <provider id="bridal-gown4.lease" label="Bridal Gown 4 Lease" domain="bridal-gown4.lease">
+        <incoming uri="imap+tls+:imap.wittmer.mx" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.mx" username="$email" />
+    </provider>
+    <provider id="florian-wittmer.de" label="Wittmer Haare Ästhetik" domain="florian-wittmer.de">
+        <incoming uri="imap+tls+:imap.wittmer.mx" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.mx" username="$email" />
+    </provider>
+    <provider id="friseer.ch" label="Friseer" domain="friseer.ch">
+        <incoming uri="imap+tls+:imap.wittmer.mx" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.mx" username="$email" />
+    </provider>
+    <provider id="gradina-heizung.de" label="Gradina Heizung Klima Sanitär" domain="gradina-heizung.de">
+        <incoming uri="imap+tls+:imap.wittmer.mx" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.mx" username="$email" />
+    </provider>
+    <provider id="haarstudio-wittmer.de" label="Wittmer Haare Ästhetik" domain="haarstudio-wittmer.de">
+        <incoming uri="imap+tls+:imap.wittmer.mx" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.mx" username="$email" />
+    </provider>
+    <provider id="hvrichter.de" label="HV Richter" domain="hvrichter.de">
+        <incoming uri="imap+tls+:imap.wittmer.mx" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.mx" username="$email" />
+    </provider>
+    <provider id="intersexkenya.org" label="Intersex Kenya" domain="intersexkenya.org">
+        <incoming uri="imap+tls+:imap.wittmer.mx" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.mx" username="$email" />
+    </provider>
+    <provider id="ivakale.com" label="Ivakale" domain="ivakale.com">
+        <incoming uri="imap+tls+:imap.wittmer.mx" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.mx" username="$email" />
+    </provider>
+    <provider id="ivakale.consulting" label="Ivakale Consulting" domain="ivakale.consulting">
+        <incoming uri="imap+tls+:imap.wittmer.mx" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.mx" username="$email" />
+    </provider>
+    <provider id="kifalme-movers.com" label="Kifalme Movers" domain="kifalme-movers.com">
+        <incoming uri="imap+tls+:imap.wittmer.mx" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.mx" username="$email" />
+    </provider>
+    <provider id="koehler-ruprecht.com" label="Weingut Koehler Ruprecht" domain="koehler-ruprecht.com">
+        <incoming uri="imap+tls+:imap.wittmer.mx" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.mx" username="$email" />
+    </provider>
+    <provider id="maiwalt.de" label="Maiwalt" domain="maiwalt.de">
+        <incoming uri="imap+tls+:imap.wittmer.mx" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.mx" username="$email" />
+    </provider>
+    <provider id="mgelektronik.com" label="MG Elektronik" domain="mgelektronik.com">
+        <incoming uri="imap+tls+:imap.wittmer.mx" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.mx" username="$email" />
+    </provider>
+    <provider id="mubezi.com" label="Mubezi" domain="mubezi.com">
+        <incoming uri="imap+tls+:imap.wittmer.mx" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.mx" username="$email" />
+    </provider>
+    <provider id="natuerlich-deko.de" label="Natuerlich Deko" domain="natuerlich-deko.de">
+        <incoming uri="imap+tls+:imap.wittmer.mx" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.mx" username="$email" />
+    </provider>
+    <provider id="ow-genuss.de" label="OW Genuss" domain="ow-genuss.de">
+        <incoming uri="imap+tls+:imap.wittmer.mx" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.mx" username="$email" />
+    </provider>
+    <provider id="privadmin.ch" label="PrivAdmin CH" domain="privadmin.ch">
+        <incoming uri="imap+tls+:imap.wittmer.mx" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.mx" username="$email" />
+    </provider>
+    <provider id="schreinerei-kintzel.de" label="Schreinerei Kintzel" domain="schreinerei-kintzel.de">
+        <incoming uri="imap+tls+:imap.wittmer.mx" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.mx" username="$email" />
+    </provider>
+    <provider id="shesatomboy.com" label="Shes A Tomboy" domain="shesatomboy.com">
+        <incoming uri="imap+tls+:imap.wittmer.mx" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.mx" username="$email" />
+    </provider>
+    <provider id="shukran-afro-shop.de" label="shukran afro shop" domain="shukran-afro-shop.de">
+        <incoming uri="imap+tls+:imap.wittmer.mx" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.mx" username="$email" />
+    </provider>
+    <provider id="shukran-afro.shop" label="shukran afro shop" domain="shukran-afro.shop">
+        <incoming uri="imap+tls+:imap.wittmer.mx" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.mx" username="$email" />
+    </provider>
+    <provider id="submilla.de" label="submilla" domain="submilla.de">
+        <incoming uri="imap+tls+:imap.wittmer.mx" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.mx" username="$email" />
+    </provider>
+    <provider id="zipelius.de" label="Architekturbüro Zipelius" domain="zipelius.de">
+        <incoming uri="imap+tls+:imap.wittmer.mx" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.mx" username="$email" />
+    </provider>
+    <provider id="zukunft-lankwitz.de" label="Zukunft Lankwitz" domain="zukunft-lankwitz.de">
+        <incoming uri="imap+tls+:imap.wittmer.mx" username="$email" />
+        <outgoing uri="smtp+tls+:smtp.wittmer.mx" username="$email" />
+    </provider>
 </providers>
