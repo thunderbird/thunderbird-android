@@ -1,5 +1,6 @@
 # K-9 Mail
 [![Build Status](https://k9mail.ci.cloudbees.com/job/master/badge/icon)](https://k9mail.ci.cloudbees.com/job/master/)
+[![Latest release](https://img.shields.io/github/release/k9mail/k-9.svg?style=flat-square)](https://github.com/k9mail/k-9/releases/latest)
 [![Join the chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/k9mail/k-9)
 
 K-9 Mail is an open-source email client for Android.
