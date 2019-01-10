@@ -14,9 +14,13 @@ import java.util.Date;
 import java.util.List;
 
 import com.fsck.k9.Account.QuoteStyle;
+import com.fsck.k9.Core;
 import com.fsck.k9.CoreResourceProvider;
+import com.fsck.k9.DI;
 import com.fsck.k9.Identity;
+import com.fsck.k9.KoinModuleKt;
 import com.fsck.k9.RobolectricTest;
+import com.fsck.k9.TestApp;
 import com.fsck.k9.TestCoreResourceProvider;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.BodyPart;
@@ -32,7 +36,10 @@ import com.fsck.k9.message.quote.InsertableHtmlContent;
 
 import org.jetbrains.annotations.Nullable;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import org.koin.standalone.StandAloneContext;
+import org.koin.standalone.StandAloneKoinContext;
 import org.mockito.ArgumentCaptor;
 import org.robolectric.Robolectric;
 
@@ -191,9 +198,16 @@ public class MessageBuilderTest extends RobolectricTest {
     private CoreResourceProvider resourceProvider = new TestCoreResourceProvider();
     private Callback callback;
 
+    @BeforeClass
+    public static void init() {
+        ArrayList l = new ArrayList();
+        l.add(KoinModuleKt.getMainModule());
+        DI.start(new TestApp(), l);
+    }
 
     @Before
     public void setUp() throws Exception {
+
         messageIdGenerator = mock(MessageIdGenerator.class);
         when(messageIdGenerator.generateMessageId(any(Message.class))).thenReturn(TEST_MESSAGE_ID);
 
