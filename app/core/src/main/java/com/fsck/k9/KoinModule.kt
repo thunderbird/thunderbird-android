@@ -25,5 +25,5 @@ val mainModule = applicationContext {
     bean { LocalKeyStoreManager(get()) }
     bean { DefaultTrustedSocketFactory(get(), get()) as TrustedSocketFactory }
     bean { Clock.INSTANCE }
-    bean { ImageResizer() }
+    bean { ImageResizer(get()) }
 }

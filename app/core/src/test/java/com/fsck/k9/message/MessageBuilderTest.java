@@ -1,6 +1,8 @@
 package com.fsck.k9.message;
 
 
+import android.net.Uri;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -27,6 +29,8 @@ import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.message.MessageBuilder.Callback;
 import com.fsck.k9.message.quote.InsertableHtmlContent;
+
+import org.jetbrains.annotations.Nullable;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -362,6 +366,37 @@ public class MessageBuilderTest extends RobolectricTest {
         fileOutputStream.close();
 
         return new Attachment() {
+            @Override
+            public void setResizeImagesEnabled(boolean b) {
+                // dummy
+            }
+
+            @Override
+            public boolean getResizeImagesEnabled() {
+                return false;
+            }
+
+            @Override
+            public int getResizeImageQuality() {
+                return 0;
+            }
+
+            @Override
+            public int getResizeImageCircumference() {
+                return 0;
+            }
+
+            @Override
+            public void setSize(@Nullable Long aLong) {
+                // dummy
+            }
+
+            @Nullable
+            @Override
+            public Uri getUri() {
+                return null;
+            }
+
             @Override
             public Long getSize() {
                 return (long) bytes.length;

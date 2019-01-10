@@ -1,8 +1,6 @@
 package com.fsck.k9.activity.compose;
 
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
@@ -13,25 +11,21 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 
-import com.fsck.k9.Account;
-import com.fsck.k9.DI;
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.AttachErrorState;
 import com.fsck.k9.activity.loader.AttachmentContentLoader;
 import com.fsck.k9.activity.loader.AttachmentInfoLoader;
 import com.fsck.k9.activity.misc.Attachment;
 import com.fsck.k9.controller.MessageReference;
-import com.fsck.k9.helper.ImageResizer;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.message.Attachment.LoadingState;
 import com.fsck.k9.provider.RawMessageProvider;
-
-import timber.log.Timber;
 
 
 public class AttachmentPresenter {
@@ -48,7 +42,6 @@ public class AttachmentPresenter {
     // injected state
     private final Context context;
     private final AttachmentMvpView attachmentMvpView;
-    private final Account account;
     private final LoaderManager loaderManager;
     private final AttachmentsChangedListener listener;
 
@@ -57,16 +50,12 @@ public class AttachmentPresenter {
     private int nextLoaderId = 0;
     private WaitingAction actionToPerformAfterWaiting = WaitingAction.NONE;
 
-    private ImageResizer imageResizer;
-
-    public AttachmentPresenter(Context context, AttachmentMvpView attachmentMvpView, Account account, LoaderManager loaderManager,
+    public AttachmentPresenter(Context context, AttachmentMvpView attachmentMvpView, LoaderManager loaderManager,
                                AttachmentsChangedListener listener) {
         this.context = context;
         this.attachmentMvpView = attachmentMvpView;
-        this.account = account;
         this.loaderManager = loaderManager;
         this.listener = listener;
-        this.imageResizer = DI.get(ImageResizer.class);
 
         attachments = new LinkedHashMap<>();
     }
@@ -124,37 +113,6 @@ public class AttachmentPresenter {
         return new ArrayList<>(attachments.values());
     }
 
-    public ArrayList<Attachment> createAttachmentListWithResizedImages() {
-        ArrayList<Attachment> result = new ArrayList<>();
-        for (Attachment attachment : attachments.values()) {
-            int resizeCircumference = 0;
-            int resizeQuality = 0;
-
-            if (ImageResizer.isImage(context, attachment.uri)) {
-                if (account.isResizeImageEnabled() && !attachment.resizeImageOverrideDefault) {
-                    resizeCircumference = account.getResizeImageCircumference();
-                    resizeQuality = account.getResizeImageQuality();
-                } else if (attachment.resizeImageOverrideDefault) {
-                    resizeCircumference = attachment.resizeImageCircumference;
-                    resizeQuality = attachment.resizeImageQuality;
-                }
-            }
-
-            if (resizeCircumference != 0) {
-                try {
-                    File newFile = imageResizer.getResizedImageFile(context, attachment.filename, resizeCircumference, resizeQuality);
-                    Attachment newAttachment = attachment.createResizedCopy(newFile);
-                    result.add(newAttachment);
-                } catch (IOException ioe) {
-                    Timber.i("image resizing failed for " + attachment.uri + " circumference=" + resizeCircumference + ", quality=" + resizeQuality);
-                }
-            } else {
-                result.add(attachment);
-            }
-        }
-        return result;
-    }
-
     public void onClickAddAttachment(RecipientPresenter recipientPresenter) {
         ComposeCryptoStatus currentCachedCryptoStatus = recipientPresenter.getCurrentCachedCryptoStatus();
         if (currentCachedCryptoStatus == null) {
@@ -190,6 +148,11 @@ public class AttachmentPresenter {
 
     public void addAttachment(Uri uri, String contentType) {
         addAttachment(uri, contentType, false);
+    }
+
+    @Nullable
+    public Attachment getAttachment(Uri uri) {
+        return attachments.get(uri);
     }
 
     private void addAttachment(Uri uri, String contentType, boolean allowMessageType) {
@@ -400,11 +363,6 @@ public class AttachmentPresenter {
         attachmentMvpView.removeAttachmentView(attachment);
         attachments.remove(uri);
         listener.onAttachmentRemoved();
-    }
-
-    public void updateAttachmentsList(Attachment attachment) {
-        Attachment originalAttachment = attachments.get(attachment.uri);
-        originalAttachment.updateResizeInfo(attachment.resizeImageCircumference, attachment.resizeImageQuality, attachment.resizeImageOverrideDefault);
     }
 
     public void onActivityResult(int resultCode, int requestCode, Intent data) {

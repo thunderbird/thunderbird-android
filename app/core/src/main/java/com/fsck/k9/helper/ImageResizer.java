@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.message.Attachment;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -14,6 +15,8 @@ import org.apache.commons.io.IOUtils;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import timber.log.Timber;
@@ -25,12 +28,46 @@ public class ImageResizer {
      */
     private static final String RESIZED_IMAGES_TEMPORARY_DIRECTORY = "/tempAttachments/";
 
-    public File getResizedImageFile(Context context, String filename, int circumference, int quality) throws IOException {
-        File tempAttachmentsDirectory = getTempAttachmentsDirectory(context);
+    private final Context context;
+
+
+    public ImageResizer(Context context) {
+        this.context = context;
+    }
+
+    public ArrayList<Attachment> createAttachmentListWithResizedImages(List<? extends Attachment> attachments) {
+        ArrayList<Attachment> result = new ArrayList<>();
+        for (Attachment attachment : attachments) {
+            int resizeCircumference;
+            int resizeQuality;
+
+            if (attachment.getResizeImagesEnabled() && isImage(context, attachment.getUri())) {
+                    resizeCircumference = attachment.getResizeImageCircumference();
+                    resizeQuality = attachment.getResizeImageQuality();
+            } else{
+                resizeCircumference = 0;
+                resizeQuality = 0;
+            }
+
+            if (resizeCircumference != 0) {
+                try {
+                    resizeImageFile(attachment, resizeCircumference, resizeQuality);
+                } catch (IOException ioe) {
+                    Timber.i("image resizing failed for " + attachment.getFileName() + " circumference=" + resizeCircumference + ", quality=" + resizeQuality);
+                }
+            }
+
+            result.add(attachment);
+        }
+        return result;
+    }
+
+
+    private void resizeImageFile(Attachment attachment, int circumference, int quality) throws IOException {
+        File tempAttachmentsDirectory = getTempAttachmentsDirectory();
         tempAttachmentsDirectory.mkdirs();
 
-        File tempFile = File.createTempFile("TempResizedAttachment", null, tempAttachmentsDirectory);
-        Bitmap bitmap = BitmapFactory.decodeFile(filename);
+        Bitmap bitmap = BitmapFactory.decodeFile(attachment.getFileName());
 
         int newWidth;
         int newHeight;
@@ -52,28 +89,21 @@ public class ImageResizer {
 
         Bitmap resized = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
         FileOutputStream out = null;
+        File tempFile = null;
         try {
+            tempFile = File.createTempFile("TempResizedAttachment", null, tempAttachmentsDirectory);
             out = new FileOutputStream(tempFile);
             resized.compress(Bitmap.CompressFormat.JPEG, quality, out);
-            return tempFile;
+            FileUtils.copyFile(tempFile, new File(attachment.getFileName()));
+            attachment.setSize(tempFile.length());
         } finally {
             IOUtils.closeQuietly(out);
-        }
-    }
-
-    public void clearTemporaryAttachmentsCache(Context context) {
-        File tempAttachmentsDirectory = getTempAttachmentsDirectory(context);
-        if (tempAttachmentsDirectory.exists()) {
-            try {
-                FileUtils.cleanDirectory(tempAttachmentsDirectory);
-            } catch (IOException e) {
-                Timber.e(e, "Error occurred while cleaning temporary directory for resized attachments");
-            }
+            FileUtils.deleteQuietly(tempFile);
         }
     }
 
     @NonNull
-    private File getTempAttachmentsDirectory(Context context) {
+    private File getTempAttachmentsDirectory() {
         File cacheDir = context.getCacheDir();
         return new File(cacheDir.getPath(), RESIZED_IMAGES_TEMPORARY_DIRECTORY);
     }
@@ -84,6 +114,7 @@ public class ImageResizer {
         String mimeType = context.getContentResolver().getType(uri);
         return mimeType != null && mimeType.toLowerCase(Locale.ROOT).startsWith("image/");
     }
+
 
     public static int convertResizeImageCircumference(String resizeCircumferenceS) {
         int resizeCircumference = Account.DEFAULT_RESIZE_IMAGE_CIRCUMFERENCE;

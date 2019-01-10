@@ -85,7 +85,7 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public static final boolean DEFAULT_RESIZE_IMAGE_ENABLED = false;
-    public static final int DEFAULT_RESIZE_IMAGE_CIRCUMFERENCE = 2444;
+    public static final int DEFAULT_RESIZE_IMAGE_CIRCUMFERENCE = 2404;
     public static final int DEFAULT_RESIZE_IMAGE_QUALITY = 90;
 
     public enum SortType {

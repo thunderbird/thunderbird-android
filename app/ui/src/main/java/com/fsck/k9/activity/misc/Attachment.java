@@ -9,8 +9,6 @@ import com.fsck.k9.Account;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
-
 
 /**
  * Container class for information about an attachment.
@@ -59,7 +57,7 @@ public class Attachment implements Parcelable, com.fsck.k9.message.Attachment {
      *
      * Valid iff {@link #state} is {@link LoadingState#METADATA} or {@link LoadingState#COMPLETE}.
      */
-    public final Long size;
+    public Long size;
 
     /**
      * The name of the temporary file containing the local copy of the attachment.
@@ -73,16 +71,16 @@ public class Attachment implements Parcelable, com.fsck.k9.message.Attachment {
      *
      * Valid iff {@link #state} is {@link LoadingState#COMPLETE}.
      */
-    public int resizeImageCircumference = Account.DEFAULT_RESIZE_IMAGE_CIRCUMFERENCE;
+    private int resizeImageCircumference = Account.DEFAULT_RESIZE_IMAGE_CIRCUMFERENCE;
 
-    public int resizeImageQuality = Account.DEFAULT_RESIZE_IMAGE_QUALITY;
+    private int resizeImageQuality = Account.DEFAULT_RESIZE_IMAGE_QUALITY;
 
     /**
-     * Stores whether default resized settings need to be overridden.
+     * Stores whether image resizing is enabled for this attachment.
      * <p>
      * Valid iff {@link #state} is {@link LoadingState#COMPLETE}.
      */
-    public boolean resizeImageOverrideDefault = false;
+    private boolean resizeImagesEnabled = false;
 
     @NotNull
     @Override
@@ -112,6 +110,27 @@ public class Attachment implements Parcelable, com.fsck.k9.message.Attachment {
     @Override
     public Long getSize() {
         return size;
+    }
+
+    @Override
+    public void setSize(Long size) { this.size = size; }
+
+    @Override
+    public int getResizeImageCircumference() { return resizeImageCircumference; }
+
+    @Override
+    public int getResizeImageQuality() { return resizeImageQuality; }
+
+    @Override
+    public boolean getResizeImagesEnabled() { return resizeImagesEnabled; }
+
+    @Override
+    public void setResizeImagesEnabled(boolean resizeImagesEnabled) { this.resizeImagesEnabled = resizeImagesEnabled; }
+
+    @Nullable
+    @Override
+    public Uri getUri() {
+        return uri;
     }
 
     private Attachment(Uri uri, LoadingState state, int loaderId, String contentType, boolean allowMessageType,
@@ -170,10 +189,10 @@ public class Attachment implements Parcelable, com.fsck.k9.message.Attachment {
                 size, absolutePath);
     }
 
-    public void updateResizeInfo(int resizeCircumference, int resizeQuality, boolean overrideDefault) {
+    public void updateResizeInfo(int resizeCircumference, int resizeQuality, boolean resizeImagesEnabled) {
         this.resizeImageCircumference = resizeCircumference;
         this.resizeImageQuality = resizeQuality;
-        this.resizeImageOverrideDefault = overrideDefault;
+        this.resizeImagesEnabled = resizeImagesEnabled;
     }
 
     // === Parcelable ===
@@ -212,8 +231,4 @@ public class Attachment implements Parcelable, com.fsck.k9.message.Attachment {
             return new Attachment[size];
         }
     };
-
-    public Attachment createResizedCopy(File newFile) {
-        return new Attachment(uri, LoadingState.COMPLETE, loaderId, contentType, allowMessageType, name, newFile.length(), newFile.getAbsolutePath());
-    }
 }
