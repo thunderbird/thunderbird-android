@@ -14,7 +14,7 @@ K-9 Mail can be downloaded from a couple of sources:
 - [Google Play](https://play.google.com/store/apps/details?id=com.fsck.k9)
 - [F-Droid](https://f-droid.org/repository/browse/?fdid=com.fsck.k9)
 - [Github Releases](https://github.com/k9mail/k-9/releases)
-- [Amazon Appstore for Android](http://www.amazon.com/dp/B004JK61K0)
+- [Amazon Appstore for Android](https://www.amazon.com/dp/B004JK61K0)
 
 You might also be interested in becoming a [tester](https://play.google.com/apps/testing/com.fsck.k9) to get an early look at new versions.
 
@@ -31,7 +31,7 @@ If the app is not behaving like it should, you might find these resources helpfu
 
 - [User Manual](https://k9mail.github.io/documentation.html)
 - [Frequently Asked Questions](https://k9mail.github.io/documentation/faq.html)
-- [Support Forum/Mailing List](http://groups.google.com/group/k-9-mail)
+- [Support Forum/Mailing List](https://groups.google.com/group/k-9-mail)
 - [Google+ Community](https://plus.google.com/communities/109228641058741937099)
 
 
@@ -44,9 +44,9 @@ https://www.transifex.com/projects/p/k9mail/
 
 ## Design
 
-A re-design is underway. You can contribute, view updates and access design files here: 
+A re-design is underway. You can contribute and view updates here:
 
-https://github.com/k9mail/k-9-design
+https://github.com/k9mail/k-9/projects
 
 
 ## Contributing
@@ -63,7 +63,7 @@ Please make sure you read the [Code Style Guidelines](https://github.com/k9mail/
 Aside from discussing changes in [pull requests](https://github.com/k9mail/k-9/pulls) and
 [issues](https://github.com/k9mail/k-9/issues) we use the following communication services:
 
-- IRC chat, [#k-9 on the Freenode network](http://webchat.freenode.net/?channels=%23k-9)
+- IRC chat, [#k-9 on the Freenode network](https://webchat.freenode.net/?channels=%23k-9)
 - [Gitter](https://gitter.im/k9mail/k-9)
 - [Developer mailing list](https://groups.google.com/forum/#!forum/k-9-dev)
 
