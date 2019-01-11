@@ -114,6 +114,10 @@ public class AttachmentPresenter {
         return new ArrayList<>(attachments.values());
     }
 
+    public List<com.fsck.k9.message.Attachment> getAttachments() {
+        return new ArrayList<com.fsck.k9.message.Attachment>(attachments.values());
+    }
+
     public void onClickAddAttachment(RecipientPresenter recipientPresenter) {
         ComposeCryptoStatus currentCachedCryptoStatus = recipientPresenter.getCurrentCachedCryptoStatus();
         if (currentCachedCryptoStatus == null) {

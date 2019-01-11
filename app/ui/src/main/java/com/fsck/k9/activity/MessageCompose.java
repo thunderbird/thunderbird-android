@@ -682,9 +682,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             recipientPresenter.builderSetProperties(builder);
         }
 
-        List<Attachment> attachments = attachmentPresenter.createAttachmentList();
+        List<com.fsck.k9.message.Attachment> attachments = attachmentPresenter.getAttachments();
         if (account.isResizeImageEnabled()) {
-            for (Attachment attachment : attachments) {
+            for (com.fsck.k9.message.Attachment attachment : attachments) {
                 attachment.setResizeImagesEnabled(true);
             }
         }
