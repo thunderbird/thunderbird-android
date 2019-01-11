@@ -3,6 +3,7 @@ package com.fsck.k9.activity.compose;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.ClipData;

@@ -304,7 +304,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         QuotedMessageMvpView quotedMessageMvpView = new QuotedMessageMvpView(this);
         quotedMessagePresenter = new QuotedMessagePresenter(this, quotedMessageMvpView, account);
-        attachmentPresenter = new AttachmentPresenter(getApplicationContext(), attachmentMvpView, getSupportLoaderManager(), this);
+        attachmentPresenter = new AttachmentPresenter(getApplicationContext(), attachmentMvpView,
+                getSupportLoaderManager(), this);
 
         messageContentView = findViewById(R.id.message_content);
         messageContentView.getInputExtras(true).putBoolean("allowEmoji", true);
@@ -657,7 +658,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     @Nullable
-    private MessageBuilder createMessageBuilder(boolean isDraft, List<Attachment> attachments) {
+    private MessageBuilder createMessageBuilder(boolean isDraft) {
         MessageBuilder builder;
 
         ComposeCryptoStatus cryptoStatus = recipientPresenter.getCurrentCachedCryptoStatus();
@@ -681,6 +682,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             recipientPresenter.builderSetProperties(builder);
         }
 
+        List<Attachment> attachments = attachmentPresenter.createAttachmentList();
         if (account.isResizeImageEnabled()) {
             for (Attachment attachment : attachments) {
                 attachment.setResizeImagesEnabled(true);
@@ -757,7 +759,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void performSaveAfterChecks() {
-        currentMessageBuilder = createMessageBuilder(true, attachmentPresenter.createAttachmentList());
+        currentMessageBuilder = createMessageBuilder(true);
         if (currentMessageBuilder != null) {
             setProgressBarIndeterminateVisibility(true);
             currentMessageBuilder.buildAsync(this);
@@ -765,7 +767,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     public void performSendAfterChecks() {
-        currentMessageBuilder = createMessageBuilder(false, attachmentPresenter.createAttachmentList());
+        currentMessageBuilder = createMessageBuilder(false);
         if (currentMessageBuilder != null) {
             changesMadeSinceLastSave = false;
             setProgressBarIndeterminateVisibility(true);

@@ -296,7 +296,7 @@ class AccountPreferenceSerializer(
             editor.putBoolean("$accountUuid.enabled", isEnabled)
             editor.putBoolean("$accountUuid.markMessageAsReadOnView", isMarkMessageAsReadOnView)
             editor.putBoolean("$accountUuid.alwaysShowCcBcc", isAlwaysShowCcBcc)
-            
+
             editor.putBoolean("$accountUuid.resizeImageEnabled", isResizeImageEnabled)
             editor.putString("$accountUuid.resizeImageCircumference", Integer.toString(resizeImageCircumference))
             editor.putString("$accountUuid.resizeImageQuality", Integer.toString(resizeImageQuality))
@@ -422,7 +422,7 @@ class AccountPreferenceSerializer(
         editor.remove("$accountUuid.messageFormat")
         editor.remove("$accountUuid.messageReadReceipt")
         editor.remove("$accountUuid.notifyMailCheck")
-        
+
         editor.remove("$accountUuid.resizeImageEnabled")
         editor.remove("$accountUuid.resizeImageCircumference")
         editor.remove("$accountUuid.resizeImageQuality")
@@ -564,7 +564,7 @@ class AccountPreferenceSerializer(
             isEnabled = true
             isMarkMessageAsReadOnView = true
             isAlwaysShowCcBcc = false
-            
+
             isResizeImageEnabled = DEFAULT_RESIZE_IMAGE_ENABLED
             resizeImageCircumference = DEFAULT_RESIZE_IMAGE_CIRCUMFERENCE
             resizeImageQuality = DEFAULT_RESIZE_IMAGE_QUALITY

@@ -56,7 +56,7 @@ public abstract class MessageBuilder {
     private Identity identity;
     private SimpleMessageFormat messageFormat;
     private String text;
-    private List<? extends Attachment> attachments;
+    private List<Attachment> attachments;
     private String signature;
     private QuoteStyle quoteStyle;
     private QuotedTextMode quotedTextMode;
@@ -396,7 +396,7 @@ public abstract class MessageBuilder {
         return this;
     }
 
-    public MessageBuilder setAttachments(List<? extends Attachment> attachments) {
+    public MessageBuilder setAttachments(List<Attachment> attachments) {
         this.attachments = attachments;
         return this;
     }

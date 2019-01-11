@@ -20,14 +20,8 @@ import java.util.Locale;
 import timber.log.Timber;
 
 public class ImageResizer {
-    /**
-     * The path of the temporary directory that is used to store resized image attachments.
-     * The directory is cleaned as soon as message is sent.
-     */
-    private static final String TEMP_IMAGE_RESIZE_BASE = "/tempImageResize-";
 
     private final Context context;
-
 
     public ImageResizer(Context context) {
         this.context = context;
@@ -83,7 +77,7 @@ public class ImageResizer {
         Bitmap resized = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true);
         FileOutputStream out = null;
         File attachmentFile = new File(attachment.getFileName());
-        File tempFile = new File(attachmentFile.getParentFile(), TEMP_IMAGE_RESIZE_BASE + System.currentTimeMillis());
+        File tempFile = new File(attachmentFile.getParentFile(), attachmentFile.getName() + "." + System.currentTimeMillis());
         try {
             // and apply the JPEG setting.
             out = new FileOutputStream(tempFile);
