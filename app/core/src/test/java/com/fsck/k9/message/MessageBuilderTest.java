@@ -418,6 +418,10 @@ public class MessageBuilderTest extends K9RobolectricTest {
             }
 
             @Override
+            public void setFileName(@Nullable String aString) {
+                // dummy
+            }
+            @Override
             public LoadingState getState() {
                 return LoadingState.COMPLETE;
             }

@@ -222,9 +222,10 @@ public abstract class MessageBuilder {
      */
     private void addAttachmentsToMessage(final MimeMultipart mp) throws MessagingException {
 
-        List<Attachment> resizedAttachments = imageResizer.createAttachmentListWithResizedImages(attachments);
+        // resize attached images according to each attachment's settings.
+        imageResizer.createAttachmentListWithResizedImages(attachments);
 
-        for (Attachment attachment : resizedAttachments) {
+        for (Attachment attachment : attachments) {
             if (attachment.getState() != Attachment.LoadingState.COMPLETE) {
                 continue;
             }

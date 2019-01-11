@@ -64,7 +64,7 @@ public class Attachment implements Parcelable, com.fsck.k9.message.Attachment {
      *
      * Valid iff {@link #state} is {@link LoadingState#COMPLETE}.
      */
-    public final String filename;
+    public String filename;
 
     /**
      * The resize values: resizeImageCircumference and resizeImageQuality
@@ -93,6 +93,9 @@ public class Attachment implements Parcelable, com.fsck.k9.message.Attachment {
     public String getFileName() {
         return filename;
     }
+
+    @Override
+    public void setFileName(String filename) { this.filename = filename; }
 
     @Nullable
     @Override
