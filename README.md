@@ -1,7 +1,6 @@
 # K-9 Mail
 [![Build Status](https://k9mail.ci.cloudbees.com/job/development%20(master)/badge/icon)](https://k9mail.ci.cloudbees.com/job/development%20(master)/)
 [![Latest release](https://img.shields.io/github/release/k9mail/k-9.svg?style=flat-square)](https://github.com/k9mail/k-9/releases/latest)
-[![Join the chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/k9mail/k-9)
 
 K-9 Mail is an open-source email client for Android.
 
@@ -56,7 +55,6 @@ Aside from discussing changes in [pull requests](https://github.com/k9mail/k-9/p
 [issues](https://github.com/k9mail/k-9/issues) we use the following communication services:
 
 - IRC chat, [#k-9 on the Freenode network](https://webchat.freenode.net/?channels=%23k-9)
-- [Gitter](https://gitter.im/k9mail/k-9)
 - [Developer mailing list](https://groups.google.com/forum/#!forum/k-9-dev)
 
 
