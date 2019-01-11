@@ -40,7 +40,7 @@ public class ImageResizer {
     public void createAttachmentListWithResizedImages(List<? extends Attachment> attachments) {
         for (Attachment attachment : attachments) {
             if (attachment.getResizeImagesEnabled() && isImage(context, attachment.getUri())) {
-                resizeImageFile(attachment);
+                resizeImageAttachment(attachment);
             }
         }
     }
@@ -50,7 +50,7 @@ public class ImageResizer {
      * Resize the given attachment.
      * @param attachment the attachment.
      */
-    private void resizeImageFile(Attachment attachment) {
+    private void resizeImageAttachment(Attachment attachment) {
         if (attachment.getFileName() == null)
             return;
 
