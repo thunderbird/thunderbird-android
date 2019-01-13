@@ -36,7 +36,7 @@ dependencies {
 
 android {
     compileSdkVersion buildConfig.compileSdk
-    buildToolsVersion buildConfig.buildTools
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
         applicationId "com.fsck.k9"
@@ -46,7 +46,7 @@ android {
         versionName '5.700-SNAPSHOT'
 
         minSdkVersion buildConfig.minSdk
-        targetSdkVersion 23
+        targetSdkVersion 26
 
         generatedDensities = ['mdpi', 'hdpi', 'xhdpi']
 
@@ -94,6 +94,8 @@ android {
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/README'
         exclude 'LICENSE.txt'
+        exclude 'META-INF/imap_debug.kotlin_module'
+        exclude 'META-INF/imap_release.kotlin_module'
     }
 
     compileOptions {

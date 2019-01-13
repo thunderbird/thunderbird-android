@@ -3,11 +3,11 @@ buildscript {
         buildConfig = [
                 'compileSdk': 27,
                 'minSdk': 19,
-                'buildTools': '27.0.3'
+                'buildTools': '28.0.3'
         ]
 
         versions = [
-                'kotlin': '1.2.41',
+                'kotlin': '1.2.71',
                 'supportLibrary': '27.1.1',
                 'preferencesFix': '27.1.1.1',
                 'lifecycleExtensions': '1.1.0',
@@ -33,7 +33,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.android.tools.build:gradle:3.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
         classpath "org.jetbrains.kotlin:kotlin-android-extensions:${versions.kotlin}"
     }
