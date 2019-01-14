@@ -13,11 +13,11 @@ val settingsUiModule = applicationContext {
     bean { AccountsLiveData(get()) }
     viewModel { SettingsViewModel(get()) }
 
-    bean { GeneralSettingsDataStore(get(), get(), get("SaveSettingsExecutorService")) }
+    bean { GeneralSettingsDataStore(get(), get("SaveSettingsExecutorService")) }
     bean("SaveSettingsExecutorService") {
         Executors.newSingleThreadExecutor(NamedThreadFactory("SaveSettings"))
     }
 
     viewModel { AccountSettingsViewModel(get(), get()) }
-    bean { AccountSettingsDataStoreFactory(get(), get(), get("SaveSettingsExecutorService")) }
+    bean { AccountSettingsDataStoreFactory(get(), get("SaveSettingsExecutorService")) }
 }

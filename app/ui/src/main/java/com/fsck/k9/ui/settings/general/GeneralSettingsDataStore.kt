@@ -6,14 +6,16 @@ import com.fsck.k9.K9
 import com.fsck.k9.K9.Theme
 import com.fsck.k9.Preferences
 import com.fsck.k9.job.K9JobManager
+import org.koin.standalone.KoinComponent
+import org.koin.standalone.inject
 import java.util.concurrent.ExecutorService
 
 class GeneralSettingsDataStore(
         private val preferences: Preferences,
-        private val jobManager: K9JobManager,
         private val executorService: ExecutorService
-) : PreferenceDataStore() {
+) : PreferenceDataStore(), KoinComponent {
     var activity: FragmentActivity? = null
+    private val jobManager: K9JobManager by inject()
 
     override fun getBoolean(key: String, defValue: Boolean): Boolean {
         return when (key) {
