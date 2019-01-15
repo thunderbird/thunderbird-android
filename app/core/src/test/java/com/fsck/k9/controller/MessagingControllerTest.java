@@ -38,6 +38,7 @@ import com.fsck.k9.mailstore.OutboxStateRepository;
 import com.fsck.k9.mailstore.SendState;
 import com.fsck.k9.mailstore.UnavailableStorageException;
 import com.fsck.k9.notification.NotificationController;
+import com.fsck.k9.notification.NotificationStrategy;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
 import org.jetbrains.annotations.NotNull;
@@ -106,6 +107,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
     private LocalStore localStore;
     @Mock
     private NotificationController notificationController;
+    @Mock
+    private NotificationStrategy notificationStrategy;
     @Captor
     private ArgumentCaptor<List<LocalFolder>> localFolderListCaptor;
     @Captor
@@ -147,7 +150,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
         MockitoAnnotations.initMocks(this);
         appContext = RuntimeEnvironment.application;
 
-        controller = new MessagingController(appContext, notificationController, localStoreProvider, contacts,
+        controller = new MessagingController(appContext, notificationController, notificationStrategy,
+                localStoreProvider, contacts,
                 accountStatsCollector, mock(CoreResourceProvider.class), backendManager,
                 Collections.<ControllerExtension>emptyList());
 
