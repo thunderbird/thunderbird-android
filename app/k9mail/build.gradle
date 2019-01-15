@@ -46,7 +46,7 @@ android {
         versionName '5.700-SNAPSHOT'
 
         minSdkVersion buildConfig.minSdk
-        targetSdkVersion 26
+        targetSdkVersion 23
 
         generatedDensities = ['mdpi', 'hdpi', 'xhdpi']
 
@@ -94,6 +94,7 @@ android {
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/README'
         exclude 'LICENSE.txt'
+        exclude 'META-INF/*.kotlin_module'
     }
 
     compileOptions {
