@@ -9,9 +9,11 @@ import java.io.OutputStream;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -27,9 +29,14 @@ import java.util.regex.Pattern;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.preference.PreferenceManager;
+import android.provider.Settings;
+import android.util.Log;
 
+import com.fsck.k9.K9;
 import com.fsck.k9.mail.Authentication;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
@@ -45,8 +52,11 @@ import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.imap.IdGrouper.GroupedIds;
 import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZOutputStream;
+
 import javax.net.ssl.SSLException;
+
 import org.apache.commons.io.IOUtils;
+
 import timber.log.Timber;
 
 import static com.fsck.k9.mail.ConnectionSecurity.STARTTLS_REQUIRED;
@@ -95,7 +105,7 @@ class ImapConnection {
 
 
     public ImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
-            ConnectivityManager connectivityManager, OAuth2TokenProvider oauthTokenProvider) {
+                          ConnectivityManager connectivityManager, OAuth2TokenProvider oauthTokenProvider) {
         this.settings = settings;
         this.socketFactory = socketFactory;
         this.connectivityManager = connectivityManager;
@@ -105,8 +115,8 @@ class ImapConnection {
     }
 
     ImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
-            ConnectivityManager connectivityManager, OAuth2TokenProvider oauthTokenProvider,
-            int socketConnectTimeout, int socketReadTimeout) {
+                   ConnectivityManager connectivityManager, OAuth2TokenProvider oauthTokenProvider,
+                   int socketConnectTimeout, int socketReadTimeout) {
         this.settings = settings;
         this.socketFactory = socketFactory;
         this.connectivityManager = connectivityManager;
@@ -204,8 +214,17 @@ class ImapConnection {
 
     private Socket connect() throws GeneralSecurityException, MessagingException, IOException {
         Exception connectException = null;
+        InetAddress[] inetAddresses = null;
 
-        InetAddress[] inetAddresses = InetAddress.getAllByName(settings.getHost());
+        //Check if unresolved host is onion
+        try {
+            inetAddresses = InetAddress.getAllByName(settings.getHost());
+        } catch (UnknownHostException e) {
+            if (settings.getHost().toLowerCase().endsWith("onion")) { //TOR Onion address
+                return connectToOnionAddress();
+            }
+        }
+
         for (InetAddress address : inetAddresses) {
             try {
                 return connectToAddress(address);
@@ -216,6 +235,50 @@ class ImapConnection {
         }
 
         throw new MessagingException("Cannot connect to host", connectException);
+    }
+
+    private Socket connectToOnionAddress() throws NoSuchAlgorithmException, KeyManagementException,
+            MessagingException, IOException {
+
+        String host = settings.getHost();
+        int port = settings.getPort();
+        String clientCertificateAlias = settings.getClientCertificateAlias();
+
+        if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
+            Timber.d("Connecting to %s", host);
+        }
+
+        if (!K9.isProxy()) {
+            Timber.e("Proxy is needed in order to connect %s", host);
+            throw new MessagingException("Proxy is needed to be set for connecting Onion addresses.");
+        }
+
+        String ip;
+        int proxyPort;
+
+        ip = K9.getProxyAddress().split(":")[0];
+        proxyPort = Integer.parseInt(K9.getProxyAddress().split(":")[1]);
+
+        InetSocketAddress HiddenerProxyAddress = new InetSocketAddress(ip, proxyPort);
+        Proxy HiddenProxy = new Proxy(Proxy.Type.SOCKS, HiddenerProxyAddress);
+        Socket underlying = new Socket(HiddenProxy);
+        InetSocketAddress sa = InetSocketAddress.createUnresolved(host, port);
+
+        //Connect
+        underlying.connect(sa, socketConnectTimeout);
+
+        Socket socket;
+        if (settings.getConnectionSecurity() == ConnectionSecurity.SSL_TLS_REQUIRED) {
+            socket = socketFactory.createSocket(underlying, host, port, clientCertificateAlias);
+        } else {
+            socket = underlying;
+        }
+
+        if (!socket.isConnected()) {
+            socket.connect(sa, socketConnectTimeout);
+        }
+
+        return socket;
     }
 
     private Socket connectToAddress(InetAddress address) throws NoSuchAlgorithmException, KeyManagementException,
@@ -231,11 +294,28 @@ class ImapConnection {
 
         SocketAddress socketAddress = new InetSocketAddress(address, port);
 
+        Socket underlying;
         Socket socket;
-        if (settings.getConnectionSecurity() == ConnectionSecurity.SSL_TLS_REQUIRED) {
-            socket = socketFactory.createSocket(null, host, port, clientCertificateAlias);
+
+        //Add proxy support
+        if (K9.isProxy()) {
+            String proxyAddress = K9.getProxyAddress().split(":")[0];
+            int proxyPort = Integer.parseInt(K9.getProxyAddress().split(":")[1]);
+
+            Timber.d("Connecting to SOCKS proxy at %s as %s", proxyAddress, proxyPort);
+
+            SocketAddress sa = new InetSocketAddress(proxyAddress, proxyPort);
+            Proxy p = new Proxy(Proxy.Type.SOCKS, sa);
+            underlying = new Socket(p);
         } else {
-            socket = new Socket();
+            underlying = new Socket();
+        }
+
+
+        if (settings.getConnectionSecurity() == ConnectionSecurity.SSL_TLS_REQUIRED) {
+            socket = socketFactory.createSocket(underlying, host, port, clientCertificateAlias);
+        } else {
+            socket = underlying;
         }
 
         socket.connect(socketAddress, socketConnectTimeout);

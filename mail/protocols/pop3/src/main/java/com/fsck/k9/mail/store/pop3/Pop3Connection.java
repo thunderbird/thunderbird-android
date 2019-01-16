@@ -5,9 +5,12 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
 import java.security.KeyManagementException;
 import java.security.MessageDigest;
@@ -17,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import com.fsck.k9.K9;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.Authentication;
 import com.fsck.k9.mail.AuthenticationFailedException;
@@ -28,7 +32,9 @@ import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.RemoteStore;
+
 import javax.net.ssl.SSLException;
+
 import timber.log.Timber;
 
 import static com.fsck.k9.mail.CertificateValidationException.Reason.MissingCapability;
@@ -53,22 +59,53 @@ class Pop3Connection {
     private boolean topNotAdvertised;
 
     Pop3Connection(Pop3Settings settings,
-            TrustedSocketFactory trustedSocketFactory) {
+                   TrustedSocketFactory trustedSocketFactory) {
         this.settings = settings;
         this.trustedSocketFactory = trustedSocketFactory;
     }
 
     void open() throws MessagingException {
         try {
+            try {
+                InetAddress.getAllByName(settings.getHost());
+            } catch (UnknownHostException ex) {
+                if (settings.getHost().toLowerCase().endsWith("onion")) {
+                    socket = createOnionSocket();
+                }
+            }
             SocketAddress socketAddress = new InetSocketAddress(settings.getHost(), settings.getPort());
-            if (settings.getConnectionSecurity() == ConnectionSecurity.SSL_TLS_REQUIRED) {
-                socket = trustedSocketFactory.createSocket(null, settings.getHost(),
-                        settings.getPort(), settings.getClientCertificateAlias());
-            } else {
-                socket = new Socket();
+
+            if (socket == null || !socket.isConnected()) {
+
+                Socket underlying;
+
+                if (K9.isProxy()) {
+                    String proxyAddress = K9.getProxyAddress().split(":")[0];
+                    int proxyPort = Integer.parseInt(K9.getProxyAddress().split(":")[1]);
+
+                    Timber.d("Connecting to SOCKS proxy at %s as %s", proxyAddress, proxyPort);
+
+                    SocketAddress sa = new InetSocketAddress(proxyAddress, proxyPort);
+                    Proxy p = new Proxy(Proxy.Type.SOCKS, sa);
+                    underlying = new Socket(p);
+                } else {
+                    underlying = new Socket();
+                }
+
+                underlying.connect(socketAddress, RemoteStore.SOCKET_CONNECT_TIMEOUT);
+
+                if (settings.getConnectionSecurity() == ConnectionSecurity.SSL_TLS_REQUIRED) {
+                    socket = trustedSocketFactory.createSocket(underlying, settings.getHost(),
+                            settings.getPort(), settings.getClientCertificateAlias());
+                } else {
+                    socket = underlying;
+                }
             }
 
-            socket.connect(socketAddress, RemoteStore.SOCKET_CONNECT_TIMEOUT);
+            if (!socket.isConnected()) {
+                socket.connect(socketAddress, RemoteStore.SOCKET_CONNECT_TIMEOUT);
+            }
+
             in = new BufferedInputStream(socket.getInputStream(), 1024);
             out = new BufferedOutputStream(socket.getOutputStream(), 512);
 
@@ -101,6 +138,42 @@ class Pop3Connection {
         }
     }
 
+    private Socket createOnionSocket() throws MessagingException, IOException, NoSuchAlgorithmException, KeyManagementException {
+
+        if (!K9.isProxy()) {
+            Timber.e("Proxy is needed in order to connect %s", settings.getHost());
+            throw new MessagingException("Proxy is needed to be set for connecting Onion addresses.");
+        }
+
+        String ip;
+        int proxyPort;
+
+        ip = K9.getProxyAddress().split(":")[0];
+        proxyPort = Integer.parseInt(K9.getProxyAddress().split(":")[1]);
+
+
+        InetSocketAddress HiddenerProxyAddress = new InetSocketAddress(ip, proxyPort);
+        Proxy HiddenProxy = new Proxy(Proxy.Type.SOCKS, HiddenerProxyAddress);
+        Socket underlying = new Socket(HiddenProxy);
+        InetSocketAddress sa = InetSocketAddress.createUnresolved(settings.getHost(), settings.getPort());
+
+        //Connect
+        underlying.connect(sa, RemoteStore.SOCKET_CONNECT_TIMEOUT);
+
+        Socket socket;
+        if (settings.getConnectionSecurity() == ConnectionSecurity.SSL_TLS_REQUIRED) {
+            socket = trustedSocketFactory.createSocket(underlying, settings.getHost(), settings.getPort(), settings.getClientCertificateAlias());
+        } else {
+            socket = underlying;
+        }
+
+        if (!socket.isConnected()) {
+            socket.connect(sa, RemoteStore.SOCKET_CONNECT_TIMEOUT);
+        }
+
+        return socket;
+    }
+
     /*
      * If STARTTLS is not available throws a CertificateValidationException which in K-9
      * triggers a "Certificate error" notification that takes the user to the incoming
@@ -108,7 +181,7 @@ class Pop3Connection {
      * "STARTTLS (if available)" setting.
      */
     private void performStartTlsUpgrade(TrustedSocketFactory trustedSocketFactory,
-            String host, int port, String clientCertificateAlias)
+                                        String host, int port, String clientCertificateAlias)
             throws MessagingException, NoSuchAlgorithmException, KeyManagementException, IOException {
         if (capabilities.stls) {
             executeSimpleCommand(STLS_COMMAND);
@@ -162,7 +235,7 @@ class Pop3Connection {
 
             default:
                 throw new MessagingException(
-                        "Unhandled authentication method: "+authType+" found in the server settings (bug).");
+                        "Unhandled authentication method: " + authType + " found in the server settings (bug).");
         }
 
     }
@@ -374,13 +447,13 @@ class Pop3Connection {
             throw new IOException("End of stream reached while trying to read line.");
         }
         do {
-            if (((char)d) == '\r') {
+            if (((char) d) == '\r') {
                 //noinspection UnnecessaryContinue Makes it easier to follow
                 continue;
-            } else if (((char)d) == '\n') {
+            } else if (((char) d) == '\n') {
                 break;
             } else {
-                sb.append((char)d);
+                sb.append((char) d);
             }
         } while ((d = in.read()) != -1);
         String ret = sb.toString();

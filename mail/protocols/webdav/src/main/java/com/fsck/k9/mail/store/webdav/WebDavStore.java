@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.KeyManagementException;
@@ -16,6 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.fsck.k9.K9;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.Folder;
@@ -777,6 +779,12 @@ public class WebDavStore extends RemoteStore {
 
             // Setup a cookie store for forms-based authentication.
             httpContext = new BasicHttpContext();
+            if (K9.isProxy()) {
+                String proxyAddress = K9.getProxyAddress().split(":")[0];
+                int proxyPort = Integer.parseInt(K9.getProxyAddress().split(":")[1]);
+                InetSocketAddress socksaddr = new InetSocketAddress(proxyAddress, proxyPort);
+                httpContext.setAttribute("socks.address", socksaddr);
+            }
             authCookies = new BasicCookieStore();
             httpContext.setAttribute(ClientContext.COOKIE_STORE, authCookies);
 

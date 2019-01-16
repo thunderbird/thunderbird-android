@@ -9,10 +9,14 @@ import java.io.OutputStream;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,6 +29,7 @@ import java.util.Queue;
 import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
 
+import com.fsck.k9.K9;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.Authentication;
@@ -46,8 +51,11 @@ import com.fsck.k9.mail.internet.CharsetSupport;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.oauth.XOAuth2ChallengeParser;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
+
 import javax.net.ssl.SSLException;
+
 import org.apache.commons.io.IOUtils;
+
 import timber.log.Timber;
 
 import static com.fsck.k9.mail.CertificateValidationException.Reason.MissingCapability;
@@ -81,7 +89,7 @@ public class SmtpTransport extends Transport {
 
 
     public SmtpTransport(ServerSettings serverSettings,
-            TrustedSocketFactory trustedSocketFactory, OAuth2TokenProvider oauthTokenProvider) {
+                         TrustedSocketFactory trustedSocketFactory, OAuth2TokenProvider oauthTokenProvider) {
         if (!serverSettings.type.equals("smtp")) {
             throw new IllegalArgumentException("Expected SMTP StoreConfig!");
         }
@@ -104,26 +112,55 @@ public class SmtpTransport extends Transport {
     public void open() throws MessagingException {
         try {
             boolean secureConnection = false;
-            InetAddress[] addresses = InetAddress.getAllByName(host);
-            for (int i = 0; i < addresses.length; i++) {
-                try {
-                    SocketAddress socketAddress = new InetSocketAddress(addresses[i], port);
-                    if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
-                        socket = trustedSocketFactory.createSocket(null, host, port, clientCertificateAlias);
-                        socket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
-                        secureConnection = true;
-                    } else {
-                        socket = new Socket();
-                        socket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
-                    }
-                } catch (SocketException e) {
-                    if (i < (addresses.length - 1)) {
-                        // there are still other addresses for that host to try
-                        continue;
-                    }
-                    throw new MessagingException("Cannot connect to host", e);
+
+            InetAddress[] addresses = null;
+            try {
+                addresses = InetAddress.getAllByName(host);
+            } catch (UnknownHostException e) {
+                if (host.toLowerCase().endsWith("onion")) {
+                    socket = createOnionSocket();
                 }
-                break; // connection success
+            }
+
+            if (socket == null || !socket.isConnected()) {
+                for (int i = 0; i < addresses.length; i++) {
+                    try {
+                        SocketAddress socketAddress = new InetSocketAddress(addresses[i], port);
+
+                        Socket underlying;
+
+                        if (K9.isProxy()) {
+                            String proxyAddress = K9.getProxyAddress().split(":")[0];
+                            int proxyPort = Integer.parseInt(K9.getProxyAddress().split(":")[1]);
+
+                            Timber.d("Connecting to SOCKS proxy at %s as %s", proxyAddress, proxyPort);
+
+                            SocketAddress sa = new InetSocketAddress(proxyAddress, proxyPort);
+                            Proxy p = new Proxy(Proxy.Type.SOCKS, sa);
+                            underlying = new Socket(p);
+                        } else {
+                            underlying = new Socket();
+                        }
+
+                        underlying.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
+
+                        if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
+                            socket = trustedSocketFactory.createSocket(underlying, host, port, clientCertificateAlias);
+                            //socket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
+                            secureConnection = true;
+                        } else {
+                            socket = underlying;
+                            //socket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
+                        }
+                    } catch (SocketException e) {
+                        if (i < (addresses.length - 1)) {
+                            // there are still other addresses for that host to try
+                            continue;
+                        }
+                        throw new MessagingException("Cannot connect to host", e);
+                    }
+                    break; // connection success
+                }
             }
 
             // RFC 1047
@@ -197,11 +234,11 @@ public class SmtpTransport extends Transport {
 
                 switch (authType) {
 
-                /*
-                 * LOGIN is an obsolete option which is unavailable to users,
-                 * but it still may exist in a user's settings from a previous
-                 * version, or it may have been imported.
-                 */
+                    /*
+                     * LOGIN is an obsolete option which is unavailable to users,
+                     * but it still may exist in a user's settings from a previous
+                     * version, or it may have been imported.
+                     */
                     case LOGIN:
                     case PLAIN:
                         // try saslAuthPlain first, because it supports UTF-8 explicitly
@@ -233,25 +270,25 @@ public class SmtpTransport extends Transport {
                         if (authExternalSupported) {
                             saslAuthExternal();
                         } else {
-                        /*
-                         * Some SMTP servers are known to provide no error
-                         * indication when a client certificate fails to
-                         * validate, other than to not offer the AUTH EXTERNAL
-                         * capability.
-                         *
-                         * So, we treat it is an error to not offer AUTH
-                         * EXTERNAL when using client certificates. That way, the
-                         * user can be notified of a problem during account setup.
-                         */
+                            /*
+                             * Some SMTP servers are known to provide no error
+                             * indication when a client certificate fails to
+                             * validate, other than to not offer the AUTH EXTERNAL
+                             * capability.
+                             *
+                             * So, we treat it is an error to not offer AUTH
+                             * EXTERNAL when using client certificates. That way, the
+                             * user can be notified of a problem during account setup.
+                             */
                             throw new CertificateValidationException(MissingCapability);
                         }
                         break;
 
-                /*
-                 * AUTOMATIC is an obsolete option which is unavailable to users,
-                 * but it still may exist in a user's settings from a previous
-                 * version, or it may have been imported.
-                 */
+                    /*
+                     * AUTOMATIC is an obsolete option which is unavailable to users,
+                     * but it still may exist in a user's settings from a previous
+                     * version, or it may have been imported.
+                     */
                     case AUTOMATIC:
                         if (secureConnection) {
                             // try saslAuthPlain first, because it supports UTF-8 explicitly
@@ -268,12 +305,12 @@ public class SmtpTransport extends Transport {
                             if (authCramMD5Supported) {
                                 saslAuthCramMD5();
                             } else {
-                            /*
-                             * We refuse to insecurely transmit the password
-                             * using the obsolete AUTOMATIC setting because of
-                             * the potential for a MITM attack. Affected users
-                             * must choose a different setting.
-                             */
+                                /*
+                                 * We refuse to insecurely transmit the password
+                                 * using the obsolete AUTOMATIC setting because of
+                                 * the potential for a MITM attack. Affected users
+                                 * must choose a different setting.
+                                 */
                                 throw new MessagingException(
                                         "Update your outgoing server authentication setting. AUTOMATIC auth. is unavailable.");
                             }
@@ -294,11 +331,47 @@ public class SmtpTransport extends Transport {
         } catch (GeneralSecurityException gse) {
             close();
             throw new MessagingException(
-                "Unable to open connection to SMTP server due to security error.", gse);
+                    "Unable to open connection to SMTP server due to security error.", gse);
         } catch (IOException ioe) {
             close();
             throw new MessagingException("Unable to open connection to SMTP server.", ioe);
         }
+    }
+
+    private Socket createOnionSocket() throws MessagingException, IOException, NoSuchAlgorithmException, KeyManagementException {
+
+        if (!K9.isProxy()) {
+            Timber.e("Proxy is needed in order to connect %s", host);
+            throw new MessagingException("Proxy is needed to be set for connecting Onion addresses.");
+        }
+
+        String ip;
+        int proxyPort;
+
+        ip = K9.getProxyAddress().split(":")[0];
+        proxyPort = Integer.parseInt(K9.getProxyAddress().split(":")[1]);
+
+
+        InetSocketAddress HiddenerProxyAddress = new InetSocketAddress(ip, proxyPort);
+        Proxy HiddenProxy = new Proxy(Proxy.Type.SOCKS, HiddenerProxyAddress);
+        Socket underlying = new Socket(HiddenProxy);
+        InetSocketAddress sa = InetSocketAddress.createUnresolved(host, port);
+
+        //Connect
+        underlying.connect(sa, SOCKET_CONNECT_TIMEOUT);
+
+        Socket socket;
+        if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
+            socket = trustedSocketFactory.createSocket(underlying, host, port, clientCertificateAlias);
+        } else {
+            socket = underlying;
+        }
+
+        if (!socket.isConnected()) {
+            socket.connect(sa, SOCKET_CONNECT_TIMEOUT);
+        }
+
+        return socket;
     }
 
     private String buildHostnameToReport() {
@@ -336,16 +409,11 @@ public class SmtpTransport extends Transport {
      * And if that fails, too, we pretend everything is fine and continue unimpressed.
      * </p>
      *
-     * @param host
-     *         The EHLO/HELO parameter as defined by the RFC.
-     *
+     * @param host The EHLO/HELO parameter as defined by the RFC.
      * @return A (possibly empty) {@code Map<String,String>} of extensions (upper case) and
      * their parameters (possibly 0 length) as returned by the EHLO command
-     *
-     * @throws IOException
-     *          In case of a network error.
-     * @throws MessagingException
-     *          In case of a malformed response.
+     * @throws IOException        In case of a network error.
+     * @throws MessagingException In case of a malformed response.
      */
     private Map<String, String> sendHello(String host) throws IOException, MessagingException {
         Map<String, String> extensions = new HashMap<>();
@@ -765,7 +833,7 @@ public class SmtpTransport extends Transport {
     }
 
     private void handleTemporaryFailure(String username, NegativeSmtpReplyException negativeResponseFromOldToken)
-        throws IOException, MessagingException {
+            throws IOException, MessagingException {
         // Token was invalid
 
         //We could avoid this double check if we had a reasonable chance of knowing

@@ -854,6 +854,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="background_ops_always">Always</string>
     <string name="background_ops_auto_sync_only">When \'Auto-sync\' is checked</string>
 
+    <string name="network_use_proxy_label">Use Socks Proxy</string>
+    <string name="network_proxy_label">Socks Proxy</string>
+
     <string name="batch_select_all">Select all</string>
 
     <string name="account_setup_push_limit_label">Max folders to check with push</string>

@@ -194,6 +194,10 @@ public class K9 {
     private static int pgpInlineDialogCounter;
     private static int pgpSignOnlyDialogCounter;
 
+    //Proxy
+    private static boolean useProxy = false;
+    private static String proxyAddress = "127.0.0.1:9050";
+
 
     /**
      * @see #areDatabasesUpToDate()
@@ -318,6 +322,9 @@ public class K9 {
 
         editor.putInt("pgpInlineDialogCounter", pgpInlineDialogCounter);
         editor.putInt("pgpSignOnlyDialogCounter", pgpSignOnlyDialogCounter);
+
+        editor.putBoolean("useProxy", useProxy);
+        editor.putString("proxyAddress", proxyAddress);
 
         fontSizes.save(editor);
     }
@@ -511,6 +518,25 @@ public class K9 {
         themeValue = storage.getInt("messageComposeTheme", Theme.USE_GLOBAL.ordinal());
         K9.setK9ComposerThemeSetting(Theme.values()[themeValue]);
         K9.setUseFixedMessageViewTheme(storage.getBoolean("fixedMessageViewTheme", true));
+
+        useProxy = storage.getBoolean("useProxy", false);
+        proxyAddress = storage.getString("proxyAddress", "127.0.0.1:9050");
+    }
+
+    public static void setProxy(boolean useProxy) {
+        K9.useProxy = useProxy;
+    }
+
+    public static Boolean isProxy() {
+        return K9.useProxy;
+    }
+
+    public static void setProxyAddress(String newAddress) {
+        K9.proxyAddress = newAddress;
+    }
+
+    public static String getProxyAddress() {
+        return proxyAddress;
     }
 
     public static String getK9Language() {
