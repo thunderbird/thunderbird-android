@@ -71,8 +71,6 @@ class Pop3Connection {
             } catch (UnknownHostException ex) {
                 if (settings.getHost().toLowerCase().endsWith("onion")) {
                     socket = createOnionSocket();
-                } else {
-                    throw new UnknownHostException("Cannot resolve " + settings.getHost());
                 }
             }
             SocketAddress socketAddress = new InetSocketAddress(settings.getHost(), settings.getPort());
@@ -90,17 +88,17 @@ class Pop3Connection {
                     SocketAddress sa = new InetSocketAddress(proxyAddress, proxyPort);
                     Proxy p = new Proxy(Proxy.Type.SOCKS, sa);
                     underlying = new Socket(p);
-                } else {
-                    underlying = new Socket();
-                }
 
-                underlying.connect(socketAddress, RemoteStore.SOCKET_CONNECT_TIMEOUT);
+                    underlying.connect(socketAddress, RemoteStore.SOCKET_CONNECT_TIMEOUT);
+                } else {
+                    underlying = null;
+                }
 
                 if (settings.getConnectionSecurity() == ConnectionSecurity.SSL_TLS_REQUIRED) {
                     socket = trustedSocketFactory.createSocket(underlying, settings.getHost(),
                             settings.getPort(), settings.getClientCertificateAlias());
                 } else {
-                    socket = underlying;
+                    socket = (underlying == null ? new Socket() : underlying);
                 }
             }
 
