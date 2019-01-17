@@ -222,6 +222,8 @@ class ImapConnection {
         } catch (UnknownHostException e) {
             if (settings.getHost().toLowerCase().endsWith("onion")) { //TOR Onion address
                 return connectToOnionAddress();
+            } else {
+                throw new MessagingException("Cannot connect to host", connectException);
             }
         }
 
