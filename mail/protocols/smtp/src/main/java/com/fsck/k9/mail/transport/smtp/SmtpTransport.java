@@ -119,6 +119,8 @@ public class SmtpTransport extends Transport {
             } catch (UnknownHostException e) {
                 if (host.toLowerCase().endsWith("onion")) {
                     socket = createOnionSocket();
+                } else {
+                    throw new UnknownHostException("Cannot resolve " + host);
                 }
             }
 

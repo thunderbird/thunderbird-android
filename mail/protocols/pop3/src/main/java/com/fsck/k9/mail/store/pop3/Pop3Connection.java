@@ -71,6 +71,8 @@ class Pop3Connection {
             } catch (UnknownHostException ex) {
                 if (settings.getHost().toLowerCase().endsWith("onion")) {
                     socket = createOnionSocket();
+                } else {
+                    throw new UnknownHostException("Cannot resolve " + settings.getHost());
                 }
             }
             SocketAddress socketAddress = new InetSocketAddress(settings.getHost(), settings.getPort());
