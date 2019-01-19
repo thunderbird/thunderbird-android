@@ -1269,7 +1269,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_crypto_hide_sign_only_on">Only encrypted signatures will be displayed</string>
     <string name="account_settings_crypto_hide_sign_only_off">All signatures will be displayed</string>
     <string name="error_sign_only_no_encryption">Encryption unavailable in sign-only mode!</string>
-    <string name="plain_text_divider_label">Plain Text</string>
     <string name="unsigned_text_divider_label">Unsigned Text</string>
     <string name="apg_deprecated_title">APG Deprecation Warning</string>
     <string name="apg_deprecated_1">APG is no longer maintained!</string>

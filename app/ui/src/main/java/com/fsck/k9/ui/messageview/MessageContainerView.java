@@ -65,8 +65,6 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
     private View unsignedTextContainer;
     private View unsignedTextDivider;
     private TextView unsignedText;
-    private View plainTextContainer;
-    private View plainTextDivider;
     private TextView plainText;
     private View mAttachmentsContainer;
 
@@ -100,8 +98,6 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
         unsignedTextDivider = findViewById(R.id.message_unsigned_divider);
         unsignedText = findViewById(R.id.message_unsigned_text);
 
-        plainTextContainer = findViewById(R.id.message_plain_text_container);
-        plainTextDivider = findViewById(R.id.message_plain_divider);
         plainText = (TextView)findViewById(R.id.message_plain_text);
         showingPictures = false;
 
@@ -426,8 +422,6 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
                 textToDisplay, messageViewInfo.attachmentResolver, onPageFinishedListener);
 
         if(isPlainText) {
-            plainTextContainer.setVisibility(View.VISIBLE);
-            plainTextDivider.setVisibility(View.VISIBLE);
             plainText.setText(messageViewInfo.plainText);
         }
 
