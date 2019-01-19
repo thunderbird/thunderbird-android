@@ -1,0 +1,48 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+
+apply from: "${rootProject.projectDir}/gradle/plugins/checkstyle-android.gradle"
+apply from: "${rootProject.projectDir}/gradle/plugins/findbugs-android.gradle"
+
+if (rootProject.testCoverage) {
+    apply plugin: 'jacoco'
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
+
+    api project(":backend:api")
+    api project(":mail:protocols:imap")
+    api project(":mail:protocols:smtp")
+
+    implementation "com.jakewharton.timber:timber:${versions.timber}"
+
+    testImplementation project(":mail:testing")
+    testImplementation "junit:junit:${versions.junit}"
+    testImplementation "org.mockito:mockito-core:${versions.mockito}"
+}
+
+android {
+    compileSdkVersion buildConfig.compileSdk
+    buildToolsVersion buildConfig.buildTools
+
+    defaultConfig {
+        minSdkVersion buildConfig.minSdk
+    }
+
+    buildTypes {
+        debug {
+            testCoverageEnabled rootProject.testCoverage
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+        lintConfig file("$rootProject.projectDir/config/lint/lint.xml")
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+}

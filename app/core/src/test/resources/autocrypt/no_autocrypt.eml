@@ -1,0 +1,11 @@
+From: Alice <alice@testsuite.autocrypt.org>
+To: Bob <bob@testsuite.autocrypt.org>
+Subject: INBOME with invalid type attribute
+Date: Sat, 17 Dec 2016 10:51:48 +0100
+Message-ID: <unknown-type@testsuite.autocrypt.org>
+MIME-Version: 1.0
+Content-Type: text/plain
+
+This message contains no INBOME header
+
+An agent capable of INBOME level 0 should not try to parse it as a header and crash.

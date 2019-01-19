@@ -1,23 +1,65 @@
 buildscript {
+    ext {
+        buildConfig = [
+                'compileSdk': 27,
+                'minSdk': 19,
+                'buildTools': '27.0.3'
+        ]
+
+        versions = [
+                'kotlin': '1.2.41',
+                'supportLibrary': '27.1.1',
+                'preferencesFix': '27.1.1.1',
+                'lifecycleExtensions': '1.1.0',
+                'okio': '1.14.0',
+                'timber': '4.5.1',
+                'koin': '0.9.1',
+                'commonsIo': '2.4',
+                'coreKtx': '0.3',
+                'mime4j': '0.8.1',
+
+                'junit': '4.12',
+                'robolectric': '3.7.1',
+                'mockito': '2.18.0',
+                'mockitoKotlin': '1.5.0',
+                'truth': '0.35'
+        ]
+    }
+
     repositories {
+        mavenCentral()
+        google()
         jcenter()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.2'
+        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
+        classpath "org.jetbrains.kotlin:kotlin-android-extensions:${versions.kotlin}"
     }
 }
 
 project.ext {
     testCoverage = project.hasProperty('testCoverage')
-    optimizeForDevelopment = project.hasProperty('optimizeForDevelopment') && optimizeForDevelopment == 'true'
 }
 
 subprojects {
-    project.plugins.whenPluginAdded { plugin ->
-        if ("com.android.build.gradle.AppPlugin".equals(plugin.class.name) ||
-                "com.android.build.gradle.LibraryPlugin".equals(plugin.class.name)) {
-            project.android.dexOptions.preDexLibraries = !rootProject.hasProperty('disablePreDex')
+    repositories {
+        mavenCentral()
+        google()
+        maven { url 'https://jitpack.io' }
+        jcenter()
+    }
+
+    configurations.all {
+        exclude group: "com.android.support", module: "support-media-compat"
+
+        resolutionStrategy {
+            force "com.android.support:support-annotations:${versions.supportLibrary}"
+            force "com.android.support:design:${versions.supportLibrary}"
+            force "com.android.support:support-fragment:${versions.supportLibrary}"
+            force "com.android.support:preference-v14:${versions.supportLibrary}"
+            force "com.android.support:cardview-v7:${versions.supportLibrary}"
         }
     }
 }

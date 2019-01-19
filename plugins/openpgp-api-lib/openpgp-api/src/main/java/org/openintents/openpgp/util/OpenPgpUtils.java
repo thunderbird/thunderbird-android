@@ -80,7 +80,7 @@ public class OpenPgpUtils {
     }
 
     public static String extractClearsignedMessage(String text) {
-        if (!text.startsWith(PGP_MARKER_CLEARSIGN_BEGIN_MESSAGE)) {
+        if (text == null || !text.startsWith(PGP_MARKER_CLEARSIGN_BEGIN_MESSAGE)) {
             return null;
         }
         int endOfHeader = text.indexOf("\r\n\r\n") +4;
@@ -118,11 +118,6 @@ public class OpenPgpUtils {
 
     /**
      * Returns a composed user id. Returns null if name is null!
-     *
-     * @param name
-     * @param email
-     * @param comment
-     * @return
      */
     public static String createUserId(UserId userId) {
         String userIdString = userId.name; // consider name a required value

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="check_frequency_entries">
+        <item>@string/account_setup_options_mail_check_frequency_never</item>
+        <item>@string/account_setup_options_mail_check_frequency_15min</item>
+        <item>@string/account_setup_options_mail_check_frequency_30min</item>
+        <item>@string/account_setup_options_mail_check_frequency_1hour</item>
+        <item>@string/account_setup_options_mail_check_frequency_2hour</item>
+        <item>@string/account_setup_options_mail_check_frequency_3hour</item>
+        <item>@string/account_setup_options_mail_check_frequency_6hour</item>
+        <item>@string/account_setup_options_mail_check_frequency_12hour</item>
+        <item>@string/account_setup_options_mail_check_frequency_24hour</item>
+    </string-array>
+
+    <string-array name="display_count_entries">
+        <item>@string/account_setup_options_mail_display_count_10</item>
+        <item>@string/account_setup_options_mail_display_count_25</item>
+        <item>@string/account_setup_options_mail_display_count_50</item>
+        <item>@string/account_setup_options_mail_display_count_100</item>
+        <item>@string/account_setup_options_mail_display_count_250</item>
+        <item>@string/account_setup_options_mail_display_count_500</item>
+        <item>@string/account_setup_options_mail_display_count_1000</item>
+        <item>@string/account_setup_options_mail_display_count_2500</item>
+        <item>@string/account_setup_options_mail_display_count_5000</item>
+        <item>@string/account_setup_options_mail_display_count_10000</item>
+        <item>@string/account_setup_options_mail_display_count_all</item>
+    </string-array>
+
+    <string-array name="message_age_entries">
+        <item>@string/account_settings_message_age_any</item>
+        <item>@string/account_settings_message_age_0</item>
+        <item>@string/account_settings_message_age_1</item>
+        <item>@string/account_settings_message_age_2</item>
+        <item>@string/account_settings_message_age_7</item>
+        <item>@string/account_settings_message_age_14</item>
+        <item>@string/account_settings_message_age_21</item>
+        <item>@string/account_settings_message_age_1_month</item>
+        <item>@string/account_settings_message_age_2_months</item>
+        <item>@string/account_settings_message_age_3_months</item>
+        <item>@string/account_settings_message_age_6_months</item>
+        <item>@string/account_settings_message_age_1_year</item>
+    </string-array>
+
+    <string-array name="autodownload_message_size_entries">
+        <item>@string/account_settings_autodownload_message_size_1</item>
+        <item>@string/account_settings_autodownload_message_size_2</item>
+        <item>@string/account_settings_autodownload_message_size_4</item>
+        <item>@string/account_settings_autodownload_message_size_8</item>
+        <item>@string/account_settings_autodownload_message_size_16</item>
+        <item>@string/account_settings_autodownload_message_size_32</item>
+        <item>@string/account_settings_autodownload_message_size_64</item>
+        <item>@string/account_settings_autodownload_message_size_128</item>
+        <item>@string/account_settings_autodownload_message_size_256</item>
+        <item>@string/account_settings_autodownload_message_size_512</item>
+        <item>@string/account_settings_autodownload_message_size_1024</item>
+        <item>@string/account_settings_autodownload_message_size_2048</item>
+        <item>@string/account_settings_autodownload_message_size_5120</item>
+        <item>@string/account_settings_autodownload_message_size_10240</item>
+        <item>@string/account_settings_autodownload_message_size_any</item>
+    </string-array>
+
+    <string-array name="folder_display_mode_entries">
+        <item>@string/account_settings_folder_display_mode_all</item>
+        <item>@string/account_settings_folder_display_mode_first_class</item>
+        <item>@string/account_settings_folder_display_mode_first_and_second_class</item>
+        <item>@string/account_settings_folder_display_mode_not_second_class</item>
+    </string-array>
+
+    <string-array name="show_pictures_entries">
+        <item>@string/account_settings_show_pictures_never</item>
+        <item>@string/account_settings_show_pictures_only_from_contacts</item>
+        <item>@string/account_settings_show_pictures_always</item>
+    </string-array>
+
+    <string-array name="searchable_entries">
+        <item>@string/account_settings_searchable_all</item>
+        <item>@string/account_settings_searchable_displayable</item>
+        <item>@string/account_settings_searchable_none</item>
+    </string-array>
+
+    <string-array name="folder_sync_mode_entries">
+        <item>@string/account_settings_folder_sync_mode_all</item>
+        <item>@string/account_settings_folder_sync_mode_first_class</item>
+        <item>@string/account_settings_folder_sync_mode_first_and_second_class</item>
+        <item>@string/account_settings_folder_sync_mode_not_second_class</item>
+        <item>@string/account_settings_folder_sync_mode_none</item>
+    </string-array>
+
+    <string-array name="folder_push_mode_entries">
+        <item>@string/account_settings_folder_push_mode_all</item>
+        <item>@string/account_settings_folder_push_mode_first_class</item>
+        <item>@string/account_settings_folder_push_mode_first_and_second_class</item>
+        <item>@string/account_settings_folder_push_mode_not_second_class</item>
+        <item>@string/account_settings_folder_push_mode_none</item>
+    </string-array>
+
+    <string-array name="push_limit_entries">
+        <item>@string/account_setup_push_limit_5</item>
+        <item>@string/account_setup_push_limit_10</item>
+        <item>@string/account_setup_push_limit_25</item>
+        <item>@string/account_setup_push_limit_50</item>
+        <item>@string/account_setup_push_limit_100</item>
+        <item>@string/account_setup_push_limit_250</item>
+        <item>@string/account_setup_push_limit_500</item>
+        <item>@string/account_setup_push_limit_1000</item>
+    </string-array>
+
+    <string-array name="folder_notify_new_mail_mode_entries">
+        <item>@string/account_settings_folder_notify_new_mail_mode_all</item>
+        <item>@string/account_settings_folder_notify_new_mail_mode_first_class</item>
+        <item>@string/account_settings_folder_notify_new_mail_mode_first_and_second_class</item>
+        <item>@string/account_settings_folder_notify_new_mail_mode_not_second_class</item>
+        <item>@string/account_settings_folder_notify_new_mail_mode_none</item>
+    </string-array>
+
+    <string-array name="folder_target_mode_entries">
+        <item>@string/account_settings_folder_target_mode_all</item>
+        <item>@string/account_settings_folder_target_mode_first_class</item>
+        <item>@string/account_settings_folder_target_mode_first_and_second_class</item>
+        <item>@string/account_settings_folder_target_mode_not_second_class</item>
+    </string-array>
+
+    <string-array name="delete_policy_entries">
+        <item>@string/account_setup_incoming_delete_policy_never_label</item>
+        <item>@string/account_setup_incoming_delete_policy_delete_label</item>
+        <item>@string/account_setup_incoming_delete_policy_markread_label</item>
+    </string-array>
+
+    <string-array name="expunge_policy_entries">
+        <item>@string/account_setup_expunge_policy_immediately</item>
+        <item>@string/account_setup_expunge_policy_on_poll</item>
+        <item>@string/account_setup_expunge_policy_manual</item>
+    </string-array>
+
+    <string-array name="idle_refresh_period_entries">
+        <item>@string/idle_refresh_period_1min</item>
+        <item>@string/idle_refresh_period_2min</item>
+        <item>@string/idle_refresh_period_3min</item>
+        <item>@string/idle_refresh_period_6min</item>
+        <item>@string/idle_refresh_period_12min</item>
+        <item>@string/idle_refresh_period_24min</item>
+        <item>@string/idle_refresh_period_36min</item>
+        <item>@string/idle_refresh_period_48min</item>
+        <item>@string/idle_refresh_period_60min</item>
+    </string-array>
+
+    <string-array name="vibrate_pattern_entries">
+        <item>@string/account_settings_vibrate_pattern_default</item>
+        <item>@string/account_settings_vibrate_pattern_1</item>
+        <item>@string/account_settings_vibrate_pattern_2</item>
+        <item>@string/account_settings_vibrate_pattern_3</item>
+        <item>@string/account_settings_vibrate_pattern_4</item>
+        <item>@string/account_settings_vibrate_pattern_5</item>
+    </string-array>
+
+    <string-array name="quote_style_entries">
+        <item>@string/account_settings_quote_style_prefix</item>
+        <item>@string/account_settings_quote_style_header</item>
+    </string-array>
+
+    <string-array name="message_format_entries">
+        <item>@string/account_settings_message_format_text</item>
+        <item>@string/account_settings_message_format_html</item>
+        <item>@string/account_settings_message_format_auto</item>
+    </string-array>
+
+    <string-array name="remote_search_num_results_entries">
+        <item >@string/account_settings_remote_search_num_results_entries_10</item>
+        <item>@string/account_settings_remote_search_num_results_entries_25</item>
+        <item>@string/account_settings_remote_search_num_results_entries_50</item>
+        <item>@string/account_settings_remote_search_num_results_entries_100</item>
+        <item>@string/account_settings_remote_search_num_results_entries_250</item>
+        <item>@string/account_settings_remote_search_num_results_entries_500</item>
+        <item>@string/account_settings_remote_search_num_results_entries_1000</item>
+        <item>@string/account_settings_remote_search_num_results_entries_all</item>
+    </string-array>
+
+</resources>

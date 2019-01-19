@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?android:listPreferredItemHeight"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?android:listPreferredItemHeight"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:background="?android:selectableItemBackground"
+        android:id="@+id/alternate_container_header"
+        >
+
+        <com.fsck.k9.ui.ContactBadge
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:id="@+id/alternate_contact_photo"
+            tools:src="@drawable/ic_contact_picture"
+            />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/alternate_header_name"
+                android:textColor="?attr/textColorPrimaryRecipientDropdown"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dip"
+                android:layout_marginStart="6dip"
+                android:singleLine="true"
+                android:ellipsize="end"
+                tools:text="Mr. Firstname Lastname"
+                />
+
+            <TextView
+                android:id="@+id/alternate_header_label"
+                android:textColor="?attr/textColorPrimaryRecipientDropdown"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dip"
+                android:layout_marginStart="6dip"
+                android:singleLine="true"
+                android:ellipsize="end"
+                tools:text="Other"
+                />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:padding="8dp"
+            android:id="@+id/alternate_remove"
+            android:background="?android:selectableItemBackground"
+            android:src="?attr/iconActionCancel"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?android:listPreferredItemHeight"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:background="?android:selectableItemBackground"
+        android:id="@+id/alternate_container_item"
+        >
+
+        <TextView
+            android:id="@+id/alternate_address_label"
+            android:textColor="?attr/textColorSecondaryRecipientDropdown"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:gravity="center_horizontal"
+            android:ellipsize="end"
+            tools:text="Home"
+            />
+
+        <TextView
+            android:id="@+id/alternate_address"
+            android:textColor="?attr/textColorSecondaryRecipientDropdown"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="6dip"
+            android:paddingRight="6dip"
+            android:singleLine="true"
+            android:ellipsize="end"
+            tools:text="address@example.com"
+            />
+
+        <FrameLayout
+            android:id="@+id/alternate_crypto_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="13dp"
+            tools:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                android:src="@drawable/status_dots"
+                android:tint="?attr/openpgp_grey"
+                />
+
+            <ImageView
+                android:id="@+id/alternate_crypto_status_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|center_vertical"
+                tools:src="@drawable/status_lock_dots_2"
+                tools:tint="?attr/openpgp_grey"
+                />
+
+        </FrameLayout>
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="13dp"
+            android:id="@+id/alternate_crypto_status_simple"
+            android:src="@drawable/status_lock"
+            android:tint="?attr/openpgp_black"
+            android:visibility="gone"
+            tools:visibility="visible"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

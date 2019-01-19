@@ -1,15 +1,11 @@
 apply plugin: 'com.android.library'
-// apply plugin: 'bintray-release' // must be applied after your artifact generating plugin (eg. java / com.android.library)
 
 android {
-    compileSdkVersion androidCompileSdkVersion.toInteger()
-    buildToolsVersion androidBuildToolsVersion
+    compileSdkVersion buildConfig.compileSdk
+    buildToolsVersion buildConfig.buildTools
 
     defaultConfig {
-        versionCode 8
-        versionName '9.0' // API-Version . minor
-        minSdkVersion 9
-        targetSdkVersion 22
+        minSdkVersion buildConfig.minSdk
     }
 
     // Do not abort build if lint finds errors
@@ -18,13 +14,8 @@ android {
     }
 }
 
-/*
-publish {
-    userOrg = 'sufficientlysecure'
-    groupId = 'org.sufficientlysecure'
-    artifactId = 'openpgp-api'
-    version = '9.0'
-    description = 'The OpenPGP API provides methods to execute OpenPGP operations, such as sign, encrypt, decrypt, verify, and more without user interaction from background threads.'
-    website = 'https://github.com/open-keychain/openpgp-api'
+dependencies {
+    implementation "android.arch.lifecycle:extensions:${versions.lifecycleExtensions}"
+    implementation "com.jakewharton.timber:timber:${versions.timber}"
+    implementation "com.takisoft.fix:preference-v7:${versions.preferencesFix}"
 }
-*/

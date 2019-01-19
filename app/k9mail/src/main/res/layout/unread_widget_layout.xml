@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/UnreadWidgetContainer"
+    android:id="@+id/unread_widget_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:clickable="true"
+    android:focusable="true">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:src="@drawable/unread_widget_icon" />
+
+        <TextView
+            android:id="@+id/unread_count"
+            android:visibility="gone"
+            android:textSize="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:paddingTop="0.5dp"
+            android:paddingBottom="0.5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:background="@drawable/unread_count_background"
+            android:textColor="#ffffff"
+            tools:ignore="SpUsage"/>
+
+    </FrameLayout>
+
+    <TextView
+        style="@style/UnreadWidgetTextView"
+        android:id="@+id/title"
+        android:text="@string/app_name"
+        android:ellipsize="marquee"
+        android:paddingTop="1dp"
+        android:paddingBottom="1dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="3dp"
+        android:singleLine="true" />
+
+</LinearLayout>

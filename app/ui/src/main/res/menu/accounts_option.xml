@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/search"
+        android:icon="?attr/iconActionSearch"
+        app:showAsAction="always"
+        android:title="@string/search_action"/>
+    <item
+        android:id="@+id/check_mail"
+        android:alphabeticShortcut="r"
+        android:icon="?attr/iconActionRefresh"
+        app:showAsAction="always"
+        android:title="@string/check_mail_action"/>
+    <item
+        android:id="@+id/compose"
+        android:alphabeticShortcut="c"
+        android:icon="?attr/iconActionCompose"
+        app:showAsAction="always"
+        android:title="@string/compose_action"/>
+    <item
+        android:id="@+id/import_export"
+        android:icon="?attr/iconActionImportExport"
+        android:title="@string/import_export_action">
+        <menu>
+            <item
+                android:id="@+id/export_all"
+                android:title="@string/settings_export_all"/>
+            <item
+                android:id="@+id/import_settings"
+                android:title="@string/settings_import"/>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/settings"
+        android:icon="?attr/iconActionSettings"
+        app:showAsAction="never"
+        android:title="@string/preferences_action"/>
+
+</menu>

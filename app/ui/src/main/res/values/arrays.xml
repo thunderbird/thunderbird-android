@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2008 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources>
+
+    <string-array name="folder_settings_folder_display_mode_entries">
+        <item>@string/folder_settings_folder_display_mode_normal</item>
+        <item>@string/folder_settings_folder_display_mode_first_class</item>
+        <item>@string/folder_settings_folder_display_mode_second_class</item>
+    </string-array>
+
+    <string-array name="folder_settings_folder_display_mode_values" translatable="false">
+        <item>NO_CLASS</item>
+        <item>FIRST_CLASS</item>
+        <item>SECOND_CLASS</item>
+    </string-array>
+
+    <string-array name="folder_settings_folder_sync_mode_entries">
+        <item>@string/folder_settings_folder_sync_mode_normal</item>
+        <item>@string/folder_settings_folder_sync_mode_first_class</item>
+        <item>@string/folder_settings_folder_sync_mode_second_class</item>
+        <item>@string/folder_settings_folder_sync_mode_inherited</item>
+    </string-array>
+
+    <string-array name="folder_settings_folder_sync_mode_values" translatable="false">
+        <item>NO_CLASS</item>
+        <item>FIRST_CLASS</item>
+        <item>SECOND_CLASS</item>
+        <item>INHERITED</item>
+    </string-array>
+
+    <string-array name="folder_settings_folder_push_mode_entries">
+        <item>@string/folder_settings_folder_push_mode_normal</item>
+        <item>@string/folder_settings_folder_push_mode_first_class</item>
+        <item>@string/folder_settings_folder_push_mode_second_class</item>
+        <item>@string/folder_settings_folder_push_mode_inherited</item>
+    </string-array>
+
+    <string-array name="folder_settings_folder_push_mode_values" translatable="false">
+        <item>NO_CLASS</item>
+        <item>FIRST_CLASS</item>
+        <item>SECOND_CLASS</item>
+        <item>INHERITED</item>
+    </string-array>
+
+    <string-array name="folder_settings_folder_notify_mode_entries">
+        <item>@string/folder_settings_folder_notify_mode_normal</item>
+        <item>@string/folder_settings_folder_notify_mode_first_class</item>
+        <item>@string/folder_settings_folder_notify_mode_second_class</item>
+        <item>@string/folder_settings_folder_notify_mode_inherited</item>
+    </string-array>
+
+    <string-array name="folder_settings_folder_notify_mode_values" translatable="false">
+        <item>NO_CLASS</item>
+        <item>FIRST_CLASS</item>
+        <item>SECOND_CLASS</item>
+        <item>INHERITED</item>
+    </string-array>
+
+    <string-array name="font_entries">
+        <item>@string/font_size_default</item>
+        <item>@string/font_size_tiniest</item>
+        <item>@string/font_size_tiny</item>
+        <item>@string/font_size_smaller</item>
+        <item>@string/font_size_small</item>
+        <item>@string/font_size_medium</item>
+        <item>@string/font_size_large</item>
+        <item>@string/font_size_larger</item>
+    </string-array>
+
+    <string-array name="font_values" translatable="false">
+        <item>-1</item>
+        <item>10</item>
+        <item>12</item>
+        <item>14</item>
+        <item>16</item>
+        <item>18</item>
+        <item>20</item>
+        <item>22</item>
+    </string-array>
+
+</resources>

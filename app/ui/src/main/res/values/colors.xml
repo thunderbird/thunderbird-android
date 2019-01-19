@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="icon_background">#ffffff</color>
+
+    <color name="light_black">#444444</color>
+
+    <color name="message_list_item_footer_background">#eeeeee</color>
+
+    <color name="status_todo_chevron">#888</color>
+    <color name="status_error_cross">#f44336</color>
+    <color name="status_ok_checkmark">#7bad45</color>
+
+    <color name="drawer_background">#666666</color>
+</resources>

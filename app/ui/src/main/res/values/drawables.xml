@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="ic_launcher">@mipmap/icon</drawable>
+    <drawable name="ic_launcher_round">@mipmap/icon</drawable>
+</resources>
