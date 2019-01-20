@@ -391,7 +391,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
         renderAttachments(messageViewInfo);
 
         String textToDisplay;
-        boolean isPlainText = K9.displayAsPlainText();
+        boolean isPlainText = K9.isMessageViewWithoutHtml();
         if (!isPlainText)
             textToDisplay = messageViewInfo.text;
         else
