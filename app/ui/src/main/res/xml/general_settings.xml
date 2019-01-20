@@ -198,10 +198,9 @@
             android:key="messageview_preferences"
             android:title="@string/messageview_preferences">
             <CheckBoxPreference
-                android:key = "messageview_html_or_plaintext"
-                android:title ="@string/global_settings_messageview_display_in_plaintext_title"
-                android:summary="@string/global_settings_messageview_display_in_plaintext_summary"
-                />
+                android:key="messageview_html_or_plaintext"
+                android:title="@string/global_settings_messageview_display_in_plaintext_title"
+                android:summary="@string/global_settings_messageview_display_in_plaintext_summary" />
 
             <CheckBoxPreference
                 android:key="messageview_fixedwidth_font"

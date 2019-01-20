@@ -45,7 +45,7 @@ public class MessageViewInfo {
     }
 
     static MessageViewInfo createWithExtractedContent(Message message, Part rootPart, boolean isMessageIncomplete,
-            String text, String plainText, List<AttachmentViewInfo> attachments, AttachmentResolver attachmentResolver) {
+                                                      String text, String plainText, List<AttachmentViewInfo> attachments, AttachmentResolver attachmentResolver) {
         return new MessageViewInfo(
                 message, isMessageIncomplete, rootPart, null, false, text, plainText, attachments, null, attachmentResolver, null,
                 Collections.<AttachmentViewInfo>emptyList());

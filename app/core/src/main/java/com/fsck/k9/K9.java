@@ -425,7 +425,7 @@ public class K9 {
         showContactPicture = storage.getBoolean("showContactPicture", true);
         changeContactNameColor = storage.getBoolean("changeRegisteredNameColor", false);
         contactNameColor = storage.getInt("registeredNameColor", 0xff00008f);
-        displayFormatPlainText = storage.getBoolean("displayFormatPlainText",false);
+        displayFormatPlainText = storage.getBoolean("displayFormatPlainText", false);
         messageViewFixedWidthFont = storage.getBoolean("messageViewFixedWidthFont", false);
         messageViewReturnToList = storage.getBoolean("messageViewReturnToList", false);
         messageViewShowNext = storage.getBoolean("messageViewShowNext", false);
@@ -758,11 +758,11 @@ public class K9 {
         K9.contactNameColor = contactNameColor;
     }
 
-    public static boolean displayAsPlainText(){
+    public static boolean displayAsPlainText() {
         return displayFormatPlainText;
     }
 
-    public static void setDisplayAsPlainText(boolean displayFormat){
+    public static void setDisplayAsPlainText(boolean displayFormat) {
         displayFormatPlainText = displayFormat;
     }
 

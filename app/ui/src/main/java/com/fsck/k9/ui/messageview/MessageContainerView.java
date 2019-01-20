@@ -98,7 +98,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
         unsignedTextDivider = findViewById(R.id.message_unsigned_divider);
         unsignedText = findViewById(R.id.message_unsigned_text);
 
-        plainText = (TextView)findViewById(R.id.message_plain_text);
+        plainText = (TextView) findViewById(R.id.message_plain_text);
         showingPictures = false;
 
         Context context = getContext();
@@ -392,7 +392,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
 
         String textToDisplay;
         boolean isPlainText = K9.displayAsPlainText();
-        if(!isPlainText)
+        if (!isPlainText)
             textToDisplay = messageViewInfo.text;
         else
             textToDisplay = "";
@@ -421,7 +421,7 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
         displayHtmlContentWithInlineAttachments(
                 textToDisplay, messageViewInfo.attachmentResolver, onPageFinishedListener);
 
-        if(isPlainText) {
+        if (isPlainText) {
             plainText.setText(messageViewInfo.plainText);
         }
 
