@@ -390,45 +390,39 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
 
         renderAttachments(messageViewInfo);
 
-        String textToDisplay;
-        boolean isPlainText = K9.isMessageViewWithoutHtml();
-        if (!isPlainText)
-            textToDisplay = messageViewInfo.text;
-        else
-            textToDisplay = "";
-
-        if (textToDisplay != null && !isShowingPictures()) {
-            if (Utility.hasExternalImages(textToDisplay)) {
-                if (loadPictures) {
-                    setLoadPictures(true);
-                } else {
-                    hasHiddenExternalImages = true;
-                }
-            }
-        }
-
-        if (textToDisplay == null) {
-            textToDisplay = HtmlConverter.wrapStatusMessage(getContext().getString(R.string.webview_empty_message));
-        }
-
-        OnPageFinishedListener onPageFinishedListener = new OnPageFinishedListener() {
-            @Override
-            public void onPageFinished() {
-                onRenderingFinishedListener.onLoadFinished();
-            }
-        };
-
-        displayHtmlContentWithInlineAttachments(
-                textToDisplay, messageViewInfo.attachmentResolver, onPageFinishedListener);
-
-        if (isPlainText) {
-            plainText.setText(messageViewInfo.plainText);
-        }
-
         if (!TextUtils.isEmpty(messageViewInfo.extraText)) {
             unsignedTextContainer.setVisibility(View.VISIBLE);
             unsignedTextDivider.setVisibility(hideUnsignedTextDivider ? View.GONE : View.VISIBLE);
             unsignedText.setText(messageViewInfo.extraText);
+        }
+
+        if (K9.isMessageViewWithoutHtml()) {
+            plainText.setText(messageViewInfo.plainText);
+            plainText.setVisibility(View.VISIBLE);
+            onRenderingFinishedListener.onLoadFinished();
+        } else {
+            String textToDisplay = messageViewInfo.text;
+            if (textToDisplay != null) {
+                if (!isShowingPictures()) {
+                    if (Utility.hasExternalImages(textToDisplay)) {
+                        if (loadPictures) {
+                            setLoadPictures(true);
+                        } else {
+                            hasHiddenExternalImages = true;
+                        }
+                    }
+                }
+            } else {
+                textToDisplay = HtmlConverter.wrapStatusMessage(getContext().getString(R.string.webview_empty_message));
+            }
+            mMessageContentView.setVisibility(View.VISIBLE);
+            OnPageFinishedListener onPageFinishedListener = new OnPageFinishedListener() {
+                @Override
+                public void onPageFinished() {
+                    onRenderingFinishedListener.onLoadFinished();
+                }
+            };
+            displayHtmlContentWithInlineAttachments(textToDisplay, messageViewInfo.attachmentResolver, onPageFinishedListener);
         }
     }
 
@@ -449,8 +443,11 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
 
     private void clearDisplayedContent() {
         mMessageContentView.displayHtmlContentWithInlineAttachments("", null, null);
+        mMessageContentView.setVisibility(View.GONE);
         unsignedTextContainer.setVisibility(View.GONE);
         unsignedText.setText("");
+        plainText.setVisibility(View.GONE);
+        plainText.setText("");
     }
 
     public void renderAttachments(MessageViewInfo messageViewInfo) {
