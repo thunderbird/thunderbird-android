@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="16sp"
         tools:text="Plain text content" />
 
     <!-- Unsigned content area -->
