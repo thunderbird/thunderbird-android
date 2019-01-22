@@ -4,10 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.provider.Settings
-import android.support.v4.app.DialogFragment
-import android.support.v4.content.ContextCompat.startActivity
-import android.support.v4.content.res.TypedArrayUtils
-import android.support.v7.preference.Preference
+import androidx.fragment.app.DialogFragment
+import androidx.core.content.ContextCompat.startActivity
+import androidx.core.content.res.TypedArrayUtils
+import androidx.preference.Preference
 import android.util.AttributeSet
 import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat
 
@@ -17,7 +17,7 @@ class NotificationsPreference
 constructor(
         context: Context,
         attrs: AttributeSet? = null,
-        defStyleAttr: Int = TypedArrayUtils.getAttr(context, android.support.v7.preference.R.attr.preferenceStyle,
+        defStyleAttr: Int = TypedArrayUtils.getAttr(context, androidx.preference.R.attr.preferenceStyle,
                 android.R.attr.preferenceStyle),
         defStyleRes: Int = 0
 ) : Preference(context, attrs, defStyleAttr, defStyleRes) {
@@ -31,7 +31,7 @@ constructor(
     companion object {
         init {
             PreferenceFragmentCompat.registerPreferenceFragment(
-                    NotificationsPreference::class.java, DialogFragment::class.java)
+                    NotificationsPreference::class.java, androidx.fragment.app.DialogFragment::class.java)
         }
     }
 }

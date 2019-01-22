@@ -6,7 +6,7 @@
 
     <include layout="@layout/toolbar" />
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
               android:layout_height="fill_parent"
               android:layout_width="fill_parent">
 
@@ -207,11 +207,11 @@
                     android:textColor="?android:attr/textColorPrimary"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/libraries"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

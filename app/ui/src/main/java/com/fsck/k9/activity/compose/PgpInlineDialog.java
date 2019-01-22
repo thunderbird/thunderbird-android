@@ -8,7 +8,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
+import androidx.annotation.IdRes;
 import android.view.LayoutInflater;
 import android.view.View;
 

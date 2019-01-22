@@ -3,8 +3,8 @@ package com.fsck.k9.ui.settings.account
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.support.v14.preference.SwitchPreference
-import android.support.v7.preference.ListPreference
+import androidx.preference.SwitchPreference
+import androidx.preference.ListPreference
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem

@@ -5,8 +5,8 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.RequiresApi;
+import androidx.annotation.VisibleForTesting;
 
 import com.fsck.k9.power.DozeChecker;
 

@@ -3,7 +3,7 @@ package com.fsck.k9.ui.permissions
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
+import androidx.fragment.app.DialogFragment
 import androidx.core.os.bundleOf
 import com.fsck.k9.activity.K9Activity
 import com.fsck.k9.activity.K9Activity.Permission
@@ -15,7 +15,7 @@ import com.fsck.k9.ui.R
  * Closing the dialog triggers a permission request. For this to work the Activity needs to be a subclass of
  * [K9Activity].
  */
-class PermissionRationaleDialogFragment : DialogFragment() {
+class PermissionRationaleDialogFragment : androidx.fragment.app.DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val args = arguments!!
         val permissionName = args.getString(ARG_PERMISSION)

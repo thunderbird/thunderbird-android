@@ -4,10 +4,10 @@ package com.fsck.k9.notification;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.support.v4.app.NotificationCompat.Action;
-import android.support.v4.app.NotificationCompat.Builder;
-import android.support.v4.app.NotificationCompat.Extender;
-import android.support.v4.app.NotificationCompat.WearableExtender;
+import androidx.core.app.NotificationCompat.Action;
+import androidx.core.app.NotificationCompat.Builder;
+import androidx.core.app.NotificationCompat.Extender;
+import androidx.core.app.NotificationCompat.WearableExtender;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;

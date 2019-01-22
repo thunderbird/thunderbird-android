@@ -20,7 +20,7 @@ dependencies {
     implementation project(":backend:pop3")
     implementation project(":backend:webdav")
 
-    implementation "com.android.support:appcompat-v7:${versions.supportLibrary}"
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
     implementation "com.jakewharton.timber:timber:${versions.timber}"
 
     testImplementation "org.robolectric:robolectric:${versions.robolectric}"
@@ -31,7 +31,7 @@ dependencies {
     testImplementation "org.jdom:jdom2:2.0.6"
     testImplementation "org.koin:koin-test:${versions.koin}"
 
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:3.0.1"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.1.1"
 }
 
 android {
@@ -50,7 +50,7 @@ android {
 
         generatedDensities = ['mdpi', 'hdpi', 'xhdpi']
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {

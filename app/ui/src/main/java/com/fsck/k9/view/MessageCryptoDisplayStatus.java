@@ -1,10 +1,10 @@
 package com.fsck.k9.view;
 
 
-import android.support.annotation.AttrRes;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
+import androidx.annotation.AttrRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 
 import com.fsck.k9.ui.R;
 import com.fsck.k9.mailstore.CryptoResultAnnotation;

@@ -1,6 +1,6 @@
 package com.fsck.k9.preferences
 
-import android.support.annotation.CheckResult
+import androidx.annotation.CheckResult
 
 
 interface StoragePersister {

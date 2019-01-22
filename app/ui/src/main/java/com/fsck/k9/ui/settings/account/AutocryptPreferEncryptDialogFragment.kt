@@ -3,9 +3,9 @@ package com.fsck.k9.ui.settings.account
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
-import android.support.v7.app.AlertDialog
-import android.support.v7.preference.DialogPreference
+import androidx.fragment.app.DialogFragment
+import androidx.appcompat.app.AlertDialog
+import androidx.preference.DialogPreference
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +13,7 @@ import android.widget.CheckBox
 import android.widget.TextView
 import com.fsck.k9.ui.R
 
-class AutocryptPreferEncryptDialogFragment : DialogFragment() {
+class AutocryptPreferEncryptDialogFragment : androidx.fragment.app.DialogFragment() {
     private val preference: AutocryptPreferEncryptPreference by lazy {
         val preferenceKey = arguments?.getString(ARG_KEY) ?: throw IllegalStateException("Argument $ARG_KEY missing")
         val fragment = targetFragment as DialogPreference.TargetFragment
