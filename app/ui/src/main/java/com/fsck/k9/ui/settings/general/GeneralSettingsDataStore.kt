@@ -1,7 +1,7 @@
 package com.fsck.k9.ui.settings.general
 
-import android.support.v4.app.FragmentActivity
-import android.support.v7.preference.PreferenceDataStore
+import androidx.fragment.app.FragmentActivity
+import androidx.preference.PreferenceDataStore
 import com.fsck.k9.K9
 import com.fsck.k9.K9.Theme
 import com.fsck.k9.Preferences
@@ -13,7 +13,7 @@ class GeneralSettingsDataStore(
         private val jobManager: K9JobManager,
         private val executorService: ExecutorService
 ) : PreferenceDataStore() {
-    var activity: FragmentActivity? = null
+    var activity: androidx.fragment.app.FragmentActivity? = null
 
     override fun getBoolean(key: String, defValue: Boolean): Boolean {
         return when (key) {

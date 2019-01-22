@@ -7,9 +7,9 @@ import java.util.Map;
 import java.util.Stack;
 
 import android.net.Uri;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
-import android.support.annotation.WorkerThread;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
+import androidx.annotation.WorkerThread;
 
 import com.fsck.k9.DI;
 import timber.log.Timber;

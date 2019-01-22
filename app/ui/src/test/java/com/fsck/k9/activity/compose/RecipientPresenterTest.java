@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.content.Context;
-import android.support.v4.app.LoaderManager;
+import androidx.loader.app.LoaderManager;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;

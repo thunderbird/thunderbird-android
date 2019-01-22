@@ -7,9 +7,9 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -58,7 +58,7 @@ class AboutActivity : K9Activity() {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_revision_url))))
         }
 
-        val manager = LinearLayoutManager(this)
+        val manager = androidx.recyclerview.widget.LinearLayoutManager(this)
         libraries.apply {
             layoutManager = manager
             adapter = LibrariesAdapter(USED_LIBRARIES)
@@ -117,9 +117,9 @@ class AboutActivity : K9Activity() {
 }
 
 private class LibrariesAdapter(private val dataset: Array<Library>)
-        : RecyclerView.Adapter<LibrariesAdapter.ViewHolder>() {
+        : androidx.recyclerview.widget.RecyclerView.Adapter<LibrariesAdapter.ViewHolder>() {
 
-    class ViewHolder(val view: View) : RecyclerView.ViewHolder(view)
+    class ViewHolder(val view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.about_library, parent, false)

@@ -3,7 +3,7 @@ package com.fsck.k9.message.signature;
 
 import java.util.regex.Pattern;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.fsck.k9.helper.jsoup.AdvancedNodeTraversor;
 import com.fsck.k9.helper.jsoup.NodeFilter;

@@ -3,9 +3,9 @@ package com.fsck.k9.ui.settings.account
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.preference.PreferenceFragmentCompat
-import android.support.v7.preference.PreferenceFragmentCompat.OnPreferenceStartScreenCallback
-import android.support.v7.preference.PreferenceScreen
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceFragmentCompat.OnPreferenceStartScreenCallback
+import androidx.preference.PreferenceScreen
 import android.view.MenuItem
 import com.fsck.k9.activity.K9Activity
 import com.fsck.k9.ui.R
