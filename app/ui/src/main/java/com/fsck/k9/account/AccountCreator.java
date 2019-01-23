@@ -13,7 +13,7 @@ import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.preferences.Protocols;
-import com.larswerkman.colorpicker.ColorPicker;
+import com.larswerkman.holocolorpicker.ColorPicker;
 
 
 /**
@@ -90,7 +90,8 @@ public class AccountCreator {
                 }
             }
         }
+        ColorPicker c = new ColorPicker(context);
 
-        return (availableColors.isEmpty()) ? ColorPicker.getRandomColor() : availableColors.get(0);
+        return (availableColors.isEmpty()) ? c.getRandomColor() : availableColors.get(0);
     }
 }

@@ -1,16 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <com.larswerkman.colorpicker.ColorPicker
+    <com.larswerkman.holocolorpicker.ColorPicker
         android:id="@+id/color_picker"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_margin="8dp"
-        app:pointer_size="48"
-        app:wheel_size="16" />
+        android:layout_margin="8dp" />
 
-</FrameLayout>
+    <com.larswerkman.holocolorpicker.SVBar
+        android:id="@+id/svbar"
+        android:layout_width="322dp"
+        android:layout_height="112dp"
+        android:layout_gravity="center"
+        android:layout_margin="8dip" />
+
+    <com.larswerkman.holocolorpicker.OpacityBar
+        android:id="@+id/opacitybar"
+        android:layout_width="322dp"
+        android:layout_height="112dp"
+        android:layout_gravity="center"
+        android:layout_margin="8dip" />
+
+</LinearLayout>
