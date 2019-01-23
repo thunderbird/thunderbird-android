@@ -8,8 +8,8 @@ buildscript {
 
         versions = [
                 'kotlin': '1.2.71',
-                'supportLibrary': '27.1.1',
-                'preferencesFix': '27.1.1.1',
+                'supportLibrary': '28.0.0',
+                'preferencesFix': '28.0.0.0',
                 'lifecycleExtensions': '1.1.0',
                 'okio': '1.14.0',
                 'timber': '4.5.1',
@@ -55,11 +55,11 @@ subprojects {
         exclude group: "com.android.support", module: "support-media-compat"
 
         resolutionStrategy {
-            force "com.android.support:support-annotations:${versions.supportLibrary}"
-            force "com.android.support:design:${versions.supportLibrary}"
-            force "com.android.support:support-fragment:${versions.supportLibrary}"
-            force "com.android.support:preference-v14:${versions.supportLibrary}"
-            force "com.android.support:cardview-v7:${versions.supportLibrary}"
+            force "androidx.lifecycle:lifecycle-livedata-core:2.1.0-alpha01"
+            force "androidx.lifecycle:lifecycle-runtime:2.1.0-alpha01"
+            force "androidx.lifecycle:lifecycle-process:2.1.0-alpha01"
+            force "androidx.lifecycle:lifecycle-extensions:2.1.0-alpha01"
+            force "androidx.core:core:1.1.0-alpha03"
         }
     }
 }
