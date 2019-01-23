@@ -2429,4 +2429,15 @@ public class LocalFolder extends Folder<LocalMessage> {
             return databaseName;
         }
     }
+
+    public static boolean isModeMismatch(Account.FolderMode aMode, Folder.FolderClass fMode) {
+        return aMode == Account.FolderMode.NONE
+                || (aMode == Account.FolderMode.FIRST_CLASS &&
+                fMode != Folder.FolderClass.FIRST_CLASS)
+                || (aMode == Account.FolderMode.FIRST_AND_SECOND_CLASS &&
+                fMode != Folder.FolderClass.FIRST_CLASS &&
+                fMode != Folder.FolderClass.SECOND_CLASS)
+                || (aMode == Account.FolderMode.NOT_SECOND_CLASS &&
+                fMode == Folder.FolderClass.SECOND_CLASS);
+    }
 }

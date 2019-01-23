@@ -83,6 +83,7 @@ import com.fsck.k9.mailstore.OutboxStateRepository;
 import com.fsck.k9.mailstore.SendState;
 import com.fsck.k9.mailstore.UnavailableStorageException;
 import com.fsck.k9.notification.NotificationController;
+import com.fsck.k9.notification.NotificationStrategy;
 import com.fsck.k9.power.TracingPowerManager;
 import com.fsck.k9.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.search.LocalSearch;
@@ -119,6 +120,7 @@ public class MessagingController {
     private final Context context;
     private final Contacts contacts;
     private final NotificationController notificationController;
+    private final NotificationStrategy notificationStrategy;
     private final LocalStoreProvider localStoreProvider;
     private final BackendManager backendManager;
 
@@ -143,11 +145,13 @@ public class MessagingController {
 
 
     MessagingController(Context context, NotificationController notificationController,
+            NotificationStrategy notificationStrategy,
             LocalStoreProvider localStoreProvider, Contacts contacts,
             AccountStatsCollector accountStatsCollector, CoreResourceProvider resourceProvider,
             BackendManager backendManager, List<ControllerExtension> controllerExtensions) {
         this.context = context;
         this.notificationController = notificationController;
+        this.notificationStrategy = notificationStrategy;
         this.localStoreProvider = localStoreProvider;
         this.contacts = contacts;
         this.accountStatsCollector = accountStatsCollector;
@@ -2515,7 +2519,7 @@ public class MessagingController {
                 Folder.FolderClass fDisplayClass = folder.getDisplayClass();
                 Folder.FolderClass fSyncClass = folder.getSyncClass();
 
-                if (modeMismatch(aDisplayMode, fDisplayClass)) {
+                if (LocalFolder.isModeMismatch(aDisplayMode, fDisplayClass)) {
                     // Never sync a folder that isn't displayed
                     /*
                     if (K9.DEBUG) {
@@ -2527,7 +2531,7 @@ public class MessagingController {
                     continue;
                 }
 
-                if (modeMismatch(aSyncMode, fSyncClass)) {
+                if (LocalFolder.isModeMismatch(aSyncMode, fSyncClass)) {
                     // Do not sync folders in the wrong class
                     /*
                     if (K9.DEBUG) {
@@ -2709,63 +2713,6 @@ public class MessagingController {
         });
     }
 
-
-    public boolean shouldNotifyForMessage(Account account, LocalFolder localFolder, Message message,
-            boolean isOldMessage) {
-        // If we don't even have an account name, don't show the notification.
-        // (This happens during initial account setup)
-        if (account.getName() == null) {
-            return false;
-        }
-
-        if (K9.isQuietTime() && !K9.isNotificationDuringQuietTimeEnabled()) {
-            return false;
-        }
-
-        // Do not notify if the user does not have notifications enabled or if the message has
-        // been read.
-        if (!account.isNotifyNewMail() || message.isSet(Flag.SEEN) || isOldMessage) {
-            return false;
-        }
-
-        Account.FolderMode aDisplayMode = account.getFolderDisplayMode();
-        Account.FolderMode aNotifyMode = account.getFolderNotifyNewMailMode();
-        Folder.FolderClass fDisplayClass = localFolder.getDisplayClass();
-        Folder.FolderClass fNotifyClass = localFolder.getNotifyClass();
-
-        if (modeMismatch(aDisplayMode, fDisplayClass)) {
-            // Never notify a folder that isn't displayed
-            return false;
-        }
-
-        if (modeMismatch(aNotifyMode, fNotifyClass)) {
-            // Do not notify folders in the wrong class
-            return false;
-        }
-
-        // No notification for new messages in Trash, Drafts, Spam or Sent folder.
-        // But do notify if it's the INBOX (see issue 1817).
-        Folder folder = message.getFolder();
-        if (folder != null) {
-            String folderServerId = folder.getServerId();
-            if (!folderServerId.equals(account.getInboxFolder()) &&
-                    (folderServerId.equals(account.getTrashFolder())
-                            || folderServerId.equals(account.getDraftsFolder())
-                            || folderServerId.equals(account.getSpamFolder())
-                            || folderServerId.equals(account.getSentFolder()))) {
-                return false;
-            }
-        }
-
-        // Don't notify if the sender address matches one of our identities and the user chose not
-        // to be notified for such messages.
-        if (account.isAnIdentity(message.getFrom()) && !account.isNotifySelfNewMail()) {
-            return false;
-        }
-
-        return !account.isNotifyContactsMailOnly() || contacts.isAnyInContacts(message.getFrom());
-    }
-
     public void deleteAccount(Account account) {
         notificationController.clearNewMailNotifications(account);
         memorizingMessagingListener.removeAccount(account);
@@ -2824,17 +2771,6 @@ public class MessagingController {
         }
 
         return id;
-    }
-
-    private boolean modeMismatch(Account.FolderMode aMode, Folder.FolderClass fMode) {
-        return aMode == Account.FolderMode.NONE
-                || (aMode == Account.FolderMode.FIRST_CLASS &&
-                fMode != Folder.FolderClass.FIRST_CLASS)
-                || (aMode == Account.FolderMode.FIRST_AND_SECOND_CLASS &&
-                fMode != Folder.FolderClass.FIRST_CLASS &&
-                fMode != Folder.FolderClass.SECOND_CLASS)
-                || (aMode == Account.FolderMode.NOT_SECOND_CLASS &&
-                fMode == Folder.FolderClass.SECOND_CLASS);
     }
 
     private static AtomicInteger sequencing = new AtomicInteger(0);
@@ -2903,7 +2839,7 @@ public class MessagingController {
                 Folder.FolderClass fDisplayClass = folder.getDisplayClass();
                 Folder.FolderClass fPushClass = folder.getPushClass();
 
-                if (modeMismatch(aDisplayMode, fDisplayClass)) {
+                if (LocalFolder.isModeMismatch(aDisplayMode, fDisplayClass)) {
                     // Never push a folder that isn't displayed
                     /*
                     if (K9.DEBUG) {
@@ -2915,7 +2851,7 @@ public class MessagingController {
                     continue;
                 }
 
-                if (modeMismatch(aPushMode, fPushClass)) {
+                if (LocalFolder.isModeMismatch(aPushMode, fPushClass)) {
                     // Do not push folders in the wrong class
                     /*
                     if (K9.DEBUG) {
@@ -3149,7 +3085,7 @@ public class MessagingController {
             // Send a notification of this message
             LocalMessage message = loadMessage(folderServerId, messageServerId);
             LocalFolder localFolder = message.getFolder();
-            if (shouldNotifyForMessage(account, localFolder, message, isOldMessage)) {
+            if (notificationStrategy.shouldNotifyForMessage(account, localFolder, message, isOldMessage)) {
                 // Notify with the localMessage so that we don't have to recalculate the content preview.
                 notificationController.addNewMailNotification(account, message, previousUnreadMessageCount);
             }
@@ -3176,7 +3112,7 @@ public class MessagingController {
                 syncRemovedMessage(folderServerId, message.getUid());
             } else {
                 LocalFolder localFolder = message.getFolder();
-                if (shouldNotifyForMessage(account, localFolder, message, false)) {
+                if (notificationStrategy.shouldNotifyForMessage(account, localFolder, message, false)) {
                     shouldBeNotifiedOf = true;
                 }
             }
