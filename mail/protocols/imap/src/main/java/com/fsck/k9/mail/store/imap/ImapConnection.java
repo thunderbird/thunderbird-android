@@ -9,9 +9,11 @@ import java.io.OutputStream;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -30,6 +32,7 @@ import java.util.zip.InflaterInputStream;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.fsck.k9.K9;
 import com.fsck.k9.mail.Authentication;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
@@ -204,8 +207,19 @@ class ImapConnection {
 
     private Socket connect() throws GeneralSecurityException, MessagingException, IOException {
         Exception connectException = null;
+        InetAddress[] inetAddresses = null;
 
-        InetAddress[] inetAddresses = InetAddress.getAllByName(settings.getHost());
+        //Check if unresolved host is onion
+        try {
+            inetAddresses = InetAddress.getAllByName(settings.getHost());
+        } catch (UnknownHostException e) {
+            if (settings.getHost().toLowerCase().endsWith("onion")) { //TOR Onion address
+                return connectToOnionAddress();
+            } else {
+                throw new UnknownHostException("Cannot resolve " + settings.getHost());
+            }
+        }
+
         for (InetAddress address : inetAddresses) {
             try {
                 return connectToAddress(address);
@@ -217,6 +231,51 @@ class ImapConnection {
 
         throw new MessagingException("Cannot connect to host", connectException);
     }
+
+    private Socket connectToOnionAddress() throws NoSuchAlgorithmException, KeyManagementException,
+            MessagingException, IOException {
+
+        String host = settings.getHost();
+        int port = settings.getPort();
+        String clientCertificateAlias = settings.getClientCertificateAlias();
+
+        if (K9MailLib.isDebug() && DEBUG_PROTOCOL_IMAP) {
+            Timber.d("Connecting to %s", host);
+        }
+
+        if (!K9.isProxy()) {
+            Timber.e("Proxy is needed in order to connect %s", host);
+            throw new MessagingException("Proxy is needed to be set for connecting Onion addresses.");
+        }
+
+        String ip;
+        int proxyPort;
+
+        ip = K9.getProxyAddress().split(":")[0];
+        proxyPort = Integer.parseInt(K9.getProxyAddress().split(":")[1]);
+
+        InetSocketAddress HiddenerProxyAddress = new InetSocketAddress(ip, proxyPort);
+        Proxy HiddenProxy = new Proxy(Proxy.Type.SOCKS, HiddenerProxyAddress);
+        Socket underlying = new Socket(HiddenProxy);
+        InetSocketAddress sa = InetSocketAddress.createUnresolved(host, port);
+
+        //Connect
+        underlying.connect(sa, socketConnectTimeout);
+
+        Socket socket;
+        if (settings.getConnectionSecurity() == ConnectionSecurity.SSL_TLS_REQUIRED) {
+            socket = socketFactory.createSocket(underlying, host, port, clientCertificateAlias);
+        } else {
+            socket = underlying;
+        }
+
+        if (!socket.isConnected()) {
+            socket.connect(sa, socketConnectTimeout);
+        }
+
+        return socket;
+    }
+
 
     private Socket connectToAddress(InetAddress address) throws NoSuchAlgorithmException, KeyManagementException,
             MessagingException, IOException {

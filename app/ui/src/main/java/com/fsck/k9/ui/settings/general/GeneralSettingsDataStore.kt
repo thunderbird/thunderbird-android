@@ -45,6 +45,7 @@ class GeneralSettingsDataStore(
             "privacy_hide_timezone" -> K9.hideTimeZone()
             "debug_logging" -> K9.isDebug()
             "sensitive_logging" -> K9.DEBUG_SENSITIVE
+            "network_use_socks_proxy" -> K9.isProxy()
             else -> defValue
         }
     }
@@ -79,6 +80,7 @@ class GeneralSettingsDataStore(
             "privacy_hide_timezone" -> K9.setHideTimeZone(value)
             "debug_logging" -> K9.setDebug(value)
             "sensitive_logging" -> K9.DEBUG_SENSITIVE = value
+            "network_use_socks_proxy" -> K9.setProxy(value)
             else -> return
         }
 
@@ -116,6 +118,7 @@ class GeneralSettingsDataStore(
             "notification_hide_subject" -> K9.getNotificationHideSubject().name
             "quiet_time_starts" -> K9.getQuietTimeStarts()
             "quiet_time_ends" -> K9.getQuietTimeEnds()
+            "network_socks_proxy_address" -> K9.getProxyAddress()
             else -> defValue
         }
     }
@@ -137,6 +140,7 @@ class GeneralSettingsDataStore(
             "notification_hide_subject" -> K9.setNotificationHideSubject(K9.NotificationHideSubject.valueOf(value))
             "quiet_time_starts" -> K9.setQuietTimeStarts(value)
             "quiet_time_ends" -> K9.setQuietTimeEnds(value)
+            "network_socks_proxy_address" -> K9.setProxyAddress(value)
             else -> return
         }
 

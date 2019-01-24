@@ -330,6 +330,19 @@
             search:summary=""
             android:title="@string/background_ops_label" />
 
+        <CheckBoxPreference
+            android:title="@string/network_use_proxy_label"
+            android:key="network_use_socks_proxy"
+            android:summary="Use socks proxy for connections" />
+
+        <EditTextPreference
+            android:title="@string/network_proxy_label"
+            android:key="network_socks_proxy_address"
+            android:summary="Enter the ip address and port of socks proxy"
+            android:dependency="network_use_socks_proxy"
+            android:dialogTitle="Socks Proxy"
+            android:defaultValue="127.0.0.1:9050" />
+
     </PreferenceScreen>
 
     <PreferenceScreen

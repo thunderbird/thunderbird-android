@@ -9,10 +9,14 @@ import java.io.OutputStream;
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,6 +29,7 @@ import java.util.Queue;
 import android.support.annotation.VisibleForTesting;
 import android.text.TextUtils;
 
+import com.fsck.k9.K9;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.Authentication;
@@ -104,26 +109,57 @@ public class SmtpTransport extends Transport {
     public void open() throws MessagingException {
         try {
             boolean secureConnection = false;
-            InetAddress[] addresses = InetAddress.getAllByName(host);
-            for (int i = 0; i < addresses.length; i++) {
-                try {
-                    SocketAddress socketAddress = new InetSocketAddress(addresses[i], port);
-                    if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
-                        socket = trustedSocketFactory.createSocket(null, host, port, clientCertificateAlias);
-                        socket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
-                        secureConnection = true;
-                    } else {
-                        socket = new Socket();
-                        socket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
-                    }
-                } catch (SocketException e) {
-                    if (i < (addresses.length - 1)) {
-                        // there are still other addresses for that host to try
-                        continue;
-                    }
-                    throw new MessagingException("Cannot connect to host", e);
+
+            InetAddress[] addresses = null;
+            try {
+                addresses = InetAddress.getAllByName(host);
+            } catch (UnknownHostException e) {
+                if (host.toLowerCase().endsWith("onion")) {
+                    socket = createOnionSocket();
+                } else {
+                    throw new UnknownHostException("Cannot resolve " + host);
                 }
-                break; // connection success
+            }
+
+            if (socket == null || !socket.isConnected()) {
+                for (int i = 0; i < addresses.length; i++) {
+                    try {
+                        SocketAddress socketAddress = new InetSocketAddress(addresses[i], port);
+
+                        Socket underlying;
+
+                        if (K9.isProxy()) {
+                            String proxyAddress = K9.getProxyAddress().split(":")[0];
+                            int proxyPort = Integer.parseInt(K9.getProxyAddress().split(":")[1]);
+
+                            Timber.d("Connecting to SOCKS proxy at %s as %s", proxyAddress, proxyPort);
+
+                            SocketAddress sa = new InetSocketAddress(proxyAddress, proxyPort);
+                            Proxy p = new Proxy(Proxy.Type.SOCKS, sa);
+                            underlying = new Socket(p);
+                        } else {
+                            underlying = new Socket();
+                        }
+
+                        underlying.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
+
+                        if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
+                            socket = trustedSocketFactory.createSocket(underlying, host, port, clientCertificateAlias);
+                            //socket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
+                            secureConnection = true;
+                        } else {
+                            socket = underlying;
+                            //socket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
+                        }
+                    } catch (SocketException e) {
+                        if (i < (addresses.length - 1)) {
+                            // there are still other addresses for that host to try
+                            continue;
+                        }
+                        throw new MessagingException("Cannot connect to host", e);
+                    }
+                    break; // connection success
+                }
             }
 
             // RFC 1047
@@ -299,6 +335,50 @@ public class SmtpTransport extends Transport {
             close();
             throw new MessagingException("Unable to open connection to SMTP server.", ioe);
         }
+    }
+
+    /**
+     * Will create an Onion socket if the destination address is Onion.
+     * @return The socket object connected to the destination Onion.
+     * @throws MessagingException If proxy is not turned on while creating Onion socket.
+     * @throws IOException
+     * @throws NoSuchAlgorithmException
+     * @throws KeyManagementException
+     */
+    private Socket createOnionSocket() throws MessagingException, IOException, NoSuchAlgorithmException, KeyManagementException {
+
+        if (!K9.isProxy()) {
+            Timber.e("Proxy is needed in order to connect %s", host);
+            throw new MessagingException("Proxy is needed to be set for connecting Onion addresses.");
+        }
+
+        String ip;
+        int proxyPort;
+
+        ip = K9.getProxyAddress().split(":")[0];
+        proxyPort = Integer.parseInt(K9.getProxyAddress().split(":")[1]);
+
+
+        InetSocketAddress HiddenerProxyAddress = new InetSocketAddress(ip, proxyPort);
+        Proxy HiddenProxy = new Proxy(Proxy.Type.SOCKS, HiddenerProxyAddress);
+        Socket underlying = new Socket(HiddenProxy);
+        InetSocketAddress sa = InetSocketAddress.createUnresolved(host, port);
+
+        //Connect
+        underlying.connect(sa, SOCKET_CONNECT_TIMEOUT);
+
+        Socket socket;
+        if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) {
+            socket = trustedSocketFactory.createSocket(underlying, host, port, clientCertificateAlias);
+        } else {
+            socket = underlying;
+        }
+
+        if (!socket.isConnected()) {
+            socket.connect(sa, SOCKET_CONNECT_TIMEOUT);
+        }
+
+        return socket;
     }
 
     private String buildHostnameToReport() {

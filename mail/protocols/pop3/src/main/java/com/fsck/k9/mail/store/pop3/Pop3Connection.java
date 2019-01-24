@@ -5,9 +5,12 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.net.UnknownHostException;
 import java.security.GeneralSecurityException;
 import java.security.KeyManagementException;
 import java.security.MessageDigest;
@@ -17,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import com.fsck.k9.K9;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.Authentication;
 import com.fsck.k9.mail.AuthenticationFailedException;
@@ -60,15 +64,46 @@ class Pop3Connection {
 
     void open() throws MessagingException {
         try {
+            try {
+                InetAddress.getAllByName(settings.getHost());
+            } catch (UnknownHostException ex) {
+                if (settings.getHost().toLowerCase().endsWith("onion")) {
+                    socket = createOnionSocket();
+                }
+            }
             SocketAddress socketAddress = new InetSocketAddress(settings.getHost(), settings.getPort());
-            if (settings.getConnectionSecurity() == ConnectionSecurity.SSL_TLS_REQUIRED) {
-                socket = trustedSocketFactory.createSocket(null, settings.getHost(),
-                        settings.getPort(), settings.getClientCertificateAlias());
-            } else {
-                socket = new Socket();
+
+            if (socket == null || !socket.isConnected()) {
+
+                Socket underlying;
+
+                if (K9.isProxy()) {
+                    String proxyAddress = K9.getProxyAddress().split(":")[0];
+                    int proxyPort = Integer.parseInt(K9.getProxyAddress().split(":")[1]);
+
+                    Timber.d("Connecting to SOCKS proxy at %s as %s", proxyAddress, proxyPort);
+
+                    SocketAddress sa = new InetSocketAddress(proxyAddress, proxyPort);
+                    Proxy p = new Proxy(Proxy.Type.SOCKS, sa);
+                    underlying = new Socket(p);
+
+                    underlying.connect(socketAddress, RemoteStore.SOCKET_CONNECT_TIMEOUT);
+                } else {
+                    underlying = null;
+                }
+
+                if (settings.getConnectionSecurity() == ConnectionSecurity.SSL_TLS_REQUIRED) {
+                    socket = trustedSocketFactory.createSocket(underlying, settings.getHost(),
+                            settings.getPort(), settings.getClientCertificateAlias());
+                } else {
+                    socket = (underlying == null ? new Socket() : underlying);
+                }
             }
 
-            socket.connect(socketAddress, RemoteStore.SOCKET_CONNECT_TIMEOUT);
+            if (!socket.isConnected()) {
+                socket.connect(socketAddress, RemoteStore.SOCKET_CONNECT_TIMEOUT);
+            }
+
             in = new BufferedInputStream(socket.getInputStream(), 1024);
             out = new BufferedOutputStream(socket.getOutputStream(), 512);
 
@@ -99,6 +134,50 @@ class Pop3Connection {
         } catch (IOException ioe) {
             throw new MessagingException("Unable to open connection to POP server.", ioe);
         }
+    }
+
+    /**
+     * This method will be used for creating a socket for Onion destinations.
+     * @return The socket in which is connected to the Onion address
+     * @throws MessagingException Will throw if proxy is not set in K9.
+     * @throws IOException
+     * @throws NoSuchAlgorithmException
+     * @throws KeyManagementException
+     */
+    private Socket createOnionSocket() throws MessagingException, IOException, NoSuchAlgorithmException, KeyManagementException {
+
+        if (!K9.isProxy()) {
+            Timber.e("Proxy is needed in order to connect %s", settings.getHost());
+            throw new MessagingException("Proxy is needed to be set for connecting Onion addresses.");
+        }
+
+        String ip;
+        int proxyPort;
+
+        ip = K9.getProxyAddress().split(":")[0];
+        proxyPort = Integer.parseInt(K9.getProxyAddress().split(":")[1]);
+
+
+        InetSocketAddress HiddenerProxyAddress = new InetSocketAddress(ip, proxyPort);
+        Proxy HiddenProxy = new Proxy(Proxy.Type.SOCKS, HiddenerProxyAddress);
+        Socket underlying = new Socket(HiddenProxy);
+        InetSocketAddress sa = InetSocketAddress.createUnresolved(settings.getHost(), settings.getPort());
+
+        //Connect
+        underlying.connect(sa, RemoteStore.SOCKET_CONNECT_TIMEOUT);
+
+        Socket socket;
+        if (settings.getConnectionSecurity() == ConnectionSecurity.SSL_TLS_REQUIRED) {
+            socket = trustedSocketFactory.createSocket(underlying, settings.getHost(), settings.getPort(), settings.getClientCertificateAlias());
+        } else {
+            socket = underlying;
+        }
+
+        if (!socket.isConnected()) {
+            socket.connect(sa, RemoteStore.SOCKET_CONNECT_TIMEOUT);
+        }
+
+        return socket;
     }
 
     /*

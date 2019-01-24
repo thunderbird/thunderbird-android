@@ -291,6 +291,12 @@ public class GlobalSettings {
                 new V(49, new BooleanSetting(false)),
                 new V(56, null)
         ));
+        s.put("useProxy", Settings.versions(
+                new V(58, new BooleanSetting(false))
+        ));
+        s.put("proxyAddress", Settings.versions(
+                new V(58, new Settings.StringSetting("127.0.0.1:9050"))
+        ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 
