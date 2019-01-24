@@ -4,15 +4,16 @@ import androidx.lifecycle.LiveData
 import com.fsck.k9.Account
 import com.fsck.k9.AccountsChangeListener
 import com.fsck.k9.Preferences
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
-import org.jetbrains.anko.coroutines.experimental.bg
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class AccountsLiveData(val preferences: Preferences) : LiveData<List<Account>>(), AccountsChangeListener {
 
     private fun loadAccountsAsync() {
-        launch(UI) {
-            val accounts = bg {
+        GlobalScope.launch(Dispatchers.Main) {
+            val accounts = async {
                 loadAccounts()
             }
 

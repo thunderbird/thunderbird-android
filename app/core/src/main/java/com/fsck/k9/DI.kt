@@ -28,7 +28,7 @@ object DI {
         return if (name.isEmpty()) {
             koinContext.resolveInstance(kClass, parameters) { koinContext.beanRegistry.searchAll(kClass) }
         } else {
-            koinContext.resolveInstance(kClass, parameters) { koinContext.beanRegistry.searchByName(name) }
+            koinContext.resolveInstance(kClass, parameters) { koinContext.beanRegistry.searchByName(name, kClass) }
         }
     }
 

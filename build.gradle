@@ -7,22 +7,22 @@ buildscript {
         ]
 
         versions = [
-                'kotlin': '1.2.71',
+                'kotlin': '1.3.11',
                 'supportLibrary': '28.0.0',
                 'preferencesFix': '28.0.0.0',
-                'lifecycleExtensions': '1.1.0',
+                'lifecycleExtensions': '1.1.1',
                 'okio': '1.14.0',
-                'timber': '4.5.1',
-                'koin': '0.9.1',
+                'timber': '4.7.1',
+                'koin': '0.9.3',
                 'commonsIo': '2.4',
-                'coreKtx': '0.3',
-                'mime4j': '0.8.1',
+                'coreKtx': '1.0.1',
+                'mime4j': '0.8.2',
 
                 'junit': '4.12',
                 'robolectric': '3.7.1',
                 'mockito': '2.18.0',
                 'mockitoKotlin': '1.5.0',
-                'truth': '0.35'
+                'truth': '0.42'
         ]
     }
 

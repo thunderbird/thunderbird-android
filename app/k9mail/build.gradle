@@ -113,11 +113,6 @@ androidExtensions {
     experimental = true
 }
 
-kotlin {
-    experimental {
-        coroutines "enable"
-    }
-}
 
 if (project.hasProperty('keyAlias')) {
     android.signingConfigs.release.keyAlias = keyAlias
