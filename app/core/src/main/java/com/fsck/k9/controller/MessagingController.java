@@ -2179,11 +2179,14 @@ public class MessagingController {
                 }
             }
 
+            Backend backend = getBackend(account);
+
             LocalStore localStore = localStoreProvider.getInstance(account);
             localFolder = localStore.getFolder(folder);
             Map<String, String> uidMap = null;
-            if (folder.equals(account.getTrashFolder()) || !account.hasTrashFolder()) {
-                Timber.d("Deleting messages in trash folder or trash set to -None-, not copying");
+            if (folder.equals(account.getTrashFolder()) || !account.hasTrashFolder() ||
+                    !backend.isDeleteMoveToTrash()) {
+                Timber.d("Not moving deleted messages to local Trash folder. Removing local copies.");
 
                 if (!localOnlyMessages.isEmpty()) {
                     localFolder.destroyMessages(localOnlyMessages);
@@ -2217,7 +2220,7 @@ public class MessagingController {
                 processPendingCommands(account);
             } else if (!syncedMessageUids.isEmpty()) {
                 if (account.getDeletePolicy() == DeletePolicy.ON_DELETE) {
-                    if (folder.equals(account.getTrashFolder())) {
+                    if (folder.equals(account.getTrashFolder()) || !backend.isDeleteMoveToTrash()) {
                         queueSetFlag(account, folder, true, Flag.DELETED, syncedMessageUids);
                     } else {
                         queueMoveOrCopy(account, folder, account.getTrashFolder(), false,
