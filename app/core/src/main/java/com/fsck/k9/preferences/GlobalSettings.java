@@ -157,7 +157,7 @@ public class GlobalSettings {
                 new V(1, new BooleanSetting(true))
         ));
         s.put("messageViewWithoutHtml", Settings.versions(
-                new V(1, new BooleanSetting(false))
+                new V(58, new BooleanSetting(false))
         ));
         s.put("messageViewFixedWidthFont", Settings.versions(
                 new V(1, new BooleanSetting(false))
