@@ -327,6 +327,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_folderlist_wrap_folder_names_label">Wrap long folder names</string>
     <string name="global_settings_folderlist_wrap_folder_names_summary">Use multiple lines to show long folder names</string>
 
+    <string name="global_settings_messageview_without_html_title">Disable HTML formatting</string>
+    <string name="global_settings_messageview_without_html_summaryOff">HTML is rendered if present in message.</string>
+    <string name="global_settings_messageview_without_html_summaryOn">HTML is stripped from the message and rendered as plain text.</string>
     <string name="global_settings_messageview_fixedwidth_label">Fixed-width fonts</string>
     <string name="global_settings_messageview_fixedwidth_summary">Use a fixed-width font when showing plain-text messages</string>
     <string name="global_settings_messageview_autofit_width_label">Auto-fit messages</string>
@@ -1146,10 +1149,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="global_settings_messageview_visible_refile_actions_title">Visible message actions</string>
     <string name="global_settings_messageview_visible_refile_actions_summary">Show selected actions in the message view menu</string>
-
-    <string name="global_settings_messageview_without_html_title">Disable HTML formatting</string>
-    <string name="global_settings_messageview_without_html_summaryOff">HTML is rendered if present in message.</string>
-    <string name="global_settings_messageview_without_html_summaryOn">HTML is stripped from the message and rendered as plain text.</string>
 
     <string name="loading_attachment">Loading attachment…</string>
     <string name="fetching_attachment_dialog_title_send">Sending message</string>

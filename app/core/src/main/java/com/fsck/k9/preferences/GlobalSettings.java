@@ -156,10 +156,10 @@ public class GlobalSettings {
         s.put("messageListStars", Settings.versions(
                 new V(1, new BooleanSetting(true))
         ));
-        s.put("messageViewFixedWidthFont", Settings.versions(
+        s.put("messageViewWithoutHtml", Settings.versions(
                 new V(1, new BooleanSetting(false))
         ));
-        s.put("messageViewWithoutHtml", Settings.versions(
+        s.put("messageViewFixedWidthFont", Settings.versions(
                 new V(1, new BooleanSetting(false))
         ));
         s.put("messageViewReturnToList", Settings.versions(

@@ -157,8 +157,8 @@ public class K9 {
     private static boolean changeContactNameColor = false;
     private static int contactNameColor = 0xff00008f;
     private static boolean showContactPicture = true;
-    private static boolean messageViewFixedWidthFont = false;
     private static boolean messageViewWithoutHtml = false;
+    private static boolean messageViewFixedWidthFont = false;
     private static boolean messageViewReturnToList = false;
     private static boolean messageViewShowNext = false;
 
@@ -279,8 +279,8 @@ public class K9 {
         editor.putBoolean("showContactPicture", showContactPicture);
         editor.putBoolean("changeRegisteredNameColor", changeContactNameColor);
         editor.putInt("registeredNameColor", contactNameColor);
-        editor.putBoolean("messageViewFixedWidthFont", messageViewFixedWidthFont);
         editor.putBoolean("messageViewWithoutHtml", messageViewWithoutHtml);
+        editor.putBoolean("messageViewFixedWidthFont", messageViewFixedWidthFont);
         editor.putBoolean("messageViewReturnToList", messageViewReturnToList);
         editor.putBoolean("messageViewShowNext", messageViewShowNext);
         editor.putBoolean("wrapFolderNames", wrapFolderNames);
