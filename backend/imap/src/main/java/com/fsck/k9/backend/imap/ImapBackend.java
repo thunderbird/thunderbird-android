@@ -103,6 +103,11 @@ public class ImapBackend implements Backend {
     }
 
     @Override
+    public boolean isDeleteMoveToTrash() {
+        return true;
+    }
+
+    @Override
     public void refreshFolderList() {
         commandRefreshFolderList.refreshFolderList();
     }
