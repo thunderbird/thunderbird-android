@@ -8,6 +8,7 @@ import android.app.DownloadManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -397,6 +398,11 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
         }
 
         if (K9.isMessageViewWithoutHtml()) {
+            if (K9.messageViewFixedWidthFont()) {
+                plainText.setTypeface(Typeface.MONOSPACE, Typeface.NORMAL);
+            } else {
+                plainText.setTypeface(Typeface.SANS_SERIF, Typeface.NORMAL);
+            }
             plainText.setText(messageViewInfo.plainText);
             plainText.setVisibility(View.VISIBLE);
             onRenderingFinishedListener.onLoadFinished();
