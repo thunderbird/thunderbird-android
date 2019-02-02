@@ -356,6 +356,12 @@
             android:summary="@string/global_settings_privacy_hide_timezone_detail"
             android:title="@string/global_settings_privacy_hide_timezone" />
 
+        <CheckBoxPreference
+            android:key="privacy_enable_incognito"
+            android:summary="@string/global_settings_privacy_enable_incognito_detail"
+            android:title="@string/global_settings_privacy_enable_incognito"
+            />
+
     </PreferenceScreen>
 
     <PreferenceScreen

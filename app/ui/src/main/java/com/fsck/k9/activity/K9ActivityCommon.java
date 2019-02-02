@@ -75,6 +75,7 @@ public class K9ActivityCommon {
         mActivity = activity;
         setLanguage(mActivity, K9.getK9Language());
         mActivity.setTheme(getK9ThemeResourceId());
+        if(K9.enableIncoginto()) applyIncogintoToTheme(mActivity);
     }
 
     /**
@@ -83,6 +84,18 @@ public class K9ActivityCommon {
     public void preDispatchTouchEvent(MotionEvent event) {
         if (mGestureDetector != null) {
             mGestureDetector.onTouchEvent(event);
+        }
+    }
+
+
+    public void applyIncogintoToTheme(Context context){
+        switch (K9.getK9Theme()){
+            case DARK:
+                context.setTheme(R.style.Theme_K9_Dark_Incoginto);
+                break;
+            case LIGHT:
+                context.setTheme(R.style.Theme_K9_Light_Incoginto);
+                break;
         }
     }
 

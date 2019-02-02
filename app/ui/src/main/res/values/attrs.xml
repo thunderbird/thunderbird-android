@@ -94,6 +94,7 @@
         <attr name="openpgp_blue" format="reference|color" />
         <attr name="openpgp_grey" format="reference|color" />
         <attr name="openpgp_dark_grey" format="reference|color" />
+        <attr name="incognito_edit_text" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="SliderPreference">
@@ -119,6 +120,11 @@
     <declare-styleable name="AutocryptPreferEncryptPreference">
         <attr name="summaryOn" format="string" />
         <attr name="summaryOff" format="string" />
+    </declare-styleable>
+
+
+    <declare-styleable name="K9EditText">
+        <attr name="is_incognito" format="boolean" />
     </declare-styleable>
 
 </resources>

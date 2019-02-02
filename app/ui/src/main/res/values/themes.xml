@@ -244,6 +244,14 @@
         <item name="windowNoTitle">false</item>
     </style>
 
+    <style name="Theme.K9.Dark.Incoginto" parent="Theme.K9.Dark.Common">
+        <item name="incognito_edit_text">true</item>
+    </style>
+
+    <style name="Theme.K9.Light.Incoginto" parent="Theme.K9.Light.Common">
+        <item name="incognito_edit_text">true</item>
+    </style>
+
     <style name="Theme.K9.Dialog.Light" parent="Theme.K9.Light">
         <item name="backgroundColorChooseAccountHeader">#cccccc</item>
     </style>

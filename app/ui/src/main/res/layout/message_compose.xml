@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical">
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical">
 
     <include layout="@layout/toolbar" />
 
@@ -29,7 +30,7 @@
                 android:orientation="horizontal"
                 android:minHeight="50dp">
 
-                <EditText
+                <com.fsck.k9.view.K9EditText
                     android:id="@+id/subject"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -40,6 +41,7 @@
                     android:background="@android:color/transparent"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
+                    app:is_incognito="?incognito_edit_text"
                     style="@style/ComposeEditTextLarge"
                     />
             </LinearLayout>

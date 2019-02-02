@@ -176,6 +176,7 @@ public class K9 {
     private static boolean wrapFolderNames = false;
     private static boolean hideUserAgent = false;
     private static boolean hideTimeZone = false;
+    private static boolean enableIncoginto = false;
 
     private static SortType sortType;
     private static Map<SortType, Boolean> sortAscending = new HashMap<>();
@@ -284,6 +285,7 @@ public class K9 {
         editor.putBoolean("wrapFolderNames", wrapFolderNames);
         editor.putBoolean("hideUserAgent", hideUserAgent);
         editor.putBoolean("hideTimeZone", hideTimeZone);
+        editor.putBoolean("enableIncoginto", enableIncoginto);
 
         editor.putString("language", language);
         editor.putInt("theme", theme.ordinal());
@@ -429,6 +431,7 @@ public class K9 {
         wrapFolderNames = storage.getBoolean("wrapFolderNames", false);
         hideUserAgent = storage.getBoolean("hideUserAgent", false);
         hideTimeZone = storage.getBoolean("hideTimeZone", false);
+        enableIncoginto = storage.getBoolean("enableIncoginto",false);
 
         confirmDelete = storage.getBoolean("confirmDelete", false);
         confirmDiscardMessage = storage.getBoolean("confirmDiscardMessage", true);
@@ -898,6 +901,16 @@ public class K9 {
     }
     public static void setHideTimeZone(final boolean state) {
         hideTimeZone = state;
+    }
+
+
+
+    public static void setEnableIncoginto(final boolean state) {
+        enableIncoginto = state;
+    }
+
+    public static boolean enableIncoginto() {
+        return enableIncoginto;
     }
 
     public static synchronized SortType getSortType() {

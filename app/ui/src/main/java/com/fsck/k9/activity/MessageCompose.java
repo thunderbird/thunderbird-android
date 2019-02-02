@@ -46,6 +46,7 @@ import android.widget.Toast;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.DI;
+import com.fsck.k9.view.K9EditText;
 import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
@@ -207,7 +208,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private boolean requestReadReceipt = false;
 
     private TextView chooseIdentityButton;
-    private EditText subjectView;
+    private K9EditText subjectView;
     private EolConvertingEditText signatureView;
     private EolConvertingEditText messageContentView;
     private LinearLayout attachmentsView;
