@@ -35,6 +35,7 @@ class Pop3Backend(
     override val supportsTrashFolder = false
     override val supportsSearchByDate = false
     override val isPushCapable = false
+    override val isDeleteMoveToTrash = false
 
     override fun refreshFolderList() {
         commandRefreshFolderList.refreshFolderList()
