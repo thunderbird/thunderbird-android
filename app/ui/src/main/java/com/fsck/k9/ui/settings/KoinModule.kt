@@ -5,19 +5,19 @@ import com.fsck.k9.ui.account.AccountsLiveData
 import com.fsck.k9.ui.settings.account.AccountSettingsDataStoreFactory
 import com.fsck.k9.ui.settings.account.AccountSettingsViewModel
 import com.fsck.k9.ui.settings.general.GeneralSettingsDataStore
-import org.koin.android.architecture.ext.viewModel
-import org.koin.dsl.module.applicationContext
+import org.koin.androidx.viewmodel.ext.koin.viewModel
+import org.koin.dsl.module.module
 import java.util.concurrent.Executors
 
-val settingsUiModule = applicationContext {
-    bean { AccountsLiveData(get()) }
+val settingsUiModule = module {
+    single { AccountsLiveData(get()) }
     viewModel { SettingsViewModel(get()) }
 
-    bean { GeneralSettingsDataStore(get(), get(), get("SaveSettingsExecutorService")) }
-    bean("SaveSettingsExecutorService") {
+    single { GeneralSettingsDataStore(get(), get(), get("SaveSettingsExecutorService")) }
+    single("SaveSettingsExecutorService") {
         Executors.newSingleThreadExecutor(NamedThreadFactory("SaveSettings"))
     }
 
     viewModel { AccountSettingsViewModel(get(), get()) }
-    bean { AccountSettingsDataStoreFactory(get(), get(), get("SaveSettingsExecutorService")) }
+    single { AccountSettingsDataStoreFactory(get(), get(), get("SaveSettingsExecutorService")) }
 }

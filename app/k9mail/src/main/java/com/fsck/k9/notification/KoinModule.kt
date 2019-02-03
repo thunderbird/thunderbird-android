@@ -1,9 +1,9 @@
 package com.fsck.k9.notification
 
-import org.koin.dsl.module.applicationContext
+import org.koin.dsl.module.module
 
-val notificationModule = applicationContext {
-    bean { K9NotificationActionCreator(get()) as NotificationActionCreator }
-    bean { K9NotificationResourceProvider(get()) as NotificationResourceProvider }
-    bean { K9NotificationStrategy(get()) as NotificationStrategy }
+val notificationModule = module {
+    single { K9NotificationActionCreator(get()) as NotificationActionCreator }
+    single { K9NotificationResourceProvider(get()) as NotificationResourceProvider }
+    single { K9NotificationStrategy(get()) as NotificationStrategy }
 }

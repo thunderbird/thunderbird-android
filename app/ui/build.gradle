@@ -6,6 +6,8 @@ apply from: "${rootProject.projectDir}/gradle/plugins/checkstyle-android.gradle"
 apply from: "${rootProject.projectDir}/gradle/plugins/findbugs-android.gradle"
 
 dependencies {
+
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
 
     implementation project(":app:core")
@@ -23,8 +25,8 @@ dependencies {
     implementation "com.takisoft.fix:preference-v7-datetimepicker:${versions.preferencesFix}"
     implementation "com.takisoft.fix:preference-v7-colorpicker:${versions.preferencesFix}"
     implementation "com.takisoft.fix:preference-v7-ringtone:${versions.preferencesFix}"
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha01'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha01'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha02'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha02'
     implementation "de.cketti.library.changelog:ckchangelog:1.2.1"
     implementation "com.github.bumptech.glide:glide:3.6.1"
     implementation "com.splitwise:tokenautocomplete:2.0.7"

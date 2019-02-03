@@ -13,7 +13,11 @@ dependencies {
 
     api project(':plugins:openpgp-api-lib:openpgp-api')
 
-    api "org.koin:koin-android-architecture:${versions.koin}"
+    api "org.koin:koin-core:${versions.koin}"
+    api "org.koin:koin-android:${versions.koin}"
+    api "org.koin:koin-android-scope:${versions.koin}"
+    api "org.koin:koin-android-viewmodel:${versions.koin}"
+    api "org.koin:koin-androidx-viewmodel:${versions.koin}"
 
     implementation "com.squareup.okio:okio:${versions.okio}"
     implementation "commons-io:commons-io:${versions.commonsIo}"

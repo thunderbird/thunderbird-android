@@ -1,8 +1,8 @@
 package com.fsck.k9.message.html
 
-import org.koin.dsl.module.applicationContext
+import org.koin.dsl.module.module
 
-val htmlModule = applicationContext {
-    bean { HtmlProcessor(get()) }
-    bean { HtmlSanitizer() }
+val htmlModule = module {
+    single { HtmlProcessor(get()) }
+    single { HtmlSanitizer() }
 }

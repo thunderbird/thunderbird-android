@@ -15,20 +15,20 @@ import com.fsck.k9.widget.list.MessageListWidgetUpdateListener
 import com.fsck.k9.widget.list.messageListWidgetModule
 import com.fsck.k9.widget.unread.UnreadWidgetUpdateListener
 import com.fsck.k9.widget.unread.unreadWidgetModule
-import org.koin.dsl.module.applicationContext
+import org.koin.dsl.module.module
 
-private val mainAppModule = applicationContext {
-    bean { App.appConfig }
-    bean { MessagingListenerProvider(
+private val mainAppModule = module {
+    single { App.appConfig }
+    single { MessagingListenerProvider(
             listOf(
                     get<UnreadWidgetUpdateListener>(),
                     get<MessageListWidgetUpdateListener>(),
                     get<BroadcastSenderListener>()
             ))
     }
-    bean("controllerExtensions") { emptyList<ControllerExtension>() }
-    bean { OpenPgpEncryptionExtractor.newInstance() as EncryptionExtractor }
-    bean { K9StoragePersister(get()) as StoragePersister }
+    single("controllerExtensions") { emptyList<ControllerExtension>() }
+    single { OpenPgpEncryptionExtractor.newInstance() as EncryptionExtractor }
+    single { K9StoragePersister(get()) as StoragePersister }
 }
 
 val appModules = listOf(
