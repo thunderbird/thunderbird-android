@@ -2,20 +2,13 @@ package com.fsck.k9.ui.settings.account
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v7.preference.PreferenceFragmentCompat
 import android.support.v7.preference.PreferenceFragmentCompat.OnPreferenceStartScreenCallback
 import android.support.v7.preference.PreferenceScreen
-import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.MenuItem
-import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
 import com.fsck.k9.activity.K9Activity
@@ -25,9 +18,7 @@ import com.fsck.k9.ui.fragmentTransactionWithBackStack
 import com.fsck.k9.ui.observe
 import com.fsck.k9.ui.observeNotNull
 import com.fsck.k9.ui.settings.SettingsViewModel
-import kotlinx.android.synthetic.main.account_list_item.view.*
 import kotlinx.android.synthetic.main.activity_account_settings.*
-import kotlinx.android.synthetic.main.toolbar.*
 import org.koin.android.architecture.ext.viewModel
 import timber.log.Timber
 
@@ -154,72 +145,6 @@ class AccountSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, A
                 putExtra(ARG_START_SCREEN_KEY, AccountSettingsFragment.PREFERENCE_OPENPGP)
             }
             context.startActivity(intent)
-        }
-    }
-}
-
-class AccountSelectionSpinner : Spinner {
-    var selection: Account
-        get() = selectedItem as Account
-        set(value) {
-            val adapter = adapter as AccountsAdapter
-            Spinner@setSelection(adapter.getPosition(value))
-        }
-
-    var title: CharSequence = ""
-        set(value) {
-            val adapter = adapter as AccountsAdapter
-            adapter.title = value
-            adapter.notifyDataSetChanged()
-        }
-
-    private lateinit var cachedBackground: Drawable
-
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
-
-    init {
-        adapter = AccountsAdapter(context)
-        cachedBackground = background
-    }
-
-    public fun loadAccounts(accounts: List<Account>) {
-        val adapter = adapter as AccountsAdapter
-        adapter.clear()
-        adapter.addAll(accounts)
-
-        setEnabled(accounts.size > 1)
-        background = if (accounts.size > 1) cachedBackground else null
-    }
-
-    internal class AccountsAdapter(context: Context) : ArrayAdapter<Account>(context, 0)  {
-        var title: CharSequence = ""
-
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-            val account = getItem(position)
-
-            val view = convertView
-                ?: LayoutInflater.from(context).inflate(R.layout.account_spinner_item, parent, false)
-
-            return view.apply {
-                setPadding(0, paddingTop, paddingRight, paddingBottom)
-                name.text = AccountsAdapter@title
-                email.text = account.email
-            }
-        }
-
-        override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View
-        {
-            val account = getItem(position)
-
-            val view = convertView
-                ?: LayoutInflater.from(context).inflate(R.layout.account_spinner_item, parent, false)
-
-            return view.apply {
-                setPadding(paddingLeft, paddingLeft / 2, paddingLeft, paddingLeft / 2)
-                name.text = account.description
-                email.text = account.email
-            }
         }
     }
 }
