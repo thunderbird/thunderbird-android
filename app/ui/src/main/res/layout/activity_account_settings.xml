@@ -12,7 +12,7 @@
                 android:elevation="4dp">
         <com.fsck.k9.ui.settings.account.AccountSelectionSpinner
                     android:id="@+id/accountSpinner"
-                    android:layout_width="fill_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
     </android.support.v7.widget.Toolbar>
 
