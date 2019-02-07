@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.activity_account_settings.*
 import org.koin.android.architecture.ext.viewModel
 import timber.log.Timber
 
-class AccountSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, AdapterView.OnItemSelectedListener {
+class AccountSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback {
     private val accountViewModel: AccountSettingsViewModel by viewModel()
     private lateinit var accountUuid: String
     private var startScreenKey: String? = null
@@ -43,30 +43,26 @@ class AccountSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, A
         loadAccount()
     }
 
-    override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-        val uuid = accountSpinner.selection.uuid
-
-        if (uuid == accountUuid)
-            return;
-
-        start(this, uuid)
-        finish()
-    }
-
-    override fun onNothingSelected(parent: AdapterView<*>) {}
-
     private fun initializeActionBar() {
         val actionBar = supportActionBar ?: throw RuntimeException("getSupportActionBar() == null")
         actionBar.setDisplayHomeAsUpEnabled(true)
         actionBar.setDisplayShowTitleEnabled(false)
 
-        accountSpinner.title = title
+        accountSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                val selectedAccountUuid = accountSpinner.selection.uuid
 
-        accountSpinner.onItemSelectedListener = this
-        val prefs = Preferences.getPreferences(this)
-        val viewModel: SettingsViewModel by viewModel()
-        viewModel.accounts.observeNotNull(this) {
-            accountSpinner.loadAccounts(prefs.accounts)
+                if (selectedAccountUuid == accountUuid) return
+
+                start(this@AccountSettingsActivity, selectedAccountUuid)
+                finish()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
+
+        accountViewModel.accounts.observeNotNull(this) { accounts ->
+            accountSpinner.setAccounts(accounts)
         }
     }
 
@@ -115,15 +111,16 @@ class AccountSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, A
             replace(R.id.accountSettingsContainer, AccountSettingsFragment.create(accountUuid, preferenceScreen.key))
         }
 
-        accountSpinner.title = preferenceScreen.title
-
         return true
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
+    }
 
-        accountSpinner.title = title
+    override fun setTitle(title: CharSequence) {
+        super.setTitle(title)
+        accountSpinner.setTitle(title)
     }
 
     companion object {
