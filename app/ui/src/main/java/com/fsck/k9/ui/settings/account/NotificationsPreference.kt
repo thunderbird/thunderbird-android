@@ -9,7 +9,7 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.res.TypedArrayUtils
 import androidx.preference.Preference
 import android.util.AttributeSet
-import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat
+import com.takisoft.preferencex.PreferenceFragmentCompat
 
 @SuppressLint("RestrictedApi")
 class NotificationsPreference

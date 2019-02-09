@@ -4,8 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import androidx.core.content.res.TypedArrayUtils
 import android.util.AttributeSet
-import com.takisoft.fix.support.v7.preference.ColorPickerPreference
-import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat
+import com.takisoft.preferencex.ColorPickerPreference
+import com.takisoft.preferencex.PreferenceFragmentCompat
 
 @SuppressLint("RestrictedApi")
 class HoloColorPickerPreference

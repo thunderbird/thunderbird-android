@@ -5,7 +5,7 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.notification.NotificationController
 import com.fsck.k9.ui.settings.remove
 import com.fsck.k9.ui.withArguments
-import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat
+import com.takisoft.preferencex.PreferenceFragmentCompat
 import org.koin.android.ext.android.inject
 
 class GeneralSettingsFragment : PreferenceFragmentCompat() {
