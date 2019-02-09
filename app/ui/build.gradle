@@ -19,10 +19,10 @@ dependencies {
     implementation project(':plugins:openpgp-api-lib:openpgp-api')
 
     implementation "androidx.appcompat:appcompat:${versions.androidxAppCompat}"
-    implementation "com.takisoft.fix:preference-v7:${versions.preferencesFix}"
-    implementation "com.takisoft.fix:preference-v7-datetimepicker:${versions.preferencesFix}"
-    implementation "com.takisoft.fix:preference-v7-colorpicker:${versions.preferencesFix}"
-    implementation "com.takisoft.fix:preference-v7-ringtone:${versions.preferencesFix}"
+    implementation "com.takisoft.preferencex:preferencex:${versions.preferencesFix}"
+    implementation "com.takisoft.preferencex:preferencex-datetimepicker:${versions.preferencesFix}"
+    implementation "com.takisoft.preferencex:preferencex-colorpicker:${versions.preferencesFix}"
+    implementation "com.takisoft.preferencex:preferencex-ringtone:${versions.preferencesFix}"
     implementation "androidx.recyclerview:recyclerview:${versions.androidxRecyclerView}"
     implementation "androidx.lifecycle:lifecycle-extensions:${versions.androidxLifecycleExtensions}"
     implementation "de.cketti.library.changelog:ckchangelog:1.2.1"
