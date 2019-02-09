@@ -30,8 +30,8 @@ dependencies {
     implementation "com.splitwise:tokenautocomplete:2.0.7"
     implementation "de.cketti.safecontentresolver:safe-content-resolver-v14:0.9.0"
     implementation "com.github.amlcurran.showcaseview:library:5.4.1"
-    implementation "com.xwray:groupie:2.1.0"
-    implementation "com.xwray:groupie-kotlin-android-extensions:2.1.0"
+    implementation "com.xwray:groupie:2.3.0"
+    implementation "com.xwray:groupie-kotlin-android-extensions:2.3.0"
     implementation 'com.mikepenz:materialdrawer:6.1.1'
     implementation 'com.mikepenz:fontawesome-typeface:5.3.1.1@aar'
     implementation 'com.github.ByteHamster:SearchPreference:v1.1.4'
