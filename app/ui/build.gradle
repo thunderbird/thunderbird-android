@@ -32,7 +32,7 @@ dependencies {
     implementation "com.github.amlcurran.showcaseview:library:5.4.1"
     implementation "com.xwray:groupie:2.1.0"
     implementation "com.xwray:groupie-kotlin-android-extensions:2.1.0"
-    implementation 'com.mikepenz:materialdrawer:6.0.7'
+    implementation 'com.mikepenz:materialdrawer:6.1.1'
     implementation 'com.mikepenz:fontawesome-typeface:5.3.1.1@aar'
     implementation 'com.github.ByteHamster:SearchPreference:v1.1.4'
 
