@@ -9,15 +9,12 @@ import android.support.v7.preference.PreferenceScreen
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
-import com.fsck.k9.Account
-import com.fsck.k9.Preferences
 import com.fsck.k9.activity.K9Activity
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.fragmentTransaction
 import com.fsck.k9.ui.fragmentTransactionWithBackStack
 import com.fsck.k9.ui.observe
 import com.fsck.k9.ui.observeNotNull
-import com.fsck.k9.ui.settings.SettingsViewModel
 import kotlinx.android.synthetic.main.activity_account_settings.*
 import org.koin.android.architecture.ext.viewModel
 import timber.log.Timber
@@ -50,19 +47,21 @@ class AccountSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback {
 
         accountSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                val selectedAccountUuid = accountSpinner.selection.uuid
-
-                if (selectedAccountUuid == accountUuid) return
-
-                start(this@AccountSettingsActivity, selectedAccountUuid)
-                finish()
+                onAccountSelected(selectedAccountUuid = accountSpinner.selection.uuid)
             }
 
-            override fun onNothingSelected(parent: AdapterView<*>) {}
+            override fun onNothingSelected(parent: AdapterView<*>) = Unit
         }
 
         accountViewModel.accounts.observeNotNull(this) { accounts ->
             accountSpinner.setAccounts(accounts)
+        }
+    }
+
+    private fun onAccountSelected(selectedAccountUuid: String) {
+        if (selectedAccountUuid != accountUuid) {
+            start(this, selectedAccountUuid)
+            finish()
         }
     }
 
@@ -114,14 +113,11 @@ class AccountSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback {
         return true
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-    }
-
     override fun setTitle(title: CharSequence) {
         super.setTitle(title)
         accountSpinner.setTitle(title)
     }
+
 
     companion object {
         private const val ARG_ACCOUNT_UUID = "accountUuid"

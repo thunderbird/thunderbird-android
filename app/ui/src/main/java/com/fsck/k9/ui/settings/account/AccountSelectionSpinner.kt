@@ -17,14 +17,16 @@ import kotlinx.android.synthetic.main.account_list_item.view.*
 class AccountSelectionSpinner : Spinner {
     var selection: Account
         get() = selectedItem as Account
-        set(value) {
-            selectedAccount = value
+        set(account) {
+            selectedAccount = account
             val adapter = adapter as AccountsAdapter
-            Spinner@setSelection(adapter.getPosition(value), false)
+            val adapterPosition = adapter.getPosition(account)
+            setSelection(adapterPosition, false)
         }
 
     private val cachedBackground: Drawable
-    private var selectedAccount = Account("")
+    private var selectedAccount: Account? = null
+
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
@@ -34,33 +36,36 @@ class AccountSelectionSpinner : Spinner {
         cachedBackground = background
     }
 
-    public fun setTitle(title: CharSequence) {
+    fun setTitle(title: CharSequence) {
         val adapter = adapter as AccountsAdapter
         adapter.title = title
         adapter.notifyDataSetChanged()
     }
 
-    public fun setAccounts(accounts: List<Account>) {
+    fun setAccounts(accounts: List<Account>) {
         val adapter = adapter as AccountsAdapter
         adapter.clear()
         adapter.addAll(accounts)
-        selection = selectedAccount
 
-        setEnabled(accounts.size > 1)
-        background = if (accounts.size > 1) cachedBackground else null
+        selectedAccount?.let { selection = it }
+
+        val showAccountSwitcher = accounts.size > 1
+        isEnabled = showAccountSwitcher
+        background = if (showAccountSwitcher) cachedBackground else null
     }
 
-    internal class AccountsAdapter(context: Context) : ArrayAdapter<Account>(context, 0)  {
+
+    internal class AccountsAdapter(context: Context) : ArrayAdapter<Account>(context, 0) {
         var title: CharSequence = ""
+
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             val account = getItem(position)
 
-            val view = convertView
-                ?: LayoutInflater.from(context).inflate(R.layout.account_spinner_item, parent, false)
+            val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.account_spinner_item, parent, false)
 
             return view.apply {
-                name.text = AccountsAdapter@title
+                name.text = title
                 email.text = account.email
             }
         }
@@ -69,7 +74,7 @@ class AccountSelectionSpinner : Spinner {
             val account = getItem(position)
 
             val view = convertView
-                ?: LayoutInflater.from(context).inflate(R.layout.account_spinner_dropdown_item, parent, false)
+                    ?: LayoutInflater.from(context).inflate(R.layout.account_spinner_dropdown_item, parent, false)
 
             return view.apply {
                 name.text = account.description
