@@ -26,7 +26,7 @@
         <item name="material_drawer_selected_text">@color/material_drawer_selected_text</item>
         <item name="material_drawer_header_selection_text">@color/material_drawer_header_selection_text</item>
 
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <item name="iconUnifiedInbox">@drawable/ic_inbox_multiple_light</item>
         <item name="iconFolder">@drawable/ic_folder_light</item>
         <item name="iconFolderInbox">@drawable/ic_inbox_light</item>
@@ -137,7 +137,7 @@
         <item name="material_drawer_selected_text">@color/material_drawer_dark_selected_text</item>
         <item name="material_drawer_header_selection_text">@color/material_drawer_dark_header_selection_text</item>
 
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <item name="iconUnifiedInbox">@drawable/ic_inbox_multiple_dark</item>
         <item name="iconFolder">@drawable/ic_folder_dark</item>
         <item name="iconFolderInbox">@drawable/ic_inbox_dark</item>

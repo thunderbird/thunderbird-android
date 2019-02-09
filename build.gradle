@@ -1,16 +1,16 @@
 buildscript {
     ext {
         buildConfig = [
-                'compileSdk': 27,
+                'compileSdk': 28,
                 'minSdk': 19,
                 'buildTools': '28.0.3'
         ]
 
         versions = [
                 'kotlin': '1.2.71',
-                'supportLibrary': '27.1.1',
-                'preferencesFix': '27.1.1.1',
-                'lifecycleExtensions': '1.1.0',
+                'supportLibrary': '28.0.0',
+                'preferencesFix': '28.0.0.0',
+                'lifecycleExtensions': '1.1.1',
                 'okio': '1.14.0',
                 'timber': '4.5.1',
                 'koin': '0.9.1',
@@ -60,6 +60,12 @@ subprojects {
             force "com.android.support:support-fragment:${versions.supportLibrary}"
             force "com.android.support:preference-v14:${versions.supportLibrary}"
             force "com.android.support:cardview-v7:${versions.supportLibrary}"
+
+            // org.koin:koin-android-architecture depends on an old version of android.arch.lifecycle:extensions
+            force "android.arch.lifecycle:extensions:${versions.lifecycleExtensions}"
+
+            // com.github.amlcurran.showcaseview:library depends on com.android.support:support-v4
+            force "com.android.support:support-v4:${versions.supportLibrary}"
         }
     }
 }
