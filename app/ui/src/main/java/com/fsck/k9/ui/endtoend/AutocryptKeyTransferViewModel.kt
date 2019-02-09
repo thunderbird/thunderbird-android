@@ -1,6 +1,6 @@
 package com.fsck.k9.ui.endtoend
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 
 internal class AutocryptKeyTransferViewModel(
         val autocryptSetupMessageLiveEvent: AutocryptSetupMessageLiveEvent,

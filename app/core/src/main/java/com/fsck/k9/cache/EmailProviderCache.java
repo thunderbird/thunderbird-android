@@ -7,7 +7,7 @@ import java.util.Map;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.content.LocalBroadcastManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mailstore.LocalMessage;

@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Set;
 
 import android.app.Notification;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationCompat.Builder;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationCompat.Builder;
 import android.text.TextUtils;
 
 import com.fsck.k9.Account;

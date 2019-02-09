@@ -2,8 +2,8 @@ package com.fsck.k9.ui.endtoend
 
 
 import android.app.PendingIntent
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
 import kotlinx.coroutines.experimental.android.UI

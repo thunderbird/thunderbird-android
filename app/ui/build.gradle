@@ -18,13 +18,13 @@ dependencies {
     implementation project(':plugins:HoloColorPicker')
     implementation project(':plugins:openpgp-api-lib:openpgp-api')
 
-    implementation "com.android.support:appcompat-v7:${versions.supportLibrary}"
+    implementation "androidx.appcompat:appcompat:${versions.androidxAppCompat}"
     implementation "com.takisoft.fix:preference-v7:${versions.preferencesFix}"
     implementation "com.takisoft.fix:preference-v7-datetimepicker:${versions.preferencesFix}"
     implementation "com.takisoft.fix:preference-v7-colorpicker:${versions.preferencesFix}"
     implementation "com.takisoft.fix:preference-v7-ringtone:${versions.preferencesFix}"
-    implementation "com.android.support:recyclerview-v7:${versions.supportLibrary}"
-    implementation "android.arch.lifecycle:extensions:${versions.lifecycleExtensions}"
+    implementation "androidx.recyclerview:recyclerview:${versions.androidxRecyclerView}"
+    implementation "androidx.lifecycle:lifecycle-extensions:${versions.androidxLifecycleExtensions}"
     implementation "de.cketti.library.changelog:ckchangelog:1.2.1"
     implementation "com.github.bumptech.glide:glide:3.6.1"
     implementation "com.splitwise:tokenautocomplete:2.0.7"
