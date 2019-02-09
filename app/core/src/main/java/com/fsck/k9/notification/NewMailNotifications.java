@@ -2,7 +2,7 @@ package com.fsck.k9.notification;
 
 
 import android.app.Notification;
-import android.support.v4.app.NotificationManagerCompat;
+import androidx.core.app.NotificationManagerCompat;
 import android.util.SparseArray;
 
 import com.fsck.k9.Account;

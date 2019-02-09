@@ -15,10 +15,10 @@ dependencies {
     implementation "org.apache.james:apache-mime4j-dom:${versions.mime4j}"
     implementation "com.squareup.okio:okio:${versions.okio}"
     implementation "commons-io:commons-io:${versions.commonsIo}"
-    implementation "com.android.support:support-annotations:${versions.supportLibrary}"
+    implementation "androidx.annotation:annotation:${versions.androidxAnnotation}"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
 
-    androidTestImplementation "com.android.support.test:runner:0.4.1"
+    androidTestImplementation "androidx.test:runner:${versions.androidxTestRunner}"
     androidTestImplementation "com.madgag.spongycastle:pg:1.51.0.0"
 
     testImplementation project(":mail:testing")
@@ -35,7 +35,7 @@ android {
     defaultConfig {
         minSdkVersion buildConfig.minSdk
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {

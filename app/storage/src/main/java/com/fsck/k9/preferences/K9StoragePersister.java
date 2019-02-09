@@ -10,7 +10,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.os.SystemClock;
-import android.support.annotation.CheckResult;
+import androidx.annotation.CheckResult;
 
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.preferences.migrations.StorageMigrations;

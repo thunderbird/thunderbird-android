@@ -5,7 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationChannelGroup
 import android.app.NotificationManager
 import android.os.Build
-import android.support.annotation.RequiresApi
+import androidx.annotation.RequiresApi
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
 import java.util.concurrent.Executor

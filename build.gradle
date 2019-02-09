@@ -8,16 +8,19 @@ buildscript {
 
         versions = [
                 'kotlin': '1.2.71',
-                'supportLibrary': '28.0.0',
+                'androidxAppCompat': '1.0.2',
+                'androidxRecyclerView': '1.0.0',
+                'androidxLifecycleExtensions': '2.0.0',
+                'androidxAnnotation': '1.0.1',
+                'coreKtx': '1.0.1',
                 'preferencesFix': '28.0.0.0',
-                'lifecycleExtensions': '1.1.1',
                 'okio': '1.14.0',
                 'timber': '4.5.1',
                 'koin': '0.9.1',
                 'commonsIo': '2.4',
-                'coreKtx': '0.3',
                 'mime4j': '0.8.1',
 
+                'androidxTestRunner': '1.1.1',
                 'junit': '4.12',
                 'robolectric': '3.7.1',
                 'mockito': '2.18.0',
@@ -52,20 +55,14 @@ subprojects {
     }
 
     configurations.all {
-        exclude group: "com.android.support", module: "support-media-compat"
-
         resolutionStrategy {
-            force "com.android.support:support-annotations:${versions.supportLibrary}"
-            force "com.android.support:design:${versions.supportLibrary}"
-            force "com.android.support:support-fragment:${versions.supportLibrary}"
-            force "com.android.support:preference-v14:${versions.supportLibrary}"
-            force "com.android.support:cardview-v7:${versions.supportLibrary}"
+            force "androidx.annotation:annotation:${versions.androidxAnnotation}"
 
-            // org.koin:koin-android-architecture depends on an old version of android.arch.lifecycle:extensions
-            force "android.arch.lifecycle:extensions:${versions.lifecycleExtensions}"
+            // org.koin:koin-android-architecture depends on android.arch.lifecycle:extensions
+            force "androidx.lifecycle:lifecycle-extensions:${versions.androidxLifecycleExtensions}"
 
             // com.github.amlcurran.showcaseview:library depends on com.android.support:support-v4
-            force "com.android.support:support-v4:${versions.supportLibrary}"
+            force "androidx.legacy:legacy-support-v4:1.0.0"
         }
     }
 }
