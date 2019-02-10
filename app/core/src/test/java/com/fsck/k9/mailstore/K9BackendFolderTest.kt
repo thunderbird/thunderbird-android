@@ -76,6 +76,16 @@ class K9BackendFolderTest : K9RobolectricTest() {
         assertEquals(flags, messageFlags)
     }
 
+    @Test
+    fun getLastUid() {
+        createMessage("200")
+        createMessage("123")
+
+        val lastUid = backendFolder.getLastUid()
+
+        assertEquals(200L, lastUid)
+    }
+
 
     fun createAccount(): Account {
         //FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()
