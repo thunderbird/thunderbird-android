@@ -9,9 +9,8 @@
   <string name="remote_control_label">Rheolaeth K-9 Mail o bell</string>
   <string name="remote_control_desc">Mae\'n galluogi\'r ap hwn i reoli gweithredoedd a gosodiadau K-9 Mail.</string>
   <!--Used in the about dialog-->
-  <string name="app_authors">Google, The K-9 Dog Walkers.</string>
+  <string name="app_authors">The K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Hawlfraint 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Hawlfraint Cyfrannau 2006-<xliff:g>%s</xliff:g> Android Open Source Project.</string>
-  <string name="app_license">Apache License, Fersiwn 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Croeso i K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -50,18 +49,12 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
   <string name="account_delete_dlg_instructions_fmt">Caiff y cyfrif \"<xliff:g id="account">%s</xliff:g>\" ei dynnu o K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Caiff yr holl ddata lleol ar gyfer \"<xliff:g id="account">%s</xliff:g>\" ei dynnu. Caiff gosodiadau\'r cyfrif eu cadw.</string>
   <string name="account_clear_dlg_instructions_fmt">Caiff copïau lleol o negeseuon yn \"<xliff:g id="account">%s</xliff:g>\" eu tynnu. Caiff gosodiadau\'r cyfrif eu cadw.</string>
-  <!--=== App Store-specific strings =======================================================-->
-  <string name="import_dialog_error_message">Rhaid gosod rheolwr ffeiliau er mwyn parhau gyda\'r mewnforio.</string>
-  <string name="open_market">Agor Play Store</string>
   <!--=== General strings ==================================================================-->
-  <string name="authors">Awduron</string>
-  <string name="app_revision">Gwybodaeth Adolygu</string>
   <string name="app_libraries">Rydym yn defnyddio\'r llyfrgelloedd trydydd parti canlynol: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Darllen E-bost</string>
   <string name="read_messages_desc">Galluogi\'r ap hwn i ddarllen dy e-bost.</string>
   <string name="delete_messages_label">Dileu E-bost</string>
   <string name="delete_messages_desc">Galluogi\'r ap hwn i ddileu dy negeseuon e-bost.</string>
-  <string name="about_title">Ynghylch K-9 Mail</string>
   <string name="accounts_title">Cyfrifon</string>
   <string name="folders_title">Ffolderi</string>
   <string name="advanced">Uwch</string>
@@ -128,7 +121,6 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
   <string name="flag_action">Ychwanegu seren</string>
   <string name="unflag_action">Tynnu seren</string>
   <string name="copy_action">Copïo</string>
-  <string name="select_text_action">Dewis testun</string>
   <string name="show_headers_action">Dangos penynnau</string>
   <string name="hide_headers_action">Cuddio penynnau</string>
   <plurals name="copy_address_to_clipboard">
@@ -195,6 +187,8 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
   <string name="notification_bg_send_ticker">Yn anfon negeseuon: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Yn anfon neges</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_messages_title">Negeseuon</string>
+  <string name="notification_channel_miscellaneous_title">Amrywiol</string>
   <string name="special_mailbox_name_inbox">Blwch Derbyn</string>
   <string name="special_mailbox_name_outbox">Anfonwyd</string>
   <string name="special_mailbox_name_drafts">Drafftiau</string>
@@ -208,7 +202,6 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archif)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Sbam)</string>
   <string name="send_failure_subject">Methwyd ag anfon rhai negeseuon</string>
-  <string name="version">Fersiwn</string>
   <string name="debug_enable_debug_logging_title">Galluogi logio dadfygio</string>
   <string name="debug_enable_debug_logging_summary">Logio gwybodaeth ddiagnostig ychwanegol</string>
   <string name="debug_enable_sensitive_logging_title">Logio gwybodaeth sensitif</string>
@@ -240,11 +233,9 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
   <string name="message_view_bcc_label">Bcc:</string>
   <string name="message_view_attachment_view_action">Agor</string>
   <string name="message_view_attachment_download_action">Cadw</string>
-  <string name="message_view_status_attachment_not_saved">Methu cadw atodiad i gerdyn SD.</string>
-  <string name="message_view_status_no_space">Methwyd cadw\'r atodiad gan nad oes digon o le.</string>
   <string name="message_view_show_pictures_action">Dangos delweddau</string>
   <string name="message_view_no_viewer">Methwyd cael hyd i ap er mwyn darllen <xliff:g id="mimetype">%s</xliff:g>.</string>
-  <string name="message_view_download_remainder">Lawrlwytho\'r neges cyfan</string>
+  <string name="message_view_download_remainder">Lawrlwytho\'r neges gyfan</string>
   <string name="message_view_toast_unable_to_display_message">Methu dangos y neges</string>
   <string name="message_view_sender_label">trwy %1$s</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
@@ -291,8 +282,6 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
   <string name="global_settings_privacy_hide_useragent_detail">Cuddio\'r Cleient K-9 o benynnau negeseuon</string>
   <string name="global_settings_privacy_hide_timezone">Cuddio cylchfa amser</string>
   <string name="global_settings_privacy_hide_timezone_detail">Defnyddio amser UTC yn hytrach na chylchfa amser lleol (e.e. GMT, BST) ym mhenynnau negeseuon ac atebion</string>
-  <string name="global_settings_privacy_hide_hostname_when_connecting">Cuddio enw\'r gwesteiwr</string>
-  <string name="global_settings_privacy_hide_hostname_when_connecting_detail">Adnabod fel \'localhost\' wrth gysylltu â gweinyddion SMTP</string>
   <string name="global_settings_notification_hide_subject_title">Cuddio\'r pwnc mewn hysbysiadau</string>
   <string name="global_settings_notification_hide_subject_never">Byth</string>
   <string name="global_settings_notification_hide_subject_when_locked">Pan mae\'r ddyfais ar glo</string>
@@ -399,9 +388,6 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
   <string name="recreate_action">Ail-greu data (Peth Olaf i\'w Drio)</string>
   <string name="account_setup_options_mail_check_frequency_label">Pa mor aml i wirio\'r ffolder</string>
   <string name="account_setup_options_mail_check_frequency_never">Byth</string>
-  <string name="account_setup_options_mail_check_frequency_1min">Pob munud</string>
-  <string name="account_setup_options_mail_check_frequency_5min">Pob 5 munud</string>
-  <string name="account_setup_options_mail_check_frequency_10min">Pob 10 munud</string>
   <string name="account_setup_options_mail_check_frequency_15min">Pob 15 munud</string>
   <string name="account_setup_options_mail_check_frequency_30min">Pob 30 munud</string>
   <string name="account_setup_options_mail_check_frequency_1hour">Pob awr</string>
@@ -456,7 +442,7 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
   <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Pob ffolder ond 2ail rhenc</string>
   <string name="account_settings_folder_notify_new_mail_mode_none">Dim</string>
   <string name="account_settings_notify_sync_label">Hysbysiadau cydweddu</string>
-  <string name="account_settings_email_label">Yn dy gyfeiriad ebost</string>
+  <string name="account_settings_email_label">Dy gyfeiriad ebost</string>
   <string name="account_settings_notify_summary">Dangos yn bar statws pan fo neges newydd</string>
   <string name="account_settings_notify_sync_summary">Dangos yn y bar statws wrth wirio am negeseuon</string>
   <string name="account_settings_notify_self_label">Cynnwys negeseuon allan</string>
@@ -493,14 +479,19 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
   <string name="account_settings_sync">Nôl negeseuon</string>
   <string name="account_settings_folders">Ffolderi</string>
   <string name="account_settings_quote_prefix_label">Rhagddodiad cyn dyfynnu testun</string>
-  <string name="account_settings_crypto">Cryptograffeg</string>
-  <string name="account_settings_crypto_app">Ap OpenPGP</string>
-  <string name="account_settings_crypto_key">Fy Allwedd</string>
+  <string name="account_settings_crypto">Amgryptiad pen-i-ben</string>
+  <string name="account_settings_crypto_app">Galluogi cefnogi OpenPGP</string>
+  <string name="account_settings_crypto_app_select_title">Dewisa ap OpenPGP</string>
+  <string name="account_settings_crypto_key">Ffurfweddu\'r allwedd pen-i-ben</string>
+  <string name="account_settings_crypto_summary_off">Nid oes ap OpenPGP wedi ei ffurfweddu</string>
+  <string name="account_settings_crypto_summary_on">Cysylltwyd â %s</string>
   <string name="account_settings_no_openpgp_provider_configured">Does dim ap OpenPGP wedi ei ffurfweddu</string>
-  <string name="account_settings_mail_check_frequency_label">Pa mor aml i wirio\'r ffolder</string>
+  <string name="account_settings_no_openpgp_provider_installed">Ni chanfuwyd ap OpenPGP - Cliciwch i osod un</string>
+  <string name="account_settings_mail_check_frequency_label">Pa mor aml i wirio ffolderi</string>
   <string name="account_settings_storage_title">Storfa</string>
   <string name="account_settings_color_label">Lliw y cyfrif</string>
   <string name="account_settings_color_summary">Acen y lliw ar gyfer y cyfrif hwn i\'w defnyddio yn rhestrau ffolderi a chyfrifon</string>
+  <string name="account_settings_color_none">Dim lliw</string>
   <string name="account_settings_led_color_label">Lliw LED hysbysiadau</string>
   <string name="account_settings_led_color_summary">Y lliw i LED dy ddyfais fflachio ar gyfer y cyfrif hwn</string>
   <string name="account_settings_mail_display_count_label">Maint ffolder lleol</string>
@@ -535,50 +526,51 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
   <string name="account_settings_message_age_1_year">y flwyddyn ddiwethaf</string>
   <string name="account_settings_folder_display_mode_label">Ffolderi i\'w dangos</string>
   <string name="account_settings_folder_display_mode_all">Pob un</string>
-  <string name="account_settings_folder_display_mode_first_class">Ffolderi dosbarth 1af yn unig</string>
-  <string name="account_settings_folder_display_mode_first_and_second_class">Ffolderi dosbarth 1af ac 2ail</string>
-  <string name="account_settings_folder_display_mode_not_second_class">Pob ffolder ond 2ail Ddosbarth</string>
-  <string name="account_settings_folder_sync_mode_label">Gwirio ffolderi</string>
+  <string name="account_settings_folder_display_mode_first_class">Ffolderi rhenc 1af yn unig</string>
+  <string name="account_settings_folder_display_mode_first_and_second_class">Ffolderi rhenc 1af ac 2ail</string>
+  <string name="account_settings_folder_display_mode_not_second_class">Pob ffolder ond 2ail renc</string>
+  <string name="account_settings_folder_sync_mode_label">Ffolderi i\'w gwirio</string>
   <string name="account_settings_folder_sync_mode_all">Pob un</string>
-  <string name="account_settings_folder_sync_mode_first_class">Ffolderi dosbarth 1af yn unig</string>
-  <string name="account_settings_folder_sync_mode_first_and_second_class">Ffolderi dosbarth 1af ac 2ail</string>
-  <string name="account_settings_folder_sync_mode_not_second_class">Pob ffolder ond 2ail Ddosbarth</string>
+  <string name="account_settings_folder_sync_mode_first_class">Ffolderi rhenc 1af yn unig</string>
+  <string name="account_settings_folder_sync_mode_first_and_second_class">Ffolderi rhenc 1af ac 2ail</string>
+  <string name="account_settings_folder_sync_mode_not_second_class">Pob ffolder ond 2ail renc</string>
   <string name="account_settings_folder_sync_mode_none">Dim</string>
-  <string name="account_settings_folder_push_mode_label">Gwthio ffolderi</string>
+  <string name="account_settings_folder_push_mode_label">Ffolderi i\'w gwthio</string>
   <string name="account_settings_folder_push_mode_all">Pob un</string>
-  <string name="account_settings_folder_push_mode_first_class">Ffolderi dosbarth 1af yn unig</string>
-  <string name="account_settings_folder_push_mode_first_and_second_class">Ffolderi dosbarth 1af ac 2ail</string>
-  <string name="account_settings_folder_push_mode_not_second_class">Pob ffolder ond 2ail Ddosbarth</string>
+  <string name="account_settings_folder_push_mode_first_class">Ffolderi rhenc 1af yn unig</string>
+  <string name="account_settings_folder_push_mode_first_and_second_class">Ffolderi rhenc 1af ac 2ail</string>
+  <string name="account_settings_folder_push_mode_not_second_class">Pob ffolder ond 2ail renc</string>
   <string name="account_settings_folder_push_mode_none">Dim</string>
   <string name="account_settings_folder_target_mode_label">Symud/copïo ffolderi cyrchfan</string>
   <string name="account_settings_folder_target_mode_all">Pob un</string>
-  <string name="account_settings_folder_target_mode_first_class">Ffolderi dosbarth 1af yn unig</string>
-  <string name="account_settings_folder_target_mode_first_and_second_class">Ffolderi dosbarth 1af ac 2ail</string>
-  <string name="account_settings_folder_target_mode_not_second_class">Pob ffolder ond 2ail Ddosbarth</string>
+  <string name="account_settings_folder_target_mode_first_class">Ffolderi rhenc 1af yn unig</string>
+  <string name="account_settings_folder_target_mode_first_and_second_class">Ffolderi rhenc 1af ac 2ail</string>
+  <string name="account_settings_folder_target_mode_not_second_class">Pob ffolder ond 2ail renc</string>
   <string name="account_settings_sync_remote_deletetions_label">Cysoni dileu ar y gweinydd</string>
   <string name="account_settings_sync_remote_deletetions_summary">Dileu negeseuon pan maen nhw\'n cael eu dileu ar y gweinydd.</string>
+  <string name="account_settings_openpgp_missing">Map OpenPGP ar goll. A chafodd ei osod?</string>
   <string name="folder_settings_title">Gosodiadau ffolder</string>
   <string name="folder_settings_in_top_group_label">Dangos yn y grŵp uchaf</string>
   <string name="folder_settings_in_top_group_summary">Dangos yn agos at frig y rhestr ffolderi</string>
-  <string name="folder_settings_folder_display_mode_label">Dosbarth dangos y ffolder</string>
-  <string name="folder_settings_folder_display_mode_normal">Dim dosbarth</string>
-  <string name="folder_settings_folder_display_mode_first_class">Dosbarth 1af</string>
-  <string name="folder_settings_folder_display_mode_second_class">2ail Ddosbarth</string>
-  <string name="folder_settings_folder_sync_mode_label">Dosbarth gwirio\'r ffolder</string>
+  <string name="folder_settings_folder_display_mode_label">Rhenc dangos y ffolder</string>
+  <string name="folder_settings_folder_display_mode_normal">Dim Rhenc</string>
+  <string name="folder_settings_folder_display_mode_first_class">Rhenc 1af</string>
+  <string name="folder_settings_folder_display_mode_second_class">2ail renc</string>
+  <string name="folder_settings_folder_sync_mode_label">Rhenc gwirio\'r ffolder</string>
   <string name="folder_settings_folder_sync_mode_normal">Dim</string>
-  <string name="folder_settings_folder_sync_mode_first_class">Dosbarth 1af</string>
-  <string name="folder_settings_folder_sync_mode_second_class">2ail Ddosbarth</string>
-  <string name="folder_settings_folder_sync_mode_inherited">Fel dosbarth dangos</string>
-  <string name="folder_settings_folder_push_mode_label">Dosbarth gwthio\'r ffolder</string>
-  <string name="folder_settings_folder_push_mode_normal">Dim dosbarth</string>
-  <string name="folder_settings_folder_push_mode_first_class">Dosbarth 1af</string>
-  <string name="folder_settings_folder_push_mode_second_class">2ail Ddosbarth</string>
-  <string name="folder_settings_folder_push_mode_inherited">Fel dosbarth cysoni</string>
-  <string name="folder_settings_folder_notify_mode_label">Dosbarth hysbysiadau\'r ffolder</string>
-  <string name="folder_settings_folder_notify_mode_normal">Dim dosbarth</string>
-  <string name="folder_settings_folder_notify_mode_first_class">Dosbarth 1af</string>
-  <string name="folder_settings_folder_notify_mode_second_class">2ail Ddosbarth</string>
-  <string name="folder_settings_folder_notify_mode_inherited">Fel dosbarth gwthio</string>
+  <string name="folder_settings_folder_sync_mode_first_class">Rhenc 1af</string>
+  <string name="folder_settings_folder_sync_mode_second_class">2ail renc</string>
+  <string name="folder_settings_folder_sync_mode_inherited">Fel ei rhenc dangos</string>
+  <string name="folder_settings_folder_push_mode_label">Rhenc gwthio\'r ffolder</string>
+  <string name="folder_settings_folder_push_mode_normal">Dim Rhenc</string>
+  <string name="folder_settings_folder_push_mode_first_class">Rhenc 1af</string>
+  <string name="folder_settings_folder_push_mode_second_class">2ail renc</string>
+  <string name="folder_settings_folder_push_mode_inherited">Fel ei rhenc cysoni</string>
+  <string name="folder_settings_folder_notify_mode_label">Rhenc hysbysiadau\'r ffolder</string>
+  <string name="folder_settings_folder_notify_mode_normal">Dim rhenc</string>
+  <string name="folder_settings_folder_notify_mode_first_class">Rhenc 1af</string>
+  <string name="folder_settings_folder_notify_mode_second_class">2ail renc</string>
+  <string name="folder_settings_folder_notify_mode_inherited">Fel ei rhenc gwthio</string>
   <string name="account_settings_incoming_label">Gweinydd</string>
   <string name="account_settings_incoming_summary">Ffurfweddu\'r gweinydd derbyn</string>
   <string name="account_settings_outgoing_label">Gweinydd anfon</string>
@@ -662,13 +654,13 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Gwrthod Allwedd</string>
   <string name="message_view_help_key">Del (neu D) - Dileu\nR - Ateb\nA - Ateb i bawb\nC - Cyfansoddi\nF - Anfon ymlaen\nM - Symud\nV - Archifo\nY - Copïo\nZ - Nodi heb/wedi ei darllen\nG - Serennu\nO - Math o drefn\nI - Trefn sortio\nQ - Nôl i\'r ffolderi\nS - Dewis/dad-ddewis\nJ neu P - Neges flaenorol\nK neu N - Neges nesaf</string>
   <string name="message_list_help_key">Del (neu D) - Dileu\nC - Cyfansoddi\nM - Symud\nV - Archive\nY - Copy\nZ -Nodi wedi/heb ei darllen\nG - Serennu\nO - Math o drefn\nI - Trefn\nQ - Nôl i\'r ffolderi\nS - Dewis/dad-ddewis</string>
-  <string name="folder_list_help_key">1 - Dangos ffolderi dosbarth 1af yn unig\n2 - Dangos ffolderi Dosbarth 1af ac 2ail\n3 - Dangos pob ffolder ond rhai 2ail Ddosbarth\n4 - Dangos pob ffolder\nQ - Dychwelyd i gyfrifon\nS - Golygu Gosodiadau Cyfrif</string>
+  <string name="folder_list_help_key">1 - Dangos ffolderi rhenc 1af yn unig\n2 - Dangos ffolderi Rhenc 1af ac 2ail\n3 - Dangos pob ffolder ond rhai 2ail renc\n4 - Dangos pob ffolder\nQ - Dychwelyd i gyfrifon\nS - Golygu Gosodiadau Cyfrif</string>
   <string name="folder_list_filter_hint">Enw ffolder yn cynnwys</string>
   <string name="folder_list_display_mode_label">Dangos ffolderi…</string>
   <string name="folder_list_display_mode_all">Pob ffolder</string>
-  <string name="folder_list_display_mode_first_class">Ffolderi Dosbarth 1af</string>
-  <string name="folder_list_display_mode_first_and_second_class">Ffolderi Dosbarth 1af ac 2ail</string>
-  <string name="folder_list_display_mode_not_second_class">Cuddio ffolderi 2ail Ddosbarth</string>
+  <string name="folder_list_display_mode_first_class">Ffolderi Rhenc 1af</string>
+  <string name="folder_list_display_mode_first_and_second_class">Ffolderi Rhenc 1af ac 2ail</string>
+  <string name="folder_list_display_mode_not_second_class">Cuddio ffolderi 2ail renc</string>
   <string name="account_settings_signature__location_label">Lleoliad llofnod</string>
   <string name="account_settings_signature__location_before_quoted_text">Cyn neges wedi ei dyfynnu</string>
   <string name="account_settings_signature__location_after_quoted_text">Ar ôl neges wedi ei dyfynnu</string>
@@ -735,6 +727,7 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
   <string name="account_settings_searchable_all">Pob un</string>
   <string name="account_settings_searchable_displayable">Yn bosib ei ddangos</string>
   <string name="account_settings_searchable_none">Dim</string>
+  <string name="account_settings_no_folder_selected">Dim</string>
   <string name="font_size_settings_title">Maint ffont</string>
   <string name="font_size_settings_description">Dewisiadau maint ffont</string>
   <string name="font_size_account_list">Rhestr cyfrifon</string>
@@ -769,7 +762,6 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
   <string name="font_size_medium">Canolig</string>
   <string name="font_size_large">Mawr</string>
   <string name="font_size_larger">Mwyaf</string>
-  <string name="miscellaneous_preferences">Amrywiol</string>
   <string name="error_activity_not_found">Methwyd dod o hyd i ap addas ar gyfer y weithred hon.</string>
   <string name="send_failed_reason">Methwyd anfon: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Cadw neges fel drafft?</string>
@@ -815,10 +807,7 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
   <string name="settings_exporting">Yn allforio gosodiadau…</string>
   <string name="settings_importing">Yn mewnforio gosodiadau…</string>
   <string name="settings_import_scanning_file">Yn sganio\'r ffeil…</string>
-  <string name="settings_export_success">Cadwyd y gosodiadau a allforiwyd i <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_generic">Allforiwyd y gosodiadau yn llwyddiannus</string>
-  <string name="settings_import_global_settings_success">Wedi mewnforio gosodiadau ap cyfan o <xliff:g id="filename">%s</xliff:g></string>
-  <string name="settings_import_success">Wedi mewnforio <xliff:g id="accounts">%s</xliff:g> o <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_account_imported_as">Mewnforiwyd <xliff:g id="original_account_name">%s</xliff:g> fel <xliff:g id="account_name_after_import">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
     <item quantity="one">1 cyfrif</item>
@@ -827,7 +816,6 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> cyfrif</item>
   </plurals>
   <string name="settings_export_failure">Methwyd ag allforio\'r gosodiadau</string>
-  <string name="settings_import_failure">Methwyd mewnforio unrhyw osodiadau o <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_header">Llwyddodd yr allforio</string>
   <string name="settings_export_failed_header">Methodd yr allforio</string>
   <string name="settings_import_success_header">Llwyddodd y mewnforio</string>
@@ -851,7 +839,6 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
   <string name="settings_import_use_incoming_server_password">Defnyddio cyfrinair y gweinydd derbyn</string>
   <string name="activate_account_action">Actifadu</string>
   <string name="account_unavailable">Dyw\'r cyfrif \"<xliff:g id="account">%s</xliff:g>\" ddim ar gael; \'check storage\'</string>
-  <string name="settings_attachment_default_path">Cadw atodiadau i…</string>
   <string name="attachment_save_title">Cadw atodiad</string>
   <string name="attachment_save_desc">Ni chafwyd hyd i borwr. Ym mhle wyt ti am gadw\'r atodiad hwn?</string>
   <string name="manage_accounts_move_up_action">Symud i fyny</string>
@@ -870,7 +857,6 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
   <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
   <string name="unread_widget_account_not_selected">Cyfrif heb ei ddewis</string>
   <string name="unread_widget_folder_not_selected">Ffolder heb ei ddewis</string>
-  <string name="import_dialog_error_title">Ap Rheoli Ffeiliau Coll</string>
   <string name="close">Cau</string>
   <string name="webview_empty_message">Dim testun</string>
   <string name="webview_contextmenu_link_view_action">Agor dolen</string>
@@ -980,7 +966,7 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
   <string name="crypto_mode_private">Amgryptio</string>
   <string name="error_crypto_provider_incompatible">Mae\'r darparwr crypto yn defnyddio fersiwn anghydnaws. Gwiria dy osodiadau.</string>
   <string name="error_crypto_provider_connect">Methwyd cysylltu â darparwr crypto. Gwiria dy osodiadau neu glicio\'r eicon crypto i gynnig eto!</string>
-  <string name="error_crypto_provider_ui_required">Gwrthodwyd mynediad i\'r darparwr crypto. Clicia\'r eicon crypto eto i geisio eto!</string>
+  <string name="error_crypto_provider_ui_required">Methwyd dechrau\'r amgryptiad pen-i-ben. Gwiria dy osodiadau.</string>
   <string name="error_crypto_inline_attach">Dyw\'r modd PGP/INLINE ddim yn caniatáu atodiadau!</string>
   <string name="enable_inline_pgp">Galluogi PGP/INLINE</string>
   <string name="disable_inline_pgp">Analluogi PGP/INLINE</string>
@@ -1007,6 +993,8 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
   <string name="crypto_msg_unencrypted_sign_error">roedd gwall mewn llofnod diwedd-i-ddiwedd</string>
   <string name="crypto_msg_incomplete_signed">rhaid lawrlwytho\'r neges yn gyfan er mwyn prosesu\'r llofnod</string>
   <string name="crypto_msg_unsupported_signed">mae\'n cynnwys llofnod diwedd-i-ddiwedd anghydnaws</string>
+  <string name="crypto_msg_unsupported_encrypted">Mae\'r neges wedi ei amgryptio, ond mewn fformat diarth.</string>
+  <string name="crypto_msg_cancelled">Mae\'r neges wedi ei amgryptio, ond diddymwyd yr amgryptio.</string>
   <string name="crypto_msg_title_unencrypted_signed_e2e">Llofnod testun plaen Diwedd-i-Ddiwedd</string>
   <string name="crypto_msg_unencrypted_sign_verified">oddi wrth lofnodwr wedi\'i gwirio</string>
   <string name="crypto_msg_title_unencrypted_signed">Llofnod testun plaen</string>
@@ -1034,6 +1022,7 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
   <string name="crypto_msg_encrypted_sign_error">ond mae gwallau yn y data diwedd-i-ddiwedd</string>
   <string name="crypto_msg_encrypted_insecure">ond dyw\'r amgryptiad ddim yn ymddangos yn ddiogel</string>
   <string name="crypto_info_ok">Iawn</string>
+  <string name="crypto_info_search_key">Allwedd Chwilio</string>
   <string name="crypto_info_view_signer">Gweld Llofnodydd</string>
   <string name="crypto_info_view_sender">Gweld Anfonwr</string>
   <string name="crypto_info_view_security_warning">Manylion</string>
@@ -1047,9 +1036,9 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
   <string name="messageview_crypto_error_title">Gwall wrth dadgryptio e-bost</string>
   <string name="recipient_error_non_ascii">Nid oes modd defnyddio nodau arbennig ar hyn o bryd!</string>
   <string name="recipient_error_parse_failed">Gwall wrth ddosrannu\'r cyfeiriad!</string>
-  <string name="account_settings_crypto_support_sign_only">Dangos llofnodion heb eu amgryptio</string>
-  <string name="account_settings_crypto_support_sign_only_on">Dangos llofnodion sydd heb eu hamgryptio</string>
-  <string name="account_settings_crypto_support_sign_only_off">Dangos llofnodion sydd heb eu hamgryptio</string>
+  <string name="account_settings_crypto_hide_sign_only">Cuddio llofnodion heb eu hamgryptio</string>
+  <string name="account_settings_crypto_hide_sign_only_on">Dim ond llofnodion wedi eu hamgryptio caiff eu dangos</string>
+  <string name="account_settings_crypto_hide_sign_only_off">Caiff pob llofnod ei ddangos</string>
   <string name="error_sign_only_no_encryption">Dyw amgryptio ddim ar gael yn y modd llofnod-yn-unig!</string>
   <string name="unsigned_text_divider_label">Testun heb ei lofnodi</string>
   <string name="apg_deprecated_title">Rhybudd Anghymeradwyaeth APG</string>
@@ -1063,7 +1052,7 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
   <string name="no_crypto_provider_see_global">Does dim ap OpenPGP wedi ei ffurfweddu. Gwelwch osodiadau\'r ap cyfan.</string>
   <string name="crypto_no_provider_title">Mae\'r neges e-bost hon wedi ei amgryptio.</string>
   <string name="crypto_no_provider_message">Mae\'r neges e-bost hon wedi ei amgryptio gydag OpenPGP.\nI\'w darllen, rhaid gosod a ffurfweddu ap OpenPGP sy\'n cydweddu.</string>
-  <string name="crypto_no_provider_button">Dewis Ap OpenPGP</string>
+  <string name="crypto_no_provider_button">Mynd i Osodiadau</string>
   <string name="mail_list_widget_text">Rhestr Negeseuon K-9</string>
   <string name="mail_list_widget_loading">Yn llwytho negeseuon…</string>
   <string name="fetching_folders_failed">Methwyd nôl rhestr ffolderi</string>
@@ -1080,4 +1069,41 @@ Plîs rhowch wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwe
   <string name="openpgp_enabled_error_back">Nôl</string>
   <string name="openpgp_enabled_error_disable">Analluogi amgryptio</string>
   <string name="openpgp_encryption">Amgryptio OpenPGP</string>
+  <string name="account_settings_crypto_prefer_encrypt">Modd cydamgryptio</string>
+  <string name="dialog_autocrypt_mutual_title">Modd cydamgryptio</string>
+  <string name="dialog_autocrypt_mutual_description_1">Ceir negeseuon fel arfer eu hamgryptio o ddewis neu wrth ateb i neges wedi ei hamgryptio.</string>
+  <string name="dialog_autocrypt_mutual_description_2">Os yw\'r anfonwr a\'r derbynnydd ill dau yn galluogi modd cyd-amgryptio, caiff amgryptiad ei alluogi.</string>
+  <string name="dialog_autocrypt_mutual_learn_more"><a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">Cliciwch yma</a> i ddysgu rhagor.</string>
+  <string name="general_settings_title">Gosodiadau cyffredinol</string>
+  <string name="dialog_openkeychain_info_title">Nid oes ap OpenPGP wedi\'i osod</string>
+  <string name="dialog_openkeychain_info_install">Gosod</string>
+  <string name="dialog_openkeychain_info_text">Mae ar K-9 Mail angen OpenKeychain ar gyfer amgryptiad pen-i-ben.</string>
+  <string name="encrypted_subject">Neges wedi\'i Hamgryptio</string>
+  <string name="account_settings_crypto_encrypt_subject">Amgryptio pynciau negeseuon</string>
+  <string name="account_settings_crypto_encrypt_subject_subtitle">Mae\'n bosib na fydd rhai derbynwyr yn medru ei brosesu</string>
+  <string name="toast_account_not_found">Gwall mewnol: Cyfrif annilys!</string>
+  <string name="toast_openpgp_provider_error">Gwall wrth gysylltu â %s!</string>
+  <string name="ac_transfer_setting_title">Anfon Neges Gosod Awtoamgryptio</string>
+  <string name="ac_transfer_setting_summary">Rhannu gosodiad pen-i-ben yn ddiogel gyda dyfeisiau eraill</string>
+  <string name="ac_transfer_title">Neges Gosod Awtoamgryptio</string>
+  <string name="ac_transfer_intro">Mae Neges Gosod Awtoamgryptio yn rhannu dy osodiad pen-i-ben yn ddiogel gyda dyfeisiau eraill.</string>
+  <string name="ac_transfer_button_send">Anfon Neges Gosod</string>
+  <string name="ac_transfer_will_be_sent">Caiff y neges ei anfon i dy gyfeiriad e-bost:</string>
+  <string name="ac_transfer_generating">Yn creu\'r neges gosod...</string>
+  <string name="ac_transfer_sending_to">Yn anfon neges at:</string>
+  <string name="ac_transfer_finish">I orffen, agora\'r neges ar dy ddyfais arall a rhoi\'r cod gosod.</string>
+  <string name="ac_transfer_show_code">Dangos Cod Gosod</string>
+  <string name="ac_transfer_msg_subject">Neges Gosod Awtoamgryptio</string>
+  <string name="ac_transfer_msg_body">Mae\'r neges hon yn cynnwys yr holl wybodaeth i anfon dy osodiadau Awtoamgryptio ynghyd a dy allwedd gyfrinachol yn ddiogel o dy ddyfais wreiddiol.
+
+I osod dy ddyfais newydd ar gyfer Awtoamgryptio, dilyna\'r cyfarwyddiadau a ddylai cael eu cyflwyno gan y ddyfais newydd.
+
+Mae\'n bosib i ti gadw\'r neges hon a\'i ddefnyddio wrth gefn fel dy allwedd gyfrinachol. Os wyt ti eisiau gwneud hyn, rhaid ysgrifennu\'r cyfrinair a\'i gadw yn ddiogel.
+</string>
+  <string name="ac_transfer_error_send">Bu gwall wrth anfon y neges. Gwiria gysylltiad dy rwydwaith a ffurfweddiad y gweinydd anfon.</string>
+  <string name="switch_on">Ymlaen</string>
+  <string name="switch_off">I ffwrdd</string>
+  <string name="navigation_drawer_open">Agor</string>
+  <string name="navigation_drawer_close">Cau</string>
+  <!--permissions-->
 </resources>

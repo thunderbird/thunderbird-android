@@ -9,9 +9,7 @@
   <string name="remote_control_label">Τηλεχειριστήριο K-9 Mail</string>
   <string name="remote_control_desc">Επιτρέπει σε αυτή την εφαρμογή να ελέγχει τη δραστηριότητα και τις ρυθμίσεις του K-9 Mail.</string>
   <!--Used in the about dialog-->
-  <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Πνευματικά δικαιώματα 2008-<xliff:g>%s</xliff:g> από The K-9 Dog Walkers. Τμηματικά πνευματικά δικαιώματα 2006-<xliff:g>%s</xliff:g> από το Android Open Source Project.</string>
-  <string name="app_license">Διέπεται από την άδεια χρήσης Apache, έκδοση 2.0.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Καλώς ήλθατε στο K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -50,18 +48,12 @@
   <string name="account_delete_dlg_instructions_fmt">Ο λογαριασμός \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφεί από το K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Όλα τα δεδομένα για το λογαριασμό \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφούν από το K-9 Mail, αλλά οι ρυθμίσεις του λογαριασμού θα διατηρηθούν.</string>
   <string name="account_clear_dlg_instructions_fmt">Όλα τα μηνύματα του λογαριασμού \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφούν από το K-9 Mail, αλλά οι ρυθμίσεις του λογαριασμού θα διατηρηθούν.</string>
-  <!--=== App Store-specific strings =======================================================-->
-  <string name="import_dialog_error_message">Δεν υπάρχει κατάλληλη εφαρμογή για να χειριστεί την εισαγωγή. Εγκαταστήστε μια εφαρμογή επόπτη αρχείων από το Android Market</string>
-  <string name="open_market">Open Market</string>
   <!--=== General strings ==================================================================-->
-  <string name="authors">Συγγραφείς</string>
-  <string name="app_revision">Πληροφορίες αναθεωρήσεων</string>
   <string name="app_libraries">Χρησιμοποιούνται οι ακόλουθες βιβλιοθήκες τρίτων: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Ανάγνωση μηνυμάτων</string>
   <string name="read_messages_desc">Επιτρέπει στην εφαρμογή να διαβάζει τα email.</string>
   <string name="delete_messages_label">Διαγραφή μηνυμάτων</string>
   <string name="delete_messages_desc">Επιτρέπει στην εφαρμογή να σβήνει τα email.</string>
-  <string name="about_title">Περί του K-9 Mail</string>
   <string name="accounts_title">Λογαριασμοί</string>
   <string name="folders_title">Φάκελοι</string>
   <string name="advanced">Προχωρημένα</string>
@@ -127,7 +119,6 @@
   <string name="flag_action">Προσθήκη αστεριού</string>
   <string name="unflag_action">Αφαίρεση αστεριού</string>
   <string name="copy_action">Αντιγραφή</string>
-  <string name="select_text_action">Επιλογή κειμένου</string>
   <string name="show_headers_action">Προβολή επικεφαλίδων</string>
   <string name="hide_headers_action">Απόκρυψη επικεφαλίδων</string>
   <plurals name="copy_address_to_clipboard">
@@ -190,6 +181,8 @@
   <string name="notification_bg_send_ticker">Αποστολή μηνύματος: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Αποστολή μηνύματος</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_messages_title">Μηνύματα</string>
+  <string name="notification_channel_miscellaneous_title">Διάφορα</string>
   <string name="special_mailbox_name_inbox">Εισερχόμενα</string>
   <string name="special_mailbox_name_outbox">Εξερχόμενα</string>
   <string name="special_mailbox_name_drafts">Πρόχειρα</string>
@@ -203,7 +196,6 @@
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Αρχειοθήκη)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Σκουπίδια)</string>
   <string name="send_failure_subject">Αποτυχία αποστολής μερικών μηνυμάτων</string>
-  <string name="version">Έκδοση</string>
   <string name="debug_enable_debug_logging_title">Ενεργοποίηση καταγραφών αποσφαλμάτωσης</string>
   <string name="debug_enable_debug_logging_summary">Καταγραφή πρόσθετων διαγνωστικών πληροφοριών</string>
   <string name="debug_enable_sensitive_logging_title">Καταγραφή ευαίσθητων πληροφοριών</string>
@@ -234,8 +226,6 @@
   <string name="message_view_bcc_label">Κρυφή Κοιν:</string>
   <string name="message_view_attachment_view_action">Άνοιγμα</string>
   <string name="message_view_attachment_download_action">Αποθήκευση</string>
-  <string name="message_view_status_attachment_not_saved">Αδύνατο να αποθηκευτεί το συνημμένο στην κάρτα αποθήκευσης.</string>
-  <string name="message_view_status_no_space">Δεν ήταν δυνατή η αποθήκευση του συνημμένου, καθώς δεν υπάρχει αρκετός χώρος.</string>
   <string name="message_view_show_pictures_action">Προβολή εικόνων</string>
   <string name="message_view_no_viewer">Δεν υπάρχει πρόγραμμα προβολής για <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Κατέβασμα πλήρους μηνύματος</string>
@@ -391,9 +381,6 @@
   <string name="recreate_action">Ανακατασκευή δεδομένων (Έσχατη λύση!)</string>
   <string name="account_setup_options_mail_check_frequency_label">Συχνότητα ενημέρωσης φακέλων</string>
   <string name="account_setup_options_mail_check_frequency_never">Ποτέ</string>
-  <string name="account_setup_options_mail_check_frequency_1min">Κάθε 1 λεπτό</string>
-  <string name="account_setup_options_mail_check_frequency_5min">Κάθε 5 λεπτά</string>
-  <string name="account_setup_options_mail_check_frequency_10min">Κάθε 10 λεπτά</string>
   <string name="account_setup_options_mail_check_frequency_15min">Κάθε 15 λεπτά</string>
   <string name="account_setup_options_mail_check_frequency_30min">Κάθε 10 λεπτά</string>
   <string name="account_setup_options_mail_check_frequency_1hour">Κάθε μία ώρα</string>
@@ -485,9 +472,6 @@
   <string name="account_settings_sync">Συγχρονισμός ταχυδρομείου</string>
   <string name="account_settings_folders">Φάκελοι</string>
   <string name="account_settings_quote_prefix_label">Πρόθεμα κειμένου παράθεσης</string>
-  <string name="account_settings_crypto">Κρυπτογραφία</string>
-  <string name="account_settings_crypto_app">OpenPGP εφαρμογή</string>
-  <string name="account_settings_crypto_key">Το κλειδί μου</string>
   <string name="account_settings_no_openpgp_provider_configured">Δεν έχει ρυθμιστεί εφαρμογή OpenPGP</string>
   <string name="account_settings_mail_check_frequency_label">Συχνότητα ενημέρωσης φακέλων</string>
   <string name="account_settings_storage_title">Αποθήκευση</string>
@@ -721,6 +705,7 @@
   <string name="account_settings_searchable_all">Όλοι</string>
   <string name="account_settings_searchable_displayable">Προβαλλόμενοι</string>
   <string name="account_settings_searchable_none">Κανένας</string>
+  <string name="account_settings_no_folder_selected">Κανένας</string>
   <string name="font_size_settings_title">Μέγεθος γραμματοσειράς</string>
   <string name="font_size_settings_description">Ρύθμιση μεγέθους γραμματοσειράς</string>
   <string name="font_size_account_list">Λίστα λογαριασμών</string>
@@ -755,7 +740,6 @@
   <string name="font_size_medium">Μεσαίο</string>
   <string name="font_size_large">Μεγάλο</string>
   <string name="font_size_larger">Μεγαλύτερο</string>
-  <string name="miscellaneous_preferences">Διάφορα</string>
   <string name="error_activity_not_found">Δεν βρέθηκε κατάλληλη εφαρμογή για αυτή την ενέργεια.</string>
   <string name="send_failed_reason">Αποστολή απέτυχε: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Αποθήκευση πρόχειρου μηνύματος;</string>
@@ -797,17 +781,13 @@
   <string name="settings_exporting">Εξαγωγή ρυθμίσεων σε εξέλιξη…</string>
   <string name="settings_importing">Εισαγωγή ρυθμίσεων σε εξέλιξη…</string>
   <string name="settings_import_scanning_file">Ανίχνευση αρχείου…</string>
-  <string name="settings_export_success">Οι εξαγόμενες ρυθμίσεις αποθηκεύτηκαν στο <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_generic">Οι ρυθμίσεις έχουν εξαχθεί με επιτυχία</string>
-  <string name="settings_import_global_settings_success">Ρυθμίσεις εισήχθηκαν από το <xliff:g id="filename">%s</xliff:g></string>
-  <string name="settings_import_success">Εισήχθηκαν <xliff:g id="accounts">%s</xliff:g> λογαριασμοί από το <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_account_imported_as">Εισήχθηκαν <xliff:g id="original_account_name">%s</xliff:g> ως <xliff:g id="account_name_after_import">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
     <item quantity="one">1 λογαριασμός</item>
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> λογαριασμοί</item>
   </plurals>
   <string name="settings_export_failure">Αποτυχία εξαγωγής ρυθμίσεων</string>
-  <string name="settings_import_failure">Αποτυχία εισαγωγής ρυθμίσεων από το <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_header">Εξαγωγή επιτυχημένη</string>
   <string name="settings_export_failed_header">Εξαγωγή απέτυχε</string>
   <string name="settings_import_success_header">Εισαγωγή επιτυχημένη</string>
@@ -827,7 +807,6 @@
   <string name="settings_import_use_incoming_server_password">Χρήση του συνθηματικού του εξυπηρέτη εισερχόμενων</string>
   <string name="activate_account_action">Ενεργοποίηση</string>
   <string name="account_unavailable">Ο λογαριασμός \'<xliff:g id="account">%s</xliff:g>\' δεν είναι διαθέσιμος. Ελέγξτε αποθήκευση.</string>
-  <string name="settings_attachment_default_path">Αποθήκευση συνημμένων στο…</string>
   <string name="attachment_save_title">Αποθήκευση συνημμένων</string>
   <string name="attachment_save_desc">Δεν βρέθηκε επόπτης αρχείων. Πού θέλετε να αποθηκευτεί αυτό το συνημμένο;</string>
   <string name="manage_accounts_move_up_action">Μετακίνηση πάνω</string>
@@ -841,7 +820,6 @@
   <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
   <string name="unread_widget_account_not_selected">Δεν έχει επιλεγεί λογαριασμός</string>
   <string name="unread_widget_folder_not_selected">Δεν έχει επιλεγεί φάκελος</string>
-  <string name="import_dialog_error_title">Λείπει εφαρμογή επόπτη αρχείων.</string>
   <string name="close">Κλείσιμο</string>
   <string name="webview_empty_message">Κενό μήνυμα</string>
   <string name="webview_contextmenu_link_view_action">Άνοιγμα για προβολή</string>
@@ -939,7 +917,6 @@
   <string name="crypto_mode_opportunistic">Κρυπτογράφηση αν είναι δυνατόν</string>
   <string name="crypto_mode_private">Κρυπτογράφησε</string>
   <string name="error_crypto_provider_connect">Δεν είναι δυνατή η σύνδεση με τον πάροχο κρυπτογράφησης, ελέγξτε τις ρυθμίσεις σας ή πιέστε το εικονίδιο κρυπτογράφηση για επανάληψη!</string>
-  <string name="error_crypto_provider_ui_required">Δεν επιτρέπεται η πρόσβαση στον πάροχο κρυπτογράφησης, πιέστε το εικονίδιο κρυπτογράφηση για επανάληψη!</string>
   <string name="error_crypto_inline_attach">Η λειτουργία σε PGP/INLINE δεν υποστιρίχει συνημμένα αρχεία!</string>
   <string name="enable_inline_pgp">Ενεργοποίηση PGP/INLINE</string>
   <string name="disable_inline_pgp">Απενεργοποίηση PGP/INLINE</string>
@@ -962,6 +939,8 @@
   <string name="openpgp_dialog_sign_only_minus_break">Οι υπογραφές μπορεί να καταστραφούν όταν στέλνονται σε λίστες αλληλογραφίας.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">Οι υπογραφές μπορεί να εμφανίζονται ως συνημμένα «signature.asc» σε μερικά προγράμματα.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Τα κρυπτογραφημένα μηνύματα περιλαμβάνουν πάντα μια υπογραφή.</string>
+  <string name="crypto_msg_unsupported_encrypted">Το μήνυμα είναι κρυπτογραφημένο σε μη υποστηριζόμενη μορφοποίηση</string>
+  <string name="crypto_msg_cancelled">Το μήνυμα είναι κρυπτογραφημένο, αλλά η αποκρυπτογράφηση ακυρώθηκε.</string>
   <string name="crypto_info_ok">Εντάξει</string>
   <string name="locked_attach_unlock">Ξεκλείδωσε</string>
   <string name="locked_attach_unencrypted">Αυτό το τμήμα δεν ήταν κρυπτογραφημένο και μπορεί να μην είναι ασφαλή.</string>
@@ -985,4 +964,8 @@
   <string name="apg">APG</string>
   <string name="no_crypto_provider_see_global">Δεν έχει ρυθμιστεί εφαρμογή OpenPGP, δείτε τις γενικές ρυθμίσεις!</string>
   <string name="openpgp_enabled_error_back">Πίσω</string>
+  <string name="general_settings_title">Γενικές ρυθμίσεις</string>
+  <string name="navigation_drawer_open">Άνοιγμα</string>
+  <string name="navigation_drawer_close">Κλείσιμο</string>
+  <!--permissions-->
 </resources>
