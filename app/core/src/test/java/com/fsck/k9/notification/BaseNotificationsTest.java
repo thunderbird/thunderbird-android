@@ -1,8 +1,8 @@
 package com.fsck.k9.notification;
 
 
-import android.support.v4.app.NotificationCompat.BigTextStyle;
-import android.support.v4.app.NotificationCompat.Builder;
+import androidx.core.app.NotificationCompat.BigTextStyle;
+import androidx.core.app.NotificationCompat.Builder;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;

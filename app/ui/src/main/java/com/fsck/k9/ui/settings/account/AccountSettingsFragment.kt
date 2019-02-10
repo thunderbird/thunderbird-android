@@ -3,8 +3,8 @@ package com.fsck.k9.ui.settings.account
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.support.v14.preference.SwitchPreference
-import android.support.v7.preference.ListPreference
+import androidx.preference.SwitchPreference
+import androidx.preference.ListPreference
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -30,7 +30,7 @@ import com.fsck.k9.ui.settings.oneTimeClickListener
 import com.fsck.k9.ui.settings.remove
 import com.fsck.k9.ui.settings.removeEntry
 import com.fsck.k9.ui.withArguments
-import com.takisoft.fix.support.v7.preference.PreferenceFragmentCompat
+import com.takisoft.preferencex.PreferenceFragmentCompat
 import com.fsck.k9.ui.observe
 import org.koin.android.architecture.ext.sharedViewModel
 import org.koin.android.ext.android.inject

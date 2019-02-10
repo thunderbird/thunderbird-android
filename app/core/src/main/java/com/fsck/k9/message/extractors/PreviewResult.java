@@ -1,7 +1,7 @@
 package com.fsck.k9.message.extractors;
 
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 
 public class PreviewResult {

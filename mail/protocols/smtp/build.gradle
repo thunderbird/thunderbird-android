@@ -12,7 +12,7 @@ dependencies {
 
     implementation "commons-io:commons-io:${versions.commonsIo}"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
-    implementation "com.android.support:support-annotations:${versions.supportLibrary}"
+    implementation "androidx.annotation:annotation:${versions.androidxAnnotation}"
 
     testImplementation project(":mail:testing")
     testImplementation "org.robolectric:robolectric:${versions.robolectric}"

@@ -3,7 +3,7 @@ package com.fsck.k9.ui.settings
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.MenuItem
 import com.fsck.k9.Account
 import com.fsck.k9.activity.K9Activity

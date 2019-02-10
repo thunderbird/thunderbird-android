@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.Set;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;

@@ -11,7 +11,7 @@
         android:key="account_settings"
         android:title="@string/account_settings_general_title">
 
-        <com.takisoft.fix.support.v7.preference.AutoSummaryEditTextPreference
+        <com.takisoft.preferencex.AutoSummaryEditTextPreference
             android:dialogTitle="@string/account_settings_description_label"
             android:key="account_description"
             android:title="@string/account_settings_description_label" />
@@ -211,7 +211,7 @@
             android:summary="@string/account_settings_strip_signature_summary"
             android:title="@string/account_settings_strip_signature_label" />
 
-        <com.takisoft.fix.support.v7.preference.AutoSummaryEditTextPreference
+        <com.takisoft.preferencex.AutoSummaryEditTextPreference
             android:dependency="quote_style"
             android:dialogTitle="@string/account_settings_quote_prefix_label"
             android:key="account_quote_prefix"
@@ -338,7 +338,7 @@
             android:summary="@string/account_notify_contacts_mail_only_summary"
             android:title="@string/account_notify_contacts_mail_only_label" />
 
-        <com.takisoft.fix.support.v7.preference.RingtonePreference
+        <com.takisoft.preferencex.RingtonePreference
             android:defaultValue="content://settings/system/notification_sound"
             android:dependency="account_notify"
             android:key="account_ringtone"
@@ -381,7 +381,7 @@
             android:summary="@string/account_settings_led_summary"
             android:title="@string/account_settings_led_label" />
 
-        <com.takisoft.fix.support.v7.preference.ColorPickerPreference
+        <com.takisoft.preferencex.ColorPickerPreference
             android:dependency="account_led"
             android:key="led_color"
             android:summary="@string/account_settings_led_color_summary"
