@@ -9,9 +9,8 @@
   <string name="remote_control_label">upravljanje programa K-9 na daljavo</string>
   <string name="remote_control_desc">Možnost omogoča programu nadzor dejavnosti in nastavitev K-9 Mail.</string>
   <!--Used in the about dialog-->
-  <string name="app_authors">Google, The K-9 Dog Walkers</string>
+  <string name="app_authors">Sprehajalci psov v skupini The K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Avtorske pravice 2008–<xliff:g>%s</xliff:g> The K-9 Dog Walkers in 2006–<xliff:g>%s</xliff:g> Odprtokodna skupnost projekta Android.</string>
-  <string name="app_license">Objavljeno z dovoljenjem Apache, različice 2.0.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Dobrodošli v K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -49,18 +48,12 @@ Poročila o napakah, predloge za nove funkcije in vprašanja lahko pošljete na
   <string name="account_delete_dlg_instructions_fmt">Račun »<xliff:g id="account">%s</xliff:g>« bo odstranjen iz programa.</string>
   <string name="account_recreate_dlg_instructions_fmt">Vsi krajevni podatki računa »<xliff:g id="account">%s</xliff:g>« bodo odstranjeni. Nastavitve računa bodo ostale nespremenjene.</string>
   <string name="account_clear_dlg_instructions_fmt">Kopije sporočil v krajevni mapi »<xliff:g id="account">%s</xliff:g>« bodo odstranjene. Nastavitve računa bodo ostale nespremenjene.</string>
-  <!--=== App Store-specific strings =======================================================-->
-  <string name="import_dialog_error_message">Za nadaljevanje uvažanja je treba namestiti upravljalnik datotek.</string>
-  <string name="open_market">Odpri Play Store</string>
   <!--=== General strings ==================================================================-->
-  <string name="authors">Avtorstvo</string>
-  <string name="app_revision">Podrobnosti različice</string>
   <string name="app_libraries">Vključene so naslednje zunanje knjižnice: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Preberi pošto</string>
   <string name="read_messages_desc">Možnost omogoča programu branje elektronske pošte.</string>
   <string name="delete_messages_label">brisanje sporočil elektronske pošte</string>
   <string name="delete_messages_desc">Možnost omogoča programu brisanje sporočil elektronske pošte.</string>
-  <string name="about_title">O programu K-9 Mail</string>
   <string name="accounts_title">Računi</string>
   <string name="folders_title">Mape</string>
   <string name="advanced">Napredno</string>
@@ -127,7 +120,6 @@ Poročila o napakah, predloge za nove funkcije in vprašanja lahko pošljete na
   <string name="flag_action">Označi z zvezdico</string>
   <string name="unflag_action">Odstrani zvezdico</string>
   <string name="copy_action">Kopiraj</string>
-  <string name="select_text_action">Izberi besedilo</string>
   <string name="show_headers_action">Prikaži glave sporočil</string>
   <string name="hide_headers_action">Skrij glave sporočil</string>
   <plurals name="copy_address_to_clipboard">
@@ -194,6 +186,8 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="notification_bg_send_ticker">Pošiljanje pošte: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Pošiljanje pošte</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_messages_title">Sporočila</string>
+  <string name="notification_channel_miscellaneous_title">Razno</string>
   <string name="special_mailbox_name_inbox">Prejeto</string>
   <string name="special_mailbox_name_outbox">Odpremni predal</string>
   <string name="special_mailbox_name_drafts">Osnutki</string>
@@ -207,7 +201,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arhivirano)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Neželena pošta)</string>
   <string name="send_failure_subject">Nekaterih sporočil ni bilo mogoče poslati!</string>
-  <string name="version">Različica</string>
   <string name="debug_enable_debug_logging_title">Omogoči beleženje razhroščevanja</string>
   <string name="debug_enable_debug_logging_summary">Beleženje dodatnih podrobnosti diagnostike</string>
   <string name="debug_enable_sensitive_logging_title">Beleženje občutljivih podrobnosti</string>
@@ -239,8 +232,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="message_view_bcc_label">Skp:</string>
   <string name="message_view_attachment_view_action">Odpri</string>
   <string name="message_view_attachment_download_action">Shrani</string>
-  <string name="message_view_status_attachment_not_saved">Priloge ni mogoče shraniti na kartico SD.</string>
-  <string name="message_view_status_no_space">Priloge ni mogoče shraniti, ker na napravi ni dovolj prostora.</string>
   <string name="message_view_show_pictures_action">Pokaži slike</string>
   <string name="message_view_no_viewer">Ni mogoče najti pregledovalnika za vrsto <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Prejmi celotno sporočilo</string>
@@ -290,8 +281,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="global_settings_privacy_hide_useragent_detail">Odstrani podatke programa K-9 iz glave pošte</string>
   <string name="global_settings_privacy_hide_timezone">Skrij časovni pas</string>
   <string name="global_settings_privacy_hide_timezone_detail">V glavah poštnih sporočil se uporabi čas UTC in ne krajevni čas</string>
-  <string name="global_settings_privacy_hide_hostname_when_connecting">Skrij ime gostitelja</string>
-  <string name="global_settings_privacy_hide_hostname_when_connecting_detail">Pri povezovanju s SMTP strežniki se identificiraj kot \'localhost\'</string>
   <string name="global_settings_notification_hide_subject_title">Skrivanje izpisa zadeve sporočila v obvestilih</string>
   <string name="global_settings_notification_hide_subject_never">Vedno pokaži zadevo</string>
   <string name="global_settings_notification_hide_subject_when_locked">Skrij, ko je naprava zaklenjena</string>
@@ -398,9 +387,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="recreate_action">Poustvari podatke (zadnja možnost obnovitve!)</string>
   <string name="account_setup_options_mail_check_frequency_label">Pogostost izpraševanja map</string>
   <string name="account_setup_options_mail_check_frequency_never">Ročno preverjanje</string>
-  <string name="account_setup_options_mail_check_frequency_1min">Vsako minuto</string>
-  <string name="account_setup_options_mail_check_frequency_5min">Vsakih 5 minut</string>
-  <string name="account_setup_options_mail_check_frequency_10min">Vsakih 10 minut</string>
   <string name="account_setup_options_mail_check_frequency_15min">Vsakih 15 minut</string>
   <string name="account_setup_options_mail_check_frequency_30min">Vsakih 30 minut</string>
   <string name="account_setup_options_mail_check_frequency_1hour">Vsako uro</string>
@@ -492,14 +478,19 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="account_settings_sync">Pridobivanje pošte</string>
   <string name="account_settings_folders">Mape</string>
   <string name="account_settings_quote_prefix_label">Predpona za navajanje izvornega besedila</string>
-  <string name="account_settings_crypto">Šifriranje sporočil</string>
-  <string name="account_settings_crypto_app">Program OpenPGP</string>
-  <string name="account_settings_crypto_key">Moj ključ</string>
+  <string name="account_settings_crypto">Celovito šifriranje (E2E)</string>
+  <string name="account_settings_crypto_app">Omogoči podporo OpenPGP</string>
+  <string name="account_settings_crypto_app_select_title">Izbor programa OpenPGP</string>
+  <string name="account_settings_crypto_key">Nastavitev ključa celovitega šifriranja</string>
+  <string name="account_settings_crypto_summary_off">Ni nastavljenega programa OpenPGP</string>
+  <string name="account_settings_crypto_summary_on">Povezano na %s</string>
   <string name="account_settings_no_openpgp_provider_configured">Ni nastavljenega programa OpenPGP</string>
+  <string name="account_settings_no_openpgp_provider_installed">Ni programa OpenPGP – klik za namestitev</string>
   <string name="account_settings_mail_check_frequency_label">Pogostost izpraševanja map</string>
   <string name="account_settings_storage_title">Pomnilnik</string>
   <string name="account_settings_color_label">Barvna shema računa</string>
   <string name="account_settings_color_summary">Barva, ki je uporabljena na seznamu map in seznamu računov</string>
+  <string name="account_settings_color_none">Brez barve</string>
   <string name="account_settings_led_color_label">Barva bliskanja ob prejetem obvestilu</string>
   <string name="account_settings_led_color_summary">Barva, s katero naj za ta račun utripa bliskavica naprave</string>
   <string name="account_settings_mail_display_count_label">Velikost mape sporočil</string>
@@ -556,6 +547,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="account_settings_folder_target_mode_not_second_class">Premakni / Kopiraj vse, razen map 2. ravni</string>
   <string name="account_settings_sync_remote_deletetions_label">Usklajevanje izbrisanih sporočil</string>
   <string name="account_settings_sync_remote_deletetions_summary">Odstrani sporočila, ki so bila izbrisana na strežniku</string>
+  <string name="account_settings_openpgp_missing">Ni programa OpenPGP – ali je bila namestitev odstranjena?</string>
   <string name="folder_settings_title">Nastavitve mape</string>
   <string name="folder_settings_in_top_group_label">Pokaži mapo v zgornji skupini</string>
   <string name="folder_settings_in_top_group_summary">Razvrsti mapo v zgornjo skupino map na seznamu</string>
@@ -692,10 +684,10 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="settings_message_theme_selection_summary_off">Izbor barvne sheme pogleda za okno prikaza sporočila</string>
   <string name="settings_message_theme_selection_summary_on">Uporaba barvne sheme prikaza sporočila</string>
   <string name="setting_language_system">Sistemsko privzeto</string>
-  <string name="background_ops_label">Usklajevanje v ozadju</string>
+  <string name="background_ops_label">Izvajaj usklajevanje v ozadju</string>
   <string name="background_ops_never">Nikoli</string>
   <string name="background_ops_always">Vedno</string>
-  <string name="background_ops_auto_sync_only">Ko je omogočeno samodejno usklajevanje</string>
+  <string name="background_ops_auto_sync_only">Le, ko je omogočeno samodejno usklajevanje</string>
   <string name="batch_select_all">Izberi vse</string>
   <string name="account_setup_push_limit_label">Največje število map za preverjanje s potiskom</string>
   <string name="account_setup_push_limit_5">5 map</string>
@@ -707,7 +699,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="account_setup_push_limit_500">500 map</string>
   <string name="account_setup_push_limit_1000">1000 map</string>
   <string name="animations_title">Pokaži animirane učinke vmesnika</string>
-  <string name="animations_summary">Prehodi dejanj in različni učinki delovanja so animirani</string>
+  <string name="animations_summary">Prehodi dejanj in različni učinki delovanja vmesnika so animirani</string>
   <string name="gestures_title">Poteze</string>
   <string name="gestures_summary">Omogoči upravljanje programa s pritiski in potezami</string>
   <string name="volume_navigation_title">Dovoli upravljanje programa s tipko za glasnost</string>
@@ -734,6 +726,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="account_settings_searchable_all">Poišči v vseh mapah računa</string>
   <string name="account_settings_searchable_displayable">Poišči le v prikazanih mapah</string>
   <string name="account_settings_searchable_none">Ne išči po mapah</string>
+  <string name="account_settings_no_folder_selected">Brez usklajevanja</string>
   <string name="font_size_settings_title">Velikost pisave</string>
   <string name="font_size_settings_description">Nastavitev velikosti pisave</string>
   <string name="font_size_account_list">Seznam računov</string>
@@ -768,7 +761,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="font_size_medium">srednje</string>
   <string name="font_size_large">veliko</string>
   <string name="font_size_larger">največje</string>
-  <string name="miscellaneous_preferences">Razno</string>
   <string name="error_activity_not_found">Ni nameščenega ustreznega programa za izvedbo tega dejanja.</string>
   <string name="send_failed_reason">Pošiljanje je spodletelo: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Ali želite shraniti osnutek sporočila?</string>
@@ -814,10 +806,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="settings_exporting">Izvažanje nastavitev …</string>
   <string name="settings_importing">Uvažanje nastavitev …</string>
   <string name="settings_import_scanning_file">Preverjanje datoteke …</string>
-  <string name="settings_export_success">Nastavitve so shranjene v datoteko <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_generic">Nastavitve so uspešno izvožene</string>
-  <string name="settings_import_global_settings_success">Splošne nastavitve so uspešno uvožene iz datoteke <xliff:g id="filename">%s</xliff:g></string>
-  <string name="settings_import_success">Nastavitve <xliff:g id="accounts">%s</xliff:g> iz <xliff:g id="filename">%s</xliff:g> so uspešno uvožene.</string>
   <string name="settings_import_account_imported_as">Račun <xliff:g id="original_account_name">%s</xliff:g> je uvožen kot <xliff:g id="account_name_after_import">%s</xliff:g>.</string>
   <plurals name="settings_import_accounts">
     <item quantity="one">1 račun</item>
@@ -826,7 +815,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> računov</item>
   </plurals>
   <string name="settings_export_failure">Izvažanje nastavitev je spodletelo</string>
-  <string name="settings_import_failure">Uvoz nastavitev iz datoteke <xliff:g id="filename">%s</xliff:g> je spodletel.</string>
   <string name="settings_export_success_header">Izvoz je uspešno končan</string>
   <string name="settings_export_failed_header">Izvoz je spodletel</string>
   <string name="settings_import_success_header">Uvoz je uspešno končan</string>
@@ -850,7 +838,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="settings_import_use_incoming_server_password">Uporabi geslo dohodnega strežnika</string>
   <string name="activate_account_action">Omogoči</string>
   <string name="account_unavailable">Račun »<xliff:g id="account">%s</xliff:g>« ni dosegljiv; preverite dostopnost pomnilnika</string>
-  <string name="settings_attachment_default_path">Shrani priloge v …</string>
   <string name="attachment_save_title">Shrani prilogo</string>
   <string name="attachment_save_desc">Ni najdenega upravljalnika datotek. Kam naj se shrani priloga?</string>
   <string name="manage_accounts_move_up_action">Premakni gor</string>
@@ -869,7 +856,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
   <string name="unread_widget_account_not_selected">Ni izbranega računa</string>
   <string name="unread_widget_folder_not_selected">Ni izbrane mape</string>
-  <string name="import_dialog_error_title">Manjka program za upravljanje datotek</string>
   <string name="close">Zapri</string>
   <string name="webview_empty_message">Ni vpisanega besedila …</string>
   <string name="webview_contextmenu_link_view_action">Odpri povezavo</string>
@@ -979,7 +965,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="crypto_mode_private">Šifriraj</string>
   <string name="error_crypto_provider_incompatible">Ponudnik šifriranja uporablja neskladno različico! Preverite nastavitve.</string>
   <string name="error_crypto_provider_connect">Ni mogoče vzpostaviti povezave s programom za šifriranje; preverite nastavitve in poskusite znova!</string>
-  <string name="error_crypto_provider_ui_required">Dostop do programa za šifriranje je zavrnjen; preverite nastavitve in poskusite znova!</string>
+  <string name="error_crypto_provider_ui_required">Začenjanje celovitega šifriranja je spodletelo. Preverite nastavitve.</string>
   <string name="error_crypto_inline_attach">Način PGP/INLINE ne omogoča dodajanja prilog!</string>
   <string name="enable_inline_pgp">Omogoči PGP/INLINE</string>
   <string name="disable_inline_pgp">Onemogoči PGP/INLINE</string>
@@ -1003,36 +989,39 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="openpgp_dialog_sign_only_minus_attach">Podpisi so v nekaterih odjemalcih prikazani kot priloge »signature.asc«.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Šifrirana sporočila vedno vključujejo tudi podpis</string>
   <string name="crypto_msg_title_plaintext">Golo besedilo</string>
-  <string name="crypto_msg_unencrypted_sign_error">end-to-end podpis je vseboval napako</string>
-  <string name="crypto_msg_incomplete_signed">za obdelavo podpisa se mora sporočilo prenesti v celoti </string>
-  <string name="crypto_msg_unsupported_signed">vsebuje nepodprt end-to-end podpis</string>
-  <string name="crypto_msg_title_unencrypted_signed_e2e">End-to-end podpisano golo besedilo</string>
+  <string name="crypto_msg_unencrypted_sign_error">Podpis za celovito šifriranje je vseboval napako</string>
+  <string name="crypto_msg_incomplete_signed">za obdelavo podpisa mora biti sporočilo prejeto v celoti</string>
+  <string name="crypto_msg_unsupported_signed">vsebuje nepodprt podpis za celovito šifriranje</string>
+  <string name="crypto_msg_unsupported_encrypted">Sporočilo je šifrirano, vendar z nepodprto obliko šifriranja.</string>
+  <string name="crypto_msg_cancelled">Sporočilo je šifrirano, vendar je bilo odšifriranje prekinjeno.</string>
+  <string name="crypto_msg_title_unencrypted_signed_e2e">Celovito šifrirano golo besedilo</string>
   <string name="crypto_msg_unencrypted_sign_verified">od preverjenega podpisnika</string>
   <string name="crypto_msg_title_unencrypted_signed">Podpisano besedilno sporočilo</string>
-  <string name="crypto_msg_unencrypted_sign_mismatch">vendar end-to-end ključ ni ustrezal pošiljatelju</string>
-  <string name="crypto_msg_unencrypted_sign_expired">vendar end-to-end ključ je potekel</string>
-  <string name="crypto_msg_unencrypted_sign_revoked">vendar end-to-end ključ je preklican</string>
-  <string name="crypto_msg_unencrypted_sign_insecure">vendar end-to-end ključ ni varen</string>
-  <string name="crypto_msg_unencrypted_sign_unknown">od neznanega end-to-end ključa </string>
+  <string name="crypto_msg_unencrypted_sign_mismatch">vendar ključ celovitega šifriranja ni ustrezal pošiljatelju</string>
+  <string name="crypto_msg_unencrypted_sign_expired">vendar je ključ za celovito šifriranje potekel</string>
+  <string name="crypto_msg_unencrypted_sign_revoked">vendar je ključ za celovito šifriranje preklican</string>
+  <string name="crypto_msg_unencrypted_sign_insecure">vendar ključ za celovito šifriranje ni varen</string>
+  <string name="crypto_msg_unencrypted_sign_unknown">od neznanega ključa za celovito šifriranje</string>
   <string name="crypto_msg_title_encrypted_unknown">Šifrirano</string>
   <string name="crypto_msg_encrypted_error">vendar je prišlo do napake pri odšifriranju</string>
-  <string name="crypto_msg_encrypted_incomplete">za odšifriranje se mora sporočilo prenesti v celoti </string>
-  <string name="crypto_msg_encrypted_no_provider">vendar ni konfigurirana nobena aplikacija za odšifriranje</string>
+  <string name="crypto_msg_encrypted_incomplete">za obdelavo podpisa mora biti sporočilo prejeto v celoti</string>
+  <string name="crypto_msg_encrypted_no_provider">vendar ni nameščenega programa za šifriranje</string>
   <string name="crypto_msg_encrypted_unsupported">vendar z nepodprto obliko šifriranja</string>
   <string name="crypto_msg_encrypted_cancelled">vendar je bilo odšifriranje preklicano</string>
   <string name="crypto_msg_title_encrypted_unsigned">Šifrirano</string>
-  <string name="crypto_msg_encrypted_unsigned">vendar ne end-to-end</string>
-  <string name="crypto_msg_title_encrypted_signed_e2e">End-to-end šifrirano</string>
+  <string name="crypto_msg_encrypted_unsigned">vendar ne celovito šifriranje</string>
+  <string name="crypto_msg_title_encrypted_signed_e2e">Celovito šifrirano (E2E)</string>
   <string name="crypto_msg_encrypted_sign_verified">od preverjenega pošiljatelja</string>
   <string name="crypto_msg_title_encrypted_signed">Šifrirano</string>
-  <string name="crypto_msg_encrypted_sign_unknown">od neznanega end-to-end ključa </string>
-  <string name="crypto_msg_encrypted_sign_mismatch">vendar end-to-end ključ ni ustrezal pošiljatelju</string>
-  <string name="crypto_msg_encrypted_sign_expired">vendar end-to-end ključ je potekel</string>
-  <string name="crypto_msg_encrypted_sign_revoked">vendar end-to-end ključ je preklican</string>
-  <string name="crypto_msg_encrypted_sign_insecure">vendar end-to-end ključ ni varen</string>
-  <string name="crypto_msg_encrypted_sign_error">vendar imajo end-to-end podatki napake</string>
-  <string name="crypto_msg_encrypted_insecure">vendar šifriranje se ne smatra za varno</string>
+  <string name="crypto_msg_encrypted_sign_unknown">od neznanega ključa za celovito šifriranje</string>
+  <string name="crypto_msg_encrypted_sign_mismatch">vendar ključ za celovito šifriranje ni ustrezal pošiljatelju</string>
+  <string name="crypto_msg_encrypted_sign_expired">vendar je ključ za celovito šifriranje potekel</string>
+  <string name="crypto_msg_encrypted_sign_revoked">vendar je ključ za celovito šifriranje preklican</string>
+  <string name="crypto_msg_encrypted_sign_insecure">vendar ključ za celovito šifriranje ni varen</string>
+  <string name="crypto_msg_encrypted_sign_error">vendar so v podatkih za celovito šifriranje napake</string>
+  <string name="crypto_msg_encrypted_insecure">vendar se šifriranje ne obravnava kot varno</string>
   <string name="crypto_info_ok">V redu</string>
+  <string name="crypto_info_search_key">Iskalni niz</string>
   <string name="crypto_info_view_signer">Podatki podpisnika</string>
   <string name="crypto_info_view_sender">Podatki pošiljatelja</string>
   <string name="crypto_info_view_security_warning">Podrobnosti</string>
@@ -1046,9 +1035,9 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="messageview_crypto_error_title">Napaka odšifriranja sporočila</string>
   <string name="recipient_error_non_ascii">Posebni znaki trenutno niso podprti!</string>
   <string name="recipient_error_parse_failed">Prišlo je do napake pri razčlenjevanju naslova!</string>
-  <string name="account_settings_crypto_support_sign_only">Pokaži nešifrirane podpise</string>
-  <string name="account_settings_crypto_support_sign_only_on">Nešifrirani podpisi bodo prikazani</string>
-  <string name="account_settings_crypto_support_sign_only_off">Nešifrirani podpisi bodo prezrti</string>
+  <string name="account_settings_crypto_hide_sign_only">Skrij nešifrirane podpise</string>
+  <string name="account_settings_crypto_hide_sign_only_on">Izpisani bodo le šifrirani podpisi</string>
+  <string name="account_settings_crypto_hide_sign_only_off">Izpisani bodo vsi podpisi</string>
   <string name="error_sign_only_no_encryption">Šifriranje v načinu ločenega podpisa ni na voljo!</string>
   <string name="unsigned_text_divider_label">Nepodpisano besedilo</string>
   <string name="apg_deprecated_title">Opozorilo o zastarelosti programa APG</string>
@@ -1062,7 +1051,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="no_crypto_provider_see_global">Med splošnimi nastavitvami ni ustrezno navedenega programa OpenPGP!</string>
   <string name="crypto_no_provider_title">Sporočilo je šifrirano</string>
   <string name="crypto_no_provider_message">Sporočilo je šifrirano s programom OpenPGP.\nZa ogled vsebine je treba namestiti ustrezen podprt program OpenPGP.</string>
-  <string name="crypto_no_provider_button">Izbor programa OpenPGP</string>
+  <string name="crypto_no_provider_button">Pojdi v Nastavitve</string>
   <string name="mail_list_widget_text">Seznami sporočil</string>
   <string name="mail_list_widget_loading">Poteka nalaganje sporočil …</string>
   <string name="fetching_folders_failed">Pridobivanje seznama map je spodletelo</string>
@@ -1079,4 +1068,41 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="openpgp_enabled_error_back">Nazaj</string>
   <string name="openpgp_enabled_error_disable">Onemogoči šifriranje</string>
   <string name="openpgp_encryption">Šifriranje OpenPGP</string>
+  <string name="account_settings_crypto_prefer_encrypt">Vzajemni način šifriranja</string>
+  <string name="dialog_autocrypt_mutual_title">Vzajemni način šifriranjaVzajemni način šifriranja</string>
+  <string name="dialog_autocrypt_mutual_description_1">Sporočila so lahko šifrirana na zahtevo. ali pri odgovarjanju na šifrirano sporočilo.</string>
+  <string name="dialog_autocrypt_mutual_description_2">Kadar oba, pošiljatelj in prejemnik, omogočita vzajemni način, je šifriranje omogočeno samodejno.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Več o tem si je mogoče prebrati <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">na straneh pomoči</a>.</string>
+  <string name="general_settings_title">Splošne nastavitve</string>
+  <string name="dialog_openkeychain_info_title">Ni nameščenega programa OpenPGP</string>
+  <string name="dialog_openkeychain_info_install">Namesti</string>
+  <string name="dialog_openkeychain_info_text">Program K-9 Mail zahteva OpenKeychain za celovito šifriranje.</string>
+  <string name="encrypted_subject">Šifrirano sporočilo</string>
+  <string name="account_settings_crypto_encrypt_subject">Šifriraj zadeve sporočila</string>
+  <string name="account_settings_crypto_encrypt_subject_subtitle">Nekateri odjemalci funkcije morda ne podpirajo.</string>
+  <string name="toast_account_not_found">Notranja napaka: neveljaven račun!</string>
+  <string name="toast_openpgp_provider_error">Napaka povezovanja z %s!</string>
+  <string name="ac_transfer_setting_title">Pošlji nastavitveno sporočilo šifriranja AutoCrypt</string>
+  <string name="ac_transfer_setting_summary">Varna izmenjava nastavitev šifriranja med različnimi napravami</string>
+  <string name="ac_transfer_title">Nastavitveno sporočilo šifriranja AutoCrypt</string>
+  <string name="ac_transfer_intro">Nastavitveno sporočilo šifriranja AutoCrypt</string>
+  <string name="ac_transfer_button_send">Pošlji nastavitveno sporočilo</string>
+  <string name="ac_transfer_will_be_sent">Sporočilo bo poslano na naslov:</string>
+  <string name="ac_transfer_generating">Poteka ustvarjanje nastavitvenega sporočila ...</string>
+  <string name="ac_transfer_sending_to">Pošiljanje sporočila za:</string>
+  <string name="ac_transfer_finish">Za dokončanje odprite sporočilo na drugi napravi in vpišite kodo nastavitve.</string>
+  <string name="ac_transfer_show_code">Pokaži kodo nastavitev</string>
+  <string name="ac_transfer_msg_subject">Nastavitveno sporočilo šifriranja AutoCrypt</string>
+  <string name="ac_transfer_msg_body">Sporočilo vsebuje vse podrobnosti za varen prenos nastavitev šifriranja AutoCrypt, vključno s šifrirnim ključem, z vaše izvorne naprave.
+
+Za nastavitev nove naprave za šifriranje AutoCrypt, sledite navodilom, prikazanim na vaši drugi napravi.
+
+Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. Če boste to storili, si geslo zapišite in ga varno shranite.
+</string>
+  <string name="ac_transfer_error_send">Prišlo je do napake med pošiljanjem sporočila. Preverite omrežne nastavitve in nastavitve odhodnega strežnika.</string>
+  <string name="switch_on">On</string>
+  <string name="switch_off">Off</string>
+  <string name="navigation_drawer_open">Odpri</string>
+  <string name="navigation_drawer_close">Zapri</string>
+  <!--permissions-->
 </resources>

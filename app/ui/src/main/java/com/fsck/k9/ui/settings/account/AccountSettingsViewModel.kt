@@ -1,12 +1,13 @@
 package com.fsck.k9.ui.settings.account
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
 import com.fsck.k9.mailstore.FolderRepositoryManager
 import com.fsck.k9.mailstore.RemoteFolderInfo
+import com.fsck.k9.ui.account.AccountsLiveData
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.launch
 import org.jetbrains.anko.coroutines.experimental.bg
@@ -15,6 +16,7 @@ class AccountSettingsViewModel(
         private val preferences: Preferences,
         private val folderRepositoryManager: FolderRepositoryManager
 ) : ViewModel() {
+    public val accounts = AccountsLiveData(preferences)
     private val accountLiveData = MutableLiveData<Account>()
     private val foldersLiveData = MutableLiveData<RemoteFolderInfo>()
 

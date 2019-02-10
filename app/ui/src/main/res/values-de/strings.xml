@@ -7,12 +7,11 @@
   <string name="shortcuts_title">K-9 Konten</string>
   <string name="unread_widget_label">K-9 Ungelesen</string>
   <string name="remote_control_label">K-9 Mail Fernsteuerung</string>
-  <string name="remote_control_desc">Erlaubt dieser Anwendung den Ablauf und die Einstellungen von K-9 Mail zu kontrollieren.</string>
+  <string name="remote_control_desc">Erlaubt dieser Anwendung, den Ablauf und die Einstellungen von K-9 Mail zu kontrollieren.</string>
   <!--Used in the about dialog-->
-  <string name="app_authors">Google, das K-9-Team und viele Weitere.</string>
+  <string name="app_authors">The K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">\u00a9 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers.
 Teile \u00a9 2006-<xliff:g>%s</xliff:g> Android Open Source Project.</string>
-  <string name="app_license">Apache-Lizenz, Version 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Willkommen bei K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -50,18 +49,12 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_delete_dlg_instructions_fmt">Das Konto \"<xliff:g id="account">%s</xliff:g>\" wird aus K-9 Mail entfernt.</string>
   <string name="account_recreate_dlg_instructions_fmt">Alle lokalen Daten des Kontos \"<xliff:g id="account">%s</xliff:g>\" werden entfernt. Kontoeinstellungen werden beibehalten.</string>
   <string name="account_clear_dlg_instructions_fmt">Lokale Kopien von Nachrichten in \"<xliff:g id="account">%s</xliff:g>\" werden entfernt. Kontoeinstellungen werden beibehalten.</string>
-  <!--=== App Store-specific strings =======================================================-->
-  <string name="import_dialog_error_message">Es wurde keine geeignete Anwendung gefunden, um den Import durchzuführen. Bitte installieren Sie einen Dateimanager aus dem Play Store.</string>
-  <string name="open_market">Play Store öffnen</string>
   <!--=== General strings ==================================================================-->
-  <string name="authors">Autoren</string>
-  <string name="app_revision">Versionsinformationen</string>
   <string name="app_libraries">Wir verwenden die folgenden externen Bibliotheken: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">E-Mails lesen</string>
   <string name="read_messages_desc">Der Anwendung erlauben, Ihre E-Mails zu lesen.</string>
   <string name="delete_messages_label">E-Mails löschen</string>
   <string name="delete_messages_desc">Der Anwendung erlauben, Ihre E-Mails zu löschen.</string>
-  <string name="about_title">Über K-9 Mail</string>
   <string name="accounts_title">Konten</string>
   <string name="folders_title">Ordner</string>
   <string name="advanced">Erweitert</string>
@@ -128,7 +121,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="flag_action">Als wichtig markieren</string>
   <string name="unflag_action">Wichtig-Markierung entfernen</string>
   <string name="copy_action">Kopieren</string>
-  <string name="select_text_action">Text auswählen</string>
   <string name="show_headers_action">Kopfzeilen anzeigen</string>
   <string name="hide_headers_action">Kopfzeilen verbergen</string>
   <plurals name="copy_address_to_clipboard">
@@ -190,6 +182,8 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="notification_bg_send_ticker">E-Mail in <xliff:g id="account">%s</xliff:g> wird gesendet</string>
   <string name="notification_bg_send_title">E-Mail wird gesendet</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_messages_title">Nachrichtenanzeige</string>
+  <string name="notification_channel_miscellaneous_title">Verschiedenes</string>
   <string name="special_mailbox_name_inbox">Posteingang</string>
   <string name="special_mailbox_name_outbox">Postausgang</string>
   <string name="special_mailbox_name_drafts">Entwürfe</string>
@@ -203,7 +197,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archiv)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
   <string name="send_failure_subject">Nachrichten konnten nicht gesendet werden</string>
-  <string name="version">Version</string>
   <string name="debug_enable_debug_logging_title">Fehlersuchprotokollierung aktivieren</string>
   <string name="debug_enable_debug_logging_summary">Zusätzliche Diagnose-Informationen protokollieren</string>
   <string name="debug_enable_sensitive_logging_title">Vertrauliche Informationen protokollieren</string>
@@ -235,8 +228,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="message_view_bcc_label">BCC:</string>
   <string name="message_view_attachment_view_action">Öffnen</string>
   <string name="message_view_attachment_download_action">Speichern</string>
-  <string name="message_view_status_attachment_not_saved">Anhang konnte nicht auf die SD-Karte gespeichert werden.</string>
-  <string name="message_view_status_no_space">Dieser Anhang konnte nicht gespeichert werden, da nicht ausreichend Speicherplatz vorhanden ist.</string>
   <string name="message_view_show_pictures_action">Bilder anzeigen</string>
   <string name="message_view_no_viewer">Es wurde kein Anzeigeprogramm für <xliff:g id="mimetype">%s</xliff:g> gefunden.</string>
   <string name="message_view_download_remainder">Gesamte Nachricht herunterladen</string>
@@ -286,8 +277,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="global_settings_privacy_hide_useragent_detail">K-9 Benutzer-Agent aus E-Mail-Kopfzeilen entfernen</string>
   <string name="global_settings_privacy_hide_timezone">Zeitzone ausblenden</string>
   <string name="global_settings_privacy_hide_timezone_detail">UTC statt lokaler Zeitzone in E-Mail-Kopfzeilen und Antwort-Kopfzeilen verwenden</string>
-  <string name="global_settings_privacy_hide_hostname_when_connecting">Hostnamen ausblenden</string>
-  <string name="global_settings_privacy_hide_hostname_when_connecting_detail">Bei einer Verbindung zu SMTP-Servern als \'localhost\' kennzeichnen</string>
   <string name="global_settings_notification_hide_subject_title">Betreff in Benachrichtigungen verbergen</string>
   <string name="global_settings_notification_hide_subject_never">Niemals</string>
   <string name="global_settings_notification_hide_subject_when_locked">Wenn der Bildschirm gesperrt ist</string>
@@ -394,9 +383,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="recreate_action">Daten neu erstellen (Letzter Ausweg!)</string>
   <string name="account_setup_options_mail_check_frequency_label">E-Mail-Abfrage</string>
   <string name="account_setup_options_mail_check_frequency_never">Nie (nur manuell)</string>
-  <string name="account_setup_options_mail_check_frequency_1min">Jede Minute</string>
-  <string name="account_setup_options_mail_check_frequency_5min">Alle 5 Minuten</string>
-  <string name="account_setup_options_mail_check_frequency_10min">Alle 10 Minuten</string>
   <string name="account_setup_options_mail_check_frequency_15min">Alle 15 Minuten</string>
   <string name="account_setup_options_mail_check_frequency_30min">Alle 30 Minuten</string>
   <string name="account_setup_options_mail_check_frequency_1hour">Jede Stunde</string>
@@ -485,17 +471,22 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_settings_quote_style_header">Erweitert (wie in Outlook, Yahoo!, Hotmail)</string>
   <string name="account_settings_general_title">Allgemeine Einstellungen</string>
   <string name="account_settings_reading_mail">Nachrichten lesen</string>
-  <string name="account_settings_sync">Nachrichten werden abgerufen</string>
+  <string name="account_settings_sync">Nachrichten abrufen</string>
   <string name="account_settings_folders">Ordner</string>
   <string name="account_settings_quote_prefix_label">Zitat-Präfix</string>
-  <string name="account_settings_crypto">Kryptographie</string>
-  <string name="account_settings_crypto_app">OpenPGP App</string>
-  <string name="account_settings_crypto_key">Mein Schlüssel</string>
+  <string name="account_settings_crypto">Ende-zu-Ende Verschlüsselung</string>
+  <string name="account_settings_crypto_app">OpenPGP-Unterstützung aktivieren</string>
+  <string name="account_settings_crypto_app_select_title">OpenPGP-App auswählen</string>
+  <string name="account_settings_crypto_key">Ende-zu-Ende-Schlüssel konfigurieren</string>
+  <string name="account_settings_crypto_summary_off">Keine OpenPGP-App konfiguriert</string>
+  <string name="account_settings_crypto_summary_on">Verbunden mit %s</string>
   <string name="account_settings_no_openpgp_provider_configured">Keine OpenPGP-App konfiguriert</string>
+  <string name="account_settings_no_openpgp_provider_installed">Keine OpenPGP-App gefunden - zum Installieren anklicken</string>
   <string name="account_settings_mail_check_frequency_label">Häufigkeit der E-Mail-Abfrage</string>
   <string name="account_settings_storage_title">Speicher</string>
   <string name="account_settings_color_label">Kontofarbe</string>
   <string name="account_settings_color_summary">Farbe, in der das Konto in der Konten- und Ordnerliste dargestellt wird</string>
+  <string name="account_settings_color_none">Keine Farbe</string>
   <string name="account_settings_led_color_label">Farbe der Benachrichtigungs-LED</string>
   <string name="account_settings_led_color_summary">Farbe, die für die Benachrichtigungs-LED bei Benachrichtigungen für dieses Konto verwendet wird</string>
   <string name="account_settings_mail_display_count_label">Anzahl anzuzeigender Nachrichten</string>
@@ -552,6 +543,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_settings_folder_target_mode_not_second_class">Alle außer Nebenordner</string>
   <string name="account_settings_sync_remote_deletetions_label">Löschungen vom Server übernehmen</string>
   <string name="account_settings_sync_remote_deletetions_summary">Nachrichten löschen, wenn sie vom Server gelöscht wurden</string>
+  <string name="account_settings_openpgp_missing">Fehlende OpenPGP-App - wurde sie deinstalliert?</string>
   <string name="folder_settings_title">Ordner-Einstellungen</string>
   <string name="folder_settings_in_top_group_label">Oben anzeigen</string>
   <string name="folder_settings_in_top_group_summary">Ordner am Anfang der Ordnerliste anzeigen</string>
@@ -667,7 +659,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_settings_signature__location_label">Position der Signatur</string>
   <string name="account_settings_signature__location_before_quoted_text">Vor zitierter Nachricht</string>
   <string name="account_settings_signature__location_after_quoted_text">Nach zitierter Nachricht</string>
-  <string name="setting_theme_global">Anwendungsdesign verwenden</string>
+  <string name="setting_theme_global">Zu verwendendes Anwendungsdesign</string>
   <string name="setting_theme_dark">Dunkel</string>
   <string name="setting_theme_light">Hell</string>
   <string name="display_preferences">Anzeige</string>
@@ -730,15 +722,16 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_settings_searchable_all">Alle</string>
   <string name="account_settings_searchable_displayable">Angezeigte</string>
   <string name="account_settings_searchable_none">Keine</string>
+  <string name="account_settings_no_folder_selected">Keine</string>
   <string name="font_size_settings_title">Schriftgröße</string>
   <string name="font_size_settings_description">Schriftgrößen festlegen</string>
   <string name="font_size_account_list">Kontenliste</string>
   <string name="font_size_account_name">Kontoname</string>
   <string name="font_size_account_description">Kontobeschreibung</string>
-  <string name="font_size_folder_list">Ordner-Liste</string>
+  <string name="font_size_folder_list">Ordnerliste</string>
   <string name="font_size_folder_name">Ordnername</string>
-  <string name="font_size_folder_status">Ordner-Status</string>
-  <string name="font_size_message_list">Nachrichten-Liste</string>
+  <string name="font_size_folder_status">Ordnerstatus</string>
+  <string name="font_size_message_list">Nachrichtenliste</string>
   <string name="font_size_message_list_subject">Betreff</string>
   <string name="font_size_message_list_sender">Absender</string>
   <string name="font_size_message_list_date">Datum</string>
@@ -747,7 +740,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="font_size_message_view_sender">Absender</string>
   <string name="font_size_message_view_to">Empfänger (To)</string>
   <string name="font_size_message_view_cc">Empfänger (CC)</string>
-  <string name="font_size_message_view_bcc">BCC</string>
+  <string name="font_size_message_view_bcc">Blindkopie (BCC)</string>
   <string name="font_size_message_view_additional_headers">Zusätzliche Header</string>
   <string name="font_size_message_view_subject">Betreff</string>
   <string name="font_size_message_view_date">Uhrzeit und Datum</string>
@@ -764,7 +757,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="font_size_medium">Mittel</string>
   <string name="font_size_large">Groß</string>
   <string name="font_size_larger">Größer</string>
-  <string name="miscellaneous_preferences">Verschiedenes</string>
   <string name="error_activity_not_found">Keine geeignete Anwendung für diese Aktion gefunden.</string>
   <string name="send_failed_reason">Senden fehlgeschlagen: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Entwurf speichern?</string>
@@ -806,17 +798,13 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="settings_exporting">Einstellungen werden exportiert…</string>
   <string name="settings_importing">Einstellungen werden importiert…</string>
   <string name="settings_import_scanning_file">Datei wird gelesen…</string>
-  <string name="settings_export_success">Exportierte Einstellungen wurden erfolgreich nach <xliff:g id="filename">%s</xliff:g> gespeichert</string>
   <string name="settings_export_success_generic">Einstellungen erfolgreich exportiert</string>
-  <string name="settings_import_global_settings_success">Globale Einstellungen erfolgreich aus <xliff:g id="filename">%s</xliff:g> importiert</string>
-  <string name="settings_import_success">\'<xliff:g id="accounts">%s</xliff:g>\' erfolgreich aus <xliff:g id="filename">%s</xliff:g> importiert</string>
   <string name="settings_import_account_imported_as"><xliff:g id="original_account_name">%s</xliff:g> als <xliff:g id="account_name_after_import">%s</xliff:g> importiert</string>
   <plurals name="settings_import_accounts">
     <item quantity="one">1 Konto</item>
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> Konten</item>
   </plurals>
   <string name="settings_export_failure">Einstellungen konnten nicht exportiert werden</string>
-  <string name="settings_import_failure">Einstellungen konnten nicht aus <xliff:g id="filename">%s</xliff:g> importiert werden</string>
   <string name="settings_export_success_header">Export erfolgreich</string>
   <string name="settings_export_failed_header">Export fehlgeschlagen</string>
   <string name="settings_import_success_header">Import erfolgreich</string>
@@ -836,7 +824,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="settings_import_use_incoming_server_password">Passwort des Posteingangsservers verwenden</string>
   <string name="activate_account_action">Aktivieren</string>
   <string name="account_unavailable">Konto \'<xliff:g id="account">%s</xliff:g>\' ist nicht verfügbar, bitte SD-Karte prüfen.</string>
-  <string name="settings_attachment_default_path">Speicherort für Anhänge</string>
   <string name="attachment_save_title">Anhang speichern</string>
   <string name="attachment_save_desc">Es wurde kein Dateimanager gefunden. Wo soll der Anhang abgelegt werden?</string>
   <string name="manage_accounts_move_up_action">Nach oben verschieben</string>
@@ -855,7 +842,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
   <string name="unread_widget_account_not_selected">Kein Konto ausgewählt</string>
   <string name="unread_widget_folder_not_selected">Kein Ordner ausgewählt</string>
-  <string name="import_dialog_error_title">Kein Dateimanager gefunden!</string>
   <string name="close">Schließen</string>
   <string name="webview_empty_message">Kein Nachrichtentext</string>
   <string name="webview_contextmenu_link_view_action">Öffnen</string>
@@ -959,9 +945,9 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="crypto_mode_disabled">Nicht verschlüsseln</string>
   <string name="crypto_mode_opportunistic">Verschlüsseln, wenn möglich</string>
   <string name="crypto_mode_private">Verschlüsseln</string>
-  <string name="error_crypto_provider_incompatible">Krypto-Anbieter verwendet inkompatible Version. Bitte überprüfen Sie Ihre Einstellungen!</string>
+  <string name="error_crypto_provider_incompatible">Verschlüsselungsdienst verwendet inkompatible Version. Bitte überprüfen Sie Ihre Einstellungen!</string>
   <string name="error_crypto_provider_connect">Verbindung zu Verschlüsselungsdienst fehlgeschlagen. Überprüfen Sie die Einstellungen oder tippen Sie auf das Verschlüsselungs-Symbol um es erneut zu versuchen.</string>
-  <string name="error_crypto_provider_ui_required">Zugang zu Verschlüsselungsdienst verweigert. Tippen Sie auf das Verschlüsselungs-Symbol um es erneut zu versuchen.</string>
+  <string name="error_crypto_provider_ui_required">Die Ende-zu-Ende Verschlüsselung konnte nicht initialisiert werden, bitte überprüfen Sie Ihre Einstellungen.</string>
   <string name="error_crypto_inline_attach">PGP/INLINE-Modus unterstützt keine Anhänge!</string>
   <string name="enable_inline_pgp">PGP/INLINE aktivieren</string>
   <string name="disable_inline_pgp">PGP/INLINE deaktivieren</string>
@@ -988,6 +974,8 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="crypto_msg_unencrypted_sign_error">Ende-zu-Ende-Signatur enthielt einen Fehler</string>
   <string name="crypto_msg_incomplete_signed">muss die Nachricht vollständig herunterladen, um die Signatur zu verarbeiten</string>
   <string name="crypto_msg_unsupported_signed">enthält eine nicht unterstützte Ende-zu-Ende-Signatur</string>
+  <string name="crypto_msg_unsupported_encrypted">Nachricht ist verschlüsselt, aber in einem nicht unterstützten Format.</string>
+  <string name="crypto_msg_cancelled">Nachricht ist verschlüsselt, aber Entschlüsselung wurde abgebrochen.</string>
   <string name="crypto_msg_title_unencrypted_signed_e2e">Ende-zu-Ende signierter Klartext</string>
   <string name="crypto_msg_unencrypted_sign_verified">von verifiziertem Signierer</string>
   <string name="crypto_msg_title_unencrypted_signed">Signierter Klartext</string>
@@ -1015,6 +1003,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="crypto_msg_encrypted_sign_error">aber die Ende-zu-Ende Daten sind fehlerhaft</string>
   <string name="crypto_msg_encrypted_insecure">aber die Verschlüsselung wird nicht als sicher angesehen</string>
   <string name="crypto_info_ok">OK</string>
+  <string name="crypto_info_search_key">Schlüssel suchen</string>
   <string name="crypto_info_view_signer">Signierer anzeigen</string>
   <string name="crypto_info_view_sender">Absender anzeigen</string>
   <string name="crypto_info_view_security_warning">Details</string>
@@ -1028,9 +1017,9 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="messageview_crypto_error_title">Fehler beim Entschlüsseln der E-Mail</string>
   <string name="recipient_error_non_ascii">Sonderzeichen werden derzeit nicht unterstützt!</string>
   <string name="recipient_error_parse_failed">Fehler beim Einlesen der Adresse!</string>
-  <string name="account_settings_crypto_support_sign_only">Unverschlüsselte Signaturen anzeigen</string>
-  <string name="account_settings_crypto_support_sign_only_on">Unverschlüsselte Signaturen werden angezeigt</string>
-  <string name="account_settings_crypto_support_sign_only_off">Unverschlüsselte Signaturen werden ignoriert</string>
+  <string name="account_settings_crypto_hide_sign_only">Unverschlüsselte Signaturen ausblenden</string>
+  <string name="account_settings_crypto_hide_sign_only_on">Nur verschlüsselte Signaturen werden angezeigt</string>
+  <string name="account_settings_crypto_hide_sign_only_off">Alle Signaturen werden angezeigt</string>
   <string name="error_sign_only_no_encryption">Verschlüsselung ist im Nur-Signieren-Modus nicht verfügbar!</string>
   <string name="unsigned_text_divider_label">Unsignierter Text</string>
   <string name="apg_deprecated_title">APG Veraltungswarnung</string>
@@ -1045,7 +1034,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="crypto_no_provider_title">Diese E-Mail ist verschlüsselt</string>
   <string name="crypto_no_provider_message">Diese E-Mail ist mit OpenPGP verschlüsselt.
 Um sie zu lesen, muss eine kompatible OpenPGP-App installiert und konfiguriert werden.</string>
-  <string name="crypto_no_provider_button">OpenPGP-App wählen</string>
+  <string name="crypto_no_provider_button">Zu den Einstellungen</string>
   <string name="mail_list_widget_text">K-9 Nachrichtenliste</string>
   <string name="mail_list_widget_loading">Nachrichten werden geladen…</string>
   <string name="fetching_folders_failed">Abrufen der Ordnerliste ist fehlgeschlagen</string>
@@ -1062,4 +1051,41 @@ Um sie zu lesen, muss eine kompatible OpenPGP-App installiert und konfiguriert w
   <string name="openpgp_enabled_error_back">Zurück</string>
   <string name="openpgp_enabled_error_disable">Verschlüsselung deaktivieren</string>
   <string name="openpgp_encryption">OpenPGP-Verschlüsselung</string>
+  <string name="account_settings_crypto_prefer_encrypt">Autocrypt wechselseitiger Modus</string>
+  <string name="dialog_autocrypt_mutual_title">Autocrypt wechselseitiger Modus</string>
+  <string name="dialog_autocrypt_mutual_description_1">Nachrichten werden normalerweise auf Wunsch oder beim Antworten auf eine verschlüsselte Nachricht verschlüsselt.</string>
+  <string name="dialog_autocrypt_mutual_description_2">Wenn sowohl Sender als auch Empfänger den wechselseitigen Modus aktiviert haben, wird die Verschlüsselung automatisch aktiviert.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Sie können <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">hier klicken</a> , um mehr zu erfahren.</string>
+  <string name="general_settings_title">Allgemeine Einstellungen</string>
+  <string name="dialog_openkeychain_info_title">Keine OpenPGP-App installiert</string>
+  <string name="dialog_openkeychain_info_install">Installieren</string>
+  <string name="dialog_openkeychain_info_text">K-9 Mail benötigt OpenKeychain für die Ende-zu-Ende Verschlüsselung.</string>
+  <string name="encrypted_subject">Verschlüsselte Nachricht</string>
+  <string name="account_settings_crypto_encrypt_subject">Betreff der Nachricht verschlüsseln</string>
+  <string name="account_settings_crypto_encrypt_subject_subtitle">Möglicherweise nicht von allen Empfängern unterstützt</string>
+  <string name="toast_account_not_found">Interner Fehler: Ungültiges Konto!</string>
+  <string name="toast_openpgp_provider_error">Fehler beim Verbinden mit %s!</string>
+  <string name="ac_transfer_setting_title">Autocrypt-Setup-Nachricht senden</string>
+  <string name="ac_transfer_setting_summary">Teile das Ende-zu-Ende-Setup auf sichere Art und Weise mit anderen Geräten</string>
+  <string name="ac_transfer_title">Autocrypt-Setup-Nachricht</string>
+  <string name="ac_transfer_intro">Eine Autocrypt-Setup-Nachricht teilt dein Ende-zu-Ende-Setup auf sichere Art und Weise mit anderen Geräten</string>
+  <string name="ac_transfer_button_send">Setup-Nachricht senden</string>
+  <string name="ac_transfer_will_be_sent">Diese Nachricht wird an deine Adresse gesendet:</string>
+  <string name="ac_transfer_generating">Erstelle Setup-Nachricht…</string>
+  <string name="ac_transfer_sending_to">Sende Nachricht an:</string>
+  <string name="ac_transfer_finish">Um abzuschließen, öffne die Nachricht auf deinem anderen Gerät und gib den Setup-Code ein.</string>
+  <string name="ac_transfer_show_code">Setup-Code anzeigen</string>
+  <string name="ac_transfer_msg_subject">Autocrypt-Setup-Nachricht</string>
+  <string name="ac_transfer_msg_body">Diese Nachricht enthält alle Information um deine Autocrypt-Einstellung zusammen mit deinem geheimen Schlüssel auf sichere Art und Weise von deinem ursprünglichen Gerät zu übertragen.
+
+Um dein neues Gerät für Autocrypt einzurichten, folge bitte den Anweisungen, die von deinem neuen Gerät angezeigt werden sollten.
+
+Du kannst diese Nachricht behalten und als Backup für deinen geheimen Schlüssel benutzen. Wenn du das willst, solltest du dir das Passwort notieren und sicher verwahren.
+</string>
+  <string name="ac_transfer_error_send">Ein Fehler beim Senden der Nachricht ist aufgetreten. Bitte überprüfe deine Netzwerkverbindung und die Konfiguration ausgehender Server.</string>
+  <string name="switch_on">An</string>
+  <string name="switch_off">Aus</string>
+  <string name="navigation_drawer_open">Öffnen</string>
+  <string name="navigation_drawer_close">Schließen</string>
+  <!--permissions-->
 </resources>

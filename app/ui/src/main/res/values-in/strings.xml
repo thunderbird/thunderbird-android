@@ -9,9 +9,8 @@
   <string name="remote_control_label">K-9 Mail pengendali jauh</string>
   <string name="remote_control_desc">Izinkan aplikasi ini mengendalikan aktivitas dan pengaturan K-9 Mail.</string>
   <!--Used in the about dialog-->
-  <string name="app_authors">Google, The K-9 Dog Walkers.</string>
+  <string name="app_authors">The K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Hak Cipta 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Hak Cipta Sebagian 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="app_license">Apache License, Versi 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Selamat datang di K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -41,8 +40,7 @@ Harap dicatat bahwa K-9 tidak mendukung sebagian besar akun Hotmail gratis dan, 
 beberapa kebiasaan saat berbicara dengan Microsoft Exchange.
 </p><p>
 Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
-https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
-</p>
+<a href="https://github.com/k9mail/k-9/">https:/github.com/k9mail/k-9/</a>.</p>
 ]]></string>
   <!--Default signature-->
   <string name="default_signature">-- \nDikirim dari perangkat Android saya menggunakan K-9 Mail.</string>
@@ -50,18 +48,12 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="account_delete_dlg_instructions_fmt">Akun \"<xliff:g id="account">%s</xliff:g>\" akan dibuang dari K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Semua data lokal \"<xliff:g id="account">%s</xliff:g>\" akan dibuang. Pengaturan akun akan dipertahankan.</string>
   <string name="account_clear_dlg_instructions_fmt">Salinan lokal pesan di dalam \"<xliff:g id="account">%s</xliff:g>\" akan dibuang. Pengaturan akun akan dipertahankan.</string>
-  <!--=== App Store-specific strings =======================================================-->
-  <string name="import_dialog_error_message">Mohon pasang pengelola berkas untuk melanjutkan mengimpor.</string>
-  <string name="open_market">Buka Play Store</string>
   <!--=== General strings ==================================================================-->
-  <string name="authors">Pengembang</string>
-  <string name="app_revision">Informasi Revisi</string>
   <string name="app_libraries">Kami menggunakan pustaka pihak ketiga berikut: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Baca Email</string>
   <string name="read_messages_desc">Izinkan aplikasi ini membaca Email Anda.</string>
   <string name="delete_messages_label">Hapus Email</string>
   <string name="delete_messages_desc">Izinkan aplikasi ini menghapus Email Anda.</string>
-  <string name="about_title">Tentang K-9 Mail</string>
   <string name="accounts_title">Akun</string>
   <string name="folders_title">Folder</string>
   <string name="advanced">Lanjutan</string>
@@ -70,6 +62,7 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="compose_title_reply">Balas</string>
   <string name="compose_title_reply_all">Balas semua</string>
   <string name="compose_title_forward">Teruskan</string>
+  <string name="compose_title_forward_as_attachment">Teruskan sebagai Lampiran</string>
   <string name="choose_account_title">Pilih akun</string>
   <string name="choose_folder_title">Pilih Folder</string>
   <string name="status_loading_account_folder">Menarik <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -100,6 +93,7 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="archive_action">Arsip</string>
   <string name="spam_action">Spam</string>
   <string name="forward_action">Teruskan</string>
+  <string name="forward_as_attachment_action">Teruskan sebagai Lampiran</string>
   <string name="move_action">Pindah</string>
   <string name="single_message_options_action">Kirim…</string>
   <string name="refile_action">File kan kembali...</string>
@@ -126,7 +120,6 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="flag_action">Tambah bintang</string>
   <string name="unflag_action">Buang bintang</string>
   <string name="copy_action">Salin</string>
-  <string name="select_text_action">Pilih teks</string>
   <string name="show_headers_action">Tampilkan tajuk</string>
   <string name="hide_headers_action">Sembunyikan tajuk</string>
   <plurals name="copy_address_to_clipboard">
@@ -187,6 +180,8 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="notification_bg_send_ticker">Mengirimkan pesan: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Mengirimkan pesan</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_messages_title">Pesan</string>
+  <string name="notification_channel_miscellaneous_title">Lain-lain</string>
   <string name="special_mailbox_name_inbox">Kotak Masuk</string>
   <string name="special_mailbox_name_outbox">Kotak Keluar</string>
   <string name="special_mailbox_name_drafts">Draf</string>
@@ -200,7 +195,6 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arsip)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
   <string name="send_failure_subject">Gagal mengirim beberapa pesan</string>
-  <string name="version">Versi</string>
   <string name="debug_enable_debug_logging_title">Fungsikan pencatatan awakutu</string>
   <string name="debug_enable_debug_logging_summary">Catat informasi diagnostik tambahan</string>
   <string name="debug_enable_sensitive_logging_title">Catat informasi sensitif</string>
@@ -222,6 +216,8 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="compose_error_incomplete_recipient">Bidang penerima berisi masukan yang tidak lengkap!</string>
   <string name="error_contact_address_not_found">Tidak ada alamat surel yang ditemukan untuk kontak ini.</string>
   <string name="message_compose_attachments_skipped_toast">Beberapa lampiran tidak bisa diteruskan karena mereka belum diunduh.</string>
+  <string name="message_compose_attachments_forward_toast">Pesan tidak dapat diteruskan karena beberapa lampiran belum diunduh.</string>
+  <string name="message_compose_show_quoted_text_action">Sertakan pesan yang dikutip</string>
   <string name="message_compose_description_delete_quoted_text">Buang teks kutipan</string>
   <string name="message_compose_description_edit_quoted_text">Sunting teks kutipan</string>
   <string name="message_view_from_format">Dari: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -230,8 +226,6 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="message_view_bcc_label">Bcc:</string>
   <string name="message_view_attachment_view_action">Buka</string>
   <string name="message_view_attachment_download_action">Simpan</string>
-  <string name="message_view_status_attachment_not_saved">Tidak bisa menyimpan lampiran ke kartu SD.</string>
-  <string name="message_view_status_no_space">Lampiran tidak dapat disimpan karena tidak ada cukup ruang.</string>
   <string name="message_view_show_pictures_action">Tampilkan gambar</string>
   <string name="message_view_no_viewer">Tidak bisa menemukan penampil untuk <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Unduh seluruh pesan</string>
@@ -387,9 +381,6 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="recreate_action">Buat kembali data (Usaha Terakhir!)</string>
   <string name="account_setup_options_mail_check_frequency_label">Frekuensi penarikan folder</string>
   <string name="account_setup_options_mail_check_frequency_never">Tidak pernah</string>
-  <string name="account_setup_options_mail_check_frequency_1min">Setiap menit</string>
-  <string name="account_setup_options_mail_check_frequency_5min">Setiap 5 menit</string>
-  <string name="account_setup_options_mail_check_frequency_10min">Setiap 10 menit</string>
   <string name="account_setup_options_mail_check_frequency_15min">Setiap 15 menit</string>
   <string name="account_setup_options_mail_check_frequency_30min">Setiap 30 menit</string>
   <string name="account_setup_options_mail_check_frequency_1hour">Setiap jam</string>
@@ -481,14 +472,19 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="account_settings_sync">Mengambil surat</string>
   <string name="account_settings_folders">Folder</string>
   <string name="account_settings_quote_prefix_label">Awalan teks kutipan</string>
-  <string name="account_settings_crypto">Kriptografi</string>
-  <string name="account_settings_crypto_app">Aplikasi OpenPGP</string>
-  <string name="account_settings_crypto_key">Kunci saya</string>
+  <string name="account_settings_crypto">Enkripsi ujung-ke-ujung</string>
+  <string name="account_settings_crypto_app">Aktifkan dukungan OpenPGP</string>
+  <string name="account_settings_crypto_app_select_title">Pilih aplikasi OpenPGP</string>
+  <string name="account_settings_crypto_key">Konfigurasikan kunci end-to-end</string>
+  <string name="account_settings_crypto_summary_off">Tidak ada aplikasi OpenPGP yang dikonfigurasi</string>
+  <string name="account_settings_crypto_summary_on">Terhubung dengan %s</string>
   <string name="account_settings_no_openpgp_provider_configured">Tidak ada aplikasi OpenPGP dikonfigurasi</string>
+  <string name="account_settings_no_openpgp_provider_installed">Tidak ditemukan aplikasi OpenPGP - klik untuk menginstal</string>
   <string name="account_settings_mail_check_frequency_label">Frekuensi penarikan folder</string>
   <string name="account_settings_storage_title">Penyimpanan</string>
   <string name="account_settings_color_label">Warna akun</string>
   <string name="account_settings_color_summary">Warna aksen akun ini digunakan dalam folder dan daftar akun</string>
+  <string name="account_settings_color_none">Tanpa warna</string>
   <string name="account_settings_led_color_label">Warna LED notifikasi</string>
   <string name="account_settings_led_color_summary">Warna LED perangkat Anda harus berkedip untuk akun ini</string>
   <string name="account_settings_mail_display_count_label">Ukuran folder lokal</string>
@@ -545,6 +541,7 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="account_settings_folder_target_mode_not_second_class">Semua kecuali folder Kelas 2</string>
   <string name="account_settings_sync_remote_deletetions_label">Sinkronkan penghapusan server</string>
   <string name="account_settings_sync_remote_deletetions_summary">Hapus pesan saat dihapus di server</string>
+  <string name="account_settings_openpgp_missing">Aplikasi OpenPGP tidak ada - apakah itu dihapus?</string>
   <string name="folder_settings_title">Pengaturan folder</string>
   <string name="folder_settings_in_top_group_label">Perlihatkan di grup teratas</string>
   <string name="folder_settings_in_top_group_summary">Tunjukkan di dekat bagian atas daftar folder</string>
@@ -687,6 +684,7 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="background_ops_auto_sync_only">Saat \'Sinkronisasi otomatis\' dicentang</string>
   <string name="batch_select_all">Pilih semua</string>
   <string name="account_setup_push_limit_label">Max folder untuk memeriksa dengan dorongan</string>
+  <string name="account_setup_push_limit_5">5 folder</string>
   <string name="account_setup_push_limit_10">10 folder</string>
   <string name="account_setup_push_limit_25">25 folder</string>
   <string name="account_setup_push_limit_50">50 folder</string>
@@ -722,6 +720,7 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="account_settings_searchable_all">Semua</string>
   <string name="account_settings_searchable_displayable">Bisa ditampilkan</string>
   <string name="account_settings_searchable_none">Nihil</string>
+  <string name="account_settings_no_folder_selected">Nihil</string>
   <string name="font_size_settings_title">Ukuran font</string>
   <string name="font_size_settings_description">konfigurasi ukuran font</string>
   <string name="font_size_account_list">Daftar akun</string>
@@ -756,7 +755,6 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="font_size_medium">Sedang</string>
   <string name="font_size_large">Besar</string>
   <string name="font_size_larger">Lebih besar</string>
-  <string name="miscellaneous_preferences">Lain-lain</string>
   <string name="error_activity_not_found">Tidak ada aplikasi yang sesuai untuk tindakan ini yang ditemukan.</string>
   <string name="send_failed_reason">Gagal mengirim: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Simpan draf pesan?</string>
@@ -796,16 +794,12 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="settings_exporting">Mengekspor pengaturan...</string>
   <string name="settings_importing">Mengimpor pengaturan...</string>
   <string name="settings_import_scanning_file">Memindai file...</string>
-  <string name="settings_export_success">Menyimpan ekspor pengaturan ke <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_generic">Pengaturan berhasil diekspor</string>
-  <string name="settings_import_global_settings_success">Impor pengaturan global dari <xliff:g id="filename">%s</xliff:g></string>
-  <string name="settings_import_success">Terimpor <xliff:g id="accounts">%s</xliff:g> from <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_account_imported_as">Terimpor <xliff:g id="original_account_name">%s</xliff:g> sebagai <xliff:g id="account_name_after_import">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> akun</item>
   </plurals>
   <string name="settings_export_failure">Gagal mengekspor pengaturan</string>
-  <string name="settings_import_failure">Gagal mengimpor pengaturan dari <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_header">Ekspor berhasil</string>
   <string name="settings_export_failed_header">Ekspor gagal</string>
   <string name="settings_import_success_header">Impor berhasil</string>
@@ -823,7 +817,6 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="settings_import_use_incoming_server_password">Gunakan kata kunci server masuk</string>
   <string name="activate_account_action">Aktifkan</string>
   <string name="account_unavailable">Akun \"<xliff:g id="account">%s</xliff:g>\" tidak tersedia; cek penyimpanan</string>
-  <string name="settings_attachment_default_path">Simpan lampiran ke...</string>
   <string name="attachment_save_title">Simpan lampiran</string>
   <string name="attachment_save_desc">Tidak ditemukan browser file. Di mana Anda ingin menyimpan lampiran ini?</string>
   <string name="manage_accounts_move_up_action">Pindah keatas</string>
@@ -842,7 +835,6 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
   <string name="unread_widget_account_not_selected">Tidak ada akun yang dipilih</string>
   <string name="unread_widget_folder_not_selected">Tidak ada folder yang dipilih</string>
-  <string name="import_dialog_error_title">Tidak ada aplikasi manajer File</string>
   <string name="close">Tutup</string>
   <string name="webview_empty_message">Tidak ada teks</string>
   <string name="webview_contextmenu_link_view_action">Buka link</string>
@@ -946,7 +938,7 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="crypto_mode_private">Enkrip</string>
   <string name="error_crypto_provider_incompatible">Penyedia Crypto menggunakan versi yang tidak kompatibel. Silakan periksa setting anda!</string>
   <string name="error_crypto_provider_connect">Tidak dapat terhubung ke penyedia kripto, periksa setelan Anda atau klik ikon kripto untuk mencoba lagi!</string>
-  <string name="error_crypto_provider_ui_required">Tidak bisa terhubung ke penyedia kripto, cek setelan anda atau klik ikon kripto untuk mencoba lagi!</string>
+  <string name="error_crypto_provider_ui_required">Gagal memulai enkripsi end-to-end, periksa pengaturan Anda</string>
   <string name="error_crypto_inline_attach">Mode PGP/INLINE tidak mendukung lampiran!</string>
   <string name="enable_inline_pgp">Aktifkan PGP/INLINE</string>
   <string name="disable_inline_pgp">Nonaktifkan PGP/INLINE</string>
@@ -969,7 +961,42 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="openpgp_dialog_sign_only_minus_break">Tanda tangan bisa pecah saat dikirim ke milis.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">Tanda tangan dapat ditampilkan sebagai lampiran \'signature.asc\' pada beberapa klien.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Pesan terenkripsi selalu menyertakan tanda tangan.</string>
+  <string name="crypto_msg_title_plaintext">Teks biasa</string>
+  <string name="crypto_msg_unencrypted_sign_error">tanda tangan akhir-ke-akhir berisi kesalahan</string>
+  <string name="crypto_msg_incomplete_signed">harus mengunduh pesan untuk memproses tanda tangan</string>
+  <string name="crypto_msg_unsupported_signed">berisi tanda tangan akhir-ke-akhir yang tidak didukung</string>
+  <string name="crypto_msg_unsupported_encrypted">Pesan dienkripsi, namun dalam format yang tidak didukung.</string>
+  <string name="crypto_msg_cancelled">Pesan dienkripsi, tapi dekripsi dibatalkan.</string>
+  <string name="crypto_msg_title_unencrypted_signed_e2e">Teks plainteks ujung ke ujung</string>
+  <string name="crypto_msg_unencrypted_sign_verified">dari penanda yang diverifikasi</string>
+  <string name="crypto_msg_title_unencrypted_signed">Bertanda teks biasa</string>
+  <string name="crypto_msg_unencrypted_sign_mismatch">tetapi kunci end-to-end tidak cocok dengan pengirim</string>
+  <string name="crypto_msg_unencrypted_sign_expired">tetapi kunci end-to-end sudah kadaluwarsa</string>
+  <string name="crypto_msg_unencrypted_sign_revoked">tetapi kunci end-to-end dicabut</string>
+  <string name="crypto_msg_unencrypted_sign_insecure">tetapi kunci end-to-end tidak dianggap aman</string>
+  <string name="crypto_msg_unencrypted_sign_unknown">dari kunci end-to-end yang tidak dikenal</string>
+  <string name="crypto_msg_title_encrypted_unknown">Terenkripsi</string>
+  <string name="crypto_msg_encrypted_error">tapi ada kesalahan dekripsi</string>
+  <string name="crypto_msg_encrypted_incomplete">harus mendownload pesan untuk dekripsi sepenuhnya</string>
+  <string name="crypto_msg_encrypted_no_provider">namun tidak ada aplikasi kripto yang dikonfigurasi</string>
+  <string name="crypto_msg_encrypted_unsupported">namun dalam format yang tidak didukung</string>
+  <string name="crypto_msg_encrypted_cancelled">namun dekripsi dibatalkan</string>
+  <string name="crypto_msg_title_encrypted_unsigned">Terenkripsi</string>
+  <string name="crypto_msg_encrypted_unsigned">tapi tidak ujung ke ujung</string>
+  <string name="crypto_msg_title_encrypted_signed_e2e">End-to-End yang dienkripsi</string>
+  <string name="crypto_msg_encrypted_sign_verified">dari penanda yang diverifikasi</string>
+  <string name="crypto_msg_title_encrypted_signed">Terenkripsi</string>
+  <string name="crypto_msg_encrypted_sign_unknown">dari kunci end-to-end yang tidak dikenal</string>
+  <string name="crypto_msg_encrypted_sign_mismatch">tetapi kunci end-to-end tidak cocok dengan pengirim</string>
+  <string name="crypto_msg_encrypted_sign_expired">tetapi kunci end-to-end sudah kadaluwarsa</string>
+  <string name="crypto_msg_encrypted_sign_revoked">tetapi kunci end-to-end dicabut</string>
+  <string name="crypto_msg_encrypted_sign_insecure">tetapi kunci end-to-end tidak dianggap aman</string>
+  <string name="crypto_msg_encrypted_sign_error">tetapi data end-to-end memiliki kesalahan</string>
+  <string name="crypto_msg_encrypted_insecure">namun enkripsi tidak dianggap aman</string>
   <string name="crypto_info_ok">OK</string>
+  <string name="crypto_info_search_key">Kunci Pencarian</string>
+  <string name="crypto_info_view_signer">Lihat Penanda</string>
+  <string name="crypto_info_view_sender">Lihat Pengirim</string>
   <string name="crypto_info_view_security_warning">Detail</string>
   <string name="locked_attach_unlock">Buka kunci</string>
   <string name="locked_attach_unencrypted">Bagian ini tidak dienkripsi, dan mungkin tidak aman.</string>
@@ -981,9 +1008,9 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="messageview_crypto_error_title">Kesalahan mendekripsi email</string>
   <string name="recipient_error_non_ascii">Karakter khusus saat ini tidak didukung!</string>
   <string name="recipient_error_parse_failed">Kesalahan mengurai alamat!</string>
-  <string name="account_settings_crypto_support_sign_only">Tampilkan tanda tangan yang tidak dienkripsi</string>
-  <string name="account_settings_crypto_support_sign_only_on">Tanda tangan yang tidak dienkripsi akan ditampilkan</string>
-  <string name="account_settings_crypto_support_sign_only_off">Tanda tangan yang tidak dienkripsi akan diabaikan</string>
+  <string name="account_settings_crypto_hide_sign_only">Sembunyikan tanda tangan yang tidak terenkripsi</string>
+  <string name="account_settings_crypto_hide_sign_only_on">Hanya tanda tangan terenkripsi yang akan ditampilkan</string>
+  <string name="account_settings_crypto_hide_sign_only_off">Semua tanda tangan akan ditampilkan</string>
   <string name="error_sign_only_no_encryption">Enkripsi tidak tersedia dalam mode tanda tangan saja!</string>
   <string name="unsigned_text_divider_label">Teks yang tidak ditandai</string>
   <string name="apg_deprecated_title">Peringatan AGP tak berlaku lagi</string>
@@ -997,7 +1024,7 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="no_crypto_provider_see_global">Tidak ada aplikasi OpenPGP yang dikonfigurasi, lihat pengaturan global!</string>
   <string name="crypto_no_provider_title">Email ini dienkripsi</string>
   <string name="crypto_no_provider_message">Email ini telah dienkripsi dengan OpenPGP. \nUntuk membacanya, Anda perlu menginstal dan mengkonfigurasi Aplikasi OpenPGP yang kompatibel.</string>
-  <string name="crypto_no_provider_button">Pilih Aplikasi OpenPGP</string>
+  <string name="crypto_no_provider_button">Pergi ke pengaturan</string>
   <string name="mail_list_widget_text">Daftar pesan K-9</string>
   <string name="mail_list_widget_loading">Memuat pesan...</string>
   <string name="fetching_folders_failed">Mengambil daftar folder gagal</string>
@@ -1008,9 +1035,47 @@ https://github.com/k9mail/k-9/<a href="https://github.com/k9mail/k-9/">.
   <string name="enable_encryption">Aktifkan Enkripsi</string>
   <string name="disable_encryption">Nonaktifkan enkripsi</string>
   <string name="openpgp_description_text1">Mengenkripsi pesan memastikan mereka dapat dibaca oleh penerima, dan tidak ada orang lain.</string>
+  <string name="openpgp_description_text3">Enkripsi hanya akan muncul jika didukung oleh semua penerima, dan mereka harus sudah mengirimi Anda email sebelumnya.</string>
   <string name="openpgp_description_text2">Alihkan enkripsi dengan mengklik ikon ini.</string>
   <string name="openpgp_enabled_error_gotit">Mengerti</string>
   <string name="openpgp_enabled_error_back">Kembali</string>
   <string name="openpgp_enabled_error_disable">Nonaktifkan enkripsi</string>
   <string name="openpgp_encryption">Enkripsi OpenPGP</string>
+  <string name="account_settings_crypto_prefer_encrypt">Mode gabungan otomatis kripto</string>
+  <string name="dialog_autocrypt_mutual_title">Mode gabungan otomatis kripto</string>
+  <string name="dialog_autocrypt_mutual_description_1">Pesan biasanya akan dienkripsi berdasarkan pilihan, atau saat membalas pesan terenkripsi.</string>
+  <string name="dialog_autocrypt_mutual_description_2">Jika kedua pengirim dan penerima mengaktifkan mode bersama, enkripsi akan diaktifkan secara default.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Anda dapat <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">klik di sini</a> untuk mempelajari lebih lanjut.</string>
+  <string name="general_settings_title">Pengaturan Umum</string>
+  <string name="dialog_openkeychain_info_title">Tidak ada aplikasi OpenPGP yang terinstal</string>
+  <string name="dialog_openkeychain_info_install">Memasang</string>
+  <string name="dialog_openkeychain_info_text">K-9 Mail membutuhkan OpenKeychain untuk enkripsi end-to-end.</string>
+  <string name="encrypted_subject">Pesan terenkripsi</string>
+  <string name="account_settings_crypto_encrypt_subject">Enkripsikan subjek pesan</string>
+  <string name="account_settings_crypto_encrypt_subject_subtitle">Mungkin tidak didukung oleh beberapa penerima</string>
+  <string name="toast_account_not_found">Kesalahan internal: Akun tidak valid!</string>
+  <string name="toast_openpgp_provider_error">Kesalahan menghubungkan ke %s!</string>
+  <string name="ac_transfer_setting_title">Kirim Pesan Pengaturan Autocrypt</string>
+  <string name="ac_transfer_setting_summary">Bagikan pengesetan end-to-end dengan perangkat lain secara aman</string>
+  <string name="ac_transfer_title">Pesan Pengaturan Autocrypt</string>
+  <string name="ac_transfer_intro">Pesan Pengaturan Autocrypt secara aman membagi pengaturan ujung ke ujung Anda dengan perangkat lain.</string>
+  <string name="ac_transfer_button_send">Kirim Pesan Penyetelan</string>
+  <string name="ac_transfer_will_be_sent">Pesan akan dikirim ke alamat Anda:</string>
+  <string name="ac_transfer_generating">Menghasilkan pesan pengaturan ...</string>
+  <string name="ac_transfer_sending_to">Mengirim pesan ke:</string>
+  <string name="ac_transfer_finish">Untuk menyelesaikan, buka pesan di perangkat Anda yang lain dan masukkan kode pengaturan.</string>
+  <string name="ac_transfer_show_code">Tampilkan Kode Pengaturan</string>
+  <string name="ac_transfer_msg_subject">Pesan Pengaturan Autocrypt</string>
+  <string name="ac_transfer_msg_body">Pesan ini berisi semua informasi untuk mentransfer pengaturan Autocrypt Anda bersama dengan kunci rahasia Anda dengan aman dari perangkat asli Anda.
+
+Untuk menyiapkan perangkat baru Anda untuk Autocrypt, ikuti petunjuk yang harus disajikan oleh perangkat baru Anda.
+
+Anda dapat menyimpan pesan ini dan menggunakannya sebagai cadangan untuk kunci rahasia Anda. Jika Anda ingin melakukan ini, Anda harus menuliskan kata sandi dan menyimpannya dengan aman.
+</string>
+  <string name="ac_transfer_error_send">Terjadi kesalahan saat mengirim pesan. Silakan periksa konektivitas jaringan Anda dan konfigurasi server keluar.</string>
+  <string name="switch_on">On</string>
+  <string name="switch_off">Off</string>
+  <string name="navigation_drawer_open">Buka</string>
+  <string name="navigation_drawer_close">Tutup</string>
+  <!--permissions-->
 </resources>

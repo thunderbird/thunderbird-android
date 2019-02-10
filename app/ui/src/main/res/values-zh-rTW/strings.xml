@@ -4,14 +4,12 @@
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">K-9 Mail</string>
-  <string name="shortcuts_title">K-9帳戶</string>
+  <string name="shortcuts_title">K-9 帳號</string>
   <string name="unread_widget_label">K-9 未讀</string>
-  <string name="remote_control_label">遠端控制K-9 Mail</string>
-  <string name="remote_control_desc">在遠端透過此程式可控制K-9 Mail的執行或變更設定。</string>
+  <string name="remote_control_label">遠端控制 K-9 Mail</string>
+  <string name="remote_control_desc">在遠端透過此程式可控制 K-9 Mail 的執行或變更設定。</string>
   <!--Used in the about dialog-->
-  <string name="app_authors">谷歌以及幫著遛K-9的小朋友們。</string>
   <string name="app_copyright_fmt">版權所有 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="app_license">依據 Apache Version 2.0.規範授權</string>
   <!--Welcome message-->
   <string name="welcome_message_title">歡迎使用K-9 Mail</string>
   <!--Default signature-->
@@ -19,18 +17,12 @@
   <string name="account_delete_dlg_instructions_fmt">帳戶「<xliff:g id="account">%s</xliff:g>」將從K-9 Mail中刪除。</string>
   <string name="account_recreate_dlg_instructions_fmt">帳戶「<xliff:g id="account">%s</xliff:g>」的所有相關資料將從K-9 Mail中刪除，僅保留帳戶設定。</string>
   <string name="account_clear_dlg_instructions_fmt">帳戶「<xliff:g id="account">%s</xliff:g>」的所有郵件將從K-9 Mail中刪除，僅保留帳戶設定。</string>
-  <!--=== App Store-specific strings =======================================================-->
-  <string name="import_dialog_error_message">沒有找到合適的應用程式來處理匯入操作。請從GOOGLE PLAY商店下載安裝檔案管理應用程式。</string>
-  <string name="open_market">開啟GOOGLE PLAY商店</string>
   <!--=== General strings ==================================================================-->
-  <string name="authors">作者</string>
-  <string name="app_revision">更新日誌</string>
   <string name="app_libraries">我們目前使用第三方的函式庫: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">顯示郵件</string>
   <string name="read_messages_desc">允許該程式讀取郵件。</string>
   <string name="delete_messages_label">刪除郵件</string>
   <string name="delete_messages_desc">允許該程式刪除郵件。</string>
-  <string name="about_title">關於K-9 Mail</string>
   <string name="accounts_title">帳戶</string>
   <string name="folders_title">信件匣</string>
   <string name="advanced">進階</string>
@@ -88,7 +80,6 @@
   <string name="flag_action">加上星號</string>
   <string name="unflag_action">移除星號</string>
   <string name="copy_action">複製</string>
-  <string name="select_text_action">選擇本文</string>
   <string name="show_headers_action">顯示標題</string>
   <string name="hide_headers_action">隱藏標題</string>
   <string name="message_view_theme_action_dark">切換為黑色主題</string>
@@ -135,6 +126,8 @@
   <string name="notification_bg_send_ticker">正在寄送郵件：<xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">正在寄送郵件</string>
   <string name="notification_bg_title_separator">：</string>
+  <string name="notification_channel_messages_title">郵件</string>
+  <string name="notification_channel_miscellaneous_title">偏好設定</string>
   <string name="special_mailbox_name_inbox">收件匣</string>
   <string name="special_mailbox_name_outbox">寄件備份</string>
   <string name="special_mailbox_name_drafts">草稿</string>
@@ -148,7 +141,6 @@
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g>（歸檔）</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g>（垃圾郵件）</string>
   <string name="send_failure_subject">部分郵件沒有成功寄送</string>
-  <string name="version">版本：</string>
   <string name="debug_enable_debug_logging_title">啟用除錯日誌</string>
   <string name="debug_enable_debug_logging_summary">記錄額外的除錯訊息</string>
   <string name="debug_enable_sensitive_logging_title">記錄敏感訊息</string>
@@ -175,7 +167,6 @@
   <string name="message_view_cc_label">副本：</string>
   <string name="message_view_attachment_view_action">開啟</string>
   <string name="message_view_attachment_download_action">儲存</string>
-  <string name="message_view_status_attachment_not_saved">無法將附件儲存到記憶卡。</string>
   <string name="message_view_show_pictures_action">顯示圖片</string>
   <string name="message_view_no_viewer">無法開啟<xliff:g id="mimetype">%s</xliff:g>。找不到可以開啟該附件的程式。</string>
   <string name="message_view_download_remainder">下載完整郵件</string>
@@ -303,9 +294,6 @@
   <string name="recreate_action">重建資料（慎用）</string>
   <string name="account_setup_options_mail_check_frequency_label">信件匣檢查頻率</string>
   <string name="account_setup_options_mail_check_frequency_never">不要</string>
-  <string name="account_setup_options_mail_check_frequency_1min">每分鐘一次</string>
-  <string name="account_setup_options_mail_check_frequency_5min">五分鐘一次</string>
-  <string name="account_setup_options_mail_check_frequency_10min">十分鐘一次</string>
   <string name="account_setup_options_mail_check_frequency_15min">十五分鐘一次</string>
   <string name="account_setup_options_mail_check_frequency_30min">三十分鐘一次</string>
   <string name="account_setup_options_mail_check_frequency_1hour">每小時一次</string>
@@ -388,7 +376,6 @@
   <string name="account_settings_sync">接收郵件</string>
   <string name="account_settings_folders">信件匣</string>
   <string name="account_settings_quote_prefix_label">引用本文前綴</string>
-  <string name="account_settings_crypto">加密</string>
   <string name="account_settings_mail_check_frequency_label">上層信件匣檢查頻率</string>
   <string name="account_settings_storage_title">帳戶儲存</string>
   <string name="account_settings_color_label">帳戶顏色</string>
@@ -615,6 +602,7 @@
   <string name="account_settings_searchable_all">全部</string>
   <string name="account_settings_searchable_displayable">可顯示的信件匣</string>
   <string name="account_settings_searchable_none">無</string>
+  <string name="account_settings_no_folder_selected">無</string>
   <string name="font_size_settings_title">字體大小</string>
   <string name="font_size_settings_description">配置字體大小</string>
   <string name="font_size_account_list">帳戶列表</string>
@@ -647,7 +635,6 @@
   <string name="font_size_medium">中等</string>
   <string name="font_size_large">大</string>
   <string name="font_size_larger">最大</string>
-  <string name="miscellaneous_preferences">偏好設定</string>
   <string name="error_activity_not_found">沒有找到可以用於此操作的程式。</string>
   <string name="save_or_discard_draft_message_dlg_title">儲存郵件草稿？</string>
   <string name="save_or_discard_draft_message_instructions_fmt">儲存還是忽略這封郵件？</string>
@@ -684,14 +671,10 @@
   <string name="settings_exporting">正在匯出設定…</string>
   <string name="settings_importing">正在匯入設定…</string>
   <string name="settings_import_scanning_file">檢查檔案…</string>
-  <string name="settings_export_success">匯出的設定檔案已經儲存到 <xliff:g id="filename">%s</xliff:g></string>
-  <string name="settings_import_global_settings_success">從 <xliff:g id="filename">%s</xliff:g> 匯入全域設定檔案</string>
-  <string name="settings_import_success">成功匯入 <xliff:g id="accounts">%s</xliff:g> 從 <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> 帳號</item>
   </plurals>
   <string name="settings_export_failure">匯出設定失敗</string>
-  <string name="settings_import_failure">從 <xliff:g id="filename">%s</xliff:g> 匯入設定檔案失敗</string>
   <string name="settings_export_success_header">已成功匯出</string>
   <string name="settings_export_failed_header">匯出失敗</string>
   <string name="settings_import_success_header">已成功匯入</string>
@@ -709,14 +692,12 @@
   <string name="settings_import_use_incoming_server_password">使用內送伺服器密碼</string>
   <string name="activate_account_action">啟動</string>
   <string name="account_unavailable">帳戶 \"<xliff:g id="account">%s</xliff:g>\" 目前無法使用; 請檢查儲存空間</string>
-  <string name="settings_attachment_default_path">另存附件…</string>
   <string name="attachment_save_title">儲存附件</string>
   <string name="attachment_save_desc">找不到檔案瀏覽器，您要將附件儲存到哪裡？</string>
   <string name="manage_accounts_move_up_action">上移</string>
   <string name="manage_accounts_move_down_action">下移</string>
   <string name="manage_accounts_moving_message">移動帳戶…</string>
   <string name="unread_widget_select_account">顯示未讀數量…</string>
-  <string name="import_dialog_error_title">沒有找到檔案管理應用程式</string>
   <string name="close">關閉</string>
   <string name="webview_empty_message">沒有內容</string>
   <string name="webview_contextmenu_link_view_action">開啟檢視</string>
@@ -787,4 +768,8 @@
   <string name="crypto_info_ok">確定</string>
   <string name="message_progress_text">載入中…</string>
   <string name="openpgp_enabled_error_back">返回</string>
+  <string name="general_settings_title">一般設定</string>
+  <string name="navigation_drawer_open">開啟</string>
+  <string name="navigation_drawer_close">關閉</string>
+  <!--permissions-->
 </resources>

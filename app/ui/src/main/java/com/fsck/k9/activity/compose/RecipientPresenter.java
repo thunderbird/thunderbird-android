@@ -15,8 +15,8 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.LoaderManager;
+import androidx.annotation.Nullable;
+import androidx.loader.app.LoaderManager;
 import android.view.Menu;
 
 import com.fsck.k9.Account;

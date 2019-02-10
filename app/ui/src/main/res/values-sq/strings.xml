@@ -9,9 +9,8 @@
   <string name="remote_control_label">Kontroll Së Largëti K-9 Mail </string>
   <string name="remote_control_desc">E lejon këtë aplikacion të kontrollojë veprimtari dhe rregullime të K-9 Mail-it.</string>
   <!--Used in the about dialog-->
-  <string name="app_authors">Google, The K-9 Dog Walkers.</string>
+  <string name="app_authors">The K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Të drejta kopjimi 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Të drejta kopjimi Mbi Pjesë 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="app_license">Apache License, Version 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Mirë se vini te K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -50,18 +49,12 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_delete_dlg_instructions_fmt">Llogaria \"<xliff:g id="account">%s</xliff:g>\" do të hiqet që nga K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Krejt të dhënat vendore për \"<xliff:g id="account">%s</xliff:g>\" do të hiqen. Rregullimet e llogarisë do të mbahen.</string>
   <string name="account_clear_dlg_instructions_fmt">Kopjet vendore të mesazheve në \"<xliff:g id="account">%s</xliff:g>\" do të hiqen. Rregullimet e llogarisë do të mbahen.</string>
-  <!--=== App Store-specific strings =======================================================-->
-  <string name="import_dialog_error_message">Që të vazhdohet importimi, ju lutemi, instaloni një përgjegjës kartelash.</string>
-  <string name="open_market">Hap Play Store</string>
   <!--=== General strings ==================================================================-->
-  <string name="authors">Autorë</string>
-  <string name="app_revision">Të dhëna versioni</string>
   <string name="app_libraries">Përdorim libraritë vijuese nga palë të treta: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Lexoni Email-e</string>
   <string name="read_messages_desc">I lejon këtij aplikacioni të lexojë email-et tuaj.</string>
   <string name="delete_messages_label">Fshiji Email-et</string>
   <string name="delete_messages_desc">I lejon këtij aplikacioni të fshijë email-et tuaj.</string>
-  <string name="about_title">Mbi K-9 Mail</string>
   <string name="accounts_title">Llogari</string>
   <string name="folders_title">Dosje</string>
   <string name="advanced">Të mëtejshme</string>
@@ -128,7 +121,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="flag_action">Shtoji yll</string>
   <string name="unflag_action">Hiqi yll</string>
   <string name="copy_action">Kopjoje</string>
-  <string name="select_text_action">Përzgjidhni tekst</string>
   <string name="show_headers_action">Shfaqi kryet</string>
   <string name="hide_headers_action">Fshihi kryet</string>
   <plurals name="copy_address_to_clipboard">
@@ -191,6 +183,8 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="notification_bg_send_ticker">Po dërgohet postë: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Dërgim poste</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_messages_title">Mesazhe</string>
+  <string name="notification_channel_miscellaneous_title">Të ndryshme</string>
   <string name="special_mailbox_name_inbox">Kuti Poste</string>
   <string name="special_mailbox_name_outbox">Për dërgim</string>
   <string name="special_mailbox_name_drafts">Skica</string>
@@ -204,7 +198,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arkiv)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Të padëshiruar)</string>
   <string name="send_failure_subject">Dështoi dërgimi i disa mesazhe</string>
-  <string name="version">Version</string>
   <string name="debug_enable_debug_logging_title">Aktivizo regjistrim diagnostikimesh</string>
   <string name="debug_enable_debug_logging_summary">Regjistro të dhëna ekstra diagnostikimesh</string>
   <string name="debug_enable_sensitive_logging_title">Regjistro të dhëna konfidenciale</string>
@@ -236,8 +229,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="message_view_bcc_label">Bcc:</string>
   <string name="message_view_attachment_view_action">Hape</string>
   <string name="message_view_attachment_download_action">Ruaje</string>
-  <string name="message_view_status_attachment_not_saved">S\’u arrit të ruhet bashkëngjitja te kartë SD.</string>
-  <string name="message_view_status_no_space">Bashkëngjitja s\’u ruajt dot ngaqë s’ka hapësirë të mjaftueshme.</string>
   <string name="message_view_show_pictures_action">Shfaqi fotot</string>
   <string name="message_view_no_viewer">S\’arrihet të gjendet parës për <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Shkarko mesazhin e plotë</string>
@@ -287,8 +278,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="global_settings_privacy_hide_useragent_detail">Hiqeni K-9 User-Agent nga kryet e email-it</string>
   <string name="global_settings_privacy_hide_timezone">Fshihe zonën kohore</string>
   <string name="global_settings_privacy_hide_timezone_detail">Përdorni UTC, në vend se zonën kohore vendore, te krye email-esh dhe krye përgjigjesh</string>
-  <string name="global_settings_privacy_hide_hostname_when_connecting">Fshihe strehëemrin</string>
-  <string name="global_settings_privacy_hide_hostname_when_connecting_detail">Identifikoje si \'localhost\', kur bëhet lidhje me shërbyes SMTP</string>
   <string name="global_settings_notification_hide_subject_title">Fshihe subjektin gjatë njoftimesh</string>
   <string name="global_settings_notification_hide_subject_never">Kurrë</string>
   <string name="global_settings_notification_hide_subject_when_locked">Kur pajisja është e kyçur</string>
@@ -395,9 +384,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="recreate_action">Rikrijo të dhënat (Shpresa e Fundit!)</string>
   <string name="account_setup_options_mail_check_frequency_label">Shpeshti vjeljeje dosjeje</string>
   <string name="account_setup_options_mail_check_frequency_never">Kurrë</string>
-  <string name="account_setup_options_mail_check_frequency_1min">Çdo minutë</string>
-  <string name="account_setup_options_mail_check_frequency_5min">Çdo 5 minuta</string>
-  <string name="account_setup_options_mail_check_frequency_10min">Çdo 10 minuta</string>
   <string name="account_setup_options_mail_check_frequency_15min">Çdo 15 minuta</string>
   <string name="account_setup_options_mail_check_frequency_30min">Çdo 30 minuta</string>
   <string name="account_setup_options_mail_check_frequency_1hour">Çdo orë</string>
@@ -489,14 +475,19 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_settings_sync">Sjellje poste</string>
   <string name="account_settings_folders">Dosje</string>
   <string name="account_settings_quote_prefix_label">Parashtesë teksti të cituar</string>
-  <string name="account_settings_crypto">Kriptografi</string>
-  <string name="account_settings_crypto_app">Aplikacion openPGP</string>
-  <string name="account_settings_crypto_key">Kyçi Im</string>
+  <string name="account_settings_crypto">Fshehtëzim skaj-më-skaj</string>
+  <string name="account_settings_crypto_app">Aktivizo mbulim OpenPGP</string>
+  <string name="account_settings_crypto_app_select_title">Përzgjidhni aplikacion OpenPGP</string>
+  <string name="account_settings_crypto_key">Formësoni kyç skaj-më-skaj</string>
+  <string name="account_settings_crypto_summary_off">S’ka aplikacion OpenPGP të formësuar</string>
+  <string name="account_settings_crypto_summary_on">I lidhur me %s</string>
   <string name="account_settings_no_openpgp_provider_configured">S\’ka aplikacion OpenPGP të formësuar</string>
+  <string name="account_settings_no_openpgp_provider_installed">S’u gjet aplikacion OpenPGP - klikoni që të instalohet një</string>
   <string name="account_settings_mail_check_frequency_label">Shpeshti vjeljeje dosjeje</string>
   <string name="account_settings_storage_title">Depozitë</string>
   <string name="account_settings_color_label">Ngjyrë llogarie</string>
   <string name="account_settings_color_summary">Ngjyrë theksimi për këtë llogari, e përdorur në listë dosjesh dhe llogarish</string>
+  <string name="account_settings_color_none">Pa ngjyrë</string>
   <string name="account_settings_led_color_label">Ngjyrë LED-i njoftimesh</string>
   <string name="account_settings_led_color_summary">Ngjyra me të cilën duhet të xixëllojë LED-i i pajisjes tuaj për këtë llogari</string>
   <string name="account_settings_mail_display_count_label">Madhësi dosjeje vendore</string>
@@ -553,6 +544,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_settings_folder_target_mode_not_second_class">Krejt, hiq dosje të Klasës së 2-të</string>
   <string name="account_settings_sync_remote_deletetions_label">Njëkohëso fshirje në shërbyes</string>
   <string name="account_settings_sync_remote_deletetions_summary">Hiqi mesazhet kur janë fshirë në shërbyes</string>
+  <string name="account_settings_openpgp_missing">Mungon aplikacioni OpenPGP - mos është çinstaluar?</string>
   <string name="folder_settings_title">Rregullime dosjeje</string>
   <string name="folder_settings_in_top_group_label">Shfaqe në grupin e epërm</string>
   <string name="folder_settings_in_top_group_summary">Shfaqe pranë kreut të listës së dosjeve</string>
@@ -731,6 +723,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_settings_searchable_all">Krejt</string>
   <string name="account_settings_searchable_displayable">Të shfaqshmet</string>
   <string name="account_settings_searchable_none">Asnjë</string>
+  <string name="account_settings_no_folder_selected">Asnjë</string>
   <string name="font_size_settings_title">Madhësi shkronjash</string>
   <string name="font_size_settings_description">Formësoni madhësi shkronjash</string>
   <string name="font_size_account_list">Listë logarish</string>
@@ -765,7 +758,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="font_size_medium">Të mesme</string>
   <string name="font_size_large">Të mëdha</string>
   <string name="font_size_larger">Më të mëdha</string>
-  <string name="miscellaneous_preferences">Të ndryshme</string>
   <string name="error_activity_not_found">S\’u gjet aplikacion i përshtatshëm për këtë veprim.</string>
   <string name="send_failed_reason">Dërgimi dështoi: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Të ruhet skica e mesazhit?</string>
@@ -807,17 +799,13 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="settings_exporting">Po eksportohen rregullimet…</string>
   <string name="settings_importing">Po importohen rregullime…</string>
   <string name="settings_import_scanning_file">Po skanohet kartelë…</string>
-  <string name="settings_export_success">Rregullimet e eksportuara u ruajtën te <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_generic">Rregullimet u eksportuan me sukses</string>
-  <string name="settings_import_global_settings_success">U importuan rregullime globale nga <xliff:g id="filename">%s</xliff:g></string>
-  <string name="settings_import_success">U importuan <xliff:g id="accounts">%s</xliff:g> nga <xliff:g id="filename">%s</xliff:g> gjithsej</string>
   <string name="settings_import_account_imported_as">U importua <xliff:g id="original_account_name">%s</xliff:g> si <xliff:g id="account_name_after_import">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
     <item quantity="one">1 llogari</item>
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> llogari</item>
   </plurals>
   <string name="settings_export_failure">S\’u arrit të eksportohen rregullimet</string>
-  <string name="settings_import_failure">Dështoi importimi i ndonjë rregullimi nga <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_header">Eksportimi u bë me sukses</string>
   <string name="settings_export_failed_header">Eksportimi dështoi</string>
   <string name="settings_import_success_header">Importimi u bë me sukses</string>
@@ -837,7 +825,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="settings_import_use_incoming_server_password">Përdor fjalëkalim shërbyesi marrjeje</string>
   <string name="activate_account_action">Aktivizoje</string>
   <string name="account_unavailable">Llogaria \"<xliff:g id="account">%s</xliff:g>\" s\’është e përdorshme; shihni depozitën</string>
-  <string name="settings_attachment_default_path">Bashkëngjitjet ruaji te…</string>
   <string name="attachment_save_title">Ruaje bashkëngjitjen</string>
   <string name="attachment_save_desc">S\’u gjet shfletues kartelash. Ku do të doni të ruhet kjo bashkëngjitje?</string>
   <string name="manage_accounts_move_up_action">Ngjite sipër</string>
@@ -856,7 +843,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
   <string name="unread_widget_account_not_selected">S\’u përzgjodh llogari</string>
   <string name="unread_widget_folder_not_selected">S\’u përzgjodh ndonjë dosje</string>
-  <string name="import_dialog_error_title">Mungon Aplikacion Përgjegjësi Kartelash</string>
   <string name="close">Mbylle</string>
   <string name="webview_empty_message">S\’ka tekst</string>
   <string name="webview_contextmenu_link_view_action">Hape lidhjen</string>
@@ -962,7 +948,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="crypto_mode_private">Fshehtëzo</string>
   <string name="error_crypto_provider_incompatible">Furnizuesi i modulit kriptografik përdor version të papërputhshëm. Ju lutemi, kontrolloni rregullimet tuaja!</string>
   <string name="error_crypto_provider_connect">S\’lidhet dot te furnizuesi i modulit kriptografik, kontrolloni rregullimet tuaja ose klikoni ikonën e kriptografisë që të riprovohet!</string>
-  <string name="error_crypto_provider_ui_required">Hyrja te furnizuesi i modulit kriptografik u mohua, klikoni ikonën e kriptografisë që të riprovohet!</string>
+  <string name="error_crypto_provider_ui_required">S’u arrit të gatitej fshehtëzim skaj-më-skaj, ju lutemi, kontrolloni rregullimet tuaja</string>
   <string name="error_crypto_inline_attach">Mënyra PGP/INLINE nuk i mbulon bashkëngjitjet!</string>
   <string name="enable_inline_pgp">Aktivizo PGP/BRENDAZI</string>
   <string name="disable_inline_pgp">Çaktivizo PGP/BRENDAZI</string>
@@ -989,6 +975,8 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="crypto_msg_unencrypted_sign_error">nënshkrimi skaj-më-skaj përmban një gabim</string>
   <string name="crypto_msg_incomplete_signed">që të përpunohet nënshkrimi, mesazhi duhet shkarkuar plotësisht</string>
   <string name="crypto_msg_unsupported_signed">përmban nënshkrim skaj-më-skaj të pambuluar</string>
+  <string name="crypto_msg_unsupported_encrypted">Mesazhi është i fshehtëzuar, por në një format të pambuluar.</string>
+  <string name="crypto_msg_cancelled">Mesazhi është i fshehtëzuar, por shfshehtëzimi u anulua.</string>
   <string name="crypto_msg_title_unencrypted_signed_e2e">Tekst i thjeshtë i nënshkruar Skaj-më-Skaj</string>
   <string name="crypto_msg_unencrypted_sign_verified">nga nënshkrues i verifikuar</string>
   <string name="crypto_msg_title_unencrypted_signed">Tekst i thjeshtë i nënshkruar</string>
@@ -1016,6 +1004,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="crypto_msg_encrypted_sign_error">por të dhënat skaj-më-skaj kanë gabime</string>
   <string name="crypto_msg_encrypted_insecure">por fshehtëzim i konsideruar jo i sigurt</string>
   <string name="crypto_info_ok">OK</string>
+  <string name="crypto_info_search_key">Kërko Kyç</string>
   <string name="crypto_info_view_signer">Shihni Nënshkruesin</string>
   <string name="crypto_info_view_sender">Shihni Dërguesin</string>
   <string name="crypto_info_view_security_warning">Hollësi</string>
@@ -1029,9 +1018,9 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="messageview_crypto_error_title">Gabim në shfsheshtëzimin e email-it</string>
   <string name="recipient_error_non_ascii">Shenjat speciale nuk mbulohet hëpërhë!</string>
   <string name="recipient_error_parse_failed">Gabim në përtypje adrese!</string>
-  <string name="account_settings_crypto_support_sign_only">Shfaq nënshkrime të pafshehtëzuar</string>
-  <string name="account_settings_crypto_support_sign_only_on">Nënshkrimet e pafshehtëzuara do të shfaqen</string>
-  <string name="account_settings_crypto_support_sign_only_off">Nënshkrimet e pafshehtëzuara do të shpërfillen</string>
+  <string name="account_settings_crypto_hide_sign_only">Fshihi nënshkrimet e pafshehtëzuara</string>
+  <string name="account_settings_crypto_hide_sign_only_on">Do të shfaqen vetëm nënshkrimet e fshehtëzuara</string>
+  <string name="account_settings_crypto_hide_sign_only_off">Do të shfaqen krejt nënshkrimet</string>
   <string name="error_sign_only_no_encryption">S’mund të kihet fshehtëzim nën mënyrën vetëm-nënshkrim!</string>
   <string name="unsigned_text_divider_label">Tekst i Panënshkruar</string>
   <string name="apg_deprecated_title">Sinjalizim APG-je të Nxjerrë Nga Përdorimi</string>
@@ -1045,7 +1034,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="no_crypto_provider_see_global">S\’ka të formësuar ndonjë aplikacion OpenPGP, shihni rregullimet globale!</string>
   <string name="crypto_no_provider_title">Ky email është i fshehtëzuar</string>
   <string name="crypto_no_provider_message">Ky email është fshehtëzuar me OpenPGP.\nQë ta lexoni, lypset të instaloni dhe formësoni një aplikacion të përputhshëm me OpenPGP-në.</string>
-  <string name="crypto_no_provider_button">Zgjidhni Aplikacion OpenPGP</string>
+  <string name="crypto_no_provider_button">Kaloni te Rregullimet</string>
   <string name="mail_list_widget_text">Listë K-9 Mesazhesh</string>
   <string name="mail_list_widget_loading">Po ngarkohen mesazhe…</string>
   <string name="fetching_folders_failed">Dështoi sjellja e listës së dosjeve</string>
@@ -1062,4 +1051,41 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="openpgp_enabled_error_back">Mbrapsht</string>
   <string name="openpgp_enabled_error_disable">Çaktivizo Fshehtëzimin</string>
   <string name="openpgp_encryption">Fshehtëzim OpenPGP</string>
+  <string name="account_settings_crypto_prefer_encrypt">Mënyra Autocrypt e përbashkët</string>
+  <string name="dialog_autocrypt_mutual_title">Mënyra Autocrypt e përbashkët</string>
+  <string name="dialog_autocrypt_mutual_description_1">Mesazhet normalisht do të fshehtëzohen sipas zgjedhjes tuaj,  ose kur i përgjigjeni një mesazhi të fshehtëzuar.</string>
+  <string name="dialog_autocrypt_mutual_description_2">Nëse si dërguesi, ashtu edhe marrësit aktivizojnë mënyrën e përbashkët, fshehtëzimi do të aktivizohet si parazgjedhje.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Mund <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">të klikoni këtu</a> që të mësoni më tepër.</string>
+  <string name="general_settings_title">Rregullime të përgjithshme</string>
+  <string name="dialog_openkeychain_info_title">S’ka aplikacion OpenPGP të instaluar</string>
+  <string name="dialog_openkeychain_info_install">Instaloje</string>
+  <string name="dialog_openkeychain_info_text">K-9 Mail lyp OpenKeychain për fshehtëzime skaj-më-skaj.</string>
+  <string name="encrypted_subject">Mesazh i Fshehtëzuar</string>
+  <string name="account_settings_crypto_encrypt_subject">Fshehtëzo subjekte mesazhesh</string>
+  <string name="account_settings_crypto_encrypt_subject_subtitle">Mund të mos mbulohet nga disa marrës</string>
+  <string name="toast_account_not_found">Gabim i brendshëm: Llogari e pavlefshme!</string>
+  <string name="toast_openpgp_provider_error">Gabim në lidhjen me %s!</string>
+  <string name="ac_transfer_setting_title">Dërgo Mesazh Rregullimi Autocrypt-i</string>
+  <string name="ac_transfer_setting_summary">Ndani në mënyrë të parrezik me pajisje të tjera rregullimin skaj-më-skaj.</string>
+  <string name="ac_transfer_title">Mesazh Rregullimi Autocrypt-i</string>
+  <string name="ac_transfer_intro">Një Mesazh Rregullimi Autocrypt-i ndan në mënyrë të parrezik me pajisje të tjera rregullimin tuaj skaj-më-skaj.</string>
+  <string name="ac_transfer_button_send">Dërgo Mesazh Rregullimi</string>
+  <string name="ac_transfer_will_be_sent">Mesazhi do të dërgohet te adresa juaj:</string>
+  <string name="ac_transfer_generating">Po prodhohet mesazhi i rregullimit…</string>
+  <string name="ac_transfer_sending_to">Po dërgohet mesazhi te:</string>
+  <string name="ac_transfer_finish">Për të përfunduar, hapeni mesazhin te pajisja juaj tjetër dhe jepni kodin e rregullimit.</string>
+  <string name="ac_transfer_show_code">Shfaq Kod Rregullimi</string>
+  <string name="ac_transfer_msg_subject">Mesazh Rregullimi Autocrypt-i</string>
+  <string name="ac_transfer_msg_body">Ky mesazh përmban krejt të dhënat për shpërnguljen e rregullimeve tuaja për Autocrypt-in, tok me kyçin tuaj të fshehtë, në mënyrë të siguruar, nga pajisja juaj fillestare.
+
+Që të rregulloni Autocrypt-in për pajisjen tuaj të re, ju lutemi, ndiqni udhëzimet që duhet t’ju shfaqen në të.
+
+Mund ta mbani këtë mesazh dhe ta përdorni si një kopjeruatje të kyçit tuaj të fshehtë. Nëse doni ta bëni këtë, fjalëkalimin duhet ta shkruani diku dhe ta depozitoni në mënyrë të sigurt.
+</string>
+  <string name="ac_transfer_error_send">Ndodhi një gabim teksa dërgohej mesazhi. Ju lutemi, kontrolloni lidhjen tuaj në rrjet dhe formësimin e shërbyesit të dërgimeve.</string>
+  <string name="switch_on">On</string>
+  <string name="switch_off">Off</string>
+  <string name="navigation_drawer_open">Hape</string>
+  <string name="navigation_drawer_close">Mbylle</string>
+  <!--permissions-->
 </resources>
