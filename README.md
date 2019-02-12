@@ -42,6 +42,9 @@ https://www.transifex.com/projects/p/k9mail/
 
 ## Contributing
 
+Thank you for contributing! If you're unfamiliar with the code, 
+start by reading the [developer documentation](docs/DESIGN.md)
+
 Please fork this repository and contribute back using [pull requests](https://github.com/k9mail/k-9/pulls).
 
 Any contributions, large or small, major features, bug fixes, unit/integration tests are welcomed and appreciated
