@@ -16,7 +16,7 @@ import com.fsck.k9.finishWithErrorToast
 import com.fsck.k9.ui.R
 import com.fsck.k9.view.StatusIndicator
 import kotlinx.android.synthetic.main.crypto_key_transfer.*
-import kotlinx.coroutines.experimental.delay
+import kotlinx.coroutines.delay
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 
