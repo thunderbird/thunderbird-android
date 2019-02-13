@@ -9,9 +9,7 @@
   <string name="remote_control_label">K-9 Mail שליטה מרחוק</string>
   <string name="remote_control_desc">אפשר לK-9 לשלוט בהגדרות פעילות הדואר.</string>
   <!--Used in the about dialog-->
-  <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="app_license">Apache License, Version 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">ברוך הבא אל דואר K-9</string>
   <!--Default signature-->
@@ -20,18 +18,12 @@
   <string name="account_delete_dlg_instructions_fmt">החשבון \"<xliff:g id="account">%s</xliff:g>\" ימחק מ K-9 Mail .</string>
   <string name="account_recreate_dlg_instructions_fmt">על הנתונים עבור \"<xliff:g id="account">%s</xliff:g>\" ימחקו מ K-9 Mail, אך הגדרות החשבון יישמרו.</string>
   <string name="account_clear_dlg_instructions_fmt">כל ההודעות ב \"<xliff:g id="account">%s</xliff:g>\" ימחקו מ K-9 Mail, אך הגדרות החשבון יישמרו.</string>
-  <!--=== App Store-specific strings =======================================================-->
-  <string name="import_dialog_error_message">התקן מנהל קבצים כדי לבצע את הייבוא.</string>
-  <string name="open_market">פתח את חנות האפליקציות</string>
   <!--=== General strings ==================================================================-->
-  <string name="authors">מפתחים</string>
-  <string name="app_revision">מידע על גירסאות</string>
   <string name="app_libraries">אנחנו משתמשים בספריות הבאות של ספקים חיצוניים: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">קרא אימיילים</string>
   <string name="read_messages_desc">אפשר ליישום זה לקרוא את האימיילים שלכם.</string>
   <string name="delete_messages_label">מחק אימיילים</string>
   <string name="delete_messages_desc">אפשר ליישום זה למחוק את האימיילים שלכם.</string>
-  <string name="about_title">אודות K-9 Mail</string>
   <string name="accounts_title">חשבונות</string>
   <string name="folders_title">תיקיות</string>
   <string name="advanced">מתקדם</string>
@@ -91,11 +83,12 @@
   <string name="flag_action">הוסף כוכב</string>
   <string name="unflag_action">מחק כוכב</string>
   <string name="copy_action">העתק</string>
-  <string name="select_text_action">בחר טקסט</string>
   <string name="show_headers_action">הצג כותרות</string>
   <string name="hide_headers_action">הסתר כותרות</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">כתובת הועתקה ללוח ההעתקה</item>
+    <item quantity="two">כתובות הועתקו ללוח ההעתקה</item>
+    <item quantity="many">כתובות הועתקו ללוח ההעתקה</item>
     <item quantity="other">כתובות הועתקו ללוח ההעתקה</item>
   </plurals>
   <string name="message_view_theme_action_dark">עבור לאערכת נושא אפלה</string>
@@ -133,6 +126,8 @@
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> הודעה חדשה
 </item>
+    <item quantity="two"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
+    <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> הודעות חדשות</item>
   </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> לא נקראו (<xliff:g id="account">%s</xliff:g>)</string>
@@ -155,6 +150,8 @@
   <string name="notification_bg_send_ticker">שולח דוא"ל: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">שולח דוא\"ל</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_messages_title">הודעות</string>
+  <string name="notification_channel_miscellaneous_title">שונות</string>
   <string name="special_mailbox_name_inbox">דואר נכנס</string>
   <string name="special_mailbox_name_outbox">דואר יוצא</string>
   <string name="special_mailbox_name_drafts">טיוטות</string>
@@ -168,7 +165,6 @@
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (ארכיון)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (דואר זבל)</string>
   <string name="send_failure_subject">נכשל בשליחת כמה הודעות</string>
-  <string name="version">גרסא</string>
   <string name="debug_enable_debug_logging_title">אפשר רישום איתור באגים</string>
   <string name="debug_enable_debug_logging_summary">יומן ניתוח מידע נוסף</string>
   <string name="debug_enable_sensitive_logging_title">יומן מידע רגיש</string>
@@ -193,7 +189,6 @@
   <string name="message_view_cc_label">עותק:</string>
   <string name="message_view_attachment_view_action">פתח</string>
   <string name="message_view_attachment_download_action">שמור</string>
-  <string name="message_view_status_attachment_not_saved">אין אפשרות לשמור את הקובץ המצורף לכרטיס ה SD.</string>
   <string name="message_view_show_pictures_action">הצג תמונות</string>
   <string name="message_view_no_viewer">לא ניתן למצוא את מציג בשביל <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">הורד את ההודעה המלאה</string>
@@ -309,9 +304,6 @@
   <string name="clear_action">נקה ההודעות (סכנה!)</string>
   <string name="recreate_action">לשחזר נתונים (המפלט האחרון!)</string>
   <string name="account_setup_options_mail_check_frequency_never">אפ פעם</string>
-  <string name="account_setup_options_mail_check_frequency_1min">כל דקה</string>
-  <string name="account_setup_options_mail_check_frequency_5min">כל 5 דקות</string>
-  <string name="account_setup_options_mail_check_frequency_10min">כל 10 דקות</string>
   <string name="account_setup_options_mail_check_frequency_15min">כל 15 דקות</string>
   <string name="account_setup_options_mail_check_frequency_30min">כל 30 דקות</string>
   <string name="account_setup_options_mail_check_frequency_1hour">כל שעה</string>
@@ -383,7 +375,6 @@
   <string name="account_settings_sync">שולף דואר</string>
   <string name="account_settings_folders">תיקיות</string>
   <string name="account_settings_quote_prefix_label">קידומת טקסט מצוטט</string>
-  <string name="account_settings_crypto">הצפנה</string>
   <string name="account_settings_storage_title">אחסון</string>
   <string name="account_settings_color_label">צבע חשבון</string>
   <string name="account_settings_color_summary">בחר את הצבע של החשבון המשומש בתיקייה וברשימת החשבונות</string>
@@ -569,6 +560,7 @@
   <string name="account_settings_searchable_all">הכל</string>
   <string name="account_settings_searchable_displayable">ניתנות להצגה</string>
   <string name="account_settings_searchable_none">כלום</string>
+  <string name="account_settings_no_folder_selected">כלום</string>
   <string name="font_size_settings_title">גודל גופן</string>
   <string name="font_size_settings_description">הגדר גודל גופן</string>
   <string name="font_size_account_list">רשימת חשבונות</string>
@@ -598,7 +590,6 @@
   <string name="font_size_medium">בינוני</string>
   <string name="font_size_large">גדול</string>
   <string name="font_size_larger">ענק</string>
-  <string name="miscellaneous_preferences">שונות</string>
   <string name="error_activity_not_found">לא נמצא ישום שיכול לבצע פעולה זו.</string>
   <string name="save_or_discard_draft_message_dlg_title">לשמור הודעה כטיוטה?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">לשמור או למחוק הודעה זו?</string>
@@ -612,6 +603,8 @@
   <string name="dialog_confirm_spam_title">אשר העברה לתיקיית דואר זבל</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">אתה בטוח שאתה רוצה להעביר את ההודעות האלו לתיקיית דואר הזבל?</item>
+    <item quantity="two">אתה בטוח שאתה רוצה להעביר <xliff:g id="message_count">%1$d</xliff:g> הודעות לתיקיית דואר הזבל?</item>
+    <item quantity="many">אתה בטוח שאתה רוצה להעביר <xliff:g id="message_count">%1$d</xliff:g> הודעות לתיקיית דואר הזבל?</item>
     <item quantity="other">אתה בטוח שאתה רוצה להעביר <xliff:g id="message_count">%1$d</xliff:g> הודעות לתיקיית דואר הזבל?</item>
   </plurals>
   <string name="dialog_confirm_spam_confirm_button">כן</string>
@@ -631,15 +624,13 @@
   <string name="settings_exporting">מייצא הגדרות…</string>
   <string name="settings_importing">מייבא הגדרות…</string>
   <string name="settings_import_scanning_file">סורק קבצים…</string>
-  <string name="settings_export_success">יצוא הגדרות נשמרו ל <xliff:g id="filename">%s</xliff:g></string>
-  <string name="settings_import_global_settings_success">יבא הגדרות כלליות מ <xliff:g id="filename">%s</xliff:g></string>
-  <string name="settings_import_success">יבא <xliff:g id="accounts">%s</xliff:g> מ <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
     <item quantity="one">חשבון 1</item>
+    <item quantity="two"><xliff:g id="numAccounts">%s</xliff:g> חשבונות</item>
+    <item quantity="many"><xliff:g id="numAccounts">%s</xliff:g> חשבונות</item>
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> חשבונות</item>
   </plurals>
   <string name="settings_export_failure">נכשל בייצוא הגדרות</string>
-  <string name="settings_import_failure">נכשל בלייבא הגדרות מ <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_header">ייצוא הצליח</string>
   <string name="settings_export_failed_header">ייצוא נכשל</string>
   <string name="settings_import_success_header">יבוא הצליח</string>
@@ -648,11 +639,12 @@
   <string name="settings_import_activate_account_intro">כדי שתוכל להשתמש בחשבון \"<xliff:g id="account">%s</xliff:g>\" אתה צריך לספק את <xliff:g id="server_passwords">%s</xliff:g>.</string>
   <plurals name="settings_import_server_passwords">
     <item quantity="one">סיסמת שרת</item>
+    <item quantity="two">סיסמת שרת</item>
+    <item quantity="many">סיסמת שרת</item>
     <item quantity="other">סיסמת שרת</item>
   </plurals>
   <string name="activate_account_action">הפעל</string>
   <string name="account_unavailable">החשבון \"<xliff:g id="account">%s</xliff:g>\" לא זמין; בדוק אחסון</string>
-  <string name="settings_attachment_default_path">שמור קובץ מצורף ל…</string>
   <string name="attachment_save_title">שמור קובץ מצורף</string>
   <string name="attachment_save_desc">לא נמצא סייר קבצים. לאן היית רוצה לשמור את הקובץ המצורף?</string>
   <string name="manage_accounts_move_up_action">העבר למעלה</string>
@@ -673,4 +665,7 @@
   <string name="address_type_mobile">סלולרי</string>
   <string name="crypto_mode_private">הצפן</string>
   <string name="crypto_info_ok">אישור</string>
+  <string name="general_settings_title">הגדרות כלליות</string>
+  <string name="navigation_drawer_open">פתח</string>
+  <!--permissions-->
 </resources>
