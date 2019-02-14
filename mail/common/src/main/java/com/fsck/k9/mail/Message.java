@@ -89,14 +89,6 @@ public abstract class Message implements Part, Body {
 
     public abstract Address[] getRecipients(RecipientType type);
 
-    public abstract void setRecipients(RecipientType type, Address[] addresses);
-
-    public void setRecipient(RecipientType type, Address address) {
-        setRecipients(type, new Address[] {
-                          address
-                      });
-    }
-
     public abstract Address[] getFrom();
 
     public abstract void setFrom(Address from);
