@@ -27,7 +27,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.ActionBar;
+import androidx.appcompat.app.ActionBar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.SparseBooleanArray;

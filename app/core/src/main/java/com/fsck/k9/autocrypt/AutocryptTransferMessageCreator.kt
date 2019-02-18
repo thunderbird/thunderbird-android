@@ -43,7 +43,7 @@ class AutocryptTransferMessageCreator(private val stringProvider: AutocryptStrin
             message.internalDate = nowDate
             message.addSentDate(nowDate, K9.hideTimeZone())
             message.setFrom(address)
-            message.setRecipients(RecipientType.TO, arrayOf(address))
+            message.setHeader("To", address.toEncodedString())
 
             return message
         } catch (e: MessagingException) {

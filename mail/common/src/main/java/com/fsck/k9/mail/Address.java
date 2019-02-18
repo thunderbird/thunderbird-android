@@ -1,8 +1,8 @@
 
 package com.fsck.k9.mail;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 
 import java.io.Serializable;
 import java.util.ArrayList;

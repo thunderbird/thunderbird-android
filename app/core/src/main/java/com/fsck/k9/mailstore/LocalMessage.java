@@ -9,7 +9,7 @@ import java.util.Date;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.core.BuildConfig;
@@ -18,6 +18,7 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.internet.AddressHeaderBuilder;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.message.MessageHeaderParser;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
@@ -80,9 +81,10 @@ public class LocalMessage extends MimeMessage {
             }
         }
         this.databaseId = cursor.getLong(LocalStore.MSG_INDEX_ID);
-        this.setRecipients(RecipientType.TO, Address.unpack(cursor.getString(LocalStore.MSG_INDEX_TO)));
-        this.setRecipients(RecipientType.CC, Address.unpack(cursor.getString(LocalStore.MSG_INDEX_CC)));
-        this.setRecipients(RecipientType.BCC, Address.unpack(cursor.getString(LocalStore.MSG_INDEX_BCC)));
+        mTo = getAddressesOrNull(Address.unpack(cursor.getString(LocalStore.MSG_INDEX_TO)));
+        mCc = getAddressesOrNull(Address.unpack(cursor.getString(LocalStore.MSG_INDEX_CC)));
+        mBcc = getAddressesOrNull(Address.unpack(cursor.getString(LocalStore.MSG_INDEX_BCC)));
+        headerNeedsUpdating = true;
         this.setReplyTo(Address.unpack(cursor.getString(LocalStore.MSG_INDEX_REPLY_TO)));
 
         this.attachmentCount = cursor.getInt(LocalStore.MSG_INDEX_ATTACHMENT_COUNT);
@@ -210,36 +212,12 @@ public class LocalMessage extends MimeMessage {
         headerNeedsUpdating = true;
     }
 
-
-    /*
-     * For performance reasons, we add headers instead of setting them (see super implementation)
-     * which removes (expensive) them before adding them
-     */
-    @Override
-    public void setRecipients(RecipientType type, Address[] addresses) {
-        if (type == RecipientType.TO) {
-            if (addresses == null || addresses.length == 0) {
-                this.mTo = null;
-            } else {
-                this.mTo = addresses;
-            }
-        } else if (type == RecipientType.CC) {
-            if (addresses == null || addresses.length == 0) {
-                this.mCc = null;
-            } else {
-                this.mCc = addresses;
-            }
-        } else if (type == RecipientType.BCC) {
-            if (addresses == null || addresses.length == 0) {
-                this.mBcc = null;
-            } else {
-                this.mBcc = addresses;
-            }
+    private Address[] getAddressesOrNull(Address[] addresses) {
+        if (addresses == null || addresses.length == 0) {
+            return null;
         } else {
-            throw new IllegalArgumentException("Unrecognized recipient type.");
+            return addresses;
         }
-
-        headerNeedsUpdating = true;
     }
 
     public void setFlagInternal(Flag flag, boolean set) throws MessagingException {
@@ -444,9 +422,10 @@ public class LocalMessage extends MimeMessage {
     private void updateHeader() {
         super.setSubject(subject);
         super.setReplyTo(mReplyTo);
-        super.setRecipients(RecipientType.TO, mTo);
-        super.setRecipients(RecipientType.CC, mCc);
-        super.setRecipients(RecipientType.BCC, mBcc);
+
+        setRecipients("To", mTo);
+        setRecipients("CC", mCc);
+        setRecipients("BCC", mBcc);
 
         if (mFrom != null && mFrom.length > 0) {
             super.setFrom(mFrom[0]);
@@ -457,6 +436,15 @@ public class LocalMessage extends MimeMessage {
         }
         
         headerNeedsUpdating = false;
+    }
+
+    private void setRecipients(String headerName, Address[] addresses) {
+        if (addresses == null || addresses.length == 0) {
+            removeHeader(headerName);
+        } else {
+            String headerValue = AddressHeaderBuilder.createHeaderValue(addresses);
+            setHeader(headerName, headerValue);
+        }
     }
 
     @Override

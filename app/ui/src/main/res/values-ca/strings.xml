@@ -9,9 +9,8 @@
   <string name="remote_control_label">Control remot del K-9 Mail</string>
   <string name="remote_control_desc">Permet que aquesta aplicació controli les activitats i la configuració del K-9 Mail.</string>
   <!--Used in the about dialog-->
-  <string name="app_authors">Google, The K-9 Dog Walkers.</string>
+  <string name="app_authors">Els passejadors de gossos K-9</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Porcions de Copyright 2006-<xliff:g>%s</xliff:g> Projecte de codi obert d\'Android.</string>
-  <string name="app_license">Llicència Apache, Versió 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Us donem la benvinguda al K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -49,18 +48,12 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_delete_dlg_instructions_fmt">El compte \"<xliff:g id="account">%s</xliff:g>\" s\'eliminarà del K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Totes les dades locals de \"<xliff:g id="account">%s</xliff:g>\" s\'eliminaran, però la configuració del compte romandrà.</string>
   <string name="account_clear_dlg_instructions_fmt">Totes les còpies locals dels missatges de \"<xliff:g id="account">%s</xliff:g>\" s\'eliminaran, però la configuració del compte romandrà.</string>
-  <!--=== App Store-specific strings =======================================================-->
-  <string name="import_dialog_error_message">Si us plau, instal·leu un gestor de fitxers per continuar aquesta importació.</string>
-  <string name="open_market">Obre la Play Store</string>
   <!--=== General strings ==================================================================-->
-  <string name="authors">Autors</string>
-  <string name="app_revision">Informació de la revisió</string>
   <string name="app_libraries">Fem servir les següents biblioteques de tercers: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Llegeix els correus</string>
   <string name="read_messages_desc">Permet a aquesta aplicació llegir els correus.</string>
   <string name="delete_messages_label">Elimina correus</string>
   <string name="delete_messages_desc">Permet que aquesta aplicació elimini correus.</string>
-  <string name="about_title">Quant a K-9 Mail</string>
   <string name="accounts_title">Comptes</string>
   <string name="folders_title">Carpetes</string>
   <string name="advanced">Avançat</string>
@@ -127,7 +120,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="flag_action">Afegeix un estel</string>
   <string name="unflag_action">Elimina l\'estel</string>
   <string name="copy_action">Copia</string>
-  <string name="select_text_action">Selecciona text</string>
   <string name="show_headers_action">Mostra les capçaleres</string>
   <string name="hide_headers_action">Amaga les capçaleres</string>
   <plurals name="copy_address_to_clipboard">
@@ -190,6 +182,8 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="notification_bg_send_ticker">Enviant correu: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Enviant correu</string>
   <string name="notification_bg_title_separator">.</string>
+  <string name="notification_channel_messages_title">Missatges</string>
+  <string name="notification_channel_miscellaneous_title">Miscel·lània</string>
   <string name="special_mailbox_name_inbox">Bústia d\'entrada</string>
   <string name="special_mailbox_name_outbox">Bústia de sortida</string>
   <string name="special_mailbox_name_drafts">Esborranys</string>
@@ -203,7 +197,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arxiu)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Brossa)</string>
   <string name="send_failure_subject">La tramesa d\'alguns missatges ha fallat.</string>
-  <string name="version">Versió</string>
   <string name="debug_enable_debug_logging_title">Habilita la depuració del registre</string>
   <string name="debug_enable_debug_logging_summary">Registra informació extra de diagnòstic</string>
   <string name="debug_enable_sensitive_logging_title">Registra informació sensible</string>
@@ -235,8 +228,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="message_view_bcc_label">Bcc:</string>
   <string name="message_view_attachment_view_action">Obre</string>
   <string name="message_view_attachment_download_action">Desa</string>
-  <string name="message_view_status_attachment_not_saved">No s\'ha pogut desar l\'adjunt a la SD.</string>
-  <string name="message_view_status_no_space">L\'adjunt no s\'ha pogut desar per manca d\'espai.</string>
   <string name="message_view_show_pictures_action">Mostra les imatges</string>
   <string name="message_view_no_viewer">No s\'ha pogut trobar un visualitzador per <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Baixa el missatge complet</string>
@@ -286,8 +277,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="global_settings_privacy_hide_useragent_detail">Suprimeix el nom K-9 User-Agent de les capçaleres del missatge</string>
   <string name="global_settings_privacy_hide_timezone">Amaga el fus horari</string>
   <string name="global_settings_privacy_hide_timezone_detail">Usa UTC en comptes de l\'hora local a les capçaleres dels missatges i a la capçalera de resposta</string>
-  <string name="global_settings_privacy_hide_hostname_when_connecting">Amaga el nom d\'usuari</string>
-  <string name="global_settings_privacy_hide_hostname_when_connecting_detail">Identifica\'t com a \"localhost\" en connectar a servidors SMTP.</string>
   <string name="global_settings_notification_hide_subject_title">Amaga l\'assumpte a les notificacions</string>
   <string name="global_settings_notification_hide_subject_never">Mai</string>
   <string name="global_settings_notification_hide_subject_when_locked">Quan el telèfon està bloquejat</string>
@@ -394,9 +383,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="recreate_action">Reconstrueix les dades (Últim recurs!)</string>
   <string name="account_setup_options_mail_check_frequency_label">Freqüència de comprovació</string>
   <string name="account_setup_options_mail_check_frequency_never">Mai</string>
-  <string name="account_setup_options_mail_check_frequency_1min">Cada minut</string>
-  <string name="account_setup_options_mail_check_frequency_5min">Cada 5 minuts</string>
-  <string name="account_setup_options_mail_check_frequency_10min">Cada 10 minuts</string>
   <string name="account_setup_options_mail_check_frequency_15min">Cada 15 minuts</string>
   <string name="account_setup_options_mail_check_frequency_30min">Cada 30 minuts</string>
   <string name="account_setup_options_mail_check_frequency_1hour">Cada hora</string>
@@ -488,14 +474,19 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_settings_sync">Recuperant el correu</string>
   <string name="account_settings_folders">Carpetes</string>
   <string name="account_settings_quote_prefix_label">Prefix de citació del text</string>
-  <string name="account_settings_crypto">Criptografia</string>
-  <string name="account_settings_crypto_app">App OpenPGP</string>
-  <string name="account_settings_crypto_key">La meva clau</string>
+  <string name="account_settings_crypto">Encriptació d\'extrem a extrem</string>
+  <string name="account_settings_crypto_app">Habilita el suport d\'OpenPGP</string>
+  <string name="account_settings_crypto_app_select_title">Trieu una aplicació d\'OpenPGP</string>
+  <string name="account_settings_crypto_key">Configureu la clau d\'extrem a extrem</string>
+  <string name="account_settings_crypto_summary_off">No hi ha cap aplicació d\'OpenPGP configurada.</string>
+  <string name="account_settings_crypto_summary_on">Connectat a %s</string>
   <string name="account_settings_no_openpgp_provider_configured">No hi ha cap aplicació d\'OpenPGP configurada.</string>
+  <string name="account_settings_no_openpgp_provider_installed">No s\'ha trobat cap aplicació d\'OpenPGP. Cliqueu per intal·lar-ne una.</string>
   <string name="account_settings_mail_check_frequency_label">Freqüència de comprovació de les carpetes</string>
   <string name="account_settings_storage_title">Emmagatzematge</string>
   <string name="account_settings_color_label">Color del compte</string>
   <string name="account_settings_color_summary">Tria el color del compte utilitzat a la llista de carpetes i de comptes</string>
+  <string name="account_settings_color_none">Sense color</string>
   <string name="account_settings_led_color_label">Color del LED de notificació</string>
   <string name="account_settings_led_color_summary">El color en què ha de fer pampallugues el LED del telèfon per a aquest compte</string>
   <string name="account_settings_mail_display_count_label">Mida de la carpeta local</string>
@@ -552,6 +543,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_settings_folder_target_mode_not_second_class">Totes les carpetes excepte 2a classe</string>
   <string name="account_settings_sync_remote_deletetions_label">Sincronitza els elements eliminats al servidor</string>
   <string name="account_settings_sync_remote_deletetions_summary">Elimina els missatges quan s\'esborrin al servidor</string>
+  <string name="account_settings_openpgp_missing">Falta una aplicació d\'OpenPGP. S\'ha desinstal·lat?</string>
   <string name="folder_settings_title">Configuració de les carpetes</string>
   <string name="folder_settings_in_top_group_label">Mostra al grup superior</string>
   <string name="folder_settings_in_top_group_summary">Mostra a prop del capdamunt de la llista de carpetes</string>
@@ -730,6 +722,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_settings_searchable_all">Tot</string>
   <string name="account_settings_searchable_displayable">Mostrable</string>
   <string name="account_settings_searchable_none">Cap</string>
+  <string name="account_settings_no_folder_selected">Cap</string>
   <string name="font_size_settings_title">Mida  de la lletra</string>
   <string name="font_size_settings_description">Configura la mida de la lletra</string>
   <string name="font_size_account_list">Llista de compte</string>
@@ -764,7 +757,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="font_size_medium">Mitjà</string>
   <string name="font_size_large">Gros</string>
   <string name="font_size_larger">Més gros</string>
-  <string name="miscellaneous_preferences">Miscel·lània</string>
   <string name="error_activity_not_found">No s\'ha trobat cap aplicació idònia per a aquesta acció.</string>
   <string name="send_failed_reason">Ha fallat l\'enviament: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Deso l\'esborrany?</string>
@@ -806,17 +798,13 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="settings_exporting">Exportant la configuració...</string>
   <string name="settings_importing">Important la configuració...</string>
   <string name="settings_import_scanning_file">Examinant el fitxer…</string>
-  <string name="settings_export_success">S\'ha exportat la configuració global a <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_generic">La configuració s\'ha exportat correctament.</string>
-  <string name="settings_import_global_settings_success">S\'ha importat la configuració global de <xliff:g id="filename">%s</xliff:g></string>
-  <string name="settings_import_success">S\'ha importat <xliff:g id="accounts">%s</xliff:g> des de <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_account_imported_as">S\'ha importat <xliff:g id="original_account_name">%s</xliff:g> com a <xliff:g id="account_name_after_import">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
     <item quantity="one">un compte</item>
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> comptes</item>
   </plurals>
   <string name="settings_export_failure">Ha fallat exportar la configuració.</string>
-  <string name="settings_import_failure">Ha fallat importar la configuració de <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_header">Exportació correcta</string>
   <string name="settings_export_failed_header">Error d\'exportació</string>
   <string name="settings_import_success_header">Importació correcta</string>
@@ -836,7 +824,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="settings_import_use_incoming_server_password">Utilitza la contrasenya del servidor d\'entrada</string>
   <string name="activate_account_action">Activa</string>
   <string name="account_unavailable">El compte \"<xliff:g id="account">%s</xliff:g>\" no és disponible; comproveu l\'emmagatzematge</string>
-  <string name="settings_attachment_default_path">Desa els adjunts a…</string>
   <string name="attachment_save_title">Desa l\'adjunt</string>
   <string name="attachment_save_desc">No s\'ha trobat cap gestor de fitxers. On voleu desar l\'adjunt?</string>
   <string name="manage_accounts_move_up_action">Mou amunt</string>
@@ -855,7 +842,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="unread_widget_title"><xliff:g id="nom_del_compte">%1$s</xliff:g> - <xliff:g id="nom_de_la_carpeta">%2$s</xliff:g></string>
   <string name="unread_widget_account_not_selected">No hi ha cap compte seleccionat</string>
   <string name="unread_widget_folder_not_selected">No hi ha cap carpeta seleccionada</string>
-  <string name="import_dialog_error_title">Es necessita un gestor de fitxers</string>
   <string name="close">Tanca</string>
   <string name="webview_empty_message">Sense text</string>
   <string name="webview_contextmenu_link_view_action">Obre per mostrar</string>
@@ -961,7 +947,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="crypto_mode_private">Encripta</string>
   <string name="error_crypto_provider_incompatible">El proveïdor de criptografia usa una versió no compatible. Si us plau, comproveu la configuració!</string>
   <string name="error_crypto_provider_connect">No es pot connectar al proveïdor de criptografia, comproveu la configuració o cliqueu a la icona de criptografia per tornar-ho a provar!</string>
-  <string name="error_crypto_provider_ui_required">Accés denegat al proveïdor de criptografia, cliqueu a la icona de criptografia per tornar-ho a provar!</string>
+  <string name="error_crypto_provider_ui_required">Ha fallat iniciar l\'encriptació d\'extrem a extrem. Si us plau, comproveu-ne la configuració.</string>
   <string name="error_crypto_inline_attach">El mode PGP/INLINE no admet adjunts!</string>
   <string name="enable_inline_pgp">Habilita PGP/INLINE</string>
   <string name="disable_inline_pgp">Inhabilita PGP/INLINE</string>
@@ -988,6 +974,8 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="crypto_msg_unencrypted_sign_error">La signatura d\'extrem a extrem contenia un error.</string>
   <string name="crypto_msg_incomplete_signed">cal baixar completament el missatge per processar-ne la signatura</string>
   <string name="crypto_msg_unsupported_signed">conté una signatura d\'extrem a extrem no admesa</string>
+  <string name="crypto_msg_unsupported_encrypted">El missatge està encriptat, però en un format no admès.</string>
+  <string name="crypto_msg_cancelled">El missatge està encriptat, però se n\'ha cancel·lat la desencriptació.</string>
   <string name="crypto_msg_title_unencrypted_signed_e2e">Text pla signat d\'extrem a extrem</string>
   <string name="crypto_msg_unencrypted_sign_verified">des d\'un signant verificat</string>
   <string name="crypto_msg_title_unencrypted_signed">Text pla signat</string>
@@ -1015,6 +1003,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="crypto_msg_encrypted_sign_error">però les dades d\'extrem a extrem tenen errors</string>
   <string name="crypto_msg_encrypted_insecure">però l\'encriptació no es considera segura</string>
   <string name="crypto_info_ok">D\'acord</string>
+  <string name="crypto_info_search_key">Clau de cerca</string>
   <string name="crypto_info_view_signer">Mostra qui signa</string>
   <string name="crypto_info_view_sender">Mostra el remitent</string>
   <string name="crypto_info_view_security_warning">Detalls</string>
@@ -1028,9 +1017,9 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="messageview_crypto_error_title">Error en desencriptar el correu</string>
   <string name="recipient_error_non_ascii">Els caràcters especials no s\'admeten actualment!</string>
   <string name="recipient_error_parse_failed">Error analitzant l\'adreça!</string>
-  <string name="account_settings_crypto_support_sign_only">Mostra les signatures no encriptades</string>
-  <string name="account_settings_crypto_support_sign_only_on">Les signatures no encriptades es mostraran</string>
-  <string name="account_settings_crypto_support_sign_only_off">Les signatures no encriptades s\'ignoraran</string>
+  <string name="account_settings_crypto_hide_sign_only">Amaga les signatures no encriptades</string>
+  <string name="account_settings_crypto_hide_sign_only_on">Només es mostraran les signatures encriptades</string>
+  <string name="account_settings_crypto_hide_sign_only_off">Es mostraran totes les signatures</string>
   <string name="error_sign_only_no_encryption">Encriptació no disponible en mode de només signar!</string>
   <string name="unsigned_text_divider_label">Text no signat</string>
   <string name="apg_deprecated_title">Avís d\'obsolescència d\'APG</string>
@@ -1044,7 +1033,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="no_crypto_provider_see_global">No hi ha cap aplicació d\'OpenPGP configurada. Vegeu la configuració global!</string>
   <string name="crypto_no_provider_title">Aquest missatge està encriptat.</string>
   <string name="crypto_no_provider_message">Aquest missatge ha estat encriptat amb OpenPGP.\nPer llegir-lo, us caldrà instal·lar i configurar una aplicació d\'OpenPGP compatible.</string>
-  <string name="crypto_no_provider_button">Trieu una aplicació d\'OpenPGP</string>
+  <string name="crypto_no_provider_button">Ves a la configuració</string>
   <string name="mail_list_widget_text">Llista de missatges del K-9</string>
   <string name="mail_list_widget_loading">Carregant missatges...</string>
   <string name="fetching_folders_failed">Ha fallat recuperar la llista de carpetes.</string>
@@ -1061,4 +1050,41 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="openpgp_enabled_error_back">Enrere</string>
   <string name="openpgp_enabled_error_disable">Inhabilita l\'encriptació</string>
   <string name="openpgp_encryption">Encriptació d\'OpenPGP</string>
+  <string name="account_settings_crypto_prefer_encrypt">Mode mutu d\'autoencriptació</string>
+  <string name="dialog_autocrypt_mutual_title">Mode mutu d\'autoencriptació</string>
+  <string name="dialog_autocrypt_mutual_description_1">Els missatges s\'encriptaran normalment per selecció o en respondre un missatge encriptat.</string>
+  <string name="dialog_autocrypt_mutual_description_2">Si tant el remitent com el destinatari habiliten el mode mutu, l\'encriptació s\'habilitarà per defecte.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Podeu <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">clicar aquí</a> per saber-ne més.</string>
+  <string name="general_settings_title">Configuració general</string>
+  <string name="dialog_openkeychain_info_title">No hi ha cap aplicació d\'OpenPGP instal·lada.</string>
+  <string name="dialog_openkeychain_info_install">Instal·la</string>
+  <string name="dialog_openkeychain_info_text">El K-9 Mail requereix OpenKeychain per a l\'encriptació d\'extrem a extrem.</string>
+  <string name="encrypted_subject">Missatge encriptat</string>
+  <string name="account_settings_crypto_encrypt_subject">Encripta l\'assumpte dels missatges.</string>
+  <string name="account_settings_crypto_encrypt_subject_subtitle">Pot no ser admès per alguns destinataris.</string>
+  <string name="toast_account_not_found">Error intern: compte no vàlid!</string>
+  <string name="toast_openpgp_provider_error">Error en connectar a %s!</string>
+  <string name="ac_transfer_setting_title">Envia un missatge de configuració d\'autoencriptació</string>
+  <string name="ac_transfer_setting_summary">Compartiu amb seguretat la configuració d\'extrem a extrem amb altres dispositius.</string>
+  <string name="ac_transfer_title">Missatge de configuració d\'autoencriptació</string>
+  <string name="ac_transfer_intro">Un missatge de configuració d\'autoencriptació comparteix amb seguretat la configuració d\'extrem a extrem amb altres dispositius.</string>
+  <string name="ac_transfer_button_send">Envia un missatge de configuració</string>
+  <string name="ac_transfer_will_be_sent">El missatge s\'enviarà a la vostra adreça:</string>
+  <string name="ac_transfer_generating">Es genera el missatge de configuració...</string>
+  <string name="ac_transfer_sending_to">S\'envia el missatge a:</string>
+  <string name="ac_transfer_finish">Per acabar, obriu el missatge a l\'altre dispositiu i introduïu-hi el codi de configuració.</string>
+  <string name="ac_transfer_show_code">Mostra el codi de configuració</string>
+  <string name="ac_transfer_msg_subject">Missatge de configuració d\'autoencriptació</string>
+  <string name="ac_transfer_msg_body">Aquest missatge conté tota la informació per transferir els paràmetres d\'autoencriptació i la vostra clau secreta amb seguretat des del dispositiu original.
+
+Per configurar el vostre dispositiu nou per a l\'autoencriptació, si us plau, seguiu les instruccions que es mostraran al dispositiu nou.
+
+Podeu guardar aquest missatge i usar-lo com a còpia de seguretat per a la vostra clau secreta. Si ho voleu fer, hauríeu d\'anotar-vos la contrasenya i desar-la amb seguretat.
+</string>
+  <string name="ac_transfer_error_send">Hi ha hagut un error mentre s\'enviava el missatge. Si us plau, comproveu la connexió de xarxa i la configuració del servidor de sortida.</string>
+  <string name="switch_on">Actiu</string>
+  <string name="switch_off">Inactiu</string>
+  <string name="navigation_drawer_open">Obre</string>
+  <string name="navigation_drawer_close">Tanca</string>
+  <!--permissions-->
 </resources>

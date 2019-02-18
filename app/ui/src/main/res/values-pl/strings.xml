@@ -9,9 +9,8 @@
   <string name="remote_control_label">K-9 Mail zdalne sterowanie</string>
   <string name="remote_control_desc">Zezwalaj tej aplikacji na sterowanie K-9 Mail i jego ustawieniami.</string>
   <!--Used in the about dialog-->
-  <string name="app_authors">Google, The K-9 Dog Walkers.</string>
+  <string name="app_authors">Autorzy K-9 Mail</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="app_license">Licencja Apache, wersja 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Witaj w K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -50,18 +49,12 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="account_delete_dlg_instructions_fmt">Konto \"<xliff:g id="account">%s</xliff:g>\" zostanie usunięte z K-9.</string>
   <string name="account_recreate_dlg_instructions_fmt">Ustawienia konta \"<xliff:g id="account">%s</xliff:g>\" pozostaną bez zmian, niemniej wszystkie dane zostaną usunięte z bazy programu.</string>
   <string name="account_clear_dlg_instructions_fmt">Ustawienia konta \"<xliff:g id="account">%s</xliff:g>\" pozostaną bez zmian, niemniej wszystkie wiadomości zostaną usunięte z bazy programu.</string>
-  <!--=== App Store-specific strings =======================================================-->
-  <string name="import_dialog_error_message">Brak aplikacji do obsługi plików importu. Zainastaluj jakąś aplikację z Google Play.</string>
-  <string name="open_market">Otwórz Google Play</string>
   <!--=== General strings ==================================================================-->
-  <string name="authors">Autorzy</string>
-  <string name="app_revision">Historia zmian</string>
   <string name="app_libraries">K-9 mail zawiera kod źródłowy: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Czytaj pocztę</string>
   <string name="read_messages_desc">Zezwalaj tej aplikacji na czytanie Twoich wiadomości</string>
   <string name="delete_messages_label">Usuń wiadomości</string>
   <string name="delete_messages_desc">Zezwalaj tej aplikacji na usuwanie Twoich wiadomości.</string>
-  <string name="about_title_fmt"><xliff:g id="app_name">%s</xliff:g></string>
   <string name="accounts_title">Konta</string>
   <string name="folders_title">Foldery</string>
   <string name="advanced">Zaawansowane</string>
@@ -70,6 +63,7 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="compose_title_reply">Odpowiedz</string>
   <string name="compose_title_reply_all">Odpowiedz wszystkim</string>
   <string name="compose_title_forward">Przekaż</string>
+  <string name="compose_title_forward_as_attachment">Przekaż jako załącznik</string>
   <string name="choose_account_title">Wybierz konto</string>
   <string name="choose_folder_title">Wybierz folder</string>
   <string name="status_loading_account_folder">Sprawdzam <xliff:g id="account">%s</xliff:g>: <xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -100,6 +94,7 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="archive_action">Archiwizuj</string>
   <string name="spam_action">Spam</string>
   <string name="forward_action">Prześlij dalej</string>
+  <string name="forward_as_attachment_action">Przekaż jako załącznik</string>
   <string name="move_action">Przenieś</string>
   <string name="single_message_options_action">Wyślij…</string>
   <string name="refile_action">Operacje…</string>
@@ -126,7 +121,6 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="flag_action">Dodaj gwiazdkę</string>
   <string name="unflag_action">Usuń gwiazdkę</string>
   <string name="copy_action">Skopiuj</string>
-  <string name="select_text_action">Zaznacz tekst</string>
   <string name="show_headers_action">Pokaż nagłówki</string>
   <string name="hide_headers_action">Ukryj nagłówki</string>
   <plurals name="copy_address_to_clipboard">
@@ -192,6 +186,8 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="notification_bg_send_ticker">Wysyłam: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Wysyłam</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_messages_title">Wiadomości</string>
+  <string name="notification_channel_miscellaneous_title">Różne</string>
   <string name="special_mailbox_name_inbox">Odebrane</string>
   <string name="special_mailbox_name_outbox">Wychodzące</string>
   <string name="special_mailbox_name_drafts">Szablony</string>
@@ -205,7 +201,6 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archiwum)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
   <string name="send_failure_subject">Niektóre wiadomości nie zostały wysłane</string>
-  <string name="version">Wersja</string>
   <string name="debug_enable_debug_logging_title">Włącz logowanie</string>
   <string name="debug_enable_debug_logging_summary">Loguj dodatkowe informacje diagnostyczne</string>
   <string name="debug_enable_sensitive_logging_title">Loguj poufne informacje</string>
@@ -227,16 +222,16 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="compose_error_incomplete_recipient">Pole Odbiorca jest niekompletne!</string>
   <string name="error_contact_address_not_found">Żaden adres email nie został znaleziony.</string>
   <string name="message_compose_attachments_skipped_toast">Niektóre załączniki nie mogą być przesłane dalej ponieważ nie zostały wcześniej pobrane.</string>
+  <string name="message_compose_attachments_forward_toast">Wiadomość nie może zostać przesłana, gdyż niektóre załączniki nie zostały ściągnięte.</string>
+  <string name="message_compose_show_quoted_text_action">Załącz cytowaną wiadomość</string>
   <string name="message_compose_description_delete_quoted_text">Usuń cytowany tekst</string>
   <string name="message_compose_description_edit_quoted_text">Edytuj cytowany tekst</string>
   <string name="message_view_from_format">Od: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">Do:</string>
   <string name="message_view_cc_label">DW:</string>
-  <string name="message_view_bcc_label">Udw:</string>
+  <string name="message_view_bcc_label">UDW:</string>
   <string name="message_view_attachment_view_action">Otwórz</string>
   <string name="message_view_attachment_download_action">Zapisz</string>
-  <string name="message_view_status_attachment_not_saved">Zapisywanie załącznika na karcie SD nie powiodło się.</string>
-  <string name="message_view_status_no_space">Załącznik nie mógł zostać zapisany. Brak miejsca.</string>
   <string name="message_view_show_pictures_action">Wyświetl grafikę</string>
   <string name="message_view_no_viewer">Nie moge znaleźć programu do wyświetlenia pliku <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Pobierz całą wiadomość</string>
@@ -246,6 +241,7 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="message_no_additional_headers_available">Wszystkie nagłówki pobrano, niemniej nie znaleziono żadnych dodatkowych do wyświetlenia.</string>
   <string name="message_additional_headers_retrieval_failed">Pobieranie nagłówków nie powiodło się.</string>
   <string name="from_same_sender">Więcej od tego nadawcy</string>
+  <string name="search_from_format">Od <xliff:g id="sender"> %s </xliff:g></string>
   <string name="debug_delete_local_body">Debuguj / wyczyść treść wiadomości</string>
   <string name="message_discarded_toast">Wiadomość usunięta</string>
   <string name="message_saved_toast">Wiadomość zapisana jako szkic</string>
@@ -375,7 +371,7 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="account_setup_incoming_webdav_auth_path_hint">Opcjonalne</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Ścieżka Mailboxa</string>
   <string name="account_setup_incoming_webdav_mailbox_path_hint">Opcjonalne</string>
-  <string name="account_setup_outgoing_title">Poczta wychodząca (SMTP)</string>
+  <string name="account_setup_outgoing_title">Ustawienia poczty wychodzącej</string>
   <string name="account_setup_outgoing_smtp_server_label">Serwer SMTP</string>
   <string name="account_setup_outgoing_port_label">Port</string>
   <string name="account_setup_outgoing_security_label">Typ zabezpieczeń</string>
@@ -391,9 +387,6 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="recreate_action">Odtwórz dane (ostatnia szansa!)</string>
   <string name="account_setup_options_mail_check_frequency_label">Pobieranie wiadomości</string>
   <string name="account_setup_options_mail_check_frequency_never">Nigdy</string>
-  <string name="account_setup_options_mail_check_frequency_1min">Co 1 minutę</string>
-  <string name="account_setup_options_mail_check_frequency_5min">Co 5 minut</string>
-  <string name="account_setup_options_mail_check_frequency_10min">Co 10 minut</string>
   <string name="account_setup_options_mail_check_frequency_15min">Co 15 minut</string>
   <string name="account_setup_options_mail_check_frequency_30min">Co 30 minut</string>
   <string name="account_setup_options_mail_check_frequency_1hour">Co 1 godzinę</string>
@@ -478,21 +471,26 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="account_settings_message_read_receipt_label">Potwierdzenie przeczytania</string>
   <string name="account_settings_message_read_receipt_summary">Zawsze wymagaj potwierdzenia o przeczytaniu</string>
   <string name="account_settings_quote_style_label">Styl cytowania podczas odpowiedzi</string>
-  <string name="account_settings_quote_style_prefix">Prefix (jak Gmail, Pine)</string>
-  <string name="account_settings_quote_style_header">Nagłówek (jak Outlook, Yahoo!, Hotmail)</string>
+  <string name="account_settings_quote_style_prefix">Prefiks (jak Gmail)</string>
+  <string name="account_settings_quote_style_header">Nagłówek (jak Microsoft Outlook)</string>
   <string name="account_settings_general_title">Ustawienia ogólne</string>
   <string name="account_settings_reading_mail">Czytanie poczty</string>
   <string name="account_settings_sync">Synchronizacja folderów</string>
   <string name="account_settings_folders">Foldery</string>
   <string name="account_settings_quote_prefix_label">Prefiks cytowania</string>
-  <string name="account_settings_crypto">Kryptografia</string>
-  <string name="account_settings_crypto_app">Aplikacja OpenPGP</string>
-  <string name="account_settings_crypto_key">Mój klucz</string>
+  <string name="account_settings_crypto">Szyfrowanie pomiędzy urządzeniami końcowymi \"end-to-end\"</string>
+  <string name="account_settings_crypto_app">Aktywuj wsparcie dla OpenPGP</string>
+  <string name="account_settings_crypto_app_select_title">Wybierz aplikację OpenPGP</string>
+  <string name="account_settings_crypto_key">Skonfiguruj szyfrowanie pomiędzy urządzeniami końcowymi \"end-to-end\"</string>
+  <string name="account_settings_crypto_summary_off">Brak skonfigurowanej aplikacji OpenPGP</string>
+  <string name="account_settings_crypto_summary_on">Połączono z %s</string>
   <string name="account_settings_no_openpgp_provider_configured">Nie skonfigurowano aplikacji OpenPGP</string>
+  <string name="account_settings_no_openpgp_provider_installed">Brak aplikacji dla OpenPGP - kliknij aby zainstalować</string>
   <string name="account_settings_mail_check_frequency_label">Sprawdzanie konta</string>
   <string name="account_settings_storage_title">Przechowanie</string>
   <string name="account_settings_color_label">Kolor konta</string>
   <string name="account_settings_color_summary">Wybierz kolor, który będzie użyty przy wyświetlaniu folderów i listy kont</string>
+  <string name="account_settings_color_none">Brak koloru</string>
   <string name="account_settings_led_color_label">Kolor powiadomienia LED</string>
   <string name="account_settings_led_color_summary">Wybierz kolor jakim migać ma dioda LED przy powiadomieniach</string>
   <string name="account_settings_mail_display_count_label">Liczba wiadomości</string>
@@ -549,6 +547,7 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="account_settings_folder_target_mode_not_second_class">Wszystkich poza klasą 2</string>
   <string name="account_settings_sync_remote_deletetions_label">Synchronizacja usunięć</string>
   <string name="account_settings_sync_remote_deletetions_summary">Usuwaj wiadomości również z serwera poczty</string>
+  <string name="account_settings_openpgp_missing">Brakuje aplikacji dla OpenPGP. Prawdopodobnie została odinstalowana.</string>
   <string name="folder_settings_title">Ustawienia folderu</string>
   <string name="folder_settings_in_top_group_label">Umieść na początku</string>
   <string name="folder_settings_in_top_group_summary">Umieść na początku wyświetlanej listy folderów</string>
@@ -652,6 +651,8 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="account_setup_failed_dlg_invalid_certificate_title">Nieznany certyfikat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Akceptuj</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Odrzuć</string>
+  <string name="message_view_help_key">Del (lub D) - Usuń\nR - Odpowiedz\nA - Odpowiedz wszystkim\nC - Stwórz\nF - Przekaż\nM - Przenieś\nV - Archiwizuj\nY - Kopiuj\nZ - Zaznacz (Nie)przeczytane\nG - Gwiazdka\nO - Typ sortowania\nl - Kolejność sortowania\nQ - Wróć do folderów\nS - Wybierz/odznacz\nJ lub P - Poprzednia wiadomość\nK lub N - Następna wiadomość</string>
+  <string name="message_list_help_key">Del (lub D) - Usuń\nR - Odpowiedz\nA - Odpowiedz wszystkim\nC - Stwórz\nF - Przekaż\nM - Przenieś\nV - Archiwizuj\nY - Kopiuj\nZ - Zaznacz (Nie)przeczytane\nG - Gwiazdka\nO - Typ sortowania\nl - Kolejność sortowania\nQ - Wróć do folderów\nS - Wybierz/odznacz</string>
   <string name="folder_list_help_key">1 - Wyśw. tylko foldery klasy 1\n2 - Wyśw. foldery klasy 1 oraz 2\n3 - Wyśw. wszystkie foldery poza klasą 2\n4 - Wyświetl wszystkie foldery\nQ - Lista kont\nS - Edytuj ustawienia konta</string>
   <string name="folder_list_filter_hint">Nazwa katalogu zawiera</string>
   <string name="folder_list_display_mode_label">Wyświetlanie folderów</string>
@@ -689,6 +690,7 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="background_ops_auto_sync_only">Gdy \'Autosynchronizacja\' jest włączona</string>
   <string name="batch_select_all">Zaznacz wszystko</string>
   <string name="account_setup_push_limit_label">Sprawdzanie przez Push</string>
+  <string name="account_setup_push_limit_5">5 folderów</string>
   <string name="account_setup_push_limit_10">Do 10 folderów</string>
   <string name="account_setup_push_limit_25">Do 25 folderów</string>
   <string name="account_setup_push_limit_50">Do 50 folderów</string>
@@ -724,6 +726,7 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="account_settings_searchable_all">Wszystkie</string>
   <string name="account_settings_searchable_displayable">Wyświetlane</string>
   <string name="account_settings_searchable_none">Żaden</string>
+  <string name="account_settings_no_folder_selected">Żadne</string>
   <string name="font_size_settings_title">Rozmiar czcionki</string>
   <string name="font_size_settings_description">Ustawienia rozmiarów czcionek</string>
   <string name="font_size_account_list">Lista kont</string>
@@ -758,7 +761,6 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="font_size_medium">Średnia</string>
   <string name="font_size_large">Duża</string>
   <string name="font_size_larger">Wielka</string>
-  <string name="miscellaneous_preferences">Różne</string>
   <string name="error_activity_not_found">Nie znaleiono odpowiedniej aplikacji.</string>
   <string name="send_failed_reason">Wysyłanie nieudane: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Zapisać szkic?</string>
@@ -804,10 +806,8 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="settings_exporting">Eksportowanie ustawień…</string>
   <string name="settings_importing">Importowanie ustawień…</string>
   <string name="settings_import_scanning_file">Skanowanie pliku…</string>
-  <string name="settings_export_success">Zapisano ustawienia do <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_generic">Eksport ustawień zakończony sukcesem</string>
-  <string name="settings_import_global_settings_success">Importowano ustawienia z <xliff:g id="filename">%s</xliff:g></string>
-  <string name="settings_import_success">Importowano <xliff:g id="accounts">%s</xliff:g> z <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_import_account_imported_as">Zaimportowano  <xliff:g id="original_account_name">%s </xliff:g> jako <xliff:g id="account_name_after_import">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
     <item quantity="one">1 konto</item>
     <item quantity="few"><xliff:g id="numAccounts">%s</xliff:g> konta</item>
@@ -815,7 +815,6 @@ Wysłane za pomocą K-9 Mail.</string>
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> kont</item>
   </plurals>
   <string name="settings_export_failure">Błąd eksportu</string>
-  <string name="settings_import_failure">Błąd importu z <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_header">Eksport udany</string>
   <string name="settings_export_failed_header">Eksport nieudany</string>
   <string name="settings_import_success_header">Import udany</string>
@@ -839,7 +838,6 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="settings_import_use_incoming_server_password">Użyj hasła serwera przychodzącego</string>
   <string name="activate_account_action">Aktywuj</string>
   <string name="account_unavailable">Konto \"<xliff:g id="account">%s</xliff:g>\" jest niedostępne; sprawdź dostępną pamięć</string>
-  <string name="settings_attachment_default_path">Zapisuj załączniki do…</string>
   <string name="attachment_save_title">Zapisz załączniki</string>
   <string name="attachment_save_desc">Brak przeglądarki plików. Chcesz zapisać ten załącznik?</string>
   <string name="manage_accounts_move_up_action">Przenieś w górę</string>
@@ -851,12 +849,13 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="unread_widget_unified_inbox_account_summary">Zintegrowana skrzynka odbiorcza</string>
   <string name="unread_widget_all_messages_account_summary">Wszystkie wiadomości</string>
   <string name="unread_widget_folder_enabled_title">Liczba folderów</string>
+  <string name="unread_widget_folder_enabled_summary">Wyświetl licznik nieprzeczytanych wiadomości tylko dla pojedynczego folderu</string>
   <string name="unread_widget_folder_title">Folder</string>
   <string name="unread_widget_folder_summary">Folder dla którego liczba nie przeczytanych wiadomości powinna być wyświetlana</string>
   <string name="unread_widget_action_done">Wykonano</string>
+  <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
   <string name="unread_widget_account_not_selected">Nie wybrano konta</string>
   <string name="unread_widget_folder_not_selected">Nie wybrano folderu</string>
-  <string name="import_dialog_error_title">Brakuje aplikacji zarządania plikami</string>
   <string name="close">Zamknij</string>
   <string name="webview_empty_message">Brak tekstu</string>
   <string name="webview_contextmenu_link_view_action">Otwórz podgląd</string>
@@ -966,7 +965,7 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="crypto_mode_private">Szyfruj</string>
   <string name="error_crypto_provider_incompatible">Aplikacja szyfrująca w niezgodnej wersji. Sprawdź ustawienia.</string>
   <string name="error_crypto_provider_connect">Nie można połączyć się z dostawcą kryptografii, sprawdź ustawienia lub kliknij ikonę kryptografii, aby spróbować ponownie!</string>
-  <string name="error_crypto_provider_ui_required">Odmowa dostępu do dostawcy kryptografii, kliknij ikonę kryptografii, aby spróbować ponownie!</string>
+  <string name="error_crypto_provider_ui_required">Inicjalizacja szyfrowania pomiędzy urządzeniami końcowymi \"end-to-end\" nie powiodła się. Sprawdź ustawienia.</string>
   <string name="error_crypto_inline_attach">Tryb PGP/INLINE nie obsługuje załączników!</string>
   <string name="enable_inline_pgp">Włącz PGP/INLINE</string>
   <string name="disable_inline_pgp">Wyłącz PGP/INLINE</string>
@@ -989,7 +988,42 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="openpgp_dialog_sign_only_minus_break">Podpisy mogą ulec uszkodzeniu przy wysyłaniu do list mailingowych</string>
   <string name="openpgp_dialog_sign_only_minus_attach">W przypadku niektórych klientów, podpisy mogą być wyświetlane jako załączniki \'signature.asc\' .</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Zaszyfrowane wiadomości są zawsze opatrzone podpisem.</string>
+  <string name="crypto_msg_title_plaintext">Czysty tekst</string>
+  <string name="crypto_msg_unencrypted_sign_error">Podpis end-to-end zawiera błąd</string>
+  <string name="crypto_msg_incomplete_signed">musisz w pełni pobrać wiadomość by przetworzyć podpis</string>
+  <string name="crypto_msg_unsupported_signed">zawiera niewspierany podpis end-to-end</string>
+  <string name="crypto_msg_unsupported_encrypted">Wiadomość jest zaszyfrowana, ale w niewspieranym formacie.</string>
+  <string name="crypto_msg_cancelled">Wiadomość jest zaszyfrowana, ale deszyfrowanie zostało przerwane.</string>
+  <string name="crypto_msg_title_unencrypted_signed_e2e">Podpis End-to-End czystego tekstu</string>
+  <string name="crypto_msg_unencrypted_sign_verified">od zaufanego dostawcy</string>
+  <string name="crypto_msg_title_unencrypted_signed">Podpisany czysty tekst</string>
+  <string name="crypto_msg_unencrypted_sign_mismatch">ale klucz end-to-end nie pasuje do nadawcy</string>
+  <string name="crypto_msg_unencrypted_sign_expired">ale klucz end-to-end wygasł</string>
+  <string name="crypto_msg_unencrypted_sign_revoked">ale klucz end-to-end jest unieważniony</string>
+  <string name="crypto_msg_unencrypted_sign_insecure">ale klucz end-to-end nie jest uważany za bezpieczny</string>
+  <string name="crypto_msg_unencrypted_sign_unknown">od nieznanego klucza end-to-end</string>
+  <string name="crypto_msg_title_encrypted_unknown">Zaszyfrowana</string>
+  <string name="crypto_msg_encrypted_error">ale jest tu błąd deszyfrowania</string>
+  <string name="crypto_msg_encrypted_incomplete">musisz w pełni pobrać wiadomość by odszyfrować</string>
+  <string name="crypto_msg_encrypted_no_provider">ale żadna aplikacja kryptograficzna nie jest skonfigurowana</string>
+  <string name="crypto_msg_encrypted_unsupported">ale jest to niewspierany format</string>
+  <string name="crypto_msg_encrypted_cancelled">ale deszyfrowanie zostało anulowane</string>
+  <string name="crypto_msg_title_encrypted_unsigned">Zaszyfrowana</string>
+  <string name="crypto_msg_encrypted_unsigned">ale nie end-to-end</string>
+  <string name="crypto_msg_title_encrypted_signed_e2e">Zaszyfrowana end-to-end</string>
+  <string name="crypto_msg_encrypted_sign_verified">od znanego nadawcy</string>
+  <string name="crypto_msg_title_encrypted_signed">Zaszyfrowana</string>
+  <string name="crypto_msg_encrypted_sign_unknown">od nieznanego klucza end-to-end</string>
+  <string name="crypto_msg_encrypted_sign_mismatch">ale klucz end-to-end nie pasuje do nadawcy</string>
+  <string name="crypto_msg_encrypted_sign_expired">ale klucz end-to-end wygasł</string>
+  <string name="crypto_msg_encrypted_sign_revoked">ale klucz end-to-end jest unieważniony</string>
+  <string name="crypto_msg_encrypted_sign_insecure">ale klucz end-to-end nie jest uważany za bezpieczny</string>
+  <string name="crypto_msg_encrypted_sign_error">ale dane end-to-end mają błędy</string>
+  <string name="crypto_msg_encrypted_insecure">ale szyfrowanie nie jest uważane za bezpieczne</string>
   <string name="crypto_info_ok">OK</string>
+  <string name="crypto_info_search_key">Klucz wyszukiwania</string>
+  <string name="crypto_info_view_signer">Zobacz podpisującego</string>
+  <string name="crypto_info_view_sender">Zobacz wysyłającego</string>
   <string name="crypto_info_view_security_warning">Szczegóły</string>
   <string name="locked_attach_unlock">Odblokuj</string>
   <string name="locked_attach_unencrypted">Ta część nie została zaszyfrowana i może nie być zabezpieczona.</string>
@@ -1001,9 +1035,9 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="messageview_crypto_error_title">Błąd odszyfrowywania wiadomości e-mail.</string>
   <string name="recipient_error_non_ascii">Znaki specjalne nie są obecnie obsługiwane!</string>
   <string name="recipient_error_parse_failed">Błąd analizowania adresu!</string>
-  <string name="account_settings_crypto_support_sign_only">Pokaż nie zaszyfrowane podpisy</string>
-  <string name="account_settings_crypto_support_sign_only_on">Nie zaszyfrowane podpisy są wyświetlane</string>
-  <string name="account_settings_crypto_support_sign_only_off">Nie zaszyfrowane podpisy są ignorowane</string>
+  <string name="account_settings_crypto_hide_sign_only">Ukryj nie zaszyfrowane podpisy.</string>
+  <string name="account_settings_crypto_hide_sign_only_on">Tylko zaszyfrowane podpisy będą widoczne.</string>
+  <string name="account_settings_crypto_hide_sign_only_off">Wszystkie podpisy będą widoczne.</string>
   <string name="error_sign_only_no_encryption">Szyfrowanie nie jest dostępne w trybie sign-only!</string>
   <string name="unsigned_text_divider_label">Niepodpisany tekst</string>
   <string name="apg_deprecated_title">Ostrzeżenie o przestarzałości APG</string>
@@ -1017,7 +1051,7 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="no_crypto_provider_see_global">Nie skonfigurowano aplikacji OpenPGP, sprawdź ustawienia globalne!</string>
   <string name="crypto_no_provider_title">Ta wiadomość e-mail jest zaszyfrowana</string>
   <string name="crypto_no_provider_message">Ta wiadomość e-mail została zaszyfrowana z użyciem OpenPGP.\n Aby ją odczytać, należy zainstalować i skonfigurować zgodną aplikację OpenPGP.</string>
-  <string name="crypto_no_provider_button">Wybierz aplikację OpenPGP</string>
+  <string name="crypto_no_provider_button">Przejdź do ustawień</string>
   <string name="mail_list_widget_text">Lista wiadomości K-9</string>
   <string name="mail_list_widget_loading">Ładowanie wiadomości…</string>
   <string name="fetching_folders_failed">Pobieranie listy katalogów się nie powiodło.</string>
@@ -1028,9 +1062,47 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="enable_encryption">Włącz szyfrowanie</string>
   <string name="disable_encryption">Wyłącz szyfrowanie</string>
   <string name="openpgp_description_text1">Szyfrowanie gwarantuje, że wiadomości mogą być odczytane tylko przez odbiorcę i nikogo innego.</string>
+  <string name="openpgp_description_text3">Szyfrowania pojawi się tylko jeśli jest wspierane przez wszystkich odbiorców i muszą oni wcześniej wysłać Tobie maila.</string>
   <string name="openpgp_description_text2">Przełącz szyfrowanie klikając ten przycisk.</string>
   <string name="openpgp_enabled_error_gotit">Zrozumiano</string>
   <string name="openpgp_enabled_error_back">Cofnij</string>
   <string name="openpgp_enabled_error_disable">Wyłącz szyfrowanie</string>
   <string name="openpgp_encryption">Szyfrowanie OpenPGP</string>
+  <string name="account_settings_crypto_prefer_encrypt">Obustronny automatyczny tryb szyfrowania</string>
+  <string name="dialog_autocrypt_mutual_title">Obustronny automatyczny tryb szyfrowania</string>
+  <string name="dialog_autocrypt_mutual_description_1">Wiadomości normalnie będą szyfrowane z wyboru lub kiedy odpowiadasz na szyfrowaną wiadomość.</string>
+  <string name="dialog_autocrypt_mutual_description_2">Jeśli nadawca i odbiorcy włączą tryb obustronnego automatycznego szyfrowania, szyfrowanie będzie włączone domyślnie.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Możesz <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">kliknąć tutaj</a> by dowiedzieć się więcej.</string>
+  <string name="general_settings_title">Ustawienia ogólne</string>
+  <string name="dialog_openkeychain_info_title">Brak aplikacji dla OpenPGP</string>
+  <string name="dialog_openkeychain_info_install">Instaluj</string>
+  <string name="dialog_openkeychain_info_text">K-9 Mail wymaga OpenKeychain dla szyfrowania pomiędzy urządzeniami końcowymi \"end-to-end\".</string>
+  <string name="encrypted_subject">Zaszyfrowana wiadomość</string>
+  <string name="account_settings_crypto_encrypt_subject">Zaszyfruj tematy wiadomości</string>
+  <string name="account_settings_crypto_encrypt_subject_subtitle">Może nie być wspierana przez niektórych odbiorców</string>
+  <string name="toast_account_not_found">Błąd wewnętrzny: nieprawidłowe konto!</string>
+  <string name="toast_openpgp_provider_error">Błąd połączenia z 1%s!</string>
+  <string name="ac_transfer_setting_title">Wyślij wiadomość konfiguracyjną Autocrypt</string>
+  <string name="ac_transfer_setting_summary">Bezpicznie wymieniaj z innymi urządzeniami konfigurację szyfrowania end-to-end</string>
+  <string name="ac_transfer_title">Wiadomość konfiguracyjna Autocrypt</string>
+  <string name="ac_transfer_intro">Wiadomość konfiguracyjna Autocrypt bezpiecznie udostępnia twoją konfigurację szyfrowania end-to-end z innymi urządzeniami.</string>
+  <string name="ac_transfer_button_send">Wyślij wiadomość konfiguracyjną</string>
+  <string name="ac_transfer_will_be_sent">Wiadomość zostanie wysłana na adres:</string>
+  <string name="ac_transfer_generating">Generowanie wiadomości konfiguracyjnej</string>
+  <string name="ac_transfer_sending_to">Wysyłanie wiadomości do:</string>
+  <string name="ac_transfer_finish">Aby zakończyć otwórz wiadomość na drugim urządzeniu i wpisz kod konfiguracyjny. </string>
+  <string name="ac_transfer_show_code">Pokaż kod konfiguracyjny</string>
+  <string name="ac_transfer_msg_subject">Wiadomość konfiguracyjna Autocrypt</string>
+  <string name="ac_transfer_msg_body">Ta wiadomość zawiera wszyskie informacje do bezpieszcznego wyeksportowania wszytkich ustawień orza klucza Autocrypt z orginalnego urządzenia.
+
+A skonfigurowąć Autocrypt na nowym urządzeniu należy podążać za wyświetlonymi na nim wskazówkami.
+
+Tą wiadomość można zachować i użyć w formie kopii zapasowej twojego klucza prywatnego, aby to uczynić należy zachować hasło i przechowywać je w bezpiecznym mejscu.
+</string>
+  <string name="ac_transfer_error_send">Podczas wysyłania wiadomości wystąpił błąd. Sprawdź połączenie sieciowe oraz adres i konfigurację serwera.</string>
+  <string name="switch_on">Włącz</string>
+  <string name="switch_off">Wyłącz</string>
+  <string name="navigation_drawer_open">Otwórz</string>
+  <string name="navigation_drawer_close">Zamknij</string>
+  <!--permissions-->
 </resources>

@@ -9,9 +9,8 @@
   <string name="remote_control_label">K-9 Retpoŝtilo teleregilo</string>
   <string name="remote_control_desc">Ebligas al tiu ĉi aplikaĵo regi agojn kaj agordojn de K-9 Retpoŝtilo.</string>
   <!--Used in the about dialog-->
-  <string name="app_authors">Google, The K-9 Dog Walkers.</string>
+  <string name="app_authors">The K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Kopirajto 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Parta kopirajto 2006-<xliff:g>%s</xliff:g> la Malfermkoda Projekto Android (AOSP).</string>
-  <string name="app_license">Permesilo Apache, versio 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Bonvenon al K-9 Retpoŝtilo</string>
   <string name="accounts_welcome"><![CDATA[
@@ -48,18 +47,12 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_delete_dlg_instructions_fmt">La konto \"<xliff:g id="account">%s</xliff:g>\" estos forigita el K-9 Retpoŝtilo.</string>
   <string name="account_recreate_dlg_instructions_fmt">Ĉiuj lokaj datumoj de \"<xliff:g id="account">%s</xliff:g>\" estos forigitaj. Agordoj de konto estos konservitaj.</string>
   <string name="account_clear_dlg_instructions_fmt">Lokaj kopioj de mesaĝoj en \"<xliff:g id="account">%s</xliff:g>\" estos forigitaj. Agordoj de konto estos konservitaj.</string>
-  <!--=== App Store-specific strings =======================================================-->
-  <string name="import_dialog_error_message">Bonvolu instali dosier-esprolilon por pluigi enporti.</string>
-  <string name="open_market">Malfermi vendejon Play</string>
   <!--=== General strings ==================================================================-->
-  <string name="authors">Aŭtoroj</string>
-  <string name="app_revision">Informoj pri eldono</string>
   <string name="app_libraries">La jenaj bibliotekoj de eksteraj liverantoj estas uzataj: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Legi retleterojn</string>
   <string name="read_messages_desc">Permesas al tiu ĉi aplikaĵo legi viajn retleterojn.</string>
   <string name="delete_messages_label">Forigi retleterojn</string>
   <string name="delete_messages_desc">Permesas al tiu ĉi aplikaĵo forigi viajn retleterojn.</string>
-  <string name="about_title">Pri K-9 Mail</string>
   <string name="accounts_title">Kontoj</string>
   <string name="folders_title">Mesaĝujoj</string>
   <string name="advanced">Spertaj</string>
@@ -126,7 +119,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="flag_action">Steletigi</string>
   <string name="unflag_action">Malsteletigi</string>
   <string name="copy_action">Kopii</string>
-  <string name="select_text_action">Marki tekston</string>
   <string name="show_headers_action">Montri mesaĝokapojn</string>
   <string name="hide_headers_action">Kaŝi mesaĝokapojn</string>
   <plurals name="copy_address_to_clipboard">
@@ -188,6 +180,8 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="notification_bg_send_ticker">Sendado de retletero: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Sendado de retletero</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_messages_title">Mesaĝoj</string>
+  <string name="notification_channel_miscellaneous_title">Diversaj</string>
   <string name="special_mailbox_name_inbox">Ricevujo</string>
   <string name="special_mailbox_name_outbox">Sendotujo</string>
   <string name="special_mailbox_name_drafts">Malnetujo</string>
@@ -201,7 +195,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arĥivo)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Trudmesaĝujo)</string>
   <string name="send_failure_subject">Malsukcesis sendi iujn mesaĝojn</string>
-  <string name="version">Versio</string>
   <string name="debug_enable_debug_logging_title">Aktivigi senerarigan protokoladon</string>
   <string name="debug_enable_debug_logging_summary">Protokolas aldonajn informojn pri senerarigo.</string>
   <string name="debug_enable_sensitive_logging_title">Protokoli konfidajn informojn</string>
@@ -233,8 +226,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="message_view_bcc_label">Kaŝkopio:</string>
   <string name="message_view_attachment_view_action">Malfermi</string>
   <string name="message_view_attachment_download_action">Konservi</string>
-  <string name="message_view_status_attachment_not_saved">Fiaskis konservi kunsendaĵon al SD-karto.</string>
-  <string name="message_view_status_no_space">La kunsendaĵo ne povis esti konservita pro nesufiĉa spaco.</string>
   <string name="message_view_show_pictures_action">Montri bildojn</string>
   <string name="message_view_no_viewer">Ne povas trovi vidigilon por <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Elŝuti tutan mesaĝon</string>
@@ -284,8 +275,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="global_settings_privacy_hide_useragent_detail">Forviŝi nomon de klienta aplikaĵo K-9 el mesaĝokapo</string>
   <string name="global_settings_privacy_hide_timezone">Kaŝi horzonon</string>
   <string name="global_settings_privacy_hide_timezone_detail">Uzi UTC anstataŭ lokan horzonon en mesaĝokapo kaj respond-kampo</string>
-  <string name="global_settings_privacy_hide_hostname_when_connecting">Kaŝi nomon de komputilo</string>
-  <string name="global_settings_privacy_hide_hostname_when_connecting_detail">Identigi kiel ‘localhost’ dum konekti al SMTP-serviloj</string>
   <string name="global_settings_notification_hide_subject_title">Kaŝi temon en sciigoj</string>
   <string name="global_settings_notification_hide_subject_never">Neniam</string>
   <string name="global_settings_notification_hide_subject_when_locked">Kiam aparato estas ŝlosita</string>
@@ -392,9 +381,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="recreate_action">Rekrei datumojn (lasta ŝanco!)</string>
   <string name="account_setup_options_mail_check_frequency_label">Ofteco de mesaĝuj-elŝuto</string>
   <string name="account_setup_options_mail_check_frequency_never">Neniam</string>
-  <string name="account_setup_options_mail_check_frequency_1min">Ĉiuminute</string>
-  <string name="account_setup_options_mail_check_frequency_5min">Je ĉiu 5 minutoj</string>
-  <string name="account_setup_options_mail_check_frequency_10min">Je ĉiu 10 minutoj</string>
   <string name="account_setup_options_mail_check_frequency_15min">Je ĉiu 15 minutoj</string>
   <string name="account_setup_options_mail_check_frequency_30min">Je ĉiu 30 minutoj</string>
   <string name="account_setup_options_mail_check_frequency_1hour">Ĉiuhore</string>
@@ -486,14 +472,19 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_settings_sync">Elŝutado de retpoŝto</string>
   <string name="account_settings_folders">Mesaĝujoj</string>
   <string name="account_settings_quote_prefix_label">Prefikso de citaĵo</string>
-  <string name="account_settings_crypto">Ĉifroteĥniko</string>
-  <string name="account_settings_crypto_app">OpenPGP-aplikaĵo</string>
-  <string name="account_settings_crypto_key">Mia ŝlosilo</string>
+  <string name="account_settings_crypto">Ĉifrado de-fino-al-fino</string>
+  <string name="account_settings_crypto_app">Aktivigi subtenon por OpenPGP</string>
+  <string name="account_settings_crypto_app_select_title">Elekti OpenPGP-aplikaĵon</string>
+  <string name="account_settings_crypto_key">Konfiguri ĉifroŝlosilon</string>
+  <string name="account_settings_crypto_summary_off">Neniu OpenPGP-aplikaĵo agordita</string>
+  <string name="account_settings_crypto_summary_on">Konektita al %s</string>
   <string name="account_settings_no_openpgp_provider_configured">Neniu OpenPGP-aplikaĵo agordita</string>
+  <string name="account_settings_no_openpgp_provider_installed">Ne trovis OpenPGP-aplikaĵon - klaku por instali</string>
   <string name="account_settings_mail_check_frequency_label">Ofteco de mesaĝuj-elŝuto</string>
   <string name="account_settings_storage_title">Memoro</string>
   <string name="account_settings_color_label">Konta koloro</string>
   <string name="account_settings_color_summary">Distinga koloro por tiu ĉi konto uzata en listoj de mesaĝujoj kaj kontoj</string>
+  <string name="account_settings_color_none">Sen koloro</string>
   <string name="account_settings_led_color_label">Sciiga LED-a koloro</string>
   <string name="account_settings_led_color_summary">Koloro de aparata LED kiu briletos je sciigoj pri tiu ĉi konto</string>
   <string name="account_settings_mail_display_count_label">Grando de loka mesaĝujo</string>
@@ -550,6 +541,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_settings_folder_target_mode_not_second_class">Ĉiuj escepte de klaso 2</string>
   <string name="account_settings_sync_remote_deletetions_label">Samtempigo de forigadoj kun servilo</string>
   <string name="account_settings_sync_remote_deletetions_summary">Forigi mesaĝojn kiam forigitaj el servilo</string>
+  <string name="account_settings_openpgp_missing">Mankas OpenPGP-aplikaĵo - eble malinstalita?</string>
   <string name="folder_settings_title">Agordoj de mesaĝujo</string>
   <string name="folder_settings_in_top_group_label">Montri supre</string>
   <string name="folder_settings_in_top_group_summary">Montras ĉe supro de mesaĝuj-listo</string>
@@ -728,6 +720,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_settings_searchable_all">Ĉiuj</string>
   <string name="account_settings_searchable_displayable">Montrataj</string>
   <string name="account_settings_searchable_none">Neniu</string>
+  <string name="account_settings_no_folder_selected">Nenia</string>
   <string name="font_size_settings_title">Tipara grando</string>
   <string name="font_size_settings_description">Agordas tiparajn grandojn</string>
   <string name="font_size_account_list">Listo de kontoj</string>
@@ -762,7 +755,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="font_size_medium">Meza</string>
   <string name="font_size_large">Granda</string>
   <string name="font_size_larger">Grandega</string>
-  <string name="miscellaneous_preferences">Diversaj</string>
   <string name="error_activity_not_found">Ne trovis taŭgan aplikaĵon por tiu ĉi ago.</string>
   <string name="send_failed_reason">Sendado malsukcesis: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Ĉu konservi malneton?</string>
@@ -804,17 +796,13 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="settings_exporting">Elportado de agordoj…</string>
   <string name="settings_importing">Enportado de agordoj…</string>
   <string name="settings_import_scanning_file">Skanado de dosiero…</string>
-  <string name="settings_export_success">Konservis elportitajn agordojn al <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_generic">Sukcese elportis agordojn</string>
-  <string name="settings_import_global_settings_success">Enportis ĝeneralajn agordojn el <xliff:g id="filename">%s</xliff:g></string>
-  <string name="settings_import_success">Enportis <xliff:g id="accounts">%s</xliff:g> el <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_account_imported_as">Enportis <xliff:g id="original_account_name">%s</xliff:g> kiel <xliff:g id="account_name_after_import">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
     <item quantity="one">1 konto</item>
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> kontoj</item>
   </plurals>
   <string name="settings_export_failure">Fiaskis elporti agordojn</string>
-  <string name="settings_import_failure">Fiaskis enporti ĉiujn agordojn el <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_header">Sukcesis elporti</string>
   <string name="settings_export_failed_header">Fiaskis elporti</string>
   <string name="settings_import_success_header">Sukcesis enporti</string>
@@ -834,7 +822,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="settings_import_use_incoming_server_password">Uzi pasvorton de eniga servilo</string>
   <string name="activate_account_action">Aktivigi</string>
   <string name="account_unavailable">Konto \"<xliff:g id="account">%s</xliff:g>\" estas nedisponebla, kontrolu memoron</string>
-  <string name="settings_attachment_default_path">Konservi kunsendaĵojn al…</string>
   <string name="attachment_save_title">Konservi kunsendaĵon</string>
   <string name="attachment_save_desc">Neniu dosier-esplorilo trovita. Kien vi volas konservi tiun ĉi kunsendaĵon?</string>
   <string name="manage_accounts_move_up_action">Movi supren</string>
@@ -853,7 +840,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
   <string name="unread_widget_account_not_selected">Neniu konto elektita</string>
   <string name="unread_widget_folder_not_selected">Neniu mesaĝujo elektita</string>
-  <string name="import_dialog_error_title">Dosier-esplorilo mankas</string>
   <string name="close">Fermi</string>
   <string name="webview_empty_message">Nenia teksto</string>
   <string name="webview_contextmenu_link_view_action">Malfermi ligilon</string>
@@ -959,7 +945,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="crypto_mode_private">Ĉifri</string>
   <string name="error_crypto_provider_incompatible">Ĉifrad-liveranto uzas nekongruan version. Bonvolu kontroli viajn agordojn!</string>
   <string name="error_crypto_provider_connect">Ne povas konekti al ĉifrilo, bonvolu kontroli viajn agordojn aŭ frapetu piktogramon de ĉifrado por reprovi!</string>
-  <string name="error_crypto_provider_ui_required">Aliro al ĉifrilo rifuzita, frapetu piktogramon de ĉifrado por reprovi!</string>
+  <string name="error_crypto_provider_ui_required">Fiaskis starti ĉifradon de-fino-al-fino, bonvolu kontroli viajn agordojn</string>
   <string name="error_crypto_inline_attach">Reĝimo PGP/INLINE ne subtenas kunsendaĵojn!</string>
   <string name="enable_inline_pgp">Aktivigi PGP/INLINE</string>
   <string name="disable_inline_pgp">Malaktivigi PGP/INLINE</string>
@@ -986,6 +972,8 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="crypto_msg_unencrypted_sign_error">ĉifra subskribo enhavas eraron</string>
   <string name="crypto_msg_incomplete_signed">devas esti tute elŝutita por pritrakti subskribon</string>
   <string name="crypto_msg_unsupported_signed">enhavas nesubtenatan ĉifran subskribon</string>
+  <string name="crypto_msg_unsupported_encrypted">Retletero estas ĉifrita, sed en nesubtenata formo.</string>
+  <string name="crypto_msg_cancelled">Retletero estas ĉifrita, sed malĉifrado estis nuligita.</string>
   <string name="crypto_msg_title_unencrypted_signed_e2e">ĉifr-subskribita platteksto</string>
   <string name="crypto_msg_unencrypted_sign_verified">de verigita subskribinto</string>
   <string name="crypto_msg_title_unencrypted_signed">Subskribita platteksto</string>
@@ -1013,6 +1001,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="crypto_msg_encrypted_sign_error">sed ĉifraj datumoj enhavas erarojn</string>
   <string name="crypto_msg_encrypted_insecure">sed ĉifr-metodo ne estas sekurinda</string>
   <string name="crypto_info_ok">Bone</string>
+  <string name="crypto_info_search_key">Serĉi ŝlosilon</string>
   <string name="crypto_info_view_signer">Vidigi subskribinton</string>
   <string name="crypto_info_view_sender">Vidigi sendinton</string>
   <string name="crypto_info_view_security_warning">Detaloj</string>
@@ -1026,9 +1015,9 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="messageview_crypto_error_title">Eraro dum malĉifrado de retletero</string>
   <string name="recipient_error_non_ascii">Specialaj signoj ne estas nune subtenataj!</string>
   <string name="recipient_error_parse_failed">Eraro dum analizado de adreso!</string>
-  <string name="account_settings_crypto_support_sign_only">Montri neĉifritajn subskribojn</string>
-  <string name="account_settings_crypto_support_sign_only_on">Neĉifritaj subskriboj montriĝos</string>
-  <string name="account_settings_crypto_support_sign_only_off">Neĉifritaj subskriboj kaŝiĝos</string>
+  <string name="account_settings_crypto_hide_sign_only">Kaŝi neĉifritajn subskribojn</string>
+  <string name="account_settings_crypto_hide_sign_only_on">Nur ĉifritaj subskribojn montriĝos</string>
+  <string name="account_settings_crypto_hide_sign_only_off">Ĉiuj subskriboj montriĝos</string>
   <string name="error_sign_only_no_encryption">Ĉifrado ne eblas en nur-subskriba reĝimo!</string>
   <string name="unsigned_text_divider_label">Nesubskribita teksto</string>
   <string name="apg_deprecated_title">Averto: APG evitindas</string>
@@ -1042,7 +1031,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="no_crypto_provider_see_global">Neniu OpenPGP-aplikaĵo agordita, vidu ĝeneralajn agordojn!</string>
   <string name="crypto_no_provider_title">Tiu ĉi retletero estas ĉifrita</string>
   <string name="crypto_no_provider_message">Tiu ĉi retletero estas ĉifrita per OpenPGP.\nPor legi ĝin, vi devas instali kaj agordi kongruan OpenPGP-aplikaĵon.</string>
-  <string name="crypto_no_provider_button">Elekti OpenPGP-aplikaĵon</string>
+  <string name="crypto_no_provider_button">Iri al agordoj</string>
   <string name="mail_list_widget_text">K-9 mesaĝlisto</string>
   <string name="mail_list_widget_loading">Ŝargado de mesaĝoj…</string>
   <string name="fetching_folders_failed">Elŝutado de mesaĝuj-listo malsukcesis</string>
@@ -1059,4 +1048,41 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="openpgp_enabled_error_back">Antaŭen</string>
   <string name="openpgp_enabled_error_disable">Malaktivigi ĉifradon</string>
   <string name="openpgp_encryption">OpenPGP-ĉifrado</string>
+  <string name="account_settings_crypto_prefer_encrypt">Reciproke aŭtomata ĉifrado</string>
+  <string name="dialog_autocrypt_mutual_title">Reciproke aŭtomata ĉifrado</string>
+  <string name="dialog_autocrypt_mutual_description_1">Mesaĝoj norme estos ĉifritaj laŭ elekto aŭ kiam respondi al ĉifrita mesaĝo</string>
+  <string name="dialog_autocrypt_mutual_description_2">Se ambaŭ sendanto kaj ricevanto aktivigas tiun ĉi reĝimon, ĉifrado estos implicite aktivigita.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Vi povas <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">klaki tien ĉi</a> por sciiĝi pli (en la angla).</string>
+  <string name="general_settings_title">Ĝeneralaj agordoj</string>
+  <string name="dialog_openkeychain_info_title">Neniu OpenPGP-aplikaĵo instalita</string>
+  <string name="dialog_openkeychain_info_install">Instali</string>
+  <string name="dialog_openkeychain_info_text">K-9 Retpoŝtilo postulas OpenKeychain por ĉifri de-fino-al-fino.</string>
+  <string name="encrypted_subject">Ĉifrita mesaĝo</string>
+  <string name="account_settings_crypto_encrypt_subject">Ĉifri temon de mesaĝo</string>
+  <string name="account_settings_crypto_encrypt_subject_subtitle">Povas esti nesubtenata de iuj ricevontoj</string>
+  <string name="toast_account_not_found">Interna eraro: malĝusta konto!</string>
+  <string name="toast_openpgp_provider_error">Eraro dum konektado al %s!</string>
+  <string name="ac_transfer_setting_title">Sendi instal-mesaĝon de Autocrypt</string>
+  <string name="ac_transfer_setting_summary">Sekure kunhavigi agordon de ĉifrado kun aliaj aparatoj</string>
+  <string name="ac_transfer_title">Instal-mesaĝo de Autocrypt</string>
+  <string name="ac_transfer_intro">Instal-mesaĝo de Autocrypt sekure kunhavigas agordojn de ĉifrado kun aliaj aparatoj.</string>
+  <string name="ac_transfer_button_send">Sendi instal-mesaĝon</string>
+  <string name="ac_transfer_will_be_sent">La mesaĝo estos sendita al via adreso:</string>
+  <string name="ac_transfer_generating">Kreado de instal-mesaĝo…</string>
+  <string name="ac_transfer_sending_to">Sendado de mesaĝo al:</string>
+  <string name="ac_transfer_finish">Por fini, malfermu la mesaĝon per via alia aparato kaj entajpu la instal-kodon.</string>
+  <string name="ac_transfer_show_code">Montri instal-kodon</string>
+  <string name="ac_transfer_msg_subject">Instal-mesaĝo de Autocrypt</string>
+  <string name="ac_transfer_msg_body">Tiu ĉi mesaĝo enhavas ĉiujn informojn por transporti viajn agordojn de Autocrypt kune kun via privata ŝlosilo sekure el via origina aparato.
+
+Por agordi vian novan aparaton por Autocrypt, bonvolu plenumi la instrukciojn montrataj ĉe via nova aparato.
+
+Vi povas konservi tiun ĉi mesaĝon kaj uzi ĝin kiel sekurkopion de via privata ŝlosilo. Por fari tion, skribu la pasvorton kaj tenu ĝin sekrete.
+</string>
+  <string name="ac_transfer_error_send">Eraro okazis dum sendado de mesaĝo. Bonvolu kontroli vian retkonekton kaj agordojn de eliga servilo.</string>
+  <string name="switch_on">Ek</string>
+  <string name="switch_off">For</string>
+  <string name="navigation_drawer_open">Malfermi</string>
+  <string name="navigation_drawer_close">Fermi</string>
+  <!--permissions-->
 </resources>
