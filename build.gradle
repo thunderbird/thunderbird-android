@@ -30,9 +30,8 @@ buildscript {
     }
 
     repositories {
-        mavenCentral()
-        google()
         jcenter()
+        google()
     }
 
     dependencies {
@@ -48,10 +47,9 @@ project.ext {
 
 subprojects {
     repositories {
-        mavenCentral()
+        jcenter()
         google()
         maven { url 'https://jitpack.io' }
-        jcenter()
     }
 
     configurations.all {
