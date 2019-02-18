@@ -48,8 +48,11 @@ import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.imap.IdGrouper.GroupedIds;
 import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZOutputStream;
+
 import javax.net.ssl.SSLException;
+
 import org.apache.commons.io.IOUtils;
+
 import timber.log.Timber;
 
 import static com.fsck.k9.mail.ConnectionSecurity.STARTTLS_REQUIRED;
@@ -98,7 +101,7 @@ class ImapConnection {
 
 
     public ImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
-            ConnectivityManager connectivityManager, OAuth2TokenProvider oauthTokenProvider) {
+                          ConnectivityManager connectivityManager, OAuth2TokenProvider oauthTokenProvider) {
         this.settings = settings;
         this.socketFactory = socketFactory;
         this.connectivityManager = connectivityManager;
@@ -108,8 +111,8 @@ class ImapConnection {
     }
 
     ImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
-            ConnectivityManager connectivityManager, OAuth2TokenProvider oauthTokenProvider,
-            int socketConnectTimeout, int socketReadTimeout) {
+                   ConnectivityManager connectivityManager, OAuth2TokenProvider oauthTokenProvider,
+                   int socketConnectTimeout, int socketReadTimeout) {
         this.settings = settings;
         this.socketFactory = socketFactory;
         this.connectivityManager = connectivityManager;
@@ -210,15 +213,16 @@ class ImapConnection {
         InetAddress[] inetAddresses = null;
 
         //Check if unresolved host is onion
-        try {
-            inetAddresses = InetAddress.getAllByName(settings.getHost());
-        } catch (UnknownHostException e) {
-            if (settings.getHost().toLowerCase().endsWith("onion")) { //TOR Onion address
-                return connectToOnionAddress();
-            } else {
+        if (settings.getHost().length() == 16 + 1 + "onion".length() && settings.getHost().toLowerCase().endsWith("onion")) { //the address is Onion
+            return connectToOnionAddress();
+        } else {
+            try {
+                inetAddresses = InetAddress.getAllByName(settings.getHost());
+            } catch (UnknownHostException e) {
                 throw new UnknownHostException("Cannot resolve " + settings.getHost());
             }
         }
+
 
         for (InetAddress address : inetAddresses) {
             try {

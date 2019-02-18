@@ -32,7 +32,9 @@ import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.RemoteStore;
+
 import javax.net.ssl.SSLException;
+
 import timber.log.Timber;
 
 import static com.fsck.k9.mail.CertificateValidationException.Reason.MissingCapability;
@@ -57,20 +59,17 @@ class Pop3Connection {
     private boolean topNotAdvertised;
 
     Pop3Connection(Pop3Settings settings,
-            TrustedSocketFactory trustedSocketFactory) {
+                   TrustedSocketFactory trustedSocketFactory) {
         this.settings = settings;
         this.trustedSocketFactory = trustedSocketFactory;
     }
 
     void open() throws MessagingException {
         try {
-            try {
-                InetAddress.getAllByName(settings.getHost());
-            } catch (UnknownHostException ex) {
-                if (settings.getHost().toLowerCase().endsWith("onion")) {
-                    socket = createOnionSocket();
-                }
+            if (settings.getHost().length() == 16 + 1 + "onion".length() && settings.getHost().toLowerCase().endsWith(".onion")) { //the address is Onion
+                socket = createOnionSocket();
             }
+
             SocketAddress socketAddress = new InetSocketAddress(settings.getHost(), settings.getPort());
 
             if (socket == null || !socket.isConnected()) {
@@ -138,8 +137,9 @@ class Pop3Connection {
 
     /**
      * This method will be used for creating a socket for Onion destinations.
+     *
      * @return The socket in which is connected to the Onion address
-     * @throws MessagingException Will throw if proxy is not set in K9.
+     * @throws MessagingException       Will throw if proxy is not set in K9.
      * @throws IOException
      * @throws NoSuchAlgorithmException
      * @throws KeyManagementException
@@ -187,7 +187,7 @@ class Pop3Connection {
      * "STARTTLS (if available)" setting.
      */
     private void performStartTlsUpgrade(TrustedSocketFactory trustedSocketFactory,
-            String host, int port, String clientCertificateAlias)
+                                        String host, int port, String clientCertificateAlias)
             throws MessagingException, NoSuchAlgorithmException, KeyManagementException, IOException {
         if (capabilities.stls) {
             executeSimpleCommand(STLS_COMMAND);
@@ -241,7 +241,7 @@ class Pop3Connection {
 
             default:
                 throw new MessagingException(
-                        "Unhandled authentication method: "+authType+" found in the server settings (bug).");
+                        "Unhandled authentication method: " + authType + " found in the server settings (bug).");
         }
 
     }
@@ -453,13 +453,13 @@ class Pop3Connection {
             throw new IOException("End of stream reached while trying to read line.");
         }
         do {
-            if (((char)d) == '\r') {
+            if (((char) d) == '\r') {
                 //noinspection UnnecessaryContinue Makes it easier to follow
                 continue;
-            } else if (((char)d) == '\n') {
+            } else if (((char) d) == '\n') {
                 break;
             } else {
-                sb.append((char)d);
+                sb.append((char) d);
             }
         } while ((d = in.read()) != -1);
         String ret = sb.toString();

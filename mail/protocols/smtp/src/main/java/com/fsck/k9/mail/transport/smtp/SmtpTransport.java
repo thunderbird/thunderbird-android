@@ -51,8 +51,11 @@ import com.fsck.k9.mail.internet.CharsetSupport;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.oauth.XOAuth2ChallengeParser;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
+
 import javax.net.ssl.SSLException;
+
 import org.apache.commons.io.IOUtils;
+
 import timber.log.Timber;
 
 import static com.fsck.k9.mail.CertificateValidationException.Reason.MissingCapability;
@@ -86,7 +89,7 @@ public class SmtpTransport extends Transport {
 
 
     public SmtpTransport(ServerSettings serverSettings,
-            TrustedSocketFactory trustedSocketFactory, OAuth2TokenProvider oauthTokenProvider) {
+                         TrustedSocketFactory trustedSocketFactory, OAuth2TokenProvider oauthTokenProvider) {
         if (!serverSettings.type.equals("smtp")) {
             throw new IllegalArgumentException("Expected SMTP StoreConfig!");
         }
@@ -111,12 +114,12 @@ public class SmtpTransport extends Transport {
             boolean secureConnection = false;
 
             InetAddress[] addresses = null;
-            try {
-                addresses = InetAddress.getAllByName(host);
-            } catch (UnknownHostException e) {
-                if (host.toLowerCase().endsWith("onion")) {
-                    socket = createOnionSocket();
-                } else {
+            if (host.length() == 16 + 1 + "onion".length() && host.toLowerCase().endsWith("onion")) { //the address is Onion
+                socket = createOnionSocket();
+            } else {
+                try {
+                    addresses = InetAddress.getAllByName(host);
+                } catch (UnknownHostException e) {
                     throw new UnknownHostException("Cannot resolve " + host);
                 }
             }
@@ -233,11 +236,11 @@ public class SmtpTransport extends Transport {
 
                 switch (authType) {
 
-                /*
-                 * LOGIN is an obsolete option which is unavailable to users,
-                 * but it still may exist in a user's settings from a previous
-                 * version, or it may have been imported.
-                 */
+                    /*
+                     * LOGIN is an obsolete option which is unavailable to users,
+                     * but it still may exist in a user's settings from a previous
+                     * version, or it may have been imported.
+                     */
                     case LOGIN:
                     case PLAIN:
                         // try saslAuthPlain first, because it supports UTF-8 explicitly
@@ -269,25 +272,25 @@ public class SmtpTransport extends Transport {
                         if (authExternalSupported) {
                             saslAuthExternal();
                         } else {
-                        /*
-                         * Some SMTP servers are known to provide no error
-                         * indication when a client certificate fails to
-                         * validate, other than to not offer the AUTH EXTERNAL
-                         * capability.
-                         *
-                         * So, we treat it is an error to not offer AUTH
-                         * EXTERNAL when using client certificates. That way, the
-                         * user can be notified of a problem during account setup.
-                         */
+                            /*
+                             * Some SMTP servers are known to provide no error
+                             * indication when a client certificate fails to
+                             * validate, other than to not offer the AUTH EXTERNAL
+                             * capability.
+                             *
+                             * So, we treat it is an error to not offer AUTH
+                             * EXTERNAL when using client certificates. That way, the
+                             * user can be notified of a problem during account setup.
+                             */
                             throw new CertificateValidationException(MissingCapability);
                         }
                         break;
 
-                /*
-                 * AUTOMATIC is an obsolete option which is unavailable to users,
-                 * but it still may exist in a user's settings from a previous
-                 * version, or it may have been imported.
-                 */
+                    /*
+                     * AUTOMATIC is an obsolete option which is unavailable to users,
+                     * but it still may exist in a user's settings from a previous
+                     * version, or it may have been imported.
+                     */
                     case AUTOMATIC:
                         if (secureConnection) {
                             // try saslAuthPlain first, because it supports UTF-8 explicitly
@@ -304,12 +307,12 @@ public class SmtpTransport extends Transport {
                             if (authCramMD5Supported) {
                                 saslAuthCramMD5();
                             } else {
-                            /*
-                             * We refuse to insecurely transmit the password
-                             * using the obsolete AUTOMATIC setting because of
-                             * the potential for a MITM attack. Affected users
-                             * must choose a different setting.
-                             */
+                                /*
+                                 * We refuse to insecurely transmit the password
+                                 * using the obsolete AUTOMATIC setting because of
+                                 * the potential for a MITM attack. Affected users
+                                 * must choose a different setting.
+                                 */
                                 throw new MessagingException(
                                         "Update your outgoing server authentication setting. AUTOMATIC auth. is unavailable.");
                             }
@@ -330,7 +333,7 @@ public class SmtpTransport extends Transport {
         } catch (GeneralSecurityException gse) {
             close();
             throw new MessagingException(
-                "Unable to open connection to SMTP server due to security error.", gse);
+                    "Unable to open connection to SMTP server due to security error.", gse);
         } catch (IOException ioe) {
             close();
             throw new MessagingException("Unable to open connection to SMTP server.", ioe);
@@ -339,8 +342,9 @@ public class SmtpTransport extends Transport {
 
     /**
      * Will create an Onion socket if the destination address is Onion.
+     *
      * @return The socket object connected to the destination Onion.
-     * @throws MessagingException If proxy is not turned on while creating Onion socket.
+     * @throws MessagingException       If proxy is not turned on while creating Onion socket.
      * @throws IOException
      * @throws NoSuchAlgorithmException
      * @throws KeyManagementException
@@ -416,16 +420,11 @@ public class SmtpTransport extends Transport {
      * And if that fails, too, we pretend everything is fine and continue unimpressed.
      * </p>
      *
-     * @param host
-     *         The EHLO/HELO parameter as defined by the RFC.
-     *
+     * @param host The EHLO/HELO parameter as defined by the RFC.
      * @return A (possibly empty) {@code Map<String,String>} of extensions (upper case) and
      * their parameters (possibly 0 length) as returned by the EHLO command
-     *
-     * @throws IOException
-     *          In case of a network error.
-     * @throws MessagingException
-     *          In case of a malformed response.
+     * @throws IOException        In case of a network error.
+     * @throws MessagingException In case of a malformed response.
      */
     private Map<String, String> sendHello(String host) throws IOException, MessagingException {
         Map<String, String> extensions = new HashMap<>();
@@ -845,7 +844,7 @@ public class SmtpTransport extends Transport {
     }
 
     private void handleTemporaryFailure(String username, NegativeSmtpReplyException negativeResponseFromOldToken)
-        throws IOException, MessagingException {
+            throws IOException, MessagingException {
         // Token was invalid
 
         //We could avoid this double check if we had a reasonable chance of knowing
