@@ -44,6 +44,9 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.0"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.0"
 
+    // using 3.12 version until we raise minSdkVersion to 21
+    implementation "com.squareup.okhttp3:okhttp:3.12.1"
+
     testImplementation project(':mail:testing')
     testImplementation project(':app:storage')
     testImplementation project(':app:testing')

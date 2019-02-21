@@ -1,16 +1,18 @@
 package com.fsck.k9.autodiscovery
 
 import com.fsck.k9.helper.EmailHelper
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import java.io.InputStream
-import java.net.URL
 import java.net.URLEncoder
 
-class ThunderbirdAutoconfigFetcher() {
+class ThunderbirdAutoconfigFetcher(private val client: OkHttpClient) {
 
     fun fetchAutoconfigFile(email: String): InputStream? {
-        val url = URL(getAutodiscoveryAddress(email))
+        val url = getAutodiscoveryAddress(email)
+        val request = Request.Builder().url(url).build()
 
-        return url.openConnection().inputStream
+        return client.newCall(request).execute().body()?.byteStream()
     }
 
     companion object {
