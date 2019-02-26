@@ -386,7 +386,13 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
 
         renderAttachments(messageViewInfo);
 
-        String textToDisplay = messageViewInfo.text;
+        String textToDisplay = null;
+        if (true /** @todo add switch */) {
+            textToDisplay = messageViewInfo.text;
+        } else {
+            textToDisplay = HtmlConverter.wrapMessageContent(messageViewInfo.plainText);
+        }
+
         if (textToDisplay != null && !isShowingPictures()) {
             if (Utility.hasExternalImages(textToDisplay)) {
                 if (loadPictures) {
