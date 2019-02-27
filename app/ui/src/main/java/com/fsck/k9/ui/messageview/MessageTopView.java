@@ -66,7 +66,6 @@ public class MessageTopView extends LinearLayout {
         super.onFinishInflate();
 
         mHeaderContainer = findViewById(R.id.header_container);
-        // mHeaderContainer.setOnLayoutChangedListener(this);
         mInflater = LayoutInflater.from(getContext());
 
         viewAnimator = findViewById(R.id.message_layout_animator);
