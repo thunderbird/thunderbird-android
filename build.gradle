@@ -7,7 +7,7 @@ buildscript {
         ]
 
         versions = [
-                'kotlin': '1.3.21',
+                'kotlin': '1.3.20',
                 'androidxAppCompat': '1.0.2',
                 'androidxRecyclerView': '1.0.0',
                 'androidxLifecycleExtensions': '2.0.0',
@@ -15,7 +15,7 @@ buildscript {
                 'coreKtx': '1.0.1',
                 'preferencesFix': '1.0.0',
                 'okio': '1.14.0',
-                'timber': '4.7.1',
+                'timber': '4.5.1',
                 'koin': '0.9.1',
                 'commonsIo': '2.4',
                 'mime4j': '0.8.1',
@@ -30,12 +30,13 @@ buildscript {
     }
 
     repositories {
-        jcenter()
+        mavenCentral()
         google()
+        jcenter()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.1'
+        classpath 'com.android.tools.build:gradle:3.2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
         classpath "org.jetbrains.kotlin:kotlin-android-extensions:${versions.kotlin}"
     }
@@ -47,9 +48,10 @@ project.ext {
 
 subprojects {
     repositories {
-        jcenter()
+        mavenCentral()
         google()
         maven { url 'https://jitpack.io' }
+        jcenter()
     }
 
     configurations.all {

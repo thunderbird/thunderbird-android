@@ -22,7 +22,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Queue;
 
-import androidx.annotation.VisibleForTesting;
 import android.text.TextUtils;
 
 import com.fsck.k9.mail.Address;
@@ -379,7 +378,7 @@ public class SmtpTransport extends Transport {
             addresses.addAll(Arrays.asList(message.getRecipients(RecipientType.CC)));
             addresses.addAll(Arrays.asList(message.getRecipients(RecipientType.BCC)));
         }
-        message.setRecipients(RecipientType.BCC, null);
+        message.removeHeader("Bcc");
 
         Map<String, List<String>> charsetAddressesMap = new HashMap<>();
         for (Address address : addresses) {
