@@ -15,8 +15,8 @@ buildscript {
                 'coreKtx': '1.0.1',
                 'preferencesFix': '1.0.0',
                 'okio': '1.14.0',
-                'timber': '4.5.1',
-                'koin': '0.9.1',
+                'timber': '4.7.1',
+                'koin': '1.0.2',
                 'commonsIo': '2.4',
                 'mime4j': '0.8.1',
 
@@ -25,7 +25,7 @@ buildscript {
                 'robolectric': '3.7.1',
                 'mockito': '2.18.0',
                 'mockitoKotlin': '1.5.0',
-                'truth': '0.35'
+                'truth': '0.42'
         ]
     }
 

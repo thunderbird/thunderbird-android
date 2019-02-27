@@ -16,8 +16,9 @@ import com.fsck.k9.ui.fragmentTransactionWithBackStack
 import com.fsck.k9.ui.observe
 import com.fsck.k9.ui.observeNotNull
 import kotlinx.android.synthetic.main.activity_account_settings.*
-import org.koin.android.architecture.ext.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
+
 
 class AccountSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback {
     private val accountViewModel: AccountSettingsViewModel by viewModel()

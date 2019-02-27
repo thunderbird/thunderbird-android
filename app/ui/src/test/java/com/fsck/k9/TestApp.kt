@@ -5,7 +5,7 @@ import com.fsck.k9.preferences.InMemoryStoragePersister
 import com.fsck.k9.preferences.StoragePersister
 import com.fsck.k9.storage.storageModule
 import com.nhaarman.mockito_kotlin.mock
-import org.koin.dsl.module.applicationContext
+import org.koin.dsl.module.module
 
 class TestApp : Application() {
     override fun onCreate() {
@@ -19,8 +19,8 @@ class TestApp : Application() {
     }
 }
 
-val testModule = applicationContext {
-    bean { AppConfig(emptyList()) }
-    bean { mock<CoreResourceProvider>() }
-    bean { InMemoryStoragePersister() as StoragePersister }
+val testModule = module {
+    single { AppConfig(emptyList()) }
+    single { mock<CoreResourceProvider>() }
+    single { InMemoryStoragePersister() as StoragePersister }
 }

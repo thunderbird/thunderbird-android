@@ -3,8 +3,8 @@ package com.fsck.k9.ui.settings
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.MenuItem
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.fsck.k9.Account
 import com.fsck.k9.activity.K9Activity
 import com.fsck.k9.activity.setup.WelcomeMessage
@@ -16,7 +16,8 @@ import com.xwray.groupie.Item
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.activity_settings.*
-import org.koin.android.architecture.ext.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+
 
 class SettingsActivity : K9Activity() {
     private val viewModel: SettingsViewModel by viewModel()

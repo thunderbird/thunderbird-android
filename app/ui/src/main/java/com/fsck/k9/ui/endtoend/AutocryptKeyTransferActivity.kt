@@ -11,6 +11,7 @@ import android.transition.TransitionInflater
 import android.transition.TransitionManager
 import android.view.MenuItem
 import android.view.View
+import androidx.lifecycle.LifecycleOwner
 import com.fsck.k9.activity.K9Activity
 import com.fsck.k9.finishWithErrorToast
 import com.fsck.k9.ui.R
@@ -18,12 +19,13 @@ import com.fsck.k9.view.StatusIndicator
 import kotlinx.android.synthetic.main.crypto_key_transfer.*
 import kotlinx.coroutines.delay
 import org.koin.android.ext.android.inject
+import org.koin.core.parameter.parametersOf
 import timber.log.Timber
 
 
 class AutocryptKeyTransferActivity : K9Activity() {
     private val presenter: AutocryptKeyTransferPresenter by inject {
-        mapOf("lifecycleOwner" to this, "autocryptTransferView" to this)
+        parametersOf(this as LifecycleOwner, this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
