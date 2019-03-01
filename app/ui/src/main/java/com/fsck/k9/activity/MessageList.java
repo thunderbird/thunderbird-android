@@ -978,10 +978,14 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             return true;
         } else if (id == R.id.set_format_plain) {
             /** @todo render message with reduced formatting */
+            /** @todo set formatting */
+            messageViewFragment.asyncReloadMessage(); /* call refresh */
             updateMenu();
             return true;
         } else if (id == R.id.set_format_html) {
             /** @todo render message with original formatting */
+            /** @todo set formatting */
+            messageViewFragment.asyncReloadMessage(); /* call refresh */
             updateMenu();
             return true;
         }
