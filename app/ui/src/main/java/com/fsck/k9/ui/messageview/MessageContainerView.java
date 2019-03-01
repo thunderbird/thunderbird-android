@@ -402,7 +402,7 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
                 }
             }
         } else {
-            textToDisplay = HtmlConverter.wrapMessageContent(messageViewInfo.plainText);
+            textToDisplay = HtmlConverter.wrapMessageContent(messageViewInfo.textPlainFormatted);
         }
 
         if (textToDisplay == null) {
