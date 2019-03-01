@@ -977,14 +977,12 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             updateMenu();
             return true;
         } else if (id == R.id.set_format_plain) {
-            /** @todo render message with reduced formatting */
-            /** @todo set formatting */
+            messageViewFragment.setRenderPlainFormat(true);
             messageViewFragment.asyncReloadMessage(); /* call refresh */
             updateMenu();
             return true;
         } else if (id == R.id.set_format_html) {
-            /** @todo render message with original formatting */
-            /** @todo set formatting */
+            messageViewFragment.setRenderPlainFormat(false);
             messageViewFragment.asyncReloadMessage(); /* call refresh */
             updateMenu();
             return true;
@@ -1152,7 +1150,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 menu.findItem(R.id.hide_headers).setVisible(false);
             }
 
-            if (false /** @todo check current formatting*/) {
+            if (messageViewFragment.getRenderPlainFormat()) {
                 menu.findItem(R.id.set_format_plain).setVisible(false);
             } else {
                 menu.findItem(R.id.set_format_html).setVisible(false);

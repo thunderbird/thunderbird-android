@@ -377,7 +377,8 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
     }
 
     public void displayMessageViewContainer(MessageViewInfo messageViewInfo,
-            final OnRenderingFinishedListener onRenderingFinishedListener, boolean loadPictures,
+            final boolean renderPlainFormat, final OnRenderingFinishedListener onRenderingFinishedListener,
+            boolean loadPictures,
             boolean hideUnsignedTextDivider, AttachmentViewCallback attachmentCallback) {
 
         this.attachmentCallback = attachmentCallback;
@@ -387,20 +388,21 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
         renderAttachments(messageViewInfo);
 
         String textToDisplay = null;
-        if (true /** @todo add switch */) {
+        if (!renderPlainFormat) {
             textToDisplay = messageViewInfo.text;
-        } else {
-            textToDisplay = HtmlConverter.wrapMessageContent(messageViewInfo.plainText);
-        }
 
-        if (textToDisplay != null && !isShowingPictures()) {
-            if (Utility.hasExternalImages(textToDisplay)) {
-                if (loadPictures) {
-                    setLoadPictures(true);
-                } else {
-                    hasHiddenExternalImages = true;
+            if (textToDisplay != null && !isShowingPictures()) {
+                if (Utility.hasExternalImages(textToDisplay)) {
+                    if (loadPictures) {
+                        setLoadPictures(true);
+                        hasHiddenExternalImages = false;
+                    } else {
+                        hasHiddenExternalImages = true;
+                    }
                 }
             }
+        } else {
+            textToDisplay = HtmlConverter.wrapMessageContent(messageViewInfo.plainText);
         }
 
         if (textToDisplay == null) {

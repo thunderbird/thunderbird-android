@@ -708,6 +708,14 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         messageLoaderHelper.asyncReloadMessage();
     }
 
+    public void setRenderPlainFormat(final boolean b) {
+        mMessageView.setRenderPlainFormat(b);
+    }
+
+    public boolean getRenderPlainFormat() {
+        return mMessageView.getRenderPlainFormat();
+    }
+
     public interface MessageViewFragmentListener {
         void onForward(MessageReference messageReference, Parcelable decryptionResultForReply);
         void onForwardAsAttachment(MessageReference messageReference, Parcelable decryptionResultForReply);
