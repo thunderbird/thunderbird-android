@@ -99,13 +99,6 @@ public abstract class Folder<T extends Message> {
         return null;
     }
 
-    public void delete(List<? extends Message> msgs, String trashFolder) throws MessagingException {
-        for (Message message : msgs) {
-            Message myMessage = getMessage(message.getUid());
-            myMessage.delete(trashFolder);
-        }
-    }
-
     public abstract void setFlags(List<? extends Message> messages, Set<Flag> flags, boolean value)
     throws MessagingException;
 
