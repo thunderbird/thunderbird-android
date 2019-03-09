@@ -40,11 +40,6 @@
             imap+ssl+   IMAP with required SSL transport security.
                             If SSL is not available the connection fails.
 
-            pop3+tls+   POP3 with required TLS transport security.
-                            If TLS is not available the connection fails.
-            pop3+ssl+   POP3 with required SSL transport security.
-                            If SSL is not available the connection fails.
-
         Valid outgoing uri schemes are:
             smtp+tls+   SMTP with required TLS transport security.
                             If TLS is not available the connection fails.
@@ -53,8 +48,8 @@
 
         The URIs should be full templates for connection, including a port if
         the service uses a non-default port.  The default ports are as follows:
-            imap+tls+   143     pop3+tls+   110     smtp+tls+   587
-            imap+ssl+   993     pop3+ssl+   995     smtp+ssl+   465
+            imap+tls+   143     smtp+tls+   587
+            imap+ssl+   993     smtp+ssl+   465
 
         The username attribute is used to supply a template for the username
         that will be presented to the server. This username is built from a
@@ -66,7 +61,7 @@
             $user - the value before the @ sign in the email address the user entered
             $domain - the value after the @ sign in the email address the user entered
             
-        The username attribute MUST be specified for the incoming element, so the POP3 or IMAP
+        The username attribute MUST be specified for the incoming element, so the IMAP
         server can identify the mailbox to be opened.
         
         The username attribute MAY be the empty string for the outgoing element, but only if the 
@@ -101,10 +96,6 @@
         <incoming uri="imap+ssl+://imap.comcast.net" username="$email" />
         <outgoing uri="smtp+tls+://smtp.comcast.net" username="$email" />
     </provider>
-    <provider id="cox" label="Cox" domain="cox.net">
-        <incoming uri="pop3+ssl+://pop.east.cox.net" username="$user" />
-        <outgoing uri="smtp+ssl+://smtp.east.cox.net" username="$user" />
-    </provider> 
     <provider id="live" label="Windows Live Hotmail" domain="live.com">
         <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
         <outgoing uri="smtp+tls+://smtp-mail.outlook.com" username="$email" />
@@ -132,10 +123,6 @@
     <provider id="zoho.com" label="Zoho Mail" domain="zoho.com">
     	<incoming uri="imap+ssl+://imap.zoho.com" username="$email" />
     	<outgoing uri="smtp+tls+://smtp.zoho.com" username="$email" />
-    </provider>
-    <provider id="gnu" label="GNU" domain="gnu.org">
-    	<incoming uri="pop3+ssl+://fencepost.gnu.org" username="$user" />
-    	<outgoing uri="smtp+tls+://fencepost.gnu.org" username="$user" />
     </provider>
     <provider id="riseup" label="Riseup Networks" domain="riseup.net">
     	<incoming uri="imap+ssl+://mail.riseup.net" username="$user" />
@@ -270,10 +257,6 @@
     <provider id="aol-uk" label="AOL" domain="aol.co.uk">
         <incoming uri="imap+ssl+://imap.uk.aol.com" label="IMAP" username="$user" />
         <outgoing uri="smtp+ssl+://smtp.uk.aol.com" username="$user" />
-    </provider>
-    <provider id="yahoo-uk" label="Yahoo" domain="yahoo.co.uk">
-        <incoming uri="pop3+ssl+://pop.mail.yahoo.co.uk" username="$user" />
-        <outgoing uri="smtp+ssl+://smtp.mail.yahoo.co.uk" username="$user" />
     </provider>
     <provider id="live-uk" label="Windows Live Hotmail" domain="live.co.uk">
         <incoming uri="imap+ssl+://imap-mail.outlook.com"  username="$email" />
@@ -470,16 +453,6 @@
     <provider id="trusted-legal-mail.ch" label="KolabNow.com" domain="trusted-legal-mail.ch">
         <incoming uri="imap+ssl+://imap.kolabnow.com" username="$email" />
         <outgoing uri="smtp+tls+://smtp.kolabnow.com" username="$email" />
-    </provider>
-
-    <!-- Poland -->
-    <provider id="interia" label="Interia" domain="interia.pl">
-        <incoming uri="pop3+ssl+://poczta.interia.pl" username="$user" />
-        <outgoing uri="smtp+ssl+://poczta.interia.pl" username="$user" />
-    </provider>
-    <provider id="o2" label="O2" domain="o2.pl">
-        <incoming uri="pop3+ssl+://poczta.o2.pl" username="$user" />
-        <outgoing uri="smtp+ssl+://poczta.o2.pl" username="$user" />
     </provider>
 
    <!-- Japanese -->
