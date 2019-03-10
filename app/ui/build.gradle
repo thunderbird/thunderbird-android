@@ -9,6 +9,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
 
     implementation project(":app:core")
+    implementation project(":app:autodiscovery")
     implementation project(":mail:common")
 
     //TODO: Remove AccountSetupIncoming's dependency on these
