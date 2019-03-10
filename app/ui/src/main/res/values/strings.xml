@@ -800,10 +800,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="account_clear_dlg_title">Clear Account</string>
 
-    <string name="provider_note_auonejp">Be sure to enable IMAP or POP3 on the au one mail settings page.</string>
-    <string name="provider_note_naver">Be sure to enable IMAP or POP3 on the Naver mail settings page.</string>
-    <string name="provider_note_hanmail">Be sure to enable IMAP or POP3 on the Hanmail(Daum) mail settings page.</string>
-
     <string name="account_setup_failed_dlg_invalid_certificate_title">Unrecognized Certificate</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accept Key</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Reject Key</string>
