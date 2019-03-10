@@ -3,7 +3,6 @@ package com.fsck.k9.mail.store.pop3;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -521,11 +520,6 @@ public class Pop3Folder extends Folder<Pop3Message> {
     @Override
     public Map<String, String> appendMessages(List<? extends Message> messages) throws MessagingException {
         return null;
-    }
-
-    @Override
-    public void delete(List<? extends Message> msgs, String trashFolder) throws MessagingException {
-        setFlags(msgs, Collections.singleton(Flag.DELETED), true);
     }
 
     @Override

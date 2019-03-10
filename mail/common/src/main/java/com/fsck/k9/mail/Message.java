@@ -137,8 +137,6 @@ public abstract class Message implements Part, Body {
 
     public abstract long getSize();
 
-    public void delete(String trashFolder) throws MessagingException {}
-
     /*
      * TODO Refactor Flags at some point to be able to store user defined flags.
      */

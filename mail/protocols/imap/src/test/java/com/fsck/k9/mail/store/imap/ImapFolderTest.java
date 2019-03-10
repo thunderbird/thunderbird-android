@@ -380,66 +380,6 @@ public class ImapFolderTest {
     }
 
     @Test
-    public void delete_withEmptyMessageList_shouldNotInteractWithImapConnection() throws Exception {
-        ImapFolder folder = createFolder("Source");
-        List<ImapMessage> messages = Collections.emptyList();
-
-        folder.delete(messages, "Trash");
-
-        verifyNoMoreInteractions(imapConnection);
-    }
-
-    @Test
-    public void delete_fromTrashFolder_shouldIssueUidStoreFlagsCommand() throws Exception {
-        ImapFolder folder = createFolder("Folder");
-        prepareImapFolderForOpen(OPEN_MODE_RW);
-        List<ImapMessage> messages = singletonList(createImapMessage("23"));
-        folder.open(OPEN_MODE_RW);
-
-        folder.delete(messages, "Folder");
-
-        assertCommandWithIdsIssued("UID STORE 23 +FLAGS.SILENT (\\Deleted)");
-    }
-
-    @Test
-    public void delete_shouldMoveMessagesToTrashFolder() throws Exception {
-        ImapFolder folder = createFolder("Folder");
-        prepareImapFolderForOpen(OPEN_MODE_RW);
-        ImapFolder trashFolder = createFolder("Trash");
-        when(imapStore.getFolder("Trash")).thenReturn(trashFolder);
-        List<ImapMessage> messages = singletonList(createImapMessage("2"));
-        setupCopyResponse("x OK [COPYUID 23 2 102] Success");
-        folder.open(OPEN_MODE_RW);
-
-        folder.delete(messages, "Trash");
-
-        assertCommandWithIdsIssued("UID STORE 2 +FLAGS.SILENT (\\Deleted)");
-    }
-
-    @Test
-    public void delete_withoutTrashFolderExisting_shouldThrow() throws Exception {
-        ImapFolder folder = createFolder("Folder");
-        prepareImapFolderForOpen(OPEN_MODE_RW);
-        ImapFolder trashFolder = createFolder("Trash");
-        when(imapStore.getFolder("Trash")).thenReturn(trashFolder);
-        List<ImapMessage> messages = singletonList(createImapMessage("2"));
-        List<ImapResponse> copyResponses = singletonList(
-                createImapResponse("x OK [COPYUID 23 2 102] Success")
-        );
-        when(imapConnection.executeSimpleCommand("UID COPY 2 \"Trash\"")).thenReturn(copyResponses);
-        folder.open(OPEN_MODE_RW);
-        doThrow(NegativeImapResponseException.class).doReturn(Collections.emptyList())
-                .when(imapConnection).executeSimpleCommand("STATUS \"Trash\" (RECENT)");
-
-        try {
-            folder.delete(messages, "Trash");
-            fail("Expected exception");
-        } catch (FolderNotFoundException e) {
-            assertEquals("Trash", e.getFolderServerId());
-        }
-    }
-
-    @Test
     public void getUnreadMessageCount_withClosedFolder_shouldThrow() throws Exception {
         ImapFolder folder = createFolder("Folder");
         when(imapStore.getConnection()).thenReturn(imapConnection);

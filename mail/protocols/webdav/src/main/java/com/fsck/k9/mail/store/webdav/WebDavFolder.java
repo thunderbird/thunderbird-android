@@ -104,11 +104,6 @@ public class WebDavFolder extends Folder<WebDavMessage> {
         return null;
     }
 
-    @Override
-    public void delete(List<? extends Message> msgs, String trashFolder) throws MessagingException {
-        moveOrCopyMessages(msgs, trashFolder, true);
-    }
-
     private void moveOrCopyMessages(List<? extends Message> messages, String folderName, boolean isMove)
             throws MessagingException {
         String[] uids = new String[messages.size()];

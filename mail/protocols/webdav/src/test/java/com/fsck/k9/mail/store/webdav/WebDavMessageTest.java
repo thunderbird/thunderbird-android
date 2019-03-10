@@ -49,14 +49,6 @@ public class WebDavMessageTest {
     }
 
     @Test
-    public void delete_asks_folder_to_delete_message() throws MessagingException {
-        when(mockFolder.getStore()).thenReturn(mockStore);
-        when(mockStore.getFolder("Trash")).thenReturn(mockTrashFolder);
-        message.delete("Trash");
-        verify(mockFolder).moveMessages(Collections.singletonList(message), mockTrashFolder);
-    }
-
-    @Test
     public void setNewHeaders_updates_size() throws MessagingException {
         ParsedMessageEnvelope parsedMessageEnvelope = new ParsedMessageEnvelope();
         parsedMessageEnvelope.addHeader("getcontentlength", "1024");
