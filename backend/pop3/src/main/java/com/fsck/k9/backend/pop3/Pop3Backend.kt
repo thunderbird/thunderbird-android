@@ -65,6 +65,10 @@ class Pop3Backend(
         throw UnsupportedOperationException("not supported")
     }
 
+    override fun deleteMessages(folderServerId: String, messageServerIds: List<String>) {
+        commandSetFlag.setFlag(folderServerId, messageServerIds, Flag.DELETED, true)
+    }
+
     override fun deleteAllMessages(folderServerId: String) {
         commandDeleteAll.deleteAll(folderServerId)
     }

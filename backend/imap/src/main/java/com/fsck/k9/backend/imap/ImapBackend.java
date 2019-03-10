@@ -147,6 +147,12 @@ public class ImapBackend implements Backend {
     }
 
     @Override
+    public void deleteMessages(@NotNull String folderServerId, @NotNull List<String> messageServerIds)
+            throws MessagingException {
+        commandSetFlag.setFlag(folderServerId, messageServerIds, Flag.DELETED, true);
+    }
+
+    @Override
     public void deleteAllMessages(@NotNull String folderServerId) throws MessagingException {
         commandDeleteAll.deleteAll(folderServerId);
     }
