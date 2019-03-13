@@ -13,6 +13,7 @@ public class MessagingControllerCommands {
     static final String COMMAND_APPEND = "append";
     static final String COMMAND_MARK_ALL_AS_READ = "mark_all_as_read";
     static final String COMMAND_SET_FLAG = "set_flag";
+    static final String COMMAND_DELETE = "delete";
     static final String COMMAND_EXPUNGE = "expunge";
     static final String COMMAND_MOVE_OR_COPY = "move_or_copy";
     static final String COMMAND_EMPTY_TRASH = "empty_trash";
@@ -155,6 +156,31 @@ public class MessagingControllerCommands {
         @Override
         public void execute(MessagingController controller, Account account) throws MessagingException {
             controller.processPendingMarkAllAsRead(this, account);
+        }
+    }
+
+    public static class PendingDelete extends PendingCommand {
+        public final String folder;
+        public final List<String> uids;
+
+
+        public static PendingDelete create(String folder, List<String> uids) {
+            return new PendingDelete(folder, uids);
+        }
+
+        private PendingDelete(String folder, List<String> uids) {
+            this.folder = folder;
+            this.uids = uids;
+        }
+
+        @Override
+        public String getCommandName() {
+            return COMMAND_DELETE;
+        }
+
+        @Override
+        public void execute(MessagingController controller, Account account) throws MessagingException {
+            controller.processPendingDelete(this, account);
         }
     }
 
