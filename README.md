@@ -1,5 +1,5 @@
 # K-9 Mail
-[![Build Status](https://k9mail.ci.cloudbees.com/job/development%20(master)/badge/icon)](https://k9mail.ci.cloudbees.com/job/development%20(master)/)
+[![Build Status](https://travis-ci.org/k9mail/k-9.svg?branch=master)](https://travis-ci.org/k9mail/k-9)
 [![Latest release](https://img.shields.io/github/release/k9mail/k-9.svg?style=flat-square)](https://github.com/k9mail/k-9/releases/latest)
 
 K-9 Mail is an open-source email client for Android.
@@ -74,11 +74,3 @@ Aside from discussing changes in [pull requests](https://github.com/k9mail/k-9/p
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-
-
-## Sponsors
-
-CloudBees' [FOSS program](https://www.cloudbees.com/resources/foss) allows us to use their DEV@cloud service for free.
-
-![built on DEV@cloud](https://www.cloudbees.com/sites/default/files/styles/large/public/Button-Built-on-CB-1.png)
-
