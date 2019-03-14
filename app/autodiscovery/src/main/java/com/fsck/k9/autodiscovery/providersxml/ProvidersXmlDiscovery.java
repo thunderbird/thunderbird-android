@@ -9,6 +9,7 @@ import android.content.res.XmlResourceParser;
 import com.fsck.k9.autodiscovery.ConnectionSettings;
 import com.fsck.k9.autodiscovery.ConnectionSettingsDiscovery;
 import com.fsck.k9.backend.BackendManager;
+import com.fsck.k9.helper.EmailHelper;
 import com.fsck.k9.helper.UrlEncodingHelper;
 import com.fsck.k9.mail.ServerSettings;
 import org.xmlpull.v1.XmlPullParser;
@@ -25,20 +26,16 @@ public class ProvidersXmlDiscovery implements ConnectionSettingsDiscovery {
         this.xmlProvider = xmlProvider;
     }
 
-    private String[] splitEmail(String email) {
-        String[] retParts = new String[2];
-        String[] emailParts = email.split("@");
-        retParts[0] = (emailParts.length > 0) ? emailParts[0] : "";
-        retParts[1] = (emailParts.length > 1) ? emailParts[1] : "";
-        return retParts;
-    }
-
     @Override
     public ConnectionSettings discover(String email) {
         String password = "";
-        String[] emailParts = splitEmail(email);
-        String user = emailParts[0];
-        String domain = emailParts[1];
+
+        String user = EmailHelper.getLocalPartFromEmailAddress(email);
+        String domain = EmailHelper.getDomainFromEmailAddress(email);
+        if (user == null || domain == null) {
+            return null;
+        }
+
         Provider mProvider = findProviderForDomain(domain);
         if (mProvider == null) {
             return null;
