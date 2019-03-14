@@ -28,4 +28,11 @@ public class EmailHelperTest {
 
         assertEquals("domain", result);
     }
+
+    @Test
+    public void getDomainFromEmailAddress_withEmptyDomain_shouldReturnNull() {
+        String result = EmailHelper.getDomainFromEmailAddress("user@");
+
+        assertNull(result);
+    }
 }
