@@ -1,129 +1,133 @@
-package com.fsck.k9.autodiscovery.providersxml;
+package com.fsck.k9.autodiscovery.providersxml
 
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.URI
+import java.net.URISyntaxException
 
-import android.content.res.XmlResourceParser;
-
-import com.fsck.k9.autodiscovery.ConnectionSettings;
-import com.fsck.k9.autodiscovery.ConnectionSettingsDiscovery;
-import com.fsck.k9.backend.BackendManager;
-import com.fsck.k9.helper.EmailHelper;
-import com.fsck.k9.helper.UrlEncodingHelper;
-import com.fsck.k9.mail.ServerSettings;
-import org.xmlpull.v1.XmlPullParser;
-import timber.log.Timber;
+import com.fsck.k9.autodiscovery.ConnectionSettings
+import com.fsck.k9.autodiscovery.ConnectionSettingsDiscovery
+import com.fsck.k9.backend.BackendManager
+import com.fsck.k9.helper.EmailHelper
+import com.fsck.k9.helper.UrlEncodingHelper
+import org.xmlpull.v1.XmlPullParser
+import timber.log.Timber
 
 
-public class ProvidersXmlDiscovery implements ConnectionSettingsDiscovery {
-    private final BackendManager backendManager;
-    private final ProvidersXmlProvider xmlProvider;
+class ProvidersXmlDiscovery(
+        private val backendManager: BackendManager,
+        private val xmlProvider: ProvidersXmlProvider
+) : ConnectionSettingsDiscovery {
 
+    override fun discover(email: String): ConnectionSettings? {
+        val password = ""
 
-    public ProvidersXmlDiscovery(BackendManager backendManager, ProvidersXmlProvider xmlProvider) {
-        this.backendManager = backendManager;
-        this.xmlProvider = xmlProvider;
-    }
+        val user = EmailHelper.getLocalPartFromEmailAddress(email) ?: return null
+        val domain = EmailHelper.getDomainFromEmailAddress(email) ?: return null
 
-    @Override
-    public ConnectionSettings discover(String email) {
-        String password = "";
-
-        String user = EmailHelper.getLocalPartFromEmailAddress(email);
-        String domain = EmailHelper.getDomainFromEmailAddress(email);
-        if (user == null || domain == null) {
-            return null;
-        }
-
-        Provider mProvider = findProviderForDomain(domain);
-        if (mProvider == null) {
-            return null;
-        }
+        val provider = findProviderForDomain(domain) ?: return null
         try {
-            String userEnc = UrlEncodingHelper.encodeUtf8(user);
-            String passwordEnc = UrlEncodingHelper.encodeUtf8(password);
+            val userEnc = UrlEncodingHelper.encodeUtf8(user)
+            val passwordEnc = UrlEncodingHelper.encodeUtf8(password)
 
-            String incomingUsername = mProvider.incomingUsernameTemplate;
-            incomingUsername = incomingUsername.replaceAll("\\$email", email);
-            incomingUsername = incomingUsername.replaceAll("\\$user", userEnc);
-            incomingUsername = incomingUsername.replaceAll("\\$domain", domain);
+            var incomingUsername = provider.incomingUsernameTemplate!!
+            incomingUsername = incomingUsername.replace("\$email", email)
+            incomingUsername = incomingUsername.replace("\$user", userEnc)
+            incomingUsername = incomingUsername.replace("\$domain", domain)
 
-            URI incomingUriTemplate = mProvider.incomingUriTemplate;
-            URI incomingUri = new URI(incomingUriTemplate.getScheme(), incomingUsername + ":" + passwordEnc,
-                    incomingUriTemplate.getHost(), incomingUriTemplate.getPort(), null, null, null);
+            val incomingUriTemplate = provider.incomingUriTemplate!!
+            val incomingUri = URI(
+                    incomingUriTemplate.scheme,
+                    "$incomingUsername:$passwordEnc",
+                    incomingUriTemplate.host,
+                    incomingUriTemplate.port,
+                    null,
+                    null,
+                    null
+            )
 
-            String outgoingUsername = mProvider.outgoingUsernameTemplate;
+            var outgoingUsername = provider.outgoingUsernameTemplate
+            val outgoingUriTemplate = provider.outgoingUriTemplate!!
 
-            URI outgoingUriTemplate = mProvider.outgoingUriTemplate;
-
-
-            URI outgoingUri;
+            val outgoingUri: URI
             if (outgoingUsername != null) {
-                outgoingUsername = outgoingUsername.replaceAll("\\$email", email);
-                outgoingUsername = outgoingUsername.replaceAll("\\$user", userEnc);
-                outgoingUsername = outgoingUsername.replaceAll("\\$domain", domain);
-                outgoingUri = new URI(outgoingUriTemplate.getScheme(), outgoingUsername + ":"
-                        + passwordEnc, outgoingUriTemplate.getHost(), outgoingUriTemplate.getPort(), null,
-                        null, null);
-
+                outgoingUsername = outgoingUsername.replace("\$email", email)
+                outgoingUsername = outgoingUsername.replace("\$user", userEnc)
+                outgoingUsername = outgoingUsername.replace("\$domain", domain)
+                outgoingUri = URI(
+                        outgoingUriTemplate.scheme,
+                        "$outgoingUsername:$passwordEnc",
+                        outgoingUriTemplate.host,
+                        outgoingUriTemplate.port,
+                        null,
+                        null,
+                        null
+                )
             } else {
-                outgoingUri = new URI(outgoingUriTemplate.getScheme(),
-                        null, outgoingUriTemplate.getHost(), outgoingUriTemplate.getPort(), null,
-                        null, null);
+                outgoingUri = URI(
+                        outgoingUriTemplate.scheme,
+                        null,
+                        outgoingUriTemplate.host,
+                        outgoingUriTemplate.port,
+                        null,
+                        null,
+                        null
+                )
             }
 
-            ServerSettings incomingSettings = backendManager.decodeStoreUri(incomingUri.toString());
-            ServerSettings outgoingSettings = backendManager.decodeTransportUri(outgoingUri.toString());
-            return new ConnectionSettings(incomingSettings, outgoingSettings);
-        } catch (URISyntaxException use) {
-            return null;
+            val incomingSettings = backendManager.decodeStoreUri(incomingUri.toString())
+            val outgoingSettings = backendManager.decodeTransportUri(outgoingUri.toString())
+            return ConnectionSettings(incomingSettings, outgoingSettings)
+        } catch (use: URISyntaxException) {
+            return null
         }
     }
 
-    private Provider findProviderForDomain(String domain) {
+    private fun findProviderForDomain(domain: String): Provider? {
         try {
-            XmlResourceParser xml = xmlProvider.getXml();
-            int xmlEventType;
-            Provider provider = null;
-            while ((xmlEventType = xml.next()) != XmlPullParser.END_DOCUMENT) {
+            val xml = xmlProvider.getXml()
+            var provider: Provider? = null
+
+            do {
+                val xmlEventType = xml.next()
+
                 if (xmlEventType == XmlPullParser.START_TAG &&
-                        "provider".equals(xml.getName()) &&
-                        domain.equalsIgnoreCase(xml.getAttributeValue(null, "domain"))) {
-                    provider = new Provider();
-                    provider.id = xml.getAttributeValue(null, "id");
-                    provider.label = xml.getAttributeValue(null, "label");
-                    provider.domain = xml.getAttributeValue(null, "domain");
+                        "provider" == xml.name &&
+                        domain.equals(xml.getAttributeValue(null, "domain"), ignoreCase = true)) {
+                    provider = Provider()
+                    provider.id = xml.getAttributeValue(null, "id")
+                    provider.label = xml.getAttributeValue(null, "label")
+                    provider.domain = xml.getAttributeValue(null, "domain")
                 } else if (xmlEventType == XmlPullParser.START_TAG &&
-                        "incoming".equals(xml.getName()) &&
+                        "incoming" == xml.name &&
                         provider != null) {
-                    provider.incomingUriTemplate = new URI(xml.getAttributeValue(null, "uri"));
-                    provider.incomingUsernameTemplate = xml.getAttributeValue(null, "username");
+                    provider.incomingUriTemplate = URI(xml.getAttributeValue(null, "uri"))
+                    provider.incomingUsernameTemplate = xml.getAttributeValue(null, "username")
                 } else if (xmlEventType == XmlPullParser.START_TAG &&
-                        "outgoing".equals(xml.getName()) &&
+                        "outgoing" == xml.name &&
                         provider != null) {
-                    provider.outgoingUriTemplate = new URI(xml.getAttributeValue(null, "uri"));
-                    provider.outgoingUsernameTemplate = xml.getAttributeValue(null, "username");
+                    provider.outgoingUriTemplate = URI(xml.getAttributeValue(null, "uri"))
+                    provider.outgoingUsernameTemplate = xml.getAttributeValue(null, "username")
                 } else if (xmlEventType == XmlPullParser.END_TAG &&
-                        "provider".equals(xml.getName()) &&
+                        "provider" == xml.name &&
                         provider != null) {
-                    return provider;
+                    return provider
                 }
-            }
-        } catch (Exception e) {
-            Timber.e(e, "Error while trying to load provider settings.");
+            } while (xmlEventType != XmlPullParser.END_DOCUMENT)
+        } catch (e: Exception) {
+            Timber.e(e, "Error while trying to load provider settings.")
         }
-        return null;
+
+        return null
     }
 
 
-    static class Provider {
-        String id;
-        String label;
-        String domain;
-        URI incomingUriTemplate;
-        String incomingUsernameTemplate;
-        URI outgoingUriTemplate;
-        String outgoingUsernameTemplate;
+    internal class Provider {
+        var id: String? = null
+        var label: String? = null
+        var domain: String? = null
+        var incomingUriTemplate: URI? = null
+        var incomingUsernameTemplate: String? = null
+        var outgoingUriTemplate: URI? = null
+        var outgoingUsernameTemplate: String? = null
     }
 }
