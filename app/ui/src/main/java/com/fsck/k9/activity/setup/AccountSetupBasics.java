@@ -332,8 +332,6 @@ public class AccountSetupBasics extends K9Activity
         mAccount.setTransportUri(transportUri);
 
         AccountSetupAccountType.actionSelectAccountType(this, mAccount, false);
-
-        finish();
     }
 
     public void onClick(View v) {
