@@ -440,15 +440,27 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 
             } catch (AuthenticationFailedException afe) {
                 Timber.e(afe, "Error while testing settings");
+
+                String message = afe.getMessage() == null ? "" : afe.getMessage();
+                int dialogStringInt = R.string.account_setup_failed_dlg_auth_message_fmt;
+
+                if (afe.isClientIDFailure()) {
+                    dialogStringInt = R.string.account_setup_failed_dlg_clientID_IMAP_message_fmt;
+                }
+
                 showErrorDialog(
-                        R.string.account_setup_failed_dlg_auth_message_fmt,
-                        afe.getMessage() == null ? "" : afe.getMessage());
+                        dialogStringInt,
+                        message);
             } catch (CertificateValidationException cve) {
                 handleCertificateValidationException(cve);
             } catch (Exception e) {
                 Timber.e(e, "Error while testing settings");
                 String message = e.getMessage() == null ? "" : e.getMessage();
-                showErrorDialog(R.string.account_setup_failed_dlg_server_message_fmt, message);
+                int dialogStringInt = R.string.account_setup_failed_dlg_server_message_fmt;
+                if (((MessagingException) e).isClientIDFailure()) {
+                    dialogStringInt = R.string.account_setup_failed_dlg_clientID_SMTP_message_fmt;
+                }
+                showErrorDialog(dialogStringInt, message);
             }
             return null;
         }

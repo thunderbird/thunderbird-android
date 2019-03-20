@@ -115,6 +115,7 @@ public class Account implements BaseAccount, StoreConfig {
 
     private final String accountUuid;
     private String storeUri;
+    private String imei;
 
     /**
      * Storage provider ID, used to locate and manage the underlying DB/file
@@ -244,6 +245,11 @@ public class Account implements BaseAccount, StoreConfig {
         this.accountUuid = uuid;
     }
 
+    public Account(String uuid, String imei) {
+        this.accountUuid = uuid;
+        this.imei = imei;
+    }
+
     public synchronized void setChipColor(int color) {
         chipColor = color;
     }
@@ -255,6 +261,26 @@ public class Account implements BaseAccount, StoreConfig {
     @Override
     public String getUuid() {
         return accountUuid;
+    }
+
+    public String getImei() {
+        return imei;
+    }
+
+    public String getClientID() {
+        if (imei != null) {
+            return imei;
+        } else {
+            return accountUuid;
+        }
+    }
+
+    public String getClientIDType() {
+        if (imei != null) {
+            return "K9-IMEI";
+        } else {
+            return "K9-UUID";
+        }
     }
 
     public synchronized String getStoreUri() {

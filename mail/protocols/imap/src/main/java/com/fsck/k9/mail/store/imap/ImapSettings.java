@@ -35,4 +35,8 @@ interface ImapSettings {
     String getCombinedPrefix();
 
     void setCombinedPrefix(String prefix);
+
+    String getAccountUuid();
+
+    String getImei();
 }

@@ -479,6 +479,9 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="account_settings_crypto_key">Configurar clave de extremo a extremo</string>
   <string name="account_settings_crypto_summary_off">Sin aplicación OpenPGP configurada</string>
   <string name="account_settings_crypto_summary_on">Conectado a %s</string>
+  <string name="account_settings_clientID_title">Identificación del cliente</string>
+  <string name="account_settings_clientID_type">Tipo de identificación del cliente</string>
+  <string name="account_settings_clientID_value">Valor de identificación del cliente</string>
   <string name="account_settings_no_openpgp_provider_configured">No hay aplicación de OpenPGP configurada</string>
   <string name="account_settings_no_openpgp_provider_installed">Aplicación OpenPGP no encontrada - Pulsar para instalar</string>
   <string name="account_settings_mail_check_frequency_label">Frecuencia de comprobación</string>

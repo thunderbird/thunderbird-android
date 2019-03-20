@@ -65,4 +65,31 @@ class AuthenticationErrorNotifications {
     private NotificationManagerCompat getNotificationManager() {
         return notificationHelper.getNotificationManager();
     }
+
+    public void showClientIDErrorNotification(Account account, boolean incoming) {
+        int notificationId = NotificationIds.getAuthenticationErrorNotificationId(account, incoming);
+
+        PendingIntent editServerSettingsPendingIntent = createContentIntent(account, incoming);
+        String title = resourceProvider.clientIDErrorTitle();
+        String text = resourceProvider.clientIDErrorBody();
+
+        NotificationCompat.Builder builder = notificationHelper
+                .createNotificationBuilder(account, NotificationChannelManager.ChannelType.MISCELLANEOUS)
+                .setSmallIcon(resourceProvider.getIconWarning())
+                .setWhen(System.currentTimeMillis())
+                .setAutoCancel(true)
+                .setTicker(title)
+                .setContentTitle(title)
+                .setContentText(text)
+                .setContentIntent(editServerSettingsPendingIntent)
+                .setStyle(new BigTextStyle().bigText(text))
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setCategory(NotificationCompat.CATEGORY_ERROR);
+
+        notificationHelper.configureNotification(builder, null, null,
+                NOTIFICATION_LED_FAILURE_COLOR,
+                NOTIFICATION_LED_BLINK_FAST, true);
+
+        getNotificationManager().notify(notificationId, builder.build());
+    }
 }

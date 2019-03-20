@@ -90,6 +90,11 @@ public class MessagingControllerPushReceiver implements PushReceiver {
         controller.handleAuthenticationFailure(account, true);
     }
 
+    @Override
+    public void ClientIDFailure() {
+        controller.handleClientIDFailure(account, true);
+    }
+
     public String getPushState(String folderServerId) {
         LocalFolder localFolder = null;
         try {

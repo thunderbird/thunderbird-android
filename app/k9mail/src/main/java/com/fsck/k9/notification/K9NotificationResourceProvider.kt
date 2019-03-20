@@ -32,6 +32,10 @@ class K9NotificationResourceProvider(private val context: Context) : Notificatio
     override fun authenticationErrorBody(accountName: String): String =
             context.getString(R.string.notification_authentication_error_text, accountName)
 
+    override fun clientIDErrorBody(): String = context.getString(R.string.notification_clientID_error_text)
+
+    override fun clientIDErrorTitle(): String = context.getString(R.string.notification_clientID_error_title)
+
     override fun certificateErrorTitle(accountName: String): String =
             context.getString(R.string.notification_certificate_error_title, accountName)
 
@@ -59,6 +63,8 @@ class K9NotificationResourceProvider(private val context: Context) : Notificatio
     override fun noSender(): String = context.getString(R.string.general_no_sender)
 
     override fun sendFailedTitle(): String = context.getString(R.string.send_failure_subject)
+
+    override fun sendFailedClientIDTitle(): String = context.getString(R.string.send_failure_clientID)
 
     override fun sendingMailTitle(): String = context.getString(R.string.notification_bg_send_title)
 

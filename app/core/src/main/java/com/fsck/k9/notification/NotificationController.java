@@ -87,4 +87,8 @@ public class NotificationController {
     public void clearNewMailNotifications(Account account) {
         newMailNotifications.clearNewMailNotifications(account);
     }
+
+    public void showClientIDErrorNotification(Account account, boolean incoming) {
+        authenticationErrorNotifications.showClientIDErrorNotification(account, incoming);
+    }
 }

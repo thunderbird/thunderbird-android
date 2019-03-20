@@ -60,6 +60,8 @@ public class SmtpTransport extends Transport {
     private final TrustedSocketFactory trustedSocketFactory;
     private final OAuth2TokenProvider oauthTokenProvider;
 
+    private final String imei;
+    private final String accountUuid;
     private final String host;
     private final int port;
     private final String username;
@@ -85,6 +87,8 @@ public class SmtpTransport extends Transport {
             throw new IllegalArgumentException("Expected SMTP StoreConfig!");
         }
 
+        imei = serverSettings.getImei();
+        accountUuid = serverSettings.getAccountUuid();
         host = serverSettings.host;
         port = serverSettings.port;
 
@@ -103,6 +107,7 @@ public class SmtpTransport extends Transport {
     public void open() throws MessagingException {
         try {
             boolean secureConnection = false;
+            boolean clientIDEnabled = false;
             InetAddress[] addresses = InetAddress.getAllByName(host);
             for (int i = 0; i < addresses.length; i++) {
                 try {
@@ -138,6 +143,10 @@ public class SmtpTransport extends Transport {
 
             Map<String, String> extensions = sendHello(hostnameToReportInHelo);
 
+            if (extensions.get("CLIENTID") != null) {
+                clientIDEnabled = true;
+            }
+
             is8bitEncodingAllowed = extensions.containsKey("8BITMIME");
             isEnhancedStatusCodesProvided = extensions.containsKey("ENHANCEDSTATUSCODES");
             isPipeliningSupported = extensions.containsKey("PIPELINING");
@@ -161,6 +170,9 @@ public class SmtpTransport extends Transport {
                      */
                     extensions = sendHello(hostnameToReportInHelo);
                     secureConnection = true;
+                    if (extensions.get("CLIENTID") != null) {
+                        clientIDEnabled = true;
+                    }
                 } else {
                     /*
                      * This exception triggers a "Certificate error"
@@ -171,6 +183,14 @@ public class SmtpTransport extends Transport {
                      */
                     throw new CertificateValidationException(
                             "STARTTLS connection security not available");
+                }
+            }
+
+            if (secureConnection && clientIDEnabled) {
+                if (imei != null) {
+                    executeCommand("CLIENTID K9-IMEI %s", imei);
+                } else {
+                    executeCommand("CLIENTID K9-UUID %s", accountUuid);
                 }
             }
 
@@ -569,10 +589,38 @@ public class SmtpTransport extends Transport {
         char replyCodeCategory = line.charAt(0);
         boolean isReplyCodeErrorCategory = (replyCodeCategory == '4') || (replyCodeCategory == '5');
         if (isReplyCodeErrorCategory) {
+            String replyText = "An unknown error has occured.";
+
+            if (format.substring(0,8).equalsIgnoreCase("CLIENTID")) {
+                if (replyCodeCategory == '4') {
+                    replyText = "An error occurred in outgoing SMTP command (CLIENTID): Server responded: " + results;
+                }
+
+                if (replyCodeCategory == '5') {
+                    switch(replyCode) {
+                        case 501:
+                        case 503:
+                        case 504:
+                            replyText = "An error occurred in outgoing SMTP command (CLIENTID): Server responded: " + results;
+                            break;
+                        case 550:
+                            replyText = "The outgoing (SMTP) server denied access to your device (CLIENTID): Server responded: " + results;
+                            break;
+                        default:
+                            replyText = "An unknown SMTP error occured. Server responded: " + results;
+                            break;
+                    }
+                }
+
+                NegativeSmtpReplyException ClientIDException = new NegativeSmtpReplyException(replyCode, replyText);
+                ClientIDException.setClientIDFailure(true);
+                throw ClientIDException;
+            }
+
             if (isEnhancedStatusCodesProvided) {
                 throw buildEnhancedNegativeSmtpReplyException(replyCode, results);
             } else {
-                String replyText = TextUtils.join(" ", results);
+                replyText = TextUtils.join(" ", results);
                 throw new NegativeSmtpReplyException(replyCode, replyText);
             }
         }

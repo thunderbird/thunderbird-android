@@ -35,6 +35,7 @@ K-9 Mail is a powerful free email client for Android.
 Its improved features include:
 </p>
 <ul>
+  <li>Client ID Security</i>
   <li>Push mail using IMAP IDLE</li>
   <li>Better performance</li>
   <li>Message refiling</li>
@@ -225,6 +226,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="notification_certificate_error_title">Certificate error for <xliff:g id="account">%s</xliff:g></string>
     <string name="notification_certificate_error_text">Check your server settings</string>
 
+    <string name="notification_clientID_error_title">IMAP Connection Failure</string>
+    <string name="notification_clientID_error_text">An error has occurred while sending the IMAP command (CLIENTID)</string>
     <string name="notification_authentication_error_title">Authentication failed</string>
     <string name="notification_authentication_error_text">Authentication failed for <xliff:g id="account">%s</xliff:g>. Update your server settings.</string>
 
@@ -254,6 +257,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
 
     <string name="send_failure_subject">Failed to send some messages</string>
+    <string name="send_failure_clientID">SMTP Connection Failure</string>
 
     <string name="version">Version</string>
     <string name="debug_enable_debug_logging_title">Enable debug logging</string>
@@ -604,6 +608,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_crypto_encrypt_all_drafts">Store all drafts encrypted</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">All drafts will be stored encrypted</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Encrypt drafts only if encryption is enabled</string>
+    <string name="account_settings_clientID_title">Client ID</string>
+    <string name="account_settings_clientID_type">Your Client ID Type: </string>
+    <string name="account_settings_clientID_value">Your Client ID Value: </string>
 
     <string name="account_settings_mail_check_frequency_label">Folder poll frequency</string>
 
@@ -1346,4 +1353,8 @@ You can keep this message and use it as a backup for your secret key. If you wan
     <!-- permissions -->
     <string name="permission_contacts_rationale_title">Allow access to contacts</string>
     <string name="permission_contacts_rationale_message">To be able to provide contact suggestions and to display contact names and photos, the app needs access to your contacts.</string>
+    <string name="account_setup_failed_dlg_clientID_IMAP_message_fmt">\An error occurred while sending the IMAP command.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="account_setup_failed_dlg_clientID_SMTP_message_fmt">\An error occurred while sending the SMTP command.\n(<xliff:g id="error">%s</xliff:g>)</string>
+    <string name="clientID_security_request_title">K9 Mail Is Requesting Additional Security Features</string>
+    <string name="clientID_security_request_details_message">Your phone\'s IMEI will be used for CLIENT ID security only</string>
 </resources>

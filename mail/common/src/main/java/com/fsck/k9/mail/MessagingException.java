@@ -5,6 +5,7 @@ public class MessagingException extends Exception {
     public static final long serialVersionUID = -1;
 
     private boolean permanentFailure = false;
+    private boolean ClientIDFailure = false;
 
     public MessagingException(String message) {
         super(message);
@@ -26,6 +27,14 @@ public class MessagingException extends Exception {
 
     public boolean isPermanentFailure() {
         return permanentFailure;
+    }
+
+    public boolean isClientIDFailure() {
+        return ClientIDFailure;
+    }
+
+    public void setClientIDFailure(boolean ClientIDfailure) {
+        this.ClientIDFailure = ClientIDfailure;
     }
 
 }

@@ -145,6 +145,8 @@ class AccountSettingsDataStore(
             "account_remote_search_num_results" -> account.remoteSearchNumResults.toString()
             "local_storage_provider" -> account.localStorageProviderId
             "account_ringtone" -> account.notificationSetting.ringtone
+            "clientID_value" -> account.clientID
+            "clientID_type" -> account.clientIDType
             else -> defValue
         }
     }

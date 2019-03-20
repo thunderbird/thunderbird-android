@@ -19,6 +19,12 @@ class TestNotificationResourceProvider : NotificationResourceProvider {
     override val miscellaneousChannelName = "Miscellaneous"
     override val miscellaneousChannelDescription = "Miscellaneous notifications like errors etc."
 
+    override fun clientIDErrorBody(): String  = "An error has occured while sending the IMAP command (CLIENTID)"
+
+    override fun sendFailedClientIDTitle(): String = "An error has occured while sending the SMTP command (CLIENTID)"
+
+    override fun clientIDErrorTitle(): String = "IMAP Connection Failure"
+
     override fun authenticationErrorTitle(): String = "Authentication failed"
 
     override fun authenticationErrorBody(accountName: String): String =

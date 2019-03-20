@@ -16,4 +16,5 @@ public interface PushReceiver {
     void authenticationFailed();
     void setPushActive(String folderServerId, boolean enabled);
     void sleep(WakeLock wakeLock, long millis);
+    void ClientIDFailure();
 }

@@ -758,6 +758,10 @@ public class MessagingController {
         notificationController.showAuthenticationErrorNotification(account, incoming);
     }
 
+    public void handleClientIDFailure(Account account, boolean incoming) {
+        notificationController.showClientIDErrorNotification(account, incoming);
+    }
+
     private static void closeFolder(Folder f) {
         if (f != null) {
             f.close();
@@ -1653,8 +1657,11 @@ public class MessagingController {
                         outboxStateRepository.decrementSendAttempts(messageId);
                         lastFailure = e;
                         wasPermanentFailure = false;
-
-                        handleAuthenticationFailure(account, false);
+                        if (e.isClientIDFailure()) {
+                            handleClientIDFailure(account, false);
+                        } else {
+                            handleAuthenticationFailure(account, false);
+                        }
                         handleSendFailure(account, localFolder, message, e);
                     } catch (CertificateValidationException e) {
                         outboxStateRepository.decrementSendAttempts(messageId);
@@ -3157,7 +3164,11 @@ public class MessagingController {
             syncFailed = true;
 
             if (exception instanceof AuthenticationFailedException) {
-                handleAuthenticationFailure(account, true);
+                if (((AuthenticationFailedException) exception).isClientIDFailure()) {
+                    handleClientIDFailure(account, true);
+                } else {
+                    handleAuthenticationFailure(account, true);
+                }
             } else {
                 notifyUserIfCertificateProblem(account, exception, true);
             }

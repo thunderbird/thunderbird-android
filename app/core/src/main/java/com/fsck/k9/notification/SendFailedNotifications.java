@@ -7,6 +7,7 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.helper.ExceptionHelper;
+import com.fsck.k9.mail.MessagingException;
 
 import static com.fsck.k9.notification.NotificationHelper.NOTIFICATION_LED_BLINK_FAST;
 import static com.fsck.k9.notification.NotificationHelper.NOTIFICATION_LED_FAILURE_COLOR;
@@ -27,6 +28,11 @@ class SendFailedNotifications {
 
     public void showSendFailedNotification(Account account, Exception exception) {
         String title = resourceProvider.sendFailedTitle();
+
+        if (exception instanceof MessagingException && ((MessagingException) exception).isClientIDFailure()) {
+            title = resourceProvider.sendFailedClientIDTitle();
+        }
+
         String text = ExceptionHelper.getRootCauseMessage(exception);
 
         int notificationId = NotificationIds.getSendFailedNotificationId(account);
@@ -42,6 +48,7 @@ class SendFailedNotifications {
                 .setContentTitle(title)
                 .setContentText(text)
                 .setContentIntent(folderListPendingIntent)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setCategory(NotificationCompat.CATEGORY_ERROR);
 

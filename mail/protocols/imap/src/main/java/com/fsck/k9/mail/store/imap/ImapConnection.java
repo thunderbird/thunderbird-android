@@ -92,6 +92,7 @@ class ImapConnection {
     private boolean open = false;
     private boolean retryXoauth2WithNewToken = true;
     private int lineLengthLimit;
+    private boolean secureConnection = false;
 
 
     public ImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
@@ -234,6 +235,7 @@ class ImapConnection {
         Socket socket;
         if (settings.getConnectionSecurity() == ConnectionSecurity.SSL_TLS_REQUIRED) {
             socket = socketFactory.createSocket(null, host, port, clientCertificateAlias);
+            secureConnection = true;
         } else {
             socket = new Socket();
         }
@@ -312,6 +314,7 @@ class ImapConnection {
     private void upgradeToTlsIfNecessary() throws IOException, MessagingException, GeneralSecurityException {
         if (settings.getConnectionSecurity() == STARTTLS_REQUIRED) {
             upgradeToTls();
+            secureConnection = true;
         }
     }
 
@@ -350,6 +353,18 @@ class ImapConnection {
     }
 
     private List<ImapResponse> authenticate() throws MessagingException, IOException {
+        if (secureConnection && hasCapability(Capabilities.CLIENT_ID)) {
+            String clientUuid = settings.getAccountUuid();
+            String clientImei = settings.getImei();
+            String clientID;
+            if (clientImei == null) {
+                clientID = "K9-UUID " + clientUuid;
+            } else {
+                clientID = "K9-IMEI " + clientImei;
+            }
+            sendClientID(clientID);
+        }
+
         switch (settings.getAuthType()) {
             case XOAUTH2:
                 if (oauthTokenProvider == null) {
@@ -511,6 +526,15 @@ class ImapConnection {
         }
     }
 
+    private void sendClientID(String clientID) throws IOException, MessagingException {
+        try {
+            executeSimpleCommand("CLIENTID " + clientID);
+        } catch (NegativeImapResponseException e) {
+            e.setClientIDFailure(true);
+            throw handleAuthenticationFailure(e);
+        }
+    }
+
     private List<ImapResponse> login() throws IOException, MessagingException {
         /*
          * Use quoted strings which permit spaces and quotes. (Using IMAP
@@ -556,6 +580,12 @@ class ImapConnection {
         if (responseCode == null || responseCode.equals(ResponseCodeExtractor.AUTHENTICATION_FAILED)) {
             if (e.wasByeResponseReceived()) {
                 close();
+            }
+
+            if (e.isClientIDFailure()) {
+                AuthenticationFailedException ClientIDException = new AuthenticationFailedException(e.getMessage());
+                ClientIDException.setClientIDFailure(true);
+                return ClientIDException;
             }
 
             return new AuthenticationFailedException(e.getMessage());

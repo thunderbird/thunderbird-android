@@ -71,6 +71,8 @@ public class ServerSettings {
      */
     private final Map<String, String> extra;
 
+    private String accountUuid;
+    private String imei;
 
     /**
      * Creates a new {@code ServerSettings} object.
@@ -162,6 +164,14 @@ public class ServerSettings {
         extra = null;
     }
 
+    public void setAccountUuid(String accountUuid) {
+        this.accountUuid = accountUuid;
+    }
+
+    public void setImei(String imei) {
+        this.imei = imei;
+    }
+
     /**
      * Returns store- or transport-specific settings as key/value pair.
      *
@@ -214,5 +224,13 @@ public class ServerSettings {
                 (password == null ? that.password == null : password.equals(that.password)) &&
                 (clientCertificateAlias == null ? that.clientCertificateAlias == null :
                         clientCertificateAlias.equals(that.clientCertificateAlias));
+    }
+
+    public String getAccountUuid() {
+        return this.accountUuid;
+    }
+
+    public String getImei() {
+        return this.imei;
     }
 }

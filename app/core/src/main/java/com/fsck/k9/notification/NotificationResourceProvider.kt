@@ -22,6 +22,8 @@ interface NotificationResourceProvider {
     fun authenticationErrorTitle(): String
     fun authenticationErrorBody(accountName: String): String
 
+    fun clientIDErrorBody(): String
+
     fun certificateErrorTitle(accountName: String): String
     fun certificateErrorBody(): String
 
@@ -34,6 +36,7 @@ interface NotificationResourceProvider {
     fun recipientDisplayName(recipientDisplayName: String): String
     fun noSender(): String
 
+    fun sendFailedClientIDTitle() : String
     fun sendFailedTitle(): String
     fun sendingMailTitle(): String
     fun sendingMailBody(accountName: String): String
@@ -50,4 +53,5 @@ interface NotificationResourceProvider {
     fun actionArchive(): String
     fun actionArchiveAll(): String
     fun actionMarkAsSpam(): String
+    fun clientIDErrorTitle(): String
 }

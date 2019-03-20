@@ -40,6 +40,8 @@ public class ImapStore extends RemoteStore {
     private ConnectivityManager connectivityManager;
     private OAuth2TokenProvider oauthTokenProvider;
 
+    private String imei;
+    private String accountUuid;
     private String host;
     private int port;
     private String username;
@@ -67,6 +69,8 @@ public class ImapStore extends RemoteStore {
             OAuth2TokenProvider oauthTokenProvider) {
         super(storeConfig, trustedSocketFactory);
 
+        imei = serverSettings.getImei();
+        accountUuid = serverSettings.getAccountUuid();
         host = serverSettings.host;
         port = serverSettings.port;
 
@@ -426,6 +430,16 @@ public class ImapStore extends RemoteStore {
         @Override
         public void setCombinedPrefix(String prefix) {
             combinedPrefix = prefix;
+        }
+
+        @Override
+        public String getAccountUuid() {
+            return accountUuid;
+        }
+
+        @Override
+        public String getImei() {
+            return imei;
         }
     }
 }

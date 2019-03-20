@@ -477,4 +477,21 @@
 
     </PreferenceScreen>
 
+    <PreferenceScreen
+        android:icon="?attr/iconPreferencesPrivacy"
+        android:key="clientID"
+        android:title="@string/account_settings_clientID_title">
+
+        <com.takisoft.preferencex.AutoSummaryEditTextPreference
+            android:editable="false"
+            android:key="clientID_type"
+            android:title="@string/account_settings_clientID_type" />
+
+        <com.takisoft.preferencex.AutoSummaryEditTextPreference
+            android:editable="false"
+            android:key="clientID_value"
+            android:title="@string/account_settings_clientID_value" />
+
+    </PreferenceScreen>
+
 </PreferenceScreen>

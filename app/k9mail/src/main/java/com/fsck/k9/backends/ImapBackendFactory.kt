@@ -37,6 +37,9 @@ class ImapBackendFactory(
     private fun createImapStore(account: Account): ImapStore {
         val oAuth2TokenProvider: OAuth2TokenProvider? = null
         val serverSettings = ImapStoreUriDecoder.decode(account.storeUri)
+        serverSettings.setAccountUuid(account.uuid)
+        serverSettings.setImei(account.imei)
+
         return ImapStore(
                 serverSettings,
                 account,
@@ -49,6 +52,8 @@ class ImapBackendFactory(
     private fun createSmtpTransport(account: Account): SmtpTransport {
         val serverSettings = decodeTransportUri(account.transportUri)
         val oauth2TokenProvider: OAuth2TokenProvider? = null
+        serverSettings.setAccountUuid(account.uuid)
+        serverSettings.setImei(account.imei)
         return SmtpTransport(serverSettings, trustedSocketFactory, oauth2TokenProvider)
     }
 

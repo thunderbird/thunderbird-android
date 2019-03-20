@@ -104,10 +104,11 @@ public class Preferences {
             accounts = new HashMap<>();
             accountsInOrder = new LinkedList<>();
             String accountUuids = getStorage().getString("accountUuids", null);
+            String imei = getStorage().getString("imei", null);
             if ((accountUuids != null) && (accountUuids.length() != 0)) {
                 String[] uuids = accountUuids.split(",");
                 for (String uuid : uuids) {
-                    Account newAccount = new Account(uuid);
+                    Account newAccount = new Account(uuid, imei);
                     accountPreferenceSerializer.loadAccount(newAccount, storage);
                     accounts.put(uuid, newAccount);
                     accountsInOrder.add(newAccount);
@@ -169,8 +170,9 @@ public class Preferences {
 
     public Account newAccount() {
         synchronized (accountLock) {
+            String imei = getStorage().getString("imei", null);
             String accountUuid = UUID.randomUUID().toString();
-            newAccount = new Account(accountUuid);
+            newAccount = new Account(accountUuid, imei);
             accountPreferenceSerializer.loadDefaults(newAccount);
             accounts.put(newAccount.getUuid(), newAccount);
             accountsInOrder.add(newAccount);
