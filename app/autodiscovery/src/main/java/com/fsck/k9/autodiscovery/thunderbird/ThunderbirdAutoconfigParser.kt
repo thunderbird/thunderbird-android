@@ -11,14 +11,12 @@ import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
 
+/**
+ * Parser for Thunderbird's
+ * [Autoconfig file format](https://wiki.mozilla.org/Thunderbird:Autoconfiguration:ConfigFileFormat)
+ */
 class ThunderbirdAutoconfigParser {
-    // structure described at:
-    // https://wiki.mozilla.org/Thunderbird:Autoconfiguration:ConfigFileFormat
-    fun parseSettings(stream: InputStream?, email: String): ConnectionSettings? {
-        if (stream == null) {
-            return null
-        }
-
+    fun parseSettings(stream: InputStream, email: String): ConnectionSettings? {
         var incoming: ServerSettings? = null
         var outgoing: ServerSettings? = null
 
@@ -30,10 +28,13 @@ class ThunderbirdAutoconfigParser {
         var eventType = xpp.eventType
         while (eventType != XmlPullParser.END_DOCUMENT) {
             if (eventType == XmlPullParser.START_TAG) {
-                if ("incomingServer" == xpp.name) {
-                    incoming = parseServer(xpp, "incomingServer", email)
-                } else if ("outgoingServer" == xpp.name) {
-                    outgoing = parseServer(xpp, "outgoingServer", email)
+                when (xpp.name) {
+                    "incomingServer" -> {
+                        incoming = parseServer(xpp, "incomingServer", email)
+                    }
+                    "outgoingServer" -> {
+                        outgoing = parseServer(xpp, "outgoingServer", email)
+                    }
                 }
 
                 if (incoming != null && outgoing != null) {
@@ -56,16 +57,22 @@ class ThunderbirdAutoconfigParser {
         var eventType = xpp.eventType
         while (!(eventType == XmlPullParser.END_TAG && nodeName == xpp.name)) {
             if (eventType == XmlPullParser.START_TAG) {
-                if (xpp.name == "hostname") {
-                    host = getText(xpp)
-                } else if (xpp.name == "port") {
-                    port = getText(xpp).toInt()
-                } else if (xpp.name == "username") {
-                    username = getText(xpp).replace("%EMAILADDRESS%", email)
-                } else if (xpp.name == "authentication" && authType == null) {
-                    authType = parseAuthType(getText(xpp))
-                } else if (xpp.name == "socketType") {
-                    connectionSecurity = parseSocketType(getText(xpp))
+                when (xpp.name) {
+                    "hostname" -> {
+                        host = getText(xpp)
+                    }
+                    "port" -> {
+                        port = getText(xpp).toInt()
+                    }
+                    "username" -> {
+                        username = getText(xpp).replace("%EMAILADDRESS%", email)
+                    }
+                    "authentication" -> {
+                        if (authType == null) authType = parseAuthType(getText(xpp))
+                    }
+                    "socketType" -> {
+                        connectionSecurity = parseSocketType(getText(xpp))
+                    }
                 }
             }
             eventType = xpp.next()
@@ -95,8 +102,6 @@ class ThunderbirdAutoconfigParser {
     @Throws(XmlPullParserException::class, IOException::class)
     private fun getText(xpp: XmlPullParser): String {
         val eventType = xpp.next()
-        return if (eventType != XmlPullParser.TEXT) {
-            ""
-        } else xpp.text
+        return if (eventType != XmlPullParser.TEXT) "" else xpp.text
     }
 }

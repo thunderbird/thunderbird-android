@@ -9,7 +9,9 @@ class ThunderbirdDiscovery(
 ): ConnectionSettingsDiscovery {
 
     override fun discover(email: String): ConnectionSettings? {
-        return fetcher.fetchAutoconfigFile(email).use {
+        val autoconfigInputStream = fetcher.fetchAutoconfigFile(email) ?: return null
+
+        return autoconfigInputStream.use {
             parser.parseSettings(it, email)
         }
     }
