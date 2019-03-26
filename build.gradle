@@ -20,6 +20,9 @@ buildscript {
                 'commonsIo': '2.4',
                 'mime4j': '0.8.1',
 
+                // Note: Only use 3.12.x versions until we raise minSdkVersion to 21
+                'okhttp': '3.12.1',
+
                 'androidxTestRunner': '1.1.1',
                 'junit': '4.12',
                 'robolectric': '3.7.1',

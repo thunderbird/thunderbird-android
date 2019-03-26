@@ -11,6 +11,7 @@ dependencies {
     implementation project(":mail:common")
 
     implementation "com.jakewharton.timber:timber:${versions.timber}"
+    implementation "com.squareup.okhttp3:okhttp:${versions.okhttp}"
 
     testImplementation project(':app:testing')
     testImplementation project(":backend:imap")
