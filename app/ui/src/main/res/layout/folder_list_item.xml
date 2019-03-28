@@ -1,33 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-        android:id="@+id/folder_list_item_layout"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="?android:attr/listPreferredItemHeight"
-        android:paddingRight="4dip"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:descendantFocusability="blocksDescendants">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/folder_list_item_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:orientation="horizontal">
 
     <View
-            android:id="@+id/chip"
-            android:layout_height="match_parent"
-            android:layout_width="8dip"
-            android:background="#ff336699"
-            android:layout_marginRight="8dip"
-            />
-
+        android:id="@+id/chip"
+        android:layout_width="8dp"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="8dp"
+        android:background="#ff336699" />
 
     <TextView
-            android:gravity="center_vertical"
-            android:padding="8dp"
-            android:id="@+id/folder_name"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            tools:text="Folder name" />
+        android:id="@+id/folder_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="?android:attr/textColorPrimary"
+        tools:text="Folder name" />
 
 </LinearLayout>
