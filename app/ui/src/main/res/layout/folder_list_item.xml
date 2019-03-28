@@ -2,6 +2,7 @@
 <LinearLayout
         android:id="@+id/folder_list_item_layout"
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:minHeight="?android:attr/listPreferredItemHeight"
@@ -19,31 +20,14 @@
             />
 
 
-    <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
+    <TextView
             android:gravity="center_vertical"
-            android:paddingBottom="2dip"
+            android:padding="8dp"
+            android:id="@+id/folder_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            tools:text="Folder name" />
 
-            android:paddingLeft="6dip">
-
-        <TextView
-                android:id="@+id/folder_name"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textAppearance="?android:attr/textAppearanceLarge"/>
-
-        <TextView
-                android:id="@+id/folder_status"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:ellipsize="end"
-                android:textColor="?android:attr/textColorTertiary"
-                android:textAppearance="?android:attr/textAppearanceSmall"/>
-
-    </LinearLayout>
 </LinearLayout>
