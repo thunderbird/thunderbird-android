@@ -1,335 +1,316 @@
-package com.fsck.k9.ui;
+package com.fsck.k9.ui
 
 
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.net.Uri;
-import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.drawerlayout.widget.DrawerLayout;
-import android.util.TypedValue;
-import android.view.View;
-import com.fsck.k9.Account;
-import com.fsck.k9.DI;
-import com.fsck.k9.K9;
-import com.fsck.k9.Preferences;
-import com.fsck.k9.activity.MessageList;
-import com.fsck.k9.helper.Contacts;
-import com.fsck.k9.mailstore.Folder;
-import com.fsck.k9.ui.folders.FolderNameFormatter;
-import com.fsck.k9.ui.messagelist.MessageListViewModel;
-import com.fsck.k9.ui.messagelist.MessageListViewModelFactory;
-import com.fsck.k9.ui.settings.SettingsActivity;
-import com.mikepenz.fontawesome_typeface_library.FontAwesome;
-import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.materialdrawer.AccountHeader;
-import com.mikepenz.materialdrawer.AccountHeaderBuilder;
-import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.Drawer.OnDrawerItemClickListener;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.DividerDrawerItem;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IProfile;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import android.graphics.Color
+import android.graphics.PorterDuff
+import android.net.Uri
+import android.os.Bundle
+import android.util.TypedValue
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import com.fsck.k9.Account
+import com.fsck.k9.DI
+import com.fsck.k9.K9
+import com.fsck.k9.Preferences
+import com.fsck.k9.activity.MessageList
+import com.fsck.k9.helper.Contacts
+import com.fsck.k9.mailstore.Folder
+import com.fsck.k9.mailstore.FolderType
+import com.fsck.k9.ui.folders.FolderNameFormatter
+import com.fsck.k9.ui.messagelist.MessageListViewModel
+import com.fsck.k9.ui.messagelist.MessageListViewModelFactory
+import com.fsck.k9.ui.settings.SettingsActivity
+import com.mikepenz.fontawesome_typeface_library.FontAwesome
+import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.materialdrawer.AccountHeader
+import com.mikepenz.materialdrawer.AccountHeaderBuilder
+import com.mikepenz.materialdrawer.Drawer
+import com.mikepenz.materialdrawer.Drawer.OnDrawerItemClickListener
+import com.mikepenz.materialdrawer.DrawerBuilder
+import com.mikepenz.materialdrawer.model.DividerDrawerItem
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
+import com.mikepenz.materialdrawer.model.ProfileDrawerItem
+import java.util.ArrayList
+import java.util.HashSet
 
 
-public class K9Drawer {
-    // Bit shift for identifiers of user folders items, to leave space for other items
-    private static final short DRAWER_FOLDER_SHIFT = 2;
-    private static final short DRAWER_ACCOUNT_SHIFT = 16;
+class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
+    private val folderNameFormatter = DI.get<FolderNameFormatter>()
+    private val preferences = DI.get<Preferences>()
 
-    private static final long DRAWER_ID_UNIFIED_INBOX = 0;
-    private static final long DRAWER_ID_PREFERENCES = 1;
-    private static final long DRAWER_ID_FOLDERS = 2;
+    private val drawer: Drawer
+    private val accountHeader: AccountHeader
+    private val headerItemCount = 1
+
+    private var iconFolderInboxResId: Int = 0
+    private var iconFolderOutboxResId: Int = 0
+    private var iconFolderSentResId: Int = 0
+    private var iconFolderTrashResId: Int = 0
+    private var iconFolderDraftsResId: Int = 0
+    private var iconFolderArchiveResId: Int = 0
+    private var iconFolderSpamResId: Int = 0
+    private var iconFolderResId: Int = 0
+
+    private val userFolderDrawerIds = ArrayList<Long>()
+    private var unifiedInboxSelected: Boolean = false
+    private var openedFolderServerId: String? = null
 
 
-    private final FolderNameFormatter folderNameFormatter = DI.get(FolderNameFormatter.class);
+    val layout: DrawerLayout
+        get() = drawer.drawerLayout
 
-    private final Drawer drawer;
-    private AccountHeader accountHeader;
-    private final MessageList parent;
-    private int headerItemCount = 1;
+    val isOpen: Boolean
+        get() = drawer.isDrawerOpen
 
-    private int iconFolderInboxResId;
-    private int iconFolderOutboxResId;
-    private int iconFolderSentResId;
-    private int iconFolderTrashResId;
-    private int iconFolderDraftsResId;
-    private int iconFolderArchiveResId;
-    private int iconFolderSpamResId;
-    private int iconFolderResId;
+    init {
+        initializeFolderIcons()
 
-    private final List<Long> userFolderDrawerIds = new ArrayList<>();
-    private boolean unifiedInboxSelected;
-    private String openedFolderServerId;
+        accountHeader = buildAccountHeader()
 
-    private final Preferences preferences = DI.get(Preferences.class);
-
-    public K9Drawer(MessageList parent, Bundle savedInstanceState) {
-        this.parent = parent;
-
-        initializeFolderIcons();
-
-        drawer = new DrawerBuilder()
+        drawer = DrawerBuilder()
                 .withActivity(parent)
                 .withOnDrawerItemClickListener(createItemClickListener())
                 .withOnDrawerListener(parent.createOnDrawerListener())
                 .withSavedInstance(savedInstanceState)
-                .withAccountHeader(buildAccountHeader())
-                .build();
+                .withAccountHeader(accountHeader)
+                .build()
 
-        addFooterItems();
+        addFooterItems()
     }
 
-    private AccountHeader buildAccountHeader() {
-        AccountHeaderBuilder headerBuilder = new AccountHeaderBuilder()
+    private fun buildAccountHeader(): AccountHeader {
+        val headerBuilder = AccountHeaderBuilder()
                 .withActivity(parent)
-                .withHeaderBackground(R.drawable.drawer_header_background);
+                .withHeaderBackground(R.drawable.drawer_header_background)
 
         if (!K9.isHideSpecialAccounts()) {
-            headerBuilder.addProfiles(new ProfileDrawerItem()
+            headerBuilder.addProfiles(ProfileDrawerItem()
                     .withNameShown(true)
                     .withName(R.string.integrated_inbox_title)
                     .withEmail(parent.getString(R.string.integrated_inbox_detail))
-                    .withIcon(new IconicsDrawable(parent, FontAwesome.Icon.faw_users)
-                            .colorRes(R.color.material_drawer_background).backgroundColor(Color.GRAY)
-                            .sizeDp(56).paddingDp(8))
+                    .withIcon(IconicsDrawable(parent, FontAwesome.Icon.faw_users)
+                            .colorRes(R.color.material_drawer_background)
+                            .backgroundColor(Color.GRAY)
+                            .sizeDp(56)
+                            .paddingDp(8))
                     .withSetSelected(unifiedInboxSelected)
                     .withIdentifier(DRAWER_ID_UNIFIED_INBOX)
-            );
+            )
         }
 
-        HashSet <Uri> photoUris = new HashSet<Uri>();
+        val photoUris = HashSet<Uri>()
 
-        List <Account> accounts = preferences.getAccounts();
-        for (int i = 0; i < preferences.getAccounts().size(); i++) {
-            Account account = accounts.get(i);
-            long drawerId = (account.getAccountNumber()+1) << DRAWER_ACCOUNT_SHIFT;
+        for (account in preferences.accounts) {
+            val drawerId = (account.accountNumber + 1 shl DRAWER_ACCOUNT_SHIFT).toLong()
 
-            ProfileDrawerItem  pdi = new ProfileDrawerItem()
+            val pdi = ProfileDrawerItem()
                     .withNameShown(true)
-                    .withName(account.getDescription())
-                    .withEmail(account.getEmail())
+                    .withName(account.description)
+                    .withEmail(account.email)
                     .withIdentifier(drawerId)
                     .withSetSelected(false)
-                    .withTag(account);
+                    .withTag(account)
 
-            Uri photoUri = Contacts.getInstance(parent).getPhotoUri(account.getEmail());
+            val photoUri = Contacts.getInstance(parent).getPhotoUri(account.email)
             if (photoUri != null && !photoUris.contains(photoUri)) {
-                photoUris.add(photoUri);
-                pdi.withIcon(photoUri);
+                photoUris.add(photoUri)
+                pdi.withIcon(photoUri)
             } else {
-                pdi.withIcon(new IconicsDrawable(parent, FontAwesome.Icon.faw_user_alt)
-                        .colorRes(R.color.material_drawer_background).backgroundColor(account.getChipColor())
-                        .sizeDp(56).paddingDp(14));
+                pdi.withIcon(IconicsDrawable(parent, FontAwesome.Icon.faw_user_alt)
+                        .colorRes(R.color.material_drawer_background)
+                        .backgroundColor(account.chipColor)
+                        .sizeDp(56)
+                        .paddingDp(14)
+                )
             }
-            headerBuilder.addProfiles(pdi);
+            headerBuilder.addProfiles(pdi)
         }
 
-        accountHeader = headerBuilder
-                .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
-                    @Override
-                    public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
-                        if (profile.getIdentifier() == DRAWER_ID_UNIFIED_INBOX) {
-                            parent.openUnifiedInbox();
-                            return false;
-                        } else {
-                            Account account = (Account) ((ProfileDrawerItem) profile).getTag();
-                            parent.openRealAccount(account);
-                            updateUserAccountsAndFolders(account);
-                            return false;
-                        }
+        return headerBuilder
+                .withOnAccountHeaderListener { _, profile, _ ->
+                    if (profile.identifier == DRAWER_ID_UNIFIED_INBOX) {
+                        parent.openUnifiedInbox()
+                        false
+                    } else {
+                        val account = (profile as ProfileDrawerItem).tag as Account
+                        parent.openRealAccount(account)
+                        updateUserAccountsAndFolders(account)
+                        false
                     }
-                })
-                .build();
-        return accountHeader;
+                }
+                .build()
     }
 
-    private void addFooterItems() {
-        drawer.addItems(new DividerDrawerItem(),
-                new PrimaryDrawerItem()
+    private fun addFooterItems() {
+        drawer.addItems(DividerDrawerItem(),
+                PrimaryDrawerItem()
                         .withName(R.string.folders_action)
                         .withIcon(iconFolderResId)
                         .withIdentifier(DRAWER_ID_FOLDERS)
                         .withSelectable(false),
-                new PrimaryDrawerItem()
+                PrimaryDrawerItem()
                         .withName(R.string.preferences_action)
                         .withIcon(getResId(R.attr.iconActionSettings))
                         .withIdentifier(DRAWER_ID_PREFERENCES)
                         .withSelectable(false)
-        );
+        )
     }
 
-    private void initializeFolderIcons() {
-        iconFolderInboxResId = getResId(R.attr.iconFolderInbox);
-        iconFolderOutboxResId = getResId(R.attr.iconFolderOutbox);
-        iconFolderSentResId = getResId(R.attr.iconFolderSent);
-        iconFolderTrashResId = getResId(R.attr.iconFolderTrash);
-        iconFolderDraftsResId = getResId(R.attr.iconFolderDrafts);
-        iconFolderArchiveResId = getResId(R.attr.iconFolderArchive);
-        iconFolderSpamResId = getResId(R.attr.iconFolderSpam);
-        iconFolderResId = getResId(R.attr.iconFolder);
+    private fun initializeFolderIcons() {
+        iconFolderInboxResId = getResId(R.attr.iconFolderInbox)
+        iconFolderOutboxResId = getResId(R.attr.iconFolderOutbox)
+        iconFolderSentResId = getResId(R.attr.iconFolderSent)
+        iconFolderTrashResId = getResId(R.attr.iconFolderTrash)
+        iconFolderDraftsResId = getResId(R.attr.iconFolderDrafts)
+        iconFolderArchiveResId = getResId(R.attr.iconFolderArchive)
+        iconFolderSpamResId = getResId(R.attr.iconFolderSpam)
+        iconFolderResId = getResId(R.attr.iconFolder)
     }
 
-    private int getResId(int resAttribute) {
-        TypedValue typedValue = new TypedValue();
-        boolean found = parent.getTheme().resolveAttribute(resAttribute, typedValue, true);
+    private fun getResId(resAttribute: Int): Int {
+        val typedValue = TypedValue()
+        val found = parent.theme.resolveAttribute(resAttribute, typedValue, true)
         if (!found) {
-            throw new AssertionError("Couldn't find resource with attribute " + resAttribute);
+            throw AssertionError("Couldn't find resource with attribute $resAttribute")
         }
-        return typedValue.resourceId;
+        return typedValue.resourceId
     }
 
-    private int getFolderIcon(Folder folder) {
-        switch (folder.getType()) {
-            case INBOX: return iconFolderInboxResId;
-            case OUTBOX: return iconFolderOutboxResId;
-            case SENT: return iconFolderSentResId;
-            case TRASH: return iconFolderTrashResId;
-            case DRAFTS: return iconFolderDraftsResId;
-            case ARCHIVE: return iconFolderArchiveResId;
-            case SPAM: return iconFolderSpamResId;
-            default: return iconFolderResId;
-        }
+    private fun getFolderIcon(folder: Folder): Int = when (folder.type) {
+        FolderType.INBOX -> iconFolderInboxResId
+        FolderType.OUTBOX -> iconFolderOutboxResId
+        FolderType.SENT -> iconFolderSentResId
+        FolderType.TRASH -> iconFolderTrashResId
+        FolderType.DRAFTS -> iconFolderDraftsResId
+        FolderType.ARCHIVE -> iconFolderArchiveResId
+        FolderType.SPAM -> iconFolderSpamResId
+        else -> iconFolderResId
     }
 
-    private String getFolderDisplayName(Folder folder) {
-        return folderNameFormatter.displayName(folder);
+    private fun getFolderDisplayName(folder: Folder): String {
+        return folderNameFormatter.displayName(folder)
     }
 
-    public void updateUserAccountsAndFolders(Account account) {
+    fun updateUserAccountsAndFolders(account: Account?) {
         if (account == null) {
-            selectUnifiedInbox();
+            selectUnifiedInbox()
         } else {
-            unifiedInboxSelected = false;
-            accountHeader.setActiveProfile((account.getAccountNumber()+1) << DRAWER_ACCOUNT_SHIFT);
-            accountHeader.getHeaderBackgroundView().setColorFilter(account.getChipColor(), PorterDuff.Mode.MULTIPLY);
-            ViewModelProvider viewModelProvider = ViewModelProviders.of(parent, new MessageListViewModelFactory());
-            MessageListViewModel viewModel = viewModelProvider.get(MessageListViewModel.class);
-            viewModel.getFolders(account).observe(parent, new Observer<List<Folder>>() {
-                @Override
-                public void onChanged(@Nullable List<Folder> folders) {
-                    setUserFolders(folders);
-                }
-            });
-            updateFolderSettingsItem();
+            unifiedInboxSelected = false
+            accountHeader.setActiveProfile((account.accountNumber + 1 shl DRAWER_ACCOUNT_SHIFT).toLong())
+            accountHeader.headerBackgroundView.setColorFilter(account.chipColor, PorterDuff.Mode.MULTIPLY)
+            val viewModelProvider = ViewModelProviders.of(parent, MessageListViewModelFactory())
+            val viewModel = viewModelProvider.get(MessageListViewModel::class.java)
+            viewModel.getFolders(account).observe(parent, Observer {
+                folders -> setUserFolders(folders)
+            })
+            updateFolderSettingsItem()
         }
     }
 
-    private void updateFolderSettingsItem() {
-        IDrawerItem drawerItem = drawer.getDrawerItem(DRAWER_ID_FOLDERS);
-        drawerItem.withEnabled(!unifiedInboxSelected);
-        drawer.updateItem(drawerItem);
+    private fun updateFolderSettingsItem() {
+        val drawerItem = drawer.getDrawerItem(DRAWER_ID_FOLDERS)
+        drawerItem.withEnabled(!unifiedInboxSelected)
+        drawer.updateItem(drawerItem)
     }
 
-    private OnDrawerItemClickListener createItemClickListener() {
-        return new OnDrawerItemClickListener() {
-            @Override
-            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                long id = drawerItem.getIdentifier();
-                if (id == DRAWER_ID_PREFERENCES) {
-                    SettingsActivity.launch(parent);
-                    return false;
-                } else if (id == DRAWER_ID_FOLDERS) {
-                    parent.openFolderSettings();
-                    return false;
-                } else {
-                    Folder folder = (Folder) drawerItem.getTag();
-                    parent.openFolder(folder.getServerId());
-                    return false;
+    private fun createItemClickListener(): OnDrawerItemClickListener {
+        return OnDrawerItemClickListener { _, _, drawerItem ->
+            when (drawerItem.identifier) {
+                DRAWER_ID_PREFERENCES -> SettingsActivity.launch(parent)
+                DRAWER_ID_FOLDERS -> parent.openFolderSettings()
+                else -> {
+                    val folder = drawerItem.tag as Folder
+                    parent.openFolder(folder.serverId)
                 }
             }
-        };
+            false
+        }
     }
 
-    public void setUserFolders(@Nullable List<Folder> folders) {
-        clearUserFolders();
+    private fun setUserFolders(folders: List<Folder>?) {
+        clearUserFolders()
 
         if (folders == null) {
-            return;
+            return
         }
 
-        long openedFolderDrawerId = -1;
-        for (int i = folders.size() - 1; i >= 0; i--) {
-            Folder folder = folders.get(i);
-            long drawerId = folder.getId() << DRAWER_FOLDER_SHIFT;
-            drawer.addItemAtPosition(new PrimaryDrawerItem()
+        var openedFolderDrawerId: Long = -1
+        for (i in folders.indices.reversed()) {
+            val folder = folders[i]
+            val drawerId = folder.id shl DRAWER_FOLDER_SHIFT
+            drawer.addItemAtPosition(PrimaryDrawerItem()
                     .withIcon(getFolderIcon(folder))
                     .withIdentifier(drawerId)
                     .withTag(folder)
                     .withName(getFolderDisplayName(folder)),
-                    headerItemCount);
+                    headerItemCount)
 
-            userFolderDrawerIds.add(drawerId);
+            userFolderDrawerIds.add(drawerId)
 
-            if (folder.getServerId().equals(openedFolderServerId)) {
-                openedFolderDrawerId = drawerId;
+            if (folder.serverId == openedFolderServerId) {
+                openedFolderDrawerId = drawerId
             }
         }
 
-        if (openedFolderDrawerId != -1) {
-            drawer.setSelection(openedFolderDrawerId, false);
+        if (openedFolderDrawerId != -1L) {
+            drawer.setSelection(openedFolderDrawerId, false)
         }
     }
 
-    private void clearUserFolders() {
-        for (long drawerId : userFolderDrawerIds) {
-            drawer.removeItem(drawerId);
+    private fun clearUserFolders() {
+        for (drawerId in userFolderDrawerIds) {
+            drawer.removeItem(drawerId)
         }
-        userFolderDrawerIds.clear();
+        userFolderDrawerIds.clear()
     }
 
-    public void selectFolder(String folderServerId) {
-        unifiedInboxSelected = false;
-        openedFolderServerId = folderServerId;
-        for (long drawerId : userFolderDrawerIds) {
-            Folder folder = (Folder) drawer.getDrawerItem(drawerId).getTag();
-            if (folder.getServerId().equals(folderServerId)) {
-                drawer.setSelection(drawerId, false);
-                return;
+    fun selectFolder(folderServerId: String) {
+        unifiedInboxSelected = false
+        openedFolderServerId = folderServerId
+        for (drawerId in userFolderDrawerIds) {
+            val folder = drawer.getDrawerItem(drawerId).tag as Folder
+            if (folder.serverId == folderServerId) {
+                drawer.setSelection(drawerId, false)
+                return
             }
         }
-        updateFolderSettingsItem();
+        updateFolderSettingsItem()
     }
 
-    public void selectUnifiedInbox() {
-        unifiedInboxSelected = true;
-        openedFolderServerId = null;
-        accountHeader.setActiveProfile(DRAWER_ID_UNIFIED_INBOX);
-        accountHeader.getHeaderBackgroundView().setColorFilter(0xFFFFFFFF, PorterDuff.Mode.MULTIPLY);
-        clearUserFolders();
-        updateFolderSettingsItem();
+    fun selectUnifiedInbox() {
+        unifiedInboxSelected = true
+        openedFolderServerId = null
+        accountHeader.setActiveProfile(DRAWER_ID_UNIFIED_INBOX)
+        accountHeader.headerBackgroundView.setColorFilter(0xFFFFFFFFL.toInt(), PorterDuff.Mode.MULTIPLY)
+        clearUserFolders()
+        updateFolderSettingsItem()
     }
 
-    public DrawerLayout getLayout() {
-        return drawer.getDrawerLayout();
+    fun open() {
+        drawer.openDrawer()
     }
 
-    public boolean isOpen() {
-        return drawer.isDrawerOpen();
+    fun close() {
+        drawer.closeDrawer()
     }
 
-    public void open() {
-        drawer.openDrawer();
+    fun lock() {
+        drawer.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
     }
 
-    public void close() {
-        drawer.closeDrawer();
+    fun unlock() {
+        drawer.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
     }
 
-    public void lock() {
-        drawer.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-    }
 
-    public void unlock() {
-        drawer.getDrawerLayout().setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+    companion object {
+        // Bit shift for identifiers of user folders items, to leave space for other items
+        private const val DRAWER_FOLDER_SHIFT: Int = 2
+        private const val DRAWER_ACCOUNT_SHIFT: Int = 16
+
+        private const val DRAWER_ID_UNIFIED_INBOX: Long = 0
+        private const val DRAWER_ID_PREFERENCES: Long = 1
+        private const val DRAWER_ID_FOLDERS: Long = 2
     }
 }
