@@ -42,7 +42,6 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.job.K9JobManager;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mailstore.LocalFolder;
-import com.fsck.k9.mailstore.LocalStoreProvider;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.helper.SizeFormatter;
@@ -125,20 +124,6 @@ public class FolderList extends K9ListActivity {
 
                     Toast toast = Toast.makeText(getApplication(), toastText, Toast.LENGTH_LONG);
                     toast.show();
-                }
-            });
-        }
-
-        public void folderLoading(final String folder, final boolean loading) {
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    FolderInfoHolder folderHolder = adapter.getFolder(folder);
-
-
-                    if (folderHolder != null) {
-                        folderHolder.loading = loading;
-                    }
-
                 }
             });
         }
@@ -375,10 +360,6 @@ public class FolderList extends K9ListActivity {
         finish();
     }
 
-    private void onClearFolder(Account account, String folderServerId) {
-        MessagingController.getInstance(getApplication()).clearFolder(account, folderServerId, adapter.mListener);
-    }
-
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
@@ -491,12 +472,6 @@ public class FolderList extends K9ListActivity {
 
         private ActivityListener mListener = new ActivityListener() {
             @Override
-            public void informUserOfStatus() {
-                handler.refreshTitle();
-                handler.dataChanged();
-            }
-
-            @Override
             public void listFoldersStarted(Account account) {
                 if (account.equals(FolderList.this.account)) {
                     handler.progress(true);
@@ -579,143 +554,6 @@ public class FolderList extends K9ListActivity {
             }
 
             @Override
-            public void synchronizeMailboxStarted(Account account, String folderServerId, String folderName) {
-                super.synchronizeMailboxStarted(account, folderServerId, folderName);
-                if (account.equals(FolderList.this.account)) {
-
-                    handler.progress(true);
-                    handler.folderLoading(folderServerId, true);
-                    handler.dataChanged();
-                }
-
-            }
-
-            @Override
-            public void synchronizeMailboxFinished(Account account, String folderServerId, int totalMessagesInMailbox, int numNewMessages) {
-                super.synchronizeMailboxFinished(account, folderServerId, totalMessagesInMailbox, numNewMessages);
-                if (account.equals(FolderList.this.account)) {
-                    handler.progress(false);
-                    handler.folderLoading(folderServerId, false);
-
-                    refreshFolder(account, folderServerId);
-                }
-
-            }
-
-            private void refreshFolder(Account account, String folderServerId) {
-                // There has to be a cheaper way to get at the localFolder object than this
-                LocalFolder localFolder = null;
-                try {
-                    if (account != null && folderServerId != null) {
-                        if (!account.isAvailable(FolderList.this)) {
-                            Timber.i("not refreshing folder of unavailable account");
-                            return;
-                        }
-                        localFolder = DI.get(LocalStoreProvider.class).getInstance(account).getFolder(folderServerId);
-                        FolderInfoHolder folderHolder = getFolder(folderServerId);
-                        if (folderHolder != null) {
-                            folderHolder.populate(localFolder, FolderList.this.account, -1);
-                            folderHolder.flaggedMessageCount = -1;
-
-                            handler.dataChanged();
-                        }
-                    }
-                } catch (Exception e) {
-                    Timber.e(e, "Exception while populating folder");
-                } finally {
-                    if (localFolder != null) {
-                        localFolder.close();
-                    }
-                }
-
-            }
-
-            @Override
-            public void synchronizeMailboxFailed(Account account, String folderServerId, String message) {
-                super.synchronizeMailboxFailed(account, folderServerId, message);
-                if (!account.equals(FolderList.this.account)) {
-                    return;
-                }
-
-
-                handler.progress(false);
-
-                handler.folderLoading(folderServerId, false);
-
-                //   String mess = truncateStatus(message);
-
-                //   handler.folderStatus(folder, mess);
-                FolderInfoHolder holder = getFolder(folderServerId);
-
-                if (holder != null) {
-                    holder.lastChecked = 0;
-                }
-
-                handler.dataChanged();
-
-            }
-
-            @Override
-            public void setPushActive(Account account, String folderServerId, boolean enabled) {
-                if (!account.equals(FolderList.this.account)) {
-                    return;
-                }
-                FolderInfoHolder holder = getFolder(folderServerId);
-
-                if (holder != null) {
-                    holder.pushActive = enabled;
-
-                    handler.dataChanged();
-                }
-            }
-
-
-            @Override
-            public void messageDeleted(Account account, String folderServerId, String messageServerId) {
-                synchronizeMailboxRemovedMessage(account, folderServerId, messageServerId);
-            }
-
-            @Override
-            public void emptyTrashCompleted(Account account) {
-                if (account.equals(FolderList.this.account)) {
-                    refreshFolder(account, FolderList.this.account.getTrashFolder());
-                }
-            }
-
-            @Override
-            public void folderStatusChanged(Account account, String folderServerId, int unreadMessageCount) {
-                if (account.equals(FolderList.this.account)) {
-                    refreshFolder(account, folderServerId);
-                    informUserOfStatus();
-                }
-            }
-
-            @Override
-            public void sendPendingMessagesCompleted(Account account) {
-                super.sendPendingMessagesCompleted(account);
-                if (account.equals(FolderList.this.account)) {
-                    refreshFolder(account, FolderList.this.account.getOutboxFolder());
-                }
-            }
-
-            @Override
-            public void sendPendingMessagesStarted(Account account) {
-                super.sendPendingMessagesStarted(account);
-
-                if (account.equals(FolderList.this.account)) {
-                    handler.dataChanged();
-                }
-            }
-
-            @Override
-            public void sendPendingMessagesFailed(Account account) {
-                super.sendPendingMessagesFailed(account);
-                if (account.equals(FolderList.this.account)) {
-                    refreshFolder(account, FolderList.this.account.getOutboxFolder());
-                }
-            }
-
-            @Override
             public void accountSizeChanged(Account account, long oldSize, long newSize) {
                 if (account.equals(FolderList.this.account)) {
                     handler.accountSizeChanged(oldSize, newSize);
@@ -728,19 +566,6 @@ public class FolderList extends K9ListActivity {
             FolderInfoHolder searchHolder = new FolderInfoHolder();
             searchHolder.serverId = folder;
             return   mFilteredFolders.indexOf(searchHolder);
-        }
-
-        public FolderInfoHolder getFolder(String folder) {
-            FolderInfoHolder holder = null;
-
-            int index = getFolderIndex(folder);
-            if (index >= 0) {
-                holder = (FolderInfoHolder) getItem(index);
-                if (holder != null) {
-                    return holder;
-                }
-            }
-            return null;
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
