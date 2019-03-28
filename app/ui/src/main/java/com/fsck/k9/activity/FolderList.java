@@ -19,7 +19,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -28,7 +27,6 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,11 +45,8 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStoreProvider;
 import com.fsck.k9.search.LocalSearch;
-import com.fsck.k9.search.SearchSpecification.Attribute;
-import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.helper.SizeFormatter;
-import com.fsck.k9.view.ColorChip;
 import timber.log.Timber;
 
 /**
@@ -66,7 +61,6 @@ public class FolderList extends K9ListActivity {
 
     private static final boolean REFRESH_REMOTE = true;
 
-    private final ColorChipProvider colorChipProvider = DI.get(ColorChipProvider.class);
     private final K9JobManager jobManager = DI.get(K9JobManager.class);
 
     private ListView listView;
@@ -773,15 +767,7 @@ public class FolderList extends K9ListActivity {
             if (holder == null) {
                 holder = new FolderViewHolder();
                 holder.folderName = view.findViewById(R.id.folder_name);
-                holder.newMessageCount = view.findViewById(R.id.new_message_count);
-                holder.flaggedMessageCount = view.findViewById(R.id.flagged_message_count);
-                holder.newMessageCountWrapper = view.findViewById(R.id.new_message_count_wrapper);
-                holder.flaggedMessageCountWrapper = view.findViewById(R.id.flagged_message_count_wrapper);
-                holder.newMessageCountIcon = view.findViewById(R.id.new_message_count_icon);
-                holder.flaggedMessageCountIcon = view.findViewById(R.id.flagged_message_count_icon);
-
                 holder.folderStatus = view.findViewById(R.id.folder_status);
-                holder.activeIcons = view.findViewById(R.id.active_icons);
                 holder.chip = view.findViewById(R.id.chip);
                 holder.folderListItemLayout = view.findViewById(R.id.folder_list_item_layout);
                 holder.folderServerId = folder.serverId;
@@ -828,54 +814,6 @@ public class FolderList extends K9ListActivity {
                 holder.folderStatus.setVisibility(View.GONE);
             }
 
-            if(folder.unreadMessageCount == -1) {
-               folder.unreadMessageCount = 0;
-                try {
-                    folder.unreadMessageCount  = folder.folder.getUnreadMessageCount();
-                } catch (Exception e) {
-                    Timber.e("Unable to get unreadMessageCount for %s:%s", account.getDescription(), folder.serverId);
-                }
-            }
-            if (folder.unreadMessageCount > 0) {
-                holder.newMessageCount.setText(String.format("%d", folder.unreadMessageCount));
-                holder.newMessageCountWrapper.setOnClickListener(
-                        createUnreadSearch(account, folder));
-                holder.newMessageCountWrapper.setVisibility(View.VISIBLE);
-
-                ColorChip colorChip = colorChipProvider.getColorChip(account, false);
-                holder.newMessageCountIcon.setBackgroundDrawable(colorChip.drawable());
-            } else {
-                holder.newMessageCountWrapper.setVisibility(View.GONE);
-            }
-
-            if (folder.flaggedMessageCount == -1) {
-                folder.flaggedMessageCount = 0;
-                try {
-                    folder.flaggedMessageCount = folder.folder.getFlaggedMessageCount();
-                } catch (Exception e) {
-                    Timber.e("Unable to get flaggedMessageCount for %s:%s", account.getDescription(), folder.serverId);
-                }
-            }
-
-            if (K9.messageListStars() && folder.flaggedMessageCount > 0) {
-                holder.flaggedMessageCount.setText(String.format("%d", folder.flaggedMessageCount));
-                holder.flaggedMessageCountWrapper.setOnClickListener(
-                        createFlaggedSearch(account, folder));
-                holder.flaggedMessageCountWrapper.setVisibility(View.VISIBLE);
-
-                ColorChip colorChip = colorChipProvider.getColorChip(account, true);
-                holder.flaggedMessageCountIcon.setBackgroundDrawable(colorChip.drawable());
-            } else {
-                holder.flaggedMessageCountWrapper.setVisibility(View.GONE);
-            }
-
-            holder.activeIcons.setOnClickListener(new OnClickListener() {
-                public void onClick(View v) {
-                    Toast toast = Toast.makeText(getApplication(), getString(R.string.tap_hint), Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            });
-
             holder.chip.setBackgroundColor(account.getChipColor());
 
 
@@ -892,36 +830,6 @@ public class FolderList extends K9ListActivity {
             fontSizes.setViewTextSize(holder.folderStatus, fontSizes.getFolderStatus());
 
             return view;
-        }
-
-        private OnClickListener createFlaggedSearch(Account account, FolderInfoHolder folder) {
-            String searchTitle = getString(R.string.search_title,
-                    getString(R.string.message_list_title, account.getDescription(),
-                            folder.displayName),
-                    getString(R.string.flagged_modifier));
-
-            LocalSearch search = new LocalSearch(searchTitle);
-            search.and(SearchField.FLAGGED, "1", Attribute.EQUALS);
-
-            search.addAllowedFolder(folder.serverId);
-            search.addAccountUuid(account.getUuid());
-
-            return new FolderClickListener(search);
-        }
-
-        private OnClickListener createUnreadSearch(Account account, FolderInfoHolder folder) {
-            String searchTitle = getString(R.string.search_title,
-                    getString(R.string.message_list_title, account.getDescription(),
-                            folder.displayName),
-                    getString(R.string.unread_modifier));
-
-            LocalSearch search = new LocalSearch(searchTitle);
-            search.and(SearchField.READ, "1", Attribute.NOT_EQUALS);
-
-            search.addAllowedFolder(folder.serverId);
-            search.addAccountUuid(account.getUuid());
-
-            return new FolderClickListener(search);
         }
 
         @Override
@@ -1015,33 +923,9 @@ public class FolderList extends K9ListActivity {
 
     static class FolderViewHolder {
         public TextView folderName;
-
         public TextView folderStatus;
-
-        public TextView newMessageCount;
-        public TextView flaggedMessageCount;
-        public View newMessageCountIcon;
-        public View flaggedMessageCountIcon;
-        public View newMessageCountWrapper;
-        public View flaggedMessageCountWrapper;
-
-        public RelativeLayout activeIcons;
         public String folderServerId;
         public View chip;
         public LinearLayout folderListItemLayout;
-    }
-
-    private class FolderClickListener implements OnClickListener {
-
-        final LocalSearch search;
-
-        FolderClickListener(LocalSearch search) {
-            this.search = search;
-        }
-
-        @Override
-        public void onClick(View v) {
-            MessageList.actionDisplaySearch(FolderList.this, search, true, false);
-        }
     }
 }

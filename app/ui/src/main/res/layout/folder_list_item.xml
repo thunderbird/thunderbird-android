@@ -46,6 +46,4 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"/>
 
     </LinearLayout>
-
-    <include layout="@layout/accounts_folders_icons"/>
 </LinearLayout>
