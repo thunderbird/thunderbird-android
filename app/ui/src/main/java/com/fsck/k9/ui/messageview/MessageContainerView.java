@@ -71,7 +71,7 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
     private ClipboardManager mClipboardManager;
     private Map<AttachmentViewInfo, AttachmentView> attachmentViewMap = new HashMap<>();
     private Map<Uri, AttachmentViewInfo> attachments = new HashMap<>();
-    private boolean hasHiddenExternalImages;
+    private boolean hasHiddenExternalImages = false;
 
     private String currentHtmlText;
     private AttachmentResolver currentAttachmentResolver;
@@ -387,7 +387,8 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
 
         renderAttachments(messageViewInfo);
 
-        String textToDisplay = null;
+        String textToDisplay;
+        hasHiddenExternalImages = false;
         if (!renderPlainFormat) {
             textToDisplay = messageViewInfo.text;
 
@@ -395,7 +396,6 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
                 if (Utility.hasExternalImages(textToDisplay)) {
                     if (loadPictures) {
                         setLoadPictures(true);
-                        hasHiddenExternalImages = false;
                     } else {
                         hasHiddenExternalImages = true;
                     }
