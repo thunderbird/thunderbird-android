@@ -50,6 +50,7 @@ import com.fsck.k9.cache.EmailProviderCache;
 import com.fsck.k9.controller.ControllerExtension.ControllerInternals;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingAppend;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingCommand;
+import com.fsck.k9.controller.MessagingControllerCommands.PendingDelete;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingEmptyTrash;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingExpunge;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingMarkAllAsRead;
@@ -1031,6 +1032,22 @@ public class MessagingController {
     void processPendingSetFlag(PendingSetFlag command, Account account) throws MessagingException {
         Backend backend = getBackend(account);
         backend.setFlag(command.folder, command.uids, command.flag, command.newState);
+    }
+
+    private void queueDelete(final Account account, final String folderServerId, final List<String> uids) {
+        putBackground("queueDelete " + account.getDescription() + ":" + folderServerId, null, new Runnable() {
+            @Override
+            public void run() {
+                PendingCommand command = PendingDelete.create(folderServerId, uids);
+                queuePendingCommand(account, command);
+                processPendingCommands(account);
+            }
+        });
+    }
+
+    void processPendingDelete(PendingDelete command, Account account) throws MessagingException {
+        Backend backend = getBackend(account);
+        backend.deleteMessages(command.folder, command.uids);
     }
 
     private void queueExpunge(final Account account, final String folderServerId) {
@@ -2221,7 +2238,7 @@ public class MessagingController {
             } else if (!syncedMessageUids.isEmpty()) {
                 if (account.getDeletePolicy() == DeletePolicy.ON_DELETE) {
                     if (folder.equals(account.getTrashFolder()) || !backend.isDeleteMoveToTrash()) {
-                        queueSetFlag(account, folder, true, Flag.DELETED, syncedMessageUids);
+                        queueDelete(account, folder, syncedMessageUids);
                     } else {
                         queueMoveOrCopy(account, folder, account.getTrashFolder(), false,
                                     syncedMessageUids, uidMap);

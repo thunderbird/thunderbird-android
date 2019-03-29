@@ -950,7 +950,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     public void onEmptyTrash() {
         if (isShowingTrashFolder()) {
-            messagingController.emptyTrash(account, null);
+            showDialog(R.id.dialog_confirm_empty_trash);
         }
     }
 
@@ -993,6 +993,15 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             String cancelText = getString(R.string.dialog_confirm_mark_all_as_read_cancel_button);
 
             fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message, confirmText, cancelText);
+        } else if (dialogId == R.id.dialog_confirm_empty_trash) {
+            String title = getString(R.string.dialog_confirm_empty_trash_title);
+            String message = getString(R.string.dialog_confirm_empty_trash_message);
+
+            String confirmText = getString(R.string.dialog_confirm_delete_confirm_button);
+            String cancelText = getString(R.string.dialog_confirm_delete_cancel_button);
+
+            fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message,
+                    confirmText, cancelText);
         } else {
             throw new RuntimeException("Called showDialog(int) with unknown dialog id.");
         }
@@ -2098,6 +2107,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             activeMessage = null;
         } else if (dialogId == R.id.dialog_confirm_mark_all_as_read) {
             markAllAsRead();
+        } else if (dialogId == R.id.dialog_confirm_empty_trash) {
+            messagingController.emptyTrash(account, null);
         }
     }
 
