@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_settingsListScreen_to_addAccountScreen"
             app:destination="@id/addAccountScreen" />
+        <action
+            android:id="@+id/action_settingsListScreen_to_settingsExportScreen"
+            app:destination="@id/settingsExportScreen" />
     </fragment>
 
     <activity
@@ -40,5 +43,11 @@
         android:name="com.fsck.k9.activity.setup.AccountSetupBasics"
         android:label="@string/account_setup_basics_title"
         tools:layout="@layout/account_setup_basics"/>
+
+    <fragment
+        android:id="@+id/settingsExportScreen"
+        android:name="com.fsck.k9.ui.settings.export.SettingsExportFragment"
+        android:label="@string/settings_export_title"
+        tools:layout="@layout/fragment_settings_export"/>
 
 </navigation>
