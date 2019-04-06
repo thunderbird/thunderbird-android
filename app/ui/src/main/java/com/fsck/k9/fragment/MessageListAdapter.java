@@ -2,6 +2,8 @@ package com.fsck.k9.fragment;
 
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -55,10 +57,20 @@ public class MessageListAdapter extends CursorAdapter {
     MessageListAdapter(MessageListFragment fragment) {
         super(fragment.getActivity(), null, 0);
         this.fragment = fragment;
-        mAttachmentIcon = fragment.getResources().getDrawable(R.drawable.ic_email_attachment_small);
-        mAnsweredIcon = fragment.getResources().getDrawable(R.drawable.ic_email_answered_small);
-        mForwardedIcon = fragment.getResources().getDrawable(R.drawable.ic_email_forwarded_small);
-        mForwardedAnsweredIcon = fragment.getResources().getDrawable(R.drawable.ic_email_forwarded_answered_small);
+
+        int[] attributes = new int[] {
+                R.attr.messageListAttachment,
+                R.attr.messageListAnswered,
+                R.attr.messageListForwarded,
+                R.attr.messageListAnsweredForwarded };
+        TypedValue typedValue = new TypedValue();
+        TypedArray array = fragment.getContext().obtainStyledAttributes(typedValue.data, attributes);
+
+        Resources res = fragment.getResources();
+        mAttachmentIcon = res.getDrawable(array.getResourceId(0, R.drawable.ic_attachment_dark));
+        mAnsweredIcon = res.getDrawable(array.getResourceId(1, R.drawable.ic_answered_dark));
+        mForwardedIcon = res.getDrawable(array.getResourceId(2, R.drawable.ic_forwarded_dark));
+        mForwardedAnsweredIcon = res.getDrawable(array.getResourceId(3, R.drawable.ic_answered_forwarded_dark));
     }
 
     private String recipientSigil(boolean toMe, boolean ccMe) {
