@@ -16,7 +16,6 @@ import android.text.style.ForegroundColorSpan;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
@@ -90,6 +89,8 @@ public class MessageListAdapter extends CursorAdapter {
         MessageViewHolder holder = new MessageViewHolder(fragment);
         holder.date = view.findViewById(R.id.date);
         holder.chip = view.findViewById(R.id.chip);
+        holder.attachment = view.findViewById(R.id.attachment);
+        holder.status = view.findViewById(R.id.status);
 
 
         if (fragment.previewLines == 0 && fragment.contactsPictureLoader == null) {
@@ -215,35 +216,28 @@ public class MessageListAdapter extends CursorAdapter {
 
         formatPreviewText(holder.preview, beforePreviewText, sigil);
 
-        Drawable statusHolder = buildStatusHolder(forwarded, answered);
-
         if (holder.from != null ) {
             holder.from.setTypeface(Typeface.create(holder.from.getTypeface(), maybeBoldTypeface));
             if (fragment.senderAboveSubject) {
-                holder.from.setCompoundDrawablesWithIntrinsicBounds(
-                        statusHolder, // left
-                        null, // top
-                        hasAttachments ? mAttachmentIcon : null, // right
-                        null); // bottom
-
                 holder.from.setText(displayName);
             } else {
                 holder.from.setText(new SpannableStringBuilder(sigil).append(displayName));
             }
         }
         if (holder.subject != null ) {
-            if (!fragment.senderAboveSubject) {
-                holder.subject.setCompoundDrawablesWithIntrinsicBounds(
-                        statusHolder, // left
-                        null, // top
-                        hasAttachments ? mAttachmentIcon : null, // right
-                        null); // bottom
-            }
-
             holder.subject.setTypeface(Typeface.create(holder.subject.getTypeface(), maybeBoldTypeface));
             holder.subject.setText(subject);
         }
         holder.date.setText(displayDate);
+        holder.attachment.setVisibility(hasAttachments ? View.VISIBLE : View.GONE);
+
+        Drawable statusHolder = buildStatusHolder(forwarded, answered);
+        if (statusHolder != null) {
+            holder.status.setImageDrawable(statusHolder);
+            holder.status.setVisibility(View.VISIBLE);
+        } else {
+            holder.status.setVisibility(View.GONE);
+        }
     }
 
     private void formatPreviewText(TextView preview, CharSequence beforePreviewText, String sigil) {
