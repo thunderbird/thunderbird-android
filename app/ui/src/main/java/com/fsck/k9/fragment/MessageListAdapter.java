@@ -47,7 +47,6 @@ import static com.fsck.k9.fragment.MLFProjectionInfo.UID_COLUMN;
 public class MessageListAdapter extends CursorAdapter {
 
     private final MessageListFragment fragment;
-    private Drawable mAttachmentIcon;
     private Drawable mForwardedIcon;
     private Drawable mAnsweredIcon;
     private Drawable mForwardedAnsweredIcon;
@@ -58,7 +57,6 @@ public class MessageListAdapter extends CursorAdapter {
         this.fragment = fragment;
 
         int[] attributes = new int[] {
-                R.attr.messageListAttachment,
                 R.attr.messageListAnswered,
                 R.attr.messageListForwarded,
                 R.attr.messageListAnsweredForwarded };
@@ -66,10 +64,9 @@ public class MessageListAdapter extends CursorAdapter {
         TypedArray array = fragment.getContext().obtainStyledAttributes(typedValue.data, attributes);
 
         Resources res = fragment.getResources();
-        mAttachmentIcon = res.getDrawable(array.getResourceId(0, R.drawable.ic_attachment_dark));
-        mAnsweredIcon = res.getDrawable(array.getResourceId(1, R.drawable.ic_answered_dark));
-        mForwardedIcon = res.getDrawable(array.getResourceId(2, R.drawable.ic_forwarded_dark));
-        mForwardedAnsweredIcon = res.getDrawable(array.getResourceId(3, R.drawable.ic_answered_forwarded_dark));
+        mAnsweredIcon = res.getDrawable(array.getResourceId(0, R.drawable.ic_messagelist_answered_dark));
+        mForwardedIcon = res.getDrawable(array.getResourceId(1, R.drawable.ic_messagelist_forwarded_dark));
+        mForwardedAnsweredIcon = res.getDrawable(array.getResourceId(2, R.drawable.ic_messagelist_answered_forwarded_dark));
     }
 
     private String recipientSigil(boolean toMe, boolean ccMe) {
