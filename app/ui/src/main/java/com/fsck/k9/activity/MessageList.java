@@ -7,6 +7,7 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
@@ -15,6 +16,7 @@ import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentManager.OnBackStackChangedListener;
 import androidx.fragment.app.FragmentTransaction;
@@ -40,10 +42,12 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.compose.MessageActions;
 import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
 import com.fsck.k9.controller.MessageReference;
+import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.fragment.MessageListFragment;
 import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.ParcelableUtil;
+import com.fsck.k9.mailstore.Folder;
 import com.fsck.k9.mailstore.SearchStatusManager;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.notification.NotificationChannelManager;
@@ -56,6 +60,7 @@ import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.ui.K9Drawer;
 import com.fsck.k9.ui.R;
+import com.fsck.k9.ui.folders.FolderNameFormatter;
 import com.fsck.k9.ui.messageview.MessageViewFragment;
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener;
 import com.fsck.k9.ui.settings.SettingsActivity;
@@ -593,6 +598,28 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         search.addAllowedFolder(folderName);
 
         performSearch(search);
+    }
+
+    public void openFolderContextMenu(final Folder folder) {
+        FolderNameFormatter folderNameFormatter = DI.get(FolderNameFormatter.class);
+        AlertDialog.Builder adb = new AlertDialog.Builder(this);
+        adb.setTitle(folderNameFormatter.displayName(folder));
+        adb.setCancelable(true);
+        String[] items = new String[] {getString(R.string.mark_all_as_read)};
+        adb.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface d, int index) {
+                if (index == 0) {
+                    markFolderRead(folder.getServerId());
+                }
+            }
+        });
+        adb.show();
+    }
+
+    private void markFolderRead(String folderId) {
+        MessagingController messagingController = MessagingController.getInstance(getApplication());
+        messagingController.markAllMessagesRead(account, folderId);
     }
 
     public void openUnifiedInbox() {

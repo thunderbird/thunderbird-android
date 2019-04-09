@@ -27,6 +27,7 @@ import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.Drawer
 import com.mikepenz.materialdrawer.Drawer.OnDrawerItemClickListener
+import com.mikepenz.materialdrawer.Drawer.OnDrawerItemLongClickListener
 import com.mikepenz.materialdrawer.DrawerBuilder
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
@@ -71,6 +72,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
         drawer = DrawerBuilder()
                 .withActivity(parent)
                 .withOnDrawerItemClickListener(createItemClickListener())
+                .withOnDrawerItemLongClickListener(createItemLongClickListener())
                 .withOnDrawerListener(parent.createOnDrawerListener())
                 .withSavedInstance(savedInstanceState)
                 .withAccountHeader(accountHeader)
@@ -223,6 +225,16 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
                     val folder = drawerItem.tag as Folder
                     parent.openFolder(folder.serverId)
                 }
+            }
+            false
+        }
+    }
+
+    private fun createItemLongClickListener(): OnDrawerItemLongClickListener {
+        return OnDrawerItemLongClickListener { _, _, drawerItem ->
+            val folder = drawerItem.tag
+            if (folder is Folder) {
+                parent.openFolderContextMenu(folder)
             }
             false
         }
