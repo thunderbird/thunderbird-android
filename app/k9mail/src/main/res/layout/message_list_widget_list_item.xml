@@ -39,7 +39,7 @@
             android:layout_marginLeft="4dp"
             android:layout_toStartOf="@+id/mail_date"
             android:layout_toLeftOf="@+id/mail_date"
-            android:src="@drawable/ic_email_attachment_small"
+            android:src="?attr/messageListAttachment"
             android:visibility="gone"
             tools:visibility="visible" />
 

@@ -82,16 +82,22 @@
                 android:gravity="top"
                 android:layout_alignParentBottom="false"/>
 
+        <ImageView
+                android:id="@+id/status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/subject_wrapper"
+                android:layout_alignBottom="@+id/subject_wrapper"
+                android:src="?attr/messageListAnswered"
+                android:layout_alignWithParentIfMissing="true" />
+
         <LinearLayout
                 android:id="@+id/subject_wrapper"
-                android:layout_centerInParent="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="false"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentBottom="false"
-                android:layout_alignParentLeft="false"
-                android:layout_toLeftOf="@+id/date">
+                android:layout_toLeftOf="@+id/attachment"
+                android:layout_toRightOf="@+id/status">
 
             <TextView
                     android:id="@+id/sender_compact"
@@ -147,6 +153,16 @@
                 android:focusable="false"
                 android:visibility="gone"
                 />
+
+        <ImageView
+                android:id="@+id/attachment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/date"
+                android:layout_alignBottom="@+id/date"
+                android:src="?attr/messageListAttachment"
+                android:layout_alignWithParentIfMissing="true"
+                android:layout_toStartOf="@+id/date" />
 
         <TextView
                 android:id="@+id/date"
