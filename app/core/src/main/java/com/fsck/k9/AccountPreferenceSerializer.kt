@@ -298,8 +298,8 @@ class AccountPreferenceSerializer(
             editor.putBoolean("$accountUuid.alwaysShowCcBcc", isAlwaysShowCcBcc)
 
             editor.putBoolean("$accountUuid.resizeImageEnabled", isResizeImageEnabled)
-            editor.putString("$accountUuid.resizeImageCircumference", Integer.toString(resizeImageCircumference))
-            editor.putString("$accountUuid.resizeImageQuality", Integer.toString(resizeImageQuality))
+            editor.putInt("$accountUuid.resizeImageCircumference", resizeImageCircumference)
+            editor.putInt("$accountUuid.resizeImageQuality", resizeImageQuality)
 
             editor.putBoolean("$accountUuid.vibrate", notificationSetting.isVibrateEnabled)
             editor.putInt("$accountUuid.vibratePattern", notificationSetting.vibratePattern)
