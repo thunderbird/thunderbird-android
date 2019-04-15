@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.content.Context;
-import android.support.v4.app.LoaderManager;
+import androidx.loader.app.LoaderManager;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
@@ -35,8 +35,8 @@ import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderState;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.ShadowOpenPgpAsyncTask;
 import org.robolectric.Robolectric;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
-import org.robolectric.shadows.ShadowApplication;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -75,7 +75,7 @@ public class RecipientPresenterTest extends K9RobolectricTest {
 
     @Before
     public void setUp() throws Exception {
-        Context context = ShadowApplication.getInstance().getApplicationContext();
+        Context context = RuntimeEnvironment.application;
         Robolectric.getBackgroundThreadScheduler().pause();
 
         recipientMvpView = mock(RecipientMvpView.class);

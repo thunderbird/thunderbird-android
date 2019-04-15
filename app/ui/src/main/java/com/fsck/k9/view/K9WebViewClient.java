@@ -14,7 +14,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.provider.Browser;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import timber.log.Timber;
 import android.webkit.WebResourceRequest;

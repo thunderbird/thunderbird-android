@@ -28,9 +28,4 @@ public class ImapMessage extends MimeMessage {
         super.setFlag(flag, set);
         mFolder.setFlags(Collections.singletonList(this), Collections.singleton(flag), set);
     }
-
-    @Override
-    public void delete(String trashFolder) throws MessagingException {
-        getFolder().delete(Collections.singletonList(this), trashFolder);
-    }
 }

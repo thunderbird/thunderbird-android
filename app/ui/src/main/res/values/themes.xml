@@ -24,9 +24,10 @@
         <item name="material_drawer_divider">@color/material_drawer_divider</item>
         <item name="material_drawer_selected">@color/material_drawer_selected</item>
         <item name="material_drawer_selected_text">@color/material_drawer_selected_text</item>
-        <item name="material_drawer_header_selection_text">@color/material_drawer_header_selection_text</item>
+        <item name="material_drawer_header_selection_text">@color/material_drawer_dark_header_selection_text</item>
+        <item name="material_drawer_header_selection_subtext">@color/material_drawer_dark_header_selection_subtext</item>
 
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <item name="iconUnifiedInbox">@drawable/ic_inbox_multiple_light</item>
         <item name="iconFolder">@drawable/ic_folder_light</item>
         <item name="iconFolderInbox">@drawable/ic_inbox_light</item>
@@ -98,6 +99,10 @@
         <item name="messageListActiveItemBackgroundColor">#ff2ea7d1</item>
         <item name="messageListDividerColor">#ffcccccc</item>
         <item name="messageListCheckbox">@drawable/btn_check_message_list_light</item>
+        <item name="messageListAttachment">@drawable/ic_messagelist_attachment_light</item>
+        <item name="messageListAnswered">@drawable/ic_messagelist_answered_light</item>
+        <item name="messageListForwarded">@drawable/ic_messagelist_forwarded_light</item>
+        <item name="messageListAnsweredForwarded">@drawable/ic_messagelist_answered_forwarded_light</item>
         <item name="messageViewBackgroundColor">#ffffffff</item>
         <item name="messageViewAttachmentBackground">@drawable/attachment_text_box_light</item>
         <item name="messageComposeAddContactImage">@drawable/ic_person_plus_light</item>
@@ -136,8 +141,9 @@
         <item name="material_drawer_selected">@color/material_drawer_dark_selected</item>
         <item name="material_drawer_selected_text">@color/material_drawer_dark_selected_text</item>
         <item name="material_drawer_header_selection_text">@color/material_drawer_dark_header_selection_text</item>
+        <item name="material_drawer_header_selection_subtext">@color/material_drawer_dark_header_selection_subtext</item>
 
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <item name="iconUnifiedInbox">@drawable/ic_inbox_multiple_dark</item>
         <item name="iconFolder">@drawable/ic_folder_dark</item>
         <item name="iconFolderInbox">@drawable/ic_inbox_dark</item>
@@ -209,6 +215,10 @@
         <item name="messageListActiveItemBackgroundColor">#ff33b5e5</item>
         <item name="messageListDividerColor">#ff333333</item>
         <item name="messageListCheckbox">@drawable/btn_check_message_list_dark</item>
+        <item name="messageListAttachment">@drawable/ic_messagelist_attachment_dark</item>
+        <item name="messageListAnswered">@drawable/ic_messagelist_answered_dark</item>
+        <item name="messageListForwarded">@drawable/ic_messagelist_forwarded_dark</item>
+        <item name="messageListAnsweredForwarded">@drawable/ic_messagelist_answered_forwarded_dark</item>
         <item name="messageViewBackgroundColor">#000000</item>
         <item name="messageViewAttachmentBackground">@drawable/attachment_text_box_dark</item>
         <item name="messageComposeAddContactImage">@drawable/ic_person_plus_dark</item>

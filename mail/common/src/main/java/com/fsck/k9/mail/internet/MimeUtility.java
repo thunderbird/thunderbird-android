@@ -9,7 +9,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;

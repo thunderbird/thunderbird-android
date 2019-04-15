@@ -24,12 +24,11 @@ import java.util.UUID;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
-import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.backend.api.MessageRemovalListener;
 import com.fsck.k9.crypto.EncryptionExtractor;
@@ -629,7 +628,7 @@ public class LocalFolder extends Folder<LocalMessage> {
         return getPrefId(serverId);
     }
 
-    public void delete() throws MessagingException {
+    private void deleteSettings() throws MessagingException {
         String id = getPrefId();
 
         StorageEditor editor = localStore.getPreferences().createStorageEditor();
@@ -1899,14 +1898,13 @@ public class LocalFolder extends Folder<LocalMessage> {
         setVisibleLimit(getAccount().getDisplayCount());
     }
 
-    @Override
-    public void delete(final boolean recurse) throws MessagingException {
+    public void delete() throws MessagingException {
         try {
             this.localStore.getDatabase().execute(false, new DbCallback<Void>() {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     try {
-                        // We need to open the folder first to make sure we've got it's id
+                        // We need to open the folder first to make sure we've got its id
                         open(OPEN_MODE_RO);
                         List<LocalMessage> messages = getMessages(null);
                         for (LocalMessage message : messages) {
@@ -1923,6 +1921,8 @@ public class LocalFolder extends Folder<LocalMessage> {
         } catch (WrappedException e) {
             throw(MessagingException) e.getCause();
         }
+
+        deleteSettings();
     }
 
     @Override
@@ -2428,5 +2428,16 @@ public class LocalFolder extends Folder<LocalMessage> {
         public String getDatabaseName() {
             return databaseName;
         }
+    }
+
+    public static boolean isModeMismatch(Account.FolderMode aMode, Folder.FolderClass fMode) {
+        return aMode == Account.FolderMode.NONE
+                || (aMode == Account.FolderMode.FIRST_CLASS &&
+                fMode != Folder.FolderClass.FIRST_CLASS)
+                || (aMode == Account.FolderMode.FIRST_AND_SECOND_CLASS &&
+                fMode != Folder.FolderClass.FIRST_CLASS &&
+                fMode != Folder.FolderClass.SECOND_CLASS)
+                || (aMode == Account.FolderMode.NOT_SECOND_CLASS &&
+                fMode == Folder.FolderClass.SECOND_CLASS);
     }
 }

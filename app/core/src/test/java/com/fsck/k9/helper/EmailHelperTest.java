@@ -28,4 +28,39 @@ public class EmailHelperTest {
 
         assertEquals("domain", result);
     }
+
+    @Test
+    public void getDomainFromEmailAddress_withEmptyDomain_shouldReturnNull() {
+        String result = EmailHelper.getDomainFromEmailAddress("user@");
+
+        assertNull(result);
+    }
+
+    @Test
+    public void getLocalPartFromEmailAddress_withRegularEmail_shouldReturnLocalPart() {
+        String result = EmailHelper.getLocalPartFromEmailAddress("user@domain.com");
+
+        assertEquals("user", result);
+    }
+
+    @Test
+    public void getLocalPartFromEmailAddress_withAtInLocalPart_shouldReturnLocalPart() {
+        String result = EmailHelper.getLocalPartFromEmailAddress("\"user@work\"@domain");
+
+        assertEquals("\"user@work\"", result);
+    }
+
+    @Test
+    public void getLocalPartFromEmailAddress_withInvalidEmail_shouldReturnNull() {
+        String result = EmailHelper.getLocalPartFromEmailAddress("user");
+
+        assertNull(result);
+    }
+
+    @Test
+    public void getLocalPartFromEmailAddress_withEmptyDomain_shouldReturnNull() {
+        String result = EmailHelper.getLocalPartFromEmailAddress("user@");
+
+        assertNull(result);
+    }
 }

@@ -294,10 +294,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".activity.EmailAddressList"
-            android:configChanges="locale"/>
-
         <activity android:name=".widget.unread.UnreadWidgetConfigurationActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>

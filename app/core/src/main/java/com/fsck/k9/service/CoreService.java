@@ -1,6 +1,5 @@
 package com.fsck.k9.service;
 
-import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -411,27 +410,25 @@ public abstract class CoreService extends Service {
         return null;
     }
 
-    public static boolean isMailSyncDisabled(Context context){
+    public static boolean isMailSyncDisabled(Context context) {
+        boolean hasConnectivity = Utility.hasConnectivity(context);
+        return !hasConnectivity || !isBackgroundSyncAllowed();
+    }
 
-        final boolean hasConnectivity = Utility.hasConnectivity(context);
-        @SuppressLint("MissingPermission")
-        final boolean autoSync = ContentResolver.getMasterSyncAutomatically();
-        boolean doBackground = true;
-        K9.BACKGROUND_OPS bOps = K9.getBackgroundOps();
-
-        switch (bOps) {
-            case NEVER:
-                doBackground = false;
-                break;
-            case ALWAYS:
-                doBackground = true;
-                break;
-            case WHEN_CHECKED_AUTO_SYNC:
-                doBackground = autoSync;
-                break;
+    public static boolean isBackgroundSyncAllowed() {
+        K9.BACKGROUND_OPS backgroundSyncSetting = K9.getBackgroundOps();
+        switch (backgroundSyncSetting) {
+            case NEVER: {
+                return false;
+            }
+            case ALWAYS: {
+                return true;
+            }
+            case WHEN_CHECKED_AUTO_SYNC: {
+                return ContentResolver.getMasterSyncAutomatically();
+            }
         }
 
-        return !(doBackground && hasConnectivity);
-
+        throw new AssertionError("Unexpected value: " + backgroundSyncSetting);
     }
 }

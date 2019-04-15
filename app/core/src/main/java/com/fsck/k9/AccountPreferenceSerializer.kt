@@ -293,6 +293,7 @@ class AccountPreferenceSerializer(
             editor.putBoolean("$accountUuid.allowRemoteSearch", isAllowRemoteSearch)
             editor.putBoolean("$accountUuid.remoteSearchFullText", isRemoteSearchFullText)
             editor.putInt("$accountUuid.remoteSearchNumResults", remoteSearchNumResults)
+            editor.putBoolean("$accountUuid.uploadSentMessages", isUploadSentMessages)
             editor.putBoolean("$accountUuid.enabled", isEnabled)
             editor.putBoolean("$accountUuid.markMessageAsReadOnView", isMarkMessageAsReadOnView)
             editor.putBoolean("$accountUuid.alwaysShowCcBcc", isAlwaysShowCcBcc)

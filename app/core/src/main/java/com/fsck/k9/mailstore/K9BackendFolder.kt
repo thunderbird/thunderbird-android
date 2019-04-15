@@ -52,7 +52,7 @@ class K9BackendFolder(
     }
 
     override fun getLastUid(): Long? {
-        return database.rawQuery("SELECT MAX(uid) FROM messages WHERE folder_id = ?", folderServerId) { cursor ->
+        return database.rawQuery("SELECT MAX(uid) FROM messages WHERE folder_id = ?", databaseId) { cursor ->
             if (cursor.moveToFirst()) {
                 cursor.getLongOrNull(0)
             } else {

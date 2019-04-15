@@ -115,7 +115,7 @@ public class ImapStoreTest {
                 createImapResponse("* LIST (\\HasNoChildren \\Trash) \"/\" \"[Gmail]/Trash\""),
                 createImapResponse("5 OK Success")
         );
-        when(imapConnection.executeSimpleCommand("LIST (SPECIAL-USE) \"\" \"*\"")).thenReturn(imapResponses);
+        when(imapConnection.executeSimpleCommand("LIST \"\" \"*\" RETURN (SPECIAL-USE)")).thenReturn(imapResponses);
         imapStore.enqueueImapConnection(imapConnection);
 
         List<ImapFolder> folders = imapStore.getPersonalNamespaces();
@@ -138,7 +138,7 @@ public class ImapStoreTest {
 
         imapStore.getPersonalNamespaces();
 
-        verify(imapConnection, never()).executeSimpleCommand("LIST (SPECIAL-USE) \"\" \"*\"");
+        verify(imapConnection, never()).executeSimpleCommand("LIST \"\" \"*\" RETURN (SPECIAL-USE)");
         verify(imapConnection).executeSimpleCommand("LIST \"\" \"*\"");
     }
 
@@ -151,7 +151,7 @@ public class ImapStoreTest {
 
         imapStore.getPersonalNamespaces();
 
-        verify(imapConnection, never()).executeSimpleCommand("LIST (SPECIAL-USE) \"\" \"*\"");
+        verify(imapConnection, never()).executeSimpleCommand("LIST \"\" \"*\" RETURN (SPECIAL-USE)");
         verify(imapConnection).executeSimpleCommand("LIST \"\" \"*\"");
     }
 

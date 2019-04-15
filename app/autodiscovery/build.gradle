@@ -1,0 +1,51 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+
+apply from: "${rootProject.projectDir}/gradle/plugins/checkstyle-android.gradle"
+apply from: "${rootProject.projectDir}/gradle/plugins/findbugs-android.gradle"
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
+
+    implementation project(":app:core")
+    implementation project(":mail:common")
+
+    implementation "com.jakewharton.timber:timber:${versions.timber}"
+    implementation "com.squareup.okhttp3:okhttp:${versions.okhttp}"
+
+    testImplementation project(':app:testing')
+    testImplementation project(":backend:imap")
+    testImplementation "org.robolectric:robolectric:${versions.robolectric}"
+    testImplementation "junit:junit:${versions.junit}"
+    testImplementation "com.google.truth:truth:${versions.truth}"
+    testImplementation "org.mockito:mockito-core:${versions.mockito}"
+    testImplementation "com.nhaarman:mockito-kotlin:${versions.mockitoKotlin}"
+    testImplementation "org.koin:koin-test:${versions.koin}"
+}
+
+android {
+    compileSdkVersion buildConfig.compileSdk
+    buildToolsVersion buildConfig.buildTools
+
+    defaultConfig {
+        minSdkVersion buildConfig.minSdk
+        // For Robolectric tests
+        targetSdkVersion 23
+    }
+
+    lintOptions {
+        abortOnError false
+        lintConfig file("$rootProject.projectDir/config/lint/lint.xml")
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+}

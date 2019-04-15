@@ -935,6 +935,19 @@ public class ImapConnectionTest {
         server.verifyInteractionCompleted();
     }
 
+    @Test
+    public void hasCapability_withNotYetOpenedConnection_shouldConnectAndFetchCapabilities() throws Exception {
+        MockImapServer server = new MockImapServer();
+        simpleOpenDialog(server, "X-SOMETHING");
+        ImapConnection imapConnection = startServerAndCreateImapConnection(server);
+
+        boolean capabilityPresent = imapConnection.hasCapability("X-SOMETHING");
+
+        assertTrue(capabilityPresent);
+        server.verifyConnectionStillOpen();
+        server.verifyInteractionCompleted();
+    }
+
     private ImapConnection createImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
             ConnectivityManager connectivityManager, OAuth2TokenProvider oAuth2TokenProvider) {
         return new ImapConnection(settings, socketFactory, connectivityManager, oAuth2TokenProvider,

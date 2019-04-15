@@ -391,36 +391,6 @@ public class ImapFolder extends Folder<ImapMessage> {
     }
 
     @Override
-    public void delete(List<? extends Message> messages, String trashFolder) throws MessagingException {
-        if (messages.isEmpty()) {
-            return;
-        }
-
-        if (trashFolder == null || getServerId().equals(trashFolder)) {
-            setFlags(messages, Collections.singleton(Flag.DELETED), true);
-        } else {
-            ImapFolder remoteTrashFolder = getStore().getFolder(trashFolder);
-            String encodedTrashFolderName = folderNameCodec.encode(remoteTrashFolder.getPrefixedName());
-            String escapedTrashFolderName = ImapUtility.encodeString(encodedTrashFolderName);
-
-            if (!exists(escapedTrashFolderName)) {
-                if (K9MailLib.isDebug()) {
-                    Timber.i("ImapFolder.delete: couldn't find remote trash folder '%s' for %s",
-                            trashFolder, getLogId());
-                }
-                throw new FolderNotFoundException(remoteTrashFolder.getServerId());
-            }
-
-            if (K9MailLib.isDebug()) {
-                Timber.d("IMAPMessage.delete: copying remote %d messages to '%s' for %s",
-                        messages.size(), trashFolder, getLogId());
-            }
-
-            moveMessages(messages, remoteTrashFolder);
-        }
-    }
-
-    @Override
     public int getMessageCount() {
         return messageCount;
     }
@@ -483,11 +453,6 @@ public class ImapFolder extends Folder<ImapMessage> {
         Collections.sort(uids, Collections.reverseOrder());
 
         return uids.get(0);
-    }
-
-    @Override
-    public void delete(boolean recurse) throws MessagingException {
-        throw new Error("ImapFolder.delete() not yet implemented");
     }
 
     @Override

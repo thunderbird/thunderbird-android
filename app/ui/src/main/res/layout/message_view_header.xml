@@ -102,14 +102,14 @@
                             android:layout_width="32sp"
                             android:layout_height="32sp"
                             android:paddingRight="2dip"
-                            android:background="@drawable/ic_email_answered_small" />
+                            android:background="?attr/messageListAnswered" />
 
                         <View
                             android:id="@+id/forwarded"
                             android:layout_width="22sp"
                             android:layout_height="22sp"
                             android:paddingRight="4dip"
-                            android:background="@drawable/ic_email_forwarded_small" />
+                            android:background="?attr/messageListForwarded" />
 
                     </LinearLayout>
 

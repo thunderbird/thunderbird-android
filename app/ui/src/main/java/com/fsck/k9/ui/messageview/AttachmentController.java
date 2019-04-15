@@ -14,7 +14,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.annotation.WorkerThread;
+import androidx.annotation.WorkerThread;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;

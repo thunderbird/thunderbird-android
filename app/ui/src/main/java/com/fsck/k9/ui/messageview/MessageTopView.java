@@ -8,8 +8,8 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.PopupMenu.OnMenuItemClickListener;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,7 +66,6 @@ public class MessageTopView extends LinearLayout {
         super.onFinishInflate();
 
         mHeaderContainer = findViewById(R.id.header_container);
-        // mHeaderContainer.setOnLayoutChangedListener(this);
         mInflater = LayoutInflater.from(getContext());
 
         viewAnimator = findViewById(R.id.message_layout_animator);

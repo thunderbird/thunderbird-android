@@ -3,24 +3,23 @@
   <!--=== App-specific strings =============================================================-->
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
-  <string name="app_name">K-9 邮箱</string>
+  <string name="app_name">K-9 Mail</string>
   <string name="shortcuts_title">K-9 账户</string>
   <string name="unread_widget_label">K-9 未读</string>
   <string name="remote_control_label">K-9 Mail 远程控制</string>
   <string name="remote_control_desc">允许这个程序控制 K-9 Mail 的行为和设置。</string>
   <!--Used in the about dialog-->
-  <string name="app_authors">Google, The K-9 Dog Walkers.</string>
+  <string name="app_authors">K-9 用户</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="app_license">Apache License 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">欢迎使用 K-9 Mail</string>
   <string name="accounts_welcome">
 
-K-9 Mail是Android上一款强大的客户端.
+K-9 Mail 是 Android 上一款强大的客户端.
 
 其改进的功能包括：
-使用IMAP环境推送邮件
-更好扥性能
+使用 IMAP 环境推送邮件
+更好的性能
 邮件复用
 邮件签名
 密送自己
@@ -28,13 +27,13 @@ K-9 Mail是Android上一款强大的客户端.
 所有文件夹同步
 返回地址配置
 快捷键
-更好的IMAP的支持
-保存附件到SD卡
+更好的 IMAP 的支持
+保存附件到 SD 卡
 清空回收站
 邮件分类
 更多……
-请注意，K-9不支持免费的Hotmail帐户，同许多邮件客户端一样，
-在使用Microsoft Exchange时会出现一些问题。
+请注意，K-9 不支持免费的 Hotmail 帐户，同许多邮件客户端一样，
+在使用 Microsoft Exchange 时会出现一些问题。
 
 请到下述网址提交错误报告，问题及新的功能建议。
 https://github.com/k9mail/k-9/20
@@ -42,21 +41,15 @@ https://github.com/k9mail/k-9/20
   <!--Default signature-->
   <string name="default_signature">-- \n使用 K-9 Mail 发送自我的Android设备。</string>
   <!--General strings that include the app name-->
-  <string name="account_delete_dlg_instructions_fmt">账户“<xliff:g id="account">%s</xliff:g>”将从K-9 Mail中删除。</string>
-  <string name="account_recreate_dlg_instructions_fmt">账户“<xliff:g id="account">%s</xliff:g>”的全部数据将从K-9 Mail中删除，但是账户设置将保留。</string>
-  <string name="account_clear_dlg_instructions_fmt">账户“<xliff:g id="account">%s</xliff:g>”中的全部邮件将从K-9 Mail中删除，但是账户设置将保留。</string>
-  <!--=== App Store-specific strings =======================================================-->
-  <string name="import_dialog_error_message">要继续导入，请先安装一款文件管理器。</string>
-  <string name="open_market">打开 Play Store</string>
+  <string name="account_delete_dlg_instructions_fmt">账户“<xliff:g id="account">%s</xliff:g>”将从 K-9 Mail 中删除。</string>
+  <string name="account_recreate_dlg_instructions_fmt">账户“<xliff:g id="account">%s</xliff:g>”的全部数据将从 K-9 Mail 中删除，但是账户设置将保留。</string>
+  <string name="account_clear_dlg_instructions_fmt">账户“<xliff:g id="account">%s</xliff:g>”中的全部邮件将从 K-9 Mail 中删除，但是账户设置将保留。</string>
   <!--=== General strings ==================================================================-->
-  <string name="authors">作者</string>
-  <string name="app_revision">更新日志</string>
-  <string name="app_libraries">我们是用了以下的第三方库： <xliff:g id="app_libraries_list">%s</xliff:g></string>
+  <string name="app_libraries">我们使用了以下的第三方库： <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">显示邮件</string>
   <string name="read_messages_desc">允许该程序读取邮件。</string>
   <string name="delete_messages_label">删除邮件</string>
   <string name="delete_messages_desc">允许该程序删除邮件。</string>
-  <string name="about_title">关于 K-9 Mail</string>
   <string name="accounts_title">账户</string>
   <string name="folders_title">文件夹</string>
   <string name="advanced">高级</string>
@@ -65,6 +58,7 @@ https://github.com/k9mail/k-9/20
   <string name="compose_title_reply">回复</string>
   <string name="compose_title_reply_all">全部回复</string>
   <string name="compose_title_forward">转发</string>
+  <string name="compose_title_forward_as_attachment">转发为附件</string>
   <string name="choose_account_title">切换账户</string>
   <string name="choose_folder_title">选择文件夹</string>
   <string name="status_loading_account_folder">正在接收 <xliff:g id="folder">%s:</xliff:g>: <xliff:g id="progress">%s</xliff:g>, <xliff:g id="account">%s</xliff:g></string>
@@ -93,8 +87,9 @@ https://github.com/k9mail/k-9/20
   <string name="reply_all_action">回复全部</string>
   <string name="delete_action">删除</string>
   <string name="archive_action">归档</string>
-  <string name="spam_action">标记为垃圾</string>
+  <string name="spam_action">标记为垃圾邮件</string>
   <string name="forward_action">转发</string>
+  <string name="forward_as_attachment_action">转发为附件</string>
   <string name="move_action">移动</string>
   <string name="single_message_options_action">发送…</string>
   <string name="refile_action">重新归档…</string>
@@ -121,7 +116,6 @@ https://github.com/k9mail/k-9/20
   <string name="flag_action">添加星标</string>
   <string name="unflag_action">移除星标</string>
   <string name="copy_action">复制</string>
-  <string name="select_text_action">选择文本</string>
   <string name="show_headers_action">显示邮件头</string>
   <string name="hide_headers_action">隐藏邮件头</string>
   <plurals name="copy_address_to_clipboard">
@@ -163,6 +157,7 @@ https://github.com/k9mail/k-9/20
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> 条新消息</item>
   </plurals>
   <string name="notification_new_one_account_fmt">您有<xliff:g id="unread_message_count">%d</xliff:g>封未读邮件（<xliff:g id="account">%s</xliff:g>）</string>
+  <string name="notification_additional_messages">加载 <xliff:g id="account">%2$s</xliff:g> 上的更多 <xliff:g id="additional_messages">%1$d</xliff:g> 条消息</string>
   <string name="notification_action_reply">回复</string>
   <string name="notification_action_mark_as_read">标记为已读</string>
   <string name="notification_action_mark_all_as_read">全部标记为已读</string>
@@ -180,6 +175,8 @@ https://github.com/k9mail/k-9/20
   <string name="notification_bg_send_ticker">正在发送邮件：<xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">发送邮件</string>
   <string name="notification_bg_title_separator">：</string>
+  <string name="notification_channel_messages_title">邮件</string>
+  <string name="notification_channel_miscellaneous_title">杂项</string>
   <string name="special_mailbox_name_inbox">收件箱</string>
   <string name="special_mailbox_name_outbox">发件箱</string>
   <string name="special_mailbox_name_drafts">草稿箱</string>
@@ -193,7 +190,6 @@ https://github.com/k9mail/k-9/20
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g>（归档）</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g>（垃圾邮件）</string>
   <string name="send_failure_subject">一些邮件没有成功发送</string>
-  <string name="version">版本：</string>
   <string name="debug_enable_debug_logging_title">启用调试日志</string>
   <string name="debug_enable_debug_logging_summary">记录额外的调试信息</string>
   <string name="debug_enable_sensitive_logging_title">记录敏感信息</string>
@@ -212,9 +208,11 @@ https://github.com/k9mail/k-9/20
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> 写到：</string>
   <string name="message_compose_reply_header_fmt_with_date">于 <xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> 写到:</string>
   <string name="message_compose_error_no_recipients">您必须添加至少一个收件人。</string>
-  <string name="compose_error_incomplete_recipient"> 收件人字段包含不完整的输入！</string>
+  <string name="compose_error_incomplete_recipient">收件人字段包含不完整的输入！</string>
   <string name="error_contact_address_not_found">没有找到该联系人的邮件地址。</string>
   <string name="message_compose_attachments_skipped_toast">由于一些附件还没有被下载，因此无法转发这些附件。</string>
+  <string name="message_compose_attachments_forward_toast">因有些附件还未下载完毕，无法转发这封消息。 </string>
+  <string name="message_compose_show_quoted_text_action">包含引用消息</string>
   <string name="message_compose_description_delete_quoted_text">删除引用文本</string>
   <string name="message_compose_description_edit_quoted_text">编辑引用文本</string>
   <string name="message_view_from_format">发件人：<xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -223,8 +221,6 @@ https://github.com/k9mail/k-9/20
   <string name="message_view_bcc_label">密送:</string>
   <string name="message_view_attachment_view_action">打开</string>
   <string name="message_view_attachment_download_action">保存</string>
-  <string name="message_view_status_attachment_not_saved">无法将附件保存到SD卡。</string>
-  <string name="message_view_status_no_space">存储空间不足，无法保存附件。</string>
   <string name="message_view_show_pictures_action">显示图片</string>
   <string name="message_view_no_viewer">无法打开<xliff:g id="mimetype">%s</xliff:g>。找不到可以阅读该文件的程序。</string>
   <string name="message_view_download_remainder">下载完整邮件</string>
@@ -323,9 +319,9 @@ https://github.com/k9mail/k-9/20
   <string name="account_setup_incoming_username_label">用户名</string>
   <string name="account_setup_incoming_password_label">密码</string>
   <string name="account_setup_incoming_client_certificate_label">客户端证书</string>
-  <string name="account_setup_incoming_pop_server_label">POP3服务器</string>
-  <string name="account_setup_incoming_imap_server_label">IMAP服务器</string>
-  <string name="account_setup_incoming_webdav_server_label">WebDAV (Exchange)服务器</string>
+  <string name="account_setup_incoming_pop_server_label">POP3 服务器</string>
+  <string name="account_setup_incoming_imap_server_label">IMAP 服务器</string>
+  <string name="account_setup_incoming_webdav_server_label">WebDAV (Exchange) 服务器</string>
   <string name="account_setup_incoming_port_label">端口号</string>
   <string name="account_setup_incoming_security_label">加密方法</string>
   <string name="account_setup_incoming_auth_type_label">身份验证方法</string>
@@ -341,7 +337,7 @@ https://github.com/k9mail/k-9/20
   <string name="account_setup_incoming_mobile_label">手机移动网络</string>
   <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
   <string name="account_setup_incoming_other_label">其他</string>
-  <string name="local_storage_provider_external_label">外部存储（SD卡）</string>
+  <string name="local_storage_provider_external_label">外部存储（SD 卡）</string>
   <string name="local_storage_provider_internal_label">正常内部存储</string>
   <string name="local_storage_provider_samsunggalaxy_label">%1$s 额外的内部存储</string>
   <string name="local_storage_provider_label">存储位置</string>
@@ -349,8 +345,8 @@ https://github.com/k9mail/k-9/20
   <string name="account_setup_expunge_policy_immediately">立刻</string>
   <string name="account_setup_expunge_policy_on_poll">接收邮件时</string>
   <string name="account_setup_expunge_policy_manual">手动</string>
-  <string name="account_setup_incoming_autodetect_namespace_label">自动检测IMAP命名空间</string>
-  <string name="account_setup_incoming_imap_path_prefix_label">IMAP路径前缀</string>
+  <string name="account_setup_incoming_autodetect_namespace_label">自动检测 IMAP 命名空间</string>
+  <string name="account_setup_incoming_imap_path_prefix_label">IMAP 路径前缀</string>
   <string name="drafts_folder_label">草稿箱名称</string>
   <string name="sent_folder_label">发件箱名称</string>
   <string name="trash_folder_label">垃圾箱名称</string>
@@ -358,14 +354,14 @@ https://github.com/k9mail/k-9/20
   <string name="spam_folder_label">垃圾邮件箱名称</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">只显示订阅的文件夹</string>
   <string name="account_setup_auto_expand_folder">自动展开文件夹</string>
-  <string name="account_setup_incoming_webdav_path_prefix_label">WebDAV (Exchange)路径</string>
+  <string name="account_setup_incoming_webdav_path_prefix_label">WebDAV (Exchange) 路径</string>
   <string name="account_setup_incoming_webdav_path_prefix_hint">可选</string>
   <string name="account_setup_incoming_webdav_auth_path_label">身份验证路径</string>
   <string name="account_setup_incoming_webdav_auth_path_hint">可选</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">邮箱路径</string>
   <string name="account_setup_incoming_webdav_mailbox_path_hint">可选</string>
   <string name="account_setup_outgoing_title">发件服务器设置</string>
-  <string name="account_setup_outgoing_smtp_server_label">SMTP服务器</string>
+  <string name="account_setup_outgoing_smtp_server_label">SMTP 服务器</string>
   <string name="account_setup_outgoing_port_label">端口</string>
   <string name="account_setup_outgoing_security_label">加密方法</string>
   <string name="account_setup_outgoing_require_login_label">要求登录。</string>
@@ -380,43 +376,40 @@ https://github.com/k9mail/k-9/20
   <string name="recreate_action">重建数据（最后的杀手锏）</string>
   <string name="account_setup_options_mail_check_frequency_label">文件夹检查频率</string>
   <string name="account_setup_options_mail_check_frequency_never">从不</string>
-  <string name="account_setup_options_mail_check_frequency_1min">每分钟一次</string>
-  <string name="account_setup_options_mail_check_frequency_5min">五分钟一次</string>
-  <string name="account_setup_options_mail_check_frequency_10min">十分钟一次</string>
-  <string name="account_setup_options_mail_check_frequency_15min">十五分钟一次</string>
-  <string name="account_setup_options_mail_check_frequency_30min">三十分钟一次</string>
+  <string name="account_setup_options_mail_check_frequency_15min">15 分钟一次</string>
+  <string name="account_setup_options_mail_check_frequency_30min">30 分钟一次</string>
   <string name="account_setup_options_mail_check_frequency_1hour">每小时一次</string>
-  <string name="account_setup_options_mail_check_frequency_2hour">两小时一次</string>
-  <string name="account_setup_options_mail_check_frequency_3hour">三小时一次</string>
-  <string name="account_setup_options_mail_check_frequency_6hour">六小时一次</string>
-  <string name="account_setup_options_mail_check_frequency_12hour">十二小时一次</string>
-  <string name="account_setup_options_mail_check_frequency_24hour">二十四小时一次</string>
+  <string name="account_setup_options_mail_check_frequency_2hour">2 小时一次</string>
+  <string name="account_setup_options_mail_check_frequency_3hour">3 小时一次</string>
+  <string name="account_setup_options_mail_check_frequency_6hour">6 小时一次</string>
+  <string name="account_setup_options_mail_check_frequency_12hour">12小时一次</string>
+  <string name="account_setup_options_mail_check_frequency_24hour">24 小时一次</string>
   <string name="push_poll_on_connect_label">被推送时检查邮件</string>
   <string name="account_setup_options_enable_push_label">在这个账户上启用推送邮件</string>
   <string name="account_setup_options_enable_push_summary">如果你的邮件服务器支持这个功能，那么新邮件将会立刻显示在手机上。这个选项可能大幅的提升性能，也可能严重的影响性能。</string>
   <string name="idle_refresh_period_label">刷新IDLE连接</string>
   <string name="idle_refresh_period_1min">每分钟一次</string>
-  <string name="idle_refresh_period_2min">两分钟一次</string>
-  <string name="idle_refresh_period_3min">三分钟一次</string>
-  <string name="idle_refresh_period_6min">六分钟一次</string>
-  <string name="idle_refresh_period_12min">十二分钟一次</string>
-  <string name="idle_refresh_period_24min">二十四分钟一次</string>
-  <string name="idle_refresh_period_36min">三十六分钟一次</string>
-  <string name="idle_refresh_period_48min">四十八分钟一次</string>
-  <string name="idle_refresh_period_60min">六十分钟一次</string>
+  <string name="idle_refresh_period_2min">2分钟一次</string>
+  <string name="idle_refresh_period_3min">3 分钟一次</string>
+  <string name="idle_refresh_period_6min">6分钟一次</string>
+  <string name="idle_refresh_period_12min">12 分钟一次</string>
+  <string name="idle_refresh_period_24min">24 分钟一次</string>
+  <string name="idle_refresh_period_36min">36 分钟一次</string>
+  <string name="idle_refresh_period_48min">48 分钟一次</string>
+  <string name="idle_refresh_period_60min">60 分钟一次</string>
   <string name="account_setup_options_notify_label">有新邮件时通知我</string>
   <string name="account_setup_options_notify_sync_label">检查新邮件时通知我</string>
   <string name="account_setup_options_mail_display_count_label">邮件显示数量</string>
-  <string name="account_setup_options_mail_display_count_10">10封</string>
-  <string name="account_setup_options_mail_display_count_25">25封</string>
-  <string name="account_setup_options_mail_display_count_50">50封</string>
-  <string name="account_setup_options_mail_display_count_100">100封</string>
-  <string name="account_setup_options_mail_display_count_250">250封</string>
-  <string name="account_setup_options_mail_display_count_500">500封</string>
-  <string name="account_setup_options_mail_display_count_1000">1000封</string>
-  <string name="account_setup_options_mail_display_count_2500">2500 条信息</string>
-  <string name="account_setup_options_mail_display_count_5000">5000 条信息</string>
-  <string name="account_setup_options_mail_display_count_10000">10000 条信息</string>
+  <string name="account_setup_options_mail_display_count_10">10 封</string>
+  <string name="account_setup_options_mail_display_count_25">25 封</string>
+  <string name="account_setup_options_mail_display_count_50">50 封</string>
+  <string name="account_setup_options_mail_display_count_100">100 封</string>
+  <string name="account_setup_options_mail_display_count_250">250 封</string>
+  <string name="account_setup_options_mail_display_count_500">500 封</string>
+  <string name="account_setup_options_mail_display_count_1000">1000 封</string>
+  <string name="account_setup_options_mail_display_count_2500">2500 封</string>
+  <string name="account_setup_options_mail_display_count_5000">5000 封</string>
+  <string name="account_setup_options_mail_display_count_10000">10000 封</string>
   <string name="account_setup_options_mail_display_count_all">所有邮件</string>
   <string name="move_copy_cannot_copy_unsynced_message">没有与服务器同步的邮件无法进行拷贝或移动</string>
   <string name="account_setup_failed_dlg_title">无法完成设置</string>
@@ -432,9 +425,9 @@ https://github.com/k9mail/k-9/20
   <string name="account_settings_notify_label">新邮件通知</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">提醒文件夹</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">全部</string>
-  <string name="account_settings_folder_notify_new_mail_mode_first_class">仅1级文件夹</string>
-  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1级和2级文件夹</string>
-  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">除了2级以外的所有文件夹</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_class">仅 1 级文件夹</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1 级和 2 级文件夹</string>
+  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">除了 2 级以外的所有文件夹</string>
   <string name="account_settings_folder_notify_new_mail_mode_none">无</string>
   <string name="account_settings_notify_sync_label">同步通知</string>
   <string name="account_settings_email_label">您的电子邮件地址</string>
@@ -462,26 +455,31 @@ https://github.com/k9mail/k-9/20
   <string name="account_settings_message_format_label">邮件格式</string>
   <string name="account_settings_message_format_text">纯文本（图片和排版将被删除）</string>
   <string name="account_settings_message_format_html">HTML（图片和排版将被保留）</string>
-  <string name="account_settings_message_format_auto">自动（纯文本，除非是在回复HTML邮件）</string>
+  <string name="account_settings_message_format_auto">自动（纯文本，除非是在回复 HTML 邮件）</string>
   <string name="account_settings_always_show_cc_bcc_label">总是显示抄送/暗送(CC/BCC)</string>
   <string name="account_settings_message_read_receipt_label">已读回执</string>
   <string name="account_settings_message_read_receipt_summary">总是要求已读回执</string>
   <string name="account_settings_quote_style_label">回复时引用格式</string>
   <string name="account_settings_quote_style_prefix">引用前缀 (类似 Gmail, Pine)</string>
-  <string name="account_settings_quote_style_header">引用头 (类似Outlook)</string>
+  <string name="account_settings_quote_style_header">引用头 (类似 Outlook)</string>
   <string name="account_settings_general_title">常规设置</string>
   <string name="account_settings_reading_mail">阅读邮件</string>
   <string name="account_settings_sync">接收邮件</string>
   <string name="account_settings_folders">文件夹</string>
   <string name="account_settings_quote_prefix_label">引用文本前缀</string>
-  <string name="account_settings_crypto">加密</string>
-  <string name="account_settings_crypto_app">OpenPGP 应用 </string>
-  <string name="account_settings_crypto_key">我的密钥</string>
+  <string name="account_settings_crypto">点对点加密</string>
+  <string name="account_settings_crypto_app">打开 OpenPGP 支持</string>
+  <string name="account_settings_crypto_app_select_title">选择 OpenPGP 应用</string>
+  <string name="account_settings_crypto_key">设置端到端密钥</string>
+  <string name="account_settings_crypto_summary_off">未设置 OpenPGP 应用</string>
+  <string name="account_settings_crypto_summary_on">已连接到 %s</string>
   <string name="account_settings_no_openpgp_provider_configured">没有设置 OpenPGP 应用</string>
+  <string name="account_settings_no_openpgp_provider_installed">未找到 OpenPGP 应用 - 点按来安装</string>
   <string name="account_settings_mail_check_frequency_label">文件夹检查频率</string>
   <string name="account_settings_storage_title">存储</string>
   <string name="account_settings_color_label">账户颜色</string>
   <string name="account_settings_color_summary">选择账户在文件夹和账户列表中显示时所使用的颜色</string>
+  <string name="account_settings_color_none">没有颜色</string>
   <string name="account_settings_led_color_label">通知 LED 灯颜色</string>
   <string name="account_settings_led_color_summary">选择手机提示该账户信息时 LED 灯闪烁的颜色</string>
   <string name="account_settings_mail_display_count_label">本地文件夹大小</string>
@@ -538,6 +536,7 @@ https://github.com/k9mail/k-9/20
   <string name="account_settings_folder_target_mode_not_second_class">除了次级文件夹</string>
   <string name="account_settings_sync_remote_deletetions_label">同步服务器上的删除</string>
   <string name="account_settings_sync_remote_deletetions_summary">删除在服务器上被删除的邮件的本地拷贝</string>
+  <string name="account_settings_openpgp_missing">OpenPGP 应用丢失 - 它已被卸载了吗？</string>
   <string name="folder_settings_title">文件夹设置</string>
   <string name="folder_settings_in_top_group_label">显示在置顶的组中</string>
   <string name="folder_settings_in_top_group_summary">显示在置顶的组之后</string>
@@ -557,8 +556,8 @@ https://github.com/k9mail/k-9/20
   <string name="folder_settings_folder_push_mode_inherited">使用与同步级别相同的级别</string>
   <string name="folder_settings_folder_notify_mode_label">文件夹提醒级别</string>
   <string name="folder_settings_folder_notify_mode_normal">不分类</string>
-  <string name="folder_settings_folder_notify_mode_first_class">1级</string>
-  <string name="folder_settings_folder_notify_mode_second_class">2级</string>
+  <string name="folder_settings_folder_notify_mode_first_class">1 级</string>
+  <string name="folder_settings_folder_notify_mode_second_class">2 级</string>
   <string name="folder_settings_folder_notify_mode_inherited">与推送级别相同</string>
   <string name="account_settings_incoming_label">收件服务器</string>
   <string name="account_settings_incoming_summary">配置收件服务器</string>
@@ -635,15 +634,15 @@ https://github.com/k9mail/k-9/20
   <string name="account_delete_dlg_title">删除账户</string>
   <string name="account_recreate_dlg_title">重建账户</string>
   <string name="account_clear_dlg_title">清除账户</string>
-  <string name="provider_note_auonejp">请确保在 au one邮件设置中开启了IMAP和POP3.</string>
-  <string name="provider_note_naver">如果您想使用IMAP或者POP3，请在Naver mail的设置页面设置允许IMAP或者POP3。</string>
-  <string name="provider_note_hanmail">如果您想使用IMAP或者POP3，请在Hanmail(Daum) mail的设置页面设置允许IMAP或者POP3。</string>
+  <string name="provider_note_auonejp">请确保在 au one 邮件设置中开启了 IMAP 和 POP3 。</string>
+  <string name="provider_note_naver">如果您想使用 IMAP 或者 POP3 ，请在 Naver mail 的设置页面设置允许 IMAP 或者 POP3 。</string>
+  <string name="provider_note_hanmail">如果您想使用 IMAP 或者 POP3 ，请在 Hanmail(Daum) mail 的设置页面设置允许 IMAP 或者 POP3 。</string>
   <string name="account_setup_failed_dlg_invalid_certificate_title">无法识别的证书信息</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">接收密钥</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">拒绝密钥</string>
-  <string name="message_view_help_key">删除 ( D) - 删除\nR - 回复\nA - 回复所有\nC - 群发\nF - 转发\nM - 移动\nV - 存档\nY - 复制\nZ - 标记 (Un)阅读\nG - 加星\nO - 排序类型\nI - 排序名称\nQ - 返回文件夹\nS - 选择/删除已选\nJ or P - 以前的邮件\nK or N - 下一封邮件</string>
-  <string name="message_list_help_key">删除 (or D) - 删除\nC - 群组\nM - 移动\nV - 归档\nY - 复制\nZ - 标记 (Un)已阅\nG - 加星\nO - 排序类型\nI - 排序名称\nQ - 返回文件夹\nS - 选择/删除已选</string>
-  <string name="folder_list_help_key">1 - 仅显示1级文件夹\n2 - 显示1级和2级文件夹\n3 - 显示除2级以外的所有文件夹\n4 - 显示所有文件夹\nQ - 返回帐户\nS - 编辑帐户设置</string>
+  <string name="message_view_help_key">Del (D) - 删除\nR - 回复\nA - 回复所有\nC - 群发\nF - 转发\nM - 移动\nV - 存档\nY - 复制\nZ - 标记 (未)阅读\nG - 加星\nO - 排序类型\nI - 排序名称\nQ - 返回文件夹\nS - 选择/删除已选\nJ or P - 以前的邮件\nK or N - 下一封邮件</string>
+  <string name="message_list_help_key">Del(D) - 删除\nC - 群组\nM - 移动\nV - 归档\nY - 复制\nZ - 标记 (未)已阅\nG - 加星\nO - 排序类型\nI - 排序名称\nQ - 返回文件夹\nS - 选择/删除已选</string>
+  <string name="folder_list_help_key">1 - 仅显示 1 级文件夹\n2 - 显示 1 级和 2 级文件夹\n3 - 显示除 2 级以外的所有文件夹\n4 - 显示所有文件夹\nQ - 返回帐户\nS - 编辑帐户设置</string>
   <string name="folder_list_filter_hint">文件夹名称中包含</string>
   <string name="folder_list_display_mode_label">文件夹</string>
   <string name="folder_list_display_mode_all">显示全部文件夹</string>
@@ -680,13 +679,14 @@ https://github.com/k9mail/k-9/20
   <string name="background_ops_auto_sync_only">当“自动同步”已选定</string>
   <string name="batch_select_all">选择全部</string>
   <string name="account_setup_push_limit_label">推送时最多检查文件夹数量</string>
-  <string name="account_setup_push_limit_10">十个文件夹</string>
-  <string name="account_setup_push_limit_25">二十五个文件夹</string>
-  <string name="account_setup_push_limit_50">五十个文件夹</string>
-  <string name="account_setup_push_limit_100">一百个文件夹</string>
-  <string name="account_setup_push_limit_250">二百五十个文件夹</string>
-  <string name="account_setup_push_limit_500">五百个文件夹</string>
-  <string name="account_setup_push_limit_1000">一千个文件夹</string>
+  <string name="account_setup_push_limit_5">5 个文件夹</string>
+  <string name="account_setup_push_limit_10">10 个文件夹 </string>
+  <string name="account_setup_push_limit_25">25 个文件夹</string>
+  <string name="account_setup_push_limit_50">50 文件夹</string>
+  <string name="account_setup_push_limit_100">100 文件夹</string>
+  <string name="account_setup_push_limit_250">250 个文件夹</string>
+  <string name="account_setup_push_limit_500">500 文件夹</string>
+  <string name="account_setup_push_limit_1000">1000 文件夹</string>
   <string name="animations_title">动画</string>
   <string name="animations_summary">使用绚丽的视觉特效</string>
   <string name="gestures_title">手势</string>
@@ -715,6 +715,7 @@ https://github.com/k9mail/k-9/20
   <string name="account_settings_searchable_all">全部</string>
   <string name="account_settings_searchable_displayable">可显示的文件夹</string>
   <string name="account_settings_searchable_none">无</string>
+  <string name="account_settings_no_folder_selected">无</string>
   <string name="font_size_settings_title">字体大小</string>
   <string name="font_size_settings_description">配置字体大小</string>
   <string name="font_size_account_list">账户列表</string>
@@ -749,7 +750,6 @@ https://github.com/k9mail/k-9/20
   <string name="font_size_medium">中等</string>
   <string name="font_size_large">大</string>
   <string name="font_size_larger">更大</string>
-  <string name="miscellaneous_preferences">杂项</string>
   <string name="error_activity_not_found">没有找到可以用于这一操作的程序。</string>
   <string name="send_failed_reason">发送失败：%s</string>
   <string name="save_or_discard_draft_message_dlg_title">保存邮件草稿？</string>
@@ -789,15 +789,12 @@ https://github.com/k9mail/k-9/20
   <string name="settings_exporting">正在导出设置…</string>
   <string name="settings_importing">正在导入设置…</string>
   <string name="settings_import_scanning_file">正在扫描文件…</string>
-  <string name="settings_export_success">设置已导出到<xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_generic">设置已成功导出</string>
-  <string name="settings_import_global_settings_success">全局设置已自<xliff:g id="filename">%s</xliff:g>导入</string>
-  <string name="settings_import_success">账户<xliff:g id="accounts">%s</xliff:g>已自<xliff:g id="filename">%s</xliff:g>导入</string>
+  <string name="settings_import_account_imported_as">已将 <xliff:g id="original_account_name">%s</xliff:g> 以 <xliff:g id="account_name_after_import">%s</xliff:g> 导入</string>
   <plurals name="settings_import_accounts">
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> 个账户</item>
   </plurals>
   <string name="settings_export_failure">导出设置失败</string>
-  <string name="settings_import_failure">自<xliff:g id="filename">%s</xliff:g>导入设置失败</string>
   <string name="settings_export_success_header">导出成功</string>
   <string name="settings_export_failed_header">导出失败</string>
   <string name="settings_import_success_header">导入成功</string>
@@ -815,7 +812,6 @@ https://github.com/k9mail/k-9/20
   <string name="settings_import_use_incoming_server_password">使用接受邮件服务器的密码</string>
   <string name="activate_account_action">激活</string>
   <string name="account_unavailable">账户\"<xliff:g id="account">%s</xliff:g>\"不可用；请检查存储</string>
-  <string name="settings_attachment_default_path">保存附件到…</string>
   <string name="attachment_save_title">保存附件</string>
   <string name="attachment_save_desc">没有找到文件管理器。该附件应保存到哪里？</string>
   <string name="manage_accounts_move_up_action">向上移动</string>
@@ -834,7 +830,6 @@ https://github.com/k9mail/k-9/20
   <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
   <string name="unread_widget_account_not_selected">未选择帐户</string>
   <string name="unread_widget_folder_not_selected">未选择文件夹</string>
-  <string name="import_dialog_error_title">没有找到文件管理器</string>
   <string name="close">关闭</string>
   <string name="webview_empty_message">没有文本</string>
   <string name="webview_contextmenu_link_view_action">浏览</string>
@@ -909,7 +904,7 @@ https://github.com/k9mail/k-9/20
   <string name="fetching_attachment_dialog_title_send">消息正在发送</string>
   <string name="fetching_attachment_dialog_title_save">正在保存草稿</string>
   <string name="fetching_attachment_dialog_message">正在获取附件…</string>
-  <string name="auth_external_error">无法认证。服务器未公告SASL EXTERNAL。这可能是由于客户端证书有问题（已过期，或者未知的认证机构），或者是由于其它的配置问题。</string>
+  <string name="auth_external_error">无法认证。服务器未公告 SASL EXTERNAL 。这可能是由于客户端证书有问题（已过期，或者未知的认证机构），或者是由于其它的配置问题。</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">使用客户端证书</string>
   <string name="client_certificate_spinner_empty">无客户端证书</string>
@@ -939,14 +934,14 @@ https://github.com/k9mail/k-9/20
   <string name="crypto_mode_private">加密</string>
   <string name="error_crypto_provider_incompatible">加密提供程序使用不兼容版本。请检查您的设置！</string>
   <string name="error_crypto_provider_connect">无法连接到加密提供程序，请检查设置或单击“加密”图标重试！</string>
-  <string name="error_crypto_provider_ui_required">拒绝提供加密访问，单击“加密”图标重试！</string>
+  <string name="error_crypto_provider_ui_required">初始化端到端加密失败，请检查设置</string>
   <string name="error_crypto_inline_attach">PGP/INLINE 模式不支持附件！</string>
   <string name="enable_inline_pgp">启用 PGP/INLINE</string>
   <string name="disable_inline_pgp">禁用 PGP/INLINE</string>
-  <string name="enable_sign_only">启用PGP签名</string>
-  <string name="disable_sign_only">禁用PGP签名</string>
+  <string name="enable_sign_only">启用 PGP 签名</string>
+  <string name="disable_sign_only">禁用 PGP 签名</string>
   <string name="openpgp_inline_title">PGP/INLINE 模式</string>
-  <string name="openpgp_inline_text">该邮件采用PGP /内联格式发送.\n这仅用于保持兼容性：</string>
+  <string name="openpgp_inline_text">该邮件采用 PGP/INLINE 格式发送.\n这仅用于保持兼容性：</string>
   <string name="openpgp_inline_plus_compat">有些软件只支持这种格式</string>
   <string name="openpgp_inline_minus_transit">签名在传输过程中可能损坏</string>
   <string name="openpgp_inline_minus_attach">不支持附件</string>
@@ -962,7 +957,42 @@ https://github.com/k9mail/k-9/20
   <string name="openpgp_dialog_sign_only_minus_break">发送到邮件列表时，签名可能会中断。</string>
   <string name="openpgp_dialog_sign_only_minus_attach">签名在一些邮件软件中会显示为附件 “signature.asc”。</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">加密邮件总是包含一个签名。</string>
+  <string name="crypto_msg_title_plaintext">纯文本</string>
+  <string name="crypto_msg_unencrypted_sign_error">端到端签名存在错误</string>
+  <string name="crypto_msg_incomplete_signed">处理签名前必须完整下载消息</string>
+  <string name="crypto_msg_unsupported_signed">包含不受支持的端到端签名</string>
+  <string name="crypto_msg_unsupported_encrypted">消息是加密的，但以不支持的格式进行加密。</string>
+  <string name="crypto_msg_cancelled">消息已加密，但解密被取消。</string>
+  <string name="crypto_msg_title_unencrypted_signed_e2e">端到端签名的纯文本</string>
+  <string name="crypto_msg_unencrypted_sign_verified">来自验证过的签名者</string>
+  <string name="crypto_msg_title_unencrypted_signed">已签名的纯文本</string>
+  <string name="crypto_msg_unencrypted_sign_mismatch">然而端到端密钥与发件人不匹配</string>
+  <string name="crypto_msg_unencrypted_sign_expired">然而端到端密钥已过期</string>
+  <string name="crypto_msg_unencrypted_sign_revoked">然而端到端密钥已被吊销</string>
+  <string name="crypto_msg_unencrypted_sign_insecure">然而端到端密钥被认为是不安全的</string>
+  <string name="crypto_msg_unencrypted_sign_unknown">来自于未知的端到端密钥</string>
+  <string name="crypto_msg_title_encrypted_unknown">已加密</string>
+  <string name="crypto_msg_encrypted_error">然而存在解密错误</string>
+  <string name="crypto_msg_encrypted_incomplete">必须下载加密的消息才能解密。</string>
+  <string name="crypto_msg_encrypted_no_provider">但是未配置加密应用</string>
+  <string name="crypto_msg_encrypted_unsupported">但是格式不受支持</string>
+  <string name="crypto_msg_encrypted_cancelled">但是解密已被取消</string>
+  <string name="crypto_msg_title_encrypted_unsigned">已加密已加密</string>
+  <string name="crypto_msg_encrypted_unsigned">但是不是端到端加密的</string>
+  <string name="crypto_msg_title_encrypted_signed_e2e">已端到端加密</string>
+  <string name="crypto_msg_encrypted_sign_verified">来自已验证的发件人</string>
+  <string name="crypto_msg_title_encrypted_signed">已加密</string>
+  <string name="crypto_msg_encrypted_sign_unknown">来自于未知的端到端密钥</string>
+  <string name="crypto_msg_encrypted_sign_mismatch">然而端到端密钥与发件人不匹配</string>
+  <string name="crypto_msg_encrypted_sign_expired">然而端到端密钥已过期</string>
+  <string name="crypto_msg_encrypted_sign_revoked">然而端到端密钥已被吊销</string>
+  <string name="crypto_msg_encrypted_sign_insecure">然而端到端密钥被认为是不安全的</string>
+  <string name="crypto_msg_encrypted_sign_error">但是端到端数据存在错误</string>
+  <string name="crypto_msg_encrypted_insecure">但是加密不安全</string>
   <string name="crypto_info_ok">确定</string>
+  <string name="crypto_info_search_key">搜索密钥</string>
+  <string name="crypto_info_view_signer">查看签名者</string>
+  <string name="crypto_info_view_sender">查看发件人</string>
   <string name="crypto_info_view_security_warning">详情</string>
   <string name="locked_attach_unlock">解锁</string>
   <string name="locked_attach_unencrypted">这部分未加密，可能不安全。</string>
@@ -974,9 +1004,9 @@ https://github.com/k9mail/k-9/20
   <string name="messageview_crypto_error_title">邮件解密错误</string>
   <string name="recipient_error_non_ascii">暂不支持特殊字符！</string>
   <string name="recipient_error_parse_failed">邮件地址解析错误！</string>
-  <string name="account_settings_crypto_support_sign_only">显示未加密的签名</string>
-  <string name="account_settings_crypto_support_sign_only_on">未加密的签名将被显示</string>
-  <string name="account_settings_crypto_support_sign_only_off">未加密的签名将被忽略</string>
+  <string name="account_settings_crypto_hide_sign_only">隐藏未加密的签名</string>
+  <string name="account_settings_crypto_hide_sign_only_on">只显示加密过的签名</string>
+  <string name="account_settings_crypto_hide_sign_only_off">显示所有签名</string>
   <string name="error_sign_only_no_encryption">加密不可用在签名模式下</string>
   <string name="unsigned_text_divider_label">未签名文本</string>
   <string name="apg_deprecated_title">APG 弃用警告</string>
@@ -990,20 +1020,58 @@ https://github.com/k9mail/k-9/20
   <string name="no_crypto_provider_see_global">没有设置 OpenPGP 应用，请检查全局设置！</string>
   <string name="crypto_no_provider_title">邮件已被加密</string>
   <string name="crypto_no_provider_message">这份邮件使用 OpenPGP 进行了加密。\n请安装并配置一个兼容 OpenPGP 的应用来查看邮件。</string>
-  <string name="crypto_no_provider_button">选择 OpenPGP 应用</string>
+  <string name="crypto_no_provider_button">前往设置</string>
   <string name="mail_list_widget_text">K-9邮件列表</string>
   <string name="mail_list_widget_loading">正在加载邮件……</string>
   <string name="fetching_folders_failed">获取文件夹列表失败</string>
   <string name="messageview_crypto_warning_details">显示详情</string>
-  <string name="error_recipient_crypto_retrieve">检索支持OpenPGP的接收者状态错误！</string>
+  <string name="error_recipient_crypto_retrieve">检索支持 OpenPGP 的接收者状态错误！</string>
   <string name="openpgp_enabled_error_title">加密不被支持</string>
   <string name="openpgp_enabled_error_msg">某些选定的收件人不支持此功能！</string>
-  <string name="enable_encryption">开启加密</string>
+  <string name="enable_encryption">启用加密</string>
   <string name="disable_encryption">禁用加密</string>
   <string name="openpgp_description_text1">加密消息确保它们可以被接收者读取，而其他人则不可读。</string>
+  <string name="openpgp_description_text3">只有所有收件人均支持加密，且他们以前给您发送过电子邮件，加密选项才会出现。</string>
   <string name="openpgp_description_text2">单击此图标切换加密。</string>
   <string name="openpgp_enabled_error_gotit">已提取它</string>
   <string name="openpgp_enabled_error_back">返回</string>
   <string name="openpgp_enabled_error_disable">禁用加密</string>
   <string name="openpgp_encryption">打开PGP加密</string>
+  <string name="account_settings_crypto_prefer_encrypt">自动加密互动模式</string>
+  <string name="dialog_autocrypt_mutual_title">自动加密互动模式</string>
+  <string name="dialog_autocrypt_mutual_description_1">消息会按您的选择，或当回复加密消息时正常加密。</string>
+  <string name="dialog_autocrypt_mutual_description_2">如果发件人和收件人均启用了互动模式，加密默认会被启用。</string>
+  <string name="dialog_autocrypt_mutual_learn_more">您可以<a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">点击这里</a>了解详情。</string>
+  <string name="general_settings_title">常规设置</string>
+  <string name="dialog_openkeychain_info_title">未安装 OpenPGP 应用</string>
+  <string name="dialog_openkeychain_info_install">安装</string>
+  <string name="dialog_openkeychain_info_text">K-9 Mail 需要 OpenKeychain 提供端到端加密。</string>
+  <string name="encrypted_subject">加密过的消息。</string>
+  <string name="account_settings_crypto_encrypt_subject">加密消息主题</string>
+  <string name="account_settings_crypto_encrypt_subject_subtitle">某些收件人可能不支持加密</string>
+  <string name="toast_account_not_found">内部错误：帐号无效！</string>
+  <string name="toast_openpgp_provider_error">无法连接到%s！</string>
+  <string name="ac_transfer_setting_title">发送自动加密配置消息</string>
+  <string name="ac_transfer_setting_summary">与其它设备安全共享端到端配置</string>
+  <string name="ac_transfer_title">自动加密配置消息</string>
+  <string name="ac_transfer_intro">通过自动加密配置消息安全地与其它设备共享您的端到端配置。</string>
+  <string name="ac_transfer_button_send">发送配置消息</string>
+  <string name="ac_transfer_will_be_sent">消息将会发送到您的地址：</string>
+  <string name="ac_transfer_generating">正在生成配置消息…</string>
+  <string name="ac_transfer_sending_to">发送消息到：</string>
+  <string name="ac_transfer_finish">请在您的其它设备上打开消息并输入设置代码完成向导。</string>
+  <string name="ac_transfer_show_code">显示设置代码</string>
+  <string name="ac_transfer_msg_subject">自动加密配置信息自动加密配置消息</string>
+  <string name="ac_transfer_msg_body">这条消息包含所有您的旧设备上的自动加密设置与您的私钥。
+
+要在您的新设备上设置自动加密，请按您的新设备上的提示操作。
+
+您可以保存这条消息，并用作您的私钥的备份。如果您想这样做，您应该写下密码并安全保存。
+</string>
+  <string name="ac_transfer_error_send">发送消息时出现错误。请检查您的网络连接与发件服务器设置。</string>
+  <string name="switch_on">开</string>
+  <string name="switch_off">关</string>
+  <string name="navigation_drawer_open">打开</string>
+  <string name="navigation_drawer_close">关闭</string>
+  <!--permissions-->
 </resources>

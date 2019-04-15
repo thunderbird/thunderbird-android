@@ -1,6 +1,9 @@
 package com.fsck.k9.mail.internet
 
 
+// RFC 5322, section 2.1.1
+internal const val RECOMMENDED_MAX_LINE_LENGTH = 78
+
 // RFC 2045: tspecials :=  "(" / ")" / "<" / ">" / "@" / "," / ";" / ":" / "\" / <"> / "/" / "[" / "]" / "?" / "="
 private val TSPECIALS = charArrayOf('(', ')', '<', '>', '@', ',', ';', ':', '\\', '"', '/', '[', ']', '?', '=')
 

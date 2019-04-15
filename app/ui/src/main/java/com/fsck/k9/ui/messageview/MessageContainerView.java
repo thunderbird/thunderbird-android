@@ -35,14 +35,13 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mailstore.AttachmentResolver;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.MessageViewInfo;
-import com.fsck.k9.view.MessageHeader.OnLayoutChangedListener;
 import com.fsck.k9.view.MessageWebView;
 import com.fsck.k9.view.MessageWebView.OnPageFinishedListener;
 
 import static android.app.DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED;
 
 
-public class MessageContainerView extends LinearLayout implements OnLayoutChangedListener, OnCreateContextMenuListener {
+public class MessageContainerView extends LinearLayout implements OnCreateContextMenuListener {
     private static final int MENU_ITEM_LINK_VIEW = Menu.FIRST;
     private static final int MENU_ITEM_LINK_SHARE = Menu.FIRST + 1;
     private static final int MENU_ITEM_LINK_COPY = Menu.FIRST + 2;
@@ -503,13 +502,6 @@ public class MessageContainerView extends LinearLayout implements OnLayoutChange
          * is now hidden.
          */
         clearDisplayedContent();
-    }
-
-    @Override
-    public void onLayoutChanged() {
-        if (mMessageContentView != null) {
-            mMessageContentView.invalidate();
-        }
     }
 
     public void enableAttachmentButtons(AttachmentViewInfo attachment) {

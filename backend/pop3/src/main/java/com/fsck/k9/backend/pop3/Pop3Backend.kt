@@ -35,6 +35,7 @@ class Pop3Backend(
     override val supportsTrashFolder = false
     override val supportsSearchByDate = false
     override val isPushCapable = false
+    override val isDeleteMoveToTrash = false
 
     override fun refreshFolderList() {
         commandRefreshFolderList.refreshFolderList()
@@ -62,6 +63,10 @@ class Pop3Backend(
 
     override fun expungeMessages(folderServerId: String, messageServerIds: List<String>) {
         throw UnsupportedOperationException("not supported")
+    }
+
+    override fun deleteMessages(folderServerId: String, messageServerIds: List<String>) {
+        commandSetFlag.setFlag(folderServerId, messageServerIds, Flag.DELETED, true)
     }
 
     override fun deleteAllMessages(folderServerId: String) {

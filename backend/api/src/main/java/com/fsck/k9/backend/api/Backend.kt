@@ -21,6 +21,7 @@ interface Backend {
     val supportsTrashFolder: Boolean
     val supportsSearchByDate: Boolean
     val isPushCapable: Boolean
+    val isDeleteMoveToTrash: Boolean
 
     @Throws(MessagingException::class)
     fun refreshFolderList()
@@ -42,6 +43,9 @@ interface Backend {
 
     @Throws(MessagingException::class)
     fun expungeMessages(folderServerId: String, messageServerIds: List<String>)
+
+    @Throws(MessagingException::class)
+    fun deleteMessages(folderServerId: String, messageServerIds: List<String>)
 
     @Throws(MessagingException::class)
     fun deleteAllMessages(folderServerId: String)

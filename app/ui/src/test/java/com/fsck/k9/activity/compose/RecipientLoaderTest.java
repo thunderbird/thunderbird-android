@@ -4,6 +4,7 @@ package com.fsck.k9.activity.compose;
 import java.util.List;
 
 import android.Manifest;
+import android.app.Application;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.MatrixCursor;
@@ -17,6 +18,8 @@ import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 import org.junit.Before;
 import org.junit.Test;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.Shadows;
 import org.robolectric.shadows.ShadowApplication;
 
 import static android.provider.ContactsContract.CommonDataKinds.Email.TYPE_HOME;
@@ -73,14 +76,15 @@ public class RecipientLoaderTest extends RobolectricTest {
 
     @Before
     public void setUp() throws Exception {
-        shadowApp = ShadowApplication.getInstance();
+        Application application = RuntimeEnvironment.application;
+        shadowApp = Shadows.shadowOf(application);
         shadowApp.grantPermissions(Manifest.permission.READ_CONTACTS);
         shadowApp.grantPermissions(Manifest.permission.WRITE_CONTACTS);
 
         context = mock(Context.class);
         contentResolver = mock(ContentResolver.class);
 
-        when(context.getApplicationContext()).thenReturn(shadowApp.getApplicationContext());
+        when(context.getApplicationContext()).thenReturn(application);
         when(context.getContentResolver()).thenReturn(contentResolver);
     }
 

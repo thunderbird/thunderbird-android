@@ -9,9 +9,7 @@
   <string name="remote_control_label">„K-9 Mail“ nutolęs valdymas</string>
   <string name="remote_control_desc">Leisti šiai programai valdyti „K-9 Mail“ veiklą ir nustatymus.</string>
   <!--Used in the about dialog-->
-  <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Autorinės teisės 2008-<xliff:g>%s</xliff:g> K-9 Dog Walkers. Dalis autorinių teisių priklauso 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="app_license">Apache License, versija 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Sveiki atvykę į „K-9 Mail“</string>
   <!--Default signature-->
@@ -19,18 +17,12 @@
   <string name="account_delete_dlg_instructions_fmt">Paskyra \"<xliff:g id="account">%s</xliff:g>\" bus pašalinta iš „K-9 Mail“.</string>
   <string name="account_recreate_dlg_instructions_fmt">Visi vietiniai \"<xliff:g id="account">%s</xliff:g>\" duomenys bus pašalinti. Paskyros nustatymai išliks.</string>
   <string name="account_clear_dlg_instructions_fmt">Vietinės  \"<xliff:g id="account">%s</xliff:g>\" laiškų kopijos bus pašalintos. Paskyros nustatymai išliks.</string>
-  <!--=== App Store-specific strings =======================================================-->
-  <string name="import_dialog_error_message">Norėdami tęsti importavimą turite įdiegti failų tvarkyklę.</string>
-  <string name="open_market">Atverti „Play Store“</string>
   <!--=== General strings ==================================================================-->
-  <string name="authors">Autoriai</string>
-  <string name="app_revision">Laidos informacija</string>
   <string name="app_libraries">Mes naudojame šias trečiųjų šalių bibliotekas: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Skaityti laiškus</string>
   <string name="read_messages_desc">Leidžia programai skaityti jūsų laiškus.</string>
   <string name="delete_messages_label">Šalinti laiškus</string>
   <string name="delete_messages_desc">Leidžia programai šalinti jūsų laiškus.</string>
-  <string name="about_title">Apie K-9 Mail</string>
   <string name="accounts_title">Paskyros</string>
   <string name="folders_title">Aplankai</string>
   <string name="advanced">Išplėstinis</string>
@@ -89,7 +81,6 @@
   <string name="flag_action">Pridėti žvaigždutę</string>
   <string name="unflag_action">Pašalinti žvaigždutę</string>
   <string name="copy_action">Kopijuoti</string>
-  <string name="select_text_action">Pažymėti tekstą</string>
   <string name="show_headers_action">Rodyti antraštes</string>
   <string name="hide_headers_action">Slėpti antraštes</string>
   <string name="message_view_theme_action_dark">Persijungti į tamsią temą</string>
@@ -136,6 +127,8 @@
   <string name="notification_bg_send_ticker">Siunčiamas paštas: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Siunčiamas paštas</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_messages_title">Laiškai</string>
+  <string name="notification_channel_miscellaneous_title">Kita</string>
   <string name="special_mailbox_name_inbox">Gauti laiškai</string>
   <string name="special_mailbox_name_outbox">Siunčiamieji</string>
   <string name="special_mailbox_name_drafts">Juodraščiai</string>
@@ -149,7 +142,6 @@
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archyvas)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Brukalas)</string>
   <string name="send_failure_subject">Kai kurių laiškų išsiųsti nepavyko</string>
-  <string name="version">Versija</string>
   <string name="debug_enable_debug_logging_title">Įjungti derinimo žurnalą</string>
   <string name="debug_enable_debug_logging_summary">Įrašyti papildomą diagnostinę informaciją</string>
   <string name="debug_enable_sensitive_logging_title">Įrašyti jautrią informaciją</string>
@@ -177,7 +169,6 @@
   <string name="message_view_cc_label">Cc:</string>
   <string name="message_view_attachment_view_action">Atverti</string>
   <string name="message_view_attachment_download_action">Išsaugoti</string>
-  <string name="message_view_status_attachment_not_saved">Išsaugoti priedų SD kortelėje nepavyko.</string>
   <string name="message_view_show_pictures_action">Rodyti paveikslėlius</string>
   <string name="message_view_no_viewer">Nepavyko rasto <xliff:g id="mimetype">%s</xliff:g> peržiūros programos.</string>
   <string name="message_view_download_remainder">Parsiųsti visą laišką</string>
@@ -305,9 +296,6 @@
   <string name="recreate_action">Atkurti duomenis (Paskutinė priemonė!)</string>
   <string name="account_setup_options_mail_check_frequency_label">Aplanko tikrinimo dažnis</string>
   <string name="account_setup_options_mail_check_frequency_never">Niekada</string>
-  <string name="account_setup_options_mail_check_frequency_1min">Kas minutę</string>
-  <string name="account_setup_options_mail_check_frequency_5min">Kas 5 minutes</string>
-  <string name="account_setup_options_mail_check_frequency_10min">Kas 10 minučių</string>
   <string name="account_setup_options_mail_check_frequency_15min">Kas 15 minučių</string>
   <string name="account_setup_options_mail_check_frequency_30min">Kas 30 minučių</string>
   <string name="account_setup_options_mail_check_frequency_1hour">Kas valandą</string>
@@ -390,7 +378,6 @@
   <string name="account_settings_sync">Gaunamas paštas</string>
   <string name="account_settings_folders">Aplankai</string>
   <string name="account_settings_quote_prefix_label">Redaguojamo teksto priedėlis</string>
-  <string name="account_settings_crypto">Šifravimas</string>
   <string name="account_settings_mail_check_frequency_label">Aplanko tikrinimo dažnis</string>
   <string name="account_settings_storage_title">Saugykla</string>
   <string name="account_settings_color_label">Paskyros spalva</string>
@@ -617,6 +604,7 @@
   <string name="account_settings_searchable_all">Visi</string>
   <string name="account_settings_searchable_displayable">Rodomas</string>
   <string name="account_settings_searchable_none">Jokios</string>
+  <string name="account_settings_no_folder_selected">Jokios</string>
   <string name="font_size_settings_title">Šrifto dydis</string>
   <string name="font_size_settings_description">Konfigūruoti šrifto dydį</string>
   <string name="font_size_account_list">Paskyrų sąrašas</string>
@@ -649,7 +637,6 @@
   <string name="font_size_medium">Vidutinis</string>
   <string name="font_size_large">Didelis</string>
   <string name="font_size_larger">Didesnis</string>
-  <string name="miscellaneous_preferences">Kita</string>
   <string name="error_activity_not_found">Šiai programai nerasta tinkamo veiksmo.</string>
   <string name="save_or_discard_draft_message_dlg_title">Išsaugoti laišką kaip juodraštį?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Išsaugoti ar nepaisyti šio laiško?</string>
@@ -666,6 +653,7 @@
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">Ar tikrai norite perkelti šį laišką į brukalo aplanką?</item>
     <item quantity="few">Ar tikrai norite perkelti <xliff:g id="message_count">%1$d</xliff:g> laiškus į brukalo aplanką?</item>
+    <item quantity="many">Ar tikrai norite perkelti <xliff:g id="message_count">%1$d</xliff:g> laiškų į brukalo aplanką?</item>
     <item quantity="other">Ar tikrai norite perkelti <xliff:g id="message_count">%1$d</xliff:g> laiškų į brukalo aplanką?</item>
   </plurals>
   <string name="dialog_confirm_spam_confirm_button">Taip</string>
@@ -685,11 +673,7 @@
   <string name="settings_exporting">Eksportuojami nustatymai…</string>
   <string name="settings_importing">Importuojami nustatymai…</string>
   <string name="settings_import_scanning_file">Skenuojamas failas…</string>
-  <string name="settings_export_success">Eksportuoti nustatymai išsaugoti <xliff:g id="filename">%s</xliff:g></string>
-  <string name="settings_import_global_settings_success">Importuoti globalius nustatymus iš <xliff:g id="filename">%s</xliff:g></string>
-  <string name="settings_import_success">Importuota <xliff:g id="accounts">%s</xliff:g> iš <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_failure">Eksportuoti nustatymų nepavyko</string>
-  <string name="settings_import_failure">Nustatymų iš <xliff:g id="filename">%s</xliff:g> importuoti nepavyko</string>
   <string name="settings_export_success_header">Eksportuota sėkmingai</string>
   <string name="settings_export_failed_header">Eksportuoti nepavyko</string>
   <string name="settings_import_success_header">Sėkmingai importuota</string>
@@ -699,6 +683,7 @@
   <plurals name="settings_import_server_passwords">
     <item quantity="one">serverio slaptažodis</item>
     <item quantity="few">serverio slaptažodžiai</item>
+    <item quantity="many">serverio slaptažodžių</item>
     <item quantity="other">serverio slaptažodžių</item>
   </plurals>
   <string name="settings_import_incoming_server">Gaunamųjų serveris (<xliff:g id="hostname">%s</xliff:g>):</string>
@@ -706,19 +691,18 @@
   <plurals name="settings_import_setting_passwords">
     <item quantity="one">Nustatomas slaptažodis…</item>
     <item quantity="few">Nustatomi slaptažodžiai…</item>
+    <item quantity="many">Nustatoma slaptažodžių…</item>
     <item quantity="other">Nustatoma slaptažodžių…</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">Naudoti gaunamųjų laiškų serverio slaptažodį</string>
   <string name="activate_account_action">Aktyvuoti</string>
   <string name="account_unavailable">Paskyra \"<xliff:g id="account">%s</xliff:g>\" neprieinama; patikrinkite saugyklą</string>
-  <string name="settings_attachment_default_path">Priedus išsaugoti į…</string>
   <string name="attachment_save_title">Išsaugoti priedą</string>
   <string name="attachment_save_desc">Failų tvarkyklė nerasta. Kur norite išsaugoti priedą?</string>
   <string name="manage_accounts_move_up_action">Pakelti</string>
   <string name="manage_accounts_move_down_action">Perkelti žemyn</string>
   <string name="manage_accounts_moving_message">Perkeliama paskyra…</string>
   <string name="unread_widget_select_account">Rodyti neskaitytų skaičių…</string>
-  <string name="import_dialog_error_title">Failų tvarkyklė nerasta</string>
   <string name="close">Užverti</string>
   <string name="webview_empty_message">Jokio teksto</string>
   <string name="webview_contextmenu_link_view_action">Atverti nuorodą</string>
@@ -797,4 +781,8 @@
   <string name="crypto_info_ok">Gerai</string>
   <string name="message_progress_text">Įkeliama…</string>
   <string name="openpgp_enabled_error_back">Atgal</string>
+  <string name="general_settings_title">Bendri nustatymai</string>
+  <string name="navigation_drawer_open">Atverti</string>
+  <string name="navigation_drawer_close">Užverti</string>
+  <!--permissions-->
 </resources>

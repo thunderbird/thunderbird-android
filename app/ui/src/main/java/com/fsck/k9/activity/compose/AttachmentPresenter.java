@@ -12,9 +12,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
 
 import com.fsck.k9.activity.compose.ComposeCryptoStatus.AttachErrorState;
 import com.fsck.k9.activity.loader.AttachmentContentLoader;
@@ -50,6 +49,7 @@ public class AttachmentPresenter {
     private LinkedHashMap<Uri, Attachment> attachments;
     private int nextLoaderId = 0;
     private WaitingAction actionToPerformAfterWaiting = WaitingAction.NONE;
+
 
     public AttachmentPresenter(Context context, AttachmentMvpView attachmentMvpView, LoaderManager loaderManager,
                                AttachmentsChangedListener listener) {
@@ -155,7 +155,6 @@ public class AttachmentPresenter {
         addAttachment(uri, contentType, false);
     }
 
-    @Nullable
     public Attachment getAttachment(Uri uri) {
         return attachments.get(uri);
     }

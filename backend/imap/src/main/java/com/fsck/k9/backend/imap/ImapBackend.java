@@ -103,6 +103,11 @@ public class ImapBackend implements Backend {
     }
 
     @Override
+    public boolean isDeleteMoveToTrash() {
+        return true;
+    }
+
+    @Override
     public void refreshFolderList() {
         commandRefreshFolderList.refreshFolderList();
     }
@@ -139,6 +144,12 @@ public class ImapBackend implements Backend {
     public void expungeMessages(@NotNull String folderServerId, @NotNull List<String> messageServerIds)
             throws MessagingException {
         commandExpunge.expungeMessages(folderServerId, messageServerIds);
+    }
+
+    @Override
+    public void deleteMessages(@NotNull String folderServerId, @NotNull List<String> messageServerIds)
+            throws MessagingException {
+        commandSetFlag.setFlag(folderServerId, messageServerIds, Flag.DELETED, true);
     }
 
     @Override

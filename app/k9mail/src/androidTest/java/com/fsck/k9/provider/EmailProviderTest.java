@@ -8,8 +8,8 @@ import java.util.GregorianCalendar;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.net.Uri;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
+import androidx.test.InstrumentationRegistry;
+import androidx.test.runner.AndroidJUnit4;
 import android.test.ProviderTestCase2;
 
 import com.fsck.k9.Account;
