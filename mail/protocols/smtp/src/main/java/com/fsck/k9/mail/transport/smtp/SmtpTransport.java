@@ -188,9 +188,9 @@ public class SmtpTransport extends Transport {
 
             if (secureConnection && clientIDEnabled) {
                 if (imei != null) {
-                    executeCommand("CLIENTID K9-IMEI %s", imei);
+                    executeClientIDCommand("CLIENTID K9-IMEI %s", imei);
                 } else {
-                    executeCommand("CLIENTID K9-UUID %s", accountUuid);
+                    executeClientIDCommand("CLIENTID K9-UUID %s", accountUuid);
                 }
             }
 
@@ -564,7 +564,11 @@ public class SmtpTransport extends Transport {
         return executeCommand(false, format, args);
     }
 
-    private CommandResponse executeCommand(boolean sensitive, String format, Object... args)
+    private CommandResponse executeClientIDCommand(String format, Object... args) throws IOException, MessagingException {
+        return executeClientIDCommand(false, format, args);
+    }
+
+    private CommandResponse executeClientIDCommand(boolean sensitive, String format, Object... args)
             throws IOException, MessagingException {
         List<String> results = new ArrayList<>();
         if (format != null) {
@@ -621,6 +625,43 @@ public class SmtpTransport extends Transport {
                 throw buildEnhancedNegativeSmtpReplyException(replyCode, results);
             } else {
                 replyText = TextUtils.join(" ", results);
+                throw new NegativeSmtpReplyException(replyCode, replyText);
+            }
+        }
+
+        return new CommandResponse(replyCode, results);
+    }
+
+    private CommandResponse executeCommand(boolean sensitive, String format, Object... args)
+            throws IOException, MessagingException {
+        List<String> results = new ArrayList<>();
+        if (format != null) {
+            String command = String.format(Locale.ROOT, format, args);
+            writeLine(command, sensitive);
+        }
+
+        String line = readCommandResponseLine(results);
+
+        int length = line.length();
+        if (length < 1) {
+            throw new MessagingException("SMTP response is 0 length");
+        }
+
+        int replyCode = -1;
+        if (length >= 3) {
+            try {
+                replyCode = Integer.parseInt(line.substring(0, 3));
+            } catch (NumberFormatException e) { /* ignore */ }
+        }
+
+        char replyCodeCategory = line.charAt(0);
+        boolean isReplyCodeErrorCategory = (replyCodeCategory == '4') || (replyCodeCategory == '5');
+        if (isReplyCodeErrorCategory) {
+
+           if (isEnhancedStatusCodesProvided) {
+                throw buildEnhancedNegativeSmtpReplyException(replyCode, results);
+            } else {
+                String replyText = TextUtils.join(" ", results);
                 throw new NegativeSmtpReplyException(replyCode, replyText);
             }
         }
