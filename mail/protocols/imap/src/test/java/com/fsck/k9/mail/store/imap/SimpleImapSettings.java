@@ -17,6 +17,8 @@ class SimpleImapSettings implements ImapSettings {
     private String pathDelimiter;
     private String combinedPrefix;
     private boolean useCompression = false;
+    private String imei;
+    private String accountUuid;
 
 
     @Override
@@ -88,6 +90,12 @@ class SimpleImapSettings implements ImapSettings {
     public void setCombinedPrefix(String prefix) {
         combinedPrefix = prefix;
     }
+
+    @Override
+    public String getImei() { return imei; }
+
+    @Override
+    public String getAccountUuid() { return accountUuid; }
 
     void setHost(String host) {
         this.host = host;
