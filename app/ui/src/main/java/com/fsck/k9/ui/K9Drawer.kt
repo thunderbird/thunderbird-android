@@ -265,7 +265,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
         userFolderDrawerIds.clear()
     }
 
-    fun selectFolder(folderServerId: String) {
+    fun selectFolder(folderServerId: String?) {
         unifiedInboxSelected = false
         openedFolderServerId = folderServerId
         for (drawerId in userFolderDrawerIds) {
