@@ -123,12 +123,15 @@ public class OpenPgpApiManager implements LifecycleObserver {
         }
 
         Intent intent = new Intent(OpenPgpApi.ACTION_CHECK_PERMISSION);
-        getOpenPgpApi().executeApiAsync(intent, null, null, new IOpenPgpCallback() {
-            @Override
-            public void onReturn(Intent result) {
-                onPgpPermissionCheckResult(result);
-            }
-        });
+        OpenPgpApi safeOpenPgpApi = getOpenPgpApi();
+        if (safeOpenPgpApi != null) {
+            safeOpenPgpApi.executeApiAsync(intent, null, null, new IOpenPgpCallback() {
+                @Override
+                public void onReturn(Intent result) {
+                    onPgpPermissionCheckResult(result);
+                }
+            });
+        }
     }
 
     public void onUserInteractionResult() {
@@ -204,6 +207,12 @@ public class OpenPgpApiManager implements LifecycleObserver {
     }
 
     public OpenPgpApi getOpenPgpApi() {
+        if (TextUtils.isEmpty(openPgpProvider)) {
+            Timber.d("openPgpProvider is set to null - possibly OpenPGP turned off");
+            disconnect();
+            setOpenPgpProviderState(OpenPgpProviderState.UNCONFIGURED);
+            return null;
+        }
         if (openPgpServiceConnection == null || !openPgpServiceConnection.isBound()) {
             Timber.e("Obtained OpenPgpApi object, but service is not bound! Inconsistent state?");
         }

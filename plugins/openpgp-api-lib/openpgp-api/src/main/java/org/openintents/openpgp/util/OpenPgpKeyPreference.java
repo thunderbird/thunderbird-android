@@ -136,7 +136,9 @@ public class OpenPgpKeyPreference extends Preference implements OpenPgpApiManage
         data.putExtra(OpenPgpApi.EXTRA_PRESELECT_KEY_ID, keyId);
         data.putExtra(OpenPgpApi.EXTRA_SHOW_AUTOCRYPT_HINT, showAutocryptHint);
         OpenPgpApi api = openPgpApiManager.getOpenPgpApi();
-        api.executeApiAsync(data, null, null, openPgpCallback);
+        if (api != null) {
+            api.executeApiAsync(data, null, null, openPgpCallback);
+        }
     }
 
     private IOpenPgpCallback openPgpCallback = new IOpenPgpCallback() {
