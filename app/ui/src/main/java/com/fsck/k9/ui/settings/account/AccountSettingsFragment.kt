@@ -10,6 +10,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
 import com.fsck.k9.Account
+import com.fsck.k9.Preferences
 import com.fsck.k9.account.BackgroundAccountRemover
 import com.fsck.k9.ui.R
 import com.fsck.k9.activity.ManageIdentities
@@ -199,11 +200,11 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
     private fun initializeCryptoSettings(account: Account) {
         findPreference(PREFERENCE_OPENPGP)?.let {
-            configureCryptoPreferences(account)
+            configureCryptoPreferences(account, false)
         }
     }
 
-    private fun configureCryptoPreferences(account: Account) {
+    private fun configureCryptoPreferences(account: Account, needSave: Boolean) {
         var pgpProviderName: String? = null
         var pgpProvider = account.openPgpProvider
         val isPgpConfigured = pgpProvider != null
@@ -221,6 +222,11 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         configureEnablePgpSupport(account, isPgpConfigured, pgpProviderName)
         configurePgpKey(account, pgpProvider)
         configureAutocryptTransfer(account)
+
+        if (needSave) {
+            val context = requireContext().applicationContext
+            Preferences.getPreferences(context).saveAccount(account);
+        }
     }
 
     private fun getOpenPgpProviderName(pgpProvider: String?): String? {
@@ -238,7 +244,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
                     val openPgpProviderPackages = OpenPgpProviderUtil.getOpenPgpProviderPackages(context)
                     if (openPgpProviderPackages.size == 1) {
                         account.openPgpProvider = openPgpProviderPackages[0]
-                        configureCryptoPreferences(account)
+                        configureCryptoPreferences(account, true)
                     } else {
                         summary = getString(R.string.account_settings_crypto_summary_config)
                         OpenPgpAppSelectDialog.startOpenPgpChooserActivity(requireActivity(), account)
@@ -250,7 +256,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
                 oneTimeClickListener {
                     account.openPgpProvider = null
                     account.openPgpKey = Account.NO_OPENPGP_KEY
-                    configureCryptoPreferences(account)
+                    configureCryptoPreferences(account, true)
                 }
             }
         }
