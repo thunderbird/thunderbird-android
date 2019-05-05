@@ -38,7 +38,7 @@ class ContactPictureLoader(
     private val contactsHelper: Contacts = Contacts.getInstance(context)
     private val pictureSizeInPx: Int = PICTURE_SIZE.toDip(context)
     private val backgroundCacheId: String = with(contactLetterBitmapCreator.config) {
-        if (hasDefaultBackgroundColor) defaultBackgroundColor.toString() else "*"
+        if (hasDefaultColor) defaultBackgroundColor.toString() else "*"
     }
 
 

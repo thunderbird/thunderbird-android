@@ -1,9 +1,7 @@
 package com.fsck.k9.contacts
 
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.Rect
+import android.graphics.*
+
 import com.fsck.k9.mail.Address
 
 /**
@@ -16,15 +14,17 @@ class ContactLetterBitmapCreator(
     fun drawBitmap(bitmap: Bitmap, pictureSizeInPx: Int, address: Address): Bitmap {
         val canvas = Canvas(bitmap)
 
-        val backgroundColor = calcUnknownContactColor(address)
+        val backgroundColor = calcUnknownContactBackgroundColor(address)
         bitmap.eraseColor(backgroundColor)
+
+        val foregroundColor = calcUnknownContactForegroundColor(address)
 
         val letter = letterExtractor.extractContactLetter(address)
 
         val paint = Paint().apply {
             isAntiAlias = true
             style = Paint.Style.FILL
-            setARGB(255, 255, 255, 255)
+            color = foregroundColor
             textSize = (pictureSizeInPx * 3 / 4).toFloat() // just scale this down a bit
         }
 
@@ -39,8 +39,8 @@ class ContactLetterBitmapCreator(
         return bitmap
     }
 
-    private fun calcUnknownContactColor(address: Address): Int {
-        if (config.hasDefaultBackgroundColor) {
+    private fun calcUnknownContactBackgroundColor(address: Address): Int {
+        if (config.hasDefaultColor) {
             return config.defaultBackgroundColor
         }
 
@@ -49,18 +49,31 @@ class ContactLetterBitmapCreator(
         return BACKGROUND_COLORS[colorIndex]
     }
 
+    private fun calcUnknownContactForegroundColor(address: Address): Int {
+        if (config.hasDefaultColor) {
+           return config.defaultForegroundColor
+        }
+
+        val hash = address.hashCode()
+        val colorIndex = (hash and Integer.MAX_VALUE) % BACKGROUND_COLORS.size
+        return FOREGROUND_COLORS[colorIndex]
+    }
+
     companion object {
         private val BACKGROUND_COLORS = intArrayOf(
-                0xff33B5E5L.toInt(),
-                0xffAA66CCL.toInt(),
-                0xff99CC00L.toInt(),
-                0xffFFBB33L.toInt(),
-                0xffFF4444L.toInt(),
-                0xff0099CCL.toInt(),
-                0xff9933CCL.toInt(),
-                0xff669900L.toInt(),
-                0xffFF8800L.toInt(),
-                0xffCC0000L.toInt()
+                0xffb3e5fcL.toInt(),
+                0xffc8e6c9L.toInt(),
+                0xffd1c4e9L.toInt(),
+                0xfffdefbaL.toInt(),
+                0xffffccbcL.toInt()
         )
+        private val FOREGROUND_COLORS = intArrayOf(
+                0xff86acd7L.toInt(),
+                0xff9eb7a3L.toInt(),
+                0xffa191cfL.toInt(),
+                0xffecbe8cL.toInt(),
+                0xffcb9f92L.toInt()
+        )
+
     }
 }
