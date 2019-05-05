@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.fsck.k9.view.MessageHeader
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.fsck.k9.view.MessageHeader xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/header_container"
     android:layout_width="match_parent"
     android:orientation="vertical"
@@ -79,12 +79,19 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical" >
 
-                    <com.fsck.k9.ui.ContactBadge
-                        android:id="@+id/contact_badge"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="40dip"
+                        android:layout_height="40dip"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginTop="8dp"
-                        android:layout_marginLeft="8dp" />
+                        android:layout_marginLeft="8dp"
+                        app:cardElevation="0dp"
+                        app:cardCornerRadius="20dip">
+                        <com.fsck.k9.ui.ContactBadge
+                            android:id="@+id/contact_badge"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+                    </androidx.cardview.widget.CardView>
 
                     <!-- State icons -->
                     <LinearLayout

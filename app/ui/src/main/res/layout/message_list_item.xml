@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="horizontal"
-              android:layout_gravity="center_vertical"
-        >
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_gravity="center_vertical">
 
     <View
             android:id="@+id/chip"
@@ -39,19 +39,25 @@
 
     </LinearLayout>
 
-    <com.fsck.k9.ui.ContactBadge
-            android:id="@+id/contact_badge"
-            android:layout_marginRight="8dip"
-            android:layout_marginTop="4dip"
-            android:layout_marginBottom="3dip"
-            android:layout_height="40dip"
-            android:layout_width="40dip"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="4dp"
-            android:src="@drawable/ic_contact_picture"
-            style="?android:attr/quickContactBadgeStyleWindowLarge"
-            android:background="@android:color/transparent"/>
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="12dip"
+        android:layout_marginTop="4dip"
+        android:layout_marginBottom="3dip"
+        android:layout_marginLeft="8dp"
+        app:cardElevation="0dp"
+        app:cardCornerRadius="20dip">
+        <com.fsck.k9.ui.ContactBadge
+                android:id="@+id/contact_badge"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:src="@drawable/ic_contact_picture"
+                style="?android:attr/quickContactBadgeStyleWindowLarge"
+                android:background="@android:color/transparent"/>
+    </androidx.cardview.widget.CardView>
 
     <RelativeLayout
             android:id="@+id/list_item_inner"
