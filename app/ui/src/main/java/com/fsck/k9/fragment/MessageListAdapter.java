@@ -53,8 +53,7 @@ public class MessageListAdapter extends CursorAdapter {
     private int previewTextColor;
     private int activeItemBackgroundColor;
     private int selectedItemBackgroundColor;
-    private int readItemBackgroundColor;
-    private int unreadItemBackgroundColor;
+    private int unselectedItemBackgroundColor;
     private FontSizes fontSizes = K9.getFontSizes();
 
     MessageListAdapter(MessageListFragment fragment) {
@@ -68,8 +67,7 @@ public class MessageListAdapter extends CursorAdapter {
                 R.attr.messageListPreviewTextColor,
                 R.attr.messageListActiveItemBackgroundColor,
                 R.attr.messageListSelectedBackgroundColor,
-                R.attr.messageListReadItemBackgroundColor,
-                R.attr.messageListUnreadItemBackgroundColor
+                R.attr.messageListItemBackgroundColor,
         };
 
         Theme theme = fragment.requireActivity().getTheme();
@@ -82,8 +80,7 @@ public class MessageListAdapter extends CursorAdapter {
         previewTextColor = array.getColor(3, Color.BLACK);
         activeItemBackgroundColor = array.getColor(4, Color.BLACK);
         selectedItemBackgroundColor = array.getColor(5, Color.BLACK);
-        readItemBackgroundColor = array.getColor(6, Color.BLACK);
-        unreadItemBackgroundColor = array.getColor(7, Color.BLACK);
+        unselectedItemBackgroundColor = array.getColor(6, Color.BLACK);
 
         array.recycle();
     }
@@ -215,7 +212,7 @@ public class MessageListAdapter extends CursorAdapter {
         if (holder.contactBadge != null) {
             updateContactBadge(holder, counterpartyAddress);
         }
-        setBackgroundColor(view, selected, read);
+        setBackgroundColor(view, selected);
         if (fragment.activeMessage != null) {
             changeBackgroundColorIfActiveMessage(cursor, account, view);
         }
@@ -327,15 +324,13 @@ public class MessageListAdapter extends CursorAdapter {
         return null;
     }
 
-    private void setBackgroundColor(View view, boolean selected, boolean read) {
+    private void setBackgroundColor(View view, boolean selected) {
         if (selected || K9.isUseBackgroundAsUnreadIndicator()) {
             int color;
             if (selected) {
                 color = selectedItemBackgroundColor;
-            } else if (read) {
-                color = readItemBackgroundColor;
-            } else {
-                color = unreadItemBackgroundColor;
+            }  else {
+                color = unselectedItemBackgroundColor;
             }
 
             view.setBackgroundColor(color);

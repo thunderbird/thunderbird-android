@@ -59,16 +59,18 @@
                 android:background="@android:color/transparent"/>
     </androidx.cardview.widget.CardView>
 
+
     <RelativeLayout
             android:id="@+id/list_item_inner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="5dip"
+            android:paddingTop="10dip"
             android:clickable="false"
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:layout_gravity="center_vertical"
-            android:paddingBottom="6dp">
+            android:background="@drawable/message_list_item_background"
+            android:paddingBottom="13dip">
 
         <TextView
                 android:id="@+id/preview"
@@ -127,7 +129,7 @@
                     android:layout_marginLeft="1dip"
                     android:ellipsize="marquee"
                     android:singleLine="true"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="?android:attr/textColorPrimary"
                     />
 
@@ -200,6 +202,7 @@
 
 
     </RelativeLayout>
+
 
 
 </LinearLayout>
