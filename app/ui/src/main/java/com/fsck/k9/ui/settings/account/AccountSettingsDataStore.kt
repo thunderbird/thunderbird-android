@@ -18,6 +18,7 @@ class AccountSettingsDataStore(
         return when (key) {
             "account_default" -> account == preferences.defaultAccount
             "mark_message_as_read_on_view" -> account.isMarkMessageAsReadOnView
+            "mark_message_as_read_on_delete" -> account.isMarkMessageAsReadOnDelete
             "account_sync_remote_deletetions" -> account.isSyncRemoteDeletions
             "push_poll_on_connect" -> account.isPushPollOnConnect
             "always_show_cc_bcc" -> account.isAlwaysShowCcBcc
@@ -51,6 +52,7 @@ class AccountSettingsDataStore(
                 return
             }
             "mark_message_as_read_on_view" -> account.isMarkMessageAsReadOnView = value
+            "mark_message_as_read_on_delete" -> account.isMarkMessageAsReadOnDelete = value
             "account_sync_remote_deletetions" -> account.isSyncRemoteDeletions = value
             "push_poll_on_connect" -> account.isPushPollOnConnect = value
             "always_show_cc_bcc" -> account.isAlwaysShowCcBcc = value

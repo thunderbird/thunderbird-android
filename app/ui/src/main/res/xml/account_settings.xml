@@ -110,6 +110,11 @@
             android:summary="@string/account_settings_sync_remote_deletetions_summary"
             android:title="@string/account_settings_sync_remote_deletetions_label" />
 
+        <CheckBoxPreference
+            android:key="mark_message_as_read_on_delete"
+            android:summary="@string/account_settings_mark_message_as_read_on_delete_summary"
+            android:title="@string/account_settings_mark_message_as_read_on_delete_label" />
+
         <ListPreference
             android:dialogTitle="@string/account_setup_incoming_delete_policy_label"
             android:entries="@array/delete_policy_entries"

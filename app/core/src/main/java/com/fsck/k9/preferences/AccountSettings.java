@@ -117,6 +117,9 @@ public class AccountSettings {
         s.put("markMessageAsReadOnView", Settings.versions(
                 new V(7, new BooleanSetting(true))
         ));
+        s.put("markMessageAsReadOnDelete", Settings.versions(
+                new V(63, new BooleanSetting(true))
+        ));
         s.put("maxPushFolders", Settings.versions(
                 new V(1, new IntegerRangeSetting(0, 100, 10))
         ));
