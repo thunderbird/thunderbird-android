@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fsck.k9.Account
 import com.fsck.k9.activity.setup.WelcomeMessage
@@ -59,15 +60,22 @@ class SettingsListFragment : Fragment() {
         settingsAdapter.clear()
 
         val miscSection = Section().apply {
-            val item = SettingsActionItem(getString(R.string.about_action), SettingsAction.ABOUT_SCREEN, R.attr.iconSettingsAbout)
-            add(item)
+            val accountActionItem = SettingsActionItem(
+                    getString(R.string.about_action),
+                    R.id.action_settingsListScreen_to_aboutScreen,
+                    R.attr.iconSettingsAbout
+            )
+            add(accountActionItem)
         }
         settingsAdapter.add(miscSection)
 
         val generalSection = Section().apply {
-            val item = SettingsActionItem(getString(R.string.general_settings_title),
-                    SettingsAction.GENERAL_SETTINGS, R.attr.iconSettingsGeneral)
-            add(item)
+            val generalSettingsActionItem = SettingsActionItem(
+                    getString(R.string.general_settings_title),
+                    R.id.action_settingsListScreen_to_generalSettingsScreen,
+                    R.attr.iconSettingsGeneral
+            )
+            add(generalSettingsActionItem)
         }
         settingsAdapter.add(generalSection)
 
@@ -75,8 +83,13 @@ class SettingsListFragment : Fragment() {
             for (account in accounts) {
                 add(AccountItem(account))
             }
-            val item = SettingsActionItem(getString(R.string.add_account_action), SettingsAction.ADD_ACCOUNT, R.attr.iconSettingsAccountAdd)
-            add(item)
+
+            val addAccountActionItem = SettingsActionItem(
+                    getString(R.string.add_account_action),
+                    R.id.action_settingsListScreen_to_addAccountScreen,
+                    R.attr.iconSettingsAccountAdd
+            )
+            add(addAccountActionItem)
         }
         accountSection.setHeader(SettingsDividerItem(getString(R.string.accounts_title)))
         settingsAdapter.add(accountSection)
@@ -85,7 +98,7 @@ class SettingsListFragment : Fragment() {
     private fun handleItemClick(item: Item<*>) {
         when (item) {
             is AccountItem -> launchAccountSettings(item.account)
-            is SettingsActionItem -> item.action.execute(requireActivity())
+            is SettingsActionItem -> findNavController().navigate(item.navigationAction)
         }
     }
 

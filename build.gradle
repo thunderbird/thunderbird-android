@@ -12,6 +12,7 @@ buildscript {
                 'androidxRecyclerView': '1.0.0',
                 'androidxLifecycleExtensions': '2.0.0',
                 'androidxAnnotation': '1.0.1',
+                'androidxNavigation': '2.0.0',
                 'coreKtx': '1.0.1',
                 'preferencesFix': '1.0.0',
                 'okio': '1.14.0',

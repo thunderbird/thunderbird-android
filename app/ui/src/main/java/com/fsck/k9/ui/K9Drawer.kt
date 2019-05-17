@@ -278,6 +278,12 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
         updateFolderSettingsItem()
     }
 
+    fun deselect() {
+        unifiedInboxSelected = false
+        openedFolderServerId = null
+        drawer.deselect()
+    }
+
     fun selectUnifiedInbox() {
         unifiedInboxSelected = true
         openedFolderServerId = null

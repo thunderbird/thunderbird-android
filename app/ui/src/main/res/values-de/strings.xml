@@ -822,6 +822,8 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
     <item quantity="other">Passwörter setzen…</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">Passwort des Posteingangsservers verwenden</string>
+
+
   <string name="activate_account_action">Aktivieren</string>
   <string name="account_unavailable">Konto \'<xliff:g id="account">%s</xliff:g>\' ist nicht verfügbar, bitte SD-Karte prüfen.</string>
   <string name="attachment_save_title">Anhang speichern</string>
