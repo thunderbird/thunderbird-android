@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 
 import com.fsck.k9.CoreResourceProvider;
-
 import com.fsck.k9.DI;
 import com.fsck.k9.helper.ImageResizer;
 import com.fsck.k9.mail.internet.AddressHeaderBuilder;

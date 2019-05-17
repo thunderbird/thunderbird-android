@@ -1060,7 +1060,6 @@ Um sie zu lesen, muss eine kompatible OpenPGP-App installiert und konfiguriert w
   <string name="openpgp_enabled_error_back">Zurück</string>
   <string name="openpgp_enabled_error_disable">Verschlüsselung deaktivieren</string>
   <string name="openpgp_encryption">OpenPGP-Verschlüsselung</string>
-
   <string name="account_settings_crypto_prefer_encrypt">Autocrypt wechselseitiger Modus</string>
   <string name="dialog_autocrypt_mutual_title">Autocrypt wechselseitiger Modus</string>
   <string name="dialog_autocrypt_mutual_description_1">Nachrichten werden normalerweise auf Wunsch oder beim Antworten auf eine verschlüsselte Nachricht verschlüsselt.</string>
