@@ -1,6 +1,6 @@
 package com.fsck.k9.ui.settings.account
 
-import android.support.v7.preference.PreferenceDataStore
+import androidx.preference.PreferenceDataStore
 import com.fsck.k9.Account
 import com.fsck.k9.Account.SpecialFolderSelection
 import com.fsck.k9.Preferences

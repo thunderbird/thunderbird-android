@@ -9,9 +9,8 @@
   <string name="remote_control_label">K-9 Posta\'ya uzaktan erişim</string>
   <string name="remote_control_desc">Bu programın K-9 Mail etkinliğini ve ayarlarını kontrol edebilmesine izin ver.</string>
   <!--Used in the about dialog-->
-  <string name="app_authors">Google, The K-9 Dog Walkers.</string>
+  <string name="app_authors">K-9 Köpek Gezdiricileri</string>
   <string name="app_copyright_fmt">Telif Hakkı 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Telif hakkı 2006-<xliff:g>%s</xliff:g> Android Açık Kaynak Projesi.</string>
-  <string name="app_license">Apache License, Sürüm 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">K-9 Posta\'ya Hoşgeldiniz</string>
   <string name="accounts_welcome"><![CDATA[
@@ -49,18 +48,12 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_delete_dlg_instructions_fmt">Hesap \"<xliff:g id="account">%s</xliff:g>\" K-9 Mail\'den kaldırılacak.</string>
   <string name="account_recreate_dlg_instructions_fmt">Bütün bilgi \"<xliff:g id="account">%s</xliff:g>\" için K-9 Mail\'den kaldırılacak, fakat hesap ayarları korunacak.</string>
   <string name="account_clear_dlg_instructions_fmt">Bütün mesajlar \"<xliff:g id="account">%s</xliff:g>\" içinden ve K-9 Mail\'den kaldırılacak, fakat hesap ayarları korunacak.</string>
-  <!--=== App Store-specific strings =======================================================-->
-  <string name="import_dialog_error_message">İçeri aktarma işlemini gerçekleştirebilecek uygun bir uygulama bulunamadı. Lütfen Google Play Store\'dan bir dosya yönetici uygulaması edinin.</string>
-  <string name="open_market">Play Store\'u Aç</string>
   <!--=== General strings ==================================================================-->
-  <string name="authors">Yazarlar</string>
-  <string name="app_revision">Gözden Geçirme Bilgileri</string>
   <string name="app_libraries">K-9 posta kaynak kodları içerir: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">E-postaları oku</string>
   <string name="read_messages_desc">Bu uygulamaya E-postalarınızı okumaya izin ver.</string>
   <string name="delete_messages_label">E-postaları sil</string>
   <string name="delete_messages_desc">Bu uygulamaya E-postalarınızı silmeye izin ver.</string>
-  <string name="about_title">Hakkında K-9 Mail</string>
   <string name="accounts_title">Hesaplar</string>
   <string name="folders_title">Klasörler</string>
   <string name="advanced">Gelişmiş</string>
@@ -127,7 +120,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="flag_action">Yıldız Ekle</string>
   <string name="unflag_action">Yıldızı Kaldır</string>
   <string name="copy_action">Kopyala</string>
-  <string name="select_text_action">Metin Seç</string>
   <string name="show_headers_action">Başlıkları göster</string>
   <string name="hide_headers_action">Başlıkları gizle</string>
   <plurals name="copy_address_to_clipboard">
@@ -189,6 +181,8 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="notification_bg_send_ticker">Posta gönderiliyor: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Posta gönderiliyor</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_messages_title">İletiler</string>
+  <string name="notification_channel_miscellaneous_title">Çeşitli</string>
   <string name="special_mailbox_name_inbox">Gelen Kutusu</string>
   <string name="special_mailbox_name_outbox">Giden Kutusu</string>
   <string name="special_mailbox_name_drafts">Taslaklar</string>
@@ -202,7 +196,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arşiv)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
   <string name="send_failure_subject">Bazı iletilerin gönderilmesi başarısız</string>
-  <string name="version">Sürüm</string>
   <string name="debug_enable_debug_logging_title">Onarma günlüğünü etkinleştir</string>
   <string name="debug_enable_debug_logging_summary">Extra tanı bilgisini günlüğe kaydet</string>
   <string name="debug_enable_sensitive_logging_title">Hassas bilgi günlüğü tut</string>
@@ -234,8 +227,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="message_view_bcc_label">Gizli Kopya:</string>
   <string name="message_view_attachment_view_action">Aç</string>
   <string name="message_view_attachment_download_action">Kaydet</string>
-  <string name="message_view_status_attachment_not_saved">Ek, SD karta kaydedilemedi.</string>
-  <string name="message_view_status_no_space">Yer yetersizliğinden eklenti kaydedilemedi.</string>
   <string name="message_view_show_pictures_action">Resimleri göster</string>
   <string name="message_view_no_viewer"><xliff:g id="mimetype">%s</xliff:g> için görüntüleyici bulunamadı.</string>
   <string name="message_view_download_remainder">Mesajın tamamını indir</string>
@@ -285,8 +276,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="global_settings_privacy_hide_useragent_detail">Posta başlığından K-9 Kullanıcı Aracısını kaldır</string>
   <string name="global_settings_privacy_hide_timezone">Zaman dilimini gizle</string>
   <string name="global_settings_privacy_hide_timezone_detail">Posta ve yanıt başlıklarında yerel zaman dilimi yerine UTC kullan</string>
-  <string name="global_settings_privacy_hide_hostname_when_connecting">Makine adını gizle</string>
-  <string name="global_settings_privacy_hide_hostname_when_connecting_detail">SMTP sunucularına bağlanırken \'localhost\' olarak tanımla</string>
   <string name="global_settings_notification_hide_subject_title">Bildirimlerde konuyu gizle</string>
   <string name="global_settings_notification_hide_subject_never">Hiçbir zaman</string>
   <string name="global_settings_notification_hide_subject_when_locked">Cihaz kilitlendiği zaman</string>
@@ -393,9 +382,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="recreate_action">Veriyi canlandır (Son çare!)</string>
   <string name="account_setup_options_mail_check_frequency_label">Klasör bilgi toplama sıklığı</string>
   <string name="account_setup_options_mail_check_frequency_never">Asla</string>
-  <string name="account_setup_options_mail_check_frequency_1min">Her dakika</string>
-  <string name="account_setup_options_mail_check_frequency_5min">Her 5 dakikada bir</string>
-  <string name="account_setup_options_mail_check_frequency_10min">Her 10 dakikada bir</string>
   <string name="account_setup_options_mail_check_frequency_15min">Her 15 dakikada bir</string>
   <string name="account_setup_options_mail_check_frequency_30min">Her 30 dakikada bir</string>
   <string name="account_setup_options_mail_check_frequency_1hour">Her Saat</string>
@@ -487,14 +473,19 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_settings_sync">Posta alma</string>
   <string name="account_settings_folders">Klasörler</string>
   <string name="account_settings_quote_prefix_label">Alıntılanmış metin öneki</string>
-  <string name="account_settings_crypto">Şifreleme</string>
-  <string name="account_settings_crypto_app">OpenPGP uygulaması</string>
-  <string name="account_settings_crypto_key">Anahtarım</string>
+  <string name="account_settings_crypto">Uçtan Uca şifreli</string>
+  <string name="account_settings_crypto_app">OpenPGP desteği etkin</string>
+  <string name="account_settings_crypto_app_select_title">OpenPGP uygulamasını seçin</string>
+  <string name="account_settings_crypto_key">uçtan uca anahtarını yapılandırma</string>
+  <string name="account_settings_crypto_summary_off">Yapılandırılmış OpenPGP uygulaması yok</string>
+  <string name="account_settings_crypto_summary_on">%s\'e bağlı</string>
   <string name="account_settings_no_openpgp_provider_configured">Yapılandırılmış OpenPGP uygulaması yok</string>
+  <string name="account_settings_no_openpgp_provider_installed">OpenPGP uygulaması bulunamadı - kurmak için tıkla</string>
   <string name="account_settings_mail_check_frequency_label">Klasör veri toplama sıklığı</string>
   <string name="account_settings_storage_title">Depolama</string>
   <string name="account_settings_color_label">Hesap rengi</string>
   <string name="account_settings_color_summary">Klasör ve hesap listesinde kullanılan hesap rengini seç</string>
+  <string name="account_settings_color_none">Renk yok</string>
   <string name="account_settings_led_color_label">Bildirim LED ışığı rengi</string>
   <string name="account_settings_led_color_summary">Bu hesap için gösterilecek LED ışık rengini seçin</string>
   <string name="account_settings_mail_display_count_label">Yerel klasör boyutu</string>
@@ -551,6 +542,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_settings_folder_target_mode_not_second_class">2. Sınıf klasörler dışında hepsi</string>
   <string name="account_settings_sync_remote_deletetions_label">Sekron sunucusu silme işlemleri</string>
   <string name="account_settings_sync_remote_deletetions_summary">Mesajlar silindiğinde sunucudan kaldır</string>
+  <string name="account_settings_openpgp_missing">OpenPGP uygulaması eksik - kaldırıldı mı?</string>
   <string name="folder_settings_title">Klasör Ayarları</string>
   <string name="folder_settings_in_top_group_label">Üst grupta göster</string>
   <string name="folder_settings_in_top_group_summary">Klasör listesinin üstüne yakın göster</string>
@@ -729,6 +721,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_settings_searchable_all">Hepsi</string>
   <string name="account_settings_searchable_displayable">Görüntülenebilir</string>
   <string name="account_settings_searchable_none">Hiçbiri</string>
+  <string name="account_settings_no_folder_selected">Hiçbiri</string>
   <string name="font_size_settings_title">Yazı tipi Boyutu</string>
   <string name="font_size_settings_description">Yazı tipi boyutunu yapılandır</string>
   <string name="font_size_account_list">Hesap listesi</string>
@@ -763,7 +756,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="font_size_medium">Orta</string>
   <string name="font_size_large">Büyük</string>
   <string name="font_size_larger">Daha büyük</string>
-  <string name="miscellaneous_preferences">Çeşitli</string>
   <string name="error_activity_not_found">Bu eylem için uygun program bulunamadı.</string>
   <string name="send_failed_reason">Gönderilemedi: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Taslak iletiyi kaydetsin mi?</string>
@@ -805,17 +797,13 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="settings_exporting">Dışa aktarma ayarları…</string>
   <string name="settings_importing">İçe aktarma ayarları…</string>
   <string name="settings_import_scanning_file">Dosya taranıyor…</string>
-  <string name="settings_export_success">Dışarı aktarılan ayarlar <xliff:g id="filename">%s</xliff:g> olarak kaydedildi.</string>
   <string name="settings_export_success_generic">Ayarlar başarıyla dışa aktarıldı</string>
-  <string name="settings_import_global_settings_success">Genel ayarlar <xliff:g id="filename">%s</xliff:g> dosyasından alındı</string>
-  <string name="settings_import_success"><xliff:g id="accounts">%s</xliff:g>, <xliff:g id="filename">%s</xliff:g> dosyasından alındı</string>
   <string name="settings_import_account_imported_as"><xliff:g id="original_account_name">%s</xliff:g> <xliff:g id="account_name_after_import">%s</xliff:g> olarak içe aktarıldı</string>
   <plurals name="settings_import_accounts">
     <item quantity="one">1 hesap</item>
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> hesap</item>
   </plurals>
   <string name="settings_export_failure">Hesaplar çıkarılırken hata oluştu</string>
-  <string name="settings_import_failure"><xliff:g id="filename">%s</xliff:g> dosyasından hiçbir ayar alınamadı</string>
   <string name="settings_export_success_header">Dışa aktarma başarılı</string>
   <string name="settings_export_failed_header">Dışa aktarma başarısız</string>
   <string name="settings_import_success_header">İçe aktarma Başarılı</string>
@@ -835,7 +823,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="settings_import_use_incoming_server_password">Gelen sunucu parolasını kullan</string>
   <string name="activate_account_action">Etkinleştir</string>
   <string name="account_unavailable">Hesap \"<xliff:g id="account">%s</xliff:g>\" mevcut değil; depolamayı kontrol et</string>
-  <string name="settings_attachment_default_path">Ekleri şuraya kaydet…</string>
   <string name="attachment_save_title">Ekleri kaydet</string>
   <string name="attachment_save_desc">Dosya gezgini bulunamadı. Bu eki nereye kaydetmek istersiniz?</string>
   <string name="manage_accounts_move_up_action">Yukarı taşı</string>
@@ -854,7 +841,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
   <string name="unread_widget_account_not_selected">Seçili hesap yok</string>
   <string name="unread_widget_folder_not_selected">Seçili klasör yok</string>
-  <string name="import_dialog_error_title">Dosya Yöneticisi uygulaması eksik</string>
   <string name="close">Kapat</string>
   <string name="webview_empty_message">Metin yok</string>
   <string name="webview_contextmenu_link_view_action">Bağlantıyı aç</string>
@@ -960,7 +946,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="crypto_mode_private">Şifrele</string>
   <string name="error_crypto_provider_incompatible">Şifreleme sağlayıcısı uyumsuz sürüm kullanıyor.Lütfen ayarlarınızı gözden geçirin!</string>
   <string name="error_crypto_provider_connect">Kripto sağlayıcısına bağlanılamadı, ayarlarınızı kontrol edin veya yeniden denemek için kripto simgesini tıklatın!</string>
-  <string name="error_crypto_provider_ui_required">Kripto sağlayıcına erişim engellendi, yeniden denemek için tıklayın!</string>
+  <string name="error_crypto_provider_ui_required">Uçtan uca şifreleme başlatılamadı, lütfen ayarlarınızı kontrol edin</string>
   <string name="error_crypto_inline_attach">PGP/INLINE kipi eklentileri desteklemez!</string>
   <string name="enable_inline_pgp">PGP/INLINE\'ı etkinleştir</string>
   <string name="disable_inline_pgp">PGP/INLINE\'ı devre dışı bırak</string>
@@ -987,6 +973,8 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="crypto_msg_unencrypted_sign_error">uçtan uca imza bir hata içeriyor</string>
   <string name="crypto_msg_incomplete_signed">İmza işlemi için ileti tamamen indirilmelidir</string>
   <string name="crypto_msg_unsupported_signed">desteklenmeyen uçtan uca imza içeriyor</string>
+  <string name="crypto_msg_unsupported_encrypted">İleti şifreli, fakat desteklenmeyen bir biçim içinde.</string>
+  <string name="crypto_msg_cancelled">İleti şifreli, fakat şifre çözme iptal edildi.</string>
   <string name="crypto_msg_title_unencrypted_signed_e2e">Uçtan uca imzalanmış düz metin</string>
   <string name="crypto_msg_unencrypted_sign_verified">doğrulanmış imzalayandan</string>
   <string name="crypto_msg_title_unencrypted_signed">İmzalı metin</string>
@@ -1014,6 +1002,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="crypto_msg_encrypted_sign_error">uçtan uca veri hataları var</string>
   <string name="crypto_msg_encrypted_insecure">ancak şifreleme güvenli olarak değerlendirilmedi</string>
   <string name="crypto_info_ok">Tamam</string>
+  <string name="crypto_info_search_key">Arama Tuşu</string>
   <string name="crypto_info_view_signer">İmzalayanı görüntüle</string>
   <string name="crypto_info_view_sender">Göndereni Görüntüle</string>
   <string name="crypto_info_view_security_warning">Ayrıntılar</string>
@@ -1027,9 +1016,9 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="messageview_crypto_error_title">E-posta şifre çözme hatası</string>
   <string name="recipient_error_non_ascii">Var olan özgün karakterler desteklenmiyor!</string>
   <string name="recipient_error_parse_failed">Adres çözümleme hatası!</string>
-  <string name="account_settings_crypto_support_sign_only">Şifresiz imzaları göster</string>
-  <string name="account_settings_crypto_support_sign_only_on">Şifresiz imzalar görüntülenir</string>
-  <string name="account_settings_crypto_support_sign_only_off">Şifrelenmemiş imzalar yok sayılacak</string>
+  <string name="account_settings_crypto_hide_sign_only">Şifrelenmemiş imzaları gizle</string>
+  <string name="account_settings_crypto_hide_sign_only_on">Yalnızca şifreli imzalar görüntülenecek</string>
+  <string name="account_settings_crypto_hide_sign_only_off">Tüm imzalar görüntülenecek</string>
   <string name="error_sign_only_no_encryption">Sadece imza kipinde şifreleme kullanılamaz!</string>
   <string name="unsigned_text_divider_label">İmzasız Metin</string>
   <string name="apg_deprecated_title">APG Reddetme Uyarısı</string>
@@ -1043,7 +1032,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="no_crypto_provider_see_global">Yapılandırılmış OpenPGP uygulaması yok, genel ayarlara bakın!</string>
   <string name="crypto_no_provider_title">Bu eposta şifreli</string>
   <string name="crypto_no_provider_message">Bu eposta OpenPGP ile şifrelendi. On okumak için uyumlu bir OpenPGP uygulaması kurup yapılandırmanız gerekir.</string>
-  <string name="crypto_no_provider_button">OpenPGP uygulaması seçimi</string>
+  <string name="crypto_no_provider_button">Ayarlara Git</string>
   <string name="mail_list_widget_text">K-9 İleti Listesi</string>
   <string name="mail_list_widget_loading">İletiler Yükleniyor…</string>
   <string name="fetching_folders_failed">Klasör listesi alınırken başarısız oldu</string>
@@ -1060,4 +1049,41 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="openpgp_enabled_error_back">Geri</string>
   <string name="openpgp_enabled_error_disable">şifreleme devre dışı</string>
   <string name="openpgp_encryption">OpenPGP Şifreleme</string>
+  <string name="account_settings_crypto_prefer_encrypt">Autocrypt karşılıklı kipi</string>
+  <string name="dialog_autocrypt_mutual_title">Autocrypt karşılıklı kipi</string>
+  <string name="dialog_autocrypt_mutual_description_1">İletiler normalde seçilerek veya şifrelenmiş bir iletiyi yanıtlarken şifrelenecektir.</string>
+  <string name="dialog_autocrypt_mutual_description_2">Hem gönderen hem de alıcının karşılıklı kipi etkinse, şifreleme öntanımlı olarak etkinleştirilir.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Daha fazlasını öğrenmek için <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">buraya tıkla</a> .</string>
+  <string name="general_settings_title">Genel Ayarlar</string>
+  <string name="dialog_openkeychain_info_title">Kurulu OpenPGP uygulaması yok</string>
+  <string name="dialog_openkeychain_info_install">Kur</string>
+  <string name="dialog_openkeychain_info_text">K-9 Maili uçtan uca şifreleme için OpenKeychain gerekir.</string>
+  <string name="encrypted_subject">Şifreli İleti</string>
+  <string name="account_settings_crypto_encrypt_subject">İleti konularını şifrele</string>
+  <string name="account_settings_crypto_encrypt_subject_subtitle">Bazı alıcılar tarafından desteklenmeyebilir</string>
+  <string name="toast_account_not_found">İç hata: Geçersiz hesap!</string>
+  <string name="toast_openpgp_provider_error">%s\'e bağlanırken hata oluştu!</string>
+  <string name="ac_transfer_setting_title">Autocrypt Kurulum İletisi Gönder</string>
+  <string name="ac_transfer_setting_summary">Uçtan uca kurulumu diğer cihazlarla güvenli bir şekilde paylaşın</string>
+  <string name="ac_transfer_title">Autocrypt Kurulum İletisi</string>
+  <string name="ac_transfer_intro">Bir Autocrypt Kurulum iletisi uçtan uca kurulumunuzu diğer aygıtlarla güvenli bir şekilde paylaşır.</string>
+  <string name="ac_transfer_button_send">Kurulum İletisi Gönder</string>
+  <string name="ac_transfer_will_be_sent">İleti adresinize gönderilecek:</string>
+  <string name="ac_transfer_generating">Kurulum iletisi oluşturuluyor...</string>
+  <string name="ac_transfer_sending_to">İleti şuraya gönderiliyor:</string>
+  <string name="ac_transfer_finish">Bitirmek için, iletinizi diğer aygıtınızda açın ve kurulum kodunu girin.</string>
+  <string name="ac_transfer_show_code">Kurulum Kodunu Göster</string>
+  <string name="ac_transfer_msg_subject">Autocrypt Kurulum İletisi</string>
+  <string name="ac_transfer_msg_body">Bu ileti otomatik şifreleme ayarlarınızı gizli anahtarınızla birlikte orijinal aygıtınızdan güvenli bir şekilde aktarmak için tüm bilgileri içerir.
+
+Yeni aygıtınıza Autocrypt kurmak için, yeni aygıtınızın size sunması gereken yönergeleri izleyin.
+
+Bu iletiyi saklayabilir ve gizli anahtarınız için bir yedekleme olarak kullanabilirsiniz.Bunu yapmak istiyorsanız, şifreyi not edip güvenli bir şekilde saklamanız gerekir.
+</string>
+  <string name="ac_transfer_error_send">İletiyi gönderirken bir hata oluştu. Lütfen ağ bağlantınızı ve giden sunucu yapılandırmanızı kontrol edin.</string>
+  <string name="switch_on">Açık</string>
+  <string name="switch_off">Kapalı</string>
+  <string name="navigation_drawer_open">Aç</string>
+  <string name="navigation_drawer_close">Kapat</string>
+  <!--permissions-->
 </resources>

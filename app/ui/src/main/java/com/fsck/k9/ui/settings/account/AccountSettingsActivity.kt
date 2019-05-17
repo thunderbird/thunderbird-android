@@ -3,25 +3,27 @@ package com.fsck.k9.ui.settings.account
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.preference.PreferenceFragmentCompat
-import android.support.v7.preference.PreferenceFragmentCompat.OnPreferenceStartScreenCallback
-import android.support.v7.preference.PreferenceScreen
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceFragmentCompat.OnPreferenceStartScreenCallback
+import androidx.preference.PreferenceScreen
 import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
 import com.fsck.k9.activity.K9Activity
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.fragmentTransaction
 import com.fsck.k9.ui.fragmentTransactionWithBackStack
 import com.fsck.k9.ui.observe
+import com.fsck.k9.ui.observeNotNull
+import kotlinx.android.synthetic.main.activity_account_settings.*
 import org.koin.android.architecture.ext.viewModel
 import timber.log.Timber
 
-
 class AccountSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback {
-    private val viewModel: AccountSettingsViewModel by viewModel()
+    private val accountViewModel: AccountSettingsViewModel by viewModel()
     private lateinit var accountUuid: String
     private var startScreenKey: String? = null
     private var fragmentAdded = false
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +43,26 @@ class AccountSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback {
     private fun initializeActionBar() {
         val actionBar = supportActionBar ?: throw RuntimeException("getSupportActionBar() == null")
         actionBar.setDisplayHomeAsUpEnabled(true)
+        actionBar.setDisplayShowTitleEnabled(false)
+
+        accountSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                onAccountSelected(selectedAccountUuid = accountSpinner.selection.uuid)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) = Unit
+        }
+
+        accountViewModel.accounts.observeNotNull(this) { accounts ->
+            accountSpinner.setAccounts(accounts)
+        }
+    }
+
+    private fun onAccountSelected(selectedAccountUuid: String) {
+        if (selectedAccountUuid != accountUuid) {
+            start(this, selectedAccountUuid)
+            finish()
+        }
     }
 
     private fun decodeArguments(): Boolean {
@@ -50,14 +72,14 @@ class AccountSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback {
     }
 
     private fun loadAccount() {
-        viewModel.getAccount(accountUuid).observe(this) { account ->
+        accountViewModel.getAccount(accountUuid).observe(this) { account ->
             if (account == null) {
                 Timber.w("Account with UUID %s not found", accountUuid)
                 finish()
                 return@observe
             }
 
-            supportActionBar!!.subtitle = account.email
+            accountSpinner.selection = account
             addAccountSettingsFragment()
         }
     }
@@ -89,6 +111,11 @@ class AccountSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback {
         }
 
         return true
+    }
+
+    override fun setTitle(title: CharSequence) {
+        super.setTitle(title)
+        accountSpinner.setTitle(title)
     }
 
 

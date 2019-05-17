@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_settings"
+    app:startDestination="@id/settingsListScreen">
+
+    <fragment
+        android:id="@+id/settingsListScreen"
+        android:name="com.fsck.k9.ui.settings.SettingsListFragment"
+        android:label="@string/prefs_title"
+        tools:layout="@layout/fragment_settings_list">
+
+        <action
+            android:id="@+id/action_settingsListScreen_to_aboutScreen"
+            app:destination="@id/aboutScreen" />
+
+        <action
+            android:id="@+id/action_settingsListScreen_to_generalSettingsScreen"
+            app:destination="@id/generalSettingsScreen" />
+
+        <action
+            android:id="@+id/action_settingsListScreen_to_addAccountScreen"
+            app:destination="@id/addAccountScreen" />
+    </fragment>
+
+    <activity
+        android:id="@+id/aboutScreen"
+        android:name="com.fsck.k9.ui.settings.AboutActivity"
+        android:label="@string/about_action"
+        tools:layout="@layout/about"/>
+
+    <activity
+        android:id="@+id/generalSettingsScreen"
+        android:name="com.fsck.k9.ui.settings.general.GeneralSettingsActivity"
+        android:label="@string/general_settings_title" />
+
+    <activity
+        android:id="@+id/addAccountScreen"
+        android:name="com.fsck.k9.activity.setup.AccountSetupBasics"
+        android:label="@string/account_setup_basics_title"
+        tools:layout="@layout/account_setup_basics"/>
+
+</navigation>

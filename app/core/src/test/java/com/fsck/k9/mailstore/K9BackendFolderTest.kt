@@ -11,7 +11,6 @@ import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Folder.FolderType
-import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.internet.MimeMessage
 import com.fsck.k9.mail.internet.MimeMessageHelper
 import com.fsck.k9.mail.internet.TextBody
@@ -76,6 +75,16 @@ class K9BackendFolderTest : K9RobolectricTest() {
         assertEquals(flags, messageFlags)
     }
 
+    @Test
+    fun getLastUid() {
+        createMessage("200")
+        createMessage("123")
+
+        val lastUid = backendFolder.getLastUid()
+
+        assertEquals(200L, lastUid)
+    }
+
 
     fun createAccount(): Account {
         //FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()
@@ -101,7 +110,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
         val message = MimeMessage().apply {
             subject = "Test message"
             setFrom(Address("alice@domain.example"))
-            setRecipient(Message.RecipientType.TO, Address("bob@domain.example"))
+            setHeader("To", "bob@domain.example")
             MimeMessageHelper.setBody(this, TextBody("Hello Bob!"))
 
             uid = messageServerId

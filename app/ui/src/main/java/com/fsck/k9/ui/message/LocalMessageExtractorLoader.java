@@ -2,9 +2,9 @@ package com.fsck.k9.ui.message;
 
 
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.annotation.WorkerThread;
-import android.support.v4.content.AsyncTaskLoader;
+import androidx.annotation.Nullable;
+import androidx.annotation.WorkerThread;
+import androidx.loader.content.AsyncTaskLoader;
 
 import com.fsck.k9.DI;
 import timber.log.Timber;

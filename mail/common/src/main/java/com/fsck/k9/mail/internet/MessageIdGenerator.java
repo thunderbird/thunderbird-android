@@ -4,7 +4,7 @@ package com.fsck.k9.mail.internet;
 import java.util.Locale;
 import java.util.UUID;
 
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;

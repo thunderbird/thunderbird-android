@@ -5,9 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.app.PendingIntent;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.view.animation.FastOutLinearInInterpolator;
-import android.support.v4.view.animation.LinearOutSlowInInterpolator;
+import androidx.loader.app.LoaderManager;
+import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
+import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;

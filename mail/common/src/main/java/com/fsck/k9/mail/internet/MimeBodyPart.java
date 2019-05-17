@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;
 

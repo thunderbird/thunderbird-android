@@ -94,6 +94,8 @@ public class Migrations {
                 MigrationTo67.addTypeColumnToFoldersTable(db, migrationsHelper);
             case 67:
                 MigrationTo68.addOutboxStateTable(db);
+            case 68:
+                new MigrationTo69(db).createPendingDelete();
         }
 
         if (shouldBuildFtsTable) {

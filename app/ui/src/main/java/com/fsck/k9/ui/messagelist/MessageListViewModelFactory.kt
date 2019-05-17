@@ -1,7 +1,7 @@
 package com.fsck.k9.ui.messagelist
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.fsck.k9.mailstore.FolderRepositoryManager
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject

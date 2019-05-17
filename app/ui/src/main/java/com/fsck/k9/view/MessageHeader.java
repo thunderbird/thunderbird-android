@@ -11,9 +11,9 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.PopupMenu.OnMenuItemClickListener;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -79,7 +79,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private ContactPictureLoader mContactsPictureLoader;
     private ContactBadge mContactBadge;
 
-    private OnLayoutChangedListener mOnLayoutChangedListener;
     private OnCryptoClickListener onCryptoClickListener;
     private OnMenuItemClickListener onMenuItemClickListener;
 
@@ -168,7 +167,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             onAddSenderToContacts();
         } else if (id == R.id.to || id == R.id.cc || id == R.id.bcc) {
             expand((TextView)view, ((TextView)view).getEllipsize() != null);
-            layoutChanged();
         } else if (id == R.id.crypto_status_icon) {
             onCryptoClickListener.onCryptoClick();
         } else if (id == R.id.icon_single_message_options) {
@@ -399,7 +397,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
             expand(mToView, true);
             expand(mCcView, true);
         }
-        layoutChanged();
     }
 
 
@@ -519,20 +516,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         public void writeToParcel(Parcel out, int flags) {
             super.writeToParcel(out, flags);
             out.writeInt((this.additionalHeadersVisible) ? 1 : 0);
-        }
-    }
-
-    public interface OnLayoutChangedListener {
-        void onLayoutChanged();
-    }
-
-    public void setOnLayoutChangedListener(OnLayoutChangedListener listener) {
-        mOnLayoutChangedListener = listener;
-    }
-
-    private void layoutChanged() {
-        if (mOnLayoutChangedListener != null) {
-            mOnLayoutChangedListener.onLayoutChanged();
         }
     }
 

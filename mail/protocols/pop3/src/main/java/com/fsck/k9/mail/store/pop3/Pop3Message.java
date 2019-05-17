@@ -24,17 +24,4 @@ public class Pop3Message extends MimeMessage {
         super.setFlag(flag, set);
         mFolder.setFlags(Collections.singletonList(this), Collections.singleton(flag), set);
     }
-
-    @Override
-    public void delete(String trashFolder) throws MessagingException {
-        //  try
-        //  {
-        //  Poor POP3 users, we can't copy the message to the Trash folder, but they still want a delete
-        setFlag(Flag.DELETED, true);
-        //   }
-//         catch (MessagingException me)
-//         {
-//          Log.w(LOG_TAG, "Could not delete non-existent message", me);
-//         }
-    }
 }

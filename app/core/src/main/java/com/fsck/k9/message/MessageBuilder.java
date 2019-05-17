@@ -10,8 +10,10 @@ import android.content.Intent;
 import android.os.AsyncTask;
 
 import com.fsck.k9.CoreResourceProvider;
+
 import com.fsck.k9.DI;
 import com.fsck.k9.helper.ImageResizer;
+import com.fsck.k9.mail.internet.AddressHeaderBuilder;
 import com.fsck.k9.mail.internet.Headers;
 import timber.log.Timber;
 
@@ -23,7 +25,6 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BoundaryGenerator;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MessageIdGenerator;
 import com.fsck.k9.mail.internet.MimeBodyPart;
@@ -99,9 +100,10 @@ public abstract class MessageBuilder {
         message.addSentDate(sentDate, hideTimeZone);
         Address from = new Address(identity.getEmail(), identity.getName());
         message.setFrom(from);
-        message.setRecipients(RecipientType.TO, to);
-        message.setRecipients(RecipientType.CC, cc);
-        message.setRecipients(RecipientType.BCC, bcc);
+
+        setRecipients(message, "To", to);
+        setRecipients(message, "CC", cc);
+        setRecipients(message, "BCC", bcc);
         message.setSubject(subject);
 
         if (requestReadReceipt) {
@@ -137,7 +139,14 @@ public abstract class MessageBuilder {
             message.setFlag(Flag.DRAFT, true);
         }
     }
-    
+
+    private void setRecipients(MimeMessage message, String headerName, Address[] addresses) {
+        if (addresses != null && addresses.length > 0) {
+            String headerValue = AddressHeaderBuilder.createHeaderValue(addresses);
+            message.setHeader(headerName, headerValue);
+        }
+    }
+
     protected MimeMultipart createMimeMultipart() {
         String boundary = boundaryGenerator.generateBoundary();
         return new MimeMultipart(boundary);

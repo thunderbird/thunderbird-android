@@ -74,6 +74,10 @@
         <attr name="messageListActiveItemBackgroundColor" format="reference|color"/>
         <attr name="messageListDividerColor" format="reference|color"/>
         <attr name="messageListCheckbox" format="reference"/>
+        <attr name="messageListAttachment" format="reference"/>
+        <attr name="messageListAnswered" format="reference"/>
+        <attr name="messageListForwarded" format="reference"/>
+        <attr name="messageListAnsweredForwarded" format="reference"/>
         <attr name="messageViewBackgroundColor" format="reference|color"/>
         <attr name="messageViewAttachmentBackground" format="reference"/>
         <attr name="messageComposeAddContactImage" format="reference"/>

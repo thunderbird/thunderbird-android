@@ -1,6 +1,6 @@
 # K-9 Mail
-[![Build Status](https://k9mail.ci.cloudbees.com/job/master/badge/icon)](https://k9mail.ci.cloudbees.com/job/master/)
-[![Join the chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/k9mail/k-9)
+[![Build Status](https://travis-ci.org/k9mail/k-9.svg?branch=master)](https://travis-ci.org/k9mail/k-9)
+[![Latest release](https://img.shields.io/github/release/k9mail/k-9.svg?style=flat-square)](https://github.com/k9mail/k-9/releases/latest)
 
 K-9 Mail is an open-source email client for Android.
 
@@ -29,8 +29,7 @@ If the app is not behaving like it should, you might find these resources helpfu
 
 - [User Manual](https://k9mail.github.io/documentation.html)
 - [Frequently Asked Questions](https://k9mail.github.io/documentation/faq.html)
-- [Support Forum/Mailing List](http://groups.google.com/group/k-9-mail)
-- [Google+ Community](https://plus.google.com/communities/109228641058741937099)
+- [Support Forum/Mailing List](https://groups.google.com/group/k-9-mail)
 
 
 ## Translations
@@ -40,14 +39,10 @@ Interested in helping to translate K-9 Mail? Contribute here:
 https://www.transifex.com/projects/p/k9mail/
 
 
-## Design
-
-A re-design is underway. You can contribute, view updates and access design files here: 
-
-https://github.com/k9mail/k-9-design
-
-
 ## Contributing
+
+Thank you for contributing! If you're unfamiliar with the code, 
+start by reading the [developer documentation](docs/DESIGN.md)
 
 Please fork this repository and contribute back using [pull requests](https://github.com/k9mail/k-9/pulls).
 
@@ -61,8 +56,7 @@ Please make sure you read the [Code Style Guidelines](https://github.com/k9mail/
 Aside from discussing changes in [pull requests](https://github.com/k9mail/k-9/pulls) and
 [issues](https://github.com/k9mail/k-9/issues) we use the following communication services:
 
-- IRC chat, [#k-9 on the Freenode network](http://webchat.freenode.net/?channels=%23k-9)
-- [Gitter](https://gitter.im/k9mail/k-9)
+- IRC chat, [#k-9 on the Freenode network](https://webchat.freenode.net/?channels=%23k-9)
 - [Developer mailing list](https://groups.google.com/forum/#!forum/k-9-dev)
 
 
@@ -79,11 +73,3 @@ Aside from discussing changes in [pull requests](https://github.com/k9mail/k-9/p
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-
-
-## Sponsors
-
-CloudBees' [FOSS program](https://www.cloudbees.com/resources/foss) allows us to use their DEV@cloud service for free.
-
-![built on DEV@cloud](https://www.cloudbees.com/sites/default/files/styles/large/public/Button-Built-on-CB-1.png)
-

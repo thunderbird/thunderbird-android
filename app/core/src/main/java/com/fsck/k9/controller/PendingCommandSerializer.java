@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.fsck.k9.controller.MessagingControllerCommands.PendingAppend;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingCommand;
+import com.fsck.k9.controller.MessagingControllerCommands.PendingDelete;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingEmptyTrash;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingExpunge;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingMarkAllAsRead;
@@ -35,6 +36,7 @@ public class PendingCommandSerializer {
         adapters.put(MessagingControllerCommands.COMMAND_EXPUNGE, moshi.adapter(PendingExpunge.class));
         adapters.put(MessagingControllerCommands.COMMAND_MARK_ALL_AS_READ, moshi.adapter(PendingMarkAllAsRead.class));
         adapters.put(MessagingControllerCommands.COMMAND_SET_FLAG, moshi.adapter(PendingSetFlag.class));
+        adapters.put(MessagingControllerCommands.COMMAND_DELETE, moshi.adapter(PendingDelete.class));
 
         this.adapters = Collections.unmodifiableMap(adapters);
     }

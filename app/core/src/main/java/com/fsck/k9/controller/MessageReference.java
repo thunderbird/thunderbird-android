@@ -3,7 +3,7 @@ package com.fsck.k9.controller;
 
 import java.util.StringTokenizer;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.filter.Base64;

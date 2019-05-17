@@ -23,16 +23,16 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ActionMode;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.app.LoaderManager.LoaderCallbacks;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ActionMode;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -950,7 +950,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     public void onEmptyTrash() {
         if (isShowingTrashFolder()) {
-            messagingController.emptyTrash(account, null);
+            showDialog(R.id.dialog_confirm_empty_trash);
         }
     }
 
@@ -993,6 +993,15 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             String cancelText = getString(R.string.dialog_confirm_mark_all_as_read_cancel_button);
 
             fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message, confirmText, cancelText);
+        } else if (dialogId == R.id.dialog_confirm_empty_trash) {
+            String title = getString(R.string.dialog_confirm_empty_trash_title);
+            String message = getString(R.string.dialog_confirm_empty_trash_message);
+
+            String confirmText = getString(R.string.dialog_confirm_delete_confirm_button);
+            String cancelText = getString(R.string.dialog_confirm_delete_cancel_button);
+
+            fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message,
+                    confirmText, cancelText);
         } else {
             throw new RuntimeException("Called showDialog(int) with unknown dialog id.");
         }
@@ -2098,6 +2107,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             activeMessage = null;
         } else if (dialogId == R.id.dialog_confirm_mark_all_as_read) {
             markAllAsRead();
+        } else if (dialogId == R.id.dialog_confirm_empty_trash) {
+            messagingController.emptyTrash(account, null);
         }
     }
 

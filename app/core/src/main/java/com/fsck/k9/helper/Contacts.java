@@ -12,7 +12,7 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import timber.log.Timber;
 import android.provider.ContactsContract.CommonDataKinds.Photo;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 
 import com.fsck.k9.mail.Address;
 

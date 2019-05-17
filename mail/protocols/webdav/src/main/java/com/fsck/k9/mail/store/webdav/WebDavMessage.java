@@ -96,13 +96,6 @@ public class WebDavMessage extends MimeMessage {
     }
 
     @Override
-    public void delete(String trashFolder) throws MessagingException {
-        WebDavFolder wdFolder = (WebDavFolder) getFolder();
-        Timber.i("Deleting message by moving to %s", trashFolder);
-        wdFolder.moveMessages(Collections.singletonList(this), wdFolder.getStore().getFolder(trashFolder));
-    }
-
-    @Override
     public void setFlag(Flag flag, boolean set) throws MessagingException {
         super.setFlag(flag, set);
         mFolder.setFlags(Collections.singletonList(this), Collections.singleton(flag), set);

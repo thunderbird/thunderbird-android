@@ -9,9 +9,7 @@
   <string name="remote_control_label">diaľkové ovládanie K-9 Mail</string>
   <string name="remote_control_desc">Umožňuje tejto aplikácii ovládať aktivity a nastavenia K-9 Mail.</string>
   <!--Used in the about dialog-->
-  <string name="app_authors">Google, The K-9 Dog Walkers.</string>
   <string name="app_copyright_fmt">Autorské práva 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="app_license">Licencované pod licenciou Apache 2.0.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Vitajte v K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -50,18 +48,12 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_delete_dlg_instructions_fmt">Účet \"<xliff:g id="account">%s</xliff:g>\" bude odstránený z K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Všetky lokálne údaje pre účet \"<xliff:g id="account">%s</xliff:g>\" budú odstránené. Nastavenia účtu budú zachované.</string>
   <string name="account_clear_dlg_instructions_fmt">Všetky správy pre účet \"<xliff:g id="account">%s</xliff:g>\" budú odstránené. Nastavenia účtu budú však zachované.</string>
-  <!--=== App Store-specific strings =======================================================-->
-  <string name="import_dialog_error_message">Nainštalujte, prosím, správcu súborov pre pokračovanie v tomto importovaní.</string>
-  <string name="open_market">Otvoriť Obchod Play</string>
   <!--=== General strings ==================================================================-->
-  <string name="authors">Autori</string>
-  <string name="app_revision">Informácie o revízii</string>
   <string name="app_libraries">Používame tieto knižnice tretích strán: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Čítať správy</string>
   <string name="read_messages_desc">Umožňuje tejto aplikácii čítať vaše e-maily.</string>
   <string name="delete_messages_label">Mazať správy</string>
   <string name="delete_messages_desc">Umožňuje tejto aplikácii mazať vaše e-maily.</string>
-  <string name="about_title">O aplikácii K-9 Mail</string>
   <string name="accounts_title">Účty</string>
   <string name="folders_title">Priečinky</string>
   <string name="advanced">Pokročilé</string>
@@ -125,12 +117,12 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="flag_action">Pridať hviezdičku</string>
   <string name="unflag_action">Odstrániť hviezdičku</string>
   <string name="copy_action">Kopírovať</string>
-  <string name="select_text_action">Vybrať text</string>
   <string name="show_headers_action">Zobraziť hlavičky</string>
   <string name="hide_headers_action">Skryť hlavičky</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Adresa bola skopírovaná do schránky.</item>
     <item quantity="few">Adresy boli skopírované do schránky.</item>
+    <item quantity="many">Adresy boli skopírované do schránky.</item>
     <item quantity="other">Adresy boli skopírované do schránky.</item>
   </plurals>
   <string name="message_view_theme_action_dark">Prepnúť na tmavú tému</string>
@@ -168,6 +160,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nová správa</item>
     <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> nové správy</item>
+    <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> nových správ</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nových správ</item>
   </plurals>
   <string name="notification_new_one_account_fmt">Počet neprečítaných správ: <xliff:g id="unread_message_count">%d</xliff:g> v <xliff:g id="account">%s</xliff:g></string>
@@ -189,6 +182,8 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="notification_bg_send_ticker">Odosielanie pošty: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Odosielanie pošty</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_messages_title">Správy</string>
+  <string name="notification_channel_miscellaneous_title">Rôzne</string>
   <string name="special_mailbox_name_inbox">Doručená</string>
   <string name="special_mailbox_name_outbox">Pošta na odoslanie</string>
   <string name="special_mailbox_name_drafts">Koncepty</string>
@@ -202,7 +197,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archív)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Nevyžiadaná)</string>
   <string name="send_failure_subject">Nepodarilo sa odoslať niektoré správy</string>
-  <string name="version">Verzia</string>
   <string name="debug_enable_debug_logging_title">Povoliť vytváranie záznamov pre ladenie</string>
   <string name="debug_enable_debug_logging_summary">Zaznamenávať rozšírené diagnostické informácie</string>
   <string name="debug_enable_sensitive_logging_title">Zaznamenávať citlivé informácie</string>
@@ -231,8 +225,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="message_view_cc_label">Kópia:</string>
   <string name="message_view_attachment_view_action">Otvoriť</string>
   <string name="message_view_attachment_download_action">Uložiť</string>
-  <string name="message_view_status_attachment_not_saved">Nemožno uložiť prílohu na kartu SD.</string>
-  <string name="message_view_status_no_space">Príloha nemohla byť uložená z dôvodu nedostatku priestoru.</string>
   <string name="message_view_show_pictures_action">Zobraziť obrázky</string>
   <string name="message_view_no_viewer">Nemožno nájsť prehliadač pre <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Stiahnuť kompletnú správu</string>
@@ -387,9 +379,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="recreate_action">Obnoviť údaje (posledná možnosť)</string>
   <string name="account_setup_options_mail_check_frequency_label">Frekvencia synchronizácie priečinkov</string>
   <string name="account_setup_options_mail_check_frequency_never">Nikdy</string>
-  <string name="account_setup_options_mail_check_frequency_1min">Každú minútu</string>
-  <string name="account_setup_options_mail_check_frequency_5min">Každých 5 minút</string>
-  <string name="account_setup_options_mail_check_frequency_10min">Každých 10 minút</string>
   <string name="account_setup_options_mail_check_frequency_15min">Každých 15 minút</string>
   <string name="account_setup_options_mail_check_frequency_30min">Každých 30 minút</string>
   <string name="account_setup_options_mail_check_frequency_1hour">Každú hodinu</string>
@@ -481,9 +470,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_settings_sync">Sťahovanie pošty</string>
   <string name="account_settings_folders">Priečinky</string>
   <string name="account_settings_quote_prefix_label">Predpona citovaného textu</string>
-  <string name="account_settings_crypto">Šifrovanie</string>
-  <string name="account_settings_crypto_app">Aplikácia OpenPGP</string>
-  <string name="account_settings_crypto_key">Môj kľúč</string>
   <string name="account_settings_no_openpgp_provider_configured">Nie je nastavená OpenPGP aplikácia</string>
   <string name="account_settings_mail_check_frequency_label">Frekvencia synchronizácie priečinkov</string>
   <string name="account_settings_storage_title">Ukladací priestor</string>
@@ -715,6 +701,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_settings_searchable_all">Všetky</string>
   <string name="account_settings_searchable_displayable">Zobraziteľné</string>
   <string name="account_settings_searchable_none">Žiadne</string>
+  <string name="account_settings_no_folder_selected">Žiadna</string>
   <string name="font_size_settings_title">Veľkosť písma</string>
   <string name="font_size_settings_description">Nastaviť veľkosť písma</string>
   <string name="font_size_account_list">Zoznam účtov</string>
@@ -749,7 +736,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="font_size_medium">Stredné</string>
   <string name="font_size_large">Veľké</string>
   <string name="font_size_larger">Väčšie</string>
-  <string name="miscellaneous_preferences">Rôzne</string>
   <string name="error_activity_not_found">Nebola nájdená žiadna vhodná aplikácia pre túto akciu.</string>
   <string name="send_failed_reason">Odoslanie zlyhalo: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Uložiť koncept správy?</string>
@@ -762,6 +748,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <plurals name="dialog_confirm_delete_messages">
     <item quantity="one">Vymazať túto správu?</item>
     <item quantity="few">Vymmazať <xliff:g id="message_count">%1$d</xliff:g> správy?</item>
+    <item quantity="many">Vymazať <xliff:g id="message_count">%1$d</xliff:g> správ?</item>
     <item quantity="other">Vymazať <xliff:g id="message_count">%1$d</xliff:g> správ?</item>
   </plurals>
   <string name="dialog_confirm_delete_confirm_button">Áno</string>
@@ -774,6 +761,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">Presunúť túto správu do priečinka Nevyžiadaná?</item>
     <item quantity="few">Presunúť <xliff:g id="message_count">%1$d</xliff:g> správy do priečinka Nevyžiadaná?</item>
+    <item quantity="many">Presunúť <xliff:g id="message_count">%1$d</xliff:g> správ do priečinka Nevyžiadaná?</item>
     <item quantity="other">Presunúť <xliff:g id="message_count">%1$d</xliff:g> správ do priečinka Nevyžiadaná?</item>
   </plurals>
   <string name="dialog_confirm_spam_confirm_button">Áno</string>
@@ -793,17 +781,14 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="settings_exporting">Exportovanie nastavení…</string>
   <string name="settings_importing">Importovanie nastavení…</string>
   <string name="settings_import_scanning_file">Skenovanie súboru…</string>
-  <string name="settings_export_success">Exportované nastavenia boli uložené do <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_generic">Export nastavení prebehol úspešne</string>
-  <string name="settings_import_global_settings_success">Importované všeobecné nastavenia z <xliff:g id="filename">%s</xliff:g></string>
-  <string name="settings_import_success">Importované <xliff:g id="accounts">%s</xliff:g> z <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
     <item quantity="one">1 účet</item>
     <item quantity="few"><xliff:g id="numAccounts">%s</xliff:g> účty</item>
+    <item quantity="many"><xliff:g id="numAccounts">%s</xliff:g> účtov</item>
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> účtov</item>
   </plurals>
   <string name="settings_export_failure">Nepodarilo sa exportovať nastavenia</string>
-  <string name="settings_import_failure">Nepodarilo sa importovať akékoľvek nastavenia z <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_header">Export bol úspešný</string>
   <string name="settings_export_failed_header">Export sa nepodaril</string>
   <string name="settings_import_success_header">Import bol úspešný</string>
@@ -813,6 +798,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <plurals name="settings_import_server_passwords">
     <item quantity="one">heslo</item>
     <item quantity="few">heslá</item>
+    <item quantity="many">hesiel</item>
     <item quantity="other">hesiel</item>
   </plurals>
   <string name="settings_import_incoming_server">Server prichádzajúcej pošty (<xliff:g id="hostname">%s</xliff:g>):</string>
@@ -820,19 +806,18 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <plurals name="settings_import_setting_passwords">
     <item quantity="one">Nastavovanie hesla…</item>
     <item quantity="few">Nastavovanie hesiel…</item>
+    <item quantity="many">Nastavovanie hesiel…</item>
     <item quantity="other">Nastavovanie hesiel…</item>
   </plurals>
   <string name="settings_import_use_incoming_server_password">Použiť heslo pre server prichádzajúcej pošty</string>
   <string name="activate_account_action">Aktivovať</string>
   <string name="account_unavailable">Účet \"<xliff:g id="account">%s</xliff:g>\" nie je dostupný; skontrolujte ukladací priestor</string>
-  <string name="settings_attachment_default_path">Ukladať prílohy do…</string>
   <string name="attachment_save_title">Uložiť prílohu</string>
   <string name="attachment_save_desc">Nebol nájdený žiadny prehliadač súborov. Kam chcete uložiť túto prílohu?</string>
   <string name="manage_accounts_move_up_action">Posunúť hore</string>
   <string name="manage_accounts_move_down_action">Posunúť dole</string>
   <string name="manage_accounts_moving_message">Presúvanie účtu…</string>
   <string name="unread_widget_select_account">Zobraziť počet neprečítaných správ pre…</string>
-  <string name="import_dialog_error_title">Chýbajúci správca súborov</string>
   <string name="close">Zavrieť</string>
   <string name="webview_empty_message">Žiadny text</string>
   <string name="webview_contextmenu_link_view_action">Otvoriť odkaz</string>
@@ -928,7 +913,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="crypto_mode_opportunistic">Ak je možné, šifrovať</string>
   <string name="crypto_mode_private">Šifrovať</string>
   <string name="error_crypto_provider_connect">Nie je možné pripojenie ku poskytovateľovi šifrovania, skontrolujte svoje nastavenia alebo kliknite na ikonu šifrovania pre ďalší pokus.</string>
-  <string name="error_crypto_provider_ui_required">Bol odopretý prístup ku poskytovateľovi šifrovania, kliknite na ikonu šifrovania pre ďalší pokus.</string>
   <string name="error_crypto_inline_attach">V režine PGP/INLINE nie sú prílohy podporované.</string>
   <string name="enable_inline_pgp">Povoliť PGP/INLINE</string>
   <string name="disable_inline_pgp">Zakázať PGP/INLINE</string>
@@ -951,6 +935,8 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="openpgp_dialog_sign_only_minus_break">Podpisy môžu byť pri odoslaní do diskusných skupín poškodené.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">Niektoré e-mailové klienty zobrazujú podpis ako prílohu s názvom \'signature.asc\'</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Šifrované správy vždy obsahujú podpis.</string>
+  <string name="crypto_msg_unsupported_encrypted">Formát šifrovanej správy nie je podporovaný.</string>
+  <string name="crypto_msg_cancelled">Správa je šifrovaná, dešifrovanie bolo zrušené.</string>
   <string name="crypto_info_ok">OK</string>
   <string name="crypto_info_view_security_warning">Detaily</string>
   <string name="locked_attach_unlock">Odomknúť</string>
@@ -976,10 +962,13 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="no_crypto_provider_see_global">Nie je nastavená žiadna OpenPGP aplikácia, skontrolujte globálne nastavenia.</string>
   <string name="crypto_no_provider_title">Táto správa je zašifrovaná</string>
   <string name="crypto_no_provider_message">Táto správa bola zašifrovaná pomocou OpenPGP\nJe potrebné nakonfigurovať kompatibilnú OpenPGP aplikáciu.</string>
-  <string name="crypto_no_provider_button">Zvoliť OpenPGP aplikáciu</string>
   <string name="mail_list_widget_text">Zoznam správ K-9</string>
   <string name="mail_list_widget_loading">Načítavajú sa správy…</string>
   <string name="fetching_folders_failed">Výpis zoznamu priečinkov zlyhal</string>
   <string name="messageview_crypto_warning_details">Zobraziť detaily</string>
   <string name="openpgp_enabled_error_back">Späť</string>
+  <string name="general_settings_title">Všeobecné nastavenia</string>
+  <string name="navigation_drawer_open">Otvoriť</string>
+  <string name="navigation_drawer_close">Zavrieť</string>
+  <!--permissions-->
 </resources>
