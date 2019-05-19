@@ -65,6 +65,8 @@
         <attr name="iconSettingsAccount" format="reference" />
         <attr name="iconSettingsAccountAdd" format="reference" />
         <attr name="iconSettingsExport" format="reference" />
+        <attr name="iconSettingsImport" format="reference" />
+        <attr name="iconSettingsImportStatus" format="reference" />
         <attr name="textColorPrimaryRecipientDropdown" format="reference" />
         <attr name="textColorSecondaryRecipientDropdown" format="reference" />
         <attr name="backgroundColorChooseAccountHeader" format="color" />

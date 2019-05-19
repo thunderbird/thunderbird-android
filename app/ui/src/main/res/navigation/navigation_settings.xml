@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_settingsListScreen_to_settingsExportScreen"
             app:destination="@id/settingsExportScreen" />
+        <action
+            android:id="@+id/action_settingsListScreen_to_settingsImportScreen"
+            app:destination="@id/settingsImportScreen" />
     </fragment>
 
     <activity
@@ -49,5 +52,11 @@
         android:name="com.fsck.k9.ui.settings.export.SettingsExportFragment"
         android:label="@string/settings_export_title"
         tools:layout="@layout/fragment_settings_export"/>
+
+    <fragment
+        android:id="@+id/settingsImportScreen"
+        android:name="com.fsck.k9.ui.settings.import.SettingsImportFragment"
+        android:label="@string/settings_import_title"
+        tools:layout="@layout/fragment_settings_import"/>
 
 </navigation>
