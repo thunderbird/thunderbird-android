@@ -3,15 +3,14 @@ package com.fsck.k9.ui.settings.account
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import androidx.preference.SwitchPreference
-import androidx.preference.ListPreference
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.preference.ListPreference
+import androidx.preference.SwitchPreference
 import com.fsck.k9.Account
 import com.fsck.k9.account.BackgroundAccountRemover
-import com.fsck.k9.ui.R
 import com.fsck.k9.activity.ManageIdentities
 import com.fsck.k9.activity.setup.AccountSetupComposition
 import com.fsck.k9.activity.setup.AccountSetupIncoming
@@ -24,14 +23,15 @@ import com.fsck.k9.mailstore.Folder
 import com.fsck.k9.mailstore.FolderType
 import com.fsck.k9.mailstore.RemoteFolderInfo
 import com.fsck.k9.mailstore.StorageManager
+import com.fsck.k9.ui.R
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity
+import com.fsck.k9.ui.observe
 import com.fsck.k9.ui.settings.onClick
 import com.fsck.k9.ui.settings.oneTimeClickListener
 import com.fsck.k9.ui.settings.remove
 import com.fsck.k9.ui.settings.removeEntry
 import com.fsck.k9.ui.withArguments
 import com.takisoft.preferencex.PreferenceFragmentCompat
-import com.fsck.k9.ui.observe
 import org.koin.android.architecture.ext.sharedViewModel
 import org.koin.android.ext.android.inject
 import org.openintents.openpgp.OpenPgpApiManager
@@ -45,6 +45,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     private val openPgpApiManager: OpenPgpApiManager by inject(parameters = { mapOf("lifecycleOwner" to this) })
     private val messagingController: MessagingController by inject()
     private val accountRemover: BackgroundAccountRemover by inject()
+    private lateinit var dataStore: AccountSettingsDataStore
 
     private val accountUuid: String by lazy {
         checkNotNull(arguments?.getString(ARG_ACCOUNT_UUID)) { "$ARG_ACCOUNT_UUID == null" }
@@ -54,7 +55,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
     override fun onCreatePreferencesFix(savedInstanceState: Bundle?, rootKey: String?) {
         val account = getAccount()
-        val dataStore = dataStoreFactory.create(account)
+        dataStore = dataStoreFactory.create(account)
 
         preferenceManager.preferenceDataStore = dataStore
         setPreferencesFromResource(R.xml.account_settings, rootKey)
@@ -213,8 +214,8 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
             if (pgpProviderName == null) {
                 Toast.makeText(requireContext(), R.string.account_settings_openpgp_missing, Toast.LENGTH_LONG).show()
 
-                account.openPgpProvider = null
                 pgpProvider = null
+                removeOpenPgpProvider(account)
             }
         }
 
@@ -237,7 +238,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
                     val context = requireContext().applicationContext
                     val openPgpProviderPackages = OpenPgpProviderUtil.getOpenPgpProviderPackages(context)
                     if (openPgpProviderPackages.size == 1) {
-                        account.openPgpProvider = openPgpProviderPackages[0]
+                        setOpenPgpProvider(account, openPgpProviderPackages[0])
                         configureCryptoPreferences(account)
                     } else {
                         summary = getString(R.string.account_settings_crypto_summary_config)
@@ -248,8 +249,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
                 isChecked = true
                 summary = getString(R.string.account_settings_crypto_summary_on, pgpProviderName)
                 oneTimeClickListener {
-                    account.openPgpProvider = null
-                    account.openPgpKey = Account.NO_OPENPGP_KEY
+                    removeOpenPgpProvider(account)
                     configureCryptoPreferences(account)
                 }
             }
@@ -258,6 +258,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
     private fun configurePgpKey(account: Account, pgpProvider: String?) {
         (findPreference(PREFERENCE_OPENPGP_KEY) as OpenPgpKeyPreference).apply {
+            value = account.openPgpKey
             setOpenPgpProvider(openPgpApiManager, pgpProvider)
             setIntentSenderFragment(this@AccountSettingsFragment)
             setDefaultUserId(OpenPgpApiHelper.buildUserId(account.getIdentity(0)))
@@ -346,6 +347,17 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
     private fun closeAccountSettings() {
         requireActivity().finish()
+    }
+
+    private fun setOpenPgpProvider(account: Account, openPgpProviderPackage: String) {
+        account.openPgpProvider = openPgpProviderPackage
+        dataStore.saveSettingsInBackground()
+    }
+
+    private fun removeOpenPgpProvider(account: Account) {
+        account.openPgpProvider = null
+        account.openPgpKey = Account.NO_OPENPGP_KEY
+        dataStore.saveSettingsInBackground()
     }
 
 
