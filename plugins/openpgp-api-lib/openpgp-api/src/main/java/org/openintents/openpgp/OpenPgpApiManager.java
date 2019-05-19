@@ -126,7 +126,9 @@ public class OpenPgpApiManager implements LifecycleObserver {
         getOpenPgpApi().executeApiAsync(intent, null, null, new IOpenPgpCallback() {
             @Override
             public void onReturn(Intent result) {
-                onPgpPermissionCheckResult(result);
+                if (openPgpProviderState != OpenPgpProviderState.UNCONFIGURED) {
+                    onPgpPermissionCheckResult(result);
+                }
             }
         });
     }
