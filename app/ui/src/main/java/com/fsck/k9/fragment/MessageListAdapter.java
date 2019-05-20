@@ -14,7 +14,6 @@ import android.text.SpannableStringBuilder;
 import android.text.format.DateUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
@@ -52,6 +51,10 @@ public class MessageListAdapter extends CursorAdapter {
     private Drawable mAnsweredIcon;
     private Drawable mForwardedAnsweredIcon;
     private int previewTextColor;
+    private int activeItemBackgroundColor;
+    private int selectedItemBackgroundColor;
+    private int readItemBackgroundColor;
+    private int unreadItemBackgroundColor;
     private FontSizes fontSizes = K9.getFontSizes();
 
     MessageListAdapter(MessageListFragment fragment) {
@@ -62,7 +65,11 @@ public class MessageListAdapter extends CursorAdapter {
                 R.attr.messageListAnswered,
                 R.attr.messageListForwarded,
                 R.attr.messageListAnsweredForwarded,
-                R.attr.messageListPreviewTextColor
+                R.attr.messageListPreviewTextColor,
+                R.attr.messageListActiveItemBackgroundColor,
+                R.attr.messageListSelectedBackgroundColor,
+                R.attr.messageListReadItemBackgroundColor,
+                R.attr.messageListUnreadItemBackgroundColor
         };
 
         Theme theme = fragment.requireActivity().getTheme();
@@ -73,6 +80,10 @@ public class MessageListAdapter extends CursorAdapter {
         mForwardedIcon = res.getDrawable(array.getResourceId(1, R.drawable.ic_messagelist_forwarded_dark));
         mForwardedAnsweredIcon = res.getDrawable(array.getResourceId(2, R.drawable.ic_messagelist_answered_forwarded_dark));
         previewTextColor = array.getColor(3, Color.BLACK);
+        activeItemBackgroundColor = array.getColor(4, Color.BLACK);
+        selectedItemBackgroundColor = array.getColor(5, Color.BLACK);
+        readItemBackgroundColor = array.getColor(6, Color.BLACK);
+        unreadItemBackgroundColor = array.getColor(7, Color.BLACK);
 
         array.recycle();
     }
@@ -301,11 +312,7 @@ public class MessageListAdapter extends CursorAdapter {
         if (account.getUuid().equals(fragment.activeMessage.getAccountUuid()) &&
                 folderServerId.equals(fragment.activeMessage.getFolderServerId()) &&
                 uid.equals(fragment.activeMessage.getUid())) {
-            int res = R.attr.messageListActiveItemBackgroundColor;
-
-            TypedValue outValue = new TypedValue();
-            fragment.getActivity().getTheme().resolveAttribute(res, outValue, true);
-            view.setBackgroundColor(outValue.data);
+            view.setBackgroundColor(activeItemBackgroundColor);
         }
     }
 
@@ -322,18 +329,16 @@ public class MessageListAdapter extends CursorAdapter {
 
     private void setBackgroundColor(View view, boolean selected, boolean read) {
         if (selected || K9.useBackgroundAsUnreadIndicator()) {
-            int res;
+            int color;
             if (selected) {
-                res = R.attr.messageListSelectedBackgroundColor;
+                color = selectedItemBackgroundColor;
             } else if (read) {
-                res = R.attr.messageListReadItemBackgroundColor;
+                color = readItemBackgroundColor;
             } else {
-                res = R.attr.messageListUnreadItemBackgroundColor;
+                color = unreadItemBackgroundColor;
             }
 
-            TypedValue outValue = new TypedValue();
-            fragment.getActivity().getTheme().resolveAttribute(res, outValue, true);
-            view.setBackgroundColor(outValue.data);
+            view.setBackgroundColor(color);
         } else {
             view.setBackgroundColor(Color.TRANSPARENT);
         }
