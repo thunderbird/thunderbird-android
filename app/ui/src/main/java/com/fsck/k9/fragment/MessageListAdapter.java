@@ -3,6 +3,7 @@ package com.fsck.k9.fragment;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.content.res.Resources.Theme;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -50,6 +51,7 @@ public class MessageListAdapter extends CursorAdapter {
     private Drawable mForwardedIcon;
     private Drawable mAnsweredIcon;
     private Drawable mForwardedAnsweredIcon;
+    private int previewTextColor;
     private FontSizes fontSizes = K9.getFontSizes();
 
     MessageListAdapter(MessageListFragment fragment) {
@@ -59,14 +61,20 @@ public class MessageListAdapter extends CursorAdapter {
         int[] attributes = new int[] {
                 R.attr.messageListAnswered,
                 R.attr.messageListForwarded,
-                R.attr.messageListAnsweredForwarded };
-        TypedValue typedValue = new TypedValue();
-        TypedArray array = fragment.getContext().obtainStyledAttributes(typedValue.data, attributes);
+                R.attr.messageListAnsweredForwarded,
+                R.attr.messageListPreviewTextColor
+        };
+
+        Theme theme = fragment.requireActivity().getTheme();
+        TypedArray array = theme.obtainStyledAttributes(attributes);
 
         Resources res = fragment.getResources();
         mAnsweredIcon = res.getDrawable(array.getResourceId(0, R.drawable.ic_messagelist_answered_dark));
         mForwardedIcon = res.getDrawable(array.getResourceId(1, R.drawable.ic_messagelist_forwarded_dark));
         mForwardedAnsweredIcon = res.getDrawable(array.getResourceId(2, R.drawable.ic_messagelist_answered_forwarded_dark));
+        previewTextColor = array.getColor(3, Color.BLACK);
+
+        array.recycle();
     }
 
     private String recipientSigil(boolean toMe, boolean ccMe) {
@@ -242,10 +250,8 @@ public class MessageListAdapter extends CursorAdapter {
         previewText.setSpan(buildSenderSpan(), 0, beforePreviewText.length() + sigil.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        int previewSpanColor = buildPreviewSpanColor();
-
         // Set span (color) for preview message
-        previewText.setSpan(new ForegroundColorSpan(previewSpanColor), beforePreviewText.length() + sigil.length(),
+        previewText.setSpan(new ForegroundColorSpan(previewTextColor), beforePreviewText.length() + sigil.length(),
                 previewText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
@@ -301,13 +307,6 @@ public class MessageListAdapter extends CursorAdapter {
             fragment.getActivity().getTheme().resolveAttribute(res, outValue, true);
             view.setBackgroundColor(outValue.data);
         }
-    }
-
-    private int buildPreviewSpanColor() {
-        //TODO: make this part of the theme
-        return (K9.getK9Theme() == K9.Theme.LIGHT) ?
-                Color.rgb(105, 105, 105) :
-                Color.rgb(160, 160, 160);
     }
 
     private Drawable buildStatusHolder(boolean forwarded, boolean answered) {
