@@ -178,7 +178,8 @@ object K9 : KoinComponent {
     @JvmStatic
     val fontSizes = FontSizes()
 
-    private var backgroundOps = BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC
+    @JvmStatic
+    var backgroundOps = BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC
 
     private var animations = true
 
@@ -300,22 +301,6 @@ object K9 : KoinComponent {
             DEBUG = debug
             updateLoggingStatus()
         }
-
-    @JvmStatic
-    fun getBackgroundOps(): BACKGROUND_OPS {
-        return backgroundOps
-    }
-
-    @JvmStatic
-    fun setBackgroundOps(backgroundOps: BACKGROUND_OPS): Boolean {
-        val oldBackgroundOps = K9.backgroundOps
-        K9.backgroundOps = backgroundOps
-        return backgroundOps != oldBackgroundOps
-    }
-
-    fun setBackgroundOps(backgroundOps: String): Boolean {
-        return setBackgroundOps(BACKGROUND_OPS.valueOf(backgroundOps))
-    }
 
     fun gesturesEnabled(): Boolean {
         return gesturesEnabled
@@ -703,12 +688,11 @@ object K9 : KoinComponent {
         isThreadedViewEnabled = storage.getBoolean("threadedView", true)
         fontSizes.load(storage)
 
-        try {
-            setBackgroundOps(BACKGROUND_OPS.valueOf(
-                    storage.getString("backgroundOperations", BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC.name)
-            ))
+        backgroundOps = try {
+            val settingValue = storage.getString("backgroundOperations", BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC.name)
+            BACKGROUND_OPS.valueOf(settingValue)
         } catch (e: Exception) {
-            setBackgroundOps(BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC)
+            BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC
         }
 
         isColorizeMissingContactPictures = storage.getBoolean("colorizeMissingContactPictures", true)

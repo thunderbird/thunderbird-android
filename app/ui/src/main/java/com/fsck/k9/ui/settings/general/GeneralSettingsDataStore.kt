@@ -112,7 +112,7 @@ class GeneralSettingsDataStore(
             "splitview_mode" -> K9.splitViewMode.name
             "notification_quick_delete" -> K9.notificationQuickDeleteBehaviour.name
             "lock_screen_notification_visibility" -> K9.lockScreenNotificationVisibility.name
-            "background_ops" -> K9.getBackgroundOps().name
+            "background_ops" -> K9.backgroundOps.name
             "notification_hide_subject" -> K9.notificationHideSubject.name
             "quiet_time_starts" -> K9.quietTimeStarts
             "quiet_time_ends" -> K9.quietTimeEnds
@@ -240,8 +240,8 @@ class GeneralSettingsDataStore(
 
     private fun setBackgroundOps(value: String) {
         val newBackgroundOps = K9.BACKGROUND_OPS.valueOf(value)
-        if (newBackgroundOps != K9.getBackgroundOps()) {
-            K9.setBackgroundOps(value)
+        if (newBackgroundOps != K9.backgroundOps) {
+            K9.backgroundOps = newBackgroundOps
             jobManager.scheduleAllMailJobs()
         }
     }

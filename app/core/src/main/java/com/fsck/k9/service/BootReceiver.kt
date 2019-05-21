@@ -26,7 +26,7 @@ class BootReceiver : CoreReceiver(), KoinComponent {
             //K9.setServicesEnabled(context, tmpWakeLockId);
             //tmpWakeLockId = null;
         } else if ("com.android.sync.SYNC_CONN_STATUS_CHANGED" == action) {
-            val bOps = K9.getBackgroundOps()
+            val bOps = K9.backgroundOps
             if (bOps == K9.BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC) {
                 jobManager.scheduleAllMailJobs()
             }
