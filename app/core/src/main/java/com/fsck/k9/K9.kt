@@ -18,25 +18,10 @@ object K9 : KoinComponent {
 
 
     /**
-     * If this is enabled, various development settings will be enabled
-     * It should NEVER be on for Market builds
-     * Right now, it just governs strictmode
+     * If this is `true`, various development settings will be enabled.
      */
     @JvmField
     val DEVELOPER_MODE = BuildConfig.DEBUG
-
-    /**
-     * If this is enabled there will be additional logging information sent to Log.d, including protocol dumps.
-     * Controlled by Preferences at run-time
-     */
-    private var DEBUG = false
-
-    /**
-     * If this is enabled than logging that normally hides sensitive information like passwords will show that
-     * information.
-     */
-    @JvmField
-    var DEBUG_SENSITIVE = false
 
 
     private const val VERSION_MIGRATE_OPENPGP_TO_ACCOUNTS = 63
@@ -148,6 +133,16 @@ object K9 : KoinComponent {
                 .commit()
     }
 
+
+    @JvmStatic
+    var isDebugLoggingEnabled: Boolean = DEVELOPER_MODE
+        set(debug) {
+            field = debug
+            updateLoggingStatus()
+        }
+
+    @JvmStatic
+    var isSensitiveDebugLoggingEnabled: Boolean = false
 
     @JvmStatic
     var k9Language = ""
@@ -344,14 +339,6 @@ object K9 : KoinComponent {
             return quietTimeChecker.isQuietTime
         }
 
-    @JvmStatic
-    var isDebug: Boolean
-        get() = DEBUG
-        set(debug) {
-            DEBUG = debug
-            updateLoggingStatus()
-        }
-
     @Synchronized
     @JvmStatic
     fun isSortAscending(sortType: SortType): Boolean {
@@ -370,9 +357,9 @@ object K9 : KoinComponent {
 
     fun init(context: Context) {
         K9MailLib.setDebugStatus(object : K9MailLib.DebugStatus {
-            override fun enabled(): Boolean = DEBUG
+            override fun enabled(): Boolean = isDebugLoggingEnabled
 
-            override fun debugSensitive(): Boolean = DEBUG_SENSITIVE
+            override fun debugSensitive(): Boolean = isSensitiveDebugLoggingEnabled
         })
 
         checkCachedDatabaseVersion(context)
@@ -391,8 +378,8 @@ object K9 : KoinComponent {
     @JvmStatic
     fun loadPrefs(prefs: Preferences) {
         val storage = prefs.storage
-        isDebug = storage.getBoolean("enableDebugLogging", DEVELOPER_MODE)
-        DEBUG_SENSITIVE = storage.getBoolean("enableSensitiveLogging", false)
+        isDebugLoggingEnabled = storage.getBoolean("enableDebugLogging", DEVELOPER_MODE)
+        isSensitiveDebugLoggingEnabled = storage.getBoolean("enableSensitiveLogging", false)
         isShowAnimations = storage.getBoolean("animations", true)
         isGesturesEnabled = storage.getBoolean("gesturesEnabled", false)
         isUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
@@ -512,8 +499,8 @@ object K9 : KoinComponent {
 
     @JvmStatic
     fun save(editor: StorageEditor) {
-        editor.putBoolean("enableDebugLogging", DEBUG)
-        editor.putBoolean("enableSensitiveLogging", DEBUG_SENSITIVE)
+        editor.putBoolean("enableDebugLogging", isDebugLoggingEnabled)
+        editor.putBoolean("enableSensitiveLogging", isSensitiveDebugLoggingEnabled)
         editor.putString("backgroundOperations", K9.backgroundOps.name)
         editor.putBoolean("animations", isShowAnimations)
         editor.putBoolean("gesturesEnabled", isGesturesEnabled)
@@ -584,8 +571,7 @@ object K9 : KoinComponent {
 
     private fun updateLoggingStatus() {
         Timber.uprootAll()
-        val enableDebugLogging = BuildConfig.DEBUG || DEBUG
-        if (enableDebugLogging) {
+        if (isDebugLoggingEnabled) {
             Timber.plant(DebugTree())
         }
     }

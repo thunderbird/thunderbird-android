@@ -74,7 +74,7 @@ public class ActivityListenerTest extends RobolectricTest {
 
         String operation = activityListener.getOperation(context);
 
-        if (K9.isDebug()) {
+        if (K9.isDebugLoggingEnabled()) {
             assertEquals("Polling and pushing disabled", operation);
         } else {
             assertEquals("Syncing disabled", operation);
@@ -89,7 +89,7 @@ public class ActivityListenerTest extends RobolectricTest {
 
         String operation = activityListener.getOperation(context);
 
-        if (K9.isDebug()) {
+        if (K9.isDebugLoggingEnabled()) {
             assertEquals("Polling and pushing disabled", operation);
         } else {
             assertEquals("Syncing disabled", operation);
@@ -103,7 +103,7 @@ public class ActivityListenerTest extends RobolectricTest {
 
         String operation = activityListener.getOperation(context);
 
-        if (K9.isDebug()) {
+        if (K9.isDebugLoggingEnabled()) {
             assertEquals("Polling and pushing disabled", operation);
         } else {
             assertEquals("Syncing disabled", operation);

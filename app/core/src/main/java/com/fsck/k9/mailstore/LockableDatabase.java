@@ -264,7 +264,7 @@ public class LockableDatabase {
         lockRead();
         final boolean doTransaction = transactional && inTransaction.get() == null;
         try {
-            final boolean debug = K9.isDebug();
+            final boolean debug = K9.isDebugLoggingEnabled();
             if (doTransaction) {
                 inTransaction.set(Boolean.TRUE);
                 mDb.beginTransaction();
