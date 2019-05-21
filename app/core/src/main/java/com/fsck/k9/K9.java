@@ -1,8 +1,6 @@
-
 package com.fsck.k9;
 
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,9 +22,6 @@ import timber.log.Timber.DebugTree;
 public class K9 {
 
     public static final int VERSION_MIGRATE_OPENPGP_TO_ACCOUNTS = 63;
-
-    public static File tempDirectory;
-    public static final String LOG_TAG = "k9";
 
     /**
      * Name of the {@link SharedPreferences} file used to store the last known version of the
@@ -58,13 +53,6 @@ public class K9 {
     private static final FontSizes fontSizes = new FontSizes();
 
     private static BACKGROUND_OPS backgroundOps = BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC;
-    /**
-     * Some log messages can be sent to a file, so that the logs
-     * can be read using unprivileged access (eg. Terminal Emulator)
-     * on the phone, without adb.  Set to null to disable
-     */
-    public static final String logFile = null;
-    //public static final String logFile = Environment.getExternalStorageDirectory() + "/k9mail/debug.log";
 
     /**
      * If this is enabled, various development settings will be enabled
@@ -202,8 +190,6 @@ public class K9 {
 
     public static final String LOCAL_UID_PREFIX = "K9LOCAL:";
 
-    public static final String REMOTE_UID_PREFIX = "K9REMOTE:";
-
     public static final String IDENTITY_HEADER = K9MailLib.IDENTITY_HEADER;
 
     /**
@@ -227,11 +213,6 @@ public class K9 {
      */
 
     public static final int MAX_SEND_ATTEMPTS = 5;
-
-    /**
-     * Max time (in millis) the wake lock will be held for when background sync is happening
-     */
-    public static final int WAKE_LOCK_TIMEOUT = 600000;
 
     public static final int MANUAL_WAKE_LOCK_TIMEOUT = 120000;
 
