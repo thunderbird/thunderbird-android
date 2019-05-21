@@ -951,7 +951,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void askBeforeDiscard() {
-        if (K9.confirmDiscardMessage()) {
+        if (K9.isConfirmDiscardMessage()) {
             showDialog(DIALOG_CONFIRM_DISCARD);
         } else {
             onDiscard();
