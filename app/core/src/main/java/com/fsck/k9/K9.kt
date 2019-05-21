@@ -223,7 +223,9 @@ object K9 : KoinComponent {
     @JvmStatic
     var isUseVolumeKeysForListNavigation = false
 
-    private var startIntegratedInbox = false
+    @JvmStatic
+    var isStartInUnifiedInbox = false
+
     private var measureAccounts = true
     private var countSearchMessages = true
 
@@ -307,15 +309,6 @@ object K9 : KoinComponent {
             DEBUG = debug
             updateLoggingStatus()
         }
-
-    @JvmStatic
-    fun startIntegratedInbox(): Boolean {
-        return startIntegratedInbox
-    }
-
-    fun setStartIntegratedInbox(startIntegratedInbox: Boolean) {
-        K9.startIntegratedInbox = startIntegratedInbox
-    }
 
     @JvmStatic
     fun showAnimations(): Boolean {
@@ -581,7 +574,7 @@ object K9 : KoinComponent {
         isGesturesEnabled = storage.getBoolean("gesturesEnabled", false)
         isUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
         isUseVolumeKeysForListNavigation = storage.getBoolean("useVolumeKeysForListNavigation", false)
-        startIntegratedInbox = storage.getBoolean("startIntegratedInbox", false)
+        isStartInUnifiedInbox = storage.getBoolean("startIntegratedInbox", false)
         measureAccounts = storage.getBoolean("measureAccounts", true)
         countSearchMessages = storage.getBoolean("countSearchMessages", true)
         isHideSpecialAccounts = storage.getBoolean("hideSpecialAccounts", false)
@@ -709,7 +702,7 @@ object K9 : KoinComponent {
         editor.putString("quietTimeStarts", quietTimeStarts)
         editor.putString("quietTimeEnds", quietTimeEnds)
 
-        editor.putBoolean("startIntegratedInbox", startIntegratedInbox)
+        editor.putBoolean("startIntegratedInbox", isStartInUnifiedInbox)
         editor.putBoolean("measureAccounts", measureAccounts)
         editor.putBoolean("countSearchMessages", countSearchMessages)
         editor.putBoolean("messageListSenderAboveSubject", messageListSenderAboveSubject)

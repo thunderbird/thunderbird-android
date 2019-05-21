@@ -35,7 +35,7 @@ class GeneralSettingsDataStore(
             "threaded_view" -> K9.isThreadedViewEnabled
             "messageview_fixedwidth_font" -> K9.messageViewFixedWidthFont()
             "messageview_autofit_width" -> K9.isAutoFitWidth
-            "start_integrated_inbox" -> K9.startIntegratedInbox()
+            "start_integrated_inbox" -> K9.isStartInUnifiedInbox
             "gestures" -> K9.isGesturesEnabled
             "messageview_return_to_list" -> K9.messageViewReturnToList()
             "messageview_show_next" -> K9.messageViewShowNext()
@@ -69,7 +69,7 @@ class GeneralSettingsDataStore(
             "threaded_view" -> K9.isThreadedViewEnabled = value
             "messageview_fixedwidth_font" -> K9.setMessageViewFixedWidthFont(value)
             "messageview_autofit_width" -> K9.isAutoFitWidth = value
-            "start_integrated_inbox" -> K9.setStartIntegratedInbox(value)
+            "start_integrated_inbox" -> K9.isStartInUnifiedInbox = value
             "gestures" -> K9.isGesturesEnabled = value
             "messageview_return_to_list" -> K9.setMessageViewReturnToList(value)
             "messageview_show_next" -> K9.setMessageViewShowNext(value)

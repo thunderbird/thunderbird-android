@@ -366,7 +366,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
 
         boolean startup = intent.getBooleanExtra(EXTRA_STARTUP, true);
-        if (startup && K9.startIntegratedInbox() && !K9.isHideSpecialAccounts()) {
+        if (startup && K9.isStartInUnifiedInbox() && !K9.isHideSpecialAccounts()) {
             onOpenAccount(unifiedInboxAccount);
             finish();
             return;
