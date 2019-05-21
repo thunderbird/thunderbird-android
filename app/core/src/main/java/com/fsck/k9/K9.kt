@@ -280,7 +280,8 @@ object K9 : KoinComponent {
     @JvmStatic
     var isHideUserAgent = false
 
-    private var hideTimeZone = false
+    @JvmStatic
+    var isHideTimeZone = false
 
     @get:Synchronized
     @set:Synchronized
@@ -348,15 +349,6 @@ object K9 : KoinComponent {
             DEBUG = debug
             updateLoggingStatus()
         }
-
-    @JvmStatic
-    fun hideTimeZone(): Boolean {
-        return hideTimeZone
-    }
-
-    fun setHideTimeZone(state: Boolean) {
-        hideTimeZone = state
-    }
 
     @Synchronized
     @JvmStatic
@@ -449,7 +441,7 @@ object K9 : KoinComponent {
         isMessageViewShowNext = storage.getBoolean("messageViewShowNext", false)
         isWrapFolderNames = storage.getBoolean("wrapFolderNames", false)
         isHideUserAgent = storage.getBoolean("hideUserAgent", false)
-        hideTimeZone = storage.getBoolean("hideTimeZone", false)
+        isHideTimeZone = storage.getBoolean("hideTimeZone", false)
 
         isConfirmDelete = storage.getBoolean("confirmDelete", false)
         isConfirmDiscardMessage = storage.getBoolean("confirmDiscardMessage", true)
@@ -569,7 +561,7 @@ object K9 : KoinComponent {
         editor.putBoolean("messageViewShowNext", isMessageViewShowNext)
         editor.putBoolean("wrapFolderNames", isWrapFolderNames)
         editor.putBoolean("hideUserAgent", isHideUserAgent)
-        editor.putBoolean("hideTimeZone", hideTimeZone)
+        editor.putBoolean("hideTimeZone", isHideTimeZone)
 
         editor.putString("language", k9Language)
         editor.putInt("theme", k9Theme.ordinal)

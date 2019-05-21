@@ -42,7 +42,7 @@ class GeneralSettingsDataStore(
             "quiet_time_enabled" -> K9.quietTimeEnabled
             "disable_notifications_during_quiet_time" -> !K9.isNotificationDuringQuietTimeEnabled
             "privacy_hide_useragent" -> K9.isHideUserAgent
-            "privacy_hide_timezone" -> K9.hideTimeZone()
+            "privacy_hide_timezone" -> K9.isHideTimeZone
             "debug_logging" -> K9.isDebug
             "sensitive_logging" -> K9.DEBUG_SENSITIVE
             else -> defValue
@@ -76,7 +76,7 @@ class GeneralSettingsDataStore(
             "quiet_time_enabled" -> K9.quietTimeEnabled = value
             "disable_notifications_during_quiet_time" -> K9.isNotificationDuringQuietTimeEnabled = !value
             "privacy_hide_useragent" -> K9.isHideUserAgent = value
-            "privacy_hide_timezone" -> K9.setHideTimeZone(value)
+            "privacy_hide_timezone" -> K9.isHideTimeZone = value
             "debug_logging" -> K9.isDebug = value
             "sensitive_logging" -> K9.DEBUG_SENSITIVE = value
             else -> return

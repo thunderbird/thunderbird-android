@@ -31,7 +31,7 @@ class QuoteHelper(private val resources: Resources) {
     }
 
     private fun createDateFormat(): DateFormat {
-        return if (K9.hideTimeZone()) {
+        return if (K9.isHideTimeZone) {
             DateFormat.getDateTimeInstance(DATE_STYLE, TIME_STYLE, Locale.ROOT).apply {
                 timeZone = TimeZone.getTimeZone("UTC")
             }
