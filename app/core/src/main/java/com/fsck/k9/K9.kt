@@ -166,7 +166,14 @@ object K9 : KoinComponent {
     @JvmStatic
     var k9ComposerThemeSetting = Theme.USE_GLOBAL
 
-    private var useFixedMessageTheme = true
+    @JvmStatic
+    var isFixedMessageViewTheme = true
+        set(theme) {
+            field = theme
+            if (!theme && k9MessageViewThemeSetting == Theme.USE_GLOBAL) {
+                k9MessageViewThemeSetting = k9Theme
+            }
+        }
 
     @JvmStatic
     val fontSizes = FontSizes()
@@ -293,18 +300,6 @@ object K9 : KoinComponent {
             DEBUG = debug
             updateLoggingStatus()
         }
-
-    @JvmStatic
-    fun useFixedMessageViewTheme(): Boolean {
-        return useFixedMessageTheme
-    }
-
-    fun setUseFixedMessageViewTheme(useFixed: Boolean) {
-        useFixedMessageTheme = useFixed
-        if (!useFixedMessageTheme && k9MessageViewThemeSetting == Theme.USE_GLOBAL) {
-            k9MessageViewThemeSetting = k9Theme
-        }
-    }
 
     @JvmStatic
     fun getBackgroundOps(): BACKGROUND_OPS {
@@ -741,7 +736,7 @@ object K9 : KoinComponent {
         k9MessageViewThemeSetting = Theme.values()[themeValue]
         themeValue = storage.getInt("messageComposeTheme", Theme.USE_GLOBAL.ordinal)
         k9ComposerThemeSetting = Theme.values()[themeValue]
-        setUseFixedMessageViewTheme(storage.getBoolean("fixedMessageViewTheme", true))
+        isFixedMessageViewTheme = storage.getBoolean("fixedMessageViewTheme", true)
     }
 
     @JvmStatic
@@ -783,7 +778,7 @@ object K9 : KoinComponent {
         editor.putInt("theme", k9Theme.ordinal)
         editor.putInt("messageViewTheme", k9MessageViewThemeSetting.ordinal)
         editor.putInt("messageComposeTheme", k9ComposerThemeSetting.ordinal)
-        editor.putBoolean("fixedMessageViewTheme", useFixedMessageTheme)
+        editor.putBoolean("fixedMessageViewTheme", isFixedMessageViewTheme)
 
         editor.putBoolean("confirmDelete", confirmDelete)
         editor.putBoolean("confirmDiscardMessage", confirmDiscardMessage)

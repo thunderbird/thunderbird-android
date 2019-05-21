@@ -1073,7 +1073,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             }
 
             MenuItem toggleTheme = menu.findItem(R.id.toggle_message_view_theme);
-            if (K9.useFixedMessageViewTheme()) {
+            if (K9.isFixedMessageViewTheme()) {
                 toggleTheme.setVisible(false);
             } else {
                 // Set title of menu item to switch to dark/light theme
