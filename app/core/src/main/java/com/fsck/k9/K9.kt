@@ -232,7 +232,9 @@ object K9 : KoinComponent {
     @JvmStatic
     var isMessageViewReturnToList = false
 
-    private var messageViewShowNext = false
+    @JvmStatic
+    var isMessageViewShowNext = false
+
     var isGesturesEnabled = true
 
     @JvmStatic
@@ -327,15 +329,6 @@ object K9 : KoinComponent {
             DEBUG = debug
             updateLoggingStatus()
         }
-
-    @JvmStatic
-    fun messageViewShowNext(): Boolean {
-        return messageViewShowNext
-    }
-
-    fun setMessageViewShowNext(messageViewShowNext: Boolean) {
-        K9.messageViewShowNext = messageViewShowNext
-    }
 
     @JvmStatic
     fun measureAccounts(): Boolean {
@@ -525,7 +518,7 @@ object K9 : KoinComponent {
         contactNameColor = storage.getInt("registeredNameColor", -0xffff71)
         isUseMessageViewFixedWidthFont = storage.getBoolean("messageViewFixedWidthFont", false)
         isMessageViewReturnToList = storage.getBoolean("messageViewReturnToList", false)
-        messageViewShowNext = storage.getBoolean("messageViewShowNext", false)
+        isMessageViewShowNext = storage.getBoolean("messageViewShowNext", false)
         wrapFolderNames = storage.getBoolean("wrapFolderNames", false)
         hideUserAgent = storage.getBoolean("hideUserAgent", false)
         hideTimeZone = storage.getBoolean("hideTimeZone", false)
@@ -645,7 +638,7 @@ object K9 : KoinComponent {
         editor.putInt("registeredNameColor", contactNameColor)
         editor.putBoolean("messageViewFixedWidthFont", isUseMessageViewFixedWidthFont)
         editor.putBoolean("messageViewReturnToList", isMessageViewReturnToList)
-        editor.putBoolean("messageViewShowNext", messageViewShowNext)
+        editor.putBoolean("messageViewShowNext", isMessageViewShowNext)
         editor.putBoolean("wrapFolderNames", wrapFolderNames)
         editor.putBoolean("hideUserAgent", hideUserAgent)
         editor.putBoolean("hideTimeZone", hideTimeZone)

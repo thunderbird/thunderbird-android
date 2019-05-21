@@ -38,7 +38,7 @@ class GeneralSettingsDataStore(
             "start_integrated_inbox" -> K9.isStartInUnifiedInbox
             "gestures" -> K9.isGesturesEnabled
             "messageview_return_to_list" -> K9.isMessageViewReturnToList
-            "messageview_show_next" -> K9.messageViewShowNext()
+            "messageview_show_next" -> K9.isMessageViewShowNext
             "quiet_time_enabled" -> K9.quietTimeEnabled
             "disable_notifications_during_quiet_time" -> !K9.isNotificationDuringQuietTimeEnabled
             "privacy_hide_useragent" -> K9.hideUserAgent()
@@ -72,7 +72,7 @@ class GeneralSettingsDataStore(
             "start_integrated_inbox" -> K9.isStartInUnifiedInbox = value
             "gestures" -> K9.isGesturesEnabled = value
             "messageview_return_to_list" -> K9.isMessageViewReturnToList = value
-            "messageview_show_next" -> K9.setMessageViewShowNext(value)
+            "messageview_show_next" -> K9.isMessageViewShowNext = value
             "quiet_time_enabled" -> K9.quietTimeEnabled = value
             "disable_notifications_during_quiet_time" -> K9.isNotificationDuringQuietTimeEnabled = !value
             "privacy_hide_useragent" -> K9.setHideUserAgent(value)

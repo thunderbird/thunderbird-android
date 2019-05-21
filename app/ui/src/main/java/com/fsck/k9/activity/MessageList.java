@@ -175,7 +175,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     private MenuItem menuButtonCheckMail;
     private View actionButtonIndeterminateProgress;
-    private int lastDirection = (K9.messageViewShowNext()) ? NEXT : PREVIOUS;
+    private int lastDirection = (K9.isMessageViewShowNext()) ? NEXT : PREVIOUS;
 
     /**
      * {@code true} if the message list should be displayed as flat list (i.e. no threading)
