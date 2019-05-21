@@ -328,7 +328,7 @@ public class MessageListAdapter extends CursorAdapter {
     }
 
     private void setBackgroundColor(View view, boolean selected, boolean read) {
-        if (selected || K9.useBackgroundAsUnreadIndicator()) {
+        if (selected || K9.isUseBackgroundAsUnreadIndicator()) {
             int color;
             if (selected) {
                 color = selectedItemBackgroundColor;

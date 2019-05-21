@@ -289,7 +289,8 @@ object K9 : KoinComponent {
     var sortType: SortType = Account.DEFAULT_SORT_TYPE
     private val sortAscending = mutableMapOf<SortType, Boolean>()
 
-    private var useBackgroundAsUnreadIndicator = true
+    @JvmStatic
+    var isUseBackgroundAsUnreadIndicator = true
 
     @get:Synchronized
     @set:Synchronized
@@ -363,17 +364,6 @@ object K9 : KoinComponent {
     @JvmStatic
     fun setSortAscending(sortType: SortType, sortAscending: Boolean) {
         K9.sortAscending[sortType] = sortAscending
-    }
-
-    @Synchronized
-    @JvmStatic
-    fun useBackgroundAsUnreadIndicator(): Boolean {
-        return useBackgroundAsUnreadIndicator
-    }
-
-    @Synchronized
-    fun setUseBackgroundAsUnreadIndicator(enabled: Boolean) {
-        useBackgroundAsUnreadIndicator = enabled
     }
 
     @JvmStatic
@@ -489,7 +479,7 @@ object K9 : KoinComponent {
             splitViewMode = SplitViewMode.valueOf(splitViewModeSetting)
         }
 
-        useBackgroundAsUnreadIndicator = storage.getBoolean("useBackgroundAsUnreadIndicator", true)
+        isUseBackgroundAsUnreadIndicator = storage.getBoolean("useBackgroundAsUnreadIndicator", true)
         isThreadedViewEnabled = storage.getBoolean("threadedView", true)
         fontSizes.load(storage)
 
@@ -583,7 +573,7 @@ object K9 : KoinComponent {
         editor.putString("notificationQuickDelete", notificationQuickDeleteBehaviour.toString())
         editor.putString("lockScreenNotificationVisibility", lockScreenNotificationVisibility.toString())
 
-        editor.putBoolean("useBackgroundAsUnreadIndicator", useBackgroundAsUnreadIndicator)
+        editor.putBoolean("useBackgroundAsUnreadIndicator", isUseBackgroundAsUnreadIndicator)
         editor.putBoolean("threadedView", isThreadedViewEnabled)
         editor.putString("splitViewMode", splitViewMode.name)
         editor.putBoolean("colorizeMissingContactPictures", isColorizeMissingContactPictures)

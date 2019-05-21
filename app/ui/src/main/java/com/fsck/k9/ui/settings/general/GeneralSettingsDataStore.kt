@@ -31,7 +31,7 @@ class GeneralSettingsDataStore(
             "messagelist_change_contact_name_color" -> K9.isChangeContactNameColor
             "messagelist_show_contact_picture" -> K9.showContactPicture()
             "messagelist_colorize_missing_contact_pictures" -> K9.isColorizeMissingContactPictures
-            "messagelist_background_as_unread_indicator" -> K9.useBackgroundAsUnreadIndicator()
+            "messagelist_background_as_unread_indicator" -> K9.isUseBackgroundAsUnreadIndicator
             "threaded_view" -> K9.isThreadedViewEnabled
             "messageview_fixedwidth_font" -> K9.isUseMessageViewFixedWidthFont
             "messageview_autofit_width" -> K9.isAutoFitWidth
@@ -65,7 +65,7 @@ class GeneralSettingsDataStore(
             "messagelist_change_contact_name_color" -> K9.isChangeContactNameColor = value
             "messagelist_show_contact_picture" -> K9.setShowContactPicture(value)
             "messagelist_colorize_missing_contact_pictures" -> K9.isColorizeMissingContactPictures = value
-            "messagelist_background_as_unread_indicator" -> K9.setUseBackgroundAsUnreadIndicator(value)
+            "messagelist_background_as_unread_indicator" -> K9.isUseBackgroundAsUnreadIndicator = value
             "threaded_view" -> K9.isThreadedViewEnabled = value
             "messageview_fixedwidth_font" -> K9.isUseMessageViewFixedWidthFont = value
             "messageview_autofit_width" -> K9.isAutoFitWidth = value
