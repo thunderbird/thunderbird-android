@@ -192,7 +192,9 @@ object K9 : KoinComponent {
     @JvmStatic
     var isConfirmDeleteStarred = false
 
-    private var confirmSpam = false
+    @JvmStatic
+    var isConfirmSpam = false
+
     private var confirmDeleteFromNotification = true
     private var confirmMarkAllRead = true
 
@@ -339,17 +341,8 @@ object K9 : KoinComponent {
         }
 
     @JvmStatic
-    fun confirmSpam(): Boolean {
-        return confirmSpam
-    }
-
-    @JvmStatic
     fun confirmDiscardMessage(): Boolean {
         return confirmDiscardMessage
-    }
-
-    fun setConfirmSpam(confirm: Boolean) {
-        confirmSpam = confirm
     }
 
     fun setConfirmDiscardMessage(confirm: Boolean) {
@@ -498,7 +491,7 @@ object K9 : KoinComponent {
         isConfirmDelete = storage.getBoolean("confirmDelete", false)
         confirmDiscardMessage = storage.getBoolean("confirmDiscardMessage", true)
         isConfirmDeleteStarred = storage.getBoolean("confirmDeleteStarred", false)
-        confirmSpam = storage.getBoolean("confirmSpam", false)
+        isConfirmSpam = storage.getBoolean("confirmSpam", false)
         confirmDeleteFromNotification = storage.getBoolean("confirmDeleteFromNotification", true)
         confirmMarkAllRead = storage.getBoolean("confirmMarkAllRead", true)
 
@@ -624,7 +617,7 @@ object K9 : KoinComponent {
         editor.putBoolean("confirmDelete", isConfirmDelete)
         editor.putBoolean("confirmDiscardMessage", confirmDiscardMessage)
         editor.putBoolean("confirmDeleteStarred", isConfirmDeleteStarred)
-        editor.putBoolean("confirmSpam", confirmSpam)
+        editor.putBoolean("confirmSpam", isConfirmSpam)
         editor.putBoolean("confirmDeleteFromNotification", confirmDeleteFromNotification)
         editor.putBoolean("confirmMarkAllRead", confirmMarkAllRead)
 

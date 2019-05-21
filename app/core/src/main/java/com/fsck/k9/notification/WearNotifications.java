@@ -235,7 +235,7 @@ class WearNotifications extends BaseNotifications {
     }
 
     private boolean isSpamActionAvailableForWear(Account account) {
-        return !K9.confirmSpam() && isMovePossible(account, account.getSpamFolder());
+        return !K9.isConfirmSpam() && isMovePossible(account, account.getSpamFolder());
     }
 
     private boolean isMovePossible(Account account, String destinationFolderName) {

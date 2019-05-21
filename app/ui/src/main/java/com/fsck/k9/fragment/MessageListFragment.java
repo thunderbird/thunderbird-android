@@ -1751,7 +1751,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
      *         The messages to move to the spam folder. Never {@code null}.
      */
     private void onSpam(List<MessageReference> messages) {
-        if (K9.confirmSpam()) {
+        if (K9.isConfirmSpam()) {
             // remember the message selection for #onCreateDialog(int)
             activeMessages = messages;
             showDialog(R.id.dialog_confirm_spam);
