@@ -24,7 +24,7 @@ class GeneralSettingsDataStore(
             "hide_special_accounts" -> K9.isHideSpecialAccounts
             "folderlist_wrap_folder_name" -> K9.wrapFolderNames()
             "messagelist_stars" -> K9.messageListStars()
-            "messagelist_checkboxes" -> K9.messageListCheckboxes()
+            "messagelist_checkboxes" -> K9.isShowMessageListCheckboxes
             "messagelist_show_correspondent_names" -> K9.showCorrespondentNames()
             "messagelist_sender_above_subject" -> K9.messageListSenderAboveSubject()
             "messagelist_show_contact_name" -> K9.showContactName()
@@ -58,7 +58,7 @@ class GeneralSettingsDataStore(
             "hide_special_accounts" -> K9.isHideSpecialAccounts = value
             "folderlist_wrap_folder_name" -> K9.setWrapFolderNames(value)
             "messagelist_stars" -> K9.setMessageListStars(value)
-            "messagelist_checkboxes" -> K9.setMessageListCheckboxes(value)
+            "messagelist_checkboxes" -> K9.isShowMessageListCheckboxes = value
             "messagelist_show_correspondent_names" -> K9.setShowCorrespondentNames(value)
             "messagelist_sender_above_subject" -> K9.setMessageListSenderAboveSubject(value)
             "messagelist_show_contact_name" -> K9.setShowContactName(value)

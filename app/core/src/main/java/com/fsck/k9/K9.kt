@@ -200,7 +200,9 @@ object K9 : KoinComponent {
     @JvmStatic
     var lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT
 
-    private var messageListCheckboxes = true
+    @JvmStatic
+    var isShowMessageListCheckboxes = true
+
     private var messageListStars = true
 
     @JvmStatic
@@ -312,15 +314,6 @@ object K9 : KoinComponent {
             DEBUG = debug
             updateLoggingStatus()
         }
-
-    @JvmStatic
-    fun messageListCheckboxes(): Boolean {
-        return messageListCheckboxes
-    }
-
-    fun setMessageListCheckboxes(checkboxes: Boolean) {
-        messageListCheckboxes = checkboxes
-    }
 
     @JvmStatic
     fun messageListStars(): Boolean {
@@ -564,7 +557,7 @@ object K9 : KoinComponent {
         countSearchMessages = storage.getBoolean("countSearchMessages", true)
         isHideSpecialAccounts = storage.getBoolean("hideSpecialAccounts", false)
         messageListSenderAboveSubject = storage.getBoolean("messageListSenderAboveSubject", false)
-        messageListCheckboxes = storage.getBoolean("messageListCheckboxes", false)
+        isShowMessageListCheckboxes = storage.getBoolean("messageListCheckboxes", false)
         messageListStars = storage.getBoolean("messageListStars", true)
         messageListPreviewLines = storage.getInt("messageListPreviewLines", 2)
 
@@ -694,7 +687,7 @@ object K9 : KoinComponent {
         editor.putBoolean("hideSpecialAccounts", isHideSpecialAccounts)
         editor.putBoolean("messageListStars", messageListStars)
         editor.putInt("messageListPreviewLines", messageListPreviewLines)
-        editor.putBoolean("messageListCheckboxes", messageListCheckboxes)
+        editor.putBoolean("messageListCheckboxes", isShowMessageListCheckboxes)
         editor.putBoolean("showCorrespondentNames", showCorrespondentNames)
         editor.putBoolean("showContactName", showContactName)
         editor.putBoolean("showContactPicture", showContactPicture)
