@@ -170,8 +170,8 @@ class GeneralSettingsDataStore(
             }
             "volume_navigation" -> {
                 mutableSetOf<String>().apply {
-                    if (K9.useVolumeKeysForNavigationEnabled()) add("message")
-                    if (K9.useVolumeKeysForListNavigationEnabled()) add("list")
+                    if (K9.isUseVolumeKeysForNavigation) add("message")
+                    if (K9.isUseVolumeKeysForListNavigation) add("list")
                 }
             }
             else -> defValues
@@ -197,8 +197,8 @@ class GeneralSettingsDataStore(
                 K9.isMessageViewSpamActionVisible = "spam" in checkedValues
             }
             "volume_navigation" -> {
-                K9.setUseVolumeKeysForNavigation("message" in checkedValues)
-                K9.setUseVolumeKeysForListNavigation("list" in checkedValues)
+                K9.isUseVolumeKeysForNavigation = "message" in checkedValues
+                K9.isUseVolumeKeysForListNavigation = "list" in checkedValues
             }
             else -> return
         }

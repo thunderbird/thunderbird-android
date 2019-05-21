@@ -679,11 +679,10 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         switch (keyCode) {
             case KeyEvent.KEYCODE_VOLUME_UP: {
                 if (messageViewFragment != null && displayMode != DisplayMode.MESSAGE_LIST &&
-                        K9.useVolumeKeysForNavigationEnabled()) {
+                        K9.isUseVolumeKeysForNavigation()) {
                     showPreviousMessage();
                     return true;
-                } else if (displayMode != DisplayMode.MESSAGE_VIEW &&
-                        K9.useVolumeKeysForListNavigationEnabled()) {
+                } else if (displayMode != DisplayMode.MESSAGE_VIEW && K9.isUseVolumeKeysForListNavigation()) {
                     messageListFragment.onMoveUp();
                     return true;
                 }
@@ -692,11 +691,10 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             }
             case KeyEvent.KEYCODE_VOLUME_DOWN: {
                 if (messageViewFragment != null && displayMode != DisplayMode.MESSAGE_LIST &&
-                        K9.useVolumeKeysForNavigationEnabled()) {
+                        K9.isUseVolumeKeysForNavigation()) {
                     showNextMessage();
                     return true;
-                } else if (displayMode != DisplayMode.MESSAGE_VIEW &&
-                        K9.useVolumeKeysForListNavigationEnabled()) {
+                } else if (displayMode != DisplayMode.MESSAGE_VIEW && K9.isUseVolumeKeysForListNavigation()) {
                     messageListFragment.onMoveDown();
                     return true;
                 }
@@ -842,7 +840,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         // Swallow these events too to avoid the audible notification of a volume change
-        if (K9.useVolumeKeysForListNavigationEnabled()) {
+        if (K9.isUseVolumeKeysForListNavigation()) {
             if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
                 Timber.v("Swallowed key up.");
                 return true;

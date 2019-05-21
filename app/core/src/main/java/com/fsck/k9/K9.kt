@@ -216,8 +216,13 @@ object K9 : KoinComponent {
     private var messageViewReturnToList = false
     private var messageViewShowNext = false
     var isGesturesEnabled = true
-    private var useVolumeKeysForNavigation = false
-    private var useVolumeKeysForListNavigation = false
+
+    @JvmStatic
+    var isUseVolumeKeysForNavigation = false
+
+    @JvmStatic
+    var isUseVolumeKeysForListNavigation = false
+
     private var startIntegratedInbox = false
     private var measureAccounts = true
     private var countSearchMessages = true
@@ -300,24 +305,6 @@ object K9 : KoinComponent {
             DEBUG = debug
             updateLoggingStatus()
         }
-
-    @JvmStatic
-    fun useVolumeKeysForNavigationEnabled(): Boolean {
-        return useVolumeKeysForNavigation
-    }
-
-    fun setUseVolumeKeysForNavigation(volume: Boolean) {
-        useVolumeKeysForNavigation = volume
-    }
-
-    @JvmStatic
-    fun useVolumeKeysForListNavigationEnabled(): Boolean {
-        return useVolumeKeysForListNavigation
-    }
-
-    fun setUseVolumeKeysForListNavigation(enabled: Boolean) {
-        useVolumeKeysForListNavigation = enabled
-    }
 
     @JvmStatic
     fun autofitWidth(): Boolean {
@@ -599,8 +586,8 @@ object K9 : KoinComponent {
         DEBUG_SENSITIVE = storage.getBoolean("enableSensitiveLogging", false)
         animations = storage.getBoolean("animations", true)
         isGesturesEnabled = storage.getBoolean("gesturesEnabled", false)
-        useVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
-        useVolumeKeysForListNavigation = storage.getBoolean("useVolumeKeysForListNavigation", false)
+        isUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
+        isUseVolumeKeysForListNavigation = storage.getBoolean("useVolumeKeysForListNavigation", false)
         startIntegratedInbox = storage.getBoolean("startIntegratedInbox", false)
         measureAccounts = storage.getBoolean("measureAccounts", true)
         countSearchMessages = storage.getBoolean("countSearchMessages", true)
@@ -721,8 +708,8 @@ object K9 : KoinComponent {
         editor.putString("backgroundOperations", K9.backgroundOps.name)
         editor.putBoolean("animations", animations)
         editor.putBoolean("gesturesEnabled", isGesturesEnabled)
-        editor.putBoolean("useVolumeKeysForNavigation", useVolumeKeysForNavigation)
-        editor.putBoolean("useVolumeKeysForListNavigation", useVolumeKeysForListNavigation)
+        editor.putBoolean("useVolumeKeysForNavigation", isUseVolumeKeysForNavigation)
+        editor.putBoolean("useVolumeKeysForListNavigation", isUseVolumeKeysForListNavigation)
         editor.putBoolean("autofitWidth", autofitWidth)
         editor.putBoolean("quietTimeEnabled", quietTimeEnabled)
         editor.putBoolean("notificationDuringQuietTimeEnabled", isNotificationDuringQuietTimeEnabled)
