@@ -181,7 +181,8 @@ object K9 : KoinComponent {
     @JvmStatic
     var backgroundOps = BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC
 
-    private var animations = true
+    @JvmStatic
+    var isShowAnimations = true
 
     private var confirmDelete = false
     private var confirmDiscardMessage = true
@@ -309,15 +310,6 @@ object K9 : KoinComponent {
             DEBUG = debug
             updateLoggingStatus()
         }
-
-    @JvmStatic
-    fun showAnimations(): Boolean {
-        return animations
-    }
-
-    fun setAnimations(animations: Boolean) {
-        K9.animations = animations
-    }
 
     @JvmStatic
     fun messageListPreviewLines(): Int {
@@ -570,7 +562,7 @@ object K9 : KoinComponent {
         val storage = prefs.storage
         isDebug = storage.getBoolean("enableDebugLogging", DEVELOPER_MODE)
         DEBUG_SENSITIVE = storage.getBoolean("enableSensitiveLogging", false)
-        animations = storage.getBoolean("animations", true)
+        isShowAnimations = storage.getBoolean("animations", true)
         isGesturesEnabled = storage.getBoolean("gesturesEnabled", false)
         isUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
         isUseVolumeKeysForListNavigation = storage.getBoolean("useVolumeKeysForListNavigation", false)
@@ -692,7 +684,7 @@ object K9 : KoinComponent {
         editor.putBoolean("enableDebugLogging", DEBUG)
         editor.putBoolean("enableSensitiveLogging", DEBUG_SENSITIVE)
         editor.putString("backgroundOperations", K9.backgroundOps.name)
-        editor.putBoolean("animations", animations)
+        editor.putBoolean("animations", isShowAnimations)
         editor.putBoolean("gesturesEnabled", isGesturesEnabled)
         editor.putBoolean("useVolumeKeysForNavigation", isUseVolumeKeysForNavigation)
         editor.putBoolean("useVolumeKeysForListNavigation", isUseVolumeKeysForListNavigation)

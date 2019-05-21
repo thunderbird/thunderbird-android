@@ -49,7 +49,7 @@ public class ViewSwitcher extends ViewAnimator implements AnimationListener {
     }
 
     private void setupAnimations(Animation in, Animation out) {
-        if (K9.showAnimations()) {
+        if (K9.isShowAnimations()) {
             setInAnimation(in);
             setOutAnimation(out);
             out.setAnimationListener(this);
@@ -60,7 +60,7 @@ public class ViewSwitcher extends ViewAnimator implements AnimationListener {
     }
 
     private void handleSwitchCompleteCallback() {
-        if (!K9.showAnimations()) {
+        if (!K9.isShowAnimations()) {
             onAnimationEnd(null);
         }
     }

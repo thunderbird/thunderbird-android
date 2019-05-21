@@ -18,7 +18,7 @@ class GeneralSettingsDataStore(
     override fun getBoolean(key: String, defValue: Boolean): Boolean {
         return when (key) {
             "fixed_message_view_theme" -> K9.isFixedMessageViewTheme
-            "animations" -> K9.showAnimations()
+            "animations" -> K9.isShowAnimations
             "measure_accounts" -> K9.measureAccounts()
             "count_search" -> K9.countSearchMessages()
             "hide_special_accounts" -> K9.isHideSpecialAccounts
@@ -52,7 +52,7 @@ class GeneralSettingsDataStore(
     override fun putBoolean(key: String, value: Boolean) {
         when (key) {
             "fixed_message_view_theme" -> K9.isFixedMessageViewTheme = value
-            "animations" -> K9.setAnimations(value)
+            "animations" -> K9.isShowAnimations = value
             "measure_accounts" -> K9.setMeasureAccounts(value)
             "count_search" -> K9.setCountSearchMessages(value)
             "hide_special_accounts" -> K9.isHideSpecialAccounts = value
