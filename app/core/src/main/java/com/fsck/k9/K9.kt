@@ -202,7 +202,9 @@ object K9 : KoinComponent {
 
     private var messageListCheckboxes = true
     private var messageListStars = true
-    private var messageListPreviewLines = 2
+
+    @JvmStatic
+    var messageListPreviewLines = 2
 
     private var showCorrespondentNames = true
     private var messageListSenderAboveSubject = false
@@ -310,15 +312,6 @@ object K9 : KoinComponent {
             DEBUG = debug
             updateLoggingStatus()
         }
-
-    @JvmStatic
-    fun messageListPreviewLines(): Int {
-        return messageListPreviewLines
-    }
-
-    fun setMessageListPreviewLines(lines: Int) {
-        messageListPreviewLines = lines
-    }
 
     @JvmStatic
     fun messageListCheckboxes(): Boolean {
