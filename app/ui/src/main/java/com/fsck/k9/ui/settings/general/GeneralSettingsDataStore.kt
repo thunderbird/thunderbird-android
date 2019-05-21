@@ -39,7 +39,7 @@ class GeneralSettingsDataStore(
             "gestures" -> K9.isGesturesEnabled
             "messageview_return_to_list" -> K9.isMessageViewReturnToList
             "messageview_show_next" -> K9.isMessageViewShowNext
-            "quiet_time_enabled" -> K9.quietTimeEnabled
+            "quiet_time_enabled" -> K9.isQuietTimeEnabled
             "disable_notifications_during_quiet_time" -> !K9.isNotificationDuringQuietTimeEnabled
             "privacy_hide_useragent" -> K9.isHideUserAgent
             "privacy_hide_timezone" -> K9.isHideTimeZone
@@ -73,7 +73,7 @@ class GeneralSettingsDataStore(
             "gestures" -> K9.isGesturesEnabled = value
             "messageview_return_to_list" -> K9.isMessageViewReturnToList = value
             "messageview_show_next" -> K9.isMessageViewShowNext = value
-            "quiet_time_enabled" -> K9.quietTimeEnabled = value
+            "quiet_time_enabled" -> K9.isQuietTimeEnabled = value
             "disable_notifications_during_quiet_time" -> K9.isNotificationDuringQuietTimeEnabled = !value
             "privacy_hide_useragent" -> K9.isHideUserAgent = value
             "privacy_hide_timezone" -> K9.isHideTimeZone = value

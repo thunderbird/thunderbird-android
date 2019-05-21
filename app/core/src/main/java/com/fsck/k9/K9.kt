@@ -270,7 +270,7 @@ object K9 : KoinComponent {
     @JvmStatic
     var isAutoFitWidth: Boolean = false
 
-    var quietTimeEnabled = false
+    var isQuietTimeEnabled = false
     var isNotificationDuringQuietTimeEnabled = true
     var quietTimeStarts: String? = null
     var quietTimeEnds: String? = null
@@ -336,7 +336,7 @@ object K9 : KoinComponent {
 
     val isQuietTime: Boolean
         get() {
-            if (!quietTimeEnabled) {
+            if (!isQuietTimeEnabled) {
                 return false
             }
 
@@ -408,7 +408,7 @@ object K9 : KoinComponent {
 
         isAutoFitWidth = storage.getBoolean("autofitWidth", true)
 
-        quietTimeEnabled = storage.getBoolean("quietTimeEnabled", false)
+        isQuietTimeEnabled = storage.getBoolean("quietTimeEnabled", false)
         isNotificationDuringQuietTimeEnabled = storage.getBoolean("notificationDuringQuietTimeEnabled", true)
         quietTimeStarts = storage.getString("quietTimeStarts", "21:00")
         quietTimeEnds = storage.getString("quietTimeEnds", "7:00")
@@ -520,7 +520,7 @@ object K9 : KoinComponent {
         editor.putBoolean("useVolumeKeysForNavigation", isUseVolumeKeysForNavigation)
         editor.putBoolean("useVolumeKeysForListNavigation", isUseVolumeKeysForListNavigation)
         editor.putBoolean("autofitWidth", isAutoFitWidth)
-        editor.putBoolean("quietTimeEnabled", quietTimeEnabled)
+        editor.putBoolean("quietTimeEnabled", isQuietTimeEnabled)
         editor.putBoolean("notificationDuringQuietTimeEnabled", isNotificationDuringQuietTimeEnabled)
         editor.putString("quietTimeStarts", quietTimeStarts)
         editor.putString("quietTimeEnds", quietTimeEnds)
