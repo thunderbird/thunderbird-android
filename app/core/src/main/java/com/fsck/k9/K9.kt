@@ -203,7 +203,8 @@ object K9 : KoinComponent {
     @JvmStatic
     var isShowMessageListCheckboxes = true
 
-    private var messageListStars = true
+    @JvmStatic
+    var isShowMessageListStars = true
 
     @JvmStatic
     var messageListPreviewLines = 2
@@ -314,15 +315,6 @@ object K9 : KoinComponent {
             DEBUG = debug
             updateLoggingStatus()
         }
-
-    @JvmStatic
-    fun messageListStars(): Boolean {
-        return messageListStars
-    }
-
-    fun setMessageListStars(stars: Boolean) {
-        messageListStars = stars
-    }
 
     @JvmStatic
     fun showCorrespondentNames(): Boolean {
@@ -558,7 +550,7 @@ object K9 : KoinComponent {
         isHideSpecialAccounts = storage.getBoolean("hideSpecialAccounts", false)
         messageListSenderAboveSubject = storage.getBoolean("messageListSenderAboveSubject", false)
         isShowMessageListCheckboxes = storage.getBoolean("messageListCheckboxes", false)
-        messageListStars = storage.getBoolean("messageListStars", true)
+        isShowMessageListStars = storage.getBoolean("messageListStars", true)
         messageListPreviewLines = storage.getInt("messageListPreviewLines", 2)
 
         isAutoFitWidth = storage.getBoolean("autofitWidth", true)
@@ -685,7 +677,7 @@ object K9 : KoinComponent {
         editor.putBoolean("countSearchMessages", countSearchMessages)
         editor.putBoolean("messageListSenderAboveSubject", messageListSenderAboveSubject)
         editor.putBoolean("hideSpecialAccounts", isHideSpecialAccounts)
-        editor.putBoolean("messageListStars", messageListStars)
+        editor.putBoolean("messageListStars", isShowMessageListStars)
         editor.putInt("messageListPreviewLines", messageListPreviewLines)
         editor.putBoolean("messageListCheckboxes", isShowMessageListCheckboxes)
         editor.putBoolean("showCorrespondentNames", showCorrespondentNames)
