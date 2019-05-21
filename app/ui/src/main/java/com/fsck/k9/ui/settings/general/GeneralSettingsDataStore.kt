@@ -29,7 +29,7 @@ class GeneralSettingsDataStore(
             "messagelist_sender_above_subject" -> K9.isMessageListSenderAboveSubject
             "messagelist_show_contact_name" -> K9.isShowContactName
             "messagelist_change_contact_name_color" -> K9.isChangeContactNameColor
-            "messagelist_show_contact_picture" -> K9.showContactPicture()
+            "messagelist_show_contact_picture" -> K9.isShowContactPicture
             "messagelist_colorize_missing_contact_pictures" -> K9.isColorizeMissingContactPictures
             "messagelist_background_as_unread_indicator" -> K9.isUseBackgroundAsUnreadIndicator
             "threaded_view" -> K9.isThreadedViewEnabled
@@ -63,7 +63,7 @@ class GeneralSettingsDataStore(
             "messagelist_sender_above_subject" -> K9.isMessageListSenderAboveSubject = value
             "messagelist_show_contact_name" -> K9.isShowContactName = value
             "messagelist_change_contact_name_color" -> K9.isChangeContactNameColor = value
-            "messagelist_show_contact_picture" -> K9.setShowContactPicture(value)
+            "messagelist_show_contact_picture" -> K9.isShowContactPicture = value
             "messagelist_colorize_missing_contact_pictures" -> K9.isColorizeMissingContactPictures = value
             "messagelist_background_as_unread_indicator" -> K9.isUseBackgroundAsUnreadIndicator = value
             "threaded_view" -> K9.isThreadedViewEnabled = value

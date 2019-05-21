@@ -235,7 +235,8 @@ object K9 : KoinComponent {
     @JvmStatic
     var contactNameColor = 0xff00008f.toInt()
 
-    private var showContactPicture = true
+    @JvmStatic
+    var isShowContactPicture = true
 
     @JvmStatic
     var isUseMessageViewFixedWidthFont = false
@@ -366,15 +367,6 @@ object K9 : KoinComponent {
         K9.sortAscending[sortType] = sortAscending
     }
 
-    @JvmStatic
-    fun showContactPicture(): Boolean {
-        return showContactPicture
-    }
-
-    fun setShowContactPicture(show: Boolean) {
-        showContactPicture = show
-    }
-
 
     fun init(context: Context) {
         K9MailLib.setDebugStatus(object : K9MailLib.DebugStatus {
@@ -423,7 +415,7 @@ object K9 : KoinComponent {
 
         isShowCorrespondentNames = storage.getBoolean("showCorrespondentNames", true)
         isShowContactName = storage.getBoolean("showContactName", false)
-        showContactPicture = storage.getBoolean("showContactPicture", true)
+        isShowContactPicture = storage.getBoolean("showContactPicture", true)
         isChangeContactNameColor = storage.getBoolean("changeRegisteredNameColor", false)
         contactNameColor = storage.getInt("registeredNameColor", -0xffff71)
         isUseMessageViewFixedWidthFont = storage.getBoolean("messageViewFixedWidthFont", false)
@@ -543,7 +535,7 @@ object K9 : KoinComponent {
         editor.putBoolean("messageListCheckboxes", isShowMessageListCheckboxes)
         editor.putBoolean("showCorrespondentNames", isShowCorrespondentNames)
         editor.putBoolean("showContactName", isShowContactName)
-        editor.putBoolean("showContactPicture", showContactPicture)
+        editor.putBoolean("showContactPicture", isShowContactPicture)
         editor.putBoolean("changeRegisteredNameColor", isChangeContactNameColor)
         editor.putInt("registeredNameColor", contactNameColor)
         editor.putBoolean("messageViewFixedWidthFont", isUseMessageViewFixedWidthFont)

@@ -417,7 +417,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         checkboxes = K9.isShowMessageListCheckboxes();
         stars = K9.isShowMessageListStars();
 
-        if (K9.showContactPicture()) {
+        if (K9.isShowContactPicture()) {
             contactsPictureLoader = ContactPicture.getContactPictureLoader();
         }
 
