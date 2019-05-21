@@ -212,7 +212,9 @@ object K9 : KoinComponent {
     @JvmStatic
     var isShowCorrespondentNames = true
 
-    private var messageListSenderAboveSubject = false
+    @JvmStatic
+    var isMessageListSenderAboveSubject = false
+
     private var showContactName = false
     private var changeContactNameColor = false
 
@@ -317,15 +319,6 @@ object K9 : KoinComponent {
             DEBUG = debug
             updateLoggingStatus()
         }
-
-    @JvmStatic
-    fun messageListSenderAboveSubject(): Boolean {
-        return messageListSenderAboveSubject
-    }
-
-    fun setMessageListSenderAboveSubject(sender: Boolean) {
-        messageListSenderAboveSubject = sender
-    }
 
     @JvmStatic
     fun showContactName(): Boolean {
@@ -541,7 +534,7 @@ object K9 : KoinComponent {
         measureAccounts = storage.getBoolean("measureAccounts", true)
         countSearchMessages = storage.getBoolean("countSearchMessages", true)
         isHideSpecialAccounts = storage.getBoolean("hideSpecialAccounts", false)
-        messageListSenderAboveSubject = storage.getBoolean("messageListSenderAboveSubject", false)
+        isMessageListSenderAboveSubject = storage.getBoolean("messageListSenderAboveSubject", false)
         isShowMessageListCheckboxes = storage.getBoolean("messageListCheckboxes", false)
         isShowMessageListStars = storage.getBoolean("messageListStars", true)
         messageListPreviewLines = storage.getInt("messageListPreviewLines", 2)
@@ -668,7 +661,7 @@ object K9 : KoinComponent {
         editor.putBoolean("startIntegratedInbox", isStartInUnifiedInbox)
         editor.putBoolean("measureAccounts", measureAccounts)
         editor.putBoolean("countSearchMessages", countSearchMessages)
-        editor.putBoolean("messageListSenderAboveSubject", messageListSenderAboveSubject)
+        editor.putBoolean("messageListSenderAboveSubject", isMessageListSenderAboveSubject)
         editor.putBoolean("hideSpecialAccounts", isHideSpecialAccounts)
         editor.putBoolean("messageListStars", isShowMessageListStars)
         editor.putInt("messageListPreviewLines", messageListPreviewLines)

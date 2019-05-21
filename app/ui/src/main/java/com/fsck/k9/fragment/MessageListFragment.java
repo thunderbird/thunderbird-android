@@ -652,7 +652,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     public void onResume() {
         super.onResume();
 
-        senderAboveSubject = K9.messageListSenderAboveSubject();
+        senderAboveSubject = K9.isMessageListSenderAboveSubject();
 
         if (!loaderJustInitialized) {
             restartLoader();

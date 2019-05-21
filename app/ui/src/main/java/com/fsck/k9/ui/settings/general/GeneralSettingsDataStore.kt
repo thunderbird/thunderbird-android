@@ -26,7 +26,7 @@ class GeneralSettingsDataStore(
             "messagelist_stars" -> K9.isShowMessageListStars
             "messagelist_checkboxes" -> K9.isShowMessageListCheckboxes
             "messagelist_show_correspondent_names" -> K9.isShowCorrespondentNames
-            "messagelist_sender_above_subject" -> K9.messageListSenderAboveSubject()
+            "messagelist_sender_above_subject" -> K9.isMessageListSenderAboveSubject
             "messagelist_show_contact_name" -> K9.showContactName()
             "messagelist_change_contact_name_color" -> K9.changeContactNameColor()
             "messagelist_show_contact_picture" -> K9.showContactPicture()
@@ -60,7 +60,7 @@ class GeneralSettingsDataStore(
             "messagelist_stars" -> K9.isShowMessageListStars = value
             "messagelist_checkboxes" -> K9.isShowMessageListCheckboxes = value
             "messagelist_show_correspondent_names" -> K9.isShowCorrespondentNames = value
-            "messagelist_sender_above_subject" -> K9.setMessageListSenderAboveSubject(value)
+            "messagelist_sender_above_subject" -> K9.isMessageListSenderAboveSubject = value
             "messagelist_show_contact_name" -> K9.setShowContactName(value)
             "messagelist_change_contact_name_color" -> K9.setChangeContactNameColor(value)
             "messagelist_show_contact_picture" -> K9.setShowContactPicture(value)
