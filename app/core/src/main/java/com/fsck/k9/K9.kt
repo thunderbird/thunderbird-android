@@ -246,7 +246,9 @@ object K9 : KoinComponent {
     @JvmStatic
     var isStartInUnifiedInbox = false
 
-    private var measureAccounts = true
+    @JvmStatic
+    var isMeasureAccounts = true
+
     private var countSearchMessages = true
 
     @JvmStatic
@@ -329,15 +331,6 @@ object K9 : KoinComponent {
             DEBUG = debug
             updateLoggingStatus()
         }
-
-    @JvmStatic
-    fun measureAccounts(): Boolean {
-        return measureAccounts
-    }
-
-    fun setMeasureAccounts(measureAccounts: Boolean) {
-        K9.measureAccounts = measureAccounts
-    }
 
     @JvmStatic
     fun countSearchMessages(): Boolean {
@@ -496,7 +489,7 @@ object K9 : KoinComponent {
         isUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
         isUseVolumeKeysForListNavigation = storage.getBoolean("useVolumeKeysForListNavigation", false)
         isStartInUnifiedInbox = storage.getBoolean("startIntegratedInbox", false)
-        measureAccounts = storage.getBoolean("measureAccounts", true)
+        isMeasureAccounts = storage.getBoolean("measureAccounts", true)
         countSearchMessages = storage.getBoolean("countSearchMessages", true)
         isHideSpecialAccounts = storage.getBoolean("hideSpecialAccounts", false)
         isMessageListSenderAboveSubject = storage.getBoolean("messageListSenderAboveSubject", false)
@@ -624,7 +617,7 @@ object K9 : KoinComponent {
         editor.putString("quietTimeEnds", quietTimeEnds)
 
         editor.putBoolean("startIntegratedInbox", isStartInUnifiedInbox)
-        editor.putBoolean("measureAccounts", measureAccounts)
+        editor.putBoolean("measureAccounts", isMeasureAccounts)
         editor.putBoolean("countSearchMessages", countSearchMessages)
         editor.putBoolean("messageListSenderAboveSubject", isMessageListSenderAboveSubject)
         editor.putBoolean("hideSpecialAccounts", isHideSpecialAccounts)

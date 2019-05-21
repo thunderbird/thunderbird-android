@@ -38,7 +38,7 @@ internal class DefaultAccountStatsCollector(
         accountSearchConditions.limitToDisplayableFolders(account, search)
 
         val accountStats = localStore.getAccountStats(search)
-        if (K9.measureAccounts()) {
+        if (K9.isMeasureAccounts) {
             accountStats.size = localStore.size
         }
 

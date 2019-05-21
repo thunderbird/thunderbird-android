@@ -188,7 +188,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             runOnUiThread(new Runnable() {
                 public void run() {
                     AccountStats stats = accountStats.get(account.getUuid());
-                    if (newSize != -1 && stats != null && K9.measureAccounts()) {
+                    if (newSize != -1 && stats != null && K9.isMeasureAccounts()) {
                         stats.size = newSize;
                     }
                     String toastText = getString(R.string.account_size_changed, account.getDescription(),
