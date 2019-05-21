@@ -20,7 +20,7 @@ class GeneralSettingsDataStore(
             "fixed_message_view_theme" -> K9.isFixedMessageViewTheme
             "animations" -> K9.isShowAnimations
             "measure_accounts" -> K9.isMeasureAccounts
-            "count_search" -> K9.countSearchMessages()
+            "count_search" -> K9.isCountSearchMessages
             "hide_special_accounts" -> K9.isHideSpecialAccounts
             "folderlist_wrap_folder_name" -> K9.wrapFolderNames()
             "messagelist_stars" -> K9.isShowMessageListStars
@@ -54,7 +54,7 @@ class GeneralSettingsDataStore(
             "fixed_message_view_theme" -> K9.isFixedMessageViewTheme = value
             "animations" -> K9.isShowAnimations = value
             "measure_accounts" -> K9.isMeasureAccounts = value
-            "count_search" -> K9.setCountSearchMessages(value)
+            "count_search" -> K9.isCountSearchMessages = value
             "hide_special_accounts" -> K9.isHideSpecialAccounts = value
             "folderlist_wrap_folder_name" -> K9.setWrapFolderNames(value)
             "messagelist_stars" -> K9.isShowMessageListStars = value

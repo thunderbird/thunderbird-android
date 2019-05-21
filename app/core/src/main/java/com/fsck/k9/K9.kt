@@ -249,7 +249,8 @@ object K9 : KoinComponent {
     @JvmStatic
     var isMeasureAccounts = true
 
-    private var countSearchMessages = true
+    @JvmStatic
+    var isCountSearchMessages = true
 
     @JvmStatic
     var isHideSpecialAccounts = false
@@ -331,15 +332,6 @@ object K9 : KoinComponent {
             DEBUG = debug
             updateLoggingStatus()
         }
-
-    @JvmStatic
-    fun countSearchMessages(): Boolean {
-        return countSearchMessages
-    }
-
-    fun setCountSearchMessages(countSearchMessages: Boolean) {
-        K9.countSearchMessages = countSearchMessages
-    }
 
     @JvmStatic
     fun confirmDelete(): Boolean {
@@ -490,7 +482,7 @@ object K9 : KoinComponent {
         isUseVolumeKeysForListNavigation = storage.getBoolean("useVolumeKeysForListNavigation", false)
         isStartInUnifiedInbox = storage.getBoolean("startIntegratedInbox", false)
         isMeasureAccounts = storage.getBoolean("measureAccounts", true)
-        countSearchMessages = storage.getBoolean("countSearchMessages", true)
+        isCountSearchMessages = storage.getBoolean("countSearchMessages", true)
         isHideSpecialAccounts = storage.getBoolean("hideSpecialAccounts", false)
         isMessageListSenderAboveSubject = storage.getBoolean("messageListSenderAboveSubject", false)
         isShowMessageListCheckboxes = storage.getBoolean("messageListCheckboxes", false)
@@ -618,7 +610,7 @@ object K9 : KoinComponent {
 
         editor.putBoolean("startIntegratedInbox", isStartInUnifiedInbox)
         editor.putBoolean("measureAccounts", isMeasureAccounts)
-        editor.putBoolean("countSearchMessages", countSearchMessages)
+        editor.putBoolean("countSearchMessages", isCountSearchMessages)
         editor.putBoolean("messageListSenderAboveSubject", isMessageListSenderAboveSubject)
         editor.putBoolean("hideSpecialAccounts", isHideSpecialAccounts)
         editor.putBoolean("messageListStars", isShowMessageListStars)

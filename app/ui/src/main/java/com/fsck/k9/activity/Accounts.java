@@ -555,7 +555,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             if (account instanceof Account) {
                 Account realAccount = (Account) account;
                 controller.getAccountStats(this, realAccount, mListener);
-            } else if (K9.countSearchMessages() && account instanceof SearchAccount) {
+            } else if (K9.isCountSearchMessages() && account instanceof SearchAccount) {
                 final SearchAccount searchAccount = (SearchAccount) account;
                 controller.getSearchAccountStats(searchAccount, mListener);
             }
