@@ -215,7 +215,9 @@ object K9 : KoinComponent {
     @JvmStatic
     var isMessageListSenderAboveSubject = false
 
-    private var showContactName = false
+    @JvmStatic
+    var isShowContactName = false
+
     private var changeContactNameColor = false
 
     @JvmStatic
@@ -319,15 +321,6 @@ object K9 : KoinComponent {
             DEBUG = debug
             updateLoggingStatus()
         }
-
-    @JvmStatic
-    fun showContactName(): Boolean {
-        return showContactName
-    }
-
-    fun setShowContactName(showContactName: Boolean) {
-        K9.showContactName = showContactName
-    }
 
     @JvmStatic
     fun changeContactNameColor(): Boolean {
@@ -547,7 +540,7 @@ object K9 : KoinComponent {
         quietTimeEnds = storage.getString("quietTimeEnds", "7:00")
 
         isShowCorrespondentNames = storage.getBoolean("showCorrespondentNames", true)
-        showContactName = storage.getBoolean("showContactName", false)
+        isShowContactName = storage.getBoolean("showContactName", false)
         showContactPicture = storage.getBoolean("showContactPicture", true)
         changeContactNameColor = storage.getBoolean("changeRegisteredNameColor", false)
         contactNameColor = storage.getInt("registeredNameColor", -0xffff71)
@@ -667,7 +660,7 @@ object K9 : KoinComponent {
         editor.putInt("messageListPreviewLines", messageListPreviewLines)
         editor.putBoolean("messageListCheckboxes", isShowMessageListCheckboxes)
         editor.putBoolean("showCorrespondentNames", isShowCorrespondentNames)
-        editor.putBoolean("showContactName", showContactName)
+        editor.putBoolean("showContactName", isShowContactName)
         editor.putBoolean("showContactPicture", showContactPicture)
         editor.putBoolean("changeRegisteredNameColor", changeContactNameColor)
         editor.putInt("registeredNameColor", contactNameColor)
