@@ -608,7 +608,7 @@ public class FolderList extends K9ListActivity {
 
             fontSizes.setViewTextSize(holder.folderName, fontSizes.getFolderName());
 
-            if (K9.wrapFolderNames()) {
+            if (K9.isWrapFolderNames()) {
                 holder.folderName.setEllipsize(null);
                 holder.folderName.setSingleLine(false);
             }

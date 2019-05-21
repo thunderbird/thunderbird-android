@@ -22,7 +22,7 @@ class GeneralSettingsDataStore(
             "measure_accounts" -> K9.isMeasureAccounts
             "count_search" -> K9.isCountSearchMessages
             "hide_special_accounts" -> K9.isHideSpecialAccounts
-            "folderlist_wrap_folder_name" -> K9.wrapFolderNames()
+            "folderlist_wrap_folder_name" -> K9.isWrapFolderNames
             "messagelist_stars" -> K9.isShowMessageListStars
             "messagelist_checkboxes" -> K9.isShowMessageListCheckboxes
             "messagelist_show_correspondent_names" -> K9.isShowCorrespondentNames
@@ -56,7 +56,7 @@ class GeneralSettingsDataStore(
             "measure_accounts" -> K9.isMeasureAccounts = value
             "count_search" -> K9.isCountSearchMessages = value
             "hide_special_accounts" -> K9.isHideSpecialAccounts = value
-            "folderlist_wrap_folder_name" -> K9.setWrapFolderNames(value)
+            "folderlist_wrap_folder_name" -> K9.isWrapFolderNames = value
             "messagelist_stars" -> K9.isShowMessageListStars = value
             "messagelist_checkboxes" -> K9.isShowMessageListCheckboxes = value
             "messagelist_show_correspondent_names" -> K9.isShowCorrespondentNames = value

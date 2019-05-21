@@ -273,7 +273,10 @@ object K9 : KoinComponent {
     var isNotificationDuringQuietTimeEnabled = true
     var quietTimeStarts: String? = null
     var quietTimeEnds: String? = null
-    private var wrapFolderNames = false
+
+    @JvmStatic
+    var isWrapFolderNames = false
+
     private var hideUserAgent = false
     private var hideTimeZone = false
 
@@ -343,15 +346,6 @@ object K9 : KoinComponent {
             DEBUG = debug
             updateLoggingStatus()
         }
-
-    @JvmStatic
-    fun wrapFolderNames(): Boolean {
-        return wrapFolderNames
-    }
-
-    fun setWrapFolderNames(state: Boolean) {
-        wrapFolderNames = state
-    }
 
     @JvmStatic
     fun hideUserAgent(): Boolean {
@@ -460,7 +454,7 @@ object K9 : KoinComponent {
         isUseMessageViewFixedWidthFont = storage.getBoolean("messageViewFixedWidthFont", false)
         isMessageViewReturnToList = storage.getBoolean("messageViewReturnToList", false)
         isMessageViewShowNext = storage.getBoolean("messageViewShowNext", false)
-        wrapFolderNames = storage.getBoolean("wrapFolderNames", false)
+        isWrapFolderNames = storage.getBoolean("wrapFolderNames", false)
         hideUserAgent = storage.getBoolean("hideUserAgent", false)
         hideTimeZone = storage.getBoolean("hideTimeZone", false)
 
@@ -580,7 +574,7 @@ object K9 : KoinComponent {
         editor.putBoolean("messageViewFixedWidthFont", isUseMessageViewFixedWidthFont)
         editor.putBoolean("messageViewReturnToList", isMessageViewReturnToList)
         editor.putBoolean("messageViewShowNext", isMessageViewShowNext)
-        editor.putBoolean("wrapFolderNames", wrapFolderNames)
+        editor.putBoolean("wrapFolderNames", isWrapFolderNames)
         editor.putBoolean("hideUserAgent", hideUserAgent)
         editor.putBoolean("hideTimeZone", hideTimeZone)
 
