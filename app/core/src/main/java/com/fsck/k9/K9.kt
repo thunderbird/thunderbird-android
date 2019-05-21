@@ -230,7 +230,9 @@ object K9 : KoinComponent {
     @JvmStatic
     var isHideSpecialAccounts = false
 
-    private var autofitWidth: Boolean = false
+    @JvmStatic
+    var isAutoFitWidth: Boolean = false
+
     var quietTimeEnabled = false
     var isNotificationDuringQuietTimeEnabled = true
     var quietTimeStarts: String? = null
@@ -305,15 +307,6 @@ object K9 : KoinComponent {
             DEBUG = debug
             updateLoggingStatus()
         }
-
-    @JvmStatic
-    fun autofitWidth(): Boolean {
-        return autofitWidth
-    }
-
-    fun setAutofitWidth(autofitWidth: Boolean) {
-        K9.autofitWidth = autofitWidth
-    }
 
     @JvmStatic
     fun startIntegratedInbox(): Boolean {
@@ -597,7 +590,7 @@ object K9 : KoinComponent {
         messageListStars = storage.getBoolean("messageListStars", true)
         messageListPreviewLines = storage.getInt("messageListPreviewLines", 2)
 
-        autofitWidth = storage.getBoolean("autofitWidth", true)
+        isAutoFitWidth = storage.getBoolean("autofitWidth", true)
 
         quietTimeEnabled = storage.getBoolean("quietTimeEnabled", false)
         isNotificationDuringQuietTimeEnabled = storage.getBoolean("notificationDuringQuietTimeEnabled", true)
@@ -710,7 +703,7 @@ object K9 : KoinComponent {
         editor.putBoolean("gesturesEnabled", isGesturesEnabled)
         editor.putBoolean("useVolumeKeysForNavigation", isUseVolumeKeysForNavigation)
         editor.putBoolean("useVolumeKeysForListNavigation", isUseVolumeKeysForListNavigation)
-        editor.putBoolean("autofitWidth", autofitWidth)
+        editor.putBoolean("autofitWidth", isAutoFitWidth)
         editor.putBoolean("quietTimeEnabled", quietTimeEnabled)
         editor.putBoolean("notificationDuringQuietTimeEnabled", isNotificationDuringQuietTimeEnabled)
         editor.putString("quietTimeStarts", quietTimeStarts)
