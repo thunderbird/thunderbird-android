@@ -199,7 +199,8 @@ object K9 : KoinComponent {
     @JvmStatic
     var isConfirmDeleteFromNotification = true
 
-    private var confirmMarkAllRead = true
+    @JvmStatic
+    var isConfirmMarkAllRead = true
 
     @JvmStatic
     var notificationHideSubject = NotificationHideSubject.NEVER
@@ -344,15 +345,6 @@ object K9 : KoinComponent {
         }
 
     @JvmStatic
-    fun confirmMarkAllRead(): Boolean {
-        return confirmMarkAllRead
-    }
-
-    fun setConfirmMarkAllRead(confirm: Boolean) {
-        confirmMarkAllRead = confirm
-    }
-
-    @JvmStatic
     fun wrapFolderNames(): Boolean {
         return wrapFolderNames
     }
@@ -477,7 +469,7 @@ object K9 : KoinComponent {
         isConfirmDeleteStarred = storage.getBoolean("confirmDeleteStarred", false)
         isConfirmSpam = storage.getBoolean("confirmSpam", false)
         isConfirmDeleteFromNotification = storage.getBoolean("confirmDeleteFromNotification", true)
-        confirmMarkAllRead = storage.getBoolean("confirmMarkAllRead", true)
+        isConfirmMarkAllRead = storage.getBoolean("confirmMarkAllRead", true)
 
         sortType = try {
             val value = storage.getString("sortTypeEnum", Account.DEFAULT_SORT_TYPE.name)
@@ -603,7 +595,7 @@ object K9 : KoinComponent {
         editor.putBoolean("confirmDeleteStarred", isConfirmDeleteStarred)
         editor.putBoolean("confirmSpam", isConfirmSpam)
         editor.putBoolean("confirmDeleteFromNotification", isConfirmDeleteFromNotification)
-        editor.putBoolean("confirmMarkAllRead", confirmMarkAllRead)
+        editor.putBoolean("confirmMarkAllRead", isConfirmMarkAllRead)
 
         editor.putString("sortTypeEnum", sortType.name)
         editor.putBoolean("sortAscending", sortAscending[sortType] ?: false)

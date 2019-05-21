@@ -156,7 +156,7 @@ class GeneralSettingsDataStore(
                     if (K9.isConfirmDeleteFromNotification) add("delete_notif")
                     if (K9.isConfirmSpam) add("spam")
                     if (K9.isConfirmDiscardMessage) add("discard")
-                    if (K9.confirmMarkAllRead()) add("mark_all_read")
+                    if (K9.isConfirmMarkAllRead) add("mark_all_read")
                 }
             }
             "messageview_visible_refile_actions" -> {
@@ -187,7 +187,7 @@ class GeneralSettingsDataStore(
                 K9.isConfirmDeleteFromNotification = "delete_notif" in checkedValues
                 K9.isConfirmSpam = "spam" in checkedValues
                 K9.isConfirmDiscardMessage = "discard" in checkedValues
-                K9.setConfirmMarkAllRead("mark_all_read" in checkedValues)
+                K9.isConfirmMarkAllRead = "mark_all_read" in checkedValues
             }
             "messageview_visible_refile_actions" -> {
                 K9.isMessageViewDeleteActionVisible = "delete" in checkedValues
