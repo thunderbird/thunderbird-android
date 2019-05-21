@@ -882,7 +882,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     private void onDelete(List<MessageReference> messages) {
-        if (K9.confirmDelete()) {
+        if (K9.isConfirmDelete()) {
             // remember the message selection for #onCreateDialog(int)
             activeMessages = messages;
             showDialog(R.id.dialog_confirm_delete);

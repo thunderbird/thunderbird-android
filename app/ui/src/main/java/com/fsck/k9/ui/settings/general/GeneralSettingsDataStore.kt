@@ -151,7 +151,7 @@ class GeneralSettingsDataStore(
         return when (key) {
             "confirm_actions" -> {
                 mutableSetOf<String>().apply {
-                    if (K9.confirmDelete()) add("delete")
+                    if (K9.isConfirmDelete) add("delete")
                     if (K9.confirmDeleteStarred()) add("delete_starred")
                     if (K9.confirmDeleteFromNotification()) add("delete_notif")
                     if (K9.confirmSpam()) add("spam")
@@ -182,7 +182,7 @@ class GeneralSettingsDataStore(
         val checkedValues = values ?: emptySet<String>()
         when (key) {
             "confirm_actions" -> {
-                K9.setConfirmDelete("delete" in checkedValues)
+                K9.isConfirmDelete = "delete" in checkedValues
                 K9.setConfirmDeleteStarred("delete_starred" in checkedValues)
                 K9.setConfirmDeleteFromNotification("delete_notif" in checkedValues)
                 K9.setConfirmSpam("spam" in checkedValues)
