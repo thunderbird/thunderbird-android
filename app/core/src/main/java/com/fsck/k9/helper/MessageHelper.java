@@ -84,7 +84,7 @@ public class MessageHelper {
     public static CharSequence toFriendly(Address address, Contacts contacts) {
         return toFriendly(address,contacts,
                 K9.isShowCorrespondentNames(),
-                K9.changeContactNameColor(),
+                K9.isChangeContactNameColor(),
                 K9.getContactNameColor());
     }
 

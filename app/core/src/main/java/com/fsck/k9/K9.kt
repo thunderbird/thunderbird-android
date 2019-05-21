@@ -218,7 +218,8 @@ object K9 : KoinComponent {
     @JvmStatic
     var isShowContactName = false
 
-    private var changeContactNameColor = false
+    @JvmStatic
+    var isChangeContactNameColor = false
 
     @JvmStatic
     var contactNameColor = 0xff00008f.toInt()
@@ -321,15 +322,6 @@ object K9 : KoinComponent {
             DEBUG = debug
             updateLoggingStatus()
         }
-
-    @JvmStatic
-    fun changeContactNameColor(): Boolean {
-        return changeContactNameColor
-    }
-
-    fun setChangeContactNameColor(changeContactNameColor: Boolean) {
-        K9.changeContactNameColor = changeContactNameColor
-    }
 
     @JvmStatic
     fun messageViewFixedWidthFont(): Boolean {
@@ -542,7 +534,7 @@ object K9 : KoinComponent {
         isShowCorrespondentNames = storage.getBoolean("showCorrespondentNames", true)
         isShowContactName = storage.getBoolean("showContactName", false)
         showContactPicture = storage.getBoolean("showContactPicture", true)
-        changeContactNameColor = storage.getBoolean("changeRegisteredNameColor", false)
+        isChangeContactNameColor = storage.getBoolean("changeRegisteredNameColor", false)
         contactNameColor = storage.getInt("registeredNameColor", -0xffff71)
         messageViewFixedWidthFont = storage.getBoolean("messageViewFixedWidthFont", false)
         messageViewReturnToList = storage.getBoolean("messageViewReturnToList", false)
@@ -662,7 +654,7 @@ object K9 : KoinComponent {
         editor.putBoolean("showCorrespondentNames", isShowCorrespondentNames)
         editor.putBoolean("showContactName", isShowContactName)
         editor.putBoolean("showContactPicture", showContactPicture)
-        editor.putBoolean("changeRegisteredNameColor", changeContactNameColor)
+        editor.putBoolean("changeRegisteredNameColor", isChangeContactNameColor)
         editor.putInt("registeredNameColor", contactNameColor)
         editor.putBoolean("messageViewFixedWidthFont", messageViewFixedWidthFont)
         editor.putBoolean("messageViewReturnToList", messageViewReturnToList)

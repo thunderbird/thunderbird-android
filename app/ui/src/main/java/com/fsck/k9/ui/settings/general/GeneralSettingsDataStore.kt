@@ -28,7 +28,7 @@ class GeneralSettingsDataStore(
             "messagelist_show_correspondent_names" -> K9.isShowCorrespondentNames
             "messagelist_sender_above_subject" -> K9.isMessageListSenderAboveSubject
             "messagelist_show_contact_name" -> K9.isShowContactName
-            "messagelist_change_contact_name_color" -> K9.changeContactNameColor()
+            "messagelist_change_contact_name_color" -> K9.isChangeContactNameColor
             "messagelist_show_contact_picture" -> K9.showContactPicture()
             "messagelist_colorize_missing_contact_pictures" -> K9.isColorizeMissingContactPictures
             "messagelist_background_as_unread_indicator" -> K9.useBackgroundAsUnreadIndicator()
@@ -62,7 +62,7 @@ class GeneralSettingsDataStore(
             "messagelist_show_correspondent_names" -> K9.isShowCorrespondentNames = value
             "messagelist_sender_above_subject" -> K9.isMessageListSenderAboveSubject = value
             "messagelist_show_contact_name" -> K9.isShowContactName = value
-            "messagelist_change_contact_name_color" -> K9.setChangeContactNameColor(value)
+            "messagelist_change_contact_name_color" -> K9.isChangeContactNameColor = value
             "messagelist_show_contact_picture" -> K9.setShowContactPicture(value)
             "messagelist_colorize_missing_contact_pictures" -> K9.isColorizeMissingContactPictures = value
             "messagelist_background_as_unread_indicator" -> K9.setUseBackgroundAsUnreadIndicator(value)
