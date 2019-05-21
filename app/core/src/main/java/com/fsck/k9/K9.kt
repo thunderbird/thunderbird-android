@@ -209,7 +209,9 @@ object K9 : KoinComponent {
     @JvmStatic
     var messageListPreviewLines = 2
 
-    private var showCorrespondentNames = true
+    @JvmStatic
+    var isShowCorrespondentNames = true
+
     private var messageListSenderAboveSubject = false
     private var showContactName = false
     private var changeContactNameColor = false
@@ -317,21 +319,12 @@ object K9 : KoinComponent {
         }
 
     @JvmStatic
-    fun showCorrespondentNames(): Boolean {
-        return showCorrespondentNames
-    }
-
-    @JvmStatic
     fun messageListSenderAboveSubject(): Boolean {
         return messageListSenderAboveSubject
     }
 
     fun setMessageListSenderAboveSubject(sender: Boolean) {
         messageListSenderAboveSubject = sender
-    }
-
-    fun setShowCorrespondentNames(showCorrespondentNames: Boolean) {
-        K9.showCorrespondentNames = showCorrespondentNames
     }
 
     @JvmStatic
@@ -560,7 +553,7 @@ object K9 : KoinComponent {
         quietTimeStarts = storage.getString("quietTimeStarts", "21:00")
         quietTimeEnds = storage.getString("quietTimeEnds", "7:00")
 
-        showCorrespondentNames = storage.getBoolean("showCorrespondentNames", true)
+        isShowCorrespondentNames = storage.getBoolean("showCorrespondentNames", true)
         showContactName = storage.getBoolean("showContactName", false)
         showContactPicture = storage.getBoolean("showContactPicture", true)
         changeContactNameColor = storage.getBoolean("changeRegisteredNameColor", false)
@@ -680,7 +673,7 @@ object K9 : KoinComponent {
         editor.putBoolean("messageListStars", isShowMessageListStars)
         editor.putInt("messageListPreviewLines", messageListPreviewLines)
         editor.putBoolean("messageListCheckboxes", isShowMessageListCheckboxes)
-        editor.putBoolean("showCorrespondentNames", showCorrespondentNames)
+        editor.putBoolean("showCorrespondentNames", isShowCorrespondentNames)
         editor.putBoolean("showContactName", showContactName)
         editor.putBoolean("showContactPicture", showContactPicture)
         editor.putBoolean("changeRegisteredNameColor", changeContactNameColor)

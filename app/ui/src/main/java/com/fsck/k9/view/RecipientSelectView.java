@@ -631,7 +631,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         }
 
         public String getDisplayNameOrAddress() {
-            final String displayName = K9.showCorrespondentNames() ? getDisplayName() : null;
+            final String displayName = K9.isShowCorrespondentNames() ? getDisplayName() : null;
 
             if (displayName != null) {
                 return displayName;

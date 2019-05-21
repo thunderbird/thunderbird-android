@@ -25,7 +25,7 @@ class GeneralSettingsDataStore(
             "folderlist_wrap_folder_name" -> K9.wrapFolderNames()
             "messagelist_stars" -> K9.isShowMessageListStars
             "messagelist_checkboxes" -> K9.isShowMessageListCheckboxes
-            "messagelist_show_correspondent_names" -> K9.showCorrespondentNames()
+            "messagelist_show_correspondent_names" -> K9.isShowCorrespondentNames
             "messagelist_sender_above_subject" -> K9.messageListSenderAboveSubject()
             "messagelist_show_contact_name" -> K9.showContactName()
             "messagelist_change_contact_name_color" -> K9.changeContactNameColor()
@@ -59,7 +59,7 @@ class GeneralSettingsDataStore(
             "folderlist_wrap_folder_name" -> K9.setWrapFolderNames(value)
             "messagelist_stars" -> K9.isShowMessageListStars = value
             "messagelist_checkboxes" -> K9.isShowMessageListCheckboxes = value
-            "messagelist_show_correspondent_names" -> K9.setShowCorrespondentNames(value)
+            "messagelist_show_correspondent_names" -> K9.isShowCorrespondentNames = value
             "messagelist_sender_above_subject" -> K9.setMessageListSenderAboveSubject(value)
             "messagelist_show_contact_name" -> K9.setShowContactName(value)
             "messagelist_change_contact_name_color" -> K9.setChangeContactNameColor(value)
