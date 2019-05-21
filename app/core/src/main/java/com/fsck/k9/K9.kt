@@ -229,7 +229,9 @@ object K9 : KoinComponent {
     @JvmStatic
     var isUseMessageViewFixedWidthFont = false
 
-    private var messageViewReturnToList = false
+    @JvmStatic
+    var isMessageViewReturnToList = false
+
     private var messageViewShowNext = false
     var isGesturesEnabled = true
 
@@ -325,15 +327,6 @@ object K9 : KoinComponent {
             DEBUG = debug
             updateLoggingStatus()
         }
-
-    @JvmStatic
-    fun messageViewReturnToList(): Boolean {
-        return messageViewReturnToList
-    }
-
-    fun setMessageViewReturnToList(messageViewReturnToList: Boolean) {
-        K9.messageViewReturnToList = messageViewReturnToList
-    }
 
     @JvmStatic
     fun messageViewShowNext(): Boolean {
@@ -531,7 +524,7 @@ object K9 : KoinComponent {
         isChangeContactNameColor = storage.getBoolean("changeRegisteredNameColor", false)
         contactNameColor = storage.getInt("registeredNameColor", -0xffff71)
         isUseMessageViewFixedWidthFont = storage.getBoolean("messageViewFixedWidthFont", false)
-        messageViewReturnToList = storage.getBoolean("messageViewReturnToList", false)
+        isMessageViewReturnToList = storage.getBoolean("messageViewReturnToList", false)
         messageViewShowNext = storage.getBoolean("messageViewShowNext", false)
         wrapFolderNames = storage.getBoolean("wrapFolderNames", false)
         hideUserAgent = storage.getBoolean("hideUserAgent", false)
@@ -651,7 +644,7 @@ object K9 : KoinComponent {
         editor.putBoolean("changeRegisteredNameColor", isChangeContactNameColor)
         editor.putInt("registeredNameColor", contactNameColor)
         editor.putBoolean("messageViewFixedWidthFont", isUseMessageViewFixedWidthFont)
-        editor.putBoolean("messageViewReturnToList", messageViewReturnToList)
+        editor.putBoolean("messageViewReturnToList", isMessageViewReturnToList)
         editor.putBoolean("messageViewShowNext", messageViewShowNext)
         editor.putBoolean("wrapFolderNames", wrapFolderNames)
         editor.putBoolean("hideUserAgent", hideUserAgent)

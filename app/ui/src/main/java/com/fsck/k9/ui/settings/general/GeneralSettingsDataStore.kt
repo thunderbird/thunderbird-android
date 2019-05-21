@@ -37,7 +37,7 @@ class GeneralSettingsDataStore(
             "messageview_autofit_width" -> K9.isAutoFitWidth
             "start_integrated_inbox" -> K9.isStartInUnifiedInbox
             "gestures" -> K9.isGesturesEnabled
-            "messageview_return_to_list" -> K9.messageViewReturnToList()
+            "messageview_return_to_list" -> K9.isMessageViewReturnToList
             "messageview_show_next" -> K9.messageViewShowNext()
             "quiet_time_enabled" -> K9.quietTimeEnabled
             "disable_notifications_during_quiet_time" -> !K9.isNotificationDuringQuietTimeEnabled
@@ -71,7 +71,7 @@ class GeneralSettingsDataStore(
             "messageview_autofit_width" -> K9.isAutoFitWidth = value
             "start_integrated_inbox" -> K9.isStartInUnifiedInbox = value
             "gestures" -> K9.isGesturesEnabled = value
-            "messageview_return_to_list" -> K9.setMessageViewReturnToList(value)
+            "messageview_return_to_list" -> K9.isMessageViewReturnToList = value
             "messageview_show_next" -> K9.setMessageViewShowNext(value)
             "quiet_time_enabled" -> K9.quietTimeEnabled = value
             "disable_notifications_during_quiet_time" -> K9.isNotificationDuringQuietTimeEnabled = !value

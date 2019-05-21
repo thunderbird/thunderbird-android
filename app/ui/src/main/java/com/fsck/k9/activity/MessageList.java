@@ -1462,7 +1462,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     @Override
     public void showNextMessageOrReturn() {
-        if (K9.messageViewReturnToList() || !showLogicalNextMessage()) {
+        if (K9.isMessageViewReturnToList() || !showLogicalNextMessage()) {
             if (displayMode == DisplayMode.SPLIT_VIEW) {
                 showMessageViewPlaceHolder();
             } else {
