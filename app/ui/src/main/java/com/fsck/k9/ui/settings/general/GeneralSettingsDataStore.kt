@@ -33,7 +33,7 @@ class GeneralSettingsDataStore(
             "messagelist_colorize_missing_contact_pictures" -> K9.isColorizeMissingContactPictures
             "messagelist_background_as_unread_indicator" -> K9.useBackgroundAsUnreadIndicator()
             "threaded_view" -> K9.isThreadedViewEnabled
-            "messageview_fixedwidth_font" -> K9.messageViewFixedWidthFont()
+            "messageview_fixedwidth_font" -> K9.isUseMessageViewFixedWidthFont
             "messageview_autofit_width" -> K9.isAutoFitWidth
             "start_integrated_inbox" -> K9.isStartInUnifiedInbox
             "gestures" -> K9.isGesturesEnabled
@@ -67,7 +67,7 @@ class GeneralSettingsDataStore(
             "messagelist_colorize_missing_contact_pictures" -> K9.isColorizeMissingContactPictures = value
             "messagelist_background_as_unread_indicator" -> K9.setUseBackgroundAsUnreadIndicator(value)
             "threaded_view" -> K9.isThreadedViewEnabled = value
-            "messageview_fixedwidth_font" -> K9.setMessageViewFixedWidthFont(value)
+            "messageview_fixedwidth_font" -> K9.isUseMessageViewFixedWidthFont = value
             "messageview_autofit_width" -> K9.isAutoFitWidth = value
             "start_integrated_inbox" -> K9.isStartInUnifiedInbox = value
             "gestures" -> K9.isGesturesEnabled = value

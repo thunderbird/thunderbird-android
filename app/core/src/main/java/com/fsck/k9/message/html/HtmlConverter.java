@@ -93,7 +93,7 @@ public class HtmlConverter {
      *      {@code <head>} element when messages are displayed.
      */
     static String cssStylePre() {
-        final String font = K9.messageViewFixedWidthFont()
+        final String font = K9.isUseMessageViewFixedWidthFont()
                 ? "monospace"
                 : "sans-serif";
         return "<style type=\"text/css\"> pre." + EmailTextToHtml.K9MAIL_CSS_CLASS +

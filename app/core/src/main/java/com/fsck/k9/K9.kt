@@ -225,7 +225,10 @@ object K9 : KoinComponent {
     var contactNameColor = 0xff00008f.toInt()
 
     private var showContactPicture = true
-    private var messageViewFixedWidthFont = false
+
+    @JvmStatic
+    var isUseMessageViewFixedWidthFont = false
+
     private var messageViewReturnToList = false
     private var messageViewShowNext = false
     var isGesturesEnabled = true
@@ -322,15 +325,6 @@ object K9 : KoinComponent {
             DEBUG = debug
             updateLoggingStatus()
         }
-
-    @JvmStatic
-    fun messageViewFixedWidthFont(): Boolean {
-        return messageViewFixedWidthFont
-    }
-
-    fun setMessageViewFixedWidthFont(fixed: Boolean) {
-        messageViewFixedWidthFont = fixed
-    }
 
     @JvmStatic
     fun messageViewReturnToList(): Boolean {
@@ -536,7 +530,7 @@ object K9 : KoinComponent {
         showContactPicture = storage.getBoolean("showContactPicture", true)
         isChangeContactNameColor = storage.getBoolean("changeRegisteredNameColor", false)
         contactNameColor = storage.getInt("registeredNameColor", -0xffff71)
-        messageViewFixedWidthFont = storage.getBoolean("messageViewFixedWidthFont", false)
+        isUseMessageViewFixedWidthFont = storage.getBoolean("messageViewFixedWidthFont", false)
         messageViewReturnToList = storage.getBoolean("messageViewReturnToList", false)
         messageViewShowNext = storage.getBoolean("messageViewShowNext", false)
         wrapFolderNames = storage.getBoolean("wrapFolderNames", false)
@@ -656,7 +650,7 @@ object K9 : KoinComponent {
         editor.putBoolean("showContactPicture", showContactPicture)
         editor.putBoolean("changeRegisteredNameColor", isChangeContactNameColor)
         editor.putInt("registeredNameColor", contactNameColor)
-        editor.putBoolean("messageViewFixedWidthFont", messageViewFixedWidthFont)
+        editor.putBoolean("messageViewFixedWidthFont", isUseMessageViewFixedWidthFont)
         editor.putBoolean("messageViewReturnToList", messageViewReturnToList)
         editor.putBoolean("messageViewShowNext", messageViewShowNext)
         editor.putBoolean("wrapFolderNames", wrapFolderNames)
