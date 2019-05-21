@@ -21,7 +21,7 @@ class GeneralSettingsDataStore(
             "animations" -> K9.showAnimations()
             "measure_accounts" -> K9.measureAccounts()
             "count_search" -> K9.countSearchMessages()
-            "hide_special_accounts" -> K9.isHideSpecialAccounts()
+            "hide_special_accounts" -> K9.isHideSpecialAccounts
             "folderlist_wrap_folder_name" -> K9.wrapFolderNames()
             "messagelist_stars" -> K9.messageListStars()
             "messagelist_checkboxes" -> K9.messageListCheckboxes()
@@ -30,20 +30,20 @@ class GeneralSettingsDataStore(
             "messagelist_show_contact_name" -> K9.showContactName()
             "messagelist_change_contact_name_color" -> K9.changeContactNameColor()
             "messagelist_show_contact_picture" -> K9.showContactPicture()
-            "messagelist_colorize_missing_contact_pictures" -> K9.isColorizeMissingContactPictures()
+            "messagelist_colorize_missing_contact_pictures" -> K9.isColorizeMissingContactPictures
             "messagelist_background_as_unread_indicator" -> K9.useBackgroundAsUnreadIndicator()
-            "threaded_view" -> K9.isThreadedViewEnabled()
+            "threaded_view" -> K9.isThreadedViewEnabled
             "messageview_fixedwidth_font" -> K9.messageViewFixedWidthFont()
             "messageview_autofit_width" -> K9.autofitWidth()
             "start_integrated_inbox" -> K9.startIntegratedInbox()
             "gestures" -> K9.gesturesEnabled()
             "messageview_return_to_list" -> K9.messageViewReturnToList()
             "messageview_show_next" -> K9.messageViewShowNext()
-            "quiet_time_enabled" -> K9.getQuietTimeEnabled()
-            "disable_notifications_during_quiet_time" -> !K9.isNotificationDuringQuietTimeEnabled()
+            "quiet_time_enabled" -> K9.quietTimeEnabled
+            "disable_notifications_during_quiet_time" -> !K9.isNotificationDuringQuietTimeEnabled
             "privacy_hide_useragent" -> K9.hideUserAgent()
             "privacy_hide_timezone" -> K9.hideTimeZone()
-            "debug_logging" -> K9.isDebug()
+            "debug_logging" -> K9.isDebug
             "sensitive_logging" -> K9.DEBUG_SENSITIVE
             else -> defValue
         }
@@ -55,7 +55,7 @@ class GeneralSettingsDataStore(
             "animations" -> K9.setAnimations(value)
             "measure_accounts" -> K9.setMeasureAccounts(value)
             "count_search" -> K9.setCountSearchMessages(value)
-            "hide_special_accounts" -> K9.setHideSpecialAccounts(value)
+            "hide_special_accounts" -> K9.isHideSpecialAccounts = value
             "folderlist_wrap_folder_name" -> K9.setWrapFolderNames(value)
             "messagelist_stars" -> K9.setMessageListStars(value)
             "messagelist_checkboxes" -> K9.setMessageListCheckboxes(value)
@@ -64,20 +64,20 @@ class GeneralSettingsDataStore(
             "messagelist_show_contact_name" -> K9.setShowContactName(value)
             "messagelist_change_contact_name_color" -> K9.setChangeContactNameColor(value)
             "messagelist_show_contact_picture" -> K9.setShowContactPicture(value)
-            "messagelist_colorize_missing_contact_pictures" -> K9.setColorizeMissingContactPictures(value)
+            "messagelist_colorize_missing_contact_pictures" -> K9.isColorizeMissingContactPictures = value
             "messagelist_background_as_unread_indicator" -> K9.setUseBackgroundAsUnreadIndicator(value)
-            "threaded_view" -> K9.setThreadedViewEnabled(value)
+            "threaded_view" -> K9.isThreadedViewEnabled = value
             "messageview_fixedwidth_font" -> K9.setMessageViewFixedWidthFont(value)
             "messageview_autofit_width" -> K9.setAutofitWidth(value)
             "start_integrated_inbox" -> K9.setStartIntegratedInbox(value)
             "gestures" -> K9.setGesturesEnabled(value)
             "messageview_return_to_list" -> K9.setMessageViewReturnToList(value)
             "messageview_show_next" -> K9.setMessageViewShowNext(value)
-            "quiet_time_enabled" -> K9.setQuietTimeEnabled(value)
-            "disable_notifications_during_quiet_time" -> K9.setNotificationDuringQuietTimeEnabled(!value)
+            "quiet_time_enabled" -> K9.quietTimeEnabled = value
+            "disable_notifications_during_quiet_time" -> K9.isNotificationDuringQuietTimeEnabled = !value
             "privacy_hide_useragent" -> K9.setHideUserAgent(value)
             "privacy_hide_timezone" -> K9.setHideTimeZone(value)
-            "debug_logging" -> K9.setDebug(value)
+            "debug_logging" -> K9.isDebug = value
             "sensitive_logging" -> K9.DEBUG_SENSITIVE = value
             else -> return
         }
@@ -87,14 +87,14 @@ class GeneralSettingsDataStore(
 
     override fun getInt(key: String?, defValue: Int): Int {
         return when (key) {
-            "messagelist_contact_name_color" -> K9.getContactNameColor()
+            "messagelist_contact_name_color" -> K9.contactNameColor
             else -> defValue
         }
     }
 
     override fun putInt(key: String?, value: Int) {
         when (key) {
-            "messagelist_contact_name_color" -> K9.setContactNameColor(value)
+            "messagelist_contact_name_color" -> K9.contactNameColor = value
             else -> return
         }
 
@@ -103,19 +103,19 @@ class GeneralSettingsDataStore(
 
     override fun getString(key: String, defValue: String?): String? {
         return when (key) {
-            "language" -> K9.getK9Language()
-            "theme" -> themeToString(K9.getK9Theme())
-            "fixed_message_view_theme" -> themeToString(K9.getK9MessageViewThemeSetting())
-            "message_compose_theme" -> themeToString(K9.getK9ComposerThemeSetting())
-            "messageViewTheme" -> themeToString(K9.getK9MessageViewThemeSetting())
+            "language" -> K9.k9Language
+            "theme" -> themeToString(K9.k9Theme)
+            "fixed_message_view_theme" -> themeToString(K9.k9MessageViewThemeSetting)
+            "message_compose_theme" -> themeToString(K9.k9ComposerThemeSetting)
+            "messageViewTheme" -> themeToString(K9.k9MessageViewThemeSetting)
             "messagelist_preview_lines" -> K9.messageListPreviewLines().toString()
-            "splitview_mode" -> K9.getSplitViewMode().name
-            "notification_quick_delete" -> K9.getNotificationQuickDeleteBehaviour().name
-            "lock_screen_notification_visibility" -> K9.getLockScreenNotificationVisibility().name
+            "splitview_mode" -> K9.splitViewMode.name
+            "notification_quick_delete" -> K9.notificationQuickDeleteBehaviour.name
+            "lock_screen_notification_visibility" -> K9.lockScreenNotificationVisibility.name
             "background_ops" -> K9.getBackgroundOps().name
-            "notification_hide_subject" -> K9.getNotificationHideSubject().name
-            "quiet_time_starts" -> K9.getQuietTimeStarts()
-            "quiet_time_ends" -> K9.getQuietTimeEnds()
+            "notification_hide_subject" -> K9.notificationHideSubject.name
+            "quiet_time_starts" -> K9.quietTimeStarts
+            "quiet_time_ends" -> K9.quietTimeEnds
             else -> defValue
         }
     }
@@ -126,17 +126,21 @@ class GeneralSettingsDataStore(
         when (key) {
             "language" -> setLanguage(value)
             "theme" -> setTheme(value)
-            "fixed_message_view_theme" -> K9.setK9MessageViewThemeSetting(stringToTheme(value))
-            "message_compose_theme" -> K9.setK9ComposerThemeSetting(stringToTheme(value))
-            "messageViewTheme" -> K9.setK9MessageViewThemeSetting(stringToTheme(value))
+            "fixed_message_view_theme" -> K9.k9MessageViewThemeSetting = stringToTheme(value)
+            "message_compose_theme" -> K9.k9ComposerThemeSetting = stringToTheme(value)
+            "messageViewTheme" -> K9.k9MessageViewThemeSetting = stringToTheme(value)
             "messagelist_preview_lines" -> K9.setMessageListPreviewLines(value.toInt())
-            "splitview_mode" -> K9.setSplitViewMode(K9.SplitViewMode.valueOf(value))
-            "notification_quick_delete" -> K9.setNotificationQuickDeleteBehaviour(K9.NotificationQuickDelete.valueOf(value))
-            "lock_screen_notification_visibility" -> K9.setLockScreenNotificationVisibility(K9.LockScreenNotificationVisibility.valueOf(value))
+            "splitview_mode" -> K9.splitViewMode = K9.SplitViewMode.valueOf(value)
+            "notification_quick_delete" -> {
+                K9.notificationQuickDeleteBehaviour = K9.NotificationQuickDelete.valueOf(value)
+            }
+            "lock_screen_notification_visibility" -> {
+                K9.lockScreenNotificationVisibility = K9.LockScreenNotificationVisibility.valueOf(value)
+            }
             "background_ops" -> setBackgroundOps(value)
-            "notification_hide_subject" -> K9.setNotificationHideSubject(K9.NotificationHideSubject.valueOf(value))
-            "quiet_time_starts" -> K9.setQuietTimeStarts(value)
-            "quiet_time_ends" -> K9.setQuietTimeEnds(value)
+            "notification_hide_subject" -> K9.notificationHideSubject = K9.NotificationHideSubject.valueOf(value)
+            "quiet_time_starts" -> K9.quietTimeStarts = value
+            "quiet_time_ends" -> K9.quietTimeEnds = value
             else -> return
         }
 
@@ -157,11 +161,11 @@ class GeneralSettingsDataStore(
             }
             "messageview_visible_refile_actions" -> {
                 mutableSetOf<String>().apply {
-                    if (K9.isMessageViewDeleteActionVisible()) add("delete")
-                    if (K9.isMessageViewArchiveActionVisible()) add("archive")
-                    if (K9.isMessageViewMoveActionVisible()) add("move")
-                    if (K9.isMessageViewCopyActionVisible()) add("copy")
-                    if (K9.isMessageViewSpamActionVisible()) add("spam")
+                    if (K9.isMessageViewDeleteActionVisible) add("delete")
+                    if (K9.isMessageViewArchiveActionVisible) add("archive")
+                    if (K9.isMessageViewMoveActionVisible) add("move")
+                    if (K9.isMessageViewCopyActionVisible) add("copy")
+                    if (K9.isMessageViewSpamActionVisible) add("spam")
                 }
             }
             "volume_navigation" -> {
@@ -186,11 +190,11 @@ class GeneralSettingsDataStore(
                 K9.setConfirmMarkAllRead("mark_all_read" in checkedValues)
             }
             "messageview_visible_refile_actions" -> {
-                K9.setMessageViewDeleteActionVisible("delete" in checkedValues)
-                K9.setMessageViewArchiveActionVisible("archive" in checkedValues)
-                K9.setMessageViewMoveActionVisible("move" in checkedValues)
-                K9.setMessageViewCopyActionVisible("copy" in checkedValues)
-                K9.setMessageViewSpamActionVisible("spam" in checkedValues)
+                K9.isMessageViewDeleteActionVisible = "delete" in checkedValues
+                K9.isMessageViewArchiveActionVisible = "archive" in checkedValues
+                K9.isMessageViewMoveActionVisible = "move" in checkedValues
+                K9.isMessageViewCopyActionVisible = "copy" in checkedValues
+                K9.isMessageViewSpamActionVisible = "spam" in checkedValues
             }
             "volume_navigation" -> {
                 K9.setUseVolumeKeysForNavigation("message" in checkedValues)
@@ -212,12 +216,12 @@ class GeneralSettingsDataStore(
     }
 
     private fun setTheme(value: String?) {
-        K9.setK9Theme(stringToTheme(value))
+        K9.k9Theme = stringToTheme(value)
         recreateActivity()
     }
 
-    private fun setLanguage(language: String?) {
-        K9.setK9Language(language)
+    private fun setLanguage(language: String) {
+        K9.k9Language = language
         recreateActivity()
     }
 
