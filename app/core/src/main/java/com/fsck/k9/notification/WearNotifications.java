@@ -227,7 +227,7 @@ class WearNotifications extends BaseNotifications {
     }
 
     private boolean isDeleteActionAvailableForWear() {
-        return isDeleteActionEnabled() && !K9.confirmDeleteFromNotification();
+        return isDeleteActionEnabled() && !K9.isConfirmDeleteFromNotification();
     }
 
     private boolean isArchiveActionAvailableForWear(Account account) {
