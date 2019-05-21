@@ -277,7 +277,9 @@ object K9 : KoinComponent {
     @JvmStatic
     var isWrapFolderNames = false
 
-    private var hideUserAgent = false
+    @JvmStatic
+    var isHideUserAgent = false
+
     private var hideTimeZone = false
 
     @get:Synchronized
@@ -346,15 +348,6 @@ object K9 : KoinComponent {
             DEBUG = debug
             updateLoggingStatus()
         }
-
-    @JvmStatic
-    fun hideUserAgent(): Boolean {
-        return hideUserAgent
-    }
-
-    fun setHideUserAgent(state: Boolean) {
-        hideUserAgent = state
-    }
 
     @JvmStatic
     fun hideTimeZone(): Boolean {
@@ -455,7 +448,7 @@ object K9 : KoinComponent {
         isMessageViewReturnToList = storage.getBoolean("messageViewReturnToList", false)
         isMessageViewShowNext = storage.getBoolean("messageViewShowNext", false)
         isWrapFolderNames = storage.getBoolean("wrapFolderNames", false)
-        hideUserAgent = storage.getBoolean("hideUserAgent", false)
+        isHideUserAgent = storage.getBoolean("hideUserAgent", false)
         hideTimeZone = storage.getBoolean("hideTimeZone", false)
 
         isConfirmDelete = storage.getBoolean("confirmDelete", false)
@@ -575,7 +568,7 @@ object K9 : KoinComponent {
         editor.putBoolean("messageViewReturnToList", isMessageViewReturnToList)
         editor.putBoolean("messageViewShowNext", isMessageViewShowNext)
         editor.putBoolean("wrapFolderNames", isWrapFolderNames)
-        editor.putBoolean("hideUserAgent", hideUserAgent)
+        editor.putBoolean("hideUserAgent", isHideUserAgent)
         editor.putBoolean("hideTimeZone", hideTimeZone)
 
         editor.putString("language", k9Language)

@@ -41,7 +41,7 @@ class GeneralSettingsDataStore(
             "messageview_show_next" -> K9.isMessageViewShowNext
             "quiet_time_enabled" -> K9.quietTimeEnabled
             "disable_notifications_during_quiet_time" -> !K9.isNotificationDuringQuietTimeEnabled
-            "privacy_hide_useragent" -> K9.hideUserAgent()
+            "privacy_hide_useragent" -> K9.isHideUserAgent
             "privacy_hide_timezone" -> K9.hideTimeZone()
             "debug_logging" -> K9.isDebug
             "sensitive_logging" -> K9.DEBUG_SENSITIVE
@@ -75,7 +75,7 @@ class GeneralSettingsDataStore(
             "messageview_show_next" -> K9.isMessageViewShowNext = value
             "quiet_time_enabled" -> K9.quietTimeEnabled = value
             "disable_notifications_during_quiet_time" -> K9.isNotificationDuringQuietTimeEnabled = !value
-            "privacy_hide_useragent" -> K9.setHideUserAgent(value)
+            "privacy_hide_useragent" -> K9.isHideUserAgent = value
             "privacy_hide_timezone" -> K9.setHideTimeZone(value)
             "debug_logging" -> K9.isDebug = value
             "sensitive_logging" -> K9.DEBUG_SENSITIVE = value
