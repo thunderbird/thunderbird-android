@@ -215,8 +215,7 @@ object K9 : KoinComponent {
     private var messageViewFixedWidthFont = false
     private var messageViewReturnToList = false
     private var messageViewShowNext = false
-
-    private var gesturesEnabled = true
+    var isGesturesEnabled = true
     private var useVolumeKeysForNavigation = false
     private var useVolumeKeysForListNavigation = false
     private var startIntegratedInbox = false
@@ -301,14 +300,6 @@ object K9 : KoinComponent {
             DEBUG = debug
             updateLoggingStatus()
         }
-
-    fun gesturesEnabled(): Boolean {
-        return gesturesEnabled
-    }
-
-    fun setGesturesEnabled(gestures: Boolean) {
-        gesturesEnabled = gestures
-    }
 
     @JvmStatic
     fun useVolumeKeysForNavigationEnabled(): Boolean {
@@ -607,7 +598,7 @@ object K9 : KoinComponent {
         isDebug = storage.getBoolean("enableDebugLogging", DEVELOPER_MODE)
         DEBUG_SENSITIVE = storage.getBoolean("enableSensitiveLogging", false)
         animations = storage.getBoolean("animations", true)
-        gesturesEnabled = storage.getBoolean("gesturesEnabled", false)
+        isGesturesEnabled = storage.getBoolean("gesturesEnabled", false)
         useVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
         useVolumeKeysForListNavigation = storage.getBoolean("useVolumeKeysForListNavigation", false)
         startIntegratedInbox = storage.getBoolean("startIntegratedInbox", false)
@@ -729,7 +720,7 @@ object K9 : KoinComponent {
         editor.putBoolean("enableSensitiveLogging", DEBUG_SENSITIVE)
         editor.putString("backgroundOperations", K9.backgroundOps.name)
         editor.putBoolean("animations", animations)
-        editor.putBoolean("gesturesEnabled", gesturesEnabled)
+        editor.putBoolean("gesturesEnabled", isGesturesEnabled)
         editor.putBoolean("useVolumeKeysForNavigation", useVolumeKeysForNavigation)
         editor.putBoolean("useVolumeKeysForListNavigation", useVolumeKeysForListNavigation)
         editor.putBoolean("autofitWidth", autofitWidth)

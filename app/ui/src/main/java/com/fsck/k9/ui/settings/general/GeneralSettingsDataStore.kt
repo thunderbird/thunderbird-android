@@ -36,7 +36,7 @@ class GeneralSettingsDataStore(
             "messageview_fixedwidth_font" -> K9.messageViewFixedWidthFont()
             "messageview_autofit_width" -> K9.autofitWidth()
             "start_integrated_inbox" -> K9.startIntegratedInbox()
-            "gestures" -> K9.gesturesEnabled()
+            "gestures" -> K9.isGesturesEnabled
             "messageview_return_to_list" -> K9.messageViewReturnToList()
             "messageview_show_next" -> K9.messageViewShowNext()
             "quiet_time_enabled" -> K9.quietTimeEnabled
@@ -70,7 +70,7 @@ class GeneralSettingsDataStore(
             "messageview_fixedwidth_font" -> K9.setMessageViewFixedWidthFont(value)
             "messageview_autofit_width" -> K9.setAutofitWidth(value)
             "start_integrated_inbox" -> K9.setStartIntegratedInbox(value)
-            "gestures" -> K9.setGesturesEnabled(value)
+            "gestures" -> K9.isGesturesEnabled = value
             "messageview_return_to_list" -> K9.setMessageViewReturnToList(value)
             "messageview_show_next" -> K9.setMessageViewShowNext(value)
             "quiet_time_enabled" -> K9.quietTimeEnabled = value
