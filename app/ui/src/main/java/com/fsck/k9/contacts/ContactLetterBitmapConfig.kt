@@ -14,7 +14,7 @@ class ContactLetterBitmapConfig(context: Context) {
     init {
         defaultBackgroundColor = if (hasDefaultBackgroundColor) {
             val outValue = TypedValue()
-            val themedContext = ContextThemeWrapper(context, K9ActivityCommon.getK9ThemeResourceId())
+            val themedContext = ContextThemeWrapper(context, K9ActivityCommon.k9ThemeResourceId)
             themedContext.theme.resolveAttribute(R.attr.contactPictureFallbackDefaultBackgroundColor, outValue, true)
             outValue.data
         } else {

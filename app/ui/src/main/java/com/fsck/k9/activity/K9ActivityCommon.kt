@@ -1,21 +1,19 @@
-package com.fsck.k9.activity;
+package com.fsck.k9.activity
 
-import java.util.Locale;
+import java.util.Locale
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
-import android.text.TextUtils;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
+import android.app.Activity
+import android.content.Context
+import android.content.res.Resources
+import android.text.TextUtils
+import android.view.GestureDetector
+import android.view.MotionEvent
 
-import com.fsck.k9.K9;
-import com.fsck.k9.K9.Theme;
-import com.fsck.k9.activity.misc.SwipeGestureDetector;
-import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
-import com.fsck.k9.ui.R;
+import com.fsck.k9.K9
+import com.fsck.k9.K9.Theme
+import com.fsck.k9.activity.misc.SwipeGestureDetector
+import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener
+import com.fsck.k9.ui.R
 
 
 /**
@@ -24,106 +22,85 @@ import com.fsck.k9.ui.R;
  * @see K9Activity
  * @see K9ListActivity
  */
-public class K9ActivityCommon {
-    /**
-     * Creates a new instance of {@link K9ActivityCommon} bound to the specified activity.
-     *
-     * @param activity
-     *         The {@link Activity} the returned {@code K9ActivityCommon} instance will be bound to.
-     *
-     * @return The {@link K9ActivityCommon} instance that will provide the base functionality of the
-     *         "K9" activities.
-     */
-    public static K9ActivityCommon newInstance(Activity activity) {
-        return new K9ActivityCommon(activity);
-    }
+class K9ActivityCommon private constructor(private val activity: Activity) {
+    private var gestureDetector: GestureDetector? = null
 
-    public static void setLanguage(Context context, String language) {
-        Locale locale;
-        if (TextUtils.isEmpty(language)) {
-            locale = Resources.getSystem().getConfiguration().locale;
-        } else if (language.length() == 5 && language.charAt(2) == '_') {
-            // language is in the form: en_US
-            locale = new Locale(language.substring(0, 2), language.substring(3));
-        } else {
-            locale = new Locale(language);
-        }
-
-        Resources resources = context.getResources();
-        Configuration config = resources.getConfiguration();
-        config.locale = locale;
-        resources.updateConfiguration(config, resources.getDisplayMetrics());
-    }
-
-
-    /**
-     * Base activities need to implement this interface.
-     *
-     * <p>The implementing class simply has to call through to the implementation of these methods
-     * in {@link K9ActivityCommon}.</p>
-     */
-    public interface K9ActivityMagic {
-        void setupGestureDetector(OnSwipeGestureListener listener);
-    }
-
-
-    private Activity mActivity;
-    private GestureDetector mGestureDetector;
-
-
-    private K9ActivityCommon(Activity activity) {
-        mActivity = activity;
-        setLanguage(mActivity, K9.getK9Language());
-        mActivity.setTheme(getK9ThemeResourceId());
+    init {
+        setLanguage(activity, K9.k9Language)
+        activity.setTheme(k9ThemeResourceId)
     }
 
     /**
-     * Call this before calling {@code super.dispatchTouchEvent(MotionEvent)}.
+     * Call this before calling `super.dispatchTouchEvent(MotionEvent)`.
      */
-    public void preDispatchTouchEvent(MotionEvent event) {
-        if (mGestureDetector != null) {
-            mGestureDetector.onTouchEvent(event);
-        }
-    }
-
-    /**
-     * Get the background color of the theme used for this activity.
-     *
-     * @return The background color of the current theme.
-     */
-    public int getThemeBackgroundColor() {
-        TypedArray array = mActivity.getTheme().obtainStyledAttributes(
-                new int[] { android.R.attr.colorBackground });
-
-        int backgroundColor = array.getColor(0, 0xFF00FF);
-
-        array.recycle();
-
-        return backgroundColor;
+    fun preDispatchTouchEvent(event: MotionEvent) {
+        gestureDetector?.onTouchEvent(event)
     }
 
     /**
      * Call this if you wish to use the swipe gesture detector.
      *
-     * @param listener
-     *         A listener that will be notified if a left to right or right to left swipe has been
-     *         detected.
+     * @param listener A listener that will be notified if a left to right or right to left swipe has been detected.
      */
-    public void setupGestureDetector(OnSwipeGestureListener listener) {
-        mGestureDetector = new GestureDetector(mActivity,
-                new SwipeGestureDetector(mActivity, listener));
+    fun setupGestureDetector(listener: OnSwipeGestureListener) {
+        gestureDetector = GestureDetector(activity, SwipeGestureDetector(activity, listener))
     }
 
-    public static int getK9ThemeResourceId(Theme themeId) {
-        return (themeId == Theme.LIGHT) ? R.style.Theme_K9_Light : R.style.Theme_K9_Dark;
+
+    companion object {
+        /**
+         * Creates a new instance of [K9ActivityCommon] bound to the specified activity.
+         *
+         * @param activity The [Activity] the returned `K9ActivityCommon` instance will be bound to.
+         *
+         * @return The [K9ActivityCommon] instance that will provide the base functionality of the "K9" activities.
+         */
+        @JvmStatic
+        fun newInstance(activity: Activity): K9ActivityCommon {
+            return K9ActivityCommon(activity)
+        }
+
+        @JvmStatic
+        fun setLanguage(context: Context, language: String) {
+            val locale = if (TextUtils.isEmpty(language)) {
+                Resources.getSystem().configuration.locale
+            } else if (language.length == 5 && language[2] == '_') {
+                // language is in the form: en_US
+                Locale(language.substring(0, 2), language.substring(3))
+            } else {
+                Locale(language)
+            }
+
+            val resources = context.resources
+            val config = resources.configuration
+            config.locale = locale
+            resources.updateConfiguration(config, resources.displayMetrics)
+        }
+
+        @JvmStatic
+        fun getK9ThemeResourceId(themeId: Theme): Int {
+            return if (themeId === Theme.LIGHT) R.style.Theme_K9_Light else R.style.Theme_K9_Dark
+        }
+
+        @JvmStatic
+        val k9ActionBarThemeResourceId: Int
+            get() = if (k9ThemeResourceId == R.style.Theme_K9_Light)
+                R.style.Theme_K9_Light_ActionBar
+            else
+                R.style.Theme_K9_Dark_ActionBar
+
+        @JvmStatic
+        val k9ThemeResourceId: Int
+            get() = getK9ThemeResourceId(K9.k9Theme)
     }
 
-    public static int getK9ActionBarThemeResourceId() {
-        return (getK9ThemeResourceId() == R.style.Theme_K9_Light) ?
-                R.style.Theme_K9_Light_ActionBar : R.style.Theme_K9_Dark_ActionBar;
-    }
-
-    public static int getK9ThemeResourceId() {
-        return getK9ThemeResourceId(K9.getK9Theme());
+    /**
+     * Base activities need to implement this interface.
+     *
+     * The implementing class simply has to call through to the implementation of these methods
+     * in [K9ActivityCommon].
+     */
+    interface K9ActivityMagic {
+        fun setupGestureDetector(listener: OnSwipeGestureListener)
     }
 }
