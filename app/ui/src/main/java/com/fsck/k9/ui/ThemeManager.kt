@@ -1,6 +1,7 @@
 package com.fsck.k9.ui
 
 import androidx.annotation.StyleRes
+import androidx.appcompat.app.AppCompatDelegate
 import com.fsck.k9.K9
 import com.fsck.k9.K9.AppTheme
 import com.fsck.k9.K9.SubTheme
@@ -19,37 +20,37 @@ class ThemeManager {
         get() = resolveTheme(K9.messageComposeTheme)
 
     @get:StyleRes
-    val appThemeResourceId: Int
-        get() = getThemeResourceId(appTheme)
+    val appThemeResourceId: Int = R.style.Theme_K9_DayNight
 
     @get:StyleRes
-    val appActionBarThemeResourceId: Int
-        get() = when (appTheme) {
-            Theme.LIGHT -> R.style.Theme_K9_Light_ActionBar
-            Theme.DARK -> R.style.Theme_K9_Dark_ActionBar
-        }
+    val appActionBarThemeResourceId: Int = R.style.Theme_K9_DayNight_ActionBar
 
     @get:StyleRes
     val messageViewThemeResourceId: Int
-        get() = getThemeResourceId(messageViewTheme)
+        get() = getSubThemeResourceId(K9.messageViewTheme)
 
     @get:StyleRes
     val messageComposeThemeResourceId: Int
-        get() = getThemeResourceId(messageComposeTheme)
+        get() = getSubThemeResourceId(K9.messageComposeTheme)
 
     @get:StyleRes
-    val dialogThemeResourceId: Int
-        get() = when (appTheme) {
-            Theme.LIGHT -> R.style.Theme_K9_Dialog_Light
-            Theme.DARK -> R.style.Theme_K9_Dialog_Dark
-        }
+    val dialogThemeResourceId: Int = R.style.Theme_K9_Dialog_DayNight
 
     @get:StyleRes
-    val translucentDialogThemeResourceId: Int
-        get() = when (appTheme) {
-            Theme.LIGHT -> R.style.Theme_K9_Dialog_Translucent_Light
-            Theme.DARK -> R.style.Theme_K9_Dialog_Translucent_Dark
+    val translucentDialogThemeResourceId: Int = R.style.Theme_K9_Dialog_Translucent_DayNight
+
+
+    fun init() {
+        updateAppTheme()
+    }
+
+    fun updateAppTheme() {
+        val defaultNightMode = when (appTheme) {
+            Theme.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
+            Theme.DARK -> AppCompatDelegate.MODE_NIGHT_YES
         }
+        AppCompatDelegate.setDefaultNightMode(defaultNightMode)
+    }
 
     fun toggleMessageViewTheme() {
         if (messageViewTheme === Theme.DARK) {
@@ -61,9 +62,10 @@ class ThemeManager {
         K9.saveSettingsAsync()
     }
 
-    private fun getThemeResourceId(theme: Theme): Int = when (theme) {
-        Theme.LIGHT -> R.style.Theme_K9_Light
-        Theme.DARK -> R.style.Theme_K9_Dark
+    private fun getSubThemeResourceId(subTheme: SubTheme): Int = when (subTheme) {
+        SubTheme.LIGHT -> R.style.Theme_K9_Light
+        SubTheme.DARK -> R.style.Theme_K9_Dark
+        SubTheme.USE_GLOBAL -> R.style.Theme_K9_DayNight
     }
 
     private fun resolveTheme(theme: SubTheme): Theme = when (theme) {
