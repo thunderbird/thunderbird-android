@@ -431,13 +431,7 @@ object K9 : KoinComponent {
 
         val notificationHideSubjectSetting = storage.getString("notificationHideSubject", null)
         notificationHideSubject = if (notificationHideSubjectSetting == null) {
-            // If the "notificationHideSubject" setting couldn't be found, the app was probably
-            // updated. Look for the old "keyguardPrivacy" setting and map it to the new enum.
-            if (storage.getBoolean("keyguardPrivacy", false)) {
-                NotificationHideSubject.WHEN_LOCKED
-            } else {
-                NotificationHideSubject.NEVER
-            }
+            NotificationHideSubject.NEVER
         } else {
             NotificationHideSubject.valueOf(notificationHideSubjectSetting)
         }
@@ -483,8 +477,7 @@ object K9 : KoinComponent {
         k9Language = storage.getString("language", "")
 
         var themeValue = storage.getInt("theme", Theme.LIGHT.ordinal)
-        // We used to save the resource ID of the theme. So convert that to the new format if necessary.
-        k9Theme = if (themeValue == Theme.DARK.ordinal || themeValue == android.R.style.Theme) {
+        k9Theme = if (themeValue == Theme.DARK.ordinal) {
             Theme.DARK
         } else {
             Theme.LIGHT
