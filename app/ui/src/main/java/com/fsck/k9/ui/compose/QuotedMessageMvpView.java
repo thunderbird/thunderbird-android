@@ -20,10 +20,12 @@ import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageFormat;
 import com.fsck.k9.ui.EolConvertingEditText;
 import com.fsck.k9.view.MessageWebView;
+import com.fsck.k9.view.WebViewConfigProvider;
 
 
 public class QuotedMessageMvpView {
     private final DisplayHtml displayHtml = DI.get(DisplayHtmlFactory.class).create();
+    private final WebViewConfigProvider webViewConfigProvider = DI.get(WebViewConfigProvider.class);
 
     private final Button mQuotedTextShow;
     private final View mQuotedTextBar;
@@ -43,7 +45,7 @@ public class QuotedMessageMvpView {
         mQuotedText.getInputExtras(true).putBoolean("allowEmoji", true);
 
         mQuotedHTML = messageCompose.findViewById(R.id.quoted_html);
-        mQuotedHTML.configure();
+        mQuotedHTML.configure(webViewConfigProvider.createForMessageCompose());
         // Disable the ability to click links in the quoted HTML page. I think this is a nice feature, but if someone
         // feels this should be a preference (or should go away all together), I'm ok with that too. -achen 20101130
         mQuotedHTML.setWebViewClient(new WebViewClient() {

@@ -39,6 +39,7 @@ import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.view.MessageWebView;
 import com.fsck.k9.view.MessageWebView.OnPageFinishedListener;
+import com.fsck.k9.view.WebViewConfigProvider;
 
 import static android.app.DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED;
 
@@ -61,6 +62,7 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
     private static final int MENU_ITEM_EMAIL_COPY = Menu.FIRST + 2;
 
     private final DisplayHtml displayHtml = DI.get(DisplayHtmlFactory.class).create();
+    private final WebViewConfigProvider webViewConfigProvider = DI.get(WebViewConfigProvider.class);
 
     private MessageWebView mMessageContentView;
     private LinearLayout mAttachments;
@@ -87,7 +89,7 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
 
         mMessageContentView = findViewById(R.id.message_content);
         if (!isInEditMode()) {
-            mMessageContentView.configure();
+            mMessageContentView.configure(webViewConfigProvider.createForMessageView());
         }
         mMessageContentView.setOnCreateContextMenuListener(this);
         mMessageContentView.setVisibility(View.VISIBLE);
