@@ -22,10 +22,13 @@ import com.fsck.k9.ui.R
  * @see K9Activity
  * @see K9ListActivity
  */
-class K9ActivityCommon private constructor(private val activity: Activity) {
+class K9ActivityCommon(private val activity: Activity) {
     private var gestureDetector: GestureDetector? = null
 
-    init {
+    /**
+     * Call this before calling `super.onCreate(Bundle)`.
+     */
+    fun preOnCreate() {
         setLanguage(activity, K9.k9Language)
         activity.setTheme(k9ThemeResourceId)
     }
@@ -48,18 +51,6 @@ class K9ActivityCommon private constructor(private val activity: Activity) {
 
 
     companion object {
-        /**
-         * Creates a new instance of [K9ActivityCommon] bound to the specified activity.
-         *
-         * @param activity The [Activity] the returned `K9ActivityCommon` instance will be bound to.
-         *
-         * @return The [K9ActivityCommon] instance that will provide the base functionality of the "K9" activities.
-         */
-        @JvmStatic
-        fun newInstance(activity: Activity): K9ActivityCommon {
-            return K9ActivityCommon(activity)
-        }
-
         @JvmStatic
         fun setLanguage(context: Context, language: String) {
             val locale = if (TextUtils.isEmpty(language)) {

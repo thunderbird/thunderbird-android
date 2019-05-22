@@ -26,24 +26,24 @@ public abstract class K9Activity extends AppCompatActivity implements K9Activity
     private static final String FRAGMENT_TAG_RATIONALE = "rationale";
 
 
-    private K9ActivityCommon mBase;
+    private final K9ActivityCommon base = new K9ActivityCommon(this);
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        mBase = K9ActivityCommon.newInstance(this);
+        base.preOnCreate();
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        mBase.preDispatchTouchEvent(event);
+        base.preDispatchTouchEvent(event);
         return super.dispatchTouchEvent(event);
     }
 
     @Override
     public void setupGestureDetector(OnSwipeGestureListener listener) {
-        mBase.setupGestureDetector(listener);
+        base.setupGestureDetector(listener);
     }
 
     protected void setLayout(@LayoutRes int layoutResId) {
