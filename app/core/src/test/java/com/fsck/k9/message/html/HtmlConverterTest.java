@@ -7,10 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import com.fsck.k9.K9;
-import com.fsck.k9.K9.Theme;
 import org.apache.commons.io.IOUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -294,58 +291,5 @@ public class HtmlConverterTest {
         String text = "hello\n-- %< -------------- >8 --\nworld\n";
         String result = HtmlConverter.textToHtml(text);
         assertEquals("<pre class=\"k9mail\">hello<hr>world<br></pre>", result);
-    }
-
-    @Test
-    public void wrapMessageContent_addsViewportMetaElement() {
-        String html = HtmlConverter.wrapMessageContent("Some text");
-
-        assertHtmlContainsElement(html, "head > meta[name=viewport]");
-    }
-
-    @Test
-    public void wrapMessageContent_setsDirToAuto() {
-        String html = HtmlConverter.wrapMessageContent("Some text");
-
-        assertHtmlContainsElement(html, "html[dir=auto]");
-    }
-
-    @Test
-    public void wrapMessageContent_addsPreCSS() {
-        K9.setK9MessageViewThemeSetting(Theme.LIGHT);
-
-        String html = HtmlConverter.wrapMessageContent("Some text");
-
-        assertHtmlContainsElement(html, "head > style");
-    }
-
-    @Test
-    public void wrapMessageContent_whenDarkMessageViewTheme_addsDarkThemeCSS() {
-        K9.setK9MessageViewThemeSetting(Theme.DARK);
-
-        String html = HtmlConverter.wrapMessageContent("Some text");
-
-        assertHtmlContainsElement(html, "head > style", 2);
-    }
-
-    @Test
-    public void wrapMessageContent_putsMessageContentInBody() {
-        String content = "Some text";
-
-        String html = HtmlConverter.wrapMessageContent(content);
-
-        assertEquals(content, Jsoup.parse(html).body().text());
-    }
-
-
-    private void assertHtmlContainsElement(String html, String cssQuery) {
-        assertHtmlContainsElement(html, cssQuery, 1);
-    }
-
-    private void assertHtmlContainsElement(String html, String cssQuery, int numberOfExpectedOccurrences) {
-        Document document = Jsoup.parse(html);
-        int numberOfFoundElements = document.select(cssQuery).size();
-        assertEquals("Expected to find '" + cssQuery + "' " + numberOfExpectedOccurrences + " time(s) in:\n" + html,
-                numberOfExpectedOccurrences, numberOfFoundElements);
     }
 }

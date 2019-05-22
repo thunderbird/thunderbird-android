@@ -9,10 +9,12 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.fsck.k9.DI;
 import com.fsck.k9.FontSizes;
+import com.fsck.k9.message.html.DisplayHtml;
+import com.fsck.k9.message.html.DisplayHtmlFactory;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.activity.MessageCompose;
-import com.fsck.k9.message.html.HtmlConverter;
 import com.fsck.k9.mailstore.AttachmentResolver;
 import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageFormat;
@@ -21,6 +23,8 @@ import com.fsck.k9.view.MessageWebView;
 
 
 public class QuotedMessageMvpView {
+    private final DisplayHtml displayHtml = DI.get(DisplayHtmlFactory.class).create();
+
     private final Button mQuotedTextShow;
     private final View mQuotedTextBar;
     private final ImageButton mQuotedTextEdit;
@@ -118,7 +122,7 @@ public class QuotedMessageMvpView {
 
     public void setQuotedHtml(String quotedContent, AttachmentResolver attachmentResolver) {
         mQuotedHTML.displayHtmlContentWithInlineAttachments(
-                HtmlConverter.wrapMessageContent(quotedContent),
+                displayHtml.wrapMessageContent(quotedContent),
                 attachmentResolver, null);
     }
 
