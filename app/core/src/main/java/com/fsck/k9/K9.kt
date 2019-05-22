@@ -149,25 +149,20 @@ object K9 : KoinComponent {
     var k9Language = ""
 
     @JvmStatic
-    var k9Theme = Theme.LIGHT
-        set(theme) {
-            if (theme != Theme.USE_GLOBAL) {
-                field = theme
-            }
-        }
+    var k9Theme = AppTheme.LIGHT
 
     @JvmStatic
-    var k9MessageViewThemeSetting = Theme.USE_GLOBAL
+    var k9MessageViewThemeSetting = SubTheme.USE_GLOBAL
 
     @JvmStatic
-    var k9ComposerThemeSetting = Theme.USE_GLOBAL
+    var k9ComposerThemeSetting = SubTheme.USE_GLOBAL
 
     @JvmStatic
     var isFixedMessageViewTheme = true
         set(theme) {
             field = theme
-            if (!theme && k9MessageViewThemeSetting == Theme.USE_GLOBAL) {
-                k9MessageViewThemeSetting = k9Theme
+            if (!theme && k9MessageViewThemeSetting == SubTheme.USE_GLOBAL) {
+                k9MessageViewThemeSetting = k9Theme.toScreenTheme()
             }
         }
 
@@ -444,10 +439,10 @@ object K9 : KoinComponent {
 
         k9Language = storage.getString("language", "")
 
-        k9Theme = storage.getEnum("theme", Theme.LIGHT)
+        k9Theme = storage.getEnum("theme", AppTheme.LIGHT)
 
-        k9MessageViewThemeSetting = storage.getEnum("messageViewTheme", Theme.USE_GLOBAL)
-        k9ComposerThemeSetting = storage.getEnum("messageComposeTheme", Theme.USE_GLOBAL)
+        k9MessageViewThemeSetting = storage.getEnum("messageViewTheme", SubTheme.USE_GLOBAL)
+        k9ComposerThemeSetting = storage.getEnum("messageComposeTheme", SubTheme.USE_GLOBAL)
         isFixedMessageViewTheme = storage.getBoolean("fixedMessageViewTheme", true)
     }
 
@@ -591,7 +586,17 @@ object K9 : KoinComponent {
     const val BOOT_RECEIVER_WAKE_LOCK_TIMEOUT = 60000
 
 
-    enum class Theme {
+    enum class AppTheme {
+        LIGHT,
+        DARK;
+
+        fun toScreenTheme() = when(this) {
+            LIGHT -> SubTheme.LIGHT
+            DARK -> SubTheme.DARK
+        }
+    }
+
+    enum class SubTheme {
         LIGHT,
         DARK,
         USE_GLOBAL

@@ -2,13 +2,14 @@ package com.fsck.k9.ui
 
 import androidx.annotation.StyleRes
 import com.fsck.k9.K9
+import com.fsck.k9.K9.AppTheme
+import com.fsck.k9.K9.SubTheme
 
 class ThemeManager {
     val appTheme: Theme
         get() = when (K9.k9Theme) {
-            K9.Theme.LIGHT -> Theme.LIGHT
-            K9.Theme.DARK -> Theme.DARK
-            K9.Theme.USE_GLOBAL -> error("App theme must be either LIGHT or DARK")
+            AppTheme.LIGHT -> Theme.LIGHT
+            AppTheme.DARK -> Theme.DARK
         }
 
     val messageViewTheme: Theme
@@ -52,9 +53,9 @@ class ThemeManager {
 
     fun toggleMessageViewTheme() {
         if (messageViewTheme === Theme.DARK) {
-            K9.k9MessageViewThemeSetting = K9.Theme.LIGHT
+            K9.k9MessageViewThemeSetting = SubTheme.LIGHT
         } else {
-            K9.k9MessageViewThemeSetting = K9.Theme.DARK
+            K9.k9MessageViewThemeSetting = SubTheme.DARK
         }
 
         K9.saveSettingsAsync()
@@ -65,10 +66,10 @@ class ThemeManager {
         Theme.DARK -> R.style.Theme_K9_Dark
     }
 
-    private fun resolveTheme(theme: K9.Theme): Theme = when (theme) {
-        K9.Theme.LIGHT -> Theme.LIGHT
-        K9.Theme.DARK -> Theme.DARK
-        K9.Theme.USE_GLOBAL -> appTheme
+    private fun resolveTheme(theme: SubTheme): Theme = when (theme) {
+        SubTheme.LIGHT -> Theme.LIGHT
+        SubTheme.DARK -> Theme.DARK
+        SubTheme.USE_GLOBAL -> appTheme
     }
 }
 
