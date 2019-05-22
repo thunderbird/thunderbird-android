@@ -8,7 +8,7 @@ import com.fsck.k9.activity.K9ActivityCommon
 import com.fsck.k9.ui.R
 
 class ContactLetterBitmapConfig(context: Context) {
-    val hasDefaultBackgroundColor: Boolean = !K9.isColorizeMissingContactPictures()
+    val hasDefaultBackgroundColor: Boolean = !K9.isColorizeMissingContactPictures
     val defaultBackgroundColor: Int
 
     init {

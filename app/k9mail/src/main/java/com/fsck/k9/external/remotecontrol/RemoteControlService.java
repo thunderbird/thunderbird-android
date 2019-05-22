@@ -13,7 +13,6 @@ import com.fsck.k9.K9.BACKGROUND_OPS;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
 import com.fsck.k9.job.K9JobManager;
-import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.service.BootReceiver;
 import com.fsck.k9.service.CoreService;
@@ -129,9 +128,12 @@ public class RemoteControlService extends CoreService {
                                 || K9RemoteControl.K9_BACKGROUND_OPERATIONS_NEVER.equals(backgroundOps)
                                 || K9RemoteControl.K9_BACKGROUND_OPERATIONS_WHEN_CHECKED_AUTO_SYNC.equals(backgroundOps)) {
                             BACKGROUND_OPS newBackgroundOps = BACKGROUND_OPS.valueOf(backgroundOps);
-                            boolean needsReset = K9.setBackgroundOps(newBackgroundOps);
-                            needsPushRestart |= needsReset;
-                            needsReschedule |= needsReset;
+                            BACKGROUND_OPS currentBackgroundOps = K9.getBackgroundOps();
+                            if (newBackgroundOps != currentBackgroundOps) {
+                                K9.setBackgroundOps(newBackgroundOps);
+                                needsPushRestart = true;
+                                needsReschedule = true;
+                            }
                         }
 
                         String theme = intent.getStringExtra(K9_THEME);

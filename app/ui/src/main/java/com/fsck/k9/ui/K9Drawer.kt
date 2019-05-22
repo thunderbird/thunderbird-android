@@ -84,7 +84,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
                 .withActivity(parent)
                 .withHeaderBackground(R.drawable.drawer_header_background)
 
-        if (!K9.isHideSpecialAccounts()) {
+        if (!K9.isHideSpecialAccounts) {
             headerBuilder.addProfiles(ProfileDrawerItem()
                     .withNameShown(true)
                     .withName(R.string.integrated_inbox_title)

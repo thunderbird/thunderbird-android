@@ -41,7 +41,7 @@ class AutocryptTransferMessageCreator(private val stringProvider: AutocryptStrin
             message.subject = subjectText
             message.setHeader("Autocrypt-Setup-Message", "v1")
             message.internalDate = nowDate
-            message.addSentDate(nowDate, K9.hideTimeZone())
+            message.addSentDate(nowDate, K9.isHideTimeZone)
             message.setFrom(address)
             message.setHeader("To", address.toEncodedString())
 

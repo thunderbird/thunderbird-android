@@ -20,7 +20,7 @@ class K9NotificationStrategy(val contacts: Contacts) : NotificationStrategy {
             return false
         }
 
-        if (K9.isQuietTime() && !K9.isNotificationDuringQuietTimeEnabled()) {
+        if (K9.isQuietTime && !K9.isNotificationDuringQuietTimeEnabled) {
             return false
         }
 

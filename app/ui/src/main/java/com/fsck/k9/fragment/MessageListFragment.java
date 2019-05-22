@@ -413,11 +413,11 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         preferences = Preferences.getPreferences(appContext);
         messagingController = MessagingController.getInstance(getActivity().getApplication());
 
-        previewLines = K9.messageListPreviewLines();
-        checkboxes = K9.messageListCheckboxes();
-        stars = K9.messageListStars();
+        previewLines = K9.getMessageListPreviewLines();
+        checkboxes = K9.isShowMessageListCheckboxes();
+        stars = K9.isShowMessageListStars();
 
-        if (K9.showContactPicture()) {
+        if (K9.isShowContactPicture()) {
             contactsPictureLoader = ContactPicture.getContactPictureLoader();
         }
 
@@ -652,7 +652,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     public void onResume() {
         super.onResume();
 
-        senderAboveSubject = K9.messageListSenderAboveSubject();
+        senderAboveSubject = K9.isMessageListSenderAboveSubject();
 
         if (!loaderJustInitialized) {
             restartLoader();
@@ -882,7 +882,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     private void onDelete(List<MessageReference> messages) {
-        if (K9.confirmDelete()) {
+        if (K9.isConfirmDelete()) {
             // remember the message selection for #onCreateDialog(int)
             activeMessages = messages;
             showDialog(R.id.dialog_confirm_delete);
@@ -1751,7 +1751,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
      *         The messages to move to the spam folder. Never {@code null}.
      */
     private void onSpam(List<MessageReference> messages) {
-        if (K9.confirmSpam()) {
+        if (K9.isConfirmSpam()) {
             // remember the message selection for #onCreateDialog(int)
             activeMessages = messages;
             showDialog(R.id.dialog_confirm_spam);
@@ -2796,7 +2796,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     public void confirmMarkAllAsRead() {
-        if (K9.confirmMarkAllRead()) {
+        if (K9.isConfirmMarkAllRead()) {
             showDialog(R.id.dialog_confirm_mark_all_as_read);
         } else {
             markAllAsRead();

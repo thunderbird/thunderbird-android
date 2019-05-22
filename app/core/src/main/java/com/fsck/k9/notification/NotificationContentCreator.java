@@ -100,7 +100,7 @@ class NotificationContentCreator {
 
     private String getMessageSender(Account account, Message message) {
         boolean isSelf = false;
-        final Contacts contacts = K9.showContactName() ? Contacts.getInstance(context) : null;
+        final Contacts contacts = K9.isShowContactName() ? Contacts.getInstance(context) : null;
         final Address[] fromAddresses = message.getFrom();
 
         if (fromAddresses != null) {

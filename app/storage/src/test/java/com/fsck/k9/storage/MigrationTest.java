@@ -49,7 +49,7 @@ public class MigrationTest extends K9RobolectricTest {
 
     @Before
     public void setUp() throws Exception {
-        K9.setDebug(true);
+        K9.setDebugLoggingEnabled(true);
         ShadowLog.stream = System.out;
         ShadowSQLiteConnection.reset();
 
