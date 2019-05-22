@@ -361,7 +361,8 @@ public class GlobalSettings {
         public Set<String> upgrade(Map<String, Object> settings) {
             SubTheme messageViewTheme = (SubTheme) settings.get("messageViewTheme");
             AppTheme theme = (AppTheme) settings.get("theme");
-            if (theme != null && messageViewTheme != null && theme.toScreenTheme() == messageViewTheme) {
+            if ((theme == AppTheme.LIGHT && messageViewTheme == SubTheme.LIGHT) ||
+                    (theme == AppTheme.DARK && messageViewTheme == SubTheme.DARK)) {
                 settings.put("messageViewTheme", SubTheme.USE_GLOBAL);
             }
 

@@ -230,6 +230,7 @@ class GeneralSettingsDataStore(
     private fun appThemeToString(theme: AppTheme) = when (theme) {
         AppTheme.LIGHT -> "light"
         AppTheme.DARK -> "dark"
+        AppTheme.FOLLOW_SYSTEM -> "follow_system"
     }
 
     private fun subThemeToString(theme: SubTheme) = when (theme) {
@@ -241,6 +242,7 @@ class GeneralSettingsDataStore(
     private fun stringToAppTheme(theme: String?) = when (theme) {
         "light" -> AppTheme.LIGHT
         "dark" -> AppTheme.DARK
+        "follow_system" -> AppTheme.FOLLOW_SYSTEM
         else -> throw AssertionError()
     }
 

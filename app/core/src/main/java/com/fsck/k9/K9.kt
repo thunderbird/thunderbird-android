@@ -156,12 +156,6 @@ object K9 : KoinComponent {
 
     @JvmStatic
     var isFixedMessageViewTheme = true
-        set(theme) {
-            field = theme
-            if (!theme && messageViewTheme == SubTheme.USE_GLOBAL) {
-                messageViewTheme = appTheme.toScreenTheme()
-            }
-        }
 
     @JvmStatic
     val fontSizes = FontSizes()
@@ -585,12 +579,8 @@ object K9 : KoinComponent {
 
     enum class AppTheme {
         LIGHT,
-        DARK;
-
-        fun toScreenTheme() = when(this) {
-            LIGHT -> SubTheme.LIGHT
-            DARK -> SubTheme.DARK
-        }
+        DARK,
+        FOLLOW_SYSTEM
     }
 
     enum class SubTheme {

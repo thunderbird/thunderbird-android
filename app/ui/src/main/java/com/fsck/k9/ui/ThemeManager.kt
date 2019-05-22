@@ -1,16 +1,19 @@
 package com.fsck.k9.ui
 
+import android.content.Context
+import android.content.res.Configuration
 import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatDelegate
 import com.fsck.k9.K9
 import com.fsck.k9.K9.AppTheme
 import com.fsck.k9.K9.SubTheme
 
-class ThemeManager {
+class ThemeManager(private val context: Context) {
     val appTheme: Theme
         get() = when (K9.appTheme) {
             AppTheme.LIGHT -> Theme.LIGHT
             AppTheme.DARK -> Theme.DARK
+            AppTheme.FOLLOW_SYSTEM -> getSystemTheme()
         }
 
     val messageViewTheme: Theme
@@ -45,9 +48,10 @@ class ThemeManager {
     }
 
     fun updateAppTheme() {
-        val defaultNightMode = when (appTheme) {
-            Theme.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
-            Theme.DARK -> AppCompatDelegate.MODE_NIGHT_YES
+        val defaultNightMode = when (K9.appTheme) {
+            AppTheme.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
+            AppTheme.DARK -> AppCompatDelegate.MODE_NIGHT_YES
+            AppTheme.FOLLOW_SYSTEM -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
         }
         AppCompatDelegate.setDefaultNightMode(defaultNightMode)
     }
@@ -72,6 +76,14 @@ class ThemeManager {
         SubTheme.LIGHT -> Theme.LIGHT
         SubTheme.DARK -> Theme.DARK
         SubTheme.USE_GLOBAL -> appTheme
+    }
+
+    private fun getSystemTheme(): Theme {
+        return when (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_NO -> Theme.LIGHT
+            Configuration.UI_MODE_NIGHT_YES -> Theme.DARK
+            else ->  Theme.LIGHT
+        }
     }
 }
 

@@ -135,6 +135,7 @@
     <string-array name="theme_values" translatable="false">
         <item>light</item>
         <item>dark</item>
+        <item>follow_system</item>
     </string-array>
 
     <string-array name="message_theme_values" translatable="false">
