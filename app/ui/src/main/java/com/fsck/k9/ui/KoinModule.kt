@@ -7,4 +7,5 @@ import org.koin.dsl.module.applicationContext
 val uiModule = applicationContext {
     bean { FolderNameFormatter(get()) }
     bean { HtmlToSpanned() }
+    bean { ThemeManager() }
 }

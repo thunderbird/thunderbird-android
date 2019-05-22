@@ -30,10 +30,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.ChooseFolder;
-import com.fsck.k9.activity.K9ActivityCommon;
 import com.fsck.k9.activity.MessageLoaderHelper;
 import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks;
 import com.fsck.k9.controller.MessageReference;
@@ -46,6 +46,7 @@ import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.ui.R;
+import com.fsck.k9.ui.ThemeManager;
 import com.fsck.k9.ui.messageview.CryptoInfoDialog.OnClickShowCryptoKeyListener;
 import com.fsck.k9.ui.messageview.MessageCryptoPresenter.MessageCryptoMvpView;
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity;
@@ -76,6 +77,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
         return fragment;
     }
+
+    private final ThemeManager themeManager = DI.get(ThemeManager.class);
 
     private MessageTopView mMessageView;
 
@@ -159,10 +162,9 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-        Context context = new ContextThemeWrapper(inflater.getContext(),
-                K9ActivityCommon.getK9ThemeResourceId(K9.getK9MessageViewTheme()));
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        int messageViewThemeResourceId = themeManager.getMessageViewThemeResourceId();
+        Context context = new ContextThemeWrapper(inflater.getContext(), messageViewThemeResourceId);
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View view = layoutInflater.inflate(R.layout.message, container, false);
 

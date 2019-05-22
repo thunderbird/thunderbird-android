@@ -326,10 +326,6 @@ object K9 : KoinComponent {
     val k9MessageViewTheme: Theme
         get() = if (k9MessageViewThemeSetting == Theme.USE_GLOBAL) k9Theme else k9MessageViewThemeSetting
 
-    @JvmStatic
-    val k9ComposerTheme: Theme
-        get() = if (k9ComposerThemeSetting == Theme.USE_GLOBAL) k9Theme else k9ComposerThemeSetting
-
     val isQuietTime: Boolean
         get() {
             if (!isQuietTimeEnabled) {

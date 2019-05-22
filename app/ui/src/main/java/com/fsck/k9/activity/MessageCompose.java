@@ -100,6 +100,7 @@ import com.fsck.k9.message.SimpleMessageFormat;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.ui.EolConvertingEditText;
 import com.fsck.k9.ui.R;
+import com.fsck.k9.ui.ThemeManager;
 import com.fsck.k9.ui.compose.QuotedMessageMvpView;
 import com.fsck.k9.ui.compose.QuotedMessagePresenter;
 import org.openintents.openpgp.OpenPgpApiManager;
@@ -232,10 +233,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
-        if (K9.getK9ComposerThemeSetting() != K9.Theme.USE_GLOBAL) {
+        ThemeManager themeManager = getThemeManager();
+        if (themeManager.getMessageComposeTheme() != themeManager.getAppTheme()) {
             // theme the whole content according to the theme (except the action bar)
-            ContextThemeWrapper themeContext = new ContextThemeWrapper(this,
-                    K9ActivityCommon.getK9ThemeResourceId(K9.getK9ComposerTheme()));
+            int messageComposeThemeResourceId = themeManager.getMessageComposeThemeResourceId();
+            ContextThemeWrapper themeContext = new ContextThemeWrapper(this, messageComposeThemeResourceId);
             @SuppressLint("InflateParams") // this is the top level activity element, it has no root
             View v = LayoutInflater.from(themeContext).inflate(R.layout.message_compose, null);
             TypedValue outValue = new TypedValue();
@@ -1127,10 +1129,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                         })
                         .create();
             case DIALOG_CHOOSE_IDENTITY:
-                Context context = new ContextThemeWrapper(this,
-                        (K9.getK9Theme() == K9.Theme.LIGHT) ?
-                                R.style.Theme_K9_Dialog_Light :
-                                R.style.Theme_K9_Dialog_Dark);
+                int dialogThemeResourceId = getThemeManager().getDialogThemeResourceId();
+                Context context = new ContextThemeWrapper(this, dialogThemeResourceId);
                 Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle(R.string.send_as);
                 final IdentityAdapter adapter = new IdentityAdapter(context);
