@@ -12,5 +12,6 @@ internal object StorageMigrations {
         if (oldVersion <= 3) StorageMigrationTo4(db, migrationsHelper).insertSpecialFolderSelectionValues()
         if (oldVersion <= 4) StorageMigrationTo5(db, migrationsHelper).fixMailCheckFrequencies()
         if (oldVersion <= 5) StorageMigrationTo6(db, migrationsHelper).performLegacyMigrations()
+        if (oldVersion <= 6) StorageMigrationTo7(db, migrationsHelper).rewriteEnumOrdinalsToNames()
     }
 }
