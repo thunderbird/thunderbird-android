@@ -105,9 +105,9 @@ class GeneralSettingsDataStore(
     override fun getString(key: String, defValue: String?): String? {
         return when (key) {
             "language" -> K9.k9Language
-            "theme" -> appThemeToString(K9.k9Theme)
-            "message_compose_theme" -> subThemeToString(K9.k9ComposerThemeSetting)
-            "messageViewTheme" -> subThemeToString(K9.k9MessageViewThemeSetting)
+            "theme" -> appThemeToString(K9.appTheme)
+            "message_compose_theme" -> subThemeToString(K9.messageComposeTheme)
+            "messageViewTheme" -> subThemeToString(K9.messageViewTheme)
             "messagelist_preview_lines" -> K9.messageListPreviewLines.toString()
             "splitview_mode" -> K9.splitViewMode.name
             "notification_quick_delete" -> K9.notificationQuickDeleteBehaviour.name
@@ -126,8 +126,8 @@ class GeneralSettingsDataStore(
         when (key) {
             "language" -> setLanguage(value)
             "theme" -> setTheme(value)
-            "message_compose_theme" -> K9.k9ComposerThemeSetting = stringToSubTheme(value)
-            "messageViewTheme" -> K9.k9MessageViewThemeSetting = stringToSubTheme(value)
+            "message_compose_theme" -> K9.messageComposeTheme = stringToSubTheme(value)
+            "messageViewTheme" -> K9.messageViewTheme = stringToSubTheme(value)
             "messagelist_preview_lines" -> K9.messageListPreviewLines = value.toInt()
             "splitview_mode" -> K9.splitViewMode = K9.SplitViewMode.valueOf(value)
             "notification_quick_delete" -> {
@@ -215,7 +215,7 @@ class GeneralSettingsDataStore(
     }
 
     private fun setTheme(value: String?) {
-        K9.k9Theme = stringToAppTheme(value)
+        K9.appTheme = stringToAppTheme(value)
         recreateActivity()
     }
 

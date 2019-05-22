@@ -149,20 +149,17 @@ object K9 : KoinComponent {
     var k9Language = ""
 
     @JvmStatic
-    var k9Theme = AppTheme.LIGHT
+    var appTheme = AppTheme.LIGHT
 
-    @JvmStatic
-    var k9MessageViewThemeSetting = SubTheme.USE_GLOBAL
-
-    @JvmStatic
-    var k9ComposerThemeSetting = SubTheme.USE_GLOBAL
+    var messageViewTheme = SubTheme.USE_GLOBAL
+    var messageComposeTheme = SubTheme.USE_GLOBAL
 
     @JvmStatic
     var isFixedMessageViewTheme = true
         set(theme) {
             field = theme
-            if (!theme && k9MessageViewThemeSetting == SubTheme.USE_GLOBAL) {
-                k9MessageViewThemeSetting = k9Theme.toScreenTheme()
+            if (!theme && messageViewTheme == SubTheme.USE_GLOBAL) {
+                messageViewTheme = appTheme.toScreenTheme()
             }
         }
 
@@ -439,10 +436,10 @@ object K9 : KoinComponent {
 
         k9Language = storage.getString("language", "")
 
-        k9Theme = storage.getEnum("theme", AppTheme.LIGHT)
+        appTheme = storage.getEnum("theme", AppTheme.LIGHT)
 
-        k9MessageViewThemeSetting = storage.getEnum("messageViewTheme", SubTheme.USE_GLOBAL)
-        k9ComposerThemeSetting = storage.getEnum("messageComposeTheme", SubTheme.USE_GLOBAL)
+        messageViewTheme = storage.getEnum("messageViewTheme", SubTheme.USE_GLOBAL)
+        messageComposeTheme = storage.getEnum("messageComposeTheme", SubTheme.USE_GLOBAL)
         isFixedMessageViewTheme = storage.getBoolean("fixedMessageViewTheme", true)
     }
 
@@ -482,9 +479,9 @@ object K9 : KoinComponent {
         editor.putBoolean("hideTimeZone", isHideTimeZone)
 
         editor.putString("language", k9Language)
-        editor.putEnum("theme", k9Theme)
-        editor.putEnum("messageViewTheme", k9MessageViewThemeSetting)
-        editor.putEnum("messageComposeTheme", k9ComposerThemeSetting)
+        editor.putEnum("theme", appTheme)
+        editor.putEnum("messageViewTheme", messageViewTheme)
+        editor.putEnum("messageComposeTheme", messageComposeTheme)
         editor.putBoolean("fixedMessageViewTheme", isFixedMessageViewTheme)
 
         editor.putBoolean("confirmDelete", isConfirmDelete)

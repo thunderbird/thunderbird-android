@@ -7,16 +7,16 @@ import com.fsck.k9.K9.SubTheme
 
 class ThemeManager {
     val appTheme: Theme
-        get() = when (K9.k9Theme) {
+        get() = when (K9.appTheme) {
             AppTheme.LIGHT -> Theme.LIGHT
             AppTheme.DARK -> Theme.DARK
         }
 
     val messageViewTheme: Theme
-        get() = resolveTheme(K9.k9MessageViewThemeSetting)
+        get() = resolveTheme(K9.messageViewTheme)
 
     val messageComposeTheme: Theme
-        get() = resolveTheme(K9.k9ComposerThemeSetting)
+        get() = resolveTheme(K9.messageComposeTheme)
 
     @get:StyleRes
     val appThemeResourceId: Int
@@ -53,9 +53,9 @@ class ThemeManager {
 
     fun toggleMessageViewTheme() {
         if (messageViewTheme === Theme.DARK) {
-            K9.k9MessageViewThemeSetting = SubTheme.LIGHT
+            K9.messageViewTheme = SubTheme.LIGHT
         } else {
-            K9.k9MessageViewThemeSetting = SubTheme.DARK
+            K9.messageViewTheme = SubTheme.DARK
         }
 
         K9.saveSettingsAsync()
