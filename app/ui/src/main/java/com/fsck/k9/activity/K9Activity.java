@@ -26,7 +26,7 @@ public abstract class K9Activity extends AppCompatActivity implements K9Activity
     private static final String FRAGMENT_TAG_RATIONALE = "rationale";
 
 
-    private final K9ActivityCommon base = new K9ActivityCommon(this);
+    private final K9ActivityCommon base = new K9ActivityCommon(this, ThemeType.DEFAULT);
 
 
     @Override

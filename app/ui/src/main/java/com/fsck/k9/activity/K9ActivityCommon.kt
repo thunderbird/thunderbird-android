@@ -3,7 +3,6 @@ package com.fsck.k9.activity
 import java.util.Locale
 
 import android.app.Activity
-import android.content.Context
 import android.content.res.Resources
 import android.text.TextUtils
 import android.view.GestureDetector
@@ -20,17 +19,26 @@ import com.fsck.k9.ui.R
  * This class implements functionality common to most activities used in K-9 Mail.
  *
  * @see K9Activity
- * @see K9ListActivity
+ * @see K9PreferenceActivity
  */
-class K9ActivityCommon(private val activity: Activity) {
+class K9ActivityCommon(
+        private val activity: Activity,
+        private val themeType: ThemeType
+) {
     private var gestureDetector: GestureDetector? = null
 
     /**
      * Call this before calling `super.onCreate(Bundle)`.
      */
     fun preOnCreate() {
-        setLanguage(activity, K9.k9Language)
-        activity.setTheme(k9ThemeResourceId)
+        setLanguage(K9.k9Language)
+
+        val theme = when (themeType) {
+            ThemeType.DEFAULT -> k9ThemeResourceId
+            ThemeType.ACTION_BAR -> k9ActionBarThemeResourceId
+            ThemeType.DIALOG -> translucentDialogThemeResourceId
+        }
+        activity.setTheme(theme)
     }
 
     /**
@@ -49,25 +57,24 @@ class K9ActivityCommon(private val activity: Activity) {
         gestureDetector = GestureDetector(activity, SwipeGestureDetector(activity, listener))
     }
 
-
-    companion object {
-        @JvmStatic
-        fun setLanguage(context: Context, language: String) {
-            val locale = if (TextUtils.isEmpty(language)) {
-                Resources.getSystem().configuration.locale
-            } else if (language.length == 5 && language[2] == '_') {
-                // language is in the form: en_US
-                Locale(language.substring(0, 2), language.substring(3))
-            } else {
-                Locale(language)
-            }
-
-            val resources = context.resources
-            val config = resources.configuration
-            config.locale = locale
-            resources.updateConfiguration(config, resources.displayMetrics)
+    private fun setLanguage(language: String) {
+        val locale = if (TextUtils.isEmpty(language)) {
+            Resources.getSystem().configuration.locale
+        } else if (language.length == 5 && language[2] == '_') {
+            // language is in the form: en_US
+            Locale(language.substring(0, 2), language.substring(3))
+        } else {
+            Locale(language)
         }
 
+        val resources = activity.resources
+        val config = resources.configuration
+        config.locale = locale
+        resources.updateConfiguration(config, resources.displayMetrics)
+    }
+
+
+    companion object {
         @JvmStatic
         fun getK9ThemeResourceId(themeId: Theme): Int {
             return if (themeId === Theme.LIGHT) R.style.Theme_K9_Light else R.style.Theme_K9_Dark
@@ -83,6 +90,12 @@ class K9ActivityCommon(private val activity: Activity) {
         @JvmStatic
         val k9ThemeResourceId: Int
             get() = getK9ThemeResourceId(K9.k9Theme)
+
+        private val translucentDialogThemeResourceId: Int
+            get() = if (k9ThemeResourceId == R.style.Theme_K9_Light)
+                R.style.Theme_K9_Dialog_Translucent_Light
+            else
+                R.style.Theme_K9_Dialog_Translucent_Dark
     }
 
     /**
@@ -94,4 +107,10 @@ class K9ActivityCommon(private val activity: Activity) {
     interface K9ActivityMagic {
         fun setupGestureDetector(listener: OnSwipeGestureListener)
     }
+}
+
+enum class ThemeType {
+    DEFAULT,
+    ACTION_BAR,
+    DIALOG
 }
