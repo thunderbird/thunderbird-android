@@ -2,21 +2,19 @@ package com.fsck.k9.ui.message;
 
 
 import android.content.Context;
+
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
 import androidx.loader.content.AsyncTaskLoader;
-
-import com.fsck.k9.DI;
-import timber.log.Timber;
-
 import com.fsck.k9.mailstore.LocalMessage;
-import com.fsck.k9.mailstore.MessageViewInfoExtractor;
-import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.mailstore.MessageCryptoAnnotations;
+import com.fsck.k9.mailstore.MessageViewInfo;
+import com.fsck.k9.mailstore.MessageViewInfoExtractor;
+import timber.log.Timber;
 
 
 public class LocalMessageExtractorLoader extends AsyncTaskLoader<MessageViewInfo> {
-    private static final MessageViewInfoExtractor messageViewInfoExtractor = DI.get(MessageViewInfoExtractor.class);
+    private final MessageViewInfoExtractor messageViewInfoExtractor;
 
 
     private final LocalMessage message;
@@ -24,11 +22,12 @@ public class LocalMessageExtractorLoader extends AsyncTaskLoader<MessageViewInfo
     @Nullable
     private MessageCryptoAnnotations annotations;
 
-    public LocalMessageExtractorLoader(
-            Context context, LocalMessage message, @Nullable MessageCryptoAnnotations annotations) {
+    public LocalMessageExtractorLoader(Context context, LocalMessage message,
+            @Nullable MessageCryptoAnnotations annotations, MessageViewInfoExtractor messageViewInfoExtractor) {
         super(context);
         this.message = message;
         this.annotations = annotations;
+        this.messageViewInfoExtractor = messageViewInfoExtractor;
     }
 
     @Override

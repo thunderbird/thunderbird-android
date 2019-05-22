@@ -36,6 +36,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.MessageLoaderHelper;
 import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks;
+import com.fsck.k9.activity.MessageLoaderHelperFactory;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.fragment.AttachmentDownloadDialogFragment;
@@ -79,6 +80,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     private final ThemeManager themeManager = DI.get(ThemeManager.class);
+    private final MessageLoaderHelperFactory messageLoaderHelperFactory = DI.get(MessageLoaderHelperFactory.class);
 
     private MessageTopView mMessageView;
 
@@ -135,7 +137,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         mController = MessagingController.getInstance(context);
         downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
         messageCryptoPresenter = new MessageCryptoPresenter(messageCryptoMvpView);
-        messageLoaderHelper = new MessageLoaderHelper(
+        messageLoaderHelper = messageLoaderHelperFactory.createForMessageView(
                 context, getLoaderManager(), getFragmentManager(), messageLoaderCallbacks);
         mInitialized = true;
     }

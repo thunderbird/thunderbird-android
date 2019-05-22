@@ -12,19 +12,19 @@ import android.widget.ImageButton;
 import com.fsck.k9.DI;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.message.html.DisplayHtml;
-import com.fsck.k9.message.html.DisplayHtmlFactory;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.mailstore.AttachmentResolver;
 import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageFormat;
 import com.fsck.k9.ui.EolConvertingEditText;
+import com.fsck.k9.ui.helper.DisplayHtmlUiFactory;
 import com.fsck.k9.view.MessageWebView;
 import com.fsck.k9.view.WebViewConfigProvider;
 
 
 public class QuotedMessageMvpView {
-    private final DisplayHtml displayHtml = DI.get(DisplayHtmlFactory.class).create();
+    private final DisplayHtml displayHtml = DI.get(DisplayHtmlUiFactory.class).createForMessageCompose();
     private final WebViewConfigProvider webViewConfigProvider = DI.get(WebViewConfigProvider.class);
 
     private final Button mQuotedTextShow;

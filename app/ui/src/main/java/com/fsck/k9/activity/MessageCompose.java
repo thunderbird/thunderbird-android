@@ -167,6 +167,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      */
     private static final Pattern PREFIX = Pattern.compile("^AW[:\\s]\\s*", Pattern.CASE_INSENSITIVE);
 
+    private final MessageLoaderHelperFactory messageLoaderHelperFactory = DI.get(MessageLoaderHelperFactory.class);
+
     private QuotedMessagePresenter quotedMessagePresenter;
     private MessageLoaderHelper messageLoaderHelper;
     private AttachmentPresenter attachmentPresenter;
@@ -403,8 +405,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             if (action == Action.REPLY || action == Action.REPLY_ALL ||
                     action == Action.FORWARD || action == Action.FORWARD_AS_ATTACHMENT ||
                     action == Action.EDIT_DRAFT) {
-                messageLoaderHelper = new MessageLoaderHelper(this, getSupportLoaderManager(),
-                        getSupportFragmentManager(), messageLoaderCallbacks);
+                messageLoaderHelper = messageLoaderHelperFactory.createForMessageCompose(this,
+                        getSupportLoaderManager(), getSupportFragmentManager(), messageLoaderCallbacks);
                 internalMessageHandler.sendEmptyMessage(MSG_PROGRESS_ON);
 
                 if (action == Action.FORWARD_AS_ATTACHMENT) {

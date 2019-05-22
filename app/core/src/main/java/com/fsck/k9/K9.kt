@@ -322,10 +322,6 @@ object K9 : KoinComponent {
     @JvmStatic
     var pgpSignOnlyDialogCounter: Int = 0
 
-    @JvmStatic
-    val k9MessageViewTheme: Theme
-        get() = if (k9MessageViewThemeSetting == Theme.USE_GLOBAL) k9Theme else k9MessageViewThemeSetting
-
     val isQuietTime: Boolean
         get() {
             if (!isQuietTimeEnabled) {
