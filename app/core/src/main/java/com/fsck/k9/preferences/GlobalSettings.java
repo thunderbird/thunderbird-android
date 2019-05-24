@@ -194,10 +194,11 @@ public class GlobalSettings {
                 new V(1, new BooleanSetting(false))
         ));
         s.put("theme", Settings.versions(
-                new V(1, new ThemeSetting(AppTheme.LIGHT))
+                new V(1, new LegacyThemeSetting(AppTheme.LIGHT)),
+                new V(58, new ThemeSetting(AppTheme.FOLLOW_SYSTEM))
         ));
         s.put("messageViewTheme", Settings.versions(
-                new V(16, new ThemeSetting(AppTheme.LIGHT)),
+                new V(16, new LegacyThemeSetting(AppTheme.LIGHT)),
                 new V(24, new SubThemeSetting(SubTheme.USE_GLOBAL))
         ));
         s.put("useVolumeKeysForListNavigation", Settings.versions(
@@ -299,6 +300,7 @@ public class GlobalSettings {
         u.put(12, new SettingsUpgraderV12());
         u.put(24, new SettingsUpgraderV24());
         u.put(31, new SettingsUpgraderV31());
+        u.put(58, new SettingsUpgraderV58());
 
         UPGRADERS = Collections.unmodifiableMap(u);
     }
@@ -413,6 +415,26 @@ public class GlobalSettings {
         }
     }
 
+    /**
+     * Upgrades the settings from version 57 to 58.
+     *
+     * <p>
+     * Set <em>theme</em> to {@link AppTheme#FOLLOW_SYSTEM} if <em>theme</em> has the value {@link AppTheme#LIGHT}.
+     * </p>
+     */
+    private static class SettingsUpgraderV58 implements SettingsUpgrader {
+
+        @Override
+        public Set<String> upgrade(Map<String, Object> settings) {
+            AppTheme theme = (AppTheme) settings.get("theme");
+            if (theme == AppTheme.LIGHT) {
+                settings.put("theme", AppTheme.FOLLOW_SYSTEM);
+            }
+
+            return null;
+        }
+    }
+
     private static class LanguageSetting extends PseudoEnumSetting<String> {
         private final Context context = DI.get(Context.class);
         private final Map<String, String> mapping;
@@ -447,11 +469,11 @@ public class GlobalSettings {
         }
     }
 
-    static class ThemeSetting extends SettingsDescription<AppTheme> {
+    static class LegacyThemeSetting extends SettingsDescription<AppTheme> {
         private static final String THEME_LIGHT = "light";
         private static final String THEME_DARK = "dark";
 
-        ThemeSetting(AppTheme defaultValue) {
+        LegacyThemeSetting(AppTheme defaultValue) {
             super(defaultValue);
         }
 
@@ -480,6 +502,54 @@ public class GlobalSettings {
             switch (value) {
                 case LIGHT: return THEME_LIGHT;
                 case DARK: return THEME_DARK;
+            }
+
+            throw new AssertionError("Unexpected case: " + value);
+        }
+
+        @Override
+        public String toString(AppTheme value) {
+            return value.name();
+        }
+    }
+
+    private static class ThemeSetting extends SettingsDescription<AppTheme> {
+        private static final String THEME_LIGHT = "light";
+        private static final String THEME_DARK = "dark";
+        private static final String THEME_FOLLOW_SYSTEM = "follow_system";
+
+        ThemeSetting(AppTheme defaultValue) {
+            super(defaultValue);
+        }
+
+        @Override
+        public AppTheme fromString(String value) throws InvalidSettingValueException {
+            try {
+                return AppTheme.valueOf(value);
+            } catch (IllegalArgumentException e) {
+                throw new InvalidSettingValueException();
+            }
+        }
+
+        @Override
+        public AppTheme fromPrettyString(String value) throws InvalidSettingValueException {
+            if (THEME_LIGHT.equals(value)) {
+                return AppTheme.LIGHT;
+            } else if (THEME_DARK.equals(value)) {
+                return AppTheme.DARK;
+            } else if (THEME_FOLLOW_SYSTEM.equals(value)) {
+                return AppTheme.FOLLOW_SYSTEM;
+            }
+
+            throw new InvalidSettingValueException();
+        }
+
+        @Override
+        public String toPrettyString(AppTheme value) {
+            switch (value) {
+                case LIGHT: return THEME_LIGHT;
+                case DARK: return THEME_DARK;
+                case FOLLOW_SYSTEM: return THEME_FOLLOW_SYSTEM;
             }
 
             throw new AssertionError("Unexpected case: " + value);
