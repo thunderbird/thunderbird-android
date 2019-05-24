@@ -139,7 +139,7 @@ public class SmtpTransportTest {
             assertEquals("Authentication methods SASL PLAIN and LOGIN are unavailable.", e.getMessage());
         }
 
-        server.verifyConnectionStillOpen();
+        server.verifyConnectionClosed();
         server.verifyInteractionCompleted();
     }
 
