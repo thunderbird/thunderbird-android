@@ -7,6 +7,7 @@ import com.fsck.k9.Account.SortType
 import com.fsck.k9.core.BuildConfig
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mailstore.LocalStore
+import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
@@ -419,55 +420,24 @@ object K9 : KoinComponent {
         isConfirmDeleteFromNotification = storage.getBoolean("confirmDeleteFromNotification", true)
         isConfirmMarkAllRead = storage.getBoolean("confirmMarkAllRead", true)
 
-        sortType = try {
-            val value = storage.getString("sortTypeEnum", Account.DEFAULT_SORT_TYPE.name)
-            SortType.valueOf(value)
-        } catch (e: Exception) {
-            Account.DEFAULT_SORT_TYPE
-        }
+        sortType = storage.getEnum("sortTypeEnum", Account.DEFAULT_SORT_TYPE)
 
         val sortAscendingSetting = storage.getBoolean("sortAscending", Account.DEFAULT_SORT_ASCENDING)
         sortAscending[sortType] = sortAscendingSetting
 
-        val notificationHideSubjectSetting = storage.getString("notificationHideSubject", null)
-        notificationHideSubject = if (notificationHideSubjectSetting == null) {
-            // If the "notificationHideSubject" setting couldn't be found, the app was probably
-            // updated. Look for the old "keyguardPrivacy" setting and map it to the new enum.
-            if (storage.getBoolean("keyguardPrivacy", false)) {
-                NotificationHideSubject.WHEN_LOCKED
-            } else {
-                NotificationHideSubject.NEVER
-            }
-        } else {
-            NotificationHideSubject.valueOf(notificationHideSubjectSetting)
-        }
+        notificationHideSubject = storage.getEnum("notificationHideSubject", NotificationHideSubject.NEVER)
+        notificationQuickDeleteBehaviour = storage.getEnum("notificationQuickDelete", NotificationQuickDelete.NEVER)
 
-        val notificationQuickDelete = storage.getString("notificationQuickDelete", null)
-        if (notificationQuickDelete != null) {
-            notificationQuickDeleteBehaviour = NotificationQuickDelete.valueOf(notificationQuickDelete)
-        }
+        lockScreenNotificationVisibility = storage.getEnum("lockScreenNotificationVisibility",
+                LockScreenNotificationVisibility.MESSAGE_COUNT)
 
-        val lockScreenNotificationVisibilitySetting = storage.getString("lockScreenNotificationVisibility", null)
-        if (lockScreenNotificationVisibilitySetting != null) {
-            lockScreenNotificationVisibility =
-                    LockScreenNotificationVisibility.valueOf(lockScreenNotificationVisibilitySetting)
-        }
-
-        val splitViewModeSetting = storage.getString("splitViewMode", null)
-        if (splitViewModeSetting != null) {
-            splitViewMode = SplitViewMode.valueOf(splitViewModeSetting)
-        }
+        splitViewMode = storage.getEnum("splitViewMode", SplitViewMode.NEVER)
 
         isUseBackgroundAsUnreadIndicator = storage.getBoolean("useBackgroundAsUnreadIndicator", true)
         isThreadedViewEnabled = storage.getBoolean("threadedView", true)
         fontSizes.load(storage)
 
-        backgroundOps = try {
-            val settingValue = storage.getString("backgroundOperations", BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC.name)
-            BACKGROUND_OPS.valueOf(settingValue)
-        } catch (e: Exception) {
-            BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC
-        }
+        backgroundOps = storage.getEnum("backgroundOperations", BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC)
 
         isColorizeMissingContactPictures = storage.getBoolean("colorizeMissingContactPictures", true)
 
@@ -482,18 +452,10 @@ object K9 : KoinComponent {
 
         k9Language = storage.getString("language", "")
 
-        var themeValue = storage.getInt("theme", Theme.LIGHT.ordinal)
-        // We used to save the resource ID of the theme. So convert that to the new format if necessary.
-        k9Theme = if (themeValue == Theme.DARK.ordinal || themeValue == android.R.style.Theme) {
-            Theme.DARK
-        } else {
-            Theme.LIGHT
-        }
+        k9Theme = storage.getEnum("theme", Theme.LIGHT)
 
-        themeValue = storage.getInt("messageViewTheme", Theme.USE_GLOBAL.ordinal)
-        k9MessageViewThemeSetting = Theme.values()[themeValue]
-        themeValue = storage.getInt("messageComposeTheme", Theme.USE_GLOBAL.ordinal)
-        k9ComposerThemeSetting = Theme.values()[themeValue]
+        k9MessageViewThemeSetting = storage.getEnum("messageViewTheme", Theme.USE_GLOBAL)
+        k9ComposerThemeSetting = storage.getEnum("messageComposeTheme", Theme.USE_GLOBAL)
         isFixedMessageViewTheme = storage.getBoolean("fixedMessageViewTheme", true)
     }
 
@@ -501,7 +463,7 @@ object K9 : KoinComponent {
     fun save(editor: StorageEditor) {
         editor.putBoolean("enableDebugLogging", isDebugLoggingEnabled)
         editor.putBoolean("enableSensitiveLogging", isSensitiveDebugLoggingEnabled)
-        editor.putString("backgroundOperations", K9.backgroundOps.name)
+        editor.putEnum("backgroundOperations", backgroundOps)
         editor.putBoolean("animations", isShowAnimations)
         editor.putBoolean("gesturesEnabled", isGesturesEnabled)
         editor.putBoolean("useVolumeKeysForNavigation", isUseVolumeKeysForNavigation)
@@ -533,9 +495,9 @@ object K9 : KoinComponent {
         editor.putBoolean("hideTimeZone", isHideTimeZone)
 
         editor.putString("language", k9Language)
-        editor.putInt("theme", k9Theme.ordinal)
-        editor.putInt("messageViewTheme", k9MessageViewThemeSetting.ordinal)
-        editor.putInt("messageComposeTheme", k9ComposerThemeSetting.ordinal)
+        editor.putEnum("theme", k9Theme)
+        editor.putEnum("messageViewTheme", k9MessageViewThemeSetting)
+        editor.putEnum("messageComposeTheme", k9ComposerThemeSetting)
         editor.putBoolean("fixedMessageViewTheme", isFixedMessageViewTheme)
 
         editor.putBoolean("confirmDelete", isConfirmDelete)
@@ -545,7 +507,7 @@ object K9 : KoinComponent {
         editor.putBoolean("confirmDeleteFromNotification", isConfirmDeleteFromNotification)
         editor.putBoolean("confirmMarkAllRead", isConfirmMarkAllRead)
 
-        editor.putString("sortTypeEnum", sortType.name)
+        editor.putEnum("sortTypeEnum", sortType)
         editor.putBoolean("sortAscending", sortAscending[sortType] ?: false)
 
         editor.putString("notificationHideSubject", notificationHideSubject.toString())
@@ -554,7 +516,7 @@ object K9 : KoinComponent {
 
         editor.putBoolean("useBackgroundAsUnreadIndicator", isUseBackgroundAsUnreadIndicator)
         editor.putBoolean("threadedView", isThreadedViewEnabled)
-        editor.putString("splitViewMode", splitViewMode.name)
+        editor.putEnum("splitViewMode", splitViewMode)
         editor.putBoolean("colorizeMissingContactPictures", isColorizeMissingContactPictures)
 
         editor.putBoolean("messageViewArchiveActionVisible", isMessageViewArchiveActionVisible)
@@ -589,6 +551,23 @@ object K9 : KoinComponent {
         }.execute()
     }
 
+    private inline fun <reified T : Enum<T>> Storage.getEnum(key: String, defaultValue: T): T {
+        return try {
+            val value = getString(key, null)
+            if (value != null) {
+                enumValueOf(value)
+            } else {
+                defaultValue
+            }
+        } catch (e: Exception) {
+            Timber.e("Couldn't read setting '%s'. Using default value instead.", key)
+            defaultValue
+        }
+    }
+
+    private fun <T : Enum<T>> StorageEditor.putEnum(key: String, value: T) {
+        putString(key, value.name)
+    }
 
     const val LOCAL_UID_PREFIX = "K9LOCAL:"
 
@@ -620,12 +599,6 @@ object K9 : KoinComponent {
     const val BOOT_RECEIVER_WAKE_LOCK_TIMEOUT = 60000
 
 
-    /**
-     * Possible values for the different theme settings.
-     *
-     * **Important:**
-     * Do not change the order of the items! The ordinal value (position) is used when saving the settings.
-     */
     enum class Theme {
         LIGHT,
         DARK,
