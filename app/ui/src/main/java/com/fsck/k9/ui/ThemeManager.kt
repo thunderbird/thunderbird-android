@@ -2,6 +2,7 @@ package com.fsck.k9.ui
 
 import android.content.Context
 import android.content.res.Configuration
+import android.os.Build
 import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatDelegate
 import com.fsck.k9.K9
@@ -51,7 +52,13 @@ class ThemeManager(private val context: Context) {
         val defaultNightMode = when (K9.appTheme) {
             AppTheme.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
             AppTheme.DARK -> AppCompatDelegate.MODE_NIGHT_YES
-            AppTheme.FOLLOW_SYSTEM -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            AppTheme.FOLLOW_SYSTEM -> {
+                if (Build.VERSION.SDK_INT < 28) {
+                    AppCompatDelegate.MODE_NIGHT_NO
+                } else {
+                    AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                }
+            }
         }
         AppCompatDelegate.setDefaultNightMode(defaultNightMode)
     }

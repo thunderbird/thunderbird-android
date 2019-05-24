@@ -149,7 +149,7 @@ object K9 : KoinComponent {
     var k9Language = ""
 
     @JvmStatic
-    var appTheme = AppTheme.LIGHT
+    var appTheme = AppTheme.FOLLOW_SYSTEM
 
     var messageViewTheme = SubTheme.USE_GLOBAL
     var messageComposeTheme = SubTheme.USE_GLOBAL
@@ -430,7 +430,7 @@ object K9 : KoinComponent {
 
         k9Language = storage.getString("language", "")
 
-        appTheme = storage.getEnum("theme", AppTheme.LIGHT)
+        appTheme = storage.getEnum("theme", AppTheme.FOLLOW_SYSTEM)
 
         messageViewTheme = storage.getEnum("messageViewTheme", SubTheme.USE_GLOBAL)
         messageComposeTheme = storage.getEnum("messageComposeTheme", SubTheme.USE_GLOBAL)
