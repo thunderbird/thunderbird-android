@@ -61,6 +61,12 @@ public class NotificationDeleteConfirmation extends AppCompatActivity {
         showDialog(DIALOG_CONFIRM);
     }
 
+    @Override
+    protected void onResume() {
+        base.preOnResume();
+        super.onResume();
+    }
+
     private void extractExtras() {
         Intent intent = getIntent();
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT_UUID);

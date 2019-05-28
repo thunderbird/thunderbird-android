@@ -92,6 +92,12 @@ public class OpenPgpAppSelectDialog extends FragmentActivity {
     }
 
     @Override
+    protected void onResume() {
+        base.preOnResume();
+        super.onResume();
+    }
+
+    @Override
     protected void onStop() {
         isStopped = true;
         super.onStop();

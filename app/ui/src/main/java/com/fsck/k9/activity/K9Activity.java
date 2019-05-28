@@ -40,6 +40,12 @@ public abstract class K9Activity extends AppCompatActivity implements K9Activity
     }
 
     @Override
+    protected void onResume() {
+        base.preOnResume();
+        super.onResume();
+    }
+
+    @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         base.preDispatchTouchEvent(event);
         return super.dispatchTouchEvent(event);

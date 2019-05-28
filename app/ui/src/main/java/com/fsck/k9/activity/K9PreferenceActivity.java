@@ -44,6 +44,7 @@ public abstract class K9PreferenceActivity extends AppCompatPreferenceActivity i
 
     @Override
     protected void onResume() {
+        base.preOnResume();
         super.onResume();
         lifecycleRegistry.markState(State.RESUMED);
     }

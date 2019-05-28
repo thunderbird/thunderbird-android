@@ -8,6 +8,7 @@ import android.view.MotionEvent
 import com.fsck.k9.K9
 import com.fsck.k9.activity.misc.SwipeGestureDetector
 import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener
+import com.fsck.k9.ui.Theme
 import com.fsck.k9.ui.ThemeManager
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
@@ -25,6 +26,8 @@ class K9ActivityCommon(
         private val themeType: ThemeType
 ) {
     private var gestureDetector: GestureDetector? = null
+    private lateinit var currentLanguage: String
+    private lateinit var currentTheme: Theme
 
     val themeManager = Companion.themeManager
 
@@ -33,14 +36,24 @@ class K9ActivityCommon(
      * Call this before calling `super.onCreate(Bundle)`.
      */
     fun preOnCreate() {
-        setLanguage(K9.k9Language)
+        K9.k9Language.let { language ->
+            currentLanguage = language
+            setLanguage(language)
+        }
 
+        currentTheme = themeManager.appTheme
         val theme = when (themeType) {
             ThemeType.DEFAULT -> themeManager.appThemeResourceId
             ThemeType.ACTION_BAR -> themeManager.appActionBarThemeResourceId
             ThemeType.DIALOG -> themeManager.translucentDialogThemeResourceId
         }
         activity.setTheme(theme)
+    }
+
+    fun preOnResume() {
+        if (currentTheme != themeManager.appTheme || currentLanguage != K9.k9Language) {
+            activity.recreate()
+        }
     }
 
     /**
