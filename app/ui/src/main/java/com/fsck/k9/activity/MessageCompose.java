@@ -37,6 +37,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.ViewStub;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -235,21 +236,24 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
+        setLayout(R.layout.message_compose);
+        ViewStub contentContainer = findViewById(R.id.message_compose_content);
+
         ThemeManager themeManager = getThemeManager();
-        if (themeManager.getMessageComposeTheme() != themeManager.getAppTheme()) {
-            // theme the whole content according to the theme (except the action bar)
-            int messageComposeThemeResourceId = themeManager.getMessageComposeThemeResourceId();
-            ContextThemeWrapper themeContext = new ContextThemeWrapper(this, messageComposeThemeResourceId);
-            @SuppressLint("InflateParams") // this is the top level activity element, it has no root
-            View v = LayoutInflater.from(themeContext).inflate(R.layout.message_compose, null);
-            TypedValue outValue = new TypedValue();
-            // background color needs to be forced
-            themeContext.getTheme().resolveAttribute(R.attr.messageViewBackgroundColor, outValue, true);
-            v.setBackgroundColor(outValue.data);
-            setLayout(v);
-        } else {
-            setLayout(R.layout.message_compose);
-        }
+        int messageComposeThemeResourceId = themeManager.getMessageComposeThemeResourceId();
+        ContextThemeWrapper themeContext = new ContextThemeWrapper(this, messageComposeThemeResourceId);
+
+        LayoutInflater themedLayoutInflater = LayoutInflater.from(themeContext);
+        contentContainer.setLayoutInflater(themedLayoutInflater);
+
+        View contentView = contentContainer.inflate();
+
+        // background color needs to be forced
+        //TODO: Change themes to use appropriate background colors that don't need overriding.
+        TypedValue outValue = new TypedValue();
+        themeContext.getTheme().resolveAttribute(R.attr.messageViewBackgroundColor, outValue, true);
+
+        contentView.setBackgroundColor(outValue.data);
 
         initializeActionBar();
 
