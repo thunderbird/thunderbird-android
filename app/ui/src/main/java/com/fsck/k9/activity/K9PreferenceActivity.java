@@ -1,24 +1,25 @@
 package com.fsck.k9.activity;
 
+
+import android.os.Bundle;
+import android.preference.ListPreference;
+import android.preference.Preference;
+import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.Lifecycle.State;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
-import android.os.Bundle;
-import android.preference.ListPreference;
-import android.preference.Preference;
-import androidx.annotation.NonNull;
-import android.view.MenuItem;
-
-import com.fsck.k9.K9;
 
 public abstract class K9PreferenceActivity extends AppCompatPreferenceActivity implements LifecycleOwner {
+    private final K9ActivityCommon base = new K9ActivityCommon(this, ThemeType.ACTION_BAR);
+
     private LifecycleRegistry lifecycleRegistry;
 
     @Override
     public void onCreate(Bundle icicle) {
-        K9ActivityCommon.setLanguage(this, K9.getK9Language());
-        setTheme(K9ActivityCommon.getK9ActionBarThemeResourceId());
+        base.preOnCreate();
         super.onCreate(icicle);
         lifecycleRegistry = new LifecycleRegistry(this);
         lifecycleRegistry.markState(State.CREATED);
@@ -43,6 +44,7 @@ public abstract class K9PreferenceActivity extends AppCompatPreferenceActivity i
 
     @Override
     protected void onResume() {
+        base.preOnResume();
         super.onResume();
         lifecycleRegistry.markState(State.RESUMED);
     }

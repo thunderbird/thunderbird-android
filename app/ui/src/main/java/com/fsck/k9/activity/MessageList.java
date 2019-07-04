@@ -47,7 +47,6 @@ import com.fsck.k9.helper.ParcelableUtil;
 import com.fsck.k9.mailstore.SearchStatusManager;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.notification.NotificationChannelManager;
-import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
 import com.fsck.k9.search.SearchSpecification;
@@ -56,6 +55,7 @@ import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.ui.K9Drawer;
 import com.fsck.k9.ui.R;
+import com.fsck.k9.ui.Theme;
 import com.fsck.k9.ui.messageview.MessageViewFragment;
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener;
 import com.fsck.k9.ui.settings.SettingsActivity;
@@ -1075,7 +1075,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 toggleTheme.setVisible(false);
             } else {
                 // Set title of menu item to switch to dark/light theme
-                if (K9.getK9MessageViewTheme() == K9.Theme.DARK) {
+                if (getThemeManager().getMessageViewTheme() == Theme.DARK) {
                     toggleTheme.setTitle(R.string.message_view_theme_action_light);
                 } else {
                     toggleTheme.setTitle(R.string.message_view_theme_action_dark);
@@ -1564,21 +1564,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
     private void onToggleTheme() {
-        if (K9.getK9MessageViewTheme() == K9.Theme.DARK) {
-            K9.setK9MessageViewThemeSetting(K9.Theme.LIGHT);
-        } else {
-            K9.setK9MessageViewThemeSetting(K9.Theme.DARK);
-        }
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                StorageEditor editor = preferences.createStorageEditor();
-                K9.save(editor);
-                editor.commit();
-            }
-        }).start();
-
+        getThemeManager().toggleMessageViewTheme();
         recreate();
     }
 

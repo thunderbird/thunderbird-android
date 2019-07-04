@@ -4,7 +4,6 @@ package com.fsck.k9.activity;
 import java.util.Collections;
 import java.util.List;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -12,8 +11,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 
+import androidx.appcompat.app.AppCompatActivity;
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.ui.R;
@@ -24,11 +23,14 @@ import static com.fsck.k9.controller.MessageReferenceHelper.toMessageReferenceLi
 import static com.fsck.k9.controller.MessageReferenceHelper.toMessageReferenceStringList;
 
 
-public class NotificationDeleteConfirmation extends Activity {
+public class NotificationDeleteConfirmation extends AppCompatActivity {
     private final static String EXTRA_ACCOUNT_UUID = "accountUuid";
     private final static String EXTRA_MESSAGE_REFERENCES = "messageReferences";
 
     private final static int DIALOG_CONFIRM = 1;
+
+
+    private final K9ActivityCommon base = new K9ActivityCommon(this, ThemeType.DIALOG);
 
     private Account account;
     private List<MessageReference> messagesToDelete;
@@ -51,14 +53,18 @@ public class NotificationDeleteConfirmation extends Activity {
 
     @Override
     public void onCreate(Bundle icicle) {
+        base.preOnCreate();
         super.onCreate(icicle);
-
-        setTheme(K9.getK9Theme() == K9.Theme.LIGHT ?
-                R.style.Theme_K9_Dialog_Translucent_Light : R.style.Theme_K9_Dialog_Translucent_Dark);
 
         extractExtras();
 
         showDialog(DIALOG_CONFIRM);
+    }
+
+    @Override
+    protected void onResume() {
+        base.preOnResume();
+        super.onResume();
     }
 
     private void extractExtras() {

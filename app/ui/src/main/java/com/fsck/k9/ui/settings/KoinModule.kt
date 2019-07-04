@@ -14,7 +14,7 @@ val settingsUiModule = applicationContext {
     bean { AccountsLiveData(get()) }
     viewModel { SettingsViewModel(get()) }
 
-    bean { GeneralSettingsDataStore(get(), get(), get("SaveSettingsExecutorService")) }
+    bean { GeneralSettingsDataStore(get(), get(), get("SaveSettingsExecutorService"), get()) }
     bean("SaveSettingsExecutorService") {
         Executors.newSingleThreadExecutor(NamedThreadFactory("SaveSettings"))
     }

@@ -16,6 +16,7 @@ import android.view.View;
 import com.fsck.k9.activity.K9ActivityCommon.K9ActivityMagic;
 import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
 import com.fsck.k9.ui.R;
+import com.fsck.k9.ui.ThemeManager;
 import com.fsck.k9.ui.permissions.PermissionRationaleDialogFragment;
 import timber.log.Timber;
 
@@ -26,24 +27,33 @@ public abstract class K9Activity extends AppCompatActivity implements K9Activity
     private static final String FRAGMENT_TAG_RATIONALE = "rationale";
 
 
-    private K9ActivityCommon mBase;
+    private final K9ActivityCommon base = new K9ActivityCommon(this, ThemeType.DEFAULT);
 
+    public ThemeManager getThemeManager() {
+        return base.getThemeManager();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        mBase = K9ActivityCommon.newInstance(this);
+        base.preOnCreate();
         super.onCreate(savedInstanceState);
     }
 
     @Override
+    protected void onResume() {
+        base.preOnResume();
+        super.onResume();
+    }
+
+    @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        mBase.preDispatchTouchEvent(event);
+        base.preDispatchTouchEvent(event);
         return super.dispatchTouchEvent(event);
     }
 
     @Override
     public void setupGestureDetector(OnSwipeGestureListener listener) {
-        mBase.setupGestureDetector(listener);
+        base.setupGestureDetector(listener);
     }
 
     protected void setLayout(@LayoutRes int layoutResId) {

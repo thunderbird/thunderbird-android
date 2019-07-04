@@ -149,27 +149,13 @@ object K9 : KoinComponent {
     var k9Language = ""
 
     @JvmStatic
-    var k9Theme = Theme.LIGHT
-        set(theme) {
-            if (theme != Theme.USE_GLOBAL) {
-                field = theme
-            }
-        }
+    var appTheme = AppTheme.FOLLOW_SYSTEM
 
-    @JvmStatic
-    var k9MessageViewThemeSetting = Theme.USE_GLOBAL
-
-    @JvmStatic
-    var k9ComposerThemeSetting = Theme.USE_GLOBAL
+    var messageViewTheme = SubTheme.USE_GLOBAL
+    var messageComposeTheme = SubTheme.USE_GLOBAL
 
     @JvmStatic
     var isFixedMessageViewTheme = true
-        set(theme) {
-            field = theme
-            if (!theme && k9MessageViewThemeSetting == Theme.USE_GLOBAL) {
-                k9MessageViewThemeSetting = k9Theme
-            }
-        }
 
     @JvmStatic
     val fontSizes = FontSizes()
@@ -322,14 +308,6 @@ object K9 : KoinComponent {
     @JvmStatic
     var pgpSignOnlyDialogCounter: Int = 0
 
-    @JvmStatic
-    val k9MessageViewTheme: Theme
-        get() = if (k9MessageViewThemeSetting == Theme.USE_GLOBAL) k9Theme else k9MessageViewThemeSetting
-
-    @JvmStatic
-    val k9ComposerTheme: Theme
-        get() = if (k9ComposerThemeSetting == Theme.USE_GLOBAL) k9Theme else k9ComposerThemeSetting
-
     val isQuietTime: Boolean
         get() {
             if (!isQuietTimeEnabled) {
@@ -452,10 +430,10 @@ object K9 : KoinComponent {
 
         k9Language = storage.getString("language", "")
 
-        k9Theme = storage.getEnum("theme", Theme.LIGHT)
+        appTheme = storage.getEnum("theme", AppTheme.FOLLOW_SYSTEM)
 
-        k9MessageViewThemeSetting = storage.getEnum("messageViewTheme", Theme.USE_GLOBAL)
-        k9ComposerThemeSetting = storage.getEnum("messageComposeTheme", Theme.USE_GLOBAL)
+        messageViewTheme = storage.getEnum("messageViewTheme", SubTheme.USE_GLOBAL)
+        messageComposeTheme = storage.getEnum("messageComposeTheme", SubTheme.USE_GLOBAL)
         isFixedMessageViewTheme = storage.getBoolean("fixedMessageViewTheme", true)
     }
 
@@ -495,9 +473,9 @@ object K9 : KoinComponent {
         editor.putBoolean("hideTimeZone", isHideTimeZone)
 
         editor.putString("language", k9Language)
-        editor.putEnum("theme", k9Theme)
-        editor.putEnum("messageViewTheme", k9MessageViewThemeSetting)
-        editor.putEnum("messageComposeTheme", k9ComposerThemeSetting)
+        editor.putEnum("theme", appTheme)
+        editor.putEnum("messageViewTheme", messageViewTheme)
+        editor.putEnum("messageComposeTheme", messageComposeTheme)
         editor.putBoolean("fixedMessageViewTheme", isFixedMessageViewTheme)
 
         editor.putBoolean("confirmDelete", isConfirmDelete)
@@ -599,7 +577,13 @@ object K9 : KoinComponent {
     const val BOOT_RECEIVER_WAKE_LOCK_TIMEOUT = 60000
 
 
-    enum class Theme {
+    enum class AppTheme {
+        LIGHT,
+        DARK,
+        FOLLOW_SYSTEM
+    }
+
+    enum class SubTheme {
         LIGHT,
         DARK,
         USE_GLOBAL
