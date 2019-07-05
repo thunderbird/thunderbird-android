@@ -184,6 +184,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private Context context;
     private final ActivityListener activityListener = new MessageListActivityListener();
     private Preferences preferences;
+    private AccountRetriever accountRetriever;
     private boolean loaderJustInitialized;
     MessageReference activeMessage;
     /**
@@ -338,7 +339,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             toggleMessageSelect(position);
         } else {
             if (showingThreadedList && cursor.getInt(THREAD_COUNT_COLUMN) > 1) {
-                Account account = getAccountFromCursor(cursor);
+                Account account = accountRetriever.invoke(cursor);
                 String folderServerId = cursor.getString(FOLDER_SERVER_ID_COLUMN);
 
                 // If threading is enabled and this item represents a thread, display the thread contents.
@@ -372,6 +373,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         Context appContext = getActivity().getApplicationContext();
 
         preferences = Preferences.getPreferences(appContext);
+        accountRetriever = new AccountRetriever(preferences);
         messagingController = MessagingController.getInstance(getActivity().getApplication());
 
         previewLines = K9.getMessageListPreviewLines();
@@ -562,7 +564,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 requireActivity().getTheme(),
                 getResources(),
                 layoutInflater,
-                MessageHelper.getInstance(getActivity())
+                MessageHelper.getInstance(getActivity()),
+                new AccountRetriever(preferences)
         );
 
         if (folderServerId != null) {
@@ -1102,7 +1105,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         menu.findItem(R.id.debug_delete_locally).setVisible(BuildConfig.DEBUG);
 
         contextMenuUniqueId = cursor.getLong(uniqueIdColumn);
-        Account account = getAccountFromCursor(cursor);
+        Account account = accountRetriever.invoke(cursor);
 
         String subject = cursor.getString(SUBJECT_COLUMN);
         boolean read = (cursor.getInt(READ_COLUMN) == 1);
@@ -2701,11 +2704,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     public void onLoaderReset(Loader<Cursor> loader) {
         selected.clear();
         adapter.swapCursor(null);
-    }
-
-    Account getAccountFromCursor(Cursor cursor) {
-        String accountUuid = cursor.getString(ACCOUNT_UUID_COLUMN);
-        return preferences.getAccount(accountUuid);
     }
 
     void remoteSearchFinished() {

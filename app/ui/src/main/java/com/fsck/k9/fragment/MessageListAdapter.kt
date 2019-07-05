@@ -19,6 +19,7 @@ import android.widget.CursorAdapter
 import android.widget.TextView
 import com.fsck.k9.Account
 import com.fsck.k9.K9
+import com.fsck.k9.Preferences
 import com.fsck.k9.fragment.MLFProjectionInfo.*
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mail.Address
@@ -32,8 +33,23 @@ class MessageListAdapter internal constructor(
         private val theme: Resources.Theme,
         private val res: Resources,
         private val layoutInflater: LayoutInflater,
-        private val messageHelper: MessageHelper
+        private val messageHelper: MessageHelper,
+        private val accountRetriever: AccountRetriever
 ) : CursorAdapter(fragment.activity, null, 0) {
+
+    companion object {
+        val attributes = intArrayOf(
+                R.attr.messageListAnswered,
+                R.attr.messageListForwarded,
+                R.attr.messageListAnsweredForwarded,
+                R.attr.messageListPreviewTextColor,
+                R.attr.messageListActiveItemBackgroundColor,
+                R.attr.messageListSelectedBackgroundColor,
+                R.attr.messageListReadItemBackgroundColor,
+                R.attr.messageListUnreadItemBackgroundColor
+        )
+    }
+
     private val mForwardedIcon: Drawable
     private val mAnsweredIcon: Drawable
     private val mForwardedAnsweredIcon: Drawable
@@ -45,20 +61,40 @@ class MessageListAdapter internal constructor(
     private val fontSizes = K9.fontSizes
 
     init {
-
-        val attributes = intArrayOf(R.attr.messageListAnswered, R.attr.messageListForwarded, R.attr.messageListAnsweredForwarded, R.attr.messageListPreviewTextColor, R.attr.messageListActiveItemBackgroundColor, R.attr.messageListSelectedBackgroundColor, R.attr.messageListReadItemBackgroundColor, R.attr.messageListUnreadItemBackgroundColor)
-
         val array = theme.obtainStyledAttributes(attributes)
 
-        mAnsweredIcon = res.getDrawable(array.getResourceId(0, R.drawable.ic_messagelist_answered_dark))
-        mForwardedIcon = res.getDrawable(array.getResourceId(1, R.drawable.ic_messagelist_forwarded_dark))
-        mForwardedAnsweredIcon = res.getDrawable(array.getResourceId(2, R.drawable.ic_messagelist_answered_forwarded_dark))
-        previewTextColor = array.getColor(3, Color.BLACK)
-        activeItemBackgroundColor = array.getColor(4, Color.BLACK)
-        selectedItemBackgroundColor = array.getColor(5, Color.BLACK)
-        readItemBackgroundColor = array.getColor(6, Color.BLACK)
-        unreadItemBackgroundColor = array.getColor(7, Color.BLACK)
-
+        mAnsweredIcon = res.getDrawable(array.getResourceId(
+                R.styleable.K9Styles_messageListAnswered,
+                R.drawable.ic_messagelist_answered_dark
+        ))
+        mForwardedIcon = res.getDrawable(array.getResourceId(
+                R.styleable.K9Styles_messageListForwarded,
+                R.drawable.ic_messagelist_forwarded_dark
+        ))
+        mForwardedAnsweredIcon = res.getDrawable(array.getResourceId(
+                R.styleable.K9Styles_messageListAnsweredForwarded,
+                R.drawable.ic_messagelist_answered_forwarded_dark
+        ))
+        previewTextColor = array.getColor(
+                R.styleable.K9Styles_messageListPreviewTextColor,
+                Color.BLACK
+        )
+        activeItemBackgroundColor = array.getColor(
+                R.styleable.K9Styles_messageListActiveItemBackgroundColor,
+                Color.BLACK
+        )
+        selectedItemBackgroundColor = array.getColor(
+                R.styleable.K9Styles_messageListSelectedBackgroundColor,
+                Color.BLACK
+        )
+        readItemBackgroundColor = array.getColor(
+                R.styleable.K9Styles_messageListReadItemBackgroundColor,
+                Color.BLACK
+        )
+        unreadItemBackgroundColor = array.getColor(
+                R.styleable.K9Styles_messageListUnreadItemBackgroundColor,
+                Color.BLACK
+        )
         array.recycle()
     }
 
@@ -138,7 +174,7 @@ class MessageListAdapter internal constructor(
     }
 
     override fun bindView(view: View, context: Context, cursor: Cursor) {
-        val account = fragment.getAccountFromCursor(cursor)
+        val account = accountRetriever(cursor)
 
         val fromList = cursor.getString(SENDER_LIST_COLUMN)
         val toList = cursor.getString(TO_LIST_COLUMN)
@@ -342,5 +378,14 @@ class MessageListAdapter internal constructor(
         }
 
         throw AssertionError("Unknown preview type: $previewType")
+    }
+}
+
+class AccountRetriever constructor(
+        private val preferences: Preferences
+) : (Cursor) -> Account {
+    override fun invoke(cursor: Cursor): Account {
+        val accountUuid = cursor.getString(ACCOUNT_UUID_COLUMN)
+        return preferences.getAccount(accountUuid)
     }
 }
