@@ -139,7 +139,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     private Cursor[] cursors;
     private boolean[] cursorValid;
-    int uniqueIdColumn;
 
     /**
      * Stores the server ID of the folder that we want to open as soon as possible after load.
@@ -163,7 +162,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private boolean sortDateAscending = false;
 
     private int selectedCount = 0;
-    Set<Long> selected = new HashSet<>();
     private ActionMode actionMode;
     private Boolean hasConnectivity;
     /**
@@ -454,9 +452,9 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
      * Write the unique IDs of selected messages to a {@link Bundle}.
      */
     private void saveSelectedMessages(Bundle outState) {
-        long[] selected = new long[this.selected.size()];
+        long[] selected = new long[adapter.getSelected().size()];
         int i = 0;
-        for (Long id : this.selected) {
+        for (Long id : adapter.getSelected()) {
             selected[i++] = id;
         }
         outState.putLongArray(STATE_SELECTED_MESSAGES, selected);
@@ -469,7 +467,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         long[] selected = savedInstanceState.getLongArray(STATE_SELECTED_MESSAGES);
         if (selected != null) {
             for (long id : selected) {
-                this.selected.add(id);
+                adapter.getSelected().add(id);
             }
         }
     }
@@ -1103,7 +1101,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         getActivity().getMenuInflater().inflate(R.menu.message_list_item_context, menu);
         menu.findItem(R.id.debug_delete_locally).setVisible(BuildConfig.DEBUG);
 
-        contextMenuUniqueId = cursor.getLong(uniqueIdColumn);
+        contextMenuUniqueId = cursor.getLong(adapter.getUniqueIdColumn());
         Account account = accountRetriever.invoke(cursor);
 
         String subject = cursor.getString(SUBJECT_COLUMN);
@@ -1112,7 +1110,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
         menu.setHeaderTitle(subject);
 
-        if (selected.contains(contextMenuUniqueId)) {
+        if (adapter.getSelected().contains(contextMenuUniqueId)) {
             menu.findItem(R.id.select).setVisible(false);
         } else {
             menu.findItem(R.id.deselect).setVisible(false);
@@ -1377,8 +1375,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             selectedCount = 0;
             for (int i = 0, end = adapter.getCount(); i < end; i++) {
                 Cursor cursor = (Cursor) adapter.getItem(i);
-                long uniqueId = cursor.getLong(uniqueIdColumn);
-                this.selected.add(uniqueId);
+                long uniqueId = cursor.getLong(adapter.getUniqueIdColumn());
+                adapter.getSelected().add(uniqueId);
 
                 if (showingThreadedList) {
                     int threadCount = cursor.getInt(THREAD_COUNT_COLUMN);
@@ -1395,7 +1393,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             updateActionModeTitle();
             computeSelectAllVisibility();
         } else {
-            this.selected.clear();
+            adapter.getSelected().clear();
             selectedCount = 0;
             if (actionMode != null) {
                 actionMode.finish();
@@ -1424,13 +1422,14 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     void toggleMessageSelectWithAdapterPosition(int adapterPosition) {
         Cursor cursor = (Cursor) adapter.getItem(adapterPosition);
-        long uniqueId = cursor.getLong(uniqueIdColumn);
+        long uniqueId = cursor.getLong(adapter.getUniqueIdColumn());
 
-        boolean selected = this.selected.contains(uniqueId);
-        if (!selected) {
-            this.selected.add(uniqueId);
+        final Set<Long> selected = adapter.getSelected();
+        boolean isSelected = selected.contains(uniqueId);
+        if (!isSelected) {
+            selected.add(uniqueId);
         } else {
-            this.selected.remove(uniqueId);
+            selected.remove(uniqueId);
         }
 
         int selectedCountDelta = 1;
@@ -1442,7 +1441,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
         if (actionMode != null) {
-            if (selectedCount == selectedCountDelta && selected) {
+            if (selectedCount == selectedCountDelta && isSelected) {
                 actionMode.finish();
                 actionMode = null;
                 return;
@@ -1451,7 +1450,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             startAndPrepareActionMode();
         }
 
-        if (selected) {
+        if (isSelected) {
             selectedCount -= selectedCountDelta;
         } else {
             selectedCount += selectedCountDelta;
@@ -1470,7 +1469,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     private void computeSelectAllVisibility() {
-        actionModeCallback.showSelectAll(selected.size() != adapter.getCount());
+        actionModeCallback.showSelectAll(adapter.getSelected().size() != adapter.getCount());
     }
 
     private void computeBatchDirection() {
@@ -1479,9 +1478,9 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
         for (int i = 0, end = adapter.getCount(); i < end; i++) {
             Cursor cursor = (Cursor) adapter.getItem(i);
-            long uniqueId = cursor.getLong(uniqueIdColumn);
+            long uniqueId = cursor.getLong(adapter.getUniqueIdColumn());
 
-            if (selected.contains(uniqueId)) {
+            if (adapter.getSelected().contains(uniqueId)) {
                 boolean read = (cursor.getInt(READ_COLUMN) == 1);
                 boolean flagged = (cursor.getInt(FLAGGED_COLUMN) == 1);
 
@@ -1524,17 +1523,18 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     private void setFlagForSelected(final Flag flag, final boolean newState) {
+        final Set<Long> selected = adapter.getSelected();
         if (selected.isEmpty()) {
             return;
         }
 
         Map<Account, List<Long>> messageMap = new HashMap<>();
         Map<Account, List<Long>> threadMap = new HashMap<>();
-        Set<Account> accounts = new HashSet<>();
+        final Set<Account> accounts = new HashSet<>();
 
         for (int position = 0, end = adapter.getCount(); position < end; position++) {
             Cursor cursor = (Cursor) adapter.getItem(position);
-            long uniqueId = cursor.getLong(uniqueIdColumn);
+            long uniqueId = cursor.getLong(adapter.getUniqueIdColumn());
 
             if (selected.contains(uniqueId)) {
                 String uuid = cursor.getString(ACCOUNT_UUID_COLUMN);
@@ -1899,9 +1899,9 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
             for (int position = 0, end = adapter.getCount(); position < end; position++) {
                 Cursor cursor = (Cursor) adapter.getItem(position);
-                long uniqueId = cursor.getLong(uniqueIdColumn);
+                long uniqueId = cursor.getLong(adapter.getUniqueIdColumn());
 
-                if (selected.contains(uniqueId)) {
+                if (adapter.getSelected().contains(uniqueId)) {
                     String accountUuid = cursor.getString(ACCOUNT_UUID_COLUMN);
                     accountUuids.add(accountUuid);
 
@@ -2272,7 +2272,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private int getPositionForUniqueId(long uniqueId) {
         for (int position = 0, end = adapter.getCount(); position < end; position++) {
             Cursor cursor = (Cursor) adapter.getItem(position);
-            if (cursor.getLong(uniqueIdColumn) == uniqueId) {
+            if (cursor.getLong(adapter.getUniqueIdColumn()) == uniqueId) {
                 return position;
             }
         }
@@ -2295,12 +2295,13 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     private List<MessageReference> getCheckedMessages() {
-        List<MessageReference> messages = new ArrayList<>(selected.size());
+        final Set<Long> adapterSelected = adapter.getSelected();
+        List<MessageReference> messages = new ArrayList<>(adapterSelected.size());
         for (int position = 0, end = adapter.getCount(); position < end; position++) {
             Cursor cursor = (Cursor) adapter.getItem(position);
-            long uniqueId = cursor.getLong(uniqueIdColumn);
+            long uniqueId = cursor.getLong(adapter.getUniqueIdColumn());
 
-            if (selected.contains(uniqueId)) {
+            if (adapterSelected.contains(uniqueId)) {
                 MessageReference message = getMessageAtPosition(position);
                 if (message != null) {
                     messages.add(message);
@@ -2618,7 +2619,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-            long uniqueId = cursor.getLong(uniqueIdColumn);
+            long uniqueId = cursor.getLong(adapter.getUniqueIdColumn());
             if (uniqueId == contextMenuUniqueId) {
                 return;
             }
@@ -2632,14 +2633,15 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     private void cleanupSelected(Cursor cursor) {
-        if (selected.isEmpty()) {
+        final Set<Long> adapterSelected = adapter.getSelected();
+        if (adapterSelected.isEmpty()) {
             return;
         }
 
-        Set<Long> selected = new HashSet<>();
+        final Set<Long> selected = new HashSet<>();
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-            long uniqueId = cursor.getLong(uniqueIdColumn);
-            if (this.selected.contains(uniqueId)) {
+            long uniqueId = cursor.getLong(adapter.getUniqueIdColumn());
+            if (adapterSelected.contains(uniqueId)) {
                 selected.add(uniqueId);
             }
         }
@@ -2652,7 +2654,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
      * Starts or finishes the action mode when necessary.
      */
     private void resetActionMode() {
-        if (selected.isEmpty()) {
+        if (adapter.getSelected().isEmpty()) {
             if (actionMode != null) {
                 actionMode.finish();
             }
@@ -2685,17 +2687,18 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
      * </p>
      */
     private void recalculateSelectionCount() {
+        final Set<Long> adapterSelected = adapter.getSelected();
         if (!showingThreadedList) {
-            selectedCount = selected.size();
+            selectedCount = adapterSelected.size();
             return;
         }
 
         selectedCount = 0;
         for (int i = 0, end = adapter.getCount(); i < end; i++) {
             Cursor cursor = (Cursor) adapter.getItem(i);
-            long uniqueId = cursor.getLong(uniqueIdColumn);
+            long uniqueId = cursor.getLong(adapter.getUniqueIdColumn());
 
-            if (selected.contains(uniqueId)) {
+            if (adapterSelected.contains(uniqueId)) {
                 int threadCount = cursor.getInt(THREAD_COUNT_COLUMN);
                 selectedCount += (threadCount > 1) ? threadCount : 1;
             }
@@ -2704,7 +2707,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        selected.clear();
+        adapter.getSelected().clear();
         adapter.swapCursor(null);
     }
 
