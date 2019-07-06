@@ -28,13 +28,14 @@ import com.fsck.k9.ui.ContactBadge
 import com.fsck.k9.ui.R
 
 
-class MessageListAdapter internal constructor(
+class MessageListAdapter constructor(
         private val fragment: MessageListFragment,
         private val theme: Resources.Theme,
         private val res: Resources,
         private val layoutInflater: LayoutInflater,
         private val messageHelper: MessageHelper,
-        private val accountRetriever: AccountRetriever
+        private val accountRetriever: AccountRetriever,
+        private val showThreadedList: Boolean
 ) : CursorAdapter(fragment.activity, null, 0) {
 
     companion object {
@@ -49,6 +50,8 @@ class MessageListAdapter internal constructor(
                 R.attr.messageListUnreadItemBackgroundColor
         )
     }
+
+    var uniqueIdColumn: Int = 0
 
     private val mForwardedIcon: Drawable
     private val mAnsweredIcon: Drawable
@@ -100,9 +103,9 @@ class MessageListAdapter internal constructor(
 
     private fun recipientSigil(toMe: Boolean, ccMe: Boolean): String {
         return if (toMe) {
-            fragment.getString(R.string.messagelist_sent_to_me_sigil)
+            res.getString(R.string.messagelist_sent_to_me_sigil)
         } else if (ccMe) {
-            fragment.getString(R.string.messagelist_sent_cc_me_sigil)
+            res.getString(R.string.messagelist_sent_cc_me_sigil)
         } else {
             ""
         }
@@ -192,10 +195,10 @@ class MessageListAdapter internal constructor(
 
         val counterpartyAddress = fetchCounterPartyAddress(fromMe, toAddrs, ccAddrs, fromAddrs)
 
-        val threadCount = if (fragment.showingThreadedList) cursor.getInt(THREAD_COUNT_COLUMN) else 0
+        val threadCount = if (showThreadedList) cursor.getInt(THREAD_COUNT_COLUMN) else 0
 
         val subject = MlfUtils.buildSubject(cursor.getString(SUBJECT_COLUMN),
-                fragment.getString(R.string.general_no_subject), threadCount)
+                res.getString(R.string.general_no_subject), threadCount)
 
         val read = cursor.getInt(READ_COLUMN) == 1
         val flagged = cursor.getInt(FLAGGED_COLUMN) == 1
@@ -208,7 +211,7 @@ class MessageListAdapter internal constructor(
 
         val maybeBoldTypeface = if (read) Typeface.NORMAL else Typeface.BOLD
 
-        val uniqueId = cursor.getLong(fragment.uniqueIdColumn)
+        val uniqueId = cursor.getLong(uniqueIdColumn)
         val selected = fragment.selected.contains(uniqueId)
 
         holder.chip.setBackgroundColor(account.chipColor)
@@ -370,7 +373,7 @@ class MessageListAdapter internal constructor(
                 return ""
             }
             DatabasePreviewType.ENCRYPTED -> {
-                return fragment.getString(R.string.preview_encrypted)
+                return res.getString(R.string.preview_encrypted)
             }
             DatabasePreviewType.TEXT -> {
                 return cursor.getString(PREVIEW_COLUMN)

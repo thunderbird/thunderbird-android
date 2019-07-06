@@ -565,7 +565,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 getResources(),
                 layoutInflater,
                 MessageHelper.getInstance(getActivity()),
-                new AccountRetriever(preferences)
+                new AccountRetriever(preferences),
+                showingThreadedList
         );
 
         if (folderServerId != null) {
@@ -2545,10 +2546,12 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         Cursor cursor;
         if (cursors.length > 1) {
             cursor = new MergeCursorWithUniqueId(cursors, getComparator());
-            uniqueIdColumn = cursor.getColumnIndex("_id");
+            if (adapter != null)
+                adapter.setUniqueIdColumn(cursor.getColumnIndex("_id"));
         } else {
             cursor = data;
-            uniqueIdColumn = ID_COLUMN;
+            if (adapter != null)
+                adapter.setUniqueIdColumn(ID_COLUMN);
         }
 
         if (isThreadDisplay) {
