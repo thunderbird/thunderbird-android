@@ -53,6 +53,8 @@ class MessageListAdapter constructor(
         )
     }
 
+    private val checkboxes: Boolean get() = K9.isShowMessageListCheckboxes
+    private val stars: Boolean get() = K9.isShowMessageListStars
     private val previewLines: Int get() = K9.messageListPreviewLines
     private val showContactPicture: Boolean get() = K9.isShowContactPicture
 
@@ -161,9 +163,9 @@ class MessageListAdapter constructor(
         fontSizes.setViewTextSize(holder.preview, fontSizes.messageListPreview)
         holder.threadCount = view.findViewById(R.id.thread_count)
         fontSizes.setViewTextSize(holder.threadCount, fontSizes.messageListSubject) // thread count is next to subject
-        view.findViewById<View>(R.id.selected_checkbox_wrapper).visibility = if (fragment.checkboxes) View.VISIBLE else View.GONE
+        view.findViewById<View>(R.id.selected_checkbox_wrapper).visibility = if (checkboxes) View.VISIBLE else View.GONE
 
-        holder.flagged.visibility = if (fragment.stars) View.VISIBLE else View.GONE
+        holder.flagged.visibility = if (stars) View.VISIBLE else View.GONE
         holder.flagged.setOnClickListener(holder)
 
 
@@ -215,10 +217,10 @@ class MessageListAdapter constructor(
         val selected = fragment.selected.contains(uniqueId)
 
         holder.chip.setBackgroundColor(account.chipColor)
-        if (fragment.checkboxes) {
+        if (checkboxes) {
             holder.selected.isChecked = selected
         }
-        if (fragment.stars) {
+        if (stars) {
             holder.flagged.isChecked = flagged
         }
         holder.position = cursor.position

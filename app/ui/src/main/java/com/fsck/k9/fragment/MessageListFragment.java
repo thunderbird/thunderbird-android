@@ -160,8 +160,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private boolean sortAscending = true;
     private boolean sortDateAscending = false;
     boolean senderAboveSubject = false;
-    boolean checkboxes = true;
-    boolean stars = true;
 
     private int selectedCount = 0;
     Set<Long> selected = new HashSet<>();
@@ -370,9 +368,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         preferences = Preferences.getPreferences(appContext);
         accountRetriever = new AccountRetriever(preferences);
         messagingController = MessagingController.getInstance(getActivity().getApplication());
-
-        checkboxes = K9.isShowMessageListCheckboxes();
-        stars = K9.isShowMessageListStars();
 
         restoreInstanceState(savedInstanceState);
         decodeArguments();
