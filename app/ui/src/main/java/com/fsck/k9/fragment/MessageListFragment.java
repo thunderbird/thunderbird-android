@@ -2629,7 +2629,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             }
         }
 
-        this.selected = selected;
+        if (adapter != null)
+        adapter.setSelected(selected);
     }
 
     /**

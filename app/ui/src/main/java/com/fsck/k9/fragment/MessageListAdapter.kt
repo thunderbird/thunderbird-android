@@ -53,14 +53,14 @@ class MessageListAdapter constructor(
         )
     }
 
+    var selected: MutableSet<Long> = mutableSetOf()
+    var uniqueIdColumn: Int = 0
+
     private val senderAboveSubject: Boolean get() = K9.isMessageListSenderAboveSubject
     private val checkboxes: Boolean get() = K9.isShowMessageListCheckboxes
     private val stars: Boolean get() = K9.isShowMessageListStars
     private val previewLines: Int get() = K9.messageListPreviewLines
     private val showContactPicture: Boolean get() = K9.isShowContactPicture
-
-    var uniqueIdColumn: Int = 0
-
     private val mForwardedIcon: Drawable
     private val mAnsweredIcon: Drawable
     private val mForwardedAnsweredIcon: Drawable
