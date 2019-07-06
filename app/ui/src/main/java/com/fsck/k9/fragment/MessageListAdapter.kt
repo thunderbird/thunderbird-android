@@ -270,14 +270,19 @@ class MessageListAdapter constructor(
         return AbsoluteSizeSpan(fontSize, true)
     }
 
-    private fun fetchCounterPartyAddress(fromMe: Boolean, toAddrs: Array<Address>, ccAddrs: Array<Address>, fromAddrs: Array<Address>): Address? {
+    private fun fetchCounterPartyAddress(
+            fromMe: Boolean,
+            toAddrs: Array<Address>,
+            ccAddrs: Array<Address>,
+            fromAddrs: Array<Address>
+    ): Address? {
         if (fromMe) {
-            if (toAddrs.size > 0) {
+            if (toAddrs.isNotEmpty()) {
                 return toAddrs[0]
-            } else if (ccAddrs.size > 0) {
+            } else if (ccAddrs.isNotEmpty()) {
                 return ccAddrs[0]
             }
-        } else if (fromAddrs.size > 0) {
+        } else if (fromAddrs.isNotEmpty()) {
             return fromAddrs[0]
         }
         return null
@@ -323,15 +328,11 @@ class MessageListAdapter constructor(
 
     private fun setBackgroundColor(view: View, selected: Boolean, read: Boolean) {
         if (selected || K9.isUseBackgroundAsUnreadIndicator) {
-            val color: Int
-            if (selected) {
-                color = selectedItemBackgroundColor
-            } else if (read) {
-                color = readItemBackgroundColor
-            } else {
-                color = unreadItemBackgroundColor
+            val color: Int = when {
+                selected -> selectedItemBackgroundColor
+                read -> readItemBackgroundColor
+                else -> unreadItemBackgroundColor
             }
-
             view.setBackgroundColor(color)
         } else {
             view.setBackgroundColor(Color.TRANSPARENT)
