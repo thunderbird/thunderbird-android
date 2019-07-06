@@ -20,6 +20,7 @@ import android.widget.TextView
 import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
+import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.fragment.MLFProjectionInfo.*
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mail.Address
@@ -35,6 +36,7 @@ class MessageListAdapter constructor(
         private val layoutInflater: LayoutInflater,
         private val messageHelper: MessageHelper,
         private val accountRetriever: AccountRetriever,
+        private val contactPictureLoader: ContactPictureLoader,
         private val showThreadedList: Boolean
 ) : CursorAdapter(fragment.activity, null, 0) {
 
@@ -50,6 +52,9 @@ class MessageListAdapter constructor(
                 R.attr.messageListUnreadItemBackgroundColor
         )
     }
+
+    private val previewLines: Int get() = K9.messageListPreviewLines
+    private val showContactPicture: Boolean get() = K9.isShowContactPicture
 
     var uniqueIdColumn: Int = 0
 
@@ -102,12 +107,10 @@ class MessageListAdapter constructor(
     }
 
     private fun recipientSigil(toMe: Boolean, ccMe: Boolean): String {
-        return if (toMe) {
-            res.getString(R.string.messagelist_sent_to_me_sigil)
-        } else if (ccMe) {
-            res.getString(R.string.messagelist_sent_cc_me_sigil)
-        } else {
-            ""
+        return when {
+            toMe -> res.getString(R.string.messagelist_sent_to_me_sigil)
+            ccMe -> res.getString(R.string.messagelist_sent_cc_me_sigil)
+            else -> ""
         }
     }
 
@@ -121,23 +124,20 @@ class MessageListAdapter constructor(
         holder.status = view.findViewById(R.id.status)
 
 
-        if (fragment.previewLines == 0 && fragment.contactsPictureLoader == null) {
+        if (previewLines == 0 && showContactPicture.not()) {
             view.findViewById<View>(R.id.preview).visibility = View.GONE
             holder.preview = view.findViewById(R.id.sender_compact)
             holder.flagged = view.findViewById(R.id.flagged_center_right)
             view.findViewById<View>(R.id.flagged_bottom_right).visibility = View.GONE
-
-
         } else {
             view.findViewById<View>(R.id.sender_compact).visibility = View.GONE
             holder.preview = view.findViewById(R.id.preview)
             holder.flagged = view.findViewById(R.id.flagged_bottom_right)
             view.findViewById<View>(R.id.flagged_center_right).visibility = View.GONE
-
         }
 
         val contactBadge = view.findViewById<ContactBadge>(R.id.contact_badge)
-        if (fragment.contactsPictureLoader != null) {
+        if (showContactPicture) {
             holder.contactBadge = contactBadge
         } else {
             contactBadge.visibility = View.GONE
@@ -157,7 +157,7 @@ class MessageListAdapter constructor(
 
 
         // 1 preview line is needed even if it is set to 0, because subject is part of the same text view
-        holder.preview.setLines(Math.max(fragment.previewLines, 1))
+        holder.preview.setLines(Math.max(previewLines, 1))
         fontSizes.setViewTextSize(holder.preview, fontSizes.messageListPreview)
         holder.threadCount = view.findViewById(R.id.thread_count)
         fontSizes.setViewTextSize(holder.threadCount, fontSizes.messageListSubject) // thread count is next to subject
@@ -234,7 +234,7 @@ class MessageListAdapter constructor(
         val sigil = recipientSigil(toMe, ccMe)
         val messageStringBuilder = SpannableStringBuilder(sigil)
                 .append(beforePreviewText)
-        if (fragment.previewLines > 0) {
+        if (previewLines > 0) {
             val preview = getPreview(cursor)
             messageStringBuilder.append(" ").append(preview)
         }
@@ -309,7 +309,7 @@ class MessageListAdapter constructor(
                      * doesn't reset the padding, so we do it ourselves.
                      */
             holder.contactBadge.setPadding(0, 0, 0, 0)
-            fragment.contactsPictureLoader.setContactPicture(holder.contactBadge, counterpartyAddress)
+            contactPictureLoader.setContactPicture(holder.contactBadge, counterpartyAddress)
         } else {
             holder.contactBadge.assignContactUri(null)
             holder.contactBadge.setImageResource(R.drawable.ic_contact_picture)

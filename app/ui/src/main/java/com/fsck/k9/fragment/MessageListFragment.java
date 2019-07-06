@@ -40,7 +40,6 @@ import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.activity.misc.ContactPicture;
 import com.fsck.k9.cache.EmailProviderCache;
-import com.fsck.k9.contacts.ContactPictureLoader;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.core.BuildConfig;
@@ -127,9 +126,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private SwipeRefreshLayout swipeRefreshLayout;
     Parcelable savedListState;
 
-    int previewLines = 0;
-
-
     private MessageListAdapter adapter;
     private View footerView;
     private FolderInfoHolder currentFolder;
@@ -192,7 +188,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
      * make sure we don't access member variables before initialization is complete.
      */
     private boolean initialized = false;
-    ContactPictureLoader contactsPictureLoader;
     private LocalBroadcastManager localBroadcastManager;
     private BroadcastReceiver cacheBroadcastReceiver;
     private IntentFilter cacheIntentFilter;
@@ -376,13 +371,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         accountRetriever = new AccountRetriever(preferences);
         messagingController = MessagingController.getInstance(getActivity().getApplication());
 
-        previewLines = K9.getMessageListPreviewLines();
         checkboxes = K9.isShowMessageListCheckboxes();
         stars = K9.isShowMessageListStars();
-
-        if (K9.isShowContactPicture()) {
-            contactsPictureLoader = ContactPicture.getContactPictureLoader();
-        }
 
         restoreInstanceState(savedInstanceState);
         decodeArguments();
@@ -566,6 +556,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 layoutInflater,
                 MessageHelper.getInstance(getActivity()),
                 new AccountRetriever(preferences),
+                ContactPicture.getContactPictureLoader(),
                 showingThreadedList
         );
 
