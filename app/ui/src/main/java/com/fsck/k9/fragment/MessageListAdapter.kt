@@ -21,6 +21,7 @@ import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import com.fsck.k9.contacts.ContactPictureLoader
+import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.fragment.MLFProjectionInfo.*
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mail.Address
@@ -53,6 +54,7 @@ class MessageListAdapter constructor(
         )
     }
 
+    var activeMessage: MessageReference? = null
     var selected: MutableSet<Long> = mutableSetOf()
     var uniqueIdColumn: Int = 0
 
@@ -215,7 +217,7 @@ class MessageListAdapter constructor(
         val maybeBoldTypeface = if (read) Typeface.NORMAL else Typeface.BOLD
 
         val uniqueId = cursor.getLong(uniqueIdColumn)
-        val selected = fragment.selected.contains(uniqueId)
+        val selected = selected.contains(uniqueId)
 
         holder.chip.setBackgroundColor(account.chipColor)
         if (checkboxes) {
@@ -229,7 +231,7 @@ class MessageListAdapter constructor(
             updateContactBadge(holder, counterpartyAddress)
         }
         setBackgroundColor(view, selected, read)
-        if (fragment.activeMessage != null) {
+        if (activeMessage != null) {
             changeBackgroundColorIfActiveMessage(cursor, account, view)
         }
         updateWithThreadCount(holder, threadCount)
@@ -323,9 +325,9 @@ class MessageListAdapter constructor(
         val uid = cursor.getString(UID_COLUMN)
         val folderServerId = cursor.getString(FOLDER_SERVER_ID_COLUMN)
 
-        if (account.uuid == fragment.activeMessage.accountUuid &&
-                folderServerId == fragment.activeMessage.folderServerId &&
-                uid == fragment.activeMessage.uid) {
+        if (account.uuid == activeMessage?.accountUuid &&
+                folderServerId == activeMessage?.folderServerId &&
+                uid == activeMessage?.uid) {
             view.setBackgroundColor(activeItemBackgroundColor)
         }
     }

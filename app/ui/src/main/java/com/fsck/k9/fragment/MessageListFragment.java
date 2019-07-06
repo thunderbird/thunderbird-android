@@ -179,7 +179,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private Preferences preferences;
     private AccountRetriever accountRetriever;
     private boolean loaderJustInitialized;
-    MessageReference activeMessage;
     /**
      * {@code true} after {@link #onCreate(Bundle)} was executed. Used in {@link #updateTitle()} to
      * make sure we don't access member variables before initialization is complete.
@@ -426,8 +425,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         saveListState(outState);
 
         outState.putBoolean(STATE_REMOTE_SEARCH_PERFORMED, remoteSearchPerformed);
-        if (activeMessage != null) {
-            outState.putString(STATE_ACTIVE_MESSAGE, activeMessage.toIdentityString());
+        if (adapter != null && adapter.getActiveMessage() != null) {
+            outState.putString(STATE_ACTIVE_MESSAGE, adapter.getActiveMessage().toIdentityString());
         }
     }
 
@@ -446,7 +445,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         remoteSearchPerformed = savedInstanceState.getBoolean(STATE_REMOTE_SEARCH_PERFORMED);
         savedListState = savedInstanceState.getParcelable(STATE_MESSAGE_LIST);
         String messageReferenceString = savedInstanceState.getString(STATE_ACTIVE_MESSAGE);
-        activeMessage = MessageReference.parse(messageReferenceString);
+        adapter.setActiveMessage(MessageReference.parse(messageReferenceString));
     }
 
     /**
@@ -2034,7 +2033,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             activeMessages = null;
         } else if (dialogId == R.id.dialog_confirm_delete) {
             onDeleteConfirmed(activeMessages);
-            activeMessage = null;
+            adapter.setActiveMessage(null);
         } else if (dialogId == R.id.dialog_confirm_mark_all_as_read) {
             markAllAsRead();
         } else if (dialogId == R.id.dialog_confirm_empty_trash) {
@@ -2432,12 +2431,12 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         StringBuilder query = new StringBuilder();
         List<String> queryArgs = new ArrayList<>();
         if (needConditions) {
-            boolean selectActive = activeMessage != null && activeMessage.getAccountUuid().equals(accountUuid);
+            boolean selectActive = adapter.getActiveMessage() != null && adapter.getActiveMessage().getAccountUuid().equals(accountUuid);
 
             if (selectActive) {
                 query.append("(" + MessageColumns.UID + " = ? AND " + SpecialColumns.FOLDER_SERVER_ID + " = ?) OR (");
-                queryArgs.add(activeMessage.getUid());
-                queryArgs.add(activeMessage.getFolderServerId());
+                queryArgs.add(adapter.getActiveMessage().getUid());
+                queryArgs.add(adapter.getActiveMessage().getFolderServerId());
             }
 
             SqlQueryBuilder.buildWhereClause(account, search.getConditions(), query, queryArgs);
@@ -2708,7 +2707,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
      * @param messageReference {@code null} to not mark any message as being 'active'.
      */
     public void setActiveMessage(MessageReference messageReference) {
-        activeMessage = messageReference;
+        adapter.setActiveMessage(messageReference);
 
         // Reload message list with modified query that always includes the active message
         if (isAdded()) {
