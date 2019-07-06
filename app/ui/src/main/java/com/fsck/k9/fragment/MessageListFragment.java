@@ -63,6 +63,8 @@ import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.search.SqlQueryBuilder;
 import com.fsck.k9.ui.R;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 import timber.log.Timber;
 
 import java.util.*;
@@ -544,8 +546,21 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private void initializeMessageList() {
         adapter = new MessageListAdapter(
                 requireContext(),
-                this,
                 requireActivity().getTheme(),
+                new Function1<Integer, Unit>() {
+                    @Override
+                    public Unit invoke(Integer pos) {
+                        toggleMessageSelectWithAdapterPosition(pos);
+                        return Unit.INSTANCE;
+                    }
+                },
+                new Function1<Integer, Unit>() {
+                    @Override
+                    public Unit invoke(Integer pos) {
+                        toggleMessageFlagWithAdapterPosition(pos);
+                        return Unit.INSTANCE;
+                    }
+                },
                 getResources(),
                 layoutInflater,
                 MessageHelper.getInstance(getActivity()),
@@ -2630,7 +2645,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
         if (adapter != null)
-        adapter.setSelected(selected);
+            adapter.setSelected(selected);
     }
 
     /**

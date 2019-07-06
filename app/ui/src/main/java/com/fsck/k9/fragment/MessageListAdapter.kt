@@ -26,14 +26,16 @@ import com.fsck.k9.fragment.MLFProjectionInfo.*
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.DatabasePreviewType
-import com.fsck.k9.ui.ContactBadge
 import com.fsck.k9.ui.R
+import kotlinx.android.synthetic.main.message_list_item.view.*
+import kotlin.math.max
 
 
 class MessageListAdapter constructor(
         context: Context,
-        private val fragment: MessageListFragment,
-        private val theme: Resources.Theme,
+        theme: Resources.Theme,
+        private val toggleMessageSelectWithAdapterPosition: (Int) -> Unit,
+        private val toggleMessageFlagWithAdapterPosition: (Int) -> Unit,
         private val res: Resources,
         private val layoutInflater: LayoutInflater,
         private val messageHelper: MessageHelper,
@@ -123,59 +125,31 @@ class MessageListAdapter constructor(
     override fun newView(context: Context, cursor: Cursor, parent: ViewGroup): View {
         val view = layoutInflater.inflate(R.layout.message_list_item, parent, false)
 
-        val holder = MessageViewHolder(fragment)
-        holder.date = view.findViewById(R.id.date)
-        holder.chip = view.findViewById(R.id.chip)
-        holder.attachment = view.findViewById(R.id.attachment)
-        holder.status = view.findViewById(R.id.status)
+        val compact = previewLines == 0 && showContactPicture.not()
+        val holder = MessageViewHolder(
+                view,
+                compact,
+                senderAboveSubject,
+                toggleMessageSelectWithAdapterPosition,
+                toggleMessageFlagWithAdapterPosition,
+                fontSizes
+        )
 
-
-        if (previewLines == 0 && showContactPicture.not()) {
-            view.findViewById<View>(R.id.preview).visibility = View.GONE
-            holder.preview = view.findViewById(R.id.sender_compact)
-            holder.flagged = view.findViewById(R.id.flagged_center_right)
-            view.findViewById<View>(R.id.flagged_bottom_right).visibility = View.GONE
-        } else {
-            view.findViewById<View>(R.id.sender_compact).visibility = View.GONE
-            holder.preview = view.findViewById(R.id.preview)
-            holder.flagged = view.findViewById(R.id.flagged_bottom_right)
-            view.findViewById<View>(R.id.flagged_center_right).visibility = View.GONE
-        }
-
-        val contactBadge = view.findViewById<ContactBadge>(R.id.contact_badge)
-        if (showContactPicture) {
-            holder.contactBadge = contactBadge
-        } else {
-            contactBadge.visibility = View.GONE
-        }
-
-        if (senderAboveSubject) {
-            holder.from = view.findViewById(R.id.subject)
-            fontSizes.setViewTextSize(holder.from, fontSizes.messageListSender)
-
-        } else {
-            holder.subject = view.findViewById(R.id.subject)
-            fontSizes.setViewTextSize(holder.subject, fontSizes.messageListSubject)
-
+        if (showContactPicture.not()) {
+            holder.contactBadge.visibility = View.GONE
         }
 
         fontSizes.setViewTextSize(holder.date, fontSizes.messageListDate)
 
-
         // 1 preview line is needed even if it is set to 0, because subject is part of the same text view
-        holder.preview.setLines(Math.max(previewLines, 1))
+        holder.preview.setLines(max(previewLines, 1))
         fontSizes.setViewTextSize(holder.preview, fontSizes.messageListPreview)
-        holder.threadCount = view.findViewById(R.id.thread_count)
         fontSizes.setViewTextSize(holder.threadCount, fontSizes.messageListSubject) // thread count is next to subject
-        view.findViewById<View>(R.id.selected_checkbox_wrapper).visibility = if (checkboxes) View.VISIBLE else View.GONE
+        view.selected_checkbox_wrapper.visibility = if (checkboxes) View.VISIBLE else View.GONE
 
         holder.flagged.visibility = if (stars) View.VISIBLE else View.GONE
         holder.flagged.setOnClickListener(holder)
-
-
-        holder.selected = view.findViewById(R.id.selected_checkbox)
         holder.selected.setOnClickListener(holder)
-
 
         view.tag = holder
 
@@ -203,8 +177,11 @@ class MessageListAdapter constructor(
 
         val threadCount = if (showThreadedList) cursor.getInt(THREAD_COUNT_COLUMN) else 0
 
-        val subject = MlfUtils.buildSubject(cursor.getString(SUBJECT_COLUMN),
-                res.getString(R.string.general_no_subject), threadCount)
+        val subject = MlfUtils.buildSubject(
+                cursor.getString(SUBJECT_COLUMN),
+                res.getString(R.string.general_no_subject),
+                threadCount
+        )
 
         val read = cursor.getInt(READ_COLUMN) == 1
         val flagged = cursor.getInt(FLAGGED_COLUMN) == 1
@@ -248,17 +225,17 @@ class MessageListAdapter constructor(
 
         formatPreviewText(holder.preview, beforePreviewText, sigil)
 
-        if (holder.from != null) {
-            holder.from.typeface = Typeface.create(holder.from.typeface, maybeBoldTypeface)
+        holder.from?.apply {
+            typeface = Typeface.create(typeface, maybeBoldTypeface)
             if (senderAboveSubject) {
-                holder.from.text = displayName
+                text = displayName
             } else {
-                holder.from.text = SpannableStringBuilder(sigil).append(displayName)
+                text = SpannableStringBuilder(sigil).append(displayName)
             }
         }
-        if (holder.subject != null) {
-            holder.subject.typeface = Typeface.create(holder.subject.typeface, maybeBoldTypeface)
-            holder.subject.text = subject
+        holder.subject?.apply {
+            typeface = Typeface.create(typeface, maybeBoldTypeface)
+            text = subject
         }
         holder.date.text = displayDate
         holder.attachment.visibility = if (hasAttachments) View.VISIBLE else View.GONE
