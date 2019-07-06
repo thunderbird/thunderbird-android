@@ -31,6 +31,7 @@ import com.fsck.k9.ui.R
 
 
 class MessageListAdapter constructor(
+        context: Context,
         private val fragment: MessageListFragment,
         private val theme: Resources.Theme,
         private val res: Resources,
@@ -39,7 +40,7 @@ class MessageListAdapter constructor(
         private val accountRetriever: AccountRetriever,
         private val contactPictureLoader: ContactPictureLoader,
         private val showThreadedList: Boolean
-) : CursorAdapter(fragment.activity, null, 0) {
+) : CursorAdapter(context, null, 0) {
 
     companion object {
         val attributes = intArrayOf(
