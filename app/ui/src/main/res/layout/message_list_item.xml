@@ -140,11 +140,10 @@
                     />
         </LinearLayout>
 
-        <CheckBox
+        <ImageView
                 android:id="@+id/flagged_center_right"
-                style="?android:attr/starStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/flagged_icon_size"
+                android:layout_height="@dimen/flagged_icon_size"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:paddingTop="3dip"
@@ -178,11 +177,10 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="?android:attr/textColorSecondary"/>
 
-        <CheckBox
+        <ImageView
                 android:id="@+id/flagged_bottom_right"
-                style="?android:attr/starStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
+                android:layout_width="@dimen/flagged_icon_size"
+                android:layout_height="@dimen/flagged_icon_size"
                 android:layout_below="@+id/date"
                 android:layout_alignParentRight="true"
                 android:paddingTop="5dip"

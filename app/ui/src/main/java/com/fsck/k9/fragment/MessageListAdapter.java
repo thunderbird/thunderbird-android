@@ -209,7 +209,11 @@ public class MessageListAdapter extends CursorAdapter {
             holder.selected.setChecked(selected);
         }
         if (fragment.stars) {
-            holder.flagged.setChecked(flagged);
+            final int iAttr = flagged ? R.attr.iconActionFlag : R.attr.iconActionUnflag;
+            final TypedArray attrArray = holder.flagged.getContext().getTheme().obtainStyledAttributes(new int[] { iAttr });
+            final int attributeResourceId = attrArray.getResourceId(0, 0);
+            holder.flagged.setImageResource(attributeResourceId);
+            attrArray.recycle();
         }
         holder.position = cursor.getPosition();
         if (holder.contactBadge != null) {

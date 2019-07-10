@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -24,7 +25,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -63,7 +63,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private ImageView mCryptoStatusIcon;
 
     private View mChip;
-    private CheckBox mFlagged;
+    private ImageView mFlagged;
     private int defaultSubjectColor;
     private TextView mAdditionalHeadersView;
     private View singleMessageOptionIcon;
@@ -334,7 +334,12 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         updateAddressField(mBccView, bcc, mBccLabel);
         mAnsweredIcon.setVisibility(message.isSet(Flag.ANSWERED) ? View.VISIBLE : View.GONE);
         mForwardedIcon.setVisibility(message.isSet(Flag.FORWARDED) ? View.VISIBLE : View.GONE);
-        mFlagged.setChecked(message.isSet(Flag.FLAGGED));
+
+        final int iAttr = message.isSet(Flag.FLAGGED) ? R.attr.iconActionFlag : R.attr.iconActionUnflag;
+        final TypedArray attrArray = mFlagged.getContext().getTheme().obtainStyledAttributes(new int[] { iAttr });
+        final int attributeResourceId = attrArray.getResourceId(0, 0);
+        mFlagged.setImageResource(attributeResourceId);
+        attrArray.recycle();
 
         mChip.setBackgroundColor(mAccount.getChipColor());
 

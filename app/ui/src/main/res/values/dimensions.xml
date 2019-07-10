@@ -2,4 +2,5 @@
 <resources>
     <dimen name="button_minWidth">100sp</dimen>
     <dimen name="widget_padding">8dp</dimen>
+    <dimen name="flagged_icon_size">32dp</dimen>
 </resources>

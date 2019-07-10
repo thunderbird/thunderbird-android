@@ -56,14 +56,11 @@
                     android:visibility="gone"
                     />
 
-                <CheckBox
+                <ImageView
                     android:id="@+id/flagged"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/flagged_icon_size"
+                    android:layout_height="@dimen/flagged_icon_size"
                     android:layout_gravity="center_vertical"
-                    android:focusable="false"
-                    android:checked="false"
-                    style="?android:attr/starStyle"
                     />
 
             </LinearLayout>
