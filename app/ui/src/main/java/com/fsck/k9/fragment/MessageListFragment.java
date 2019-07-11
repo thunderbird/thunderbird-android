@@ -105,6 +105,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
      */
     private static final Map<SortType, Comparator<Cursor>> SORT_COMPARATORS;
 
+    private static final int NO_UNIQUE_ID = 0;
+
     static {
         // fill the mapping at class time loading
 
@@ -196,7 +198,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
      * <p>
      * The value of this field is {@code 0} when no context menu is currently open.
      */
-    private long contextMenuUniqueId = 0;
+    private long contextMenuUniqueId = NO_UNIQUE_ID;
 
 
     /**
@@ -442,13 +444,15 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         remoteSearchPerformed = savedInstanceState.getBoolean(STATE_REMOTE_SEARCH_PERFORMED);
         savedListState = savedInstanceState.getParcelable(STATE_MESSAGE_LIST);
         String messageReferenceString = savedInstanceState.getString(STATE_ACTIVE_MESSAGE);
-        adapter.setActiveMessage(MessageReference.parse(messageReferenceString));
+        if (adapter != null) adapter.setActiveMessage(MessageReference.parse(messageReferenceString));
     }
 
     /**
      * Write the unique IDs of selected messages to a {@link Bundle}.
      */
     private void saveSelectedMessages(Bundle outState) {
+        if (adapter == null) return;
+
         long[] selected = new long[adapter.getSelected().size()];
         int i = 0;
         for (Long id : adapter.getSelected()) {
@@ -461,6 +465,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
      * Restore selected messages from a {@link Bundle}.
      */
     private void restoreSelectedMessages(Bundle savedInstanceState) {
+        if (adapter == null) return;
         long[] selected = savedInstanceState.getLongArray(STATE_SELECTED_MESSAGES);
         if (selected != null) {
             for (long id : selected) {
@@ -582,7 +587,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         cacheBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                adapter.notifyDataSetChanged();
+                if (adapter != null) adapter.notifyDataSetChanged();
             }
         };
 
@@ -1052,6 +1057,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             onResendMessage(getMessageAtPosition(adapterPosition));
             selectedCount = 0;
         } else if (id == R.id.same_sender) {
+            if (adapter == null) return false;
             Cursor cursor = (Cursor) adapter.getItem(adapterPosition);
             String senderAddress = MlfUtils.getSenderAddressFromCursor(cursor);
             if (senderAddress != null) {
@@ -1098,20 +1104,12 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         getActivity().getMenuInflater().inflate(R.menu.message_list_item_context, menu);
         menu.findItem(R.id.debug_delete_locally).setVisible(BuildConfig.DEBUG);
 
-        contextMenuUniqueId = cursor.getLong(adapter.getUniqueIdColumn());
-        Account account = accountRetriever.invoke(cursor);
-
         String subject = cursor.getString(SUBJECT_COLUMN);
         boolean read = (cursor.getInt(READ_COLUMN) == 1);
         boolean flagged = (cursor.getInt(FLAGGED_COLUMN) == 1);
 
         menu.setHeaderTitle(subject);
 
-        if (adapter.getSelected().contains(contextMenuUniqueId)) {
-            menu.findItem(R.id.select).setVisible(false);
-        } else {
-            menu.findItem(R.id.deselect).setVisible(false);
-        }
 
         if (read) {
             menu.findItem(R.id.mark_as_read).setVisible(false);
@@ -1123,6 +1121,16 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             menu.findItem(R.id.flag).setVisible(false);
         } else {
             menu.findItem(R.id.unflag).setVisible(false);
+        }
+
+        if (adapter == null) return;
+        contextMenuUniqueId = cursor.getLong(adapter.getUniqueIdColumn());
+        final Account account = accountRetriever.invoke(cursor);
+
+        if (adapter.getSelected().contains(contextMenuUniqueId)) {
+            menu.findItem(R.id.select).setVisible(false);
+        } else {
+            menu.findItem(R.id.deselect).setVisible(false);
         }
 
         if (!messagingController.isCopyCapable(account)) {
@@ -2724,7 +2732,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
      * @param messageReference {@code null} to not mark any message as being 'active'.
      */
     public void setActiveMessage(MessageReference messageReference) {
-        adapter.setActiveMessage(messageReference);
+        if (adapter != null && messageReference != null)
+            adapter.setActiveMessage(messageReference);
 
         // Reload message list with modified query that always includes the active message
         if (isAdded()) {
