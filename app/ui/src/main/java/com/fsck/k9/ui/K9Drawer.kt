@@ -15,8 +15,12 @@ import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.helper.Contacts
+import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mailstore.Folder
 import com.fsck.k9.mailstore.FolderType
+import com.fsck.k9.mailstore.LocalFolder
+import com.fsck.k9.mailstore.LocalStore
+import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.messagelist.MessageListViewModel
 import com.fsck.k9.ui.messagelist.MessageListViewModelFactory
@@ -28,6 +32,7 @@ import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.Drawer
 import com.mikepenz.materialdrawer.Drawer.OnDrawerItemClickListener
 import com.mikepenz.materialdrawer.DrawerBuilder
+import com.mikepenz.materialdrawer.holder.StringHolder
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
@@ -55,6 +60,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
     private val userFolderDrawerIds = ArrayList<Long>()
     private var unifiedInboxSelected: Boolean = false
     private var openedFolderServerId: String? = null
+    private var drawerIdMapping = HashMap<String, Long>()
 
 
     val layout: DrawerLayout
@@ -202,7 +208,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
             val viewModelProvider = ViewModelProviders.of(parent, MessageListViewModelFactory())
             val viewModel = viewModelProvider.get(MessageListViewModel::class.java)
             viewModel.getFolders(account).observe(parent, Observer {
-                folders -> setUserFolders(folders)
+                folders -> setUserFolders(account, folders)
             })
             updateFolderSettingsItem()
         }
@@ -228,13 +234,15 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
         }
     }
 
-    private fun setUserFolders(folders: List<Folder>?) {
+    private fun setUserFolders(account: Account, folders: List<Folder>?) {
         clearUserFolders()
 
         if (folders == null) {
             return
         }
 
+        drawerIdMapping.clear()
+        val localStore = DI.get(LocalStoreProvider::class.java).getInstance(account)
         var openedFolderDrawerId: Long = -1
         for (i in folders.indices.reversed()) {
             val folder = folders[i]
@@ -246,6 +254,9 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
                     .withName(getFolderDisplayName(folder)),
                     headerItemCount)
 
+            drawerIdMapping[folder.serverId] = drawerId
+            updateUnreadMessageCount(folder.serverId, getUnreadMessages(folder.serverId, localStore))
+
             userFolderDrawerIds.add(drawerId)
 
             if (folder.serverId == openedFolderServerId) {
@@ -256,6 +267,41 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
         if (openedFolderDrawerId != -1L) {
             drawer.setSelection(openedFolderDrawerId, false)
         }
+    }
+
+    fun updateUnreadMessageCount() {
+        val account = (accountHeader.activeProfile as ProfileDrawerItem).tag as? Account ?: return
+        val localStore = DI.get(LocalStoreProvider::class.java).getInstance(account)
+        drawer.drawerItems.forEach {
+            val folder = it.tag
+            if (folder is Folder) {
+                val unread = getUnreadMessages(folder.serverId, localStore)
+                updateUnreadMessageCount(folder.serverId, unread)
+            }
+        }
+    }
+
+    fun updateUnreadMessageCount(folderServerId: String, unreadMessageCount: Int) {
+        val drawerId = drawerIdMapping[folderServerId] ?: return
+        if (unreadMessageCount == 0) {
+            drawer.updateBadge(drawerId, StringHolder(""))
+        } else {
+            drawer.updateBadge(drawerId, StringHolder("" + unreadMessageCount))
+        }
+    }
+
+    private fun getUnreadMessages(folderServerId: String, localStore: LocalStore): Int {
+        var localFolder : LocalFolder? = null
+        try {
+            localFolder = localStore.getFolder(folderServerId)
+            localFolder.open(com.fsck.k9.mail.Folder.OPEN_MODE_RO)
+            return localFolder.unreadMessageCount
+        } catch (e: MessagingException) {
+            throw RuntimeException(e)
+        } finally {
+            localFolder?.close()
+        }
+
     }
 
     private fun clearUserFolders() {

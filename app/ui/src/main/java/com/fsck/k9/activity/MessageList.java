@@ -40,6 +40,8 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.compose.MessageActions;
 import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
 import com.fsck.k9.controller.MessageReference;
+import com.fsck.k9.controller.MessagingController;
+import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.fragment.MessageListFragment;
 import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener;
 import com.fsck.k9.helper.Contacts;
@@ -176,6 +178,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     private MenuItem menuButtonCheckMail;
     private View actionButtonIndeterminateProgress;
     private int lastDirection = (K9.isMessageViewShowNext()) ? NEXT : PREVIOUS;
+    private MessagingController messagingController;
 
     /**
      * {@code true} if the message list should be displayed as flat list (i.e. no threading)
@@ -237,6 +240,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         initializeFragments();
         displayViews();
         channelUtils.updateChannels();
+        messagingController = MessagingController.getInstance(getApplication());
 
         ChangeLog cl = new ChangeLog(this);
         if (cl.isFirstRun()) {
@@ -523,6 +527,14 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     protected void onStart() {
         super.onStart();
         Contacts.clearCache();
+        messagingController.addListener(drawerUnreadCountListener);
+        drawer.updateUnreadMessageCount();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        messagingController.removeListener(drawerUnreadCountListener);
     }
 
     @Override
@@ -1618,6 +1630,18 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         drawer.unlock();
         drawerToggle.setDrawerIndicatorEnabled(true);
     }
+
+    private SimpleMessagingListener drawerUnreadCountListener = new SimpleMessagingListener() {
+        @Override
+        public void folderStatusChanged(Account account, final String folderServerId, final int unreadMessageCount) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    drawer.updateUnreadMessageCount(folderServerId, unreadMessageCount);
+                }
+            });
+        }
+    };
 
     private void initializeFromLocalSearch(LocalSearch search) {
         this.search = search;

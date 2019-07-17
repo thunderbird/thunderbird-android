@@ -1691,6 +1691,7 @@ public class MessagingController {
 
             for (MessagingListener l : getListeners()) {
                 l.sendPendingMessagesCompleted(account);
+                l.folderStatusChanged(account, localFolder.getServerId(), localFolder.getUnreadMessageCount());
             }
 
             if (lastFailure != null) {
