@@ -33,6 +33,14 @@ public class K9StoragePersister implements StoragePersister {
     private SQLiteDatabase openDB() {
         SQLiteDatabase db = context.openOrCreateDatabase(DB_NAME, Context.MODE_PRIVATE, null);
 
+        if (db.getVersion() != DB_VERSION) {
+            upgrade(db);
+        }
+
+        return db;
+    }
+
+    private void upgrade(SQLiteDatabase db) {
         db.beginTransaction();
         try {
             if (db.getVersion() < 1) {
@@ -50,8 +58,6 @@ public class K9StoragePersister implements StoragePersister {
         if (db.getVersion() != DB_VERSION) {
             throw new RuntimeException("Storage database upgrade failed!");
         }
-
-        return db;
     }
 
     private void createStorageDatabase(SQLiteDatabase db) {

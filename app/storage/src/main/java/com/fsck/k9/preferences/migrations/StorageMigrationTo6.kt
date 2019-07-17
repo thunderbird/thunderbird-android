@@ -27,7 +27,11 @@ class StorageMigrationTo6(
     }
 
     private fun rewriteTheme() {
-        val theme = migrationsHelper.readValue(db, "theme")?.toInt()
+        val theme = try {
+            migrationsHelper.readValue(db, "theme")?.toInt()
+        } catch (e : NumberFormatException) {
+            THEME_ORDINAL_LIGHT
+        }
 
         // We used to save the resource ID of the theme. So convert that to the new format if necessary.
         val newTheme = if (theme == THEME_ORDINAL_DARK || theme == android.R.style.Theme) {

@@ -35,7 +35,12 @@ class StorageMigrationTo7(
     }
 
     private fun rewriteScreenTheme(key: String) {
-        val newTheme = when (migrationsHelper.readValue(db, key)?.toInt()) {
+        val theme = try {
+            migrationsHelper.readValue(db, key)?.toInt()
+        } catch (e : NumberFormatException) {
+            THEME_ORDINAL_USE_GLOBAL
+        }
+        val newTheme = when (theme) {
             THEME_ORDINAL_DARK -> THEME_DARK
             THEME_ORDINAL_USE_GLOBAL -> THEME_USE_GLOBAL
             else -> THEME_LIGHT
