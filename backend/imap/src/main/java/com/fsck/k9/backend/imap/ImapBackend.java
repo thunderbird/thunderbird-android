@@ -1,6 +1,7 @@
 package com.fsck.k9.backend.imap;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -160,6 +161,18 @@ public class ImapBackend implements Backend {
     public Map<String, String> moveMessages(@NotNull String sourceFolderServerId, @NotNull String targetFolderServerId,
             @NotNull List<String> messageServerIds) throws MessagingException {
         return commandMoveOrCopyMessages.moveMessages(sourceFolderServerId, targetFolderServerId, messageServerIds);
+    }
+
+    @Nullable
+    @Override
+    public Map<String, String> moveMessagesAndMarkAsRead(@NotNull String sourceFolderServerId,
+             @NotNull String targetFolderServerId, @NotNull List<String> messageServerIds) throws MessagingException {
+        Map<String, String> uidMapping = commandMoveOrCopyMessages
+                .moveMessages(sourceFolderServerId, targetFolderServerId, messageServerIds);
+        if (uidMapping != null) {
+            setFlag(targetFolderServerId, new ArrayList<>(uidMapping.values()), Flag.SEEN, true);
+        }
+        return uidMapping;
     }
 
     @Nullable
