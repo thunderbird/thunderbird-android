@@ -9,9 +9,8 @@
   <string name="remote_control_label">Controlo remoto do K-9 Mail</string>
   <string name="remote_control_desc">Permite que esta aplicação controle as atividades e definições do K-9 Mail.</string>
   <!--Used in the about dialog-->
-  <string name="app_authors">Google, The K-9 Dog Walkers.</string>
+  <string name="app_authors">The K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Partes protegidas por Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="app_license">Licença Apache, Versão 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Bem-vindo ao K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -50,18 +49,12 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\" será removida do K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Todos os dados locais de \"<xliff:g id="account">%s</xliff:g>\" serão removidos. As definições da conta serão mantidas.</string>
   <string name="account_clear_dlg_instructions_fmt">As cópias locais das mensagens em \"<xliff:g id="account">%s</xliff:g>\" serão removidas. As definições da conta serão mantidas.</string>
-  <!--=== App Store-specific strings =======================================================-->
-  <string name="import_dialog_error_message">Por favor instale um gestor de ficheiros para continuar com a importação.</string>
-  <string name="open_market">Abrir Play Store</string>
   <!--=== General strings ==================================================================-->
-  <string name="authors">Autores</string>
-  <string name="app_revision">Informação da revisão</string>
   <string name="app_libraries">Estamos a usar as seguintes bibliotecas de terceiros: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Ler Emails</string>
   <string name="read_messages_desc">Permite que esta aplicação leia os seus emails.</string>
   <string name="delete_messages_label">Eliminar emails</string>
   <string name="delete_messages_desc">Permite que esta aplicação elimine os seus emails.</string>
-  <string name="about_title">Sobre K-9 Mail</string>
   <string name="accounts_title">Contas</string>
   <string name="folders_title">Pastas</string>
   <string name="advanced">Avançado</string>
@@ -69,7 +62,9 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="compose_title_compose">Compor</string>
   <string name="compose_title_reply">Responder</string>
   <string name="compose_title_reply_all">Responder a todos</string>
-  <string name="compose_title_forward">Reencaminhar</string>
+  <string name="compose_title_forward">Encaminhar</string>
+  <string name="compose_title_forward_as_attachment">Encaminhar como anexo</string>
+  <string name="choose_account_title">Escolher Conta</string>
   <string name="choose_folder_title">Selecionar pasta</string>
   <string name="status_loading_account_folder">A verificar <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">A obter cabeçalhos <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -98,7 +93,8 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="delete_action">Apagar</string>
   <string name="archive_action">Arquivar</string>
   <string name="spam_action">Spam</string>
-  <string name="forward_action">Reencaminhar</string>
+  <string name="forward_action">Encaminhar</string>
+  <string name="forward_as_attachment_action">Encaminhar como anexo</string>
   <string name="move_action">Mover</string>
   <string name="single_message_options_action">Enviar…</string>
   <string name="refile_action">Relocar…</string>
@@ -125,7 +121,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="flag_action">Adicionar estrela</string>
   <string name="unflag_action">Remover estrela</string>
   <string name="copy_action">Copiar</string>
-  <string name="select_text_action">Selecionar texto</string>
   <string name="show_headers_action">Mostrar cabeçalhos</string>
   <string name="hide_headers_action">Esconder cabeçalhos</string>
   <plurals name="copy_address_to_clipboard">
@@ -187,6 +182,8 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="notification_bg_send_ticker">A enviar correio: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">A enviar correio</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_messages_title">Mensagens</string>
+  <string name="notification_channel_miscellaneous_title">Diversos</string>
   <string name="special_mailbox_name_inbox">Caixa de entrada</string>
   <string name="special_mailbox_name_outbox">Caixa de saída</string>
   <string name="special_mailbox_name_drafts">Rascunhos</string>
@@ -200,7 +197,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arquivo)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
   <string name="send_failure_subject">Falha ao enviar algumas mensagens</string>
-  <string name="version">Versão</string>
   <string name="debug_enable_debug_logging_title">Ativar registo de depuração</string>
   <string name="debug_enable_debug_logging_summary">Registar informação de diagnóstico extra</string>
   <string name="debug_enable_sensitive_logging_title">Registar informação sensível</string>
@@ -221,16 +217,17 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="message_compose_error_no_recipients">Tem de adicionar pelo menos um destinatário.</string>
   <string name="compose_error_incomplete_recipient">O campo de destinatário está incompleto!</string>
   <string name="error_contact_address_not_found">Não foi possível encontrar um endereço de email para este contacto.</string>
-  <string name="message_compose_attachments_skipped_toast">Alguns anexos não podem ser reencaminhados porque não foram transferidos.</string>
+  <string name="message_compose_attachments_skipped_toast">Alguns anexos não podem ser encaminhados porque não foram transferidos.</string>
+  <string name="message_compose_attachments_forward_toast">Esta mensagem não pode ser encaminhada porque alguns anexos não foram transferidos. </string>
+  <string name="message_compose_show_quoted_text_action">Incluir mensagem citada</string>
   <string name="message_compose_description_delete_quoted_text">Remover texto citado</string>
   <string name="message_compose_description_edit_quoted_text">Editar texto citado</string>
   <string name="message_view_from_format">De: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">Para:</string>
   <string name="message_view_cc_label">Cc:</string>
+  <string name="message_view_bcc_label">Bcc:</string>
   <string name="message_view_attachment_view_action">Abrir</string>
   <string name="message_view_attachment_download_action">Guardar</string>
-  <string name="message_view_status_attachment_not_saved">Não foi possível guardar o anexo para o cartão SD.</string>
-  <string name="message_view_status_no_space">Não foi possível guardar o anexo pois não existe espaço suficiente.</string>
   <string name="message_view_show_pictures_action">Mostrar imagens</string>
   <string name="message_view_no_viewer">Incapaz de encontrar visualizador para <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Transferir mensagem completa</string>
@@ -240,6 +237,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="message_no_additional_headers_available">Todos os cabeçalhos foram transferidos, mas não existem cabeçalhos adicionais para exibição.</string>
   <string name="message_additional_headers_retrieval_failed">A obtenção de cabeçalhos adicionais da base de dados ou servidor de email falhou.</string>
   <string name="from_same_sender">Mais deste remetente</string>
+  <string name="search_from_format">De <xliff:g id="sender">%s</xliff:g></string>
   <string name="debug_delete_local_body">Depurar / Apagar corpo da mensagem</string>
   <string name="message_discarded_toast">Mensagem rejeitada</string>
   <string name="message_saved_toast">Mensagem guardada como rascunho</string>
@@ -385,9 +383,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="recreate_action">Recriar dados (em último caso!)</string>
   <string name="account_setup_options_mail_check_frequency_label">Frequência de verificação de pastas</string>
   <string name="account_setup_options_mail_check_frequency_never">Nunca</string>
-  <string name="account_setup_options_mail_check_frequency_1min">A cada minuto</string>
-  <string name="account_setup_options_mail_check_frequency_5min">A cada 5 minutos</string>
-  <string name="account_setup_options_mail_check_frequency_10min">A cada 10 minutos</string>
   <string name="account_setup_options_mail_check_frequency_15min">A cada 15 minutos</string>
   <string name="account_setup_options_mail_check_frequency_30min">A cada 30 minutos</string>
   <string name="account_setup_options_mail_check_frequency_1hour">A cada hora</string>
@@ -479,14 +474,17 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_settings_sync">Verificação de email</string>
   <string name="account_settings_folders">Pastas</string>
   <string name="account_settings_quote_prefix_label">Prefixo do texto citado</string>
-  <string name="account_settings_crypto">Criptografia</string>
-  <string name="account_settings_crypto_app">Aplicação OpenPGP</string>
-  <string name="account_settings_crypto_key">Minha chave</string>
+  <string name="account_settings_crypto_app">Ativar suporte OenPGP</string>
+  <string name="account_settings_crypto_app_select_title">Selecionar aplicação OpenPGP</string>
+  <string name="account_settings_crypto_summary_off">Sem aplicação OpenPGP configurada</string>
+  <string name="account_settings_crypto_summary_on">Conectado a %s</string>
   <string name="account_settings_no_openpgp_provider_configured">Nenhuma aplicação OpenPGP configurada</string>
+  <string name="account_settings_no_openpgp_provider_installed">Não foi encontrada uma aplicação OpenPGP; clique para instalar</string>
   <string name="account_settings_mail_check_frequency_label">Frequência de verificação de pastas</string>
   <string name="account_settings_storage_title">Armazenamento</string>
   <string name="account_settings_color_label">Cor da conta</string>
   <string name="account_settings_color_summary">A cor predominante desta conta usada na lista de pastas e contas</string>
+  <string name="account_settings_color_none">Sem cor</string>
   <string name="account_settings_led_color_label">Cor da notificação LED</string>
   <string name="account_settings_led_color_summary">A cor que o LED do dispositivo deve piscar para esta conta</string>
   <string name="account_settings_mail_display_count_label">Tamanho da pasta local</string>
@@ -543,10 +541,12 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_settings_folder_target_mode_not_second_class">Todas excepto pastas de 2ª classe</string>
   <string name="account_settings_sync_remote_deletetions_label">Sincronizar as eliminações do servidor</string>
   <string name="account_settings_sync_remote_deletetions_summary">Remove as mensagens quando eliminadas no servidor</string>
+  <string name="account_settings_openpgp_missing">Falta uma aplicação OpenPGP; foi desinstalada? </string>
   <string name="folder_settings_title">Definições da pasta</string>
   <string name="folder_settings_in_top_group_label">Mostrar no grupo do topo</string>
   <string name="folder_settings_in_top_group_summary">Mostrar junto ao topo da lista de pastas</string>
   <string name="folder_settings_folder_display_mode_label">Classe de exibição da pasta</string>
+  <string name="folder_settings_folder_display_mode_normal">Sem Classe</string>
   <string name="folder_settings_folder_display_mode_first_class">1ª classe</string>
   <string name="folder_settings_folder_display_mode_second_class">2ª classe</string>
   <string name="folder_settings_folder_sync_mode_normal">Nenhuma</string>
@@ -554,10 +554,12 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="folder_settings_folder_sync_mode_second_class">2ª classe</string>
   <string name="folder_settings_folder_sync_mode_inherited">A mesma que a classe de exibição</string>
   <string name="folder_settings_folder_push_mode_label">Classe de push da pasta</string>
+  <string name="folder_settings_folder_push_mode_normal">Sem Classe</string>
   <string name="folder_settings_folder_push_mode_first_class">1ª classe</string>
   <string name="folder_settings_folder_push_mode_second_class">2ª classe</string>
   <string name="folder_settings_folder_push_mode_inherited">A mesma que a classe de sincronização</string>
   <string name="folder_settings_folder_notify_mode_label">Classe de notificação da pasta</string>
+  <string name="folder_settings_folder_notify_mode_normal">Sem Classe</string>
   <string name="folder_settings_folder_notify_mode_first_class">1ª classe</string>
   <string name="folder_settings_folder_notify_mode_second_class">2ª classe</string>
   <string name="folder_settings_folder_notify_mode_inherited">A mesma que a classe de push</string>
@@ -643,6 +645,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Aceitar chave</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rejeitar chave</string>
   <string name="folder_list_help_key">1 - Exibir apenas pastas de 1ª classe\n2 - Exibir pastas de 1ª e 2ª classe\n3 - Exibir todas excepto pastas de 2ª classe\n4 - Exibir todas as pastas\nQ - Voltar às contas\nS - Editar definições da conta</string>
+  <string name="folder_list_filter_hint">Nome da pasta contém</string>
   <string name="folder_list_display_mode_label">Mostrar pastas…</string>
   <string name="folder_list_display_mode_all">Todas as pastas</string>
   <string name="folder_list_display_mode_first_class">Pastas de 1ª classe</string>
@@ -678,6 +681,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="background_ops_auto_sync_only">Quando a \'Sincronização automática\' estiver selecionada</string>
   <string name="batch_select_all">Selecionar tudo</string>
   <string name="account_setup_push_limit_label">Número máximo de pastas a verificar com push</string>
+  <string name="account_setup_push_limit_5">5 pastas</string>
   <string name="account_setup_push_limit_10">10 pastas</string>
   <string name="account_setup_push_limit_25">25 pastas</string>
   <string name="account_setup_push_limit_50">50 pastas</string>
@@ -713,6 +717,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_settings_searchable_all">Todas</string>
   <string name="account_settings_searchable_displayable">Visíveis</string>
   <string name="account_settings_searchable_none">Nenhuma</string>
+  <string name="account_settings_no_folder_selected">Nenhuma</string>
   <string name="font_size_settings_title">Tamanho da letra</string>
   <string name="font_size_settings_description">Configurar tamanho da letra</string>
   <string name="font_size_account_list">Lista de contas</string>
@@ -747,7 +752,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="font_size_medium">Médio</string>
   <string name="font_size_large">Grande</string>
   <string name="font_size_larger">Muito grande</string>
-  <string name="miscellaneous_preferences">Diversos</string>
   <string name="error_activity_not_found">Não foi encontrada uma aplicação apropriada para esta ação.</string>
   <string name="send_failed_reason">O envio falhou: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Guardar mensagem de rascunho?</string>
@@ -789,16 +793,13 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="settings_exporting">A exportar definições…</string>
   <string name="settings_importing">A importar definições…</string>
   <string name="settings_import_scanning_file">A examinar ficheiro…</string>
-  <string name="settings_export_success">As definições exportadas foram guardadas em <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_generic">Definições exportadas com sucesso</string>
-  <string name="settings_import_global_settings_success">As definições globais foram importadas a partir de <xliff:g id="filename">%s</xliff:g></string>
-  <string name="settings_import_success">Importado <xliff:g id="accounts">%s</xliff:g> a partir de <xliff:g id="filename">%s</xliff:g></string>
+  <string name="settings_import_account_imported_as">Importada <xliff:g id="original_account_name">%s</xliff:g> como <xliff:g id="account_name_after_import">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
     <item quantity="one">1 conta</item>
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> contas</item>
   </plurals>
   <string name="settings_export_failure">Falha ao exportar definições</string>
-  <string name="settings_import_failure">Falha ao importar quaisquer definições a partir de <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_header">A exportação foi bem sucedida</string>
   <string name="settings_export_failed_header">A exportação falhou</string>
   <string name="settings_import_success_header">A importação foi bem sucedida</string>
@@ -818,14 +819,23 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="settings_import_use_incoming_server_password">Usar a palavra-passe do servidor de entrada</string>
   <string name="activate_account_action">Ativar</string>
   <string name="account_unavailable">A conta \"<xliff:g id="account">%s</xliff:g>\" está indisponível; verifique o armazenamento</string>
-  <string name="settings_attachment_default_path">Guardar anexos para…</string>
   <string name="attachment_save_title">Guardar anexo</string>
   <string name="attachment_save_desc">Não foi encontrado um explorador de ficheiros. Onde gostaria de guardar este anexo?</string>
   <string name="manage_accounts_move_up_action">Mover para cima</string>
   <string name="manage_accounts_move_down_action">Mover para baixo</string>
   <string name="manage_accounts_moving_message">A mover a conta…</string>
   <string name="unread_widget_select_account">Mostrar contador de não lidos para…</string>
-  <string name="import_dialog_error_title">Aplicação de gestão de ficheiros está em falta</string>
+  <string name="unread_widget_account_title">Conta</string>
+  <string name="unread_widget_account_summary">A conta para a qual a contagem das não lidas referente deva ser mostrada</string>
+  <string name="unread_widget_unified_inbox_account_summary">Caixa de Entrada Unificada </string>
+  <string name="unread_widget_all_messages_account_summary">Todas as mensagens</string>
+  <string name="unread_widget_folder_enabled_summary">Mostrar a contagem das não lidas de apenas uma pasta</string>
+  <string name="unread_widget_folder_title">Pasta</string>
+  <string name="unread_widget_folder_summary">A pasta para a qual a contagem das não lidas referente deva ser mostrada</string>
+  <string name="unread_widget_action_done">Terminado</string>
+  <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
+  <string name="unread_widget_account_not_selected">Nenhuma conta selecionada</string>
+  <string name="unread_widget_folder_not_selected">Nenhuma pasta selecionada</string>
   <string name="close">Fechar</string>
   <string name="webview_empty_message">Sem texto</string>
   <string name="webview_contextmenu_link_view_action">Abrir hiperligação</string>
@@ -859,6 +869,14 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_settings_remote_search_num_label">Limite de pesquisa do servidor</string>
   <string name="account_settings_remote_search_num_summary">A pesquisa irá parar após encontrar <xliff:g id="num_results">%s</xliff:g> resultados.</string>
   <string name="remote_search_sending_query">A enviar consulta ao servidor</string>
+  <plurals name="remote_search_downloading">
+    <item quantity="one">A obter %d resultado</item>
+    <item quantity="other">A obter %d resultados</item>
+  </plurals>
+  <plurals name="remote_search_downloading_limited">
+    <item quantity="one">A obter %1$d de %2$d resultado</item>
+    <item quantity="other">A obter %1$d de %2$d resultados</item>
+  </plurals>
   <string name="remote_search_error">A pesquisa remota falhou</string>
   <string name="account_settings_search">Pesquisa</string>
   <string name="account_settings_remote_search_enabled">Ativar pesquisa no servidor</string>
@@ -917,11 +935,11 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="address_type_other">Outro</string>
   <string name="address_type_mobile">Telemóvel</string>
   <string name="compose_error_no_draft_folder">Não foi configurada uma pasta de rascunhos para esta conta!</string>
+  <string name="compose_error_no_key_configured">Nenhuma chave configurada para esta conta! Verifique as suas definições.</string>
   <string name="crypto_mode_disabled">Não encriptar</string>
   <string name="crypto_mode_opportunistic">Encriptar se possível</string>
   <string name="crypto_mode_private">Encriptar</string>
   <string name="error_crypto_provider_connect">Não foi possível ligar ao provedor de criptografia, verifique as suas definições ou clique no ícone de encriptação para tentar novamente!</string>
-  <string name="error_crypto_provider_ui_required">Acesso negado ao provedor de criptografia, clique no ícone de encriptação para tentar novamente!</string>
   <string name="error_crypto_inline_attach">O modo PGP/INLINE não suporta anexos!</string>
   <string name="enable_inline_pgp">Ativar PGP/INLINE</string>
   <string name="disable_inline_pgp">Desativar PGP/INLINE</string>
@@ -944,6 +962,18 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="openpgp_dialog_sign_only_minus_break">Assinaturas podem romper quando enviadas para listas de discussão.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">As assinaturas podem ser exibidas como anexos \'signature.asc\' em alguns clientes.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Mensagens encriptadas incluem sempre uma assinatura.</string>
+  <string name="crypto_msg_title_plaintext">Texto simples</string>
+  <string name="crypto_msg_incomplete_signed">deve completar a transferência da mensagem para processar a assinatura</string>
+  <string name="crypto_msg_unsupported_encrypted">A mensagem está encriptada, mas num formato não suportado.</string>
+  <string name="crypto_msg_cancelled">A mensagem está encriptada, mas a desencriptação foi cancelada.</string>
+  <string name="crypto_msg_unencrypted_sign_verified">de assinante verificado</string>
+  <string name="crypto_msg_title_encrypted_unknown">Encriptada</string>
+  <string name="crypto_msg_encrypted_error">mas houve um erro de descodificação</string>
+  <string name="crypto_msg_encrypted_incomplete">deve completar a transferência da mensagem para a a descodificação</string>
+  <string name="crypto_msg_encrypted_unsupported">mas num formato não suportado</string>
+  <string name="crypto_msg_title_encrypted_unsigned">Encriptada</string>
+  <string name="crypto_msg_encrypted_sign_verified">de assinante verificado</string>
+  <string name="crypto_msg_title_encrypted_signed">Encriptada</string>
   <string name="crypto_info_ok">OK</string>
   <string name="crypto_info_view_security_warning">Detalhes</string>
   <string name="locked_attach_unlock">Desbloquear</string>
@@ -969,9 +999,12 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="no_crypto_provider_see_global">Nenhuma aplicação OpenPGP configurada, verifique as definições globais!</string>
   <string name="crypto_no_provider_title">Este email está encriptado</string>
   <string name="crypto_no_provider_message">Este email foi encriptado com OpenPGP.\nPara o ler, necessita de instalar e configurar uma aplicação OpenPGP compatível.</string>
-  <string name="crypto_no_provider_button">Escolher aplicação OpenPGP</string>
   <string name="mail_list_widget_text">K-9 Lista de mensagens</string>
   <string name="mail_list_widget_loading">A carregar mensagens…</string>
   <string name="fetching_folders_failed">A obtenção da lista de pastas falhou</string>
   <string name="messageview_crypto_warning_details">Mostrar detalhes</string>
+  <string name="general_settings_title">Definições gerais</string>
+  <string name="navigation_drawer_open">Abrir</string>
+  <string name="navigation_drawer_close">Fechar</string>
+  <!--permissions-->
 </resources>

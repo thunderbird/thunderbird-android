@@ -157,7 +157,7 @@
                 android:summary="@string/global_settings_registered_name_color_changed"
                 android:title="@string/global_settings_registered_name_color_label" />
 
-            <com.takisoft.fix.support.v7.preference.ColorPickerPreference
+            <com.takisoft.preferencex.ColorPickerPreference
                 android:dependency="messagelist_change_contact_name_color"
                 android:key="messagelist_contact_name_color"
                 android:title="Contact name color" />
@@ -279,7 +279,7 @@
             android:summary="@string/quiet_time_notification_description"
             android:title="@string/quiet_time_notification" />
 
-        <com.takisoft.fix.support.v7.preference.TimePickerPreference
+        <com.takisoft.preferencex.TimePickerPreference
             android:dependency="quiet_time_enabled"
             android:key="quiet_time_starts"
             android:title="@string/quiet_time_starts"
@@ -287,7 +287,7 @@
             search:summary=""
             app:pref_summaryHasTime="%s" />
 
-        <com.takisoft.fix.support.v7.preference.TimePickerPreference
+        <com.takisoft.preferencex.TimePickerPreference
             android:dependency="quiet_time_enabled"
             android:key="quiet_time_ends"
             android:title="@string/quiet_time_ends"

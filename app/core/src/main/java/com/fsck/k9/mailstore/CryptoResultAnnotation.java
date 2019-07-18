@@ -2,8 +2,8 @@ package com.fsck.k9.mailstore;
 
 
 import android.app.PendingIntent;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.fsck.k9.mail.internet.MimeBodyPart;
 

@@ -3,8 +3,8 @@ package com.fsck.k9.ui.settings.account
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
-import android.support.v7.preference.PreferenceDialogFragmentCompat
+import androidx.appcompat.app.AlertDialog
+import androidx.preference.PreferenceDialogFragmentCompat
 import android.view.LayoutInflater
 import com.fsck.k9.ui.R
 import com.larswerkman.colorpicker.ColorPicker

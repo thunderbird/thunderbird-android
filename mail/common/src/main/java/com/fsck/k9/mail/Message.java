@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.Set;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
@@ -88,14 +88,6 @@ public abstract class Message implements Part, Body {
     public abstract void setSentDate(Date sentDate, boolean hideTimeZone);
 
     public abstract Address[] getRecipients(RecipientType type);
-
-    public abstract void setRecipients(RecipientType type, Address[] addresses);
-
-    public void setRecipient(RecipientType type, Address address) {
-        setRecipients(type, new Address[] {
-                          address
-                      });
-    }
 
     public abstract Address[] getFrom();
 

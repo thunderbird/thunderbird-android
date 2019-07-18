@@ -7,11 +7,10 @@
   <string name="shortcuts_title">Contas K-9</string>
   <string name="unread_widget_label">Não lidos K-9</string>
   <string name="remote_control_label">Controle remoto para K-9 Mail</string>
-  <string name="remote_control_desc">Permitir que esta aplicação controle atividades e configurações do K-9 Mail.</string>
+  <string name="remote_control_desc">Permitir que este aplicativo controle atividades e configurações do K-9 Mail.</string>
   <!--Used in the about dialog-->
-  <string name="app_authors">Google, The K-9 Dog Walkers.</string>
+  <string name="app_authors">Criadores do K-9</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Partes do Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="app_license">Apache License, Versão 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Bem-vindo ao K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -49,18 +48,12 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="account_delete_dlg_instructions_fmt">A conta \"<xliff:g id="account">%s</xliff:g>\" será removida do K-9 Mail.</string>
   <string name="account_recreate_dlg_instructions_fmt">Todos os dados locais de \"<xliff:g id="account">%s</xliff:g>\" serão removidos do K-9 Mail, mas as configurações da conta serão mantidas.</string>
   <string name="account_clear_dlg_instructions_fmt">As cópias locais das mensagens de \"<xliff:g id="account">%s</xliff:g>\" serão removidas, mas as configurações da conta serão mantidas.</string>
-  <!--=== App Store-specific strings =======================================================-->
-  <string name="import_dialog_error_message">Por favor, instale um gerenciador de arquivos para continuar com essa importação.</string>
-  <string name="open_market">Abrir a Play Store</string>
   <!--=== General strings ==================================================================-->
-  <string name="authors">Autores</string>
-  <string name="app_revision">Informações da revisão</string>
   <string name="app_libraries">Estamos usando as seguintes bibliotecas de terceiros: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Ler e-mails</string>
-  <string name="read_messages_desc">Permite que esta aplicação leia seus e-mails.</string>
+  <string name="read_messages_desc">Permite que este aplicativo leia seus e-mails.</string>
   <string name="delete_messages_label">Excluir e-mails</string>
-  <string name="delete_messages_desc">Permite que o K-9 exclua seus e-mails.</string>
-  <string name="about_title">Sobre K-9 Mail</string>
+  <string name="delete_messages_desc">Permite que este aplicativo exclua seus e-mails.</string>
   <string name="accounts_title">Contas</string>
   <string name="folders_title">Pastas</string>
   <string name="advanced">Avançado</string>
@@ -69,6 +62,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="compose_title_reply">Responder</string>
   <string name="compose_title_reply_all">Responder a todos</string>
   <string name="compose_title_forward">Encaminhar</string>
+  <string name="compose_title_forward_as_attachment">Encaminhar como anexo</string>
   <string name="choose_account_title">Selecionar conta</string>
   <string name="choose_folder_title">Escolher a pasta</string>
   <string name="status_loading_account_folder">Verificar <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -99,9 +93,10 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="archive_action">Arquivar</string>
   <string name="spam_action">Spam</string>
   <string name="forward_action">Encaminhar</string>
+  <string name="forward_as_attachment_action">Encaminhar como anexo</string>
   <string name="move_action">Mover</string>
   <string name="single_message_options_action">Enviar…</string>
-  <string name="refile_action">Rearquivar…</string>
+  <string name="refile_action">Movimentar...</string>
   <string name="done_action">Concluído</string>
   <string name="discard_action">Descartar</string>
   <string name="save_draft_action">Salvar como rascunho</string>
@@ -125,7 +120,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="flag_action">Adicionar estrela</string>
   <string name="unflag_action">Remover estrela</string>
   <string name="copy_action">Copiar</string>
-  <string name="select_text_action">Selecionar texto</string>
   <string name="show_headers_action">Exibir cabeçalhos</string>
   <string name="hide_headers_action">Ocultar cabeçalhos</string>
   <plurals name="copy_address_to_clipboard">
@@ -187,6 +181,8 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="notification_bg_send_ticker">Enviando mensagem: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Enviando mensagem</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_messages_title">Mensagens</string>
+  <string name="notification_channel_miscellaneous_title">Diversos</string>
   <string name="special_mailbox_name_inbox">Caixa de entrada</string>
   <string name="special_mailbox_name_outbox">Caixa de saída</string>
   <string name="special_mailbox_name_drafts">Rascunhos</string>
@@ -200,7 +196,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arquivadas)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
   <string name="send_failure_subject">Algumas mensagens não foram enviadas</string>
-  <string name="version">Versão</string>
   <string name="debug_enable_debug_logging_title">Habilitar relatório de depuração</string>
   <string name="debug_enable_debug_logging_summary">Relatar informações de diagnósticos extras</string>
   <string name="debug_enable_sensitive_logging_title">Relatar informações confidencias</string>
@@ -222,6 +217,8 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="compose_error_incomplete_recipient">O campo destinatário está incompleto!</string>
   <string name="error_contact_address_not_found">Não foi possível encontrar um endereço de e-mail para este contato.</string>
   <string name="message_compose_attachments_skipped_toast">Alguns anexos não puderam ser encaminhados porque não foram baixados.</string>
+  <string name="message_compose_attachments_forward_toast">Não foi possível encaminhar a mensagem porque alguns anexos não foram baixados.</string>
+  <string name="message_compose_show_quoted_text_action">Incluir mensagem citada</string>
   <string name="message_compose_description_delete_quoted_text">Remover o texto citado</string>
   <string name="message_compose_description_edit_quoted_text">Editar o texto citado</string>
   <string name="message_view_from_format">De: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -230,8 +227,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="message_view_bcc_label">Cco:</string>
   <string name="message_view_attachment_view_action">Abrir</string>
   <string name="message_view_attachment_download_action">Salvar</string>
-  <string name="message_view_status_attachment_not_saved">Não foi possível salvar o anexo no cartão SD.</string>
-  <string name="message_view_status_no_space">Não foi possível salvar o anexo porque não existe espaço disponível.</string>
   <string name="message_view_show_pictures_action">Exibir imagens</string>
   <string name="message_view_no_viewer">Não foi possível encontrar um visualizador para <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Baixar a mensagem completa</string>
@@ -292,7 +287,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="global_settings_notification_quick_delete_description">Exibe um botão nas notificações para exclusão rápida de mensagens</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Notificações na tela de bloqueio</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Sem notificações na tela de bloqueio</string>
-  <string name="global_settings_lock_screen_notification_visibility_app_name">Nome da aplicação</string>
+  <string name="global_settings_lock_screen_notification_visibility_app_name">Nome do aplicativo</string>
   <string name="global_settings_lock_screen_notification_visibility_message_count">Número de mensagens não lidas</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Número de mensagens e remetentes</string>
   <string name="global_settings_lock_screen_notification_visibility_everything">O mesmo de quando a tela está desbloqueada</string>
@@ -387,9 +382,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="recreate_action">Recriar dados (Última solução!)</string>
   <string name="account_setup_options_mail_check_frequency_label">Frequência de verificação da pasta</string>
   <string name="account_setup_options_mail_check_frequency_never">Nunca</string>
-  <string name="account_setup_options_mail_check_frequency_1min">A cada minuto</string>
-  <string name="account_setup_options_mail_check_frequency_5min">A cada 5 minutos</string>
-  <string name="account_setup_options_mail_check_frequency_10min">A cada 10 minutos</string>
   <string name="account_setup_options_mail_check_frequency_15min">A cada 15 minutos</string>
   <string name="account_setup_options_mail_check_frequency_30min">A cada 30 minutos</string>
   <string name="account_setup_options_mail_check_frequency_1hour">A cada hora</string>
@@ -481,14 +473,19 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="account_settings_sync">Busca das mensagens</string>
   <string name="account_settings_folders">Pastas</string>
   <string name="account_settings_quote_prefix_label">Prefixo do texto citado</string>
-  <string name="account_settings_crypto">Criptografia</string>
-  <string name="account_settings_crypto_app">Aplicativo OpenPGP</string>
-  <string name="account_settings_crypto_key">Minha chave</string>
-  <string name="account_settings_no_openpgp_provider_configured">Nenhum aplicativo OpenPGP configurado</string>
+  <string name="account_settings_crypto">Criptografia de ponta-a-ponta</string>
+  <string name="account_settings_crypto_app">Habilitar o suporte a OpenPGP</string>
+  <string name="account_settings_crypto_app_select_title">Selecionar o aplicativo de OpenPGP</string>
+  <string name="account_settings_crypto_key">Configurar a chave de ponta-a-ponta</string>
+  <string name="account_settings_crypto_summary_off">Nenhum aplicativo de OpenPGP configurado</string>
+  <string name="account_settings_crypto_summary_on">Conectado a %s</string>
+  <string name="account_settings_no_openpgp_provider_configured">Nenhum aplicativo de OpenPGP configurado</string>
+  <string name="account_settings_no_openpgp_provider_installed">Nenhum aplicativo de OpenPGP encontrado - clique para instalar</string>
   <string name="account_settings_mail_check_frequency_label">Frequência de verificação da pasta</string>
   <string name="account_settings_storage_title">Armazenamento</string>
   <string name="account_settings_color_label">Cor da conta</string>
   <string name="account_settings_color_summary">A cor desta conta é usada na pasta e na lista de contas</string>
+  <string name="account_settings_color_none">Sem cor</string>
   <string name="account_settings_led_color_label">Cor do LED para notificações</string>
   <string name="account_settings_led_color_summary">A cor do LED que piscará no seu dispositivo para esta conta</string>
   <string name="account_settings_mail_display_count_label">Tamanho da pasta local</string>
@@ -545,6 +542,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="account_settings_folder_target_mode_not_second_class">Todas, exceto as pastas de 2ª classe</string>
   <string name="account_settings_sync_remote_deletetions_label">Sincronizar exclusões no servidor</string>
   <string name="account_settings_sync_remote_deletetions_summary">Remove mensagens quando excluídas no servidor</string>
+  <string name="account_settings_openpgp_missing">O aplicativo de OpenPGP não foi encontrado - ele foi desinstalado?</string>
   <string name="folder_settings_title">Configurações da pasta</string>
   <string name="folder_settings_in_top_group_label">Exibir no grupo superior</string>
   <string name="folder_settings_in_top_group_summary">Exibe perto do topo da lista de pastas</string>
@@ -656,7 +654,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="folder_list_display_mode_all">Todas as pastas</string>
   <string name="folder_list_display_mode_first_class">Pastas de 1ª classe</string>
   <string name="folder_list_display_mode_first_and_second_class">Pastas de 1ª &amp; 2ª classes</string>
-  <string name="folder_list_display_mode_not_second_class">Esconder pastas de 2ª classe</string>
+  <string name="folder_list_display_mode_not_second_class">Ocultar pastas de 2ª classe</string>
   <string name="account_settings_signature__location_label">Posição da Assinatura</string>
   <string name="account_settings_signature__location_before_quoted_text">Antes do texto citado</string>
   <string name="account_settings_signature__location_after_quoted_text">Depois do texto citado</string>
@@ -687,6 +685,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="background_ops_auto_sync_only">Quando a sincronização automática estiver habilitada</string>
   <string name="batch_select_all">Selecionar todas</string>
   <string name="account_setup_push_limit_label">Máximo de pastas para verificar com sincronização</string>
+  <string name="account_setup_push_limit_5">5 pastas</string>
   <string name="account_setup_push_limit_10">10 pastas</string>
   <string name="account_setup_push_limit_25">25 pastas</string>
   <string name="account_setup_push_limit_50">50 pastas</string>
@@ -706,8 +705,8 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="measure_accounts_summary">Desligue para exibição mais rápida</string>
   <string name="count_search_title">Contador para resultados de pesquisa</string>
   <string name="count_search_summary">Desligue para exibição mais rápida</string>
-  <string name="hide_special_accounts_title">Esconder contas especiais</string>
-  <string name="hide_special_accounts_summary">Esconde a Caixa de Entrada Unificada e todas as contas de mensagens</string>
+  <string name="hide_special_accounts_title">Ocultar contas especiais</string>
+  <string name="hide_special_accounts_summary">Oculta a Caixa de Entrada Unificada e todas as contas de mensagens</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="flagged_modifier"> - Sinalizada</string>
   <string name="unread_modifier"> - Não lido</string>
@@ -722,6 +721,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="account_settings_searchable_all">Todas</string>
   <string name="account_settings_searchable_displayable">Exibíveis</string>
   <string name="account_settings_searchable_none">Nenhuma</string>
+  <string name="account_settings_no_folder_selected">Nenhuma</string>
   <string name="font_size_settings_title">Tamanho da fonte</string>
   <string name="font_size_settings_description">Configura o tamanho da fonte</string>
   <string name="font_size_account_list">Lista de contas</string>
@@ -756,7 +756,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="font_size_medium">Médio</string>
   <string name="font_size_large">Grande</string>
   <string name="font_size_larger">Maior</string>
-  <string name="miscellaneous_preferences">Diversos</string>
   <string name="error_activity_not_found">Não foi encontrado nenhum aplicativo adequado a esta ação.</string>
   <string name="send_failed_reason">Falha no envio: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Salvar mensagem de rascunho?</string>
@@ -798,17 +797,13 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="settings_exporting">Exportando configurações…</string>
   <string name="settings_importing">Importando configurações…</string>
   <string name="settings_import_scanning_file">Vasculhando arquivo…</string>
-  <string name="settings_export_success">As configurações exportadas foram salvas em <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_generic">As configurações foram exportadas com sucesso</string>
-  <string name="settings_import_global_settings_success">Configurações globais importadas de <xliff:g id="filename">%s</xliff:g></string>
-  <string name="settings_import_success"><xliff:g id="accounts">%s</xliff:g> importada de <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_import_account_imported_as">Importado <xliff:g id="original_account_name">%s</xliff:g> como <xliff:g id="account_name_after_import">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
     <item quantity="one">1 conta</item>
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> contas</item>
   </plurals>
   <string name="settings_export_failure">Não foi possível exportar as configurações</string>
-  <string name="settings_import_failure">Não foi possível importar nenhuma configuração de <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_header">Exportação concluída</string>
   <string name="settings_export_failed_header">Não foi possível exportar</string>
   <string name="settings_import_success_header">Importação concluída</string>
@@ -828,7 +823,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="settings_import_use_incoming_server_password">Usar a senha do servidor de entrada</string>
   <string name="activate_account_action">Ativar</string>
   <string name="account_unavailable">A conta \"<xliff:g id="account">%s</xliff:g>\" está indisponível; verifique o armazenamento</string>
-  <string name="settings_attachment_default_path">Salvar anexos em…</string>
   <string name="attachment_save_title">Salvar anexo</string>
   <string name="attachment_save_desc">Não foi encontrado nenhum gerenciador de arquivos. Onde deseja salvar esse anexo?</string>
   <string name="manage_accounts_move_up_action">Mover para cima</string>
@@ -847,7 +841,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
   <string name="unread_widget_account_not_selected">Nenhuma conta selecionada</string>
   <string name="unread_widget_folder_not_selected">Nenhuma pasta selecionada</string>
-  <string name="import_dialog_error_title">Gerenciador de arquivos não encontrado</string>
   <string name="close">Fechar</string>
   <string name="webview_empty_message">Nenhum texto</string>
   <string name="webview_contextmenu_link_view_action">Abrir link</string>
@@ -953,7 +946,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="crypto_mode_private">Criptografar</string>
   <string name="error_crypto_provider_incompatible">O provedor de criptografia usa uma versão incompatível. Por favor, verifique suas configurações!</string>
   <string name="error_crypto_provider_connect">Não foi possível conectar ao provedor de criptografia. Verifique suas configurações ou clique no ícone de criptografia para tentar novamente!</string>
-  <string name="error_crypto_provider_ui_required">Acesso negado ao provedor de criptografia. Clique no ícone de criptografia para tentar novamente!</string>
+  <string name="error_crypto_provider_ui_required">Não foi possível iniciar a criptografia de ponta-a-ponta, por favor verifique suas configurações</string>
   <string name="error_crypto_inline_attach">O modo PGP/INLINE não suporta anexos!</string>
   <string name="enable_inline_pgp">Habilitar PGP/INLINE</string>
   <string name="disable_inline_pgp">Desabilitar PGP/INLINE</string>
@@ -976,7 +969,42 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="openpgp_dialog_sign_only_minus_break">Assinaturas podem apresentar problema quando enviadas para listas de discussão.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">A assinatura pode ser mostrada como um anexo \'signature.asc\' em alguns clientes.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Mensagens criptografadas sempre incluem uma assinatura.</string>
+  <string name="crypto_msg_title_plaintext">Texto puro</string>
+  <string name="crypto_msg_unencrypted_sign_error">a assinatura de ponta-a-ponta continha um erro</string>
+  <string name="crypto_msg_incomplete_signed">a mensagem deve ser totalmente transferida para processar a assinatura</string>
+  <string name="crypto_msg_unsupported_signed">contém assinatura ponta-a-ponta não suportada</string>
+  <string name="crypto_msg_unsupported_encrypted">A mensagem está criptografada, mas em um formato não suportado.</string>
+  <string name="crypto_msg_cancelled">A mensagem está criptografada, mas a descriptografia foi cancelada.</string>
+  <string name="crypto_msg_title_unencrypted_signed_e2e">Ponta-a-ponta assinada em texto puro</string>
+  <string name="crypto_msg_unencrypted_sign_verified">de um assinador verificado</string>
+  <string name="crypto_msg_title_unencrypted_signed">Texto puro assinada</string>
+  <string name="crypto_msg_unencrypted_sign_mismatch">mas a chave ponta-a-ponta não corresponde ao remetente</string>
+  <string name="crypto_msg_unencrypted_sign_expired">mas a chave ponta-a-ponta expirou</string>
+  <string name="crypto_msg_unencrypted_sign_revoked">mas a chave ponta-a-ponta foi revogada</string>
+  <string name="crypto_msg_unencrypted_sign_insecure">mas a chave ponta-a-ponta não é considerada segura</string>
+  <string name="crypto_msg_unencrypted_sign_unknown">de uma chave ponta-a-ponta desconhecida</string>
+  <string name="crypto_msg_title_encrypted_unknown">Criptografada</string>
+  <string name="crypto_msg_encrypted_error">mas ocorreu um erro de descriptografia</string>
+  <string name="crypto_msg_encrypted_incomplete">a mensagem deve ser totalmente transferida para ser descriptografada</string>
+  <string name="crypto_msg_encrypted_no_provider">mas não existe nenhum app de criptografia configurado</string>
+  <string name="crypto_msg_encrypted_unsupported">mas em um forma não suportado</string>
+  <string name="crypto_msg_encrypted_cancelled">mas a descriptografia foi cancelada</string>
+  <string name="crypto_msg_title_encrypted_unsigned">Criptografada</string>
+  <string name="crypto_msg_encrypted_unsigned">mas não ponta-a-ponta</string>
+  <string name="crypto_msg_title_encrypted_signed_e2e">Criptografada ponta-a-ponta</string>
+  <string name="crypto_msg_encrypted_sign_verified">de um remetente verificado</string>
+  <string name="crypto_msg_title_encrypted_signed">Criptografada</string>
+  <string name="crypto_msg_encrypted_sign_unknown">de uma chave ponta-a-ponta desconhecida</string>
+  <string name="crypto_msg_encrypted_sign_mismatch">mas a chave ponta-a-ponta não corresponde ao remetente</string>
+  <string name="crypto_msg_encrypted_sign_expired">mas a chave ponta-a-ponta expirou</string>
+  <string name="crypto_msg_encrypted_sign_revoked">mas a chave ponta-a-ponta foi revogada</string>
+  <string name="crypto_msg_encrypted_sign_insecure">mas a chave ponta-a-ponta não é considerada segura</string>
+  <string name="crypto_msg_encrypted_sign_error">mas os dados de ponta-a-ponta têm erros</string>
+  <string name="crypto_msg_encrypted_insecure">mas a criptografia não é considerada segura</string>
   <string name="crypto_info_ok">OK</string>
+  <string name="crypto_info_search_key">Pesquisar a chave</string>
+  <string name="crypto_info_view_signer">Ver o assinador</string>
+  <string name="crypto_info_view_sender">Ver o remetente</string>
   <string name="crypto_info_view_security_warning">Detalhes</string>
   <string name="locked_attach_unlock">Desbloquear</string>
   <string name="locked_attach_unencrypted">Esta parte não foi criptografada e pode estar insegura.</string>
@@ -988,9 +1016,9 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="messageview_crypto_error_title">Erro descriptografando a mensagem</string>
   <string name="recipient_error_non_ascii">Atualmente não existe suporte para caracteres especiais!</string>
   <string name="recipient_error_parse_failed">Erro ao analisar o endereço!</string>
-  <string name="account_settings_crypto_support_sign_only">Exibir assinaturas não criptografadas</string>
-  <string name="account_settings_crypto_support_sign_only_on">As assinaturas não criptografadas serão exibidas</string>
-  <string name="account_settings_crypto_support_sign_only_off">Assinaturas não criptografadas serão ignoradas</string>
+  <string name="account_settings_crypto_hide_sign_only">Ocultar assinaturas não criptografadas</string>
+  <string name="account_settings_crypto_hide_sign_only_on">Somente as assinaturas criptografadas serão exibidas</string>
+  <string name="account_settings_crypto_hide_sign_only_off">Todas as assinaturas serão exibidas</string>
   <string name="error_sign_only_no_encryption">A criptografia não está disponível no modo Somente Assinatura!</string>
   <string name="unsigned_text_divider_label">Texto não assinado</string>
   <string name="apg_deprecated_title">Aviso de obsolescência do APG</string>
@@ -1001,10 +1029,10 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="apg_learn_more">Você pode <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">clicar aqui</a> para saber mais.</string>
   <string name="apg_deprecated_ok">Entendi!</string>
   <string name="apg">APG</string>
-  <string name="no_crypto_provider_see_global">Não foi configurado nenhum aplicativo OpenPGP, verifique as configurações globais!</string>
+  <string name="no_crypto_provider_see_global">Não foi configurado nenhum aplicativo de OpenPGP, verifique as configurações globais!</string>
   <string name="crypto_no_provider_title">Esta mensagem está criptografada</string>
   <string name="crypto_no_provider_message">Esta mensagem foi criptografada com o OpenPGP.\nPara lê-la, você precisa instalar e configurar um aplicativo OpenPGP compatível.</string>
-  <string name="crypto_no_provider_button">Selecione o aplicativo OpenPGP</string>
+  <string name="crypto_no_provider_button">Ir para as configurações</string>
   <string name="mail_list_widget_text">Lista de mensagens do K-9</string>
   <string name="mail_list_widget_loading">Carregando mensagens…</string>
   <string name="fetching_folders_failed">Não foi possível buscar a listagem de pastas</string>
@@ -1015,9 +1043,47 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="enable_encryption">Habilitar a criptografia</string>
   <string name="disable_encryption">Desabilitar a criptografia</string>
   <string name="openpgp_description_text1">Criptografar mensagens garante que elas sejam lidas somente pelo destinatário e mais ninguém.</string>
+  <string name="openpgp_description_text3">A criptografia será apresentada somente se for suportada por todos os destinatários, e eles tem que ter enviado um e-mail antes.</string>
   <string name="openpgp_description_text2">Alterne a criptografia clicando neste ícone.</string>
   <string name="openpgp_enabled_error_gotit">Entendi</string>
   <string name="openpgp_enabled_error_back">Voltar</string>
   <string name="openpgp_enabled_error_disable">Desabilitar a criptografia</string>
   <string name="openpgp_encryption">Criptografia OpenPGP</string>
+  <string name="account_settings_crypto_prefer_encrypt">Modo de autocriptografia mútua</string>
+  <string name="dialog_autocrypt_mutual_title">Modo de autocriptografia mútua</string>
+  <string name="dialog_autocrypt_mutual_description_1">As mensagens serão normalmente criptografadas por opção ou em resposta a uma mensagem criptografada.</string>
+  <string name="dialog_autocrypt_mutual_description_2">Se tanto o remetente quanto o destinatário habilitarem o modo mútuo, a criptografia será habilitada por padrão.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Você pode <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">clicar aqui</a> para aprender mais.</string>
+  <string name="general_settings_title">Configurações gerais</string>
+  <string name="dialog_openkeychain_info_title">Nenhum app OpenPGP instalado</string>
+  <string name="dialog_openkeychain_info_install">Instalar</string>
+  <string name="dialog_openkeychain_info_text">O K-9 Mail necessita do OpenKeychain para criptografia ponta-a-ponta.</string>
+  <string name="encrypted_subject">Mensagem criptografada</string>
+  <string name="account_settings_crypto_encrypt_subject">Criptografar os assuntos das mensagens</string>
+  <string name="account_settings_crypto_encrypt_subject_subtitle">Pode não ser suportado por alguns destinatários</string>
+  <string name="toast_account_not_found">Erro interno: conta inválida!</string>
+  <string name="toast_openpgp_provider_error">Erro durante a conexão com %s!</string>
+  <string name="ac_transfer_setting_title">Enviar Mensagem de Configuração de Autocriptografia</string>
+  <string name="ac_transfer_setting_summary">Compartilhe configurações de ponta-a-ponta de forma segura com outros dispositivos</string>
+  <string name="ac_transfer_title">Mensagem de Configuração de Autocriptografia</string>
+  <string name="ac_transfer_intro">Uma Mensagem de Configuração de Autocriptografia compartilha, com outros dispositivos, sua configuração de ponta-a-ponta de forma segura.</string>
+  <string name="ac_transfer_button_send">Enviar Mensagem de Configuração</string>
+  <string name="ac_transfer_will_be_sent">A mensagem será enviada para o seu endereço:</string>
+  <string name="ac_transfer_generating">Gerando a mensagem de configuração...</string>
+  <string name="ac_transfer_sending_to">Enviando a mensagem para:</string>
+  <string name="ac_transfer_finish">Para finalizar, abra a mensagem em seu outro dispositivo e digite o código de configuração.</string>
+  <string name="ac_transfer_show_code">Exibir o código de configuração</string>
+  <string name="ac_transfer_msg_subject">Mensagem de Configuração de Autocriptografia</string>
+  <string name="ac_transfer_msg_body">Esta mensagem contém todas as informações necessárias para transferir suas configurações de Autocriptografia juntamente com sua chave secreta, de forma segura, a partir do seu dispositivo original
+
+Para configurar o seu novo dispositivo para Autocriptografia, por favor siga as instruções que apresentadas pelo seu novo dispositivo.
+
+Você pode manter esta mensagem e usá-la como um backup para a sua chave secreta. Caso queira fazer isso, você deve anotar a senha e armazená-la em um local seguro.
+</string>
+  <string name="ac_transfer_error_send">Ocorreu um erro durante o envio da mensagem. Por favor, verifique a conectividade da sua rede e as configurações de seu servidor de envio.</string>
+  <string name="switch_on">On</string>
+  <string name="switch_off">Off</string>
+  <string name="navigation_drawer_open">Abrir</string>
+  <string name="navigation_drawer_close">Fechar</string>
+  <!--permissions-->
 </resources>

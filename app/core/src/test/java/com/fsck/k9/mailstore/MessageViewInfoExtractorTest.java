@@ -11,7 +11,7 @@ import java.util.TimeZone;
 import android.app.Application;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.fsck.k9.DI;
 import com.fsck.k9.K9RobolectricTest;
@@ -19,7 +19,6 @@ import com.fsck.k9.TestCoreResourceProvider;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
@@ -244,7 +243,7 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
         // Create message/rfc822 body
         MimeMessage innerMessage = new MimeMessage();
         innerMessage.addSentDate(new Date(112, 2, 17), false);
-        innerMessage.setRecipients(RecipientType.TO, new Address[] { new Address("to@example.com") });
+        innerMessage.setHeader("To", "to@example.com");
         innerMessage.setSubject("Subject");
         innerMessage.setFrom(new Address("from@example.com"));
         MimeMessageHelper.setBody(innerMessage, innerBody);

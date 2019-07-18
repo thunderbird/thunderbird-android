@@ -9,9 +9,8 @@
   <string name="remote_control_label">К-9 даљинско управљање</string>
   <string name="remote_control_desc">Дозвољава овој апликацији да управља активностима и поставкама К-9 Поште.</string>
   <!--Used in the about dialog-->
-  <string name="app_authors">Гугл, К-9 Шетачи паса.</string>
+  <string name="app_authors">К-9 Шетачи паса.</string>
   <string name="app_copyright_fmt">Ауторска права 2008-<xliff:g>%s</xliff:g> „K-9 Dog Walkers“. Део ауторских права 2006-<xliff:g>%s</xliff:g> Андроид пројекат отвореног ко̂да.</string>
-  <string name="app_license">Апачи лиценцом, издање 2.0</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Добро дошли у К-9 Пошту</string>
   <string name="accounts_welcome"><![CDATA[
@@ -49,18 +48,12 @@
   <string name="account_delete_dlg_instructions_fmt">Налог „<xliff:g id="account">%s</xliff:g>“ ће бити уклоњен из К-9 Поште.</string>
   <string name="account_recreate_dlg_instructions_fmt">Сви локални подаци за „<xliff:g id="account">%s</xliff:g>“ ће бити уклоњени. Поставке налога ће остати.</string>
   <string name="account_clear_dlg_instructions_fmt">Локалне копије порука у „<xliff:g id="account">%s</xliff:g>“ ће бити уклоњене. Поставке налога ће остати.</string>
-  <!--=== App Store-specific strings =======================================================-->
-  <string name="import_dialog_error_message">Инсталирајте менаџер фајлова да бисте наставили овај увоз.</string>
-  <string name="open_market">Отвори Плеј продавницу</string>
   <!--=== General strings ==================================================================-->
-  <string name="authors">Аутори</string>
-  <string name="app_revision">Подаци о ревизији</string>
   <string name="app_libraries">Користимо следеће библиотеке треће стране: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">читање е-порука</string>
   <string name="read_messages_desc">Дозвољава овој апликацији читање ваших е-порука.</string>
   <string name="delete_messages_label">брисање е-порука</string>
   <string name="delete_messages_desc">Дозвољава овој апликацији брисање ваших е-порука.</string>
-  <string name="about_title">О K-9 Mail</string>
   <string name="accounts_title">Налози</string>
   <string name="folders_title">Фасцикле</string>
   <string name="advanced">Напредно</string>
@@ -125,7 +118,6 @@
   <string name="flag_action">Додај звездицу</string>
   <string name="unflag_action">Уклони звездицу</string>
   <string name="copy_action">Копирај</string>
-  <string name="select_text_action">Изабери текст</string>
   <string name="show_headers_action">Прикажи заглавље</string>
   <string name="hide_headers_action">Сакриј заглавље</string>
   <plurals name="copy_address_to_clipboard">
@@ -190,6 +182,8 @@
   <string name="notification_bg_send_ticker">Шаљем пошту: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Шаљем пошту</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_messages_title">Поруке</string>
+  <string name="notification_channel_miscellaneous_title">Разно</string>
   <string name="special_mailbox_name_inbox">Долазне</string>
   <string name="special_mailbox_name_outbox">Одлазне</string>
   <string name="special_mailbox_name_drafts">Нацрти</string>
@@ -203,7 +197,6 @@
   <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Архива)</string>
   <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Нежељене)</string>
   <string name="send_failure_subject">Неуспех слања неких порука</string>
-  <string name="version">Издање</string>
   <string name="debug_enable_debug_logging_title">Укључи бележење за отклањање грешака</string>
   <string name="debug_enable_debug_logging_summary">Бележи додатне дијагностичке податке</string>
   <string name="debug_enable_sensitive_logging_title">Бележи осетљиве податке</string>
@@ -225,6 +218,7 @@
   <string name="compose_error_incomplete_recipient">Поље примаоца садржи непотпун унос!</string>
   <string name="error_contact_address_not_found">Адреса е-поште овог контакта није нађена.</string>
   <string name="message_compose_attachments_skipped_toast">Неки прилози не могу бити прослеђени јер нису преузети.</string>
+  <string name="message_compose_show_quoted_text_action">Уљкучи цитирану поруку</string>
   <string name="message_compose_description_delete_quoted_text">Уклони цитирани текст</string>
   <string name="message_compose_description_edit_quoted_text">Уреди цитирани текст</string>
   <string name="message_view_from_format">Од: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
@@ -233,8 +227,6 @@
   <string name="message_view_bcc_label">Бцц:</string>
   <string name="message_view_attachment_view_action">Отвори</string>
   <string name="message_view_attachment_download_action">Сачувај</string>
-  <string name="message_view_status_attachment_not_saved">Не могу да сачувам прилог на СД картицу.</string>
-  <string name="message_view_status_no_space">Прилог није могао бити сачуван јер нема довољно простора.</string>
   <string name="message_view_show_pictures_action">Прикажи слике</string>
   <string name="message_view_no_viewer">Не могу да нађем прегледач за <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Преузми читаву поруку</string>
@@ -389,9 +381,6 @@
   <string name="recreate_action">Поново направи податке (крајња нужда!)</string>
   <string name="account_setup_options_mail_check_frequency_label">Проверавање фасцикли</string>
   <string name="account_setup_options_mail_check_frequency_never">Никад</string>
-  <string name="account_setup_options_mail_check_frequency_1min">Сваке минуте</string>
-  <string name="account_setup_options_mail_check_frequency_5min">Сваких 5 минута</string>
-  <string name="account_setup_options_mail_check_frequency_10min">Сваких 10 минута</string>
   <string name="account_setup_options_mail_check_frequency_15min">Сваких 15 минута</string>
   <string name="account_setup_options_mail_check_frequency_30min">Сваких 30 минута</string>
   <string name="account_setup_options_mail_check_frequency_1hour">Сваког сата</string>
@@ -483,9 +472,7 @@
   <string name="account_settings_sync">Добављање поште</string>
   <string name="account_settings_folders">Фасцикле</string>
   <string name="account_settings_quote_prefix_label">Префикс цитираног текста</string>
-  <string name="account_settings_crypto">Криптографија</string>
-  <string name="account_settings_crypto_app">ОпенПГП апликација</string>
-  <string name="account_settings_crypto_key">Мој кључ</string>
+  <string name="account_settings_crypto_app">Укључи ОпенПГП</string>
   <string name="account_settings_no_openpgp_provider_configured">Нема подешене апликације за ОпенПГП</string>
   <string name="account_settings_mail_check_frequency_label">Учесталост провере фасцикли</string>
   <string name="account_settings_storage_title">Складиште</string>
@@ -724,6 +711,7 @@
   <string name="account_settings_searchable_all">Све</string>
   <string name="account_settings_searchable_displayable">Приказане</string>
   <string name="account_settings_searchable_none">Ниједна</string>
+  <string name="account_settings_no_folder_selected">Ниједна</string>
   <string name="font_size_settings_title">Величина фонта</string>
   <string name="font_size_settings_description">Подешавање величине фонта</string>
   <string name="font_size_account_list">Списак налога</string>
@@ -758,7 +746,6 @@
   <string name="font_size_medium">Средњи</string>
   <string name="font_size_large">Велики</string>
   <string name="font_size_larger">Већи</string>
-  <string name="miscellaneous_preferences">Разно</string>
   <string name="error_activity_not_found">Нема подесне апликације за ову радњу.</string>
   <string name="send_failed_reason">Слање није успело: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Сачувати нацрт поруке?</string>
@@ -802,17 +789,13 @@
   <string name="settings_exporting">Извозим поставке…</string>
   <string name="settings_importing">Увозим поставке…</string>
   <string name="settings_import_scanning_file">Очитавам фајл…</string>
-  <string name="settings_export_success">Извезене поставке сачуване у <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_generic">Поставке успешно извезене</string>
-  <string name="settings_import_global_settings_success">Увезене опште поставке из <xliff:g id="filename">%s</xliff:g></string>
-  <string name="settings_import_success">Увезено <xliff:g id="accounts">%s</xliff:g> из <xliff:g id="filename">%s</xliff:g></string>
   <plurals name="settings_import_accounts">
     <item quantity="one">1 налог</item>
     <item quantity="few"><xliff:g id="numAccounts">%s</xliff:g> налога</item>
     <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> налога</item>
   </plurals>
   <string name="settings_export_failure">Неуспех извоза поставки</string>
-  <string name="settings_import_failure">Неуспех увоза поставки из <xliff:g id="filename">%s</xliff:g></string>
   <string name="settings_export_success_header">Извоз је успео</string>
   <string name="settings_export_failed_header">Извоз није успео</string>
   <string name="settings_import_success_header">Увоз је успео</string>
@@ -834,7 +817,6 @@
   <string name="settings_import_use_incoming_server_password">Користи лозинку долазног сервера</string>
   <string name="activate_account_action">Активирај</string>
   <string name="account_unavailable">Налог „<xliff:g id="account">%s</xliff:g>“ је недоступан; проверите складиште</string>
-  <string name="settings_attachment_default_path">Сачувај прилоге у…</string>
   <string name="attachment_save_title">Упис прилога</string>
   <string name="attachment_save_desc">Нема прегледача фајлова. Где желите да сачувате овај прилог?</string>
   <string name="manage_accounts_move_up_action">Помери горе</string>
@@ -850,7 +832,6 @@
   <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
   <string name="unread_widget_account_not_selected">Ниједан налог није изабран</string>
   <string name="unread_widget_folder_not_selected">Ниједна фасцикла није изабрана</string>
-  <string name="import_dialog_error_title">Нема апликације за менаџмент фајлова</string>
   <string name="close">Затвори</string>
   <string name="webview_empty_message">Нема текста</string>
   <string name="webview_contextmenu_link_view_action">Отвори везу</string>
@@ -957,7 +938,6 @@
   <string name="crypto_mode_opportunistic">Шифруј ако је могуће</string>
   <string name="crypto_mode_private">Шифруј</string>
   <string name="error_crypto_provider_connect">Не могу да се повежем са снабдевачем криптографије, проверите ваше поставке или покушајте поново тапом на икону криптографије!</string>
-  <string name="error_crypto_provider_ui_required">Приступ снабдевачу криптографије одбијен, тапните икону криптографије да покушате поново!</string>
   <string name="error_crypto_inline_attach">PGP/INLINE режим не подржава прилоге!</string>
   <string name="enable_inline_pgp">Укључи PGP/INLINE</string>
   <string name="disable_inline_pgp">Искључи PGP/INLINE</string>
@@ -980,6 +960,8 @@
   <string name="openpgp_dialog_sign_only_minus_break">Потписи могу да се покваре ако се шаље на мејлинг-листе.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">Потписи могу бити приказани као „signature.asc“ прилози у неким клијентима.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Шифроване поруке увек укључују потпис.</string>
+  <string name="crypto_msg_unsupported_encrypted">Порука је шифрована али у неподржаном формату.</string>
+  <string name="crypto_msg_cancelled">Порука је шифрована али је дешифровање отказано.</string>
   <string name="crypto_info_ok">У реду</string>
   <string name="crypto_info_view_security_warning">Детаљи</string>
   <string name="locked_attach_unlock">Откључај</string>
@@ -992,9 +974,6 @@
   <string name="messageview_crypto_error_title">Грешка дешифровања е-поруке</string>
   <string name="recipient_error_non_ascii">Посебни знакови тренутно нису нису подржани!</string>
   <string name="recipient_error_parse_failed">Грешка прослеђивања адресе!</string>
-  <string name="account_settings_crypto_support_sign_only">Прикажи нешифроване потписе</string>
-  <string name="account_settings_crypto_support_sign_only_on">Нешифровани потписи ће бити приказани</string>
-  <string name="account_settings_crypto_support_sign_only_off">Нешифровани потписи ће бити занемарени</string>
   <string name="error_sign_only_no_encryption">Шифровање није могуће у само-потпис режиму!</string>
   <string name="unsigned_text_divider_label">Непотписан текст</string>
   <string name="apg_deprecated_title">Упозорење о застарењу АПГ-а</string>
@@ -1008,7 +987,7 @@
   <string name="no_crypto_provider_see_global">Нема подешене апликације за ОпенПГП, погледајте глобалне поставке!</string>
   <string name="crypto_no_provider_title">Ова е-порука је шифрована</string>
   <string name="crypto_no_provider_message">Ова е-порука је шифрована у ОпенПГП-у.\nДа бисте је прочитали, треба да инсталирате и поставите компатибилну ОпенПГП апликацију.</string>
-  <string name="crypto_no_provider_button">Изаберите ОпенПГП апликацију</string>
+  <string name="crypto_no_provider_button">Иди на Поставке</string>
   <string name="mail_list_widget_text">К-9 списак порука</string>
   <string name="mail_list_widget_loading">Учитавам поруке…</string>
   <string name="fetching_folders_failed">Добављање списка фасцикли није успело</string>
@@ -1020,4 +999,11 @@
   <string name="openpgp_enabled_error_back">Назад</string>
   <string name="openpgp_enabled_error_disable">Искључи шифровање</string>
   <string name="openpgp_encryption">ОпенПГП шифровање</string>
+  <string name="general_settings_title">Опште поставке</string>
+  <string name="ac_transfer_sending_to">Шаљем поруку за:</string>
+  <string name="switch_on">Укљ</string>
+  <string name="switch_off">Иск</string>
+  <string name="navigation_drawer_open">Отвори</string>
+  <string name="navigation_drawer_close">Затвори</string>
+  <!--permissions-->
 </resources>

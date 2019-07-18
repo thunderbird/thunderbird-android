@@ -23,6 +23,6 @@
 
 -keep public class org.openintents.openpgp.**
 
--keepclassmembers class * extends android.support.v7.widget.SearchView {
-   public <init>(android.content.Context);
+-keepclassmembers class * extends androidx.appcompat.widget.SearchView {
+    public <init>(android.content.Context);
 }
