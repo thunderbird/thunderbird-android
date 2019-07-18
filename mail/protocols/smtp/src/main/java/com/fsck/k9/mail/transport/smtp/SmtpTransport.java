@@ -114,7 +114,7 @@ public class SmtpTransport extends Transport {
             boolean secureConnection = false;
 
             InetAddress[] addresses = null;
-            if (host.length() == 16 + 1 + "onion".length() && host.toLowerCase().endsWith("onion")) { //the address is Onion
+            if (host.toLowerCase().endsWith("onion")) { //the address is Onion
                 socket = createOnionSocket();
             } else {
                 try {

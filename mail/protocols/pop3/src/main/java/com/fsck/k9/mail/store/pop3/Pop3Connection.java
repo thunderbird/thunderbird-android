@@ -66,7 +66,7 @@ class Pop3Connection {
 
     void open() throws MessagingException {
         try {
-            if (settings.getHost().length() == 16 + 1 + "onion".length() && settings.getHost().toLowerCase().endsWith(".onion")) { //the address is Onion
+            if (settings.getHost().toLowerCase().endsWith(".onion")) { //the address is Onion
                 socket = createOnionSocket();
             }
 

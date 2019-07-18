@@ -213,7 +213,7 @@ class ImapConnection {
         InetAddress[] inetAddresses = null;
 
         //Check if unresolved host is onion
-        if (settings.getHost().length() == 16 + 1 + "onion".length() && settings.getHost().toLowerCase().endsWith("onion")) { //the address is Onion
+        if (settings.getHost().toLowerCase().endsWith("onion")) { //the address is Onion
             return connectToOnionAddress();
         } else {
             try {
