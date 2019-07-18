@@ -2141,8 +2141,8 @@ public class MessagingController {
 
     @SuppressLint("NewApi") // used for debugging only
     public void debugClearMessagesLocally(final List<MessageReference> messages) {
-        if (!BuildConfig.DEBUG) {
-            throw new AssertionError("method must only be used in debug build!");
+        if (!K9.DEVELOPER_MODE) {
+            throw new AssertionError("method must only be used in developer mode!");
         }
 
         actOnMessagesGroupedByAccountAndFolder(messages, new MessageActor() {

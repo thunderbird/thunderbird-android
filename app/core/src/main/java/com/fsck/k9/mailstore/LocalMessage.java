@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteDatabase;
 import androidx.annotation.VisibleForTesting;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.K9;
 import com.fsck.k9.core.BuildConfig;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.mail.Address;
@@ -340,8 +341,8 @@ public class LocalMessage extends MimeMessage {
     }
 
     public void debugClearLocalData() throws MessagingException {
-        if (!BuildConfig.DEBUG) {
-            throw new AssertionError("method must only be used in debug build!");
+        if (!K9.DEVELOPER_MODE) {
+            throw new AssertionError("method must only be used in developer mode!");
         }
 
         try {
