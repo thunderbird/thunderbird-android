@@ -15,6 +15,7 @@ import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.helper.Contacts
+import com.fsck.k9.mailstore.DisplayFolder
 import com.fsck.k9.mailstore.Folder
 import com.fsck.k9.mailstore.FolderType
 import com.fsck.k9.ui.folders.FolderNameFormatter
@@ -228,7 +229,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
         }
     }
 
-    private fun setUserFolders(folders: List<Folder>?) {
+    private fun setUserFolders(folders: List<DisplayFolder>?) {
         clearUserFolders()
 
         if (folders == null) {
@@ -237,7 +238,8 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
 
         var openedFolderDrawerId: Long = -1
         for (i in folders.indices.reversed()) {
-            val folder = folders[i]
+            val displayFolder = folders[i]
+            val folder = displayFolder.folder
             val drawerId = folder.id shl DRAWER_FOLDER_SHIFT
             drawer.addItemAtPosition(PrimaryDrawerItem()
                     .withIcon(getFolderIcon(folder))
