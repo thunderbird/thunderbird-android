@@ -46,6 +46,13 @@ class StoreSchemaDefinition implements SchemaDefinition {
 
         db.beginTransaction();
         try {
+            if (db.getVersion() > DB_VERSION) {
+                String accountUuid = migrationsHelper.getAccount().getUuid();
+                throw new AssertionError("Database downgrades are not supported. " +
+                        "Please fix the account database '" + accountUuid + "' manually or " +
+                        "clear app data.");
+            }
+
             // schema version 29 was when we moved to incremental updates
             // in the case of a new db or a < v29 db, we blow away and start from scratch
             if (db.getVersion() < 29) {

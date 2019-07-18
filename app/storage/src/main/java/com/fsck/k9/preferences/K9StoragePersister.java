@@ -35,6 +35,11 @@ public class K9StoragePersister implements StoragePersister {
 
         db.beginTransaction();
         try {
+            if (db.getVersion() > DB_VERSION) {
+                throw new AssertionError("Database downgrades are not supported. " +
+                        "Please fix the database '" + DB_NAME + "' manually or clear app data.");
+            }
+
             if (db.getVersion() < 1) {
                 createStorageDatabase(db);
             } else {
