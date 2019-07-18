@@ -241,12 +241,19 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
             val displayFolder = folders[i]
             val folder = displayFolder.folder
             val drawerId = folder.id shl DRAWER_FOLDER_SHIFT
-            drawer.addItemAtPosition(PrimaryDrawerItem()
+
+            val drawerItem = PrimaryDrawerItem()
                     .withIcon(getFolderIcon(folder))
                     .withIdentifier(drawerId)
                     .withTag(folder)
-                    .withName(getFolderDisplayName(folder)),
-                    headerItemCount)
+                    .withName(getFolderDisplayName(folder))
+
+            val unreadCount = displayFolder.unreadCount
+            if (unreadCount > 0) {
+                drawerItem.withBadge(unreadCount.toString())
+            }
+
+            drawer.addItemAtPosition(drawerItem, headerItemCount)
 
             userFolderDrawerIds.add(drawerId)
 
