@@ -121,7 +121,7 @@
                     android:layout_marginLeft="1dip"
                     android:ellipsize="marquee"
                     android:singleLine="true"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="?android:attr/textColorPrimary"
                     />
 
