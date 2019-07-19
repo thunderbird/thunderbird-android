@@ -1136,7 +1136,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
         getActivity().getMenuInflater().inflate(R.menu.message_list_item_context, menu);
-        menu.findItem(R.id.debug_delete_locally).setVisible(BuildConfig.DEBUG);
+        menu.findItem(R.id.debug_delete_locally).setVisible(K9.DEVELOPER_MODE);
 
         contextMenuUniqueId = cursor.getLong(uniqueIdColumn);
         Account account = getAccountFromCursor(cursor);

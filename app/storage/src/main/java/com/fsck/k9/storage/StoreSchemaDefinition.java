@@ -3,6 +3,7 @@ package com.fsck.k9.storage;
 
 import android.database.sqlite.SQLiteDatabase;
 
+import com.fsck.k9.K9;
 import com.fsck.k9.core.BuildConfig;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mailstore.LockableDatabase.SchemaDefinition;
@@ -31,7 +32,7 @@ class StoreSchemaDefinition implements SchemaDefinition {
         try {
             upgradeDatabase(db);
         } catch (Exception e) {
-            if (BuildConfig.DEBUG) {
+            if (K9.DEVELOPER_MODE) {
                 throw new Error("Exception while upgrading database", e);
             }
 
