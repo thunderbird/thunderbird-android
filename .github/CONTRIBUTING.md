@@ -3,14 +3,13 @@
 If the app is not behaving like it should, it's not necessarily a bug. Please consult the following resources before
 submitting a new issue.
 
-* [User Manual](https://github.com/k9mail/k-9/wiki/Manual)
-* [Frequently Asked Questions](https://github.com/k9mail/k-9/wiki/FrequentlyAskedQuestions)
+* [User Manual](https://k9mail.github.io/documentation.html)
+* [Frequently Asked Questions](https://k9mail.github.io/documentation/faq.html)
 * [Support Forum/Mailing List](http://groups.google.com/group/k-9-mail)
-* [Google+ Community](https://plus.google.com/communities/109228641058741937099)
 
 ### Bug report guidelines
 
-* __Important:__ Please report issues using our [template](https://raw.githubusercontent.com/k9mail/k-9/master/issue_template.md)
+* __Important:__ Please report issues using our [template](https://github.com/k9mail/k-9/blob/master/.github/issue_template.md)
 to make sure all important information is included.
 * The issue tracker is solely for bug reports and feature/enhancement requests. If you have a question of any kind,
 please use the [mailing list](http://groups.google.com/group/k-9-mail) instead.
