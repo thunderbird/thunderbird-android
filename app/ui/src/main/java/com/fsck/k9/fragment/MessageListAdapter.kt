@@ -98,6 +98,9 @@ class MessageListAdapter internal constructor(
     private val checkboxes: Boolean
         get() = K9.isShowMessageListCheckboxes
 
+    private val stars: Boolean
+        get() = K9.isShowMessageListStars
+
 
     private fun recipientSigil(toMe: Boolean, ccMe: Boolean): String {
         return if (toMe) {
@@ -147,7 +150,7 @@ class MessageListAdapter internal constructor(
         fontSizes.setViewTextSize(holder.threadCount, fontSizes.messageListSubject) // thread count is next to subject
         view.findViewById<View>(R.id.selected_checkbox_wrapper).visibility = if (checkboxes) View.VISIBLE else View.GONE
 
-        holder.flagged.visibility = if (fragment.stars) View.VISIBLE else View.GONE
+        holder.flagged.visibility = if (stars) View.VISIBLE else View.GONE
         holder.flagged.setOnClickListener(holder)
 
 
@@ -202,7 +205,7 @@ class MessageListAdapter internal constructor(
         if (checkboxes) {
             holder.selected.isChecked = selected
         }
-        if (fragment.stars) {
+        if (stars) {
             holder.flagged.isChecked = flagged
         }
         holder.position = cursor.position
