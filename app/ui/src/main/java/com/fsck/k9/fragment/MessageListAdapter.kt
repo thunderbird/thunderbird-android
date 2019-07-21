@@ -43,6 +43,8 @@ import com.fsck.k9.fragment.MLFProjectionInfo.TO_LIST_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.UID_COLUMN
 import com.fsck.k9.helper.MessageHelper
 
+import kotlin.math.max
+
 class MessageListAdapter internal constructor(
         theme: Resources.Theme,
         private val res: Resources,
@@ -78,6 +80,9 @@ class MessageListAdapter internal constructor(
 
         array.recycle()
     }
+
+    private inline val previewLines: Int
+        get() = K9.messageListPreviewLines
 
     private fun recipientSigil(toMe: Boolean, ccMe: Boolean): String {
         return if (toMe) {
@@ -121,7 +126,7 @@ class MessageListAdapter internal constructor(
 
 
         // 1 preview line is needed even if it is set to 0, because subject is part of the same text view
-        holder.preview.setLines(Math.max(fragment.previewLines, 1))
+        holder.preview.setLines(max(previewLines, 1))
         fontSizes.setViewTextSize(holder.preview, fontSizes.messageListPreview)
         holder.threadCount = view.findViewById(R.id.thread_count)
         fontSizes.setViewTextSize(holder.threadCount, fontSizes.messageListSubject) // thread count is next to subject
@@ -198,7 +203,7 @@ class MessageListAdapter internal constructor(
         val sigil = recipientSigil(toMe, ccMe)
         val messageStringBuilder = SpannableStringBuilder(sigil)
                 .append(beforePreviewText)
-        if (fragment.previewLines > 0) {
+        if (previewLines > 0) {
             val preview = getPreview(cursor)
             messageStringBuilder.append(" ").append(preview)
         }

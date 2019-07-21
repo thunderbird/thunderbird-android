@@ -163,9 +163,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private SwipeRefreshLayout swipeRefreshLayout;
     Parcelable savedListState;
 
-    int previewLines = 0;
-
-
     private MessageListAdapter adapter;
     private View footerView;
     private FolderInfoHolder currentFolder;
@@ -410,7 +407,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         preferences = Preferences.getPreferences(appContext);
         messagingController = MessagingController.getInstance(getActivity().getApplication());
 
-        previewLines = K9.getMessageListPreviewLines();
         checkboxes = K9.isShowMessageListCheckboxes();
         stars = K9.isShowMessageListStars();
 
