@@ -56,6 +56,7 @@ class MessageListAdapter internal constructor(
         private val layoutInflater: LayoutInflater,
         private val messageHelper: MessageHelper,
         private val contactsPictureLoader: ContactPictureLoader,
+        private val accountRetriever: AccountRetriever,
         private val showingThreadedList: Boolean = false
 ) : CursorAdapter(context, null, 0) {
 
@@ -179,7 +180,7 @@ class MessageListAdapter internal constructor(
     }
 
     override fun bindView(view: View, context: Context, cursor: Cursor) {
-        val account = fragment.getAccountFromCursor(cursor)
+        val account = accountRetriever(cursor)
 
         val fromList = cursor.getString(SENDER_LIST_COLUMN)
         val toList = cursor.getString(TO_LIST_COLUMN)
