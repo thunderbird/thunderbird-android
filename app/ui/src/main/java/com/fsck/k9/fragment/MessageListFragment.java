@@ -598,7 +598,11 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     private void initializeMessageList() {
-        adapter = new MessageListAdapter(getResources(), this);
+        adapter = new MessageListAdapter(
+                getResources(),
+                requireActivity().getTheme(),
+                this
+        );
 
         if (folderServerId != null) {
             currentFolder = getFolderInfoHolder(folderServerId, account);
