@@ -601,7 +601,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         adapter = new MessageListAdapter(
                 getResources(),
                 requireActivity().getTheme(),
-                this
+                this,
+                layoutInflater
         );
 
         if (folderServerId != null) {
@@ -2824,10 +2825,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     private boolean isPullToRefreshAllowed() {
         return (isRemoteSearchAllowed() || isCheckMailAllowed());
-    }
-
-    LayoutInflater getK9LayoutInflater() {
-        return layoutInflater;
     }
 
     public LocalSearch getLocalSearch() {
