@@ -596,8 +596,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     private void initializeMessageList() {
         adapter = new MessageListAdapter(
-                this.getResources(),
                 this.requireActivity().getTheme(),
+                this.getResources(),
                 this,
                 LayoutInflater.from(requireContext())
         );

@@ -43,8 +43,8 @@ import com.fsck.k9.fragment.MLFProjectionInfo.TO_LIST_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.UID_COLUMN
 
 class MessageListAdapter internal constructor(
-        res: Resources,
         theme: Resources.Theme,
+        private val res: Resources,
         private val fragment: MessageListFragment,
         private val layoutInflater: LayoutInflater
 ) : CursorAdapter(fragment.activity, null, 0) {
@@ -79,9 +79,9 @@ class MessageListAdapter internal constructor(
 
     private fun recipientSigil(toMe: Boolean, ccMe: Boolean): String {
         return if (toMe) {
-            fragment.getString(R.string.messagelist_sent_to_me_sigil)
+            res.getString(R.string.messagelist_sent_to_me_sigil)
         } else if (ccMe) {
-            fragment.getString(R.string.messagelist_sent_cc_me_sigil)
+            res.getString(R.string.messagelist_sent_cc_me_sigil)
         } else {
             ""
         }
@@ -160,7 +160,7 @@ class MessageListAdapter internal constructor(
         val threadCount = if (fragment.showingThreadedList) cursor.getInt(THREAD_COUNT_COLUMN) else 0
 
         val subject = MlfUtils.buildSubject(cursor.getString(SUBJECT_COLUMN),
-                fragment.getString(R.string.general_no_subject), threadCount)
+                res.getString(R.string.general_no_subject), threadCount)
 
         val read = cursor.getInt(READ_COLUMN) == 1
         val flagged = cursor.getInt(FLAGGED_COLUMN) == 1
@@ -335,7 +335,7 @@ class MessageListAdapter internal constructor(
                 return ""
             }
             DatabasePreviewType.ENCRYPTED -> {
-                return fragment.getString(R.string.preview_encrypted)
+                return res.getString(R.string.preview_encrypted)
             }
             DatabasePreviewType.TEXT -> {
                 return cursor.getString(PREVIEW_COLUMN)
