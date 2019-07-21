@@ -79,13 +79,14 @@ class MessageListAdapter internal constructor(
 
         array.recycle()
     }
-
-
-    private val senderAboveSubject: Boolean
-        get() = K9.isMessageListSenderAboveSubject
+    private val checkboxes: Boolean
+        get() = K9.isShowMessageListCheckboxes
 
     private inline val previewLines: Int
         get() = K9.messageListPreviewLines
+
+    private val senderAboveSubject: Boolean
+        get() = K9.isMessageListSenderAboveSubject
 
     private fun recipientSigil(toMe: Boolean, ccMe: Boolean): String {
         return if (toMe) {
@@ -133,7 +134,7 @@ class MessageListAdapter internal constructor(
         fontSizes.setViewTextSize(holder.preview, fontSizes.messageListPreview)
         holder.threadCount = view.findViewById(R.id.thread_count)
         fontSizes.setViewTextSize(holder.threadCount, fontSizes.messageListSubject) // thread count is next to subject
-        view.findViewById<View>(R.id.selected_checkbox_wrapper).visibility = if (fragment.checkboxes) View.VISIBLE else View.GONE
+        view.findViewById<View>(R.id.selected_checkbox_wrapper).visibility = if (checkboxes) View.VISIBLE else View.GONE
 
         holder.flagged.visibility = if (fragment.stars) View.VISIBLE else View.GONE
         holder.flagged.setOnClickListener(holder)
@@ -187,7 +188,7 @@ class MessageListAdapter internal constructor(
         val selected = fragment.selected.contains(uniqueId)
 
         holder.chip.setBackgroundColor(account.chipColor)
-        if (fragment.checkboxes) {
+        if (checkboxes) {
             holder.selected.isChecked = selected
         }
         if (fragment.stars) {

@@ -195,7 +195,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private SortType sortType = SortType.SORT_DATE;
     private boolean sortAscending = true;
     private boolean sortDateAscending = false;
-    boolean checkboxes = true;
     boolean stars = true;
 
     private int selectedCount = 0;
@@ -406,7 +405,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         preferences = Preferences.getPreferences(appContext);
         messagingController = MessagingController.getInstance(getActivity().getApplication());
 
-        checkboxes = K9.isShowMessageListCheckboxes();
         stars = K9.isShowMessageListStars();
 
         if (K9.isShowContactPicture()) {
