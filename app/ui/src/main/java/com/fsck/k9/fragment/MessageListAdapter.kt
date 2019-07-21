@@ -21,6 +21,8 @@ import android.widget.TextView
 import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.ui.R
+import com.fsck.k9.contacts.ContactPictureLoader
+import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.DatabasePreviewType
 import com.fsck.k9.ui.ContactBadge
@@ -40,7 +42,6 @@ import com.fsck.k9.fragment.MLFProjectionInfo.SUBJECT_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.THREAD_COUNT_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.TO_LIST_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.UID_COLUMN
-import com.fsck.k9.helper.MessageHelper
 
 import kotlin.math.max
 
@@ -50,6 +51,7 @@ class MessageListAdapter internal constructor(
         private val fragment: MessageListFragment,
         private val layoutInflater: LayoutInflater,
         private val messageHelper: MessageHelper,
+        private val contactsPictureLoader: ContactPictureLoader,
         private val showingThreadedList: Boolean = false
 ) : CursorAdapter(fragment.activity, null, 0) {
     private val mForwardedIcon: Drawable
@@ -101,6 +103,9 @@ class MessageListAdapter internal constructor(
     private val stars: Boolean
         get() = K9.isShowMessageListStars
 
+    private val showContactPicture: Boolean
+        get() = K9.isShowContactPicture
+
 
     private fun recipientSigil(toMe: Boolean, ccMe: Boolean): String {
         return if (toMe) {
@@ -124,7 +129,7 @@ class MessageListAdapter internal constructor(
         holder.flagged = view.findViewById(R.id.star)
 
         val contactBadge = view.findViewById<ContactBadge>(R.id.contact_badge)
-        if (fragment.contactsPictureLoader != null) {
+        if (showContactPicture) {
             holder.contactBadge = contactBadge
         } else {
             contactBadge.visibility = View.GONE
@@ -309,7 +314,7 @@ class MessageListAdapter internal constructor(
                      * doesn't reset the padding, so we do it ourselves.
                      */
             holder.contactBadge.setPadding(0, 0, 0, 0)
-            fragment.contactsPictureLoader.setContactPicture(holder.contactBadge, counterpartyAddress)
+            contactsPictureLoader.setContactPicture(holder.contactBadge, counterpartyAddress)
         } else {
             holder.contactBadge.assignContactUri(null)
             holder.contactBadge.setImageResource(R.drawable.ic_contact_picture)

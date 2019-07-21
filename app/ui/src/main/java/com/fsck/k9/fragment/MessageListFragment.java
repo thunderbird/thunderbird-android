@@ -60,11 +60,9 @@ import com.fsck.k9.activity.ActivityListener;
 import com.fsck.k9.activity.ChooseFolder;
 import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.activity.misc.ContactPicture;
-import com.fsck.k9.contacts.ContactPictureLoader;
 import com.fsck.k9.cache.EmailProviderCache;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.core.BuildConfig;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
 import com.fsck.k9.fragment.MessageListFragmentComparators.ArrivalComparator;
@@ -220,7 +218,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
      * make sure we don't access member variables before initialization is complete.
      */
     private boolean initialized = false;
-    ContactPictureLoader contactsPictureLoader;
     private LocalBroadcastManager localBroadcastManager;
     private BroadcastReceiver cacheBroadcastReceiver;
     private IntentFilter cacheIntentFilter;
@@ -405,10 +402,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         preferences = Preferences.getPreferences(appContext);
         messagingController = MessagingController.getInstance(getActivity().getApplication());
 
-        if (K9.isShowContactPicture()) {
-            contactsPictureLoader = ContactPicture.getContactPictureLoader();
-        }
-
         restoreInstanceState(savedInstanceState);
         decodeArguments();
 
@@ -590,6 +583,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 this,
                 layoutInflater,
                 MessageHelper.getInstance(getActivity()),
+                ContactPicture.getContactPictureLoader(),
                 showingThreadedList
         );
 
