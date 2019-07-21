@@ -212,7 +212,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private final ActivityListener activityListener = new MessageListActivityListener();
     private Preferences preferences;
     private boolean loaderJustInitialized;
-    MessageReference activeMessage;
+    private MessageReference activeMessage;
     /**
      * {@code true} after {@link #onCreate(Bundle)} was executed. Used in {@link #updateTitle()} to
      * make sure we don't access member variables before initialization is complete.
@@ -481,6 +481,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         savedListState = savedInstanceState.getParcelable(STATE_MESSAGE_LIST);
         String messageReferenceString = savedInstanceState.getString(STATE_ACTIVE_MESSAGE);
         activeMessage = MessageReference.parse(messageReferenceString);
+        if (adapter != null) adapter.setActiveMessage(activeMessage);
     }
 
     /**
@@ -2090,6 +2091,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         } else if (dialogId == R.id.dialog_confirm_delete) {
             onDeleteConfirmed(activeMessages);
             activeMessage = null;
+            if (adapter != null) adapter.setActiveMessage(null);
         } else if (dialogId == R.id.dialog_confirm_mark_all_as_read) {
             markAllAsRead();
         } else if (dialogId == R.id.dialog_confirm_empty_trash) {
@@ -2760,6 +2762,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
         // Redraw list immediately
         if (adapter != null) {
+            adapter.setActiveMessage(activeMessage);
             adapter.notifyDataSetChanged();
         }
     }
