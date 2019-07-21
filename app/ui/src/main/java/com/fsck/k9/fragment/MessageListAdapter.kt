@@ -120,6 +120,8 @@ class MessageListAdapter internal constructor(
     private val activeUid: String?
         get() = activeMessage?.uid
 
+    var uniqueIdColumn: Int = 0
+
 
     private fun recipientSigil(toMe: Boolean, ccMe: Boolean): String {
         return if (toMe) {
@@ -217,7 +219,7 @@ class MessageListAdapter internal constructor(
 
         val maybeBoldTypeface = if (read) Typeface.NORMAL else Typeface.BOLD
 
-        val uniqueId = cursor.getLong(fragment.uniqueIdColumn)
+        val uniqueId = cursor.getLong(uniqueIdColumn)
         val selected = fragment.selected.contains(uniqueId)
 
         holder.chip.setBackgroundColor(account.chipColor)

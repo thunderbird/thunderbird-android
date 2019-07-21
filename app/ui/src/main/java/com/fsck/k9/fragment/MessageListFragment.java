@@ -172,7 +172,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     private Cursor[] cursors;
     private boolean[] cursorValid;
-    int uniqueIdColumn;
+    private int uniqueIdColumn;
 
     /**
      * Stores the server ID of the folder that we want to open as soon as possible after load.
@@ -2577,6 +2577,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             cursor = data;
             uniqueIdColumn = ID_COLUMN;
         }
+        adapter.setUniqueIdColumn(uniqueIdColumn);
 
         if (isThreadDisplay) {
             if (cursor.moveToFirst()) {
