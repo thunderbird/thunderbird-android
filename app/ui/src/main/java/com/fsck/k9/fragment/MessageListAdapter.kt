@@ -23,6 +23,7 @@ import com.fsck.k9.FontSizes
 import com.fsck.k9.K9
 import com.fsck.k9.ui.R
 import com.fsck.k9.contacts.ContactPictureLoader
+import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.fragment.MLFProjectionInfo.*
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mail.Address
@@ -56,6 +57,9 @@ class MessageListAdapter internal constructor(
         private val contactsPictureLoader: ContactPictureLoader,
         private val showingThreadedList: Boolean = false
 ) : CursorAdapter(fragment.activity, null, 0) {
+
+    private val activeAccountUuid: String?
+        get() = activeMessage?.accountUuid
     private val mForwardedIcon: Drawable
     private val mAnsweredIcon: Drawable
     private val mForwardedAnsweredIcon: Drawable
@@ -84,6 +88,7 @@ class MessageListAdapter internal constructor(
         array.recycle()
     }
 
+
     private val checkboxes: Boolean
         get() = K9.isShowMessageListCheckboxes
 
@@ -98,6 +103,15 @@ class MessageListAdapter internal constructor(
 
     private val showContactPicture: Boolean
         get() = K9.isShowContactPicture
+
+    private val activeMessage: MessageReference?
+        get() = fragment.activeMessage
+
+    private val activeFolderServerId: String?
+        get() = activeMessage?.folderServerId
+
+    private val activeUid: String?
+        get() = activeMessage?.uid
 
     private fun recipientSigil(toMe: Boolean, ccMe: Boolean): String {
         return if (toMe) {
@@ -210,7 +224,7 @@ class MessageListAdapter internal constructor(
             updateContactBadge(holder, counterpartyAddress)
         }
         setBackgroundColor(view, selected, read)
-        if (fragment.activeMessage != null) {
+        if (activeMessage != null) {
             changeBackgroundColorIfActiveMessage(cursor, account, view)
         }
         updateWithThreadCount(holder, threadCount)
@@ -304,9 +318,9 @@ class MessageListAdapter internal constructor(
         val uid = cursor.getString(UID_COLUMN)
         val folderServerId = cursor.getString(FOLDER_SERVER_ID_COLUMN)
 
-        if (account.uuid == fragment.activeMessage.accountUuid &&
-                folderServerId == fragment.activeMessage.folderServerId &&
-                uid == fragment.activeMessage.uid) {
+        if (account.uuid == activeAccountUuid &&
+                folderServerId == activeFolderServerId &&
+                uid == activeUid) {
             view.setBackgroundColor(activeItemBackgroundColor)
         }
     }
