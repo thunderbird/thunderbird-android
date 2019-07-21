@@ -21,6 +21,7 @@ import android.widget.TextView
 import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.ui.R
+import com.fsck.k9.Preferences
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.helper.MessageHelper
@@ -28,6 +29,7 @@ import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.DatabasePreviewType
 import com.fsck.k9.ui.ContactBadge
 
+import com.fsck.k9.fragment.MLFProjectionInfo.ACCOUNT_UUID_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.ANSWERED_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.ATTACHMENT_COUNT_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.CC_LIST_COLUMN
@@ -54,6 +56,7 @@ class MessageListAdapter internal constructor(
         private val layoutInflater: LayoutInflater,
         private val messageHelper: MessageHelper,
         private val contactsPictureLoader: ContactPictureLoader,
+        private val preferences: Preferences,
         private val showingThreadedList: Boolean = false
 ) : CursorAdapter(context, null, 0) {
 
@@ -187,7 +190,7 @@ class MessageListAdapter internal constructor(
     }
 
     override fun bindView(view: View, context: Context, cursor: Cursor) {
-        val account = fragment.getAccountFromCursor(cursor)
+        val account = getAccount(cursor)
 
         val fromList = cursor.getString(SENDER_LIST_COLUMN)
         val toList = cursor.getString(TO_LIST_COLUMN)
@@ -274,6 +277,11 @@ class MessageListAdapter internal constructor(
         } else {
             holder.status.visibility = View.GONE
         }
+    }
+
+    private fun getAccount(cursor: Cursor): Account {
+        val accountUuid = cursor.getString(ACCOUNT_UUID_COLUMN)
+        return preferences.getAccount(accountUuid)
     }
 
     private fun formatPreviewText(

@@ -586,6 +586,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 layoutInflater,
                 MessageHelper.getInstance(getActivity()),
                 ContactPicture.getContactPictureLoader(),
+                preferences,
                 showingThreadedList
         );
 
@@ -2736,7 +2737,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         adapter.swapCursor(null);
     }
 
-    Account getAccountFromCursor(Cursor cursor) {
+    private Account getAccountFromCursor(Cursor cursor) {
         String accountUuid = cursor.getString(ACCOUNT_UUID_COLUMN);
         return preferences.getAccount(accountUuid);
     }
