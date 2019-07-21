@@ -91,6 +91,9 @@ class MessageListAdapter internal constructor(
     private inline val previewLines: Int
         get() = K9.messageListPreviewLines
 
+    private val senderAboveSubject: Boolean
+        get() = K9.isMessageListSenderAboveSubject
+
 
     private fun recipientSigil(toMe: Boolean, ccMe: Boolean): String {
         return if (toMe) {
@@ -120,7 +123,7 @@ class MessageListAdapter internal constructor(
             contactBadge.visibility = View.GONE
         }
 
-        if (fragment.senderAboveSubject) {
+        if (senderAboveSubject) {
             holder.from = view.findViewById(R.id.subject)
             fontSizes.setViewTextSize(holder.from, fontSizes.messageListSender)
 
@@ -207,7 +210,7 @@ class MessageListAdapter internal constructor(
             changeBackgroundColorIfActiveMessage(cursor, account, view)
         }
         updateWithThreadCount(holder, threadCount)
-        val beforePreviewText = if (fragment.senderAboveSubject) subject else displayName
+        val beforePreviewText = if (senderAboveSubject) subject else displayName
         val sigil = recipientSigil(toMe, ccMe)
         val messageStringBuilder = SpannableStringBuilder(sigil)
                 .append(beforePreviewText)
@@ -221,7 +224,7 @@ class MessageListAdapter internal constructor(
 
         if (holder.from != null) {
             holder.from.typeface = Typeface.create(holder.from.typeface, maybeBoldTypeface)
-            if (fragment.senderAboveSubject) {
+            if (senderAboveSubject) {
                 holder.from.text = displayName
             } else {
                 holder.from.text = SpannableStringBuilder(sigil).append(displayName)
@@ -265,7 +268,7 @@ class MessageListAdapter internal constructor(
      * Create a span section for the sender, and assign the correct font size and weight
      */
     private fun buildSenderSpan(): AbsoluteSizeSpan {
-        val fontSize = if (fragment.senderAboveSubject)
+        val fontSize = if (senderAboveSubject)
             fontSizes.messageListSubject
         else
             fontSizes.messageListSender
