@@ -61,9 +61,9 @@ class MessageListAdapter internal constructor(
         private val showingThreadedList: Boolean = false
 ) : CursorAdapter(context, null, 0) {
 
-    private val mForwardedIcon: Drawable
-    private val mAnsweredIcon: Drawable
-    private val mForwardedAnsweredIcon: Drawable
+    private val forwardedIcon: Drawable
+    private val answeredIcon: Drawable
+    private val forwardedAnsweredIcon: Drawable
     private val previewTextColor: Int
     private val activeItemBackgroundColor: Int
     private val selectedItemBackgroundColor: Int
@@ -76,9 +76,9 @@ class MessageListAdapter internal constructor(
 
         val array = theme.obtainStyledAttributes(attributes)
 
-        mAnsweredIcon = res.getDrawable(array.getResourceId(0, R.drawable.ic_messagelist_answered_dark))
-        mForwardedIcon = res.getDrawable(array.getResourceId(1, R.drawable.ic_messagelist_forwarded_dark))
-        mForwardedAnsweredIcon = res.getDrawable(array.getResourceId(2, R.drawable.ic_messagelist_answered_forwarded_dark))
+        answeredIcon = res.getDrawable(array.getResourceId(0, R.drawable.ic_messagelist_answered_dark))
+        forwardedIcon = res.getDrawable(array.getResourceId(1, R.drawable.ic_messagelist_forwarded_dark))
+        forwardedAnsweredIcon = res.getDrawable(array.getResourceId(2, R.drawable.ic_messagelist_answered_forwarded_dark))
         previewTextColor = array.getColor(3, Color.BLACK)
         activeItemBackgroundColor = array.getColor(4, Color.BLACK)
         selectedItemBackgroundColor = array.getColor(5, Color.BLACK)
@@ -336,11 +336,11 @@ class MessageListAdapter internal constructor(
 
     private fun buildStatusHolder(forwarded: Boolean, answered: Boolean): Drawable? {
         if (forwarded && answered) {
-            return mForwardedAnsweredIcon
+            return forwardedAnsweredIcon
         } else if (answered) {
-            return mAnsweredIcon
+            return answeredIcon
         } else if (forwarded) {
-            return mForwardedIcon
+            return forwardedIcon
         }
         return null
     }
