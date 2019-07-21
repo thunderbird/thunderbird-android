@@ -212,8 +212,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
      * between user interactions (e.g. selecting a folder for move operation).
      */
     private List<MessageReference> activeMessages;
-    /* package visibility for faster inner class access */
-    MessageHelper messageHelper;
     private final ActionModeCallback actionModeCallback = new ActionModeCallback();
     MessageListFragmentListener fragmentListener;
     boolean showingThreadedList;
@@ -455,8 +453,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        messageHelper = MessageHelper.getInstance(getActivity());
-
         initializeMessageList();
 
         // This needs to be done before initializing the cursor loader below
@@ -602,7 +598,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 requireActivity().getTheme(),
                 getResources(),
                 this,
-                layoutInflater
+                layoutInflater,
+                MessageHelper.getInstance(getActivity())
         );
 
         if (folderServerId != null) {

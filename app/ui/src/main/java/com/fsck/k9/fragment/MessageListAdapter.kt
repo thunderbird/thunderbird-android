@@ -40,12 +40,14 @@ import com.fsck.k9.fragment.MLFProjectionInfo.SUBJECT_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.THREAD_COUNT_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.TO_LIST_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.UID_COLUMN
+import com.fsck.k9.helper.MessageHelper
 
 class MessageListAdapter internal constructor(
         theme: Resources.Theme,
         private val res: Resources,
         private val fragment: MessageListFragment,
-        private val layoutInflater: LayoutInflater
+        private val layoutInflater: LayoutInflater,
+        private val messageHelper: MessageHelper
 ) : CursorAdapter(fragment.activity, null, 0) {
     private val mForwardedIcon: Drawable
     private val mAnsweredIcon: Drawable
@@ -156,11 +158,11 @@ class MessageListAdapter internal constructor(
         val toAddrs = Address.unpack(toList)
         val ccAddrs = Address.unpack(ccList)
 
-        val fromMe = fragment.messageHelper.toMe(account, fromAddrs)
-        val toMe = fragment.messageHelper.toMe(account, toAddrs)
-        val ccMe = fragment.messageHelper.toMe(account, ccAddrs)
+        val fromMe = messageHelper.toMe(account, fromAddrs)
+        val toMe = messageHelper.toMe(account, toAddrs)
+        val ccMe = messageHelper.toMe(account, ccAddrs)
 
-        val displayName = fragment.messageHelper.getDisplayName(account, fromAddrs, toAddrs)
+        val displayName = messageHelper.getDisplayName(account, fromAddrs, toAddrs)
         val displayDate = DateUtils.getRelativeTimeSpanString(context, cursor.getLong(DATE_COLUMN))
 
         val counterpartyAddress = fetchCounterPartyAddress(fromMe, toAddrs, ccAddrs, fromAddrs)
