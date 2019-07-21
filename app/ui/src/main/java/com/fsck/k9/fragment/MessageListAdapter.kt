@@ -58,8 +58,6 @@ class MessageListAdapter internal constructor(
         private val showingThreadedList: Boolean = false
 ) : CursorAdapter(fragment.activity, null, 0) {
 
-    private val activeAccountUuid: String?
-        get() = activeMessage?.accountUuid
     private val mForwardedIcon: Drawable
     private val mAnsweredIcon: Drawable
     private val mForwardedAnsweredIcon: Drawable
@@ -104,8 +102,10 @@ class MessageListAdapter internal constructor(
     private val showContactPicture: Boolean
         get() = K9.isShowContactPicture
 
-    private val activeMessage: MessageReference?
-        get() = fragment.activeMessage
+    var activeMessage: MessageReference? = null
+
+    private val activeAccountUuid: String?
+        get() = activeMessage?.accountUuid
 
     private val activeFolderServerId: String?
         get() = activeMessage?.folderServerId
