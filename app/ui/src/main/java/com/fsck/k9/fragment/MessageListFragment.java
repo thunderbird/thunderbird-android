@@ -195,7 +195,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private SortType sortType = SortType.SORT_DATE;
     private boolean sortAscending = true;
     private boolean sortDateAscending = false;
-    boolean senderAboveSubject = false;
     boolean checkboxes = true;
     boolean stars = true;
 
@@ -646,8 +645,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     @Override
     public void onResume() {
         super.onResume();
-
-        senderAboveSubject = K9.isMessageListSenderAboveSubject();
 
         if (!loaderJustInitialized) {
             restartLoader();

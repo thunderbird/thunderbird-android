@@ -61,8 +61,6 @@ class MessageListAdapter internal constructor(
     private val readItemBackgroundColor: Int
     private val unreadItemBackgroundColor: Int
     private val fontSizes = K9.fontSizes
-
-
     init {
 
         val attributes = intArrayOf(R.attr.messageListAnswered, R.attr.messageListForwarded, R.attr.messageListAnsweredForwarded, R.attr.messageListPreviewTextColor, R.attr.messageListActiveItemBackgroundColor, R.attr.messageListSelectedBackgroundColor, R.attr.messageListReadItemBackgroundColor, R.attr.messageListUnreadItemBackgroundColor)
@@ -80,6 +78,10 @@ class MessageListAdapter internal constructor(
 
         array.recycle()
     }
+
+
+    private val senderAboveSubject: Boolean
+        get() = K9.isMessageListSenderAboveSubject
 
     private inline val previewLines: Int
         get() = K9.messageListPreviewLines
@@ -112,7 +114,7 @@ class MessageListAdapter internal constructor(
             contactBadge.visibility = View.GONE
         }
 
-        if (fragment.senderAboveSubject) {
+        if (senderAboveSubject) {
             holder.from = view.findViewById(R.id.subject)
             fontSizes.setViewTextSize(holder.from, fontSizes.messageListSender)
 
@@ -199,7 +201,7 @@ class MessageListAdapter internal constructor(
             changeBackgroundColorIfActiveMessage(cursor, account, view)
         }
         updateWithThreadCount(holder, threadCount)
-        val beforePreviewText = if (fragment.senderAboveSubject) subject else displayName
+        val beforePreviewText = if (senderAboveSubject) subject else displayName
         val sigil = recipientSigil(toMe, ccMe)
         val messageStringBuilder = SpannableStringBuilder(sigil)
                 .append(beforePreviewText)
@@ -213,7 +215,7 @@ class MessageListAdapter internal constructor(
 
         if (holder.from != null) {
             holder.from.typeface = Typeface.create(holder.from.typeface, maybeBoldTypeface)
-            if (fragment.senderAboveSubject) {
+            if (senderAboveSubject) {
                 holder.from.text = displayName
             } else {
                 holder.from.text = SpannableStringBuilder(sigil).append(displayName)
@@ -249,7 +251,7 @@ class MessageListAdapter internal constructor(
      * Create a span section for the sender, and assign the correct font size and weight
      */
     private fun buildSenderSpan(): AbsoluteSizeSpan {
-        val fontSize = if (fragment.senderAboveSubject)
+        val fontSize = if (senderAboveSubject)
             fontSizes.messageListSubject
         else
             fontSizes.messageListSender
