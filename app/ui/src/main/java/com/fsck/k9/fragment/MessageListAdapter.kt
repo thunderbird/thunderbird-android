@@ -47,6 +47,7 @@ import com.fsck.k9.fragment.MLFProjectionInfo.UID_COLUMN
 import kotlin.math.max
 
 class MessageListAdapter internal constructor(
+        context: Context,
         theme: Resources.Theme,
         private val res: Resources,
         private val fragment: MessageListFragment,
@@ -54,7 +55,7 @@ class MessageListAdapter internal constructor(
         private val messageHelper: MessageHelper,
         private val contactsPictureLoader: ContactPictureLoader,
         private val showingThreadedList: Boolean = false
-) : CursorAdapter(fragment.activity, null, 0) {
+) : CursorAdapter(context, null, 0) {
 
     private val mForwardedIcon: Drawable
     private val mAnsweredIcon: Drawable

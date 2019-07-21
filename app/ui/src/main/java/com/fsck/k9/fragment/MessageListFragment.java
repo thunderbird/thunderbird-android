@@ -579,6 +579,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     private void initializeMessageList() {
         adapter = new MessageListAdapter(
+                requireContext(),
                 requireActivity().getTheme(),
                 getResources(),
                 this,
