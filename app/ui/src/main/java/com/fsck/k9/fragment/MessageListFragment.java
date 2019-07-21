@@ -209,7 +209,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private List<MessageReference> activeMessages;
     private final ActionModeCallback actionModeCallback = new ActionModeCallback();
     MessageListFragmentListener fragmentListener;
-    boolean showingThreadedList;
+    private boolean showingThreadedList;
     private boolean isThreadDisplay;
     private Context context;
     private final ActivityListener activityListener = new MessageListActivityListener();
@@ -591,7 +591,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 this.getResources(),
                 this,
                 LayoutInflater.from(requireContext()),
-                MessageHelper.getInstance(getActivity())
+                MessageHelper.getInstance(getActivity()),
+                this.showingThreadedList
         );
 
         if (folderServerId != null) {
