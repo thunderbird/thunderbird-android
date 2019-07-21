@@ -68,7 +68,6 @@ class MessageListAdapter internal constructor(
     private val readItemBackgroundColor: Int
     private val unreadItemBackgroundColor: Int
     private val fontSizes = K9.fontSizes
-
     init {
 
         val attributes = intArrayOf(R.attr.messageListAnswered, R.attr.messageListForwarded, R.attr.messageListAnsweredForwarded, R.attr.messageListPreviewTextColor, R.attr.messageListActiveItemBackgroundColor, R.attr.messageListSelectedBackgroundColor, R.attr.messageListReadItemBackgroundColor, R.attr.messageListUnreadItemBackgroundColor)
@@ -87,9 +86,9 @@ class MessageListAdapter internal constructor(
         array.recycle()
     }
 
-
     private val checkboxes: Boolean
         get() = K9.isShowMessageListCheckboxes
+
 
     private inline val previewLines: Int
         get() = K9.messageListPreviewLines
@@ -115,6 +114,8 @@ class MessageListAdapter internal constructor(
         get() = activeMessage?.uid
 
     var uniqueIdColumn: Int = 0
+
+    var selected: Set<Long> = emptySet()
 
     private fun recipientSigil(toMe: Boolean, ccMe: Boolean): String {
         return if (toMe) {
@@ -213,7 +214,7 @@ class MessageListAdapter internal constructor(
         val maybeBoldTypeface = if (read) Typeface.NORMAL else Typeface.BOLD
 
         val uniqueId = cursor.getLong(uniqueIdColumn)
-        val selected = fragment.selected.contains(uniqueId)
+        val selected = selected.contains(uniqueId)
 
         holder.chip.setBackgroundColor(account.chipColor)
         if (checkboxes) {
