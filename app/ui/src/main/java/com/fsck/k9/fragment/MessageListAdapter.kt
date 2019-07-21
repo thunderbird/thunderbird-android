@@ -3,8 +3,6 @@ package com.fsck.k9.fragment
 
 import android.content.Context
 import android.content.res.Resources
-import android.content.res.Resources.Theme
-import android.content.res.TypedArray
 import android.database.Cursor
 import android.graphics.Color
 import android.graphics.Typeface
@@ -44,6 +42,7 @@ import com.fsck.k9.fragment.MLFProjectionInfo.TO_LIST_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.UID_COLUMN
 
 class MessageListAdapter internal constructor(
+        res: Resources,
         private val fragment: MessageListFragment
 ) : CursorAdapter(fragment.activity, null, 0) {
     private val mForwardedIcon: Drawable
@@ -64,7 +63,6 @@ class MessageListAdapter internal constructor(
         val theme = fragment.requireActivity().theme
         val array = theme.obtainStyledAttributes(attributes)
 
-        val res = fragment.resources
         mAnsweredIcon = res.getDrawable(array.getResourceId(0, R.drawable.ic_messagelist_answered_dark))
         mForwardedIcon = res.getDrawable(array.getResourceId(1, R.drawable.ic_messagelist_forwarded_dark))
         mForwardedAnsweredIcon = res.getDrawable(array.getResourceId(2, R.drawable.ic_messagelist_answered_forwarded_dark))
