@@ -43,6 +43,7 @@ import com.fsck.k9.fragment.MLFProjectionInfo.UID_COLUMN
 
 class MessageListAdapter internal constructor(
         res: Resources,
+        theme: Resources.Theme,
         private val fragment: MessageListFragment
 ) : CursorAdapter(fragment.activity, null, 0) {
     private val mForwardedIcon: Drawable
@@ -60,7 +61,6 @@ class MessageListAdapter internal constructor(
 
         val attributes = intArrayOf(R.attr.messageListAnswered, R.attr.messageListForwarded, R.attr.messageListAnsweredForwarded, R.attr.messageListPreviewTextColor, R.attr.messageListActiveItemBackgroundColor, R.attr.messageListSelectedBackgroundColor, R.attr.messageListReadItemBackgroundColor, R.attr.messageListUnreadItemBackgroundColor)
 
-        val theme = fragment.requireActivity().theme
         val array = theme.obtainStyledAttributes(attributes)
 
         mAnsweredIcon = res.getDrawable(array.getResourceId(0, R.drawable.ic_messagelist_answered_dark))
