@@ -62,6 +62,8 @@ import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.search.SqlQueryBuilder;
 import com.fsck.k9.ui.R;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 import timber.log.Timber;
 
 import java.util.*;
@@ -541,13 +543,26 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 this.requireContext(),
                 this.requireActivity().getTheme(),
                 this.getResources(),
-                this,
                 LayoutInflater.from(requireContext()),
                 MessageHelper.getInstance(getActivity()),
                 ContactPicture.getContactPictureLoader(),
                 new AccountRetriever(
                         Preferences.getPreferences(this.requireContext().getApplicationContext())
                 ),
+                new Function1<Integer, Unit>() {
+                    @Override
+                    public Unit invoke(Integer position) {
+                        toggleMessageSelectWithAdapterPosition(position);
+                        return Unit.INSTANCE;
+                    }
+                },
+                new Function1<Integer, Unit>() {
+                    @Override
+                    public Unit invoke(Integer position) {
+                        toggleMessageFlagWithAdapterPosition(position);
+                        return Unit.INSTANCE;
+                    }
+                },
                 this.showingThreadedList
         );
 

@@ -52,11 +52,12 @@ class MessageListAdapter internal constructor(
         context: Context,
         theme: Resources.Theme,
         private val res: Resources,
-        private val fragment: MessageListFragment,
         private val layoutInflater: LayoutInflater,
         private val messageHelper: MessageHelper,
         private val contactsPictureLoader: ContactPictureLoader,
         private val accountRetriever: AccountRetriever,
+        private val toggleMessageSelectWithAdapterPosition: (Int) -> Unit,
+        private val toggleMessageFlagWithAdapterPosition: (Int) -> Unit,
         private val showingThreadedList: Boolean = false
 ) : CursorAdapter(context, null, 0) {
 
@@ -131,7 +132,10 @@ class MessageListAdapter internal constructor(
     override fun newView(context: Context, cursor: Cursor, parent: ViewGroup): View {
         val view = layoutInflater.inflate(R.layout.message_list_item, parent, false)
 
-        val holder = MessageViewHolder(fragment)
+        val holder = MessageViewHolder(
+                toggleMessageSelectWithAdapterPosition,
+                toggleMessageFlagWithAdapterPosition
+        )
         holder.date = view.findViewById(R.id.date)
         holder.chip = view.findViewById(R.id.chip)
         holder.attachment = view.findViewById(R.id.attachment)
