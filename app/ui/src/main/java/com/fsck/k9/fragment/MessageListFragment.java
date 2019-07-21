@@ -195,7 +195,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private SortType sortType = SortType.SORT_DATE;
     private boolean sortAscending = true;
     private boolean sortDateAscending = false;
-    boolean stars = true;
 
     private int selectedCount = 0;
     Set<Long> selected = new HashSet<>();
@@ -404,8 +403,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
         preferences = Preferences.getPreferences(appContext);
         messagingController = MessagingController.getInstance(getActivity().getApplication());
-
-        stars = K9.isShowMessageListStars();
 
         if (K9.isShowContactPicture()) {
             contactsPictureLoader = ContactPicture.getContactPictureLoader();
