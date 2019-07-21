@@ -49,7 +49,8 @@ class MessageListAdapter internal constructor(
         private val res: Resources,
         private val fragment: MessageListFragment,
         private val layoutInflater: LayoutInflater,
-        private val messageHelper: MessageHelper
+        private val messageHelper: MessageHelper,
+        private val showingThreadedList: Boolean = false
 ) : CursorAdapter(fragment.activity, null, 0) {
     private val mForwardedIcon: Drawable
     private val mAnsweredIcon: Drawable
@@ -175,7 +176,7 @@ class MessageListAdapter internal constructor(
 
         val counterpartyAddress = fetchCounterPartyAddress(fromMe, toAddrs, ccAddrs, fromAddrs)
 
-        val threadCount = if (fragment.showingThreadedList) cursor.getInt(THREAD_COUNT_COLUMN) else 0
+        val threadCount = if (showingThreadedList) cursor.getInt(THREAD_COUNT_COLUMN) else 0
 
         val subject = MlfUtils.buildSubject(cursor.getString(SUBJECT_COLUMN),
                 res.getString(R.string.general_no_subject), threadCount)
