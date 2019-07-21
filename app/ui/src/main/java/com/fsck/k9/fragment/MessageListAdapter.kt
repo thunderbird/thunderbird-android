@@ -12,6 +12,7 @@ import android.text.SpannableStringBuilder
 import android.text.format.DateUtils
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CursorAdapter
@@ -44,7 +45,8 @@ import com.fsck.k9.fragment.MLFProjectionInfo.UID_COLUMN
 class MessageListAdapter internal constructor(
         res: Resources,
         theme: Resources.Theme,
-        private val fragment: MessageListFragment
+        private val fragment: MessageListFragment,
+        private val layoutInflater: LayoutInflater
 ) : CursorAdapter(fragment.activity, null, 0) {
     private val mForwardedIcon: Drawable
     private val mAnsweredIcon: Drawable
@@ -86,7 +88,7 @@ class MessageListAdapter internal constructor(
     }
 
     override fun newView(context: Context, cursor: Cursor, parent: ViewGroup): View {
-        val view = fragment.k9LayoutInflater.inflate(R.layout.message_list_item, parent, false)
+        val view = layoutInflater.inflate(R.layout.message_list_item, parent, false)
 
         val holder = MessageViewHolder(fragment)
         holder.date = view.findViewById(R.id.date)

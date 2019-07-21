@@ -169,7 +169,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private MessageListAdapter adapter;
     private View footerView;
     private FolderInfoHolder currentFolder;
-    private LayoutInflater layoutInflater;
     private MessagingController messagingController;
 
     private Account account;
@@ -433,8 +432,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
-        layoutInflater = inflater;
-
         View view = inflater.inflate(R.layout.message_list_fragment, container, false);
 
         initializePullToRefresh(view);
@@ -601,7 +598,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         adapter = new MessageListAdapter(
                 this.getResources(),
                 this.requireActivity().getTheme(),
-                this
+                this,
+                LayoutInflater.from(requireContext())
         );
 
         if (folderServerId != null) {
@@ -1349,7 +1347,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     private View getFooterView(ViewGroup parent) {
         if (footerView == null) {
-            footerView = layoutInflater.inflate(R.layout.message_list_item_footer, parent, false);
+            footerView = LayoutInflater.from(requireContext())
+                    .inflate(R.layout.message_list_item_footer, parent, false);
             FooterViewHolder holder = new FooterViewHolder();
             holder.main = footerView.findViewById(R.id.main_text);
             footerView.setTag(holder);
@@ -2824,10 +2823,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     private boolean isPullToRefreshAllowed() {
         return (isRemoteSearchAllowed() || isCheckMailAllowed());
-    }
-
-    LayoutInflater getK9LayoutInflater() {
-        return layoutInflater;
     }
 
     public LocalSearch getLocalSearch() {
