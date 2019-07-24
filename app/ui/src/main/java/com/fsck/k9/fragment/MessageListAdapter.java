@@ -107,23 +107,8 @@ public class MessageListAdapter extends CursorAdapter {
         holder.chip = view.findViewById(R.id.chip);
         holder.attachment = view.findViewById(R.id.attachment);
         holder.status = view.findViewById(R.id.status);
-
-
-        if (fragment.previewLines == 0 && fragment.contactsPictureLoader == null) {
-            view.findViewById(R.id.preview).setVisibility(View.GONE);
-            holder.preview = view.findViewById(R.id.sender_compact);
-            holder.flagged = view.findViewById(R.id.flagged_center_right);
-            view.findViewById(R.id.flagged_bottom_right).setVisibility(View.GONE);
-
-
-
-        } else {
-            view.findViewById(R.id.sender_compact).setVisibility(View.GONE);
-            holder.preview = view.findViewById(R.id.preview);
-            holder.flagged = view.findViewById(R.id.flagged_bottom_right);
-            view.findViewById(R.id.flagged_center_right).setVisibility(View.GONE);
-
-        }
+        holder.preview = view.findViewById(R.id.preview);
+        holder.flagged = view.findViewById(R.id.star);
 
         ContactBadge contactBadge = view.findViewById(R.id.contact_badge);
         if (fragment.contactsPictureLoader != null) {

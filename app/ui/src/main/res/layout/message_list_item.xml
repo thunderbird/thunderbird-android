@@ -69,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_toLeftOf="@+id/flagged_bottom_right"
+                android:layout_toLeftOf="@+id/star"
                 android:layout_marginLeft="1dip"
                 android:layout_marginRight="3dip"
                 android:bufferType="spannable"
@@ -100,19 +100,6 @@
                 android:layout_toRightOf="@+id/status">
 
             <TextView
-                    android:id="@+id/sender_compact"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.3"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    android:layout_marginBottom="1dip"
-                    android:layout_marginLeft="1dip"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="?android:attr/textColorPrimary"
-                    />
-
-            <TextView
                     android:id="@+id/subject"
                     android:layout_width="0dp"
                     android:layout_weight="0.7"
@@ -140,20 +127,6 @@
                     />
         </LinearLayout>
 
-        <CheckBox
-                android:id="@+id/flagged_center_right"
-                style="?android:attr/starStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:paddingTop="3dip"
-                android:paddingLeft="2dip"
-                android:paddingRight="4dip"
-                android:focusable="false"
-                android:visibility="gone"
-                />
-
         <ImageView
                 android:id="@+id/attachment"
                 android:layout_width="wrap_content"
@@ -171,7 +144,7 @@
                 android:layout_alignTop="@+id/subject_wrapper"
                 android:layout_alignWithParentIfMissing="true"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/flagged_center_right"
+                android:layout_alignParentRight="true"
                 android:paddingLeft="3dip"
                 android:paddingRight="8dip"
                 android:singleLine="true"
@@ -179,7 +152,7 @@
                 android:textColor="?android:attr/textColorSecondary"/>
 
         <CheckBox
-                android:id="@+id/flagged_bottom_right"
+                android:id="@+id/star"
                 style="?android:attr/starStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
