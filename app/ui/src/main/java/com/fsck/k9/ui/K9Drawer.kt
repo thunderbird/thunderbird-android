@@ -15,9 +15,11 @@ import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.helper.Contacts
+import com.fsck.k9.mailstore.DisplayFolder
 import com.fsck.k9.mailstore.Folder
 import com.fsck.k9.mailstore.FolderType
 import com.fsck.k9.ui.folders.FolderNameFormatter
+import com.fsck.k9.ui.folders.FoldersLiveData
 import com.fsck.k9.ui.messagelist.MessageListViewModel
 import com.fsck.k9.ui.messagelist.MessageListViewModelFactory
 import com.fsck.k9.ui.settings.SettingsActivity
@@ -55,6 +57,11 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
     private val userFolderDrawerIds = ArrayList<Long>()
     private var unifiedInboxSelected: Boolean = false
     private var openedFolderServerId: String? = null
+
+    private var foldersLiveData: FoldersLiveData? = null
+    private val foldersObserver = Observer<List<DisplayFolder>> { folders ->
+        setUserFolders(folders)
+    }
 
 
     val layout: DrawerLayout
@@ -201,9 +208,12 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
             accountHeader.headerBackgroundView.setColorFilter(account.chipColor, PorterDuff.Mode.MULTIPLY)
             val viewModelProvider = ViewModelProviders.of(parent, MessageListViewModelFactory())
             val viewModel = viewModelProvider.get(MessageListViewModel::class.java)
-            viewModel.getFolders(account).observe(parent, Observer {
-                folders -> setUserFolders(folders)
-            })
+
+            foldersLiveData?.removeObserver(foldersObserver)
+            foldersLiveData = viewModel.getFolders(account).apply {
+                observe(parent, foldersObserver)
+            }
+
             updateFolderSettingsItem()
         }
     }
@@ -228,7 +238,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
         }
     }
 
-    private fun setUserFolders(folders: List<Folder>?) {
+    private fun setUserFolders(folders: List<DisplayFolder>?) {
         clearUserFolders()
 
         if (folders == null) {
@@ -237,14 +247,22 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
 
         var openedFolderDrawerId: Long = -1
         for (i in folders.indices.reversed()) {
-            val folder = folders[i]
+            val displayFolder = folders[i]
+            val folder = displayFolder.folder
             val drawerId = folder.id shl DRAWER_FOLDER_SHIFT
-            drawer.addItemAtPosition(PrimaryDrawerItem()
+
+            val drawerItem = PrimaryDrawerItem()
                     .withIcon(getFolderIcon(folder))
                     .withIdentifier(drawerId)
                     .withTag(folder)
-                    .withName(getFolderDisplayName(folder)),
-                    headerItemCount)
+                    .withName(getFolderDisplayName(folder))
+
+            val unreadCount = displayFolder.unreadCount
+            if (unreadCount > 0) {
+                drawerItem.withBadge(unreadCount.toString())
+            }
+
+            drawer.addItemAtPosition(drawerItem, headerItemCount)
 
             userFolderDrawerIds.add(drawerId)
 
