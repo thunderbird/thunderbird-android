@@ -2534,7 +2534,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             cursor = data;
             uniqueIdColumn = ID_COLUMN;
         }
-        if (adapter != null) adapter.setUniqueIdColumn(uniqueIdColumn);
+        adapter.setUniqueIdColumn(uniqueIdColumn);
 
         if (isThreadDisplay) {
             if (cursor.moveToFirst()) {
