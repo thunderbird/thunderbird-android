@@ -7,13 +7,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.fsck.k9.ui.ContactBadge;
 import com.fsck.k9.ui.R;
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
 
 
 public class MessageViewHolder implements View.OnClickListener {
-    private final Function1<Integer, Unit> toggleMessageFlagWithAdapterPosition;
-    private final Function1<Integer, Unit> toggleMessageSelectWithAdapterPosition;
+    private final MessageListItemActionListener itemActionListener;
     public TextView subject;
     public TextView preview;
     public TextView from;
@@ -28,12 +25,8 @@ public class MessageViewHolder implements View.OnClickListener {
     public ImageView attachment;
     public ImageView status;
 
-    public MessageViewHolder(
-            Function1<Integer, Unit> toggleMessageSelectWithAdapterPosition,
-            Function1<Integer, Unit> toggleMessageFlagWithAdapterPosition
-    ) {
-        this.toggleMessageSelectWithAdapterPosition = toggleMessageSelectWithAdapterPosition;
-        this.toggleMessageFlagWithAdapterPosition = toggleMessageFlagWithAdapterPosition;
+    public MessageViewHolder(final MessageListItemActionListener itemActionListener) {
+        this.itemActionListener = itemActionListener;
     }
 
     @Override
@@ -41,9 +34,9 @@ public class MessageViewHolder implements View.OnClickListener {
         if (position != -1) {
             int id = view.getId();
             if (id == R.id.selected_checkbox) {
-                toggleMessageSelectWithAdapterPosition.invoke(position);
+                itemActionListener.toggleMessageSelectWithAdapterPosition(position);
             } else if (id == R.id.star) {
-                toggleMessageFlagWithAdapterPosition.invoke(position);
+                itemActionListener.toggleMessageFlagWithAdapterPosition(position);
             }
         }
     }
