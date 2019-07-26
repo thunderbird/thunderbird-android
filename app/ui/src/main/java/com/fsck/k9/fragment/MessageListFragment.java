@@ -544,9 +544,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 LayoutInflater.from(requireContext()),
                 MessageHelper.getInstance(getActivity()),
                 ContactPicture.getContactPictureLoader(),
-                new AccountRetriever(
-                        Preferences.getPreferences(this.requireContext().getApplicationContext())
-                ),
+                Preferences.getPreferences(this.requireContext().getApplicationContext()),
                 this,
                 this.showingThreadedList
         );
