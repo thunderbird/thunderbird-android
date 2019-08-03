@@ -153,7 +153,7 @@
 
         <CheckBox
                 android:id="@+id/star"
-                style="?android:attr/starStyle"
+                style="@style/MessageStarStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:layout_below="@+id/date"
