@@ -5,13 +5,12 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.ContactBadge;
+import com.fsck.k9.ui.R;
 
 
 public class MessageViewHolder implements View.OnClickListener {
-    private final MessageListFragment fragment;
+    private final MessageListItemActionListener itemActionListener;
     public TextView subject;
     public TextView preview;
     public TextView from;
@@ -26,8 +25,8 @@ public class MessageViewHolder implements View.OnClickListener {
     public ImageView attachment;
     public ImageView status;
 
-    public MessageViewHolder(MessageListFragment fragment) {
-        this.fragment = fragment;
+    public MessageViewHolder(final MessageListItemActionListener itemActionListener) {
+        this.itemActionListener = itemActionListener;
     }
 
     @Override
@@ -35,9 +34,9 @@ public class MessageViewHolder implements View.OnClickListener {
         if (position != -1) {
             int id = view.getId();
             if (id == R.id.selected_checkbox) {
-                fragment.toggleMessageSelectWithAdapterPosition(position);
+                itemActionListener.toggleMessageSelectWithAdapterPosition(position);
             } else if (id == R.id.star) {
-                fragment.toggleMessageFlagWithAdapterPosition(position);
+                itemActionListener.toggleMessageFlagWithAdapterPosition(position);
             }
         }
     }
