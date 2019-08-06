@@ -19,7 +19,6 @@ import android.widget.CursorAdapter
 import android.widget.TextView
 
 import com.fsck.k9.Account
-import com.fsck.k9.K9
 import com.fsck.k9.ui.R
 import com.fsck.k9.Preferences
 import com.fsck.k9.contacts.ContactPictureLoader
@@ -69,7 +68,6 @@ class MessageListAdapter internal constructor(
     private val selectedItemBackgroundColor: Int
     private val readItemBackgroundColor: Int
     private val unreadItemBackgroundColor: Int
-    private val fontSizes = K9.fontSizes
 
     init {
 
@@ -144,22 +142,22 @@ class MessageListAdapter internal constructor(
 
         if (appearance.senderAboveSubject) {
             holder.from = view.findViewById(R.id.subject)
-            fontSizes.setViewTextSize(holder.from, fontSizes.messageListSender)
+            appearance.fontSizes.setViewTextSize(holder.from, appearance.fontSizes.messageListSender)
 
         } else {
             holder.subject = view.findViewById(R.id.subject)
-            fontSizes.setViewTextSize(holder.subject, fontSizes.messageListSubject)
+            appearance.fontSizes.setViewTextSize(holder.subject, appearance.fontSizes.messageListSubject)
 
         }
 
-        fontSizes.setViewTextSize(holder.date, fontSizes.messageListDate)
+        appearance.fontSizes.setViewTextSize(holder.date, appearance.fontSizes.messageListDate)
 
 
         // 1 preview line is needed even if it is set to 0, because subject is part of the same text view
         holder.preview.setLines(max(appearance.previewLines, 1))
-        fontSizes.setViewTextSize(holder.preview, fontSizes.messageListPreview)
+        appearance.fontSizes.setViewTextSize(holder.preview, appearance.fontSizes.messageListPreview)
         holder.threadCount = view.findViewById(R.id.thread_count)
-        fontSizes.setViewTextSize(holder.threadCount, fontSizes.messageListSubject) // thread count is next to subject
+        appearance.fontSizes.setViewTextSize(holder.threadCount, appearance.fontSizes.messageListSubject) // thread count is next to subject
         view.findViewById<View>(R.id.selected_checkbox_wrapper).visibility =
                 if (appearance.checkboxes) View.VISIBLE else View.GONE
 
@@ -294,9 +292,9 @@ class MessageListAdapter internal constructor(
      */
     private fun buildSenderSpan(): AbsoluteSizeSpan {
         val fontSize = if (appearance.senderAboveSubject)
-            fontSizes.messageListSubject
+            appearance.fontSizes.messageListSubject
         else
-            fontSizes.messageListSender
+            appearance.fontSizes.messageListSender
         return AbsoluteSizeSpan(fontSize, true)
     }
 
@@ -357,7 +355,7 @@ class MessageListAdapter internal constructor(
     }
 
     private fun setBackgroundColor(view: View, selected: Boolean, read: Boolean) {
-        if (selected || K9.isUseBackgroundAsUnreadIndicator) {
+        if (selected || appearance.backGroundAsReadIndicator) {
             val color: Int
             if (selected) {
                 color = selectedItemBackgroundColor

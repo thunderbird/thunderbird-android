@@ -605,12 +605,14 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     private MessageListAppearance getMessageListAppearance() {
         return new MessageListAppearance(
+                K9.getFontSizes(),
                 K9.isShowMessageListCheckboxes(),
                 K9.getMessageListPreviewLines(),
                 K9.isShowMessageListStars(),
                 K9.isMessageListSenderAboveSubject(),
                 K9.isShowContactPicture(),
-                showingThreadedList
+                showingThreadedList,
+                K9.isUseBackgroundAsUnreadIndicator()
         );
     }
 
