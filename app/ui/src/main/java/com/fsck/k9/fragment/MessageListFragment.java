@@ -92,6 +92,7 @@ import com.fsck.k9.search.SearchSpecification;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.SearchField;
 import com.fsck.k9.search.SqlQueryBuilder;
+import com.fsck.k9.ui.messagelist.MessageListAppearance;
 import timber.log.Timber;
 
 import static com.fsck.k9.fragment.MLFProjectionInfo.ACCOUNT_UUID_COLUMN;
@@ -587,7 +588,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 ContactPicture.getContactPictureLoader(),
                 preferences,
                 this,
-                showingThreadedList
+                getMessageListAppearance()
         );
 
         if (folderServerId != null) {
@@ -600,6 +601,19 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
         listView.setAdapter(adapter);
+    }
+
+    private MessageListAppearance getMessageListAppearance() {
+        return new MessageListAppearance(
+                K9.getFontSizes(),
+                K9.isShowMessageListCheckboxes(),
+                K9.getMessageListPreviewLines(),
+                K9.isShowMessageListStars(),
+                K9.isMessageListSenderAboveSubject(),
+                K9.isShowContactPicture(),
+                showingThreadedList,
+                K9.isUseBackgroundAsUnreadIndicator()
+        );
     }
 
     private void createCacheBroadcastReceiver(Context appContext) {
