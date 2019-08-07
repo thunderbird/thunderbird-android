@@ -1,85 +1,80 @@
-package com.fsck.k9.helper;
+package com.fsck.k9.helper
+
+import com.fsck.k9.Account
+import com.fsck.k9.Identity
+import com.fsck.k9.mail.Message
 
 
-import com.fsck.k9.Account;
-import com.fsck.k9.Identity;
-import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.Message;
-
-
-public class IdentityHelper {
+object IdentityHelper {
 
     /**
      * Find the identity a message was sent to.
      *
      * @param account
-     *         The account the message belongs to.
+     * The account the message belongs to.
      * @param message
-     *         The message to get the recipients from.
+     * The message to get the recipients from.
      *
      * @return The identity the message was sent to, or the account's default identity if it
-     *         couldn't be determined which identity this message was sent to.
+     * couldn't be determined which identity this message was sent to.
      *
-     * @see Account#findIdentity(com.fsck.k9.mail.Address)
+     * @see Account.findIdentity
      */
-    public static Identity getRecipientIdentityFromMessage(Account account, Message message) {
-        Identity recipient = null;
+    @JvmStatic
+    fun getRecipientIdentityFromMessage(account: Account, message: Message): Identity {
+        var recipient: Identity? = null
 
-            for (Address address : message.getRecipients(Message.RecipientType.TO)) {
-                Identity identity = account.findIdentity(address);
-                if (identity != null) {
-                    recipient = identity;
-                    break;
-                }
+        for (address in message.getRecipients(Message.RecipientType.TO)) {
+            val identity = account.findIdentity(address)
+            if (identity != null) {
+                recipient = identity
+                break
             }
+        }
 
         if (recipient == null) {
-            Address[] ccAddresses = message.getRecipients(Message.RecipientType.CC);
-            if (ccAddresses.length > 0) {
-                for (Address address : ccAddresses) {
-                    Identity identity = account.findIdentity(address);
+            val ccAddresses = message.getRecipients(Message.RecipientType.CC)
+            if (ccAddresses.size > 0) {
+                for (address in ccAddresses) {
+                    val identity = account.findIdentity(address)
                     if (identity != null) {
-                        recipient = identity;
-                        break;
+                        recipient = identity
+                        break
                     }
                 }
             }
         }
 
         if (recipient == null) {
-            for (Address address : message.getRecipients(Message.RecipientType.X_ORIGINAL_TO)) {
-                Identity identity = account.findIdentity(address);
+            for (address in message.getRecipients(Message.RecipientType.X_ORIGINAL_TO)) {
+                val identity = account.findIdentity(address)
                 if (identity != null) {
-                    recipient = identity;
-                    break;
+                    recipient = identity
+                    break
                 }
             }
         }
 
         if (recipient == null) {
-            for (Address address : message.getRecipients(Message.RecipientType.DELIVERED_TO)) {
-                Identity identity = account.findIdentity(address);
+            for (address in message.getRecipients(Message.RecipientType.DELIVERED_TO)) {
+                val identity = account.findIdentity(address)
                 if (identity != null) {
-                    recipient = identity;
-                    break;
+                    recipient = identity
+                    break
                 }
             }
         }
 
         if (recipient == null) {
-            for (Address address : message.getRecipients(Message.RecipientType.X_ENVELOPE_TO)) {
-                Identity identity = account.findIdentity(address);
+            for (address in message.getRecipients(Message.RecipientType.X_ENVELOPE_TO)) {
+                val identity = account.findIdentity(address)
                 if (identity != null) {
-                    recipient = identity;
-                    break;
+                    recipient = identity
+                    break
                 }
             }
         }
 
-        if (recipient == null) {
-            recipient = account.getIdentity(0);
-        }
-
-        return recipient;
+        return recipient ?: account.getIdentity(0)
     }
 }
