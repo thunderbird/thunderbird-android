@@ -3,9 +3,17 @@ package com.fsck.k9.helper
 import com.fsck.k9.Account
 import com.fsck.k9.Identity
 import com.fsck.k9.mail.Message
+import com.fsck.k9.mail.Message.RecipientType
 
 
 object IdentityHelper {
+    private val RECIPIENT_TYPES = listOf(
+            RecipientType.TO,
+            RecipientType.CC,
+            RecipientType.X_ORIGINAL_TO,
+            RecipientType.DELIVERED_TO,
+            RecipientType.X_ENVELOPE_TO
+    )
 
     /**
      * Find the identity a message was sent to.
@@ -22,58 +30,11 @@ object IdentityHelper {
      */
     @JvmStatic
     fun getRecipientIdentityFromMessage(account: Account, message: Message): Identity {
-        var recipient: Identity? = null
-
-        for (address in message.getRecipients(Message.RecipientType.TO)) {
-            val identity = account.findIdentity(address)
-            if (identity != null) {
-                recipient = identity
-                break
-            }
-        }
-
-        if (recipient == null) {
-            val ccAddresses = message.getRecipients(Message.RecipientType.CC)
-            if (ccAddresses.size > 0) {
-                for (address in ccAddresses) {
-                    val identity = account.findIdentity(address)
-                    if (identity != null) {
-                        recipient = identity
-                        break
-                    }
-                }
-            }
-        }
-
-        if (recipient == null) {
-            for (address in message.getRecipients(Message.RecipientType.X_ORIGINAL_TO)) {
-                val identity = account.findIdentity(address)
-                if (identity != null) {
-                    recipient = identity
-                    break
-                }
-            }
-        }
-
-        if (recipient == null) {
-            for (address in message.getRecipients(Message.RecipientType.DELIVERED_TO)) {
-                val identity = account.findIdentity(address)
-                if (identity != null) {
-                    recipient = identity
-                    break
-                }
-            }
-        }
-
-        if (recipient == null) {
-            for (address in message.getRecipients(Message.RecipientType.X_ENVELOPE_TO)) {
-                val identity = account.findIdentity(address)
-                if (identity != null) {
-                    recipient = identity
-                    break
-                }
-            }
-        }
+        val recipient: Identity? = RECIPIENT_TYPES.asSequence()
+                .flatMap { recipientType -> message.getRecipients(recipientType).asSequence() }
+                .map { address -> account.findIdentity(address) }
+                .filterNotNull()
+                .firstOrNull()
 
         return recipient ?: account.getIdentity(0)
     }
