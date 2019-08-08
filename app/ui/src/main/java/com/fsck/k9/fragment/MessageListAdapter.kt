@@ -17,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CursorAdapter
 import android.widget.TextView
+import androidx.core.view.isVisible
 
 import com.fsck.k9.Account
 import com.fsck.k9.ui.R
@@ -148,9 +149,9 @@ class MessageListAdapter internal constructor(
         holder.preview.setLines(max(appearance.previewLines, 1))
         appearance.fontSizes.setViewTextSize(holder.preview, appearance.fontSizes.messageListPreview)
         appearance.fontSizes.setViewTextSize(holder.threadCount, appearance.fontSizes.messageListSubject) // thread count is next to subject
-        holder.selectedCheckbox.visibility = if (appearance.checkboxes) View.VISIBLE else View.GONE
+        holder.selectedCheckbox.isVisible = appearance.checkboxes
 
-        holder.flagged.visibility = if (appearance.stars) View.VISIBLE else View.GONE
+        holder.flagged.isVisible = appearance.stars
         holder.flagged.setOnClickListener(holder)
 
         holder.selected.setOnClickListener(holder)
