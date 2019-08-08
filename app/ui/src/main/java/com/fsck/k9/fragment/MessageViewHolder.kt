@@ -1,42 +1,40 @@
-package com.fsck.k9.fragment;
+package com.fsck.k9.fragment
 
 
-import android.view.View;
-import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.TextView;
-import com.fsck.k9.ui.ContactBadge;
-import com.fsck.k9.ui.R;
+import android.annotation.SuppressLint
+import android.view.View
+import android.widget.CheckBox
+import android.widget.ImageView
+import android.widget.TextView
+import com.fsck.k9.ui.ContactBadge
+import com.fsck.k9.ui.R
 
+@SuppressLint("ResourceType")
+class MessageViewHolder(
+        view: View,
+        private val itemActionListener: MessageListItemActionListener
+) : View.OnClickListener {
+    var position = -1
 
-public class MessageViewHolder implements View.OnClickListener {
-    private final MessageListItemActionListener itemActionListener;
-    public TextView subject;
-    public TextView preview;
-    public TextView from;
-    public TextView time;
-    public TextView date;
-    public View chip;
-    public TextView threadCount;
-    public CheckBox flagged;
-    public CheckBox selected;
-    public int position = -1;
-    public ContactBadge contactBadge;
-    public ImageView attachment;
-    public ImageView status;
+    var contactBadge: ContactBadge? = null
+    val subject: TextView = view.findViewById(R.id.subject)
+    val preview: TextView = view.findViewById(R.id.preview)
+    val date: TextView = view.findViewById(R.id.date)
+    val chip: View = view.findViewById(R.id.chip)
+    val threadCount: TextView = view.findViewById(R.id.thread_count)
+    val flagged: CheckBox = view.findViewById(R.id.star)
+    val selected: CheckBox = view.findViewById(R.id.selected_checkbox)
+    val attachment: ImageView = view.findViewById(R.id.attachment)
+    val status: ImageView = view.findViewById(R.id.status)
+    val selectedCheckbox: View = view.findViewById(R.id.selected_checkbox_wrapper)
 
-    public MessageViewHolder(final MessageListItemActionListener itemActionListener) {
-        this.itemActionListener = itemActionListener;
-    }
-
-    @Override
-    public void onClick(View view) {
+    override fun onClick(view: View) {
         if (position != -1) {
-            int id = view.getId();
+            val id = view.id
             if (id == R.id.selected_checkbox) {
-                itemActionListener.toggleMessageSelectWithAdapterPosition(position);
+                itemActionListener.toggleMessageSelectWithAdapterPosition(position)
             } else if (id == R.id.star) {
-                itemActionListener.toggleMessageFlagWithAdapterPosition(position);
+                itemActionListener.toggleMessageFlagWithAdapterPosition(position)
             }
         }
     }
