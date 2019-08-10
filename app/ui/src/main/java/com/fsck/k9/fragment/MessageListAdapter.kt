@@ -45,6 +45,7 @@ import com.fsck.k9.fragment.MLFProjectionInfo.SUBJECT_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.THREAD_COUNT_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.TO_LIST_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.UID_COLUMN
+import com.fsck.k9.ui.ContactBadge
 
 import kotlin.math.max
 
@@ -172,8 +173,6 @@ class MessageListAdapter internal constructor(
         val displayName = messageHelper.getDisplayName(account, fromAddrs, toAddrs)
         val displayDate = DateUtils.getRelativeTimeSpanString(context, cursor.getLong(DATE_COLUMN))
 
-        val counterpartyAddress = fetchCounterPartyAddress(fromMe, toAddrs, ccAddrs, fromAddrs)
-
         val threadCount = if (appearance.showingThreadedList) cursor.getInt(THREAD_COUNT_COLUMN) else 0
 
         val subject = MlfUtils.buildSubject(cursor.getString(SUBJECT_COLUMN),
@@ -201,8 +200,9 @@ class MessageListAdapter internal constructor(
             holder.flagged.isChecked = flagged
         }
         holder.position = cursor.position
-        if (holder.contactBadge != null) {
-            updateContactBadge(holder, counterpartyAddress)
+        if (holder.contactBadge.isVisible) {
+            val counterpartyAddress = fetchCounterPartyAddress(fromMe, toAddrs, ccAddrs, fromAddrs)
+            updateContactBadge(holder.contactBadge, counterpartyAddress)
         }
         setBackgroundColor(view, selected, read)
         if (activeMessage != null) {
@@ -292,19 +292,19 @@ class MessageListAdapter internal constructor(
         return null
     }
 
-    private fun updateContactBadge(holder: MessageViewHolder, counterpartyAddress: Address?) {
+    private fun updateContactBadge(contactBadge: ContactBadge, counterpartyAddress: Address?) {
         if (counterpartyAddress != null) {
-            holder.contactBadge!!.setContact(counterpartyAddress)
+            contactBadge.setContact(counterpartyAddress)
             /*
                      * At least in Android 2.2 a different background + padding is used when no
                      * email address is available. ListView reuses the views but ContactBadge
                      * doesn't reset the padding, so we do it ourselves.
                      */
-            holder.contactBadge!!.setPadding(0, 0, 0, 0)
-            contactsPictureLoader.setContactPicture(holder.contactBadge!!, counterpartyAddress)
+            contactBadge.setPadding(0, 0, 0, 0)
+            contactsPictureLoader.setContactPicture(contactBadge, counterpartyAddress)
         } else {
-            holder.contactBadge!!.assignContactUri(null)
-            holder.contactBadge!!.setImageResource(R.drawable.ic_contact_picture)
+            contactBadge.assignContactUri(null)
+            contactBadge.setImageResource(R.drawable.ic_contact_picture)
         }
     }
 
