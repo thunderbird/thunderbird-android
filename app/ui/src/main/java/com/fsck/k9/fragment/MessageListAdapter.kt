@@ -27,7 +27,6 @@ import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.DatabasePreviewType
-import com.fsck.k9.ui.ContactBadge
 import com.fsck.k9.ui.messagelist.MessageListAppearance
 
 import com.fsck.k9.fragment.MLFProjectionInfo.ACCOUNT_UUID_COLUMN
@@ -134,12 +133,7 @@ class MessageListAdapter internal constructor(
 
         val holder = MessageViewHolder(view, listItemListener)
 
-        val contactBadge = view.findViewById<ContactBadge>(R.id.contact_badge)
-        if (appearance.showContactPicture) {
-            holder.contactBadge = contactBadge
-        } else {
-            contactBadge.visibility = View.GONE
-        }
+        holder.contactBadge.isVisible = appearance.showContactPicture
 
         appearance.fontSizes.setViewTextSize(holder.subject, subjectViewFontSize)
 
