@@ -17,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CursorAdapter
 import android.widget.TextView
+import androidx.core.view.isVisible
 
 import com.fsck.k9.Account
 import com.fsck.k9.ui.R
@@ -26,7 +27,6 @@ import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.DatabasePreviewType
-import com.fsck.k9.ui.ContactBadge
 import com.fsck.k9.ui.messagelist.MessageListAppearance
 
 import com.fsck.k9.fragment.MLFProjectionInfo.ACCOUNT_UUID_COLUMN
@@ -45,6 +45,7 @@ import com.fsck.k9.fragment.MLFProjectionInfo.SUBJECT_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.THREAD_COUNT_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.TO_LIST_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.UID_COLUMN
+import com.fsck.k9.ui.ContactBadge
 
 import kotlin.math.max
 
@@ -111,6 +112,12 @@ class MessageListAdapter internal constructor(
 
     var selected: Set<Long> = emptySet()
 
+    private inline val subjectViewFontSize: Int
+        get() = if (appearance.senderAboveSubject) {
+            appearance.fontSizes.messageListSender
+        } else {
+            appearance.fontSizes.messageListSubject
+        }
 
     private fun recipientSigil(toMe: Boolean, ccMe: Boolean): String {
         return if (toMe) {
@@ -125,49 +132,24 @@ class MessageListAdapter internal constructor(
     override fun newView(context: Context, cursor: Cursor, parent: ViewGroup): View {
         val view = layoutInflater.inflate(R.layout.message_list_item, parent, false)
 
-        val holder = MessageViewHolder(listItemListener)
-        holder.date = view.findViewById(R.id.date)
-        holder.chip = view.findViewById(R.id.chip)
-        holder.attachment = view.findViewById(R.id.attachment)
-        holder.status = view.findViewById(R.id.status)
-        holder.preview = view.findViewById(R.id.preview)
-        holder.flagged = view.findViewById(R.id.star)
+        val holder = MessageViewHolder(view, listItemListener)
 
-        val contactBadge = view.findViewById<ContactBadge>(R.id.contact_badge)
-        if (appearance.showContactPicture) {
-            holder.contactBadge = contactBadge
-        } else {
-            contactBadge.visibility = View.GONE
-        }
+        holder.contactBadge.isVisible = appearance.showContactPicture
 
-        if (appearance.senderAboveSubject) {
-            holder.from = view.findViewById(R.id.subject)
-            appearance.fontSizes.setViewTextSize(holder.from, appearance.fontSizes.messageListSender)
-
-        } else {
-            holder.subject = view.findViewById(R.id.subject)
-            appearance.fontSizes.setViewTextSize(holder.subject, appearance.fontSizes.messageListSubject)
-
-        }
+        appearance.fontSizes.setViewTextSize(holder.subject, subjectViewFontSize)
 
         appearance.fontSizes.setViewTextSize(holder.date, appearance.fontSizes.messageListDate)
-
 
         // 1 preview line is needed even if it is set to 0, because subject is part of the same text view
         holder.preview.setLines(max(appearance.previewLines, 1))
         appearance.fontSizes.setViewTextSize(holder.preview, appearance.fontSizes.messageListPreview)
-        holder.threadCount = view.findViewById(R.id.thread_count)
         appearance.fontSizes.setViewTextSize(holder.threadCount, appearance.fontSizes.messageListSubject) // thread count is next to subject
-        view.findViewById<View>(R.id.selected_checkbox_wrapper).visibility =
-                if (appearance.checkboxes) View.VISIBLE else View.GONE
+        holder.selectedCheckbox.isVisible = appearance.checkboxes
 
-        holder.flagged.visibility = if (appearance.stars) View.VISIBLE else View.GONE
+        holder.flagged.isVisible = appearance.stars
         holder.flagged.setOnClickListener(holder)
 
-
-        holder.selected = view.findViewById(R.id.selected_checkbox)
         holder.selected.setOnClickListener(holder)
-
 
         view.tag = holder
 
@@ -190,8 +172,6 @@ class MessageListAdapter internal constructor(
 
         val displayName = messageHelper.getDisplayName(account, fromAddrs, toAddrs)
         val displayDate = DateUtils.getRelativeTimeSpanString(context, cursor.getLong(DATE_COLUMN))
-
-        val counterpartyAddress = fetchCounterPartyAddress(fromMe, toAddrs, ccAddrs, fromAddrs)
 
         val threadCount = if (appearance.showingThreadedList) cursor.getInt(THREAD_COUNT_COLUMN) else 0
 
@@ -220,8 +200,9 @@ class MessageListAdapter internal constructor(
             holder.flagged.isChecked = flagged
         }
         holder.position = cursor.position
-        if (holder.contactBadge != null) {
-            updateContactBadge(holder, counterpartyAddress)
+        if (holder.contactBadge.isVisible) {
+            val counterpartyAddress = fetchCounterPartyAddress(fromMe, toAddrs, ccAddrs, fromAddrs)
+            updateContactBadge(holder.contactBadge, counterpartyAddress)
         }
         setBackgroundColor(view, selected, read)
         if (activeMessage != null) {
@@ -240,18 +221,13 @@ class MessageListAdapter internal constructor(
 
         formatPreviewText(holder.preview, beforePreviewText, sigil)
 
-        if (holder.from != null) {
-            holder.from.typeface = Typeface.create(holder.from.typeface, maybeBoldTypeface)
-            if (appearance.senderAboveSubject) {
-                holder.from.text = displayName
-            } else {
-                holder.from.text = SpannableStringBuilder(sigil).append(displayName)
-            }
-        }
-        if (holder.subject != null) {
-            holder.subject.typeface = Typeface.create(holder.subject.typeface, maybeBoldTypeface)
+        holder.subject.typeface = Typeface.create(holder.subject.typeface, maybeBoldTypeface)
+        if (appearance.senderAboveSubject) {
+            holder.subject.text = displayName
+        } else {
             holder.subject.text = subject
         }
+
         holder.date.text = displayDate
         holder.attachment.visibility = if (hasAttachments) View.VISIBLE else View.GONE
 
@@ -316,19 +292,19 @@ class MessageListAdapter internal constructor(
         return null
     }
 
-    private fun updateContactBadge(holder: MessageViewHolder, counterpartyAddress: Address?) {
+    private fun updateContactBadge(contactBadge: ContactBadge, counterpartyAddress: Address?) {
         if (counterpartyAddress != null) {
-            holder.contactBadge.setContact(counterpartyAddress)
+            contactBadge.setContact(counterpartyAddress)
             /*
                      * At least in Android 2.2 a different background + padding is used when no
                      * email address is available. ListView reuses the views but ContactBadge
                      * doesn't reset the padding, so we do it ourselves.
                      */
-            holder.contactBadge.setPadding(0, 0, 0, 0)
-            contactsPictureLoader.setContactPicture(holder.contactBadge, counterpartyAddress)
+            contactBadge.setPadding(0, 0, 0, 0)
+            contactsPictureLoader.setContactPicture(contactBadge, counterpartyAddress)
         } else {
-            holder.contactBadge.assignContactUri(null)
-            holder.contactBadge.setImageResource(R.drawable.ic_contact_picture)
+            contactBadge.assignContactUri(null)
+            contactBadge.setImageResource(R.drawable.ic_contact_picture)
         }
     }
 
