@@ -4,7 +4,6 @@ import com.fsck.k9.FontSizes
 
 data class MessageListAppearance(
         val fontSizes: FontSizes,
-        val checkboxes: Boolean,
         val previewLines: Int,
         val stars: Boolean,
         val senderAboveSubject: Boolean,

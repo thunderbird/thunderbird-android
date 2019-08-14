@@ -23,17 +23,12 @@ class MessageViewHolder(
     val chip: View = view.findViewById(R.id.chip)
     val threadCount: TextView = view.findViewById(R.id.thread_count)
     val flagged: CheckBox = view.findViewById(R.id.star)
-    val selected: CheckBox = view.findViewById(R.id.selected_checkbox)
     val attachment: ImageView = view.findViewById(R.id.attachment)
     val status: ImageView = view.findViewById(R.id.status)
-    val selectedCheckbox: View = view.findViewById(R.id.selected_checkbox_wrapper)
 
     override fun onClick(view: View) {
         if (position != -1) {
-            val id = view.id
-            if (id == R.id.selected_checkbox) {
-                itemActionListener.toggleMessageSelectWithAdapterPosition(position)
-            } else if (id == R.id.star) {
+            if (view.id == R.id.star) {
                 itemActionListener.toggleMessageFlagWithAdapterPosition(position)
             }
         }

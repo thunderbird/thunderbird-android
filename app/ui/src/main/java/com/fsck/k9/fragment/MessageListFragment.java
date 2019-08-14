@@ -606,7 +606,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private MessageListAppearance getMessageListAppearance() {
         return new MessageListAppearance(
                 K9.getFontSizes(),
-                K9.isShowMessageListCheckboxes(),
                 K9.getMessageListPreviewLines(),
                 K9.isShowMessageListStars(),
                 K9.isMessageListSenderAboveSubject(),
@@ -1463,8 +1462,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         setFlag(adapterPosition,Flag.FLAGGED, !flagged);
     }
 
-    @Override
-    public void toggleMessageSelectWithAdapterPosition(int adapterPosition) {
+    private void toggleMessageSelectWithAdapterPosition(int adapterPosition) {
         Cursor cursor = (Cursor) adapter.getItem(adapterPosition);
         long uniqueId = cursor.getLong(uniqueIdColumn);
 

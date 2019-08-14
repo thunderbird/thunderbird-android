@@ -144,12 +144,9 @@ class MessageListAdapter internal constructor(
         holder.preview.setLines(max(appearance.previewLines, 1))
         appearance.fontSizes.setViewTextSize(holder.preview, appearance.fontSizes.messageListPreview)
         appearance.fontSizes.setViewTextSize(holder.threadCount, appearance.fontSizes.messageListSubject) // thread count is next to subject
-        holder.selectedCheckbox.isVisible = appearance.checkboxes
 
         holder.flagged.isVisible = appearance.stars
         holder.flagged.setOnClickListener(holder)
-
-        holder.selected.setOnClickListener(holder)
 
         view.tag = holder
 
@@ -193,9 +190,6 @@ class MessageListAdapter internal constructor(
         val selected = selected.contains(uniqueId)
 
         holder.chip.setBackgroundColor(account.chipColor)
-        if (appearance.checkboxes) {
-            holder.selected.isChecked = selected
-        }
         if (appearance.stars) {
             holder.flagged.isChecked = flagged
         }
@@ -377,6 +371,5 @@ class MessageListAdapter internal constructor(
 }
 
 interface MessageListItemActionListener {
-    fun toggleMessageSelectWithAdapterPosition(position: Int)
     fun toggleMessageFlagWithAdapterPosition(position: Int)
 }

@@ -15,31 +15,6 @@
             android:layout_marginRight="4dp"
             />
 
-    <LinearLayout
-            android:id="@+id/selected_checkbox_wrapper"
-            android:layout_width="wrap_content"
-
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_gravity="center"
-            android:visibility="visible"
-            android:textColor="?android:attr/textColorPrimary"
-            android:baselineAligned="false">
-
-        <CheckBox
-                android:id="@+id/selected_checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:focusable="false"
-                android:clickable="false"
-                android:paddingLeft="4dp"
-                android:paddingRight="0dp"
-                android:visibility="visible"
-                />
-
-    </LinearLayout>
-
     <com.fsck.k9.ui.ContactBadge
             android:id="@+id/contact_badge"
             android:layout_marginRight="8dip"
