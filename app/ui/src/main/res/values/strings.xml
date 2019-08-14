@@ -305,8 +305,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="global_settings_flag_label">Show stars</string>
     <string name="global_settings_flag_summary">Stars indicate flagged messages</string>
-    <string name="global_settings_checkbox_label">Multi-select checkboxes</string>
-    <string name="global_settings_checkbox_summary">Always show multi-select checkboxes</string>
     <string name="global_settings_preview_lines_label">Preview lines</string>
     <string name="global_settings_show_correspondent_names_label">Show correspondent names</string>
     <string name="global_settings_show_correspondent_names_summary">Show correspondent names rather than their email addresses</string>
