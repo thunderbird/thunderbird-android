@@ -417,7 +417,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="move_copy_cannot_copy_unsynced_message">Nemožno skopírovať ani presunúť správu, ktorá nie je synchronizovaná so serverom</string>
   <string name="account_setup_failed_dlg_title">Nastavenie nemohlo byť dokončené</string>
   <string name="account_setup_failed_dlg_auth_message_fmt">Používateľské meno alebo heslo nie je správne.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">Server predložil neplatný SSL certifikát. Niekedy je to kvôli zlej konfigurácii servera, inokedy zas preto, že niekto sa snaží zatočiť na vás alebo váš e-mailový server. Ak si nie ste istý, čo sa deje, kliknite na tlačidlo Odmietnuť a obráťte sa na ľudí, ktorí spravujú váš e-mailový server.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">Server predložil neplatný SSL certifikát. Niekedy je to kvôli zlej konfigurácii servera, inokedy zas preto, že niekto sa snaží zaútočiť na vás alebo váš e-mailový server. Ak si nie ste istý, čo sa deje, kliknite na tlačidlo Odmietnuť a obráťte sa na ľudí, ktorí spravujú váš e-mailový server.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Nie je možné sa pripojiť k serveru.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Upraviť podrobnosti</string>
   <string name="account_setup_failed_dlg_continue_action">Pokračovať</string>
