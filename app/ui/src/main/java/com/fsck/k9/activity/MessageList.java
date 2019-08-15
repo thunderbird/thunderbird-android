@@ -472,14 +472,22 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         }
 
         if (search == null) {
-            // We've most likely been started by an old unread widget
             String accountUuid = intent.getStringExtra("account");
-            String folderServerId = intent.getStringExtra("folder");
+            if (accountUuid != null) {
+                // We've most likely been started by an old unread widget
+                String folderServerId = intent.getStringExtra("folder");
 
-            search = new LocalSearch(folderServerId);
-            search.addAccountUuid((accountUuid == null) ? "invalid" : accountUuid);
-            if (folderServerId != null) {
-                search.addAllowedFolder(folderServerId);
+                search = new LocalSearch(folderServerId);
+                search.addAccountUuid(accountUuid);
+                if (folderServerId != null) {
+                    search.addAllowedFolder(folderServerId);
+                }
+            } else {
+                if (BuildConfig.DEBUG) {
+                    throw new AssertionError("MessageList started without required extras");
+                }
+
+                search = SearchAccount.createUnifiedInboxAccount().getRelatedSearch();
             }
         }
 
