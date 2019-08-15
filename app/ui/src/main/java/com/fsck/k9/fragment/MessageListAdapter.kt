@@ -20,6 +20,7 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 
 import com.fsck.k9.Account
+import com.fsck.k9.FontSizes
 import com.fsck.k9.ui.R
 import com.fsck.k9.Preferences
 import com.fsck.k9.contacts.ContactPictureLoader
@@ -251,27 +252,30 @@ class MessageListAdapter internal constructor(
             sigil: String
     ) {
         val previewText = preview.text as Spannable
-        previewText.setSpan(buildSenderSpan(), 0, beforePreviewText.length + sigil.length,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        val beforePreviewLength = beforePreviewText.length + sigil.length
+        addBeforePreviewSpan(previewText, beforePreviewLength)
 
         // Set span (color) for preview message
         previewText.setSpan(
                 ForegroundColorSpan(previewTextColor),
-                beforePreviewText.length + sigil.length,
+                beforePreviewLength,
                 previewText.length,
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
     }
 
-    /**
-     * Create a span section for the sender, and assign the correct font size and weight
-     */
-    private fun buildSenderSpan(): AbsoluteSizeSpan {
-        val fontSize = if (appearance.senderAboveSubject)
+    private fun addBeforePreviewSpan(text: Spannable, length: Int) {
+        val fontSize = if (appearance.senderAboveSubject) {
             appearance.fontSizes.messageListSubject
-        else
+        } else {
             appearance.fontSizes.messageListSender
-        return AbsoluteSizeSpan(fontSize, true)
+        }
+
+        if (fontSize != FontSizes.FONT_DEFAULT) {
+            val span = AbsoluteSizeSpan(fontSize, true)
+            text.setSpan(span, 0, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
     }
 
     private fun fetchCounterPartyAddress(

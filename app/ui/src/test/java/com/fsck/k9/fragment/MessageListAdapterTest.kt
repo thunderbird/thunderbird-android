@@ -364,7 +364,6 @@ class MessageListAdapterTest : RobolectricTest() {
     }
 
     @Test
-    @Ignore("Currently failing. See issue #4153.")
     fun withoutSenderAboveSubjectAndDefaultFontSize_shouldNotSetTextSizeSpanInSecondLineView() {
         val adapter = createAdapter(
                 fontSizes = createFontSizes(sender = FONT_DEFAULT),
@@ -389,7 +388,6 @@ class MessageListAdapterTest : RobolectricTest() {
     }
 
     @Test
-    @Ignore("Currently failing. See issue #4153.")
     fun withSenderAboveSubjectAndDefaultFontSize_shouldNotSetTextSizeSpanInSecondLineView() {
         val adapter = createAdapter(
                 fontSizes = createFontSizes(subject = FONT_DEFAULT),
