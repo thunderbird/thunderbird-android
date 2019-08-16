@@ -224,6 +224,8 @@ public class ChooseFolder extends K9ListActivity {
     }
 
     private void setDisplayMode(FolderMode aMode) {
+        mAccount.setFolderTargetMode(aMode);
+        Preferences.getPreferences(getApplicationContext()).saveAccount(mAccount);
         mMode = aMode;
         // invalidate the current filter as it is working on an inval
         if (mMyFilter != null) {
