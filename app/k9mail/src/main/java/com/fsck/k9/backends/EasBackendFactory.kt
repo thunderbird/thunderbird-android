@@ -1,6 +1,7 @@
 package com.fsck.k9.backends
 
 import com.fsck.k9.Account
+import com.fsck.k9.K9
 import com.fsck.k9.backend.BackendFactory
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.backend.eas.EasBackend
@@ -18,7 +19,7 @@ class EasBackendFactory(
     override fun createBackend(account: Account): Backend {
         val backendStorage = backendStorageFactory.createBackendStorage(account)
         val serverSettings = EasServerSettings.decode(account.storeUri)
-        val deviceId = "23413"
+        val deviceId = K9.getOrCreateDeviceID()
 
         return EasBackend(backendStorage, trustManagerFactory, serverSettings, deviceId)
     }

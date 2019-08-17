@@ -13,6 +13,7 @@ import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
 import timber.log.Timber
 import timber.log.Timber.DebugTree
+import java.util.UUID
 
 object K9 : KoinComponent {
     private val preferences: Preferences by inject()
@@ -308,6 +309,9 @@ object K9 : KoinComponent {
     @JvmStatic
     var pgpSignOnlyDialogCounter: Int = 0
 
+    @JvmStatic
+    private var deviceId: String? = null
+
     val isQuietTime: Boolean
         get() {
             if (!isQuietTimeEnabled) {
@@ -331,6 +335,16 @@ object K9 : KoinComponent {
     @JvmStatic
     fun setSortAscending(sortType: SortType, sortAscending: Boolean) {
         K9.sortAscending[sortType] = sortAscending
+    }
+
+    @Synchronized
+    fun getOrCreateDeviceID(): String {
+        if (deviceId == null) {
+            deviceId = UUID.randomUUID().toString().replace("-", "")
+            saveSettingsAsync()
+        }
+
+        return deviceId!!
     }
 
 
@@ -435,6 +449,8 @@ object K9 : KoinComponent {
         messageViewTheme = storage.getEnum("messageViewTheme", SubTheme.USE_GLOBAL)
         messageComposeTheme = storage.getEnum("messageComposeTheme", SubTheme.USE_GLOBAL)
         isFixedMessageViewTheme = storage.getBoolean("fixedMessageViewTheme", true)
+
+        deviceId = storage.getString("deviceId", null)
     }
 
     @JvmStatic
@@ -505,6 +521,8 @@ object K9 : KoinComponent {
 
         editor.putInt("pgpInlineDialogCounter", pgpInlineDialogCounter)
         editor.putInt("pgpSignOnlyDialogCounter", pgpSignOnlyDialogCounter)
+
+        editor.putString("deviceId", deviceId)
 
         fontSizes.save(editor)
     }
