@@ -74,7 +74,6 @@ class EasClient(private val easServerSettings: EasServerSettings,
     ): Response {
         initialize()
 
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             println(Base64.getEncoder().encodeToString(payload))
         }
@@ -132,7 +131,7 @@ class EasClient(private val easServerSettings: EasServerSettings,
     fun provision(provisionRequest: Provision): Provision {
         val response = post("Provision", WbXmlMapper.serialize(ProvisionDTO(provisionRequest)))
         ensureSuccessfulResponse(response)
-        return WbXmlMapper.parse<ProvisionDTO>(response.body()!!.byteStream())!!.provision
+        return WbXmlMapper.parse<ProvisionDTO>(response.body()!!.byteStream()).provision
     }
 
     fun folderSync(folderSync: FolderSync): FolderSync? {
@@ -145,7 +144,7 @@ class EasClient(private val easServerSettings: EasServerSettings,
         )
         ensureSuccessfulResponse(response)
 
-        return WbXmlMapper.parse<FolderSyncDTO>(response.body()!!.byteStream())?.folderSync
+        return WbXmlMapper.parse<FolderSyncDTO>(response.body()!!.byteStream()).folderSync
     }
 
     fun sync(sync: Sync): Sync? {
@@ -157,7 +156,7 @@ class EasClient(private val easServerSettings: EasServerSettings,
         )
         )
         ensureSuccessfulResponse(response)
-        return WbXmlMapper.parse<SyncDTO>(response.body()!!.byteStream())?.sync
+        return WbXmlMapper.parse<SyncDTO>(response.body()!!.byteStream()).sync
     }
 
     fun ping(id: String) {

@@ -73,8 +73,6 @@ object WbXmlMapper {
         getFieldSerializers(obj.javaClass).forEach {
             it(obj, output, tagPage)
         }
-
-        output.write(WbXml.END)
     }
 
     private fun writeElement(output: ByteArrayOutputStream, tag: Int, value: Any, tagPage: AtomicInteger) {
@@ -100,16 +98,15 @@ object WbXmlMapper {
                         write(WbXml.STR_I)
                         write(value.toByteArray())
                         write(0)
-                        write(WbXml.END)
                     }
                     is Int -> {
                         write(WbXml.STR_I)
                         write(value.toString().toByteArray())
                         write(0)
-                        write(WbXml.END)
                     }
                     else -> serializeInner(value, output, tagPage)
                 }
+                write(WbXml.END)
             }
         }
     }
@@ -200,10 +197,10 @@ object WbXmlMapper {
     fun <T : Any> parse(input: InputStream, clazz: Class<T>) =
             input.use {
                 it.run {
-                    read(); // version
-                    consumeInt();  // ?
-                    consumeInt();  // 106 (UTF-8)
-                    consumeInt();  // string table length
+                    read() // version
+                    consumeInt()  // ?
+                    consumeInt()  // 106 (UTF-8)
+                    consumeInt()  // string table length
 
                     parseInner(this, clazz, AtomicInteger(0))
                 }
@@ -262,7 +259,7 @@ object WbXmlMapper {
         }
     }
 
-    private fun <T : Any> parseInner(input: InputStream, clazz: Class<T>, tagPage: AtomicInteger): T? {
+    private fun <T : Any> parseInner(input: InputStream, clazz: Class<T>, tagPage: AtomicInteger): T {
         val (constructor, mapping) = getFieldParsers(clazz)
 
         val params = Array<Any?>(mapping.size) { null }
@@ -275,13 +272,21 @@ object WbXmlMapper {
                         tagPage.set(read() shl WbXml.PAGE_SHIFT)
                     }
                     WbXml.END -> {
-                        return constructor.call(*params) as T?
+                        //try {
+                        return constructor.call(*params) as T
+                        //} catch (e: Exception) {
+                        //   IOException("Required Element missing")
+                        //}
                     }
                     WbXml.STR_I -> {
                         throw IOException("Unexpected STR_I")
                     }
                     -1 -> {
-                        return constructor.call(*params) as T?
+                        // try {
+                        return constructor.call(*params) as T
+                        // } catch (e: Exception) {
+                        //    IOException("Required Element missing")
+                        // }
                         // throw IOException("Unexpected EOF")
                     }
                     else -> {
