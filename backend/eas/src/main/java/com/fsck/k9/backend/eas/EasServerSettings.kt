@@ -22,36 +22,38 @@ public class EasServerSettings(
 
     companion object {
         fun encode(settings: ServerSettings) = settings.run {
-            HttpUrl.Builder()
-                    .scheme("http")
+            val url = HttpUrl.Builder()
+                    .scheme(when (connectionSecurity) {
+                        ConnectionSecurity.NONE -> "http"
+                        ConnectionSecurity.SSL_TLS_REQUIRED -> "https"
+                        else -> throw IllegalArgumentException("Invalid connection security")
+                    })
                     .host(host)
                     .port(port)
                     .username(encodeUtf8(username))
                     .password(encodeUtf8(password))
                     .build()
                     .toString()
-                    .replace("http", when (connectionSecurity) {
-                        ConnectionSecurity.NONE -> "eas+"
-                        ConnectionSecurity.SSL_TLS_REQUIRED -> "eas+ssl+"
-                        else -> throw IllegalArgumentException("Invalid connection security")
-                    })
+
+            return@run "eas+$url"
         }
 
-        fun decode(uri: String) =
-                HttpUrl.parse(uri
-                        .replace("eas+ssl+", "https")
-                        .replace("eas+", "http"))!!.run {
-                    EasServerSettings(
-                            host(),
-                            port(),
-                            when {
-                                scheme().startsWith("https") -> ConnectionSecurity.SSL_TLS_REQUIRED
-                                scheme().startsWith("http") -> ConnectionSecurity.NONE
-                                else -> throw IllegalArgumentException("Invalid connection scheme")
-                            },
-                            decodeUtf8(username()),
-                            decodeUtf8(password())
-                    )
-                }
+        fun decode(uri: String): EasServerSettings {
+            val url = uri.substringAfter("eas+")
+
+            return HttpUrl.parse(url)?.run {
+                EasServerSettings(
+                        host(),
+                        port(),
+                        when (scheme()) {
+                            "https" -> ConnectionSecurity.SSL_TLS_REQUIRED
+                            "http" -> ConnectionSecurity.NONE
+                            else -> throw IllegalArgumentException("Invalid connection scheme")
+                        },
+                        decodeUtf8(username()),
+                        decodeUtf8(password())
+                )
+            } ?: throw IllegalArgumentException()
+        }
     }
 }

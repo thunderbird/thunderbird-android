@@ -92,7 +92,7 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
 
         String domainPart = EmailHelper.getDomainFromEmailAddress(mAccount.getEmail());
         String suggestedServerName = serverNameSuggester.suggestServerName(Protocols.WEBDAV, domainPart);
-        URI uri = new URI(isEas ? "eas+ssl+": "webdav+ssl+", userPass, suggestedServerName, uriForDecode.getPort(), null, null, null);
+        URI uri = new URI(isEas ? "eas+https": "webdav+ssl+", userPass, suggestedServerName, uriForDecode.getPort(), null, null, null);
         mAccount.setStoreUri(uri.toString());
     }
 
