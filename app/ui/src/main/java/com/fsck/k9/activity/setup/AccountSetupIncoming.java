@@ -233,7 +233,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 if (!editSettings) {
                     findViewById(R.id.imap_folder_setup_section).setVisibility(View.GONE);
                 }
-            } else if (settings.type.equals(Protocols.WEBDAV)) {
+            } else if (settings.type.equals(Protocols.WEBDAV) || settings.type.equals(Protocols.EAS)) {
                 serverLabelView.setText(R.string.account_setup_incoming_webdav_server_label);
                 mConnectionSecurityChoices = new ConnectionSecurity[] {
                         ConnectionSecurity.NONE,
@@ -247,18 +247,24 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 findViewById(R.id.compression_label).setVisibility(View.GONE);
                 mSubscribedFoldersOnly.setVisibility(View.GONE);
 
-                WebDavStoreSettings webDavSettings = (WebDavStoreSettings) settings;
+                if (settings.type.equals(Protocols.WEBDAV)) {
+                    WebDavStoreSettings webDavSettings = (WebDavStoreSettings) settings;
 
-                if (webDavSettings.path != null) {
-                    mWebdavPathPrefixView.setText(webDavSettings.path);
-                }
+                    if (webDavSettings.path != null) {
+                        mWebdavPathPrefixView.setText(webDavSettings.path);
+                    }
 
-                if (webDavSettings.authPath != null) {
-                    mWebdavAuthPathView.setText(webDavSettings.authPath);
-                }
+                    if (webDavSettings.authPath != null) {
+                        mWebdavAuthPathView.setText(webDavSettings.authPath);
+                    }
 
-                if (webDavSettings.mailboxPath != null) {
-                    mWebdavMailboxPathView.setText(webDavSettings.mailboxPath);
+                    if (webDavSettings.mailboxPath != null) {
+                        mWebdavMailboxPathView.setText(webDavSettings.mailboxPath);
+                    }
+                } else {
+                    mWebdavPathPrefixView.setVisibility(View.GONE);
+                    mWebdavAuthPathView.setVisibility(View.GONE);
+                    mWebdavMailboxPathView.setVisibility(View.GONE);
                 }
             } else {
                 throw new Exception("Unknown account type: " + mAccount.getStoreUri());

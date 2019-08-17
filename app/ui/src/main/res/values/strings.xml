@@ -392,6 +392,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_account_type_pop_action">POP3</string>
     <string name="account_setup_account_type_imap_action">IMAP</string>
     <string name="account_setup_account_type_webdav_action">Exchange (WebDAV)</string>
+    <string name="account_setup_account_type_eas_action">Exchange (Active Sync)</string>
 
     <string name="account_setup_auth_type_normal_password">Normal password</string>
     <string name="account_setup_auth_type_insecure_password">Password, transmitted insecurely</string>

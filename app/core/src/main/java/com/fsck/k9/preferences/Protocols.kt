@@ -4,5 +4,6 @@ object Protocols {
     const val IMAP = "imap"
     const val POP3 = "pop3"
     const val WEBDAV = "webdav"
+    const val EAS = "eas"
     const val SMTP = "smtp"
 }

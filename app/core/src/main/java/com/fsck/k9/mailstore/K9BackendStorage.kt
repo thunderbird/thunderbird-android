@@ -71,7 +71,7 @@ class K9BackendStorage(
         return database.execute(false) { db ->
             val cursor = db.query(
                     "account_extra_values",
-                    arrayOf("value_string"),
+                    arrayOf("value_text"),
                     "name = ?",
                     arrayOf(name),
                     null, null, null)
@@ -88,7 +88,7 @@ class K9BackendStorage(
     override fun setExtraString(name: String, value: String) {
         database.execute(false) { db ->
             val contentValues = ContentValues().apply {
-                put("value_string", value)
+                put("value_text", value)
             }
             db.update("account_extra_values", contentValues, "name = ?", arrayOf(name))
         }

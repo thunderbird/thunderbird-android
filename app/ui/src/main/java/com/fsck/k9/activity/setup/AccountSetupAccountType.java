@@ -48,6 +48,7 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
         findViewById(R.id.pop).setOnClickListener(this);
         findViewById(R.id.imap).setOnClickListener(this);
         findViewById(R.id.webdav).setOnClickListener(this);
+        findViewById(R.id.eas).setOnClickListener(this);
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
@@ -70,14 +71,14 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
         mAccount.setTransportUri(transportUri.toString());
     }
 
-    private void setupDav() throws URISyntaxException {
+    private void setupExchange(boolean isEas) throws URISyntaxException {
         URI uriForDecode = new URI(mAccount.getStoreUri());
 
         /*
          * The user info we have been given from
          * AccountSetupBasics.onManualSetup() is encoded as an IMAP store
          * URI: AuthType:UserName:Password (no fields should be empty).
-         * However, AuthType is not applicable to WebDAV nor to its store
+         * However, AuthType is not applicable to WebDAV or EAS nor to its store
          * URI. Re-encode without it, using just the UserName and Password.
          */
         String userPass = "";
@@ -91,7 +92,7 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
 
         String domainPart = EmailHelper.getDomainFromEmailAddress(mAccount.getEmail());
         String suggestedServerName = serverNameSuggester.suggestServerName(Protocols.WEBDAV, domainPart);
-        URI uri = new URI("webdav+ssl+", userPass, suggestedServerName, uriForDecode.getPort(), null, null, null);
+        URI uri = new URI(isEas ? "eas+ssl+": "webdav+ssl+", userPass, suggestedServerName, uriForDecode.getPort(), null, null, null);
         mAccount.setStoreUri(uri.toString());
     }
 
@@ -103,7 +104,9 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
             } else if (id == R.id.imap) {
                 setupStoreAndSmtpTransport(Protocols.IMAP, "imap+ssl+");
             } else if (id == R.id.webdav) {
-                setupDav();
+                setupExchange(false);
+            }else if (id == R.id.eas) {
+                setupExchange(true);
             }
         } catch (Exception ex) {
             failure(ex);

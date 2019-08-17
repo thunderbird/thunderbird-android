@@ -19,6 +19,7 @@ dependencies {
     implementation project(":backend:imap")
     implementation project(":backend:pop3")
     implementation project(":backend:webdav")
+    implementation project(":backend:eas")
 
     implementation "androidx.appcompat:appcompat:${versions.androidxAppCompat}"
     implementation "com.jakewharton.timber:timber:${versions.timber}"

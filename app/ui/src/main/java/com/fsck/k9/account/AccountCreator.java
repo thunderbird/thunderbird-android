@@ -40,6 +40,7 @@ public class AccountCreator {
             case Protocols.IMAP: return DeletePolicy.ON_DELETE;
             case Protocols.POP3: return DeletePolicy.NEVER;
             case Protocols.WEBDAV: return DeletePolicy.ON_DELETE;
+            case Protocols.EAS: return DeletePolicy.ON_DELETE;
         }
 
         throw new AssertionError("Unhandled case: " + type);
@@ -48,7 +49,9 @@ public class AccountCreator {
     public static int getDefaultPort(ConnectionSecurity securityType, String serverType) {
         switch (serverType) {
             case Protocols.IMAP: return getImapDefaultPort(securityType);
-            case Protocols.WEBDAV: return getWebDavDefaultPort(securityType);
+            case Protocols.WEBDAV:
+            case Protocols.EAS:
+                return getExchangeDefaultPort(securityType);
             case Protocols.POP3: return getPop3DefaultPort(securityType);
             case Protocols.SMTP: return getSmtpDefaultPort(securityType);
         }
@@ -64,7 +67,7 @@ public class AccountCreator {
         return connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED ? 995 : 110;
     }
 
-    private static int getWebDavDefaultPort(ConnectionSecurity connectionSecurity) {
+    private static int getExchangeDefaultPort(ConnectionSecurity connectionSecurity) {
         return connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED ? 443 : 80;
     }
 

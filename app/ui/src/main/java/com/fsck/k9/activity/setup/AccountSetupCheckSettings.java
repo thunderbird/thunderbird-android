@@ -484,7 +484,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
         }
 
         private void checkOutgoing() throws MessagingException {
-            if (!isWebDavAccount()) {
+            if (!isExchangeAccount()) {
                 publishProgress(R.string.account_setup_check_settings_check_outgoing_msg);
             }
 
@@ -492,7 +492,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
         }
 
         private void checkIncoming() throws MessagingException {
-            if (isWebDavAccount()) {
+            if (isExchangeAccount()) {
                 publishProgress(R.string.account_setup_check_settings_authenticate);
             } else {
                 publishProgress(R.string.account_setup_check_settings_check_incoming_msg);
@@ -500,7 +500,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 
             messagingController.checkIncomingServerSettings(account);
 
-            if (isWebDavAccount()) {
+            if (isExchangeAccount()) {
                 publishProgress(R.string.account_setup_check_settings_fetch);
             }
             MessagingController.getInstance(getApplication()).listFoldersSynchronous(account, true, null);
@@ -508,8 +508,9 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                     .synchronizeMailbox(account, account.getInboxFolder(), null, null);
         }
 
-        private boolean isWebDavAccount() {
-            return account.getStoreUri().startsWith("webdav");
+        private boolean isExchangeAccount() {
+            return account.getStoreUri().startsWith("webdav") ||
+                    account.getStoreUri().startsWith("eas");
         }
 
         private void createSpecialLocalFolders(CheckDirection direction) throws MessagingException {
