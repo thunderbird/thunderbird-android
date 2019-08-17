@@ -12,14 +12,15 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
     implementation "org.jetbrains.kotlin:kotlin-reflect:${versions.kotlin}"
 
-    implementation "com.squareup.okhttp3:okhttp:3.10.0"
-    implementation "com.squareup.okhttp3:logging-interceptor:3.10.0"
+    implementation "com.squareup.okhttp3:okhttp:${versions.okhttp}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}"
 
     api project(":backend:api")
 
     implementation "com.jakewharton.timber:timber:${versions.timber}"
 
     testImplementation project(":mail:testing")
+    testImplementation "com.squareup.okhttp3:mockwebserver:${versions.okhttp}"
     testImplementation "junit:junit:${versions.junit}"
     testImplementation "org.mockito:mockito-core:${versions.mockito}"
 }
