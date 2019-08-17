@@ -55,7 +55,14 @@ class EasSyncCommand(val client: EasClient,
                 if (commands != null) {
                     if (commands.add!!.isNotEmpty()) {
                         for (item in commands.add) {
-                            backendFolder.savePartialMessage(item.getMessage(EasFolder(folder)))
+                            val message = item.getMessage(EasFolder(folder))
+
+                            if (item.isTruncated()) {
+                                backendFolder.savePartialMessage(message)
+                            } else {
+                                backendFolder.saveCompleteMessage(message)
+                            }
+
                             listener.syncNewMessage(folder, item.serverId, false)
                         }
                     }
@@ -70,6 +77,8 @@ class EasSyncCommand(val client: EasClient,
         }
     }
 }
+
+fun SyncItem.isTruncated() = data!!.body!!.truncated == 1
 
 fun SyncItem.getMessage(folder: EasFolder) = data!!.let {
     EasMessage(folder).apply {

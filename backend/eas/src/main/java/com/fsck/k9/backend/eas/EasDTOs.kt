@@ -51,7 +51,8 @@ data class FolderSyncDTO(@field:Tag(Tags.FOLDER_FOLDER_SYNC) val folderSync: Fol
 
 data class Body(
         @field:Tag(Tags.BASE_TYPE, index = 0) val type: String? = null,
-        @field:Tag(Tags.BASE_DATA, index = 1) val data: String? = null
+        @field:Tag(Tags.BASE_DATA, index = 1) val data: String? = null,
+        @field:Tag(Tags.BASE_TRUNCATED, index = 2) val truncated: Int? = null
 )
 
 data class SyncData(
