@@ -79,7 +79,10 @@ data class SyncCommands(
         @field:Tag(Tags.SYNC_FETCH, index = 3) val fetch: List<SyncItem>? = null
 )
 
-data class SyncResponses(@field:Tag(Tags.SYNC_FETCH) val item: List<SyncItem>)
+data class SyncResponses(
+        @field:Tag(Tags.SYNC_ADD, index = 0) val add: List<SyncItem>?,
+        @field:Tag(Tags.SYNC_FETCH, index = 1) val fetch: List<SyncItem>
+)
 
 data class SyncBodyPreference(
         @field:Tag(Tags.BASE_TYPE, index = 0) val baseType: Int? = null,

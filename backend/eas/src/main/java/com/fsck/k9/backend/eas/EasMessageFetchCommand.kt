@@ -1,6 +1,7 @@
 package com.fsck.k9.backend.eas
 
 import com.fsck.k9.backend.api.BackendStorage
+import com.fsck.k9.mail.MessagingException
 
 class EasMessageFetchCommand(private val client: EasClient,
                              private val provisionManager: EasProvisionManager,
@@ -28,12 +29,9 @@ class EasMessageFetchCommand(private val client: EasClient,
             backendFolder.setFolderExtraString(EXTRA_SYNC_KEY, newSyncKey)
             val responses = syncResponse.collections!!.collection!!.responses
 
-            val message = EasMessage(EasFolder(folderServerId))
-            message.uid = messageServerId
-            message.messageId = messageServerId
-            println(responses)
-            message.parse(responses!!.item.first().data!!.body!!.data!!.byteInputStream())
 
+            val message = responses?.fetch?.firstOrNull()?.getMessage(EasFolder(folderServerId))
+                    ?: throw MessagingException("Message not found")
             message
         }
     }

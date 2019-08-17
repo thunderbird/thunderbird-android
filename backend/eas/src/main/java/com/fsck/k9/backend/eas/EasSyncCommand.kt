@@ -85,6 +85,9 @@ fun SyncItem.getMessage(folder: EasFolder) = data!!.let {
         parse(it.body!!.data!!.byteInputStream())
         messageId = serverId
         uid = serverId
+        if (it.emailRead == 1) {
+            setFlag(Flag.SEEN, true)
+        }
     }
 }
 
