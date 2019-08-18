@@ -81,7 +81,9 @@ data class SyncCommands(
 
 data class SyncResponses(
         @field:Tag(Tags.SYNC_ADD, index = 0) val add: List<SyncItem>?,
-        @field:Tag(Tags.SYNC_FETCH, index = 1) val fetch: List<SyncItem>
+        @field:Tag(Tags.SYNC_DELETE, index = 1) val delete: List<SyncItem>?,
+        @field:Tag(Tags.SYNC_CHANGE, index = 2) val change: List<SyncItem>?,
+        @field:Tag(Tags.SYNC_FETCH, index = 3) val fetch: List<SyncItem>?
 )
 
 data class SyncBodyPreference(
@@ -121,10 +123,10 @@ data class SyncDTO(@field:Tag(Tags.SYNC_SYNC) val sync: Sync)
 
 data class PingFolder(
         @field:Tag(Tags.PING_CLASS, index = 0) val clazz: String?,
-        @field:Tag(Tags.PING_ID, index = 0) val id: String?
+        @field:Tag(Tags.PING_ID, index = 1) val id: String?
 )
 
-data class PingFolders(@field:Tag(Tags.PING_FOLDER) val folder: PingFolder?)
+data class PingFolders(@field:Tag(Tags.PING_FOLDER) val folder: List<PingFolder>?)
 data class Ping(
         @field:Tag(Tags.PING_HEARTBEAT_INTERVAL, index = 0) val heartbeatInterval: Int? = null,
         @field:Tag(Tags.PING_FOLDERS, index = 1) val pingFolders: PingFolders? = null

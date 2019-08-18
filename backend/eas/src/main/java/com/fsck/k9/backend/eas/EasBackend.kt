@@ -42,7 +42,7 @@ class EasBackend(backendStorage: BackendStorage,
     }
 
     override fun setFlag(folderServerId: String, messageServerIds: List<String>, flag: Flag, newState: Boolean) {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        syncCommand.setFlag(folderServerId, messageServerIds, flag, newState)
     }
 
     override fun markAllAsRead(folderServerId: String) {
@@ -58,11 +58,11 @@ class EasBackend(backendStorage: BackendStorage,
     }
 
     override fun deleteMessages(folderServerId: String, messageServerIds: List<String>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        syncCommand.delete(folderServerId, messageServerIds)
     }
 
     override fun deleteAllMessages(folderServerId: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        // TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun moveMessages(sourceFolderServerId: String, targetFolderServerId: String, messageServerIds: List<String>): Map<String, String>? {

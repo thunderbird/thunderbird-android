@@ -14,16 +14,14 @@ import kotlin.math.min
 
 const val EXTRA_SYNC_KEY = "EXTRA_SYNC_KEY"
 
-class EasSyncCommand(val client: EasClient,
-                     val provisionManager: EasProvisionManager,
-                     val backendStorage: BackendStorage) {
+class EasSyncCommand(private val client: EasClient,
+                     private val provisionManager: EasProvisionManager,
+                     private val backendStorage: BackendStorage) {
 
     fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener) {
         val backendFolder = backendStorage.getFolder(folder)
 
         var syncKey = backendFolder.getFolderExtraString(EXTRA_SYNC_KEY) ?: "0"
-
-        println(syncKey)
 
         var messagesLoaded = 0
         val maxMessageLoad = syncConfig.defaultVisibleLimit
@@ -49,11 +47,13 @@ class EasSyncCommand(val client: EasClient,
                         getChanges = 1,
                         windowSize = min(30, maxMessageLoad - messagesLoaded)))))
 
-                val newSyncKey = syncResponse!!.collections!!.collection!!.syncKey!!
+                val collection = syncResponse!!.collections!!.collection!!
+
+                val newSyncKey = collection.syncKey!!
                 backendFolder.setFolderExtraString(EXTRA_SYNC_KEY, newSyncKey)
-                val commands = syncResponse.collections!!.collection!!.commands
+                val commands = collection.commands
                 if (commands != null) {
-                    if (commands.add!!.isNotEmpty()) {
+                    if (commands.add?.isNotEmpty() == true) {
                         for (item in commands.add) {
                             val message = item.getMessage(EasFolder(folder))
 
@@ -65,15 +65,72 @@ class EasSyncCommand(val client: EasClient,
 
                             listener.syncNewMessage(folder, item.serverId, false)
                         }
+                        messagesLoaded += commands.add.size
                     }
 
-                    messagesLoaded += commands.add.size
+                    if (commands.delete?.isNotEmpty() == true) {
+                        backendFolder.destroyMessages(commands.delete.map { it.serverId })
+
+                        for (item in commands.delete) {
+                            listener.syncRemovedMessage(folder, item.serverId)
+                        }
+                    }
+
+                    if (commands.change?.isNotEmpty() == true) {
+                        for (item in commands.change) {
+                            item.data?.emailRead?.let {
+                                backendFolder.setMessageFlag(item.serverId, Flag.SEEN, it == 1)
+
+                                listener.syncFlagChanged(folder, item.serverId)
+                            }
+                        }
+                    }
                 }
 
-                if (syncResponse.collections.collection!!.moreAvailable != true) {
+                if (collection.moreAvailable != true) {
                     break
                 }
             }
+        }
+    }
+
+    fun delete(folderServerId: String, messageServerIds: List<String>) {
+        executeCommands(folderServerId, SyncCommands(
+                delete = messageServerIds.map { SyncItem(it) }
+        ))
+    }
+
+    fun setFlag(folderServerId: String, messageServerIds: List<String>, flag: Flag, newState: Boolean) {
+        if (flag == Flag.SEEN) {
+            executeCommands(folderServerId, SyncCommands(
+                    change = messageServerIds.map {
+                        SyncItem(it, SyncData(emailRead = if (newState) 1 else 0))
+                    }
+            ))
+        }
+    }
+
+    private fun executeCommands(folderServerId: String, syncCommands: SyncCommands) {
+        val backendFolder = backendStorage.getFolder(folderServerId)
+        val syncKey = backendFolder.getFolderExtraString(EXTRA_SYNC_KEY) ?: "0"
+
+        provisionManager.ensureProvisioned {
+            val syncResponse = client.sync(Sync(
+                    SyncCollections(
+                            SyncCollection(
+                                    "Email",
+                                    syncKey,
+                                    folderServerId,
+                                    1,
+                                    commands = syncCommands
+                            )
+                    )
+            ))
+
+            println(syncResponse)
+
+            val newSyncKey = syncResponse!!.collections!!.collection!!.syncKey!!
+            backendFolder.setFolderExtraString(EXTRA_SYNC_KEY, newSyncKey)
         }
     }
 }
