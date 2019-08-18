@@ -49,28 +49,32 @@ class EasClient(private val easServerSettings: EasServerSettings,
                 .build()
     }
 
-    private fun buildUrl(command: String, extra: String?) = easServerSettings.run {
-        HttpUrl.Builder()
-                .scheme(when (connectionSecurity) {
-                    ConnectionSecurity.NONE -> "http"
-                    ConnectionSecurity.SSL_TLS_REQUIRED -> "https"
-                    else -> throw IllegalStateException()
-                })
-                .host(host)
-                .port(port)
-                .addPathSegment("Microsoft-Server-ActiveSync")
-                .addQueryParameter("Cmd", command)
-                .addQueryParameter("User", username)
-                .addQueryParameter("DeviceId", deviceId)
-                .addQueryParameter("DeviceType", DEVICE_TYPE)
-                .build()
+    private fun buildUrl(command: String, extra: Pair<String, String>? = null) = easServerSettings.run {
+        HttpUrl.Builder().apply {
+            scheme(when (connectionSecurity) {
+                ConnectionSecurity.NONE -> "http"
+                ConnectionSecurity.SSL_TLS_REQUIRED -> "https"
+                else -> throw IllegalStateException()
+            })
+            host(host)
+            port(port)
+            addPathSegment("Microsoft-Server-ActiveSync")
+            addQueryParameter("Cmd", command)
+            addQueryParameter("User", username)
+            addQueryParameter("DeviceId", deviceId)
+            addQueryParameter("DeviceType", DEVICE_TYPE)
+            extra?.let { (name, value) ->
+                addQueryParameter(name, value)
+            }
+        }.build()
     }
 
     private fun post(
             command: String,
             payload: ByteArray,
-            extra: String? = null,
-            isMessage: Boolean = false
+            extra: Pair<String, String>? = null,
+            isMessage: Boolean = false,
+            customTimeout: Long? = null
     ): Response {
         initialize()
 
@@ -106,7 +110,7 @@ class EasClient(private val easServerSettings: EasServerSettings,
 
     fun options() {
         val request = Request.Builder()
-                .url(buildUrl("OPTIONS", ""))
+                .url(buildUrl("OPTIONS"))
                 .method("OPTIONS", null)
                 .header("Authorization", authHeader)
                 .build()
@@ -127,6 +131,10 @@ class EasClient(private val easServerSettings: EasServerSettings,
         }
     }
 
+    fun sendMessage(data: ByteArray) {
+        val response = post("SendMail", data, "SaveInSent" to "T", isMessage = true)
+        ensureSuccessfulResponse(response)
+    }
 
     fun provision(provisionRequest: Provision): Provision {
         val response = post("Provision", WbXmlMapper.serialize(ProvisionDTO(provisionRequest)))

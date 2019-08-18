@@ -28,6 +28,7 @@ class EasBackend(backendStorage: BackendStorage,
     private val folderSyncCommand = EasFolderSyncCommand(client, provisionManager, backendStorage)
     private val syncCommand = EasSyncCommand(client, provisionManager, backendStorage)
     private val messageFetchCommand = EasMessageFetchCommand(client, provisionManager, backendStorage)
+    private val sendMessageCommand = EasSendMessageCommand(client, provisionManager)
 
     override fun refreshFolderList() {
         folderSyncCommand.sync()
@@ -86,11 +87,11 @@ class EasBackend(backendStorage: BackendStorage,
     }
 
     override fun findByMessageId(folderServerId: String, messageId: String): String? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return null
     }
 
     override fun uploadMessage(folderServerId: String, message: Message): String? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return null
     }
 
     override fun createPusher(receiver: PushReceiver): Pusher {
@@ -102,7 +103,7 @@ class EasBackend(backendStorage: BackendStorage,
     }
 
     override fun sendMessage(message: Message) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        sendMessageCommand.sendMessage(message)
     }
 
     override fun checkOutgoingServerSettings() {
