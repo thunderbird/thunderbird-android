@@ -11,7 +11,7 @@ data class ProvisionPolicyDoc(
 
 data class ProvisionPolicyData(@field:Tag(Tags.PROVISION_EAS_PROVISION_DOC) val doc: ProvisionPolicyDoc)
 data class ProvisionPolicy(
-        @field:Tag(Tags.PROVISION_POLICY_TYPE, index = 0) val policyType: String,
+        @field:Tag(Tags.PROVISION_POLICY_TYPE, index = 0) val policyType: String? = null,
         @field:Tag(Tags.PROVISION_POLICY_KEY, index = 1) val policyKey: String? = null,
         @field:Tag(Tags.PROVISION_STATUS, index = 2) val policyStatus: Int? = null,
         @field:Tag(Tags.PROVISION_DATA, index = 3) val policyData: ProvisionPolicyData? = null

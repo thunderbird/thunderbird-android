@@ -18,7 +18,7 @@ const val DEVICE_TYPE = "K9"
 const val SUPPORTED_PROTOCOL_EX2007 = "12.0"
 
 
-class EasClient(private val easServerSettings: EasServerSettings,
+open class EasClient(private val easServerSettings: EasServerSettings,
                 private val trustManagerFactory: TrustManagerFactory,
                 private val deviceId: String) {
     val logging = HttpLoggingInterceptor().apply {
@@ -35,7 +35,7 @@ class EasClient(private val easServerSettings: EasServerSettings,
 
     private var serverVersion: String? = null
 
-    var policyKey: String = "0"
+    open var policyKey: String = "0"
 
     init {
         val x509TrustManager = trustManagerFactory.getTrustManagerForDomain(easServerSettings.host, easServerSettings.port)
@@ -141,7 +141,7 @@ class EasClient(private val easServerSettings: EasServerSettings,
         ensureSuccessfulResponse(response)
     }
 
-    fun provision(provisionRequest: Provision): Provision {
+    open fun provision(provisionRequest: Provision): Provision {
         val response = post("Provision", WbXmlMapper.serialize(ProvisionDTO(provisionRequest)))
         ensureSuccessfulResponse(response)
         return WbXmlMapper.parse<ProvisionDTO>(response.body()!!.byteStream()).provision

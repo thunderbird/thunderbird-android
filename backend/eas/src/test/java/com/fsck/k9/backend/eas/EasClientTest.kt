@@ -29,7 +29,7 @@ class EasClientTest {
         whenever(trustManager.getTrustManagerForDomain(any(), any())).thenReturn(tmf)
     }
 
-    val DEVICE_ID = "DevID"
+    private val DEVICE_ID = "DevID"
 
     private val trustManager = mock<TrustManagerFactory>()
 

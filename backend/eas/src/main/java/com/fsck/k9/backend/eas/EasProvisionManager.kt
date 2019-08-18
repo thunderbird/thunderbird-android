@@ -3,14 +3,14 @@ package com.fsck.k9.backend.eas
 import com.fsck.k9.backend.api.BackendStorage
 
 const val EAS_12_POLICY_TYPE = "MS-EAS-Provisioning-WBXML"
-
 const val EXTRA_POLICY_KEY = "EXTRA_POLICY_KEY"
 
-class EasProvisionManager(val client: EasClient, val backendStorage: BackendStorage) {
+class EasProvisionManager(private val client: EasClient, private val backendStorage: BackendStorage) {
+    class ProvisionException : Exception("Couldn't provision user")
+
     fun <T> ensureProvisioned(block: (() -> T)): T {
         if (client.policyKey == "0") {
             val policyKey = backendStorage.getExtraString(EXTRA_POLICY_KEY)
-            println("POL->" + policyKey )
 
             if (policyKey == null) {
                 provisionClient()
@@ -18,17 +18,19 @@ class EasProvisionManager(val client: EasClient, val backendStorage: BackendStor
                 client.policyKey = policyKey
             }
         }
-        try {
-            return block()
+        return try {
+            block()
         } catch (e: UnprovisionedException) {
             provisionClient()
-            return block()
+            block()
         }
     }
 
     private fun provisionClient() {
-        client.policyKey = ackProvision(canProvision())
-        backendStorage.setExtraString(EXTRA_POLICY_KEY, client.policyKey)
+        ackProvision(canProvision()).let {
+            client.policyKey = it
+            backendStorage.setExtraString(EXTRA_POLICY_KEY, it)
+        }
     }
 
     private fun canProvision(): String {
@@ -41,6 +43,10 @@ class EasProvisionManager(val client: EasClient, val backendStorage: BackendStor
         )
 
         val provisionResponse = client.provision(provisionRequest)
+        if (provisionResponse.status != 1) {
+            throw ProvisionException()
+        }
+
         return provisionResponse.policies!!.policy.policyKey!!
     }
 
@@ -56,6 +62,9 @@ class EasProvisionManager(val client: EasClient, val backendStorage: BackendStor
         )
 
         val provisionResponse = client.provision(provisionRequest)
+        if (provisionResponse.status != 1) {
+            throw ProvisionException()
+        }
         return provisionResponse.policies!!.policy.policyKey!!
     }
 }
