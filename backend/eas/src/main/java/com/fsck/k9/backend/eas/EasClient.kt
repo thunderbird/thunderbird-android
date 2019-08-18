@@ -1,12 +1,11 @@
 package com.fsck.k9.backend.eas
 
-import android.os.Build
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ssl.TrustManagerFactory
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import java.io.IOException
-import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.net.ssl.SSLContext
 
 
@@ -78,10 +77,6 @@ class EasClient(private val easServerSettings: EasServerSettings,
     ): Response {
         initialize()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            println(Base64.getEncoder().encodeToString(payload))
-        }
-
         val body = RequestBody.create(
                 if (isMessage) {
                     MEDIATYPE_MESSAGE
@@ -95,11 +90,20 @@ class EasClient(private val easServerSettings: EasServerSettings,
                 .post(body)
                 .header("Authorization", authHeader)
                 .header("Connection", "keep-alive")
-                .header("User-Agent", "wio/0.3")
+                .header("User-Agent", "K9/${BuildConfig.VERSION_NAME}")
                 .header("MS-ASProtocolVersion", serverVersion!!)
                 .header("X-MS-PolicyKey", policyKey)
                 .build()
-        return okHttpClient.newCall(request).execute()
+
+        val client = if (customTimeout != null) {
+            okHttpClient.newBuilder()
+                    .readTimeout(customTimeout, TimeUnit.SECONDS)
+                    .build()
+        } else {
+            okHttpClient
+        }
+
+        return client.newCall(request).execute()
     }
 
     fun initialize() {
@@ -112,6 +116,7 @@ class EasClient(private val easServerSettings: EasServerSettings,
         val request = Request.Builder()
                 .url(buildUrl("OPTIONS"))
                 .method("OPTIONS", null)
+                .header("User-Agent", "K9/${BuildConfig.VERSION_NAME}")
                 .header("Authorization", authHeader)
                 .build()
         val response = okHttpClient.newCall(request).execute()
@@ -143,48 +148,34 @@ class EasClient(private val easServerSettings: EasServerSettings,
     }
 
     fun folderSync(folderSync: FolderSync): FolderSync? {
-        val response = post(
-                "FolderSync", WbXmlMapper.serialize(
+        val response = post("FolderSync", WbXmlMapper.serialize(
                 FolderSyncDTO(
                         folderSync
                 )
-        )
-        )
+        ))
         ensureSuccessfulResponse(response)
 
         return WbXmlMapper.parse<FolderSyncDTO>(response.body()!!.byteStream()).folderSync
     }
 
     fun sync(sync: Sync): Sync? {
-        val response = post(
-                "Sync", WbXmlMapper.serialize(
+        val response = post("Sync", WbXmlMapper.serialize(
                 SyncDTO(
                         sync
                 )
-        )
-        )
+        ))
         ensureSuccessfulResponse(response)
         return WbXmlMapper.parse<SyncDTO>(response.body()!!.byteStream()).sync
     }
 
-    fun ping(id: String) {
+    fun ping(ping: Ping, timeout: Long): PingResponse? {
         val ping = PingDTO(
-                Ping(
-                        1000,
-                        PingFolders(
-                                PingFolder(
-                                        "Email",
-                                        id
-                                )
-                        )
-                )
+                ping
         )
 
-
-        val response = post("Ping", WbXmlMapper.serialize(ping))
+        val response = post("Ping", WbXmlMapper.serialize(ping), customTimeout = timeout)
         ensureSuccessfulResponse(response)
-        // println(Base64.getEncoder().encodeToString(response.body!!.bytes()))
-        println(WbXmlMapper.parse<PingResponseDTO>(response.body()!!.byteStream()))
+        return WbXmlMapper.parse<PingResponseDTO>(response.body()!!.byteStream()).ping
     }
 
     private fun ensureSuccessfulResponse(response: Response) {
