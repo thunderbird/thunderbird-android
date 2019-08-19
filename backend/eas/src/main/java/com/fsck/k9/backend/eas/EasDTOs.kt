@@ -36,8 +36,8 @@ data class FolderChange(
 
 data class FolderChanges(
         @field:Tag(Tags.FOLDER_ADD, index = 0) val folderAdd: List<FolderChange>? = null,
-        @field:Tag(Tags.FOLDER_DELETE, index = 1) val folderDelete: List<FolderChange>? = null,
         @field:Tag(Tags.FOLDER_UPDATE, index = 2) val folderUpdate: List<FolderChange>? = null,
+        @field:Tag(Tags.FOLDER_DELETE, index = 1) val folderDelete: List<String>? = null,
         @field:Tag(Tags.FOLDER_COUNT, index = 3) val folderCount: Int
 )
 
@@ -47,7 +47,7 @@ data class FolderSync(
         @field:Tag(Tags.FOLDER_CHANGES, index = 2) val folderChanges: FolderChanges? = null
 )
 
-data class FolderSyncDTO(@field:Tag(Tags.FOLDER_FOLDER_SYNC) val folderSync: FolderSync?)
+data class FolderSyncDTO(@field:Tag(Tags.FOLDER_FOLDER_SYNC) val folderSync: FolderSync)
 
 data class Body(
         @field:Tag(Tags.BASE_TYPE, index = 0) val type: String? = null,

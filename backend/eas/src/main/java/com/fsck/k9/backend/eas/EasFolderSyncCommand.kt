@@ -3,6 +3,7 @@ package com.fsck.k9.backend.eas
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.mail.Folder
+import com.fsck.k9.mail.MessagingException
 
 const val EXTRA_FOLDER_SYNC_KEY = "EXTRA_FOLDER_SYNC_KEY"
 
@@ -11,11 +12,16 @@ class EasFolderSyncCommand(private val client: EasClient,
                            private val backendStorage: BackendStorage) {
 
     fun sync() {
-        val syncKey = backendStorage.getExtraString(EXTRA_FOLDER_SYNC_KEY) ?: "0"
+        val syncKey = backendStorage.getExtraString(EXTRA_FOLDER_SYNC_KEY) ?: INITIAL_SYNC_KEY
 
         provisionManager.ensureProvisioned {
             val folderSyncResponse = client.folderSync(FolderSync(syncKey = syncKey))
-            val folderChanges = folderSyncResponse?.folderChanges!!
+
+            if (folderSyncResponse.status != STATUS_OK) {
+                throw MessagingException("Couldn't sync folders user")
+            }
+
+            val folderChanges = folderSyncResponse.folderChanges!!
             val newSyncKey = folderSyncResponse.syncKey
             backendStorage.setExtraString(EXTRA_FOLDER_SYNC_KEY, newSyncKey)
 
@@ -27,7 +33,7 @@ class EasFolderSyncCommand(private val client: EasClient,
             }
 
             if (folderChanges.folderDelete != null) {
-                backendStorage.deleteFolders(folderChanges.folderDelete.map { it.serverID })
+                backendStorage.deleteFolders(folderChanges.folderDelete)
             }
 
             folderChanges.folderUpdate?.forEach {
@@ -44,5 +50,4 @@ class EasFolderSyncCommand(private val client: EasClient,
         6 -> Folder.FolderType.OUTBOX
         else -> Folder.FolderType.REGULAR
     }
-
 }

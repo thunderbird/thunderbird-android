@@ -59,7 +59,7 @@ class EasClientTest {
     }
 
     @Test(expected = AuthException::class)
-    fun initialize_invalidCredentials() {
+    fun initialize_invalidCredentials_shouldThrow() {
         val mockServer = MockWebServer()
         mockServer.enqueue(MockResponse().setResponseCode(401))
 
@@ -72,7 +72,7 @@ class EasClientTest {
     }
 
     @Test(expected = IOException::class)
-    fun initialize_serverVersionNotSupported() {
+    fun initialize_serverVersionNotSupported_shouldThrow() {
         val mockServer = MockWebServer()
         mockServer.enqueue(MockResponse().apply {
             addHeader("ms-asprotocolversions", "2.5")

@@ -1,6 +1,7 @@
 package com.fsck.k9.backend.eas
 
 import com.fsck.k9.backend.api.BackendStorage
+import com.fsck.k9.mail.MessagingException
 import com.nhaarman.mockito_kotlin.*
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -145,7 +146,7 @@ class EasProvisionManagerTest {
         verify(backendStorage).setExtraString("EXTRA_POLICY_KEY", "key1")
     }
 
-    @Test(expected = EasProvisionManager.ProvisionException::class)
+    @Test(expected = MessagingException::class)
     fun ensureProvisioned_notProvisionedCanProvisionFailed_shouldThrow() {
         val cut = EasProvisionManager(client, backendStorage)
         whenever(client.policyKey).thenReturn("0")
@@ -155,7 +156,7 @@ class EasProvisionManagerTest {
         cut.ensureProvisioned {}
     }
 
-    @Test(expected = EasProvisionManager.ProvisionException::class)
+    @Test(expected = MessagingException::class)
     fun ensureProvisioned_notProvisionedAckProvisionFailed_shouldThrow() {
         val cut = EasProvisionManager(client, backendStorage)
         whenever(client.policyKey).thenReturn("0")

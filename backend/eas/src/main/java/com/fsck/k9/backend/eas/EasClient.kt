@@ -15,12 +15,14 @@ class AuthException : Exception("Client could't authenticate or authorize")
 val MEDIATYPE_MESSAGE = MediaType.parse("message/rfc822")
 val MEDIATYPE_WBXML = MediaType.parse("application/vnd.ms-sync.wbxml")
 const val DEVICE_TYPE = "K9"
+const val INITIAL_SYNC_KEY = "0"
 const val SUPPORTED_PROTOCOL_EX2007 = "12.0"
 
+const val STATUS_OK = 1
 
 open class EasClient(private val easServerSettings: EasServerSettings,
-                private val trustManagerFactory: TrustManagerFactory,
-                private val deviceId: String) {
+                     private val trustManagerFactory: TrustManagerFactory,
+                     private val deviceId: String) {
     val logging = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.HEADERS
     }
@@ -35,7 +37,7 @@ open class EasClient(private val easServerSettings: EasServerSettings,
 
     private var serverVersion: String? = null
 
-    open var policyKey: String = "0"
+    open var policyKey: String = INITIAL_POLICY_KEY
 
     init {
         val x509TrustManager = trustManagerFactory.getTrustManagerForDomain(easServerSettings.host, easServerSettings.port)
@@ -147,7 +149,7 @@ open class EasClient(private val easServerSettings: EasServerSettings,
         return WbXmlMapper.parse<ProvisionDTO>(response.body()!!.byteStream()).provision
     }
 
-    fun folderSync(folderSync: FolderSync): FolderSync? {
+    open fun folderSync(folderSync: FolderSync): FolderSync {
         val response = post("FolderSync", WbXmlMapper.serialize(
                 FolderSyncDTO(
                         folderSync
@@ -158,7 +160,7 @@ open class EasClient(private val easServerSettings: EasServerSettings,
         return WbXmlMapper.parse<FolderSyncDTO>(response.body()!!.byteStream()).folderSync
     }
 
-    fun sync(sync: Sync): Sync? {
+    open fun sync(sync: Sync): Sync {
         val response = post("Sync", WbXmlMapper.serialize(
                 SyncDTO(
                         sync
@@ -168,12 +170,10 @@ open class EasClient(private val easServerSettings: EasServerSettings,
         return WbXmlMapper.parse<SyncDTO>(response.body()!!.byteStream()).sync
     }
 
-    fun ping(ping: Ping, timeout: Long): PingResponse? {
-        val ping = PingDTO(
+    fun ping(ping: Ping, timeout: Long): PingResponse {
+        val response = post("Ping", WbXmlMapper.serialize(PingDTO(
                 ping
-        )
-
-        val response = post("Ping", WbXmlMapper.serialize(ping), customTimeout = timeout)
+        )), customTimeout = timeout)
         ensureSuccessfulResponse(response)
         return WbXmlMapper.parse<PingResponseDTO>(response.body()!!.byteStream()).ping
     }

@@ -10,27 +10,34 @@ class EasMessageFetchCommand(private val client: EasClient,
     fun fetch(folderServerId: String, messageServerId: String): EasMessage {
         val backendFolder = backendStorage.getFolder(folderServerId)
 
-        val syncKey = backendFolder.getFolderExtraString(EXTRA_SYNC_KEY) ?: "0"
-        println(syncKey)
+        val syncKey = backendFolder.getFolderExtraString(EXTRA_SYNC_KEY) ?: INITIAL_SYNC_KEY
 
         return provisionManager.ensureProvisioned {
-            val syncResponse = client.sync(Sync(SyncCollections(SyncCollection("Email",
-                    syncKey,
-                    folderServerId,
-                    options = SyncOptions(
-                            mimeSupport = 2,
-                            bodyPreference = SyncBodyPreference(4)
-                    ),
-                    commands = SyncCommands(fetch = listOf(
-                            SyncItem(messageServerId)
-                    ))))))
+            val syncResponse = client.sync(Sync(
+                    SyncCollections(
+                            SyncCollection("Email",
+                                    syncKey,
+                                    folderServerId,
+                                    options = SyncOptions(
+                                            mimeSupport = 2,
+                                            bodyPreference = SyncBodyPreference(4)
+                                    ),
+                                    commands = SyncCommands(fetch = listOf(
+                                            SyncItem(messageServerId)
+                                    ))
+                            )
+                    )
+            ))
 
-            val newSyncKey = syncResponse!!.collections!!.collection!!.syncKey!!
+            if (syncResponse.status != STATUS_OK) {
+                throw MessagingException("Couldn't sync messages")
+            }
+            val collection = syncResponse.collections!!.collection!!
+
+            val newSyncKey = collection.syncKey!!
             backendFolder.setFolderExtraString(EXTRA_SYNC_KEY, newSyncKey)
-            val responses = syncResponse.collections!!.collection!!.responses
 
-
-            val message = responses?.fetch?.firstOrNull()?.getMessage(EasFolder(folderServerId))
+            val message = collection.responses?.fetch?.firstOrNull()?.getMessage(EasFolder(folderServerId))
                     ?: throw MessagingException("Message not found")
             message
         }

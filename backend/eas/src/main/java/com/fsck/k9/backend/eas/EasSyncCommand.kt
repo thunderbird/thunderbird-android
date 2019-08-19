@@ -21,13 +21,13 @@ class EasSyncCommand(private val client: EasClient,
     fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener) {
         val backendFolder = backendStorage.getFolder(folder)
 
-        var syncKey = backendFolder.getFolderExtraString(EXTRA_SYNC_KEY) ?: "0"
+        var syncKey = backendFolder.getFolderExtraString(EXTRA_SYNC_KEY) ?: INITIAL_SYNC_KEY
 
         var messagesLoaded = 0
         val maxMessageLoad = syncConfig.defaultVisibleLimit
 
         provisionManager.ensureProvisioned {
-            if (syncKey == "0") {
+            if (syncKey == INITIAL_SYNC_KEY) {
                 val syncResponse = client.sync(Sync(SyncCollections(SyncCollection(
                         "Email",
                         syncKey,
@@ -68,7 +68,7 @@ class EasSyncCommand(private val client: EasClient,
                         messagesLoaded += commands.add.size
                     }
 
-                    if (commands.delete?.isNotEmpty() == true) {
+                    if (commands.delete?.isNotEmpty() == true && syncConfig.syncRemoteDeletions) {
                         backendFolder.destroyMessages(commands.delete.map { it.serverId })
 
                         for (item in commands.delete) {
