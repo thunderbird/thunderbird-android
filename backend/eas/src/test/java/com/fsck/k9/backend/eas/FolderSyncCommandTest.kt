@@ -2,12 +2,13 @@ package com.fsck.k9.backend.eas
 
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.FolderInfo
+import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.Folder
 import com.fsck.k9.mail.MessagingException
 import com.nhaarman.mockito_kotlin.*
 import org.junit.Test
 
-class EasFolderSyncCommandTest {
+class FolderSyncCommandTest {
     private val client = mock<EasClient>()
     private val provisionManager = mock<EasProvisionManager>()
     private val backendStorage = mock<BackendStorage>()
@@ -34,7 +35,7 @@ class EasFolderSyncCommandTest {
 
         whenever(provisionManager.ensureProvisioned<(() -> Unit)>(any())).thenAnswer { (it.getArgument(0) as (() -> Unit))() }
 
-        val cut = EasFolderSyncCommand(client, provisionManager, backendStorage)
+        val cut = FolderSyncCommand(client, provisionManager, backendStorage)
 
         cut.sync()
 
@@ -59,7 +60,7 @@ class EasFolderSyncCommandTest {
 
         whenever(provisionManager.ensureProvisioned<(() -> Unit)>(any())).thenAnswer { (it.getArgument(0) as (() -> Unit))() }
 
-        val cut = EasFolderSyncCommand(client, provisionManager, backendStorage)
+        val cut = FolderSyncCommand(client, provisionManager, backendStorage)
 
         cut.sync()
 
@@ -75,19 +76,19 @@ class EasFolderSyncCommandTest {
 
         whenever(provisionManager.ensureProvisioned<(() -> Unit)>(any())).thenAnswer { (it.getArgument(0) as (() -> Unit))() }
 
-        val cut = EasFolderSyncCommand(client, provisionManager, backendStorage)
+        val cut = FolderSyncCommand(client, provisionManager, backendStorage)
 
         cut.sync()
     }
 
-    @Test(expected = AuthException::class)
+    @Test(expected = AuthenticationFailedException::class)
     fun folderSync_authError_shouldThrow() {
         whenever(backendStorage.getExtraString("EXTRA_FOLDER_SYNC_KEY")).thenReturn("key0")
-        whenever(client.folderSync(FolderSync("key0"))).thenAnswer { throw AuthException() }
+        whenever(client.folderSync(FolderSync("key0"))).thenAnswer { throw AuthenticationFailedException("auth fail") }
 
         whenever(provisionManager.ensureProvisioned<(() -> Unit)>(any())).thenAnswer { (it.getArgument(0) as (() -> Unit))() }
 
-        val cut = EasFolderSyncCommand(client, provisionManager, backendStorage)
+        val cut = FolderSyncCommand(client, provisionManager, backendStorage)
 
         cut.sync()
     }

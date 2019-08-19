@@ -1,22 +1,18 @@
 package com.fsck.k9.backend.eas
 
-import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncListener
 import com.fsck.k9.mail.*
 import com.fsck.k9.mail.internet.MimeMessage
-import java.io.InputStream
-import java.io.OutputStream
 import java.util.*
-import kotlin.math.max
 import kotlin.math.min
 
 const val EXTRA_SYNC_KEY = "EXTRA_SYNC_KEY"
 
-class EasSyncCommand(private val client: EasClient,
-                     private val provisionManager: EasProvisionManager,
-                     private val backendStorage: BackendStorage) {
+class SyncCommand(private val client: EasClient,
+                  private val provisionManager: EasProvisionManager,
+                  private val backendStorage: BackendStorage) {
 
     fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener) {
         val backendFolder = backendStorage.getFolder(folder)
@@ -33,7 +29,7 @@ class EasSyncCommand(private val client: EasClient,
                         syncKey,
                         folder))))
 
-                syncKey = syncResponse!!.collections!!.collection!!.syncKey!!
+                syncKey = syncResponse.collections!!.collection!!.syncKey!!
             }
             while (maxMessageLoad > messagesLoaded) {
                 val syncResponse = client.sync(Sync(SyncCollections(SyncCollection("Email",
@@ -42,12 +38,15 @@ class EasSyncCommand(private val client: EasClient,
                         1,
                         options = SyncOptions(
                                 mimeSupport = 2,
-                                bodyPreference = SyncBodyPreference(4, syncConfig.maximumAutoDownloadMessageSize)
+                                bodyPreference = SyncBodyPreference(4, syncConfig.maximumAutoDownloadMessageSize),
+                                filterType = 5
                         ),
                         getChanges = 1,
                         windowSize = min(30, maxMessageLoad - messagesLoaded)))))
 
-                val collection = syncResponse!!.collections!!.collection!!
+                println(syncResponse)
+
+                val collection = syncResponse.collections!!.collection!!
 
                 val newSyncKey = collection.syncKey!!
                 backendFolder.setFolderExtraString(EXTRA_SYNC_KEY, newSyncKey)
@@ -91,6 +90,9 @@ class EasSyncCommand(private val client: EasClient,
                     break
                 }
             }
+
+            // TODO
+            listener.syncFinished(folder, messagesLoaded + 10000, messagesLoaded)
         }
     }
 
@@ -129,7 +131,7 @@ class EasSyncCommand(private val client: EasClient,
 
             println(syncResponse)
 
-            val newSyncKey = syncResponse!!.collections!!.collection!!.syncKey!!
+            val newSyncKey = syncResponse.collections!!.collection!!.syncKey!!
             backendFolder.setFolderExtraString(EXTRA_SYNC_KEY, newSyncKey)
         }
     }

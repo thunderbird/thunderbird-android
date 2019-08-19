@@ -1,6 +1,8 @@
 package com.fsck.k9.backend.eas
 
+import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.ConnectionSecurity
+import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.ssl.TrustManagerFactory
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
@@ -9,8 +11,7 @@ import java.util.concurrent.TimeUnit
 import javax.net.ssl.SSLContext
 
 
-class UnprovisionedException : Exception("Server requires client (re-)provision")
-class AuthException : Exception("Client could't authenticate or authorize")
+class UnprovisionedException : MessagingException("Server requires client (re-)provision")
 
 val MEDIATYPE_MESSAGE = MediaType.parse("message/rfc822")
 val MEDIATYPE_WBXML = MediaType.parse("application/vnd.ms-sync.wbxml")
@@ -125,7 +126,7 @@ open class EasClient(private val easServerSettings: EasServerSettings,
         ensureSuccessfulResponse(response)
 
         val versions =
-                response.header("ms-asprotocolversions", null) ?: throw IOException("versions header missing")
+                response.header("ms-asprotocolversions", null) ?: throw MessagingException("versions header missing")
         selectProtocolVersion(versions)
     }
 
@@ -134,11 +135,11 @@ open class EasClient(private val easServerSettings: EasServerSettings,
 
         serverVersion = when {
             versions.contains(SUPPORTED_PROTOCOL_EX2007) -> SUPPORTED_PROTOCOL_EX2007
-            else -> throw IOException("server version not supported")
+            else -> throw MessagingException("server version not supported")
         }
     }
 
-    fun sendMessage(data: ByteArray) {
+    open fun sendMessage(data: ByteArray) {
         val response = post("SendMail", data, "SaveInSent" to "T", isMessage = true)
         ensureSuccessfulResponse(response)
     }
@@ -182,7 +183,7 @@ open class EasClient(private val easServerSettings: EasServerSettings,
         when (response.code()) {
             in 200..299 -> return
             449 -> throw UnprovisionedException()
-            401, 403 -> throw AuthException()
+            401, 403 -> throw  AuthenticationFailedException("Client could't authenticate or authorize")
             else -> throw IOException("got status ${response.code()}")
         }
     }

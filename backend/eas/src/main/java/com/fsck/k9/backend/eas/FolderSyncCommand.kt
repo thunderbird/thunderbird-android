@@ -5,11 +5,11 @@ import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.mail.Folder
 import com.fsck.k9.mail.MessagingException
 
-const val EXTRA_FOLDER_SYNC_KEY = "EXTRA_FOLDER_SYNC_KEY"
+class FolderSyncCommand(private val client: EasClient,
+                        private val provisionManager: EasProvisionManager,
+                        private val backendStorage: BackendStorage) {
 
-class EasFolderSyncCommand(private val client: EasClient,
-                           private val provisionManager: EasProvisionManager,
-                           private val backendStorage: BackendStorage) {
+    val EXTRA_FOLDER_SYNC_KEY = "EXTRA_FOLDER_SYNC_KEY"
 
     fun sync() {
         val syncKey = backendStorage.getExtraString(EXTRA_FOLDER_SYNC_KEY) ?: INITIAL_SYNC_KEY

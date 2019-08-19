@@ -25,10 +25,10 @@ class EasBackend(backendStorage: BackendStorage,
 
     private val provisionManager = EasProvisionManager(client, backendStorage)
 
-    private val folderSyncCommand = EasFolderSyncCommand(client, provisionManager, backendStorage)
-    private val syncCommand = EasSyncCommand(client, provisionManager, backendStorage)
-    private val messageFetchCommand = EasMessageFetchCommand(client, provisionManager, backendStorage)
-    private val sendMessageCommand = EasSendMessageCommand(client, provisionManager)
+    private val folderSyncCommand = FolderSyncCommand(client, provisionManager, backendStorage)
+    private val syncCommand = SyncCommand(client, provisionManager, backendStorage)
+    private val messageFetchCommand = MessageFetchCommand(client, provisionManager, backendStorage)
+    private val sendMessageCommand = SendMessageCommand(client, provisionManager)
 
     override fun refreshFolderList() {
         folderSyncCommand.sync()

@@ -80,10 +80,10 @@ data class SyncCommands(
 )
 
 data class SyncResponses(
-        @field:Tag(Tags.SYNC_ADD, index = 0) val add: List<SyncItem>?,
-        @field:Tag(Tags.SYNC_DELETE, index = 1) val delete: List<SyncItem>?,
-        @field:Tag(Tags.SYNC_CHANGE, index = 2) val change: List<SyncItem>?,
-        @field:Tag(Tags.SYNC_FETCH, index = 3) val fetch: List<SyncItem>?
+        @field:Tag(Tags.SYNC_ADD, index = 0) val add: List<SyncItem>? = null,
+        @field:Tag(Tags.SYNC_DELETE, index = 1) val delete: List<SyncItem>? = null,
+        @field:Tag(Tags.SYNC_CHANGE, index = 2) val change: List<SyncItem>? = null,
+        @field:Tag(Tags.SYNC_FETCH, index = 3) val fetch: List<SyncItem>? = null
 )
 
 data class SyncBodyPreference(

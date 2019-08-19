@@ -3,9 +3,9 @@ package com.fsck.k9.backend.eas
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.mail.MessagingException
 
-class EasMessageFetchCommand(private val client: EasClient,
-                             private val provisionManager: EasProvisionManager,
-                             private val backendStorage: BackendStorage) {
+class MessageFetchCommand(private val client: EasClient,
+                          private val provisionManager: EasProvisionManager,
+                          private val backendStorage: BackendStorage) {
 
     fun fetch(folderServerId: String, messageServerId: String): EasMessage {
         val backendFolder = backendStorage.getFolder(folderServerId)

@@ -1,6 +1,8 @@
 package com.fsck.k9.backend.eas
 
+import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.ConnectionSecurity
+import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.ssl.TrustManagerFactory
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
@@ -8,6 +10,7 @@ import com.nhaarman.mockito_kotlin.whenever
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okio.Buffer
+import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -58,7 +61,7 @@ class EasClientTest {
         cut.initialize()
     }
 
-    @Test(expected = AuthException::class)
+    @Test(expected = AuthenticationFailedException::class)
     fun initialize_invalidCredentials_shouldThrow() {
         val mockServer = MockWebServer()
         mockServer.enqueue(MockResponse().setResponseCode(401))
@@ -71,7 +74,20 @@ class EasClientTest {
         cut.initialize()
     }
 
-    @Test(expected = IOException::class)
+    @Test(expected = MessagingException::class)
+    fun initialize_serverVersionHeaderMissing_shouldThrow() {
+        val mockServer = MockWebServer()
+        mockServer.enqueue(MockResponse())
+
+        val url = mockServer.url("/")
+        val settings = EasServerSettings(url.host(), url.port(), ConnectionSecurity.NONE, "user", "pass")
+
+        val cut = EasClient(settings, trustManager, DEVICE_ID)
+
+        cut.initialize()
+    }
+
+    @Test(expected = MessagingException::class)
     fun initialize_serverVersionNotSupported_shouldThrow() {
         val mockServer = MockWebServer()
         mockServer.enqueue(MockResponse().apply {
@@ -86,12 +102,12 @@ class EasClientTest {
         cut.initialize()
     }
 
-    @Test(expected = IOException::class)
+    @Test
     fun sendMail_shouldInitializeAndPostMessage() {
         val mockServer = MockWebServer()
 
         mockServer.enqueue(MockResponse().apply {
-            addHeader("ms-asprotocolversions", "2.5")
+            addHeader("ms-asprotocolversions", "12.0")
         })
 
         mockServer.enqueue(MockResponse())
@@ -116,9 +132,10 @@ class EasClientTest {
         assertEquals(request.getHeader("Authorization"), "Basic dXNlcjpwYXNz")
         assertEquals(request.getHeader("MS-ASProtocolVersion"), "12.0")
         assertEquals(request.getHeader("X-MS-PolicyKey"), "8546")
+        assertArrayEquals(request.body.readByteArray(), "MyMSG".toByteArray())
     }
 
-    @Test(expected = AuthException::class)
+    @Test(expected = AuthenticationFailedException::class)
     fun sendMail_cant_auth_shouldThrow() {
         val mockServer = MockWebServer()
 
@@ -213,7 +230,7 @@ class EasClientTest {
         assertEquals(expectedRequest, actualRequest)
     }
 
-    @Test(expected = AuthException::class)
+    @Test(expected = AuthenticationFailedException::class)
     fun provision_cant_auth_shouldThrow() {
         val mockServer = MockWebServer()
 
@@ -272,7 +289,7 @@ class EasClientTest {
         assertEquals(expectedRequest, actualRequest)
     }
 
-    @Test(expected = AuthException::class)
+    @Test(expected = AuthenticationFailedException::class)
     fun folderSync_cant_auth_shouldThrow() {
         val mockServer = MockWebServer()
 
@@ -331,7 +348,7 @@ class EasClientTest {
         assertEquals(expectedRequest, actualRequest)
     }
 
-    @Test(expected = AuthException::class)
+    @Test(expected = AuthenticationFailedException::class)
     fun sync_cant_auth_shouldThrow() {
         val mockServer = MockWebServer()
 

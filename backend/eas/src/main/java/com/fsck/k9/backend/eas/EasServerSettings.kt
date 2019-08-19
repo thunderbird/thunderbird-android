@@ -6,7 +6,7 @@ import com.fsck.k9.mail.helper.UrlEncodingHelper.decodeUtf8
 import com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8
 import okhttp3.HttpUrl
 
-public class EasServerSettings(
+class EasServerSettings(
         host: String,
         port: Int,
         connectionSecurity: ConnectionSecurity,

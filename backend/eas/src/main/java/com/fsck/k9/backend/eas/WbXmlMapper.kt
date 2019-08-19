@@ -16,6 +16,8 @@ annotation class Tag(val value: Int, val index: Int = 0)
 object WbXmlMapper {
     private val fieldSerializers = mutableMapOf<Class<*>, List<(Any, ByteArrayOutputStream, AtomicInteger) -> Unit>>()
 
+    const val EOL = -1
+
     private fun getFieldSerializers(clazz: Class<*>): List<(Any, ByteArrayOutputStream, AtomicInteger) -> Unit> {
         var serializer = fieldSerializers[clazz]
         if (serializer == null) {
@@ -217,7 +219,7 @@ object WbXmlMapper {
                         val i = read()
                         when (i) {
                             0 -> break@str
-                            -1 -> throw IOException("Unexpected EOF")
+                            EOL -> throw IOException("Unexpected EOF")
                             else -> outputStream.write(i)
                         }
                     }
@@ -248,7 +250,7 @@ object WbXmlMapper {
                         while (read() != 0) {
                         }
                     }
-                    -1 -> {
+                    EOL -> {
                         throw IOException("Unexpected EOF")
                     }
                     else -> if (id and WbXml.CONTENT_MASK != 0) {
@@ -281,7 +283,7 @@ object WbXmlMapper {
                     WbXml.STR_I -> {
                         throw IOException("Unexpected STR_I")
                     }
-                    -1 -> {
+                    EOL -> {
                         // try {
                         return constructor.call(*params) as T
                         // } catch (e: Exception) {
