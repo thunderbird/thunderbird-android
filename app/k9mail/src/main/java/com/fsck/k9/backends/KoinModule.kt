@@ -16,5 +16,5 @@ val backendsModule = applicationContext {
     bean { ImapBackendFactory(get(), get(), get(), get()) }
     bean { Pop3BackendFactory(get(), get()) }
     bean { WebDavBackendFactory(get(), get()) }
-    bean { EasBackendFactory(get(), get()) }
+    bean { EasBackendFactory(get(), get(), get()) }
 }

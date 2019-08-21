@@ -2,6 +2,9 @@ package com.fsck.k9.backend.eas
 
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.FolderInfo
+import com.fsck.k9.backend.eas.dto.FolderChange
+import com.fsck.k9.backend.eas.dto.FolderChanges
+import com.fsck.k9.backend.eas.dto.FolderSync
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.Folder
 import com.fsck.k9.mail.MessagingException

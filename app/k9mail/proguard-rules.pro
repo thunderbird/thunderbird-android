@@ -20,7 +20,7 @@
 # Project specific rules
 -dontnote com.fsck.k9.ui.messageview.**
 -dontnote com.fsck.k9.view.**
--keep class com.fsck.k9.backend.eas.** { *; }
+-keep class com.fsck.k9.backend.eas.dto.**
 
 -keep public class org.openintents.openpgp.**
 

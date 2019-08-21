@@ -3,19 +3,24 @@ package com.fsck.k9.backend.eas
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncListener
+import com.fsck.k9.backend.eas.dto.*
 import com.fsck.k9.mail.*
-import com.fsck.k9.mail.internet.MimeMessage
-import java.util.*
+import com.fsck.k9.mail.filter.EOLConvertingOutputStream
+import java.io.InputStream
+import java.io.OutputStream
 import kotlin.math.min
 
 const val EXTRA_SYNC_KEY = "EXTRA_SYNC_KEY"
+const val SYNC_CLASS_EMAIL = "Email"
+const val SYNC_OPTION_MIME_SUPPORT_FULL = 2
+const val SYNC_BODY_PREF_TYPE_MIME = 4
 
 class SyncCommand(private val client: EasClient,
                   private val provisionManager: EasProvisionManager,
                   private val backendStorage: BackendStorage) {
 
-    fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener) {
-        val backendFolder = backendStorage.getFolder(folder)
+    fun sync(folderServerId: String, syncConfig: SyncConfig, listener: SyncListener) {
+        val backendFolder = backendStorage.getFolder(folderServerId)
 
         var syncKey = backendFolder.getFolderExtraString(EXTRA_SYNC_KEY) ?: INITIAL_SYNC_KEY
 
@@ -27,18 +32,18 @@ class SyncCommand(private val client: EasClient,
                 val syncResponse = client.sync(Sync(SyncCollections(SyncCollection(
                         "Email",
                         syncKey,
-                        folder))))
+                        folderServerId))))
 
                 syncKey = syncResponse.collections!!.collection!!.syncKey!!
             }
             while (maxMessageLoad > messagesLoaded) {
-                val syncResponse = client.sync(Sync(SyncCollections(SyncCollection("Email",
+                val syncResponse = client.sync(Sync(SyncCollections(SyncCollection(SYNC_CLASS_EMAIL,
                         syncKey,
-                        folder,
+                        folderServerId,
                         1,
                         options = SyncOptions(
-                                mimeSupport = 2,
-                                bodyPreference = SyncBodyPreference(4, syncConfig.maximumAutoDownloadMessageSize),
+                                mimeSupport = SYNC_OPTION_MIME_SUPPORT_FULL,
+                                bodyPreference = SyncBodyPreference(SYNC_BODY_PREF_TYPE_MIME, syncConfig.maximumAutoDownloadMessageSize),
                                 filterType = 5
                         ),
                         getChanges = 1,
@@ -54,7 +59,7 @@ class SyncCommand(private val client: EasClient,
                 if (commands != null) {
                     if (commands.add?.isNotEmpty() == true) {
                         for (item in commands.add) {
-                            val message = item.getMessage(EasFolder(folder))
+                            val message = item.extractEasMessage(folderServerId)
 
                             if (item.isTruncated()) {
                                 backendFolder.savePartialMessage(message)
@@ -62,25 +67,25 @@ class SyncCommand(private val client: EasClient,
                                 backendFolder.saveCompleteMessage(message)
                             }
 
-                            listener.syncNewMessage(folder, item.serverId, false)
+                            listener.syncNewMessage(folderServerId, item.serverId!!, false)
                         }
                         messagesLoaded += commands.add.size
                     }
 
                     if (commands.delete?.isNotEmpty() == true && syncConfig.syncRemoteDeletions) {
-                        backendFolder.destroyMessages(commands.delete.map { it.serverId })
+                        backendFolder.destroyMessages(commands.delete.map { it.serverId!! })
 
                         for (item in commands.delete) {
-                            listener.syncRemovedMessage(folder, item.serverId)
+                            listener.syncRemovedMessage(folderServerId, item.serverId!!)
                         }
                     }
 
                     if (commands.change?.isNotEmpty() == true) {
                         for (item in commands.change) {
                             item.data?.emailRead?.let {
-                                backendFolder.setMessageFlag(item.serverId, Flag.SEEN, it == 1)
+                                backendFolder.setMessageFlag(item.serverId!!, Flag.SEEN, it == 1)
 
-                                listener.syncFlagChanged(folder, item.serverId)
+                                listener.syncFlagChanged(folderServerId, item.serverId)
                             }
                         }
                     }
@@ -92,38 +97,38 @@ class SyncCommand(private val client: EasClient,
             }
 
             // TODO
-            listener.syncFinished(folder, messagesLoaded + 10000, messagesLoaded)
+            listener.syncFinished(folderServerId, messagesLoaded + 10000, messagesLoaded)
         }
     }
 
-    fun delete(folderServerId: String, messageServerIds: List<String>) {
+    fun delete(folderServerId: String, messageServerIds: List<String>, exprune: Boolean = false) {
         executeCommands(folderServerId, SyncCommands(
                 delete = messageServerIds.map { SyncItem(it) }
-        ))
+        ), deleteAsMoves = if (exprune) 0 else 1)
     }
 
     fun setFlag(folderServerId: String, messageServerIds: List<String>, flag: Flag, newState: Boolean) {
         if (flag == Flag.SEEN) {
             executeCommands(folderServerId, SyncCommands(
                     change = messageServerIds.map {
-                        SyncItem(it, SyncData(emailRead = if (newState) 1 else 0))
+                        SyncItem(serverId = it, data = SyncData(emailRead = if (newState) 1 else 0))
                     }
             ))
         }
     }
 
-    private fun executeCommands(folderServerId: String, syncCommands: SyncCommands) {
+    private fun executeCommands(folderServerId: String, syncCommands: SyncCommands, deleteAsMoves: Int = 1) {
         val backendFolder = backendStorage.getFolder(folderServerId)
-        val syncKey = backendFolder.getFolderExtraString(EXTRA_SYNC_KEY) ?: "0"
+        val syncKey = backendFolder.getFolderExtraString(EXTRA_SYNC_KEY) ?: INITIAL_SYNC_KEY
 
         provisionManager.ensureProvisioned {
             val syncResponse = client.sync(Sync(
                     SyncCollections(
                             SyncCollection(
-                                    "Email",
+                                    SYNC_CLASS_EMAIL,
                                     syncKey,
                                     folderServerId,
-                                    1,
+                                    deleteAsMoves,
                                     commands = syncCommands
                             )
                     )
@@ -139,9 +144,9 @@ class SyncCommand(private val client: EasClient,
 
 fun SyncItem.isTruncated() = data!!.body!!.truncated == 1
 
-fun SyncItem.getMessage(folder: EasFolder) = data!!.let {
-    EasMessage(folder).apply {
-        parse(it.body!!.data!!.byteInputStream())
+fun SyncItem.extractEasMessage(folderServerId: String) = data!!.let {
+    (it.body?.data!!.message as EasMessage).apply {
+        setFolderServerId(folderServerId)
         messageId = serverId
         uid = serverId
         if (it.emailRead == 1) {
@@ -150,84 +155,23 @@ fun SyncItem.getMessage(folder: EasFolder) = data!!.let {
     }
 }
 
-class EasFolder(@JvmField val serverId: String) : Folder<EasMessage>() {
-    override fun open(mode: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+class EasMessageElement : StreamableElement {
+    lateinit var message: Message
+
+    fun from(message: Message) {
+        this.message = message
     }
 
-    override fun close() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun readFromStream(inputStream: InputStream) {
+        message = EasMessage().apply {
+            parse(inputStream)
+        }
     }
 
-    override fun isOpen(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun getMode(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun create(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun exists(): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun getMessageCount(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun getUnreadMessageCount(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun getFlaggedMessageCount(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun getMessage(uid: String?): EasMessage {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun getMessages(start: Int, end: Int, earliestDate: Date?, listener: MessageRetrievalListener<EasMessage>?): MutableList<EasMessage> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun areMoreMessagesAvailable(indexOfOldestMessage: Int, earliestDate: Date?): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun appendMessages(messages: MutableList<out Message>?): MutableMap<String, String> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun setFlags(messages: MutableList<out Message>?, flags: MutableSet<Flag>?, value: Boolean) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun setFlags(flags: MutableSet<Flag>?, value: Boolean) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun getUidFromMessageId(messageId: String?): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun fetch(messages: MutableList<EasMessage>?, fp: FetchProfile?, listener: MessageRetrievalListener<EasMessage>?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun getServerId() = serverId
-
-    override fun getName(): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun writeToStream(outputStream: OutputStream) {
+        val msgOut = EOLConvertingOutputStream(outputStream)
+        message.writeTo(msgOut)
+        msgOut.flush()
     }
 }
 
-class EasMessage(folder: EasFolder) : MimeMessage() {
-    init {
-        mFolder = folder
-    }
-}

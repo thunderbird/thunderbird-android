@@ -1,7 +1,9 @@
 package com.fsck.k9.backend.eas
 
+import com.fsck.k9.backend.eas.dto.*
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.ConnectionSecurity
+import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.ssl.TrustManagerFactory
 import com.nhaarman.mockito_kotlin.any
@@ -15,6 +17,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import java.io.IOException
+import java.io.OutputStream
 import java.security.KeyStore
 import javax.net.ssl.X509TrustManager
 
@@ -115,10 +118,16 @@ class EasClientTest {
         val url = mockServer.url("/")
         val settings = EasServerSettings(url.host(), url.port(), ConnectionSecurity.NONE, "user", "pass")
 
+        val message = mock<Message>()
+        whenever(message.calculateSize()).thenReturn(17)
+        whenever(message.writeTo(any())).thenAnswer {
+            (it.getArgument(0) as OutputStream).write("Filter\nNext Line".toByteArray())
+        }
+
         val cut = EasClient(settings, trustManager, DEVICE_ID)
         cut.policyKey = "8546"
 
-        cut.sendMessage("MyMSG".toByteArray())
+        cut.sendMessage(message)
 
         // Ignore "OPTIONS"
         mockServer.takeRequest()
@@ -128,11 +137,12 @@ class EasClientTest {
         assertEquals(request.method, "POST")
         assertEquals(request.path, "/Microsoft-Server-ActiveSync?Cmd=SendMail&User=user&DeviceId=DevID&DeviceType=K9&SaveInSent=T")
         assertEquals(request.getHeader("Content-Type"), "message/rfc822")
+        assertEquals(request.getHeader("Content-Length"), "17")
         assertEquals(request.getHeader("User-Agent"), "K9/${BuildConfig.VERSION_NAME}")
         assertEquals(request.getHeader("Authorization"), "Basic dXNlcjpwYXNz")
         assertEquals(request.getHeader("MS-ASProtocolVersion"), "12.0")
         assertEquals(request.getHeader("X-MS-PolicyKey"), "8546")
-        assertArrayEquals(request.body.readByteArray(), "MyMSG".toByteArray())
+        assertArrayEquals(request.body.readByteArray(), "Filter\r\nNext Line".toByteArray())
     }
 
     @Test(expected = AuthenticationFailedException::class)
@@ -148,9 +158,15 @@ class EasClientTest {
         val url = mockServer.url("/")
         val settings = EasServerSettings(url.host(), url.port(), ConnectionSecurity.NONE, "user", "pass")
 
+        val message = mock<Message>()
+        whenever(message.calculateSize()).thenReturn(17)
+        whenever(message.writeTo(any())).thenAnswer {
+            (it.getArgument(0) as OutputStream).write("Filter\nNext Line".toByteArray())
+        }
+
         val cut = EasClient(settings, trustManager, DEVICE_ID)
 
-        cut.sendMessage("MyMSG".toByteArray())
+        cut.sendMessage(message)
     }
 
     @Test(expected = UnprovisionedException::class)
@@ -166,9 +182,15 @@ class EasClientTest {
         val url = mockServer.url("/")
         val settings = EasServerSettings(url.host(), url.port(), ConnectionSecurity.NONE, "user", "pass")
 
+        val message = mock<Message>()
+        whenever(message.calculateSize()).thenReturn(17)
+        whenever(message.writeTo(any())).thenAnswer {
+            (it.getArgument(0) as OutputStream).write("Filter\nNext Line".toByteArray())
+        }
+
         val cut = EasClient(settings, trustManager, DEVICE_ID)
 
-        cut.sendMessage("MyMSG".toByteArray())
+        cut.sendMessage(message)
     }
 
     @Test(expected = IOException::class)
@@ -184,9 +206,14 @@ class EasClientTest {
         val url = mockServer.url("/")
         val settings = EasServerSettings(url.host(), url.port(), ConnectionSecurity.NONE, "user", "pass")
 
+        val message = mock<Message>()
+        whenever(message.writeTo(any())).thenAnswer {
+            (it.getArgument(0) as OutputStream).write("Filter\nNext Line".toByteArray())
+        }
+
         val cut = EasClient(settings, trustManager, DEVICE_ID)
 
-        cut.sendMessage("MyMSG".toByteArray())
+        cut.sendMessage(message)
     }
 
     @Test
@@ -201,8 +228,9 @@ class EasClientTest {
 
         val expectedResponse = Provision(status = 2)
 
-        mockServer.enqueue(MockResponse().setBody(Buffer().write(WbXmlMapper.serialize(ProvisionDTO(expectedResponse)))))
-
+        mockServer.enqueue(MockResponse().setBody(Buffer().apply {
+            WbXmlMapper.serialize(ProvisionDTO(expectedResponse), this.outputStream())
+        }))
         val url = mockServer.url("/")
         val settings = EasServerSettings(url.host(), url.port(), ConnectionSecurity.NONE, "user", "pass")
 
@@ -260,7 +288,9 @@ class EasClientTest {
 
         val expectedResponse = FolderSync("key1")
 
-        mockServer.enqueue(MockResponse().setBody(Buffer().write(WbXmlMapper.serialize(FolderSyncDTO(expectedResponse)))))
+        mockServer.enqueue(MockResponse().setBody(Buffer().apply {
+            WbXmlMapper.serialize(FolderSyncDTO(expectedResponse), this.outputStream())
+        }))
 
         val url = mockServer.url("/")
         val settings = EasServerSettings(url.host(), url.port(), ConnectionSecurity.NONE, "user", "pass")
@@ -319,7 +349,9 @@ class EasClientTest {
 
         val expectedResponse = Sync(SyncCollections(SyncCollection(syncKey = "key1")))
 
-        mockServer.enqueue(MockResponse().setBody(Buffer().write(WbXmlMapper.serialize(SyncDTO(expectedResponse)))))
+        mockServer.enqueue(MockResponse().setBody(Buffer().apply {
+            WbXmlMapper.serialize(SyncDTO(expectedResponse), this.outputStream())
+        }))
 
         val url = mockServer.url("/")
         val settings = EasServerSettings(url.host(), url.port(), ConnectionSecurity.NONE, "user", "pass")

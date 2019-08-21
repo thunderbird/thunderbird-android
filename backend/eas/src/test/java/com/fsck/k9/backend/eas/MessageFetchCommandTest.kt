@@ -2,6 +2,7 @@ package com.fsck.k9.backend.eas
 
 import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendStorage
+import com.fsck.k9.backend.eas.dto.*
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.K9LibRobolectricTestRunner
 import com.fsck.k9.mail.Message
@@ -15,7 +16,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RuntimeEnvironment
-import java.io.ByteArrayOutputStream
 import java.io.IOException
 
 @RunWith(K9LibRobolectricTestRunner::class)
@@ -35,8 +35,9 @@ class MessageFetchCommandTest {
         whenever(backendFolderMock.getFolderExtraString("EXTRA_SYNC_KEY")).thenReturn("key0")
         whenever(backendStorage.getFolder("col0")).thenReturn(backendFolderMock)
 
-        val expectedMessage = EasMessage(EasFolder("col0")).apply {
+        val expectedMessage = EasMessage().apply {
             MimeMessageHelper.setBody(this, bodypart("text/plain", "text").body);
+            setFolderServerId("col0")
             subject = "Subject"
             uid = "id0";
             messageId = "id0";
@@ -63,15 +64,13 @@ class MessageFetchCommandTest {
                                 "key1",
                                 "col0",
                                 responses = SyncResponses(fetch = listOf(
-                                        SyncItem("id0", SyncData(
+                                        SyncItem(serverId = "id0", data = SyncData(
                                                 emailFrom = "k9@icloud.com",
                                                 emailTo = "chris@gmx.de",
                                                 emailRead = 1,
                                                 emailSubject = "Subject",
                                                 body = Body(
-                                                        data = ByteArrayOutputStream().apply {
-                                                            expectedMessage.writeTo(this)
-                                                        }.toString()
+                                                        data = EasMessageElement().apply { from(expectedMessage) }
                                                 )
                                         ))
                                 )),

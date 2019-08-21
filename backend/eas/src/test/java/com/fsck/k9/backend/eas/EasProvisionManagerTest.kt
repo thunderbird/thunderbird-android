@@ -1,6 +1,9 @@
 package com.fsck.k9.backend.eas
 
 import com.fsck.k9.backend.api.BackendStorage
+import com.fsck.k9.backend.eas.dto.Provision
+import com.fsck.k9.backend.eas.dto.ProvisionPolicies
+import com.fsck.k9.backend.eas.dto.ProvisionPolicy
 import com.fsck.k9.mail.MessagingException
 import com.nhaarman.mockito_kotlin.*
 import org.junit.Assert.assertEquals

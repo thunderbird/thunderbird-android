@@ -1,4 +1,8 @@
-package com.fsck.k9.backend.eas
+package com.fsck.k9.backend.eas.dto
+
+import com.fsck.k9.backend.eas.EasMessageElement
+import com.fsck.k9.backend.eas.Tag
+import com.fsck.k9.backend.eas.Tags
 
 data class ProvisionPolicyDoc(
         @field:Tag(Tags.PROVISION_DEVICE_PASSWORD_ENABLED, index = 0) val devicePasswordEnabled: Int? = 0,
@@ -51,7 +55,7 @@ data class FolderSyncDTO(@field:Tag(Tags.FOLDER_FOLDER_SYNC) val folderSync: Fol
 
 data class Body(
         @field:Tag(Tags.BASE_TYPE, index = 0) val type: String? = null,
-        @field:Tag(Tags.BASE_DATA, index = 1) val data: String? = null,
+        @field:Tag(Tags.BASE_DATA, index = 1) val data: EasMessageElement? = null,
         @field:Tag(Tags.BASE_TRUNCATED, index = 2) val truncated: Int? = null
 )
 
@@ -68,8 +72,9 @@ data class SyncData(
 )
 
 data class SyncItem(
-        @field:Tag(Tags.SYNC_SERVER_ID, index = 0) val serverId: String,
-        @field:Tag(Tags.SYNC_APPLICATION_DATA, index = 1) val data: SyncData? = null
+        @field:Tag(Tags.SYNC_SERVER_ID, index = 0) val serverId: String? = null,
+        @field:Tag(Tags.SYNC_CLIENT_ID, index = 1) val clientId: String? = null,
+        @field:Tag(Tags.SYNC_APPLICATION_DATA, index = 2) val data: SyncData? = null
 )
 
 data class SyncCommands(
@@ -141,3 +146,22 @@ data class PingResponse(
 )
 
 data class PingResponseDTO(@field:Tag(Tags.PING_PING) val ping: PingResponse)
+
+data class MoveItem(
+        @field:Tag(Tags.MOVE_SRCMSGID, index = 0) val srcMessageId: String,
+        @field:Tag(Tags.MOVE_SRCFLDID, index = 1) val srcFolderId: String,
+        @field:Tag(Tags.MOVE_DSTFLDID, index = 2) val destFolderId: String
+)
+
+data class MoveResponse(
+        @field:Tag(Tags.MOVE_SRCMSGID, index = 0) val srcMessageId: String,
+        @field:Tag(Tags.MOVE_STATUS, index = 1) val status: Int? = null,
+        @field:Tag(Tags.MOVE_DSTMSGID, index = 2) val destMessageId: String? = null
+)
+
+data class MoveItems(
+        @field:Tag(Tags.MOVE_MOVE, index = 0) val moveItems: List<MoveItem>? = null,
+        @field:Tag(Tags.MOVE_RESPONSE, index = 1) val response: List<MoveResponse>? = null
+)
+
+data class MoveItemsDTO(@field:Tag(Tags.MOVE_MOVE_ITEMS) val moveItems: MoveItems)

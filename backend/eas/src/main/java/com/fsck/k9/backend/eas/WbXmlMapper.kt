@@ -3,6 +3,7 @@ package com.fsck.k9.backend.eas
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStream
+import java.io.OutputStream
 import java.lang.reflect.ParameterizedType
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.reflect.KFunction
@@ -13,12 +14,17 @@ import kotlin.reflect.full.primaryConstructor
 @Target(AnnotationTarget.FIELD, AnnotationTarget.VALUE_PARAMETER)
 annotation class Tag(val value: Int, val index: Int = 0)
 
+interface StreamableElement {
+    fun readFromStream(inputStream: InputStream)
+    fun writeToStream(outputStream: OutputStream)
+}
+
 object WbXmlMapper {
-    private val fieldSerializers = mutableMapOf<Class<*>, List<(Any, ByteArrayOutputStream, AtomicInteger) -> Unit>>()
+    private val fieldSerializers = mutableMapOf<Class<*>, List<(Any, OutputStream, AtomicInteger) -> Unit>>()
 
     const val EOL = -1
 
-    private fun getFieldSerializers(clazz: Class<*>): List<(Any, ByteArrayOutputStream, AtomicInteger) -> Unit> {
+    private fun getFieldSerializers(clazz: Class<*>): List<(Any, OutputStream, AtomicInteger) -> Unit> {
         var serializer = fieldSerializers[clazz]
         if (serializer == null) {
             serializer = clazz.declaredFields
@@ -32,7 +38,7 @@ object WbXmlMapper {
 
                         if (field.type == List::class.java) {
                             { obj: Any,
-                              output: ByteArrayOutputStream,
+                              output: OutputStream,
                               tagPage: AtomicInteger ->
                                 field.get(obj)?.let {
                                     (it as List<*>).forEach {
@@ -43,7 +49,7 @@ object WbXmlMapper {
                             }
                         } else {
                             { obj: Any,
-                              output: ByteArrayOutputStream,
+                              output: OutputStream,
                               tagPage: AtomicInteger ->
                                 field.get(obj)?.let {
                                     writeElement(output, tag, it, tagPage)
@@ -57,19 +63,18 @@ object WbXmlMapper {
         return serializer
     }
 
-    fun serialize(obj: Any) = ByteArrayOutputStream().apply {
+    fun serialize(obj: Any, output: OutputStream) = output.run {
         write(0x03) // version 1.3
         write(0x01) // unknown or missing public identifier
         write(106)
         write(0)
         serializeInner(obj, this, AtomicInteger(2220))
         flush()
-    }.toByteArray()!!
-
+    }
 
     private fun serializeInner(
             obj: Any,
-            output: ByteArrayOutputStream,
+            output: OutputStream,
             tagPage: AtomicInteger
     ) {
         getFieldSerializers(obj.javaClass).forEach {
@@ -77,7 +82,7 @@ object WbXmlMapper {
         }
     }
 
-    private fun writeElement(output: ByteArrayOutputStream, tag: Int, value: Any, tagPage: AtomicInteger) {
+    private fun writeElement(output: OutputStream, tag: Int, value: Any, tagPage: AtomicInteger) {
         output.run {
             val page = tag shr WbXml.PAGE_SHIFT
             val id = tag and WbXml.PAGE_MASK
@@ -104,6 +109,11 @@ object WbXmlMapper {
                     is Int -> {
                         write(WbXml.STR_I)
                         write(value.toString().toByteArray())
+                        write(0)
+                    }
+                    is StreamableElement -> {
+                        write(WbXml.STR_I)
+                        value.writeToStream(this)
                         write(0)
                     }
                     else -> serializeInner(value, output, tagPage)
@@ -180,9 +190,19 @@ object WbXmlMapper {
                                     }
                                 }
                                 else -> {
-                                    tag to { input: InputStream, tagPage: AtomicInteger, params: Array<Any?> ->
-                                        params[index] = parseInner(input, field.type, tagPage)
-                                        Unit
+                                    if (StreamableElement::class.java.isAssignableFrom(field.type)) {
+                                        val streamableElementConstructor = field.type.kotlin.primaryConstructor
+                                                as KFunction<out StreamableElement>
+
+                                        tag to { input: InputStream, tagPage: AtomicInteger, params: Array<Any?> ->
+                                            params[index] = parseStreamableElement(input, streamableElementConstructor)
+                                            Unit
+                                        }
+                                    } else {
+                                        tag to { input: InputStream, tagPage: AtomicInteger, params: Array<Any?> ->
+                                            params[index] = parseInner(input, field.type, tagPage)
+                                            Unit
+                                        }
                                     }
                                 }
                             }
@@ -208,6 +228,41 @@ object WbXmlMapper {
                 }
             }
 
+    private fun <T : StreamableElement> parseStreamableElement(input: InputStream, constructor: KFunction<T>): T? {
+        input.run {
+            val id = read()
+            val streamableElement = when (id) {
+                WbXml.STR_I -> {
+                    val streamableElement = constructor.call()
+
+                    streamableElement.readFromStream(object : InputStream() {
+                        var closed = false
+                        override fun read(): Int {
+                            if (closed) {
+                                return EOL
+                            }
+                            return when (val i = input.read()) {
+                                0 -> {
+                                    closed = true
+                                    EOL
+                                }
+                                EOL -> throw IOException("Unexpected EOF")
+                                else -> i
+                            }
+                        }
+                    })
+
+                    streamableElement
+                }
+                WbXml.END -> return null
+                else -> throw IllegalStateException(id.toString())
+            }
+            when (read()) {
+                WbXml.END -> return streamableElement
+                else -> throw IllegalStateException()
+            }
+        }
+    }
 
     private fun parseString(input: InputStream): String {
         input.run {

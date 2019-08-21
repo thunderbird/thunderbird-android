@@ -2,13 +2,14 @@ package com.fsck.k9.backend.eas
 
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.eas.dto.*
+import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessagingException
 
-class MessageFetchCommand(private val client: EasClient,
-                          private val provisionManager: EasProvisionManager,
-                          private val backendStorage: BackendStorage) {
+class MessageUploadCommand(private val client: EasClient,
+                           private val provisionManager: EasProvisionManager,
+                           private val backendStorage: BackendStorage) {
 
-    fun fetch(folderServerId: String, messageServerId: String): EasMessage {
+    fun upload(folderServerId: String, message: Message): String {
         val backendFolder = backendStorage.getFolder(folderServerId)
 
         val syncKey = backendFolder.getFolderExtraString(EXTRA_SYNC_KEY) ?: INITIAL_SYNC_KEY
@@ -19,12 +20,8 @@ class MessageFetchCommand(private val client: EasClient,
                             SyncCollection(SYNC_CLASS_EMAIL,
                                     syncKey,
                                     folderServerId,
-                                    options = SyncOptions(
-                                            mimeSupport = SYNC_OPTION_MIME_SUPPORT_FULL,
-                                            bodyPreference = SyncBodyPreference(SYNC_BODY_PREF_TYPE_MIME)
-                                    ),
-                                    commands = SyncCommands(fetch = listOf(
-                                            SyncItem(serverId = messageServerId)
+                                    commands = SyncCommands(add = listOf(
+                                            SyncItem(clientId = "tmpId", data = SyncData(body = Body(data = EasMessageElement().apply { from(message) })))
                                     ))
                             )
                     )
@@ -33,15 +30,17 @@ class MessageFetchCommand(private val client: EasClient,
             val collection = syncResponse.collections?.collection
 
             if (collection?.status != STATUS_OK) {
-                throw MessagingException("Couldn't fetch message")
+                throw MessagingException("Couldn't upload message")
             }
 
             val newSyncKey = collection.syncKey!!
             backendFolder.setFolderExtraString(EXTRA_SYNC_KEY, newSyncKey)
 
-            val message = collection.responses?.fetch?.firstOrNull()?.extractEasMessage(folderServerId)
-                    ?: throw MessagingException("Message not found")
-            message
+            println(syncResponse)
+
+            val serverId = collection.commands?.add?.firstOrNull()?.serverId
+                    ?: throw MessagingException("Couldn't upload message")
+            serverId
         }
     }
 }

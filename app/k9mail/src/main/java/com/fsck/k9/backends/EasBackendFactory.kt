@@ -7,13 +7,14 @@ import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.backend.eas.EasBackend
 import com.fsck.k9.backend.eas.EasServerSettings
 import com.fsck.k9.mail.ServerSettings
+import com.fsck.k9.mail.power.PowerManager
 import com.fsck.k9.mail.ssl.TrustManagerFactory
 import com.fsck.k9.mailstore.K9BackendStorageFactory
 
 class EasBackendFactory(
         private val backendStorageFactory: K9BackendStorageFactory,
-        private val trustManagerFactory: TrustManagerFactory
-) : BackendFactory {
+        private val trustManagerFactory: TrustManagerFactory,
+        private val powerManager: PowerManager) : BackendFactory {
     override val transportUriPrefix = "eas"
 
     override fun createBackend(account: Account): Backend {
@@ -21,7 +22,7 @@ class EasBackendFactory(
         val serverSettings = EasServerSettings.decode(account.storeUri)
         val deviceId = K9.getOrCreateDeviceID()
 
-        return EasBackend(backendStorage, trustManagerFactory, serverSettings, deviceId)
+        return EasBackend(backendStorage, trustManagerFactory, serverSettings, powerManager, deviceId)
     }
 
     override fun decodeStoreUri(storeUri: String): ServerSettings {

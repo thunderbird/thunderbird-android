@@ -1,6 +1,9 @@
 package com.fsck.k9.backend.eas
 
 import com.fsck.k9.backend.api.BackendStorage
+import com.fsck.k9.backend.eas.dto.Provision
+import com.fsck.k9.backend.eas.dto.ProvisionPolicies
+import com.fsck.k9.backend.eas.dto.ProvisionPolicy
 import com.fsck.k9.mail.MessagingException
 
 const val EAS_12_POLICY_TYPE = "MS-EAS-Provisioning-WBXML"
@@ -27,7 +30,9 @@ open class EasProvisionManager(private val client: EasClient, private val backen
     }
 
     private fun provisionClient() {
-        ackProvision(canProvision()).let {
+        val tempPolicyKey = canProvision()
+
+        ackProvision(tempPolicyKey).let {
             client.policyKey = it
             backendStorage.setExtraString(EXTRA_POLICY_KEY, it)
         }

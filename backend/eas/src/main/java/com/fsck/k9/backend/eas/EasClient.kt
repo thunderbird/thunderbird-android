@@ -1,11 +1,15 @@
 package com.fsck.k9.backend.eas
 
+import com.fsck.k9.backend.eas.dto.*
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.ConnectionSecurity
+import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.mail.filter.EOLConvertingOutputStream
 import com.fsck.k9.mail.ssl.TrustManagerFactory
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
+import okio.BufferedSink
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.SSLContext
@@ -25,7 +29,7 @@ open class EasClient(private val easServerSettings: EasServerSettings,
                      private val trustManagerFactory: TrustManagerFactory,
                      private val deviceId: String) {
     val logging = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.HEADERS
+        level = HttpLoggingInterceptor.Level.BODY
     }
 
     private val okHttpClient: OkHttpClient
@@ -73,20 +77,11 @@ open class EasClient(private val easServerSettings: EasServerSettings,
 
     private fun post(
             command: String,
-            payload: ByteArray,
+            body: RequestBody,
             extra: Pair<String, String>? = null,
-            isMessage: Boolean = false,
             customTimeout: Long? = null
     ): Response {
         initialize()
-
-        val body = RequestBody.create(
-                if (isMessage) {
-                    MEDIATYPE_MESSAGE
-                } else {
-                    MEDIATYPE_WBXML
-                }, payload
-        )
 
         val request = Request.Builder()
                 .url(buildUrl(command, extra))
@@ -139,44 +134,59 @@ open class EasClient(private val easServerSettings: EasServerSettings,
         }
     }
 
-    open fun sendMessage(data: ByteArray) {
-        val response = post("SendMail", data, "SaveInSent" to "T", isMessage = true)
+    open fun sendMessage(message: Message) {
+        val body = object : RequestBody() {
+            override fun contentLength() = message.calculateSize()
+            override fun contentType() = MEDIATYPE_MESSAGE
+
+            override fun writeTo(sink: BufferedSink) {
+                val msgOut = EOLConvertingOutputStream(sink.outputStream())
+                message.writeTo(msgOut)
+                msgOut.flush()
+            }
+        }
+
+        val response = post("SendMail", body, extra = "SaveInSent" to "T")
         ensureSuccessfulResponse(response)
     }
 
     open fun provision(provisionRequest: Provision): Provision {
-        val response = post("Provision", WbXmlMapper.serialize(ProvisionDTO(provisionRequest)))
+        val response = post("Provision", ProvisionDTO(provisionRequest).toWbXmlRequestBody())
         ensureSuccessfulResponse(response)
-        return WbXmlMapper.parse<ProvisionDTO>(response.body()!!.byteStream()).provision
+        return response.body()!!.parseWbXmlResponseBody<ProvisionDTO>().provision
     }
 
     open fun folderSync(folderSync: FolderSync): FolderSync {
-        val response = post("FolderSync", WbXmlMapper.serialize(
-                FolderSyncDTO(
-                        folderSync
-                )
-        ))
+        val response = post("FolderSync", FolderSyncDTO(
+                folderSync
+        ).toWbXmlRequestBody())
         ensureSuccessfulResponse(response)
 
-        return WbXmlMapper.parse<FolderSyncDTO>(response.body()!!.byteStream()).folderSync
+        return response.body()!!.parseWbXmlResponseBody<FolderSyncDTO>().folderSync
     }
 
     open fun sync(sync: Sync): Sync {
-        val response = post("Sync", WbXmlMapper.serialize(
-                SyncDTO(
-                        sync
-                )
-        ))
+        val response = post("Sync", SyncDTO(
+                sync
+        ).toWbXmlRequestBody())
         ensureSuccessfulResponse(response)
-        return WbXmlMapper.parse<SyncDTO>(response.body()!!.byteStream()).sync
+        return response.body()!!.parseWbXmlResponseBody<SyncDTO>().sync
     }
 
-    fun ping(ping: Ping, timeout: Long): PingResponse {
-        val response = post("Ping", WbXmlMapper.serialize(PingDTO(
-                ping
-        )), customTimeout = timeout)
+    open fun moveItems(moveItems: MoveItems): MoveItems {
+        val response = post("MoveItems", MoveItemsDTO(
+                moveItems
+        ).toWbXmlRequestBody())
         ensureSuccessfulResponse(response)
-        return WbXmlMapper.parse<PingResponseDTO>(response.body()!!.byteStream()).ping
+        return response.body()!!.parseWbXmlResponseBody<MoveItemsDTO>().moveItems
+    }
+
+    open fun ping(ping: Ping, timeout: Long): PingResponse {
+        val response = post("Ping", PingDTO(
+                ping
+        ).toWbXmlRequestBody(), customTimeout = timeout)
+        ensureSuccessfulResponse(response)
+        return response.body()!!.parseWbXmlResponseBody<PingResponseDTO>().ping
     }
 
     private fun ensureSuccessfulResponse(response: Response) {
@@ -186,5 +196,15 @@ open class EasClient(private val easServerSettings: EasServerSettings,
             401, 403 -> throw  AuthenticationFailedException("Client could't authenticate or authorize")
             else -> throw IOException("got status ${response.code()}")
         }
+    }
+}
+
+inline fun <reified T : Any> ResponseBody.parseWbXmlResponseBody() = WbXmlMapper.parse<T>(byteStream())
+
+fun Any.toWbXmlRequestBody() = object : RequestBody() {
+    override fun contentType() = MEDIATYPE_WBXML
+
+    override fun writeTo(sink: BufferedSink) {
+        WbXmlMapper.serialize(this@toWbXmlRequestBody, sink.outputStream())
     }
 }
