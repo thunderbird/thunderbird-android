@@ -5,6 +5,7 @@ import java.util.Date
 
 data class SyncConfig(
         val expungePolicy: ExpungePolicy,
+        val maximumPolledMessageAge: Int,
         val earliestPollDate: Date?,
         val syncRemoteDeletions: Boolean,
         val maximumAutoDownloadMessageSize: Int,

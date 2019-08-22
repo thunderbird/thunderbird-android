@@ -329,6 +329,7 @@ public class ImapSyncTest {
     private void configureSyncConfig() {
         syncConfig = new SyncConfig(
                 ExpungePolicy.MANUALLY,
+                -1,
                 null,
                 true,
                 MAXIMUM_SMALL_MESSAGE_SIZE,
@@ -348,6 +349,7 @@ public class ImapSyncTest {
     private void configureSyncConfigWithExpungePolicy(ExpungePolicy expungePolicy) {
         syncConfig = syncConfig.copy(
                 expungePolicy,
+                syncConfig.getMaximumPolledMessageAge(),
                 syncConfig.getEarliestPollDate(),
                 syncConfig.getSyncRemoteDeletions(),
                 syncConfig.getMaximumAutoDownloadMessageSize(),
@@ -358,6 +360,7 @@ public class ImapSyncTest {
     private void configureSyncConfigWithSyncRemoteDeletions(boolean syncRemoteDeletions) {
         syncConfig = syncConfig.copy(
                 syncConfig.getExpungePolicy(),
+                syncConfig.getMaximumPolledMessageAge(),
                 syncConfig.getEarliestPollDate(),
                 syncRemoteDeletions,
                 syncConfig.getMaximumAutoDownloadMessageSize(),
@@ -368,6 +371,7 @@ public class ImapSyncTest {
     private void configureSyncConfigWithSyncRemoteDeletionsAndEarliestPollDate(Date earliestPollDate) {
         syncConfig = syncConfig.copy(
                 syncConfig.getExpungePolicy(),
+                -1,
                 earliestPollDate,
                 true,
                 syncConfig.getMaximumAutoDownloadMessageSize(),

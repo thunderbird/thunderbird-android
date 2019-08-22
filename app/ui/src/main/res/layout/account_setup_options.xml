@@ -57,6 +57,12 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/account_setup_options_mail_display_count_label" />
 
+            <Spinner
+                android:id="@+id/account_message_age"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/account_settings_message_age_label" />
+
             <CheckBox
                 android:id="@+id/account_notify"
                 android:layout_width="fill_parent"

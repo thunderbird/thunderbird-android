@@ -8,6 +8,7 @@ import com.fsck.k9.mail.*
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream
 import java.io.InputStream
 import java.io.OutputStream
+import java.util.*
 import kotlin.math.min
 
 const val EXTRA_SYNC_KEY = "EXTRA_SYNC_KEY"
@@ -15,6 +16,13 @@ const val SYNC_CLASS_EMAIL = "Email"
 const val SYNC_OPTION_MIME_SUPPORT_FULL = 2
 const val SYNC_BODY_PREF_TYPE_MIME = 4
 const val SYNC_EMAIL_FLAG_STATUS_FLAG_SET = 2
+
+const val FILTER_ALL = 0
+const val FILTER_1_DAY = 1
+const val FILTER_3_DAYS = 2
+const val FILTER_1_WEEK = 3
+const val FILTER_2_WEEKS = 4
+const val FILTER_1_MONTH = 5
 
 class SyncCommand(private val client: EasClient,
                   private val provisionManager: EasProvisionManager,
@@ -25,37 +33,48 @@ class SyncCommand(private val client: EasClient,
 
         var syncKey = backendFolder.getFolderExtraString(EXTRA_SYNC_KEY) ?: INITIAL_SYNC_KEY
 
+        val filterType = when (syncConfig.maximumPolledMessageAge) {
+            0 -> FILTER_1_DAY
+            1, 2 -> FILTER_3_DAYS
+            7 -> FILTER_1_WEEK
+            14 -> FILTER_2_WEEKS
+            21, 28 -> FILTER_1_MONTH
+            else -> FILTER_ALL
+        }
+
         var messagesLoaded = 0
-        val maxMessageLoad = syncConfig.defaultVisibleLimit
 
         provisionManager.ensureProvisioned {
             if (syncKey == INITIAL_SYNC_KEY) {
                 val syncResponse = client.sync(Sync(SyncCollections(SyncCollection(
-                        "Email",
+                        SYNC_CLASS_EMAIL,
                         syncKey,
                         folderServerId))))
 
                 syncKey = syncResponse.collections!!.collection!!.syncKey!!
             }
-            while (maxMessageLoad > messagesLoaded) {
-                val syncResponse = client.sync(Sync(SyncCollections(SyncCollection(SYNC_CLASS_EMAIL,
-                        syncKey,
-                        folderServerId,
-                        1,
-                        options = SyncOptions(
-                                mimeSupport = SYNC_OPTION_MIME_SUPPORT_FULL,
-                                bodyPreference = SyncBodyPreference(SYNC_BODY_PREF_TYPE_MIME, syncConfig.maximumAutoDownloadMessageSize),
-                                filterType = 5
-                        ),
-                        getChanges = 1,
-                        windowSize = min(30, maxMessageLoad - messagesLoaded)))))
-
-                println(syncResponse)
+            while (true) {
+                val syncResponse = client.sync(Sync(SyncCollections(
+                        SyncCollection(
+                                SYNC_CLASS_EMAIL,
+                                syncKey,
+                                folderServerId,
+                                1,
+                                options = SyncOptions(
+                                        mimeSupport = SYNC_OPTION_MIME_SUPPORT_FULL,
+                                        bodyPreference = SyncBodyPreference(
+                                                SYNC_BODY_PREF_TYPE_MIME,
+                                                syncConfig.maximumAutoDownloadMessageSize),
+                                        filterType = filterType
+                                ),
+                                getChanges = 1,
+                                windowSize = 30)
+                )))
 
                 val collection = syncResponse.collections!!.collection!!
 
-                val newSyncKey = collection.syncKey!!
-                backendFolder.setFolderExtraString(EXTRA_SYNC_KEY, newSyncKey)
+                syncKey = collection.syncKey!!
+                backendFolder.setFolderExtraString(EXTRA_SYNC_KEY, syncKey)
                 val commands = collection.commands
                 if (commands != null) {
                     if (commands.add?.isNotEmpty() == true) {

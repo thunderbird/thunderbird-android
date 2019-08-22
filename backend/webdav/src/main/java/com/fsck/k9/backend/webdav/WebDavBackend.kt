@@ -37,6 +37,7 @@ class WebDavBackend(
     override val supportsCopy = true
     override val supportsUpload = true
     override val supportsTrashFolder = true
+    override val supportsSearchByVisibleLimit = true
     override val supportsSearchByDate = false
     override val isPushCapable = false
     override val isDeleteMoveToTrash = true

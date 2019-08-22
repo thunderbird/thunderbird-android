@@ -1363,11 +1363,11 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             } else if (!currentFolder.moreMessages) {
                 updateFooter(null);
             } else {
-                String message;
+                String message = null;
                 if (!currentFolder.lastCheckFailed) {
                     if (account.getDisplayCount() == 0) {
                         message = context.getString(R.string.message_list_load_more_messages_action);
-                    } else {
+                    } else if (messagingController.supportSearchByVisibleLimit(account)) {
                         message = String.format(context.getString(R.string.load_more_messages_fmt),
                                 account.getDisplayCount());
                     }

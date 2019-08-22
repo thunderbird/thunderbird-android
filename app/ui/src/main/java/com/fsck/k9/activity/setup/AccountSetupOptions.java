@@ -29,6 +29,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
 
     private Spinner mCheckFrequencyView;
 
+    private Spinner mMessageAgeView;
     private Spinner mDisplayCountView;
 
 
@@ -51,6 +52,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
         setLayout(R.layout.account_setup_options);
 
         mCheckFrequencyView = findViewById(R.id.account_check_frequency);
+        mMessageAgeView = findViewById(R.id.account_message_age);
         mDisplayCountView = findViewById(R.id.account_display_count);
         mNotifyView = findViewById(R.id.account_notify);
         mNotifySyncView = findViewById(R.id.account_notify_sync);
@@ -86,30 +88,50 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
         .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mCheckFrequencyView.setAdapter(checkFrequenciesAdapter);
 
-        SpinnerOption displayCounts[] = {
-            new SpinnerOption(10, getString(R.string.account_setup_options_mail_display_count_10)),
-            new SpinnerOption(25, getString(R.string.account_setup_options_mail_display_count_25)),
-            new SpinnerOption(50, getString(R.string.account_setup_options_mail_display_count_50)),
-            new SpinnerOption(100, getString(R.string.account_setup_options_mail_display_count_100)),
-            new SpinnerOption(250, getString(R.string.account_setup_options_mail_display_count_250)),
-            new SpinnerOption(500, getString(R.string.account_setup_options_mail_display_count_500)),
-            new SpinnerOption(1000, getString(R.string.account_setup_options_mail_display_count_1000)),
-        };
-
-        ArrayAdapter<SpinnerOption> displayCountsAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, displayCounts);
-        displayCountsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mDisplayCountView.setAdapter(displayCountsAdapter);
-
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
+
+        if (messagingController.supportSearchByVisibleLimit(mAccount)) {
+            mMessageAgeView.setVisibility(View.GONE);
+            SpinnerOption displayCounts[] = {
+                    new SpinnerOption(10, getString(R.string.account_setup_options_mail_display_count_10)),
+                    new SpinnerOption(25, getString(R.string.account_setup_options_mail_display_count_25)),
+                    new SpinnerOption(50, getString(R.string.account_setup_options_mail_display_count_50)),
+                    new SpinnerOption(100, getString(R.string.account_setup_options_mail_display_count_100)),
+                    new SpinnerOption(250, getString(R.string.account_setup_options_mail_display_count_250)),
+                    new SpinnerOption(500, getString(R.string.account_setup_options_mail_display_count_500)),
+                    new SpinnerOption(1000, getString(R.string.account_setup_options_mail_display_count_1000)),
+            };
+
+            ArrayAdapter<SpinnerOption> displayCountsAdapter = new ArrayAdapter<>(this,
+                    android.R.layout.simple_spinner_item, displayCounts);
+            displayCountsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mDisplayCountView.setAdapter(displayCountsAdapter);
+            SpinnerOption.setSpinnerOptionValue(mDisplayCountView, mAccount
+                    .getDisplayCount());
+        } else {
+            mDisplayCountView.setVisibility(View.GONE);
+            SpinnerOption displayAges[] = {
+                    new SpinnerOption(-1, getString(R.string.account_settings_message_age_any)),
+                    new SpinnerOption(0, getString(R.string.account_settings_message_age_0)),
+                    new SpinnerOption(2, getString(R.string.account_settings_message_age_2)),
+                    new SpinnerOption(7, getString(R.string.account_settings_message_age_7)),
+                    new SpinnerOption(14, getString(R.string.account_settings_message_age_14)),
+                    new SpinnerOption(28, getString(R.string.account_settings_message_age_1_month)),
+            };
+
+            ArrayAdapter<SpinnerOption> displayCountsAdapter = new ArrayAdapter<>(this,
+                    android.R.layout.simple_spinner_item, displayAges);
+            displayCountsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mMessageAgeView.setAdapter(displayCountsAdapter);
+            SpinnerOption.setSpinnerOptionValue(mDisplayCountView, mAccount
+                    .getDisplayCount());
+        }
 
         mNotifyView.setChecked(mAccount.isNotifyNewMail());
         mNotifySyncView.setChecked(mAccount.isNotifySync());
         SpinnerOption.setSpinnerOptionValue(mCheckFrequencyView, mAccount
                                             .getAutomaticCheckIntervalMinutes());
-        SpinnerOption.setSpinnerOptionValue(mDisplayCountView, mAccount
-                                            .getDisplayCount());
 
 
         boolean isPushCapable = messagingController.isPushCapable(mAccount);
@@ -128,8 +150,13 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
         mAccount.setNotifySync(mNotifySyncView.isChecked());
         mAccount.setAutomaticCheckIntervalMinutes((Integer)((SpinnerOption)mCheckFrequencyView
                 .getSelectedItem()).value);
-        mAccount.setDisplayCount((Integer)((SpinnerOption)mDisplayCountView
-                                           .getSelectedItem()).value);
+        if (messagingController.supportSearchByVisibleLimit(mAccount)) {
+            mAccount.setDisplayCount((Integer) ((SpinnerOption) mDisplayCountView
+                    .getSelectedItem()).value);
+        } else {
+            mAccount.setMaximumPolledMessageAge((Integer) ((SpinnerOption) mMessageAgeView
+                    .getSelectedItem()).value);
+        }
 
         if (mPushEnable.isChecked()) {
             mAccount.setFolderPushMode(Account.FolderMode.FIRST_CLASS);

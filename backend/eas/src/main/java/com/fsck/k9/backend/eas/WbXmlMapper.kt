@@ -9,7 +9,6 @@ import java.util.concurrent.atomic.AtomicInteger
 import kotlin.reflect.KFunction
 import kotlin.reflect.full.primaryConstructor
 
-
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FIELD, AnnotationTarget.VALUE_PARAMETER)
 annotation class Tag(val value: Int, val index: Int = 0)
@@ -124,9 +123,9 @@ object WbXmlMapper {
     }
 
     private val fieldParsers =
-            mutableMapOf<Class<*>, Pair<KFunction<*>, Map<Int, (InputStream, AtomicInteger, Array<Any?>) -> Unit>>>()
+            mutableMapOf<Class<*>, Pair<KFunction<*>, Map<Int, (InputStream, AtomicInteger, Array<Any?>, Boolean) -> Unit>>>()
 
-    private fun getFieldParsers(clazz: Class<*>): Pair<KFunction<*>, Map<Int, (InputStream, AtomicInteger, Array<Any?>) -> Unit>> {
+    private fun getFieldParsers(clazz: Class<*>): Pair<KFunction<*>, Map<Int, (InputStream, AtomicInteger, Array<Any?>, Boolean) -> Unit>> {
         var fieldParser = fieldParsers[clazz]
         if (fieldParser == null) {
             val constructor = clazz.kotlin.primaryConstructor!!
@@ -138,33 +137,48 @@ object WbXmlMapper {
                         val field = it.first
                         val tag = it.second.value
                         val index = it.second.index
-                        if (field.type == List::class.java) {
+                        val parser = if (field.type == List::class.java) {
                             val type = (field.genericType as ParameterizedType).actualTypeArguments[0] as Class<*>
                             when (type) {
                                 String::class.java -> {
-                                    tag to { input: InputStream, tagPage: AtomicInteger, params: Array<Any?> ->
+                                    { input: InputStream,
+                                      _: AtomicInteger,
+                                      params: Array<Any?>,
+                                      isEmpty: Boolean ->
                                         if (params[index] == null) {
                                             params[index] = ArrayList<String>()
                                         }
-                                        (params[index] as ArrayList<String>).add(parseString(input))
+                                        if (!isEmpty) {
+                                            (params[index] as ArrayList<String>).add(parseString(input))
+                                        }
                                         Unit
                                     }
                                 }
                                 Int::class.java, Integer::class.java -> {
-                                    tag to { input: InputStream, tagPage: AtomicInteger, params: Array<Any?> ->
+                                    { input: InputStream,
+                                      _: AtomicInteger,
+                                      params: Array<Any?>,
+                                      isEmpty: Boolean ->
                                         if (params[index] == null) {
                                             params[index] = ArrayList<Int>()
                                         }
-                                        (params[index] as ArrayList<Int>).add(parseString(input).toInt())
+                                        if (!isEmpty) {
+                                            (params[index] as ArrayList<Int>).add(parseString(input).toInt())
+                                        }
                                         Unit
                                     }
                                 }
                                 else -> {
-                                    tag to { input: InputStream, tagPage: AtomicInteger, params: Array<Any?> ->
+                                    { input: InputStream,
+                                      tagPage: AtomicInteger,
+                                      params: Array<Any?>,
+                                      isEmpty: Boolean ->
                                         if (params[index] == null) {
                                             params[index] = ArrayList<Any?>()
                                         }
-                                        (params[index] as ArrayList<Any?>).add(parseInner(input, type, tagPage))
+                                        if (!isEmpty) {
+                                            (params[index] as ArrayList<Any?>).add(parseInner(input, type, tagPage))
+                                        }
                                         Unit
                                     }
                                 }
@@ -172,19 +186,36 @@ object WbXmlMapper {
                         } else {
                             when (field.type) {
                                 String::class.java -> {
-                                    tag to { input: InputStream, tagPage: AtomicInteger, params: Array<Any?> ->
-                                        params[index] = parseString(input)
+                                    { input: InputStream,
+                                      _: AtomicInteger,
+                                      params: Array<Any?>,
+                                      isEmpty: Boolean ->
+                                        if (isEmpty) {
+                                            params[index] = ""
+                                        } else {
+                                            params[index] = parseString(input)
+                                        }
                                         Unit
                                     }
                                 }
                                 Int::class.java, Integer::class.java -> {
-                                    tag to { input: InputStream, tagPage: AtomicInteger, params: Array<Any?> ->
-                                        params[index] = parseString(input).toInt()
+                                    { input: InputStream,
+                                      _: AtomicInteger,
+                                      params: Array<Any?>,
+                                      isEmpty: Boolean ->
+                                        if (isEmpty) {
+                                            params[index] = 0
+                                        } else {
+                                            params[index] = parseString(input).toInt()
+                                        }
                                         Unit
                                     }
                                 }
-                                Boolean::class.java -> {
-                                    tag to { input: InputStream, tagPage: AtomicInteger, params: Array<Any?> ->
+                                java.lang.Boolean::class.java, Boolean::class.java -> {
+                                    { _: InputStream,
+                                      _: AtomicInteger,
+                                      params: Array<Any?>,
+                                      isEmpty: Boolean ->
                                         params[index] = true
                                         Unit
                                     }
@@ -194,19 +225,30 @@ object WbXmlMapper {
                                         val streamableElementConstructor = field.type.kotlin.primaryConstructor
                                                 as KFunction<out StreamableElement>
 
-                                        tag to { input: InputStream, tagPage: AtomicInteger, params: Array<Any?> ->
-                                            params[index] = parseStreamableElement(input, streamableElementConstructor)
+                                        { input: InputStream,
+                                          _: AtomicInteger,
+                                          params: Array<Any?>,
+                                          isEmpty: Boolean ->
+                                            if (!isEmpty) {
+                                                params[index] = parseStreamableElement(input, streamableElementConstructor)
+                                            }
                                             Unit
                                         }
                                     } else {
-                                        tag to { input: InputStream, tagPage: AtomicInteger, params: Array<Any?> ->
-                                            params[index] = parseInner(input, field.type, tagPage)
+                                        { input: InputStream,
+                                          tagPage: AtomicInteger,
+                                          params: Array<Any?>,
+                                          isEmpty: Boolean ->
+                                            if (!isEmpty) {
+                                                params[index] = parseInner(input, field.type, tagPage)
+                                            }
                                             Unit
                                         }
                                     }
                                 }
                             }
                         }
+                        tag to parser
                     }.toMap()
 
             fieldParsers[clazz] = fieldParser
@@ -348,14 +390,13 @@ object WbXmlMapper {
                     }
                     else -> {
                         val tag = id and WbXml.PAGE_MASK or tagPage.get()
-
                         if (id and WbXml.CONTENT_MASK != 0) {
                             mapping[tag]?.let { consumer ->
-                                consumer(input, tagPage, params)
+                                consumer(input, tagPage, params, false)
                             } ?: skipTag(this, tagPage)
                         } else {
                             mapping[tag]?.let { consumer ->
-                                // consumer(input, tagPage, params)
+                                consumer(input, tagPage, params, true)
                             }
                         }
                     }

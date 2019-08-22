@@ -262,9 +262,10 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                         mWebdavMailboxPathView.setText(webDavSettings.mailboxPath);
                     }
                 } else {
-                    mWebdavPathPrefixView.setVisibility(View.GONE);
-                    mWebdavAuthPathView.setVisibility(View.GONE);
-                    mWebdavMailboxPathView.setVisibility(View.GONE);
+                    findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
+                    findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
+                    findViewById(R.id.webdav_owa_path_section).setVisibility(View.GONE);
+                    findViewById(R.id.webdav_auth_path_section).setVisibility(View.GONE);
                 }
             } else {
                 throw new Exception("Unknown account type: " + mAccount.getStoreUri());

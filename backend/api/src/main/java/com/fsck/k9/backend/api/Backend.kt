@@ -20,6 +20,7 @@ interface Backend {
     val supportsUpload: Boolean
     val supportsTrashFolder: Boolean
     val supportsSearchByDate: Boolean
+    val supportsSearchByVisibleLimit: Boolean
     val isPushCapable: Boolean
     val isDeleteMoveToTrash: Boolean
 

@@ -57,7 +57,6 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingMarkAllAsRead;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveOrCopy;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag;
 import com.fsck.k9.controller.ProgressBodyFactory.ProgressListener;
-import com.fsck.k9.core.BuildConfig;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.AuthenticationFailedException;
@@ -737,6 +736,7 @@ public class MessagingController {
     private SyncConfig createSyncConfig(Account account) {
         return new SyncConfig(
                     account.getExpungePolicy().toBackendExpungePolicy(),
+                    account.getMaximumPolledMessageAge(),
                     account.getEarliestPollDate(),
                     account.isSyncRemoteDeletions(),
                     account.getMaximumAutoDownloadMessageSize(),
@@ -1845,6 +1845,10 @@ public class MessagingController {
 
     public boolean supportsExpunge(Account account) {
         return getBackend(account).getSupportsExpunge();
+    }
+
+    public boolean supportSearchByVisibleLimit(Account account) {
+        return getBackend(account).getSupportsSearchByVisibleLimit();
     }
 
     public boolean supportsSearchByDate(Account account) {

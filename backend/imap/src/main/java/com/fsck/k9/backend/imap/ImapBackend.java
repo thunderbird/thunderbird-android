@@ -93,6 +93,11 @@ public class ImapBackend implements Backend {
     }
 
     @Override
+    public boolean getSupportsSearchByVisibleLimit() {
+        return true;
+    }
+
+    @Override
     public boolean getSupportsSearchByDate() {
         return true;
     }
