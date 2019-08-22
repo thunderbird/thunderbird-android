@@ -14,6 +14,7 @@ const val EXTRA_SYNC_KEY = "EXTRA_SYNC_KEY"
 const val SYNC_CLASS_EMAIL = "Email"
 const val SYNC_OPTION_MIME_SUPPORT_FULL = 2
 const val SYNC_BODY_PREF_TYPE_MIME = 4
+const val SYNC_EMAIL_FLAG_STATUS_FLAG_SET = 2
 
 class SyncCommand(private val client: EasClient,
                   private val provisionManager: EasProvisionManager,
@@ -82,10 +83,20 @@ class SyncCommand(private val client: EasClient,
 
                     if (commands.change?.isNotEmpty() == true) {
                         for (item in commands.change) {
+                            var flagChanged = false
+
                             item.data?.emailRead?.let {
                                 backendFolder.setMessageFlag(item.serverId!!, Flag.SEEN, it == 1)
+                                flagChanged = true
+                            }
 
-                                listener.syncFlagChanged(folderServerId, item.serverId)
+                            item.data?.emailFlag?.let {
+                                backendFolder.setMessageFlag(item.serverId!!, Flag.FLAGGED, it.status == SYNC_EMAIL_FLAG_STATUS_FLAG_SET)
+                                flagChanged = true
+                            }
+
+                            if (flagChanged) {
+                                listener.syncFlagChanged(folderServerId, item.serverId!!)
                             }
                         }
                     }
@@ -96,8 +107,7 @@ class SyncCommand(private val client: EasClient,
                 }
             }
 
-            // TODO
-            listener.syncFinished(folderServerId, messagesLoaded + 10000, messagesLoaded)
+            listener.syncFinished(folderServerId, -1, messagesLoaded)
         }
     }
 
@@ -108,13 +118,17 @@ class SyncCommand(private val client: EasClient,
     }
 
     fun setFlag(folderServerId: String, messageServerIds: List<String>, flag: Flag, newState: Boolean) {
-        if (flag == Flag.SEEN) {
-            executeCommands(folderServerId, SyncCommands(
-                    change = messageServerIds.map {
-                        SyncItem(serverId = it, data = SyncData(emailRead = if (newState) 1 else 0))
-                    }
-            ))
+        val data = when (flag) {
+            Flag.SEEN -> SyncData(emailRead = if (newState) 1 else 0)
+            Flag.FLAGGED -> SyncData(emailFlag = EmailFlag(if (newState) SYNC_EMAIL_FLAG_STATUS_FLAG_SET else 0))
+            else -> return
         }
+
+        executeCommands(folderServerId, SyncCommands(
+                change = messageServerIds.map {
+                    SyncItem(serverId = it, data = data)
+                }
+        ))
     }
 
     private fun executeCommands(folderServerId: String, syncCommands: SyncCommands, deleteAsMoves: Int = 1) {
@@ -134,8 +148,6 @@ class SyncCommand(private val client: EasClient,
                     )
             ))
 
-            println(syncResponse)
-
             val newSyncKey = syncResponse.collections!!.collection!!.syncKey!!
             backendFolder.setFolderExtraString(EXTRA_SYNC_KEY, newSyncKey)
         }
@@ -151,6 +163,9 @@ fun SyncItem.extractEasMessage(folderServerId: String) = data!!.let {
         uid = serverId
         if (it.emailRead == 1) {
             setFlag(Flag.SEEN, true)
+        }
+        if (it.emailFlag?.status == SYNC_EMAIL_FLAG_STATUS_FLAG_SET) {
+            setFlag(Flag.FLAGGED, true)
         }
     }
 }

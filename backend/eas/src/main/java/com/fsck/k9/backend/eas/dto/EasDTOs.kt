@@ -59,6 +59,8 @@ data class Body(
         @field:Tag(Tags.BASE_TRUNCATED, index = 2) val truncated: Int? = null
 )
 
+data class EmailFlag(@field:Tag(Tags.EMAIL_FLAG_STATUS) val status: Int? = null)
+
 data class SyncData(
         @field:Tag(Tags.EMAIL_TO, index = 0) val emailTo: String? = null,
         @field:Tag(Tags.EMAIL_FROM, index = 1) val emailFrom: String? = null,
@@ -68,7 +70,8 @@ data class SyncData(
         @field:Tag(Tags.EMAIL_SUBJECT, index = 5) val emailSubject: String? = null,
         @field:Tag(Tags.EMAIL_READ, index = 6) val emailRead: Int? = null,
         @field:Tag(Tags.EMAIL_BODY, index = 7) val emailBody: String? = null,
-        @field:Tag(Tags.BASE_BODY, index = 8) val body: Body? = null
+        @field:Tag(Tags.EMAIL_FLAG, index = 8) val emailFlag: EmailFlag? = null,
+        @field:Tag(Tags.BASE_BODY, index = 9) val body: Body? = null
 )
 
 data class SyncItem(
