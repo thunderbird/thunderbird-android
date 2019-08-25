@@ -9,7 +9,6 @@ class MessageMoveCommand(private val client: EasClient,
                          private val provisionManager: EasProvisionManager) {
     val STATUS_OK = 3
 
-
     fun moveMessages(sourceFolderServerId: String, targetFolderServerId: String, messageServerIds: List<String>): Map<String, String> {
         return provisionManager.ensureProvisioned {
             val moveResponse = client.moveItems(MoveItems(

@@ -1847,7 +1847,7 @@ public class MessagingController {
         return getBackend(account).getSupportsExpunge();
     }
 
-    public boolean supportSearchByVisibleLimit(Account account) {
+    public boolean supportsSearchByVisibleLimit(Account account) {
         return getBackend(account).getSupportsSearchByVisibleLimit();
     }
 

@@ -91,7 +91,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
-        if (messagingController.supportSearchByVisibleLimit(mAccount)) {
+        if (messagingController.supportsSearchByVisibleLimit(mAccount)) {
             mMessageAgeView.setVisibility(View.GONE);
             SpinnerOption displayCounts[] = {
                     new SpinnerOption(10, getString(R.string.account_setup_options_mail_display_count_10)),
@@ -150,7 +150,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
         mAccount.setNotifySync(mNotifySyncView.isChecked());
         mAccount.setAutomaticCheckIntervalMinutes((Integer)((SpinnerOption)mCheckFrequencyView
                 .getSelectedItem()).value);
-        if (messagingController.supportSearchByVisibleLimit(mAccount)) {
+        if (messagingController.supportsSearchByVisibleLimit(mAccount)) {
             mAccount.setDisplayCount((Integer) ((SpinnerOption) mDisplayCountView
                     .getSelectedItem()).value);
         } else {

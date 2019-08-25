@@ -26,7 +26,7 @@ const val SUPPORTED_PROTOCOL_EX2007 = "12.0"
 const val STATUS_OK = 1
 
 open class EasClient(private val easServerSettings: EasServerSettings,
-                     private val trustManagerFactory: TrustManagerFactory,
+                     trustManagerFactory: TrustManagerFactory,
                      private val deviceId: String) {
     val logging = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY

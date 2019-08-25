@@ -14,7 +14,7 @@ class EasBackend(backendStorage: BackendStorage,
                  private val powerManager: PowerManager,
                  deviceId: String) : Backend {
     override val supportsSeenFlag = true
-    override val supportsExpunge = true
+    override val supportsExpunge = false
     override val supportsMove = true
     override val supportsCopy = false
     override val supportsUpload = false
@@ -30,8 +30,6 @@ class EasBackend(backendStorage: BackendStorage,
 
     private val folderSyncCommand = FolderSyncCommand(client, provisionManager, backendStorage)
     private val syncCommand = SyncCommand(client, provisionManager, backendStorage)
-    private val messageFetchCommand = MessageFetchCommand(client, provisionManager, backendStorage)
-    private val messageUploadCommand = MessageUploadCommand(client, provisionManager, backendStorage)
     private val messageMoveCommand = MessageMoveCommand(client, provisionManager)
     private val sendMessageCommand = MessageSendCommand(client, provisionManager)
 
@@ -48,23 +46,23 @@ class EasBackend(backendStorage: BackendStorage,
     }
 
     override fun markAllAsRead(folderServerId: String) {
-        // TODO("not implemented")
+        // not supported
     }
 
     override fun deleteMessages(folderServerId: String, messageServerIds: List<String>) {
-        syncCommand.delete(folderServerId, messageServerIds)
+        // not supported
     }
 
     override fun expungeMessages(folderServerId: String, messageServerIds: List<String>) {
-        syncCommand.delete(folderServerId, messageServerIds, exprune = true)
+        throw UnsupportedOperationException("not supported")
     }
 
     override fun deleteAllMessages(folderServerId: String) {
-        // TODO("not implemented")
+        // not supported
     }
 
     override fun expunge(folderServerId: String) {
-        // TODO("not implemented")
+        throw UnsupportedOperationException("not supported")
     }
 
     override fun moveMessages(sourceFolderServerId: String, targetFolderServerId: String, messageServerIds: List<String>): Map<String, String>? {
@@ -84,7 +82,7 @@ class EasBackend(backendStorage: BackendStorage,
     }
 
     override fun fetchMessage(folderServerId: String, messageServerId: String, fetchProfile: FetchProfile): Message {
-        return messageFetchCommand.fetch(folderServerId, messageServerId)
+        return syncCommand.fetch(folderServerId, messageServerId)
     }
 
     override fun fetchPart(folderServerId: String, messageServerId: String, part: Part, bodyFactory: BodyFactory) {
@@ -96,7 +94,7 @@ class EasBackend(backendStorage: BackendStorage,
     }
 
     override fun uploadMessage(folderServerId: String, message: Message): String? {
-        return messageUploadCommand.upload(folderServerId, message)
+        throw UnsupportedOperationException("not supported")
     }
 
     override fun createPusher(receiver: PushReceiver) = EasPusher(client, powerManager, receiver)

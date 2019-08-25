@@ -1367,7 +1367,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 if (!currentFolder.lastCheckFailed) {
                     if (account.getDisplayCount() == 0) {
                         message = context.getString(R.string.message_list_load_more_messages_action);
-                    } else if (messagingController.supportSearchByVisibleLimit(account)) {
+                    } else if (messagingController.supportsSearchByVisibleLimit(account)) {
                         message = String.format(context.getString(R.string.load_more_messages_fmt),
                                 account.getDisplayCount());
                     }

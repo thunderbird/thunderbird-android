@@ -41,8 +41,7 @@ data class FolderChange(
 data class FolderChanges(
         @field:Tag(Tags.FOLDER_ADD, index = 0) val folderAdd: List<FolderChange>? = null,
         @field:Tag(Tags.FOLDER_UPDATE, index = 2) val folderUpdate: List<FolderChange>? = null,
-        @field:Tag(Tags.FOLDER_DELETE, index = 1) val folderDelete: List<String>? = null,
-        @field:Tag(Tags.FOLDER_COUNT, index = 3) val folderCount: Int
+        @field:Tag(Tags.FOLDER_DELETE, index = 1) val folderDelete: List<String>? = null
 )
 
 data class FolderSync(
@@ -101,9 +100,10 @@ data class SyncBodyPreference(
 )
 
 data class SyncOptions(
-        @field:Tag(Tags.SYNC_MIME_SUPPORT, index = 0) val mimeSupport: Int? = null,
-        @field:Tag(Tags.BASE_BODY_PREFERENCE, index = 1) val bodyPreference: SyncBodyPreference? = null,
-        @field:Tag(Tags.SYNC_FILTER_TYPE, index = 2) val filterType: Int? = null
+        @field:Tag(Tags.SYNC_FILTER_TYPE, index = 0) val filterType: Int? = null,
+        @field:Tag(Tags.SYNC_MIME_SUPPORT, index = 1) val mimeSupport: Int? = null,
+        @field:Tag(Tags.SYNC_CONFLICT, index = 2) val conflict: Int? = null,
+        @field:Tag(Tags.BASE_BODY_PREFERENCE, index = 3) val bodyPreference: SyncBodyPreference? = null
 )
 
 data class SyncCollection(

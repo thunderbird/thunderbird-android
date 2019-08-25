@@ -25,13 +25,13 @@ class FolderSyncCommandTest {
                                 folderAdd = listOf(
                                         FolderChange("FolderAdd1", 2, null, "id1"),
                                         FolderChange("FolderAdd2", 3, null, "id2"),
-                                        FolderChange("FolderAdd3", 4, null, "id3")),
-                                folderDelete = listOf("id4", "id5"),
+                                        FolderChange("FolderAdd3", 4, null, "id3"),
+                                        FolderChange("NotMailFolder1", 8, null, "id4")),
+                                folderDelete = listOf("id5", "id6"),
                                 folderUpdate = listOf(
-                                        FolderChange("FolderChange1", 5, null, "id6"),
-                                        FolderChange("FolderChange2", 6, null, "id7"),
-                                        FolderChange("FolderChange3", 7, null, "id8")),
-                                folderCount = 8
+                                        FolderChange("FolderChange1", 5, null, "id7"),
+                                        FolderChange("FolderChange2", 6, null, "id8"),
+                                        FolderChange("NotMailFolder2", 7, null, "id9"))
                         )
                 )
         )
@@ -42,23 +42,24 @@ class FolderSyncCommandTest {
 
         cut.sync()
 
+        verify(backendStorage).getExtraString(any())
         verify(backendStorage).setExtraString("EXTRA_FOLDER_SYNC_KEY", "key1")
         verify(backendStorage).createFolders(listOf(
                 FolderInfo("id1", "FolderAdd1", Folder.FolderType.INBOX),
                 FolderInfo("id2", "FolderAdd2", Folder.FolderType.DRAFTS),
                 FolderInfo("id3", "FolderAdd3", Folder.FolderType.TRASH)
         ))
-        verify(backendStorage).deleteFolders(listOf("id4", "id5"))
-        verify(backendStorage).changeFolder("id6", "FolderChange1", Folder.FolderType.SENT)
-        verify(backendStorage).changeFolder("id7", "FolderChange2", Folder.FolderType.OUTBOX)
-        verify(backendStorage).changeFolder("id8", "FolderChange3", Folder.FolderType.REGULAR)
+        verify(backendStorage).deleteFolders(listOf("id5", "id6"))
+        verify(backendStorage).changeFolder("id7", "FolderChange1", Folder.FolderType.SENT)
+        verify(backendStorage).changeFolder("id8", "FolderChange2", Folder.FolderType.OUTBOX)
+        verifyNoMoreInteractions(backendStorage)
     }
 
     @Test
     fun folderSync_nothingToSync_shouldSyncFolders() {
         whenever(backendStorage.getExtraString("EXTRA_FOLDER_SYNC_KEY")).thenReturn("key0")
         whenever(client.folderSync(FolderSync("key0"))).thenReturn(
-                FolderSync("key1", 1, FolderChanges(folderCount = 0))
+                FolderSync("key1", 1, FolderChanges())
         )
 
         whenever(provisionManager.ensureProvisioned<(() -> Unit)>(any())).thenAnswer { (it.getArgument(0) as (() -> Unit))() }
@@ -67,7 +68,9 @@ class FolderSyncCommandTest {
 
         cut.sync()
 
+        verify(backendStorage).getExtraString(any())
         verify(backendStorage).setExtraString("EXTRA_FOLDER_SYNC_KEY", "key1")
+        verifyNoMoreInteractions(backendStorage)
     }
 
     @Test(expected = MessagingException::class)

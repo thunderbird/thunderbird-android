@@ -175,7 +175,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
     private fun initializeDisplayCount(account: Account) {
         findPreference(PREFERENCE_DISPLAY_COUNT)?.apply {
-            if (!messagingController.supportSearchByVisibleLimit(account)) {
+            if (!messagingController.supportsSearchByVisibleLimit(account)) {
                 remove()
             }
         }

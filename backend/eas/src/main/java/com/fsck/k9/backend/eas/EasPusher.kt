@@ -41,20 +41,25 @@ class EasPusher(private val client: EasClient,
                         println(folderServerIds)
                         val result = client.ping(Ping(BASE_POLL_DURATION_SEC, PingFolders(
                                 folderServerIds.map {
-                                    PingFolder("Email", it)
+                                    PingFolder(SYNC_CLASS_EMAIL, it)
                                 }
                         )), TIMEOUT_MS)
                         Timber.i("Got Ping Response")
                         println(result)
                         println(thread!!.isInterrupted)
 
+                        if(result.status != 1 && result.status != 2 ) {
+                            break
+                        }
+
                         result.pingFolders?.folderId?.forEach {
                             receiver.syncFolder(EasMessage.EasFolder(it))
                         }
-                        println("AFTER SYNC")
                     }
                 } catch (e: AuthenticationFailedException) {
                     receiver.authenticationFailed()
+                } catch (e: Exception) {
+                    receiver.pushError("Caught exception", e)
                 }
             } finally {
                 wakeLock?.release()
