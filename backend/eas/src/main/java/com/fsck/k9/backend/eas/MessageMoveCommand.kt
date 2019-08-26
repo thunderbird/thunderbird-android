@@ -4,10 +4,9 @@ import com.fsck.k9.backend.eas.dto.MoveItem
 import com.fsck.k9.backend.eas.dto.MoveItems
 import com.fsck.k9.mail.MessagingException
 
-
 class MessageMoveCommand(private val client: EasClient,
                          private val provisionManager: EasProvisionManager) {
-    val STATUS_OK = 3
+    val STATUS_SUCCESSFULLY_MOVED = 3
 
     fun moveMessages(sourceFolderServerId: String, targetFolderServerId: String, messageServerIds: List<String>): Map<String, String> {
         return provisionManager.ensureProvisioned {
@@ -21,7 +20,7 @@ class MessageMoveCommand(private val client: EasClient,
                 throw MessagingException("Couldn't move messages")
             }
 
-            moveResponse.response.filter { it.status == STATUS_OK }.map { it.srcMessageId to it.destMessageId!! }.toMap()
+            moveResponse.response.filter { it.status == STATUS_SUCCESSFULLY_MOVED }.map { it.srcMessageId to it.destMessageId!! }.toMap()
         }
     }
 }

@@ -19,7 +19,6 @@ class EasServerSettings(
         username,
         password,
         null) {
-
     companion object {
         fun encode(settings: ServerSettings) = settings.run {
             val url = HttpUrl.Builder()

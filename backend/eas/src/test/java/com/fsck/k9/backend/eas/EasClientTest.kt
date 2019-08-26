@@ -18,11 +18,12 @@ import org.junit.Before
 import org.junit.Test
 import java.io.IOException
 import java.io.OutputStream
+import java.net.SocketTimeoutException
 import java.security.KeyStore
+import java.util.concurrent.TimeUnit
 import javax.net.ssl.X509TrustManager
 
 class EasClientTest {
-
     @Before
     fun initTrustManager() {
         val tmf = javax.net.ssl.TrustManagerFactory.getInstance("X509").run {
@@ -396,5 +397,133 @@ class EasClientTest {
         val cut = EasClient(settings, trustManager, DEVICE_ID)
 
         cut.sync(Sync(SyncCollections(SyncCollection(syncKey = "key"))))
+    }
+
+    @Test
+    fun moveItems_shouldInitializeAndMoveItems() {
+        val mockServer = MockWebServer()
+
+        mockServer.enqueue(MockResponse().apply {
+            addHeader("ms-asprotocolversions", "12.0")
+        })
+
+        val expectedRequest = MoveItems()
+
+        val expectedResponse = MoveItems()
+
+        mockServer.enqueue(MockResponse().setBody(Buffer().apply {
+            WbXmlMapper.serialize(MoveItemsDTO(expectedResponse), this.outputStream())
+        }))
+
+        val url = mockServer.url("/")
+        val settings = EasServerSettings(url.host(), url.port(), ConnectionSecurity.NONE, "user", "pass")
+
+        val cut = EasClient(settings, trustManager, DEVICE_ID)
+        cut.policyKey = "8546"
+
+        val actualResponse = cut.moveItems(expectedRequest)
+
+        // Ignore "OPTIONS"
+        mockServer.takeRequest()
+
+        val request = mockServer.takeRequest()
+
+        assertEquals(request.method, "POST")
+        assertEquals(request.path, "/Microsoft-Server-ActiveSync?Cmd=MoveItems&User=user&DeviceId=DevID&DeviceType=K9")
+        assertEquals(request.getHeader("Content-Type"), "application/vnd.ms-sync.wbxml")
+        assertEquals(request.getHeader("User-Agent"), "K9/${BuildConfig.VERSION_NAME}")
+        assertEquals(request.getHeader("Authorization"), "Basic dXNlcjpwYXNz")
+        assertEquals(request.getHeader("MS-ASProtocolVersion"), "12.0")
+        assertEquals(request.getHeader("X-MS-PolicyKey"), "8546")
+
+        val actualRequest = WbXmlMapper.parse<MoveItemsDTO>(request.body.inputStream()).moveItems
+
+        assertEquals(expectedResponse, actualResponse)
+        assertEquals(expectedRequest, actualRequest)
+    }
+
+    @Test(expected = AuthenticationFailedException::class)
+    fun moveItems_cant_auth_shouldThrow() {
+        val mockServer = MockWebServer()
+
+        mockServer.enqueue(MockResponse().apply {
+            addHeader("ms-asprotocolversions", "12.0")
+        })
+
+        mockServer.enqueue(MockResponse().setResponseCode(401))
+
+        val url = mockServer.url("/")
+        val settings = EasServerSettings(url.host(), url.port(), ConnectionSecurity.NONE, "user", "pass")
+
+        val cut = EasClient(settings, trustManager, DEVICE_ID)
+
+        cut.sync(Sync(SyncCollections(SyncCollection(syncKey = "key"))))
+    }
+
+    @Test
+    fun ping_shouldInitializeAndPing() {
+        val mockServer = MockWebServer()
+
+        mockServer.enqueue(MockResponse().apply {
+            addHeader("ms-asprotocolversions", "12.0")
+        })
+
+        val expectedRequest = Ping()
+
+        val expectedResponse = PingResponse(status = 1)
+
+        mockServer.enqueue(MockResponse().setBody(Buffer().apply {
+            WbXmlMapper.serialize(PingResponseDTO(expectedResponse), this.outputStream())
+        }))
+
+        val url = mockServer.url("/")
+        val settings = EasServerSettings(url.host(), url.port(), ConnectionSecurity.NONE, "user", "pass")
+
+        val cut = EasClient(settings, trustManager, DEVICE_ID)
+        cut.policyKey = "8546"
+
+        val actualResponse = cut.ping(expectedRequest, 1000L)
+
+        // Ignore "OPTIONS"
+        mockServer.takeRequest()
+
+        val request = mockServer.takeRequest()
+
+        assertEquals(request.method, "POST")
+        assertEquals(request.path, "/Microsoft-Server-ActiveSync?Cmd=Ping&User=user&DeviceId=DevID&DeviceType=K9")
+        assertEquals(request.getHeader("Content-Type"), "application/vnd.ms-sync.wbxml")
+        assertEquals(request.getHeader("User-Agent"), "K9/${BuildConfig.VERSION_NAME}")
+        assertEquals(request.getHeader("Authorization"), "Basic dXNlcjpwYXNz")
+        assertEquals(request.getHeader("MS-ASProtocolVersion"), "12.0")
+        assertEquals(request.getHeader("X-MS-PolicyKey"), "8546")
+
+        val actualRequest = WbXmlMapper.parse<PingDTO>(request.body.inputStream()).ping
+
+        assertEquals(expectedResponse, actualResponse)
+        assertEquals(expectedRequest, actualRequest)
+    }
+
+    @Test(expected = SocketTimeoutException::class)
+    fun ping_customTimeoutExceeded_shouldThrow() {
+        val mockServer = MockWebServer()
+
+        mockServer.enqueue(MockResponse().apply {
+            addHeader("ms-asprotocolversions", "12.0")
+        })
+
+        val expectedRequest = Ping()
+
+        val expectedResponse = Ping()
+
+        mockServer.enqueue(MockResponse().setBody(Buffer().apply {
+            WbXmlMapper.serialize(PingDTO(expectedResponse), this.outputStream())
+        }).setHeadersDelay(3000L, TimeUnit.MILLISECONDS))
+
+        val url = mockServer.url("/")
+        val settings = EasServerSettings(url.host(), url.port(), ConnectionSecurity.NONE, "user", "pass")
+
+        val cut = EasClient(settings, trustManager, DEVICE_ID)
+
+        cut.ping(expectedRequest, 200L)
     }
 }

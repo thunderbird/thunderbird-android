@@ -44,6 +44,6 @@ class MessageMoveTest {
 
         val cut = MessageMoveCommand(client, provisionManager)
 
-        val result = cut.moveMessages("colSrc", "colDst", listOf("id1", "id2", "id3"))
+        cut.moveMessages("colSrc", "colDst", listOf("id1", "id2", "id3"))
     }
 }

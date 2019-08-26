@@ -9,6 +9,12 @@ import java.util.concurrent.atomic.AtomicInteger
 import kotlin.reflect.KFunction
 import kotlin.reflect.full.primaryConstructor
 
+/**
+ * Used to annotate a field of a `data class` as a WbXml element.
+ * @param value contains the Tag
+ * @param index orders the properties. A field annotated with index `0` would be the first property,
+ * the first constructor parameter and the first inner element in the outer element
+ */
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FIELD, AnnotationTarget.VALUE_PARAMETER)
 annotation class Tag(val value: Int, val index: Int = 0)
@@ -18,10 +24,14 @@ interface StreamableElement {
     fun writeToStream(outputStream: OutputStream)
 }
 
+/**
+ * Converts a Kotlin `data class` instance to a WbXml @see (WAP Binary XML Content Format)[https://www.w3.org/TR/wbxml/]
+ * document and vice versa.
+ */
 object WbXmlMapper {
-    private val fieldSerializers = mutableMapOf<Class<*>, List<(Any, OutputStream, AtomicInteger) -> Unit>>()
-
     const val EOL = -1
+
+    private val fieldSerializers = mutableMapOf<Class<*>, List<(Any, OutputStream, AtomicInteger) -> Unit>>()
 
     private fun getFieldSerializers(clazz: Class<*>): List<(Any, OutputStream, AtomicInteger) -> Unit> {
         var serializer = fieldSerializers[clazz]
@@ -125,6 +135,11 @@ object WbXmlMapper {
     private val fieldParsers =
             mutableMapOf<Class<*>, Pair<KFunction<*>, Map<Int, (InputStream, AtomicInteger, Array<Any?>, Boolean) -> Unit>>>()
 
+    /**
+     * @return [Pair] of, first the constructor to build the `data class` instance from the parsed inner elements,
+     * second [Map] of Tag to function which takes the [InputStream], the current tag page ,
+     * array holding the inner elements, boolean if the tag is empty
+     */
     private fun getFieldParsers(clazz: Class<*>): Pair<KFunction<*>, Map<Int, (InputStream, AtomicInteger, Array<Any?>, Boolean) -> Unit>> {
         var fieldParser = fieldParsers[clazz]
         if (fieldParser == null) {
@@ -149,6 +164,7 @@ object WbXmlMapper {
                                             params[index] = ArrayList<String>()
                                         }
                                         if (!isEmpty) {
+                                            @Suppress("UNCHECKED_CAST")
                                             (params[index] as ArrayList<String>).add(parseString(input))
                                         }
                                         Unit
@@ -163,6 +179,7 @@ object WbXmlMapper {
                                             params[index] = ArrayList<Int>()
                                         }
                                         if (!isEmpty) {
+                                            @Suppress("UNCHECKED_CAST")
                                             (params[index] as ArrayList<Int>).add(parseString(input).toInt())
                                         }
                                         Unit
@@ -177,6 +194,7 @@ object WbXmlMapper {
                                             params[index] = ArrayList<Any?>()
                                         }
                                         if (!isEmpty) {
+                                            @Suppress("UNCHECKED_CAST")
                                             (params[index] as ArrayList<Any?>).add(parseInner(input, type, tagPage))
                                         }
                                         Unit
@@ -215,15 +233,16 @@ object WbXmlMapper {
                                     { _: InputStream,
                                       _: AtomicInteger,
                                       params: Array<Any?>,
-                                      isEmpty: Boolean ->
+                                      _: Boolean ->
                                         params[index] = true
                                         Unit
                                     }
                                 }
                                 else -> {
                                     if (StreamableElement::class.java.isAssignableFrom(field.type)) {
+                                        @Suppress("UNCHECKED_CAST")
                                         val streamableElementConstructor = field.type.kotlin.primaryConstructor
-                                                as KFunction<out StreamableElement>
+                                                as KFunction<StreamableElement>
 
                                         { input: InputStream,
                                           _: AtomicInteger,
@@ -372,6 +391,7 @@ object WbXmlMapper {
                     }
                     WbXml.END -> {
                         //try {
+                        @Suppress("UNCHECKED_CAST")
                         return constructor.call(*params) as T
                         //} catch (e: Exception) {
                         //   IOException("Required Element missing")
@@ -382,6 +402,7 @@ object WbXmlMapper {
                     }
                     EOL -> {
                         // try {
+                        @Suppress("UNCHECKED_CAST")
                         return constructor.call(*params) as T
                         // } catch (e: Exception) {
                         //    IOException("Required Element missing")

@@ -105,7 +105,7 @@ public class AccountSetupAccountType extends K9Activity implements OnClickListen
                 setupStoreAndSmtpTransport(Protocols.IMAP, "imap+ssl+");
             } else if (id == R.id.webdav) {
                 setupExchange(false);
-            }else if (id == R.id.eas) {
+            } else if (id == R.id.eas) {
                 setupExchange(true);
             }
         } catch (Exception ex) {

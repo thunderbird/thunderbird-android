@@ -27,7 +27,6 @@ const val FILTER_1_MONTH = 5
 class SyncCommand(private val client: EasClient,
                   private val provisionManager: EasProvisionManager,
                   private val backendStorage: BackendStorage) {
-
     fun setFlag(folderServerId: String, messageServerIds: List<String>, flag: Flag, newState: Boolean) {
         val data = when (flag) {
             Flag.SEEN -> SyncData(emailRead = if (newState) 1 else 0)

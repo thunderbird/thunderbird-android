@@ -9,6 +9,5 @@ public class WbXml {
 
     public static final int SWITCH_PAGE = 0;
     public static final int END = 1;
-    public static final int ENTITY = 2;
     public static final int STR_I = 3;
 }

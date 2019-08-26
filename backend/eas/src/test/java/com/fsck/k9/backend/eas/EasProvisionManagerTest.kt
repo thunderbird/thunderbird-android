@@ -10,7 +10,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class EasProvisionManagerTest {
-
     private val backendStorage = mock<BackendStorage>()
     private val client = mock<EasClient>()
 

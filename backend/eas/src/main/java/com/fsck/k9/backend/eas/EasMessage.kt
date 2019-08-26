@@ -17,67 +17,67 @@ class EasMessage : MimeMessage() {
         override fun close() {}
 
         override fun isOpen(): Boolean {
-            TODO("not implemented")
+            throw NotImplementedError()
         }
 
         override fun getMode(): Int {
-            TODO("not implemented")
+            throw NotImplementedError()
         }
 
         override fun create(): Boolean {
-            TODO("not implemented")
+            throw NotImplementedError()
         }
 
         override fun exists(): Boolean {
-            TODO("not implemented")
+            throw NotImplementedError()
         }
 
         override fun getMessageCount(): Int {
-            TODO("not implemented")
+            throw NotImplementedError()
         }
 
         override fun getUnreadMessageCount(): Int {
-            TODO("not implemented")
+            throw NotImplementedError()
         }
 
         override fun getFlaggedMessageCount(): Int {
-            TODO("not implemented")
+            throw NotImplementedError()
         }
 
         override fun getMessage(uid: String?): EasMessage {
-            TODO("not implemented")
+            throw NotImplementedError()
         }
 
         override fun getMessages(start: Int, end: Int, earliestDate: Date?, listener: MessageRetrievalListener<EasMessage>?): MutableList<EasMessage> {
-            TODO("not implemented")
+            throw NotImplementedError()
         }
 
         override fun areMoreMessagesAvailable(indexOfOldestMessage: Int, earliestDate: Date?): Boolean {
-            TODO("not implemented")
+            throw NotImplementedError()
         }
 
         override fun appendMessages(messages: MutableList<out Message>?): MutableMap<String, String> {
-            TODO("not implemented")
+            throw NotImplementedError()
         }
 
         override fun setFlags(messages: MutableList<out Message>?, flags: MutableSet<Flag>?, value: Boolean) {
-            TODO("not implemented")
+            throw NotImplementedError()
         }
 
         override fun setFlags(flags: MutableSet<Flag>?, value: Boolean) {
-            TODO("not implemented")
+            throw NotImplementedError()
         }
 
         override fun getUidFromMessageId(messageId: String?): String {
-            TODO("not implemented")
+            throw NotImplementedError()
         }
 
         override fun fetch(messages: MutableList<EasMessage>?, fp: FetchProfile?, listener: MessageRetrievalListener<EasMessage>?) {
-            TODO("not implemented")
+            throw NotImplementedError()
         }
 
         override fun getName(): String {
-            TODO("not implemented")
+            throw NotImplementedError()
         }
     }
 }

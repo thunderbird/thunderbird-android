@@ -10,7 +10,6 @@ import com.fsck.k9.mail.MessagingException
 class FolderSyncCommand(private val client: EasClient,
                         private val provisionManager: EasProvisionManager,
                         private val backendStorage: BackendStorage) {
-
     val EXTRA_FOLDER_SYNC_KEY = "EXTRA_FOLDER_SYNC_KEY"
 
     val FOLDER_TYPE_GENERIC = 1

@@ -1,10 +1,7 @@
 package com.fsck.k9.backend.eas
 
 import com.fsck.k9.backend.eas.dto.*
-import com.fsck.k9.mail.AuthenticationFailedException
-import com.fsck.k9.mail.ConnectionSecurity
-import com.fsck.k9.mail.Message
-import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.mail.*
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream
 import com.fsck.k9.mail.ssl.TrustManagerFactory
 import okhttp3.*
@@ -14,9 +11,6 @@ import java.io.IOException
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.SSLContext
 
-
-class UnprovisionedException : MessagingException("Server requires client (re-)provision")
-
 val MEDIATYPE_MESSAGE = MediaType.parse("message/rfc822")
 val MEDIATYPE_WBXML = MediaType.parse("application/vnd.ms-sync.wbxml")
 const val DEVICE_TYPE = "K9"
@@ -25,12 +19,11 @@ const val SUPPORTED_PROTOCOL_EX2007 = "12.0"
 
 const val STATUS_OK = 1
 
+class UnprovisionedException : MessagingException("Server requires client (re-)provision")
+
 open class EasClient(private val easServerSettings: EasServerSettings,
                      trustManagerFactory: TrustManagerFactory,
                      private val deviceId: String) {
-    val logging = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
-    }
 
     private val okHttpClient: OkHttpClient
 
@@ -49,10 +42,14 @@ open class EasClient(private val easServerSettings: EasServerSettings,
         val sslContext = SSLContext.getInstance("TLS")
         sslContext.init(null, arrayOf(x509TrustManager), null)
 
-        okHttpClient = OkHttpClient.Builder()
-                .addInterceptor(logging)
-                .sslSocketFactory(sslContext.socketFactory!!, x509TrustManager)
-                .build()
+        okHttpClient = OkHttpClient.Builder().apply {
+            if (K9MailLib.isDebug()) {
+                addInterceptor(HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.BODY
+                })
+            }
+            sslSocketFactory(sslContext.socketFactory!!, x509TrustManager)
+        }.build()
     }
 
     private fun buildUrl(command: String, extra: Pair<String, String>? = null) = easServerSettings.run {
@@ -95,7 +92,7 @@ open class EasClient(private val easServerSettings: EasServerSettings,
 
         val client = if (customTimeout != null) {
             okHttpClient.newBuilder()
-                    .readTimeout(customTimeout, TimeUnit.SECONDS)
+                    .readTimeout(customTimeout, TimeUnit.MILLISECONDS)
                     .build()
         } else {
             okHttpClient
@@ -110,7 +107,7 @@ open class EasClient(private val easServerSettings: EasServerSettings,
         }
     }
 
-    fun options() {
+    private fun options() {
         val request = Request.Builder()
                 .url(buildUrl("OPTIONS"))
                 .method("OPTIONS", null)
@@ -120,13 +117,13 @@ open class EasClient(private val easServerSettings: EasServerSettings,
         val response = okHttpClient.newCall(request).execute()
         ensureSuccessfulResponse(response)
 
-        val versions =
-                response.header("ms-asprotocolversions", null) ?: throw MessagingException("versions header missing")
+        val versions = response.header("ms-asprotocolversions", null)
+                ?: throw MessagingException("versions header missing")
         selectProtocolVersion(versions)
     }
 
-    private fun selectProtocolVersion(versions: String) {
-        val versions = versions.split(",")
+    private fun selectProtocolVersion(versionsHeaderValue: String) {
+        val versions = versionsHeaderValue.split(",")
 
         serverVersion = when {
             versions.contains(SUPPORTED_PROTOCOL_EX2007) -> SUPPORTED_PROTOCOL_EX2007
