@@ -1,8 +1,9 @@
 package com.fsck.k9.backend.eas
 
+import java.util.Date
+
 import com.fsck.k9.mail.*
 import com.fsck.k9.mail.internet.MimeMessage
-import java.util.Date
 
 class EasMessage : MimeMessage() {
     fun setFolderServerId(folderServerId: String) {

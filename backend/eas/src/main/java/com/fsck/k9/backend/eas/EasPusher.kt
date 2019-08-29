@@ -1,5 +1,7 @@
 package com.fsck.k9.backend.eas
 
+import timber.log.Timber
+
 import com.fsck.k9.backend.eas.dto.Ping
 import com.fsck.k9.backend.eas.dto.PingFolder
 import com.fsck.k9.backend.eas.dto.PingFolders
@@ -8,7 +10,6 @@ import com.fsck.k9.mail.power.PowerManager
 import com.fsck.k9.mail.PushReceiver
 import com.fsck.k9.mail.Pusher
 import com.fsck.k9.mail.power.WakeLock
-import timber.log.Timber
 
 class EasPusher(private val client: EasClient,
                 private val powerManager: PowerManager,

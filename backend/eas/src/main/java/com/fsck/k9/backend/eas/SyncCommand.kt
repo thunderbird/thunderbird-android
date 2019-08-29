@@ -1,15 +1,17 @@
 package com.fsck.k9.backend.eas
 
+import java.io.InputStream
+import java.io.OutputStream
+
 import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncListener
 import com.fsck.k9.backend.eas.dto.*
-import com.fsck.k9.backend.eas.dto.Body
-import com.fsck.k9.mail.*
+import com.fsck.k9.mail.Flag
+import com.fsck.k9.mail.Message
+import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream
-import java.io.InputStream
-import java.io.OutputStream
 
 const val EXTRA_SYNC_KEY = "EXTRA_SYNC_KEY"
 const val SYNC_CLASS_EMAIL = "Email"

@@ -1,15 +1,17 @@
 package com.fsck.k9.backend.eas
 
+import java.io.IOException
+import java.util.concurrent.TimeUnit
+import javax.net.ssl.SSLContext
+
+import okhttp3.*
+import okhttp3.logging.HttpLoggingInterceptor
+import okio.BufferedSink
+
 import com.fsck.k9.backend.eas.dto.*
 import com.fsck.k9.mail.*
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream
 import com.fsck.k9.mail.ssl.TrustManagerFactory
-import okhttp3.*
-import okhttp3.logging.HttpLoggingInterceptor
-import okio.BufferedSink
-import java.io.IOException
-import java.util.concurrent.TimeUnit
-import javax.net.ssl.SSLContext
 
 val MEDIATYPE_MESSAGE = MediaType.parse("message/rfc822")
 val MEDIATYPE_WBXML = MediaType.parse("application/vnd.ms-sync.wbxml")

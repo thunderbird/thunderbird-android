@@ -1,10 +1,11 @@
 package com.fsck.k9.backend.eas
 
+import okhttp3.HttpUrl
+
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.helper.UrlEncodingHelper.decodeUtf8
 import com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8
-import okhttp3.HttpUrl
 
 class EasServerSettings(
         host: String,
