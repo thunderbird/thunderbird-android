@@ -24,6 +24,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -44,6 +45,7 @@ import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.ui.R;
+import com.fsck.k9.ui.folders.FolderIconProvider;
 import com.fsck.k9.ui.helper.SizeFormatter;
 import timber.log.Timber;
 
@@ -442,6 +444,7 @@ public class FolderList extends K9ListActivity {
         private List<FolderInfoHolder> mFolders = new ArrayList<>();
         private List<FolderInfoHolder> mFilteredFolders = Collections.unmodifiableList(mFolders);
         private Filter mFilter = new FolderListFilter();
+        private FolderIconProvider folderIconProvider = new FolderIconProvider(getTheme());
 
         public Object getItem(long position) {
             return getItem((int)position);
@@ -591,7 +594,7 @@ public class FolderList extends K9ListActivity {
             if (holder == null) {
                 holder = new FolderViewHolder();
                 holder.folderName = view.findViewById(R.id.folder_name);
-                holder.chip = view.findViewById(R.id.chip);
+                holder.folderIcon = view.findViewById(R.id.folder_icon);
                 holder.folderListItemLayout = view.findViewById(R.id.folder_list_item_layout);
                 holder.folderServerId = folder.serverId;
 
@@ -603,8 +606,7 @@ public class FolderList extends K9ListActivity {
             }
 
             holder.folderName.setText(folder.displayName);
-            holder.chip.setBackgroundColor(account.getChipColor());
-
+            holder.folderIcon.setImageResource(folderIconProvider.getFolderIcon(folder.folder.getType()));
 
             fontSizes.setViewTextSize(holder.folderName, fontSizes.getFolderName());
 
@@ -712,7 +714,7 @@ public class FolderList extends K9ListActivity {
     static class FolderViewHolder {
         public TextView folderName;
         public String folderServerId;
-        public View chip;
+        public ImageView folderIcon;
         public LinearLayout folderListItemLayout;
     }
 }

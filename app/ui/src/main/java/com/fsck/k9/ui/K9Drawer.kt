@@ -17,7 +17,7 @@ import com.fsck.k9.activity.MessageList
 import com.fsck.k9.helper.Contacts
 import com.fsck.k9.mailstore.DisplayFolder
 import com.fsck.k9.mailstore.Folder
-import com.fsck.k9.mailstore.FolderType
+import com.fsck.k9.ui.folders.FolderIconProvider
 import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.folders.FoldersLiveData
 import com.fsck.k9.ui.messagelist.MessageListViewModel
@@ -44,15 +44,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
     private val drawer: Drawer
     private val accountHeader: AccountHeader
     private val headerItemCount = 1
-
-    private var iconFolderInboxResId: Int = 0
-    private var iconFolderOutboxResId: Int = 0
-    private var iconFolderSentResId: Int = 0
-    private var iconFolderTrashResId: Int = 0
-    private var iconFolderDraftsResId: Int = 0
-    private var iconFolderArchiveResId: Int = 0
-    private var iconFolderSpamResId: Int = 0
-    private var iconFolderResId: Int = 0
+    private val folderIconProvider: FolderIconProvider = FolderIconProvider(parent.theme)
 
     private val userFolderDrawerIds = ArrayList<Long>()
     private var unifiedInboxSelected: Boolean = false
@@ -71,8 +63,6 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
         get() = drawer.isDrawerOpen
 
     init {
-        initializeFolderIcons()
-
         accountHeader = buildAccountHeader()
 
         drawer = DrawerBuilder()
@@ -153,7 +143,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
         drawer.addItems(DividerDrawerItem(),
                 PrimaryDrawerItem()
                         .withName(R.string.folders_action)
-                        .withIcon(iconFolderResId)
+                        .withIcon(folderIconProvider.iconFolderResId)
                         .withIdentifier(DRAWER_ID_FOLDERS)
                         .withSelectable(false),
                 PrimaryDrawerItem()
@@ -164,17 +154,6 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
         )
     }
 
-    private fun initializeFolderIcons() {
-        iconFolderInboxResId = getResId(R.attr.iconFolderInbox)
-        iconFolderOutboxResId = getResId(R.attr.iconFolderOutbox)
-        iconFolderSentResId = getResId(R.attr.iconFolderSent)
-        iconFolderTrashResId = getResId(R.attr.iconFolderTrash)
-        iconFolderDraftsResId = getResId(R.attr.iconFolderDrafts)
-        iconFolderArchiveResId = getResId(R.attr.iconFolderArchive)
-        iconFolderSpamResId = getResId(R.attr.iconFolderSpam)
-        iconFolderResId = getResId(R.attr.iconFolder)
-    }
-
     private fun getResId(resAttribute: Int): Int {
         val typedValue = TypedValue()
         val found = parent.theme.resolveAttribute(resAttribute, typedValue, true)
@@ -182,17 +161,6 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
             throw AssertionError("Couldn't find resource with attribute $resAttribute")
         }
         return typedValue.resourceId
-    }
-
-    private fun getFolderIcon(folder: Folder): Int = when (folder.type) {
-        FolderType.INBOX -> iconFolderInboxResId
-        FolderType.OUTBOX -> iconFolderOutboxResId
-        FolderType.SENT -> iconFolderSentResId
-        FolderType.TRASH -> iconFolderTrashResId
-        FolderType.DRAFTS -> iconFolderDraftsResId
-        FolderType.ARCHIVE -> iconFolderArchiveResId
-        FolderType.SPAM -> iconFolderSpamResId
-        else -> iconFolderResId
     }
 
     private fun getFolderDisplayName(folder: Folder): String {
@@ -252,7 +220,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
             val drawerId = folder.id shl DRAWER_FOLDER_SHIFT
 
             val drawerItem = PrimaryDrawerItem()
-                    .withIcon(getFolderIcon(folder))
+                    .withIcon(folderIconProvider.getFolderIcon(folder.type))
                     .withIdentifier(drawerId)
                     .withTag(folder)
                     .withName(getFolderDisplayName(folder))
