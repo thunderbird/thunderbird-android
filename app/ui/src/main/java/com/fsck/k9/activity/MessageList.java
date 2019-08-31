@@ -53,6 +53,7 @@ import com.fsck.k9.search.SearchSpecification;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.SearchField;
+import com.fsck.k9.ui.BuildConfig;
 import com.fsck.k9.ui.K9Drawer;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.Theme;
@@ -437,10 +438,15 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
                 Bundle appData = intent.getBundleExtra(SearchManager.APP_DATA);
                 if (appData != null) {
-                    search.addAccountUuid(appData.getString(EXTRA_SEARCH_ACCOUNT));
-                    // searches started from a folder list activity will provide an account, but no folder
-                    if (appData.getString(EXTRA_SEARCH_FOLDER) != null) {
-                        search.addAllowedFolder(appData.getString(EXTRA_SEARCH_FOLDER));
+                    String searchAccountUuid = appData.getString(EXTRA_SEARCH_ACCOUNT);
+                    if (searchAccountUuid != null) {
+                        search.addAccountUuid(searchAccountUuid);
+                        // searches started from a folder list activity will provide an account, but no folder
+                        if (appData.getString(EXTRA_SEARCH_FOLDER) != null) {
+                            search.addAllowedFolder(appData.getString(EXTRA_SEARCH_FOLDER));
+                        }
+                    } else if (BuildConfig.DEBUG) {
+                        throw new AssertionError("Invalid app data in search intent");
                     }
                 } else {
                     search.addAccountUuid(LocalSearch.ALL_ACCOUNTS);
@@ -466,14 +472,22 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         }
 
         if (search == null) {
-            // We've most likely been started by an old unread widget
             String accountUuid = intent.getStringExtra("account");
-            String folderServerId = intent.getStringExtra("folder");
+            if (accountUuid != null) {
+                // We've most likely been started by an old unread widget
+                String folderServerId = intent.getStringExtra("folder");
 
-            search = new LocalSearch(folderServerId);
-            search.addAccountUuid((accountUuid == null) ? "invalid" : accountUuid);
-            if (folderServerId != null) {
-                search.addAllowedFolder(folderServerId);
+                search = new LocalSearch(folderServerId);
+                search.addAccountUuid(accountUuid);
+                if (folderServerId != null) {
+                    search.addAllowedFolder(folderServerId);
+                }
+            } else {
+                if (BuildConfig.DEBUG) {
+                    throw new AssertionError("MessageList started without required extras");
+                }
+
+                search = SearchAccount.createUnifiedInboxAccount().getRelatedSearch();
             }
         }
 
