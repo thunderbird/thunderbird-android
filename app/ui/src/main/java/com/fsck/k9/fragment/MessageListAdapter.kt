@@ -17,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CursorAdapter
 import android.widget.TextView
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
 
 import com.fsck.k9.Account
@@ -190,7 +191,10 @@ class MessageListAdapter internal constructor(
         val uniqueId = cursor.getLong(uniqueIdColumn)
         val selected = selected.contains(uniqueId)
 
-        holder.chip.setBackgroundColor(account.chipColor)
+        val accountChipDrawable = holder.chip.drawable.mutate()
+        DrawableCompat.setTint(accountChipDrawable, account.chipColor)
+        holder.chip.setImageDrawable(accountChipDrawable)
+
         if (appearance.stars) {
             holder.flagged.isChecked = flagged
         }

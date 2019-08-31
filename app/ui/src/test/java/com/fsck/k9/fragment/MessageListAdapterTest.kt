@@ -18,7 +18,6 @@ import com.fsck.k9.FontSizes.FONT_DEFAULT
 import com.fsck.k9.FontSizes.LARGE
 import com.fsck.k9.Preferences
 import com.fsck.k9.RobolectricTest
-import com.fsck.k9.backgroundColor
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mail.Address
@@ -46,7 +45,6 @@ import org.robolectric.RuntimeEnvironment
 
 private const val SOME_ACCOUNT_UUID = "6b84207b-25de-4dab-97c3-953bbf03fec6"
 private const val DISPLAY_NAME = "Display Name"
-private const val SOME_CHIP_COLOR = 0x00ff0000
 private const val FIRST_LINE_DEFAULT_FONT_SIZE = 18f
 private const val SECOND_LINE_DEFAULT_FONT_SIZE = 14f
 private const val DATE_DEFAULT_FONT_SIZE = 14f
@@ -64,16 +62,6 @@ class MessageListAdapterTest : RobolectricTest() {
     val contactsPictureLoader: ContactPictureLoader = mock()
     val listItemListener: MessageListItemActionListener = mock()
 
-
-    @Test
-    fun accountChipShouldHaveAccountColorAsBackgroundColor() {
-        testAccount.chipColor = SOME_CHIP_COLOR
-        val adapter = createAdapter()
-
-        val view = adapter.createAndBindView()
-
-        assertEquals(SOME_CHIP_COLOR, view.accountChipView.backgroundColor)
-    }
 
     @Test
     fun withoutStars_shouldHideStarCheckBox() {
@@ -524,7 +512,6 @@ class MessageListAdapterTest : RobolectricTest() {
 
     fun secondLine(senderOrSubject: String, preview: String)= "$senderOrSubject $preview"
 
-    val View.accountChipView: View get() = findViewById(R.id.chip)
     val View.starView: CheckBox get() = findViewById(R.id.star)
     val View.contactPictureView: ContactBadge get() = findViewById(R.id.contact_badge)
     val View.threadCountView: TextView get() = findViewById(R.id.thread_count)

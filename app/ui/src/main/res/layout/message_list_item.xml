@@ -7,23 +7,15 @@
               android:layout_gravity="center_vertical"
         >
 
-    <View
-            android:id="@+id/chip"
-            android:adjustViewBounds="false"
-            android:layout_height="match_parent"
-            android:layout_width="8dip"
-            android:layout_marginRight="4dp"
-            />
-
     <com.fsck.k9.ui.ContactBadge
             android:id="@+id/contact_badge"
-            android:layout_marginRight="8dip"
+            android:layout_marginRight="16dp"
             android:layout_marginTop="4dip"
             android:layout_marginBottom="3dip"
             android:layout_height="40dip"
             android:layout_width="40dip"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="4dp"
+            android:layout_marginLeft="16dp"
             tools:src="@drawable/ic_contact_picture"
             android:background="@android:color/transparent"/>
 
@@ -73,6 +65,14 @@
                 android:layout_alignParentTop="true"
                 android:layout_toLeftOf="@+id/attachment"
                 android:layout_toRightOf="@+id/status">
+
+            <ImageView
+                android:id="@+id/account_color_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="4dp"
+                android:src="@drawable/ic_account_color" />
 
             <TextView
                     android:id="@+id/subject"

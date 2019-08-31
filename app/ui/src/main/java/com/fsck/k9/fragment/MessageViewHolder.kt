@@ -20,7 +20,7 @@ class MessageViewHolder(
     val subject: TextView = view.findViewById(R.id.subject)
     val preview: TextView = view.findViewById(R.id.preview)
     val date: TextView = view.findViewById(R.id.date)
-    val chip: View = view.findViewById(R.id.chip)
+    val chip: ImageView = view.findViewById(R.id.account_color_chip)
     val threadCount: TextView = view.findViewById(R.id.thread_count)
     val flagged: CheckBox = view.findViewById(R.id.star)
     val attachment: ImageView = view.findViewById(R.id.attachment)
