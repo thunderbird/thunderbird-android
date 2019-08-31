@@ -4,7 +4,10 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
+import com.bumptech.glide.load.Key
+import com.bumptech.glide.signature.StringSignature
 import com.fsck.k9.mail.Address
+import com.fsck.k9.ui.helper.MaterialColors
 
 /**
  * Draw a `Bitmap` containing the "contact letter" obtained by [ContactLetterExtractor].
@@ -45,22 +48,54 @@ class ContactLetterBitmapCreator(
         }
 
         val hash = address.hashCode()
-        val colorIndex = (hash and Integer.MAX_VALUE) % BACKGROUND_COLORS.size
-        return BACKGROUND_COLORS[colorIndex]
+        if (config.useDarkTheme) {
+            val colorIndex = (hash and Integer.MAX_VALUE) % BACKGROUND_COLORS_DARK.size
+            return BACKGROUND_COLORS_DARK[colorIndex]
+        } else {
+            val colorIndex = (hash and Integer.MAX_VALUE) % BACKGROUND_COLORS_LIGHT.size
+            return BACKGROUND_COLORS_LIGHT[colorIndex]
+        }
+    }
+
+    fun signatureOf(address: Address): Key {
+        val letter = letterExtractor.extractContactLetter(address)
+        val backgroundColor = calcUnknownContactColor(address)
+        return StringSignature(letter + backgroundColor)
     }
 
     companion object {
-        private val BACKGROUND_COLORS = intArrayOf(
-                0xff33B5E5L.toInt(),
-                0xffAA66CCL.toInt(),
-                0xff99CC00L.toInt(),
-                0xffFFBB33L.toInt(),
-                0xffFF4444L.toInt(),
-                0xff0099CCL.toInt(),
-                0xff9933CCL.toInt(),
-                0xff669900L.toInt(),
-                0xffFF8800L.toInt(),
-                0xffCC0000L.toInt()
-        )
+        private val BACKGROUND_COLORS_LIGHT = intArrayOf(
+                MaterialColors.RED_300,
+                MaterialColors.DEEP_PURPLE_300,
+                MaterialColors.LIGHT_BLUE_300,
+                MaterialColors.GREEN_300,
+                MaterialColors.DEEP_ORANGE_300,
+                MaterialColors.BLUE_GREY_300,
+                MaterialColors.PINK_300,
+                MaterialColors.INDIGO_300,
+                MaterialColors.CYAN_300,
+                MaterialColors.AMBER_400,
+                MaterialColors.BROWN_300,
+                MaterialColors.PURPLE_300,
+                MaterialColors.BLUE_300,
+                MaterialColors.TEAL_300,
+                MaterialColors.ORANGE_400)
+
+        private val BACKGROUND_COLORS_DARK = intArrayOf(
+                MaterialColors.RED_600,
+                MaterialColors.DEEP_PURPLE_600,
+                MaterialColors.LIGHT_BLUE_600,
+                MaterialColors.GREEN_600,
+                MaterialColors.DEEP_ORANGE_600,
+                MaterialColors.BLUE_GREY_600,
+                MaterialColors.PINK_600,
+                MaterialColors.INDIGO_600,
+                MaterialColors.CYAN_600,
+                MaterialColors.AMBER_600,
+                MaterialColors.BROWN_600,
+                MaterialColors.PURPLE_600,
+                MaterialColors.BLUE_600,
+                MaterialColors.TEAL_600,
+                MaterialColors.ORANGE_600)
     }
 }
