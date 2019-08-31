@@ -76,45 +76,6 @@ class MessageListAdapterTest : RobolectricTest() {
     }
 
     @Test
-    fun withoutCheckboxes_shouldHideSelectionCheckbox() {
-        val adapter = createAdapter(checkboxes = false)
-
-        val view = adapter.createAndBindView()
-
-        assertTrue(view.selectionCheckBoxContainer.isGone)
-    }
-
-    @Test
-    fun withCheckboxes_shouldShowSelectionCheckbox() {
-        val adapter = createAdapter(checkboxes = true)
-
-        val view = adapter.createAndBindView()
-
-        assertTrue(view.selectionCheckBoxContainer.isVisible)
-    }
-
-    @Test
-    fun withCheckboxesAndMessageSelected_shouldCheckSelectionCheckBox() {
-        val cursor = createCursor(id = 23)
-        val adapter = createAdapter(checkboxes = true)
-        adapter.selected = setOf(23)
-
-        val view = adapter.createAndBindView(cursor)
-
-        assertTrue(view.selectionCheckBox.isChecked)
-    }
-
-    @Test
-    fun withCheckboxesAndMessageNotSelected_shouldNotCheckSelectionCheckBox() {
-        val adapter = createAdapter(checkboxes = true)
-        val cursor = createCursor(id = 23)
-
-        val view = adapter.createAndBindView(cursor)
-
-        assertFalse(view.selectionCheckBox.isChecked)
-    }
-
-    @Test
     fun withoutStars_shouldHideStarCheckBox() {
         val adapter = createAdapter(stars = false)
 
@@ -475,7 +436,6 @@ class MessageListAdapterTest : RobolectricTest() {
 
     fun createAdapter(
             fontSizes: FontSizes = createFontSizes(),
-            checkboxes: Boolean = false,
             previewLines: Int = 0,
             stars: Boolean = true,
             senderAboveSubject: Boolean = false,
@@ -485,7 +445,6 @@ class MessageListAdapterTest : RobolectricTest() {
     ): MessageListAdapter {
         val appearance = MessageListAppearance(
                 fontSizes,
-                checkboxes,
                 previewLines,
                 stars,
                 senderAboveSubject,
@@ -566,8 +525,6 @@ class MessageListAdapterTest : RobolectricTest() {
     fun secondLine(senderOrSubject: String, preview: String)= "$senderOrSubject $preview"
 
     val View.accountChipView: View get() = findViewById(R.id.chip)
-    val View.selectionCheckBoxContainer: View get() = findViewById(R.id.selected_checkbox_wrapper)
-    val View.selectionCheckBox: CheckBox get() = findViewById(R.id.selected_checkbox)
     val View.starView: CheckBox get() = findViewById(R.id.star)
     val View.contactPictureView: ContactBadge get() = findViewById(R.id.contact_badge)
     val View.threadCountView: TextView get() = findViewById(R.id.thread_count)

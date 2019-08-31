@@ -131,11 +131,6 @@
                 android:title="@string/global_settings_flag_label" />
 
             <CheckBoxPreference
-                android:key="messagelist_checkboxes"
-                android:summary="@string/global_settings_checkbox_summary"
-                android:title="@string/global_settings_checkbox_label" />
-
-            <CheckBoxPreference
                 android:key="messagelist_show_correspondent_names"
                 android:summary="@string/global_settings_show_correspondent_names_summary"
                 android:title="@string/global_settings_show_correspondent_names_label" />
