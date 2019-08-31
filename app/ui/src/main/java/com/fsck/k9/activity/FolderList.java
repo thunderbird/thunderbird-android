@@ -83,7 +83,7 @@ public class FolderList extends K9ListActivity {
         public void refreshTitle() {
             runOnUiThread(new Runnable() {
                 public void run() {
-                    actionBar.setTitle(R.string.folders_title);
+                    actionBar.setTitle(R.string.folders_action);
 
                     String operation = adapter.mListener.getOperation(FolderList.this);
                     if (operation.length() < 1) {
