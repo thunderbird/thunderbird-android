@@ -450,15 +450,17 @@ public class FolderList extends K9ListActivity {
             return getItem((int)position);
         }
 
+        @Override
         public Object getItem(int position) {
             return mFilteredFolders.get(position);
         }
 
-
+        @Override
         public long getItemId(int position) {
             return mFilteredFolders.get(position).folder.getDatabaseId();
         }
 
+        @Override
         public int getCount() {
             return mFilteredFolders.size();
         }
@@ -571,6 +573,7 @@ public class FolderList extends K9ListActivity {
             return   mFilteredFolders.indexOf(searchHolder);
         }
 
+        @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (position <= getCount()) {
                 return  getItemView(position, convertView, parent);
@@ -635,6 +638,7 @@ public class FolderList extends K9ListActivity {
             this.mFilter = filter;
         }
 
+        @Override
         public Filter getFilter() {
             return mFilter;
         }
