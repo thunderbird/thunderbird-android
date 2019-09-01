@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -52,14 +51,14 @@ public class ChooseFolder extends K9ListActivity {
     public static final String RESULT_FOLDER_DISPLAY_NAME = "folderDisplayName";
 
 
-    String currentFolder;
-    String mSelectFolder;
-    Account mAccount;
-    MessageReference mMessageReference;
-    FolderListAdapter mAdapter;
+    private String currentFolder;
+    private String mSelectFolder;
+    private Account mAccount;
+    private MessageReference mMessageReference;
+    private FolderListAdapter mAdapter;
     private ChooseFolderHandler mHandler = new ChooseFolderHandler();
-    boolean mHideCurrentFolder = true;
-    boolean mShowDisplayableOnly = false;
+    private boolean mHideCurrentFolder = true;
+    private boolean mShowDisplayableOnly = false;
 
     /**
      * What folders to display.<br/>
@@ -68,13 +67,6 @@ public class ChooseFolder extends K9ListActivity {
      * while this activity is showing.
      */
     private Account.FolderMode mMode;
-
-    /**
-     * Current filter used by our ArrayAdapter.<br/>
-     * Created on the fly and invalidated if a new
-     * set of folders is chosen via {@link #onOptionsItemSelected(MenuItem)}
-     */
-    private FolderListFilter<String> mMyFilter = null;
 
 
     @Override
@@ -224,10 +216,6 @@ public class ChooseFolder extends K9ListActivity {
 
     private void setDisplayMode(FolderMode aMode) {
         mMode = aMode;
-        // invalidate the current filter as it is working on an inval
-        if (mMyFilter != null) {
-            mMyFilter.invalidate();
-        }
         //re-populate the list
         MessagingController.getInstance(getApplication()).listFolders(mAccount, false, mListener);
     }
@@ -364,25 +352,38 @@ public class ChooseFolder extends K9ListActivity {
         }
     };
 
-    class FolderListAdapter extends BaseAdapter implements Filterable {
+    class FolderListAdapter extends BaseAdapter implements Filterable,
+            FolderListFilter.FilterableAdapter<FolderInfoHolder> {
         private List<FolderInfoHolder> mFolders = new ArrayList<>();
         private List<FolderInfoHolder> mFilteredFolders = Collections.unmodifiableList(mFolders);
-        private Filter mFilter = new FolderListAdapter.FolderListFilter();
+        private Filter mFilter = new FolderListFilter<>(this);
         private FolderIconProvider folderIconProvider = new FolderIconProvider(getTheme());
 
         public FolderInfoHolder getItem(long position) {
             return getItem((int)position);
         }
 
+        @Override
         public FolderInfoHolder getItem(int position) {
             return mFilteredFolders.get(position);
         }
 
-
+        @Override
         public long getItemId(int position) {
             return mFilteredFolders.get(position).folder.getServerId().hashCode() ;
         }
 
+        @Override
+        public void clear() {
+            mFolders.clear();
+        }
+
+        @Override
+        public void add(FolderInfoHolder object) {
+            mFolders.add(object);
+        }
+
+        @Override
         public int getCount() {
             return mFilteredFolders.size();
         }
@@ -397,6 +398,7 @@ public class ChooseFolder extends K9ListActivity {
             return true;
         }
 
+        @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (position <= getCount()) {
                 return  getItemView(position, convertView, parent);
@@ -452,77 +454,6 @@ public class ChooseFolder extends K9ListActivity {
 
         public Filter getFilter() {
             return mFilter;
-        }
-
-        /**
-         * Filter to search for occurrences of the search-expression in any place of the
-         * folder-name instead of doing just a prefix-search.
-         *
-         * @author Marcus@Wolschon.biz
-         */
-        public class FolderListFilter extends Filter {
-            private CharSequence mSearchTerm;
-
-            public CharSequence getSearchTerm() {
-                return mSearchTerm;
-            }
-
-            /**
-             * Do the actual search.
-             * {@inheritDoc}
-             *
-             * @see #publishResults(CharSequence, FilterResults)
-             */
-            @Override
-            protected FilterResults performFiltering(CharSequence searchTerm) {
-                mSearchTerm = searchTerm;
-                FilterResults results = new FilterResults();
-
-                Locale locale = Locale.getDefault();
-                if ((searchTerm == null) || (searchTerm.length() == 0)) {
-                    List<FolderInfoHolder> list = new ArrayList<>(mFolders);
-                    results.values = list;
-                    results.count = list.size();
-                } else {
-                    final String searchTermString = searchTerm.toString().toLowerCase(locale);
-                    final String[] words = searchTermString.split(" ");
-                    final int wordCount = words.length;
-
-                    final List<FolderInfoHolder> newValues = new ArrayList<>();
-
-                    for (final FolderInfoHolder value : mFolders) {
-                        if (value.displayName == null) {
-                            continue;
-                        }
-                        final String valueText = value.displayName.toLowerCase(locale);
-
-                        for (int k = 0; k < wordCount; k++) {
-                            if (valueText.contains(words[k])) {
-                                newValues.add(value);
-                                break;
-                            }
-                        }
-                    }
-
-                    results.values = newValues;
-                    results.count = newValues.size();
-                }
-
-                return results;
-            }
-
-            /**
-             * Publish the results to the user-interface.
-             * {@inheritDoc}
-             */
-            @SuppressWarnings("unchecked")
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                //noinspection unchecked
-                mFilteredFolders = Collections.unmodifiableList((ArrayList<FolderInfoHolder>) results.values);
-                // Send notification that the data set changed now
-                notifyDataSetChanged();
-            }
         }
     }
 
