@@ -1121,7 +1121,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             onDebugClearLocally(getMessageAtPosition(adapterPosition));
         }
 
-        contextMenuUniqueId = 0;
+        if (id != R.id.single_message_options && id != R.id.refile) {
+            // Do not de-select when opening submenu
+            contextMenuUniqueId = 0;
+        }
         return true;
     }
 
