@@ -446,9 +446,6 @@ public class FolderList extends K9ListActivity {
         private Filter mFilter = new FolderListFilter();
         private FolderIconProvider folderIconProvider = new FolderIconProvider(getTheme());
 
-        public Object getItem(long position) {
-            return getItem((int)position);
-        }
 
         @Override
         public Object getItem(int position) {
@@ -463,16 +460,6 @@ public class FolderList extends K9ListActivity {
         @Override
         public int getCount() {
             return mFilteredFolders.size();
-        }
-
-        @Override
-        public boolean isEnabled(int item) {
-            return true;
-        }
-
-        @Override
-        public boolean areAllItemsEnabled() {
-            return true;
         }
 
         private ActivityListener mListener = new ActivityListener() {
@@ -628,14 +615,6 @@ public class FolderList extends K9ListActivity {
         @Override
         public boolean hasStableIds() {
             return true;
-        }
-
-        public boolean isItemSelectable(int position) {
-            return true;
-        }
-
-        public void setFilter(final Filter filter) {
-            this.mFilter = filter;
         }
 
         @Override
