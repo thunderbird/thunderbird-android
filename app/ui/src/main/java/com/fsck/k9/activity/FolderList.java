@@ -629,21 +629,8 @@ public class FolderList extends K9ListActivity {
          * @author Marcus@Wolschon.biz
          */
         public class FolderListFilter extends Filter {
-            private CharSequence mSearchTerm;
-
-            public CharSequence getSearchTerm() {
-                return mSearchTerm;
-            }
-
-            /**
-             * Do the actual search.
-             * {@inheritDoc}
-             *
-             * @see #publishResults(CharSequence, FilterResults)
-             */
             @Override
             protected FilterResults performFiltering(CharSequence searchTerm) {
-                mSearchTerm = searchTerm;
                 FilterResults results = new FilterResults();
 
                 Locale locale = Locale.getDefault();
