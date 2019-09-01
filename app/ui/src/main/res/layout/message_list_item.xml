@@ -49,30 +49,28 @@
                 android:gravity="top"
                 android:layout_alignParentBottom="false"/>
 
-        <ImageView
-                android:id="@+id/status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/subject_wrapper"
-                android:layout_alignBottom="@+id/subject_wrapper"
-                android:src="?attr/messageListAnswered"
-                android:layout_alignWithParentIfMissing="true" />
-
         <LinearLayout
                 android:id="@+id/subject_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_toLeftOf="@+id/attachment"
-                android:layout_toRightOf="@+id/status">
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/attachment">
 
             <ImageView
                 android:id="@+id/account_color_chip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginRight="4dp"
+                android:layout_marginEnd="4dp"
                 android:src="@drawable/ic_account_color" />
+
+            <ImageView
+                android:id="@+id/status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="?attr/messageListAnswered"
+                tools:src="@drawable/ic_messagelist_answered_light"/>
 
             <TextView
                     android:id="@+id/subject"
