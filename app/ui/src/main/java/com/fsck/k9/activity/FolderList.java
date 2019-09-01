@@ -456,7 +456,7 @@ public class FolderList extends K9ListActivity {
 
 
         public long getItemId(int position) {
-            return mFilteredFolders.get(position).folder.getServerId().hashCode() ;
+            return mFilteredFolders.get(position).folder.getDatabaseId();
         }
 
         public int getCount() {
