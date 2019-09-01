@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Locale;
 
 import timber.log.Timber;
-import android.widget.ArrayAdapter;
 import android.widget.Filter;
 
 /**
@@ -22,7 +21,7 @@ public class FolderListFilter<T> extends Filter {
      * changes due to the filtering performed by {@link #performFiltering}.
      * This in turn will change the folders displayed in the ListView.
      */
-    private ArrayAdapter<T> mFolders;
+    private FilterableAdapter<T> mFolders;
 
     /**
      * All folders.
@@ -34,7 +33,7 @@ public class FolderListFilter<T> extends Filter {
      *
      * @param folders
      */
-    public FolderListFilter(final ArrayAdapter<T> folders) {
+    public FolderListFilter(final FilterableAdapter<T> folders) {
         this.mFolders = folders;
     }
 
@@ -97,32 +96,32 @@ public class FolderListFilter<T> extends Filter {
     @SuppressWarnings("unchecked")
     @Override
     protected void publishResults(CharSequence constraint, FilterResults results) {
-        // Don't notify for every change
-        mFolders.setNotifyOnChange(false);
-        try {
-
-            //noinspection unchecked
-            final List<T> folders = (List<T>) results.values;
-            mFolders.clear();
-            if (folders != null) {
-                for (T folder : folders) {
-                    if (folder != null) {
-                        mFolders.add(folder);
-                    }
+        //noinspection unchecked
+        final List<T> folders = (List<T>) results.values;
+        mFolders.clear();
+        if (folders != null) {
+            for (T folder : folders) {
+                if (folder != null) {
+                    mFolders.add(folder);
                 }
-            } else {
-                Timber.w("FolderListFilter.publishResults - null search-result ");
             }
-
-            // Send notification that the data set changed now
-            mFolders.notifyDataSetChanged();
-        } finally {
-            // restore notification status
-            mFolders.setNotifyOnChange(true);
+        } else {
+            Timber.w("FolderListFilter.publishResults - null search-result ");
         }
+
+        // Send notification that the data set changed now
+        mFolders.notifyDataSetChanged();
     }
 
     public void invalidate() {
         mOriginalValues = null;
+    }
+
+    public interface FilterableAdapter<T> {
+        void notifyDataSetChanged();
+        void clear();
+        void add(T object);
+        int getCount();
+        T getItem(int i);
     }
 }
