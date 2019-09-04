@@ -9,7 +9,7 @@
 
     <com.fsck.k9.ui.ContactBadge
             android:id="@+id/contact_badge"
-            android:layout_marginRight="16dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="4dip"
             android:layout_marginBottom="3dip"
             android:layout_height="40dip"
@@ -24,6 +24,7 @@
             android:id="@+id/list_item_inner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
             android:paddingTop="5dip"
             android:clickable="false"
             android:focusable="false"
