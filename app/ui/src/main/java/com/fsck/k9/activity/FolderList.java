@@ -87,7 +87,7 @@ public class FolderList extends K9ListActivity {
                 public void run() {
                     actionBar.setTitle(R.string.folders_action);
 
-                    String operation = adapter.mListener.getOperation(FolderList.this);
+                    String operation = adapter.activityListener.getOperation(FolderList.this);
                     if (operation.length() < 1) {
                         actionBar.setSubtitle(account.getEmail());
                     } else {
@@ -101,9 +101,9 @@ public class FolderList extends K9ListActivity {
         public void newFolders(final List<FolderInfoHolder> newFolders) {
             runOnUiThread(new Runnable() {
                 public void run() {
-                    adapter.mFolders.clear();
-                    adapter.mFolders.addAll(newFolders);
-                    adapter.mFilteredFolders = adapter.mFolders;
+                    adapter.folders.clear();
+                    adapter.folders.addAll(newFolders);
+                    adapter.filteredFolders = adapter.folders;
                     handler.dataChanged();
                 }
             });
@@ -262,20 +262,20 @@ public class FolderList extends K9ListActivity {
         final Object previousData = getLastCustomNonConfigurationInstance();
 
         if (previousData != null) {
-            adapter.mFolders = (ArrayList<FolderInfoHolder>) previousData;
-            adapter.mFilteredFolders = Collections.unmodifiableList(adapter.mFolders);
+            adapter.folders = (ArrayList<FolderInfoHolder>) previousData;
+            adapter.filteredFolders = Collections.unmodifiableList(adapter.folders);
         }
     }
 
 
     @Override public Object onRetainCustomNonConfigurationInstance() {
-        return (adapter == null) ? null : adapter.mFolders;
+        return (adapter == null) ? null : adapter.folders;
     }
 
     @Override public void onPause() {
         super.onPause();
-        MessagingController.getInstance(getApplication()).removeListener(adapter.mListener);
-        adapter.mListener.onPause(this);
+        MessagingController.getInstance(getApplication()).removeListener(adapter.activityListener);
+        adapter.activityListener.onPause(this);
     }
 
     /**
@@ -297,14 +297,14 @@ public class FolderList extends K9ListActivity {
 
         handler.refreshTitle();
 
-        MessagingController.getInstance(getApplication()).addListener(adapter.mListener);
+        MessagingController.getInstance(getApplication()).addListener(adapter.activityListener);
         //account.refresh(Preferences.getPreferences(this));
-        MessagingController.getInstance(getApplication()).getAccountStats(this, account, adapter.mListener);
+        MessagingController.getInstance(getApplication()).getAccountStats(this, account, adapter.activityListener);
 
         onRefresh(!REFRESH_REMOTE);
 
         MessagingController.getInstance(getApplication()).cancelNotificationsForAccount(account);
-        adapter.mListener.onResume(this);
+        adapter.activityListener.onResume(this);
     }
 
     @Override
@@ -354,7 +354,7 @@ public class FolderList extends K9ListActivity {
 
 
     private void onRefresh(final boolean forceRemote) {
-        MessagingController.getInstance(getApplication()).listFolders(account, forceRemote, adapter.mListener);
+        MessagingController.getInstance(getApplication()).listFolders(account, forceRemote, adapter.activityListener);
     }
 
     private void onAccounts() {
@@ -441,39 +441,28 @@ public class FolderList extends K9ListActivity {
     }
 
     class FolderListAdapter extends BaseAdapter implements Filterable {
-        private List<FolderInfoHolder> mFolders = new ArrayList<>();
-        private List<FolderInfoHolder> mFilteredFolders = Collections.unmodifiableList(mFolders);
-        private Filter mFilter = new FolderListFilter();
+        private List<FolderInfoHolder> folders = new ArrayList<>();
+        private List<FolderInfoHolder> filteredFolders = Collections.unmodifiableList(folders);
+        private Filter filter = new FolderListFilter();
         private FolderIconProvider folderIconProvider = new FolderIconProvider(getTheme());
 
-        public Object getItem(long position) {
-            return getItem((int)position);
-        }
 
+        @Override
         public Object getItem(int position) {
-            return mFilteredFolders.get(position);
+            return filteredFolders.get(position);
         }
 
-
+        @Override
         public long getItemId(int position) {
-            return mFilteredFolders.get(position).folder.getServerId().hashCode() ;
+            return filteredFolders.get(position).folder.getDatabaseId();
         }
 
+        @Override
         public int getCount() {
-            return mFilteredFolders.size();
+            return filteredFolders.size();
         }
 
-        @Override
-        public boolean isEnabled(int item) {
-            return true;
-        }
-
-        @Override
-        public boolean areAllItemsEnabled() {
-            return true;
-        }
-
-        private ActivityListener mListener = new ActivityListener() {
+        private ActivityListener activityListener = new ActivityListener() {
             @Override
             public void listFoldersStarted(Account account) {
                 if (account.equals(FolderList.this.account)) {
@@ -503,7 +492,7 @@ public class FolderList extends K9ListActivity {
                 if (account.equals(FolderList.this.account)) {
 
                     handler.progress(false);
-                    MessagingController.getInstance(getApplication()).refreshListener(adapter.mListener);
+                    MessagingController.getInstance(getApplication()).refreshListener(adapter.activityListener);
                     handler.dataChanged();
                 }
                 super.listFoldersFinished(account);
@@ -568,9 +557,10 @@ public class FolderList extends K9ListActivity {
         public int getFolderIndex(String folder) {
             FolderInfoHolder searchHolder = new FolderInfoHolder();
             searchHolder.serverId = folder;
-            return   mFilteredFolders.indexOf(searchHolder);
+            return   filteredFolders.indexOf(searchHolder);
         }
 
+        @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (position <= getCount()) {
                 return  getItemView(position, convertView, parent);
@@ -627,16 +617,9 @@ public class FolderList extends K9ListActivity {
             return true;
         }
 
-        public boolean isItemSelectable(int position) {
-            return true;
-        }
-
-        public void setFilter(final Filter filter) {
-            this.mFilter = filter;
-        }
-
+        @Override
         public Filter getFilter() {
-            return mFilter;
+            return filter;
         }
 
         /**
@@ -646,26 +629,13 @@ public class FolderList extends K9ListActivity {
          * @author Marcus@Wolschon.biz
          */
         public class FolderListFilter extends Filter {
-            private CharSequence mSearchTerm;
-
-            public CharSequence getSearchTerm() {
-                return mSearchTerm;
-            }
-
-            /**
-             * Do the actual search.
-             * {@inheritDoc}
-             *
-             * @see #publishResults(CharSequence, FilterResults)
-             */
             @Override
             protected FilterResults performFiltering(CharSequence searchTerm) {
-                mSearchTerm = searchTerm;
                 FilterResults results = new FilterResults();
 
                 Locale locale = Locale.getDefault();
                 if ((searchTerm == null) || (searchTerm.length() == 0)) {
-                    List<FolderInfoHolder> list = new ArrayList<>(mFolders);
+                    List<FolderInfoHolder> list = new ArrayList<>(folders);
                     results.values = list;
                     results.count = list.size();
                 } else {
@@ -675,7 +645,7 @@ public class FolderList extends K9ListActivity {
 
                     final List<FolderInfoHolder> newValues = new ArrayList<>();
 
-                    for (final FolderInfoHolder value : mFolders) {
+                    for (final FolderInfoHolder value : folders) {
                         if (value.displayName == null) {
                             continue;
                         }
@@ -704,7 +674,7 @@ public class FolderList extends K9ListActivity {
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 //noinspection unchecked
-                mFilteredFolders = Collections.unmodifiableList((ArrayList<FolderInfoHolder>) results.values);
+                filteredFolders = Collections.unmodifiableList((ArrayList<FolderInfoHolder>) results.values);
                 // Send notification that the data set changed now
                 notifyDataSetChanged();
             }
