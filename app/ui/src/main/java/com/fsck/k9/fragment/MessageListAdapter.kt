@@ -137,6 +137,7 @@ class MessageListAdapter internal constructor(
         val holder = MessageViewHolder(view, listItemListener)
 
         holder.contactBadge.isVisible = appearance.showContactPicture
+        holder.chip.isVisible = appearance.showAccountChip
 
         appearance.fontSizes.setViewTextSize(holder.subject, subjectViewFontSize)
 
@@ -191,9 +192,11 @@ class MessageListAdapter internal constructor(
         val uniqueId = cursor.getLong(uniqueIdColumn)
         val selected = selected.contains(uniqueId)
 
-        val accountChipDrawable = holder.chip.drawable.mutate()
-        DrawableCompat.setTint(accountChipDrawable, account.chipColor)
-        holder.chip.setImageDrawable(accountChipDrawable)
+        if (appearance.showAccountChip) {
+            val accountChipDrawable = holder.chip.drawable.mutate()
+            DrawableCompat.setTint(accountChipDrawable, account.chipColor)
+            holder.chip.setImageDrawable(accountChipDrawable)
+        }
 
         if (appearance.stars) {
             holder.flagged.isChecked = flagged

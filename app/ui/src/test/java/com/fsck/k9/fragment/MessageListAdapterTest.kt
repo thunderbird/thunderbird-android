@@ -64,6 +64,24 @@ class MessageListAdapterTest : RobolectricTest() {
 
 
     @Test
+    fun withShowAccountChip_shouldShowAccountChip() {
+        val adapter = createAdapter(showAccountChip = true)
+
+        val view = adapter.createAndBindView()
+
+        assertTrue(view.accountChipView.isVisible)
+    }
+
+    @Test
+    fun withoutShowAccountChip_shouldHideAccountChip() {
+        val adapter = createAdapter(showAccountChip = false)
+
+        val view = adapter.createAndBindView()
+
+        assertTrue(view.accountChipView.isGone)
+    }
+
+    @Test
     fun withoutStars_shouldHideStarCheckBox() {
         val adapter = createAdapter(stars = false)
 
@@ -429,7 +447,8 @@ class MessageListAdapterTest : RobolectricTest() {
             senderAboveSubject: Boolean = false,
             showContactPicture: Boolean = true,
             showingThreadedList: Boolean = true,
-            backGroundAsReadIndicator: Boolean = false
+            backGroundAsReadIndicator: Boolean = false,
+            showAccountChip: Boolean = false
     ): MessageListAdapter {
         val appearance = MessageListAppearance(
                 fontSizes,
@@ -438,7 +457,8 @@ class MessageListAdapterTest : RobolectricTest() {
                 senderAboveSubject,
                 showContactPicture,
                 showingThreadedList,
-                backGroundAsReadIndicator
+                backGroundAsReadIndicator,
+                showAccountChip
         )
 
         return MessageListAdapter(
@@ -512,6 +532,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
     fun secondLine(senderOrSubject: String, preview: String)= "$senderOrSubject $preview"
 
+    val View.accountChipView: View get() = findViewById(R.id.account_color_chip)
     val View.starView: CheckBox get() = findViewById(R.id.star)
     val View.contactPictureView: ContactBadge get() = findViewById(R.id.contact_badge)
     val View.threadCountView: TextView get() = findViewById(R.id.thread_count)

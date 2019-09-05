@@ -604,6 +604,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     private MessageListAppearance getMessageListAppearance() {
+        boolean showAccountChip = !isSingleAccountMode();
         return new MessageListAppearance(
                 K9.getFontSizes(),
                 K9.getMessageListPreviewLines(),
@@ -611,7 +612,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 K9.isMessageListSenderAboveSubject(),
                 K9.isShowContactPicture(),
                 showingThreadedList,
-                K9.isUseBackgroundAsUnreadIndicator()
+                K9.isUseBackgroundAsUnreadIndicator(),
+                showAccountChip
         );
     }
 
