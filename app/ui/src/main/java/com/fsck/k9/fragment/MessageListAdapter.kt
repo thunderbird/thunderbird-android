@@ -12,6 +12,7 @@ import android.text.SpannableStringBuilder
 import android.text.format.DateUtils
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -221,7 +222,7 @@ class MessageListAdapter internal constructor(
         }
         holder.preview.setText(messageStringBuilder, TextView.BufferType.SPANNABLE)
 
-        formatPreviewText(holder.preview, beforePreviewText, sigil)
+        formatPreviewText(holder.preview, beforePreviewText, sigil, read)
 
         holder.subject.typeface = Typeface.create(holder.subject.typeface, maybeBoldTypeface)
         if (appearance.senderAboveSubject) {
@@ -250,12 +251,13 @@ class MessageListAdapter internal constructor(
     private fun formatPreviewText(
             preview: TextView,
             beforePreviewText: CharSequence,
-            sigil: String
+            sigil: String,
+            messageRead: Boolean
     ) {
         val previewText = preview.text as Spannable
 
         val beforePreviewLength = beforePreviewText.length + sigil.length
-        addBeforePreviewSpan(previewText, beforePreviewLength)
+        addBeforePreviewSpan(previewText, beforePreviewLength, messageRead)
 
         // Set span (color) for preview message
         previewText.setSpan(
@@ -266,7 +268,7 @@ class MessageListAdapter internal constructor(
         )
     }
 
-    private fun addBeforePreviewSpan(text: Spannable, length: Int) {
+    private fun addBeforePreviewSpan(text: Spannable, length: Int, messageRead: Boolean) {
         val fontSize = if (appearance.senderAboveSubject) {
             appearance.fontSizes.messageListSubject
         } else {
@@ -275,6 +277,11 @@ class MessageListAdapter internal constructor(
 
         if (fontSize != FontSizes.FONT_DEFAULT) {
             val span = AbsoluteSizeSpan(fontSize, true)
+            text.setSpan(span, 0, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+
+        if (!messageRead) {
+            val span = StyleSpan(Typeface.BOLD)
             text.setSpan(span, 0, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
     }
