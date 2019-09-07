@@ -2,6 +2,7 @@ package com.fsck.k9.fragment
 
 import android.content.res.Resources
 import android.database.Cursor
+import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
 
 class MessageListItemExtractor(
@@ -12,6 +13,9 @@ class MessageListItemExtractor(
     val date: Long get() = cursor.getLong(MLFProjectionInfo.DATE_COLUMN)
 
     val flagged: Boolean get() = cursor.getInt(MLFProjectionInfo.FLAGGED_COLUMN) == 1
+
+    val fromAddresses: Array<Address>
+        get() = Address.unpack(cursor.getString(MLFProjectionInfo.SENDER_LIST_COLUMN))
 
     val hasAttachments: Boolean get() = cursor.getInt(MLFProjectionInfo.ATTACHMENT_COUNT_COLUMN) > 0
 
