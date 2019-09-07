@@ -27,7 +27,6 @@ import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.fragment.MLFProjectionInfo.ACCOUNT_UUID_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.ANSWERED_COLUMN
-import com.fsck.k9.fragment.MLFProjectionInfo.ATTACHMENT_COUNT_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.CC_LIST_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.FOLDER_SERVER_ID_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.FORWARDED_COLUMN
@@ -177,8 +176,6 @@ class MessageListAdapter internal constructor(
         val answered = cursor.getInt(ANSWERED_COLUMN) == 1
         val forwarded = cursor.getInt(FORWARDED_COLUMN) == 1
 
-        val hasAttachments = cursor.getInt(ATTACHMENT_COUNT_COLUMN) > 0
-
         val holder = view.tag as MessageViewHolder
 
         val maybeBoldTypeface = if (read) Typeface.NORMAL else Typeface.BOLD
@@ -224,7 +221,7 @@ class MessageListAdapter internal constructor(
         }
 
         holder.date.text = displayDate
-        holder.attachment.visibility = if (hasAttachments) View.VISIBLE else View.GONE
+        holder.attachment.isVisible = itemExtractor.hasAttachments
 
         val statusHolder = buildStatusHolder(forwarded, answered)
         if (statusHolder != null) {
