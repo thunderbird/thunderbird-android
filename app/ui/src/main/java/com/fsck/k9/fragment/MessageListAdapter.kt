@@ -154,10 +154,9 @@ class MessageListAdapter internal constructor(
         val account = getAccount(cursor)
         val itemExtractor = view.getTag(EXTRACTOR) as MessageListItemExtractor
 
-        val toList = cursor.getString(TO_LIST_COLUMN)
         val ccList = cursor.getString(CC_LIST_COLUMN)
         val fromAddrs = itemExtractor.fromAddresses
-        val toAddrs = Address.unpack(toList)
+        val toAddrs = itemExtractor.toAddresses
         val ccAddrs = Address.unpack(ccList)
 
         val fromMe = messageHelper.toMe(account, fromAddrs)
