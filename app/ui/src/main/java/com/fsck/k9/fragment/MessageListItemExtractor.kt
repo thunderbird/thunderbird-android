@@ -25,19 +25,21 @@ class MessageListItemExtractor(
         get() = Address.unpack(cursor.getString(MLFProjectionInfo.TO_LIST_COLUMN))
     private val toMe: Boolean get() = messageHelper.toMe(account, toAddresses)
 
+    val answered: Boolean get() = cursor.getInt(MLFProjectionInfo.ANSWERED_COLUMN) == 1
+
     val counterPartyAddresses: Address?
-    get() {
-        if (fromMe) {
-            if (toAddresses.isNotEmpty()) {
-                return toAddresses[0]
-            } else if (ccAddresses.isNotEmpty()) {
-                return ccAddresses[0]
+        get() {
+            if (fromMe) {
+                if (toAddresses.isNotEmpty()) {
+                    return toAddresses[0]
+                } else if (ccAddresses.isNotEmpty()) {
+                    return ccAddresses[0]
+                }
+            } else if (fromAddresses.isNotEmpty()) {
+                return fromAddresses[0]
             }
-        } else if (fromAddresses.isNotEmpty()) {
-            return fromAddresses[0]
+            return null
         }
-        return null
-    }
 
     val displayName: CharSequence
         get() = messageHelper.getDisplayName(account, fromAddresses, toAddresses)
@@ -66,6 +68,8 @@ class MessageListItemExtractor(
                 null -> throw AssertionError("Unknown preview type: $previewType")
             }
         }
+
+    val read: Boolean get() = cursor.getInt(MLFProjectionInfo.READ_COLUMN) == 1
 
     val sigil: String
         get() {
