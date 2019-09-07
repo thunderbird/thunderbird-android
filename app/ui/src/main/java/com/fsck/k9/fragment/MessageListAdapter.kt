@@ -29,13 +29,10 @@ import com.fsck.k9.fragment.MLFProjectionInfo.ACCOUNT_UUID_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.ANSWERED_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.FOLDER_SERVER_ID_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.FORWARDED_COLUMN
-import com.fsck.k9.fragment.MLFProjectionInfo.PREVIEW_COLUMN
-import com.fsck.k9.fragment.MLFProjectionInfo.PREVIEW_TYPE_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.READ_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.UID_COLUMN
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mail.Address
-import com.fsck.k9.mailstore.DatabasePreviewType
 import com.fsck.k9.ui.ContactBadge
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.messagelist.MessageListAppearance
