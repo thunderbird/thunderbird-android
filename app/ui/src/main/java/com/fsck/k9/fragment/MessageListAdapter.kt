@@ -170,7 +170,7 @@ class MessageListAdapter internal constructor(
         val ccMe = messageHelper.toMe(account, ccAddrs)
 
         val displayName = messageHelper.getDisplayName(account, fromAddrs, toAddrs)
-        val displayDate = DateUtils.getRelativeTimeSpanString(context, cursor.getLong(DATE_COLUMN))
+        val displayDate = DateUtils.getRelativeTimeSpanString(context, itemExtractor.date)
 
         val threadCount = if (appearance.showingThreadedList) itemExtractor.threadCount else 0
 
