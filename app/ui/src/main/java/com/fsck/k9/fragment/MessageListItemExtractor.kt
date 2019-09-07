@@ -9,6 +9,8 @@ class MessageListItemExtractor(
         private val res: Resources
 ) {
 
+    val threadCount: Int get() = cursor.getInt(MLFProjectionInfo.THREAD_COUNT_COLUMN)
+
     fun subject(threadCount: Int): String {
         return MlfUtils.buildSubject(cursor.getString(MLFProjectionInfo.SUBJECT_COLUMN),
                 res.getString(R.string.general_no_subject), threadCount)
