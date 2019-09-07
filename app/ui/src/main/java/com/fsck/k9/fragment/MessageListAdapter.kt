@@ -20,18 +20,11 @@ import android.widget.CursorAdapter
 import android.widget.TextView
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
-
 import com.fsck.k9.Account
 import com.fsck.k9.FontSizes
-import com.fsck.k9.ui.R
 import com.fsck.k9.Preferences
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.controller.MessageReference
-import com.fsck.k9.helper.MessageHelper
-import com.fsck.k9.mail.Address
-import com.fsck.k9.mailstore.DatabasePreviewType
-import com.fsck.k9.ui.messagelist.MessageListAppearance
-
 import com.fsck.k9.fragment.MLFProjectionInfo.ACCOUNT_UUID_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.ANSWERED_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.ATTACHMENT_COUNT_COLUMN
@@ -48,8 +41,12 @@ import com.fsck.k9.fragment.MLFProjectionInfo.SUBJECT_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.THREAD_COUNT_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.TO_LIST_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.UID_COLUMN
+import com.fsck.k9.helper.MessageHelper
+import com.fsck.k9.mail.Address
+import com.fsck.k9.mailstore.DatabasePreviewType
 import com.fsck.k9.ui.ContactBadge
-
+import com.fsck.k9.ui.R
+import com.fsck.k9.ui.messagelist.MessageListAppearance
 import kotlin.math.max
 
 class MessageListAdapter internal constructor(
@@ -153,12 +150,14 @@ class MessageListAdapter internal constructor(
         holder.flagged.setOnClickListener(holder)
 
         view.tag = holder
+        view.setTag(EXTRACTOR, MessageListItemExtractor(cursor))
 
         return view
     }
 
     override fun bindView(view: View, context: Context, cursor: Cursor) {
         val account = getAccount(cursor)
+        val itemExtractor = view.getTag(EXTRACTOR) as MessageListItemExtractor
 
         val fromList = cursor.getString(SENDER_LIST_COLUMN)
         val toList = cursor.getString(TO_LIST_COLUMN)
@@ -385,6 +384,10 @@ class MessageListAdapter internal constructor(
         }
 
         throw AssertionError("Unknown preview type: $previewType")
+    }
+
+    companion object {
+        private val EXTRACTOR = R.id.message_list_item_extractor
     }
 }
 
