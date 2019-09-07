@@ -15,12 +15,15 @@ class MessageListItemExtractor(
         private val res: Resources
 ) {
 
-    private val ccMe: Boolean get() = messageHelper.toMe(account, ccAddresses)
-    private val fromMe: Boolean get() = messageHelper.toMe(account, fromAddresses)
-    private val toMe: Boolean get() = messageHelper.toMe(account, toAddresses)
-
-    val ccAddresses: Array<Address>
+    private val ccAddresses: Array<Address>
         get() = Address.unpack(cursor.getString(MLFProjectionInfo.CC_LIST_COLUMN))
+    private val ccMe: Boolean get() = messageHelper.toMe(account, ccAddresses)
+    private val fromAddresses: Array<Address>
+        get() = Address.unpack(cursor.getString(MLFProjectionInfo.SENDER_LIST_COLUMN))
+    private val fromMe: Boolean get() = messageHelper.toMe(account, fromAddresses)
+    private val toAddresses: Array<Address>
+        get() = Address.unpack(cursor.getString(MLFProjectionInfo.TO_LIST_COLUMN))
+    private val toMe: Boolean get() = messageHelper.toMe(account, toAddresses)
 
     val counterPartyAddresses: Address?
     get() {
@@ -42,9 +45,6 @@ class MessageListItemExtractor(
     val date: Long get() = cursor.getLong(MLFProjectionInfo.DATE_COLUMN)
 
     val flagged: Boolean get() = cursor.getInt(MLFProjectionInfo.FLAGGED_COLUMN) == 1
-
-    val fromAddresses: Array<Address>
-        get() = Address.unpack(cursor.getString(MLFProjectionInfo.SENDER_LIST_COLUMN))
 
     val hasAttachments: Boolean get() = cursor.getInt(MLFProjectionInfo.ATTACHMENT_COUNT_COLUMN) > 0
 
@@ -77,9 +77,6 @@ class MessageListItemExtractor(
         }
 
     val threadCount: Int get() = cursor.getInt(MLFProjectionInfo.THREAD_COUNT_COLUMN)
-
-    val toAddresses: Array<Address>
-        get() = Address.unpack(cursor.getString(MLFProjectionInfo.TO_LIST_COLUMN))
 
     fun subject(threadCount: Int): String {
         return MlfUtils.buildSubject(cursor.getString(MLFProjectionInfo.SUBJECT_COLUMN),
