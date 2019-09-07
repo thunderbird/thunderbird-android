@@ -24,7 +24,6 @@ class MessageListItemExtractor(
     private val toAddresses: Array<Address>
         get() = Address.unpack(cursor.getString(MLFProjectionInfo.TO_LIST_COLUMN))
     private val toMe: Boolean get() = messageHelper.toMe(account, toAddresses)
-
     val answered: Boolean get() = cursor.getInt(MLFProjectionInfo.ANSWERED_COLUMN) == 1
 
     val counterPartyAddresses: Address?
@@ -47,6 +46,8 @@ class MessageListItemExtractor(
     val date: Long get() = cursor.getLong(MLFProjectionInfo.DATE_COLUMN)
 
     val flagged: Boolean get() = cursor.getInt(MLFProjectionInfo.FLAGGED_COLUMN) == 1
+
+    val forwarded: Boolean get() = cursor.getInt(MLFProjectionInfo.FORWARDED_COLUMN) == 1
 
     val hasAttachments: Boolean get() = cursor.getInt(MLFProjectionInfo.ATTACHMENT_COUNT_COLUMN) > 0
 

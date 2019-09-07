@@ -27,7 +27,6 @@ import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.fragment.MLFProjectionInfo.ACCOUNT_UUID_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.FOLDER_SERVER_ID_COLUMN
-import com.fsck.k9.fragment.MLFProjectionInfo.FORWARDED_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.UID_COLUMN
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mail.Address
@@ -144,7 +143,7 @@ class MessageListAdapter internal constructor(
 
         val read = itemExtractor.read
         val answered = itemExtractor.answered
-        val forwarded = cursor.getInt(FORWARDED_COLUMN) == 1
+        val forwarded = itemExtractor.forwarded
 
         val holder = view.tag as MessageViewHolder
 
