@@ -188,7 +188,7 @@ class MessageListAdapter internal constructor(
         val messageStringBuilder = SpannableStringBuilder(sigil)
                 .append(beforePreviewText)
         if (appearance.previewLines > 0) {
-            val preview = getPreview(cursor)
+            val preview = itemExtractor.preview
             messageStringBuilder.append(" ").append(preview)
         }
         holder.preview.setText(messageStringBuilder, TextView.BufferType.SPANNABLE)
@@ -337,25 +337,6 @@ class MessageListAdapter internal constructor(
         } else {
             holder.threadCount.visibility = View.GONE
         }
-    }
-
-    private fun getPreview(cursor: Cursor): String {
-        val previewTypeString = cursor.getString(PREVIEW_TYPE_COLUMN)
-        val previewType = DatabasePreviewType.fromDatabaseValue(previewTypeString)
-
-        when (previewType) {
-            DatabasePreviewType.NONE, DatabasePreviewType.ERROR -> {
-                return ""
-            }
-            DatabasePreviewType.ENCRYPTED -> {
-                return res.getString(R.string.preview_encrypted)
-            }
-            DatabasePreviewType.TEXT -> {
-                return cursor.getString(PREVIEW_COLUMN)
-            }
-        }
-
-        throw AssertionError("Unknown preview type: $previewType")
     }
 
     companion object {

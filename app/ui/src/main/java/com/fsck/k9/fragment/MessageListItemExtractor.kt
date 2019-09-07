@@ -5,6 +5,7 @@ import android.database.Cursor
 import com.fsck.k9.Account
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mail.Address
+import com.fsck.k9.mailstore.DatabasePreviewType
 import com.fsck.k9.ui.R
 
 class MessageListItemExtractor(
@@ -31,6 +32,25 @@ class MessageListItemExtractor(
         get() = Address.unpack(cursor.getString(MLFProjectionInfo.SENDER_LIST_COLUMN))
 
     val hasAttachments: Boolean get() = cursor.getInt(MLFProjectionInfo.ATTACHMENT_COUNT_COLUMN) > 0
+
+    val preview: String
+        get() {
+            val previewTypeString = cursor.getString(MLFProjectionInfo.PREVIEW_TYPE_COLUMN)
+            val previewType = DatabasePreviewType.fromDatabaseValue(previewTypeString)
+
+            return when (previewType) {
+                DatabasePreviewType.NONE, DatabasePreviewType.ERROR -> {
+                    ""
+                }
+                DatabasePreviewType.ENCRYPTED -> {
+                    res.getString(R.string.preview_encrypted)
+                }
+                DatabasePreviewType.TEXT -> {
+                    cursor.getString(MLFProjectionInfo.PREVIEW_COLUMN)
+                }
+                null -> throw AssertionError("Unknown preview type: $previewType")
+            }
+        }
 
     val sigil: String
         get() {
