@@ -10,7 +10,9 @@ class MessageListItemExtractor(
 ) {
 
     val date: Long get() = cursor.getLong(MLFProjectionInfo.DATE_COLUMN)
-    
+
+    val flagged: Boolean get() = cursor.getInt(MLFProjectionInfo.FLAGGED_COLUMN) == 1
+
     val threadCount: Int get() = cursor.getInt(MLFProjectionInfo.THREAD_COUNT_COLUMN)
 
     fun subject(threadCount: Int): String {

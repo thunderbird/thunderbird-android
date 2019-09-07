@@ -29,15 +29,12 @@ import com.fsck.k9.fragment.MLFProjectionInfo.ACCOUNT_UUID_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.ANSWERED_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.ATTACHMENT_COUNT_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.CC_LIST_COLUMN
-import com.fsck.k9.fragment.MLFProjectionInfo.DATE_COLUMN
-import com.fsck.k9.fragment.MLFProjectionInfo.FLAGGED_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.FOLDER_SERVER_ID_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.FORWARDED_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.PREVIEW_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.PREVIEW_TYPE_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.READ_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.SENDER_LIST_COLUMN
-import com.fsck.k9.fragment.MLFProjectionInfo.THREAD_COUNT_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.TO_LIST_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.UID_COLUMN
 import com.fsck.k9.helper.MessageHelper
@@ -177,7 +174,6 @@ class MessageListAdapter internal constructor(
         val subject = itemExtractor.subject(threadCount)
 
         val read = cursor.getInt(READ_COLUMN) == 1
-        val flagged = cursor.getInt(FLAGGED_COLUMN) == 1
         val answered = cursor.getInt(ANSWERED_COLUMN) == 1
         val forwarded = cursor.getInt(FORWARDED_COLUMN) == 1
 
@@ -196,9 +192,8 @@ class MessageListAdapter internal constructor(
             holder.chip.setImageDrawable(accountChipDrawable)
         }
 
-        if (appearance.stars) {
-            holder.flagged.isChecked = flagged
-        }
+        holder.flagged.isChecked = appearance.stars && itemExtractor.flagged
+
         holder.position = cursor.position
         if (holder.contactBadge.isVisible) {
             val counterpartyAddress = fetchCounterPartyAddress(fromMe, toAddrs, ccAddrs, fromAddrs)
