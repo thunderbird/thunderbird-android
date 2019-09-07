@@ -14,6 +14,9 @@ class MessageListItemExtractor(
         private val res: Resources
 ) {
 
+    private val ccMe: Boolean get() = messageHelper.toMe(account, ccAddresses)
+    private val toMe: Boolean get() = messageHelper.toMe(account, toAddresses)
+
     val ccAddresses: Array<Address>
         get() = Address.unpack(cursor.getString(MLFProjectionInfo.CC_LIST_COLUMN))
 
@@ -28,6 +31,15 @@ class MessageListItemExtractor(
         get() = Address.unpack(cursor.getString(MLFProjectionInfo.SENDER_LIST_COLUMN))
 
     val hasAttachments: Boolean get() = cursor.getInt(MLFProjectionInfo.ATTACHMENT_COUNT_COLUMN) > 0
+
+    val sigil: String
+        get() {
+            return when {
+                toMe -> res.getString(R.string.messagelist_sent_to_me_sigil)
+                ccMe -> res.getString(R.string.messagelist_sent_cc_me_sigil)
+                else -> ""
+            }
+        }
 
     val threadCount: Int get() = cursor.getInt(MLFProjectionInfo.THREAD_COUNT_COLUMN)
 
