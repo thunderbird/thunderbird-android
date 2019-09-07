@@ -2,7 +2,9 @@ package com.fsck.k9.fragment
 
 import android.content.res.Resources
 import android.database.Cursor
+import androidx.annotation.ColorInt
 import com.fsck.k9.Account
+import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mail.Address
@@ -10,12 +12,14 @@ import com.fsck.k9.mailstore.DatabasePreviewType
 import com.fsck.k9.ui.R
 
 class MessageListItemExtractor(
-        private val account: Account,
+        private val preferences: Preferences,
         val cursor: Cursor,
         private val messageHelper: MessageHelper,
         private val res: Resources
 ) {
 
+    private val account: Account
+        get() = preferences.getAccount(cursor.getString(MLFProjectionInfo.ACCOUNT_UUID_COLUMN))
     private val ccAddresses: Array<Address>
         get() = Address.unpack(cursor.getString(MLFProjectionInfo.CC_LIST_COLUMN))
     private val ccMe: Boolean get() = messageHelper.toMe(account, ccAddresses)
@@ -25,6 +29,7 @@ class MessageListItemExtractor(
     private val toAddresses: Array<Address>
         get() = Address.unpack(cursor.getString(MLFProjectionInfo.TO_LIST_COLUMN))
     private val toMe: Boolean get() = messageHelper.toMe(account, toAddresses)
+
     val answered: Boolean get() = cursor.getInt(MLFProjectionInfo.ANSWERED_COLUMN) == 1
 
     val counterPartyAddresses: Address?
@@ -40,6 +45,9 @@ class MessageListItemExtractor(
             }
             return null
         }
+
+
+    val chipColor: Int @ColorInt get() = account.chipColor
 
     val displayName: CharSequence
         get() = messageHelper.getDisplayName(account, fromAddresses, toAddresses)
