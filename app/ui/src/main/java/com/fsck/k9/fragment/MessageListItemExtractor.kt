@@ -10,7 +10,7 @@ import com.fsck.k9.ui.R
 
 class MessageListItemExtractor(
         private val account: Account,
-        private val cursor: Cursor,
+        val cursor: Cursor,
         private val messageHelper: MessageHelper,
         private val res: Resources
 ) {

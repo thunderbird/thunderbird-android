@@ -129,14 +129,13 @@ class MessageListAdapter internal constructor(
         holder.flagged.setOnClickListener(holder)
 
         view.tag = holder
-        view.setTag(EXTRACTOR, MessageListItemExtractor(getAccount(cursor), cursor, messageHelper, res))
 
         return view
     }
 
     override fun bindView(view: View, context: Context, cursor: Cursor) {
         val account = getAccount(cursor)
-        val itemExtractor = view.getTag(EXTRACTOR) as MessageListItemExtractor
+        val itemExtractor = getExtractor(view, cursor)
 
         val displayName = itemExtractor.displayName
         val displayDate = DateUtils.getRelativeTimeSpanString(context, itemExtractor.date)
@@ -203,6 +202,16 @@ class MessageListAdapter internal constructor(
         } else {
             holder.status.visibility = View.GONE
         }
+    }
+
+    private fun getExtractor(view: View, cursor: Cursor): MessageListItemExtractor {
+        if (view.getTag(EXTRACTOR) == null
+                || (view.getTag(EXTRACTOR) as MessageListItemExtractor).cursor != cursor) {
+            val extractor = MessageListItemExtractor(getAccount(cursor), cursor, messageHelper, res)
+            view.setTag(EXTRACTOR, extractor)
+            return extractor
+        }
+        return view.getTag(EXTRACTOR) as MessageListItemExtractor
     }
 
     private fun getAccount(cursor: Cursor): Account {
