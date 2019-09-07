@@ -25,12 +25,12 @@ class MessageListItemExtractor(
     val counterPartyAddresses: Address?
     get() {
         if (fromMe) {
-            if (toAddresses.size > 0) {
+            if (toAddresses.isNotEmpty()) {
                 return toAddresses[0]
-            } else if (ccAddresses.size > 0) {
+            } else if (ccAddresses.isNotEmpty()) {
                 return ccAddresses[0]
             }
-        } else if (fromAddresses.size > 0) {
+        } else if (fromAddresses.isNotEmpty()) {
             return fromAddresses[0]
         }
         return null
