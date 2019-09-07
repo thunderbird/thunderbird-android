@@ -6,6 +6,22 @@ import androidx.annotation.ColorInt
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessageReference
+import com.fsck.k9.fragment.MLFProjectionInfo.ACCOUNT_UUID_COLUMN
+import com.fsck.k9.fragment.MLFProjectionInfo.ANSWERED_COLUMN
+import com.fsck.k9.fragment.MLFProjectionInfo.ATTACHMENT_COUNT_COLUMN
+import com.fsck.k9.fragment.MLFProjectionInfo.CC_LIST_COLUMN
+import com.fsck.k9.fragment.MLFProjectionInfo.DATE_COLUMN
+import com.fsck.k9.fragment.MLFProjectionInfo.FLAGGED_COLUMN
+import com.fsck.k9.fragment.MLFProjectionInfo.FOLDER_SERVER_ID_COLUMN
+import com.fsck.k9.fragment.MLFProjectionInfo.FORWARDED_COLUMN
+import com.fsck.k9.fragment.MLFProjectionInfo.PREVIEW_COLUMN
+import com.fsck.k9.fragment.MLFProjectionInfo.PREVIEW_TYPE_COLUMN
+import com.fsck.k9.fragment.MLFProjectionInfo.READ_COLUMN
+import com.fsck.k9.fragment.MLFProjectionInfo.SENDER_LIST_COLUMN
+import com.fsck.k9.fragment.MLFProjectionInfo.SUBJECT_COLUMN
+import com.fsck.k9.fragment.MLFProjectionInfo.THREAD_COUNT_COLUMN
+import com.fsck.k9.fragment.MLFProjectionInfo.TO_LIST_COLUMN
+import com.fsck.k9.fragment.MLFProjectionInfo.UID_COLUMN
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.DatabasePreviewType
@@ -19,18 +35,18 @@ class MessageListItemExtractor(
 ) {
 
     private val account: Account
-        get() = preferences.getAccount(cursor.getString(MLFProjectionInfo.ACCOUNT_UUID_COLUMN))
+        get() = preferences.getAccount(cursor.getString(ACCOUNT_UUID_COLUMN))
     private val ccAddresses: Array<Address>
-        get() = Address.unpack(cursor.getString(MLFProjectionInfo.CC_LIST_COLUMN))
+        get() = Address.unpack(cursor.getString(CC_LIST_COLUMN))
     private val ccMe: Boolean get() = messageHelper.toMe(account, ccAddresses)
     private val fromAddresses: Array<Address>
-        get() = Address.unpack(cursor.getString(MLFProjectionInfo.SENDER_LIST_COLUMN))
+        get() = Address.unpack(cursor.getString(SENDER_LIST_COLUMN))
     private val fromMe: Boolean get() = messageHelper.toMe(account, fromAddresses)
     private val toAddresses: Array<Address>
-        get() = Address.unpack(cursor.getString(MLFProjectionInfo.TO_LIST_COLUMN))
+        get() = Address.unpack(cursor.getString(TO_LIST_COLUMN))
     private val toMe: Boolean get() = messageHelper.toMe(account, toAddresses)
 
-    val answered: Boolean get() = cursor.getInt(MLFProjectionInfo.ANSWERED_COLUMN) == 1
+    val answered: Boolean get() = cursor.getInt(ANSWERED_COLUMN) == 1
 
     val counterPartyAddresses: Address?
         get() {
@@ -52,17 +68,17 @@ class MessageListItemExtractor(
     val displayName: CharSequence
         get() = messageHelper.getDisplayName(account, fromAddresses, toAddresses)
 
-    val date: Long get() = cursor.getLong(MLFProjectionInfo.DATE_COLUMN)
+    val date: Long get() = cursor.getLong(DATE_COLUMN)
 
-    val flagged: Boolean get() = cursor.getInt(MLFProjectionInfo.FLAGGED_COLUMN) == 1
+    val flagged: Boolean get() = cursor.getInt(FLAGGED_COLUMN) == 1
 
-    val forwarded: Boolean get() = cursor.getInt(MLFProjectionInfo.FORWARDED_COLUMN) == 1
+    val forwarded: Boolean get() = cursor.getInt(FORWARDED_COLUMN) == 1
 
-    val hasAttachments: Boolean get() = cursor.getInt(MLFProjectionInfo.ATTACHMENT_COUNT_COLUMN) > 0
+    val hasAttachments: Boolean get() = cursor.getInt(ATTACHMENT_COUNT_COLUMN) > 0
 
     val preview: String
         get() {
-            val previewTypeString = cursor.getString(MLFProjectionInfo.PREVIEW_TYPE_COLUMN)
+            val previewTypeString = cursor.getString(PREVIEW_TYPE_COLUMN)
             val previewType = DatabasePreviewType.fromDatabaseValue(previewTypeString)
 
             return when (previewType) {
@@ -73,13 +89,13 @@ class MessageListItemExtractor(
                     res.getString(R.string.preview_encrypted)
                 }
                 DatabasePreviewType.TEXT -> {
-                    cursor.getString(MLFProjectionInfo.PREVIEW_COLUMN)
+                    cursor.getString(PREVIEW_COLUMN)
                 }
                 null -> throw AssertionError("Unknown preview type: $previewType")
             }
         }
 
-    val read: Boolean get() = cursor.getInt(MLFProjectionInfo.READ_COLUMN) == 1
+    val read: Boolean get() = cursor.getInt(READ_COLUMN) == 1
 
     val sigil: String
         get() {
@@ -90,11 +106,11 @@ class MessageListItemExtractor(
             }
         }
 
-    val threadCount: Int get() = cursor.getInt(MLFProjectionInfo.THREAD_COUNT_COLUMN)
+    val threadCount: Int get() = cursor.getInt(THREAD_COUNT_COLUMN)
 
     fun isActiveMessage(against: MessageReference?): Boolean {
-        val uid = cursor.getString(MLFProjectionInfo.UID_COLUMN)
-        val folderServerId = cursor.getString(MLFProjectionInfo.FOLDER_SERVER_ID_COLUMN)
+        val uid = cursor.getString(UID_COLUMN)
+        val folderServerId = cursor.getString(FOLDER_SERVER_ID_COLUMN)
 
         val activeAccountUuid = against?.accountUuid
         val activeFolderServerId = against?.folderServerId
@@ -105,7 +121,7 @@ class MessageListItemExtractor(
     }
 
     fun subject(threadCount: Int): String {
-        return MlfUtils.buildSubject(cursor.getString(MLFProjectionInfo.SUBJECT_COLUMN),
+        return MlfUtils.buildSubject(cursor.getString(SUBJECT_COLUMN),
                 res.getString(R.string.general_no_subject), threadCount)
     }
 }
