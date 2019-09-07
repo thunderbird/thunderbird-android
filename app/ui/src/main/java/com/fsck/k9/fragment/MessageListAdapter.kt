@@ -141,12 +141,6 @@ class MessageListAdapter internal constructor(
         val account = getAccount(cursor)
         val itemExtractor = view.getTag(EXTRACTOR) as MessageListItemExtractor
 
-        val fromAddrs = itemExtractor.fromAddresses
-        val toAddrs = itemExtractor.toAddresses
-        val ccAddrs = itemExtractor.ccAddresses
-
-        val fromMe = messageHelper.toMe(account, fromAddrs)
-
         val displayName = itemExtractor.displayName
         val displayDate = DateUtils.getRelativeTimeSpanString(context, itemExtractor.date)
 
@@ -175,7 +169,7 @@ class MessageListAdapter internal constructor(
 
         holder.position = cursor.position
         if (holder.contactBadge.isVisible) {
-            val counterpartyAddress = fetchCounterPartyAddress(fromMe, toAddrs, ccAddrs, fromAddrs)
+            val counterpartyAddress = itemExtractor.counterPartyAddresses
             updateContactBadge(holder.contactBadge, counterpartyAddress)
         }
         setBackgroundColor(view, selected, read)
@@ -255,24 +249,6 @@ class MessageListAdapter internal constructor(
             val span = StyleSpan(Typeface.BOLD)
             text.setSpan(span, 0, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
-    }
-
-    private fun fetchCounterPartyAddress(
-            fromMe: Boolean,
-            toAddrs: Array<Address>,
-            ccAddrs: Array<Address>,
-            fromAddrs: Array<Address>
-    ): Address? {
-        if (fromMe) {
-            if (toAddrs.size > 0) {
-                return toAddrs[0]
-            } else if (ccAddrs.size > 0) {
-                return ccAddrs[0]
-            }
-        } else if (fromAddrs.size > 0) {
-            return fromAddrs[0]
-        }
-        return null
     }
 
     private fun updateContactBadge(contactBadge: ContactBadge, counterpartyAddress: Address?) {

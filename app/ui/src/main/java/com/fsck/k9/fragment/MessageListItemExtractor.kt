@@ -16,10 +16,25 @@ class MessageListItemExtractor(
 ) {
 
     private val ccMe: Boolean get() = messageHelper.toMe(account, ccAddresses)
+    private val fromMe: Boolean get() = messageHelper.toMe(account, fromAddresses)
     private val toMe: Boolean get() = messageHelper.toMe(account, toAddresses)
 
     val ccAddresses: Array<Address>
         get() = Address.unpack(cursor.getString(MLFProjectionInfo.CC_LIST_COLUMN))
+
+    val counterPartyAddresses: Address?
+    get() {
+        if (fromMe) {
+            if (toAddresses.size > 0) {
+                return toAddresses[0]
+            } else if (ccAddresses.size > 0) {
+                return ccAddresses[0]
+            }
+        } else if (fromAddresses.size > 0) {
+            return fromAddresses[0]
+        }
+        return null
+    }
 
     val displayName: CharSequence
         get() = messageHelper.getDisplayName(account, fromAddresses, toAddresses)
