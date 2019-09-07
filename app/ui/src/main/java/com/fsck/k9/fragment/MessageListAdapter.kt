@@ -119,22 +119,16 @@ class MessageListAdapter internal constructor(
 
     override fun bindView(view: View, context: Context, cursor: Cursor) {
         val itemExtractor = getExtractor(view, cursor)
+        val holder = view.tag as MessageViewHolder
 
         val displayName = itemExtractor.displayName
         val displayDate = DateUtils.getRelativeTimeSpanString(context, itemExtractor.date)
-
         val threadCount = if (appearance.showingThreadedList) itemExtractor.threadCount else 0
-
         val subject = itemExtractor.subject(threadCount)
-
         val read = itemExtractor.read
         val answered = itemExtractor.answered
         val forwarded = itemExtractor.forwarded
-
-        val holder = view.tag as MessageViewHolder
-
         val maybeBoldTypeface = if (read) Typeface.NORMAL else Typeface.BOLD
-
         val uniqueId = cursor.getLong(uniqueIdColumn)
         val selected = selected.contains(uniqueId)
 
