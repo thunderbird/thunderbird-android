@@ -172,12 +172,9 @@ class MessageListAdapter internal constructor(
         holder.date.text = displayDate
         holder.attachment.isVisible = itemExtractor.hasAttachments
 
-        val statusHolder = buildStatusHolder(forwarded, answered)
-        if (statusHolder != null) {
-            holder.status.setImageDrawable(statusHolder)
-            holder.status.visibility = View.VISIBLE
-        } else {
-            holder.status.visibility = View.GONE
+        holder.status.isVisible = answered || forwarded
+        if (holder.status.isVisible) {
+            holder.status.setImageDrawable(getStatusDrawable(forwarded, answered))
         }
     }
 
@@ -245,7 +242,7 @@ class MessageListAdapter internal constructor(
         }
     }
 
-    private fun buildStatusHolder(forwarded: Boolean, answered: Boolean): Drawable? {
+    private fun getStatusDrawable(forwarded: Boolean, answered: Boolean): Drawable? {
         if (forwarded && answered) {
             return forwardedAnsweredIcon
         } else if (answered) {
