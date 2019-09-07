@@ -9,6 +9,8 @@ class MessageListItemExtractor(
         private val cursor: Cursor,
         private val res: Resources
 ) {
+    val ccAddresses: Array<Address>
+        get() = Address.unpack(cursor.getString(MLFProjectionInfo.CC_LIST_COLUMN))
 
     val date: Long get() = cursor.getLong(MLFProjectionInfo.DATE_COLUMN)
 
