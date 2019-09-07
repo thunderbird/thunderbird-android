@@ -149,7 +149,12 @@ class MessageListAdapter internal constructor(
         if (itemExtractor.isActiveMessage(activeMessage)) {
             view.setBackgroundColor(activeItemBackgroundColor)
         }
-        updateWithThreadCount(holder, threadCount)
+
+        holder.threadCount.isVisible = threadCount > 1
+        if (holder.threadCount.isVisible) {
+            holder.threadCount.text = "%d".format(threadCount)
+        }
+
         val beforePreviewText = if (appearance.senderAboveSubject) subject else displayName
         val sigil = itemExtractor.sigil
         val messageStringBuilder = SpannableStringBuilder(sigil)
@@ -267,15 +272,6 @@ class MessageListAdapter internal constructor(
             view.setBackgroundColor(color)
         } else {
             view.setBackgroundColor(Color.TRANSPARENT)
-        }
-    }
-
-    private fun updateWithThreadCount(holder: MessageViewHolder, threadCount: Int) {
-        if (threadCount > 1) {
-            holder.threadCount.setText(String.format("%d", threadCount))
-            holder.threadCount.visibility = View.VISIBLE
-        } else {
-            holder.threadCount.visibility = View.GONE
         }
     }
 
