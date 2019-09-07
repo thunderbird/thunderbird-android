@@ -27,14 +27,11 @@ import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.fragment.MLFProjectionInfo.ACCOUNT_UUID_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.ANSWERED_COLUMN
-import com.fsck.k9.fragment.MLFProjectionInfo.CC_LIST_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.FOLDER_SERVER_ID_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.FORWARDED_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.PREVIEW_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.PREVIEW_TYPE_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.READ_COLUMN
-import com.fsck.k9.fragment.MLFProjectionInfo.SENDER_LIST_COLUMN
-import com.fsck.k9.fragment.MLFProjectionInfo.TO_LIST_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.UID_COLUMN
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mail.Address
@@ -145,7 +142,12 @@ class MessageListAdapter internal constructor(
         holder.flagged.setOnClickListener(holder)
 
         view.tag = holder
-        view.setTag(EXTRACTOR, MessageListItemExtractor(cursor, res))
+        view.setTag(EXTRACTOR, MessageListItemExtractor(
+                getAccount(cursor),
+                cursor,
+                messageHelper,
+                res
+        ))
 
         return view
     }
@@ -162,7 +164,7 @@ class MessageListAdapter internal constructor(
         val toMe = messageHelper.toMe(account, toAddrs)
         val ccMe = messageHelper.toMe(account, ccAddrs)
 
-        val displayName = messageHelper.getDisplayName(account, fromAddrs, toAddrs)
+        val displayName = itemExtractor.displayName
         val displayDate = DateUtils.getRelativeTimeSpanString(context, itemExtractor.date)
 
         val threadCount = if (appearance.showingThreadedList) itemExtractor.threadCount else 0

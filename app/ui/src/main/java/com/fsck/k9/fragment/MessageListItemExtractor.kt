@@ -2,15 +2,23 @@ package com.fsck.k9.fragment
 
 import android.content.res.Resources
 import android.database.Cursor
+import com.fsck.k9.Account
+import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
 
 class MessageListItemExtractor(
+        private val account: Account,
         private val cursor: Cursor,
+        private val messageHelper: MessageHelper,
         private val res: Resources
 ) {
+
     val ccAddresses: Array<Address>
         get() = Address.unpack(cursor.getString(MLFProjectionInfo.CC_LIST_COLUMN))
+
+    val displayName: CharSequence
+        get() = messageHelper.getDisplayName(account, fromAddresses, toAddresses)
 
     val date: Long get() = cursor.getLong(MLFProjectionInfo.DATE_COLUMN)
 
