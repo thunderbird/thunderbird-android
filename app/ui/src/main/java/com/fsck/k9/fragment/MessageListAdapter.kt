@@ -145,10 +145,8 @@ class MessageListAdapter internal constructor(
             val counterpartyAddress = itemExtractor.counterPartyAddresses
             updateContactBadge(holder.contactBadge, counterpartyAddress)
         }
-        setBackgroundColor(view, selected, read)
-        if (itemExtractor.isActiveMessage(activeMessage)) {
-            view.setBackgroundColor(activeItemBackgroundColor)
-        }
+
+        setBackgroundColor(view, selected, read, itemExtractor.isActiveMessage(activeMessage))
 
         holder.threadCount.isVisible = threadCount > 1
         if (holder.threadCount.isVisible) {
@@ -258,18 +256,18 @@ class MessageListAdapter internal constructor(
         return null
     }
 
-    private fun setBackgroundColor(view: View, selected: Boolean, read: Boolean) {
+    private fun setBackgroundColor(view: View, selected: Boolean, read: Boolean,
+                                   isActive: Boolean) {
         if (selected || appearance.backGroundAsReadIndicator) {
-            val color: Int
-            if (selected) {
-                color = selectedItemBackgroundColor
-            } else if (read) {
-                color = readItemBackgroundColor
-            } else {
-                color = unreadItemBackgroundColor
+            val color: Int = when {
+                selected -> selectedItemBackgroundColor
+                read -> readItemBackgroundColor
+                else -> unreadItemBackgroundColor
             }
 
             view.setBackgroundColor(color)
+        } else if (isActive) {
+            view.setBackgroundColor(activeItemBackgroundColor)
         } else {
             view.setBackgroundColor(Color.TRANSPARENT)
         }
