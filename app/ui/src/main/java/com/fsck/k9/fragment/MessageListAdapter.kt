@@ -26,8 +26,6 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.fragment.MLFProjectionInfo.ACCOUNT_UUID_COLUMN
-import com.fsck.k9.fragment.MLFProjectionInfo.FOLDER_SERVER_ID_COLUMN
-import com.fsck.k9.fragment.MLFProjectionInfo.UID_COLUMN
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.ContactBadge
@@ -84,15 +82,6 @@ class MessageListAdapter internal constructor(
     }
 
     var activeMessage: MessageReference? = null
-
-    private val activeAccountUuid: String?
-        get() = activeMessage?.accountUuid
-
-    private val activeFolderServerId: String?
-        get() = activeMessage?.folderServerId
-
-    private val activeUid: String?
-        get() = activeMessage?.uid
 
     var uniqueIdColumn: Int = 0
 
@@ -166,8 +155,8 @@ class MessageListAdapter internal constructor(
             updateContactBadge(holder.contactBadge, counterpartyAddress)
         }
         setBackgroundColor(view, selected, read)
-        if (activeMessage != null) {
-            changeBackgroundColorIfActiveMessage(cursor, account, view)
+        if (itemExtractor.isActiveMessage(activeMessage)) {
+            view.setBackgroundColor(activeItemBackgroundColor)
         }
         updateWithThreadCount(holder, threadCount)
         val beforePreviewText = if (appearance.senderAboveSubject) subject else displayName
@@ -267,17 +256,6 @@ class MessageListAdapter internal constructor(
         } else {
             contactBadge.assignContactUri(null)
             contactBadge.setImageResource(R.drawable.ic_contact_picture)
-        }
-    }
-
-    private fun changeBackgroundColorIfActiveMessage(cursor: Cursor, account: Account, view: View) {
-        val uid = cursor.getString(UID_COLUMN)
-        val folderServerId = cursor.getString(FOLDER_SERVER_ID_COLUMN)
-
-        if (account.uuid == activeAccountUuid &&
-                folderServerId == activeFolderServerId &&
-                uid == activeUid) {
-            view.setBackgroundColor(activeItemBackgroundColor)
         }
     }
 

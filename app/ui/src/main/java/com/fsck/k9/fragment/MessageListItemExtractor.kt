@@ -3,6 +3,7 @@ package com.fsck.k9.fragment
 import android.content.res.Resources
 import android.database.Cursor
 import com.fsck.k9.Account
+import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.DatabasePreviewType
@@ -82,6 +83,18 @@ class MessageListItemExtractor(
         }
 
     val threadCount: Int get() = cursor.getInt(MLFProjectionInfo.THREAD_COUNT_COLUMN)
+
+    fun isActiveMessage(against: MessageReference?): Boolean {
+        val uid = cursor.getString(MLFProjectionInfo.UID_COLUMN)
+        val folderServerId = cursor.getString(MLFProjectionInfo.FOLDER_SERVER_ID_COLUMN)
+
+        val activeAccountUuid = against?.accountUuid
+        val activeFolderServerId = against?.folderServerId
+        val activeUid = against?.uid
+        return account.uuid == activeAccountUuid
+                && folderServerId == activeFolderServerId
+                && uid == activeUid
+    }
 
     fun subject(threadCount: Int): String {
         return MlfUtils.buildSubject(cursor.getString(MLFProjectionInfo.SUBJECT_COLUMN),
