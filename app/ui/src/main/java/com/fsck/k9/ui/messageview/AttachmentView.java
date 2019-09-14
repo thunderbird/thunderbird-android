@@ -16,13 +16,13 @@ import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.helper.SizeFormatter;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 
-
 public class AttachmentView extends FrameLayout implements OnClickListener {
     private AttachmentViewInfo attachment;
     private AttachmentViewCallback callback;
 
     private Button viewButton;
     private Button downloadButton;
+    private Button extractButton;
 
 
     public AttachmentView(Context context, AttributeSet attrs, int defStyle) {
@@ -44,11 +44,13 @@ public class AttachmentView extends FrameLayout implements OnClickListener {
     public void enableButtons() {
         viewButton.setEnabled(true);
         downloadButton.setEnabled(true);
+        extractButton.setEnabled(true);
     }
 
     public void disableButtons() {
         viewButton.setEnabled(false);
         downloadButton.setEnabled(false);
+        extractButton.setEnabled(false);
     }
 
     public void setAttachment(AttachmentViewInfo attachment) {
@@ -60,14 +62,21 @@ public class AttachmentView extends FrameLayout implements OnClickListener {
     private void displayAttachmentInformation() {
         viewButton = findViewById(R.id.view);
         downloadButton = findViewById(R.id.download);
+        extractButton = findViewById(R.id.extract);
 
         if (attachment.size > K9.MAX_ATTACHMENT_DOWNLOAD_SIZE) {
             viewButton.setVisibility(View.GONE);
             downloadButton.setVisibility(View.GONE);
+            extractButton.setVisibility(View.GONE);
+        }
+
+        if (!attachment.mimeType.toLowerCase().equals("application/ms-tnef") && !attachment.mimeType.toLowerCase().equals("application/vnd.ms-tnef")) {
+            extractButton.setVisibility(View.GONE);
         }
 
         viewButton.setOnClickListener(this);
         downloadButton.setOnClickListener(this);
+        extractButton.setOnClickListener(this);
 
         TextView attachmentName = findViewById(R.id.attachment_name);
         attachmentName.setText(attachment.displayName);
@@ -94,6 +103,8 @@ public class AttachmentView extends FrameLayout implements OnClickListener {
             onViewButtonClick();
         } else if (id == R.id.download) {
             onSaveButtonClick();
+        } else if (id == R.id.extract) {
+            onExtractButtonClick();
         }
     }
 
@@ -103,6 +114,10 @@ public class AttachmentView extends FrameLayout implements OnClickListener {
 
     private void onSaveButtonClick() {
         callback.onSaveAttachment(attachment);
+    }
+
+    private void onExtractButtonClick() {
+        callback.onExtractAttachment(attachment);
     }
 
     public void setCallback(AttachmentViewCallback callback) {

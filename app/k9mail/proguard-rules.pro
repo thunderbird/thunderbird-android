@@ -16,6 +16,7 @@
 
 -dontwarn okio.**
 -dontwarn com.squareup.moshi.**
+-dontwarn net.freeutils.tnef.**
 
 # Project specific rules
 -dontnote com.fsck.k9.ui.messageview.**

@@ -285,7 +285,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="message_view_bcc_label">Bcc:</string>
     <string name="message_view_attachment_view_action">Open</string>
     <string name="message_view_attachment_download_action">Save</string>
+    <string name="message_view_attachment_extract_action">Extract</string>
     <string name="message_view_status_attachment_not_saved">Unable to save attachment.</string>
+    <string name="message_view_status_attachment_not_extracted">Unable to extract attachment.</string>
     <string name="message_view_show_pictures_action">Show pictures</string>
     <string name="message_view_no_viewer">Unable to find viewer for <xliff:g id="mimetype">%s</xliff:g>.</string>
     <string name="message_view_download_remainder">Download complete message</string>

@@ -71,6 +71,19 @@
                 android:layout_alignWithParentIfMissing="true"
                 android:layout_below="@id/attachment_name"
                 android:layout_marginTop="6dip" />
+            <Button
+                android:id="@+id/extract"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="?android:attr/buttonStyleSmall"
+                android:paddingLeft="20dip"
+                android:paddingRight="20dip"
+                android:text="@string/message_view_attachment_extract_action"
+                android:singleLine="true"
+                android:layout_toLeftOf="@id/view"
+                android:layout_alignWithParentIfMissing="true"
+                android:layout_below="@id/attachment_name"
+                android:layout_marginTop="6dip" />
         </RelativeLayout>
     </LinearLayout>
     <LinearLayout

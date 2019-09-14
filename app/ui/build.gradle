@@ -41,6 +41,7 @@ dependencies {
     implementation 'com.github.ByteHamster:SearchPreference:v1.1.4'
     implementation 'com.mikepenz:fastadapter:3.3.1'
     implementation 'de.hdodenhof:circleimageview:3.0.0'
+    implementation 'net.freeutils:jtnef:2.0.0'
 
     implementation "commons-io:commons-io:${versions.commonsIo}"
     implementation "androidx.core:core-ktx:${versions.coreKtx}"

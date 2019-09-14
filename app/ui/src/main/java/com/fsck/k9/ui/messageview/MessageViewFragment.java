@@ -11,9 +11,12 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.os.SystemClock;
+
+import androidx.documentfile.provider.DocumentFile;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -63,6 +66,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
     private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
     private static final int REQUEST_CODE_CREATE_DOCUMENT = 3;
+    private static final int REQUEST_CODE_EXTRACT_DOCUMENT = 4;
 
     public static final int REQUEST_MASK_LOADER_HELPER = (1 << 8);
     public static final int REQUEST_MASK_CRYPTO_PRESENTER = (1 << 9);
@@ -457,6 +461,12 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                 }
                 break;
             }
+            case REQUEST_CODE_EXTRACT_DOCUMENT: {
+                if (data != null && data.getData() != null) {
+                    getAttachmentController(currentAttachmentViewInfo).extractAttachmentTo(DocumentFile.fromTreeUri(getApplicationContext(), data.getData()));
+                }
+                break;
+            }
             case ACTIVITY_CHOOSE_FOLDER_MOVE:
             case ACTIVITY_CHOOSE_FOLDER_COPY: {
                 if (data == null) {
@@ -815,6 +825,18 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         intent.addCategory(Intent.CATEGORY_OPENABLE);
 
         startActivityForResult(intent, REQUEST_CODE_CREATE_DOCUMENT);
+    }
+
+    @Override
+    public void onExtractAttachment(final AttachmentViewInfo attachment) {
+        currentAttachmentViewInfo = attachment;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+
+            startActivityForResult(intent, REQUEST_CODE_EXTRACT_DOCUMENT);
+        } else {
+            getAttachmentController(attachment).extractAttachmentTo(DocumentFile.fromFile(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)));
+        }
     }
 
     private AttachmentController getAttachmentController(AttachmentViewInfo attachment) {

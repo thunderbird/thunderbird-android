@@ -14,8 +14,9 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
-import androidx.annotation.WorkerThread;
 import android.widget.Toast;
+import androidx.annotation.WorkerThread;
+import androidx.documentfile.provider.DocumentFile;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
@@ -29,6 +30,11 @@ import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalPart;
 import com.fsck.k9.provider.AttachmentTempFileProvider;
 import com.fsck.k9.ui.R;
+
+import net.freeutils.tnef.Attachment;
+import net.freeutils.tnef.TNEFInputStream;
+import net.freeutils.tnef.TNEFUtils;
+
 import org.apache.commons.io.IOUtils;
 import timber.log.Timber;
 
@@ -38,7 +44,6 @@ public class AttachmentController {
     private final MessagingController controller;
     private final MessageViewFragment messageViewFragment;
     private final AttachmentViewInfo attachment;
-
 
     AttachmentController(MessagingController controller, MessageViewFragment messageViewFragment,
             AttachmentViewInfo attachment) {
@@ -64,6 +69,14 @@ public class AttachmentController {
         }
     }
 
+    public void extractAttachmentTo(DocumentFile folderFile) {
+        if (!attachment.isContentAvailable()) {
+            downloadAndExtractAttachmentTo((LocalPart) attachment.part, folderFile);
+        } else {
+            extractLocalAttachmentTo(folderFile);
+        }
+    }
+
     private void downloadAndViewAttachment(LocalPart localPart) {
         downloadAttachment(localPart, new Runnable() {
             @Override
@@ -79,6 +92,15 @@ public class AttachmentController {
             public void run() {
                 messageViewFragment.refreshAttachmentThumbnail(attachment);
                 saveLocalAttachmentTo(documentUri);
+            }
+        });
+    }
+
+    private void downloadAndExtractAttachmentTo(LocalPart localPart, final DocumentFile folderFile) {
+        downloadAttachment(localPart, new Runnable() {
+            @Override
+            public void run() {
+                extractLocalAttachmentTo(folderFile);
             }
         });
     }
@@ -112,6 +134,10 @@ public class AttachmentController {
         new SaveAttachmentAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, documentUri);
     }
 
+    private void extractLocalAttachmentTo(DocumentFile folderFile) {
+        new ExtractAttachmentAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, folderFile);
+    }
+
     private void writeAttachment(Uri documentUri) throws IOException {
         ContentResolver contentResolver = context.getContentResolver();
         InputStream in = contentResolver.openInputStream(attachment.internalUri);
@@ -125,6 +151,39 @@ public class AttachmentController {
             }
         } finally {
             in.close();
+        }
+    }
+
+    private void extractTNEFTo(DocumentFile folderFile) throws IOException {
+        ContentResolver contentResolver = context.getContentResolver();
+        InputStream inputStream = contentResolver.openInputStream(attachment.internalUri);
+        TNEFInputStream tnefInputStream = new TNEFInputStream(inputStream);
+        net.freeutils.tnef.Message message = new net.freeutils.tnef.Message(tnefInputStream);
+        try {
+            extractTNEFAttachmentsTo(message, folderFile);
+        } finally {
+            TNEFUtils.closeAll(message, tnefInputStream, inputStream);
+        }
+    }
+
+    private void extractTNEFAttachmentsTo(net.freeutils.tnef.Message message, DocumentFile folderFile) {
+        ContentResolver contentResolver = context.getContentResolver();
+        for (Attachment attachment : message.getAttachments()) {
+            if (attachment.getNestedMessage() != null) {
+                extractTNEFAttachmentsTo(attachment.getNestedMessage(), folderFile);
+            } else {
+                String filename = attachment.getFilename();
+                if (filename != null) {
+                    filename = filename.replaceAll("(.*[/\\\\])*", "");
+                    try {
+                        DocumentFile file = folderFile.createFile("", filename);
+                        if (file != null)
+                            attachment.writeTo(contentResolver.openOutputStream(file.getUri()));
+                    } catch (IOException e) {
+                        Timber.e(e, "Failed to extract file " + filename + " from " + this.attachment.displayName);
+                    }
+                }
+            }
         }
     }
 
@@ -192,6 +251,11 @@ public class AttachmentController {
 
     private void displayAttachmentNotSavedMessage() {
         String message = context.getString(R.string.message_view_status_attachment_not_saved);
+        displayMessageToUser(message);
+    }
+
+    private void displayAttachmentNotExtractedMessage() {
+        String message = context.getString(R.string.message_view_status_attachment_not_extracted);
         displayMessageToUser(message);
     }
 
@@ -271,6 +335,34 @@ public class AttachmentController {
             messageViewFragment.enableAttachmentButtons(attachment);
             if (!success) {
                 displayAttachmentNotSavedMessage();
+            }
+        }
+    }
+
+    private class ExtractAttachmentAsyncTask extends AsyncTask<DocumentFile, Void, Boolean> {
+
+        @Override
+        protected void onPreExecute() {
+            messageViewFragment.disableAttachmentButtons(attachment);
+        }
+
+        @Override
+        protected Boolean doInBackground(DocumentFile... params) {
+            try {
+                DocumentFile folderFile = params[0];
+                extractTNEFTo(folderFile);
+                return true;
+            } catch (IOException e) {
+                Timber.e(e, "Error extracting attachment");
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            messageViewFragment.enableAttachmentButtons(attachment);
+            if (!success) {
+                displayAttachmentNotExtractedMessage();
             }
         }
     }
