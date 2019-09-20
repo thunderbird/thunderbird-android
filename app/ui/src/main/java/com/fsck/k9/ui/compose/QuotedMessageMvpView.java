@@ -9,18 +9,24 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.fsck.k9.DI;
 import com.fsck.k9.FontSizes;
+import com.fsck.k9.message.html.DisplayHtml;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.activity.MessageCompose;
-import com.fsck.k9.message.html.HtmlConverter;
 import com.fsck.k9.mailstore.AttachmentResolver;
 import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageFormat;
 import com.fsck.k9.ui.EolConvertingEditText;
+import com.fsck.k9.ui.helper.DisplayHtmlUiFactory;
 import com.fsck.k9.view.MessageWebView;
+import com.fsck.k9.view.WebViewConfigProvider;
 
 
 public class QuotedMessageMvpView {
+    private final DisplayHtml displayHtml = DI.get(DisplayHtmlUiFactory.class).createForMessageCompose();
+    private final WebViewConfigProvider webViewConfigProvider = DI.get(WebViewConfigProvider.class);
+
     private final Button mQuotedTextShow;
     private final View mQuotedTextBar;
     private final ImageButton mQuotedTextEdit;
@@ -39,7 +45,7 @@ public class QuotedMessageMvpView {
         mQuotedText.getInputExtras(true).putBoolean("allowEmoji", true);
 
         mQuotedHTML = messageCompose.findViewById(R.id.quoted_html);
-        mQuotedHTML.configure();
+        mQuotedHTML.configure(webViewConfigProvider.createForMessageCompose());
         // Disable the ability to click links in the quoted HTML page. I think this is a nice feature, but if someone
         // feels this should be a preference (or should go away all together), I'm ok with that too. -achen 20101130
         mQuotedHTML.setWebViewClient(new WebViewClient() {
@@ -118,7 +124,7 @@ public class QuotedMessageMvpView {
 
     public void setQuotedHtml(String quotedContent, AttachmentResolver attachmentResolver) {
         mQuotedHTML.displayHtmlContentWithInlineAttachments(
-                HtmlConverter.wrapMessageContent(quotedContent),
+                displayHtml.wrapMessageContent(quotedContent),
                 attachmentResolver, null);
     }
 

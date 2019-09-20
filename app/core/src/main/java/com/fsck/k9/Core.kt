@@ -11,6 +11,7 @@ import android.os.StrictMode
 import com.fsck.k9.autocrypt.autocryptModule
 import com.fsck.k9.controller.controllerModule
 import com.fsck.k9.crypto.openPgpModule
+import com.fsck.k9.helper.helperModule
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.job.jobModule
 import com.fsck.k9.mail.internet.BinaryTempFileBody
@@ -47,7 +48,8 @@ object Core : KoinComponent {
             quoteModule,
             coreNotificationModule,
             controllerModule,
-            jobModule
+            jobModule,
+            helperModule
     )
 
     /**

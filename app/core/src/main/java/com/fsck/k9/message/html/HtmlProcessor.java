@@ -6,10 +6,12 @@ import org.jsoup.nodes.Document;
 
 public class HtmlProcessor {
     private final HtmlSanitizer htmlSanitizer;
+    private final DisplayHtml displayHtml;
 
 
-    HtmlProcessor(HtmlSanitizer htmlSanitizer) {
+    HtmlProcessor(HtmlSanitizer htmlSanitizer, DisplayHtml displayHtml) {
         this.htmlSanitizer = htmlSanitizer;
+        this.displayHtml = displayHtml;
     }
 
     public String processForDisplay(String html) {
@@ -21,8 +23,8 @@ public class HtmlProcessor {
 
     private void addCustomHeadContents(Document document) {
         document.head().append("<meta name=\"viewport\" content=\"width=device-width\"/>" +
-                HtmlConverter.cssStyleTheme() +
-                HtmlConverter.cssStylePre());
+                displayHtml.cssStyleTheme() +
+                displayHtml.cssStylePre());
     }
 
     public static String toCompactString(Document document) {

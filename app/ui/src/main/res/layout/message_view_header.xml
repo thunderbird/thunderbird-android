@@ -63,7 +63,7 @@
                     android:layout_gravity="center_vertical"
                     android:focusable="false"
                     android:checked="false"
-                    style="?android:attr/starStyle"
+                    style="@style/MessageStarStyle"
                     />
 
             </LinearLayout>

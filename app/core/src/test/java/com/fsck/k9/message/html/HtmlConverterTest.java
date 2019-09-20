@@ -1,39 +1,12 @@
 package com.fsck.k9.message.html;
 
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
-import com.fsck.k9.K9;
-import com.fsck.k9.K9.Theme;
-import org.apache.commons.io.IOUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
 
 
 public class HtmlConverterTest {
-    // Useful if you want to write stuff to a file for debugging in a browser.
-    private static final boolean WRITE_TO_FILE = Boolean.parseBoolean(System.getProperty("k9.htmlConverterTest.writeToFile", "false"));
-    private static final String OUTPUT_FILE = "C:/temp/parse.html";
-    private K9.Theme priorMessageViewTheme;
-
-    @Before
-    public void before() {
-        priorMessageViewTheme = K9.getK9MessageViewTheme();
-    }
-
-    @After
-    public void after() {
-        K9.setK9MessageViewThemeSetting(priorMessageViewTheme);
-    }
-
     @Test
     public void testTextQuoteToHtmlBlockquote() {
         String message = "Panama!\r\n" +
@@ -47,8 +20,9 @@ public class HtmlConverterTest {
                 "\r\n" +
                 "Nice job :)\r\n" +
                 ">> Guess!";
+
         String result = HtmlConverter.textToHtml(message);
-        writeToFile(result);
+
         assertEquals("<pre class=\"k9mail\">"
                 + "Panama!<br>"
                 + "<br>"
@@ -86,8 +60,9 @@ public class HtmlConverterTest {
                 ">     LOL F1RST!!!!!\r\n" +
                 ">\r\n" +
                 "> :)";
+
         String result = HtmlConverter.textToHtml(message);
-        writeToFile(result);
+
         assertEquals("<pre class=\"k9mail\">"
                 + "*facepalm*<br>"
                 + "<br>"
@@ -111,8 +86,9 @@ public class HtmlConverterTest {
                 ">>>> four\r\n" +
                 ">>>>> five\r\n" +
                 ">>>>>> six";
+
         String result = HtmlConverter.textToHtml(message);
-        writeToFile(result);
+
         assertEquals("<pre class=\"k9mail\">"
                 + "zero<br>"
                 + "<blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #729fcf; padding-left: 1ex;\">"
@@ -136,37 +112,14 @@ public class HtmlConverterTest {
                 + "</pre>", result);
     }
 
-    private void writeToFile(final String content) {
-        if (!WRITE_TO_FILE) {
-            return;
-        }
-
-        FileWriter fstream = null;
-
-        try {
-            File f = new File(OUTPUT_FILE);
-            if (f.exists() && !f.delete()) {
-                throw new RuntimeException("Unable to delete existing output");
-            }
-
-            fstream = new FileWriter(OUTPUT_FILE);
-            BufferedWriter out = new BufferedWriter(fstream);
-            out.write(content);
-            out.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } finally {
-            IOUtils.closeQuietly(fstream);
-        }
-    }
-
     @Test
     public void testPreserveSpacesAtFirst() {
         String message = "foo\r\n"
                 + " bar\r\n"
                 + "  baz\r\n";
+
         String result = HtmlConverter.textToHtml(message);
-        writeToFile(result);
+
         assertEquals("<pre class=\"k9mail\">"
                 + "foo<br>"
                 + " bar<br>"
@@ -182,8 +135,9 @@ public class HtmlConverterTest {
                         + "    \n"
                         + "   <\r\n"
                         + "  > \r\n";
+
         String result = HtmlConverter.textToHtml(message);
-        writeToFile(result);
+
         assertEquals("<pre class=\"k9mail\">"
                 + " <br>"
                 + "  &amp;<br>"
@@ -294,58 +248,5 @@ public class HtmlConverterTest {
         String text = "hello\n-- %< -------------- >8 --\nworld\n";
         String result = HtmlConverter.textToHtml(text);
         assertEquals("<pre class=\"k9mail\">hello<hr>world<br></pre>", result);
-    }
-
-    @Test
-    public void wrapMessageContent_addsViewportMetaElement() {
-        String html = HtmlConverter.wrapMessageContent("Some text");
-
-        assertHtmlContainsElement(html, "head > meta[name=viewport]");
-    }
-
-    @Test
-    public void wrapMessageContent_setsDirToAuto() {
-        String html = HtmlConverter.wrapMessageContent("Some text");
-
-        assertHtmlContainsElement(html, "html[dir=auto]");
-    }
-
-    @Test
-    public void wrapMessageContent_addsPreCSS() {
-        K9.setK9MessageViewThemeSetting(Theme.LIGHT);
-
-        String html = HtmlConverter.wrapMessageContent("Some text");
-
-        assertHtmlContainsElement(html, "head > style");
-    }
-
-    @Test
-    public void wrapMessageContent_whenDarkMessageViewTheme_addsDarkThemeCSS() {
-        K9.setK9MessageViewThemeSetting(Theme.DARK);
-
-        String html = HtmlConverter.wrapMessageContent("Some text");
-
-        assertHtmlContainsElement(html, "head > style", 2);
-    }
-
-    @Test
-    public void wrapMessageContent_putsMessageContentInBody() {
-        String content = "Some text";
-
-        String html = HtmlConverter.wrapMessageContent(content);
-
-        assertEquals(content, Jsoup.parse(html).body().text());
-    }
-
-
-    private void assertHtmlContainsElement(String html, String cssQuery) {
-        assertHtmlContainsElement(html, cssQuery, 1);
-    }
-
-    private void assertHtmlContainsElement(String html, String cssQuery, int numberOfExpectedOccurrences) {
-        Document document = Jsoup.parse(html);
-        int numberOfFoundElements = document.select(cssQuery).size();
-        assertEquals("Expected to find '" + cssQuery + "' " + numberOfExpectedOccurrences + " time(s) in:\n" + html,
-                numberOfExpectedOccurrences, numberOfFoundElements);
     }
 }

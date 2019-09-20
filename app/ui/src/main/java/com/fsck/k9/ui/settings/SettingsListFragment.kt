@@ -93,6 +93,17 @@ class SettingsListFragment : Fragment() {
         }
         accountSection.setHeader(SettingsDividerItem(getString(R.string.accounts_title)))
         settingsAdapter.add(accountSection)
+
+        val backupSection = Section().apply {
+            val exportSettingsActionItem = SettingsActionItem(
+                    getString(R.string.settings_export_title),
+                    R.id.action_settingsListScreen_to_settingsExportScreen,
+                    R.attr.iconSettingsExport
+            )
+            add(exportSettingsActionItem)
+        }
+        backupSection.setHeader(SettingsDividerItem(getString(R.string.settings_list_backup_category)))
+        settingsAdapter.add(backupSection)
     }
 
     private fun handleItemClick(item: Item<*>) {

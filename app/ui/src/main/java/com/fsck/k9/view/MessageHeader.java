@@ -31,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.DI;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.activity.misc.ContactPicture;
@@ -49,6 +50,8 @@ import timber.log.Timber;
 
 
 public class MessageHeader extends LinearLayout implements OnClickListener, OnLongClickListener {
+    private final ClipboardManager clipboardManager = DI.get(ClipboardManager.class);
+
     private Context mContext;
     private TextView mFromView;
     private TextView mSenderView;
@@ -208,8 +211,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
     private void onAddAddressesToClipboard(Address[] addresses) {
         String addressList = Address.toString(addresses);
-
-        ClipboardManager clipboardManager = ClipboardManager.getInstance(mContext);
         clipboardManager.setText("addresses", addressList);
 
         Toast.makeText(mContext, createMessage(addresses.length), Toast.LENGTH_LONG).show();
@@ -269,7 +270,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     }
 
     public void populate(final Message message, final Account account) {
-        final Contacts contacts = K9.showContactName() ? mContacts : null;
+        final Contacts contacts = K9.isShowContactName() ? mContacts : null;
         final CharSequence from = MessageHelper.toFriendly(message.getFrom(), contacts);
         final CharSequence to = MessageHelper.toFriendly(message.getRecipients(Message.RecipientType.TO), contacts);
         final CharSequence cc = MessageHelper.toFriendly(message.getRecipients(Message.RecipientType.CC), contacts);
@@ -294,7 +295,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mMessage = message;
         mAccount = account;
 
-        if (K9.showContactPicture()) {
+        if (K9.isShowContactPicture()) {
             mContactBadge.setVisibility(View.VISIBLE);
             mContactsPictureLoader = ContactPicture.getContactPictureLoader();
         }  else {
@@ -318,7 +319,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
                 | DateUtils.FORMAT_SHOW_YEAR);
         mDateView.setText(dateTime);
 
-        if (K9.showContactPicture()) {
+        if (K9.isShowContactPicture()) {
             if (counterpartyAddress != null) {
                 mContactBadge.setContact(counterpartyAddress);
                 mContactsPictureLoader.setContactPicture(mContactBadge, counterpartyAddress);

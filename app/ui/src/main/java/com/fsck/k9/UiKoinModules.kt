@@ -8,6 +8,7 @@ import com.fsck.k9.fragment.fragmentModule
 import com.fsck.k9.ui.endtoend.endToEndUiModule
 import com.fsck.k9.ui.settings.settingsUiModule
 import com.fsck.k9.ui.uiModule
+import com.fsck.k9.view.viewModule
 
 val uiModules = listOf(
         activityModule,
@@ -17,5 +18,6 @@ val uiModules = listOf(
         fragmentModule,
         contactsModule,
         accountModule,
-        autodiscoveryModule
+        autodiscoveryModule,
+        viewModule
 )

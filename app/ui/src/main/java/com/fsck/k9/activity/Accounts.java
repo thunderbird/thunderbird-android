@@ -188,7 +188,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             runOnUiThread(new Runnable() {
                 public void run() {
                     AccountStats stats = accountStats.get(account.getUuid());
-                    if (newSize != -1 && stats != null && K9.measureAccounts()) {
+                    if (newSize != -1 && stats != null && K9.isMeasureAccounts()) {
                         stats.size = newSize;
                     }
                     String toastText = getString(R.string.account_size_changed, account.getDescription(),
@@ -366,7 +366,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
         }
 
         boolean startup = intent.getBooleanExtra(EXTRA_STARTUP, true);
-        if (startup && K9.startIntegratedInbox() && !K9.isHideSpecialAccounts()) {
+        if (startup && K9.isStartInUnifiedInbox() && !K9.isHideSpecialAccounts()) {
             onOpenAccount(unifiedInboxAccount);
             finish();
             return;
@@ -555,7 +555,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             if (account instanceof Account) {
                 Account realAccount = (Account) account;
                 controller.getAccountStats(this, realAccount, mListener);
-            } else if (K9.countSearchMessages() && account instanceof SearchAccount) {
+            } else if (K9.isCountSearchMessages() && account instanceof SearchAccount) {
                 final SearchAccount searchAccount = (SearchAccount) account;
                 controller.getSearchAccountStats(searchAccount, mListener);
             }
@@ -1615,7 +1615,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
                 holder.newMessageCountWrapper.setVisibility(unreadMessageCount > 0 ? View.VISIBLE : View.GONE);
 
                 holder.flaggedMessageCount.setText(String.format("%d", stats.flaggedMessageCount));
-                holder.flaggedMessageCountWrapper.setVisibility(K9.messageListStars() && stats.flaggedMessageCount > 0 ? View.VISIBLE : View.GONE);
+                holder.flaggedMessageCountWrapper.setVisibility(K9.isShowMessageListStars() && stats.flaggedMessageCount > 0 ? View.VISIBLE : View.GONE);
 
                 holder.flaggedMessageCountWrapper.setOnClickListener(createFlaggedSearchListener(account));
                 holder.newMessageCountWrapper.setOnClickListener(createUnreadSearchListener(account));

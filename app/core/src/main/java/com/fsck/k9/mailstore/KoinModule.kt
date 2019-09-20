@@ -4,7 +4,7 @@ import org.koin.dsl.module.applicationContext
 
 val mailStoreModule = applicationContext {
     bean { FolderRepositoryManager(get(), get()) }
-    bean { MessageViewInfoExtractor(get(), get(), get()) }
+    bean { MessageViewInfoExtractorFactory(get(), get(), get()) }
     bean { StorageManager.getInstance(get()) }
     bean { SearchStatusManager() }
     bean { SpecialFolderSelectionStrategy() }

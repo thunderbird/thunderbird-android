@@ -27,7 +27,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
 import android.widget.ListPopupWindow;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -43,6 +42,7 @@ import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.tokenautocomplete.TokenCompleteTextView;
 import org.apache.james.mime4j.util.CharsetUtil;
 import timber.log.Timber;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class RecipientSelectView extends TokenCompleteTextView<Recipient> implements LoaderCallbacks<List<Recipient>>,
@@ -120,7 +120,10 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     @SuppressLint("InflateParams")
     private View inflateLayout() {
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-        return layoutInflater.inflate(R.layout.recipient_token_item, null, false);
+        View layout = layoutInflater.inflate(R.layout.recipient_token_item, null, false);
+        View contactPhoto = layout.findViewById(R.id.contact_photo);
+        contactPhoto.setZ(1.f);
+        return layout;
     }
 
     private void bindObjectView(Recipient recipient, View view) {
@@ -536,7 +539,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
     private static class RecipientTokenViewHolder {
         final TextView vName;
-        final ImageView vContactPhoto;
+        final CircleImageView vContactPhoto;
         final View cryptoStatusRed;
         final View cryptoStatusOrange;
         final View cryptoStatusGreen;
@@ -631,7 +634,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         }
 
         public String getDisplayNameOrAddress() {
-            final String displayName = K9.showCorrespondentNames() ? getDisplayName() : null;
+            final String displayName = K9.isShowCorrespondentNames() ? getDisplayName() : null;
 
             if (displayName != null) {
                 return displayName;

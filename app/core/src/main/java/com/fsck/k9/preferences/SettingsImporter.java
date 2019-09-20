@@ -76,11 +76,17 @@ public class SettingsImporter {
         public final AccountDescription original;
         public final AccountDescription imported;
         public final boolean overwritten;
+        public final boolean incomingPasswordNeeded;
+        public final boolean outgoingPasswordNeeded;
 
-        private AccountDescriptionPair(AccountDescription original, AccountDescription imported, boolean overwritten) {
+        private AccountDescriptionPair(AccountDescription original, AccountDescription imported,
+                boolean overwritten, boolean incomingPasswordNeeded,
+                boolean outgoingPasswordNeeded) {
             this.original = original;
             this.imported = imported;
             this.overwritten = overwritten;
+            this.incomingPasswordNeeded = incomingPasswordNeeded;
+            this.outgoingPasswordNeeded = outgoingPasswordNeeded;
         }
     }
 
@@ -364,9 +370,7 @@ public class SettingsImporter {
         String storeUri = backendManager.createStoreUri(incoming);
         putString(editor, accountKeyPrefix + AccountPreferenceSerializer.STORE_URI_KEY, Base64.encode(storeUri));
 
-        // Mark account as disabled if the AuthType isn't EXTERNAL and the
-        // settings file didn't contain a password
-        boolean createAccountDisabled = AuthType.EXTERNAL != incoming.authenticationType &&
+        boolean incomingPasswordNeeded = AuthType.EXTERNAL != incoming.authenticationType &&
                 (incoming.password == null || incoming.password.isEmpty());
 
         String incomingServerType = ServerTypeConverter.toServerSettingsType(account.incoming.type);
@@ -375,6 +379,7 @@ public class SettingsImporter {
             throw new InvalidSettingValueException();
         }
 
+        boolean outgoingPasswordNeeded = false;
         if (account.outgoing != null) {
             // Write outgoing server settings (transportUri)
             ServerSettings outgoing = new ImportedServerSettings(account.outgoing);
@@ -387,15 +392,14 @@ public class SettingsImporter {
              * identical for this account type. Nor is a password required if the AuthType is EXTERNAL.
              */
             String outgoingServerType = ServerTypeConverter.toServerSettingsType(outgoing.type);
-            boolean outgoingPasswordNeeded = AuthType.EXTERNAL != outgoing.authenticationType &&
+            outgoingPasswordNeeded = AuthType.EXTERNAL != outgoing.authenticationType &&
                     !outgoingServerType.equals(Protocols.WEBDAV) &&
                     outgoing.username != null &&
                     !outgoing.username.isEmpty() &&
                     (outgoing.password == null || outgoing.password.isEmpty());
-            createAccountDisabled = outgoingPasswordNeeded || createAccountDisabled;
         }
 
-        // Write key to mark account as disabled if necessary
+        boolean createAccountDisabled = incomingPasswordNeeded || outgoingPasswordNeeded;
         if (createAccountDisabled) {
             editor.putBoolean(accountKeyPrefix + "enabled", false);
         }
@@ -452,7 +456,8 @@ public class SettingsImporter {
         //TODO: sync folder settings with localstore?
 
         AccountDescription imported = new AccountDescription(accountName, uuid);
-        return new AccountDescriptionPair(original, imported, mergeImportedAccount);
+        return new AccountDescriptionPair(original, imported, mergeImportedAccount,
+                incomingPasswordNeeded, outgoingPasswordNeeded);
     }
 
     private static void importFolder(StorageEditor editor, int contentVersion, String uuid, ImportedFolder folder,
@@ -627,9 +632,9 @@ public class SettingsImporter {
      *         The new value for the preference.
      */
     private static void putString(StorageEditor editor, String key, String value) {
-        if (K9.isDebug()) {
+        if (K9.isDebugLoggingEnabled()) {
             String outputValue = value;
-            if (!K9.DEBUG_SENSITIVE && (key.endsWith(".transportUri") || key.endsWith(".storeUri"))) {
+            if (!K9.isSensitiveDebugLoggingEnabled() && (key.endsWith(".transportUri") || key.endsWith(".storeUri"))) {
                 outputValue = "*sensitive*";
             }
             Timber.v("Setting %s=%s", key, outputValue);

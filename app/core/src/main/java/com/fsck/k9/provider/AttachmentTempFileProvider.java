@@ -110,7 +110,7 @@ public class AttachmentTempFileProvider extends FileProvider {
                     allFilesDeleted = false;
                 }
             } else {
-                if (K9.isDebug()) {
+                if (K9.isDebugLoggingEnabled()) {
                     String timeLeftStr = String.format(
                             Locale.ENGLISH, "%.2f", (lastModified - deletionThreshold) / 1000 / 60.0);
                     Timber.e("Not deleting temp file (for another %s minutes)", timeLeftStr);

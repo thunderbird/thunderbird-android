@@ -6,6 +6,7 @@ android:
     - android-28
     - extra-android-m2repository
 
+dist: trusty
 jdk: oraclejdk8
 
 script: ./gradlew testDebug

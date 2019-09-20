@@ -1,38 +1,22 @@
 package com.fsck.k9.ui.messagelist
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.fsck.k9.Account
-import com.fsck.k9.mailstore.Folder
-import com.fsck.k9.mailstore.FolderRepositoryManager
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import com.fsck.k9.ui.folders.FoldersLiveData
+import com.fsck.k9.ui.folders.FoldersLiveDataFactory
 
-class MessageListViewModel(private val folderRepositoryManager: FolderRepositoryManager) : ViewModel() {
-    private val foldersLiveData = MutableLiveData<List<Folder>>()
-    private var account: Account? = null
+class MessageListViewModel(private val foldersLiveDataFactory: FoldersLiveDataFactory) : ViewModel() {
+    private var foldersLiveData: FoldersLiveData? = null
 
 
-    fun getFolders(account: Account): LiveData<List<Folder>> {
-        if (foldersLiveData.value == null || this.account != account) {
-            this.account = account
-            loadFolders(account)
+    fun getFolders(account: Account): FoldersLiveData {
+        val liveData = foldersLiveData
+        if (liveData != null && liveData.accountUuid == account.uuid) {
+            return liveData
         }
 
-        return foldersLiveData
-    }
-
-    private fun loadFolders(account: Account) {
-        GlobalScope.launch(Dispatchers.Main) {
-            val folders = async {
-                val folderRepository = folderRepositoryManager.getFolderRepository(account)
-                folderRepository.getDisplayFolders()
-            }.await()
-
-            foldersLiveData.value = folders
+        return foldersLiveDataFactory.create(account).also {
+            foldersLiveData = it
         }
     }
 }

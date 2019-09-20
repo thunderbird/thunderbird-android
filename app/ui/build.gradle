@@ -28,6 +28,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:${versions.androidxLifecycleExtensions}"
     implementation "androidx.navigation:navigation-fragment-ktx:${versions.androidxNavigation}"
     implementation "androidx.navigation:navigation-ui-ktx:${versions.androidxNavigation}"
+    implementation "androidx.constraintlayout:constraintlayout:${versions.androidxConstraintLayout}"
     implementation "de.cketti.library.changelog:ckchangelog:1.2.1"
     implementation "com.github.bumptech.glide:glide:3.6.1"
     implementation "com.splitwise:tokenautocomplete:2.0.7"
@@ -38,6 +39,8 @@ dependencies {
     implementation 'com.mikepenz:materialdrawer:6.1.1'
     implementation 'com.mikepenz:fontawesome-typeface:5.3.1.1@aar'
     implementation 'com.github.ByteHamster:SearchPreference:v1.1.4'
+    implementation 'com.mikepenz:fastadapter:3.3.1'
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
 
     implementation "commons-io:commons-io:${versions.commonsIo}"
     implementation "androidx.core:core-ktx:${versions.coreKtx}"

@@ -26,17 +26,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fsck.k9.DI;
+import com.fsck.k9.message.html.DisplayHtml;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.Contacts;
-import com.fsck.k9.message.html.HtmlConverter;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mailstore.AttachmentResolver;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.mailstore.MessageViewInfo;
+import com.fsck.k9.ui.helper.DisplayHtmlUiFactory;
 import com.fsck.k9.view.MessageWebView;
 import com.fsck.k9.view.MessageWebView.OnPageFinishedListener;
+import com.fsck.k9.view.WebViewConfigProvider;
 
 import static android.app.DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED;
 
@@ -58,6 +61,10 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
     private static final int MENU_ITEM_EMAIL_SAVE = Menu.FIRST + 1;
     private static final int MENU_ITEM_EMAIL_COPY = Menu.FIRST + 2;
 
+    private final DisplayHtml displayHtml = DI.get(DisplayHtmlUiFactory.class).createForMessageView();
+    private final WebViewConfigProvider webViewConfigProvider = DI.get(WebViewConfigProvider.class);
+    private final ClipboardManager clipboardManager = DI.get(ClipboardManager.class);
+
     private MessageWebView mMessageContentView;
     private LinearLayout mAttachments;
     private View unsignedTextContainer;
@@ -68,7 +75,6 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
     private boolean showingPictures;
     private LayoutInflater mInflater;
     private AttachmentViewCallback attachmentCallback;
-    private ClipboardManager mClipboardManager;
     private Map<AttachmentViewInfo, AttachmentView> attachmentViewMap = new HashMap<>();
     private Map<Uri, AttachmentViewInfo> attachments = new HashMap<>();
     private boolean hasHiddenExternalImages;
@@ -83,7 +89,7 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
 
         mMessageContentView = findViewById(R.id.message_content);
         if (!isInEditMode()) {
-            mMessageContentView.configure();
+            mMessageContentView.configure(webViewConfigProvider.createForMessageView());
         }
         mMessageContentView.setOnCreateContextMenuListener(this);
         mMessageContentView.setVisibility(View.VISIBLE);
@@ -99,7 +105,6 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
 
         Context context = getContext();
         mInflater = LayoutInflater.from(context);
-        mClipboardManager = ClipboardManager.getInstance(context);
     }
 
     @Override
@@ -138,7 +143,7 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
                             case MENU_ITEM_LINK_COPY: {
                                 String label = getContext().getString(
                                         R.string.webview_contextmenu_link_clipboard_label);
-                                mClipboardManager.setText(label, url);
+                                clipboardManager.setText(label, url);
                                 break;
                             }
                         }
@@ -196,7 +201,7 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
                             case MENU_ITEM_IMAGE_COPY: {
                                 String label = getContext().getString(
                                         R.string.webview_contextmenu_image_clipboard_label);
-                                mClipboardManager.setText(label, uri.toString());
+                                clipboardManager.setText(label, uri.toString());
                                 break;
                             }
                         }
@@ -245,7 +250,7 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
                             case MENU_ITEM_PHONE_COPY: {
                                 String label = getContext().getString(
                                         R.string.webview_contextmenu_phone_clipboard_label);
-                                mClipboardManager.setText(label, phoneNumber);
+                                clipboardManager.setText(label, phoneNumber);
                                 break;
                             }
                         }
@@ -290,7 +295,7 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
                             case MENU_ITEM_EMAIL_COPY: {
                                 String label = getContext().getString(
                                         R.string.webview_contextmenu_email_clipboard_label);
-                                mClipboardManager.setText(label, email);
+                                clipboardManager.setText(label, email);
                                 break;
                             }
                         }
@@ -398,7 +403,8 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
         }
 
         if (textToDisplay == null) {
-            textToDisplay = HtmlConverter.wrapStatusMessage(getContext().getString(R.string.webview_empty_message));
+            String noTextMessage = getContext().getString(R.string.webview_empty_message);
+            textToDisplay = displayHtml.wrapStatusMessage(noTextMessage);
         }
 
         OnPageFinishedListener onPageFinishedListener = new OnPageFinishedListener() {

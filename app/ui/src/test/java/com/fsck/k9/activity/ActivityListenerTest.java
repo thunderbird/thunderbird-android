@@ -4,7 +4,6 @@ package com.fsck.k9.activity;
 import android.content.Context;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.RobolectricTest;
 import com.fsck.k9.mail.Message;
 import org.junit.Before;
@@ -74,11 +73,7 @@ public class ActivityListenerTest extends RobolectricTest {
 
         String operation = activityListener.getOperation(context);
 
-        if (K9.isDebug()) {
-            assertEquals("Polling and pushing disabled", operation);
-        } else {
-            assertEquals("Syncing disabled", operation);
-        }
+        assertEquals("Syncing disabled", operation);
     }
 
     @Test
@@ -89,11 +84,7 @@ public class ActivityListenerTest extends RobolectricTest {
 
         String operation = activityListener.getOperation(context);
 
-        if (K9.isDebug()) {
-            assertEquals("Polling and pushing disabled", operation);
-        } else {
-            assertEquals("Syncing disabled", operation);
-        }
+        assertEquals("Syncing disabled", operation);
     }
 
     @Test
@@ -103,11 +94,7 @@ public class ActivityListenerTest extends RobolectricTest {
 
         String operation = activityListener.getOperation(context);
 
-        if (K9.isDebug()) {
-            assertEquals("Polling and pushing disabled", operation);
-        } else {
-            assertEquals("Syncing disabled", operation);
-        }
+        assertEquals("Syncing disabled", operation);
     }
 
     @Test

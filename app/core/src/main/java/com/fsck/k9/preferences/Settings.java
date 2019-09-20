@@ -36,7 +36,7 @@ public class Settings {
      *
      * @see SettingsExporter
      */
-    public static final int VERSION = 58;
+    public static final int VERSION = 59;
 
     static Map<String, Object> validate(int version, Map<String, TreeMap<Integer, SettingsDescription>> settings,
             Map<String, String> importedSettings, boolean useDefaultValues) {
@@ -166,7 +166,7 @@ public class Settings {
         T defaultValue = setting.getDefaultValue();
         validatedSettingsMutable.put(settingName, defaultValue);
 
-        if (K9.isDebug()) {
+        if (K9.isDebugLoggingEnabled()) {
             String prettyValue = setting.toPrettyString(defaultValue);
             Timber.v("Added new setting \"%s\" with default value \"%s\"", settingName, prettyValue);
         }

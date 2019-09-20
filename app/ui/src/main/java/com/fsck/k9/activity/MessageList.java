@@ -47,15 +47,16 @@ import com.fsck.k9.helper.ParcelableUtil;
 import com.fsck.k9.mailstore.SearchStatusManager;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.notification.NotificationChannelManager;
-import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
 import com.fsck.k9.search.SearchSpecification;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.SearchField;
+import com.fsck.k9.ui.BuildConfig;
 import com.fsck.k9.ui.K9Drawer;
 import com.fsck.k9.ui.R;
+import com.fsck.k9.ui.Theme;
 import com.fsck.k9.ui.messageview.MessageViewFragment;
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener;
 import com.fsck.k9.ui.settings.SettingsActivity;
@@ -175,7 +176,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     private MenuItem menuButtonCheckMail;
     private View actionButtonIndeterminateProgress;
-    private int lastDirection = (K9.messageViewShowNext()) ? NEXT : PREVIOUS;
+    private int lastDirection = (K9.isMessageViewShowNext()) ? NEXT : PREVIOUS;
 
     /**
      * {@code true} if the message list should be displayed as flat list (i.e. no threading)
@@ -437,10 +438,15 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
                 Bundle appData = intent.getBundleExtra(SearchManager.APP_DATA);
                 if (appData != null) {
-                    search.addAccountUuid(appData.getString(EXTRA_SEARCH_ACCOUNT));
-                    // searches started from a folder list activity will provide an account, but no folder
-                    if (appData.getString(EXTRA_SEARCH_FOLDER) != null) {
-                        search.addAllowedFolder(appData.getString(EXTRA_SEARCH_FOLDER));
+                    String searchAccountUuid = appData.getString(EXTRA_SEARCH_ACCOUNT);
+                    if (searchAccountUuid != null) {
+                        search.addAccountUuid(searchAccountUuid);
+                        // searches started from a folder list activity will provide an account, but no folder
+                        if (appData.getString(EXTRA_SEARCH_FOLDER) != null) {
+                            search.addAllowedFolder(appData.getString(EXTRA_SEARCH_FOLDER));
+                        }
+                    } else if (BuildConfig.DEBUG) {
+                        throw new AssertionError("Invalid app data in search intent");
                     }
                 } else {
                     search.addAccountUuid(LocalSearch.ALL_ACCOUNTS);
@@ -466,14 +472,22 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         }
 
         if (search == null) {
-            // We've most likely been started by an old unread widget
             String accountUuid = intent.getStringExtra("account");
-            String folderServerId = intent.getStringExtra("folder");
+            if (accountUuid != null) {
+                // We've most likely been started by an old unread widget
+                String folderServerId = intent.getStringExtra("folder");
 
-            search = new LocalSearch(folderServerId);
-            search.addAccountUuid((accountUuid == null) ? "invalid" : accountUuid);
-            if (folderServerId != null) {
-                search.addAllowedFolder(folderServerId);
+                search = new LocalSearch(folderServerId);
+                search.addAccountUuid(accountUuid);
+                if (folderServerId != null) {
+                    search.addAllowedFolder(folderServerId);
+                }
+            } else {
+                if (BuildConfig.DEBUG) {
+                    throw new AssertionError("MessageList started without required extras");
+                }
+
+                search = SearchAccount.createUnifiedInboxAccount().getRelatedSearch();
             }
         }
 
@@ -679,11 +693,10 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         switch (keyCode) {
             case KeyEvent.KEYCODE_VOLUME_UP: {
                 if (messageViewFragment != null && displayMode != DisplayMode.MESSAGE_LIST &&
-                        K9.useVolumeKeysForNavigationEnabled()) {
+                        K9.isUseVolumeKeysForNavigation()) {
                     showPreviousMessage();
                     return true;
-                } else if (displayMode != DisplayMode.MESSAGE_VIEW &&
-                        K9.useVolumeKeysForListNavigationEnabled()) {
+                } else if (displayMode != DisplayMode.MESSAGE_VIEW && K9.isUseVolumeKeysForListNavigation()) {
                     messageListFragment.onMoveUp();
                     return true;
                 }
@@ -692,11 +705,10 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             }
             case KeyEvent.KEYCODE_VOLUME_DOWN: {
                 if (messageViewFragment != null && displayMode != DisplayMode.MESSAGE_LIST &&
-                        K9.useVolumeKeysForNavigationEnabled()) {
+                        K9.isUseVolumeKeysForNavigation()) {
                     showNextMessage();
                     return true;
-                } else if (displayMode != DisplayMode.MESSAGE_VIEW &&
-                        K9.useVolumeKeysForListNavigationEnabled()) {
+                } else if (displayMode != DisplayMode.MESSAGE_VIEW && K9.isUseVolumeKeysForListNavigation()) {
                     messageListFragment.onMoveDown();
                     return true;
                 }
@@ -842,7 +854,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         // Swallow these events too to avoid the audible notification of a volume change
-        if (K9.useVolumeKeysForListNavigationEnabled()) {
+        if (K9.isUseVolumeKeysForListNavigation()) {
             if ((keyCode == KeyEvent.KEYCODE_VOLUME_UP) || (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
                 Timber.v("Swallowed key up.");
                 return true;
@@ -1073,11 +1085,11 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             }
 
             MenuItem toggleTheme = menu.findItem(R.id.toggle_message_view_theme);
-            if (K9.useFixedMessageViewTheme()) {
+            if (K9.isFixedMessageViewTheme()) {
                 toggleTheme.setVisible(false);
             } else {
                 // Set title of menu item to switch to dark/light theme
-                if (K9.getK9MessageViewTheme() == K9.Theme.DARK) {
+                if (getThemeManager().getMessageViewTheme() == Theme.DARK) {
                     toggleTheme.setTitle(R.string.message_view_theme_action_light);
                 } else {
                     toggleTheme.setTitle(R.string.message_view_theme_action_dark);
@@ -1464,7 +1476,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     @Override
     public void showNextMessageOrReturn() {
-        if (K9.messageViewReturnToList() || !showLogicalNextMessage()) {
+        if (K9.isMessageViewReturnToList() || !showLogicalNextMessage()) {
             if (displayMode == DisplayMode.SPLIT_VIEW) {
                 showMessageViewPlaceHolder();
             } else {
@@ -1566,21 +1578,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
     private void onToggleTheme() {
-        if (K9.getK9MessageViewTheme() == K9.Theme.DARK) {
-            K9.setK9MessageViewThemeSetting(K9.Theme.LIGHT);
-        } else {
-            K9.setK9MessageViewThemeSetting(K9.Theme.DARK);
-        }
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                StorageEditor editor = preferences.createStorageEditor();
-                K9.save(editor);
-                editor.commit();
-            }
-        }).start();
-
+        getThemeManager().toggleMessageViewTheme();
         recreate();
     }
 

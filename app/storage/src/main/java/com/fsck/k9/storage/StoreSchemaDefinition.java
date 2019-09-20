@@ -3,6 +3,7 @@ package com.fsck.k9.storage;
 
 import android.database.sqlite.SQLiteDatabase;
 
+import com.fsck.k9.K9;
 import com.fsck.k9.core.BuildConfig;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mailstore.LockableDatabase.SchemaDefinition;
@@ -31,7 +32,7 @@ class StoreSchemaDefinition implements SchemaDefinition {
         try {
             upgradeDatabase(db);
         } catch (Exception e) {
-            if (BuildConfig.DEBUG) {
+            if (K9.DEVELOPER_MODE) {
                 throw new Error("Exception while upgrading database", e);
             }
 
@@ -46,6 +47,13 @@ class StoreSchemaDefinition implements SchemaDefinition {
 
         db.beginTransaction();
         try {
+            if (db.getVersion() > DB_VERSION) {
+                String accountUuid = migrationsHelper.getAccount().getUuid();
+                throw new AssertionError("Database downgrades are not supported. " +
+                        "Please fix the account database '" + accountUuid + "' manually or " +
+                        "clear app data.");
+            }
+
             // schema version 29 was when we moved to incremental updates
             // in the case of a new db or a < v29 db, we blow away and start from scratch
             if (db.getVersion() < 29) {
