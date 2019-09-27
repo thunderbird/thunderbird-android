@@ -267,7 +267,7 @@
 
             <meta-data
                 android:name="android.service.chooser.chooser_target_service"
-                android:value="com.fsck.k9.service.K9ChooserTargetService" />
+                android:value="com.fsck.k9.directshare.K9ChooserTargetService" />
         </activity>
 
         <!-- Search Activity - searchable -->
