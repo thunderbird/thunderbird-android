@@ -332,17 +332,7 @@ public class ChooseFolder extends K9ListActivity {
                     @Override
                     public void run() {
                         // Now we're in the UI-thread, we can safely change the contents of the adapter.
-                        mAdapter.mFolders.clear();
-                        mAdapter.mFolders.addAll(folderList);
-                        mAdapter.mFilteredFolders = mAdapter.mFolders;
-                        mAdapter.notifyDataSetChanged();
-
-                        /*
-                         * Only enable the text filter after the list has been
-                         * populated to avoid possible race conditions because our
-                         * FolderListFilter isn't really thread-safe.
-                         */
-                        getListView().setTextFilterEnabled(true);
+                        mAdapter.setFolders(folderList);
                     }
                 });
             }
@@ -358,6 +348,7 @@ public class ChooseFolder extends K9ListActivity {
         private List<FolderInfoHolder> mFilteredFolders = Collections.unmodifiableList(mFolders);
         private Filter mFilter = new FolderListFilter(this);
         private FolderIconProvider folderIconProvider = new FolderIconProvider(getTheme());
+        private CharSequence filterText;
 
         public FolderInfoHolder getItem(long position) {
             return getItem((int)position);
@@ -452,9 +443,15 @@ public class ChooseFolder extends K9ListActivity {
         }
 
         @Override
-        public void setFilteredFolders(List<FolderInfoHolder> folders) {
-            mFilteredFolders = new ArrayList<>(folders);
+        public void setFilteredFolders(CharSequence filterText, List<FolderInfoHolder> folders) {
+            this.filterText = filterText;
+            mFilteredFolders = folders;
             notifyDataSetChanged();
+        }
+
+        void setFolders(List<FolderInfoHolder> folders) {
+            mFolders = folders;
+            getFilter().filter(filterText);
         }
     }
 

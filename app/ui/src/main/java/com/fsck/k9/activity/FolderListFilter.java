@@ -53,12 +53,12 @@ public class FolderListFilter extends Filter {
     @Override
     protected void publishResults(CharSequence constraint, FilterResults results) {
         List<FolderInfoHolder> folders = (List<FolderInfoHolder>) results.values;
-        adapter.setFilteredFolders(folders);
+        adapter.setFilteredFolders(constraint, folders);
     }
 
 
     public interface FolderAdapter {
         List<FolderInfoHolder> getFolders();
-        void setFilteredFolders(List<FolderInfoHolder> folders);
+        void setFilteredFolders(CharSequence filterText, List<FolderInfoHolder> folders);
     }
 }
