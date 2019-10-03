@@ -8,47 +8,20 @@ import timber.log.Timber;
 import android.widget.Filter;
 
 /**
- * Filter to search for occurrences of the search-expression in any place of the
- * folder-name instead of doing just a prefix-search.
- *
- * @author Marcus@Wolschon.biz
+ * Filter to search for occurrences of the search-expression in any place of the folder name.
  */
 public class FolderListFilter<T> extends Filter {
-    /**
-     * ArrayAdapter that contains the list of folders displayed in the
-     * ListView.
-     * This object is modified by {@link #publishResults} to reflect the
-     * changes due to the filtering performed by {@link #performFiltering}.
-     * This in turn will change the folders displayed in the ListView.
-     */
     private FilterableAdapter<T> mFolders;
-
-    /**
-     * All folders.
-     */
     private List<T> mOriginalValues = null;
 
-    /**
-     * Create a filter for a list of folders.
-     *
-     * @param folders
-     */
     public FolderListFilter(final FilterableAdapter<T> folders) {
         this.mFolders = folders;
     }
 
-    /**
-     * Do the actual search.
-     * {@inheritDoc}
-     *
-     * @see #publishResults(CharSequence, FilterResults)
-     */
     @Override
     protected FilterResults performFiltering(CharSequence searchTerm) {
         FilterResults results = new FilterResults();
 
-        // Copy the values from mFolders to mOriginalValues if this is the
-        // first time this method is called.
         if (mOriginalValues == null) {
             int count = mFolders.getCount();
             mOriginalValues = new ArrayList<>(count);
@@ -89,14 +62,9 @@ public class FolderListFilter<T> extends Filter {
         return results;
     }
 
-    /**
-     * Publish the results to the user-interface.
-     * {@inheritDoc}
-     */
     @SuppressWarnings("unchecked")
     @Override
     protected void publishResults(CharSequence constraint, FilterResults results) {
-        //noinspection unchecked
         final List<T> folders = (List<T>) results.values;
         mFolders.clear();
         if (folders != null) {
@@ -109,12 +77,7 @@ public class FolderListFilter<T> extends Filter {
             Timber.w("FolderListFilter.publishResults - null search-result ");
         }
 
-        // Send notification that the data set changed now
         mFolders.notifyDataSetChanged();
-    }
-
-    public void invalidate() {
-        mOriginalValues = null;
     }
 
     public interface FilterableAdapter<T> {
