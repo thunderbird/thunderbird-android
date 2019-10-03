@@ -4,17 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import timber.log.Timber;
 import android.widget.Filter;
 
 /**
  * Filter to search for occurrences of the search-expression in any place of the folder name.
  */
-public class FolderListFilter<T> extends Filter {
-    private FilterableAdapter<T> adapter;
-    private List<T> unfilteredFolderList = null;
+public class FolderListFilter extends Filter {
+    private final FolderAdapter adapter;
 
-    public FolderListFilter(final FilterableAdapter<T> folders) {
+
+    public FolderListFilter(FolderAdapter folders) {
         this.adapter = folders;
     }
 
@@ -22,34 +21,22 @@ public class FolderListFilter<T> extends Filter {
     protected FilterResults performFiltering(CharSequence searchTerm) {
         FilterResults results = new FilterResults();
 
-        if (unfilteredFolderList == null) {
-            int count = adapter.getCount();
-            unfilteredFolderList = new ArrayList<>(count);
-            for (int i = 0; i < count; i++) {
-                unfilteredFolderList.add(adapter.getItem(i));
-            }
-        }
-
         Locale locale = Locale.getDefault();
-        if ((searchTerm == null) || (searchTerm.length() == 0)) {
-            List<T> list = new ArrayList<>(unfilteredFolderList);
+        if (searchTerm == null || searchTerm.length() == 0) {
+            List<FolderInfoHolder> list = new ArrayList<>(adapter.getFolders());
             results.values = list;
             results.count = list.size();
         } else {
-            final String searchTermString = searchTerm.toString().toLowerCase(locale);
-            final String[] words = searchTermString.split(" ");
-            final int wordCount = words.length;
+            String searchTermString = searchTerm.toString().toLowerCase(locale);
+            String[] words = searchTermString.split(" ");
 
-            final List<T> values = unfilteredFolderList;
+            List<FolderInfoHolder> newValues = new ArrayList<>();
+            for (FolderInfoHolder folderInfoHolder : adapter.getFolders()) {
+                String valueText = folderInfoHolder.displayName.toLowerCase(locale);
 
-            final List<T> newValues = new ArrayList<>();
-
-            for (final T value : values) {
-                final String valueText = value.toString().toLowerCase(locale);
-
-                for (int k = 0; k < wordCount; k++) {
-                    if (valueText.contains(words[k])) {
-                        newValues.add(value);
+                for (String word : words) {
+                    if (valueText.contains(word)) {
+                        newValues.add(folderInfoHolder);
                         break;
                     }
                 }
@@ -65,26 +52,13 @@ public class FolderListFilter<T> extends Filter {
     @SuppressWarnings("unchecked")
     @Override
     protected void publishResults(CharSequence constraint, FilterResults results) {
-        final List<T> folders = (List<T>) results.values;
-        adapter.clear();
-        if (folders != null) {
-            for (T folder : folders) {
-                if (folder != null) {
-                    adapter.add(folder);
-                }
-            }
-        } else {
-            Timber.w("FolderListFilter.publishResults - null search-result ");
-        }
-
-        adapter.notifyDataSetChanged();
+        List<FolderInfoHolder> folders = (List<FolderInfoHolder>) results.values;
+        adapter.setFilteredFolders(folders);
     }
 
-    public interface FilterableAdapter<T> {
-        void notifyDataSetChanged();
-        void clear();
-        void add(T object);
-        int getCount();
-        T getItem(int i);
+
+    public interface FolderAdapter {
+        List<FolderInfoHolder> getFolders();
+        void setFilteredFolders(List<FolderInfoHolder> folders);
     }
 }

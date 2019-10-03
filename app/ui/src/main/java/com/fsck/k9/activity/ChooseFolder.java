@@ -29,6 +29,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.activity.FolderListFilter.FolderAdapter;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.controller.MessagingController;
@@ -352,11 +353,10 @@ public class ChooseFolder extends K9ListActivity {
         }
     };
 
-    class FolderListAdapter extends BaseAdapter implements Filterable,
-            FolderListFilter.FilterableAdapter<FolderInfoHolder> {
+    class FolderListAdapter extends BaseAdapter implements Filterable, FolderAdapter {
         private List<FolderInfoHolder> mFolders = new ArrayList<>();
         private List<FolderInfoHolder> mFilteredFolders = Collections.unmodifiableList(mFolders);
-        private Filter mFilter = new FolderListFilter<>(this);
+        private Filter mFilter = new FolderListFilter(this);
         private FolderIconProvider folderIconProvider = new FolderIconProvider(getTheme());
 
         public FolderInfoHolder getItem(long position) {
@@ -371,16 +371,6 @@ public class ChooseFolder extends K9ListActivity {
         @Override
         public long getItemId(int position) {
             return mFilteredFolders.get(position).folder.getDatabaseId();
-        }
-
-        @Override
-        public void clear() {
-            mFolders.clear();
-        }
-
-        @Override
-        public void add(FolderInfoHolder object) {
-            mFolders.add(object);
         }
 
         @Override
@@ -454,6 +444,17 @@ public class ChooseFolder extends K9ListActivity {
 
         public Filter getFilter() {
             return mFilter;
+        }
+
+        @Override
+        public List<FolderInfoHolder> getFolders() {
+            return mFolders;
+        }
+
+        @Override
+        public void setFilteredFolders(List<FolderInfoHolder> folders) {
+            mFilteredFolders = new ArrayList<>(folders);
+            notifyDataSetChanged();
         }
     }
 
