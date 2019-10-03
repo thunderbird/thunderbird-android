@@ -11,10 +11,12 @@ import android.widget.Filter;
  */
 public class FolderListFilter extends Filter {
     private final FolderAdapter adapter;
+    private final List<FolderInfoHolder> folders;
 
 
-    public FolderListFilter(FolderAdapter folders) {
-        this.adapter = folders;
+    public FolderListFilter(FolderAdapter adapter, List<FolderInfoHolder> folders) {
+        this.adapter = adapter;
+        this.folders = folders;
     }
 
     @Override
@@ -23,7 +25,7 @@ public class FolderListFilter extends Filter {
 
         Locale locale = Locale.getDefault();
         if (searchTerm == null || searchTerm.length() == 0) {
-            List<FolderInfoHolder> list = new ArrayList<>(adapter.getFolders());
+            List<FolderInfoHolder> list = new ArrayList<>(folders);
             results.values = list;
             results.count = list.size();
         } else {
@@ -31,7 +33,7 @@ public class FolderListFilter extends Filter {
             String[] words = searchTermString.split(" ");
 
             List<FolderInfoHolder> newValues = new ArrayList<>();
-            for (FolderInfoHolder folderInfoHolder : adapter.getFolders()) {
+            for (FolderInfoHolder folderInfoHolder : folders) {
                 String valueText = folderInfoHolder.displayName.toLowerCase(locale);
 
                 for (String word : words) {
@@ -58,7 +60,6 @@ public class FolderListFilter extends Filter {
 
 
     public interface FolderAdapter {
-        List<FolderInfoHolder> getFolders();
         void setFilteredFolders(CharSequence filterText, List<FolderInfoHolder> folders);
     }
 }

@@ -40,6 +40,8 @@ import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.ui.folders.FolderIconProvider;
 import timber.log.Timber;
 
+import static java.util.Collections.emptyList;
+
 
 public class ChooseFolder extends K9ListActivity {
     public static final String EXTRA_ACCOUNT = "com.fsck.k9.ChooseFolder_account";
@@ -344,9 +346,9 @@ public class ChooseFolder extends K9ListActivity {
     };
 
     class FolderListAdapter extends BaseAdapter implements Filterable, FolderAdapter {
-        private List<FolderInfoHolder> mFolders = new ArrayList<>();
-        private List<FolderInfoHolder> mFilteredFolders = Collections.unmodifiableList(mFolders);
-        private Filter mFilter = new FolderListFilter(this);
+        private List<FolderInfoHolder> mFolders = emptyList();
+        private List<FolderInfoHolder> mFilteredFolders = emptyList();
+        private Filter mFilter = new FolderListFilter(this, mFolders);
         private FolderIconProvider folderIconProvider = new FolderIconProvider(getTheme());
         private CharSequence filterText;
 
@@ -438,11 +440,6 @@ public class ChooseFolder extends K9ListActivity {
         }
 
         @Override
-        public List<FolderInfoHolder> getFolders() {
-            return mFolders;
-        }
-
-        @Override
         public void setFilteredFolders(CharSequence filterText, List<FolderInfoHolder> folders) {
             this.filterText = filterText;
             mFilteredFolders = folders;
@@ -451,7 +448,8 @@ public class ChooseFolder extends K9ListActivity {
 
         void setFolders(List<FolderInfoHolder> folders) {
             mFolders = folders;
-            getFilter().filter(filterText);
+            mFilter = new FolderListFilter(this, folders);
+            mFilter.filter(filterText);
         }
     }
 
