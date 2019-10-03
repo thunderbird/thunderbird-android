@@ -370,7 +370,7 @@ public class ChooseFolder extends K9ListActivity {
 
         @Override
         public long getItemId(int position) {
-            return mFilteredFolders.get(position).folder.getServerId().hashCode() ;
+            return mFilteredFolders.get(position).folder.getDatabaseId();
         }
 
         @Override
