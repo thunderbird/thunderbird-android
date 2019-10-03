@@ -11,28 +11,28 @@ import android.widget.Filter;
  * Filter to search for occurrences of the search-expression in any place of the folder name.
  */
 public class FolderListFilter<T> extends Filter {
-    private FilterableAdapter<T> mFolders;
-    private List<T> mOriginalValues = null;
+    private FilterableAdapter<T> adapter;
+    private List<T> unfilteredFolderList = null;
 
     public FolderListFilter(final FilterableAdapter<T> folders) {
-        this.mFolders = folders;
+        this.adapter = folders;
     }
 
     @Override
     protected FilterResults performFiltering(CharSequence searchTerm) {
         FilterResults results = new FilterResults();
 
-        if (mOriginalValues == null) {
-            int count = mFolders.getCount();
-            mOriginalValues = new ArrayList<>(count);
+        if (unfilteredFolderList == null) {
+            int count = adapter.getCount();
+            unfilteredFolderList = new ArrayList<>(count);
             for (int i = 0; i < count; i++) {
-                mOriginalValues.add(mFolders.getItem(i));
+                unfilteredFolderList.add(adapter.getItem(i));
             }
         }
 
         Locale locale = Locale.getDefault();
         if ((searchTerm == null) || (searchTerm.length() == 0)) {
-            List<T> list = new ArrayList<>(mOriginalValues);
+            List<T> list = new ArrayList<>(unfilteredFolderList);
             results.values = list;
             results.count = list.size();
         } else {
@@ -40,7 +40,7 @@ public class FolderListFilter<T> extends Filter {
             final String[] words = searchTermString.split(" ");
             final int wordCount = words.length;
 
-            final List<T> values = mOriginalValues;
+            final List<T> values = unfilteredFolderList;
 
             final List<T> newValues = new ArrayList<>();
 
@@ -66,18 +66,18 @@ public class FolderListFilter<T> extends Filter {
     @Override
     protected void publishResults(CharSequence constraint, FilterResults results) {
         final List<T> folders = (List<T>) results.values;
-        mFolders.clear();
+        adapter.clear();
         if (folders != null) {
             for (T folder : folders) {
                 if (folder != null) {
-                    mFolders.add(folder);
+                    adapter.add(folder);
                 }
             }
         } else {
             Timber.w("FolderListFilter.publishResults - null search-result ");
         }
 
-        mFolders.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 
     public interface FilterableAdapter<T> {
