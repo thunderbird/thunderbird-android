@@ -55,8 +55,8 @@ subprojects {
     repositories {
         mavenCentral()
         google()
-        maven { url 'https://jitpack.io' }
         jcenter()
+        maven { url 'https://jitpack.io' }
     }
 
     configurations.all {
