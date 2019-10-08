@@ -29,6 +29,7 @@ import com.fsck.k9.textString
 import com.fsck.k9.ui.ContactBadge
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.messagelist.MessageListAppearance
+import com.fsck.k9.ui.messagelist.MessageListExtractor
 import com.nhaarman.mockito_kotlin.anyArray
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.eq
@@ -464,9 +465,8 @@ class MessageListAdapterTest : RobolectricTest() {
                 theme = context.theme,
                 res = context.resources,
                 layoutInflater = LayoutInflater.from(context),
-                messageHelper = messageHelper,
                 contactsPictureLoader = contactsPictureLoader,
-                preferences = preferences,
+                messageListExtractor = MessageListExtractor(preferences, messageHelper),
                 listItemListener = listItemListener,
                 appearance = appearance
         )

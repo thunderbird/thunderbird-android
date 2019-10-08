@@ -19,33 +19,15 @@ import android.widget.CursorAdapter
 import android.widget.TextView
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
-import com.fsck.k9.Account
 import com.fsck.k9.FontSizes
-import com.fsck.k9.Preferences
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.controller.MessageReference
-import com.fsck.k9.fragment.MLFProjectionInfo.ACCOUNT_UUID_COLUMN
-import com.fsck.k9.fragment.MLFProjectionInfo.ANSWERED_COLUMN
-import com.fsck.k9.fragment.MLFProjectionInfo.ATTACHMENT_COUNT_COLUMN
-import com.fsck.k9.fragment.MLFProjectionInfo.CC_LIST_COLUMN
-import com.fsck.k9.fragment.MLFProjectionInfo.DATE_COLUMN
-import com.fsck.k9.fragment.MLFProjectionInfo.FLAGGED_COLUMN
-import com.fsck.k9.fragment.MLFProjectionInfo.FOLDER_SERVER_ID_COLUMN
-import com.fsck.k9.fragment.MLFProjectionInfo.FORWARDED_COLUMN
-import com.fsck.k9.fragment.MLFProjectionInfo.PREVIEW_COLUMN
-import com.fsck.k9.fragment.MLFProjectionInfo.PREVIEW_TYPE_COLUMN
-import com.fsck.k9.fragment.MLFProjectionInfo.READ_COLUMN
-import com.fsck.k9.fragment.MLFProjectionInfo.SENDER_LIST_COLUMN
-import com.fsck.k9.fragment.MLFProjectionInfo.SUBJECT_COLUMN
-import com.fsck.k9.fragment.MLFProjectionInfo.THREAD_COUNT_COLUMN
-import com.fsck.k9.fragment.MLFProjectionInfo.TO_LIST_COLUMN
-import com.fsck.k9.fragment.MLFProjectionInfo.UID_COLUMN
-import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mail.Address
-import com.fsck.k9.mailstore.DatabasePreviewType
 import com.fsck.k9.ui.ContactBadge
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.messagelist.MessageListAppearance
+import com.fsck.k9.ui.messagelist.MessageListExtractor
+import com.fsck.k9.ui.messagelist.MessageListItem
 import kotlin.math.max
 
 class MessageListAdapter internal constructor(
@@ -53,9 +35,8 @@ class MessageListAdapter internal constructor(
     theme: Resources.Theme,
     private val res: Resources,
     private val layoutInflater: LayoutInflater,
-    private val messageHelper: MessageHelper,
     private val contactsPictureLoader: ContactPictureLoader,
-    private val preferences: Preferences,
+    private val messageListExtractor: MessageListExtractor,
     private val listItemListener: MessageListItemActionListener,
     private val appearance: MessageListAppearance
 ) : CursorAdapter(context, null, 0) {
@@ -97,15 +78,6 @@ class MessageListAdapter internal constructor(
     }
 
     var activeMessage: MessageReference? = null
-
-    private val activeAccountUuid: String?
-        get() = activeMessage?.accountUuid
-
-    private val activeFolderServerId: String?
-        get() = activeMessage?.folderServerId
-
-    private val activeUid: String?
-        get() = activeMessage?.uid
 
     var uniqueIdColumn: Int = 0
 
@@ -154,103 +126,63 @@ class MessageListAdapter internal constructor(
     }
 
     override fun bindView(view: View, context: Context, cursor: Cursor) {
-        val account = getAccount(cursor)
-
-        val fromList = cursor.getString(SENDER_LIST_COLUMN)
-        val toList = cursor.getString(TO_LIST_COLUMN)
-        val ccList = cursor.getString(CC_LIST_COLUMN)
-        val fromAddrs = Address.unpack(fromList)
-        val toAddrs = Address.unpack(toList)
-        val ccAddrs = Address.unpack(ccList)
-
-        val fromMe = messageHelper.toMe(account, fromAddrs)
-        val toMe = messageHelper.toMe(account, toAddrs)
-        val ccMe = messageHelper.toMe(account, ccAddrs)
-        val counterPartyAddress = fetchCounterPartyAddress(fromMe, toAddrs, ccAddrs, fromAddrs)
-
-        val displayName = messageHelper.getDisplayName(account, fromAddrs, toAddrs)
-        val messageDate = cursor.getLong(DATE_COLUMN)
-
-        val threadCount = cursor.getInt(THREAD_COUNT_COLUMN)
-        val subjectText = cursor.getString(SUBJECT_COLUMN)
-
-        val read = cursor.getInt(READ_COLUMN) == 1
-        val flagged = cursor.getInt(FLAGGED_COLUMN) == 1
-        val answered = cursor.getInt(ANSWERED_COLUMN) == 1
-        val forwarded = cursor.getInt(FORWARDED_COLUMN) == 1
-
-        val hasAttachments = cursor.getInt(ATTACHMENT_COUNT_COLUMN) > 0
-
-        val uniqueId = cursor.getLong(uniqueIdColumn)
-        val selected = selected.contains(uniqueId)
-
-        val uid = cursor.getString(UID_COLUMN)
-        val folderServerId = cursor.getString(FOLDER_SERVER_ID_COLUMN)
-        val active = account.uuid == activeAccountUuid && folderServerId == activeFolderServerId && uid == activeUid
-
-        val previewTypeString = cursor.getString(PREVIEW_TYPE_COLUMN)
-        val previewType = DatabasePreviewType.fromDatabaseValue(previewTypeString)
-        val isMessageEncrypted = previewType == DatabasePreviewType.ENCRYPTED
-        val previewText = if (previewType == DatabasePreviewType.TEXT) cursor.getString(PREVIEW_COLUMN) else ""
-
-        val position = cursor.position
+        val item = messageListExtractor.extractMessageListItem(cursor, uniqueIdColumn)
+        val isSelected = selected.contains(item.uniqueId)
+        val isActive = isActiveMessage(item)
 
         val holder = view.tag as MessageViewHolder
 
-        val maybeBoldTypeface = if (read) Typeface.NORMAL else Typeface.BOLD
-        val displayDate = DateUtils.getRelativeTimeSpanString(context, messageDate)
-        val displayThreadCount = if (appearance.showingThreadedList) threadCount else 0
-        val subject = MlfUtils.buildSubject(subjectText, res.getString(R.string.general_no_subject), displayThreadCount)
+        with(item) {
+            val maybeBoldTypeface = if (isRead) Typeface.NORMAL else Typeface.BOLD
+            val displayDate = DateUtils.getRelativeTimeSpanString(context, messageDate)
+            val displayThreadCount = if (appearance.showingThreadedList) threadCount else 0
+            val subject = MlfUtils.buildSubject(subject, res.getString(R.string.general_no_subject), displayThreadCount)
 
-        if (appearance.showAccountChip) {
-            val accountChipDrawable = holder.chip.drawable.mutate()
-            DrawableCompat.setTint(accountChipDrawable, account.chipColor)
-            holder.chip.setImageDrawable(accountChipDrawable)
+            if (appearance.showAccountChip) {
+                val accountChipDrawable = holder.chip.drawable.mutate()
+                DrawableCompat.setTint(accountChipDrawable, account.chipColor)
+                holder.chip.setImageDrawable(accountChipDrawable)
+            }
+
+            if (appearance.stars) {
+                holder.flagged.isChecked = isStarred
+            }
+            holder.position = position
+            if (holder.contactBadge.isVisible) {
+                updateContactBadge(holder.contactBadge, counterPartyAddress)
+            }
+            setBackgroundColor(view, isSelected, isRead, isActive)
+            updateWithThreadCount(holder, displayThreadCount)
+            val beforePreviewText = if (appearance.senderAboveSubject) subject else displayName
+            val sigil = recipientSigil(toMe, ccMe)
+            val messageStringBuilder = SpannableStringBuilder(sigil)
+                    .append(beforePreviewText)
+            if (appearance.previewLines > 0) {
+                val preview = getPreview(isMessageEncrypted, previewText)
+                messageStringBuilder.append(" ").append(preview)
+            }
+            holder.preview.setText(messageStringBuilder, TextView.BufferType.SPANNABLE)
+
+            formatPreviewText(holder.preview, beforePreviewText, sigil, isRead)
+
+            holder.subject.typeface = Typeface.create(holder.subject.typeface, maybeBoldTypeface)
+            if (appearance.senderAboveSubject) {
+                holder.subject.text = displayName
+            } else {
+                holder.subject.text = subject
+            }
+
+            holder.date.text = displayDate
+            holder.attachment.visibility = if (hasAttachments) View.VISIBLE else View.GONE
+
+            val statusHolder = buildStatusHolder(isForwarded, isAnswered)
+            if (statusHolder != null) {
+                holder.status.setImageDrawable(statusHolder)
+                holder.status.visibility = View.VISIBLE
+            } else {
+                holder.status.visibility = View.GONE
+            }
         }
-
-        if (appearance.stars) {
-            holder.flagged.isChecked = flagged
-        }
-        holder.position = position
-        if (holder.contactBadge.isVisible) {
-            updateContactBadge(holder.contactBadge, counterPartyAddress)
-        }
-        setBackgroundColor(view, selected, read, active)
-        updateWithThreadCount(holder, displayThreadCount)
-        val beforePreviewText = if (appearance.senderAboveSubject) subject else displayName
-        val sigil = recipientSigil(toMe, ccMe)
-        val messageStringBuilder = SpannableStringBuilder(sigil)
-                .append(beforePreviewText)
-        if (appearance.previewLines > 0) {
-            val preview = getPreview(isMessageEncrypted, previewText)
-            messageStringBuilder.append(" ").append(preview)
-        }
-        holder.preview.setText(messageStringBuilder, TextView.BufferType.SPANNABLE)
-
-        formatPreviewText(holder.preview, beforePreviewText, sigil, read)
-
-        holder.subject.typeface = Typeface.create(holder.subject.typeface, maybeBoldTypeface)
-        if (appearance.senderAboveSubject) {
-            holder.subject.text = displayName
-        } else {
-            holder.subject.text = subject
-        }
-
-        holder.date.text = displayDate
-        holder.attachment.visibility = if (hasAttachments) View.VISIBLE else View.GONE
-
-        val statusHolder = buildStatusHolder(forwarded, answered)
-        if (statusHolder != null) {
-            holder.status.setImageDrawable(statusHolder)
-            holder.status.visibility = View.VISIBLE
-        } else {
-            holder.status.visibility = View.GONE
-        }
-    }
-
-    private fun getAccount(cursor: Cursor): Account {
-        val accountUuid = cursor.getString(ACCOUNT_UUID_COLUMN)
-        return preferences.getAccount(accountUuid)
     }
 
     private fun formatPreviewText(
@@ -289,24 +221,6 @@ class MessageListAdapter internal constructor(
             val span = StyleSpan(Typeface.BOLD)
             text.setSpan(span, 0, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
-    }
-
-    private fun fetchCounterPartyAddress(
-        fromMe: Boolean,
-        toAddrs: Array<Address>,
-        ccAddrs: Array<Address>,
-        fromAddrs: Array<Address>
-    ): Address? {
-        if (fromMe) {
-            if (toAddrs.size > 0) {
-                return toAddrs[0]
-            } else if (ccAddrs.size > 0) {
-                return ccAddrs[0]
-            }
-        } else if (fromAddrs.size > 0) {
-            return fromAddrs[0]
-        }
-        return null
     }
 
     private fun updateContactBadge(contactBadge: ContactBadge, counterpartyAddress: Address?) {
@@ -364,6 +278,14 @@ class MessageListAdapter internal constructor(
         } else {
             previewText
         }
+    }
+
+    private fun isActiveMessage(item: MessageListItem): Boolean {
+        val activeMessage = this.activeMessage ?: return false
+
+        return item.account.uuid == activeMessage.accountUuid &&
+            item.folderServerId == activeMessage.folderServerId &&
+            item.messageUid == activeMessage.uid
     }
 }
 
