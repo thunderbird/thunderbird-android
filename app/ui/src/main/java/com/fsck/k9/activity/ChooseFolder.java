@@ -9,19 +9,27 @@ import java.util.List;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 
+import android.widget.TextView;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.FolderMode;
+import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.activity.FolderListFilter.FolderAdapter;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.controller.MessagingController;
@@ -29,6 +37,10 @@ import com.fsck.k9.controller.MessagingListener;
 import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mailstore.LocalFolder;
+import com.fsck.k9.ui.folders.FolderIconProvider;
+import timber.log.Timber;
+
+import static java.util.Collections.emptyList;
 
 
 public class ChooseFolder extends K9ListActivity {
@@ -42,14 +54,14 @@ public class ChooseFolder extends K9ListActivity {
     public static final String RESULT_FOLDER_DISPLAY_NAME = "folderDisplayName";
 
 
-    String currentFolder;
-    String mSelectFolder;
-    Account mAccount;
-    MessageReference mMessageReference;
-    ArrayAdapter<FolderDisplayData> mAdapter;
+    private String currentFolder;
+    private String mSelectFolder;
+    private Account mAccount;
+    private MessageReference mMessageReference;
+    private FolderListAdapter mAdapter;
     private ChooseFolderHandler mHandler = new ChooseFolderHandler();
-    boolean mHideCurrentFolder = true;
-    boolean mShowDisplayableOnly = false;
+    private boolean mHideCurrentFolder = true;
+    private boolean mShowDisplayableOnly = false;
 
     /**
      * What folders to display.<br/>
@@ -58,13 +70,6 @@ public class ChooseFolder extends K9ListActivity {
      * while this activity is showing.
      */
     private Account.FolderMode mMode;
-
-    /**
-     * Current filter used by our ArrayAdapter.<br/>
-     * Created on the fly and invalidated if a new
-     * set of folders is chosen via {@link #onOptionsItemSelected(MenuItem)}
-     */
-    private FolderListFilter<String> mMyFilter = null;
 
 
     @Override
@@ -95,18 +100,7 @@ public class ChooseFolder extends K9ListActivity {
         if (currentFolder == null)
             currentFolder = "";
 
-        mAdapter = new ArrayAdapter<FolderDisplayData>(this, android.R.layout.simple_list_item_1) {
-            private Filter myFilter = null;
-
-            @Override
-            public Filter getFilter() {
-                if (myFilter == null) {
-                    myFilter = new FolderListFilter<>(this);
-                }
-                return myFilter;
-            }
-        };
-
+        mAdapter = new FolderListAdapter();
         setListAdapter(mAdapter);
 
         mMode = mAccount.getFolderTargetMode();
@@ -115,7 +109,7 @@ public class ChooseFolder extends K9ListActivity {
         this.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FolderDisplayData folder = mAdapter.getItem(position);
+                FolderInfoHolder folder = mAdapter.getItem(position);
                 if (folder == null) {
                     throw new AssertionError("Couldn't get item at adapter position " + position);
                 }
@@ -225,10 +219,6 @@ public class ChooseFolder extends K9ListActivity {
 
     private void setDisplayMode(FolderMode aMode) {
         mMode = aMode;
-        // invalidate the current filter as it is working on an inval
-        if (mMyFilter != null) {
-            mMyFilter.invalidate();
-        }
         //re-populate the list
         MessagingController.getInstance(getApplication()).listFolders(mAccount, false, mListener);
     }
@@ -264,8 +254,8 @@ public class ChooseFolder extends K9ListActivity {
             }
             Account.FolderMode aMode = mMode;
 
-            List<FolderDisplayData> newFolders = new ArrayList<>();
-            List<FolderDisplayData> topFolders = new ArrayList<>();
+            List<FolderInfoHolder> newFolders = new ArrayList<>();
+            List<FolderInfoHolder> topFolders = new ArrayList<>();
 
             for (LocalFolder folder : folders) {
                 String serverId = folder.getServerId();
@@ -289,10 +279,7 @@ public class ChooseFolder extends K9ListActivity {
                     continue;
                 }
 
-                long id = folder.getDatabaseId();
-                String name = folder.getName();
-                String displayName = buildDisplayName(account, serverId, name);
-                FolderDisplayData folderDisplayData = new FolderDisplayData(id, serverId, displayName);
+                FolderInfoHolder folderDisplayData = new FolderInfoHolder(folder, account);
 
                 if (folder.isInTopGroup()) {
                     topFolders.add(folderDisplayData);
@@ -301,9 +288,9 @@ public class ChooseFolder extends K9ListActivity {
                 }
             }
 
-            final Comparator<FolderDisplayData> comparator = new Comparator<FolderDisplayData>() {
+            final Comparator<FolderInfoHolder> comparator = new Comparator<FolderInfoHolder>() {
                 @Override
-                public int compare(FolderDisplayData lhs, FolderDisplayData rhs) {
+                public int compare(FolderInfoHolder lhs, FolderInfoHolder rhs) {
                     int result = lhs.displayName.compareToIgnoreCase(rhs.displayName);
                     return (result != 0) ? result : lhs.displayName.compareTo(rhs.displayName);
                 }
@@ -312,7 +299,7 @@ public class ChooseFolder extends K9ListActivity {
             Collections.sort(topFolders, comparator);
             Collections.sort(newFolders, comparator);
 
-            final List<FolderDisplayData> folderList = new ArrayList<>(newFolders.size() + topFolders.size());
+            final List<FolderInfoHolder> folderList = new ArrayList<>(newFolders.size() + topFolders.size());
 
             folderList.addAll(topFolders);
             folderList.addAll(newFolders);
@@ -325,7 +312,7 @@ public class ChooseFolder extends K9ListActivity {
              */
             try {
                 int position = 0;
-                for (FolderDisplayData folder : folderList) {
+                for (FolderInfoHolder folder : folderList) {
                     if (mSelectFolder != null) {
                         /*
                          * Never select EXTRA_CUR_FOLDER (mFolder) if EXTRA_SEL_FOLDER
@@ -347,16 +334,7 @@ public class ChooseFolder extends K9ListActivity {
                     @Override
                     public void run() {
                         // Now we're in the UI-thread, we can safely change the contents of the adapter.
-                        mAdapter.clear();
-                        mAdapter.addAll(folderList);
-                        mAdapter.notifyDataSetChanged();
-
-                        /*
-                         * Only enable the text filter after the list has been
-                         * populated to avoid possible race conditions because our
-                         * FolderListFilter isn't really thread-safe.
-                         */
-                        getListView().setTextFilterEnabled(true);
+                        mAdapter.setFolders(folderList);
                     }
                 });
             }
@@ -367,29 +345,117 @@ public class ChooseFolder extends K9ListActivity {
         }
     };
 
-    private String buildDisplayName(Account account, String serverId, String name) {
-        if (account.getInboxFolder().equals(serverId)) {
-            return getString(R.string.special_mailbox_name_inbox);
-        } else {
-            return name;
-        }
-    }
+    class FolderListAdapter extends BaseAdapter implements Filterable, FolderAdapter {
+        private List<FolderInfoHolder> mFolders = emptyList();
+        private List<FolderInfoHolder> mFilteredFolders = emptyList();
+        private Filter mFilter = new FolderListFilter(this, mFolders);
+        private FolderIconProvider folderIconProvider = new FolderIconProvider(getTheme());
+        private CharSequence filterText;
 
-
-    static class FolderDisplayData {
-        final long id;
-        final String serverId;
-        final String displayName;
-
-        FolderDisplayData(long id, String serverId, String displayName) {
-            this.id = id;
-            this.serverId = serverId;
-            this.displayName = displayName;
+        public FolderInfoHolder getItem(long position) {
+            return getItem((int)position);
         }
 
         @Override
-        public String toString() {
-            return displayName;
+        public FolderInfoHolder getItem(int position) {
+            return mFilteredFolders.get(position);
         }
+
+        @Override
+        public long getItemId(int position) {
+            return mFilteredFolders.get(position).folder.getDatabaseId();
+        }
+
+        @Override
+        public int getCount() {
+            return mFilteredFolders.size();
+        }
+
+        @Override
+        public boolean isEnabled(int item) {
+            return true;
+        }
+
+        @Override
+        public boolean areAllItemsEnabled() {
+            return true;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (position <= getCount()) {
+                return  getItemView(position, convertView, parent);
+            } else {
+                Timber.e("getView with illegal position=%d called! count is only %d", position, getCount());
+                return null;
+            }
+        }
+
+        public View getItemView(int itemPosition, View convertView, ViewGroup parent) {
+            FolderInfoHolder folder = getItem(itemPosition);
+            View view;
+            if (convertView != null) {
+                view = convertView;
+            } else {
+                view = View.inflate(ChooseFolder.this, R.layout.choose_folder_list_item, null);
+            }
+
+            FolderViewHolder holder = (FolderViewHolder) view.getTag();
+
+            if (holder == null) {
+                holder = new FolderViewHolder();
+                holder.folderName = view.findViewById(R.id.folder_name);
+                holder.folderIcon = view.findViewById(R.id.folder_icon);
+                holder.folderListItemLayout = view.findViewById(R.id.folder_list_item_layout);
+
+                view.setTag(holder);
+            }
+
+            if (folder == null) {
+                return view;
+            }
+
+            holder.folderName.setText(folder.displayName);
+            holder.folderIcon.setImageResource(folderIconProvider.getFolderIcon(folder.folder.getType()));
+
+            if (K9.isWrapFolderNames()) {
+                holder.folderName.setEllipsize(null);
+                holder.folderName.setSingleLine(false);
+            }
+            else {
+                holder.folderName.setEllipsize(TextUtils.TruncateAt.START);
+                holder.folderName.setSingleLine(true);
+            }
+
+            return view;
+        }
+
+        @Override
+        public boolean hasStableIds() {
+            return true;
+        }
+
+        public Filter getFilter() {
+            return mFilter;
+        }
+
+        @Override
+        public void setFilteredFolders(CharSequence filterText, List<FolderInfoHolder> folders) {
+            this.filterText = filterText;
+            mFilteredFolders = folders;
+            notifyDataSetChanged();
+        }
+
+        void setFolders(List<FolderInfoHolder> folders) {
+            mFolders = folders;
+            mFilter = new FolderListFilter(this, folders);
+            mFilter.filter(filterText);
+        }
+    }
+
+    static class FolderViewHolder {
+        TextView folderName;
+        ImageView folderIcon;
+        LinearLayout folderListItemLayout;
     }
 }
