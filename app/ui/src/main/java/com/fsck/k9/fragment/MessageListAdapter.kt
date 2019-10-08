@@ -170,14 +170,13 @@ class MessageListAdapter internal constructor(
         val fromMe = messageHelper.toMe(account, fromAddrs)
         val toMe = messageHelper.toMe(account, toAddrs)
         val ccMe = messageHelper.toMe(account, ccAddrs)
+        val counterPartyAddress = fetchCounterPartyAddress(fromMe, toAddrs, ccAddrs, fromAddrs)
 
         val displayName = messageHelper.getDisplayName(account, fromAddrs, toAddrs)
-        val displayDate = DateUtils.getRelativeTimeSpanString(context, cursor.getLong(DATE_COLUMN))
+        val messageDate = cursor.getLong(DATE_COLUMN)
 
-        val threadCount = if (appearance.showingThreadedList) cursor.getInt(THREAD_COUNT_COLUMN) else 0
-
-        val subject = MlfUtils.buildSubject(cursor.getString(SUBJECT_COLUMN),
-                res.getString(R.string.general_no_subject), threadCount)
+        val threadCount = cursor.getInt(THREAD_COUNT_COLUMN)
+        val subjectText = cursor.getString(SUBJECT_COLUMN)
 
         val read = cursor.getInt(READ_COLUMN) == 1
         val flagged = cursor.getInt(FLAGGED_COLUMN) == 1
@@ -186,12 +185,26 @@ class MessageListAdapter internal constructor(
 
         val hasAttachments = cursor.getInt(ATTACHMENT_COUNT_COLUMN) > 0
 
+        val uniqueId = cursor.getLong(uniqueIdColumn)
+        val selected = selected.contains(uniqueId)
+
+        val uid = cursor.getString(UID_COLUMN)
+        val folderServerId = cursor.getString(FOLDER_SERVER_ID_COLUMN)
+        val active = account.uuid == activeAccountUuid && folderServerId == activeFolderServerId && uid == activeUid
+
+        val previewTypeString = cursor.getString(PREVIEW_TYPE_COLUMN)
+        val previewType = DatabasePreviewType.fromDatabaseValue(previewTypeString)
+        val isMessageEncrypted = previewType == DatabasePreviewType.ENCRYPTED
+        val previewText = if (previewType == DatabasePreviewType.TEXT) cursor.getString(PREVIEW_COLUMN) else ""
+
+        val position = cursor.position
+
         val holder = view.tag as MessageViewHolder
 
         val maybeBoldTypeface = if (read) Typeface.NORMAL else Typeface.BOLD
-
-        val uniqueId = cursor.getLong(uniqueIdColumn)
-        val selected = selected.contains(uniqueId)
+        val displayDate = DateUtils.getRelativeTimeSpanString(context, messageDate)
+        val displayThreadCount = if (appearance.showingThreadedList) threadCount else 0
+        val subject = MlfUtils.buildSubject(subjectText, res.getString(R.string.general_no_subject), displayThreadCount)
 
         if (appearance.showAccountChip) {
             val accountChipDrawable = holder.chip.drawable.mutate()
@@ -202,22 +215,18 @@ class MessageListAdapter internal constructor(
         if (appearance.stars) {
             holder.flagged.isChecked = flagged
         }
-        holder.position = cursor.position
+        holder.position = position
         if (holder.contactBadge.isVisible) {
-            val counterpartyAddress = fetchCounterPartyAddress(fromMe, toAddrs, ccAddrs, fromAddrs)
-            updateContactBadge(holder.contactBadge, counterpartyAddress)
+            updateContactBadge(holder.contactBadge, counterPartyAddress)
         }
-        setBackgroundColor(view, selected, read)
-        if (activeMessage != null) {
-            changeBackgroundColorIfActiveMessage(cursor, account, view)
-        }
-        updateWithThreadCount(holder, threadCount)
+        setBackgroundColor(view, selected, read, active)
+        updateWithThreadCount(holder, displayThreadCount)
         val beforePreviewText = if (appearance.senderAboveSubject) subject else displayName
         val sigil = recipientSigil(toMe, ccMe)
         val messageStringBuilder = SpannableStringBuilder(sigil)
                 .append(beforePreviewText)
         if (appearance.previewLines > 0) {
-            val preview = getPreview(cursor)
+            val preview = getPreview(isMessageEncrypted, previewText)
             messageStringBuilder.append(" ").append(preview)
         }
         holder.preview.setText(messageStringBuilder, TextView.BufferType.SPANNABLE)
@@ -320,17 +329,6 @@ class MessageListAdapter internal constructor(
         }
     }
 
-    private fun changeBackgroundColorIfActiveMessage(cursor: Cursor, account: Account, view: View) {
-        val uid = cursor.getString(UID_COLUMN)
-        val folderServerId = cursor.getString(FOLDER_SERVER_ID_COLUMN)
-
-        if (account.uuid == activeAccountUuid &&
-                folderServerId == activeFolderServerId &&
-                uid == activeUid) {
-            view.setBackgroundColor(activeItemBackgroundColor)
-        }
-    }
-
     private fun buildStatusHolder(forwarded: Boolean, answered: Boolean): Drawable? {
         if (forwarded && answered) {
             return forwardedAnsweredIcon
@@ -342,21 +340,17 @@ class MessageListAdapter internal constructor(
         return null
     }
 
-    private fun setBackgroundColor(view: View, selected: Boolean, read: Boolean) {
-        if (selected || appearance.backGroundAsReadIndicator) {
-            val color: Int
-            if (selected) {
-                color = selectedItemBackgroundColor
-            } else if (read) {
-                color = readItemBackgroundColor
-            } else {
-                color = unreadItemBackgroundColor
-            }
-
-            view.setBackgroundColor(color)
-        } else {
-            view.setBackgroundColor(Color.TRANSPARENT)
+    private fun setBackgroundColor(view: View, selected: Boolean, read: Boolean, active: Boolean) {
+        val backGroundAsReadIndicator = appearance.backGroundAsReadIndicator
+        val backgroundColor = when {
+            active -> activeItemBackgroundColor
+            selected -> selectedItemBackgroundColor
+            backGroundAsReadIndicator && read -> readItemBackgroundColor
+            backGroundAsReadIndicator && !read -> unreadItemBackgroundColor
+            else -> Color.TRANSPARENT
         }
+
+        view.setBackgroundColor(backgroundColor)
     }
 
     private fun updateWithThreadCount(holder: MessageViewHolder, threadCount: Int) {
@@ -368,23 +362,12 @@ class MessageListAdapter internal constructor(
         }
     }
 
-    private fun getPreview(cursor: Cursor): String {
-        val previewTypeString = cursor.getString(PREVIEW_TYPE_COLUMN)
-        val previewType = DatabasePreviewType.fromDatabaseValue(previewTypeString)
-
-        when (previewType) {
-            DatabasePreviewType.NONE, DatabasePreviewType.ERROR -> {
-                return ""
-            }
-            DatabasePreviewType.ENCRYPTED -> {
-                return res.getString(R.string.preview_encrypted)
-            }
-            DatabasePreviewType.TEXT -> {
-                return cursor.getString(PREVIEW_COLUMN)
-            }
+    private fun getPreview(isMessageEncrypted: Boolean, previewText: String): String {
+        return if (isMessageEncrypted) {
+            res.getString(R.string.preview_encrypted)
+        } else {
+            previewText
         }
-
-        throw AssertionError("Unknown preview type: $previewType")
     }
 }
 
