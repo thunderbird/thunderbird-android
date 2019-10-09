@@ -1,8 +1,6 @@
 package com.fsck.k9.fragment
 
 import android.content.Context
-import android.database.Cursor
-import android.database.MatrixCursor
 import android.text.Spannable
 import android.text.style.AbsoluteSizeSpan
 import android.view.ContextThemeWrapper
@@ -17,49 +15,31 @@ import com.fsck.k9.Account
 import com.fsck.k9.FontSizes
 import com.fsck.k9.FontSizes.FONT_DEFAULT
 import com.fsck.k9.FontSizes.LARGE
-import com.fsck.k9.Preferences
 import com.fsck.k9.RobolectricTest
 import com.fsck.k9.contacts.ContactPictureLoader
-import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.mail.Address
-import com.fsck.k9.provider.EmailProvider.MessageColumns
-import com.fsck.k9.provider.EmailProvider.SpecialColumns
-import com.fsck.k9.provider.EmailProvider.ThreadColumns
 import com.fsck.k9.textString
 import com.fsck.k9.ui.ContactBadge
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.messagelist.MessageListAppearance
-import com.fsck.k9.ui.messagelist.MessageListExtractor
-import com.nhaarman.mockito_kotlin.anyArray
-import com.nhaarman.mockito_kotlin.doReturn
-import com.nhaarman.mockito_kotlin.eq
+import com.fsck.k9.ui.messagelist.MessageListItem
 import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Ignore
 import org.junit.Test
-import org.mockito.AdditionalMatchers.aryEq
 import org.robolectric.RuntimeEnvironment
 
 private const val SOME_ACCOUNT_UUID = "6b84207b-25de-4dab-97c3-953bbf03fec6"
-private const val DISPLAY_NAME = "Display Name"
 private const val FIRST_LINE_DEFAULT_FONT_SIZE = 18f
 private const val SECOND_LINE_DEFAULT_FONT_SIZE = 14f
 private const val DATE_DEFAULT_FONT_SIZE = 14f
 
 class MessageListAdapterTest : RobolectricTest() {
     val context: Context = ContextThemeWrapper(RuntimeEnvironment.application, R.style.Theme_K9_Light)
-    val testAccount = Account(SOME_ACCOUNT_UUID)
 
-    val messageHelper: MessageHelper = mock {
-        on { getDisplayName(eq(testAccount), anyArray(), anyArray()) } doReturn DISPLAY_NAME
-    }
-    val preferences: Preferences = mock {
-        on { getAccount(SOME_ACCOUNT_UUID) } doReturn testAccount
-    }
     val contactsPictureLoader: ContactPictureLoader = mock()
     val listItemListener: MessageListItemActionListener = mock()
 
@@ -100,21 +80,21 @@ class MessageListAdapterTest : RobolectricTest() {
     }
 
     @Test
-    fun withStarsAndFlaggedMessage_shouldCheckStarCheckBox() {
+    fun withStarsAndStarredMessage_shouldCheckStarCheckBox() {
         val adapter = createAdapter(stars = true)
-        val cursor = createCursor(flagged = 1)
+        val messageListItem = createMessageListItem(isStarred = true)
 
-        val view = adapter.createAndBindView(cursor)
+        val view = adapter.createAndBindView(messageListItem)
 
         assertTrue(view.starView.isChecked)
     }
 
     @Test
-    fun withStarsAndUnflaggedMessage_shouldNotCheckStarCheckBox() {
+    fun withStarsAndUnstarredMessage_shouldNotCheckStarCheckBox() {
         val adapter = createAdapter(stars = true)
-        val cursor = createCursor(flagged = 0)
+        val messageListItem = createMessageListItem(isStarred = false)
 
-        val view = adapter.createAndBindView(cursor)
+        val view = adapter.createAndBindView(messageListItem)
 
         assertFalse(view.starView.isChecked)
     }
@@ -140,9 +120,9 @@ class MessageListAdapterTest : RobolectricTest() {
     @Test
     fun withThreadCountOne_shouldHideThreadCountView() {
         val adapter = createAdapter()
-        val cursor = createCursor(threadCount = 1)
+        val messageListItem = createMessageListItem(threadCount = 1)
 
-        val view = adapter.createAndBindView(cursor)
+        val view = adapter.createAndBindView(messageListItem)
 
         assertTrue(view.threadCountView.isGone)
     }
@@ -150,9 +130,9 @@ class MessageListAdapterTest : RobolectricTest() {
     @Test
     fun withThreadCountGreaterOne_shouldShowThreadCountViewWithExpectedValue() {
         val adapter = createAdapter()
-        val cursor = createCursor(threadCount = 13)
+        val messageListItem = createMessageListItem(threadCount = 13)
 
-        val view = adapter.createAndBindView(cursor)
+        val view = adapter.createAndBindView(messageListItem)
 
         assertTrue(view.threadCountView.isVisible)
         assertEquals("13", view.threadCountView.textString)
@@ -161,9 +141,9 @@ class MessageListAdapterTest : RobolectricTest() {
     @Test
     fun withoutSenderAboveSubject_shouldShowSubjectInFirstLine() {
         val adapter = createAdapter(senderAboveSubject = false)
-        val cursor = createCursor(subject = "Subject")
+        val messageListItem = createMessageListItem(subject = "Subject")
 
-        val view = adapter.createAndBindView(cursor)
+        val view = adapter.createAndBindView(messageListItem)
 
         assertEquals("Subject", view.firstLineView.textString)
     }
@@ -171,37 +151,39 @@ class MessageListAdapterTest : RobolectricTest() {
     @Test
     fun withSenderAboveSubject_shouldShowDisplayNameInFirstLine() {
         val adapter = createAdapter(senderAboveSubject = true)
+        val messageListItem = createMessageListItem(displayName = "Display Name")
 
-        val view = adapter.createAndBindView()
+        val view = adapter.createAndBindView(messageListItem)
 
-        assertEquals(DISPLAY_NAME, view.firstLineView.textString)
+        assertEquals("Display Name", view.firstLineView.textString)
     }
 
     @Test
     fun withoutSenderAboveSubjectAndZeroPreviewLines_shouldShowDisplayNameInSecondLine() {
         val adapter = createAdapter(senderAboveSubject = false, previewLines = 0)
+        val messageListItem = createMessageListItem(displayName = "Display Name")
 
-        val view = adapter.createAndBindView()
+        val view = adapter.createAndBindView(messageListItem)
 
-        assertEquals(DISPLAY_NAME, view.secondLineView.textString)
+        assertEquals("Display Name", view.secondLineView.textString)
     }
 
     @Test
     fun withoutSenderAboveSubjectAndPreviewLines_shouldShowDisplayNameAndPreviewInSecondLine() {
         val adapter = createAdapter(senderAboveSubject = false, previewLines = 1)
-        val cursor = createCursor(preview = "Preview")
+        val messageListItem = createMessageListItem(displayName = "Display Name", previewText = "Preview")
 
-        val view = adapter.createAndBindView(cursor)
+        val view = adapter.createAndBindView(messageListItem)
 
-        assertEquals(secondLine(DISPLAY_NAME, "Preview"), view.secondLineView.textString)
+        assertEquals(secondLine("Display Name", "Preview"), view.secondLineView.textString)
     }
 
     @Test
     fun withSenderAboveSubjectAndZeroPreviewLines_shouldShowSubjectInSecondLine() {
         val adapter = createAdapter(senderAboveSubject = true, previewLines = 0)
-        val cursor = createCursor(subject = "Subject")
+        val messageListItem = createMessageListItem(subject = "Subject")
 
-        val view = adapter.createAndBindView(cursor)
+        val view = adapter.createAndBindView(messageListItem)
 
         assertEquals("Subject", view.secondLineView.textString)
     }
@@ -209,9 +191,9 @@ class MessageListAdapterTest : RobolectricTest() {
     @Test
     fun withSenderAboveSubjectAndPreviewLines_shouldShowSubjectAndPreviewInSecondLine() {
         val adapter = createAdapter(senderAboveSubject = true, previewLines = 1)
-        val cursor = createCursor(subject = "Subject", preview = "Preview")
+        val messageListItem = createMessageListItem(subject = "Subject", previewText = "Preview")
 
-        val view = adapter.createAndBindView(cursor)
+        val view = adapter.createAndBindView(messageListItem)
 
         assertEquals(secondLine("Subject", "Preview"), view.secondLineView.textString)
     }
@@ -220,10 +202,9 @@ class MessageListAdapterTest : RobolectricTest() {
     @Ignore("Currently failing. See issue #4152.")
     fun withSenderAboveSubjectAndMessageToMe_shouldDisplayIndicatorInFirstLine() {
         val adapter = createAdapter(senderAboveSubject = true)
-        val cursor = createCursor(to = "to@domain.example")
-        configureMessageHelperMockToMe("to@domain.example")
+        val messageListItem = createMessageListItem(toMe = true)
 
-        val view = adapter.createAndBindView(cursor)
+        val view = adapter.createAndBindView(messageListItem)
 
         assertTrue(view.firstLineView.containsToMeIndicator())
     }
@@ -232,10 +213,9 @@ class MessageListAdapterTest : RobolectricTest() {
     @Ignore("Currently failing. See issue #4152.")
     fun withSenderAboveSubjectAndMessageCcMe_shouldDisplayIndicatorInFirstLine() {
         val adapter = createAdapter(senderAboveSubject = true)
-        val cursor = createCursor(cc = "cc@domain.example")
-        configureMessageHelperMockToMe("cc@domain.example")
+        val messageListItem = createMessageListItem(ccMe = true)
 
-        val view = adapter.createAndBindView(cursor)
+        val view = adapter.createAndBindView(messageListItem)
 
         assertTrue(view.firstLineView.containsCcMeIndicator())
     }
@@ -243,10 +223,9 @@ class MessageListAdapterTest : RobolectricTest() {
     @Test
     fun withoutSenderAboveSubjectAndMessageToMe_shouldDisplayIndicatorInSecondLine() {
         val adapter = createAdapter(senderAboveSubject = false)
-        val cursor = createCursor(to = "to@domain.example")
-        configureMessageHelperMockToMe("to@domain.example")
+        val messageListItem = createMessageListItem(toMe = true)
 
-        val view = adapter.createAndBindView(cursor)
+        val view = adapter.createAndBindView(messageListItem)
 
         assertTrue(view.secondLineView.containsToMeIndicator())
     }
@@ -254,30 +233,29 @@ class MessageListAdapterTest : RobolectricTest() {
     @Test
     fun withoutSenderAboveSubjectAndMessageCcMe_shouldDisplayIndicatorInSecondLine() {
         val adapter = createAdapter(senderAboveSubject = false)
-        val cursor = createCursor(cc = "cc@domain.example")
-        configureMessageHelperMockToMe("cc@domain.example")
+        val messageListItem = createMessageListItem(ccMe = true)
 
-        val view = adapter.createAndBindView(cursor)
+        val view = adapter.createAndBindView(messageListItem)
 
         assertTrue(view.secondLineView.containsCcMeIndicator())
     }
 
     @Test
-    fun withAttachmentCountZero_shouldHideAttachmentCountView() {
+    fun withoutAttachments_shouldHideAttachmentCountView() {
         val adapter = createAdapter()
-        val cursor = createCursor(attachmentCount = 0)
+        val messageListItem = createMessageListItem(hasAttachments = false)
 
-        val view = adapter.createAndBindView(cursor)
+        val view = adapter.createAndBindView(messageListItem)
 
         assertTrue(view.attachmentCountView.isGone)
     }
 
     @Test
-    fun withNonZeroAttachmentCount_shouldShowAttachmentCountView() {
+    fun withAttachments_shouldShowAttachmentCountView() {
         val adapter = createAdapter()
-        val cursor = createCursor(attachmentCount = 3)
+        val messageListItem = createMessageListItem(hasAttachments = true)
 
-        val view = adapter.createAndBindView(cursor)
+        val view = adapter.createAndBindView(messageListItem)
 
         assertTrue(view.attachmentCountView.isVisible)
     }
@@ -420,11 +398,6 @@ class MessageListAdapterTest : RobolectricTest() {
         assertEquals(22f, view.secondLineView.textSize)
     }
 
-    fun configureMessageHelperMockToMe(address: String) {
-        val addresses = Address.parse(address)
-        whenever(messageHelper.toMe(eq(testAccount), aryEq(addresses))).thenReturn(true)
-    }
-
     fun createFontSizes(
         subject: Int = FONT_DEFAULT,
         sender: Int = FONT_DEFAULT,
@@ -466,66 +439,66 @@ class MessageListAdapterTest : RobolectricTest() {
                 res = context.resources,
                 layoutInflater = LayoutInflater.from(context),
                 contactsPictureLoader = contactsPictureLoader,
-                messageListExtractor = MessageListExtractor(preferences, messageHelper),
                 listItemListener = listItemListener,
                 appearance = appearance
         )
     }
 
-    fun createCursor(
-        id: Long = 0L,
-        uid: String = "irrelevant",
-        internalDate: Long = 0L,
+    fun createMessageListItem(
+        position: Int = 0,
+        account: Account = Account(SOME_ACCOUNT_UUID),
         subject: String = "irrelevant",
-        date: Long = 0L,
-        sender: String = "irrelevant@domain.example",
-        to: String = "irrelevant@domain.example",
-        cc: String = "irrelevant@domain.example",
-        read: Int = 0,
-        flagged: Int = 0,
-        answered: Int = 0,
-        forwarded: Int = 0,
-        attachmentCount: Int = 0,
-        folderId: String = "irrelevant",
-        previewType: String = "text",
-        preview: String = "irrelevant",
-        threadRoot: Long = 0L,
-        accountUuid: String = SOME_ACCOUNT_UUID,
+        threadCount: Int = 0,
+        messageDate: Long = 0L,
+        displayName: CharSequence = "irrelevant",
+        counterPartyAddress: Address? = Address.parse("irrelevant@domain.example").first(),
+        fromMe: Boolean = false,
+        toMe: Boolean = false,
+        ccMe: Boolean = false,
+        previewText: String = "irrelevant",
+        isMessageEncrypted: Boolean = false,
+        isRead: Boolean = false,
+        isStarred: Boolean = false,
+        isAnswered: Boolean = false,
+        isForwarded: Boolean = false,
+        hasAttachments: Boolean = false,
+        uniqueId: Long = 0L,
         folderServerId: String = "irrelevant",
-        threadCount: Int = 0
-    ): Cursor {
-        val mapping = mapOf(
-                MessageColumns.ID to id,
-                MessageColumns.UID to uid,
-                MessageColumns.INTERNAL_DATE to internalDate,
-                MessageColumns.SUBJECT to subject,
-                MessageColumns.DATE to date,
-                MessageColumns.SENDER_LIST to Address.pack(Address.parse(sender)),
-                MessageColumns.TO_LIST to Address.pack(Address.parse(to)),
-                MessageColumns.CC_LIST to Address.pack(Address.parse(cc)),
-                MessageColumns.READ to read,
-                MessageColumns.FLAGGED to flagged,
-                MessageColumns.ANSWERED to answered,
-                MessageColumns.FORWARDED to forwarded,
-                MessageColumns.ATTACHMENT_COUNT to attachmentCount,
-                MessageColumns.FOLDER_ID to folderId,
-                MessageColumns.PREVIEW_TYPE to previewType,
-                MessageColumns.PREVIEW to preview,
-                ThreadColumns.ROOT to threadRoot,
-                SpecialColumns.ACCOUNT_UUID to accountUuid,
-                SpecialColumns.FOLDER_SERVER_ID to folderServerId,
-                SpecialColumns.THREAD_COUNT to threadCount
+        messageUid: String = "irrelevant",
+        databaseId: Long = 0L,
+        senderAddress: String? = null,
+        threadRoot: Long = 0L
+    ): MessageListItem {
+        return MessageListItem(
+                position,
+                account,
+                subject,
+                threadCount,
+                messageDate,
+                displayName,
+                counterPartyAddress,
+                fromMe,
+                toMe,
+                ccMe,
+                previewText,
+                isMessageEncrypted,
+                isRead,
+                isStarred,
+                isAnswered,
+                isForwarded,
+                hasAttachments,
+                uniqueId,
+                folderServerId,
+                messageUid,
+                databaseId,
+                senderAddress,
+                threadRoot
         )
-        return MatrixCursor(mapping.keys.toTypedArray())
-                .apply { addRow(mapping.values.toTypedArray()) }
-                .also { it.moveToFirst() }
     }
 
-    fun MessageListAdapter.createAndBindView(cursor: Cursor = createCursor()): View {
-        val view = newView(context, cursor, LinearLayout(context))
-        bindView(view, context, cursor)
-
-        return view
+    fun MessageListAdapter.createAndBindView(item: MessageListItem = createMessageListItem()): View {
+        messages = listOf(item)
+        return getView(0, null, LinearLayout(context))
     }
 
     fun secondLine(senderOrSubject: String, preview: String) = "$senderOrSubject $preview"

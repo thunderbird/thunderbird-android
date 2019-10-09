@@ -2,7 +2,6 @@ package com.fsck.k9.fragment
 
 import android.content.Context
 import android.content.res.Resources
-import android.database.Cursor
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
@@ -15,7 +14,7 @@ import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CursorAdapter
+import android.widget.BaseAdapter
 import android.widget.TextView
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
@@ -26,20 +25,18 @@ import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.ContactBadge
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.messagelist.MessageListAppearance
-import com.fsck.k9.ui.messagelist.MessageListExtractor
 import com.fsck.k9.ui.messagelist.MessageListItem
 import kotlin.math.max
 
 class MessageListAdapter internal constructor(
-    context: Context,
+    private val context: Context,
     theme: Resources.Theme,
     private val res: Resources,
     private val layoutInflater: LayoutInflater,
     private val contactsPictureLoader: ContactPictureLoader,
-    private val messageListExtractor: MessageListExtractor,
     private val listItemListener: MessageListItemActionListener,
     private val appearance: MessageListAppearance
-) : CursorAdapter(context, null, 0) {
+) : BaseAdapter() {
 
     private val forwardedIcon: Drawable
     private val answeredIcon: Drawable
@@ -77,9 +74,13 @@ class MessageListAdapter internal constructor(
         array.recycle()
     }
 
-    var activeMessage: MessageReference? = null
+    var messages: List<MessageListItem> = emptyList()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
-    var uniqueIdColumn: Int = 0
+    var activeMessage: MessageReference? = null
 
     var selected: Set<Long> = emptySet()
 
@@ -100,7 +101,23 @@ class MessageListAdapter internal constructor(
         }
     }
 
-    override fun newView(context: Context, cursor: Cursor, parent: ViewGroup): View {
+    override fun hasStableIds(): Boolean = true
+
+    override fun getCount(): Int = messages.size
+
+    override fun getItemId(position: Int): Long = messages[position].uniqueId
+
+    override fun getItem(position: Int): MessageListItem = messages[position]
+
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+        val message = getItem(position)
+        val view: View = convertView ?: newView(parent)
+        bindView(view, context, message)
+
+        return view
+    }
+
+    private fun newView(parent: ViewGroup?): View {
         val view = layoutInflater.inflate(R.layout.message_list_item, parent, false)
 
         val holder = MessageViewHolder(view, listItemListener)
@@ -125,14 +142,13 @@ class MessageListAdapter internal constructor(
         return view
     }
 
-    override fun bindView(view: View, context: Context, cursor: Cursor) {
-        val item = messageListExtractor.extractMessageListItem(cursor, uniqueIdColumn)
-        val isSelected = selected.contains(item.uniqueId)
-        val isActive = isActiveMessage(item)
+    private fun bindView(view: View, context: Context, message: MessageListItem) {
+        val isSelected = selected.contains(message.uniqueId)
+        val isActive = isActiveMessage(message)
 
         val holder = view.tag as MessageViewHolder
 
-        with(item) {
+        with(message) {
             val maybeBoldTypeface = if (isRead) Typeface.NORMAL else Typeface.BOLD
             val displayDate = DateUtils.getRelativeTimeSpanString(context, messageDate)
             val displayThreadCount = if (appearance.showingThreadedList) threadCount else 0
