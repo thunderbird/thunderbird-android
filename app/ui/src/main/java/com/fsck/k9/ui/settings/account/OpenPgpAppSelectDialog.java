@@ -297,8 +297,8 @@ public class OpenPgpAppSelectDialog extends FragmentActivity {
             builder.setPositiveButton(R.string.dialog_openkeychain_info_install, new OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    startOpenKeychainInstallActivity();
                     dismiss();
+                    startOpenKeychainInstallActivity();
                 }
             });
 
