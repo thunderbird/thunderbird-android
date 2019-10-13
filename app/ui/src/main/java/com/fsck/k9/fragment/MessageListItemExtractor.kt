@@ -34,8 +34,6 @@ class MessageListItemExtractor(
         private val res: Resources
 ) {
 
-    private val account: Account
-        get() = preferences.getAccount(cursor.getString(ACCOUNT_UUID_COLUMN))
     private val ccAddresses: Array<Address>
         get() = Address.unpack(cursor.getString(CC_LIST_COLUMN))
     private val ccMe: Boolean get() = messageHelper.toMe(account, ccAddresses)
@@ -45,6 +43,8 @@ class MessageListItemExtractor(
     private val toAddresses: Array<Address>
         get() = Address.unpack(cursor.getString(TO_LIST_COLUMN))
     private val toMe: Boolean get() = messageHelper.toMe(account, toAddresses)
+    val account: Account
+        get() = preferences.getAccount(cursor.getString(ACCOUNT_UUID_COLUMN))
 
     val answered: Boolean get() = cursor.getInt(ANSWERED_COLUMN) == 1
 
@@ -71,6 +71,8 @@ class MessageListItemExtractor(
     val date: Long get() = cursor.getLong(DATE_COLUMN)
 
     val flagged: Boolean get() = cursor.getInt(FLAGGED_COLUMN) == 1
+
+    val folderServerId: String? get() = cursor.getString(FOLDER_SERVER_ID_COLUMN)
 
     val forwarded: Boolean get() = cursor.getInt(FORWARDED_COLUMN) == 1
 
@@ -107,6 +109,8 @@ class MessageListItemExtractor(
         }
 
     val threadCount: Int get() = cursor.getInt(THREAD_COUNT_COLUMN)
+
+    val uid: String get() = cursor.getString(UID_COLUMN)
 
     fun isActiveMessage(against: MessageReference?): Boolean {
         val uid = cursor.getString(UID_COLUMN)

@@ -153,7 +153,7 @@ class MessageListItemAdapter internal constructor(
             updateContactBadge(holder.contactBadge, counterpartyAddress)
         }
 
-        setBackgroundColor(view, selected, read, listItem.isActiveMessage(activeMessage))
+        setBackgroundColor(view, selected, read, isActiveMessage(listItem, activeMessage))
 
         holder.threadCount.isVisible = threadCount > 1
         if (holder.threadCount.isVisible) {
@@ -186,6 +186,20 @@ class MessageListItemAdapter internal constructor(
         if (holder.status.isVisible) {
             holder.status.setImageDrawable(getStatusDrawable(forwarded, answered))
         }
+    }
+
+    private fun isActiveMessage(item: MessageListItem, activeMessage: MessageReference?): Boolean {
+        if (activeMessage == null) return false
+
+        val uid = item.uid
+        val folderServerId = item.folderServerId
+
+        val activeAccountUuid = activeMessage.accountUuid
+        val activeFolderServerId = activeMessage.folderServerId
+        val activeUid = activeMessage.uid
+        return item.account.uuid == activeAccountUuid
+                && folderServerId == activeFolderServerId
+                && uid == activeUid
     }
 
     private fun formatPreviewText(

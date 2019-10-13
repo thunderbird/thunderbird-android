@@ -37,6 +37,8 @@ class CursorToMessageListItems(
 
     private inline val MessageListItemExtractor.asItem: MessageListItem
         get() = MessageListItem(
+                this.uid,
+                this.folderServerId,
                 this.displayName.toString(),
                 this.subject(this.threadCount),
                 this.date,
@@ -50,7 +52,8 @@ class CursorToMessageListItems(
                 this.flagged,
                 this.hasAttachments,
                 this.preview,
-                this.counterPartyAddresses
+                this.counterPartyAddresses,
+                this.account
         )
 
 }
