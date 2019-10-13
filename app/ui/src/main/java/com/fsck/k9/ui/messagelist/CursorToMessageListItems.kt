@@ -49,7 +49,8 @@ class CursorToMessageListItems(
                 this.chipColor,
                 this.flagged,
                 this.hasAttachments,
-                this.preview
+                this.preview,
+                this.counterPartyAddresses
         )
 
 }

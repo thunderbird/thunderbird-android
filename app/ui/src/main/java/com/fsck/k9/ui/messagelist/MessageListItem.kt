@@ -1,6 +1,7 @@
 package com.fsck.k9.ui.messagelist
 
 import androidx.annotation.ColorInt
+import com.fsck.k9.mail.Address
 
 data class MessageListItem(
         val displayName: String,
@@ -15,5 +16,6 @@ data class MessageListItem(
         @ColorInt val chipColor: Int,
         val flagged: Boolean,
         val hasAttachments: Boolean,
-        val preview: String
+        val preview: String,
+        val counterPartyAddresses: Address?
 )
