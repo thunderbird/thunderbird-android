@@ -15,11 +15,11 @@ data class MessageListItem(
         val read: Boolean,
         val answered: Boolean,
         val forwarded: Boolean,
-        val selected: Boolean,
         @ColorInt val chipColor: Int,
         val flagged: Boolean,
         val hasAttachments: Boolean,
         val preview: String,
         val counterPartyAddresses: Address?,
-        val account: Account
+        val account: Account,
+        val selectionIdentifier: Long
 )

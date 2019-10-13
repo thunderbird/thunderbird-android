@@ -128,4 +128,6 @@ class MessageListItemExtractor(
         return MlfUtils.buildSubject(cursor.getString(SUBJECT_COLUMN),
                 res.getString(R.string.general_no_subject), threadCount)
     }
+
+    fun selectionIdentifier(uniqueColumnId: Int): Long = cursor.getLong(uniqueColumnId)
 }

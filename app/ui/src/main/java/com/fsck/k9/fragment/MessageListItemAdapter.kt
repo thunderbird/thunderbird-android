@@ -87,8 +87,6 @@ class MessageListItemAdapter internal constructor(
 
     var activeMessage: MessageReference? = null
 
-    var uniqueIdColumn: Int = 0
-
     var selected: Set<Long> = emptySet()
 
     private inline val subjectViewFontSize: Int
@@ -136,8 +134,7 @@ class MessageListItemAdapter internal constructor(
         val answered = listItem.answered
         val forwarded = listItem.forwarded
         val maybeBoldTypeface = if (read) Typeface.NORMAL else Typeface.BOLD
-        val uniqueId = cursor.getLong(uniqueIdColumn)
-        val selected = selected.contains(uniqueId)
+        val selected = selected.contains(listItem.selectionIdentifier)
 
         if (appearance.showAccountChip) {
             val accountChipDrawable = holder.chip.drawable.mutate()

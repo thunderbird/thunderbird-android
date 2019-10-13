@@ -5,14 +5,16 @@ import android.database.Cursor
 import com.fsck.k9.Preferences
 import com.fsck.k9.fragment.MessageListItemExtractor
 import com.fsck.k9.helper.MessageHelper
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class CursorToMessageListItems(
         private val preferences: Preferences,
         private val helper: MessageHelper,
-        private val resources: Resources
+        private val resources: Resources,
+        private val uniqueColumnId: Int
 ) {
 
     private fun messageListItemExtractor(cursor: Cursor) = MessageListItemExtractor(
@@ -25,13 +27,14 @@ class CursorToMessageListItems(
     fun convert(cursor: Cursor, onItemsReady: (List<MessageListItem>) -> Unit) {
         val extractor = messageListItemExtractor(cursor)
         GlobalScope.launch {
-            async {
+            val itemsRetrieved = withContext(Dispatchers.Default) {
                 val items = arrayListOf<MessageListItem>()
                 while (cursor.moveToNext()) {
                     items += extractor.asItem
                 }
-                onItemsReady(items)
+                items
             }
+            onItemsReady(itemsRetrieved)
         }
     }
 
@@ -47,13 +50,14 @@ class CursorToMessageListItems(
                 this.read,
                 this.answered,
                 this.forwarded,
-                false,
                 this.chipColor,
                 this.flagged,
                 this.hasAttachments,
                 this.preview,
                 this.counterPartyAddresses,
-                this.account
+                this.account,
+                this.selectionIdentifier(uniqueColumnId)
+
         )
 
 }
