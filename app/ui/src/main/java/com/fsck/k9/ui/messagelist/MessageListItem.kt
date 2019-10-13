@@ -3,10 +3,9 @@ package com.fsck.k9.ui.messagelist
 import androidx.annotation.ColorInt
 
 data class MessageListItem(
-        val id: Long,
         val displayName: String,
         val subject: String,
-        val displayDate: String,
+        val date: Long,
         val sigil: String,
         val threadCount: Int,
         val read: Boolean,
