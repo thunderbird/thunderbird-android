@@ -99,9 +99,8 @@
         </activity>
 
         <activity
-            android:name=".activity.setup.WelcomeMessage"
-            android:configChanges="locale"
-            android:label="@string/welcome_message_title"/>
+            android:name=".ui.onboarding.OnboardingActivity"
+            android:label="@string/welcome_message_title" />
 
         <activity
             android:name=".ui.settings.account.OpenPgpAppSelectDialog"

@@ -7,6 +7,7 @@ import com.fsck.k9.ui.settings.account.AccountSettingsViewModel
 import com.fsck.k9.ui.settings.export.SettingsExportViewModel
 import com.fsck.k9.ui.settings.general.GeneralSettingsDataStore
 import com.fsck.k9.ui.settings.import.AccountActivator
+import com.fsck.k9.ui.settings.import.SettingsImportResultViewModel
 import com.fsck.k9.ui.settings.import.SettingsImportViewModel
 import org.koin.android.architecture.ext.viewModel
 import org.koin.dsl.module.applicationContext
@@ -26,6 +27,7 @@ val settingsUiModule = applicationContext {
 
     viewModel { SettingsExportViewModel(get(), get()) }
     viewModel { SettingsImportViewModel(get(), get()) }
+    viewModel { SettingsImportResultViewModel() }
 
     bean { AccountActivator(get(), get(), get(), get()) }
 }

@@ -1,5 +1,7 @@
 package com.fsck.k9.ui.settings.import
 
+import com.fsck.k9.ui.settings.import.SettingsListItem.GeneralSettings
+
 class SettingsImportUiModel {
     var settingsList: List<SettingsListItem> = emptyList()
     var isSettingsListVisible = false
@@ -18,6 +20,10 @@ class SettingsImportUiModel {
 
     val hasDocumentBeenRead
         get() = isSettingsListVisible
+
+    val wasAccountImportSuccessful
+        get() = hasImportStarted && settingsList.any { it !is GeneralSettings && it.importStatus.isSuccess}
+
 
     fun enablePickDocumentButton() {
         isPickDocumentButtonEnabled = true
@@ -130,10 +136,7 @@ class SettingsImportUiModel {
     }
 
     fun updateCloseButtonAndImportStatusText() {
-        val errorsOnly = settingsList.none {
-            it.importStatus == ImportStatus.IMPORT_SUCCESS ||
-            it.importStatus == ImportStatus.IMPORT_SUCCESS_PASSWORD_REQUIRED
-        }
+        val errorsOnly = settingsList.none { it.importStatus.isSuccess }
         if (errorsOnly) {
             showImportErrorText()
             return
@@ -168,7 +171,10 @@ enum class ImportStatus {
     NOT_SELECTED,
     IMPORT_SUCCESS,
     IMPORT_SUCCESS_PASSWORD_REQUIRED,
-    IMPORT_FAILURE
+    IMPORT_FAILURE;
+
+    val isSuccess: Boolean
+        get() = this == IMPORT_SUCCESS || this == IMPORT_SUCCESS_PASSWORD_REQUIRED
 }
 
 enum class ButtonState {
