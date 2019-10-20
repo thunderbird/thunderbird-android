@@ -27,11 +27,11 @@
             app:destination="@id/settingsExportScreen" />
     </fragment>
 
-    <activity
+    <fragment
         android:id="@+id/aboutScreen"
-        android:name="com.fsck.k9.ui.settings.AboutActivity"
+        android:name="com.fsck.k9.ui.settings.AboutFragment"
         android:label="@string/about_action"
-        tools:layout="@layout/about"/>
+        tools:layout="@layout/fragment_about"/>
 
     <activity
         android:id="@+id/generalSettingsScreen"
