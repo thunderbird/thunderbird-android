@@ -40,15 +40,6 @@
             android:padding="10dip"
             android:text="@string/account_setup_account_type_pop_action" />
 
-        <Button
-            android:id="@+id/webdav"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:minWidth="@dimen/button_minWidth"
-            android:padding="10dip"
-            android:text="@string/account_setup_account_type_webdav_action" />
-
     </LinearLayout>
 
 </LinearLayout>
