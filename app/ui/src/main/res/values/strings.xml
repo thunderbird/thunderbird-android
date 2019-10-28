@@ -994,6 +994,21 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="settings_export_success_generic">Settings successfully exported</string>
     <string name="settings_export_failure">Failed to export settings</string>
 
+    <string name="settings_import_title">Import settings</string>
+    <string name="settings_import_pick_document_button">Select file</string>
+    <string name="settings_import_button">Import</string>
+    <string name="settings_import_progress_text">Importing settings…</string>
+    <string name="settings_import_success_generic">Settings successfully imported</string>
+    <string name="settings_import_password_required">Please enter passwords</string>
+    <string name="settings_import_failure">Failed to import settings</string>
+    <string name="settings_import_read_failure">Failed to read settings file</string>
+    <string name="settings_import_partial_failure">Failed to import some settings</string>
+    <string name="settings_import_status_success">Imported successfully</string>
+    <string name="settings_import_status_password_required">Password required</string>
+    <string name="settings_import_status_not_imported">Not imported</string>
+    <string name="settings_import_status_error">Import failure</string>
+    <string name="settings_import_later_button">Later</string>
+
     <string name="import_export_action">Settings Import &amp; Export</string>
     <string name="settings_export_account">Export account settings</string>
     <string name="settings_export_all">Export settings and accounts</string>
@@ -1012,7 +1027,6 @@ Please submit bug reports, contribute new features and ask questions at
         <item quantity="one">1 account</item>
         <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> accounts</item>
     </plurals>
-    <string name="settings_import_failure">Failed to import any settings</string>
     <string name="settings_export_success_header">Export succeeded</string>
     <string name="settings_export_failed_header">Export failed</string>
     <string name="settings_import_success_header">Import succeeded</string>
@@ -1023,6 +1037,16 @@ Please submit bug reports, contribute new features and ask questions at
         <item quantity="one">server password</item>
         <item quantity="other">server passwords</item>
     </plurals>
+
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">To be able to use the account \"<xliff:g id="account">%s</xliff:g>\" you need to provide the server password.</item>
+        <item quantity="other">To be able to use the account \"<xliff:g id="account">%s</xliff:g>\" you need to provide the server passwords.</item>
+    </plurals>
+    <string name="settings_import_incoming_server_password_hint">Incoming server password</string>
+    <string name="settings_import_outgoing_server_password_hint">Outgoing server password</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Use same password for outgoing server</string>
+    <string name="server_name_format">Server name: <xliff:g id="hostname">%s</xliff:g></string>
+
     <string name="settings_import_incoming_server">Incoming server (<xliff:g id="hostname">%s</xliff:g>):</string>
     <string name="settings_import_outgoing_server">Outgoing server (<xliff:g id="hostname">%s</xliff:g>):</string>
     <plurals name="settings_import_setting_passwords">

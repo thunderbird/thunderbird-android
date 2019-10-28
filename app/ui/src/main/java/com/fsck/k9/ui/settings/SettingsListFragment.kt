@@ -101,6 +101,13 @@ class SettingsListFragment : Fragment() {
                     R.attr.iconSettingsExport
             )
             add(exportSettingsActionItem)
+
+            val importSettingsActionItem = SettingsActionItem(
+                    getString(R.string.settings_import_title),
+                    R.id.action_settingsListScreen_to_settingsImportScreen,
+                    R.attr.iconSettingsImport
+            )
+            add(importSettingsActionItem)
         }
         backupSection.setHeader(SettingsDividerItem(getString(R.string.settings_list_backup_category)))
         settingsAdapter.add(backupSection)

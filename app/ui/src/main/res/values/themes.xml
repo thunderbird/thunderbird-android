@@ -91,6 +91,8 @@
         <item name="iconSettingsAccount">@drawable/ic_account_light</item>
         <item name="iconSettingsAccountAdd">@drawable/ic_account_plus_light</item>
         <item name="iconSettingsExport">@drawable/ic_export_light</item>
+        <item name="iconSettingsImport">@drawable/ic_import_light</item>
+        <item name="iconSettingsImportStatus">@drawable/ic_import_status_light</item>
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_light</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_light</item>
         <item name="messageListSelectedBackgroundColor">#8038B8E2</item>
@@ -211,6 +213,8 @@
         <item name="iconSettingsAccount">@drawable/ic_account_dark</item>
         <item name="iconSettingsAccountAdd">@drawable/ic_account_plus_dark</item>
         <item name="iconSettingsExport">@drawable/ic_export_dark</item>
+        <item name="iconSettingsImport">@drawable/ic_import_dark</item>
+        <item name="iconSettingsImportStatus">@drawable/ic_import_status_dark</item>
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_dark</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_dark</item>
         <item name="messageListSelectedBackgroundColor">#8038B8E2</item>
