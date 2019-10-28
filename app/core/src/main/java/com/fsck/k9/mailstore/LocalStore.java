@@ -323,7 +323,7 @@ public class LocalStore {
 
                 // Don't delete deleted messages. They are essentially placeholders for UIDs of messages that have
                 // been deleted locally.
-                db.delete("messages", "deleted = 0", null);
+                db.delete("messages", null, null);
 
                 // We don't need the search data now either
                 db.delete("messages_fulltext", null, null);
