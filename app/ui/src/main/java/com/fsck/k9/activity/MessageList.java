@@ -481,11 +481,14 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                     search.addAllowedFolder(folderServerId);
                 }
             } else {
-                if (BuildConfig.DEBUG) {
-                    throw new AssertionError("MessageList started without required extras");
+                account = preferences.getDefaultAccount();
+                search = new LocalSearch();
+                search.addAccountUuid(account.getUuid());
+                String folderServerId = account.getAutoExpandFolder();
+                if (folderServerId == null) {
+                    folderServerId = account.getInboxFolder();
                 }
-
-                search = SearchAccount.createUnifiedInboxAccount().getRelatedSearch();
+                search.addAllowedFolder(folderServerId);
             }
         }
 
