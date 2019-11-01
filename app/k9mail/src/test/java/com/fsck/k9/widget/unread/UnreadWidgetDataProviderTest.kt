@@ -39,19 +39,6 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
     }
 
     @Test
-    fun allMessages() {
-        val configuration = UnreadWidgetConfiguration(
-                appWidgetId = 2, accountUuid = SearchAccount.ALL_MESSAGES, folderServerId = null)
-
-        val widgetData = provider.loadUnreadWidgetData(configuration)
-
-        with(widgetData!!) {
-            assertThat(title).isEqualTo("All messages")
-            assertThat(unreadCount).isEqualTo(SEARCH_ACCOUNT_UNREAD_COUNT)
-        }
-    }
-
-    @Test
     fun regularAccount() {
         val configuration = UnreadWidgetConfiguration(
                 appWidgetId = 3, accountUuid = ACCOUNT_UUID, folderServerId = null)
