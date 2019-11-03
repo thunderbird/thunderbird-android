@@ -144,6 +144,13 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         return intent;
     }
 
+    public static void launch(Context context) {
+        Intent intent = new Intent(context, MessageList.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        context.startActivity(intent);
+    }
+
 
     private enum DisplayMode {
         MESSAGE_LIST,
