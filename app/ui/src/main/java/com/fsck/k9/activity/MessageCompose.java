@@ -280,7 +280,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
              * There are no accounts set up. This should not have happened. Prompt the
              * user to set up an account as an acceptable bailout.
              */
-            startActivity(new Intent(this, Accounts.class));
+            MessageList.launch(this);
             changesMadeSinceLastSave = false;
             finish();
             return;
