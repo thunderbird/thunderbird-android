@@ -19,6 +19,10 @@
             android:id="@+id/action_welcomeScreen_to_addAccountScreen"
             app:destination="@id/addAccountScreen" />
 
+        <action
+            android:id="@+id/action_welcomeScreen_to_messageListScreen"
+            app:destination="@id/messageListScreen" />
+
     </fragment>
 
     <fragment
@@ -32,5 +36,10 @@
         android:name="com.fsck.k9.activity.setup.AccountSetupBasics"
         android:label="@string/account_setup_basics_title"
         tools:layout="@layout/account_setup_basics"/>
+
+    <activity
+        android:id="@+id/messageListScreen"
+        android:name="com.fsck.k9.activity.MessageList"
+        tools:layout="@layout/message_list"/>
 
 </navigation>
