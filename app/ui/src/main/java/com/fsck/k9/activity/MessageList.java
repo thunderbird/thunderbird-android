@@ -502,7 +502,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         initializeFromLocalSearch(search);
 
         if (account != null && !account.isAvailable(this)) {
-            Timber.i("not opening MessageList of unavailable account");
             onAccountUnavailable();
             return false;
         }
@@ -871,11 +870,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         return super.onKeyUp(keyCode, event);
     }
 
-    private void onAccounts() {
-        Accounts.listAccounts(this);
-        finish();
-    }
-
     private void onShowFolderList() {
         FolderList.actionHandleAccount(this, account);
         finish();
@@ -1206,9 +1200,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
     protected void onAccountUnavailable() {
+        //TODO: Find better way to handle this case.
+        Timber.i("Account is unavailable right now: " + account);
         finish();
-        // TODO inform user about account unavailability using Toast
-        Accounts.listAccounts(this);
     }
 
     public void setActionBarTitle(String title) {
@@ -1460,12 +1454,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             showMessageList();
         } else if (fragmentManager.getBackStackEntryCount() > 0) {
             fragmentManager.popBackStack();
-        } else if (messageListFragment.isManualSearch()) {
-            finish();
-        } else if (!singleFolderMode) {
-            onAccounts();
         } else {
-            onShowFolderList();
+            finish();
         }
     }
 
