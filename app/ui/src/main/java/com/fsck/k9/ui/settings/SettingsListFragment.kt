@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fsck.k9.Account
-import com.fsck.k9.activity.setup.WelcomeMessage
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.observeNotNull
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity
@@ -49,7 +48,7 @@ class SettingsListFragment : Fragment() {
     private fun populateSettingsList() {
         viewModel.accounts.observeNotNull(this) { accounts ->
             if (accounts.isEmpty()) {
-                launchWelcomeScreen()
+                launchOnboarding()
             } else {
                 populateSettingsList(accounts)
             }
@@ -124,9 +123,8 @@ class SettingsListFragment : Fragment() {
         AccountSettingsActivity.start(requireActivity(), account.uuid)
     }
 
-    private fun launchWelcomeScreen() {
-        val activity = requireActivity()
-        WelcomeMessage.showWelcomeMessage(activity)
-        activity.finish()
+    private fun launchOnboarding() {
+        findNavController().navigate(R.id.action_settingsListScreen_to_onboardingScreen)
+        requireActivity().finish()
     }
 }

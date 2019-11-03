@@ -175,7 +175,7 @@ class SettingsImportViewModel(
     }
 
     fun onCloseButtonClicked() {
-        sendActionEvent(Action.Close)
+        sendActionEvent(Action.Close(importSuccess = uiModel.wasAccountImportSuccessful))
     }
 
     fun onSettingsListItemClicked(position: Int) {
@@ -412,7 +412,7 @@ class SettingsImportViewModel(
 }
 
 sealed class Action {
-    object Close : Action()
+    class Close(val importSuccess: Boolean) : Action()
     object PickDocument : Action()
     class PasswordPrompt(
             val accountUuid: String,

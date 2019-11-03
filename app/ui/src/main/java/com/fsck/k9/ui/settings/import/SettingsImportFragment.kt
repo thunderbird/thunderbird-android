@@ -16,10 +16,12 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.ui.observeNotNull
 import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter
 import kotlinx.android.synthetic.main.fragment_settings_import.*
+import org.koin.android.architecture.ext.sharedViewModel
 import org.koin.android.architecture.ext.viewModel
 
 class SettingsImportFragment : Fragment() {
     private val viewModel: SettingsImportViewModel by viewModel()
+    private val resultViewModel: SettingsImportResultViewModel by sharedViewModel()
 
     private lateinit var settingsImportAdapter: FastItemAdapter<ImportListItem>
 
@@ -130,10 +132,17 @@ class SettingsImportFragment : Fragment() {
 
     private fun handleActionEvents(action: Action) {
         when (action) {
-            is Action.Close -> findNavController().popBackStack()
+            is Action.Close -> closeImportScreen(action)
             is Action.PickDocument -> pickDocument()
             is Action.PasswordPrompt -> showPasswordPrompt(action)
         }
+    }
+
+    private fun closeImportScreen(action: Action.Close) {
+        if (action.importSuccess) {
+            resultViewModel.setSettingsImportResult()
+        }
+        findNavController().popBackStack()
     }
 
     private fun pickDocument() {
