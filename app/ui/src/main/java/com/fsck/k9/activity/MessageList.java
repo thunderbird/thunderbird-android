@@ -419,8 +419,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             String specialFolder = intent.getStringExtra(EXTRA_SPECIAL_FOLDER);
             if (SearchAccount.UNIFIED_INBOX.equals(specialFolder)) {
                 search = SearchAccount.createUnifiedInboxAccount().getRelatedSearch();
-            } else if (SearchAccount.ALL_MESSAGES.equals(specialFolder)) {
-                search = SearchAccount.createAllMessagesAccount().getRelatedSearch();
             }
         } else if (intent.getStringExtra(SearchManager.QUERY) != null) {
             // check if this intent comes from the system search ( remote )

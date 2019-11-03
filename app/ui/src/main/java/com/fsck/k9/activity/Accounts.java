@@ -99,9 +99,9 @@ import timber.log.Timber;
 public class Accounts extends K9ListActivity implements OnItemClickListener {
 
     /**
-     * Number of special accounts ('Unified Inbox' and 'All Messages')
+     * Number of special accounts ('Unified Inbox')
      */
-    private static final int SPECIAL_ACCOUNTS_COUNT = 2;
+    private static final int SPECIAL_ACCOUNTS_COUNT = 1;
 
     private static final int DIALOG_REMOVE_ACCOUNT = 1;
     private static final int DIALOG_CLEAR_ACCOUNT = 2;
@@ -122,7 +122,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
     private AccountsHandler handler = new AccountsHandler();
     private AccountsAdapter adapter;
-    private SearchAccount allMessagesAccount = null;
     private SearchAccount unifiedInboxAccount = null;
     private FontSizes fontSizes = K9.getFontSizes();
 
@@ -415,7 +414,6 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
      */
     private void createSpecialAccounts() {
         unifiedInboxAccount = SearchAccount.createUnifiedInboxAccount();
-        allMessagesAccount = SearchAccount.createAllMessagesAccount();
     }
 
     @SuppressWarnings("unchecked")
@@ -525,14 +523,13 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
         List<BaseAccount> newAccounts;
         if (!K9.isHideSpecialAccounts() && accounts.size() > 0) {
-            if (unifiedInboxAccount == null || allMessagesAccount == null) {
+            if (unifiedInboxAccount == null) {
                 createSpecialAccounts();
             }
 
             newAccounts = new ArrayList<>(accounts.size() +
                     SPECIAL_ACCOUNTS_COUNT);
             newAccounts.add(unifiedInboxAccount);
-            newAccounts.add(allMessagesAccount);
         } else {
             newAccounts = new ArrayList<>(accounts.size());
         }

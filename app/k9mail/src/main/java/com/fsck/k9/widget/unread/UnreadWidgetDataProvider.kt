@@ -3,7 +3,6 @@ package com.fsck.k9.widget.unread
 import android.content.Context
 import android.content.Intent
 import com.fsck.k9.Account
-import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import com.fsck.k9.R
 import com.fsck.k9.activity.FolderList
@@ -18,7 +17,7 @@ class UnreadWidgetDataProvider(
         private val messagingController: MessagingController
 ) {
     fun loadUnreadWidgetData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? = with(configuration) {
-        if (SearchAccount.UNIFIED_INBOX == accountUuid || SearchAccount.ALL_MESSAGES == accountUuid) {
+        if (SearchAccount.UNIFIED_INBOX == accountUuid) {
             loadSearchAccountData(configuration)
         } else if (folderServerId != null) {
             loadFolderData(configuration)
@@ -41,7 +40,6 @@ class UnreadWidgetDataProvider(
 
     private fun getSearchAccount(accountUuid: String): SearchAccount = when (accountUuid) {
         SearchAccount.UNIFIED_INBOX -> SearchAccount.createUnifiedInboxAccount()
-        SearchAccount.ALL_MESSAGES -> SearchAccount.createAllMessagesAccount()
         else -> throw AssertionError("SearchAccount expected")
     }
 

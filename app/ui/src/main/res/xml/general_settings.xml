@@ -96,7 +96,6 @@
             <CheckBoxPreference
                 android:disableDependentsState="true"
                 android:key="hide_special_accounts"
-                android:summary="@string/hide_special_accounts_summary"
                 android:title="@string/hide_special_accounts_title" />
 
         </PreferenceCategory>
