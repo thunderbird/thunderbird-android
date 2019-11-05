@@ -643,15 +643,16 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         FolderList.actionHandleAccount(this, account);
     }
 
-    public void openRealAccount(Account realAccount) {
-        if (realAccount.getAutoExpandFolder() == null) {
-            FolderList.actionHandleAccount(this, realAccount);
-        } else {
-            LocalSearch search = new LocalSearch(realAccount.getAutoExpandFolder());
-            search.addAllowedFolder(realAccount.getAutoExpandFolder());
-            search.addAccountUuid(realAccount.getUuid());
-            actionDisplaySearch(this, search, false, false);
+    public void openRealAccount(Account account) {
+        String folderServerId = account.getAutoExpandFolder();
+        if (folderServerId == null) {
+            folderServerId = account.getInboxFolder();
         }
+
+        LocalSearch search = new LocalSearch();
+        search.addAllowedFolder(folderServerId);
+        search.addAccountUuid(account.getUuid());
+        actionDisplaySearch(this, search, false, false);
     }
 
     private void performSearch(LocalSearch search) {
@@ -736,12 +737,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             }
             case KeyEvent.KEYCODE_C: {
                 messageListFragment.onCompose();
-                return true;
-            }
-            case KeyEvent.KEYCODE_Q: {
-                if (messageListFragment != null && messageListFragment.isSingleAccountMode()) {
-                    onShowFolderList();
-                }
                 return true;
             }
             case KeyEvent.KEYCODE_O: {
@@ -880,11 +875,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             }
         }
         return super.onKeyUp(keyCode, event);
-    }
-
-    private void onShowFolderList() {
-        FolderList.actionHandleAccount(this, account);
-        finish();
     }
 
     private void onEditSettings() {
