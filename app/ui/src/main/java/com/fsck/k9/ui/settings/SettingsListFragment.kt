@@ -58,16 +58,6 @@ class SettingsListFragment : Fragment() {
     private fun populateSettingsList(accounts: List<Account>) {
         settingsAdapter.clear()
 
-        val miscSection = Section().apply {
-            val accountActionItem = SettingsActionItem(
-                    getString(R.string.about_action),
-                    R.id.action_settingsListScreen_to_aboutScreen,
-                    R.attr.iconSettingsAbout
-            )
-            add(accountActionItem)
-        }
-        settingsAdapter.add(miscSection)
-
         val generalSection = Section().apply {
             val generalSettingsActionItem = SettingsActionItem(
                     getString(R.string.general_settings_title),
@@ -110,6 +100,17 @@ class SettingsListFragment : Fragment() {
         }
         backupSection.setHeader(SettingsDividerItem(getString(R.string.settings_list_backup_category)))
         settingsAdapter.add(backupSection)
+
+        val miscSection = Section().apply {
+            val accountActionItem = SettingsActionItem(
+                getString(R.string.about_action),
+                R.id.action_settingsListScreen_to_aboutScreen,
+                R.attr.iconSettingsAbout
+            )
+            add(accountActionItem)
+        }
+        miscSection.setHeader(SettingsDividerItem(getString(R.string.settings_list_miscellaneous_category)))
+        settingsAdapter.add(miscSection)
     }
 
     private fun handleItemClick(item: Item<*>) {
