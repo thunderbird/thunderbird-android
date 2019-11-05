@@ -136,6 +136,18 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         return intent;
     }
 
+    public static Intent shortcutIntentForAccount(Context context, Account account) {
+        String folderServerId = account.getAutoExpandFolder();
+        if (folderServerId == null) {
+            folderServerId = account.getInboxFolder();
+        }
+
+        LocalSearch search = new LocalSearch();
+        search.addAccountUuid(account.getUuid());
+        search.addAllowedFolder(folderServerId);
+        return MessageList.intentDisplaySearch(context, search, false, true, true);
+    }
+
     public static Intent actionDisplayMessageIntent(Context context,
             MessageReference messageReference) {
         Intent intent = new Intent(context, MessageList.class);
