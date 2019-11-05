@@ -196,7 +196,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
         return OnDrawerItemClickListener { _, _, drawerItem ->
             when (drawerItem.identifier) {
                 DRAWER_ID_PREFERENCES -> SettingsActivity.launch(parent)
-                DRAWER_ID_FOLDERS -> parent.openFolderSettings()
+                DRAWER_ID_FOLDERS -> parent.launchManageFoldersScreen()
                 else -> {
                     val folder = drawerItem.tag as Folder
                     parent.openFolder(folder.serverId)

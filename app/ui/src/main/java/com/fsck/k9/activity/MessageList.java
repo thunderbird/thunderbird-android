@@ -634,13 +634,13 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         actionDisplaySearch(this, SearchAccount.createUnifiedInboxAccount().getRelatedSearch(), false, false);
     }
 
-    public void openFolderSettings() {
+    public void launchManageFoldersScreen() {
         if (account == null) {
-            Timber.e("Tried to open account settings, but no account selected!");
+            Timber.e("Tried to open \"Manage folders\", but no account selected!");
             return;
         }
 
-        ManageFoldersActivity.actionHandleAccount(this, account);
+        ManageFoldersActivity.launch(this, account);
     }
 
     public void openRealAccount(Account account) {

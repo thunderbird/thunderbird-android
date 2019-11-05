@@ -158,20 +158,9 @@ public class ManageFoldersActivity extends K9ListActivity {
         }
     }
 
-    public static Intent actionHandleAccountIntent(Context context, Account account, boolean fromShortcut) {
+    public static void launch(Context context, Account account) {
         Intent intent = new Intent(context, ManageFoldersActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(EXTRA_ACCOUNT, account.getUuid());
-
-        if (fromShortcut) {
-            intent.putExtra(EXTRA_FROM_SHORTCUT, true);
-        }
-
-        return intent;
-    }
-
-    public static void actionHandleAccount(Context context, Account account) {
-        Intent intent = actionHandleAccountIntent(context, account, false);
         context.startActivity(intent);
     }
 
