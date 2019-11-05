@@ -640,7 +640,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             return;
         }
 
-        FolderList.actionHandleAccount(this, account);
+        ManageFoldersActivity.actionHandleAccount(this, account);
     }
 
     public void openRealAccount(Account account) {
