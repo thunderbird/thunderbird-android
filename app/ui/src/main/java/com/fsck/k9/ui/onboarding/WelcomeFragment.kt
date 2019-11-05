@@ -8,9 +8,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.fsck.k9.Preferences
-import com.fsck.k9.activity.MessageList
-import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.helper.HtmlToSpanned
 import com.fsck.k9.ui.observeNotNull
@@ -21,7 +18,6 @@ import org.koin.android.ext.android.inject
 
 class WelcomeFragment : Fragment() {
     private val htmlToSpanned: HtmlToSpanned by inject()
-    private val preferences: Preferences by inject()
     private val importResultViewModel: SettingsImportResultViewModel by sharedViewModel()
 
 
@@ -56,14 +52,7 @@ class WelcomeFragment : Fragment() {
     }
 
     private fun launchMessageList() {
-        //TODO: Remove this and use NavController to navigate to MessageList once GH-4230 has been implemented
-        val account = preferences.defaultAccount
-        val folder = account.autoExpandFolder ?: account.inboxFolder
-        val search = LocalSearch(folder)
-        search.addAllowedFolder(folder)
-        search.addAccountUuid(account.uuid)
-        MessageList.actionDisplaySearch(requireActivity(), search, false, true)
-
+        findNavController().navigate(R.id.action_welcomeScreen_to_messageListScreen)
         requireActivity().finish()
     }
 }

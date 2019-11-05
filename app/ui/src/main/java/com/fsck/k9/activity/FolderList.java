@@ -287,8 +287,7 @@ public class FolderList extends K9ListActivity {
         super.onResume();
 
         if (!account.isAvailable(this)) {
-            Timber.i("account unavaliabale, not showing folder-list but account-list");
-            Accounts.listAccounts(this);
+            Timber.i("Account is unavailable right now: " + account);
             finish();
             return;
         }
@@ -311,10 +310,6 @@ public class FolderList extends K9ListActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         //Shortcuts that work no matter what is selected
         switch (keyCode) {
-        case KeyEvent.KEYCODE_Q: {
-            onAccounts();
-            return true;
-        }
         case KeyEvent.KEYCODE_H: {
             Toast toast = Toast.makeText(this, R.string.folder_list_help_key, Toast.LENGTH_LONG);
             toast.show();
@@ -357,15 +352,10 @@ public class FolderList extends K9ListActivity {
         MessagingController.getInstance(getApplication()).listFolders(account, forceRemote, adapter.activityListener);
     }
 
-    private void onAccounts() {
-        Accounts.listAccounts(this);
-        finish();
-    }
-
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            onAccounts();
+            onBackPressed();
             return true;
         } else if (id == R.id.list_folders) {
             onRefresh(REFRESH_REMOTE);
