@@ -59,6 +59,7 @@ import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.Theme;
 import com.fsck.k9.ui.messageview.MessageViewFragment;
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener;
+import com.fsck.k9.ui.onboarding.OnboardingActivity;
 import com.fsck.k9.ui.settings.SettingsActivity;
 import com.fsck.k9.view.ViewSwitcher;
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener;
@@ -207,6 +208,13 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        List<Account> accounts = preferences.getAccounts();
+        if (accounts.isEmpty()) {
+            OnboardingActivity.launch(this);
+            finish();
+            return;
+        }
 
         if (UpgradeDatabases.actionUpgradeDatabases(this, getIntent())) {
             finish();
