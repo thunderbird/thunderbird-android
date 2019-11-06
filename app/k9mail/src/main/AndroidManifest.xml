@@ -84,12 +84,8 @@
         <!-- TODO: Remove after 2020-12-31 -->
         <activity-alias
             android:name=".activity.Accounts"
-            android:targetActivity=".activity.MessageList" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity-alias>
+            android:targetActivity=".activity.MessageList"
+            android:exported="true" />
 
         <activity
             android:name=".ui.onboarding.OnboardingActivity"
