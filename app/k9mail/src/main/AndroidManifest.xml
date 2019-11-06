@@ -193,15 +193,12 @@
             android:label="@string/ac_transfer_title"
             />
 
-        <activity
+        <!-- activity-alias so old launcher shortcuts work -->
+        <!-- TODO: Remove after 2020-12-31 -->
+        <activity-alias
             android:name=".activity.FolderList"
-            android:configChanges="locale"
-            android:uiOptions="splitActionBarWhenNarrow">
-            <intent-filter>
-                <!-- This action is only to allow an entry point for launcher shortcuts -->
-                <action android:name="android.intent.action.MAIN"/>
-            </intent-filter>
-        </activity>
+            android:targetActivity=".activity.MessageList"
+            android:exported="true" />
 
         <activity
             android:name=".activity.MessageList"
@@ -298,6 +295,10 @@
         <activity
             android:name=".activity.UpgradeDatabases"
             android:label="@string/upgrade_databases_title"/>
+
+        <activity
+            android:name=".activity.ManageFoldersActivity"
+            android:label="@string/folders_action" />
 
         <activity
             android:name=".ui.settings.SettingsActivity"

@@ -137,6 +137,18 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         return intent;
     }
 
+    public static Intent shortcutIntentForAccount(Context context, Account account) {
+        String folderServerId = account.getAutoExpandFolder();
+        if (folderServerId == null) {
+            folderServerId = account.getInboxFolder();
+        }
+
+        LocalSearch search = new LocalSearch();
+        search.addAccountUuid(account.getUuid());
+        search.addAllowedFolder(folderServerId);
+        return MessageList.intentDisplaySearch(context, search, false, true, true);
+    }
+
     public static Intent actionDisplayMessageIntent(Context context,
             MessageReference messageReference) {
         Intent intent = new Intent(context, MessageList.class);
@@ -630,24 +642,25 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         actionDisplaySearch(this, SearchAccount.createUnifiedInboxAccount().getRelatedSearch(), false, false);
     }
 
-    public void openFolderSettings() {
+    public void launchManageFoldersScreen() {
         if (account == null) {
-            Timber.e("Tried to open account settings, but no account selected!");
+            Timber.e("Tried to open \"Manage folders\", but no account selected!");
             return;
         }
 
-        FolderList.actionHandleAccount(this, account);
+        ManageFoldersActivity.launch(this, account);
     }
 
-    public void openRealAccount(Account realAccount) {
-        if (realAccount.getAutoExpandFolder() == null) {
-            FolderList.actionHandleAccount(this, realAccount);
-        } else {
-            LocalSearch search = new LocalSearch(realAccount.getAutoExpandFolder());
-            search.addAllowedFolder(realAccount.getAutoExpandFolder());
-            search.addAccountUuid(realAccount.getUuid());
-            actionDisplaySearch(this, search, false, false);
+    public void openRealAccount(Account account) {
+        String folderServerId = account.getAutoExpandFolder();
+        if (folderServerId == null) {
+            folderServerId = account.getInboxFolder();
         }
+
+        LocalSearch search = new LocalSearch();
+        search.addAllowedFolder(folderServerId);
+        search.addAccountUuid(account.getUuid());
+        actionDisplaySearch(this, search, false, false);
     }
 
     private void performSearch(LocalSearch search) {
@@ -732,12 +745,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             }
             case KeyEvent.KEYCODE_C: {
                 messageListFragment.onCompose();
-                return true;
-            }
-            case KeyEvent.KEYCODE_Q: {
-                if (messageListFragment != null && messageListFragment.isSingleAccountMode()) {
-                    onShowFolderList();
-                }
                 return true;
             }
             case KeyEvent.KEYCODE_O: {
@@ -876,11 +883,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             }
         }
         return super.onKeyUp(keyCode, event);
-    }
-
-    private void onShowFolderList() {
-        FolderList.actionHandleAccount(this, account);
-        finish();
     }
 
     private void onEditSettings() {

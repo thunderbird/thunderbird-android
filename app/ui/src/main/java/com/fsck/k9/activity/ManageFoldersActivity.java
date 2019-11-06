@@ -54,7 +54,7 @@ import timber.log.Timber;
  * Activity shows list of the Account's folders
  */
 
-public class FolderList extends K9ListActivity {
+public class ManageFoldersActivity extends K9ListActivity {
     private static final String EXTRA_ACCOUNT = "account";
 
     private static final String EXTRA_FROM_SHORTCUT = "fromShortcut";
@@ -87,7 +87,7 @@ public class FolderList extends K9ListActivity {
                 public void run() {
                     actionBar.setTitle(R.string.folders_action);
 
-                    String operation = adapter.activityListener.getOperation(FolderList.this);
+                    String operation = adapter.activityListener.getOperation(ManageFoldersActivity.this);
                     if (operation.length() < 1) {
                         actionBar.setSubtitle(account.getEmail());
                     } else {
@@ -158,20 +158,9 @@ public class FolderList extends K9ListActivity {
         }
     }
 
-    public static Intent actionHandleAccountIntent(Context context, Account account, boolean fromShortcut) {
-        Intent intent = new Intent(context, FolderList.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    public static void launch(Context context, Account account) {
+        Intent intent = new Intent(context, ManageFoldersActivity.class);
         intent.putExtra(EXTRA_ACCOUNT, account.getUuid());
-
-        if (fromShortcut) {
-            intent.putExtra(EXTRA_FROM_SHORTCUT, true);
-        }
-
-        return intent;
-    }
-
-    public static void actionHandleAccount(Context context, Account account) {
-        Intent intent = actionHandleAccountIntent(context, account, false);
         context.startActivity(intent);
     }
 
@@ -193,7 +182,7 @@ public class FolderList extends K9ListActivity {
         listView.setScrollingCacheEnabled(false);
         listView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FolderSettings.actionSettings(FolderList.this, account, ((FolderInfoHolder) adapter.getItem(position)).serverId);
+                FolderSettings.actionSettings(ManageFoldersActivity.this, account, ((FolderInfoHolder) adapter.getItem(position)).serverId);
             }
         });
 
@@ -455,7 +444,7 @@ public class FolderList extends K9ListActivity {
         private ActivityListener activityListener = new ActivityListener() {
             @Override
             public void listFoldersStarted(Account account) {
-                if (account.equals(FolderList.this.account)) {
+                if (account.equals(ManageFoldersActivity.this.account)) {
                     handler.progress(true);
                 }
                 super.listFoldersStarted(account);
@@ -464,7 +453,7 @@ public class FolderList extends K9ListActivity {
 
             @Override
             public void listFoldersFailed(Account account, String message) {
-                if (account.equals(FolderList.this.account)) {
+                if (account.equals(ManageFoldersActivity.this.account)) {
                     handler.progress(false);
                     runOnUiThread(new Runnable() {
                         @Override
@@ -479,7 +468,7 @@ public class FolderList extends K9ListActivity {
 
             @Override
             public void listFoldersFinished(Account account) {
-                if (account.equals(FolderList.this.account)) {
+                if (account.equals(ManageFoldersActivity.this.account)) {
 
                     handler.progress(false);
                     MessagingController.getInstance(getApplication()).refreshListener(adapter.activityListener);
@@ -491,7 +480,7 @@ public class FolderList extends K9ListActivity {
 
             @Override
             public void listFolders(Account account, List<LocalFolder> folders) {
-                if (account.equals(FolderList.this.account)) {
+                if (account.equals(ManageFoldersActivity.this.account)) {
 
                     List<FolderInfoHolder> newFolders = new LinkedList<>();
                     List<FolderInfoHolder> topFolders = new LinkedList<>();
@@ -516,9 +505,9 @@ public class FolderList extends K9ListActivity {
                         }
 
                         if (holder == null) {
-                            holder = new FolderInfoHolder(folder, FolderList.this.account, -1);
+                            holder = new FolderInfoHolder(folder, ManageFoldersActivity.this.account, -1);
                         } else {
-                            holder.populate(folder, FolderList.this.account, -1);
+                            holder.populate(folder, ManageFoldersActivity.this.account, -1);
 
                         }
                         if (folder.isInTopGroup()) {
@@ -537,7 +526,7 @@ public class FolderList extends K9ListActivity {
 
             @Override
             public void accountSizeChanged(Account account, long oldSize, long newSize) {
-                if (account.equals(FolderList.this.account)) {
+                if (account.equals(ManageFoldersActivity.this.account)) {
                     handler.accountSizeChanged(oldSize, newSize);
                 }
             }

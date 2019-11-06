@@ -5,7 +5,6 @@ import android.content.Intent
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
 import com.fsck.k9.R
-import com.fsck.k9.activity.FolderList
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.search.LocalSearch
@@ -57,14 +56,8 @@ class UnreadWidgetDataProvider(
     }
 
     private fun getClickIntentForAccount(account: Account): Intent {
-        if (account.autoExpandFolder == null) {
-            return FolderList.actionHandleAccountIntent(context, account, false)
-        }
-
-        val search = LocalSearch(account.autoExpandFolder)
-        search.addAllowedFolder(account.autoExpandFolder)
-        search.addAccountUuid(account.uuid)
-        return MessageList.intentDisplaySearch(context, search, false, true, true)
+        val folderServerId = account.autoExpandFolder ?: account.inboxFolder
+        return getClickIntentForFolder(account, folderServerId)
     }
 
     private fun loadFolderData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? {
@@ -78,13 +71,12 @@ class UnreadWidgetDataProvider(
 
         val unreadCount = messagingController.getFolderUnreadMessageCount(account, folderServerId)
 
-        val clickIntent = getClickIntentForFolder(accountUuid, folderServerId)
+        val clickIntent = getClickIntentForFolder(account, folderServerId)
 
         return UnreadWidgetData(configuration, title, unreadCount, clickIntent)
     }
 
-    private fun getClickIntentForFolder(accountUuid: String, folderServerId: String): Intent {
-        val account = preferences.getAccount(accountUuid)
+    private fun getClickIntentForFolder(account: Account, folderServerId: String): Intent {
         val search = LocalSearch(folderServerId)
         search.addAllowedFolder(folderServerId)
         search.addAccountUuid(account.uuid)
