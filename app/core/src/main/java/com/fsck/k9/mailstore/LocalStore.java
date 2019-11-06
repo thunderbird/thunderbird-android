@@ -1314,7 +1314,7 @@ public class LocalStore {
                 try {
                     AccountStats accountStats = new AccountStats();
                     if (cursor.moveToFirst()) {
-                        accountStats.unreadMessageCount = cursor.getInt(0);
+                        accountStats.setUnreadMessageCount(cursor.getInt(0));
                         accountStats.flaggedMessageCount = cursor.getInt(1);
                     }
 

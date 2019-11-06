@@ -675,7 +675,7 @@ public class MessageProvider extends ContentProvider {
                         if (myAccountStats == null) {
                             values[1] = 0;
                         } else {
-                            values[1] = myAccountStats.unreadMessageCount;
+                            values[1] = myAccountStats.getUnreadMessageCount();
                         }
                     } catch (MessagingException e) {
                         Timber.e(e.getMessage());

@@ -518,7 +518,7 @@ public class MessagingController {
                         List<LocalMessage> messages = new ArrayList<>();
 
                         messages.add(message);
-                        stats.unreadMessageCount += (!message.isSet(Flag.SEEN)) ? 1 : 0;
+                        stats.setUnreadMessageCount(stats.getUnreadMessageCount() + (!message.isSet(Flag.SEEN)) ? 1 : 0);
                         stats.flaggedMessageCount += (message.isSet(Flag.FLAGGED)) ? 1 : 0;
                         if (listener != null) {
                             listener.listLocalMessagesAddMessages(account, null, messages);
@@ -2575,7 +2575,7 @@ public class MessagingController {
                             account.setRingNotified(false);
                             try {
                                 AccountStats stats = getAccountStats(account);
-                                if (stats == null || stats.unreadMessageCount == 0) {
+                                if (stats == null || stats.getUnreadMessageCount() == 0) {
                                     notificationController.clearNewMailNotifications(account);
                                 }
                             } catch (MessagingException e) {
@@ -2689,7 +2689,7 @@ public class MessagingController {
                     long newSize = localStore.getSize();
                     AccountStats stats = new AccountStats();
                     stats.size = newSize;
-                    stats.unreadMessageCount = 0;
+                    stats.setUnreadMessageCount(0);
                     stats.flaggedMessageCount = 0;
                     for (MessagingListener l : getListeners(ml)) {
                         l.accountSizeChanged(account, oldSize, newSize);
@@ -2717,7 +2717,7 @@ public class MessagingController {
                     long newSize = localStore.getSize();
                     AccountStats stats = new AccountStats();
                     stats.size = newSize;
-                    stats.unreadMessageCount = 0;
+                    stats.setUnreadMessageCount(0);
                     stats.flaggedMessageCount = 0;
                     for (MessagingListener l : getListeners(ml)) {
                         l.accountSizeChanged(account, oldSize, newSize);
@@ -3049,7 +3049,7 @@ public class MessagingController {
         private int getUnreadMessageCount() {
             try {
                 AccountStats stats = getAccountStats(account);
-                return stats.unreadMessageCount;
+                return stats.getUnreadMessageCount();
             } catch (MessagingException e) {
                 Timber.e(e, "Unable to getUnreadMessageCount for account: %s", account);
                 return 0;

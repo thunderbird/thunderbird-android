@@ -257,11 +257,11 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
             AccountStats oldStats = accountStats.get(account.getUuid());
             int oldUnreadMessageCount = 0;
             if (oldStats != null) {
-                oldUnreadMessageCount = oldStats.unreadMessageCount;
+                oldUnreadMessageCount = oldStats.getUnreadMessageCount();;
             }
             if (stats == null) {
                 stats = new AccountStats(); // empty stats for unavailable accounts
-                stats.available = false;
+                stats.setAvailable(false);
             }
             accountStats.put(account.getUuid(), stats);
             handler.dataChanged();
@@ -1610,7 +1610,7 @@ public class Accounts extends K9ListActivity implements OnItemClickListener {
 
             Integer unreadMessageCount = null;
             if (stats != null) {
-                unreadMessageCount = stats.unreadMessageCount;
+                unreadMessageCount = stats.getUnreadMessageCount();
                 holder.newMessageCount.setText(String.format("%d", unreadMessageCount));
                 holder.newMessageCountWrapper.setVisibility(unreadMessageCount > 0 ? View.VISIBLE : View.GONE);
 
