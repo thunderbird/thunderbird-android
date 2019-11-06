@@ -9,7 +9,6 @@ import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.search.SearchAccount
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.anyOrNull
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import org.junit.Test
@@ -85,7 +84,7 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
     }
 
     fun createMessagingController(): MessagingController = mock {
-        on { getSearchAccountStatsSynchronous(any(), anyOrNull()) } doReturn SEARCH_ACCOUNT_STATS
+        on { getSearchAccountStatsSynchronous(any()) } doReturn SEARCH_ACCOUNT_STATS
         on { getAccountStats(account) } doReturn ACCOUNT_STATS
         on { getFolderUnreadMessageCount(eq(account), eq(FOLDER_SERVER_ID)) } doReturn FOLDER_UNREAD_COUNT
     }

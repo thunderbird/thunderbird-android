@@ -57,7 +57,6 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingMarkAllAsRead;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveOrCopy;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag;
 import com.fsck.k9.controller.ProgressBodyFactory.ProgressListener;
-import com.fsck.k9.core.BuildConfig;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.AuthenticationFailedException;
@@ -1753,44 +1752,12 @@ public class MessagingController {
         }
     }
 
-    public void getAccountStats(final Context context, final Account account,
-            final MessagingListener listener) {
-
-        threadPool.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    AccountStats stats = getAccountStats(account);
-                    listener.accountStatusChanged(account, stats);
-                } catch (MessagingException me) {
-                    Timber.e(me, "Count not get unread count for account %s", account.getDescription());
-                }
-
-            }
-        });
-    }
-
     public AccountStats getAccountStats(Account account) throws MessagingException {
         return accountStatsCollector.getStats(account);
     }
 
-    public void getSearchAccountStats(final SearchAccount searchAccount, final MessagingListener listener) {
-        threadPool.execute(new Runnable() {
-            @Override
-            public void run() {
-                getSearchAccountStatsSynchronous(searchAccount, listener);
-            }
-        });
-    }
-
-    public AccountStats getSearchAccountStatsSynchronous(SearchAccount searchAccount, MessagingListener listener) {
-        AccountStats stats = accountStatsCollector.getSearchAccountStats(searchAccount);
-
-        if (listener != null) {
-            listener.accountStatusChanged(searchAccount, stats);
-        }
-
-        return stats;
+    public AccountStats getSearchAccountStatsSynchronous(SearchAccount searchAccount) {
+        return accountStatsCollector.getSearchAccountStats(searchAccount);
     }
 
     public void getFolderUnreadMessageCount(final Account account, final String folderServerId,
@@ -2687,13 +2654,8 @@ public class MessagingController {
                     localStore.clear();
                     localStore.resetVisibleLimits(account.getDisplayCount());
                     long newSize = localStore.getSize();
-                    AccountStats stats = new AccountStats();
-                    stats.size = newSize;
-                    stats.unreadMessageCount = 0;
-                    stats.flaggedMessageCount = 0;
                     for (MessagingListener l : getListeners(ml)) {
                         l.accountSizeChanged(account, oldSize, newSize);
-                        l.accountStatusChanged(account, stats);
                     }
                 } catch (UnavailableStorageException e) {
                     Timber.i("Failed to clear account because storage is not available - trying again later.");
@@ -2715,13 +2677,8 @@ public class MessagingController {
                     localStore.recreate();
                     localStore.resetVisibleLimits(account.getDisplayCount());
                     long newSize = localStore.getSize();
-                    AccountStats stats = new AccountStats();
-                    stats.size = newSize;
-                    stats.unreadMessageCount = 0;
-                    stats.flaggedMessageCount = 0;
                     for (MessagingListener l : getListeners(ml)) {
                         l.accountSizeChanged(account, oldSize, newSize);
-                        l.accountStatusChanged(account, stats);
                     }
                 } catch (UnavailableStorageException e) {
                     Timber.i("Failed to recreate an account because storage is not available - trying again later.");

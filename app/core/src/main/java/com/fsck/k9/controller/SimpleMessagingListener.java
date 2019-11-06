@@ -21,10 +21,6 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     }
 
     @Override
-    public void accountStatusChanged(BaseAccount account, AccountStats stats) {
-    }
-
-    @Override
     public void accountSizeChanged(Account account, long oldSize, long newSize) {
     }
 

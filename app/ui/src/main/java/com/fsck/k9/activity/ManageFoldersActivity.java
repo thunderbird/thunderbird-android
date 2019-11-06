@@ -287,7 +287,6 @@ public class ManageFoldersActivity extends K9ListActivity {
 
         MessagingController.getInstance(getApplication()).addListener(adapter.activityListener);
         //account.refresh(Preferences.getPreferences(this));
-        MessagingController.getInstance(getApplication()).getAccountStats(this, account, adapter.activityListener);
 
         onRefresh(!REFRESH_REMOTE);
 

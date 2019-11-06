@@ -8,7 +8,6 @@ import android.content.Context;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountStats;
-import com.fsck.k9.BaseAccount;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mailstore.LocalFolder;
@@ -18,7 +17,6 @@ import com.fsck.k9.mailstore.LocalMessage;
 public interface MessagingListener {
     void searchStats(AccountStats stats);
 
-    void accountStatusChanged(BaseAccount account, AccountStats stats);
     void accountSizeChanged(Account account, long oldSize, long newSize);
 
     void listFoldersStarted(Account account);
