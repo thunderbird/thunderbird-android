@@ -33,8 +33,7 @@ internal class DefaultUnreadMessageCountProvider(
             accountSearchConditions.excludeSpecialFolders(account, search)
             accountSearchConditions.limitToDisplayableFolders(account, search)
 
-            val accountStats = localStore.getAccountStats(search)
-            accountStats.unreadMessageCount
+            localStore.getUnreadMessageCount(search)
         } catch (e: MessagingException) {
             Timber.e(e, "Unable to getUnreadMessageCount for account: %s", account)
             0
@@ -56,8 +55,7 @@ internal class DefaultUnreadMessageCountProvider(
     private fun getUnreadMessageCountWithLocalSearch(account: Account, search: LocalSearch): Int {
         return try {
             val localStore = localStoreProvider.getInstance(account)
-            val accountStats = localStore.getAccountStats(search)
-            accountStats.unreadMessageCount
+            localStore.getUnreadMessageCount(search)
         } catch (e: MessagingException) {
             Timber.e(e, "Unable to getUnreadMessageCount for account: %s", account)
             0

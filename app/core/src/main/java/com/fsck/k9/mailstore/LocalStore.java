@@ -28,7 +28,6 @@ import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.AccountStats;
 import com.fsck.k9.Clock;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
@@ -1293,7 +1292,7 @@ public class LocalStore {
         return folderMap;
     }
 
-    public AccountStats getAccountStats(LocalSearch search) throws MessagingException {
+    public int getUnreadMessageCount(LocalSearch search) throws MessagingException {
         StringBuilder whereBuilder = new StringBuilder();
         List<String> queryArgs = new ArrayList<>();
         SqlQueryBuilder.buildWhereClause(account, search.getConditions(), whereBuilder, queryArgs);
@@ -1301,24 +1300,22 @@ public class LocalStore {
         String where = whereBuilder.toString();
         final String[] selectionArgs = queryArgs.toArray(new String[queryArgs.size()]);
 
-        final String sqlQuery = "SELECT SUM(read=0), SUM(flagged) " +
+        final String sqlQuery = "SELECT SUM(read=0) " +
                 "FROM messages " +
                 "JOIN folders ON (folders.id = messages.folder_id) " +
                 "WHERE (messages.empty = 0 AND messages.deleted = 0)" +
                 (!TextUtils.isEmpty(where) ? " AND (" + where + ")" : "");
 
-        return database.execute(false, new DbCallback<AccountStats>() {
+        return database.execute(false, new DbCallback<Integer>() {
             @Override
-            public AccountStats doDbWork(SQLiteDatabase db) throws WrappedException, MessagingException {
+            public Integer doDbWork(SQLiteDatabase db) throws WrappedException, MessagingException {
                 Cursor cursor = db.rawQuery(sqlQuery, selectionArgs);
                 try {
-                    AccountStats accountStats = new AccountStats();
                     if (cursor.moveToFirst()) {
-                        accountStats.unreadMessageCount = cursor.getInt(0);
-                        accountStats.flaggedMessageCount = cursor.getInt(1);
+                        return cursor.getInt(0);
+                    } else {
+                        return 0;
                     }
-
-                    return accountStats;
                 } finally {
                     cursor.close();
                 }

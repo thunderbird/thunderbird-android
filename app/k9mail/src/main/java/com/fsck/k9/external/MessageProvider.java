@@ -36,7 +36,6 @@ import android.os.Bundle;
 import android.provider.BaseColumns;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.AccountStats;
 import com.fsck.k9.BuildConfig;
 import com.fsck.k9.DI;
 import com.fsck.k9.Preferences;
@@ -45,7 +44,6 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.search.SearchAccount;
 import timber.log.Timber;
