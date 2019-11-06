@@ -36,7 +36,6 @@ import androidx.annotation.VisibleForTesting;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.Account.Expunge;
-import com.fsck.k9.AccountStats;
 import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
@@ -131,7 +130,7 @@ public class MessagingController {
     private final ConcurrentHashMap<Account, Pusher> pushers = new ConcurrentHashMap<>();
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private final MemorizingMessagingListener memorizingMessagingListener = new MemorizingMessagingListener();
-    private final AccountStatsCollector accountStatsCollector;
+    private final UnreadMessageCountProvider unreadMessageCountProvider;
     private final CoreResourceProvider resourceProvider;
 
 
@@ -147,14 +146,14 @@ public class MessagingController {
     MessagingController(Context context, NotificationController notificationController,
             NotificationStrategy notificationStrategy,
             LocalStoreProvider localStoreProvider, Contacts contacts,
-            AccountStatsCollector accountStatsCollector, CoreResourceProvider resourceProvider,
+            UnreadMessageCountProvider unreadMessageCountProvider, CoreResourceProvider resourceProvider,
             BackendManager backendManager, List<ControllerExtension> controllerExtensions) {
         this.context = context;
         this.notificationController = notificationController;
         this.notificationStrategy = notificationStrategy;
         this.localStoreProvider = localStoreProvider;
         this.contacts = contacts;
-        this.accountStatsCollector = accountStatsCollector;
+        this.unreadMessageCountProvider = unreadMessageCountProvider;
         this.resourceProvider = resourceProvider;
         this.backendManager = backendManager;
 
@@ -1749,17 +1748,11 @@ public class MessagingController {
     }
 
     public int getUnreadMessageCount(Account account) {
-        try {
-            AccountStats stats = accountStatsCollector.getStats(account);
-            return (stats == null) ? 0 : stats.unreadMessageCount;
-        } catch (MessagingException e) {
-            Timber.e(e, "Unable to getUnreadMessageCount for account: %s", account);
-            return 0;
-        }
+        return unreadMessageCountProvider.getUnreadMessageCount(account);
     }
 
     public int getUnreadMessageCount(SearchAccount searchAccount) {
-        return accountStatsCollector.getSearchAccountStats(searchAccount).unreadMessageCount;
+        return unreadMessageCountProvider.getUnreadMessageCount(searchAccount);
     }
 
     public void getFolderUnreadMessageCount(final Account account, final String folderServerId,
