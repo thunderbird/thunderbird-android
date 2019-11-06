@@ -867,9 +867,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="start_integrated_inbox_title">Start in Unified Inbox</string>
 
-    <string name="measure_accounts_title">Show account size</string>
-    <string name="measure_accounts_summary">Turn off for faster display</string>
-
     <string name="hide_special_accounts_title">Hide Unified Inbox</string>
 
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>

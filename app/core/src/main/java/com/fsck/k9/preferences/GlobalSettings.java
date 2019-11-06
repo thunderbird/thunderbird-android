@@ -142,9 +142,6 @@ public class GlobalSettings {
         s.put("language", Settings.versions(
                 new V(1, new LanguageSetting())
         ));
-        s.put("measureAccounts", Settings.versions(
-                new V(1, new BooleanSetting(true))
-        ));
         s.put("messageListPreviewLines", Settings.versions(
                 new V(1, new IntegerRangeSetting(1, 100, 2))
         ));
