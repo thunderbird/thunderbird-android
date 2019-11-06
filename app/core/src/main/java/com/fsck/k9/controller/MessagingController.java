@@ -1758,8 +1758,8 @@ public class MessagingController {
         }
     }
 
-    public AccountStats getSearchAccountStatsSynchronous(SearchAccount searchAccount) {
-        return accountStatsCollector.getSearchAccountStats(searchAccount);
+    public int getUnreadMessageCount(SearchAccount searchAccount) {
+        return accountStatsCollector.getSearchAccountStats(searchAccount).unreadMessageCount;
     }
 
     public void getFolderUnreadMessageCount(final Account account, final String folderServerId,
