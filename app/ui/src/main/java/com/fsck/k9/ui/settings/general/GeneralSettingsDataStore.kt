@@ -22,8 +22,6 @@ class GeneralSettingsDataStore(
         return when (key) {
             "fixed_message_view_theme" -> K9.isFixedMessageViewTheme
             "animations" -> K9.isShowAnimations
-            "measure_accounts" -> K9.isMeasureAccounts
-            "count_search" -> K9.isCountSearchMessages
             "hide_special_accounts" -> K9.isHideSpecialAccounts
             "folderlist_wrap_folder_name" -> K9.isWrapFolderNames
             "messagelist_stars" -> K9.isShowMessageListStars
@@ -55,8 +53,6 @@ class GeneralSettingsDataStore(
         when (key) {
             "fixed_message_view_theme" -> K9.isFixedMessageViewTheme = value
             "animations" -> K9.isShowAnimations = value
-            "measure_accounts" -> K9.isMeasureAccounts = value
-            "count_search" -> K9.isCountSearchMessages = value
             "hide_special_accounts" -> K9.isHideSpecialAccounts = value
             "folderlist_wrap_folder_name" -> K9.isWrapFolderNames = value
             "messagelist_stars" -> K9.isShowMessageListStars = value

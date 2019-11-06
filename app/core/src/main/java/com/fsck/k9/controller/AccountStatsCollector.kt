@@ -37,12 +37,7 @@ internal class DefaultAccountStatsCollector(
         accountSearchConditions.excludeSpecialFolders(account, search)
         accountSearchConditions.limitToDisplayableFolders(account, search)
 
-        val accountStats = localStore.getAccountStats(search)
-        if (K9.isMeasureAccounts) {
-            accountStats.size = localStore.size
-        }
-
-        return accountStats
+        return localStore.getAccountStats(search)
     }
 
     override fun getSearchAccountStats(searchAccount: SearchAccount): AccountStats {
