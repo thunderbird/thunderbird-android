@@ -70,9 +70,6 @@ public class GlobalSettings {
         s.put("confirmMarkAllRead", Settings.versions(
                 new V(44, new BooleanSetting(true))
         ));
-        s.put("countSearchMessages", Settings.versions(
-                new V(1, new BooleanSetting(false))
-        ));
         s.put("enableDebugLogging", Settings.versions(
                 new V(1, new BooleanSetting(false))
         ));

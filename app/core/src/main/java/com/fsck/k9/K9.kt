@@ -241,9 +241,6 @@ object K9 : KoinComponent {
     var isMeasureAccounts = true
 
     @JvmStatic
-    var isCountSearchMessages = true
-
-    @JvmStatic
     var isHideSpecialAccounts = false
 
     @JvmStatic
@@ -362,7 +359,6 @@ object K9 : KoinComponent {
         isUseVolumeKeysForListNavigation = storage.getBoolean("useVolumeKeysForListNavigation", false)
         isStartInUnifiedInbox = storage.getBoolean("startIntegratedInbox", false)
         isMeasureAccounts = storage.getBoolean("measureAccounts", true)
-        isCountSearchMessages = storage.getBoolean("countSearchMessages", true)
         isHideSpecialAccounts = storage.getBoolean("hideSpecialAccounts", false)
         isMessageListSenderAboveSubject = storage.getBoolean("messageListSenderAboveSubject", false)
         isShowMessageListStars = storage.getBoolean("messageListStars", true)
@@ -450,7 +446,6 @@ object K9 : KoinComponent {
 
         editor.putBoolean("startIntegratedInbox", isStartInUnifiedInbox)
         editor.putBoolean("measureAccounts", isMeasureAccounts)
-        editor.putBoolean("countSearchMessages", isCountSearchMessages)
         editor.putBoolean("messageListSenderAboveSubject", isMessageListSenderAboveSubject)
         editor.putBoolean("hideSpecialAccounts", isHideSpecialAccounts)
         editor.putBoolean("messageListStars", isShowMessageListStars)
