@@ -489,7 +489,6 @@ public class MessagingController {
 
     @VisibleForTesting
     void searchLocalMessagesSynchronous(final LocalSearch search, final MessagingListener listener) {
-        final AccountStats stats = new AccountStats();
         final Set<String> uuidSet = new HashSet<>(Arrays.asList(search.getAccountUuids()));
         List<Account> accounts = Preferences.getPreferences(context).getAccounts();
         boolean allAccounts = uuidSet.contains(SearchSpecification.ALL_ACCOUNTS);
@@ -517,8 +516,6 @@ public class MessagingController {
                         List<LocalMessage> messages = new ArrayList<>();
 
                         messages.add(message);
-                        stats.unreadMessageCount += (!message.isSet(Flag.SEEN)) ? 1 : 0;
-                        stats.flaggedMessageCount += (message.isSet(Flag.FLAGGED)) ? 1 : 0;
                         if (listener != null) {
                             listener.listLocalMessagesAddMessages(account, null, messages);
                         }
@@ -535,9 +532,8 @@ public class MessagingController {
             }
         }
 
-        // publish the total search statistics
         if (listener != null) {
-            listener.searchStats(stats);
+            listener.listLocalMessagesFinished();
         }
     }
 

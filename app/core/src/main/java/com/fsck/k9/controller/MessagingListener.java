@@ -7,7 +7,6 @@ import java.util.List;
 import android.content.Context;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.AccountStats;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mailstore.LocalFolder;
@@ -15,8 +14,6 @@ import com.fsck.k9.mailstore.LocalMessage;
 
 
 public interface MessagingListener {
-    void searchStats(AccountStats stats);
-
     void accountSizeChanged(Account account, long oldSize, long newSize);
 
     void listFoldersStarted(Account account);
@@ -25,6 +22,7 @@ public interface MessagingListener {
     void listFoldersFailed(Account account, String message);
 
     void listLocalMessagesAddMessages(Account account, String folderServerId, List<LocalMessage> messages);
+    void listLocalMessagesFinished();
 
     void synchronizeMailboxStarted(Account account, String folderServerId, String folderName);
     void synchronizeMailboxHeadersStarted(Account account, String folderServerId, String folderName);

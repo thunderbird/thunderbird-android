@@ -1077,7 +1077,7 @@ public class MessageProvider extends ContentProvider {
         }
 
         @Override
-        public void searchStats(AccountStats stats) {
+        public void listLocalMessagesFinished() {
             try {
                 queue.put(holders);
             } catch (InterruptedException e) {
