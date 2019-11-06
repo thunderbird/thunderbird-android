@@ -85,7 +85,7 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
 
     fun createMessagingController(): MessagingController = mock {
         on { getSearchAccountStatsSynchronous(any()) } doReturn SEARCH_ACCOUNT_STATS
-        on { getAccountStats(account) } doReturn ACCOUNT_STATS
+        on { getUnreadMessageCount(account) } doReturn ACCOUNT_UNREAD_COUNT
         on { getFolderUnreadMessageCount(eq(account), eq(FOLDER_SERVER_ID)) } doReturn FOLDER_UNREAD_COUNT
     }
 

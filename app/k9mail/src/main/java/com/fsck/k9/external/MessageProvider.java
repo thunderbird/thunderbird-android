@@ -658,7 +658,6 @@ public class MessageProvider extends ContentProvider {
             MatrixCursor cursor = new MatrixCursor(UNREAD_PROJECTION);
 
             Account myAccount;
-            AccountStats myAccountStats;
 
             Object[] values = new Object[2];
 
@@ -669,19 +668,8 @@ public class MessageProvider extends ContentProvider {
             for (Account account : accounts) {
                 if (account.getAccountNumber() == accountNumber) {
                     myAccount = account;
-                    try {
-                        myAccountStats = controller.getAccountStats(account);
-                        values[0] = myAccount.getDescription();
-                        if (myAccountStats == null) {
-                            values[1] = 0;
-                        } else {
-                            values[1] = myAccountStats.unreadMessageCount;
-                        }
-                    } catch (MessagingException e) {
-                        Timber.e(e.getMessage());
-                        values[0] = "Unknown";
-                        values[1] = 0;
-                    }
+                    values[0] = myAccount.getDescription();
+                    values[1] = controller.getUnreadMessageCount(account);
                     cursor.addRow(values);
                 }
             }

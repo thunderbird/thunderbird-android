@@ -1748,8 +1748,14 @@ public class MessagingController {
         }
     }
 
-    public AccountStats getAccountStats(Account account) throws MessagingException {
-        return accountStatsCollector.getStats(account);
+    public int getUnreadMessageCount(Account account) {
+        try {
+            AccountStats stats = accountStatsCollector.getStats(account);
+            return (stats == null) ? 0 : stats.unreadMessageCount;
+        } catch (MessagingException e) {
+            Timber.e(e, "Unable to getUnreadMessageCount for account: %s", account);
+            return 0;
+        }
     }
 
     public AccountStats getSearchAccountStatsSynchronous(SearchAccount searchAccount) {
@@ -2536,13 +2542,8 @@ public class MessagingController {
                             Timber.v("Clearing notification flag for %s", account.getDescription());
 
                             account.setRingNotified(false);
-                            try {
-                                AccountStats stats = getAccountStats(account);
-                                if (stats == null || stats.unreadMessageCount == 0) {
-                                    notificationController.clearNewMailNotifications(account);
-                                }
-                            } catch (MessagingException e) {
-                                Timber.e(e, "Unable to getUnreadMessageCount for account: %s", account);
+                            if (getUnreadMessageCount(account) == 0) {
+                                notificationController.clearNewMailNotifications(account);
                             }
                         }
                     }
@@ -2996,17 +2997,7 @@ public class MessagingController {
             this.listener = listener;
             this.localStore = getLocalStoreOrThrow(account);
 
-            previousUnreadMessageCount = getUnreadMessageCount();
-        }
-
-        private int getUnreadMessageCount() {
-            try {
-                AccountStats stats = getAccountStats(account);
-                return stats.unreadMessageCount;
-            } catch (MessagingException e) {
-                Timber.e(e, "Unable to getUnreadMessageCount for account: %s", account);
-                return 0;
-            }
+            previousUnreadMessageCount = getUnreadMessageCount(account);
         }
 
         @Override
