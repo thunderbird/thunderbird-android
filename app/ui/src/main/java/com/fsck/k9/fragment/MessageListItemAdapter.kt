@@ -1,6 +1,7 @@
 package com.fsck.k9.fragment
 
 
+import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Typeface
@@ -157,17 +158,7 @@ class MessageListItemAdapter internal constructor(
             holder.threadCount.text = "%d".format(threadCount)
         }
 
-        val beforePreviewText = if (appearance.senderAboveSubject) subject else displayName
-        val sigil = listItem.sigil
-        val messageStringBuilder = SpannableStringBuilder(sigil)
-                .append(beforePreviewText)
-        if (appearance.previewLines > 0) {
-            val preview = listItem.preview
-            messageStringBuilder.append(" ").append(preview)
-        }
-        holder.preview.setText(messageStringBuilder, TextView.BufferType.SPANNABLE)
-
-        formatPreviewText(holder.preview, beforePreviewText, sigil)
+        setupPreview(holder, listItem)
 
         holder.subject.typeface = Typeface.create(holder.subject.typeface, maybeBoldTypeface)
         if (appearance.senderAboveSubject) {
@@ -185,6 +176,50 @@ class MessageListItemAdapter internal constructor(
         }
     }
 
+    private fun setupPreview(holder: MessageViewHolder, listItem: MessageListItem) {
+        val sigil = listItem.sigil
+        val previewTextStart = if (appearance.senderAboveSubject) listItem.subject else listItem.displayName
+        val previewTextBuilder = SpannableStringBuilder(sigil)
+                .append(previewTextStart)
+        if (appearance.previewLines > 0) {
+            val preview = listItem.preview
+            previewTextBuilder.append(" ").append(preview)
+        }
+        holder.preview.setText(previewTextBuilder, TextView.BufferType.SPANNABLE)
+
+        formatPreviewText(holder.preview, sigil.length + previewTextStart.length)
+    }
+
+    private fun formatPreviewText(
+            preview: TextView,
+            lenghthToSetup: Int
+    ) {
+        val previewText = preview.text as Spannable
+
+        setPrevieFontSize(previewText, lenghthToSetup)
+
+        // Set span (color) for preview message
+        previewText.setSpan(
+                ForegroundColorSpan(previewTextColor),
+                lenghthToSetup,
+                previewText.length,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+    }
+
+    private fun setPrevieFontSize(text: Spannable, length: Int) {
+        val fontSize = if (appearance.senderAboveSubject) {
+            appearance.fontSizes.messageListSubject
+        } else {
+            appearance.fontSizes.messageListSender
+        }
+
+        if (fontSize != FontSizes.FONT_DEFAULT) {
+            val span = AbsoluteSizeSpan(fontSize, true)
+            text.setSpan(span, 0, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+    }
+
     private fun isActiveMessage(item: MessageListItem, activeMessage: MessageReference?): Boolean {
         if (activeMessage == null) return false
 
@@ -197,38 +232,6 @@ class MessageListItemAdapter internal constructor(
         return item.account.uuid == activeAccountUuid
                 && folderServerId == activeFolderServerId
                 && uid == activeUid
-    }
-
-    private fun formatPreviewText(
-            preview: TextView,
-            beforePreviewText: CharSequence,
-            sigil: String
-    ) {
-        val previewText = preview.text as Spannable
-
-        val beforePreviewLength = beforePreviewText.length + sigil.length
-        addBeforePreviewSpan(previewText, beforePreviewLength)
-
-        // Set span (color) for preview message
-        previewText.setSpan(
-                ForegroundColorSpan(previewTextColor),
-                beforePreviewLength,
-                previewText.length,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-    }
-
-    private fun addBeforePreviewSpan(text: Spannable, length: Int) {
-        val fontSize = if (appearance.senderAboveSubject) {
-            appearance.fontSizes.messageListSubject
-        } else {
-            appearance.fontSizes.messageListSender
-        }
-
-        if (fontSize != FontSizes.FONT_DEFAULT) {
-            val span = AbsoluteSizeSpan(fontSize, true)
-            text.setSpan(span, 0, length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        }
     }
 
     private fun updateContactBadge(contactBadge: ContactBadge, counterpartyAddress: Address?) {
