@@ -101,15 +101,10 @@ import org.jetbrains.annotations.NotNull;
 import timber.log.Timber;
 
 import static com.fsck.k9.fragment.MLFProjectionInfo.ACCOUNT_UUID_COLUMN;
-import static com.fsck.k9.fragment.MLFProjectionInfo.FLAGGED_COLUMN;
-import static com.fsck.k9.fragment.MLFProjectionInfo.FOLDER_SERVER_ID_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.ID_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.PROJECTION;
-import static com.fsck.k9.fragment.MLFProjectionInfo.READ_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.SUBJECT_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.THREADED_PROJECTION;
-import static com.fsck.k9.fragment.MLFProjectionInfo.THREAD_COUNT_COLUMN;
-import static com.fsck.k9.fragment.MLFProjectionInfo.THREAD_ROOT_COLUMN;
 
 
 public class MessageListFragment extends Fragment implements OnItemClickListener,
