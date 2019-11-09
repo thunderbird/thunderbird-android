@@ -1133,22 +1133,20 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
 
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        Cursor cursor = (Cursor) listView.getItemAtPosition(info.position);
+        final AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
+        if (adapter.getCount() <= info.position) return;
 
-        if (cursor == null) {
-            return;
-        }
+        final MessageListItem item =  adapter.getItem(info.position);
 
         getActivity().getMenuInflater().inflate(R.menu.message_list_item_context, menu);
         menu.findItem(R.id.debug_delete_locally).setVisible(K9.DEVELOPER_MODE);
 
-        contextMenuUniqueId = cursor.getLong(uniqueIdColumn);
-        Account account = getAccountFromCursor(cursor);
+        contextMenuUniqueId = item.getSelectionIdentifier();
+        final Account account = item.getAccount();
 
-        String subject = cursor.getString(SUBJECT_COLUMN);
-        boolean read = (cursor.getInt(READ_COLUMN) == 1);
-        boolean flagged = (cursor.getInt(FLAGGED_COLUMN) == 1);
+        final String subject = item.getSubject();
+        final boolean read = item.getRead();
+        final boolean flagged = item.getFlagged();
 
         menu.setHeaderTitle(subject);
 
