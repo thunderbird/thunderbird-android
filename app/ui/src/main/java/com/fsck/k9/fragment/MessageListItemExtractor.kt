@@ -14,6 +14,7 @@ import com.fsck.k9.fragment.MLFProjectionInfo.DATE_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.FLAGGED_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.FOLDER_SERVER_ID_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.FORWARDED_COLUMN
+import com.fsck.k9.fragment.MLFProjectionInfo.ID_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.PREVIEW_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.PREVIEW_TYPE_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.READ_COLUMN
@@ -77,6 +78,8 @@ class MessageListItemExtractor(
     val forwarded: Boolean get() = cursor.getInt(FORWARDED_COLUMN) == 1
 
     val hasAttachments: Boolean get() = cursor.getInt(ATTACHMENT_COUNT_COLUMN) > 0
+
+    val id: Long get() = cursor.getLong(ID_COLUMN)
 
     val preview: String
         get() {

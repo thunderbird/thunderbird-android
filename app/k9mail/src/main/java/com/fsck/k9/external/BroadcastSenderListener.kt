@@ -26,7 +26,7 @@ class BroadcastSenderListener(private val context: Context) : SimpleMessagingLis
         intent.putExtra(BroadcastIntents.EXTRA_FROM_SELF, account.isAnIdentity(message.from))
         context.sendBroadcast(intent)
 
-        Timber.d("Broadcasted: action=ACTION_EMAIL_RECEIVED account=%s folder=%s message uid=%s",
+        Timber.d("Broadcasted: action=ACTION_EMAIL_RECEIVED account=%s folder=%s message messageUid=%s",
                 account.description,
                 folderServerId,
                 message.uid)
@@ -40,7 +40,7 @@ class BroadcastSenderListener(private val context: Context) : SimpleMessagingLis
         intent.putExtra(BroadcastIntents.EXTRA_FOLDER, folderServerId)
         context.sendBroadcast(intent)
 
-        Timber.d("Broadcasted: action=ACTION_EMAIL_DELETED account=%s folder=%s message uid=%s",
+        Timber.d("Broadcasted: action=ACTION_EMAIL_DELETED account=%s folder=%s message messageUid=%s",
                 account.description,
                 folderServerId,
                 messageServerId)

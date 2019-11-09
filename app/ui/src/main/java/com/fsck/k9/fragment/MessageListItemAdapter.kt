@@ -1,7 +1,6 @@
 package com.fsck.k9.fragment
 
 
-import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Typeface
@@ -223,7 +222,7 @@ class MessageListItemAdapter internal constructor(
     private fun isActiveMessage(item: MessageListItem, activeMessage: MessageReference?): Boolean {
         if (activeMessage == null) return false
 
-        val uid = item.uid
+        val uid = item.messageUid
         val folderServerId = item.folderServerId
 
         val activeAccountUuid = activeMessage.accountUuid

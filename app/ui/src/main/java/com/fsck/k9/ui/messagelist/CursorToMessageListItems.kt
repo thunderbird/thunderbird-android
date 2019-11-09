@@ -40,6 +40,7 @@ class CursorToMessageListItems(
 
     private inline val MessageListItemExtractor.asItem: MessageListItem
         get() = MessageListItem(
+                this.id,
                 this.uid,
                 this.folderServerId.orEmpty(),
                 this.displayName.toString(),
