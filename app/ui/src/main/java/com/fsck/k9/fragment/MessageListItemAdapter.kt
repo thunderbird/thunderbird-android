@@ -277,4 +277,8 @@ class MessageListItemAdapter internal constructor(
             view.setBackgroundColor(Color.TRANSPARENT)
         }
     }
+
+    fun clearData() {
+        data = emptyList()
+    }
 }

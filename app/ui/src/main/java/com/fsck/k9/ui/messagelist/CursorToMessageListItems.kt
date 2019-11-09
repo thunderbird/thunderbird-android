@@ -24,7 +24,7 @@ class CursorToMessageListItems(
             resources
     )
 
-    fun convert(cursor: Cursor, onItemsReady: (List<MessageListItem>) -> Unit) {
+    fun convert(cursor: Cursor, onItemsReady: ConvertedMessagesReady) {
         val extractor = messageListItemExtractor(cursor)
         GlobalScope.launch {
             val itemsRetrieved = withContext(Dispatchers.Default) {
@@ -34,14 +34,14 @@ class CursorToMessageListItems(
                 }
                 items
             }
-            onItemsReady(itemsRetrieved)
+            onItemsReady.onItemsReady(itemsRetrieved)
         }
     }
 
     private inline val MessageListItemExtractor.asItem: MessageListItem
         get() = MessageListItem(
                 this.uid,
-                this.folderServerId,
+                this.folderServerId.orEmpty(),
                 this.displayName.toString(),
                 this.subject(this.threadCount),
                 this.date,
@@ -59,5 +59,8 @@ class CursorToMessageListItems(
                 this.selectionIdentifier(uniqueColumnId)
 
         )
+}
 
+interface ConvertedMessagesReady {
+    fun onItemsReady(list: List<MessageListItem>)
 }

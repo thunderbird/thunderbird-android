@@ -6,7 +6,7 @@ import com.fsck.k9.mail.Address
 
 data class MessageListItem(
         val uid: String,
-        val folderServerId: String?,
+        val folderServerId: String,
         val displayName: String,
         val subject: String,
         val date: Long,
