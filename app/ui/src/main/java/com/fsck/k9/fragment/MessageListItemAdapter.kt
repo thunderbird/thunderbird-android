@@ -1,6 +1,7 @@
 package com.fsck.k9.fragment
 
 
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Typeface
@@ -115,16 +116,15 @@ class MessageListItemAdapter internal constructor(
 
         holder.flagged.isVisible = appearance.stars
         holder.flagged.setOnClickListener(holder)
-        bindView(view, position)
-
         view.tag = holder
+        bindView(view, holder, position)
+
 
         return view
     }
 
-    private fun bindView(view: View, position: Int) {
+    private fun bindView(view: View, holder: MessageViewHolder, position: Int) {
         val listItem = data[position]
-        val holder = view.tag as MessageViewHolder
 
         val displayName = listItem.displayName
         val displayDate = DateUtils.getRelativeTimeSpanString(view.context, listItem.date)

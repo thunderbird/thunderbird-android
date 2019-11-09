@@ -7,6 +7,7 @@ import com.fsck.k9.fragment.MessageListItemExtractor
 import com.fsck.k9.helper.MessageHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -26,15 +27,15 @@ class CursorToMessageListItems(
 
     fun convert(cursor: Cursor, onItemsReady: ConvertedMessagesReady) {
         val extractor = messageListItemExtractor(cursor)
-        GlobalScope.launch {
-            val itemsRetrieved = withContext(Dispatchers.Default) {
+        GlobalScope.launch(Dispatchers.Main) {
+            val items = async {
                 val items = arrayListOf<MessageListItem>()
                 while (cursor.moveToNext()) {
                     items += extractor.asItem
                 }
                 items
             }
-            onItemsReady.onItemsReady(itemsRetrieved)
+            onItemsReady.onItemsReady(items.await())
         }
     }
 

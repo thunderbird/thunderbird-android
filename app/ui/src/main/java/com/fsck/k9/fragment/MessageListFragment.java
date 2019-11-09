@@ -362,20 +362,17 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             return;
         }
 
-        Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-        if (cursor == null) {
-            return;
-        }
+        final MessageListItem item = adapter.getItem(position);
 
         if (selectedCount > 0) {
             toggleMessageSelect(position);
         } else {
-            if (showingThreadedList && cursor.getInt(THREAD_COUNT_COLUMN) > 1) {
-                Account account = getAccountFromCursor(cursor);
-                String folderServerId = cursor.getString(FOLDER_SERVER_ID_COLUMN);
+            if (showingThreadedList && item.getThreadCount() > 0) {
+                final Account account = item.getAccount();
+                String folderServerId = item.getFolderServerId();
 
                 // If threading is enabled and this item represents a thread, display the thread contents.
-                long rootId = cursor.getLong(THREAD_ROOT_COLUMN);
+                long rootId = item.getThreadId();
                 fragmentListener.showThread(account, folderServerId, rootId);
             } else {
                 // This item represents a message; just display the message.

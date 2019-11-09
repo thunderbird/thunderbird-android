@@ -112,7 +112,13 @@ class MessageListItemExtractor(
             }
         }
 
-    val threadCount: Int get() = cursor.getInt(THREAD_COUNT_COLUMN)
+    val threadCount: Int get() {
+        try {
+            return cursor.getInt(THREAD_COUNT_COLUMN)
+        } catch (_: Exception) {
+            return 0
+        }
+    }
 
     val threadRootId: Long get() = cursor.getLong(THREAD_ROOT_COLUMN)
 
