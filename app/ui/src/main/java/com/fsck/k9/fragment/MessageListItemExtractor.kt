@@ -21,6 +21,7 @@ import com.fsck.k9.fragment.MLFProjectionInfo.READ_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.SENDER_LIST_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.SUBJECT_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.THREAD_COUNT_COLUMN
+import com.fsck.k9.fragment.MLFProjectionInfo.THREAD_ROOT_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.TO_LIST_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.UID_COLUMN
 import com.fsck.k9.helper.MessageHelper
@@ -112,6 +113,8 @@ class MessageListItemExtractor(
         }
 
     val threadCount: Int get() = cursor.getInt(THREAD_COUNT_COLUMN)
+
+    val threadRootId: Long get() = cursor.getLong(THREAD_ROOT_COLUMN)
 
     val uid: String get() = cursor.getString(UID_COLUMN)
 

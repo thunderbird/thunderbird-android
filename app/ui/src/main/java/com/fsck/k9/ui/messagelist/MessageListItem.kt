@@ -13,6 +13,7 @@ data class MessageListItem(
         val date: Long,
         val sigil: String,
         val threadCount: Int,
+        val threadId: Long,
         val read: Boolean,
         val answered: Boolean,
         val forwarded: Boolean,

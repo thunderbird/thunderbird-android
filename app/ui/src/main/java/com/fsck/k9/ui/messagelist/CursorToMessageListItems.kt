@@ -48,6 +48,7 @@ class CursorToMessageListItems(
                 this.date,
                 this.sigil,
                 this.threadCount,
+                this.threadRootId,
                 this.read,
                 this.answered,
                 this.forwarded,
