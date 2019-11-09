@@ -100,10 +100,8 @@ import com.fsck.k9.ui.messagelist.MessageListItem;
 import org.jetbrains.annotations.NotNull;
 import timber.log.Timber;
 
-import static com.fsck.k9.fragment.MLFProjectionInfo.ACCOUNT_UUID_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.ID_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.PROJECTION;
-import static com.fsck.k9.fragment.MLFProjectionInfo.SUBJECT_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.THREADED_PROJECTION;
 
 
@@ -493,8 +491,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             selected[i++] = id;
         }
         outState.putLongArray(STATE_SELECTED_MESSAGES, selected);
-    }
 
+    }
     /**
      * Restore selected messages from a {@link Bundle}.
      */
@@ -2641,8 +2639,9 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             @Override
             public void onItemsReady(@NotNull List<MessageListItem> list) {
                 if (isThreadDisplay) {
-                    if (cursor.moveToFirst()) {
-                        title = cursor.getString(SUBJECT_COLUMN);
+                    final MessageListItem item = list.get(0);
+                    if (item != null) {
+                        title = item.getSubject();
                         if (!TextUtils.isEmpty(title)) {
                             title = Utility.stripSubject(title);
                         }
@@ -2796,11 +2795,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     public void onLoaderReset(Loader<Cursor> loader) {
         selected.clear();
         adapter.clearData();
-    }
-
-    private Account getAccountFromCursor(Cursor cursor) {
-        String accountUuid = cursor.getString(ACCOUNT_UUID_COLUMN);
-        return preferences.getAccount(accountUuid);
     }
 
     void remoteSearchFinished() {
