@@ -3,11 +3,12 @@ buildscript {
         buildConfig = [
                 'compileSdk': 28,
                 'minSdk': 19,
-                'buildTools': '28.0.3'
+                'buildTools': '28.0.3',
+                'robolectricSdk': 28
         ]
 
         versions = [
-                'kotlin': '1.3.20',
+                'kotlin': '1.3.50',
                 'androidxAppCompat': '1.0.2',
                 'androidxRecyclerView': '1.0.0',
                 'androidxLifecycleExtensions': '2.0.0',
@@ -28,11 +29,13 @@ buildscript {
 
                 'androidxTestRunner': '1.1.1',
                 'junit': '4.12',
-                'robolectric': '3.7.1',
+                'robolectric': '4.2.1',
                 'mockito': '2.18.0',
                 'mockitoKotlin': '1.5.0',
                 'truth': '0.35'
         ]
+
+        javaVersion = JavaVersion.VERSION_1_8
     }
 
     repositories {
@@ -42,7 +45,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.2'
+        classpath 'com.android.tools.build:gradle:3.5.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
         classpath "org.jetbrains.kotlin:kotlin-android-extensions:${versions.kotlin}"
     }

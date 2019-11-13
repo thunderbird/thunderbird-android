@@ -5,6 +5,7 @@ import android.database.Cursor
 import android.database.MatrixCursor
 import android.text.Spannable
 import android.text.style.AbsoluteSizeSpan
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.CheckBox
@@ -50,7 +51,7 @@ private const val SECOND_LINE_DEFAULT_FONT_SIZE = 14f
 private const val DATE_DEFAULT_FONT_SIZE = 14f
 
 class MessageListAdapterTest : RobolectricTest() {
-    val context: Context = RuntimeEnvironment.application
+    val context: Context = ContextThemeWrapper(RuntimeEnvironment.application, R.style.Theme_K9_Light)
     val testAccount = Account(SOME_ACCOUNT_UUID)
 
     val messageHelper: MessageHelper = mock {
