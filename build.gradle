@@ -3,7 +3,8 @@ buildscript {
         buildConfig = [
                 'compileSdk': 28,
                 'minSdk': 19,
-                'buildTools': '28.0.3'
+                'buildTools': '28.0.3',
+                'robolectricSdk': 28
         ]
 
         versions = [
@@ -28,7 +29,7 @@ buildscript {
 
                 'androidxTestRunner': '1.1.1',
                 'junit': '4.12',
-                'robolectric': '3.7.1',
+                'robolectric': '4.2.1',
                 'mockito': '2.18.0',
                 'mockitoKotlin': '1.5.0',
                 'truth': '0.35'

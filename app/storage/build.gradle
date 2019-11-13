@@ -26,8 +26,7 @@ android {
 
     defaultConfig {
         minSdkVersion buildConfig.minSdk
-        // For Robolectric tests
-        targetSdkVersion 22
+        targetSdkVersion buildConfig.robolectricSdk
     }
 
     lintOptions {
