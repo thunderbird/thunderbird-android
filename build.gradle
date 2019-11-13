@@ -16,6 +16,7 @@ buildscript {
                 'androidxAnnotation': '1.0.1',
                 'androidxNavigation': '2.0.0',
                 'androidxConstraintLayout': '1.1.3',
+                'androidxWorkManager': '2.2.0',
                 'materialComponents': '1.0.0',
                 'coreKtx': '1.0.1',
                 'preferencesFix': '1.0.0',

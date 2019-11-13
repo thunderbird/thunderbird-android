@@ -1,11 +1,12 @@
 package com.fsck.k9.job
 
-import com.evernote.android.job.JobManager
+import androidx.work.WorkerFactory
 import org.koin.dsl.module.applicationContext
 
 val jobModule = applicationContext {
-    bean { JobManager.create(get()) as JobManager }
-    bean { K9JobManager(get(), get(), get(), get()) }
-    bean { K9JobCreator(get()) }
-    factory { MailSyncJobManager(get(), get()) }
+    bean { WorkManagerProvider(get(), get()) }
+    bean<WorkerFactory> { K9WorkerFactory(get(), get()) }
+    bean { get<WorkManagerProvider>().getWorkManager() }
+    bean { K9JobManager(get(), get(), get()) }
+    factory { MailSyncWorkerManager(get()) }
 }
