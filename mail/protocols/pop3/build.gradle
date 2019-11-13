@@ -1,7 +1,5 @@
 apply plugin: 'com.android.library'
 
-apply from: "${rootProject.projectDir}/gradle/plugins/checkstyle-android.gradle"
-
 if (rootProject.testCoverage) {
     apply plugin: 'jacoco'
 }

@@ -2,8 +2,6 @@ apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'org.jetbrains.kotlin.android.extensions'
 
-apply from: "${rootProject.projectDir}/gradle/plugins/checkstyle-android.gradle"
-
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
 

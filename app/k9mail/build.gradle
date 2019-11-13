@@ -2,8 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'org.jetbrains.kotlin.android.extensions'
 
-apply from: "${rootProject.projectDir}/gradle/plugins/checkstyle-android.gradle"
-
 if (rootProject.testCoverage) {
     apply plugin: 'jacoco'
 }
