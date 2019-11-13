@@ -13,7 +13,6 @@ import android.content.Context;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.SpecialFolderSelection;
 import com.fsck.k9.AccountPreferenceSerializer;
-import com.fsck.k9.AccountStats;
 import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
@@ -42,7 +41,6 @@ import com.fsck.k9.notification.NotificationStrategy;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -94,8 +92,6 @@ public class MessagingControllerTest extends K9RobolectricTest {
     @Mock
     private Contacts contacts;
     @Mock
-    private AccountStats accountStats;
-    @Mock
     private SimpleMessagingListener listener;
     @Mock
     private LocalSearch search;
@@ -129,17 +125,15 @@ public class MessagingControllerTest extends K9RobolectricTest {
     private LocalMessage localMessageToSend1;
     private volatile boolean hasFetchedMessage = false;
 
-    private AccountStatsCollector accountStatsCollector = new AccountStatsCollector() {
-        @NotNull
+    private UnreadMessageCountProvider unreadMessageCountProvider = new UnreadMessageCountProvider() {
         @Override
-        public AccountStats getSearchAccountStats(@NotNull SearchAccount searchAccount) {
-            return accountStats;
+        public int getUnreadMessageCount(@NotNull SearchAccount searchAccount) {
+            return 0;
         }
 
-        @Nullable
         @Override
-        public AccountStats getStats(@NotNull Account account) {
-            return accountStats;
+        public int getUnreadMessageCount(@NotNull Account account) {
+            return 0;
         }
     };
 
@@ -152,7 +146,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
         controller = new MessagingController(appContext, notificationController, notificationStrategy,
                 localStoreProvider, contacts,
-                accountStatsCollector, mock(CoreResourceProvider.class), backendManager,
+                unreadMessageCountProvider, mock(CoreResourceProvider.class), backendManager,
                 Collections.<ControllerExtension>emptyList());
 
         configureAccount();
