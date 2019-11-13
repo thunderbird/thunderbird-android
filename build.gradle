@@ -34,7 +34,7 @@ buildscript {
                 'truth': '0.35'
         ]
 
-        javaVersion = JavaVersion.VERSION_1_7
+        javaVersion = JavaVersion.VERSION_1_8
     }
 
     repositories {
