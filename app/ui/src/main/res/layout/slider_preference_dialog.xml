@@ -15,7 +15,7 @@ Licensed under the MIT License (see LICENSE.txt)
     android:paddingTop="8dip" >
 
     <TextView
-        android:id="@+android:id/message"
+        android:id="@android:id/message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

@@ -339,8 +339,7 @@ public class PgpMessageBuilder extends MessageBuilder {
 
     @NonNull
     private OpenPgpDataSource createOpenPgpDataSourceFromBodyPart(final MimeBodyPart bodyPart,
-            final boolean writeBodyContentOnly)
-            throws MessagingException {
+            final boolean writeBodyContentOnly) {
         return new OpenPgpDataSource() {
             @Override
             public void writeTo(OutputStream os) throws IOException {

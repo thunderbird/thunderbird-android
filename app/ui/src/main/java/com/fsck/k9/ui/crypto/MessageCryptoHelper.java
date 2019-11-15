@@ -13,10 +13,10 @@ import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
-
 import com.fsck.k9.autocrypt.AutocryptOperations;
 import com.fsck.k9.crypto.MessageCryptoStructureDetector;
 import com.fsck.k9.mail.Address;
@@ -40,7 +40,6 @@ import com.fsck.k9.mailstore.MimePartStreamParser;
 import com.fsck.k9.mailstore.util.FileFactory;
 import com.fsck.k9.provider.DecryptedFileProvider;
 import org.apache.commons.io.IOUtils;
-import org.openintents.openpgp.IOpenPgpService2;
 import org.openintents.openpgp.OpenPgpDecryptionResult;
 import org.openintents.openpgp.OpenPgpError;
 import org.openintents.openpgp.OpenPgpSignatureResult;
@@ -52,6 +51,7 @@ import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSink;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
 import org.openintents.openpgp.util.OpenPgpServiceConnection;
 import org.openintents.openpgp.util.OpenPgpServiceConnection.OnBound;
+import org.sufficientlysecure.keychain.remote.OpenPgpService;
 import timber.log.Timber;
 
 
@@ -236,7 +236,7 @@ public class MessageCryptoHelper {
                 new OnBound() {
 
                     @Override
-                    public void onBound(IOpenPgpService2 service) {
+                    public void onBound(OpenPgpService service) {
                         openPgpApi = openPgpApiFactory.createOpenPgpApi(context, service);
 
                         nextStep();

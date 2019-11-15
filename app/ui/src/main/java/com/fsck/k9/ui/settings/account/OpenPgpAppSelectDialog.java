@@ -129,7 +129,7 @@ public class OpenPgpAppSelectDialog extends FragmentActivity {
 
             OpenPgpProviderEntry noneEntry = new OpenPgpProviderEntry(null,
                     context.getString(R.string.openpgp_list_preference_none),
-                    getResources().getDrawable(R.drawable.ic_action_cancel_launchersize_light));
+                    getResources().getDrawable(R.drawable.ic_cancel_white_24dp));
             openPgpProviderList.add(noneEntry);
 
             if (isApgInstalled(getActivity())) {
