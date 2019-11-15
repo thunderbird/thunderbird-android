@@ -1,0 +1,3 @@
+[submodule "openkeychain"]
+	path = openkeychain
+	url = https://github.com/open-keychain/open-keychain.git
