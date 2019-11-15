@@ -16,6 +16,8 @@
 
 package org.openintents.openpgp;
 
+import java.util.Arrays;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -34,13 +36,9 @@ public class OpenPgpDecryptionResult implements Parcelable {
     // encrypted
     public static final int RESULT_ENCRYPTED = 1;
 
-    public final int result;
-    public final byte[] sessionKey;
-    public final byte[] decryptedSessionKey;
-
-    public int getResult() {
-        return result;
-    }
+    private final int result;
+    private final byte[] sessionKey;
+    private final byte[] decryptedSessionKey;
 
     public OpenPgpDecryptionResult(int result) {
         this.result = result;
@@ -57,10 +55,26 @@ public class OpenPgpDecryptionResult implements Parcelable {
         this.decryptedSessionKey = decryptedSessionKey;
     }
 
-    public OpenPgpDecryptionResult(OpenPgpDecryptionResult b) {
-        this.result = b.result;
-        this.sessionKey = b.sessionKey;
-        this.decryptedSessionKey = b.decryptedSessionKey;
+    public int getResult() {
+        return result;
+    }
+
+    public boolean hasDecryptedSessionKey() {
+        return sessionKey != null;
+    }
+
+    public byte[] getSessionKey() {
+        if (sessionKey == null) {
+            return null;
+        }
+        return Arrays.copyOf(sessionKey, sessionKey.length);
+    }
+
+    public byte[] getDecryptedSessionKey() {
+        if (sessionKey == null || decryptedSessionKey == null) {
+            return null;
+        }
+        return Arrays.copyOf(decryptedSessionKey, decryptedSessionKey.length);
     }
 
     public int describeContents() {

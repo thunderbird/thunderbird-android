@@ -16,7 +16,7 @@
 
 package org.openintents.openpgp.util;
 
-
+import java.io.Serializable;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -131,7 +131,7 @@ public class OpenPgpUtils {
         return userIdString;
     }
 
-    public static class UserId {
+    public static class UserId implements Serializable {
         public final String name;
         public final String email;
         public final String comment;

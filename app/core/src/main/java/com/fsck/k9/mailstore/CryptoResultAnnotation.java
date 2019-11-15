@@ -110,7 +110,7 @@ public final class CryptoResultAnnotation {
     }
 
     public boolean isEncrypted() {
-        return openPgpDecryptionResult != null && openPgpDecryptionResult.result == OpenPgpDecryptionResult.RESULT_ENCRYPTED;
+        return openPgpDecryptionResult != null && openPgpDecryptionResult.getResult() == OpenPgpDecryptionResult.RESULT_ENCRYPTED;
     }
 
     @Nullable

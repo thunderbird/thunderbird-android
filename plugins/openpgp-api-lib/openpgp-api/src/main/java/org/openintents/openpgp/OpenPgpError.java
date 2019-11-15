@@ -35,6 +35,7 @@ public class OpenPgpError implements Parcelable {
     public static final int NO_USER_IDS = 3;
     public static final int OPPORTUNISTIC_MISSING_KEYS = 4;
 
+
     int errorId;
     String message;
 
@@ -69,10 +70,6 @@ public class OpenPgpError implements Parcelable {
 
     public int describeContents() {
         return 0;
-    }
-
-    public String toString() {
-        return "OpenPGP-Api Error (" + errorId + "): " + message;
     }
 
     public void writeToParcel(Parcel dest, int flags) {
