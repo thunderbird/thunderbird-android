@@ -38,6 +38,7 @@ import org.koin.core.parameter.parametersOf
 import org.openintents.openpgp.OpenPgpApiManager
 import org.openintents.openpgp.util.OpenPgpKeyPreference
 import org.openintents.openpgp.util.OpenPgpProviderUtil
+import org.sufficientlysecure.keychain.ui.MainActivity
 
 class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFragmentListener {
     private val viewModel: AccountSettingsViewModel by sharedViewModel()
@@ -215,6 +216,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         configureEnablePgpSupport(account, isPgpConfigured, pgpProviderName)
         configurePgpKey(account, pgpProvider)
         configureAutocryptTransfer(account)
+        configureAutocryptManageKeys()
     }
 
     private fun getOpenPgpProviderName(pgpProvider: String?): String? {
@@ -262,6 +264,13 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     private fun configureAutocryptTransfer(account: Account) {
         findPreference<Preference>(PREFERENCE_AUTOCRYPT_TRANSFER)!!.onClick {
             val intent = AutocryptKeyTransferActivity.createIntent(requireContext(), account.uuid)
+            startActivity(intent)
+        }
+    }
+
+    private fun configureAutocryptManageKeys() {
+        findPreference(PREFERENCE_AUTOCRYPT_MANAGE).onClick {
+            val intent = Intent(context, MainActivity::class.java)
             startActivity(intent)
         }
     }
@@ -372,6 +381,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val PREFERENCE_OPENPGP_ENABLE = "openpgp_provider"
         private const val PREFERENCE_OPENPGP_KEY = "openpgp_key"
         private const val PREFERENCE_AUTOCRYPT_TRANSFER = "autocrypt_transfer"
+        private const val PREFERENCE_AUTOCRYPT_MANAGE = "autocrypt_manage"
         private const val PREFERENCE_FOLDERS = "folders"
         private const val PREFERENCE_AUTO_EXPAND_FOLDER = "account_setup_auto_expand_folder"
         private const val PREFERENCE_ARCHIVE_FOLDER = "archive_folder"

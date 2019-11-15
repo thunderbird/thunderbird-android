@@ -1223,6 +1223,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="ac_transfer_setting_title">Send Autocrypt Setup Message</string>
     <string name="ac_transfer_setting_summary">Securely share end-to-end setup with other devices</string>
 
+    <string name="ac_manage_setting_title">Manage Autocrypt Keys</string>
+    <string name="ac_manage_setting_summary">Backup or remove individual keys</string>
+
     <string name="ac_transfer_title">Autocrypt Setup Message</string>
     <string name="ac_transfer_intro">An Autocrypt Setup Message securely shares your end-to-end setup with other devices.</string>
     <string name="ac_transfer_button_send">Send Setup Message</string>
