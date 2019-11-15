@@ -17,6 +17,8 @@ dependencies {
     implementation project(":backend:pop3")
     implementation project(":backend:webdav")
 
+    implementation project(":openkeychain:OpenKeychain")
+
     implementation "androidx.appcompat:appcompat:${versions.androidxAppCompat}"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
 

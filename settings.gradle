@@ -16,3 +16,18 @@ include ':backend:imap'
 include ':backend:pop3'
 include ':backend:webdav'
 include ':plugins:openpgp-api-lib:openpgp-api'
+
+include ':openkeychain:OpenKeychain'
+include ':openkeychain:nfcsweetspot'
+include ':openkeychain:extern:bouncycastle:core'
+include ':openkeychain:extern:bouncycastle:pg'
+include ':openkeychain:extern:bouncycastle:prov'
+include ':openkeychain:extern:minidns'
+include ':openkeychain:extern:MaterialChipsInput:library'
+
+// Workaround for Android Gradle Plugin 2.0, as described in http://stackoverflow.com/a/36544850
+//include ':extern:openpgp-api-lib:openpgp-api'
+//include ':openkeychain:openpgp-api-lib'
+//project(':openkeychain:openpgp-api-lib').projectDir = new File('openkeychain/extern/openpgp-api-lib/openpgp-api')
+include ':openkeychain:sshauthentication-api'
+project(':openkeychain:sshauthentication-api').projectDir = new File('openkeychain/sshauthentication-api')
