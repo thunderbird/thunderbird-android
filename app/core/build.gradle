@@ -8,7 +8,7 @@ dependencies {
     api project(":mail:common")
     api project(":backend:api")
 
-    api project(':plugins:openpgp-api-lib:openpgp-api')
+    implementation project(":openkeychain:OpenKeychain")
 
     api "org.koin:koin-androidx-viewmodel:${versions.koin}"
     implementation "org.koin:koin-java:${versions.koin}"

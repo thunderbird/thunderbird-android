@@ -13,7 +13,7 @@ dependencies {
     compileOnly project(":mail:protocols:imap")
     compileOnly project(":mail:protocols:webdav")
 
-    implementation project(':plugins:openpgp-api-lib:openpgp-api')
+    implementation project(":openkeychain:OpenKeychain")
 
     implementation "androidx.appcompat:appcompat:${versions.androidxAppCompat}"
     implementation "com.takisoft.preferencex:preferencex:${versions.preferencesFix}"
