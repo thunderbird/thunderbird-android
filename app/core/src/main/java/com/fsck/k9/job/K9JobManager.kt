@@ -8,8 +8,7 @@ class K9JobManager(
         jobCreator: K9JobCreator,
         private val jobManager: JobManager,
         private val preferences: Preferences,
-        private val mailSyncJobManager: MailSyncJobManager,
-        private val pusherRefreshJobManager: PusherRefreshJobManager
+        private val mailSyncJobManager: MailSyncJobManager
 ) {
 
     // It's recommended to initialize JobManager in Application onCreate()
@@ -34,21 +33,12 @@ class K9JobManager(
     }
 
     fun schedulePusherRefresh() {
-        cancelAllPusherRefreshJobs()
-
-        preferences.availableAccounts?.forEach { account ->
-            pusherRefreshJobManager.scheduleJob(account)
-        }
+        // Push is temporarily disabled. See GH-4253
     }
 
     fun cancelAllMailSyncJobs() {
         Timber.v("canceling mail sync job")
         jobManager.cancelAllForTag(MailSyncJob.TAG)
-    }
-
-    fun cancelAllPusherRefreshJobs() {
-        Timber.v("canceling pusher refresh job")
-        jobManager.cancelAllForTag(PusherRefreshJob.TAG)
     }
 
     companion object {
