@@ -12,9 +12,11 @@ import org.koin.log.EmptyLogger
 import org.koin.standalone.StandAloneContext
 
 object DI {
+    private const val DEBUG = false
+
     @JvmStatic fun start(application: Application, modules: List<Module>) {
         @Suppress("ConstantConditionIf")
-        Koin.logger = if (BuildConfig.DEBUG) AndroidLogger() else EmptyLogger()
+        Koin.logger = if (BuildConfig.DEBUG && DEBUG) AndroidLogger() else EmptyLogger()
 
         StandAloneContext.startKoin(modules) with application
     }
