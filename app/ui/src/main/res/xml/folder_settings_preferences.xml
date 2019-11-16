@@ -50,6 +50,7 @@
             android:entryValues="@array/folder_settings_folder_sync_mode_values"
             android:dialogTitle="@string/folder_settings_folder_sync_mode_label" />
 
+        <!-- Temporarily disabled. See GH-4253
         <ListPreference
             android:persistent="false"
             android:key="folder_settings_folder_push_mode"
@@ -57,6 +58,7 @@
             android:entries="@array/folder_settings_folder_push_mode_entries"
             android:entryValues="@array/folder_settings_folder_push_mode_values"
             android:dialogTitle="@string/folder_settings_folder_push_mode_label" />
+        -->
 
         <ListPreference
             android:persistent="false"

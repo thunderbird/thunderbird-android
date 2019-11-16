@@ -116,6 +116,7 @@ public class FolderSettings extends K9PreferenceActivity {
             }
         });
 
+        /* Temporarily disabled. See GH-4253
         mPushClass = (ListPreference) findPreference(PREFERENCE_PUSH_CLASS);
         mPushClass.setEnabled(isPushCapable);
         mPushClass.setValue(mFolder.getRawPushClass().name());
@@ -129,6 +130,7 @@ public class FolderSettings extends K9PreferenceActivity {
                 return false;
             }
         });
+         */
 
         mNotifyClass = (ListPreference) findPreference(PREFERENCE_NOTIFY_CLASS);
         mNotifyClass.setValue(mFolder.getRawNotifyClass().name());
@@ -152,7 +154,9 @@ public class FolderSettings extends K9PreferenceActivity {
         FolderClass oldDisplayClass = mFolder.getDisplayClass();
         mFolder.setDisplayClass(FolderClass.valueOf(mDisplayClass.getValue()));
         mFolder.setSyncClass(FolderClass.valueOf(mSyncClass.getValue()));
+        /* Temporarily disabled. See GH-4253
         mFolder.setPushClass(FolderClass.valueOf(mPushClass.getValue()));
+         */
         mFolder.setNotifyClass(FolderClass.valueOf(mNotifyClass.getValue()));
 
         mFolder.save();
