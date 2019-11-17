@@ -37,6 +37,7 @@ buildscript {
         ]
 
         javaVersion = JavaVersion.VERSION_1_8
+        kotlinJvmVersion = "1.8"
     }
 
     repositories {
