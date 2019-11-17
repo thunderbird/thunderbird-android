@@ -18,6 +18,6 @@ class ClipboardManager(private val context: Context) {
     fun setText(label: String, text: String) {
         val clipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
         val clip = ClipData.newPlainText(label, text)
-        clipboardManager.primaryClip = clip
+        clipboardManager.setPrimaryClip(clip)
     }
 }

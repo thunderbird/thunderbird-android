@@ -36,7 +36,7 @@ class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, S
                 add(R.id.generalSettingsContainer, GeneralSettingsFragment.create())
             }
         } else {
-            searchQuery = savedInstanceState.getString(KEY_SEARCH_QUERY)
+            searchQuery = savedInstanceState.getString(KEY_SEARCH_QUERY) ?: error("Missing instance state")
             searchEnabled = savedInstanceState.getBoolean(KEY_SEARCH_ENABLED)
         }
     }
