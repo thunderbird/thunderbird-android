@@ -4,7 +4,7 @@ buildscript {
                 'compileSdk': 29,
                 'targetSdk': 23,
                 'minSdk': 19,
-                'buildTools': '28.0.3',
+                'buildTools': '29.0.2',
                 'robolectricSdk': 28
         ]
 
