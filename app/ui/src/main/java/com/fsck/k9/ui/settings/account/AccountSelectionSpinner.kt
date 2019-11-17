@@ -60,7 +60,7 @@ class AccountSelectionSpinner : Spinner {
 
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-            val account = getItem(position)
+            val account = getItem(position) ?: error("No item at position $position")
 
             val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.account_spinner_item, parent, false)
 
@@ -71,7 +71,7 @@ class AccountSelectionSpinner : Spinner {
         }
 
         override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-            val account = getItem(position)
+            val account = getItem(position) ?: error("No item at position $position")
 
             val view = convertView
                     ?: LayoutInflater.from(context).inflate(R.layout.account_spinner_dropdown_item, parent, false)
