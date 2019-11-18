@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,10 +14,10 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.loader.app.LoaderManager;
 import android.view.Menu;
 
+import androidx.annotation.Nullable;
+import androidx.loader.app.LoaderManager;
 import com.fsck.k9.Account;
 import com.fsck.k9.Identity;
 import com.fsck.k9.K9;
@@ -43,10 +42,6 @@ import com.fsck.k9.message.MessageBuilder;
 import com.fsck.k9.message.PgpMessageBuilder;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
-import org.openintents.openpgp.OpenPgpApiManager;
-import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback;
-import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderError;
-import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderState;
 import org.openintents.openpgp.util.OpenPgpApi;
 import timber.log.Timber;
 
@@ -74,7 +69,7 @@ public class RecipientPresenter {
     private final ComposePgpInlineDecider composePgpInlineDecider;
     private final AutocryptStatusInteractor autocryptStatusInteractor;
     private final RecipientsChangedListener listener;
-    private final OpenPgpApiManager openPgpApiManager;
+    private final OpenPgpApi openPgpApi;
     private final AutocryptDraftStateHeaderParser draftStateHeaderParser;
     private ReplyToParser replyToParser;
     private Account account;
@@ -91,7 +86,7 @@ public class RecipientPresenter {
 
 
     public RecipientPresenter(Context context, LoaderManager loaderManager,
-            OpenPgpApiManager openPgpApiManager, RecipientMvpView recipientMvpView, Account account,
+            OpenPgpApi openPgpApi, RecipientMvpView recipientMvpView, Account account,
             ComposePgpInlineDecider composePgpInlineDecider,
             ComposePgpEnableByDefaultDecider composePgpEnableByDefaultDecider,
             AutocryptStatusInteractor autocryptStatusInteractor,
@@ -104,7 +99,7 @@ public class RecipientPresenter {
         this.composePgpEnableByDefaultDecider = composePgpEnableByDefaultDecider;
         this.replyToParser = replyToParser;
         this.listener = recipientsChangedListener;
-        this.openPgpApiManager = openPgpApiManager;
+        this.openPgpApi = openPgpApi;
         this.draftStateHeaderParser = draftStateHeaderParser;
 
         recipientMvpView.setPresenter(this);
@@ -300,7 +295,7 @@ public class RecipientPresenter {
 
     public void onPrepareOptionsMenu(Menu menu) {
         ComposeCryptoStatus currentCryptoStatus = getCurrentCachedCryptoStatus();
-        boolean isCryptoConfigured = currentCryptoStatus != null && currentCryptoStatus.isProviderStateOk();
+        boolean isCryptoConfigured = currentCryptoStatus != null;
         if (isCryptoConfigured) {
             boolean isEncrypting = currentCryptoStatus.isEncryptionEnabled();
             menu.findItem(R.id.openpgp_encrypt_enable).setVisible(!isEncrypting);
@@ -341,7 +336,6 @@ public class RecipientPresenter {
 
         String openPgpProvider = account.getOpenPgpProvider();
         recipientMvpView.setCryptoProvider(openPgpProvider);
-        openPgpApiManager.setOpenPgpProvider(openPgpProvider, openPgpCallback);
     }
 
     @SuppressWarnings("UnusedParameters")
@@ -414,15 +408,12 @@ public class RecipientPresenter {
     public void asyncUpdateCryptoStatus() {
         cachedCryptoStatus = null;
 
-        OpenPgpProviderState openPgpProviderState = openPgpApiManager.getOpenPgpProviderState();
-
         Long accountCryptoKey = account.getOpenPgpKey();
         if (accountCryptoKey == Account.NO_OPENPGP_KEY) {
             accountCryptoKey = null;
         }
 
         final ComposeCryptoStatus composeCryptoStatus = new ComposeCryptoStatus(
-                openPgpProviderState,
                 accountCryptoKey,
                 getAllRecipients(),
                 cryptoEnablePgpInline,
@@ -432,21 +423,11 @@ public class RecipientPresenter {
                 account.isOpenPgpEncryptSubject(),
                 currentCryptoMode);
 
-        if (openPgpProviderState != OpenPgpProviderState.OK) {
-            cachedCryptoStatus = composeCryptoStatus;
-            redrawCachedCryptoStatusIcon();
-            return;
-        }
-
         final String[] recipientAddresses = composeCryptoStatus.getRecipientAddressesAsArray();
 
         new AsyncTask<Void,Void,RecipientAutocryptStatus>() {
             @Override
             protected RecipientAutocryptStatus doInBackground(Void... voids) {
-                OpenPgpApi openPgpApi = openPgpApiManager.getOpenPgpApi();
-                if (openPgpApi == null) {
-                    return null;
-                }
                 return autocryptStatusInteractor.retrieveCryptoProviderRecipientStatus(openPgpApi, recipientAddresses);
             }
 
@@ -599,9 +580,6 @@ public class RecipientPresenter {
                 RecipientType recipientType = recipientTypeFromRequestCode(requestCode);
                 addRecipientFromContactUri(recipientType, data.getData());
                 break;
-            case OPENPGP_USER_INTERACTION:
-                openPgpApiManager.onUserInteractionResult();
-                break;
             case REQUEST_CODE_AUTOCRYPT:
                 asyncUpdateCryptoStatus();
                 break;
@@ -647,22 +625,7 @@ public class RecipientPresenter {
     }
 
     void onClickCryptoStatus() {
-        switch (openPgpApiManager.getOpenPgpProviderState()) {
-            case UNCONFIGURED:
-                Timber.e("click on crypto status while unconfigured - this should not really happen?!");
-                return;
-            case OK:
-                toggleEncryptionState(false);
-                return;
-            case UI_REQUIRED:
-                // TODO show openpgp settings
-                PendingIntent pendingIntent = openPgpApiManager.getUserInteractionPendingIntent();
-                recipientMvpView.launchUserInteractionPendingIntent(pendingIntent, OPENPGP_USER_INTERACTION);
-                break;
-            case UNINITIALIZED:
-            case ERROR:
-                openPgpApiManager.refreshConnection();
-        }
+        toggleEncryptionState(false);
     }
 
     private void toggleEncryptionState(boolean showGotIt) {
@@ -764,7 +727,7 @@ public class RecipientPresenter {
         pgpMessageBuilder.setCc(getCcAddresses());
         pgpMessageBuilder.setBcc(getBccAddresses());
 
-        pgpMessageBuilder.setOpenPgpApi(openPgpApiManager.getOpenPgpApi());
+        pgpMessageBuilder.setOpenPgpApi(openPgpApi);
         pgpMessageBuilder.setCryptoStatus(cryptoStatus);
     }
 
@@ -841,33 +804,6 @@ public class RecipientPresenter {
     public interface RecipientsChangedListener {
         void onRecipientsChanged();
     }
-
-    private final OpenPgpApiManagerCallback openPgpCallback = new OpenPgpApiManagerCallback() {
-        @Override
-        public void onOpenPgpProviderStatusChanged() {
-            if (openPgpApiManager.getOpenPgpProviderState() == OpenPgpProviderState.UI_REQUIRED) {
-                recipientMvpView.showErrorOpenPgpUserInteractionRequired();
-            }
-
-            asyncUpdateCryptoStatus();
-        }
-
-        @Override
-        public void onOpenPgpProviderError(OpenPgpProviderError error) {
-            switch (error) {
-                case ConnectionLost:
-                    openPgpApiManager.refreshConnection();
-                    break;
-                case VersionIncompatible:
-                    recipientMvpView.showErrorOpenPgpIncompatible();
-                    break;
-                case ConnectionFailed:
-                default:
-                    recipientMvpView.showErrorOpenPgpConnection();
-                    break;
-            }
-        }
-    };
 
     public enum CryptoMode {
         SIGN_ONLY,

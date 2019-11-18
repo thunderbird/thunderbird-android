@@ -104,8 +104,8 @@ import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.ThemeManager;
 import com.fsck.k9.ui.compose.QuotedMessageMvpView;
 import com.fsck.k9.ui.compose.QuotedMessagePresenter;
-import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.util.OpenPgpApi;
+import org.sufficientlysecure.keychain.remote.OpenPgpService;
 import timber.log.Timber;
 
 
@@ -295,9 +295,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         ComposePgpInlineDecider composePgpInlineDecider = new ComposePgpInlineDecider();
         ComposePgpEnableByDefaultDecider composePgpEnableByDefaultDecider = new ComposePgpEnableByDefaultDecider();
 
-        OpenPgpApiManager openPgpApiManager = new OpenPgpApiManager(getApplicationContext(), this);
+        OpenPgpApi openPgpApi = new OpenPgpApi(getApplicationContext(), new OpenPgpService(getApplicationContext()));
         recipientPresenter = new RecipientPresenter(getApplicationContext(), getSupportLoaderManager(),
-                openPgpApiManager, recipientMvpView, account, composePgpInlineDecider, composePgpEnableByDefaultDecider,
+                openPgpApi, recipientMvpView, account, composePgpInlineDecider, composePgpEnableByDefaultDecider,
                 AutocryptStatusInteractor.getInstance(), new ReplyToParser(), this,
                 DI.get(AutocryptDraftStateHeaderParser.class));
         recipientPresenter.asyncUpdateCryptoStatus();
