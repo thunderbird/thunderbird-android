@@ -106,11 +106,6 @@ public class PgpMessageBuilder extends MessageBuilder {
             return;
         }
 
-        if (!cryptoStatus.isProviderStateOk()) {
-            queueMessageBuildException(new MessagingException("OpenPGP Provider is not ready!"));
-            return;
-        }
-
         addAutocryptHeaderIfAvailable(openPgpKeyId);
         if (isDraft()) {
             addDraftStateHeader();

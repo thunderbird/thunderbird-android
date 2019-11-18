@@ -1,11 +1,10 @@
 package com.fsck.k9.crypto
 
-import androidx.lifecycle.LifecycleOwner
 import org.koin.dsl.module
-import org.openintents.openpgp.OpenPgpApiManager
+import org.openintents.openpgp.util.OpenPgpApi
+import org.sufficientlysecure.keychain.remote.OpenPgpService
 
 val openPgpModule = module {
-    factory { (lifecycleOwner: LifecycleOwner) ->
-        OpenPgpApiManager(get(), lifecycleOwner)
-    }
+    single { OpenPgpService(get()) }
+    single { OpenPgpApi(get(), get()) }
 }

@@ -8,15 +8,12 @@ import com.fsck.k9.message.AutocryptStatusInteractor
 import com.fsck.k9.message.AutocryptStatusInteractor.RecipientAutocryptStatus
 import com.fsck.k9.message.CryptoStatus
 import com.fsck.k9.view.RecipientSelectView.Recipient
-import org.openintents.openpgp.OpenPgpApiManager
-import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderState
 
 /** This is an immutable object which contains all relevant metadata entered
  * during email composition to apply cryptographic operations before sending
  * or saving as draft.
  */
 data class ComposeCryptoStatus(
-        private val openPgpProviderState: OpenPgpProviderState,
         override val openPgpKeyId: Long?,
         val recipientAddresses: List<String>,
         override val isPgpInlineModeEnabled: Boolean,
@@ -28,8 +25,7 @@ data class ComposeCryptoStatus(
         private val recipientAutocryptStatus: RecipientAutocryptStatus? = null
 ) : CryptoStatus {
 
-    constructor(openPgpProviderState: OpenPgpProviderState,
-                openPgpKeyId: Long?,
+    constructor(openPgpKeyId: Long?,
                 recipientAddresses: List<Recipient>,
                 isPgpInlineModeEnabled: Boolean,
                 isSenderPreferEncryptMutual: Boolean,
@@ -37,7 +33,7 @@ data class ComposeCryptoStatus(
                 isEncryptAllDrafts: Boolean,
                 isEncryptSubject: Boolean,
                 cryptoMode: CryptoMode) : this(
-            openPgpProviderState, openPgpKeyId,
+            openPgpKeyId,
             recipientAddresses.map { it.address.address },
             isPgpInlineModeEnabled, isSenderPreferEncryptMutual, isReplyToEncrypted, isEncryptAllDrafts, isEncryptSubject, cryptoMode)
 
@@ -48,12 +44,11 @@ data class ComposeCryptoStatus(
     private val isMutualAndNotDisabled = cryptoMode != CryptoMode.CHOICE_DISABLED && canEncryptAndIsMutualDefault()
     private val isReplyAndNotDisabled = cryptoMode != CryptoMode.CHOICE_DISABLED && isReplyToEncrypted
 
-    val isOpenPgpConfigured = openPgpProviderState != OpenPgpProviderState.UNCONFIGURED
+    val isOpenPgpConfigured = true
 
     override val isSignOnly = cryptoMode == CryptoMode.SIGN_ONLY
 
     override val isEncryptionEnabled = when {
-        openPgpProviderState == OpenPgpProviderState.UNCONFIGURED -> false
         isSignOnly -> false
         isExplicitlyEnabled -> true
         isMutualAndNotDisabled -> true
@@ -61,18 +56,9 @@ data class ComposeCryptoStatus(
         else -> false
     }
 
-    override fun isProviderStateOk() = openPgpProviderState == OpenPgpProviderState.OK
-
     override fun isUserChoice() = cryptoMode != CryptoMode.NO_CHOICE
     override fun isSigningEnabled() = cryptoMode == CryptoMode.SIGN_ONLY || isEncryptionEnabled
     val recipientAddressesAsArray = recipientAddresses.toTypedArray()
-
-    private val displayTypeFromProviderError = when (openPgpProviderState) {
-        OpenPgpApiManager.OpenPgpProviderState.OK -> null
-        OpenPgpApiManager.OpenPgpProviderState.UNCONFIGURED -> CryptoStatusDisplayType.UNCONFIGURED
-        OpenPgpApiManager.OpenPgpProviderState.UNINITIALIZED -> CryptoStatusDisplayType.UNINITIALIZED
-        OpenPgpApiManager.OpenPgpProviderState.ERROR, OpenPgpApiManager.OpenPgpProviderState.UI_REQUIRED -> CryptoStatusDisplayType.ERROR
-    }
 
     private val displayTypeFromAutocryptError = when (recipientAutocryptStatusType) {
         null, AutocryptStatusInteractor.RecipientAutocryptStatusType.ERROR -> CryptoStatusDisplayType.ERROR
@@ -98,15 +84,13 @@ data class ComposeCryptoStatus(
     }
 
     val displayType =
-            displayTypeFromProviderError
-                    ?: displayTypeFromAutocryptError
+            displayTypeFromAutocryptError
                     ?: displayTypeFromEnabledAutocryptStatus
                     ?: displayTypeFromSignOnly
                     ?: displayTypeFromEncryptionAvailable
                     ?: CryptoStatusDisplayType.UNAVAILABLE
 
     val specialModeDisplayType = when {
-        openPgpProviderState != OpenPgpProviderState.OK -> CryptoSpecialModeDisplayType.NONE
         isSignOnly && isPgpInlineModeEnabled -> CryptoSpecialModeDisplayType.SIGN_ONLY_PGP_INLINE
         isSignOnly -> CryptoSpecialModeDisplayType.SIGN_ONLY
         allRecipientsCanEncrypt() && isPgpInlineModeEnabled -> CryptoSpecialModeDisplayType.PGP_INLINE
@@ -116,14 +100,12 @@ data class ComposeCryptoStatus(
     val autocryptPendingIntent = recipientAutocryptStatus?.intent
 
     val sendErrorStateOrNull = when {
-        openPgpProviderState != OpenPgpProviderState.OK -> SendErrorState.PROVIDER_ERROR
         openPgpKeyId == null && (isEncryptionEnabled || isSignOnly) -> SendErrorState.KEY_CONFIG_ERROR
         isEncryptionEnabled && !allRecipientsCanEncrypt() -> SendErrorState.ENABLED_ERROR
         else -> null
     }
 
     val attachErrorStateOrNull = when {
-        openPgpProviderState == OpenPgpProviderState.UNCONFIGURED -> null
         isPgpInlineModeEnabled -> AttachErrorState.IS_INLINE
         else -> null
     }
@@ -139,7 +121,6 @@ data class ComposeCryptoStatus(
     override fun getRecipientAddresses() = recipientAddresses.toTypedArray()
 
     fun withRecipientAutocryptStatus(recipientAutocryptStatusType: RecipientAutocryptStatus) = ComposeCryptoStatus(
-            openPgpProviderState = openPgpProviderState,
             cryptoMode = cryptoMode,
             openPgpKeyId = openPgpKeyId,
             isPgpInlineModeEnabled = isPgpInlineModeEnabled,

@@ -34,7 +34,6 @@ import org.junit.Test
 import org.koin.core.inject
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito.*
-import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderState
 import org.openintents.openpgp.OpenPgpError
 import org.openintents.openpgp.util.OpenPgpApi
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource
@@ -49,7 +48,6 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
 
 
     private val defaultCryptoStatus = ComposeCryptoStatus(
-            OpenPgpProviderState.OK,
             TEST_KEY_ID,
             emptyList<RecipientSelectView.Recipient>(),
             false,
@@ -70,48 +68,6 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         BinaryTempFileBody.setTempDirectory(RuntimeEnvironment.application.cacheDir)
         `when`(autocryptOpenPgpApiInteractor.getKeyMaterialForKeyId(openPgpApi, TEST_KEY_ID, SENDER_EMAIL))
                 .thenReturn(AUTOCRYPT_KEY_MATERIAL)
-    }
-
-    @Test
-    @Throws(MessagingException::class)
-    fun build__withCryptoProviderUnconfigured__shouldThrow() {
-        val cryptoStatus = defaultCryptoStatus.copy(openPgpProviderState = OpenPgpProviderState.UNCONFIGURED)
-
-        pgpMessageBuilder.setCryptoStatus(cryptoStatus)
-
-        val mockCallback = mock(Callback::class.java)
-        pgpMessageBuilder.buildAsync(mockCallback)
-
-        verify(mockCallback).onMessageBuildException(any<MessagingException>())
-        verifyNoMoreInteractions(mockCallback)
-    }
-
-    @Test
-    @Throws(MessagingException::class)
-    fun build__withCryptoProviderUninitialized__shouldThrow() {
-        val cryptoStatus = defaultCryptoStatus.copy(openPgpProviderState = OpenPgpProviderState.UNINITIALIZED)
-
-        pgpMessageBuilder.setCryptoStatus(cryptoStatus)
-
-        val mockCallback = mock(Callback::class.java)
-        pgpMessageBuilder.buildAsync(mockCallback)
-
-        verify(mockCallback).onMessageBuildException(any<MessagingException>())
-        verifyNoMoreInteractions(mockCallback)
-    }
-
-    @Test
-    @Throws(MessagingException::class)
-    fun build__withCryptoProviderError__shouldThrow() {
-        val cryptoStatus = defaultCryptoStatus.copy(openPgpProviderState = OpenPgpProviderState.ERROR)
-
-        pgpMessageBuilder.setCryptoStatus(cryptoStatus)
-
-        val mockCallback = mock(Callback::class.java)
-        pgpMessageBuilder.buildAsync(mockCallback)
-
-        verify(mockCallback).onMessageBuildException(any<MessagingException>())
-        verifyNoMoreInteractions(mockCallback)
     }
 
     @Test

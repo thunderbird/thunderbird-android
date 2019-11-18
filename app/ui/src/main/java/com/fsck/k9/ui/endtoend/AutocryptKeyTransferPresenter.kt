@@ -9,15 +9,13 @@ import com.fsck.k9.Preferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import org.openintents.openpgp.OpenPgpApiManager
-import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback
-import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderError
+import org.openintents.openpgp.util.OpenPgpApi
 import timber.log.Timber
 
 
 class AutocryptKeyTransferPresenter internal constructor(
         lifecycleOwner: LifecycleOwner,
-        private val openPgpApiManager: OpenPgpApiManager,
+        private val openPgpApi: OpenPgpApi,
         private val preferences: Preferences,
         private val viewModel: AutocryptKeyTransferViewModel,
         private val view: AutocryptKeyTransferActivity
@@ -39,19 +37,7 @@ class AutocryptKeyTransferPresenter internal constructor(
 
         account = preferences.getAccount(accountUuid)
 
-        openPgpApiManager.setOpenPgpProvider(account.openPgpProvider, object : OpenPgpApiManagerCallback {
-            override fun onOpenPgpProviderStatusChanged() {
-                if (openPgpApiManager.openPgpProviderState == OpenPgpApiManager.OpenPgpProviderState.UI_REQUIRED) {
-                    view.finishWithProviderConnectError(openPgpApiManager.readableOpenPgpProviderName)
-                }
-            }
-
-            override fun onOpenPgpProviderError(error: OpenPgpProviderError) {
-                view.finishWithProviderConnectError(openPgpApiManager.readableOpenPgpProviderName)
-            }
-        })
-
-        view.setAddress(account.identities[0].email!!)
+        view.setAddress(account.email)
 
         viewModel.autocryptSetupTransferLiveEvent.recall()
     }
@@ -67,7 +53,7 @@ class AutocryptKeyTransferPresenter internal constructor(
             view.uxDelay()
             view.setLoadingStateGenerating()
 
-            viewModel.autocryptSetupMessageLiveEvent.loadAutocryptSetupMessageAsync(openPgpApiManager.openPgpApi, account)
+            viewModel.autocryptSetupMessageLiveEvent.loadAutocryptSetupMessageAsync(openPgpApi, account)
         }
     }
 
