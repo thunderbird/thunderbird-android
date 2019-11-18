@@ -4,14 +4,14 @@
     android:id="@+id/mail_list_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:background="@color/md_white_1000">
+    tools:background="#fff">
 
     <!-- A regular View breaks things for some reason, but a TextView does the job -->
     <TextView
         android:id="@+id/chip"
         android:layout_width="8dip"
         android:layout_height="match_parent"
-        tools:background="@color/orange"
+        tools:background="#0099CC"
         android:visibility="visible" />
 
     <RelativeLayout
