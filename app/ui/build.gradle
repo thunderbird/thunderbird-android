@@ -79,6 +79,10 @@ android {
         targetCompatibility javaVersion
     }
 
+    kotlinOptions {
+        jvmTarget = kotlinJvmVersion
+    }
+
     testOptions {
         unitTests {
             includeAndroidResources = true

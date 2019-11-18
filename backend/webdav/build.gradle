@@ -41,4 +41,8 @@ android {
         sourceCompatibility javaVersion
         targetCompatibility javaVersion
     }
+
+    kotlinOptions {
+        jvmTarget = kotlinJvmVersion
+    }
 }

@@ -15,6 +15,7 @@ dependencies {
     implementation "com.squareup.okio:okio:${versions.okio}"
     implementation "commons-io:commons-io:${versions.commonsIo}"
     implementation "androidx.core:core-ktx:${versions.coreKtx}"
+    implementation "androidx.work:work-runtime-ktx:${versions.androidxWorkManager}"
     implementation "org.jsoup:jsoup:1.11.2"
     implementation "com.squareup.moshi:moshi:1.2.0"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
@@ -53,6 +54,10 @@ android {
     compileOptions {
         sourceCompatibility javaVersion
         targetCompatibility javaVersion
+    }
+
+    kotlinOptions {
+        jvmTarget = kotlinJvmVersion
     }
 
     testOptions {
