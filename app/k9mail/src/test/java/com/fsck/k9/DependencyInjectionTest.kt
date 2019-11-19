@@ -3,14 +3,17 @@ package com.fsck.k9
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity
+import com.fsck.k9.ui.endtoend.AutocryptKeyTransferPresenter
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.Koin
-import org.koin.log.PrintLogger
+import org.koin.core.KoinApplication
+import org.koin.core.logger.PrintLogger
+import org.koin.core.parameter.parametersOf
 import org.koin.test.AutoCloseKoinTest
-import org.koin.test.dryRun
+import org.koin.test.check.checkModules
+import org.openintents.openpgp.OpenPgpApiManager
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
@@ -20,16 +23,15 @@ class DependencyInjectionTest : AutoCloseKoinTest() {
     val lifecycleOwner = mock<LifecycleOwner> {
         on { lifecycle } doReturn mock<Lifecycle>()
     }
+    val autocryptTransferView = mock<AutocryptKeyTransferActivity>()
 
     @Test
     fun testDependencyTree() {
-        Koin.logger = PrintLogger()
+        KoinApplication.logger = PrintLogger()
 
-        dryRun {
-            mapOf(
-                    "lifecycleOwner" to lifecycleOwner,
-                    "autocryptTransferView" to mock<AutocryptKeyTransferActivity>()
-            )
+        getKoin().checkModules {
+            create<OpenPgpApiManager> { parametersOf(lifecycleOwner) }
+            create<AutocryptKeyTransferPresenter> { parametersOf(lifecycleOwner, autocryptTransferView) }
         }
     }
 }

@@ -44,7 +44,6 @@ import org.jetbrains.annotations.NotNull;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.koin.standalone.StandAloneContext;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Captor;
@@ -158,7 +157,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     public void tearDown() throws Exception {
         removeAccountsFromPreferences();
         controller.stop();
-        StandAloneContext.INSTANCE.closeKoin();
+        autoClose();
     }
 
     @Test

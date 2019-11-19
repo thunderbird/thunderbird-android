@@ -1,8 +1,8 @@
 package com.fsck.k9.storage
 
 import com.fsck.k9.mailstore.SchemaDefinitionFactory
-import org.koin.dsl.module.applicationContext
+import org.koin.dsl.module
 
-val storageModule = applicationContext {
-    bean { K9SchemaDefinitionFactory() as SchemaDefinitionFactory }
+val storageModule = module {
+    single<SchemaDefinitionFactory> { K9SchemaDefinitionFactory() }
 }

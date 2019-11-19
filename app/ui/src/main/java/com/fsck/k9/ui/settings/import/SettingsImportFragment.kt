@@ -16,8 +16,8 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.ui.observeNotNull
 import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter
 import kotlinx.android.synthetic.main.fragment_settings_import.*
-import org.koin.android.architecture.ext.sharedViewModel
-import org.koin.android.architecture.ext.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsImportFragment : Fragment() {
     private val viewModel: SettingsImportViewModel by viewModel()
@@ -164,7 +164,7 @@ class SettingsImportFragment : Fragment() {
                 targetFragment = this,
                 requestCode = REQUEST_PASSWORD_PROMPT
         )
-        dialogFragment.show(fragmentManager, null)
+        dialogFragment.show(requireFragmentManager(), null)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

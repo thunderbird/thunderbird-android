@@ -10,12 +10,17 @@ dependencies {
 
     api project(':plugins:openpgp-api-lib:openpgp-api')
 
-    api "org.koin:koin-android-architecture:${versions.koin}"
+    api "org.koin:koin-androidx-viewmodel:${versions.koin}"
+    implementation "org.koin:koin-java:${versions.koin}"
+
+    api "androidx.annotation:annotation:${versions.androidxAnnotation}"
 
     implementation "com.squareup.okio:okio:${versions.okio}"
     implementation "commons-io:commons-io:${versions.commonsIo}"
     implementation "androidx.core:core-ktx:${versions.coreKtx}"
     implementation "androidx.work:work-runtime-ktx:${versions.androidxWorkManager}"
+    implementation "androidx.fragment:fragment:${versions.androidxFragment}"
+    implementation "androidx.localbroadcastmanager:localbroadcastmanager:${versions.androidxLocalBroadcastManager}"
     implementation "org.jsoup:jsoup:1.11.2"
     implementation "com.squareup.moshi:moshi:1.2.0"
     implementation "com.jakewharton.timber:timber:${versions.timber}"

@@ -5,13 +5,13 @@ import com.fsck.k9.ui.folders.FoldersLiveDataFactory
 import com.fsck.k9.ui.helper.DisplayHtmlUiFactory
 import com.fsck.k9.ui.helper.HtmlSettingsProvider
 import com.fsck.k9.ui.helper.HtmlToSpanned
-import org.koin.dsl.module.applicationContext
+import org.koin.dsl.module
 
-val uiModule = applicationContext {
-    bean { FolderNameFormatter(get()) }
-    bean { HtmlToSpanned() }
-    bean { ThemeManager(get()) }
-    bean { HtmlSettingsProvider(get()) }
-    bean { DisplayHtmlUiFactory(get()) }
-    bean { FoldersLiveDataFactory(get(), get()) }
+val uiModule = module {
+    single { FolderNameFormatter(get()) }
+    single { HtmlToSpanned() }
+    single { ThemeManager(get()) }
+    single { HtmlSettingsProvider(get()) }
+    single { DisplayHtmlUiFactory(get()) }
+    single { FoldersLiveDataFactory(get(), get()) }
 }

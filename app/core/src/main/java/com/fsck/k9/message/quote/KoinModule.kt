@@ -1,8 +1,8 @@
 package com.fsck.k9.message.quote
 
-import org.koin.dsl.module.applicationContext
+import org.koin.dsl.module
 
-val quoteModule = applicationContext {
+val quoteModule = module {
     factory { QuoteHelper(get()) }
     factory { TextQuoteCreator(get(), get()) }
 }

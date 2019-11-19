@@ -20,8 +20,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.koin.standalone.inject
-
+import org.koin.core.inject
 
 class K9BackendFolderTest : K9RobolectricTest() {
     val preferences: Preferences by inject()
