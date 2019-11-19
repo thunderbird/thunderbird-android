@@ -5,7 +5,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender.SendIntentException
-import android.os.Build
 import android.os.Bundle
 import android.transition.TransitionInflater
 import android.transition.TransitionManager
@@ -139,10 +138,8 @@ class AutocryptKeyTransferActivity : K9Activity() {
     }
 
     private fun setupSceneTransition() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val transition = TransitionInflater.from(this).inflateTransition(R.transition.transfer_transitions)
-            TransitionManager.beginDelayedTransition(findViewById(android.R.id.content), transition)
-        }
+        val transition = TransitionInflater.from(this).inflateTransition(R.transition.transfer_transitions)
+        TransitionManager.beginDelayedTransition(findViewById(android.R.id.content), transition)
     }
 
     fun finishAsCancelled() {
