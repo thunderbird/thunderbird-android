@@ -3,7 +3,7 @@ buildscript {
         buildConfig = [
                 'compileSdk': 29,
                 'targetSdk': 28,
-                'minSdk': 19,
+                'minSdk': 21,
                 'buildTools': '29.0.2',
                 'robolectricSdk': 28
         ]
