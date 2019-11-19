@@ -3,7 +3,7 @@ buildscript {
         buildConfig = [
                 'compileSdk': 29,
                 'targetSdk': 28,
-                'minSdk': 19,
+                'minSdk': 21,
                 'buildTools': '29.0.2',
                 'robolectricSdk': 28
         ]
@@ -25,9 +25,7 @@ buildscript {
                 'koin': '0.9.1',
                 'commonsIo': '2.4',
                 'mime4j': '0.8.1',
-
-                // Note: Only use 3.12.x versions until we raise minSdkVersion to 21
-                'okhttp': '3.12.1',
+                'okhttp': '4.2.1',
 
                 'androidxTestRunner': '1.1.1',
                 'junit': '4.12',

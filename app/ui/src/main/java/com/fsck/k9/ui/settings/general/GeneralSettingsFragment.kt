@@ -4,8 +4,6 @@ import android.os.Build
 import android.os.Bundle
 import androidx.preference.ListPreference
 import com.fsck.k9.ui.R
-import com.fsck.k9.notification.NotificationController
-import com.fsck.k9.ui.settings.remove
 import com.fsck.k9.ui.withArguments
 import com.takisoft.preferencex.PreferenceFragmentCompat
 import org.koin.android.ext.android.inject
@@ -21,7 +19,6 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
 
         initializeTheme()
         initializeStartInUnifiedInbox()
-        initializeLockScreenNotificationVisibility()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -47,13 +44,6 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
-    private fun initializeLockScreenNotificationVisibility() {
-        val lockScreenNotificationsSupported = NotificationController.platformSupportsLockScreenNotifications()
-        if (!lockScreenNotificationsSupported) {
-            findPreference(PREFERENCE_LOCK_SCREEN_NOTIFICATION_VISIBILITY)?.apply { remove() }
-        }
-    }
-
     private fun hideSpecialAccounts() = dataStore.getBoolean(PREFERENCE_HIDE_SPECIAL_ACCOUNTS, false)
 
 
@@ -61,7 +51,6 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         private const val PREFERENCE_THEME = "theme"
         private const val PREFERENCE_START_IN_UNIFIED_INBOX = "start_integrated_inbox"
         private const val PREFERENCE_HIDE_SPECIAL_ACCOUNTS = "hide_special_accounts"
-        private const val PREFERENCE_LOCK_SCREEN_NOTIFICATION_VISIBILITY = "lock_screen_notification_visibility"
 
         fun create(rootKey: String? = null) = GeneralSettingsFragment().withArguments(ARG_PREFERENCE_ROOT to rootKey)
     }
