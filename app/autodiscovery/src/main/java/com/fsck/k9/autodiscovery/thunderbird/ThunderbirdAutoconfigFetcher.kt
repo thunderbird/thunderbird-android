@@ -15,7 +15,7 @@ class ThunderbirdAutoconfigFetcher(private val okHttpClient: OkHttpClient) {
         val response = okHttpClient.newCall(request).execute()
 
         return if (response.isSuccessful) {
-            response.body()?.byteStream()
+            response.body?.byteStream()
         } else {
             null
         }
