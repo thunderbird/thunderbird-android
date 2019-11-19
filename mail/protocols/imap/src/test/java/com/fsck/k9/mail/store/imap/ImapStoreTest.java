@@ -242,6 +242,31 @@ public class ImapStoreTest {
     }
 
     @Test
+    public void getPersonalNamespaces_withDuplicateFolderNames_shouldRemoveDuplicatesAndKeepFolderType()
+            throws Exception {
+        ImapConnection imapConnection = mock(ImapConnection.class);
+        when(imapConnection.hasCapability(Capabilities.LIST_EXTENDED)).thenReturn(true);
+        when(imapConnection.hasCapability(Capabilities.SPECIAL_USE)).thenReturn(true);
+        List<ImapResponse> imapResponses = Arrays.asList(
+                createImapResponse("* LIST () \".\" \"INBOX\""),
+                createImapResponse("* LIST (\\HasNoChildren) \".\" \"Junk\""),
+                createImapResponse("* LIST (\\Junk) \".\" \"Junk\""),
+                createImapResponse("* LIST (\\HasNoChildren) \".\" \"Junk\""),
+                createImapResponse("5 OK Success")
+        );
+        when(imapConnection.executeSimpleCommand("LIST \"\" \"*\" RETURN (SPECIAL-USE)")).thenReturn(imapResponses);
+        imapStore.enqueueImapConnection(imapConnection);
+
+        List<ImapFolder> result = imapStore.getPersonalNamespaces();
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        ImapFolder junkFolder = getFolderByName(result, "Junk");
+        assertNotNull(junkFolder);
+        assertEquals(FolderType.SPAM, junkFolder.getType());
+    }
+
+    @Test
     public void getPersonalNamespaces_withoutException_shouldLeaveImapConnectionOpen() throws Exception {
         ImapConnection imapConnection = mock(ImapConnection.class);
         List<ImapResponse> imapResponses = Collections.singletonList(createImapResponse("5 OK Success"));
@@ -365,6 +390,15 @@ public class ImapStoreTest {
         }
 
         return folderNames;
+    }
+
+    private ImapFolder getFolderByName(List<ImapFolder> result, String folderName) {
+        for (ImapFolder imapFolder : result) {
+            if (imapFolder.getName().equals(folderName)) {
+                return imapFolder;
+            }
+        }
+        return null;
     }
 
     private Map<String, ImapFolder> toFolderMap(List<ImapFolder> folders) {
