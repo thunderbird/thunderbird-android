@@ -11,7 +11,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.net.SSLCertificateSocketFactory;
-import android.os.Build;
 import android.text.TextUtils;
 
 import com.fsck.k9.mail.MessagingException;
@@ -33,33 +32,6 @@ import timber.log.Timber;
 public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
     private static final String[] ENABLED_CIPHERS;
     private static final String[] ENABLED_PROTOCOLS;
-
-    private static final String[] ORDERED_KNOWN_CIPHERS = {
-            "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
-            "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
-            "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
-            "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
-            "TLS_DHE_RSA_WITH_AES_256_GCM_SHA384",
-            "TLS_DHE_RSA_WITH_AES_128_GCM_SHA256",
-            "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
-            "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA",
-            "TLS_DHE_RSA_WITH_AES_256_CBC_SHA",
-            "TLS_DHE_DSS_WITH_AES_256_CBC_SHA",
-            "TLS_ECDH_RSA_WITH_AES_256_CBC_SHA",
-            "TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA",
-            "TLS_RSA_WITH_AES_256_CBC_SHA",
-            "TLS_ECDHE_RSA_WITH_3DES_EDE_CBC_SHA",
-            "TLS_ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA",
-            "TLS_ECDH_RSA_WITH_3DES_EDE_CBC_SHA",
-            "TLS_ECDH_ECDSA_WITH_3DES_EDE_CBC_SHA",
-            "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
-            "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA",
-            "TLS_DHE_RSA_WITH_AES_128_CBC_SHA",
-            "TLS_DHE_DSS_WITH_AES_128_CBC_SHA",
-            "TLS_ECDH_RSA_WITH_AES_128_CBC_SHA",
-            "TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA",
-            "TLS_RSA_WITH_AES_128_CBC_SHA",
-    };
 
     private static final String[] BLACKLISTED_CIPHERS = {
             "SSL_RSA_WITH_DES_CBC_SHA",
@@ -83,10 +55,6 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
             "TLS_ECDH_anon_WITH_NULL_SHA",
             "TLS_ECDH_anon_WITH_RC4_128_SHA",
             "TLS_RSA_WITH_NULL_SHA256"
-    };
-
-    private static final String[] ORDERED_KNOWN_PROTOCOLS = {
-            "TLSv1.2", "TLSv1.1", "TLSv1"
     };
 
     private static final String[] BLACKLISTED_PROTOCOLS = {
@@ -114,18 +82,8 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
             Timber.e(e, "Error getting information about available SSL/TLS ciphers and protocols");
         }
 
-        if (hasWeakSslImplementation()) {
-            ENABLED_CIPHERS = (enabledCiphers == null) ? null :
-                    reorder(enabledCiphers, ORDERED_KNOWN_CIPHERS, BLACKLISTED_CIPHERS);
-            ENABLED_PROTOCOLS = (supportedProtocols == null) ? null :
-                    reorder(supportedProtocols, ORDERED_KNOWN_PROTOCOLS, BLACKLISTED_PROTOCOLS);
-        } else {
-            ENABLED_CIPHERS = (enabledCiphers == null) ? null :
-                    remove(enabledCiphers, BLACKLISTED_CIPHERS);
-            ENABLED_PROTOCOLS = (supportedProtocols == null) ? null :
-                    remove(supportedProtocols, BLACKLISTED_PROTOCOLS);
-        }
-
+        ENABLED_CIPHERS = (enabledCiphers == null) ? null : remove(enabledCiphers, BLACKLISTED_CIPHERS);
+        ENABLED_PROTOCOLS = (supportedProtocols == null) ? null : remove(supportedProtocols, BLACKLISTED_PROTOCOLS);
     }
 
     private final Context context;
@@ -134,36 +92,6 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
     public DefaultTrustedSocketFactory(Context context, TrustManagerFactory trustManagerFactory) {
         this.context = context;
         this.trustManagerFactory = trustManagerFactory;
-    }
-
-    private static boolean hasWeakSslImplementation() {
-        return android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP;
-    }
-
-    private static String[] reorder(String[] enabled, String[] known, String[] blacklisted) {
-        List<String> unknown = new ArrayList<>();
-        Collections.addAll(unknown, enabled);
-
-        // Remove blacklisted items
-        if (blacklisted != null) {
-            for (String item : blacklisted) {
-                unknown.remove(item);
-            }
-        }
-
-        // Order known items
-        List<String> result = new ArrayList<>();
-        for (String item : known) {
-            if (unknown.remove(item)) {
-                result.add(item);
-            }
-        }
-
-        // Add unknown items at the end. This way security won't get worse when unknown ciphers
-        // start showing up in the future.
-        result.addAll(unknown);
-
-        return result.toArray(new String[0]);
     }
 
     protected static String[] remove(String[] enabled, String[] blacklisted) {
