@@ -322,7 +322,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     void progress(final boolean progress) {
-        fragmentListener.enableActionBarProgress(progress);
         if (swipeRefreshLayout != null && !progress) {
             swipeRefreshLayout.setRefreshing(false);
         }
@@ -2280,7 +2279,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     public interface MessageListFragmentListener {
-        void enableActionBarProgress(boolean enable);
         void setMessageListProgress(int level);
         void showThread(Account account, String folderServerId, long rootId);
         void showMoreFromSameSender(String senderAddress);

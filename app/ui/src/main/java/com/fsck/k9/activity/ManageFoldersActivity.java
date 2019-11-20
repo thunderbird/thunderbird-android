@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -76,8 +75,6 @@ public class ManageFoldersActivity extends K9ListActivity {
     private FontSizes fontSizes = K9.getFontSizes();
     private Context context;
 
-    private MenuItem refreshMenuItem;
-    private View actionBarProgressView;
     private ActionBar actionBar;
 
     class FolderListHandler extends Handler {
@@ -131,22 +128,7 @@ public class ManageFoldersActivity extends K9ListActivity {
         }
 
         public void progress(final boolean progress) {
-            // Make sure we don't try this before the menu is initialized
-            // this could happen while the activity is initialized.
-            if (refreshMenuItem == null) {
-                return;
-            }
-
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    if (progress) {
-                        refreshMenuItem.setActionView(actionBarProgressView);
-                    } else {
-                        refreshMenuItem.setActionView(null);
-                    }
-                }
-            });
-
+            //TODO: Display progress indicator
         }
 
         public void dataChanged() {
@@ -175,7 +157,6 @@ public class ManageFoldersActivity extends K9ListActivity {
 
         setLayout(R.layout.folder_list);
         initializeActionBar();
-        actionBarProgressView = getActionBarProgressView();
         listView = getListView();
         listView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         listView.setFastScrollEnabled(true);
@@ -201,11 +182,6 @@ public class ManageFoldersActivity extends K9ListActivity {
              */
             return;
         }
-    }
-
-    @SuppressLint("InflateParams")
-    private View getActionBarProgressView() {
-        return getLayoutInflater().inflate(R.layout.actionbar_indeterminate_progress_actionview, null);
     }
 
     private void initializeActionBar() {
@@ -383,7 +359,6 @@ public class ManageFoldersActivity extends K9ListActivity {
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.folder_list_option, menu);
-        refreshMenuItem = menu.findItem(R.id.check_mail);
         configureFolderSearchView(menu);
         return true;
     }
