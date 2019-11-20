@@ -32,8 +32,9 @@ import com.fsck.k9.ui.settings.remove
 import com.fsck.k9.ui.settings.removeEntry
 import com.fsck.k9.ui.withArguments
 import com.takisoft.preferencex.PreferenceFragmentCompat
-import org.koin.android.architecture.ext.sharedViewModel
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.core.parameter.parametersOf
 import org.openintents.openpgp.OpenPgpApiManager
 import org.openintents.openpgp.util.OpenPgpKeyPreference
 import org.openintents.openpgp.util.OpenPgpProviderUtil
@@ -42,7 +43,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     private val viewModel: AccountSettingsViewModel by sharedViewModel()
     private val dataStoreFactory: AccountSettingsDataStoreFactory by inject()
     private val storageManager: StorageManager by inject()
-    private val openPgpApiManager: OpenPgpApiManager by inject(parameters = { mapOf("lifecycleOwner" to this) })
+    private val openPgpApiManager: OpenPgpApiManager by inject { parametersOf(this) }
     private val messagingController: MessagingController by inject()
     private val accountRemover: BackgroundAccountRemover by inject()
     private lateinit var dataStore: AccountSettingsDataStore
@@ -335,7 +336,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
                 getString(R.string.cancel_action)
         )
         dialogFragment.setTargetFragment(this, REQUEST_DELETE_ACCOUNT)
-        dialogFragment.show(fragmentManager, TAG_DELETE_ACCOUNT_CONFIRMATION)
+        dialogFragment.show(requireFragmentManager(), TAG_DELETE_ACCOUNT_CONFIRMATION)
     }
 
     override fun doPositiveClick(dialogId: Int) {

@@ -31,7 +31,7 @@ import org.junit.Assert
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
-import org.koin.standalone.inject
+import org.koin.core.inject
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito.*
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderState

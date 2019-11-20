@@ -1,7 +1,7 @@
 package com.fsck.k9.helper
 
-import org.koin.dsl.module.applicationContext
+import org.koin.dsl.module
 
-val helperModule = applicationContext {
-    bean { ClipboardManager(get()) }
+val helperModule = module {
+    single { ClipboardManager(get()) }
 }

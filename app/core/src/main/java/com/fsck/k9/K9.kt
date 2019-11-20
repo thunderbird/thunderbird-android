@@ -9,12 +9,10 @@ import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
-object K9 : KoinComponent {
+object K9 : EarlyInit {
     private val preferences: Preferences by inject()
 
 

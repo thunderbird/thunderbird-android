@@ -13,8 +13,8 @@ import com.fsck.k9.ui.helper.HtmlToSpanned
 import com.fsck.k9.ui.observeNotNull
 import com.fsck.k9.ui.settings.import.SettingsImportResultViewModel
 import com.fsck.k9.ui.settings.import.SettingsImportSuccess
-import org.koin.android.architecture.ext.sharedViewModel
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class WelcomeFragment : Fragment() {
     private val htmlToSpanned: HtmlToSpanned by inject()

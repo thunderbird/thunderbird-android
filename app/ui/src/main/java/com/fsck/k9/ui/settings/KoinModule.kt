@@ -9,25 +9,26 @@ import com.fsck.k9.ui.settings.general.GeneralSettingsDataStore
 import com.fsck.k9.ui.settings.import.AccountActivator
 import com.fsck.k9.ui.settings.import.SettingsImportResultViewModel
 import com.fsck.k9.ui.settings.import.SettingsImportViewModel
-import org.koin.android.architecture.ext.viewModel
-import org.koin.dsl.module.applicationContext
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.qualifier.named
+import org.koin.dsl.module
 import java.util.concurrent.Executors
 
-val settingsUiModule = applicationContext {
-    bean { AccountsLiveData(get()) }
+val settingsUiModule = module {
+    single { AccountsLiveData(get()) }
     viewModel { SettingsViewModel(get()) }
 
-    bean { GeneralSettingsDataStore(get(), get(), get("SaveSettingsExecutorService"), get()) }
-    bean("SaveSettingsExecutorService") {
+    single { GeneralSettingsDataStore(get(), get(), get(named("SaveSettingsExecutorService")), get()) }
+    single(named("SaveSettingsExecutorService")) {
         Executors.newSingleThreadExecutor(NamedThreadFactory("SaveSettings"))
     }
 
     viewModel { AccountSettingsViewModel(get(), get()) }
-    bean { AccountSettingsDataStoreFactory(get(), get(), get("SaveSettingsExecutorService")) }
+    single { AccountSettingsDataStoreFactory(get(), get(), get(named("SaveSettingsExecutorService"))) }
 
     viewModel { SettingsExportViewModel(get(), get()) }
     viewModel { SettingsImportViewModel(get(), get()) }
     viewModel { SettingsImportResultViewModel() }
 
-    bean { AccountActivator(get(), get(), get(), get()) }
+    single { AccountActivator(get(), get(), get(), get()) }
 }

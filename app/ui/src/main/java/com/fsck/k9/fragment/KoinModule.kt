@@ -1,7 +1,7 @@
 package com.fsck.k9.fragment
 
-import org.koin.dsl.module.applicationContext
+import org.koin.dsl.module
 
-val fragmentModule = applicationContext {
-    bean { SortTypeToastProvider() }
+val fragmentModule = module {
+    single { SortTypeToastProvider() }
 }

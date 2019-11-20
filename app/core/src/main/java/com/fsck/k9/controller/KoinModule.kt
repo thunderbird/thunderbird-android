@@ -1,8 +1,11 @@
 package com.fsck.k9.controller
 
-import org.koin.dsl.module.applicationContext
+import org.koin.core.qualifier.named
+import org.koin.dsl.module
 
-val controllerModule = applicationContext {
-    bean { MessagingController(get(), get(), get(), get(), get(), get(), get(), get(), get("controllerExtensions")) }
-    bean { DefaultUnreadMessageCountProvider(get(), get(), get(), get()) as UnreadMessageCountProvider }
+val controllerModule = module {
+    single {
+        MessagingController(get(), get(), get(), get(), get(), get(), get(), get(), get(named("controllerExtensions")))
+    }
+    single<UnreadMessageCountProvider> { DefaultUnreadMessageCountProvider(get(), get(), get(), get()) }
 }

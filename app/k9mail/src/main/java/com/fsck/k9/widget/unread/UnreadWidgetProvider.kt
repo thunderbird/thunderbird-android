@@ -7,12 +7,12 @@ import android.content.Context
 import android.content.Intent
 import android.view.View
 import android.widget.RemoteViews
+import com.fsck.k9.EarlyInit
 import com.fsck.k9.R
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
+import com.fsck.k9.inject
 import timber.log.Timber
 
-class UnreadWidgetProvider : AppWidgetProvider(), KoinComponent {
+class UnreadWidgetProvider : AppWidgetProvider(), EarlyInit {
     private val repository: UnreadWidgetRepository by inject()
 
 

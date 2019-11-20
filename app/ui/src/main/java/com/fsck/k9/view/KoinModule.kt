@@ -1,7 +1,7 @@
 package com.fsck.k9.view
 
-import org.koin.dsl.module.applicationContext
+import org.koin.dsl.module
 
-val viewModule = applicationContext {
-    bean { WebViewConfigProvider(get()) }
+val viewModule = module {
+    single { WebViewConfigProvider(get()) }
 }
