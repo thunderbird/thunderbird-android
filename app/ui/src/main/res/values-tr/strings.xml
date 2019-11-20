@@ -6,11 +6,16 @@
   <string name="app_name">K-9 Posta</string>
   <string name="shortcuts_title">K-9 Hesaplar</string>
   <string name="unread_widget_label">K-9 Okunmamış</string>
-  <string name="remote_control_label">K-9 Posta\'ya uzaktan erişim</string>
-  <string name="remote_control_desc">Bu programın K-9 Mail etkinliğini ve ayarlarını kontrol edebilmesine izin ver.</string>
   <!--Used in the about dialog-->
   <string name="app_authors">K-9 Köpek Gezdiricileri</string>
+  <string name="app_authors_url">https://github.com/k9mail/k-9/graphs/contributors</string>
   <string name="app_copyright_fmt">Telif Hakkı 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Telif hakkı 2006-<xliff:g>%s</xliff:g> Android Açık Kaynak Projesi.</string>
+  <string name="source_code">Kaynak</string>
+  <string name="app_source_url">https://github.com/k9mail/k-9</string>
+  <string name="app_license">Apache Lisansı Sürüm 2.0</string>
+  <string name="app_license_url">https://www.apache.org/licenses/LICENSE-2.0</string>
+  <string name="about_libraries">Kütüphaneler</string>
+  <string name="license">Lisans</string>
   <!--Welcome message-->
   <string name="welcome_message_title">K-9 Posta\'ya Hoşgeldiniz</string>
   <string name="accounts_welcome"><![CDATA[
@@ -46,18 +51,17 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="default_signature">-- \nAndroid için K-9 Posta\'dan gönderildi. Lütfen bu kısa notumu mazur görün.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Hesap \"<xliff:g id="account">%s</xliff:g>\" K-9 Mail\'den kaldırılacak.</string>
-  <string name="account_recreate_dlg_instructions_fmt">Bütün bilgi \"<xliff:g id="account">%s</xliff:g>\" için K-9 Mail\'den kaldırılacak, fakat hesap ayarları korunacak.</string>
-  <string name="account_clear_dlg_instructions_fmt">Bütün mesajlar \"<xliff:g id="account">%s</xliff:g>\" içinden ve K-9 Mail\'den kaldırılacak, fakat hesap ayarları korunacak.</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_libraries">K-9 posta kaynak kodları içerir: <xliff:g id="app_libraries_list">%s</xliff:g></string>
+  <string name="authors">Yapanlar</string>
+  <string name="app_revision">Gözden Geçirme Bilgisi</string>
   <string name="read_messages_label">E-postaları oku</string>
   <string name="read_messages_desc">Bu uygulamaya E-postalarınızı okumaya izin ver.</string>
   <string name="delete_messages_label">E-postaları sil</string>
   <string name="delete_messages_desc">Bu uygulamaya E-postalarınızı silmeye izin ver.</string>
+  <string name="about_title">K-9 Mail Hakkında</string>
   <string name="accounts_title">Hesaplar</string>
   <string name="folders_title">Klasörler</string>
   <string name="advanced">Gelişmiş</string>
-  <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
   <string name="compose_title_compose">Oluştur</string>
   <string name="compose_title_reply">Yanıtla</string>
   <string name="compose_title_reply_all">Tümünü Yanıtla</string>
@@ -70,11 +74,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="status_sending_account">Gönderiyor <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_processing_account">İşlem <xliff:g id="account">%s</xliff:g><xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
-  <string name="status_next_poll">Sonraki alım <xliff:g id="nexttime">%s</xliff:g></string>
-  <string name="status_no_network">Eşzamanlama devre dışı - Ağ yok</string>
-  <string name="status_no_background">Eşzamanlama devre dışı - Artalan etkinliği yok</string>
-  <string name="status_poll_and_push_disabled">İterek yoklama devre dışı</string>
-  <string name="status_syncing_blocked">Eşzamanlama engelli</string>
   <string name="status_syncing_off">Eşzamanlama devredışı</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seçildi</string>
   <string name="next_action">İleri</string>
@@ -109,11 +108,9 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="search_action">Arama</string>
   <string name="search_results">Arama Sonuçları</string>
   <string name="preferences_action">Ayarlar</string>
+  <string name="folders_action">Klasörleri yönet</string>
   <string name="account_settings_action">Hesap Ayarları</string>
-  <string name="folder_settings_action">Klasör Ayarları</string>
-  <string name="global_settings_action">Genel Ayarlar</string>
   <string name="remove_account_action">Hesabı Kaldır</string>
-  <string name="clear_pending_action">Bekleyen işlemleri temizle (riskli!)</string>
   <string name="mark_as_read_action">Okundu olarak işaretle</string>
   <string name="send_alternate_action">Paylaş</string>
   <string name="send_alternate_chooser_title">Gönderici Seç</string>
@@ -135,14 +132,11 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="add_attachment_action">Eki ekle</string>
   <string name="empty_trash_action">Çöpü Boşalt</string>
   <string name="expunge_action">Çıkar</string>
-  <string name="clear_local_folder_action">Yerel iletileri temizle</string>
   <string name="about_action">Hakkında</string>
   <string name="prefs_title">Ayarlar</string>
-  <string name="accounts_context_menu_title">Hesap Seçenekleri</string>
   <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
   <string name="general_no_subject">(Konu yok)</string>
   <string name="general_no_sender">Gönderen yok</string>
-  <string name="status_loading">Seçim</string>
   <string name="status_loading_more">İletiler yükleniyor\u2026</string>
   <string name="status_network_error">Bağlantı hatası</string>
   <string name="status_invalid_id_error">İleti bulunamadı</string>
@@ -155,8 +149,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="abbrev_bytes">B</string>
   <string name="account_size_changed">\"<xliff:g id="account">%s</xliff:g>\" hesabı <xliff:g id="oldSize">%s</xliff:g> den <xliff:g id="newSize">%s</xliff:g>\'e küçüldü</string>
   <string name="compacting_account">Hesap sıkıştırılıyor \"<xliff:g id="account">%s</xliff:g>\"</string>
-  <string name="clearing_account">Hesap temizleniyor \"<xliff:g id="account">%s</xliff:g>\"</string>
-  <string name="recreating_account">Hesap yeniden oluşturuluyor \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Yeni posta</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> yeni mesaj</item>
@@ -182,20 +174,16 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="notification_bg_send_title">Posta gönderiliyor</string>
   <string name="notification_bg_title_separator">:</string>
   <string name="notification_channel_messages_title">İletiler</string>
+  <string name="notification_channel_messages_description">İletilerle ilgili bildirimler</string>
   <string name="notification_channel_miscellaneous_title">Çeşitli</string>
+  <string name="notification_channel_miscellaneous_description">Hata vb. çeşitli bildirimler.</string>
   <string name="special_mailbox_name_inbox">Gelen Kutusu</string>
   <string name="special_mailbox_name_outbox">Giden Kutusu</string>
   <string name="special_mailbox_name_drafts">Taslaklar</string>
   <string name="special_mailbox_name_trash">Çöp</string>
   <string name="special_mailbox_name_sent">Gönderilen</string>
-  <string name="special_mailbox_name_archive">Arşiv</string>
-  <string name="special_mailbox_name_spam">Gereksiz posta</string>
-  <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Taslaklar)</string>
-  <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Çöp)</string>
-  <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Gönderilen)</string>
-  <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arşiv)</string>
-  <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
   <string name="send_failure_subject">Bazı iletilerin gönderilmesi başarısız</string>
+  <string name="version">Sürüm</string>
   <string name="debug_enable_debug_logging_title">Onarma günlüğünü etkinleştir</string>
   <string name="debug_enable_debug_logging_summary">Extra tanı bilgisini günlüğe kaydet</string>
   <string name="debug_enable_sensitive_logging_title">Hassas bilgi günlüğü tut</string>
@@ -227,6 +215,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="message_view_bcc_label">Gizli Kopya:</string>
   <string name="message_view_attachment_view_action">Aç</string>
   <string name="message_view_attachment_download_action">Kaydet</string>
+  <string name="message_view_status_attachment_not_saved">Eklenti kaydedilemedi</string>
   <string name="message_view_show_pictures_action">Resimleri göster</string>
   <string name="message_view_no_viewer"><xliff:g id="mimetype">%s</xliff:g> için görüntüleyici bulunamadı.</string>
   <string name="message_view_download_remainder">Mesajın tamamını indir</string>
@@ -242,8 +231,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="message_saved_toast">Mesaj taslak olarak kaydedildi</string>
   <string name="global_settings_flag_label">Yıldızları Göster</string>
   <string name="global_settings_flag_summary">Yıldız bayraklı mesajları gösterir</string>
-  <string name="global_settings_checkbox_label">Çoklu seçim işaret kutuları</string>
-  <string name="global_settings_checkbox_summary">Çoklu seçim işaret kutularını daima göster</string>
   <string name="global_settings_preview_lines_label">Önizleme hatları</string>
   <string name="global_settings_show_correspondent_names_label">İlgili isimleri göster</string>
   <string name="global_settings_show_correspondent_names_summary">İlgili e-posta adresleri yerine isimlerini göster</string>
@@ -252,7 +239,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="global_settings_show_contact_name_label">Rehberdeki kişi isimlerini göster</string>
   <string name="global_settings_show_contact_name_summary">Alıcı isimlerini mümkün olduğunda rehberdeki isimlerden kullan</string>
   <string name="global_settings_registered_name_color_label">Bağlantıları renklendir</string>
-  <string name="global_settings_registered_name_color_default">Rehberdeki kişilerin isimlerini renklendirme</string>
   <string name="global_settings_registered_name_color_changed">Rehberdeki kişilerin isimlerini renklendir</string>
   <string name="global_settings_folderlist_wrap_folder_names_label">Uzun klasör isimlerini bük</string>
   <string name="global_settings_folderlist_wrap_folder_names_summary">Uzun klasör adlarını göstermek için birden fazla satır kullan</string>
@@ -284,7 +270,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="global_settings_notification_quick_delete_never">Hiçbir zaman</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Tek bir mesaj bildirimi için</string>
   <string name="global_settings_notification_quick_delete_always">Her zaman</string>
-  <string name="global_settings_notification_quick_delete_description">Hızlı mesaj silmek için bildirimde buton göster</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Kilit Ekranı Bildirimleri</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Kilit ekranı bildirimi yok</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Uygulama adı</string>
@@ -316,7 +301,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_setup_account_type_instructions">Bu ne tür bir hesaptır?</string>
   <string name="account_setup_account_type_pop_action">POP3</string>
   <string name="account_setup_account_type_imap_action">IMAP</string>
-  <string name="account_setup_account_type_webdav_action">Takas (WebDAV)</string>
   <string name="account_setup_auth_type_normal_password">Normal parola</string>
   <string name="account_setup_auth_type_insecure_password">Güvenlik olmadan gönderilen şifre</string>
   <string name="account_setup_auth_type_encrypted_password">Şifreli parola</string>
@@ -328,7 +312,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_setup_incoming_pop_server_label">POP3 sunucusu</string>
   <string name="account_setup_incoming_imap_server_label">IMAP sunucusu</string>
   <string name="account_setup_incoming_webdav_server_label">Takas sunucusu</string>
-  <string name="account_setup_incoming_port_label">Port</string>
+  <string name="account_setup_incoming_port_label">Bağlanma noktası</string>
   <string name="account_setup_incoming_security_label">Güvenlik </string>
   <string name="account_setup_incoming_auth_type_label">Kimlik doğrulama </string>
   <string name="account_setup_incoming_security_none_label">Hiçbiri</string>
@@ -345,13 +329,11 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_setup_incoming_other_label">Diğer</string>
   <string name="local_storage_provider_external_label">Harici depolama (SD kart)</string>
   <string name="local_storage_provider_internal_label">Düzenli dahili depolama</string>
-  <string name="local_storage_provider_samsunggalaxy_label">%1$s ek iç depolama</string>
-  <string name="local_storage_provider_label">Depolama yeri</string>
   <string name="account_setup_expunge_policy_label">Sunucudan silinen mesajları temizle</string>
   <string name="account_setup_expunge_policy_immediately">Hemen</string>
   <string name="account_setup_expunge_policy_on_poll">Oylama  zamanı</string>
   <string name="account_setup_expunge_policy_manual">Sadece elle</string>
-  <string name="account_setup_incoming_autodetect_namespace_label">IMAP isim alanını otomatik tespit et</string>
+  <string name="account_setup_incoming_autodetect_namespace_label">IMAP ad alanını otomatik algıla</string>
   <string name="account_setup_incoming_imap_path_prefix_label">IMAP yolu öneki</string>
   <string name="drafts_folder_label">Taslaklar klasörü</string>
   <string name="sent_folder_label">Giden Klasörü</string>
@@ -368,7 +350,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_setup_incoming_webdav_mailbox_path_hint">İsteğe bağlı</string>
   <string name="account_setup_outgoing_title">Giden sunucu ayarları</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP sunucu</string>
-  <string name="account_setup_outgoing_port_label">Port</string>
+  <string name="account_setup_outgoing_port_label">Bağlanma noktası</string>
   <string name="account_setup_outgoing_security_label">Güvenlik </string>
   <string name="account_setup_outgoing_require_login_label">Oturum açmayı gerektirir</string>
   <string name="account_setup_outgoing_username_label">Kullanıcı Adı</string>
@@ -378,8 +360,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_setup_bad_uri">Geçersiz kurulum: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Hesap seçenekleri</string>
   <string name="compact_action">Sıkışık hesap</string>
-  <string name="clear_action">İletileri temizle (riskli!)</string>
-  <string name="recreate_action">Veriyi canlandır (Son çare!)</string>
   <string name="account_setup_options_mail_check_frequency_label">Klasör bilgi toplama sıklığı</string>
   <string name="account_setup_options_mail_check_frequency_never">Asla</string>
   <string name="account_setup_options_mail_check_frequency_15min">Her 15 dakikada bir</string>
@@ -447,6 +427,8 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_settings_notification_opens_unread_summary">Bildirim açık olduğunda okunmamış mesajlar için arama yap</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Açılan iletiyi okundu olarak işaretle</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Mesaj okunmak üzere açıldığında okundu olarak işaretle</string>
+  <string name="account_settings_notification_open_system_notifications_label">Bildirim ayarları</string>
+  <string name="account_settings_notification_open_system_notifications_summary">Sistem bildirim ayarlarını aç</string>
   <string name="account_settings_show_pictures_label">Daima resimleri göster</string>
   <string name="account_settings_show_pictures_never">Hayır</string>
   <string name="account_settings_show_pictures_only_from_contacts">Kişilerden</string>
@@ -468,6 +450,8 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_settings_quote_style_label">Alıntı tarzında yanıtla</string>
   <string name="account_settings_quote_style_prefix">Önek (Gmail, Pine gibi)</string>
   <string name="account_settings_quote_style_header">Başlık (Outlook, Yahoo!, Hotmail gibi)</string>
+  <string name="account_settings_upload_sent_messages_label">Gönderilmiş iletileri karşıya yükle</string>
+  <string name="account_settings_upload_sent_messages_summary">İletileri gönderdikten sonra Gönderilen klasörüne yükleyin</string>
   <string name="account_settings_general_title">Genel Ayarlar</string>
   <string name="account_settings_reading_mail">Posta okuma</string>
   <string name="account_settings_sync">Posta alma</string>
@@ -479,10 +463,11 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_settings_crypto_key">uçtan uca anahtarını yapılandırma</string>
   <string name="account_settings_crypto_summary_off">Yapılandırılmış OpenPGP uygulaması yok</string>
   <string name="account_settings_crypto_summary_on">%s\'e bağlı</string>
-  <string name="account_settings_no_openpgp_provider_configured">Yapılandırılmış OpenPGP uygulaması yok</string>
-  <string name="account_settings_no_openpgp_provider_installed">OpenPGP uygulaması bulunamadı - kurmak için tıkla</string>
+  <string name="account_settings_crypto_summary_config">Yapılandırılıyor...</string>
+  <string name="account_settings_crypto_encrypt_all_drafts">Tüm taslakları şifreli olarak sakla</string>
+  <string name="account_settings_crypto_encrypt_all_drafts_on">Tüm taslaklar şifreli olarak depolanacak</string>
+  <string name="account_settings_crypto_encrypt_all_drafts_off">Taslakları yalnızca şifreleme etkinse şifrele</string>
   <string name="account_settings_mail_check_frequency_label">Klasör veri toplama sıklığı</string>
-  <string name="account_settings_storage_title">Depolama</string>
   <string name="account_settings_color_label">Hesap rengi</string>
   <string name="account_settings_color_summary">Klasör ve hesap listesinde kullanılan hesap rengini seç</string>
   <string name="account_settings_color_none">Renk yok</string>
@@ -638,11 +623,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="sort_by_unread">Okundu/Okunmadı</string>
   <string name="sort_by_attach">Ekler</string>
   <string name="account_delete_dlg_title">Hesabı Kaldır</string>
-  <string name="account_recreate_dlg_title">Hesabı tekrar oluştur</string>
-  <string name="account_clear_dlg_title">Hesabı Temizle</string>
-  <string name="provider_note_auonejp">Bu sağlayıcı için IMAP veya POP3 kullanmak isterseniz, au one ayarlar sayfasında IMAP veya POP3 kullanmaya izin vermelisiniz.</string>
-  <string name="provider_note_naver">Bu sağlayıcı için IMAP veya POP3 kullanmak isterseniz, Naver mail ayarlar sayfasında IMAP veya POP3 kullanmaya izin vermelisiniz.</string>
-  <string name="provider_note_hanmail">Bu sağlayıcı için IMAP veya POP3 kullanmak isterseniz, Hanmail (Daum) mail ayarlar sayfasında IMAP veya POP3 kullanmaya izin vermelisiniz .</string>
   <string name="account_setup_failed_dlg_invalid_certificate_title">Tanınmayan Sertifika</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Kabul Tuşu</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Reddetme Tuşu</string>
@@ -661,6 +641,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="setting_theme_global">Uygulama temasını kullan</string>
   <string name="setting_theme_dark">Koyu</string>
   <string name="setting_theme_light">Aydınlık</string>
+  <string name="setting_theme_follow_system">Sistem öntanımlısını kullan</string>
   <string name="display_preferences">Görüntü</string>
   <string name="global_preferences">Genel</string>
   <string name="debug_preferences">Hata ayıklama</string>
@@ -701,20 +682,12 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="volume_navigation_message">İleti görünümlerinde</string>
   <string name="volume_navigation_list">liste görünümlerinde</string>
   <string name="start_integrated_inbox_title">Birleşik Gelen Kutusu ile başla</string>
-  <string name="measure_accounts_title">Hesap boyutunu göster</string>
-  <string name="measure_accounts_summary">Daha hızlı görüntüleme için kapatın</string>
-  <string name="count_search_title">Arama sonuçları sayısı</string>
-  <string name="count_search_summary">Daha hızlı görüntüleme için kapatın</string>
-  <string name="hide_special_accounts_title">Özel hesapları gizle</string>
-  <string name="hide_special_accounts_summary">Bütün ileti hesaplarını ve birleşik gelen kutusunu gizle</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-  <string name="flagged_modifier"> - Yıldızlı</string>
   <string name="unread_modifier"> - Okunmadı</string>
   <string name="search_all_messages_title">Bütün mesajlar</string>
   <string name="search_all_messages_detail">Bütün mesajlar aranabilir klasörlerde</string>
   <string name="integrated_inbox_title">Birleşik Gelen Kutusu</string>
   <string name="integrated_inbox_detail">Bütün mesajlar birleşik gelen kutusunda</string>
-  <string name="tap_hint">Okunmamış veya yıldızlı iletiler için kutucuğa veya yıldıza dokunun</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Birleştir</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Birleşik Gelen Kutusunda bütün mesajlar görünür</string>
   <string name="account_settings_searchable_label">Arama için Klasörler</string>
@@ -722,6 +695,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_settings_searchable_displayable">Görüntülenebilir</string>
   <string name="account_settings_searchable_none">Hiçbiri</string>
   <string name="account_settings_no_folder_selected">Hiçbiri</string>
+  <string name="account_settings_automatic_special_folder">Otomatik (%s)</string>
   <string name="font_size_settings_title">Yazı tipi Boyutu</string>
   <string name="font_size_settings_description">Yazı tipi boyutunu yapılandır</string>
   <string name="font_size_account_list">Hesap listesi</string>
@@ -773,6 +747,8 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="dialog_confirm_delete_cancel_button">Hayır</string>
   <string name="dialog_confirm_mark_all_as_read_title">Tüm iletileri okundu olarak işaretlemeyi onayla</string>
   <string name="dialog_confirm_mark_all_as_read_message">Tüm iletileri okundu olarak işaretlemek istiyor musunuz?</string>
+  <string name="dialog_confirm_empty_trash_title">Çöpü boşaltmayı onayla</string>
+  <string name="dialog_confirm_empty_trash_message">Çöp klasörünü boşaltmak istiyor musun?</string>
   <string name="dialog_confirm_mark_all_as_read_confirm_button">Evet</string>
   <string name="dialog_confirm_mark_all_as_read_cancel_button">Hayır</string>
   <string name="dialog_confirm_spam_title">Gereksiz posta klasörüne taşımayı onayla</string>
@@ -783,56 +759,24 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="dialog_confirm_spam_confirm_button">Evet</string>
   <string name="dialog_confirm_spam_cancel_button">Hayır</string>
   <string name="dialog_attachment_progress_title">Ek indiriliyor</string>
-  <string name="debug_logging_enabled">Hata ayıklama günlüğü etkin</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="import_export_action">Ayarları İçeri &amp; Dışarı aktar</string>
-  <string name="settings_export_account">Hesap ayarlarını dışa aktar</string>
-  <string name="settings_export_all">Ayarlar ve hesapları dışa aktar</string>
-  <string name="settings_import_dialog_title">İçe Aktar</string>
-  <string name="settings_export_dialog_title">Dışa Aktar</string>
-  <string name="settings_import">İçe Aktarma ayarları</string>
-  <string name="settings_import_selection">Seçimi içe aktar</string>
-  <string name="settings_import_global_settings">Genel ayarlar</string>
-  <string name="settings_exporting">Dışa aktarma ayarları…</string>
-  <string name="settings_importing">İçe aktarma ayarları…</string>
-  <string name="settings_import_scanning_file">Dosya taranıyor…</string>
+  <string name="settings_list_backup_category">Yedekleme</string>
+  <string name="settings_list_miscellaneous_category">Çeşitli</string>
+  <string name="settings_export_title">Dışa aktarım ayarları</string>
+  <string name="settings_export_button">Dışa Aktar</string>
+  <string name="settings_export_share_button">Paylaş</string>
+  <string name="settings_export_progress_text">Dışa aktarma ayarları…</string>
   <string name="settings_export_success_generic">Ayarlar başarıyla dışa aktarıldı</string>
-  <string name="settings_import_account_imported_as"><xliff:g id="original_account_name">%s</xliff:g> <xliff:g id="account_name_after_import">%s</xliff:g> olarak içe aktarıldı</string>
-  <plurals name="settings_import_accounts">
-    <item quantity="one">1 hesap</item>
-    <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> hesap</item>
-  </plurals>
   <string name="settings_export_failure">Hesaplar çıkarılırken hata oluştu</string>
-  <string name="settings_export_success_header">Dışa aktarma başarılı</string>
-  <string name="settings_export_failed_header">Dışa aktarma başarısız</string>
-  <string name="settings_import_success_header">İçe aktarma Başarılı</string>
-  <string name="settings_import_failed_header">İçe aktarma başarısız</string>
-  <string name="settings_import_activate_account_header">Hesabı etkinleştir</string>
-  <string name="settings_import_activate_account_intro">\"<xliff:g id="account">%s</xliff:g>\" hesabını etkinleştirebilmek için <xliff:g id="server_passwords">%s</xliff:g> belirtmeniz gerekli.</string>
-  <plurals name="settings_import_server_passwords">
-    <item quantity="one">sunucu şifresini</item>
-    <item quantity="other">sunucu parolaları</item>
-  </plurals>
-  <string name="settings_import_incoming_server">Gelen sunucu (<xliff:g id="hostname">%s</xliff:g>):</string>
-  <string name="settings_import_outgoing_server">Giden sunucu (<xliff:g id="hostname">%s</xliff:g>):</string>
-  <plurals name="settings_import_setting_passwords">
-    <item quantity="one">Şifreyi ayarlıyor…</item>
-    <item quantity="other">Parolalar ayarlanıyor…</item>
-  </plurals>
-  <string name="settings_import_use_incoming_server_password">Gelen sunucu parolasını kullan</string>
-  <string name="activate_account_action">Etkinleştir</string>
-  <string name="account_unavailable">Hesap \"<xliff:g id="account">%s</xliff:g>\" mevcut değil; depolamayı kontrol et</string>
-  <string name="attachment_save_title">Ekleri kaydet</string>
-  <string name="attachment_save_desc">Dosya gezgini bulunamadı. Bu eki nereye kaydetmek istersiniz?</string>
-  <string name="manage_accounts_move_up_action">Yukarı taşı</string>
-  <string name="manage_accounts_move_down_action">Aşağı taşı</string>
-  <string name="manage_accounts_moving_message">Hesap taşınıyor…</string>
+  <string name="settings_import_title">İçe Aktarma ayarları</string>
+  <string name="settings_import_button">İçe Aktar</string>
+  <string name="settings_import">İçe Aktarma ayarları</string>
+  <string name="settings_importing">İçe aktarma ayarları…</string>
   <string name="unread_widget_select_account">Şunun için okunmadı sayısını göster…</string>
   <string name="unread_widget_account_title">Hesap</string>
   <string name="unread_widget_account_summary">Okunmamış ileti sayısının görüntüleneceği hesap</string>
   <string name="unread_widget_unified_inbox_account_summary">Birleşik Gelen Kutusu</string>
-  <string name="unread_widget_all_messages_account_summary">Tüm iletiler</string>
   <string name="unread_widget_folder_enabled_title">Klasör sayısı</string>
   <string name="unread_widget_folder_enabled_summary">Sadece tek bir klasörün okunmamış sayısını görüntüle</string>
   <string name="unread_widget_folder_title">Klasör</string>
@@ -841,7 +785,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
   <string name="unread_widget_account_not_selected">Seçili hesap yok</string>
   <string name="unread_widget_folder_not_selected">Seçili klasör yok</string>
-  <string name="close">Kapat</string>
   <string name="webview_empty_message">Metin yok</string>
   <string name="webview_contextmenu_link_view_action">Bağlantıyı aç</string>
   <string name="webview_contextmenu_link_share_action">Bağlantıyı paylaş</string>
@@ -861,8 +804,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="webview_contextmenu_email_save_action">Kişilere kaydet</string>
   <string name="webview_contextmenu_email_copy_action">E-posta adresini panoya kopyala</string>
   <string name="webview_contextmenu_email_clipboard_label">E-posta adresi</string>
-  <string name="image_saved_as">Resim \"<xliff:g id="filename">%s</xliff:g>\" olarak kaydedildi.</string>
-  <string name="image_saving_failed">Resim kaydedilirken hata oluştu.</string>
   <string name="account_settings_remote_search_num_results_entries_all">Tümü</string>
   <string name="account_settings_remote_search_num_results_entries_10">10</string>
   <string name="account_settings_remote_search_num_results_entries_25">25</string>
@@ -872,7 +813,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_settings_remote_search_num_results_entries_500">500</string>
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">Sunucu arama limiti</string>
-  <string name="account_settings_remote_search_num_summary">Arama <xliff:g id="num_results">%s</xliff:g> sonuç bulunduktan sonra duracaktır.</string>
   <string name="remote_search_sending_query">İstek sunucuya gönderiliyor</string>
   <plurals name="remote_search_downloading">
     <item quantity="one">%d sonuç getiriliyor</item>
@@ -887,8 +827,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_settings_remote_search_enabled">Sunucu aramasını etkinleştir</string>
   <string name="account_settings_remote_search_enabled_summary">Cihazınıza ek olarak sunucu üzerinde mesaj ara</string>
   <string name="action_remote_search">Sunucuda mesaj ara</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_pull">Sunucuda arama için çekin</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_release">Arama sunucusunda bırak…</string>
   <string name="remote_search_unavailable_no_network">Sunucuda arama için ağ bağlantısı gereklidir.</string>
   <string name="global_settings_background_as_unread_indicator_label">Okunduğunda rengi değiştir</string>
   <string name="global_settings_background_as_unread_indicator_summary">İleti okunduğunda farklı bir arkaplan gösterilecek</string>
@@ -897,7 +835,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="upgrade_databases_title">Veri tabanı güncelleniyor</string>
   <string name="upgrade_databases_unspecified">Veri tabanı güncelleniyor…</string>
   <string name="upgrade_database_format">\"<xliff:g id="account">%s</xliff:g>\" hesabı veri tabanı güncelleniyor</string>
-  <string name="message_list_loading">Yükleniyor…</string>
   <string name="global_settings_splitview_mode_label">Bölünmüş ekran göster</string>
   <string name="global_settings_splitview_always">Her zaman</string>
   <string name="global_settings_splitview_never">Hiçbir zaman</string>
@@ -905,9 +842,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="message_view_empty">Sol taraftan bir mesaj seçin</string>
   <string name="global_settings_show_contact_picture_label">Kişi resimlerini göster</string>
   <string name="global_settings_show_contact_picture_summary">Mesaj listesinde kişi resimlerini gösterir</string>
-  <string name="last_refresh_time_format"><xliff:g id="formatted_time">%s</xliff:g> yenilendi</string>
-  <string name="last_refresh_time_format_with_push"><xliff:g id="time_with_preposition">%s</xliff:g> yenilendi (Push active)</string>
-  <string name="preposition_for_date"><xliff:g id="date">%s</xliff:g></string>
   <string name="mark_all_as_read">Tümünü okundu olarak işaretle</string>
   <string name="global_settings_colorize_missing_contact_pictures_label">Kişi resimlerini renklendir</string>
   <string name="global_settings_colorize_missing_contact_pictures_summary">Eksik kişi resimlerini renklendir</string>
@@ -928,8 +862,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <!--Note: This references message_view_download_remainder-->
   <string name="preview_encrypted">*Şifreli*</string>
   <string name="add_from_contacts">Kişilerden Ekle</string>
-  <string name="crypto_settings_cancel">İptal</string>
-  <string name="crypto_settings_ok">İlerle</string>
   <string name="recipient_cc">Kopya</string>
   <string name="recipient_bcc">Gizli Kopya</string>
   <string name="recipient_to">Kime</string>
@@ -941,9 +873,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="address_type_mobile">Mobil</string>
   <string name="compose_error_no_draft_folder">Bu hesap için Taslak klasörü ayarlanmamış!</string>
   <string name="compose_error_no_key_configured">Bu hesap için yapılandırılmış bir anahtar yok! Ayarlarınızı gözden geçirin.</string>
-  <string name="crypto_mode_disabled">Şifreleme</string>
-  <string name="crypto_mode_opportunistic">Mümkünse şifrele</string>
-  <string name="crypto_mode_private">Şifrele</string>
   <string name="error_crypto_provider_incompatible">Şifreleme sağlayıcısı uyumsuz sürüm kullanıyor.Lütfen ayarlarınızı gözden geçirin!</string>
   <string name="error_crypto_provider_connect">Kripto sağlayıcısına bağlanılamadı, ayarlarınızı kontrol edin veya yeniden denemek için kripto simgesini tıklatın!</string>
   <string name="error_crypto_provider_ui_required">Uçtan uca şifreleme başlatılamadı, lütfen ayarlarınızı kontrol edin</string>
@@ -987,8 +916,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="crypto_msg_encrypted_error">bir şifre çözme hatası var</string>
   <string name="crypto_msg_encrypted_incomplete">şifre çözümü için ileti tamamen indirilmelidir</string>
   <string name="crypto_msg_encrypted_no_provider">yapılandırılmış bir şifre uygulaması yok</string>
-  <string name="crypto_msg_encrypted_unsupported">Fakat bu desteklenmeyen bir biçimde</string>
-  <string name="crypto_msg_encrypted_cancelled">şifre çözme iptal edildi</string>
   <string name="crypto_msg_title_encrypted_unsigned">Şifreli </string>
   <string name="crypto_msg_encrypted_unsigned">uçtan uca değil</string>
   <string name="crypto_msg_title_encrypted_signed_e2e">Uçtan Uca şifreli</string>
@@ -1029,14 +956,12 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="apg_learn_more">Daha fazlasını öğrenmek için <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">buraya tıkla</a> .</string>
   <string name="apg_deprecated_ok">Anladım!</string>
   <string name="apg">APG</string>
-  <string name="no_crypto_provider_see_global">Yapılandırılmış OpenPGP uygulaması yok, genel ayarlara bakın!</string>
   <string name="crypto_no_provider_title">Bu eposta şifreli</string>
   <string name="crypto_no_provider_message">Bu eposta OpenPGP ile şifrelendi. On okumak için uyumlu bir OpenPGP uygulaması kurup yapılandırmanız gerekir.</string>
   <string name="crypto_no_provider_button">Ayarlara Git</string>
   <string name="mail_list_widget_text">K-9 İleti Listesi</string>
   <string name="mail_list_widget_loading">İletiler Yükleniyor…</string>
   <string name="fetching_folders_failed">Klasör listesi alınırken başarısız oldu</string>
-  <string name="messageview_crypto_warning_details">Ayrıntıları Göster</string>
   <string name="error_recipient_crypto_retrieve">OpenPGP sağlayıcıdan alıcı durumu alınırken hata oluştu!</string>
   <string name="openpgp_enabled_error_title">Şifreleme yapılamaz</string>
   <string name="openpgp_enabled_error_msg">Seçilen bazı alıcılar bu özelliği desteklemiyor!</string>
@@ -1086,4 +1011,6 @@ Bu iletiyi saklayabilir ve gizli anahtarınız için bir yedekleme olarak kullan
   <string name="navigation_drawer_open">Aç</string>
   <string name="navigation_drawer_close">Kapat</string>
   <!--permissions-->
+  <string name="permission_contacts_rationale_title">Kişilere erişime izin ver</string>
+  <string name="permission_contacts_rationale_message">Kişilerle ilgili öneriler sunabilmek, kişi adlarını ve fotoğraflarını görüntüleyebilmek için uygulamanın kişilerinize erişmesi gerekir.</string>
 </resources>
