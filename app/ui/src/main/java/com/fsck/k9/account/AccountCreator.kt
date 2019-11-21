@@ -6,6 +6,7 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.preferences.Protocols
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.helper.MaterialColors
 
 /**
  * Deals with logic surrounding account creation.
@@ -51,11 +52,25 @@ class AccountCreator(private val preferences: Preferences, private val resources
 
     fun pickColor(): Int {
         val accounts = preferences.accounts
-        val usedAccountColors = accounts.map { it.chipColor }.toSet()
-        val accountColors = resources.getIntArray(R.array.account_colors)
+        val usedAccountColors = accounts.map { it.chipColor }
+        val accountColors = resources.getIntArray(R.array.account_colors).toList()
 
-        return accountColors.asSequence()
-            .filterNot { it in usedAccountColors }
-            .firstOrNull() ?: accountColors.random()
+        val availableColors = accountColors - usedAccountColors
+        if (availableColors.isEmpty()) {
+            return accountColors.random()
+        }
+
+        return availableColors.shuffled().minBy { color ->
+            val index = DEFAULT_COLORS.indexOf(color)
+            if (index != -1) index else DEFAULT_COLORS.size
+        }!!
+    }
+
+    companion object {
+        private val DEFAULT_COLORS = intArrayOf(
+            MaterialColors.BLUE_700,
+            MaterialColors.PINK_500,
+            MaterialColors.AMBER_600
+        )
     }
 }
