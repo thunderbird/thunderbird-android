@@ -1,100 +1,82 @@
-package com.fsck.k9.account;
+package com.fsck.k9.account
 
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import android.content.Context;
-import android.graphics.Color;
-
-import com.fsck.k9.Account;
-import com.fsck.k9.Account.DeletePolicy;
-import com.fsck.k9.Preferences;
-import com.fsck.k9.mail.ConnectionSecurity;
-import com.fsck.k9.preferences.Protocols;
-
+import android.content.Context
+import android.graphics.Color
+import com.fsck.k9.Account.DeletePolicy
+import com.fsck.k9.Preferences
+import com.fsck.k9.mail.ConnectionSecurity
+import com.fsck.k9.preferences.Protocols
 
 /**
  * Deals with logic surrounding account creation.
- * <p/>
+ *
  * TODO Move much of the code from com.fsck.k9.activity.setup.* into here
  */
-public class AccountCreator {
+object AccountCreator {
     /*
      * https://developer.android.com/design/style/color.html
      * Note: Order does matter, it's the order in which they will be picked.
      */
-    private static final Integer[] PREDEFINED_COLORS = new Integer[] {
-            Color.parseColor("#0099CC"),    // blue
-            Color.parseColor("#669900"),    // green
-            Color.parseColor("#FF8800"),    // orange
-            Color.parseColor("#CC0000"),    // red
-            Color.parseColor("#9933CC")     // purple
-    };
+    private val PREDEFINED_COLORS = listOf(
+        Color.parseColor("#0099CC"),  // blue
+        Color.parseColor("#669900"),  // green
+        Color.parseColor("#FF8800"),  // orange
+        Color.parseColor("#CC0000"),  // red
+        Color.parseColor("#9933CC") // purple
+    )
 
-
-    public static DeletePolicy getDefaultDeletePolicy(String type) {
-        switch (type) {
-            case Protocols.IMAP: return DeletePolicy.ON_DELETE;
-            case Protocols.POP3: return DeletePolicy.NEVER;
-            case Protocols.WEBDAV: return DeletePolicy.ON_DELETE;
+    @JvmStatic
+    fun getDefaultDeletePolicy(type: String): DeletePolicy {
+        return when (type) {
+            Protocols.IMAP -> DeletePolicy.ON_DELETE
+            Protocols.POP3 -> DeletePolicy.NEVER
+            Protocols.WEBDAV -> DeletePolicy.ON_DELETE
+            else -> throw AssertionError("Unhandled case: $type")
         }
-
-        throw new AssertionError("Unhandled case: " + type);
     }
 
-    public static int getDefaultPort(ConnectionSecurity securityType, String serverType) {
-        switch (serverType) {
-            case Protocols.IMAP: return getImapDefaultPort(securityType);
-            case Protocols.WEBDAV: return getWebDavDefaultPort(securityType);
-            case Protocols.POP3: return getPop3DefaultPort(securityType);
-            case Protocols.SMTP: return getSmtpDefaultPort(securityType);
+    @JvmStatic
+    fun getDefaultPort(securityType: ConnectionSecurity, serverType: String): Int {
+        return when (serverType) {
+            Protocols.IMAP -> getImapDefaultPort(securityType)
+            Protocols.WEBDAV -> getWebDavDefaultPort(securityType)
+            Protocols.POP3 -> getPop3DefaultPort(securityType)
+            Protocols.SMTP -> getSmtpDefaultPort(securityType)
+            else -> throw AssertionError("Unhandled case: $serverType")
         }
-
-        throw new AssertionError("Unhandled case: " + serverType);
     }
 
-    private static int getImapDefaultPort(ConnectionSecurity connectionSecurity) {
-        return connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED ? 993 : 143;
+    private fun getImapDefaultPort(connectionSecurity: ConnectionSecurity): Int {
+        return if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) 993 else 143
     }
 
-    private static int getPop3DefaultPort(ConnectionSecurity connectionSecurity) {
-        return connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED ? 995 : 110;
+    private fun getPop3DefaultPort(connectionSecurity: ConnectionSecurity): Int {
+        return if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) 995 else 110
     }
 
-    private static int getWebDavDefaultPort(ConnectionSecurity connectionSecurity) {
-        return connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED ? 443 : 80;
+    private fun getWebDavDefaultPort(connectionSecurity: ConnectionSecurity): Int {
+        return if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) 443 else 80
     }
 
-    private static int getSmtpDefaultPort(ConnectionSecurity connectionSecurity) {
-        return connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED ? 465 : 587;
+    private fun getSmtpDefaultPort(connectionSecurity: ConnectionSecurity): Int {
+        return if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) 465 else 587
     }
 
     /*
      * Pick a nice Android guidelines color if we haven't used them all yet.
      */
-    public static int pickColor(Context context) {
-        List<Account> accounts = Preferences.getPreferences(context).getAccounts();
+    @JvmStatic
+    fun pickColor(context: Context): Int {
+        val preferences = Preferences.getPreferences(context)
+        val accounts = preferences.accounts
 
-        List<Integer> availableColors = new ArrayList<>(PREDEFINED_COLORS.length);
-        Collections.addAll(availableColors, PREDEFINED_COLORS);
-
-        for (Account account : accounts) {
-            Integer color = account.getChipColor();
-            if (availableColors.contains(color)) {
-                availableColors.remove(color);
-                if (availableColors.isEmpty()) {
-                    break;
-                }
-            }
-        }
-
-        return (availableColors.isEmpty()) ? getRandomColor() : availableColors.get(0);
+        val usedAccountColors = accounts.map { it.chipColor }
+        val availableColors = PREDEFINED_COLORS - usedAccountColors
+        return availableColors.firstOrNull() ?: getRandomColor()
     }
 
-    private static int getRandomColor() {
+    private fun getRandomColor(): Int {
         //TODO: return random color
-        return PREDEFINED_COLORS[4];
+        return PREDEFINED_COLORS[4]
     }
 }
