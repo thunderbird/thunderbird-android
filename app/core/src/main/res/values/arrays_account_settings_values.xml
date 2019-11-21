@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <integer-array name="account_colors">
+        <item>0xFF0099CC</item>
+        <item>0xFF669900</item>
+        <item>0xFFFF8800</item>
+        <item>0xFFCC0000</item>
+        <item>0xFF9933CC</item>
+    </integer-array>
+
     <string-array name="check_frequency_values" translatable="false">
         <item>-1</item>
         <item>15</item>
