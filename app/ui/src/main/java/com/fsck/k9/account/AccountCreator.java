@@ -13,7 +13,6 @@ import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.preferences.Protocols;
-import com.larswerkman.colorpicker.ColorPicker;
 
 
 /**
@@ -91,6 +90,11 @@ public class AccountCreator {
             }
         }
 
-        return (availableColors.isEmpty()) ? ColorPicker.getRandomColor() : availableColors.get(0);
+        return (availableColors.isEmpty()) ? getRandomColor() : availableColors.get(0);
+    }
+
+    private static int getRandomColor() {
+        //TODO: return random color
+        return PREDEFINED_COLORS[4];
     }
 }
