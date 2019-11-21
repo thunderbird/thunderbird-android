@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Must be kept in sync with arrays_drawer.xml/drawer_account_accent_color_dark_theme -->
     <integer-array name="account_colors">
         <item>0xFFFFB300</item> <!-- Amber 600 -->
         <item>0xFFFB8C00</item> <!-- Orange 600 -->
-        <item>0xFFF4511E</item> <!-- Deep orange 600-->
+        <item>0xFFF4511E</item> <!-- Deep orange 600 -->
         <item>0xFFE53935</item> <!-- Red 600 -->
 
         <item>0xFFC0CA33</item> <!-- Lime 600 -->
@@ -18,8 +19,8 @@
         <item>0xFF3949AB</item> <!-- Indigo 600 -->
 
         <item>0xFFE91E63</item> <!-- Pink 500 -->
-        <item>0xFF8E24AA</item> <!-- Purple 600-->
-        <item>0xFF5E35B1</item> <!-- Deep purple 600-->
+        <item>0xFF8E24AA</item> <!-- Purple 600 -->
+        <item>0xFF5E35B1</item> <!-- Deep purple 600 -->
         <item>0xFF455A64</item> <!-- Blue gray 700 -->
     </integer-array>
 

@@ -1,5 +1,6 @@
 package com.fsck.k9.ui
 
+import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.net.Uri
@@ -45,6 +46,8 @@ import org.koin.core.inject
 class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : KoinComponent {
     private val folderNameFormatter: FolderNameFormatter by inject()
     private val preferences: Preferences by inject()
+    private val themeManager: ThemeManager by inject()
+    private val resources: Resources by inject()
 
     private val drawer: Drawer
     private val accountHeader: AccountHeader
@@ -53,6 +56,8 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
     private val userFolderDrawerIds = ArrayList<Long>()
     private var unifiedInboxSelected: Boolean = false
+    private var accentColor: Int = 0
+    private var selectedColor: Int = 0
     private var openedFolderServerId: String? = null
 
     private var foldersLiveData: FoldersLiveData? = null
@@ -178,6 +183,11 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
             selectUnifiedInbox()
         } else {
             unifiedInboxSelected = false
+            with (getDrawerColorsForAccount(account)) {
+                accentColor = first
+                selectedColor = second
+            }
+
             accountHeader.setActiveProfile((account.accountNumber + 1 shl DRAWER_ACCOUNT_SHIFT).toLong())
             accountHeader.headerBackgroundView.setColorFilter(account.chipColor, PorterDuff.Mode.MULTIPLY)
             val viewModelProvider = ViewModelProviders.of(parent, MessageListViewModelFactory())
@@ -231,6 +241,8 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                     .withIcon(folderIconProvider.getFolderIcon(folder.type))
                     .withIdentifier(drawerId)
                     .withTag(folder)
+                    .withSelectedColor(selectedColor)
+                    .withSelectedTextColor(accentColor)
                     .withName(getFolderDisplayName(folder))
 
             val unreadCount = displayFolder.unreadCount
@@ -281,10 +293,32 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     fun selectUnifiedInbox() {
         unifiedInboxSelected = true
         openedFolderServerId = null
+        accentColor = 0 // Unified inbox does not have folders, so color does not matter
+        selectedColor = 0
         accountHeader.setActiveProfile(DRAWER_ID_UNIFIED_INBOX)
         accountHeader.headerBackgroundView.setColorFilter(0xFFFFFFFFL.toInt(), PorterDuff.Mode.MULTIPLY)
         clearUserFolders()
         updateFolderSettingsItem()
+    }
+
+    private fun getDrawerColorsForAccount(account: Account) : Pair<Int, Int> {
+        val baseColor = if (themeManager.appTheme == Theme.DARK) {
+            getDarkThemeAccentColor(account.chipColor)
+        } else {
+            account.chipColor
+        }
+        return Pair(baseColor, baseColor.and(0xffffff).or(0x22000000))
+    }
+
+    private fun getDarkThemeAccentColor(color: Int) : Int {
+        val lightColors = resources.getIntArray(R.array.account_colors)
+        val darkColors = resources.getIntArray(R.array.drawer_account_accent_color_dark_theme)
+        val idx = lightColors.indexOf(color)
+        return if (idx == -1) {
+            color
+        } else {
+            darkColors[idx]
+        }
     }
 
     fun open() {
