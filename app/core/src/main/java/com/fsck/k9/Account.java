@@ -190,7 +190,6 @@ public class Account implements BaseAccount, StoreConfig {
     private boolean uploadSentMessages;
 
     private boolean changedVisibleLimits = false;
-    private boolean changedLocalStorageProviderId = false;
 
     /**
      * Indicates whether this account is enabled, i.e. ready for use, or not.
@@ -343,10 +342,7 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public void setLocalStorageProviderId(String id) {
-        if (localStorageProviderId == null || !localStorageProviderId.equals(id)) {
-            this.localStorageProviderId = id;
-            changedLocalStorageProviderId = true;
-        }
+        localStorageProviderId = id;
     }
 
     /**
@@ -1062,13 +1058,8 @@ public class Account implements BaseAccount, StoreConfig {
         return changedVisibleLimits;
     }
 
-    boolean isChangedLocalStorageProviderId() {
-        return changedLocalStorageProviderId;
-    }
-
     void resetChangeMarkers() {
         changedVisibleLimits = false;
-        changedLocalStorageProviderId = false;
     }
 
 }

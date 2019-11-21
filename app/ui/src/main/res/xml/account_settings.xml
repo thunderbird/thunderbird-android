@@ -296,19 +296,6 @@
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:icon="?attr/iconPreferencesStorage"
-        android:key="storage_provider"
-        android:title="@string/account_settings_storage_title">
-
-        <ListPreference
-            android:dialogTitle="@string/local_storage_provider_label"
-            android:key="local_storage_provider"
-            android:summary="%s"
-            android:title="@string/local_storage_provider_label" />
-
-    </PreferenceScreen>
-
-    <PreferenceScreen
         android:icon="?attr/iconPreferencesNotifications"
         android:key="notifications"
         android:title="@string/notifications_title">

@@ -58,7 +58,6 @@
         <attr name="iconPreferencesFetchMail" format="reference" />
         <attr name="iconPreferencesSearch" format="reference" />
         <attr name="iconPreferencesReadMail" format="reference" />
-        <attr name="iconPreferencesStorage" format="reference" />
         <attr name="iconPreferencesCompose" format="reference" />
         <attr name="iconSettingsAbout" format="reference" />
         <attr name="iconSettingsGeneral" format="reference" />
