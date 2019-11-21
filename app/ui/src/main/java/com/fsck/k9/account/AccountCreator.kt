@@ -1,6 +1,5 @@
 package com.fsck.k9.account
 
-import android.content.Context
 import android.graphics.Color
 import com.fsck.k9.Account.DeletePolicy
 import com.fsck.k9.Preferences
@@ -12,7 +11,7 @@ import com.fsck.k9.preferences.Protocols
  *
  * TODO Move much of the code from com.fsck.k9.activity.setup.* into here
  */
-object AccountCreator {
+class AccountCreator(private val preferences: Preferences) {
     /*
      * https://developer.android.com/design/style/color.html
      * Note: Order does matter, it's the order in which they will be picked.
@@ -25,7 +24,6 @@ object AccountCreator {
         Color.parseColor("#9933CC") // purple
     )
 
-    @JvmStatic
     fun getDefaultDeletePolicy(type: String): DeletePolicy {
         return when (type) {
             Protocols.IMAP -> DeletePolicy.ON_DELETE
@@ -35,7 +33,6 @@ object AccountCreator {
         }
     }
 
-    @JvmStatic
     fun getDefaultPort(securityType: ConnectionSecurity, serverType: String): Int {
         return when (serverType) {
             Protocols.IMAP -> getImapDefaultPort(securityType)
@@ -62,12 +59,7 @@ object AccountCreator {
         return if (connectionSecurity == ConnectionSecurity.SSL_TLS_REQUIRED) 465 else 587
     }
 
-    /*
-     * Pick a nice Android guidelines color if we haven't used them all yet.
-     */
-    @JvmStatic
-    fun pickColor(context: Context): Int {
-        val preferences = Preferences.getPreferences(context)
+    fun pickColor(): Int {
         val accounts = preferences.accounts
 
         val usedAccountColors = accounts.map { it.chipColor }

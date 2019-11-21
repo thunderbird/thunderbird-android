@@ -54,6 +54,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
 
     private final BackendManager backendManager = DI.get(BackendManager.class);
+    private final AccountCreator accountCreator = DI.get(AccountCreator.class);
 
     private EditText mUsernameView;
     private EditText mPasswordView;
@@ -448,7 +449,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         // Remove listener so as not to trigger validateFields() which is called
         // elsewhere as a result of user interaction.
         mPortView.removeTextChangedListener(validationTextWatcher);
-        mPortView.setText(String.valueOf(AccountCreator.getDefaultPort(securityType, Protocols.SMTP)));
+        mPortView.setText(String.valueOf(accountCreator.getDefaultPort(securityType, Protocols.SMTP)));
         mPortView.addTextChangedListener(validationTextWatcher);
     }
 
