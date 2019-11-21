@@ -4,8 +4,6 @@ import com.fsck.k9.backends.backendsModule
 import com.fsck.k9.controller.ControllerExtension
 import com.fsck.k9.crypto.EncryptionExtractor
 import com.fsck.k9.crypto.openpgp.OpenPgpEncryptionExtractor
-import com.fsck.k9.external.BroadcastSenderListener
-import com.fsck.k9.external.externalModule
 import com.fsck.k9.notification.notificationModule
 import com.fsck.k9.preferences.K9StoragePersister
 import com.fsck.k9.preferences.StoragePersister
@@ -23,8 +21,7 @@ private val mainAppModule = module {
     single { MessagingListenerProvider(
             listOf(
                     get<UnreadWidgetUpdateListener>(),
-                    get<MessageListWidgetUpdateListener>(),
-                    get<BroadcastSenderListener>()
+                    get<MessageListWidgetUpdateListener>()
             ))
     }
     single(named("controllerExtensions")) { emptyList<ControllerExtension>() }
@@ -34,7 +31,6 @@ private val mainAppModule = module {
 
 val appModules = listOf(
         mainAppModule,
-        externalModule,
         messageListWidgetModule,
         unreadWidgetModule,
         notificationModule,
