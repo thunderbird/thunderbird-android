@@ -1,6 +1,8 @@
 package com.fsck.k9.account;
 
 
+import android.content.res.Resources;
+
 import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.RobolectricTest;
@@ -20,7 +22,8 @@ public class AccountCreatorTest extends RobolectricTest {
     @Before
     public void setUp() {
         Preferences preferences = mock(Preferences.class);
-        accountCreator = new AccountCreator(preferences);
+        Resources resources = mock(Resources.class);
+        accountCreator = new AccountCreator(preferences, resources);
     }
 
     @Test

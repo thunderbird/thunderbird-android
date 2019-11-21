@@ -1,28 +1,18 @@
 package com.fsck.k9.account
 
-import android.graphics.Color
+import android.content.res.Resources
 import com.fsck.k9.Account.DeletePolicy
 import com.fsck.k9.Preferences
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.preferences.Protocols
+import com.fsck.k9.ui.R
 
 /**
  * Deals with logic surrounding account creation.
  *
  * TODO Move much of the code from com.fsck.k9.activity.setup.* into here
  */
-class AccountCreator(private val preferences: Preferences) {
-    /*
-     * https://developer.android.com/design/style/color.html
-     * Note: Order does matter, it's the order in which they will be picked.
-     */
-    private val PREDEFINED_COLORS = listOf(
-        Color.parseColor("#0099CC"),  // blue
-        Color.parseColor("#669900"),  // green
-        Color.parseColor("#FF8800"),  // orange
-        Color.parseColor("#CC0000"),  // red
-        Color.parseColor("#9933CC") // purple
-    )
+class AccountCreator(private val preferences: Preferences, private val resources: Resources) {
 
     fun getDefaultDeletePolicy(type: String): DeletePolicy {
         return when (type) {
@@ -61,14 +51,11 @@ class AccountCreator(private val preferences: Preferences) {
 
     fun pickColor(): Int {
         val accounts = preferences.accounts
+        val usedAccountColors = accounts.map { it.chipColor }.toSet()
+        val accountColors = resources.getIntArray(R.array.account_colors)
 
-        val usedAccountColors = accounts.map { it.chipColor }
-        val availableColors = PREDEFINED_COLORS - usedAccountColors
-        return availableColors.firstOrNull() ?: getRandomColor()
-    }
-
-    private fun getRandomColor(): Int {
-        //TODO: return random color
-        return PREDEFINED_COLORS[4]
+        return accountColors.asSequence()
+            .filterNot { it in usedAccountColors }
+            .firstOrNull() ?: accountColors.random()
     }
 }
