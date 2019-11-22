@@ -27,14 +27,6 @@
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <permission
-        android:name="${applicationId}.permission.REMOTE_CONTROL"
-        android:description="@string/remote_control_desc"
-        android:label="@string/remote_control_label"
-        android:permissionGroup="android.permission-group.MESSAGES"
-        android:protectionLevel="dangerous"/>
-    <uses-permission android:name="${applicationId}.permission.REMOTE_CONTROL"/>
-
-    <permission
         android:name="${applicationId}.permission.READ_MESSAGES"
         android:description="@string/read_messages_desc"
         android:label="@string/read_messages_label"
@@ -327,18 +319,6 @@
         </receiver>
 
         <receiver
-            android:name=".external.remotecontrol.RemoteControlReceiver"
-            android:enabled="true"
-            android:permission="${applicationId}.permission.REMOTE_CONTROL">
-            <intent-filter>
-                <action android:name="${applicationId}.K9RemoteControl.set"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="${applicationId}.K9RemoteControl.requestAccounts"/>
-            </intent-filter>
-        </receiver>
-
-        <receiver
             android:name=".service.CoreReceiver"
             android:exported="false"/>
 
@@ -402,11 +382,6 @@
         <service
             android:name=".service.PushService"
             android:enabled="true"/>
-
-        <service
-            android:name=".external.remotecontrol.RemoteControlService"
-            android:enabled="true"
-            android:permission="${applicationId}.permission.REMOTE_CONTROL"/>
 
         <service
             android:name=".service.SleepService"
