@@ -1,6 +1,7 @@
 package com.fsck.k9.provider
 
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
@@ -75,7 +76,7 @@ class UnreadWidgetProvider : AppWidgetProvider(), EarlyInit {
         }
         clickIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
-        val pendingIntent = PendingIntent.getActivity(context, appWidgetId, clickIntent, 0)
+        val pendingIntent = PendingIntent.getActivity(context, appWidgetId, clickIntent, FLAG_UPDATE_CURRENT)
         remoteViews.setOnClickPendingIntent(R.id.unread_widget_layout, pendingIntent)
 
         appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
