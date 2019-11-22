@@ -51,6 +51,7 @@ import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.SchemaDefinition;
 import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
+import com.fsck.k9.mailstore.StorageManager.InternalStorageProvider;
 import com.fsck.k9.mailstore.StorageManager.StorageProvider;
 import com.fsck.k9.message.extractors.AttachmentCounter;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
@@ -213,6 +214,16 @@ public class LocalStore {
 
         Clock clock = DI.get(Clock.class);
         outboxStateRepository = new OutboxStateRepository(database, clock);
+
+        // If "External storage" is selected as storage location, move database to internal storage
+        //TODO: Remove this code after 2020-12-31.
+        // If the database is still on external storage after this date, we'll just ignore it and create a new one on
+        // internal storage.
+        if (!InternalStorageProvider.ID.equals(account.getLocalStorageProviderId())) {
+            switchLocalStorage(InternalStorageProvider.ID);
+            account.setLocalStorageProviderId(InternalStorageProvider.ID);
+            getPreferences().saveAccount(account);
+        }
     }
 
     public static int getDbVersion() {

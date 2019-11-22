@@ -311,6 +311,8 @@ public class LockableDatabase {
             return;
         }
 
+        Timber.v("LockableDatabase: Switching provider from %s to %s", mStorageProviderId, newProviderId);
+
         final String oldProviderId = mStorageProviderId;
         lockWrite(oldProviderId);
         try {

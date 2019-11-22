@@ -399,7 +399,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="local_storage_provider_external_label">External storage (SD card)</string>
     <string name="local_storage_provider_internal_label">Regular internal storage</string>
-    <string name="local_storage_provider_label">Storage location</string>
 
     <string name="account_setup_expunge_policy_label">Erase deleted messages on server</string>
     <string name="account_setup_expunge_policy_immediately">Immediately</string>
@@ -570,8 +569,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_crypto_encrypt_all_drafts_off">Encrypt drafts only if encryption is enabled</string>
 
     <string name="account_settings_mail_check_frequency_label">Folder poll frequency</string>
-
-    <string name="account_settings_storage_title">Storage</string>
 
     <string name="account_settings_color_label">Account color</string>
     <string name="account_settings_color_summary">The accent color of this account used in folder and account list</string>

@@ -22,7 +22,6 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmen
 import com.fsck.k9.mailstore.Folder
 import com.fsck.k9.mailstore.FolderType
 import com.fsck.k9.mailstore.RemoteFolderInfo
-import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity
 import com.fsck.k9.ui.observe
@@ -42,7 +41,6 @@ import org.openintents.openpgp.util.OpenPgpProviderUtil
 class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFragmentListener {
     private val viewModel: AccountSettingsViewModel by sharedViewModel()
     private val dataStoreFactory: AccountSettingsDataStoreFactory by inject()
-    private val storageManager: StorageManager by inject()
     private val openPgpApiManager: OpenPgpApiManager by inject { parametersOf(this) }
     private val messagingController: MessagingController by inject()
     private val accountRemover: BackgroundAccountRemover by inject()
@@ -73,7 +71,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         initializeExpungePolicy(account)
         initializeMessageAge(account)
         initializeAdvancedPushSettings(account)
-        initializeLocalStorageProvider()
         initializeCryptoSettings(account)
         initializeFolderSettings(account)
         initializeNotifications()
@@ -181,14 +178,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
             findPreference(PREFERENCE_REMOTE_SEARCH)?.remove()
         }
          */
-    }
-
-    private fun initializeLocalStorageProvider() {
-        (findPreference(PREFERENCE_LOCAL_STORAGE_PROVIDER) as? ListPreference)?.apply {
-            val providers = storageManager.availableProviders.entries
-            entries = providers.map { it.value }.toTypedArray()
-            entryValues = providers.map { it.key }.toTypedArray()
-        }
     }
 
     private fun initializeNotifications() {
@@ -379,7 +368,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val PREFERENCE_PUSH_MODE = "folder_push_mode"
         private const val PREFERENCE_ADVANCED_PUSH_SETTINGS = "push_advanced"
         private const val PREFERENCE_REMOTE_SEARCH = "search"
-        private const val PREFERENCE_LOCAL_STORAGE_PROVIDER = "local_storage_provider"
         private const val PREFERENCE_OPENPGP_ENABLE = "openpgp_provider"
         private const val PREFERENCE_OPENPGP_KEY = "openpgp_key"
         private const val PREFERENCE_AUTOCRYPT_TRANSFER = "autocrypt_transfer"

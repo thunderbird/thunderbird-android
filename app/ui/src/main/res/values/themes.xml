@@ -84,7 +84,6 @@
         <item name="iconPreferencesCrypto">@drawable/ic_preferences_crypto_light</item>
         <item name="iconPreferencesFetchMail">@drawable/ic_preferences_check_mail_light</item>
         <item name="iconPreferencesReadMail">@drawable/ic_opened_envelope_light</item>
-        <item name="iconPreferencesStorage">@drawable/ic_storage_light</item>
         <item name="iconPreferencesCompose">@drawable/ic_pencil_light</item>
         <item name="iconSettingsAbout">@drawable/ic_info_outline_light</item>
         <item name="iconSettingsGeneral">@drawable/ic_cog_light</item>
@@ -206,7 +205,6 @@
         <item name="iconPreferencesCrypto">@drawable/ic_preferences_crypto_dark</item>
         <item name="iconPreferencesFetchMail">@drawable/ic_preferences_check_mail_dark</item>
         <item name="iconPreferencesReadMail">@drawable/ic_opened_envelope_dark</item>
-        <item name="iconPreferencesStorage">@drawable/ic_storage_dark</item>
         <item name="iconPreferencesCompose">@drawable/ic_pencil_dark</item>
         <item name="iconSettingsAbout">@drawable/ic_info_outline_dark</item>
         <item name="iconSettingsGeneral">@drawable/ic_cog_dark</item>
