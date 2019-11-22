@@ -13,7 +13,6 @@ dependencies {
     compileOnly project(":mail:protocols:imap")
     compileOnly project(":mail:protocols:webdav")
 
-    implementation project(':plugins:HoloColorPicker')
     implementation project(':plugins:openpgp-api-lib:openpgp-api')
 
     implementation "androidx.appcompat:appcompat:${versions.androidxAppCompat}"

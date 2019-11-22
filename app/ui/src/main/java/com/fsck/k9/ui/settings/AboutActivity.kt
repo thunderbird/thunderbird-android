@@ -82,7 +82,6 @@ class AboutFragment : Fragment() {
                 Library("ckChangeLog", "https://github.com/cketti/ckChangeLog", "Apache License, Version 2.0"),
                 Library("Commons IO", "https://commons.apache.org/io/", "Apache License, Version 2.0"),
                 Library("Glide", "https://github.com/bumptech/glide", "Mixed License"),
-                Library("HoloColorPicker", "https://github.com/LarsWerkman/HoloColorPicker", "Apache License, Version 2.0"),
                 Library("jsoup", "https://jsoup.org/", "MIT License"),
                 Library("jutf7", "http://jutf7.sourceforge.net/", "MIT License"),
                 Library("JZlib", "http://www.jcraft.com/jzlib/", "BSD-style License"),
