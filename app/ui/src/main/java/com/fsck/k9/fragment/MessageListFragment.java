@@ -95,6 +95,7 @@ import com.fsck.k9.search.SqlQueryBuilder;
 import com.fsck.k9.ui.messagelist.MessageListAppearance;
 import timber.log.Timber;
 
+import static com.fsck.k9.Account.Expunge.EXPUNGE_MANUALLY;
 import static com.fsck.k9.fragment.MLFProjectionInfo.ACCOUNT_UUID_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.FLAGGED_COLUMN;
 import static com.fsck.k9.fragment.MLFProjectionInfo.FOLDER_SERVER_ID_COLUMN;
@@ -322,7 +323,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     void progress(final boolean progress) {
-        fragmentListener.enableActionBarProgress(progress);
         if (swipeRefreshLayout != null && !progress) {
             swipeRefreshLayout.setRefreshing(false);
         }
@@ -2280,7 +2280,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     public interface MessageListFragmentListener {
-        void enableActionBarProgress(boolean enable);
         void setMessageListProgress(int level);
         void showThread(Account account, String folderServerId, long rootId);
         void showMoreFromSameSender(String senderAddress);
@@ -2428,8 +2427,9 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         return search.isManualSearch();
     }
 
-    public boolean isAccountExpungeCapable() {
-        return account != null && messagingController.supportsExpunge(account);
+    public boolean shouldShowExpungeAction() {
+        return account != null && account.getExpungePolicy() == EXPUNGE_MANUALLY &&
+                messagingController.supportsExpunge(account);
     }
 
     public void onRemoteSearch() {
