@@ -6,11 +6,16 @@
   <string name="app_name">K-9 Mail</string>
   <string name="shortcuts_title">Računi K-9</string>
   <string name="unread_widget_label">Neprebrano K-9</string>
-  <string name="remote_control_label">upravljanje programa K-9 na daljavo</string>
-  <string name="remote_control_desc">Možnost omogoča programu nadzor dejavnosti in nastavitev K-9 Mail.</string>
   <!--Used in the about dialog-->
   <string name="app_authors">Sprehajalci psov v skupini The K-9 Dog Walkers</string>
+  <string name="app_authors_url">https://github.com/k9mail/k-9/graphs/contributors</string>
   <string name="app_copyright_fmt">Avtorske pravice 2008–<xliff:g>%s</xliff:g> The K-9 Dog Walkers in 2006–<xliff:g>%s</xliff:g> Odprtokodna skupnost projekta Android.</string>
+  <string name="source_code">Vir</string>
+  <string name="app_source_url">https://github.com/k9mail/k-9</string>
+  <string name="app_license">Licenca Apache, različica 2.0</string>
+  <string name="app_license_url">https://www.apache.org/licenses/LICENSE-2.0</string>
+  <string name="about_libraries">Knjižnice</string>
+  <string name="license">Dovoljenje</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Dobrodošli v K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -46,18 +51,17 @@ Poročila o napakah, predloge za nove funkcije in vprašanja lahko pošljete na
   <string name="default_signature">-- \nPoslano s programom K-9 Mail.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Račun »<xliff:g id="account">%s</xliff:g>« bo odstranjen iz programa.</string>
-  <string name="account_recreate_dlg_instructions_fmt">Vsi krajevni podatki računa »<xliff:g id="account">%s</xliff:g>« bodo odstranjeni. Nastavitve računa bodo ostale nespremenjene.</string>
-  <string name="account_clear_dlg_instructions_fmt">Kopije sporočil v krajevni mapi »<xliff:g id="account">%s</xliff:g>« bodo odstranjene. Nastavitve računa bodo ostale nespremenjene.</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_libraries">Vključene so naslednje zunanje knjižnice: <xliff:g id="app_libraries_list">%s</xliff:g></string>
+  <string name="authors">Avtorji</string>
+  <string name="app_revision">Podrobnosti o izdaji</string>
   <string name="read_messages_label">Preberi pošto</string>
   <string name="read_messages_desc">Možnost omogoča programu branje elektronske pošte.</string>
   <string name="delete_messages_label">brisanje sporočil elektronske pošte</string>
   <string name="delete_messages_desc">Možnost omogoča programu brisanje sporočil elektronske pošte.</string>
+  <string name="about_title">O programu</string>
   <string name="accounts_title">Računi</string>
   <string name="folders_title">Mape</string>
   <string name="advanced">Napredno</string>
-  <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
   <string name="compose_title_compose">Sestavi novo</string>
   <string name="compose_title_reply">Odgovori</string>
   <string name="compose_title_reply_all">Odgovori vsem</string>
@@ -70,11 +74,6 @@ Poročila o napakah, predloge za nove funkcije in vprašanja lahko pošljete na
   <string name="status_sending_account">Pošiljanje <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_processing_account">Obdelava <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
-  <string name="status_next_poll">Naslednje izpraševanje <xliff:g id="nexttime">%s</xliff:g></string>
-  <string name="status_no_network">Usklajevanje je onemogočeno – ni omrežja</string>
-  <string name="status_no_background">Usklajevanje je onemogočeno – ni zaznanega delovanja v ozadju</string>
-  <string name="status_poll_and_push_disabled">Izpraševanje in potiskanje je onemogočeno</string>
-  <string name="status_syncing_blocked">Usklajevanje je prekinjeno</string>
   <string name="status_syncing_off">Usklajevanje je onemogočeno</string>
   <string name="actionbar_selected">Izbrano: <xliff:g id="selection_count">%d</xliff:g></string>
   <string name="next_action">Naslednje</string>
@@ -109,11 +108,9 @@ Poročila o napakah, predloge za nove funkcije in vprašanja lahko pošljete na
   <string name="search_action">Poišči</string>
   <string name="search_results">Rezultati iskanja</string>
   <string name="preferences_action">Nastavitve</string>
+  <string name="folders_action">Upravljanje z mapami</string>
   <string name="account_settings_action">Nastavitve računa</string>
-  <string name="folder_settings_action">Nastavitve mape</string>
-  <string name="global_settings_action">Splošne nastavitve</string>
   <string name="remove_account_action">Odstrani račun</string>
-  <string name="clear_pending_action">Prekini dejanja na čakanju (lahko poškoduje podatke!)</string>
   <string name="mark_as_read_action">Označi kot prebrano</string>
   <string name="send_alternate_action">Objavi z …</string>
   <string name="send_alternate_chooser_title">Izberi pošiljatelja</string>
@@ -137,14 +134,11 @@ Poročila o napakah, predloge za nove funkcije in vprašanja lahko pošljete na
   <string name="add_attachment_action">Dodaj prilogo</string>
   <string name="empty_trash_action">Izprazni smeti</string>
   <string name="expunge_action">Počisti izbrisano</string>
-  <string name="clear_local_folder_action">Počisti krajevna sporočila</string>
   <string name="about_action">O programu</string>
   <string name="prefs_title">Nastavitve</string>
-  <string name="accounts_context_menu_title">Možnosti računa</string>
   <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
   <string name="general_no_subject">(ni navedene zadeve …)</string>
   <string name="general_no_sender">Ni navedenega pošiljatelja</string>
-  <string name="status_loading">Izpraševanje</string>
   <string name="status_loading_more">Nalaganje sporočil\u2026</string>
   <string name="status_network_error">Napaka povezave</string>
   <string name="status_invalid_id_error">Sporočila ni mogoče najti</string>
@@ -158,8 +152,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="abbrev_bytes"> B</string>
   <string name="account_size_changed">Račun »<xliff:g id="account">%s</xliff:g>« je skrčen iz <xliff:g id="oldSize">%s</xliff:g> na <xliff:g id="newSize">%s</xliff:g>.</string>
   <string name="compacting_account">Poteka stiskanje računa »<xliff:g id="account">%s</xliff:g>«.</string>
-  <string name="clearing_account">Čiščenje računa »<xliff:g id="account">%s</xliff:g>«</string>
-  <string name="recreating_account">Poustvarjanje računa »<xliff:g id="account">%s</xliff:g>«</string>
   <string name="notification_new_title">Nova pošta</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> novo sporočilo</item>
@@ -193,14 +185,8 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="special_mailbox_name_drafts">Osnutki</string>
   <string name="special_mailbox_name_trash">Koš</string>
   <string name="special_mailbox_name_sent">Poslano</string>
-  <string name="special_mailbox_name_archive">Arhivirano</string>
-  <string name="special_mailbox_name_spam">Neželena pošta</string>
-  <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Osnutki)</string>
-  <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Koš)</string>
-  <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Poslano)</string>
-  <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arhivirano)</string>
-  <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Neželena pošta)</string>
   <string name="send_failure_subject">Nekaterih sporočil ni bilo mogoče poslati!</string>
+  <string name="version">Različica</string>
   <string name="debug_enable_debug_logging_title">Omogoči beleženje razhroščevanja</string>
   <string name="debug_enable_debug_logging_summary">Beleženje dodatnih podrobnosti diagnostike</string>
   <string name="debug_enable_sensitive_logging_title">Beleženje občutljivih podrobnosti</string>
@@ -247,8 +233,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="message_saved_toast">Sporočilo je shranjeno kot osnutek</string>
   <string name="global_settings_flag_label">Pokaži zvezdice sporočil</string>
   <string name="global_settings_flag_summary">Zvezdice označujejo izbrana posebna sporočila</string>
-  <string name="global_settings_checkbox_label">Večizbirna potrditvena polja</string>
-  <string name="global_settings_checkbox_summary">V menijih pokaže večizbirna potrditvena polja</string>
   <string name="global_settings_preview_lines_label">Število prikazanih vrstic v predogledu sporočila</string>
   <string name="global_settings_show_correspondent_names_label">Pokaži imena dopisovalcev</string>
   <string name="global_settings_show_correspondent_names_summary">Namesto elektronskih naslovov so izpisana imena dopisovalcev</string>
@@ -257,7 +241,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="global_settings_show_contact_name_label">Pokaži imena stikov</string>
   <string name="global_settings_show_contact_name_summary">Uporabljena so imena tistih prejemnikov, ki so na voljo v imeniku</string>
   <string name="global_settings_registered_name_color_label">Obarvanje stikov v seznamu</string>
-  <string name="global_settings_registered_name_color_default">Ne obarvaj imen na seznamu stikov</string>
   <string name="global_settings_registered_name_color_changed">Obarvaj imena na seznamu stikov</string>
   <string name="global_settings_folderlist_wrap_folder_names_label">Oblivanje dolgih imen map</string>
   <string name="global_settings_folderlist_wrap_folder_names_summary">Za prikaz dolgih imen map uporabi več vrstic</string>
@@ -289,7 +272,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="global_settings_notification_quick_delete_never">Nikoli ne pokaži</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Le pri obvestilih enega sporočila</string>
   <string name="global_settings_notification_quick_delete_always">Vedno pokaži</string>
-  <string name="global_settings_notification_quick_delete_description">V obvestilu prikaži gumb, ki omogoča hitro brisanje sporočila</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Obvestila zaklenjenega zaslona</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Ni obvestil zaklenjenega zaslona</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Ime programa</string>
@@ -321,7 +303,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="account_setup_account_type_instructions">Kakšne vrste je račun?</string>
   <string name="account_setup_account_type_pop_action">POP3</string>
   <string name="account_setup_account_type_imap_action">IMAP</string>
-  <string name="account_setup_account_type_webdav_action">Exchange (prek WebDAV)</string>
   <string name="account_setup_auth_type_normal_password">Običajno geslo</string>
   <string name="account_setup_auth_type_insecure_password">Geslo, posredovano na ne-varen način</string>
   <string name="account_setup_auth_type_encrypted_password">Šifrirano geslo</string>
@@ -350,8 +331,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="account_setup_incoming_other_label">Drugo</string>
   <string name="local_storage_provider_external_label">Zunanji pomnilnik (kartica SD)</string>
   <string name="local_storage_provider_internal_label">Notranji pomnilnik naprave</string>
-  <string name="local_storage_provider_samsunggalaxy_label">%1$s dodatni notranji pomnilnik</string>
-  <string name="local_storage_provider_label">Mesto pomnilnika</string>
   <string name="account_setup_expunge_policy_label">Počisti izbrisana sporočila na strežniku</string>
   <string name="account_setup_expunge_policy_immediately">Počisti takoj</string>
   <string name="account_setup_expunge_policy_on_poll">Počisti med izpraševanjem</string>
@@ -383,8 +362,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="account_setup_bad_uri">Neveljavna nastavitev: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Možnosti računa</string>
   <string name="compact_action">Stisni račun</string>
-  <string name="clear_action">Izbriši vsa sporočila računa (!)</string>
-  <string name="recreate_action">Poustvari podatke (zadnja možnost obnovitve!)</string>
   <string name="account_setup_options_mail_check_frequency_label">Pogostost izpraševanja map</string>
   <string name="account_setup_options_mail_check_frequency_never">Ročno preverjanje</string>
   <string name="account_setup_options_mail_check_frequency_15min">Vsakih 15 minut</string>
@@ -452,6 +429,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="account_settings_notification_opens_unread_summary">Odpre se neprebrano sporočilo, prikazana pa so tudi druga neprebrana sporočila</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Ob odpiranju označi kot prebrano</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Ko se sporočilo prvič odpre, naj bo označeno kot prebrano</string>
+  <string name="account_settings_notification_open_system_notifications_label">Nastavitve za obvestila</string>
   <string name="account_settings_show_pictures_label">Prikaz slik</string>
   <string name="account_settings_show_pictures_never">Ne pokaži slik</string>
   <string name="account_settings_show_pictures_only_from_contacts">Pokaži slike znanih stikov</string>
@@ -484,10 +462,8 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="account_settings_crypto_key">Nastavitev ključa celovitega šifriranja</string>
   <string name="account_settings_crypto_summary_off">Ni nastavljenega programa OpenPGP</string>
   <string name="account_settings_crypto_summary_on">Povezano na %s</string>
-  <string name="account_settings_no_openpgp_provider_configured">Ni nastavljenega programa OpenPGP</string>
-  <string name="account_settings_no_openpgp_provider_installed">Ni programa OpenPGP – klik za namestitev</string>
+  <string name="account_settings_crypto_summary_config">Poteka nastavljanje ...</string>
   <string name="account_settings_mail_check_frequency_label">Pogostost izpraševanja map</string>
-  <string name="account_settings_storage_title">Pomnilnik</string>
   <string name="account_settings_color_label">Barvna shema računa</string>
   <string name="account_settings_color_summary">Barva, ki je uporabljena na seznamu map in seznamu računov</string>
   <string name="account_settings_color_none">Brez barve</string>
@@ -643,11 +619,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="sort_by_unread">najprej neprebrane</string>
   <string name="sort_by_attach">po prilogah</string>
   <string name="account_delete_dlg_title">Izbriši račun</string>
-  <string name="account_recreate_dlg_title">Poustvari račun</string>
-  <string name="account_clear_dlg_title">Počisti račun</string>
-  <string name="provider_note_auonejp">Preveriti je treba, ali je omogočen protokol IMAP oziroma POP3 na strani z nastavitvami za strežnik »au one«.</string>
-  <string name="provider_note_naver">Preveriti je treba, ali je omogočen protokol IMAP oziroma POP3 na strani z nastavitvami za strežnik »Naver«.</string>
-  <string name="provider_note_hanmail">Preveriti je treba, ali je omogočen protokol IMAP oziroma POP3 na strani z nastavitvami za strežnik »Hanmail(Daum)«.</string>
   <string name="account_setup_failed_dlg_invalid_certificate_title">Nepoznano potrdilo</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Sprejmi ključ</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Zavrni ključ</string>
@@ -706,20 +677,12 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="volume_navigation_message">V pogledu sporočil</string>
   <string name="volume_navigation_list">V pogledu seznamov</string>
   <string name="start_integrated_inbox_title">Začni v skupnem prikazu prejetih sporočil</string>
-  <string name="measure_accounts_title">Pokaži velikost računa</string>
-  <string name="measure_accounts_summary">Neizbrana možnost opazno pospeši hitrost delovanja</string>
-  <string name="count_search_title">Omogoči štetje rezultatov iskanja</string>
-  <string name="count_search_summary">Neizbrana možnost opazno pospeši hitrost delovanja</string>
-  <string name="hide_special_accounts_title">Skrij posebne račune</string>
-  <string name="hide_special_accounts_summary">Skrij skupno mapo prejetih sporočil in ostale račune</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-  <string name="flagged_modifier">- Označeno z zvezdico</string>
   <string name="unread_modifier">- Neprebrano</string>
   <string name="search_all_messages_title">Vsa sporočila</string>
   <string name="search_all_messages_detail">Vsa sporočila v iskalnih mapah</string>
   <string name="integrated_inbox_title">Skupna mapa prejetih sporočil</string>
   <string name="integrated_inbox_detail">Vsa sporočila v skupnih mapah</string>
-  <string name="tap_hint">Tapnite krog ali zvezdico za prikaz neprebranih sporočil ali sporočil z zvezdico</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Združi</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Vsa sporočila so prikazana v skupni mapi prejetih sporočil</string>
   <string name="account_settings_searchable_label">Iskanje po mapah</string>
@@ -727,6 +690,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="account_settings_searchable_displayable">Poišči le v prikazanih mapah</string>
   <string name="account_settings_searchable_none">Ne išči po mapah</string>
   <string name="account_settings_no_folder_selected">Brez usklajevanja</string>
+  <string name="account_settings_automatic_special_folder">Samodejno (%s)</string>
   <string name="font_size_settings_title">Velikost pisave</string>
   <string name="font_size_settings_description">Nastavitev velikosti pisave</string>
   <string name="font_size_account_list">Seznam računov</string>
@@ -792,62 +756,28 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="dialog_confirm_spam_confirm_button">Da</string>
   <string name="dialog_confirm_spam_cancel_button">Ne</string>
   <string name="dialog_attachment_progress_title">Prejemanje priloge</string>
-  <string name="debug_logging_enabled">Beleženje razhroščevanja je omogočeno</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="import_export_action">Uvoz in izvoz nastavitev</string>
-  <string name="settings_export_account">Izvozi nastavitve računa</string>
-  <string name="settings_export_all">Izvozi nastavitve</string>
-  <string name="settings_import_dialog_title">Uvozi</string>
-  <string name="settings_export_dialog_title">Izvozi</string>
-  <string name="settings_import">Uvozi nastavitve</string>
-  <string name="settings_import_selection">Uvozi izbrano</string>
-  <string name="settings_import_global_settings">Splošne nastavitve</string>
-  <string name="settings_exporting">Izvažanje nastavitev …</string>
-  <string name="settings_importing">Uvažanje nastavitev …</string>
-  <string name="settings_import_scanning_file">Preverjanje datoteke …</string>
+  <string name="settings_list_backup_category">Varnostna kopija</string>
+  <string name="settings_list_miscellaneous_category">Razno</string>
+  <string name="settings_export_title">Izvozi nastavitve</string>
+  <string name="settings_export_button">Izvozi</string>
+  <string name="settings_export_share_button">Objavi z …</string>
+  <string name="settings_export_progress_text">Izvažanje nastavitev …</string>
   <string name="settings_export_success_generic">Nastavitve so uspešno izvožene</string>
-  <string name="settings_import_account_imported_as">Račun <xliff:g id="original_account_name">%s</xliff:g> je uvožen kot <xliff:g id="account_name_after_import">%s</xliff:g>.</string>
-  <plurals name="settings_import_accounts">
-    <item quantity="one">1 račun</item>
-    <item quantity="two"><xliff:g id="numAccounts">%s</xliff:g> računa</item>
-    <item quantity="few"><xliff:g id="numAccounts">%s</xliff:g> računi</item>
-    <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> računov</item>
-  </plurals>
-  <string name="settings_export_failure">Izvažanje nastavitev je spodletelo</string>
-  <string name="settings_export_success_header">Izvoz je uspešno končan</string>
-  <string name="settings_export_failed_header">Izvoz je spodletel</string>
-  <string name="settings_import_success_header">Uvoz je uspešno končan</string>
-  <string name="settings_import_failed_header">Uvoz je spodletel</string>
-  <string name="settings_import_activate_account_header">Omogoči račun</string>
-  <string name="settings_import_activate_account_intro">Za uporabo računa »<xliff:g id="account">%s</xliff:g>« je treba vpisati <xliff:g id="server_passwords">%s</xliff:g>.</string>
-  <plurals name="settings_import_server_passwords">
-    <item quantity="one">geslo strežnika</item>
-    <item quantity="two">gesli strežnika</item>
-    <item quantity="few">gesla strežnika</item>
-    <item quantity="other">gesla strežnika</item>
-  </plurals>
-  <string name="settings_import_incoming_server">Dohodni strežnik (<xliff:g id="hostname">%s</xliff:g>):</string>
-  <string name="settings_import_outgoing_server">Odhodni strežnik (<xliff:g id="hostname">%s</xliff:g>):</string>
-  <plurals name="settings_import_setting_passwords">
-    <item quantity="one">Nastavitev gesla …</item>
-    <item quantity="two">Nastavitev gesel …</item>
-    <item quantity="few">Nastavitev gesel …</item>
-    <item quantity="other">Nastavitev gesel …</item>
-  </plurals>
-  <string name="settings_import_use_incoming_server_password">Uporabi geslo dohodnega strežnika</string>
-  <string name="activate_account_action">Omogoči</string>
-  <string name="account_unavailable">Račun »<xliff:g id="account">%s</xliff:g>« ni dosegljiv; preverite dostopnost pomnilnika</string>
-  <string name="attachment_save_title">Shrani prilogo</string>
-  <string name="attachment_save_desc">Ni najdenega upravljalnika datotek. Kam naj se shrani priloga?</string>
-  <string name="manage_accounts_move_up_action">Premakni gor</string>
-  <string name="manage_accounts_move_down_action">Premakni dol</string>
-  <string name="manage_accounts_moving_message">Premikanje računa …</string>
+  <string name="settings_export_failure">Napaka pri izvozu nastavitev</string>
+  <string name="settings_import_title">Uvozi nastavitve</string>
+  <string name="settings_import_pick_document_button">Izberi datoteko</string>
+  <string name="settings_import_button">Uvozi</string>
+  <string name="settings_import_success_generic">Nastavitve so uspešno uvožene</string>
+  <string name="settings_import_password_required">Prosim, vnesi geslo</string>
+  <string name="settings_import_failure">Napaka pri uvozu nastavitev</string>
+  <string name="settings_import">Uvozi nastavitve</string>
+  <string name="settings_importing">Uvažanje nastavitev …</string>
   <string name="unread_widget_select_account">Prikaži število neprebranih za …</string>
   <string name="unread_widget_account_title">Račun</string>
   <string name="unread_widget_account_summary">Račun za katerega naj bo pokazano število neprebranih sporočil</string>
   <string name="unread_widget_unified_inbox_account_summary">Skupna mapa prejetih sporočil</string>
-  <string name="unread_widget_all_messages_account_summary">Vsa sporočila</string>
   <string name="unread_widget_folder_enabled_title">Števec map</string>
   <string name="unread_widget_folder_enabled_summary">Pokaži števec neprebranih sporočil le za eno mapo</string>
   <string name="unread_widget_folder_title">Mapa</string>
@@ -856,7 +786,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
   <string name="unread_widget_account_not_selected">Ni izbranega računa</string>
   <string name="unread_widget_folder_not_selected">Ni izbrane mape</string>
-  <string name="close">Zapri</string>
   <string name="webview_empty_message">Ni vpisanega besedila …</string>
   <string name="webview_contextmenu_link_view_action">Odpri povezavo</string>
   <string name="webview_contextmenu_link_share_action">Objavi povezavo</string>
@@ -876,8 +805,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="webview_contextmenu_email_save_action">Shrani med stike</string>
   <string name="webview_contextmenu_email_copy_action">Kopiraj naslov v odložišče</string>
   <string name="webview_contextmenu_email_clipboard_label">Naslov elektronske pošte</string>
-  <string name="image_saved_as">Slika je shranjena kot »<xliff:g id="filename">%s</xliff:g>«</string>
-  <string name="image_saving_failed">Shranjevanje slike je spodletelo.</string>
   <string name="account_settings_remote_search_num_results_entries_all">vsi</string>
   <string name="account_settings_remote_search_num_results_entries_10">10</string>
   <string name="account_settings_remote_search_num_results_entries_25">25</string>
@@ -887,7 +814,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="account_settings_remote_search_num_results_entries_500">500</string>
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">Omejitev iskanja na strežniku</string>
-  <string name="account_settings_remote_search_num_summary">Iskanje bo zaustavljeno, ko bo najdenih <xliff:g id="num_results">%s</xliff:g> zadetkov.</string>
   <string name="remote_search_sending_query">Pošiljanje poizvedbe na strežnik</string>
   <plurals name="remote_search_downloading">
     <item quantity="one">Poteka pridobivanje %d zadetka</item>
@@ -906,8 +832,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="account_settings_remote_search_enabled">Omogoči iskanje na strežniku</string>
   <string name="account_settings_remote_search_enabled_summary">Preišči krajevna in tudi neusklajena sporočila na strežniku</string>
   <string name="action_remote_search">Poišči sporočila na strežniku</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_pull">Povlecite za iskanje na strežniku …</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_release">Sprostite za iskanje na strežniku …</string>
   <string name="remote_search_unavailable_no_network">Za iskanje na strežniku je zahtevana dejavna omrežna povezava.</string>
   <string name="global_settings_background_as_unread_indicator_label">Spremeni barvo prebranega sporočila</string>
   <string name="global_settings_background_as_unread_indicator_summary">Drugačna barva ozadja nakazuje, da je bilo sporočilo že prebrano</string>
@@ -916,7 +840,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="upgrade_databases_title">Nadgrajevanje podatkovne zbirke</string>
   <string name="upgrade_databases_unspecified">Nadgrajevanje podatkovne zbirke …</string>
   <string name="upgrade_database_format">Nadgrajevanje podatkovne zbirke računa »<xliff:g id="account">%s</xliff:g>«</string>
-  <string name="message_list_loading">Poteka nalaganje …</string>
   <string name="global_settings_splitview_mode_label">Pokaži razdeljen zaslon</string>
   <string name="global_settings_splitview_always">Vedno</string>
   <string name="global_settings_splitview_never">Nikoli</string>
@@ -924,9 +847,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="message_view_empty">Izberite sporočilo na levi.</string>
   <string name="global_settings_show_contact_picture_label">Pokaži slike stikov</string>
   <string name="global_settings_show_contact_picture_summary">V seznamu sporočil prikaže slike stikov</string>
-  <string name="last_refresh_time_format">Nazadnje osveženo: <xliff:g id="formatted_time">%s</xliff:g></string>
-  <string name="last_refresh_time_format_with_push">Nazadnje osveženo: <xliff:g id="time_with_preposition">%s</xliff:g> (potiskanje je dejavno)</string>
-  <string name="preposition_for_date"><xliff:g id="date">%s</xliff:g></string>
   <string name="mark_all_as_read">Označi vse kot prebrano</string>
   <string name="global_settings_colorize_missing_contact_pictures_label">Obarvaj slike stikov</string>
   <string name="global_settings_colorize_missing_contact_pictures_summary">Uporabi barvo na mestu manjkajočih slik stikov</string>
@@ -947,8 +867,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <!--Note: This references message_view_download_remainder-->
   <string name="preview_encrypted">*Šifrirano*</string>
   <string name="add_from_contacts">Dodaj stik</string>
-  <string name="crypto_settings_cancel">Prekliči</string>
-  <string name="crypto_settings_ok">Nadaljuj</string>
   <string name="recipient_cc">Kp</string>
   <string name="recipient_bcc">Skp</string>
   <string name="recipient_to">Za</string>
@@ -960,9 +878,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="address_type_mobile">Mobilni</string>
   <string name="compose_error_no_draft_folder">Za ta račun ni nastavljene mape za osnutke!</string>
   <string name="compose_error_no_key_configured">Ni nastavljenega ključa za za ta račun! Preverite nastavitve.</string>
-  <string name="crypto_mode_disabled">Ne šifriraj</string>
-  <string name="crypto_mode_opportunistic">Šifriraj, če je mogoče</string>
-  <string name="crypto_mode_private">Šifriraj</string>
   <string name="error_crypto_provider_incompatible">Ponudnik šifriranja uporablja neskladno različico! Preverite nastavitve.</string>
   <string name="error_crypto_provider_connect">Ni mogoče vzpostaviti povezave s programom za šifriranje; preverite nastavitve in poskusite znova!</string>
   <string name="error_crypto_provider_ui_required">Začenjanje celovitega šifriranja je spodletelo. Preverite nastavitve.</string>
@@ -1006,8 +921,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="crypto_msg_encrypted_error">vendar je prišlo do napake pri odšifriranju</string>
   <string name="crypto_msg_encrypted_incomplete">za obdelavo podpisa mora biti sporočilo prejeto v celoti</string>
   <string name="crypto_msg_encrypted_no_provider">vendar ni nameščenega programa za šifriranje</string>
-  <string name="crypto_msg_encrypted_unsupported">vendar z nepodprto obliko šifriranja</string>
-  <string name="crypto_msg_encrypted_cancelled">vendar je bilo odšifriranje preklicano</string>
   <string name="crypto_msg_title_encrypted_unsigned">Šifrirano</string>
   <string name="crypto_msg_encrypted_unsigned">vendar ne celovito šifriranje</string>
   <string name="crypto_msg_title_encrypted_signed_e2e">Celovito šifrirano (E2E)</string>
@@ -1048,14 +961,12 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="apg_learn_more">Več o tem si je mogoče prebrati na spletišču <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">GitHub</a>.</string>
   <string name="apg_deprecated_ok">Razumem!</string>
   <string name="apg">APG</string>
-  <string name="no_crypto_provider_see_global">Med splošnimi nastavitvami ni ustrezno navedenega programa OpenPGP!</string>
   <string name="crypto_no_provider_title">Sporočilo je šifrirano</string>
   <string name="crypto_no_provider_message">Sporočilo je šifrirano s programom OpenPGP.\nZa ogled vsebine je treba namestiti ustrezen podprt program OpenPGP.</string>
   <string name="crypto_no_provider_button">Pojdi v Nastavitve</string>
   <string name="mail_list_widget_text">Seznami sporočil</string>
   <string name="mail_list_widget_loading">Poteka nalaganje sporočil …</string>
   <string name="fetching_folders_failed">Pridobivanje seznama map je spodletelo</string>
-  <string name="messageview_crypto_warning_details">Prikaži podrobnosti</string>
   <string name="error_recipient_crypto_retrieve">Napaka pridobivanja stanja prejemnika prek ponudnika OpenPGP!</string>
   <string name="openpgp_enabled_error_title">Šifriranje ni mogoče</string>
   <string name="openpgp_enabled_error_msg">Nekateri izmed izbranih prejemnikov ne podpirajo te možnosti!</string>

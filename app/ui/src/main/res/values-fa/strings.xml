@@ -6,24 +6,29 @@
   <string name="app_name">نامه‌دان K-9</string>
   <string name="shortcuts_title">حساب‌های K-9</string>
   <string name="unread_widget_label">نخوانده‌های K-9</string>
-  <string name="remote_control_label">کنترل از دور نامه‌دان K-9</string>
-  <string name="remote_control_desc">به این برنامه اجازه می‌دهد فعالیت‌ها و تنظیمات نامه‌دان K-9 را کنترل کند.</string>
   <!--Used in the about dialog-->
-  <string name="app_authors">سگ‌چران‌های K-9</string>
-  <string name="app_copyright_fmt">حق نشر ۲۰۰۸-<xliff:g>⁮%s</xliff:g>  سگ‌چران‌های K-9. حق نشر جزئی ۲۰۰۶-<xliff:g>⁮%s</xliff:g> پروژهٔ متن‌باز اندروید.</string>
+  <string name="app_authors">The K-9 Dog Walkers</string>
+  <string name="app_authors_url">https://github.com/k9mail/k-9/graphs/contributors</string>
+  <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
+  <string name="source_code">کد منبع</string>
+  <string name="app_source_url">https://github.com/k9mail/k-9</string>
+  <string name="app_license">مجوز آپاچی، نسخهٔ ۲٫۰</string>
+  <string name="app_license_url">https://www.apache.org/licenses/LICENSE-2.0</string>
+  <string name="about_libraries">کتابخانه‌ها</string>
+  <string name="license">مجوز</string>
   <!--Welcome message-->
   <string name="welcome_message_title">به نامه‌دان کِی‌ناین خوش آمدید</string>
   <string name="accounts_welcome"><![CDATA[
 <p>
-نامه‌دان K-9 برنامه‌ای رایگان برای مدیریت رایانامه در اندروید است.
+نامه‌دان K-9 برنامه‌ای رایگان برای مدیریت ایمیل در اندروید است.
 </p><p>
 برخی از قابلیت‌های بهبودیافتهٔ آن:
 </p>
 <ul>
   <li>پیشرانی حساب کاربری (Push Mail) با استفاده از IMAP IDLE</li>
-  <li>بهترشدن عملکرد</li>
+  <li>عملکرد بهتر</li>
   <li>سامان‌دهی پیام‌ها</li>
-  <li>امضاهای رایانامه</li>
+  <li>امضاهای ایمیل</li>
   <li>ارسال مخفیانه به خود (Bcc-to-self)</li>
   <li>اشتراک به پوشه‌های خاص با IMAP</li>
   <li>همگام‌سازی همهٔ پوشه‌ها</li>
@@ -38,26 +43,25 @@
 <p>
 لطفاً توجه کنید که K-9، مانند بسیاری از برنامه‌های مدیریت ایمیل، از بیشتر حساب‌های رایگان Hotmail پشتیبانی نمی‌کند و هنگام برقراری ارتباط‌ با Microsoft Exchange مشکلاتی وجود دارد.
 </p><p>
-لطفاً گزارش‌های خطا، همکاری برای قابلیت جدید و پرسش‌هایتان را در اینجا مطرح بفرمایید:
+لطفاً گزارش‌های خطا، همکاری برای قابلیت جدید و پرسش‌هایتان را در اینجا مطرح کنید:
 <a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
 </p>
     ]]></string>
   <!--Default signature-->
-  <string name="default_signature">-- \nبه‌وسیلهٔ دستگاه اندرویدم و برنامهٔ نامه‌دان K-9 ارسال شد. لطفاً اختصار آن را بر من ببخشید.</string>
+  <string name="default_signature">-- \nاز دستگاه اندرویدم و به‌وسیلهٔ نامه‌دان K-9 ارسال شد. لطفاً اختصار آن را بر من ببخشید.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">حساب «<xliff:g id="account">%s</xliff:g>» از نامه‌دان K-9 حذف خواهد شد.</string>
-  <string name="account_recreate_dlg_instructions_fmt">همهٔ اطلاعات «<xliff:g id="account">%s</xliff:g>» از روی دستگاه حذف خواهد شد. تنظیمات حساب حفظ می‌شود.</string>
-  <string name="account_clear_dlg_instructions_fmt">کپی‌های روی دستگاه از پیام‌ها که در «<xliff:g id="account">%s</xliff:g>» قرار دارند حذف می‌شوند. تنظیمات حساب حفظ می‌شود.</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_libraries">از این کتابخانه‌های شخص‌ثالث استفاده می‌کنیم: <xliff:g id="app_libraries_list">%s</xliff:g></string>
-  <string name="read_messages_label">خواندن رایانامه‌ها</string>
-  <string name="read_messages_desc">به این برنامه اجازه می‌دهد که رایانامه‌های شما را بخواند.</string>
-  <string name="delete_messages_label">پاک‌کردن رایانامه‌ها</string>
-  <string name="delete_messages_desc">به این برنامه اجازه می‌دهد رایانامه‌های شما را پاک کند.</string>
+  <string name="authors">سازندگان</string>
+  <string name="app_revision">اطلاعات نسخه‌ها</string>
+  <string name="read_messages_label">خواندن ایمیل‌ها</string>
+  <string name="read_messages_desc">به این برنامه اجازه می‌دهد که ایمیل‌های شما را بخواند.</string>
+  <string name="delete_messages_label">پاک‌کردن ایمیل‌ها</string>
+  <string name="delete_messages_desc">به این برنامه اجازه می‌دهد ایمیل‌های شما را پاک کند.</string>
+  <string name="about_title">دربارهٔ نامه‌دادن K-9</string>
   <string name="accounts_title">حساب‌ها</string>
   <string name="folders_title">پوشه‌ها</string>
   <string name="advanced">پیشرفته</string>
-  <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
   <string name="compose_title_compose">نوشتن</string>
   <string name="compose_title_reply">پاسخ</string>
   <string name="compose_title_reply_all">پاسخ به همه</string>
@@ -70,11 +74,6 @@
   <string name="status_sending_account">در حال ارسال <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_processing_account">پردازش <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
-  <string name="status_next_poll">سرکشی بعدی <xliff:g id="nexttime">%s</xliff:g></string>
-  <string name="status_no_network">همگام‌سازی غیرفعال شد - شبکه نیست</string>
-  <string name="status_no_background">همگام‌سازی غیرفعال شد - غیرفعال در پس‌زمینه</string>
-  <string name="status_poll_and_push_disabled">سرکشی و پیشرانی غیرفعال شد</string>
-  <string name="status_syncing_blocked">همگام‌سازی مسدود شد</string>
   <string name="status_syncing_off">همگام‌سازی غیرفعال شد</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> انتخاب</string>
   <string name="next_action">بعدی</string>
@@ -109,11 +108,9 @@
   <string name="search_action">جستجو</string>
   <string name="search_results">نتایج جستجو</string>
   <string name="preferences_action">تنظیمات</string>
+  <string name="folders_action">مدیریت پوشه‌ها</string>
   <string name="account_settings_action">تنظیمات حساب</string>
-  <string name="folder_settings_action">تنظیمات پوشه</string>
-  <string name="global_settings_action">تنظیمات سراسری</string>
   <string name="remove_account_action">حذف حساب</string>
-  <string name="clear_pending_action">پاک‌کردن کارهای معلق (خطر!)</string>
   <string name="mark_as_read_action">خوانده شد</string>
   <string name="send_alternate_action">اشتراک‌گذاری</string>
   <string name="send_alternate_chooser_title">انتخاب فرستنده</string>
@@ -135,14 +132,11 @@
   <string name="add_attachment_action">افزودن پیوست</string>
   <string name="empty_trash_action">خالی‌کردن زباله‌دان</string>
   <string name="expunge_action">زدودن کامل</string>
-  <string name="clear_local_folder_action">پاک‌کردن پیام‌ها از روی دستگاه</string>
   <string name="about_action">درباره</string>
   <string name="prefs_title">تنظیمات</string>
-  <string name="accounts_context_menu_title">گزینه‌های حساب</string>
   <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
   <string name="general_no_subject">(بدون موضوع)</string>
   <string name="general_no_sender">بدون فرستنده</string>
-  <string name="status_loading">در حال سرکشی</string>
   <string name="status_loading_more">بارگیری پیام‌ها\u2026</string>
   <string name="status_network_error">خطای اتصال</string>
   <string name="status_invalid_id_error">پیام یافت نشد</string>
@@ -156,8 +150,6 @@
   <string name="abbrev_bytes">ب‍</string>
   <string name="account_size_changed">حجم حساب «<xliff:g id="account">%s</xliff:g>» از <xliff:g id="oldSize">%s</xliff:g> به <xliff:g id="newSize">%s</xliff:g> کاهش پیدا کرد</string>
   <string name="compacting_account">در حال فشرده‌سازی حساب «<xliff:g id="account">%s</xliff:g>»</string>
-  <string name="clearing_account">در حال پاک‌سازی حساب «<xliff:g id="account">%s</xliff:g>»</string>
-  <string name="recreating_account">در حال بازسازی حساب «<xliff:g id="account">%s</xliff:g>»</string>
   <string name="notification_new_title">نامهٔ جدید</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> نامهٔ جدید</item>
@@ -183,20 +175,16 @@
   <string name="notification_bg_send_title">ارسال نامه</string>
   <string name="notification_bg_title_separator">:</string>
   <string name="notification_channel_messages_title">پیام‌ها</string>
+  <string name="notification_channel_messages_description">اعلان‌های مربوط به پیام‌ها</string>
   <string name="notification_channel_miscellaneous_title">متفرقه</string>
+  <string name="notification_channel_miscellaneous_description">سایر اعلان‌ها مانند خطاها و...</string>
   <string name="special_mailbox_name_inbox">صندوق ورودی</string>
   <string name="special_mailbox_name_outbox">صندوق خروجی</string>
   <string name="special_mailbox_name_drafts">پیش‌نویس‌ها</string>
   <string name="special_mailbox_name_trash">زباله‌دان</string>
   <string name="special_mailbox_name_sent">ارسالی</string>
-  <string name="special_mailbox_name_archive">بایگانی</string>
-  <string name="special_mailbox_name_spam">هرزنامه</string>
-  <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (پیش‌نویس‌ها)</string>
-  <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (زباله‌دان)</string>
-  <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (ارسالی)</string>
-  <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (بایگانی)</string>
-  <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (هرزنامه)</string>
   <string name="send_failure_subject">ارسال برخی پیام‌ها ناموفق بود</string>
+  <string name="version">نسخه</string>
   <string name="debug_enable_debug_logging_title">فعال‌سازی ثبت گزارش عیب‌یابی</string>
   <string name="debug_enable_debug_logging_summary">ثبت اطلاعات عیب‌یابی اضافه‌تر</string>
   <string name="debug_enable_sensitive_logging_title">ثبت اطلاعات حساس</string>
@@ -216,7 +204,7 @@
   <string name="message_compose_reply_header_fmt_with_date">در <xliff:g id="sent_date">%1$s</xliff:g>، <xliff:g id="sender">%2$s</xliff:g> نوشت:</string>
   <string name="message_compose_error_no_recipients">باید حداقل یک گیرنده اضافه کنید.</string>
   <string name="compose_error_incomplete_recipient">مقدار واردشده برای نشانی گیرنده ناقص است!</string>
-  <string name="error_contact_address_not_found">هیچ رایانامه‌ای برای این مخاطب پیدا نشد.</string>
+  <string name="error_contact_address_not_found">هیچ ایمیلی برای این مخاطب پیدا نشد.</string>
   <string name="message_compose_attachments_skipped_toast">بعضی پیوست‌ها هدایت نمی‌شوند، زیرا دانلود نشده‌اند.</string>
   <string name="message_compose_attachments_forward_toast">پیام هدایت نمی‌شود، زیرا بعضی پیوست‌ها دانلود نشده‌اند.</string>
   <string name="message_compose_show_quoted_text_action">شامل نقل‌قول پیام باشد</string>
@@ -228,6 +216,7 @@
   <string name="message_view_bcc_label">مخفیانه به:</string>
   <string name="message_view_attachment_view_action">باز</string>
   <string name="message_view_attachment_download_action">ذخیره</string>
+  <string name="message_view_status_attachment_not_saved">نمی‌توان پیوست را ذخیره کرد.</string>
   <string name="message_view_show_pictures_action">نمایش تصاویر</string>
   <string name="message_view_no_viewer">نمایش‌دهنده‌ای برای <xliff:g id="mimetype">%s</xliff:g> پیدا نشد.</string>
   <string name="message_view_download_remainder">دانلود پیام کامل</string>
@@ -243,17 +232,14 @@
   <string name="message_saved_toast">پیش‌نویس پیام ذخیره شد</string>
   <string name="global_settings_flag_label">نمایش ستاره‌ها</string>
   <string name="global_settings_flag_summary">پیام‌های پرچم‌دار با ستاره مشخص می‌شوند</string>
-  <string name="global_settings_checkbox_label">انتخاب چندتایی</string>
-  <string name="global_settings_checkbox_summary">همیشه مربع‌های انتخاب چندتایی را نمایش بده</string>
   <string name="global_settings_preview_lines_label">سطرهای پیش‌نمایش</string>
   <string name="global_settings_show_correspondent_names_label">نمایش نام متناظر</string>
-  <string name="global_settings_show_correspondent_names_summary">به‌جای نشانی رایانامه نام متناظر با آن را نشان بده</string>
+  <string name="global_settings_show_correspondent_names_summary">به‌جای نشانی ایمیل نام متناظر با آن را نشان بده</string>
   <string name="global_settings_sender_above_subject_label">نام متناظر در بالای موضوع</string>
   <string name="global_settings_sender_above_subject_summary">نام‌های متناظر را در بالای موضوع نمایش بده نه زیر آن</string>
   <string name="global_settings_show_contact_name_label">نمایش نام مخاطب</string>
   <string name="global_settings_show_contact_name_summary">در صورت وجود، نام گیرنده را از لیست مخاطبان نمایش بده</string>
   <string name="global_settings_registered_name_color_label">رنگی‌کردن مخاطبان</string>
-  <string name="global_settings_registered_name_color_default">نام‌های موجود در لیست مخاطبان رنگی نشود</string>
   <string name="global_settings_registered_name_color_changed">نام‌های موجود در لیست مخاطبان رنگی شود</string>
   <string name="global_settings_folderlist_wrap_folder_names_label">نام طولانی پوشه را بپیچان</string>
   <string name="global_settings_folderlist_wrap_folder_names_summary">از چند سطر برای نمایش نام طولانی پوشه استفاده می‌کند</string>
@@ -285,7 +271,6 @@
   <string name="global_settings_notification_quick_delete_never">هرگز</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">برای اعلان پیام تکی</string>
   <string name="global_settings_notification_quick_delete_always">همیشه</string>
-  <string name="global_settings_notification_quick_delete_description">دکمه‌ای را در نوار اعلان نمایش می‌دهد تا بتوانید پیام را فوراً حذف کنید</string>
   <string name="global_settings_lock_screen_notification_visibility_title">اعلانات صفحهٔ قفل</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">در صفحهٔ قفل اعلانی نباشد</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">نام برنامه</string>
@@ -299,7 +284,7 @@
   <string name="quiet_time_starts">آغاز زمان خاموشی</string>
   <string name="quiet_time_ends">پایان زمان خاموشی</string>
   <string name="account_setup_basics_title">راه‌اندازی حساب کاربری جدید</string>
-  <string name="account_setup_basics_email_hint">نشانی رایانامه</string>
+  <string name="account_setup_basics_email_hint">نشانی ایمیل</string>
   <string name="account_setup_basics_password_hint">گذرواژه</string>
   <string name="account_setup_basics_show_password">نمایش گذرواژه</string>
   <string name="account_setup_basics_manual_setup_action">تنظیم دستی</string>
@@ -317,10 +302,9 @@
   <string name="account_setup_account_type_instructions">نوع این حساب کاربری چیست؟</string>
   <string name="account_setup_account_type_pop_action">POP3</string>
   <string name="account_setup_account_type_imap_action">IMAP</string>
-  <string name="account_setup_account_type_webdav_action">Exchange (WebDAV)</string>
   <string name="account_setup_auth_type_normal_password">گذرواژهٔ عادی</string>
   <string name="account_setup_auth_type_insecure_password">گذرواژه، به‌شکل ناامن ارسال شد</string>
-  <string name="account_setup_auth_type_encrypted_password">گذرواژهٔ رمزشده</string>
+  <string name="account_setup_auth_type_encrypted_password">گذرواژهٔ رمزنگاری‌شده</string>
   <string name="account_setup_auth_type_tls_client_certificate">گواهی کلاینت</string>
   <string name="account_setup_incoming_title">تنظیمات میزبان ورودی</string>
   <string name="account_setup_incoming_username_label">نام کاربری</string>
@@ -346,8 +330,6 @@
   <string name="account_setup_incoming_other_label">سایر</string>
   <string name="local_storage_provider_external_label">حافظهٔ خارجی (کارت SD)</string>
   <string name="local_storage_provider_internal_label">حافظهٔ داخلی همیشگی</string>
-  <string name="local_storage_provider_samsunggalaxy_label">%1$s حافظهٔ داخلی اضافی</string>
-  <string name="local_storage_provider_label">محل ذخیره‌سازی</string>
   <string name="account_setup_expunge_policy_label">پیام‌های حذف‌شده را از روی میزبان هم پاک کن</string>
   <string name="account_setup_expunge_policy_immediately">فوراً</string>
   <string name="account_setup_expunge_policy_on_poll">در زمان سرکشی</string>
@@ -379,8 +361,6 @@
   <string name="account_setup_bad_uri">پیکربندی نادرست: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">گزینه‌های حساب کاربری</string>
   <string name="compact_action">فشرده‌سازی حساب</string>
-  <string name="clear_action">پاک‌کردن پیام‌ها (خطر!)</string>
-  <string name="recreate_action">بازسازی اطلاعات (آخرین چاره!)</string>
   <string name="account_setup_options_mail_check_frequency_label">تکرار سرکشی به پوشه</string>
   <string name="account_setup_options_mail_check_frequency_never">هرگز</string>
   <string name="account_setup_options_mail_check_frequency_15min">هر ۱۵ دقیقه</string>
@@ -437,7 +417,7 @@
   <string name="account_settings_folder_notify_new_mail_mode_not_second_class">همه به‌جز پوشه‌های سطح ۲</string>
   <string name="account_settings_folder_notify_new_mail_mode_none">هیچ‌کدام</string>
   <string name="account_settings_notify_sync_label">اعلانات همگام‌سازی</string>
-  <string name="account_settings_email_label">نشانی رایانامهٔ شما</string>
+  <string name="account_settings_email_label">نشانی ایمیل شما</string>
   <string name="account_settings_notify_summary">زمانی که نامه می‌رسد در نوار وضعیت خبر بده</string>
   <string name="account_settings_notify_sync_summary">زمانی که نامه‌ها در حال به‌روزآوری است در نوار وضعیت خبر بده</string>
   <string name="account_settings_notify_self_label">شامل نامه‌های خروجی</string>
@@ -448,6 +428,8 @@
   <string name="account_settings_notification_opens_unread_summary">زمانی که اعلان باز شود پیام‌های نخوانده جستجو می‌شود</string>
   <string name="account_settings_mark_message_as_read_on_view_label">اگر باز شد نشان بزن که خواندم</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">زمانی که یک نامه را باز کردید به‌عنوان خوانده‌شده علامت بخورد</string>
+  <string name="account_settings_notification_open_system_notifications_label">تنظیمات اعلان</string>
+  <string name="account_settings_notification_open_system_notifications_summary">بازکردن تنظیمات اعلان دستگاه</string>
   <string name="account_settings_show_pictures_label">همیشه عکس‌ها را نشان بده</string>
   <string name="account_settings_show_pictures_never">خیر</string>
   <string name="account_settings_show_pictures_only_from_contacts">از مخاطبان</string>
@@ -469,21 +451,24 @@
   <string name="account_settings_quote_style_label">شیوهٔ نقل‌قول در پاسخ</string>
   <string name="account_settings_quote_style_prefix">پیشوند (مثل جیمیل)</string>
   <string name="account_settings_quote_style_header">سرعنوان (مثل اوت‌لوک)</string>
+  <string name="account_settings_upload_sent_messages_label">بارگذاری پیام‌های ارسالی</string>
+  <string name="account_settings_upload_sent_messages_summary">پیام‌ها پس از ارسال در پوشهٔ ارسالی بارگذاری شوند.</string>
   <string name="account_settings_general_title">تنظیمات کلی</string>
   <string name="account_settings_reading_mail">خواندن نامه</string>
   <string name="account_settings_sync">واکشی نامه</string>
   <string name="account_settings_folders">پوشه‌ها</string>
   <string name="account_settings_quote_prefix_label">پیشوند متن نقل‌قول</string>
-  <string name="account_settings_crypto">رمزگذاری سرتاسر</string>
+  <string name="account_settings_crypto">رمزنگاری سر-تا-سر</string>
   <string name="account_settings_crypto_app">فعال‌سازی پشتیبانی از OpenPGP</string>
   <string name="account_settings_crypto_app_select_title">برنامهٔ OpenPGP را انتخاب کنید</string>
-  <string name="account_settings_crypto_key">پیکربندی کلید سرتاسر</string>
+  <string name="account_settings_crypto_key">پیکربندی کلید سر-تا-سر</string>
   <string name="account_settings_crypto_summary_off">برنامه‌ای برای OpenPGP پیکربندی نشده</string>
   <string name="account_settings_crypto_summary_on">به %s متصل شد</string>
-  <string name="account_settings_no_openpgp_provider_configured">برنامه‌ای برای OpenPGP پیکربندی نشده</string>
-  <string name="account_settings_no_openpgp_provider_installed">برنامه‌ای برای OpenPGP یافت نشد - برای نصب اینجا بزنید</string>
+  <string name="account_settings_crypto_summary_config">در حال پیکربندی...</string>
+  <string name="account_settings_crypto_encrypt_all_drafts">ذخیرهٔ همهٔ پیش‌نویس‌ها به‌صورت رمزنگاری‌شده</string>
+  <string name="account_settings_crypto_encrypt_all_drafts_on">همهٔ پیش‌نویس‌ها به‌صورت رمزنگاری‌شده ذخیره می‌شوند</string>
+  <string name="account_settings_crypto_encrypt_all_drafts_off">پیش‌نویس‌ها فقط در صورتی رمزنگاری شوند که رمزنگاری فعال باشد</string>
   <string name="account_settings_mail_check_frequency_label">تکرار سرکشی به پوشه</string>
-  <string name="account_settings_storage_title">ذخیره‌گاه</string>
   <string name="account_settings_color_label">رنگ حساب کاربری</string>
   <string name="account_settings_color_summary">رنگ مشخصهٔ این حساب که در لیست پوشه‌ها و حساب‌ها استفاده می‌شود</string>
   <string name="account_settings_color_none">بی‌رنگ</string>
@@ -605,7 +590,7 @@
   <string name="edit_identity_description_hint">(اختیاری)</string>
   <string name="edit_identity_name_label">نام شما</string>
   <string name="edit_identity_name_hint">(اختیاری)</string>
-  <string name="edit_identity_email_label">نشانی رایانامه</string>
+  <string name="edit_identity_email_label">نشانی ایمیل</string>
   <string name="edit_identity_email_hint">(لازم)</string>
   <string name="edit_identity_reply_to_label">نشانی «پاسخ به»</string>
   <string name="edit_identity_reply_to_hint">(اختیاری)</string>
@@ -617,7 +602,7 @@
   <string name="choose_identity_title">انتخاب هویت</string>
   <string name="send_as">ارسال به‌عنوان</string>
   <string name="no_removable_identity">نمی‌توانید تک‌هویت خود را حذف کنید</string>
-  <string name="identity_has_no_email">نمی‌توانید بدون نشانی رایانامه از هویت استفاده کنید</string>
+  <string name="identity_has_no_email">نمی‌توانید بدون نشانی ایمیل از هویت استفاده کنید</string>
   <string name="sort_earliest_first">اول، نخستین پیام‌ها</string>
   <string name="sort_latest_first">اول، آخرین پیام‌ها</string>
   <string name="sort_subject_alpha">الفبایی موضوع</string>
@@ -639,11 +624,6 @@
   <string name="sort_by_unread">خوانده/نخوانده</string>
   <string name="sort_by_attach">پیوست‌ها</string>
   <string name="account_delete_dlg_title">حذف حساب</string>
-  <string name="account_recreate_dlg_title">بازسازی حساب</string>
-  <string name="account_clear_dlg_title">پاک‌سازی حساب</string>
-  <string name="provider_note_auonejp">حتماً IMAP یا POP3 را در صفحهٔ تنظیمات سرویس رایانامهٔ au one فعال کنید.</string>
-  <string name="provider_note_naver">حتماً IMAP یا POP3 را در صفحهٔ تنظیمات سرویس رایانامهٔ Naver فعال کنید.</string>
-  <string name="provider_note_hanmail">حتماً IMAP یا POP3 را در صفحهٔ تنظیمات سرویس رایانامهٔ Hanmail(Daum)‎ فعال کنید.</string>
   <string name="account_setup_failed_dlg_invalid_certificate_title">گواهی ناشناس</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">پذیرش کلید</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">ردکردن کلید</string>
@@ -662,6 +642,7 @@
   <string name="setting_theme_global">از پوستهٔ برنامه استفاده کن</string>
   <string name="setting_theme_dark">تیره</string>
   <string name="setting_theme_light">روشن</string>
+  <string name="setting_theme_follow_system">استفاده از پیشفرض سیستم</string>
   <string name="display_preferences">نمایش</string>
   <string name="global_preferences">سراسری</string>
   <string name="debug_preferences">عیب‌یابی</string>
@@ -702,20 +683,12 @@
   <string name="volume_navigation_message">در نماهای پیام</string>
   <string name="volume_navigation_list">در نماهای لیستی</string>
   <string name="start_integrated_inbox_title">هنگام شروع صندوق یکپارچه را نشان بده</string>
-  <string name="measure_accounts_title">نمایش اندازهٔ حساب کاربری</string>
-  <string name="measure_accounts_summary">برای نمایش سریع‌تر، خاموشش کنید</string>
-  <string name="count_search_title">شمارش تعداد نتایج جستجو</string>
-  <string name="count_search_summary">برای نمایش سریع‌تر، خاموشش کنید</string>
-  <string name="hide_special_accounts_title">پنهان‌کردن حساب‌های کاربری ویژه</string>
-  <string name="hide_special_accounts_summary">حساب‌های «صندوق ورودی یکپارچه» و «همهٔ پیام‌ها» پنهان شود</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-  <string name="flagged_modifier">- ستاره‌دار</string>
   <string name="unread_modifier">- نخوانده</string>
   <string name="search_all_messages_title">همهٔ پیام‌ها</string>
   <string name="search_all_messages_detail">همهٔ پیام‌های پوشه‌های قابل‌جستجو</string>
   <string name="integrated_inbox_title">صندوق ورودی یکپارچه</string>
   <string name="integrated_inbox_detail">همهٔ پیام‌های صندوق ورودی یکپارچه</string>
-  <string name="tap_hint">روی دایره یا ستاره بزنید تا پیام‌های نخوانده یا ستاره‌دار را ببینید</string>
   <string name="folder_settings_include_in_integrated_inbox_label">یکپارچگی</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">همهٔ پیام‌ها در صندوق ورودی یکپارچه نشان داده می‌شوند</string>
   <string name="account_settings_searchable_label">پوشه‌ها برای جستجو</string>
@@ -723,6 +696,7 @@
   <string name="account_settings_searchable_displayable">قابل‌نمایش</string>
   <string name="account_settings_searchable_none">هیچ‌کدام</string>
   <string name="account_settings_no_folder_selected">هیچ‌کدام</string>
+  <string name="account_settings_automatic_special_folder">خودکار (%s)</string>
   <string name="font_size_settings_title">اندازهٔ قلم</string>
   <string name="font_size_settings_description">پیکربندی اندازهٔ قلم</string>
   <string name="font_size_account_list">لیست حساب</string>
@@ -774,6 +748,8 @@
   <string name="dialog_confirm_delete_cancel_button">خیر</string>
   <string name="dialog_confirm_mark_all_as_read_title">تأیید خواندن همه</string>
   <string name="dialog_confirm_mark_all_as_read_message">آیا همهٔ پیام‌ها را نشان می‌زنید که خوانده‌اید؟</string>
+  <string name="dialog_confirm_empty_trash_title">تأیید خالی‌کردن زباله‌دان</string>
+  <string name="dialog_confirm_empty_trash_message">آیا می‌خواهید زباله‌دان را خالی کنید؟</string>
   <string name="dialog_confirm_mark_all_as_read_confirm_button">بله</string>
   <string name="dialog_confirm_mark_all_as_read_cancel_button">خیر</string>
   <string name="dialog_confirm_spam_title">تأیید انتقال به پوشهٔ هرزنامه</string>
@@ -784,56 +760,24 @@
   <string name="dialog_confirm_spam_confirm_button">بله</string>
   <string name="dialog_confirm_spam_cancel_button">خیر</string>
   <string name="dialog_attachment_progress_title">در حال دانلود پیوست</string>
-  <string name="debug_logging_enabled">ثبت گزارش عیب‌یابی فعال شد</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="import_export_action">وارد و صادرکردن تنظیمات</string>
-  <string name="settings_export_account">صادرکردن تنظیمات حساب</string>
-  <string name="settings_export_all">صادرکردن تنظیمات و حساب‌ها</string>
-  <string name="settings_import_dialog_title">واردکردن</string>
-  <string name="settings_export_dialog_title">صادرکردن</string>
-  <string name="settings_import">واردکردن تنظیمات</string>
-  <string name="settings_import_selection">واردکردن انتخاب‌ها</string>
-  <string name="settings_import_global_settings">تنظیمات سراسری</string>
-  <string name="settings_exporting">تنظیمات صدور...</string>
-  <string name="settings_importing">تنظیمات ورود...</string>
-  <string name="settings_import_scanning_file">در حال پویش فایل...</string>
-  <string name="settings_export_success_generic">تنظیمات با موفقیت صادر شد</string>
-  <string name="settings_import_account_imported_as"><xliff:g id="original_account_name">%s</xliff:g> به‌عنوان <xliff:g id="account_name_after_import">%s</xliff:g> وارد شد</string>
-  <plurals name="settings_import_accounts">
-    <item quantity="one"><xliff:g id="numAccounts">%s</xliff:g> حساب</item>
-    <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> حساب</item>
-  </plurals>
+  <string name="settings_list_backup_category">پشتیبان</string>
+  <string name="settings_list_miscellaneous_category">متفرقه</string>
+  <string name="settings_export_title">صادرکردن تنظیمات</string>
+  <string name="settings_export_button">صادرکردن</string>
+  <string name="settings_export_share_button">اشتراک‌گذاری</string>
+  <string name="settings_export_progress_text">در حال صدور تنظیمات...</string>
+  <string name="settings_export_success_generic">صدور تنظیمات با موفقیت انجام شد</string>
   <string name="settings_export_failure">صدور تنظیمات ناموفق بود</string>
-  <string name="settings_export_success_header">صدور با موفقیت انجام شد</string>
-  <string name="settings_export_failed_header">صدور ناموفق بود</string>
-  <string name="settings_import_success_header">ورود با موفقیت انجام شد</string>
-  <string name="settings_import_failed_header">ورود ناموفق بود</string>
-  <string name="settings_import_activate_account_header">فعال‌سازی حساب</string>
-  <string name="settings_import_activate_account_intro">برای اینکه بتوانید از حساب «<xliff:g id="account">%s</xliff:g>» استفاده کنید، باید <xliff:g id="server_passwords">%s</xliff:g> را فراهم کنید.</string>
-  <plurals name="settings_import_server_passwords">
-    <item quantity="one">گذرواژه‌های میزبان</item>
-    <item quantity="other">گذرواژه‌های میزبان</item>
-  </plurals>
-  <string name="settings_import_incoming_server">میزبان ورودی (<xliff:g id="hostname">%s</xliff:g>):</string>
-  <string name="settings_import_outgoing_server">میزبان خروجی (<xliff:g id="hostname">%s</xliff:g>):</string>
-  <plurals name="settings_import_setting_passwords">
-    <item quantity="one">در حال تنظیم گذرواژه...</item>
-    <item quantity="other">در حال تنظیم گذرواژه...</item>
-  </plurals>
-  <string name="settings_import_use_incoming_server_password">از گذرواژهٔ میزبان ورودی استفاده شود</string>
-  <string name="activate_account_action">فعال‌سازی</string>
-  <string name="account_unavailable">حساب «<xliff:g id="account">%s</xliff:g>» در دسترس نیست؛ ذخیره‌گاه را بررسی کنید</string>
-  <string name="attachment_save_title">ذخیرهٔ پیوست‌ها</string>
-  <string name="attachment_save_desc">مرورگری برای فایل پیدا نشد. این پیوست کجا ذخیره شود؟</string>
-  <string name="manage_accounts_move_up_action">برو بالا</string>
-  <string name="manage_accounts_move_down_action">برو پاییین</string>
-  <string name="manage_accounts_moving_message">جابه‌جاکردن حساب...</string>
+  <string name="settings_import_title">واردکردن تنظیمات</string>
+  <string name="settings_import_button">واردکردن</string>
+  <string name="settings_import">واردکردن تنظیمات</string>
+  <string name="settings_importing">در حال ورود تنظیمات…</string>
   <string name="unread_widget_select_account">نمایش تعداد نخوانده‌ها برای...</string>
   <string name="unread_widget_account_title">حساب</string>
   <string name="unread_widget_account_summary">حسابی که تعداد پیام‌های نخواندهٔ آن باید نشان داده شود</string>
   <string name="unread_widget_unified_inbox_account_summary">صندوق ورودی یکپارچه</string>
-  <string name="unread_widget_all_messages_account_summary">همهٔ پیام‌ها</string>
   <string name="unread_widget_folder_enabled_title">شمارش یک پوشه</string>
   <string name="unread_widget_folder_enabled_summary">فقط تعداد نامه‌های نخوانده از یک پوشه را نشان بده</string>
   <string name="unread_widget_folder_title">پوشه</string>
@@ -842,7 +786,6 @@
   <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
   <string name="unread_widget_account_not_selected">حسابی انتخاب نشده</string>
   <string name="unread_widget_folder_not_selected">پوشه‌ای انتخاب نشده</string>
-  <string name="close">بستن</string>
   <string name="webview_empty_message">بدون متن</string>
   <string name="webview_contextmenu_link_view_action">بازکردن پیوند</string>
   <string name="webview_contextmenu_link_share_action">اشتراک‌گذاری پیوند</string>
@@ -861,9 +804,7 @@
   <string name="webview_contextmenu_email_send_action">ارسال نامه</string>
   <string name="webview_contextmenu_email_save_action">ذخیره در مخاطبان</string>
   <string name="webview_contextmenu_email_copy_action">کپی‌کردن نشانی در بریده‌دان</string>
-  <string name="webview_contextmenu_email_clipboard_label">نشانی رایانامه</string>
-  <string name="image_saved_as">ذخیرهٔ تصویر به‌عنوان «<xliff:g id="filename">%s</xliff:g>»</string>
-  <string name="image_saving_failed">ذخیره‌سازی تصویر ناموفق بود.</string>
+  <string name="webview_contextmenu_email_clipboard_label">نشانی ایمیل</string>
   <string name="account_settings_remote_search_num_results_entries_all">همه</string>
   <string name="account_settings_remote_search_num_results_entries_10">۱۰</string>
   <string name="account_settings_remote_search_num_results_entries_25">۲۵</string>
@@ -873,7 +814,6 @@
   <string name="account_settings_remote_search_num_results_entries_500">۵۰۰</string>
   <string name="account_settings_remote_search_num_results_entries_1000">۱۰۰۰</string>
   <string name="account_settings_remote_search_num_label">محدودیت جستجوی میزبان</string>
-  <string name="account_settings_remote_search_num_summary">جستجو پس از یافتن <xliff:g id="num_results">%s</xliff:g> نتیجه متوقف می‌شود.</string>
   <string name="remote_search_sending_query">ارسال درخواست به میزبان</string>
   <plurals name="remote_search_downloading">
     <item quantity="one">واکشی %d نتیجه</item>
@@ -888,8 +828,6 @@
   <string name="account_settings_remote_search_enabled">فعال‌سازی جستجو در میزبان</string>
   <string name="account_settings_remote_search_enabled_summary">هنگام جستجو علاوه بر پیام‌های روی دستگاه، پیام‌های میزبان را هم می‌گردد</string>
   <string name="action_remote_search">جستجوی پیام‌ها در میزبان</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_pull">بکشید تا در میزبان جستجو شود...</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_release">رها کنید تا در میزبان جستجو شود...</string>
   <string name="remote_search_unavailable_no_network">برای جستجو در میزبان به اتصال شبکه نیاز دارید.</string>
   <string name="global_settings_background_as_unread_indicator_label">تغییر رنگ پس از خواندن</string>
   <string name="global_settings_background_as_unread_indicator_summary">با رنگ متفاوتی برای پس‌زمینه مشخص می‌شود که پیام خوانده شده است</string>
@@ -898,7 +836,6 @@
   <string name="upgrade_databases_title">ارتقای پایگاه‌داده</string>
   <string name="upgrade_databases_unspecified">ارتقای پایگاه‌داده...</string>
   <string name="upgrade_database_format">ارتقای پایگاه‌دادهٔ حساب «<xliff:g id="account">%s</xliff:g>»</string>
-  <string name="message_list_loading">بارگیری...</string>
   <string name="global_settings_splitview_mode_label">صفحهٔ دوبخشی</string>
   <string name="global_settings_splitview_always">همیشه</string>
   <string name="global_settings_splitview_never">هرگز</string>
@@ -906,9 +843,6 @@
   <string name="message_view_empty">لطفاً از سمت چپ پیامی را انتخاب کنید</string>
   <string name="global_settings_show_contact_picture_label">نمایش تصویر مخاطبان</string>
   <string name="global_settings_show_contact_picture_summary">در لیست پیام‌ها عکس مخاطبان نشان داده شود</string>
-  <string name="last_refresh_time_format"><xliff:g id="formatted_time">%s</xliff:g> به‌روز شد</string>
-  <string name="last_refresh_time_format_with_push"><xliff:g id="time_with_preposition">%s</xliff:g> به‌روز شد (پیشرانی فعال)</string>
-  <string name="preposition_for_date">در <xliff:g id="date">%s</xliff:g></string>
   <string name="mark_all_as_read">همگی خوانده شد</string>
   <string name="global_settings_colorize_missing_contact_pictures_label">رنگ‌کردن عکس مخاطبان</string>
   <string name="global_settings_colorize_missing_contact_pictures_summary">برای مخاطبان بدون عکس از رنگ استفاده کن</string>
@@ -929,8 +863,6 @@
   <!--Note: This references message_view_download_remainder-->
   <string name="preview_encrypted">*رمزنگاری‌شده*</string>
   <string name="add_from_contacts">افزودن از مخاطبان</string>
-  <string name="crypto_settings_cancel">لغو</string>
-  <string name="crypto_settings_ok">ادامه</string>
   <string name="recipient_cc">رونوشت به</string>
   <string name="recipient_bcc">مخفیانه به</string>
   <string name="recipient_to">به</string>
@@ -942,19 +874,16 @@
   <string name="address_type_mobile">همراه</string>
   <string name="compose_error_no_draft_folder">برای این حساب هیچ پوشهٔ پیش‌نویسی تنظیم نشده!</string>
   <string name="compose_error_no_key_configured">برای این حساب هیچ کلیدی تعریف نشده! تنظیمات را بررسی کنید.</string>
-  <string name="crypto_mode_disabled">رمزنگاری نشود</string>
-  <string name="crypto_mode_opportunistic">در صورت امکان رمزنگاری شود</string>
-  <string name="crypto_mode_private">رمزنگاری</string>
   <string name="error_crypto_provider_incompatible">نسخهٔ رمزنگار (Crypto provider) ناسازگار است. لطفاً تنظیمات را بررسی کنید!</string>
   <string name="error_crypto_provider_connect">اتصال به رمزنگار (Crypto provider) ممکن نیست. تنظیمات را بررسی کنید یا برای تلاشِ مجدد روی نماد رمزنگار بزنید!</string>
-  <string name="error_crypto_provider_ui_required">مقداردهی اولیه برای رمزنگاری سرتاسر ناموفق بود. لطفاً تنظیمات را بررسی کنید</string>
+  <string name="error_crypto_provider_ui_required">مقداردهی اولیه برای رمزنگاری سر-تا-سر ناموفق بود. لطفاً تنظیمات را بررسی کنید</string>
   <string name="error_crypto_inline_attach">حالت PGP/INLINE از پیوست پشتیبانی نمی‌کند!</string>
   <string name="enable_inline_pgp">فعال‌سازی PGP/INLINE</string>
   <string name="disable_inline_pgp">غیرفعال‌سازی PGP/INLINE</string>
   <string name="enable_sign_only">فعال‌سازی PGP Sign-Only</string>
   <string name="disable_sign_only">غیرفعال‌سازی PGP Sign-Only</string>
   <string name="openpgp_inline_title">حالت PGP/INLINE </string>
-  <string name="openpgp_inline_text">رایانامه در قالب PGP/INLINE ارسال شد.\nاز این فقط برای سازگاری استفاده کنید:</string>
+  <string name="openpgp_inline_text">ایمیل در قالب PGP/INLINE ارسال شد.\nاز این فقط برای سازگاری استفاده کنید:</string>
   <string name="openpgp_inline_plus_compat">بعضی کلاینت‌ها فقط این قالب را پشتیبانی می‌کنند</string>
   <string name="openpgp_inline_minus_transit">ممکن است امضاها در حین انتقال شکسته شوند</string>
   <string name="openpgp_inline_minus_attach">از پیوست‌ها پشتیبانی نمی‌شود</string>
@@ -965,42 +894,40 @@
   <string name="openpgp_sign_only_disable">غیرفعال شود</string>
   <string name="openpgp_sign_only_keep_enabled">فعال بماند</string>
   <string name="openpgp_dialog_sign_only_title">حالت PGP Sign-Only</string>
-  <string name="openpgp_dialog_sign_only_text">در این حالت، برای ساخت یک امضای رمزنگاری از یک رایانامهٔ رمزنشده از کلید PGP شما استفاده می‌شود.</string>
-  <string name="openpgp_dialog_sign_only_plus_verified">رایانامه را رمزنگاری نمی‌کند، بلکه بررسی می‌کند که با کلید شما ارسال شده باشد.</string>
+  <string name="openpgp_dialog_sign_only_text">در این حالت، کلید PGP شما استفاده می‌شود تا یک امضای رمزنگاری از ایمیل رمزنگاری‌نشده ساخته شود.</string>
+  <string name="openpgp_dialog_sign_only_plus_verified">ایمیل را رمزنگاری نمی‌کند، بلکه بررسی می‌کند که با کلید شما ارسال شده باشد.</string>
   <string name="openpgp_dialog_sign_only_minus_break">در صورتی که به لیست‌های پست‌سپاری الکترونیک (Mailing lists) ارسال شود شاید امضا از بین برود.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">شاید در بعضی کلاینت‌ها، امضاها در قالب فایل پیوستی «signature.asc» نشان داده شود.</string>
-  <string name="openpgp_dialog_sign_only_neutral_encsigned">پیام‌های رمزشده همیشه حاوی یک امضا هستند.</string>
+  <string name="openpgp_dialog_sign_only_neutral_encsigned">پیام‌های رمزنگاری‌شده همیشه حاوی یک امضا هستند.</string>
   <string name="crypto_msg_title_plaintext">متن ساده</string>
-  <string name="crypto_msg_unencrypted_sign_error">امضای سرتاسر خطا داشت</string>
+  <string name="crypto_msg_unencrypted_sign_error">امضای سر-تا-سر خطا داشت</string>
   <string name="crypto_msg_incomplete_signed">برای پردازش امضا، پیام باید کامل دریافت شود</string>
-  <string name="crypto_msg_unsupported_signed">حاوی امضای سرتاسرِ پشتیبانی‌نشده است</string>
+  <string name="crypto_msg_unsupported_signed">حاوی امضای سر-تا-سرِ پشتیبانی‌نشده است</string>
   <string name="crypto_msg_unsupported_encrypted">پیام رمزنگاری شده است، اما قالب آن پشتیبانی نمی‌شود.</string>
   <string name="crypto_msg_cancelled">پیام رمزنگاری شده است، اما رمزگشایی لغو شد.</string>
-  <string name="crypto_msg_title_unencrypted_signed_e2e">متن سادهٔ دوسر امضاشده</string>
+  <string name="crypto_msg_title_unencrypted_signed_e2e">متن سادهٔ سر-تا-سر امضاشده</string>
   <string name="crypto_msg_unencrypted_sign_verified">از امضاکنندهٔ تأییدشده</string>
   <string name="crypto_msg_title_unencrypted_signed">متن سادهٔ امضاشده</string>
-  <string name="crypto_msg_unencrypted_sign_mismatch">اما کلید سرتاسر با فرستنده همخوانی ندارد</string>
-  <string name="crypto_msg_unencrypted_sign_expired">اما کلید سرتاسر منقضی شده است</string>
-  <string name="crypto_msg_unencrypted_sign_revoked">اما کلید سرتاسر باطل شده است</string>
-  <string name="crypto_msg_unencrypted_sign_insecure">اما کلیدِ سرتاسر، امن نیست</string>
-  <string name="crypto_msg_unencrypted_sign_unknown">از کلید سرتاسرِ ناشناس است</string>
-  <string name="crypto_msg_title_encrypted_unknown">رمزنگاری شده</string>
+  <string name="crypto_msg_unencrypted_sign_mismatch">اما کلید سر-تا-سر با فرستنده همخوانی ندارد</string>
+  <string name="crypto_msg_unencrypted_sign_expired">اما کلید سر-تا-سر منقضی شده است</string>
+  <string name="crypto_msg_unencrypted_sign_revoked">اما کلید سر-تا-سر باطل شده است</string>
+  <string name="crypto_msg_unencrypted_sign_insecure">اما کلیدِ سر-تا-سر، امن نیست</string>
+  <string name="crypto_msg_unencrypted_sign_unknown">از کلید سر-تا-سرِ ناشناس است</string>
+  <string name="crypto_msg_title_encrypted_unknown">رمزنگاری‌شده</string>
   <string name="crypto_msg_encrypted_error">اما در رمزگشایی خطایی رخ داد</string>
   <string name="crypto_msg_encrypted_incomplete">برای رمزگشایی باید پیام را کامل دانلود کنید</string>
   <string name="crypto_msg_encrypted_no_provider">اما هیچ برنامهٔ رمزنگار پیکربندی نشده است</string>
-  <string name="crypto_msg_encrypted_unsupported">اما قالب آن پشتیبانی نمی‌شود</string>
-  <string name="crypto_msg_encrypted_cancelled">اما رمزگشایی لغو شد</string>
-  <string name="crypto_msg_title_encrypted_unsigned">رمزنگاری شده</string>
-  <string name="crypto_msg_encrypted_unsigned">اما نه سرتاسر</string>
-  <string name="crypto_msg_title_encrypted_signed_e2e">سرتاسر رمزنگاری شده</string>
+  <string name="crypto_msg_title_encrypted_unsigned">رمزنگاری‌شده</string>
+  <string name="crypto_msg_encrypted_unsigned">اما نه سر-تا-سر</string>
+  <string name="crypto_msg_title_encrypted_signed_e2e">رمزنگاری‌شدهٔ سر تا سر</string>
   <string name="crypto_msg_encrypted_sign_verified">از فرستندهٔ تأییدشده</string>
-  <string name="crypto_msg_title_encrypted_signed">رمزنگاری شده</string>
-  <string name="crypto_msg_encrypted_sign_unknown">از کلید سرتاسرِ ناشناس</string>
-  <string name="crypto_msg_encrypted_sign_mismatch">اما کلید سرتاسر با فرستنده همخوانی ندارد</string>
-  <string name="crypto_msg_encrypted_sign_expired">اما کلید سرتاسر منقضی شده است</string>
-  <string name="crypto_msg_encrypted_sign_revoked">اما کلید سرتاسر باطل شده است</string>
-  <string name="crypto_msg_encrypted_sign_insecure">اما کلیدِ سرتاسر، امن نیست</string>
-  <string name="crypto_msg_encrypted_sign_error">اما اطلاعات سرتاسر، خطاهایی دارد</string>
+  <string name="crypto_msg_title_encrypted_signed">رمزنگاری‌شده</string>
+  <string name="crypto_msg_encrypted_sign_unknown">از کلید سر-تا-سرِ ناشناس</string>
+  <string name="crypto_msg_encrypted_sign_mismatch">اما کلید سر-تا-سر با فرستنده همخوانی ندارد</string>
+  <string name="crypto_msg_encrypted_sign_expired">اما کلید سر-تا-سر منقضی شده است</string>
+  <string name="crypto_msg_encrypted_sign_revoked">اما کلید سر-تا-سر باطل شده است</string>
+  <string name="crypto_msg_encrypted_sign_insecure">اما کلیدِ سر-تا-سر، امن نیست</string>
+  <string name="crypto_msg_encrypted_sign_error">اما اطلاعات سر-تا-سر، خطاهایی دارد</string>
   <string name="crypto_msg_encrypted_insecure">اما رمزنگاری، امن نیست</string>
   <string name="crypto_info_ok">خب</string>
   <string name="crypto_info_search_key">کلید جستجو</string>
@@ -1013,12 +940,12 @@
   <string name="message_progress_text">بارگیری...</string>
   <string name="messageview_decrypt_cancelled">رمزگشایی لغو شد.</string>
   <string name="messageview_decrypt_retry">تلاش دوباره</string>
-  <string name="messageview_decrypt_incomplete">برای رمزگشایی باید پیام رمزشده را کامل دانلود کنید.</string>
-  <string name="messageview_crypto_error_title">خطا هنگام رمزگشایی رایانامه</string>
+  <string name="messageview_decrypt_incomplete">برای رمزگشایی باید پیام رمزنگاری‌شده را کامل دانلود کنید.</string>
+  <string name="messageview_crypto_error_title">خطا هنگام رمزگشایی ایمیل</string>
   <string name="recipient_error_non_ascii">فعلاً نویسه‌های ویژه پشتیبانی نمی‌شود!</string>
   <string name="recipient_error_parse_failed">خطا هنگام خواندن نشانی!</string>
-  <string name="account_settings_crypto_hide_sign_only">امضاهای رمزنشده را مخفی کن</string>
-  <string name="account_settings_crypto_hide_sign_only_on">فقط امضاهای رمزشده نمایش داده می‌شود</string>
+  <string name="account_settings_crypto_hide_sign_only">امضاهای رمزنگاری‌نشده را مخفی کن</string>
+  <string name="account_settings_crypto_hide_sign_only_on">فقط امضاهای رمزنگاری‌شده نمایش داده می‌شود</string>
   <string name="account_settings_crypto_hide_sign_only_off">همهٔ امضاها نشان داده می‌شود</string>
   <string name="error_sign_only_no_encryption">در حالت فقط-امضا (sign-only) رمزنگاری امکان‌پذیر نیست!</string>
   <string name="unsigned_text_divider_label">متن امضانشده</string>
@@ -1030,21 +957,19 @@
   <string name="apg_learn_more">برای اطلاعات بیشتر <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">اینجا کلیک کنید</a>.</string>
   <string name="apg_deprecated_ok">فهمیدم!</string>
   <string name="apg">APG</string>
-  <string name="no_crypto_provider_see_global">برنامه‌ای برای OpenPGP تنظیم نشده، تنظیمات سراسری را ببینید!</string>
   <string name="crypto_no_provider_title">این نامه رمزنگاری شده است</string>
   <string name="crypto_no_provider_message">این نامه با OpenPGP رمزنگاری شده است.\nبرای خواندن آن، باید برنامه‌ای سازگار با OpenPGP را نصب و پیکربندی کنید.</string>
   <string name="crypto_no_provider_button">برو به تنظیمات</string>
   <string name="mail_list_widget_text">لیست پیام K-9</string>
   <string name="mail_list_widget_loading">بارگیری پیام‌ها...</string>
   <string name="fetching_folders_failed">واکشی لیست پوشه ناموفق بود</string>
-  <string name="messageview_crypto_warning_details">نمایش جزئیات</string>
   <string name="error_recipient_crypto_retrieve">هنگام بازیابی وضعیت گیرنده از فراهم‌ساز OpenPGP خطایی رخ داد!</string>
   <string name="openpgp_enabled_error_title">رمزنگاری ممکن نیست</string>
   <string name="openpgp_enabled_error_msg">بعضی از گیرندگان انتخابی از این ویژگی پشتیبانی نمی‌کنند!</string>
   <string name="enable_encryption">فعال‌سازی رمزنگاری</string>
   <string name="disable_encryption">غیرفعال‌سازی رمزنگاری</string>
   <string name="openpgp_description_text1">با رمزنگاری پیام‌ها خیالتان راحت باشد که فقط گیرنده آن را می‌خواند، نه کس دیگری.</string>
-  <string name="openpgp_description_text3">اگر همهٔ گیرندگان از رمزنگاری پشتیبانی کنند، رمزنگاری را می‌بینید. همچنین آن‌ها باید قبلاً برای شما نامه‌ای فرستاده باشند.</string>
+  <string name="openpgp_description_text3">فقط در صورتی که همهٔ گیرندگان از رمزنگاری پشتیبانی کنند، رمزنگاری را می‌بینید. همچنین آن‌ها باید قبلاً برای شما نامه‌ای فرستاده باشند.</string>
   <string name="openpgp_description_text2">رمزنگاری را با زدن روی این نماد فعال/غیرفعال کنید.</string>
   <string name="openpgp_enabled_error_gotit">فهمیدم</string>
   <string name="openpgp_enabled_error_back">برگشت</string>
@@ -1052,22 +977,22 @@
   <string name="openpgp_encryption">رمزنگاری OpenPGP</string>
   <string name="account_settings_crypto_prefer_encrypt">حالت رمزنگاری خودکار دوسره</string>
   <string name="dialog_autocrypt_mutual_title">حالت رمزنگاری خودکار دوسره</string>
-  <string name="dialog_autocrypt_mutual_description_1">در حالت عادی پیام‌ها به‌انتخاب یا زمانی که در پاسخ به پیام رمزشده‌ای ارسال شوند، رمزنگاری می‌شوند.</string>
+  <string name="dialog_autocrypt_mutual_description_1">پیام‌ها معمولاً یا به‌انتخاب رمزنگاری می‌شوند یا زمانی که در پاسخ به پیام رمزنگاری‌شده‌ای ارسال شوند.</string>
   <string name="dialog_autocrypt_mutual_description_2">اگر هم فرستنده و هم گیرنده حالت دوسره را فعال کنند، رمزنگاری به‌طور پیش‌فرض فعال خواهد شد.</string>
   <string name="dialog_autocrypt_mutual_learn_more">برای اطلاعات بیشتر <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">اینجا کلیک کنید</a>.</string>
   <string name="general_settings_title">تنظیمات کلی</string>
   <string name="dialog_openkeychain_info_title">برنامه‌ای برای OpenPGP نصب نیست</string>
   <string name="dialog_openkeychain_info_install">نصب</string>
-  <string name="dialog_openkeychain_info_text">نامه‌دان K-9 برای رمزنگاری سرتاسر به OpenKeychain نیاز دارد.</string>
-  <string name="encrypted_subject">پیام رمزشده</string>
+  <string name="dialog_openkeychain_info_text">نامه‌دان K-9 برای رمزنگاری سر-تا-سر به OpenKeychain نیاز دارد.</string>
+  <string name="encrypted_subject">پیام رمزنگاری‌شده</string>
   <string name="account_settings_crypto_encrypt_subject">موضوع پیام رمزنگاری شود</string>
   <string name="account_settings_crypto_encrypt_subject_subtitle">شاید برخی گیرندگان از آن پشتیبانی نکنند</string>
   <string name="toast_account_not_found">خطای داخلی: حساب نامعتبر است!</string>
   <string name="toast_openpgp_provider_error">خطا در اتصال به %s!</string>
   <string name="ac_transfer_setting_title">ارسال پیام راه‌انداز Autocrypt </string>
-  <string name="ac_transfer_setting_summary">راه‌انداز سرتاسر را به‌طور ایمن با سایر دستگاه‌ها به‌اشتراک بگذار</string>
+  <string name="ac_transfer_setting_summary">راه‌انداز سر-تا-سر را به‌طور ایمن با سایر دستگاه‌ها به‌اشتراک بگذار</string>
   <string name="ac_transfer_title">پیام راه‌انداز Autocrypt</string>
-  <string name="ac_transfer_intro">یک پیام راه‌انداز Autocrypt راه‌انداز سرتاسر شما را به‌طور ایمن با سایر دستگاه‌ها به‌اشتراک می‌گذارد.</string>
+  <string name="ac_transfer_intro">یک پیام راه‌انداز Autocrypt راه‌انداز سر-تا-سر شما را به‌طور ایمن با سایر دستگاه‌ها به‌اشتراک می‌گذارد.</string>
   <string name="ac_transfer_button_send">ارسال پیام راه‌انداز</string>
   <string name="ac_transfer_will_be_sent">پیام به نشانی شما ارسال خواهد شد:</string>
   <string name="ac_transfer_generating">در حال ساخت پیام راه‌انداز...</string>
@@ -1087,4 +1012,6 @@
   <string name="navigation_drawer_open">باز</string>
   <string name="navigation_drawer_close">بستن</string>
   <!--permissions-->
+  <string name="permission_contacts_rationale_title">اجازهٔ دسترسی به مخاطبان را بدهید</string>
+  <string name="permission_contacts_rationale_message">برای پیشنهاد مخاطب و نمایش نام و عکس مخاطب، برنامه نیاز دارد به مخاطبان شما دسترسی داشته باشد.</string>
 </resources>
