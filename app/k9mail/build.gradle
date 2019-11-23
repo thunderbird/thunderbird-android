@@ -40,7 +40,7 @@ android {
         testApplicationId "com.fsck.k9.tests"
 
         versionCode 27000
-        versionName '5.700-SNAPSHOT'
+        versionName '5.700'
 
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk
