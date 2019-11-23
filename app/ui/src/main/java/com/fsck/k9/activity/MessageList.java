@@ -495,14 +495,19 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         if (search == null) {
             String accountUuid = intent.getStringExtra("account");
             if (accountUuid != null) {
-                // We've most likely been started by an old unread widget
+                // We've most likely been started by an old unread widget or accounts shortcut
                 String folderServerId = intent.getStringExtra("folder");
+                if (folderServerId == null) {
+                    account = preferences.getAccount(accountUuid);
+                    folderServerId = account.getAutoExpandFolder();
+                    if (folderServerId == null) {
+                        folderServerId = account.getInboxFolder();
+                    }
+                }
 
                 search = new LocalSearch(folderServerId);
                 search.addAccountUuid(accountUuid);
-                if (folderServerId != null) {
-                    search.addAllowedFolder(folderServerId);
-                }
+                search.addAllowedFolder(folderServerId);
             } else {
                 account = preferences.getDefaultAccount();
                 search = new LocalSearch();

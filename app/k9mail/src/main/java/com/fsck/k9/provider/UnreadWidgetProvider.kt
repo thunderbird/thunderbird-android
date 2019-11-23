@@ -1,6 +1,7 @@
-package com.fsck.k9.widget.unread
+package com.fsck.k9.provider
 
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_UPDATE_CURRENT
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
@@ -10,8 +11,19 @@ import android.widget.RemoteViews
 import com.fsck.k9.EarlyInit
 import com.fsck.k9.R
 import com.fsck.k9.inject
+import com.fsck.k9.widget.unread.UnreadWidgetConfigurationActivity
+import com.fsck.k9.widget.unread.UnreadWidgetData
+import com.fsck.k9.widget.unread.UnreadWidgetRepository
 import timber.log.Timber
 
+/**
+ * Unread home screen widget "provider"
+ *
+ * IMPORTANT: This class must not be renamed or moved, otherwise unread widgets added to the home screen using an older
+ * version of the app will stop working.
+ *
+ * The rest of the unread widget specific code can be found in the package [com.fsck.k9.widget.unread].
+ */
 class UnreadWidgetProvider : AppWidgetProvider(), EarlyInit {
     private val repository: UnreadWidgetRepository by inject()
 
@@ -64,7 +76,7 @@ class UnreadWidgetProvider : AppWidgetProvider(), EarlyInit {
         }
         clickIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
-        val pendingIntent = PendingIntent.getActivity(context, appWidgetId, clickIntent, 0)
+        val pendingIntent = PendingIntent.getActivity(context, appWidgetId, clickIntent, FLAG_UPDATE_CURRENT)
         remoteViews.setOnClickPendingIntent(R.id.unread_widget_layout, pendingIntent)
 
         appWidgetManager.updateAppWidget(appWidgetId, remoteViews)
