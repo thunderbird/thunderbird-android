@@ -16,7 +16,7 @@
             android:layout_height="24dp"
             android:scaleType="centerCrop"
             android:id="@+id/crypto_error_icon"
-            tools:src="@drawable/status_lock_error"
+            android:src="@drawable/status_lock_error"
             />
 
         <TextView

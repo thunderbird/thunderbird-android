@@ -62,7 +62,6 @@ public class MessageCryptoHelper {
 
 
     private final Context context;
-    private final String openPgpProvider;
     private final AutocryptOperations autocryptOperations;
     private final Object callbackLock = new Object();
     private final Deque<CryptoPart> partsToProcess = new ArrayDeque<>();
@@ -91,16 +90,11 @@ public class MessageCryptoHelper {
 
 
     public MessageCryptoHelper(Context context, OpenPgpApiFactory openPgpApiFactory,
-            AutocryptOperations autocryptOperations, @NonNull String openPgpProvider) {
+            AutocryptOperations autocryptOperations) {
         this.context = context.getApplicationContext();
 
         this.autocryptOperations = autocryptOperations;
         this.openPgpApiFactory = openPgpApiFactory;
-        this.openPgpProvider = openPgpProvider;
-    }
-
-    public boolean isConfiguredForOpenPgpProvider(String openPgpProvider) {
-        return this.openPgpProvider.equals(openPgpProvider);
     }
 
     public void asyncStartOrResumeProcessingMessage(Message message, MessageCryptoCallback callback,
@@ -232,7 +226,7 @@ public class MessageCryptoHelper {
     }
 
     private void connectToCryptoProviderService() {
-        openPgpServiceConnection = new OpenPgpServiceConnection(context, openPgpProvider,
+        openPgpServiceConnection = new OpenPgpServiceConnection(context,
                 new OnBound() {
 
                     @Override

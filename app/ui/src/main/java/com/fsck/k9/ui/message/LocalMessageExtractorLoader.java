@@ -51,7 +51,7 @@ public class LocalMessageExtractorLoader extends AsyncTaskLoader<MessageViewInfo
     @WorkerThread
     public MessageViewInfo loadInBackground() {
         try {
-            return messageViewInfoExtractor.extractMessageForView(message, annotations, message.getAccount().isOpenPgpProviderConfigured());
+            return messageViewInfoExtractor.extractMessageForView(message, annotations, true);
         } catch (Exception e) {
             Timber.e(e, "Error while decoding message");
             return null;

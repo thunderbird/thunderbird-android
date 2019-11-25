@@ -14,11 +14,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.ContactsContract.Contacts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.app.LoaderManager.LoaderCallbacks;
-import androidx.loader.content.Loader;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -31,18 +26,23 @@ import android.widget.ListPopupWindow;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.app.LoaderManager.LoaderCallbacks;
+import androidx.loader.content.Loader;
 import com.fsck.k9.K9;
-import com.fsck.k9.ui.R;
 import com.fsck.k9.activity.AlternateRecipientAdapter;
 import com.fsck.k9.activity.AlternateRecipientAdapter.AlternateRecipientListener;
 import com.fsck.k9.activity.compose.RecipientAdapter;
 import com.fsck.k9.activity.compose.RecipientLoader;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.ui.R;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.tokenautocomplete.TokenCompleteTextView;
+import de.hdodenhof.circleimageview.CircleImageView;
 import org.apache.james.mime4j.util.CharsetUtil;
 import timber.log.Timber;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class RecipientSelectView extends TokenCompleteTextView<Recipient> implements LoaderCallbacks<List<Recipient>>,
@@ -57,8 +57,6 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
 
     private RecipientAdapter adapter;
-    @Nullable
-    private String cryptoProvider;
     private boolean showAdvancedInfo;
     private boolean showCryptoEnabled;
     @Nullable
@@ -68,6 +66,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     private AlternateRecipientAdapter alternatesAdapter;
     private Recipient alternatesPopupRecipient;
     private TokenListener<Recipient> listener;
+    private boolean cryptoEnabled;
 
 
     public RecipientSelectView(Context context) {
@@ -132,12 +131,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         holder.vName.setText(recipient.getDisplayNameOrAddress());
 
         RecipientAdapter.setContactPhotoOrPlaceholder(getContext(), holder.vContactPhoto, recipient);
-
-        boolean hasCryptoProvider = cryptoProvider != null;
-        if (!hasCryptoProvider) {
-            holder.hideCryptoState();
-            return;
-        }
+        holder.hideCryptoState();
 
         boolean isAvailable = recipient.cryptoStatus == RecipientCryptoStatus.AVAILABLE_TRUSTED ||
                 recipient.cryptoStatus == RecipientCryptoStatus.AVAILABLE_UNTRUSTED;
@@ -271,8 +265,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         loaderManager.restartLoader(LOADER_ID_FILTERING, args, this);
     }
 
-    public void setCryptoProvider(@Nullable String cryptoProvider, boolean showAdvancedInfo) {
-        this.cryptoProvider = cryptoProvider;
+    public void setCryptoEnabled(boolean cryptoEnabled, boolean showAdvancedInfo) {
+        this.cryptoEnabled = cryptoEnabled;
         this.showAdvancedInfo = showAdvancedInfo;
         adapter.setShowAdvancedInfo(showAdvancedInfo);
         alternatesAdapter.setShowAdvancedInfo(showAdvancedInfo);
@@ -363,6 +357,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
     @Override
     public Loader<List<Recipient>> onCreateLoader(int id, Bundle args) {
+        // TODO remove? not sure how to deal with this one yet
+        String cryptoProvider = cryptoEnabled ? "com.fsck.k9.debug" : null;
         switch (id) {
             case LOADER_ID_FILTERING: {
                 String query = args != null && args.containsKey(ARG_QUERY) ? args.getString(ARG_QUERY) : "";

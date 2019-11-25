@@ -58,21 +58,18 @@ public class MessageCryptoPresenter implements OnCryptoClickListener {
 
         switch (displayStatus) {
             case CANCELLED: {
-                Drawable providerIcon = getOpenPgpApiProviderIcon(messageView.getContext(), account.getOpenPgpProvider());
-                messageView.showMessageCryptoCancelledView(messageViewInfo, providerIcon);
+                messageView.showMessageCryptoCancelledView(messageViewInfo);
                 break;
             }
 
             case INCOMPLETE_ENCRYPTED: {
-                Drawable providerIcon = getOpenPgpApiProviderIcon(messageView.getContext(), account.getOpenPgpProvider());
-                messageView.showMessageEncryptedButIncomplete(messageViewInfo, providerIcon);
+                messageView.showMessageEncryptedButIncomplete(messageViewInfo);
                 break;
             }
 
             case ENCRYPTED_ERROR:
             case UNSUPPORTED_ENCRYPTED: {
-                Drawable providerIcon = getOpenPgpApiProviderIcon(messageView.getContext(), account.getOpenPgpProvider());
-                messageView.showMessageCryptoErrorView(messageViewInfo, providerIcon);
+                messageView.showMessageCryptoErrorView(messageViewInfo);
                 break;
             }
 

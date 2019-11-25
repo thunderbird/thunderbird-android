@@ -177,7 +177,6 @@ public class Account implements BaseAccount, StoreConfig {
     private boolean replyAfterQuote;
     private boolean stripSignature;
     private boolean syncRemoteDeletions;
-    private String openPgpProvider;
     private long openPgpKey;
     private boolean autocryptPreferEncryptMutual;
     private boolean openPgpHideSignOnly;
@@ -905,32 +904,12 @@ public class Account implements BaseAccount, StoreConfig {
         this.stripSignature = stripSignature;
     }
 
-    public boolean isOpenPgpProviderConfigured() {
-        return !TextUtils.isEmpty(openPgpProvider);
-    }
-
-    @Nullable
-    public String getOpenPgpProvider() {
-        if (TextUtils.isEmpty(openPgpProvider)) {
-            return null;
-        }
-        return openPgpProvider;
-    }
-
-    public void setOpenPgpProvider(String openPgpProvider) {
-        this.openPgpProvider = openPgpProvider;
-    }
-
     public long getOpenPgpKey() {
         return openPgpKey;
     }
 
     public void setOpenPgpKey(long keyId) {
         openPgpKey = keyId;
-    }
-
-    public boolean hasOpenPgpKey() {
-        return openPgpKey != NO_OPENPGP_KEY;
     }
 
     public boolean getAutocryptPreferEncryptMutual() {

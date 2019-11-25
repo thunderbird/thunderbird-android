@@ -125,7 +125,6 @@ class AccountPreferenceSerializer(
             isSignatureBeforeQuotedText = storage.getBoolean("$accountUuid.signatureBeforeQuotedText", false)
             identities = loadIdentities(accountUuid, storage)
 
-            openPgpProvider = storage.getString("$accountUuid.openPgpProvider", "")
             openPgpKey = storage.getLong("$accountUuid.cryptoKey", NO_OPENPGP_KEY)
             isOpenPgpHideSignOnly = storage.getBoolean("$accountUuid.openPgpHideSignOnly", true)
             isOpenPgpEncryptSubject = storage.getBoolean("$accountUuid.openPgpEncryptSubject", true)
@@ -270,7 +269,6 @@ class AccountPreferenceSerializer(
             editor.putBoolean("$accountUuid.openPgpHideSignOnly", isOpenPgpHideSignOnly)
             editor.putBoolean("$accountUuid.openPgpEncryptSubject", isOpenPgpEncryptSubject)
             editor.putBoolean("$accountUuid.openPgpEncryptAllDrafts", isOpenPgpEncryptAllDrafts)
-            editor.putString("$accountUuid.openPgpProvider", openPgpProvider)
             editor.putBoolean("$accountUuid.autocryptMutualMode", autocryptPreferEncryptMutual)
             editor.putBoolean("$accountUuid.allowRemoteSearch", isAllowRemoteSearch)
             editor.putBoolean("$accountUuid.remoteSearchFullText", isRemoteSearchFullText)

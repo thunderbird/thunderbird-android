@@ -61,6 +61,9 @@ public class RecipientPresenter {
 
     private static final int PGP_DIALOG_DISPLAY_THRESHOLD = 2;
 
+    // TODO get rid of this
+    private static final String CRYPTO_PROVIDER_TEMP = "com.fsck.k9.debug";
+
 
     // transient state, which is either obtained during construction and initialization, or cached
     private final Context context;
@@ -333,13 +336,12 @@ public class RecipientPresenter {
             recipientMvpView.setBccVisibility(true);
             updateRecipientExpanderVisibility();
         }
-
-        String openPgpProvider = account.getOpenPgpProvider();
-        recipientMvpView.setCryptoProvider(openPgpProvider);
     }
 
     @SuppressWarnings("UnusedParameters")
     public void onSwitchIdentity(Identity identity) {
+        // TODO change depending on whether crypto is enabled for identity, or not
+        recipientMvpView.setCryptoEnabled(true);
 
         // TODO decide what actually to do on identity switch?
         /*
@@ -521,7 +523,7 @@ public class RecipientPresenter {
     }
 
     private void addRecipientsFromAddresses(final RecipientType recipientType, final Address... addresses) {
-        new RecipientLoader(context, account.getOpenPgpProvider(), addresses) {
+        new RecipientLoader(context, CRYPTO_PROVIDER_TEMP, addresses) {
             @Override
             public void deliverResult(List<Recipient> result) {
                 Recipient[] recipientArray = result.toArray(new Recipient[result.size()]);
@@ -534,7 +536,7 @@ public class RecipientPresenter {
     }
 
     private void addRecipientFromContactUri(final RecipientType recipientType, final Uri uri) {
-        new RecipientLoader(context, account.getOpenPgpProvider(), uri, false) {
+        new RecipientLoader(context, CRYPTO_PROVIDER_TEMP, uri, false) {
             @Override
             public void deliverResult(List<Recipient> result) {
                 // TODO handle multiple available mail addresses for a contact?
