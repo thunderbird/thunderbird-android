@@ -357,20 +357,18 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
     @Override
     public Loader<List<Recipient>> onCreateLoader(int id, Bundle args) {
-        // TODO remove? not sure how to deal with this one yet
-        String cryptoProvider = cryptoEnabled ? "com.fsck.k9.debug" : null;
         switch (id) {
             case LOADER_ID_FILTERING: {
                 String query = args != null && args.containsKey(ARG_QUERY) ? args.getString(ARG_QUERY) : "";
                 adapter.setHighlight(query);
-                return new RecipientLoader(getContext(), cryptoProvider, query);
+                return new RecipientLoader(getContext(), query);
             }
             case LOADER_ID_ALTERNATES: {
                 Uri contactLookupUri = alternatesPopupRecipient.getContactLookupUri();
                 if (contactLookupUri != null) {
-                    return new RecipientLoader(getContext(), cryptoProvider, contactLookupUri, true);
+                    return new RecipientLoader(getContext(), contactLookupUri, true);
                 } else {
-                    return new RecipientLoader(getContext(), cryptoProvider, alternatesPopupRecipient.address);
+                    return new RecipientLoader(getContext(), alternatesPopupRecipient.address);
                 }
             }
         }

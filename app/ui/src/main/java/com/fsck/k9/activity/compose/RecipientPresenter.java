@@ -61,9 +61,6 @@ public class RecipientPresenter {
 
     private static final int PGP_DIALOG_DISPLAY_THRESHOLD = 2;
 
-    // TODO get rid of this
-    private static final String CRYPTO_PROVIDER_TEMP = "com.fsck.k9.debug";
-
 
     // transient state, which is either obtained during construction and initialization, or cached
     private final Context context;
@@ -523,7 +520,7 @@ public class RecipientPresenter {
     }
 
     private void addRecipientsFromAddresses(final RecipientType recipientType, final Address... addresses) {
-        new RecipientLoader(context, CRYPTO_PROVIDER_TEMP, addresses) {
+        new RecipientLoader(context, addresses) {
             @Override
             public void deliverResult(List<Recipient> result) {
                 Recipient[] recipientArray = result.toArray(new Recipient[result.size()]);
@@ -536,7 +533,7 @@ public class RecipientPresenter {
     }
 
     private void addRecipientFromContactUri(final RecipientType recipientType, final Uri uri) {
-        new RecipientLoader(context, CRYPTO_PROVIDER_TEMP, uri, false) {
+        new RecipientLoader(context, uri, false) {
             @Override
             public void deliverResult(List<Recipient> result) {
                 // TODO handle multiple available mail addresses for a contact?
