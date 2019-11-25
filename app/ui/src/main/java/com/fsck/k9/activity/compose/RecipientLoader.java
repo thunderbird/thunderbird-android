@@ -28,6 +28,7 @@ import com.fsck.k9.mail.Address;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
+import org.sufficientlysecure.keychain.remote.AutocryptStatusProvider;
 import timber.log.Timber;
 
 
@@ -111,8 +112,8 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
     private final Address[] addresses;
     private final Uri contactUri;
     private final Uri lookupKeyUri;
-    private final String cryptoProvider;
     private final ContentResolver contentResolver;
+    private final AutocryptStatusProvider autocryptStatusProvider;
 
     private List<Recipient> cachedRecipients;
     private ForceLoadContentObserver observerContact, observerKey;
@@ -124,40 +125,40 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         this.addresses = null;
         this.contactUri = null;
 
-        this.cryptoProvider = null;
+        autocryptStatusProvider = new AutocryptStatusProvider(context);
         this.contentResolver = context.getContentResolver();
     }
 
-    public RecipientLoader(Context context, String cryptoProvider, String query) {
+    public RecipientLoader(Context context, String query) {
         super(context);
         this.query = query;
         this.lookupKeyUri = null;
         this.addresses = null;
         this.contactUri = null;
-        this.cryptoProvider = cryptoProvider;
 
+        autocryptStatusProvider = new AutocryptStatusProvider(context);
         contentResolver = context.getContentResolver();
     }
 
-    public RecipientLoader(Context context, String cryptoProvider, Address... addresses) {
+    public RecipientLoader(Context context, Address... addresses) {
         super(context);
         this.query = null;
         this.addresses = addresses;
         this.contactUri = null;
-        this.cryptoProvider = cryptoProvider;
         this.lookupKeyUri = null;
 
+        autocryptStatusProvider = new AutocryptStatusProvider(context);
         contentResolver = context.getContentResolver();
     }
 
-    public RecipientLoader(Context context, String cryptoProvider, Uri contactUri, boolean isLookupKey) {
+    public RecipientLoader(Context context, Uri contactUri, boolean isLookupKey) {
         super(context);
         this.query = null;
         this.addresses = null;
         this.contactUri = isLookupKey ? null : contactUri;
         this.lookupKeyUri = isLookupKey ? contactUri : null;
-        this.cryptoProvider = cryptoProvider;
 
+        autocryptStatusProvider = new AutocryptStatusProvider(context);
         contentResolver = context.getContentResolver();
     }
 
@@ -181,10 +182,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             fillContactDataFromEmailContentUri(contactUri, recipients, recipientMap);
         } else if (query != null) {
             fillContactDataFromQuery(query, recipients, recipientMap);
-
-            if (cryptoProvider != null) {
-                fillContactDataFromCryptoProvider(query, recipients, recipientMap);
-            }
+            fillContactDataFromCryptoProvider(query, recipients, recipientMap);
         } else if (lookupKeyUri != null) {
             fillContactDataFromLookupKey(lookupKeyUri, recipients, recipientMap);
         } else {
@@ -200,9 +198,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             return recipients;
         }
 
-        if (cryptoProvider != null) {
-            fillCryptoStatusData(recipientMap);
-        }
+        fillCryptoStatusData(recipientMap);
 
         return recipients;
     }
@@ -212,8 +208,8 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             Map<String, Recipient> recipientMap) {
         Cursor cursor;
         try {
-            Uri queryUri = Uri.parse("content://" + cryptoProvider + ".provider.exported/autocrypt_status");
-            cursor = contentResolver.query(queryUri, PROJECTION_CRYPTO_ADDRESSES, null,
+            Uri queryUri = Uri.parse("content://nomatter.invalid/autocrypt_status");
+            cursor = autocryptStatusProvider.query(queryUri, PROJECTION_CRYPTO_ADDRESSES, null,
                     new String[] { "%" + query + "%" }, null);
 
             if (cursor == null) {
@@ -486,9 +482,9 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         String[] recipientAddresses = recipientList.toArray(new String[recipientList.size()]);
 
         Cursor cursor;
-        Uri queryUri = Uri.parse("content://" + cryptoProvider + ".provider.exported/autocrypt_status");
+        Uri queryUri = Uri.parse("content://nomatter.invalid/autocrypt_status");
         try {
-            cursor = contentResolver.query(queryUri, PROJECTION_CRYPTO_STATUS, null, recipientAddresses, null);
+            cursor = autocryptStatusProvider.query(queryUri, PROJECTION_CRYPTO_STATUS, null, recipientAddresses, null);
         } catch (SecurityException e) {
             // TODO escalate error to crypto status?
             return;
