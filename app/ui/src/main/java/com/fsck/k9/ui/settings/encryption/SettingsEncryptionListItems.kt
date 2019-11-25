@@ -16,7 +16,6 @@ class AdvancedSettingsItem : EncryptionSwitchItem(GENERAL_SETTINGS_ID) {
 }
 
 class EncryptionIdentityItem(account: SettingsListItem.EncryptionIdentity) : EncryptionSwitchItem(account.accountNumber + ACCOUNT_ITEMS_ID_OFFSET) {
-    private val displayName = account.displayName
     private val email = account.email
 
 

@@ -32,9 +32,13 @@ class SettingsEncryptionViewModel(val context: Context, val preferences: Prefere
                 accountsMap = accounts.map { it.accountNumber to it.uuid }.toMap()
 
                 val listItems = savedSelection.let { savedState ->
-                    val accountListItems = accounts.map { account ->
-                        SettingsListItem.EncryptionIdentity(account.accountNumber, account.displayName, account.email).apply {
-                            enabled = savedState == null || account.uuid in savedState.selectedAccountUuids
+                    var accountListItems = emptyList<SettingsListItem>()
+                    for (account in accounts) {
+                        accountListItems = account.identities.mapIndexed { index, identity ->
+                            // TODO: better IDs
+                            SettingsListItem.EncryptionIdentity(account.accountNumber * 1000 + index, account.accountNumber, identity.email).apply {
+                                enabled = savedState == null || account.uuid in savedState.selectedAccountUuids
+                            }
                         }
                     }
 

@@ -20,8 +20,8 @@ sealed class SettingsListItem {
 
     object AdvancedSettings : SettingsListItem()
     data class EncryptionIdentity(
+            val id: Int,
             val accountNumber: Int,
-            val displayName: String,
             val email: String
     ) : SettingsListItem()
 }
