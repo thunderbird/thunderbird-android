@@ -32,6 +32,9 @@
         <action
             android:id="@+id/action_settingsListScreen_to_settingsImportScreen"
             app:destination="@id/settingsImportScreen" />
+        <action
+            android:id="@+id/action_settingsListScreen_to_settingsEncryptionScreen"
+            app:destination="@id/settingsEncryptionScreen" />
     </fragment>
 
     <activity
@@ -69,4 +72,9 @@
         android:label="@string/settings_import_title"
         tools:layout="@layout/fragment_settings_import"/>
 
+    <fragment
+        android:id="@+id/settingsEncryptionScreen"
+        android:name="com.fsck.k9.ui.settings.encryption.SettingsEncryptionFragment"
+        android:label="@string/encryption_settings_title"
+        tools:layout="@layout/fragment_settings_encryption"/>
 </navigation>

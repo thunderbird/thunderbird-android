@@ -12,5 +12,6 @@
     <item type="id" name="settings_export_list_account_item"/>
     <item type="id" name="settings_import_list_general_item"/>
     <item type="id" name="settings_import_list_account_item"/>
+    <item type="id" name="settings_encryption_list_identity_item"/>
 
 </resources>

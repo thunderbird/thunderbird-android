@@ -102,6 +102,12 @@ class SettingsListFragment : Fragment() {
         settingsAdapter.add(backupSection)
 
         val miscSection = Section().apply {
+            val encryptionSettingsActionItem = SettingsActionItem(
+                    getString(R.string.encryption_settings_title),
+                    R.id.action_settingsListScreen_to_settingsEncryptionScreen,
+                    R.attr.iconSettingsEncryption
+            )
+            add(encryptionSettingsActionItem)
             val accountActionItem = SettingsActionItem(
                 getString(R.string.about_action),
                 R.id.action_settingsListScreen_to_aboutScreen,
