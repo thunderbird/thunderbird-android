@@ -424,12 +424,7 @@
         android:key="openpgp"
         android:title="@string/account_settings_crypto">
 
-        <SwitchPreference
-            android:key="openpgp_provider"
-            android:title="@string/account_settings_crypto_app" />
-
         <org.openintents.openpgp.util.OpenPgpKeyPreference
-            android:dependency="openpgp_provider"
             android:key="openpgp_key"
             android:title="@string/account_settings_crypto_key" />
 

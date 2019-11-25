@@ -14,10 +14,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.os.SystemClock;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener;
 import android.text.TextUtils;
 import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
@@ -29,6 +25,10 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
@@ -261,11 +261,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                 mMessageView, mAccount, messageViewInfo);
         if (!handledByCryptoPresenter) {
             mMessageView.showMessage(mAccount, messageViewInfo);
-            if (mAccount.isOpenPgpProviderConfigured()) {
-                mMessageView.getMessageHeaderView().setCryptoStatusDisabled();
-            } else {
-                mMessageView.getMessageHeaderView().hideCryptoStatus();
-            }
+            mMessageView.getMessageHeaderView().setCryptoStatusDisabled();
         }
 
         if (messageViewInfo.subject != null) {
@@ -275,9 +271,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     private void displayHeaderForLoadingMessage(LocalMessage message) {
         mMessageView.setHeaders(message, mAccount);
-        if (mAccount.isOpenPgpProviderConfigured()) {
-            mMessageView.getMessageHeaderView().setCryptoStatusLoading();
-        }
+        mMessageView.getMessageHeaderView().setCryptoStatusLoading();
         displaySubject(message.getSubject());
         mFragmentListener.updateMenu();
     }

@@ -5,31 +5,28 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.ShowPictures;
-import com.fsck.k9.ui.R;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mailstore.MessageViewInfo;
+import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.messageview.MessageContainerView.OnRenderingFinishedListener;
 import com.fsck.k9.view.MessageHeader;
-import com.fsck.k9.view.ThemeUtils;
 import com.fsck.k9.view.ToolableViewAnimator;
 import org.openintents.openpgp.OpenPgpError;
 
@@ -131,19 +128,17 @@ public class MessageTopView extends LinearLayout {
         }
     }
 
-    public void showMessageEncryptedButIncomplete(MessageViewInfo messageViewInfo, Drawable providerIcon) {
+    public void showMessageEncryptedButIncomplete(MessageViewInfo messageViewInfo) {
         resetAndPrepareMessageView(messageViewInfo);
         View view = mInflater.inflate(R.layout.message_content_crypto_incomplete, containerView, false);
-        setCryptoProviderIcon(providerIcon, view);
 
         containerView.addView(view);
         displayViewOnLoadFinished(false);
     }
 
-    public void showMessageCryptoErrorView(MessageViewInfo messageViewInfo, Drawable providerIcon) {
+    public void showMessageCryptoErrorView(MessageViewInfo messageViewInfo) {
         resetAndPrepareMessageView(messageViewInfo);
         View view = mInflater.inflate(R.layout.message_content_crypto_error, containerView, false);
-        setCryptoProviderIcon(providerIcon, view);
 
         TextView cryptoErrorText = view.findViewById(R.id.crypto_error_text);
         OpenPgpError openPgpError = messageViewInfo.cryptoResultAnnotation.getOpenPgpError();
@@ -156,10 +151,9 @@ public class MessageTopView extends LinearLayout {
         displayViewOnLoadFinished(false);
     }
 
-    public void showMessageCryptoCancelledView(MessageViewInfo messageViewInfo, Drawable providerIcon) {
+    public void showMessageCryptoCancelledView(MessageViewInfo messageViewInfo) {
         resetAndPrepareMessageView(messageViewInfo);
         View view = mInflater.inflate(R.layout.message_content_crypto_cancelled, containerView, false);
-        setCryptoProviderIcon(providerIcon, view);
 
         view.findViewById(R.id.crypto_cancelled_retry).setOnClickListener(new OnClickListener() {
             @Override
@@ -185,16 +179,6 @@ public class MessageTopView extends LinearLayout {
 
         containerView.addView(view);
         displayViewOnLoadFinished(false);
-    }
-
-    private void setCryptoProviderIcon(Drawable openPgpApiProviderIcon, View view) {
-        ImageView cryptoProviderIcon = view.findViewById(R.id.crypto_error_icon);
-        if (openPgpApiProviderIcon != null) {
-            cryptoProviderIcon.setImageDrawable(openPgpApiProviderIcon);
-        } else {
-            cryptoProviderIcon.setImageResource(R.drawable.status_lock_error);
-            cryptoProviderIcon.setColorFilter(ThemeUtils.getStyledColor(getContext(), R.attr.openpgp_red));
-        }
     }
 
     /**

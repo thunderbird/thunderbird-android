@@ -8,7 +8,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.preference.ListPreference
 import androidx.preference.Preference
-import androidx.preference.SwitchPreference
 import com.fsck.k9.Account
 import com.fsck.k9.account.BackgroundAccountRemover
 import com.fsck.k9.activity.ManageIdentities
@@ -26,7 +25,6 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity
 import com.fsck.k9.ui.observe
 import com.fsck.k9.ui.settings.onClick
-import com.fsck.k9.ui.settings.oneTimeClickListener
 import com.fsck.k9.ui.settings.remove
 import com.fsck.k9.ui.settings.removeEntry
 import com.fsck.k9.ui.withArguments
@@ -196,39 +194,12 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     }
 
     private fun configureCryptoPreferences(account: Account) {
-        var pgpProviderName: String? = null
-        var pgpProvider = account.openPgpProvider
-        val isPgpConfigured = pgpProvider != null
+        // TODO remove
+        val pgpProvider = "com.fsck.k9.debug"
 
-        if (isPgpConfigured) {
-            pgpProviderName = "K-9"
-        }
-
-        configureEnablePgpSupport(account, isPgpConfigured, pgpProviderName)
         configurePgpKey(account, pgpProvider)
         configureAutocryptTransfer(account)
         configureAutocryptManageKeys()
-    }
-
-    private fun configureEnablePgpSupport(account: Account, isPgpConfigured: Boolean, pgpProviderName: String?) {
-        (findPreference<Preference>(PREFERENCE_OPENPGP_ENABLE) as SwitchPreference).apply {
-            if (!isPgpConfigured) {
-                isChecked = false
-                setSummary(R.string.account_settings_crypto_summary_off)
-                oneTimeClickListener(clickHandled = false) {
-                    val context = requireContext().applicationContext
-                    setOpenPgpProvider(account, "com.fsck.k9.debug")
-                    configureCryptoPreferences(account)
-                }
-            } else {
-                isChecked = true
-                summary = getString(R.string.account_settings_crypto_summary_on, pgpProviderName)
-                oneTimeClickListener {
-                    removeOpenPgpProvider(account)
-                    configureCryptoPreferences(account)
-                }
-            }
-        }
     }
 
     private fun configurePgpKey(account: Account, pgpProvider: String?) {
@@ -329,17 +300,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
     private fun closeAccountSettings() {
         requireActivity().finish()
-    }
-
-    private fun setOpenPgpProvider(account: Account, openPgpProviderPackage: String) {
-        account.openPgpProvider = openPgpProviderPackage
-        dataStore.saveSettingsInBackground()
-    }
-
-    private fun removeOpenPgpProvider(account: Account) {
-        account.openPgpProvider = null
-        account.openPgpKey = Account.NO_OPENPGP_KEY
-        dataStore.saveSettingsInBackground()
     }
 
 

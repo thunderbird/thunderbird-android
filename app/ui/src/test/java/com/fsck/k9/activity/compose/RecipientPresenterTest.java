@@ -319,8 +319,6 @@ public class RecipientPresenterTest extends K9RobolectricTest {
     private void setupCryptoProvider(RecipientAutocryptStatus autocryptStatusResult) throws Exception {
         Account account = mock(Account.class);
 
-        when(account.getOpenPgpProvider()).thenReturn(CRYPTO_PROVIDER);
-        when(account.isOpenPgpProviderConfigured()).thenReturn(true);
         when(account.getOpenPgpKey()).thenReturn(CRYPTO_KEY_ID);
         recipientPresenter.onSwitchAccount(account);
 

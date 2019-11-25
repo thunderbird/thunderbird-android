@@ -18,14 +18,14 @@ import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.Contacts.Data;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.loader.content.AsyncTaskLoader;
 import androidx.core.content.ContextCompat;
-
+import androidx.loader.content.AsyncTaskLoader;
 import com.fsck.k9.helper.EmptyCursor;
-import com.fsck.k9.ui.R;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.ui.R;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 import timber.log.Timber;

@@ -156,11 +156,10 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         bccView.setShowCryptoEnabled(isEnabled);
     }
 
-    public void setCryptoProvider(String openPgpProvider) {
-        // TODO move "show advanced" into settings, or somewhere?
-        toView.setCryptoProvider(openPgpProvider, false);
-        ccView.setCryptoProvider(openPgpProvider, false);
-        bccView.setCryptoProvider(openPgpProvider, false);
+    public void setCryptoEnabled(boolean cryptoEnabled) {
+        toView.setCryptoEnabled(cryptoEnabled, cryptoEnabled);
+        ccView.setCryptoEnabled(cryptoEnabled, cryptoEnabled);
+        bccView.setCryptoEnabled(cryptoEnabled, cryptoEnabled);
     }
 
     public void requestFocusOnToField() {
