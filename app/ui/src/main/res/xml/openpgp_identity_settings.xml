@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:key="master_switch_key"
+    android:title="@string/account_settings_crypto">
+
+    <PreferenceCategory android:key="cat_enabled">
+        <Preference
+            android:layout="@layout/openpgp_identity_setting_header_enabled"
+            android:selectable="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:key="cat_disabled">
+        <Preference
+            android:layout="@layout/openpgp_identity_setting_header_disabled"
+            android:selectable="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory>
+
+        <Preference
+            android:key="openpgp_fingerprint"
+            android:persistent="false"
+            android:title="@string/openpgp_settings_identity_fingerprint" />
+
+        <com.fsck.k9.ui.settings.account.AutocryptPreferEncryptPreference
+            android:key="openpgp_mutual_mode"
+            android:persistent="false"
+            android:title="@string/account_settings_crypto_prefer_encrypt"
+            app:summaryOff="@string/switch_off"
+            app:summaryOn="@string/switch_on" />
+
+    </PreferenceCategory>
+</PreferenceScreen>

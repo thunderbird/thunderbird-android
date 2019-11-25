@@ -13,7 +13,7 @@ data class Identity(
         val replyTo: String? = null,
         val openPgpEnabled: Boolean = false,
         val openPgpModeMutual: Boolean = false,
-        val openPgpKey: Long? = null
+        val openPgpKey: Long = -1
 ) : Parcelable {
     // TODO remove when callers are converted to Kotlin
     fun withName(name: String?) = copy(name = name)

@@ -254,6 +254,18 @@ public class Preferences {
         notifyListeners();
     }
 
+    public void saveIdentity(Account account, int identityIndex, Identity newIdentity) {
+        List<Identity> identities = account.getIdentities();
+        if (identityIndex == -1) {
+            identities.add(newIdentity);
+        } else {
+            identities.remove(identityIndex);
+            identities.add(identityIndex, newIdentity);
+        }
+
+        saveAccount(account);
+    }
+
     private void ensureAssignedAccountNumber(Account account) {
         if (account.getAccountNumber() != Account.UNASSIGNED_ACCOUNT_NUMBER) {
             return;

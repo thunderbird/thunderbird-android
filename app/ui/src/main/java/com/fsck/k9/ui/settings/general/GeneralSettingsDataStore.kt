@@ -44,6 +44,9 @@ class GeneralSettingsDataStore(
             "privacy_hide_timezone" -> K9.isHideTimeZone
             "debug_logging" -> K9.isDebugLoggingEnabled
             "sensitive_logging" -> K9.isSensitiveDebugLoggingEnabled
+            "openpgp_hide_sign_only" -> K9.openPgpHideSignOnly
+            "openpgp_encrypt_subject" -> K9.openPgpEncryptSubject
+            "openpgp_encrypt_all_drafts" -> K9.openPgpEncryptAllDrafts
             else -> defValue
         }
     }
@@ -74,6 +77,9 @@ class GeneralSettingsDataStore(
             "privacy_hide_timezone" -> K9.isHideTimeZone = value
             "debug_logging" -> K9.isDebugLoggingEnabled = value
             "sensitive_logging" -> K9.isSensitiveDebugLoggingEnabled = value
+            "openpgp_hide_sign_only" -> K9.openPgpHideSignOnly = value
+            "openpgp_encrypt_subject" -> K9.openPgpEncryptSubject = value
+            "openpgp_encrypt_all_drafts" -> K9.openPgpEncryptAllDrafts = value
             else -> return
         }
 

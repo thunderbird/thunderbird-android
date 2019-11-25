@@ -1208,6 +1208,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="dialog_autocrypt_mutual_learn_more">You can <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">click here</a> to learn more.</string>
 
     <string name="general_settings_title">General settings</string>
+    <string name="encryption_settings_title">End-to-end encryption</string>
 
     <string name="dialog_openkeychain_info_title">No OpenPGP app installed</string>
     <string name="dialog_openkeychain_info_install">Install</string>
@@ -1253,4 +1254,11 @@ You can keep this message and use it as a backup for your secret key. If you wan
     <!-- permissions -->
     <string name="permission_contacts_rationale_title">Allow access to contacts</string>
     <string name="permission_contacts_rationale_message">To be able to provide contact suggestions and to display contact names and photos, the app needs access to your contacts.</string>
+
+    <string name="openpgp_settings_mode_disabled">Disabled</string>
+    <string name="openpgp_settings_mode_automatic">Enabled, automatic allowed</string>
+    <string name="openpgp_settings_mode_manual">Enabled, manual only</string>
+    <string name="openpgp_settings_identity_info">Your emails can be secured with end-to-end encryption, which means your email provider and third parties can\'t read them. Learn more on https://autocrypt.org</string>
+    <string name="openpgp_settings_identity_fingerprint">Key for this address</string>
+
 </resources>

@@ -154,6 +154,9 @@ class AccountPreferenceSerializer(
             val signature = storage.getString("$accountUuid.signature.$ident", null)
             val description = storage.getString("$accountUuid.$IDENTITY_DESCRIPTION_KEY.$ident", null)
             val replyTo = storage.getString("$accountUuid.replyTo.$ident", null)
+            val openPgpEnabled = storage.getBoolean("$accountUuid.openPgpEnabled.$ident", Identity().openPgpEnabled)
+            val openPgpModeMutual = storage.getBoolean("$accountUuid.openPgpModeMutual.$ident", Identity().openPgpModeMutual)
+            val openPgpKey = storage.getLong("$accountUuid.openPgpKey.$ident", Identity().openPgpKey)
             if (email != null) {
                 val identity = Identity(
                     name = name,
@@ -161,7 +164,10 @@ class AccountPreferenceSerializer(
                     signatureUse = signatureUse,
                     signature = signature,
                     description = description,
-                    replyTo = replyTo
+                    replyTo = replyTo,
+                    openPgpEnabled = openPgpEnabled,
+                    openPgpModeMutual = openPgpModeMutual,
+                    openPgpKey = openPgpKey
                 )
                 newIdentities.add(identity)
                 gotOne = true
@@ -409,6 +415,9 @@ class AccountPreferenceSerializer(
                 editor.putString("$uuid.signature.$ident", identity.signature)
                 editor.putString("$uuid.$IDENTITY_DESCRIPTION_KEY.$ident", identity.description)
                 editor.putString("$uuid.replyTo.$ident", identity.replyTo)
+                editor.putBoolean("$uuid.openPgpEnabled.$ident", identity.openPgpEnabled)
+                editor.putBoolean("$uuid.openPgpModeMutual.$ident", identity.openPgpModeMutual)
+                editor.putLong("$uuid.openPgpKey.$ident", identity.openPgpKey)
                 ident++
             }
         }
@@ -430,6 +439,9 @@ class AccountPreferenceSerializer(
                 editor.remove("$accountUuid.signature.$identityIndex")
                 editor.remove("$accountUuid.$IDENTITY_DESCRIPTION_KEY.$identityIndex")
                 editor.remove("$accountUuid.replyTo.$identityIndex")
+                editor.remove("$accountUuid.openPgpEnabled.$identityIndex")
+                editor.remove("$accountUuid.openPgpModeMutual.$identityIndex")
+                editor.remove("$accountUuid.openPgpKey.$identityIndex")
                 gotOne = true
             }
             identityIndex++

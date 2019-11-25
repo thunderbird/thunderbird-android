@@ -73,15 +73,7 @@ class EditIdentity : K9Activity() {
         )
         // identity.setAlwaysBcc(mAccountAlwaysBcc.getText().toString());
 
-        val identities = account.identities
-        if (identityIndex == -1) {
-            identities.add(identity)
-        } else {
-            identities.removeAt(identityIndex)
-            identities.add(identityIndex, identity)
-        }
-
-        Preferences.getPreferences(applicationContext).saveAccount(account)
+        Preferences.getPreferences(applicationContext).saveIdentity(account, identityIndex, identity)
 
         finish()
     }

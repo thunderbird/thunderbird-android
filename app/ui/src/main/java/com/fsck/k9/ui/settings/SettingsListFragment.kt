@@ -102,6 +102,12 @@ class SettingsListFragment : Fragment() {
         settingsAdapter.add(backupSection)
 
         val miscSection = Section().apply {
+            val openPgpSettingsActionItem = SettingsActionItem(
+                    getString(R.string.encryption_settings_title),
+                    R.id.action_settingsListScreen_to_settingsOpenPgpScreen,
+                    R.attr.iconSettingsOpenPgp
+            )
+            add(openPgpSettingsActionItem)
             val accountActionItem = SettingsActionItem(
                 getString(R.string.about_action),
                 R.id.action_settingsListScreen_to_aboutScreen,

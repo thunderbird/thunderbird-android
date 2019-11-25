@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory android:key="openpgp_identities" />
+
+    <PreferenceCategory
+        android:key="advanced"
+        app:initialExpandedChildrenCount="1">
+
+        <Preference
+            android:key="autocrypt_transfer"
+            android:summary="@string/ac_transfer_setting_summary"
+            android:title="@string/ac_transfer_setting_title" />
+
+        <Preference
+            android:key="openpgp_manage"
+            android:summary="@string/ac_manage_setting_summary"
+            android:title="@string/ac_manage_setting_title" />
+
+        <SwitchPreference
+            android:key="openpgp_encrypt_all_drafts"
+            android:summaryOff="@string/account_settings_crypto_encrypt_all_drafts_off"
+            android:summaryOn="@string/account_settings_crypto_encrypt_all_drafts_on"
+            android:title="@string/account_settings_crypto_encrypt_all_drafts" />
+
+        <SwitchPreference
+            android:key="openpgp_hide_sign_only"
+            android:summaryOff="@string/account_settings_crypto_hide_sign_only_off"
+            android:summaryOn="@string/account_settings_crypto_hide_sign_only_on"
+            android:title="@string/account_settings_crypto_hide_sign_only" />
+
+        <SwitchPreference
+            android:key="openpgp_encrypt_subject"
+            android:summary="@string/account_settings_crypto_encrypt_subject_subtitle"
+            android:title="@string/account_settings_crypto_encrypt_subject" />
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>
+

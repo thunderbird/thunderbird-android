@@ -295,6 +295,10 @@
             android:label="@string/general_settings_title" />
 
         <activity
+            android:name=".ui.settings.openpgp.OpenPgpSettingsActivity"
+            android:label="@string/encryption_settings_title" />
+
+        <activity
             android:name=".ui.settings.account.AccountSettingsActivity"
             android:label="@string/account_settings_title_fmt" />
 

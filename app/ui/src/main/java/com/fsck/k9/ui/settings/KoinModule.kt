@@ -4,6 +4,7 @@ import com.fsck.k9.helper.NamedThreadFactory
 import com.fsck.k9.ui.account.AccountsLiveData
 import com.fsck.k9.ui.settings.account.AccountSettingsDataStoreFactory
 import com.fsck.k9.ui.settings.account.AccountSettingsViewModel
+import com.fsck.k9.ui.settings.openpgp.OpenPgpSettingsViewModel
 import com.fsck.k9.ui.settings.export.SettingsExportViewModel
 import com.fsck.k9.ui.settings.general.GeneralSettingsDataStore
 import com.fsck.k9.ui.settings.import.AccountActivator
@@ -29,6 +30,7 @@ val settingsUiModule = module {
     viewModel { SettingsExportViewModel(get(), get()) }
     viewModel { SettingsImportViewModel(get(), get()) }
     viewModel { SettingsImportResultViewModel() }
+    viewModel { OpenPgpSettingsViewModel(get()) }
 
     single { AccountActivator(get(), get(), get(), get()) }
 }

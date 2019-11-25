@@ -32,6 +32,9 @@
         <action
             android:id="@+id/action_settingsListScreen_to_settingsImportScreen"
             app:destination="@id/settingsImportScreen" />
+        <action
+            android:id="@+id/action_settingsListScreen_to_settingsOpenPgpScreen"
+            app:destination="@id/settingsOpenPgpScreen" />
     </fragment>
 
     <activity
@@ -68,5 +71,10 @@
         android:name="com.fsck.k9.ui.settings.import.SettingsImportFragment"
         android:label="@string/settings_import_title"
         tools:layout="@layout/fragment_settings_import"/>
+
+    <activity
+        android:id="@+id/settingsOpenPgpScreen"
+        android:name="com.fsck.k9.ui.settings.openpgp.OpenPgpSettingsActivity"
+        android:label="@string/encryption_settings_title" />
 
 </navigation>

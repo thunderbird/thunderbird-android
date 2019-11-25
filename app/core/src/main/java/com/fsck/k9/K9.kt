@@ -472,6 +472,10 @@ object K9 : EarlyInit {
         editor.putInt("pgpInlineDialogCounter", pgpInlineDialogCounter)
         editor.putInt("pgpSignOnlyDialogCounter", pgpSignOnlyDialogCounter)
 
+        editor.putBoolean("openPgpHideSignOnly", openPgpHideSignOnly)
+        editor.putBoolean("openPgpEncryptSubject", openPgpEncryptSubject)
+        editor.putBoolean("openPgpEncryptAllDrafts", openPgpEncryptAllDrafts)
+
         fontSizes.save(editor)
     }
 
