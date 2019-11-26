@@ -12,6 +12,7 @@ data class Identity(
         val signatureUse: Boolean = false,
         val replyTo: String? = null,
         val openPgpEnabled: Boolean = false,
+        val openPgpModeMutual: Boolean = false,
         val openPgpKey: Long? = null
 ) : Parcelable {
     // TODO remove when callers are converted to Kotlin

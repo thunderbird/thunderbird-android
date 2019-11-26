@@ -73,6 +73,7 @@ public class RecipientPresenter {
     private final AutocryptDraftStateHeaderParser draftStateHeaderParser;
     private ReplyToParser replyToParser;
     private Account account;
+    private Identity identity;
     private Boolean hasContactPicker;
     @Nullable
     private ComposeCryptoStatus cachedCryptoStatus;
@@ -333,14 +334,15 @@ public class RecipientPresenter {
             recipientMvpView.setBccVisibility(true);
             updateRecipientExpanderVisibility();
         }
+
+        onSwitchIdentity(account.getIdentity(0));
     }
 
     @SuppressWarnings("UnusedParameters")
     public void onSwitchIdentity(Identity identity) {
-        // TODO change depending on whether crypto is enabled for identity, or not
-        recipientMvpView.setCryptoEnabled(true);
+        this.identity = identity;
+        recipientMvpView.setCryptoEnabled(identity.getOpenPgpEnabled());
 
-        // TODO decide what actually to do on identity switch?
         /*
         if (mIdentityChanged) {
             mBccWrapper.setVisibility(View.VISIBLE);
@@ -348,7 +350,6 @@ public class RecipientPresenter {
         mBccView.setText("");
         mBccView.addAddress(new Address(mAccount.getAlwaysBcc(), ""));
         */
-
     }
 
     private static Address[] addressFromStringArray(String[] addresses) {
@@ -407,16 +408,13 @@ public class RecipientPresenter {
     public void asyncUpdateCryptoStatus() {
         cachedCryptoStatus = null;
 
-        Long accountCryptoKey = account.getOpenPgpKey();
-        if (accountCryptoKey == Account.NO_OPENPGP_KEY) {
-            accountCryptoKey = null;
-        }
+        Long identityOpenPgpKey = identity.getOpenPgpKey();
 
         final ComposeCryptoStatus composeCryptoStatus = new ComposeCryptoStatus(
-                accountCryptoKey,
+                identityOpenPgpKey,
                 getAllRecipients(),
                 cryptoEnablePgpInline,
-                account.getAutocryptPreferEncryptMutual(),
+                identity.getOpenPgpModeMutual(),
                 isReplyToEncryptedMessage,
                 K9.getOpenPgpEncryptAllDrafts(),
                 K9.getOpenPgpEncryptSubject(),

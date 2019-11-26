@@ -27,7 +27,8 @@ class AutocryptSetupMessageLiveEvent(val messageCreator: AutocryptTransferMessag
     }
 
     private fun loadAutocryptSetupMessage(openPgpApi: OpenPgpApi, account: Account): AutocryptSetupMessage {
-        val keyIds = longArrayOf(account.openPgpKey)
+        // TODO this takes all identities for the account, is that what we want?
+        val keyIds = account.identities.mapNotNull { it.openPgpKey }.toLongArray()
         val address = Address.parse(account.getIdentity(0).email)[0]
 
         val intent = Intent(OpenPgpApi.ACTION_AUTOCRYPT_KEY_TRANSFER)

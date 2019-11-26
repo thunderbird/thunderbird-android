@@ -204,7 +204,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
     private fun configurePgpKey(account: Account, pgpProvider: String?) {
         (findPreference<Preference>(PREFERENCE_OPENPGP_KEY) as OpenPgpKeyPreference).apply {
-            value = account.openPgpKey
             setOpenPgpProvider(openPgpApi)
             setIntentSenderFragment(this@AccountSettingsFragment)
             setDefaultUserId(OpenPgpApiHelper.buildUserId(account.getIdentity(0)))

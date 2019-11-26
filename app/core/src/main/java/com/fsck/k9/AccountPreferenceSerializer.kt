@@ -125,8 +125,6 @@ class AccountPreferenceSerializer(
             isSignatureBeforeQuotedText = storage.getBoolean("$accountUuid.signatureBeforeQuotedText", false)
             identities = loadIdentities(accountUuid, storage)
 
-            openPgpKey = storage.getLong("$accountUuid.cryptoKey", NO_OPENPGP_KEY)
-            autocryptPreferEncryptMutual = storage.getBoolean("$accountUuid.autocryptMutualMode", false)
             isAllowRemoteSearch = storage.getBoolean("$accountUuid.allowRemoteSearch", false)
             isRemoteSearchFullText = storage.getBoolean("$accountUuid.remoteSearchFullText", false)
             remoteSearchNumResults = storage.getInt("$accountUuid.remoteSearchNumResults", DEFAULT_REMOTE_SEARCH_NUM_RESULTS)
@@ -262,8 +260,6 @@ class AccountPreferenceSerializer(
             editor.putBoolean("$accountUuid.defaultQuotedTextShown", isDefaultQuotedTextShown)
             editor.putBoolean("$accountUuid.replyAfterQuote", isReplyAfterQuote)
             editor.putBoolean("$accountUuid.stripSignature", isStripSignature)
-            editor.putLong("$accountUuid.cryptoKey", openPgpKey)
-            editor.putBoolean("$accountUuid.autocryptMutualMode", autocryptPreferEncryptMutual)
             editor.putBoolean("$accountUuid.allowRemoteSearch", isAllowRemoteSearch)
             editor.putBoolean("$accountUuid.remoteSearchFullText", isRemoteSearchFullText)
             editor.putInt("$accountUuid.remoteSearchNumResults", remoteSearchNumResults)
@@ -522,7 +518,6 @@ class AccountPreferenceSerializer(
             isReplyAfterQuote = DEFAULT_REPLY_AFTER_QUOTE
             isStripSignature = DEFAULT_STRIP_SIGNATURE
             isSyncRemoteDeletions = true
-            openPgpKey = NO_OPENPGP_KEY
             isAllowRemoteSearch = false
             isRemoteSearchFullText = false
             remoteSearchNumResults = DEFAULT_REMOTE_SEARCH_NUM_RESULTS
