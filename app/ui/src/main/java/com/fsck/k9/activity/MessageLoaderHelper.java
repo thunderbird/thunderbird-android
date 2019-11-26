@@ -17,6 +17,7 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.app.LoaderManager.LoaderCallbacks;
 import androidx.loader.content.Loader;
 import com.fsck.k9.Account;
+import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.autocrypt.AutocryptOperations;
 import com.fsck.k9.controller.MessageReference;
@@ -292,7 +293,8 @@ public class MessageLoaderHelper {
             retainCryptoHelperFragment.setData(messageCryptoHelper);
         }
         messageCryptoHelper.asyncStartOrResumeProcessingMessage(
-                localMessage, messageCryptoCallback, cachedDecryptionResult, !account.isOpenPgpHideSignOnly());
+                localMessage, messageCryptoCallback, cachedDecryptionResult, !K9
+                        .getOpenPgpHideSignOnly());
     }
 
     private void cancelAndClearCryptoOperation() {

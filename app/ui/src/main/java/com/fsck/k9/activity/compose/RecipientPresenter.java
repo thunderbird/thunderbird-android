@@ -301,7 +301,7 @@ public class RecipientPresenter {
             menu.findItem(R.id.openpgp_encrypt_enable).setVisible(!isEncrypting);
             menu.findItem(R.id.openpgp_encrypt_disable).setVisible(isEncrypting);
 
-            boolean showSignOnly = !account.isOpenPgpHideSignOnly();
+            boolean showSignOnly = !K9.getOpenPgpHideSignOnly();
             boolean isSignOnly = currentCryptoStatus.isSignOnly();
             menu.findItem(R.id.openpgp_sign_only).setVisible(showSignOnly && !isSignOnly);
             menu.findItem(R.id.openpgp_sign_only_disable).setVisible(showSignOnly && isSignOnly);
@@ -418,8 +418,8 @@ public class RecipientPresenter {
                 cryptoEnablePgpInline,
                 account.getAutocryptPreferEncryptMutual(),
                 isReplyToEncryptedMessage,
-                account.isOpenPgpEncryptAllDrafts(),
-                account.isOpenPgpEncryptSubject(),
+                K9.getOpenPgpEncryptAllDrafts(),
+                K9.getOpenPgpEncryptSubject(),
                 currentCryptoMode);
 
         final String[] recipientAddresses = composeCryptoStatus.getRecipientAddressesAsArray();

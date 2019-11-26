@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.ShowPictures;
+import com.fsck.k9.K9;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
@@ -115,7 +116,7 @@ public class MessageTopView extends LinearLayout {
                 containerView, false);
         containerView.addView(view);
 
-        boolean hideUnsignedTextDivider = account.isOpenPgpHideSignOnly();
+        boolean hideUnsignedTextDivider = K9.getOpenPgpHideSignOnly();
         view.displayMessageViewContainer(messageViewInfo, new OnRenderingFinishedListener() {
             @Override
             public void onLoadFinished() {
