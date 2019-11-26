@@ -211,10 +211,6 @@
         search:ignore="true">
 
         <CheckBoxPreference
-            android:key="start_integrated_inbox"
-            android:title="@string/start_integrated_inbox_title" />
-
-        <CheckBoxPreference
             android:key="gestures"
             android:summary="@string/gestures_summary"
             android:title="@string/gestures_title" />

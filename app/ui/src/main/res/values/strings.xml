@@ -826,8 +826,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="volume_navigation_message">In message views</string>
     <string name="volume_navigation_list">In list views</string>
 
-    <string name="start_integrated_inbox_title">Start in Unified Inbox</string>
-
     <string name="hide_special_accounts_title">Hide Unified Inbox</string>
 
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
