@@ -1,4 +1,4 @@
-package com.fsck.k9.ui.settings.autocrypt
+package com.fsck.k9.ui.settings.openpgp
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -23,8 +23,8 @@ import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.fragment_settings_list.*
 import org.koin.android.architecture.ext.viewModel
 
-class SettingsAutocryptFragment : Fragment() {
-    private val viewModel: SettingsAutocryptViewModel by viewModel()
+class SettingsOpenPgpFragment : Fragment() {
+    private val viewModel: SettingsOpenPgpViewModel by viewModel()
 
     private lateinit var settingsAdapter: GroupAdapter<ViewHolder>
 

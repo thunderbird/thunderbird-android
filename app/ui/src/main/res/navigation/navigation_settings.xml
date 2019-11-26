@@ -33,8 +33,8 @@
             android:id="@+id/action_settingsListScreen_to_settingsImportScreen"
             app:destination="@id/settingsImportScreen" />
         <action
-            android:id="@+id/action_settingsListScreen_to_settingsAutocryptScreen"
-            app:destination="@id/settingsAutocryptScreen" />
+            android:id="@+id/action_settingsListScreen_to_settingsOpenPgpScreen"
+            app:destination="@id/settingsOpenPgpScreen" />
     </fragment>
 
     <activity
@@ -73,8 +73,7 @@
         tools:layout="@layout/fragment_settings_import"/>
 
     <fragment
-        android:id="@+id/settingsAutocryptScreen"
-        android:name="com.fsck.k9.ui.settings.autocrypt.SettingsAutocryptFragment"
-        android:label="@string/encryption_settings_title"
-        tools:layout="@layout/fragment_settings_autocrypt"/>
+        android:id="@+id/settingsOpenPgpScreen"
+        android:name="com.fsck.k9.ui.settings.openpgp.SettingsOpenPgpFragment"
+        android:label="@string/encryption_settings_title"/>
 </navigation>

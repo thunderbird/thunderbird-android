@@ -1,4 +1,4 @@
-package com.fsck.k9.ui.settings.autocrypt
+package com.fsck.k9.ui.settings.openpgp
 
 import androidx.lifecycle.LiveData
 import com.fsck.k9.AccountsChangeListener

@@ -6,7 +6,7 @@
     android:layout_height="72dp">
 
     <Switch
-        android:id="@+id/switchView"
+        android:id="@+id/identitySwitch"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:focusable="false"
@@ -21,11 +21,11 @@
         android:layout_height="48dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/switchView"
+        app:layout_constraintEnd_toStartOf="@+id/identitySwitch"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/autocryptItem"
+        android:id="@+id/identityItem"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="?attr/selectableItemBackground"
@@ -37,21 +37,21 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/autocryptIdentityEmail"
+            android:id="@+id/identityEmail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:duplicateParentState="true"
             android:textAppearance="?android:attr/textAppearanceListItem"
-            app:layout_constraintBottom_toTopOf="@+id/autocryptIdentityDescription"
+            app:layout_constraintBottom_toTopOf="@+id/identityDescription"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
             tools:text="user@domain.example" />
 
         <TextView
-            android:id="@+id/autocryptIdentityDescription"
+            android:id="@+id/identityDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -60,7 +60,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/autocryptIdentityEmail"
+            app:layout_constraintTop_toBottomOf="@+id/identityEmail"
             tools:text="Manual mode" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
