@@ -9,55 +9,55 @@ import com.fsck.k9.ui.R
 import kotlinx.android.synthetic.main.edit_identity.*
 
 class EditIdentity : K9Activity() {
-    private lateinit var mAccount: Account
-    private lateinit var mIdentity: Identity
-    private var mIdentityIndex: Int = 0
+    private lateinit var account: Account
+    private lateinit var identity: Identity
+    private var identityIndex: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mIdentity = intent.getParcelableExtra(EXTRA_IDENTITY)
-        mIdentityIndex = intent.getIntExtra(EXTRA_IDENTITY_INDEX, -1)
+        identity = intent.getParcelableExtra(EXTRA_IDENTITY)
+        identityIndex = intent.getIntExtra(EXTRA_IDENTITY_INDEX, -1)
         val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT)
-        mAccount = Preferences.getPreferences(this).getAccount(accountUuid)
+        account = Preferences.getPreferences(this).getAccount(accountUuid)
 
-        if (mIdentityIndex == -1) {
-            mIdentity = Identity()
+        if (identityIndex == -1) {
+            identity = Identity()
         }
 
         setLayout(R.layout.edit_identity)
 
         savedInstanceState?.getParcelable<Identity>(EXTRA_IDENTITY)?.let {
-            mIdentity = it
+            identity = it
         }
 
-        description.setText(mIdentity.description)
-        name.setText(mIdentity.name)
-        email.setText(mIdentity.email)
-        reply_to.setText(mIdentity.replyTo)
+        description.setText(identity.description)
+        name.setText(identity.name)
+        email.setText(identity.email)
+        reply_to.setText(identity.replyTo)
 
         //      mAccountAlwaysBcc = (EditText)findViewById(R.id.bcc);
-        //      mAccountAlwaysBcc.setText(mIdentity.getAlwaysBcc());
+        //      mAccountAlwaysBcc.setText(identity.getAlwaysBcc());
 
-        signature_use.isChecked = mIdentity.signatureUse
+        signature_use.isChecked = identity.signatureUse
         signature_use.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 signature_layout.visibility = View.VISIBLE
-                signature.setText(mIdentity.signature)
+                signature.setText(identity.signature)
             } else {
                 signature_layout.visibility = View.GONE
             }
         }
 
         if (signature_use.isChecked) {
-            signature.setText(mIdentity.signature)
+            signature.setText(identity.signature)
         } else {
             signature_layout.visibility = View.GONE
         }
     }
 
     private fun saveIdentity() {
-        mIdentity = mIdentity.copy(
+        identity = identity.copy(
             description = description.text.toString(),
             email = email.text.toString(),
             name = name.text.toString(),
@@ -65,17 +65,17 @@ class EditIdentity : K9Activity() {
             signature = signature.text.toString(),
             replyTo = if (reply_to.text.isNotEmpty()) reply_to.text.toString() else null
         )
-        // mIdentity.setAlwaysBcc(mAccountAlwaysBcc.getText().toString());
+        // identity.setAlwaysBcc(mAccountAlwaysBcc.getText().toString());
 
-        val identities = mAccount.identities
-        if (mIdentityIndex == -1) {
-            identities.add(mIdentity)
+        val identities = account.identities
+        if (identityIndex == -1) {
+            identities.add(identity)
         } else {
-            identities.removeAt(mIdentityIndex)
-            identities.add(mIdentityIndex, mIdentity)
+            identities.removeAt(identityIndex)
+            identities.add(identityIndex, identity)
         }
 
-        Preferences.getPreferences(applicationContext).saveAccount(mAccount)
+        Preferences.getPreferences(applicationContext).saveAccount(account)
 
         finish()
     }
@@ -87,7 +87,7 @@ class EditIdentity : K9Activity() {
 
     public override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelable(EXTRA_IDENTITY, mIdentity)
+        outState.putParcelable(EXTRA_IDENTITY, identity)
     }
 
     companion object {
