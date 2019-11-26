@@ -13,8 +13,8 @@ import com.fsck.k9.ui.helper.MaterialColors
  * Draw a `Bitmap` containing the "contact letter" obtained by [ContactLetterExtractor].
  */
 class ContactLetterBitmapCreator(
-        private val letterExtractor: ContactLetterExtractor,
-        val config: ContactLetterBitmapConfig
+    private val letterExtractor: ContactLetterExtractor,
+    val config: ContactLetterBitmapConfig
 ) {
     fun drawBitmap(bitmap: Bitmap, pictureSizeInPx: Int, address: Address): Bitmap {
         val canvas = Canvas(bitmap)

@@ -6,8 +6,8 @@ import android.database.sqlite.SQLiteDatabase
  * Rewrite frequencies lower than LOWEST_FREQUENCY_SUPPORTED
  */
 class StorageMigrationTo5(
-        private val db: SQLiteDatabase,
-        private val migrationsHelper: StorageMigrationsHelper
+    private val db: SQLiteDatabase,
+    private val migrationsHelper: StorageMigrationsHelper
 ) {
     fun fixMailCheckFrequencies() {
         val accountUuidsListValue = migrationsHelper.readValue(db, "accountUuids")
@@ -28,7 +28,6 @@ class StorageMigrationTo5(
             migrationsHelper.writeValue(db, key, LOWEST_FREQUENCY_SUPPORTED.toString())
         }
     }
-
 
     companion object {
         // see: https://github.com/evernote/android-job/wiki/FAQ#why-cant-an-interval-be-smaller-than-15-minutes-for-periodic-jobs

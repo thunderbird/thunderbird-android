@@ -1,25 +1,23 @@
 package com.fsck.k9.ui.settings.general
 
-
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.AttributeSet
 import androidx.core.content.res.TypedArrayUtils
 import androidx.preference.ListPreference
-import android.util.AttributeSet
 import com.fsck.k9.ui.R
-
 
 class LanguagePreference
 @JvmOverloads
 @SuppressLint("RestrictedApi")
 constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = TypedArrayUtils.getAttr(context,
-                androidx.preference.R.attr.dialogPreferenceStyle,
-                android.R.attr.dialogPreferenceStyle),
-        defStyleRes: Int = 0
-) : ListPreference(context, attrs, defStyleAttr, defStyleRes ) {
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = TypedArrayUtils.getAttr(context,
+            androidx.preference.R.attr.dialogPreferenceStyle,
+            android.R.attr.dialogPreferenceStyle),
+    defStyleRes: Int = 0
+) : ListPreference(context, attrs, defStyleAttr, defStyleRes) {
 
     init {
         val supportedLanguages = context.resources.getStringArray(R.array.supported_languages).toSet()

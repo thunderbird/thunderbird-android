@@ -5,8 +5,8 @@ import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.mailstore.FolderRepositoryManager
 
 class FoldersLiveDataFactory(
-        private val folderRepositoryManager: FolderRepositoryManager,
-        private val messagingController: MessagingController
+    private val folderRepositoryManager: FolderRepositoryManager,
+    private val messagingController: MessagingController
 ) {
     fun create(account: Account): FoldersLiveData {
         val folderRepository = folderRepositoryManager.getFolderRepository(account)

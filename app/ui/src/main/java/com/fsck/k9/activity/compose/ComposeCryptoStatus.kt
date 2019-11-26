@@ -1,6 +1,5 @@
 package com.fsck.k9.activity.compose
 
-
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoSpecialModeDisplayType
 import com.fsck.k9.activity.compose.RecipientMvpView.CryptoStatusDisplayType
 import com.fsck.k9.activity.compose.RecipientPresenter.CryptoMode
@@ -16,27 +15,29 @@ import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderState
  * or saving as draft.
  */
 data class ComposeCryptoStatus(
-        private val openPgpProviderState: OpenPgpProviderState,
-        override val openPgpKeyId: Long?,
-        val recipientAddresses: List<String>,
-        override val isPgpInlineModeEnabled: Boolean,
-        override val isSenderPreferEncryptMutual: Boolean,
-        override val isReplyToEncrypted: Boolean,
-        override val isEncryptAllDrafts: Boolean,
-        override val isEncryptSubject: Boolean,
-        private val cryptoMode: CryptoMode,
-        private val recipientAutocryptStatus: RecipientAutocryptStatus? = null
+    private val openPgpProviderState: OpenPgpProviderState,
+    override val openPgpKeyId: Long?,
+    val recipientAddresses: List<String>,
+    override val isPgpInlineModeEnabled: Boolean,
+    override val isSenderPreferEncryptMutual: Boolean,
+    override val isReplyToEncrypted: Boolean,
+    override val isEncryptAllDrafts: Boolean,
+    override val isEncryptSubject: Boolean,
+    private val cryptoMode: CryptoMode,
+    private val recipientAutocryptStatus: RecipientAutocryptStatus? = null
 ) : CryptoStatus {
 
-    constructor(openPgpProviderState: OpenPgpProviderState,
-                openPgpKeyId: Long?,
-                recipientAddresses: List<Recipient>,
-                isPgpInlineModeEnabled: Boolean,
-                isSenderPreferEncryptMutual: Boolean,
-                isReplyToEncrypted: Boolean,
-                isEncryptAllDrafts: Boolean,
-                isEncryptSubject: Boolean,
-                cryptoMode: CryptoMode) : this(
+    constructor(
+        openPgpProviderState: OpenPgpProviderState,
+        openPgpKeyId: Long?,
+        recipientAddresses: List<Recipient>,
+        isPgpInlineModeEnabled: Boolean,
+        isSenderPreferEncryptMutual: Boolean,
+        isReplyToEncrypted: Boolean,
+        isEncryptAllDrafts: Boolean,
+        isEncryptSubject: Boolean,
+        cryptoMode: CryptoMode
+    ) : this(
             openPgpProviderState, openPgpKeyId,
             recipientAddresses.map { it.address.address },
             isPgpInlineModeEnabled, isSenderPreferEncryptMutual, isReplyToEncrypted, isEncryptAllDrafts, isEncryptSubject, cryptoMode)
@@ -160,5 +161,4 @@ data class ComposeCryptoStatus(
     enum class AttachErrorState {
         IS_INLINE
     }
-
 }

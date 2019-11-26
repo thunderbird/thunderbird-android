@@ -9,7 +9,6 @@ import org.koin.core.inject
 class MessageListViewModelFactory : ViewModelProvider.Factory, KoinComponent {
     private val foldersLiveDataFactory: FoldersLiveDataFactory by inject()
 
-
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return MessageListViewModel(foldersLiveDataFactory) as T
     }

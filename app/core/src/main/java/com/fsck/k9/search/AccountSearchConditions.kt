@@ -4,7 +4,9 @@ import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.BaseAccount
 import com.fsck.k9.mail.Folder.FolderClass
-import com.fsck.k9.search.SearchSpecification.*
+import com.fsck.k9.search.SearchSpecification.Attribute
+import com.fsck.k9.search.SearchSpecification.SearchCondition
+import com.fsck.k9.search.SearchSpecification.SearchField
 
 class AccountSearchConditions {
     /**
@@ -31,7 +33,8 @@ class AccountSearchConditions {
 
                 // TODO: Create a proper interface for creating arbitrary condition trees
                 val searchCondition = SearchCondition(
-                        SearchField.DISPLAY_CLASS, Attribute.EQUALS, FolderClass.SECOND_CLASS.name)
+                    SearchField.DISPLAY_CLASS, Attribute.EQUALS, FolderClass.SECOND_CLASS.name
+                )
                 val root = search.conditions
                 if (root.mRight != null) {
                     root.mRight.or(searchCondition)

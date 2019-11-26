@@ -5,9 +5,9 @@ import com.fsck.k9.Preferences
 import timber.log.Timber
 
 class K9JobManager(
-        private val workManager: WorkManager,
-        private val preferences: Preferences,
-        private val mailSyncWorkerManager: MailSyncWorkerManager
+    private val workManager: WorkManager,
+    private val preferences: Preferences,
+    private val mailSyncWorkerManager: MailSyncWorkerManager
 ) {
     fun scheduleAllMailJobs() {
         Timber.v("scheduling all jobs")

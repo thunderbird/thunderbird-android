@@ -9,10 +9,10 @@ import com.fsck.k9.service.CoreService
 import timber.log.Timber
 
 class MailSyncWorker(
-        private val messagingController: MessagingController,
-        private val preferences: Preferences,
-        context: Context,
-        parameters: WorkerParameters
+    private val messagingController: MessagingController,
+    private val preferences: Preferences,
+    context: Context,
+    parameters: WorkerParameters
 ) : Worker(context, parameters) {
 
     override fun doWork(): Result {

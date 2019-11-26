@@ -8,10 +8,10 @@ import com.fsck.k9.job.K9JobManager
 import java.util.concurrent.ExecutorService
 
 class AccountSettingsDataStore(
-        private val preferences: Preferences,
-        private val executorService: ExecutorService,
-        private val account: Account,
-        private val jobManager: K9JobManager
+    private val preferences: Preferences,
+    private val executorService: ExecutorService,
+    private val account: Account,
+    private val jobManager: K9JobManager
 ) : PreferenceDataStore() {
 
     override fun getBoolean(key: String, defValue: Boolean): Boolean {
@@ -226,8 +226,8 @@ class AccountSettingsDataStore(
     }
 
     private fun saveSpecialFolderSelection(
-            preferenceValue: String,
-            specialFolderSetter: (String?, SpecialFolderSelection) -> Unit
+        preferenceValue: String,
+        specialFolderSetter: (String?, SpecialFolderSelection) -> Unit
     ) {
         val specialFolder = extractFolderName(preferenceValue)
 
@@ -241,7 +241,7 @@ class AccountSettingsDataStore(
     }
 
     private fun loadSpecialFolder(specialFolder: String?, specialFolderSelection: SpecialFolderSelection): String {
-        val prefix =  when (specialFolderSelection) {
+        val prefix = when (specialFolderSelection) {
             SpecialFolderSelection.AUTOMATIC -> FolderListPreference.AUTOMATIC_PREFIX
             SpecialFolderSelection.MANUAL -> FolderListPreference.MANUAL_PREFIX
         }

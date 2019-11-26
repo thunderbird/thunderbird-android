@@ -1,6 +1,5 @@
 package com.fsck.k9.storage.migrations
 
-
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import com.fsck.k9.mail.FetchProfile
@@ -8,7 +7,6 @@ import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mailstore.LocalFolder
 import com.fsck.k9.mailstore.LocalStore
 import timber.log.Timber
-
 
 internal class FullTextIndexer(val localStore: LocalStore, val database: SQLiteDatabase) {
     private val fulltextCreator = localStore.messageFulltextCreator

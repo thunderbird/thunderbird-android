@@ -1,6 +1,5 @@
 package com.fsck.k9.ui
 
-
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.net.Uri
@@ -10,7 +9,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.fsck.k9.Account
-import com.fsck.k9.DI
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import com.fsck.k9.activity.MessageList
@@ -33,11 +31,10 @@ import com.mikepenz.materialdrawer.DrawerBuilder
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 import java.util.ArrayList
 import java.util.HashSet
-
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : KoinComponent {
     private val folderNameFormatter: FolderNameFormatter by inject()
@@ -56,7 +53,6 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private val foldersObserver = Observer<List<DisplayFolder>> { folders ->
         setUserFolders(folders)
     }
-
 
     val layout: DrawerLayout
         get() = drawer.drawerLayout
@@ -296,7 +292,6 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     fun unlock() {
         drawer.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
     }
-
 
     companion object {
         // Bit shift for identifiers of user folders items, to leave space for other items

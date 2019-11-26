@@ -22,8 +22,7 @@ class SettingsImportUiModel {
         get() = isSettingsListVisible
 
     val wasAccountImportSuccessful
-        get() = hasImportStarted && settingsList.any { it !is GeneralSettings && it.importStatus.isSuccess}
-
+        get() = hasImportStarted && settingsList.any { it !is GeneralSettings && it.importStatus.isSuccess }
 
     fun enablePickDocumentButton() {
         isPickDocumentButtonEnabled = true

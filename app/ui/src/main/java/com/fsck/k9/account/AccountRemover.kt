@@ -10,9 +10,9 @@ import timber.log.Timber
  * Removes an account and all associated data.
  */
 class AccountRemover(
-        private val localStoreProvider: LocalStoreProvider,
-        private val messagingController: MessagingController,
-        private val preferences: Preferences
+    private val localStoreProvider: LocalStoreProvider,
+    private val messagingController: MessagingController,
+    private val preferences: Preferences
 ) {
 
     fun removeAccount(accountUuid: String) {

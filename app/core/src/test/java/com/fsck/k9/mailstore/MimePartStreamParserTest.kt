@@ -1,15 +1,12 @@
 package com.fsck.k9.mailstore
 
-
-import java.io.ByteArrayInputStream
-
 import com.fsck.k9.mail.internet.MimeBodyPart
 import com.fsck.k9.mail.internet.MimeMessage
 import com.fsck.k9.mail.internet.MimeMultipart
+import java.io.ByteArrayInputStream
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
-
-import org.junit.Assert.*
-
 
 class MimePartStreamParserTest {
     @Test

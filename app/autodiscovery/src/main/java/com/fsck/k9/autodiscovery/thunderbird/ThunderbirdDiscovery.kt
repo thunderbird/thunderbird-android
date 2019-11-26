@@ -4,9 +4,9 @@ import com.fsck.k9.autodiscovery.ConnectionSettings
 import com.fsck.k9.autodiscovery.ConnectionSettingsDiscovery
 
 class ThunderbirdDiscovery(
-        private val fetcher: ThunderbirdAutoconfigFetcher,
-        private val parser: ThunderbirdAutoconfigParser
-): ConnectionSettingsDiscovery {
+    private val fetcher: ThunderbirdAutoconfigFetcher,
+    private val parser: ThunderbirdAutoconfigParser
+) : ConnectionSettingsDiscovery {
 
     override fun discover(email: String): ConnectionSettings? {
         val autoconfigInputStream = fetcher.fetchAutoconfigFile(email) ?: return null

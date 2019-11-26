@@ -15,12 +15,10 @@ import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter
 import kotlinx.android.synthetic.main.fragment_settings_export.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
 class SettingsExportFragment : Fragment() {
     private val viewModel: SettingsExportViewModel by viewModel()
 
     private lateinit var settingsExportAdapter: FastItemAdapter<CheckBoxItem>
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_settings_export, container, false)
@@ -91,7 +89,7 @@ class SettingsExportFragment : Fragment() {
         setSettingsList(model.settingsList, model.isSettingsListEnabled)
     }
 
-    //TODO: Update list instead of replacing it completely
+    // TODO: Update list instead of replacing it completely
     private fun setSettingsList(items: List<SettingsListItem>, enable: Boolean) {
         val checkBoxItems = items.map { item ->
             val checkBoxItem = when (item) {
@@ -150,7 +148,6 @@ class SettingsExportFragment : Fragment() {
             }
         }
     }
-
 
     companion object {
         private const val RESULT_PICK_DOCUMENT = Activity.RESULT_FIRST_USER

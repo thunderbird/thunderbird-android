@@ -1,6 +1,5 @@
 package com.fsck.k9.message.html
 
-
 internal interface UriParser {
     /**
      * Parse scheme specific URI beginning from given position.

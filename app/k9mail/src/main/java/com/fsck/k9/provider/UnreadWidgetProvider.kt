@@ -27,7 +27,6 @@ import timber.log.Timber
 class UnreadWidgetProvider : AppWidgetProvider(), EarlyInit {
     private val repository: UnreadWidgetRepository by inject()
 
-
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         for (widgetId in appWidgetIds) {
             val widgetData = repository.getWidgetData(widgetId)

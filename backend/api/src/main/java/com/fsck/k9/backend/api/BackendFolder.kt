@@ -4,7 +4,7 @@ import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
 import java.util.Date
 
-//FIXME: add documentation
+// FIXME: add documentation
 interface BackendFolder {
     val name: String
     val visibleLimit: Int

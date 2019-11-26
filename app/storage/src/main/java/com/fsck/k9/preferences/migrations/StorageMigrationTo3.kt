@@ -6,8 +6,8 @@ import android.database.sqlite.SQLiteDatabase
  * Rewrite folder name values of "-NONE-" to `null`
  */
 class StorageMigrationTo3(
-        private val db: SQLiteDatabase,
-        private val migrationsHelper: StorageMigrationsHelper
+    private val db: SQLiteDatabase,
+    private val migrationsHelper: StorageMigrationsHelper
 ) {
     fun rewriteFolderNone() {
         val accountUuidsListValue = migrationsHelper.readValue(db, "accountUuids")
@@ -36,7 +36,6 @@ class StorageMigrationTo3(
             migrationsHelper.writeValue(db, key, NEW_FOLDER_VALUE)
         }
     }
-
 
     companion object {
         private const val OLD_FOLDER_VALUE = "-NONE-"

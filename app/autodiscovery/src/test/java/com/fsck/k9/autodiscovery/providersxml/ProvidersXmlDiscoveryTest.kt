@@ -13,7 +13,6 @@ import org.junit.Test
 import org.mockito.ArgumentMatchers.anyString
 import org.robolectric.RuntimeEnvironment
 
-
 class ProvidersXmlDiscoveryTest : RobolectricTest() {
     val backendManager = mock<BackendManager> {
         on { decodeStoreUri(anyString()) } doAnswer { mock -> ImapStoreUriDecoder.decode(mock.getArgument(0)) }
@@ -23,7 +22,6 @@ class ProvidersXmlDiscoveryTest : RobolectricTest() {
     }
     val xmlProvider = ProvidersXmlProvider(RuntimeEnvironment.application)
     val providersXmlDiscovery = ProvidersXmlDiscovery(backendManager, xmlProvider)
-
 
     @Test
     fun discover_withGmailDomain_shouldReturnCorrectSettings() {

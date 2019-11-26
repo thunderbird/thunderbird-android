@@ -16,8 +16,8 @@ import com.fsck.k9.mail.transport.smtp.SmtpTransportUriDecoder
 import com.fsck.k9.mailstore.K9BackendStorageFactory
 
 class Pop3BackendFactory(
-        private val backendStorageFactory: K9BackendStorageFactory,
-        private val trustedSocketFactory: TrustedSocketFactory
+    private val backendStorageFactory: K9BackendStorageFactory,
+    private val trustedSocketFactory: TrustedSocketFactory
 ) : BackendFactory {
     override val transportUriPrefix = "smtp"
 

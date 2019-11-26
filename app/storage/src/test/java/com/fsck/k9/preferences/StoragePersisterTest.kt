@@ -1,6 +1,5 @@
 package com.fsck.k9.preferences
 
-
 import android.content.Context
 import com.fsck.k9.preferences.K9StoragePersister.StoragePersistOperationCallback
 import com.fsck.k9.preferences.K9StoragePersister.StoragePersistOperations
@@ -17,7 +16,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Test
 import org.robolectric.RuntimeEnvironment
-
 
 class StoragePersisterTest : K9RobolectricTest() {
     private var context: Context = RuntimeEnvironment.application
@@ -103,9 +101,9 @@ class StoragePersisterTest : K9RobolectricTest() {
     }
 
     private fun prepareCallback(
-            persistOp: ((StoragePersistOperations) -> Unit)? = null,
-            before: ((MutableMap<String, String>) -> Unit)? = null,
-            onSuccess: ((Map<String, String>) -> Unit)? = null
+        persistOp: ((StoragePersistOperations) -> Unit)? = null,
+        before: ((MutableMap<String, String>) -> Unit)? = null,
+        onSuccess: ((Map<String, String>) -> Unit)? = null
     ): StoragePersistOperationCallback = spy(object : StoragePersistOperationCallback {
         override fun beforePersistTransaction(workingStorage: MutableMap<String, String>) {
             before?.invoke(workingStorage)

@@ -6,8 +6,8 @@ import android.database.sqlite.SQLiteDatabase
  * Perform legacy conversions that previously lived in `K9`.
  */
 class StorageMigrationTo6(
-        private val db: SQLiteDatabase,
-        private val migrationsHelper: StorageMigrationsHelper
+    private val db: SQLiteDatabase,
+    private val migrationsHelper: StorageMigrationsHelper
 ) {
     fun performLegacyMigrations() {
         rewriteKeyguardPrivacy()

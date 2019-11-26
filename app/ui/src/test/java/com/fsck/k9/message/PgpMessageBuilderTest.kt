@@ -1,6 +1,5 @@
 package com.fsck.k9.message
 
-
 import android.app.Activity
 import android.app.PendingIntent
 import android.content.Intent
@@ -19,34 +18,47 @@ import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.BodyPart
 import com.fsck.k9.mail.BoundaryGenerator
 import com.fsck.k9.mail.MessagingException
-import com.fsck.k9.mail.internet.*
+import com.fsck.k9.mail.internet.BinaryTempFileBody
+import com.fsck.k9.mail.internet.MessageIdGenerator
+import com.fsck.k9.mail.internet.MimeMessage
+import com.fsck.k9.mail.internet.MimeMultipart
+import com.fsck.k9.mail.internet.MimeUtility
+import com.fsck.k9.mail.internet.TextBody
 import com.fsck.k9.message.MessageBuilder.Callback
 import com.fsck.k9.message.quote.InsertableHtmlContent
 import com.fsck.k9.view.RecipientSelectView
 import com.nhaarman.mockito_kotlin.anyOrNull
+import java.io.ByteArrayOutputStream
+import java.io.IOException
+import java.io.OutputStream
+import java.util.Date
 import org.apache.commons.io.Charsets
 import org.apache.commons.io.IOUtils
 import org.apache.james.mime4j.util.MimeUtil
 import org.junit.Assert
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.koin.core.inject
 import org.mockito.ArgumentCaptor
-import org.mockito.Mockito.*
+import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.anyInt
+import org.mockito.ArgumentMatchers.eq
+import org.mockito.ArgumentMatchers.same
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.spy
+import org.mockito.Mockito.verify
+import org.mockito.Mockito.verifyNoMoreInteractions
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderState
 import org.openintents.openpgp.OpenPgpError
 import org.openintents.openpgp.util.OpenPgpApi
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource
 import org.robolectric.RuntimeEnvironment
-import java.io.ByteArrayOutputStream
-import java.io.IOException
-import java.io.OutputStream
-import java.util.*
-
 
 class PgpMessageBuilderTest : K9RobolectricTest() {
-
 
     private val defaultCryptoStatus = ComposeCryptoStatus(
             OpenPgpProviderState.OK,
@@ -603,19 +615,16 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         val cryptoStatus = defaultCryptoStatus.copy(recipientAddresses = listOf("test@example.org"))
         pgpMessageBuilder.setCryptoStatus(cryptoStatus)
 
-
         val returnIntent = Intent()
         returnIntent.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_ERROR)
         returnIntent.putExtra(OpenPgpApi.RESULT_ERROR,
                 OpenPgpError(OpenPgpError.OPPORTUNISTIC_MISSING_KEYS, "Missing keys"))
-
 
         `when`(openPgpApi.executeApi(any(Intent::class.java), any(OpenPgpDataSource::class.java), any(OutputStream::class.java)))
                 .thenReturn(returnIntent)
 
         val mockCallback = mock(Callback::class.java)
         pgpMessageBuilder.buildAsync(mockCallback)
-
 
         val captor = ArgumentCaptor.forClass(MimeMessage::class.java)
         verify(mockCallback).onMessageBuildSuccess(captor.capture(), eq(false))
@@ -635,11 +644,9 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         returnIntentSigned.putExtra(OpenPgpApi.RESULT_CODE, OpenPgpApi.RESULT_CODE_SUCCESS)
         // no OpenPgpApi.EXTRA_DETACHED_SIGNATURE!
 
-
         `when`(openPgpApi.executeApi(any<Intent>(), any<OpenPgpDataSource>(), any<OutputStream>())).thenReturn(returnIntentSigned)
         val mockCallback = mock(Callback::class.java)
         pgpMessageBuilder.buildAsync(mockCallback)
-
 
         verify(mockCallback).onMessageBuildException(any<MessagingException>())
         verifyNoMoreInteractions(mockCallback)
@@ -651,9 +658,11 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
         private val AUTOCRYPT_KEY_MATERIAL = byteArrayOf(1, 2, 3)
         private val SENDER_EMAIL = "test@example.org"
 
-        private fun createDefaultPgpMessageBuilder(openPgpApi: OpenPgpApi,
-                                                   autocryptOpenPgpApiInteractor: AutocryptOpenPgpApiInteractor,
-                                                   resourceProvider: CoreResourceProvider): PgpMessageBuilder {
+        private fun createDefaultPgpMessageBuilder(
+            openPgpApi: OpenPgpApi,
+            autocryptOpenPgpApiInteractor: AutocryptOpenPgpApiInteractor,
+            resourceProvider: CoreResourceProvider
+        ): PgpMessageBuilder {
             val builder = PgpMessageBuilder(
                     MessageIdGenerator.getInstance(), BoundaryGenerator.getInstance(),
                     AutocryptOperations.getInstance(), autocryptOpenPgpApiInteractor, resourceProvider)
@@ -704,7 +713,6 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
             } catch (e: MessagingException) {
                 Assert.fail()
             }
-
         }
 
         private fun assertContentOfBodyPartEquals(reason: String, signatureBodyPart: BodyPart, expected: String) {
@@ -718,7 +726,6 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
             } catch (e: MessagingException) {
                 Assert.fail()
             }
-
         }
 
         private fun assertIntentEqualsActionAndExtras(expected: Intent, actual: Intent) {

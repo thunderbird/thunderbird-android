@@ -6,8 +6,8 @@ import android.database.sqlite.SQLiteDatabase
  * Rewrite settings to use enum names instead of ordinals.
  */
 class StorageMigrationTo7(
-        private val db: SQLiteDatabase,
-        private val migrationsHelper: StorageMigrationsHelper
+    private val db: SQLiteDatabase,
+    private val migrationsHelper: StorageMigrationsHelper
 ) {
     fun rewriteEnumOrdinalsToNames() {
         rewriteTheme()

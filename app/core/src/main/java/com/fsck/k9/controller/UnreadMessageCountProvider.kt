@@ -16,10 +16,10 @@ interface UnreadMessageCountProvider {
 }
 
 internal class DefaultUnreadMessageCountProvider(
-        private val context: Context,
-        private val preferences: Preferences,
-        private val accountSearchConditions: AccountSearchConditions,
-        private val localStoreProvider: LocalStoreProvider
+    private val context: Context,
+    private val preferences: Preferences,
+    private val accountSearchConditions: AccountSearchConditions,
+    private val localStoreProvider: LocalStoreProvider
 ) : UnreadMessageCountProvider {
     override fun getUnreadMessageCount(account: Account): Int {
         if (!account.isAvailable(context)) {

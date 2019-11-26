@@ -1,9 +1,9 @@
 package com.fsck.k9.preferences
 
-
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
-
 
 private const val TEST_STRING_KEY = "s"
 private const val TEST_STRING_VALUE = "y"

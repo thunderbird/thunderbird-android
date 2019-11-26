@@ -10,10 +10,9 @@ import com.fsck.k9.activity.misc.SwipeGestureDetector
 import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener
 import com.fsck.k9.ui.Theme
 import com.fsck.k9.ui.ThemeManager
+import java.util.Locale
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import java.util.Locale
-
 
 /**
  * This class implements functionality common to most activities used in K-9 Mail.
@@ -22,15 +21,14 @@ import java.util.Locale
  * @see K9PreferenceActivity
  */
 class K9ActivityCommon(
-        private val activity: Activity,
-        private val themeType: ThemeType
+    private val activity: Activity,
+    private val themeType: ThemeType
 ) {
     private var gestureDetector: GestureDetector? = null
     private lateinit var currentLanguage: String
     private lateinit var currentTheme: Theme
 
     val themeManager = Companion.themeManager
-
 
     /**
      * Call this before calling `super.onCreate(Bundle)`.
@@ -87,7 +85,6 @@ class K9ActivityCommon(
         config.locale = locale
         resources.updateConfiguration(config, resources.displayMetrics)
     }
-
 
     companion object : KoinComponent {
         private val themeManager: ThemeManager by inject()

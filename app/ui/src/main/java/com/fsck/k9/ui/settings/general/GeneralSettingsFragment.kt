@@ -11,7 +11,6 @@ import org.koin.android.ext.android.inject
 class GeneralSettingsFragment : PreferenceFragmentCompat() {
     private val dataStore: GeneralSettingsDataStore by inject()
 
-
     override fun onCreatePreferencesFix(savedInstanceState: Bundle?, rootKey: String?) {
         preferenceManager.preferenceDataStore = dataStore
 
@@ -34,7 +33,6 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
             }
         }
     }
-
 
     companion object {
         private const val PREFERENCE_THEME = "theme"

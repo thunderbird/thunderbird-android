@@ -14,8 +14,8 @@ import com.fsck.k9.mail.transport.WebDavTransport
 import com.fsck.k9.mailstore.K9BackendStorageFactory
 
 class WebDavBackendFactory(
-        private val backendStorageFactory: K9BackendStorageFactory,
-        private val trustManagerFactory: TrustManagerFactory
+    private val backendStorageFactory: K9BackendStorageFactory,
+    private val trustManagerFactory: TrustManagerFactory
 ) : BackendFactory {
     override val transportUriPrefix = "webdav"
 

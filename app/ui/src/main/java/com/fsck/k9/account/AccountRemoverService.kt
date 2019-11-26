@@ -12,7 +12,6 @@ import org.koin.core.inject
 class AccountRemoverService : JobIntentService(), KoinComponent {
     private val accountRemover: AccountRemover by inject()
 
-
     override fun onHandleWork(intent: Intent) {
         val accountUuid = intent.getStringExtra(ARG_ACCOUNT_UUID)
                 ?: throw IllegalArgumentException("No account UUID provided")
@@ -20,11 +19,9 @@ class AccountRemoverService : JobIntentService(), KoinComponent {
         accountRemover.removeAccount(accountUuid)
     }
 
-
     companion object {
         private const val JOB_ID = 1
         private const val ARG_ACCOUNT_UUID = "accountUuid"
-
 
         fun enqueueRemoveAccountJob(context: Context, accountUuid: String) {
             val workIntent = Intent().apply {

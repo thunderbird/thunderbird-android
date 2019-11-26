@@ -7,7 +7,7 @@ import android.content.Context
  */
 class BackgroundAccountRemover(private val context: Context) {
     fun removeAccountAsync(accountUuid: String) {
-        //TODO: Add a mechanism to hide the account from the UI right away
+        // TODO: Add a mechanism to hide the account from the UI right away
 
         AccountRemoverService.enqueueRemoveAccountJob(context, accountUuid)
     }

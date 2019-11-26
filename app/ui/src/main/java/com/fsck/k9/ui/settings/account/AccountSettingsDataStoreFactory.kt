@@ -6,9 +6,9 @@ import com.fsck.k9.job.K9JobManager
 import java.util.concurrent.ExecutorService
 
 class AccountSettingsDataStoreFactory(
-        private val preferences: Preferences,
-        private val jobManager: K9JobManager,
-        private val executorService: ExecutorService
+    private val preferences: Preferences,
+    private val jobManager: K9JobManager,
+    private val executorService: ExecutorService
 ) {
     fun create(account: Account): AccountSettingsDataStore {
         return AccountSettingsDataStore(preferences, executorService, account, jobManager)

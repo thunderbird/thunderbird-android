@@ -5,7 +5,6 @@ import com.fsck.k9.Identity
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Message.RecipientType
 
-
 object IdentityHelper {
     private val RECIPIENT_TYPES = listOf(
             RecipientType.TO,
