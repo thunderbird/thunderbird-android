@@ -84,19 +84,8 @@
             android:title="@string/accountlist_preferences">
 
             <CheckBoxPreference
-                android:key="measure_accounts"
-                android:summary="@string/measure_accounts_summary"
-                android:title="@string/measure_accounts_title" />
-
-            <CheckBoxPreference
-                android:key="count_search"
-                android:summary="@string/count_search_summary"
-                android:title="@string/count_search_title" />
-
-            <CheckBoxPreference
                 android:disableDependentsState="true"
                 android:key="hide_special_accounts"
-                android:summary="@string/hide_special_accounts_summary"
                 android:title="@string/hide_special_accounts_title" />
 
         </PreferenceCategory>
@@ -129,11 +118,6 @@
                 android:key="messagelist_stars"
                 android:summary="@string/global_settings_flag_summary"
                 android:title="@string/global_settings_flag_label" />
-
-            <CheckBoxPreference
-                android:key="messagelist_checkboxes"
-                android:summary="@string/global_settings_checkbox_summary"
-                android:title="@string/global_settings_checkbox_label" />
 
             <CheckBoxPreference
                 android:key="messagelist_show_correspondent_names"

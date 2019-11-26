@@ -22,7 +22,6 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmen
 import com.fsck.k9.mailstore.Folder
 import com.fsck.k9.mailstore.FolderType
 import com.fsck.k9.mailstore.RemoteFolderInfo
-import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity
 import com.fsck.k9.ui.observe
@@ -32,8 +31,9 @@ import com.fsck.k9.ui.settings.remove
 import com.fsck.k9.ui.settings.removeEntry
 import com.fsck.k9.ui.withArguments
 import com.takisoft.preferencex.PreferenceFragmentCompat
-import org.koin.android.architecture.ext.sharedViewModel
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.core.parameter.parametersOf
 import org.openintents.openpgp.OpenPgpApiManager
 import org.openintents.openpgp.util.OpenPgpKeyPreference
 import org.openintents.openpgp.util.OpenPgpProviderUtil
@@ -41,8 +41,7 @@ import org.openintents.openpgp.util.OpenPgpProviderUtil
 class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFragmentListener {
     private val viewModel: AccountSettingsViewModel by sharedViewModel()
     private val dataStoreFactory: AccountSettingsDataStoreFactory by inject()
-    private val storageManager: StorageManager by inject()
-    private val openPgpApiManager: OpenPgpApiManager by inject(parameters = { mapOf("lifecycleOwner" to this) })
+    private val openPgpApiManager: OpenPgpApiManager by inject { parametersOf(this) }
     private val messagingController: MessagingController by inject()
     private val accountRemover: BackgroundAccountRemover by inject()
     private lateinit var dataStore: AccountSettingsDataStore
@@ -72,7 +71,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         initializeExpungePolicy(account)
         initializeMessageAge(account)
         initializeAdvancedPushSettings(account)
-        initializeLocalStorageProvider()
         initializeCryptoSettings(account)
         initializeFolderSettings(account)
         initializeNotifications()
@@ -173,19 +171,13 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     }
 
     private fun initializeAdvancedPushSettings(account: Account) {
+        /* Temporarily disabled. See GH-4253
         if (!messagingController.isPushCapable(account)) {
             findPreference(PREFERENCE_PUSH_MODE)?.remove()
             findPreference(PREFERENCE_ADVANCED_PUSH_SETTINGS)?.remove()
             findPreference(PREFERENCE_REMOTE_SEARCH)?.remove()
         }
-    }
-
-    private fun initializeLocalStorageProvider() {
-        (findPreference(PREFERENCE_LOCAL_STORAGE_PROVIDER) as? ListPreference)?.apply {
-            val providers = storageManager.availableProviders.entries
-            entries = providers.map { it.value }.toTypedArray()
-            entryValues = providers.map { it.key }.toTypedArray()
-        }
+         */
     }
 
     private fun initializeNotifications() {
@@ -333,7 +325,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
                 getString(R.string.cancel_action)
         )
         dialogFragment.setTargetFragment(this, REQUEST_DELETE_ACCOUNT)
-        dialogFragment.show(fragmentManager, TAG_DELETE_ACCOUNT_CONFIRMATION)
+        dialogFragment.show(requireFragmentManager(), TAG_DELETE_ACCOUNT_CONFIRMATION)
     }
 
     override fun doPositiveClick(dialogId: Int) {
@@ -376,7 +368,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val PREFERENCE_PUSH_MODE = "folder_push_mode"
         private const val PREFERENCE_ADVANCED_PUSH_SETTINGS = "push_advanced"
         private const val PREFERENCE_REMOTE_SEARCH = "search"
-        private const val PREFERENCE_LOCAL_STORAGE_PROVIDER = "local_storage_provider"
         private const val PREFERENCE_OPENPGP_ENABLE = "openpgp_provider"
         private const val PREFERENCE_OPENPGP_KEY = "openpgp_key"
         private const val PREFERENCE_AUTOCRYPT_TRANSFER = "autocrypt_transfer"

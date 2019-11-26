@@ -9,12 +9,10 @@ import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
-object K9 : KoinComponent {
+object K9 : EarlyInit {
     private val preferences: Preferences by inject()
 
 
@@ -149,27 +147,13 @@ object K9 : KoinComponent {
     var k9Language = ""
 
     @JvmStatic
-    var k9Theme = Theme.LIGHT
-        set(theme) {
-            if (theme != Theme.USE_GLOBAL) {
-                field = theme
-            }
-        }
+    var appTheme = AppTheme.FOLLOW_SYSTEM
 
-    @JvmStatic
-    var k9MessageViewThemeSetting = Theme.USE_GLOBAL
-
-    @JvmStatic
-    var k9ComposerThemeSetting = Theme.USE_GLOBAL
+    var messageViewTheme = SubTheme.USE_GLOBAL
+    var messageComposeTheme = SubTheme.USE_GLOBAL
 
     @JvmStatic
     var isFixedMessageViewTheme = true
-        set(theme) {
-            field = theme
-            if (!theme && k9MessageViewThemeSetting == Theme.USE_GLOBAL) {
-                k9MessageViewThemeSetting = k9Theme
-            }
-        }
 
     @JvmStatic
     val fontSizes = FontSizes()
@@ -206,9 +190,6 @@ object K9 : KoinComponent {
 
     @JvmStatic
     var lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT
-
-    @JvmStatic
-    var isShowMessageListCheckboxes = true
 
     @JvmStatic
     var isShowMessageListStars = true
@@ -255,12 +236,6 @@ object K9 : KoinComponent {
     var isStartInUnifiedInbox = false
 
     @JvmStatic
-    var isMeasureAccounts = true
-
-    @JvmStatic
-    var isCountSearchMessages = true
-
-    @JvmStatic
     var isHideSpecialAccounts = false
 
     @JvmStatic
@@ -287,7 +262,7 @@ object K9 : KoinComponent {
     private val sortAscending = mutableMapOf<SortType, Boolean>()
 
     @JvmStatic
-    var isUseBackgroundAsUnreadIndicator = true
+    var isUseBackgroundAsUnreadIndicator = false
 
     @get:Synchronized
     @set:Synchronized
@@ -321,14 +296,6 @@ object K9 : KoinComponent {
 
     @JvmStatic
     var pgpSignOnlyDialogCounter: Int = 0
-
-    @JvmStatic
-    val k9MessageViewTheme: Theme
-        get() = if (k9MessageViewThemeSetting == Theme.USE_GLOBAL) k9Theme else k9MessageViewThemeSetting
-
-    @JvmStatic
-    val k9ComposerTheme: Theme
-        get() = if (k9ComposerThemeSetting == Theme.USE_GLOBAL) k9Theme else k9ComposerThemeSetting
 
     val isQuietTime: Boolean
         get() {
@@ -386,11 +353,8 @@ object K9 : KoinComponent {
         isUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
         isUseVolumeKeysForListNavigation = storage.getBoolean("useVolumeKeysForListNavigation", false)
         isStartInUnifiedInbox = storage.getBoolean("startIntegratedInbox", false)
-        isMeasureAccounts = storage.getBoolean("measureAccounts", true)
-        isCountSearchMessages = storage.getBoolean("countSearchMessages", true)
         isHideSpecialAccounts = storage.getBoolean("hideSpecialAccounts", false)
         isMessageListSenderAboveSubject = storage.getBoolean("messageListSenderAboveSubject", false)
-        isShowMessageListCheckboxes = storage.getBoolean("messageListCheckboxes", false)
         isShowMessageListStars = storage.getBoolean("messageListStars", true)
         messageListPreviewLines = storage.getInt("messageListPreviewLines", 2)
 
@@ -433,7 +397,7 @@ object K9 : KoinComponent {
 
         splitViewMode = storage.getEnum("splitViewMode", SplitViewMode.NEVER)
 
-        isUseBackgroundAsUnreadIndicator = storage.getBoolean("useBackgroundAsUnreadIndicator", true)
+        isUseBackgroundAsUnreadIndicator = storage.getBoolean("useBackgroundAsUnreadIndicator", false)
         isThreadedViewEnabled = storage.getBoolean("threadedView", true)
         fontSizes.load(storage)
 
@@ -452,10 +416,10 @@ object K9 : KoinComponent {
 
         k9Language = storage.getString("language", "")
 
-        k9Theme = storage.getEnum("theme", Theme.LIGHT)
+        appTheme = storage.getEnum("theme", AppTheme.FOLLOW_SYSTEM)
 
-        k9MessageViewThemeSetting = storage.getEnum("messageViewTheme", Theme.USE_GLOBAL)
-        k9ComposerThemeSetting = storage.getEnum("messageComposeTheme", Theme.USE_GLOBAL)
+        messageViewTheme = storage.getEnum("messageViewTheme", SubTheme.USE_GLOBAL)
+        messageComposeTheme = storage.getEnum("messageComposeTheme", SubTheme.USE_GLOBAL)
         isFixedMessageViewTheme = storage.getBoolean("fixedMessageViewTheme", true)
     }
 
@@ -475,13 +439,10 @@ object K9 : KoinComponent {
         editor.putString("quietTimeEnds", quietTimeEnds)
 
         editor.putBoolean("startIntegratedInbox", isStartInUnifiedInbox)
-        editor.putBoolean("measureAccounts", isMeasureAccounts)
-        editor.putBoolean("countSearchMessages", isCountSearchMessages)
         editor.putBoolean("messageListSenderAboveSubject", isMessageListSenderAboveSubject)
         editor.putBoolean("hideSpecialAccounts", isHideSpecialAccounts)
         editor.putBoolean("messageListStars", isShowMessageListStars)
         editor.putInt("messageListPreviewLines", messageListPreviewLines)
-        editor.putBoolean("messageListCheckboxes", isShowMessageListCheckboxes)
         editor.putBoolean("showCorrespondentNames", isShowCorrespondentNames)
         editor.putBoolean("showContactName", isShowContactName)
         editor.putBoolean("showContactPicture", isShowContactPicture)
@@ -495,9 +456,9 @@ object K9 : KoinComponent {
         editor.putBoolean("hideTimeZone", isHideTimeZone)
 
         editor.putString("language", k9Language)
-        editor.putEnum("theme", k9Theme)
-        editor.putEnum("messageViewTheme", k9MessageViewThemeSetting)
-        editor.putEnum("messageComposeTheme", k9ComposerThemeSetting)
+        editor.putEnum("theme", appTheme)
+        editor.putEnum("messageViewTheme", messageViewTheme)
+        editor.putEnum("messageComposeTheme", messageComposeTheme)
         editor.putBoolean("fixedMessageViewTheme", isFixedMessageViewTheme)
 
         editor.putBoolean("confirmDelete", isConfirmDelete)
@@ -599,7 +560,13 @@ object K9 : KoinComponent {
     const val BOOT_RECEIVER_WAKE_LOCK_TIMEOUT = 60000
 
 
-    enum class Theme {
+    enum class AppTheme {
+        LIGHT,
+        DARK,
+        FOLLOW_SYSTEM
+    }
+
+    enum class SubTheme {
         LIGHT,
         DARK,
         USE_GLOBAL

@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.AccountStats;
 import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.service.CoreService;
 import com.fsck.k9.ui.R;
@@ -257,11 +256,6 @@ public class ActivityListener extends SimpleMessagingListener {
             processingCommandTitle = null;
         }
 
-        informUserOfStatus();
-    }
-
-    @Override
-    public void searchStats(AccountStats stats) {
         informUserOfStatus();
     }
 

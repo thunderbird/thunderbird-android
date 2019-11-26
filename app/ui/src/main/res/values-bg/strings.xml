@@ -6,8 +6,6 @@
   <string name="app_name">K-9 Mail</string>
   <string name="shortcuts_title">K-9 Профили</string>
   <string name="unread_widget_label">K-9 Непрочетени</string>
-  <string name="remote_control_label">K-9 Mail дистанционно управление</string>
-  <string name="remote_control_desc">Позволява на К-9 Mail да контролира активността и настройките</string>
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Правата запазени 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Част от правата 2006-<xliff:g>%s</xliff:g> на Android Open Source Project.</string>
@@ -46,10 +44,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="default_signature">-- \nИзпратено от моето Андроид у-во чрез K-9 Mail. Моля да ме извините за краткия ми изказ.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Акаунтът \"<xliff:g id="account">%s</xliff:g>\" ще бъде премахнат от K-9 Mail.</string>
-  <string name="account_recreate_dlg_instructions_fmt">Всички свалени данни за \"<xliff:g id="account">%s</xliff:g>\" ще бъдат премахнати. Настройките на Акаунта ще бъдат запазени.</string>
-  <string name="account_clear_dlg_instructions_fmt">Локалните копия на съобщенията от \"<xliff:g id="account">%s</xliff:g>\" ще бъдат премахнати. Настройките на Акаунта ще бъдат запазени.</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_libraries">Използваме следните библиотеки от трети страни: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Прочитане на имейли</string>
   <string name="read_messages_desc">Позволява на тази праграма да чете вашите Писма.</string>
   <string name="delete_messages_label">Изтрий Писмата</string>
@@ -57,7 +52,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="accounts_title">Профили</string>
   <string name="folders_title">Папки</string>
   <string name="advanced">Допълнителни</string>
-  <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
   <string name="compose_title_compose">Създай</string>
   <string name="compose_title_reply">Отговори</string>
   <string name="compose_title_reply_all">Отговори до всички</string>
@@ -70,11 +64,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="status_sending_account">Изпращане на <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_processing_account">Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
-  <string name="status_next_poll">Следващо обновяване <xliff:g id="nexttime">%s</xliff:g></string>
-  <string name="status_no_network">Синхронизирането e деактивирано - няма връзка с мрежата</string>
-  <string name="status_no_background">Синхронизирането е деактивирано - няма активност в режим фон</string>
-  <string name="status_poll_and_push_disabled">Polling и pushing са деактивирани</string>
-  <string name="status_syncing_blocked">Синхронизирането е блокирано</string>
   <string name="status_syncing_off">Синхронизирането изключено</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> избрани</string>
   <string name="next_action">Следващ</string>
@@ -110,10 +99,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="search_results">Резултати от търсенето</string>
   <string name="preferences_action">Настройки</string>
   <string name="account_settings_action">Настройки на профила</string>
-  <string name="folder_settings_action">Настройки на папката</string>
-  <string name="global_settings_action">Глобални настройки</string>
   <string name="remove_account_action">Премахни профила</string>
-  <string name="clear_pending_action">Премахни чакащите операции (опасно!)</string>
   <string name="mark_as_read_action">Маркирай като прочетено</string>
   <string name="send_alternate_action">Сподели</string>
   <string name="send_alternate_chooser_title">Избери изпращащ</string>
@@ -135,14 +121,11 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="add_attachment_action">Прикачи</string>
   <string name="empty_trash_action">Изпразни кошчето</string>
   <string name="expunge_action">Премахни</string>
-  <string name="clear_local_folder_action">Изчисти локалните съобщения</string>
   <string name="about_action">Относно</string>
   <string name="prefs_title">Настройки</string>
-  <string name="accounts_context_menu_title">Опции за профила</string>
   <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
   <string name="general_no_subject">(Без тема)</string>
   <string name="general_no_sender">Без изпращач</string>
-  <string name="status_loading">Получаване</string>
   <string name="status_loading_more">Зарежда съобщенията\u2026</string>
   <string name="status_network_error">Грешка при свързване</string>
   <string name="status_invalid_id_error">Съобщението не е намерено</string>
@@ -155,8 +138,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="abbrev_bytes">Б</string>
   <string name="account_size_changed">Профил \"<xliff:g id="account">%s</xliff:g>\" се смали от <xliff:g id="oldSize">%s</xliff:g> до <xliff:g id="newSize">%s</xliff:g></string>
   <string name="compacting_account">Компресира профил \"<xliff:g id="account">%s</xliff:g>\"</string>
-  <string name="clearing_account">Изчиства профил \"<xliff:g id="account">%s</xliff:g>\"</string>
-  <string name="recreating_account">Пресъздава профил \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Ново Писмо</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> ново съобщение</item>
@@ -188,13 +169,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="special_mailbox_name_drafts">Чернови</string>
   <string name="special_mailbox_name_trash">Кошче</string>
   <string name="special_mailbox_name_sent">Изпратени</string>
-  <string name="special_mailbox_name_archive">Архив</string>
-  <string name="special_mailbox_name_spam">Спам</string>
-  <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Чернови)</string>
-  <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Кошче)</string>
-  <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Изпратени)</string>
-  <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Архив)</string>
-  <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Спам)</string>
   <string name="send_failure_subject">Грешка при изпращане на някой съобщения</string>
   <string name="debug_enable_debug_logging_title">Включете доклада за дебъгване</string>
   <string name="debug_enable_debug_logging_summary">Записвайте допълнителна диагностична информация</string>
@@ -242,8 +216,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="message_saved_toast">Съобщението записано като чернова</string>
   <string name="global_settings_flag_label">Покажи звездичките</string>
   <string name="global_settings_flag_summary">Звездичките показват маркирани съобщения</string>
-  <string name="global_settings_checkbox_label">Много избираеми отметки</string>
-  <string name="global_settings_checkbox_summary">Винаги показвай много избираеми отметки</string>
   <string name="global_settings_preview_lines_label">Редове за преглед</string>
   <string name="global_settings_show_correspondent_names_label">Покажи имената на кореспондентите</string>
   <string name="global_settings_show_correspondent_names_summary">Покажи имената на кореспондентите вместо техните email адреси</string>
@@ -252,7 +224,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="global_settings_show_contact_name_label">Покажи контактите</string>
   <string name="global_settings_show_contact_name_summary">Използвай името на получателя от контактите, когато това е възможно</string>
   <string name="global_settings_registered_name_color_label">Оцвети контактите</string>
-  <string name="global_settings_registered_name_color_default">Не оцветявай имената в контакт листа</string>
   <string name="global_settings_registered_name_color_changed">Оцветявай имената в контакт листа</string>
   <string name="global_settings_folderlist_wrap_folder_names_label">Пренасяй дългите имана на папки</string>
   <string name="global_settings_folderlist_wrap_folder_names_summary">Използва няколко реда за да показва дългите имена на папките</string>
@@ -284,7 +255,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="global_settings_notification_quick_delete_never">Никога</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">За отделни съобщения</string>
   <string name="global_settings_notification_quick_delete_always">Винаги</string>
-  <string name="global_settings_notification_quick_delete_description">Показвай бутон в известието, позволяващ бързо изтриване на съобщението</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Известия при заключен екран</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Без известия при заключен екран</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Име на програмата</string>
@@ -316,7 +286,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_setup_account_type_instructions">Какъв тип профил е това?</string>
   <string name="account_setup_account_type_pop_action">POP3</string>
   <string name="account_setup_account_type_imap_action">IMAP</string>
-  <string name="account_setup_account_type_webdav_action">Exchange (WebDAV)</string>
   <string name="account_setup_auth_type_normal_password">Нормална парола</string>
   <string name="account_setup_auth_type_insecure_password">Парола, предавана несигурно</string>
   <string name="account_setup_auth_type_encrypted_password">Криптирана парола</string>
@@ -345,8 +314,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_setup_incoming_other_label">Друга</string>
   <string name="local_storage_provider_external_label">Външна памет (SD карта)</string>
   <string name="local_storage_provider_internal_label">Вътрешна памет</string>
-  <string name="local_storage_provider_samsunggalaxy_label">%1$s допълнителна вътрешна памет</string>
-  <string name="local_storage_provider_label">Място за съхранение</string>
   <string name="account_setup_expunge_policy_label">Премахни изтритите от сървъра съобщения</string>
   <string name="account_setup_expunge_policy_immediately">Веднага</string>
   <string name="account_setup_expunge_policy_on_poll">При проверка</string>
@@ -378,8 +345,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_setup_bad_uri">Невалидни настройки: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Настройки на профила</string>
   <string name="compact_action">Компактен профил</string>
-  <string name="clear_action">Изтрий всички съобщения (опасно!)</string>
-  <string name="recreate_action">Пресъздай информацията (Само в краен случай!)</string>
   <string name="account_setup_options_mail_check_frequency_label">Честота на проверка на папката</string>
   <string name="account_setup_options_mail_check_frequency_never">Никога</string>
   <string name="account_setup_options_mail_check_frequency_15min">На всеки 15 минути</string>
@@ -479,10 +444,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_settings_crypto_key">Настройване на ключа за криптиране от край-докрай</string>
   <string name="account_settings_crypto_summary_off">Няма избрано OpenPGP приложение</string>
   <string name="account_settings_crypto_summary_on">Свързан с %s</string>
-  <string name="account_settings_no_openpgp_provider_configured">Не е настроено OpenPGP приложение</string>
-  <string name="account_settings_no_openpgp_provider_installed">Не е открито OpenPGP приложение - натиснете, за да инсталирате</string>
   <string name="account_settings_mail_check_frequency_label">Честота на проверка на папката</string>
-  <string name="account_settings_storage_title">Място</string>
   <string name="account_settings_color_label">Цвят на профила</string>
   <string name="account_settings_color_summary">Акцентиращ цвят, който ще се използва в профила за показване на папки и списък</string>
   <string name="account_settings_color_none">Безцветно</string>
@@ -638,11 +600,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="sort_by_unread">Прочетено/непрочетено</string>
   <string name="sort_by_attach">Файлове</string>
   <string name="account_delete_dlg_title">Премахни профила</string>
-  <string name="account_recreate_dlg_title">Направи профила отново</string>
-  <string name="account_clear_dlg_title">Изчисти профила</string>
-  <string name="provider_note_auonejp">Не забравяйте да включите IMAP или POP3 в страницата за настройки на au one.</string>
-  <string name="provider_note_naver">Не забравяйте да включите IMAP или POP3 в страницата за настройки на Naver.</string>
-  <string name="provider_note_hanmail">Не забравяйте да включите IMAP или POP3 в страницата за настройки на Hanmail(Daum).</string>
   <string name="account_setup_failed_dlg_invalid_certificate_title">Неразпознат сертификат</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Приеми ключа</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Отхвърли ключа</string>
@@ -701,20 +658,12 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="volume_navigation_message">В преглед на съобщението</string>
   <string name="volume_navigation_list">В списъка със съобщения</string>
   <string name="start_integrated_inbox_title">Започване в обща входяща кутия</string>
-  <string name="measure_accounts_title">Показване размера на профила</string>
-  <string name="measure_accounts_summary">Изклчване за по-бързо изобразяване</string>
-  <string name="count_search_title">Преброяване на резултатите</string>
-  <string name="count_search_summary">Изключване за по-бързо изобразяване</string>
-  <string name="hide_special_accounts_title">Скриване на специални профили</string>
-  <string name="hide_special_accounts_summary">Скриване на общата входяща кутия и всички имейл профили</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-  <string name="flagged_modifier">- Звезди</string>
   <string name="unread_modifier"> - Не прочетени</string>
   <string name="search_all_messages_title">Всички съобщения</string>
   <string name="search_all_messages_detail">Всички съобщеня в папки позволяващи търсене</string>
   <string name="integrated_inbox_title">Обща входяща кутия</string>
   <string name="integrated_inbox_detail">Всички съобщения в общата входяща кутия</string>
-  <string name="tap_hint">Натиснете кръгчето или звездата за непрочетени или отбелязани съобщения</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Обедени</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Всички съобщения ще бъдат показани в общата входяща кутия</string>
   <string name="account_settings_searchable_label">Папки позволяващи търсене</string>
@@ -783,56 +732,22 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="dialog_confirm_spam_confirm_button">Да</string>
   <string name="dialog_confirm_spam_cancel_button">Не</string>
   <string name="dialog_attachment_progress_title">Изтегляне на прикачен файл</string>
-  <string name="debug_logging_enabled">Доклад за дебъгването е разрешен</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="import_export_action">Внасяне &amp; изнасяне на настройки</string>
-  <string name="settings_export_account">Изнасяне настройки на профила</string>
-  <string name="settings_export_all">Изнасяне на настройки и профили</string>
-  <string name="settings_import_dialog_title">Внасяне</string>
-  <string name="settings_export_dialog_title">Изнасяне</string>
-  <string name="settings_import">Внасяне настройки</string>
-  <string name="settings_import_selection">Внесе избраните</string>
-  <string name="settings_import_global_settings">Глобални настройки</string>
-  <string name="settings_exporting">Настройки на изнсянето…</string>
-  <string name="settings_importing">Настройки на внасянето…</string>
-  <string name="settings_import_scanning_file">Сканиране на файл…</string>
+  <string name="settings_list_miscellaneous_category">Разни</string>
+  <string name="settings_export_button">Изнасяне</string>
+  <string name="settings_export_share_button">Сподели</string>
+  <string name="settings_export_progress_text">Настройки на изнсянето…</string>
   <string name="settings_export_success_generic">Настройките са успешно изнесени</string>
-  <string name="settings_import_account_imported_as"><xliff:g id="original_account_name">%s</xliff:g> е внесен като <xliff:g id="account_name_after_import">%s</xliff:g></string>
-  <plurals name="settings_import_accounts">
-    <item quantity="one">1 профил</item>
-    <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> профила</item>
-  </plurals>
   <string name="settings_export_failure">Неуспешно изнасяне на настройки</string>
-  <string name="settings_export_success_header">Изнасянето е успешно</string>
-  <string name="settings_export_failed_header">Изнасянето е неуспешно</string>
-  <string name="settings_import_success_header">Внасянето е успешно</string>
-  <string name="settings_import_failed_header">Внасянето е неуспешно</string>
-  <string name="settings_import_activate_account_header">Активирай профил</string>
-  <string name="settings_import_activate_account_intro">За да можете да използвате профила  \"<xliff:g id="account">%s</xliff:g>\" трябва да зададете <xliff:g id="server_passwords">%s</xliff:g>.</string>
-  <plurals name="settings_import_server_passwords">
-    <item quantity="one">сървърната парола</item>
-    <item quantity="other">сървърните пароли</item>
-  </plurals>
-  <string name="settings_import_incoming_server">Входящ сървър (<xliff:g id="hostname">%s</xliff:g>):</string>
-  <string name="settings_import_outgoing_server">Изходящ сървър (<xliff:g id="hostname">%s</xliff:g>):</string>
-  <plurals name="settings_import_setting_passwords">
-    <item quantity="one">Задаване на парола…</item>
-    <item quantity="other">Задаване на пароли…</item>
-  </plurals>
-  <string name="settings_import_use_incoming_server_password">Използване на паролата на входящия сървър</string>
-  <string name="activate_account_action">Активиране</string>
-  <string name="account_unavailable">Профилът \"<xliff:g id="account">%s</xliff:g>\" не е на линия; проверете диска</string>
-  <string name="attachment_save_title">Запазване на прикачени файлове</string>
-  <string name="attachment_save_desc">Не е открит браузър. Къде да бъде запазен този прикачен файл?</string>
-  <string name="manage_accounts_move_up_action">Премести нагоре</string>
-  <string name="manage_accounts_move_down_action">Премести надолу</string>
-  <string name="manage_accounts_moving_message">Престване на профил…</string>
+  <string name="settings_import_title">Внасяне настройки</string>
+  <string name="settings_import_button">Внасяне</string>
+  <string name="settings_import">Внасяне настройки</string>
+  <string name="settings_importing">Настройки на внасянето…</string>
   <string name="unread_widget_select_account">Показване на непрочетената бройка за…</string>
   <string name="unread_widget_account_title">Профил</string>
   <string name="unread_widget_account_summary">Профилът, за който да се показва броят непрочетени съобщения</string>
   <string name="unread_widget_unified_inbox_account_summary">Обща входяща кутия</string>
-  <string name="unread_widget_all_messages_account_summary">Всички съобщения</string>
   <string name="unread_widget_folder_enabled_title">Брой папки</string>
   <string name="unread_widget_folder_enabled_summary">Показване на броя непрочетени съобщения само за една папка</string>
   <string name="unread_widget_folder_title">Папка</string>
@@ -841,7 +756,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
   <string name="unread_widget_account_not_selected">Няма избран профил</string>
   <string name="unread_widget_folder_not_selected">Няма избрана папка</string>
-  <string name="close">Затваряне</string>
   <string name="webview_empty_message">Няма текст</string>
   <string name="webview_contextmenu_link_view_action">Отваряне на връзка</string>
   <string name="webview_contextmenu_link_share_action">Споделяне на връзка</string>
@@ -861,8 +775,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="webview_contextmenu_email_save_action">Запазване в контакти</string>
   <string name="webview_contextmenu_email_copy_action">Копиране на адрес</string>
   <string name="webview_contextmenu_email_clipboard_label">Имейл адрес</string>
-  <string name="image_saved_as">Запазване на изображение като \"<xliff:g id="filename">%s</xliff:g>\"</string>
-  <string name="image_saving_failed">Неуспешно запазване на изображение.</string>
   <string name="account_settings_remote_search_num_results_entries_all">Всички</string>
   <string name="account_settings_remote_search_num_results_entries_10">10</string>
   <string name="account_settings_remote_search_num_results_entries_25">25</string>
@@ -872,7 +784,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_settings_remote_search_num_results_entries_500">500</string>
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">Лимит на търсенето на сървъра</string>
-  <string name="account_settings_remote_search_num_summary">Търсенето ще бъде преустановено, когато бъдят намерени <xliff:g id="num_results">%s</xliff:g> резултата.</string>
   <string name="remote_search_sending_query">Изпращане на заявката към сървъра</string>
   <plurals name="remote_search_downloading">
     <item quantity="one">Изтегляне на %d реултат</item>
@@ -887,8 +798,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_settings_remote_search_enabled">Разреши търсене на сървъра</string>
   <string name="account_settings_remote_search_enabled_summary">Търсене на съобщения на сървъра, в допълнение към тези, на вашето устройство</string>
   <string name="action_remote_search">Търсене на съобщения в сървъра</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_pull">Дръпни надолу, за да започне търсене на сървъра…</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_release">Пусни, за да започне търсене в сървъра…</string>
   <string name="remote_search_unavailable_no_network">Нужна е връзка с мрежата, за да бъде извършено търсене в сървъра.</string>
   <string name="global_settings_background_as_unread_indicator_label">Промяна на цвета след прочитане</string>
   <string name="global_settings_background_as_unread_indicator_summary">Различвен фон ще показва, че съобщението е било прочетено</string>
@@ -897,7 +806,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="upgrade_databases_title">Обновяване на базите данни</string>
   <string name="upgrade_databases_unspecified">Обновяване на базите данни…</string>
   <string name="upgrade_database_format">Обновяване на базата данни на профил \"<xliff:g id="account">%s</xliff:g>\"</string>
-  <string name="message_list_loading">Зареждане…</string>
   <string name="global_settings_splitview_mode_label">Покзване на разделен екран</string>
   <string name="global_settings_splitview_always">Винаги</string>
   <string name="global_settings_splitview_never">Никога</string>
@@ -905,9 +813,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="message_view_empty">Моля, изберете съобщение в ляво</string>
   <string name="global_settings_show_contact_picture_label">Показване снимка на контакта</string>
   <string name="global_settings_show_contact_picture_summary">Показване на снимка на контакта в списъка със съобщения</string>
-  <string name="last_refresh_time_format">Обновено в <xliff:g id="formatted_time">%s</xliff:g></string>
-  <string name="last_refresh_time_format_with_push">Обновено <xliff:g id="time_with_preposition">%s</xliff:g> (Push е активен)</string>
-  <string name="preposition_for_date">на <xliff:g id="date">%s</xliff:g></string>
   <string name="mark_all_as_read">Отбелязване на всички като прочетени</string>
   <string name="global_settings_colorize_missing_contact_pictures_label">Оцветяване на снимките на контактите</string>
   <string name="global_settings_colorize_missing_contact_pictures_summary">Оцветяване на контактите с липсващи снимки</string>
@@ -928,8 +833,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <!--Note: This references message_view_download_remainder-->
   <string name="preview_encrypted">*Крипитиран*</string>
   <string name="add_from_contacts">Добавяне в контакти</string>
-  <string name="crypto_settings_cancel">Отказване</string>
-  <string name="crypto_settings_ok">Напред</string>
   <string name="recipient_cc">Cc</string>
   <string name="recipient_bcc">Bcc</string>
   <string name="recipient_to">До</string>
@@ -941,9 +844,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="address_type_mobile">Мобилен</string>
   <string name="compose_error_no_draft_folder">Липсва папка чернови за този профил!</string>
   <string name="compose_error_no_key_configured">Няма зададен ключ за този профил! Моля, проверете настройките си.</string>
-  <string name="crypto_mode_disabled">Да не се криптира</string>
-  <string name="crypto_mode_opportunistic">Криптиране, когато е възможно</string>
-  <string name="crypto_mode_private">Криптиране</string>
   <string name="error_crypto_provider_incompatible">Доставчика на крипто имзползва несъвместима версия.  Моля, прегледайте настройките си!</string>
   <string name="error_crypto_provider_connect">Неуспешна връзка с доставчика на криптиране, проверете настройките си или натиснете иконата за повторен опит!</string>
   <string name="error_crypto_provider_ui_required">Неуспешно пускане на криптиране край-до-край, моля прегледайте настройките</string>
@@ -987,8 +887,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="crypto_msg_encrypted_error">но възникна грешка при декриптирането</string>
   <string name="crypto_msg_encrypted_incomplete">тряба да се изтегли цялото съобщение за декриптиране</string>
   <string name="crypto_msg_encrypted_no_provider">но няма настроена крипто приложение</string>
-  <string name="crypto_msg_encrypted_unsupported">но е в неподържан формат</string>
-  <string name="crypto_msg_encrypted_cancelled">но декриптирането е прекратено</string>
   <string name="crypto_msg_title_encrypted_unsigned">Криптирано</string>
   <string name="crypto_msg_encrypted_unsigned">но не е от край-до-край</string>
   <string name="crypto_msg_title_encrypted_signed_e2e">Криптирано от край-до-край</string>
@@ -1029,14 +927,12 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="apg_learn_more">Може да <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">натиснете тук</a>, за да научите повече.</string>
   <string name="apg_deprecated_ok">Ясно!</string>
   <string name="apg">APG</string>
-  <string name="no_crypto_provider_see_global">Не е настроено OpenPGP приложение, Вижте глобалните настройки!</string>
   <string name="crypto_no_provider_title">Имейлът е криптиран</string>
   <string name="crypto_no_provider_message">Този имейл е криптиран използвайки OpenPGP.\nЗа да го прочетете, трябва да инсталирате и настроите OpenPGP приложението.</string>
   <string name="crypto_no_provider_button">Към настройки</string>
   <string name="mail_list_widget_text">K-9 списък със собщения</string>
   <string name="mail_list_widget_loading">Зареждане на съобщения…</string>
   <string name="fetching_folders_failed">Неуспешно изтегляне списъка на папки</string>
-  <string name="messageview_crypto_warning_details">Показване на информация</string>
   <string name="error_recipient_crypto_retrieve">Грешка при изтегляне на статуса на получателя от OpenPGP доставчика!</string>
   <string name="openpgp_enabled_error_title">Криптирането е невъзможно</string>
   <string name="openpgp_enabled_error_msg">Някои от избраните получатели не поддържат тази функция!</string>

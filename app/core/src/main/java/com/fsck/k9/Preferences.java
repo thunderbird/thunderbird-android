@@ -272,14 +272,6 @@ public class Preferences {
             }
         }
 
-        if (account.isChangedLocalStorageProviderId()) {
-            try {
-                localStoreProvider.getInstance(account).switchLocalStorage(account.getLocalStorageProviderId());
-            } catch (MessagingException e) {
-                Timber.e(e, "Failed to load LocalStore!");
-            }
-        }
-
         account.resetChangeMarkers();
     }
 

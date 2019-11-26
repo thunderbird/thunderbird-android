@@ -1,55 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="horizontal"
               android:layout_gravity="center_vertical"
         >
 
-    <View
-            android:id="@+id/chip"
-            android:adjustViewBounds="false"
-            android:layout_height="match_parent"
-            android:layout_width="8dip"
-            android:layout_marginRight="4dp"
-            />
-
-    <LinearLayout
-            android:id="@+id/selected_checkbox_wrapper"
-            android:layout_width="wrap_content"
-
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_gravity="center"
-            android:visibility="visible"
-            android:textColor="?android:attr/textColorPrimary"
-            android:baselineAligned="false">
-
-        <CheckBox
-                android:id="@+id/selected_checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:focusable="false"
-                android:clickable="false"
-                android:paddingLeft="4dp"
-                android:paddingRight="0dp"
-                android:visibility="visible"
-                />
-
-    </LinearLayout>
-
     <com.fsck.k9.ui.ContactBadge
             android:id="@+id/contact_badge"
-            android:layout_marginRight="8dip"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="4dip"
             android:layout_marginBottom="3dip"
             android:layout_height="40dip"
             android:layout_width="40dip"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="4dp"
-            android:src="@drawable/ic_contact_picture"
-            style="?android:attr/quickContactBadgeStyleWindowLarge"
+            android:layout_marginLeft="16dp"
+            tools:src="@drawable/ic_contact_picture"
             android:background="@android:color/transparent"/>
 
 
@@ -57,6 +24,7 @@
             android:id="@+id/list_item_inner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
             android:paddingTop="5dip"
             android:clickable="false"
             android:focusable="false"
@@ -69,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_toLeftOf="@+id/flagged_bottom_right"
+                android:layout_toLeftOf="@+id/star"
                 android:layout_marginLeft="1dip"
                 android:layout_marginRight="3dip"
                 android:bufferType="spannable"
@@ -82,35 +50,28 @@
                 android:gravity="top"
                 android:layout_alignParentBottom="false"/>
 
-        <ImageView
-                android:id="@+id/status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/subject_wrapper"
-                android:layout_alignBottom="@+id/subject_wrapper"
-                android:src="?attr/messageListAnswered"
-                android:layout_alignWithParentIfMissing="true" />
-
         <LinearLayout
                 android:id="@+id/subject_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_toLeftOf="@+id/attachment"
-                android:layout_toRightOf="@+id/status">
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/attachment">
 
-            <TextView
-                    android:id="@+id/sender_compact"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="0.3"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    android:layout_marginBottom="1dip"
-                    android:layout_marginLeft="1dip"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="?android:attr/textColorPrimary"
-                    />
+            <ImageView
+                android:id="@+id/account_color_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="4dp"
+                android:src="@drawable/ic_account_color" />
+
+            <ImageView
+                android:id="@+id/status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="?attr/messageListAnswered"
+                tools:src="@drawable/ic_messagelist_answered_light"/>
 
             <TextView
                     android:id="@+id/subject"
@@ -121,7 +82,7 @@
                     android:layout_marginLeft="1dip"
                     android:ellipsize="marquee"
                     android:singleLine="true"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="?android:attr/textColorPrimary"
                     />
 
@@ -140,20 +101,6 @@
                     />
         </LinearLayout>
 
-        <CheckBox
-                android:id="@+id/flagged_center_right"
-                style="?android:attr/starStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:paddingTop="3dip"
-                android:paddingLeft="2dip"
-                android:paddingRight="4dip"
-                android:focusable="false"
-                android:visibility="gone"
-                />
-
         <ImageView
                 android:id="@+id/attachment"
                 android:layout_width="wrap_content"
@@ -171,7 +118,7 @@
                 android:layout_alignTop="@+id/subject_wrapper"
                 android:layout_alignWithParentIfMissing="true"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/flagged_center_right"
+                android:layout_alignParentRight="true"
                 android:paddingLeft="3dip"
                 android:paddingRight="8dip"
                 android:singleLine="true"
@@ -179,8 +126,8 @@
                 android:textColor="?android:attr/textColorSecondary"/>
 
         <CheckBox
-                android:id="@+id/flagged_bottom_right"
-                style="?android:attr/starStyle"
+                android:id="@+id/star"
+                style="@style/MessageStarStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:layout_below="@+id/date"

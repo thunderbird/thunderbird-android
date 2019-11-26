@@ -10,14 +10,6 @@
         <item name="android:windowContentOverlay">@drawable/panel_separator</item>
     </style>
 
-    <!--
-      Fix a bug with AutoCompleteTextView
-      See https://code.google.com/p/android/issues/detail?id=5237
-    -->
-    <style name="Widget.K9.AutoCompleteTextView" parent="@android:style/Widget.AutoCompleteTextView">
-        <item name="android:textColor">@android:color/primary_text_light</item>
-    </style>
-
     <style name="UnreadWidgetContainer">
         <item name="android:paddingTop">0dp</item>
         <item name="android:paddingLeft">0dp</item>
@@ -64,6 +56,10 @@
     <style name="NegativeBulletPoint">
         <item name="android:src">@drawable/bullet_point_negative</item>
         <item name="android:tint">?attr/tintColorBulletPointNegative</item>
+    </style>
+
+    <style name="MessageStarStyle">
+        <item name="android:button">?attr/messageStar</item>
     </style>
 
 </resources>

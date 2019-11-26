@@ -21,7 +21,7 @@ import timber.log.Timber;
 
 
 public class K9StoragePersister implements StoragePersister {
-    private static final int DB_VERSION = 7;
+    private static final int DB_VERSION = 9;
     private static final String DB_NAME = "preferences_storage";
 
     private final Context context;
@@ -35,6 +35,11 @@ public class K9StoragePersister implements StoragePersister {
 
         db.beginTransaction();
         try {
+            if (db.getVersion() > DB_VERSION) {
+                throw new AssertionError("Database downgrades are not supported. " +
+                        "Please fix the database '" + DB_NAME + "' manually or clear app data.");
+            }
+
             if (db.getVersion() < 1) {
                 createStorageDatabase(db);
             } else {

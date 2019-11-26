@@ -36,7 +36,6 @@ import android.os.Bundle;
 import android.provider.BaseColumns;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.AccountStats;
 import com.fsck.k9.BuildConfig;
 import com.fsck.k9.DI;
 import com.fsck.k9.Preferences;
@@ -45,7 +44,6 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.search.SearchAccount;
 import timber.log.Timber;
@@ -658,7 +656,6 @@ public class MessageProvider extends ContentProvider {
             MatrixCursor cursor = new MatrixCursor(UNREAD_PROJECTION);
 
             Account myAccount;
-            AccountStats myAccountStats;
 
             Object[] values = new Object[2];
 
@@ -669,19 +666,8 @@ public class MessageProvider extends ContentProvider {
             for (Account account : accounts) {
                 if (account.getAccountNumber() == accountNumber) {
                     myAccount = account;
-                    try {
-                        myAccountStats = controller.getAccountStats(account);
-                        values[0] = myAccount.getDescription();
-                        if (myAccountStats == null) {
-                            values[1] = 0;
-                        } else {
-                            values[1] = myAccountStats.unreadMessageCount;
-                        }
-                    } catch (MessagingException e) {
-                        Timber.e(e.getMessage());
-                        values[0] = "Unknown";
-                        values[1] = 0;
-                    }
+                    values[0] = myAccount.getDescription();
+                    values[1] = controller.getUnreadMessageCount(account);
                     cursor.addRow(values);
                 }
             }
@@ -1077,7 +1063,7 @@ public class MessageProvider extends ContentProvider {
         }
 
         @Override
-        public void searchStats(AccountStats stats) {
+        public void listLocalMessagesFinished() {
             try {
                 queue.put(holders);
             } catch (InterruptedException e) {

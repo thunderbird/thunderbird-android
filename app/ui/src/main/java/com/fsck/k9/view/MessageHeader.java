@@ -31,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.DI;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.K9;
 import com.fsck.k9.activity.misc.ContactPicture;
@@ -49,6 +50,8 @@ import timber.log.Timber;
 
 
 public class MessageHeader extends LinearLayout implements OnClickListener, OnLongClickListener {
+    private final ClipboardManager clipboardManager = DI.get(ClipboardManager.class);
+
     private Context mContext;
     private TextView mFromView;
     private TextView mSenderView;
@@ -208,8 +211,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
     private void onAddAddressesToClipboard(Address[] addresses) {
         String addressList = Address.toString(addresses);
-
-        ClipboardManager clipboardManager = ClipboardManager.getInstance(mContext);
         clipboardManager.setText("addresses", addressList);
 
         Toast.makeText(mContext, createMessage(addresses.length), Toast.LENGTH_LONG).show();

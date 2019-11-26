@@ -19,7 +19,8 @@ import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.K9.NotificationQuickDelete;
 import com.fsck.k9.K9.SplitViewMode;
-import com.fsck.k9.K9.Theme;
+import com.fsck.k9.K9.AppTheme;
+import com.fsck.k9.K9.SubTheme;
 import com.fsck.k9.core.R;
 import com.fsck.k9.preferences.Settings.BooleanSetting;
 import com.fsck.k9.preferences.Settings.ColorSetting;
@@ -68,9 +69,6 @@ public class GlobalSettings {
         ));
         s.put("confirmMarkAllRead", Settings.versions(
                 new V(44, new BooleanSetting(true))
-        ));
-        s.put("countSearchMessages", Settings.versions(
-                new V(1, new BooleanSetting(false))
         ));
         s.put("enableDebugLogging", Settings.versions(
                 new V(1, new BooleanSetting(false))
@@ -144,12 +142,6 @@ public class GlobalSettings {
         s.put("language", Settings.versions(
                 new V(1, new LanguageSetting())
         ));
-        s.put("measureAccounts", Settings.versions(
-                new V(1, new BooleanSetting(true))
-        ));
-        s.put("messageListCheckboxes", Settings.versions(
-                new V(1, new BooleanSetting(false))
-        ));
         s.put("messageListPreviewLines", Settings.versions(
                 new V(1, new IntegerRangeSetting(1, 100, 2))
         ));
@@ -193,11 +185,12 @@ public class GlobalSettings {
                 new V(1, new BooleanSetting(false))
         ));
         s.put("theme", Settings.versions(
-                new V(1, new ThemeSetting(K9.Theme.LIGHT))
+                new V(1, new LegacyThemeSetting(AppTheme.LIGHT)),
+                new V(58, new ThemeSetting(AppTheme.FOLLOW_SYSTEM))
         ));
         s.put("messageViewTheme", Settings.versions(
-                new V(16, new ThemeSetting(K9.Theme.LIGHT)),
-                new V(24, new SubThemeSetting(K9.Theme.USE_GLOBAL))
+                new V(16, new LegacyThemeSetting(AppTheme.LIGHT)),
+                new V(24, new SubThemeSetting(SubTheme.USE_GLOBAL))
         ));
         s.put("useVolumeKeysForListNavigation", Settings.versions(
                 new V(1, new BooleanSetting(false))
@@ -212,7 +205,8 @@ public class GlobalSettings {
                 new V(12, new EnumSetting<>(NotificationHideSubject.class, NotificationHideSubject.NEVER))
         ));
         s.put("useBackgroundAsUnreadIndicator", Settings.versions(
-                new V(19, new BooleanSetting(true))
+                new V(19, new BooleanSetting(true)),
+                new V(59, new BooleanSetting(false))
         ));
         s.put("threadedView", Settings.versions(
                 new V(20, new BooleanSetting(true))
@@ -221,7 +215,7 @@ public class GlobalSettings {
                 new V(23, new EnumSetting<>(SplitViewMode.class, SplitViewMode.NEVER))
         ));
         s.put("messageComposeTheme", Settings.versions(
-                new V(24, new SubThemeSetting(K9.Theme.USE_GLOBAL))
+                new V(24, new SubThemeSetting(SubTheme.USE_GLOBAL))
         ));
         s.put("fixedMessageViewTheme", Settings.versions(
                 new V(24, new BooleanSetting(true))
@@ -298,6 +292,7 @@ public class GlobalSettings {
         u.put(12, new SettingsUpgraderV12());
         u.put(24, new SettingsUpgraderV24());
         u.put(31, new SettingsUpgraderV31());
+        u.put(58, new SettingsUpgraderV58());
 
         UPGRADERS = Collections.unmodifiableMap(u);
     }
@@ -350,7 +345,7 @@ public class GlobalSettings {
      * Upgrades the settings from version 23 to 24.
      *
      * <p>
-     * Set <em>messageViewTheme</em> to {@link K9.Theme#USE_GLOBAL} if <em>messageViewTheme</em> has
+     * Set <em>messageViewTheme</em> to {@link SubTheme#USE_GLOBAL} if <em>messageViewTheme</em> has
      * the same value as <em>theme</em>.
      * </p>
      */
@@ -358,10 +353,11 @@ public class GlobalSettings {
 
         @Override
         public Set<String> upgrade(Map<String, Object> settings) {
-            K9.Theme messageViewTheme = (K9.Theme) settings.get("messageViewTheme");
-            K9.Theme theme = (K9.Theme) settings.get("theme");
-            if (theme != null && messageViewTheme != null && theme == messageViewTheme) {
-                settings.put("messageViewTheme", K9.Theme.USE_GLOBAL);
+            SubTheme messageViewTheme = (SubTheme) settings.get("messageViewTheme");
+            AppTheme theme = (AppTheme) settings.get("theme");
+            if ((theme == AppTheme.LIGHT && messageViewTheme == SubTheme.LIGHT) ||
+                    (theme == AppTheme.DARK && messageViewTheme == SubTheme.DARK)) {
+                settings.put("messageViewTheme", SubTheme.USE_GLOBAL);
             }
 
             return null;
@@ -411,6 +407,26 @@ public class GlobalSettings {
         }
     }
 
+    /**
+     * Upgrades the settings from version 57 to 58.
+     *
+     * <p>
+     * Set <em>theme</em> to {@link AppTheme#FOLLOW_SYSTEM} if <em>theme</em> has the value {@link AppTheme#LIGHT}.
+     * </p>
+     */
+    private static class SettingsUpgraderV58 implements SettingsUpgrader {
+
+        @Override
+        public Set<String> upgrade(Map<String, Object> settings) {
+            AppTheme theme = (AppTheme) settings.get("theme");
+            if (theme == AppTheme.LIGHT) {
+                settings.put("theme", AppTheme.FOLLOW_SYSTEM);
+            }
+
+            return null;
+        }
+    }
+
     private static class LanguageSetting extends PseudoEnumSetting<String> {
         private final Context context = DI.get(Context.class);
         private final Map<String, String> mapping;
@@ -445,87 +461,143 @@ public class GlobalSettings {
         }
     }
 
-    static class ThemeSetting extends SettingsDescription<K9.Theme> {
+    static class LegacyThemeSetting extends SettingsDescription<AppTheme> {
         private static final String THEME_LIGHT = "light";
         private static final String THEME_DARK = "dark";
 
-        ThemeSetting(K9.Theme defaultValue) {
+        LegacyThemeSetting(AppTheme defaultValue) {
             super(defaultValue);
         }
 
         @Override
-        public K9.Theme fromString(String value) throws InvalidSettingValueException {
+        public AppTheme fromString(String value) throws InvalidSettingValueException {
             try {
-                K9.Theme theme = Theme.valueOf(value);
-                if (theme == K9.Theme.LIGHT || theme == K9.Theme.DARK) {
-                    return theme;
-                }
-            } catch (IllegalArgumentException e) { /* do nothing */ }
-
-            throw new InvalidSettingValueException();
-        }
-
-        @Override
-        public K9.Theme fromPrettyString(String value) throws InvalidSettingValueException {
-            if (THEME_LIGHT.equals(value)) {
-                return K9.Theme.LIGHT;
-            } else if (THEME_DARK.equals(value)) {
-                return K9.Theme.DARK;
-            }
-
-            throw new InvalidSettingValueException();
-        }
-
-        @Override
-        public String toPrettyString(K9.Theme value) {
-            switch (value) {
-                case DARK: {
-                    return THEME_DARK;
-                }
-                default: {
-                    return THEME_LIGHT;
-                }
-            }
-        }
-
-        @Override
-        public String toString(K9.Theme value) {
-            return value.name();
-        }
-    }
-
-    private static class SubThemeSetting extends ThemeSetting {
-        private static final String THEME_USE_GLOBAL = "use_global";
-
-        SubThemeSetting(Theme defaultValue) {
-            super(defaultValue);
-        }
-
-        @Override
-        public K9.Theme fromString(String value) throws InvalidSettingValueException {
-            try {
-                return K9.Theme.valueOf(value);
+                return K9.AppTheme.valueOf(value);
             } catch (IllegalArgumentException e) {
                 throw new InvalidSettingValueException();
             }
         }
 
         @Override
-        public K9.Theme fromPrettyString(String value) throws InvalidSettingValueException {
-            if (THEME_USE_GLOBAL.equals(value)) {
-                return K9.Theme.USE_GLOBAL;
+        public AppTheme fromPrettyString(String value) throws InvalidSettingValueException {
+            if (THEME_LIGHT.equals(value)) {
+                return AppTheme.LIGHT;
+            } else if (THEME_DARK.equals(value)) {
+                return AppTheme.DARK;
             }
 
-            return super.fromPrettyString(value);
+            throw new InvalidSettingValueException();
         }
 
         @Override
-        public String toPrettyString(K9.Theme value) {
-            if (value == K9.Theme.USE_GLOBAL) {
-                return THEME_USE_GLOBAL;
+        public String toPrettyString(AppTheme value) {
+            switch (value) {
+                case LIGHT: return THEME_LIGHT;
+                case DARK: return THEME_DARK;
             }
 
-            return super.toPrettyString(value);
+            throw new AssertionError("Unexpected case: " + value);
+        }
+
+        @Override
+        public String toString(AppTheme value) {
+            return value.name();
+        }
+    }
+
+    private static class ThemeSetting extends SettingsDescription<AppTheme> {
+        private static final String THEME_LIGHT = "light";
+        private static final String THEME_DARK = "dark";
+        private static final String THEME_FOLLOW_SYSTEM = "follow_system";
+
+        ThemeSetting(AppTheme defaultValue) {
+            super(defaultValue);
+        }
+
+        @Override
+        public AppTheme fromString(String value) throws InvalidSettingValueException {
+            try {
+                return AppTheme.valueOf(value);
+            } catch (IllegalArgumentException e) {
+                throw new InvalidSettingValueException();
+            }
+        }
+
+        @Override
+        public AppTheme fromPrettyString(String value) throws InvalidSettingValueException {
+            if (THEME_LIGHT.equals(value)) {
+                return AppTheme.LIGHT;
+            } else if (THEME_DARK.equals(value)) {
+                return AppTheme.DARK;
+            } else if (THEME_FOLLOW_SYSTEM.equals(value)) {
+                return AppTheme.FOLLOW_SYSTEM;
+            }
+
+            throw new InvalidSettingValueException();
+        }
+
+        @Override
+        public String toPrettyString(AppTheme value) {
+            switch (value) {
+                case LIGHT: return THEME_LIGHT;
+                case DARK: return THEME_DARK;
+                case FOLLOW_SYSTEM: return THEME_FOLLOW_SYSTEM;
+            }
+
+            throw new AssertionError("Unexpected case: " + value);
+        }
+
+        @Override
+        public String toString(AppTheme value) {
+            return value.name();
+        }
+    }
+
+    private static class SubThemeSetting extends SettingsDescription<SubTheme> {
+        private static final String THEME_LIGHT = "light";
+        private static final String THEME_DARK = "dark";
+        private static final String THEME_USE_GLOBAL = "use_global";
+
+        SubThemeSetting(SubTheme defaultValue) {
+            super(defaultValue);
+        }
+
+        @Override
+        public SubTheme fromString(String value) throws InvalidSettingValueException {
+            try {
+                return SubTheme.valueOf(value);
+            } catch (IllegalArgumentException e) {
+                throw new InvalidSettingValueException();
+            }
+        }
+
+        @Override
+        public SubTheme fromPrettyString(String value) throws InvalidSettingValueException {
+            if (THEME_LIGHT.equals(value)) {
+                return SubTheme.LIGHT;
+            } else if (THEME_DARK.equals(value)) {
+                return SubTheme.DARK;
+            } else if (THEME_USE_GLOBAL.equals(value)) {
+                return SubTheme.USE_GLOBAL;
+            }
+
+            throw new InvalidSettingValueException();
+        }
+
+        @Override
+        public String toPrettyString(SubTheme value) {
+            switch (value) {
+                case LIGHT: return THEME_LIGHT;
+                case DARK: return THEME_DARK;
+                case USE_GLOBAL: return THEME_USE_GLOBAL;
+            }
+
+            throw new AssertionError("Unexpected case: " + value);
+        }
+
+        @Override
+        public String toString(SubTheme value) {
+            return value.name();
         }
     }
 

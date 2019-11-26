@@ -5,7 +5,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender.SendIntentException
-import android.os.Build
 import android.os.Bundle
 import android.transition.TransitionInflater
 import android.transition.TransitionManager
@@ -18,13 +17,12 @@ import com.fsck.k9.view.StatusIndicator
 import kotlinx.android.synthetic.main.crypto_key_transfer.*
 import kotlinx.coroutines.delay
 import org.koin.android.ext.android.inject
+import org.koin.core.parameter.parametersOf
 import timber.log.Timber
 
 
 class AutocryptKeyTransferActivity : K9Activity() {
-    private val presenter: AutocryptKeyTransferPresenter by inject {
-        mapOf("lifecycleOwner" to this, "autocryptTransferView" to this)
-    }
+    private val presenter: AutocryptKeyTransferPresenter by inject { parametersOf(this, this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -139,10 +137,8 @@ class AutocryptKeyTransferActivity : K9Activity() {
     }
 
     private fun setupSceneTransition() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val transition = TransitionInflater.from(this).inflateTransition(R.transition.transfer_transitions)
-            TransitionManager.beginDelayedTransition(findViewById(android.R.id.content), transition)
-        }
+        val transition = TransitionInflater.from(this).inflateTransition(R.transition.transfer_transitions)
+        TransitionManager.beginDelayedTransition(findViewById(android.R.id.content), transition)
     }
 
     fun finishAsCancelled() {

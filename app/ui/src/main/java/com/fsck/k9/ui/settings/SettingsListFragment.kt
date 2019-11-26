@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fsck.k9.Account
-import com.fsck.k9.activity.setup.WelcomeMessage
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.observeNotNull
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity
@@ -17,7 +16,7 @@ import com.xwray.groupie.Item
 import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.fragment_settings_list.*
-import org.koin.android.architecture.ext.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsListFragment : Fragment() {
     private val viewModel: SettingsViewModel by viewModel()
@@ -49,7 +48,7 @@ class SettingsListFragment : Fragment() {
     private fun populateSettingsList() {
         viewModel.accounts.observeNotNull(this) { accounts ->
             if (accounts.isEmpty()) {
-                launchWelcomeScreen()
+                launchOnboarding()
             } else {
                 populateSettingsList(accounts)
             }
@@ -58,16 +57,6 @@ class SettingsListFragment : Fragment() {
 
     private fun populateSettingsList(accounts: List<Account>) {
         settingsAdapter.clear()
-
-        val miscSection = Section().apply {
-            val accountActionItem = SettingsActionItem(
-                    getString(R.string.about_action),
-                    R.id.action_settingsListScreen_to_aboutScreen,
-                    R.attr.iconSettingsAbout
-            )
-            add(accountActionItem)
-        }
-        settingsAdapter.add(miscSection)
 
         val generalSection = Section().apply {
             val generalSettingsActionItem = SettingsActionItem(
@@ -101,9 +90,27 @@ class SettingsListFragment : Fragment() {
                     R.attr.iconSettingsExport
             )
             add(exportSettingsActionItem)
+
+            val importSettingsActionItem = SettingsActionItem(
+                    getString(R.string.settings_import_title),
+                    R.id.action_settingsListScreen_to_settingsImportScreen,
+                    R.attr.iconSettingsImport
+            )
+            add(importSettingsActionItem)
         }
         backupSection.setHeader(SettingsDividerItem(getString(R.string.settings_list_backup_category)))
         settingsAdapter.add(backupSection)
+
+        val miscSection = Section().apply {
+            val accountActionItem = SettingsActionItem(
+                getString(R.string.about_action),
+                R.id.action_settingsListScreen_to_aboutScreen,
+                R.attr.iconSettingsAbout
+            )
+            add(accountActionItem)
+        }
+        miscSection.setHeader(SettingsDividerItem(getString(R.string.settings_list_miscellaneous_category)))
+        settingsAdapter.add(miscSection)
     }
 
     private fun handleItemClick(item: Item<*>) {
@@ -117,9 +124,8 @@ class SettingsListFragment : Fragment() {
         AccountSettingsActivity.start(requireActivity(), account.uuid)
     }
 
-    private fun launchWelcomeScreen() {
-        val activity = requireActivity()
-        WelcomeMessage.showWelcomeMessage(activity)
-        activity.finish()
+    private fun launchOnboarding() {
+        findNavController().navigate(R.id.action_settingsListScreen_to_onboardingScreen)
+        requireActivity().finish()
     }
 }

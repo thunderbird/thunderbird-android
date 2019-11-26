@@ -3,15 +3,18 @@ package com.fsck.k9.ui.settings.general
 import androidx.fragment.app.FragmentActivity
 import androidx.preference.PreferenceDataStore
 import com.fsck.k9.K9
-import com.fsck.k9.K9.Theme
+import com.fsck.k9.K9.AppTheme
+import com.fsck.k9.K9.SubTheme
 import com.fsck.k9.Preferences
 import com.fsck.k9.job.K9JobManager
+import com.fsck.k9.ui.ThemeManager
 import java.util.concurrent.ExecutorService
 
 class GeneralSettingsDataStore(
         private val preferences: Preferences,
         private val jobManager: K9JobManager,
-        private val executorService: ExecutorService
+        private val executorService: ExecutorService,
+        private val themeManager: ThemeManager
 ) : PreferenceDataStore() {
     var activity: FragmentActivity? = null
 
@@ -19,12 +22,9 @@ class GeneralSettingsDataStore(
         return when (key) {
             "fixed_message_view_theme" -> K9.isFixedMessageViewTheme
             "animations" -> K9.isShowAnimations
-            "measure_accounts" -> K9.isMeasureAccounts
-            "count_search" -> K9.isCountSearchMessages
             "hide_special_accounts" -> K9.isHideSpecialAccounts
             "folderlist_wrap_folder_name" -> K9.isWrapFolderNames
             "messagelist_stars" -> K9.isShowMessageListStars
-            "messagelist_checkboxes" -> K9.isShowMessageListCheckboxes
             "messagelist_show_correspondent_names" -> K9.isShowCorrespondentNames
             "messagelist_sender_above_subject" -> K9.isMessageListSenderAboveSubject
             "messagelist_show_contact_name" -> K9.isShowContactName
@@ -53,12 +53,9 @@ class GeneralSettingsDataStore(
         when (key) {
             "fixed_message_view_theme" -> K9.isFixedMessageViewTheme = value
             "animations" -> K9.isShowAnimations = value
-            "measure_accounts" -> K9.isMeasureAccounts = value
-            "count_search" -> K9.isCountSearchMessages = value
             "hide_special_accounts" -> K9.isHideSpecialAccounts = value
             "folderlist_wrap_folder_name" -> K9.isWrapFolderNames = value
             "messagelist_stars" -> K9.isShowMessageListStars = value
-            "messagelist_checkboxes" -> K9.isShowMessageListCheckboxes = value
             "messagelist_show_correspondent_names" -> K9.isShowCorrespondentNames = value
             "messagelist_sender_above_subject" -> K9.isMessageListSenderAboveSubject = value
             "messagelist_show_contact_name" -> K9.isShowContactName = value
@@ -104,10 +101,9 @@ class GeneralSettingsDataStore(
     override fun getString(key: String, defValue: String?): String? {
         return when (key) {
             "language" -> K9.k9Language
-            "theme" -> themeToString(K9.k9Theme)
-            "fixed_message_view_theme" -> themeToString(K9.k9MessageViewThemeSetting)
-            "message_compose_theme" -> themeToString(K9.k9ComposerThemeSetting)
-            "messageViewTheme" -> themeToString(K9.k9MessageViewThemeSetting)
+            "theme" -> appThemeToString(K9.appTheme)
+            "message_compose_theme" -> subThemeToString(K9.messageComposeTheme)
+            "messageViewTheme" -> subThemeToString(K9.messageViewTheme)
             "messagelist_preview_lines" -> K9.messageListPreviewLines.toString()
             "splitview_mode" -> K9.splitViewMode.name
             "notification_quick_delete" -> K9.notificationQuickDeleteBehaviour.name
@@ -126,9 +122,8 @@ class GeneralSettingsDataStore(
         when (key) {
             "language" -> setLanguage(value)
             "theme" -> setTheme(value)
-            "fixed_message_view_theme" -> K9.k9MessageViewThemeSetting = stringToTheme(value)
-            "message_compose_theme" -> K9.k9ComposerThemeSetting = stringToTheme(value)
-            "messageViewTheme" -> K9.k9MessageViewThemeSetting = stringToTheme(value)
+            "message_compose_theme" -> K9.messageComposeTheme = stringToSubTheme(value)
+            "messageViewTheme" -> K9.messageViewTheme = stringToSubTheme(value)
             "messagelist_preview_lines" -> K9.messageListPreviewLines = value.toInt()
             "splitview_mode" -> K9.splitViewMode = K9.SplitViewMode.valueOf(value)
             "notification_quick_delete" -> {
@@ -216,7 +211,8 @@ class GeneralSettingsDataStore(
     }
 
     private fun setTheme(value: String?) {
-        K9.k9Theme = stringToTheme(value)
+        K9.appTheme = stringToAppTheme(value)
+        themeManager.updateAppTheme()
         recreateActivity()
     }
 
@@ -225,16 +221,29 @@ class GeneralSettingsDataStore(
         recreateActivity()
     }
 
-    private fun themeToString(theme: Theme) = when (theme) {
-        Theme.LIGHT -> "light"
-        Theme.DARK -> "dark"
-        Theme.USE_GLOBAL -> "global"
+    private fun appThemeToString(theme: AppTheme) = when (theme) {
+        AppTheme.LIGHT -> "light"
+        AppTheme.DARK -> "dark"
+        AppTheme.FOLLOW_SYSTEM -> "follow_system"
     }
 
-    private fun stringToTheme(theme: String?) = when (theme) {
-        "light" -> Theme.LIGHT
-        "dark" -> Theme.DARK
-        "global" -> Theme.USE_GLOBAL
+    private fun subThemeToString(theme: SubTheme) = when (theme) {
+        SubTheme.LIGHT -> "light"
+        SubTheme.DARK -> "dark"
+        SubTheme.USE_GLOBAL -> "global"
+    }
+
+    private fun stringToAppTheme(theme: String?) = when (theme) {
+        "light" -> AppTheme.LIGHT
+        "dark" -> AppTheme.DARK
+        "follow_system" -> AppTheme.FOLLOW_SYSTEM
+        else -> throw AssertionError()
+    }
+
+    private fun stringToSubTheme(theme: String?) = when (theme) {
+        "light" -> SubTheme.LIGHT
+        "dark" -> SubTheme.DARK
+        "global" -> SubTheme.USE_GLOBAL
         else -> throw AssertionError()
     }
 

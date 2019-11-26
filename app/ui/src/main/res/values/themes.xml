@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="Theme.K9.Startup" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Theme.K9.Startup" parent="Theme.K9.Dark">
         <item name="android:windowBackground">@android:color/black</item>
     </style>
 
@@ -43,7 +43,7 @@
         <item name="iconActionAddAttachment">@drawable/ic_attachment_light</item>
         <item name="iconActionAddCcBcc">@drawable/ic_group_plus_light</item>
         <item name="iconActionArchive">@drawable/ic_archive_light</item>
-        <item name="iconActionCompose">@drawable/ic_envelope_light</item>
+        <item name="iconActionCompose">@drawable/ic_pencil_light</item>
         <item name="iconActionDelete">@drawable/ic_trash_can_light</item>
         <item name="iconActionMove">@drawable/ic_folder_light</item>
         <item name="iconActionCopy">@drawable/ic_content_copy_light</item>
@@ -84,13 +84,14 @@
         <item name="iconPreferencesCrypto">@drawable/ic_preferences_crypto_light</item>
         <item name="iconPreferencesFetchMail">@drawable/ic_preferences_check_mail_light</item>
         <item name="iconPreferencesReadMail">@drawable/ic_opened_envelope_light</item>
-        <item name="iconPreferencesStorage">@drawable/ic_storage_light</item>
         <item name="iconPreferencesCompose">@drawable/ic_pencil_light</item>
         <item name="iconSettingsAbout">@drawable/ic_info_outline_light</item>
         <item name="iconSettingsGeneral">@drawable/ic_cog_light</item>
         <item name="iconSettingsAccount">@drawable/ic_account_light</item>
         <item name="iconSettingsAccountAdd">@drawable/ic_account_plus_light</item>
         <item name="iconSettingsExport">@drawable/ic_export_light</item>
+        <item name="iconSettingsImport">@drawable/ic_import_light</item>
+        <item name="iconSettingsImportStatus">@drawable/ic_import_status_light</item>
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_light</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_light</item>
         <item name="messageListSelectedBackgroundColor">#8038B8E2</item>
@@ -106,6 +107,7 @@
         <item name="messageListAnswered">@drawable/ic_messagelist_answered_light</item>
         <item name="messageListForwarded">@drawable/ic_messagelist_forwarded_light</item>
         <item name="messageListAnsweredForwarded">@drawable/ic_messagelist_answered_forwarded_light</item>
+        <item name="messageStar">@drawable/btn_check_star_light</item>
         <item name="messageViewBackgroundColor">#ffffffff</item>
         <item name="messageViewAttachmentBackground">@drawable/attachment_text_box_light</item>
         <item name="messageComposeAddContactImage">@drawable/ic_person_plus_light</item>
@@ -129,6 +131,7 @@
     </style>
 
     <style name="Theme.K9.Dark.Common" parent="Theme.K9.Dark.Base">
+        <item name="android:navigationBarColor">#000000</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
         <item name="colorPrimary">@color/md_grey_900</item>
@@ -162,7 +165,7 @@
         <item name="iconActionAddAttachment">@drawable/ic_attachment_dark</item>
         <item name="iconActionAddCcBcc">@drawable/ic_group_plus_dark</item>
         <item name="iconActionArchive">@drawable/ic_archive_dark</item>
-        <item name="iconActionCompose">@drawable/ic_envelope_dark</item>
+        <item name="iconActionCompose">@drawable/ic_pencil_dark</item>
         <item name="iconActionDelete">@drawable/ic_trash_can_dark</item>
         <item name="iconActionMove">@drawable/ic_folder_dark</item>
         <item name="iconActionCopy">@drawable/ic_content_copy_dark</item>
@@ -203,13 +206,14 @@
         <item name="iconPreferencesCrypto">@drawable/ic_preferences_crypto_dark</item>
         <item name="iconPreferencesFetchMail">@drawable/ic_preferences_check_mail_dark</item>
         <item name="iconPreferencesReadMail">@drawable/ic_opened_envelope_dark</item>
-        <item name="iconPreferencesStorage">@drawable/ic_storage_dark</item>
         <item name="iconPreferencesCompose">@drawable/ic_pencil_dark</item>
         <item name="iconSettingsAbout">@drawable/ic_info_outline_dark</item>
         <item name="iconSettingsGeneral">@drawable/ic_cog_dark</item>
         <item name="iconSettingsAccount">@drawable/ic_account_dark</item>
         <item name="iconSettingsAccountAdd">@drawable/ic_account_plus_dark</item>
         <item name="iconSettingsExport">@drawable/ic_export_dark</item>
+        <item name="iconSettingsImport">@drawable/ic_import_dark</item>
+        <item name="iconSettingsImportStatus">@drawable/ic_import_status_dark</item>
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_dark</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_dark</item>
         <item name="messageListSelectedBackgroundColor">#8038B8E2</item>
@@ -225,6 +229,7 @@
         <item name="messageListAnswered">@drawable/ic_messagelist_answered_dark</item>
         <item name="messageListForwarded">@drawable/ic_messagelist_forwarded_dark</item>
         <item name="messageListAnsweredForwarded">@drawable/ic_messagelist_answered_forwarded_dark</item>
+        <item name="messageStar">@drawable/btn_check_star_dark</item>
         <item name="messageViewBackgroundColor">#000000</item>
         <item name="messageViewAttachmentBackground">@drawable/attachment_text_box_dark</item>
         <item name="messageComposeAddContactImage">@drawable/ic_person_plus_dark</item>
@@ -295,4 +300,10 @@
     </style>
 
     <style name="Theme.K9.Transparent" parent="@android:style/Theme.NoDisplay" />
+
+    <style name="Theme.K9.DayNight" parent="Theme.K9.Light" />
+    <style name="Theme.K9.DayNight.ActionBar" parent="Theme.K9.Light.ActionBar" />
+    <style name="Theme.K9.Dialog.DayNight" parent="Theme.K9.Dialog.Light" />
+    <style name="Theme.K9.Dialog.Translucent.DayNight" parent="Theme.K9.Dialog.Translucent.Light" />
+
 </resources>

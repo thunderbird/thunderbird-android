@@ -1,5 +1,6 @@
 package com.fsck.k9.mailstore
 
+import android.database.sqlite.SQLiteDatabase
 import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.mail.Folder.FolderClass
@@ -10,11 +11,12 @@ class FolderRepository(
         private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy,
         private val account: Account
 ) {
-    private val sortForDisplay = compareByDescending<LocalFolder> { it.serverId == account.inboxFolder }
-            .thenByDescending { it.serverId == account.outboxFolder }
-            .thenByDescending { account.isSpecialFolder(it.serverId) }
+    private val sortForDisplay =
+            compareByDescending<DisplayFolder> { it.folder.serverId == account.inboxFolder }
+            .thenByDescending { it.folder.serverId == account.outboxFolder }
+            .thenByDescending { account.isSpecialFolder(it.folder.serverId) }
             .thenByDescending { it.isInTopGroup }
-            .thenBy(String.CASE_INSENSITIVE_ORDER) { it.name }
+            .thenBy(String.CASE_INSENSITIVE_ORDER) { it.folder.name }
 
 
     fun getRemoteFolderInfo(): RemoteFolderInfo {
@@ -38,33 +40,72 @@ class FolderRepository(
                 .map { Folder(it.databaseId, it.serverId, it.name, it.type.toFolderType()) }
     }
 
-    fun getDisplayFolders(): List<Folder> {
-        val folders = localStoreProvider.getInstance(account).getPersonalNamespaces(false)
-        return folders
-                .filter(::shouldDisplayFolder)
-                .sortedWith(sortForDisplay)
-                .map(::createFolderFromLocalFolder)
+    fun getDisplayFolders(): List<DisplayFolder> {
+        val database = localStoreProvider.getInstance(account).database
+        val displayFolders = database.execute(false) { db -> getDisplayFolders(db) }
+
+        return displayFolders.sortedWith(sortForDisplay)
     }
 
-    private fun shouldDisplayFolder(localFolder: LocalFolder): Boolean {
-        val displayMode = account.folderDisplayMode
-        val displayClass = localFolder.displayClass
-        return when (displayMode) {
-            FolderMode.ALL -> true
-            FolderMode.FIRST_CLASS -> displayClass == FolderClass.FIRST_CLASS
-            FolderMode.FIRST_AND_SECOND_CLASS -> {
-                displayClass == FolderClass.FIRST_CLASS || displayClass == FolderClass.SECOND_CLASS
+    private fun getDisplayFolders(db: SQLiteDatabase): List<DisplayFolder> {
+        val queryBuilder = StringBuilder("""
+            SELECT f.id, f.server_id, f.name, f.top_group, (
+                SELECT COUNT(m.id) 
+                FROM messages m 
+                WHERE m.folder_id = f.id AND m.empty = 0 AND m.deleted = 0 AND m.read = 0
+            )
+            FROM folders f
+            """.trimIndent()
+        )
+
+        addDisplayClassSelection(queryBuilder)
+
+        val query = queryBuilder.toString()
+        db.rawQuery(query, null).use { cursor ->
+            val displayFolders = mutableListOf<DisplayFolder>()
+
+            while (cursor.moveToNext()) {
+                val id = cursor.getLong(0)
+                val serverId = cursor.getString(1)
+                val name = cursor.getString(2)
+                val type = folderTypeOf(serverId)
+                val isInTopGroup = cursor.getInt(3) == 1
+                val unreadCount = cursor.getInt(4)
+
+                val folder = Folder(id, serverId, name, type)
+                displayFolders.add(DisplayFolder(folder, isInTopGroup, unreadCount))
             }
-            FolderMode.NOT_SECOND_CLASS -> displayClass != FolderClass.SECOND_CLASS
-            else -> throw AssertionError("Invalid folder display mode: $displayMode")
+
+            return displayFolders
         }
     }
 
-    private fun createFolderFromLocalFolder(localFolder: LocalFolder): Folder {
-        return Folder(localFolder.databaseId, localFolder.serverId, localFolder.name, folderTypeOf(localFolder))
+    private fun addDisplayClassSelection(query: StringBuilder) {
+        when (val displayMode = account.folderDisplayMode) {
+            FolderMode.ALL -> Unit // Return all folders
+            FolderMode.FIRST_CLASS -> {
+                query.append(" WHERE f.display_class = '")
+                        .append(FolderClass.FIRST_CLASS.name)
+                        .append("'")
+            }
+            FolderMode.FIRST_AND_SECOND_CLASS -> {
+                query.append(" WHERE f.display_class IN ('")
+                        .append(FolderClass.FIRST_CLASS.name)
+                        .append("', '")
+                        .append(FolderClass.SECOND_CLASS.name)
+                        .append("')")
+            }
+            FolderMode.NOT_SECOND_CLASS -> {
+                query.append(" WHERE f.display_class != '")
+                        .append(FolderClass.SECOND_CLASS.name)
+                        .append("'")
+            }
+            FolderMode.NONE -> throw AssertionError("Invalid folder display mode: $displayMode")
+        }
     }
 
-    private fun folderTypeOf(folder: LocalFolder) = when (folder.serverId) {
+
+    private fun folderTypeOf(serverId: String) = when (serverId) {
         account.inboxFolder -> FolderType.INBOX
         account.outboxFolder -> FolderType.OUTBOX
         account.sentFolder -> FolderType.SENT
@@ -88,6 +129,12 @@ class FolderRepository(
 }
 
 data class Folder(val id: Long, val serverId: String, val name: String, val type: FolderType)
+
+data class DisplayFolder(
+        val folder: Folder,
+        val isInTopGroup: Boolean,
+        val unreadCount: Int
+)
 
 data class RemoteFolderInfo(val folders: List<Folder>, val automaticSpecialFolders: Map<FolderType, Folder?>)
 

@@ -19,8 +19,7 @@ android {
 
     defaultConfig {
         minSdkVersion buildConfig.minSdk
-        // For Robolectric tests
-        targetSdkVersion 22
+        targetSdkVersion buildConfig.robolectricSdk
     }
 
     lintOptions {
@@ -29,7 +28,11 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility javaVersion
+        targetCompatibility javaVersion
+    }
+
+    kotlinOptions {
+        jvmTarget = kotlinJvmVersion
     }
 }

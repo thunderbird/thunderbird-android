@@ -27,8 +27,9 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.activity.K9ActivityCommon;
+import com.fsck.k9.activity.ThemeType;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.dialog.ApgDeprecationWarningDialog;
 import org.openintents.openpgp.util.OpenPgpApi;
@@ -52,6 +53,9 @@ public class OpenPgpAppSelectDialog extends FragmentActivity {
     private static final Intent MARKET_INTENT_FALLBACK = new Intent(Intent.ACTION_VIEW, Uri.parse(
             String.format("https://play.google.com/store/apps/details?id=%s", OPENKEYCHAIN_PACKAGE)));
 
+
+    private final K9ActivityCommon base = new K9ActivityCommon(this, ThemeType.DIALOG);
+
     private boolean isStopped;
     private Account account;
 
@@ -63,13 +67,11 @@ public class OpenPgpAppSelectDialog extends FragmentActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        base.preOnCreate();
         super.onCreate(savedInstanceState);
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         account = Preferences.getPreferences(this).getAccount(accountUuid);
-
-        setTheme(K9.getK9Theme() == K9.Theme.LIGHT ?
-                R.style.Theme_K9_Dialog_Translucent_Light : R.style.Theme_K9_Dialog_Translucent_Dark);
     }
 
     @Override
@@ -87,6 +89,12 @@ public class OpenPgpAppSelectDialog extends FragmentActivity {
         } else {
             showOpenPgpSelectDialogFragment();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        base.preOnResume();
+        super.onResume();
     }
 
     @Override
@@ -289,8 +297,8 @@ public class OpenPgpAppSelectDialog extends FragmentActivity {
             builder.setPositiveButton(R.string.dialog_openkeychain_info_install, new OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    startOpenKeychainInstallActivity();
                     dismiss();
+                    startOpenKeychainInstallActivity();
                 }
             });
 

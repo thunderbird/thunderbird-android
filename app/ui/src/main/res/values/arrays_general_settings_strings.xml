@@ -84,9 +84,15 @@
         <item>日本語</item>
     </string-array>
 
+    <string-array name="theme_entries_legacy">
+        <item>@string/setting_theme_light</item>
+        <item>@string/setting_theme_dark</item>
+    </string-array>
+
     <string-array name="theme_entries">
         <item>@string/setting_theme_light</item>
         <item>@string/setting_theme_dark</item>
+        <item>@string/setting_theme_follow_system</item>
     </string-array>
 
     <string-array name="message_theme_entries">

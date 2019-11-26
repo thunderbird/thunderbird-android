@@ -6,15 +6,14 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import com.fsck.k9.EarlyInit
 import com.fsck.k9.K9
 import com.fsck.k9.helper.K9AlarmManager
+import com.fsck.k9.inject
 import com.fsck.k9.job.K9JobManager
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
 import timber.log.Timber
 
-class BootReceiver : CoreReceiver(), KoinComponent {
-
+class BootReceiver : CoreReceiver(), EarlyInit {
     private val jobManager: K9JobManager by inject()
 
     override fun receive(context: Context, intent: Intent, _tmpWakeLockId: Int?): Int? {

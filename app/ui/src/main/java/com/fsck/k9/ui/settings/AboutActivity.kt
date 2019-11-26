@@ -1,38 +1,31 @@
 package com.fsck.k9.ui.settings
 
-import java.util.Calendar
-
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-import android.webkit.WebView
-import android.widget.TextView
-import com.fsck.k9.activity.K9Activity
 import com.fsck.k9.ui.R
 import de.cketti.library.changelog.ChangeLog
-import kotlinx.android.synthetic.main.about.*
 import kotlinx.android.synthetic.main.about_library.view.*
-
+import kotlinx.android.synthetic.main.fragment_about.*
 import timber.log.Timber
+import java.util.Calendar
 
 private data class Library(val name: String, val URL: String, val license: String)
 
-class AboutActivity : K9Activity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setLayout(R.layout.about)
+class AboutFragment : Fragment() {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_about, container, false)
+    }
 
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         version.text = getVersionNumber()
         versionLayout.setOnClickListener { displayChangeLog() }
@@ -58,7 +51,7 @@ class AboutActivity : K9Activity() {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_revision_url))))
         }
 
-        val manager = LinearLayoutManager(this)
+        val manager = LinearLayoutManager(view.context)
         libraries.apply {
             layoutManager = manager
             adapter = LibrariesAdapter(USED_LIBRARIES)
@@ -67,22 +60,14 @@ class AboutActivity : K9Activity() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> onBackPressed()
-            else -> return super.onOptionsItemSelected(item)
-        }
-
-        return true
-    }
-
     private fun displayChangeLog() {
-        ChangeLog(this).fullLogDialog.show()
+        ChangeLog(requireActivity()).fullLogDialog.show()
     }
 
     private fun getVersionNumber(): String {
         return try {
-            val packageInfo = packageManager.getPackageInfo(packageName, 0)
+            val context = requireContext()
+            val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
             packageInfo.versionName
         } catch (e: PackageManager.NameNotFoundException) {
             Timber.e(e, "Error getting PackageInfo")
@@ -97,7 +82,6 @@ class AboutActivity : K9Activity() {
                 Library("ckChangeLog", "https://github.com/cketti/ckChangeLog", "Apache License, Version 2.0"),
                 Library("Commons IO", "https://commons.apache.org/io/", "Apache License, Version 2.0"),
                 Library("Glide", "https://github.com/bumptech/glide", "Mixed License"),
-                Library("HoloColorPicker", "https://github.com/LarsWerkman/HoloColorPicker", "Apache License, Version 2.0"),
                 Library("jsoup", "https://jsoup.org/", "MIT License"),
                 Library("jutf7", "http://jutf7.sourceforge.net/", "MIT License"),
                 Library("JZlib", "http://www.jcraft.com/jzlib/", "BSD-style License"),
@@ -108,11 +92,6 @@ class AboutActivity : K9Activity() {
                 Library("ShowcaseView", "https://github.com/amlcurran/ShowcaseView", "Apache License, Version 2.0"),
                 Library("Timber", "https://github.com/JakeWharton/timber", "Apache License, Version 2.0"),
                 Library("TokenAutoComplete", "https://github.com/splitwise/TokenAutoComplete/", "Apache License, Version 2.0"))
-
-        fun start(context: Context) {
-            val intent = Intent(context, AboutActivity::class.java)
-            context.startActivity(intent)
-        }
     }
 }
 

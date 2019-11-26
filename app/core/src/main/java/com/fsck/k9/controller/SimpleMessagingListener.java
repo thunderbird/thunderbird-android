@@ -7,8 +7,6 @@ import java.util.List;
 import android.content.Context;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.AccountStats;
-import com.fsck.k9.BaseAccount;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mailstore.LocalFolder;
@@ -16,14 +14,6 @@ import com.fsck.k9.mailstore.LocalMessage;
 
 
 public abstract class SimpleMessagingListener implements MessagingListener {
-    @Override
-    public void searchStats(AccountStats stats) {
-    }
-
-    @Override
-    public void accountStatusChanged(BaseAccount account, AccountStats stats) {
-    }
-
     @Override
     public void accountSizeChanged(Account account, long oldSize, long newSize) {
     }
@@ -46,6 +36,10 @@ public abstract class SimpleMessagingListener implements MessagingListener {
 
     @Override
     public void listLocalMessagesAddMessages(Account account, String folderServerId, List<LocalMessage> messages) {
+    }
+
+    @Override
+    public void listLocalMessagesFinished() {
     }
 
     @Override

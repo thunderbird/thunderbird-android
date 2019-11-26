@@ -58,13 +58,14 @@
         <attr name="iconPreferencesFetchMail" format="reference" />
         <attr name="iconPreferencesSearch" format="reference" />
         <attr name="iconPreferencesReadMail" format="reference" />
-        <attr name="iconPreferencesStorage" format="reference" />
         <attr name="iconPreferencesCompose" format="reference" />
         <attr name="iconSettingsAbout" format="reference" />
         <attr name="iconSettingsGeneral" format="reference" />
         <attr name="iconSettingsAccount" format="reference" />
         <attr name="iconSettingsAccountAdd" format="reference" />
         <attr name="iconSettingsExport" format="reference" />
+        <attr name="iconSettingsImport" format="reference" />
+        <attr name="iconSettingsImportStatus" format="reference" />
         <attr name="textColorPrimaryRecipientDropdown" format="reference" />
         <attr name="textColorSecondaryRecipientDropdown" format="reference" />
         <attr name="backgroundColorChooseAccountHeader" format="color" />
@@ -81,6 +82,7 @@
         <attr name="messageListAnswered" format="reference"/>
         <attr name="messageListForwarded" format="reference"/>
         <attr name="messageListAnsweredForwarded" format="reference"/>
+        <attr name="messageStar" format="reference"/>
         <attr name="messageViewBackgroundColor" format="reference|color"/>
         <attr name="messageViewAttachmentBackground" format="reference"/>
         <attr name="messageComposeAddContactImage" format="reference"/>

@@ -28,10 +28,6 @@ class LockScreenNotification {
     }
 
     public void configureLockScreenNotification(Builder builder, NotificationData notificationData) {
-        if (!NotificationController.platformSupportsLockScreenNotifications()) {
-            return;
-        }
-
         switch (K9.getLockScreenNotificationVisibility()) {
             case NOTHING: {
                 builder.setVisibility(NotificationCompat.VISIBILITY_SECRET);

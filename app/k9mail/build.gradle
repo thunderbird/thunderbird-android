@@ -2,9 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'org.jetbrains.kotlin.android.extensions'
 
-apply from: "${rootProject.projectDir}/gradle/plugins/checkstyle-android.gradle"
-apply from: "${rootProject.projectDir}/gradle/plugins/findbugs-android.gradle"
-
 if (rootProject.testCoverage) {
     apply plugin: 'jacoco'
 }
@@ -43,10 +40,10 @@ android {
         testApplicationId "com.fsck.k9.tests"
 
         versionCode 27000
-        versionName '5.700-SNAPSHOT'
+        versionName '5.700'
 
         minSdkVersion buildConfig.minSdk
-        targetSdkVersion 23
+        targetSdkVersion buildConfig.targetSdk
 
         generatedDensities = ['mdpi', 'hdpi', 'xhdpi']
 
@@ -98,8 +95,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility javaVersion
+        targetCompatibility javaVersion
+    }
+
+    kotlinOptions {
+        jvmTarget = kotlinJvmVersion
     }
 
     testOptions {

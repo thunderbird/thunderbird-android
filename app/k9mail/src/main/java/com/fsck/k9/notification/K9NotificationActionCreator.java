@@ -6,16 +6,12 @@ import java.util.List;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import androidx.core.app.TaskStackBuilder;
 import android.text.TextUtils;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
-import com.fsck.k9.Preferences;
 import com.fsck.k9.R;
-import com.fsck.k9.activity.Accounts;
-import com.fsck.k9.activity.FolderList;
 import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.activity.NotificationDeleteConfirmation;
@@ -47,40 +43,40 @@ class K9NotificationActionCreator implements NotificationActionCreator {
 
     @Override
     public PendingIntent createViewMessagePendingIntent(MessageReference messageReference, int notificationId) {
-        TaskStackBuilder stack = buildMessageViewBackStack(messageReference);
-        return stack.getPendingIntent(notificationId, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent intent = createMessageViewIntent(messageReference);
+        return PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override
     public PendingIntent createViewFolderPendingIntent(Account account, String folderServerId, int notificationId) {
-        TaskStackBuilder stack = buildMessageListBackStack(account, folderServerId);
-        return stack.getPendingIntent(notificationId, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent intent = createMessageListIntent(account, folderServerId);
+        return PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override
     public PendingIntent createViewMessagesPendingIntent(Account account, List<MessageReference> messageReferences,
             int notificationId) {
 
-        TaskStackBuilder stack;
+        Intent intent;
         if (account.isGoToUnreadMessageSearch()) {
-            stack = buildUnreadBackStack(account);
+            intent = createUnreadIntent(account);
         } else {
             String folderServerId = getFolderServerIdOfAllMessages(messageReferences);
 
             if (folderServerId == null) {
-                stack = buildFolderListBackStack(account);
+                intent = createMessageListIntent(account);
             } else {
-                stack = buildMessageListBackStack(account, folderServerId);
+                intent = createMessageListIntent(account, folderServerId);
             }
         }
 
-        return stack.getPendingIntent(notificationId, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override
     public PendingIntent createViewFolderListPendingIntent(Account account, int notificationId) {
-        TaskStackBuilder stack = buildFolderListBackStack(account);
-        return stack.getPendingIntent(notificationId, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent intent = createMessageListIntent(account);
+        return PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     @Override
@@ -207,63 +203,32 @@ class K9NotificationActionCreator implements NotificationActionCreator {
         return PendingIntent.getService(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    private TaskStackBuilder buildAccountsBackStack() {
-        TaskStackBuilder stack = TaskStackBuilder.create(context);
-        if (!skipAccountsInBackStack()) {
-            Intent intent = new Intent(context, Accounts.class);
-            intent.putExtra(Accounts.EXTRA_STARTUP, false);
-
-            stack.addNextIntent(intent);
-        }
-        return stack;
-    }
-
-    private TaskStackBuilder buildFolderListBackStack(Account account) {
-        TaskStackBuilder stack = buildAccountsBackStack();
-
-        Intent intent = FolderList.actionHandleAccountIntent(context, account, false);
-
-        stack.addNextIntent(intent);
-
-        return stack;
-    }
-
-    private TaskStackBuilder buildUnreadBackStack(final Account account) {
-        TaskStackBuilder stack = buildAccountsBackStack();
-
+    private Intent createUnreadIntent(final Account account) {
         String searchTitle = context.getString(R.string.search_title, account.getDescription(), context.getString(R.string.unread_modifier));
         LocalSearch search = accountSearchConditions.createUnreadSearch(account, searchTitle);
-        Intent intent = MessageList.intentDisplaySearch(context, search, true, false, false);
-
-        stack.addNextIntent(intent);
-
-        return stack;
+        return MessageList.intentDisplaySearch(context, search, true, false, false);
     }
 
-    private TaskStackBuilder buildMessageListBackStack(Account account, String folderServerId) {
-        TaskStackBuilder stack = skipFolderListInBackStack(account, folderServerId) ?
-                buildAccountsBackStack() : buildFolderListBackStack(account);
-
+    private Intent createMessageListIntent(Account account) {
+        String folderServerId = account.getAutoExpandFolder();
+        if (folderServerId == null) {
+            folderServerId = account.getInboxFolder();
+        }
         LocalSearch search = new LocalSearch(folderServerId);
         search.addAllowedFolder(folderServerId);
         search.addAccountUuid(account.getUuid());
-        Intent intent = MessageList.intentDisplaySearch(context, search, false, true, true);
-
-        stack.addNextIntent(intent);
-
-        return stack;
+        return MessageList.intentDisplaySearch(context, search, false, true, true);
     }
 
-    private TaskStackBuilder buildMessageViewBackStack(MessageReference message) {
-        Account account = Preferences.getPreferences(context).getAccount(message.getAccountUuid());
-        String folderServerId = message.getFolderServerId();
-        TaskStackBuilder stack = buildMessageListBackStack(account, folderServerId);
+    private Intent createMessageListIntent(Account account, String folderServerId) {
+        LocalSearch search = new LocalSearch(folderServerId);
+        search.addAllowedFolder(folderServerId);
+        search.addAccountUuid(account.getUuid());
+        return MessageList.intentDisplaySearch(context, search, false, true, true);
+    }
 
-        Intent intent = MessageList.actionDisplayMessageIntent(context, message);
-
-        stack.addNextIntent(intent);
-
-        return stack;
+    private Intent createMessageViewIntent(MessageReference message) {
+        return MessageList.actionDisplayMessageIntent(context, message);
     }
 
     private String getFolderServerIdOfAllMessages(List<MessageReference> messageReferences) {
@@ -277,13 +242,5 @@ class K9NotificationActionCreator implements NotificationActionCreator {
         }
 
         return folderServerId;
-    }
-
-    private boolean skipFolderListInBackStack(Account account, String folderServerId) {
-        return folderServerId != null && folderServerId.equals(account.getAutoExpandFolder());
-    }
-
-    private boolean skipAccountsInBackStack() {
-        return Preferences.getPreferences(context).getAccounts().size() == 1;
     }
 }

@@ -8,47 +8,20 @@ import android.content.pm.PackageManager
 import android.os.Handler
 import android.os.Looper
 import android.os.StrictMode
-import com.fsck.k9.autocrypt.autocryptModule
-import com.fsck.k9.controller.controllerModule
-import com.fsck.k9.crypto.openPgpModule
 import com.fsck.k9.job.K9JobManager
-import com.fsck.k9.job.jobModule
 import com.fsck.k9.mail.internet.BinaryTempFileBody
-import com.fsck.k9.mailstore.mailStoreModule
-import com.fsck.k9.message.extractors.extractorModule
-import com.fsck.k9.message.html.htmlModule
-import com.fsck.k9.message.quote.quoteModule
-import com.fsck.k9.notification.coreNotificationModule
-import com.fsck.k9.search.searchModule
 import com.fsck.k9.service.BootReceiver
 import com.fsck.k9.service.ShutdownReceiver
 import com.fsck.k9.service.StorageGoneReceiver
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
 import timber.log.Timber
 import java.util.concurrent.SynchronousQueue
 
-object Core : KoinComponent {
+object Core : EarlyInit {
     private val context: Context by inject()
     private val appConfig: AppConfig by inject()
     private val jobManager: K9JobManager by inject()
 
     private val componentsToDisable = listOf(BootReceiver::class.java)
-
-    @JvmStatic
-    val coreModules = listOf(
-            mainModule,
-            openPgpModule,
-            autocryptModule,
-            mailStoreModule,
-            searchModule,
-            extractorModule,
-            htmlModule,
-            quoteModule,
-            coreNotificationModule,
-            controllerModule,
-            jobModule
-    )
 
     /**
      * This needs to be called from [Application#onCreate][android.app.Application#onCreate] before calling through

@@ -4,80 +4,41 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import timber.log.Timber;
-import android.widget.ArrayAdapter;
 import android.widget.Filter;
 
 /**
- * Filter to search for occurrences of the search-expression in any place of the
- * folder-name instead of doing just a prefix-search.
- *
- * @author Marcus@Wolschon.biz
+ * Filter to search for occurrences of the search-expression in any place of the folder name.
  */
-public class FolderListFilter<T> extends Filter {
-    /**
-     * ArrayAdapter that contains the list of folders displayed in the
-     * ListView.
-     * This object is modified by {@link #publishResults} to reflect the
-     * changes due to the filtering performed by {@link #performFiltering}.
-     * This in turn will change the folders displayed in the ListView.
-     */
-    private ArrayAdapter<T> mFolders;
+public class FolderListFilter extends Filter {
+    private final FolderAdapter adapter;
+    private final List<FolderInfoHolder> folders;
 
-    /**
-     * All folders.
-     */
-    private List<T> mOriginalValues = null;
 
-    /**
-     * Create a filter for a list of folders.
-     *
-     * @param folders
-     */
-    public FolderListFilter(final ArrayAdapter<T> folders) {
-        this.mFolders = folders;
+    public FolderListFilter(FolderAdapter adapter, List<FolderInfoHolder> folders) {
+        this.adapter = adapter;
+        this.folders = folders;
     }
 
-    /**
-     * Do the actual search.
-     * {@inheritDoc}
-     *
-     * @see #publishResults(CharSequence, FilterResults)
-     */
     @Override
     protected FilterResults performFiltering(CharSequence searchTerm) {
         FilterResults results = new FilterResults();
 
-        // Copy the values from mFolders to mOriginalValues if this is the
-        // first time this method is called.
-        if (mOriginalValues == null) {
-            int count = mFolders.getCount();
-            mOriginalValues = new ArrayList<>(count);
-            for (int i = 0; i < count; i++) {
-                mOriginalValues.add(mFolders.getItem(i));
-            }
-        }
-
         Locale locale = Locale.getDefault();
-        if ((searchTerm == null) || (searchTerm.length() == 0)) {
-            List<T> list = new ArrayList<>(mOriginalValues);
+        if (searchTerm == null || searchTerm.length() == 0) {
+            List<FolderInfoHolder> list = new ArrayList<>(folders);
             results.values = list;
             results.count = list.size();
         } else {
-            final String searchTermString = searchTerm.toString().toLowerCase(locale);
-            final String[] words = searchTermString.split(" ");
-            final int wordCount = words.length;
+            String searchTermString = searchTerm.toString().toLowerCase(locale);
+            String[] words = searchTermString.split(" ");
 
-            final List<T> values = mOriginalValues;
+            List<FolderInfoHolder> newValues = new ArrayList<>();
+            for (FolderInfoHolder folderInfoHolder : folders) {
+                String valueText = folderInfoHolder.displayName.toLowerCase(locale);
 
-            final List<T> newValues = new ArrayList<>();
-
-            for (final T value : values) {
-                final String valueText = value.toString().toLowerCase(locale);
-
-                for (int k = 0; k < wordCount; k++) {
-                    if (valueText.contains(words[k])) {
-                        newValues.add(value);
+                for (String word : words) {
+                    if (valueText.contains(word)) {
+                        newValues.add(folderInfoHolder);
                         break;
                     }
                 }
@@ -90,39 +51,15 @@ public class FolderListFilter<T> extends Filter {
         return results;
     }
 
-    /**
-     * Publish the results to the user-interface.
-     * {@inheritDoc}
-     */
     @SuppressWarnings("unchecked")
     @Override
     protected void publishResults(CharSequence constraint, FilterResults results) {
-        // Don't notify for every change
-        mFolders.setNotifyOnChange(false);
-        try {
-
-            //noinspection unchecked
-            final List<T> folders = (List<T>) results.values;
-            mFolders.clear();
-            if (folders != null) {
-                for (T folder : folders) {
-                    if (folder != null) {
-                        mFolders.add(folder);
-                    }
-                }
-            } else {
-                Timber.w("FolderListFilter.publishResults - null search-result ");
-            }
-
-            // Send notification that the data set changed now
-            mFolders.notifyDataSetChanged();
-        } finally {
-            // restore notification status
-            mFolders.setNotifyOnChange(true);
-        }
+        List<FolderInfoHolder> folders = (List<FolderInfoHolder>) results.values;
+        adapter.setFilteredFolders(constraint, folders);
     }
 
-    public void invalidate() {
-        mOriginalValues = null;
+
+    public interface FolderAdapter {
+        void setFilteredFolders(CharSequence filterText, List<FolderInfoHolder> folders);
     }
 }

@@ -15,9 +15,11 @@ import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.helper.Contacts
+import com.fsck.k9.mailstore.DisplayFolder
 import com.fsck.k9.mailstore.Folder
-import com.fsck.k9.mailstore.FolderType
+import com.fsck.k9.ui.folders.FolderIconProvider
 import com.fsck.k9.ui.folders.FolderNameFormatter
+import com.fsck.k9.ui.folders.FoldersLiveData
 import com.fsck.k9.ui.messagelist.MessageListViewModel
 import com.fsck.k9.ui.messagelist.MessageListViewModelFactory
 import com.fsck.k9.ui.settings.SettingsActivity
@@ -31,30 +33,29 @@ import com.mikepenz.materialdrawer.DrawerBuilder
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import java.util.ArrayList
 import java.util.HashSet
 
 
-class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
-    private val folderNameFormatter = DI.get<FolderNameFormatter>()
-    private val preferences = DI.get<Preferences>()
+class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : KoinComponent {
+    private val folderNameFormatter: FolderNameFormatter by inject()
+    private val preferences: Preferences by inject()
 
     private val drawer: Drawer
     private val accountHeader: AccountHeader
     private val headerItemCount = 1
-
-    private var iconFolderInboxResId: Int = 0
-    private var iconFolderOutboxResId: Int = 0
-    private var iconFolderSentResId: Int = 0
-    private var iconFolderTrashResId: Int = 0
-    private var iconFolderDraftsResId: Int = 0
-    private var iconFolderArchiveResId: Int = 0
-    private var iconFolderSpamResId: Int = 0
-    private var iconFolderResId: Int = 0
+    private val folderIconProvider: FolderIconProvider = FolderIconProvider(parent.theme)
 
     private val userFolderDrawerIds = ArrayList<Long>()
     private var unifiedInboxSelected: Boolean = false
     private var openedFolderServerId: String? = null
+
+    private var foldersLiveData: FoldersLiveData? = null
+    private val foldersObserver = Observer<List<DisplayFolder>> { folders ->
+        setUserFolders(folders)
+    }
 
 
     val layout: DrawerLayout
@@ -64,8 +65,6 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
         get() = drawer.isDrawerOpen
 
     init {
-        initializeFolderIcons()
-
         accountHeader = buildAccountHeader()
 
         drawer = DrawerBuilder()
@@ -146,7 +145,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
         drawer.addItems(DividerDrawerItem(),
                 PrimaryDrawerItem()
                         .withName(R.string.folders_action)
-                        .withIcon(iconFolderResId)
+                        .withIcon(folderIconProvider.iconFolderResId)
                         .withIdentifier(DRAWER_ID_FOLDERS)
                         .withSelectable(false),
                 PrimaryDrawerItem()
@@ -157,17 +156,6 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
         )
     }
 
-    private fun initializeFolderIcons() {
-        iconFolderInboxResId = getResId(R.attr.iconFolderInbox)
-        iconFolderOutboxResId = getResId(R.attr.iconFolderOutbox)
-        iconFolderSentResId = getResId(R.attr.iconFolderSent)
-        iconFolderTrashResId = getResId(R.attr.iconFolderTrash)
-        iconFolderDraftsResId = getResId(R.attr.iconFolderDrafts)
-        iconFolderArchiveResId = getResId(R.attr.iconFolderArchive)
-        iconFolderSpamResId = getResId(R.attr.iconFolderSpam)
-        iconFolderResId = getResId(R.attr.iconFolder)
-    }
-
     private fun getResId(resAttribute: Int): Int {
         val typedValue = TypedValue()
         val found = parent.theme.resolveAttribute(resAttribute, typedValue, true)
@@ -175,17 +163,6 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
             throw AssertionError("Couldn't find resource with attribute $resAttribute")
         }
         return typedValue.resourceId
-    }
-
-    private fun getFolderIcon(folder: Folder): Int = when (folder.type) {
-        FolderType.INBOX -> iconFolderInboxResId
-        FolderType.OUTBOX -> iconFolderOutboxResId
-        FolderType.SENT -> iconFolderSentResId
-        FolderType.TRASH -> iconFolderTrashResId
-        FolderType.DRAFTS -> iconFolderDraftsResId
-        FolderType.ARCHIVE -> iconFolderArchiveResId
-        FolderType.SPAM -> iconFolderSpamResId
-        else -> iconFolderResId
     }
 
     private fun getFolderDisplayName(folder: Folder): String {
@@ -201,9 +178,12 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
             accountHeader.headerBackgroundView.setColorFilter(account.chipColor, PorterDuff.Mode.MULTIPLY)
             val viewModelProvider = ViewModelProviders.of(parent, MessageListViewModelFactory())
             val viewModel = viewModelProvider.get(MessageListViewModel::class.java)
-            viewModel.getFolders(account).observe(parent, Observer {
-                folders -> setUserFolders(folders)
-            })
+
+            foldersLiveData?.removeObserver(foldersObserver)
+            foldersLiveData = viewModel.getFolders(account).apply {
+                observe(parent, foldersObserver)
+            }
+
             updateFolderSettingsItem()
         }
     }
@@ -218,7 +198,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
         return OnDrawerItemClickListener { _, _, drawerItem ->
             when (drawerItem.identifier) {
                 DRAWER_ID_PREFERENCES -> SettingsActivity.launch(parent)
-                DRAWER_ID_FOLDERS -> parent.openFolderSettings()
+                DRAWER_ID_FOLDERS -> parent.launchManageFoldersScreen()
                 else -> {
                     val folder = drawerItem.tag as Folder
                     parent.openFolder(folder.serverId)
@@ -228,7 +208,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
         }
     }
 
-    private fun setUserFolders(folders: List<Folder>?) {
+    private fun setUserFolders(folders: List<DisplayFolder>?) {
         clearUserFolders()
 
         if (folders == null) {
@@ -237,14 +217,22 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
 
         var openedFolderDrawerId: Long = -1
         for (i in folders.indices.reversed()) {
-            val folder = folders[i]
+            val displayFolder = folders[i]
+            val folder = displayFolder.folder
             val drawerId = folder.id shl DRAWER_FOLDER_SHIFT
-            drawer.addItemAtPosition(PrimaryDrawerItem()
-                    .withIcon(getFolderIcon(folder))
+
+            val drawerItem = PrimaryDrawerItem()
+                    .withIcon(folderIconProvider.getFolderIcon(folder.type))
                     .withIdentifier(drawerId)
                     .withTag(folder)
-                    .withName(getFolderDisplayName(folder)),
-                    headerItemCount)
+                    .withName(getFolderDisplayName(folder))
+
+            val unreadCount = displayFolder.unreadCount
+            if (unreadCount > 0) {
+                drawerItem.withBadge(unreadCount.toString())
+            }
+
+            drawer.addItemAtPosition(drawerItem, headerItemCount)
 
             userFolderDrawerIds.add(drawerId)
 
