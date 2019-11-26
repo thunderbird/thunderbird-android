@@ -32,9 +32,6 @@ class AccountSettingsDataStore(
             "account_led" -> account.notificationSetting.isLedEnabled
             "account_notify_sync" -> account.isNotifySync
             "notification_opens_unread" -> account.isGoToUnreadMessageSearch
-            "openpgp_hide_sign_only" -> account.isOpenPgpHideSignOnly
-            "openpgp_encrypt_subject" -> account.isOpenPgpEncryptSubject
-            "openpgp_encrypt_all_drafts" -> account.isOpenPgpEncryptAllDrafts
             "remote_search_enabled" -> account.isAllowRemoteSearch
             "autocrypt_prefer_encrypt" -> account.autocryptPreferEncryptMutual
             "upload_sent_messages" -> account.isUploadSentMessages
@@ -66,9 +63,6 @@ class AccountSettingsDataStore(
             "account_notify_sync" -> account.isNotifySync = value
             "notification_opens_unread" -> account.isGoToUnreadMessageSearch = value
             "remote_search_enabled" -> account.isAllowRemoteSearch = value
-            "openpgp_hide_sign_only" -> account.isOpenPgpHideSignOnly = value
-            "openpgp_encrypt_subject" -> account.isOpenPgpEncryptSubject = value
-            "openpgp_encrypt_all_drafts" -> account.isOpenPgpEncryptAllDrafts = value
             "autocrypt_prefer_encrypt" -> account.autocryptPreferEncryptMutual = value
             "upload_sent_messages" -> account.isUploadSentMessages = value
             else -> return

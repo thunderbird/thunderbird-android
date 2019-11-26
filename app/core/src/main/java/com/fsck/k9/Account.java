@@ -920,30 +920,6 @@ public class Account implements BaseAccount, StoreConfig {
         this.autocryptPreferEncryptMutual = autocryptPreferEncryptMutual;
     }
 
-    public boolean isOpenPgpHideSignOnly() {
-        return openPgpHideSignOnly;
-    }
-
-    public void setOpenPgpHideSignOnly(boolean openPgpHideSignOnly) {
-        this.openPgpHideSignOnly = openPgpHideSignOnly;
-    }
-
-    public boolean isOpenPgpEncryptSubject() {
-        return openPgpEncryptSubject;
-    }
-
-    public void setOpenPgpEncryptSubject(boolean openPgpEncryptSubject) {
-        this.openPgpEncryptSubject = openPgpEncryptSubject;
-    }
-
-    public boolean isOpenPgpEncryptAllDrafts() {
-        return openPgpEncryptAllDrafts;
-    }
-
-    public void setOpenPgpEncryptAllDrafts(boolean openPgpEncryptAllDrafts) {
-        this.openPgpEncryptAllDrafts = openPgpEncryptAllDrafts;
-    }
-
     public boolean isAllowRemoteSearch() {
         return allowRemoteSearch;
     }
