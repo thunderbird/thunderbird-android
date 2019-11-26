@@ -16,7 +16,7 @@ class EditIdentity : K9Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mIdentity = intent.getSerializableExtra(EXTRA_IDENTITY) as Identity
+        mIdentity = intent.getParcelableExtra(EXTRA_IDENTITY)
         mIdentityIndex = intent.getIntExtra(EXTRA_IDENTITY_INDEX, -1)
         val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT)
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid)
@@ -27,12 +27,8 @@ class EditIdentity : K9Activity() {
 
         setLayout(R.layout.edit_identity)
 
-        /*
-         * If we're being reloaded we override the original account with the one
-         * we saved
-         */
-        if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_IDENTITY)) {
-            mIdentity = savedInstanceState.getSerializable(EXTRA_IDENTITY) as Identity
+        savedInstanceState?.getParcelable<Identity>(EXTRA_IDENTITY)?.let {
+            mIdentity = it
         }
 
         description.setText(mIdentity.description)
@@ -61,19 +57,15 @@ class EditIdentity : K9Activity() {
     }
 
     private fun saveIdentity() {
-
-        mIdentity.description = description.text.toString()
-        mIdentity.email = email.text.toString()
-        //      mIdentity.setAlwaysBcc(mAccountAlwaysBcc.getText().toString());
-        mIdentity.name = name.text.toString()
-        mIdentity.signatureUse = signature_use.isChecked
-        mIdentity.signature = signature.text.toString()
-
-        if (reply_to.text.isEmpty()) {
-            mIdentity.replyTo = null
-        } else {
-            mIdentity.replyTo = reply_to.text.toString()
-        }
+        mIdentity = mIdentity.copy(
+            description = description.text.toString(),
+            email = email.text.toString(),
+            name = name.text.toString(),
+            signatureUse = signature_use.isChecked,
+            signature = signature.text.toString(),
+            replyTo = if (reply_to.text.isNotEmpty()) reply_to.text.toString() else null
+        )
+        // mIdentity.setAlwaysBcc(mAccountAlwaysBcc.getText().toString());
 
         val identities = mAccount.identities
         if (mIdentityIndex == -1) {
@@ -95,7 +87,7 @@ class EditIdentity : K9Activity() {
 
     public override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putSerializable(EXTRA_IDENTITY, mIdentity)
+        outState.putParcelable(EXTRA_IDENTITY, mIdentity)
     }
 
     companion object {
