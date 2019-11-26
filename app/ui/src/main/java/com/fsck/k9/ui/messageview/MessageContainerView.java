@@ -26,10 +26,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fsck.k9.DI;
+import com.fsck.k9.message.html.DisplayHtml;
+import com.fsck.k9.message.html.DisplayHtmlFactory;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.helper.ClipboardManager;
 import com.fsck.k9.helper.Contacts;
-import com.fsck.k9.message.html.HtmlConverter;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mailstore.AttachmentResolver;
@@ -57,6 +59,8 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
     private static final int MENU_ITEM_EMAIL_SEND = Menu.FIRST;
     private static final int MENU_ITEM_EMAIL_SAVE = Menu.FIRST + 1;
     private static final int MENU_ITEM_EMAIL_COPY = Menu.FIRST + 2;
+
+    private final DisplayHtml displayHtml = DI.get(DisplayHtmlFactory.class).create();
 
     private MessageWebView mMessageContentView;
     private LinearLayout mAttachments;
@@ -402,11 +406,12 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
                 }
             }
         } else {
-            textToDisplay = HtmlConverter.wrapMessageContent(messageViewInfo.textPlainFormatted);
+            textToDisplay = displayHtml.wrapMessageContent(messageViewInfo.textPlainFormatted);
         }
 
         if (textToDisplay == null) {
-            textToDisplay = HtmlConverter.wrapStatusMessage(getContext().getString(R.string.webview_empty_message));
+            String noTextMessage = getContext().getString(R.string.webview_empty_message);
+            textToDisplay = displayHtml.wrapStatusMessage(noTextMessage);
         }
 
         OnPageFinishedListener onPageFinishedListener = new OnPageFinishedListener() {

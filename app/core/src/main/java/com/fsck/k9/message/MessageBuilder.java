@@ -107,7 +107,7 @@ public abstract class MessageBuilder {
             message.setHeader("Return-Receipt-To", from.toEncodedString());
         }
 
-        if (!K9.hideUserAgent()) {
+        if (!K9.isHideUserAgent()) {
             message.setHeader("User-Agent", resourceProvider.userAgent());
         }
 

@@ -290,7 +290,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
      * Called from UI thread when user select Delete
      */
     public void onDelete() {
-        if (K9.confirmDelete() || (K9.confirmDeleteStarred() && mMessage.isSet(Flag.FLAGGED))) {
+        if (K9.isConfirmDelete() || (K9.isConfirmDeleteStarred() && mMessage.isSet(Flag.FLAGGED))) {
             showDialog(R.id.dialog_confirm_delete);
         } else {
             delete();
@@ -330,7 +330,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             return;
         }
 
-        if (dstFolder.equals(mAccount.getSpamFolder()) && K9.confirmSpam()) {
+        if (dstFolder.equals(mAccount.getSpamFolder()) && K9.isConfirmSpam()) {
             mDstFolder = dstFolder;
             showDialog(R.id.dialog_confirm_spam);
         } else {

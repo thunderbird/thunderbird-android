@@ -683,7 +683,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         builder.setSubject(Utility.stripNewLines(subjectView.getText().toString()))
                 .setSentDate(new Date())
-                .setHideTimeZone(K9.hideTimeZone())
+                .setHideTimeZone(K9.isHideTimeZone())
                 .setInReplyTo(repliedToMessageId)
                 .setReferences(referencedMessageIds)
                 .setRequestReadReceipt(requestReadReceipt)
@@ -951,7 +951,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void askBeforeDiscard() {
-        if (K9.confirmDiscardMessage()) {
+        if (K9.isConfirmDiscardMessage()) {
             showDialog(DIALOG_CONFIRM_DISCARD);
         } else {
             onDiscard();

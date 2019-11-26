@@ -204,7 +204,7 @@ class AccountSettingsDataStore(
         saveSettingsInBackground()
     }
 
-    private fun saveSettingsInBackground() {
+    fun saveSettingsInBackground() {
         executorService.execute {
             saveSettings()
         }

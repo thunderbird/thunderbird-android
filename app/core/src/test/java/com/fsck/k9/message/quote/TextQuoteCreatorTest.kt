@@ -36,7 +36,7 @@ class TextQuoteCreatorTest : RobolectricTest() {
 
     @Before
     fun setUp() {
-        K9.setHideTimeZone(true)
+        K9.isHideTimeZone = true
     }
 
     @Test

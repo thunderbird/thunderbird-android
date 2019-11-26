@@ -140,7 +140,7 @@ class K9NotificationActionCreator implements NotificationActionCreator {
 
     @Override
     public PendingIntent createDeleteMessagePendingIntent(MessageReference messageReference, int notificationId) {
-        if (K9.confirmDeleteFromNotification()) {
+        if (K9.isConfirmDeleteFromNotification()) {
             return createDeleteConfirmationPendingIntent(messageReference, notificationId);
         } else {
             return createDeleteServicePendingIntent(messageReference, notificationId);
@@ -162,7 +162,7 @@ class K9NotificationActionCreator implements NotificationActionCreator {
     @Override
     public PendingIntent createDeleteAllPendingIntent(Account account, List<MessageReference> messageReferences,
             int notificationId) {
-        if (K9.confirmDeleteFromNotification()) {
+        if (K9.isConfirmDeleteFromNotification()) {
             return getDeleteAllConfirmationPendingIntent(messageReferences, notificationId);
         } else {
             return getDeleteAllServicePendingIntent(account, messageReferences, notificationId);

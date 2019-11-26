@@ -20,7 +20,7 @@ class NotificationHelper(
             ledColor: Int?, ledSpeed: Int,
             ringAndVibrate: Boolean) {
 
-        if (K9.isQuietTime()) {
+        if (K9.isQuietTime) {
             return
         }
 

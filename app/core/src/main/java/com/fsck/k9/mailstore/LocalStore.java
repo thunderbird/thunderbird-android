@@ -284,7 +284,7 @@ public class LocalStore {
     }
 
     public void compact() throws MessagingException {
-        if (K9.isDebug()) {
+        if (K9.isDebugLoggingEnabled()) {
             Timber.i("Before compaction size = %d", getSize());
         }
 
@@ -296,20 +296,20 @@ public class LocalStore {
             }
         });
 
-        if (K9.isDebug()) {
+        if (K9.isDebugLoggingEnabled()) {
             Timber.i("After compaction size = %d", getSize());
         }
     }
 
 
     public void clear() throws MessagingException {
-        if (K9.isDebug()) {
+        if (K9.isDebugLoggingEnabled()) {
             Timber.i("Before prune size = %d", getSize());
         }
 
         deleteAllMessageDataFromDisk();
 
-        if (K9.isDebug()) {
+        if (K9.isDebugLoggingEnabled()) {
             Timber.i("After prune / before compaction size = %d", getSize());
             Timber.i("Before clear folder count = %d", getFolderCount());
             Timber.i("Before clear message count = %d", getMessageCount());
@@ -335,7 +335,7 @@ public class LocalStore {
 
         compact();
 
-        if (K9.isDebug()) {
+        if (K9.isDebugLoggingEnabled()) {
             Timber.i("After clear message count = %d", getMessageCount());
             Timber.i("After clear size = %d", getSize());
         }

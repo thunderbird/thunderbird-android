@@ -44,7 +44,7 @@ public abstract class K9ListActivity extends K9Activity implements K9ActivityMag
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // Shortcuts that work no matter what is selected
-        if (K9.useVolumeKeysForListNavigationEnabled() &&
+        if (K9.isUseVolumeKeysForListNavigation() &&
                 (keyCode == KeyEvent.KEYCODE_VOLUME_UP ||
                         keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
 
@@ -71,7 +71,7 @@ public abstract class K9ListActivity extends K9Activity implements K9ActivityMag
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         // Swallow these events too to avoid the audible notification of a volume change
-        if (K9.useVolumeKeysForListNavigationEnabled() &&
+        if (K9.isUseVolumeKeysForListNavigation() &&
                 (keyCode == KeyEvent.KEYCODE_VOLUME_UP ||
                 keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
             return true;

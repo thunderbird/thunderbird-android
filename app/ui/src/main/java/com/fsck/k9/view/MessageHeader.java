@@ -269,7 +269,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     }
 
     public void populate(final Message message, final Account account) {
-        final Contacts contacts = K9.showContactName() ? mContacts : null;
+        final Contacts contacts = K9.isShowContactName() ? mContacts : null;
         final CharSequence from = MessageHelper.toFriendly(message.getFrom(), contacts);
         final CharSequence to = MessageHelper.toFriendly(message.getRecipients(Message.RecipientType.TO), contacts);
         final CharSequence cc = MessageHelper.toFriendly(message.getRecipients(Message.RecipientType.CC), contacts);
@@ -294,7 +294,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mMessage = message;
         mAccount = account;
 
-        if (K9.showContactPicture()) {
+        if (K9.isShowContactPicture()) {
             mContactBadge.setVisibility(View.VISIBLE);
             mContactsPictureLoader = ContactPicture.getContactPictureLoader();
         }  else {
@@ -318,7 +318,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
                 | DateUtils.FORMAT_SHOW_YEAR);
         mDateView.setText(dateTime);
 
-        if (K9.showContactPicture()) {
+        if (K9.isShowContactPicture()) {
             if (counterpartyAddress != null) {
                 mContactBadge.setContact(counterpartyAddress);
                 mContactsPictureLoader.setContactPicture(mContactBadge, counterpartyAddress);

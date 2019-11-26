@@ -2,6 +2,7 @@
 <resources>
 
     <declare-styleable name="K9Styles">
+        <attr name="bottomBarBackground" format="reference|color" />
         <attr name="iconUnifiedInbox" format="reference" />
         <attr name="iconFolder" format="reference" />
         <attr name="iconFolderInbox" format="reference" />
@@ -63,6 +64,7 @@
         <attr name="iconSettingsGeneral" format="reference" />
         <attr name="iconSettingsAccount" format="reference" />
         <attr name="iconSettingsAccountAdd" format="reference" />
+        <attr name="iconSettingsExport" format="reference" />
         <attr name="textColorPrimaryRecipientDropdown" format="reference" />
         <attr name="textColorSecondaryRecipientDropdown" format="reference" />
         <attr name="backgroundColorChooseAccountHeader" format="color" />
@@ -72,8 +74,13 @@
         <attr name="messageListThreadCountForegroundColor" format="reference|color"/>
         <attr name="messageListThreadCountBackground" format="reference|color"/>
         <attr name="messageListActiveItemBackgroundColor" format="reference|color"/>
+        <attr name="messageListPreviewTextColor" format="reference|color"/>
         <attr name="messageListDividerColor" format="reference|color"/>
         <attr name="messageListCheckbox" format="reference"/>
+        <attr name="messageListAttachment" format="reference"/>
+        <attr name="messageListAnswered" format="reference"/>
+        <attr name="messageListForwarded" format="reference"/>
+        <attr name="messageListAnsweredForwarded" format="reference"/>
         <attr name="messageViewBackgroundColor" format="reference|color"/>
         <attr name="messageViewAttachmentBackground" format="reference"/>
         <attr name="messageComposeAddContactImage" format="reference"/>

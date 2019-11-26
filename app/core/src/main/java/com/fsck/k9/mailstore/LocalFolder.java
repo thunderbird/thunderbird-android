@@ -2118,7 +2118,7 @@ public class LocalFolder extends Folder<LocalMessage> {
                 String messagePartId = cursor.getString(0);
                 File file = localStore.getAttachmentFile(messagePartId);
                 if (file.exists()) {
-                    if (!file.delete() && K9.isDebug()) {
+                    if (!file.delete() && K9.isDebugLoggingEnabled()) {
                         Timber.d("Couldn't delete message part file: %s", file.getAbsolutePath());
                     }
                 }

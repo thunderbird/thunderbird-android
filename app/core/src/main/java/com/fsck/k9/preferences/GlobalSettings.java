@@ -456,17 +456,11 @@ public class GlobalSettings {
         @Override
         public K9.Theme fromString(String value) throws InvalidSettingValueException {
             try {
-                Integer theme = Integer.parseInt(value);
-                if (theme == K9.Theme.LIGHT.ordinal() ||
-                        // We used to store the resource ID of the theme in the preference storage,
-                        // but don't use the database upgrade mechanism to update the values. So
-                        // we have to deal with the old format here.
-                        theme == android.R.style.Theme_Light) {
-                    return K9.Theme.LIGHT;
-                } else if (theme == K9.Theme.DARK.ordinal() || theme == android.R.style.Theme) {
-                    return K9.Theme.DARK;
+                K9.Theme theme = Theme.valueOf(value);
+                if (theme == K9.Theme.LIGHT || theme == K9.Theme.DARK) {
+                    return theme;
                 }
-            } catch (NumberFormatException e) { /* do nothing */ }
+            } catch (IllegalArgumentException e) { /* do nothing */ }
 
             throw new InvalidSettingValueException();
         }
@@ -496,7 +490,7 @@ public class GlobalSettings {
 
         @Override
         public String toString(K9.Theme value) {
-            return Integer.toString(value.ordinal());
+            return value.name();
         }
     }
 
@@ -510,13 +504,8 @@ public class GlobalSettings {
         @Override
         public K9.Theme fromString(String value) throws InvalidSettingValueException {
             try {
-                Integer theme = Integer.parseInt(value);
-                if (theme == K9.Theme.USE_GLOBAL.ordinal()) {
-                    return K9.Theme.USE_GLOBAL;
-                }
-
-                return super.fromString(value);
-            } catch (NumberFormatException e) {
+                return K9.Theme.valueOf(value);
+            } catch (IllegalArgumentException e) {
                 throw new InvalidSettingValueException();
             }
         }

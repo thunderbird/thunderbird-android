@@ -14,6 +14,7 @@
         <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
         <item name="colorPrimary">@color/md_grey_100</item>
         <item name="colorPrimaryDark">@color/md_grey_100</item>
+        <item name="bottomBarBackground">@color/md_grey_50</item>
 
         <item name="material_drawer_background">@color/material_drawer_background</item>
         <item name="material_drawer_primary_text">@color/material_drawer_primary_text</item>
@@ -89,6 +90,7 @@
         <item name="iconSettingsGeneral">@drawable/ic_cog_light</item>
         <item name="iconSettingsAccount">@drawable/ic_account_light</item>
         <item name="iconSettingsAccountAdd">@drawable/ic_account_plus_light</item>
+        <item name="iconSettingsExport">@drawable/ic_export_light</item>
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_light</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_light</item>
         <item name="messageListSelectedBackgroundColor">#8038B8E2</item>
@@ -97,8 +99,13 @@
         <item name="messageListThreadCountForegroundColor">?android:attr/colorBackground</item>
         <item name="messageListThreadCountBackground">@drawable/thread_count_box_light</item>
         <item name="messageListActiveItemBackgroundColor">#ff2ea7d1</item>
+        <item name="messageListPreviewTextColor">#ff696969</item>
         <item name="messageListDividerColor">#ffcccccc</item>
         <item name="messageListCheckbox">@drawable/btn_check_message_list_light</item>
+        <item name="messageListAttachment">@drawable/ic_messagelist_attachment_light</item>
+        <item name="messageListAnswered">@drawable/ic_messagelist_answered_light</item>
+        <item name="messageListForwarded">@drawable/ic_messagelist_forwarded_light</item>
+        <item name="messageListAnsweredForwarded">@drawable/ic_messagelist_answered_forwarded_light</item>
         <item name="messageViewBackgroundColor">#ffffffff</item>
         <item name="messageViewAttachmentBackground">@drawable/attachment_text_box_light</item>
         <item name="messageComposeAddContactImage">@drawable/ic_person_plus_light</item>
@@ -126,6 +133,7 @@
         <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
         <item name="colorPrimary">@color/md_grey_900</item>
         <item name="colorPrimaryDark">@color/md_grey_900</item>
+        <item name="bottomBarBackground">@color/md_grey_900</item>
 
         <item name="material_drawer_background">@color/material_drawer_dark_background</item>
         <item name="material_drawer_primary_text">@color/material_drawer_dark_primary_text</item>
@@ -201,6 +209,7 @@
         <item name="iconSettingsGeneral">@drawable/ic_cog_dark</item>
         <item name="iconSettingsAccount">@drawable/ic_account_dark</item>
         <item name="iconSettingsAccountAdd">@drawable/ic_account_plus_dark</item>
+        <item name="iconSettingsExport">@drawable/ic_export_dark</item>
         <item name="textColorPrimaryRecipientDropdown">@android:color/primary_text_dark</item>
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_dark</item>
         <item name="messageListSelectedBackgroundColor">#8038B8E2</item>
@@ -209,8 +218,13 @@
         <item name="messageListThreadCountForegroundColor">?android:attr/colorBackground</item>
         <item name="messageListThreadCountBackground">@drawable/thread_count_box_dark</item>
         <item name="messageListActiveItemBackgroundColor">#ff33b5e5</item>
+        <item name="messageListPreviewTextColor">#ffa0a0a0</item>
         <item name="messageListDividerColor">#ff333333</item>
         <item name="messageListCheckbox">@drawable/btn_check_message_list_dark</item>
+        <item name="messageListAttachment">@drawable/ic_messagelist_attachment_dark</item>
+        <item name="messageListAnswered">@drawable/ic_messagelist_answered_dark</item>
+        <item name="messageListForwarded">@drawable/ic_messagelist_forwarded_dark</item>
+        <item name="messageListAnsweredForwarded">@drawable/ic_messagelist_answered_forwarded_dark</item>
         <item name="messageViewBackgroundColor">#000000</item>
         <item name="messageViewAttachmentBackground">@drawable/attachment_text_box_dark</item>
         <item name="messageComposeAddContactImage">@drawable/ic_person_plus_dark</item>

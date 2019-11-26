@@ -54,6 +54,7 @@
     <application
         android:name="com.fsck.k9.App"
         android:allowTaskReparenting="false"
+        android:usesCleartextTraffic="true"
         android:icon="@drawable/ic_launcher"
         android:roundIcon="@drawable/ic_launcher_round"
         android:label="@string/app_name"
@@ -293,10 +294,6 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".activity.EmailAddressList"
-            android:configChanges="locale"/>
 
         <activity android:name=".widget.unread.UnreadWidgetConfigurationActivity">
             <intent-filter>
