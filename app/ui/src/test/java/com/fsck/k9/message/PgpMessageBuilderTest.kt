@@ -659,11 +659,12 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
                     AutocryptOperations.getInstance(), autocryptOpenPgpApiInteractor, resourceProvider)
             builder.setOpenPgpApi(openPgpApi)
 
-            val identity = Identity()
-            identity.name = "tester"
-            identity.email = SENDER_EMAIL
-            identity.description = "test identity"
-            identity.signatureUse = false
+            val identity = Identity(
+                    name = "tester",
+                    email = SENDER_EMAIL,
+                    description = "test identity",
+                    signatureUse = false
+            )
 
             builder.setSubject("subject")
                     .setSentDate(Date())

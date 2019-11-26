@@ -1,19 +1,6 @@
 package com.fsck.k9
 
-import com.fsck.k9.Account.DEFAULT_SORT_ASCENDING
-import com.fsck.k9.Account.DEFAULT_SORT_TYPE
-import com.fsck.k9.Account.DeletePolicy
-import com.fsck.k9.Account.Expunge
-import com.fsck.k9.Account.FolderMode
-import com.fsck.k9.Account.INBOX
-import com.fsck.k9.Account.MessageFormat
-import com.fsck.k9.Account.NO_OPENPGP_KEY
-import com.fsck.k9.Account.QuoteStyle
-import com.fsck.k9.Account.Searchable
-import com.fsck.k9.Account.ShowPictures
-import com.fsck.k9.Account.SortType
-import com.fsck.k9.Account.SpecialFolderSelection
-import com.fsck.k9.Account.UNASSIGNED_ACCOUNT_NUMBER
+import com.fsck.k9.Account.*
 import com.fsck.k9.helper.Utility
 import com.fsck.k9.mail.NetworkType
 import com.fsck.k9.mail.filter.Base64
@@ -21,7 +8,7 @@ import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
 import timber.log.Timber
-import java.util.ArrayList
+import java.util.*
 
 class AccountPreferenceSerializer(
         private val storageManager: StorageManager,
@@ -174,13 +161,14 @@ class AccountPreferenceSerializer(
             val description = storage.getString("$accountUuid.$IDENTITY_DESCRIPTION_KEY.$ident", null)
             val replyTo = storage.getString("$accountUuid.replyTo.$ident", null)
             if (email != null) {
-                val identity = Identity()
-                identity.name = name
-                identity.email = email
-                identity.signatureUse = signatureUse
-                identity.signature = signature
-                identity.description = description
-                identity.replyTo = replyTo
+                val identity = Identity(
+                    name = name,
+                    email = email,
+                    signatureUse = signatureUse,
+                    signature = signature,
+                    description = description,
+                    replyTo = replyTo
+                )
                 newIdentities.add(identity)
                 gotOne = true
             }
@@ -192,12 +180,13 @@ class AccountPreferenceSerializer(
             val email = storage.getString("$accountUuid.email", null)
             val signatureUse = storage.getBoolean("$accountUuid.signatureUse", true)
             val signature = storage.getString("$accountUuid.signature", null)
-            val identity = Identity()
-            identity.name = name
-            identity.email = email
-            identity.signatureUse = signatureUse
-            identity.signature = signature
-            identity.description = email
+            val identity = Identity(
+                name = name,
+                email = email,
+                signatureUse = signatureUse,
+                signature = signature,
+                description = email
+            )
             newIdentities.add(identity)
         }
 
@@ -561,11 +550,11 @@ class AccountPreferenceSerializer(
 
             identities = ArrayList<Identity>()
 
-            val identity = Identity().apply {
-                signatureUse = true
-                signature = resourceProvider.defaultSignature()
+            val identity = Identity(
+                signatureUse = true,
+                signature = resourceProvider.defaultSignature(),
                 description = resourceProvider.defaultIdentityDescription()
-            }
+            )
             identities.add(identity)
 
             with (notificationSetting) {

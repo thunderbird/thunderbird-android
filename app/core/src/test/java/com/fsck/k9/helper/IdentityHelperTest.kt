@@ -121,10 +121,10 @@ class IdentityHelperTest : RobolectricTest() {
         )
     }
 
-    private fun newIdentity(name: String, email: String) = Identity().apply {
-        this.name = name
-        this.email = email
-    }
+    private fun newIdentity(name: String, email: String) = Identity(
+            name = name,
+            email = email
+    )
 
     private fun messageWithRecipients(vararg recipients: Pair<RecipientType, String>): Message {
         return MimeMessage().apply {
