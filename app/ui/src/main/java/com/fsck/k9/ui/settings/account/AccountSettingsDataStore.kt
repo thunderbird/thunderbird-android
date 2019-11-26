@@ -33,7 +33,6 @@ class AccountSettingsDataStore(
             "account_notify_sync" -> account.isNotifySync
             "notification_opens_unread" -> account.isGoToUnreadMessageSearch
             "remote_search_enabled" -> account.isAllowRemoteSearch
-            "autocrypt_prefer_encrypt" -> account.autocryptPreferEncryptMutual
             "upload_sent_messages" -> account.isUploadSentMessages
             else -> defValue
         }
@@ -63,7 +62,6 @@ class AccountSettingsDataStore(
             "account_notify_sync" -> account.isNotifySync = value
             "notification_opens_unread" -> account.isGoToUnreadMessageSearch = value
             "remote_search_enabled" -> account.isAllowRemoteSearch = value
-            "autocrypt_prefer_encrypt" -> account.autocryptPreferEncryptMutual = value
             "upload_sent_messages" -> account.isUploadSentMessages = value
             else -> return
         }
@@ -83,22 +81,6 @@ class AccountSettingsDataStore(
         when (key) {
             "chip_color" -> account.chipColor = value
             "led_color" -> account.notificationSetting.ledColor = value
-            else -> return
-        }
-
-        saveSettingsInBackground()
-    }
-
-    override fun getLong(key: String?, defValue: Long): Long {
-        return when (key) {
-            "openpgp_key" -> account.openPgpKey
-            else -> defValue
-        }
-    }
-
-    override fun putLong(key: String?, value: Long) {
-        when (key) {
-            "openpgp_key" -> account.openPgpKey = value
             else -> return
         }
 

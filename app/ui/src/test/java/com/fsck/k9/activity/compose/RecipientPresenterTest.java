@@ -5,8 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.content.Context;
-import androidx.loader.app.LoaderManager;
 
+import androidx.loader.app.LoaderManager;
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9RobolectricTest;
@@ -40,7 +40,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -319,7 +318,6 @@ public class RecipientPresenterTest extends K9RobolectricTest {
     private void setupCryptoProvider(RecipientAutocryptStatus autocryptStatusResult) throws Exception {
         Account account = mock(Account.class);
 
-        when(account.getOpenPgpKey()).thenReturn(CRYPTO_KEY_ID);
         recipientPresenter.onSwitchAccount(account);
 
         when(autocryptStatusInteractor.retrieveCryptoProviderRecipientStatus(
