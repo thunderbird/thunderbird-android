@@ -1,4 +1,4 @@
-package com.fsck.k9.ui.settings.encryption
+package com.fsck.k9.ui.settings.autocrypt
 
 import android.content.Context
 import android.net.Uri
@@ -14,15 +14,15 @@ import kotlinx.coroutines.withContext
 private typealias AccountUuid = String
 private typealias AccountNumber = Int
 
-class SettingsEncryptionViewModel(val context: Context, val preferences: Preferences) : CoroutineScopeViewModel() {
-    private val uiModelLiveData = MutableLiveData<SettingsEncryptionUiModel>()
+class SettingsAutocryptViewModel(val context: Context, val preferences: Preferences) : CoroutineScopeViewModel() {
+    private val uiModelLiveData = MutableLiveData<SettingsAutocryptUiModel>()
 
-    private val uiModel = SettingsEncryptionUiModel()
+    private val uiModel = SettingsAutocryptUiModel()
     private var accountsMap: Map<AccountNumber, AccountUuid> = emptyMap()
     private var savedSelection: SavedListItemSelection? = null
     private var contentUri: Uri? = null
 
-    fun getUiModel(): LiveData<SettingsEncryptionUiModel> {
+    fun getUiModel(): LiveData<SettingsAutocryptUiModel> {
         if (uiModelLiveData.value == null) {
             uiModelLiveData.value = uiModel
 
@@ -36,7 +36,7 @@ class SettingsEncryptionViewModel(val context: Context, val preferences: Prefere
                     for (account in accounts) {
                         accountListItems = account.identities.mapIndexed { index, identity ->
                             // TODO: better IDs
-                            SettingsListItem.EncryptionIdentity(account.accountNumber * 1000 + index, account.accountNumber, identity.email).apply {
+                            SettingsListItem.AutocryptIdentity(account.accountNumber * 1000 + index, account.accountNumber, identity.email).apply {
                                 enabled = savedState == null || account.uuid in savedState.selectedAccountUuids
                             }
                         }
@@ -92,7 +92,7 @@ class SettingsEncryptionViewModel(val context: Context, val preferences: Prefere
         }
     }
 
-    private fun updateUiModel(block: SettingsEncryptionUiModel.() -> Unit) {
+    private fun updateUiModel(block: SettingsAutocryptUiModel.() -> Unit) {
         uiModel.block()
         uiModelLiveData.value = uiModel
     }

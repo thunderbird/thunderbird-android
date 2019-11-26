@@ -8,4 +8,4 @@
     android:orientation="vertical"
     android:scrollbars="vertical"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    tools:listitem="@layout/settings_encryption_identity_list_item" />
+    tools:listitem="@layout/settings_autocrypt_identity_list_item" />

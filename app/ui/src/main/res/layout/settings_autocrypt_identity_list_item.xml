@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/encryptionIdentityEmail"
+        android:id="@+id/autocryptIdentityEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -27,7 +27,7 @@
         android:layout_marginEnd="8dp"
         android:duplicateParentState="true"
         android:textAppearance="?android:attr/textAppearanceListItem"
-        app:layout_constraintBottom_toTopOf="@+id/encryptionIdentityDescription"
+        app:layout_constraintBottom_toTopOf="@+id/autocryptIdentityDescription"
         app:layout_constraintEnd_toStartOf="@+id/divider"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -35,7 +35,7 @@
         tools:text="user@domain.example" />
 
     <TextView
-        android:id="@+id/encryptionIdentityDescription"
+        android:id="@+id/autocryptIdentityDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -46,7 +46,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/divider"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/encryptionIdentityEmail"
+        app:layout_constraintTop_toBottomOf="@+id/autocryptIdentityEmail"
         tools:text="Manual mode" />
 
     <View

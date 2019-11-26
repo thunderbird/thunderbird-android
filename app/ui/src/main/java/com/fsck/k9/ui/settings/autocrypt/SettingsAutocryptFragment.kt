@@ -1,4 +1,4 @@
-package com.fsck.k9.ui.settings.encryption
+package com.fsck.k9.ui.settings.autocrypt
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,14 +12,14 @@ import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter
 import org.koin.android.architecture.ext.viewModel
 
 
-class SettingsEncryptionFragment : Fragment() {
-    private val viewModel: SettingsEncryptionViewModel by viewModel()
+class SettingsAutocryptFragment : Fragment() {
+    private val viewModel: SettingsAutocryptViewModel by viewModel()
 
-    private lateinit var settingsEncryptionAdapter: FastItemAdapter<EncryptionSwitchItem>
+    private lateinit var settingsAutocryptAdapter: FastItemAdapter<SwitchItem>
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_settings_encryption, container, false)
+        return inflater.inflate(R.layout.fragment_settings_autocrypt, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -27,15 +27,15 @@ class SettingsEncryptionFragment : Fragment() {
 //            viewModel.initializeFromSavedState(savedInstanceState)
 //        }
 
-        initializeSettingsEncryptionList(view)
+        initializeSettingsIdentityList(view)
 
         viewModel.getUiModel().observeNotNull(this) { updateUi(it) }
     }
 
-    private fun initializeSettingsEncryptionList(view: View) {
-        settingsEncryptionAdapter = FastItemAdapter<EncryptionSwitchItem>().apply {
+    private fun initializeSettingsIdentityList(view: View) {
+        settingsAutocryptAdapter = FastItemAdapter<SwitchItem>().apply {
             setHasStableIds(true)
-            withOnClickListener { _, _, item: EncryptionSwitchItem, position ->
+            withOnClickListener { _, _, item: SwitchItem, position ->
                 //                viewModel.onSettingsListItemSelected(position, !item.isSelected)
                 true
             }
@@ -45,10 +45,10 @@ class SettingsEncryptionFragment : Fragment() {
         }
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.settingsEncryptionList)
-        recyclerView.adapter = settingsEncryptionAdapter
+        recyclerView.adapter = settingsAutocryptAdapter
     }
 
-    private fun updateUi(model: SettingsEncryptionUiModel) {
+    private fun updateUi(model: SettingsAutocryptUiModel) {
         setSettingsList(model.settingsList, model.isSettingsListEnabled)
     }
 
@@ -56,13 +56,13 @@ class SettingsEncryptionFragment : Fragment() {
         val switchItems = items.map { item ->
             val switchItem = when (item) {
                 is SettingsListItem.AdvancedSettings -> AdvancedSettingsItem()
-                is SettingsListItem.EncryptionIdentity -> EncryptionIdentityItem(item)
+                is SettingsListItem.AutocryptIdentity -> AutocryptIdentityItem(item)
             }
 
             switchItem.withEnabled(enable)
         }
 
-        settingsEncryptionAdapter.set(switchItems)
+        settingsAutocryptAdapter.set(switchItems)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

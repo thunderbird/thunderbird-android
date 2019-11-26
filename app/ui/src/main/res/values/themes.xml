@@ -87,7 +87,7 @@
         <item name="iconPreferencesCompose">@drawable/ic_pencil_light</item>
         <item name="iconSettingsAbout">@drawable/ic_info_outline_light</item>
         <item name="iconSettingsGeneral">@drawable/ic_cog_light</item>
-        <item name="iconSettingsEncryption">@drawable/ic_preferences_crypto_light</item>
+        <item name="iconSettingsAutocrypt">@drawable/ic_preferences_crypto_light</item>
         <item name="iconSettingsAccount">@drawable/ic_account_light</item>
         <item name="iconSettingsAccountAdd">@drawable/ic_account_plus_light</item>
         <item name="iconSettingsExport">@drawable/ic_export_light</item>
@@ -210,7 +210,7 @@
         <item name="iconPreferencesCompose">@drawable/ic_pencil_dark</item>
         <item name="iconSettingsAbout">@drawable/ic_info_outline_dark</item>
         <item name="iconSettingsGeneral">@drawable/ic_cog_dark</item>
-        <item name="iconSettingsEncryption">@drawable/ic_preferences_crypto_dark</item>
+        <item name="iconSettingsAutocrypt">@drawable/ic_preferences_crypto_dark</item>
         <item name="iconSettingsAccount">@drawable/ic_account_dark</item>
         <item name="iconSettingsAccountAdd">@drawable/ic_account_plus_dark</item>
         <item name="iconSettingsExport">@drawable/ic_export_dark</item>

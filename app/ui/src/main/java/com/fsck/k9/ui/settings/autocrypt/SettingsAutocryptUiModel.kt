@@ -1,7 +1,7 @@
-package com.fsck.k9.ui.settings.encryption
+package com.fsck.k9.ui.settings.autocrypt
 
 
-class SettingsEncryptionUiModel {
+class SettingsAutocryptUiModel {
     var settingsList: List<SettingsListItem> = emptyList()
     var isSettingsListEnabled = true
 
@@ -19,7 +19,7 @@ sealed class SettingsListItem {
     var enabled: Boolean = true
 
     object AdvancedSettings : SettingsListItem()
-    data class EncryptionIdentity(
+    data class AutocryptIdentity(
             val id: Int,
             val accountNumber: Int,
             val email: String
