@@ -133,11 +133,12 @@ class AccountSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback {
 
         @JvmStatic
         fun startCryptoSettings(context: Context, accountUuid: String) {
-            val intent = Intent(context, AccountSettingsActivity::class.java).apply {
-                putExtra(ARG_ACCOUNT_UUID, accountUuid)
-                putExtra(ARG_START_SCREEN_KEY, AccountSettingsFragment.PREFERENCE_OPENPGP)
-            }
-            context.startActivity(intent)
+            // TODO
+//            val intent = Intent(context, AccountSettingsActivity::class.java).apply {
+//                putExtra(ARG_ACCOUNT_UUID, accountUuid)
+//                putExtra(ARG_START_SCREEN_KEY, AccountSettingsFragment.PREFERENCE_OPENPGP)
+//            }
+//            context.startActivity(intent)
         }
     }
 }
