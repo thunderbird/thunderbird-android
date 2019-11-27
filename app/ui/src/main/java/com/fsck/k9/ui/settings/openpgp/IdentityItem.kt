@@ -17,7 +17,13 @@ internal class IdentityItem(val identity: Identity, val identityListener: OnIden
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.identityEmail.text = identity.email
-        viewHolder.identityDescription.text = "todo"
+        viewHolder.identitySwitch.isChecked = identity.openPgpEnabled
+        val mutualModeDescription = when {
+            !identity.openPgpEnabled -> R.string.settings_openpgp_mode_disabled
+            identity.openPgpModeMutual -> R.string.settings_openpgp_mode_automatic
+            else -> R.string.settings_openpgp_mode_manual
+        }
+        viewHolder.identityDescription.setText(mutualModeDescription)
 
         viewHolder.itemView.identityItem.setOnClickListener {
             identityListener.onIdentityClicked(this@IdentityItem, identity)

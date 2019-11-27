@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.fsck.k9.Account
 import com.fsck.k9.Identity
+import com.fsck.k9.Preferences
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.observeNotNull
 import com.fsck.k9.ui.settings.AccountItem
@@ -22,9 +23,11 @@ import com.xwray.groupie.Section
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.fragment_settings_list.*
 import org.koin.android.architecture.ext.viewModel
+import org.koin.android.ext.android.inject
 
 class SettingsOpenPgpFragment : Fragment() {
     private val viewModel: SettingsOpenPgpViewModel by viewModel()
+    private val preferences: Preferences by inject()
 
     private lateinit var settingsAdapter: GroupAdapter<ViewHolder>
 
@@ -51,30 +54,34 @@ class SettingsOpenPgpFragment : Fragment() {
     }
 
     private fun populateSettingsList() {
-        viewModel.identities.observeNotNull(this) { identities ->
-            if (identities.isNotEmpty()) {
-                populateSettingsList(identities)
+        viewModel.accounts.observeNotNull(this) { accounts ->
+            if (accounts.isNotEmpty()) {
+                populateSettingsList(accounts)
             }
         }
     }
 
-    private fun populateSettingsList(identities: List<Identity>) {
+    private fun populateSettingsList(accounts: List<Account>) {
         settingsAdapter.clear()
 
-        val identitiesSection = Section().apply {
-            for (identity in identities) {
-                add(IdentityItem(identity, object : IdentityItem.OnIdentityClickedListener {
-                    override fun onIdentityClicked(item: IdentityItem, identity: Identity) {
-                        onIdentityClicked(identity)
-                    }
+        val accountsSection = Section()
+        for (account in accounts) {
+            val accountIdentitiesSection = Section().apply {
+                for ((identityIndex, identity) in account.identities.withIndex()) {
+                    add(IdentityItem(identity, object : IdentityItem.OnIdentityClickedListener {
+                        override fun onIdentityClicked(item: IdentityItem, identity: Identity) {
+                            onIdentityClicked(account, identityIndex, identity)
+                        }
 
-                    override fun onCheckedChange(item: IdentityItem, identity: Identity, checked: Boolean) {
-                        onIdentityChecked(identity, checked)
-                    }
-                }))
+                        override fun onCheckedChange(item: IdentityItem, identity: Identity, checked: Boolean) {
+                            onIdentityChecked(account, identityIndex, identity, checked)
+                        }
+                    }))
+                }
             }
+            accountsSection.add(accountIdentitiesSection)
         }
-        settingsAdapter.add(identitiesSection)
+        settingsAdapter.add(accountsSection)
 
         val advancedSection = Section().apply {
             val generalSettingsActionItem = SettingsActionItem(
@@ -99,11 +106,14 @@ class SettingsOpenPgpFragment : Fragment() {
         AccountSettingsActivity.start(requireActivity(), account.uuid)
     }
 
-    private fun onIdentityClicked(identity: Identity) {
+    private fun onIdentityClicked(account: Account, identityIndex: Int, identity: Identity) {
         Toast.makeText(requireActivity(), "identity: " + identity.email, Toast.LENGTH_SHORT).show();
     }
 
-    private fun onIdentityChecked(identity: Identity, checked: Boolean) {
+    private fun onIdentityChecked(account: Account, identityIndex: Int, identity: Identity, checked: Boolean) {
+        account.identities[identityIndex] = identity.copy(openPgpEnabled = checked)
+        preferences.saveAccount(account)
+
         Toast.makeText(requireActivity(), "identity: " + identity.email + "checked: " + checked, Toast.LENGTH_SHORT).show();
     }
 }
