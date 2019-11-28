@@ -1,10 +1,10 @@
 package com.fsck.k9.backends
 
 import com.fsck.k9.backend.BackendManager
-import org.koin.dsl.module.applicationContext
+import org.koin.dsl.module
 
-val backendsModule = applicationContext {
-    bean {
+val backendsModule = module {
+    single {
         BackendManager(
                 mapOf(
                         "imap" to get<ImapBackendFactory>(),
@@ -12,7 +12,7 @@ val backendsModule = applicationContext {
                         "webdav" to get<WebDavBackendFactory>()
                 ))
     }
-    bean { ImapBackendFactory(get(), get(), get(), get()) }
-    bean { Pop3BackendFactory(get(), get()) }
-    bean { WebDavBackendFactory(get(), get()) }
+    single { ImapBackendFactory(get(), get(), get(), get()) }
+    single { Pop3BackendFactory(get(), get()) }
+    single { WebDavBackendFactory(get(), get()) }
 }

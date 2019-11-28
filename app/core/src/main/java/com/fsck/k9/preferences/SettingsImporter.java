@@ -78,15 +78,19 @@ public class SettingsImporter {
         public final boolean overwritten;
         public final boolean incomingPasswordNeeded;
         public final boolean outgoingPasswordNeeded;
+        public final String incomingServerName;
+        public final String outgoingServerName;
 
         private AccountDescriptionPair(AccountDescription original, AccountDescription imported,
-                boolean overwritten, boolean incomingPasswordNeeded,
-                boolean outgoingPasswordNeeded) {
+                boolean overwritten, boolean incomingPasswordNeeded, boolean outgoingPasswordNeeded,
+                String incomingServerName, String outgoingServerName) {
             this.original = original;
             this.imported = imported;
             this.overwritten = overwritten;
             this.incomingPasswordNeeded = incomingPasswordNeeded;
             this.outgoingPasswordNeeded = outgoingPasswordNeeded;
+            this.incomingServerName = incomingServerName;
+            this.outgoingServerName = outgoingServerName;
         }
     }
 
@@ -370,6 +374,7 @@ public class SettingsImporter {
         String storeUri = backendManager.createStoreUri(incoming);
         putString(editor, accountKeyPrefix + AccountPreferenceSerializer.STORE_URI_KEY, Base64.encode(storeUri));
 
+        String incomingServerName = incoming.host;
         boolean incomingPasswordNeeded = AuthType.EXTERNAL != incoming.authenticationType &&
                 (incoming.password == null || incoming.password.isEmpty());
 
@@ -379,6 +384,7 @@ public class SettingsImporter {
             throw new InvalidSettingValueException();
         }
 
+        String outgoingServerName = null;
         boolean outgoingPasswordNeeded = false;
         if (account.outgoing != null) {
             // Write outgoing server settings (transportUri)
@@ -397,6 +403,8 @@ public class SettingsImporter {
                     outgoing.username != null &&
                     !outgoing.username.isEmpty() &&
                     (outgoing.password == null || outgoing.password.isEmpty());
+
+            outgoingServerName = outgoing.host;
         }
 
         boolean createAccountDisabled = incomingPasswordNeeded || outgoingPasswordNeeded;
@@ -457,7 +465,7 @@ public class SettingsImporter {
 
         AccountDescription imported = new AccountDescription(accountName, uuid);
         return new AccountDescriptionPair(original, imported, mergeImportedAccount,
-                incomingPasswordNeeded, outgoingPasswordNeeded);
+                incomingPasswordNeeded, outgoingPasswordNeeded, incomingServerName, outgoingServerName);
     }
 
     private static void importFolder(StorageEditor editor, int contentVersion, String uuid, ImportedFolder folder,

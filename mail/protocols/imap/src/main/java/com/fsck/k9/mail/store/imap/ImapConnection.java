@@ -265,31 +265,24 @@ class ImapConnection {
         extractCapabilities(Collections.singletonList(initialResponse));
     }
 
-    private List<ImapResponse> extractCapabilities(List<ImapResponse> responses) {
+    private boolean extractCapabilities(List<ImapResponse> responses) {
         CapabilityResponse capabilityResponse = CapabilityResponse.parse(responses);
-        if (capabilityResponse != null) {
-            Set<String> receivedCapabilities = capabilityResponse.getCapabilities();
-            if (K9MailLib.isDebug()) {
-                Timber.d("Saving %s capabilities for %s", receivedCapabilities, getLogId());
-            }
-            capabilities = receivedCapabilities;
+        if (capabilityResponse == null) {
+            return false;
         }
-        return responses;
+
+        Set<String> receivedCapabilities = capabilityResponse.getCapabilities();
+        Timber.d("Saving %s capabilities for %s", receivedCapabilities, getLogId());
+        capabilities = receivedCapabilities;
+
+        return true;
     }
 
-    private List<ImapResponse> extractOrRequestCapabilities(List<ImapResponse> responses)
-            throws IOException, MessagingException {
-        CapabilityResponse capabilityResponse = CapabilityResponse.parse(responses);
-        if (capabilityResponse != null) {
-            Set<String> receivedCapabilities = capabilityResponse.getCapabilities();
-            Timber.d("Saving %s capabilities for %s", receivedCapabilities, getLogId());
-            capabilities = receivedCapabilities;
-        } else {
+    private void extractOrRequestCapabilities(List<ImapResponse> responses) throws IOException, MessagingException {
+        if (!extractCapabilities(responses)) {
             Timber.i("Did not get capabilities in post-auth banner, requesting CAPABILITY for %s", getLogId());
             requestCapabilities();
         }
-
-        return responses;
     }
 
     private void requestCapabilitiesIfNecessary() throws IOException, MessagingException {
@@ -303,8 +296,7 @@ class ImapConnection {
     }
 
     private void requestCapabilities() throws IOException, MessagingException {
-        List<ImapResponse> responses = extractCapabilities(executeSimpleCommand(Commands.CAPABILITY));
-        if (responses.size() != 2) {
+        if (!extractCapabilities(executeSimpleCommand(Commands.CAPABILITY))) {
             throw new MessagingException("Invalid CAPABILITY response received");
         }
     }

@@ -84,19 +84,8 @@
             android:title="@string/accountlist_preferences">
 
             <CheckBoxPreference
-                android:key="measure_accounts"
-                android:summary="@string/measure_accounts_summary"
-                android:title="@string/measure_accounts_title" />
-
-            <CheckBoxPreference
-                android:key="count_search"
-                android:summary="@string/count_search_summary"
-                android:title="@string/count_search_title" />
-
-            <CheckBoxPreference
                 android:disableDependentsState="true"
                 android:key="hide_special_accounts"
-                android:summary="@string/hide_special_accounts_summary"
                 android:title="@string/hide_special_accounts_title" />
 
         </PreferenceCategory>
@@ -220,10 +209,6 @@
         android:key="interaction_preferences"
         android:title="@string/interaction_preferences"
         search:ignore="true">
-
-        <CheckBoxPreference
-            android:key="start_integrated_inbox"
-            android:title="@string/start_integrated_inbox_title" />
 
         <CheckBoxPreference
             android:key="gestures"

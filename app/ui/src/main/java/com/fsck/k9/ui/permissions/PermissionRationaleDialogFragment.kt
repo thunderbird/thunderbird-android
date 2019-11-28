@@ -17,8 +17,8 @@ import com.fsck.k9.ui.R
  */
 class PermissionRationaleDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val args = arguments!!
-        val permissionName = args.getString(ARG_PERMISSION)
+        val args = arguments ?: error("Arguments missing")
+        val permissionName = args.getString(ARG_PERMISSION) ?: error("Missing argument '$ARG_PERMISSION'")
 
         val permission = Permission.valueOf(permissionName)
 

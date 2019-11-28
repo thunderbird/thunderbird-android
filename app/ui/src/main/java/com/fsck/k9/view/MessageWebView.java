@@ -18,7 +18,7 @@ import com.fsck.k9.ui.R;
 import com.fsck.k9.mailstore.AttachmentResolver;
 
 
-public class MessageWebView extends RigidWebView {
+public class MessageWebView extends WebView {
 
     public MessageWebView(Context context) {
         super(context);

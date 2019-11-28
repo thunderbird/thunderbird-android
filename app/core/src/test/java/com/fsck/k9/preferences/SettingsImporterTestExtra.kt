@@ -10,8 +10,8 @@ import com.fsck.k9.backend.imap.ImapStoreUriDecoder
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.transport.smtp.SmtpTransportUriCreator
 import com.fsck.k9.mail.transport.smtp.SmtpTransportUriDecoder
-import org.koin.dsl.module.applicationContext
-import org.koin.standalone.StandAloneContext.loadKoinModules
+import org.koin.core.context.loadKoinModules
+import org.koin.dsl.module
 
 fun setUpBackendManager() {
     val backendFactory = object : BackendFactory {
@@ -38,7 +38,7 @@ fun setUpBackendManager() {
         }
     }
 
-    loadKoinModules(applicationContext {
-        bean { BackendManager(mapOf("imap" to backendFactory)) }
+    loadKoinModules(module {
+        single { BackendManager(mapOf("imap" to backendFactory)) }
     })
 }

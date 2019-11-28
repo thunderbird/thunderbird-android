@@ -1,8 +1,7 @@
 package com.fsck.k9.activity
 
-import org.koin.dsl.module.applicationContext
+import org.koin.dsl.module
 
-val activityModule = applicationContext {
-    bean { ColorChipProvider() }
-    bean { MessageLoaderHelperFactory(get(), get()) }
+val activityModule = module {
+    single { MessageLoaderHelperFactory(get(), get()) }
 }

@@ -6,11 +6,16 @@
   <string name="app_name">K-9 Mail</string>
   <string name="shortcuts_title">Account di K-9</string>
   <string name="unread_widget_label">K-9 nuovi messaggi</string>
-  <string name="remote_control_label">Controllo remoto di K-9 Mail</string>
-  <string name="remote_control_desc">Consenti a questa applicazione di controllare le attività e le impostazioni di K-9 Mail.</string>
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
+  <string name="app_authors_url">https://github.com/k9mail/k-9/graphs/contributors</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
+  <string name="source_code">Sorgenti</string>
+  <string name="app_source_url">https://github.com/k9mail/k-9</string>
+  <string name="app_license">Apache License, Versione 2.0</string>
+  <string name="app_license_url">https://www.apache.org/licenses/LICENSE-2.0</string>
+  <string name="about_libraries">Librerie</string>
+  <string name="license">Licenza</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Benvenuto in K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -47,18 +52,17 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="default_signature">-- \nInviato dal mio dispositivo Android con K-9 Mail. Perdonate la brevità.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">L\'account \"<xliff:g id="account">%s</xliff:g>\" sarà rimosso da K-9 Mail.</string>
-  <string name="account_recreate_dlg_instructions_fmt">Tutti i dati per \"<xliff:g id="account">%s</xliff:g>\" saranno rimossi da K-9 Mail, ma le impostazioni dell\'account saranno conservate.</string>
-  <string name="account_clear_dlg_instructions_fmt">Le copie locali dei messaggi in \"<xliff:g id="account">%s</xliff:g>\" saranno rimosse da K-9 Mail, ma le impostazioni dell\'account saranno conservate.</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_libraries">Ci avvaliamo delle seguenti librerie di terze parti: <xliff:g id="app_libraries_list">%s</xliff:g></string>
+  <string name="authors">Autori</string>
+  <string name="app_revision">Informazioni di revisione</string>
   <string name="read_messages_label">Leggi i messaggi</string>
   <string name="read_messages_desc">Consenti all\'applicazione di leggere i messaggi.</string>
   <string name="delete_messages_label">Elimina messaggi</string>
   <string name="delete_messages_desc">Permetti all\'applicazione di eliminare i messaggi.</string>
+  <string name="about_title">Informazioni su K-9 Mail</string>
   <string name="accounts_title">Account</string>
   <string name="folders_title">Cartelle</string>
   <string name="advanced">Avanzate</string>
-  <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
   <string name="compose_title_compose">Componi</string>
   <string name="compose_title_reply">Rispondi</string>
   <string name="compose_title_reply_all">Rispondi a tutti</string>
@@ -71,11 +75,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="status_sending_account">Invio <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_processing_account">Elab <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
-  <string name="status_next_poll">Prossima verifica <xliff:g id="nexttime">%s</xliff:g></string>
-  <string name="status_no_network">Sincronizzazione disabilitata - Nessuna rete</string>
-  <string name="status_no_background">Sincronizzazione disabilitata - Nessuna attività in background</string>
-  <string name="status_poll_and_push_disabled">Recupero e ricezione push disabilitati</string>
-  <string name="status_syncing_blocked">Sincronizzazione bloccata</string>
   <string name="status_syncing_off">Sincronizzazione disabilitata</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> selezionati</string>
   <string name="next_action">Successivo</string>
@@ -110,11 +109,9 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="search_action">Cerca</string>
   <string name="search_results">Risultati della ricerca</string>
   <string name="preferences_action">Impostazioni</string>
+  <string name="folders_action">Gestisci cartelle</string>
   <string name="account_settings_action">Impostazioni account</string>
-  <string name="folder_settings_action">Impostazioni cartella</string>
-  <string name="global_settings_action">Impostazioni globali</string>
   <string name="remove_account_action">Rimuovi account</string>
-  <string name="clear_pending_action">Annulla tutte le azioni in corso (pericolo!)</string>
   <string name="mark_as_read_action">Marca come letto</string>
   <string name="send_alternate_action">Condividi</string>
   <string name="send_alternate_chooser_title">Scegli il mittente</string>
@@ -136,14 +133,11 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="add_attachment_action">Aggiungi allegato</string>
   <string name="empty_trash_action">Svuota cestino</string>
   <string name="expunge_action">Rimuovi messaggi eliminati</string>
-  <string name="clear_local_folder_action">Cancella messaggi locali</string>
   <string name="about_action">Informazioni</string>
   <string name="prefs_title">Impostazioni</string>
-  <string name="accounts_context_menu_title">Opzioni account</string>
   <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
   <string name="general_no_subject">(Nessun oggetto)</string>
   <string name="general_no_sender">Nessun mittente</string>
-  <string name="status_loading">Recupero in corso</string>
   <string name="status_loading_more">Caricamento dei messaggi in corso\u2026</string>
   <string name="status_network_error">Errore di connessione</string>
   <string name="status_invalid_id_error">Messaggio non trovato</string>
@@ -157,8 +151,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="abbrev_bytes">B</string>
   <string name="account_size_changed">Account \"<xliff:g id="account">%s</xliff:g>\" ridimensionato da <xliff:g id="oldSize">%s</xliff:g> a <xliff:g id="newSize">%s</xliff:g></string>
   <string name="compacting_account">Compattazione account \"<xliff:g id="account">%s</xliff:g>\"</string>
-  <string name="clearing_account">Svuotamento account \"<xliff:g id="account">%s</xliff:g>\"</string>
-  <string name="recreating_account">Rigenerazione account \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Nuova posta</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nuovo messaggio</item>
@@ -184,20 +176,16 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="notification_bg_send_title">Invio posta</string>
   <string name="notification_bg_title_separator">:</string>
   <string name="notification_channel_messages_title">Messaggi</string>
+  <string name="notification_channel_messages_description">Notifiche relative ai messaggi</string>
   <string name="notification_channel_miscellaneous_title">Varie</string>
+  <string name="notification_channel_miscellaneous_description">Notifiche varie come errori ecc.</string>
   <string name="special_mailbox_name_inbox">Posta in arrivo</string>
   <string name="special_mailbox_name_outbox">Posta in uscita</string>
   <string name="special_mailbox_name_drafts">Bozze</string>
   <string name="special_mailbox_name_trash">Cestino</string>
   <string name="special_mailbox_name_sent">Posta inviata</string>
-  <string name="special_mailbox_name_archive">Archivio</string>
-  <string name="special_mailbox_name_spam">Spam</string>
-  <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Bozze)</string>
-  <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Cestino)</string>
-  <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Posta inviata)</string>
-  <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archivio)</string>
-  <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
   <string name="send_failure_subject">Impossibile inviare alcuni messaggi</string>
+  <string name="version">Versione</string>
   <string name="debug_enable_debug_logging_title">Attiva la registrazione di debug</string>
   <string name="debug_enable_debug_logging_summary">Registra informazioni diagnostiche aggiuntive</string>
   <string name="debug_enable_sensitive_logging_title">Registra informazioni sensibili</string>
@@ -229,6 +217,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="message_view_bcc_label">Ccn:</string>
   <string name="message_view_attachment_view_action">Apri</string>
   <string name="message_view_attachment_download_action">Salva</string>
+  <string name="message_view_status_attachment_not_saved">Impossibile salvare l\'allegato.</string>
   <string name="message_view_show_pictures_action">Mostra immagini</string>
   <string name="message_view_no_viewer">Impossibile trovare un visualizzatore per <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Scarica messaggio completo</string>
@@ -244,8 +233,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="message_saved_toast">Messaggio salvato come bozza</string>
   <string name="global_settings_flag_label">Mostra stelle</string>
   <string name="global_settings_flag_summary">Le stelle indicano i messaggi evidenziati</string>
-  <string name="global_settings_checkbox_label">Caselle di selezione multipla</string>
-  <string name="global_settings_checkbox_summary">Mostra sempre caselle di selezione multipla</string>
   <string name="global_settings_preview_lines_label">Righe di anteprima</string>
   <string name="global_settings_show_correspondent_names_label">Mostra nomi dei corrispondenti</string>
   <string name="global_settings_show_correspondent_names_summary">Mostra i nomi dei corrispondenti al posto degli indirizzi email</string>
@@ -254,7 +241,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="global_settings_show_contact_name_label">Mostra nomi dei contatti</string>
   <string name="global_settings_show_contact_name_summary">Utilizza i nomi dei destinatari dalla rubrica se disponibili</string>
   <string name="global_settings_registered_name_color_label">Colora i contatti</string>
-  <string name="global_settings_registered_name_color_default">Non colorare i nomi nel tuo elenco dei contatti</string>
   <string name="global_settings_registered_name_color_changed">Colora i nomi nel tuo elenco dei contatti</string>
   <string name="global_settings_folderlist_wrap_folder_names_label">A capo cartelle con nome lungo</string>
   <string name="global_settings_folderlist_wrap_folder_names_summary">Utilizza più righe per mostrare cartelle con nome lungo</string>
@@ -286,7 +272,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="global_settings_notification_quick_delete_never">Mai</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Per la notifica di un singolo messaggio</string>
   <string name="global_settings_notification_quick_delete_always">Sempre</string>
-  <string name="global_settings_notification_quick_delete_description">Mostra un pulsante nella notifica che consente l\'eliminazione rapida</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Notifiche schermata di blocco</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Nessuna notifica sulla schermata di blocco</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Nome applicazione</string>
@@ -318,7 +303,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_setup_account_type_instructions">Che tipo di account è questo?</string>
   <string name="account_setup_account_type_pop_action">POP3</string>
   <string name="account_setup_account_type_imap_action">IMAP</string>
-  <string name="account_setup_account_type_webdav_action">Exchange (WebDAV)</string>
   <string name="account_setup_auth_type_normal_password">Password normale</string>
   <string name="account_setup_auth_type_insecure_password">Password, trasmessa in modo non sicuro</string>
   <string name="account_setup_auth_type_encrypted_password">Password cifrata</string>
@@ -347,8 +331,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_setup_incoming_other_label">Altra</string>
   <string name="local_storage_provider_external_label">Memoria esterna (SD card)</string>
   <string name="local_storage_provider_internal_label">Memoria interna standard</string>
-  <string name="local_storage_provider_samsunggalaxy_label">Memoria interna aggiuntiva %1$s</string>
-  <string name="local_storage_provider_label">Posizione di archiviazione</string>
   <string name="account_setup_expunge_policy_label">Cancella i messaggi eliminati sul server</string>
   <string name="account_setup_expunge_policy_immediately">Immediatamente</string>
   <string name="account_setup_expunge_policy_on_poll">Durante ogni recupero</string>
@@ -380,8 +362,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_setup_bad_uri">Configurazione non valida: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Opzioni account</string>
   <string name="compact_action">Compatta account</string>
-  <string name="clear_action">Cancella i messaggi (pericolo!)</string>
-  <string name="recreate_action">Ricrea i dati (ultima spiaggia!)</string>
   <string name="account_setup_options_mail_check_frequency_label">Frequenza verifica cartella</string>
   <string name="account_setup_options_mail_check_frequency_never">Mai</string>
   <string name="account_setup_options_mail_check_frequency_15min">Ogni 15 minuti</string>
@@ -449,6 +429,8 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_settings_notification_opens_unread_summary">Ricerca non letti quando Notifiche è aperto</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marca come letto all\'apertura</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marca un messaggio come letto quando viene aperto per la visualizzazione</string>
+  <string name="account_settings_notification_open_system_notifications_label">Impostazioni notifiche</string>
+  <string name="account_settings_notification_open_system_notifications_summary">Apri le impostazioni di sistema delle notifiche</string>
   <string name="account_settings_show_pictures_label">Mostra sempre le immagini</string>
   <string name="account_settings_show_pictures_never">No</string>
   <string name="account_settings_show_pictures_only_from_contacts">Dai contatti</string>
@@ -470,6 +452,8 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_settings_quote_style_label">Aspetto testo citato nelle risposte</string>
   <string name="account_settings_quote_style_prefix">Prefisso (come Gmail)</string>
   <string name="account_settings_quote_style_header">Intestazione (come Outlook)</string>
+  <string name="account_settings_upload_sent_messages_label">Carica i messaggi inviati</string>
+  <string name="account_settings_upload_sent_messages_summary">Carica i messaggi nella cartella Posta inviata dopo l\'invio</string>
   <string name="account_settings_general_title">Impostazioni generali</string>
   <string name="account_settings_reading_mail">Lettura dei messaggi</string>
   <string name="account_settings_sync">Recupero dei messaggi</string>
@@ -481,10 +465,11 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_settings_crypto_key">Configura chiave end-to-end</string>
   <string name="account_settings_crypto_summary_off">Nessuna applicazione OpenPGP configurata</string>
   <string name="account_settings_crypto_summary_on">Connesso a %s</string>
-  <string name="account_settings_no_openpgp_provider_configured">Nessuna applicazione OpenPGP configurata</string>
-  <string name="account_settings_no_openpgp_provider_installed">Applicazione OpenPGP non trovata - clic per installarla</string>
+  <string name="account_settings_crypto_summary_config">Configurazione in corso...</string>
+  <string name="account_settings_crypto_encrypt_all_drafts">Memorizza tutte le bozze con cifratura</string>
+  <string name="account_settings_crypto_encrypt_all_drafts_on">Tutte le bozze saranno memorizzate con cifratura</string>
+  <string name="account_settings_crypto_encrypt_all_drafts_off">Cifra le bozze solo se la cifratura è abilitata</string>
   <string name="account_settings_mail_check_frequency_label">Frequenza di recupero della cartella</string>
-  <string name="account_settings_storage_title">Archiviazione</string>
   <string name="account_settings_color_label">Colore dell\'account</string>
   <string name="account_settings_color_summary">Scegli il colore dell\'account utilizzato nell\'elenco delle cartelle e degli account</string>
   <string name="account_settings_color_none">Nessun colore</string>
@@ -640,11 +625,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="sort_by_unread">Letto/non letto</string>
   <string name="sort_by_attach">Allegati</string>
   <string name="account_delete_dlg_title">Rimuovi account</string>
-  <string name="account_recreate_dlg_title">Ricrea account</string>
-  <string name="account_clear_dlg_title">Cancella account</string>
-  <string name="provider_note_auonejp">Assicurati di abilitare IMAP o POP3 sulla pagina delle impostazioni di au one.</string>
-  <string name="provider_note_naver">Assicurati di abilitare IMAP o POP3 sulla pagina delle impostazioni di Naver mail.</string>
-  <string name="provider_note_hanmail">Assicurati di abilitare IMAP o POP3 sulla pagina delle impostazioni di Hanmail(Daum).</string>
   <string name="account_setup_failed_dlg_invalid_certificate_title">Certificato non riconosciuto</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Accetta chiave</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rifiuta chiave</string>
@@ -663,6 +643,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="setting_theme_global">Usa il tema dell\'applicazione</string>
   <string name="setting_theme_dark">Scuro</string>
   <string name="setting_theme_light">Chiaro</string>
+  <string name="setting_theme_follow_system">Utilizza predefinito di sistema</string>
   <string name="display_preferences">Visualizzazione</string>
   <string name="global_preferences">Globali</string>
   <string name="debug_preferences">Debug</string>
@@ -703,20 +684,13 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="volume_navigation_message">In visualizzazione messaggi</string>
   <string name="volume_navigation_list">In visualizzazione elenco</string>
   <string name="start_integrated_inbox_title">Avvia in Posta in arrivo combinata</string>
-  <string name="measure_accounts_title">Mostra dimensione account</string>
-  <string name="measure_accounts_summary">Disattiva per una visualizzazione più veloce</string>
-  <string name="count_search_title">Conta i risultati della ricerca</string>
-  <string name="count_search_summary">Disattiva per una visualizzazione più veloce</string>
-  <string name="hide_special_accounts_title">Nascondi account speciali</string>
-  <string name="hide_special_accounts_summary">Nascondi Posta in arrivo combinata e tutti gli account dei messaggi</string>
+  <string name="hide_special_accounts_title">Nascondi Posta in arrivo combinata</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-  <string name="flagged_modifier">- Con stella</string>
   <string name="unread_modifier">- Non letto</string>
   <string name="search_all_messages_title">Tutti i messaggi</string>
   <string name="search_all_messages_detail">Tutti i messaggi nelle cartelle abilitate per la ricerca</string>
   <string name="integrated_inbox_title">Posta in arrivo combinata</string>
   <string name="integrated_inbox_detail">Tutti i messaggi nella Posta in arrivo combinata</string>
-  <string name="tap_hint">Tocca il cerchio o la stella per i messaggi non letti o preferiti</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Combina</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Tutti i messaggi sono visualizzati nella Posta in arrivo combinata</string>
   <string name="account_settings_searchable_label">Cartelle da analizzare</string>
@@ -724,6 +698,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_settings_searchable_displayable">Visibili</string>
   <string name="account_settings_searchable_none">Nessuna</string>
   <string name="account_settings_no_folder_selected">Nessuna</string>
+  <string name="account_settings_automatic_special_folder">Automatica (%s)</string>
   <string name="font_size_settings_title">Dimensione carattere</string>
   <string name="font_size_settings_description">Configura la dimensione dei caratteri</string>
   <string name="font_size_account_list">Elenco account</string>
@@ -775,6 +750,8 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="dialog_confirm_delete_cancel_button">No</string>
   <string name="dialog_confirm_mark_all_as_read_title">Conferma di marcare tutti come letti</string>
   <string name="dialog_confirm_mark_all_as_read_message">Vuoi marcare tutti i messaggi come letti?</string>
+  <string name="dialog_confirm_empty_trash_title">Conferma lo svuotamento del cestino</string>
+  <string name="dialog_confirm_empty_trash_message">Vuoi svuotare la cartella del cestino?</string>
   <string name="dialog_confirm_mark_all_as_read_confirm_button">Sì</string>
   <string name="dialog_confirm_mark_all_as_read_cancel_button">No</string>
   <string name="dialog_confirm_spam_title">Conferma spostamento nella cartella spam</string>
@@ -785,56 +762,43 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="dialog_confirm_spam_confirm_button">Sì</string>
   <string name="dialog_confirm_spam_cancel_button">No</string>
   <string name="dialog_attachment_progress_title">Scaricamento allegato</string>
-  <string name="debug_logging_enabled">Registrazione dei log per il debug abilitata</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="import_export_action">Importa ed esporta impostazioni</string>
-  <string name="settings_export_account">Esporta impostazioni account</string>
-  <string name="settings_export_all">Esporta impostazioni e account</string>
-  <string name="settings_import_dialog_title">Importa</string>
-  <string name="settings_export_dialog_title">Esporta</string>
-  <string name="settings_import">Importa impostazioni</string>
-  <string name="settings_import_selection">Importa selezione</string>
-  <string name="settings_import_global_settings">Impostazioni globali</string>
-  <string name="settings_exporting">Esportazione impostazioni…</string>
-  <string name="settings_importing">Importazione impostazioni…</string>
-  <string name="settings_import_scanning_file">Scansione del file…</string>
+  <string name="settings_list_backup_category">Copia di sicurezza</string>
+  <string name="settings_list_miscellaneous_category">Varie</string>
+  <string name="settings_export_title">Esporta impostazioni</string>
+  <string name="settings_export_button">Esporta</string>
+  <string name="settings_export_share_button">Condividi</string>
+  <string name="settings_export_progress_text">Esportazione impostazioni…</string>
   <string name="settings_export_success_generic">Impostazioni esportate correttamente</string>
-  <string name="settings_import_account_imported_as">Importato <xliff:g id="original_account_name">%s</xliff:g> da <xliff:g id="account_name_after_import">%s</xliff:g></string>
-  <plurals name="settings_import_accounts">
-    <item quantity="one">1 account</item>
-    <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> account</item>
-  </plurals>
   <string name="settings_export_failure">Esportazione impostazioni non riuscita</string>
-  <string name="settings_export_success_header">Esportazione completata</string>
-  <string name="settings_export_failed_header">Esportazione non riuscita</string>
-  <string name="settings_import_success_header">Importazione completata</string>
-  <string name="settings_import_failed_header">Importazione non riuscita</string>
-  <string name="settings_import_activate_account_header">Attiva account</string>
-  <string name="settings_import_activate_account_intro">Per usare l\'account \"<xliff:g id="account">%s</xliff:g>\" devi fornire la <xliff:g id="server_passwords">%s</xliff:g>.</string>
-  <plurals name="settings_import_server_passwords">
-    <item quantity="one">password del server</item>
-    <item quantity="other">password del server</item>
+  <string name="settings_import_title">Importa impostazioni</string>
+  <string name="settings_import_pick_document_button">Seleziona file</string>
+  <string name="settings_import_button">Importa</string>
+  <string name="settings_import_success_generic">Impostazioni importate correttamente</string>
+  <string name="settings_import_password_required">Digita le password</string>
+  <string name="settings_import_failure">Importazione impostazioni non riuscita</string>
+  <string name="settings_import_read_failure">Lettura file delle impostazioni non riuscita</string>
+  <string name="settings_import_partial_failure">Importazione di alcune impostazioni non riuscita</string>
+  <string name="settings_import_status_success">Importate correttamente</string>
+  <string name="settings_import_status_password_required">Password richiesta</string>
+  <string name="settings_import_status_not_imported">Non importate</string>
+  <string name="settings_import_status_error">Importazione non riuscita</string>
+  <string name="settings_import_later_button">Più tardi</string>
+  <string name="settings_import">Importa impostazioni</string>
+  <string name="settings_importing">Importazione impostazioni…</string>
+  <plurals name="settings_import_password_prompt">
+    <item quantity="one">Per poter utilizzare l\'account \"<xliff:g id="account">%s</xliff:g>\" devi fornire le password del server.</item>
+    <item quantity="other">Per poter utilizzare l\'account \"<xliff:g id="account">%s</xliff:g>\" devi fornire le password del server.</item>
   </plurals>
-  <string name="settings_import_incoming_server">Server della posta in arrivo (<xliff:g id="hostname">%s</xliff:g>):</string>
-  <string name="settings_import_outgoing_server">Server della posta in uscita (<xliff:g id="hostname">%s</xliff:g>):</string>
-  <plurals name="settings_import_setting_passwords">
-    <item quantity="one">Impostazione password…</item>
-    <item quantity="other">Impostazione password…</item>
-  </plurals>
-  <string name="settings_import_use_incoming_server_password">Usa la password del server della posta in arrivo</string>
-  <string name="activate_account_action">Attiva</string>
-  <string name="account_unavailable">L\'account \"<xliff:g id="account">%s</xliff:g>\" non è disponibile; controlla lo spazio di archiviazione</string>
-  <string name="attachment_save_title">Salva allegato</string>
-  <string name="attachment_save_desc">Nessun gestore file presente. Dove vuoi salvare questo allegato?</string>
-  <string name="manage_accounts_move_up_action">Sposta su</string>
-  <string name="manage_accounts_move_down_action">Sposta giù</string>
-  <string name="manage_accounts_moving_message">Spostamento account…</string>
+  <string name="settings_import_incoming_server_password_hint">Password del server di ingresso</string>
+  <string name="settings_import_outgoing_server_password_hint">Password del server di uscita</string>
+  <string name="settings_import_use_same_password_for_outgoing_server">Usa la stessa password per il server di uscita</string>
+  <string name="server_name_format">Nome server: <xliff:g id="hostname">%s</xliff:g></string>
   <string name="unread_widget_select_account">Mostra numero messaggi non letti per…</string>
   <string name="unread_widget_account_title">Account</string>
   <string name="unread_widget_account_summary">L\'account per il quale dovrebbe essere visualizzato il contatore non letti</string>
   <string name="unread_widget_unified_inbox_account_summary">Posta in arrivo combinata</string>
-  <string name="unread_widget_all_messages_account_summary">Tutti i messaggi</string>
   <string name="unread_widget_folder_enabled_title">Conteggio cartella</string>
   <string name="unread_widget_folder_enabled_summary">Visualizza il contatore non letti solo di una singola cartella</string>
   <string name="unread_widget_folder_title">Cartella</string>
@@ -843,7 +807,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
   <string name="unread_widget_account_not_selected">Nessun account selezionato</string>
   <string name="unread_widget_folder_not_selected">Nessuna cartella selezionata</string>
-  <string name="close">Chiudi</string>
   <string name="webview_empty_message">Senza testo</string>
   <string name="webview_contextmenu_link_view_action">Apri collegamento</string>
   <string name="webview_contextmenu_link_share_action">Condividi collegamento</string>
@@ -863,8 +826,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="webview_contextmenu_email_save_action">Salva nei contatti</string>
   <string name="webview_contextmenu_email_copy_action">Copia indirizzo negli appunti</string>
   <string name="webview_contextmenu_email_clipboard_label">Indirizzo email</string>
-  <string name="image_saved_as">Immagine salvata come \"<xliff:g id="filename">%s</xliff:g>\"</string>
-  <string name="image_saving_failed">Salvataggio dell\'immagine non riuscito.</string>
   <string name="account_settings_remote_search_num_results_entries_all">Tutti</string>
   <string name="account_settings_remote_search_num_results_entries_10">10</string>
   <string name="account_settings_remote_search_num_results_entries_25">25</string>
@@ -874,7 +835,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_settings_remote_search_num_results_entries_500">500</string>
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">Limite risultati di ricerca sul server</string>
-  <string name="account_settings_remote_search_num_summary">La ricerca si fermerà dopo aver trovato <xliff:g id="num_results">%s</xliff:g> risultati.</string>
   <string name="remote_search_sending_query">Invio della richiesta al server</string>
   <plurals name="remote_search_downloading">
     <item quantity="one">Recupero di %d risultato</item>
@@ -889,8 +849,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_settings_remote_search_enabled">Abilita la ricerca sul server</string>
   <string name="account_settings_remote_search_enabled_summary">Cerca messaggi sul server oltre a quelli sul dispositivo</string>
   <string name="action_remote_search">Cerca messaggi sul server</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_pull">Tira per cercare sul server…</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_release">Rilascia per cercare sul server…</string>
   <string name="remote_search_unavailable_no_network">Le ricerche sul server richiedono una connessione alla rete.</string>
   <string name="global_settings_background_as_unread_indicator_label">Cambia colore dopo la lettura</string>
   <string name="global_settings_background_as_unread_indicator_summary">Uno sfondo diverso mostrerà che il messaggio è stato letto</string>
@@ -899,7 +857,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="upgrade_databases_title">Aggiornamento dei database</string>
   <string name="upgrade_databases_unspecified">Aggiornamento dei database…</string>
   <string name="upgrade_database_format">Aggiornamento del database dell\'account \"<xliff:g id="account">%s</xliff:g>\"</string>
-  <string name="message_list_loading">Caricamento in corso…</string>
   <string name="global_settings_splitview_mode_label">Mostra schermo diviso</string>
   <string name="global_settings_splitview_always">Sempre</string>
   <string name="global_settings_splitview_never">Mai</string>
@@ -907,9 +864,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="message_view_empty">Seleziona un messaggio a sinistra</string>
   <string name="global_settings_show_contact_picture_label">Mostra immagini dei contatti</string>
   <string name="global_settings_show_contact_picture_summary">Mostra le immagini dei contatti nell\'elenco dei messaggi</string>
-  <string name="last_refresh_time_format">Ultimo aggiornamento <xliff:g id="formatted_time">%s</xliff:g></string>
-  <string name="last_refresh_time_format_with_push">Ultimo aggiornamento <xliff:g id="time_with_preposition">%s</xliff:g> (push email attivo)</string>
-  <string name="preposition_for_date">il <xliff:g id="date">%s</xliff:g></string>
   <string name="mark_all_as_read">Marca tutti come letti</string>
   <string name="global_settings_colorize_missing_contact_pictures_label">Colora le immagini dei contatti</string>
   <string name="global_settings_colorize_missing_contact_pictures_summary">Colora le immagini mancanti dei contatti</string>
@@ -930,8 +884,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <!--Note: This references message_view_download_remainder-->
   <string name="preview_encrypted">*Cifrato*</string>
   <string name="add_from_contacts">Aggiungi da Contatti</string>
-  <string name="crypto_settings_cancel">Annulla</string>
-  <string name="crypto_settings_ok">Procedi</string>
   <string name="recipient_cc">Cc</string>
   <string name="recipient_bcc">Ccn</string>
   <string name="recipient_to">A</string>
@@ -943,9 +895,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="address_type_mobile">Cellulare</string>
   <string name="compose_error_no_draft_folder">Non è stata configurata una cartella Bozze per questo account!</string>
   <string name="compose_error_no_key_configured">Nessuna chiave configurata per questo account! Controlla le impostazioni.</string>
-  <string name="crypto_mode_disabled">Non cifrare</string>
-  <string name="crypto_mode_opportunistic">Cifra se possibile</string>
-  <string name="crypto_mode_private">Cifra</string>
   <string name="error_crypto_provider_incompatible">Il fornitore della cifratura utilizza una versione incompatibile. Controlla le tue impostazioni!</string>
   <string name="error_crypto_provider_connect">Impossibile connettersi al fornitore della crittografia, controlla le impostazioni oppure fai clic sull\'icona di cifratura per riprovare!</string>
   <string name="error_crypto_provider_ui_required">Inizializzazione della cifratura end-to-end non riuscita, controlla le tue impostazioni</string>
@@ -989,8 +938,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="crypto_msg_encrypted_error">ma si è verificato un errore di decifratura</string>
   <string name="crypto_msg_encrypted_incomplete">devi scaricare completamente per la decifratura</string>
   <string name="crypto_msg_encrypted_no_provider">ma nessuna applicazione di cifratura è configurata</string>
-  <string name="crypto_msg_encrypted_unsupported">ma in un formato non supportato</string>
-  <string name="crypto_msg_encrypted_cancelled">ma la decifratura è stata annullata</string>
   <string name="crypto_msg_title_encrypted_unsigned">Cifrato</string>
   <string name="crypto_msg_encrypted_unsigned">ma non end-to-end</string>
   <string name="crypto_msg_title_encrypted_signed_e2e">Cifrato end-to-end</string>
@@ -1031,14 +978,12 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="apg_learn_more">Puoi fare <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">clic qui</a> per ulteriori informazioni.</string>
   <string name="apg_deprecated_ok">Ricevuto!</string>
   <string name="apg">APG</string>
-  <string name="no_crypto_provider_see_global">Nessuna applicazione OpenPGP configurata, vedi le impostazioni globali.</string>
   <string name="crypto_no_provider_title">Questo messaggio è cifrato</string>
   <string name="crypto_no_provider_message">Questo messaggio è stato cifrato con OpenPGP.\nPer leggerlo, devi installare e configurare un\'applicazione compatibile con OpenPGP.</string>
   <string name="crypto_no_provider_button">Vai alle impostazioni</string>
   <string name="mail_list_widget_text">Elenco messaggi di K-9</string>
   <string name="mail_list_widget_loading">Caricamento messaggi in corso…</string>
   <string name="fetching_folders_failed">Recupero elenco cartelle non riuscito</string>
-  <string name="messageview_crypto_warning_details">Mostra dettagli</string>
   <string name="error_recipient_crypto_retrieve">Errore durante il recupero dello stato del destinatario dal fornitore OpenPGP!</string>
   <string name="openpgp_enabled_error_title">Cifratura non possibile</string>
   <string name="openpgp_enabled_error_msg">Alcuni dei destinatari selezionati non supportano questa funzionalità!</string>
@@ -1088,4 +1033,6 @@ Puoi conservare questo messaggio e utilizza come una copia di sicurezza della tu
   <string name="navigation_drawer_open">Apri</string>
   <string name="navigation_drawer_close">Chiudi</string>
   <!--permissions-->
+  <string name="permission_contacts_rationale_title">Consenti l\'accesso ai contatti</string>
+  <string name="permission_contacts_rationale_message">Per poter fornire suggerimenti sui contatti e per visualizzare i nomi e le foto dei contatti, l\'applicazione ha bisogno di accedere ai tuoi contatti.</string>
 </resources>

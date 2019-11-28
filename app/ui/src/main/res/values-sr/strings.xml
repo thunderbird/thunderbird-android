@@ -6,8 +6,6 @@
   <string name="app_name">К-9 Пошта</string>
   <string name="shortcuts_title">К-9 налози</string>
   <string name="unread_widget_label">К-9 непрочитане</string>
-  <string name="remote_control_label">К-9 даљинско управљање</string>
-  <string name="remote_control_desc">Дозвољава овој апликацији да управља активностима и поставкама К-9 Поште.</string>
   <!--Used in the about dialog-->
   <string name="app_authors">К-9 Шетачи паса.</string>
   <string name="app_copyright_fmt">Ауторска права 2008-<xliff:g>%s</xliff:g> „K-9 Dog Walkers“. Део ауторских права 2006-<xliff:g>%s</xliff:g> Андроид пројекат отвореног ко̂да.</string>
@@ -46,10 +44,7 @@
   <string name="default_signature">-- \nПослато К-9 Поштом са мог Андроид уређаја. Извините због сажетости.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Налог „<xliff:g id="account">%s</xliff:g>“ ће бити уклоњен из К-9 Поште.</string>
-  <string name="account_recreate_dlg_instructions_fmt">Сви локални подаци за „<xliff:g id="account">%s</xliff:g>“ ће бити уклоњени. Поставке налога ће остати.</string>
-  <string name="account_clear_dlg_instructions_fmt">Локалне копије порука у „<xliff:g id="account">%s</xliff:g>“ ће бити уклоњене. Поставке налога ће остати.</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_libraries">Користимо следеће библиотеке треће стране: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">читање е-порука</string>
   <string name="read_messages_desc">Дозвољава овој апликацији читање ваших е-порука.</string>
   <string name="delete_messages_label">брисање е-порука</string>
@@ -57,7 +52,6 @@
   <string name="accounts_title">Налози</string>
   <string name="folders_title">Фасцикле</string>
   <string name="advanced">Напредно</string>
-  <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
   <string name="compose_title_compose">Састави</string>
   <string name="compose_title_reply">Одговори</string>
   <string name="compose_title_reply_all">Одговори свима</string>
@@ -69,11 +63,6 @@
   <string name="status_sending_account">Шаљем <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_processing_account">Обрађујем <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
-  <string name="status_next_poll">Следећа провера <xliff:g id="nexttime">%s</xliff:g></string>
-  <string name="status_no_network">Синхронизација искључена — нема мреже</string>
-  <string name="status_no_background">Синхронизација искључена — нема позадинске активности</string>
-  <string name="status_poll_and_push_disabled">Проверавање и гурање искључено</string>
-  <string name="status_syncing_blocked">Синхронизација блокирана</string>
   <string name="status_syncing_off">Синхронизација онемогућена</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> изабрано</string>
   <string name="next_action">Следеће</string>
@@ -108,10 +97,7 @@
   <string name="search_results">Резултати претраге</string>
   <string name="preferences_action">Поставке</string>
   <string name="account_settings_action">Поставке налога</string>
-  <string name="folder_settings_action">Поставке фасцикле</string>
-  <string name="global_settings_action">Опште поставке</string>
   <string name="remove_account_action">Уклони налог</string>
-  <string name="clear_pending_action">Очисти наступајуће радње (пажња!)</string>
   <string name="mark_as_read_action">Означи као прочитано</string>
   <string name="send_alternate_action">Подели</string>
   <string name="send_alternate_chooser_title">Изаберите пошиљаоца</string>
@@ -134,14 +120,11 @@
   <string name="add_attachment_action">Додај прилог</string>
   <string name="empty_trash_action">Испразни смеће</string>
   <string name="expunge_action">Испразни</string>
-  <string name="clear_local_folder_action">Очисти локалне поруке</string>
   <string name="about_action">О програму</string>
   <string name="prefs_title">Поставке</string>
-  <string name="accounts_context_menu_title">Опције налога</string>
   <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
   <string name="general_no_subject">(без предмета)</string>
   <string name="general_no_sender">Нема пошиљаоца</string>
-  <string name="status_loading">Проверавам</string>
   <string name="status_loading_more">Учитавам поруке\u2026</string>
   <string name="status_network_error">Грешка повезивања</string>
   <string name="status_invalid_id_error">Порука није нађена</string>
@@ -155,8 +138,6 @@
   <string name="abbrev_bytes">B</string>
   <string name="account_size_changed">Налог „<xliff:g id="account">%s</xliff:g>“ смањен са <xliff:g id="oldSize">%s</xliff:g> на <xliff:g id="newSize">%s</xliff:g></string>
   <string name="compacting_account">Сажимање налога „<xliff:g id="account">%s</xliff:g>“</string>
-  <string name="clearing_account">Чишћење налога „<xliff:g id="account">%s</xliff:g>“</string>
-  <string name="recreating_account">Поновно прављење налога „<xliff:g id="account">%s</xliff:g>“</string>
   <string name="notification_new_title">Нова пошта</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> нова порука</item>
@@ -189,13 +170,6 @@
   <string name="special_mailbox_name_drafts">Нацрти</string>
   <string name="special_mailbox_name_trash">Смеће</string>
   <string name="special_mailbox_name_sent">Послате</string>
-  <string name="special_mailbox_name_archive">Архива</string>
-  <string name="special_mailbox_name_spam">Нежељене</string>
-  <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Нацрти)</string>
-  <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Смеће)</string>
-  <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Послате)</string>
-  <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Архива)</string>
-  <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Нежељене)</string>
   <string name="send_failure_subject">Неуспех слања неких порука</string>
   <string name="debug_enable_debug_logging_title">Укључи бележење за отклањање грешака</string>
   <string name="debug_enable_debug_logging_summary">Бележи додатне дијагностичке податке</string>
@@ -241,8 +215,6 @@
   <string name="message_saved_toast">Порука сачувана у нацрте</string>
   <string name="global_settings_flag_label">Прикажи звездице</string>
   <string name="global_settings_flag_summary">Звездице указују на обележене поруке</string>
-  <string name="global_settings_checkbox_label">Вишеизборне кућице</string>
-  <string name="global_settings_checkbox_summary">Увек прикажи вишеизборне кућице</string>
   <string name="global_settings_preview_lines_label">Линије прегледа</string>
   <string name="global_settings_show_correspondent_names_label">Приказ имена дописника</string>
   <string name="global_settings_show_correspondent_names_summary">Приказуј имена дописника уместо њихових е-адреса</string>
@@ -251,7 +223,6 @@
   <string name="global_settings_show_contact_name_label">Прикажи имена контаката</string>
   <string name="global_settings_show_contact_name_summary">Користи имена прималаца из именика кад је могуће</string>
   <string name="global_settings_registered_name_color_label">Обоји контакте</string>
-  <string name="global_settings_registered_name_color_default">Не боји имена на вашем списку контаката</string>
   <string name="global_settings_registered_name_color_changed">Обоји имена на вашем списку контаката</string>
   <string name="global_settings_folderlist_wrap_folder_names_label">Преламај дуга имена фасцикли</string>
   <string name="global_settings_folderlist_wrap_folder_names_summary">Користи више линија за приказ дугих имена фасцикли</string>
@@ -283,7 +254,6 @@
   <string name="global_settings_notification_quick_delete_never">Никад</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">За обавештења једне поруке</string>
   <string name="global_settings_notification_quick_delete_always">Увек</string>
-  <string name="global_settings_notification_quick_delete_description">Прикажи дугме у обавештењу за брзо брисање поруке</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Обавештења на закључаном екрану</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Без обавештења на закључаном екрану</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Назив програма</string>
@@ -315,7 +285,6 @@
   <string name="account_setup_account_type_instructions">Какав је ово налог?</string>
   <string name="account_setup_account_type_pop_action">ПОП3</string>
   <string name="account_setup_account_type_imap_action">ИМАП</string>
-  <string name="account_setup_account_type_webdav_action">Размена (ВебДАВ)</string>
   <string name="account_setup_auth_type_normal_password">Нормална лозинка</string>
   <string name="account_setup_auth_type_insecure_password">Лозинка послата небезбедно</string>
   <string name="account_setup_auth_type_encrypted_password">Шифрована лозинка</string>
@@ -344,8 +313,6 @@
   <string name="account_setup_incoming_other_label">Осталим</string>
   <string name="local_storage_provider_external_label">Спољашње складиште (СД картица)</string>
   <string name="local_storage_provider_internal_label">Обично унутрашње складиште</string>
-  <string name="local_storage_provider_samsunggalaxy_label">%1$s додатно унутрашње складиште</string>
-  <string name="local_storage_provider_label">Локација складишта</string>
   <string name="account_setup_expunge_policy_label">Уклони обрисане поруке са сервера</string>
   <string name="account_setup_expunge_policy_immediately">Одмах</string>
   <string name="account_setup_expunge_policy_on_poll">Приликом провере</string>
@@ -377,8 +344,6 @@
   <string name="account_setup_bad_uri">Неисправна постава: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Опције налога</string>
   <string name="compact_action">Сажми налог</string>
-  <string name="clear_action">Очисти поруке (пажња!)</string>
-  <string name="recreate_action">Поново направи податке (крајња нужда!)</string>
   <string name="account_setup_options_mail_check_frequency_label">Проверавање фасцикли</string>
   <string name="account_setup_options_mail_check_frequency_never">Никад</string>
   <string name="account_setup_options_mail_check_frequency_15min">Сваких 15 минута</string>
@@ -473,9 +438,7 @@
   <string name="account_settings_folders">Фасцикле</string>
   <string name="account_settings_quote_prefix_label">Префикс цитираног текста</string>
   <string name="account_settings_crypto_app">Укључи ОпенПГП</string>
-  <string name="account_settings_no_openpgp_provider_configured">Нема подешене апликације за ОпенПГП</string>
   <string name="account_settings_mail_check_frequency_label">Учесталост провере фасцикли</string>
-  <string name="account_settings_storage_title">Складиште</string>
   <string name="account_settings_color_label">Боја налога</string>
   <string name="account_settings_color_summary">Наглашена боја за овај налог, користи се за списак фасцикли и налога</string>
   <string name="account_settings_led_color_label">Боја ЛЕД обавештења</string>
@@ -629,11 +592,6 @@
   <string name="sort_by_unread">(Не)прочитана</string>
   <string name="sort_by_attach">Прилози</string>
   <string name="account_delete_dlg_title">Уклони налог</string>
-  <string name="account_recreate_dlg_title">Поново направи налог</string>
-  <string name="account_clear_dlg_title">Очисти налог</string>
-  <string name="provider_note_auonejp">Морате да омогућите ИМАП или ПОП3 на страници поставки „au one“ поште.</string>
-  <string name="provider_note_naver">Морате да омогућите ИМАП или ПОП3 на страници поставки „Naver“ поште.</string>
-  <string name="provider_note_hanmail">Морате да омогућите ИМАП или ПОП3 на страници поставки „Hanmail(Daum)“ поште.</string>
   <string name="account_setup_failed_dlg_invalid_certificate_title">Непрепознат сертификат</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Прихвати кључ</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Одбиј кључ</string>
@@ -691,20 +649,12 @@
   <string name="volume_navigation_message">У приказу порука</string>
   <string name="volume_navigation_list">У приказу спискова</string>
   <string name="start_integrated_inbox_title">Почни у обједињеном сандучету</string>
-  <string name="measure_accounts_title">Прикажи величину налога</string>
-  <string name="measure_accounts_summary">Искључите за бржи приказ</string>
-  <string name="count_search_title">Броји резултате претраге</string>
-  <string name="count_search_summary">Искључите за бржи приказ</string>
-  <string name="hide_special_accounts_title">Сакриј посебне налоге</string>
-  <string name="hide_special_accounts_summary">Сакриј налоге „Обједињено пријемно сандуче“ и „Све поруке“</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-  <string name="flagged_modifier"> - са звездицом</string>
   <string name="unread_modifier"> - непрочитане</string>
   <string name="search_all_messages_title">Све поруке</string>
   <string name="search_all_messages_detail">Све поруке у претраживим фасциклама</string>
   <string name="integrated_inbox_title">Обједињено пријемно сандуче</string>
   <string name="integrated_inbox_detail">Све поруке у обједињеном сандучету</string>
-  <string name="tap_hint">Тапните кружић или звездицу за непрочитане или означене поруке</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Обједини</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Све поруке се приказују у обједињеном сандучету</string>
   <string name="account_settings_searchable_label">Фасцикле за претрагу</string>
@@ -775,64 +725,27 @@
   <string name="dialog_confirm_spam_confirm_button">Да</string>
   <string name="dialog_confirm_spam_cancel_button">Не</string>
   <string name="dialog_attachment_progress_title">Преузимам прилог</string>
-  <string name="debug_logging_enabled">Бележење за отклањање грешака укључено</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="import_export_action">Увоз и извоз поставки</string>
-  <string name="settings_export_account">Извези поставке налога</string>
-  <string name="settings_export_all">Извези поставке и налоге</string>
-  <string name="settings_import_dialog_title">Увоз</string>
-  <string name="settings_export_dialog_title">Извоз</string>
-  <string name="settings_import">Увези поставке</string>
-  <string name="settings_import_selection">Увези изабрано</string>
-  <string name="settings_import_global_settings">Опште поставке</string>
-  <string name="settings_exporting">Извозим поставке…</string>
-  <string name="settings_importing">Увозим поставке…</string>
-  <string name="settings_import_scanning_file">Очитавам фајл…</string>
+  <string name="settings_list_miscellaneous_category">Разно</string>
+  <string name="settings_export_button">Извоз</string>
+  <string name="settings_export_share_button">Подели</string>
+  <string name="settings_export_progress_text">Извозим поставке…</string>
   <string name="settings_export_success_generic">Поставке успешно извезене</string>
-  <plurals name="settings_import_accounts">
-    <item quantity="one">1 налог</item>
-    <item quantity="few"><xliff:g id="numAccounts">%s</xliff:g> налога</item>
-    <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> налога</item>
-  </plurals>
   <string name="settings_export_failure">Неуспех извоза поставки</string>
-  <string name="settings_export_success_header">Извоз је успео</string>
-  <string name="settings_export_failed_header">Извоз није успео</string>
-  <string name="settings_import_success_header">Увоз је успео</string>
-  <string name="settings_import_failed_header">Увоз није успео</string>
-  <string name="settings_import_activate_account_header">Активирање налога</string>
-  <string name="settings_import_activate_account_intro">Да бисте могли да користите налог „<xliff:g id="account">%s</xliff:g>“ морате да унесете <xliff:g id="server_passwords">%s</xliff:g>.</string>
-  <plurals name="settings_import_server_passwords">
-    <item quantity="one">лозинку сервера</item>
-    <item quantity="few">лозинке сервера</item>
-    <item quantity="other">лозинке сервера</item>
-  </plurals>
-  <string name="settings_import_incoming_server">Долазни сервер (<xliff:g id="hostname">%s</xliff:g>):</string>
-  <string name="settings_import_outgoing_server">Одлазни сервер (<xliff:g id="hostname">%s</xliff:g>):</string>
-  <plurals name="settings_import_setting_passwords">
-    <item quantity="one">Постављам лозинку…</item>
-    <item quantity="few">Постављам лозинке…</item>
-    <item quantity="other">Постављам лозинке…</item>
-  </plurals>
-  <string name="settings_import_use_incoming_server_password">Користи лозинку долазног сервера</string>
-  <string name="activate_account_action">Активирај</string>
-  <string name="account_unavailable">Налог „<xliff:g id="account">%s</xliff:g>“ је недоступан; проверите складиште</string>
-  <string name="attachment_save_title">Упис прилога</string>
-  <string name="attachment_save_desc">Нема прегледача фајлова. Где желите да сачувате овај прилог?</string>
-  <string name="manage_accounts_move_up_action">Помери горе</string>
-  <string name="manage_accounts_move_down_action">Помери доле</string>
-  <string name="manage_accounts_moving_message">Померам налог…</string>
+  <string name="settings_import_title">Увези поставке</string>
+  <string name="settings_import_button">Увоз</string>
+  <string name="settings_import">Увези поставке</string>
+  <string name="settings_importing">Увозим поставке…</string>
   <string name="unread_widget_select_account">Прикажи број непрочитаних за…</string>
   <string name="unread_widget_account_title">Налог</string>
   <string name="unread_widget_unified_inbox_account_summary">Обједињено пријемно сандуче</string>
-  <string name="unread_widget_all_messages_account_summary">Све поруке</string>
   <string name="unread_widget_folder_enabled_title">Број фасцикли</string>
   <string name="unread_widget_folder_title">Фасцикла</string>
   <string name="unread_widget_action_done">Заврши</string>
   <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
   <string name="unread_widget_account_not_selected">Ниједан налог није изабран</string>
   <string name="unread_widget_folder_not_selected">Ниједна фасцикла није изабрана</string>
-  <string name="close">Затвори</string>
   <string name="webview_empty_message">Нема текста</string>
   <string name="webview_contextmenu_link_view_action">Отвори везу</string>
   <string name="webview_contextmenu_link_share_action">Дели везу</string>
@@ -852,8 +765,6 @@
   <string name="webview_contextmenu_email_save_action">Сачувај у контакте</string>
   <string name="webview_contextmenu_email_copy_action">Копирај адресу у клипборд</string>
   <string name="webview_contextmenu_email_clipboard_label">Адреса е-поште</string>
-  <string name="image_saved_as">Порука сачувана као „<xliff:g id="filename">%s</xliff:g>“</string>
-  <string name="image_saving_failed">Упис слике није успео.</string>
   <string name="account_settings_remote_search_num_results_entries_all">Све</string>
   <string name="account_settings_remote_search_num_results_entries_10">10</string>
   <string name="account_settings_remote_search_num_results_entries_25">25</string>
@@ -863,7 +774,6 @@
   <string name="account_settings_remote_search_num_results_entries_500">500</string>
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">Ограничење претраге сервера</string>
-  <string name="account_settings_remote_search_num_summary">Тражење ће стати након <xliff:g id="num_results">%s</xliff:g> нађених ставки.</string>
   <string name="remote_search_sending_query">Шаљем упит серверу</string>
   <plurals name="remote_search_downloading">
     <item quantity="one">Добављам %d резултат</item>
@@ -880,8 +790,6 @@
   <string name="account_settings_remote_search_enabled">Омогући претрагу сервера</string>
   <string name="account_settings_remote_search_enabled_summary">Тражи поруке на серверу поред оних на вашем уређају</string>
   <string name="action_remote_search">Тражи поруке на серверу</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_pull">Повуците за тражење на серверу…</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_release">Пустите за тражење на серверу…</string>
   <string name="remote_search_unavailable_no_network">За претрагу сервера потребна је веза са мрежом.</string>
   <string name="global_settings_background_as_unread_indicator_label">Промени боју након читања</string>
   <string name="global_settings_background_as_unread_indicator_summary">Другачија позадина ће показати да је порука прочитана</string>
@@ -890,7 +798,6 @@
   <string name="upgrade_databases_title">Надоградња база података</string>
   <string name="upgrade_databases_unspecified">Надограђујем базе података…</string>
   <string name="upgrade_database_format">Надограђујем базе података за налог „<xliff:g id="account">%s</xliff:g>“</string>
-  <string name="message_list_loading">Учитавам…</string>
   <string name="global_settings_splitview_mode_label">Подељени приказ</string>
   <string name="global_settings_splitview_always">Увек</string>
   <string name="global_settings_splitview_never">Никад</string>
@@ -898,9 +805,6 @@
   <string name="message_view_empty">Изаберите поруку с лева</string>
   <string name="global_settings_show_contact_picture_label">Прикажи слике контаката</string>
   <string name="global_settings_show_contact_picture_summary">Прикажи слике контаката у списку порука</string>
-  <string name="last_refresh_time_format">Освежена <xliff:g id="formatted_time">%s</xliff:g></string>
-  <string name="last_refresh_time_format_with_push">Освежена <xliff:g id="time_with_preposition">%s</xliff:g> (активно гурање)</string>
-  <string name="preposition_for_date">у <xliff:g id="date">%s</xliff:g></string>
   <string name="mark_all_as_read">Означи све као прочитано</string>
   <string name="global_settings_colorize_missing_contact_pictures_label">Обоји слике контаката</string>
   <string name="global_settings_colorize_missing_contact_pictures_summary">Обоји недостајуће слике контаката</string>
@@ -921,8 +825,6 @@
   <!--Note: This references message_view_download_remainder-->
   <string name="preview_encrypted">*Шифровано*</string>
   <string name="add_from_contacts">Додај из контаката</string>
-  <string name="crypto_settings_cancel">Одустани</string>
-  <string name="crypto_settings_ok">Настави</string>
   <string name="recipient_cc">Цц</string>
   <string name="recipient_bcc">Бцц</string>
   <string name="recipient_to">За</string>
@@ -934,9 +836,6 @@
   <string name="address_type_mobile">Мобилни</string>
   <string name="compose_error_no_draft_folder">Фасцикла за нацрте није подешена за овај налог!</string>
   <string name="compose_error_no_key_configured">Ниједан кључ није постављен за овај налог! Проверите поставке.</string>
-  <string name="crypto_mode_disabled">Не шифруј.</string>
-  <string name="crypto_mode_opportunistic">Шифруј ако је могуће</string>
-  <string name="crypto_mode_private">Шифруј</string>
   <string name="error_crypto_provider_connect">Не могу да се повежем са снабдевачем криптографије, проверите ваше поставке или покушајте поново тапом на икону криптографије!</string>
   <string name="error_crypto_inline_attach">PGP/INLINE режим не подржава прилоге!</string>
   <string name="enable_inline_pgp">Укључи PGP/INLINE</string>
@@ -984,14 +883,12 @@
   <string name="apg_learn_more">Кликните <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">овде</a> да сазнате више.</string>
   <string name="apg_deprecated_ok">Важи!</string>
   <string name="apg">АПГ</string>
-  <string name="no_crypto_provider_see_global">Нема подешене апликације за ОпенПГП, погледајте глобалне поставке!</string>
   <string name="crypto_no_provider_title">Ова е-порука је шифрована</string>
   <string name="crypto_no_provider_message">Ова е-порука је шифрована у ОпенПГП-у.\nДа бисте је прочитали, треба да инсталирате и поставите компатибилну ОпенПГП апликацију.</string>
   <string name="crypto_no_provider_button">Иди на Поставке</string>
   <string name="mail_list_widget_text">К-9 списак порука</string>
   <string name="mail_list_widget_loading">Учитавам поруке…</string>
   <string name="fetching_folders_failed">Добављање списка фасцикли није успело</string>
-  <string name="messageview_crypto_warning_details">Прикажи детаље</string>
   <string name="openpgp_enabled_error_title">Шифровање није могуће</string>
   <string name="enable_encryption">Укључи шифровање</string>
   <string name="disable_encryption">Искључи шифровање</string>

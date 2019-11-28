@@ -4,8 +4,6 @@ import com.fsck.k9.backends.backendsModule
 import com.fsck.k9.controller.ControllerExtension
 import com.fsck.k9.crypto.EncryptionExtractor
 import com.fsck.k9.crypto.openpgp.OpenPgpEncryptionExtractor
-import com.fsck.k9.external.BroadcastSenderListener
-import com.fsck.k9.external.externalModule
 import com.fsck.k9.notification.notificationModule
 import com.fsck.k9.preferences.K9StoragePersister
 import com.fsck.k9.preferences.StoragePersister
@@ -15,25 +13,24 @@ import com.fsck.k9.widget.list.MessageListWidgetUpdateListener
 import com.fsck.k9.widget.list.messageListWidgetModule
 import com.fsck.k9.widget.unread.UnreadWidgetUpdateListener
 import com.fsck.k9.widget.unread.unreadWidgetModule
-import org.koin.dsl.module.applicationContext
+import org.koin.core.qualifier.named
+import org.koin.dsl.module
 
-private val mainAppModule = applicationContext {
-    bean { App.appConfig }
-    bean { MessagingListenerProvider(
+private val mainAppModule = module {
+    single { App.appConfig }
+    single { MessagingListenerProvider(
             listOf(
                     get<UnreadWidgetUpdateListener>(),
-                    get<MessageListWidgetUpdateListener>(),
-                    get<BroadcastSenderListener>()
+                    get<MessageListWidgetUpdateListener>()
             ))
     }
-    bean("controllerExtensions") { emptyList<ControllerExtension>() }
-    bean { OpenPgpEncryptionExtractor.newInstance() as EncryptionExtractor }
-    bean { K9StoragePersister(get()) as StoragePersister }
+    single(named("controllerExtensions")) { emptyList<ControllerExtension>() }
+    single<EncryptionExtractor> { OpenPgpEncryptionExtractor.newInstance() }
+    single<StoragePersister> { K9StoragePersister(get()) }
 }
 
 val appModules = listOf(
         mainAppModule,
-        externalModule,
         messageListWidgetModule,
         unreadWidgetModule,
         notificationModule,

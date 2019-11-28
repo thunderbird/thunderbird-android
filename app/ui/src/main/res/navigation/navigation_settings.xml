@@ -12,6 +12,10 @@
         tools:layout="@layout/fragment_settings_list">
 
         <action
+            android:id="@+id/action_settingsListScreen_to_onboardingScreen"
+            app:destination="@id/onboardingScreen" />
+
+        <action
             android:id="@+id/action_settingsListScreen_to_aboutScreen"
             app:destination="@id/aboutScreen" />
 
@@ -25,13 +29,22 @@
         <action
             android:id="@+id/action_settingsListScreen_to_settingsExportScreen"
             app:destination="@id/settingsExportScreen" />
+        <action
+            android:id="@+id/action_settingsListScreen_to_settingsImportScreen"
+            app:destination="@id/settingsImportScreen" />
     </fragment>
 
     <activity
+        android:id="@+id/onboardingScreen"
+        android:name="com.fsck.k9.ui.onboarding.OnboardingActivity"
+        android:label="@string/welcome_message_title"
+        tools:layout="@layout/activity_onboarding"/>
+
+    <fragment
         android:id="@+id/aboutScreen"
-        android:name="com.fsck.k9.ui.settings.AboutActivity"
+        android:name="com.fsck.k9.ui.settings.AboutFragment"
         android:label="@string/about_action"
-        tools:layout="@layout/about"/>
+        tools:layout="@layout/fragment_about"/>
 
     <activity
         android:id="@+id/generalSettingsScreen"
@@ -49,5 +62,11 @@
         android:name="com.fsck.k9.ui.settings.export.SettingsExportFragment"
         android:label="@string/settings_export_title"
         tools:layout="@layout/fragment_settings_export"/>
+
+    <fragment
+        android:id="@+id/settingsImportScreen"
+        android:name="com.fsck.k9.ui.settings.import.SettingsImportFragment"
+        android:label="@string/settings_import_title"
+        tools:layout="@layout/fragment_settings_import"/>
 
 </navigation>

@@ -6,8 +6,6 @@
   <string name="app_name">K-9 Mail</string>
   <string name="shortcuts_title">K-9 Akun</string>
   <string name="unread_widget_label">K-9 Belum dibaca</string>
-  <string name="remote_control_label">K-9 Mail pengendali jauh</string>
-  <string name="remote_control_desc">Izinkan aplikasi ini mengendalikan aktivitas dan pengaturan K-9 Mail.</string>
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Hak Cipta 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Hak Cipta Sebagian 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
@@ -46,10 +44,7 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="default_signature">-- \nDikirim dari perangkat Android saya menggunakan K-9 Mail.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Akun \"<xliff:g id="account">%s</xliff:g>\" akan dibuang dari K-9 Mail.</string>
-  <string name="account_recreate_dlg_instructions_fmt">Semua data lokal \"<xliff:g id="account">%s</xliff:g>\" akan dibuang. Pengaturan akun akan dipertahankan.</string>
-  <string name="account_clear_dlg_instructions_fmt">Salinan lokal pesan di dalam \"<xliff:g id="account">%s</xliff:g>\" akan dibuang. Pengaturan akun akan dipertahankan.</string>
   <!--=== General strings ==================================================================-->
-  <string name="app_libraries">Kami menggunakan pustaka pihak ketiga berikut: <xliff:g id="app_libraries_list">%s</xliff:g></string>
   <string name="read_messages_label">Baca Email</string>
   <string name="read_messages_desc">Izinkan aplikasi ini membaca Email Anda.</string>
   <string name="delete_messages_label">Hapus Email</string>
@@ -57,7 +52,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="accounts_title">Akun</string>
   <string name="folders_title">Folder</string>
   <string name="advanced">Lanjutan</string>
-  <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
   <string name="compose_title_compose">Menyusun</string>
   <string name="compose_title_reply">Balas</string>
   <string name="compose_title_reply_all">Balas semua</string>
@@ -70,11 +64,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="status_sending_account">Mengirimkan <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_processing_account">Memproses <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
-  <string name="status_next_poll">Penarikan berikutnya <xliff:g id="nexttime">%s</xliff:g></string>
-  <string name="status_no_network">Sinkronisasi di non fungsikan - Tidak ada jaringan</string>
-  <string name="status_no_background">Sinkronisasi di non fungsikan - Tidak ada aktivitas di belakang</string>
-  <string name="status_poll_and_push_disabled">Menarik dan mendorong nonaktif</string>
-  <string name="status_syncing_blocked">Sinkronisasi di non fungsikan</string>
   <string name="status_syncing_off">Sinkronisasi dinonfungsikan</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> dipilih</string>
   <string name="next_action">Selanjutnya</string>
@@ -110,10 +99,7 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="search_results">Hasil pencarian</string>
   <string name="preferences_action">Pengaturan</string>
   <string name="account_settings_action">Pengaturan akun</string>
-  <string name="folder_settings_action">Pengaturan folder</string>
-  <string name="global_settings_action">Pengaturan global</string>
   <string name="remove_account_action">Buang akun</string>
-  <string name="clear_pending_action">Bersihkan tindakan tertunda (bahaya!)</string>
   <string name="mark_as_read_action">Tandai sudah dibaca</string>
   <string name="send_alternate_action">Bagikan</string>
   <string name="send_alternate_chooser_title">Pilih pengirim</string>
@@ -134,14 +120,11 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="add_attachment_action">Tambah lampiran</string>
   <string name="empty_trash_action">Kosongkan Tong Sampah</string>
   <string name="expunge_action">Menghapus</string>
-  <string name="clear_local_folder_action">Bersihkan pesan lokal</string>
   <string name="about_action">Tentang</string>
   <string name="prefs_title">Pengaturan</string>
-  <string name="accounts_context_menu_title">Opsi akun</string>
   <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
   <string name="general_no_subject">(Tidak ada subyek)</string>
   <string name="general_no_sender">Tidak ada pengirim</string>
-  <string name="status_loading">Menarik</string>
   <string name="status_loading_more">Memuat pesan\u2026</string>
   <string name="status_network_error">Galat sambungan</string>
   <string name="status_invalid_id_error">Pesan tidak ditemukan</string>
@@ -155,8 +138,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="abbrev_bytes">B</string>
   <string name="account_size_changed">Akun \"<xliff:g id="account">%s</xliff:g>\" dimampatkan dari <xliff:g id="oldSize">%s</xliff:g> ke <xliff:g id="newSize">%s</xliff:g></string>
   <string name="compacting_account">Memampatkan akun \"<xliff:g id="account">%s</xliff:g>\"</string>
-  <string name="clearing_account">Membersihkan akun \"<xliff:g id="account">%s</xliff:g>\"</string>
-  <string name="recreating_account">Membuat ulang akun \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Pesan baru</string>
   <plurals name="notification_new_messages_title">
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> pesan baru</item>
@@ -187,13 +168,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="special_mailbox_name_drafts">Draf</string>
   <string name="special_mailbox_name_trash">Tong Sampah</string>
   <string name="special_mailbox_name_sent">Terkirim</string>
-  <string name="special_mailbox_name_archive">Arsip</string>
-  <string name="special_mailbox_name_spam">Spam</string>
-  <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Draf)</string>
-  <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Tong Sampah)</string>
-  <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Terkirim)</string>
-  <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Arsip)</string>
-  <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
   <string name="send_failure_subject">Gagal mengirim beberapa pesan</string>
   <string name="debug_enable_debug_logging_title">Fungsikan pencatatan awakutu</string>
   <string name="debug_enable_debug_logging_summary">Catat informasi diagnostik tambahan</string>
@@ -241,8 +215,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="message_saved_toast">Pesan disimpan sebagai draf</string>
   <string name="global_settings_flag_label">Tampilkan bintang</string>
   <string name="global_settings_flag_summary">Bintang menunjukkan pesan yang ditandai</string>
-  <string name="global_settings_checkbox_label">Kotak centang multi-pilihan</string>
-  <string name="global_settings_checkbox_summary">Selalu tampilkan kotak centang multi-pilihan</string>
   <string name="global_settings_preview_lines_label">Garis pratinjau</string>
   <string name="global_settings_show_correspondent_names_label">Tampilkan nama koresponden</string>
   <string name="global_settings_show_correspondent_names_summary">Tampilkan nama koresponden bukan alamat surel mereka</string>
@@ -251,7 +223,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="global_settings_show_contact_name_label">Tampilkan nama kontak</string>
   <string name="global_settings_show_contact_name_summary">Gunakan nama penerima dari Kontak jika tersedia</string>
   <string name="global_settings_registered_name_color_label">Warnai kontak</string>
-  <string name="global_settings_registered_name_color_default">Jangan warnai nama di daftar kontak Anda</string>
   <string name="global_settings_registered_name_color_changed">Warnai nama di daftar kontak Anda</string>
   <string name="global_settings_folderlist_wrap_folder_names_label">Persingkat nama folder yang panjang</string>
   <string name="global_settings_folderlist_wrap_folder_names_summary">Gunakan baris baru untuk menampilkan nama folder yang panjang</string>
@@ -283,7 +254,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="global_settings_notification_quick_delete_never">Tidak pernah</string>
   <string name="global_settings_notification_quick_delete_when_single_msg">Untuk notifikasi pesan tunggal</string>
   <string name="global_settings_notification_quick_delete_always">Selalu</string>
-  <string name="global_settings_notification_quick_delete_description">Menampilkan tombol dalam notifikasi yang memungkinkan dengan cepat menghapus pesan</string>
   <string name="global_settings_lock_screen_notification_visibility_title">Notifikasi Layar Penguncian</string>
   <string name="global_settings_lock_screen_notification_visibility_nothing">Tidak ada pemberitahuan layar kunci</string>
   <string name="global_settings_lock_screen_notification_visibility_app_name">Nama aplikasi</string>
@@ -315,7 +285,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_setup_account_type_instructions">Akun apa ini?</string>
   <string name="account_setup_account_type_pop_action">POP3</string>
   <string name="account_setup_account_type_imap_action">IMAP</string>
-  <string name="account_setup_account_type_webdav_action">Exchange (WebDAV)</string>
   <string name="account_setup_auth_type_normal_password">Sandi normal</string>
   <string name="account_setup_auth_type_insecure_password">Sandi, dikirim secara tidak aman</string>
   <string name="account_setup_auth_type_encrypted_password">Sandi terenkripsi</string>
@@ -344,8 +313,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_setup_incoming_other_label">Lainnya</string>
   <string name="local_storage_provider_external_label">Penyimpanan eksternal (kartu SD)</string>
   <string name="local_storage_provider_internal_label">Penyimpanan internal umum</string>
-  <string name="local_storage_provider_samsunggalaxy_label">%1$s penyimpanan internal tambahan</string>
-  <string name="local_storage_provider_label">Lokasi penyimpanan</string>
   <string name="account_setup_expunge_policy_label">Hapus pesan yang dihapus di server</string>
   <string name="account_setup_expunge_policy_immediately">Segera</string>
   <string name="account_setup_expunge_policy_on_poll">Ketika menarik</string>
@@ -377,8 +344,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_setup_bad_uri">Salah pengaturan: <xliff:g id="err_mess">%s</xliff:g></string>
   <string name="account_setup_options_title">Opsi akun</string>
   <string name="compact_action">Akun ringkas</string>
-  <string name="clear_action">Bersihkan pesan (bahaya!)</string>
-  <string name="recreate_action">Buat kembali data (Usaha Terakhir!)</string>
   <string name="account_setup_options_mail_check_frequency_label">Frekuensi penarikan folder</string>
   <string name="account_setup_options_mail_check_frequency_never">Tidak pernah</string>
   <string name="account_setup_options_mail_check_frequency_15min">Setiap 15 menit</string>
@@ -478,10 +443,7 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_settings_crypto_key">Konfigurasikan kunci end-to-end</string>
   <string name="account_settings_crypto_summary_off">Tidak ada aplikasi OpenPGP yang dikonfigurasi</string>
   <string name="account_settings_crypto_summary_on">Terhubung dengan %s</string>
-  <string name="account_settings_no_openpgp_provider_configured">Tidak ada aplikasi OpenPGP dikonfigurasi</string>
-  <string name="account_settings_no_openpgp_provider_installed">Tidak ditemukan aplikasi OpenPGP - klik untuk menginstal</string>
   <string name="account_settings_mail_check_frequency_label">Frekuensi penarikan folder</string>
-  <string name="account_settings_storage_title">Penyimpanan</string>
   <string name="account_settings_color_label">Warna akun</string>
   <string name="account_settings_color_summary">Warna aksen akun ini digunakan dalam folder dan daftar akun</string>
   <string name="account_settings_color_none">Tanpa warna</string>
@@ -637,11 +599,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="sort_by_unread">Terbaca/belum</string>
   <string name="sort_by_attach">Lampiran</string>
   <string name="account_delete_dlg_title">Hapus akun</string>
-  <string name="account_recreate_dlg_title">Buat kembali akun</string>
-  <string name="account_clear_dlg_title">Bersihkan akun</string>
-  <string name="provider_note_auonejp">Pastikan untuk mengaktifkan IMAP atau POP3 pada halaman au one pengaturan mail.</string>
-  <string name="provider_note_naver">Pastikan untuk mengaktifkan IMAP atau POP3 pada halaman Naver pengaturan mail.</string>
-  <string name="provider_note_hanmail">Pastikan untuk mengaktifkan IMAP atau POP3 pada halaman Hanmail(Daum) pengaturan mail.</string>
   <string name="account_setup_failed_dlg_invalid_certificate_title">Sertifikat tidak dikenal</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Terima kunci</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Tolak kunci</string>
@@ -700,20 +657,12 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="volume_navigation_message">Dalam tampilan pesan</string>
   <string name="volume_navigation_list">Dalam tampilan daftar</string>
   <string name="start_integrated_inbox_title">Mulai pada Inbox terpadu</string>
-  <string name="measure_accounts_title">Perlihatkan ukuran akun</string>
-  <string name="measure_accounts_summary">Matikan untuk tampilan lebih cepat</string>
-  <string name="count_search_title">Hitung hasil pencarian</string>
-  <string name="count_search_summary">Matikan untuk tampilan lebih cepat</string>
-  <string name="hide_special_accounts_title">Sembunyikan akun spesial</string>
-  <string name="hide_special_accounts_summary">Sembunyikan kotak masuk terpadu dan semua akun pesan</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-  <string name="flagged_modifier">- Terandai bintang</string>
   <string name="unread_modifier">- Belum dibaca</string>
   <string name="search_all_messages_title">Semua pesan</string>
   <string name="search_all_messages_detail">Semua pesan dalam folder yang dapat ditelusuri</string>
   <string name="integrated_inbox_title">Inbox terpadu</string>
   <string name="integrated_inbox_detail">Semua pesan dalam folder terpadu</string>
-  <string name="tap_hint">Ketuk lingkaran atau bintang untuk pesan yang belum dibaca atau berbintang</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Satukan</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Semua pesan ditampilkan di Unified Inbox</string>
   <string name="account_settings_searchable_label">Folder untuk dicari</string>
@@ -780,53 +729,22 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="dialog_confirm_spam_confirm_button">Ya</string>
   <string name="dialog_confirm_spam_cancel_button">Tidak</string>
   <string name="dialog_attachment_progress_title">Mengunduh lampiran</string>
-  <string name="debug_logging_enabled">Aktifkan debug logging</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="import_export_action">Pengaturan impor &amp; ekspor</string>
-  <string name="settings_export_account">Ekspor pengaturan akun</string>
-  <string name="settings_export_all">Ekspor pengaturan dan akun</string>
-  <string name="settings_import_dialog_title">Impor</string>
-  <string name="settings_export_dialog_title">Ekspor</string>
-  <string name="settings_import">Impor pengaturan</string>
-  <string name="settings_import_selection">Impor pilihan</string>
-  <string name="settings_import_global_settings">Pengaturan global</string>
-  <string name="settings_exporting">Mengekspor pengaturan...</string>
-  <string name="settings_importing">Mengimpor pengaturan...</string>
-  <string name="settings_import_scanning_file">Memindai file...</string>
+  <string name="settings_list_miscellaneous_category">Lain-lain</string>
+  <string name="settings_export_button">Ekspor</string>
+  <string name="settings_export_share_button">Bagikan</string>
+  <string name="settings_export_progress_text">Mengekspor pengaturan...</string>
   <string name="settings_export_success_generic">Pengaturan berhasil diekspor</string>
-  <string name="settings_import_account_imported_as">Terimpor <xliff:g id="original_account_name">%s</xliff:g> sebagai <xliff:g id="account_name_after_import">%s</xliff:g></string>
-  <plurals name="settings_import_accounts">
-    <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> akun</item>
-  </plurals>
   <string name="settings_export_failure">Gagal mengekspor pengaturan</string>
-  <string name="settings_export_success_header">Ekspor berhasil</string>
-  <string name="settings_export_failed_header">Ekspor gagal</string>
-  <string name="settings_import_success_header">Impor berhasil</string>
-  <string name="settings_import_failed_header">Impor gagal</string>
-  <string name="settings_import_activate_account_header">Aktifkan akun</string>
-  <string name="settings_import_activate_account_intro">Untuk dapat menggunakan akun \"<xliff:g id="account">%s</xliff:g>\" anda butuh menyediakan <xliff:g id="server_passwords">%s</xliff:g>.</string>
-  <plurals name="settings_import_server_passwords">
-    <item quantity="other">Kata kunci server</item>
-  </plurals>
-  <string name="settings_import_incoming_server">Server masuk (<xliff:g id="hostname">%s</xliff:g>):</string>
-  <string name="settings_import_outgoing_server">Server keluar (<xliff:g id="hostname">%s</xliff:g>):</string>
-  <plurals name="settings_import_setting_passwords">
-    <item quantity="other">Menetapkan kata sandi ...</item>
-  </plurals>
-  <string name="settings_import_use_incoming_server_password">Gunakan kata kunci server masuk</string>
-  <string name="activate_account_action">Aktifkan</string>
-  <string name="account_unavailable">Akun \"<xliff:g id="account">%s</xliff:g>\" tidak tersedia; cek penyimpanan</string>
-  <string name="attachment_save_title">Simpan lampiran</string>
-  <string name="attachment_save_desc">Tidak ditemukan browser file. Di mana Anda ingin menyimpan lampiran ini?</string>
-  <string name="manage_accounts_move_up_action">Pindah keatas</string>
-  <string name="manage_accounts_move_down_action">Pindah kebawah</string>
-  <string name="manage_accounts_moving_message">Memindahkan akun...</string>
+  <string name="settings_import_title">Impor pengaturan</string>
+  <string name="settings_import_button">Impor</string>
+  <string name="settings_import">Impor pengaturan</string>
+  <string name="settings_importing">Mengimpor pengaturan...</string>
   <string name="unread_widget_select_account">Perlihatkan jumlah belum terbaca untuk...</string>
   <string name="unread_widget_account_title">Akun</string>
   <string name="unread_widget_account_summary">Akun yang jumlah yang belum dibaca harus ditampilkan</string>
   <string name="unread_widget_unified_inbox_account_summary">Inbox terpadu</string>
-  <string name="unread_widget_all_messages_account_summary">Semua pesan</string>
   <string name="unread_widget_folder_enabled_title">Penghitung folder</string>
   <string name="unread_widget_folder_enabled_summary">Tampilkan jumlah yang belum dibaca hanya satu folder</string>
   <string name="unread_widget_folder_title">Folder</string>
@@ -835,7 +753,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
   <string name="unread_widget_account_not_selected">Tidak ada akun yang dipilih</string>
   <string name="unread_widget_folder_not_selected">Tidak ada folder yang dipilih</string>
-  <string name="close">Tutup</string>
   <string name="webview_empty_message">Tidak ada teks</string>
   <string name="webview_contextmenu_link_view_action">Buka link</string>
   <string name="webview_contextmenu_link_share_action">Bagikan link</string>
@@ -855,8 +772,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="webview_contextmenu_email_save_action">Simpan ke kontak</string>
   <string name="webview_contextmenu_email_copy_action">Salin alamat ke clipboard</string>
   <string name="webview_contextmenu_email_clipboard_label">Alamat surel</string>
-  <string name="image_saved_as">Simpan gambar sebagai \"<xliff:g id="filename">%s</xliff:g>\"</string>
-  <string name="image_saving_failed">Gagal menyimpan gambar</string>
   <string name="account_settings_remote_search_num_results_entries_all">Semua</string>
   <string name="account_settings_remote_search_num_results_entries_10">10</string>
   <string name="account_settings_remote_search_num_results_entries_25">25</string>
@@ -866,7 +781,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_settings_remote_search_num_results_entries_500">500</string>
   <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
   <string name="account_settings_remote_search_num_label">Batas pencarian server</string>
-  <string name="account_settings_remote_search_num_summary">Pencarian akan berhenti setelah menemukan <xliff:g id="num_results">%s</xliff:g> hasil.</string>
   <string name="remote_search_sending_query">Mengirim kueri ke server</string>
   <plurals name="remote_search_downloading">
     <item quantity="other">Mengambil %d hasil</item>
@@ -879,8 +793,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_settings_remote_search_enabled">Aktifkan pencarian server</string>
   <string name="account_settings_remote_search_enabled_summary">Cari pesan di server selain yang ada di perangkat Anda</string>
   <string name="action_remote_search">Cari pesan di server</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_pull">Tarik untuk mencari server...</string>
-  <string name="pull_to_refresh_remote_search_from_local_search_release">Lepaskan untuk mencari server...</string>
   <string name="remote_search_unavailable_no_network">Sambungan jaringan diperlukan untuk pencarian server.</string>
   <string name="global_settings_background_as_unread_indicator_label">Ubah warna saat dibaca</string>
   <string name="global_settings_background_as_unread_indicator_summary">Latar belakang yang berbeda akan menunjukkan bahwa pesan telah dibaca</string>
@@ -889,7 +801,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="upgrade_databases_title">Mengupgrade database</string>
   <string name="upgrade_databases_unspecified">Mengupgrade database...</string>
   <string name="upgrade_database_format">Mengupgrade database untuk akun \"<xliff:g id="account">%s</xliff:g>\"</string>
-  <string name="message_list_loading">Memuat...</string>
   <string name="global_settings_splitview_mode_label">Tampilkan layar terpisah</string>
   <string name="global_settings_splitview_always">Selalu</string>
   <string name="global_settings_splitview_never">Tidak pernah</string>
@@ -897,9 +808,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="message_view_empty">Silahkan pilih pesan di sebelah kiri</string>
   <string name="global_settings_show_contact_picture_label">Perlihatkan gambar kontak</string>
   <string name="global_settings_show_contact_picture_summary">Tampilkan gambar kontak dalam daftar pesan</string>
-  <string name="last_refresh_time_format">Disegarkan <xliff:g id="formatted_time">%s</xliff:g></string>
-  <string name="last_refresh_time_format_with_push">Disegarkan <xliff:g id="time_with_preposition">%s</xliff:g> (Dorong aktif)</string>
-  <string name="preposition_for_date">pada <xliff:g id="date">%s</xliff:g></string>
   <string name="mark_all_as_read">Tandai semua telah dibaca</string>
   <string name="global_settings_colorize_missing_contact_pictures_label">Warnai gambar kontak</string>
   <string name="global_settings_colorize_missing_contact_pictures_summary">Warnai gambar kontak yang hilang</string>
@@ -920,8 +828,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <!--Note: This references message_view_download_remainder-->
   <string name="preview_encrypted">*Terenkripsi*</string>
   <string name="add_from_contacts">Tambahkan dari kontak</string>
-  <string name="crypto_settings_cancel">Batal</string>
-  <string name="crypto_settings_ok">Lanjutkan</string>
   <string name="recipient_cc">Cc</string>
   <string name="recipient_bcc">Bcc</string>
   <string name="recipient_to">Kepada</string>
@@ -933,9 +839,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="address_type_mobile">Mobile</string>
   <string name="compose_error_no_draft_folder">Tidak ada folder Konsep yang dikonfigurasi untuk akun ini!</string>
   <string name="compose_error_no_key_configured">Tidak ada kunci yang dikonfigurasi untuk akun ini! Silakan periksa pengaturan Anda.</string>
-  <string name="crypto_mode_disabled">Jangan enkrip</string>
-  <string name="crypto_mode_opportunistic">Enkrip jika memungkinkan</string>
-  <string name="crypto_mode_private">Enkrip</string>
   <string name="error_crypto_provider_incompatible">Penyedia Crypto menggunakan versi yang tidak kompatibel. Silakan periksa setting anda!</string>
   <string name="error_crypto_provider_connect">Tidak dapat terhubung ke penyedia kripto, periksa setelan Anda atau klik ikon kripto untuk mencoba lagi!</string>
   <string name="error_crypto_provider_ui_required">Gagal memulai enkripsi end-to-end, periksa pengaturan Anda</string>
@@ -979,8 +882,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="crypto_msg_encrypted_error">tapi ada kesalahan dekripsi</string>
   <string name="crypto_msg_encrypted_incomplete">harus mendownload pesan untuk dekripsi sepenuhnya</string>
   <string name="crypto_msg_encrypted_no_provider">namun tidak ada aplikasi kripto yang dikonfigurasi</string>
-  <string name="crypto_msg_encrypted_unsupported">namun dalam format yang tidak didukung</string>
-  <string name="crypto_msg_encrypted_cancelled">namun dekripsi dibatalkan</string>
   <string name="crypto_msg_title_encrypted_unsigned">Terenkripsi</string>
   <string name="crypto_msg_encrypted_unsigned">tapi tidak ujung ke ujung</string>
   <string name="crypto_msg_title_encrypted_signed_e2e">End-to-End yang dienkripsi</string>
@@ -1021,14 +922,12 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="apg_learn_more">Anda bisa <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">klik di sini</a> untuk mempelajari lebih lanjut.</string>
   <string name="apg_deprecated_ok">Mengerti!</string>
   <string name="apg">APG</string>
-  <string name="no_crypto_provider_see_global">Tidak ada aplikasi OpenPGP yang dikonfigurasi, lihat pengaturan global!</string>
   <string name="crypto_no_provider_title">Email ini dienkripsi</string>
   <string name="crypto_no_provider_message">Email ini telah dienkripsi dengan OpenPGP. \nUntuk membacanya, Anda perlu menginstal dan mengkonfigurasi Aplikasi OpenPGP yang kompatibel.</string>
   <string name="crypto_no_provider_button">Pergi ke pengaturan</string>
   <string name="mail_list_widget_text">Daftar pesan K-9</string>
   <string name="mail_list_widget_loading">Memuat pesan...</string>
   <string name="fetching_folders_failed">Mengambil daftar folder gagal</string>
-  <string name="messageview_crypto_warning_details">Perlihatkan detail</string>
   <string name="error_recipient_crypto_retrieve">Terjadi kesalahan saat mengambil status penerima dari penyedia OpenPGP!</string>
   <string name="openpgp_enabled_error_title">Enkripsi tidak mungkin dilakukan</string>
   <string name="openpgp_enabled_error_msg">Beberapa penerima yang dipilih tidak mendukung fitur ini!</string>

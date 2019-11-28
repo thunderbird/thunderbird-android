@@ -33,13 +33,15 @@ import com.mikepenz.materialdrawer.DrawerBuilder
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import java.util.ArrayList
 import java.util.HashSet
 
 
-class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
-    private val folderNameFormatter = DI.get<FolderNameFormatter>()
-    private val preferences = DI.get<Preferences>()
+class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : KoinComponent {
+    private val folderNameFormatter: FolderNameFormatter by inject()
+    private val preferences: Preferences by inject()
 
     private val drawer: Drawer
     private val accountHeader: AccountHeader
@@ -196,7 +198,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) {
         return OnDrawerItemClickListener { _, _, drawerItem ->
             when (drawerItem.identifier) {
                 DRAWER_ID_PREFERENCES -> SettingsActivity.launch(parent)
-                DRAWER_ID_FOLDERS -> parent.openFolderSettings()
+                DRAWER_ID_FOLDERS -> parent.launchManageFoldersScreen()
                 else -> {
                     val folder = drawerItem.tag as Folder
                     parent.openFolder(folder.serverId)

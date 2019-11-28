@@ -10,9 +10,6 @@
     <string name="shortcuts_title">K-9 Accounts</string>
     <string name="unread_widget_label">K-9 Unread</string>
 
-    <string name="remote_control_label">K-9 Mail remote control</string>
-    <string name="remote_control_desc">Allows this application to control K-9 Mail activities and settings.</string>
-
 
     <!-- Used in the about dialog -->
     <string name="app_authors">The K-9 Dog Walkers</string>
@@ -66,8 +63,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <!-- General strings that include the app name -->
     <string name="account_delete_dlg_instructions_fmt">The account \"<xliff:g id="account">%s</xliff:g>\" will be removed from K-9 Mail.</string>
-    <string name="account_recreate_dlg_instructions_fmt">All local data for \"<xliff:g id="account">%s</xliff:g>\" will be removed. Account settings will be retained.</string>
-    <string name="account_clear_dlg_instructions_fmt">Local copies of messages in \"<xliff:g id="account">%s</xliff:g>\" will be removed. Account settings will be retained.</string>
 
 
 
@@ -75,7 +70,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="authors">Authors</string>
     <string name="app_revision">Revision Information</string>
-    <string name="app_libraries">We\'re using the following third-party libraries: <xliff:g id="app_libraries_list">%s</xliff:g></string>
 
     <string name="read_messages_label">Read Emails</string>
     <string name="read_messages_desc">Allows this application to read your Emails.</string>
@@ -86,8 +80,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="accounts_title">Accounts</string>
     <string name="folders_title">Folders</string>
     <string name="advanced">Advanced</string>
-
-    <string name="message_list_title"><xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> </string>
 
     <string name="compose_title_compose">Compose</string>
     <string name="compose_title_reply">Reply</string>
@@ -141,10 +133,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="preferences_action">Settings</string>
     <string name="folders_action">Manage folders</string>
     <string name="account_settings_action">Account settings</string>
-    <string name="folder_settings_action">Folder settings</string>
-    <string name="global_settings_action">Global settings</string>
     <string name="remove_account_action">Remove account</string>
-    <string name="clear_pending_action">Clear pending actions (danger!)</string>
 
     <string name="mark_as_read_action">Mark as read</string>
     <string name="send_alternate_action">Share</string>
@@ -170,16 +159,13 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="add_attachment_action">Add attachment</string>
     <string name="empty_trash_action">Empty Trash</string>
     <string name="expunge_action">Expunge</string>
-    <string name="clear_local_folder_action">Clear local messages</string>
     <string name="about_action">About</string>
 
     <string name="prefs_title">Settings</string>
-    <string name="accounts_context_menu_title">Account options</string>
 
     <!-- Shown in place of the subject when a message has no subject. Showing this in parentheses is customary. -->
     <string name="general_no_subject">(No subject)</string>
     <string name="general_no_sender">No sender</string>
-    <string name="status_loading">Polling</string>
     <string name="status_loading_more">Loading messages\u2026</string>
     <string name="status_network_error">Connection error</string>
     <string name="status_invalid_id_error">Message not found</string>
@@ -198,8 +184,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_size_changed">Account \"<xliff:g id="account">%s</xliff:g>\" shrunk from <xliff:g id="oldSize">%s</xliff:g> to <xliff:g id="newSize">%s</xliff:g></string>
 
     <string name="compacting_account">Compacting account \"<xliff:g id="account">%s</xliff:g>\"</string>
-    <string name="clearing_account">Clearing account \"<xliff:g id="account">%s</xliff:g>\"</string>
-    <string name="recreating_account">Recreating account \"<xliff:g id="account">%s</xliff:g>\"</string>
 
     <string name="notification_new_title">New mail</string>
     <plurals name="notification_new_messages_title">
@@ -239,14 +223,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="special_mailbox_name_drafts">Drafts</string>
     <string name="special_mailbox_name_trash">Trash</string>
     <string name="special_mailbox_name_sent">Sent</string>
-    <string name="special_mailbox_name_archive">Archive</string>
-    <string name="special_mailbox_name_spam">Spam</string>
-
-    <string name="special_mailbox_name_drafts_fmt"><xliff:g id="folder">%s</xliff:g> (Drafts)</string>
-    <string name="special_mailbox_name_trash_fmt"><xliff:g id="folder">%s</xliff:g> (Trash)</string>
-    <string name="special_mailbox_name_sent_fmt"><xliff:g id="folder">%s</xliff:g> (Sent)</string>
-    <string name="special_mailbox_name_archive_fmt"><xliff:g id="folder">%s</xliff:g> (Archive)</string>
-    <string name="special_mailbox_name_spam_fmt"><xliff:g id="folder">%s</xliff:g> (Spam)</string>
 
     <string name="send_failure_subject">Failed to send some messages</string>
 
@@ -315,7 +291,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_show_contact_name_label">Show contact names</string>
     <string name="global_settings_show_contact_name_summary">Use recipient names from Contacts when available</string>
     <string name="global_settings_registered_name_color_label">Colorize contacts</string>
-    <string name="global_settings_registered_name_color_default">Don\'t colorize names in your contact list</string>
     <string name="global_settings_registered_name_color_changed">Colorize names in your contact list</string>
     <string name="global_settings_folderlist_wrap_folder_names_label">Wrap long folder names</string>
     <string name="global_settings_folderlist_wrap_folder_names_summary">Use multiple lines to show long folder names</string>
@@ -351,7 +326,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_notification_quick_delete_never">Never</string>
     <string name="global_settings_notification_quick_delete_when_single_msg">For single message notification</string>
     <string name="global_settings_notification_quick_delete_always">Always</string>
-    <string name="global_settings_notification_quick_delete_description">Show a button in the notification that allows quick message deletion</string>
 
     <string name="global_settings_lock_screen_notification_visibility_title">Lock Screen Notifications</string>
     <string name="global_settings_lock_screen_notification_visibility_nothing">No lock screen notifications</string>
@@ -389,7 +363,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_account_type_instructions">What kind of account is this?</string>
     <string name="account_setup_account_type_pop_action">POP3</string>
     <string name="account_setup_account_type_imap_action">IMAP</string>
-    <string name="account_setup_account_type_webdav_action">Exchange (WebDAV)</string>
 
     <string name="account_setup_auth_type_normal_password">Normal password</string>
     <string name="account_setup_auth_type_insecure_password">Password, transmitted insecurely</string>
@@ -423,8 +396,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="local_storage_provider_external_label">External storage (SD card)</string>
     <string name="local_storage_provider_internal_label">Regular internal storage</string>
-    <string name="local_storage_provider_samsunggalaxy_label">%1$s additional internal storage</string>
-    <string name="local_storage_provider_label">Storage location</string>
 
     <string name="account_setup_expunge_policy_label">Erase deleted messages on server</string>
     <string name="account_setup_expunge_policy_immediately">Immediately</string>
@@ -466,8 +437,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_options_title">Account options</string>
 
     <string name="compact_action">Compact account</string>
-    <string name="clear_action">Clear messages (danger!)</string>
-    <string name="recreate_action">Recreate data (Last Resort!)</string>
 
     <string name="account_setup_options_mail_check_frequency_label">Folder poll frequency</string>
     <string name="account_setup_options_mail_check_frequency_never">Never</string>
@@ -592,15 +561,11 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_crypto_summary_off">No OpenPGP app configured</string>
     <string name="account_settings_crypto_summary_on">Connected to %s</string>
     <string name="account_settings_crypto_summary_config">Configuring…</string>
-    <string name="account_settings_no_openpgp_provider_configured">No OpenPGP app configured</string>
-    <string name="account_settings_no_openpgp_provider_installed">No OpenPGP app found - click to install</string>
     <string name="account_settings_crypto_encrypt_all_drafts">Store all drafts encrypted</string>
     <string name="account_settings_crypto_encrypt_all_drafts_on">All drafts will be stored encrypted</string>
     <string name="account_settings_crypto_encrypt_all_drafts_off">Encrypt drafts only if encryption is enabled</string>
 
     <string name="account_settings_mail_check_frequency_label">Folder poll frequency</string>
-
-    <string name="account_settings_storage_title">Storage</string>
 
     <string name="account_settings_color_label">Account color</string>
     <string name="account_settings_color_summary">The accent color of this account used in folder and account list</string>
@@ -789,10 +754,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="account_delete_dlg_title">Remove Account</string>
 
-    <string name="account_recreate_dlg_title">Recreate Account</string>
-
-    <string name="account_clear_dlg_title">Clear Account</string>
-
     <string name="account_setup_failed_dlg_invalid_certificate_title">Unrecognized Certificate</string>
     <string name="account_setup_failed_dlg_invalid_certificate_accept">Accept Key</string>
     <string name="account_setup_failed_dlg_invalid_certificate_reject">Reject Key</string>
@@ -865,19 +826,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="volume_navigation_message">In message views</string>
     <string name="volume_navigation_list">In list views</string>
 
-    <string name="start_integrated_inbox_title">Start in Unified Inbox</string>
-
-    <string name="measure_accounts_title">Show account size</string>
-    <string name="measure_accounts_summary">Turn off for faster display</string>
-
-    <string name="count_search_title">Count search results</string>
-    <string name="count_search_summary">Turn off for faster display</string>
-
-    <string name="hide_special_accounts_title">Hide special accounts</string>
-    <string name="hide_special_accounts_summary">Hide the unified inbox and all messages accounts</string>
+    <string name="hide_special_accounts_title">Hide Unified Inbox</string>
 
     <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
-    <string name="flagged_modifier"> - Starred</string>
     <string name="unread_modifier"> - Unread</string>
 
     <string name="search_all_messages_title">All messages</string>
@@ -885,8 +836,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="integrated_inbox_title">Unified Inbox</string>
     <string name="integrated_inbox_detail">All messages in unified folders</string>
-
-    <string name="tap_hint">Tap circle or star for unread or starred messages</string>
 
     <string name="folder_settings_include_in_integrated_inbox_label">Unify</string>
     <string name="folder_settings_include_in_integrated_inbox_summary">All messages are shown in Unified Inbox</string>
@@ -980,12 +929,11 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="dialog_attachment_progress_title">Downloading attachment</string>
 
-    <string name="debug_logging_enabled">Debug logging enabled</string>
-
     <string name="messagelist_sent_to_me_sigil">»</string>
     <string name="messagelist_sent_cc_me_sigil">›</string>
 
     <string name="settings_list_backup_category">Backup</string>
+    <string name="settings_list_miscellaneous_category">Miscellaneous</string>
 
     <string name="settings_export_title">Export settings</string>
     <string name="settings_export_button">Export</string>
@@ -994,58 +942,36 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="settings_export_success_generic">Settings successfully exported</string>
     <string name="settings_export_failure">Failed to export settings</string>
 
-    <string name="import_export_action">Settings Import &amp; Export</string>
-    <string name="settings_export_account">Export account settings</string>
-    <string name="settings_export_all">Export settings and accounts</string>
-    <string name="settings_import_dialog_title">Import</string>
-    <string name="settings_export_dialog_title">Export</string>
+    <string name="settings_import_title">Import settings</string>
+    <string name="settings_import_pick_document_button">Select file</string>
+    <string name="settings_import_button">Import</string>
+    <string name="settings_import_success_generic">Settings successfully imported</string>
+    <string name="settings_import_password_required">Please enter passwords</string>
+    <string name="settings_import_failure">Failed to import settings</string>
+    <string name="settings_import_read_failure">Failed to read settings file</string>
+    <string name="settings_import_partial_failure">Failed to import some settings</string>
+    <string name="settings_import_status_success">Imported successfully</string>
+    <string name="settings_import_status_password_required">Password required</string>
+    <string name="settings_import_status_not_imported">Not imported</string>
+    <string name="settings_import_status_error">Import failure</string>
+    <string name="settings_import_later_button">Later</string>
+
     <string name="settings_import">Import settings</string>
-    <string name="settings_import_selection">Import selection</string>
-    <string name="settings_import_global_settings">Global settings</string>
-    <string name="settings_exporting">Exporting settings…</string>
     <string name="settings_importing">Importing settings…</string>
-    <string name="settings_import_scanning_file">Scanning file…</string>
-    <string name="settings_import_global_settings_success">Imported global settings</string>
-    <string name="settings_import_success">Imported <xliff:g id="accounts">%s</xliff:g></string>
-    <string name="settings_import_account_imported_as">Imported <xliff:g id="original_account_name">%s</xliff:g> as <xliff:g id="account_name_after_import">%s</xliff:g></string>
-    <plurals name="settings_import_accounts">
-        <item quantity="one">1 account</item>
-        <item quantity="other"><xliff:g id="numAccounts">%s</xliff:g> accounts</item>
-    </plurals>
-    <string name="settings_import_failure">Failed to import any settings</string>
-    <string name="settings_export_success_header">Export succeeded</string>
-    <string name="settings_export_failed_header">Export failed</string>
-    <string name="settings_import_success_header">Import succeeded</string>
-    <string name="settings_import_failed_header">Import failed</string>
-    <string name="settings_import_activate_account_header">Activate account</string>
-    <string name="settings_import_activate_account_intro">To be able to use the account \"<xliff:g id="account">%s</xliff:g>\" you need to provide the <xliff:g id="server_passwords">%s</xliff:g>.</string>
-    <plurals name="settings_import_server_passwords">
-        <item quantity="one">server password</item>
-        <item quantity="other">server passwords</item>
-    </plurals>
-    <string name="settings_import_incoming_server">Incoming server (<xliff:g id="hostname">%s</xliff:g>):</string>
-    <string name="settings_import_outgoing_server">Outgoing server (<xliff:g id="hostname">%s</xliff:g>):</string>
-    <plurals name="settings_import_setting_passwords">
-        <item quantity="one">Setting password…</item>
-        <item quantity="other">Setting passwords…</item>
-    </plurals>
-    <string name="settings_import_use_incoming_server_password">Use the incoming server password</string>
-    <string name="activate_account_action">Activate</string>
 
-    <string name="account_unavailable">Account \"<xliff:g id="account">%s</xliff:g>\" is unavailable; check storage</string>
-
-    <string name="attachment_save_title">Save attachment</string>
-    <string name="attachment_save_desc">No file browser found. Where would you like to save this attachment?</string>
-
-    <string name="manage_accounts_move_up_action">Move up</string>
-    <string name="manage_accounts_move_down_action">Move down</string>
-    <string name="manage_accounts_moving_message">Moving account…</string>
+    <plurals name="settings_import_password_prompt">
+        <item quantity="one">To be able to use the account \"<xliff:g id="account">%s</xliff:g>\" you need to provide the server password.</item>
+        <item quantity="other">To be able to use the account \"<xliff:g id="account">%s</xliff:g>\" you need to provide the server passwords.</item>
+    </plurals>
+    <string name="settings_import_incoming_server_password_hint">Incoming server password</string>
+    <string name="settings_import_outgoing_server_password_hint">Outgoing server password</string>
+    <string name="settings_import_use_same_password_for_outgoing_server">Use same password for outgoing server</string>
+    <string name="server_name_format">Server name: <xliff:g id="hostname">%s</xliff:g></string>
 
     <string name="unread_widget_select_account">Show unread count for…</string>
     <string name="unread_widget_account_title">Account</string>
     <string name="unread_widget_account_summary">The account for which the unread count should be displayed</string>
     <string name="unread_widget_unified_inbox_account_summary">Unified Inbox</string>
-    <string name="unread_widget_all_messages_account_summary">All messages</string>
     <string name="unread_widget_folder_enabled_title">Folder count</string>
     <string name="unread_widget_folder_enabled_summary">Display the unread count of only a single folder</string>
     <string name="unread_widget_folder_title">Folder</string>
@@ -1054,8 +980,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
     <string name="unread_widget_account_not_selected">No account selected</string>
     <string name="unread_widget_folder_not_selected">No folder selected</string>
-
-    <string name="close">Close</string>
 
     <string name="webview_empty_message">No text</string>
 
@@ -1081,9 +1005,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="webview_contextmenu_email_copy_action">Copy address to clipboard</string>
     <string name="webview_contextmenu_email_clipboard_label">Email address</string>
 
-    <string name="image_saved_as">Saved image as \"<xliff:g id="filename">%s</xliff:g>\"</string>
-    <string name="image_saving_failed">Saving the image failed.</string>
-
     <string name="account_settings_remote_search_num_results_entries_all">All</string>
     <string name="account_settings_remote_search_num_results_entries_10">10</string>
     <string name="account_settings_remote_search_num_results_entries_25">25</string>
@@ -1093,7 +1014,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_remote_search_num_results_entries_500">500</string>
     <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
     <string name="account_settings_remote_search_num_label">Server search limit</string>
-    <string name="account_settings_remote_search_num_summary">Search will stop after finding <xliff:g id="num_results">%s</xliff:g> results.</string>
     <string name="remote_search_sending_query">Sending query to server</string>
     <plurals name="remote_search_downloading">
         <item quantity="one">Fetching %d result</item>
@@ -1109,8 +1029,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_remote_search_enabled">Enable server search</string>
     <string name="account_settings_remote_search_enabled_summary">Search messages on the server in addition to those on your device</string>
     <string name="action_remote_search">Search messages on server</string>
-    <string name="pull_to_refresh_remote_search_from_local_search_pull">Pull to search server…</string>
-    <string name="pull_to_refresh_remote_search_from_local_search_release">Release to search server…</string>
     <string name="remote_search_unavailable_no_network">A network connection is required for server search.</string>
 
     <string name="global_settings_background_as_unread_indicator_label">Change colour when read</string>
@@ -1123,8 +1041,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="upgrade_databases_unspecified">Upgrading databases…</string>
     <string name="upgrade_database_format">Upgrading database of account \"<xliff:g id="account">%s</xliff:g>\"</string>
 
-    <string name="message_list_loading">Loading…</string>
-
     <string name="global_settings_splitview_mode_label">Show split-screen</string>
     <string name="global_settings_splitview_always">Always</string>
     <string name="global_settings_splitview_never">Never</string>
@@ -1134,10 +1050,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="global_settings_show_contact_picture_label">Show contact pictures</string>
     <string name="global_settings_show_contact_picture_summary">Show contact pictures in the message list</string>
-
-    <string name="last_refresh_time_format">Refreshed <xliff:g id="formatted_time">%s</xliff:g></string>
-    <string name="last_refresh_time_format_with_push">Refreshed <xliff:g id="time_with_preposition">%s</xliff:g> (Push active)</string>
-    <string name="preposition_for_date">on <xliff:g id="date">%s</xliff:g></string>
 
     <string name="mark_all_as_read">Mark all as read</string>
 
@@ -1165,8 +1077,6 @@ Please submit bug reports, contribute new features and ask questions at
     <!-- Note: This references message_view_download_remainder -->
     <string name="preview_encrypted">*Encrypted*</string>
     <string name="add_from_contacts">Add from Contacts</string>
-    <string name="crypto_settings_cancel">Cancel</string>
-    <string name="crypto_settings_ok">Proceed</string>
     <string name="recipient_cc">Cc</string>
     <string name="recipient_bcc">Bcc</string>
     <string name="recipient_to">To</string>
@@ -1178,9 +1088,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="address_type_mobile">Mobile</string>
     <string name="compose_error_no_draft_folder">No Drafts folder configured for this account!</string>
     <string name="compose_error_no_key_configured">No key configured for this account! Check your settings.</string>
-    <string name="crypto_mode_disabled">Don\'t encrypt</string>
-    <string name="crypto_mode_opportunistic">Encrypt if possible</string>
-    <string name="crypto_mode_private">Encrypt</string>
     <string name="error_crypto_provider_incompatible">Crypto provider uses incompatible version. Please check your settings!</string>
     <string name="error_crypto_provider_connect">Cannot connect to crypto provider, check your settings or click crypto icon to retry!</string>
     <string name="error_crypto_provider_ui_required">Failed to initialize end-to-end encryption, please check your settings</string>
@@ -1228,8 +1135,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="crypto_msg_encrypted_error">but there was a decryption error</string>
     <string name="crypto_msg_encrypted_incomplete">must fully download message for decryption</string>
     <string name="crypto_msg_encrypted_no_provider">but no crypto app is configured</string>
-    <string name="crypto_msg_encrypted_unsupported">but in an unsupported format</string>
-    <string name="crypto_msg_encrypted_cancelled">but decryption was cancelled</string>
 
     <string name="crypto_msg_title_encrypted_unsigned">Encrypted</string>
     <string name="crypto_msg_encrypted_unsigned">but not end-to-end</string>
@@ -1275,7 +1180,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="apg_learn_more">You can <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">click here</a> to learn more.</string>
     <string name="apg_deprecated_ok">Got it!</string>
     <string name="apg">APG</string>
-    <string name="no_crypto_provider_see_global">No OpenPGP app configured, see global settings!</string>
     <string name="crypto_no_provider_title">This email is encrypted</string>
     <string name="crypto_no_provider_message">This email has been encrypted with OpenPGP.\nTo read it, you need to install and configure a compatible OpenPGP App.</string>
     <string name="crypto_no_provider_button">Go to Settings</string>
@@ -1283,7 +1187,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="mail_list_widget_text">K-9 Message List</string>
     <string name="mail_list_widget_loading">Loading messages…</string>
     <string name="fetching_folders_failed">Fetching folder list failed</string>
-    <string name="messageview_crypto_warning_details">Show Details</string>
     <string name="error_recipient_crypto_retrieve">Error retrieving recipient status from OpenPGP provider!</string>
 
     <string name="openpgp_enabled_error_title">Encryption not possible</string>

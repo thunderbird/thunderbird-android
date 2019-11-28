@@ -9,12 +9,10 @@ import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
-object K9 : KoinComponent {
+object K9 : EarlyInit {
     private val preferences: Preferences by inject()
 
 
@@ -235,15 +233,6 @@ object K9 : KoinComponent {
     var isUseVolumeKeysForListNavigation = false
 
     @JvmStatic
-    var isStartInUnifiedInbox = false
-
-    @JvmStatic
-    var isMeasureAccounts = true
-
-    @JvmStatic
-    var isCountSearchMessages = true
-
-    @JvmStatic
     var isHideSpecialAccounts = false
 
     @JvmStatic
@@ -360,9 +349,6 @@ object K9 : KoinComponent {
         isGesturesEnabled = storage.getBoolean("gesturesEnabled", false)
         isUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
         isUseVolumeKeysForListNavigation = storage.getBoolean("useVolumeKeysForListNavigation", false)
-        isStartInUnifiedInbox = storage.getBoolean("startIntegratedInbox", false)
-        isMeasureAccounts = storage.getBoolean("measureAccounts", true)
-        isCountSearchMessages = storage.getBoolean("countSearchMessages", true)
         isHideSpecialAccounts = storage.getBoolean("hideSpecialAccounts", false)
         isMessageListSenderAboveSubject = storage.getBoolean("messageListSenderAboveSubject", false)
         isShowMessageListStars = storage.getBoolean("messageListStars", true)
@@ -448,9 +434,6 @@ object K9 : KoinComponent {
         editor.putString("quietTimeStarts", quietTimeStarts)
         editor.putString("quietTimeEnds", quietTimeEnds)
 
-        editor.putBoolean("startIntegratedInbox", isStartInUnifiedInbox)
-        editor.putBoolean("measureAccounts", isMeasureAccounts)
-        editor.putBoolean("countSearchMessages", isCountSearchMessages)
         editor.putBoolean("messageListSenderAboveSubject", isMessageListSenderAboveSubject)
         editor.putBoolean("hideSpecialAccounts", isHideSpecialAccounts)
         editor.putBoolean("messageListStars", isShowMessageListStars)

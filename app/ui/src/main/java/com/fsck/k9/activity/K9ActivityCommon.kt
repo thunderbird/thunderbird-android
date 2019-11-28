@@ -10,8 +10,8 @@ import com.fsck.k9.activity.misc.SwipeGestureDetector
 import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener
 import com.fsck.k9.ui.Theme
 import com.fsck.k9.ui.ThemeManager
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import java.util.Locale
 
 

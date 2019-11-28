@@ -179,7 +179,7 @@ public class ImapStore extends RemoteStore {
                 ListResponse.parseLsub(responses) :
                 ListResponse.parseList(responses);
 
-        List<FolderListItem> folders = new ArrayList<>(listResponses.size());
+        Map<String, FolderListItem> folderMap = new HashMap<>(listResponses.size());
         for (ListResponse listResponse : listResponses) {
             String decodedFolderName;
             try {
@@ -235,10 +235,15 @@ public class ImapStore extends RemoteStore {
                 type = FolderType.REGULAR;
             }
 
-            folders.add(new FolderListItem(folder, type));
+            FolderListItem existingItem = folderMap.get(folder);
+            if (existingItem == null || existingItem.getType() == FolderType.REGULAR) {
+                folderMap.put(folder, new FolderListItem(folder, type));
+            }
         }
 
+        List<FolderListItem> folders = new ArrayList<>(folderMap.size() + 1);
         folders.add(new FolderListItem(ImapFolder.INBOX, FolderType.INBOX));
+        folders.addAll(folderMap.values());
 
         return folders;
     }

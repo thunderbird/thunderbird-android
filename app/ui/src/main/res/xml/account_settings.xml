@@ -21,10 +21,11 @@
             android:summary="@string/account_settings_default_summary"
             android:title="@string/account_settings_default_label" />
 
-        <com.fsck.k9.ui.settings.account.HoloColorPickerPreference
+        <com.takisoft.preferencex.ColorPickerPreference
             android:key="chip_color"
             android:summary="@string/account_settings_color_summary"
-            android:title="@string/account_settings_color_label" />
+            android:title="@string/account_settings_color_label"
+            app:pref_colors="@array/account_colors" />
 
     </PreferenceScreen>
 
@@ -93,6 +94,7 @@
             android:summary="%s"
             android:title="@string/account_settings_folder_sync_mode_label" />
 
+        <!-- Temporarily disabled. See GH-4253
         <ListPreference
             android:dialogTitle="@string/account_settings_folder_push_mode_label"
             android:entries="@array/folder_push_mode_entries"
@@ -100,6 +102,7 @@
             android:key="folder_push_mode"
             android:summary="%s"
             android:title="@string/account_settings_folder_push_mode_label" />
+        -->
 
         <CheckBoxPreference
             android:defaultValue="true"
@@ -128,6 +131,7 @@
             android:summary="@string/account_settings_incoming_summary"
             android:title="@string/account_settings_incoming_label" />
 
+        <!-- Temporarily disabled. See GH-4253
         <PreferenceScreen
             android:key="push_advanced"
             android:title="@string/account_settings_push_advanced_title">
@@ -151,6 +155,7 @@
                 android:title="@string/idle_refresh_period_label" />
 
         </PreferenceScreen>
+        -->
 
     </PreferenceScreen>
 
@@ -313,19 +318,6 @@
             android:key="trash_folder"
             android:summary="%s"
             android:title="@string/trash_folder_label" />
-
-    </PreferenceScreen>
-
-    <PreferenceScreen
-        android:icon="?attr/iconPreferencesStorage"
-        android:key="storage_provider"
-        android:title="@string/account_settings_storage_title">
-
-        <ListPreference
-            android:dialogTitle="@string/local_storage_provider_label"
-            android:key="local_storage_provider"
-            android:summary="%s"
-            android:title="@string/local_storage_provider_label" />
 
     </PreferenceScreen>
 

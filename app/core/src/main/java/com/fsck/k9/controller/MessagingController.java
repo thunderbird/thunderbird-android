@@ -36,7 +36,6 @@ import androidx.annotation.VisibleForTesting;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.Account.Expunge;
-import com.fsck.k9.AccountStats;
 import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
@@ -57,7 +56,6 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingMarkAllAsRead;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveOrCopy;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag;
 import com.fsck.k9.controller.ProgressBodyFactory.ProgressListener;
-import com.fsck.k9.core.BuildConfig;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.AuthenticationFailedException;
@@ -132,7 +130,7 @@ public class MessagingController {
     private final ConcurrentHashMap<Account, Pusher> pushers = new ConcurrentHashMap<>();
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private final MemorizingMessagingListener memorizingMessagingListener = new MemorizingMessagingListener();
-    private final AccountStatsCollector accountStatsCollector;
+    private final UnreadMessageCountProvider unreadMessageCountProvider;
     private final CoreResourceProvider resourceProvider;
 
 
@@ -148,14 +146,14 @@ public class MessagingController {
     MessagingController(Context context, NotificationController notificationController,
             NotificationStrategy notificationStrategy,
             LocalStoreProvider localStoreProvider, Contacts contacts,
-            AccountStatsCollector accountStatsCollector, CoreResourceProvider resourceProvider,
+            UnreadMessageCountProvider unreadMessageCountProvider, CoreResourceProvider resourceProvider,
             BackendManager backendManager, List<ControllerExtension> controllerExtensions) {
         this.context = context;
         this.notificationController = notificationController;
         this.notificationStrategy = notificationStrategy;
         this.localStoreProvider = localStoreProvider;
         this.contacts = contacts;
-        this.accountStatsCollector = accountStatsCollector;
+        this.unreadMessageCountProvider = unreadMessageCountProvider;
         this.resourceProvider = resourceProvider;
         this.backendManager = backendManager;
 
@@ -490,7 +488,6 @@ public class MessagingController {
 
     @VisibleForTesting
     void searchLocalMessagesSynchronous(final LocalSearch search, final MessagingListener listener) {
-        final AccountStats stats = new AccountStats();
         final Set<String> uuidSet = new HashSet<>(Arrays.asList(search.getAccountUuids()));
         List<Account> accounts = Preferences.getPreferences(context).getAccounts();
         boolean allAccounts = uuidSet.contains(SearchSpecification.ALL_ACCOUNTS);
@@ -518,8 +515,6 @@ public class MessagingController {
                         List<LocalMessage> messages = new ArrayList<>();
 
                         messages.add(message);
-                        stats.unreadMessageCount += (!message.isSet(Flag.SEEN)) ? 1 : 0;
-                        stats.flaggedMessageCount += (message.isSet(Flag.FLAGGED)) ? 1 : 0;
                         if (listener != null) {
                             listener.listLocalMessagesAddMessages(account, null, messages);
                         }
@@ -536,9 +531,8 @@ public class MessagingController {
             }
         }
 
-        // publish the total search statistics
         if (listener != null) {
-            listener.searchStats(stats);
+            listener.listLocalMessagesFinished();
         }
     }
 
@@ -1753,44 +1747,12 @@ public class MessagingController {
         }
     }
 
-    public void getAccountStats(final Context context, final Account account,
-            final MessagingListener listener) {
-
-        threadPool.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    AccountStats stats = getAccountStats(account);
-                    listener.accountStatusChanged(account, stats);
-                } catch (MessagingException me) {
-                    Timber.e(me, "Count not get unread count for account %s", account.getDescription());
-                }
-
-            }
-        });
+    public int getUnreadMessageCount(Account account) {
+        return unreadMessageCountProvider.getUnreadMessageCount(account);
     }
 
-    public AccountStats getAccountStats(Account account) throws MessagingException {
-        return accountStatsCollector.getStats(account);
-    }
-
-    public void getSearchAccountStats(final SearchAccount searchAccount, final MessagingListener listener) {
-        threadPool.execute(new Runnable() {
-            @Override
-            public void run() {
-                getSearchAccountStatsSynchronous(searchAccount, listener);
-            }
-        });
-    }
-
-    public AccountStats getSearchAccountStatsSynchronous(SearchAccount searchAccount, MessagingListener listener) {
-        AccountStats stats = accountStatsCollector.getSearchAccountStats(searchAccount);
-
-        if (listener != null) {
-            listener.accountStatusChanged(searchAccount, stats);
-        }
-
-        return stats;
+    public int getUnreadMessageCount(SearchAccount searchAccount) {
+        return unreadMessageCountProvider.getUnreadMessageCount(searchAccount);
     }
 
     public void getFolderUnreadMessageCount(final Account account, final String folderServerId,
@@ -2573,13 +2535,8 @@ public class MessagingController {
                             Timber.v("Clearing notification flag for %s", account.getDescription());
 
                             account.setRingNotified(false);
-                            try {
-                                AccountStats stats = getAccountStats(account);
-                                if (stats == null || stats.unreadMessageCount == 0) {
-                                    notificationController.clearNewMailNotifications(account);
-                                }
-                            } catch (MessagingException e) {
-                                Timber.e(e, "Unable to getUnreadMessageCount for account: %s", account);
+                            if (getUnreadMessageCount(account) == 0) {
+                                notificationController.clearNewMailNotifications(account);
                             }
                         }
                     }
@@ -2687,13 +2644,8 @@ public class MessagingController {
                     localStore.clear();
                     localStore.resetVisibleLimits(account.getDisplayCount());
                     long newSize = localStore.getSize();
-                    AccountStats stats = new AccountStats();
-                    stats.size = newSize;
-                    stats.unreadMessageCount = 0;
-                    stats.flaggedMessageCount = 0;
                     for (MessagingListener l : getListeners(ml)) {
                         l.accountSizeChanged(account, oldSize, newSize);
-                        l.accountStatusChanged(account, stats);
                     }
                 } catch (UnavailableStorageException e) {
                     Timber.i("Failed to clear account because storage is not available - trying again later.");
@@ -2715,13 +2667,8 @@ public class MessagingController {
                     localStore.recreate();
                     localStore.resetVisibleLimits(account.getDisplayCount());
                     long newSize = localStore.getSize();
-                    AccountStats stats = new AccountStats();
-                    stats.size = newSize;
-                    stats.unreadMessageCount = 0;
-                    stats.flaggedMessageCount = 0;
                     for (MessagingListener l : getListeners(ml)) {
                         l.accountSizeChanged(account, oldSize, newSize);
-                        l.accountStatusChanged(account, stats);
                     }
                 } catch (UnavailableStorageException e) {
                     Timber.i("Failed to recreate an account because storage is not available - trying again later.");
@@ -3043,17 +2990,7 @@ public class MessagingController {
             this.listener = listener;
             this.localStore = getLocalStoreOrThrow(account);
 
-            previousUnreadMessageCount = getUnreadMessageCount();
-        }
-
-        private int getUnreadMessageCount() {
-            try {
-                AccountStats stats = getAccountStats(account);
-                return stats.unreadMessageCount;
-            } catch (MessagingException e) {
-                Timber.e(e, "Unable to getUnreadMessageCount for account: %s", account);
-                return 0;
-            }
+            previousUnreadMessageCount = getUnreadMessageCount(account);
         }
 
         @Override

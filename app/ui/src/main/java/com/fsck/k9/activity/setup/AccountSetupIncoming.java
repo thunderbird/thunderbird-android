@@ -62,6 +62,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private final MessagingController messagingController = DI.get(MessagingController.class);
     private final BackendManager backendManager = DI.get(BackendManager.class);
     private final K9JobManager jobManager = DI.get(K9JobManager.class);
+    private final AccountCreator accountCreator = DI.get(AccountCreator.class);
 
     private String mStoreType;
     private EditText mUsernameView;
@@ -265,7 +266,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             }
 
             if (!editSettings) {
-                mAccount.setDeletePolicy(AccountCreator.getDefaultDeletePolicy(settings.type));
+                mAccount.setDeletePolicy(accountCreator.getDefaultDeletePolicy(settings.type));
             }
 
             // Note that mConnectionSecurityChoices is configured above based on server type
@@ -502,7 +503,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         // Remove listener so as not to trigger validateFields() which is called
         // elsewhere as a result of user interaction.
         mPortView.removeTextChangedListener(validationTextWatcher);
-        mPortView.setText(String.valueOf(AccountCreator.getDefaultPort(securityType, mStoreType)));
+        mPortView.setText(String.valueOf(accountCreator.getDefaultPort(securityType, mStoreType)));
         mPortView.addTextChangedListener(validationTextWatcher);
     }
 

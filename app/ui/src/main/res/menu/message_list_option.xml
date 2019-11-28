@@ -26,14 +26,6 @@
         android:title="@string/action_remote_search"
         android:visible="false"/>
 
-    <!-- MessageList -->
-    <item
-        android:id="@+id/check_mail"
-        android:alphabeticShortcut="r"
-        android:icon="?attr/iconActionRefresh"
-        app:showAsAction="always"
-        android:title="@string/check_mail_action"/>
-
     <!-- MessageView -->
     <item
         android:id="@+id/archive"
@@ -232,11 +224,5 @@
         android:id="@+id/toggle_message_view_theme"
         app:showAsAction="never"
         android:title="@string/message_view_theme_action_dark"/>
-    <!-- always -->
-    <item
-        android:id="@+id/settings"
-        android:icon="?attr/iconActionSettings"
-        app:showAsAction="never"
-        android:title="@string/preferences_action" />
 
 </menu>

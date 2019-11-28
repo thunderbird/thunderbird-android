@@ -146,7 +146,6 @@ class AccountSettingsDataStore(
             "account_vibrate_pattern" -> account.notificationSetting.vibratePattern.toString()
             "account_vibrate_times" -> account.notificationSetting.vibrateTimes.toString()
             "account_remote_search_num_results" -> account.remoteSearchNumResults.toString()
-            "local_storage_provider" -> account.localStorageProviderId
             "account_ringtone" -> account.notificationSetting.ringtone
             "resize_image_circumference" -> Integer.toString(account.resizeImageCircumference)
             "resize_image_quality" -> Integer.toString(account.resizeImageQuality)
@@ -198,7 +197,6 @@ class AccountSettingsDataStore(
             "account_vibrate_pattern" -> account.notificationSetting.vibratePattern = value.toInt()
             "account_vibrate_times" -> account.notificationSetting.vibrateTimes = value.toInt()
             "account_remote_search_num_results" -> account.remoteSearchNumResults = value.toInt()
-            "local_storage_provider" -> account.localStorageProviderId = value
             "account_ringtone" -> with(account.notificationSetting) {
                 isRingEnabled = true
                 ringtone = value

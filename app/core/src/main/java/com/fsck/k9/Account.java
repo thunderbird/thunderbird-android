@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import android.content.Context;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy;
@@ -22,6 +21,8 @@ import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.mailstore.StorageManager.StorageProvider;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 
 /**
  * Account stores all of the settings for a single account defined by the user. Each account is defined by a UUID.
@@ -194,7 +195,6 @@ public class Account implements BaseAccount, StoreConfig {
     private boolean uploadSentMessages;
 
     private boolean changedVisibleLimits = false;
-    private boolean changedLocalStorageProviderId = false;
 
     private boolean resizeImageEnabled;
     private int resizeImageCircumference;
@@ -300,7 +300,8 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public synchronized void setName(String name) {
-        identities.get(0).setName(name);
+        Identity newIdentity = identities.get(0).withName(name);
+        identities.set(0, newIdentity);
     }
 
     public synchronized boolean getSignatureUse() {
@@ -308,7 +309,8 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public synchronized void setSignatureUse(boolean signatureUse) {
-        identities.get(0).setSignatureUse(signatureUse);
+        Identity newIdentity = identities.get(0).withSignatureUse(signatureUse);
+        identities.set(0, newIdentity);
     }
 
     public synchronized String getSignature() {
@@ -316,7 +318,8 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public synchronized void setSignature(String signature) {
-        identities.get(0).setSignature(signature);
+        Identity newIdentity = identities.get(0).withSignature(signature);
+        identities.set(0, newIdentity);
     }
 
     @Override
@@ -326,7 +329,8 @@ public class Account implements BaseAccount, StoreConfig {
 
     @Override
     public synchronized void setEmail(String email) {
-        identities.get(0).setEmail(email);
+        Identity newIdentity = identities.get(0).withEmail(email);
+        identities.set(0, newIdentity);
     }
 
     public synchronized String getAlwaysBcc() {
@@ -351,10 +355,7 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public void setLocalStorageProviderId(String id) {
-        if (localStorageProviderId == null || !localStorageProviderId.equals(id)) {
-            this.localStorageProviderId = id;
-            changedLocalStorageProviderId = true;
-        }
+        localStorageProviderId = id;
     }
 
     /**
@@ -1088,13 +1089,8 @@ public class Account implements BaseAccount, StoreConfig {
         return changedVisibleLimits;
     }
 
-    boolean isChangedLocalStorageProviderId() {
-        return changedLocalStorageProviderId;
-    }
-
     void resetChangeMarkers() {
         changedVisibleLimits = false;
-        changedLocalStorageProviderId = false;
     }
 
 }

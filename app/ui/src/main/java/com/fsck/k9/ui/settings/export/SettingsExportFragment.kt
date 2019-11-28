@@ -13,7 +13,7 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.ui.observeNotNull
 import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter
 import kotlinx.android.synthetic.main.fragment_settings_export.*
-import org.koin.android.architecture.ext.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class SettingsExportFragment : Fragment() {

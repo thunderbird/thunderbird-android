@@ -1,10 +1,10 @@
 package com.fsck.k9.widget.unread
 
-import org.koin.dsl.module.applicationContext
+import org.koin.dsl.module
 
-val unreadWidgetModule = applicationContext {
-    bean { UnreadWidgetRepository(get(), get()) }
-    bean { UnreadWidgetDataProvider(get(), get(), get()) }
-    bean { UnreadWidgetUpdater(get()) }
-    bean { UnreadWidgetUpdateListener(get()) }
+val unreadWidgetModule = module {
+    single { UnreadWidgetRepository(get(), get()) }
+    single { UnreadWidgetDataProvider(get(), get(), get()) }
+    single { UnreadWidgetUpdater(get()) }
+    single { UnreadWidgetUpdateListener(get()) }
 }

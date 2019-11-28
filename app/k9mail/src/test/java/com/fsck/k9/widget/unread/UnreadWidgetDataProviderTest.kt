@@ -2,14 +2,12 @@ package com.fsck.k9.widget.unread
 
 import android.content.Context
 import com.fsck.k9.Account
-import com.fsck.k9.AccountStats
 import com.fsck.k9.Preferences
 import com.fsck.k9.AppRobolectricTest
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.search.SearchAccount
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.anyOrNull
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
 import org.junit.Test
@@ -34,19 +32,6 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
 
         with(widgetData!!) {
             assertThat(title).isEqualTo("Unified Inbox")
-            assertThat(unreadCount).isEqualTo(SEARCH_ACCOUNT_UNREAD_COUNT)
-        }
-    }
-
-    @Test
-    fun allMessages() {
-        val configuration = UnreadWidgetConfiguration(
-                appWidgetId = 2, accountUuid = SearchAccount.ALL_MESSAGES, folderServerId = null)
-
-        val widgetData = provider.loadUnreadWidgetData(configuration)
-
-        with(widgetData!!) {
-            assertThat(title).isEqualTo("All messages")
             assertThat(unreadCount).isEqualTo(SEARCH_ACCOUNT_UNREAD_COUNT)
         }
     }
@@ -90,6 +75,7 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
     fun createAccount(): Account = mock {
         on { uuid } doReturn ACCOUNT_UUID
         on { description } doReturn ACCOUNT_DESCRIPTION
+        on { autoExpandFolder } doReturn FOLDER_SERVER_ID
     }
 
     fun createPreferences(): Preferences = mock {
@@ -97,8 +83,8 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
     }
 
     fun createMessagingController(): MessagingController = mock {
-        on { getSearchAccountStatsSynchronous(any(), anyOrNull()) } doReturn SEARCH_ACCOUNT_STATS
-        on { getAccountStats(account) } doReturn ACCOUNT_STATS
+        on { getUnreadMessageCount(any<SearchAccount>()) } doReturn SEARCH_ACCOUNT_UNREAD_COUNT
+        on { getUnreadMessageCount(account) } doReturn ACCOUNT_UNREAD_COUNT
         on { getFolderUnreadMessageCount(eq(account), eq(FOLDER_SERVER_ID)) } doReturn FOLDER_UNREAD_COUNT
     }
 
@@ -109,12 +95,5 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
         const val SEARCH_ACCOUNT_UNREAD_COUNT = 1
         const val ACCOUNT_UNREAD_COUNT = 2
         const val FOLDER_UNREAD_COUNT = 3
-
-        val SEARCH_ACCOUNT_STATS = AccountStats().apply {
-            unreadMessageCount = SEARCH_ACCOUNT_UNREAD_COUNT
-        }
-        val ACCOUNT_STATS = AccountStats().apply {
-            unreadMessageCount = ACCOUNT_UNREAD_COUNT
-        }
     }
 }

@@ -105,7 +105,7 @@ class UnreadWidgetConfigurationActivity : K9PreferenceActivity() {
         selectedAccountUuid = accountUuid
         selectedFolder = null
         unreadFolder.summary = getString(R.string.unread_widget_folder_summary)
-        if (SearchAccount.UNIFIED_INBOX == selectedAccountUuid || SearchAccount.ALL_MESSAGES == selectedAccountUuid) {
+        if (SearchAccount.UNIFIED_INBOX == selectedAccountUuid) {
             handleSearchAccount()
         } else {
             handleRegularAccount()
@@ -115,8 +115,6 @@ class UnreadWidgetConfigurationActivity : K9PreferenceActivity() {
     private fun handleSearchAccount() {
         if (SearchAccount.UNIFIED_INBOX == selectedAccountUuid) {
             unreadAccount.setSummary(R.string.unread_widget_unified_inbox_account_summary)
-        } else if (SearchAccount.ALL_MESSAGES == selectedAccountUuid) {
-            unreadAccount.setSummary(R.string.unread_widget_all_messages_account_summary)
         }
         unreadFolderEnabled.isEnabled = false
         unreadFolderEnabled.isChecked = false

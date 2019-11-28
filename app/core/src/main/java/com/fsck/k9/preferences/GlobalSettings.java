@@ -70,9 +70,6 @@ public class GlobalSettings {
         s.put("confirmMarkAllRead", Settings.versions(
                 new V(44, new BooleanSetting(true))
         ));
-        s.put("countSearchMessages", Settings.versions(
-                new V(1, new BooleanSetting(false))
-        ));
         s.put("enableDebugLogging", Settings.versions(
                 new V(1, new BooleanSetting(false))
         ));
@@ -145,9 +142,6 @@ public class GlobalSettings {
         s.put("language", Settings.versions(
                 new V(1, new LanguageSetting())
         ));
-        s.put("measureAccounts", Settings.versions(
-                new V(1, new BooleanSetting(true))
-        ));
         s.put("messageListPreviewLines", Settings.versions(
                 new V(1, new IntegerRangeSetting(1, 100, 2))
         ));
@@ -186,9 +180,6 @@ public class GlobalSettings {
         ));
         s.put("sortAscending", Settings.versions(
                 new V(10, new BooleanSetting(Account.DEFAULT_SORT_ASCENDING))
-        ));
-        s.put("startIntegratedInbox", Settings.versions(
-                new V(1, new BooleanSetting(false))
         ));
         s.put("theme", Settings.versions(
                 new V(1, new LegacyThemeSetting(AppTheme.LIGHT)),

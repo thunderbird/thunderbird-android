@@ -51,7 +51,7 @@ class AutocryptKeyTransferPresenter internal constructor(
             }
         })
 
-        view.setAddress(account.identities[0].email)
+        view.setAddress(account.identities[0].email!!)
 
         viewModel.autocryptSetupTransferLiveEvent.recall()
     }
