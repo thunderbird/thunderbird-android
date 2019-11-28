@@ -18,7 +18,7 @@ import java.io.InputStream
 class AutocryptSetupMessageLiveEvent(val messageCreator: AutocryptTransferMessageCreator) : SingleLiveEvent<AutocryptSetupMessage>() {
     fun loadAutocryptSetupMessageAsync(openPgpApi: OpenPgpApi, account: Account) {
         GlobalScope.launch(Dispatchers.Main) {
-            val setupMessage = async {
+            val setupMessage = async(Dispatchers.IO) {
                 loadAutocryptSetupMessage(openPgpApi, account)
             }
 

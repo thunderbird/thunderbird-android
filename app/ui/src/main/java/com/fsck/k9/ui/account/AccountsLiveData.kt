@@ -13,7 +13,7 @@ class AccountsLiveData(val preferences: Preferences) : LiveData<List<Account>>()
 
     private fun loadAccountsAsync() {
         GlobalScope.launch(Dispatchers.Main) {
-            val accounts = async {
+            val accounts = async(Dispatchers.IO) {
                 loadAccounts()
             }
 

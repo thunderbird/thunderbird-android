@@ -12,7 +12,7 @@ class AutocryptSetupTransferLiveEvent(
 
     fun sendMessageAsync(account: Account, setupMsg: AutocryptSetupMessage) {
         GlobalScope.launch(Dispatchers.Main) {
-            val setupMessage = async {
+            val setupMessage = async(Dispatchers.IO) {
                 messagingController.sendMessageBlocking(account, setupMsg.setupMessage)
             }
 
