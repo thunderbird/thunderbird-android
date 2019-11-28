@@ -1,5 +1,6 @@
 package com.fsck.k9.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import com.fsck.k9.Account
@@ -16,14 +17,10 @@ class EditIdentity : K9Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        identity = intent.getParcelableExtra(EXTRA_IDENTITY)
+        identity = getIdentity(intent)
         identityIndex = intent.getIntExtra(EXTRA_IDENTITY_INDEX, -1)
         val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT)
         account = Preferences.getPreferences(this).getAccount(accountUuid)
-
-        if (identityIndex == -1) {
-            identity = Identity()
-        }
 
         setLayout(R.layout.edit_identity)
 
@@ -54,6 +51,15 @@ class EditIdentity : K9Activity() {
         } else {
             signature_layout.visibility = View.GONE
         }
+    }
+
+    private fun getIdentity(intent: Intent): Identity {
+        var identity = intent.getParcelableExtra<Identity>(EXTRA_IDENTITY)
+        if (identity == null) {
+            identity = Identity()
+        }
+
+        return identity
     }
 
     private fun saveIdentity() {
