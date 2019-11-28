@@ -21,7 +21,7 @@ buildscript {
                 'androidxLocalBroadcastManager': '1.0.0',
                 'materialComponents': '1.0.0',
                 'coreKtx': '1.0.1',
-                'preferencesFix': '1.0.0',
+                'preferencesFix': '1.1.0',
                 'okio': '1.14.0',
                 'timber': '4.5.1',
                 'koin': '2.0.1',

@@ -10,7 +10,7 @@ inline fun Preference.onClick(crossinline action: () -> Unit) = setOnPreferenceC
     true
 }
 
-fun Preference.remove() = parent?.removePreference(this)
+fun Preference?.remove() = this?.parent?.removePreference(this)
 
 fun ListPreference.removeEntry(entryValue: String) {
     val deleteIndex = entryValues.indexOf(entryValue)
