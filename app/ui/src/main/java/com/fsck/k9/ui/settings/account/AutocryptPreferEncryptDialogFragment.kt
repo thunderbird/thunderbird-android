@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.preference.Preference
 import com.fsck.k9.ui.R
 
 class AutocryptPreferEncryptDialogFragment : DialogFragment() {
@@ -18,7 +19,7 @@ class AutocryptPreferEncryptDialogFragment : DialogFragment() {
         val preferenceKey = arguments?.getString(ARG_KEY) ?: throw IllegalStateException("Argument $ARG_KEY missing")
         val fragment = targetFragment as DialogPreference.TargetFragment
 
-        fragment.findPreference(preferenceKey) as AutocryptPreferEncryptPreference
+        fragment.findPreference<AutocryptPreferEncryptPreference>(preferenceKey)!!
     }
 
 
