@@ -5,6 +5,7 @@ import android.graphics.PorterDuff
 import android.net.Uri
 import android.os.Bundle
 import android.util.TypedValue
+import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -21,8 +22,11 @@ import com.fsck.k9.ui.folders.FoldersLiveData
 import com.fsck.k9.ui.messagelist.MessageListViewModel
 import com.fsck.k9.ui.messagelist.MessageListViewModelFactory
 import com.fsck.k9.ui.settings.SettingsActivity
-import com.mikepenz.fontawesome_typeface_library.FontAwesome
+import com.mikepenz.iconics.IconicsColor
 import com.mikepenz.iconics.IconicsDrawable
+import com.mikepenz.iconics.IconicsSize
+import com.mikepenz.iconics.typeface.library.fontawesome.FontAwesome
+import com.mikepenz.iconics.utils.colorRes
 import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.Drawer
@@ -31,6 +35,8 @@ import com.mikepenz.materialdrawer.DrawerBuilder
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
+import com.mikepenz.materialdrawer.model.interfaces.IProfile
 import java.util.ArrayList
 import java.util.HashSet
 import org.koin.core.KoinComponent
@@ -86,10 +92,10 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                     .withEmail(parent.getString(R.string.integrated_inbox_detail))
                     .withIcon(IconicsDrawable(parent, FontAwesome.Icon.faw_users)
                             .colorRes(R.color.material_drawer_background)
-                            .backgroundColor(Color.GRAY)
-                            .sizeDp(56)
-                            .paddingDp(8))
-                    .withSetSelected(unifiedInboxSelected)
+                            .backgroundColor(IconicsColor.colorInt(Color.GRAY))
+                            .size(IconicsSize.dp(56))
+                            .padding(IconicsSize.dp(8)))
+                    .withSelected(unifiedInboxSelected)
                     .withIdentifier(DRAWER_ID_UNIFIED_INBOX)
             )
         }
@@ -104,7 +110,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                     .withName(account.description)
                     .withEmail(account.email)
                     .withIdentifier(drawerId)
-                    .withSetSelected(false)
+                    .withSelected(false)
                     .withTag(account)
 
             val photoUri = Contacts.getInstance(parent).getPhotoUri(account.email)
@@ -114,26 +120,28 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
             } else {
                 pdi.withIcon(IconicsDrawable(parent, FontAwesome.Icon.faw_user_alt)
                         .colorRes(R.color.material_drawer_background)
-                        .backgroundColor(account.chipColor)
-                        .sizeDp(56)
-                        .paddingDp(14)
+                        .backgroundColor(IconicsColor.colorInt(account.chipColor))
+                        .size(IconicsSize.dp(56))
+                        .padding(IconicsSize.dp(14))
                 )
             }
             headerBuilder.addProfiles(pdi)
         }
 
         return headerBuilder
-                .withOnAccountHeaderListener { _, profile, _ ->
-                    if (profile.identifier == DRAWER_ID_UNIFIED_INBOX) {
-                        parent.openUnifiedInbox()
-                        false
-                    } else {
-                        val account = (profile as ProfileDrawerItem).tag as Account
-                        parent.openRealAccount(account)
-                        updateUserAccountsAndFolders(account)
-                        false
+                .withOnAccountHeaderListener(object : AccountHeader.OnAccountHeaderListener {
+                    override fun onProfileChanged(view: View?, profile: IProfile<*>, current: Boolean): Boolean {
+                        if (profile.identifier == DRAWER_ID_UNIFIED_INBOX) {
+                            parent.openUnifiedInbox()
+                            return false
+                        } else {
+                            val account = (profile as ProfileDrawerItem).tag as Account
+                            parent.openRealAccount(account)
+                            updateUserAccountsAndFolders(account)
+                            return false
+                        }
                     }
-                }
+                })
                 .build()
     }
 
@@ -185,22 +193,24 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     }
 
     private fun updateFolderSettingsItem() {
-        val drawerItem = drawer.getDrawerItem(DRAWER_ID_FOLDERS)
-        drawerItem.withEnabled(!unifiedInboxSelected)
+        val drawerItem = drawer.getDrawerItem(DRAWER_ID_FOLDERS)!!
+        drawerItem.isEnabled = !unifiedInboxSelected
         drawer.updateItem(drawerItem)
     }
 
     private fun createItemClickListener(): OnDrawerItemClickListener {
-        return OnDrawerItemClickListener { _, _, drawerItem ->
-            when (drawerItem.identifier) {
-                DRAWER_ID_PREFERENCES -> SettingsActivity.launch(parent)
-                DRAWER_ID_FOLDERS -> parent.launchManageFoldersScreen()
-                else -> {
-                    val folder = drawerItem.tag as Folder
-                    parent.openFolder(folder.serverId)
+        return object : OnDrawerItemClickListener {
+            override fun onItemClick(view: View?, position: Int, drawerItem: IDrawerItem<*>): Boolean {
+                when (drawerItem.identifier) {
+                    DRAWER_ID_PREFERENCES -> SettingsActivity.launch(parent)
+                    DRAWER_ID_FOLDERS -> parent.launchManageFoldersScreen()
+                    else -> {
+                        val folder = drawerItem.tag as Folder
+                        parent.openFolder(folder.serverId)
+                    }
                 }
+                return false
             }
-            false
         }
     }
 
@@ -253,7 +263,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         unifiedInboxSelected = false
         openedFolderServerId = folderServerId
         for (drawerId in userFolderDrawerIds) {
-            val folder = drawer.getDrawerItem(drawerId).tag as Folder
+            val folder = drawer.getDrawerItem(drawerId)!!.tag as Folder
             if (folder.serverId == folderServerId) {
                 drawer.setSelection(drawerId, false)
                 return

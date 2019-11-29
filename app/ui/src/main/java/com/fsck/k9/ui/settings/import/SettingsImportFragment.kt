@@ -14,7 +14,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.observeNotNull
-import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.adapters.ItemAdapter
 import kotlinx.android.synthetic.main.fragment_settings_import.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -23,7 +24,8 @@ class SettingsImportFragment : Fragment() {
     private val viewModel: SettingsImportViewModel by viewModel()
     private val resultViewModel: SettingsImportResultViewModel by sharedViewModel()
 
-    private lateinit var settingsImportAdapter: FastItemAdapter<ImportListItem>
+    private lateinit var settingsImportAdapter: FastAdapter<ImportListItem>
+    private lateinit var itemAdapter: ItemAdapter<ImportListItem>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_settings_import, container, false)
@@ -44,13 +46,14 @@ class SettingsImportFragment : Fragment() {
     }
 
     private fun initializeSettingsImportList(view: View) {
-        settingsImportAdapter = FastItemAdapter<ImportListItem>().apply {
+        itemAdapter = ItemAdapter()
+        settingsImportAdapter = FastAdapter.with(itemAdapter).apply {
             setHasStableIds(true)
-            withOnClickListener { _, _, _, position ->
+            onClickListener = { _, _, _, position ->
                 viewModel.onSettingsListItemClicked(position)
                 true
             }
-            withEventHook(ImportListItemClickEvent { position ->
+            addEventHook(ImportListItemClickEvent { position ->
                 viewModel.onSettingsListItemClicked(position)
             })
         }
@@ -119,12 +122,13 @@ class SettingsImportFragment : Fragment() {
                 is SettingsListItem.Account -> AccountItem(item)
             }
 
-            checkBoxItem
-                    .withSetSelected(item.selected)
-                    .withEnabled(item.enabled && enable)
+            checkBoxItem.apply {
+                isSelected = item.selected
+                isEnabled = item.enabled && enable
+            }
         }
 
-        settingsImportAdapter.set(importListItems)
+        itemAdapter.set(importListItems)
 
         settingsImportList.isEnabled = enable
     }

@@ -11,14 +11,16 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.observeNotNull
-import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.adapters.ItemAdapter
 import kotlinx.android.synthetic.main.fragment_settings_export.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsExportFragment : Fragment() {
     private val viewModel: SettingsExportViewModel by viewModel()
 
-    private lateinit var settingsExportAdapter: FastItemAdapter<CheckBoxItem>
+    private lateinit var settingsExportAdapter: FastAdapter<CheckBoxItem>
+    private lateinit var itemAdapter: ItemAdapter<CheckBoxItem>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_settings_export, container, false)
@@ -38,13 +40,14 @@ class SettingsExportFragment : Fragment() {
     }
 
     private fun initializeSettingsExportList(view: View) {
-        settingsExportAdapter = FastItemAdapter<CheckBoxItem>().apply {
+        itemAdapter = ItemAdapter()
+        settingsExportAdapter = FastAdapter.with(itemAdapter).apply {
             setHasStableIds(true)
-            withOnClickListener { _, _, item: CheckBoxItem, position ->
+            onClickListener = { _, _, item: CheckBoxItem, position ->
                 viewModel.onSettingsListItemSelected(position, !item.isSelected)
                 true
             }
-            withEventHook(CheckBoxClickEvent { position, isSelected ->
+            addEventHook(CheckBoxClickEvent { position, isSelected ->
                 viewModel.onSettingsListItemSelected(position, isSelected)
             })
         }
@@ -97,12 +100,13 @@ class SettingsExportFragment : Fragment() {
                 is SettingsListItem.Account -> AccountItem(item)
             }
 
-            checkBoxItem
-                    .withSetSelected(item.selected)
-                    .withEnabled(enable)
+            checkBoxItem.apply {
+                isSelected = item.selected
+                isEnabled = enable
+            }
         }
 
-        settingsExportAdapter.set(checkBoxItems)
+        itemAdapter.set(checkBoxItems)
 
         settingsExportList.isEnabled = enable
     }
