@@ -43,7 +43,6 @@ import org.junit.Test
 import org.mockito.AdditionalMatchers.aryEq
 import org.robolectric.RuntimeEnvironment
 
-
 private const val SOME_ACCOUNT_UUID = "6b84207b-25de-4dab-97c3-953bbf03fec6"
 private const val DISPLAY_NAME = "Display Name"
 private const val FIRST_LINE_DEFAULT_FONT_SIZE = 18f
@@ -62,7 +61,6 @@ class MessageListAdapterTest : RobolectricTest() {
     }
     val contactsPictureLoader: ContactPictureLoader = mock()
     val listItemListener: MessageListItemActionListener = mock()
-
 
     @Test
     fun withShowAccountChip_shouldShowAccountChip() {
@@ -421,17 +419,16 @@ class MessageListAdapterTest : RobolectricTest() {
         assertEquals(22f, view.secondLineView.textSize)
     }
 
-
     fun configureMessageHelperMockToMe(address: String) {
         val addresses = Address.parse(address)
         whenever(messageHelper.toMe(eq(testAccount), aryEq(addresses))).thenReturn(true)
     }
 
     fun createFontSizes(
-            subject: Int = FONT_DEFAULT,
-            sender: Int = FONT_DEFAULT,
-            preview: Int = FONT_DEFAULT,
-            date: Int = FONT_DEFAULT
+        subject: Int = FONT_DEFAULT,
+        sender: Int = FONT_DEFAULT,
+        preview: Int = FONT_DEFAULT,
+        date: Int = FONT_DEFAULT
     ): FontSizes {
         return FontSizes().apply {
             messageListSubject = subject
@@ -442,14 +439,14 @@ class MessageListAdapterTest : RobolectricTest() {
     }
 
     fun createAdapter(
-            fontSizes: FontSizes = createFontSizes(),
-            previewLines: Int = 0,
-            stars: Boolean = true,
-            senderAboveSubject: Boolean = false,
-            showContactPicture: Boolean = true,
-            showingThreadedList: Boolean = true,
-            backGroundAsReadIndicator: Boolean = false,
-            showAccountChip: Boolean = false
+        fontSizes: FontSizes = createFontSizes(),
+        previewLines: Int = 0,
+        stars: Boolean = true,
+        senderAboveSubject: Boolean = false,
+        showContactPicture: Boolean = true,
+        showingThreadedList: Boolean = true,
+        backGroundAsReadIndicator: Boolean = false,
+        showAccountChip: Boolean = false
     ): MessageListAdapter {
         val appearance = MessageListAppearance(
                 fontSizes,
@@ -476,26 +473,26 @@ class MessageListAdapterTest : RobolectricTest() {
     }
 
     fun createCursor(
-            id: Long = 0L,
-            uid: String = "irrelevant",
-            internalDate: Long = 0L,
-            subject: String =  "irrelevant",
-            date: Long = 0L,
-            sender: String = "irrelevant@domain.example",
-            to: String = "irrelevant@domain.example",
-            cc: String = "irrelevant@domain.example",
-            read: Int = 0,
-            flagged: Int = 0,
-            answered: Int = 0,
-            forwarded: Int = 0,
-            attachmentCount: Int = 0,
-            folderId: String = "irrelevant",
-            previewType: String = "text",
-            preview: String = "irrelevant",
-            threadRoot: Long = 0L,
-            accountUuid: String = SOME_ACCOUNT_UUID,
-            folderServerId: String = "irrelevant",
-            threadCount: Int = 0
+        id: Long = 0L,
+        uid: String = "irrelevant",
+        internalDate: Long = 0L,
+        subject: String = "irrelevant",
+        date: Long = 0L,
+        sender: String = "irrelevant@domain.example",
+        to: String = "irrelevant@domain.example",
+        cc: String = "irrelevant@domain.example",
+        read: Int = 0,
+        flagged: Int = 0,
+        answered: Int = 0,
+        forwarded: Int = 0,
+        attachmentCount: Int = 0,
+        folderId: String = "irrelevant",
+        previewType: String = "text",
+        preview: String = "irrelevant",
+        threadRoot: Long = 0L,
+        accountUuid: String = SOME_ACCOUNT_UUID,
+        folderServerId: String = "irrelevant",
+        threadCount: Int = 0
     ): Cursor {
         val mapping = mapOf(
                 MessageColumns.ID to id,
@@ -531,7 +528,7 @@ class MessageListAdapterTest : RobolectricTest() {
         return view
     }
 
-    fun secondLine(senderOrSubject: String, preview: String)= "$senderOrSubject $preview"
+    fun secondLine(senderOrSubject: String, preview: String) = "$senderOrSubject $preview"
 
     val View.accountChipView: View get() = findViewById(R.id.account_color_chip)
     val View.starView: CheckBox get() = findViewById(R.id.star)

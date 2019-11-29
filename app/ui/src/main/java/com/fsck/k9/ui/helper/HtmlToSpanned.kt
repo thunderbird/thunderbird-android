@@ -43,4 +43,3 @@ private class ListTagHandler : TagHandler {
         }
     }
 }
-

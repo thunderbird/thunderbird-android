@@ -14,5 +14,5 @@ class ContactLetterExtractor {
     companion object {
         private val EXTRACT_LETTER_PATTERN = Regex("\\p{L}\\p{M}*")
         private const val FALLBACK_CONTACT_LETTER = "?"
-   }
+    }
 }

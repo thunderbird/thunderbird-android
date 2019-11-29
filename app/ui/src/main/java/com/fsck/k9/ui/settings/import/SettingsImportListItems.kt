@@ -15,8 +15,8 @@ import kotlinx.android.synthetic.main.settings_import_account_list_item.*
 private const val GENERAL_SETTINGS_ID = 0L
 private const val ACCOUNT_ITEMS_ID_OFFSET = 1L
 
-abstract class ImportListItem(private val id: Long, private val importStatus: ImportStatus)
-    : AbstractItem<ImportListItem, ImportCheckBoxViewHolder>() {
+abstract class ImportListItem(private val id: Long, private val importStatus: ImportStatus) :
+    AbstractItem<ImportListItem, ImportCheckBoxViewHolder>() {
 
     override fun getIdentifier(): Long = id
 
@@ -70,10 +70,10 @@ class ImportListItemClickEvent(val action: (position: Int) -> Unit) : ClickEvent
     }
 
     override fun onClick(
-            view: View,
-            position: Int,
-            fastAdapter: FastAdapter<ImportListItem>,
-            item: ImportListItem
+        view: View,
+        position: Int,
+        fastAdapter: FastAdapter<ImportListItem>,
+        item: ImportListItem
     ) {
         action(position)
     }
@@ -86,8 +86,8 @@ class GeneralSettingsItem(importStatus: ImportStatus) : ImportListItem(GENERAL_S
     override fun getLayoutRes(): Int = R.layout.settings_import_general_list_item
 }
 
-class AccountItem(account: SettingsListItem.Account)
-    : ImportListItem(account.accountIndex + ACCOUNT_ITEMS_ID_OFFSET, account.importStatus) {
+class AccountItem(account: SettingsListItem.Account) :
+    ImportListItem(account.accountIndex + ACCOUNT_ITEMS_ID_OFFSET, account.importStatus) {
 
     private val displayName = account.displayName
 

@@ -8,7 +8,6 @@ import com.fsck.k9.ui.folders.FoldersLiveDataFactory
 class MessageListViewModel(private val foldersLiveDataFactory: FoldersLiveDataFactory) : ViewModel() {
     private var foldersLiveData: FoldersLiveData? = null
 
-
     fun getFolders(account: Account): FoldersLiveData {
         val liveData = foldersLiveData
         if (liveData != null && liveData.accountUuid == account.uuid) {

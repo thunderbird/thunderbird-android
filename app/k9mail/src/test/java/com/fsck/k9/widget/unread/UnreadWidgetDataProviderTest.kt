@@ -2,8 +2,8 @@ package com.fsck.k9.widget.unread
 
 import android.content.Context
 import com.fsck.k9.Account
-import com.fsck.k9.Preferences
 import com.fsck.k9.AppRobolectricTest
+import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.search.SearchAccount
 import com.google.common.truth.Truth.assertThat
@@ -14,14 +14,12 @@ import org.junit.Test
 import org.mockito.ArgumentMatchers.eq
 import org.robolectric.RuntimeEnvironment
 
-
 class UnreadWidgetDataProviderTest : AppRobolectricTest() {
     val context: Context = RuntimeEnvironment.application
     val account = createAccount()
     val preferences = createPreferences()
     val messagingController = createMessagingController()
     val provider = UnreadWidgetDataProvider(context, preferences, messagingController)
-
 
     @Test
     fun unifiedInbox() {
@@ -70,7 +68,6 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
 
         assertThat(widgetData).isNull()
     }
-
 
     fun createAccount(): Account = mock {
         on { uuid } doReturn ACCOUNT_UUID

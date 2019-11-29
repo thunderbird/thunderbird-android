@@ -4,7 +4,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-
 class MimeParameterDecoderTest {
     @Test
     fun rfc2045_example1() {
@@ -343,7 +342,6 @@ class MimeParameterDecoderTest {
                 "into multiple lines. Also non-ASCII characters: ä€\uD83C\uDF1E")
         assertTrue(mimeValue.ignoredParameters.isEmpty())
     }
-
 
     private fun assertParametersEquals(mimeValue: MimeValue, vararg expected: Pair<String, String>) {
         assertEquals(expected.toSet(), mimeValue.parameters.toPairSet())

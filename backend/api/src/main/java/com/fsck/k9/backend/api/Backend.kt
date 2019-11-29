@@ -1,6 +1,5 @@
 package com.fsck.k9.backend.api
 
-
 import com.fsck.k9.mail.BodyFactory
 import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Flag
@@ -10,7 +9,6 @@ import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.PushReceiver
 import com.fsck.k9.mail.Pusher
-
 
 interface Backend {
     val supportsSeenFlag: Boolean
@@ -52,24 +50,24 @@ interface Backend {
 
     @Throws(MessagingException::class)
     fun moveMessages(
-            sourceFolderServerId: String,
-            targetFolderServerId: String,
-            messageServerIds: List<String>
+        sourceFolderServerId: String,
+        targetFolderServerId: String,
+        messageServerIds: List<String>
     ): Map<String, String>?
 
     @Throws(MessagingException::class)
     fun copyMessages(
-            sourceFolderServerId: String,
-            targetFolderServerId: String,
-            messageServerIds: List<String>
+        sourceFolderServerId: String,
+        targetFolderServerId: String,
+        messageServerIds: List<String>
     ): Map<String, String>?
 
     @Throws(MessagingException::class)
     fun search(
-            folderServerId: String,
-            query: String?,
-            requiredFlags: Set<Flag>?,
-            forbiddenFlags: Set<Flag>?
+        folderServerId: String,
+        query: String?,
+        requiredFlags: Set<Flag>?,
+        forbiddenFlags: Set<Flag>?
     ): List<String>
 
     @Throws(MessagingException::class)

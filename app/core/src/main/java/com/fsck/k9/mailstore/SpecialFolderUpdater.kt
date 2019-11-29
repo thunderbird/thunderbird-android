@@ -9,9 +9,9 @@ import com.fsck.k9.Preferences
  * as [SpecialFolderSelection.MANUAL] but have been deleted from the server.
  */
 class SpecialFolderUpdater(
-        private val preferences: Preferences,
-        private val folderRepository: FolderRepository,
-        private val account: Account
+    private val preferences: Preferences,
+    private val folderRepository: FolderRepository,
+    private val account: Account
 ) {
     fun updateSpecialFolders() {
         val (folders, automaticSpecialFolders) = folderRepository.getRemoteFolderInfo()
@@ -31,9 +31,9 @@ class SpecialFolderUpdater(
     }
 
     private fun updateSpecialFolder(
-            type: FolderType,
-            folders: List<Folder>,
-            automaticSpecialFolders: Map<FolderType, Folder?>
+        type: FolderType,
+        folders: List<Folder>,
+        automaticSpecialFolders: Map<FolderType, Folder?>
     ) {
         when (getSpecialFolderSelection(type)) {
             SpecialFolderSelection.AUTOMATIC -> {

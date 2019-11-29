@@ -31,7 +31,6 @@ class K9BackendFolderTest : K9RobolectricTest() {
     val backendFolder = createBackendFolder()
     val database: LockableDatabase = localStoreProvider.getInstance(account).database
 
-
     @Before
     fun setUp() {
         // Set EmailProvider.CONTENT_URI so LocalStore.notifyChange() won't crash
@@ -84,9 +83,8 @@ class K9BackendFolderTest : K9RobolectricTest() {
         assertEquals(200L, lastUid)
     }
 
-
     fun createAccount(): Account {
-        //FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()
+        // FIXME: This is a hack to get Preferences into a state where it's safe to call newAccount()
         preferences.clearAccounts()
 
         return preferences.newAccount()
@@ -135,7 +133,6 @@ class K9BackendFolderTest : K9RobolectricTest() {
     }
 
     private fun dbOperation(action: (SQLiteDatabase) -> Unit) = database.execute(false, action)
-
 
     companion object {
         const val FOLDER_SERVER_ID = "testFolder"

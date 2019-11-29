@@ -5,20 +5,17 @@ import android.content.SharedPreferences
 class InMemoryStoragePersister : StoragePersister {
     private val values = mutableMapOf<String, Any?>()
 
-
     override fun loadValues(): Map<String, String> {
         return values.mapValues { (_, value) -> value?.toString() ?: "" }
     }
 
     override fun createStorageEditor(storage: Storage): StorageEditor = InMemoryStorageEditor(storage)
 
-
     private inner class InMemoryStorageEditor(private val storage: Storage) : StorageEditor {
         private val snapshot = storage.all.toMutableMap()
         private val removals = mutableSetOf<String>()
         private val changes = mutableMapOf<String, String>()
         private var alreadyCommitted = false
-
 
         override fun copy(input: SharedPreferences) = Unit
 

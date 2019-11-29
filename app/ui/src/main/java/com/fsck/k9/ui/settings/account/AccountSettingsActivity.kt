@@ -3,12 +3,12 @@ package com.fsck.k9.ui.settings.account
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.PreferenceFragmentCompat.OnPreferenceStartScreenCallback
-import androidx.preference.PreferenceScreen
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceFragmentCompat.OnPreferenceStartScreenCallback
+import androidx.preference.PreferenceScreen
 import com.fsck.k9.activity.K9Activity
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.fragmentTransaction
@@ -104,7 +104,8 @@ class AccountSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback {
     }
 
     override fun onPreferenceStartScreen(
-            caller: PreferenceFragmentCompat, preferenceScreen: PreferenceScreen
+        caller: PreferenceFragmentCompat,
+        preferenceScreen: PreferenceScreen
     ): Boolean {
         fragmentTransactionWithBackStack {
             replace(R.id.accountSettingsContainer, AccountSettingsFragment.create(accountUuid, preferenceScreen.key))
@@ -117,7 +118,6 @@ class AccountSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback {
         super.setTitle(title)
         accountSpinner.setTitle(title)
     }
-
 
     companion object {
         private const val ARG_ACCOUNT_UUID = "accountUuid"

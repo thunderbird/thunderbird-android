@@ -43,7 +43,6 @@ class ThemeManager(private val context: Context) {
     @get:StyleRes
     val translucentDialogThemeResourceId: Int = R.style.Theme_K9_Dialog_Translucent_DayNight
 
-
     fun init() {
         updateAppTheme()
     }
@@ -89,7 +88,7 @@ class ThemeManager(private val context: Context) {
         return when (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
             Configuration.UI_MODE_NIGHT_NO -> Theme.LIGHT
             Configuration.UI_MODE_NIGHT_YES -> Theme.DARK
-            else ->  Theme.LIGHT
+            else -> Theme.LIGHT
         }
     }
 }

@@ -9,7 +9,6 @@ import com.fsck.k9.provider.UnreadWidgetProvider
 class UnreadWidgetUpdater(private val context: Context) {
     private val appWidgetManager = AppWidgetManager.getInstance(context)
 
-
     fun updateAll() {
         val thisWidget = ComponentName(context, UnreadWidgetProvider::class.java)
         val widgetIds = appWidgetManager.getAppWidgetIds(thisWidget)

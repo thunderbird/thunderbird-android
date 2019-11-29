@@ -13,8 +13,8 @@ import com.fsck.k9.mail.internet.BinaryTempFileBody
 import com.fsck.k9.service.BootReceiver
 import com.fsck.k9.service.ShutdownReceiver
 import com.fsck.k9.service.StorageGoneReceiver
-import timber.log.Timber
 import java.util.concurrent.SynchronousQueue
+import timber.log.Timber
 
 object Core : EarlyInit {
     private val context: Context by inject()
@@ -83,7 +83,6 @@ object Core : EarlyInit {
         if (enabled) {
             jobManager.scheduleAllMailJobs()
         }
-
     }
 
     /**

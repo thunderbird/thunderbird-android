@@ -1,15 +1,11 @@
 package com.fsck.k9.message.quote
 
-
+import android.content.res.Resources
+import com.fsck.k9.K9
+import com.fsck.k9.mail.Message
 import java.text.DateFormat
 import java.util.Locale
 import java.util.TimeZone
-
-import android.content.res.Resources
-
-import com.fsck.k9.K9
-import com.fsck.k9.mail.Message
-
 
 class QuoteHelper(private val resources: Resources) {
 
@@ -40,7 +36,6 @@ class QuoteHelper(private val resources: Resources) {
             DateFormat.getDateTimeInstance(DATE_STYLE, TIME_STYLE, locale)
         }
     }
-
 
     companion object {
         // amount of extra buffer to allocate to accommodate quoting headers or prefixes

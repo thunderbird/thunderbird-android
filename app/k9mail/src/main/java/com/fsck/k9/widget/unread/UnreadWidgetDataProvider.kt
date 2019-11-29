@@ -11,9 +11,9 @@ import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchAccount
 
 class UnreadWidgetDataProvider(
-        private val context: Context,
-        private val preferences: Preferences,
-        private val messagingController: MessagingController
+    private val context: Context,
+    private val preferences: Preferences,
+    private val messagingController: MessagingController
 ) {
     fun loadUnreadWidgetData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? = with(configuration) {
         if (SearchAccount.UNIFIED_INBOX == accountUuid) {
@@ -59,7 +59,7 @@ class UnreadWidgetDataProvider(
         val folderServerId = configuration.folderServerId ?: return null
 
         val accountName = account.description
-        //FIXME: Use folder display name instead of folderServerId for title
+        // FIXME: Use folder display name instead of folderServerId for title
         val title = context.getString(R.string.unread_widget_title, accountName, folderServerId)
 
         val unreadCount = messagingController.getFolderUnreadMessageCount(account, folderServerId)

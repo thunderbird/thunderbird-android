@@ -7,7 +7,6 @@ import org.junit.Test
 class DisplayHtmlTest {
     val displayHtml = DisplayHtml(HtmlSettings(useDarkMode = false, useFixedWidthFont = false))
 
-
     @Test
     fun wrapMessageContent_addsViewportMetaElement() {
         val html = displayHtml.wrapMessageContent("Some text")

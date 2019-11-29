@@ -13,7 +13,6 @@ import com.fsck.k9.ui.R
 class SettingsActivity : K9Activity() {
     private lateinit var navController: NavController
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setLayout(R.layout.activity_settings)
@@ -37,7 +36,6 @@ class SettingsActivity : K9Activity() {
         onBackPressed()
         return true
     }
-
 
     companion object {
         @JvmStatic fun launch(activity: Activity) {

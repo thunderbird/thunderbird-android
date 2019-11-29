@@ -6,8 +6,8 @@ import android.database.sqlite.SQLiteDatabase
  * Rewrite theme setting to use `FOLLOW_SYSTEM` when it's currently set to `LIGHT`.
  */
 class StorageMigrationTo8(
-        private val db: SQLiteDatabase,
-        private val migrationsHelper: StorageMigrationsHelper
+    private val db: SQLiteDatabase,
+    private val migrationsHelper: StorageMigrationsHelper
 ) {
     fun rewriteTheme() {
         val theme = migrationsHelper.readValue(db, "theme")

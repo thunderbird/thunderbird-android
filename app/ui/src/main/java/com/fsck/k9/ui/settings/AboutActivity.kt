@@ -12,10 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.ui.R
 import de.cketti.library.changelog.ChangeLog
+import java.util.Calendar
 import kotlinx.android.synthetic.main.about_library.view.*
 import kotlinx.android.synthetic.main.fragment_about.*
 import timber.log.Timber
-import java.util.Calendar
 
 private data class Library(val name: String, val URL: String, val license: String)
 
@@ -95,12 +95,12 @@ class AboutFragment : Fragment() {
     }
 }
 
-private class LibrariesAdapter(private val dataset: Array<Library>)
-        : RecyclerView.Adapter<LibrariesAdapter.ViewHolder>() {
+private class LibrariesAdapter(private val dataset: Array<Library>) :
+        RecyclerView.Adapter<LibrariesAdapter.ViewHolder>() {
 
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.about_library, parent, false)
         return ViewHolder(view)
     }

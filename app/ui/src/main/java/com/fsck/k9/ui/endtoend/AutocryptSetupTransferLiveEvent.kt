@@ -11,7 +11,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class AutocryptSetupTransferLiveEvent(
-        private val messagingController: MessagingController
+    private val messagingController: MessagingController
 ) : SingleLiveEvent<AutocryptSetupTransferResult>() {
 
     fun sendMessageAsync(account: Account, setupMsg: AutocryptSetupMessage) {

@@ -6,7 +6,7 @@ import com.fsck.k9.mail.Message
 import com.fsck.k9.message.extractors.TextPartFinder
 
 class OpenPgpEncryptionExtractor internal constructor(
-        private val encryptionDetector: EncryptionDetector
+    private val encryptionDetector: EncryptionDetector
 ) : EncryptionExtractor {
 
     override fun extractEncryption(message: Message): EncryptionResult? {
@@ -16,7 +16,6 @@ class OpenPgpEncryptionExtractor internal constructor(
             null
         }
     }
-
 
     companion object {
         const val ENCRYPTION_TYPE = "openpgp"

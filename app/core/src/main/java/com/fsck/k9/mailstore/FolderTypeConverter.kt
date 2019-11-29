@@ -3,7 +3,6 @@ package com.fsck.k9.mailstore
 
 import com.fsck.k9.mail.Folder.FolderType
 
-
 @JvmName("fromDatabaseFolderType")
 fun String.toFolderType(): FolderType {
     return when (this) {

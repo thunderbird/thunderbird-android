@@ -1,6 +1,5 @@
 package com.fsck.k9.message.quote
 
-
 import android.content.res.Configuration
 import android.content.res.Resources
 import com.fsck.k9.Account.QuoteStyle
@@ -14,11 +13,10 @@ import com.fsck.k9.mail.Message.RecipientType
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
-import org.junit.Before
-import org.junit.Test
 import java.util.Date
 import java.util.Locale
-
+import org.junit.Before
+import org.junit.Test
 
 class TextQuoteCreatorTest : RobolectricTest() {
     val resources = mock<Resources> {
@@ -32,7 +30,6 @@ class TextQuoteCreatorTest : RobolectricTest() {
         on { subject } doReturn "Message subject"
     }
     val textQuoteCreator = TextQuoteCreator(QuoteHelper(resources), TestCoreResourceProvider())
-
 
     @Before
     fun setUp() {

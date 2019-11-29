@@ -1,10 +1,10 @@
 package com.fsck.k9.autodiscovery.thunderbird
 
 import com.fsck.k9.helper.EmailHelper
+import java.io.InputStream
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import java.io.InputStream
 
 class ThunderbirdAutoconfigFetcher(private val okHttpClient: OkHttpClient) {
 
@@ -20,7 +20,6 @@ class ThunderbirdAutoconfigFetcher(private val okHttpClient: OkHttpClient) {
             null
         }
     }
-
 
     companion object {
         // address described at:

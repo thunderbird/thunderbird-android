@@ -9,8 +9,8 @@ import android.database.sqlite.SQLiteDatabase
  * configure "poll folders" so folders that have previously used Push will now be polled.
  */
 class StorageMigrationTo9(
-        private val db: SQLiteDatabase,
-        private val migrationsHelper: StorageMigrationsHelper
+    private val db: SQLiteDatabase,
+    private val migrationsHelper: StorageMigrationsHelper
 ) {
     fun disablePush() {
         val accountUuidsListValue = migrationsHelper.readValue(db, "accountUuids")

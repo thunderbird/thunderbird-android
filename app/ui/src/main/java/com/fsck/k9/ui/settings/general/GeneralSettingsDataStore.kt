@@ -11,10 +11,10 @@ import com.fsck.k9.ui.ThemeManager
 import java.util.concurrent.ExecutorService
 
 class GeneralSettingsDataStore(
-        private val preferences: Preferences,
-        private val jobManager: K9JobManager,
-        private val executorService: ExecutorService,
-        private val themeManager: ThemeManager
+    private val preferences: Preferences,
+    private val jobManager: K9JobManager,
+    private val executorService: ExecutorService,
+    private val themeManager: ThemeManager
 ) : PreferenceDataStore() {
     var activity: FragmentActivity? = null
 

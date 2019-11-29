@@ -1,9 +1,8 @@
 package com.fsck.k9.ui.settings
 
-import androidx.preference.MultiSelectListPreference
 import androidx.preference.ListPreference
+import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
-
 
 inline fun Preference.onClick(crossinline action: () -> Unit) = setOnPreferenceClickListener {
     action()

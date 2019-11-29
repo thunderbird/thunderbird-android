@@ -1,6 +1,5 @@
 package com.fsck.k9.contacts
 
-
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -21,19 +20,18 @@ import com.fsck.k9.helper.Contacts
 import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
 import com.fsck.k9.view.RecipientSelectView.Recipient
-import timber.log.Timber
 import kotlin.math.max
+import timber.log.Timber
 
 class ContactPictureLoader(
-        private val context: Context,
-        private val contactLetterBitmapCreator: ContactLetterBitmapCreator
+    private val context: Context,
+    private val contactLetterBitmapCreator: ContactLetterBitmapCreator
 ) {
     private val contactsHelper: Contacts = Contacts.getInstance(context)
     private val pictureSizeInPx: Int = PICTURE_SIZE.toDip(context)
     private val backgroundCacheId: String = with(contactLetterBitmapCreator.config) {
         if (hasDefaultBackgroundColor) defaultBackgroundColor.toString() else "*"
     }
-
 
     fun setContactPicture(imageView: ImageView, address: Address) {
         Glide.with(imageView.context)
@@ -177,7 +175,6 @@ class ContactPictureLoader(
     }
 
     private fun Int.toDip(context: Context): Int = (this * context.resources.displayMetrics.density).toInt()
-
 
     companion object {
         /**

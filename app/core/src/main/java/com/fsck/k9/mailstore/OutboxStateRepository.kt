@@ -95,7 +95,6 @@ class OutboxStateRepository(private val database: LockableDatabase, private val 
         }
     }
 
-
     companion object {
         private const val TABLE_NAME = "outbox_state"
         private const val COLUMN_MESSAGE_ID = "message_id"

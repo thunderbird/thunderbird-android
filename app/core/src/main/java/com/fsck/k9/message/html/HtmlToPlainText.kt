@@ -117,7 +117,6 @@ private class FormattingVisitor : NodeVisitor {
         return output.substring(0, lastIndex + 1)
     }
 
-
     companion object {
         private const val MAX_WIDTH = 76
     }

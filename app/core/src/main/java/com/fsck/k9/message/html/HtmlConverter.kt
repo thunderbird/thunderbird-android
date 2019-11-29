@@ -1,6 +1,5 @@
 package com.fsck.k9.message.html
 
-
 import org.jsoup.Jsoup
 
 /**
@@ -13,15 +12,14 @@ object HtmlConverter {
      * define the object character and the replacement character.
      */
     private const val PREVIEW_OBJECT_CHARACTER = 0xfffc.toChar()
-    private const val PREVIEW_OBJECT_REPLACEMENT = 0x20.toChar()  // space
+    private const val PREVIEW_OBJECT_REPLACEMENT = 0x20.toChar() // space
 
     /**
      * toHtml() converts non-breaking spaces into the UTF-8 non-breaking space, which doesn't get
      * rendered properly in some clients. Replace it with a simple space.
      */
-    private const val NBSP_CHARACTER = 0x00a0.toChar()    // utf-8 non-breaking space
-    private const val NBSP_REPLACEMENT = 0x20.toChar()    // space
-
+    private const val NBSP_CHARACTER = 0x00a0.toChar() // utf-8 non-breaking space
+    private const val NBSP_REPLACEMENT = 0x20.toChar() // space
 
     /**
      * Convert an HTML string to a plain text string.

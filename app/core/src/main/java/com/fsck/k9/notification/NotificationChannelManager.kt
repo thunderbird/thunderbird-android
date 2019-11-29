@@ -1,6 +1,5 @@
 package com.fsck.k9.notification
 
-
 import android.app.NotificationChannel
 import android.app.NotificationChannelGroup
 import android.app.NotificationManager
@@ -11,10 +10,10 @@ import com.fsck.k9.Preferences
 import java.util.concurrent.Executor
 
 class NotificationChannelManager(
-        private val preferences: Preferences,
-        private val backgroundExecutor: Executor,
-        private val notificationManager: NotificationManager,
-        private val resourceProvider: NotificationResourceProvider
+    private val preferences: Preferences,
+    private val backgroundExecutor: Executor,
+    private val notificationManager: NotificationManager,
+    private val resourceProvider: NotificationResourceProvider
 ) {
 
     enum class ChannelType {
@@ -36,12 +35,13 @@ class NotificationChannelManager(
             removeChannelsForNonExistingOrChangedAccounts(notificationManager, accounts)
             addChannelsForAccounts(notificationManager, accounts)
         }
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private fun addChannelsForAccounts(
-            notificationManager: NotificationManager, accounts: List<Account>) {
+        notificationManager: NotificationManager,
+        accounts: List<Account>
+    ) {
         for (account in accounts) {
             val groupId = account.uuid
             val group = NotificationChannelGroup(groupId, account.displayName)
@@ -57,7 +57,9 @@ class NotificationChannelManager(
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private fun removeChannelsForNonExistingOrChangedAccounts(
-            notificationManager: NotificationManager, accounts: List<Account>) {
+        notificationManager: NotificationManager,
+        accounts: List<Account>
+    ) {
         val existingAccounts = HashMap<String, Account>()
         for (account in accounts) {
             existingAccounts[account.uuid] = account

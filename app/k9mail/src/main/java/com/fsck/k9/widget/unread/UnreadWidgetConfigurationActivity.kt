@@ -9,7 +9,6 @@ import android.preference.Preference
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-
 import com.fsck.k9.Preferences
 import com.fsck.k9.R
 import com.fsck.k9.activity.ChooseAccount
@@ -17,9 +16,7 @@ import com.fsck.k9.activity.ChooseFolder
 import com.fsck.k9.activity.K9PreferenceActivity
 import com.fsck.k9.search.SearchAccount
 import org.koin.android.ext.android.inject
-
 import timber.log.Timber
-
 
 /**
  * Activity to select an account for the unread widget.

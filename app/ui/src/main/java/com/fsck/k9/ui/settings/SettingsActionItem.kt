@@ -1,11 +1,11 @@
 package com.fsck.k9.ui.settings
 
+import android.util.TypedValue
+import androidx.annotation.IdRes
 import com.fsck.k9.ui.R
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.text_icon_list_item.*
-import android.util.TypedValue
-import androidx.annotation.IdRes
 
 internal class SettingsActionItem(val text: String, @IdRes val navigationAction: Int, val icon: Int) : Item() {
 

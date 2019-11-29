@@ -5,7 +5,6 @@ import com.fsck.k9.mail.Address
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-
 class ContactLetterExtractorTest : RobolectricTest() {
     val letterExtractor = ContactLetterExtractor()
 

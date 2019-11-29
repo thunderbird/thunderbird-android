@@ -1,6 +1,5 @@
 package com.fsck.k9.ui.endtoend
 
-
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
@@ -19,7 +18,6 @@ import kotlinx.coroutines.delay
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
 import timber.log.Timber
-
 
 class AutocryptKeyTransferActivity : K9Activity() {
     private val presenter: AutocryptKeyTransferPresenter by inject { parametersOf(this, this) }
@@ -40,7 +38,7 @@ class AutocryptKeyTransferActivity : K9Activity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item?.itemId == android.R.id.home) {
-            presenter.onClickHome();
+            presenter.onClickHome()
             return true
         } else {
             return super.onOptionsItemSelected(item)

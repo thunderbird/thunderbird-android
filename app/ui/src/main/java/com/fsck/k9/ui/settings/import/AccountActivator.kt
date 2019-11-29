@@ -11,10 +11,10 @@ import com.fsck.k9.controller.MessagingController
  * Activate account after server password(s) have been provided on settings import.
  */
 class AccountActivator(
-        private val context: Context,
-        private val preferences: Preferences,
-        private val messagingController: MessagingController,
-        private val backendManager: BackendManager
+    private val context: Context,
+    private val preferences: Preferences,
+    private val messagingController: MessagingController,
+    private val backendManager: BackendManager
 ) {
     fun enableAccount(accountUuid: String, incomingServerPassword: String?, outgoingServerPassword: String?) {
         val account = preferences.getAccount(accountUuid)
@@ -29,9 +29,9 @@ class AccountActivator(
     }
 
     private fun setAccountPasswords(
-            account: Account,
-            incomingServerPassword: String?,
-            outgoingServerPassword: String?
+        account: Account,
+        incomingServerPassword: String?,
+        outgoingServerPassword: String?
     ) {
         if (incomingServerPassword != null) {
             val incomingServerSettings = backendManager.decodeStoreUri(account.storeUri)

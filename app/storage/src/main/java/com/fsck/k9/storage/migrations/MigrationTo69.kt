@@ -7,10 +7,8 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag
 import com.fsck.k9.controller.PendingCommandSerializer
 import com.fsck.k9.mail.Flag
 
-
 internal class MigrationTo69(private val db: SQLiteDatabase) {
     private val serializer: PendingCommandSerializer = PendingCommandSerializer.getInstance()
-
 
     fun createPendingDelete() {
         val pendingSetFlagsToConvert = mutableListOf<PendingSetFlag>()

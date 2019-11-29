@@ -12,16 +12,16 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class FoldersLiveData(
-        private val folderRepository: FolderRepository,
-        private val messagingController: MessagingController,
-        val accountUuid: String
+    private val folderRepository: FolderRepository,
+    private val messagingController: MessagingController,
+    val accountUuid: String
 ) : LiveData<List<DisplayFolder>>() {
 
     private val listener = object : SimpleMessagingListener() {
         override fun folderStatusChanged(
-                account: Account?,
-                folderServerId: String?,
-                unreadMessageCount: Int
+            account: Account?,
+            folderServerId: String?,
+            unreadMessageCount: Int
         ) {
             if (account?.uuid == accountUuid) {
                 loadFoldersAsync()

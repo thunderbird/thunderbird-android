@@ -1,8 +1,5 @@
 package com.fsck.k9.ui.settings.export
 
-import com.fsck.k9.Account as K9Account
-
-
 class SettingsExportUiModel {
     var settingsList: List<SettingsListItem> = emptyList()
     var isSettingsListEnabled = true
@@ -10,7 +7,6 @@ class SettingsExportUiModel {
     var isShareButtonVisible = false
     var isProgressVisible = false
     var statusText = StatusText.HIDDEN
-
 
     fun enableExportButton() {
         exportButton = ButtonState.ENABLED
@@ -78,9 +74,9 @@ sealed class SettingsListItem {
 
     object GeneralSettings : SettingsListItem()
     data class Account(
-            val accountNumber: Int,
-            val displayName: String,
-            val email: String
+        val accountNumber: Int,
+        val displayName: String,
+        val email: String
     ) : SettingsListItem()
 }
 

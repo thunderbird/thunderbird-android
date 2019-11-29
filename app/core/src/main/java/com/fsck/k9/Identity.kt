@@ -5,12 +5,12 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Identity(
-        val description: String? = null,
-        val name: String? = null,
-        val email: String? = null,
-        val signature: String? = null,
-        val signatureUse: Boolean = false,
-        val replyTo: String? = null
+    val description: String? = null,
+    val name: String? = null,
+    val email: String? = null,
+    val signature: String? = null,
+    val signatureUse: Boolean = false,
+    val replyTo: String? = null
 ) : Parcelable {
     // TODO remove when callers are converted to Kotlin
     fun withName(name: String?) = copy(name = name)

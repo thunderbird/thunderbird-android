@@ -25,7 +25,6 @@ class SettingsImportFragment : Fragment() {
 
     private lateinit var settingsImportAdapter: FastItemAdapter<ImportListItem>
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_settings_import, container, false)
     }
@@ -112,7 +111,7 @@ class SettingsImportFragment : Fragment() {
         setSettingsList(model.settingsList, model.isSettingsListEnabled)
     }
 
-    //TODO: Update list instead of replacing it completely
+    // TODO: Update list instead of replacing it completely
     private fun setSettingsList(items: List<SettingsListItem>, enable: Boolean) {
         val importListItems = items.map { item ->
             val checkBoxItem = when (item) {
@@ -195,7 +194,6 @@ class SettingsImportFragment : Fragment() {
             viewModel.onPasswordPromptResult(result)
         }
     }
-
 
     companion object {
         private const val REQUEST_PICK_DOCUMENT = Activity.RESULT_FIRST_USER

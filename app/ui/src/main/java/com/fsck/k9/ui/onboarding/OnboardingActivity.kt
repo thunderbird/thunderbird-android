@@ -13,7 +13,6 @@ import com.fsck.k9.ui.R
 class OnboardingActivity : K9Activity() {
     private lateinit var navController: NavController
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setLayout(R.layout.activity_onboarding)
@@ -31,7 +30,6 @@ class OnboardingActivity : K9Activity() {
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
-
 
     companion object {
         @JvmStatic fun launch(activity: Activity) {

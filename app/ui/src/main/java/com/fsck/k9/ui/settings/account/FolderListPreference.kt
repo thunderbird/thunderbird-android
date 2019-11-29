@@ -3,11 +3,11 @@ package com.fsck.k9.ui.settings.account
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Typeface
-import androidx.core.content.res.TypedArrayUtils
-import androidx.preference.ListPreference
 import android.text.SpannableString
 import android.text.style.StyleSpan
 import android.util.AttributeSet
+import androidx.core.content.res.TypedArrayUtils
+import androidx.preference.ListPreference
 import com.fsck.k9.mailstore.Folder
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.folders.FolderNameFormatter
@@ -21,11 +21,11 @@ import org.koin.core.inject
 class FolderListPreference
 @JvmOverloads
 constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = TypedArrayUtils.getAttr(context, androidx.preference.R.attr.dialogPreferenceStyle,
-                android.R.attr.dialogPreferenceStyle),
-        defStyleRes: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = TypedArrayUtils.getAttr(context, androidx.preference.R.attr.dialogPreferenceStyle,
+            android.R.attr.dialogPreferenceStyle),
+    defStyleRes: Int = 0
 ) : ListPreference(context, attrs, defStyleAttr, defStyleRes), KoinComponent {
     private val folderNameFormatter: FolderNameFormatter by inject()
     private val noFolderSelectedName = context.getString(R.string.account_settings_no_folder_selected).italicize()
@@ -36,7 +36,6 @@ constructor(
         entryValues = emptyArray()
         isEnabled = false
     }
-
 
     fun setFolders(folders: List<Folder>) {
         entries = (listOf(noFolderSelectedName) + getFolderDisplayNames(folders)).toTypedArray()

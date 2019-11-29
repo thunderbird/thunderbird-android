@@ -1,6 +1,5 @@
 package com.fsck.k9.fragment
 
-
 import android.annotation.SuppressLint
 import android.view.View
 import android.widget.CheckBox
@@ -11,8 +10,8 @@ import com.fsck.k9.ui.R
 
 @SuppressLint("ResourceType")
 class MessageViewHolder(
-        view: View,
-        private val itemActionListener: MessageListItemActionListener
+    view: View,
+    private val itemActionListener: MessageListItemActionListener
 ) : View.OnClickListener {
     var position = -1
 

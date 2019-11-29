@@ -52,11 +52,11 @@ class PasswordPromptDialogFragment : DialogFragment() {
 
     @SuppressLint("InflateParams")
     private fun createView(
-            accountName: String,
-            inputIncomingServerPassword: Boolean,
-            incomingServerName: String?,
-            inputOutgoingServerPassword: Boolean,
-            outgoingServerName: String?
+        accountName: String,
+        inputIncomingServerPassword: Boolean,
+        incomingServerName: String?,
+        inputOutgoingServerPassword: Boolean,
+        outgoingServerName: String?
     ): View {
         val layoutInflater = LayoutInflater.from(requireContext())
         val view = layoutInflater.inflate(R.layout.password_prompt_dialog, null)
@@ -106,7 +106,6 @@ class PasswordPromptDialogFragment : DialogFragment() {
         targetFragment!!.onActivityResult(targetRequestCode, Activity.RESULT_OK, resultIntent)
     }
 
-
     companion object {
         private const val ARG_ACCOUNT_UUID = "accountUuid"
         private const val ARG_ACCOUNT_NAME = "accountName"
@@ -116,14 +115,14 @@ class PasswordPromptDialogFragment : DialogFragment() {
         private const val ARG_OUTGOING_SERVER_NAME = "outgoingServerName"
 
         fun create(
-                accountUuid: String,
-                accountName: String,
-                inputIncomingServerPassword: Boolean,
-                incomingServerName: String?,
-                inputOutgoingServerPassword: Boolean,
-                outgoingServerName: String?,
-                targetFragment: Fragment,
-                requestCode: Int
+            accountUuid: String,
+            accountName: String,
+            inputIncomingServerPassword: Boolean,
+            incomingServerName: String?,
+            inputOutgoingServerPassword: Boolean,
+            outgoingServerName: String?,
+            targetFragment: Fragment,
+            requestCode: Int
         ) = PasswordPromptDialogFragment().apply {
             arguments = bundleOf(
                     ARG_ACCOUNT_UUID to accountUuid,

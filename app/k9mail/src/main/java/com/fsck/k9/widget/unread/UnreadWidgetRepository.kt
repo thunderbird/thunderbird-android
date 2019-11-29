@@ -3,8 +3,8 @@ package com.fsck.k9.widget.unread
 import android.content.Context
 
 class UnreadWidgetRepository(
-        private val context: Context,
-        private val dataRetriever: UnreadWidgetDataProvider
+    private val context: Context,
+    private val dataRetriever: UnreadWidgetDataProvider
 ) {
 
     fun saveWidgetConfiguration(configuration: UnreadWidgetConfiguration) {

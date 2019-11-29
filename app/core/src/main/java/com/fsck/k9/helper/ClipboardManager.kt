@@ -3,7 +3,6 @@ package com.fsck.k9.helper
 import android.content.ClipData
 import android.content.Context
 
-
 /**
  * Access the system clipboard
  */

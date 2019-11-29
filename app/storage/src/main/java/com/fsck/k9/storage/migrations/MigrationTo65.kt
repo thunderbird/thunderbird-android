@@ -3,7 +3,6 @@ package com.fsck.k9.storage.migrations
 import android.database.sqlite.SQLiteDatabase
 import com.fsck.k9.mailstore.MigrationsHelper
 
-
 internal object MigrationTo65 {
     @JvmStatic
     fun addLocalOnlyColumnToFoldersTable(db: SQLiteDatabase, migrationsHelper: MigrationsHelper) {
