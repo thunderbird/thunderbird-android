@@ -9,16 +9,14 @@ import com.mikepenz.fastadapter.items.AbstractItem
 import com.mikepenz.fastadapter.listeners.ClickEventHook
 import kotlinx.android.extensions.LayoutContainer
 
-abstract class CheckBoxItem(private val id: Long) : AbstractItem<CheckBoxItem, CheckBoxViewHolder>() {
-    override fun getIdentifier(): Long = id
+abstract class CheckBoxItem(override var identifier: Long) : AbstractItem<CheckBoxViewHolder>() {
+    override fun getViewHolder(v: View): CheckBoxViewHolder = CheckBoxViewHolder(v)
 
-    override fun getViewHolder(view: View): CheckBoxViewHolder = CheckBoxViewHolder(view)
-
-    override fun bindView(viewHolder: CheckBoxViewHolder, payloads: List<Any>) {
-        super.bindView(viewHolder, payloads)
-        viewHolder.checkBox.isChecked = isSelected
-        viewHolder.itemView.isEnabled = isEnabled
-        viewHolder.checkBox.isEnabled = isEnabled
+    override fun bindView(holder: CheckBoxViewHolder, payloads: MutableList<Any>) {
+        super.bindView(holder, payloads)
+        holder.checkBox.isChecked = isSelected
+        holder.itemView.isEnabled = isEnabled
+        holder.checkBox.isEnabled = isEnabled
     }
 }
 
@@ -33,7 +31,7 @@ class CheckBoxClickEvent(val action: (position: Int, isSelected: Boolean) -> Uni
         return if (viewHolder is CheckBoxViewHolder) viewHolder.checkBox else null
     }
 
-    override fun onClick(view: View, position: Int, fastAdapter: FastAdapter<CheckBoxItem>, item: CheckBoxItem) {
+    override fun onClick(v: View, position: Int, fastAdapter: FastAdapter<CheckBoxItem>, item: CheckBoxItem) {
         action(position, !item.isSelected)
     }
 }
