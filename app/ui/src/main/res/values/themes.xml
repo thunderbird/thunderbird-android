@@ -134,8 +134,9 @@
         <item name="android:navigationBarColor">#000000</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
+        <item name="android:colorBackground">@color/md_black_1000</item>
         <item name="colorPrimary">@color/md_grey_900</item>
-        <item name="colorPrimaryDark">@color/md_grey_900</item>
+        <item name="colorPrimaryDark">@color/md_black_1000</item>
         <item name="bottomBarBackground">@color/md_grey_900</item>
 
         <item name="material_drawer_background">@color/material_drawer_dark_background</item>
@@ -218,7 +219,7 @@
         <item name="textColorSecondaryRecipientDropdown">@android:color/secondary_text_dark</item>
         <item name="messageListSelectedBackgroundColor">#8038B8E2</item>
         <item name="messageListReadItemBackgroundColor">#00000000</item>
-        <item name="messageListUnreadItemBackgroundColor">#c05a5a5a</item>
+        <item name="messageListUnreadItemBackgroundColor">#80444444</item>
         <item name="messageListThreadCountForegroundColor">?android:attr/colorBackground</item>
         <item name="messageListThreadCountBackground">@drawable/thread_count_box_dark</item>
         <item name="messageListActiveItemBackgroundColor">#ff33b5e5</item>
