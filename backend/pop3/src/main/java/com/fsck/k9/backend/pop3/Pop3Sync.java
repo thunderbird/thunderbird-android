@@ -193,7 +193,7 @@ class Pop3Sync {
             /*
              * Now we download the actual content of messages.
              */
-            int newMessages = downloadMessages(syncConfig, remoteFolder, backendFolder, remoteMessages, false, true,
+            int newMessages = downloadMessages(syncConfig, remoteFolder, backendFolder, remoteMessages, false,
                     listener);
 
             int unreadMessageCount = backendFolder.getUnreadMessageCount();
@@ -257,7 +257,7 @@ class Pop3Sync {
 
     private int downloadMessages(final SyncConfig syncConfig, final Folder remoteFolder,
             final BackendFolder backendFolder, List<Message> inputMessages, boolean flagSyncOnly,
-            boolean purgeToVisibleLimit, final SyncListener listener) throws MessagingException {
+            final SyncListener listener) throws MessagingException {
 
         final Date earliestDate = syncConfig.getEarliestPollDate();
         Date downloadStarted = new Date(); // now
