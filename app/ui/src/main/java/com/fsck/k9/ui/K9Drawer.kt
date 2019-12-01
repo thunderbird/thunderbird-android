@@ -183,9 +183,9 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
             selectUnifiedInbox()
         } else {
             unifiedInboxSelected = false
-            with (getDrawerColorsForAccount(account)) {
-                accentColor = first
-                selectedColor = second
+            getDrawerColorsForAccount(account).let { drawerColors ->
+                accentColor = drawerColors.accentColor
+                selectedColor = drawerColors.selectedColor
             }
 
             accountHeader.setActiveProfile((account.accountNumber + 1 shl DRAWER_ACCOUNT_SHIFT).toLong())
@@ -301,24 +301,28 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         updateFolderSettingsItem()
     }
 
-    private fun getDrawerColorsForAccount(account: Account) : Pair<Int, Int> {
+    private data class DrawerColors(
+        val accentColor: Int,
+        val selectedColor: Int
+    )
+
+    private fun getDrawerColorsForAccount(account: Account): DrawerColors {
         val baseColor = if (themeManager.appTheme == Theme.DARK) {
             getDarkThemeAccentColor(account.chipColor)
         } else {
             account.chipColor
         }
-        return Pair(baseColor, baseColor.and(0xffffff).or(0x22000000))
+        return DrawerColors(
+            accentColor = baseColor,
+            selectedColor = baseColor.and(0xffffff).or(0x22000000)
+        )
     }
 
-    private fun getDarkThemeAccentColor(color: Int) : Int {
+    private fun getDarkThemeAccentColor(color: Int): Int {
         val lightColors = resources.getIntArray(R.array.account_colors)
         val darkColors = resources.getIntArray(R.array.drawer_account_accent_color_dark_theme)
-        val idx = lightColors.indexOf(color)
-        return if (idx == -1) {
-            color
-        } else {
-            darkColors[idx]
-        }
+        val index = lightColors.indexOf(color)
+        return if (index == -1) color else darkColors[index]
     }
 
     fun open() {
