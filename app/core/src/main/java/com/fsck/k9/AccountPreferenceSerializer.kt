@@ -513,7 +513,7 @@ class AccountPreferenceSerializer(
             accountNumber = UNASSIGNED_ACCOUNT_NUMBER
             isNotifyNewMail = true
             folderNotifyNewMailMode = FolderMode.ALL
-            isNotifySync = true
+            isNotifySync = false
             isNotifySelfNewMail = true
             isNotifyContactsMailOnly = false
             folderDisplayMode = FolderMode.NOT_SECOND_CLASS
