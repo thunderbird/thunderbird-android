@@ -8,7 +8,6 @@ import com.fsck.k9.Account
 import com.fsck.k9.Preferences
 import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendFolder.MoreMessages
-import com.fsck.k9.backend.api.MessageRemovalListener
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
 import java.util.Date
@@ -114,11 +113,6 @@ class K9BackendFolder(
 
     override fun setPushState(pushState: String?) {
         return database.setString(column = "push_state", value = pushState)
-    }
-
-    // TODO: Move implementation from LocalFolder to this class
-    override fun purgeToVisibleLimit(listener: MessageRemovalListener) {
-        localFolder.purgeToVisibleLimit(listener)
     }
 
     override fun isMessagePresent(messageServerId: String): Boolean {
