@@ -193,13 +193,18 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
             val viewModelProvider = ViewModelProviders.of(parent, MessageListViewModelFactory())
             val viewModel = viewModelProvider.get(MessageListViewModel::class.java)
 
-            foldersLiveData?.removeObserver(foldersObserver)
+            removeFoldersObserver()
             foldersLiveData = viewModel.getFolders(account).apply {
                 observe(parent, foldersObserver)
             }
 
             updateFolderSettingsItem()
         }
+    }
+
+    private fun removeFoldersObserver() {
+        foldersLiveData?.removeObserver(foldersObserver)
+        foldersLiveData = null
     }
 
     private fun updateFolderSettingsItem() {
@@ -297,6 +302,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         selectedColor = 0
         accountHeader.setActiveProfile(DRAWER_ID_UNIFIED_INBOX)
         accountHeader.headerBackgroundView.setColorFilter(0xFFFFFFFFL.toInt(), PorterDuff.Mode.MULTIPLY)
+        removeFoldersObserver()
         clearUserFolders()
         updateFolderSettingsItem()
     }
