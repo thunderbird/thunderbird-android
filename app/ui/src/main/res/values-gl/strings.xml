@@ -648,7 +648,6 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="volume_navigation_title">Navegación con teclas de volume</string>
   <string name="volume_navigation_message">Vista de mensaxe</string>
   <string name="volume_navigation_list">Listas de mensaxes</string>
-  <string name="start_integrated_inbox_title">Iniciar na Bandexa unificada</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Sin ler</string>
   <string name="search_all_messages_title">Todas as mensaxes</string>

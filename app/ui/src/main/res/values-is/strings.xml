@@ -682,7 +682,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="volume_navigation_title">Flakk með hljóðstyrkshnöppum</string>
   <string name="volume_navigation_message">Í skilaboðasýnum</string>
   <string name="volume_navigation_list">Í listasýnum</string>
-  <string name="start_integrated_inbox_title">Byrja í sameinuðu innhólfi</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- Ólesið</string>
   <string name="search_all_messages_title">Öll skilaboð</string>

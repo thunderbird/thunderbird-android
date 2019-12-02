@@ -687,7 +687,6 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="volume_navigation_title">Pori gyda\'r botymau sain</string>
   <string name="volume_navigation_message">Wrth edrych ar neges</string>
   <string name="volume_navigation_list">Wrth edrych ar restr</string>
-  <string name="start_integrated_inbox_title">Dechrau yn y Mewnflwch Unedig</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- Heb eu darllen</string>
   <string name="search_all_messages_title">Pob neges</string>

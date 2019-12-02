@@ -574,7 +574,6 @@
   <string name="volume_navigation_title">Navegación coas teclas de volume</string>
   <string name="volume_navigation_message">Na vista de mensaxes</string>
   <string name="volume_navigation_list">Nas listaxes</string>
-  <string name="start_integrated_inbox_title">Estrela na caixa de entrada unificada</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Non lida</string>
   <string name="search_all_messages_title">Todas as mensaxes</string>

@@ -5,7 +5,7 @@
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">K-9 Mail</string>
   <string name="shortcuts_title">Account di K-9</string>
-  <string name="unread_widget_label">K-9 nuovi messaggi</string>
+  <string name="unread_widget_label">K-9 Nuovi messaggi</string>
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
   <string name="app_authors_url">https://github.com/k9mail/k-9/graphs/contributors</string>
@@ -683,7 +683,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="volume_navigation_title">Navigazione con tasti volume</string>
   <string name="volume_navigation_message">In visualizzazione messaggi</string>
   <string name="volume_navigation_list">In visualizzazione elenco</string>
-  <string name="start_integrated_inbox_title">Avvia in Posta in arrivo combinata</string>
   <string name="hide_special_accounts_title">Nascondi Posta in arrivo combinata</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- Non letto</string>

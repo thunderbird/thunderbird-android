@@ -607,7 +607,6 @@
   <string name="volume_navigation_title">볼륨 키 탐색</string>
   <string name="volume_navigation_message">메시지 뷰</string>
   <string name="volume_navigation_list">다양한 리스트 뷰</string>
-  <string name="start_integrated_inbox_title">통합 편지함으로 시작</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - 읽지 않은 메일 수</string>
   <string name="search_all_messages_title">모든 편지</string>

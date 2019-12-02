@@ -680,7 +680,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="volume_navigation_title">ボリュームキー操作</string>
   <string name="volume_navigation_message">メッセージ表示</string>
   <string name="volume_navigation_list">一覧表示</string>
-  <string name="start_integrated_inbox_title">統合フォルダで始める</string>
   <string name="hide_special_accounts_title">統合フォルダを非表示</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - 未読</string>

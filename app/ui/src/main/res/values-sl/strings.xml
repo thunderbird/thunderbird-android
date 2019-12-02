@@ -132,7 +132,7 @@ Poročila o napakah, predloge za nove funkcije in vprašanja lahko pošljete na
   <string name="read_receipt_enabled">Sporočilo bo poslano s povratnico</string>
   <string name="read_receipt_disabled">Sporočilo bo poslano brez povratnice</string>
   <string name="add_attachment_action">Dodaj prilogo</string>
-  <string name="empty_trash_action">Izprazni smeti</string>
+  <string name="empty_trash_action">Izprazni koš</string>
   <string name="expunge_action">Počisti izbrisano</string>
   <string name="about_action">O programu</string>
   <string name="prefs_title">Nastavitve</string>
@@ -179,7 +179,9 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="notification_bg_send_title">Pošiljanje pošte</string>
   <string name="notification_bg_title_separator">:</string>
   <string name="notification_channel_messages_title">Sporočila</string>
+  <string name="notification_channel_messages_description">Obvestila v zvezi s sporočili</string>
   <string name="notification_channel_miscellaneous_title">Razno</string>
+  <string name="notification_channel_miscellaneous_description">Razna obvestila, kot so npr. napake itd.</string>
   <string name="special_mailbox_name_inbox">Prejeto</string>
   <string name="special_mailbox_name_outbox">Odpremni predal</string>
   <string name="special_mailbox_name_drafts">Osnutki</string>
@@ -218,6 +220,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="message_view_bcc_label">Skp:</string>
   <string name="message_view_attachment_view_action">Odpri</string>
   <string name="message_view_attachment_download_action">Shrani</string>
+  <string name="message_view_status_attachment_not_saved">Priloge ni mogoče shraniti.</string>
   <string name="message_view_show_pictures_action">Pokaži slike</string>
   <string name="message_view_no_viewer">Ni mogoče najti pregledovalnika za vrsto <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Prejmi celotno sporočilo</string>
@@ -430,6 +433,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Ob odpiranju označi kot prebrano</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Ko se sporočilo prvič odpre, naj bo označeno kot prebrano</string>
   <string name="account_settings_notification_open_system_notifications_label">Nastavitve za obvestila</string>
+  <string name="account_settings_notification_open_system_notifications_summary">Odpri nastavitve za sistemska obvestila</string>
   <string name="account_settings_show_pictures_label">Prikaz slik</string>
   <string name="account_settings_show_pictures_never">Ne pokaži slik</string>
   <string name="account_settings_show_pictures_only_from_contacts">Pokaži slike znanih stikov</string>
@@ -451,6 +455,8 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="account_settings_quote_style_label">Način navajanja izvirnega besedila v odgovoru</string>
   <string name="account_settings_quote_style_prefix">Navedeno izvorno besedilo je pred odgovorom</string>
   <string name="account_settings_quote_style_header">Navedeno izvorno besedilo je za odgovorom</string>
+  <string name="account_settings_upload_sent_messages_label">Naloži poslana sporočila</string>
+  <string name="account_settings_upload_sent_messages_summary">Po pošiljanju naloži sporočila v mapo Poslano</string>
   <string name="account_settings_general_title">Splošne nastavitve</string>
   <string name="account_settings_reading_mail">Branje pošte</string>
   <string name="account_settings_sync">Pridobivanje pošte</string>
@@ -463,6 +469,9 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="account_settings_crypto_summary_off">Ni nastavljenega programa OpenPGP</string>
   <string name="account_settings_crypto_summary_on">Povezano na %s</string>
   <string name="account_settings_crypto_summary_config">Poteka nastavljanje ...</string>
+  <string name="account_settings_crypto_encrypt_all_drafts">Shrani vse osnutke šifrirano</string>
+  <string name="account_settings_crypto_encrypt_all_drafts_on">Vsi osnutki bodo shranjeni šifrirano</string>
+  <string name="account_settings_crypto_encrypt_all_drafts_off">Šifriraj osnutke samo, če je omogočeno šifriranje</string>
   <string name="account_settings_mail_check_frequency_label">Pogostost izpraševanja map</string>
   <string name="account_settings_color_label">Barvna shema računa</string>
   <string name="account_settings_color_summary">Barva, ki je uporabljena na seznamu map in seznamu računov</string>
@@ -637,6 +646,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="setting_theme_global">Uporabi barvno shemo</string>
   <string name="setting_theme_dark">Temna</string>
   <string name="setting_theme_light">Svetla</string>
+  <string name="setting_theme_follow_system">Uporabi sistemsko privzeto</string>
   <string name="display_preferences">Prikaz</string>
   <string name="global_preferences">Splošno</string>
   <string name="debug_preferences">Razhroščevanje</string>
@@ -676,7 +686,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="volume_navigation_title">Dovoli upravljanje programa s tipko za glasnost</string>
   <string name="volume_navigation_message">V pogledu sporočil</string>
   <string name="volume_navigation_list">V pogledu seznamov</string>
-  <string name="start_integrated_inbox_title">Začni v skupnem prikazu prejetih sporočil</string>
+  <string name="hide_special_accounts_title">Skrij skupno mapo prejetih sporočil</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- Neprebrano</string>
   <string name="search_all_messages_title">Vsa sporočila</string>
@@ -744,6 +754,8 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="dialog_confirm_delete_cancel_button">Ne</string>
   <string name="dialog_confirm_mark_all_as_read_title">Potrditev označevanja prebranega</string>
   <string name="dialog_confirm_mark_all_as_read_message">Ali želite označiti vsa sporočila kot prebrana?</string>
+  <string name="dialog_confirm_empty_trash_title">Potrdi izpraznitev koša</string>
+  <string name="dialog_confirm_empty_trash_message">Ali želite izprazniti mapo za smeti?</string>
   <string name="dialog_confirm_mark_all_as_read_confirm_button">Da</string>
   <string name="dialog_confirm_mark_all_as_read_cancel_button">Ne</string>
   <string name="dialog_confirm_spam_title">Potrditev premikanja v mapo neželene pošte</string>
@@ -764,16 +776,33 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="settings_export_button">Izvozi</string>
   <string name="settings_export_share_button">Objavi z …</string>
   <string name="settings_export_progress_text">Izvažanje nastavitev …</string>
-  <string name="settings_export_success_generic">Nastavitve so uspešno izvožene</string>
+  <string name="settings_export_success_generic">Nastavitve so bile uspešno izvožene</string>
   <string name="settings_export_failure">Napaka pri izvozu nastavitev</string>
   <string name="settings_import_title">Uvozi nastavitve</string>
   <string name="settings_import_pick_document_button">Izberi datoteko</string>
   <string name="settings_import_button">Uvozi</string>
-  <string name="settings_import_success_generic">Nastavitve so uspešno uvožene</string>
-  <string name="settings_import_password_required">Prosim, vnesi geslo</string>
+  <string name="settings_import_success_generic">Nastavitve so bile uspešno uvožene</string>
+  <string name="settings_import_password_required">Prosim, vnesite geslo</string>
   <string name="settings_import_failure">Napaka pri uvozu nastavitev</string>
+  <string name="settings_import_read_failure">Napaka pri branju datoteke nastavitev</string>
+  <string name="settings_import_partial_failure">Napaka pri uvozu nekaterih nastavitev</string>
+  <string name="settings_import_status_success">Uspešno uvoženo</string>
+  <string name="settings_import_status_password_required">Geslo je potrebno</string>
+  <string name="settings_import_status_not_imported">Ni uvoženo</string>
+  <string name="settings_import_status_error">Napaka pri uvozu</string>
+  <string name="settings_import_later_button">Kasneje</string>
   <string name="settings_import">Uvozi nastavitve</string>
   <string name="settings_importing">Uvažanje nastavitev …</string>
+  <plurals name="settings_import_password_prompt">
+    <item quantity="one">Za uporabo računa »<xliff:g id="account">%s</xliff:g>« morate navesti geslo strežnika.</item>
+    <item quantity="two">Za uporabo računa »<xliff:g id="account">%s</xliff:g>« morate navesti gesli strežnika.</item>
+    <item quantity="few">Za uporabo računa »<xliff:g id="account">%s</xliff:g>« morate navesti gesla strežnika.</item>
+    <item quantity="other">Za uporabo računa »<xliff:g id="account">%s</xliff:g>« morate navesti gesla strežnika.</item>
+  </plurals>
+  <string name="settings_import_incoming_server_password_hint">Geslo dohodnega strežnika</string>
+  <string name="settings_import_outgoing_server_password_hint">Geslo odhodnega strežnika</string>
+  <string name="settings_import_use_same_password_for_outgoing_server">Uporabi isto geslo za odhodni strežnik</string>
+  <string name="server_name_format">Ime strežnika: <xliff:g id="hostname">%s</xliff:g></string>
   <string name="unread_widget_select_account">Prikaži število neprebranih za …</string>
   <string name="unread_widget_account_title">Račun</string>
   <string name="unread_widget_account_summary">Račun za katerega naj bo pokazano število neprebranih sporočil</string>
@@ -1016,4 +1045,6 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
   <string name="navigation_drawer_open">Odpri</string>
   <string name="navigation_drawer_close">Zapri</string>
   <!--permissions-->
+  <string name="permission_contacts_rationale_title">Dovoli dostop do stikov</string>
+  <string name="permission_contacts_rationale_message">Če hočete dobiti predloge za stike in prikazati imena in fotografije stikov, aplikacija potrebuje dostop do vaših stikov.</string>
 </resources>

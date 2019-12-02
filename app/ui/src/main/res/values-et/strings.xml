@@ -650,7 +650,6 @@
   <string name="volume_navigation_title">Helitugevuse nupuga liikumine</string>
   <string name="volume_navigation_message">Sõnumite vaadetes</string>
   <string name="volume_navigation_list">Nimekirja vaadetes</string>
-  <string name="start_integrated_inbox_title">Alusta koondsisendkaustas</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- Lugemata</string>
   <string name="search_all_messages_title">Kõik sõnumid</string>

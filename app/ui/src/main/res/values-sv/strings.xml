@@ -682,7 +682,6 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="volume_navigation_title">Navigering med volymknapp</string>
   <string name="volume_navigation_message">I meddelandelistor</string>
   <string name="volume_navigation_list">I listvyer</string>
-  <string name="start_integrated_inbox_title">Samlad inkorg vid start</string>
   <string name="hide_special_accounts_title">Dölj samlad inkorg</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Olästa</string>

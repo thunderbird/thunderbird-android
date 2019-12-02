@@ -641,7 +641,6 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="volume_navigation_title">Seòladaireachd slighe putanan àirde na fuaime</string>
   <string name="volume_navigation_message">Ann an seallaidhean theachdaireachdan</string>
   <string name="volume_navigation_list">Ann an seallaidhean liostaichean</string>
-  <string name="start_integrated_inbox_title">Tòisich sa bhogsa a-steach cho-aonaichte</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- gun leughadh</string>
   <string name="search_all_messages_title">Na h-uile teachdaireachd</string>

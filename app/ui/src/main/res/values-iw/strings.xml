@@ -505,7 +505,6 @@
   <string name="volume_navigation_title">נייוט באמצעות מקשי הווליום</string>
   <string name="volume_navigation_message">הצגת הודעה</string>
   <string name="volume_navigation_list">רשימת תצוגות שונות</string>
-  <string name="start_integrated_inbox_title">התחל בתיבת דואר נכנס אחידה</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- לא נקרא</string>
   <string name="search_all_messages_title">כל ההודעות</string>
