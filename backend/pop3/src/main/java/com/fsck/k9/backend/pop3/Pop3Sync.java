@@ -15,7 +15,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.fsck.k9.backend.api.BackendFolder;
 import com.fsck.k9.backend.api.BackendFolder.MoreMessages;
 import com.fsck.k9.backend.api.BackendStorage;
-import com.fsck.k9.backend.api.MessageRemovalListener;
 import com.fsck.k9.backend.api.SyncConfig;
 import com.fsck.k9.backend.api.SyncListener;
 import com.fsck.k9.helper.ExceptionHelper;
@@ -194,7 +193,7 @@ class Pop3Sync {
             /*
              * Now we download the actual content of messages.
              */
-            int newMessages = downloadMessages(syncConfig, remoteFolder, backendFolder, remoteMessages, false, true,
+            int newMessages = downloadMessages(syncConfig, remoteFolder, backendFolder, remoteMessages, false,
                     listener);
 
             int unreadMessageCount = backendFolder.getUnreadMessageCount();
@@ -258,7 +257,7 @@ class Pop3Sync {
 
     private int downloadMessages(final SyncConfig syncConfig, final Folder remoteFolder,
             final BackendFolder backendFolder, List<Message> inputMessages, boolean flagSyncOnly,
-            boolean purgeToVisibleLimit, final SyncListener listener) throws MessagingException {
+            final SyncListener listener) throws MessagingException {
 
         final Date earliestDate = syncConfig.getEarliestPollDate();
         Date downloadStarted = new Date(); // now
@@ -342,16 +341,6 @@ class Pop3Sync {
         refreshLocalMessageFlags(syncConfig, remoteFolder, backendFolder, syncFlagMessages, progress, todo, listener);
 
         Timber.d("SYNC: Synced remote messages for folder %s, %d new messages", folder, newMessages.get());
-
-        if (purgeToVisibleLimit) {
-            backendFolder.purgeToVisibleLimit(new MessageRemovalListener() {
-                @Override
-                public void messageRemoved(Message message) {
-                    listener.syncRemovedMessage(folder, message.getUid());
-                }
-
-            });
-        }
 
         // If the oldest message seen on this sync is newer than
         // the oldest message seen on the previous sync, then

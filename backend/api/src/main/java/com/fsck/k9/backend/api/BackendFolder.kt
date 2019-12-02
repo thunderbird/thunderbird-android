@@ -19,7 +19,6 @@ interface BackendFolder {
     fun setStatus(status: String?)
     fun getPushState(): String?
     fun setPushState(pushState: String?)
-    fun purgeToVisibleLimit(listener: MessageRemovalListener)
     fun isMessagePresent(messageServerId: String): Boolean
     fun getMessageFlags(messageServerId: String): Set<Flag>
     fun setMessageFlag(messageServerId: String, flag: Flag, value: Boolean)

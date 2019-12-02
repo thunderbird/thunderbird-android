@@ -15,7 +15,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.fsck.k9.backend.api.BackendFolder;
 import com.fsck.k9.backend.api.BackendFolder.MoreMessages;
 import com.fsck.k9.backend.api.BackendStorage;
-import com.fsck.k9.backend.api.MessageRemovalListener;
 import com.fsck.k9.backend.api.SyncConfig;
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy;
 import com.fsck.k9.backend.api.SyncListener;
@@ -208,7 +207,7 @@ class ImapSync {
              * Now we download the actual content of messages.
              */
             int newMessages = downloadMessages(syncConfig, remoteFolder, backendFolder, remoteMessages, false,
-                    true, lastUid, listener);
+                    lastUid, listener);
 
             int unreadMessageCount = backendFolder.getUnreadMessageCount();
             listener.folderStatusChanged(folder, unreadMessageCount);
@@ -271,7 +270,6 @@ class ImapSync {
                     backendFolder,
                     Collections.singletonList(remoteMessage),
                     false,
-                    false,
                     null,
                     new SimpleSyncListener());
         } finally {
@@ -291,15 +289,12 @@ class ImapSync {
      *         A list of messages objects that store the UIDs of which messages to download.
      * @param flagSyncOnly
      *         Only flags will be fetched from the remote store if this is {@code true}.
-     * @param purgeToVisibleLimit
-     *         If true, local messages will be purged down to the limit of visible messages.
-     *
      * @return The number of downloaded messages that are not flagged as {@link Flag#SEEN}.
      *
      * @throws MessagingException
      */
     private int downloadMessages(SyncConfig syncConfig, Folder remoteFolder, BackendFolder backendFolder,
-            List<Message> inputMessages, boolean flagSyncOnly, boolean purgeToVisibleLimit, Long lastUid,
+            List<Message> inputMessages, boolean flagSyncOnly, Long lastUid,
             final SyncListener listener) throws MessagingException {
 
         final Date earliestDate = syncConfig.getEarliestPollDate();
@@ -393,16 +388,6 @@ class ImapSync {
         refreshLocalMessageFlags(syncConfig, remoteFolder, backendFolder, syncFlagMessages, progress, todo, listener);
 
         Timber.d("SYNC: Synced remote messages for folder %s, %d new messages", folder, newMessages.get());
-
-        if (purgeToVisibleLimit) {
-            backendFolder.purgeToVisibleLimit(new MessageRemovalListener() {
-                @Override
-                public void messageRemoved(Message message) {
-                    listener.syncRemovedMessage(folder, message.getUid());
-                }
-
-            });
-        }
 
         return newMessages.get();
     }
