@@ -62,9 +62,7 @@ public class ManageFoldersActivity extends K9ListActivity {
 
     private final K9JobManager jobManager = DI.get(K9JobManager.class);
 
-    private ListView listView;
-
-    private FolderListAdapter adapter;
+    private FolderListAdapter folderListAdapter;
 
     private LayoutInflater inflater;
 
@@ -84,7 +82,7 @@ public class ManageFoldersActivity extends K9ListActivity {
                 public void run() {
                     actionBar.setTitle(R.string.folders_action);
 
-                    String operation = adapter.activityListener.getOperation(ManageFoldersActivity.this);
+                    String operation = folderListAdapter.activityListener.getOperation(ManageFoldersActivity.this);
                     if (operation.length() < 1) {
                         actionBar.setSubtitle(account.getEmail());
                     } else {
@@ -98,9 +96,9 @@ public class ManageFoldersActivity extends K9ListActivity {
         public void newFolders(final List<FolderInfoHolder> newFolders) {
             runOnUiThread(new Runnable() {
                 public void run() {
-                    adapter.folders.clear();
-                    adapter.folders.addAll(newFolders);
-                    adapter.filteredFolders = adapter.folders;
+                    folderListAdapter.folders.clear();
+                    folderListAdapter.folders.addAll(newFolders);
+                    folderListAdapter.filteredFolders = folderListAdapter.folders;
                     handler.dataChanged();
                 }
             });
@@ -134,7 +132,7 @@ public class ManageFoldersActivity extends K9ListActivity {
         public void dataChanged() {
             runOnUiThread(new Runnable() {
                 public void run() {
-                    adapter.notifyDataSetChanged();
+                    folderListAdapter.notifyDataSetChanged();
                 }
             });
         }
@@ -157,13 +155,13 @@ public class ManageFoldersActivity extends K9ListActivity {
 
         setLayout(R.layout.folder_list);
         initializeActionBar();
-        listView = getListView();
+        ListView listView = getListView();
         listView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         listView.setFastScrollEnabled(true);
         listView.setScrollingCacheEnabled(false);
         listView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FolderSettings.actionSettings(ManageFoldersActivity.this, account, ((FolderInfoHolder) adapter.getItem(position)).serverId);
+                FolderSettings.actionSettings(ManageFoldersActivity.this, account, ((FolderInfoHolder) folderListAdapter.getItem(position)).serverId);
             }
         });
 
@@ -215,11 +213,11 @@ public class ManageFoldersActivity extends K9ListActivity {
     }
 
     private void initializeActivityView() {
-        adapter = new FolderListAdapter();
+        folderListAdapter = new FolderListAdapter();
         restorePreviousData();
 
-        setListAdapter(adapter);
-        getListView().setTextFilterEnabled(adapter.getFilter() != null); // should never be false but better safe then sorry
+        setListAdapter(folderListAdapter);
+        getListView().setTextFilterEnabled(folderListAdapter.getFilter() != null); // should never be false but better safe then sorry
     }
 
     @SuppressWarnings("unchecked")
@@ -227,20 +225,20 @@ public class ManageFoldersActivity extends K9ListActivity {
         final Object previousData = getLastCustomNonConfigurationInstance();
 
         if (previousData != null) {
-            adapter.folders = (ArrayList<FolderInfoHolder>) previousData;
-            adapter.filteredFolders = Collections.unmodifiableList(adapter.folders);
+            folderListAdapter.folders = (ArrayList<FolderInfoHolder>) previousData;
+            folderListAdapter.filteredFolders = Collections.unmodifiableList(folderListAdapter.folders);
         }
     }
 
 
     @Override public Object onRetainCustomNonConfigurationInstance() {
-        return (adapter == null) ? null : adapter.folders;
+        return (folderListAdapter == null) ? null : folderListAdapter.folders;
     }
 
     @Override public void onPause() {
         super.onPause();
-        MessagingController.getInstance(getApplication()).removeListener(adapter.activityListener);
-        adapter.activityListener.onPause(this);
+        MessagingController.getInstance(getApplication()).removeListener(folderListAdapter.activityListener);
+        folderListAdapter.activityListener.onPause(this);
     }
 
     /**
@@ -256,18 +254,18 @@ public class ManageFoldersActivity extends K9ListActivity {
             finish();
             return;
         }
-        if (adapter == null)
+        if (folderListAdapter == null)
             initializeActivityView();
 
         handler.refreshTitle();
 
-        MessagingController.getInstance(getApplication()).addListener(adapter.activityListener);
+        MessagingController.getInstance(getApplication()).addListener(folderListAdapter.activityListener);
         //account.refresh(Preferences.getPreferences(this));
 
         onRefresh(!REFRESH_REMOTE);
 
         MessagingController.getInstance(getApplication()).cancelNotificationsForAccount(account);
-        adapter.activityListener.onResume(this);
+        folderListAdapter.activityListener.onResume(this);
     }
 
     @Override
@@ -307,13 +305,13 @@ public class ManageFoldersActivity extends K9ListActivity {
         if (account.getFolderPushMode() != FolderMode.NONE) {
             jobManager.schedulePusherRefresh();
         }
-        adapter.getFilter().filter(null);
+        folderListAdapter.getFilter().filter(null);
         onRefresh(false);
     }
 
 
     private void onRefresh(final boolean forceRemote) {
-        MessagingController.getInstance(getApplication()).listFolders(account, forceRemote, adapter.activityListener);
+        MessagingController.getInstance(getApplication()).listFolders(account, forceRemote, folderListAdapter.activityListener);
     }
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
@@ -378,7 +376,7 @@ public class ManageFoldersActivity extends K9ListActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
+                folderListAdapter.getFilter().filter(newText);
                 return true;
             }
         });
@@ -445,7 +443,7 @@ public class ManageFoldersActivity extends K9ListActivity {
                 if (account.equals(ManageFoldersActivity.this.account)) {
 
                     handler.progress(false);
-                    MessagingController.getInstance(getApplication()).refreshListener(adapter.activityListener);
+                    MessagingController.getInstance(getApplication()).refreshListener(folderListAdapter.activityListener);
                     handler.dataChanged();
                 }
                 super.listFoldersFinished(account);
