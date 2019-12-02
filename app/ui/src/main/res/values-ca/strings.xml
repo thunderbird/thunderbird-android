@@ -682,7 +682,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="volume_navigation_title">Navegació amb botons de volum</string>
   <string name="volume_navigation_message">Vista del missatge</string>
   <string name="volume_navigation_list">A la vista de llistes</string>
-  <string name="start_integrated_inbox_title">Comença a la bústia unificada</string>
   <string name="hide_special_accounts_title">Amaga la bústia unificada</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- No llegit</string>

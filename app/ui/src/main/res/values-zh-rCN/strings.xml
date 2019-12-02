@@ -673,7 +673,6 @@ https://github.com/k9mail/k-9/20
   <string name="volume_navigation_title">音量键导航</string>
   <string name="volume_navigation_message">信息视图</string>
   <string name="volume_navigation_list">不同的列表视图</string>
-  <string name="start_integrated_inbox_title">从全局收件箱启动</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - 未读</string>
   <string name="search_all_messages_title">所有邮件</string>

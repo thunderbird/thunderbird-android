@@ -681,7 +681,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="volume_navigation_title">Navigering med lydstyrkeknapp</string>
   <string name="volume_navigation_message">I meldingsvisninger</string>
   <string name="volume_navigation_list">I listevisninger</string>
-  <string name="start_integrated_inbox_title">Start i samlet innboks</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- Uleste</string>
   <string name="search_all_messages_title">Alle meldinger</string>

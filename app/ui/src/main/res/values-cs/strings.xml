@@ -685,7 +685,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="volume_navigation_title">Navigace tlačítky hlasitosti</string>
   <string name="volume_navigation_message">Zobrazení zpráv</string>
   <string name="volume_navigation_list">Různá zobrazení seznamů</string>
-  <string name="start_integrated_inbox_title">Začít v Integrované doručené poště</string>
   <string name="hide_special_accounts_title">Skrýt sjednocenou příchozí poštu</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Nepřečtené</string>

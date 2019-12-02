@@ -643,7 +643,6 @@
   <string name="volume_navigation_title">Πλοήγηση με πλήκτρο έντασης</string>
   <string name="volume_navigation_message">Προβολή μηνύματος</string>
   <string name="volume_navigation_list">Διάφορες προβολές λίστας</string>
-  <string name="start_integrated_inbox_title">Εκκίνηση στα ενιαία εισερχόμενα</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Μη αναγνωσμένα</string>
   <string name="search_all_messages_title">Όλα τα μηνύματα</string>

@@ -683,7 +683,6 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="volume_navigation_title">Navigation à l’aide de la touche de volume</string>
   <string name="volume_navigation_message">Dans les vues des courriels</string>
   <string name="volume_navigation_list">Dans les vues en liste</string>
-  <string name="start_integrated_inbox_title">Démarrer dans la boîte de réception unifiée</string>
   <string name="hide_special_accounts_title">Cacher la boîte de réception unifiée</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Non lu</string>

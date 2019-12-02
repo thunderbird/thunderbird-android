@@ -680,7 +680,6 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="volume_navigation_title">Navegación con teclas de volumen</string>
   <string name="volume_navigation_message">Vista de mensaje</string>
   <string name="volume_navigation_list">Listas de mensajes</string>
-  <string name="start_integrated_inbox_title">Usar Bandeja unificada</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - No leído</string>
   <string name="search_all_messages_title">Todos los mensajes</string>

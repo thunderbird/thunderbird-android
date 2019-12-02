@@ -681,7 +681,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="volume_navigation_title">Bolumen teklekin nabigatu</string>
   <string name="volume_navigation_message">Mezu barruko ikuspegiak</string>
   <string name="volume_navigation_list">Zerrenda barruko ikuspegiak</string>
-  <string name="start_integrated_inbox_title">Hasi sarrerako ontzi bateratutan</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Irakurri gabe</string>
   <string name="search_all_messages_title">Mezu guztiak</string>

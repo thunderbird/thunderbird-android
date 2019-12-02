@@ -318,7 +318,7 @@
   <string name="account_setup_options_mail_display_count_5000">5000 رسالة</string>
   <string name="account_setup_options_mail_display_count_10000">10000 رسالة</string>
   <string name="account_setup_options_mail_display_count_all">كل الرسائل</string>
-  <string name="account_setup_failed_dlg_title">تعذرت مواصلة عملية تتمة الإعداد</string>
+  <string name="account_setup_failed_dlg_title">تعذرت مواصلة عملية إتمام الإعداد</string>
   <string name="account_setup_failed_dlg_auth_message_fmt">إسم المستخدم أو كلمة السر خاطئة.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">تعديل التفاصيل</string>
   <string name="account_setup_failed_dlg_continue_action">مواصلة</string>
@@ -554,7 +554,6 @@
   <string name="animations_title">الحركة</string>
   <string name="gestures_title">الإيماءات</string>
   <string name="volume_navigation_title">التصفح عبر أزرار التحكم في الصوت</string>
-  <string name="start_integrated_inbox_title">إبدأ بصندوق البريد الموحَّد</string>
   <string name="unread_modifier"> - غير المقروءة</string>
   <string name="search_all_messages_title">كل الرسائل</string>
   <string name="integrated_inbox_title">البريد الوارد الموحَّد</string>
