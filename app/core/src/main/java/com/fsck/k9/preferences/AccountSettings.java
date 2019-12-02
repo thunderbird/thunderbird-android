@@ -63,7 +63,8 @@ public class AccountSettings {
                 new V(1, new StringSetting("INBOX"))
         ));
         s.put("automaticCheckIntervalMinutes", Settings.versions(
-                new V(1, new IntegerResourceSetting(-1, R.array.check_frequency_values))
+                new V(1, new IntegerResourceSetting(-1, R.array.check_frequency_values)),
+                new V(61, new IntegerResourceSetting(60, R.array.check_frequency_values))
         ));
         s.put("chipColor", Settings.versions(
                 new V(1, new ColorSetting(0xFF0000FF))

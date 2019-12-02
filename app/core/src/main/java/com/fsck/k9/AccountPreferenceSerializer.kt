@@ -2,11 +2,11 @@ package com.fsck.k9
 
 import com.fsck.k9.Account.DEFAULT_SORT_ASCENDING
 import com.fsck.k9.Account.DEFAULT_SORT_TYPE
+import com.fsck.k9.Account.DEFAULT_SYNC_INTERVAL
 import com.fsck.k9.Account.DeletePolicy
 import com.fsck.k9.Account.Expunge
 import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.Account.INBOX
-import com.fsck.k9.Account.INTERVAL_MINUTES_NEVER
 import com.fsck.k9.Account.MessageFormat
 import com.fsck.k9.Account.NO_OPENPGP_KEY
 import com.fsck.k9.Account.QuoteStyle
@@ -37,7 +37,7 @@ class AccountPreferenceSerializer(
             transportUri = Base64.decode(storage.getString("$accountUuid.transportUri", null))
             description = storage.getString("$accountUuid.description", null)
             alwaysBcc = storage.getString("$accountUuid.alwaysBcc", alwaysBcc)
-            automaticCheckIntervalMinutes = storage.getInt("$accountUuid.automaticCheckIntervalMinutes", INTERVAL_MINUTES_NEVER)
+            automaticCheckIntervalMinutes = storage.getInt("$accountUuid.automaticCheckIntervalMinutes", DEFAULT_SYNC_INTERVAL)
             idleRefreshMinutes = storage.getInt("$accountUuid.idleRefreshMinutes", 24)
             isPushPollOnConnect = storage.getBoolean("$accountUuid.pushPollOnConnect", true)
             displayCount = storage.getInt("$accountUuid.displayCount", K9.DEFAULT_VISIBLE_LIMIT)
@@ -506,14 +506,14 @@ class AccountPreferenceSerializer(
     fun loadDefaults(account: Account) {
         with(account) {
             localStorageProviderId = storageManager.defaultProviderId
-            automaticCheckIntervalMinutes = INTERVAL_MINUTES_NEVER
+            automaticCheckIntervalMinutes = DEFAULT_SYNC_INTERVAL
             idleRefreshMinutes = 24
             isPushPollOnConnect = true
             displayCount = K9.DEFAULT_VISIBLE_LIMIT
             accountNumber = UNASSIGNED_ACCOUNT_NUMBER
             isNotifyNewMail = true
             folderNotifyNewMailMode = FolderMode.ALL
-            isNotifySync = true
+            isNotifySync = false
             isNotifySelfNewMail = true
             isNotifyContactsMailOnly = false
             folderDisplayMode = FolderMode.NOT_SECOND_CLASS
