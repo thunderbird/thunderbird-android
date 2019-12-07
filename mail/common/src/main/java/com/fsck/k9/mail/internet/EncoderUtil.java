@@ -11,7 +11,7 @@ import org.apache.james.mime4j.Charsets;
  * Static methods for encoding header field values. This includes encoded-words
  * as defined in <a href='http://www.faqs.org/rfcs/rfc2047.html'>RFC 2047</a>
  * or display-names of an e-mail address, for example.
- *
+ * <p>
  * This class is copied from the org.apache.james.mime4j.decoder.EncoderUtil class.  It's modified here in order to
  * encode emoji characters in the Subject headers.  The method to decode emoji depends on the MimeMessage class because
  * it has to be determined with the sender address.
@@ -38,11 +38,17 @@ class EncoderUtil {
      * Selects one of the two encodings specified in RFC 2047.
      */
     public enum Encoding {
-        /** The B encoding (identical to base64 defined in RFC 2045). */
+        /**
+         * The B encoding (identical to base64 defined in RFC 2045).
+         */
         B,
-        /** The Q encoding (similar to quoted-printable defined in RFC 2045). */
+        /**
+         * The Q encoding (similar to quoted-printable defined in RFC 2045).
+         */
         Q,
-        /** If only default ascii characters exist. */
+        /**
+         * If only default ascii characters exist.
+         */
         PLAIN_ASCII
     }
 
@@ -54,18 +60,17 @@ class EncoderUtil {
      * words separated by space. The text is separated into a sequence of
      * encoded words if it does not fit in a single one.
      *
-     * @param text
-     *            text to encode.
-     * @param charset
-     *            the Java charset that should be used to encode the specified
-     *            string into a byte array. A suitable charset is detected
-     *            automatically if this parameter is <code>null</code>.
+     * @param text    text to encode.
+     * @param charset the Java charset that should be used to encode the specified
+     *                string into a byte array. A suitable charset is detected
+     *                automatically if this parameter is <code>null</code>.
      * @return the encoded word (or sequence of encoded words if the given text
-     *         does not fit in a single encoded word).
+     * does not fit in a single encoded word).
      */
     public static String encodeEncodedWord(String text, Charset charset) {
-        if (text == null)
+        if (text == null) {
             throw new IllegalArgumentException();
+        }
 
         Encoding encoding = determineEncoding(text);
 
@@ -73,8 +78,9 @@ class EncoderUtil {
             return text;
         }
 
-        if (charset == null)
+        if (charset == null) {
             charset = determineCharset(text);
+        }
 
         String mimeCharset = CharsetSupport.getExternalCharset(charset.name());
 
@@ -92,8 +98,7 @@ class EncoderUtil {
     private static String encodeB(String prefix, String text, Charset charset, byte[] bytes) {
         int encodedLength = bEncodedLength(bytes);
 
-        int totalLength = prefix.length() + encodedLength
-                          + ENC_WORD_SUFFIX.length();
+        int totalLength = prefix.length() + encodedLength + ENC_WORD_SUFFIX.length();
         if (totalLength <= ENCODED_WORD_MAX_LENGTH) {
             return prefix + org.apache.james.mime4j.codec.EncoderUtil.encodeB(bytes) + ENC_WORD_SUFFIX;
         } else {
@@ -119,11 +124,10 @@ class EncoderUtil {
         return (bytes.length + 2) / 3 * 4;
     }
 
-    private static String encodeQ(String prefix, String text,  Charset charset, byte[] bytes) {
+    private static String encodeQ(String prefix, String text, Charset charset, byte[] bytes) {
         int encodedLength = qEncodedLength(bytes);
 
-        int totalLength = prefix.length() + encodedLength
-                          + ENC_WORD_SUFFIX.length();
+        int totalLength = prefix.length() + encodedLength + ENC_WORD_SUFFIX.length();
         if (totalLength <= ENCODED_WORD_MAX_LENGTH) {
             return prefix + org.apache.james.mime4j.codec.EncoderUtil.encodeQ(bytes, org.apache.james.mime4j.codec.EncoderUtil.Usage.WORD_ENTITY) + ENC_WORD_SUFFIX;
         } else {
