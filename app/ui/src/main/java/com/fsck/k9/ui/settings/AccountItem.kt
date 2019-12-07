@@ -13,5 +13,6 @@ internal class AccountItem(val account: Account) : Item() {
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.name.text = account.description
         viewHolder.email.text = account.email
+        viewHolder.icon.setColorFilter(account.chipColor)
     }
 }
