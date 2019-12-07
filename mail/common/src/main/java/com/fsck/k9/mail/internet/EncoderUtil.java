@@ -41,7 +41,9 @@ class EncoderUtil {
         /** The B encoding (identical to base64 defined in RFC 2045). */
         B,
         /** The Q encoding (similar to quoted-printable defined in RFC 2045). */
-        Q
+        Q,
+        /** If only default ascii characters exist. */
+        PLAIN_ASCII
     }
 
     private EncoderUtil() {
@@ -65,14 +67,18 @@ class EncoderUtil {
         if (text == null)
             throw new IllegalArgumentException();
 
+        Encoding encoding = determineEncoding(text);
+
+        if (encoding == Encoding.PLAIN_ASCII) {
+            return text;
+        }
+
         if (charset == null)
             charset = determineCharset(text);
 
         String mimeCharset = CharsetSupport.getExternalCharset(charset.name());
 
         byte[] bytes = encode(text, charset);
-
-        Encoding encoding = determineEncoding(bytes);
 
         if (encoding == Encoding.B) {
             String prefix = ENC_WORD_PREFIX + mimeCharset + "?B?";
@@ -91,11 +97,17 @@ class EncoderUtil {
         if (totalLength <= ENCODED_WORD_MAX_LENGTH) {
             return prefix + org.apache.james.mime4j.codec.EncoderUtil.encodeB(bytes) + ENC_WORD_SUFFIX;
         } else {
-            String part1 = text.substring(0, text.length() / 2);
+            int splitAt = text.length() / 2;
+
+            if (Character.isHighSurrogate(text.charAt(splitAt - 1))) {
+                splitAt--;
+            }
+
+            String part1 = text.substring(0, splitAt);
             byte[] bytes1 = encode(part1, charset);
             String word1 = encodeB(prefix, part1, charset, bytes1);
 
-            String part2 = text.substring(text.length() / 2);
+            String part2 = text.substring(splitAt);
             byte[] bytes2 = encode(part2, charset);
             String word2 = encodeB(prefix, part2, charset, bytes2);
 
@@ -115,11 +127,17 @@ class EncoderUtil {
         if (totalLength <= ENCODED_WORD_MAX_LENGTH) {
             return prefix + org.apache.james.mime4j.codec.EncoderUtil.encodeQ(bytes, org.apache.james.mime4j.codec.EncoderUtil.Usage.WORD_ENTITY) + ENC_WORD_SUFFIX;
         } else {
-            String part1 = text.substring(0, text.length() / 2);
+            int splitAt = text.length() / 2;
+
+            if (Character.isHighSurrogate(text.charAt(splitAt - 1))) {
+                splitAt--;
+            }
+
+            String part1 = text.substring(0, splitAt);
             byte[] bytes1 = encode(part1, charset);
             String word1 = encodeQ(prefix, part1, charset, bytes1);
 
-            String part2 = text.substring(text.length() / 2);
+            String part2 = text.substring(splitAt);
             byte[] bytes2 = encode(part2, charset);
             String word2 = encodeQ(prefix, part2, charset, bytes2);
 
@@ -168,19 +186,28 @@ class EncoderUtil {
         return ascii ? Charsets.US_ASCII : Charsets.ISO_8859_1;
     }
 
-    private static Encoding determineEncoding(byte[] bytes) {
-        if (bytes.length == 0)
-            return Encoding.Q;
-
-        int qEncoded = 0;
-        for (int i = 0; i < bytes.length; i++) {
-            int v = bytes[i] & 0xff;
-            if (v != 32 && !Q_RESTRICTED_CHARS.get(v)) {
-                qEncoded++;
+    private static Encoding determineEncoding(String string) {
+        int asciiCount = 0;
+        int nonAsciiCount = 0;
+        for (int i = 0; i < string.length(); i++) {
+            int charValue = (int) string.charAt(i);
+            if (isNonAscii(charValue)) {
+                nonAsciiCount++;
+            } else {
+                asciiCount++;
             }
         }
 
-        int percentage = qEncoded * 100 / bytes.length;
-        return percentage > 30 ? Encoding.B : Encoding.Q;
+        if (nonAsciiCount == 0) {
+            return Encoding.PLAIN_ASCII;
+        } else if (asciiCount > nonAsciiCount) {
+            return Encoding.Q;
+        } else {
+            return Encoding.B;
+        }
+    }
+
+    private static boolean isNonAscii(int charCode) {
+        return charCode >= 127 || (charCode < 32 && charCode != '\r' && charCode != '\n' && charCode != '\t');
     }
 }
