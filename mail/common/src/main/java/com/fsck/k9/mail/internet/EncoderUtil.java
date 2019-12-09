@@ -45,11 +45,7 @@ class EncoderUtil {
         /**
          * The Q encoding (similar to quoted-printable defined in RFC 2045).
          */
-        Q,
-        /**
-         * If only default ascii characters exist.
-         */
-        PLAIN_ASCII
+        Q
     }
 
     private EncoderUtil() {
@@ -72,12 +68,6 @@ class EncoderUtil {
             throw new IllegalArgumentException();
         }
 
-        Encoding encoding = determineEncoding(text);
-
-        if (encoding == Encoding.PLAIN_ASCII) {
-            return text;
-        }
-
         if (charset == null) {
             charset = determineCharset(text);
         }
@@ -85,6 +75,8 @@ class EncoderUtil {
         String mimeCharset = CharsetSupport.getExternalCharset(charset.name());
 
         byte[] bytes = encode(text, charset);
+
+        Encoding encoding = determineEncoding(bytes);
 
         if (encoding == Encoding.B) {
             String prefix = ENC_WORD_PREFIX + mimeCharset + "?B?";
@@ -190,28 +182,19 @@ class EncoderUtil {
         return ascii ? Charsets.US_ASCII : Charsets.ISO_8859_1;
     }
 
-    private static Encoding determineEncoding(String string) {
-        int asciiCount = 0;
-        int nonAsciiCount = 0;
-        for (int i = 0; i < string.length(); i++) {
-            int charValue = (int) string.charAt(i);
-            if (isNonAscii(charValue)) {
-                nonAsciiCount++;
-            } else {
-                asciiCount++;
+    private static Encoding determineEncoding(byte[] bytes) {
+        if (bytes.length == 0)
+            return Encoding.Q;
+
+        int qEncoded = 0;
+        for (int i = 0; i < bytes.length; i++) {
+            int v = bytes[i] & 0xff;
+            if (v != 32 && !Q_RESTRICTED_CHARS.get(v)) {
+                qEncoded++;
             }
         }
 
-        if (nonAsciiCount == 0) {
-            return Encoding.PLAIN_ASCII;
-        } else if (asciiCount > nonAsciiCount) {
-            return Encoding.Q;
-        } else {
-            return Encoding.B;
-        }
-    }
-
-    private static boolean isNonAscii(int charCode) {
-        return charCode >= 127 || (charCode < 32 && charCode != '\r' && charCode != '\n' && charCode != '\t');
+        int percentage = qEncoded * 100 / bytes.length;
+        return percentage > 30 ? Encoding.B : Encoding.Q;
     }
 }

@@ -914,7 +914,7 @@ public class MimeUtility {
 
     // TODO implement proper foldAndEncode
     public static String foldAndEncode(String s) {
-        return EncoderUtil.encodeEncodedWord(s, null);
+        return s;
     }
 
     /**
