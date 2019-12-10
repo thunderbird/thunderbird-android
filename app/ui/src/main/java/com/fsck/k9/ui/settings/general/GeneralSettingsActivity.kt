@@ -36,8 +36,8 @@ class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, S
                 add(R.id.generalSettingsContainer, GeneralSettingsFragment.create())
             }
         } else {
-            searchQuery = savedInstanceState.getString(KEY_SEARCH_QUERY) ?: error("Missing instance state")
-            searchEnabled = savedInstanceState.getBoolean(KEY_SEARCH_ENABLED)
+            searchQuery = savedInstanceState.getString(KEY_SEARCH_QUERY, "")
+            searchEnabled = savedInstanceState.getBoolean(KEY_SEARCH_ENABLED, false)
         }
     }
 
@@ -47,9 +47,11 @@ class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, S
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putString(KEY_SEARCH_QUERY, searchPreferenceActionView.query.toString())
-        outState.putBoolean(KEY_SEARCH_ENABLED, !searchPreferenceActionView.isIconified)
-        searchPreferenceActionView.onBackPressed()
+        if (::searchPreferenceActionView.isInitialized) {
+            outState.putString(KEY_SEARCH_QUERY, searchPreferenceActionView.query.toString())
+            outState.putBoolean(KEY_SEARCH_ENABLED, !searchPreferenceActionView.isIconified)
+            searchPreferenceActionView.onBackPressed()
+        }
         super.onSaveInstanceState(outState)
     }
 
