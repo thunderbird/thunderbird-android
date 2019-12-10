@@ -30,14 +30,11 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.activity.ActivityListener
 import com.fsck.k9.activity.FolderInfoHolder
 import com.fsck.k9.activity.K9ListActivity
-import com.fsck.k9.activity.MessageList
-import com.fsck.k9.activity.UpgradeDatabases
 import com.fsck.k9.activity.setup.FolderSettings
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.mail.Folder.FolderClass
 import com.fsck.k9.mailstore.LocalFolder
-import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.folders.FolderIconProvider
 import com.fsck.k9.ui.helper.SizeFormatter
@@ -105,11 +102,8 @@ class ManageFoldersActivity : K9ListActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (UpgradeDatabases.actionUpgradeDatabases(this, intent)) {
-            finish()
-            return
-        }
         setLayout(R.layout.folder_list)
+
         initializeActionBar()
         val listView = listView
         listView.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
@@ -120,39 +114,20 @@ class ManageFoldersActivity : K9ListActivity() {
         listView.isSaveEnabled = true
         inflater = layoutInflater
         context = this
-        onNewIntent(intent)
-        if (isFinishing) { /*
-             * onNewIntent() may call finish(), but execution will still continue here.
-             * We return now because we don't want to display the changelog which can
-             * result in a leaked window error.
-             */
+
+        val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT)
+        account = Preferences.getPreferences(this).getAccount(accountUuid)
+        if (account == null) {
+            finish()
             return
         }
+
+        initializeActivityView()
     }
 
     private fun initializeActionBar() {
         actionBar = supportActionBar
         actionBar!!.setDisplayHomeAsUpEnabled(true)
-    }
-
-    public override fun onNewIntent(intent: Intent) {
-        setIntent(intent) // onNewIntent doesn't autoset our "internal" intent
-        val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT)
-        account = Preferences.getPreferences(this).getAccount(accountUuid)
-        if (account == null) { /*
-             * This can happen when a launcher shortcut is created for an
-             * account, and then the account is deleted or data is wiped, and
-             * then the shortcut is used.
-             */
-            finish()
-            return
-        }
-        if (intent.getBooleanExtra(EXTRA_FROM_SHORTCUT, false) && account!!.autoExpandFolder != null) {
-            onOpenFolder(account!!.autoExpandFolder)
-            finish()
-        } else {
-            initializeActivityView()
-        }
     }
 
     private fun initializeActivityView() {
@@ -269,13 +244,6 @@ class ManageFoldersActivity : K9ListActivity() {
         } else {
             super.onOptionsItemSelected(item)
         }
-    }
-
-    private fun onOpenFolder(folder: String) {
-        val search = LocalSearch(folder)
-        search.addAccountUuid(account!!.uuid)
-        search.addAllowedFolder(folder)
-        MessageList.actionDisplaySearch(this, search, false, false)
     }
 
     private fun onCompact(account: Account?) {
@@ -501,7 +469,6 @@ class ManageFoldersActivity : K9ListActivity() {
 
     companion object {
         private const val EXTRA_ACCOUNT = "account"
-        private const val EXTRA_FROM_SHORTCUT = "fromShortcut"
         private const val REFRESH_REMOTE = true
 
         @JvmStatic
