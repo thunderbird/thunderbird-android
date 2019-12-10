@@ -1,4 +1,4 @@
-package com.fsck.k9.activity
+package com.fsck.k9.ui.managefolders
 
 import android.content.Context
 import android.content.Intent
@@ -27,6 +27,11 @@ import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.DI
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
+import com.fsck.k9.activity.ActivityListener
+import com.fsck.k9.activity.FolderInfoHolder
+import com.fsck.k9.activity.K9ListActivity
+import com.fsck.k9.activity.MessageList
+import com.fsck.k9.activity.UpgradeDatabases
 import com.fsck.k9.activity.setup.FolderSettings
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.job.K9JobManager

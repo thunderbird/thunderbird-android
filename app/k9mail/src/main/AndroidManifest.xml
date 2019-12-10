@@ -289,7 +289,7 @@
             android:label="@string/upgrade_databases_title"/>
 
         <activity
-            android:name=".activity.ManageFoldersActivity"
+            android:name=".ui.managefolders.ManageFoldersActivity"
             android:label="@string/folders_action" />
 
         <activity
