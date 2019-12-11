@@ -39,7 +39,7 @@ class K9BackendStorage(
         val localFolders = folders.map { localStore.getFolder(it.serverId, it.name, it.type) }
         localStore.createFolders(localFolders, account.displayCount)
 
-        if (folders.any { it.type != FolderType.REGULAR }) {
+        if (folders.any { it.type != RemoteFolderType.REGULAR }) {
             specialFolderUpdater.updateSpecialFolders()
         }
     }
