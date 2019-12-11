@@ -14,7 +14,7 @@ class K9BackendStorage(
     private val preferences: Preferences,
     private val account: Account,
     private val localStore: LocalStore,
-    private val specialFolderUpdater: SpecialFolderUpdater
+    private val listeners: List<BackendStorageListener>
 ) : BackendStorage {
     private val database = localStore.database
 
@@ -39,9 +39,7 @@ class K9BackendStorage(
         val localFolders = folders.map { localStore.getFolder(it.serverId, it.name, it.type) }
         localStore.createFolders(localFolders, account.displayCount)
 
-        if (folders.any { it.type != RemoteFolderType.REGULAR }) {
-            specialFolderUpdater.updateSpecialFolders()
-        }
+        listeners.forEach { it.onFoldersCreated(folders) }
     }
 
     override fun deleteFolders(folderServerIds: List<String>) {
@@ -50,7 +48,7 @@ class K9BackendStorage(
                 .map { localStore.getFolder(it) }
                 .forEach { it.delete() }
 
-        specialFolderUpdater.updateSpecialFolders()
+        listeners.forEach { it.onFoldersDeleted(folderServerIds) }
     }
 
     override fun changeFolder(folderServerId: String, name: String, type: RemoteFolderType) {
@@ -63,7 +61,7 @@ class K9BackendStorage(
             db.update("folders", values, "server_id = ?", arrayOf(folderServerId))
         }
 
-        specialFolderUpdater.updateSpecialFolders()
+        listeners.forEach { it.onFolderChanged(folderServerId, name, type) }
     }
 
     override fun getExtraString(name: String): String? {
