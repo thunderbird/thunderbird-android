@@ -6,6 +6,7 @@ import com.fsck.k9.AppRobolectricTest
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.search.SearchAccount
+import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.doReturn
@@ -19,7 +20,8 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
     val account = createAccount()
     val preferences = createPreferences()
     val messagingController = createMessagingController()
-    val provider = UnreadWidgetDataProvider(context, preferences, messagingController)
+    val defaultFolderStrategy = createDefaultFolderStrategy()
+    val provider = UnreadWidgetDataProvider(context, preferences, messagingController, defaultFolderStrategy)
 
     @Test
     fun unifiedInbox() {
@@ -72,7 +74,6 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
     fun createAccount(): Account = mock {
         on { uuid } doReturn ACCOUNT_UUID
         on { description } doReturn ACCOUNT_DESCRIPTION
-        on { autoExpandFolder } doReturn FOLDER_SERVER_ID
     }
 
     fun createPreferences(): Preferences = mock {
@@ -83,6 +84,10 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
         on { getUnreadMessageCount(any<SearchAccount>()) } doReturn SEARCH_ACCOUNT_UNREAD_COUNT
         on { getUnreadMessageCount(account) } doReturn ACCOUNT_UNREAD_COUNT
         on { getFolderUnreadMessageCount(eq(account), eq(FOLDER_SERVER_ID)) } doReturn FOLDER_UNREAD_COUNT
+    }
+
+    fun createDefaultFolderStrategy(): DefaultFolderProvider = mock {
+        on { getDefaultFolder(account) } doReturn FOLDER_SERVER_ID
     }
 
     companion object {

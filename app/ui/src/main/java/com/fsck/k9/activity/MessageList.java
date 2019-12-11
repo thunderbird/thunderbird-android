@@ -56,6 +56,7 @@ import com.fsck.k9.ui.BuildConfig;
 import com.fsck.k9.ui.K9Drawer;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.Theme;
+import com.fsck.k9.ui.messagelist.DefaultFolderProvider;
 import com.fsck.k9.ui.messageview.MessageViewFragment;
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener;
 import com.fsck.k9.ui.onboarding.OnboardingActivity;
@@ -136,10 +137,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
     public static Intent shortcutIntentForAccount(Context context, Account account) {
-        String folderServerId = account.getAutoExpandFolder();
-        if (folderServerId == null) {
-            folderServerId = account.getInboxFolder();
-        }
+        DefaultFolderProvider defaultFolderProvider = DI.get(DefaultFolderProvider.class);
+        String folderServerId = defaultFolderProvider.getDefaultFolder(account);
 
         LocalSearch search = new LocalSearch();
         search.addAccountUuid(account.getUuid());
@@ -174,6 +173,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     private StorageManager.StorageListener mStorageListener = new StorageListenerImplementation();
     private final Preferences preferences = DI.get(Preferences.class);
     private final NotificationChannelManager channelUtils = DI.get(NotificationChannelManager.class);
+    private final DefaultFolderProvider defaultFolderProvider = DI.get(DefaultFolderProvider.class);
 
     private ActionBar actionBar;
     private ActionBarDrawerToggle drawerToggle;
@@ -499,10 +499,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 String folderServerId = intent.getStringExtra("folder");
                 if (folderServerId == null) {
                     account = preferences.getAccount(accountUuid);
-                    folderServerId = account.getAutoExpandFolder();
-                    if (folderServerId == null) {
-                        folderServerId = account.getInboxFolder();
-                    }
+                    folderServerId = defaultFolderProvider.getDefaultFolder(account);
                 }
 
                 search = new LocalSearch(folderServerId);
@@ -512,10 +509,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 account = preferences.getDefaultAccount();
                 search = new LocalSearch();
                 search.addAccountUuid(account.getUuid());
-                String folderServerId = account.getAutoExpandFolder();
-                if (folderServerId == null) {
-                    folderServerId = account.getInboxFolder();
-                }
+                String folderServerId = defaultFolderProvider.getDefaultFolder(account);
                 search.addAllowedFolder(folderServerId);
             }
         }
@@ -651,10 +645,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
     public void openRealAccount(Account account) {
-        String folderServerId = account.getAutoExpandFolder();
-        if (folderServerId == null) {
-            folderServerId = account.getInboxFolder();
-        }
+        String folderServerId = defaultFolderProvider.getDefaultFolder(account);
 
         LocalSearch search = new LocalSearch();
         search.addAllowedFolder(folderServerId);
