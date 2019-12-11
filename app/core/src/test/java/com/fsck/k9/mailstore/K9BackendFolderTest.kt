@@ -24,7 +24,6 @@ import org.koin.core.inject
 
 class K9BackendFolderTest : K9RobolectricTest() {
     val preferences: Preferences by inject()
-    val folderRepositoryManager: FolderRepositoryManager by inject()
     val localStoreProvider: LocalStoreProvider by inject()
 
     val account: Account = createAccount()
@@ -92,9 +91,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
 
     fun createBackendFolder(): BackendFolder {
         val localStore: LocalStore = localStoreProvider.getInstance(account)
-        val folderRepository = folderRepositoryManager.getFolderRepository(account)
-        val specialFolderUpdater = SpecialFolderUpdater(preferences, folderRepository, account)
-        val backendStorage = K9BackendStorage(preferences, account, localStore, specialFolderUpdater)
+        val backendStorage = K9BackendStorage(preferences, account, localStore, emptyList())
         backendStorage.createFolders(listOf(FolderInfo(FOLDER_SERVER_ID, FOLDER_NAME, FOLDER_TYPE)))
 
         val folderServerIds = backendStorage.getFolderServerIds()
