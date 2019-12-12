@@ -680,7 +680,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     @Override
     public void onBackPressed() {
-        if (displayMode == DisplayMode.MESSAGE_VIEW && messageListWasDisplayed) {
+        if (isDrawerEnabled() && drawer.isOpen()) {
+            drawer.close();
+        } else if (displayMode == DisplayMode.MESSAGE_VIEW && messageListWasDisplayed) {
             showMessageList();
         } else {
             super.onBackPressed();
