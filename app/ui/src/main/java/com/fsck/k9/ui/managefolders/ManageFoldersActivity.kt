@@ -3,31 +3,20 @@ package com.fsck.k9.ui.managefolders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.TextUtils.TruncateAt
 import android.view.KeyEvent
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-import android.widget.AdapterView.OnItemClickListener
-import android.widget.BaseAdapter
-import android.widget.Filter
-import android.widget.Filterable
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.SearchView
-import android.widget.SearchView.OnQueryTextListener
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
+import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.SearchView.OnQueryTextListener
+import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.DI
-import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import com.fsck.k9.activity.ActivityListener
-import com.fsck.k9.activity.K9ListActivity
+import com.fsck.k9.activity.K9Activity
 import com.fsck.k9.activity.setup.FolderSettings
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.job.K9JobManager
@@ -37,38 +26,45 @@ import com.fsck.k9.ui.folders.FolderIconProvider
 import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.helper.SizeFormatter
 import com.fsck.k9.ui.observeNotNull
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.adapters.ItemAdapter
 import java.util.Locale
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import timber.log.Timber
 
-class ManageFoldersActivity : K9ListActivity() {
+class ManageFoldersActivity : K9Activity() {
     private val viewModel: ManageFoldersViewModel by viewModel()
     private val folderNameFormatter: FolderNameFormatter by inject()
     private val jobManager = DI.get(K9JobManager::class.java)
-    private var folderListAdapter: FolderListAdapter? = null
-    private var inflater: LayoutInflater? = null
+    private val folderIconProvider by lazy { FolderIconProvider(theme) }
+
+    private lateinit var actionBar: ActionBar
+    private lateinit var itemAdapter: ItemAdapter<FolderListItem>
+
     private var account: Account? = null
-    private val fontSizes = K9.fontSizes
-    private var context: Context? = null
-    private var actionBar: ActionBar? = null
+    private val activityListener = object : ActivityListener() {
+        override fun accountSizeChanged(account: Account, oldSize: Long, newSize: Long) {
+            if (account == this@ManageFoldersActivity.account) {
+                runOnUiThread {
+                    val toastText = getString(
+                        R.string.account_size_changed,
+                        account.description,
+                        SizeFormatter.formatSize(application, oldSize),
+                        SizeFormatter.formatSize(application, newSize)
+                    )
+                    val toast = Toast.makeText(application, toastText, Toast.LENGTH_LONG)
+                    toast.show()
+                }
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setLayout(R.layout.folder_list)
 
         initializeActionBar()
-        val listView = listView
-        listView.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
-        listView.isFastScrollEnabled = true
-        listView.isScrollingCacheEnabled = false
-        listView.onItemClickListener = OnItemClickListener { _, _, position, _ ->
-            val folderServerId = (folderListAdapter!!.getItem(position) as DisplayFolder).folder.serverId
-            FolderSettings.actionSettings(this@ManageFoldersActivity, account, folderServerId)
-        }
-        listView.isSaveEnabled = true
-        inflater = layoutInflater
-        context = this
+        initializeFolderList()
 
         val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT)
         val account = Preferences.getPreferences(this).getAccount(accountUuid)
@@ -78,42 +74,57 @@ class ManageFoldersActivity : K9ListActivity() {
         }
         this.account = account
 
-        initializeActivityView()
-
         viewModel.getFolders(account).observeNotNull(this) { folders ->
             updateFolderList(folders)
         }
     }
 
-    private fun updateFolderList(displayFolders: List<DisplayFolder>) {
-        folderListAdapter!!.apply {
-            folders.clear()
-            folders.addAll(displayFolders)
-            filteredFolders = folders
-            notifyDataSetChanged()
-        }
-    }
-
     private fun initializeActionBar() {
-        actionBar = supportActionBar
-        actionBar!!.setDisplayHomeAsUpEnabled(true)
+        actionBar = supportActionBar!!
+        actionBar.setDisplayHomeAsUpEnabled(true)
     }
 
-    private fun initializeActivityView() {
-        folderListAdapter = FolderListAdapter()
-        setListAdapter(folderListAdapter)
-        listView.isTextFilterEnabled =
-            folderListAdapter!!.filter != null // should never be false but better safe then sorry
+    private fun initializeFolderList() {
+        itemAdapter = ItemAdapter()
+        itemAdapter.itemFilter.filterPredicate = ::folderListFilter
+
+        val folderListAdapter = FastAdapter.with(itemAdapter).apply {
+            setHasStableIds(true)
+            onClickListener = { _, _, item: FolderListItem, _ ->
+                onFolderListItemClicked(item.serverId)
+                true
+            }
+        }
+
+        val recyclerView = findViewById<RecyclerView>(R.id.folderList)
+        recyclerView.adapter = folderListAdapter
+    }
+
+    private fun updateFolderList(displayFolders: List<DisplayFolder>) {
+        val folderListItems = displayFolders.map { displayFolder ->
+            val databaseId = displayFolder.folder.id
+            val folderIconResource = folderIconProvider.getFolderIcon(displayFolder.folder.type)
+            val displayName = folderNameFormatter.displayName(displayFolder.folder)
+            val serverId = displayFolder.folder.serverId
+
+            FolderListItem(databaseId, folderIconResource, displayName, serverId)
+        }
+
+        itemAdapter.set(folderListItems)
+    }
+
+    private fun onFolderListItemClicked(folderServerId: String) {
+        FolderSettings.actionSettings(this@ManageFoldersActivity, account, folderServerId)
     }
 
     public override fun onPause() {
-        MessagingController.getInstance(application).removeListener(folderListAdapter!!.activityListener)
+        MessagingController.getInstance(application).removeListener(activityListener)
         super.onPause()
     }
 
     public override fun onResume() {
         super.onResume()
-        MessagingController.getInstance(application).addListener(folderListAdapter!!.activityListener)
+        MessagingController.getInstance(application).addListener(activityListener)
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean { // Shortcuts that work no matter what is selected
@@ -149,11 +160,12 @@ class ManageFoldersActivity : K9ListActivity() {
         if (account!!.folderPushMode != FolderMode.NONE) {
             jobManager.schedulePusherRefresh()
         }
-        folderListAdapter!!.filter.filter(null)
+
+        itemAdapter.filter(null)
     }
 
     private fun onRefresh(forceRemote: Boolean) {
-        MessagingController.getInstance(application).listFolders(account, forceRemote, folderListAdapter!!.activityListener)
+        MessagingController.getInstance(application).listFolders(account, forceRemote, activityListener)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -205,147 +217,25 @@ class ManageFoldersActivity : K9ListActivity() {
         folderSearchView.queryHint = getString(R.string.folder_list_filter_hint)
         folderSearchView.setOnQueryTextListener(object : OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
-                folderMenuItem.collapseActionView()
-                actionBar!!.setTitle(R.string.filter_folders_action)
+                itemAdapter.filter(query)
                 return true
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                folderListAdapter!!.filter.filter(newText)
+                itemAdapter.filter(newText)
                 return true
             }
         })
-        folderSearchView.setOnCloseListener {
-            actionBar!!.setTitle(R.string.folders_title)
-            false
-        }
     }
 
-    internal inner class FolderListAdapter : BaseAdapter(), Filterable {
-        var folders: MutableList<DisplayFolder> = mutableListOf()
-        var filteredFolders = folders.toList()
-        private val filter: Filter = FolderListFilter()
-        private val folderIconProvider = FolderIconProvider(theme)
-        override fun getItem(position: Int): Any {
-            return filteredFolders[position]
-        }
+    private fun folderListFilter(item: FolderListItem, constraint: CharSequence?): Boolean {
+        if (constraint.isNullOrEmpty()) return true
 
-        override fun getItemId(position: Int): Long {
-            return filteredFolders[position].folder.id
-        }
-
-        override fun getCount(): Int {
-            return filteredFolders.size
-        }
-
-        val activityListener: ActivityListener = object : ActivityListener() {
-            override fun accountSizeChanged(account: Account, oldSize: Long, newSize: Long) {
-                if (account == this@ManageFoldersActivity.account) {
-                    runOnUiThread {
-                        val toastText = getString(
-                            R.string.account_size_changed,
-                            account.description,
-                            SizeFormatter.formatSize(application, oldSize),
-                            SizeFormatter.formatSize(application, newSize)
-                        )
-                        val toast = Toast.makeText(application, toastText, Toast.LENGTH_LONG)
-                        toast.show()
-                    }
-                }
-            }
-        }
-
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
-            return if (position <= count) {
-                getItemView(position, convertView, parent)
-            } else {
-                Timber.e("getView with illegal position=%d called! count is only %d", position, count)
-                null
-            }
-        }
-
-        fun getItemView(itemPosition: Int, convertView: View?, parent: ViewGroup?): View {
-            val displayFolder = getItem(itemPosition) as DisplayFolder
-            val view: View
-            view = convertView ?: inflater!!.inflate(R.layout.folder_list_item, parent, false)
-            var holder = view.tag as? FolderViewHolder
-            if (holder == null) {
-                holder = FolderViewHolder()
-                holder.folderName = view.findViewById(R.id.folder_name)
-                holder.folderIcon = view.findViewById(R.id.folder_icon)
-                holder.folderListItemLayout = view.findViewById(R.id.folder_list_item_layout)
-                holder.folderServerId = displayFolder.folder.serverId
-                view.tag = holder
-            }
-
-            holder.folderName!!.text = folderNameFormatter.displayName(displayFolder.folder)
-            holder.folderIcon!!.setImageResource(folderIconProvider.getFolderIcon(displayFolder.folder.type))
-            fontSizes.setViewTextSize(holder.folderName, fontSizes.folderName)
-            if (K9.isWrapFolderNames) {
-                holder.folderName!!.ellipsize = null
-                holder.folderName!!.isSingleLine = false
-            } else {
-                holder.folderName!!.ellipsize = TruncateAt.START
-                holder.folderName!!.isSingleLine = true
-            }
-            return view
-        }
-
-        override fun hasStableIds(): Boolean {
-            return true
-        }
-
-        override fun getFilter(): Filter {
-            return filter
-        }
-
-        /**
-         * Filter to search for occurrences of the search-expression in any place of the
-         * folder-name instead of doing just a prefix-search.
-         */
-        inner class FolderListFilter : Filter() {
-            override fun performFiltering(searchTerm: CharSequence?): FilterResults {
-                val results = FilterResults()
-                val locale = Locale.getDefault()
-                if (searchTerm == null || searchTerm.length == 0) {
-                    val list: List<DisplayFolder> = folders.toList()
-                    results.values = list
-                    results.count = list.size
-                } else {
-                    val searchTermString = searchTerm.toString().toLowerCase(locale)
-                    val words = searchTermString.split(" ").toTypedArray()
-                    val wordCount = words.size
-                    val newValues: MutableList<DisplayFolder> = mutableListOf()
-                    for (displayFolder in folders) {
-                        val displayName = folderNameFormatter.displayName(displayFolder.folder)
-                        val valueText = displayName.toLowerCase(locale)
-                        for (k in 0 until wordCount) {
-                            if (valueText.contains(words[k])) {
-                                newValues.add(displayFolder)
-                                break
-                            }
-                        }
-                    }
-                    results.values = newValues.toList()
-                    results.count = newValues.size
-                }
-                return results
-            }
-
-            override fun publishResults(constraint: CharSequence?, results: FilterResults) {
-                @Suppress("UNCHECKED_CAST")
-                filteredFolders = results.values as List<DisplayFolder>
-                // Send notification that the data set changed now
-                notifyDataSetChanged()
-            }
-        }
-    }
-
-    class FolderViewHolder {
-        var folderName: TextView? = null
-        var folderServerId: String? = null
-        var folderIcon: ImageView? = null
-        var folderListItemLayout: LinearLayout? = null
+        val locale = Locale.getDefault()
+        val displayName = item.displayName.toLowerCase(locale)
+        return constraint.splitToSequence(" ")
+            .map { it.toLowerCase(locale) }
+            .any { it in displayName }
     }
 
     companion object {
