@@ -13,13 +13,11 @@ import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
-import com.fsck.k9.DI
 import com.fsck.k9.Preferences
 import com.fsck.k9.activity.ActivityListener
 import com.fsck.k9.activity.K9Activity
 import com.fsck.k9.activity.setup.FolderSettings
 import com.fsck.k9.controller.MessagingController
-import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.mailstore.DisplayFolder
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.folders.FolderIconProvider
@@ -35,13 +33,14 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ManageFoldersActivity : K9Activity() {
     private val viewModel: ManageFoldersViewModel by viewModel()
     private val folderNameFormatter: FolderNameFormatter by inject()
-    private val jobManager = DI.get(K9JobManager::class.java)
+    private val messagingController: MessagingController by inject()
+    private val preferences: Preferences by inject()
     private val folderIconProvider by lazy { FolderIconProvider(theme) }
 
+    private lateinit var account: Account
     private lateinit var actionBar: ActionBar
     private lateinit var itemAdapter: ItemAdapter<FolderListItem>
 
-    private var account: Account? = null
     private val activityListener = object : ActivityListener() {
         override fun accountSizeChanged(account: Account, oldSize: Long, newSize: Long) {
             if (account == this@ManageFoldersActivity.account) {
@@ -63,20 +62,23 @@ class ManageFoldersActivity : K9Activity() {
         super.onCreate(savedInstanceState)
         setLayout(R.layout.folder_list)
 
-        initializeActionBar()
-        initializeFolderList()
-
-        val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT)
-        val account = Preferences.getPreferences(this).getAccount(accountUuid)
-        if (account == null) {
+        if (!decodeArguments()) {
             finish()
             return
         }
-        this.account = account
+
+        initializeActionBar()
+        initializeFolderList()
 
         viewModel.getFolders(account).observeNotNull(this) { folders ->
             updateFolderList(folders)
         }
+    }
+
+    private fun decodeArguments(): Boolean {
+        val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT) ?: return false
+        account = preferences.getAccount(accountUuid) ?: return false
+        return true
     }
 
     private fun initializeActionBar() {
@@ -91,7 +93,7 @@ class ManageFoldersActivity : K9Activity() {
         val folderListAdapter = FastAdapter.with(itemAdapter).apply {
             setHasStableIds(true)
             onClickListener = { _, _, item: FolderListItem, _ ->
-                onFolderListItemClicked(item.serverId)
+                openFolderSettings(item.serverId)
                 true
             }
         }
@@ -113,95 +115,36 @@ class ManageFoldersActivity : K9Activity() {
         itemAdapter.set(folderListItems)
     }
 
-    private fun onFolderListItemClicked(folderServerId: String) {
-        FolderSettings.actionSettings(this@ManageFoldersActivity, account, folderServerId)
+    private fun openFolderSettings(folderServerId: String) {
+        FolderSettings.actionSettings(this, account, folderServerId)
     }
 
     public override fun onPause() {
-        MessagingController.getInstance(application).removeListener(activityListener)
+        messagingController.removeListener(activityListener)
         super.onPause()
     }
 
     public override fun onResume() {
         super.onResume()
-        MessagingController.getInstance(application).addListener(activityListener)
+        messagingController.addListener(activityListener)
     }
 
-    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean { // Shortcuts that work no matter what is selected
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         when (keyCode) {
-            KeyEvent.KEYCODE_H -> {
-                val toast = Toast.makeText(this, R.string.folder_list_help_key, Toast.LENGTH_LONG)
-                toast.show()
-                return true
-            }
-            KeyEvent.KEYCODE_1 -> {
-                setDisplayMode(FolderMode.FIRST_CLASS)
-                return true
-            }
-            KeyEvent.KEYCODE_2 -> {
-                setDisplayMode(FolderMode.FIRST_AND_SECOND_CLASS)
-                return true
-            }
-            KeyEvent.KEYCODE_3 -> {
-                setDisplayMode(FolderMode.NOT_SECOND_CLASS)
-                return true
-            }
-            KeyEvent.KEYCODE_4 -> {
-                setDisplayMode(FolderMode.ALL)
-                return true
-            }
-        }
-        return super.onKeyDown(keyCode, event)
-    } // onKeyDown
-
-    private fun setDisplayMode(newMode: FolderMode) {
-        account!!.folderDisplayMode = newMode
-        Preferences.getPreferences(applicationContext).saveAccount(account)
-        if (account!!.folderPushMode != FolderMode.NONE) {
-            jobManager.schedulePusherRefresh()
+            KeyEvent.KEYCODE_H -> displayHelpText()
+            KeyEvent.KEYCODE_1 -> setDisplayMode(FolderMode.FIRST_CLASS)
+            KeyEvent.KEYCODE_2 -> setDisplayMode(FolderMode.FIRST_AND_SECOND_CLASS)
+            KeyEvent.KEYCODE_3 -> setDisplayMode(FolderMode.NOT_SECOND_CLASS)
+            KeyEvent.KEYCODE_4 -> setDisplayMode(FolderMode.ALL)
+            else -> return super.onKeyDown(keyCode, event)
         }
 
-        itemAdapter.filter(null)
+        return true
     }
 
-    private fun onRefresh(forceRemote: Boolean) {
-        MessagingController.getInstance(application).listFolders(account, forceRemote, activityListener)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-        return if (id == android.R.id.home) {
-            onBackPressed()
-            true
-        } else if (id == R.id.list_folders) {
-            onRefresh(REFRESH_REMOTE)
-            true
-        } else if (id == R.id.compact) {
-            onCompact(account)
-            true
-        } else if (id == R.id.display_1st_class) {
-            setDisplayMode(FolderMode.FIRST_CLASS)
-            true
-        } else if (id == R.id.display_1st_and_2nd_class) {
-            setDisplayMode(FolderMode.FIRST_AND_SECOND_CLASS)
-            true
-        } else if (id == R.id.display_not_second_class) {
-            setDisplayMode(FolderMode.NOT_SECOND_CLASS)
-            true
-        } else if (id == R.id.display_all) {
-            setDisplayMode(FolderMode.ALL)
-            true
-        } else {
-            super.onOptionsItemSelected(item)
-        }
-    }
-
-    private fun onCompact(account: Account?) {
-        val toastText = getString(R.string.compacting_account, account!!.description)
-        val toast = Toast.makeText(application, toastText, Toast.LENGTH_SHORT)
+    private fun displayHelpText() {
+        val toast = Toast.makeText(this, R.string.folder_list_help_key, Toast.LENGTH_LONG)
         toast.show()
-
-        MessagingController.getInstance(application).compact(account, null)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -228,6 +171,40 @@ class ManageFoldersActivity : K9Activity() {
         })
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> onBackPressed()
+            R.id.list_folders -> refreshFolderList()
+            R.id.compact -> compactAccount()
+            R.id.display_1st_class -> setDisplayMode(FolderMode.FIRST_CLASS)
+            R.id.display_1st_and_2nd_class -> setDisplayMode(FolderMode.FIRST_AND_SECOND_CLASS)
+            R.id.display_not_second_class -> setDisplayMode(FolderMode.NOT_SECOND_CLASS)
+            R.id.display_all -> setDisplayMode(FolderMode.ALL)
+            else -> return super.onOptionsItemSelected(item)
+        }
+
+        return true
+    }
+
+    private fun refreshFolderList() {
+        messagingController.listFolders(account, true, activityListener)
+    }
+
+    private fun compactAccount() {
+        val toastText = getString(R.string.compacting_account, account.description)
+        val toast = Toast.makeText(application, toastText, Toast.LENGTH_SHORT)
+        toast.show()
+
+        messagingController.compact(account, null)
+    }
+
+    private fun setDisplayMode(newMode: FolderMode) {
+        account.folderDisplayMode = newMode
+        preferences.saveAccount(account)
+
+        itemAdapter.filter(null)
+    }
+
     private fun folderListFilter(item: FolderListItem, constraint: CharSequence?): Boolean {
         if (constraint.isNullOrEmpty()) return true
 
@@ -240,7 +217,6 @@ class ManageFoldersActivity : K9Activity() {
 
     companion object {
         private const val EXTRA_ACCOUNT = "account"
-        private const val REFRESH_REMOTE = true
 
         @JvmStatic
         fun launch(context: Context, account: Account) {
