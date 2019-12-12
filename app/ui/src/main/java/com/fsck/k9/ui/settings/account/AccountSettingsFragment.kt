@@ -70,6 +70,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         initializeDeletePolicy(account)
         initializeExpungePolicy(account)
         initializeMessageAge(account)
+        initializeIgnoreMessageAgeDuringSearch(account)
         initializeAdvancedPushSettings(account)
         initializeCryptoSettings(account)
         initializeFolderSettings(account)
@@ -169,7 +170,13 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
             }
         }
     }
-
+    private fun initializeIgnoreMessageAgeDuringSearch(account: Account) {
+        findPreference<Preference>(PREFERENCE_IGNORE_MESSAGE_AGE_DURING_SEARCH)?.apply {
+            if (!messagingController.supportsSearchByDate(account)) {
+                remove()
+            }
+        }
+    }
     private fun initializeAdvancedPushSettings(account: Account) {
         /* Temporarily disabled. See GH-4253
         if (!messagingController.isPushCapable(account)) {
@@ -364,6 +371,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val PREFERENCE_DELETE_POLICY = "delete_policy"
         private const val PREFERENCE_EXPUNGE_POLICY = "expunge_policy"
         private const val PREFERENCE_MESSAGE_AGE = "account_message_age"
+        private const val PREFERENCE_IGNORE_MESSAGE_AGE_DURING_SEARCH = "account_ignore_message_age_during_search"
         private const val PREFERENCE_PUSH_MODE = "folder_push_mode"
         private const val PREFERENCE_ADVANCED_PUSH_SETTINGS = "push_advanced"
         private const val PREFERENCE_REMOTE_SEARCH = "search"

@@ -36,6 +36,7 @@ class AccountSettingsDataStore(
             "openpgp_encrypt_subject" -> account.isOpenPgpEncryptSubject
             "openpgp_encrypt_all_drafts" -> account.isOpenPgpEncryptAllDrafts
             "remote_search_enabled" -> account.isAllowRemoteSearch
+            "account_ignore_message_age_during_search" -> account.ignoreMaximumPolledMessageAgeDuringSearch
             "autocrypt_prefer_encrypt" -> account.autocryptPreferEncryptMutual
             "upload_sent_messages" -> account.isUploadSentMessages
             else -> defValue
@@ -66,6 +67,7 @@ class AccountSettingsDataStore(
             "account_notify_sync" -> account.isNotifySync = value
             "notification_opens_unread" -> account.isGoToUnreadMessageSearch = value
             "remote_search_enabled" -> account.isAllowRemoteSearch = value
+            "account_ignore_message_age_during_search" -> account.ignoreMaximumPolledMessageAgeDuringSearch = value
             "openpgp_hide_sign_only" -> account.isOpenPgpHideSignOnly = value
             "openpgp_encrypt_subject" -> account.isOpenPgpEncryptSubject = value
             "openpgp_encrypt_all_drafts" -> account.isOpenPgpEncryptAllDrafts = value
@@ -156,6 +158,7 @@ class AccountSettingsDataStore(
             "show_pictures_enum" -> account.showPictures = Account.ShowPictures.valueOf(value)
             "account_display_count" -> account.displayCount = value.toInt()
             "account_message_age" -> account.maximumPolledMessageAge = value.toInt()
+            "account_ignore_message_age_during_search" -> account.ignoreMaximumPolledMessageAgeDuringSearch = value.toBoolean()
             "account_autodownload_size" -> account.maximumAutoDownloadMessageSize = value.toInt()
             "account_check_frequency" -> {
                 if (account.setAutomaticCheckIntervalMinutes(value.toInt())) {

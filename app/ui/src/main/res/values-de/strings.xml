@@ -848,6 +848,9 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_settings_remote_search_enabled_summary">Nachrichten nicht nur auf dem Gerät, sondern auch auf dem Server suchen</string>
   <string name="action_remote_search">Nachrichten auf Server suchen</string>
   <string name="remote_search_unavailable_no_network">Serverseitige Suche kann ohne Netzverbindung nicht durchgeführt werden.</string>
+  <string name="account_settings_ignore_message_age_during_search">Ignoriere maximales Nachrichtenalter</string>
+  <string name="account_settings_ignore_message_age_during_search_summary">Das in den Einstellungen zur Synchronisation gesetzte maximale Alter der abzurufenden Nachrichten wird bei der server-seitigen Suche ignoriert.</string>
+
   <string name="global_settings_background_as_unread_indicator_label">Farbe ändern, wenn gelesen</string>
   <string name="global_settings_background_as_unread_indicator_summary">Ein anderer Hintergrund zeigt, dass die Nachricht gelesen wurde</string>
   <string name="global_settings_threaded_view_label">Nachrichten gruppieren</string>

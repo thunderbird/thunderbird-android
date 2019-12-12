@@ -737,7 +737,15 @@ public class MessagingController {
                     K9.DEFAULT_VISIBLE_LIMIT,
                     SYNC_FLAGS);
     }
-
+    private SyncConfig createSearchSyncConfig(Account account) {
+        return new SyncConfig(
+                account.getExpungePolicy().toBackendExpungePolicy(),
+                account.getEarliestSearchPollDate(),
+                account.isSyncRemoteDeletions(),
+                account.getMaximumAutoDownloadMessageSize(),
+                K9.DEFAULT_VISIBLE_LIMIT,
+                SYNC_FLAGS);
+    }
     private void updateFolderStatus(Account account, String folderServerId, String status) {
         try {
             LocalStore localStore = localStoreProvider.getInstance(account);
@@ -1319,8 +1327,8 @@ public class MessagingController {
                 Backend backend = getBackend(account);
 
                 if (loadPartialFromSearch) {
-                    SyncConfig syncConfig = createSyncConfig(account);
-                    backend.downloadMessage(syncConfig, folder, uid);
+                    SyncConfig searchsyncConfig = createSearchSyncConfig(account);
+                    backend.downloadMessage(searchsyncConfig, folder, uid);
                 } else {
                     FetchProfile fp = new FetchProfile();
                     fp.add(FetchProfile.Item.BODY);

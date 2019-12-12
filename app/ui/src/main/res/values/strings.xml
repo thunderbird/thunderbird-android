@@ -1030,6 +1030,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_remote_search_enabled_summary">Search messages on the server in addition to those on your device</string>
     <string name="action_remote_search">Search messages on server</string>
     <string name="remote_search_unavailable_no_network">A network connection is required for server search.</string>
+    <string name="account_settings_ignore_message_age_during_search">Ignore maximum message age</string>
+    <string name="account_settings_ignore_message_age_during_search_summary">The maximum message age that is specified in the account settings is ignored during server-side search.</string>
 
     <string name="global_settings_background_as_unread_indicator_label">Change colour when read</string>
     <string name="global_settings_background_as_unread_indicator_summary">A different background will show that the message has been read</string>

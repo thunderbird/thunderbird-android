@@ -416,6 +416,11 @@
             android:key="account_remote_search_num_results"
             android:summary="%s"
             android:title="@string/account_settings_remote_search_num_label" />
+        <CheckBoxPreference
+            android:dependency="remote_search_enabled"
+            android:key="account_ignore_message_age_during_search"
+            android:summary="@string/account_settings_ignore_message_age_during_search_summary"
+            android:title="@string/account_settings_ignore_message_age_during_search" />
 
     </PreferenceScreen>
 

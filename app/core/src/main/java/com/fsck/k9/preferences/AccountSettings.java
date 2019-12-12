@@ -129,6 +129,9 @@ public class AccountSettings {
         s.put("maximumPolledMessageAge", Settings.versions(
                 new V(1, new IntegerResourceSetting(-1, R.array.message_age_values))
         ));
+        s.put("ignoreMaximumPolledMessageAgeDuringSearch", Settings.versions(
+                new V(62, new BooleanSetting(true))
+        ));
         s.put("messageFormat", Settings.versions(
                 new V(1, new EnumSetting<>(MessageFormat.class, AccountPreferenceSerializer.DEFAULT_MESSAGE_FORMAT))
         ));
@@ -326,6 +329,36 @@ public class AccountSettings {
         public Integer fromString(String value) throws InvalidSettingValueException {
             try {
                 return Integer.parseInt(value);
+            } catch (NumberFormatException e) {
+                throw new InvalidSettingValueException();
+            }
+        }
+    }
+    private static class BooleanResourceSetting extends PseudoEnumSetting<Boolean> {
+        private final Context context = DI.get(Context.class);
+        private final Map<Boolean, String> mapping;
+
+        BooleanResourceSetting(boolean defaultValue, int resId) {
+            super(defaultValue);
+
+            Map<Boolean, String> mapping = new HashMap<>();
+            String[] values = context.getResources().getStringArray(resId);
+            for (String value : values) {
+                boolean boolValue = Boolean.parseBoolean(value);
+                mapping.put(boolValue, value);
+            }
+            this.mapping = Collections.unmodifiableMap(mapping);
+        }
+
+        @Override
+        protected Map<Boolean, String> getMapping() {
+            return mapping;
+        }
+
+        @Override
+        public Boolean fromString(String value) throws InvalidSettingValueException {
+            try {
+                return Boolean.parseBoolean(value);
             } catch (NumberFormatException e) {
                 throw new InvalidSettingValueException();
             }

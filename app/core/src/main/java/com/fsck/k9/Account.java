@@ -165,6 +165,7 @@ public class Account implements BaseAccount, StoreConfig {
     private Searchable searchableFolders;
     private boolean subscribedFoldersOnly;
     private int maximumPolledMessageAge;
+    private boolean ignoreMaximumPolledMessageAgeDuringSearch;
     private int maximumAutoDownloadMessageSize;
     // Tracks if we have sent a notification for this account for
     // current set of fetched messages
@@ -795,9 +796,16 @@ public class Account implements BaseAccount, StoreConfig {
     public synchronized int getMaximumPolledMessageAge() {
         return maximumPolledMessageAge;
     }
+    public synchronized boolean getIgnoreMaximumPolledMessageAgeDuringSearch()
+    {
+        return ignoreMaximumPolledMessageAgeDuringSearch;
+    }
 
     public synchronized void setMaximumPolledMessageAge(int maximumPolledMessageAge) {
         this.maximumPolledMessageAge = maximumPolledMessageAge;
+    }
+    public synchronized void setIgnoreMaximumPolledMessageAgeDuringSearch(boolean ignoreMaximumPolledMessageAgeDuringSearch) {
+        this.ignoreMaximumPolledMessageAgeDuringSearch = ignoreMaximumPolledMessageAgeDuringSearch;
     }
 
     public synchronized int getMaximumAutoDownloadMessageSize() {
@@ -807,7 +815,14 @@ public class Account implements BaseAccount, StoreConfig {
     public synchronized void setMaximumAutoDownloadMessageSize(int maximumAutoDownloadMessageSize) {
         this.maximumAutoDownloadMessageSize = maximumAutoDownloadMessageSize;
     }
-
+    public Date getEarliestSearchPollDate()
+    {
+        boolean ignore_maximum_message_age_during_search = getIgnoreMaximumPolledMessageAgeDuringSearch();
+        if (ignore_maximum_message_age_during_search)
+            return null;
+        else
+            return getEarliestPollDate();
+    }
     public Date getEarliestPollDate() {
         int age = getMaximumPolledMessageAge();
         if (age >= 0) {

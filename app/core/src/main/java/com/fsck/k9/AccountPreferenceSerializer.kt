@@ -86,6 +86,7 @@ class AccountPreferenceSerializer(
             isGoToUnreadMessageSearch = storage.getBoolean("$accountUuid.goToUnreadMessageSearch", false)
             isSubscribedFoldersOnly = storage.getBoolean("$accountUuid.subscribedFoldersOnly", false)
             maximumPolledMessageAge = storage.getInt("$accountUuid.maximumPolledMessageAge", -1)
+            ignoreMaximumPolledMessageAgeDuringSearch= storage.getBoolean("$accountUuid.ignoreMaximumPolledMessageAgeDuringSearch", true)
             maximumAutoDownloadMessageSize = storage.getInt("$accountUuid.maximumAutoDownloadMessageSize", 32768)
             messageFormat = getEnumStringPref<MessageFormat>(storage, "$accountUuid.messageFormat", DEFAULT_MESSAGE_FORMAT)
             val messageFormatAuto = storage.getBoolean("$accountUuid.messageFormatAuto", DEFAULT_MESSAGE_FORMAT_AUTO)
@@ -531,6 +532,7 @@ class AccountPreferenceSerializer(
             isGoToUnreadMessageSearch = false
             isSubscribedFoldersOnly = false
             maximumPolledMessageAge = -1
+            ignoreMaximumPolledMessageAgeDuringSearch=true;
             maximumAutoDownloadMessageSize = 32768
             messageFormat = DEFAULT_MESSAGE_FORMAT
             isMessageFormatAuto = DEFAULT_MESSAGE_FORMAT_AUTO
