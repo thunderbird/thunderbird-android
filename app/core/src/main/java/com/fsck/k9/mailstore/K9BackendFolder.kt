@@ -1,8 +1,8 @@
 package com.fsck.k9.mailstore
 
 import android.content.ContentValues
-import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import androidx.core.database.getLongOrNull
 import androidx.core.database.getStringOrNull
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
@@ -365,8 +365,6 @@ class K9BackendFolder(
             db.update(table, contentValues, selection, selectionArgs)
         }
     }
-
-    private fun Cursor.getLongOrNull(columnIndex: Int): Long? = if (isNull(columnIndex)) null else getLong(columnIndex)
 
     private fun String.toMoreMessages(): MoreMessages = when (this) {
         "unknown" -> MoreMessages.UNKNOWN
