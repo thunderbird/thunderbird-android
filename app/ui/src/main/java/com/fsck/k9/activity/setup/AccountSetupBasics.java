@@ -204,6 +204,7 @@ public class AccountSetupBasics extends K9Activity
                 && mEmailValidator.isValidAddressOnly(email);
 
         mNextButton.setEnabled(valid);
+        mNextButton.setFocusable(valid);
         mManualSetupButton.setEnabled(valid);
         /*
          * Dim the next button's icon to 50% if the button is disabled.
