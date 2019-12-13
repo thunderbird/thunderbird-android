@@ -13,5 +13,5 @@ val uiModule = module {
     single { ThemeManager(get()) }
     single { HtmlSettingsProvider(get()) }
     single { DisplayHtmlUiFactory(get()) }
-    single { FoldersLiveDataFactory(get(), get()) }
+    single { FoldersLiveDataFactory(get(), get(), get()) }
 }

@@ -56,6 +56,7 @@ import com.fsck.k9.ui.BuildConfig;
 import com.fsck.k9.ui.K9Drawer;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.Theme;
+import com.fsck.k9.ui.managefolders.ManageFoldersActivity;
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider;
 import com.fsck.k9.ui.messageview.MessageViewFragment;
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener;
