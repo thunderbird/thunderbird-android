@@ -117,7 +117,14 @@ class K9BackendFolder(
 
     override fun isMessagePresent(messageServerId: String): Boolean {
         return database.execute(false) { db ->
-            val cursor = db.query("messages", arrayOf("id"), "uid = ?", arrayOf(messageServerId), null, null, null)
+            val cursor = db.query(
+                "messages",
+                arrayOf("id"),
+                "folder_id = ? AND uid = ?",
+                arrayOf(databaseId, messageServerId),
+                null, null, null
+            )
+
             cursor.use {
                 cursor.moveToFirst()
             }
@@ -137,8 +144,8 @@ class K9BackendFolder(
             val cursor = db.query(
                     "messages",
                     arrayOf("deleted", "read", "flagged", "answered", "forwarded", "flags"),
-                    "uid = ?",
-                    arrayOf(messageServerId),
+                    "folder_id = ? AND uid = ?",
+                    arrayOf(databaseId, messageServerId),
                     null, null, null)
 
             cursor.use {
@@ -177,8 +184,8 @@ class K9BackendFolder(
                 val flagsColumnValue = database.getString(
                         table = "messages",
                         column = "flags",
-                        selection = "uid = ?",
-                        selectionArgs = *arrayOf(messageServerId)
+                        selection = "folder_id = ? AND uid = ?",
+                        selectionArgs = *arrayOf(databaseId, messageServerId)
                 ) ?: ""
 
                 val flags = flagsColumnValue.split(',').toMutableSet()
@@ -193,8 +200,8 @@ class K9BackendFolder(
                 database.setString(
                         table = "messages",
                         column = "flags",
-                        selection = "uid = ?",
-                        selectionArgs = *arrayOf(messageServerId),
+                        selection = "folder_id = ? AND uid = ?",
+                        selectionArgs = *arrayOf(databaseId, messageServerId),
                         value = serializedFlags
                 )
             }
@@ -336,7 +343,7 @@ class K9BackendFolder(
             val contentValues = ContentValues().apply {
                 put(column, if (value) 1 else 0)
             }
-            db.update("messages", contentValues, "uid = ?", arrayOf(messageServerId))
+            db.update("messages", contentValues, "folder_id = ? AND uid = ?", arrayOf(databaseId, messageServerId))
         }
     }
 
