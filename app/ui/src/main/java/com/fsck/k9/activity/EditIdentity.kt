@@ -15,20 +15,16 @@ class EditIdentity : K9Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setLayout(R.layout.edit_identity)
 
-        identity = intent.getParcelableExtra(EXTRA_IDENTITY)
         identityIndex = intent.getIntExtra(EXTRA_IDENTITY_INDEX, -1)
         val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT)
         account = Preferences.getPreferences(this).getAccount(accountUuid)
 
-        if (identityIndex == -1) {
-            identity = Identity()
-        }
-
-        setLayout(R.layout.edit_identity)
-
-        savedInstanceState?.getParcelable<Identity>(EXTRA_IDENTITY)?.let {
-            identity = it
+        identity = when {
+            savedInstanceState != null -> savedInstanceState.getParcelable(EXTRA_IDENTITY) ?: error("Missing state")
+            identityIndex != -1 -> intent.getParcelableExtra(EXTRA_IDENTITY) ?: error("Missing argument")
+            else -> Identity()
         }
 
         description.setText(identity.description)
