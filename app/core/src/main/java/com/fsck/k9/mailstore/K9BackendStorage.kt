@@ -2,6 +2,7 @@ package com.fsck.k9.mailstore
 
 import android.content.ContentValues
 import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import androidx.core.database.getStringOrNull
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
@@ -68,7 +69,7 @@ class K9BackendStorage(
         return database.execute(false) { db ->
             val cursor = db.query(
                     "account_extra_values",
-                    arrayOf("value_string"),
+                    arrayOf("value_text"),
                     "name = ?",
                     arrayOf(name),
                     null, null, null)
@@ -85,9 +86,10 @@ class K9BackendStorage(
     override fun setExtraString(name: String, value: String) {
         database.execute(false) { db ->
             val contentValues = ContentValues().apply {
-                put("value_string", value)
+                put("name", name)
+                put("value_text", value)
             }
-            db.update("account_extra_values", contentValues, "name = ?", arrayOf(name))
+            db.insertWithOnConflict("account_extra_values", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE)
         }
     }
 
@@ -112,9 +114,10 @@ class K9BackendStorage(
     override fun setExtraNumber(name: String, value: Long) {
         database.execute(false) { db ->
             val contentValues = ContentValues().apply {
+                put("name", name)
                 put("value_integer", value)
             }
-            db.update("account_extra_values", contentValues, "name = ?", arrayOf(name))
+            db.insertWithOnConflict("account_extra_values", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE)
         }
     }
 
