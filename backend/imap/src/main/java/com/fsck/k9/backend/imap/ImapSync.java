@@ -297,11 +297,6 @@ class ImapSync {
             List<Message> inputMessages, boolean flagSyncOnly, Long lastUid,
             final SyncListener listener) throws MessagingException {
 
-        final Date earliestDate = syncConfig.getEarliestPollDate();
-
-        if (earliestDate != null) {
-            Timber.d("Only syncing messages after %s", earliestDate);
-        }
         final String folder = remoteFolder.getServerId();
 
         List<Message> syncFlagMessages = new ArrayList<>();
@@ -368,7 +363,7 @@ class ImapSync {
         fp.add(FetchProfile.Item.BODY);
         //        fp.add(FetchProfile.Item.FLAGS);
         //        fp.add(FetchProfile.Item.ENVELOPE);
-        downloadSmallMessages(syncConfig, remoteFolder, backendFolder, smallMessages, progress, newMessages, todo, fp,
+        downloadSmallMessages(remoteFolder, backendFolder, smallMessages, progress, newMessages, todo, fp,
                 lastUid, listener);
         smallMessages.clear();
         /*
@@ -376,7 +371,7 @@ class ImapSync {
          */
         fp = new FetchProfile();
         fp.add(FetchProfile.Item.STRUCTURE);
-        downloadLargeMessages(syncConfig, remoteFolder, backendFolder, largeMessages, progress, newMessages, todo, fp,
+        downloadLargeMessages(remoteFolder, backendFolder, largeMessages, progress, newMessages, todo, fp,
                 lastUid, listener);
         largeMessages.clear();
 
@@ -460,20 +455,14 @@ class ImapSync {
             final SyncListener listener) throws MessagingException {
         final String folder = remoteFolder.getServerId();
 
-        final Date earliestDate = syncConfig.getEarliestPollDate();
         remoteFolder.fetch(unsyncedMessages, fp,
                 new MessageRetrievalListener<T>() {
                     @Override
                     public void messageFinished(T message, int number, int ofTotal) {
                         try {
-                            if (message.isSet(Flag.DELETED) || message.olderThan(earliestDate)) {
-                                if (message.isSet(Flag.DELETED)) {
-                                    Timber.v("Newly downloaded message %s:%s:%s was marked deleted on server, " +
-                                            "skipping", accountName, folder, message.getUid());
-                                } else {
-                                    Timber.d("Newly downloaded message %s is older than %s, skipping",
-                                            message.getUid(), earliestDate);
-                                }
+                            if (message.isSet(Flag.DELETED)) {
+                                Timber.v("Newly downloaded message %s:%s:%s was marked deleted on server, skipping",
+                                        accountName, folder, message.getUid());
 
                                 progress.incrementAndGet();
 
@@ -507,7 +496,6 @@ class ImapSync {
     }
 
     private <T extends Message> void downloadSmallMessages(
-            SyncConfig syncConfig,
             final Folder<T> remoteFolder,
             final BackendFolder backendFolder,
             List<T> smallMessages,
@@ -519,8 +507,6 @@ class ImapSync {
             final SyncListener listener) throws MessagingException {
         final String folder = remoteFolder.getServerId();
 
-        final Date earliestDate = syncConfig.getEarliestPollDate();
-
         Timber.d("SYNC: Fetching %d small messages for folder %s", smallMessages.size(), folder);
 
         remoteFolder.fetch(smallMessages,
@@ -528,12 +514,6 @@ class ImapSync {
                     @Override
                     public void messageFinished(final T message, int number, int ofTotal) {
                         try {
-                            if (!shouldImportMessage(message, earliestDate)) {
-                                progress.incrementAndGet();
-
-                                return;
-                            }
-
                             // Store the updated message locally
                             backendFolder.saveCompleteMessage(message);
                             progress.incrementAndGet();
@@ -572,7 +552,6 @@ class ImapSync {
     }
 
     private <T extends Message> void downloadLargeMessages(
-            SyncConfig syncConfig,
             final Folder<T> remoteFolder,
             final BackendFolder backendFolder,
             List<T> largeMessages,
@@ -583,18 +562,11 @@ class ImapSync {
             Long lastUid,
             SyncListener listener) throws MessagingException {
         final String folder = remoteFolder.getServerId();
-        final Date earliestDate = syncConfig.getEarliestPollDate();
 
         Timber.d("SYNC: Fetching large messages for folder %s", folder);
 
         remoteFolder.fetch(largeMessages, fp, null);
         for (T message : largeMessages) {
-
-            if (!shouldImportMessage(message, earliestDate)) {
-                progress.incrementAndGet();
-                continue;
-            }
-
             if (message.getBody() == null) {
                 downloadSaneBody(remoteFolder, backendFolder, message);
             } else {
@@ -730,14 +702,6 @@ class ImapSync {
             }
         }
         return messageChanged;
-    }
-
-    private boolean shouldImportMessage(Message message, Date earliestDate) {
-        if (message.olderThan(earliestDate)) {
-            Timber.d("Message %s is older than %s, hence not saving", message.getUid(), earliestDate);
-            return false;
-        }
-        return true;
     }
 
     private static void closeFolder(Folder folder) {
