@@ -1,0 +1,26 @@
+{
+  "methodResponses": [
+    [
+      "error",
+      {
+        "type": "cannotCalculateChanges"
+      },
+      "0"
+    ],
+    [
+      "error",
+      {
+        "type": "resultReference"
+      },
+      "1"
+    ],
+    [
+      "error",
+      {
+        "type": "resultReference"
+      },
+      "2"
+    ]
+  ],
+  "sessionState": "0"
+}

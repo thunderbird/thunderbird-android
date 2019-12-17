@@ -21,6 +21,7 @@ class JmapBackend(
 ) : Backend {
     private val jmapClient = config.toJmapClient()
     private val accountId = config.accountId
+    private val commandRefreshFolderList = CommandRefreshFolderList(backendStorage, jmapClient, accountId)
     override val supportsSeenFlag = true
     override val supportsExpunge = false
     override val supportsMove = true
@@ -32,7 +33,7 @@ class JmapBackend(
     override val isDeleteMoveToTrash = false
 
     override fun refreshFolderList() {
-        // TODO: implement
+        commandRefreshFolderList.refreshFolderList()
     }
 
     override fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener) {
