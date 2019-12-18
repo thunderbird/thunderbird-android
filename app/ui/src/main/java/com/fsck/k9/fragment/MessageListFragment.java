@@ -915,7 +915,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                     return;
                 }
 
-                final String destFolder = data.getStringExtra(ChooseFolderActivity.EXTRA_NEW_FOLDER);
+                final String destFolder = data.getStringExtra(ChooseFolderActivity.RESULT_SELECTED_FOLDER);
                 final List<MessageReference> messages = activeMessages;
 
                 if (destFolder != null) {
@@ -1698,12 +1698,12 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             List<MessageReference> messages) {
         Intent intent = new Intent(getActivity(), ChooseFolderActivity.class);
         intent.putExtra(ChooseFolderActivity.EXTRA_ACCOUNT, accountUuid);
-        intent.putExtra(ChooseFolderActivity.EXTRA_SEL_FOLDER, lastSelectedFolder);
+        intent.putExtra(ChooseFolderActivity.EXTRA_SCROLL_TO_FOLDER, lastSelectedFolder);
 
         if (sourceFolder == null) {
-            intent.putExtra(ChooseFolderActivity.EXTRA_SHOW_CURRENT, "yes");
+            intent.putExtra(ChooseFolderActivity.EXTRA_SHOW_CURRENT_FOLDER, "yes");
         } else {
-            intent.putExtra(ChooseFolderActivity.EXTRA_CUR_FOLDER, sourceFolder);
+            intent.putExtra(ChooseFolderActivity.EXTRA_CURRENT_FOLDER, sourceFolder);
         }
 
         // remember the selected messages for #onActivityResult

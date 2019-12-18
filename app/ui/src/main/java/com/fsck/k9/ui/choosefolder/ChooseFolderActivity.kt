@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.Window
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +12,6 @@ import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.Preferences
 import com.fsck.k9.activity.K9Activity
-import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.mailstore.DisplayFolder
 import com.fsck.k9.ui.R
@@ -28,6 +26,8 @@ import java.util.Locale
 
 class ChooseFolderActivity : K9Activity() {
     private val viewModel: ChooseFolderViewModel by viewModel()
+    private val preferences: Preferences by inject()
+    private val messagingController: MessagingController by inject()
     private val folderNameFormatter: FolderNameFormatter by inject()
     private val folderIconProvider by lazy { FolderIconProvider(theme) }
 
@@ -35,41 +35,43 @@ class ChooseFolderActivity : K9Activity() {
     private lateinit var account: Account
     private var currentFolder: String? = null
     private var selectFolder: String? = null
-    private var messageReference: MessageReference? = null
+    private var messageReference: String? = null
     private var hideCurrentFolder = true
     private var showDisplayableOnly = false
     private var foldersLiveData: FoldersLiveData? = null
+
     private val folderListObserver = Observer<List<DisplayFolder>> { folders ->
         updateFolderList(folders)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS)
         setLayout(R.layout.folder_list)
 
-        val intent = intent
-        val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT)
-        account = Preferences.getPreferences(this).getAccount(accountUuid)
-        if (intent.hasExtra(EXTRA_MESSAGE)) {
-            val messageReferenceString = intent.getStringExtra(EXTRA_MESSAGE)
-            messageReference = MessageReference.parse(messageReferenceString)
+        if (!decodeArguments()) {
+            finish()
+            return
         }
-        currentFolder = intent.getStringExtra(EXTRA_CUR_FOLDER)
-        selectFolder = intent.getStringExtra(EXTRA_SEL_FOLDER)
-        if (intent.getStringExtra(EXTRA_SHOW_CURRENT) != null) {
-            hideCurrentFolder = false
-        }
-        if (intent.getStringExtra(EXTRA_SHOW_DISPLAYABLE_ONLY) != null) {
-            showDisplayableOnly = true
-        }
-        if (currentFolder == null) currentFolder = ""
 
         initializeFolderList()
 
         foldersLiveData = viewModel.getFolders(account, account.folderTargetMode).apply {
             observe(this@ChooseFolderActivity, folderListObserver)
         }
+    }
+
+    private fun decodeArguments(): Boolean {
+        val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT) ?: return false
+        account = preferences.getAccount(accountUuid) ?: return false
+
+        messageReference = intent.getStringExtra(EXTRA_MESSAGE)
+        currentFolder = intent.getStringExtra(EXTRA_CURRENT_FOLDER)
+        selectFolder = intent.getStringExtra(EXTRA_SCROLL_TO_FOLDER)
+
+        if (intent.getStringExtra(EXTRA_SHOW_CURRENT_FOLDER) != null) hideCurrentFolder = false
+        if (intent.getStringExtra(EXTRA_SHOW_DISPLAYABLE_ONLY) != null) showDisplayableOnly = true
+
+        return true
     }
 
     private fun initializeFolderList() {
@@ -89,7 +91,11 @@ class ChooseFolderActivity : K9Activity() {
     }
 
     private fun updateFolderList(displayFolders: List<DisplayFolder>) {
-        val foldersToHide = if (hideCurrentFolder) setOf(currentFolder, Account.OUTBOX) else setOf(Account.OUTBOX)
+        val foldersToHide = if (hideCurrentFolder) {
+            setOf(currentFolder, Account.OUTBOX)
+        } else {
+            setOf(Account.OUTBOX)
+        }
 
         val folderListItems = displayFolders.asSequence()
             .filterNot { it.folder.serverId in foldersToHide }
@@ -104,19 +110,6 @@ class ChooseFolderActivity : K9Activity() {
             .toList()
 
         itemAdapter.set(folderListItems)
-    }
-
-    private fun returnResult(folderServerId: String, displayName: String) {
-        val result = Intent()
-        result.putExtra(EXTRA_ACCOUNT, account.uuid)
-        result.putExtra(EXTRA_CUR_FOLDER, currentFolder)
-        result.putExtra(EXTRA_NEW_FOLDER, folderServerId)
-        if (messageReference != null) {
-            result.putExtra(EXTRA_MESSAGE, messageReference!!.toIdentityString())
-        }
-        result.putExtra(RESULT_FOLDER_DISPLAY_NAME, displayName)
-        setResult(Activity.RESULT_OK, result)
-        finish()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -144,29 +137,19 @@ class ChooseFolderActivity : K9Activity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-        return if (id == R.id.display_1st_class) {
-            setDisplayMode(FolderMode.FIRST_CLASS)
-            true
-        } else if (id == R.id.display_1st_and_2nd_class) {
-            setDisplayMode(FolderMode.FIRST_AND_SECOND_CLASS)
-            true
-        } else if (id == R.id.display_not_second_class) {
-            setDisplayMode(FolderMode.NOT_SECOND_CLASS)
-            true
-        } else if (id == R.id.display_all) {
-            setDisplayMode(FolderMode.ALL)
-            true
-        } else if (id == R.id.list_folders) {
-            onRefresh()
-            true
-        } else {
-            super.onOptionsItemSelected(item)
+        when (item.itemId) {
+            R.id.display_1st_class -> setDisplayMode(FolderMode.FIRST_CLASS)
+            R.id.display_1st_and_2nd_class -> setDisplayMode(FolderMode.FIRST_AND_SECOND_CLASS)
+            R.id.display_not_second_class -> setDisplayMode(FolderMode.NOT_SECOND_CLASS)
+            R.id.display_all -> setDisplayMode(FolderMode.ALL)
+            R.id.list_folders -> refreshFolderList()
+            else -> return super.onOptionsItemSelected(item)
         }
+        return true
     }
 
-    private fun onRefresh() {
-        MessagingController.getInstance(application).listFolders(account, true, null)
+    private fun refreshFolderList() {
+        messagingController.listFolders(account, true, null)
     }
 
     private fun setDisplayMode(displayMode: FolderMode) {
@@ -174,6 +157,18 @@ class ChooseFolderActivity : K9Activity() {
         foldersLiveData = viewModel.getFolders(account, displayMode).apply {
             observe(this@ChooseFolderActivity, folderListObserver)
         }
+    }
+
+    private fun returnResult(folderServerId: String, displayName: String) {
+        val result = Intent().apply {
+            putExtra(EXTRA_ACCOUNT, account.uuid)
+            putExtra(EXTRA_MESSAGE, messageReference)
+            putExtra(RESULT_SELECTED_FOLDER, folderServerId)
+            putExtra(RESULT_FOLDER_DISPLAY_NAME, displayName)
+        }
+
+        setResult(Activity.RESULT_OK, result)
+        finish()
     }
 
     private fun folderListFilter(item: FolderListItem, constraint: CharSequence?): Boolean {
@@ -187,13 +182,13 @@ class ChooseFolderActivity : K9Activity() {
     }
 
     companion object {
-        const val EXTRA_ACCOUNT = "com.fsck.k9.ChooseFolder_account"
-        const val EXTRA_CUR_FOLDER = "com.fsck.k9.ChooseFolder_curfolder"
-        const val EXTRA_SEL_FOLDER = "com.fsck.k9.ChooseFolder_selfolder"
-        const val EXTRA_NEW_FOLDER = "com.fsck.k9.ChooseFolder_newfolder"
-        const val EXTRA_MESSAGE = "com.fsck.k9.ChooseFolder_message"
-        const val EXTRA_SHOW_CURRENT = "com.fsck.k9.ChooseFolder_showcurrent"
-        const val EXTRA_SHOW_DISPLAYABLE_ONLY = "com.fsck.k9.ChooseFolder_showDisplayableOnly"
+        const val EXTRA_ACCOUNT = "accountUuid"
+        const val EXTRA_CURRENT_FOLDER = "currentFolder"
+        const val EXTRA_SCROLL_TO_FOLDER = "scrollToFolder"
+        const val EXTRA_MESSAGE = "messageReference"
+        const val EXTRA_SHOW_CURRENT_FOLDER = "showCurrentFolder"
+        const val EXTRA_SHOW_DISPLAYABLE_ONLY = "showDisplayableOnly"
+        const val RESULT_SELECTED_FOLDER = "selectedFolder"
         const val RESULT_FOLDER_DISPLAY_NAME = "folderDisplayName"
     }
 }

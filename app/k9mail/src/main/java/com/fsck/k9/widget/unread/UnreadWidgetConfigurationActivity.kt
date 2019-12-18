@@ -84,7 +84,7 @@ class UnreadWidgetConfigurationActivity : K9PreferenceActivity() {
             when (requestCode) {
                 REQUEST_CHOOSE_ACCOUNT -> handleChooseAccount(data.getStringExtra(ChooseAccount.EXTRA_ACCOUNT_UUID))
                 REQUEST_CHOOSE_FOLDER -> {
-                    val folderServerId = data.getStringExtra(ChooseFolderActivity.EXTRA_NEW_FOLDER)
+                    val folderServerId = data.getStringExtra(ChooseFolderActivity.RESULT_SELECTED_FOLDER)
                     val folderDisplayName = data.getStringExtra(ChooseFolderActivity.RESULT_FOLDER_DISPLAY_NAME)
                     handleChooseFolder(folderServerId, folderDisplayName)
                 }
