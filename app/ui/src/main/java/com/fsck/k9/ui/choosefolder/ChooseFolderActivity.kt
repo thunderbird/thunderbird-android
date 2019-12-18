@@ -56,7 +56,9 @@ class ChooseFolderActivity : K9Activity() {
 
         initializeFolderList()
 
-        foldersLiveData = viewModel.getFolders(account, account.folderTargetMode).apply {
+        val displayMode = if (showDisplayableOnly) account.folderDisplayMode else account.folderTargetMode
+
+        foldersLiveData = viewModel.getFolders(account, displayMode).apply {
             observe(this@ChooseFolderActivity, folderListObserver)
         }
     }
