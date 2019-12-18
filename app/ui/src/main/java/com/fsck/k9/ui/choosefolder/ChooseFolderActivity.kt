@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.Window
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
@@ -18,7 +19,7 @@ import com.fsck.k9.mailstore.DisplayFolder
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.folders.FolderIconProvider
 import com.fsck.k9.ui.folders.FolderNameFormatter
-import com.fsck.k9.ui.observeNotNull
+import com.fsck.k9.ui.folders.FoldersLiveData
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import org.koin.android.ext.android.inject
@@ -37,7 +38,10 @@ class ChooseFolderActivity : K9Activity() {
     private var messageReference: MessageReference? = null
     private var hideCurrentFolder = true
     private var showDisplayableOnly = false
-    private var mode: FolderMode? = null
+    private var foldersLiveData: FoldersLiveData? = null
+    private val folderListObserver = Observer<List<DisplayFolder>> { folders ->
+        updateFolderList(folders)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,12 +65,10 @@ class ChooseFolderActivity : K9Activity() {
         }
         if (currentFolder == null) currentFolder = ""
 
-        mode = account.getFolderTargetMode()
-
         initializeFolderList()
 
-        viewModel.getFolders(account).observeNotNull(this) { folders ->
-            updateFolderList(folders)
+        foldersLiveData = viewModel.getFolders(account, account.folderTargetMode).apply {
+            observe(this@ChooseFolderActivity, folderListObserver)
         }
     }
 
@@ -167,9 +169,11 @@ class ChooseFolderActivity : K9Activity() {
         MessagingController.getInstance(application).listFolders(account, true, null)
     }
 
-    private fun setDisplayMode(aMode: FolderMode) {
-        mode = aMode
-        // TODO: implement
+    private fun setDisplayMode(displayMode: FolderMode) {
+        foldersLiveData?.removeObserver(folderListObserver)
+        foldersLiveData = viewModel.getFolders(account, displayMode).apply {
+            observe(this@ChooseFolderActivity, folderListObserver)
+        }
     }
 
     private fun folderListFilter(item: FolderListItem, constraint: CharSequence?): Boolean {
