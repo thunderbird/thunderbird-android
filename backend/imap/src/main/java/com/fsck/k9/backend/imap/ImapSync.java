@@ -47,16 +47,14 @@ class ImapSync {
         this.imapStore = imapStore;
     }
 
-    void sync(String folder, SyncConfig syncConfig, SyncListener listener, Folder providedRemoteFolder) {
-        synchronizeMailboxSynchronous(folder, syncConfig, listener, providedRemoteFolder);
+    void sync(String folder, SyncConfig syncConfig, SyncListener listener) {
+        synchronizeMailboxSynchronous(folder, syncConfig, listener);
     }
 
-    void synchronizeMailboxSynchronous(final String folder, SyncConfig syncConfig, final SyncListener listener,
-            Folder providedRemoteFolder) {
-        Folder remoteFolder = null;
-
+    void synchronizeMailboxSynchronous(final String folder, SyncConfig syncConfig, final SyncListener listener) {
         Timber.i("Synchronizing folder %s:%s", accountName, folder);
 
+        ImapFolder remoteFolder = null;
         BackendFolder backendFolder = null;
         try {
             Timber.v("SYNC: About to get local folder %s", folder);
@@ -74,43 +72,37 @@ class ImapSync {
 
             Map<String, Long> localUidMap = backendFolder.getAllMessagesAndEffectiveDates();
 
-            if (providedRemoteFolder != null) {
-                Timber.v("SYNC: using providedRemoteFolder %s", folder);
-                remoteFolder = providedRemoteFolder;
-            } else {
-                Timber.v("SYNC: About to get remote folder %s", folder);
-                remoteFolder = imapStore.getFolder(folder);
+            Timber.v("SYNC: About to get remote folder %s", folder);
+            remoteFolder = imapStore.getFolder(folder);
 
-                /*
-                 * Synchronization process:
-                 *
-                Open the folder
-                Upload any local messages that are marked as PENDING_UPLOAD (Drafts, Sent, Trash)
-                Get the message count
-                Get the list of the newest K9.DEFAULT_VISIBLE_LIMIT messages
-                getMessages(messageCount - K9.DEFAULT_VISIBLE_LIMIT, messageCount)
-                See if we have each message locally, if not fetch it's flags and envelope
-                Get and update the unread count for the folder
-                Update the remote flags of any messages we have locally with an internal date newer than the remote message.
-                Get the current flags for any messages we have locally but did not just download
-                Update local flags
-                For any message we have locally but not remotely, delete the local message to keep cache clean.
-                Download larger parts of any new messages.
-                (Optional) Download small attachments in the background.
-                 */
+            /*
+             * Synchronization process:
+             *
+            Open the folder
+            Upload any local messages that are marked as PENDING_UPLOAD (Drafts, Sent, Trash)
+            Get the message count
+            Get the list of the newest K9.DEFAULT_VISIBLE_LIMIT messages
+            getMessages(messageCount - K9.DEFAULT_VISIBLE_LIMIT, messageCount)
+            See if we have each message locally, if not fetch it's flags and envelope
+            Get and update the unread count for the folder
+            Update the remote flags of any messages we have locally with an internal date newer than the remote message.
+            Get the current flags for any messages we have locally but did not just download
+            Update local flags
+            For any message we have locally but not remotely, delete the local message to keep cache clean.
+            Download larger parts of any new messages.
+            (Optional) Download small attachments in the background.
+             */
 
-                /*
-                 * Open the remote folder. This pre-loads certain metadata like message count.
-                 */
-                Timber.v("SYNC: About to open remote folder %s", folder);
+            /*
+             * Open the remote folder. This pre-loads certain metadata like message count.
+             */
+            Timber.v("SYNC: About to open remote folder %s", folder);
 
-                if (syncConfig.getExpungePolicy() == ExpungePolicy.ON_POLL) {
-                    Timber.d("SYNC: Expunging folder %s:%s", accountName, folder);
-                    remoteFolder.expunge();
-                }
-                remoteFolder.open(Folder.OPEN_MODE_RO);
-
+            if (syncConfig.getExpungePolicy() == ExpungePolicy.ON_POLL) {
+                Timber.d("SYNC: Expunging folder %s:%s", accountName, folder);
+                remoteFolder.expunge();
             }
+            remoteFolder.open(Folder.OPEN_MODE_RO);
 
             listener.syncAuthenticationSuccess();
 
@@ -249,9 +241,7 @@ class ImapSync {
                     System.currentTimeMillis());
 
         } finally {
-            if (providedRemoteFolder == null) {
-                closeFolder(remoteFolder);
-            }
+            closeFolder(remoteFolder);
         }
 
     }

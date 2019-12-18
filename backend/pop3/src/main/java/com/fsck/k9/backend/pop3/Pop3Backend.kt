@@ -7,7 +7,6 @@ import com.fsck.k9.backend.api.SyncListener
 import com.fsck.k9.mail.BodyFactory
 import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Flag
-import com.fsck.k9.mail.Folder
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.PushReceiver
@@ -41,7 +40,7 @@ class Pop3Backend(
         commandRefreshFolderList.refreshFolderList()
     }
 
-    override fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener, providedRemoteFolder: Folder<*>?) {
+    override fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener) {
         pop3Sync.sync(folder, syncConfig, listener)
     }
 

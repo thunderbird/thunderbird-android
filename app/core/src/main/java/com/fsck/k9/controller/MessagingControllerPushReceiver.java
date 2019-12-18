@@ -58,7 +58,7 @@ public class MessagingControllerPushReceiver implements PushReceiver {
             String message) {
                 latch.countDown();
             }
-        }, null);
+        });
 
         Timber.v("syncFolder(%s) about to await latch release", folderServerId);
 
