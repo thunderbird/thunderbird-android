@@ -236,6 +236,10 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
             return
         }
 
+        if (accountHeader.isSelectionListShown) {
+            accountHeader.toggleSelectionList(parent);
+        }
+
         var openedFolderDrawerId: Long = -1
         for (i in folders.indices.reversed()) {
             val displayFolder = folders[i]
