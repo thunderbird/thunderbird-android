@@ -50,30 +50,40 @@ class ChooseFolderActivity : K9Activity() {
         super.onCreate(savedInstanceState)
         setLayout(R.layout.folder_list)
 
-        if (!decodeArguments()) {
+        if (!decodeArguments(savedInstanceState)) {
             finish()
             return
         }
 
         initializeFolderList()
 
-        val displayMode = if (showDisplayableOnly) account.folderDisplayMode else account.folderTargetMode
+        val savedDisplayMode = savedInstanceState?.getString(STATE_DISPLAY_MODE)?.let { FolderMode.valueOf(it) }
+        val displayMode = savedDisplayMode ?: getInitialDisplayMode()
 
         foldersLiveData = viewModel.getFolders(account, displayMode).apply {
             observe(this@ChooseFolderActivity, folderListObserver)
         }
     }
 
-    private fun decodeArguments(): Boolean {
+    private fun decodeArguments(savedInstanceState: Bundle?): Boolean {
         val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT) ?: return false
         account = preferences.getAccount(accountUuid) ?: return false
 
         messageReference = intent.getStringExtra(EXTRA_MESSAGE_REFERENCE)
         currentFolder = intent.getStringExtra(EXTRA_CURRENT_FOLDER)
-        scrollToFolder = intent.getStringExtra(EXTRA_SCROLL_TO_FOLDER)
         showDisplayableOnly = intent.getBooleanExtra(EXTRA_SHOW_DISPLAYABLE_ONLY, false)
 
+        scrollToFolder = if (savedInstanceState != null) {
+            savedInstanceState.getString(STATE_SCROLL_TO_FOLDER)
+        } else {
+            intent.getStringExtra(EXTRA_SCROLL_TO_FOLDER)
+        }
+
         return true
+    }
+
+    private fun getInitialDisplayMode(): FolderMode {
+        return if (showDisplayableOnly) account.folderDisplayMode else account.folderTargetMode
     }
 
     private fun initializeFolderList() {
@@ -125,6 +135,12 @@ class ChooseFolderActivity : K9Activity() {
         }
 
         scrollToFolder = null
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(STATE_SCROLL_TO_FOLDER, scrollToFolder)
+        outState.putString(STATE_DISPLAY_MODE, foldersLiveData?.displayMode?.name)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -196,6 +212,8 @@ class ChooseFolderActivity : K9Activity() {
     }
 
     companion object {
+        private const val STATE_SCROLL_TO_FOLDER = "scrollToFolder"
+        private const val STATE_DISPLAY_MODE = "displayMode"
         private const val EXTRA_ACCOUNT = "accountUuid"
         private const val EXTRA_CURRENT_FOLDER = "currentFolder"
         private const val EXTRA_SCROLL_TO_FOLDER = "scrollToFolder"
