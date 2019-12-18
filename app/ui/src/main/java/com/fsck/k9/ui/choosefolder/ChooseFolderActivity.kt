@@ -33,6 +33,7 @@ class ChooseFolderActivity : K9Activity() {
     private val folderNameFormatter: FolderNameFormatter by inject()
     private val folderIconProvider by lazy { FolderIconProvider(theme) }
 
+    private lateinit var recyclerView: RecyclerView
     private lateinit var itemAdapter: ItemAdapter<FolderListItem>
     private lateinit var account: Account
     private var currentFolder: String? = null
@@ -87,7 +88,7 @@ class ChooseFolderActivity : K9Activity() {
             }
         }
 
-        val recyclerView = findViewById<RecyclerView>(R.id.folderList)
+        recyclerView = findViewById(R.id.folderList)
         recyclerView.adapter = folderListAdapter
     }
 
@@ -111,6 +112,19 @@ class ChooseFolderActivity : K9Activity() {
             .toList()
 
         itemAdapter.set(folderListItems)
+
+        scrollToFolder(folderListItems)
+    }
+
+    private fun scrollToFolder(folders: List<FolderListItem>) {
+        if (scrollToFolder == null) return
+
+        val index = folders.indexOfFirst { it.serverId == scrollToFolder }
+        if (index != -1) {
+            recyclerView.scrollToPosition(index)
+        }
+
+        scrollToFolder = null
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
