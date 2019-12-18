@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.Window
-import android.widget.SearchView
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
@@ -119,7 +119,7 @@ class ChooseFolderActivity : K9Activity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         super.onCreateOptionsMenu(menu)
-        menuInflater.inflate(R.menu.folder_select_option, menu)
+        menuInflater.inflate(R.menu.choose_folder_option, menu)
         configureFolderSearchView(menu)
         return true
     }
@@ -128,7 +128,17 @@ class ChooseFolderActivity : K9Activity() {
         val folderMenuItem = menu.findItem(R.id.filter_folders)
         val folderSearchView = folderMenuItem.actionView as SearchView
         folderSearchView.queryHint = getString(R.string.folder_list_filter_hint)
-        // TODO: implement
+        folderSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                itemAdapter.filter(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                itemAdapter.filter(newText)
+                return true
+            }
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
