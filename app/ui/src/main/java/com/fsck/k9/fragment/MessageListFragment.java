@@ -1696,15 +1696,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private void displayFolderChoice(int requestCode, String sourceFolder,
             String accountUuid, String lastSelectedFolder,
             List<MessageReference> messages) {
-        Intent intent = new Intent(getActivity(), ChooseFolderActivity.class);
-        intent.putExtra(ChooseFolderActivity.EXTRA_ACCOUNT, accountUuid);
-        intent.putExtra(ChooseFolderActivity.EXTRA_SCROLL_TO_FOLDER, lastSelectedFolder);
-
-        if (sourceFolder == null) {
-            intent.putExtra(ChooseFolderActivity.EXTRA_SHOW_CURRENT_FOLDER, "yes");
-        } else {
-            intent.putExtra(ChooseFolderActivity.EXTRA_CURRENT_FOLDER, sourceFolder);
-        }
+        Intent intent = ChooseFolderActivity.buildLaunchIntent(requireContext(), accountUuid, sourceFolder,
+                lastSelectedFolder, false, null);
 
         // remember the selected messages for #onActivityResult
         activeMessages = messages;

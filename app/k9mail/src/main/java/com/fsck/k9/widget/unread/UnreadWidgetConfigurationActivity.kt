@@ -70,9 +70,11 @@ class UnreadWidgetConfigurationActivity : K9PreferenceActivity() {
 
         unreadFolder = findPreference(PREFERENCE_UNREAD_FOLDER)
         unreadFolder.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            val intent = Intent(this@UnreadWidgetConfigurationActivity, ChooseFolderActivity::class.java)
-            intent.putExtra(ChooseFolderActivity.EXTRA_ACCOUNT, selectedAccountUuid)
-            intent.putExtra(ChooseFolderActivity.EXTRA_SHOW_DISPLAYABLE_ONLY, "yes")
+            val intent = ChooseFolderActivity.buildLaunchIntent(
+                context = this@UnreadWidgetConfigurationActivity,
+                accountUuid = selectedAccountUuid!!,
+                showDisplayableOnly = true
+            )
             startActivityForResult(intent, REQUEST_CHOOSE_FOLDER)
             false
         }

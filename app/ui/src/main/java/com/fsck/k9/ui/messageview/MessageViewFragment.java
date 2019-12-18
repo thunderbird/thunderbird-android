@@ -419,13 +419,14 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         onRefile(mAccount.getSpamFolder());
     }
 
-    private void startRefileActivity(int activity) {
-        Intent intent = new Intent(getActivity(), ChooseFolderActivity.class);
-        intent.putExtra(ChooseFolderActivity.EXTRA_ACCOUNT, mAccount.getUuid());
-        intent.putExtra(ChooseFolderActivity.EXTRA_CURRENT_FOLDER, mMessageReference.getFolderServerId());
-        intent.putExtra(ChooseFolderActivity.EXTRA_SCROLL_TO_FOLDER, mAccount.getLastSelectedFolder());
-        intent.putExtra(ChooseFolderActivity.EXTRA_MESSAGE, mMessageReference.toIdentityString());
-        startActivityForResult(intent, activity);
+    private void startRefileActivity(int requestCode) {
+        String accountUuid = mAccount.getUuid();
+        String currentFolder = mMessageReference.getFolderServerId();
+        String scrollToFolder = mAccount.getLastSelectedFolder();
+        Intent intent = ChooseFolderActivity.buildLaunchIntent(requireActivity(), accountUuid, currentFolder,
+                scrollToFolder, false, mMessageReference);
+
+        startActivityForResult(intent, requestCode);
     }
 
     public void onPendingIntentResult(int requestCode, int resultCode, Intent data) {
@@ -464,7 +465,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                 }
 
                 String destFolder = data.getStringExtra(ChooseFolderActivity.RESULT_SELECTED_FOLDER);
-                String messageReferenceString = data.getStringExtra(ChooseFolderActivity.EXTRA_MESSAGE);
+                String messageReferenceString = data.getStringExtra(ChooseFolderActivity.RESULT_MESSAGE_REFERENCE);
                 MessageReference ref = MessageReference.parse(messageReferenceString);
                 if (mMessageReference.equals(ref)) {
                     mAccount.setLastSelectedFolder(destFolder);

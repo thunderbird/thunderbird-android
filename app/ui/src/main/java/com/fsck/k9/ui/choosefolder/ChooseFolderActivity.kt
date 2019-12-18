@@ -1,6 +1,7 @@
 package com.fsck.k9.ui.choosefolder
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -12,6 +13,7 @@ import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.Preferences
 import com.fsck.k9.activity.K9Activity
+import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.mailstore.DisplayFolder
 import com.fsck.k9.ui.R
@@ -20,9 +22,9 @@ import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.folders.FoldersLiveData
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import java.util.Locale
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.Locale
 
 class ChooseFolderActivity : K9Activity() {
     private val viewModel: ChooseFolderViewModel by viewModel()
@@ -34,9 +36,8 @@ class ChooseFolderActivity : K9Activity() {
     private lateinit var itemAdapter: ItemAdapter<FolderListItem>
     private lateinit var account: Account
     private var currentFolder: String? = null
-    private var selectFolder: String? = null
+    private var scrollToFolder: String? = null
     private var messageReference: String? = null
-    private var hideCurrentFolder = true
     private var showDisplayableOnly = false
     private var foldersLiveData: FoldersLiveData? = null
 
@@ -64,12 +65,10 @@ class ChooseFolderActivity : K9Activity() {
         val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT) ?: return false
         account = preferences.getAccount(accountUuid) ?: return false
 
-        messageReference = intent.getStringExtra(EXTRA_MESSAGE)
+        messageReference = intent.getStringExtra(EXTRA_MESSAGE_REFERENCE)
         currentFolder = intent.getStringExtra(EXTRA_CURRENT_FOLDER)
-        selectFolder = intent.getStringExtra(EXTRA_SCROLL_TO_FOLDER)
-
-        if (intent.getStringExtra(EXTRA_SHOW_CURRENT_FOLDER) != null) hideCurrentFolder = false
-        if (intent.getStringExtra(EXTRA_SHOW_DISPLAYABLE_ONLY) != null) showDisplayableOnly = true
+        scrollToFolder = intent.getStringExtra(EXTRA_SCROLL_TO_FOLDER)
+        showDisplayableOnly = intent.getBooleanExtra(EXTRA_SHOW_DISPLAYABLE_ONLY, false)
 
         return true
     }
@@ -91,7 +90,7 @@ class ChooseFolderActivity : K9Activity() {
     }
 
     private fun updateFolderList(displayFolders: List<DisplayFolder>) {
-        val foldersToHide = if (hideCurrentFolder) {
+        val foldersToHide = if (currentFolder != null) {
             setOf(currentFolder, Account.OUTBOX)
         } else {
             setOf(Account.OUTBOX)
@@ -161,10 +160,9 @@ class ChooseFolderActivity : K9Activity() {
 
     private fun returnResult(folderServerId: String, displayName: String) {
         val result = Intent().apply {
-            putExtra(EXTRA_ACCOUNT, account.uuid)
-            putExtra(EXTRA_MESSAGE, messageReference)
             putExtra(RESULT_SELECTED_FOLDER, folderServerId)
             putExtra(RESULT_FOLDER_DISPLAY_NAME, displayName)
+            putExtra(RESULT_MESSAGE_REFERENCE, messageReference)
         }
 
         setResult(Activity.RESULT_OK, result)
@@ -182,13 +180,31 @@ class ChooseFolderActivity : K9Activity() {
     }
 
     companion object {
-        const val EXTRA_ACCOUNT = "accountUuid"
-        const val EXTRA_CURRENT_FOLDER = "currentFolder"
-        const val EXTRA_SCROLL_TO_FOLDER = "scrollToFolder"
-        const val EXTRA_MESSAGE = "messageReference"
-        const val EXTRA_SHOW_CURRENT_FOLDER = "showCurrentFolder"
-        const val EXTRA_SHOW_DISPLAYABLE_ONLY = "showDisplayableOnly"
+        private const val EXTRA_ACCOUNT = "accountUuid"
+        private const val EXTRA_CURRENT_FOLDER = "currentFolder"
+        private const val EXTRA_SCROLL_TO_FOLDER = "scrollToFolder"
+        private const val EXTRA_MESSAGE_REFERENCE = "messageReference"
+        private const val EXTRA_SHOW_DISPLAYABLE_ONLY = "showDisplayableOnly"
         const val RESULT_SELECTED_FOLDER = "selectedFolder"
         const val RESULT_FOLDER_DISPLAY_NAME = "folderDisplayName"
+        const val RESULT_MESSAGE_REFERENCE = "messageReference"
+
+        @JvmStatic
+        fun buildLaunchIntent(
+            context: Context,
+            accountUuid: String,
+            currentFolder: String? = null,
+            scrollToFolder: String? = null,
+            showDisplayableOnly: Boolean = false,
+            messageReference: MessageReference? = null
+        ): Intent {
+            return Intent(context, ChooseFolderActivity::class.java).apply {
+                putExtra(EXTRA_ACCOUNT, accountUuid)
+                putExtra(EXTRA_CURRENT_FOLDER, currentFolder)
+                putExtra(EXTRA_SCROLL_TO_FOLDER, scrollToFolder)
+                putExtra(EXTRA_SHOW_DISPLAYABLE_ONLY, showDisplayableOnly)
+                messageReference?.let { putExtra(EXTRA_MESSAGE_REFERENCE, it.toIdentityString()) }
+            }
+        }
     }
 }
