@@ -1,4 +1,4 @@
-package com.fsck.k9.activity
+package com.fsck.k9.ui.choosefolder
 
 import android.app.Activity
 import android.content.Intent
@@ -24,7 +24,10 @@ import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
+import com.fsck.k9.activity.FolderInfoHolder
+import com.fsck.k9.activity.FolderListFilter
 import com.fsck.k9.activity.FolderListFilter.FolderAdapter
+import com.fsck.k9.activity.K9ListActivity
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.controller.MessagingListener
@@ -37,7 +40,7 @@ import java.util.ArrayList
 import java.util.Collections
 import java.util.Comparator
 
-class ChooseFolder : K9ListActivity() {
+class ChooseFolderActivity : K9ListActivity() {
     private lateinit var account: Account
     private var currentFolder: String? = null
     private var selectFolder: String? = null
@@ -181,28 +184,28 @@ class ChooseFolder : K9ListActivity() {
 
     private val mListener: MessagingListener = object : SimpleMessagingListener() {
         override fun listFoldersStarted(account: Account) {
-            if (account != this@ChooseFolder.account) {
+            if (account != this@ChooseFolderActivity.account) {
                 return
             }
             handler.progress(true)
         }
 
         override fun listFoldersFailed(account: Account, message: String) {
-            if (account != this@ChooseFolder.account) {
+            if (account != this@ChooseFolderActivity.account) {
                 return
             }
             handler.progress(false)
         }
 
         override fun listFoldersFinished(account: Account) {
-            if (account != this@ChooseFolder.account) {
+            if (account != this@ChooseFolderActivity.account) {
                 return
             }
             handler.progress(false)
         }
 
         override fun listFolders(account: Account, folders: List<LocalFolder>) {
-            if (account != this@ChooseFolder.account) {
+            if (account != this@ChooseFolderActivity.account) {
                 return
             }
             val aMode = mode
@@ -304,7 +307,7 @@ class ChooseFolder : K9ListActivity() {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             val folder = getItem(position)
-            val view = convertView ?: View.inflate(this@ChooseFolder, R.layout.choose_folder_list_item, null)
+            val view = convertView ?: View.inflate(this@ChooseFolderActivity, R.layout.choose_folder_list_item, null)
             var holder = view.tag as? FolderViewHolder
             if (holder == null) {
                 holder = FolderViewHolder()

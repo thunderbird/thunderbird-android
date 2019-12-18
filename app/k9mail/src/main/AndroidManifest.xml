@@ -137,7 +137,7 @@
             android:theme="@style/Theme.K9Dialog"/>
 
         <activity
-            android:name=".activity.ChooseFolder"
+            android:name=".ui.choosefolder.ChooseFolderActivity"
             android:configChanges="locale"
             android:label="@string/choose_folder_title"
             android:noHistory="true"

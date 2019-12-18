@@ -12,7 +12,7 @@ import android.widget.Toast
 import com.fsck.k9.Preferences
 import com.fsck.k9.R
 import com.fsck.k9.activity.ChooseAccount
-import com.fsck.k9.activity.ChooseFolder
+import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
 import com.fsck.k9.activity.K9PreferenceActivity
 import com.fsck.k9.search.SearchAccount
 import org.koin.android.ext.android.inject
@@ -70,9 +70,9 @@ class UnreadWidgetConfigurationActivity : K9PreferenceActivity() {
 
         unreadFolder = findPreference(PREFERENCE_UNREAD_FOLDER)
         unreadFolder.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            val intent = Intent(this@UnreadWidgetConfigurationActivity, ChooseFolder::class.java)
-            intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, selectedAccountUuid)
-            intent.putExtra(ChooseFolder.EXTRA_SHOW_DISPLAYABLE_ONLY, "yes")
+            val intent = Intent(this@UnreadWidgetConfigurationActivity, ChooseFolderActivity::class.java)
+            intent.putExtra(ChooseFolderActivity.EXTRA_ACCOUNT, selectedAccountUuid)
+            intent.putExtra(ChooseFolderActivity.EXTRA_SHOW_DISPLAYABLE_ONLY, "yes")
             startActivityForResult(intent, REQUEST_CHOOSE_FOLDER)
             false
         }
@@ -84,8 +84,8 @@ class UnreadWidgetConfigurationActivity : K9PreferenceActivity() {
             when (requestCode) {
                 REQUEST_CHOOSE_ACCOUNT -> handleChooseAccount(data.getStringExtra(ChooseAccount.EXTRA_ACCOUNT_UUID))
                 REQUEST_CHOOSE_FOLDER -> {
-                    val folderServerId = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER)
-                    val folderDisplayName = data.getStringExtra(ChooseFolder.RESULT_FOLDER_DISPLAY_NAME)
+                    val folderServerId = data.getStringExtra(ChooseFolderActivity.EXTRA_NEW_FOLDER)
+                    val folderDisplayName = data.getStringExtra(ChooseFolderActivity.RESULT_FOLDER_DISPLAY_NAME)
                     handleChooseFolder(folderServerId, folderDisplayName)
                 }
             }
