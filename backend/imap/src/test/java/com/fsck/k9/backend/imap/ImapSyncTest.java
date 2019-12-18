@@ -15,10 +15,10 @@ import com.fsck.k9.backend.api.SyncListener;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.imap.ImapFolder;
+import com.fsck.k9.mail.store.imap.ImapMessage;
 import com.fsck.k9.mail.store.imap.ImapStore;
 import org.junit.Before;
 import org.junit.Test;
@@ -167,7 +167,7 @@ public class ImapSyncTest {
             throws Exception {
         messageCountInRemoteFolder(1);
         Date dateOfEarliestPoll = new Date();
-        Message remoteMessage = messageOnServer();
+        ImapMessage remoteMessage = messageOnServer();
         configureSyncConfigWithSyncRemoteDeletionsAndEarliestPollDate(dateOfEarliestPoll);
         when(remoteMessage.olderThan(dateOfEarliestPoll)).thenReturn(false);
 
@@ -180,7 +180,7 @@ public class ImapSyncTest {
     public void sync_withAccountSetToSyncRemoteDeletions_shouldDeleteLocalCopiesOfExistingMessagesBeforeEarliestPollDate()
             throws Exception {
         messageCountInRemoteFolder(1);
-        Message remoteMessage = messageOnServer();
+        ImapMessage remoteMessage = messageOnServer();
         Date dateOfEarliestPoll = new Date();
         configureSyncConfigWithSyncRemoteDeletionsAndEarliestPollDate(dateOfEarliestPoll);
         when(remoteMessage.olderThan(dateOfEarliestPoll)).thenReturn(true);
@@ -219,7 +219,7 @@ public class ImapSyncTest {
 
     @Test
     public void sync_withUnsyncedNewSmallMessage_shouldFetchBodyOfSmallMessage() throws Exception {
-        Message smallMessage = buildSmallNewMessage();
+        ImapMessage smallMessage = buildSmallNewMessage();
         messageCountInRemoteFolder(1);
         hasUnsyncedRemoteMessage();
         when(remoteFolder.supportsFetchingFlags()).thenReturn(false);
@@ -235,7 +235,7 @@ public class ImapSyncTest {
 
     @Test
     public void sync_withUnsyncedNewSmallMessage_shouldFetchStructureAndLimitedBodyOfLargeMessage() throws Exception {
-        Message largeMessage = buildLargeNewMessage();
+        ImapMessage largeMessage = buildLargeNewMessage();
         messageCountInRemoteFolder(1);
         hasUnsyncedRemoteMessage();
         when(remoteFolder.supportsFetchingFlags()).thenReturn(false);
@@ -252,7 +252,7 @@ public class ImapSyncTest {
         assertEquals(FetchProfile.Item.BODY_SANE, fetchProfileCaptor.getAllValues().get(3).get(0));
     }
 
-    private void respondToFetchEnvelopesWithMessage(final Message message) throws MessagingException {
+    private void respondToFetchEnvelopesWithMessage(final ImapMessage message) throws MessagingException {
         doAnswer(new Answer() {
             @Override
             public Void answer(InvocationOnMock invocation) {
@@ -270,15 +270,15 @@ public class ImapSyncTest {
         }).when(remoteFolder).fetch(any(List.class), any(FetchProfile.class), nullable(MessageRetrievalListener.class));
     }
 
-    private Message buildSmallNewMessage() {
-        Message message = mock(Message.class);
+    private ImapMessage buildSmallNewMessage() {
+        ImapMessage message = mock(ImapMessage.class);
         when(message.olderThan(nullable(Date.class))).thenReturn(false);
         when(message.getSize()).thenReturn((long) MAXIMUM_SMALL_MESSAGE_SIZE);
         return message;
     }
 
-    private Message buildLargeNewMessage() {
-        Message message = mock(Message.class);
+    private ImapMessage buildLargeNewMessage() {
+        ImapMessage message = mock(ImapMessage.class);
         when(message.olderThan(nullable(Date.class))).thenReturn(false);
         when(message.getSize()).thenReturn((long) (MAXIMUM_SMALL_MESSAGE_SIZE + 1));
         return message;
@@ -288,9 +288,9 @@ public class ImapSyncTest {
         when(remoteFolder.getMessageCount()).thenReturn(value);
     }
 
-    private Message messageOnServer() throws MessagingException {
+    private ImapMessage messageOnServer() throws MessagingException {
         String messageUid = "UID";
-        Message remoteMessage = mock(Message.class);
+        ImapMessage remoteMessage = mock(ImapMessage.class);
 
         when(remoteMessage.getUid()).thenReturn(messageUid);
         when(remoteFolder.getMessages(anyInt(), anyInt(), nullable(Date.class),
@@ -300,7 +300,7 @@ public class ImapSyncTest {
 
     private void hasUnsyncedRemoteMessage() throws MessagingException {
         String messageUid = "UID";
-        Message remoteMessage = mock(Message.class);
+        ImapMessage remoteMessage = mock(ImapMessage.class);
         when(remoteMessage.getUid()).thenReturn(messageUid);
         when(remoteFolder.getMessages(anyInt(), anyInt(), nullable(Date.class),
                 nullable(MessageRetrievalListener.class))).thenReturn(Collections.singletonList(remoteMessage));
