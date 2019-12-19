@@ -1,14 +1,8 @@
 package com.fsck.k9
 
-import android.text.util.Rfc822Tokenizer
-import android.widget.AutoCompleteTextView.Validator
 import java.util.regex.Pattern
 
-class EmailAddressValidator : Validator {
-
-    override fun fixText(invalidText: CharSequence): CharSequence = ""
-
-    override fun isValid(text: CharSequence): Boolean = Rfc822Tokenizer.tokenize(text).isNotEmpty()
+class EmailAddressValidator {
 
     fun isValidAddressOnly(text: CharSequence): Boolean = EMAIL_ADDRESS_PATTERN.matcher(text).matches()
 
