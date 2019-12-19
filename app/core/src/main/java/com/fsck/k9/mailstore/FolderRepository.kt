@@ -39,14 +39,17 @@ class FolderRepository(
                 .map { Folder(it.databaseId, it.serverId, it.name, it.type.toFolderType()) }
     }
 
-    fun getDisplayFolders(): List<DisplayFolder> {
+    fun getDisplayFolders(displayMode: FolderMode?): List<DisplayFolder> {
         val database = localStoreProvider.getInstance(account).database
-        val displayFolders = database.execute(false) { db -> getDisplayFolders(db) }
+        val displayFolders = database.execute(false) { db ->
+            val displayModeFilter = displayMode ?: account.folderDisplayMode
+            getDisplayFolders(db, displayModeFilter)
+        }
 
         return displayFolders.sortedWith(sortForDisplay)
     }
 
-    private fun getDisplayFolders(db: SQLiteDatabase): List<DisplayFolder> {
+    private fun getDisplayFolders(db: SQLiteDatabase, displayMode: FolderMode): List<DisplayFolder> {
         val queryBuilder = StringBuilder("""
             SELECT f.id, f.server_id, f.name, f.top_group, (
                 SELECT COUNT(m.id) 
@@ -57,7 +60,7 @@ class FolderRepository(
             """.trimIndent()
         )
 
-        addDisplayClassSelection(queryBuilder)
+        addDisplayClassSelection(queryBuilder, displayMode)
 
         val query = queryBuilder.toString()
         db.rawQuery(query, null).use { cursor ->
@@ -79,8 +82,8 @@ class FolderRepository(
         }
     }
 
-    private fun addDisplayClassSelection(query: StringBuilder) {
-        when (val displayMode = account.folderDisplayMode) {
+    private fun addDisplayClassSelection(query: StringBuilder, displayMode: FolderMode) {
+        when (displayMode) {
             FolderMode.ALL -> Unit // Return all folders
             FolderMode.FIRST_CLASS -> {
                 query.append(" WHERE f.display_class = '")

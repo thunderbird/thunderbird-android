@@ -2,6 +2,7 @@ package com.fsck.k9.ui.folders
 
 import androidx.lifecycle.LiveData
 import com.fsck.k9.Account
+import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.AccountsChangeListener
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
@@ -17,7 +18,8 @@ class FoldersLiveData(
     private val folderRepository: FolderRepository,
     private val messagingController: MessagingController,
     private val preferences: Preferences,
-    val accountUuid: String
+    val accountUuid: String,
+    val displayMode: FolderMode?
 ) : LiveData<List<DisplayFolder>>() {
 
     private val messagingListener = object : SimpleMessagingListener() {
@@ -38,7 +40,7 @@ class FoldersLiveData(
 
     private fun loadFoldersAsync() {
         GlobalScope.launch(Dispatchers.Main) {
-            value = withContext(Dispatchers.IO) { folderRepository.getDisplayFolders() }
+            value = withContext(Dispatchers.IO) { folderRepository.getDisplayFolders(displayMode) }
         }
     }
 
