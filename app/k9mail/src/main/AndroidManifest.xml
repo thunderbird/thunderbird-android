@@ -192,11 +192,7 @@
             android:targetActivity=".activity.MessageList"
             android:exported="true" />
 
-        <activity
-            android:name=".activity.MessageList"
-            android:configChanges="locale"
-            android:launchMode="singleTop"
-            android:uiOptions="splitActionBarWhenNarrow">
+        <activity android:name=".activity.MessageList">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
