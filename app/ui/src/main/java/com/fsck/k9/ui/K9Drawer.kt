@@ -33,7 +33,6 @@ import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.Drawer
 import com.mikepenz.materialdrawer.Drawer.OnDrawerItemClickListener
 import com.mikepenz.materialdrawer.DrawerBuilder
-import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
@@ -51,7 +50,6 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
     private val drawer: Drawer
     private val accountHeader: AccountHeader
-    private val headerItemCount = 1
     private val folderIconProvider: FolderIconProvider = FolderIconProvider(parent.theme)
 
     private val userFolderDrawerIds = ArrayList<Long>()
@@ -151,17 +149,21 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     }
 
     private fun addFooterItems() {
-        drawer.addItems(DividerDrawerItem(),
+        if (!unifiedInboxSelected) {
+            drawer.addStickyFooterItem(
                 PrimaryDrawerItem()
-                        .withName(R.string.folders_action)
-                        .withIcon(folderIconProvider.iconFolderResId)
-                        .withIdentifier(DRAWER_ID_FOLDERS)
-                        .withSelectable(false),
-                PrimaryDrawerItem()
-                        .withName(R.string.preferences_action)
-                        .withIcon(getResId(R.attr.iconActionSettings))
-                        .withIdentifier(DRAWER_ID_PREFERENCES)
-                        .withSelectable(false)
+                    .withName(R.string.folders_action)
+                    .withIcon(folderIconProvider.iconFolderResId)
+                    .withIdentifier(DRAWER_ID_FOLDERS)
+                    .withSelectable(false)
+            )
+        }
+
+        drawer.addStickyFooterItem(PrimaryDrawerItem()
+            .withName(R.string.preferences_action)
+            .withIcon(getResId(R.attr.iconActionSettings))
+            .withIdentifier(DRAWER_ID_PREFERENCES)
+            .withSelectable(false)
         )
     }
 
@@ -198,7 +200,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 observe(parent, foldersObserver)
             }
 
-            updateFolderSettingsItem()
+            updateFooterItems()
         }
     }
 
@@ -207,10 +209,9 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         foldersLiveData = null
     }
 
-    private fun updateFolderSettingsItem() {
-        val drawerItem = drawer.getDrawerItem(DRAWER_ID_FOLDERS)!!
-        drawerItem.isEnabled = !unifiedInboxSelected
-        drawer.updateItem(drawerItem)
+    private fun updateFooterItems() {
+        drawer.removeAllStickyFooterItems()
+        addFooterItems()
     }
 
     private fun createItemClickListener(): OnDrawerItemClickListener {
@@ -237,8 +238,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         }
 
         var openedFolderDrawerId: Long = -1
-        for (i in folders.indices.reversed()) {
-            val displayFolder = folders[i]
+        for (displayFolder in folders) {
             val folder = displayFolder.folder
             val drawerId = folder.id shl DRAWER_FOLDER_SHIFT
 
@@ -255,7 +255,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 drawerItem.withBadge(unreadCount.toString())
             }
 
-            drawer.addItemAtPosition(drawerItem, headerItemCount)
+            drawer.addItem(drawerItem)
 
             userFolderDrawerIds.add(drawerId)
 
@@ -270,9 +270,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     }
 
     private fun clearUserFolders() {
-        for (drawerId in userFolderDrawerIds) {
-            drawer.removeItem(drawerId)
-        }
+        drawer.removeAllItems()
         userFolderDrawerIds.clear()
     }
 
@@ -286,7 +284,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 return
             }
         }
-        updateFolderSettingsItem()
+        updateFooterItems()
     }
 
     fun deselect() {
@@ -304,7 +302,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         accountHeader.headerBackgroundView.setColorFilter(0xFFFFFFFFL.toInt(), PorterDuff.Mode.MULTIPLY)
         removeFoldersObserver()
         clearUserFolders()
-        updateFolderSettingsItem()
+        updateFooterItems()
     }
 
     private data class DrawerColors(
