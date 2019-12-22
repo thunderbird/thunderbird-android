@@ -50,7 +50,6 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
     private val drawer: Drawer
     private val accountHeader: AccountHeader
-    private val headerItemCount = 1
     private val folderIconProvider: FolderIconProvider = FolderIconProvider(parent.theme)
 
     private val userFolderDrawerIds = ArrayList<Long>()
@@ -239,8 +238,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         }
 
         var openedFolderDrawerId: Long = -1
-        for (i in folders.indices.reversed()) {
-            val displayFolder = folders[i]
+        for (displayFolder in folders) {
             val folder = displayFolder.folder
             val drawerId = folder.id shl DRAWER_FOLDER_SHIFT
 
@@ -257,7 +255,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 drawerItem.withBadge(unreadCount.toString())
             }
 
-            drawer.addItemAtPosition(drawerItem, headerItemCount)
+            drawer.addItem(drawerItem)
 
             userFolderDrawerIds.add(drawerId)
 
@@ -272,9 +270,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     }
 
     private fun clearUserFolders() {
-        for (drawerId in userFolderDrawerIds) {
-            drawer.removeItem(drawerId)
-        }
+        drawer.removeAllItems()
         userFolderDrawerIds.clear()
     }
 
