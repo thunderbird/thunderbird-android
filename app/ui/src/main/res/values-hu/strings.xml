@@ -643,6 +643,7 @@ Küldjön hibajelentéseket, járuljon hozzá új funkciókkal, és tegyen fel k
   <string name="setting_theme_global">Alkalmazás témájának használata</string>
   <string name="setting_theme_dark">Sötét</string>
   <string name="setting_theme_light">Világos</string>
+  <string name="setting_theme_follow_system">Rendszer alapértelmezettjének használata</string>
   <string name="display_preferences">Megjelenés</string>
   <string name="global_preferences">Globális</string>
   <string name="debug_preferences">Hibakeresés</string>
@@ -682,6 +683,7 @@ Küldjön hibajelentéseket, járuljon hozzá új funkciókkal, és tegyen fel k
   <string name="volume_navigation_title">Hangerő gomb navigáció</string>
   <string name="volume_navigation_message">Üzenetnézetekben</string>
   <string name="volume_navigation_list">Listanézetekben</string>
+  <string name="hide_special_accounts_title">Egységes beérkezett üzenetek elrejtése</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">– Olvasatlan</string>
   <string name="search_all_messages_title">Összes üzenet</string>
@@ -770,9 +772,28 @@ Küldjön hibajelentéseket, járuljon hozzá új funkciókkal, és tegyen fel k
   <string name="settings_export_success_generic">A beállítások sikeresen exportálva</string>
   <string name="settings_export_failure">A beállítások exportálása sikertelen</string>
   <string name="settings_import_title">Beállítások importálása</string>
+  <string name="settings_import_pick_document_button">Fájl kiválasztása</string>
   <string name="settings_import_button">Importálás</string>
+  <string name="settings_import_success_generic">A beállítások sikeresen importálva</string>
+  <string name="settings_import_password_required">Adja meg a jelszavakat</string>
+  <string name="settings_import_failure">Nem sikerült importálni a beállításokat</string>
+  <string name="settings_import_read_failure">Nem sikerült beolvasni a beállítások fájlt</string>
+  <string name="settings_import_partial_failure">Nem sikerült importálni néhány beállítást</string>
+  <string name="settings_import_status_success">Sikeresen importálva</string>
+  <string name="settings_import_status_password_required">Jelszó szükséges</string>
+  <string name="settings_import_status_not_imported">Nincs importálva</string>
+  <string name="settings_import_status_error">Importálási hiba</string>
+  <string name="settings_import_later_button">Később</string>
   <string name="settings_import">Beállítások importálása</string>
   <string name="settings_importing">Beállítások importálása…</string>
+  <plurals name="settings_import_password_prompt">
+    <item quantity="one">Ahhoz, hogy képes legyen használni a(z) „<xliff:g id="account">%s</xliff:g>” fiókot, meg kell adnia a kiszolgáló jelszavát.</item>
+    <item quantity="other">Ahhoz, hogy képes legyen használni a(z) „<xliff:g id="account">%s</xliff:g>” fiókot, meg kell adnia a kiszolgáló jelszavait.</item>
+  </plurals>
+  <string name="settings_import_incoming_server_password_hint">Bejövő kiszolgáló jelszava</string>
+  <string name="settings_import_outgoing_server_password_hint">Kimenő kiszolgáló jelszava</string>
+  <string name="settings_import_use_same_password_for_outgoing_server">Ugyanazon jelszó használata a kimenő kiszolgálónál</string>
+  <string name="server_name_format">Kiszolgáló neve: <xliff:g id="hostname">%s</xliff:g></string>
   <string name="unread_widget_select_account">Olvasatlanok számának megjelenítése ennél…</string>
   <string name="unread_widget_account_title">Fiók</string>
   <string name="unread_widget_account_summary">Az a fiók, amelynél az olvasatlanok számlálóját meg kell jeleníteni</string>

@@ -83,7 +83,7 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="cancel_action">Annuler</string>
   <string name="send_action">Envoyer</string>
   <string name="send_again_action">Renvoyer</string>
-  <string name="empty_subject">L’objet est vide. Cliquez de nouveau pour envoyer quand même</string>
+  <string name="empty_subject">L’objet est vide. Touchez de nouveau pour envoyer quand même</string>
   <string name="select_action">Sélectionner</string>
   <string name="deselect_action">Dessélectionner</string>
   <string name="reply_action">Répondre</string>
@@ -230,7 +230,7 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="search_from_format">De <xliff:g id="sender">%s</xliff:g></string>
   <string name="debug_delete_local_body">Déboguer / Effacer le corps du courriel</string>
   <string name="message_discarded_toast">Le courriel a été abandonné</string>
-  <string name="message_saved_toast">Courriel enregistré comme brouillon</string>
+  <string name="message_saved_toast">Le courriel a été enregistré comme brouillon</string>
   <string name="global_settings_flag_label">Afficher les étoiles</string>
   <string name="global_settings_flag_summary">Les étoiles indiquent des courriels suivis</string>
   <string name="global_settings_preview_lines_label">Lignes dʼaperçu</string>
@@ -402,7 +402,7 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="move_copy_cannot_copy_unsynced_message">Impossible de copier ou déplacer un courriel qui n’est pas synchronisé avec le serveur</string>
   <string name="account_setup_failed_dlg_title">La configuration n’a pas pu être terminée</string>
   <string name="account_setup_failed_dlg_auth_message_fmt">Nom d’utilisateur ou mot de passe erroné.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_certificate_message_fmt">Le serveur a présenté un certificat SSL invalide. Ceci est parfois causé par une mauvaise configuration du serveur. Parfois, quelqu’un essaie de vous attaquer ou d’attaquer votre serveur de courriel. Si vous n’êtes pas sûr de ce qu’il se passe, cliquez sur Rejeter et contactez les gestionnaires du serveur de courriel.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">Le serveur a présenté un certificat SSL invalide. Cela est parfois causé par une mauvaise configuration du serveur. Parfois, quelqu’un essaie de vous attaquer ou d’attaquer votre serveur de courriel. Si vous n’êtes pas sûr de ce qu’il se passe, touchez Rejeter et contactez les gestionnaires de votre serveur de courriel.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Impossible de se connecter au serveur.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Modifier les détails</string>
   <string name="account_setup_failed_dlg_continue_action">Continuer</string>
@@ -872,7 +872,7 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="fetching_attachment_dialog_title_send">Envoi du courriel</string>
   <string name="fetching_attachment_dialog_title_save">Enregistrement du brouillon</string>
   <string name="fetching_attachment_dialog_message">Récupération de la pièce jointe…</string>
-  <string name="auth_external_error">Authentification impossible. Le serveur n’annonce pas la fonction SASL EXTERNE. Ceci pourrait être causé par un problème avec le certificat client (expiré, autorité de certification inconnue) ou quelque autre problème de configuration. </string>
+  <string name="auth_external_error">L’authentification est impossible. Le serveur n’annonce pas la fonction SASL EXTERNE. Cela pourrait être causé par un problème avec le certificat client (expiré, autorité de certification inconnue) ou quelque autre problème de configuration.</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Utiliser le certificat client</string>
   <string name="client_certificate_spinner_empty">Aucun certificat client</string>
@@ -895,7 +895,7 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="compose_error_no_draft_folder">Aucun dossier Brouillons n’est configuré pour ce compte !</string>
   <string name="compose_error_no_key_configured">Aucune clé n’est configurée pour ce compte ! Veuillez vérifier vos paramètres.</string>
   <string name="error_crypto_provider_incompatible">Le fournisseur cryptographique utilise une version non compatible. Veuillez vérifier vos paramètres !</string>
-  <string name="error_crypto_provider_connect">Impossible de se connecter au fournisseur cryptographique. Vérifiez vos paramètres ou cliquez sur l’icône Cryptographie pour ressayer !</string>
+  <string name="error_crypto_provider_connect">Impossible de se connecter au fournisseur cryptographique. Veuillez vérifiez vos paramètres ou touchez l’icône Cryptographie pour ressayer !</string>
   <string name="error_crypto_provider_ui_required">Échec d’initialisation du chiffrement de bout en bout, veuillez vérifier vos paramètres</string>
   <string name="error_crypto_inline_attach">Le mode PGP/INTÉGRÉ ne prend pas en charge les fichiers joints !</string>
   <string name="enable_inline_pgp">Activer PGP/INTÉGRÉ</string>
@@ -974,7 +974,7 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="apg_deprecated_2">C’est pourquoi APG n’est plus pris en charge par Courriel K-9 Mail.</string>
   <string name="apg_deprecated_bullet_1">Le développement s’est arrêté début 2014. </string>
   <string name="apg_deprecated_bullet_2">Des problèmes de sécurité non résolus persistent</string>
-  <string name="apg_learn_more">Vous pouvez <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">cliquer ici</a> pour en apprendre davantage..</string>
+  <string name="apg_learn_more">Vous pouvez <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">toucher ici</a> (page en anglais) pour en apprendre davantage.</string>
   <string name="apg_deprecated_ok">D’accord !</string>
   <string name="apg">APG</string>
   <string name="crypto_no_provider_title">Le courriel est chiffré</string>
@@ -990,7 +990,7 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="disable_encryption">Désactiver le chiffrement</string>
   <string name="openpgp_description_text1">Le chiffrement des courriels garantit qu’ils ne peuvent être lus que par le destinataire et personne d’autre.</string>
   <string name="openpgp_description_text3">Le chiffrement ne sera proposé que s’il est pris en charge par tous les destinataires et qu’ils vous ont envoyé un courriel auparavant.</string>
-  <string name="openpgp_description_text2">Activer, désactiver le chiffrement en cliquant sur cette icône.</string>
+  <string name="openpgp_description_text2">Activer ou désactiver le chiffrement en touchant cette icône.</string>
   <string name="openpgp_enabled_error_gotit">D’accord</string>
   <string name="openpgp_enabled_error_back">Retour</string>
   <string name="openpgp_enabled_error_disable">Désactiver le chiffrement</string>
@@ -999,7 +999,7 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="dialog_autocrypt_mutual_title">Mode mutuel Autocrypt</string>
   <string name="dialog_autocrypt_mutual_description_1">Les courriels seront habituellement chiffrés par choix ou en répondant à un courriel chiffré.</string>
   <string name="dialog_autocrypt_mutual_description_2">Si l’expéditeur et les destinataires activent le mode mutuel, le chiffrement sera activé par défaut.</string>
-  <string name="dialog_autocrypt_mutual_learn_more">Vous pouvez <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">cliquer ici</a> pour en apprendre davantage.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Vous pouvez <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">toucher ici</a> (page en anglais) pour en apprendre davantage.</string>
   <string name="general_settings_title">Paramètres généraux</string>
   <string name="dialog_openkeychain_info_title">Aucune appli OpenPGP n’est installée</string>
   <string name="dialog_openkeychain_info_install">Installer</string>

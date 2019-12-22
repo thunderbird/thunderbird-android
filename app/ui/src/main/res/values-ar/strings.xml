@@ -7,6 +7,7 @@
   <string name="shortcuts_title">حسابات K-9</string>
   <string name="unread_widget_label">K-9 غير المقروء</string>
   <!--Used in the about dialog-->
+  <string name="app_authors_url">https://github.com/k9mail/k-9/graphs/contributors</string>
   <string name="source_code">المَصدر</string>
   <string name="app_source_url">https://github.com/k9mail/k-9</string>
   <string name="app_license">Apache License, Version 2.0</string>
@@ -68,6 +69,7 @@
   <string name="search_action">ابحث</string>
   <string name="search_results">نتائج البحث</string>
   <string name="preferences_action">الإعدادات</string>
+  <string name="folders_action">إدارة المجلدات</string>
   <string name="account_settings_action">إعدادات الحساب</string>
   <string name="remove_account_action">احذف الحساب</string>
   <string name="mark_as_read_action">علامة مقروء</string>
@@ -133,6 +135,7 @@
   <string name="notification_bg_send_title">إرسال البريد</string>
   <string name="notification_bg_title_separator">:</string>
   <string name="notification_channel_messages_title">الرسائل</string>
+  <string name="notification_channel_messages_description">إشعارات ذات علاقة بالرسائل</string>
   <string name="notification_channel_miscellaneous_title">مُتنوع</string>
   <string name="special_mailbox_name_inbox">الوارد</string>
   <string name="special_mailbox_name_outbox">الصادر</string>
@@ -166,6 +169,7 @@
   <string name="message_view_cc_label">نسخة كربونية :</string>
   <string name="message_view_attachment_view_action">افتح</string>
   <string name="message_view_attachment_download_action">احفظ</string>
+  <string name="message_view_status_attachment_not_saved">غير قادر على حفظ المرفق.</string>
   <string name="message_view_show_pictures_action">اظهر الصور</string>
   <string name="message_view_download_remainder">تنزيل الرسالة كاملةً</string>
   <string name="message_view_toast_unable_to_display_message">ﻻ يُمكن عرض الرسالة</string>
@@ -373,6 +377,7 @@
   <string name="account_settings_crypto">التعمية مِن الطرف إلى نهاية الطرف</string>
   <string name="account_settings_crypto_app">تنشيط دعم أوبن بي جي بي</string>
   <string name="account_settings_crypto_app_select_title">إختيار تطبيق أوبن بي جي بي</string>
+  <string name="account_settings_crypto_summary_on">متصل بـ %s</string>
   <string name="account_settings_crypto_summary_config">الضبط جارٍ...</string>
   <string name="account_settings_color_label">لون الحساب</string>
   <string name="account_settings_color_none">مِن دون لون</string>
@@ -614,7 +619,9 @@
   <string name="dialog_attachment_progress_title">عملية تنزيل المرفقات جارية</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
+  <string name="settings_list_backup_category">النسخ الاحتياطي</string>
   <string name="settings_list_miscellaneous_category">مُتنوع</string>
+  <string name="settings_export_title">تصدير الإعدادات</string>
   <string name="settings_export_button">تصدير</string>
   <string name="settings_export_share_button">شارك</string>
   <string name="settings_export_progress_text">تصدير الإعدادات…</string>
@@ -622,8 +629,10 @@
   <string name="settings_export_failure">فشل تصدير الإعدادات</string>
   <string name="settings_import_title">استيراد الإعدادات</string>
   <string name="settings_import_button">استيراد</string>
+  <string name="settings_import_later_button">لاحقًا</string>
   <string name="settings_import">استيراد الإعدادات</string>
   <string name="settings_importing">استيراد الإعدادات…</string>
+  <string name="server_name_format">اسم الخادم: <xliff:g id="hostname">%s</xliff:g></string>
   <string name="unread_widget_account_title">الحساب</string>
   <string name="unread_widget_unified_inbox_account_summary">البريد الوارد الموحَّد</string>
   <string name="unread_widget_folder_enabled_title">تعداد المجلدات</string>

@@ -434,7 +434,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_settings_show_pictures_never">Niemals</string>
   <string name="account_settings_show_pictures_only_from_contacts">Nur von Kontakten</string>
   <string name="account_settings_show_pictures_always">Immer</string>
-  <string name="account_settings_composition">Nachrichten verfassen</string>
+  <string name="account_settings_composition">E-Mail-Versand</string>
   <string name="account_settings_default_quoted_text_shown_label">Nachricht beim Antworten zitieren</string>
   <string name="account_settings_default_quoted_text_shown_summary">Beim Antworten die ursprüngliche Nachricht als Zitat einfügen</string>
   <string name="account_settings_reply_after_quote_label">Antwort unter Zitat</string>
@@ -454,8 +454,8 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_settings_upload_sent_messages_label">Gesendete Nachrichten hochladen</string>
   <string name="account_settings_upload_sent_messages_summary">Nachrichten nach dem Senden in den Ordner Gesendet hochladen</string>
   <string name="account_settings_general_title">Allgemeine Einstellungen</string>
-  <string name="account_settings_reading_mail">Nachrichten lesen</string>
-  <string name="account_settings_sync">Nachrichten abrufen</string>
+  <string name="account_settings_reading_mail">E-mails lesen</string>
+  <string name="account_settings_sync">E-Mail-Empfang</string>
   <string name="account_settings_folders">Ordner</string>
   <string name="account_settings_quote_prefix_label">Zitat-Präfix</string>
   <string name="account_settings_crypto">Ende-zu-Ende Verschlüsselung</string>
