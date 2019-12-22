@@ -681,6 +681,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="volume_navigation_title">Ses Düğmesi ile dolaşma</string>
   <string name="volume_navigation_message">İleti görünümlerinde</string>
   <string name="volume_navigation_list">liste görünümlerinde</string>
+  <string name="hide_special_accounts_title">Birleşik Gelen Kutusunu Gizle</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Okunmadı</string>
   <string name="search_all_messages_title">Bütün mesajlar</string>
@@ -769,9 +770,21 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="settings_export_success_generic">Ayarlar başarıyla dışa aktarıldı</string>
   <string name="settings_export_failure">Hesaplar çıkarılırken hata oluştu</string>
   <string name="settings_import_title">İçe Aktarma ayarları</string>
+  <string name="settings_import_pick_document_button">Dosya seç</string>
   <string name="settings_import_button">İçe Aktar</string>
+  <string name="settings_import_success_generic">Ayarlar başarıyla içe aktarıldı</string>
+  <string name="settings_import_password_required">Lütfen parolaları girin</string>
+  <string name="settings_import_status_success">Başarıyla içe aktarıldı</string>
+  <string name="settings_import_status_password_required">Parola gerekli</string>
+  <string name="settings_import_status_not_imported">İçe aktarılmadı</string>
+  <string name="settings_import_status_error">İçe aktarma hatası</string>
+  <string name="settings_import_later_button">Daha sonra</string>
   <string name="settings_import">İçe Aktarma ayarları</string>
   <string name="settings_importing">İçe aktarma ayarları…</string>
+  <string name="settings_import_incoming_server_password_hint">Gelen sunucusu parolası</string>
+  <string name="settings_import_outgoing_server_password_hint">Giden sunucusu parolası</string>
+  <string name="settings_import_use_same_password_for_outgoing_server">Giden sunucusu için de aynı parolayı kullan</string>
+  <string name="server_name_format">Sunucu adı: <xliff:g id="hostname">%s</xliff:g></string>
   <string name="unread_widget_select_account">Şunun için okunmadı sayısını göster…</string>
   <string name="unread_widget_account_title">Hesap</string>
   <string name="unread_widget_account_summary">Okunmamış ileti sayısının görüntüleneceği hesap</string>
