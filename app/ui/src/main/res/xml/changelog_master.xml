@@ -8,6 +8,13 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.703" versioncode="27003">
+        <change>Fixed issue where going back to the app would open the default folder</change>
+        <change>Fixed crash when trying to create a new identity</change>
+        <change>Various smaller bug fixes</change>
+        <change>'Choose folder' now displays folders in the same order as the side drawer</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.702" versioncode="27002">
         <change>The back button now closes the side drawer instead of exiting the app immediately</change>
         <change>Fixed "Download complete message" for POP3 accounts</change>
