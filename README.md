@@ -1,5 +1,6 @@
 # K-9 Mail
 [![Latest release](https://img.shields.io/github/release/k9mail/k-9.svg?style=flat-square)](https://github.com/k9mail/k-9/releases/latest)
+[![Latest beta release](https://img.shields.io/github/v/release/k9mail/k-9.svg?include_prereleases&style=flat-square)](https://github.com/k9mail/k-9/releases)
 
 K-9 Mail is an open-source email client for Android.
 
