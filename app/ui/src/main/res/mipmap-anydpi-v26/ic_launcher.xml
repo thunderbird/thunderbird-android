@@ -2,6 +2,6 @@
 <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
     <background android:drawable="@color/icon_background"/>
     <foreground>
-        <inset android:drawable="@mipmap/icon" android:inset="20%"/>
+        <inset android:drawable="@mipmap/icon" android:inset="23%"/>
     </foreground>
 </adaptive-icon>
