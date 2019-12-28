@@ -194,6 +194,7 @@
 
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.APP_EMAIL"/>
 
                 <!-- TODO: Remove once minSdkVersion has been changed to 24+ -->
                 <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER"/>
