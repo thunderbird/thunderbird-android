@@ -965,6 +965,9 @@ public class MimeUtility {
 
 
     public static Part findFirstPartByMimeType(Part part, String mimeType) {
+        if (part == null) {
+            return null;
+        }
         if (part.getBody() instanceof Multipart) {
             Multipart multipart = (Multipart)part.getBody();
             for (BodyPart bodyPart : multipart.getBodyParts()) {

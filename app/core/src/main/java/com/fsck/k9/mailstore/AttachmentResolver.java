@@ -58,7 +58,9 @@ public class AttachmentResolver {
 
         while (!partsToCheck.isEmpty()) {
             Part part = partsToCheck.pop();
-
+            if (part == null) {
+                continue;
+            }
             Body body = part.getBody();
             if (body instanceof Multipart) {
                 Multipart multipart = (Multipart) body;
