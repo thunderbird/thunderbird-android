@@ -3,6 +3,7 @@ package com.fsck.k9.mailstore
 import com.fsck.k9.Account
 import com.fsck.k9.Account.SpecialFolderSelection
 import com.fsck.k9.Preferences
+import com.fsck.k9.mail.Folder.FolderClass
 
 /**
  * Updates special folders in [Account] if they are marked as [SpecialFolderSelection.AUTOMATIC] or if they are marked
@@ -28,7 +29,22 @@ class SpecialFolderUpdater(
     }
 
     private fun updateInbox(folders: List<Folder>) {
-        account.inboxFolder = folders.firstOrNull { it.type == FolderType.INBOX }?.serverId
+        val oldInboxServerId = account.inboxFolder
+        val newInboxServerId = folders.firstOrNull { it.type == FolderType.INBOX }?.serverId
+        if (newInboxServerId == oldInboxServerId) return
+
+        account.inboxFolder = newInboxServerId
+
+        if (oldInboxServerId != null && folders.any { it.serverId == oldInboxServerId }) {
+            folderRepository.setIncludeInUnifiedInbox(oldInboxServerId, false)
+        }
+
+        if (newInboxServerId != null) {
+            folderRepository.setIncludeInUnifiedInbox(newInboxServerId, true)
+            folderRepository.setDisplayClass(newInboxServerId, FolderClass.FIRST_CLASS)
+            folderRepository.setSyncClass(newInboxServerId, FolderClass.FIRST_CLASS)
+            folderRepository.setNotificationClass(newInboxServerId, FolderClass.FIRST_CLASS)
+        }
     }
 
     private fun updateSpecialFolder(type: FolderType, folders: List<Folder>) {
@@ -64,6 +80,8 @@ class SpecialFolderUpdater(
     }
 
     private fun setSpecialFolder(type: FolderType, folder: String?, selection: SpecialFolderSelection) {
+        if (getSpecialFolder(type) == folder) return
+
         when (type) {
             FolderType.ARCHIVE -> account.setArchiveFolder(folder, selection)
             FolderType.DRAFTS -> account.setDraftsFolder(folder, selection)
@@ -71,6 +89,11 @@ class SpecialFolderUpdater(
             FolderType.SPAM -> account.setSpamFolder(folder, selection)
             FolderType.TRASH -> account.setTrashFolder(folder, selection)
             else -> throw AssertionError("Unsupported: $type")
+        }
+
+        if (folder != null) {
+            folderRepository.setDisplayClass(folder, FolderClass.FIRST_CLASS)
+            folderRepository.setSyncClass(folder, FolderClass.NO_CLASS)
         }
     }
 

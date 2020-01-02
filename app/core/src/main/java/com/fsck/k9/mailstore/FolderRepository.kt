@@ -113,6 +113,30 @@ class FolderRepository(
         RemoteFolderType.SPAM -> FolderType.SPAM
         RemoteFolderType.ARCHIVE -> FolderType.ARCHIVE
     }
+
+    fun setIncludeInUnifiedInbox(serverId: String, includeInUnifiedInbox: Boolean) {
+        val localStore = localStoreProvider.getInstance(account)
+        val folder = localStore.getFolder(serverId)
+        folder.isIntegrate = includeInUnifiedInbox
+    }
+
+    fun setDisplayClass(serverId: String, folderClass: FolderClass) {
+        val localStore = localStoreProvider.getInstance(account)
+        val folder = localStore.getFolder(serverId)
+        folder.displayClass = folderClass
+    }
+
+    fun setSyncClass(serverId: String, folderClass: FolderClass) {
+        val localStore = localStoreProvider.getInstance(account)
+        val folder = localStore.getFolder(serverId)
+        folder.syncClass = folderClass
+    }
+
+    fun setNotificationClass(serverId: String, folderClass: FolderClass) {
+        val localStore = localStoreProvider.getInstance(account)
+        val folder = localStore.getFolder(serverId)
+        folder.notifyClass = folderClass
+    }
 }
 
 data class Folder(val id: Long, val serverId: String, val name: String, val type: FolderType)

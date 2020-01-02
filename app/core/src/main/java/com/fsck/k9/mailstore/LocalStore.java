@@ -914,29 +914,6 @@ public class LocalStore {
                     }
 
                     final  LocalFolder.PreferencesHolder prefHolder = folder.new PreferencesHolder();
-
-                    // When created, special folders should always be displayed
-                    // inbox should be integrated
-                    // and the inbox and drafts folders should be syncced by default
-                    if (account.isSpecialFolder(serverId)) {
-                        prefHolder.inTopGroup = true;
-                        prefHolder.displayClass = LocalFolder.FolderClass.FIRST_CLASS;
-                        if (serverId.equals(account.getInboxFolder())) {
-                            prefHolder.integrate = true;
-                            prefHolder.notifyClass = LocalFolder.FolderClass.FIRST_CLASS;
-                            prefHolder.pushClass = LocalFolder.FolderClass.FIRST_CLASS;
-                        } else {
-                            prefHolder.pushClass = LocalFolder.FolderClass.INHERITED;
-
-                        }
-                        if (serverId.equals(account.getInboxFolder()) || serverId.equals(account.getDraftsFolder())) {
-                            prefHolder.syncClass = LocalFolder.FolderClass.FIRST_CLASS;
-                        } else {
-                            prefHolder.syncClass = LocalFolder.FolderClass.NO_CLASS;
-                        }
-                    }
-                    folder.refresh(serverId, prefHolder);   // Recover settings from Preferences
-
                     db.execSQL("INSERT INTO folders (name, visible_limit, top_group, display_class, poll_class, notify_class, push_class, integrate, server_id, local_only, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", new Object[] {
                                    name,
                                    visibleLimit,
