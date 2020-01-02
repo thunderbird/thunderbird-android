@@ -11,17 +11,18 @@ import com.fsck.k9.Preferences
 class SpecialFolderUpdater(
     private val preferences: Preferences,
     private val folderRepository: FolderRepository,
+    private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy,
     private val account: Account
 ) {
     fun updateSpecialFolders() {
-        val (folders, automaticSpecialFolders) = folderRepository.getRemoteFolderInfo()
+        val folders = folderRepository.getRemoteFolders()
 
         updateInbox(folders)
-        updateSpecialFolder(FolderType.ARCHIVE, folders, automaticSpecialFolders)
-        updateSpecialFolder(FolderType.DRAFTS, folders, automaticSpecialFolders)
-        updateSpecialFolder(FolderType.SENT, folders, automaticSpecialFolders)
-        updateSpecialFolder(FolderType.SPAM, folders, automaticSpecialFolders)
-        updateSpecialFolder(FolderType.TRASH, folders, automaticSpecialFolders)
+        updateSpecialFolder(FolderType.ARCHIVE, folders)
+        updateSpecialFolder(FolderType.DRAFTS, folders)
+        updateSpecialFolder(FolderType.SENT, folders)
+        updateSpecialFolder(FolderType.SPAM, folders)
+        updateSpecialFolder(FolderType.TRASH, folders)
 
         saveAccount()
     }
@@ -30,14 +31,11 @@ class SpecialFolderUpdater(
         account.inboxFolder = folders.firstOrNull { it.type == FolderType.INBOX }?.serverId
     }
 
-    private fun updateSpecialFolder(
-        type: FolderType,
-        folders: List<Folder>,
-        automaticSpecialFolders: Map<FolderType, Folder?>
-    ) {
+    private fun updateSpecialFolder(type: FolderType, folders: List<Folder>) {
         when (getSpecialFolderSelection(type)) {
             SpecialFolderSelection.AUTOMATIC -> {
-                setSpecialFolder(type, automaticSpecialFolders[type]?.serverId, SpecialFolderSelection.AUTOMATIC)
+                val specialFolder = specialFolderSelectionStrategy.selectSpecialFolder(folders, type)
+                setSpecialFolder(type, specialFolder?.serverId, SpecialFolderSelection.AUTOMATIC)
             }
             SpecialFolderSelection.MANUAL -> {
                 if (folders.none { it.serverId == getSpecialFolder(type) }) {

@@ -5,8 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
+import com.fsck.k9.mailstore.Folder
 import com.fsck.k9.mailstore.FolderRepositoryManager
-import com.fsck.k9.mailstore.RemoteFolderInfo
+import com.fsck.k9.mailstore.FolderType
+import com.fsck.k9.mailstore.SpecialFolderSelectionStrategy
 import com.fsck.k9.ui.account.AccountsLiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -15,9 +17,10 @@ import kotlinx.coroutines.withContext
 
 class AccountSettingsViewModel(
     private val preferences: Preferences,
-    private val folderRepositoryManager: FolderRepositoryManager
+    private val folderRepositoryManager: FolderRepositoryManager,
+    private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy
 ) : ViewModel() {
-    public val accounts = AccountsLiveData(preferences)
+    val accounts = AccountsLiveData(preferences)
     private val accountLiveData = MutableLiveData<Account>()
     private val foldersLiveData = MutableLiveData<RemoteFolderInfo>()
 
@@ -58,8 +61,22 @@ class AccountSettingsViewModel(
         val folderRepository = folderRepositoryManager.getFolderRepository(account)
         GlobalScope.launch(Dispatchers.Main) {
             foldersLiveData.value = withContext(Dispatchers.IO) {
-                folderRepository.getRemoteFolderInfo()
+                val folders = folderRepository.getRemoteFolders()
+                val automaticSpecialFolders = getAutomaticSpecialFolders(folders)
+                RemoteFolderInfo(folders, automaticSpecialFolders)
             }
         }
     }
+
+    private fun getAutomaticSpecialFolders(folders: List<Folder>): Map<FolderType, Folder?> {
+        return mapOf(
+            FolderType.ARCHIVE to specialFolderSelectionStrategy.selectSpecialFolder(folders, FolderType.ARCHIVE),
+            FolderType.DRAFTS to specialFolderSelectionStrategy.selectSpecialFolder(folders, FolderType.DRAFTS),
+            FolderType.SENT to specialFolderSelectionStrategy.selectSpecialFolder(folders, FolderType.SENT),
+            FolderType.SPAM to specialFolderSelectionStrategy.selectSpecialFolder(folders, FolderType.SPAM),
+            FolderType.TRASH to specialFolderSelectionStrategy.selectSpecialFolder(folders, FolderType.TRASH)
+        )
+    }
 }
+
+data class RemoteFolderInfo(val folders: List<Folder>, val automaticSpecialFolders: Map<FolderType, Folder?>)
