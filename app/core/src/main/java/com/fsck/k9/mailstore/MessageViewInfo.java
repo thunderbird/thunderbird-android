@@ -57,7 +57,8 @@ public class MessageViewInfo {
         try {
             Body emptyBody = new TextBody("");
             Part emptyPart = new MimeBodyPart(emptyBody, "text/plain");
-            return new MessageViewInfo(message, isMessageIncomplete, emptyPart, null, false, null, null, null, null,
+            String subject = message.getSubject();
+            return new MessageViewInfo(message, isMessageIncomplete, emptyPart, subject, false, null, null, null, null,
                     null, null);
         } catch (MessagingException e) {
             throw new AssertionError(e);
