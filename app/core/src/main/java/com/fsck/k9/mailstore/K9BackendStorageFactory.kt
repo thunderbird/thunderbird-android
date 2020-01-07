@@ -6,12 +6,18 @@ import com.fsck.k9.Preferences
 class K9BackendStorageFactory(
     private val preferences: Preferences,
     private val folderRepositoryManager: FolderRepositoryManager,
-    private val localStoreProvider: LocalStoreProvider
+    private val localStoreProvider: LocalStoreProvider,
+    private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy
 ) {
     fun createBackendStorage(account: Account): K9BackendStorage {
         val folderRepository = folderRepositoryManager.getFolderRepository(account)
         val localStore = localStoreProvider.getInstance(account)
-        val specialFolderUpdater = SpecialFolderUpdater(preferences, folderRepository, account)
+        val specialFolderUpdater = SpecialFolderUpdater(
+            preferences,
+            folderRepository,
+            specialFolderSelectionStrategy,
+            account
+        )
         val specialFolderListener = SpecialFolderBackendStorageListener(specialFolderUpdater)
         val autoExpandFolderListener = AutoExpandFolderBackendStorageListener(preferences, account)
         val listeners = listOf(specialFolderListener, autoExpandFolderListener)

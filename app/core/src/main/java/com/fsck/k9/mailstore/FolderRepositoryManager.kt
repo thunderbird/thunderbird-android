@@ -6,5 +6,5 @@ class FolderRepositoryManager(
     private val localStoreProvider: LocalStoreProvider,
     private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy
 ) {
-    fun getFolderRepository(account: Account) = FolderRepository(localStoreProvider, specialFolderSelectionStrategy, account)
+    fun getFolderRepository(account: Account) = FolderRepository(localStoreProvider, account)
 }
