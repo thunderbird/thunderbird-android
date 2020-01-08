@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.fsck.k9.mail.Folder.FolderClass;
+import com.fsck.k9.mail.FolderClass;
 import com.fsck.k9.preferences.Settings.BooleanSetting;
 import com.fsck.k9.preferences.Settings.EnumSetting;
 import com.fsck.k9.preferences.Settings.SettingsDescription;

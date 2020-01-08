@@ -1,7 +1,7 @@
 package com.fsck.k9.mailstore
 
 import com.fsck.k9.backend.api.FolderInfo
-import com.fsck.k9.mail.Folder
+import com.fsck.k9.mail.FolderType
 
 /**
  * Update special folders when folders are added, removed, or changed.
@@ -11,7 +11,7 @@ class SpecialFolderBackendStorageListener(
 ) : BackendStorageListener {
 
     override fun onFoldersCreated(folders: List<FolderInfo>) {
-        if (folders.any { it.type != Folder.FolderType.REGULAR }) {
+        if (folders.any { it.type != FolderType.REGULAR }) {
             specialFolderUpdater.updateSpecialFolders()
         }
     }
@@ -20,7 +20,7 @@ class SpecialFolderBackendStorageListener(
         specialFolderUpdater.updateSpecialFolders()
     }
 
-    override fun onFolderChanged(folderServerId: String, name: String, type: Folder.FolderType) {
+    override fun onFolderChanged(folderServerId: String, name: String, type: FolderType) {
         specialFolderUpdater.updateSpecialFolders()
     }
 }

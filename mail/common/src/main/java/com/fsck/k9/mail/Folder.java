@@ -16,22 +16,6 @@ public abstract class Folder<T extends Message> {
     public static final int OPEN_MODE_RW=0;
     public static final int OPEN_MODE_RO=1;
 
-    // NONE is obsolete, it will be translated to NO_CLASS for display and to INHERITED for sync and push
-    public enum FolderClass {
-        NONE, NO_CLASS, INHERITED, FIRST_CLASS, SECOND_CLASS
-    }
-
-    public enum FolderType {
-        REGULAR,
-        INBOX,
-        OUTBOX,
-        DRAFTS,
-        SENT,
-        TRASH,
-        SPAM,
-        ARCHIVE
-    }
-
     /**
      * Forces an open of the MailProvider. If the provider is already open this
      * function returns without doing anything.

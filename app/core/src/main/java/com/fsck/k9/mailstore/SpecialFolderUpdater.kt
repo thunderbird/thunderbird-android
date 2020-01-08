@@ -3,7 +3,7 @@ package com.fsck.k9.mailstore
 import com.fsck.k9.Account
 import com.fsck.k9.Account.SpecialFolderSelection
 import com.fsck.k9.Preferences
-import com.fsck.k9.mail.Folder.FolderClass
+import com.fsck.k9.mail.FolderClass
 
 /**
  * Updates special folders in [Account] if they are marked as [SpecialFolderSelection.AUTOMATIC] or if they are marked

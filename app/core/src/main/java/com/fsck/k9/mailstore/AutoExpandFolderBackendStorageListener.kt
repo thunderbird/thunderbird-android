@@ -3,7 +3,7 @@ package com.fsck.k9.mailstore
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
 import com.fsck.k9.backend.api.FolderInfo
-import com.fsck.k9.mail.Folder
+import com.fsck.k9.mail.FolderType
 
 /**
  * Reset an Account's auto-expand folder when the currently configured folder was removed.
@@ -22,5 +22,5 @@ class AutoExpandFolderBackendStorageListener(
         }
     }
 
-    override fun onFolderChanged(folderServerId: String, name: String, type: Folder.FolderType) = Unit
+    override fun onFolderChanged(folderServerId: String, name: String, type: FolderType) = Unit
 }

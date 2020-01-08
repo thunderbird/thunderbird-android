@@ -5,12 +5,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
+import com.fsck.k9.mail.FolderClass;
 import com.fsck.k9.mailstore.MigrationsHelper;
 import timber.log.Timber;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.helper.Utility;
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.preferences.Storage;
 
 
@@ -54,37 +54,37 @@ class MigrationTo41 {
         Account account = migrationsHelper.getAccount();
         String accountUuid = account.getUuid();
 
-        Folder.FolderClass displayClass = Folder.FolderClass.NO_CLASS;
-        Folder.FolderClass syncClass = Folder.FolderClass.INHERITED;
-        Folder.FolderClass pushClass = Folder.FolderClass.SECOND_CLASS;
+        FolderClass displayClass = FolderClass.NO_CLASS;
+        FolderClass syncClass = FolderClass.INHERITED;
+        FolderClass pushClass = FolderClass.SECOND_CLASS;
         boolean inTopGroup = false;
         boolean integrate = false;
         if (account.getInboxFolder().equals(name)) {
-            displayClass = Folder.FolderClass.FIRST_CLASS;
-            syncClass =  Folder.FolderClass.FIRST_CLASS;
-            pushClass =  Folder.FolderClass.FIRST_CLASS;
+            displayClass = FolderClass.FIRST_CLASS;
+            syncClass =  FolderClass.FIRST_CLASS;
+            pushClass =  FolderClass.FIRST_CLASS;
             inTopGroup = true;
             integrate = true;
         }
 
         try {
-            displayClass = Folder.FolderClass.valueOf(storage.getString(accountUuid + "." + name + ".displayMode", displayClass.name()));
-            syncClass = Folder.FolderClass.valueOf(storage.getString(accountUuid + "." + name + ".syncMode", syncClass.name()));
-            pushClass = Folder.FolderClass.valueOf(storage.getString(accountUuid + "." + name + ".pushMode", pushClass.name()));
+            displayClass = FolderClass.valueOf(storage.getString(accountUuid + "." + name + ".displayMode", displayClass.name()));
+            syncClass = FolderClass.valueOf(storage.getString(accountUuid + "." + name + ".syncMode", syncClass.name()));
+            pushClass = FolderClass.valueOf(storage.getString(accountUuid + "." + name + ".pushMode", pushClass.name()));
             inTopGroup = storage.getBoolean(accountUuid + "." + name + ".inTopGroup", inTopGroup);
             integrate = storage.getBoolean(accountUuid + "." + name + ".integrate", integrate);
         } catch (Exception e) {
             Timber.e(e, " Throwing away an error while trying to upgrade folder metadata");
         }
 
-        if (displayClass == Folder.FolderClass.NONE) {
-            displayClass = Folder.FolderClass.NO_CLASS;
+        if (displayClass == FolderClass.NONE) {
+            displayClass = FolderClass.NO_CLASS;
         }
-        if (syncClass == Folder.FolderClass.NONE) {
-            syncClass = Folder.FolderClass.INHERITED;
+        if (syncClass == FolderClass.NONE) {
+            syncClass = FolderClass.INHERITED;
         }
-        if (pushClass == Folder.FolderClass.NONE) {
-            pushClass = Folder.FolderClass.INHERITED;
+        if (pushClass == FolderClass.NONE) {
+            pushClass = FolderClass.INHERITED;
         }
 
         db.execSQL("UPDATE folders SET integrate = ?, top_group = ?, poll_class=?, push_class =?, display_class = ? WHERE id = ?",

@@ -40,8 +40,8 @@ import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.FetchProfile.Item;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Folder.FolderType;
+import com.fsck.k9.mail.FolderType;
+import com.fsck.k9.mail.FolderClass;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
@@ -941,7 +941,7 @@ public class LocalStore {
             folder.create();
         }
         folder.setName(folderName);
-        folder.setSyncClass(Folder.FolderClass.NONE);
+        folder.setSyncClass(FolderClass.NONE);
     }
 
     static String serializeFlags(Iterable<Flag> flags) {
