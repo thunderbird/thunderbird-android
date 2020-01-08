@@ -487,7 +487,7 @@ public class WebDavFolder extends Folder<WebDavMessage> {
             WebDavMessage wdMessage = (WebDavMessage) messages.get(i);
 
             try {
-                wdMessage.setFlagInternal(Flag.SEEN, uidToReadStatus.get(wdMessage.getUid()));
+                wdMessage.setFlag(Flag.SEEN, uidToReadStatus.get(wdMessage.getUid()));
             } catch (NullPointerException e) {
                 Timber.v(e, "Under some weird circumstances, " +
                         "setting the read status when syncing from webdav threw an NPE. Skipping.");
@@ -550,7 +550,7 @@ public class WebDavFolder extends Folder<WebDavMessage> {
             ParsedMessageEnvelope envelope = envelopes.get(message.getUid());
             if (envelope != null) {
                 message.setNewHeaders(envelope);
-                message.setFlagInternal(Flag.SEEN, envelope.getReadStatus());
+                message.setFlag(Flag.SEEN, envelope.getReadStatus());
             } else {
                 Timber.e("Asked to get metadata for a non-existent message: %s", message.getUid());
             }
