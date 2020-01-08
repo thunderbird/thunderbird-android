@@ -1109,7 +1109,7 @@ public class MessagingController {
         try {
             LocalStore localStore = localStoreProvider.getInstance(account);
             localFolder = localStore.getFolder(folder);
-            localFolder.open(LocalFolder.OPEN_MODE_RW);
+            localFolder.open();
             List<? extends Message> messages = localFolder.getMessages(null, false);
             for (Message message : messages) {
                 if (!message.isSet(Flag.SEEN)) {
@@ -1247,7 +1247,7 @@ public class MessagingController {
         try {
             LocalStore localStore = localStoreProvider.getInstance(account);
             localFolder = localStore.getFolder(folderServerId);
-            localFolder.open(LocalFolder.OPEN_MODE_RW);
+            localFolder.open();
 
             // Update the messages in the local store
             localFolder.setFlags(messages, Collections.singleton(flag), newState);
@@ -1294,7 +1294,7 @@ public class MessagingController {
         try {
             LocalStore localStore = localStoreProvider.getInstance(account);
             localFolder = localStore.getFolder(folderServerId);
-            localFolder.open(LocalFolder.OPEN_MODE_RW);
+            localFolder.open();
 
             Message message = localFolder.getMessage(uid);
             if (message != null) {
@@ -1344,7 +1344,7 @@ public class MessagingController {
         try {
             LocalStore localStore = localStoreProvider.getInstance(account);
             localFolder = localStore.getFolder(folder);
-            localFolder.open(LocalFolder.OPEN_MODE_RW);
+            localFolder.open();
 
             LocalMessage message = localFolder.getMessage(uid);
 
@@ -1400,7 +1400,7 @@ public class MessagingController {
     public LocalMessage loadMessage(Account account, String folderServerId, String uid) throws MessagingException {
         LocalStore localStore = localStoreProvider.getInstance(account);
         LocalFolder localFolder = localStore.getFolder(folderServerId);
-        localFolder.open(LocalFolder.OPEN_MODE_RW);
+        localFolder.open();
 
         LocalMessage message = localFolder.getMessage(uid);
         if (message == null || message.getDatabaseId() == 0) {
@@ -1421,7 +1421,7 @@ public class MessagingController {
     public LocalMessage loadMessageMetadata(Account account, String folderServerId, String uid) throws MessagingException {
         LocalStore localStore = localStoreProvider.getInstance(account);
         LocalFolder localFolder = localStore.getFolder(folderServerId);
-        localFolder.open(LocalFolder.OPEN_MODE_RW);
+        localFolder.open();
 
         LocalMessage message = localFolder.getMessage(uid);
         if (message == null || message.getDatabaseId() == 0) {
@@ -1502,7 +1502,7 @@ public class MessagingController {
         try {
             LocalStore localStore = localStoreProvider.getInstance(account);
             LocalFolder localFolder = localStore.getFolder(account.getOutboxFolder());
-            localFolder.open(LocalFolder.OPEN_MODE_RW);
+            localFolder.open();
             localFolder.appendMessages(Collections.singletonList(message));
             LocalMessage localMessage = localFolder.getMessage(message.getUid());
             long messageId = localMessage.getDatabaseId();
@@ -1587,7 +1587,7 @@ public class MessagingController {
                 return false;
             }
 
-            localFolder.open(LocalFolder.OPEN_MODE_RW);
+            localFolder.open();
 
             if (localFolder.getMessageCount() > 0) {
                 return true;
@@ -1620,7 +1620,7 @@ public class MessagingController {
             for (MessagingListener l : getListeners()) {
                 l.sendPendingMessagesStarted(account);
             }
-            localFolder.open(LocalFolder.OPEN_MODE_RW);
+            localFolder.open();
 
             List<LocalMessage> localMessages = localFolder.getMessages(null);
             int progress = 0;
@@ -2069,7 +2069,7 @@ public class MessagingController {
         try {
             LocalStore localStore = localStoreProvider.getInstance(account);
             localFolder = localStore.getFolder(account.getDraftsFolder());
-            localFolder.open(LocalFolder.OPEN_MODE_RW);
+            localFolder.open();
             String uid = localFolder.getMessageUidById(id);
             if (uid != null) {
                 MessageReference messageReference = new MessageReference(
@@ -2311,7 +2311,7 @@ public class MessagingController {
         // or local deletes will never get cleaned up
         LocalStore localStore = localStoreProvider.getInstance(account);
         LocalFolder folder = localStore.getFolder(trashFolderServerId);
-        folder.open(LocalFolder.OPEN_MODE_RW);
+        folder.open();
         synchronizeFolder(account, folder, true, 0, null);
 
         compact(account, null);
@@ -2325,7 +2325,7 @@ public class MessagingController {
                 try {
                     LocalStore localStore = localStoreProvider.getInstance(account);
                     localFolder = localStore.getFolder(account.getTrashFolder());
-                    localFolder.open(LocalFolder.OPEN_MODE_RW);
+                    localFolder.open();
 
                     boolean isTrashLocalOnly = isTrashLocalOnly(account);
                     if (isTrashLocalOnly) {
@@ -2369,7 +2369,7 @@ public class MessagingController {
         LocalFolder localFolder = null;
         try {
             localFolder = localStoreProvider.getInstance(account).getFolder(folderServerId);
-            localFolder.open(LocalFolder.OPEN_MODE_RW);
+            localFolder.open();
             localFolder.clearAllMessages();
         } catch (UnavailableStorageException e) {
             Timber.i("Failed to clear folder because storage is not available - trying again later.");
@@ -2555,7 +2555,7 @@ public class MessagingController {
 
             LocalStore localStore = localStoreProvider.getInstance(account);
             for (final LocalFolder folder : localStore.getPersonalNamespaces(false)) {
-                folder.open(LocalFolder.OPEN_MODE_RW);
+                folder.open();
 
                 FolderClass fDisplayClass = folder.getDisplayClass();
                 FolderClass fSyncClass = folder.getSyncClass();
@@ -2630,7 +2630,7 @@ public class MessagingController {
                             // once
                             final LocalStore localStore = localStoreProvider.getInstance(account);
                             tLocalFolder = localStore.getFolder(folder.getServerId());
-                            tLocalFolder.open(LocalFolder.OPEN_MODE_RW);
+                            tLocalFolder.open();
 
                             if (!ignoreLastCheckedTime && tLocalFolder.getLastChecked() >
                                     (System.currentTimeMillis() - accountInterval)) {
@@ -2759,7 +2759,7 @@ public class MessagingController {
         try {
             LocalStore localStore = localStoreProvider.getInstance(account);
             LocalFolder localFolder = localStore.getFolder(account.getDraftsFolder());
-            localFolder.open(LocalFolder.OPEN_MODE_RW);
+            localFolder.open();
 
             if (existingDraftId != INVALID_MESSAGE_ID) {
                 String uid = localFolder.getMessageUidById(existingDraftId);
@@ -2860,7 +2860,7 @@ public class MessagingController {
                 if (folder.getServerId().equals(account.getOutboxFolder())) {
                     continue;
                 }
-                folder.open(LocalFolder.OPEN_MODE_RW);
+                folder.open();
 
                 FolderClass fDisplayClass = folder.getDisplayClass();
                 FolderClass fPushClass = folder.getPushClass();
@@ -3173,7 +3173,7 @@ public class MessagingController {
         private LocalMessage loadMessage(String folderServerId, String messageServerId) {
             try {
                 LocalFolder localFolder = localStore.getFolder(folderServerId);
-                localFolder.open(LocalFolder.OPEN_MODE_RW);
+                localFolder.open();
                 return localFolder.getMessage(messageServerId);
             } catch (MessagingException e) {
                 throw new RuntimeException("Couldn't load message (" + folderServerId + ":" + messageServerId + ")", e);

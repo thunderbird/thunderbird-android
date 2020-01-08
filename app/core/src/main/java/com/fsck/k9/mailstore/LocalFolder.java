@@ -73,9 +73,6 @@ import timber.log.Timber;
 
 
 public class LocalFolder {
-    public static final int OPEN_MODE_RW = 0;
-    public static final int OPEN_MODE_RO = 1;
-
     private static final int MAX_BODY_SIZE_FOR_DATABASE = 16 * 1024;
     private static final long INVALID_MESSAGE_PART_ID = -1;
 
@@ -166,14 +163,9 @@ public class LocalFolder {
         return getAccount().getSignatureUse();
     }
 
-    public void open(final int mode) throws MessagingException {
-
-        if (isOpen() && (getMode() == mode || mode == OPEN_MODE_RO)) {
+    public void open() throws MessagingException {
+        if (isOpen()) {
             return;
-        } else if (isOpen()) {
-            //previously opened in READ_ONLY and now requesting READ_WRITE
-            //so close connection and reopen
-            close();
         }
 
         try {
@@ -246,10 +238,6 @@ public class LocalFolder {
         return (databaseId != -1 && serverId != null);
     }
 
-    public int getMode() {
-        return OPEN_MODE_RW;
-    }
-
     public String getServerId() {
         return serverId;
     }
@@ -260,7 +248,7 @@ public class LocalFolder {
 
     public void setName(String name) throws MessagingException {
         try {
-            open(OPEN_MODE_RW);
+            open();
 
             if (name.equals(this.name)) {
                 return;
@@ -339,7 +327,7 @@ public class LocalFolder {
                 @Override
                 public Integer doDbWork(final SQLiteDatabase db) throws WrappedException {
                     try {
-                        open(OPEN_MODE_RW);
+                        open();
                     } catch (MessagingException e) {
                         throw new WrappedException(e);
                     }
@@ -363,7 +351,7 @@ public class LocalFolder {
 
     public int getUnreadMessageCount() throws MessagingException {
         if (databaseId == -1) {
-            open(OPEN_MODE_RW);
+            open();
         }
 
         try {
@@ -393,7 +381,7 @@ public class LocalFolder {
 
     public void setLastChecked(final long lastChecked) throws MessagingException {
         try {
-            open(OPEN_MODE_RW);
+            open();
             this.lastChecked = lastChecked;
         } catch (MessagingException e) {
             throw new WrappedException(e);
@@ -403,7 +391,7 @@ public class LocalFolder {
 
     public void setLastPush(final long lastPush) throws MessagingException {
         try {
-            open(OPEN_MODE_RW);
+            open();
             this.lastPush = lastPush;
         } catch (MessagingException e) {
             throw new WrappedException(e);
@@ -412,7 +400,7 @@ public class LocalFolder {
     }
 
     public int getVisibleLimit() throws MessagingException {
-        open(OPEN_MODE_RW);
+        open();
         return visibleLimit;
     }
 
@@ -451,7 +439,7 @@ public class LocalFolder {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
                     try {
-                        open(OPEN_MODE_RW);
+                        open();
                     } catch (MessagingException e) {
                         throw new WrappedException(e);
                     }
@@ -551,7 +539,7 @@ public class LocalFolder {
     }
 
     private String getPrefId() throws MessagingException {
-        open(OPEN_MODE_RW);
+        open();
         return getPrefId(serverId);
     }
 
@@ -615,7 +603,7 @@ public class LocalFolder {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
                     try {
-                        open(OPEN_MODE_RW);
+                        open();
                         if (fp.contains(FetchProfile.Item.BODY)) {
                             for (Message message : messages) {
                                 LocalMessage localMessage = (LocalMessage) message;
@@ -745,7 +733,7 @@ public class LocalFolder {
                 @Override
                 public String doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     try {
-                        open(OPEN_MODE_RW);
+                        open();
                         Cursor cursor = null;
 
                         try {
@@ -775,7 +763,7 @@ public class LocalFolder {
                 @Override
                 public LocalMessage doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     try {
-                        open(OPEN_MODE_RW);
+                        open();
                         LocalMessage message = new LocalMessage(LocalFolder.this.localStore, uid, LocalFolder.this);
                         Cursor cursor = null;
 
@@ -818,7 +806,7 @@ public class LocalFolder {
                 @Override
                 public List<LocalMessage> doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     try {
-                        open(OPEN_MODE_RW);
+                        open();
                         return LocalFolder.this.localStore.getMessages(listener, LocalFolder.this,
                                 "SELECT " + LocalStore.GET_MESSAGES_COLS +
                                 "FROM messages " +
@@ -847,7 +835,7 @@ public class LocalFolder {
                     ArrayList<String> result = new ArrayList<>();
 
                     try {
-                        open(OPEN_MODE_RO);
+                        open();
 
                         cursor = db.rawQuery(
                                 "SELECT uid " +
@@ -875,7 +863,7 @@ public class LocalFolder {
     }
 
     public List<LocalMessage> getMessagesByUids(@NonNull List<String> uids) throws MessagingException {
-        open(OPEN_MODE_RW);
+        open();
         List<LocalMessage> messages = new ArrayList<>();
         for (String uid : uids) {
             LocalMessage message = getMessage(uid);
@@ -888,7 +876,7 @@ public class LocalFolder {
 
     public List<LocalMessage> getMessagesByReference(@NonNull List<MessageReference> messageReferences)
             throws MessagingException {
-        open(OPEN_MODE_RW);
+        open();
 
         String accountUuid = getAccountUuid();
         String folderServerId = getServerId();
@@ -922,7 +910,7 @@ public class LocalFolder {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     try {
-                        destFolder.open(OPEN_MODE_RW);
+                        destFolder.open();
                         for (Message message : msgs) {
                             LocalMessage lMessage = (LocalMessage)message;
 
@@ -981,7 +969,7 @@ public class LocalFolder {
                              */
 
                             // We need to open this folder to get the folder id
-                            open(OPEN_MODE_RW);
+                            open();
 
                             cv.clear();
                             cv.put("uid", oldUID);
@@ -1117,7 +1105,7 @@ public class LocalFolder {
      */
     private Map<String, String> appendMessages(final List<? extends Message> messages, final boolean copy)
             throws MessagingException {
-        open(OPEN_MODE_RW);
+        open();
         try {
             final Map<String, String> uidMap = new HashMap<>();
             this.localStore.getDatabase().execute(true, new DbCallback<Void>() {
@@ -1525,7 +1513,7 @@ public class LocalFolder {
     }
 
     public void addPartToMessage(final LocalMessage message, final Part part) throws MessagingException {
-        open(OPEN_MODE_RW);
+        open();
 
         localStore.getDatabase().execute(false, new DbCallback<Void>() {
             @Override
@@ -1563,7 +1551,7 @@ public class LocalFolder {
      * the uid in the message.
      */
     public void changeUid(final LocalMessage message) throws MessagingException {
-        open(OPEN_MODE_RW);
+        open();
         final ContentValues cv = new ContentValues();
         cv.put("uid", message.getUid());
         this.localStore.getDatabase().execute(false, new DbCallback<Void>() {
@@ -1581,7 +1569,7 @@ public class LocalFolder {
 
     public void setFlags(final List<? extends Message> messages, final Set<Flag> flags, final boolean value)
     throws MessagingException {
-        open(OPEN_MODE_RW);
+        open();
 
         // Use one transaction to set all flags
         try {
@@ -1608,7 +1596,7 @@ public class LocalFolder {
 
     public void setFlags(final Set<Flag> flags, boolean value)
     throws MessagingException {
-        open(OPEN_MODE_RW);
+        open();
         for (Message message : getMessages(null)) {
             message.setFlags(flags, value);
         }
@@ -1617,7 +1605,7 @@ public class LocalFolder {
     public void clearAllMessages() throws MessagingException {
         final String[] folderIdArg = new String[] { Long.toString(databaseId) };
 
-        open(OPEN_MODE_RO);
+        open();
 
         try {
             this.localStore.getDatabase().execute(false, new DbCallback<Void>() {
@@ -1667,7 +1655,7 @@ public class LocalFolder {
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     try {
                         // We need to open the folder first to make sure we've got its id
-                        open(OPEN_MODE_RO);
+                        open();
                         List<LocalMessage> messages = getMessages(null);
                         for (LocalMessage message : messages) {
                             deleteMessageDataFromDisk(message.getMessagePartId());
@@ -2009,7 +1997,7 @@ public class LocalFolder {
                 @Override
                 public List<String> doDbWork(final SQLiteDatabase db) throws WrappedException {
                     try {
-                        open(OPEN_MODE_RW);
+                        open();
                     } catch (MessagingException e) {
                         throw new WrappedException(e);
                     }

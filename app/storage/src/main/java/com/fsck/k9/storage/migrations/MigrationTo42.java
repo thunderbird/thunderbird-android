@@ -5,11 +5,9 @@ import java.util.List;
 
 import android.os.SystemClock;
 
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.MigrationsHelper;
-import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
 import timber.log.Timber;
 
