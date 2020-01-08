@@ -45,7 +45,6 @@ import com.fsck.k9.message.extractors.MessageFulltextCreator;
 import com.fsck.k9.message.extractors.MessagePreviewCreator;
 import com.fsck.k9.message.extractors.PreviewResult;
 import com.fsck.k9.message.extractors.PreviewResult.PreviewType;
-import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
 
 import org.apache.commons.io.IOUtils;
@@ -61,7 +60,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -82,7 +80,6 @@ public class LocalFolder {
     private static final long INVALID_MESSAGE_PART_ID = -1;
 
 
-    private final SearchStatusManager searchStatusManager = DI.get(SearchStatusManager.class);
     private final LocalStore localStore;
     private final AttachmentInfoExtractor attachmentInfoExtractor;
     private final EncryptionExtractor encryptionExtractor = DI.get(EncryptionExtractor.class);
@@ -107,9 +104,6 @@ public class LocalFolder {
     private boolean isInTopGroup = false;
     private boolean isIntegrate = false;
 
-    // mLastUid is used during syncs. It holds the highest UID within the local folder so we
-    // know whether or not an unread message added to the local folder is actually "new" or not.
-    private Integer lastUid = null;
     private MoreMessages moreMessages = MoreMessages.UNKNOWN;
     private boolean localOnly = false;
 
@@ -170,10 +164,6 @@ public class LocalFolder {
 
     public boolean getSignatureUse() {
         return getAccount().getSignatureUse();
-    }
-
-    public boolean syncRemoteDeletions() {
-        return getAccount().isSyncRemoteDeletions();
     }
 
     public void open(final int mode) throws MessagingException {
@@ -401,36 +391,6 @@ public class LocalFolder {
         }
     }
 
-    public int getFlaggedMessageCount() throws MessagingException {
-        if (databaseId == -1) {
-            open(OPEN_MODE_RW);
-        }
-
-        try {
-            return this.localStore.getDatabase().execute(false, new DbCallback<Integer>() {
-                @Override
-                public Integer doDbWork(final SQLiteDatabase db) throws WrappedException {
-                    int flaggedMessageCount = 0;
-                    Cursor cursor = db.query("messages", new String[] { "COUNT(id)" },
-                            "folder_id = ? AND empty = 0 AND deleted = 0 AND flagged = 1",
-                            new String[] { Long.toString(databaseId) }, null, null, null);
-
-                    try {
-                        if (cursor.moveToFirst()) {
-                            flaggedMessageCount = cursor.getInt(0);
-                        }
-                    } finally {
-                        cursor.close();
-                    }
-
-                    return flaggedMessageCount;
-                }
-            });
-        } catch (WrappedException e) {
-            throw(MessagingException) e.getCause();
-        }
-    }
-
     public void setLastChecked(final long lastChecked) throws MessagingException {
         try {
             open(OPEN_MODE_RW);
@@ -648,55 +608,6 @@ public class LocalFolder {
 
     }
 
-    public void refresh(String name, PreferencesHolder prefHolder) {
-        String id = getPrefId(name);
-
-        Storage storage = this.localStore.getStorage();
-
-        try {
-            prefHolder.displayClass = FolderClass.valueOf(storage.getString(id + ".displayMode",
-                                      prefHolder.displayClass.name()));
-        } catch (Exception e) {
-            Timber.e(e, "Unable to load displayMode for %s", getServerId());
-        }
-        if (prefHolder.displayClass == FolderClass.NONE) {
-            prefHolder.displayClass = FolderClass.NO_CLASS;
-        }
-
-        try {
-            prefHolder.syncClass = FolderClass.valueOf(storage.getString(id  + ".syncMode",
-                                   prefHolder.syncClass.name()));
-        } catch (Exception e) {
-            Timber.e(e, "Unable to load syncMode for %s", getServerId());
-
-        }
-        if (prefHolder.syncClass == FolderClass.NONE) {
-            prefHolder.syncClass = FolderClass.INHERITED;
-        }
-
-        try {
-            prefHolder.notifyClass = FolderClass.valueOf(storage.getString(id  + ".notifyMode",
-                                   prefHolder.notifyClass.name()));
-        } catch (Exception e) {
-            Timber.e(e, "Unable to load notifyMode for %s", getServerId());
-        }
-        if (prefHolder.notifyClass == FolderClass.NONE) {
-            prefHolder.notifyClass = FolderClass.INHERITED;
-        }
-
-        try {
-            prefHolder.pushClass = FolderClass.valueOf(storage.getString(id  + ".pushMode",
-                                   prefHolder.pushClass.name()));
-        } catch (Exception e) {
-            Timber.e(e, "Unable to load pushMode for %s", getServerId());
-        }
-        if (prefHolder.pushClass == FolderClass.NONE) {
-            prefHolder.pushClass = FolderClass.INHERITED;
-        }
-        prefHolder.inTopGroup = storage.getBoolean(id + ".inTopGroup", prefHolder.inTopGroup);
-        prefHolder.integrate = storage.getBoolean(id + ".integrate", prefHolder.integrate);
-    }
-
     public void fetch(final List<LocalMessage> messages, final FetchProfile fp, final MessageRetrievalListener<LocalMessage> listener)
     throws MessagingException {
         try {
@@ -828,18 +739,6 @@ public class LocalFolder {
         MessageHeaderParser.parse(part, new ByteArrayInputStream(header));
     }
 
-    public List<LocalMessage> getMessages(int start, int end, Date earliestDate, MessageRetrievalListener<LocalMessage> listener)
-    throws MessagingException {
-        open(OPEN_MODE_RW);
-        throw new MessagingException(
-            "LocalStore.getMessages(int, int, MessageRetrievalListener) not yet implemented");
-    }
-
-    public boolean areMoreMessagesAvailable(int indexOfOldestMessage, Date earliestDate)
-            throws IOException, MessagingException {
-        throw new IllegalStateException("Not implemented");
-    }
-
     public String getMessageUidById(final long id) throws MessagingException {
         try {
             return this.localStore.getDatabase().execute(false, new DbCallback<String>() {
@@ -901,43 +800,6 @@ public class LocalFolder {
                     } catch (MessagingException e) {
                         throw new WrappedException(e);
                     }
-                }
-            });
-        } catch (WrappedException e) {
-            throw(MessagingException) e.getCause();
-        }
-    }
-
-    public Map<String,Long> getAllMessagesAndEffectiveDates() throws MessagingException {
-        try {
-            return  localStore.getDatabase().execute(false, new DbCallback<Map<String, Long>>() {
-                @Override
-                public Map<String, Long> doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
-                    Cursor cursor = null;
-                    HashMap<String, Long> result = new HashMap<>();
-
-                    try {
-                        open(OPEN_MODE_RO);
-
-                        cursor = db.rawQuery(
-                                "SELECT uid, date " +
-                                        "FROM messages " +
-                                        "WHERE empty = 0 AND deleted = 0 AND " +
-                                        "folder_id = ? ORDER BY date DESC",
-                                new String[] { Long.toString(databaseId) });
-
-                        while (cursor.moveToNext()) {
-                            String uid = cursor.getString(0);
-                            Long date = cursor.isNull(1) ? null : cursor.getLong(1);
-                            result.put(uid, date);
-                        }
-                    } catch (MessagingException e) {
-                        throw new WrappedException(e);
-                    } finally {
-                        Utility.closeQuietly(cursor);
-                    }
-
-                    return result;
                 }
             });
         } catch (WrappedException e) {
@@ -1171,32 +1033,6 @@ public class LocalFolder {
             throw(MessagingException) e.getCause();
         }
 
-    }
-
-    /**
-     * Convenience transaction wrapper for storing a message and set it as fully downloaded. Implemented mainly to speed up DB transaction commit.
-     *
-     * @param message Message to store. Never <code>null</code>.
-     * @param runnable What to do before setting {@link Flag#X_DOWNLOADED_FULL}. Never <code>null</code>.
-     * @return The local version of the message. Never <code>null</code>.
-     */
-    public LocalMessage storeSmallMessage(final Message message, final Runnable runnable) throws MessagingException {
-        return this.localStore.getDatabase().execute(true, new DbCallback<LocalMessage>() {
-            @Override
-            public LocalMessage doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
-                try {
-                    appendMessages(Collections.singletonList(message));
-                    final String uid = message.getUid();
-                    final LocalMessage result = getMessage(uid);
-                    runnable.run();
-                    // Set a flag indicating this message has now be fully downloaded
-                    result.setFlag(Flag.X_DOWNLOADED_FULL, true);
-                    return result;
-                } catch (MessagingException e) {
-                    throw new WrappedException(e);
-                }
-            }
-        });
     }
 
     /**
@@ -1778,28 +1614,6 @@ public class LocalFolder {
         }
     }
 
-    public String getUidFromMessageId(String messageId) throws MessagingException {
-        throw new MessagingException("Cannot call getUidFromMessageId on LocalFolder");
-    }
-
-    public void clearMessagesOlderThan(long cutoff) throws MessagingException {
-        open(OPEN_MODE_RO);
-
-        List<? extends Message> messages  = this.localStore.getMessages(null, this,
-                "SELECT " + LocalStore.GET_MESSAGES_COLS +
-                "FROM messages " +
-                "LEFT JOIN message_parts ON (message_parts.id = messages.message_part_id) " +
-                "LEFT JOIN threads ON (threads.message_id = messages.id) " +
-                "WHERE empty = 0 AND (folder_id = ? and date < ?)",
-                new String[] { Long.toString(databaseId), Long.toString(cutoff) });
-
-        for (Message message : messages) {
-            message.destroy();
-        }
-
-        this.localStore.notifyChange();
-    }
-
     public void clearAllMessages() throws MessagingException {
         final String[] folderIdArg = new String[] { Long.toString(databaseId) };
 
@@ -2083,74 +1897,6 @@ public class LocalFolder {
     public void setInTopGroup(boolean inTopGroup) throws MessagingException {
         isInTopGroup = inTopGroup;
         updateFolderColumn("top_group", isInTopGroup ? 1 : 0);
-    }
-
-    public Integer getLastUid() {
-        return lastUid;
-    }
-
-    /**
-     * <p>Fetches the most recent <b>numeric</b> UID value in this folder.  This is used by
-     * {@link com.fsck.k9.controller.MessagingController#shouldNotifyForMessage} to see if messages being
-     * fetched are new and unread.  Messages are "new" if they have a UID higher than the most recent UID prior
-     * to synchronization.</p>
-     *
-     * <p>This only works for protocols with numeric UIDs (like IMAP). For protocols with
-     * alphanumeric UIDs (like POP), this method quietly fails and shouldNotifyForMessage() will
-     * always notify for unread messages.</p>
-     *
-     * <p>Once Issue 1072 has been fixed, this method and shouldNotifyForMessage() should be
-     * updated to use internal dates rather than UIDs to determine new-ness. While this doesn't
-     * solve things for POP (which doesn't have internal dates), we can likely use this as a
-     * framework to examine send date in lieu of internal date.</p>
-     */
-    public void updateLastUid() throws MessagingException {
-        Integer lastUid = this.localStore.getDatabase().execute(false, new DbCallback<Integer>() {
-            @Override
-            public Integer doDbWork(final SQLiteDatabase db) {
-                Cursor cursor = null;
-                try {
-                    open(OPEN_MODE_RO);
-                    cursor = db.rawQuery("SELECT MAX(uid) FROM messages WHERE folder_id=?", new String[] { Long.toString(
-                            databaseId) });
-                    if (cursor.getCount() > 0) {
-                        cursor.moveToFirst();
-                        return cursor.getInt(0);
-                    }
-                } catch (Exception e) {
-                    Timber.e(e, "Unable to updateLastUid: ");
-                } finally {
-                    Utility.closeQuietly(cursor);
-                }
-                return null;
-            }
-        });
-
-        Timber.d("Updated last UID for folder %s to %s", serverId, lastUid);
-        this.lastUid = lastUid;
-    }
-
-    public Long getOldestMessageDate() throws MessagingException {
-        return this.localStore.getDatabase().execute(false, new DbCallback<Long>() {
-            @Override
-            public Long doDbWork(final SQLiteDatabase db) {
-                Cursor cursor = null;
-                try {
-                    open(OPEN_MODE_RO);
-                    cursor = db.rawQuery("SELECT MIN(date) FROM messages WHERE folder_id=?", new String[] { Long.toString(
-                            databaseId) });
-                    if (cursor.getCount() > 0) {
-                        cursor.moveToFirst();
-                        return cursor.getLong(0);
-                    }
-                } catch (Exception e) {
-                    Timber.e(e, "Unable to fetch oldest message date: ");
-                } finally {
-                    Utility.closeQuietly(cursor);
-                }
-                return null;
-            }
-        });
     }
 
     private ThreadInfo doMessageThreading(SQLiteDatabase db, Message message) {
