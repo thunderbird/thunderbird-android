@@ -180,6 +180,7 @@ public class Account implements BaseAccount, StoreConfig {
     private boolean openPgpEncryptSubject;
     private boolean openPgpEncryptAllDrafts;
     private boolean markMessageAsReadOnView;
+    private boolean markMessageAsReadOnDelete;
     private boolean alwaysShowCcBcc;
     private boolean allowRemoteSearch;
     private boolean remoteSearchFullText;
@@ -1037,6 +1038,14 @@ public class Account implements BaseAccount, StoreConfig {
 
     public synchronized void setMarkMessageAsReadOnView(boolean value) {
         markMessageAsReadOnView = value;
+    }
+
+    public synchronized boolean isMarkMessageAsReadOnDelete() {
+        return markMessageAsReadOnDelete;
+    }
+
+    public synchronized void setMarkMessageAsReadOnDelete(boolean value) {
+        markMessageAsReadOnDelete = value;
     }
 
     public synchronized boolean isAlwaysShowCcBcc() {

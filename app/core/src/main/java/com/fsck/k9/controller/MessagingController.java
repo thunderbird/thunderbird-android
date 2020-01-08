@@ -53,6 +53,7 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingDelete;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingEmptyTrash;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingExpunge;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingMarkAllAsRead;
+import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveAndMarkAsRead;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveOrCopy;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag;
 import com.fsck.k9.controller.ProgressBodyFactory.ProgressListener;
@@ -929,18 +930,44 @@ public class MessagingController {
         }
     }
 
-    private void queueMoveOrCopy(Account account, String srcFolder, String destFolder, boolean isCopy,
-            List<String> uids) {
-        PendingCommand command = PendingMoveOrCopy.create(srcFolder, destFolder, isCopy, uids);
+    private void queueMoveOrCopy(Account account, String srcFolder, String destFolder,
+                                 MoveOrCopyFlavor operation, List<String> uids) {
+        PendingCommand command;
+        switch (operation) {
+            case MOVE:
+                command = PendingMoveOrCopy.create(srcFolder, destFolder, false, uids);
+                break;
+            case COPY:
+                command = PendingMoveOrCopy.create(srcFolder, destFolder, true, uids);
+                break;
+            case MOVE_AND_MARK_AS_READ:
+                command = PendingMoveAndMarkAsRead.create(srcFolder, destFolder, uids);
+                break;
+            default:
+                return;
+        }
         queuePendingCommand(account, command);
     }
 
     private void queueMoveOrCopy(Account account, String srcFolder, String destFolder,
-            boolean isCopy, List<String> uids, Map<String, String> uidMap) {
+                                 MoveOrCopyFlavor operation, List<String> uids, Map<String, String> uidMap) {
         if (uidMap == null || uidMap.isEmpty()) {
-            queueMoveOrCopy(account, srcFolder, destFolder, isCopy, uids);
+            queueMoveOrCopy(account, srcFolder, destFolder, operation, uids);
         } else {
-            PendingCommand command = PendingMoveOrCopy.create(srcFolder, destFolder, isCopy, uidMap);
+            PendingCommand command;
+            switch (operation) {
+                case MOVE:
+                    command = PendingMoveOrCopy.create(srcFolder, destFolder, false, uidMap);
+                    break;
+                case COPY:
+                    command = PendingMoveOrCopy.create(srcFolder, destFolder, true, uidMap);
+                    break;
+                case MOVE_AND_MARK_AS_READ:
+                    command = PendingMoveAndMarkAsRead.create(srcFolder, destFolder, uidMap);
+                    break;
+                default:
+                    return;
+            }
             queuePendingCommand(account, command);
         }
     }
@@ -948,17 +975,28 @@ public class MessagingController {
     void processPendingMoveOrCopy(PendingMoveOrCopy command, Account account) throws MessagingException {
         String srcFolder = command.srcFolder;
         String destFolder = command.destFolder;
-        boolean isCopy = command.isCopy;
+        MoveOrCopyFlavor operation = command.isCopy ? MoveOrCopyFlavor.COPY : MoveOrCopyFlavor.MOVE;
 
         Map<String, String> newUidMap = command.newUidMap;
         List<String> uids = newUidMap != null ? new ArrayList<>(newUidMap.keySet()) : command.uids;
 
-        processPendingMoveOrCopy(account, srcFolder, destFolder, uids, isCopy, newUidMap);
+        processPendingMoveOrCopy(account, srcFolder, destFolder, uids, operation, newUidMap);
+    }
+
+    void processPendingMoveAndRead(PendingMoveAndMarkAsRead command, Account account) throws MessagingException {
+        String srcFolder = command.srcFolder;
+        String destFolder = command.destFolder;
+
+        Map<String, String> newUidMap = command.newUidMap;
+        List<String> uids = newUidMap != null ? new ArrayList<>(newUidMap.keySet()) : command.uids;
+
+        processPendingMoveOrCopy(account, srcFolder, destFolder, uids,
+                MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ, newUidMap);
     }
 
     @VisibleForTesting
     void processPendingMoveOrCopy(Account account, String srcFolder, String destFolder, List<String> uids,
-            boolean isCopy, Map<String, String> newUidMap) throws MessagingException {
+                                  MoveOrCopyFlavor operation, Map<String, String> newUidMap) throws MessagingException {
         LocalFolder localDestFolder;
 
         LocalStore localStore = localStoreProvider.getInstance(account);
@@ -967,13 +1005,22 @@ public class MessagingController {
         Backend backend = getBackend(account);
 
         Map<String, String> remoteUidMap;
-        if (isCopy) {
-            remoteUidMap = backend.copyMessages(srcFolder, destFolder, uids);
-        } else {
-            remoteUidMap = backend.moveMessages(srcFolder, destFolder, uids);
+        switch (operation) {
+            case COPY:
+                remoteUidMap = backend.copyMessages(srcFolder, destFolder, uids);
+                break;
+            case MOVE:
+                remoteUidMap = backend.moveMessages(srcFolder, destFolder, uids);
+                break;
+            case MOVE_AND_MARK_AS_READ:
+                remoteUidMap = backend.moveMessagesAndMarkAsRead(srcFolder, destFolder, uids);
+                break;
+            default:
+                throw new RuntimeException("Unsupported messaging operation");
         }
 
-        if (!isCopy && backend.getSupportsExpunge() && account.getExpungePolicy() == Expunge.EXPUNGE_IMMEDIATELY) {
+        if (operation != MoveOrCopyFlavor.COPY && backend.getSupportsExpunge()
+                && account.getExpungePolicy() == Expunge.EXPUNGE_IMMEDIATELY) {
             Timber.i("processingPendingMoveOrCopy expunging folder %s:%s", account.getDescription(), srcFolder);
             backend.expungeMessages(srcFolder, uids);
         }
@@ -1831,7 +1878,7 @@ public class MessagingController {
                 putBackground("moveMessages", null, new Runnable() {
                     @Override
                     public void run() {
-                        moveOrCopyMessageSynchronous(account, srcFolder, messages, destFolder, false);
+                        moveOrCopyMessageSynchronous(account, srcFolder, messages, destFolder, MoveOrCopyFlavor.MOVE);
                     }
                 });
             }
@@ -1850,7 +1897,8 @@ public class MessagingController {
                     public void run() {
                         try {
                             List<Message> messagesInThreads = collectMessagesInThreads(account, messages);
-                            moveOrCopyMessageSynchronous(account, srcFolder, messagesInThreads, destFolder, false);
+                            moveOrCopyMessageSynchronous(account, srcFolder, messagesInThreads, destFolder,
+                                    MoveOrCopyFlavor.MOVE);
                         } catch (MessagingException e) {
                             Timber.e(e, "Exception while moving messages");
                         }
@@ -1873,7 +1921,8 @@ public class MessagingController {
                 putBackground("copyMessages", null, new Runnable() {
                     @Override
                     public void run() {
-                        moveOrCopyMessageSynchronous(srcAccount, srcFolder, messages, destFolder, true);
+                        moveOrCopyMessageSynchronous(srcAccount, srcFolder, messages, destFolder,
+                                MoveOrCopyFlavor.COPY);
                     }
                 });
             }
@@ -1891,7 +1940,7 @@ public class MessagingController {
                         try {
                             List<Message> messagesInThreads = collectMessagesInThreads(account, messages);
                             moveOrCopyMessageSynchronous(account, srcFolder, messagesInThreads, destFolder,
-                                    true);
+                                    MoveOrCopyFlavor.COPY);
                         } catch (MessagingException e) {
                             Timber.e(e, "Exception while copying messages");
                         }
@@ -1908,14 +1957,17 @@ public class MessagingController {
     }
 
     private void moveOrCopyMessageSynchronous(final Account account, final String srcFolder,
-            final List<? extends Message> inMessages, final String destFolder, final boolean isCopy) {
+            final List<? extends Message> inMessages, final String destFolder,
+            MoveOrCopyFlavor operation) {
 
         try {
             LocalStore localStore = localStoreProvider.getInstance(account);
-            if (!isCopy && !isMoveCapable(account)) {
+            if ((operation == MoveOrCopyFlavor.MOVE
+                        || operation == MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ)
+                    && !isMoveCapable(account)) {
                 return;
             }
-            if (isCopy && !isCopyCapable(account)) {
+            if (operation == MoveOrCopyFlavor.COPY && !isCopyCapable(account)) {
                 return;
             }
 
@@ -1944,11 +1996,11 @@ public class MessagingController {
                 }
 
                 Timber.i("moveOrCopyMessageSynchronous: source folder = %s, %d messages, destination folder = %s, " +
-                        "isCopy = %s", srcFolder, messages.size(), destFolder, isCopy);
+                        "operation = %s", srcFolder, messages.size(), destFolder, operation.name());
 
                 Map<String, String> uidMap;
 
-                if (isCopy) {
+                if (operation == MoveOrCopyFlavor.COPY) {
                     FetchProfile fp = new FetchProfile();
                     fp.add(Item.ENVELOPE);
                     fp.add(Item.BODY);
@@ -1972,6 +2024,10 @@ public class MessagingController {
                             l.messageUidChanged(account, srcFolder, origUid, message.getUid());
                         }
                     }
+                    if (operation == MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ) {
+                        localDestFolder.setFlags(messages, Collections.singleton(Flag.SEEN), true);
+                        unreadCountAffected = true;
+                    }
                     unsuppressMessages(account, messages);
 
                     if (unreadCountAffected) {
@@ -1987,7 +2043,7 @@ public class MessagingController {
                 }
 
                 List<String> origUidKeys = new ArrayList<>(origUidMap.keySet());
-                queueMoveOrCopy(account, srcFolder, destFolder, isCopy, origUidKeys, uidMap);
+                queueMoveOrCopy(account, srcFolder, destFolder, operation, origUidKeys, uidMap);
             }
 
             processPendingCommands(account);
@@ -2173,6 +2229,10 @@ public class MessagingController {
                 Timber.d("Deleting messages in normal folder, moving");
                 localTrashFolder = localStore.getFolder(account.getTrashFolder());
                 uidMap = localFolder.moveMessages(messages, localTrashFolder);
+
+                if (account.isMarkMessageAsReadOnDelete()) {
+                    localTrashFolder.setFlags(messages, Collections.singleton(Flag.SEEN), true);
+                }
             }
 
             for (MessagingListener l : getListeners()) {
@@ -2197,9 +2257,12 @@ public class MessagingController {
                 if (account.getDeletePolicy() == DeletePolicy.ON_DELETE) {
                     if (folder.equals(account.getTrashFolder()) || !backend.isDeleteMoveToTrash()) {
                         queueDelete(account, folder, syncedMessageUids);
+                    } else if (account.isMarkMessageAsReadOnDelete()) {
+                        queueMoveOrCopy(account, folder, account.getTrashFolder(),
+                                MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ, syncedMessageUids, uidMap);
                     } else {
-                        queueMoveOrCopy(account, folder, account.getTrashFolder(), false,
-                                    syncedMessageUids, uidMap);
+                        queueMoveOrCopy(account, folder, account.getTrashFolder(),
+                                MoveOrCopyFlavor.MOVE, syncedMessageUids, uidMap);
                     }
                     processPendingCommands(account);
                 } else if (account.getDeletePolicy() == DeletePolicy.MARK_AS_READ) {
@@ -3116,5 +3179,9 @@ public class MessagingController {
                 throw new RuntimeException("Couldn't load message (" + folderServerId + ":" + messageServerId + ")", e);
             }
         }
+    }
+
+    private enum MoveOrCopyFlavor {
+        MOVE, COPY, MOVE_AND_MARK_AS_READ
     }
 }

@@ -55,6 +55,13 @@ interface Backend {
     ): Map<String, String>?
 
     @Throws(MessagingException::class)
+    fun moveMessagesAndMarkAsRead(
+        sourceFolderServerId: String,
+        targetFolderServerId: String,
+        messageServerIds: List<String>
+    ): Map<String, String>?
+
+    @Throws(MessagingException::class)
     fun copyMessages(
         sourceFolderServerId: String,
         targetFolderServerId: String,
