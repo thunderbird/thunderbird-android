@@ -79,7 +79,6 @@ import com.fsck.k9.helper.MergeCursorWithUniqueId;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.preferences.StorageEditor;
@@ -2154,8 +2153,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 }
                 // Closing the folder will kill off the connection if we're mid-search.
                 final Account searchAccount = account;
-                final Folder remoteFolder = currentFolder.folder;
-                remoteFolder.close();
                 // Send a remoteSearchFinished() message for good measure.
                 activityListener
                         .remoteSearchFinished(currentFolder.serverId, 0, searchAccount.getRemoteSearchNumResults(), null);
