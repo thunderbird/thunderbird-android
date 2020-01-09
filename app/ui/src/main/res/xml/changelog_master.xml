@@ -8,6 +8,12 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.704" versioncode="27004">
+        <change>Changed background color of the app icon</change>
+        <change>Added setting to mark a message as read when it is deleted (enabled by default)</change>
+        <change>Fixed crash when trying to reply to encrypted messages</change>
+        <change>Fixed configuration of special folders that lead to Inbox not being checked for new messages automatically</change>
+    </release>
     <release version="5.703" versioncode="27003">
         <change>Fixed issue where going back to the app would open the default folder</change>
         <change>Fixed crash when trying to create a new identity</change>
