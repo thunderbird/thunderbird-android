@@ -13,12 +13,9 @@
 
     <!-- Used in the about dialog -->
     <string name="app_authors">The K-9 Dog Walkers</string>
-    <string name="app_authors_url">https://github.com/k9mail/k-9/graphs/contributors</string>
     <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
     <string name="source_code">Source</string>
-    <string name="app_source_url">https://github.com/k9mail/k-9</string>
     <string name="app_license">Apache License, Version 2.0</string>
-    <string name="app_license_url">https://www.apache.org/licenses/LICENSE-2.0</string>
     <string name="about_libraries">Libraries</string>
     <string name="license">License</string>
 
