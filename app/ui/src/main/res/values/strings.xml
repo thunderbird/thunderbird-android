@@ -289,8 +289,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_show_contact_name_summary">Use recipient names from Contacts when available</string>
     <string name="global_settings_registered_name_color_label">Colorize contacts</string>
     <string name="global_settings_registered_name_color_changed">Colorize names in your contact list</string>
-    <string name="global_settings_folderlist_wrap_folder_names_label">Wrap long folder names</string>
-    <string name="global_settings_folderlist_wrap_folder_names_summary">Use multiple lines to show long folder names</string>
 
     <string name="global_settings_messageview_fixedwidth_label">Fixed-width fonts</string>
     <string name="global_settings_messageview_fixedwidth_summary">Use a fixed-width font when showing plain-text messages</string>
@@ -786,7 +784,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="accountlist_preferences">Account list</string>
     <string name="messagelist_preferences">Message lists</string>
     <string name="messageview_preferences">Messages</string>
-    <string name="folderlist_preferences">Folder lists</string>
     <string name="settings_theme_label">Theme</string>
     <string name="settings_message_theme_label">Message view theme</string>
     <string name="settings_compose_theme_label">Composer theme</string>
