@@ -91,17 +91,6 @@
         </PreferenceCategory>
 
         <PreferenceCategory
-            android:key="folderlist_preferences"
-            android:title="@string/folderlist_preferences">
-
-            <CheckBoxPreference
-                android:key="folderlist_wrap_folder_name"
-                android:summary="@string/global_settings_folderlist_wrap_folder_names_summary"
-                android:title="@string/global_settings_folderlist_wrap_folder_names_label" />
-
-        </PreferenceCategory>
-
-        <PreferenceCategory
             android:key="messagelist_preferences"
             android:title="@string/messagelist_preferences">
 

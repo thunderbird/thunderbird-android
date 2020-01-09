@@ -240,9 +240,6 @@ object K9 : EarlyInit {
     var quietTimeEnds: String? = null
 
     @JvmStatic
-    var isWrapFolderNames = false
-
-    @JvmStatic
     var isHideUserAgent = false
 
     @JvmStatic
@@ -364,7 +361,6 @@ object K9 : EarlyInit {
         isUseMessageViewFixedWidthFont = storage.getBoolean("messageViewFixedWidthFont", false)
         isMessageViewReturnToList = storage.getBoolean("messageViewReturnToList", false)
         isMessageViewShowNext = storage.getBoolean("messageViewShowNext", false)
-        isWrapFolderNames = storage.getBoolean("wrapFolderNames", false)
         isHideUserAgent = storage.getBoolean("hideUserAgent", false)
         isHideTimeZone = storage.getBoolean("hideTimeZone", false)
 
@@ -441,7 +437,6 @@ object K9 : EarlyInit {
         editor.putBoolean("messageViewFixedWidthFont", isUseMessageViewFixedWidthFont)
         editor.putBoolean("messageViewReturnToList", isMessageViewReturnToList)
         editor.putBoolean("messageViewShowNext", isMessageViewShowNext)
-        editor.putBoolean("wrapFolderNames", isWrapFolderNames)
         editor.putBoolean("hideUserAgent", isHideUserAgent)
         editor.putBoolean("hideTimeZone", isHideTimeZone)
 
