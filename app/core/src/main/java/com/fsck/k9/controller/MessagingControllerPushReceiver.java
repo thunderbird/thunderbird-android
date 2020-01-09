@@ -8,7 +8,6 @@ import android.content.Context;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.power.WakeLock;
@@ -95,7 +94,7 @@ public class MessagingControllerPushReceiver implements PushReceiver {
         try {
             LocalStore localStore = localStoreProvider.getInstance(account);
             localFolder = localStore.getFolder(folderServerId);
-            localFolder.open(Folder.OPEN_MODE_RW);
+            localFolder.open();
             return localFolder.getPushState();
         } catch (Exception e) {
             Timber.e(e, "Unable to get push state from account %s, folder %s", account.getDescription(), folderServerId);

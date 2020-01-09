@@ -8,7 +8,6 @@ import timber.log.Timber;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.search.SearchSpecification.Attribute;
@@ -112,7 +111,7 @@ public class SqlQueryBuilder {
         try {
             LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
             LocalFolder folder = localStore.getFolder(folderServerId);
-            folder.open(Folder.OPEN_MODE_RO);
+            folder.open();
             folderId = folder.getDatabaseId();
         } catch (MessagingException e) {
             //FIXME

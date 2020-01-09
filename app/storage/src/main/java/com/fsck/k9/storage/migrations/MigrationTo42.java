@@ -5,11 +5,9 @@ import java.util.List;
 
 import android.os.SystemClock;
 
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.MigrationsHelper;
-import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
 import timber.log.Timber;
 
@@ -22,12 +20,9 @@ class MigrationTo42 {
             long startTime = SystemClock.elapsedRealtime();
             StorageEditor editor = migrationsHelper.getPreferences().createStorageEditor();
 
-            List<? extends Folder > folders = localStore.getPersonalNamespaces(true);
-            for (Folder folder : folders) {
-                if (folder instanceof LocalFolder) {
-                    LocalFolder lFolder = (LocalFolder)folder;
-                    lFolder.save(editor);
-                }
+            List<LocalFolder> folders = localStore.getPersonalNamespaces(true);
+            for (LocalFolder folder : folders) {
+                folder.save(editor);
             }
 
             editor.commit();

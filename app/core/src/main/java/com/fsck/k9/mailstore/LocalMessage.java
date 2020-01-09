@@ -99,7 +99,7 @@ public class LocalMessage extends MimeMessage {
 
         if (this.mFolder == null) {
             LocalFolder f = new LocalFolder(this.localStore, cursor.getInt(LocalStore.MSG_INDEX_FOLDER_ID));
-            f.open(LocalFolder.OPEN_MODE_RW);
+            f.open();
             this.mFolder = f;
         }
 

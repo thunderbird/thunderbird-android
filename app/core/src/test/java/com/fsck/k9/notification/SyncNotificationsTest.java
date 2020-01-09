@@ -8,9 +8,9 @@ import androidx.core.app.NotificationCompat.Builder;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.testing.MockHelper;
 import com.fsck.k9.RobolectricTest;
-import com.fsck.k9.mail.Folder;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -80,10 +80,10 @@ public class SyncNotificationsTest extends RobolectricTest {
 
     @Test
     public void testGetFetchingMailNotificationId() throws Exception {
-        Folder folder = createFakeFolder();
+        LocalFolder localFolder = createFakeLocalFolder();
         int notificationId = NotificationIds.getFetchingMailNotificationId(account);
 
-        syncNotifications.showFetchingMailNotification(account, folder);
+        syncNotifications.showFetchingMailNotification(account, localFolder);
 
         verify(notificationManager).notify(notificationId, notification);
         verify(builder).setSmallIcon(resourceProvider.getIconCheckingMail());
@@ -151,8 +151,8 @@ public class SyncNotificationsTest extends RobolectricTest {
         return actionBuilder;
     }
 
-    private Folder createFakeFolder() {
-        Folder folder = mock(Folder.class);
+    private LocalFolder createFakeLocalFolder() {
+        LocalFolder folder = mock(LocalFolder.class);
         when(folder.getServerId()).thenReturn(FOLDER_SERVER_ID);
         when(folder.getName()).thenReturn(FOLDER_NAME);
         return folder;

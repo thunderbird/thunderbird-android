@@ -22,7 +22,6 @@ import com.fsck.k9.DI;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.mail.FetchProfile;
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mailstore.LocalFolder;
@@ -185,7 +184,7 @@ public class RawMessageProvider extends ContentProvider {
         try {
             LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
             LocalFolder localFolder = localStore.getFolder(folderServerId);
-            localFolder.open(Folder.OPEN_MODE_RW);
+            localFolder.open();
 
             LocalMessage message = localFolder.getMessage(uid);
             if (message == null || message.getDatabaseId() == 0) {

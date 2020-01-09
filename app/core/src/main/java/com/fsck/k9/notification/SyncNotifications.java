@@ -6,7 +6,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mailstore.LocalFolder;
 
 import static com.fsck.k9.notification.NotificationHelper.NOTIFICATION_LED_BLINK_FAST;
 
@@ -62,7 +62,7 @@ class SyncNotifications {
         getNotificationManager().cancel(notificationId);
     }
 
-    public void showFetchingMailNotification(Account account, Folder folder) {
+    public void showFetchingMailNotification(Account account, LocalFolder folder) {
         String accountName = account.getDescription();
         String folderServerId = folder.getServerId();
         String folderName = folder.getName();

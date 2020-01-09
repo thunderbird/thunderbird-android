@@ -12,7 +12,6 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
@@ -26,7 +25,7 @@ public class MlfUtils {
     static LocalFolder getOpenFolder(String folderServerId, Account account) throws MessagingException {
         LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
         LocalFolder localFolder = localStore.getFolder(folderServerId);
-        localFolder.open(Folder.OPEN_MODE_RO);
+        localFolder.open();
         return localFolder;
     }
 

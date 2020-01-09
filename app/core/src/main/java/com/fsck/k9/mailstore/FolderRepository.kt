@@ -3,8 +3,8 @@ package com.fsck.k9.mailstore
 import android.database.sqlite.SQLiteDatabase
 import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
-import com.fsck.k9.mail.Folder.FolderClass
-import com.fsck.k9.mail.Folder.FolderType as RemoteFolderType
+import com.fsck.k9.mail.FolderClass
+import com.fsck.k9.mail.FolderType as RemoteFolderType
 
 class FolderRepository(
     private val localStoreProvider: LocalStoreProvider,
