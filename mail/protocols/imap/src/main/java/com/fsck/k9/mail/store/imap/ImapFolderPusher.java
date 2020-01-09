@@ -587,7 +587,7 @@ class ImapFolderPusher extends ImapFolder {
 
                     List<Message> messages = new ArrayList<>();
                     for (long uid = startUid; uid <= newUid; uid++) {
-                        ImapMessage message = new ImapMessage(Long.toString(uid), ImapFolderPusher.this);
+                        ImapMessage message = new ImapMessage(Long.toString(uid));
                         messages.add(message);
                     }
 
@@ -626,10 +626,10 @@ class ImapFolderPusher extends ImapFolder {
                 }
 
                 for (String uid : removeUids) {
-                    ImapMessage message = new ImapMessage(uid, ImapFolderPusher.this);
+                    ImapMessage message = new ImapMessage(uid);
 
                     try {
-                        message.setFlagInternal(Flag.DELETED, true);
+                        message.setFlag(Flag.DELETED, true);
                     } catch (MessagingException me) {
                         Timber.e("Unable to set DELETED flag on message %s", message.getUid());
                     }
@@ -662,7 +662,7 @@ class ImapFolderPusher extends ImapFolder {
             List<Message> messages = new ArrayList<>(count);
 
             for (long uid = startUid; uid < uidNext; uid++) {
-                ImapMessage message = new ImapMessage(Long.toString(uid), ImapFolderPusher.this);
+                ImapMessage message = new ImapMessage(Long.toString(uid));
                 messages.add(message);
             }
 

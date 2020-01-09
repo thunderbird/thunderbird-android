@@ -851,7 +851,7 @@ public class ImapFolderTest {
         folder.fetch(messages, fetchProfile, null);
 
         ImapMessage imapMessage = messages.get(0);
-        verify(imapMessage).setFlagInternal(Flag.SEEN, true);
+        verify(imapMessage).setFlag(Flag.SEEN, true);
     }
 
     @Test
@@ -1043,13 +1043,12 @@ public class ImapFolderTest {
     }
 
     @Test
-    public void getMessageByUid_returnsNewImapMessageWithUidInFolder() throws Exception {
+    public void getMessageByUid_returnsNewImapMessageWithUid() throws Exception {
         ImapFolder folder = createFolder("Folder");
 
         ImapMessage message = folder.getMessage("uid");
 
         assertEquals("uid", message.getUid());
-        assertEquals(folder, message.getFolder());
     }
 
     private Part createPlainTextPart(String serverExtra) {

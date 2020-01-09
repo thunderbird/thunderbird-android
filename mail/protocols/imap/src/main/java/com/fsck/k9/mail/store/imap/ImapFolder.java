@@ -457,7 +457,7 @@ public class ImapFolder extends Folder<ImapMessage> {
 
     @Override
     public ImapMessage getMessage(String uid) throws MessagingException {
-        return new ImapMessage(uid, this);
+        return new ImapMessage(uid);
     }
 
     @Override
@@ -587,7 +587,7 @@ public class ImapFolder extends Folder<ImapMessage> {
                 listener.messageStarted(uid, i, count);
             }
 
-            ImapMessage message = new ImapMessage(uid, this);
+            ImapMessage message = new ImapMessage(uid);
             messages.add(message);
 
             if (listener != null) {
@@ -817,19 +817,19 @@ public class ImapFolder extends Folder<ImapMessage> {
                 for (int i = 0, count = flags.size(); i < count; i++) {
                     String flag = flags.getString(i);
                     if (flag.equalsIgnoreCase("\\Deleted")) {
-                        message.setFlagInternal(Flag.DELETED, true);
+                        message.setFlag(Flag.DELETED, true);
                     } else if (flag.equalsIgnoreCase("\\Answered")) {
-                        message.setFlagInternal(Flag.ANSWERED, true);
+                        message.setFlag(Flag.ANSWERED, true);
                     } else if (flag.equalsIgnoreCase("\\Seen")) {
-                        message.setFlagInternal(Flag.SEEN, true);
+                        message.setFlag(Flag.SEEN, true);
                     } else if (flag.equalsIgnoreCase("\\Flagged")) {
-                        message.setFlagInternal(Flag.FLAGGED, true);
+                        message.setFlag(Flag.FLAGGED, true);
                     } else if (flag.equalsIgnoreCase("$Forwarded")) {
-                        message.setFlagInternal(Flag.FORWARDED, true);
+                        message.setFlag(Flag.FORWARDED, true);
                         /* a message contains FORWARDED FLAG -> so we can also create them */
                         store.getPermanentFlagsIndex().add(Flag.FORWARDED);
                     } else if (flag.equalsIgnoreCase("\\Draft")){
-                        message.setFlagInternal(Flag.DRAFT, true);
+                        message.setFlag(Flag.DRAFT, true);
                     }
                 }
             }

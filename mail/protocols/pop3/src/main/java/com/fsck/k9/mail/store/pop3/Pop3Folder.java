@@ -137,7 +137,7 @@ public class Pop3Folder extends Folder<Pop3Message> {
     public Pop3Message getMessage(String uid) throws MessagingException {
         Pop3Message message = uidToMsgMap.get(uid);
         if (message == null) {
-            message = new Pop3Message(uid, this);
+            message = new Pop3Message(uid);
         }
         return message;
     }
@@ -214,7 +214,7 @@ public class Pop3Folder extends Folder<Pop3Message> {
                         return;
                     }
                     String msgUid = uidParts[2];
-                    message = new Pop3Message(msgUid, this);
+                    message = new Pop3Message(msgUid);
                     indexMessage(msgNum, message);
                 }
             }
@@ -255,7 +255,7 @@ public class Pop3Folder extends Folder<Pop3Message> {
                     if (msgNum >= start && msgNum <= end) {
                         Pop3Message message = msgNumToMsgMap.get(msgNum);
                         if (message == null) {
-                            message = new Pop3Message(msgUid, this);
+                            message = new Pop3Message(msgUid);
                             indexMessage(msgNum, message);
                         }
                     }
@@ -302,7 +302,7 @@ public class Pop3Folder extends Folder<Pop3Message> {
 
                     Pop3Message message = uidToMsgMap.get(msgUid);
                     if (message == null) {
-                        message = new Pop3Message(msgUid, this);
+                        message = new Pop3Message(msgUid);
                     }
                     indexMessage(msgNum, message);
                 }
