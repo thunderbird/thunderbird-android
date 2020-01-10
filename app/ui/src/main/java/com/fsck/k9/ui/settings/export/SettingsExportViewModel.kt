@@ -5,11 +5,12 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.fsck.k9.Preferences
 import com.fsck.k9.helper.SingleLiveEvent
 import com.fsck.k9.helper.measureRealtimeMillis
 import com.fsck.k9.preferences.SettingsExporter
-import com.fsck.k9.ui.helper.CoroutineScopeViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -18,7 +19,7 @@ import kotlinx.coroutines.withContext
 private typealias AccountUuid = String
 private typealias AccountNumber = Int
 
-class SettingsExportViewModel(val context: Context, val preferences: Preferences) : CoroutineScopeViewModel() {
+class SettingsExportViewModel(val context: Context, val preferences: Preferences) : ViewModel() {
     private val uiModelLiveData = MutableLiveData<SettingsExportUiModel>()
     private val actionLiveData = SingleLiveEvent<Action>()
 
@@ -51,7 +52,7 @@ class SettingsExportViewModel(val context: Context, val preferences: Preferences
         if (uiModelLiveData.value == null) {
             uiModelLiveData.value = uiModel
 
-            launch {
+            viewModelScope.launch {
                 val accounts = withContext(Dispatchers.IO) { preferences.accounts }
 
                 accountsMap = accounts.map { it.accountNumber to it.uuid }.toMap()
@@ -125,7 +126,7 @@ class SettingsExportViewModel(val context: Context, val preferences: Preferences
         val includeGeneralSettings = this.includeGeneralSettings
         val selectedAccounts = this.selectedAccounts
 
-        launch {
+        viewModelScope.launch {
             try {
                 val elapsed = measureRealtimeMillis {
                     withContext(Dispatchers.IO) {

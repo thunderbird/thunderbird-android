@@ -6,12 +6,13 @@ import android.os.Bundle
 import android.os.Parcelable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.fsck.k9.helper.SingleLiveEvent
 import com.fsck.k9.helper.measureRealtimeMillisWithResult
 import com.fsck.k9.preferences.SettingsImporter
 import com.fsck.k9.preferences.SettingsImporter.ImportResults
 import com.fsck.k9.ui.getEnum
-import com.fsck.k9.ui.helper.CoroutineScopeViewModel
 import com.fsck.k9.ui.putEnum
 import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.Dispatchers
@@ -27,7 +28,7 @@ private typealias AccountNumber = Int
 class SettingsImportViewModel(
     private val context: Context,
     private val accountActivator: AccountActivator
-) : CoroutineScopeViewModel() {
+) : ViewModel() {
     private val uiModelLiveData = MutableLiveData<SettingsImportUiModel>()
     private val actionLiveData = SingleLiveEvent<Action>()
 
@@ -213,7 +214,7 @@ class SettingsImportViewModel(
     private fun startReadSettingsFile(contentUri: Uri) {
         this.contentUri = contentUri
 
-        launch {
+        viewModelScope.launch {
             try {
                 val (elapsed, contents) = measureRealtimeMillisWithResult {
                     withContext(Dispatchers.IO) {
@@ -250,7 +251,7 @@ class SettingsImportViewModel(
 
     private fun startImportSettings() {
         val contentUri = this.contentUri ?: error("contentUri is missing")
-        launch {
+        viewModelScope.launch {
             try {
                 val importGeneralSettings = includeGeneralSettings
                 val importAccounts = selectedAccounts.toList()
