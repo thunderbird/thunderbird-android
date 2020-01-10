@@ -5,6 +5,7 @@ import com.fsck.k9.ui.folders.FoldersLiveDataFactory
 import com.fsck.k9.ui.helper.DisplayHtmlUiFactory
 import com.fsck.k9.ui.helper.HtmlSettingsProvider
 import com.fsck.k9.ui.helper.HtmlToSpanned
+import com.fsck.k9.ui.messagelist.MessageListExtractor
 import org.koin.dsl.module
 
 val uiModule = module {
@@ -14,4 +15,5 @@ val uiModule = module {
     single { HtmlSettingsProvider(get()) }
     single { DisplayHtmlUiFactory(get()) }
     single { FoldersLiveDataFactory(get(), get(), get()) }
+    single { MessageListExtractor(get(), get()) }
 }
