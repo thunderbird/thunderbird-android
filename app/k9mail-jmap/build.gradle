@@ -1,0 +1,130 @@
+apply plugin: 'com.android.application'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'org.jetbrains.kotlin.android.extensions'
+apply plugin: 'org.jlleitschuh.gradle.ktlint'
+
+if (rootProject.testCoverage) {
+    apply plugin: 'jacoco'
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
+
+    implementation project(":app:ui")
+    implementation project(":app:core")
+    implementation project(":app:storage")
+    implementation project(":app:crypto-openpgp")
+    implementation project(":backend:imap")
+    implementation project(":backend:pop3")
+    implementation project(":backend:webdav")
+    implementation project(":backend:jmap")
+
+    implementation "androidx.appcompat:appcompat:${versions.androidxAppCompat}"
+    implementation "com.jakewharton.timber:timber:${versions.timber}"
+
+    testImplementation "org.robolectric:robolectric:${versions.robolectric}"
+    testImplementation "junit:junit:${versions.junit}"
+    testImplementation "com.google.truth:truth:${versions.truth}"
+    testImplementation "org.mockito:mockito-core:${versions.mockito}"
+    testImplementation "com.nhaarman:mockito-kotlin:${versions.mockitoKotlin}"
+    testImplementation "org.jdom:jdom2:2.0.6"
+    testImplementation "org.koin:koin-test:${versions.koin}"
+
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.1.1"
+}
+
+android {
+    compileSdkVersion buildConfig.compileSdk
+    buildToolsVersion buildConfig.buildTools
+
+    defaultConfig {
+        applicationId "com.fsck.k9.jmap"
+        testApplicationId "com.fsck.k9.jmap.tests"
+
+        versionCode 1
+        versionName 'JMAP DEV'
+
+        minSdkVersion buildConfig.minSdk
+        targetSdkVersion buildConfig.targetSdk
+
+        generatedDensities = ['mdpi', 'hdpi', 'xhdpi']
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        release
+    }
+
+    buildTypes {
+        release {
+            if (project.hasProperty('storeFile')) {
+                signingConfig signingConfigs.release
+            }
+
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            buildConfigField "boolean", "DEVELOPER_MODE", "false"
+        }
+
+        debug {
+            applicationIdSuffix ".debug"
+            testCoverageEnabled rootProject.testCoverage
+
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            buildConfigField "boolean", "DEVELOPER_MODE", "true"
+        }
+    }
+
+    // Do not abort build if lint finds errors
+    lintOptions {
+        abortOnError false
+        lintConfig file("$rootProject.projectDir/config/lint/lint.xml")
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/README'
+        exclude 'LICENSE.txt'
+        exclude 'META-INF/*.kotlin_module'
+    }
+
+    compileOptions {
+        sourceCompatibility javaVersion
+        targetCompatibility javaVersion
+    }
+
+    kotlinOptions {
+        jvmTarget = kotlinJvmVersion
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+}
+
+androidExtensions {
+    experimental = true
+}
+
+if (project.hasProperty('keyAlias')) {
+    android.signingConfigs.release.keyAlias = keyAlias
+}
+if (project.hasProperty('keyPassword')) {
+    android.signingConfigs.release.keyPassword = keyPassword
+}
+if (project.hasProperty('storeFile')) {
+    android.signingConfigs.release.storeFile = file(storeFile)
+}
+if (project.hasProperty('storePassword')) {
+    android.signingConfigs.release.storePassword = storePassword
+}
