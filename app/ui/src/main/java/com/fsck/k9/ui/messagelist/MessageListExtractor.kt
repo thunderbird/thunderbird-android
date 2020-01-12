@@ -11,7 +11,11 @@ class MessageListExtractor(
     private val preferences: Preferences,
     private val messageHelper: MessageHelper
 ) {
-    fun extractMessageListItem(cursor: Cursor, uniqueIdColumn: Int): MessageListItem {
+    fun extractMessageList(cursor: Cursor, uniqueIdColumn: Int): List<MessageListItem> {
+        return cursor.map { extractMessageListItem(it, uniqueIdColumn) }
+    }
+
+    private fun extractMessageListItem(cursor: Cursor, uniqueIdColumn: Int): MessageListItem {
         val position = cursor.position
         val accountUuid = cursor.getString(MLFProjectionInfo.ACCOUNT_UUID_COLUMN)
         val account = preferences.getAccount(accountUuid)
@@ -41,6 +45,9 @@ class MessageListExtractor(
         val uniqueId = cursor.getLong(uniqueIdColumn)
         val folderServerId = cursor.getString(MLFProjectionInfo.FOLDER_SERVER_ID_COLUMN)
         val messageUid = cursor.getString(MLFProjectionInfo.UID_COLUMN)
+        val databaseId = cursor.getLong(MLFProjectionInfo.ID_COLUMN)
+        val senderAddress = fromAddresses.getOrNull(0)?.address
+        val threadRoot = cursor.getLong(MLFProjectionInfo.THREAD_ROOT_COLUMN)
 
         return MessageListItem(
                 position,
@@ -62,7 +69,10 @@ class MessageListExtractor(
                 hasAttachments,
                 uniqueId,
                 folderServerId,
-                messageUid
+                messageUid,
+                databaseId,
+                senderAddress,
+                threadRoot
         )
     }
 
@@ -92,5 +102,12 @@ class MessageListExtractor(
 
     private fun Cursor.getIntIfColumnPresent(columnIndex: Int): Int? {
         return if (columnCount >= columnIndex + 1) getInt(columnIndex) else null
+    }
+
+    private inline fun <T> Cursor.map(block: (Cursor) -> T): List<T> {
+        return List(count) { index ->
+            moveToPosition(index)
+            block(this)
+        }
     }
 }

@@ -23,5 +23,8 @@ data class MessageListItem(
     val hasAttachments: Boolean,
     val uniqueId: Long,
     val folderServerId: String,
-    val messageUid: String
+    val messageUid: String,
+    val databaseId: Long,
+    val senderAddress: String?,
+    val threadRoot: Long
 )
