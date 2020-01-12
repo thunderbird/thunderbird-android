@@ -17,7 +17,7 @@ import com.fsck.k9.mailstore.DisplayFolder
 import com.fsck.k9.mailstore.Folder
 import com.fsck.k9.ui.folders.FolderIconProvider
 import com.fsck.k9.ui.folders.FolderNameFormatter
-import com.fsck.k9.ui.messagelist.MessageListViewModel
+import com.fsck.k9.ui.folders.FoldersViewModel
 import com.fsck.k9.ui.settings.SettingsActivity
 import com.mikepenz.iconics.IconicsColor
 import com.mikepenz.iconics.IconicsDrawable
@@ -40,7 +40,7 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 
 class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : KoinComponent {
-    private val viewModel: MessageListViewModel by parent.viewModel()
+    private val viewModel: FoldersViewModel by parent.viewModel()
     private val folderNameFormatter: FolderNameFormatter by inject()
     private val preferences: Preferences by inject()
     private val themeManager: ThemeManager by inject()
