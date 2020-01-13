@@ -2255,7 +2255,8 @@ public class MessagingController {
                 processPendingCommands(account);
             } else if (!syncedMessageUids.isEmpty()) {
                 if (account.getDeletePolicy() == DeletePolicy.ON_DELETE) {
-                    if (folder.equals(account.getTrashFolder()) || !backend.isDeleteMoveToTrash()) {
+                    if (!account.hasTrashFolder() || folder.equals(account.getTrashFolder()) ||
+                            !backend.isDeleteMoveToTrash()) {
                         queueDelete(account, folder, syncedMessageUids);
                     } else if (account.isMarkMessageAsReadOnDelete()) {
                         queueMoveOrCopy(account, folder, account.getTrashFolder(),
