@@ -20,6 +20,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.navigation.NavController;
+
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -60,7 +62,6 @@ import com.fsck.k9.ui.managefolders.ManageFoldersActivity;
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider;
 import com.fsck.k9.ui.messageview.MessageViewFragment;
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener;
-import com.fsck.k9.ui.onboarding.OnboardingActivity;
 import com.fsck.k9.view.ViewSwitcher;
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener;
 import com.mikepenz.materialdrawer.Drawer.OnDrawerListener;
@@ -215,15 +216,18 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
      */
     private boolean messageListWasDisplayed = false;
     private ViewSwitcher viewSwitcher;
+    private NavController navController;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        navController = createNavController();
+
         List<Account> accounts = preferences.getAccounts();
         if (accounts.isEmpty()) {
-            OnboardingActivity.launch(this);
+            navController.navigate(R.id.action_global_onboardingScreen);
             finish();
             return;
         }
@@ -1637,5 +1641,11 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         } else {
             drawer.deselect();
         }
+    }
+
+    private NavController createNavController() {
+        NavController navController = new NavController(this);
+        navController.setGraph(R.navigation.navigation_main);
+        return navController;
     }
 }
