@@ -48,6 +48,10 @@ public class EmailProvider extends ContentProvider {
     public static String AUTHORITY;
     public static Uri CONTENT_URI;
 
+    public static Uri getNotificationUri(String accountUuid) {
+        return Uri.withAppendedPath(CONTENT_URI, "account/" + accountUuid + "/messages");
+    }
+
     private UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
 
@@ -238,8 +242,7 @@ public class EmailProvider extends ContentProvider {
                     throw new RuntimeException("Not implemented");
                 }
 
-                Uri notificationUri = Uri.withAppendedPath(CONTENT_URI, "account/" + accountUuid + "/messages");
-                cursor.setNotificationUri(contentResolver, notificationUri);
+                cursor.setNotificationUri(contentResolver, getNotificationUri(accountUuid));
 
                 cursor = new SpecialColumnsCursor(new IdTrickeryCursor(cursor), projection, specialColumns);
                 cursor = new EmailProviderCacheCursor(accountUuid, cursor, getContext());

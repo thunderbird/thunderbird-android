@@ -10,7 +10,7 @@ import com.fsck.k9.provider.EmailProvider.ThreadColumns;
 
 public final class MLFProjectionInfo {
 
-    static final String[] THREADED_PROJECTION = {
+    public static final String[] THREADED_PROJECTION = {
             MessageColumns.ID,
             MessageColumns.UID,
             MessageColumns.INTERNAL_DATE,
@@ -55,6 +55,6 @@ public final class MLFProjectionInfo {
     public static final int FOLDER_SERVER_ID_COLUMN = 18;
     public static final int THREAD_COUNT_COLUMN = 19;
 
-    static final String[] PROJECTION = Arrays.copyOf(THREADED_PROJECTION,
+    public static final String[] PROJECTION = Arrays.copyOf(THREADED_PROJECTION,
             THREAD_COUNT_COLUMN);
 }
