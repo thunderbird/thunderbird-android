@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'org.jetbrains.kotlin.android.extensions'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'org.jlleitschuh.gradle.ktlint'
 
 if (rootProject.testCoverage) {
@@ -21,6 +22,11 @@ dependencies {
 
     implementation "androidx.appcompat:appcompat:${versions.androidxAppCompat}"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
+    implementation "androidx.constraintlayout:constraintlayout:${versions.androidxConstraintLayout}"
+    implementation "com.google.android.material:material:${versions.materialComponents}"
+    implementation "androidx.navigation:navigation-fragment-ktx:${versions.androidxNavigation}"
+    implementation "androidx.navigation:navigation-ui-ktx:${versions.androidxNavigation}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0"
 
     testImplementation "org.robolectric:robolectric:${versions.robolectric}"
     testImplementation "junit:junit:${versions.junit}"
@@ -103,6 +109,10 @@ android {
 
     kotlinOptions {
         jvmTarget = kotlinJvmVersion
+    }
+
+    dataBinding {
+        enabled = true
     }
 
     testOptions {

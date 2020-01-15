@@ -242,6 +242,10 @@
             android:name="com.fsck.k9.ui.settings.account.AccountSettingsActivity"
             android:label="@string/account_settings_title_fmt" />
 
+        <activity
+            android:name="com.fsck.k9.ui.addaccount.AddAccountActivity"
+            android:label="@string/add_account_action" />
+
         <receiver
             android:name="com.fsck.k9.service.BootReceiver"
             android:enabled="true">

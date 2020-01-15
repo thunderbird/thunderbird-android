@@ -9,6 +9,7 @@ import com.fsck.k9.preferences.K9StoragePersister
 import com.fsck.k9.preferences.StoragePersister
 import com.fsck.k9.resources.resourcesModule
 import com.fsck.k9.storage.storageModule
+import com.fsck.k9.ui.addaccount.uiAddAccountModule
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -25,5 +26,6 @@ val appModules = listOf(
         notificationModule,
         resourcesModule,
         backendsModule,
-        storageModule
+        storageModule,
+        uiAddAccountModule
 )
