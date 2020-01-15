@@ -7,9 +7,9 @@ import com.fsck.k9.mail.Folder.FolderClass
 import com.fsck.k9.mail.Folder.FolderType as RemoteFolderType
 
 class FolderRepository(
-        private val localStoreProvider: LocalStoreProvider,
-        private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy,
-        private val account: Account
+    private val localStoreProvider: LocalStoreProvider,
+    private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy,
+    private val account: Account
 ) {
     private val sortForDisplay =
             compareByDescending<DisplayFolder> { it.folder.serverId == account.inboxFolder }
@@ -17,7 +17,6 @@ class FolderRepository(
             .thenByDescending { account.isSpecialFolder(it.folder.serverId) }
             .thenByDescending { it.isInTopGroup }
             .thenBy(String.CASE_INSENSITIVE_ORDER) { it.folder.name }
-
 
     fun getRemoteFolderInfo(): RemoteFolderInfo {
         val folders = getRemoteFolders()
@@ -104,7 +103,6 @@ class FolderRepository(
         }
     }
 
-
     private fun folderTypeOf(serverId: String) = when (serverId) {
         account.inboxFolder -> FolderType.INBOX
         account.outboxFolder -> FolderType.OUTBOX
@@ -119,7 +117,7 @@ class FolderRepository(
     private fun RemoteFolderType.toFolderType(): FolderType = when (this) {
         RemoteFolderType.REGULAR -> FolderType.REGULAR
         RemoteFolderType.INBOX -> FolderType.INBOX
-        RemoteFolderType.OUTBOX -> FolderType.REGULAR   // We currently don't support remote Outbox folders
+        RemoteFolderType.OUTBOX -> FolderType.REGULAR // We currently don't support remote Outbox folders
         RemoteFolderType.DRAFTS -> FolderType.DRAFTS
         RemoteFolderType.SENT -> FolderType.SENT
         RemoteFolderType.TRASH -> FolderType.TRASH
@@ -131,9 +129,9 @@ class FolderRepository(
 data class Folder(val id: Long, val serverId: String, val name: String, val type: FolderType)
 
 data class DisplayFolder(
-        val folder: Folder,
-        val isInTopGroup: Boolean,
-        val unreadCount: Int
+    val folder: Folder,
+    val isInTopGroup: Boolean,
+    val unreadCount: Int
 )
 
 data class RemoteFolderInfo(val folders: List<Folder>, val automaticSpecialFolders: Map<FolderType, Folder?>)

@@ -1,6 +1,5 @@
 package com.fsck.k9.service
 
-
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
@@ -22,8 +21,8 @@ class BootReceiver : CoreReceiver(), EarlyInit {
 
         val action = intent.action
         if (Intent.ACTION_BOOT_COMPLETED == action) {
-            //K9.setServicesEnabled(context, tmpWakeLockId);
-            //tmpWakeLockId = null;
+            // K9.setServicesEnabled(context, tmpWakeLockId);
+            // tmpWakeLockId = null;
         } else if ("com.android.sync.SYNC_CONN_STATUS_CHANGED" == action) {
             val bOps = K9.backgroundOps
             if (bOps == K9.BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC) {
@@ -46,7 +45,6 @@ class BootReceiver : CoreReceiver(), EarlyInit {
 
             alarmMgr.set(AlarmManager.RTC_WAKEUP, atTime, pi)
         }
-
 
         return tmpWakeLockId
     }
@@ -98,5 +96,4 @@ class BootReceiver : CoreReceiver(), EarlyInit {
             }, 0))
         }
     }
-
 }

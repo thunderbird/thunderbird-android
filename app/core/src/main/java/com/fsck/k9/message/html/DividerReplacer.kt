@@ -11,13 +11,11 @@ internal object DividerReplacer : TextToHtml.HtmlModifier {
                 "(?:\\n|$)" +
             ")+")
 
-
     override fun findModifications(text: CharSequence): List<HtmlModification> {
         return PATTERN.findAll(text).map { matchResult ->
             Divider(matchResult.range.start, matchResult.range.endInclusive + 1)
         }.toList()
     }
-
 
     class Divider(startIndex: Int, endIndex: Int) : HtmlModification.Replace(startIndex, endIndex) {
         override fun replace(textToHtml: TextToHtml) {

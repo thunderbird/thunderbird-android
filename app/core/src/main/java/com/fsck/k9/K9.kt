@@ -15,13 +15,11 @@ import timber.log.Timber.DebugTree
 object K9 : EarlyInit {
     private val preferences: Preferences by inject()
 
-
     /**
      * If this is `true`, various development settings will be enabled.
      */
     @JvmField
     val DEVELOPER_MODE = BuildConfig.DEBUG
-
 
     private const val VERSION_MIGRATE_OPENPGP_TO_ACCOUNTS = 63
 
@@ -52,7 +50,6 @@ object K9 : EarlyInit {
      * @see areDatabasesUpToDate
      */
     private var databasesUpToDate = false
-
 
     /**
      * Check if we already know whether all databases are using the current database schema.
@@ -131,7 +128,6 @@ object K9 : EarlyInit {
                 .remove("openPgpSupportSignOnly")
                 .commit()
     }
-
 
     @JvmStatic
     var isDebugLoggingEnabled: Boolean = DEVELOPER_MODE
@@ -233,9 +229,6 @@ object K9 : EarlyInit {
     var isUseVolumeKeysForListNavigation = false
 
     @JvmStatic
-    var isStartInUnifiedInbox = false
-
-    @JvmStatic
     var isHideSpecialAccounts = false
 
     @JvmStatic
@@ -322,7 +315,6 @@ object K9 : EarlyInit {
         K9.sortAscending[sortType] = sortAscending
     }
 
-
     fun init(context: Context) {
         K9MailLib.setDebugStatus(object : K9MailLib.DebugStatus {
             override fun enabled(): Boolean = isDebugLoggingEnabled
@@ -352,7 +344,6 @@ object K9 : EarlyInit {
         isGesturesEnabled = storage.getBoolean("gesturesEnabled", false)
         isUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
         isUseVolumeKeysForListNavigation = storage.getBoolean("useVolumeKeysForListNavigation", false)
-        isStartInUnifiedInbox = storage.getBoolean("startIntegratedInbox", false)
         isHideSpecialAccounts = storage.getBoolean("hideSpecialAccounts", false)
         isMessageListSenderAboveSubject = storage.getBoolean("messageListSenderAboveSubject", false)
         isShowMessageListStars = storage.getBoolean("messageListStars", true)
@@ -438,7 +429,6 @@ object K9 : EarlyInit {
         editor.putString("quietTimeStarts", quietTimeStarts)
         editor.putString("quietTimeEnds", quietTimeEnds)
 
-        editor.putBoolean("startIntegratedInbox", isStartInUnifiedInbox)
         editor.putBoolean("messageListSenderAboveSubject", isMessageListSenderAboveSubject)
         editor.putBoolean("hideSpecialAccounts", isHideSpecialAccounts)
         editor.putBoolean("messageListStars", isShowMessageListStars)
@@ -558,7 +548,6 @@ object K9 : EarlyInit {
     const val PUSH_WAKE_LOCK_TIMEOUT = K9MailLib.PUSH_WAKE_LOCK_TIMEOUT
     const val MAIL_SERVICE_WAKE_LOCK_TIMEOUT = 60000
     const val BOOT_RECEIVER_WAKE_LOCK_TIMEOUT = 60000
-
 
     enum class AppTheme {
         LIGHT,

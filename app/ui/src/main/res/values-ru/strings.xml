@@ -684,7 +684,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="volume_navigation_title">Прокрутка кнопками Vol+/-</string>
   <string name="volume_navigation_message">В сообщении</string>
   <string name="volume_navigation_list">В списке</string>
-  <string name="start_integrated_inbox_title">Запуск в общих \"Входящих\"</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">– не прочитано</string>
   <string name="search_all_messages_title">Вся почта</string>

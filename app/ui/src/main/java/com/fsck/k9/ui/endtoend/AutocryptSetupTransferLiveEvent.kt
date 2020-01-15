@@ -4,15 +4,19 @@ import android.app.PendingIntent
 import com.fsck.k9.Account
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.helper.SingleLiveEvent
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class AutocryptSetupTransferLiveEvent(
-        private val messagingController: MessagingController
+    private val messagingController: MessagingController
 ) : SingleLiveEvent<AutocryptSetupTransferResult>() {
 
     fun sendMessageAsync(account: Account, setupMsg: AutocryptSetupMessage) {
         GlobalScope.launch(Dispatchers.Main) {
-            val setupMessage = async {
+            val setupMessage = async(Dispatchers.IO) {
                 messagingController.sendMessageBlocking(account, setupMsg.setupMessage)
             }
 

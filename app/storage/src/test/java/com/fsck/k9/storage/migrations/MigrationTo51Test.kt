@@ -7,6 +7,7 @@ import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.storage.RobolectricTest
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
+import java.io.ByteArrayInputStream
 import org.apache.commons.io.IOUtils
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream
 import org.junit.Assert.assertEquals
@@ -14,13 +15,10 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.robolectric.RuntimeEnvironment
-import java.io.ByteArrayInputStream
-
 
 class MigrationTo51Test : RobolectricTest() {
     private lateinit var mockMigrationsHelper: MigrationsHelper
     private lateinit var database: SQLiteDatabase
-
 
     @Before
     fun setUp() {
@@ -108,7 +106,6 @@ class MigrationTo51Test : RobolectricTest() {
         assertEquals("<html><img src=\"cid:a\$b@host\" /></html>", htmlMessagePartBody())
     }
 
-
     private fun createWithV50Table(): SQLiteDatabase {
         val database = SQLiteDatabase.create(null)
         database.execSQL("""
@@ -192,10 +189,10 @@ class MigrationTo51Test : RobolectricTest() {
     }
 
     private fun insertMessage(
-            mimeType: String,
-            htmlContent: String? = null,
-            textContent: String? = null,
-            attachmentCount: Int = 0
+        mimeType: String,
+        htmlContent: String? = null,
+        textContent: String? = null,
+        attachmentCount: Int = 0
     ) {
         database.execSQL(
                 "INSERT INTO messages (flags, html_content, text_content, mime_type, attachment_count) " +

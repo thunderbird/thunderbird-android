@@ -1,9 +1,7 @@
 package com.fsck.k9.backend.imap
 
-
 import com.fsck.k9.mail.Folder
 import com.fsck.k9.mail.store.imap.ImapStore
-
 
 internal class CommandFindByMessageId(private val imapStore: ImapStore) {
 

@@ -445,47 +445,6 @@ public class LocalFolder extends Folder<LocalMessage> {
         return visibleLimit;
     }
 
-    public void purgeToVisibleLimit(final MessageRemovalListener listener) throws MessagingException {
-        // don't purge messages while a Search is active since it might throw away search results
-        if (searchStatusManager.isActive()) {
-            return;
-        }
-
-        if (visibleLimit == 0) {
-            return;
-        }
-
-        open(OPEN_MODE_RW);
-
-        localStore.getDatabase().execute(false, new DbCallback<Void>() {
-            @Override
-            public Void doDbWork(final SQLiteDatabase db) {
-                Cursor cursor = db.rawQuery("SELECT uid " +
-                                "FROM messages " +
-                                "WHERE empty = 0 AND deleted = 0 AND folder_id = ? ORDER BY date DESC " +
-                                " LIMIT -1 OFFSET ?",
-                        new String[] { Long.toString(getDatabaseId()), Integer.toString(visibleLimit) });
-
-                try {
-                    while (cursor.moveToNext()) {
-                        String uid = cursor.getString(0);
-                        LocalMessage localMessage = getMessage(uid);
-
-                        if (listener != null) {
-                            listener.messageRemoved(localMessage);
-                        }
-                        destroyMessage(localMessage);
-                    }
-                } catch (Exception e) {
-                    Timber.d(e, "Got an exception");
-                } finally {
-                    Utility.closeQuietly(cursor);
-                }
-                return null;
-            }
-        });
-    }
-
     public void setVisibleLimit(final int visibleLimit) throws MessagingException {
         updateMoreMessagesOnVisibleLimitChange(visibleLimit, this.visibleLimit);
 

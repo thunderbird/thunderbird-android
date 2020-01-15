@@ -6,8 +6,8 @@ import android.database.sqlite.SQLiteDatabase
  * Add `*FolderSelection` values of "MANUAL" for existing accounts (default for new accounts is "AUTOMATIC").
  */
 class StorageMigrationTo4(
-        private val db: SQLiteDatabase,
-        private val migrationsHelper: StorageMigrationsHelper
+    private val db: SQLiteDatabase,
+    private val migrationsHelper: StorageMigrationsHelper
 ) {
     fun insertSpecialFolderSelectionValues() {
         val accountUuidsListValue = migrationsHelper.readValue(db, "accountUuids")

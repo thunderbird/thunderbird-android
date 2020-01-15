@@ -8,6 +8,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.preference.ListPreference
+import androidx.preference.Preference
 import androidx.preference.SwitchPreference
 import com.fsck.k9.Account
 import com.fsck.k9.account.BackgroundAccountRemover
@@ -50,7 +51,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         checkNotNull(arguments?.getString(ARG_ACCOUNT_UUID)) { "$ARG_ACCOUNT_UUID == null" }
     }
     private var title: CharSequence? = null
-
 
     override fun onCreatePreferencesFix(savedInstanceState: Bundle?, rootKey: String?) {
         val account = getAccount()
@@ -105,25 +105,25 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     }
 
     private fun initializeIncomingServer() {
-        findPreference(PREFERENCE_INCOMING_SERVER)?.onClick {
+        findPreference<Preference>(PREFERENCE_INCOMING_SERVER)?.onClick {
             AccountSetupIncoming.actionEditIncomingSettings(requireActivity(), accountUuid)
         }
     }
 
     private fun initializeComposition() {
-        findPreference(PREFERENCE_COMPOSITION)?.onClick {
+        findPreference<Preference>(PREFERENCE_COMPOSITION)?.onClick {
             AccountSetupComposition.actionEditCompositionSettings(requireActivity(), accountUuid)
         }
     }
 
     private fun initializeManageIdentities() {
-        findPreference(PREFERENCE_MANAGE_IDENTITIES)?.onClick {
+        findPreference<Preference>(PREFERENCE_MANAGE_IDENTITIES)?.onClick {
             ManageIdentities.start(requireActivity(), accountUuid)
         }
     }
 
     private fun initializeUploadSentMessages(account: Account) {
-        findPreference(PREFERENCE_UPLOAD_SENT_MESSAGES)?.apply {
+        findPreference<Preference>(PREFERENCE_UPLOAD_SENT_MESSAGES)?.apply {
             if (!messagingController.supportsUpload(account)) {
                 remove()
             }
@@ -131,13 +131,13 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     }
 
     private fun initializeOutgoingServer() {
-        findPreference(PREFERENCE_OUTGOING_SERVER)?.onClick {
+        findPreference<Preference>(PREFERENCE_OUTGOING_SERVER)?.onClick {
             AccountSetupOutgoing.actionEditOutgoingSettings(requireActivity(), accountUuid)
         }
     }
 
     private fun initializeQuoteStyle() {
-        findPreference(PREFERENCE_QUOTE_STYLE)?.apply {
+        findPreference<Preference>(PREFERENCE_QUOTE_STYLE)?.apply {
             setOnPreferenceChangeListener { _, newValue ->
                 val quoteStyle = Account.QuoteStyle.valueOf(newValue.toString())
                 notifyDependencyChange(quoteStyle == Account.QuoteStyle.HEADER)
@@ -155,7 +155,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     }
 
     private fun initializeExpungePolicy(account: Account) {
-        findPreference(PREFERENCE_EXPUNGE_POLICY)?.apply {
+        findPreference<Preference>(PREFERENCE_EXPUNGE_POLICY)?.apply {
             if (!messagingController.supportsExpunge(account)) {
                 remove()
             }
@@ -163,7 +163,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     }
 
     private fun initializeMessageAge(account: Account) {
-        findPreference(PREFERENCE_MESSAGE_AGE)?.apply {
+        findPreference<Preference>(PREFERENCE_MESSAGE_AGE)?.apply {
             if (!messagingController.supportsSearchByDate(account)) {
                 remove()
             }
@@ -181,9 +181,9 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     }
 
     private fun initializeNotifications() {
-        findPreference(PREFERENCE_OPEN_NOTIFICATION_SETTINGS)?.let {
+        findPreference<Preference>(PREFERENCE_OPEN_NOTIFICATION_SETTINGS)?.let {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                PRE_SDK26_NOTIFICATION_PREFERENCES.forEach { findPreference(it).remove() }
+                PRE_SDK26_NOTIFICATION_PREFERENCES.forEach { findPreference<Preference>(it).remove() }
             } else {
                 it.remove()
             }
@@ -191,7 +191,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     }
 
     private fun initializeCryptoSettings(account: Account) {
-        findPreference(PREFERENCE_OPENPGP)?.let {
+        findPreference<Preference>(PREFERENCE_OPENPGP)?.let {
             configureCryptoPreferences(account)
         }
     }
@@ -222,7 +222,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     }
 
     private fun configureEnablePgpSupport(account: Account, isPgpConfigured: Boolean, pgpProviderName: String?) {
-        (findPreference(PREFERENCE_OPENPGP_ENABLE) as SwitchPreference).apply {
+        (findPreference<Preference>(PREFERENCE_OPENPGP_ENABLE) as SwitchPreference).apply {
             if (!isPgpConfigured) {
                 isChecked = false
                 setSummary(R.string.account_settings_crypto_summary_off)
@@ -249,7 +249,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     }
 
     private fun configurePgpKey(account: Account, pgpProvider: String?) {
-        (findPreference(PREFERENCE_OPENPGP_KEY) as OpenPgpKeyPreference).apply {
+        (findPreference<Preference>(PREFERENCE_OPENPGP_KEY) as OpenPgpKeyPreference).apply {
             value = account.openPgpKey
             setOpenPgpProvider(openPgpApiManager, pgpProvider)
             setIntentSenderFragment(this@AccountSettingsFragment)
@@ -259,20 +259,20 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     }
 
     private fun configureAutocryptTransfer(account: Account) {
-        findPreference(PREFERENCE_AUTOCRYPT_TRANSFER).onClick {
+        findPreference<Preference>(PREFERENCE_AUTOCRYPT_TRANSFER)!!.onClick {
             val intent = AutocryptKeyTransferActivity.createIntent(requireContext(), account.uuid)
             startActivity(intent)
         }
     }
 
     private fun initializeFolderSettings(account: Account) {
-        findPreference(PREFERENCE_FOLDERS)?.let {
+        findPreference<Preference>(PREFERENCE_FOLDERS)?.let {
             if (!messagingController.isMoveCapable(account)) {
-                findPreference(PREFERENCE_ARCHIVE_FOLDER).remove()
-                findPreference(PREFERENCE_DRAFTS_FOLDER).remove()
-                findPreference(PREFERENCE_SENT_FOLDER).remove()
-                findPreference(PREFERENCE_SPAM_FOLDER).remove()
-                findPreference(PREFERENCE_TRASH_FOLDER).remove()
+                findPreference<Preference>(PREFERENCE_ARCHIVE_FOLDER).remove()
+                findPreference<Preference>(PREFERENCE_DRAFTS_FOLDER).remove()
+                findPreference<Preference>(PREFERENCE_SENT_FOLDER).remove()
+                findPreference<Preference>(PREFERENCE_SPAM_FOLDER).remove()
+                findPreference<Preference>(PREFERENCE_TRASH_FOLDER).remove()
             }
 
             loadFolders(account)
@@ -351,7 +351,6 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         account.openPgpKey = Account.NO_OPENPGP_KEY
         dataStore.saveSettingsInBackground()
     }
-
 
     companion object {
         internal const val PREFERENCE_OPENPGP = "openpgp"

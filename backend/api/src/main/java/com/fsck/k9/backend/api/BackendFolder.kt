@@ -4,7 +4,7 @@ import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
 import java.util.Date
 
-//FIXME: add documentation
+// FIXME: add documentation
 interface BackendFolder {
     val name: String
     val visibleLimit: Int
@@ -19,7 +19,6 @@ interface BackendFolder {
     fun setStatus(status: String?)
     fun getPushState(): String?
     fun setPushState(pushState: String?)
-    fun purgeToVisibleLimit(listener: MessageRemovalListener)
     fun isMessagePresent(messageServerId: String): Boolean
     fun getMessageFlags(messageServerId: String): Set<Flag>
     fun setMessageFlag(messageServerId: String, flag: Flag, value: Boolean)

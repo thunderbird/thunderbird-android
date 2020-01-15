@@ -1,11 +1,12 @@
 package com.fsck.k9.autocrypt
 
-
 import com.fsck.k9.mail.filter.Base64
 import com.fsck.k9.mailstore.MimePartStreamParser
-import org.junit.Assert.*
+import org.junit.Assert.assertArrayEquals
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Test
-
 
 class AutocryptGossipHeaderParserTest {
     val GOSSIP_DATA_BOB = Base64.decodeBase64(

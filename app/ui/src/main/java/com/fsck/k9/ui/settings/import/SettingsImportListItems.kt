@@ -15,23 +15,21 @@ import kotlinx.android.synthetic.main.settings_import_account_list_item.*
 private const val GENERAL_SETTINGS_ID = 0L
 private const val ACCOUNT_ITEMS_ID_OFFSET = 1L
 
-abstract class ImportListItem(private val id: Long, private val importStatus: ImportStatus)
-    : AbstractItem<ImportListItem, ImportCheckBoxViewHolder>() {
+abstract class ImportListItem(override var identifier: Long, private val importStatus: ImportStatus) :
+    AbstractItem<ImportCheckBoxViewHolder>() {
 
-    override fun getIdentifier(): Long = id
-
-    override fun getViewHolder(view: View): ImportCheckBoxViewHolder {
-        return ImportCheckBoxViewHolder(view)
+    override fun getViewHolder(v: View): ImportCheckBoxViewHolder {
+        return ImportCheckBoxViewHolder(v)
     }
 
-    override fun bindView(viewHolder: ImportCheckBoxViewHolder, payloads: List<Any>) {
-        super.bindView(viewHolder, payloads)
-        viewHolder.checkBox.isChecked = isSelected
-        viewHolder.itemView.isEnabled = isEnabled
-        viewHolder.checkBox.isEnabled = isEnabled
+    override fun bindView(holder: ImportCheckBoxViewHolder, payloads: MutableList<Any>) {
+        super.bindView(holder, payloads)
+        holder.checkBox.isChecked = isSelected
+        holder.itemView.isEnabled = isEnabled
+        holder.checkBox.isEnabled = isEnabled
 
-        viewHolder.checkBox.isVisible = importStatus == ImportStatus.NOT_AVAILABLE
-        viewHolder.statusIcon.isVisible = importStatus != ImportStatus.NOT_AVAILABLE
+        holder.checkBox.isVisible = importStatus == ImportStatus.NOT_AVAILABLE
+        holder.statusIcon.isVisible = importStatus != ImportStatus.NOT_AVAILABLE
 
         if (importStatus != ImportStatus.NOT_AVAILABLE) {
             val imageLevel = when (importStatus) {
@@ -41,7 +39,7 @@ abstract class ImportListItem(private val id: Long, private val importStatus: Im
                 ImportStatus.IMPORT_FAILURE -> 3
                 else -> error("Unexpected import status: $importStatus")
             }
-            viewHolder.statusIcon.setImageLevel(imageLevel)
+            holder.statusIcon.setImageLevel(imageLevel)
 
             val contentDescriptionStringResId = when (importStatus) {
                 ImportStatus.IMPORT_SUCCESS -> R.string.settings_import_status_success
@@ -50,8 +48,8 @@ abstract class ImportListItem(private val id: Long, private val importStatus: Im
                 ImportStatus.IMPORT_FAILURE -> R.string.settings_import_status_error
                 else -> error("Unexpected import status: $importStatus")
             }
-            val context = viewHolder.containerView.context
-            viewHolder.statusIcon.contentDescription = context.getString(contentDescriptionStringResId)
+            val context = holder.containerView.context
+            holder.statusIcon.contentDescription = context.getString(contentDescriptionStringResId)
         }
     }
 }
@@ -70,33 +68,30 @@ class ImportListItemClickEvent(val action: (position: Int) -> Unit) : ClickEvent
     }
 
     override fun onClick(
-            view: View,
-            position: Int,
-            fastAdapter: FastAdapter<ImportListItem>,
-            item: ImportListItem
+        v: View,
+        position: Int,
+        fastAdapter: FastAdapter<ImportListItem>,
+        item: ImportListItem
     ) {
         action(position)
     }
 }
 
 class GeneralSettingsItem(importStatus: ImportStatus) : ImportListItem(GENERAL_SETTINGS_ID, importStatus) {
-
-    override fun getType(): Int = R.id.settings_import_list_general_item
-
-    override fun getLayoutRes(): Int = R.layout.settings_import_general_list_item
+    override val type = R.id.settings_import_list_general_item
+    override val layoutRes = R.layout.settings_import_general_list_item
 }
 
-class AccountItem(account: SettingsListItem.Account)
-    : ImportListItem(account.accountIndex + ACCOUNT_ITEMS_ID_OFFSET, account.importStatus) {
+class AccountItem(account: SettingsListItem.Account) :
+    ImportListItem(account.accountIndex + ACCOUNT_ITEMS_ID_OFFSET, account.importStatus) {
 
     private val displayName = account.displayName
 
-    override fun getType(): Int = R.id.settings_import_list_account_item
+    override val type = R.id.settings_import_list_account_item
+    override val layoutRes = R.layout.settings_import_account_list_item
 
-    override fun getLayoutRes(): Int = R.layout.settings_import_account_list_item
-
-    override fun bindView(viewHolder: ImportCheckBoxViewHolder, payloads: List<Any>) {
-        super.bindView(viewHolder, payloads)
-        viewHolder.accountDisplayName.text = displayName
+    override fun bindView(holder: ImportCheckBoxViewHolder, payloads: MutableList<Any>) {
+        super.bindView(holder, payloads)
+        holder.accountDisplayName.text = displayName
     }
 }

@@ -1,6 +1,5 @@
 package com.fsck.k9.mail.internet
 
-
 // RFC 5322, section 2.1.1
 internal const val RECOMMENDED_MAX_LINE_LENGTH = 78
 
@@ -13,7 +12,6 @@ internal const val HTAB = '\t'
 // RFC 5234: SP = %x20
 internal const val SPACE = ' '
 
-
 // RFC 5234: CRLF = %d13.10
 internal const val CRLF = "\r\n"
 
@@ -24,7 +22,6 @@ internal const val SEMICOLON = ';'
 internal const val EQUALS_SIGN = '='
 internal const val ASTERISK = '*'
 internal const val SINGLE_QUOTE = '\''
-
 
 internal fun Char.isTSpecial() = this in TSPECIALS
 

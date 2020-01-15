@@ -585,7 +585,6 @@
   <string name="volume_navigation_title">Navigacija tipkama glasnoće</string>
   <string name="volume_navigation_message">U pregledu poruka</string>
   <string name="volume_navigation_list">U pregledu popisa</string>
-  <string name="start_integrated_inbox_title">Započni u Objedinjenoj Dolaznoj Pošti</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- Nepročitano</string>
   <string name="search_all_messages_title">Sve poruke</string>

@@ -4,11 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.view.Menu
+import android.view.MenuItem
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceFragmentCompat.OnPreferenceStartScreenCallback
 import androidx.preference.PreferenceScreen
-import android.view.Menu
-import android.view.MenuItem
 import com.bytehamster.lib.preferencesearch.SearchPreferenceActionView
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResult
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener
@@ -131,7 +131,8 @@ class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, S
     }
 
     override fun onPreferenceStartScreen(
-            caller: PreferenceFragmentCompat, preferenceScreen: PreferenceScreen
+        caller: PreferenceFragmentCompat,
+        preferenceScreen: PreferenceScreen
     ): Boolean {
         fragmentTransactionWithBackStack {
             replace(R.id.generalSettingsContainer, GeneralSettingsFragment.create(preferenceScreen.key))
@@ -139,7 +140,6 @@ class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, S
 
         return true
     }
-
 
     companion object {
         private const val KEY_SEARCH_QUERY = "search_query"

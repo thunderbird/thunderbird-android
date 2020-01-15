@@ -1,9 +1,9 @@
 package com.fsck.k9.mail.internet
 
-import okio.Buffer
 import java.nio.charset.Charset
 import java.nio.charset.IllegalCharsetNameException
 import java.util.Locale
+import okio.Buffer
 
 private typealias Parameters = Map<String, String>
 private typealias BasicParameters = Map<String, ParameterValue>
@@ -182,11 +182,11 @@ object MimeParameterDecoder {
     }
 
     private fun readExtendedParameterValue(
-            parser: MimeHeaderParser,
-            parameterName: String,
-            newParameterName: String,
-            section: Int?,
-            parameterText: String
+        parser: MimeHeaderParser,
+        parameterName: String,
+        newParameterName: String,
+        section: Int?,
+        parameterText: String
     ): ParameterSection? {
         return try {
             val charsetName = parser.readUntil(SINGLE_QUOTE)
@@ -278,7 +278,7 @@ object MimeParameterDecoder {
 private data class ParameterValue(val value: String, val wasToken: Boolean)
 
 private data class BasicParameterResults(
-        val parameters: BasicParameters,
-        val ignoredParameters: IgnoredParameters,
-        val parserErrorIndex: Int?
+    val parameters: BasicParameters,
+    val ignoredParameters: IgnoredParameters,
+    val parserErrorIndex: Int?
 )

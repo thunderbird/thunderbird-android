@@ -681,7 +681,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="volume_navigation_title">Ses Düğmesi ile dolaşma</string>
   <string name="volume_navigation_message">İleti görünümlerinde</string>
   <string name="volume_navigation_list">liste görünümlerinde</string>
-  <string name="start_integrated_inbox_title">Birleşik Gelen Kutusu ile başla</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Okunmadı</string>
   <string name="search_all_messages_title">Bütün mesajlar</string>

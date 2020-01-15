@@ -7,7 +7,6 @@ interface Attachment {
     val name: String?
     val size: Long?
 
-
     enum class LoadingState {
         URI_ONLY,
         METADATA,

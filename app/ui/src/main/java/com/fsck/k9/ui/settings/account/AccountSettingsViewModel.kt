@@ -10,12 +10,12 @@ import com.fsck.k9.mailstore.RemoteFolderInfo
 import com.fsck.k9.ui.account.AccountsLiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AccountSettingsViewModel(
-        private val preferences: Preferences,
-        private val folderRepositoryManager: FolderRepositoryManager
+    private val preferences: Preferences,
+    private val folderRepositoryManager: FolderRepositoryManager
 ) : ViewModel() {
     public val accounts = AccountsLiveData(preferences)
     private val accountLiveData = MutableLiveData<Account>()
@@ -25,11 +25,9 @@ class AccountSettingsViewModel(
         if (accountLiveData.value == null) {
 
             GlobalScope.launch(Dispatchers.Main) {
-                val account = async {
+                accountLiveData.value = withContext(Dispatchers.IO) {
                     loadAccount(accountUuid)
-                }.await()
-
-                accountLiveData.value = account
+                }
             }
         }
 
@@ -59,11 +57,9 @@ class AccountSettingsViewModel(
     private fun loadFolders(account: Account) {
         val folderRepository = folderRepositoryManager.getFolderRepository(account)
         GlobalScope.launch(Dispatchers.Main) {
-            val remoteFolderInfo = async {
+            foldersLiveData.value = withContext(Dispatchers.IO) {
                 folderRepository.getRemoteFolderInfo()
-            }.await()
-
-            foldersLiveData.value = remoteFolderInfo
+            }
         }
     }
 }

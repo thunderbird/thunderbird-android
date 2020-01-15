@@ -656,7 +656,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="volume_navigation_title">Navigasi tombol volume</string>
   <string name="volume_navigation_message">Dalam tampilan pesan</string>
   <string name="volume_navigation_list">Dalam tampilan daftar</string>
-  <string name="start_integrated_inbox_title">Mulai pada Inbox terpadu</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- Belum dibaca</string>
   <string name="search_all_messages_title">Semua pesan</string>

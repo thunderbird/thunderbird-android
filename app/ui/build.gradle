@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'org.jetbrains.kotlin.android.extensions'
+apply plugin: 'org.jlleitschuh.gradle.ktlint'
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
@@ -33,10 +34,10 @@ dependencies {
     implementation "com.github.amlcurran.showcaseview:library:5.4.1"
     implementation "com.xwray:groupie:2.3.0"
     implementation "com.xwray:groupie-kotlin-android-extensions:2.3.0"
-    implementation 'com.mikepenz:materialdrawer:6.1.1'
-    implementation 'com.mikepenz:fontawesome-typeface:5.3.1.1@aar'
+    implementation 'com.mikepenz:materialdrawer:7.0.0-rc08'
+    implementation 'com.mikepenz:fontawesome-typeface:5.9.0.0-kotlin@aar'
     implementation 'com.github.ByteHamster:SearchPreference:v1.1.4'
-    implementation 'com.mikepenz:fastadapter:3.3.1'
+    implementation 'com.mikepenz:fastadapter:4.1.1'
     implementation 'de.hdodenhof:circleimageview:3.0.0'
 
     implementation "commons-io:commons-io:${versions.commonsIo}"

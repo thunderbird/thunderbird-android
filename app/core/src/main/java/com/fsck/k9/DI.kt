@@ -8,8 +8,8 @@ import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
-import org.koin.java.KoinJavaComponent.getKoin
 import org.koin.java.KoinJavaComponent.get as koinGet
+import org.koin.java.KoinJavaComponent.getKoin
 
 object DI {
     private const val DEBUG = false
@@ -35,6 +35,6 @@ interface EarlyInit
 
 // Copied from ComponentCallbacks.inject()
 inline fun <reified T : Any> EarlyInit.inject(
-        qualifier: Qualifier? = null,
-        noinline parameters: ParametersDefinition? = null
+    qualifier: Qualifier? = null,
+    noinline parameters: ParametersDefinition? = null
 ) = lazy { getKoin().get<T>(qualifier, parameters) }

@@ -17,10 +17,10 @@ import com.fsck.k9.mail.store.webdav.WebDavStore
 import com.fsck.k9.mail.transport.WebDavTransport
 
 class WebDavBackend(
-        accountName: String,
-        backendStorage: BackendStorage,
-        private val webDavStore: WebDavStore,
-        private val webDavTransport: WebDavTransport
+    accountName: String,
+    backendStorage: BackendStorage,
+    private val webDavStore: WebDavStore,
+    private val webDavTransport: WebDavTransport
 ) : Backend {
     private val webDavSync: WebDavSync = WebDavSync(accountName, backendStorage, webDavStore)
     private val commandGetFolders = CommandRefreshFolderList(backendStorage, webDavStore)
@@ -79,26 +79,26 @@ class WebDavBackend(
     }
 
     override fun moveMessages(
-            sourceFolderServerId: String,
-            targetFolderServerId: String,
-            messageServerIds: List<String>
+        sourceFolderServerId: String,
+        targetFolderServerId: String,
+        messageServerIds: List<String>
     ): Map<String, String>? {
         return commandMoveOrCopyMessages.moveMessages(sourceFolderServerId, targetFolderServerId, messageServerIds)
     }
 
     override fun copyMessages(
-            sourceFolderServerId: String,
-            targetFolderServerId: String,
-            messageServerIds: List<String>
+        sourceFolderServerId: String,
+        targetFolderServerId: String,
+        messageServerIds: List<String>
     ): Map<String, String>? {
         return commandMoveOrCopyMessages.copyMessages(sourceFolderServerId, targetFolderServerId, messageServerIds)
     }
 
     override fun search(
-            folderServerId: String,
-            query: String?,
-            requiredFlags: Set<Flag>?,
-            forbiddenFlags: Set<Flag>?
+        folderServerId: String,
+        query: String?,
+        requiredFlags: Set<Flag>?,
+        forbiddenFlags: Set<Flag>?
     ): List<String> {
         throw UnsupportedOperationException("not supported")
     }

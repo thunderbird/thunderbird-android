@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'org.jlleitschuh.gradle.ktlint'
 
 if (rootProject.testCoverage) {
     apply plugin: 'jacoco'

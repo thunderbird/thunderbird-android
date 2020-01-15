@@ -8,6 +8,13 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.701" versioncode="27001">
+        <change>Use account color as accent color in drawer</change>
+        <change>Removed setting 'Start in Unified Inbox'</change>
+        <change>Fixed bug that displayed folders when the Unified Inbox was selected</change>
+        <change>Fixed bug where work was accidentally done in the main thread</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.700" versioncode="27000">
         <change>Major redesign of the user interface</change>
         <change>Temporarily disabled Push (IMAP IDLE) until we can make it work reliable; your accounts will be polled every 15 minutes instead</change>

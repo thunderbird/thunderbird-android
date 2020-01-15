@@ -11,14 +11,12 @@ import org.koin.android.ext.android.inject
 class GeneralSettingsFragment : PreferenceFragmentCompat() {
     private val dataStore: GeneralSettingsDataStore by inject()
 
-
     override fun onCreatePreferencesFix(savedInstanceState: Bundle?, rootKey: String?) {
         preferenceManager.preferenceDataStore = dataStore
 
         setPreferencesFromResource(R.xml.general_settings, rootKey)
 
         initializeTheme()
-        initializeStartInUnifiedInbox()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -36,21 +34,8 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
-    private fun initializeStartInUnifiedInbox() {
-        findPreference(PREFERENCE_START_IN_UNIFIED_INBOX)?.apply {
-            if (hideSpecialAccounts()) {
-                isEnabled = false
-            }
-        }
-    }
-
-    private fun hideSpecialAccounts() = dataStore.getBoolean(PREFERENCE_HIDE_SPECIAL_ACCOUNTS, false)
-
-
     companion object {
         private const val PREFERENCE_THEME = "theme"
-        private const val PREFERENCE_START_IN_UNIFIED_INBOX = "start_integrated_inbox"
-        private const val PREFERENCE_HIDE_SPECIAL_ACCOUNTS = "hide_special_accounts"
 
         fun create(rootKey: String? = null) = GeneralSettingsFragment().withArguments(ARG_PREFERENCE_ROOT to rootKey)
     }

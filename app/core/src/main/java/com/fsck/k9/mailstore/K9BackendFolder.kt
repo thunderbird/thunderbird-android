@@ -8,23 +8,21 @@ import com.fsck.k9.Account
 import com.fsck.k9.Preferences
 import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendFolder.MoreMessages
-import com.fsck.k9.backend.api.MessageRemovalListener
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
 import java.util.Date
 
 class K9BackendFolder(
-        private val preferences: Preferences,
-        private val account: Account,
-        private val localStore: LocalStore,
-        private val folderServerId: String
+    private val preferences: Preferences,
+    private val account: Account,
+    private val localStore: LocalStore,
+    private val folderServerId: String
 ) : BackendFolder {
     private val database = localStore.database
     private val databaseId: String
     private val localFolder = localStore.getFolder(folderServerId)
     override val name: String
     override val visibleLimit: Int
-
 
     init {
         data class Init(val databaseId: String, val name: String, val visibleLimit: Int)
@@ -115,11 +113,6 @@ class K9BackendFolder(
 
     override fun setPushState(pushState: String?) {
         return database.setString(column = "push_state", value = pushState)
-    }
-
-    // TODO: Move implementation from LocalFolder to this class
-    override fun purgeToVisibleLimit(listener: MessageRemovalListener) {
-        localFolder.purgeToVisibleLimit(listener)
     }
 
     override fun isMessagePresent(messageServerId: String): Boolean {
@@ -283,12 +276,11 @@ class K9BackendFolder(
         }
     }
 
-
     private fun LockableDatabase.getString(
-            table: String = "folders",
-            column: String,
-            selection: String = "id = ?",
-            vararg selectionArgs: String = arrayOf(databaseId)
+        table: String = "folders",
+        column: String,
+        selection: String = "id = ?",
+        vararg selectionArgs: String = arrayOf(databaseId)
     ): String? {
         return execute(false) { db ->
             val cursor = db.query(table, arrayOf(column), selection, selectionArgs, null, null, null)
@@ -303,10 +295,10 @@ class K9BackendFolder(
     }
 
     private fun LockableDatabase.getStringOrNull(
-            table: String = "folders",
-            column: String,
-            selection: String = "id = ?",
-            vararg selectionArgs: String = arrayOf(databaseId)
+        table: String = "folders",
+        column: String,
+        selection: String = "id = ?",
+        vararg selectionArgs: String = arrayOf(databaseId)
     ): String? {
         return execute(false) { db ->
             val cursor = db.query(table, arrayOf(column), selection, selectionArgs, null, null, null)
@@ -321,11 +313,11 @@ class K9BackendFolder(
     }
 
     private fun LockableDatabase.setString(
-            table: String = "folders",
-            column: String,
-            value: String?,
-            selection: String = "id = ?",
-            vararg selectionArgs: String = arrayOf(databaseId)
+        table: String = "folders",
+        column: String,
+        value: String?,
+        selection: String = "id = ?",
+        vararg selectionArgs: String = arrayOf(databaseId)
     ) {
         execute(false) { db ->
             val contentValues = ContentValues().apply {
@@ -336,9 +328,9 @@ class K9BackendFolder(
     }
 
     private fun LockableDatabase.setMessagesBoolean(
-            messageServerId: String,
-            column: String,
-            value: Boolean
+        messageServerId: String,
+        column: String,
+        value: Boolean
     ) {
         execute(false) { db ->
             val contentValues = ContentValues().apply {
@@ -349,10 +341,10 @@ class K9BackendFolder(
     }
 
     private fun LockableDatabase.getLongOrNull(
-            table: String = "folders",
-            column: String,
-            selection: String = "id = ?",
-            vararg selectionArgs: String = arrayOf(databaseId)
+        table: String = "folders",
+        column: String,
+        selection: String = "id = ?",
+        vararg selectionArgs: String = arrayOf(databaseId)
     ): Long? {
         return execute(false) { db ->
             val cursor = db.query(table, arrayOf(column), selection, selectionArgs, null, null, null)
@@ -367,11 +359,11 @@ class K9BackendFolder(
     }
 
     private fun LockableDatabase.setLong(
-            table: String = "folders",
-            column: String,
-            value: Long,
-            selection: String = "id = ?",
-            vararg selectionArgs: String = arrayOf(databaseId)
+        table: String = "folders",
+        column: String,
+        value: Long,
+        selection: String = "id = ?",
+        vararg selectionArgs: String = arrayOf(databaseId)
     ) {
         execute(false) { db ->
             val contentValues = ContentValues().apply {

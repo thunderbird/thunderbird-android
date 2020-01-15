@@ -1,6 +1,5 @@
 package com.fsck.k9.ui.endtoend
 
-
 import android.app.PendingIntent
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
@@ -14,13 +13,12 @@ import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderError
 import timber.log.Timber
 
-
 class AutocryptKeyTransferPresenter internal constructor(
-        lifecycleOwner: LifecycleOwner,
-        private val openPgpApiManager: OpenPgpApiManager,
-        private val preferences: Preferences,
-        private val viewModel: AutocryptKeyTransferViewModel,
-        private val view: AutocryptKeyTransferActivity
+    lifecycleOwner: LifecycleOwner,
+    private val openPgpApiManager: OpenPgpApiManager,
+    private val preferences: Preferences,
+    private val viewModel: AutocryptKeyTransferViewModel,
+    private val view: AutocryptKeyTransferActivity
 ) {
 
     private lateinit var account: Account
@@ -51,7 +49,7 @@ class AutocryptKeyTransferPresenter internal constructor(
             }
         })
 
-        view.setAddress(account.identities[0].email)
+        view.setAddress(account.identities[0].email!!)
 
         viewModel.autocryptSetupTransferLiveEvent.recall()
     }

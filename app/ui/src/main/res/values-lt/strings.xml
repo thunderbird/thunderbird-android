@@ -547,7 +547,6 @@
   <string name="volume_navigation_title">Navigacija garso klavišais</string>
   <string name="volume_navigation_message">Pranešimų rodinyje</string>
   <string name="volume_navigation_list">Sąrašo rodiniuose</string>
-  <string name="start_integrated_inbox_title">Paleisti suvestiniame gautųjų aplanke</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- Neskaityta</string>
   <string name="search_all_messages_title">Visos žinutės</string>

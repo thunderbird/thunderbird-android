@@ -9,10 +9,12 @@ import com.fsck.k9.mailstore.LocalFolder
 
 class K9NotificationStrategy(val contacts: Contacts) : NotificationStrategy {
 
-    override fun shouldNotifyForMessage(account: Account,
-                                        localFolder: LocalFolder,
-                                        message: Message,
-                                        isOldMessage:Boolean):Boolean {
+    override fun shouldNotifyForMessage(
+        account: Account,
+        localFolder: LocalFolder,
+        message: Message,
+        isOldMessage: Boolean
+    ): Boolean {
 
         // If we don't even have an account name, don't show the notification.
         // (This happens during initial account setup)
@@ -50,10 +52,10 @@ class K9NotificationStrategy(val contacts: Contacts) : NotificationStrategy {
         val folder = message.folder
         if (folder != null) {
             val folderServerId = folder.serverId
-            if (folderServerId != account.inboxFolder && (folderServerId == account.trashFolder
-                            || folderServerId == account.draftsFolder
-                            || folderServerId == account.spamFolder
-                            || folderServerId == account.sentFolder)) {
+            if (folderServerId != account.inboxFolder && (folderServerId == account.trashFolder ||
+                            folderServerId == account.draftsFolder ||
+                            folderServerId == account.spamFolder ||
+                            folderServerId == account.sentFolder)) {
                 return false
             }
         }
@@ -63,7 +65,5 @@ class K9NotificationStrategy(val contacts: Contacts) : NotificationStrategy {
         return if (account.isAnIdentity(message.from) && !account.isNotifySelfNewMail) {
             false
         } else !account.isNotifyContactsMailOnly || contacts.isAnyInContacts(message.from)
-
     }
 }
-

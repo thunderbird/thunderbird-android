@@ -7,11 +7,10 @@ internal object UriLinkifier : TextToHtml.HtmlModifier {
         }
     }
 
-
     class LinkifyUri(
-            startIndex: Int,
-            endIndex: Int,
-            val uri: CharSequence
+        startIndex: Int,
+        endIndex: Int,
+        val uri: CharSequence
     ) : HtmlModification.Wrap(startIndex, endIndex) {
 
         override fun appendPrefix(textToHtml: TextToHtml) {

@@ -9,7 +9,7 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Het K-9 ontwikkelingsteam</string>
   <string name="app_authors_url">https://github.com/k9mail/k-9/graphs/contributors</string>
-  <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
+  <string name="app_copyright_fmt">Auteursrecht 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Voor gedeeltes gelt auteursrecht 2006-<xliff:g>%s</xliff:g> het Android Open Source Project.</string>
   <string name="source_code">Bron</string>
   <string name="app_source_url">https://github.com/k9mail/k-9</string>
   <string name="app_license">Apache Licentie, versie 2.0</string>
@@ -677,7 +677,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="volume_navigation_title">Volume op/neer navigatie</string>
   <string name="volume_navigation_message">Bericht beeld</string>
   <string name="volume_navigation_list">Variabele lijst weergave</string>
-  <string name="start_integrated_inbox_title">Gecombineerde postvak-in bij start</string>
   <string name="hide_special_accounts_title">Gecombineerde postvak-in verbergen</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Ongelezen</string>

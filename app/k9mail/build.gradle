@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'org.jetbrains.kotlin.android.extensions'
+apply plugin: 'org.jlleitschuh.gradle.ktlint'
 
 if (rootProject.testCoverage) {
     apply plugin: 'jacoco'
@@ -39,8 +40,8 @@ android {
         applicationId "com.fsck.k9"
         testApplicationId "com.fsck.k9.tests"
 
-        versionCode 27000
-        versionName '5.700'
+        versionCode 27001
+        versionName '5.701'
 
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk

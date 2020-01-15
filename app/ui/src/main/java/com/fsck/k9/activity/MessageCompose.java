@@ -608,7 +608,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         outState.putBoolean(STATE_KEY_SOURCE_MESSAGE_PROCED, relatedMessageProcessed);
         outState.putLong(STATE_KEY_DRAFT_ID, draftId);
-        outState.putSerializable(STATE_IDENTITY, identity);
+        outState.putParcelable(STATE_IDENTITY, identity);
         outState.putBoolean(STATE_IDENTITY_CHANGED, identityChanged);
         outState.putString(STATE_IN_REPLY_TO, repliedToMessageId);
         outState.putString(STATE_REFERENCES, referencedMessageIds);
@@ -642,7 +642,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         attachmentPresenter.onRestoreInstanceState(savedInstanceState);
 
         draftId = savedInstanceState.getLong(STATE_KEY_DRAFT_ID);
-        identity = (Identity) savedInstanceState.getSerializable(STATE_IDENTITY);
+        identity = savedInstanceState.getParcelable(STATE_IDENTITY);
         identityChanged = savedInstanceState.getBoolean(STATE_IDENTITY_CHANGED);
         repliedToMessageId = savedInstanceState.getString(STATE_IN_REPLY_TO);
         referencedMessageIds = savedInstanceState.getString(STATE_REFERENCES);
@@ -1344,28 +1344,29 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         Identity newIdentity = new Identity();
         if (k9identity.containsKey(IdentityField.SIGNATURE)) {
-            newIdentity.setSignatureUse(true);
-            newIdentity.setSignature(k9identity.get(IdentityField.SIGNATURE));
+            newIdentity = newIdentity
+                    .withSignatureUse(true)
+                    .withSignature(k9identity.get(IdentityField.SIGNATURE));
             signatureChanged = true;
         } else {
             if (message instanceof LocalMessage) {
-                newIdentity.setSignatureUse(((LocalMessage) message).getFolder().getSignatureUse());
+                newIdentity = newIdentity.withSignatureUse(((LocalMessage) message).getFolder().getSignatureUse());
             }
-            newIdentity.setSignature(identity.getSignature());
+            newIdentity = newIdentity.withSignature(identity.getSignature());
         }
 
         if (k9identity.containsKey(IdentityField.NAME)) {
-            newIdentity.setName(k9identity.get(IdentityField.NAME));
+            newIdentity = newIdentity.withName(k9identity.get(IdentityField.NAME));
             identityChanged = true;
         } else {
-            newIdentity.setName(identity.getName());
+            newIdentity = newIdentity.withName(identity.getName());
         }
 
         if (k9identity.containsKey(IdentityField.EMAIL)) {
-            newIdentity.setEmail(k9identity.get(IdentityField.EMAIL));
+            newIdentity = newIdentity.withEmail(k9identity.get(IdentityField.EMAIL));
             identityChanged = true;
         } else {
-            newIdentity.setEmail(identity.getEmail());
+            newIdentity = newIdentity.withEmail(identity.getEmail());
         }
 
         if (k9identity.containsKey(IdentityField.ORIGINAL_MESSAGE)) {

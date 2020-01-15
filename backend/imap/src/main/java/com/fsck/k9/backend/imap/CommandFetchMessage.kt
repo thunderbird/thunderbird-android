@@ -1,6 +1,5 @@
 package com.fsck.k9.backend.imap
 
-
 import com.fsck.k9.mail.BodyFactory
 import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Folder
@@ -9,7 +8,6 @@ import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.store.imap.ImapFolder
 import com.fsck.k9.mail.store.imap.ImapMessage
 import com.fsck.k9.mail.store.imap.ImapStore
-
 
 internal class CommandFetchMessage(private val imapStore: ImapStore) {
 
@@ -20,7 +18,7 @@ internal class CommandFetchMessage(private val imapStore: ImapStore) {
 
             val message = folder.getMessage(messageServerId)
 
-            //fun fact: ImapFolder.fetch can't handle getting STRUCTURE at same time as headers
+            // fun fact: ImapFolder.fetch can't handle getting STRUCTURE at same time as headers
             if (fetchProfile.contains(FetchProfile.Item.STRUCTURE) &&
                     fetchProfile.contains(FetchProfile.Item.ENVELOPE)) {
                 val headerFetchProfile = fetchProfile.without(FetchProfile.Item.STRUCTURE)

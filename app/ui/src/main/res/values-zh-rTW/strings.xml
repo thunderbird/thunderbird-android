@@ -545,7 +545,6 @@
   <string name="volume_navigation_title">音量鍵導航</string>
   <string name="volume_navigation_message">訊息檢視</string>
   <string name="volume_navigation_list">不同的訊息檢視列表</string>
-  <string name="start_integrated_inbox_title">從全域收件匣啟動</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- 未讀</string>
   <string name="search_all_messages_title">所有郵件</string>

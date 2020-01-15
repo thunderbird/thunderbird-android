@@ -13,7 +13,6 @@ object MimeParameterEncoder {
 
     private const val ENCODED_VALUE_PREFIX = "UTF-8''"
 
-
     /**
      * Create header field value with parameters encoded if necessary.
      */

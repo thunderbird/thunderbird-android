@@ -3,14 +3,14 @@ package com.fsck.k9.ui.settings.account
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
-import androidx.fragment.app.DialogFragment
-import androidx.appcompat.app.AlertDialog
-import androidx.preference.DialogPreference
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.DialogFragment
+import androidx.preference.DialogPreference
 import com.fsck.k9.ui.R
 
 class AutocryptPreferEncryptDialogFragment : DialogFragment() {
@@ -18,9 +18,8 @@ class AutocryptPreferEncryptDialogFragment : DialogFragment() {
         val preferenceKey = arguments?.getString(ARG_KEY) ?: throw IllegalStateException("Argument $ARG_KEY missing")
         val fragment = targetFragment as DialogPreference.TargetFragment
 
-        fragment.findPreference(preferenceKey) as AutocryptPreferEncryptPreference
+        fragment.findPreference<AutocryptPreferEncryptPreference>(preferenceKey)!!
     }
-
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         @SuppressLint("InflateParams")
@@ -39,7 +38,7 @@ class AutocryptPreferEncryptDialogFragment : DialogFragment() {
 
         return AlertDialog.Builder(requireContext())
                 // TODO add autocrypt logo?
-                //.setIcon(R.drawable.autocrypt)
+                // .setIcon(R.drawable.autocrypt)
                 .setView(view)
                 .setPositiveButton(R.string.done_action, null)
                 .create()
@@ -48,7 +47,6 @@ class AutocryptPreferEncryptDialogFragment : DialogFragment() {
     private fun TextView.makeLinksClickable() {
         this.movementMethod = LinkMovementMethod.getInstance()
     }
-
 
     companion object {
         private const val ARG_KEY = "key"

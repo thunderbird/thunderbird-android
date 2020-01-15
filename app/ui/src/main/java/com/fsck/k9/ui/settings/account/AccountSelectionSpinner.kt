@@ -8,10 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-
 import com.fsck.k9.Account
 import com.fsck.k9.ui.R
-
 import kotlinx.android.synthetic.main.account_list_item.view.*
 
 class AccountSelectionSpinner : Spinner {
@@ -26,7 +24,6 @@ class AccountSelectionSpinner : Spinner {
 
     private val cachedBackground: Drawable
     private var selectedAccount: Account? = null
-
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
@@ -54,10 +51,8 @@ class AccountSelectionSpinner : Spinner {
         background = if (showAccountSwitcher) cachedBackground else null
     }
 
-
     internal class AccountsAdapter(context: Context) : ArrayAdapter<Account>(context, 0) {
         var title: CharSequence = ""
-
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             val account = getItem(position) ?: error("No item at position $position")

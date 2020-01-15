@@ -1,6 +1,5 @@
 package com.fsck.k9.fragment
 
-
 import android.content.Context
 import android.content.res.Resources
 import android.database.Cursor
@@ -20,18 +19,11 @@ import android.widget.CursorAdapter
 import android.widget.TextView
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
-
 import com.fsck.k9.Account
 import com.fsck.k9.FontSizes
-import com.fsck.k9.ui.R
 import com.fsck.k9.Preferences
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.controller.MessageReference
-import com.fsck.k9.helper.MessageHelper
-import com.fsck.k9.mail.Address
-import com.fsck.k9.mailstore.DatabasePreviewType
-import com.fsck.k9.ui.messagelist.MessageListAppearance
-
 import com.fsck.k9.fragment.MLFProjectionInfo.ACCOUNT_UUID_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.ANSWERED_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.ATTACHMENT_COUNT_COLUMN
@@ -48,20 +40,24 @@ import com.fsck.k9.fragment.MLFProjectionInfo.SUBJECT_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.THREAD_COUNT_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.TO_LIST_COLUMN
 import com.fsck.k9.fragment.MLFProjectionInfo.UID_COLUMN
+import com.fsck.k9.helper.MessageHelper
+import com.fsck.k9.mail.Address
+import com.fsck.k9.mailstore.DatabasePreviewType
 import com.fsck.k9.ui.ContactBadge
-
+import com.fsck.k9.ui.R
+import com.fsck.k9.ui.messagelist.MessageListAppearance
 import kotlin.math.max
 
 class MessageListAdapter internal constructor(
-        context: Context,
-        theme: Resources.Theme,
-        private val res: Resources,
-        private val layoutInflater: LayoutInflater,
-        private val messageHelper: MessageHelper,
-        private val contactsPictureLoader: ContactPictureLoader,
-        private val preferences: Preferences,
-        private val listItemListener: MessageListItemActionListener,
-        private val appearance: MessageListAppearance
+    context: Context,
+    theme: Resources.Theme,
+    private val res: Resources,
+    private val layoutInflater: LayoutInflater,
+    private val messageHelper: MessageHelper,
+    private val contactsPictureLoader: ContactPictureLoader,
+    private val preferences: Preferences,
+    private val listItemListener: MessageListItemActionListener,
+    private val appearance: MessageListAppearance
 ) : CursorAdapter(context, null, 0) {
 
     private val forwardedIcon: Drawable
@@ -249,10 +245,10 @@ class MessageListAdapter internal constructor(
     }
 
     private fun formatPreviewText(
-            preview: TextView,
-            beforePreviewText: CharSequence,
-            sigil: String,
-            messageRead: Boolean
+        preview: TextView,
+        beforePreviewText: CharSequence,
+        sigil: String,
+        messageRead: Boolean
     ) {
         val previewText = preview.text as Spannable
 
@@ -287,10 +283,10 @@ class MessageListAdapter internal constructor(
     }
 
     private fun fetchCounterPartyAddress(
-            fromMe: Boolean,
-            toAddrs: Array<Address>,
-            ccAddrs: Array<Address>,
-            fromAddrs: Array<Address>
+        fromMe: Boolean,
+        toAddrs: Array<Address>,
+        ccAddrs: Array<Address>,
+        fromAddrs: Array<Address>
     ): Address? {
         if (fromMe) {
             if (toAddrs.size > 0) {

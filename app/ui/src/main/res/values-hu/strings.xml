@@ -682,7 +682,6 @@ Küldjön hibajelentéseket, járuljon hozzá új funkciókkal, és tegyen fel k
   <string name="volume_navigation_title">Hangerő gomb navigáció</string>
   <string name="volume_navigation_message">Üzenetnézetekben</string>
   <string name="volume_navigation_list">Listanézetekben</string>
-  <string name="start_integrated_inbox_title">Kezdés az egységes beérkezett üzenetekben</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">– Olvasatlan</string>
   <string name="search_all_messages_title">Összes üzenet</string>

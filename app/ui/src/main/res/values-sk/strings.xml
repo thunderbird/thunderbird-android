@@ -638,7 +638,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="volume_navigation_title">Navigácia tlačidlami hlasitosti</string>
   <string name="volume_navigation_message">V zobrazení správ</string>
   <string name="volume_navigation_list">V zobrazení zoznamu</string>
-  <string name="start_integrated_inbox_title">Začni v Jednotnej schránke</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Neprečítaná</string>
   <string name="search_all_messages_title">Všetky správy</string>

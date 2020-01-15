@@ -2,10 +2,10 @@ package com.fsck.k9.ui.settings.account
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.AttributeSet
 import androidx.core.content.res.TypedArrayUtils
 import androidx.preference.PreferenceViewHolder
 import androidx.preference.TwoStatePreference
-import android.util.AttributeSet
 import com.fsck.k9.ui.R
 import com.takisoft.preferencex.PreferenceFragmentCompat
 
@@ -13,11 +13,11 @@ import com.takisoft.preferencex.PreferenceFragmentCompat
 class AutocryptPreferEncryptPreference
 @JvmOverloads
 constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = TypedArrayUtils.getAttr(context, androidx.preference.R.attr.preferenceStyle,
-                android.R.attr.preferenceStyle),
-        defStyleRes: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = TypedArrayUtils.getAttr(context, androidx.preference.R.attr.preferenceStyle,
+            android.R.attr.preferenceStyle),
+    defStyleRes: Int = 0
 ) : TwoStatePreference(context, attrs, defStyleAttr, defStyleRes) {
 
     init {
@@ -44,7 +44,6 @@ constructor(
             isChecked = newValue
         }
     }
-
 
     companion object {
         init {

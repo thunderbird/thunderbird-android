@@ -9,10 +9,10 @@ import com.fsck.k9.ui.settings.general.GeneralSettingsDataStore
 import com.fsck.k9.ui.settings.import.AccountActivator
 import com.fsck.k9.ui.settings.import.SettingsImportResultViewModel
 import com.fsck.k9.ui.settings.import.SettingsImportViewModel
+import java.util.concurrent.Executors
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
-import java.util.concurrent.Executors
 
 val settingsUiModule = module {
     single { AccountsLiveData(get()) }

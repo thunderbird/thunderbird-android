@@ -1,7 +1,13 @@
 package com.fsck.k9.fragment
 
 import com.fsck.k9.Account.SortType
-import com.fsck.k9.Account.SortType.*
+import com.fsck.k9.Account.SortType.SORT_ARRIVAL
+import com.fsck.k9.Account.SortType.SORT_ATTACHMENT
+import com.fsck.k9.Account.SortType.SORT_DATE
+import com.fsck.k9.Account.SortType.SORT_FLAGGED
+import com.fsck.k9.Account.SortType.SORT_SENDER
+import com.fsck.k9.Account.SortType.SORT_SUBJECT
+import com.fsck.k9.Account.SortType.SORT_UNREAD
 import com.fsck.k9.ui.R
 
 class SortTypeToastProvider {

@@ -23,7 +23,6 @@ class SettingsListFragment : Fragment() {
 
     private lateinit var settingsAdapter: GroupAdapter<ViewHolder>
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_settings_list, container, false)
     }

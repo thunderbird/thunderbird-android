@@ -1,6 +1,5 @@
 package com.fsck.k9.helper
 
-
 import com.fsck.k9.Account
 import com.fsck.k9.Identity
 import com.fsck.k9.RobolectricTest
@@ -10,8 +9,8 @@ import com.fsck.k9.mail.Message.RecipientType
 import com.fsck.k9.mail.internet.AddressHeaderBuilder
 import com.fsck.k9.mail.internet.MimeMessage
 import com.google.common.truth.Truth.assertThat
+import java.util.UUID
 import org.junit.Test
-import java.util.*
 
 class IdentityHelperTest : RobolectricTest() {
     private val account = createDummyAccount()
@@ -109,7 +108,6 @@ class IdentityHelperTest : RobolectricTest() {
         assertThat(identity.email).isEqualTo(DEFAULT_ADDRESS)
     }
 
-
     private fun createDummyAccount() = Account(UUID.randomUUID().toString()).apply {
         identities = listOf(
                 newIdentity("Default", DEFAULT_ADDRESS),
@@ -121,10 +119,10 @@ class IdentityHelperTest : RobolectricTest() {
         )
     }
 
-    private fun newIdentity(name: String, email: String) = Identity().apply {
-        this.name = name
-        this.email = email
-    }
+    private fun newIdentity(name: String, email: String) = Identity(
+            name = name,
+            email = email
+    )
 
     private fun messageWithRecipients(vararg recipients: Pair<RecipientType, String>): Message {
         return MimeMessage().apply {

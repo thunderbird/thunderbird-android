@@ -424,11 +424,13 @@ public class MessageBuilderTest extends RobolectricTest {
     }
 
     private Identity createIdentity() {
-        Identity identity = new Identity();
-        identity.setName(TEST_IDENTITY_ADDRESS.getPersonal());
-        identity.setEmail(TEST_IDENTITY_ADDRESS.getAddress());
-        identity.setDescription("test identity");
-        identity.setSignatureUse(false);
-        return identity;
+        return new Identity(
+                "test identity",
+                TEST_IDENTITY_ADDRESS.getPersonal(),
+                TEST_IDENTITY_ADDRESS.getAddress(),
+                null,
+                false,
+                null
+        );
     }
 }

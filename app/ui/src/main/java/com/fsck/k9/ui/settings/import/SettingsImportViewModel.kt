@@ -25,8 +25,8 @@ private typealias AccountUuid = String
 private typealias AccountNumber = Int
 
 class SettingsImportViewModel(
-        private val context: Context,
-        private val accountActivator: AccountActivator
+    private val context: Context,
+    private val accountActivator: AccountActivator
 ) : CoroutineScopeViewModel() {
     private val uiModelLiveData = MutableLiveData<SettingsImportUiModel>()
     private val actionLiveData = SingleLiveEvent<Action>()
@@ -53,7 +53,6 @@ class SettingsImportViewModel(
                     .toSet()
         }
 
-
     fun getActionEvents(): LiveData<Action> = actionLiveData
 
     fun getUiModel(): LiveData<SettingsImportUiModel> {
@@ -63,7 +62,6 @@ class SettingsImportViewModel(
 
         return uiModelLiveData
     }
-
 
     fun initializeFromSavedState(savedInstanceState: Bundle) {
         contentUri = savedInstanceState.getParcelable(STATE_CONTENT_URI)
@@ -267,7 +265,6 @@ class SettingsImportViewModel(
                     delay(MIN_PROGRESS_DURATION - elapsed)
                 }
 
-
                 updateUiModel {
                     setGeneralSettingsImportStatus(importResults, importGeneralSettings)
                     setAccountsImportStatus(importResults)
@@ -285,8 +282,8 @@ class SettingsImportViewModel(
     }
 
     private fun SettingsImportUiModel.setGeneralSettingsImportStatus(
-            importResults: ImportResults,
-            importGeneralSettings: Boolean
+        importResults: ImportResults,
+        importGeneralSettings: Boolean
     ) {
         val importStatus = when {
             importResults.globalSettings -> ImportStatus.IMPORT_SUCCESS
@@ -390,7 +387,6 @@ class SettingsImportViewModel(
                 .toCollection(ArrayList(uiModel.settingsList.size - 1))
     }
 
-
     companion object {
         private const val MIN_PROGRESS_DURATION = 500L
 
@@ -415,31 +411,31 @@ sealed class Action {
     class Close(val importSuccess: Boolean) : Action()
     object PickDocument : Action()
     class PasswordPrompt(
-            val accountUuid: String,
-            val accountName: String,
-            val inputIncomingServerPassword: Boolean,
-            val incomingServerName: String?,
-            val inputOutgoingServerPassword: Boolean,
-            val outgoingServerName: String?
+        val accountUuid: String,
+        val accountName: String,
+        val inputIncomingServerPassword: Boolean,
+        val incomingServerName: String?,
+        val inputOutgoingServerPassword: Boolean,
+        val outgoingServerName: String?
     ) : Action()
 }
 
 private class AccountState(
-        val incomingServerName: String?,
-        val outgoingServerName: String?,
-        val incomingServerPasswordNeeded: Boolean,
-        val outgoingServerPasswordNeeded: Boolean
+    val incomingServerName: String?,
+    val outgoingServerName: String?,
+    val incomingServerPasswordNeeded: Boolean,
+    val outgoingServerPasswordNeeded: Boolean
 )
 
 @Parcelize
 private class SavedAccountState(
-        val accountIndex: Int,
-        val displayName: String,
-        val accountUuid: String,
-        val selected: Boolean,
-        val importStatus: ImportStatus,
-        val incomingServerName: String?,
-        val outgoingServerName: String?,
-        val incomingServerPasswordNeeded: Boolean,
-        val outgoingServerPasswordNeeded: Boolean
+    val accountIndex: Int,
+    val displayName: String,
+    val accountUuid: String,
+    val selected: Boolean,
+    val importStatus: ImportStatus,
+    val incomingServerName: String?,
+    val outgoingServerName: String?,
+    val incomingServerPasswordNeeded: Boolean,
+    val outgoingServerPasswordNeeded: Boolean
 ) : Parcelable

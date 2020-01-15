@@ -6,14 +6,14 @@ import com.fsck.k9.autodiscovery.ConnectionSettingsDiscovery
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.helper.EmailHelper
 import com.fsck.k9.helper.UrlEncodingHelper
-import org.xmlpull.v1.XmlPullParser
-import timber.log.Timber
 import java.net.URI
 import java.net.URISyntaxException
+import org.xmlpull.v1.XmlPullParser
+import timber.log.Timber
 
 class ProvidersXmlDiscovery(
-        private val backendManager: BackendManager,
-        private val xmlProvider: ProvidersXmlProvider
+    private val backendManager: BackendManager,
+    private val xmlProvider: ProvidersXmlProvider
 ) : ConnectionSettingsDiscovery {
 
     override fun discover(email: String): ConnectionSettings? {
@@ -108,11 +108,10 @@ class ProvidersXmlDiscovery(
         }
     }
 
-
     internal data class Provider(
-            val incomingUriTemplate: String,
-            val incomingUsernameTemplate: String,
-            val outgoingUriTemplate: String,
-            val outgoingUsernameTemplate: String?
+        val incomingUriTemplate: String,
+        val incomingUsernameTemplate: String,
+        val outgoingUriTemplate: String,
+        val outgoingUsernameTemplate: String?
     )
 }

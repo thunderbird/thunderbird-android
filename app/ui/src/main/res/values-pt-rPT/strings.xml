@@ -682,7 +682,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="volume_navigation_title">Navegação com as teclas de volume</string>
   <string name="volume_navigation_message">Na vista de mensagens</string>
   <string name="volume_navigation_list">Nas vistas em lista</string>
-  <string name="start_integrated_inbox_title">Iniciar na caixa de entrada unificada</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- Não lidos</string>
   <string name="search_all_messages_title">Todas as mensagens</string>

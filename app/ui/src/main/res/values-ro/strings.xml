@@ -662,7 +662,6 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="volume_navigation_title">Navigare prin butonu de volum</string>
   <string name="volume_navigation_message">Vizualizări în mesaj</string>
   <string name="volume_navigation_list">Vizualizări în listă</string>
-  <string name="start_integrated_inbox_title">Pornește în Căsuța poștală unificată</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Necitite</string>
   <string name="search_all_messages_title">Toate mesajele</string>

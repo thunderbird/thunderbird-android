@@ -687,7 +687,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="volume_navigation_title">Merdeiñ dre afelloù an ampled</string>
   <string name="volume_navigation_message">Er gwel kemennadenn</string>
   <string name="volume_navigation_list">Er gwel roll</string>
-  <string name="start_integrated_inbox_title">Kregiñ er voest unanet</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- Anlennet</string>
   <string name="search_all_messages_title">An holl gemennadennoù</string>

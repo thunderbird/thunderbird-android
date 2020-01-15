@@ -4,8 +4,8 @@ import android.app.NotificationManager
 import android.content.Context
 import androidx.core.app.NotificationManagerCompat
 import com.fsck.k9.AccountPreferenceSerializer
-import org.koin.dsl.module
 import java.util.concurrent.Executors
+import org.koin.dsl.module
 
 val coreNotificationModule = module {
     single { NotificationController(get(), get(), get(), get(), get()) }

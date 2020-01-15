@@ -4,20 +4,18 @@ import androidx.lifecycle.LiveData
 import com.fsck.k9.Account
 import com.fsck.k9.AccountsChangeListener
 import com.fsck.k9.Preferences
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AccountsLiveData(val preferences: Preferences) : LiveData<List<Account>>(), AccountsChangeListener {
 
     private fun loadAccountsAsync() {
         GlobalScope.launch(Dispatchers.Main) {
-            val accounts = async {
+            value = withContext(Dispatchers.IO) {
                 loadAccounts()
             }
-
-            value = accounts.await()
         }
     }
 

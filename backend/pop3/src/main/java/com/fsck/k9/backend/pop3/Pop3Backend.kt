@@ -16,10 +16,10 @@ import com.fsck.k9.mail.store.pop3.Pop3Store
 import com.fsck.k9.mail.transport.smtp.SmtpTransport
 
 class Pop3Backend(
-        accountName: String,
-        backendStorage: BackendStorage,
-        private val pop3Store: Pop3Store,
-        private val smtpTransport: SmtpTransport
+    accountName: String,
+    backendStorage: BackendStorage,
+    private val pop3Store: Pop3Store,
+    private val smtpTransport: SmtpTransport
 ) : Backend {
     private val pop3Sync: Pop3Sync = Pop3Sync(accountName, backendStorage, pop3Store)
     private val commandRefreshFolderList = CommandRefreshFolderList(backendStorage)
@@ -74,26 +74,26 @@ class Pop3Backend(
     }
 
     override fun moveMessages(
-            sourceFolderServerId: String,
-            targetFolderServerId: String,
-            messageServerIds: List<String>
+        sourceFolderServerId: String,
+        targetFolderServerId: String,
+        messageServerIds: List<String>
     ): Map<String, String>? {
         throw UnsupportedOperationException("not supported")
     }
 
     override fun copyMessages(
-            sourceFolderServerId: String,
-            targetFolderServerId: String,
-            messageServerIds: List<String>
+        sourceFolderServerId: String,
+        targetFolderServerId: String,
+        messageServerIds: List<String>
     ): Map<String, String>? {
         throw UnsupportedOperationException("not supported")
     }
 
     override fun search(
-            folderServerId: String,
-            query: String?,
-            requiredFlags: Set<Flag>?,
-            forbiddenFlags: Set<Flag>?
+        folderServerId: String,
+        query: String?,
+        requiredFlags: Set<Flag>?,
+        forbiddenFlags: Set<Flag>?
     ): List<String> {
         throw UnsupportedOperationException("not supported")
     }

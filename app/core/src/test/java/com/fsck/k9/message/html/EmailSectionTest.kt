@@ -1,9 +1,7 @@
 package com.fsck.k9.message.html
 
-
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
-
 
 class EmailSectionTest {
     @Test
@@ -64,7 +62,6 @@ class EmailSectionTest {
         assertThat(section.subSequence(7, 10).asString()).isEqualTo("hre")
         assertThat(section.subSequence(6, 11).asString()).isEqualTo("Three")
     }
-
 
     private fun CharSequence.asString() = StringBuilder(length).apply {
         this@asString.forEach { append(it) }

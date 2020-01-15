@@ -45,7 +45,6 @@ class SettingsExportViewModel(val context: Context, val preferences: Preferences
                             .toSet()
         }
 
-
     fun getActionEvents(): LiveData<Action> = actionLiveData
 
     fun getUiModel(): LiveData<SettingsExportUiModel> {
@@ -79,7 +78,6 @@ class SettingsExportViewModel(val context: Context, val preferences: Preferences
 
         return uiModelLiveData
     }
-
 
     fun initializeFromSavedState(savedInstanceState: Bundle) {
         savedSelection = SavedListItemSelection(
@@ -186,7 +184,6 @@ class SettingsExportViewModel(val context: Context, val preferences: Preferences
         actionLiveData.value = action
     }
 
-
     companion object {
         private const val MIN_PROGRESS_DURATION = 1000L
         private const val SETTINGS_MIME_TYPE = "application/octet-stream"
@@ -208,6 +205,6 @@ sealed class Action {
 }
 
 private data class SavedListItemSelection(
-        val includeGeneralSettings: Boolean,
-        val selectedAccountUuids: Set<AccountUuid>
+    val includeGeneralSettings: Boolean,
+    val selectedAccountUuids: Set<AccountUuid>
 )

@@ -55,14 +55,6 @@
                 android:text="@string/account_setup_options_notify_label"
                 android:textColor="?android:attr/textColorPrimary" />
 
-            <CheckBox
-                android:id="@+id/account_notify_sync"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/account_setup_options_notify_sync_label"
-
-                android:textColor="?android:attr/textColorPrimary" />
-
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"

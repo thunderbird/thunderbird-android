@@ -11,10 +11,10 @@ import com.fsck.k9.ui.ThemeManager
 import java.util.concurrent.ExecutorService
 
 class GeneralSettingsDataStore(
-        private val preferences: Preferences,
-        private val jobManager: K9JobManager,
-        private val executorService: ExecutorService,
-        private val themeManager: ThemeManager
+    private val preferences: Preferences,
+    private val jobManager: K9JobManager,
+    private val executorService: ExecutorService,
+    private val themeManager: ThemeManager
 ) : PreferenceDataStore() {
     var activity: FragmentActivity? = null
 
@@ -35,7 +35,6 @@ class GeneralSettingsDataStore(
             "threaded_view" -> K9.isThreadedViewEnabled
             "messageview_fixedwidth_font" -> K9.isUseMessageViewFixedWidthFont
             "messageview_autofit_width" -> K9.isAutoFitWidth
-            "start_integrated_inbox" -> K9.isStartInUnifiedInbox
             "gestures" -> K9.isGesturesEnabled
             "messageview_return_to_list" -> K9.isMessageViewReturnToList
             "messageview_show_next" -> K9.isMessageViewShowNext
@@ -66,7 +65,6 @@ class GeneralSettingsDataStore(
             "threaded_view" -> K9.isThreadedViewEnabled = value
             "messageview_fixedwidth_font" -> K9.isUseMessageViewFixedWidthFont = value
             "messageview_autofit_width" -> K9.isAutoFitWidth = value
-            "start_integrated_inbox" -> K9.isStartInUnifiedInbox = value
             "gestures" -> K9.isGesturesEnabled = value
             "messageview_return_to_list" -> K9.isMessageViewReturnToList = value
             "messageview_show_next" -> K9.isMessageViewShowNext = value
