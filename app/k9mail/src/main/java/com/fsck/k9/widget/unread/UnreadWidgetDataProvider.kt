@@ -9,11 +9,13 @@ import com.fsck.k9.activity.MessageList
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchAccount
+import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 
 class UnreadWidgetDataProvider(
     private val context: Context,
     private val preferences: Preferences,
-    private val messagingController: MessagingController
+    private val messagingController: MessagingController,
+    private val defaultFolderProvider: DefaultFolderProvider
 ) {
     fun loadUnreadWidgetData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? = with(configuration) {
         if (SearchAccount.UNIFIED_INBOX == accountUuid) {
@@ -49,7 +51,7 @@ class UnreadWidgetDataProvider(
     }
 
     private fun getClickIntentForAccount(account: Account): Intent {
-        val folderServerId = account.autoExpandFolder ?: account.inboxFolder
+        val folderServerId = defaultFolderProvider.getDefaultFolder(account)
         return getClickIntentForFolder(account, folderServerId)
     }
 

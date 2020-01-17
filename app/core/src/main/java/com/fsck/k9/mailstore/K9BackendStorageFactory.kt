@@ -12,6 +12,9 @@ class K9BackendStorageFactory(
         val folderRepository = folderRepositoryManager.getFolderRepository(account)
         val localStore = localStoreProvider.getInstance(account)
         val specialFolderUpdater = SpecialFolderUpdater(preferences, folderRepository, account)
-        return K9BackendStorage(preferences, account, localStore, specialFolderUpdater)
+        val specialFolderListener = SpecialFolderBackendStorageListener(specialFolderUpdater)
+        val autoExpandFolderListener = AutoExpandFolderBackendStorageListener(preferences, account)
+        val listeners = listOf(specialFolderListener, autoExpandFolderListener)
+        return K9BackendStorage(preferences, account, localStore, listeners)
     }
 }

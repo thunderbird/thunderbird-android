@@ -105,9 +105,6 @@ public class AccountSettings {
         s.put("idleRefreshMinutes", Settings.versions(
                 new V(1, new IntegerResourceSetting(24, R.array.idle_refresh_period_values))
         ));
-        s.put("inboxFolderName", Settings.versions(
-                new V(1, new StringSetting("INBOX"))
-        ));
         s.put("led", Settings.versions(
                 new V(1, new BooleanSetting(true))
         ));

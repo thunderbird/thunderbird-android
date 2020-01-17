@@ -6,7 +6,6 @@ import com.fsck.k9.Account.DEFAULT_SYNC_INTERVAL
 import com.fsck.k9.Account.DeletePolicy
 import com.fsck.k9.Account.Expunge
 import com.fsck.k9.Account.FolderMode
-import com.fsck.k9.Account.INBOX
 import com.fsck.k9.Account.MessageFormat
 import com.fsck.k9.Account.NO_OPENPGP_KEY
 import com.fsck.k9.Account.QuoteStyle
@@ -52,7 +51,7 @@ class AccountPreferenceSerializer(
             isNotifyContactsMailOnly = storage.getBoolean("$accountUuid.notifyContactsMailOnly", false)
             isNotifySync = storage.getBoolean("$accountUuid.notifyMailCheck", false)
             deletePolicy = DeletePolicy.fromInt(storage.getInt("$accountUuid.deletePolicy", DeletePolicy.NEVER.setting))
-            inboxFolder = storage.getString("$accountUuid.inboxFolderName", INBOX)
+            inboxFolder = storage.getString("$accountUuid.inboxFolderName", null)
 
             val draftsFolder = storage.getString("$accountUuid.draftsFolderName", null)
             val draftsFolderSelection = getEnumStringPref<SpecialFolderSelection>(storage, "$accountUuid.draftsFolderSelection",
@@ -104,7 +103,7 @@ class AccountPreferenceSerializer(
                 setCompression(type, useCompression)
             }
 
-            autoExpandFolder = storage.getString("$accountUuid.autoExpandFolderName", INBOX)
+            autoExpandFolder = storage.getString("$accountUuid.autoExpandFolderName", null)
 
             accountNumber = storage.getInt("$accountUuid.accountNumber", UNASSIGNED_ACCOUNT_NUMBER)
 
@@ -525,8 +524,8 @@ class AccountPreferenceSerializer(
             showPictures = ShowPictures.NEVER
             isSignatureBeforeQuotedText = false
             expungePolicy = Expunge.EXPUNGE_IMMEDIATELY
-            autoExpandFolder = INBOX
-            inboxFolder = INBOX
+            autoExpandFolder = null
+            inboxFolder = null
             maxPushFolders = 10
             isGoToUnreadMessageSearch = false
             isSubscribedFoldersOnly = false

@@ -8,6 +8,14 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.702" versioncode="27002">
+        <change>The back button now closes the side drawer instead of exiting the app immediately</change>
+        <change>Fixed "Download complete message" for POP3 accounts</change>
+        <change>Fixed bug that could lead to some messages not being synchronized with an IMAP server</change>
+        <change>Fixed bug where sometimes subjects weren't encoded properly</change>
+        <change>Fixed crash when changing theme</change>
+        <change>'Manage folders' now displays folders in the same order as the side drawer</change>
+    </release>
     <release version="5.701" versioncode="27001">
         <change>Use account color as accent color in drawer</change>
         <change>Removed setting 'Start in Unified Inbox'</change>

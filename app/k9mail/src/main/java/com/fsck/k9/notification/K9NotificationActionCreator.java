@@ -20,6 +20,7 @@ import com.fsck.k9.activity.setup.AccountSetupIncoming;
 import com.fsck.k9.activity.setup.AccountSetupOutgoing;
 import com.fsck.k9.search.AccountSearchConditions;
 import com.fsck.k9.search.LocalSearch;
+import com.fsck.k9.ui.messagelist.DefaultFolderProvider;
 
 
 /**
@@ -35,6 +36,7 @@ import com.fsck.k9.search.LocalSearch;
 class K9NotificationActionCreator implements NotificationActionCreator {
     private final Context context;
     private final AccountSearchConditions accountSearchConditions = DI.get(AccountSearchConditions.class);
+    private final DefaultFolderProvider defaultFolderProvider = DI.get(DefaultFolderProvider.class);
 
 
     public K9NotificationActionCreator(Context context) {
@@ -210,10 +212,7 @@ class K9NotificationActionCreator implements NotificationActionCreator {
     }
 
     private Intent createMessageListIntent(Account account) {
-        String folderServerId = account.getAutoExpandFolder();
-        if (folderServerId == null) {
-            folderServerId = account.getInboxFolder();
-        }
+        String folderServerId = defaultFolderProvider.getDefaultFolder(account);
         LocalSearch search = new LocalSearch(folderServerId);
         search.addAllowedFolder(folderServerId);
         search.addAccountUuid(account.getUuid());

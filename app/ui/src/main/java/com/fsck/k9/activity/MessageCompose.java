@@ -104,6 +104,8 @@ import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.ThemeManager;
 import com.fsck.k9.ui.compose.QuotedMessageMvpView;
 import com.fsck.k9.ui.compose.QuotedMessagePresenter;
+import com.fsck.k9.ui.messagelist.DefaultFolderProvider;
+
 import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.util.OpenPgpApi;
 import timber.log.Timber;
@@ -169,6 +171,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private static final Pattern PREFIX = Pattern.compile("^AW[:\\s]\\s*", Pattern.CASE_INSENSITIVE);
 
     private final MessageLoaderHelperFactory messageLoaderHelperFactory = DI.get(MessageLoaderHelperFactory.class);
+    private final DefaultFolderProvider defaultFolderProvider = DI.get(DefaultFolderProvider.class);
 
     private QuotedMessagePresenter quotedMessagePresenter;
     private MessageLoaderHelper messageLoaderHelper;
@@ -783,7 +786,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         internalMessageHandler.sendEmptyMessage(MSG_DISCARDED_DRAFT);
         changesMadeSinceLastSave = false;
         if (navigateUp) {
-            openAutoExpandFolder();
+            openDefaultFolder();
         } else {
             finish();
         }
@@ -1052,7 +1055,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 onDiscard();
             } else {
                 if (navigateUp) {
-                    openAutoExpandFolder();
+                    openDefaultFolder();
                 } else {
                     super.onBackPressed();
                 }
@@ -1060,8 +1063,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
     }
 
-    private void openAutoExpandFolder() {
-        String folder = account.getAutoExpandFolder();
+    private void openDefaultFolder() {
+        String folder = defaultFolderProvider.getDefaultFolder(account);
         LocalSearch search = new LocalSearch(folder);
         search.addAccountUuid(account.getUuid());
         search.addAllowedFolder(folder);

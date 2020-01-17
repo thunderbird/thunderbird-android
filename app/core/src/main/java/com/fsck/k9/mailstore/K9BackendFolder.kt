@@ -1,8 +1,8 @@
 package com.fsck.k9.mailstore
 
 import android.content.ContentValues
-import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import androidx.core.database.getLongOrNull
 import androidx.core.database.getStringOrNull
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
@@ -79,12 +79,12 @@ class K9BackendFolder(
         localFolder.destroyMessages(localMessages)
     }
 
-    override fun getMoreMessages(): BackendFolder.MoreMessages {
+    override fun getMoreMessages(): MoreMessages {
         val moreMessages = database.getString(column = "more_messages") ?: "unknown"
         return moreMessages.toMoreMessages()
     }
 
-    override fun setMoreMessages(moreMessages: BackendFolder.MoreMessages) {
+    override fun setMoreMessages(moreMessages: MoreMessages) {
         database.setString(column = "more_messages", value = moreMessages.toDatabaseValue())
     }
 
@@ -117,7 +117,14 @@ class K9BackendFolder(
 
     override fun isMessagePresent(messageServerId: String): Boolean {
         return database.execute(false) { db ->
-            val cursor = db.query("messages", arrayOf("id"), "uid = ?", arrayOf(messageServerId), null, null, null)
+            val cursor = db.query(
+                "messages",
+                arrayOf("id"),
+                "folder_id = ? AND uid = ?",
+                arrayOf(databaseId, messageServerId),
+                null, null, null
+            )
+
             cursor.use {
                 cursor.moveToFirst()
             }
@@ -137,8 +144,8 @@ class K9BackendFolder(
             val cursor = db.query(
                     "messages",
                     arrayOf("deleted", "read", "flagged", "answered", "forwarded", "flags"),
-                    "uid = ?",
-                    arrayOf(messageServerId),
+                    "folder_id = ? AND uid = ?",
+                    arrayOf(databaseId, messageServerId),
                     null, null, null)
 
             cursor.use {
@@ -177,8 +184,8 @@ class K9BackendFolder(
                 val flagsColumnValue = database.getString(
                         table = "messages",
                         column = "flags",
-                        selection = "uid = ?",
-                        selectionArgs = *arrayOf(messageServerId)
+                        selection = "folder_id = ? AND uid = ?",
+                        selectionArgs = *arrayOf(databaseId, messageServerId)
                 ) ?: ""
 
                 val flags = flagsColumnValue.split(',').toMutableSet()
@@ -193,8 +200,8 @@ class K9BackendFolder(
                 database.setString(
                         table = "messages",
                         column = "flags",
-                        selection = "uid = ?",
-                        selectionArgs = *arrayOf(messageServerId),
+                        selection = "folder_id = ? AND uid = ?",
+                        selectionArgs = *arrayOf(databaseId, messageServerId),
                         value = serializedFlags
                 )
             }
@@ -237,12 +244,23 @@ class K9BackendFolder(
     }
 
     override fun getFolderExtraString(name: String): String? {
-        return database.getStringOrNull(
-                table = "folder_extra_values",
-                column = "value_text",
-                selection = "name = ? AND folder_id = ?",
-                selectionArgs = *arrayOf(name, databaseId)
-        )
+        return database.execute(false) { db ->
+            val cursor = db.query(
+                "folder_extra_values",
+                arrayOf("value_text"),
+                "name = ? AND folder_id = ?",
+                arrayOf(name, databaseId),
+                null, null, null
+            )
+
+            cursor.use {
+                if (it.moveToFirst()) {
+                    it.getStringOrNull(0)
+                } else {
+                    null
+                }
+            }
+        }
     }
 
     override fun setFolderExtraString(name: String, value: String) {
@@ -257,12 +275,23 @@ class K9BackendFolder(
     }
 
     override fun getFolderExtraNumber(name: String): Long? {
-        return database.getLongOrNull(
-                table = "folder_extra_values",
-                column = "value_integer",
-                selection = "name = ? AND folder_id = ?",
-                selectionArgs = *arrayOf(name, databaseId)
-        )
+        return database.execute(false) { db ->
+            val cursor = db.query(
+                "folder_extra_values",
+                arrayOf("value_integer"),
+                "name = ? AND folder_id = ?",
+                arrayOf(name, databaseId),
+                null, null, null
+            )
+
+            cursor.use {
+                if (it.moveToFirst()) {
+                    it.getLongOrNull(0)
+                } else {
+                    null
+                }
+            }
+        }
     }
 
     override fun setFolderExtraNumber(name: String, value: Long) {
@@ -294,24 +323,6 @@ class K9BackendFolder(
         }
     }
 
-    private fun LockableDatabase.getStringOrNull(
-        table: String = "folders",
-        column: String,
-        selection: String = "id = ?",
-        vararg selectionArgs: String = arrayOf(databaseId)
-    ): String? {
-        return execute(false) { db ->
-            val cursor = db.query(table, arrayOf(column), selection, selectionArgs, null, null, null)
-            cursor.use {
-                if (it.moveToFirst()) {
-                    it.getStringOrNull(0)
-                } else {
-                    null
-                }
-            }
-        }
-    }
-
     private fun LockableDatabase.setString(
         table: String = "folders",
         column: String,
@@ -336,25 +347,7 @@ class K9BackendFolder(
             val contentValues = ContentValues().apply {
                 put(column, if (value) 1 else 0)
             }
-            db.update("messages", contentValues, "uid = ?", arrayOf(messageServerId))
-        }
-    }
-
-    private fun LockableDatabase.getLongOrNull(
-        table: String = "folders",
-        column: String,
-        selection: String = "id = ?",
-        vararg selectionArgs: String = arrayOf(databaseId)
-    ): Long? {
-        return execute(false) { db ->
-            val cursor = db.query(table, arrayOf(column), selection, selectionArgs, null, null, null)
-            cursor.use {
-                if (it.moveToFirst()) {
-                    it.getLongOrNull(0)
-                } else {
-                    null
-                }
-            }
+            db.update("messages", contentValues, "folder_id = ? AND uid = ?", arrayOf(databaseId, messageServerId))
         }
     }
 
@@ -372,8 +365,6 @@ class K9BackendFolder(
             db.update(table, contentValues, selection, selectionArgs)
         }
     }
-
-    private fun Cursor.getLongOrNull(columnIndex: Int): Long? = if (isNull(columnIndex)) null else getLong(columnIndex)
 
     private fun String.toMoreMessages(): MoreMessages = when (this) {
         "unknown" -> MoreMessages.UNKNOWN
