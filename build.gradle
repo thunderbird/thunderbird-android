@@ -19,7 +19,7 @@ buildscript {
                 'androidxWorkManager': '2.2.0',
                 'androidxFragment': '1.1.0',
                 'androidxLocalBroadcastManager': '1.0.0',
-                'materialComponents': '1.0.0',
+                'materialComponents': '1.1.0-rc02',
                 'coreKtx': '1.1.0',
                 'preferencesFix': '1.1.0',
                 'okio': '2.4.3',

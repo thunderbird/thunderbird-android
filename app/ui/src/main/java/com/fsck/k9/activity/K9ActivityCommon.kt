@@ -49,7 +49,7 @@ class K9ActivityCommon(
     }
 
     fun preOnResume() {
-        if (currentTheme != themeManager.appTheme || currentLanguage != K9.k9Language) {
+        if (currentLanguage != K9.k9Language) {
             activity.recreate()
         }
     }
