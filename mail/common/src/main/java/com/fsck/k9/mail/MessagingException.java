@@ -6,6 +6,10 @@ public class MessagingException extends Exception {
 
     private boolean permanentFailure = false;
 
+    public MessagingException(Throwable cause) {
+        super(cause);
+    }
+
     public MessagingException(String message) {
         super(message);
     }

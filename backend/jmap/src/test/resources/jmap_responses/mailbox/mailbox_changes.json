@@ -1,0 +1,86 @@
+{
+  "methodResponses": [
+    [
+      "Mailbox/changes",
+      {
+        "accountId": "test@example.com",
+        "oldState": "23",
+        "newState": "42",
+        "hasMoreChanges": false,
+        "created": [ "id_folder2" ],
+        "updated": [ "id_trash" ],
+        "destroyed": [ "id_folder1" ]
+      },
+      "0"
+    ],
+    [
+      "Mailbox/get",
+      {
+        "accountId": "test@example.com",
+        "state": "42",
+        "list": [
+          {
+            "id": "id_folder2",
+            "name": "folder2",
+            "parentId": null,
+            "myRights": {
+              "mayReadItems": true,
+              "mayAddItems": true,
+              "mayRemoveItems": true,
+              "mayCreateChild": true,
+              "mayDelete": true,
+              "maySubmit": true,
+              "maySetSeen": true,
+              "maySetKeywords": true,
+              "mayAdmin": true,
+              "mayRename": true
+            },
+            "role": null,
+            "totalEmails": 0,
+            "unreadEmails": 0,
+            "totalThreads": 0,
+            "unreadThreads": 0,
+            "sortOrder": 10,
+            "isSubscribed": false
+          }
+        ]
+      },
+      "1"
+    ],
+    [
+      "Mailbox/get",
+      {
+        "accountId": "test@example.com",
+        "state": "42",
+        "list": [
+          {
+            "id": "id_trash",
+            "name": "Deleted messages",
+            "parentId": null,
+            "myRights": {
+              "mayReadItems": true,
+              "mayAddItems": true,
+              "mayRemoveItems": true,
+              "mayCreateChild": true,
+              "mayDelete": true,
+              "maySubmit": true,
+              "maySetSeen": true,
+              "maySetKeywords": true,
+              "mayAdmin": true,
+              "mayRename": true
+            },
+            "role": "trash",
+            "totalEmails": 2,
+            "unreadEmails": 0,
+            "totalThreads": 2,
+            "unreadThreads": 0,
+            "sortOrder": 7,
+            "isSubscribed": false
+          }
+        ]
+      },
+      "2"
+    ]
+  ],
+  "sessionState": "0"
+}

@@ -25,4 +25,5 @@ val mainModule = module {
     single<TrustedSocketFactory> { DefaultTrustedSocketFactory(get(), get()) }
     single { Clock.INSTANCE }
     factory { ServerNameSuggester() }
+    factory { EmailAddressValidator() }
 }
