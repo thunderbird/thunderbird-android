@@ -8,9 +8,9 @@ import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
 import com.google.common.truth.Truth.assertThat
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.doReturn
-import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.mock
 import org.junit.Test
 import org.mockito.ArgumentMatchers.eq
 import org.robolectric.RuntimeEnvironment
