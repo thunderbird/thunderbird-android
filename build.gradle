@@ -22,7 +22,7 @@ buildscript {
                 'materialComponents': '1.0.0',
                 'coreKtx': '1.0.1',
                 'preferencesFix': '1.1.0',
-                'okio': '1.14.0',
+                'okio': '2.4.3',
                 'timber': '4.5.1',
                 'koin': '2.0.1',
                 'commonsIo': '2.4',
