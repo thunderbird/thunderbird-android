@@ -34,7 +34,7 @@ buildscript {
                 'robolectric': '4.2.1',
                 'mockito': '3.2.4',
                 'mockitoKotlin': '2.2.0',
-                'truth': '0.35'
+                'truth': '1.0.1'
         ]
 
         javaVersion = JavaVersion.VERSION_1_8
