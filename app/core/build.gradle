@@ -23,7 +23,7 @@ dependencies {
     implementation "androidx.fragment:fragment:${versions.androidxFragment}"
     implementation "androidx.localbroadcastmanager:localbroadcastmanager:${versions.androidxLocalBroadcastManager}"
     implementation "org.jsoup:jsoup:1.11.2"
-    implementation "com.squareup.moshi:moshi:1.2.0"
+    implementation "com.squareup.moshi:moshi:1.9.2"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
     implementation "org.apache.james:apache-mime4j-core:${versions.mime4j}"
     implementation 'com.evernote:android-job:1.2.6'
