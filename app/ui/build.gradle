@@ -35,7 +35,7 @@ dependencies {
     implementation "com.github.amlcurran.showcaseview:library:5.4.1"
     implementation "com.xwray:groupie:2.3.0"
     implementation "com.xwray:groupie-kotlin-android-extensions:2.3.0"
-    implementation 'com.mikepenz:materialdrawer:7.0.0-rc09'
+    implementation 'com.mikepenz:materialdrawer:7.0.0'
     implementation 'com.mikepenz:fontawesome-typeface:5.9.0.0-kotlin@aar'
     implementation 'com.github.ByteHamster:SearchPreference:v1.1.4'
     implementation 'com.mikepenz:fastadapter:4.1.1'
