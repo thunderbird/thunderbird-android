@@ -25,7 +25,7 @@ buildscript {
                 'okio': '2.4.3',
                 'timber': '4.5.1',
                 'koin': '2.0.1',
-                'commonsIo': '2.4',
+                'commonsIo': '2.6',
                 'mime4j': '0.8.1',
                 'okhttp': '4.2.1',
 
