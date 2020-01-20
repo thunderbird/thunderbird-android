@@ -205,10 +205,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private void setWindowProgress() {
         int level = MAX_PROGRESS;
 
-        if (currentFolder != null && currentFolder.loading && activityListener.getFolderTotal() > 0) {
-            int divisor = activityListener.getFolderTotal();
-            if (divisor != 0) {
-                level = (MAX_PROGRESS / divisor) * (activityListener.getFolderCompleted()) ;
+        if (currentFolder != null && currentFolder.loading) {
+            int folderTotal = activityListener.getFolderTotal();
+            if (folderTotal > 0) {
+                level = (MAX_PROGRESS * activityListener.getFolderCompleted()) / folderTotal;
                 if (level > MAX_PROGRESS) {
                     level = MAX_PROGRESS;
                 }
