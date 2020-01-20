@@ -28,6 +28,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
@@ -66,7 +67,6 @@ import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener;
 import com.mikepenz.materialdrawer.Drawer.OnDrawerListener;
 import de.cketti.library.changelog.ChangeLog;
 import timber.log.Timber;
-
 
 
 /**
@@ -185,6 +185,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     private FragmentTransaction openFolderTransaction;
     private Menu menu;
 
+    private ProgressBar progressBar;
     private ViewGroup messageViewContainer;
     private View messageViewPlaceHolder;
 
@@ -394,6 +395,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
     private void initializeLayout() {
+        progressBar = findViewById(R.id.message_list_progress);
         messageViewContainer = findViewById(R.id.message_view_container);
 
         LayoutInflater layoutInflater = getLayoutInflater();
@@ -1203,8 +1205,13 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
     @Override
+    public void setMessageListProgressEnabled(boolean enable) {
+        progressBar.setVisibility(enable ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    @Override
     public void setMessageListProgress(int progress) {
-        setProgress(progress);
+        progressBar.setProgress(progress);
     }
 
     @Override

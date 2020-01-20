@@ -8,6 +8,18 @@
 
     <include layout="@layout/toolbar" />
 
+    <ProgressBar
+        android:id="@+id/message_list_progress"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-2dp"
+        android:elevation="4dp"
+        android:max="10000"
+        android:maxHeight="2dp"
+        android:minHeight="2dp"
+        android:visibility="invisible" />
+
     <LinearLayout
             android:id="@+id/container"
             android:layout_width="fill_parent"

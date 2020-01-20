@@ -29,7 +29,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
@@ -74,6 +73,7 @@ import net.jcip.annotations.GuardedBy;
 import timber.log.Timber;
 
 import static com.fsck.k9.Account.Expunge.EXPUNGE_MANUALLY;
+import static com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener.MAX_PROGRESS;
 import static com.fsck.k9.search.LocalSearchExtensions.getAccountsFromLocalSearch;
 
 
@@ -203,14 +203,14 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     private void setWindowProgress() {
-        int level = Window.PROGRESS_END;
+        int level = MAX_PROGRESS;
 
         if (currentFolder != null && currentFolder.loading && activityListener.getFolderTotal() > 0) {
             int divisor = activityListener.getFolderTotal();
             if (divisor != 0) {
-                level = (Window.PROGRESS_END / divisor) * (activityListener.getFolderCompleted()) ;
-                if (level > Window.PROGRESS_END) {
-                    level = Window.PROGRESS_END;
+                level = (MAX_PROGRESS / divisor) * (activityListener.getFolderCompleted()) ;
+                if (level > MAX_PROGRESS) {
+                    level = MAX_PROGRESS;
                 }
             }
         }
@@ -238,6 +238,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         if (swipeRefreshLayout != null && !progress) {
             swipeRefreshLayout.setRefreshing(false);
         }
+        fragmentListener.setMessageListProgressEnabled(progress);
     }
 
     @Override
@@ -1147,8 +1148,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             } else {
                 handler.updateFooter(null);
             }
-            fragmentListener.setMessageListProgress(Window.PROGRESS_END);
-
         }
 
         @Override
@@ -1161,7 +1160,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 handler.updateFooter(context.getResources().getQuantityString(R.plurals.remote_search_downloading,
                         numResults, numResults));
             }
-            fragmentListener.setMessageListProgress(Window.PROGRESS_START);
+
+            informUserOfStatus();
         }
 
         private void informUserOfStatus() {
@@ -2181,6 +2181,9 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     public interface MessageListFragmentListener {
+        int MAX_PROGRESS = 10000;
+
+        void setMessageListProgressEnabled(boolean enable);
         void setMessageListProgress(int level);
         void showThread(Account account, String folderServerId, long rootId);
         void showMoreFromSameSender(String senderAddress);
