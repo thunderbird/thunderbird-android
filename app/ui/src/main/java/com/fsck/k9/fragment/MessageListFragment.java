@@ -48,7 +48,7 @@ import com.fsck.k9.Account.SortType;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.activity.ActivityListener;
+import com.fsck.k9.controller.SimpleMessagingListener;
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity;
 import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.activity.misc.ContactPicture;
@@ -69,6 +69,8 @@ import com.fsck.k9.ui.messagelist.MessageListConfig;
 import com.fsck.k9.ui.messagelist.MessageListFragmentDiContainer;
 import com.fsck.k9.ui.messagelist.MessageListItem;
 import com.fsck.k9.ui.messagelist.MessageListViewModel;
+
+import net.jcip.annotations.GuardedBy;
 
 import timber.log.Timber;
 
@@ -153,7 +155,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private boolean showingThreadedList;
     private boolean isThreadDisplay;
     private Context context;
-    private final ActivityListener activityListener = new MessageListActivityListener();
+    private final MessageListActivityListener activityListener = new MessageListActivityListener();
     private Preferences preferences;
     private MessageReference activeMessage;
     /**
@@ -1116,7 +1118,13 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         return AdapterView.INVALID_POSITION;
     }
 
-    class MessageListActivityListener extends ActivityListener {
+    class MessageListActivityListener extends SimpleMessagingListener {
+        private final Object lock = new Object();
+
+        @GuardedBy("lock") private int folderCompleted = 0;
+        @GuardedBy("lock") private int folderTotal = 0;
+
+
         @Override
         public void remoteSearchFailed(String folderServerId, final String err) {
             handler.post(new Runnable() {
@@ -1169,8 +1177,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             fragmentListener.setMessageListProgress(Window.PROGRESS_START);
         }
 
-        @Override
-        public void informUserOfStatus() {
+        private void informUserOfStatus() {
             handler.refreshTitle();
         }
 
@@ -1179,19 +1186,54 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             if (updateForMe(account, folderServerId)) {
                 handler.progress(true);
                 handler.folderLoading(folderServerId, true);
+
+                synchronized (lock) {
+                    folderCompleted = 0;
+                    folderTotal = 0;
+                }
+
+                informUserOfStatus();
             }
-            super.synchronizeMailboxStarted(account, folderServerId, folderName);
         }
 
         @Override
-        public void synchronizeMailboxFinished(Account account, String folderServerId,
-        int totalMessagesInMailbox, int numNewMessages) {
+        public void synchronizeMailboxHeadersProgress(Account account, String folderServerId, int completed, int total) {
+            synchronized (lock) {
+                folderCompleted = completed;
+                folderTotal = total;
+            }
+
+            informUserOfStatus();
+        }
+
+        @Override
+        public void synchronizeMailboxHeadersFinished(Account account, String folderServerId, int total, int completed) {
+            synchronized (lock) {
+                folderCompleted = 0;
+                folderTotal = 0;
+            }
+
+            informUserOfStatus();
+        }
+
+        @Override
+        public void synchronizeMailboxProgress(Account account, String folderServerId, int completed, int total) {
+            synchronized (lock) {
+                folderCompleted = completed;
+                folderTotal = total;
+            }
+
+            informUserOfStatus();
+        }
+
+        @Override
+        public void synchronizeMailboxFinished(Account account, String folderServerId, int totalMessagesInMailbox,
+                int numNewMessages) {
 
             if (updateForMe(account, folderServerId)) {
                 handler.progress(false);
                 handler.folderLoading(folderServerId, false);
             }
-            super.synchronizeMailboxFinished(account, folderServerId, totalMessagesInMailbox, numNewMessages);
         }
 
         @Override
@@ -1201,7 +1243,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 handler.progress(false);
                 handler.folderLoading(folderServerId, false);
             }
-            super.synchronizeMailboxFailed(account, folderServerId, message);
         }
 
         private boolean updateForMe(Account account, String folderServerId) {
@@ -1215,6 +1256,18 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
             List<String> folderServerIds = search.getFolderServerIds();
             return (folderServerIds.isEmpty() || folderServerIds.contains(folderServerId));
+        }
+
+        public int getFolderCompleted() {
+            synchronized (lock) {
+                return folderCompleted;
+            }
+        }
+
+        public int getFolderTotal() {
+            synchronized (lock) {
+                return folderTotal;
+            }
         }
     }
 
