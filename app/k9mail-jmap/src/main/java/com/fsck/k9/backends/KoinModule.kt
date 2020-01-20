@@ -17,7 +17,8 @@ val backendsModule = module {
     single { ImapBackendFactory(get(), get(), get(), get()) }
     single { Pop3BackendFactory(get(), get()) }
     single { WebDavBackendFactory(get(), get()) }
-    single { JmapBackendFactory(get()) }
+    single { JmapBackendFactory(get(), get()) }
     factory { JmapAccountDiscovery() }
     factory { JmapAccountCreator(get(), get(), get(), get()) }
+    single { OkHttpClientProvider() }
 }

@@ -60,6 +60,19 @@ class K9BackendFolder(
         }
     }
 
+    override fun getMessageServerIds(): Set<String> {
+        return database.rawQuery("SELECT uid FROM messages" +
+            " WHERE empty = 0 AND deleted = 0 AND folder_id = ? AND uid NOT LIKE '${K9.LOCAL_UID_PREFIX}%'" +
+            " ORDER BY date DESC", databaseId) { cursor ->
+            val result = mutableSetOf<String>()
+            while (cursor.moveToNext()) {
+                val uid = cursor.getString(0)
+                result.add(uid)
+            }
+            result
+        }
+    }
+
     override fun getAllMessagesAndEffectiveDates(): Map<String, Long?> {
         return database.rawQuery("SELECT uid, date FROM messages" +
                 " WHERE empty = 0 AND deleted = 0 AND folder_id = ? AND uid NOT LIKE '${K9.LOCAL_UID_PREFIX}%'" +

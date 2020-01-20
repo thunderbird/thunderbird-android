@@ -11,17 +11,23 @@ import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.PushReceiver
 import com.fsck.k9.mail.Pusher
-import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
+import okhttp3.OkHttpClient
 import rs.ltt.jmap.client.JmapClient
+import rs.ltt.jmap.client.http.BasicAuthHttpAuthentication
+import rs.ltt.jmap.client.http.HttpAuthentication
 import rs.ltt.jmap.common.method.call.core.EchoMethodCall
 
 class JmapBackend(
-    private val backendStorage: BackendStorage,
+    backendStorage: BackendStorage,
+    okHttpClient: OkHttpClient,
     config: JmapConfig
 ) : Backend {
-    private val jmapClient = config.toJmapClient()
+    private val httpAuthentication = config.toHttpAuthentication()
+    private val jmapClient = createJmapClient(config, httpAuthentication)
     private val accountId = config.accountId
     private val commandRefreshFolderList = CommandRefreshFolderList(backendStorage, jmapClient, accountId)
+    private val commandSync = CommandSync(backendStorage, jmapClient, okHttpClient, accountId, httpAuthentication)
     override val supportsSeenFlag = true
     override val supportsExpunge = false
     override val supportsMove = true
@@ -37,7 +43,7 @@ class JmapBackend(
     }
 
     override fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener) {
-        // TODO: implement
+        commandSync.sync(folder, listener)
     }
 
     override fun downloadMessage(syncConfig: SyncConfig, folderServerId: String, messageServerId: String) {
@@ -116,12 +122,16 @@ class JmapBackend(
         checkIncomingServerSettings()
     }
 
-    private fun JmapConfig.toJmapClient(): JmapClient {
-        return if (baseUrl == null) {
-            JmapClient(username, password)
+    private fun JmapConfig.toHttpAuthentication(): HttpAuthentication {
+        return BasicAuthHttpAuthentication(username, password)
+    }
+
+    private fun createJmapClient(jmapConfig: JmapConfig, httpAuthentication: HttpAuthentication): JmapClient {
+        return if (jmapConfig.baseUrl == null) {
+            JmapClient(httpAuthentication)
         } else {
-            val baseHttpUrl = HttpUrl.parse(baseUrl)
-            JmapClient(username, password, baseHttpUrl)
+            val baseHttpUrl = jmapConfig.baseUrl.toHttpUrlOrNull()
+            JmapClient(httpAuthentication, baseHttpUrl)
         }
     }
 }

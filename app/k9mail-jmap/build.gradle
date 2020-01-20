@@ -79,8 +79,7 @@ android {
             applicationIdSuffix ".debug"
             testCoverageEnabled rootProject.testCoverage
 
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled false
 
             buildConfigField "boolean", "DEVELOPER_MODE", "true"
         }

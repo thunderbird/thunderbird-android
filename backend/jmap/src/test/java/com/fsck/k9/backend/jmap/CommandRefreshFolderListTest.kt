@@ -7,9 +7,6 @@ import com.fsck.k9.mail.MessagingException
 import junit.framework.AssertionFailedError
 import okhttp3.HttpUrl
 import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.MockWebServer
-import okio.buffer
-import okio.source
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
@@ -132,30 +129,12 @@ class CommandRefreshFolderListTest {
         return createCommandRefreshFolderList(server.url("/jmap/"))
     }
 
-    private fun createMockWebServer(vararg mockResponses: MockResponse): MockWebServer {
-        return MockWebServer().apply {
-            for (mockResponse in mockResponses) {
-                enqueue(mockResponse)
-            }
-            start()
-        }
-    }
-
     private fun createCommandRefreshFolderList(
         baseUrl: HttpUrl,
         accountId: String = "test@example.com"
     ): CommandRefreshFolderList {
         val jmapClient = JmapClient("test", "test", baseUrl)
         return CommandRefreshFolderList(backendStorage, jmapClient, accountId)
-    }
-
-    private fun responseBodyFromResource(name: String): MockResponse {
-        return MockResponse().setBody(loadResource(name))
-    }
-
-    private fun loadResource(name: String): String {
-        val resourceAsStream = javaClass.getResourceAsStream(name) ?: error("Couldn't load resource: $name")
-        return resourceAsStream.use { it.source().buffer().readUtf8() }
     }
 
     @Suppress("SameParameterValue")

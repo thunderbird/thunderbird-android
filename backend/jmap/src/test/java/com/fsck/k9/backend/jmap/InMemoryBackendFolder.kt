@@ -4,20 +4,64 @@ import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Message
+import com.fsck.k9.mail.internet.MimeMessage
 import java.util.Date
+import okio.Buffer
+import org.junit.Assert.assertEquals
 
 class InMemoryBackendFolder(override var name: String, var type: FolderType) : BackendFolder {
     val extraStrings: MutableMap<String, String> = mutableMapOf()
     val extraNumbers: MutableMap<String, Long> = mutableMapOf()
+    private val messages = mutableMapOf<String, Message>()
 
     override var visibleLimit: Int = 25
+
+    fun assertMessages(vararg messagePairs: Pair<String, String>) {
+        for ((messageServerId, resourceName) in messagePairs) {
+            assertMessageContents(messageServerId, resourceName)
+        }
+        val messageServerIds = messagePairs.map { it.first }.toSet()
+        assertEquals(messageServerIds, messages.keys)
+    }
+
+    private fun assertMessageContents(messageServerId: String, resourceName: String) {
+        val message = messages[messageServerId] ?: error("Message $messageServerId not found")
+        assertEquals(loadResource(resourceName), getMessageContents(message))
+    }
+
+    fun createMessages(vararg messagePairs: Pair<String, String>) {
+        for ((messageServerId, resourceName) in messagePairs) {
+            val inputStream = javaClass.getResourceAsStream(resourceName)
+                ?: error("Couldn't load resource: $resourceName")
+
+            val message = inputStream.use {
+                MimeMessage.parseMimeMessage(inputStream, false)
+            }
+
+            messages[messageServerId] = message
+        }
+    }
+
+    private fun getMessageContents(message: Message): String {
+        val buffer = Buffer()
+        buffer.outputStream().use {
+            message.writeTo(it)
+        }
+        return buffer.readUtf8()
+    }
+
+    override fun getMessageServerIds(): Set<String> {
+        return messages.keys.toSet()
+    }
 
     override fun getAllMessagesAndEffectiveDates(): Map<String, Long?> {
         throw UnsupportedOperationException("not implemented")
     }
 
     override fun destroyMessages(messageServerIds: List<String>) {
-        throw UnsupportedOperationException("not implemented")
+        for (messageServerId in messageServerIds) {
+            messages.remove(messageServerId)
+        }
     }
 
     override fun getLastUid(): Long? {
@@ -61,11 +105,13 @@ class InMemoryBackendFolder(override var name: String, var type: FolderType) : B
     }
 
     override fun savePartialMessage(message: Message) {
-        throw UnsupportedOperationException("not implemented")
+        val messageServerId = checkNotNull(message.uid)
+        messages[messageServerId] = message
     }
 
     override fun saveCompleteMessage(message: Message) {
-        throw UnsupportedOperationException("not implemented")
+        val messageServerId = checkNotNull(message.uid)
+        messages[messageServerId] = message
     }
 
     override fun getLatestOldMessageSeenTime(): Date {
