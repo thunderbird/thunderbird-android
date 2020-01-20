@@ -85,6 +85,19 @@ class WebDavBackend(
         return commandMoveOrCopyMessages.moveMessages(sourceFolderServerId, targetFolderServerId, messageServerIds)
     }
 
+    override fun moveMessagesAndMarkAsRead(
+        sourceFolderServerId: String,
+        targetFolderServerId: String,
+        messageServerIds: List<String>
+    ): Map<String, String>? {
+        val uidMapping = commandMoveOrCopyMessages
+                .moveMessages(sourceFolderServerId, targetFolderServerId, messageServerIds)
+        if (uidMapping != null) {
+            setFlag(targetFolderServerId, uidMapping.values.toList(), Flag.SEEN, true)
+        }
+        return uidMapping
+    }
+
     override fun copyMessages(
         sourceFolderServerId: String,
         targetFolderServerId: String,

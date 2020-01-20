@@ -150,6 +150,7 @@ class AccountPreferenceSerializer(
 
             isEnabled = storage.getBoolean("$accountUuid.enabled", true)
             isMarkMessageAsReadOnView = storage.getBoolean("$accountUuid.markMessageAsReadOnView", true)
+            isMarkMessageAsReadOnDelete = storage.getBoolean("$accountUuid.markMessageAsReadOnDelete", true)
             isAlwaysShowCcBcc = storage.getBoolean("$accountUuid.alwaysShowCcBcc", false)
 
             // Use email address as account description if necessary
@@ -290,6 +291,7 @@ class AccountPreferenceSerializer(
             editor.putBoolean("$accountUuid.uploadSentMessages", isUploadSentMessages)
             editor.putBoolean("$accountUuid.enabled", isEnabled)
             editor.putBoolean("$accountUuid.markMessageAsReadOnView", isMarkMessageAsReadOnView)
+            editor.putBoolean("$accountUuid.markMessageAsReadOnDelete", isMarkMessageAsReadOnDelete)
             editor.putBoolean("$accountUuid.alwaysShowCcBcc", isAlwaysShowCcBcc)
 
             editor.putBoolean("$accountUuid.vibrate", notificationSetting.isVibrateEnabled)
@@ -400,6 +402,7 @@ class AccountPreferenceSerializer(
         editor.remove("$accountUuid.autocryptMutualMode")
         editor.remove("$accountUuid.enabled")
         editor.remove("$accountUuid.markMessageAsReadOnView")
+        editor.remove("$accountUuid.markMessageAsReadOnDelete")
         editor.remove("$accountUuid.alwaysShowCcBcc")
         editor.remove("$accountUuid.allowRemoteSearch")
         editor.remove("$accountUuid.remoteSearchFullText")
@@ -547,6 +550,7 @@ class AccountPreferenceSerializer(
             isUploadSentMessages = true
             isEnabled = true
             isMarkMessageAsReadOnView = true
+            isMarkMessageAsReadOnDelete = true
             isAlwaysShowCcBcc = false
 
             setArchiveFolder(null, SpecialFolderSelection.AUTOMATIC)

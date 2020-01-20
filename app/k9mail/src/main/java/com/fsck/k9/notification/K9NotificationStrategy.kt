@@ -4,15 +4,15 @@ import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.helper.Contacts
 import com.fsck.k9.mail.Flag
-import com.fsck.k9.mail.Message
 import com.fsck.k9.mailstore.LocalFolder
+import com.fsck.k9.mailstore.LocalMessage
 
 class K9NotificationStrategy(val contacts: Contacts) : NotificationStrategy {
 
     override fun shouldNotifyForMessage(
         account: Account,
         localFolder: LocalFolder,
-        message: Message,
+        message: LocalMessage,
         isOldMessage: Boolean
     ): Boolean {
 

@@ -40,8 +40,8 @@ import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.FetchProfile.Item;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Folder.FolderType;
+import com.fsck.k9.mail.FolderType;
+import com.fsck.k9.mail.FolderClass;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
@@ -395,9 +395,9 @@ public class LocalStore {
     public List<LocalFolder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
         final List<LocalFolder> folders = new LinkedList<>();
         try {
-            database.execute(false, new DbCallback < List <? extends Folder >> () {
+            database.execute(false, new DbCallback<List<LocalFolder>>() {
                 @Override
-                public List <? extends Folder > doDbWork(final SQLiteDatabase db) throws WrappedException {
+                public List<LocalFolder> doDbWork(final SQLiteDatabase db) throws WrappedException {
                     Cursor cursor = null;
 
                     try {
@@ -914,29 +914,6 @@ public class LocalStore {
                     }
 
                     final  LocalFolder.PreferencesHolder prefHolder = folder.new PreferencesHolder();
-
-                    // When created, special folders should always be displayed
-                    // inbox should be integrated
-                    // and the inbox and drafts folders should be syncced by default
-                    if (account.isSpecialFolder(serverId)) {
-                        prefHolder.inTopGroup = true;
-                        prefHolder.displayClass = LocalFolder.FolderClass.FIRST_CLASS;
-                        if (serverId.equals(account.getInboxFolder())) {
-                            prefHolder.integrate = true;
-                            prefHolder.notifyClass = LocalFolder.FolderClass.FIRST_CLASS;
-                            prefHolder.pushClass = LocalFolder.FolderClass.FIRST_CLASS;
-                        } else {
-                            prefHolder.pushClass = LocalFolder.FolderClass.INHERITED;
-
-                        }
-                        if (serverId.equals(account.getInboxFolder()) || serverId.equals(account.getDraftsFolder())) {
-                            prefHolder.syncClass = LocalFolder.FolderClass.FIRST_CLASS;
-                        } else {
-                            prefHolder.syncClass = LocalFolder.FolderClass.NO_CLASS;
-                        }
-                    }
-                    folder.refresh(serverId, prefHolder);   // Recover settings from Preferences
-
                     db.execSQL("INSERT INTO folders (name, visible_limit, top_group, display_class, poll_class, notify_class, push_class, integrate, server_id, local_only, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", new Object[] {
                                    name,
                                    visibleLimit,
@@ -964,7 +941,7 @@ public class LocalStore {
             folder.create();
         }
         folder.setName(folderName);
-        folder.setSyncClass(Folder.FolderClass.NONE);
+        folder.setSyncClass(FolderClass.NONE);
     }
 
     static String serializeFlags(Iterable<Flag> flags) {

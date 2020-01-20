@@ -88,6 +88,14 @@ class Pop3Backend(
         throw UnsupportedOperationException("not supported")
     }
 
+    override fun moveMessagesAndMarkAsRead(
+        sourceFolderServerId: String,
+        targetFolderServerId: String,
+        messageServerIds: List<String>
+    ): Map<String, String>? {
+        throw UnsupportedOperationException("not supported")
+    }
+
     override fun search(
         folderServerId: String,
         query: String?,

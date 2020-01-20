@@ -18,8 +18,7 @@ import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.activity.K9PreferenceActivity;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.job.K9JobManager;
-import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Folder.FolderClass;
+import com.fsck.k9.mail.FolderClass;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
@@ -69,7 +68,7 @@ public class FolderSettings extends K9PreferenceActivity {
         try {
             LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(mAccount);
             mFolder = localStore.getFolder(folderServerId);
-            mFolder.open(Folder.OPEN_MODE_RW);
+            mFolder.open();
         } catch (MessagingException me) {
             Timber.e(me, "Unable to edit folder %s preferences", folderServerId);
             return;

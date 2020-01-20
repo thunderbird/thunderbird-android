@@ -9,7 +9,7 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.FolderInfo
-import com.fsck.k9.mail.Folder.FolderType as RemoteFolderType
+import com.fsck.k9.mail.FolderType as RemoteFolderType
 
 class K9BackendStorage(
     private val preferences: Preferences,

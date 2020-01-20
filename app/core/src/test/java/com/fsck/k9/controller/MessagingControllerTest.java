@@ -25,7 +25,6 @@ import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalFolder;
@@ -164,7 +163,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     public void clearFolderSynchronous_shouldOpenFolderForWriting() throws MessagingException {
         controller.clearFolderSynchronous(account, FOLDER_NAME, listener);
 
-        verify(localFolder).open(Folder.OPEN_MODE_RW);
+        verify(localFolder).open();
     }
 
     @Test
@@ -183,14 +182,14 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
     @Test(expected = UnavailableAccountException.class)
     public void clearFolderSynchronous_whenStorageUnavailable_shouldThrowUnavailableAccountException() throws MessagingException {
-        doThrow(new UnavailableStorageException("Test")).when(localFolder).open(Folder.OPEN_MODE_RW);
+        doThrow(new UnavailableStorageException("Test")).when(localFolder).open();
 
         controller.clearFolderSynchronous(account, FOLDER_NAME, listener);
     }
 
     @Test()
     public void clearFolderSynchronous_whenExceptionThrown_shouldStillCloseFolder() throws MessagingException {
-        doThrow(new RuntimeException("Test")).when(localFolder).open(Folder.OPEN_MODE_RW);
+        doThrow(new RuntimeException("Test")).when(localFolder).open();
 
         try {
             controller.clearFolderSynchronous(account, FOLDER_NAME, listener);

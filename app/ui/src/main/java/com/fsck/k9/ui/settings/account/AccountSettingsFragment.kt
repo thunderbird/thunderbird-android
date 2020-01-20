@@ -22,7 +22,6 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
 import com.fsck.k9.mailstore.Folder
 import com.fsck.k9.mailstore.FolderType
-import com.fsck.k9.mailstore.RemoteFolderInfo
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity
 import com.fsck.k9.ui.observe

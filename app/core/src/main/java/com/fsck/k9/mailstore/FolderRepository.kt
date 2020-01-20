@@ -3,12 +3,11 @@ package com.fsck.k9.mailstore
 import android.database.sqlite.SQLiteDatabase
 import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
-import com.fsck.k9.mail.Folder.FolderClass
-import com.fsck.k9.mail.Folder.FolderType as RemoteFolderType
+import com.fsck.k9.mail.FolderClass
+import com.fsck.k9.mail.FolderType as RemoteFolderType
 
 class FolderRepository(
     private val localStoreProvider: LocalStoreProvider,
-    private val specialFolderSelectionStrategy: SpecialFolderSelectionStrategy,
     private val account: Account
 ) {
     private val sortForDisplay =
@@ -18,20 +17,7 @@ class FolderRepository(
             .thenByDescending { it.isInTopGroup }
             .thenBy(String.CASE_INSENSITIVE_ORDER) { it.folder.name }
 
-    fun getRemoteFolderInfo(): RemoteFolderInfo {
-        val folders = getRemoteFolders()
-        val automaticSpecialFolders = mapOf(
-                FolderType.ARCHIVE to specialFolderSelectionStrategy.selectSpecialFolder(folders, FolderType.ARCHIVE),
-                FolderType.DRAFTS to specialFolderSelectionStrategy.selectSpecialFolder(folders, FolderType.DRAFTS),
-                FolderType.SENT to specialFolderSelectionStrategy.selectSpecialFolder(folders, FolderType.SENT),
-                FolderType.SPAM to specialFolderSelectionStrategy.selectSpecialFolder(folders, FolderType.SPAM),
-                FolderType.TRASH to specialFolderSelectionStrategy.selectSpecialFolder(folders, FolderType.TRASH)
-        )
-
-        return RemoteFolderInfo(folders, automaticSpecialFolders)
-    }
-
-    private fun getRemoteFolders(): List<Folder> {
+    fun getRemoteFolders(): List<Folder> {
         val folders = localStoreProvider.getInstance(account).getPersonalNamespaces(false)
 
         return folders
@@ -127,6 +113,30 @@ class FolderRepository(
         RemoteFolderType.SPAM -> FolderType.SPAM
         RemoteFolderType.ARCHIVE -> FolderType.ARCHIVE
     }
+
+    fun setIncludeInUnifiedInbox(serverId: String, includeInUnifiedInbox: Boolean) {
+        val localStore = localStoreProvider.getInstance(account)
+        val folder = localStore.getFolder(serverId)
+        folder.isIntegrate = includeInUnifiedInbox
+    }
+
+    fun setDisplayClass(serverId: String, folderClass: FolderClass) {
+        val localStore = localStoreProvider.getInstance(account)
+        val folder = localStore.getFolder(serverId)
+        folder.displayClass = folderClass
+    }
+
+    fun setSyncClass(serverId: String, folderClass: FolderClass) {
+        val localStore = localStoreProvider.getInstance(account)
+        val folder = localStore.getFolder(serverId)
+        folder.syncClass = folderClass
+    }
+
+    fun setNotificationClass(serverId: String, folderClass: FolderClass) {
+        val localStore = localStoreProvider.getInstance(account)
+        val folder = localStore.getFolder(serverId)
+        folder.notifyClass = folderClass
+    }
 }
 
 data class Folder(val id: Long, val serverId: String, val name: String, val type: FolderType)
@@ -136,8 +146,6 @@ data class DisplayFolder(
     val isInTopGroup: Boolean,
     val unreadCount: Int
 )
-
-data class RemoteFolderInfo(val folders: List<Folder>, val automaticSpecialFolders: Map<FolderType, Folder?>)
 
 enum class FolderType {
     REGULAR,

@@ -1,6 +1,6 @@
 package com.fsck.k9.backend.api
 
-import com.fsck.k9.mail.Folder.FolderType
+import com.fsck.k9.mail.FolderType
 
 interface BackendStorage {
     fun getFolder(folderServerId: String): BackendFolder

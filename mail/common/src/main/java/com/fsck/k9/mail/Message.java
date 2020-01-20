@@ -26,8 +26,6 @@ public abstract class Message implements Part, Body {
 
     private Date mInternalDate;
 
-    protected Folder mFolder;
-
     public boolean olderThan(Date earliestDate) {
         if (earliestDate == null) {
             return false;
@@ -39,36 +37,12 @@ public abstract class Message implements Part, Body {
         return myDate != null && myDate.before(earliestDate);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || !(o instanceof Message)) {
-            return false;
-        }
-        Message other = (Message)o;
-        return (getUid().equals(other.getUid())
-                && getFolder().getServerId().equals(other.getFolder().getServerId()));
-    }
-
-    @Override
-    public int hashCode() {
-        final int MULTIPLIER = 31;
-
-        int result = 1;
-        result = MULTIPLIER * result + (mFolder != null ? mFolder.getServerId().hashCode() : 0);
-        result = MULTIPLIER * result + mUid.hashCode();
-        return result;
-    }
-
     public String getUid() {
         return mUid;
     }
 
     public void setUid(String uid) {
         this.mUid = uid;
-    }
-
-    public Folder getFolder() {
-        return mFolder;
     }
 
     public abstract String getSubject();

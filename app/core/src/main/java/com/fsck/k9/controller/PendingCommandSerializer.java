@@ -13,6 +13,7 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingDelete;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingEmptyTrash;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingExpunge;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingMarkAllAsRead;
+import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveAndMarkAsRead;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveOrCopy;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag;
 import com.squareup.moshi.JsonAdapter;
@@ -31,6 +32,8 @@ public class PendingCommandSerializer {
         HashMap<String, JsonAdapter<? extends PendingCommand>> adapters = new HashMap<>();
 
         adapters.put(MessagingControllerCommands.COMMAND_MOVE_OR_COPY, moshi.adapter(PendingMoveOrCopy.class));
+        adapters.put(MessagingControllerCommands.COMMAND_MOVE_AND_MARK_AS_READ,
+                moshi.adapter(PendingMoveAndMarkAsRead.class));
         adapters.put(MessagingControllerCommands.COMMAND_APPEND, moshi.adapter(PendingAppend.class));
         adapters.put(MessagingControllerCommands.COMMAND_EMPTY_TRASH, moshi.adapter(PendingEmptyTrash.class));
         adapters.put(MessagingControllerCommands.COMMAND_EXPUNGE, moshi.adapter(PendingExpunge.class));

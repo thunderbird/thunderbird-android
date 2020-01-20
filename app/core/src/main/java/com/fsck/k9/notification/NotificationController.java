@@ -3,7 +3,7 @@ package com.fsck.k9.notification;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.controller.MessageReference;
-import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 
 
@@ -61,7 +61,7 @@ public class NotificationController {
         sendFailedNotifications.clearSendFailedNotification(account);
     }
 
-    public void showFetchingMailNotification(Account account, Folder folder) {
+    public void showFetchingMailNotification(Account account, LocalFolder folder) {
         syncNotifications.showFetchingMailNotification(account, folder);
     }
 
