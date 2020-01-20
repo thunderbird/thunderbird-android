@@ -25,7 +25,7 @@ dependencies {
     testImplementation "junit:junit:${versions.junit}"
     testImplementation "com.google.truth:truth:${versions.truth}"
     testImplementation "org.mockito:mockito-core:${versions.mockito}"
-    testImplementation "com.nhaarman:mockito-kotlin:${versions.mockitoKotlin}"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:${versions.mockitoKotlin}"
     testImplementation "org.jdom:jdom2:2.0.6"
     testImplementation "org.koin:koin-test:${versions.koin}"
 

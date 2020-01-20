@@ -5,8 +5,8 @@ import com.fsck.k9.Account
 import com.fsck.k9.mailstore.MigrationsHelper
 import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.storage.RobolectricTest
-import com.nhaarman.mockito_kotlin.doReturn
-import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.mock
 import java.io.ByteArrayInputStream
 import org.apache.commons.io.IOUtils
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream

@@ -27,7 +27,7 @@ import com.fsck.k9.mail.internet.TextBody
 import com.fsck.k9.message.MessageBuilder.Callback
 import com.fsck.k9.message.quote.InsertableHtmlContent
 import com.fsck.k9.view.RecipientSelectView
-import com.nhaarman.mockito_kotlin.anyOrNull
+import com.nhaarman.mockitokotlin2.anyOrNull
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.OutputStream

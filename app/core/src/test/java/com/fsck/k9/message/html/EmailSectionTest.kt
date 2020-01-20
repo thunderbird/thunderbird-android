@@ -45,7 +45,7 @@ class EmailSectionTest {
     fun subSequence() {
         val section = "[ One][ Two][ Three]".asEmailSection()
 
-        assertThat(section.subSequence(0, 11)).isSameAs(section)
+        assertThat(section.subSequence(0, 11)).isSameInstanceAs(section)
         assertThat(section.subSequence(0, 3).asString()).isEqualTo("One")
         assertThat(section.subSequence(0, 2).asString()).isEqualTo("On")
         assertThat(section.subSequence(1, 3).asString()).isEqualTo("ne")
