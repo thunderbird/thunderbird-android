@@ -544,7 +544,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         super.onPause();
 
         localBroadcastManager.unregisterReceiver(cacheBroadcastReceiver);
-        activityListener.onPause(getActivity());
         messagingController.removeListener(activityListener);
     }
 
@@ -563,7 +562,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
         localBroadcastManager.registerReceiver(cacheBroadcastReceiver, cacheIntentFilter);
-        activityListener.onResume(getActivity());
         messagingController.addListener(activityListener);
 
         //Cancel pending new mail notifications when we open an account
