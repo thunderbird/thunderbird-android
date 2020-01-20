@@ -291,7 +291,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Næ í upplýsingar um aðgang\u2026</string>
   <string name="account_setup_check_settings_check_incoming_msg">Athuga stillingar inn-póstþjónsins\u2026</string>
-  <string name="account_setup_check_settings_check_outgoing_msg">Athuga stillingar út-póstþjónsins\u2026</string>
+  <string name="account_setup_check_settings_check_outgoing_msg">Athuga stillingar sendinga-póstþjónsins\u2026</string>
   <string name="account_setup_check_settings_authenticate">Auðkenni\u2026</string>
   <string name="account_setup_check_settings_fetch">Næ í stillingar aðgangs\u2026</string>
   <string name="account_setup_check_settings_canceling_msg">Hætti við\u2026</string>
@@ -349,7 +349,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_setup_incoming_webdav_auth_path_hint">Valkvætt</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Samnefni pósthólfs</string>
   <string name="account_setup_incoming_webdav_mailbox_path_hint">Valkvætt</string>
-  <string name="account_setup_outgoing_title">Stillingar út-póstþjóns</string>
+  <string name="account_setup_outgoing_title">Stillingar sendinga-póstþjóns</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP-þjónn</string>
   <string name="account_setup_outgoing_port_label">Gátt</string>
   <string name="account_setup_outgoing_security_label">Öryggi</string>
@@ -553,7 +553,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="folder_settings_folder_notify_mode_inherited">Sami og ýtingarflokkur</string>
   <string name="account_settings_incoming_label">Inn-póstþjónn</string>
   <string name="account_settings_incoming_summary">Stilla móttöku-póstþjón</string>
-  <string name="account_settings_outgoing_label">Út-póstþjónn</string>
+  <string name="account_settings_outgoing_label">Sendinga-póstþjónn</string>
   <string name="account_settings_outgoing_summary">Stilla sendinga-póstþjón (SMTP)</string>
   <string name="account_settings_description_label">Nafn aðgangsins</string>
   <string name="account_settings_name_label">Nafnið þitt</string>
@@ -682,6 +682,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="volume_navigation_title">Flakk með hljóðstyrkshnöppum</string>
   <string name="volume_navigation_message">Í skilaboðasýnum</string>
   <string name="volume_navigation_list">Í listasýnum</string>
+  <string name="hide_special_accounts_title">Fela sameinað innhólf</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- Ólesið</string>
   <string name="search_all_messages_title">Öll skilaboð</string>
@@ -770,9 +771,28 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="settings_export_success_generic">Tókst að flytja út stillingar</string>
   <string name="settings_export_failure">Mistókst að flytja út stillingar</string>
   <string name="settings_import_title">Flytja inn stillingar</string>
+  <string name="settings_import_pick_document_button">Velja skrá</string>
   <string name="settings_import_button">Flytja inn</string>
+  <string name="settings_import_success_generic">Tókst að flytja inn stillingar</string>
+  <string name="settings_import_password_required"> Settu inn lykilorðin</string>
+  <string name="settings_import_failure">Mistókst að flytja inn stillingar</string>
+  <string name="settings_import_read_failure">Mistókst að lesa stillingaskrá</string>
+  <string name="settings_import_partial_failure">Mistókst að flytja inn sumar stillingar</string>
+  <string name="settings_import_status_success">Innflutningur tókst</string>
+  <string name="settings_import_status_password_required">Lykilorðs er krafist</string>
+  <string name="settings_import_status_not_imported">Ekki flutt inn</string>
+  <string name="settings_import_status_error">Innflutningur mistókst</string>
+  <string name="settings_import_later_button">Síðar</string>
   <string name="settings_import">Flytja inn stillingar</string>
   <string name="settings_importing">Flytja inn stillingar…</string>
+  <plurals name="settings_import_password_prompt">
+    <item quantity="one">Til að geta notað aðganginn \"<xliff:g id="account">%s</xliff:g>\" verður þú að gefa upp lykilorðið á þjóninum.</item>
+    <item quantity="other">Til að geta notað aðganginn \"<xliff:g id="account">%s</xliff:g>\" verður þú að gefa upp lykilorðin á þjóninum.</item>
+  </plurals>
+  <string name="settings_import_incoming_server_password_hint">Lykilorð móttöku-póstþjóns</string>
+  <string name="settings_import_outgoing_server_password_hint">Lykilorð sendinga-póstþjóns</string>
+  <string name="settings_import_use_same_password_for_outgoing_server">Nota sama lykilorð fyrir sendinga-póstþjóninn</string>
+  <string name="server_name_format">Heiti póstþjóns: <xliff:g id="hostname">%s</xliff:g></string>
   <string name="unread_widget_select_account">Sýna fjölda ólesins fyrir…</string>
   <string name="unread_widget_account_title">Aðgangur</string>
   <string name="unread_widget_account_summary">Aðgangurinn sem birting fjöldi ólesinna skilaboða tilheyrir</string>

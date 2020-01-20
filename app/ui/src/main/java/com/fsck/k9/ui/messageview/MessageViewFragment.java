@@ -33,7 +33,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.activity.ChooseFolder;
+import com.fsck.k9.ui.choosefolder.ChooseFolderActivity;
 import com.fsck.k9.activity.MessageLoaderHelper;
 import com.fsck.k9.activity.MessageLoaderHelper.MessageLoaderCallbacks;
 import com.fsck.k9.activity.MessageLoaderHelperFactory;
@@ -419,13 +419,14 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         onRefile(mAccount.getSpamFolder());
     }
 
-    private void startRefileActivity(int activity) {
-        Intent intent = new Intent(getActivity(), ChooseFolder.class);
-        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, mAccount.getUuid());
-        intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, mMessageReference.getFolderServerId());
-        intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, mAccount.getLastSelectedFolder());
-        intent.putExtra(ChooseFolder.EXTRA_MESSAGE, mMessageReference.toIdentityString());
-        startActivityForResult(intent, activity);
+    private void startRefileActivity(int requestCode) {
+        String accountUuid = mAccount.getUuid();
+        String currentFolder = mMessageReference.getFolderServerId();
+        String scrollToFolder = mAccount.getLastSelectedFolder();
+        Intent intent = ChooseFolderActivity.buildLaunchIntent(requireActivity(), accountUuid, currentFolder,
+                scrollToFolder, false, mMessageReference);
+
+        startActivityForResult(intent, requestCode);
     }
 
     public void onPendingIntentResult(int requestCode, int resultCode, Intent data) {
@@ -463,8 +464,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                     return;
                 }
 
-                String destFolder = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
-                String messageReferenceString = data.getStringExtra(ChooseFolder.EXTRA_MESSAGE);
+                String destFolder = data.getStringExtra(ChooseFolderActivity.RESULT_SELECTED_FOLDER);
+                String messageReferenceString = data.getStringExtra(ChooseFolderActivity.RESULT_MESSAGE_REFERENCE);
                 MessageReference ref = MessageReference.parse(messageReferenceString);
                 if (mMessageReference.equals(ref)) {
                     mAccount.setLastSelectedFolder(destFolder);

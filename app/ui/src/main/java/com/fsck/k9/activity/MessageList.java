@@ -117,6 +117,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         intent.putExtra(EXTRA_SEARCH, ParcelableUtil.marshall(search));
         intent.putExtra(EXTRA_NO_THREADING, noThreading);
 
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         if (clearTop) {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         }
@@ -131,6 +132,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         Intent intent = new Intent(context, MessageList.class);
         intent.setAction(ACTION_SHORTCUT);
         intent.putExtra(EXTRA_SPECIAL_FOLDER, specialFolder);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
@@ -150,6 +152,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     public static Intent actionDisplayMessageIntent(Context context,
             MessageReference messageReference) {
         Intent intent = new Intent(context, MessageList.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(EXTRA_MESSAGE_REFERENCE, messageReference.toIdentityString());
         return intent;

@@ -32,21 +32,21 @@ public class MessagingControllerPushReceiver implements PushReceiver {
         this.context = context;
     }
 
-    public void messagesFlagsChanged(Folder folder, List<Message> messages) {
-        syncFolder(folder);
+    public void messagesFlagsChanged(String folderServerId, List<Message> messages) {
+        syncFolder(folderServerId);
     }
-    public void messagesArrived(Folder folder, List<Message> messages) {
-        syncFolder(folder);
+    public void messagesArrived(String folderServerId, List<Message> messages) {
+        syncFolder(folderServerId);
     }
-    public void messagesRemoved(Folder folder, List<Message> messages) {
-        syncFolder(folder);
+    public void messagesRemoved(String folderServerId, List<Message> messages) {
+        syncFolder(folderServerId);
     }
 
-    public void syncFolder(Folder folder) {
-        Timber.v("syncFolder(%s)", folder.getServerId());
+    public void syncFolder(String folderServerId) {
+        Timber.v("syncFolder(%s)", folderServerId);
 
         final CountDownLatch latch = new CountDownLatch(1);
-        controller.synchronizeMailbox(account, folder.getServerId(), new SimpleMessagingListener() {
+        controller.synchronizeMailbox(account, folderServerId, new SimpleMessagingListener() {
             @Override
             public void synchronizeMailboxFinished(Account account, String folderServerId,
             int totalMessagesInMailbox, int numNewMessages) {
@@ -58,13 +58,13 @@ public class MessagingControllerPushReceiver implements PushReceiver {
             String message) {
                 latch.countDown();
             }
-        }, folder);
+        });
 
-        Timber.v("syncFolder(%s) about to await latch release", folder.getServerId());
+        Timber.v("syncFolder(%s) about to await latch release", folderServerId);
 
         try {
             latch.await();
-            Timber.v("syncFolder(%s) got latch release", folder.getServerId());
+            Timber.v("syncFolder(%s) got latch release", folderServerId);
         } catch (Exception e) {
             Timber.e(e, "Interrupted while awaiting latch release");
         }

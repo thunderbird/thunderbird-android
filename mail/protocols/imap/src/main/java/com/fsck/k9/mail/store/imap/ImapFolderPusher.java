@@ -592,7 +592,7 @@ class ImapFolderPusher extends ImapFolder {
                     }
 
                     if (!messages.isEmpty()) {
-                        pushReceiver.messagesArrived(ImapFolderPusher.this, messages);
+                        pushReceiver.messagesArrived(getServerId(), messages);
                     }
                 }
             }
@@ -604,7 +604,7 @@ class ImapFolderPusher extends ImapFolder {
                 List<? extends Message> messageList = getMessages(messageSeqSet, true, null);
 
                 List<Message> messages = new ArrayList<>(messageList);
-                pushReceiver.messagesFlagsChanged(ImapFolderPusher.this, messages);
+                pushReceiver.messagesFlagsChanged(getServerId(), messages);
             } catch (Exception e) {
                 pushReceiver.pushError("Exception while processing Push untagged responses", e);
             }
@@ -637,7 +637,7 @@ class ImapFolderPusher extends ImapFolder {
                     messages.add(message);
                 }
 
-                pushReceiver.messagesRemoved(ImapFolderPusher.this, messages);
+                pushReceiver.messagesRemoved(getServerId(), messages);
             } catch (Exception e) {
                 Timber.e("Cannot remove EXPUNGEd messages");
             }
@@ -650,7 +650,7 @@ class ImapFolderPusher extends ImapFolder {
                 throw new MessagingException("Message count = -1 for idling");
             }
 
-            pushReceiver.syncFolder(ImapFolderPusher.this);
+            pushReceiver.syncFolder(getServerId());
         }
 
         private void notifyMessagesArrived(long startUid, long uidNext) {
@@ -666,7 +666,7 @@ class ImapFolderPusher extends ImapFolder {
                 messages.add(message);
             }
 
-            pushReceiver.messagesArrived(ImapFolderPusher.this, messages);
+            pushReceiver.messagesArrived(getServerId(), messages);
         }
 
         private long getOldUidNext() {

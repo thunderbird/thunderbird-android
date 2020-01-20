@@ -3,7 +3,6 @@ package com.fsck.k9.backend.api
 import com.fsck.k9.mail.BodyFactory
 import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Flag
-import com.fsck.k9.mail.Folder
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.Part
@@ -25,7 +24,7 @@ interface Backend {
     fun refreshFolderList()
 
     // TODO: Add a way to cancel the sync process
-    fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener, providedRemoteFolder: Folder<*>?)
+    fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener)
 
     @Throws(MessagingException::class)
     fun downloadMessage(syncConfig: SyncConfig, folderServerId: String, messageServerId: String)

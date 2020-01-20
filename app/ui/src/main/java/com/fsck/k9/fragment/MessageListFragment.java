@@ -57,7 +57,7 @@ import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.ActivityListener;
-import com.fsck.k9.activity.ChooseFolder;
+import com.fsck.k9.ui.choosefolder.ChooseFolderActivity;
 import com.fsck.k9.activity.FolderInfoHolder;
 import com.fsck.k9.activity.misc.ContactPicture;
 import com.fsck.k9.cache.EmailProviderCache;
@@ -915,7 +915,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                     return;
                 }
 
-                final String destFolder = data.getStringExtra(ChooseFolder.EXTRA_NEW_FOLDER);
+                final String destFolder = data.getStringExtra(ChooseFolderActivity.RESULT_SELECTED_FOLDER);
                 final List<MessageReference> messages = activeMessages;
 
                 if (destFolder != null) {
@@ -1685,7 +1685,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     /**
      * Helper method to manage the invocation of {@link #startActivityForResult(Intent, int)} for a
-     * folder operation ({@link ChooseFolder} activity), while saving a list of associated messages.
+     * folder operation ({@link ChooseFolderActivity} activity), while saving a list of associated messages.
      *
      * @param requestCode
      *         If {@code >= 0}, this code will be returned in {@code onActivityResult()} when the
@@ -1696,15 +1696,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private void displayFolderChoice(int requestCode, String sourceFolder,
             String accountUuid, String lastSelectedFolder,
             List<MessageReference> messages) {
-        Intent intent = new Intent(getActivity(), ChooseFolder.class);
-        intent.putExtra(ChooseFolder.EXTRA_ACCOUNT, accountUuid);
-        intent.putExtra(ChooseFolder.EXTRA_SEL_FOLDER, lastSelectedFolder);
-
-        if (sourceFolder == null) {
-            intent.putExtra(ChooseFolder.EXTRA_SHOW_CURRENT, "yes");
-        } else {
-            intent.putExtra(ChooseFolder.EXTRA_CUR_FOLDER, sourceFolder);
-        }
+        Intent intent = ChooseFolderActivity.buildLaunchIntent(requireContext(), accountUuid, sourceFolder,
+                lastSelectedFolder, false, null);
 
         // remember the selected messages for #onActivityResult
         activeMessages = messages;
@@ -2132,7 +2125,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     public void checkMail() {
         if (isSingleAccountMode() && isSingleFolderMode()) {
-            messagingController.synchronizeMailbox(account, folderServerId, activityListener, null);
+            messagingController.synchronizeMailbox(account, folderServerId, activityListener);
             messagingController.sendPendingMessages(account, activityListener);
         } else if (allAccounts) {
             messagingController.checkMail(context, null, true, true, activityListener);

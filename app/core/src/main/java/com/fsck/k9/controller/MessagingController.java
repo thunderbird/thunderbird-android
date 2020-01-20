@@ -667,7 +667,7 @@ public class MessagingController {
             if (localFolder.getVisibleLimit() > 0) {
                 localFolder.setVisibleLimit(localFolder.getVisibleLimit() + account.getDisplayCount());
             }
-            synchronizeMailbox(account, folder, listener, null);
+            synchronizeMailbox(account, folder, listener);
         } catch (MessagingException me) {
             throw new RuntimeException("Unable to set visible limit on folder", me);
         }
@@ -676,12 +676,11 @@ public class MessagingController {
     /**
      * Start background synchronization of the specified folder.
      */
-    public void synchronizeMailbox(final Account account, final String folder, final MessagingListener listener,
-            final Folder providedRemoteFolder) {
+    public void synchronizeMailbox(final Account account, final String folder, final MessagingListener listener) {
         putBackground("synchronizeMailbox", listener, new Runnable() {
             @Override
             public void run() {
-                synchronizeMailboxSynchronous(account, folder, listener, providedRemoteFolder);
+                synchronizeMailboxSynchronous(account, folder, listener);
             }
         });
     }
@@ -693,15 +692,12 @@ public class MessagingController {
      * TODO Break this method up into smaller chunks.
      */
     @VisibleForTesting
-    void synchronizeMailboxSynchronous(final Account account, final String folder, final MessagingListener listener,
-            Folder providedRemoteFolder) {
+    void synchronizeMailboxSynchronous(final Account account, final String folder, final MessagingListener listener) {
         Backend remoteMessageStore = getBackend(account);
-        syncFolder(account, folder, listener, providedRemoteFolder, remoteMessageStore);
+        syncFolder(account, folder, listener, remoteMessageStore);
     }
 
-    private void syncFolder(Account account, String folder, MessagingListener listener, Folder providedRemoteFolder,
-            Backend remoteMessageStore) {
-
+    private void syncFolder(Account account, String folder, MessagingListener listener, Backend remoteMessageStore) {
         Exception commandException = null;
         try {
             processPendingCommandsSynchronous(account);
@@ -718,7 +714,7 @@ public class MessagingController {
         SyncConfig syncConfig = createSyncConfig(account);
 
         ControllerSyncListener syncListener = new ControllerSyncListener(account, listener);
-        remoteMessageStore.sync(folder, syncConfig, syncListener, providedRemoteFolder);
+        remoteMessageStore.sync(folder, syncConfig, syncListener);
 
         if (commandException != null && !syncListener.syncFailed) {
             String rootMessage = getRootCauseMessage(commandException);
@@ -2582,7 +2578,7 @@ public class MessagingController {
                             }
                             showFetchingMailNotificationIfNecessary(account, folder);
                             try {
-                                synchronizeMailboxSynchronous(account, folder.getServerId(), listener, null);
+                                synchronizeMailboxSynchronous(account, folder.getServerId(), listener);
                             } finally {
                                 clearFetchingMailNotificationIfNecessary(account);
                             }
