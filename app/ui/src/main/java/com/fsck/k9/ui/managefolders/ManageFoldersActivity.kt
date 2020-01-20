@@ -14,10 +14,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.Preferences
-import com.fsck.k9.activity.ActivityListener
 import com.fsck.k9.activity.K9Activity
 import com.fsck.k9.activity.setup.FolderSettings
 import com.fsck.k9.controller.MessagingController
+import com.fsck.k9.controller.SimpleMessagingListener
 import com.fsck.k9.mailstore.DisplayFolder
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.folders.FolderIconProvider
@@ -41,7 +41,7 @@ class ManageFoldersActivity : K9Activity() {
     private lateinit var actionBar: ActionBar
     private lateinit var itemAdapter: ItemAdapter<FolderListItem>
 
-    private val activityListener = object : ActivityListener() {
+    private val messagingListener = object : SimpleMessagingListener() {
         override fun accountSizeChanged(account: Account, oldSize: Long, newSize: Long) {
             if (account == this@ManageFoldersActivity.account) {
                 runOnUiThread {
@@ -120,13 +120,13 @@ class ManageFoldersActivity : K9Activity() {
     }
 
     public override fun onPause() {
-        messagingController.removeListener(activityListener)
+        messagingController.removeListener(messagingListener)
         super.onPause()
     }
 
     public override fun onResume() {
         super.onResume()
-        messagingController.addListener(activityListener)
+        messagingController.addListener(messagingListener)
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
@@ -187,7 +187,7 @@ class ManageFoldersActivity : K9Activity() {
     }
 
     private fun refreshFolderList() {
-        messagingController.listFolders(account, true, activityListener)
+        messagingController.listFolders(account, true, messagingListener)
     }
 
     private fun compactAccount() {
