@@ -34,3 +34,17 @@ classes. Each class is colour-coded by its top-level project.
 ## Sending email
 
 ![send email sequence](SendEmail.png)
+
+# Running Unit Tests
+
+## System Requirements
+
+ * [Oracle Java SE SDK 1.8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+
+## Instructions
+
+Run at project folder path:
+
+```
+./gradlew assembleDebug testDebugUnitTest ktlintCheck
+```
