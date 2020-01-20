@@ -15,6 +15,7 @@ import org.koin.dsl.module
 val mainModule = module {
     single { Preferences.getPreferences(get()) }
     single { get<Context>().resources }
+    single { get<Context>().contentResolver }
     single { LocalStoreProvider() }
     single<PowerManager> { TracingPowerManager.getPowerManager(get()) }
     single { Contacts.getInstance(get()) }
@@ -24,4 +25,5 @@ val mainModule = module {
     single<TrustedSocketFactory> { DefaultTrustedSocketFactory(get(), get()) }
     single { Clock.INSTANCE }
     factory { ServerNameSuggester() }
+    factory { EmailAddressValidator() }
 }

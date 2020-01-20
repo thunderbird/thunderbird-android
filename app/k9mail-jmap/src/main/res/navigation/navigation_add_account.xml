@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_add_account"
+    app:startDestination="@id/addJmapAccountScreen">
+
+    <fragment
+        android:id="@+id/addJmapAccountScreen"
+        android:name="com.fsck.k9.ui.addaccount.AddAccountFragment"
+        android:label="@string/add_account_action"
+        tools:layout="@layout/fragment_add_account">
+
+        <action
+            android:id="@+id/action_addJmapAccountScreen_to_messageListScreen"
+            app:destination="@id/messageListScreen" />
+
+    </fragment>
+
+    <activity
+        android:id="@+id/messageListScreen"
+        android:name="com.fsck.k9.activity.MessageList"
+        tools:layout="@layout/message_list"/>
+
+</navigation>

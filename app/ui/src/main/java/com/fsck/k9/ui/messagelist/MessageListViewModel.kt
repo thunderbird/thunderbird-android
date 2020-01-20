@@ -1,21 +1,35 @@
 package com.fsck.k9.ui.messagelist
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
-import com.fsck.k9.Account
-import com.fsck.k9.ui.folders.FoldersLiveData
-import com.fsck.k9.ui.folders.FoldersLiveDataFactory
+import androidx.lifecycle.viewModelScope
 
-class MessageListViewModel(private val foldersLiveDataFactory: FoldersLiveDataFactory) : ViewModel() {
-    private var foldersLiveData: FoldersLiveData? = null
+class MessageListViewModel(private val messageListLiveDataFactory: MessageListLiveDataFactory) : ViewModel() {
+    private var currentMessageListLiveData: MessageListLiveData? = null
+    private val messageListLiveData = MediatorLiveData<List<MessageListItem>>()
 
-    fun getFolders(account: Account): FoldersLiveData {
-        val liveData = foldersLiveData
-        if (liveData != null && liveData.accountUuid == account.uuid) {
-            return liveData
+    fun getMessageListLiveData(): LiveData<List<MessageListItem>> {
+        return messageListLiveData
+    }
+
+    fun loadMessageList(config: MessageListConfig) {
+        if (currentMessageListLiveData?.config == config) return
+
+        removeCurrentMessageListLiveData()
+
+        val liveData = messageListLiveDataFactory.create(viewModelScope, config)
+        currentMessageListLiveData = liveData
+
+        messageListLiveData.addSource(liveData) { items ->
+            messageListLiveData.value = items
         }
+    }
 
-        return foldersLiveDataFactory.create(account).also {
-            foldersLiveData = it
+    private fun removeCurrentMessageListLiveData() {
+        currentMessageListLiveData?.let {
+            currentMessageListLiveData = null
+            messageListLiveData.removeSource(it)
         }
     }
 }

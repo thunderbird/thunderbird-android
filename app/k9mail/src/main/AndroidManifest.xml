@@ -132,21 +132,18 @@
             android:name=".activity.ChooseAccount"
             android:configChanges="locale"
             android:label="@string/choose_account_title"
-            android:noHistory="true"
-            android:theme="@style/Theme.K9Dialog"/>
+            android:noHistory="true" />
 
         <activity
             android:name=".ui.choosefolder.ChooseFolderActivity"
             android:configChanges="locale"
             android:label="@string/choose_folder_title"
-            android:noHistory="true"
-            android:theme="@style/Theme.K9Dialog"/>
+            android:noHistory="true" />
 
         <activity
             android:name=".activity.ChooseIdentity"
             android:configChanges="locale"
-            android:label="@string/choose_identity_title"
-            android:theme="@style/Theme.K9Dialog"/>
+            android:label="@string/choose_identity_title" />
 
         <activity
             android:name=".activity.ManageIdentities"

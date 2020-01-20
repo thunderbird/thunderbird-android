@@ -1,0 +1,50 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'org.jlleitschuh.gradle.ktlint'
+
+if (rootProject.testCoverage) {
+    apply plugin: 'jacoco'
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
+
+    api project(":backend:api")
+
+    implementation 'rs.ltt.jmap:jmap-client:0.2.2'
+    implementation "com.jakewharton.timber:timber:${versions.timber}"
+
+    testImplementation project(":mail:testing")
+    testImplementation "junit:junit:${versions.junit}"
+    testImplementation "org.mockito:mockito-core:${versions.mockito}"
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.2.1")
+}
+
+android {
+    compileSdkVersion buildConfig.compileSdk
+    buildToolsVersion buildConfig.buildTools
+
+    defaultConfig {
+        minSdkVersion buildConfig.minSdk
+    }
+
+    buildTypes {
+        debug {
+            testCoverageEnabled rootProject.testCoverage
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+        lintConfig file("$rootProject.projectDir/config/lint/lint.xml")
+    }
+
+    compileOptions {
+        sourceCompatibility javaVersion
+        targetCompatibility javaVersion
+    }
+
+    kotlinOptions {
+        jvmTarget = kotlinJvmVersion
+    }
+}

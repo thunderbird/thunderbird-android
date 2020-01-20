@@ -8,8 +8,6 @@ import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
@@ -19,9 +17,7 @@ import com.fsck.k9.mailstore.DisplayFolder
 import com.fsck.k9.mailstore.Folder
 import com.fsck.k9.ui.folders.FolderIconProvider
 import com.fsck.k9.ui.folders.FolderNameFormatter
-import com.fsck.k9.ui.folders.FoldersLiveData
-import com.fsck.k9.ui.messagelist.MessageListViewModel
-import com.fsck.k9.ui.messagelist.MessageListViewModelFactory
+import com.fsck.k9.ui.folders.FoldersViewModel
 import com.fsck.k9.ui.settings.SettingsActivity
 import com.mikepenz.iconics.IconicsColor
 import com.mikepenz.iconics.IconicsDrawable
@@ -39,10 +35,12 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IProfile
 import java.util.ArrayList
 import java.util.HashSet
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
 class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : KoinComponent {
+    private val viewModel: FoldersViewModel by parent.viewModel()
     private val folderNameFormatter: FolderNameFormatter by inject()
     private val preferences: Preferences by inject()
     private val themeManager: ThemeManager by inject()
@@ -57,11 +55,6 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private var accentColor: Int = 0
     private var selectedColor: Int = 0
     private var openedFolderServerId: String? = null
-
-    private var foldersLiveData: FoldersLiveData? = null
-    private val foldersObserver = Observer<List<DisplayFolder>> { folders ->
-        setUserFolders(folders)
-    }
 
     val layout: DrawerLayout
         get() = drawer.drawerLayout
@@ -81,6 +74,10 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 .build()
 
         addFooterItems()
+
+        viewModel.getFolderListLiveData().observe(parent) { folders ->
+            setUserFolders(folders)
+        }
     }
 
     private fun buildAccountHeader(): AccountHeader {
@@ -192,21 +189,11 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
             accountHeader.setActiveProfile((account.accountNumber + 1 shl DRAWER_ACCOUNT_SHIFT).toLong())
             accountHeader.headerBackgroundView.setColorFilter(account.chipColor, PorterDuff.Mode.MULTIPLY)
-            val viewModelProvider = ViewModelProviders.of(parent, MessageListViewModelFactory())
-            val viewModel = viewModelProvider.get(MessageListViewModel::class.java)
 
-            removeFoldersObserver()
-            foldersLiveData = viewModel.getFolders(account).apply {
-                observe(parent, foldersObserver)
-            }
+            viewModel.loadFolders(account)
 
             updateFooterItems()
         }
-    }
-
-    private fun removeFoldersObserver() {
-        foldersLiveData?.removeObserver(foldersObserver)
-        foldersLiveData = null
     }
 
     private fun updateFooterItems() {
@@ -300,7 +287,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         selectedColor = 0
         accountHeader.setActiveProfile(DRAWER_ID_UNIFIED_INBOX)
         accountHeader.headerBackgroundView.setColorFilter(0xFFFFFFFFL.toInt(), PorterDuff.Mode.MULTIPLY)
-        removeFoldersObserver()
+        viewModel.stopLoadingFolders()
         clearUserFolders()
         updateFooterItems()
     }
