@@ -39,8 +39,6 @@ public interface MessagingListener {
     void sendPendingMessagesCompleted(Account account);
     void sendPendingMessagesFailed(Account account);
 
-    void emptyTrashCompleted(Account account);
-
     void folderStatusChanged(Account account, String folderServerId, int unreadMessageCount);
     void systemStatusChanged();
 

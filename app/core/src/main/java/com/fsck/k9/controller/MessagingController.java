@@ -2198,7 +2198,8 @@ public class MessagingController {
                 LocalFolder localFolder = null;
                 try {
                     LocalStore localStore = localStoreProvider.getInstance(account);
-                    localFolder = localStore.getFolder(account.getTrashFolder());
+                    String trashFolderServerId = account.getTrashFolder();
+                    localFolder = localStore.getFolder(trashFolderServerId);
                     localFolder.open();
 
                     boolean isTrashLocalOnly = isTrashLocalOnly(account);
@@ -2209,7 +2210,7 @@ public class MessagingController {
                     }
 
                     for (MessagingListener l : getListeners()) {
-                        l.emptyTrashCompleted(account);
+                        l.folderStatusChanged(account, trashFolderServerId, 0);
                     }
 
                     if (!isTrashLocalOnly) {
