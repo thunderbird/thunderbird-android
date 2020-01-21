@@ -5,7 +5,7 @@ import com.fsck.k9.crypto.EncryptionExtractor
 import com.fsck.k9.preferences.InMemoryStoragePersister
 import com.fsck.k9.preferences.StoragePersister
 import com.fsck.k9.storage.storageModule
-import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockitokotlin2.mock
 import org.koin.dsl.module
 
 class TestApp : Application() {

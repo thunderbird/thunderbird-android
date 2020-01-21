@@ -1,6 +1,6 @@
 package com.fsck.k9
 
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockitokotlin2.whenever
 import java.util.Calendar
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
