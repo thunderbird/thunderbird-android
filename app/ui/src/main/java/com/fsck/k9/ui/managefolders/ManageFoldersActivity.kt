@@ -187,7 +187,7 @@ class ManageFoldersActivity : K9Activity() {
     }
 
     private fun refreshFolderList() {
-        messagingController.listFolders(account, true, messagingListener)
+        messagingController.refreshFolderList(account)
     }
 
     private fun compactAccount() {

@@ -180,7 +180,7 @@ class ChooseFolderActivity : K9Activity() {
     }
 
     private fun refreshFolderList() {
-        messagingController.listFolders(account, true, null)
+        messagingController.refreshFolderList(account)
     }
 
     private fun setDisplayMode(displayMode: FolderMode) {

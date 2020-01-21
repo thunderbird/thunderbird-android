@@ -9,17 +9,11 @@ import android.content.Context;
 import com.fsck.k9.Account;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 
 
 public interface MessagingListener {
     void accountSizeChanged(Account account, long oldSize, long newSize);
-
-    void listFoldersStarted(Account account);
-    void listFolders(Account account, List<LocalFolder> folders);
-    void listFoldersFinished(Account account);
-    void listFoldersFailed(Account account, String message);
 
     void listLocalMessagesAddMessages(Account account, String folderServerId, List<LocalMessage> messages);
     void listLocalMessagesFinished();

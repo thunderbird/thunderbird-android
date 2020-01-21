@@ -25,7 +25,7 @@ class AccountActivator(
         Core.setServicesEnabled(context)
 
         // Get list of folders from remote server
-        messagingController.listFolders(account, true, null)
+        messagingController.refreshFolderList(account)
     }
 
     private fun setAccountPasswords(

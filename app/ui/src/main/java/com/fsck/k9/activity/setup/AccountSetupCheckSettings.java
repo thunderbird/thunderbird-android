@@ -503,7 +503,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
             if (isWebDavAccount()) {
                 publishProgress(R.string.account_setup_check_settings_fetch);
             }
-            MessagingController.getInstance(getApplication()).listFoldersSynchronous(account, true, null);
+            MessagingController.getInstance(getApplication()).refreshFolderListSynchronous(account);
             MessagingController.getInstance(getApplication())
                     .synchronizeMailbox(account, account.getInboxFolder(), null);
         }
