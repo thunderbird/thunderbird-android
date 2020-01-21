@@ -31,7 +31,6 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
 
             Memory syncStarted = null;
             Memory sendStarted = null;
-            Memory processingStarted = null;
 
             for (Memory memory : memories.values()) {
 
@@ -76,17 +75,6 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
                             break;
                     }
                 }
-                if (memory.processingState != null) {
-                    switch (memory.processingState) {
-                        case STARTED:
-                            processingStarted = memory;
-                            break;
-                        case FINISHED:
-                        case FAILED:
-                            other.pendingCommandsFinished(memory.account);
-                            break;
-                    }
-                }
             }
             Memory somethingStarted = null;
             if (syncStarted != null) {
@@ -97,17 +85,6 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
             if (sendStarted != null) {
                 other.sendPendingMessagesStarted(sendStarted.account);
                 somethingStarted = sendStarted;
-            }
-            if (processingStarted != null) {
-                other.pendingCommandsProcessing(processingStarted.account);
-                if (processingStarted.processingCommandTitle != null) {
-                    other.pendingCommandStarted(processingStarted.account,
-                            processingStarted.processingCommandTitle);
-
-                } else {
-                    other.pendingCommandCompleted(processingStarted.account, null);
-                }
-                somethingStarted = processingStarted;
             }
             if (somethingStarted != null && somethingStarted.folderTotal > 0) {
                 other.synchronizeMailboxProgress(somethingStarted.account, somethingStarted.folderServerId,
@@ -180,33 +157,6 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
         memory.folderTotal = total;
     }
 
-
-    @Override
-    public synchronized void pendingCommandsProcessing(Account account) {
-        Memory memory = getMemory(account, null);
-        memory.processingState = MemorizingState.STARTED;
-        memory.folderCompleted = 0;
-        memory.folderTotal = 0;
-    }
-
-    @Override
-    public synchronized void pendingCommandsFinished(Account account) {
-        Memory memory = getMemory(account, null);
-        memory.processingState = MemorizingState.FINISHED;
-    }
-
-    @Override
-    public synchronized void pendingCommandStarted(Account account, String commandTitle) {
-        Memory memory = getMemory(account, null);
-        memory.processingCommandTitle = commandTitle;
-    }
-
-    @Override
-    public synchronized void pendingCommandCompleted(Account account, String commandTitle) {
-        Memory memory = getMemory(account, null);
-        memory.processingCommandTitle = null;
-    }
-
     private Memory getMemory(Account account, String folderServerId) {
         Memory memory = memories.get(getMemoryKey(account, folderServerId));
         if (memory == null) {
@@ -229,7 +179,6 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
         MemorizingState syncingState = null;
         MemorizingState sendingState = null;
         MemorizingState pushingState = null;
-        MemorizingState processingState = null;
         String failureMessage = null;
 
         int syncingTotalMessagesInMailbox;
@@ -237,7 +186,6 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
 
         int folderCompleted = 0;
         int folderTotal = 0;
-        String processingCommandTitle = null;
 
         Memory(Account account, String folderServerId) {
             this.account = account;

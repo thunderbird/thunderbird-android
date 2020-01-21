@@ -696,26 +696,12 @@ public class MessagingController {
         LocalStore localStore = localStoreProvider.getInstance(account);
         List<PendingCommand> commands = localStore.getPendingCommands();
 
-        int progress = 0;
-        int todo = commands.size();
-        if (todo == 0) {
-            return;
-        }
-
-        for (MessagingListener l : getListeners()) {
-            l.pendingCommandsProcessing(account);
-            l.synchronizeMailboxProgress(account, null, progress, todo);
-        }
-
         PendingCommand processingCommand = null;
         try {
             for (PendingCommand command : commands) {
                 processingCommand = command;
                 Timber.d("Processing pending command '%s'", command);
 
-                for (MessagingListener l : getListeners()) {
-                    l.pendingCommandStarted(account, command.getCommandName());
-                }
                 /*
                  * We specifically do not catch any exceptions here. If a command fails it is
                  * most likely due to a server or IO error and it must be retried before any
@@ -734,22 +720,12 @@ public class MessagingController {
                     } else {
                         throw me;
                     }
-                } finally {
-                    progress++;
-                    for (MessagingListener l : getListeners()) {
-                        l.synchronizeMailboxProgress(account, null, progress, todo);
-                        l.pendingCommandCompleted(account, command.getCommandName());
-                    }
                 }
             }
         } catch (MessagingException me) {
             notifyUserIfCertificateProblem(account, me, true);
             Timber.e(me, "Could not process command '%s'", processingCommand);
             throw me;
-        } finally {
-            for (MessagingListener l : getListeners()) {
-                l.pendingCommandsFinished(account);
-            }
         }
     }
 

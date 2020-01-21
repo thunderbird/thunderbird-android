@@ -124,22 +124,6 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     }
 
     @Override
-    public void pendingCommandStarted(Account account, String commandTitle) {
-    }
-
-    @Override
-    public void pendingCommandsProcessing(Account account) {
-    }
-
-    @Override
-    public void pendingCommandCompleted(Account account, String commandTitle) {
-    }
-
-    @Override
-    public void pendingCommandsFinished(Account account) {
-    }
-
-    @Override
     public void remoteSearchStarted(String folder) {
     }
 

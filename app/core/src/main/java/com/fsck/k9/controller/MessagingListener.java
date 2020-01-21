@@ -52,11 +52,6 @@ public interface MessagingListener {
     void loadAttachmentFinished(Account account, Message message, Part part);
     void loadAttachmentFailed(Account account, Message message, Part part, String reason);
 
-    void pendingCommandStarted(Account account, String commandTitle);
-    void pendingCommandsProcessing(Account account);
-    void pendingCommandCompleted(Account account, String commandTitle);
-    void pendingCommandsFinished(Account account);
-
     void remoteSearchStarted(String folder);
     void remoteSearchServerQueryComplete(String folderServerId, int numResults, int maxResults);
     void remoteSearchFinished(String folderServerId, int numResults, int maxResults, List<String> extraResults);
