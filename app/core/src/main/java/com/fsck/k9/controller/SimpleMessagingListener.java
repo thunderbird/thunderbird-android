@@ -104,10 +104,6 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     }
 
     @Override
-    public void messageDeleted(Account account, String folderServerId, String messageServerId) {
-    }
-
-    @Override
     public void messageUidChanged(Account account, String folderServerId, String oldUid, String newUid) {
     }
 

@@ -44,7 +44,6 @@ public interface MessagingListener {
     void folderStatusChanged(Account account, String folderServerId, int unreadMessageCount);
     void systemStatusChanged();
 
-    void messageDeleted(Account account, String folderServerId, String messageServerId);
     void messageUidChanged(Account account, String folderServerId, String oldUid, String newUid);
 
     void setPushActive(Account account, String folderServerId, boolean enabled);

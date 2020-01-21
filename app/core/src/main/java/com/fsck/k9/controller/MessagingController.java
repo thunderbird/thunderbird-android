@@ -2070,15 +2070,6 @@ public class MessagingController {
         LocalFolder localFolder = null;
         LocalFolder localTrashFolder = null;
         try {
-            //We need to make these callbacks before moving the messages to the trash
-            //as messages get a new UID after being moved
-            for (Message message : messages) {
-                String messageServerId = message.getUid();
-                for (MessagingListener l : getListeners(listener)) {
-                    l.messageDeleted(account, folder, messageServerId);
-                }
-            }
-
             List<Message> localOnlyMessages = new ArrayList<>();
             List<Message> syncedMessages = new ArrayList<>();
             List<String> syncedMessageUids = new ArrayList<>();

@@ -25,10 +25,6 @@ class MessageListWidgetUpdateListener(private val context: Context) : SimpleMess
         updateMailListWidget()
     }
 
-    override fun messageDeleted(account: Account, folderServerId: String, messageServerId: String) {
-        updateMailListWidget()
-    }
-
     override fun synchronizeMailboxNewMessage(account: Account, folderServerId: String, message: Message) {
         updateMailListWidget()
     }
