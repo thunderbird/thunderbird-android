@@ -10,6 +10,7 @@ import com.fsck.k9.Account
 import com.fsck.k9.Identity
 import com.fsck.k9.Preferences
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity
 import com.fsck.k9.ui.settings.account.AutocryptPreferEncryptPreference
 import com.takisoft.preferencex.PreferenceFragmentCompatMasterSwitch
 import com.takisoft.preferencex.PreferenceFragmentCompatMasterSwitch.OnMasterSwitchChangeListener
@@ -50,6 +51,21 @@ class OpenPgpSettingsIdentityFragment : PreferenceFragmentCompatMasterSwitch() {
         updateInfoViewState(masterSwitch.isChecked)
     }
 
+    override fun onPreferenceTreeClick(preference: Preference?): Boolean {
+        return when (preference!!.key) {
+            KEY_AUTOCRYPT_TRANSFER -> {
+                showAutocryptTransfer()
+                true
+            }
+            else -> super.onPreferenceTreeClick(preference)
+        }
+    }
+
+    private fun showAutocryptTransfer() {
+        val intent = AutocryptKeyTransferActivity.createIntent(requireContext(), account, identity)
+        startActivity(intent)
+    }
+
     private fun enableDisableMutualMode(checked: Boolean) {
         identity = identity.copy(openPgpModeMutual = checked)
         preferences.saveIdentity(account, identityIndex, identity)
@@ -80,6 +96,7 @@ class OpenPgpSettingsIdentityFragment : PreferenceFragmentCompatMasterSwitch() {
         const val KEY_CAT_DISABLED = "cat_disabled"
         const val KEY_FINGERPRINT = "openpgp_fingerprint"
         const val KEY_MUTUAL_MODE = "openpgp_mutual_mode"
+        const val KEY_AUTOCRYPT_TRANSFER = "autocrypt_transfer"
 
         const val ARGUMENT_IDENTITY = "identity"
         const val ARGUMENT_ACCOUNT_UUID = "account_uuid"

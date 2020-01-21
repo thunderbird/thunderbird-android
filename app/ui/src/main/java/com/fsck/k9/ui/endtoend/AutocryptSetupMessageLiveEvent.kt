@@ -2,7 +2,7 @@ package com.fsck.k9.ui.endtoend
 
 import android.app.PendingIntent
 import android.content.Intent
-import com.fsck.k9.Account
+import com.fsck.k9.Identity
 import com.fsck.k9.autocrypt.AutocryptTransferMessageCreator
 import com.fsck.k9.helper.SingleLiveEvent
 import com.fsck.k9.mail.Address
@@ -16,20 +16,19 @@ import java.io.ByteArrayOutputStream
 import java.io.InputStream
 
 class AutocryptSetupMessageLiveEvent(val messageCreator: AutocryptTransferMessageCreator) : SingleLiveEvent<AutocryptSetupMessage>() {
-    fun loadAutocryptSetupMessageAsync(openPgpApi: OpenPgpApi, account: Account) {
+    fun loadAutocryptSetupMessageAsync(openPgpApi: OpenPgpApi, identity: Identity) {
         GlobalScope.launch(Dispatchers.Main) {
             val setupMessage = async {
-                loadAutocryptSetupMessage(openPgpApi, account)
+                loadAutocryptSetupMessage(openPgpApi, identity)
             }
 
             value = setupMessage.await()
         }
     }
 
-    private fun loadAutocryptSetupMessage(openPgpApi: OpenPgpApi, account: Account): AutocryptSetupMessage {
-        // TODO this takes all identities for the account, is that what we want?
-        val keyIds = account.identities.mapNotNull { it.openPgpKey }.toLongArray()
-        val address = Address.parse(account.getIdentity(0).email)[0]
+    private fun loadAutocryptSetupMessage(openPgpApi: OpenPgpApi, identity: Identity): AutocryptSetupMessage {
+        val keyIds = arrayOf(identity.openPgpKey)
+        val address = Address.parse(identity.email)[0]
 
         val intent = Intent(OpenPgpApi.ACTION_AUTOCRYPT_KEY_TRANSFER)
         intent.putExtra(OpenPgpApi.EXTRA_KEY_IDS, keyIds)

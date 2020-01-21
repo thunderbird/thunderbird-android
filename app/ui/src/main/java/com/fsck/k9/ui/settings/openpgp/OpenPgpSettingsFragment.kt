@@ -46,18 +46,8 @@ class OpenPgpSettingsFragment : PreferenceFragmentCompat() {
                 showManageKeys()
                 true
             }
-            KEY_AUTOCRYPT_TRANSFER -> {
-                showAutocryptTransfer()
-                true
-            }
             else -> super.onPreferenceTreeClick(preference)
         }
-    }
-
-    private fun showAutocryptTransfer() {
-        // TODO: implement autocrypt transfer with ALL keys
-        val intent = AutocryptKeyTransferActivity.createIntent(requireContext(), "TODO")
-        startActivity(intent)
     }
 
     private fun showManageKeys() {
@@ -132,7 +122,6 @@ class OpenPgpSettingsFragment : PreferenceFragmentCompat() {
     companion object {
         const val KEY_CATEGORY_IDENTITIES = "openpgp_identities"
         const val KEY_MANAGE = "openpgp_manage"
-        const val KEY_AUTOCRYPT_TRANSFER = "autocrypt_transfer"
 
         fun create(rootKey: String? = null) = OpenPgpSettingsFragment().withArguments(ARG_PREFERENCE_ROOT to rootKey)
     }

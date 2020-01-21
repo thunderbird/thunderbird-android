@@ -19,6 +19,11 @@
     <PreferenceCategory>
 
         <Preference
+            android:key="autocrypt_transfer"
+            android:summary="@string/ac_transfer_setting_summary"
+            android:title="@string/ac_transfer_setting_title" />
+
+        <Preference
             android:key="openpgp_fingerprint"
             android:persistent="false"
             android:title="@string/openpgp_settings_identity_fingerprint" />

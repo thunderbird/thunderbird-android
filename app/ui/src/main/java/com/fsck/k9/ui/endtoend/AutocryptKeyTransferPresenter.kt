@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.fsck.k9.Account
+import com.fsck.k9.Identity
 import com.fsck.k9.Preferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -22,6 +23,7 @@ class AutocryptKeyTransferPresenter internal constructor(
 ) {
 
     private lateinit var account: Account
+    private lateinit var identity: Identity
     private lateinit var showTransferCodePi: PendingIntent
 
     init {
@@ -29,15 +31,16 @@ class AutocryptKeyTransferPresenter internal constructor(
         viewModel.autocryptSetupTransferLiveEvent.observe(lifecycleOwner, Observer { pi -> onLoadedAutocryptSetupTransfer(pi) })
     }
 
-    fun initFromIntent(accountUuid: String?) {
-        if (accountUuid == null) {
+    fun initFromIntent(accountUuid: String?, selectedIdentity: Identity?) {
+        if (accountUuid == null || selectedIdentity == null || selectedIdentity.email == null) {
             view.finishWithInvalidAccountError()
             return
         }
 
         account = preferences.getAccount(accountUuid)
+        identity = selectedIdentity
 
-        view.setAddress(account.email)
+        view.setAddress(selectedIdentity.email!!)
 
         viewModel.autocryptSetupTransferLiveEvent.recall()
     }
@@ -53,7 +56,7 @@ class AutocryptKeyTransferPresenter internal constructor(
             view.uxDelay()
             view.setLoadingStateGenerating()
 
-            viewModel.autocryptSetupMessageLiveEvent.loadAutocryptSetupMessageAsync(openPgpApi, account)
+            viewModel.autocryptSetupMessageLiveEvent.loadAutocryptSetupMessageAsync(openPgpApi, identity)
         }
     }
 

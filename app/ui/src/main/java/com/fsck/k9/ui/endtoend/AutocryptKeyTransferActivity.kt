@@ -10,6 +10,8 @@ import android.transition.TransitionInflater
 import android.transition.TransitionManager
 import android.view.MenuItem
 import android.view.View
+import com.fsck.k9.Account
+import com.fsck.k9.Identity
 import com.fsck.k9.activity.K9Activity
 import com.fsck.k9.finishWithErrorToast
 import com.fsck.k9.ui.R
@@ -28,14 +30,15 @@ class AutocryptKeyTransferActivity : K9Activity() {
         super.onCreate(savedInstanceState)
         setLayout(R.layout.crypto_key_transfer)
 
-        val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT)
+        val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT_UUID)
+        val identity = intent.getParcelableExtra<Identity>(EXTRA_IDENTITY)
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         transferSendButton.setOnClickListener { presenter.onClickTransferSend() }
         transferButtonShowCode.setOnClickListener { presenter.onClickShowTransferCode() }
 
-        presenter.initFromIntent(accountUuid)
+        presenter.initFromIntent(accountUuid, identity)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -152,12 +155,14 @@ class AutocryptKeyTransferActivity : K9Activity() {
     }
 
     companion object {
-        private const val EXTRA_ACCOUNT = "account"
+        private const val EXTRA_ACCOUNT_UUID = "accountUuid"
+        private const val EXTRA_IDENTITY = "identity"
         private const val UX_DELAY_MS = 1200L
 
-        fun createIntent(context: Context, accountUuid: String): Intent {
+        fun createIntent(context: Context, account: Account, identity: Identity): Intent {
             val intent = Intent(context, AutocryptKeyTransferActivity::class.java)
-            intent.putExtra(EXTRA_ACCOUNT, accountUuid)
+            intent.putExtra(EXTRA_ACCOUNT_UUID, account.uuid)
+            intent.putExtra(EXTRA_IDENTITY, identity)
             return intent
         }
     }
