@@ -12,3 +12,7 @@ fun LocalSearch.getAccounts(preferences: Preferences): List<Account> {
         accounts.filter { it.uuid in searchAccountUuids }
     }
 }
+
+fun LocalSearch.getAccountUuids(preferences: Preferences): List<String> {
+    return getAccounts(preferences).map { it.uuid }
+}
