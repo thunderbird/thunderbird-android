@@ -368,110 +368,16 @@ public class MessagingController {
         cache.removeValueForThreads(messageIds, columnName);
     }
 
-
-    /**
-     * Lists folders that are available locally and remotely. This method calls
-     * listFoldersCallback for local folders before it returns, and then for
-     * remote folders at some later point. If there are no local folders
-     * includeRemote is forced by this method. This method should be called from
-     * a Thread as it may take several seconds to list the local folders.
-     * TODO this needs to cache the remote folder list
-     */
-    public void listFolders(final Account account, final boolean refreshRemote, final MessagingListener listener) {
-        threadPool.execute(new Runnable() {
-            @Override
-            public void run() {
-                listFoldersSynchronous(account, refreshRemote, listener);
-            }
-        });
+    public void refreshFolderList(final Account account) {
+        put("refreshFolderList", null, () -> refreshFolderListSynchronous(account));
     }
 
-    /**
-     * Lists folders that are available locally and remotely. This method calls
-     * listFoldersCallback for local folders before it returns, and then for
-     * remote folders at some later point. If there are no local folders
-     * includeRemote is forced by this method. This method is called in the
-     * foreground.
-     * TODO this needs to cache the remote folder list
-     */
-    public void listFoldersSynchronous(final Account account, final boolean refreshRemote,
-            final MessagingListener listener) {
-        for (MessagingListener l : getListeners(listener)) {
-            l.listFoldersStarted(account);
-        }
-        List<LocalFolder> localFolders = null;
-        if (!account.isAvailable(context)) {
-            Timber.i("not listing folders of unavailable account");
-        } else {
-            try {
-                LocalStore localStore = localStoreProvider.getInstance(account);
-                localFolders = localStore.getPersonalNamespaces(false);
-
-                if (refreshRemote || localFolders.isEmpty()) {
-                    doRefreshRemote(account, listener);
-                    return;
-                }
-
-                for (MessagingListener l : getListeners(listener)) {
-                    l.listFolders(account, localFolders);
-                }
-            } catch (Exception e) {
-                for (MessagingListener l : getListeners(listener)) {
-                    l.listFoldersFailed(account, e.getMessage());
-                }
-
-                Timber.e(e);
-                return;
-            } finally {
-                if (localFolders != null) {
-                    for (LocalFolder localFolder : localFolders) {
-                        closeFolder(localFolder);
-                    }
-                }
-            }
-        }
-
-        for (MessagingListener l : getListeners(listener)) {
-            l.listFoldersFinished(account);
-        }
-    }
-
-    private void doRefreshRemote(final Account account, final MessagingListener listener) {
-        put("doRefreshRemote", listener, new Runnable() {
-            @Override
-            public void run() {
-                refreshRemoteSynchronous(account, listener);
-            }
-        });
-    }
-
-    @VisibleForTesting
-    void refreshRemoteSynchronous(final Account account, final MessagingListener listener) {
-        List<LocalFolder> localFolders = null;
+    public void refreshFolderListSynchronous(Account account) {
         try {
             Backend backend = getBackend(account);
             backend.refreshFolderList();
-
-            LocalStore localStore = localStoreProvider.getInstance(account);
-            localFolders = localStore.getPersonalNamespaces(false);
-
-            for (MessagingListener l : getListeners(listener)) {
-                l.listFolders(account, localFolders);
-            }
-            for (MessagingListener l : getListeners(listener)) {
-                l.listFoldersFinished(account);
-            }
         } catch (Exception e) {
             Timber.e(e);
-            for (MessagingListener l : getListeners(listener)) {
-                l.listFoldersFailed(account, "");
-            }
-        } finally {
-            if (localFolders != null) {
-                for (LocalFolder localFolder : localFolders) {
-                    closeFolder(localFolder);
-                }
-            }
         }
     }
 
@@ -2380,8 +2286,6 @@ public class MessagingController {
         } finally {
             closeFolder(localFolder);
         }
-
-        listFoldersSynchronous(account, false, listener);
     }
 
 

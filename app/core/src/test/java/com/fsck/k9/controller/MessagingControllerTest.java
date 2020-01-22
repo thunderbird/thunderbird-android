@@ -55,7 +55,6 @@ import org.mockito.stubbing.Answer;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.shadows.ShadowLog;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Matchers.any;
@@ -103,8 +102,6 @@ public class MessagingControllerTest extends K9RobolectricTest {
     private NotificationController notificationController;
     @Mock
     private NotificationStrategy notificationStrategy;
-    @Captor
-    private ArgumentCaptor<List<LocalFolder>> localFolderListCaptor;
     @Captor
     private ArgumentCaptor<FetchProfile> fetchProfileCaptor;
     @Captor
@@ -199,65 +196,9 @@ public class MessagingControllerTest extends K9RobolectricTest {
         verify(localFolder, atLeastOnce()).close();
     }
 
-    @Test()
-    public void clearFolderSynchronous_shouldListFolders() throws MessagingException {
-        controller.clearFolderSynchronous(account, FOLDER_NAME, listener);
-
-        verify(listener, atLeastOnce()).listFoldersStarted(account);
-    }
-
-    @Test
-    public void listFoldersSynchronous_shouldNotifyTheListenerListingStarted() throws MessagingException {
-        List<LocalFolder> folders = Collections.singletonList(localFolder);
-        when(localStore.getPersonalNamespaces(false)).thenReturn(folders);
-
-        controller.listFoldersSynchronous(account, false, listener);
-
-        verify(listener).listFoldersStarted(account);
-    }
-
-    @Test
-    public void listFoldersSynchronous_shouldNotifyTheListenerOfTheListOfFolders() throws MessagingException {
-        List<LocalFolder> folders = Collections.singletonList(localFolder);
-        when(localStore.getPersonalNamespaces(false)).thenReturn(folders);
-
-        controller.listFoldersSynchronous(account, false, listener);
-
-        verify(listener).listFolders(eq(account), localFolderListCaptor.capture());
-        assertEquals(folders, localFolderListCaptor.getValue());
-    }
-
-    @Test
-    public void listFoldersSynchronous_shouldNotifyFailureOnException() throws MessagingException {
-        when(localStore.getPersonalNamespaces(false)).thenThrow(new MessagingException("Test"));
-
-        controller.listFoldersSynchronous(account, true, listener);
-
-        verify(listener).listFoldersFailed(account, "Test");
-    }
-
-    @Test
-    public void listFoldersSynchronous_shouldNotNotifyFinishedAfterFailure() throws MessagingException {
-        when(localStore.getPersonalNamespaces(false)).thenThrow(new MessagingException("Test"));
-
-        controller.listFoldersSynchronous(account, true, listener);
-
-        verify(listener, never()).listFoldersFinished(account);
-    }
-
-    @Test
-    public void listFoldersSynchronous_shouldNotifyFinishedAfterSuccess() throws MessagingException {
-        List<LocalFolder> folders = Collections.singletonList(localFolder);
-        when(localStore.getPersonalNamespaces(false)).thenReturn(folders);
-
-        controller.listFoldersSynchronous(account, false, listener);
-
-        verify(listener).listFoldersFinished(account);
-    }
-
     @Test
     public void refreshRemoteSynchronous_shouldCallBackend() throws MessagingException {
-        controller.refreshRemoteSynchronous(account, listener);
+        controller.refreshFolderListSynchronous(account);
 
         verify(backend).refreshFolderList();
     }
