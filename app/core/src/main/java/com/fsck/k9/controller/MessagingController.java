@@ -2,7 +2,6 @@ package com.fsck.k9.controller;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -88,7 +87,6 @@ import com.fsck.k9.power.TracingPowerManager;
 import com.fsck.k9.power.TracingPowerManager.TracingWakeLock;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.search.SearchAccount;
-import com.fsck.k9.search.SearchSpecification;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import timber.log.Timber;
@@ -96,6 +94,7 @@ import timber.log.Timber;
 import static com.fsck.k9.K9.MAX_SEND_ATTEMPTS;
 import static com.fsck.k9.helper.ExceptionHelper.getRootCauseMessage;
 import static com.fsck.k9.mail.Flag.X_REMOTE_COPY_STARTED;
+import static com.fsck.k9.search.LocalSearchExtensions.getAccountsFromLocalSearch;
 
 
 /**
@@ -395,16 +394,10 @@ public class MessagingController {
 
     @VisibleForTesting
     void searchLocalMessagesSynchronous(final LocalSearch search, final MessagingListener listener) {
-        final Set<String> uuidSet = new HashSet<>(Arrays.asList(search.getAccountUuids()));
-        List<Account> accounts = Preferences.getPreferences(context).getAccounts();
-        boolean allAccounts = uuidSet.contains(SearchSpecification.ALL_ACCOUNTS);
+        Preferences preferences = Preferences.getPreferences(context);
+        List<Account> searchAccounts = getAccountsFromLocalSearch(search, preferences);
 
-        // for every account we want to search do the query in the localstore
-        for (final Account account : accounts) {
-
-            if (!allAccounts && !uuidSet.contains(account.getUuid())) {
-                continue;
-            }
+        for (final Account account : searchAccounts) {
 
             // Collecting statistics of the search result
             MessageRetrievalListener<LocalMessage> retrievalListener = new MessageRetrievalListener<LocalMessage>() {

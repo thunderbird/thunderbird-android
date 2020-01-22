@@ -207,7 +207,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
     public void searchLocalMessagesSynchronous_shouldCallSearchForMessagesOnLocalStore()
             throws Exception {
         setAccountsInPreferences(Collections.singletonMap(ACCOUNT_UUID, account));
-        when(search.getAccountUuids()).thenReturn(new String[]{"allAccounts"});
+        when(search.searchAllAccounts()).thenReturn(true);
+        when(search.getAccountUuids()).thenReturn(new String[0]);
 
         controller.searchLocalMessagesSynchronous(search, listener);
 
@@ -220,7 +221,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
         setAccountsInPreferences(Collections.singletonMap(ACCOUNT_UUID, account));
         LocalMessage localMessage = mock(LocalMessage.class);
         when(localMessage.getFolder()).thenReturn(localFolder);
-        when(search.getAccountUuids()).thenReturn(new String[]{"allAccounts"});
+        when(search.searchAllAccounts()).thenReturn(true);
+        when(search.getAccountUuids()).thenReturn(new String[0]);
         when(localStore.searchForMessages(nullable(MessageRetrievalListener.class), eq(search)))
                 .thenThrow(new MessagingException("Test"));
 

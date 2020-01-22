@@ -1,8 +1,10 @@
+@file:JvmName("LocalSearchExtensions")
 package com.fsck.k9.search
 
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
 
+@JvmName("getAccountsFromLocalSearch")
 fun LocalSearch.getAccounts(preferences: Preferences): List<Account> {
     val accounts = preferences.accounts
     return if (searchAllAccounts()) {

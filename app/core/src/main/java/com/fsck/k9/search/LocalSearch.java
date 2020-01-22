@@ -121,10 +121,6 @@ public class LocalSearch implements SearchSpecification {
      * @param uuid Uuid of the account to be added.
      */
     public void addAccountUuid(String uuid) {
-        if (uuid.equals(ALL_ACCOUNTS)) {
-            mAccountUuids.clear();
-            return;
-        }
         mAccountUuids.add(uuid);
     }
 
@@ -327,17 +323,11 @@ public class LocalSearch implements SearchSpecification {
     }
 
     /**
-     * Returns all the account uuids that this search will try to
-     * match against.
-     *
-     * @return Array of account uuids.
+     * Returns all the account uuids that this search will try to match against. Might be an empty array, in which case
+     * all accounts should be included in the search.
      */
     @Override
     public String[] getAccountUuids() {
-        if (mAccountUuids.isEmpty()) {
-            return new String[] { SearchSpecification.ALL_ACCOUNTS };
-        }
-
         String[] tmp = new String[mAccountUuids.size()];
         mAccountUuids.toArray(tmp);
         return tmp;

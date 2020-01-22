@@ -8,6 +8,7 @@ import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.search.AccountSearchConditions
 import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchAccount
+import com.fsck.k9.search.getAccounts
 import timber.log.Timber
 
 interface UnreadMessageCountProvider {
@@ -42,7 +43,7 @@ internal class DefaultUnreadMessageCountProvider(
 
     override fun getUnreadMessageCount(searchAccount: SearchAccount): Int {
         val search = searchAccount.relatedSearch
-        val accounts = getAccountsFromLocalSearch(search)
+        val accounts = search.getAccounts(preferences)
 
         var unreadMessageCount = 0
         for (account in accounts) {
@@ -59,14 +60,6 @@ internal class DefaultUnreadMessageCountProvider(
         } catch (e: MessagingException) {
             Timber.e(e, "Unable to getUnreadMessageCount for account: %s", account)
             0
-        }
-    }
-
-    private fun getAccountsFromLocalSearch(search: LocalSearch): List<Account> {
-        return if (search.searchAllAccounts()) {
-            preferences.accounts
-        } else {
-            preferences.accounts.filter { it.uuid in search.accountUuids }
         }
     }
 }
