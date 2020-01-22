@@ -1000,7 +1000,7 @@ public class MessagingController {
             }
 
             for (MessagingListener l : getListeners()) {
-                l.folderStatusChanged(account, folder, 0);
+                l.folderStatusChanged(account, folder);
             }
         } finally {
             closeFolder(localFolder);
@@ -1085,14 +1085,8 @@ public class MessagingController {
             String folderServerId = entry.getKey();
 
             // Notify listeners of changed folder status
-            LocalFolder localFolder = localStore.getFolder(folderServerId);
-            try {
-                int unreadMessageCount = localFolder.getUnreadMessageCount();
-                for (MessagingListener l : getListeners()) {
-                    l.folderStatusChanged(account, folderServerId, unreadMessageCount);
-                }
-            } catch (MessagingException e) {
-                Timber.w(e, "Couldn't get unread count for folder: %s", folderServerId);
+            for (MessagingListener l : getListeners()) {
+                l.folderStatusChanged(account, folderServerId);
             }
 
             // TODO: Skip the remote part for all local-only folders
@@ -1134,9 +1128,8 @@ public class MessagingController {
             // Update the messages in the local store
             localFolder.setFlags(messages, Collections.singleton(flag), newState);
 
-            int unreadMessageCount = localFolder.getUnreadMessageCount();
             for (MessagingListener l : getListeners()) {
-                l.folderStatusChanged(account, folderServerId, unreadMessageCount);
+                l.folderStatusChanged(account, folderServerId);
             }
 
 
@@ -1682,7 +1675,7 @@ public class MessagingController {
                 } catch (MessagingException me) {
                     Timber.e(me, "Count not get unread count for account %s", account.getDescription());
                 }
-                l.folderStatusChanged(account, folderServerId, unreadMessageCount);
+                l.folderStatusChanged(account, folderServerId);
             }
         };
 
@@ -1882,9 +1875,8 @@ public class MessagingController {
                     if (unreadCountAffected) {
                         // If this copy operation changes the unread count in the destination
                         // folder, notify the listeners.
-                        int unreadMessageCount = localDestFolder.getUnreadMessageCount();
                         for (MessagingListener l : getListeners()) {
-                            l.folderStatusChanged(account, destFolder, unreadMessageCount);
+                            l.folderStatusChanged(account, destFolder);
                         }
                     }
                 } else {
@@ -1908,8 +1900,8 @@ public class MessagingController {
                         int unreadMessageCountSrc = localSrcFolder.getUnreadMessageCount();
                         int unreadMessageCountDest = localDestFolder.getUnreadMessageCount();
                         for (MessagingListener l : getListeners()) {
-                            l.folderStatusChanged(account, srcFolder, unreadMessageCountSrc);
-                            l.folderStatusChanged(account, destFolder, unreadMessageCountDest);
+                            l.folderStatusChanged(account, srcFolder);
+                            l.folderStatusChanged(account, destFolder);
                         }
                     }
                 }
@@ -2099,10 +2091,9 @@ public class MessagingController {
             }
 
             for (MessagingListener l : getListeners()) {
-                l.folderStatusChanged(account, folder, localFolder.getUnreadMessageCount());
+                l.folderStatusChanged(account, folder);
                 if (localTrashFolder != null) {
-                    l.folderStatusChanged(account, account.getTrashFolder(),
-                            localTrashFolder.getUnreadMessageCount());
+                    l.folderStatusChanged(account, account.getTrashFolder());
                 }
             }
 
@@ -2200,7 +2191,7 @@ public class MessagingController {
                     }
 
                     for (MessagingListener l : getListeners()) {
-                        l.folderStatusChanged(account, trashFolderServerId, 0);
+                        l.folderStatusChanged(account, trashFolderServerId);
                     }
 
                     if (!isTrashLocalOnly) {
@@ -3021,9 +3012,9 @@ public class MessagingController {
         }
 
         @Override
-        public void folderStatusChanged(@NotNull String folderServerId, int unreadMessageCount) {
+        public void folderStatusChanged(@NotNull String folderServerId) {
             for (MessagingListener messagingListener : getListeners(listener)) {
-                messagingListener.folderStatusChanged(account, folderServerId, unreadMessageCount);
+                messagingListener.folderStatusChanged(account, folderServerId);
             }
         }
 

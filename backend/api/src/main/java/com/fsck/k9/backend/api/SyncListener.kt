@@ -17,5 +17,5 @@ interface SyncListener {
     fun syncFinished(folderServerId: String, totalMessagesInMailbox: Int, numNewMessages: Int)
     fun syncFailed(folderServerId: String, message: String, exception: Exception?)
 
-    fun folderStatusChanged(folderServerId: String, unreadMessageCount: Int)
+    fun folderStatusChanged(folderServerId: String)
 }

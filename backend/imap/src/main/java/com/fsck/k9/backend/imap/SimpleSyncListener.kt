@@ -14,5 +14,5 @@ class SimpleSyncListener : SyncListener {
     override fun syncFlagChanged(folderServerId: String, messageServerId: String) = Unit
     override fun syncFinished(folderServerId: String, totalMessagesInMailbox: Int, numNewMessages: Int) = Unit
     override fun syncFailed(folderServerId: String, message: String, exception: Exception?) = Unit
-    override fun folderStatusChanged(folderServerId: String, unreadMessageCount: Int) = Unit
+    override fun folderStatusChanged(folderServerId: String) = Unit
 }

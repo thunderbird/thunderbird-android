@@ -80,7 +80,7 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     }
 
     @Override
-    public void folderStatusChanged(Account account, String folderServerId, int unreadMessageCount) {
+    public void folderStatusChanged(Account account, String folderServerId) {
     }
 
     @Override
