@@ -2818,12 +2818,6 @@ public class MessagingController {
         }
     }
 
-    public void systemStatusChanged() {
-        for (MessagingListener l : getListeners()) {
-            l.systemStatusChanged();
-        }
-    }
-
     public void cancelNotificationsForAccount(Account account) {
         notificationController.clearNewMailNotifications(account);
     }

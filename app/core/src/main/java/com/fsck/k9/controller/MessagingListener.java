@@ -40,7 +40,6 @@ public interface MessagingListener {
     void sendPendingMessagesFailed(Account account);
 
     void folderStatusChanged(Account account, String folderServerId, int unreadMessageCount);
-    void systemStatusChanged();
 
     void messageUidChanged(Account account, String folderServerId, String oldUid, String newUid);
 
