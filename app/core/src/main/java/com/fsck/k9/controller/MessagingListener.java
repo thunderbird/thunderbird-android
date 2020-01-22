@@ -26,7 +26,7 @@ public interface MessagingListener {
     void synchronizeMailboxProgress(Account account, String folderServerId, int completed, int total);
     void synchronizeMailboxNewMessage(Account account, String folderServerId, Message message);
     void synchronizeMailboxRemovedMessage(Account account, String folderServerId, String messageServerId);
-    void synchronizeMailboxFinished(Account account, String folderServerId, int totalMessagesInMailbox, int numNewMessages);
+    void synchronizeMailboxFinished(Account account, String folderServerId);
     void synchronizeMailboxFailed(Account account, String folderServerId, String message);
 
     void loadMessageRemoteFinished(Account account, String folderServerId, String uid);

@@ -2989,10 +2989,9 @@ public class MessagingController {
         }
 
         @Override
-        public void syncFinished(@NotNull String folderServerId, int totalMessagesInMailbox, int numNewMessages) {
+        public void syncFinished(@NotNull String folderServerId) {
             for (MessagingListener messagingListener : getListeners(listener)) {
-                messagingListener.synchronizeMailboxFinished(account, folderServerId, totalMessagesInMailbox,
-                        numNewMessages);
+                messagingListener.synchronizeMailboxFinished(account, folderServerId);
             }
         }
 

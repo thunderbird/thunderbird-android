@@ -39,8 +39,7 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
                             syncStarted = memory;
                             break;
                         case FINISHED:
-                            other.synchronizeMailboxFinished(memory.account, memory.folderServerId,
-                                    memory.syncingTotalMessagesInMailbox, memory.syncingNumNewMessages);
+                            other.synchronizeMailboxFinished(memory.account, memory.folderServerId);
                             break;
                         case FAILED:
                             other.synchronizeMailboxFailed(memory.account, memory.folderServerId,
@@ -74,12 +73,9 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
     }
 
     @Override
-    public synchronized void synchronizeMailboxFinished(Account account, String folderServerId,
-            int totalMessagesInMailbox, int numNewMessages) {
+    public synchronized void synchronizeMailboxFinished(Account account, String folderServerId) {
         Memory memory = getMemory(account, folderServerId);
         memory.syncingState = MemorizingState.FINISHED;
-        memory.syncingTotalMessagesInMailbox = totalMessagesInMailbox;
-        memory.syncingNumNewMessages = numNewMessages;
     }
 
     @Override
@@ -120,9 +116,6 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
         String folderName;
         MemorizingState syncingState = null;
         String failureMessage = null;
-
-        int syncingTotalMessagesInMailbox;
-        int syncingNumNewMessages;
 
         int folderCompleted = 0;
         int folderTotal = 0;

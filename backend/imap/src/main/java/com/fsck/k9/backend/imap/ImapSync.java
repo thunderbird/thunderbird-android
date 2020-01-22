@@ -214,7 +214,7 @@ class ImapSync {
                     System.currentTimeMillis(),
                     newMessages);
 
-            listener.syncFinished(folder, remoteMessageCount, newMessages);
+            listener.syncFinished(folder);
 
             Timber.i("Done synchronizing folder %s:%s", accountName, folder);
 

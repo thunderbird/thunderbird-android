@@ -55,8 +55,7 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     }
 
     @Override
-    public void synchronizeMailboxFinished(Account account, String folderServerId, int totalMessagesInMailbox,
-            int numNewMessages) {
+    public void synchronizeMailboxFinished(Account account, String folderServerId) {
     }
 
     @Override

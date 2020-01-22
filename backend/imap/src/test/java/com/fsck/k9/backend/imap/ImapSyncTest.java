@@ -90,7 +90,7 @@ public class ImapSyncTest {
 
         imapSync.sync(FOLDER_NAME, syncConfig, listener);
 
-        verify(listener).syncFinished(FOLDER_NAME, 1, 0);
+        verify(listener).syncFinished(FOLDER_NAME);
     }
 
     @Test
@@ -99,7 +99,7 @@ public class ImapSyncTest {
 
         imapSync.sync(FOLDER_NAME, syncConfig, listener);
 
-        verify(listener).syncFinished(FOLDER_NAME, 0, 0);
+        verify(listener).syncFinished(FOLDER_NAME);
     }
 
     @Test
