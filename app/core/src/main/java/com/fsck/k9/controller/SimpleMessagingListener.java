@@ -80,18 +80,6 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     }
 
     @Override
-    public void sendPendingMessagesStarted(Account account) {
-    }
-
-    @Override
-    public void sendPendingMessagesCompleted(Account account) {
-    }
-
-    @Override
-    public void sendPendingMessagesFailed(Account account) {
-    }
-
-    @Override
     public void folderStatusChanged(Account account, String folderServerId, int unreadMessageCount) {
     }
 

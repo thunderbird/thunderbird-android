@@ -30,7 +30,6 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
         if (other != null) {
 
             Memory syncStarted = null;
-            Memory sendStarted = null;
 
             for (Memory memory : memories.values()) {
 
@@ -49,30 +48,12 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
                             break;
                     }
                 }
-
-                if (memory.sendingState != null) {
-                    switch (memory.sendingState) {
-                        case STARTED:
-                            sendStarted = memory;
-                            break;
-                        case FINISHED:
-                            other.sendPendingMessagesCompleted(memory.account);
-                            break;
-                        case FAILED:
-                            other.sendPendingMessagesFailed(memory.account);
-                            break;
-                    }
-                }
             }
             Memory somethingStarted = null;
             if (syncStarted != null) {
                 other.synchronizeMailboxStarted(syncStarted.account, syncStarted.folderServerId,
                         syncStarted.folderName);
                 somethingStarted = syncStarted;
-            }
-            if (sendStarted != null) {
-                other.sendPendingMessagesStarted(sendStarted.account);
-                somethingStarted = sendStarted;
             }
             if (somethingStarted != null && somethingStarted.folderTotal > 0) {
                 other.synchronizeMailboxProgress(somethingStarted.account, somethingStarted.folderServerId,
@@ -111,27 +92,6 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
     }
 
     @Override
-    public synchronized void sendPendingMessagesStarted(Account account) {
-        Memory memory = getMemory(account, null);
-        memory.sendingState = MemorizingState.STARTED;
-        memory.folderCompleted = 0;
-        memory.folderTotal = 0;
-    }
-
-    @Override
-    public synchronized void sendPendingMessagesCompleted(Account account) {
-        Memory memory = getMemory(account, null);
-        memory.sendingState = MemorizingState.FINISHED;
-    }
-
-    @Override
-    public synchronized void sendPendingMessagesFailed(Account account) {
-        Memory memory = getMemory(account, null);
-        memory.sendingState = MemorizingState.FAILED;
-    }
-
-
-    @Override
     public synchronized void synchronizeMailboxProgress(Account account, String folderServerId, int completed,
             int total) {
         Memory memory = getMemory(account, folderServerId);
@@ -159,7 +119,6 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
         String folderServerId;
         String folderName;
         MemorizingState syncingState = null;
-        MemorizingState sendingState = null;
         String failureMessage = null;
 
         int syncingTotalMessagesInMailbox;

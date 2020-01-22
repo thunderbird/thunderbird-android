@@ -35,10 +35,6 @@ public interface MessagingListener {
     void checkMailStarted(Context context, Account account);
     void checkMailFinished(Context context, Account account);
 
-    void sendPendingMessagesStarted(Account account);
-    void sendPendingMessagesCompleted(Account account);
-    void sendPendingMessagesFailed(Account account);
-
     void folderStatusChanged(Account account, String folderServerId, int unreadMessageCount);
 
     void messageUidChanged(Account account, String folderServerId, String oldUid, String newUid);

@@ -1499,9 +1499,7 @@ public class MessagingController {
                 Timber.v("Outbox does not exist");
                 return;
             }
-            for (MessagingListener l : getListeners()) {
-                l.sendPendingMessagesStarted(account);
-            }
+
             localFolder.open();
 
             List<LocalMessage> localMessages = localFolder.getMessages(null);
@@ -1608,10 +1606,6 @@ public class MessagingController {
                 }
             }
 
-            for (MessagingListener l : getListeners()) {
-                l.sendPendingMessagesCompleted(account);
-            }
-
             if (lastFailure != null) {
                 if (wasPermanentFailure) {
                     notificationController.showSendFailedNotification(account, lastFailure);
@@ -1624,10 +1618,6 @@ public class MessagingController {
             throw new UnavailableAccountException(e);
         } catch (Exception e) {
             Timber.v(e, "Failed to send pending messages");
-
-            for (MessagingListener l : getListeners()) {
-                l.sendPendingMessagesFailed(account);
-            }
         } finally {
             if (lastFailure == null) {
                 notificationController.clearSendFailedNotification(account);
