@@ -104,10 +104,6 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     }
 
     @Override
-    public void setPushActive(Account account, String folderServerId, boolean enabled) {
-    }
-
-    @Override
     public void loadAttachmentFinished(Account account, Message message, Part part) {
     }
 

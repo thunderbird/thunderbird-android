@@ -107,8 +107,6 @@ public class MessagingControllerPushReceiver implements PushReceiver {
     }
 
     public void setPushActive(String folderServerId, boolean enabled) {
-        for (MessagingListener l : controller.getListeners()) {
-            l.setPushActive(account, folderServerId, enabled);
-        }
+        // Nothing to do for now
     }
 }

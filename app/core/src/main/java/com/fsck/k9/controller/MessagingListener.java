@@ -44,8 +44,6 @@ public interface MessagingListener {
 
     void messageUidChanged(Account account, String folderServerId, String oldUid, String newUid);
 
-    void setPushActive(Account account, String folderServerId, boolean enabled);
-
     void loadAttachmentFinished(Account account, Message message, Part part);
     void loadAttachmentFailed(Account account, Message message, Part part, String reason);
 

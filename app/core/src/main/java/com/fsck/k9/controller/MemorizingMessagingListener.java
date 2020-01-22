@@ -63,18 +63,6 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
                             break;
                     }
                 }
-                if (memory.pushingState != null) {
-                    switch (memory.pushingState) {
-                        case STARTED:
-                            other.setPushActive(memory.account, memory.folderServerId, true);
-                            break;
-                        case FINISHED:
-                            other.setPushActive(memory.account, memory.folderServerId, false);
-                            break;
-                        case FAILED:
-                            break;
-                    }
-                }
             }
             Memory somethingStarted = null;
             if (syncStarted != null) {
@@ -120,12 +108,6 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
         Memory memory = getMemory(account, folderServerId);
         memory.syncingState = MemorizingState.FAILED;
         memory.failureMessage = message;
-    }
-
-    @Override
-    public synchronized void setPushActive(Account account, String folderServerId, boolean active) {
-        Memory memory = getMemory(account, folderServerId);
-        memory.pushingState = (active ? MemorizingState.STARTED : MemorizingState.FINISHED);
     }
 
     @Override
@@ -178,7 +160,6 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
         String folderName;
         MemorizingState syncingState = null;
         MemorizingState sendingState = null;
-        MemorizingState pushingState = null;
         String failureMessage = null;
 
         int syncingTotalMessagesInMailbox;
