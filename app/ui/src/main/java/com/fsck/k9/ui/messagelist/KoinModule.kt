@@ -8,5 +8,5 @@ val messageListUiModule = module {
     factory { DefaultFolderProvider() }
     factory { MessageListExtractor(get(), get()) }
     factory { MessageListLoader(get(), get(), get()) }
-    factory { MessageListLiveDataFactory(get(), get()) }
+    factory { MessageListLiveDataFactory(get(), get(), get()) }
 }

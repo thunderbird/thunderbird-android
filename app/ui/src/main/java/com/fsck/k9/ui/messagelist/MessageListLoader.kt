@@ -23,6 +23,7 @@ import com.fsck.k9.provider.EmailProvider.SpecialColumns
 import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchSpecification.SearchField
 import com.fsck.k9.search.SqlQueryBuilder
+import com.fsck.k9.search.getAccounts
 import java.util.ArrayList
 import java.util.Comparator
 
@@ -33,8 +34,7 @@ class MessageListLoader(
 ) {
 
     fun getMessageList(config: MessageListConfig): List<MessageListItem> {
-        val accountUuids = config.search.accountUuids
-        val cursors = accountUuids.mapNotNull { preferences.getAccount(it) }
+        val cursors = config.search.getAccounts(preferences)
             .mapNotNull { loadMessageListForAccount(it, config) }
             .toTypedArray()
 

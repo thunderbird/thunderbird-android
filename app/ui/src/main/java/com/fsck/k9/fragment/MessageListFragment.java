@@ -62,7 +62,6 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.search.LocalSearch;
-import com.fsck.k9.search.SearchSpecification;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.messagelist.MessageListAppearance;
 import com.fsck.k9.ui.messagelist.MessageListConfig;
@@ -75,6 +74,7 @@ import net.jcip.annotations.GuardedBy;
 import timber.log.Timber;
 
 import static com.fsck.k9.Account.Expunge.EXPUNGE_MANUALLY;
+import static com.fsck.k9.search.LocalSearchExtensions.getAccountsFromLocalSearch;
 
 
 public class MessageListFragment extends Fragment implements OnItemClickListener,
@@ -442,12 +442,23 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         search = args.getParcelable(ARG_SEARCH);
         title = search.getName();
 
-        String[] accountUuids = search.getAccountUuids();
+        List<Account> searchAccounts = getAccountsFromLocalSearch(search, preferences);
+        allAccounts = search.searchAllAccounts();
+        if (searchAccounts.size() == 1) {
+            Account singleAccount = searchAccounts.get(0);
 
-        singleAccountMode = false;
-        if (accountUuids.length == 1 && !search.searchAllAccounts()) {
             singleAccountMode = true;
-            account = preferences.getAccount(accountUuids[0]);
+            account = singleAccount;
+            accountUuids = new String[] { singleAccount.getUuid() };
+        } else {
+            String[] searchAccountUuids = new String[searchAccounts.size()];
+            for (int i = 0, len = searchAccounts.size(); i < len; i++) {
+                searchAccountUuids[i] = searchAccounts.get(i).getUuid();
+            }
+
+            singleAccountMode = false;
+            account = null;
+            accountUuids = searchAccountUuids;
         }
 
         singleFolderMode = false;
@@ -455,30 +466,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             singleFolderMode = true;
             folderServerId = search.getFolderServerIds().get(0);
             currentFolder = getFolderInfoHolder(folderServerId, account);
-        }
-
-        allAccounts = false;
-        if (singleAccountMode) {
-            this.accountUuids = new String[] { account.getUuid() };
-        } else {
-            if (accountUuids.length == 1 &&
-                    accountUuids[0].equals(SearchSpecification.ALL_ACCOUNTS)) {
-                allAccounts = true;
-
-                List<Account> accounts = preferences.getAccounts();
-
-                this.accountUuids = new String[accounts.size()];
-                for (int i = 0, len = accounts.size(); i < len; i++) {
-                    this.accountUuids[i] = accounts.get(i).getUuid();
-                }
-
-                if (this.accountUuids.length == 1) {
-                    singleAccountMode = true;
-                    account = accounts.get(0);
-                }
-            } else {
-                this.accountUuids = accountUuids;
-            }
         }
     }
 

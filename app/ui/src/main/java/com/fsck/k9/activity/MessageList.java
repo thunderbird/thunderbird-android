@@ -473,8 +473,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                     } else if (BuildConfig.DEBUG) {
                         throw new AssertionError("Invalid app data in search intent");
                     }
-                } else {
-                    search.addAccountUuid(LocalSearch.ALL_ACCOUNTS);
                 }
             }
         } else {
