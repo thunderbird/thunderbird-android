@@ -26,7 +26,7 @@ public interface MessagingListener {
     void synchronizeMailboxProgress(Account account, String folderServerId, int completed, int total);
     void synchronizeMailboxNewMessage(Account account, String folderServerId, Message message);
     void synchronizeMailboxRemovedMessage(Account account, String folderServerId, String messageServerId);
-    void synchronizeMailboxFinished(Account account, String folderServerId, int totalMessagesInMailbox, int numNewMessages);
+    void synchronizeMailboxFinished(Account account, String folderServerId);
     void synchronizeMailboxFailed(Account account, String folderServerId, String message);
 
     void loadMessageRemoteFinished(Account account, String folderServerId, String uid);
@@ -35,27 +35,12 @@ public interface MessagingListener {
     void checkMailStarted(Context context, Account account);
     void checkMailFinished(Context context, Account account);
 
-    void sendPendingMessagesStarted(Account account);
-    void sendPendingMessagesCompleted(Account account);
-    void sendPendingMessagesFailed(Account account);
+    void folderStatusChanged(Account account, String folderServerId);
 
-    void emptyTrashCompleted(Account account);
-
-    void folderStatusChanged(Account account, String folderServerId, int unreadMessageCount);
-    void systemStatusChanged();
-
-    void messageDeleted(Account account, String folderServerId, String messageServerId);
     void messageUidChanged(Account account, String folderServerId, String oldUid, String newUid);
-
-    void setPushActive(Account account, String folderServerId, boolean enabled);
 
     void loadAttachmentFinished(Account account, Message message, Part part);
     void loadAttachmentFailed(Account account, Message message, Part part, String reason);
-
-    void pendingCommandStarted(Account account, String commandTitle);
-    void pendingCommandsProcessing(Account account);
-    void pendingCommandCompleted(Account account, String commandTitle);
-    void pendingCommandsFinished(Account account);
 
     void remoteSearchStarted(String folder);
     void remoteSearchServerQueryComplete(String folderServerId, int numResults, int maxResults);

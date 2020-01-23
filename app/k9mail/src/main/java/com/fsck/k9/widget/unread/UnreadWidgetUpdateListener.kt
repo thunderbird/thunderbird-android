@@ -19,15 +19,11 @@ class UnreadWidgetUpdateListener(private val unreadWidgetUpdater: UnreadWidgetUp
         updateUnreadWidget()
     }
 
-    override fun messageDeleted(account: Account, folderServerId: String, messageServerId: String) {
-        updateUnreadWidget()
-    }
-
     override fun synchronizeMailboxNewMessage(account: Account, folderServerId: String, message: Message) {
         updateUnreadWidget()
     }
 
-    override fun folderStatusChanged(account: Account, folderServerId: String, unreadMessageCount: Int) {
+    override fun folderStatusChanged(account: Account, folderServerId: String) {
         updateUnreadWidget()
     }
 }

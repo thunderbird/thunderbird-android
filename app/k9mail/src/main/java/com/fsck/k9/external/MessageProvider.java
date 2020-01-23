@@ -101,7 +101,7 @@ public class MessageProvider extends ContentProvider {
         MessagingController messagingController = DI.get(MessagingController.class);
         messagingController.addListener(new SimpleMessagingListener() {
             @Override
-            public void folderStatusChanged(Account account, String folderServerId, int unreadMessageCount) {
+            public void folderStatusChanged(Account account, String folderServerId) {
                 context.getContentResolver().notifyChange(CONTENT_URI, null);
             }
         });

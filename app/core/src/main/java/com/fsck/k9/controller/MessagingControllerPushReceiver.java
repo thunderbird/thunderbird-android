@@ -47,8 +47,7 @@ public class MessagingControllerPushReceiver implements PushReceiver {
         final CountDownLatch latch = new CountDownLatch(1);
         controller.synchronizeMailbox(account, folderServerId, new SimpleMessagingListener() {
             @Override
-            public void synchronizeMailboxFinished(Account account, String folderServerId,
-            int totalMessagesInMailbox, int numNewMessages) {
+            public void synchronizeMailboxFinished(Account account, String folderServerId) {
                 latch.countDown();
             }
 
@@ -107,8 +106,6 @@ public class MessagingControllerPushReceiver implements PushReceiver {
     }
 
     public void setPushActive(String folderServerId, boolean enabled) {
-        for (MessagingListener l : controller.getListeners()) {
-            l.setPushActive(account, folderServerId, enabled);
-        }
+        // Nothing to do for now
     }
 }

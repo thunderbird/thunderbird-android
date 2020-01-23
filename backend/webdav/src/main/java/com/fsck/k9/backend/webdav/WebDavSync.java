@@ -196,8 +196,7 @@ class WebDavSync {
             int newMessages = downloadMessages(syncConfig, remoteFolder, backendFolder, remoteMessages, false,
                     listener);
 
-            int unreadMessageCount = backendFolder.getUnreadMessageCount();
-            listener.folderStatusChanged(folder, unreadMessageCount);
+            listener.folderStatusChanged(folder);
 
             /* Notify listeners that we're finally done. */
 
@@ -210,7 +209,7 @@ class WebDavSync {
                     System.currentTimeMillis(),
                     newMessages);
 
-            listener.syncFinished(folder, remoteMessageCount, newMessages);
+            listener.syncFinished(folder);
 
             Timber.i("Done synchronizing folder %s:%s", accountName, folder);
 

@@ -201,8 +201,7 @@ class ImapSync {
             int newMessages = downloadMessages(syncConfig, remoteFolder, backendFolder, remoteMessages, false,
                     lastUid, listener);
 
-            int unreadMessageCount = backendFolder.getUnreadMessageCount();
-            listener.folderStatusChanged(folder, unreadMessageCount);
+            listener.folderStatusChanged(folder);
 
             /* Notify listeners that we're finally done. */
 
@@ -215,7 +214,7 @@ class ImapSync {
                     System.currentTimeMillis(),
                     newMessages);
 
-            listener.syncFinished(folder, remoteMessageCount, newMessages);
+            listener.syncFinished(folder);
 
             Timber.i("Done synchronizing folder %s:%s", accountName, folder);
 

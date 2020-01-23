@@ -55,8 +55,7 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     }
 
     @Override
-    public void synchronizeMailboxFinished(Account account, String folderServerId, int totalMessagesInMailbox,
-            int numNewMessages) {
+    public void synchronizeMailboxFinished(Account account, String folderServerId) {
     }
 
     @Override
@@ -80,39 +79,11 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     }
 
     @Override
-    public void sendPendingMessagesStarted(Account account) {
-    }
-
-    @Override
-    public void sendPendingMessagesCompleted(Account account) {
-    }
-
-    @Override
-    public void sendPendingMessagesFailed(Account account) {
-    }
-
-    @Override
-    public void emptyTrashCompleted(Account account) {
-    }
-
-    @Override
-    public void folderStatusChanged(Account account, String folderServerId, int unreadMessageCount) {
-    }
-
-    @Override
-    public void systemStatusChanged() {
-    }
-
-    @Override
-    public void messageDeleted(Account account, String folderServerId, String messageServerId) {
+    public void folderStatusChanged(Account account, String folderServerId) {
     }
 
     @Override
     public void messageUidChanged(Account account, String folderServerId, String oldUid, String newUid) {
-    }
-
-    @Override
-    public void setPushActive(Account account, String folderServerId, boolean enabled) {
     }
 
     @Override
@@ -121,22 +92,6 @@ public abstract class SimpleMessagingListener implements MessagingListener {
 
     @Override
     public void loadAttachmentFailed(Account account, Message message, Part part, String reason) {
-    }
-
-    @Override
-    public void pendingCommandStarted(Account account, String commandTitle) {
-    }
-
-    @Override
-    public void pendingCommandsProcessing(Account account) {
-    }
-
-    @Override
-    public void pendingCommandCompleted(Account account, String commandTitle) {
-    }
-
-    @Override
-    public void pendingCommandsFinished(Account account) {
     }
 
     @Override

@@ -371,15 +371,6 @@ public class MessagingControllerTest extends K9RobolectricTest {
     }
 
     @Test
-    public void sendPendingMessagesSynchronous_shouldCallListenerOnStart() throws MessagingException {
-        setupAccountWithMessageToSend();
-
-        controller.sendPendingMessagesSynchronous(account);
-
-        verify(listener).sendPendingMessagesStarted(account);
-    }
-
-    @Test
     public void sendPendingMessagesSynchronous_shouldSetProgress() throws MessagingException {
         setupAccountWithMessageToSend();
 
@@ -454,15 +445,6 @@ public class MessagingControllerTest extends K9RobolectricTest {
         controller.sendPendingMessagesSynchronous(account);
 
         verify(notificationController).showCertificateErrorNotification(account, false);
-    }
-
-    @Test
-    public void sendPendingMessagesSynchronous_shouldCallListenerOnCompletion() throws MessagingException {
-        setupAccountWithMessageToSend();
-
-        controller.sendPendingMessagesSynchronous(account);
-
-        verify(listener).sendPendingMessagesCompleted(account);
     }
 
     private void setupAccountWithMessageToSend() throws MessagingException {
