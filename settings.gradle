@@ -18,9 +18,7 @@ include ':backend:webdav'
 
 include ':openkeychain:OpenKeychain'
 include ':openkeychain:nfcsweetspot'
-include ':openkeychain:extern:bouncycastle:core'
 include ':openkeychain:extern:bouncycastle:pg'
-include ':openkeychain:extern:bouncycastle:prov'
 include ':openkeychain:extern:minidns'
 include ':openkeychain:extern:MaterialChipsInput:library'
 
