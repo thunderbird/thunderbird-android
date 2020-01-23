@@ -11,11 +11,15 @@ class MessageListExtractor(
     private val preferences: Preferences,
     private val messageHelper: MessageHelper
 ) {
-    fun extractMessageList(cursor: Cursor, uniqueIdColumn: Int): List<MessageListItem> {
-        return cursor.map { extractMessageListItem(it, uniqueIdColumn) }
+    fun extractMessageList(cursor: Cursor, uniqueIdColumn: Int, threadCountIncluded: Boolean): List<MessageListItem> {
+        return cursor.map { extractMessageListItem(it, uniqueIdColumn, threadCountIncluded) }
     }
 
-    private fun extractMessageListItem(cursor: Cursor, uniqueIdColumn: Int): MessageListItem {
+    private fun extractMessageListItem(
+        cursor: Cursor,
+        uniqueIdColumn: Int,
+        threadCountIncluded: Boolean
+    ): MessageListItem {
         val position = cursor.position
         val accountUuid = cursor.getString(MLFProjectionInfo.ACCOUNT_UUID_COLUMN)
         val account = preferences.getAccount(accountUuid)
@@ -31,7 +35,7 @@ class MessageListExtractor(
         val counterPartyAddress = getCounterPartyAddress(fromMe, toAddresses, ccAddresses, fromAddresses)
         val displayName = messageHelper.getDisplayName(account, fromAddresses, toAddresses)
         val messageDate = cursor.getLong(MLFProjectionInfo.DATE_COLUMN)
-        val threadCount = cursor.getIntIfColumnPresent(MLFProjectionInfo.THREAD_COUNT_COLUMN) ?: 0
+        val threadCount = if (threadCountIncluded) cursor.getInt(MLFProjectionInfo.THREAD_COUNT_COLUMN) else 0
         val subject = cursor.getString(MLFProjectionInfo.SUBJECT_COLUMN)
         val isRead = cursor.getBoolean(MLFProjectionInfo.READ_COLUMN)
         val isStarred = cursor.getBoolean(MLFProjectionInfo.FLAGGED_COLUMN)
@@ -99,10 +103,6 @@ class MessageListExtractor(
     }
 
     private fun Cursor.getBoolean(columnIndex: Int): Boolean = getInt(columnIndex) == 1
-
-    private fun Cursor.getIntIfColumnPresent(columnIndex: Int): Int? {
-        return if (columnCount >= columnIndex + 1) getInt(columnIndex) else null
-    }
 
     private inline fun <T> Cursor.map(block: (Cursor) -> T): List<T> {
         return List(count) { index ->
