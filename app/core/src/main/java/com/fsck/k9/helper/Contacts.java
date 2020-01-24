@@ -6,7 +6,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.AbstractCursor;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
@@ -268,11 +267,8 @@ public class Contacts {
     }
 
     private boolean hasContactPermission() {
-        boolean canRead = ContextCompat.checkSelfPermission(mContext,
+        return ContextCompat.checkSelfPermission(mContext,
                 Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
-        boolean canWrite = ContextCompat.checkSelfPermission(mContext,
-                Manifest.permission.WRITE_CONTACTS) == PackageManager.PERMISSION_GRANTED;
-        return  canRead && canWrite;
     }
 
     /**
