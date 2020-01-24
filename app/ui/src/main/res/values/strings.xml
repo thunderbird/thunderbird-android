@@ -1260,5 +1260,6 @@ You can keep this message and use it as a backup for your secret key. If you wan
     <string name="openpgp_settings_mode_manual">Enabled, manual only</string>
     <string name="openpgp_settings_identity_info">Your emails can be secured with end-to-end encryption, which means your email provider and third parties can\'t read them. Learn more on https://autocrypt.org</string>
     <string name="openpgp_settings_identity_fingerprint">Key for this address</string>
+    <string name="openpgp_keys_import">Import key</string>
 
 </resources>

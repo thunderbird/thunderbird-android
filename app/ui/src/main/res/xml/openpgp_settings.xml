@@ -9,9 +9,9 @@
         app:initialExpandedChildrenCount="1">
 
         <Preference
-            android:key="openpgp_manage"
             android:summary="@string/ac_manage_setting_summary"
-            android:title="@string/ac_manage_setting_title" />
+            android:title="@string/ac_manage_setting_title"
+            app:fragment="com.fsck.k9.ui.settings.openpgp.OpenPgpKeysFragment" />
 
         <SwitchPreference
             android:key="openpgp_encrypt_all_drafts"
@@ -31,7 +31,6 @@
             android:title="@string/account_settings_crypto_encrypt_subject" />
 
     </PreferenceCategory>
-
 
 </PreferenceScreen>
 

@@ -1,6 +1,5 @@
 package com.fsck.k9.ui.settings.openpgp
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -18,7 +17,6 @@ import com.takisoft.preferencex.PreferenceFragmentCompat
 import com.takisoft.preferencex.SwitchPreferenceCompat
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.sufficientlysecure.keychain.ui.MainActivity
 
 class OpenPgpSettingsFragment : PreferenceFragmentCompat() {
     private val preferences: Preferences by inject()
@@ -38,21 +36,6 @@ class OpenPgpSettingsFragment : PreferenceFragmentCompat() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         dataStore.activity = activity
-    }
-
-    override fun onPreferenceTreeClick(preference: Preference?): Boolean {
-        return when (preference!!.key) {
-            KEY_MANAGE -> {
-                showManageKeys()
-                true
-            }
-            else -> super.onPreferenceTreeClick(preference)
-        }
-    }
-
-    private fun showManageKeys() {
-        val intent = Intent(context, MainActivity::class.java)
-        startActivity(intent)
     }
 
     private fun populateIdentitiesList(accounts: List<Account>) {
