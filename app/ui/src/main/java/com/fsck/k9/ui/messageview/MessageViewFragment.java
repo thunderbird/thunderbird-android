@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -112,6 +113,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private Context mContext;
 
     private AttachmentViewInfo currentAttachmentViewInfo;
+
+    private MessageViewInfo currentMessageViewInfo;
 
     @Override
     public void onAttach(Context context) {
@@ -257,6 +260,9 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private void showMessage(MessageViewInfo messageViewInfo) {
         hideKeyboard();
 
+        // TODO: how to display source of encrypted messages? Show the encrypted or the decrypted source?
+        currentMessageViewInfo = messageViewInfo;
+
         boolean handledByCryptoPresenter = messageCryptoPresenter.maybeHandleShowMessage(
                 mMessageView, mAccount, messageViewInfo);
         if (!handledByCryptoPresenter) {
@@ -307,6 +313,12 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     public boolean allHeadersVisible() {
         return mMessageView.getMessageHeaderView().additionalHeadersVisible();
+    }
+
+    public void onShowSource() {
+        MessageSourceViewFragment messageSourceViewFragment = new MessageSourceViewFragment(currentMessageViewInfo.text);
+
+        messageSourceViewFragment.show(getFragmentManager(), null);
     }
 
     private void delete() {

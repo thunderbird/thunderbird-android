@@ -141,6 +141,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="copy_action">Copy</string>
     <string name="show_headers_action">Show headers</string>
     <string name="hide_headers_action">Hide headers</string>
+    <string name="show_source_action">Show source</string>
     <plurals name="copy_address_to_clipboard">
         <item quantity="one">Address copied to clipboard</item>
         <item quantity="other">Addresses copied to clipboard</item>

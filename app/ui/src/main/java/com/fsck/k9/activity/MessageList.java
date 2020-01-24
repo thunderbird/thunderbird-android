@@ -20,6 +20,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -979,6 +981,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             messageViewFragment.onToggleAllHeadersView();
             updateMenu();
             return true;
+        } else if (id == R.id.show_source) {
+            messageViewFragment.onShowSource();
+            return true;
         }
 
         if (!singleFolderMode) {
@@ -1053,6 +1058,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             menu.findItem(R.id.toggle_message_view_theme).setVisible(false);
             menu.findItem(R.id.show_headers).setVisible(false);
             menu.findItem(R.id.hide_headers).setVisible(false);
+            menu.findItem(R.id.show_source).setVisible(false);
         } else {
             // hide prev/next buttons in split mode
             if (displayMode != DisplayMode.MESSAGE_VIEW) {
@@ -1522,6 +1528,11 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         configureMenu(menu);
     }
 
+    @Override
+    public void updateMenu() {
+        invalidateOptionsMenu();
+    }
+
     private void showMessageView() {
         displayMode = DisplayMode.MESSAGE_VIEW;
 
@@ -1536,11 +1547,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
         showMessageTitleView();
         configureMenu(menu);
-    }
-
-    @Override
-    public void updateMenu() {
-        invalidateOptionsMenu();
     }
 
     @Override
