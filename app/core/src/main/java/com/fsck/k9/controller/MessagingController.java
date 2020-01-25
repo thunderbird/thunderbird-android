@@ -805,46 +805,23 @@ public class MessagingController {
         }
     }
 
-    private void queueMoveOrCopy(Account account, String srcFolder, String destFolder,
-                                 MoveOrCopyFlavor operation, List<String> uids) {
+    private void queueMoveOrCopy(Account account, String srcFolder, String destFolder, MoveOrCopyFlavor operation,
+            Map<String, String> uidMap) {
         PendingCommand command;
         switch (operation) {
             case MOVE:
-                command = PendingMoveOrCopy.create(srcFolder, destFolder, false, uids);
+                command = PendingMoveOrCopy.create(srcFolder, destFolder, false, uidMap);
                 break;
             case COPY:
-                command = PendingMoveOrCopy.create(srcFolder, destFolder, true, uids);
+                command = PendingMoveOrCopy.create(srcFolder, destFolder, true, uidMap);
                 break;
             case MOVE_AND_MARK_AS_READ:
-                command = PendingMoveAndMarkAsRead.create(srcFolder, destFolder, uids);
+                command = PendingMoveAndMarkAsRead.create(srcFolder, destFolder, uidMap);
                 break;
             default:
                 return;
         }
         queuePendingCommand(account, command);
-    }
-
-    private void queueMoveOrCopy(Account account, String srcFolder, String destFolder,
-                                 MoveOrCopyFlavor operation, List<String> uids, Map<String, String> uidMap) {
-        if (uidMap == null || uidMap.isEmpty()) {
-            queueMoveOrCopy(account, srcFolder, destFolder, operation, uids);
-        } else {
-            PendingCommand command;
-            switch (operation) {
-                case MOVE:
-                    command = PendingMoveOrCopy.create(srcFolder, destFolder, false, uidMap);
-                    break;
-                case COPY:
-                    command = PendingMoveOrCopy.create(srcFolder, destFolder, true, uidMap);
-                    break;
-                case MOVE_AND_MARK_AS_READ:
-                    command = PendingMoveAndMarkAsRead.create(srcFolder, destFolder, uidMap);
-                    break;
-                default:
-                    return;
-            }
-            queuePendingCommand(account, command);
-        }
     }
 
     void processPendingMoveOrCopy(PendingMoveOrCopy command, Account account) throws MessagingException {
@@ -1899,8 +1876,7 @@ public class MessagingController {
                     }
                 }
 
-                List<String> origUidKeys = new ArrayList<>(origUidMap.keySet());
-                queueMoveOrCopy(account, srcFolder, destFolder, operation, origUidKeys, uidMap);
+                queueMoveOrCopy(account, srcFolder, destFolder, operation, uidMap);
             }
 
             processPendingCommands(account);
@@ -2107,10 +2083,10 @@ public class MessagingController {
                         queueDelete(account, folder, syncedMessageUids);
                     } else if (account.isMarkMessageAsReadOnDelete()) {
                         queueMoveOrCopy(account, folder, account.getTrashFolder(),
-                                MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ, syncedMessageUids, uidMap);
+                                MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ, uidMap);
                     } else {
                         queueMoveOrCopy(account, folder, account.getTrashFolder(),
-                                MoveOrCopyFlavor.MOVE, syncedMessageUids, uidMap);
+                                MoveOrCopyFlavor.MOVE, uidMap);
                     }
                     processPendingCommands(account);
                 } else if (account.getDeletePolicy() == DeletePolicy.MARK_AS_READ) {
