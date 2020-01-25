@@ -838,9 +838,8 @@ public class MessagingController {
     void processPendingMoveAndRead(PendingMoveAndMarkAsRead command, Account account) throws MessagingException {
         String srcFolder = command.srcFolder;
         String destFolder = command.destFolder;
-
         Map<String, String> newUidMap = command.newUidMap;
-        List<String> uids = newUidMap != null ? new ArrayList<>(newUidMap.keySet()) : command.uids;
+        List<String> uids = new ArrayList<>(newUidMap.keySet());
 
         processPendingMoveOrCopy(account, srcFolder, destFolder, uids,
                 MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ, newUidMap);
