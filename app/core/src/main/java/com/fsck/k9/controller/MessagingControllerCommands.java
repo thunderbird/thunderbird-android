@@ -42,7 +42,7 @@ public class MessagingControllerCommands {
             return new PendingMoveOrCopy(srcFolder, destFolder, isCopy, null, uidMap);
         }
 
-        public static PendingMoveOrCopy create(String srcFolder, String destFolder, boolean isCopy, List<String> uids) {
+        public static PendingMoveOrCopy createLegacy(String srcFolder, String destFolder, boolean isCopy, List<String> uids) {
             return new PendingMoveOrCopy(srcFolder, destFolder, isCopy, uids, null);
         }
 

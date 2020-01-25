@@ -130,7 +130,7 @@ class MigrationTo60 {
         String destFolder = command.arguments[2];
         boolean isCopy = Boolean.parseBoolean(command.arguments[3]);
 
-        return PendingMoveOrCopy.create(srcFolder, destFolder, isCopy, singletonList(uid));
+        return PendingMoveOrCopy.createLegacy(srcFolder, destFolder, isCopy, singletonList(uid));
     }
 
     private static PendingCommand migrateCommandMoveOrCopyBulkNew(OldPendingCommand command) {
@@ -151,7 +151,7 @@ class MigrationTo60 {
             List<String> uids = new ArrayList<>(command.arguments.length - 4);
             uids.addAll(Arrays.asList(command.arguments).subList(4, command.arguments.length));
 
-            return PendingMoveOrCopy.create(srcFolder, destFolder, isCopy, uids);
+            return PendingMoveOrCopy.createLegacy(srcFolder, destFolder, isCopy, uids);
         }
     }
 
