@@ -8,6 +8,9 @@ import com.fsck.k9.Account;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.MessagingException;
 
+import static com.fsck.k9.controller.Preconditions.requireValidUids;
+import static com.fsck.k9.helper.Preconditions.checkNotNull;
+
 
 public class MessagingControllerCommands {
     static final String COMMAND_APPEND = "append";
@@ -39,6 +42,9 @@ public class MessagingControllerCommands {
 
         public static PendingMoveOrCopy create(String srcFolder, String destFolder, boolean isCopy,
                 Map<String, String> uidMap) {
+            checkNotNull(srcFolder);
+            checkNotNull(destFolder);
+            requireValidUids(uidMap);
             return new PendingMoveOrCopy(srcFolder, destFolder, isCopy, null, uidMap);
         }
 
@@ -73,6 +79,9 @@ public class MessagingControllerCommands {
 
 
         public static PendingMoveAndMarkAsRead create(String srcFolder, String destFolder, Map<String, String> uidMap) {
+            checkNotNull(srcFolder);
+            checkNotNull(destFolder);
+            requireValidUids(uidMap);
             return new PendingMoveAndMarkAsRead(srcFolder, destFolder, uidMap);
         }
 
@@ -117,6 +126,9 @@ public class MessagingControllerCommands {
 
 
         public static PendingSetFlag create(String folder, boolean newState, Flag flag, List<String> uids) {
+            checkNotNull(folder);
+            checkNotNull(flag);
+            requireValidUids(uids);
             return new PendingSetFlag(folder, newState, flag, uids);
         }
 
@@ -144,6 +156,8 @@ public class MessagingControllerCommands {
 
 
         public static PendingAppend create(String folderServerId, String uid) {
+            checkNotNull(folderServerId);
+            checkNotNull(uid);
             return new PendingAppend(folderServerId, uid);
         }
 
@@ -168,6 +182,7 @@ public class MessagingControllerCommands {
 
 
         public static PendingMarkAllAsRead create(String folder) {
+            checkNotNull(folder);
             return new PendingMarkAllAsRead(folder);
         }
 
@@ -192,6 +207,8 @@ public class MessagingControllerCommands {
 
 
         public static PendingDelete create(String folder, List<String> uids) {
+            checkNotNull(folder);
+            requireValidUids(uids);
             return new PendingDelete(folder, uids);
         }
 
@@ -216,6 +233,7 @@ public class MessagingControllerCommands {
 
 
         public static PendingExpunge create(String folderServerId) {
+            checkNotNull(folderServerId);
             return new PendingExpunge(folderServerId);
         }
 
