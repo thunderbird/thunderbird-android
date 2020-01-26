@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
@@ -53,7 +52,7 @@ public class Pop3Store {
     public void checkSettings() throws MessagingException {
         Pop3Folder folder = new Pop3Folder(this, Pop3Folder.INBOX);
         try {
-            folder.open(Folder.OPEN_MODE_RW);
+            folder.open();
             folder.requestUidl();
         }
         finally {

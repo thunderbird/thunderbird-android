@@ -3,7 +3,6 @@ package com.fsck.k9.mail.store.pop3;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -15,7 +14,6 @@ import android.annotation.SuppressLint;
 
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
@@ -29,7 +27,7 @@ import static com.fsck.k9.mail.store.pop3.Pop3Commands.*;
 /**
  * POP3 only supports one folder, "Inbox". So the folder name is the ID here.
  */
-public class Pop3Folder extends Folder<Pop3Message> {
+public class Pop3Folder {
     public static final String INBOX = "INBOX";
 
 
@@ -48,8 +46,7 @@ public class Pop3Folder extends Folder<Pop3Message> {
         this.name = name;
     }
 
-    @Override
-    public synchronized void open(int mode) throws MessagingException {
+    public synchronized void open() throws MessagingException {
         if (isOpen()) {
             return;
         }
@@ -70,17 +67,10 @@ public class Pop3Folder extends Folder<Pop3Message> {
         uidToMsgNumMap.clear();
     }
 
-    @Override
     public boolean isOpen() {
         return connection != null && connection.isOpen();
     }
 
-    @Override
-    public int getMode() {
-        return Folder.OPEN_MODE_RW;
-    }
-
-    @Override
     public void close() {
         try {
             if (isOpen()) {
@@ -99,42 +89,19 @@ public class Pop3Folder extends Folder<Pop3Message> {
         }
     }
 
-    @Override
     public String getServerId() {
         return name;
     }
 
-    @Override
     public String getName() {
         return name;
     }
 
-    @Override
-    public boolean create() throws MessagingException {
-        return false;
-    }
-
-    @Override
-    public boolean exists() throws MessagingException {
-        return INBOX.equals(name);
-    }
-
-    @Override
     public int getMessageCount() {
         return messageCount;
     }
 
-    @Override
-    public int getUnreadMessageCount() throws MessagingException {
-        return -1;
-    }
-    @Override
-    public int getFlaggedMessageCount() throws MessagingException {
-        return -1;
-    }
-
-    @Override
-    public Pop3Message getMessage(String uid) throws MessagingException {
+    public Pop3Message getMessage(String uid) {
         Pop3Message message = uidToMsgMap.get(uid);
         if (message == null) {
             message = new Pop3Message(uid);
@@ -142,8 +109,7 @@ public class Pop3Folder extends Folder<Pop3Message> {
         return message;
     }
 
-    @Override
-    public List<Pop3Message> getMessages(int start, int end, Date earliestDate, MessageRetrievalListener<Pop3Message> listener)
+    public List<Pop3Message> getMessages(int start, int end, MessageRetrievalListener<Pop3Message> listener)
     throws MessagingException {
         if (start < 1 || end < 1 || end < start) {
             throw new MessagingException(String.format(Locale.US, "Invalid message set %d %d",
@@ -179,8 +145,7 @@ public class Pop3Folder extends Folder<Pop3Message> {
         return messages;
     }
 
-    @Override
-    public boolean areMoreMessagesAvailable(int indexOfOldestMessage, Date earliestDate) {
+    public boolean areMoreMessagesAvailable(int indexOfOldestMessage) {
         return indexOfOldestMessage > 1;
     }
 
@@ -325,7 +290,6 @@ public class Pop3Folder extends Folder<Pop3Message> {
      * @param messages Messages to populate
      * @param fp The contents to populate
      */
-    @Override
     public void fetch(List<Pop3Message> messages, FetchProfile fp,
             MessageRetrievalListener<Pop3Message> listener)
     throws MessagingException {
@@ -517,22 +481,6 @@ public class Pop3Folder extends Folder<Pop3Message> {
         }
     }
 
-    @Override
-    public Map<String, String> appendMessages(List<? extends Message> messages) throws MessagingException {
-        return null;
-    }
-
-    @Override
-    public String getUidFromMessageId(String messageId) throws MessagingException {
-        return null;
-    }
-
-    @Override
-    public void setFlags(final Set<Flag> flags, boolean value) throws MessagingException {
-        throw new UnsupportedOperationException("POP3: No setFlags(Set<Flag>,boolean)");
-    }
-
-    @Override
     public void setFlags(List<? extends Message> messages, final Set<Flag> flags, boolean value)
     throws MessagingException {
         if (!value || !flags.contains(Flag.DELETED)) {
@@ -560,19 +508,13 @@ public class Pop3Folder extends Folder<Pop3Message> {
                         true
                 );
             }
-            open(Folder.OPEN_MODE_RW);
+            open();
             connection.executeSimpleCommand(String.format(DELE_COMMAND + " %s", msgNum));
         }
     }
 
-    @Override
     public boolean isFlagSupported(Flag flag) {
         return (flag == Flag.DELETED);
-    }
-
-    @Override
-    public boolean supportsFetchingFlags() {
-        return false;
     }
 
     @Override

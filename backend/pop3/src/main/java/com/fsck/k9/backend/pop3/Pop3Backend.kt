@@ -23,7 +23,6 @@ class Pop3Backend(
     private val pop3Sync: Pop3Sync = Pop3Sync(accountName, backendStorage, pop3Store)
     private val commandRefreshFolderList = CommandRefreshFolderList(backendStorage)
     private val commandSetFlag = CommandSetFlag(pop3Store)
-    private val commandDeleteAll = CommandDeleteAll(pop3Store)
     private val commandFetchMessage = CommandFetchMessage(pop3Store)
 
     override val supportsSeenFlag = false
@@ -69,7 +68,7 @@ class Pop3Backend(
     }
 
     override fun deleteAllMessages(folderServerId: String) {
-        commandDeleteAll.deleteAll(folderServerId)
+        throw UnsupportedOperationException("not supported")
     }
 
     override fun moveMessages(
