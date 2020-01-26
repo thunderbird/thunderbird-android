@@ -51,8 +51,8 @@ import timber.log.Timber;
 
 import static com.fsck.k9.mail.ConnectionSecurity.STARTTLS_REQUIRED;
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_IMAP;
-import static com.fsck.k9.mail.store.RemoteStore.SOCKET_CONNECT_TIMEOUT;
-import static com.fsck.k9.mail.store.RemoteStore.SOCKET_READ_TIMEOUT;
+import static com.fsck.k9.mail.NetworkTimeouts.SOCKET_CONNECT_TIMEOUT;
+import static com.fsck.k9.mail.NetworkTimeouts.SOCKET_READ_TIMEOUT;
 import static com.fsck.k9.mail.store.imap.ImapResponseParser.equalsIgnoreCase;
 
 

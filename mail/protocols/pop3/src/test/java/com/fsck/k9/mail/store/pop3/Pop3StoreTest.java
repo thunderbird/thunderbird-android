@@ -6,7 +6,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.util.List;
 
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.AuthenticationFailedException;
@@ -21,7 +20,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
@@ -86,21 +84,6 @@ public class Pop3StoreTest {
         Pop3Folder folder = store.getFolder("TestFolder");
 
         assertEquals("TestFolder", folder.getServerId());
-    }
-
-    @Test
-    public void getPersonalNamespace_shouldReturnListConsistingOfInbox() throws Exception {
-        List<Pop3Folder> folders = store.getPersonalNamespaces();
-
-        assertEquals(1, folders.size());
-        assertEquals("INBOX", folders.get(0).getServerId());
-    }
-
-    @Test
-    public void isSeenFlagSupported_shouldReturnFalse() throws Exception {
-        boolean result = store.isSeenFlagSupported();
-
-        assertFalse(result);
     }
 
     @Test(expected = MessagingException.class)

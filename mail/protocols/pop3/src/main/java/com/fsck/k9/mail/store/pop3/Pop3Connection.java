@@ -27,12 +27,13 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.filter.Hex;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
-import com.fsck.k9.mail.store.RemoteStore;
 import javax.net.ssl.SSLException;
 import timber.log.Timber;
 
 import static com.fsck.k9.mail.CertificateValidationException.Reason.MissingCapability;
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_POP3;
+import static com.fsck.k9.mail.NetworkTimeouts.SOCKET_CONNECT_TIMEOUT;
+import static com.fsck.k9.mail.NetworkTimeouts.SOCKET_READ_TIMEOUT;
 import static com.fsck.k9.mail.store.pop3.Pop3Commands.*;
 
 
@@ -68,11 +69,11 @@ class Pop3Connection {
                 socket = new Socket();
             }
 
-            socket.connect(socketAddress, RemoteStore.SOCKET_CONNECT_TIMEOUT);
+            socket.connect(socketAddress, SOCKET_CONNECT_TIMEOUT);
             in = new BufferedInputStream(socket.getInputStream(), 1024);
             out = new BufferedOutputStream(socket.getOutputStream(), 512);
 
-            socket.setSoTimeout(RemoteStore.SOCKET_READ_TIMEOUT);
+            socket.setSoTimeout(SOCKET_READ_TIMEOUT);
 
             if (!isOpen()) {
                 throw new MessagingException("Unable to connect socket");
@@ -118,7 +119,7 @@ class Pop3Connection {
                     host,
                     port,
                     clientCertificateAlias);
-            socket.setSoTimeout(RemoteStore.SOCKET_READ_TIMEOUT);
+            socket.setSoTimeout(SOCKET_READ_TIMEOUT);
             in = new BufferedInputStream(socket.getInputStream(), 1024);
             out = new BufferedOutputStream(socket.getOutputStream(), 512);
             if (!isOpen()) {

@@ -20,10 +20,10 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.PushReceiver;
 import com.fsck.k9.mail.power.PowerManager;
 import com.fsck.k9.mail.power.WakeLock;
-import com.fsck.k9.mail.store.RemoteStore;
 import timber.log.Timber;
 
 import static com.fsck.k9.mail.K9MailLib.PUSH_WAKE_LOCK_TIMEOUT;
+import static com.fsck.k9.mail.NetworkTimeouts.SOCKET_READ_TIMEOUT;
 import static com.fsck.k9.mail.store.imap.ImapResponseParser.equalsIgnoreCase;
 
 
@@ -718,7 +718,7 @@ class ImapFolderPusher extends ImapFolder {
 
         private void sendDone() {
             try {
-                imapConnection.setReadTimeout(RemoteStore.SOCKET_READ_TIMEOUT);
+                imapConnection.setReadTimeout(SOCKET_READ_TIMEOUT);
                 imapConnection.sendContinuation("DONE");
             } catch (IOException e) {
                 imapConnection.close();
