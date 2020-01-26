@@ -2,7 +2,6 @@ package com.fsck.k9.backend.imap
 
 import com.fsck.k9.mail.BodyFactory
 import com.fsck.k9.mail.FetchProfile
-import com.fsck.k9.mail.Folder
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.store.imap.ImapFolder
@@ -14,7 +13,7 @@ internal class CommandFetchMessage(private val imapStore: ImapStore) {
     fun fetchMessage(folderServerId: String, messageServerId: String, fetchProfile: FetchProfile): Message {
         val folder = imapStore.getFolder(folderServerId)
         try {
-            folder.open(Folder.OPEN_MODE_RO)
+            folder.open(ImapFolder.OPEN_MODE_RO)
 
             val message = folder.getMessage(messageServerId)
 
@@ -39,7 +38,7 @@ internal class CommandFetchMessage(private val imapStore: ImapStore) {
     fun fetchPart(folderServerId: String, messageServerId: String, part: Part, bodyFactory: BodyFactory) {
         val folder = imapStore.getFolder(folderServerId)
         try {
-            folder.open(Folder.OPEN_MODE_RW)
+            folder.open(ImapFolder.OPEN_MODE_RW)
 
             val message = folder.getMessage(messageServerId)
             folder.fetchPart(message, part, null, bodyFactory)

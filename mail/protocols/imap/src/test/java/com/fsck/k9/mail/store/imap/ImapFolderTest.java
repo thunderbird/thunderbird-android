@@ -16,7 +16,6 @@ import com.fsck.k9.mail.DefaultBodyFactory;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.FetchProfile.Item;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
@@ -35,8 +34,8 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.robolectric.RuntimeEnvironment;
 
-import static com.fsck.k9.mail.Folder.OPEN_MODE_RO;
-import static com.fsck.k9.mail.Folder.OPEN_MODE_RW;
+import static com.fsck.k9.mail.store.imap.ImapFolder.OPEN_MODE_RO;
+import static com.fsck.k9.mail.store.imap.ImapFolder.OPEN_MODE_RW;
 import static com.fsck.k9.mail.store.imap.ImapResponseHelper.createImapResponse;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singleton;
@@ -282,20 +281,6 @@ public class ImapFolderTest {
         boolean success = imapFolder.create();
 
         assertFalse(success);
-    }
-
-    @Test
-    public void copyMessages_withoutDestinationFolderOfWrongType_shouldThrow() throws Exception {
-        ImapFolder sourceFolder = createFolder("Source");
-        Folder destinationFolder = mock(Folder.class);
-        List<ImapMessage> messages = singletonList(mock(ImapMessage.class));
-
-        try {
-            sourceFolder.copyMessages(messages, destinationFolder);
-            fail("Expected exception");
-        } catch (MessagingException e) {
-            assertEquals("ImapFolder.copyMessages passed non-ImapFolder", e.getMessage());
-        }
     }
 
     @Test

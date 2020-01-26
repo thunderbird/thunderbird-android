@@ -4,7 +4,6 @@ package com.fsck.k9.backend.imap;
 import java.util.Collections;
 
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.imap.ImapFolder;
 import com.fsck.k9.mail.store.imap.ImapStore;
@@ -26,8 +25,8 @@ class CommandMarkAllAsRead {
         }
 
         try {
-            remoteFolder.open(Folder.OPEN_MODE_RW);
-            if (remoteFolder.getMode() != Folder.OPEN_MODE_RW) {
+            remoteFolder.open(ImapFolder.OPEN_MODE_RW);
+            if (remoteFolder.getMode() != ImapFolder.OPEN_MODE_RW) {
                 return;
             }
 

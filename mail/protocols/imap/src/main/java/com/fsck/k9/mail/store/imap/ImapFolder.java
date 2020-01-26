@@ -23,7 +23,7 @@ import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyFactory;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.FolderType;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
@@ -40,7 +40,10 @@ import timber.log.Timber;
 import static com.fsck.k9.mail.store.imap.ImapUtility.getLastResponse;
 
 
-public class ImapFolder extends Folder<ImapMessage> {
+public class ImapFolder {
+    public static final int OPEN_MODE_RW = 0;
+    public static final int OPEN_MODE_RO = 1;
+
     static final String INBOX = "INBOX";
     private static final ThreadLocal<SimpleDateFormat> RFC3501_DATE = new ThreadLocal<SimpleDateFormat>() {
         @Override
@@ -55,10 +58,11 @@ public class ImapFolder extends Folder<ImapMessage> {
     protected volatile int messageCount = -1;
     protected volatile long uidNext = -1L;
     protected volatile ImapConnection connection;
-    protected ImapStore store = null;
+    protected ImapStore store;
     protected Map<Long, String> msgSeqUidMap = new ConcurrentHashMap<>();
     private final FolderNameCodec folderNameCodec;
     private final String name;
+    private FolderType type = FolderType.REGULAR;
     private int mode;
     private volatile boolean exists;
     private boolean inSearch = false;
@@ -74,6 +78,14 @@ public class ImapFolder extends Folder<ImapMessage> {
         this.store = store;
         this.name = name;
         this.folderNameCodec = folderNameCodec;
+    }
+
+    public FolderType getType() {
+        return type;
+    }
+
+    public void setType(FolderType type) {
+        this.type = type;
     }
 
     private String getPrefixedName() throws MessagingException {
@@ -111,7 +123,6 @@ public class ImapFolder extends Folder<ImapMessage> {
         return handleUntaggedResponses(connection.executeSimpleCommand(command));
     }
 
-    @Override
     public void open(int mode) throws MessagingException {
         internalOpen(mode);
 
@@ -192,17 +203,14 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    @Override
     public boolean isOpen() {
         return connection != null;
     }
 
-    @Override
     public int getMode() {
         return mode;
     }
 
-    @Override
     public void close() {
         messageCount = -1;
 
@@ -223,12 +231,10 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    @Override
     public String getServerId() {
         return name;
     }
 
-    @Override
     public String getName() {
         return name;
     }
@@ -247,7 +253,6 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    @Override
     public boolean exists() throws MessagingException {
         if (exists) {
             return true;
@@ -286,7 +291,6 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    @Override
     public boolean create() throws MessagingException {
         /*
          * This method needs to operate in the unselected mode as well as the selected mode
@@ -335,17 +339,11 @@ public class ImapFolder extends Folder<ImapMessage> {
      *
      * @return The mapping of original message UIDs to the new server UIDs.
      */
-    @Override
-    public Map<String, String> copyMessages(List<? extends Message> messages, Folder folder) throws MessagingException {
-        if (!(folder instanceof ImapFolder)) {
-            throw new MessagingException("ImapFolder.copyMessages passed non-ImapFolder");
-        }
-
+    public Map<String, String> copyMessages(List<? extends Message> messages, ImapFolder folder) throws MessagingException {
         if (messages.isEmpty()) {
             return null;
         }
 
-        ImapFolder imapFolder = (ImapFolder) folder;
         checkOpen(); //only need READ access
 
         Set<Long> uids = new HashSet<>(messages.size());
@@ -353,7 +351,7 @@ public class ImapFolder extends Folder<ImapMessage> {
             uids.add(Long.parseLong(messages.get(i).getUid()));
         }
 
-        String encodedDestinationFolderName = folderNameCodec.encode(imapFolder.getPrefixedName());
+        String encodedDestinationFolderName = folderNameCodec.encode(folder.getPrefixedName());
         String escapedDestinationFolderName = ImapUtility.encodeString(encodedDestinationFolderName);
 
         //TODO: Just perform the operation and only check for existence of the folder if the operation fails.
@@ -363,7 +361,7 @@ public class ImapFolder extends Folder<ImapMessage> {
                         escapedDestinationFolderName, getLogId());
             }
 
-            throw new FolderNotFoundException(imapFolder.getServerId());
+            throw new FolderNotFoundException(folder.getServerId());
         }
 
         try {
@@ -377,8 +375,7 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    @Override
-    public Map<String, String> moveMessages(List<? extends Message> messages, Folder folder) throws MessagingException {
+    public Map<String, String> moveMessages(List<? extends Message> messages, ImapFolder folder) throws MessagingException {
         if (messages.isEmpty()) {
             return null;
         }
@@ -390,7 +387,6 @@ public class ImapFolder extends Folder<ImapMessage> {
         return uidMapping;
     }
 
-    @Override
     public int getMessageCount() {
         return messageCount;
     }
@@ -417,12 +413,10 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    @Override
     public int getUnreadMessageCount() throws MessagingException {
         return getRemoteMessageCount("UNSEEN NOT DELETED");
     }
 
-    @Override
     public int getFlaggedMessageCount() throws MessagingException {
         return getRemoteMessageCount("FLAGGED NOT DELETED");
     }
@@ -455,12 +449,10 @@ public class ImapFolder extends Folder<ImapMessage> {
         return uids.get(0);
     }
 
-    @Override
-    public ImapMessage getMessage(String uid) throws MessagingException {
+    public ImapMessage getMessage(String uid) {
         return new ImapMessage(uid);
     }
 
-    @Override
     public List<ImapMessage> getMessages(int start, int end, Date earliestDate,
             MessageRetrievalListener<ImapMessage> listener) throws MessagingException {
         return getMessages(start, end, earliestDate, false, listener);
@@ -497,7 +489,6 @@ public class ImapFolder extends Folder<ImapMessage> {
         return " SINCE " + RFC3501_DATE.get().format(earliestDate);
     }
 
-    @Override
     public boolean areMoreMessagesAvailable(int indexOfOldestMessage, Date earliestDate) throws IOException,
             MessagingException {
 
@@ -569,8 +560,8 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    private List<ImapMessage> getMessages(SearchResponse searchResponse, MessageRetrievalListener<ImapMessage> listener)
-            throws MessagingException {
+    private List<ImapMessage> getMessages(SearchResponse searchResponse,
+            MessageRetrievalListener<ImapMessage> listener) {
 
         List<ImapMessage> messages = new ArrayList<>();
         List<Long> uids = searchResponse.getNumbers();
@@ -598,7 +589,6 @@ public class ImapFolder extends Folder<ImapMessage> {
         return messages;
     }
 
-    @Override
     public void fetch(List<ImapMessage> messages, FetchProfile fetchProfile,
             MessageRetrievalListener<ImapMessage> listener) throws MessagingException {
         if (messages == null || messages.isEmpty()) {
@@ -728,7 +718,6 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    @Override
     public void fetchPart(Message message, Part part, MessageRetrievalListener<Message> listener,
             BodyFactory bodyFactory) throws MessagingException {
         checkOpen();
@@ -1092,7 +1081,6 @@ public class ImapFolder extends Folder<ImapMessage> {
      *
      * @return The mapping of original message UIDs to the new server UIDs.
      */
-    @Override
     public Map<String, String> appendMessages(List<? extends Message> messages) throws MessagingException {
         open(OPEN_MODE_RW);
         checkOpen();
@@ -1182,7 +1170,6 @@ public class ImapFolder extends Folder<ImapMessage> {
         return messageIdHeader.length == 0 ? null : messageIdHeader[0];
     }
 
-    @Override
     public String getUidFromMessageId(String messageId) throws MessagingException {
         if (K9MailLib.isDebug()) {
             Timber.d("Looking for UID for message with message-id %s for %s", messageId, getLogId());
@@ -1206,7 +1193,6 @@ public class ImapFolder extends Folder<ImapMessage> {
         return null;
     }
 
-    @Override
     public void expunge() throws MessagingException {
         open(OPEN_MODE_RW);
         checkOpen();
@@ -1218,7 +1204,6 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    @Override
     public void expungeUids(List<String> uids) throws MessagingException {
         if (uids == null || uids.isEmpty()) {
             throw new IllegalArgumentException("expungeUids() must be called with a non-empty set of UIDs");
@@ -1242,7 +1227,6 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    @Override
     public void setFlags(Set<Flag> flags, boolean value) throws MessagingException {
         open(OPEN_MODE_RW);
         checkOpen();
@@ -1260,7 +1244,6 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    @Override
     public String getNewPushState(String oldSerializedPushState, Message message) {
         try {
             String uid = message.getUid();
@@ -1282,7 +1265,6 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    @Override
     public void setFlags(List<? extends Message> messages, final Set<Flag> flags, boolean value)
             throws MessagingException {
         open(OPEN_MODE_RW);
@@ -1339,10 +1321,6 @@ public class ImapFolder extends Folder<ImapMessage> {
         return getServerId().hashCode();
     }
 
-    private ImapStore getStore() {
-        return store;
-    }
-
     protected String getLogId() {
         String id = store.getStoreConfig().toString() + ":" + getServerId() + "/" + Thread.currentThread().getName();
         if (connection != null) {
@@ -1360,7 +1338,6 @@ public class ImapFolder extends Folder<ImapMessage> {
      * @return List of messages found
      * @throws MessagingException On any error.
      */
-    @Override
     public List<ImapMessage> search(final String queryString, final Set<Flag> requiredFlags,
             final Set<Flag> forbiddenFlags) throws MessagingException {
 

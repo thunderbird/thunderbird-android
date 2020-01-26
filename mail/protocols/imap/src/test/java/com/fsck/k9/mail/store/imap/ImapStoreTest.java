@@ -16,7 +16,6 @@ import android.net.ConnectivityManager;
 
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.FolderType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
@@ -57,7 +56,7 @@ public class ImapStoreTest {
 
     @Test
     public void getFolder_shouldReturnImapFolderInstance() throws Exception {
-        Folder result = imapStore.getFolder("INBOX");
+        ImapFolder result = imapStore.getFolder("INBOX");
 
         assertEquals(ImapFolder.class, result.getClass());
     }
@@ -65,9 +64,9 @@ public class ImapStoreTest {
     @Test
     public void getFolder_calledTwice_shouldReturnFirstInstance() throws Exception {
         String folderName = "Trash";
-        Folder imapFolder = imapStore.getFolder(folderName);
+        ImapFolder imapFolder = imapStore.getFolder(folderName);
 
-        Folder result = imapStore.getFolder(folderName);
+        ImapFolder result = imapStore.getFolder(folderName);
 
         assertEquals(imapFolder, result);
     }
@@ -168,7 +167,7 @@ public class ImapStoreTest {
         when(imapConnection.executeSimpleCommand("LIST \"\" \"*\"")).thenReturn(imapResponses);
         imapStore.enqueueImapConnection(imapConnection);
 
-        List<? extends Folder> result = imapStore.getPersonalNamespaces();
+        List<ImapFolder> result = imapStore.getPersonalNamespaces();
 
         assertNotNull(result);
         assertEquals(Sets.newSet("INBOX", "Folder.SubFolder"), extractFolderNames(result));
@@ -196,7 +195,7 @@ public class ImapStoreTest {
         when(imapConnection.executeSimpleCommand("LIST \"\" \"*\"")).thenReturn(imapResponses);
         imapStore.enqueueImapConnection(imapConnection);
 
-        List<? extends Folder> result = imapStore.getPersonalNamespaces();
+        List<ImapFolder> result = imapStore.getPersonalNamespaces();
 
         assertNotNull(result);
         assertEquals(Sets.newSet("INBOX", "Folder.SubFolder"), extractFolderNames(result));
@@ -383,9 +382,9 @@ public class ImapStoreTest {
         return storeConfig;
     }
 
-    private Set<String> extractFolderNames(List<? extends Folder> folders) {
+    private Set<String> extractFolderNames(List<ImapFolder> folders) {
         Set<String> folderNames = new HashSet<>(folders.size());
-        for (Folder folder : folders) {
+        for (ImapFolder folder : folders) {
             folderNames.add(folder.getServerId());
         }
 

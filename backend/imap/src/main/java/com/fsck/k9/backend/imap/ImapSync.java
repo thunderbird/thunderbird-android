@@ -24,7 +24,6 @@ import com.fsck.k9.mail.BodyFactory;
 import com.fsck.k9.mail.DefaultBodyFactory;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
@@ -102,7 +101,7 @@ class ImapSync {
                 Timber.d("SYNC: Expunging folder %s:%s", accountName, folder);
                 remoteFolder.expunge();
             }
-            remoteFolder.open(Folder.OPEN_MODE_RO);
+            remoteFolder.open(ImapFolder.OPEN_MODE_RO);
 
             listener.syncAuthenticationSuccess();
 
@@ -250,7 +249,7 @@ class ImapSync {
         BackendFolder backendFolder = backendStorage.getFolder(folderServerId);
         ImapFolder remoteFolder = imapStore.getFolder(folderServerId);
         try {
-            remoteFolder.open(Folder.OPEN_MODE_RO);
+            remoteFolder.open(ImapFolder.OPEN_MODE_RO);
             ImapMessage remoteMessage = remoteFolder.getMessage(messageServerId);
 
             downloadMessages(

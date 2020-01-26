@@ -1,8 +1,6 @@
 package com.fsck.k9.mail.store.imap;
 
 
-import com.fsck.k9.mail.Folder;
-
 import static com.fsck.k9.mail.store.imap.ImapResponseParser.equalsIgnoreCase;
 
 
@@ -51,6 +49,6 @@ class SelectOrExamineResponse {
             throw new IllegalStateException("Called getOpenMode() despite hasOpenMode() returning false");
         }
 
-        return readWriteMode ? Folder.OPEN_MODE_RW : Folder.OPEN_MODE_RO;
+        return readWriteMode ? ImapFolder.OPEN_MODE_RW : ImapFolder.OPEN_MODE_RO;
     }
 }

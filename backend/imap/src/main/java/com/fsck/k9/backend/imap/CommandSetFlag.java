@@ -7,7 +7,6 @@ import java.util.List;
 
 import com.fsck.k9.backend.api.BackendFolder;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.imap.ImapFolder;
@@ -27,13 +26,13 @@ class CommandSetFlag {
             boolean newState) throws MessagingException {
 
         ImapFolder remoteFolder = imapStore.getFolder(folderServerId);
-        if (!remoteFolder.exists() || !remoteFolder.isFlagSupported(flag)) {
+        if (!remoteFolder.exists()) {
             return;
         }
 
         try {
-            remoteFolder.open(Folder.OPEN_MODE_RW);
-            if (remoteFolder.getMode() != Folder.OPEN_MODE_RW) {
+            remoteFolder.open(ImapFolder.OPEN_MODE_RW);
+            if (remoteFolder.getMode() != ImapFolder.OPEN_MODE_RW) {
                 return;
             }
             List<Message> messages = new ArrayList<>();
