@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +33,6 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import static com.fsck.k9.mail.Folder.OPEN_MODE_RO;
-import static com.fsck.k9.mail.Folder.OPEN_MODE_RW;
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -354,7 +351,7 @@ public class WebDavFolderTest {
 
     @Test
     public void open_should_open_folder() throws MessagingException {
-        folder.open(OPEN_MODE_RW);
+        folder.open();
         assertTrue(folder.isOpen());
     }
 
@@ -362,18 +359,6 @@ public class WebDavFolderTest {
     public void close_should_close_folder() throws MessagingException {
         folder.close();
         assertFalse(folder.isOpen());
-    }
-
-    @Test
-    public void mode_is_always_readwrite() throws Exception {
-        assertEquals(OPEN_MODE_RW, folder.getMode());
-        folder.open(OPEN_MODE_RO);
-        assertEquals(OPEN_MODE_RW, folder.getMode());
-    }
-
-    @Test
-    public void exists_is_always_true() throws Exception {
-        assertTrue(folder.exists());
     }
 
     @Test
@@ -420,7 +405,7 @@ public class WebDavFolderTest {
         when(mockStore.processRequest(eq("https://localhost/webDavStoreUrl/testFolder"), eq("SEARCH"),
                 eq(messagesXml), Matchers.<Map<String, String>>any())).thenReturn(mockDataSet);
 
-        folder.getMessages(messageStart, messageEnd, new Date(), listener);
+        folder.getMessages(messageStart, messageEnd, listener);
 
         verify(listener, times(5)).messageStarted(anyString(), anyInt(), eq(5));
         verify(listener, times(5)).messageFinished(any(WebDavMessage.class), anyInt(), eq(5));
@@ -438,7 +423,7 @@ public class WebDavFolderTest {
         when(mockStore.processRequest(eq("https://localhost/webDavStoreUrl/testFolder"), eq("SEARCH"),
                 eq(messagesXml), Matchers.<Map<String, String>>any())).thenReturn(mockDataSet);
 
-        folder.getMessages(messageStart, messageEnd, new Date(), listener);
+        folder.getMessages(messageStart, messageEnd, listener);
 
         verify(mockStore, times(2)).processRequest(anyString(), anyString(), anyString(),
                 headerCaptor.capture());
@@ -464,7 +449,7 @@ public class WebDavFolderTest {
     @Test(expected = MessagingException.class)
     public void getMessages_should_throw_message_exception_if_requesting_messages_from_empty_folder()
             throws MessagingException {
-        folder.getMessages(0, 10, new Date(), listener);
+        folder.getMessages(0, 10, listener);
     }
 
     private void setupMoveOrCopy() throws MessagingException {

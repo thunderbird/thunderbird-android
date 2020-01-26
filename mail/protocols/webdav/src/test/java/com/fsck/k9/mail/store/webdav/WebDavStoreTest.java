@@ -11,7 +11,6 @@ import java.util.Map;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.ConnectionSecurity;
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.FolderType;
 import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 import com.fsck.k9.mail.MessagingException;
@@ -197,7 +196,7 @@ public class WebDavStoreTest {
 
     @Test
     public void getFolder_shouldReturnWebDavFolderInstance() {
-        Folder result = webDavStore.getFolder("INBOX");
+        WebDavFolder result = webDavStore.getFolder("INBOX");
 
         assertEquals(WebDavFolder.class, result.getClass());
     }
@@ -205,9 +204,9 @@ public class WebDavStoreTest {
     @Test
     public void getFolder_calledTwice_shouldReturnFirstInstance() {
         String folderName = "Trash";
-        Folder webDavFolder = webDavStore.getFolder(folderName);
+        WebDavFolder webDavFolder = webDavStore.getFolder(folderName);
 
-        Folder result = webDavStore.getFolder(folderName);
+        WebDavFolder result = webDavStore.getFolder(folderName);
 
         assertSame(webDavFolder, result);
     }
@@ -229,10 +228,10 @@ public class WebDavStoreTest {
         configureHttpResponses(UNAUTHORIZED_401_RESPONSE, OK_200_RESPONSE, createOkPropfindResponse(),
                 createOkSearchResponse());
 
-        List<? extends Folder> folders = webDavStore.getPersonalNamespaces();
+        List<WebDavFolder> folders = webDavStore.getPersonalNamespaces();
 
         Map<String, FolderType> folderNameToTypeMap = new HashMap<>();
-        for (Folder folder : folders) {
+        for (WebDavFolder folder : folders) {
             folderNameToTypeMap.put(folder.getName(), folder.getType());
         }
         assertEquals(FolderType.INBOX, folderNameToTypeMap.get("Inbox"));
@@ -257,7 +256,7 @@ public class WebDavStoreTest {
         configureHttpResponses(UNAUTHORIZED_401_RESPONSE, OK_200_RESPONSE, createOkPropfindResponse(),
                 createOkSearchResponse());
 
-        List<? extends Folder> folders = webDavStore.getPersonalNamespaces();
+        List<WebDavFolder> folders = webDavStore.getPersonalNamespaces();
 
         List<HttpGeneric> requests = requestCaptor.getAllValues();
 

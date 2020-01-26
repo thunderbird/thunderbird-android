@@ -2,7 +2,7 @@ package com.fsck.k9.mail.store.webdav;
 
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.FolderType;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
@@ -39,8 +39,9 @@ import static com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8;
 /**
  * A WebDav Folder
  */
-public class WebDavFolder extends Folder<WebDavMessage> {
+public class WebDavFolder {
     private String mName;
+    private FolderType type = FolderType.REGULAR;
     private String mFolderUrl;
     private boolean mIsOpen = false;
     private int mMessageCount = 0;
@@ -56,6 +57,14 @@ public class WebDavFolder extends Folder<WebDavMessage> {
         store = nStore;
         this.mName = name;
         buildFolderUrl();
+    }
+
+    public FolderType getType() {
+        return type;
+    }
+
+    public void setType(FolderType type) {
+        this.type = type;
     }
 
     private void buildFolderUrl() {
@@ -86,20 +95,19 @@ public class WebDavFolder extends Folder<WebDavMessage> {
         }
     }
 
-    @Override
-    public void open(int mode) throws MessagingException {
+    public void open() throws MessagingException {
         store.getHttpClient();
         this.mIsOpen = true;
     }
 
-    @Override
-    public Map<String, String> copyMessages(List<? extends Message> messages, Folder folder) throws MessagingException {
+    public Map<String, String> copyMessages(List<? extends Message> messages, WebDavFolder folder)
+            throws MessagingException {
         moveOrCopyMessages(messages, folder.getServerId(), false);
         return null;
     }
 
-    @Override
-    public Map<String, String> moveMessages(List<? extends Message> messages, Folder folder) throws MessagingException {
+    public Map<String, String> moveMessages(List<? extends Message> messages, WebDavFolder folder)
+            throws MessagingException {
         moveOrCopyMessages(messages, folder.getServerId(), true);
         return null;
     }
@@ -160,69 +168,41 @@ public class WebDavFolder extends Folder<WebDavMessage> {
         return messageCount;
     }
 
-    @Override
     public int getMessageCount() throws MessagingException {
-        open(Folder.OPEN_MODE_RW);
+        open();
         this.mMessageCount = getMessageCount(true);
         return this.mMessageCount;
     }
 
-    @Override
     public int getUnreadMessageCount() throws MessagingException {
-        open(Folder.OPEN_MODE_RW);
+        open();
         this.mUnreadMessageCount = getMessageCount(false);
         return this.mUnreadMessageCount;
     }
 
-    @Override
-    public int getFlaggedMessageCount() throws MessagingException {
-        return -1;
-    }
-
-    @Override
     public boolean isOpen() {
         return this.mIsOpen;
     }
 
-    @Override
-    public int getMode() {
-        return Folder.OPEN_MODE_RW;
-    }
-
-    @Override
     public String getServerId() {
         return this.mName;
     }
 
-    @Override
     public String getName() {
         return this.mName;
     }
 
-    @Override
-    public boolean exists() {
-        return true;
-    }
-
-    @Override
     public void close() {
         this.mMessageCount = 0;
         this.mUnreadMessageCount = 0;
         this.mIsOpen = false;
     }
 
-    @Override
-    public boolean create() throws MessagingException {
-        return true;
-    }
-
-    @Override
-    public WebDavMessage getMessage(String uid) throws MessagingException {
+    public WebDavMessage getMessage(String uid) {
         return new WebDavMessage(uid, this);
     }
 
-    @Override
-    public List<WebDavMessage> getMessages(int start, int end, Date earliestDate, MessageRetrievalListener<WebDavMessage> listener)
+    public List<WebDavMessage> getMessages(int start, int end, MessageRetrievalListener<WebDavMessage> listener)
             throws MessagingException {
         List<WebDavMessage> messages = new ArrayList<>();
         String[] uids;
@@ -270,7 +250,6 @@ public class WebDavFolder extends Folder<WebDavMessage> {
         return messages;
     }
 
-    @Override
     public boolean areMoreMessagesAvailable(int indexOfOldestMessage, Date earliestDate) {
         return indexOfOldestMessage > 1;
     }
@@ -288,7 +267,6 @@ public class WebDavFolder extends Folder<WebDavMessage> {
         return dataset.getUidToUrl();
     }
 
-    @Override
     public void fetch(List<WebDavMessage> messages, FetchProfile fp, MessageRetrievalListener<WebDavMessage> listener)
             throws MessagingException {
         if (messages == null ||
@@ -561,7 +539,6 @@ public class WebDavFolder extends Folder<WebDavMessage> {
         }
     }
 
-    @Override
     public void setFlags(List<? extends Message> messages, final Set<Flag> flags, boolean value)
             throws MessagingException {
         String[] uids = new String[messages.size()];
@@ -625,7 +602,6 @@ public class WebDavFolder extends Folder<WebDavMessage> {
         return store.getUrl() + "Deleted%20Items/" + filename;
     }
 
-    @Override
     public Map<String, String> appendMessages(List<? extends Message> messages) throws MessagingException {
         appendWebDavMessages(messages);
         return null;
@@ -651,7 +627,7 @@ public class WebDavFolder extends Folder<WebDavMessage> {
                 }
                 out = new ByteArrayOutputStream((int) size);
 
-                open(Folder.OPEN_MODE_RW);
+                open();
                 EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
                         new BufferedOutputStream(out, 1024));
                 message.writeTo(msgOut);
@@ -687,19 +663,6 @@ public class WebDavFolder extends Folder<WebDavMessage> {
             return ((WebDavFolder) o).mName.equals(mName);
         }
         return super.equals(o);
-    }
-
-    @Override
-    public String getUidFromMessageId(String messageId) throws MessagingException {
-        Timber.e("Unimplemented method getUidFromMessageId in WebDavStore.WebDavFolder could lead to duplicate messages "
-                        + " being uploaded to the Sent folder");
-        return null;
-    }
-
-    @Override
-    public void setFlags(final Set<Flag> flags, boolean value) throws MessagingException {
-        Timber.e("Unimplemented method setFlags(Set<Flag>, boolean) breaks markAllMessagesAsRead and EmptyTrash");
-        // Try to make this efficient by not retrieving all of the messages
     }
 
     public String getUrl() {

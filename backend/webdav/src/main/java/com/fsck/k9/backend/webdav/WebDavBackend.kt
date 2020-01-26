@@ -14,6 +14,7 @@ import com.fsck.k9.mail.PushReceiver
 import com.fsck.k9.mail.Pusher
 import com.fsck.k9.mail.store.webdav.WebDavStore
 import com.fsck.k9.mail.transport.WebDavTransport
+import timber.log.Timber
 
 class WebDavBackend(
     accountName: String,
@@ -24,9 +25,7 @@ class WebDavBackend(
     private val webDavSync: WebDavSync = WebDavSync(accountName, backendStorage, webDavStore)
     private val commandGetFolders = CommandRefreshFolderList(backendStorage, webDavStore)
     private val commandSetFlag = CommandSetFlag(webDavStore)
-    private val commandMarkAllAsRead = CommandMarkAllAsRead(webDavStore)
     private val commandMoveOrCopyMessages = CommandMoveOrCopyMessages(webDavStore)
-    private val commandDeleteAll = CommandDeleteAll(webDavStore)
     private val commandFetchMessage = CommandFetchMessage(webDavStore)
     private val commandUploadMessage = CommandUploadMessage(webDavStore)
 
@@ -58,7 +57,7 @@ class WebDavBackend(
     }
 
     override fun markAllAsRead(folderServerId: String) {
-        commandMarkAllAsRead.markAllAsRead(folderServerId)
+        Timber.e("Method not implemented; breaks 'mark all as read'")
     }
 
     override fun expunge(folderServerId: String) {
@@ -74,7 +73,7 @@ class WebDavBackend(
     }
 
     override fun deleteAllMessages(folderServerId: String) {
-        commandDeleteAll.deleteAll(folderServerId)
+        Timber.e("Method not implemented; breaks 'empty trash'")
     }
 
     override fun moveMessages(
