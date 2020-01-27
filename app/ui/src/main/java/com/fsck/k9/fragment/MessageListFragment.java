@@ -1276,15 +1276,11 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 updateFooter(null);
             } else {
                 String message;
-                if (!currentFolder.lastCheckFailed) {
-                    if (account.getDisplayCount() == 0) {
-                        message = context.getString(R.string.message_list_load_more_messages_action);
-                    } else {
-                        message = String.format(context.getString(R.string.load_more_messages_fmt),
-                                account.getDisplayCount());
-                    }
+                if (account.getDisplayCount() == 0) {
+                    message = context.getString(R.string.message_list_load_more_messages_action);
                 } else {
-                    message = context.getString(R.string.status_loading_more_failed);
+                    message = String.format(context.getString(R.string.load_more_messages_fmt),
+                            account.getDisplayCount());
                 }
                 updateFooter(message);
             }

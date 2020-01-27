@@ -16,7 +16,6 @@ public class FolderInfoHolder {
     public final String displayName;
     public final long lastChecked;
     public boolean loading;
-    public boolean lastCheckFailed;
     public boolean moreMessages;
 
 
