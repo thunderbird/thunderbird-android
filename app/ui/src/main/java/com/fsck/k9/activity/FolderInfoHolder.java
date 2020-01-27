@@ -2,7 +2,6 @@ package com.fsck.k9.activity;
 
 
 import com.fsck.k9.Account;
-import com.fsck.k9.DI;
 import com.fsck.k9.mailstore.Folder;
 import com.fsck.k9.mailstore.FolderType;
 import com.fsck.k9.mailstore.LocalFolder;
@@ -10,7 +9,7 @@ import com.fsck.k9.ui.folders.FolderNameFormatter;
 
 
 public class FolderInfoHolder {
-    private final FolderNameFormatter folderNameFormatter = DI.get(FolderNameFormatter.class);
+    private final FolderNameFormatter folderNameFormatter;
 
     public final String serverId;
     public final String displayName;
@@ -19,7 +18,8 @@ public class FolderInfoHolder {
     public boolean moreMessages;
 
 
-    public FolderInfoHolder(LocalFolder localFolder, Account account) {
+    public FolderInfoHolder(FolderNameFormatter folderNameFormatter, LocalFolder localFolder, Account account) {
+        this.folderNameFormatter = folderNameFormatter;
         this.serverId = localFolder.getServerId();
         this.lastChecked = localFolder.getLastUpdate();
         this.displayName = getDisplayName(account, localFolder);

@@ -25,6 +25,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.ui.folders.FolderNameFormatter;
+import com.fsck.k9.ui.folders.FolderNameFormatterFactory;
 
 import timber.log.Timber;
 
@@ -43,7 +44,9 @@ public class FolderSettings extends K9PreferenceActivity {
 
     private final MessagingController messagingController = DI.get(MessagingController.class);
     private final K9JobManager jobManager = DI.get(K9JobManager.class);
-    private final FolderNameFormatter folderNameFormatter = DI.get(FolderNameFormatter.class);
+    private final FolderNameFormatterFactory folderNameFormatterFactory = DI.get(FolderNameFormatterFactory.class);
+
+    private FolderNameFormatter folderNameFormatter;
 
     private LocalFolder mFolder;
 
@@ -64,6 +67,8 @@ public class FolderSettings extends K9PreferenceActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        folderNameFormatter = folderNameFormatterFactory.create(this);
 
         String folderServerId = (String)getIntent().getSerializableExtra(EXTRA_FOLDER_NAME);
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);

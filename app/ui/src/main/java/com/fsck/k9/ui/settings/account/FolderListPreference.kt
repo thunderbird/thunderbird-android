@@ -13,6 +13,7 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.ui.folders.FolderNameFormatter
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import org.koin.core.parameter.parametersOf
 
 /**
  * A [ListPreference] that allows selecting one of an account's folders.
@@ -27,7 +28,7 @@ constructor(
             android.R.attr.dialogPreferenceStyle),
     defStyleRes: Int = 0
 ) : ListPreference(context, attrs, defStyleAttr, defStyleRes), KoinComponent {
-    private val folderNameFormatter: FolderNameFormatter by inject()
+    private val folderNameFormatter: FolderNameFormatter by inject { parametersOf(context) }
     private val noFolderSelectedName = context.getString(R.string.account_settings_no_folder_selected).italicize()
     private lateinit var automaticFolderOption: CharSequence
 

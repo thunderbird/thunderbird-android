@@ -4,6 +4,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferPresenter
+import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.Test
@@ -15,6 +16,7 @@ import org.koin.test.AutoCloseKoinTest
 import org.koin.test.check.checkModules
 import org.openintents.openpgp.OpenPgpApiManager
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
@@ -32,6 +34,7 @@ class DependencyInjectionTest : AutoCloseKoinTest() {
         getKoin().checkModules {
             create<OpenPgpApiManager> { parametersOf(lifecycleOwner) }
             create<AutocryptKeyTransferPresenter> { parametersOf(lifecycleOwner, autocryptTransferView) }
+            create<FolderNameFormatter> { parametersOf(RuntimeEnvironment.application) }
         }
     }
 }

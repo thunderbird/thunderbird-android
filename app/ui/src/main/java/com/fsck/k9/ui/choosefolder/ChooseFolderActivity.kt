@@ -25,12 +25,13 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import java.util.Locale
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class ChooseFolderActivity : K9Activity() {
     private val viewModel: ChooseFolderViewModel by viewModel()
     private val preferences: Preferences by inject()
     private val messagingController: MessagingController by inject()
-    private val folderNameFormatter: FolderNameFormatter by inject()
+    private val folderNameFormatter: FolderNameFormatter by inject { parametersOf(this) }
     private val folderIconProvider by lazy { FolderIconProvider(theme) }
 
     private lateinit var recyclerView: RecyclerView
