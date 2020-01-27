@@ -94,7 +94,7 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
         return folderNameFormatter.displayName(folder);
     }
 
-    private static FolderType getFolderType(Account account, String serverId) {
+    public static FolderType getFolderType(Account account, String serverId) {
         if (serverId.equals(account.getInboxFolder())) {
             return FolderType.INBOX;
         } else if (serverId.equals(account.getOutboxFolder())) {
@@ -112,20 +112,6 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
         } else {
             return FolderType.REGULAR;
         }
-    }
-
-    /**
-     * Returns the display name for a folder.
-     *
-     * Deprecated. Use {@link FolderNameFormatter} instead.
-     */
-    @Deprecated
-    public static String getDisplayName(Account account, String serverId, String name) {
-        FolderNameFormatter folderNameFormatter = DI.get(FolderNameFormatter.class);
-        FolderType folderType = getFolderType(account, serverId);
-        Folder folder = new Folder(-1, serverId, name, folderType);
-
-        return folderNameFormatter.displayName(folder);
     }
 
     public void setMoreMessagesFromFolder(LocalFolder folder) {
