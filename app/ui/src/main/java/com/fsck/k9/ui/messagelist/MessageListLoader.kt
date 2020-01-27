@@ -48,11 +48,13 @@ class MessageListLoader(
             uniqueIdColumn = MLFProjectionInfo.ID_COLUMN
         }
 
-        return messageListExtractor.extractMessageList(
-            cursor,
-            uniqueIdColumn,
-            threadCountIncluded = config.showingThreadedList
-        )
+        return cursor.use {
+            messageListExtractor.extractMessageList(
+                cursor,
+                uniqueIdColumn,
+                threadCountIncluded = config.showingThreadedList
+            )
+        }
     }
 
     private fun loadMessageListForAccount(account: Account, config: MessageListConfig): Cursor? {
