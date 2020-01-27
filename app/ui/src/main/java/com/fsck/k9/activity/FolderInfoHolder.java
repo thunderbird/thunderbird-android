@@ -9,76 +9,20 @@ import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.ui.folders.FolderNameFormatter;
 
 
-public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
+public class FolderInfoHolder {
     private final FolderNameFormatter folderNameFormatter = DI.get(FolderNameFormatter.class);
 
-    public String serverId;
-    public String displayName;
-    public long lastChecked;
-    public int unreadMessageCount = -1;
-    public int flaggedMessageCount = -1;
+    public final String serverId;
+    public final String displayName;
+    public final long lastChecked;
     public boolean loading;
-    public String status;
     public boolean lastCheckFailed;
-    public LocalFolder folder;
-    public boolean pushActive;
     public boolean moreMessages;
 
-    @Override
-    public boolean equals(Object o) {
-        return o instanceof FolderInfoHolder && serverId.equals(((FolderInfoHolder) o).serverId);
-    }
 
-    @Override
-    public int hashCode() {
-        return serverId.hashCode();
-    }
-
-    public int compareTo(FolderInfoHolder o) {
-        String s1 = this.serverId;
-        String s2 = o.serverId;
-
-        int ret = s1.compareToIgnoreCase(s2);
-        if (ret != 0) {
-            return ret;
-        } else {
-            return s1.compareTo(s2);
-        }
-
-    }
-
-    private String truncateStatus(String mess) {
-        if (mess != null && mess.length() > 27) {
-            mess = mess.substring(0, 27);
-        }
-        return mess;
-    }
-
-    // constructor for an empty object for comparisons
-    public FolderInfoHolder() {
-    }
-
-    public FolderInfoHolder(LocalFolder folder, Account account) {
-        populate(folder, account);
-    }
-
-    public FolderInfoHolder(LocalFolder folder, Account account, int unreadCount) {
-        populate(folder, account, unreadCount);
-    }
-
-    public void populate(LocalFolder folder, Account account, int unreadCount) {
-        populate(folder, account);
-        this.unreadMessageCount = unreadCount;
-        folder.close();
-    }
-
-    public void populate(LocalFolder localFolder, Account account) {
-        this.folder = localFolder;
+    public FolderInfoHolder(LocalFolder localFolder, Account account) {
         this.serverId = localFolder.getServerId();
         this.lastChecked = localFolder.getLastUpdate();
-
-        this.status = truncateStatus(localFolder.getStatus());
-
         this.displayName = getDisplayName(account, localFolder);
         setMoreMessagesFromFolder(localFolder);
     }
@@ -92,6 +36,10 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
                 getFolderType(account, serverId));
 
         return folderNameFormatter.displayName(folder);
+    }
+
+    public void setMoreMessagesFromFolder(LocalFolder folder) {
+        moreMessages = folder.hasMoreMessages();
     }
 
     public static FolderType getFolderType(Account account, String serverId) {
@@ -112,9 +60,5 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
         } else {
             return FolderType.REGULAR;
         }
-    }
-
-    public void setMoreMessagesFromFolder(LocalFolder folder) {
-        moreMessages = folder.hasMoreMessages();
     }
 }

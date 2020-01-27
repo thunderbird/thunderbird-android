@@ -1548,7 +1548,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         if (isThreadDisplay) {
             folderServerId = messages.get(0).getFolderServerId();
         } else if (singleFolderMode) {
-            folderServerId = currentFolder.folder.getServerId();
+            folderServerId = currentFolder.serverId;
         } else {
             folderServerId = null;
         }
@@ -1578,7 +1578,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         if (isThreadDisplay) {
             folderServerId = messages.get(0).getFolderServerId();
         } else if (singleFolderMode) {
-            folderServerId = currentFolder.folder.getServerId();
+            folderServerId = currentFolder.serverId;
         } else {
             folderServerId = null;
         }
