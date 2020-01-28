@@ -1,17 +1,6 @@
 package com.fsck.k9.backend.pop3;
 
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import com.fsck.k9.backend.api.BackendFolder;
 import com.fsck.k9.backend.api.BackendFolder.MoreMessages;
 import com.fsck.k9.backend.api.BackendStorage;
@@ -19,17 +8,23 @@ import com.fsck.k9.backend.api.SyncConfig;
 import com.fsck.k9.backend.api.SyncListener;
 import com.fsck.k9.helper.ExceptionHelper;
 import com.fsck.k9.mail.AuthenticationFailedException;
-import com.fsck.k9.mail.BodyFactory;
-import com.fsck.k9.mail.DefaultBodyFactory;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.internet.MessageExtractor;
+import com.fsck.k9.mail.store.pop3.Pop3Folder;
+import com.fsck.k9.mail.store.pop3.Pop3Message;
 import com.fsck.k9.mail.store.pop3.Pop3Store;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import timber.log.Timber;
 
 
@@ -50,7 +45,7 @@ class Pop3Sync {
     }
 
     void synchronizeMailboxSynchronous(String folder, SyncConfig syncConfig, SyncListener listener) {
-        Folder remoteFolder = null;
+        Pop3Folder remoteFolder = null;
 
         Timber.i("Synchronizing folder %s:%s", accountName, folder);
 
@@ -97,7 +92,7 @@ class Pop3Sync {
              */
             Timber.v("SYNC: About to open remote folder %s", folder);
 
-            remoteFolder.open(Folder.OPEN_MODE_RO);
+            remoteFolder.open();
 
             listener.syncAuthenticationSuccess();
 
@@ -112,8 +107,8 @@ class Pop3Sync {
                 visibleLimit = syncConfig.getDefaultVisibleLimit();
             }
 
-            final List<Message> remoteMessages = new ArrayList<>();
-            Map<String, Message> remoteUidMap = new HashMap<>();
+            final List<Pop3Message> remoteMessages = new ArrayList<>();
+            Map<String, Pop3Message> remoteUidMap = new HashMap<>();
 
             Timber.v("SYNC: Remote message count for folder %s is %d", folder, remoteMessageCount);
 
@@ -137,12 +132,12 @@ class Pop3Sync {
                 listener.syncHeadersStarted(folder, folderName);
 
 
-                List<? extends Message> remoteMessageArray =
-                        remoteFolder.getMessages(remoteStart, remoteMessageCount, earliestDate, null);
+                List<Pop3Message> remoteMessageArray =
+                        remoteFolder.getMessages(remoteStart, remoteMessageCount, null);
 
                 int messageCount = remoteMessageArray.size();
 
-                for (Message thisMess : remoteMessageArray) {
+                for (Pop3Message thisMess : remoteMessageArray) {
                     headerProgress.incrementAndGet();
                     listener.syncHeadersProgress(folder, headerProgress.get(), messageCount);
 
@@ -187,13 +182,13 @@ class Pop3Sync {
             localUidMap = null;
 
             if (moreMessages == MoreMessages.UNKNOWN) {
-                updateMoreMessages(remoteFolder, backendFolder, earliestDate, remoteStart);
+                updateMoreMessages(remoteFolder, backendFolder, remoteStart);
             }
 
             /*
              * Now we download the actual content of messages.
              */
-            int newMessages = downloadMessages(syncConfig, remoteFolder, backendFolder, remoteMessages, false,
+            int newMessages = downloadMessages(syncConfig, remoteFolder, backendFolder, remoteMessages,
                     listener);
 
             listener.folderStatusChanged(folder);
@@ -241,21 +236,21 @@ class Pop3Sync {
         }
     }
 
-    private void updateMoreMessages(Folder remoteFolder, BackendFolder backendFolder, Date earliestDate,
-            int remoteStart) throws MessagingException, IOException {
+    private void updateMoreMessages(Pop3Folder remoteFolder, BackendFolder backendFolder,
+                                    int remoteStart) {
 
         if (remoteStart == 1) {
             backendFolder.setMoreMessages(MoreMessages.FALSE);
         } else {
-            boolean moreMessagesAvailable = remoteFolder.areMoreMessagesAvailable(remoteStart, earliestDate);
+            boolean moreMessagesAvailable = remoteFolder.areMoreMessagesAvailable(remoteStart);
 
             MoreMessages newMoreMessages = (moreMessagesAvailable) ? MoreMessages.TRUE : MoreMessages.FALSE;
             backendFolder.setMoreMessages(newMoreMessages);
         }
     }
 
-    private int downloadMessages(final SyncConfig syncConfig, final Folder remoteFolder,
-            final BackendFolder backendFolder, List<Message> inputMessages, boolean flagSyncOnly,
+    private int downloadMessages(final SyncConfig syncConfig, final Pop3Folder remoteFolder,
+            final BackendFolder backendFolder, List<Pop3Message> inputMessages,
             final SyncListener listener) throws MessagingException {
 
         final Date earliestDate = syncConfig.getEarliestPollDate();
@@ -266,15 +261,14 @@ class Pop3Sync {
         }
         final String folder = remoteFolder.getServerId();
 
-        List<Message> syncFlagMessages = new ArrayList<>();
-        List<Message> unsyncedMessages = new ArrayList<>();
+        List<Pop3Message> syncFlagMessages = new ArrayList<>();
+        List<Pop3Message> unsyncedMessages = new ArrayList<>();
         final AtomicInteger newMessages = new AtomicInteger(0);
 
-        List<Message> messages = new ArrayList<>(inputMessages);
+        List<Pop3Message> messages = new ArrayList<>(inputMessages);
 
-        for (Message message : messages) {
-            evaluateMessageForDownload(message, folder, backendFolder, remoteFolder, unsyncedMessages,
-                    syncFlagMessages, flagSyncOnly, listener);
+        for (Pop3Message message : messages) {
+            evaluateMessageForDownload(message, folder, backendFolder, unsyncedMessages, syncFlagMessages, listener);
         }
 
         final AtomicInteger progress = new AtomicInteger(0);
@@ -284,8 +278,8 @@ class Pop3Sync {
         Timber.d("SYNC: Have %d unsynced messages", unsyncedMessages.size());
 
         messages.clear();
-        final List<Message> largeMessages = new ArrayList<>();
-        final List<Message> smallMessages = new ArrayList<>();
+        final List<Pop3Message> largeMessages = new ArrayList<>();
+        final List<Pop3Message> smallMessages = new ArrayList<>();
         if (!unsyncedMessages.isEmpty()) {
             int visibleLimit = backendFolder.getVisibleLimit();
             int listSize = unsyncedMessages.size();
@@ -295,9 +289,6 @@ class Pop3Sync {
             }
 
             FetchProfile fp = new FetchProfile();
-            if (remoteFolder.supportsFetchingFlags()) {
-                fp.add(FetchProfile.Item.FLAGS);
-            }
             fp.add(FetchProfile.Item.ENVELOPE);
 
             Timber.d("SYNC: About to fetch %d unsynced messages for folder %s", unsyncedMessages.size(), folder);
@@ -332,13 +323,6 @@ class Pop3Sync {
         downloadLargeMessages(syncConfig, remoteFolder, backendFolder, largeMessages, progress, newMessages, todo, fp, listener);
         largeMessages.clear();
 
-        /*
-         * Refresh the flags for any messages in the local store that we didn't just
-         * download.
-         */
-
-        refreshLocalMessageFlags(syncConfig, remoteFolder, backendFolder, syncFlagMessages, progress, todo, listener);
-
         Timber.d("SYNC: Synced remote messages for folder %s, %d new messages", folder, newMessages.get());
 
         // If the oldest message seen on this sync is newer than
@@ -360,13 +344,11 @@ class Pop3Sync {
     }
 
     private void evaluateMessageForDownload(
-            final Message message,
+            final Pop3Message message,
             final String folder,
             final BackendFolder backendFolder,
-            final Folder remoteFolder,
-            final List<Message> unsyncedMessages,
-            final List<Message> syncFlagMessages,
-            boolean flagSyncOnly,
+            final List<Pop3Message> unsyncedMessages,
+            final List<Pop3Message> syncFlagMessages,
             SyncListener listener) {
 
         String messageServerId = message.getUid();
@@ -380,25 +362,23 @@ class Pop3Sync {
         boolean messagePresentLocally = backendFolder.isMessagePresent(messageServerId);
 
         if (!messagePresentLocally) {
-            if (!flagSyncOnly) {
-                if (!message.isSet(Flag.X_DOWNLOADED_FULL) && !message.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
-                    Timber.v("Message with uid %s has not yet been downloaded", messageServerId);
+            if (!message.isSet(Flag.X_DOWNLOADED_FULL) && !message.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
+                Timber.v("Message with uid %s has not yet been downloaded", messageServerId);
 
-                    unsyncedMessages.add(message);
+                unsyncedMessages.add(message);
+            } else {
+                Timber.v("Message with uid %s is partially or fully downloaded", messageServerId);
+
+                // Store the updated message locally
+                boolean completeMessage = message.isSet(Flag.X_DOWNLOADED_FULL);
+                if (completeMessage) {
+                    backendFolder.saveCompleteMessage(message);
                 } else {
-                    Timber.v("Message with uid %s is partially or fully downloaded", messageServerId);
-
-                    // Store the updated message locally
-                    boolean completeMessage = message.isSet(Flag.X_DOWNLOADED_FULL);
-                    if (completeMessage) {
-                        backendFolder.saveCompleteMessage(message);
-                    } else {
-                        backendFolder.savePartialMessage(message);
-                    }
-
-                    boolean isOldMessage = isOldMessage(backendFolder, message);
-                    listener.syncNewMessage(folder, messageServerId, isOldMessage);
+                    backendFolder.savePartialMessage(message);
                 }
+
+                boolean isOldMessage = isOldMessage(backendFolder, message);
+                listener.syncNewMessage(folder, messageServerId, isOldMessage);
             }
             return;
         }
@@ -412,10 +392,6 @@ class Pop3Sync {
 
                 unsyncedMessages.add(message);
             } else {
-                String newPushState = remoteFolder.getNewPushState(backendFolder.getPushState(), message);
-                if (newPushState != null) {
-                    backendFolder.setPushState(newPushState);
-                }
                 syncFlagMessages.add(message);
             }
         } else {
@@ -423,10 +399,10 @@ class Pop3Sync {
         }
     }
 
-    private <T extends Message> void fetchUnsyncedMessages(final SyncConfig syncConfig, final Folder<T> remoteFolder,
-            List<T> unsyncedMessages,
-            final List<Message> smallMessages,
-            final List<Message> largeMessages,
+    private void fetchUnsyncedMessages(final SyncConfig syncConfig, final Pop3Folder remoteFolder,
+            List<Pop3Message> unsyncedMessages,
+            final List<Pop3Message> smallMessages,
+            final List<Pop3Message> largeMessages,
             final AtomicInteger progress,
             final int todo,
             FetchProfile fp,
@@ -435,9 +411,9 @@ class Pop3Sync {
 
         final Date earliestDate = syncConfig.getEarliestPollDate();
         remoteFolder.fetch(unsyncedMessages, fp,
-                new MessageRetrievalListener<T>() {
+                new MessageRetrievalListener<Pop3Message>() {
                     @Override
-                    public void messageFinished(T message, int number, int ofTotal) {
+                    public void messageFinished(Pop3Message message, int number, int ofTotal) {
                         try {
                             if (message.isSet(Flag.DELETED) || message.olderThan(earliestDate)) {
                                 if (message.isSet(Flag.DELETED)) {
@@ -478,10 +454,10 @@ class Pop3Sync {
                 });
     }
 
-    private <T extends Message> void downloadSmallMessages(
-            final Folder<T> remoteFolder,
+    private void downloadSmallMessages(
+            final Pop3Folder remoteFolder,
             final BackendFolder backendFolder,
-            List<T> smallMessages,
+            List<Pop3Message> smallMessages,
             final AtomicInteger progress,
             final AtomicInteger newMessages,
             final int todo,
@@ -492,9 +468,9 @@ class Pop3Sync {
         Timber.d("SYNC: Fetching %d small messages for folder %s", smallMessages.size(), folder);
 
         remoteFolder.fetch(smallMessages,
-                fp, new MessageRetrievalListener<T>() {
+                fp, new MessageRetrievalListener<Pop3Message>() {
                     @Override
-                    public void messageFinished(final T message, int number, int ofTotal) {
+                    public void messageFinished(final Pop3Message message, int number, int ofTotal) {
                         try {
 
                             // Store the updated message locally
@@ -533,15 +509,15 @@ class Pop3Sync {
         Timber.d("SYNC: Done fetching small messages for folder %s", folder);
     }
 
-    private boolean isOldMessage(BackendFolder backendFolder, Message message) {
+    private boolean isOldMessage(BackendFolder backendFolder, Pop3Message message) {
         return message.olderThan(backendFolder.getLatestOldMessageSeenTime());
     }
 
-    private <T extends Message> void downloadLargeMessages(
+    private void downloadLargeMessages(
             final SyncConfig syncConfig,
-            final Folder<T> remoteFolder,
+            final Pop3Folder remoteFolder,
             final BackendFolder backendFolder,
-            List<T> largeMessages,
+            List<Pop3Message> largeMessages,
             final AtomicInteger progress,
             final AtomicInteger newMessages,
             final int todo,
@@ -552,13 +528,9 @@ class Pop3Sync {
         Timber.d("SYNC: Fetching large messages for folder %s", folder);
 
         remoteFolder.fetch(largeMessages, fp, null);
-        for (T message : largeMessages) {
+        for (Pop3Message message : largeMessages) {
 
-            if (message.getBody() == null) {
-                downloadSaneBody(syncConfig, remoteFolder, backendFolder, message);
-            } else {
-                downloadPartial(remoteFolder, backendFolder, message);
-            }
+            downloadSaneBody(syncConfig, remoteFolder, backendFolder, message);
 
             String messageServerId = message.getUid();
             Timber.v("About to notify listeners that we got a new large message %s:%s:%s",
@@ -584,8 +556,8 @@ class Pop3Sync {
         Timber.d("SYNC: Done fetching large messages for folder %s", folder);
     }
 
-    private void downloadSaneBody(SyncConfig syncConfig, Folder remoteFolder, BackendFolder backendFolder,
-            Message message) throws MessagingException {
+    private void downloadSaneBody(SyncConfig syncConfig, Pop3Folder remoteFolder, BackendFolder backendFolder,
+            Pop3Message message) throws MessagingException {
         /*
          * The provider was unable to get the structure of the message, so
          * we'll download a reasonable portion of the messge and mark it as
@@ -626,93 +598,5 @@ class Pop3Sync {
         } else {
             backendFolder.savePartialMessage(message);
         }
-    }
-
-    private void downloadPartial(Folder remoteFolder, BackendFolder backendFolder, Message message)
-            throws MessagingException {
-        /*
-         * We have a structure to deal with, from which
-         * we can pull down the parts we want to actually store.
-         * Build a list of parts we are interested in. Text parts will be downloaded
-         * right now, attachments will be left for later.
-         */
-
-        Set<Part> viewables = MessageExtractor.collectTextParts(message);
-
-        /*
-         * Now download the parts we're interested in storing.
-         */
-        BodyFactory bodyFactory = new DefaultBodyFactory();
-        for (Part part : viewables) {
-            remoteFolder.fetchPart(message, part, null, bodyFactory);
-        }
-
-        // Store the updated message locally
-        backendFolder.savePartialMessage(message);
-    }
-
-    private void refreshLocalMessageFlags(
-            final SyncConfig syncConfig,
-            final Folder remoteFolder,
-            final BackendFolder backendFolder,
-            List<Message> syncFlagMessages,
-            final AtomicInteger progress,
-            final int todo,
-            SyncListener listener
-    ) throws MessagingException {
-
-        final String folder = remoteFolder.getServerId();
-        if (remoteFolder.supportsFetchingFlags()) {
-            Timber.d("SYNC: About to sync flags for %d remote messages for folder %s", syncFlagMessages.size(), folder);
-
-            FetchProfile fp = new FetchProfile();
-            fp.add(FetchProfile.Item.FLAGS);
-
-            List<Message> undeletedMessages = new LinkedList<>();
-            for (Message message : syncFlagMessages) {
-                if (!message.isSet(Flag.DELETED)) {
-                    undeletedMessages.add(message);
-                }
-            }
-
-            remoteFolder.fetch(undeletedMessages, fp, null);
-            for (Message remoteMessage : syncFlagMessages) {
-                boolean messageChanged = syncFlags(syncConfig, backendFolder, remoteMessage);
-                if (messageChanged) {
-                    listener.syncFlagChanged(folder, remoteMessage.getUid());
-                }
-                progress.incrementAndGet();
-                listener.syncProgress(folder, progress.get(), todo);
-            }
-        }
-    }
-
-    private boolean syncFlags(SyncConfig syncConfig, BackendFolder backendFolder, Message remoteMessage) {
-        String messageServerId = remoteMessage.getUid();
-
-        if (!backendFolder.isMessagePresent(messageServerId)) {
-            return false;
-        }
-
-        Set<Flag> localMessageFlags = backendFolder.getMessageFlags(messageServerId);
-        if (localMessageFlags.contains(Flag.DELETED)) {
-            return false;
-        }
-
-        boolean messageChanged = false;
-        if (remoteMessage.isSet(Flag.DELETED)) {
-            if (syncConfig.getSyncRemoteDeletions()) {
-                backendFolder.setMessageFlag(messageServerId, Flag.DELETED, true);
-                messageChanged = true;
-            }
-        } else {
-            for (Flag flag : syncConfig.getSyncFlags()) {
-                if (remoteMessage.isSet(flag) != localMessageFlags.contains(flag)) {
-                    backendFolder.setMessageFlag(messageServerId, flag, remoteMessage.isSet(flag));
-                    messageChanged = true;
-                }
-            }
-        }
-        return messageChanged;
     }
 }

@@ -10,7 +10,6 @@ import java.net.Socket;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.ConnectionSecurity;
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.filter.Base64;
@@ -138,7 +137,7 @@ public class Pop3StoreTest {
         when(mockSocket.getOutputStream()).thenReturn(byteArrayOutputStream);
         Pop3Folder folder = store.getFolder(Pop3Folder.INBOX);
 
-        folder.open(Folder.OPEN_MODE_RW);
+        folder.open();
 
         assertEquals(20, folder.getMessageCount());
         assertEquals(AUTH + CAPA + AUTH_PLAIN_WITH_LOGIN + STAT, byteArrayOutputStream.toString("UTF-8"));
@@ -153,7 +152,7 @@ public class Pop3StoreTest {
         when(mockSocket.getInputStream()).thenReturn(new ByteArrayInputStream(response.getBytes("UTF-8")));
         Pop3Folder folder = store.getFolder(Pop3Folder.INBOX);
 
-        folder.open(Folder.OPEN_MODE_RW);
+        folder.open();
     }
 
     private ServerSettings createServerSettings() {

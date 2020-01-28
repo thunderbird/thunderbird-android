@@ -14,7 +14,6 @@ import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy;
 import com.fsck.k9.backend.api.SyncListener;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.imap.ImapFolder;
@@ -118,7 +117,7 @@ public class ImapSyncTest {
 
         imapSync.sync(FOLDER_NAME, syncConfig, listener);
 
-        verify(remoteFolder).open(Folder.OPEN_MODE_RO);
+        verify(remoteFolder).open(ImapFolder.OPEN_MODE_RO);
     }
 
     @Test
@@ -206,7 +205,6 @@ public class ImapSyncTest {
     public void sync_shouldFetchUnsynchronizedMessagesListAndFlags() throws Exception {
         messageCountInRemoteFolder(1);
         hasUnsyncedRemoteMessage();
-        when(remoteFolder.supportsFetchingFlags()).thenReturn(true);
 
         imapSync.sync(FOLDER_NAME, syncConfig, listener);
 
@@ -222,7 +220,6 @@ public class ImapSyncTest {
         ImapMessage smallMessage = buildSmallNewMessage();
         messageCountInRemoteFolder(1);
         hasUnsyncedRemoteMessage();
-        when(remoteFolder.supportsFetchingFlags()).thenReturn(false);
         respondToFetchEnvelopesWithMessage(smallMessage);
 
         imapSync.sync(FOLDER_NAME, syncConfig, listener);
@@ -238,7 +235,6 @@ public class ImapSyncTest {
         ImapMessage largeMessage = buildLargeNewMessage();
         messageCountInRemoteFolder(1);
         hasUnsyncedRemoteMessage();
-        when(remoteFolder.supportsFetchingFlags()).thenReturn(false);
         respondToFetchEnvelopesWithMessage(largeMessage);
 
         imapSync.sync(FOLDER_NAME, syncConfig, listener);

@@ -1,6 +1,16 @@
 package com.fsck.k9.mail.store.pop3;
 
 
+import com.fsck.k9.mail.FetchProfile;
+import com.fsck.k9.mail.FetchProfile.Item;
+import com.fsck.k9.mail.MessageRetrievalListener;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.internet.BinaryTempFileBody;
+import com.fsck.k9.mail.store.StoreConfig;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -8,27 +18,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import com.fsck.k9.mail.FetchProfile;
-import com.fsck.k9.mail.FetchProfile.Item;
-import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.MessageRetrievalListener;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.internet.BinaryTempFileBody;
-import com.fsck.k9.mail.store.StoreConfig;
-import org.junit.Before;
-import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 
@@ -53,68 +50,18 @@ public class Pop3FolderTest {
         BinaryTempFileBody.setTempDirectory(new File(System.getProperty("java.io.tmpdir")));
     }
 
-    @Test
-    public void create_withHoldsFoldersArgument_shouldDoNothing() throws Exception {
-        Pop3Folder folder = new Pop3Folder(mockStore, "TestFolder");
-
-        boolean result = folder.create();
-
-        assertFalse(result);
-        verifyZeroInteractions(mockConnection);
-    }
-
-    @Test
-    public void create_withHoldsMessagesArgument_shouldDoNothing() throws Exception {
-        Pop3Folder folder = new Pop3Folder(mockStore, "TestFolder");
-
-        boolean result = folder.create();
-
-        assertFalse(result);
-        verifyZeroInteractions(mockConnection);
-    }
-
-    @Test
-    public void exists_withInbox_shouldReturnTrue() throws Exception {
-        boolean result = folder.exists();
-
-        assertTrue(result);
-    }
-
-    @Test
-    public void exists_withNonInboxFolder_shouldReturnFalse() throws Exception {
-        folder = new Pop3Folder(mockStore, "TestFolder");
-
-        boolean result = folder.exists();
-
-        assertFalse(result);
-    }
-
-    @Test
-    public void getUnreadMessageCount_shouldBeMinusOne() throws Exception {
-        int result = folder.getUnreadMessageCount();
-
-        assertEquals(-1, result);
-    }
-
-    @Test
-    public void getFlaggedMessageCount_shouldBeMinusOne() throws Exception {
-        int result = folder.getFlaggedMessageCount();
-
-        assertEquals(-1, result);
-    }
-
     @Test(expected = MessagingException.class)
     public void open_withoutInboxFolder_shouldThrow() throws Exception {
         Pop3Folder folder = new Pop3Folder(mockStore, "TestFolder");
 
-        folder.open(Folder.OPEN_MODE_RW);
+        folder.open();
     }
 
     @Test
     public void open_withoutInboxFolder_shouldNotTryAndCreateConnection() throws Exception {
         Pop3Folder folder = new Pop3Folder(mockStore, "TestFolder");
         try {
-            folder.open(Folder.OPEN_MODE_RW);
+            folder.open();
         } catch (Exception ignored) {}
         verify(mockStore, never()).createConnection();
     }
@@ -124,13 +71,13 @@ public class Pop3FolderTest {
             throws MessagingException {
 
         when(mockStore.createConnection()).thenThrow(new MessagingException("Test"));
-        folder.open(Folder.OPEN_MODE_RW);
+        folder.open();
     }
 
     @Test
     public void open_withInboxFolder_shouldSetMessageCountFromStatResponse()
             throws MessagingException {
-        folder.open(Folder.OPEN_MODE_RW);
+        folder.open();
 
         int messageCount = folder.getMessageCount();
 
@@ -143,13 +90,13 @@ public class Pop3FolderTest {
         when(mockConnection.executeSimpleCommand(Pop3Commands.STAT_COMMAND))
                 .thenThrow(new MessagingException("Test"));
 
-        folder.open(Folder.OPEN_MODE_RW);
+        folder.open();
     }
 
     @Test
     public void open_createsAndOpensConnection()
             throws MessagingException {
-        folder.open(Folder.OPEN_MODE_RW);
+        folder.open();
 
         verify(mockStore, times(1)).createConnection();
         verify(mockConnection).open();
@@ -158,22 +105,12 @@ public class Pop3FolderTest {
     @Test
     public void open_whenAlreadyOpenWithValidConnection_doesNotCreateAnotherConnection()
             throws MessagingException {
-        folder.open(Folder.OPEN_MODE_RW);
+        folder.open();
         when(mockConnection.isOpen()).thenReturn(true);
 
-        folder.open(Folder.OPEN_MODE_RW);
+        folder.open();
 
         verify(mockStore, times(1)).createConnection();
-    }
-
-    @Test
-    public void getMode_withFolderOpenedInRO_isRW() throws MessagingException {
-
-        folder.open(Folder.OPEN_MODE_RO);
-
-        int mode = folder.getMode();
-
-        assertEquals(Folder.OPEN_MODE_RW, mode);
     }
 
     @Test
@@ -188,7 +125,7 @@ public class Pop3FolderTest {
     public void close_onOpenedFolder_succeeds()
             throws MessagingException {
 
-        folder.open(Folder.OPEN_MODE_RW);
+        folder.open();
 
         folder.close();
     }
@@ -197,7 +134,7 @@ public class Pop3FolderTest {
     public void close_onOpenedFolder_sendsQUIT()
             throws MessagingException {
 
-        folder.open(Folder.OPEN_MODE_RW);
+        folder.open();
         when(mockConnection.isOpen()).thenReturn(true);
 
         folder.close();
@@ -209,7 +146,7 @@ public class Pop3FolderTest {
     public void close_withExceptionQuiting_ignoresException()
             throws MessagingException {
 
-        folder.open(Folder.OPEN_MODE_RW);
+        folder.open();
         when(mockConnection.isOpen()).thenReturn(true);
         doThrow(new MessagingException("Test"))
                 .when(mockConnection)
@@ -222,7 +159,7 @@ public class Pop3FolderTest {
     public void close_onOpenedFolder_closesConnection()
             throws MessagingException {
 
-        folder.open(Folder.OPEN_MODE_RW);
+        folder.open();
         when(mockConnection.isOpen()).thenReturn(true);
 
         folder.close();
@@ -232,35 +169,35 @@ public class Pop3FolderTest {
 
     @Test
     public void getMessages_returnsListOfMessagesOnServer() throws IOException, MessagingException {
-        folder.open(Folder.OPEN_MODE_RW);
+        folder.open();
 
         when(mockConnection.readLine()).thenReturn("1 abcd").thenReturn(".");
 
-        List<Pop3Message> result = folder.getMessages(1, 1, null, mockListener);
+        List<Pop3Message> result = folder.getMessages(1, 1, mockListener);
 
         assertEquals(1, result.size());
     }
 
     @Test(expected = MessagingException.class)
     public void getMessages_withInvalidSet_throwsException() throws IOException, MessagingException {
-        folder.open(Folder.OPEN_MODE_RW);
+        folder.open();
 
-        folder.getMessages(2, 1, null, mockListener);
+        folder.getMessages(2, 1, mockListener);
     }
 
     @Test(expected = MessagingException.class)
     public void getMessages_withIOExceptionReadingLine_throwsException() throws IOException, MessagingException {
-        folder.open(Folder.OPEN_MODE_RW);
+        folder.open();
 
         when(mockConnection.readLine()).thenThrow(new IOException("Test"));
 
-        folder.getMessages(1, 1, null, mockListener);
+        folder.getMessages(1, 1, mockListener);
     }
 
     @Test
     public void getMessage_withPreviouslyFetchedMessage_returnsMessage()
             throws IOException, MessagingException {
-        folder.open(Folder.OPEN_MODE_RW);
+        folder.open();
 
         List<Pop3Message> messageList = setupMessageFromServer();
 
@@ -272,7 +209,7 @@ public class Pop3FolderTest {
     @Test
     public void getMessage_withNoPreviouslyFetchedMessage_returnsNewMessage()
             throws IOException, MessagingException {
-        folder.open(Folder.OPEN_MODE_RW);
+        folder.open();
 
         Pop3Message message = folder.getMessage("abcd");
 
@@ -282,7 +219,7 @@ public class Pop3FolderTest {
 
     @Test
     public void fetch_withEnvelopeProfile_setsSizeOfMessage() throws MessagingException, IOException {
-        folder.open(Folder.OPEN_MODE_RW);
+        folder.open();
         List<Pop3Message> messageList = setupMessageFromServer();
         FetchProfile fetchProfile = new FetchProfile();
         fetchProfile.add(Item.ENVELOPE);
@@ -304,7 +241,7 @@ public class Pop3FolderTest {
                 "Content-Transfer-Encoding: 7bit\r\n" +
                 "\r\n" +
                 "this is some test text.").getBytes());
-        folder.open(Folder.OPEN_MODE_RW);
+        folder.open();
         List<Pop3Message> messageList = setupMessageFromServer();
         FetchProfile fetchProfile = new FetchProfile();
         fetchProfile.add(Item.BODY);
@@ -321,6 +258,6 @@ public class Pop3FolderTest {
 
     private List<Pop3Message> setupMessageFromServer() throws IOException, MessagingException {
         when(mockConnection.readLine()).thenReturn("1 abcd").thenReturn(".");
-        return folder.getMessages(1, 1, null, mockListener);
+        return folder.getMessages(1, 1, mockListener);
     }
 }

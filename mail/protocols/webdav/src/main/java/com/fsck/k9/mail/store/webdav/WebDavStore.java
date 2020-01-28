@@ -18,14 +18,12 @@ import java.util.Map;
 
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.ConnectionSecurity;
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.FolderType;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.ssl.TrustManagerFactory;
-import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mail.store.webdav.WebDavHttpClient.WebDavHttpClientFactory;
 import javax.net.ssl.SSLException;
@@ -83,7 +81,7 @@ public class WebDavStore {
     private short authenticationType = WebDavConstants.AUTH_TYPE_NONE;
     private String cachedLoginUrl;
 
-    private Folder sendFolder = null;
+    private WebDavFolder sendFolder = null;
     private Map<String, WebDavFolder> folderList = new HashMap<>();
 
     public WebDavStore(TrustManagerFactory trustManagerFactory, WebDavStoreSettings serverSettings, StoreConfig storeConfig) {
@@ -162,8 +160,8 @@ public class WebDavStore {
         authenticate();
     }
 
-    public List<? extends Folder> getPersonalNamespaces() throws MessagingException {
-        List<Folder> folderList = new LinkedList<>();
+    public List<WebDavFolder> getPersonalNamespaces() throws MessagingException {
+        List<WebDavFolder> folderList = new LinkedList<>();
         /*
          * We have to check authentication here so we have the proper URL stored
          */
@@ -282,7 +280,7 @@ public class WebDavStore {
         return folder;
     }
 
-    private Folder getSendSpoolFolder() {
+    private WebDavFolder getSendSpoolFolder() {
         if (sendFolder == null) {
             sendFolder = getFolder(WebDavConstants.DAV_MAIL_SEND_FOLDER);
         }
@@ -939,7 +937,7 @@ public class WebDavStore {
     public void sendMessages(List<? extends Message> messages) throws MessagingException {
         WebDavFolder tmpFolder = getFolder(storeConfig.getDraftsFolder());
         try {
-            tmpFolder.open(Folder.OPEN_MODE_RW);
+            tmpFolder.open();
             List<? extends Message> retMessages = tmpFolder.appendWebDavMessages(messages);
 
             tmpFolder.moveMessages(retMessages, getSendSpoolFolder());

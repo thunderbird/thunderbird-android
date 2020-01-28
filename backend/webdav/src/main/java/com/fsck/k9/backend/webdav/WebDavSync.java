@@ -1,7 +1,21 @@
 package com.fsck.k9.backend.webdav;
 
 
-import java.io.IOException;
+import com.fsck.k9.backend.api.BackendFolder;
+import com.fsck.k9.backend.api.BackendFolder.MoreMessages;
+import com.fsck.k9.backend.api.BackendStorage;
+import com.fsck.k9.backend.api.SyncConfig;
+import com.fsck.k9.backend.api.SyncListener;
+import com.fsck.k9.helper.ExceptionHelper;
+import com.fsck.k9.mail.AuthenticationFailedException;
+import com.fsck.k9.mail.FetchProfile;
+import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.MessageRetrievalListener;
+import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.store.webdav.WebDavFolder;
+import com.fsck.k9.mail.store.webdav.WebDavMessage;
+import com.fsck.k9.mail.store.webdav.WebDavStore;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -12,24 +26,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.fsck.k9.backend.api.BackendFolder;
-import com.fsck.k9.backend.api.BackendFolder.MoreMessages;
-import com.fsck.k9.backend.api.BackendStorage;
-import com.fsck.k9.backend.api.SyncConfig;
-import com.fsck.k9.backend.api.SyncListener;
-import com.fsck.k9.helper.ExceptionHelper;
-import com.fsck.k9.mail.AuthenticationFailedException;
-import com.fsck.k9.mail.BodyFactory;
-import com.fsck.k9.mail.DefaultBodyFactory;
-import com.fsck.k9.mail.FetchProfile;
-import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.MessageRetrievalListener;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.internet.MessageExtractor;
-import com.fsck.k9.mail.store.webdav.WebDavStore;
 import timber.log.Timber;
 
 
@@ -50,7 +46,7 @@ class WebDavSync {
     }
 
     void synchronizeMailboxSynchronous(String folder, SyncConfig syncConfig, SyncListener listener) {
-        Folder remoteFolder = null;
+        WebDavFolder remoteFolder = null;
 
         Timber.i("Synchronizing folder %s:%s", accountName, folder);
 
@@ -97,7 +93,7 @@ class WebDavSync {
              */
             Timber.v("SYNC: About to open remote folder %s", folder);
 
-            remoteFolder.open(Folder.OPEN_MODE_RO);
+            remoteFolder.open();
 
             listener.syncAuthenticationSuccess();
 
@@ -112,8 +108,8 @@ class WebDavSync {
                 visibleLimit = syncConfig.getDefaultVisibleLimit();
             }
 
-            final List<Message> remoteMessages = new ArrayList<>();
-            Map<String, Message> remoteUidMap = new HashMap<>();
+            final List<WebDavMessage> remoteMessages = new ArrayList<>();
+            Map<String, WebDavMessage> remoteUidMap = new HashMap<>();
 
             Timber.v("SYNC: Remote message count for folder %s is %d", folder, remoteMessageCount);
 
@@ -137,12 +133,12 @@ class WebDavSync {
                 listener.syncHeadersStarted(folder, folderName);
 
 
-                List<? extends Message> remoteMessageArray =
-                        remoteFolder.getMessages(remoteStart, remoteMessageCount, earliestDate, null);
+                List<WebDavMessage> remoteMessageArray =
+                        remoteFolder.getMessages(remoteStart, remoteMessageCount, null);
 
                 int messageCount = remoteMessageArray.size();
 
-                for (Message thisMess : remoteMessageArray) {
+                for (WebDavMessage thisMess : remoteMessageArray) {
                     headerProgress.incrementAndGet();
                     listener.syncHeadersProgress(folder, headerProgress.get(), messageCount);
 
@@ -193,7 +189,7 @@ class WebDavSync {
             /*
              * Now we download the actual content of messages.
              */
-            int newMessages = downloadMessages(syncConfig, remoteFolder, backendFolder, remoteMessages, false,
+            int newMessages = downloadMessages(syncConfig, remoteFolder, backendFolder, remoteMessages,
                     listener);
 
             listener.folderStatusChanged(folder);
@@ -241,8 +237,8 @@ class WebDavSync {
         }
     }
 
-    private void updateMoreMessages(Folder remoteFolder, BackendFolder backendFolder, Date earliestDate,
-            int remoteStart) throws MessagingException, IOException {
+    private void updateMoreMessages(WebDavFolder remoteFolder, BackendFolder backendFolder, Date earliestDate,
+            int remoteStart) {
 
         if (remoteStart == 1) {
             backendFolder.setMoreMessages(MoreMessages.FALSE);
@@ -254,8 +250,8 @@ class WebDavSync {
         }
     }
 
-    private int downloadMessages(final SyncConfig syncConfig, final Folder remoteFolder,
-            final BackendFolder backendFolder, List<Message> inputMessages, boolean flagSyncOnly,
+    private int downloadMessages(final SyncConfig syncConfig, final WebDavFolder remoteFolder,
+            final BackendFolder backendFolder, List<WebDavMessage> inputMessages,
             final SyncListener listener) throws MessagingException {
 
         final Date earliestDate = syncConfig.getEarliestPollDate();
@@ -266,15 +262,14 @@ class WebDavSync {
         }
         final String folder = remoteFolder.getServerId();
 
-        List<Message> syncFlagMessages = new ArrayList<>();
-        List<Message> unsyncedMessages = new ArrayList<>();
+        List<WebDavMessage> syncFlagMessages = new ArrayList<>();
+        List<WebDavMessage> unsyncedMessages = new ArrayList<>();
         final AtomicInteger newMessages = new AtomicInteger(0);
 
-        List<Message> messages = new ArrayList<>(inputMessages);
+        List<WebDavMessage> messages = new ArrayList<>(inputMessages);
 
-        for (Message message : messages) {
-            evaluateMessageForDownload(message, folder, backendFolder, remoteFolder, unsyncedMessages,
-                    syncFlagMessages, flagSyncOnly, listener);
+        for (WebDavMessage message : messages) {
+            evaluateMessageForDownload(message, folder, backendFolder, unsyncedMessages, syncFlagMessages, listener);
         }
 
         final AtomicInteger progress = new AtomicInteger(0);
@@ -284,8 +279,8 @@ class WebDavSync {
         Timber.d("SYNC: Have %d unsynced messages", unsyncedMessages.size());
 
         messages.clear();
-        final List<Message> largeMessages = new ArrayList<>();
-        final List<Message> smallMessages = new ArrayList<>();
+        final List<WebDavMessage> largeMessages = new ArrayList<>();
+        final List<WebDavMessage> smallMessages = new ArrayList<>();
         if (!unsyncedMessages.isEmpty()) {
             int visibleLimit = backendFolder.getVisibleLimit();
             int listSize = unsyncedMessages.size();
@@ -295,9 +290,7 @@ class WebDavSync {
             }
 
             FetchProfile fp = new FetchProfile();
-            if (remoteFolder.supportsFetchingFlags()) {
-                fp.add(FetchProfile.Item.FLAGS);
-            }
+            fp.add(FetchProfile.Item.FLAGS);
             fp.add(FetchProfile.Item.ENVELOPE);
 
             Timber.d("SYNC: About to fetch %d unsynced messages for folder %s", unsyncedMessages.size(), folder);
@@ -360,13 +353,11 @@ class WebDavSync {
     }
 
     private void evaluateMessageForDownload(
-            final Message message,
+            final WebDavMessage message,
             final String folder,
             final BackendFolder backendFolder,
-            final Folder remoteFolder,
-            final List<Message> unsyncedMessages,
-            final List<Message> syncFlagMessages,
-            boolean flagSyncOnly,
+            final List<WebDavMessage> unsyncedMessages,
+            final List<WebDavMessage> syncFlagMessages,
             SyncListener listener) {
 
         String messageServerId = message.getUid();
@@ -380,24 +371,22 @@ class WebDavSync {
         boolean messagePresentLocally = backendFolder.isMessagePresent(messageServerId);
 
         if (!messagePresentLocally) {
-            if (!flagSyncOnly) {
-                if (!message.isSet(Flag.X_DOWNLOADED_FULL) && !message.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
-                    Timber.v("Message with uid %s has not yet been downloaded", messageServerId);
+            if (!message.isSet(Flag.X_DOWNLOADED_FULL) && !message.isSet(Flag.X_DOWNLOADED_PARTIAL)) {
+                Timber.v("Message with uid %s has not yet been downloaded", messageServerId);
 
-                    unsyncedMessages.add(message);
+                unsyncedMessages.add(message);
+            } else {
+                Timber.v("Message with uid %s is partially or fully downloaded", messageServerId);
+
+                // Store the updated message locally
+                boolean completeMessage = message.isSet(Flag.X_DOWNLOADED_FULL);
+                if (completeMessage) {
+                    backendFolder.saveCompleteMessage(message);
                 } else {
-                    Timber.v("Message with uid %s is partially or fully downloaded", messageServerId);
-
-                    // Store the updated message locally
-                    boolean completeMessage = message.isSet(Flag.X_DOWNLOADED_FULL);
-                    if (completeMessage) {
-                        backendFolder.saveCompleteMessage(message);
-                    } else {
-                        backendFolder.savePartialMessage(message);
-                    }
-
-                    listener.syncNewMessage(folder, messageServerId, false);
+                    backendFolder.savePartialMessage(message);
                 }
+
+                listener.syncNewMessage(folder, messageServerId, false);
             }
             return;
         }
@@ -411,10 +400,6 @@ class WebDavSync {
 
                 unsyncedMessages.add(message);
             } else {
-                String newPushState = remoteFolder.getNewPushState(backendFolder.getPushState(), message);
-                if (newPushState != null) {
-                    backendFolder.setPushState(newPushState);
-                }
                 syncFlagMessages.add(message);
             }
         } else {
@@ -422,10 +407,10 @@ class WebDavSync {
         }
     }
 
-    private <T extends Message> void fetchUnsyncedMessages(final SyncConfig syncConfig, final Folder<T> remoteFolder,
-            List<T> unsyncedMessages,
-            final List<Message> smallMessages,
-            final List<Message> largeMessages,
+    private void fetchUnsyncedMessages(final SyncConfig syncConfig, final WebDavFolder remoteFolder,
+            List<WebDavMessage> unsyncedMessages,
+            final List<WebDavMessage> smallMessages,
+            final List<WebDavMessage> largeMessages,
             final AtomicInteger progress,
             final int todo,
             FetchProfile fp,
@@ -434,9 +419,9 @@ class WebDavSync {
 
         final Date earliestDate = syncConfig.getEarliestPollDate();
         remoteFolder.fetch(unsyncedMessages, fp,
-                new MessageRetrievalListener<T>() {
+                new MessageRetrievalListener<WebDavMessage>() {
                     @Override
-                    public void messageFinished(T message, int number, int ofTotal) {
+                    public void messageFinished(WebDavMessage message, int number, int ofTotal) {
                         try {
                             if (message.isSet(Flag.DELETED) || message.olderThan(earliestDate)) {
                                 if (message.isSet(Flag.DELETED)) {
@@ -477,10 +462,10 @@ class WebDavSync {
                 });
     }
 
-    private <T extends Message> void downloadSmallMessages(
-            final Folder<T> remoteFolder,
+    private void downloadSmallMessages(
+            final WebDavFolder remoteFolder,
             final BackendFolder backendFolder,
-            List<T> smallMessages,
+            List<WebDavMessage> smallMessages,
             final AtomicInteger progress,
             final AtomicInteger newMessages,
             final int todo,
@@ -491,9 +476,9 @@ class WebDavSync {
         Timber.d("SYNC: Fetching %d small messages for folder %s", smallMessages.size(), folder);
 
         remoteFolder.fetch(smallMessages,
-                fp, new MessageRetrievalListener<T>() {
+                fp, new MessageRetrievalListener<WebDavMessage>() {
                     @Override
-                    public void messageFinished(final T message, int number, int ofTotal) {
+                    public void messageFinished(final WebDavMessage message, int number, int ofTotal) {
                         try {
 
                             // Store the updated message locally
@@ -531,11 +516,11 @@ class WebDavSync {
         Timber.d("SYNC: Done fetching small messages for folder %s", folder);
     }
 
-    private <T extends Message> void downloadLargeMessages(
+    private void downloadLargeMessages(
             final SyncConfig syncConfig,
-            final Folder<T> remoteFolder,
+            final WebDavFolder remoteFolder,
             final BackendFolder backendFolder,
-            List<T> largeMessages,
+            List<WebDavMessage> largeMessages,
             final AtomicInteger progress,
             final AtomicInteger newMessages,
             final int todo,
@@ -546,13 +531,8 @@ class WebDavSync {
         Timber.d("SYNC: Fetching large messages for folder %s", folder);
 
         remoteFolder.fetch(largeMessages, fp, null);
-        for (T message : largeMessages) {
-
-            if (message.getBody() == null) {
-                downloadSaneBody(syncConfig, remoteFolder, backendFolder, message);
-            } else {
-                downloadPartial(remoteFolder, backendFolder, message);
-            }
+        for (WebDavMessage message : largeMessages) {
+            downloadSaneBody(syncConfig, remoteFolder, backendFolder, message);
 
             String messageServerId = message.getUid();
             Timber.v("About to notify listeners that we got a new large message %s:%s:%s",
@@ -577,8 +557,8 @@ class WebDavSync {
         Timber.d("SYNC: Done fetching large messages for folder %s", folder);
     }
 
-    private void downloadSaneBody(SyncConfig syncConfig, Folder remoteFolder, BackendFolder backendFolder,
-            Message message) throws MessagingException {
+    private void downloadSaneBody(SyncConfig syncConfig, WebDavFolder remoteFolder, BackendFolder backendFolder,
+            WebDavMessage message) throws MessagingException {
         /*
          * The provider was unable to get the structure of the message, so
          * we'll download a reasonable portion of the messge and mark it as
@@ -621,66 +601,41 @@ class WebDavSync {
         }
     }
 
-    private void downloadPartial(Folder remoteFolder, BackendFolder backendFolder, Message message)
-            throws MessagingException {
-        /*
-         * We have a structure to deal with, from which
-         * we can pull down the parts we want to actually store.
-         * Build a list of parts we are interested in. Text parts will be downloaded
-         * right now, attachments will be left for later.
-         */
-
-        Set<Part> viewables = MessageExtractor.collectTextParts(message);
-
-        /*
-         * Now download the parts we're interested in storing.
-         */
-        BodyFactory bodyFactory = new DefaultBodyFactory();
-        for (Part part : viewables) {
-            remoteFolder.fetchPart(message, part, null, bodyFactory);
-        }
-
-        // Store the updated message locally
-        backendFolder.savePartialMessage(message);
-    }
-
     private void refreshLocalMessageFlags(
             final SyncConfig syncConfig,
-            final Folder remoteFolder,
+            final WebDavFolder remoteFolder,
             final BackendFolder backendFolder,
-            List<Message> syncFlagMessages,
+            List<WebDavMessage> syncFlagMessages,
             final AtomicInteger progress,
             final int todo,
             SyncListener listener
     ) throws MessagingException {
 
         final String folder = remoteFolder.getServerId();
-        if (remoteFolder.supportsFetchingFlags()) {
-            Timber.d("SYNC: About to sync flags for %d remote messages for folder %s", syncFlagMessages.size(), folder);
+        Timber.d("SYNC: About to sync flags for %d remote messages for folder %s", syncFlagMessages.size(), folder);
 
-            FetchProfile fp = new FetchProfile();
-            fp.add(FetchProfile.Item.FLAGS);
+        FetchProfile fp = new FetchProfile();
+        fp.add(FetchProfile.Item.FLAGS);
 
-            List<Message> undeletedMessages = new LinkedList<>();
-            for (Message message : syncFlagMessages) {
-                if (!message.isSet(Flag.DELETED)) {
-                    undeletedMessages.add(message);
-                }
+        List<WebDavMessage> undeletedMessages = new LinkedList<>();
+        for (WebDavMessage message : syncFlagMessages) {
+            if (!message.isSet(Flag.DELETED)) {
+                undeletedMessages.add(message);
             }
+        }
 
-            remoteFolder.fetch(undeletedMessages, fp, null);
-            for (Message remoteMessage : syncFlagMessages) {
-                boolean messageChanged = syncFlags(syncConfig, backendFolder, remoteMessage);
-                if (messageChanged) {
-                    listener.syncFlagChanged(folder, remoteMessage.getUid());
-                }
-                progress.incrementAndGet();
-                listener.syncProgress(folder, progress.get(), todo);
+        remoteFolder.fetch(undeletedMessages, fp, null);
+        for (WebDavMessage remoteMessage : syncFlagMessages) {
+            boolean messageChanged = syncFlags(syncConfig, backendFolder, remoteMessage);
+            if (messageChanged) {
+                listener.syncFlagChanged(folder, remoteMessage.getUid());
             }
+            progress.incrementAndGet();
+            listener.syncProgress(folder, progress.get(), todo);
         }
     }
 
-    private boolean syncFlags(SyncConfig syncConfig, BackendFolder backendFolder, Message remoteMessage) {
+    private boolean syncFlags(SyncConfig syncConfig, BackendFolder backendFolder, WebDavMessage remoteMessage) {
         String messageServerId = remoteMessage.getUid();
 
         if (!backendFolder.isMessagePresent(messageServerId)) {
