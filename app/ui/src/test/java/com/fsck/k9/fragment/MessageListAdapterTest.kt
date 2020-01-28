@@ -199,6 +199,26 @@ class MessageListAdapterTest : RobolectricTest() {
     }
 
     @Test
+    fun withMissingSubject_shouldDisplayNoSubjectIndicator() {
+        val adapter = createAdapter(senderAboveSubject = false)
+        val messageListItem = createMessageListItem(subject = null)
+
+        val view = adapter.createAndBindView(messageListItem)
+
+        assertTrue(view.firstLineView.containsNoSubjectIndicator())
+    }
+
+    @Test
+    fun withEmptySubject_shouldDisplayNoSubjectIndicator() {
+        val adapter = createAdapter(senderAboveSubject = false)
+        val messageListItem = createMessageListItem(subject = "")
+
+        val view = adapter.createAndBindView(messageListItem)
+
+        assertTrue(view.firstLineView.containsNoSubjectIndicator())
+    }
+
+    @Test
     @Ignore("Currently failing. See issue #4152.")
     fun withSenderAboveSubjectAndMessageToMe_shouldDisplayIndicatorInFirstLine() {
         val adapter = createAdapter(senderAboveSubject = true)
@@ -447,7 +467,7 @@ class MessageListAdapterTest : RobolectricTest() {
     fun createMessageListItem(
         position: Int = 0,
         account: Account = Account(SOME_ACCOUNT_UUID),
-        subject: String = "irrelevant",
+        subject: String? = "irrelevant",
         threadCount: Int = 0,
         messageDate: Long = 0L,
         displayName: CharSequence = "irrelevant",
@@ -514,6 +534,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
     fun TextView.containsToMeIndicator() = textString.startsWith("»")
     fun TextView.containsCcMeIndicator() = textString.startsWith("›")
+    fun TextView.containsNoSubjectIndicator() = textString.contains(context.getString(R.string.general_no_subject))
 
     fun TextView.getFirstAbsoluteSizeSpanValueOrNull(): Int? {
         val spans = (text as Spannable).getSpans(0, text.length, AbsoluteSizeSpan::class.java)
