@@ -168,8 +168,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="status_invalid_id_error">Message not found</string>
     <string name="status_loading_error">Message loading error</string>
 
-    <string name="status_loading_more_failed">Retry loading more messages</string>
-
     <string name="load_more_messages_fmt">Load up
     to <xliff:g id="messages_to_load">%d</xliff:g> more</string>
 

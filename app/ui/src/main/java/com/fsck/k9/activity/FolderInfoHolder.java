@@ -2,83 +2,26 @@ package com.fsck.k9.activity;
 
 
 import com.fsck.k9.Account;
-import com.fsck.k9.DI;
 import com.fsck.k9.mailstore.Folder;
 import com.fsck.k9.mailstore.FolderType;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.ui.folders.FolderNameFormatter;
 
 
-public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
-    private final FolderNameFormatter folderNameFormatter = DI.get(FolderNameFormatter.class);
+public class FolderInfoHolder {
+    private final FolderNameFormatter folderNameFormatter;
 
-    public String serverId;
-    public String displayName;
-    public long lastChecked;
-    public int unreadMessageCount = -1;
-    public int flaggedMessageCount = -1;
+    public final String serverId;
+    public final String displayName;
+    public final long lastChecked;
     public boolean loading;
-    public String status;
-    public boolean lastCheckFailed;
-    public LocalFolder folder;
-    public boolean pushActive;
     public boolean moreMessages;
 
-    @Override
-    public boolean equals(Object o) {
-        return o instanceof FolderInfoHolder && serverId.equals(((FolderInfoHolder) o).serverId);
-    }
 
-    @Override
-    public int hashCode() {
-        return serverId.hashCode();
-    }
-
-    public int compareTo(FolderInfoHolder o) {
-        String s1 = this.serverId;
-        String s2 = o.serverId;
-
-        int ret = s1.compareToIgnoreCase(s2);
-        if (ret != 0) {
-            return ret;
-        } else {
-            return s1.compareTo(s2);
-        }
-
-    }
-
-    private String truncateStatus(String mess) {
-        if (mess != null && mess.length() > 27) {
-            mess = mess.substring(0, 27);
-        }
-        return mess;
-    }
-
-    // constructor for an empty object for comparisons
-    public FolderInfoHolder() {
-    }
-
-    public FolderInfoHolder(LocalFolder folder, Account account) {
-        populate(folder, account);
-    }
-
-    public FolderInfoHolder(LocalFolder folder, Account account, int unreadCount) {
-        populate(folder, account, unreadCount);
-    }
-
-    public void populate(LocalFolder folder, Account account, int unreadCount) {
-        populate(folder, account);
-        this.unreadMessageCount = unreadCount;
-        folder.close();
-    }
-
-    public void populate(LocalFolder localFolder, Account account) {
-        this.folder = localFolder;
+    public FolderInfoHolder(FolderNameFormatter folderNameFormatter, LocalFolder localFolder, Account account) {
+        this.folderNameFormatter = folderNameFormatter;
         this.serverId = localFolder.getServerId();
         this.lastChecked = localFolder.getLastUpdate();
-
-        this.status = truncateStatus(localFolder.getStatus());
-
         this.displayName = getDisplayName(account, localFolder);
         setMoreMessagesFromFolder(localFolder);
     }
@@ -94,7 +37,11 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
         return folderNameFormatter.displayName(folder);
     }
 
-    private static FolderType getFolderType(Account account, String serverId) {
+    public void setMoreMessagesFromFolder(LocalFolder folder) {
+        moreMessages = folder.hasMoreMessages();
+    }
+
+    public static FolderType getFolderType(Account account, String serverId) {
         if (serverId.equals(account.getInboxFolder())) {
             return FolderType.INBOX;
         } else if (serverId.equals(account.getOutboxFolder())) {
@@ -112,23 +59,5 @@ public class FolderInfoHolder implements Comparable<FolderInfoHolder> {
         } else {
             return FolderType.REGULAR;
         }
-    }
-
-    /**
-     * Returns the display name for a folder.
-     *
-     * Deprecated. Use {@link FolderNameFormatter} instead.
-     */
-    @Deprecated
-    public static String getDisplayName(Account account, String serverId, String name) {
-        FolderNameFormatter folderNameFormatter = DI.get(FolderNameFormatter.class);
-        FolderType folderType = getFolderType(account, serverId);
-        Folder folder = new Folder(-1, serverId, name, folderType);
-
-        return folderNameFormatter.displayName(folder);
-    }
-
-    public void setMoreMessagesFromFolder(LocalFolder folder) {
-        moreMessages = folder.hasMoreMessages();
     }
 }

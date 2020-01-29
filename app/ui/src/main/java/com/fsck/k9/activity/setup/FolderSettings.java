@@ -12,6 +12,8 @@ import android.preference.Preference;
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.mailstore.Folder;
+import com.fsck.k9.mailstore.FolderType;
 import com.fsck.k9.mailstore.LocalStoreProvider;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.activity.FolderInfoHolder;
@@ -22,6 +24,8 @@ import com.fsck.k9.mail.FolderClass;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalStore;
+import com.fsck.k9.ui.folders.FolderNameFormatter;
+import com.fsck.k9.ui.folders.FolderNameFormatterFactory;
 
 import timber.log.Timber;
 
@@ -40,6 +44,9 @@ public class FolderSettings extends K9PreferenceActivity {
 
     private final MessagingController messagingController = DI.get(MessagingController.class);
     private final K9JobManager jobManager = DI.get(K9JobManager.class);
+    private final FolderNameFormatterFactory folderNameFormatterFactory = DI.get(FolderNameFormatterFactory.class);
+
+    private FolderNameFormatter folderNameFormatter;
 
     private LocalFolder mFolder;
 
@@ -61,6 +68,8 @@ public class FolderSettings extends K9PreferenceActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        folderNameFormatter = folderNameFormatterFactory.create(this);
+
         String folderServerId = (String)getIntent().getSerializableExtra(EXTRA_FOLDER_NAME);
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         Account mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
@@ -79,7 +88,7 @@ public class FolderSettings extends K9PreferenceActivity {
         addPreferencesFromResource(R.xml.folder_settings_preferences);
 
         String folderName = mFolder.getName();
-        String displayName = FolderInfoHolder.getDisplayName(mAccount, folderServerId, folderName);
+        String displayName = getDisplayName(mAccount, folderServerId, folderName);
         Preference category = findPreference(PREFERENCE_TOP_CATERGORY);
         category.setTitle(displayName);
 
@@ -178,5 +187,12 @@ public class FolderSettings extends K9PreferenceActivity {
         }
 
         super.onPause();
+    }
+
+    public String getDisplayName(Account account, String serverId, String name) {
+        FolderType folderType = FolderInfoHolder.getFolderType(account, serverId);
+        Folder folder = new Folder(-1, serverId, name, folderType);
+
+        return folderNameFormatter.displayName(folder);
     }
 }

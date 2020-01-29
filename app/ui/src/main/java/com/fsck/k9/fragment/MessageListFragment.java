@@ -62,6 +62,8 @@ import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.preferences.StorageEditor;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.ui.R;
+import com.fsck.k9.ui.folders.FolderNameFormatter;
+import com.fsck.k9.ui.folders.FolderNameFormatterFactory;
 import com.fsck.k9.ui.messagelist.MessageListAppearance;
 import com.fsck.k9.ui.messagelist.MessageListConfig;
 import com.fsck.k9.ui.messagelist.MessageListFragmentDiContainer;
@@ -105,6 +107,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     private final SortTypeToastProvider sortTypeToastProvider = DI.get(SortTypeToastProvider.class);
     private final MessageListFragmentDiContainer diContainer = new MessageListFragmentDiContainer(this);
+    private final FolderNameFormatterFactory folderNameFormatterFactory = DI.get(FolderNameFormatterFactory.class);
+    private FolderNameFormatter folderNameFormatter;
 
     ListView listView;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -309,6 +313,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        folderNameFormatter = folderNameFormatterFactory.create(requireActivity());
         Context appContext = getActivity().getApplicationContext();
 
         preferences = Preferences.getPreferences(appContext);
@@ -523,7 +528,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private FolderInfoHolder getFolderInfoHolder(String folderServerId, Account account) {
         try {
             LocalFolder localFolder = MlfUtils.getOpenFolder(folderServerId, account);
-            return new FolderInfoHolder(localFolder, account);
+            return new FolderInfoHolder(folderNameFormatter, localFolder, account);
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
@@ -1276,15 +1281,11 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 updateFooter(null);
             } else {
                 String message;
-                if (!currentFolder.lastCheckFailed) {
-                    if (account.getDisplayCount() == 0) {
-                        message = context.getString(R.string.message_list_load_more_messages_action);
-                    } else {
-                        message = String.format(context.getString(R.string.load_more_messages_fmt),
-                                account.getDisplayCount());
-                    }
+                if (account.getDisplayCount() == 0) {
+                    message = context.getString(R.string.message_list_load_more_messages_action);
                 } else {
-                    message = context.getString(R.string.status_loading_more_failed);
+                    message = String.format(context.getString(R.string.load_more_messages_fmt),
+                            account.getDisplayCount());
                 }
                 updateFooter(message);
             }
@@ -1548,7 +1549,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         if (isThreadDisplay) {
             folderServerId = messages.get(0).getFolderServerId();
         } else if (singleFolderMode) {
-            folderServerId = currentFolder.folder.getServerId();
+            folderServerId = currentFolder.serverId;
         } else {
             folderServerId = null;
         }
@@ -1578,7 +1579,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         if (isThreadDisplay) {
             folderServerId = messages.get(0).getFolderServerId();
         } else if (singleFolderMode) {
-            folderServerId = currentFolder.folder.getServerId();
+            folderServerId = currentFolder.serverId;
         } else {
             folderServerId = null;
         }

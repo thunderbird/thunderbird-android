@@ -38,10 +38,11 @@ import java.util.HashSet
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import org.koin.core.parameter.parametersOf
 
 class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : KoinComponent {
     private val viewModel: FoldersViewModel by parent.viewModel()
-    private val folderNameFormatter: FolderNameFormatter by inject()
+    private val folderNameFormatter: FolderNameFormatter by inject { parametersOf(parent) }
     private val preferences: Preferences by inject()
     private val themeManager: ThemeManager by inject()
     private val resources: Resources by inject()
