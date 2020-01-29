@@ -6,8 +6,6 @@ import android.text.TextUtils
 import android.view.GestureDetector
 import android.view.MotionEvent
 import com.fsck.k9.K9
-import com.fsck.k9.activity.misc.SwipeGestureDetector
-import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener
 import com.fsck.k9.ui.Theme
 import com.fsck.k9.ui.ThemeManager
 import java.util.Locale
@@ -61,15 +59,6 @@ class K9ActivityCommon(
         gestureDetector?.onTouchEvent(event)
     }
 
-    /**
-     * Call this if you wish to use the swipe gesture detector.
-     *
-     * @param listener A listener that will be notified if a left to right or right to left swipe has been detected.
-     */
-    fun setupGestureDetector(listener: OnSwipeGestureListener) {
-        gestureDetector = GestureDetector(activity, SwipeGestureDetector(activity, listener))
-    }
-
     private fun setLanguage(language: String) {
         val locale = if (TextUtils.isEmpty(language)) {
             Resources.getSystem().configuration.locale
@@ -88,16 +77,6 @@ class K9ActivityCommon(
 
     companion object : KoinComponent {
         private val themeManager: ThemeManager by inject()
-    }
-
-    /**
-     * Base activities need to implement this interface.
-     *
-     * The implementing class simply has to call through to the implementation of these methods
-     * in [K9ActivityCommon].
-     */
-    interface K9ActivityMagic {
-        fun setupGestureDetector(listener: OnSwipeGestureListener)
     }
 }
 

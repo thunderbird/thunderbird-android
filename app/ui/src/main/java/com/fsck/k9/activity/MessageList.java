@@ -24,7 +24,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
@@ -38,7 +37,6 @@ import com.fsck.k9.K9;
 import com.fsck.k9.K9.SplitViewMode;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.activity.compose.MessageActions;
-import com.fsck.k9.activity.misc.SwipeGestureDetector.OnSwipeGestureListener;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.fragment.MessageListFragment;
 import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener;
@@ -75,8 +73,7 @@ import timber.log.Timber;
  * From this Activity the user can perform all standard message operations.
  */
 public class MessageList extends K9Activity implements MessageListFragmentListener,
-        MessageViewFragmentListener, OnBackStackChangedListener, OnSwipeGestureListener,
-        OnSwitchCompleteListener {
+        MessageViewFragmentListener, OnBackStackChangedListener, OnSwitchCompleteListener {
 
     private static final String EXTRA_SEARCH = "search_bytes";
     private static final String EXTRA_NO_THREADING = "no_threading";
@@ -248,9 +245,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
         initializeActionBar();
         initializeDrawer(savedInstanceState);
-
-        // Enable gesture detection for MessageLists
-        setupGestureDetector(this);
 
         if (!decodeExtras(getIntent())) {
             return;
@@ -1315,22 +1309,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         }
 
         configureMenu(menu);
-    }
-
-    @Override
-    public void onSwipeRightToLeft(MotionEvent e1, MotionEvent e2) {
-        // Disabled because it interferes with the bezel swipe for the drawer
-//        if (messageListFragment != null && displayMode != DisplayMode.MESSAGE_VIEW) {
-//            messageListFragment.onSwipeRightToLeft(e1, e2);
-//        }
-    }
-
-    @Override
-    public void onSwipeLeftToRight(MotionEvent e1, MotionEvent e2) {
-        // Disabled because it interferes with the bezel swipe for the drawer
-//        if (messageListFragment != null && displayMode != DisplayMode.MESSAGE_VIEW) {
-//            messageListFragment.onSwipeLeftToRight(e1, e2);
-//        }
     }
 
     private final class StorageListenerImplementation implements StorageManager.StorageListener {
