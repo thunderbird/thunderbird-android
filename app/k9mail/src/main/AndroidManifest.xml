@@ -51,7 +51,8 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.K9.Startup"
         android:resizeableActivity="true"
-        android:allowBackup="false">
+        android:allowBackup="false"
+        android:hasFragileUserData="true">
 
         <meta-data
             android:name="android.app.default_searchable"
