@@ -316,8 +316,10 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public void onShowSource() {
+        // FIXME: crash when opening before message text is available
         MessageSourceViewFragment messageSourceViewFragment = new MessageSourceViewFragment(currentMessageViewInfo.text);
 
+        // FIXME: crash when chaning to landscape
         messageSourceViewFragment.show(getFragmentManager(), null);
     }
 
