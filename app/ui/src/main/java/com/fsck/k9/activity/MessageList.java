@@ -21,7 +21,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -1528,11 +1527,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         configureMenu(menu);
     }
 
-    @Override
-    public void updateMenu() {
-        invalidateOptionsMenu();
-    }
-
     private void showMessageView() {
         displayMode = DisplayMode.MESSAGE_VIEW;
 
@@ -1547,6 +1541,11 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
         showMessageTitleView();
         configureMenu(menu);
+    }
+
+    @Override
+    public void updateMenu() {
+        invalidateOptionsMenu();
     }
 
     @Override
