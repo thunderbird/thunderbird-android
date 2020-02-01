@@ -20,7 +20,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
