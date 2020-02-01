@@ -42,10 +42,10 @@ public class MessageSourceViewFragment extends DialogFragment {
 
         builder.setPositiveButton(R.string.ok, null);
 
-        // set layout params to make dialog have maximum height and width
+        // set layout params to make dialog have maximum width
         AlertDialog dialog = builder.create();
         dialog.show();
-        Objects.requireNonNull(dialog.getWindow()).setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        Objects.requireNonNull(dialog.getWindow()).setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
 
         return dialog;
     }
