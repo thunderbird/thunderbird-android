@@ -168,6 +168,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="status_network_error">Connection error</string>
     <string name="status_invalid_id_error">Message not found</string>
     <string name="status_loading_error">Message loading error</string>
+    <string name="message_not_yet_loaded">Message not yet loaded. Try again later.</string>
 
     <string name="status_loading_more_failed">Retry loading more messages</string>
 

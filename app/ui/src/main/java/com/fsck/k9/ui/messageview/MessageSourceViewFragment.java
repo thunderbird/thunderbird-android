@@ -1,8 +1,9 @@
 package com.fsck.k9.ui.messageview;
 
+import java.util.Objects;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,42 +14,39 @@ import androidx.fragment.app.DialogFragment;
 
 import com.fsck.k9.ui.R;
 
-public class MessageSourceViewFragment extends DialogFragment {
-    private String messageText;
+import org.jetbrains.annotations.NotNull;
 
-    public MessageSourceViewFragment(String text) {
-        messageText = text;
+public class MessageSourceViewFragment extends DialogFragment {
+    private final static String BUNDLE_ARGUMENT_ID_TEXT = "text";
+
+    public static MessageSourceViewFragment newInstance(String text) {
+        Bundle args = new Bundle();
+        args.putString(BUNDLE_ARGUMENT_ID_TEXT, text);
+        MessageSourceViewFragment fragment = new MessageSourceViewFragment();
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
+    @NotNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.message_source_view, null);
         TextView source_text = view.findViewById(R.id.source_text);
-        source_text.setText(messageText);
+        source_text.setText(requireArguments().getString(BUNDLE_ARGUMENT_ID_TEXT));
 
         builder.setView(view);
 
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // FIRE ZE MISSILES!
-                    }
-                });
+        builder.setPositiveButton(R.string.ok, null);
 
-//        AlertDialog dialog = builder.create();
-//        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-//        dialog.show();
-//
-//        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-//        lp.copyFrom(dialog.getWindow().getAttributes());
-//        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-//        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
-//        dialog.show();
-//        dialog.getWindow().setAttributes(lp);
+        // set layout params to make dialog have maximum height and width
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        Objects.requireNonNull(dialog.getWindow()).setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
 
-        return builder.create();
+        return dialog;
     }
 }

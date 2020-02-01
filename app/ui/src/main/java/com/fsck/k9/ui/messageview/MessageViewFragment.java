@@ -316,11 +316,12 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public void onShowSource() {
-        // FIXME: crash when opening before message text is available
-        MessageSourceViewFragment messageSourceViewFragment = new MessageSourceViewFragment(currentMessageViewInfo.text);
-
-        // FIXME: crash when chaning to landscape
-        messageSourceViewFragment.show(getFragmentManager(), null);
+        if (currentMessageViewInfo != null) {
+            MessageSourceViewFragment messageSourceViewFragment = MessageSourceViewFragment.newInstance(currentMessageViewInfo.text);
+            messageSourceViewFragment.show(requireFragmentManager(), null);
+        } else {
+            Toast.makeText(getActivity(), R.string.message_not_yet_loaded, Toast.LENGTH_LONG).show();
+        }
     }
 
     private void delete() {
