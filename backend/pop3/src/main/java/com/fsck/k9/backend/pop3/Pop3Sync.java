@@ -162,8 +162,7 @@ class Pop3Sync {
             if (syncConfig.getSyncRemoteDeletions()) {
                 List<String> destroyMessageUids = new ArrayList<>();
                 for (String localMessageUid : localUidMap.keySet()) {
-                    if (!localMessageUid.startsWith(BackendFolder.LOCAL_UID_PREFIX) &&
-                            remoteUidMap.get(localMessageUid) == null) {
+                    if (remoteUidMap.get(localMessageUid) == null) {
                         destroyMessageUids.add(localMessageUid);
                     }
                 }

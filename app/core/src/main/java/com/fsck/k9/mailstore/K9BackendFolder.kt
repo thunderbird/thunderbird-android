@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase
 import androidx.core.database.getLongOrNull
 import androidx.core.database.getStringOrNull
 import com.fsck.k9.Account
+import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendFolder.MoreMessages
@@ -61,7 +62,7 @@ class K9BackendFolder(
 
     override fun getAllMessagesAndEffectiveDates(): Map<String, Long?> {
         return database.rawQuery("SELECT uid, date FROM messages" +
-                " WHERE empty = 0 AND deleted = 0 AND folder_id = ?" +
+                " WHERE empty = 0 AND deleted = 0 AND folder_id = ? AND uid NOT LIKE '${K9.LOCAL_UID_PREFIX}%'" +
                 " ORDER BY date DESC", databaseId) { cursor ->
             val result = mutableMapOf<String, Long?>()
             while (cursor.moveToNext()) {
@@ -201,6 +202,8 @@ class K9BackendFolder(
 
     // TODO: Move implementation from LocalFolder to this class
     override fun saveCompleteMessage(message: Message) {
+        requireMessageServerId(message)
+
         localFolder.appendMessages(listOf(message))
 
         val localMessage = localFolder.getMessage(message.uid)
@@ -209,6 +212,8 @@ class K9BackendFolder(
 
     // TODO: Move implementation from LocalFolder to this class
     override fun savePartialMessage(message: Message) {
+        requireMessageServerId(message)
+
         localFolder.appendMessages(listOf(message))
 
         val localMessage = localFolder.getMessage(message.uid)
@@ -366,5 +371,11 @@ class K9BackendFolder(
         MoreMessages.UNKNOWN -> "unknown"
         MoreMessages.FALSE -> "false"
         MoreMessages.TRUE -> "true"
+    }
+
+    private fun requireMessageServerId(message: Message) {
+        if (message.uid.isNullOrEmpty()) {
+            error("Message requires a server ID to be set")
+        }
     }
 }
