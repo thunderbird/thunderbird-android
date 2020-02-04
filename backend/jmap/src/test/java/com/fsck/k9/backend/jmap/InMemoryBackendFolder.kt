@@ -32,10 +32,6 @@ class InMemoryBackendFolder(override var name: String, var type: FolderType) : B
         throw UnsupportedOperationException("not implemented")
     }
 
-    override fun getUnreadMessageCount(): Int {
-        throw UnsupportedOperationException("not implemented")
-    }
-
     override fun setLastChecked(timestamp: Long) {
         throw UnsupportedOperationException("not implemented")
     }

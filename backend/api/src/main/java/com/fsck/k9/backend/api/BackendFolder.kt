@@ -14,7 +14,6 @@ interface BackendFolder {
     fun getLastUid(): Long?
     fun getMoreMessages(): MoreMessages
     fun setMoreMessages(moreMessages: MoreMessages)
-    fun getUnreadMessageCount(): Int
     fun setLastChecked(timestamp: Long)
     fun setStatus(status: String?)
     fun getPushState(): String?
