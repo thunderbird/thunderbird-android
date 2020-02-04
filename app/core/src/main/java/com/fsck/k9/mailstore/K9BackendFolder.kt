@@ -202,6 +202,8 @@ class K9BackendFolder(
 
     // TODO: Move implementation from LocalFolder to this class
     override fun saveCompleteMessage(message: Message) {
+        requireMessageServerId(message)
+
         localFolder.appendMessages(listOf(message))
 
         val localMessage = localFolder.getMessage(message.uid)
@@ -210,6 +212,8 @@ class K9BackendFolder(
 
     // TODO: Move implementation from LocalFolder to this class
     override fun savePartialMessage(message: Message) {
+        requireMessageServerId(message)
+
         localFolder.appendMessages(listOf(message))
 
         val localMessage = localFolder.getMessage(message.uid)
@@ -367,5 +371,11 @@ class K9BackendFolder(
         MoreMessages.UNKNOWN -> "unknown"
         MoreMessages.FALSE -> "false"
         MoreMessages.TRUE -> "true"
+    }
+
+    private fun requireMessageServerId(message: Message) {
+        if (message.uid.isNullOrEmpty()) {
+            error("Message requires a server ID to be set")
+        }
     }
 }

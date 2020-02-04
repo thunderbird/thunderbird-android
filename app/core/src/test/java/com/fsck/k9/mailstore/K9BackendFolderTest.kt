@@ -11,13 +11,16 @@ import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderType
+import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.internet.MimeMessage
 import com.fsck.k9.mail.internet.MimeMessageHelper
 import com.fsck.k9.mail.internet.TextBody
 import com.fsck.k9.provider.EmailProvider
+import java.lang.IllegalStateException
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
+import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Test
 import org.koin.core.inject
@@ -44,7 +47,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
     @Test
     fun getMessageFlags() {
         val flags = setOf(Flag.SEEN, Flag.DRAFT, Flag.X_DOWNLOADED_FULL)
-        createMessage(MESSAGE_SERVER_ID, flags)
+        createMessageInBackendFolder(MESSAGE_SERVER_ID, flags)
 
         val messageFlags = backendFolder.getMessageFlags(MESSAGE_SERVER_ID)
 
@@ -53,7 +56,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
 
     @Test
     fun getMessageFlags_withFlagsColumnSetToNull_shouldBeTreatedAsEmpty() {
-        createMessage(MESSAGE_SERVER_ID)
+        createMessageInBackendFolder(MESSAGE_SERVER_ID)
         setFlagsColumnToNull()
 
         val messageFlags = backendFolder.getMessageFlags(MESSAGE_SERVER_ID)
@@ -64,7 +67,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
     @Test
     fun getMessageFlags_withFlagsColumnSetToNull_shouldReadSpecialColumnFlags() {
         val flags = setOf(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED)
-        createMessage(MESSAGE_SERVER_ID, flags)
+        createMessageInBackendFolder(MESSAGE_SERVER_ID, flags)
         setFlagsColumnToNull()
 
         val messageFlags = backendFolder.getMessageFlags(MESSAGE_SERVER_ID)
@@ -74,12 +77,34 @@ class K9BackendFolderTest : K9RobolectricTest() {
 
     @Test
     fun getLastUid() {
-        createMessage("200")
-        createMessage("123")
+        createMessageInBackendFolder("200")
+        createMessageInBackendFolder("123")
 
         val lastUid = backendFolder.getLastUid()
 
         assertEquals(200L, lastUid)
+    }
+
+    @Test
+    fun saveCompleteMessage_withoutServerId_shouldThrow() {
+        val message = createMessage(messageServerId = null)
+
+        try {
+            backendFolder.saveCompleteMessage(message)
+            fail("Expected exception")
+        } catch (e: IllegalStateException) {
+        }
+    }
+
+    @Test
+    fun savePartialMessage_withoutServerId_shouldThrow() {
+        val message = createMessage(messageServerId = null)
+
+        try {
+            backendFolder.savePartialMessage(message)
+            fail("Expected exception")
+        } catch (e: IllegalStateException) {
+        }
     }
 
     fun createAccount(): Account {
@@ -100,8 +125,16 @@ class K9BackendFolderTest : K9RobolectricTest() {
         return K9BackendFolder(preferences, account, localStore, FOLDER_SERVER_ID)
     }
 
-    fun createMessage(messageServerId: String, flags: Set<Flag> = emptySet()) {
-        val message = MimeMessage().apply {
+    fun createMessageInBackendFolder(messageServerId: String, flags: Set<Flag> = emptySet()) {
+        val message = createMessage(messageServerId, flags)
+        backendFolder.saveCompleteMessage(message)
+
+        val messageServerIds = backendFolder.getAllMessagesAndEffectiveDates().keys
+        assertTrue(messageServerId in messageServerIds)
+    }
+
+    private fun createMessage(messageServerId: String?, flags: Set<Flag> = emptySet()): Message {
+        return MimeMessage().apply {
             subject = "Test message"
             setFrom(Address("alice@domain.example"))
             setHeader("To", "bob@domain.example")
@@ -110,11 +143,6 @@ class K9BackendFolderTest : K9RobolectricTest() {
             uid = messageServerId
             setFlags(flags, true)
         }
-
-        backendFolder.saveCompleteMessage(message)
-
-        val messageServerIds = backendFolder.getAllMessagesAndEffectiveDates().keys
-        assertTrue(messageServerId in messageServerIds)
     }
 
     private fun setFlagsColumnToNull() {
