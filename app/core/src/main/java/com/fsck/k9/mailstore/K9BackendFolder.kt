@@ -88,17 +88,6 @@ class K9BackendFolder(
         database.setString(column = "more_messages", value = moreMessages.toDatabaseValue())
     }
 
-    override fun getUnreadMessageCount(): Int {
-        return database.rawQuery("SELECT COUNT(id) FROM messages" +
-                " WHERE folder_id = ? AND empty = 0 AND deleted = 0 AND read = 0", databaseId) { cursor ->
-            if (cursor.moveToFirst()) {
-                cursor.getInt(0)
-            } else {
-                throw IllegalStateException("Couldn't get unread message count for folder $folderServerId")
-            }
-        }
-    }
-
     override fun setLastChecked(timestamp: Long) {
         database.setLong(column = "last_updated", value = timestamp)
     }
