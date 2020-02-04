@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import com.fsck.k9.backend.api.BackendFolder;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.webdav.WebDavFolder;
@@ -44,10 +43,7 @@ class CommandMoveOrCopyMessages {
             List<Message> messages = new ArrayList<>();
 
             for (String uid : uids) {
-                // TODO: Local messages should never end up here. Throw in debug builds.
-                if (!uid.startsWith(BackendFolder.LOCAL_UID_PREFIX)) {
-                    messages.add(remoteSrcFolder.getMessage(uid));
-                }
+                messages.add(remoteSrcFolder.getMessage(uid));
             }
 
             if (messages.isEmpty()) {

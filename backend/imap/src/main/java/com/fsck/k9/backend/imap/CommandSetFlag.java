@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.fsck.k9.backend.api.BackendFolder;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
@@ -37,9 +36,7 @@ class CommandSetFlag {
             }
             List<Message> messages = new ArrayList<>();
             for (String uid : messageServerIds) {
-                if (!uid.startsWith(BackendFolder.LOCAL_UID_PREFIX)) {
-                    messages.add(remoteFolder.getMessage(uid));
-                }
+                messages.add(remoteFolder.getMessage(uid));
             }
 
             if (messages.isEmpty()) {
