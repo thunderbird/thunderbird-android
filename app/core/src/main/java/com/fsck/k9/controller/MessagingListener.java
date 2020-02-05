@@ -18,8 +18,8 @@ public interface MessagingListener {
     void listLocalMessagesAddMessages(Account account, String folderServerId, List<LocalMessage> messages);
     void listLocalMessagesFinished();
 
-    void synchronizeMailboxStarted(Account account, String folderServerId, String folderName);
-    void synchronizeMailboxHeadersStarted(Account account, String folderServerId, String folderName);
+    void synchronizeMailboxStarted(Account account, String folderServerId);
+    void synchronizeMailboxHeadersStarted(Account account, String folderServerId);
     void synchronizeMailboxHeadersProgress(Account account, String folderServerId, int completed, int total);
     void synchronizeMailboxHeadersFinished(Account account, String folderServerId, int totalMessagesInMailbox,
             int numNewMessages);
