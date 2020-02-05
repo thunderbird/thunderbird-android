@@ -26,11 +26,11 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     }
 
     @Override
-    public void synchronizeMailboxStarted(Account account, String folderServerId, String folderName) {
+    public void synchronizeMailboxStarted(Account account, String folderServerId) {
     }
 
     @Override
-    public void synchronizeMailboxHeadersStarted(Account account, String folderServerId, String folderName) {
+    public void synchronizeMailboxHeadersStarted(Account account, String folderServerId) {
     }
 
     @Override
