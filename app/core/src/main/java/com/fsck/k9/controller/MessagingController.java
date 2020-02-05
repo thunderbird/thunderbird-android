@@ -2869,7 +2869,7 @@ public class MessagingController {
         }
 
         @Override
-        public void syncStarted(@NotNull String folderServerId, @NotNull String folderName) {
+        public void syncStarted(@NotNull String folderServerId) {
             for (MessagingListener messagingListener : getListeners(listener)) {
                 messagingListener.synchronizeMailboxStarted(account, folderServerId);
             }
@@ -2881,7 +2881,7 @@ public class MessagingController {
         }
 
         @Override
-        public void syncHeadersStarted(@NotNull String folderServerId, @NotNull String folderName) {
+        public void syncHeadersStarted(@NotNull String folderServerId) {
             for (MessagingListener messagingListener : getListeners(listener)) {
                 messagingListener.synchronizeMailboxHeadersStarted(account, folderServerId);
             }

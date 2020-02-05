@@ -58,9 +58,8 @@ class ImapSync {
         try {
             Timber.v("SYNC: About to get local folder %s", folder);
             backendFolder = backendStorage.getFolder(folder);
-            String folderName = backendFolder.getName();
 
-            listener.syncStarted(folder, folderName);
+            listener.syncStarted(folder);
 
             /*
              * Get the message list from the local store and create an index of
@@ -138,7 +137,7 @@ class ImapSync {
                         remoteStart, remoteMessageCount, folder);
 
                 final AtomicInteger headerProgress = new AtomicInteger(0);
-                listener.syncHeadersStarted(folder, folderName);
+                listener.syncHeadersStarted(folder);
 
 
                 List<ImapMessage> remoteMessageArray =
