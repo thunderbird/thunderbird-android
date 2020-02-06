@@ -16,9 +16,11 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import com.fsck.k9.mailstore.AttachmentResolver;
+import com.fsck.k9.ui.R;
 import com.fsck.k9.view.MessageWebView.OnPageFinishedListener;
 import timber.log.Timber;
 
@@ -56,15 +58,13 @@ public class K9WebViewClient extends WebViewClient {
         Context context = webView.getContext();
         Intent intent = createBrowserViewIntent(uri, context);
 
-        boolean overridingUrlLoading = false;
         try {
             context.startActivity(intent);
-            overridingUrlLoading = true;
         } catch (ActivityNotFoundException ex) {
-            // If no application can handle the URL, assume that the WebView can handle it.
+            Toast.makeText(context, R.string.error_activity_not_found, Toast.LENGTH_LONG).show();
         }
 
-        return overridingUrlLoading;
+        return true;
     }
 
     private Intent createBrowserViewIntent(Uri uri, Context context) {
