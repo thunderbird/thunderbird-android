@@ -209,7 +209,6 @@ class GeneralSettingsDataStore(
     private fun setTheme(value: String?) {
         K9.appTheme = stringToAppTheme(value)
         themeManager.updateAppTheme()
-        recreateActivity()
     }
 
     private fun setLanguage(language: String) {

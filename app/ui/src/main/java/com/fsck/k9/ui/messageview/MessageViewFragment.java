@@ -138,7 +138,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
         messageCryptoPresenter = new MessageCryptoPresenter(messageCryptoMvpView);
         messageLoaderHelper = messageLoaderHelperFactory.createForMessageView(
-                context, getLoaderManager(), getFragmentManager(), messageLoaderCallbacks);
+                context, getLoaderManager(), getParentFragmentManager(), messageLoaderCallbacks);
         mInitialized = true;
     }
 
@@ -542,15 +542,15 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         }
 
         fragment.setTargetFragment(this, dialogId);
-        fragment.show(getFragmentManager(), getDialogTag(dialogId));
+        fragment.show(getParentFragmentManager(), getDialogTag(dialogId));
     }
 
     private void removeDialog(int dialogId) {
-        FragmentManager fm = getFragmentManager();
-
-        if (fm == null || isRemoving() || isDetached()) {
+        if (!isAdded()) {
             return;
         }
+
+        FragmentManager fm = getParentFragmentManager();
 
         // Make sure the "show dialog" transaction has been processed when we call
         // findFragmentByTag() below. Otherwise the fragment won't be found and the dialog will
@@ -679,7 +679,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         public void showCryptoInfoDialog(MessageCryptoDisplayStatus displayStatus, boolean hasSecurityWarning) {
             CryptoInfoDialog dialog = CryptoInfoDialog.newInstance(displayStatus, hasSecurityWarning);
             dialog.setTargetFragment(MessageViewFragment.this, 0);
-            dialog.show(getFragmentManager(), "crypto_info_dialog");
+            dialog.show(getParentFragmentManager(), "crypto_info_dialog");
         }
 
         @Override

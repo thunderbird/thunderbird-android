@@ -14,6 +14,7 @@ import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
+
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentManager.OnBackStackChangedListener;
 import androidx.fragment.app.FragmentTransaction;
@@ -21,11 +22,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -59,6 +58,7 @@ import com.fsck.k9.ui.managefolders.ManageFoldersActivity;
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider;
 import com.fsck.k9.ui.messageview.MessageViewFragment;
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener;
+import com.fsck.k9.ui.messageview.PlaceholderFragment;
 import com.fsck.k9.ui.onboarding.OnboardingActivity;
 import com.fsck.k9.view.ViewSwitcher;
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener;
@@ -90,6 +90,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     private static final String STATE_DISPLAY_MODE = "displayMode";
     private static final String STATE_MESSAGE_LIST_WAS_DISPLAYED = "messageListWasDisplayed";
     private static final String STATE_FIRST_BACK_STACK_ID = "firstBackstackId";
+
+    private static final String FRAGMENT_TAG_MESSAGE_VIEW = "MessageViewFragment";
+    private static final String FRAGMENT_TAG_PLACEHOLDER = "MessageViewPlaceholder";
 
     // Used for navigating to next/previous message
     private static final int PREVIOUS = 1;
@@ -183,8 +186,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     private Menu menu;
 
     private ProgressBar progressBar;
-    private ViewGroup messageViewContainer;
-    private View messageViewPlaceHolder;
+    private PlaceholderFragment messageViewPlaceHolder;
 
     private MessageListFragment messageListFragment;
     private MessageViewFragment messageViewFragment;
@@ -311,7 +313,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     private void findFragments() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         messageListFragment = (MessageListFragment) fragmentManager.findFragmentById(R.id.message_list_container);
-        messageViewFragment = (MessageViewFragment) fragmentManager.findFragmentById(R.id.message_view_container);
+        messageViewFragment = (MessageViewFragment) fragmentManager.findFragmentByTag(FRAGMENT_TAG_MESSAGE_VIEW);
 
         if (messageListFragment != null) {
             initializeFromLocalSearch(messageListFragment.getLocalSearch());
@@ -390,10 +392,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
 
     private void initializeLayout() {
         progressBar = findViewById(R.id.message_list_progress);
-        messageViewContainer = findViewById(R.id.message_view_container);
-
-        LayoutInflater layoutInflater = getLayoutInflater();
-        messageViewPlaceHolder = layoutInflater.inflate(R.layout.empty_message_view, messageViewContainer, false);
+        messageViewPlaceHolder = new PlaceholderFragment();
     }
 
     private void displayViews() {
@@ -1216,17 +1215,15 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         if (folderServerId.equals(account.getDraftsFolder())) {
             MessageActions.actionEditDraft(this, messageReference);
         } else {
-            messageViewContainer.removeView(messageViewPlaceHolder);
-
             if (messageListFragment != null) {
                 messageListFragment.setActiveMessage(messageReference);
             }
 
             MessageViewFragment fragment = MessageViewFragment.newInstance(messageReference);
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.message_view_container, fragment);
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.message_view_container, fragment, FRAGMENT_TAG_MESSAGE_VIEW);
+            fragmentTransaction.commit();
             messageViewFragment = fragment;
-            ft.commit();
 
             if (displayMode != DisplayMode.SPLIT_VIEW) {
                 showMessageView();
@@ -1383,9 +1380,12 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     private void showMessageViewPlaceHolder() {
         removeMessageViewFragment();
 
-        // Add placeholder view if necessary
-        if (messageViewPlaceHolder.getParent() == null) {
-            messageViewContainer.addView(messageViewPlaceHolder);
+        // Add placeholder fragment if necessary
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.findFragmentByTag(FRAGMENT_TAG_PLACEHOLDER) == null) {
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.message_view_container, messageViewPlaceHolder, FRAGMENT_TAG_PLACEHOLDER);
+            fragmentTransaction.commit();
         }
 
         messageListFragment.setActiveMessage(null);

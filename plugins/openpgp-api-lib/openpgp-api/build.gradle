@@ -15,7 +15,7 @@ android {
 }
 
 dependencies {
-    implementation "androidx.lifecycle:lifecycle-extensions:${versions.androidxLifecycleExtensions}"
+    implementation "androidx.lifecycle:lifecycle-common:${versions.androidxLifecycle}"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
     implementation "com.takisoft.preferencex:preferencex:${versions.preferencesFix}"
 }

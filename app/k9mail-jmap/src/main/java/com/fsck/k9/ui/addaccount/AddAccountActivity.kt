@@ -2,11 +2,11 @@ package com.fsck.k9.ui.addaccount
 
 import android.os.Bundle
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.fsck.k9.activity.K9Activity
 import com.fsck.k9.jmap.R
+import com.fsck.k9.ui.findNavController
 
 class AddAccountActivity : K9Activity() {
     private lateinit var navController: NavController
