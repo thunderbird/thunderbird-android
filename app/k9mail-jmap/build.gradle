@@ -26,7 +26,8 @@ dependencies {
     implementation "com.google.android.material:material:${versions.materialComponents}"
     implementation "androidx.navigation:navigation-fragment-ktx:${versions.androidxNavigation}"
     implementation "androidx.navigation:navigation-ui-ktx:${versions.androidxNavigation}"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.1.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.androidxLifecycle}"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:${versions.androidxLifecycle}"
 
     testImplementation "org.robolectric:robolectric:${versions.robolectric}"
     testImplementation "junit:junit:${versions.junit}"
