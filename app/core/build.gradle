@@ -18,7 +18,7 @@ dependencies {
 
     implementation "com.squareup.okio:okio:${versions.okio}"
     implementation "commons-io:commons-io:${versions.commonsIo}"
-    implementation "androidx.core:core-ktx:${versions.coreKtx}"
+    implementation "androidx.core:core-ktx:${versions.androidxCore}"
     implementation "androidx.work:work-runtime-ktx:${versions.androidxWorkManager}"
     implementation "androidx.fragment:fragment:${versions.androidxFragment}"
     implementation "androidx.localbroadcastmanager:localbroadcastmanager:${versions.androidxLocalBroadcastManager}"
