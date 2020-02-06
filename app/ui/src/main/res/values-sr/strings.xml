@@ -9,6 +9,9 @@
   <!--Used in the about dialog-->
   <string name="app_authors">К-9 Шетачи паса.</string>
   <string name="app_copyright_fmt">Ауторска права 2008-<xliff:g>%s</xliff:g> „K-9 Dog Walkers“. Део ауторских права 2006-<xliff:g>%s</xliff:g> Андроид пројекат отвореног ко̂да.</string>
+  <string name="source_code">Извор</string>
+  <string name="about_libraries">Библиотеке</string>
+  <string name="license">Лиценца</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Добро дошли у К-9 Пошту</string>
   <string name="accounts_welcome"><![CDATA[
@@ -129,7 +132,6 @@
   <string name="status_network_error">Грешка повезивања</string>
   <string name="status_invalid_id_error">Порука није нађена</string>
   <string name="status_loading_error">Грешка учитавања поруке</string>
-  <string name="status_loading_more_failed">Поново покушај учитати још порука</string>
   <string name="load_more_messages_fmt">Учитај још
     <xliff:g id="messages_to_load">%d</xliff:g> порука</string>
   <string name="abbrev_gigabytes">GB</string>
@@ -224,8 +226,6 @@
   <string name="global_settings_show_contact_name_summary">Користи имена прималаца из именика кад је могуће</string>
   <string name="global_settings_registered_name_color_label">Обоји контакте</string>
   <string name="global_settings_registered_name_color_changed">Обоји имена на вашем списку контаката</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">Преламај дуга имена фасцикли</string>
-  <string name="global_settings_folderlist_wrap_folder_names_summary">Користи више линија за приказ дугих имена фасцикли</string>
   <string name="global_settings_messageview_fixedwidth_label">Фонтови фиксне величине</string>
   <string name="global_settings_messageview_fixedwidth_summary">Користи фонт фиксне ширине за приказ обичних текстуалних порука</string>
   <string name="global_settings_messageview_autofit_width_label">Уклопи поруке</string>
@@ -619,7 +619,6 @@
   <string name="accountlist_preferences">Списак налога</string>
   <string name="messagelist_preferences">Списак порука</string>
   <string name="messageview_preferences">Поруке</string>
-  <string name="folderlist_preferences">Списак фасцикли</string>
   <string name="settings_theme_label">Тема</string>
   <string name="settings_message_theme_label">Тема приказа порука</string>
   <string name="settings_compose_theme_label">Тема састављача</string>

@@ -8,12 +8,9 @@
   <string name="unread_widget_label">K-9 Não lido</string>
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
-  <string name="app_authors_url">https://github.com/k9mail/k-9/graphs/contributors</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Partes protegidas por Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
   <string name="source_code">Fonte</string>
-  <string name="app_source_url">https://github.com/k9mail/k-9</string>
   <string name="app_license">Licença Apache, versão 2.0.</string>
-  <string name="app_license_url">https://www.apache.org/licenses/LICENSE-2.0</string>
   <string name="about_libraries">Bibliotecas</string>
   <string name="license">Licença</string>
   <!--Welcome message-->
@@ -142,7 +139,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="status_network_error">Erro de ligação</string>
   <string name="status_invalid_id_error">Mensagem não encontrada</string>
   <string name="status_loading_error">Erro ao carregar mensagem</string>
-  <string name="status_loading_more_failed">Tentar novamente carregar mais mensagens</string>
   <string name="load_more_messages_fmt">Carregar mais <xliff:g id="messages_to_load">%d</xliff:g></string>
   <string name="abbrev_gigabytes">GB</string>
   <string name="abbrev_megabytes">MB</string>
@@ -241,8 +237,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="global_settings_show_contact_name_summary">Usar nome dos destinatários a partir dos Contactos quando disponível</string>
   <string name="global_settings_registered_name_color_label">Colorir contactos</string>
   <string name="global_settings_registered_name_color_changed">Colorir nomes na sua lista de contactos</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">Ajustar nomes de pastas longos</string>
-  <string name="global_settings_folderlist_wrap_folder_names_summary">Usar múltiplas linhas para mostrar nomes de pastas longos</string>
   <string name="global_settings_messageview_fixedwidth_label">Fontes de largura fixa</string>
   <string name="global_settings_messageview_fixedwidth_summary">Usar uma fonte de largura fixa quando forem visualizadas mensagens em texto simples</string>
   <string name="global_settings_messageview_autofit_width_label">Ajustar automaticamente as mensagens</string>
@@ -652,7 +646,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="accountlist_preferences">Lista de contas</string>
   <string name="messagelist_preferences">Listas de mensagens</string>
   <string name="messageview_preferences">Mensagens</string>
-  <string name="folderlist_preferences">Listas de pastas</string>
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Tema da vista de mensagem</string>
   <string name="settings_compose_theme_label">Tema da composição</string>

@@ -7,11 +7,8 @@
   <string name="shortcuts_title">حسابات K-9</string>
   <string name="unread_widget_label">K-9 غير المقروء</string>
   <!--Used in the about dialog-->
-  <string name="app_authors_url">https://github.com/k9mail/k-9/graphs/contributors</string>
   <string name="source_code">المَصدر</string>
-  <string name="app_source_url">https://github.com/k9mail/k-9</string>
   <string name="app_license">Apache License, Version 2.0</string>
-  <string name="app_license_url">https://www.apache.org/licenses/LICENSE-2.0</string>
   <string name="about_libraries">المكتبات</string>
   <string name="license">الرخصة</string>
   <!--Welcome message-->
@@ -106,7 +103,6 @@
   <string name="status_network_error">خطأ في الإتصال</string>
   <string name="status_invalid_id_error">رسالة غير موجودة</string>
   <string name="status_loading_error">خطأ في تحميل الرسالة</string>
-  <string name="status_loading_more_failed">إعادة محاولة تحميل رسائل أُخرى</string>
   <string name="abbrev_gigabytes">جيجابايت</string>
   <string name="abbrev_megabytes">ميجابايت</string>
   <string name="abbrev_kilobytes">كيلوبايت</string>
@@ -187,8 +183,6 @@
   <string name="global_settings_show_contact_name_label">اظهر أسماء المتراسيلن</string>
   <string name="global_settings_registered_name_color_label">تلوين المُتراسِلين</string>
   <string name="global_settings_registered_name_color_changed">تاريخ الأسماء في قائمة مراسليك</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">إقتطاع أسماء المجلدات الطويلة</string>
-  <string name="global_settings_folderlist_wrap_folder_names_summary">إستخدام عِدّة أسطر لإظهار أسماء الملفات الطويلة</string>
   <string name="global_settings_messageview_fixedwidth_label">حجم خط ثابت</string>
   <string name="global_settings_messageview_autofit_width_label">ﻻئم الرسالة تلقائيًا</string>
   <string name="global_settings_messageview_autofit_width_summary">تقليص الرسالة لتناسب الشاشة</string>
@@ -539,7 +533,6 @@
   <string name="accountlist_preferences">قائمة الحساب</string>
   <string name="messagelist_preferences">قوائم الرسالة</string>
   <string name="messageview_preferences">الرسائل</string>
-  <string name="folderlist_preferences">مجلد القوائم</string>
   <string name="settings_theme_label">السمة</string>
   <string name="settings_compose_theme_label">سمة المحرر</string>
   <string name="settings_language_label">اللغة</string>

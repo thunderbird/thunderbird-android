@@ -99,7 +99,6 @@
   <string name="status_network_error">연결 오류</string>
   <string name="status_invalid_id_error">메시지를 찾을 수 없습니다</string>
   <string name="status_loading_error">메시지 로딩 에러</string>
-  <string name="status_loading_more_failed">메시지 로딩 실패</string>
   <string name="load_more_messages_fmt">최대 <xliff:g id="messages_to_load">%d</xliff:g>개 더 불러오기</string>
   <string name="abbrev_gigabytes">GB</string>
   <string name="abbrev_megabytes">MB</string>
@@ -193,8 +192,6 @@
   <string name="global_settings_show_contact_name_summary">받는 사람 이름을 연락처에서 가져 옵니다</string>
   <string name="global_settings_registered_name_color_label">아는 연락처 색깔 표시</string>
   <string name="global_settings_registered_name_color_changed">연락처 목록에 있는 이름을 색으로 표시합니다</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">폴더 이름 자동 줄 바꿈</string>
-  <string name="global_settings_folderlist_wrap_folder_names_summary">폴더 이름이 길 때 여러 줄에 걸쳐 표시합니다</string>
   <string name="global_settings_messageview_fixedwidth_label">고정폭 폰트</string>
   <string name="global_settings_messageview_fixedwidth_summary">평문 메시지를 보여줄때 고정폭 폰트를 사용합니다</string>
   <string name="global_settings_messageview_autofit_width_label">너비 자동 맞춤</string>
@@ -578,7 +575,6 @@
   <string name="accountlist_preferences">계정 항목</string>
   <string name="messagelist_preferences">메시지 목록</string>
   <string name="messageview_preferences">메시지</string>
-  <string name="folderlist_preferences">폴더 목록</string>
   <string name="settings_theme_label">테마</string>
   <string name="settings_message_theme_label">메시지 보기 테마</string>
   <string name="settings_compose_theme_label">메시지 쓰기 테마</string>

@@ -89,7 +89,6 @@
   <string name="status_loading_more">正在載入郵件…</string>
   <string name="status_network_error">網路連接錯誤</string>
   <string name="status_invalid_id_error">沒有找到郵件</string>
-  <string name="status_loading_more_failed">再次嘗試載入更多郵件</string>
   <string name="load_more_messages_fmt">再載入<xliff:g id="messages_to_load">%d</xliff:g>封郵件</string>
   <string name="abbrev_gigabytes">GB</string>
   <string name="abbrev_megabytes">MB</string>
@@ -165,8 +164,6 @@
   <string name="global_settings_show_contact_name_summary">用聯絡人姓名取代顯示電子郵件地址</string>
   <string name="global_settings_registered_name_color_label">使用顏色標記特定聯絡人</string>
   <string name="global_settings_registered_name_color_changed">使用顏色標記聯絡人列表</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">完整顯示資料夾名稱</string>
-  <string name="global_settings_folderlist_wrap_folder_names_summary">資料夾名稱過長時以多行顯示</string>
   <string name="global_settings_messageview_fixedwidth_label">定寬字體</string>
   <string name="global_settings_messageview_fixedwidth_summary">使用定寬字體顯示純文字郵件</string>
   <string name="global_settings_messageview_autofit_width_label">自動調整訊息</string>
@@ -516,7 +513,6 @@
   <string name="accountlist_preferences">帳戶列表</string>
   <string name="messagelist_preferences">郵件列表</string>
   <string name="messageview_preferences">郵件</string>
-  <string name="folderlist_preferences">信件匣列表</string>
   <string name="settings_theme_label">主題</string>
   <string name="settings_message_theme_label">訊息檢視主題</string>
   <string name="settings_compose_theme_label">新郵件主題</string>

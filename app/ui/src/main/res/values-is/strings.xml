@@ -8,12 +8,9 @@
   <string name="unread_widget_label">K-9 - Ólesið</string>
   <!--Used in the about dialog-->
   <string name="app_authors">K-9 hundatemjararnir</string>
-  <string name="app_authors_url">https://github.com/k9mail/k-9/graphs/contributors</string>
   <string name="app_copyright_fmt">Höfundarréttur 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Höfundarréttur að hluta 2006-<xliff:g>%s</xliff:g> til Android Open Source verkefnisins.</string>
   <string name="source_code">Uppruni</string>
-  <string name="app_source_url">https://github.com/k9mail/k-9</string>
   <string name="app_license">Apache notkunarleyfi, útgáfa 2.0</string>
-  <string name="app_license_url">https://www.apache.org/licenses/LICENSE-2.0</string>
   <string name="about_libraries">Aðgerðasöfn</string>
   <string name="license">Notkunarleyfi</string>
   <!--Welcome message-->
@@ -141,7 +138,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="status_network_error">Villa í tengingu</string>
   <string name="status_invalid_id_error">Skilaboðin fundust ekki</string>
   <string name="status_loading_error">Villa við að hlaða inn skilaboðum</string>
-  <string name="status_loading_more_failed">Reyna aftur að hlaða inn fleiri skilaboðum</string>
   <string name="load_more_messages_fmt">Hlaða inn allt
     að <xliff:g id="messages_to_load">%d</xliff:g> til viðbótar</string>
   <string name="abbrev_gigabytes">GB</string>
@@ -241,8 +237,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="global_settings_show_contact_name_summary">Nota nöfn viðtakenda úr tengiliðaskrá þegar það er mögulegt</string>
   <string name="global_settings_registered_name_color_label">Lita tengiliði</string>
   <string name="global_settings_registered_name_color_changed">Lita nöfn í tengiliðalistanum þínum</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">Línuskrið á löngum möppuheitum</string>
-  <string name="global_settings_folderlist_wrap_folder_names_summary">Nota margar línur til að birta löng nöfn á möppum</string>
   <string name="global_settings_messageview_fixedwidth_label">Jafnbreitt letur</string>
   <string name="global_settings_messageview_fixedwidth_summary">Nota jafnbreitt letur til að birta skilaboð með hreinum texta</string>
   <string name="global_settings_messageview_autofit_width_label">Skilaboð passi sjálfvirkt</string>
@@ -652,7 +646,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="accountlist_preferences">Aðgangalisti</string>
   <string name="messagelist_preferences">Skilaboðalistar</string>
   <string name="messageview_preferences">Skilaboð</string>
-  <string name="folderlist_preferences">Möppulistar</string>
   <string name="settings_theme_label">Þema</string>
   <string name="settings_message_theme_label">Þema í skilaboðasýn</string>
   <string name="settings_compose_theme_label">Þema við samningu</string>

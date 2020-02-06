@@ -8,12 +8,9 @@
   <string name="unread_widget_label">K-9 Ulest</string>
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
-  <string name="app_authors_url">https://github.com/k9mail/k-9/graphs/contributors</string>
   <string name="app_copyright_fmt">Opphavsrett 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Kopirett for noen deler 2006-<xliff:g>%s</xliff:g> Android Open Source Project.</string>
   <string name="source_code">Kilde</string>
-  <string name="app_source_url">https://github.com/k9mail/k-9</string>
   <string name="app_license">Apache License, Version 2.0</string>
-  <string name="app_license_url">https://www.apache.org/licenses/LICENSE-2.0</string>
   <string name="about_libraries">Bibliotek</string>
   <string name="license">Lisens</string>
   <!--Welcome message-->
@@ -142,7 +139,6 @@ Send feilmeldinger, bidra med nye funksjoner og still spørsmål her:
   <string name="status_network_error">Tilkoblingsfeil</string>
   <string name="status_invalid_id_error">Melding ikke funnet</string>
   <string name="status_loading_error">Lasting av melding feilet</string>
-  <string name="status_loading_more_failed">Prøv igjen å laste flere meldinger</string>
   <string name="load_more_messages_fmt">Last opp
 til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="abbrev_gigabytes">GB</string>
@@ -242,8 +238,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="global_settings_show_contact_name_summary">Bruk mottakers navn fra kontaktliste når mulig</string>
   <string name="global_settings_registered_name_color_label">Fargelegg kontakter</string>
   <string name="global_settings_registered_name_color_changed">Fargelegg navn i kontaktlisten</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">Linjebryt lange mappenavn</string>
-  <string name="global_settings_folderlist_wrap_folder_names_summary">Bruk flere linjer for å vise lange mappenavn</string>
   <string name="global_settings_messageview_fixedwidth_label">Fastbreddeskrifter</string>
   <string name="global_settings_messageview_fixedwidth_summary">Bruk fastbreddeskrift ved visning av meldinger i ren tekst.</string>
   <string name="global_settings_messageview_autofit_width_label">Autojuster meldinger</string>
@@ -651,7 +645,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="accountlist_preferences">Kontoliste</string>
   <string name="messagelist_preferences">Meldingsliste</string>
   <string name="messageview_preferences">Meldinger</string>
-  <string name="folderlist_preferences">Mappelister</string>
   <string name="settings_theme_label">Drakt</string>
   <string name="settings_message_theme_label">Drakt for meldingsvisning</string>
   <string name="settings_compose_theme_label">Drakt for skriving</string>

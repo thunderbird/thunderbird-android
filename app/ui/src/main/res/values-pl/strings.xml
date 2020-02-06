@@ -8,12 +8,9 @@
   <string name="unread_widget_label">K-9 Mail nieprzeczytane</string>
   <!--Used in the about dialog-->
   <string name="app_authors">Autorzy K-9 Mail</string>
-  <string name="app_authors_url">https://github.com/k9mail/k-9/graphs/contributors</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
   <string name="source_code">Źródło</string>
-  <string name="app_source_url">https://github.com/k9mail/k-9</string>
   <string name="app_license">Licencja Apache, Wersja 2.0</string>
-  <string name="app_license_url">https://www.apache.org/licenses/LICENSE-2.0</string>
   <string name="about_libraries">Biblioteki</string>
   <string name="license">Licencja</string>
   <!--Welcome message-->
@@ -144,7 +141,6 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="status_network_error">Błąd połączenia</string>
   <string name="status_invalid_id_error">Nie znaleziono wiadomości</string>
   <string name="status_loading_error">Błąd ładowania wiadomości</string>
-  <string name="status_loading_more_failed">Spróbuj wczytać wiadomości ponownie</string>
   <string name="load_more_messages_fmt">Pobierz kolejne <xliff:g id="messages_to_load">%d</xliff:g> wiadomości</string>
   <string name="abbrev_gigabytes">GB</string>
   <string name="abbrev_megabytes">MB</string>
@@ -245,8 +241,6 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="global_settings_show_contact_name_summary">Użyj nazw nadawców, jeżeli występują w Twojej książce kontaktowej</string>
   <string name="global_settings_registered_name_color_label">Koloruj kontakty</string>
   <string name="global_settings_registered_name_color_changed">Koloruj nazwiska na liście kontaktów</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">Zawiń długie nazwy folderów</string>
-  <string name="global_settings_folderlist_wrap_folder_names_summary">Użyj kilku linii aby wyświetlić długie nazwy folderów</string>
   <string name="global_settings_messageview_fixedwidth_label">Czcionka o stałej szer.</string>
   <string name="global_settings_messageview_fixedwidth_summary">Użyj czcionki o stałej szerokości do wyświetlania wiadomości tekstowych</string>
   <string name="global_settings_messageview_autofit_width_label">Dopasuj wiadomość do rozmiaru ekranu</string>
@@ -655,7 +649,6 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="accountlist_preferences">Lista kont</string>
   <string name="messagelist_preferences">Listy wiadomości</string>
   <string name="messageview_preferences">Wiadomości</string>
-  <string name="folderlist_preferences">Listy folderów</string>
   <string name="settings_theme_label">Kolorystyka</string>
   <string name="settings_message_theme_label">Kolorystyka widoku wiadomości</string>
   <string name="settings_compose_theme_label">Kolorystyka widoku tworzenia wiadomości</string>

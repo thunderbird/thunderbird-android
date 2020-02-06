@@ -8,12 +8,9 @@
   <string name="unread_widget_label">Mensaje K-9 no leído</string>
   <!--Used in the about dialog-->
   <string name="app_authors">Los paseadores del perro K-9</string>
-  <string name="app_authors_url">https://github.com/k9mail/k-9/graphs/contributors</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Partes del Copyright 2006-<xliff:g>%s</xliff:g> Android Open Source Project.</string>
   <string name="source_code">Fuente</string>
-  <string name="app_source_url">https://github.com/k9mail/k-9</string>
   <string name="app_license">Apache License, Version 2.0</string>
-  <string name="app_license_url">https://www.apache.org/licenses/LICENSE-2.0</string>
   <string name="about_libraries">Librerías</string>
   <string name="license">Licencia</string>
   <!--Welcome message-->
@@ -141,7 +138,6 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="status_network_error">Error de conexión</string>
   <string name="status_invalid_id_error">Mensaje no encontrado</string>
   <string name="status_loading_error">Error al cargar el mensaje</string>
-  <string name="status_loading_more_failed">Intentando cargar más mensajes</string>
   <string name="load_more_messages_fmt">Cargar <xliff:g id="messages_to_load">%d</xliff:g> más</string>
   <string name="abbrev_gigabytes">GB</string>
   <string name="abbrev_megabytes">MB</string>
@@ -240,8 +236,6 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="global_settings_show_contact_name_summary">Utilizar nombre de destinatario desde Contactos cuando esté disponible</string>
   <string name="global_settings_registered_name_color_label">Colorear contactos</string>
   <string name="global_settings_registered_name_color_changed">Colorear nombres en la lista de contactos</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">Ajustar nombres de carpeta largos</string>
-  <string name="global_settings_folderlist_wrap_folder_names_summary">Usar varias líneas para mostrar los nombres de carpeta largos</string>
   <string name="global_settings_messageview_fixedwidth_label">Tipos de letra de ancho fijo</string>
   <string name="global_settings_messageview_fixedwidth_summary">Utilizar tipos de letra de ancho fijo al mostrar mensajes en formato texto</string>
   <string name="global_settings_messageview_autofit_width_label">Auto-ajustar los mensajes</string>
@@ -427,6 +421,8 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="account_settings_notification_opens_unread_summary">Abrir correo no leído desde la notificación</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marcar mensaje como leído al abrirlo</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marcar mensaje como leído cuando se abre para verlo</string>
+  <string name="account_settings_mark_message_as_read_on_delete_label">Marcar como leído al borrar</string>
+  <string name="account_settings_mark_message_as_read_on_delete_summary">Marcar el mensaje como leído cuando se borra</string>
   <string name="account_settings_notification_open_system_notifications_label">Configuración de las notificaciones</string>
   <string name="account_settings_notification_open_system_notifications_summary">Abrir opciones de notificación del sistema.</string>
   <string name="account_settings_show_pictures_label">Mostrar imágenes siempre</string>
@@ -641,6 +637,7 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="setting_theme_global">Usar el tema de la aplicación</string>
   <string name="setting_theme_dark">Oscuro</string>
   <string name="setting_theme_light">Claro</string>
+  <string name="setting_theme_follow_system">Usar predeterminado del sistema</string>
   <string name="display_preferences">Visualización</string>
   <string name="global_preferences">Global</string>
   <string name="debug_preferences">Depuración</string>
@@ -650,7 +647,6 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="accountlist_preferences">Lista de cuentas</string>
   <string name="messagelist_preferences">Lista de mensajes</string>
   <string name="messageview_preferences">Mensajes</string>
-  <string name="folderlist_preferences">Listas de carpeta</string>
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Tema de vista de mensaje</string>
   <string name="settings_compose_theme_label">Tema de redacción</string>
@@ -680,6 +676,7 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="volume_navigation_title">Navegación con teclas de volumen</string>
   <string name="volume_navigation_message">Vista de mensaje</string>
   <string name="volume_navigation_list">Listas de mensajes</string>
+  <string name="hide_special_accounts_title">Ocultar bandeja unificada</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - No leído</string>
   <string name="search_all_messages_title">Todos los mensajes</string>
@@ -768,9 +765,28 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="settings_export_success_generic">Se han exportado correctamente los ajustes</string>
   <string name="settings_export_failure">Fallo al exportar los ajustes</string>
   <string name="settings_import_title">Importar ajustes</string>
+  <string name="settings_import_pick_document_button">Seleccionar archivo</string>
   <string name="settings_import_button">Importar</string>
+  <string name="settings_import_success_generic">Los ajustes se han importado correctamente</string>
+  <string name="settings_import_password_required">Por favor, introduzca contraseñas</string>
+  <string name="settings_import_failure">La importación de ajustes ha fallado</string>
+  <string name="settings_import_read_failure">Fallo al leer el archivo de ajustes</string>
+  <string name="settings_import_partial_failure">La importación de algunos ajustes ha fallado</string>
+  <string name="settings_import_status_success">Importado correctamente</string>
+  <string name="settings_import_status_password_required">Se requiere contraseña</string>
+  <string name="settings_import_status_not_imported">No importado</string>
+  <string name="settings_import_status_error">Fallo en la importación</string>
+  <string name="settings_import_later_button">Más tarde</string>
   <string name="settings_import">Importar ajustes</string>
   <string name="settings_importing">Importando ajustes…</string>
+  <plurals name="settings_import_password_prompt">
+    <item quantity="one">Para poder usar la cuenta \"<xliff:g id="account">%s</xliff:g>\" necesita proporcionar la contraseña del servidor.</item>
+    <item quantity="other">Para poder usar la cuenta \"<xliff:g id="account">%s</xliff:g>\" necesita proporcionar las contraseñas del servidor.</item>
+  </plurals>
+  <string name="settings_import_incoming_server_password_hint">Contraseña del servidor de correo entrante</string>
+  <string name="settings_import_outgoing_server_password_hint">Contraseña del servidor de correo saliente</string>
+  <string name="settings_import_use_same_password_for_outgoing_server">Usar la misma contraseña para el servidor de correo saliente</string>
+  <string name="server_name_format">Nombre del servidor: <xliff:g id="hostname">%s</xliff:g></string>
   <string name="unread_widget_select_account">Mostrar contador no leídos para…</string>
   <string name="unread_widget_account_title">Cuenta</string>
   <string name="unread_widget_account_summary">La cuenta para la que se debe visualizar la cantidad de no leídos</string>

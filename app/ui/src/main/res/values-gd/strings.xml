@@ -129,7 +129,6 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="status_network_error">Mearachd leis a’ cheangal</string>
   <string name="status_invalid_id_error">Cha deach an teachdaireachd a lorg</string>
   <string name="status_loading_error">Mearachd a’ luchdadh na teachdaireachd</string>
-  <string name="status_loading_more_failed">Feuch ri luchdadh a’ chorr dhe na teachdaireachdan a-rithist</string>
   <string name="load_more_messages_fmt">Luchdaich suas ri
     to <xliff:g id="messages_to_load">%d</xliff:g> a bharrachd</string>
   <string name="abbrev_gigabytes">GB</string>
@@ -224,8 +223,6 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="global_settings_show_contact_name_summary">Cleachd ainmean o luchd-aithne Android ma tha gin ann</string>
   <string name="global_settings_registered_name_color_label">Cuir dathan air an luchd-aithne</string>
   <string name="global_settings_registered_name_color_changed">Cuir dathan air ainmean ann an liosta an luchd-aithne agad</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">Paisg ainmean fada phasganan</string>
-  <string name="global_settings_folderlist_wrap_folder_names_summary">Cleachd iomadh loidhne airson ainmean fada phasganan</string>
   <string name="global_settings_messageview_fixedwidth_label">Cruthan-clò le leud socraichte</string>
   <string name="global_settings_messageview_fixedwidth_summary">Cleachd cruth-clò le leud socraichte nuair a thèid taisbeanadh ann an teacsa lom a shealltainn</string>
   <string name="global_settings_messageview_autofit_width_label">Fèin-fhreagair teachdaireachdan</string>
@@ -614,7 +611,6 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="accountlist_preferences">Liosta nan cunntasan</string>
   <string name="messagelist_preferences">Liosta nan teachdaireachdan</string>
   <string name="messageview_preferences">Teachdaireachdan</string>
-  <string name="folderlist_preferences">Liosta nam pasganan</string>
   <string name="settings_theme_label">Ùrlar</string>
   <string name="settings_message_theme_label">Ùrlar sealladh nan teachdaireachdan</string>
   <string name="settings_compose_theme_label">Ùrlar an sgrìobhaidh</string>

@@ -98,7 +98,6 @@
   <string name="status_loading_more">טוען הודעות</string>
   <string name="status_network_error">שגיאת חיבור</string>
   <string name="status_invalid_id_error">לא נמצאו הודעות</string>
-  <string name="status_loading_more_failed">נסה שוב לטעון הודעות נוספות</string>
   <string name="load_more_messages_fmt">טען
 עד <xliff:g id="messages_to_load">%d</xliff:g> נוספים</string>
   <string name="abbrev_gigabytes">GB</string>
@@ -482,7 +481,6 @@
   <string name="accountlist_preferences">רשימת חשבונות</string>
   <string name="messagelist_preferences">רשימת הודעות</string>
   <string name="messageview_preferences">הודעות</string>
-  <string name="folderlist_preferences">רשימת תיקיות</string>
   <string name="settings_theme_label">ערכת נושא</string>
   <string name="settings_language_label">שפה</string>
   <string name="setting_language_system">ברירות מחדל מערכת</string>

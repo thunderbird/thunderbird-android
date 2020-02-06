@@ -8,13 +8,10 @@
   <string name="unread_widget_label">K-9 Ungelesen</string>
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
-  <string name="app_authors_url">https://github.com/k9mail/k-9/graphs/contributors</string>
   <string name="app_copyright_fmt">\u00a9 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers.
 Teile \u00a9 2006-<xliff:g>%s</xliff:g> Android Open Source Project.</string>
-  <string name="source_code">Quelle</string>
-  <string name="app_source_url">https://github.com/k9mail/k-9</string>
+  <string name="source_code">Quellcode</string>
   <string name="app_license">Apache-Lizenz, Version 2.0</string>
-  <string name="app_license_url">https://www.apache.org/licenses/LICENSE-2.0</string>
   <string name="about_libraries">Bibliotheken</string>
   <string name="license">Lizenz</string>
   <!--Welcome message-->
@@ -114,7 +111,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="remove_account_action">Konto entfernen</string>
   <string name="mark_as_read_action">Als gelesen markieren</string>
   <string name="send_alternate_action">Teilen</string>
-  <string name="send_alternate_chooser_title">Anwendung auswählen</string>
+  <string name="send_alternate_chooser_title">Absender auswählen</string>
   <string name="flag_action">Als wichtig markieren</string>
   <string name="unflag_action">Wichtig-Markierung entfernen</string>
   <string name="copy_action">Kopieren</string>
@@ -124,8 +121,8 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
     <item quantity="one">Adresse in Zwischenablage kopiert</item>
     <item quantity="other">Adressen in Zwischenablage kopiert</item>
   </plurals>
-  <string name="message_view_theme_action_dark">Dunkles Theme verwenden</string>
-  <string name="message_view_theme_action_light">Helles Theme verwenden</string>
+  <string name="message_view_theme_action_dark">Dunkles Design verwenden</string>
+  <string name="message_view_theme_action_light">Helles Design verwenden</string>
   <string name="mark_as_unread_action">Als ungelesen markieren</string>
   <string name="read_receipt">Empfangsbestätigung</string>
   <string name="read_receipt_enabled">Eine Empfangsbestätigung wird angefordert</string>
@@ -142,7 +139,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="status_network_error">Verbindungsfehler</string>
   <string name="status_invalid_id_error">Nachricht nicht gefunden</string>
   <string name="status_loading_error">Nachrichtenladefehler</string>
-  <string name="status_loading_more_failed">Laden weiterer Nachrichten erneut starten</string>
   <string name="load_more_messages_fmt">Bis zu <xliff:g id="messages_to_load">%d</xliff:g> weitere abrufen</string>
   <string name="abbrev_gigabytes">GB</string>
   <string name="abbrev_megabytes">MB</string>
@@ -185,8 +181,8 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="special_mailbox_name_sent">Gesendet</string>
   <string name="send_failure_subject">Nachrichten konnten nicht gesendet werden</string>
   <string name="version">Version</string>
-  <string name="debug_enable_debug_logging_title">Fehlersuchprotokollierung aktivieren</string>
-  <string name="debug_enable_debug_logging_summary">Zusätzliche Diagnose-Informationen protokollieren</string>
+  <string name="debug_enable_debug_logging_title">Fehlerprotokoll aktivieren</string>
+  <string name="debug_enable_debug_logging_summary">Zusätzliche Informationen zur Fehlerdiagnose protokollieren</string>
   <string name="debug_enable_sensitive_logging_title">Vertrauliche Informationen protokollieren</string>
   <string name="debug_enable_sensitive_logging_summary">Anmeldepasswörter bei Verbindungsaufbau protokollieren.</string>
   <string name="message_list_load_more_messages_action">Weitere Nachrichten laden</string>
@@ -233,16 +229,14 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="global_settings_flag_label">Wichtige Nachrichten</string>
   <string name="global_settings_flag_summary">Sterne weisen auf wichtige Nachrichten hin.</string>
   <string name="global_settings_preview_lines_label">Vorschauzeilen</string>
-  <string name="global_settings_show_correspondent_names_label">Name anzeigen</string>
-  <string name="global_settings_show_correspondent_names_summary">Name anstatt der E-Mail-Adresse des Korrespondenten anzeigen</string>
+  <string name="global_settings_show_correspondent_names_label">Namen anzeigen</string>
+  <string name="global_settings_show_correspondent_names_summary">Namen anstatt der E-Mail-Adresse des Korrespondenten anzeigen</string>
   <string name="global_settings_sender_above_subject_label">Korrespondent über Betreff</string>
   <string name="global_settings_sender_above_subject_summary">Namen der Korrespondenten über anstatt unter der Betreffzeile anzeigen</string>
   <string name="global_settings_show_contact_name_label">Namen aus Adressbuch</string>
   <string name="global_settings_show_contact_name_summary">Bekannte Namen aus dem Adressbuch (\'Kontakte\') anzeigen</string>
   <string name="global_settings_registered_name_color_label">Farbe von bekannten Namen</string>
   <string name="global_settings_registered_name_color_changed">Farbe wählen</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">Lange Namen umbrechen</string>
-  <string name="global_settings_folderlist_wrap_folder_names_summary">Lange Ordnernamen auf mehreren Zeilen anzeigen</string>
   <string name="global_settings_messageview_fixedwidth_label">Monotype-Schriftart</string>
   <string name="global_settings_messageview_fixedwidth_summary">Schriftart mit gleicher Zeichenbreite für Nur-Text-Nachrichten verwenden</string>
   <string name="global_settings_messageview_autofit_width_label">Nachrichtendarstellung</string>
@@ -252,7 +246,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="global_settings_messageview_show_next_label">Nach Löschen nächste Nachricht</string>
   <string name="global_settings_messageview_show_next_summary">Nach Löschen standardmäßig die nächste Nachricht anzeigen</string>
   <string name="global_settings_confirm_actions_title">Bestätigungsdialog</string>
-  <string name="global_settings_confirm_actions_summary">Bestätigung bei gewissen Aktionen erfordern</string>
+  <string name="global_settings_confirm_actions_summary">Bei Ausführung der ausgewählten Aktionen einen Bestätigungsdialog anzeigen</string>
   <string name="global_settings_confirm_action_delete">Löschen</string>
   <string name="global_settings_confirm_action_delete_starred">Sternmarkierte Löschen (nur in Nachrichtenansicht)</string>
   <string name="global_settings_confirm_action_spam">Spam</string>
@@ -276,7 +270,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="global_settings_lock_screen_notification_visibility_app_name">Anwendungsname</string>
   <string name="global_settings_lock_screen_notification_visibility_message_count">Anzahl der ungelesenen Nachrichten</string>
   <string name="global_settings_lock_screen_notification_visibility_senders">Nachrichtenanzahl und Absender</string>
-  <string name="global_settings_lock_screen_notification_visibility_everything">Gleiche wie bei entsperrtem Bildschirm</string>
+  <string name="global_settings_lock_screen_notification_visibility_everything">Wie bei entsperrtem Bildschirm</string>
   <string name="quiet_time">Ruhezeit</string>
   <string name="quiet_time_description">Klingeln, Vibrieren und Leuchten in der Nacht deaktivieren</string>
   <string name="quiet_time_notification">Benachrichtigungen deaktivieren</string>
@@ -290,7 +284,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_setup_basics_manual_setup_action">Manuelle Einrichtung</string>
   <string name="account_setup_check_settings_title"/>
   <string name="account_setup_check_settings_retr_info_msg">Kontoinformationen werden abgerufen\u2026</string>
-  <string name="account_setup_check_settings_check_incoming_msg">Einstellungen des Empfangsservers werden überprüft\u2026</string>
+  <string name="account_setup_check_settings_check_incoming_msg">Einstellungen des Eingangsservers werden überprüft\u2026</string>
   <string name="account_setup_check_settings_check_outgoing_msg">Einstellungen des Ausgangsservers werden überprüft\u2026</string>
   <string name="account_setup_check_settings_authenticate">Authentifizierung\u2026</string>
   <string name="account_setup_check_settings_fetch">Kontoeinstellungen werden geladen\u2026</string>
@@ -302,8 +296,8 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_setup_account_type_instructions">Art des Kontos?</string>
   <string name="account_setup_account_type_pop_action">POP3-Konto</string>
   <string name="account_setup_account_type_imap_action">IMAP-Konto</string>
-  <string name="account_setup_auth_type_normal_password">Passwort, normal</string>
-  <string name="account_setup_auth_type_insecure_password">Passwort, verschlüsselt übermittelt</string>
+  <string name="account_setup_auth_type_normal_password">Normales Passwort</string>
+  <string name="account_setup_auth_type_insecure_password">Passwort, unsicher übermittelt</string>
   <string name="account_setup_auth_type_encrypted_password">Verschlüsseltes Passwort</string>
   <string name="account_setup_auth_type_tls_client_certificate">Client-Zertifikat</string>
   <string name="account_setup_incoming_title">Einstellungen für Posteingangsserver</string>
@@ -321,7 +315,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
   <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" ist nicht gültig mit \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
   <string name="account_setup_incoming_delete_policy_label">Beim Löschen von Nachrichten</string>
-  <string name="account_setup_incoming_delete_policy_never_label">Nie von Server löschen</string>
+  <string name="account_setup_incoming_delete_policy_never_label">Nie auf Server löschen</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Auch auf Server löschen</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Auf Server als gelesen markieren</string>
   <string name="account_setup_incoming_compression_label">Komprimierung bei Netzwerk verwenden:</string>
@@ -402,7 +396,8 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_setup_failed_dlg_title">Einrichtung konnte nicht abgeschlossen werden</string>
   <string name="account_setup_failed_dlg_auth_message_fmt">Benutzername oder Passwort ist falsch.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">Der Server verwendet ein ungültiges SSL-Zertifikat. Dies könnte daran liegen, dass der Server falsch konfiguriert ist. Allerdings könnte es auch daran liegen, dass jemand versucht Sie oder ihren E-Mail-Server anzugreifen. Falls Sie sich nicht sicher sind was der Grund ist, klicken Sie auf Abbrechen und kontaktieren Sie die Administratoren Ihres E-Mail-Servers. \n\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_server_message_fmt">Kann nicht mit dem Server verbinden.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Verbindung zum Server nicht möglich.
+(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_edit_details_action">Details bearbeiten</string>
   <string name="account_setup_failed_dlg_continue_action">Weiter</string>
   <string name="account_settings_push_advanced_title">Erweitert</string>
@@ -428,6 +423,8 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_settings_notification_opens_unread_summary">Beim Öffnen einer Benachrichtigung Liste der ungelesenen Nachrichten anzeigen</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Beim Öffnen als gelesen markieren</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Nachricht als gelesen markieren, sobald sie zum Betrachten geöffnet wird</string>
+  <string name="account_settings_mark_message_as_read_on_delete_label">Beim Löschen als gelesen markieren</string>
+  <string name="account_settings_mark_message_as_read_on_delete_summary">Nachricht als gelesen markieren, sobald sie gelöscht wird</string>
   <string name="account_settings_notification_open_system_notifications_label">Benachrichtigungseinstellungen</string>
   <string name="account_settings_notification_open_system_notifications_summary">Benachrichtigungseinstellungen öffnen</string>
   <string name="account_settings_show_pictures_label">Bilder automatisch herunterladen</string>
@@ -436,11 +433,11 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_settings_show_pictures_always">Immer</string>
   <string name="account_settings_composition">E-Mail-Versand</string>
   <string name="account_settings_default_quoted_text_shown_label">Nachricht beim Antworten zitieren</string>
-  <string name="account_settings_default_quoted_text_shown_summary">Beim Antworten die ursprüngliche Nachricht als Zitat einfügen</string>
-  <string name="account_settings_reply_after_quote_label">Antwort unter Zitat</string>
-  <string name="account_settings_reply_after_quote_summary">Die Antwort auf eine Nachricht unterhalb der ursprünglichen Nachricht platzieren</string>
+  <string name="account_settings_default_quoted_text_shown_summary">Ursprüngliche Nachricht als Zitat in die Antwort einfügen</string>
+  <string name="account_settings_reply_after_quote_label">Antwort nach Zitat</string>
+  <string name="account_settings_reply_after_quote_summary">Die ursprüngliche Nachricht erscheint vor der Antwort</string>
   <string name="account_settings_strip_signature_label">Signatur aus Zitat entfernen</string>
-  <string name="account_settings_strip_signature_summary">Beim Antworten die Signatur aus dem Zitat entfernen</string>
+  <string name="account_settings_strip_signature_summary">In Antworten werden Signaturen aus zitierten Nachrichten entfernt</string>
   <string name="account_settings_message_format_label">Formatierung</string>
   <string name="account_settings_message_format_text">Nur-Text (Bilder und Formatierungen entfernen)</string>
   <string name="account_settings_message_format_html">HTML (Bilder und Formatierungen bleiben erhalten)</string>
@@ -454,8 +451,8 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_settings_upload_sent_messages_label">Gesendete Nachrichten hochladen</string>
   <string name="account_settings_upload_sent_messages_summary">Nachrichten nach dem Senden in den Ordner Gesendet hochladen</string>
   <string name="account_settings_general_title">Allgemeine Einstellungen</string>
-  <string name="account_settings_reading_mail">E-mails lesen</string>
-  <string name="account_settings_sync">E-Mail-Empfang</string>
+  <string name="account_settings_reading_mail">E-Mails lesen</string>
+  <string name="account_settings_sync">E-Mails abrufen</string>
   <string name="account_settings_folders">Ordner</string>
   <string name="account_settings_quote_prefix_label">Zitat-Präfix</string>
   <string name="account_settings_crypto">Ende-zu-Ende Verschlüsselung</string>
@@ -476,20 +473,20 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_settings_led_color_summary">Farbe, die für die Benachrichtigungs-LED bei Benachrichtigungen für dieses Konto verwendet wird</string>
   <string name="account_settings_mail_display_count_label">Anzahl anzuzeigender Nachrichten</string>
   <string name="account_settings_autodownload_message_size_label">Nachrichten automatisch laden bis</string>
-  <string name="account_settings_autodownload_message_size_1">1KB</string>
-  <string name="account_settings_autodownload_message_size_2">2KB</string>
-  <string name="account_settings_autodownload_message_size_4">4KB</string>
-  <string name="account_settings_autodownload_message_size_8">8KB</string>
-  <string name="account_settings_autodownload_message_size_16">16KB</string>
-  <string name="account_settings_autodownload_message_size_32">32KB</string>
-  <string name="account_settings_autodownload_message_size_64">64KB</string>
-  <string name="account_settings_autodownload_message_size_128">128KB</string>
-  <string name="account_settings_autodownload_message_size_256">256KB</string>
-  <string name="account_settings_autodownload_message_size_512">512KB</string>
-  <string name="account_settings_autodownload_message_size_1024">1MB</string>
-  <string name="account_settings_autodownload_message_size_2048">2MB</string>
-  <string name="account_settings_autodownload_message_size_5120">5MB</string>
-  <string name="account_settings_autodownload_message_size_10240">10MB</string>
+  <string name="account_settings_autodownload_message_size_1">1 kB</string>
+  <string name="account_settings_autodownload_message_size_2">2 kB</string>
+  <string name="account_settings_autodownload_message_size_4">4 kB</string>
+  <string name="account_settings_autodownload_message_size_8">8 kB</string>
+  <string name="account_settings_autodownload_message_size_16">16 kB</string>
+  <string name="account_settings_autodownload_message_size_32">32 kB</string>
+  <string name="account_settings_autodownload_message_size_64">64 kB</string>
+  <string name="account_settings_autodownload_message_size_128">128 kB</string>
+  <string name="account_settings_autodownload_message_size_256">256 kB</string>
+  <string name="account_settings_autodownload_message_size_512">512 kB</string>
+  <string name="account_settings_autodownload_message_size_1024">1 MB</string>
+  <string name="account_settings_autodownload_message_size_2048">2 MB</string>
+  <string name="account_settings_autodownload_message_size_5120">5 MB</string>
+  <string name="account_settings_autodownload_message_size_10240">10 MB</string>
   <string name="account_settings_autodownload_message_size_any">Keine Beschränkung</string>
   <string name="account_settings_message_age_label">Nachrichten synchronisieren</string>
   <string name="account_settings_message_age_any">Alle (keine Beschränkung)</string>
@@ -546,15 +543,15 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="folder_settings_folder_push_mode_first_class">Hauptordner</string>
   <string name="folder_settings_folder_push_mode_second_class">Nebenordner</string>
   <string name="folder_settings_folder_push_mode_inherited">Wie Synchronisationsklasse</string>
-  <string name="folder_settings_folder_notify_mode_label">Ordnerbenachrichtigungsklasse</string>
+  <string name="folder_settings_folder_notify_mode_label">Benachrichtigungsklasse</string>
   <string name="folder_settings_folder_notify_mode_normal">Keine Klasse</string>
   <string name="folder_settings_folder_notify_mode_first_class">Hauptordner</string>
   <string name="folder_settings_folder_notify_mode_second_class">Nebenordner</string>
   <string name="folder_settings_folder_notify_mode_inherited">Wie Push-Klasse</string>
-  <string name="account_settings_incoming_label">Posteingangs-Einstellungen</string>
-  <string name="account_settings_incoming_summary">Einstellungen für Posteingangsserver bearbeiten</string>
-  <string name="account_settings_outgoing_label">Postausgangs-Einstellungen</string>
-  <string name="account_settings_outgoing_summary">Einstellungen für Postausgangsserver bearbeiten</string>
+  <string name="account_settings_incoming_label">Posteingangsserver</string>
+  <string name="account_settings_incoming_summary">Einstellungen des Posteingangsservers bearbeiten</string>
+  <string name="account_settings_outgoing_label">Postausgangsserver</string>
+  <string name="account_settings_outgoing_summary">Einstellungen des Postausgangsservers (SMTP) bearbeiten</string>
   <string name="account_settings_description_label">Kontoname</string>
   <string name="account_settings_name_label">Ihr Name</string>
   <string name="notifications_title">Benachrichtigungen</string>
@@ -580,7 +577,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="manage_identities_context_menu_title">Identität bearbeiten</string>
   <string name="edit_identity_title">Identität bearbeiten</string>
   <string name="new_identity_action">Neue Identität erstellen</string>
-  <string name="account_settings_always_bcc_label">Alle Nachrichten mit BCC an</string>
+  <string name="account_settings_always_bcc_label">Alle Nachrichten als BCC an</string>
   <string name="manage_identities_edit_action">Bearbeiten</string>
   <string name="manage_identities_move_up_action">Nach oben verschieben</string>
   <string name="manage_identities_move_down_action">Nach unten verschieben</string>
@@ -652,7 +649,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="accountlist_preferences">Kontenliste</string>
   <string name="messagelist_preferences">Nachrichtenliste</string>
   <string name="messageview_preferences">Nachrichten</string>
-  <string name="folderlist_preferences">Ordnerliste</string>
   <string name="settings_theme_label">Design</string>
   <string name="settings_message_theme_label">Nachrichten-Design</string>
   <string name="settings_compose_theme_label">Editor-Design</string>

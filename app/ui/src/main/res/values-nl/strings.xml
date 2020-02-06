@@ -8,12 +8,9 @@
   <string name="unread_widget_label">K-9 Ongelezen</string>
   <!--Used in the about dialog-->
   <string name="app_authors">Het K-9 ontwikkelingsteam</string>
-  <string name="app_authors_url">https://github.com/k9mail/k-9/graphs/contributors</string>
   <string name="app_copyright_fmt">Auteursrecht 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Voor gedeeltes gelt auteursrecht 2006-<xliff:g>%s</xliff:g> het Android Open Source Project.</string>
   <string name="source_code">Bron</string>
-  <string name="app_source_url">https://github.com/k9mail/k-9</string>
   <string name="app_license">Apache Licentie, versie 2.0</string>
-  <string name="app_license_url">https://www.apache.org/licenses/LICENSE-2.0</string>
   <string name="about_libraries">Bibliotheken</string>
   <string name="license">Licentie</string>
   <!--Welcome message-->
@@ -137,7 +134,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="status_network_error">Netwerkfout</string>
   <string name="status_invalid_id_error">Bericht niet gevonden</string>
   <string name="status_loading_error">Bericht laden is mislukt</string>
-  <string name="status_loading_more_failed">Opnieuw meer berichten laden</string>
   <string name="load_more_messages_fmt">Volgende <xliff:g id="messages_to_load">%d</xliff:g> berichten</string>
   <string name="abbrev_gigabytes">GiB</string>
   <string name="abbrev_megabytes">MiB</string>
@@ -236,8 +232,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="global_settings_show_contact_name_summary">Gebruik naam uit het adresboek</string>
   <string name="global_settings_registered_name_color_label">Kleuren contacten</string>
   <string name="global_settings_registered_name_color_changed">Kleur de namen in uw contact lijst</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">Lange mapnamen afbreken</string>
-  <string name="global_settings_folderlist_wrap_folder_names_summary">Gebruik meerdere regels om lange mapnamen weer te geven</string>
   <string name="global_settings_messageview_fixedwidth_label">Vaste breedte lettertypen</string>
   <string name="global_settings_messageview_fixedwidth_summary">Gebruik een lettertype met vaste breedte bij het weergeven van plain-tekstberichten</string>
   <string name="global_settings_messageview_autofit_width_label">Berichten auto-passen</string>
@@ -423,6 +417,8 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_settings_notification_opens_unread_summary">Zoekt voor ongelezen berichten wanneer Notificatie is geopend</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Markeer als gelezen als geopend</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Markeer als gelezen wanneer ingezien</string>
+  <string name="account_settings_mark_message_as_read_on_delete_label">Als gelezen markeren bij wissen</string>
+  <string name="account_settings_mark_message_as_read_on_delete_summary">Markeer een bericht als gelezen wanneer die wordt gewist</string>
   <string name="account_settings_notification_open_system_notifications_label">Meldingsinstellingen</string>
   <string name="account_settings_notification_open_system_notifications_summary">Open instellingen voor systeemmeldingen</string>
   <string name="account_settings_show_pictures_label">Laat afbeeldingen automatisch zien</string>
@@ -647,7 +643,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="accountlist_preferences">Accountlijst</string>
   <string name="messagelist_preferences">Berichtlijsten</string>
   <string name="messageview_preferences">Berichten</string>
-  <string name="folderlist_preferences">Maplijsten</string>
   <string name="settings_theme_label">Thema</string>
   <string name="settings_message_theme_label">Thema om berichten te zien</string>
   <string name="settings_compose_theme_label">Thema om berichten te schrijven</string>

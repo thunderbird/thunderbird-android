@@ -90,7 +90,6 @@
   <string name="status_loading_more">Įkeliami laiškai…</string>
   <string name="status_network_error">Prisijungimo klaida</string>
   <string name="status_invalid_id_error">Laiškas nerastas</string>
-  <string name="status_loading_more_failed">Pabandyti dar kartą įkelti daugiau laiškų</string>
   <string name="load_more_messages_fmt">Įkelti dar iki <xliff:g id="messages_to_load">%d</xliff:g> laiškų</string>
   <string name="abbrev_gigabytes">GB</string>
   <string name="abbrev_megabytes">MB</string>
@@ -167,8 +166,6 @@
   <string name="global_settings_show_contact_name_summary">Kai įmanoma naudoti gavėjų vardus iš adresų knygos</string>
   <string name="global_settings_registered_name_color_label">Spalvoti kontaktus</string>
   <string name="global_settings_registered_name_color_changed">Adresatų sąraše spalvoti vardus</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">Laužyti ilgus aplankų vardus</string>
-  <string name="global_settings_folderlist_wrap_folder_names_summary">Ilgus aplankų pavadinimus rodyti keliose eilutėse</string>
   <string name="global_settings_messageview_fixedwidth_label">Nekintančio pločio šriftai</string>
   <string name="global_settings_messageview_fixedwidth_summary">Atvaizduojant gryno teksto laiškus naudoti lygiaplotį šriftą</string>
   <string name="global_settings_messageview_autofit_width_label">Automatiškai pritaikyti laiškus</string>
@@ -518,7 +515,6 @@
   <string name="accountlist_preferences">Paskyrų sąrašas</string>
   <string name="messagelist_preferences">Laiškų sąrašai</string>
   <string name="messageview_preferences">Laiškai</string>
-  <string name="folderlist_preferences">Aplankų sąrašai</string>
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Laiško peržiūros tema</string>
   <string name="settings_compose_theme_label">Kūrimo tema</string>

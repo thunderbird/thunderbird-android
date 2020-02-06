@@ -8,12 +8,9 @@
   <string name="unread_widget_label">K-9 Anlennet</string>
   <!--Used in the about dialog-->
   <string name="app_authors">Diorroerien K-9</string>
-  <string name="app_authors_url">https://github.com/k9mail/k-9/graphs/contributors</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> Ar valeerien K-9 Dog. Lodennoù Copyright 2006-<xliff:g>%s</xliff:g> and Android Open Source Project.</string>
   <string name="source_code">Tarzh</string>
-  <string name="app_source_url">https://github.com/k9mail/k-9</string>
   <string name="app_license">Lañvaz Apache, Handelv 2.0</string>
-  <string name="app_license_url">https://www.apache.org/licenses/LICENSE-2.0</string>
   <string name="about_libraries">Levraouegoù</string>
   <string name="license">Lañvaz</string>
   <!--Welcome message-->
@@ -144,7 +141,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="status_network_error">Fazi kennaskañ</string>
   <string name="status_invalid_id_error">N’eo ket bet kavet ar gemennadenn</string>
   <string name="status_loading_error">Fazi kargañ ar gemennadenn</string>
-  <string name="status_loading_more_failed">Adklask kargañ kemennadennoù ouzhpenn</string>
   <string name="load_more_messages_fmt">Kargañ
 <xliff:g id="messages_to_load">%d</xliff:g> ouzhpenn</string>
   <string name="abbrev_gigabytes">Ge</string>
@@ -247,8 +243,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="global_settings_show_contact_name_summary">Arverañ anvioù ar c’henskriver eus an darempredoù p’eo hegerz</string>
   <string name="global_settings_registered_name_color_label">Livañ an darempredoù</string>
   <string name="global_settings_registered_name_color_changed">Livañ an anvioù en ho roll darempredoù</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">Krennat anvioù teuliadoù hir</string>
-  <string name="global_settings_folderlist_wrap_folder_names_summary">Arverañ meur a linenn evit an anvioù teuliadoù hir</string>
   <string name="global_settings_messageview_fixedwidth_label">Nodrezhoù digemm o ledander</string>
   <string name="global_settings_messageview_fixedwidth_summary">Arverañ un nodrezh digemm e ledander pa vez skrammet kemennadennoù e testenn blaen </string>
   <string name="global_settings_messageview_autofit_width_label">Klotañ ar c’hemennadennoù</string>
@@ -657,7 +651,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="accountlist_preferences">Roll ar c’hontoù</string>
   <string name="messagelist_preferences">Roll ar c’hemennadennoù</string>
   <string name="messageview_preferences">Kemennadennoù</string>
-  <string name="folderlist_preferences">Roll an teuliadoù</string>
   <string name="settings_theme_label">Neuz</string>
   <string name="settings_message_theme_label">Neuz ar c’hemennadennoù</string>
   <string name="settings_compose_theme_label">Neuz ar skridaozer</string>

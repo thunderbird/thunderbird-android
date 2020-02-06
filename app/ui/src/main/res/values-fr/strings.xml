@@ -8,12 +8,9 @@
   <string name="unread_widget_label">K-9 non lus</string>
   <!--Used in the about dialog-->
   <string name="app_authors">Les auteurs de K-9</string>
-  <string name="app_authors_url">https://github.com/k9mail/k-9/graphs/contributors</string>
   <string name="app_copyright_fmt">Tous droits réservés 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Parties protégées par droits d’auteur 2006-<xliff:g>%s</xliff:g> le projet libre Android.</string>
   <string name="source_code">Source</string>
-  <string name="app_source_url">https://github.com/k9mail/k-9</string>
   <string name="app_license">Licence Apache, Version 2.0</string>
-  <string name="app_license_url">https://www.apache.org/licenses/LICENSE-2.0</string>
   <string name="about_libraries">Bibliothèques</string>
   <string name="license">Licence</string>
   <!--Welcome message-->
@@ -142,7 +139,6 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="status_network_error">Erreur de connexion</string>
   <string name="status_invalid_id_error">Courriel introuvable</string>
   <string name="status_loading_error">Erreur de chargement du courriel</string>
-  <string name="status_loading_more_failed">Ressayer de charger plus de courriels</string>
   <string name="load_more_messages_fmt">Charger
 jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="abbrev_gigabytes">Go</string>
@@ -242,8 +238,6 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="global_settings_show_contact_name_summary">Utiliser les noms de destinataire des Contacts s’il y en a</string>
   <string name="global_settings_registered_name_color_label">Colorer les contacts</string>
   <string name="global_settings_registered_name_color_changed">Colorer les noms dans votre liste de contacts</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">Retour sur les noms de dossier longs</string>
-  <string name="global_settings_folderlist_wrap_folder_names_summary">Utiliser plusieurs lignes pour afficher les noms de dossier longs</string>
   <string name="global_settings_messageview_fixedwidth_label">Police à largeur fixe</string>
   <string name="global_settings_messageview_fixedwidth_summary">Utiliser une police à largeur fixe pour les courriels en texte brut</string>
   <string name="global_settings_messageview_autofit_width_label">Ajustement automatique des courriels</string>
@@ -429,6 +423,8 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="account_settings_notification_opens_unread_summary">Recherche des courriels non lus lors de l’accès aux notifications</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marquer comme lu à l’ouverture</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marquer un courriel comme lu quand il est ouvert pour être visualisé</string>
+  <string name="account_settings_mark_message_as_read_on_delete_label">Marquer comme lu lors de la suppression</string>
+  <string name="account_settings_mark_message_as_read_on_delete_summary">Marquer un message comme lu lors de la suppression</string>
   <string name="account_settings_notification_open_system_notifications_label">Paramètres de notification</string>
   <string name="account_settings_notification_open_system_notifications_summary">Ouvrir les paramètres de notification du système</string>
   <string name="account_settings_show_pictures_label">Toujours afficher les images</string>
@@ -653,7 +649,6 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="accountlist_preferences">Liste des comptes</string>
   <string name="messagelist_preferences">Liste des courriels</string>
   <string name="messageview_preferences">Courriels</string>
-  <string name="folderlist_preferences">Liste des dossiers</string>
   <string name="settings_theme_label">Thème</string>
   <string name="settings_message_theme_label">Thème de vue des courriels</string>
   <string name="settings_compose_theme_label">Thème de rédaction</string>

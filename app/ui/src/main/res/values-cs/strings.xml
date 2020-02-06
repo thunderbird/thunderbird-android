@@ -7,12 +7,9 @@
   <string name="shortcuts_title">Účty K-9</string>
   <string name="unread_widget_label">K-9 Nepřečtená</string>
   <!--Used in the about dialog-->
-  <string name="app_authors_url">https://github.com/k9mail/k-9/graphs/contributors</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
   <string name="source_code">Zdrojové kódy</string>
-  <string name="app_source_url">https://github.com/k9mail/k-9</string>
   <string name="app_license">Apache License, verze 2.0</string>
-  <string name="app_license_url">https://www.apache.org/licenses/LICENSE-2.0</string>
   <string name="about_libraries">Softwarové knihovny</string>
   <string name="license">Licence</string>
   <!--Welcome message-->
@@ -142,7 +139,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="status_network_error">Chyba spojení</string>
   <string name="status_invalid_id_error">Zpráva nenalezena</string>
   <string name="status_loading_error">Chyba při načítání zprávy</string>
-  <string name="status_loading_more_failed">Opakujte načtení více zpráv</string>
   <string name="load_more_messages_fmt">Načti až
     o <xliff:g id="messages_to_load">%d</xliff:g> více</string>
   <string name="abbrev_gigabytes">GB</string>
@@ -244,8 +240,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="global_settings_show_contact_name_summary">Použít jména příjemců ze Seznamu kontaktů, je-li to možné</string>
   <string name="global_settings_registered_name_color_label">Obarvit kontakty</string>
   <string name="global_settings_registered_name_color_changed">Obarvit jména v seznamu kontaktů</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">Zalomit dlouhé názvy složek</string>
-  <string name="global_settings_folderlist_wrap_folder_names_summary">Použít více řádků pro dlouhé názvy složek</string>
   <string name="global_settings_messageview_fixedwidth_label">Písma s pevnou šířkou</string>
   <string name="global_settings_messageview_fixedwidth_summary">Pro zobrazování neformátovaných textových zpráv použít písmo s pevnou šířkou</string>
   <string name="global_settings_messageview_autofit_width_label">Automatické přizpůsobení zpráv</string>
@@ -431,6 +425,8 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_settings_notification_opens_unread_summary">Vyhledává nepřečtené zprávy, je-li otevřeno oznámení</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Označit jako přečtenou po otevření</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Označit zprávu jako přečtenou po otevření</string>
+  <string name="account_settings_mark_message_as_read_on_delete_label">Při smazání označit jako přečtené</string>
+  <string name="account_settings_mark_message_as_read_on_delete_summary">Při jejím mazání, označit zprávu jako přečtenou</string>
   <string name="account_settings_notification_open_system_notifications_label">Nastavení oznamování</string>
   <string name="account_settings_notification_open_system_notifications_summary">Nastavení oznamování v operačním systému</string>
   <string name="account_settings_show_pictures_label">Vždy zobrazovat obrázky</string>
@@ -655,7 +651,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="accountlist_preferences">Seznam účtů</string>
   <string name="messagelist_preferences">Seznam zpráv</string>
   <string name="messageview_preferences">Zprávy</string>
-  <string name="folderlist_preferences">Seznam složek</string>
   <string name="settings_theme_label">Vzhled</string>
   <string name="settings_message_theme_label">Vzhled náhledu zprávy</string>
   <string name="settings_compose_theme_label">Vzhled psaní zprávy</string>
