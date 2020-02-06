@@ -8,12 +8,9 @@
   <string name="unread_widget_label">K-9 Lugemata</string>
   <!--Used in the about dialog-->
   <string name="app_authors">K-9 Autorid</string>
-  <string name="app_authors_url">https://github.com/k9mail/k-9/graphs/contributors</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
   <string name="source_code">Lähtekood</string>
-  <string name="app_source_url">https://github.com/k9mail/k-9</string>
   <string name="app_license">Apache litsents, versioon 2.0</string>
-  <string name="app_license_url">https://www.apache.org/licenses/LICENSE-2.0</string>
   <string name="about_libraries">Teegid</string>
   <string name="license">Litsents</string>
   <!--Welcome message-->
@@ -24,6 +21,7 @@
   <string name="account_delete_dlg_instructions_fmt">Konto \"<xliff:g id="account">%s</xliff:g>\" eemaldatakse K-9 Mailist.</string>
   <!--=== General strings ==================================================================-->
   <string name="authors">Autorid</string>
+  <string name="app_revision">Parandusteave</string>
   <string name="read_messages_label">Loe meilisõnumeid</string>
   <string name="read_messages_desc">Lubab sellel rakendusel lugeda sinu e-kirju.</string>
   <string name="delete_messages_label">Kustuta e-kirjad</string>
@@ -111,7 +109,6 @@
   <string name="status_network_error">Ühenduse viga</string>
   <string name="status_invalid_id_error">Kirja ei leita</string>
   <string name="status_loading_error">Sõnumi laadimise viga</string>
-  <string name="status_loading_more_failed">Proovi veelkord kirju laadida</string>
   <string name="load_more_messages_fmt">Laadi üles
     <xliff:g id="messages_to_load">%d</xliff:g> rohkem</string>
   <string name="abbrev_gigabytes">GB</string>
@@ -211,8 +208,6 @@
   <string name="global_settings_show_contact_name_summary">Näita saaja nime kontaktidest, kui see olemas</string>
   <string name="global_settings_registered_name_color_label">Tooni kontaktid</string>
   <string name="global_settings_registered_name_color_changed">Näita kontakte nimekirjas värvilisena</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">Murra pikkade kaustade nimed</string>
-  <string name="global_settings_folderlist_wrap_folder_names_summary">Kasuta pikkade kausta nimede näitamiseks mitut rida</string>
   <string name="global_settings_messageview_fixedwidth_label">Fikseeritud laiusega fondid</string>
   <string name="global_settings_messageview_fixedwidth_summary">Kasuta lihtteksti kirjades fikseeritud laiusega fonti</string>
   <string name="global_settings_messageview_autofit_width_label">Sobita kirjad automaatselt</string>
@@ -423,6 +418,8 @@
   <string name="account_settings_quote_style_label">Vastuse tsitaadi stiil</string>
   <string name="account_settings_quote_style_prefix">Eesliide (nagu Gmail)</string>
   <string name="account_settings_quote_style_header">Päis (nagu Outlook)</string>
+  <string name="account_settings_upload_sent_messages_label">Laadi üles saadetud sõnumid</string>
+  <string name="account_settings_upload_sent_messages_summary">Laadi sõnumid saadetud sõnumite kausta pärast saatmist</string>
   <string name="account_settings_general_title">Üldised sätted</string>
   <string name="account_settings_reading_mail">Meili lugemine</string>
   <string name="account_settings_sync">Meili toomine</string>
@@ -620,7 +617,6 @@
   <string name="accountlist_preferences">Konto nimekiri</string>
   <string name="messagelist_preferences">Sõnumite nimekirjad</string>
   <string name="messageview_preferences">Sõnumid</string>
-  <string name="folderlist_preferences">Kaustade nimekiri</string>
   <string name="settings_theme_label">Teema</string>
   <string name="settings_message_theme_label">Sõnumite vaate teema</string>
   <string name="settings_compose_theme_label">Koostaja teema</string>
@@ -738,9 +734,23 @@
   <string name="settings_export_success_generic">Sätted edukalt eksporditud</string>
   <string name="settings_export_failure">Sätete eksportimine ebaõnnestus</string>
   <string name="settings_import_title">Impordi sätted</string>
+  <string name="settings_import_pick_document_button">Vali fail</string>
   <string name="settings_import_button">Impordi</string>
+  <string name="settings_import_success_generic">Sätted edukalt imporditud</string>
+  <string name="settings_import_password_required">Palun sisesta paroolid</string>
+  <string name="settings_import_failure">Sätete importimine ebaõnnestus</string>
+  <string name="settings_import_read_failure">Sätete faili lugemine ebaõnnestus</string>
+  <string name="settings_import_partial_failure">Mõnede sätete importimine ebaõnnestus</string>
+  <string name="settings_import_status_success">Importimine õnnestus</string>
+  <string name="settings_import_status_password_required">Salasõna on vajalik</string>
+  <string name="settings_import_status_not_imported">Ei imporditud</string>
+  <string name="settings_import_status_error">Importimise viga</string>
+  <string name="settings_import_later_button">Hiljem</string>
   <string name="settings_import">Impordi sätted</string>
   <string name="settings_importing">Sätete importimine…</string>
+  <string name="settings_import_incoming_server_password_hint">Sissetuleva serveri parool</string>
+  <string name="settings_import_outgoing_server_password_hint">Väljuva serveri parool</string>
+  <string name="settings_import_use_same_password_for_outgoing_server">Kasuta sama parooli väljuva serveri tarbeks</string>
   <string name="unread_widget_select_account">Näita lugemata sõnumite arvu...</string>
   <string name="unread_widget_account_title">Konto</string>
   <string name="unread_widget_account_summary">Konto, mille lugemata sõnumite arvu peaks näitama</string>
@@ -874,6 +884,9 @@
   <string name="locked_attach_unlock">Ava</string>
   <string name="message_progress_text">Laeb…</string>
   <string name="messageview_decrypt_retry">Korduskatse</string>
+  <string name="recipient_error_parse_failed">Viga aadressi parsimisel!</string>
+  <string name="account_settings_crypto_hide_sign_only">Peida krüpteerimata allkirjad</string>
+  <string name="unsigned_text_divider_label">Allkirjastamata tekst</string>
   <string name="apg_deprecated_bullet_1">Arendus lõppes 2014. aasta alguses</string>
   <string name="apg_learn_more">Võid lisainfoks <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">klikkida siia</a></string>
   <string name="apg_deprecated_ok">Arusaadav!</string>

@@ -137,7 +137,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="status_network_error">Konekta eraro</string>
   <string name="status_invalid_id_error">Mesaĝo ne trovita</string>
   <string name="status_loading_error">Eraro dum ŝargado de mesaĝo</string>
-  <string name="status_loading_more_failed">Reprovi ŝargi pli da mesaĝoj</string>
   <string name="load_more_messages_fmt">Ŝargi maksimume <xliff:g id="messages_to_load">%d</xliff:g> sekvajn</string>
   <string name="abbrev_gigabytes">GB</string>
   <string name="abbrev_megabytes">MB</string>
@@ -236,8 +235,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="global_settings_show_contact_name_summary">Uzas nomojn de ricevontojn el via adresaro kiam tio ĉi eblas</string>
   <string name="global_settings_registered_name_color_label">Kolorigi kontaktojn</string>
   <string name="global_settings_registered_name_color_changed">Kolorigi nomojn en adresaro</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">Faldi longajn nomojn de mesaĝujoj</string>
-  <string name="global_settings_folderlist_wrap_folder_names_summary">Uzas kelkajn liniojn por vidigi longajn nomojn de mesaĝujoj</string>
   <string name="global_settings_messageview_fixedwidth_label">Egallarĝaj tiparoj</string>
   <string name="global_settings_messageview_fixedwidth_summary">Uzas egallarĝan tiparon por vidigi plattekstajn mesaĝojn</string>
   <string name="global_settings_messageview_autofit_width_label">Aŭtomate adapti mesaĝojn al ekrana larĝo</string>
@@ -423,6 +420,8 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_settings_notification_opens_unread_summary">Serĉas nelegitajn mesaĝojn kiam sciigo malfermiĝas</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marki kiel legitan je malfermo</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Markas mesaĝon kiel nelegitan, kiam ĝi estas malfermita por montri</string>
+  <string name="account_settings_mark_message_as_read_on_delete_label">Marki kiel legitan je forigo</string>
+  <string name="account_settings_mark_message_as_read_on_delete_summary">Markas mesaĝon kiel nelegitan, kiam ĝi estas forigata</string>
   <string name="account_settings_notification_open_system_notifications_label">Agordoj de sciigoj</string>
   <string name="account_settings_notification_open_system_notifications_summary">Malfermi sistemajn agordojn de sciigoj</string>
   <string name="account_settings_show_pictures_label">Ĉiam montri bildojn</string>
@@ -647,7 +646,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="accountlist_preferences">Listo de kontoj</string>
   <string name="messagelist_preferences">Listoj de mesaĝoj</string>
   <string name="messageview_preferences">Mesaĝoj</string>
-  <string name="folderlist_preferences">Listoj de mesaĝujoj</string>
   <string name="settings_theme_label">Etoso</string>
   <string name="settings_message_theme_label">Etoso de mesaĝa vido</string>
   <string name="settings_compose_theme_label">Etoso de mesaĝ-kreada vido</string>

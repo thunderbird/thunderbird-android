@@ -129,7 +129,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="status_network_error">Chyba pripojenia</string>
   <string name="status_invalid_id_error">Správa nebola nájdená</string>
   <string name="status_loading_error">Chyba otvárania správy</string>
-  <string name="status_loading_more_failed">Skúsiť znovu načítať viac správ</string>
   <string name="load_more_messages_fmt">Načítať ďalších <xliff:g id="messages_to_load">%d</xliff:g> správ</string>
   <string name="abbrev_gigabytes">GB</string>
   <string name="abbrev_megabytes">MB</string>
@@ -222,8 +221,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="global_settings_show_contact_name_summary">Použiť mená príjemcov z kontaktov, ak sú k dispozícii</string>
   <string name="global_settings_registered_name_color_label">Zafarbiť kontakty</string>
   <string name="global_settings_registered_name_color_changed">Zafarbiť mená v zozname kontaktov</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">Skracovať dlhé názvy priečinkov</string>
-  <string name="global_settings_folderlist_wrap_folder_names_summary">Použiť viac riadkov pre zobrazenie dlhých názvov priečinkov</string>
   <string name="global_settings_messageview_fixedwidth_label">Písma s pevnou šírkou</string>
   <string name="global_settings_messageview_fixedwidth_summary">Používať písmo s pevnou šírkou pri zobrazovaní textových správ</string>
   <string name="global_settings_messageview_autofit_width_label">Automaticky prispôsobiť správy</string>
@@ -609,7 +606,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="accountlist_preferences">Zoznam účtov</string>
   <string name="messagelist_preferences">Zoznamy správ</string>
   <string name="messageview_preferences">Správy</string>
-  <string name="folderlist_preferences">Zoznamy priečinkov</string>
   <string name="settings_theme_label">Téma</string>
   <string name="settings_message_theme_label">Téma zobrazenia správy</string>
   <string name="settings_compose_theme_label">Téma pri písaní správy</string>

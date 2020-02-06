@@ -131,7 +131,6 @@ Vă rugăm să ne raportați defecte, să contribuiți cu funcționalități noi
   <string name="status_network_error">Eroare de conectare</string>
   <string name="status_invalid_id_error">Mesajul nu a fost găsit</string>
   <string name="status_loading_error">Eroare la încărcarea mesajului</string>
-  <string name="status_loading_more_failed">Reîncearcă încărcarea de mesaje</string>
   <string name="load_more_messages_fmt">Încarcă
 cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
   <string name="abbrev_gigabytes">GB</string>
@@ -228,8 +227,6 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
   <string name="global_settings_show_contact_name_summary">Foloseşte numele destinatarilor din Contacte atunci când sunt disponibile</string>
   <string name="global_settings_registered_name_color_label">Colorează contactele</string>
   <string name="global_settings_registered_name_color_changed">Colorează numele în lista de contacte</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">Restrânge numele lungi de dosar</string>
-  <string name="global_settings_folderlist_wrap_folder_names_summary">Folosește mai multe linii pentru a arăta nume lungi de dosar</string>
   <string name="global_settings_messageview_fixedwidth_label">Fonturi de lățime fixă</string>
   <string name="global_settings_messageview_fixedwidth_summary">Utilizează un font cu lățime fixă când mesajele sunt cu text simplu</string>
   <string name="global_settings_messageview_autofit_width_label">Auto-dimensionează mesajele</string>
@@ -632,7 +629,6 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="accountlist_preferences">Listă conturi</string>
   <string name="messagelist_preferences">Listă mesaje</string>
   <string name="messageview_preferences">Mesaje</string>
-  <string name="folderlist_preferences">Listă dosare</string>
   <string name="settings_theme_label">Temă</string>
   <string name="settings_message_theme_label">Temă vizualizare mesaje</string>
   <string name="settings_compose_theme_label">Temă compunere</string>

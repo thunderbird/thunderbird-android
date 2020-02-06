@@ -8,12 +8,9 @@
   <string name="unread_widget_label">K-9 Irakurri gabe</string>
   <!--Used in the about dialog-->
   <string name="app_authors">K-9 Txakur-paseatzaileak</string>
-  <string name="app_authors_url">https://github.com/k9mail/k-9/graphs/contributors</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project-en zatiak.</string>
   <string name="source_code">Iturria</string>
-  <string name="app_source_url">https://github.com/k9mail/k-9</string>
   <string name="app_license">Apache lizentzia, 2.0 bertsioa</string>
-  <string name="app_license_url">https://www.apache.org/licenses/LICENSE-2.0</string>
   <string name="about_libraries">Liburutegiak</string>
   <string name="license">Lizentziak</string>
   <!--Welcome message-->
@@ -141,7 +138,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="status_network_error">Konexio errorea</string>
   <string name="status_invalid_id_error">Ez da mezua aurkitu</string>
   <string name="status_loading_error">Akatsa mezua kargatzean</string>
-  <string name="status_loading_more_failed">Saiatu mezu gehiago kargatzen berriro</string>
   <string name="load_more_messages_fmt"><xliff:g id="messages_to_load">%d</xliff:g> gehiago kargatu</string>
   <string name="abbrev_gigabytes">GB</string>
   <string name="abbrev_megabytes">MB</string>
@@ -182,7 +178,7 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="special_mailbox_name_drafts">Zirriborroak</string>
   <string name="special_mailbox_name_trash">Zakarrontzia</string>
   <string name="special_mailbox_name_sent">Bidalitakoak</string>
-  <string name="send_failure_subject">Mezu batzuen bidaltzeak huts egin du</string>
+  <string name="send_failure_subject">Ezin izan dira mezu batzuk bidali</string>
   <string name="version">Bertsioa</string>
   <string name="debug_enable_debug_logging_title">Gaitu arazketarako egunkaria</string>
   <string name="debug_enable_debug_logging_summary">Diagnostikorako informazio gehigarria erregistratu</string>
@@ -240,8 +236,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="global_settings_show_contact_name_summary">Erabili hartzaileen izenak Kontaktuetatik erabilgarri daudenean</string>
   <string name="global_settings_registered_name_color_label">Koloreztatu kontaktuak</string>
   <string name="global_settings_registered_name_color_changed">Koloreztatu izenak kontaktu zerrendan</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">Egokitu karpeta izen luzeak</string>
-  <string name="global_settings_folderlist_wrap_folder_names_summary">Erabili lerro anitz karpeta izen luzeak erakusteko</string>
   <string name="global_settings_messageview_fixedwidth_label">Zabalera finkoko letra-tipoak</string>
   <string name="global_settings_messageview_fixedwidth_summary">Erabili zabalera finkoko letra-tipoak testu arrunteko mezuak erakustean</string>
   <string name="global_settings_messageview_autofit_width_label">Doitu mezuak automatikoki</string>
@@ -427,6 +421,8 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_settings_notification_opens_unread_summary">Jakinarazpena irekitzean irakurri gabeko mezuak bilatu</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Markatu irakurritako gisa irekitzean</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Markatu mezua irakurritako gisa ikusteko irekitzerakoan</string>
+  <string name="account_settings_mark_message_as_read_on_delete_label">Markatu irakurritako gisa ezabatzean</string>
+  <string name="account_settings_mark_message_as_read_on_delete_summary">Markatu mezua irakurritako gisa ikusteko ezabatzean</string>
   <string name="account_settings_notification_open_system_notifications_label">Jakinarazpenen ezarpenak</string>
   <string name="account_settings_notification_open_system_notifications_summary">Ireki sistemako jakinarazpenen ezarpenak</string>
   <string name="account_settings_show_pictures_label">Erakutsi beti Irudiak</string>
@@ -651,7 +647,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="accountlist_preferences">Kontuen zerrenda</string>
   <string name="messagelist_preferences">Mezu zerrendak</string>
   <string name="messageview_preferences">Mezuak</string>
-  <string name="folderlist_preferences">Karpeta zerrendak</string>
   <string name="settings_theme_label">Itxura</string>
   <string name="settings_message_theme_label">Mezua ikusteko itxura</string>
   <string name="settings_compose_theme_label">Mezua idazteko itxura</string>
@@ -681,6 +676,7 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="volume_navigation_title">Bolumen teklekin nabigatu</string>
   <string name="volume_navigation_message">Mezu barruko ikuspegiak</string>
   <string name="volume_navigation_list">Zerrenda barruko ikuspegiak</string>
+  <string name="hide_special_accounts_title">Ezkutatu sarrerako ontzi bateratua</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Irakurri gabe</string>
   <string name="search_all_messages_title">Mezu guztiak</string>
@@ -767,11 +763,30 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="settings_export_share_button">Partekatu</string>
   <string name="settings_export_progress_text">Ezarpenak esportatzen…</string>
   <string name="settings_export_success_generic">Ezarpenak ondo esportatu dira</string>
-  <string name="settings_export_failure">Ezarpenak esportatzeak huts egin du</string>
+  <string name="settings_export_failure">Ezin izan dira ezarpenak esportatu</string>
   <string name="settings_import_title">Inportatu ezarpenak</string>
+  <string name="settings_import_pick_document_button">Hautatu fitxategia</string>
   <string name="settings_import_button">Inportatu</string>
+  <string name="settings_import_success_generic">Ezarpenak ongi inportatu dira</string>
+  <string name="settings_import_password_required">Sartu pasahitzak</string>
+  <string name="settings_import_failure">Ezin izan dira ezarpenak inportatu</string>
+  <string name="settings_import_read_failure">Ezin izan da ezarpenen fitxategia irakurri</string>
+  <string name="settings_import_partial_failure">Ezin izan dira ezarpen batzuk inportatu</string>
+  <string name="settings_import_status_success">Ongi inportatuta</string>
+  <string name="settings_import_status_password_required">Pasahitza derrigorrezkoa</string>
+  <string name="settings_import_status_not_imported">Inportatu gabe</string>
+  <string name="settings_import_status_error">Inportazio hutsegitea</string>
+  <string name="settings_import_later_button">Geroago</string>
   <string name="settings_import">Inportatu ezarpenak</string>
   <string name="settings_importing">Ezarpenak inportatzen…</string>
+  <plurals name="settings_import_password_prompt">
+    <item quantity="one">\"<xliff:g id="account">%s</xliff:g>\" kontua erabili ahal izateko zerbitzari-pasahitza eman behar duzu</item>
+    <item quantity="other">\"<xliff:g id="account">%s</xliff:g>\" kontua erabili ahal izateko zerbitzari-pasahitzak eman behar dituzu</item>
+  </plurals>
+  <string name="settings_import_incoming_server_password_hint">Sarrerako zerbitzariaren pasahitza</string>
+  <string name="settings_import_outgoing_server_password_hint">Irteerako zerbitzariaren pasahitza</string>
+  <string name="settings_import_use_same_password_for_outgoing_server">Erabili pasahitz bera irteera zerbitzariarentzat</string>
+  <string name="server_name_format">Zerbitzari-izena: <xliff:g id="hostname">%s</xliff:g></string>
   <string name="unread_widget_select_account">Erakutsi honen irakurri gabe kopurua…</string>
   <string name="unread_widget_account_title">Kontua</string>
   <string name="unread_widget_account_summary">Irakurri gabekoen kopurua bistaratua izan beharko lukeen kontua</string>
@@ -855,7 +870,7 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_setup_basics_client_certificate">Erabili bezero ziurtagiria</string>
   <string name="client_certificate_spinner_empty">Ez dago bezero ziurtagiririk</string>
   <string name="client_certificate_spinner_delete">Kendu bezero ziurtagiri hautapena</string>
-  <string name="client_certificate_retrieval_failure">\"<xliff:g id="alias">%s</xliff:g>\" aliasarentzako bezero ziurtagiria berreskuratzeak huts egin du</string>
+  <string name="client_certificate_retrieval_failure">Ezin izan da \"<xliff:g id="alias">%s</xliff:g>\" aliasarentzako bezero ziurtagiria berreskuratu</string>
   <string name="client_certificate_advanced_options">Aukera aurreratuak</string>
   <string name="client_certificate_expired">Client certificate \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" bezero ziurtagiria iraungi da edo ez da baliozkoa oraindik (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
   <!--Note: This references message_view_download_remainder-->
@@ -874,7 +889,7 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="compose_error_no_key_configured">Gakorik ez konfiguratuta kontu honetarako! Egiaztatu zure ezarpenak.</string>
   <string name="error_crypto_provider_incompatible">Zifratze-hornitzaileak bertsio bateraezina darabil. Mesedez egiaztatu zure ezarpenak!</string>
   <string name="error_crypto_provider_connect">Ezin izan da zifratze hornitzailearekin konektatu, egiaztatu zure ezarpenak edo klikatu zifratze ikonoan berriro saiatzeko!</string>
-  <string name="error_crypto_provider_ui_required">Huts egin du muturretik muturrerako zifratzea abiatzean, egiaztatu zure ezarpenak</string>
+  <string name="error_crypto_provider_ui_required">Ezin izan da muturretik muturrerako zifratzea abiatu, egiaztatu zure ezarpenak</string>
   <string name="error_crypto_inline_attach">PGP/INLINE moduak ez ditu eranskinak onartzen!</string>
   <string name="enable_inline_pgp">Gaitu PGP/INLINE</string>
   <string name="disable_inline_pgp">Desgaitu PGP/INLINE</string>

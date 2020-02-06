@@ -8,12 +8,9 @@
   <string name="unread_widget_label">K-9 no llegits</string>
   <!--Used in the about dialog-->
   <string name="app_authors">Els passejadors de gossos K-9</string>
-  <string name="app_authors_url">https://github.com/k9mail/k-9/graphs/contributors</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Porcions de Copyright 2006-<xliff:g>%s</xliff:g> Projecte de codi obert d\'Android.</string>
   <string name="source_code">Font</string>
-  <string name="app_source_url">https://github.com/k9mail/k-9</string>
   <string name="app_license">Llicència d\'Apache, versió 2.0</string>
-  <string name="app_license_url">https://www.apache.org/licenses/LICENSE-2.0</string>
   <string name="about_libraries">Biblioteques</string>
   <string name="license">Llicència</string>
   <!--Welcome message-->
@@ -141,7 +138,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="status_network_error">Error de connexió</string>
   <string name="status_invalid_id_error">No s\'ha trobat el missatge</string>
   <string name="status_loading_error">Hi ha hagut un error durant la càrrega del missatge</string>
-  <string name="status_loading_more_failed">Reintenta carregar més missatges</string>
   <string name="load_more_messages_fmt">Carrega\'n
     fins a <xliff:g id="messages_to_load">%d</xliff:g> més</string>
   <string name="abbrev_gigabytes">GB</string>
@@ -241,8 +237,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="global_settings_show_contact_name_summary">Usa els noms dels destinataris segons els contactes quan estiguin disponibles</string>
   <string name="global_settings_registered_name_color_label">Acoloreix els contactes</string>
   <string name="global_settings_registered_name_color_changed">Acoloreix els noms de la llista de contactes</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">Ajusta les carpetes amb noms llargs</string>
-  <string name="global_settings_folderlist_wrap_folder_names_summary">Utilitza diverses línies per mostrar el nom complet de les carpetes amb noms llargs.</string>
   <string name="global_settings_messageview_fixedwidth_label">Tipus de lletra d\'amplada fixa</string>
   <string name="global_settings_messageview_fixedwidth_summary">Utilitza un tipus de lletra d\'amplada fixa quan es mostrin missatges de text pla.</string>
   <string name="global_settings_messageview_autofit_width_label">Ajusta l\'amplada dels missatges automàticament</string>
@@ -428,6 +422,8 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_settings_notification_opens_unread_summary">Cerca missatges no llegits quan s\'ha obert la notificació.</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marca el missatge obert com a llegit</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marca el missatge com a llegit després d\'haver-lo obert.</string>
+  <string name="account_settings_mark_message_as_read_on_delete_label">Marca com a llegit quan se suprimeixi</string>
+  <string name="account_settings_mark_message_as_read_on_delete_summary">Marca un missatge com a llegit quan se suprimeix.</string>
   <string name="account_settings_notification_open_system_notifications_label">Configuració de les notificacions</string>
   <string name="account_settings_notification_open_system_notifications_summary">Obre la configuració de les notificacions del sistema</string>
   <string name="account_settings_show_pictures_label">Sempre mostra les imatges</string>
@@ -652,7 +648,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="accountlist_preferences">Llista de comptes</string>
   <string name="messagelist_preferences">Llista de missatges</string>
   <string name="messageview_preferences">Missatges</string>
-  <string name="folderlist_preferences">Llista de carpetes</string>
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Tema de vista de missatge</string>
   <string name="settings_compose_theme_label">Tema de vista del redactor</string>

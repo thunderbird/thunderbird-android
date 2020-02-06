@@ -8,12 +8,9 @@
   <string name="unread_widget_label">K-9 Olästa</string>
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
-  <string name="app_authors_url">https://github.com/k9mail/k-9/graphs/contributors</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Vissa delar har Copyright 2006-<xliff:g>%s</xliff:g> Android Open Source Project.</string>
   <string name="source_code">Källa</string>
-  <string name="app_source_url">https://github.com/k9mail/k-9</string>
   <string name="app_license">Apache License, Version 2.0</string>
-  <string name="app_license_url">https://www.apache.org/licenses/LICENSE-2.0</string>
   <string name="about_libraries">Bibliotek</string>
   <string name="license">Licens</string>
   <!--Welcome message-->
@@ -141,7 +138,6 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="status_network_error">Anslutningsfel</string>
   <string name="status_invalid_id_error">Meddelandet hittades inte</string>
   <string name="status_loading_error">Inläsningsfel av meddelande</string>
-  <string name="status_loading_more_failed">Försök läsa in fler meddelanden igen</string>
   <string name="load_more_messages_fmt">Läs in ytterligare upp
     till <xliff:g id="messages_to_load">%d</xliff:g></string>
   <string name="abbrev_gigabytes">GB</string>
@@ -241,8 +237,6 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="global_settings_show_contact_name_summary">Använd mottagarnas namn från Kontakter om tillgängligt</string>
   <string name="global_settings_registered_name_color_label">Färglägg kontakter</string>
   <string name="global_settings_registered_name_color_changed">Färglägg namn i kontaktlistan</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">Radbryt långa mappnamn</string>
-  <string name="global_settings_folderlist_wrap_folder_names_summary">Använd flera rader för att visa långa mappnamn</string>
   <string name="global_settings_messageview_fixedwidth_label">Typsnitt med fast bredd</string>
   <string name="global_settings_messageview_fixedwidth_summary">Använd ett typsnitt med fast bredd för att visa meddelanden med enbart text</string>
   <string name="global_settings_messageview_autofit_width_label">Anpassa automatiskt meddelanden</string>
@@ -428,6 +422,8 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_settings_notification_opens_unread_summary">Letar efter oläst e-post när aviseringen öppnas</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Markera som läst vid öppning</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Markera ett meddelande som läst när det visas</string>
+  <string name="account_settings_mark_message_as_read_on_delete_label">Markera som läst när det tas bort</string>
+  <string name="account_settings_mark_message_as_read_on_delete_summary">Markera ett meddelande som läst när det tas bort</string>
   <string name="account_settings_notification_open_system_notifications_label">Aviseringsinställningar</string>
   <string name="account_settings_notification_open_system_notifications_summary">Öppna inställningar för systemaviseringar</string>
   <string name="account_settings_show_pictures_label">Visa alltid bilder</string>
@@ -652,7 +648,6 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="accountlist_preferences">Kontolista</string>
   <string name="messagelist_preferences">Meddelandelistor</string>
   <string name="messageview_preferences">Meddelanden</string>
-  <string name="folderlist_preferences">Mapplistor</string>
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Tema för meddelandelista</string>
   <string name="settings_compose_theme_label">Komponera tema</string>

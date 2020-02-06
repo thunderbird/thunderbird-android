@@ -8,12 +8,9 @@
   <string name="unread_widget_label">K-9 Непрочетени</string>
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
-  <string name="app_authors_url">https://github.com/k9mail/k-9/graphs/contributors</string>
   <string name="app_copyright_fmt">Правата запазени 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Част от правата 2006-<xliff:g>%s</xliff:g> на Android Open Source Project.</string>
   <string name="source_code">Източник</string>
-  <string name="app_source_url">https://github.com/k9mail/k-9</string>
   <string name="app_license">Apache License, Version 2.0</string>
-  <string name="app_license_url">https://www.apache.org/licenses/LICENSE-2.0</string>
   <string name="about_libraries">Libraries</string>
   <string name="license">License</string>
   <!--Welcome message-->
@@ -141,7 +138,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="status_network_error">Грешка при свързване</string>
   <string name="status_invalid_id_error">Съобщението не е намерено</string>
   <string name="status_loading_error">Грешка при зареждане на съобщението</string>
-  <string name="status_loading_more_failed">Повторен опит за зареждане на повече съобщения</string>
   <string name="load_more_messages_fmt">Зареди още <xliff:g id="messages_to_load">%d</xliff:g> </string>
   <string name="abbrev_gigabytes">ГБ</string>
   <string name="abbrev_megabytes">МБ</string>
@@ -240,8 +236,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="global_settings_show_contact_name_summary">Използвай името на получателя от контактите, когато това е възможно</string>
   <string name="global_settings_registered_name_color_label">Оцвети контактите</string>
   <string name="global_settings_registered_name_color_changed">Оцветявай имената в контакт листа</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">Пренасяй дългите имана на папки</string>
-  <string name="global_settings_folderlist_wrap_folder_names_summary">Използва няколко реда за да показва дългите имена на папките</string>
   <string name="global_settings_messageview_fixedwidth_label">Шрифт с фиксирана широчина</string>
   <string name="global_settings_messageview_fixedwidth_summary">Използва шрифт с фиксирана широчина за показване на съобщения съдържащи само текст</string>
   <string name="global_settings_messageview_autofit_width_label">Автоматично мащабиране</string>
@@ -651,7 +645,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="accountlist_preferences">Списък на профилите</string>
   <string name="messagelist_preferences">Списък на съобщенията</string>
   <string name="messageview_preferences">Съобщения</string>
-  <string name="folderlist_preferences">Списък на папките</string>
   <string name="settings_theme_label">Тема</string>
   <string name="settings_message_theme_label">Тема при преглед на съобщенията</string>
   <string name="settings_compose_theme_label">Тема на композитора</string>

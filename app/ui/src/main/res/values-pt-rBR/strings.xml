@@ -8,12 +8,9 @@
   <string name="unread_widget_label">Não lidos K-9</string>
   <!--Used in the about dialog-->
   <string name="app_authors">Criadores do K-9</string>
-  <string name="app_authors_url">https://github.com/k9mail/k-9/graphs/contributors</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Partes do Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
   <string name="source_code">Fonte</string>
-  <string name="app_source_url">https://github.com/k9mail/k-9</string>
   <string name="app_license">Apache License, Versão 2.0</string>
-  <string name="app_license_url">https://www.apache.org/licenses/LICENSE-2.0</string>
   <string name="about_libraries">Bibliotecas</string>
   <string name="license">Licença</string>
   <!--Welcome message-->
@@ -141,7 +138,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="status_network_error">Erro de conexão</string>
   <string name="status_invalid_id_error">Mensagem não encontrada</string>
   <string name="status_loading_error">Erro no carregamento da mensagem</string>
-  <string name="status_loading_more_failed">Tentar novamente a carga de mais mensagens</string>
   <string name="load_more_messages_fmt">Toque para ver mais <xliff:g id="messages_to_load">%d</xliff:g> msgs.</string>
   <string name="abbrev_gigabytes">GB</string>
   <string name="abbrev_megabytes">MB</string>
@@ -240,8 +236,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="global_settings_show_contact_name_summary">Nomeia os destinatários a partir dos Contatos, quando disponíveis</string>
   <string name="global_settings_registered_name_color_label">Colorir contatos</string>
   <string name="global_settings_registered_name_color_changed">Colorir nomes em sua lista de contatos</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">Quebrar nomes longos de pasta</string>
-  <string name="global_settings_folderlist_wrap_folder_names_summary">Usa múltiplas linhas para exibir nomes longos de pastas</string>
   <string name="global_settings_messageview_fixedwidth_label">Fontes de tamanho fixo</string>
   <string name="global_settings_messageview_fixedwidth_summary">Usa uma fonte de tamanho fixo ao exibir mensagens que contenham somente texto</string>
   <string name="global_settings_messageview_autofit_width_label">Ajustar mensagens automaticamente</string>
@@ -427,6 +421,8 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="account_settings_notification_opens_unread_summary">Procurar por mensagens não lidas quando uma notificação for aberta</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marcar como lida ao abrir</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marcar a mensagem como lida quando ela for aberta para visualização</string>
+  <string name="account_settings_mark_message_as_read_on_delete_label">Marcar como lida ao excluir</string>
+  <string name="account_settings_mark_message_as_read_on_delete_summary">Marca uma mensagem como lida quando ela for excluída</string>
   <string name="account_settings_notification_open_system_notifications_label">Configurações das notificações</string>
   <string name="account_settings_notification_open_system_notifications_summary">Abrir as configurações de notificações do sistema</string>
   <string name="account_settings_show_pictures_label">Sempre exibir imagens</string>
@@ -651,7 +647,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="accountlist_preferences">Lista de contas</string>
   <string name="messagelist_preferences">Listas de mensagens</string>
   <string name="messageview_preferences">Mensagens</string>
-  <string name="folderlist_preferences">Listas de pastas</string>
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Tema da visualização de mensagens</string>
   <string name="settings_compose_theme_label">Tema do editor</string>
@@ -681,6 +676,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="volume_navigation_title">Navegação com a tecla de volume</string>
   <string name="volume_navigation_message">Nas visualizações das mensagens</string>
   <string name="volume_navigation_list">Nas visualizações das listas</string>
+  <string name="hide_special_accounts_title">Ocultar a caixa de entrada unificada</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Não lido</string>
   <string name="search_all_messages_title">Todas as mensagens</string>

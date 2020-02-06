@@ -8,12 +8,9 @@
   <string name="unread_widget_label">未読件数</string>
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
-  <string name="app_authors_url">https://github.com/k9mail/k-9/graphs/contributors</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
   <string name="source_code">ソース</string>
-  <string name="app_source_url">https://github.com/k9mail/k-9</string>
   <string name="app_license">Apache License, Version 2.0</string>
-  <string name="app_license_url">https://www.apache.org/licenses/LICENSE-2.0</string>
   <string name="about_libraries">ライブラリー</string>
   <string name="license">ライセンス</string>
   <!--Welcome message-->
@@ -141,7 +138,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="status_network_error">接続エラー</string>
   <string name="status_invalid_id_error">メッセージが見つかりません</string>
   <string name="status_loading_error">メール取込エラー</string>
-  <string name="status_loading_more_failed">メール取込の再実行</string>
   <string name="load_more_messages_fmt"><xliff:g id="messages_to_load">%d</xliff:g> 件 読込</string>
   <string name="abbrev_gigabytes">GB</string>
   <string name="abbrev_megabytes">MB</string>
@@ -239,8 +235,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="global_settings_show_contact_name_summary">連絡先に登録されている名前を表示する</string>
   <string name="global_settings_registered_name_color_label">連絡先の名前に色を付ける</string>
   <string name="global_settings_registered_name_color_changed">連絡先の名前の場合は色を付ける</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">長いフォルダ名を折り返す</string>
-  <string name="global_settings_folderlist_wrap_folder_names_summary">長いフォルダ名を複数行で表示する</string>
   <string name="global_settings_messageview_fixedwidth_label">固定幅フォント</string>
   <string name="global_settings_messageview_fixedwidth_summary">プレーンテキストメッセージの表示に固定幅フォントを利用</string>
   <string name="global_settings_messageview_autofit_width_label">メッセージサイズ自動調整</string>
@@ -426,6 +420,8 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_settings_notification_opens_unread_summary">通知を開いた際に未読メールを検索する</string>
   <string name="account_settings_mark_message_as_read_on_view_label">開くと同時に既読にする</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">メッセージを参照したときに既読にする</string>
+  <string name="account_settings_mark_message_as_read_on_delete_label">削除時に既読にする</string>
+  <string name="account_settings_mark_message_as_read_on_delete_summary">メッセージが削除されたときに既読にします</string>
   <string name="account_settings_notification_open_system_notifications_label">通知設定</string>
   <string name="account_settings_notification_open_system_notifications_summary">システム通知設定を開きます</string>
   <string name="account_settings_show_pictures_label">画像を自動で表示</string>
@@ -650,7 +646,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="accountlist_preferences">アカウント一覧</string>
   <string name="messagelist_preferences">メッセージ一覧</string>
   <string name="messageview_preferences">メッセージ表示</string>
-  <string name="folderlist_preferences">フォルダ一覧</string>
   <string name="settings_theme_label">テーマ</string>
   <string name="settings_message_theme_label">メッセージ表示画面のテーマ</string>
   <string name="settings_compose_theme_label">メッセージ作成画面のテーマ</string>

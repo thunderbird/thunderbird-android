@@ -90,7 +90,6 @@
   <string name="status_loading_more">A cargar mensaxes\u2026</string>
   <string name="status_network_error">Erro de conexión</string>
   <string name="status_invalid_id_error">Mensaxe non atopada</string>
-  <string name="status_loading_more_failed">Volver tentar cargar máis mensaxes</string>
   <string name="load_more_messages_fmt">Cargar
      <xliff:g id="messages_to_load">%d</xliff:g> máis</string>
   <string name="abbrev_gigabytes">Gb</string>
@@ -172,8 +171,6 @@
   <string name="global_settings_show_contact_name_summary">Usar os nomes dos destinatarios desde Contactos cando sexa posible</string>
   <string name="global_settings_registered_name_color_label">Colorar contactos</string>
   <string name="global_settings_registered_name_color_changed">Colorar nomes na listaxe de contactos</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">Axustar nomes longos de cartafoles</string>
-  <string name="global_settings_folderlist_wrap_folder_names_summary">Utilizar múltiples liñas para mostrar os nomes longos dos cartafoles</string>
   <string name="global_settings_messageview_fixedwidth_label">Tamaño fixo das fontes</string>
   <string name="global_settings_messageview_fixedwidth_summary">Usar tamaño fixo das fontes cando se mostren as mensaxes en texto plano</string>
   <string name="global_settings_messageview_autofit_width_label">Axustar automaticamente as mensaxes</string>
@@ -545,7 +542,6 @@
   <string name="accountlist_preferences">Listaxe de contas</string>
   <string name="messagelist_preferences">Listaxes de mensaxes</string>
   <string name="messageview_preferences">Mensaxes</string>
-  <string name="folderlist_preferences">Listaxes de cartafol</string>
   <string name="settings_theme_label">Tema</string>
   <string name="settings_message_theme_label">Tema de vista de mensaxe</string>
   <string name="settings_compose_theme_label">Tema de redacción</string>

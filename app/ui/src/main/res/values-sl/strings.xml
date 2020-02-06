@@ -8,12 +8,9 @@
   <string name="unread_widget_label">Neprebrano K-9</string>
   <!--Used in the about dialog-->
   <string name="app_authors">Sprehajalci psov v skupini The K-9 Dog Walkers</string>
-  <string name="app_authors_url">https://github.com/k9mail/k-9/graphs/contributors</string>
   <string name="app_copyright_fmt">Avtorske pravice 2008–<xliff:g>%s</xliff:g> The K-9 Dog Walkers in 2006–<xliff:g>%s</xliff:g> Odprtokodna skupnost projekta Android.</string>
   <string name="source_code">Vir</string>
-  <string name="app_source_url">https://github.com/k9mail/k-9</string>
   <string name="app_license">Licenca Apache, različica 2.0</string>
-  <string name="app_license_url">https://www.apache.org/licenses/LICENSE-2.0</string>
   <string name="about_libraries">Knjižnice</string>
   <string name="license">Dovoljenje</string>
   <!--Welcome message-->
@@ -143,7 +140,6 @@ Poročila o napakah, predloge za nove funkcije in vprašanja lahko pošljete na
   <string name="status_network_error">Napaka povezave</string>
   <string name="status_invalid_id_error">Sporočila ni mogoče najti</string>
   <string name="status_loading_error">Napaka nalaganja sporočila</string>
-  <string name="status_loading_more_failed">Poskusi znova naložiti več sporočil</string>
   <string name="load_more_messages_fmt">Naloži 
 dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="abbrev_gigabytes"> GB</string>
@@ -245,8 +241,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="global_settings_show_contact_name_summary">Uporabljena so imena tistih prejemnikov, ki so na voljo v imeniku</string>
   <string name="global_settings_registered_name_color_label">Obarvanje stikov v seznamu</string>
   <string name="global_settings_registered_name_color_changed">Obarvaj imena na seznamu stikov</string>
-  <string name="global_settings_folderlist_wrap_folder_names_label">Oblivanje dolgih imen map</string>
-  <string name="global_settings_folderlist_wrap_folder_names_summary">Za prikaz dolgih imen map uporabi več vrstic</string>
   <string name="global_settings_messageview_fixedwidth_label">Pisava s stalno širino</string>
   <string name="global_settings_messageview_fixedwidth_summary">Pri prikazu neoblikovanih besedilnih sporočil se uporabi pisava s črkami stalne širine</string>
   <string name="global_settings_messageview_autofit_width_label">Samodejno prilagodi prikaz sporočil</string>
@@ -656,7 +650,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="accountlist_preferences">Seznam računov</string>
   <string name="messagelist_preferences">Seznami sporočil</string>
   <string name="messageview_preferences">Sporočila</string>
-  <string name="folderlist_preferences">Seznami map</string>
   <string name="settings_theme_label">Barvna shema</string>
   <string name="settings_message_theme_label">Barvna shema pogleda sporočila</string>
   <string name="settings_compose_theme_label">Barvna shema sestavljalnika sporočil</string>
