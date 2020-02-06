@@ -282,7 +282,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         setIntent(intent);
 
         if (firstBackStackId >= 0) {
-            getFragmentManager().popBackStackImmediate(firstBackStackId,
+            getSupportFragmentManager().popBackStackImmediate(firstBackStackId,
                     FragmentManager.POP_BACK_STACK_INCLUSIVE);
             firstBackStackId = -1;
         }
