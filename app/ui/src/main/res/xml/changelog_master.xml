@@ -8,6 +8,16 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.705" versioncode="27005">
+        <change>Fixed bug that prevented contact pictures from being displayed</change>
+        <change>Display progress bar when syncing a folder</change>
+        <change>Fixed deleting messages when there's no Trash folder (IMAP)</change>
+        <change>Fixed a crash when encountering messages without a subject</change>
+        <change>Fixed bug that could lead to two message lists being displayed on top of each other</change>
+        <change>Stop trying to open external links inside the app when there's no app installed to handle the content</change>
+        <change>Updated translations</change>
+        <change>A lot of internal changes and improvements</change>
+    </release>
     <release version="5.704" versioncode="27004">
         <change>Changed background color of the app icon</change>
         <change>Added setting to mark a message as read when it is deleted (enabled by default)</change>
