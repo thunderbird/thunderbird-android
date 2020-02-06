@@ -25,12 +25,12 @@
             android:layout_height="0dip"
             android:layout_weight="1">
 
-        <FrameLayout
+        <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/message_list_container"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"/>
 
-        <FrameLayout
+        <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/message_view_container"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"/>

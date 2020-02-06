@@ -881,7 +881,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
         fragment.setTargetFragment(this, dialogId);
-        fragment.show(getFragmentManager(), getDialogTag(dialogId));
+        fragment.show(getParentFragmentManager(), getDialogTag(dialogId));
     }
 
     private String getDialogTag(int dialogId) {
