@@ -18,6 +18,8 @@ import com.fsck.k9.mailstore.AttachmentViewInfo;
 
 
 public class AttachmentView extends FrameLayout implements OnClickListener {
+    private final SizeFormatter sizeFormatter;
+
     private AttachmentViewInfo attachment;
     private AttachmentViewCallback callback;
 
@@ -27,14 +29,15 @@ public class AttachmentView extends FrameLayout implements OnClickListener {
 
     public AttachmentView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        sizeFormatter = new SizeFormatter(context.getResources());
     }
 
     public AttachmentView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
     }
 
     public AttachmentView(Context context) {
-        super(context);
+        this(context, null);
     }
 
     public AttachmentViewInfo getAttachment() {
@@ -82,7 +85,7 @@ public class AttachmentView extends FrameLayout implements OnClickListener {
         if (size == AttachmentViewInfo.UNKNOWN_SIZE) {
             attachmentSize.setText("");
         } else {
-            String text = SizeFormatter.formatSize(getContext(), size);
+            String text = sizeFormatter.formatSize(size);
             attachmentSize.setText(text);
         }
     }

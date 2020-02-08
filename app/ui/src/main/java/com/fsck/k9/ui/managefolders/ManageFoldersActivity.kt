@@ -37,6 +37,7 @@ class ManageFoldersActivity : K9Activity() {
     private val messagingController: MessagingController by inject()
     private val preferences: Preferences by inject()
     private val folderIconProvider by lazy { FolderIconProvider(theme) }
+    private val sizeFormatter: SizeFormatter by inject { parametersOf(this) }
 
     private lateinit var account: Account
     private lateinit var actionBar: ActionBar
@@ -49,8 +50,8 @@ class ManageFoldersActivity : K9Activity() {
                     val toastText = getString(
                         R.string.account_size_changed,
                         account.description,
-                        SizeFormatter.formatSize(application, oldSize),
-                        SizeFormatter.formatSize(application, newSize)
+                        sizeFormatter.formatSize(oldSize),
+                        sizeFormatter.formatSize(newSize)
                     )
                     val toast = Toast.makeText(application, toastText, Toast.LENGTH_LONG)
                     toast.show()
