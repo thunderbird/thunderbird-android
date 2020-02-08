@@ -1,28 +1,25 @@
-package com.fsck.k9.ui.helper;
+package com.fsck.k9.ui.helper
 
+import android.content.Context
+import com.fsck.k9.ui.R
 
-import android.content.Context;
-
-import com.fsck.k9.ui.R;
-
-public class SizeFormatter {
+object SizeFormatter {
     /*
      * Formats the given size as a String in bytes, kB, MB or GB with a single digit
      * of precision. Ex: 12,315,000 = 12.3 MB
      */
-    public static String formatSize(Context context, long size) {
+    @JvmStatic
+    fun formatSize(context: Context, size: Long): String {
         if (size > 1024000000) {
-            return ((float)(size / 102400000) / 10) + context.getString(R.string.abbrev_gigabytes);
+            return ((size / 102400000).toFloat() / 10).toString() + context.getString(R.string.abbrev_gigabytes)
         }
         if (size > 1024000) {
-            return ((float)(size / 102400) / 10) + context.getString(R.string.abbrev_megabytes);
+            return ((size / 102400).toFloat() / 10).toString() + context.getString(R.string.abbrev_megabytes)
         }
         if (size > 1024) {
-            return ((float)(size / 102) / 10) + context.getString(R.string.abbrev_kilobytes);
+            return ((size / 102).toFloat() / 10).toString() + context.getString(R.string.abbrev_kilobytes)
         }
-        return size + context.getString(R.string.abbrev_bytes);
+
+        return size.toString() + context.getString(R.string.abbrev_bytes)
     }
-
 }
-
-
