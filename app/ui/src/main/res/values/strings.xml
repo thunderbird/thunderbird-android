@@ -171,10 +171,10 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="load_more_messages_fmt">Load up
     to <xliff:g id="messages_to_load">%d</xliff:g> more</string>
 
-    <string name="abbrev_gigabytes">GB</string>
-    <string name="abbrev_megabytes">MB</string>
-    <string name="abbrev_kilobytes">KB</string>
-    <string name="abbrev_bytes">B</string>
+    <string name="size_format_gigabytes">%.1f GB</string>
+    <string name="size_format_megabytes">%.1f MB</string>
+    <string name="size_format_kilobytes">%.1f kB</string>
+    <string name="size_format_bytes">%d B</string>
 
     <string name="account_size_changed">Account \"<xliff:g id="account">%s</xliff:g>\" shrunk from <xliff:g id="oldSize">%s</xliff:g> to <xliff:g id="newSize">%s</xliff:g></string>
 

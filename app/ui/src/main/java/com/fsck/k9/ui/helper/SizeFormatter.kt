@@ -4,21 +4,23 @@ import android.content.res.Resources
 import com.fsck.k9.ui.R
 
 class SizeFormatter(private val resources: Resources) {
-    /*
-     * Formats the given size as a String in bytes, kB, MB or GB with a single digit
-     * of precision. Ex: 12,315,000 = 12.3 MB
-     */
     fun formatSize(size: Long): String {
-        if (size > 1024000000) {
-            return ((size / 102400000).toFloat() / 10).toString() + resources.getString(R.string.abbrev_gigabytes)
+        return when {
+            size >= 999_950_000L -> {
+                val number = (size / 1_000_000L).toFloat() / 1000f
+                resources.getString(R.string.size_format_gigabytes, number)
+            }
+            size >= 999_950L -> {
+                val number = (size / 1000L).toFloat() / 1000f
+                resources.getString(R.string.size_format_megabytes, number)
+            }
+            size >= 1000L -> {
+                val number = size.toFloat() / 1000f
+                resources.getString(R.string.size_format_kilobytes, number)
+            }
+            else -> {
+                resources.getString(R.string.size_format_bytes, size)
+            }
         }
-        if (size > 1024000) {
-            return ((size / 102400).toFloat() / 10).toString() + resources.getString(R.string.abbrev_megabytes)
-        }
-        if (size > 1024) {
-            return ((size / 102).toFloat() / 10).toString() + resources.getString(R.string.abbrev_kilobytes)
-        }
-
-        return size.toString() + resources.getString(R.string.abbrev_bytes)
     }
 }
