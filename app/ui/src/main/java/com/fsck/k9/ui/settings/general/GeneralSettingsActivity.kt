@@ -50,7 +50,6 @@ class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, S
         if (::searchPreferenceActionView.isInitialized) {
             outState.putString(KEY_SEARCH_QUERY, searchPreferenceActionView.query.toString())
             outState.putBoolean(KEY_SEARCH_ENABLED, !searchPreferenceActionView.isIconified)
-            searchPreferenceActionView.cancelSearch()
         }
         super.onSaveInstanceState(outState)
     }
