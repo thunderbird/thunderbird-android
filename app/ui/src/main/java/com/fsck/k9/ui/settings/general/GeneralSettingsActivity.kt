@@ -50,13 +50,13 @@ class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, S
         if (::searchPreferenceActionView.isInitialized) {
             outState.putString(KEY_SEARCH_QUERY, searchPreferenceActionView.query.toString())
             outState.putBoolean(KEY_SEARCH_ENABLED, !searchPreferenceActionView.isIconified)
-            searchPreferenceActionView.onBackPressed()
+            searchPreferenceActionView.cancelSearch()
         }
         super.onSaveInstanceState(outState)
     }
 
     override fun onSearchResultClicked(result: SearchPreferenceResult) {
-        searchPreferenceActionView.close()
+        searchPreferenceActionView.cancelSearch()
         searchPreferenceMenuItem.collapseActionView()
 
         if (result.resourceFile == R.xml.font_preferences) {
@@ -84,20 +84,21 @@ class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, S
             setFragmentContainerViewId(R.id.generalSettingsContainer)
             setBreadcrumbsEnabled(true)
             setFuzzySearchEnabled(true)
+            textHint = getString(R.string.search_action)
+            textNoResults = getString(R.string.preference_search_no_results)
 
-            with(index()) {
-                addFile(R.xml.general_settings)
+            index(R.xml.general_settings)
+            with(index(R.xml.font_preferences)) {
                 addBreadcrumb(R.string.general_settings_title)
                 addBreadcrumb(R.string.display_preferences)
                 addBreadcrumb(R.string.global_preferences)
                 addBreadcrumb(R.string.font_size_settings_title)
-                addFile(R.xml.font_preferences)
             }
         }
 
         searchPreferenceMenuItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionCollapse(item: MenuItem): Boolean {
-                searchPreferenceActionView.onBackPressed()
+                searchPreferenceActionView.cancelSearch()
                 return true
             }
 
@@ -127,7 +128,7 @@ class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, S
     }
 
     override fun onBackPressed() {
-        if (!searchPreferenceActionView.onBackPressed()) {
+        if (!searchPreferenceActionView.cancelSearch()) {
             super.onBackPressed()
         }
     }
