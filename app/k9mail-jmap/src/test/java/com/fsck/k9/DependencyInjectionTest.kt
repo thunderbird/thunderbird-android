@@ -5,6 +5,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferPresenter
 import com.fsck.k9.ui.folders.FolderNameFormatter
+import com.fsck.k9.ui.helper.SizeFormatter
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.Test
@@ -35,6 +36,7 @@ class DependencyInjectionTest : AutoCloseKoinTest() {
             create<OpenPgpApiManager> { parametersOf(lifecycleOwner) }
             create<AutocryptKeyTransferPresenter> { parametersOf(lifecycleOwner, autocryptTransferView) }
             create<FolderNameFormatter> { parametersOf(RuntimeEnvironment.application) }
+            create<SizeFormatter> { parametersOf(RuntimeEnvironment.application) }
         }
     }
 }
