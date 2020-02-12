@@ -7,7 +7,6 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Handler
 import android.os.Looper
-import android.os.StrictMode
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.mail.internet.BinaryTempFileBody
 import com.fsck.k9.service.BootReceiver
@@ -29,7 +28,7 @@ object Core : EarlyInit {
      */
     fun earlyInit(context: Context) {
         if (K9.DEVELOPER_MODE) {
-            StrictMode.enableDefaults()
+            enableStrictMode()
         }
 
         val packageName = context.packageName
