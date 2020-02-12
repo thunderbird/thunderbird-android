@@ -129,7 +129,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
         val message = createMessage(messageServerId, flags)
         backendFolder.saveCompleteMessage(message)
 
-        val messageServerIds = backendFolder.getAllMessagesAndEffectiveDates().keys
+        val messageServerIds = backendFolder.getMessageServerIds()
         assertTrue(messageServerId in messageServerIds)
     }
 

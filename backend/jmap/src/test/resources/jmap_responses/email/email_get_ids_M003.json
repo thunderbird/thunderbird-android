@@ -1,0 +1,23 @@
+{
+  "methodResponses": [
+    [
+      "Email/get",
+      {
+        "state": "50",
+        "list": [
+          {
+            "id": "M003",
+            "blobId": "B003",
+            "keywords": {},
+            "size": 215,
+            "receivedAt": "2020-02-11T13:00:00Z"
+          }
+        ],
+        "notFound": [],
+        "accountId": "test@example.com"
+      },
+      "0"
+    ]
+  ],
+  "sessionState": "0"
+}

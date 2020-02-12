@@ -9,6 +9,7 @@ interface BackendFolder {
     val name: String
     val visibleLimit: Int
 
+    fun getMessageServerIds(): Set<String>
     fun getAllMessagesAndEffectiveDates(): Map<String, Long?>
     fun destroyMessages(messageServerIds: List<String>)
     fun getLastUid(): Long?

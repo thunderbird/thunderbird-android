@@ -1,6 +1,5 @@
 package com.fsck.k9.backend.jmap
 
-import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.mail.FolderType
@@ -10,7 +9,7 @@ class InMemoryBackendStorage : BackendStorage {
     val extraStrings: MutableMap<String, String> = mutableMapOf()
     val extraNumbers: MutableMap<String, Long> = mutableMapOf()
 
-    override fun getFolder(folderServerId: String): BackendFolder {
+    override fun getFolder(folderServerId: String): InMemoryBackendFolder {
         return folders[folderServerId] ?: error("Folder $folderServerId not found")
     }
 

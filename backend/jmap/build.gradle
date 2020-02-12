@@ -11,11 +11,11 @@ dependencies {
 
     api project(":backend:api")
 
-    implementation 'rs.ltt.jmap:jmap-client:0.2.2'
+    api "com.squareup.okhttp3:okhttp:${versions.okhttp}"
+    implementation "rs.ltt.jmap:jmap-client:0.2.4"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
 
     testImplementation project(":mail:testing")
-    testImplementation "junit:junit:${versions.junit}"
     testImplementation "org.mockito:mockito-core:${versions.mockito}"
     testImplementation("com.squareup.okhttp3:mockwebserver:4.2.1")
 }

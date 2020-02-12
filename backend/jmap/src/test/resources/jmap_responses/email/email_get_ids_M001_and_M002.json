@@ -1,0 +1,32 @@
+{
+  "methodResponses": [
+    [
+      "Email/get",
+      {
+        "state": "50",
+        "list": [
+          {
+            "id": "M001",
+            "blobId": "B001",
+            "keywords": {},
+            "size": 280,
+            "receivedAt": "2020-02-11T11:00:00Z"
+          },
+          {
+            "id": "M002",
+            "blobId": "B002",
+            "keywords": {
+              "$seen": true
+            },
+            "size": 365,
+            "receivedAt": "2020-01-11T12:00:00Z"
+          }
+        ],
+        "notFound": [],
+        "accountId": "test@example.com"
+      },
+      "0"
+    ]
+  ],
+  "sessionState": "0"
+}

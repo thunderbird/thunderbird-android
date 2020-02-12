@@ -1,0 +1,16 @@
+From: Bob <bob@domain.example>
+To: alice@domain.example
+Message-ID: <message002@domain.example>
+In-Reply-To: <message001@domain.example>
+References: <message001@domain.example>
+Date: Mon, 10 Feb 2020 10:20:30 +0100
+Subject: Re: Hello there
+Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
+
+Hi Alice,
+
+I've received your message.
+
+Best,
+Bob

@@ -11,11 +11,15 @@ import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mailstore.K9BackendStorageFactory
 
-class JmapBackendFactory(private val backendStorageFactory: K9BackendStorageFactory) : BackendFactory {
+class JmapBackendFactory(
+    private val backendStorageFactory: K9BackendStorageFactory,
+    private val okHttpClientProvider: OkHttpClientProvider
+) : BackendFactory {
     override val transportUriPrefix = "jmap"
 
     override fun createBackend(account: Account): Backend {
         val backendStorage = backendStorageFactory.createBackendStorage(account)
+        val okHttpClient = okHttpClientProvider.getOkHttpClient()
 
         val serverSettings = decodeStoreUri(account.storeUri)
         val jmapConfig = JmapConfig(
@@ -25,7 +29,7 @@ class JmapBackendFactory(private val backendStorageFactory: K9BackendStorageFact
             accountId = serverSettings.extra["accountId"]!!
         )
 
-        return JmapBackend(backendStorage, jmapConfig)
+        return JmapBackend(backendStorage, okHttpClient, jmapConfig)
     }
 
     override fun decodeStoreUri(storeUri: String): ServerSettings {
