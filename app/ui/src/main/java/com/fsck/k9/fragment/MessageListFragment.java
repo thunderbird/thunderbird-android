@@ -67,6 +67,7 @@ import com.fsck.k9.ui.folders.FolderNameFormatterFactory;
 import com.fsck.k9.ui.messagelist.MessageListAppearance;
 import com.fsck.k9.ui.messagelist.MessageListConfig;
 import com.fsck.k9.ui.messagelist.MessageListFragmentDiContainer;
+import com.fsck.k9.ui.messagelist.MessageListInfo;
 import com.fsck.k9.ui.messagelist.MessageListItem;
 import com.fsck.k9.ui.messagelist.MessageListViewModel;
 
@@ -191,7 +192,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         if (currentFolder != null && currentFolder.serverId.equals(folder)) {
             currentFolder.loading = loading;
         }
-        updateMoreMessagesOfCurrentFolder();
         updateFooterView();
     }
 
@@ -2375,7 +2375,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         return fragmentListener.startSearch(account, folderServerId);
    }
 
-    public void setMessageList(List<MessageListItem> messageListItems) {
+    public void setMessageList(MessageListInfo messageListInfo) {
+        List<MessageListItem> messageListItems = messageListInfo.getMessageListItems();
         if (isThreadDisplay && messageListItems.isEmpty()) {
             handler.goBack();
             return;
@@ -2417,16 +2418,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
         fragmentListener.updateMenu();
-    }
 
-    private void updateMoreMessagesOfCurrentFolder() {
         if (folderServerId != null) {
-            try {
-                LocalFolder folder = MlfUtils.getOpenFolder(folderServerId, account);
-                currentFolder.setMoreMessagesFromFolder(folder);
-            } catch (MessagingException e) {
-                throw new RuntimeException(e);
-            }
+            currentFolder.moreMessages = messageListInfo.getHasMoreMessages();
+            updateFooterView();
         }
     }
 

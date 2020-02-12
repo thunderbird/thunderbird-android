@@ -19,7 +19,7 @@ class MessageListLiveData(
     private val contentResolver: ContentResolver,
     private val coroutineScope: CoroutineScope,
     val config: MessageListConfig
-) : LiveData<List<MessageListItem>>() {
+) : LiveData<MessageListInfo>() {
 
     private val contentObserver = object : ContentObserver(Handler()) {
         override fun onChange(selfChange: Boolean) {
