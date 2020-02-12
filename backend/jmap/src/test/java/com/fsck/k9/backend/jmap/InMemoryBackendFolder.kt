@@ -128,8 +128,12 @@ class InMemoryBackendFolder(override var name: String, var type: FolderType) : B
 
     override fun getFolderExtraString(name: String): String? = extraStrings[name]
 
-    override fun setFolderExtraString(name: String, value: String) {
-        extraStrings[name] = value
+    override fun setFolderExtraString(name: String, value: String?) {
+        if (value != null) {
+            extraStrings[name] = value
+        } else {
+            extraStrings.remove(name)
+        }
     }
 
     override fun getFolderExtraNumber(name: String): Long? = extraNumbers[name]

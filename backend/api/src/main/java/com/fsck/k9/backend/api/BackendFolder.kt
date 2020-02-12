@@ -28,7 +28,7 @@ interface BackendFolder {
     fun setLatestOldMessageSeenTime(date: Date)
     fun getOldestMessageDate(): Date?
     fun getFolderExtraString(name: String): String?
-    fun setFolderExtraString(name: String, value: String)
+    fun setFolderExtraString(name: String, value: String?)
     fun getFolderExtraNumber(name: String): Long?
     fun setFolderExtraNumber(name: String, value: Long)
 
