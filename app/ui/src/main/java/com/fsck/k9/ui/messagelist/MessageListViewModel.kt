@@ -7,9 +7,9 @@ import androidx.lifecycle.viewModelScope
 
 class MessageListViewModel(private val messageListLiveDataFactory: MessageListLiveDataFactory) : ViewModel() {
     private var currentMessageListLiveData: MessageListLiveData? = null
-    private val messageListLiveData = MediatorLiveData<List<MessageListItem>>()
+    private val messageListLiveData = MediatorLiveData<MessageListInfo>()
 
-    fun getMessageListLiveData(): LiveData<List<MessageListItem>> {
+    fun getMessageListLiveData(): LiveData<MessageListInfo> {
         return messageListLiveData
     }
 

@@ -23,7 +23,7 @@ public class FolderInfoHolder {
         this.serverId = localFolder.getServerId();
         this.lastChecked = localFolder.getLastUpdate();
         this.displayName = getDisplayName(account, localFolder);
-        setMoreMessagesFromFolder(localFolder);
+        moreMessages = localFolder.hasMoreMessages();
     }
 
     private String getDisplayName(Account account, LocalFolder localFolder) {
@@ -35,10 +35,6 @@ public class FolderInfoHolder {
                 getFolderType(account, serverId));
 
         return folderNameFormatter.displayName(folder);
-    }
-
-    public void setMoreMessagesFromFolder(LocalFolder folder) {
-        moreMessages = folder.hasMoreMessages();
     }
 
     public static FolderType getFolderType(Account account, String serverId) {

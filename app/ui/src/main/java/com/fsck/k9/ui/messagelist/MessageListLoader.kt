@@ -18,6 +18,7 @@ import com.fsck.k9.fragment.MessageListFragmentComparators.SenderComparator
 import com.fsck.k9.fragment.MessageListFragmentComparators.SubjectComparator
 import com.fsck.k9.fragment.MessageListFragmentComparators.UnreadComparator
 import com.fsck.k9.helper.MergeCursorWithUniqueId
+import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.provider.EmailProvider
 import com.fsck.k9.provider.EmailProvider.SpecialColumns
 import com.fsck.k9.search.LocalSearch
@@ -30,11 +31,13 @@ import java.util.Comparator
 class MessageListLoader(
     private val preferences: Preferences,
     private val contentResolver: ContentResolver,
+    private val localStoreProvider: LocalStoreProvider,
     private val messageListExtractor: MessageListExtractor
 ) {
 
-    fun getMessageList(config: MessageListConfig): List<MessageListItem> {
-        val cursors = config.search.getAccounts(preferences)
+    fun getMessageList(config: MessageListConfig): MessageListInfo {
+        val accounts = config.search.getAccounts(preferences)
+        val cursors = accounts
             .mapNotNull { loadMessageListForAccount(it, config) }
             .toTypedArray()
 
@@ -48,13 +51,16 @@ class MessageListLoader(
             uniqueIdColumn = MLFProjectionInfo.ID_COLUMN
         }
 
-        return cursor.use {
+        val messageListItems = cursor.use {
             messageListExtractor.extractMessageList(
                 cursor,
                 uniqueIdColumn,
                 threadCountIncluded = config.showingThreadedList
             )
         }
+        val hasMoreMessages = loadHasMoreMessages(accounts, config.search.folderServerIds)
+
+        return MessageListInfo(messageListItems, hasMoreMessages)
     }
 
     private fun loadMessageListForAccount(account: Account, config: MessageListConfig): Cursor? {
@@ -166,6 +172,19 @@ class MessageListLoader(
         return ComparatorChain(chain)
     }
 
+    private fun loadHasMoreMessages(accounts: List<Account>, folderServerIds: List<String>): Boolean {
+        return if (accounts.size == 1 && folderServerIds.size == 1) {
+            val account = accounts[0]
+            val folderServerId = folderServerIds[0]
+            val localStore = localStoreProvider.getInstance(account)
+            val localFolder = localStore.getFolder(folderServerId)
+            localFolder.open()
+            localFolder.hasMoreMessages()
+        } else {
+            false
+        }
+    }
+
     companion object {
         private val SORT_COMPARATORS = mapOf(
             SortType.SORT_ATTACHMENT to AttachmentComparator(),
@@ -178,3 +197,5 @@ class MessageListLoader(
         )
     }
 }
+
+data class MessageListInfo(val messageListItems: List<MessageListItem>, val hasMoreMessages: Boolean)
