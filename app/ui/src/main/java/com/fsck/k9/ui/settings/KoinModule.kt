@@ -18,7 +18,7 @@ val settingsUiModule = module {
     single { AccountsLiveData(get()) }
     viewModel { SettingsViewModel(get()) }
 
-    single { GeneralSettingsDataStore(get(), get(), get(named("SaveSettingsExecutorService")), get()) }
+    factory { GeneralSettingsDataStore(get(), get(), get(named("SaveSettingsExecutorService")), get()) }
     single(named("SaveSettingsExecutorService")) {
         Executors.newSingleThreadExecutor(NamedThreadFactory("SaveSettings"))
     }
