@@ -1,0 +1,20 @@
+{
+  "methodResponses": [
+    [
+      "Email/get",
+      {
+        "state": "50",
+        "list": [
+          {
+            "id": "M002",
+            "keywords": {}
+          }
+        ],
+        "notFound": [],
+        "accountId": "test@example.com"
+      },
+      "0"
+    ]
+  ],
+  "sessionState": "0"
+}

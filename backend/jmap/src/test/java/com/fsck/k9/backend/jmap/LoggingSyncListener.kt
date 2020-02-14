@@ -1,11 +1,23 @@
 package com.fsck.k9.backend.jmap
 
 import com.fsck.k9.backend.api.SyncListener
+import java.lang.AssertionError
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
+import org.junit.Assert.fail
 
 class LoggingSyncListener : SyncListener {
     private val events = mutableListOf<SyncListenerEvent>()
+
+    fun assertSyncSuccess() {
+        events.filterIsInstance<SyncListenerEvent.SyncFailed>().firstOrNull()?.let { syncFailed ->
+            throw AssertionError("Expected sync success", syncFailed.exception)
+        }
+
+        if (events.none { it is SyncListenerEvent.SyncFinished }) {
+            fail("Expected SyncFinished, but only got: $events")
+        }
+    }
 
     fun assertSyncEvents(vararg events: SyncListenerEvent) {
         for (event in events) {
