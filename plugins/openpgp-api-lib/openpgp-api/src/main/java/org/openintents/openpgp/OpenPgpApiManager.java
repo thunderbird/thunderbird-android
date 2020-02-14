@@ -76,6 +76,12 @@ public class OpenPgpApiManager implements LifecycleObserver {
             return;
         }
 
+        if (openPgpServiceConnection != null) {
+            // An OpenPgpServiceConnection has already been created, but hasn't been bound yet.
+            // We'll just wait for OnBound.onBound() to be called.
+            return;
+        }
+
         setOpenPgpProviderState(OpenPgpProviderState.UNINITIALIZED);
         openPgpServiceConnection = new OpenPgpServiceConnection(context, openPgpProvider, new OnBound() {
             @Override
