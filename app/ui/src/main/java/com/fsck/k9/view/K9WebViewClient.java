@@ -10,6 +10,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.Browser;
 import android.text.TextUtils;
 import android.webkit.WebResourceRequest;
@@ -19,6 +20,8 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+
 import com.fsck.k9.mailstore.AttachmentResolver;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.view.MessageWebView.OnPageFinishedListener;
@@ -49,8 +52,17 @@ public class K9WebViewClient extends WebViewClient {
     }
 
     @Override
+    public boolean shouldOverrideUrlLoading(WebView webView, String url) {
+        return shouldOverrideUrlLoading(webView, Uri.parse(url));
+    }
+
+    @Override
+    @RequiresApi(Build.VERSION_CODES.N)
     public boolean shouldOverrideUrlLoading(WebView webView, WebResourceRequest request) {
-        Uri uri = request.getUrl();
+        return shouldOverrideUrlLoading(webView, request.getUrl());
+    }
+
+    private boolean shouldOverrideUrlLoading(WebView webView, Uri uri) {
         if (CID_SCHEME.equals(uri.getScheme())) {
             return false;
         }
