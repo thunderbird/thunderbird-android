@@ -11,6 +11,7 @@ import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import rs.ltt.jmap.client.JmapClient
+import rs.ltt.jmap.client.api.MethodErrorResponseException
 import rs.ltt.jmap.client.api.UnauthorizedException
 import rs.ltt.jmap.client.http.HttpAuthentication
 import rs.ltt.jmap.client.session.Session
@@ -19,8 +20,10 @@ import rs.ltt.jmap.common.entity.capability.CoreCapability
 import rs.ltt.jmap.common.entity.filter.EmailFilterCondition
 import rs.ltt.jmap.common.entity.query.EmailQuery
 import rs.ltt.jmap.common.method.call.email.GetEmailMethodCall
+import rs.ltt.jmap.common.method.call.email.QueryChangesEmailMethodCall
 import rs.ltt.jmap.common.method.call.email.QueryEmailMethodCall
 import rs.ltt.jmap.common.method.response.email.GetEmailMethodResponse
+import rs.ltt.jmap.common.method.response.email.QueryChangesEmailMethodResponse
 import rs.ltt.jmap.common.method.response.email.QueryEmailMethodResponse
 import timber.log.Timber
 
@@ -39,8 +42,12 @@ class CommandSync(
 
             val limit = if (backendFolder.visibleLimit > 0) backendFolder.visibleLimit.toLong() else null
 
-            // FIXME: Only do full sync when we can't do a delta sync
-            fullSync(backendFolder, folderServerId, limit, listener)
+            val queryState = backendFolder.getFolderExtraString(EXTRA_QUERY_STATE)
+            if (queryState == null) {
+                fullSync(backendFolder, folderServerId, limit, listener)
+            } else {
+                deltaSync(backendFolder, folderServerId, limit, queryState, listener)
+            }
 
             listener.syncFinished(folderServerId)
         } catch (e: UnauthorizedException) {
@@ -63,17 +70,82 @@ class CommandSync(
         } else {
             Timber.d("Fetching all messages in %s (%s)", backendFolder.name, folderServerId)
         }
-        val remoteServerIds = fetchMessageServerIds(folderServerId, limit)
 
-        val destroyServerIds = cachedServerIds - remoteServerIds
-        if (destroyServerIds.isNotEmpty()) {
-            Timber.d("Removing messages no longer on server: %s", destroyServerIds)
-            backendFolder.destroyMessages(destroyServerIds.toList())
+        val queryEmailMethod = QueryEmailMethodCall(accountId, createEmailQuery(folderServerId), limit)
+        val queryEmailCall = jmapClient.call(queryEmailMethod)
+        val queryEmailResponse = queryEmailCall.getMainResponseBlocking<QueryEmailMethodResponse>()
+        val queryState = if (queryEmailResponse.isCanCalculateChanges) queryEmailResponse.queryState else null
+        val remoteServerIds = queryEmailResponse.ids.toSet()
+
+        val destroyServerIds = (cachedServerIds - remoteServerIds).toList()
+        val newServerIds = remoteServerIds - cachedServerIds
+
+        handleFolderUpdates(backendFolder, folderServerId, destroyServerIds, newServerIds, queryState, listener)
+
+        // TODO: Refresh flags of messages we've already downloaded before
+    }
+
+    private fun createEmailQuery(folderServerId: String): EmailQuery? {
+        val filter = EmailFilterCondition.builder()
+            .inMailbox(folderServerId)
+            .build()
+
+        // FIXME: Add sort parameter
+        return EmailQuery.of(filter)
+    }
+
+    private fun deltaSync(
+        backendFolder: BackendFolder,
+        folderServerId: String,
+        limit: Long?,
+        queryState: String,
+        listener: SyncListener
+    ) {
+        Timber.d("Updating messages in %s (%s)", backendFolder.name, folderServerId)
+
+        val emailQuery = createEmailQuery(folderServerId)
+        val queryChangesEmailMethod = QueryChangesEmailMethodCall(accountId, queryState, emailQuery)
+        val queryChangesEmailCall = jmapClient.call(queryChangesEmailMethod)
+
+        val queryChangesEmailResponse = try {
+            queryChangesEmailCall.getMainResponseBlocking<QueryChangesEmailMethodResponse>()
+        } catch (e: MethodErrorResponseException) {
+            if (e.methodErrorResponse.type == ERROR_CANNOT_CALCULATE_CHANGES) {
+                Timber.d("Server responded with '$ERROR_CANNOT_CALCULATE_CHANGES'; switching to full sync")
+
+                backendFolder.saveQueryState(null)
+                fullSync(backendFolder, folderServerId, limit, listener)
+                return
+            }
+
+            throw e
         }
 
-        val newServerIds = remoteServerIds - cachedServerIds
+        val destroyServerIds = queryChangesEmailResponse.removed.toList()
+        val newServerIds = queryChangesEmailResponse.added.map { it.item }.toSet()
+        val newQueryState = queryChangesEmailResponse.newQueryState
+
+        handleFolderUpdates(backendFolder, folderServerId, destroyServerIds, newServerIds, newQueryState, listener)
+
+        // TODO: Refresh flags of messages we've already downloaded before
+    }
+
+    private fun handleFolderUpdates(
+        backendFolder: BackendFolder,
+        folderServerId: String,
+        destroyServerIds: List<String>,
+        newServerIds: Set<String>,
+        newQueryState: String?,
+        listener: SyncListener
+    ) {
+        if (destroyServerIds.isNotEmpty()) {
+            Timber.d("Removing messages no longer on server: %s", destroyServerIds)
+            backendFolder.destroyMessages(destroyServerIds)
+        }
+
         if (newServerIds.isEmpty()) {
             Timber.d("No new messages on server")
+            backendFolder.saveQueryState(newQueryState)
             return
         }
 
@@ -101,21 +173,7 @@ class CommandSync(
             listener.syncProgress(folderServerId, index + 1, total)
         }
 
-        // TODO: Refresh flags of messages we've already downloaded before
-    }
-
-    private fun fetchMessageServerIds(folderServerId: String, limit: Long?): Set<String> {
-        val filter = EmailFilterCondition.builder()
-            .inMailbox(folderServerId)
-            .build()
-
-        // FIXME: Add sort parameter
-        val queryEmailMethod = QueryEmailMethodCall(accountId, EmailQuery.of(filter), limit)
-        val queryEmailCall = jmapClient.call(queryEmailMethod)
-
-        val queryEmailResponse = queryEmailCall.getMainResponseBlocking<QueryEmailMethodResponse>()
-
-        return queryEmailResponse.ids.toSet()
+        backendFolder.saveQueryState(newQueryState)
     }
 
     private fun fetchMessageInfo(session: Session, maxObjectsInGet: Int, emailIds: Set<String>): List<MessageInfo> {
@@ -193,6 +251,15 @@ class CommandSync(
     private fun Session.maxObjectsInGet(): Int {
         val coreCapability = getCapability(CoreCapability::class.java)
         return minOf(Int.MAX_VALUE.toLong(), coreCapability.maxObjectsInGet).toInt()
+    }
+
+    private fun BackendFolder.saveQueryState(queryState: String?) {
+        setFolderExtraString(EXTRA_QUERY_STATE, queryState)
+    }
+
+    companion object {
+        private const val EXTRA_QUERY_STATE = "jmapQueryState"
+        private const val ERROR_CANNOT_CALCULATE_CHANGES = "cannotCalculateChanges"
     }
 }
 

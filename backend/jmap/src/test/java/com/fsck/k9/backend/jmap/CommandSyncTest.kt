@@ -58,6 +58,7 @@ class CommandSyncTest {
             "M001" to "/jmap_responses/blob/email/email_1.eml",
             "M002" to "/jmap_responses/blob/email/email_2.eml"
         )
+        backendFolder.assertQueryState("50:0")
         syncListener.assertSyncEvents(
             SyncListenerEvent.SyncStarted(FOLDER_SERVER_ID),
             SyncListenerEvent.SyncProgress(FOLDER_SERVER_ID, completed = 1, total = 2),
@@ -133,6 +134,72 @@ class CommandSyncTest {
         )
     }
 
+    @Test
+    fun deltaSyncWithoutChanges() {
+        val backendFolder = backendStorage.getFolder(FOLDER_SERVER_ID)
+        backendFolder.createMessages(
+            "M001" to "/jmap_responses/blob/email/email_1.eml",
+            "M002" to "/jmap_responses/blob/email/email_2.eml"
+        )
+        backendFolder.setQueryState("50:0")
+        val command = createCommandSync(
+            responseBodyFromResource("/jmap_responses/session/valid_session.json"),
+            responseBodyFromResource("/jmap_responses/email/email_query_changes_empty_result.json")
+        )
+
+        command.sync(FOLDER_SERVER_ID, syncListener)
+
+        assertEquals(setOf("M001", "M002"), backendFolder.getMessageServerIds())
+        backendFolder.assertQueryState("50:0")
+        syncListener.assertSyncEvents(
+            SyncListenerEvent.SyncStarted(FOLDER_SERVER_ID),
+            SyncListenerEvent.SyncFinished(FOLDER_SERVER_ID)
+        )
+    }
+
+    @Test
+    fun deltaSyncWithLocalMessagesAndDifferentMessagesInRemoteMailbox() {
+        val backendFolder = backendStorage.getFolder(FOLDER_SERVER_ID)
+        backendFolder.createMessages(
+            "M001" to "/jmap_responses/blob/email/email_1.eml",
+            "M002" to "/jmap_responses/blob/email/email_2.eml"
+        )
+        backendFolder.setQueryState("50:0")
+        val command = createCommandSync(
+            responseBodyFromResource("/jmap_responses/session/valid_session.json"),
+            responseBodyFromResource("/jmap_responses/email/email_query_changes_M001_deleted_M003_added.json"),
+            responseBodyFromResource("/jmap_responses/email/email_get_ids_M003.json"),
+            responseBodyFromResource("/jmap_responses/blob/email/email_3.eml")
+        )
+
+        command.sync(FOLDER_SERVER_ID, syncListener)
+
+        assertEquals(setOf("M002", "M003"), backendFolder.getMessageServerIds())
+        backendFolder.assertQueryState("51:0")
+    }
+
+    @Test
+    fun deltaSyncCannotCalculateChanges() {
+        val backendFolder = backendStorage.getFolder(FOLDER_SERVER_ID)
+        backendFolder.createMessages(
+            "M001" to "/jmap_responses/blob/email/email_1.eml",
+            "M002" to "/jmap_responses/blob/email/email_2.eml"
+        )
+        backendFolder.setQueryState("10:0")
+        val command = createCommandSync(
+            responseBodyFromResource("/jmap_responses/session/valid_session.json"),
+            responseBodyFromResource("/jmap_responses/email/email_query_changes_cannot_calculate_changes_error.json"),
+            responseBodyFromResource("/jmap_responses/email/email_query_M002_and_M003.json"),
+            responseBodyFromResource("/jmap_responses/email/email_get_ids_M003.json"),
+            responseBodyFromResource("/jmap_responses/blob/email/email_3.eml")
+        )
+
+        command.sync(FOLDER_SERVER_ID, syncListener)
+
+        assertEquals(setOf("M002", "M003"), backendFolder.getMessageServerIds())
+        backendFolder.assertQueryState("50:0")
+    }
+
     private fun createCommandSync(vararg mockResponses: MockResponse): CommandSync {
         val server = createMockWebServer(*mockResponses)
         return createCommandSync(server.url("/jmap/"))
@@ -153,6 +220,14 @@ class CommandSyncTest {
         val requestUrl = request.requestUrl ?: error("No request URL")
         val requestUrlPath = requestUrl.encodedPath + "?" + requestUrl.encodedQuery
         assertEquals(expected, requestUrlPath)
+    }
+
+    private fun InMemoryBackendFolder.assertQueryState(expected: String) {
+        assertEquals(expected, getFolderExtraString("jmapQueryState"))
+    }
+
+    private fun InMemoryBackendFolder.setQueryState(queryState: String) {
+        setFolderExtraString("jmapQueryState", queryState)
     }
 
     companion object {

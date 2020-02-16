@@ -270,11 +270,15 @@ class K9BackendFolder(
         }
     }
 
-    override fun setFolderExtraString(name: String, value: String) {
+    override fun setFolderExtraString(name: String, value: String?) {
         database.execute(false) { db ->
             val contentValues = ContentValues().apply {
                 put("name", name)
-                put("value_text", value)
+                if (value != null) {
+                    put("value_text", value)
+                } else {
+                    putNull("value_text")
+                }
                 put("folder_id", databaseId)
             }
             db.insertWithOnConflict("folder_extra_values", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE)

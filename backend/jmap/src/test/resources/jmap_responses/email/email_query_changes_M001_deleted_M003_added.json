@@ -1,0 +1,21 @@
+{
+  "methodResponses": [
+    [
+      "Email/queryChanges",
+      {
+        "accountId": "test@example.com",
+        "oldQueryState": "50:0",
+        "newQueryState": "51:0",
+        "removed": ["M001"],
+        "added": [
+          {
+            "id": "M003",
+            "index": 1
+          }
+        ]
+      },
+      "0"
+    ]
+  ],
+  "sessionState": "0"
+}
