@@ -49,8 +49,8 @@ public class K9WebViewClient extends WebViewClient {
     }
 
     @Override
-    public boolean shouldOverrideUrlLoading(WebView webView, WebResourceRequest request) {
-        Uri uri = request.getUrl();
+    public boolean shouldOverrideUrlLoading(WebView webView, String url) {
+        Uri uri = Uri.parse(url);
         if (CID_SCHEME.equals(uri.getScheme())) {
             return false;
         }
@@ -65,6 +65,12 @@ public class K9WebViewClient extends WebViewClient {
         }
 
         return true;
+    }
+
+    @Override
+    public boolean shouldOverrideUrlLoading(WebView webView, WebResourceRequest request) {
+        Uri uri = request.getUrl();
+        return shouldOverrideUrlLoading(webView, uri.toString());
     }
 
     private Intent createBrowserViewIntent(Uri uri, Context context) {
