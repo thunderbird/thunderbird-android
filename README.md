@@ -5,7 +5,7 @@
 K-9 Mail is an open-source email client for Android.
 
 
-## Download
+### Download
 
 K-9 Mail can be downloaded from a couple of sources:
 
