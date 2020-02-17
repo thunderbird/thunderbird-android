@@ -13,6 +13,7 @@ class InMemoryBackendFolder(override var name: String, var type: FolderType) : B
     val extraStrings: MutableMap<String, String> = mutableMapOf()
     val extraNumbers: MutableMap<String, Long> = mutableMapOf()
     private val messages = mutableMapOf<String, Message>()
+    private val messageFlags = mutableMapOf<String, MutableSet<Flag>>()
 
     override var visibleLimit: Int = 25
 
@@ -39,6 +40,7 @@ class InMemoryBackendFolder(override var name: String, var type: FolderType) : B
             }
 
             messages[messageServerId] = message
+            messageFlags[messageServerId] = mutableSetOf()
         }
     }
 
@@ -61,6 +63,7 @@ class InMemoryBackendFolder(override var name: String, var type: FolderType) : B
     override fun destroyMessages(messageServerIds: List<String>) {
         for (messageServerId in messageServerIds) {
             messages.remove(messageServerId)
+            messageFlags.remove(messageServerId)
         }
     }
 
@@ -97,21 +100,28 @@ class InMemoryBackendFolder(override var name: String, var type: FolderType) : B
     }
 
     override fun getMessageFlags(messageServerId: String): Set<Flag> {
-        throw UnsupportedOperationException("not implemented")
+        return messageFlags[messageServerId] ?: error("Message $messageServerId not found")
     }
 
     override fun setMessageFlag(messageServerId: String, flag: Flag, value: Boolean) {
-        throw UnsupportedOperationException("not implemented")
+        val flags = messageFlags[messageServerId] ?: error("Message $messageServerId not found")
+        if (value) {
+            flags.add(flag)
+        } else {
+            flags.remove(flag)
+        }
     }
 
     override fun savePartialMessage(message: Message) {
         val messageServerId = checkNotNull(message.uid)
         messages[messageServerId] = message
+        messageFlags[messageServerId] = message.flags.toMutableSet()
     }
 
     override fun saveCompleteMessage(message: Message) {
         val messageServerId = checkNotNull(message.uid)
         messages[messageServerId] = message
+        messageFlags[messageServerId] = message.flags.toMutableSet()
     }
 
     override fun getLatestOldMessageSeenTime(): Date {

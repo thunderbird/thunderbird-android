@@ -2,6 +2,7 @@ package com.fsck.k9.backend.jmap
 
 import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendStorage
+import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncListener
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.Flag
@@ -35,7 +36,7 @@ class CommandSync(
     private val httpAuthentication: HttpAuthentication
 ) {
 
-    fun sync(folderServerId: String, listener: SyncListener) {
+    fun sync(folderServerId: String, syncConfig: SyncConfig, listener: SyncListener) {
         try {
             val backendFolder = backendStorage.getFolder(folderServerId)
             listener.syncStarted(folderServerId)
@@ -44,9 +45,9 @@ class CommandSync(
 
             val queryState = backendFolder.getFolderExtraString(EXTRA_QUERY_STATE)
             if (queryState == null) {
-                fullSync(backendFolder, folderServerId, limit, listener)
+                fullSync(backendFolder, folderServerId, syncConfig, limit, listener)
             } else {
-                deltaSync(backendFolder, folderServerId, limit, queryState, listener)
+                deltaSync(backendFolder, folderServerId, syncConfig, limit, queryState, listener)
             }
 
             listener.syncFinished(folderServerId)
@@ -62,7 +63,13 @@ class CommandSync(
         }
     }
 
-    private fun fullSync(backendFolder: BackendFolder, folderServerId: String, limit: Long?, listener: SyncListener) {
+    private fun fullSync(
+        backendFolder: BackendFolder,
+        folderServerId: String,
+        syncConfig: SyncConfig,
+        limit: Long?,
+        listener: SyncListener
+    ) {
         val cachedServerIds: Set<String> = backendFolder.getMessageServerIds()
 
         if (limit != null) {
@@ -82,7 +89,8 @@ class CommandSync(
 
         handleFolderUpdates(backendFolder, folderServerId, destroyServerIds, newServerIds, queryState, listener)
 
-        // TODO: Refresh flags of messages we've already downloaded before
+        val refreshServerIds = cachedServerIds.intersect(remoteServerIds)
+        refreshMessageFlags(backendFolder, syncConfig, refreshServerIds)
     }
 
     private fun createEmailQuery(folderServerId: String): EmailQuery? {
@@ -97,6 +105,7 @@ class CommandSync(
     private fun deltaSync(
         backendFolder: BackendFolder,
         folderServerId: String,
+        syncConfig: SyncConfig,
         limit: Long?,
         queryState: String,
         listener: SyncListener
@@ -114,12 +123,14 @@ class CommandSync(
                 Timber.d("Server responded with '$ERROR_CANNOT_CALCULATE_CHANGES'; switching to full sync")
 
                 backendFolder.saveQueryState(null)
-                fullSync(backendFolder, folderServerId, limit, listener)
+                fullSync(backendFolder, folderServerId, syncConfig, limit, listener)
                 return
             }
 
             throw e
         }
+
+        val cachedServerIds = backendFolder.getMessageServerIds()
 
         val destroyServerIds = queryChangesEmailResponse.removed.toList()
         val newServerIds = queryChangesEmailResponse.added.map { it.item }.toSet()
@@ -127,7 +138,8 @@ class CommandSync(
 
         handleFolderUpdates(backendFolder, folderServerId, destroyServerIds, newServerIds, newQueryState, listener)
 
-        // TODO: Refresh flags of messages we've already downloaded before
+        val refreshServerIds = cachedServerIds - destroyServerIds
+        refreshMessageFlags(backendFolder, syncConfig, refreshServerIds)
     }
 
     private fun handleFolderUpdates(
@@ -179,7 +191,7 @@ class CommandSync(
     private fun fetchMessageInfo(session: Session, maxObjectsInGet: Int, emailIds: Set<String>): List<MessageInfo> {
         return emailIds
             .chunked(maxObjectsInGet) { emailIdsChunk ->
-                fetchEmailsForMessageInfo(emailIdsChunk)
+                getEmailPropertiesFromServer(emailIdsChunk, INFO_PROPERTIES)
             }
             .flatten()
             .map { email ->
@@ -187,19 +199,8 @@ class CommandSync(
             }
     }
 
-    private fun fetchEmailsForMessageInfo(emailIdsChunk: List<String>): List<Email> {
-        val getEmailMethod = GetEmailMethodCall(
-            accountId,
-            emailIdsChunk.toTypedArray(),
-            arrayOf(
-                "id",
-                "blobId",
-                "size",
-                "receivedAt",
-                "keywords"
-            )
-        )
-
+    private fun getEmailPropertiesFromServer(emailIdsChunk: List<String>, properties: Array<String>): List<Email> {
+        val getEmailMethod = GetEmailMethodCall(accountId, emailIdsChunk.toTypedArray(), properties)
         val getEmailCall = jmapClient.call(getEmailMethod)
 
         val getEmailResponse = getEmailCall.getMainResponseBlocking<GetEmailMethodResponse>()
@@ -225,6 +226,38 @@ class CommandSync(
                 MimeMessage.parseMimeMessage(inputStream, false)
             } else {
                 null
+            }
+        }
+    }
+
+    private fun refreshMessageFlags(backendFolder: BackendFolder, syncConfig: SyncConfig, emailIds: Set<String>) {
+        if (emailIds.isEmpty()) return
+
+        Timber.v("Fetching flags for messages: %s", emailIds)
+
+        val session = jmapClient.session.get()
+        val maxObjectsInGet = session.maxObjectsInGet()
+
+        emailIds
+            .asSequence()
+            .chunked(maxObjectsInGet) { emailIdsChunk ->
+                getEmailPropertiesFromServer(emailIdsChunk, FLAG_PROPERTIES)
+            }
+            .flatten()
+            .forEach { email ->
+                syncFlagsForMessage(backendFolder, syncConfig, email)
+            }
+    }
+
+    private fun syncFlagsForMessage(backendFolder: BackendFolder, syncConfig: SyncConfig, email: Email) {
+        val messageServerId = email.id
+        val localFlags = backendFolder.getMessageFlags(messageServerId)
+        val remoteFlags = email.keywords.toFlags()
+        for (flag in syncConfig.syncFlags) {
+            val flagSetOnServer = flag in remoteFlags
+            val flagSetLocally = flag in localFlags
+            if (flagSetOnServer != flagSetLocally) {
+                backendFolder.setMessageFlag(messageServerId, flag, flagSetOnServer)
             }
         }
     }
@@ -260,6 +293,8 @@ class CommandSync(
     companion object {
         private const val EXTRA_QUERY_STATE = "jmapQueryState"
         private const val ERROR_CANNOT_CALCULATE_CHANGES = "cannotCalculateChanges"
+        private val INFO_PROPERTIES = arrayOf("id", "blobId", "size", "receivedAt", "keywords")
+        private val FLAG_PROPERTIES = arrayOf("id", "keywords")
     }
 }
 

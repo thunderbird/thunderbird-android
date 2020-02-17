@@ -43,7 +43,7 @@ class JmapBackend(
     }
 
     override fun sync(folder: String, syncConfig: SyncConfig, listener: SyncListener) {
-        commandSync.sync(folder, listener)
+        commandSync.sync(folder, syncConfig, listener)
     }
 
     override fun downloadMessage(syncConfig: SyncConfig, folderServerId: String, messageServerId: String) {
