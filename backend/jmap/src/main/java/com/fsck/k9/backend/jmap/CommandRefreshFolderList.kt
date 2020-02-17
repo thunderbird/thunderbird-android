@@ -46,7 +46,9 @@ internal class CommandRefreshFolderList(
     }
 
     private fun fetchMailboxes() {
-        val call = jmapClient.call(GetMailboxMethodCall(accountId))
+        val call = jmapClient.call(
+            GetMailboxMethodCall.builder().accountId(accountId).build()
+        )
         val response = call.getMainResponseBlocking<GetMailboxMethodResponse>()
         val foldersOnServer = response.list
 
@@ -91,19 +93,24 @@ internal class CommandRefreshFolderList(
 
     private fun fetchMailboxChanges(state: String): UpdateState {
         val multiCall = jmapClient.newMultiCall()
-        val mailboxChangesCall = multiCall.call(ChangesMailboxMethodCall(accountId, state))
+        val mailboxChangesCall = multiCall.call(
+            ChangesMailboxMethodCall.builder()
+                .accountId(accountId)
+                .sinceState(state)
+                .build()
+        )
         val createdMailboxesCall = multiCall.call(
-            GetMailboxMethodCall(
-                accountId,
-                mailboxChangesCall.createResultReference(ResultReference.Path.CREATED)
-            )
+            GetMailboxMethodCall.builder()
+                .accountId(accountId)
+                .idsReference(mailboxChangesCall.createResultReference(ResultReference.Path.CREATED))
+                .build()
         )
         val changedMailboxesCall = multiCall.call(
-            GetMailboxMethodCall(
-                accountId,
-                mailboxChangesCall.createResultReference(ResultReference.Path.UPDATED),
-                mailboxChangesCall.createResultReference(ResultReference.Path.UPDATED_PROPERTIES)
-            )
+            GetMailboxMethodCall.builder()
+                .accountId(accountId)
+                .idsReference(mailboxChangesCall.createResultReference(ResultReference.Path.UPDATED))
+                .propertiesReference(mailboxChangesCall.createResultReference(ResultReference.Path.UPDATED_PROPERTIES))
+                .build()
         )
         multiCall.execute()
 

@@ -78,8 +78,13 @@ class CommandSync(
             Timber.d("Fetching all messages in %s (%s)", backendFolder.name, folderServerId)
         }
 
-        val queryEmailMethod = QueryEmailMethodCall(accountId, createEmailQuery(folderServerId), limit)
-        val queryEmailCall = jmapClient.call(queryEmailMethod)
+        val queryEmailCall = jmapClient.call(
+            QueryEmailMethodCall.builder()
+                .accountId(accountId)
+                .query(createEmailQuery(folderServerId))
+                .limit(limit)
+                .build()
+        )
         val queryEmailResponse = queryEmailCall.getMainResponseBlocking<QueryEmailMethodResponse>()
         val queryState = if (queryEmailResponse.isCanCalculateChanges) queryEmailResponse.queryState else null
         val remoteServerIds = queryEmailResponse.ids.toSet()
@@ -113,8 +118,13 @@ class CommandSync(
         Timber.d("Updating messages in %s (%s)", backendFolder.name, folderServerId)
 
         val emailQuery = createEmailQuery(folderServerId)
-        val queryChangesEmailMethod = QueryChangesEmailMethodCall(accountId, queryState, emailQuery)
-        val queryChangesEmailCall = jmapClient.call(queryChangesEmailMethod)
+        val queryChangesEmailCall = jmapClient.call(
+            QueryChangesEmailMethodCall.builder()
+                .accountId(accountId)
+                .sinceQueryState(queryState)
+                .query(emailQuery)
+                .build()
+        )
 
         val queryChangesEmailResponse = try {
             queryChangesEmailCall.getMainResponseBlocking<QueryChangesEmailMethodResponse>()
@@ -200,8 +210,13 @@ class CommandSync(
     }
 
     private fun getEmailPropertiesFromServer(emailIdsChunk: List<String>, properties: Array<String>): List<Email> {
-        val getEmailMethod = GetEmailMethodCall(accountId, emailIdsChunk.toTypedArray(), properties)
-        val getEmailCall = jmapClient.call(getEmailMethod)
+        val getEmailCall = jmapClient.call(
+            GetEmailMethodCall.builder()
+                .accountId(accountId)
+                .ids(emailIdsChunk.toTypedArray())
+                .properties(properties)
+                .build()
+        )
 
         val getEmailResponse = getEmailCall.getMainResponseBlocking<GetEmailMethodResponse>()
         return getEmailResponse.list.toList()
