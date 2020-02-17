@@ -28,6 +28,7 @@ class JmapBackend(
     private val accountId = config.accountId
     private val commandRefreshFolderList = CommandRefreshFolderList(backendStorage, jmapClient, accountId)
     private val commandSync = CommandSync(backendStorage, jmapClient, okHttpClient, accountId, httpAuthentication)
+    private val commandSetFlag = CommandSetFlag(jmapClient, accountId)
     override val supportsSeenFlag = true
     override val supportsExpunge = false
     override val supportsMove = true
@@ -51,7 +52,7 @@ class JmapBackend(
     }
 
     override fun setFlag(folderServerId: String, messageServerIds: List<String>, flag: Flag, newState: Boolean) {
-        throw UnsupportedOperationException("not implemented")
+        commandSetFlag.setFlag(messageServerIds, flag, newState)
     }
 
     override fun markAllAsRead(folderServerId: String) {
