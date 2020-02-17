@@ -12,7 +12,7 @@ dependencies {
     api project(":backend:api")
 
     api "com.squareup.okhttp3:okhttp:${versions.okhttp}"
-    implementation "rs.ltt.jmap:jmap-client:0.2.4"
+    implementation "rs.ltt.jmap:jmap-client:0.3.0"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
 
     testImplementation project(":mail:testing")
