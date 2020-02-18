@@ -141,9 +141,15 @@ class CommandSync(
 
         val cachedServerIds = backendFolder.getMessageServerIds()
 
-        val destroyServerIds = queryChangesEmailResponse.removed.toList()
-        val newServerIds = queryChangesEmailResponse.added.map { it.item }.toSet()
+        val removedServerIds = queryChangesEmailResponse.removed.toSet()
+        val addedServerIds = queryChangesEmailResponse.added.map { it.item }.toSet()
         val newQueryState = queryChangesEmailResponse.newQueryState
+
+        // An email can appear in both the 'removed' and the 'added' properties, e.g. when its position in the list
+        // changes. But we don't want to remove a message from the database only to download it again right away.
+        val retainedServerIds = removedServerIds.intersect(addedServerIds)
+        val destroyServerIds = (removedServerIds - retainedServerIds).toList()
+        val newServerIds = addedServerIds - retainedServerIds
 
         handleFolderUpdates(backendFolder, folderServerId, destroyServerIds, newServerIds, newQueryState, listener)
 
