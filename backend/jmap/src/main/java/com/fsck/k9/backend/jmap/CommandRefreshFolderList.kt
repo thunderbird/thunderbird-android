@@ -109,7 +109,6 @@ internal class CommandRefreshFolderList(
             GetMailboxMethodCall.builder()
                 .accountId(accountId)
                 .idsReference(mailboxChangesCall.createResultReference(ResultReference.Path.UPDATED))
-                .propertiesReference(mailboxChangesCall.createResultReference(ResultReference.Path.UPDATED_PROPERTIES))
                 .build()
         )
         multiCall.execute()
