@@ -17,7 +17,6 @@ import rs.ltt.jmap.client.api.UnauthorizedException
 import rs.ltt.jmap.client.http.HttpAuthentication
 import rs.ltt.jmap.client.session.Session
 import rs.ltt.jmap.common.entity.Email
-import rs.ltt.jmap.common.entity.capability.CoreCapability
 import rs.ltt.jmap.common.entity.filter.EmailFilterCondition
 import rs.ltt.jmap.common.entity.query.EmailQuery
 import rs.ltt.jmap.common.method.call.email.GetEmailMethodCall
@@ -173,7 +172,7 @@ class CommandSync(
 
         Timber.d("New messages on server: %s", newServerIds)
         val session = jmapClient.session.get()
-        val maxObjectsInGet = session.maxObjectsInGet()
+        val maxObjectsInGet = session.maxObjectsInGet
         val messageInfoList = fetchMessageInfo(session, maxObjectsInGet, newServerIds)
 
         val total = messageInfoList.size
@@ -251,7 +250,7 @@ class CommandSync(
         Timber.v("Fetching flags for messages: %s", emailIds)
 
         val session = jmapClient.session.get()
-        val maxObjectsInGet = session.maxObjectsInGet()
+        val maxObjectsInGet = session.maxObjectsInGet
 
         emailIds
             .asSequence()
@@ -294,11 +293,6 @@ class CommandSync(
         "\$answered" -> Flag.ANSWERED
         "\$forwarded" -> Flag.FORWARDED
         else -> null
-    }
-
-    private fun Session.maxObjectsInGet(): Int {
-        val coreCapability = getCapability(CoreCapability::class.java)
-        return minOf(Int.MAX_VALUE.toLong(), coreCapability.maxObjectsInGet).toInt()
     }
 
     private fun BackendFolder.saveQueryState(queryState: String?) {
