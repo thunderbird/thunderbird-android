@@ -30,6 +30,7 @@ class JmapBackend(
     private val commandSync = CommandSync(backendStorage, jmapClient, okHttpClient, accountId, httpAuthentication)
     private val commandSetFlag = CommandSetFlag(jmapClient, accountId)
     private val commandDelete = CommandDelete(jmapClient, accountId)
+    private val commandMove = CommandMove(jmapClient, accountId)
     override val supportsSeenFlag = true
     override val supportsExpunge = false
     override val supportsMove = true
@@ -38,7 +39,7 @@ class JmapBackend(
     override val supportsTrashFolder = true
     override val supportsSearchByDate = true
     override val isPushCapable = false // FIXME
-    override val isDeleteMoveToTrash = false
+    override val isDeleteMoveToTrash = true
 
     override fun refreshFolderList() {
         commandRefreshFolderList.refreshFolderList()
@@ -76,16 +77,27 @@ class JmapBackend(
         commandDelete.deleteAllMessages(folderServerId)
     }
 
-    override fun moveMessages(sourceFolderServerId: String, targetFolderServerId: String, messageServerIds: List<String>): Map<String, String>? {
-        throw UnsupportedOperationException("not implemented")
+    override fun moveMessages(
+        sourceFolderServerId: String,
+        targetFolderServerId: String,
+        messageServerIds: List<String>
+    ): Map<String, String>? {
+        commandMove.moveMessages(targetFolderServerId, messageServerIds)
+        return messageServerIds.associateWith { it }
     }
 
     override fun moveMessagesAndMarkAsRead(sourceFolderServerId: String, targetFolderServerId: String, messageServerIds: List<String>): Map<String, String>? {
-        throw UnsupportedOperationException("not implemented")
+        commandMove.moveMessagesAndMarkAsRead(targetFolderServerId, messageServerIds)
+        return messageServerIds.associateWith { it }
     }
 
-    override fun copyMessages(sourceFolderServerId: String, targetFolderServerId: String, messageServerIds: List<String>): Map<String, String>? {
-        throw UnsupportedOperationException("not implemented")
+    override fun copyMessages(
+        sourceFolderServerId: String,
+        targetFolderServerId: String,
+        messageServerIds: List<String>
+    ): Map<String, String>? {
+        commandMove.copyMessages(targetFolderServerId, messageServerIds)
+        return messageServerIds.associateWith { it }
     }
 
     override fun search(folderServerId: String, query: String?, requiredFlags: Set<Flag>?, forbiddenFlags: Set<Flag>?): List<String> {
