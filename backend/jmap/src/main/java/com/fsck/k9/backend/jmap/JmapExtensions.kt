@@ -8,6 +8,8 @@ import rs.ltt.jmap.client.session.Session
 import rs.ltt.jmap.common.entity.capability.CoreCapability
 import rs.ltt.jmap.common.method.MethodResponse
 
+internal const val MAX_CHUNK_SIZE = 5000
+
 internal inline fun <reified T : MethodResponse> ListenableFuture<MethodResponses>.getMainResponseBlocking(): T {
     return futureGetOrThrow().getMain(T::class.java)
 }

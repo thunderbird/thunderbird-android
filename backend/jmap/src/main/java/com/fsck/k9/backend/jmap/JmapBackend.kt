@@ -56,7 +56,7 @@ class JmapBackend(
     }
 
     override fun markAllAsRead(folderServerId: String) {
-        throw UnsupportedOperationException("not implemented")
+        commandSetFlag.markAllAsRead(folderServerId)
     }
 
     override fun expunge(folderServerId: String) {
