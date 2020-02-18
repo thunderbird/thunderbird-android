@@ -29,6 +29,7 @@ class JmapBackend(
     private val commandRefreshFolderList = CommandRefreshFolderList(backendStorage, jmapClient, accountId)
     private val commandSync = CommandSync(backendStorage, jmapClient, okHttpClient, accountId, httpAuthentication)
     private val commandSetFlag = CommandSetFlag(jmapClient, accountId)
+    private val commandDelete = CommandDelete(jmapClient, accountId)
     override val supportsSeenFlag = true
     override val supportsExpunge = false
     override val supportsMove = true
@@ -68,11 +69,11 @@ class JmapBackend(
     }
 
     override fun deleteMessages(folderServerId: String, messageServerIds: List<String>) {
-        throw UnsupportedOperationException("not implemented")
+        commandDelete.deleteMessages(messageServerIds)
     }
 
     override fun deleteAllMessages(folderServerId: String) {
-        throw UnsupportedOperationException("not implemented")
+        commandDelete.deleteAllMessages(folderServerId)
     }
 
     override fun moveMessages(sourceFolderServerId: String, targetFolderServerId: String, messageServerIds: List<String>): Map<String, String>? {
