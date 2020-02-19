@@ -2126,7 +2126,7 @@ public class MessagingController {
         String trashFolderServerId = account.getTrashFolder();
         backend.deleteAllMessages(trashFolderServerId);
 
-        if (account.getExpungePolicy() == Expunge.EXPUNGE_IMMEDIATELY) {
+        if (account.getExpungePolicy() == Expunge.EXPUNGE_IMMEDIATELY && backend.getSupportsExpunge()) {
             backend.expunge(trashFolderServerId);
         }
 
