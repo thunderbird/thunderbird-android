@@ -243,7 +243,7 @@
                         android:id="@+id/date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/cc"
+                        android:layout_below="@id/bcc"
                         android:layout_alignParentRight="true"
                         android:paddingTop="8dp"
                         android:singleLine="true"
