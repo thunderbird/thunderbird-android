@@ -201,6 +201,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private boolean finishAfterDraftSaved;
     private boolean alreadyNotifiedUserOfEmptySubject = false;
     private boolean changesMadeSinceLastSave = false;
+    private int alwaysBccAddrCount;
 
     /**
      * The database ID of this message's draft. This is used when saving drafts so the message in
@@ -428,7 +429,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             if (action != Action.EDIT_DRAFT) {
                 String alwaysBccString = account.getAlwaysBcc();
                 if (!TextUtils.isEmpty(alwaysBccString)) {
-                    recipientPresenter.addBccAddresses(Address.parse(alwaysBccString));
+                    Address[] addrs = Address.parse(alwaysBccString);
+                    alwaysBccAddrCount = addrs.length;
+                    recipientPresenter.addBccAddresses(addrs);
                 }
             }
         }
@@ -753,7 +756,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             return;
         }
 
-        if (!changesMadeSinceLastSave) {
+        if (!changesMadeSinceLastSave || !draftIsNotEmpty()) {
             return;
         }
 
@@ -855,7 +858,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
 
             // test whether there is something to save
-            if (changesMadeSinceLastSave || (draftId != INVALID_DRAFT_ID)) {
+            if (changesMadeSinceLastSave && draftIsNotEmpty() || (draftId != INVALID_DRAFT_ID)) {
                 final long previousDraftId = draftId;
                 final Account previousAccount = this.account;
 
@@ -1082,7 +1085,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         return subjectView.getText().length() != 0 ||
                 !recipientPresenter.getToAddresses().isEmpty() ||
                 !recipientPresenter.getCcAddresses().isEmpty() ||
-                !recipientPresenter.getBccAddresses().isEmpty();
+                (recipientPresenter.getBccAddresses().size() - alwaysBccAddrCount) > 0;
     }
 
     @Override
