@@ -70,6 +70,8 @@
         <meta-data
             android:name="com.samsung.android.sdk.multiwindow.penwindow.enable"
             android:value="true"/>
+        <meta-data android:name="android.webkit.WebView.MetricsOptOut"
+            android:value="true" />
 
         <!-- activity-alias so old launcher shortcuts work -->
         <!-- TODO: Remove after 2020-12-31 -->
