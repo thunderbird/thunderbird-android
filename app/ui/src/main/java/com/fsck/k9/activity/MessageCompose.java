@@ -80,7 +80,6 @@ import com.fsck.k9.helper.MailTo;
 import com.fsck.k9.helper.ReplyToParser;
 import com.fsck.k9.helper.SimpleTextWatcher;
 import com.fsck.k9.helper.Utility;
-import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
@@ -422,13 +421,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     Parcelable cachedDecryptionResult = intent.getParcelableExtra(EXTRA_MESSAGE_DECRYPTION_RESULT);
                     messageLoaderHelper.asyncStartOrResumeLoadingMessage(
                             relatedMessageReference, cachedDecryptionResult);
-                }
-            }
-
-            if (action != Action.EDIT_DRAFT) {
-                String alwaysBccString = account.getAlwaysBcc();
-                if (!TextUtils.isEmpty(alwaysBccString)) {
-                    recipientPresenter.addBccAddresses(Address.parse(alwaysBccString));
                 }
             }
         }

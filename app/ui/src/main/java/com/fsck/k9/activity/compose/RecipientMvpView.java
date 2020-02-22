@@ -1,6 +1,7 @@
 package com.fsck.k9.activity.compose;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -194,6 +195,21 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
             case BCC: {
                 bccView.addRecipients(recipients);
                 break;
+            }
+        }
+    }
+
+    public void removeBccAddresses(Address[] addressesToRemove) {
+        if (addressesToRemove.length == 0) {
+            return;
+        }
+
+        List<Recipient> bccRecipients = new ArrayList<>(getBccRecipients());
+        for (Recipient recipient : bccRecipients) {
+            for (Address address : addressesToRemove) {
+                if (recipient.address.equals(address)) {
+                    bccView.removeObject(recipient);
+                }
             }
         }
     }
