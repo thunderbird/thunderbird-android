@@ -78,6 +78,7 @@ public class RecipientPresenter {
     private final AutocryptDraftStateHeaderParser draftStateHeaderParser;
     private ReplyToParser replyToParser;
     private Account account;
+    private Address[] alwaysBccAddresses;
     private Boolean hasContactPicker;
     @Nullable
     private ComposeCryptoStatus cachedCryptoStatus;
@@ -287,14 +288,19 @@ public class RecipientPresenter {
     public void addBccAddresses(Address... bccRecipients) {
         if (bccRecipients.length > 0) {
             addRecipientsFromAddresses(RecipientType.BCC, bccRecipients);
-            String bccAddress = account.getAlwaysBcc();
-
-            // If the auto-bcc is the only entry in the BCC list, don't show the Bcc fields.
-            boolean alreadyVisible = recipientMvpView.isBccVisible();
-            boolean singleBccRecipientFromAccount =
-                    bccRecipients.length == 1 && bccRecipients[0].toString().equals(bccAddress);
-            recipientMvpView.setBccVisibility(alreadyVisible || !singleBccRecipientFromAccount);
+            recipientMvpView.setBccVisibility(true);
             updateRecipientExpanderVisibility();
+        }
+    }
+
+    public void addAlwaysBcc() {
+        alwaysBccAddresses = Address.parse(account.getAlwaysBcc());
+        addRecipientsFromAddresses(RecipientType.BCC, alwaysBccAddresses);
+    }
+
+    private void removeAlwaysBcc() {
+        if (alwaysBccAddresses != null) {
+            recipientMvpView.removeBccAddresses(alwaysBccAddresses);
         }
     }
 
@@ -338,6 +344,9 @@ public class RecipientPresenter {
             recipientMvpView.setBccVisibility(true);
             updateRecipientExpanderVisibility();
         }
+
+        removeAlwaysBcc();
+        addAlwaysBcc();
 
         String openPgpProvider = account.getOpenPgpProvider();
         recipientMvpView.setCryptoProvider(openPgpProvider);
