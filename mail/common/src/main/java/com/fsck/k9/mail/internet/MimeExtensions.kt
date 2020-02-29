@@ -35,5 +35,7 @@ internal fun Char.isVChar() = toInt() in 33..126
 // RFC 5234: WSP =  SP / HTAB
 internal fun Char.isWsp() = this == SPACE || this == HTAB
 
+internal fun Char.isWspOrCrlf() = this == SPACE || this == HTAB || this == CR || this == LF
+
 // RFC 2231: attribute-char := <any (US-ASCII) CHAR except SPACE, CTLs, "*", "'", "%", or tspecials>
 internal fun Char.isAttributeChar() = isVChar() && this != '*' && this != '\'' && this != '%' && !isTSpecial()
