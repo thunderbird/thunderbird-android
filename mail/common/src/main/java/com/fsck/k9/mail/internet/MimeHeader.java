@@ -18,11 +18,11 @@ public class MimeHeader {
     public static final String HEADER_CONTENT_DISPOSITION = "Content-Disposition";
     public static final String HEADER_CONTENT_ID = "Content-ID";
 
-    private List<Field> mFields = new ArrayList<>();
-    private String mCharset = null;
+    private List<Field> fields = new ArrayList<>();
+    private String charset = null;
 
     public void clear() {
-        mFields.clear();
+        fields.clear();
     }
 
     public String getFirstHeader(String name) {
@@ -35,12 +35,12 @@ public class MimeHeader {
 
     public void addHeader(String name, String value) {
         Field field = Field.newNameValueField(name, MimeUtility.foldAndEncode(value));
-        mFields.add(field);
+        fields.add(field);
     }
 
     void addRawHeader(String name, String raw) {
         Field field = Field.newRawField(name, raw);
-        mFields.add(field);
+        fields.add(field);
     }
 
     public void setHeader(String name, String value) {
@@ -54,7 +54,7 @@ public class MimeHeader {
     @NonNull
     public Set<String> getHeaderNames() {
         Set<String> names = new LinkedHashSet<>();
-        for (Field field : mFields) {
+        for (Field field : fields) {
             names.add(field.getName());
         }
         return names;
@@ -63,7 +63,7 @@ public class MimeHeader {
     @NonNull
     public String[] getHeader(String name) {
         List<String> values = new ArrayList<>();
-        for (Field field : mFields) {
+        for (Field field : fields) {
             if (field.getName().equalsIgnoreCase(name)) {
                 values.add(field.getValue());
             }
@@ -73,17 +73,17 @@ public class MimeHeader {
 
     public void removeHeader(String name) {
         List<Field> removeFields = new ArrayList<>();
-        for (Field field : mFields) {
+        for (Field field : fields) {
             if (field.getName().equalsIgnoreCase(name)) {
                 removeFields.add(field);
             }
         }
-        mFields.removeAll(removeFields);
+        fields.removeAll(removeFields);
     }
 
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        for (Field field : mFields) {
+        for (Field field : fields) {
             if (field.hasRawData()) {
                 builder.append(field.getRaw());
             } else {
@@ -96,7 +96,7 @@ public class MimeHeader {
 
     public void writeTo(OutputStream out) throws IOException {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out), 1024);
-        for (Field field : mFields) {
+        for (Field field : fields) {
             if (field.hasRawData()) {
                 writer.write(field.getRaw());
             } else {
@@ -113,8 +113,8 @@ public class MimeHeader {
         if (hasToBeEncoded(value)) {
             Charset charset = null;
 
-            if (mCharset != null) {
-                charset = Charset.forName(mCharset);
+            if (this.charset != null) {
+                charset = Charset.forName(this.charset);
             }
             value = EncoderUtil.encodeEncodedWord(field.getValue(), charset);
         }
@@ -130,8 +130,8 @@ public class MimeHeader {
         if (hasToBeEncoded(value)) {
             Charset charset = null;
 
-            if (mCharset != null) {
-                charset = Charset.forName(mCharset);
+            if (this.charset != null) {
+                charset = Charset.forName(this.charset);
             }
             value = EncoderUtil.encodeEncodedWord(field.getValue(), charset);
         }
@@ -217,6 +217,6 @@ public class MimeHeader {
     }
 
     public void setCharset(String charset) {
-        mCharset = charset;
+        this.charset = charset;
     }
 }
