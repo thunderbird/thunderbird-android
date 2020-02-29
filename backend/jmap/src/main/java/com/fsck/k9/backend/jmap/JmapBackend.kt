@@ -31,6 +31,7 @@ class JmapBackend(
     private val commandSetFlag = CommandSetFlag(jmapClient, accountId)
     private val commandDelete = CommandDelete(jmapClient, accountId)
     private val commandMove = CommandMove(jmapClient, accountId)
+    private val commandUpload = CommandUpload(jmapClient, okHttpClient, httpAuthentication, accountId)
     override val supportsSeenFlag = true
     override val supportsExpunge = false
     override val supportsMove = true
@@ -113,11 +114,11 @@ class JmapBackend(
     }
 
     override fun findByMessageId(folderServerId: String, messageId: String): String? {
-        throw UnsupportedOperationException("not implemented")
+        return null
     }
 
     override fun uploadMessage(folderServerId: String, message: Message): String? {
-        throw UnsupportedOperationException("not implemented")
+        return commandUpload.uploadMessage(folderServerId, message)
     }
 
     override fun createPusher(receiver: PushReceiver): Pusher {
