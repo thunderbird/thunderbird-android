@@ -222,21 +222,6 @@ public class Address implements Serializable {
         }
     }
 
-    public static String toEncodedString(Address[] addresses) {
-        if (addresses == null) {
-            return null;
-        }
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < addresses.length; i++) {
-            sb.append(addresses[i].toEncodedString());
-            if (i < addresses.length - 1) {
-                sb.append(',');
-            }
-        }
-        return sb.toString();
-    }
-
-
     /**
      * Unpacks an address list previously packed with packAddressList()
      * @param addressList Packed address list.
