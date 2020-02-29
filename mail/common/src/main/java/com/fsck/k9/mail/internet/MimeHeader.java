@@ -11,7 +11,7 @@ import java.util.*;
 import androidx.annotation.NonNull;
 
 
-public class MimeHeader implements Cloneable {
+public class MimeHeader {
     public static final String SUBJECT = "Subject";
     public static final String HEADER_CONTENT_TYPE = "Content-Type";
     public static final String HEADER_CONTENT_TRANSFER_ENCODING = "Content-Transfer-Encoding";
@@ -218,16 +218,5 @@ public class MimeHeader implements Cloneable {
 
     public void setCharset(String charset) {
         mCharset = charset;
-    }
-
-    @Override
-    public MimeHeader clone() {
-        try {
-            MimeHeader header = (MimeHeader) super.clone();
-            header.mFields = new ArrayList<>(mFields);
-            return header;
-        } catch(CloneNotSupportedException e) {
-            throw new AssertionError(e);
-        }
     }
 }
