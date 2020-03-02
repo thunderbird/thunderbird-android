@@ -320,7 +320,7 @@ public class MimeMessage extends Message {
             removeHeader("Reply-to");
             mReplyTo = null;
         } else {
-            setHeader("Reply-to", Address.toEncodedString(replyTo));
+            setHeader("Reply-to", AddressHeaderBuilder.createHeaderValue(replyTo));
             mReplyTo = replyTo;
         }
     }
