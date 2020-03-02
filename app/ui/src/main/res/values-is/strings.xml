@@ -140,10 +140,10 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="status_loading_error">Villa við að hlaða inn skilaboðum</string>
   <string name="load_more_messages_fmt">Hlaða inn allt
     að <xliff:g id="messages_to_load">%d</xliff:g> til viðbótar</string>
-  <string name="abbrev_gigabytes">GB</string>
-  <string name="abbrev_megabytes">MB</string>
-  <string name="abbrev_kilobytes">KB</string>
-  <string name="abbrev_bytes">B</string>
+  <string name="size_format_gigabytes">%.1f GB</string>
+  <string name="size_format_megabytes">%.1f MB</string>
+  <string name="size_format_kilobytes">%.1f kB</string>
+  <string name="size_format_bytes">%d B</string>
   <string name="account_size_changed">Aðgangurinn \"<xliff:g id="account">%s</xliff:g>\" minnkaði úr <xliff:g id="oldSize">%s</xliff:g> í <xliff:g id="newSize">%s</xliff:g></string>
   <string name="compacting_account">Þjappa \"<xliff:g id="account">%s</xliff:g>\" aðganginum</string>
   <string name="notification_new_title">Nýr póstur</string>
@@ -422,6 +422,8 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_settings_notification_opens_unread_summary">Leitar að ólesnum skilaboðum þegar tilkynningar eru opnaðar</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Merkja sem lesið þegar er opnað</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Merkja skilaboð sem lesin þegar þau eru opnuð til lestrar</string>
+  <string name="account_settings_mark_message_as_read_on_delete_label">Merkja sem lesið þegar er eytt</string>
+  <string name="account_settings_mark_message_as_read_on_delete_summary">Merkja skilaboð sem lesin þegar þeim er eytt</string>
   <string name="account_settings_notification_open_system_notifications_label">Stillingar á tilkynningum</string>
   <string name="account_settings_notification_open_system_notifications_summary">Opna stillingar kerfisins fyrir tilkynningar</string>
   <string name="account_settings_show_pictures_label">Alltaf sýna myndir</string>
@@ -470,20 +472,20 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_settings_led_color_summary">Litur LED-merkis sem tækið á að blikka við tilkynningar fyrir þennan aðgang</string>
   <string name="account_settings_mail_display_count_label">Stærð staðværrar möppu</string>
   <string name="account_settings_autodownload_message_size_label">Ná í skilaboð upp að</string>
-  <string name="account_settings_autodownload_message_size_1">1Kb</string>
-  <string name="account_settings_autodownload_message_size_2">2Kb</string>
-  <string name="account_settings_autodownload_message_size_4">4Kb</string>
-  <string name="account_settings_autodownload_message_size_8">8Kb</string>
-  <string name="account_settings_autodownload_message_size_16">16Kb</string>
-  <string name="account_settings_autodownload_message_size_32">32Kb</string>
-  <string name="account_settings_autodownload_message_size_64">64Kb</string>
-  <string name="account_settings_autodownload_message_size_128">128Kb</string>
-  <string name="account_settings_autodownload_message_size_256">256Kb</string>
-  <string name="account_settings_autodownload_message_size_512">512Kb</string>
-  <string name="account_settings_autodownload_message_size_1024">1Mb</string>
-  <string name="account_settings_autodownload_message_size_2048">2Mb</string>
-  <string name="account_settings_autodownload_message_size_5120">5Mb</string>
-  <string name="account_settings_autodownload_message_size_10240">10Mb</string>
+  <string name="account_settings_autodownload_message_size_1">1 KiB</string>
+  <string name="account_settings_autodownload_message_size_2">2 KiB</string>
+  <string name="account_settings_autodownload_message_size_4">4 KiB</string>
+  <string name="account_settings_autodownload_message_size_8">8 KiB</string>
+  <string name="account_settings_autodownload_message_size_16">16 KiB</string>
+  <string name="account_settings_autodownload_message_size_32">32 KiB</string>
+  <string name="account_settings_autodownload_message_size_64">64 KiB</string>
+  <string name="account_settings_autodownload_message_size_128">128 KiB</string>
+  <string name="account_settings_autodownload_message_size_256">256 KiB</string>
+  <string name="account_settings_autodownload_message_size_512">512 KiB</string>
+  <string name="account_settings_autodownload_message_size_1024">1 MiB</string>
+  <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
+  <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
+  <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
   <string name="account_settings_autodownload_message_size_any">hvaða stærð sem er (engin takmörk)</string>
   <string name="account_settings_message_age_label">Samstilla skilaboð frá</string>
   <string name="account_settings_message_age_any">hvenær sem er (engin takmörk)</string>
@@ -650,6 +652,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="settings_message_theme_label">Þema í skilaboðasýn</string>
   <string name="settings_compose_theme_label">Þema við samningu</string>
   <string name="settings_language_label">Tungumál</string>
+  <string name="preference_search_no_results">Engar stillingar fundust</string>
   <string name="settings_message_theme_selection_label">Fast þema skilaboða</string>
   <string name="settings_message_theme_selection_summary_off">Velja þema til skoðunar skilaboða, með skilaboð opin</string>
   <string name="settings_message_theme_selection_summary_on">Nota fast þema til skoðunar skilaboða</string>

@@ -131,10 +131,6 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="status_loading_error">Mearachd a’ luchdadh na teachdaireachd</string>
   <string name="load_more_messages_fmt">Luchdaich suas ri
     to <xliff:g id="messages_to_load">%d</xliff:g> a bharrachd</string>
-  <string name="abbrev_gigabytes">GB</string>
-  <string name="abbrev_megabytes">MB</string>
-  <string name="abbrev_kilobytes">KB</string>
-  <string name="abbrev_bytes">B</string>
   <string name="account_size_changed">Bha an cunntas “<xliff:g id="account">%s</xliff:g>” <xliff:g id="oldSize">%s</xliff:g> is tha e <xliff:g id="newSize">%s</xliff:g> a-nis</string>
   <string name="compacting_account">A’ dùmhlachadh a’ chunntais “<xliff:g id="account">%s</xliff:g>”</string>
   <string name="notification_new_title">Post ùr</string>
@@ -441,20 +437,6 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="account_settings_led_color_summary">An dath a bhios air LED an uidheim agad dhan chunntas seo</string>
   <string name="account_settings_mail_display_count_label">Meud a’ phasgain ionadail</string>
   <string name="account_settings_autodownload_message_size_label">Faigh teachdaireachdan suas ri</string>
-  <string name="account_settings_autodownload_message_size_1">1KB</string>
-  <string name="account_settings_autodownload_message_size_2">2KB</string>
-  <string name="account_settings_autodownload_message_size_4">4KB</string>
-  <string name="account_settings_autodownload_message_size_8">8KB</string>
-  <string name="account_settings_autodownload_message_size_16">16KB</string>
-  <string name="account_settings_autodownload_message_size_32">32KB</string>
-  <string name="account_settings_autodownload_message_size_64">64KB</string>
-  <string name="account_settings_autodownload_message_size_128">128KB</string>
-  <string name="account_settings_autodownload_message_size_256">256KB</string>
-  <string name="account_settings_autodownload_message_size_512">512KB</string>
-  <string name="account_settings_autodownload_message_size_1024">1MB</string>
-  <string name="account_settings_autodownload_message_size_2048">2MB</string>
-  <string name="account_settings_autodownload_message_size_5120">5MB</string>
-  <string name="account_settings_autodownload_message_size_10240">10MB</string>
   <string name="account_settings_autodownload_message_size_any">meud sam bith (gun chrìoch)</string>
   <string name="account_settings_message_age_label">Sioncronaich teachdaireachdan</string>
   <string name="account_settings_message_age_any">o àm sam bith (gun chrìoch)</string>

@@ -92,10 +92,6 @@
   <string name="status_invalid_id_error">Mensaxe non atopada</string>
   <string name="load_more_messages_fmt">Cargar
      <xliff:g id="messages_to_load">%d</xliff:g> máis</string>
-  <string name="abbrev_gigabytes">Gb</string>
-  <string name="abbrev_megabytes">Mb</string>
-  <string name="abbrev_kilobytes">Kb</string>
-  <string name="abbrev_bytes">B</string>
   <string name="account_size_changed">Conta \"<xliff:g id="account">%s</xliff:g>\" reducida de <xliff:g id="oldSize">%s</xliff:g> a <xliff:g id="newSize">%s</xliff:g></string>
   <string name="compacting_account">A compactar a conta \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Correo novo</string>
@@ -379,20 +375,6 @@
   <string name="account_settings_led_color_summary">Selecciona a cor LED para os avisos desta conta</string>
   <string name="account_settings_mail_display_count_label">Tamaño do cartafol local</string>
   <string name="account_settings_autodownload_message_size_label">Obter mensaxes ata</string>
-  <string name="account_settings_autodownload_message_size_1">1Kb</string>
-  <string name="account_settings_autodownload_message_size_2">2Kb</string>
-  <string name="account_settings_autodownload_message_size_4">4Kb</string>
-  <string name="account_settings_autodownload_message_size_8">8Kb</string>
-  <string name="account_settings_autodownload_message_size_16">16Kb</string>
-  <string name="account_settings_autodownload_message_size_32">32Kb</string>
-  <string name="account_settings_autodownload_message_size_64">64Kb</string>
-  <string name="account_settings_autodownload_message_size_128">128Kb</string>
-  <string name="account_settings_autodownload_message_size_256">256Kb</string>
-  <string name="account_settings_autodownload_message_size_512">512Kb</string>
-  <string name="account_settings_autodownload_message_size_1024">1Mb</string>
-  <string name="account_settings_autodownload_message_size_2048">2Mb</string>
-  <string name="account_settings_autodownload_message_size_5120">5Mb</string>
-  <string name="account_settings_autodownload_message_size_10240">10Mb</string>
   <string name="account_settings_autodownload_message_size_any">calquera tamaño (sen límites)</string>
   <string name="account_settings_message_age_label">Sincronizar mensaxes desde</string>
   <string name="account_settings_message_age_any">calquera tempo (sen límites)</string>

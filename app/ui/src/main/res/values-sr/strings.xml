@@ -134,10 +134,6 @@
   <string name="status_loading_error">Грешка учитавања поруке</string>
   <string name="load_more_messages_fmt">Учитај још
     <xliff:g id="messages_to_load">%d</xliff:g> порука</string>
-  <string name="abbrev_gigabytes">GB</string>
-  <string name="abbrev_megabytes">MB</string>
-  <string name="abbrev_kilobytes">KB</string>
-  <string name="abbrev_bytes">B</string>
   <string name="account_size_changed">Налог „<xliff:g id="account">%s</xliff:g>“ смањен са <xliff:g id="oldSize">%s</xliff:g> на <xliff:g id="newSize">%s</xliff:g></string>
   <string name="compacting_account">Сажимање налога „<xliff:g id="account">%s</xliff:g>“</string>
   <string name="notification_new_title">Нова пошта</string>
@@ -445,20 +441,6 @@
   <string name="account_settings_led_color_summary">Боја трепћућег ЛЕД светла за овај налог</string>
   <string name="account_settings_mail_display_count_label">Величина локалне фасцикле</string>
   <string name="account_settings_autodownload_message_size_label">Добављај поруке до</string>
-  <string name="account_settings_autodownload_message_size_1">1Kb</string>
-  <string name="account_settings_autodownload_message_size_2">2Kb</string>
-  <string name="account_settings_autodownload_message_size_4">4Kb</string>
-  <string name="account_settings_autodownload_message_size_8">8Kb</string>
-  <string name="account_settings_autodownload_message_size_16">16Kb</string>
-  <string name="account_settings_autodownload_message_size_32">32Kb</string>
-  <string name="account_settings_autodownload_message_size_64">64Kb</string>
-  <string name="account_settings_autodownload_message_size_128">128Kb</string>
-  <string name="account_settings_autodownload_message_size_256">256Kb</string>
-  <string name="account_settings_autodownload_message_size_512">512Kb</string>
-  <string name="account_settings_autodownload_message_size_1024">1Mb</string>
-  <string name="account_settings_autodownload_message_size_2048">2Mb</string>
-  <string name="account_settings_autodownload_message_size_5120">5Mb</string>
-  <string name="account_settings_autodownload_message_size_10240">10Mb</string>
   <string name="account_settings_autodownload_message_size_any">било које величине (без ограничења)</string>
   <string name="account_settings_message_age_label">Синхронизуј поруке од</string>
   <string name="account_settings_message_age_any">било кад (без ограничења)</string>

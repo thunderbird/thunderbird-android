@@ -103,10 +103,6 @@
   <string name="status_network_error">خطأ في الإتصال</string>
   <string name="status_invalid_id_error">رسالة غير موجودة</string>
   <string name="status_loading_error">خطأ في تحميل الرسالة</string>
-  <string name="abbrev_gigabytes">جيجابايت</string>
-  <string name="abbrev_megabytes">ميجابايت</string>
-  <string name="abbrev_kilobytes">كيلوبايت</string>
-  <string name="abbrev_bytes">بايت</string>
   <string name="notification_new_title">رسالة جديدة</string>
   <plurals name="notification_new_messages_title">
     <item quantity="zero"><xliff:g id="new_message_count">%d</xliff:g> ﻻ رسائل</item>
@@ -377,20 +373,6 @@
   <string name="account_settings_color_none">مِن دون لون</string>
   <string name="account_settings_led_color_label">لون ضوء التنبيهات</string>
   <string name="account_settings_mail_display_count_label">حجم المجلد المحلي</string>
-  <string name="account_settings_autodownload_message_size_1">1 ك.ب</string>
-  <string name="account_settings_autodownload_message_size_2">2 ك.ب</string>
-  <string name="account_settings_autodownload_message_size_4">4 ك.ب</string>
-  <string name="account_settings_autodownload_message_size_8">8 ك.ب</string>
-  <string name="account_settings_autodownload_message_size_16">16 ك.ب</string>
-  <string name="account_settings_autodownload_message_size_32">32 ك.ب</string>
-  <string name="account_settings_autodownload_message_size_64">64 ك.ب</string>
-  <string name="account_settings_autodownload_message_size_128">128 ك.ب</string>
-  <string name="account_settings_autodownload_message_size_256">256 ك.ب</string>
-  <string name="account_settings_autodownload_message_size_512">512 ك.ب</string>
-  <string name="account_settings_autodownload_message_size_1024">1 م.ب</string>
-  <string name="account_settings_autodownload_message_size_2048">2 م.ب</string>
-  <string name="account_settings_autodownload_message_size_5120">5 م.ب</string>
-  <string name="account_settings_autodownload_message_size_10240">10 م.ب</string>
   <string name="account_settings_autodownload_message_size_any">أي حجم (بدون حَدْ)</string>
   <string name="account_settings_message_age_label">زَامن الرسائل مع</string>
   <string name="account_settings_message_age_any">أي وقت (بدون حَدْ)</string>

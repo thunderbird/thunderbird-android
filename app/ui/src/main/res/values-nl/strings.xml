@@ -65,7 +65,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="status_loading_account_folder">Poll <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Koppen ophalen <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Verzenden <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
-  <string name="status_processing_account">Proc <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+  <string name="status_processing_account">Verw. <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_syncing_off">Synchroniseren uitgeschakeld</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> geselecteerd</string>
@@ -135,10 +135,10 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="status_invalid_id_error">Bericht niet gevonden</string>
   <string name="status_loading_error">Bericht laden is mislukt</string>
   <string name="load_more_messages_fmt">Volgende <xliff:g id="messages_to_load">%d</xliff:g> berichten</string>
-  <string name="abbrev_gigabytes">GiB</string>
-  <string name="abbrev_megabytes">MiB</string>
-  <string name="abbrev_kilobytes">KiB</string>
-  <string name="abbrev_bytes">B</string>
+  <string name="size_format_gigabytes">%.1f GB</string>
+  <string name="size_format_megabytes">%.1f MB</string>
+  <string name="size_format_kilobytes">%.1f kB</string>
+  <string name="size_format_bytes">%d B</string>
   <string name="account_size_changed">Account \"<xliff:g id="account">%s</xliff:g>\" verkleind van <xliff:g id="oldSize">%s</xliff:g> naar <xliff:g id="newSize">%s</xliff:g></string>
   <string name="compacting_account">Account \"<xliff:g id="account">%s</xliff:g>\" comprimeren</string>
   <string name="notification_new_title">Nieuw bericht</string>
@@ -449,10 +449,10 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_settings_sync">Berichten ophalen</string>
   <string name="account_settings_folders">Mappen</string>
   <string name="account_settings_quote_prefix_label">Citaat voorvoegsel</string>
-  <string name="account_settings_crypto">End-to-end versleuteling</string>
+  <string name="account_settings_crypto">Eind-tot-eind versleuteling</string>
   <string name="account_settings_crypto_app">OpenPGP ondersteuning inschakelen</string>
   <string name="account_settings_crypto_app_select_title">OpenPGP app selecteren</string>
-  <string name="account_settings_crypto_key">End-to-end sleutel instellen</string>
+  <string name="account_settings_crypto_key">Eind-tot-eind sleutel instellen</string>
   <string name="account_settings_crypto_summary_off">Geen OpenPGP app ingesteld</string>
   <string name="account_settings_crypto_summary_on">Verbonden met %s</string>
   <string name="account_settings_crypto_summary_config">Aan het configureren...</string>
@@ -467,20 +467,20 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_settings_led_color_summary">Kies de LED kleur van de telefoon, welke moet knipperen voor deze account</string>
   <string name="account_settings_mail_display_count_label">Lokale map grootte</string>
   <string name="account_settings_autodownload_message_size_label">Automatisch berichten downloaden tot</string>
-  <string name="account_settings_autodownload_message_size_1">1KiB</string>
-  <string name="account_settings_autodownload_message_size_2">2KiB</string>
-  <string name="account_settings_autodownload_message_size_4">4KiB</string>
-  <string name="account_settings_autodownload_message_size_8">8KiB</string>
-  <string name="account_settings_autodownload_message_size_16">16KiB</string>
-  <string name="account_settings_autodownload_message_size_32">32KiB</string>
-  <string name="account_settings_autodownload_message_size_64">64KiB</string>
-  <string name="account_settings_autodownload_message_size_128">128KiB</string>
-  <string name="account_settings_autodownload_message_size_256">256KiB</string>
-  <string name="account_settings_autodownload_message_size_512">512KiB</string>
-  <string name="account_settings_autodownload_message_size_1024">1MiB</string>
-  <string name="account_settings_autodownload_message_size_2048">2MiB</string>
-  <string name="account_settings_autodownload_message_size_5120">5MiB</string>
-  <string name="account_settings_autodownload_message_size_10240">10MiB</string>
+  <string name="account_settings_autodownload_message_size_1">1 KiB</string>
+  <string name="account_settings_autodownload_message_size_2">2 KiB</string>
+  <string name="account_settings_autodownload_message_size_4">4 KiB</string>
+  <string name="account_settings_autodownload_message_size_8">8 KiB</string>
+  <string name="account_settings_autodownload_message_size_16">16 KiB</string>
+  <string name="account_settings_autodownload_message_size_32">32 KiB</string>
+  <string name="account_settings_autodownload_message_size_64">64 KiB</string>
+  <string name="account_settings_autodownload_message_size_128">128 KiB</string>
+  <string name="account_settings_autodownload_message_size_256">256 KiB</string>
+  <string name="account_settings_autodownload_message_size_512">512 KiB</string>
+  <string name="account_settings_autodownload_message_size_1024">1 MiB</string>
+  <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
+  <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
+  <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
   <string name="account_settings_autodownload_message_size_any">elke grootte (geen limiet)</string>
   <string name="account_settings_message_age_label">Sync berichten van</string>
   <string name="account_settings_message_age_any">alles (geen limiet)</string>
@@ -647,6 +647,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="settings_message_theme_label">Thema om berichten te zien</string>
   <string name="settings_compose_theme_label">Thema om berichten te schrijven</string>
   <string name="settings_language_label">Taal</string>
+  <string name="preference_search_no_results">Geen instellingen gevonden</string>
   <string name="settings_message_theme_selection_label">Vast berichten thema</string>
   <string name="settings_message_theme_selection_summary_off">Kies het thema tijdens het bekijken van het bericht</string>
   <string name="settings_message_theme_selection_summary_on">Gebruik een vast thema om het bericht te bekijken</string>
@@ -885,7 +886,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="compose_error_no_key_configured">Geen sleutel ingesteld voor dit account! Controleer je instellingen.</string>
   <string name="error_crypto_provider_incompatible">Crypto provider gebruikt incompatibele versie. Controleer je instellingen!</string>
   <string name="error_crypto_provider_connect">Kan geen verbinding maken met de crypto provider. Controleer de instellingen of klik op het crypto icoontje om nogmaals te proberen.</string>
-  <string name="error_crypto_provider_ui_required">Initialisatie van end-to-end versleuteling is mislukt, controleer de instellingen</string>
+  <string name="error_crypto_provider_ui_required">Initialisatie van eind-tot-eind versleuteling is mislukt, controleer de instellingen</string>
   <string name="error_crypto_inline_attach">PGP/MIME instelling ondersteund geen bijlagen!</string>
   <string name="enable_inline_pgp">PGP/INLINE toestaan</string>
   <string name="disable_inline_pgp">PGP/INLINE uitzetten</string>
@@ -909,34 +910,34 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="openpgp_dialog_sign_only_minus_attach">Handtekening kan worden weergegeven als  \'signature.asc\' bijlage bij sommige programma\'s</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Versleutelde berichten bevatten altijd een handtekening.</string>
   <string name="crypto_msg_title_plaintext">Platte tekst</string>
-  <string name="crypto_msg_unencrypted_sign_error">end-to-end handtekening bevat een fout</string>
+  <string name="crypto_msg_unencrypted_sign_error">eind-tot-eind handtekening bevat een fout</string>
   <string name="crypto_msg_incomplete_signed">moet bericht volledig downloaden om handtekening te verwerken</string>
-  <string name="crypto_msg_unsupported_signed">bevat niet ondersteunde end-to-end handtekening</string>
+  <string name="crypto_msg_unsupported_signed">bevat niet ondersteunde eind-tot-eind handtekening</string>
   <string name="crypto_msg_unsupported_encrypted">Bericht is versleuteld, maar in een niet ondersteund formaat.</string>
   <string name="crypto_msg_cancelled">Bericht is versleuteld, maar ontsleuteling was gestopt.</string>
-  <string name="crypto_msg_title_unencrypted_signed_e2e">End-to-end getekende platte tekst</string>
+  <string name="crypto_msg_title_unencrypted_signed_e2e">Eind-tot-eind getekende platte tekst</string>
   <string name="crypto_msg_unencrypted_sign_verified">van geverifieerde ondertekenaar</string>
   <string name="crypto_msg_title_unencrypted_signed">Platte tekst getekend</string>
-  <string name="crypto_msg_unencrypted_sign_mismatch">maar end-to-end sleutel komt niet overeen met afzender</string>
-  <string name="crypto_msg_unencrypted_sign_expired">maar end-to-end sleutel is verlopen</string>
-  <string name="crypto_msg_unencrypted_sign_revoked">maar end-to-end sleutel is ingetrokken</string>
-  <string name="crypto_msg_unencrypted_sign_insecure">maar end-to-end sleutel is niet veilig</string>
-  <string name="crypto_msg_unencrypted_sign_unknown">van een onbekende end-to-end sleutel</string>
+  <string name="crypto_msg_unencrypted_sign_mismatch">maar eind-tot-eind sleutel komt niet overeen met afzender</string>
+  <string name="crypto_msg_unencrypted_sign_expired">maar eind-tot-eind sleutel is verlopen</string>
+  <string name="crypto_msg_unencrypted_sign_revoked">maar eind-tot-eind sleutel is ingetrokken</string>
+  <string name="crypto_msg_unencrypted_sign_insecure">maar eind-tot-eind sleutel is niet veilig</string>
+  <string name="crypto_msg_unencrypted_sign_unknown">van een onbekende eind-tot-eind sleutel</string>
   <string name="crypto_msg_title_encrypted_unknown">Versleuteld</string>
   <string name="crypto_msg_encrypted_error">maar er is een ontsleutel fout opgetreden</string>
   <string name="crypto_msg_encrypted_incomplete">moet bericht volledig downloaden voor ontsleuteling</string>
   <string name="crypto_msg_encrypted_no_provider">maar er is geen crypto app geconfigureerd</string>
   <string name="crypto_msg_title_encrypted_unsigned">Versleuteld</string>
-  <string name="crypto_msg_encrypted_unsigned">maar niet end-to-end</string>
-  <string name="crypto_msg_title_encrypted_signed_e2e">End-to-end versleuteld</string>
+  <string name="crypto_msg_encrypted_unsigned">maar niet eind-tot-eind</string>
+  <string name="crypto_msg_title_encrypted_signed_e2e">Eind-tot-eind versleuteld</string>
   <string name="crypto_msg_encrypted_sign_verified">van geverifieerde afzender</string>
   <string name="crypto_msg_title_encrypted_signed">Versleuteld</string>
-  <string name="crypto_msg_encrypted_sign_unknown">van een onbekende end-to-end sleutel</string>
-  <string name="crypto_msg_encrypted_sign_mismatch">maar end-to-end sleutel komt niet overeen met afzender</string>
-  <string name="crypto_msg_encrypted_sign_expired">maar end-to-end sleutel is verlopen</string>
-  <string name="crypto_msg_encrypted_sign_revoked">maar end-to-end sleutel is ingetrokken</string>
-  <string name="crypto_msg_encrypted_sign_insecure">maar end-to-end sleutel is niet veilig</string>
-  <string name="crypto_msg_encrypted_sign_error">maar end-to-end gegevens bevatten fouten</string>
+  <string name="crypto_msg_encrypted_sign_unknown">van een onbekende eind-tot-eind sleutel</string>
+  <string name="crypto_msg_encrypted_sign_mismatch">maar eind-tot-eind sleutel komt niet overeen met afzender</string>
+  <string name="crypto_msg_encrypted_sign_expired">maar eind-tot-eind sleutel is verlopen</string>
+  <string name="crypto_msg_encrypted_sign_revoked">maar eind-tot-eind sleutel is ingetrokken</string>
+  <string name="crypto_msg_encrypted_sign_insecure">maar eind-tot-eind sleutel is niet veilig</string>
+  <string name="crypto_msg_encrypted_sign_error">maar eind-tot-eind gegevens bevatten fouten</string>
   <string name="crypto_msg_encrypted_insecure">maar versleuteling is niet veilig</string>
   <string name="crypto_info_ok">OK</string>
   <string name="crypto_info_search_key">Zoek Sleutel</string>
@@ -992,16 +993,16 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="general_settings_title">Algemene instellingen</string>
   <string name="dialog_openkeychain_info_title">Geen OpenPGP app geïnstalleerd</string>
   <string name="dialog_openkeychain_info_install">Installeren</string>
-  <string name="dialog_openkeychain_info_text">K-9 Mail vereist OpenKeychain voor end-to-end versleuteling.</string>
+  <string name="dialog_openkeychain_info_text">K-9 Mail vereist OpenKeychain voor eind-tot-eind versleuteling.</string>
   <string name="encrypted_subject">Versleuteld bericht</string>
   <string name="account_settings_crypto_encrypt_subject">Onderwerp van bericht versleutelen</string>
   <string name="account_settings_crypto_encrypt_subject_subtitle">Mogelijk niet ondersteund door alle ontvangers</string>
   <string name="toast_account_not_found">Interne fout: Ongeldig account!</string>
   <string name="toast_openpgp_provider_error">Fout bij het verbinden met %s!</string>
   <string name="ac_transfer_setting_title">Verstuur Autocrypt Setup bericht</string>
-  <string name="ac_transfer_setting_summary">Veilig delen van end-to-end instellingen met andere apparaten</string>
+  <string name="ac_transfer_setting_summary">Veilig delen van eind-tot-eind instellingen met andere apparaten</string>
   <string name="ac_transfer_title">Autocrypt Setup bericht</string>
-  <string name="ac_transfer_intro">Een Autocrypt Setup bericht deelt uw end-to-end instellingen op een beveiligde manier met andere apparaten.</string>
+  <string name="ac_transfer_intro">Een Autocrypt Setup bericht deelt uw eind-tot-eind instellingen op een beveiligde manier met andere apparaten.</string>
   <string name="ac_transfer_button_send">Verstuur Setup bericht</string>
   <string name="ac_transfer_will_be_sent">Het bericht wordt verstuurd naar uw adres:</string>
   <string name="ac_transfer_generating">Genereren Setup bericht...</string>

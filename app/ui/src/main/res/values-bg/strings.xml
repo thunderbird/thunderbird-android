@@ -139,10 +139,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="status_invalid_id_error">Съобщението не е намерено</string>
   <string name="status_loading_error">Грешка при зареждане на съобщението</string>
   <string name="load_more_messages_fmt">Зареди още <xliff:g id="messages_to_load">%d</xliff:g> </string>
-  <string name="abbrev_gigabytes">ГБ</string>
-  <string name="abbrev_megabytes">МБ</string>
-  <string name="abbrev_kilobytes">КБ</string>
-  <string name="abbrev_bytes">Б</string>
   <string name="account_size_changed">Профил \"<xliff:g id="account">%s</xliff:g>\" се смали от <xliff:g id="oldSize">%s</xliff:g> до <xliff:g id="newSize">%s</xliff:g></string>
   <string name="compacting_account">Компресира профил \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Ново Писмо</string>
@@ -469,20 +465,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_settings_led_color_summary">Цветът в който ще мига LED на вашето у-во за този профил</string>
   <string name="account_settings_mail_display_count_label">Размер на локалната папка</string>
   <string name="account_settings_autodownload_message_size_label">Получавай съобщения до</string>
-  <string name="account_settings_autodownload_message_size_1">1Кб</string>
-  <string name="account_settings_autodownload_message_size_2">2Кб</string>
-  <string name="account_settings_autodownload_message_size_4">4Кб</string>
-  <string name="account_settings_autodownload_message_size_8">8Кб</string>
-  <string name="account_settings_autodownload_message_size_16">16Кб</string>
-  <string name="account_settings_autodownload_message_size_32">32Кб</string>
-  <string name="account_settings_autodownload_message_size_64">64Кб</string>
-  <string name="account_settings_autodownload_message_size_128">128Кб</string>
-  <string name="account_settings_autodownload_message_size_256">256Кб</string>
-  <string name="account_settings_autodownload_message_size_512">512Кб</string>
-  <string name="account_settings_autodownload_message_size_1024">1Мб</string>
-  <string name="account_settings_autodownload_message_size_2048">2Мб</string>
-  <string name="account_settings_autodownload_message_size_5120">5Мб</string>
-  <string name="account_settings_autodownload_message_size_10240">10Мб</string>
   <string name="account_settings_autodownload_message_size_any">без ограничение</string>
   <string name="account_settings_message_age_label">Синхронизиране на съобщенията от</string>
   <string name="account_settings_message_age_any">по всяко време</string>
