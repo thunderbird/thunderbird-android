@@ -8,6 +8,19 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.706" versioncode="27006">
+        <change>Unified Inbox is now opened by default (if enabled)</change>
+        <change>Back button now opens default folder before exiting the app</change>
+        <change>Fixed bug where the input area for the message body wasn't growing properly</change>
+        <change>Keep read position when switching apps</change>
+        <change>Don't open external links inside the app on old Android/WebView versions</change>
+        <change>Update "auto BCC" recipients when switching accounts in message compose window</change>
+        <change>Fixed UI bug where BCC recipient and the date overlapped when viewing messages</change>
+        <change>Fixed bug that lead to display of inaccurate attachment sizes</change>
+        <change>Opt out of anonymous WebView metrics collection</change>
+        <change>Removed automatic display of "What's New" dialog because of display issues</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.705" versioncode="27005">
         <change>Fixed bug that prevented contact pictures from being displayed</change>
         <change>Display progress bar when syncing a folder</change>
