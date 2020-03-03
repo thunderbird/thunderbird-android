@@ -63,7 +63,6 @@ import com.fsck.k9.ui.onboarding.OnboardingActivity;
 import com.fsck.k9.view.ViewSwitcher;
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener;
 import com.mikepenz.materialdrawer.Drawer.OnDrawerListener;
-import de.cketti.library.changelog.ChangeLog;
 import timber.log.Timber;
 
 
@@ -262,11 +261,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         initializeFragments();
         displayViews();
         channelUtils.updateChannels();
-
-        ChangeLog cl = new ChangeLog(this);
-        if (cl.isFirstRun()) {
-            cl.getLogDialog().show();
-        }
 
         if (savedInstanceState == null) {
             checkAndRequestPermissions();
