@@ -503,11 +503,16 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 search.addAccountUuid(accountUuid);
                 search.addAllowedFolder(folderServerId);
             } else {
-                account = preferences.getDefaultAccount();
-                search = new LocalSearch();
-                search.addAccountUuid(account.getUuid());
-                String folderServerId = defaultFolderProvider.getDefaultFolder(account);
-                search.addAllowedFolder(folderServerId);
+                if (K9.isHideSpecialAccounts()) {
+                    account = preferences.getDefaultAccount();
+                    search = new LocalSearch();
+                    search.addAccountUuid(account.getUuid());
+                    String folderServerId = defaultFolderProvider.getDefaultFolder(account);
+                    search.addAllowedFolder(folderServerId);
+                } else {
+                    account = null;
+                    search = SearchAccount.createUnifiedInboxAccount().getRelatedSearch();
+                }
             }
         }
 
