@@ -631,6 +631,12 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         performSearch(search);
     }
 
+    public void openFolderImmediately(String folderName) {
+        openFolder(folderName);
+        openFolderTransaction.commit();
+        openFolderTransaction = null;
+    }
+
     public void openUnifiedInbox() {
         account = null;
         drawer.selectUnifiedInbox();
@@ -687,7 +693,17 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         } else if (displayMode == DisplayMode.MESSAGE_VIEW && messageListWasDisplayed) {
             showMessageList();
         } else {
-            super.onBackPressed();
+            if (isDrawerEnabled() && account != null) {
+                String defaultFolder = defaultFolderProvider.getDefaultFolder(account);
+                String currentFolder = singleFolderMode ? search.getFolderServerIds().get(0) : null;
+                if (!defaultFolder.equals(currentFolder)) {
+                    openFolderImmediately(defaultFolder);
+                } else {
+                    super.onBackPressed();
+                }
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 
