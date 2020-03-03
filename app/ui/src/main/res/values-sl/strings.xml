@@ -142,10 +142,6 @@ Poročila o napakah, predloge za nove funkcije in vprašanja lahko pošljete na
   <string name="status_loading_error">Napaka nalaganja sporočila</string>
   <string name="load_more_messages_fmt">Naloži 
 dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
-  <string name="abbrev_gigabytes"> GB</string>
-  <string name="abbrev_megabytes"> MB</string>
-  <string name="abbrev_kilobytes"> kB</string>
-  <string name="abbrev_bytes"> B</string>
   <string name="account_size_changed">Račun »<xliff:g id="account">%s</xliff:g>« je skrčen iz <xliff:g id="oldSize">%s</xliff:g> na <xliff:g id="newSize">%s</xliff:g>.</string>
   <string name="compacting_account">Poteka stiskanje računa »<xliff:g id="account">%s</xliff:g>«.</string>
   <string name="notification_new_title">Nova pošta</string>
@@ -474,20 +470,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="account_settings_led_color_summary">Barva, s katero naj za ta račun utripa bliskavica naprave</string>
   <string name="account_settings_mail_display_count_label">Velikost mape sporočil</string>
   <string name="account_settings_autodownload_message_size_label">V celoti prejmi sporočila do velikosti</string>
-  <string name="account_settings_autodownload_message_size_1">1 kb</string>
-  <string name="account_settings_autodownload_message_size_2">2 kb</string>
-  <string name="account_settings_autodownload_message_size_4">4 kb</string>
-  <string name="account_settings_autodownload_message_size_8">8 kb</string>
-  <string name="account_settings_autodownload_message_size_16">16 kb</string>
-  <string name="account_settings_autodownload_message_size_32">32 kb</string>
-  <string name="account_settings_autodownload_message_size_64">64 kb</string>
-  <string name="account_settings_autodownload_message_size_128">128 kb</string>
-  <string name="account_settings_autodownload_message_size_256">256 kb</string>
-  <string name="account_settings_autodownload_message_size_512">512 kb </string>
-  <string name="account_settings_autodownload_message_size_1024">1 Mb</string>
-  <string name="account_settings_autodownload_message_size_2048">2 Mb</string>
-  <string name="account_settings_autodownload_message_size_5120">5 Mb</string>
-  <string name="account_settings_autodownload_message_size_10240">10 Mb</string>
   <string name="account_settings_autodownload_message_size_any">brez omejitev</string>
   <string name="account_settings_message_age_label">Uskladi sporočila</string>
   <string name="account_settings_message_age_any">Brez omejitev</string>

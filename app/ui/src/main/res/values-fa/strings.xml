@@ -140,10 +140,6 @@
   <string name="status_loading_error">خطای بارگیری پیام</string>
   <string name="load_more_messages_fmt">    تا <xliff:g id="messages_to_load">%d</xliff:g> پیام دیگر
 بارگیری کن</string>
-  <string name="abbrev_gigabytes">گب‍</string>
-  <string name="abbrev_megabytes">مب‍</string>
-  <string name="abbrev_kilobytes">کب‍</string>
-  <string name="abbrev_bytes">ب‍</string>
   <string name="account_size_changed">حجم حساب «<xliff:g id="account">%s</xliff:g>» از <xliff:g id="oldSize">%s</xliff:g> به <xliff:g id="newSize">%s</xliff:g> کاهش پیدا کرد</string>
   <string name="compacting_account">در حال فشرده‌سازی حساب «<xliff:g id="account">%s</xliff:g>»</string>
   <string name="notification_new_title">رایانامهٔ جدید</string>
@@ -472,20 +468,6 @@
   <string name="account_settings_led_color_summary">برای این حساب کاربری چراغ LED دستگاهتان به چه رنگی چشمک بزند</string>
   <string name="account_settings_mail_display_count_label">گنجایش پوشهٔ محلی</string>
   <string name="account_settings_autodownload_message_size_label">واکشی پیام‌ها تا این حجم</string>
-  <string name="account_settings_autodownload_message_size_1">۱ کیلوبایت</string>
-  <string name="account_settings_autodownload_message_size_2">۲ کیلوبایت</string>
-  <string name="account_settings_autodownload_message_size_4">۴ کیلوبایت</string>
-  <string name="account_settings_autodownload_message_size_8">۸ کیلوبایت</string>
-  <string name="account_settings_autodownload_message_size_16">۱۶ کیلوبایت</string>
-  <string name="account_settings_autodownload_message_size_32">۳۲ کیلوبایت</string>
-  <string name="account_settings_autodownload_message_size_64">۶۴ کیلوبایت</string>
-  <string name="account_settings_autodownload_message_size_128">۱۲۸ کیلوبایت</string>
-  <string name="account_settings_autodownload_message_size_256">۲۵۶ کیلوبایت</string>
-  <string name="account_settings_autodownload_message_size_512">۵۱۲ کیلوبایت</string>
-  <string name="account_settings_autodownload_message_size_1024">۱ مگابایت</string>
-  <string name="account_settings_autodownload_message_size_2048">۲ مگابایت</string>
-  <string name="account_settings_autodownload_message_size_5120">۵ مگابایت</string>
-  <string name="account_settings_autodownload_message_size_10240">۱۰ مگابایت</string>
   <string name="account_settings_autodownload_message_size_any">هر اندازه‌ای (بدون محدودیت)</string>
   <string name="account_settings_message_age_label">همگام‌سازی پیام‌ها از</string>
   <string name="account_settings_message_age_any">هر زمانی (بدون محدودیت)</string>

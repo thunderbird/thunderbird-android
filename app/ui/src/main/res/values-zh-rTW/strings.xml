@@ -90,10 +90,6 @@
   <string name="status_network_error">網路連接錯誤</string>
   <string name="status_invalid_id_error">沒有找到郵件</string>
   <string name="load_more_messages_fmt">再載入<xliff:g id="messages_to_load">%d</xliff:g>封郵件</string>
-  <string name="abbrev_gigabytes">GB</string>
-  <string name="abbrev_megabytes">MB</string>
-  <string name="abbrev_kilobytes">KB</string>
-  <string name="abbrev_bytes">B</string>
   <string name="account_size_changed">帳戶「<xliff:g id="account">%s</xliff:g>」已從<xliff:g id="oldSize">%s</xliff:g>縮小到<xliff:g id="newSize">%s</xliff:g></string>
   <string name="compacting_account">正在壓縮帳戶「<xliff:g id="account">%s</xliff:g>」</string>
   <string name="notification_new_title">您有新郵件</string>
@@ -349,20 +345,6 @@
   <string name="account_settings_led_color_summary">選擇手機提醒該帳戶訊息時LED燈閃爍的顏色</string>
   <string name="account_settings_mail_display_count_label">本地信件匣大小</string>
   <string name="account_settings_autodownload_message_size_label">收取郵件的最大尺寸為</string>
-  <string name="account_settings_autodownload_message_size_1">1Kb</string>
-  <string name="account_settings_autodownload_message_size_2">2Kb</string>
-  <string name="account_settings_autodownload_message_size_4">4Kb</string>
-  <string name="account_settings_autodownload_message_size_8">8Kb</string>
-  <string name="account_settings_autodownload_message_size_16">16Kb</string>
-  <string name="account_settings_autodownload_message_size_32">32Kb</string>
-  <string name="account_settings_autodownload_message_size_64">64Kb</string>
-  <string name="account_settings_autodownload_message_size_128">128Kb</string>
-  <string name="account_settings_autodownload_message_size_256">256Kb</string>
-  <string name="account_settings_autodownload_message_size_512">512Kb</string>
-  <string name="account_settings_autodownload_message_size_1024">1Mb</string>
-  <string name="account_settings_autodownload_message_size_2048">2Mb</string>
-  <string name="account_settings_autodownload_message_size_5120">5Mb</string>
-  <string name="account_settings_autodownload_message_size_10240">10Mb</string>
   <string name="account_settings_autodownload_message_size_any">任意（無限制）</string>
   <string name="account_settings_message_age_label">同步該時段內的郵件</string>
   <string name="account_settings_message_age_any">任意時段（無限制）</string>

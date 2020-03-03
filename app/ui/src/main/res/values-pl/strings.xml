@@ -142,10 +142,10 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="status_invalid_id_error">Nie znaleziono wiadomości</string>
   <string name="status_loading_error">Błąd ładowania wiadomości</string>
   <string name="load_more_messages_fmt">Pobierz kolejne <xliff:g id="messages_to_load">%d</xliff:g> wiadomości</string>
-  <string name="abbrev_gigabytes">GB</string>
-  <string name="abbrev_megabytes">MB</string>
-  <string name="abbrev_kilobytes">KB</string>
-  <string name="abbrev_bytes">B</string>
+  <string name="size_format_gigabytes">%.1f GB</string>
+  <string name="size_format_megabytes">%.1f MB</string>
+  <string name="size_format_kilobytes">%.1f kB</string>
+  <string name="size_format_bytes">%d B</string>
   <string name="account_size_changed">Objętość konta \"<xliff:g id="account">%s</xliff:g>\" zmniejszyła się z <xliff:g id="oldSize">%s</xliff:g> do <xliff:g id="newSize">%s</xliff:g></string>
   <string name="compacting_account">Kompaktuję konto \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Nowa wiadomość</string>
@@ -426,6 +426,8 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="account_settings_notification_opens_unread_summary">Powiadomienie o nieprzeczytanych wiadomościach</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Oznacz jako przeczytane</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Oznacz wiadomość jako przeczytaną przy otwieraniu</string>
+  <string name="account_settings_mark_message_as_read_on_delete_label">Oznacz jako przeczytane po usunięciu</string>
+  <string name="account_settings_mark_message_as_read_on_delete_summary">Oznacz wiadomość jako przeczytaną przy usuwaniu</string>
   <string name="account_settings_notification_open_system_notifications_label">Ustawienia powiadomień</string>
   <string name="account_settings_notification_open_system_notifications_summary">Otwórz systemowe ustawienia powiadomień</string>
   <string name="account_settings_show_pictures_label">Zawsze pokazuj obrazki</string>
@@ -474,20 +476,20 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="account_settings_led_color_summary">Wybierz kolor jakim migać ma dioda LED przy powiadomieniach</string>
   <string name="account_settings_mail_display_count_label">Liczba wiadomości</string>
   <string name="account_settings_autodownload_message_size_label">Rozmiar pobieranych wiadomości</string>
-  <string name="account_settings_autodownload_message_size_1">1Kb</string>
-  <string name="account_settings_autodownload_message_size_2">2Kb</string>
-  <string name="account_settings_autodownload_message_size_4">4Kb</string>
-  <string name="account_settings_autodownload_message_size_8">8Kb</string>
-  <string name="account_settings_autodownload_message_size_16">16Kb</string>
-  <string name="account_settings_autodownload_message_size_32">32Kb</string>
-  <string name="account_settings_autodownload_message_size_64">64Kb</string>
-  <string name="account_settings_autodownload_message_size_128">128Kb</string>
-  <string name="account_settings_autodownload_message_size_256">256Kb</string>
-  <string name="account_settings_autodownload_message_size_512">512Kb</string>
-  <string name="account_settings_autodownload_message_size_1024">1Mb</string>
-  <string name="account_settings_autodownload_message_size_2048">2Mb</string>
-  <string name="account_settings_autodownload_message_size_5120">5Mb</string>
-  <string name="account_settings_autodownload_message_size_10240">10Mb</string>
+  <string name="account_settings_autodownload_message_size_1">1 KiB</string>
+  <string name="account_settings_autodownload_message_size_2">2 KiB</string>
+  <string name="account_settings_autodownload_message_size_4">4 KiB</string>
+  <string name="account_settings_autodownload_message_size_8">8 KiB</string>
+  <string name="account_settings_autodownload_message_size_16">16 KiB</string>
+  <string name="account_settings_autodownload_message_size_32">32 KiB</string>
+  <string name="account_settings_autodownload_message_size_64">64 KiB</string>
+  <string name="account_settings_autodownload_message_size_128">128 KiB</string>
+  <string name="account_settings_autodownload_message_size_256">256 KiB</string>
+  <string name="account_settings_autodownload_message_size_512">512 KiB</string>
+  <string name="account_settings_autodownload_message_size_1024">1 MiB</string>
+  <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
+  <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
+  <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
   <string name="account_settings_autodownload_message_size_any">dowolny rozmiar (bez limitu)</string>
   <string name="account_settings_message_age_label">Synchronizuj nowsze niż</string>
   <string name="account_settings_message_age_any">wszystkie</string>
@@ -640,6 +642,7 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="setting_theme_global">Użyj stylu aplikacji</string>
   <string name="setting_theme_dark">Ciemna</string>
   <string name="setting_theme_light">Jasna</string>
+  <string name="setting_theme_follow_system">Użyj domyślnego systemowego</string>
   <string name="display_preferences">Ustawienia globalne</string>
   <string name="global_preferences">Globalne</string>
   <string name="debug_preferences">Debugowanie</string>
@@ -761,16 +764,21 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="dialog_attachment_progress_title">Pobieranie załącznika</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
+  <string name="settings_list_backup_category">Kopia zapasowa</string>
   <string name="settings_list_miscellaneous_category">Różne</string>
+  <string name="settings_export_title">Eksport ustawień</string>
   <string name="settings_export_button">Eksportuj</string>
   <string name="settings_export_share_button">Prześlij dalej (alternatywne)</string>
   <string name="settings_export_progress_text">Eksportowanie ustawień…</string>
   <string name="settings_export_success_generic">Eksport ustawień zakończony sukcesem</string>
   <string name="settings_export_failure">Błąd eksportu</string>
   <string name="settings_import_title">Import</string>
+  <string name="settings_import_pick_document_button">Wybierz plik</string>
   <string name="settings_import_button">Importuj</string>
+  <string name="settings_import_later_button">Później</string>
   <string name="settings_import">Import</string>
   <string name="settings_importing">Importowanie ustawień…</string>
+  <string name="server_name_format">Nazwa serwera: <xliff:g id="hostname">%s</xliff:g></string>
   <string name="unread_widget_select_account">Pokaż licznik nieprzeczytanych dla…</string>
   <string name="unread_widget_account_title">Konto</string>
   <string name="unread_widget_account_summary">Folder dla którego liczba nie przeczytanych wiadomości powinna być wyświetlana</string>
