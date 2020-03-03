@@ -272,6 +272,10 @@ public class MessageLoaderHelper {
                 throw new IllegalStateException("loader id must be message loader id");
             }
 
+            if (message == localMessage) {
+                return;
+            }
+
             localMessage = message;
             if (message == null) {
                 onLoadMessageFromDatabaseFailed();
@@ -408,6 +412,8 @@ public class MessageLoaderHelper {
     }
 
     private LoaderCallbacks<MessageViewInfo> decodeMessageLoaderCallback = new LoaderCallbacks<MessageViewInfo>() {
+        private MessageViewInfo messageViewInfo;
+
         @Override
         public Loader<MessageViewInfo> onCreateLoader(int id, Bundle args) {
             if (id != DECODE_MESSAGE_LOADER_ID) {
@@ -422,6 +428,12 @@ public class MessageLoaderHelper {
             if (loader.getId() != DECODE_MESSAGE_LOADER_ID) {
                 throw new IllegalStateException("loader id must be message decoder id");
             }
+
+            if (messageViewInfo == this.messageViewInfo) {
+                return;
+            }
+
+            this.messageViewInfo = messageViewInfo;
             onDecodeMessageFinished(messageViewInfo);
         }
 
@@ -430,7 +442,8 @@ public class MessageLoaderHelper {
             if (loader.getId() != DECODE_MESSAGE_LOADER_ID) {
                 throw new IllegalStateException("loader id must be message decoder id");
             }
-            // Do nothing
+
+            messageViewInfo = null;
         }
     };
 
