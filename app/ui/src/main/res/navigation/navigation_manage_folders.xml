@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_onboarding"
+    app:startDestination="@id/manageFoldersScreen">
+
+    <fragment
+        android:id="@+id/manageFoldersScreen"
+        android:name="com.fsck.k9.ui.managefolders.ManageFoldersFragment"
+        android:label="@string/folders_action"
+        tools:layout="@layout/fragment_manage_folders">
+    </fragment>
+
+</navigation>
