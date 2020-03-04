@@ -687,7 +687,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         } else if (displayMode == DisplayMode.MESSAGE_VIEW && messageListWasDisplayed) {
             showMessageList();
         } else {
-            if (isDrawerEnabled() && account != null) {
+            if (isDrawerEnabled() && account != null && getSupportFragmentManager().getBackStackEntryCount() == 0) {
                 String defaultFolder = defaultFolderProvider.getDefaultFolder(account);
                 String currentFolder = singleFolderMode ? search.getFolderServerIds().get(0) : null;
                 if (!defaultFolder.equals(currentFolder)) {
