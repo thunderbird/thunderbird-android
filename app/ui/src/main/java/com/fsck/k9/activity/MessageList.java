@@ -659,6 +659,11 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         initializeFromLocalSearch(search);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
+
+        if (BuildConfig.DEBUG && fragmentManager.getBackStackEntryCount() > 0) {
+            throw new IllegalStateException("Don't call performSearch() while there are fragments on the back stack");
+        }
+
         openFolderTransaction = fragmentManager.beginTransaction();
         messageListFragment = MessageListFragment.newInstance(search, false, K9.isThreadedViewEnabled());
         openFolderTransaction.replace(R.id.message_list_container, messageListFragment);
@@ -687,7 +692,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         } else if (displayMode == DisplayMode.MESSAGE_VIEW && messageListWasDisplayed) {
             showMessageList();
         } else {
-            if (isDrawerEnabled() && account != null) {
+            if (isDrawerEnabled() && account != null && getSupportFragmentManager().getBackStackEntryCount() == 0) {
                 String defaultFolder = defaultFolderProvider.getDefaultFolder(account);
                 String currentFolder = singleFolderMode ? search.getFolderServerIds().get(0) : null;
                 if (!defaultFolder.equals(currentFolder)) {
