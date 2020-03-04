@@ -10,7 +10,7 @@ import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.core.KoinApplication
+import org.koin.core.context.KoinContextHandler
 import org.koin.core.logger.PrintLogger
 import org.koin.core.parameter.parametersOf
 import org.koin.test.AutoCloseKoinTest
@@ -30,7 +30,7 @@ class DependencyInjectionTest : AutoCloseKoinTest() {
 
     @Test
     fun testDependencyTree() {
-        KoinApplication.logger = PrintLogger()
+        KoinContextHandler.get()._logger = PrintLogger()
 
         getKoin().checkModules {
             create<OpenPgpApiManager> { parametersOf(lifecycleOwner) }
