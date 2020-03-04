@@ -8,11 +8,12 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
-import com.fsck.k9.activity.setup.FolderSettings
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.mailstore.DisplayFolder
 import com.fsck.k9.ui.R
@@ -21,10 +22,10 @@ import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.observeNotNull
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import java.util.Locale
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
-import java.util.Locale
 
 class ManageFoldersFragment : Fragment() {
     private val viewModel: ManageFoldersViewModel by viewModel()
@@ -87,7 +88,11 @@ class ManageFoldersFragment : Fragment() {
     }
 
     private fun openFolderSettings(folderServerId: String) {
-        FolderSettings.actionSettings(requireActivity(), account, folderServerId)
+        val folderSettingsArguments = bundleOf(
+            FolderSettingsFragment.EXTRA_ACCOUNT to account.uuid,
+            FolderSettingsFragment.EXTRA_FOLDER_SERVER_ID to folderServerId
+        )
+        findNavController().navigate(R.id.action_manageFoldersScreen_to_folderSettingsScreen, folderSettingsArguments)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

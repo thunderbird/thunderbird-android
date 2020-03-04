@@ -172,11 +172,6 @@
             android:label="@string/account_setup_check_settings_title"/>
 
         <activity
-            android:name=".activity.setup.FolderSettings"
-            android:configChanges="locale"
-            android:label="@string/folder_settings_title"/>
-
-        <activity
             android:name=".ui.endtoend.AutocryptKeyTransferActivity"
             android:configChanges="locale"
             android:label="@string/ac_transfer_title"

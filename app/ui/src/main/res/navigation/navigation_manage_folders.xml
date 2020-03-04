@@ -10,6 +10,16 @@
         android:name="com.fsck.k9.ui.managefolders.ManageFoldersFragment"
         android:label="@string/folders_action"
         tools:layout="@layout/fragment_manage_folders">
+
+        <action
+            android:id="@+id/action_manageFoldersScreen_to_folderSettingsScreen"
+            app:destination="@id/folderSettingsScreen" />
+
     </fragment>
+
+    <fragment
+        android:id="@+id/folderSettingsScreen"
+        android:name="com.fsck.k9.ui.managefolders.FolderSettingsFragment"
+        android:label="@string/folder_settings_title"/>
 
 </navigation>
