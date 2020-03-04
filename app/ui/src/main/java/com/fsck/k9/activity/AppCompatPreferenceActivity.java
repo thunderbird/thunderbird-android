@@ -15,11 +15,13 @@ package com.fsck.k9.activity;
  * limitations under the License.
  */
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
@@ -38,10 +40,21 @@ public abstract class AppCompatPreferenceActivity extends PreferenceActivity {
     private AppCompatDelegate mDelegate;
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(getDelegate().attachBaseContext2(newBase));
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         getDelegate().installViewFactory();
         getDelegate().onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void setTheme(@StyleRes final int resId) {
+        super.setTheme(resId);
+        getDelegate().setTheme(resId);
     }
 
     @Override
