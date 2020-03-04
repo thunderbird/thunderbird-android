@@ -17,12 +17,10 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.activity.K9Activity
 import com.fsck.k9.activity.setup.FolderSettings
 import com.fsck.k9.controller.MessagingController
-import com.fsck.k9.controller.SimpleMessagingListener
 import com.fsck.k9.mailstore.DisplayFolder
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.folders.FolderIconProvider
 import com.fsck.k9.ui.folders.FolderNameFormatter
-import com.fsck.k9.ui.helper.SizeFormatter
 import com.fsck.k9.ui.observeNotNull
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
@@ -37,28 +35,10 @@ class ManageFoldersActivity : K9Activity() {
     private val messagingController: MessagingController by inject()
     private val preferences: Preferences by inject()
     private val folderIconProvider by lazy { FolderIconProvider(theme) }
-    private val sizeFormatter: SizeFormatter by inject { parametersOf(this) }
 
     private lateinit var account: Account
     private lateinit var actionBar: ActionBar
     private lateinit var itemAdapter: ItemAdapter<FolderListItem>
-
-    private val messagingListener = object : SimpleMessagingListener() {
-        override fun accountSizeChanged(account: Account, oldSize: Long, newSize: Long) {
-            if (account == this@ManageFoldersActivity.account) {
-                runOnUiThread {
-                    val toastText = getString(
-                        R.string.account_size_changed,
-                        account.description,
-                        sizeFormatter.formatSize(oldSize),
-                        sizeFormatter.formatSize(newSize)
-                    )
-                    val toast = Toast.makeText(application, toastText, Toast.LENGTH_LONG)
-                    toast.show()
-                }
-            }
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,16 +101,6 @@ class ManageFoldersActivity : K9Activity() {
         FolderSettings.actionSettings(this, account, folderServerId)
     }
 
-    public override fun onPause() {
-        messagingController.removeListener(messagingListener)
-        super.onPause()
-    }
-
-    public override fun onResume() {
-        super.onResume()
-        messagingController.addListener(messagingListener)
-    }
-
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         when (keyCode) {
             KeyEvent.KEYCODE_H -> displayHelpText()
@@ -177,7 +147,6 @@ class ManageFoldersActivity : K9Activity() {
         when (item.itemId) {
             android.R.id.home -> onBackPressed()
             R.id.list_folders -> refreshFolderList()
-            R.id.compact -> compactAccount()
             R.id.display_1st_class -> setDisplayMode(FolderMode.FIRST_CLASS)
             R.id.display_1st_and_2nd_class -> setDisplayMode(FolderMode.FIRST_AND_SECOND_CLASS)
             R.id.display_not_second_class -> setDisplayMode(FolderMode.NOT_SECOND_CLASS)
@@ -190,14 +159,6 @@ class ManageFoldersActivity : K9Activity() {
 
     private fun refreshFolderList() {
         messagingController.refreshFolderList(account)
-    }
-
-    private fun compactAccount() {
-        val toastText = getString(R.string.compacting_account, account.description)
-        val toast = Toast.makeText(application, toastText, Toast.LENGTH_SHORT)
-        toast.show()
-
-        messagingController.compact(account, null)
     }
 
     private fun setDisplayMode(newMode: FolderMode) {
