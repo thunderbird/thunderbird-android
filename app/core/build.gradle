@@ -12,7 +12,6 @@ dependencies {
     api project(':plugins:openpgp-api-lib:openpgp-api')
 
     api "org.koin:koin-androidx-viewmodel:${versions.koin}"
-    implementation "org.koin:koin-java:${versions.koin}"
 
     api "androidx.annotation:annotation:${versions.androidxAnnotation}"
 
