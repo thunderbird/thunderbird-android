@@ -3,10 +3,8 @@ package com.fsck.k9.ui.managefolders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
@@ -99,24 +97,6 @@ class ManageFoldersActivity : K9Activity() {
 
     private fun openFolderSettings(folderServerId: String) {
         FolderSettings.actionSettings(this, account, folderServerId)
-    }
-
-    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        when (keyCode) {
-            KeyEvent.KEYCODE_H -> displayHelpText()
-            KeyEvent.KEYCODE_1 -> setDisplayMode(FolderMode.FIRST_CLASS)
-            KeyEvent.KEYCODE_2 -> setDisplayMode(FolderMode.FIRST_AND_SECOND_CLASS)
-            KeyEvent.KEYCODE_3 -> setDisplayMode(FolderMode.NOT_SECOND_CLASS)
-            KeyEvent.KEYCODE_4 -> setDisplayMode(FolderMode.ALL)
-            else -> return super.onKeyDown(keyCode, event)
-        }
-
-        return true
-    }
-
-    private fun displayHelpText() {
-        val toast = Toast.makeText(this, R.string.folder_list_help_key, Toast.LENGTH_LONG)
-        toast.show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
