@@ -659,6 +659,11 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         initializeFromLocalSearch(search);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
+
+        if (BuildConfig.DEBUG && fragmentManager.getBackStackEntryCount() > 0) {
+            throw new IllegalStateException("Don't call performSearch() while there are fragments on the back stack");
+        }
+
         openFolderTransaction = fragmentManager.beginTransaction();
         messageListFragment = MessageListFragment.newInstance(search, false, K9.isThreadedViewEnabled());
         openFolderTransaction.replace(R.id.message_list_container, messageListFragment);
