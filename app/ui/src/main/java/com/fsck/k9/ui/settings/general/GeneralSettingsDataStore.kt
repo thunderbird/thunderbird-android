@@ -81,6 +81,7 @@ class GeneralSettingsDataStore(
     override fun getInt(key: String?, defValue: Int): Int {
         return when (key) {
             "messagelist_contact_name_color" -> K9.contactNameColor
+            "message_view_content_font_slider" -> K9.fontSizes.messageViewContentAsPercent
             else -> defValue
         }
     }
@@ -88,6 +89,7 @@ class GeneralSettingsDataStore(
     override fun putInt(key: String?, value: Int) {
         when (key) {
             "messagelist_contact_name_color" -> K9.contactNameColor = value
+            "message_view_content_font_slider" -> K9.fontSizes.messageViewContentAsPercent = value
             else -> return
         }
 
@@ -108,6 +110,22 @@ class GeneralSettingsDataStore(
             "notification_hide_subject" -> K9.notificationHideSubject.name
             "quiet_time_starts" -> K9.quietTimeStarts
             "quiet_time_ends" -> K9.quietTimeEnds
+            "account_name_font" -> K9.fontSizes.accountName.toString()
+            "account_description_font" -> K9.fontSizes.accountDescription.toString()
+            "folder_name_font" -> K9.fontSizes.folderName.toString()
+            "folder_status_font" -> K9.fontSizes.folderStatus.toString()
+            "message_list_subject_font" -> K9.fontSizes.messageListSubject.toString()
+            "message_list_sender_font" -> K9.fontSizes.messageListSender.toString()
+            "message_list_date_font" -> K9.fontSizes.messageListDate.toString()
+            "message_list_preview_font" -> K9.fontSizes.messageListPreview.toString()
+            "message_view_sender_font" -> K9.fontSizes.messageViewSender.toString()
+            "message_view_to_font" -> K9.fontSizes.messageViewTo.toString()
+            "message_view_cc_font" -> K9.fontSizes.messageViewCC.toString()
+            "message_view_bcc_font" -> K9.fontSizes.messageViewBCC.toString()
+            "message_view_subject_font" -> K9.fontSizes.messageViewSubject.toString()
+            "message_view_date_font" -> K9.fontSizes.messageViewDate.toString()
+            "message_view_additional_headers_font" -> K9.fontSizes.messageViewAdditionalHeaders.toString()
+            "message_compose_input_font" -> K9.fontSizes.messageComposeInput.toString()
             else -> defValue
         }
     }
@@ -132,6 +150,22 @@ class GeneralSettingsDataStore(
             "notification_hide_subject" -> K9.notificationHideSubject = K9.NotificationHideSubject.valueOf(value)
             "quiet_time_starts" -> K9.quietTimeStarts = value
             "quiet_time_ends" -> K9.quietTimeEnds = value
+            "account_name_font" -> K9.fontSizes.accountName = value.toInt()
+            "account_description_font" -> K9.fontSizes.accountDescription = value.toInt()
+            "folder_name_font" -> K9.fontSizes.folderName = value.toInt()
+            "folder_status_font" -> K9.fontSizes.folderStatus = value.toInt()
+            "message_list_subject_font" -> K9.fontSizes.messageListSubject = value.toInt()
+            "message_list_sender_font" -> K9.fontSizes.messageListSender = value.toInt()
+            "message_list_date_font" -> K9.fontSizes.messageListDate = value.toInt()
+            "message_list_preview_font" -> K9.fontSizes.messageListPreview = value.toInt()
+            "message_view_sender_font" -> K9.fontSizes.messageViewSender = value.toInt()
+            "message_view_to_font" -> K9.fontSizes.messageViewTo = value.toInt()
+            "message_view_cc_font" -> K9.fontSizes.messageViewCC = value.toInt()
+            "message_view_bcc_font" -> K9.fontSizes.messageViewBCC = value.toInt()
+            "message_view_subject_font" -> K9.fontSizes.messageViewSubject = value.toInt()
+            "message_view_date_font" -> K9.fontSizes.messageViewDate = value.toInt()
+            "message_view_additional_headers_font" -> K9.fontSizes.messageViewAdditionalHeaders = value.toInt()
+            "message_compose_input_font" -> K9.fontSizes.messageComposeInput = value.toInt()
             else -> return
         }
 

@@ -13,7 +13,6 @@ import com.bytehamster.lib.preferencesearch.SearchPreferenceActionView
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResult
 import com.bytehamster.lib.preferencesearch.SearchPreferenceResultListener
 import com.fsck.k9.activity.K9Activity
-import com.fsck.k9.activity.setup.FontSizeSettings
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.fragmentTransaction
 import com.fsck.k9.ui.fragmentTransactionWithBackStack
@@ -58,18 +57,14 @@ class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, S
         searchPreferenceActionView.cancelSearch()
         searchPreferenceMenuItem.collapseActionView()
 
-        if (result.resourceFile == R.xml.font_preferences) {
-            startActivity(Intent(this, FontSizeSettings::class.java))
-        } else {
-            val fragment = GeneralSettingsFragment.create(result.screen)
-            fragmentTransaction {
-                addToBackStack("Search result")
-                replace(R.id.generalSettingsContainer, fragment)
-            }
-
-            val accentColor = theme.resolveAttribute(R.attr.colorAccent)
-            result.highlight(fragment as PreferenceFragmentCompat, accentColor)
+        val fragment = GeneralSettingsFragment.create(result.screen)
+        fragmentTransaction {
+            addToBackStack("Search result")
+            replace(R.id.generalSettingsContainer, fragment)
         }
+
+        val accentColor = theme.resolveAttribute(R.attr.colorAccent)
+        result.highlight(fragment as PreferenceFragmentCompat, accentColor)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -87,12 +82,6 @@ class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, S
             textNoResults = getString(R.string.preference_search_no_results)
 
             index(R.xml.general_settings)
-            with(index(R.xml.font_preferences)) {
-                addBreadcrumb(R.string.general_settings_title)
-                addBreadcrumb(R.string.display_preferences)
-                addBreadcrumb(R.string.global_preferences)
-                addBreadcrumb(R.string.font_size_settings_title)
-            }
         }
 
         searchPreferenceMenuItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
