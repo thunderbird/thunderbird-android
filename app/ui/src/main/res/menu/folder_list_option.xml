@@ -26,10 +26,6 @@
         </menu>
     </item>
     <item
-        android:id="@+id/compact"
-        app:showAsAction="never"
-        android:title="@string/compact_action"/>
-    <item
         android:id="@+id/list_folders"
         android:icon="?attr/iconActionRefresh"
         android:title="@string/refresh_folders_action"/>

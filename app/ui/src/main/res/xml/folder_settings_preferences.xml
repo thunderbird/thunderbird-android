@@ -14,62 +14,51 @@
      limitations under the License.
 -->
 
-<!--
-  Make sure to add android:persistent="false" to all preferences to disable saving
-  the preference values to SharedPreferences. We use our own storage mechanism for
-  the preferences. See com.fsck.k9.preferences.Storage.
-
-  Also note that every sub-PreferenceScreen needs an "android:key" parameter so the correct screen
-  can be displayed after the device has been rotated.
--->
-
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
         android:key="folder_settings">
 
         <CheckBoxPreference
-            android:persistent="false"
             android:key="folder_settings_in_top_group"
             android:title="@string/folder_settings_in_top_group_label"
             android:summary="@string/folder_settings_in_top_group_summary" />
 
         <ListPreference
-            android:persistent="false"
             android:key="folder_settings_folder_display_mode"
             android:title="@string/folder_settings_folder_display_mode_label"
+            android:summary="%s"
             android:entries="@array/folder_settings_folder_display_mode_entries"
             android:entryValues="@array/folder_settings_folder_display_mode_values"
             android:dialogTitle="@string/folder_settings_folder_display_mode_label" />
 
         <ListPreference
-            android:persistent="false"
             android:key="folder_settings_folder_sync_mode"
             android:title="@string/folder_settings_folder_sync_mode_label"
+            android:summary="%s"
             android:entries="@array/folder_settings_folder_sync_mode_entries"
             android:entryValues="@array/folder_settings_folder_sync_mode_values"
             android:dialogTitle="@string/folder_settings_folder_sync_mode_label" />
 
         <!-- Temporarily disabled. See GH-4253
         <ListPreference
-            android:persistent="false"
             android:key="folder_settings_folder_push_mode"
             android:title="@string/folder_settings_folder_push_mode_label"
+            android:summary="%s"
             android:entries="@array/folder_settings_folder_push_mode_entries"
             android:entryValues="@array/folder_settings_folder_push_mode_values"
             android:dialogTitle="@string/folder_settings_folder_push_mode_label" />
         -->
 
         <ListPreference
-            android:persistent="false"
             android:key="folder_settings_folder_notify_mode"
             android:title="@string/folder_settings_folder_notify_mode_label"
+            android:summary="%s"
             android:entries="@array/folder_settings_folder_notify_mode_entries"
             android:entryValues="@array/folder_settings_folder_notify_mode_values"
             android:dialogTitle="@string/folder_settings_folder_notify_mode_label" />
 
         <CheckBoxPreference
-            android:persistent="false"
             android:key="folder_settings_include_in_integrated_inbox"
             android:title="@string/folder_settings_include_in_integrated_inbox_label"
             android:summary="@string/folder_settings_include_in_integrated_inbox_summary" />

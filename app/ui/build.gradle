@@ -23,6 +23,7 @@ dependencies {
     implementation "com.takisoft.preferencex:preferencex-ringtone:${versions.preferencesFix}"
     implementation "androidx.recyclerview:recyclerview:${versions.androidxRecyclerView}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.androidxLifecycle}"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:${versions.androidxLifecycle}"
     implementation "androidx.navigation:navigation-fragment-ktx:${versions.androidxNavigation}"
     implementation "androidx.navigation:navigation-ui-ktx:${versions.androidxNavigation}"
     implementation "androidx.constraintlayout:constraintlayout:${versions.androidxConstraintLayout}"
