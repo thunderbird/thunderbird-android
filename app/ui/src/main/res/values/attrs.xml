@@ -105,10 +105,6 @@
         <attr name="openpgp_dark_grey" format="reference|color" />
     </declare-styleable>
 
-    <declare-styleable name="SliderPreference">
-        <attr name="android:summary" />
-    </declare-styleable>
-    
     <declare-styleable name="FoldableLinearLayout">
         <attr name="foldedLabel" format="string" />
         <attr name="unFoldedLabel" format="string" />
