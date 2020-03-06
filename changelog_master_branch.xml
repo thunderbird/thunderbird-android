@@ -8,6 +8,11 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.707" versioncode="27007">
+        <change>Fixed a bug in the new 'back button opens default folder' code</change>
+        <change>Fixed a crash on Android 5.x devices with old WebView versions</change>
+        <change>Fixed theme issues in some settings screens</change>
+    </release>
     <release version="5.706" versioncode="27006">
         <change>Unified Inbox is now opened by default (if enabled)</change>
         <change>Back button now opens default folder before exiting the app</change>
