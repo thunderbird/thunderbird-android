@@ -19,6 +19,8 @@ dependencies {
     implementation project(":backend:webdav")
 
     implementation "androidx.appcompat:appcompat:${versions.androidxAppCompat}"
+    implementation "androidx.core:core-ktx:${versions.coreKtx}"
+    implementation "com.takisoft.preferencex:preferencex:${versions.preferencesFix}"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
 
     testImplementation "org.robolectric:robolectric:${versions.robolectric}"
