@@ -2,6 +2,7 @@ package com.fsck.k9.fragment
 
 import android.content.Context
 import android.content.res.Resources
+import android.content.res.Resources.Theme
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
@@ -26,11 +27,13 @@ import com.fsck.k9.ui.ContactBadge
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.messagelist.MessageListAppearance
 import com.fsck.k9.ui.messagelist.MessageListItem
+import com.fsck.k9.ui.resolveColorAttribute
+import com.fsck.k9.ui.resolveDrawableAttribute
 import kotlin.math.max
 
 class MessageListAdapter internal constructor(
     private val context: Context,
-    theme: Resources.Theme,
+    theme: Theme,
     private val res: Resources,
     private val layoutInflater: LayoutInflater,
     private val contactsPictureLoader: ContactPictureLoader,
@@ -38,41 +41,14 @@ class MessageListAdapter internal constructor(
     private val appearance: MessageListAppearance
 ) : BaseAdapter() {
 
-    private val forwardedIcon: Drawable
-    private val answeredIcon: Drawable
-    private val forwardedAnsweredIcon: Drawable
-    private val previewTextColor: Int
-    private val activeItemBackgroundColor: Int
-    private val selectedItemBackgroundColor: Int
-    private val readItemBackgroundColor: Int
-    private val unreadItemBackgroundColor: Int
-
-    init {
-
-        val attributes = intArrayOf(
-                R.attr.messageListAnswered,
-                R.attr.messageListForwarded,
-                R.attr.messageListAnsweredForwarded,
-                R.attr.messageListPreviewTextColor,
-                R.attr.messageListActiveItemBackgroundColor,
-                R.attr.messageListSelectedBackgroundColor,
-                R.attr.messageListReadItemBackgroundColor,
-                R.attr.messageListUnreadItemBackgroundColor
-        )
-
-        val array = theme.obtainStyledAttributes(attributes)
-
-        answeredIcon = res.getDrawable(array.getResourceId(0, R.drawable.ic_messagelist_answered_dark))
-        forwardedIcon = res.getDrawable(array.getResourceId(1, R.drawable.ic_messagelist_forwarded_dark))
-        forwardedAnsweredIcon = res.getDrawable(array.getResourceId(2, R.drawable.ic_messagelist_answered_forwarded_dark))
-        previewTextColor = array.getColor(3, Color.BLACK)
-        activeItemBackgroundColor = array.getColor(4, Color.BLACK)
-        selectedItemBackgroundColor = array.getColor(5, Color.BLACK)
-        readItemBackgroundColor = array.getColor(6, Color.BLACK)
-        unreadItemBackgroundColor = array.getColor(7, Color.BLACK)
-
-        array.recycle()
-    }
+    private val forwardedIcon: Drawable = theme.resolveDrawableAttribute(R.attr.messageListForwarded)
+    private val answeredIcon: Drawable = theme.resolveDrawableAttribute(R.attr.messageListAnswered)
+    private val forwardedAnsweredIcon: Drawable = theme.resolveDrawableAttribute(R.attr.messageListAnsweredForwarded)
+    private val previewTextColor: Int = theme.resolveColorAttribute(R.attr.messageListPreviewTextColor)
+    private val activeItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListActiveItemBackgroundColor)
+    private val selectedItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListSelectedBackgroundColor)
+    private val readItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListReadItemBackgroundColor)
+    private val unreadItemBackgroundColor: Int = theme.resolveColorAttribute(R.attr.messageListUnreadItemBackgroundColor)
 
     var messages: List<MessageListItem> = emptyList()
         set(value) {

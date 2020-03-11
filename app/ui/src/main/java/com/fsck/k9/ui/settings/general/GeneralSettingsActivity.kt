@@ -16,7 +16,7 @@ import com.fsck.k9.activity.K9Activity
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.fragmentTransaction
 import com.fsck.k9.ui.fragmentTransactionWithBackStack
-import com.fsck.k9.ui.resolveAttribute
+import com.fsck.k9.ui.resolveColorAttribute
 
 class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, SearchPreferenceResultListener {
     private lateinit var searchPreferenceActionView: SearchPreferenceActionView
@@ -63,7 +63,7 @@ class GeneralSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback, S
             replace(R.id.generalSettingsContainer, fragment)
         }
 
-        val accentColor = theme.resolveAttribute(R.attr.colorAccent)
+        val accentColor = theme.resolveColorAttribute(R.attr.colorAccent)
         result.highlight(fragment as PreferenceFragmentCompat, accentColor)
     }
 
