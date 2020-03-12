@@ -16,7 +16,6 @@ import org.koin.core.inject
  * This class implements functionality common to most activities used in K-9 Mail.
  *
  * @see K9Activity
- * @see K9PreferenceActivity
  */
 class K9ActivityCommon(
     private val activity: Activity,
