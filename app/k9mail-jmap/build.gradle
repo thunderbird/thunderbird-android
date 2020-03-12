@@ -36,8 +36,6 @@ dependencies {
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:${versions.mockitoKotlin}"
     testImplementation "org.jdom:jdom2:2.0.6"
     testImplementation "org.koin:koin-test:${versions.koin}"
-
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.1.1"
 }
 
 android {

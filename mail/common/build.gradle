@@ -16,9 +16,6 @@ dependencies {
     implementation "androidx.annotation:annotation:${versions.androidxAnnotation}"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
 
-    androidTestImplementation "androidx.test:runner:${versions.androidxTestRunner}"
-    androidTestImplementation "com.madgag.spongycastle:pg:1.51.0.0"
-
     testImplementation project(":mail:testing")
     testImplementation "org.robolectric:robolectric:${versions.robolectric}"
     testImplementation "junit:junit:${versions.junit}"
