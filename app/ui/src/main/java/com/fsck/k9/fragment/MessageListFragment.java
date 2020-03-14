@@ -29,6 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -77,7 +78,7 @@ import static com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListen
 import static com.fsck.k9.search.LocalSearchExtensions.getAccountsFromLocalSearch;
 
 
-public class MessageListFragment extends Fragment implements OnItemClickListener,
+public class MessageListFragment extends Fragment implements OnItemClickListener, OnItemLongClickListener,
         ConfirmationDialogFragmentListener, MessageListItemActionListener {
 
     public static MessageListFragment newInstance(
@@ -279,6 +280,16 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 openMessageAtPosition(adapterPosition);
             }
         }
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        if (view == footerView) {
+            return false;
+        }
+
+        toggleMessageSelect(position);
+        return true;
     }
 
     @Override
@@ -600,6 +611,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         listView.setFastScrollEnabled(true);
         listView.setScrollingCacheEnabled(false);
         listView.setOnItemClickListener(this);
+        listView.setOnItemLongClickListener(this);
     }
 
     public void onCompose() {
