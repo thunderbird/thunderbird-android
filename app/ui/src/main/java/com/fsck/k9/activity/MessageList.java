@@ -1252,23 +1252,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
     @Override
-    public void onResendMessage(MessageReference messageReference) {
-        MessageActions.actionEditDraft(this, messageReference);
-    }
-
-    @Override
-    public void onForward(MessageReference messageReference) {
-        onForward(messageReference, null);
-    }
-
-    @Override
     public void onForward(MessageReference messageReference, Parcelable decryptionResultForReply) {
         MessageActions.actionForward(this, messageReference, decryptionResultForReply);
-    }
-
-    @Override
-    public void onForwardAsAttachment(MessageReference messageReference) {
-        onForwardAsAttachment(messageReference, null);
     }
 
     @Override
@@ -1277,18 +1262,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
     @Override
-    public void onReply(MessageReference messageReference) {
-        onReply(messageReference, null);
-    }
-
-    @Override
     public void onReply(MessageReference messageReference, Parcelable decryptionResultForReply) {
         MessageActions.actionReply(this, messageReference, false, decryptionResultForReply);
-    }
-
-    @Override
-    public void onReplyAll(MessageReference messageReference) {
-        onReplyAll(messageReference, null);
     }
 
     @Override
@@ -1299,18 +1274,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     @Override
     public void onCompose(Account account) {
         MessageActions.actionCompose(this, account);
-    }
-
-    @Override
-    public void showMoreFromSameSender(String senderAddress) {
-        LocalSearch tmpSearch = new LocalSearch(getString(R.string.search_from_format, senderAddress));
-        tmpSearch.addAccountUuids(search.getAccountUuids());
-        tmpSearch.and(SearchField.SENDER, senderAddress, Attribute.CONTAINS);
-
-        initializeFromLocalSearch(tmpSearch);
-
-        MessageListFragment fragment = MessageListFragment.newInstance(tmpSearch, false, false);
-        addMessageListFragment(fragment, true);
     }
 
     @Override
