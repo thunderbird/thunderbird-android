@@ -34,7 +34,6 @@ class GeneralSettingsDataStore(
             "threaded_view" -> K9.isThreadedViewEnabled
             "messageview_fixedwidth_font" -> K9.isUseMessageViewFixedWidthFont
             "messageview_autofit_width" -> K9.isAutoFitWidth
-            "gestures" -> K9.isGesturesEnabled
             "messageview_return_to_list" -> K9.isMessageViewReturnToList
             "messageview_show_next" -> K9.isMessageViewShowNext
             "quiet_time_enabled" -> K9.isQuietTimeEnabled
@@ -63,7 +62,6 @@ class GeneralSettingsDataStore(
             "threaded_view" -> K9.isThreadedViewEnabled = value
             "messageview_fixedwidth_font" -> K9.isUseMessageViewFixedWidthFont = value
             "messageview_autofit_width" -> K9.isAutoFitWidth = value
-            "gestures" -> K9.isGesturesEnabled = value
             "messageview_return_to_list" -> K9.isMessageViewReturnToList = value
             "messageview_show_next" -> K9.isMessageViewShowNext = value
             "quiet_time_enabled" -> K9.isQuietTimeEnabled = value

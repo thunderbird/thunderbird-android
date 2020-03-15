@@ -16,7 +16,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.TextUtils;
@@ -24,7 +23,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -910,45 +908,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     public void onSendPendingMessages() {
         messagingController.sendPendingMessages(account, null);
-    }
-
-    public void onSwipeRightToLeft(final MotionEvent e1, final MotionEvent e2) {
-        // Handle right-to-left as an un-select
-        handleSwipe(e1, false);
-    }
-
-    public void onSwipeLeftToRight(final MotionEvent e1, final MotionEvent e2) {
-        // Handle left-to-right as a select.
-        handleSwipe(e1, true);
-    }
-
-    /**
-     * Handle a select or unselect swipe event.
-     *
-     * @param downMotion
-     *         Event that started the swipe
-     * @param selected
-     *         {@code true} if this was an attempt to select (i.e. left to right).
-     */
-    private void handleSwipe(final MotionEvent downMotion, final boolean selected) {
-        int x = (int) downMotion.getRawX();
-        int y = (int) downMotion.getRawY();
-
-        Rect headerRect = new Rect();
-        listView.getGlobalVisibleRect(headerRect);
-
-        // Only handle swipes in the visible area of the message list
-        if (headerRect.contains(x, y)) {
-            int[] listPosition = new int[2];
-            listView.getLocationOnScreen(listPosition);
-
-            int listX = x - listPosition[0];
-            int listY = y - listPosition[1];
-
-            int listViewPosition = listView.pointToPosition(listX, listY);
-
-            toggleMessageSelect(listViewPosition);
-        }
     }
 
     private int listViewToAdapterPosition(int position) {

@@ -360,11 +360,6 @@
         android:title="@string/interaction_preferences"
         search:ignore="true">
 
-        <CheckBoxPreference
-            android:key="gestures"
-            android:summary="@string/gestures_summary"
-            android:title="@string/gestures_title" />
-
         <MultiSelectListPreference
             android:dialogTitle="@string/volume_navigation_title"
             android:entries="@array/volume_navigation_entries"

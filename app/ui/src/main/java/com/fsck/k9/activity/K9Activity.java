@@ -10,7 +10,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import android.view.MotionEvent;
 
 import android.view.View;
 import com.fsck.k9.ui.R;
@@ -41,12 +40,6 @@ public abstract class K9Activity extends AppCompatActivity {
     protected void onResume() {
         base.preOnResume();
         super.onResume();
-    }
-
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
-        base.preDispatchTouchEvent(event);
-        return super.dispatchTouchEvent(event);
     }
 
     protected void setLayout(@LayoutRes int layoutResId) {

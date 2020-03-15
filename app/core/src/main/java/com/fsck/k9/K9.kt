@@ -220,8 +220,6 @@ object K9 : EarlyInit {
     @JvmStatic
     var isMessageViewShowNext = false
 
-    var isGesturesEnabled = true
-
     @JvmStatic
     var isUseVolumeKeysForNavigation = false
 
@@ -338,7 +336,6 @@ object K9 : EarlyInit {
         isDebugLoggingEnabled = storage.getBoolean("enableDebugLogging", DEVELOPER_MODE)
         isSensitiveDebugLoggingEnabled = storage.getBoolean("enableSensitiveLogging", false)
         isShowAnimations = storage.getBoolean("animations", true)
-        isGesturesEnabled = storage.getBoolean("gesturesEnabled", false)
         isUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
         isUseVolumeKeysForListNavigation = storage.getBoolean("useVolumeKeysForListNavigation", false)
         isHideSpecialAccounts = storage.getBoolean("hideSpecialAccounts", false)
@@ -416,7 +413,6 @@ object K9 : EarlyInit {
         editor.putBoolean("enableSensitiveLogging", isSensitiveDebugLoggingEnabled)
         editor.putEnum("backgroundOperations", backgroundOps)
         editor.putBoolean("animations", isShowAnimations)
-        editor.putBoolean("gesturesEnabled", isGesturesEnabled)
         editor.putBoolean("useVolumeKeysForNavigation", isUseVolumeKeysForNavigation)
         editor.putBoolean("useVolumeKeysForListNavigation", isUseVolumeKeysForListNavigation)
         editor.putBoolean("autofitWidth", isAutoFitWidth)
