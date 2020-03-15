@@ -812,8 +812,6 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="animations_title">Animation</string>
     <string name="animations_summary">Use gaudy visual effects</string>
-    <string name="gestures_title">Gestures</string>
-    <string name="gestures_summary">Enable gesture control</string>
 
     <string name="volume_navigation_title">Volume key navigation</string>
     <string name="volume_navigation_message">In message views</string>

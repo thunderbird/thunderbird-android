@@ -3,8 +3,6 @@ package com.fsck.k9.activity
 import android.app.Activity
 import android.content.res.Resources
 import android.text.TextUtils
-import android.view.GestureDetector
-import android.view.MotionEvent
 import com.fsck.k9.K9
 import com.fsck.k9.ui.Theme
 import com.fsck.k9.ui.ThemeManager
@@ -21,7 +19,6 @@ class K9ActivityCommon(
     private val activity: Activity,
     private val themeType: ThemeType
 ) {
-    private var gestureDetector: GestureDetector? = null
     private lateinit var currentLanguage: String
     private lateinit var currentTheme: Theme
 
@@ -49,13 +46,6 @@ class K9ActivityCommon(
         if (currentLanguage != K9.k9Language) {
             activity.recreate()
         }
-    }
-
-    /**
-     * Call this before calling `super.dispatchTouchEvent(MotionEvent)`.
-     */
-    fun preDispatchTouchEvent(event: MotionEvent) {
-        gestureDetector?.onTouchEvent(event)
     }
 
     private fun setLanguage(language: String) {

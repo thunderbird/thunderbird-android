@@ -128,10 +128,6 @@ public class GlobalSettings {
         s.put("fontSizeMessageViewTo", Settings.versions(
                 new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
         ));
-        s.put("gesturesEnabled", Settings.versions(
-                new V(1, new BooleanSetting(true)),
-                new V(4, new BooleanSetting(false))
-        ));
         s.put("hideSpecialAccounts", Settings.versions(
                 new V(1, new BooleanSetting(false))
         ));
