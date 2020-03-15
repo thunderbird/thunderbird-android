@@ -20,8 +20,6 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.TextUtils;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,8 +28,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -80,7 +78,7 @@ import static com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListen
 import static com.fsck.k9.search.LocalSearchExtensions.getAccountsFromLocalSearch;
 
 
-public class MessageListFragment extends Fragment implements OnItemClickListener,
+public class MessageListFragment extends Fragment implements OnItemClickListener, OnItemLongClickListener,
         ConfirmationDialogFragmentListener, MessageListItemActionListener {
 
     public static MessageListFragment newInstance(
@@ -171,17 +169,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private LocalBroadcastManager localBroadcastManager;
     private BroadcastReceiver cacheBroadcastReceiver;
     private IntentFilter cacheIntentFilter;
-    /**
-     * Stores the unique ID of the message the context menu was opened for.
-     *
-     * We have to save this because the message list might change between the time the menu was
-     * opened and when the user clicks on a menu item. When this happens the 'adapter position' that
-     * is accessible via the {@code ContextMenu} object might correspond to another list item and we
-     * would end up using/modifying the wrong message.
-     *
-     * The value of this field is {@code 0} when no context menu is currently open.
-     */
-    private long contextMenuUniqueId = 0;
 
 
     private MessageListViewModel getViewModel() {
@@ -293,6 +280,16 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 openMessageAtPosition(adapterPosition);
             }
         }
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        if (view == footerView) {
+            return false;
+        }
+
+        toggleMessageSelect(position);
+        return true;
     }
 
     @Override
@@ -614,8 +611,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         listView.setFastScrollEnabled(true);
         listView.setScrollingCacheEnabled(false);
         listView.setOnItemClickListener(this);
-
-        registerForContextMenu(listView);
+        listView.setOnItemLongClickListener(this);
     }
 
     public void onCompose() {
@@ -628,26 +624,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         } else {
             fragmentListener.onCompose(account);
         }
-    }
-
-    private void onReply(MessageReference messageReference) {
-        fragmentListener.onReply(messageReference);
-    }
-
-    private void onReplyAll(MessageReference messageReference) {
-        fragmentListener.onReplyAll(messageReference);
-    }
-
-    private void onForward(MessageReference messageReference) {
-        fragmentListener.onForward(messageReference);
-    }
-
-    public void onForwardAsAttachment(MessageReference messageReference) {
-        fragmentListener.onForwardAsAttachment(messageReference);
-    }
-
-    private void onResendMessage(MessageReference messageReference) {
-        fragmentListener.onResendMessage(messageReference);
     }
 
     public void changeSort(SortType sortType) {
@@ -749,10 +725,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
         changeSort(sorts[curIndex]);
-    }
-
-    private void onDelete(MessageReference message) {
-        onDelete(Collections.singletonList(message));
     }
 
     private void onDelete(List<MessageReference> messages) {
@@ -938,122 +910,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     public void onSendPendingMessages() {
         messagingController.sendPendingMessages(account, null);
-    }
-
-    @Override
-    public boolean onContextItemSelected(android.view.MenuItem item) {
-        if (contextMenuUniqueId == 0) {
-            return false;
-        }
-
-        int adapterPosition = getPositionForUniqueId(contextMenuUniqueId);
-        if (adapterPosition == AdapterView.INVALID_POSITION) {
-            return false;
-        }
-
-        int id = item.getItemId();
-        if (id == R.id.deselect || id == R.id.select) {
-            toggleMessageSelectWithAdapterPosition(adapterPosition);
-        } else if (id == R.id.reply) {
-            onReply(getMessageAtPosition(adapterPosition));
-        } else if (id == R.id.reply_all) {
-            onReplyAll(getMessageAtPosition(adapterPosition));
-        } else if (id == R.id.forward) {
-            onForward(getMessageAtPosition(adapterPosition));
-        } else if (id == R.id.forward_as_attachment) {
-            onForwardAsAttachment(getMessageAtPosition(adapterPosition));
-        } else if (id == R.id.send_again) {
-            onResendMessage(getMessageAtPosition(adapterPosition));
-            selectedCount = 0;
-        } else if (id == R.id.same_sender) {
-            MessageListItem messageListItem = adapter.getItem(adapterPosition);
-            String senderAddress = messageListItem.getSenderAddress();
-            if (senderAddress != null) {
-                fragmentListener.showMoreFromSameSender(senderAddress);
-            }
-        } else if (id == R.id.delete) {
-            MessageReference message = getMessageAtPosition(adapterPosition);
-            onDelete(message);
-        } else if (id == R.id.mark_as_read) {
-            setFlag(adapterPosition, Flag.SEEN, true);
-        } else if (id == R.id.mark_as_unread) {
-            setFlag(adapterPosition, Flag.SEEN, false);
-        } else if (id == R.id.flag) {
-            setFlag(adapterPosition, Flag.FLAGGED, true);
-        } else if (id == R.id.unflag) {
-            setFlag(adapterPosition, Flag.FLAGGED, false);
-        } else if (id == R.id.archive) {        // only if the account supports this
-            onArchive(getMessageAtPosition(adapterPosition));
-        } else if (id == R.id.spam) {
-            onSpam(getMessageAtPosition(adapterPosition));
-        } else if (id == R.id.move) {
-            onMove(getMessageAtPosition(adapterPosition));
-        } else if (id == R.id.copy) {
-            onCopy(getMessageAtPosition(adapterPosition));
-        } else if (id == R.id.debug_delete_locally) {       // debug options
-            onDebugClearLocally(getMessageAtPosition(adapterPosition));
-        }
-
-        contextMenuUniqueId = 0;
-        return true;
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-
-        AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
-        int adapterPosition = listViewToAdapterPosition(info.position);
-        MessageListItem messageListItem = adapter.getItem(adapterPosition);
-
-        getActivity().getMenuInflater().inflate(R.menu.message_list_item_context, menu);
-        menu.findItem(R.id.debug_delete_locally).setVisible(K9.DEVELOPER_MODE);
-
-        contextMenuUniqueId = messageListItem.getUniqueId();
-        Account account = messageListItem.getAccount();
-
-        String subject = messageListItem.getSubject();
-        boolean read = messageListItem.isRead();
-        boolean flagged = messageListItem.isStarred();
-
-        menu.setHeaderTitle(subject);
-
-        if (selected.contains(contextMenuUniqueId)) {
-            menu.findItem(R.id.select).setVisible(false);
-        } else {
-            menu.findItem(R.id.deselect).setVisible(false);
-        }
-
-        if (read) {
-            menu.findItem(R.id.mark_as_read).setVisible(false);
-        } else {
-            menu.findItem(R.id.mark_as_unread).setVisible(false);
-        }
-
-        if (flagged) {
-            menu.findItem(R.id.flag).setVisible(false);
-        } else {
-            menu.findItem(R.id.unflag).setVisible(false);
-        }
-
-        if (!messagingController.isCopyCapable(account)) {
-            menu.findItem(R.id.copy).setVisible(false);
-        }
-
-        if (!messagingController.isMoveCapable(account)) {
-            menu.findItem(R.id.move).setVisible(false);
-            menu.findItem(R.id.archive).setVisible(false);
-            menu.findItem(R.id.spam).setVisible(false);
-        }
-
-        if (!account.hasArchiveFolder()) {
-            menu.findItem(R.id.archive).setVisible(false);
-        }
-
-        if (!account.hasSpamFolder()) {
-            menu.findItem(R.id.spam).setVisible(false);
-        }
-
     }
 
     public void onSwipeRightToLeft(final MotionEvent e1, final MotionEvent e2) {
@@ -1590,10 +1446,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 messages);
     }
 
-    private void onDebugClearLocally(MessageReference message) {
-        messagingController.debugClearMessagesLocally(Collections.singletonList(message));
-    }
-
     /**
      * Helper method to manage the invocation of {@link #startActivityForResult(Intent, int)} for a
      * folder operation ({@link ChooseFolderActivity} activity), while saving a list of associated messages.
@@ -1646,10 +1498,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             msgList.add(message);
         }
         return messagesByAccount;
-    }
-
-    private void onSpam(MessageReference message) {
-        onSpam(Collections.singletonList(message));
     }
 
     /**
@@ -2187,12 +2035,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         void setMessageListProgressEnabled(boolean enable);
         void setMessageListProgress(int level);
         void showThread(Account account, String folderServerId, long rootId);
-        void showMoreFromSameSender(String senderAddress);
-        void onResendMessage(MessageReference message);
-        void onForward(MessageReference message);
-        void onForwardAsAttachment(MessageReference message);
-        void onReply(MessageReference message);
-        void onReplyAll(MessageReference message);
         void openMessage(MessageReference messageReference);
         void setMessageListTitle(String title);
         void onCompose(Account account);
@@ -2216,17 +2058,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private int getAdapterPositionForSelectedMessage() {
         int listViewPosition = listView.getSelectedItemPosition();
         return listViewToAdapterPosition(listViewPosition);
-    }
-
-    private int getPositionForUniqueId(long uniqueId) {
-        for (int position = 0, end = adapter.getCount(); position < end; position++) {
-            MessageListItem messageListItem = adapter.getItem(position);
-            if (messageListItem.getUniqueId() == uniqueId) {
-                return position;
-            }
-        }
-
-        return AdapterView.INVALID_POSITION;
     }
 
     private MessageReference getMessageAtPosition(int adapterPosition) {
@@ -2404,8 +2235,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         cleanupSelected(messageListItems);
         adapter.setSelected(selected);
 
-        updateContextMenu(messageListItems);
-
         adapter.setMessages(messageListItems);
 
         resetActionMode();
@@ -2427,27 +2256,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     public boolean isLoadFinished() {
         return messageListLoaded;
-    }
-
-    /**
-     * Close the context menu when the message it was opened for is no longer in the message list.
-     */
-    private void updateContextMenu(List<MessageListItem> messageListItems) {
-        if (contextMenuUniqueId == 0) {
-            return;
-        }
-
-        for (MessageListItem messageListItem : messageListItems) {
-            if (messageListItem.getUniqueId() == contextMenuUniqueId) {
-                return;
-            }
-        }
-
-        contextMenuUniqueId = 0;
-        Activity activity = getActivity();
-        if (activity != null) {
-            activity.closeContextMenu();
-        }
     }
 
     private void cleanupSelected(List<MessageListItem> messageListItems) {
