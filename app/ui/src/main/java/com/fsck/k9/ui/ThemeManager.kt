@@ -14,7 +14,7 @@ class ThemeManager(private val context: Context) {
         get() = when (K9.appTheme) {
             AppTheme.LIGHT -> Theme.LIGHT
             AppTheme.DARK -> Theme.DARK
-            AppTheme.FOLLOW_SYSTEM -> getSystemTheme()
+            AppTheme.FOLLOW_SYSTEM -> if (Build.VERSION.SDK_INT < 28) Theme.LIGHT else getSystemTheme()
         }
 
     val messageViewTheme: Theme
