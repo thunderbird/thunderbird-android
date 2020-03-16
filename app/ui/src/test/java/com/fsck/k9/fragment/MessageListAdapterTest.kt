@@ -7,6 +7,7 @@ import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.CheckBox
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.isGone
@@ -19,7 +20,6 @@ import com.fsck.k9.RobolectricTest
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.mail.Address
 import com.fsck.k9.textString
-import com.fsck.k9.ui.ContactBadge
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.messagelist.MessageListAppearance
 import com.fsck.k9.ui.messagelist.MessageListItem
@@ -525,7 +525,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
     val View.accountChipView: View get() = findViewById(R.id.account_color_chip)
     val View.starView: CheckBox get() = findViewById(R.id.star)
-    val View.contactPictureView: ContactBadge get() = findViewById(R.id.contact_badge)
+    val View.contactPictureView: ImageView get() = findViewById(R.id.contact_picture)
     val View.threadCountView: TextView get() = findViewById(R.id.thread_count)
     val View.firstLineView: TextView get() = findViewById(R.id.subject)
     val View.secondLineView: TextView get() = findViewById(R.id.preview)

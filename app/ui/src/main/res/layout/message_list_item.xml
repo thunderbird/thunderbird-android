@@ -7,8 +7,8 @@
               android:layout_gravity="center_vertical"
         >
 
-    <com.fsck.k9.ui.ContactBadge
-            android:id="@+id/contact_badge"
+    <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/contact_picture"
             android:layout_marginRight="10dp"
             android:layout_marginTop="4dip"
             android:layout_marginBottom="3dip"

@@ -17,6 +17,7 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
@@ -24,7 +25,6 @@ import com.fsck.k9.FontSizes
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.mail.Address
-import com.fsck.k9.ui.ContactBadge
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.messagelist.MessageListAppearance
 import com.fsck.k9.ui.messagelist.MessageListItem
@@ -105,7 +105,7 @@ class MessageListAdapter internal constructor(
 
         val holder = MessageViewHolder(view)
 
-        holder.contactBadge.isVisible = appearance.showContactPicture
+        holder.contactPicture.isVisible = appearance.showContactPicture
         holder.chip.isVisible = appearance.showAccountChip
 
         appearance.fontSizes.setViewTextSize(holder.subject, subjectViewFontSize)
@@ -148,8 +148,8 @@ class MessageListAdapter internal constructor(
                 holder.flagged.isChecked = isStarred
             }
             holder.position = position
-            if (holder.contactBadge.isVisible) {
-                updateContactBadge(holder.contactBadge, counterPartyAddress)
+            if (holder.contactPicture.isVisible) {
+                setContactPicture(holder.contactPicture, counterPartyAddress)
             }
             setBackgroundColor(view, isSelected, isRead, isActive)
             updateWithThreadCount(holder, displayThreadCount)
@@ -223,19 +223,11 @@ class MessageListAdapter internal constructor(
         }
     }
 
-    private fun updateContactBadge(contactBadge: ContactBadge, counterpartyAddress: Address?) {
+    private fun setContactPicture(contactPictureView: ImageView, counterpartyAddress: Address?) {
         if (counterpartyAddress != null) {
-            contactBadge.setContact(counterpartyAddress)
-            /*
-                     * At least in Android 2.2 a different background + padding is used when no
-                     * email address is available. ListView reuses the views but ContactBadge
-                     * doesn't reset the padding, so we do it ourselves.
-                     */
-            contactBadge.setPadding(0, 0, 0, 0)
-            contactsPictureLoader.setContactPicture(contactBadge, counterpartyAddress)
+            contactsPictureLoader.setContactPicture(contactPictureView, counterpartyAddress)
         } else {
-            contactBadge.assignContactUri(null)
-            contactBadge.setImageResource(R.drawable.ic_contact_picture)
+            contactPictureView.setImageResource(R.drawable.ic_contact_picture)
         }
     }
 
