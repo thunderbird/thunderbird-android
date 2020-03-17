@@ -14,6 +14,7 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
@@ -67,6 +68,12 @@ class MessageListAdapter internal constructor(
             appearance.fontSizes.messageListSubject
         }
 
+    private val flagClickListener = OnClickListener { view: View ->
+        val messageViewHolder = view.tag as MessageViewHolder
+        val messageListItem = getItem(messageViewHolder.position)
+        listItemListener.toggleMessageFlag(messageListItem)
+    }
+
     private fun recipientSigil(toMe: Boolean, ccMe: Boolean): String {
         return if (toMe) {
             res.getString(R.string.messagelist_sent_to_me_sigil)
@@ -96,7 +103,7 @@ class MessageListAdapter internal constructor(
     private fun newView(parent: ViewGroup?): View {
         val view = layoutInflater.inflate(R.layout.message_list_item, parent, false)
 
-        val holder = MessageViewHolder(view, listItemListener)
+        val holder = MessageViewHolder(view)
 
         holder.contactBadge.isVisible = appearance.showContactPicture
         holder.chip.isVisible = appearance.showAccountChip
@@ -111,7 +118,8 @@ class MessageListAdapter internal constructor(
         appearance.fontSizes.setViewTextSize(holder.threadCount, appearance.fontSizes.messageListSubject) // thread count is next to subject
 
         holder.flagged.isVisible = appearance.stars
-        holder.flagged.setOnClickListener(holder)
+        holder.flagged.tag = holder
+        holder.flagged.setOnClickListener(flagClickListener)
 
         view.tag = holder
 
@@ -282,5 +290,5 @@ class MessageListAdapter internal constructor(
 }
 
 interface MessageListItemActionListener {
-    fun toggleMessageFlagWithAdapterPosition(position: Int)
+    fun toggleMessageFlag(item: MessageListItem)
 }

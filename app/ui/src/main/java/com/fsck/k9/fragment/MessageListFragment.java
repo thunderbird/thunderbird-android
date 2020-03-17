@@ -1184,11 +1184,9 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     @Override
-    public void toggleMessageFlagWithAdapterPosition(int adapterPosition) {
-        MessageListItem messageListItem = adapter.getItem(adapterPosition);
+    public void toggleMessageFlag(MessageListItem messageListItem) {
         boolean flagged = messageListItem.isStarred();
-
-        setFlag(adapterPosition,Flag.FLAGGED, !flagged);
+        setFlag(messageListItem, Flag.FLAGGED, !flagged);
     }
 
     private void toggleMessageSelectWithAdapterPosition(int adapterPosition) {
@@ -1271,12 +1269,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         actionModeCallback.showFlag(isBatchFlag);
     }
 
-    private void setFlag(int adapterPosition, final Flag flag, final boolean newState) {
-        if (adapterPosition == AdapterView.INVALID_POSITION) {
-            return;
-        }
-
-        MessageListItem messageListItem = adapter.getItem(adapterPosition);
+    private void setFlag(MessageListItem messageListItem, final Flag flag, final boolean newState) {
         Account account = messageListItem.getAccount();
 
         if (showingThreadedList && messageListItem.getThreadCount() > 1) {
@@ -2082,7 +2075,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         } else if (flag == Flag.FLAGGED) {
             flagState = messageListItem.isStarred();
         }
-        setFlag(adapterPosition, flag, !flagState);
+        setFlag(messageListItem, flag, !flagState);
     }
 
     public void onMove() {
