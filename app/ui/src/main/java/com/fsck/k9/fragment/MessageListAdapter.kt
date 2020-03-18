@@ -71,7 +71,14 @@ class MessageListAdapter internal constructor(
     private val flagClickListener = OnClickListener { view: View ->
         val messageViewHolder = view.tag as MessageViewHolder
         val messageListItem = getItem(messageViewHolder.position)
-        listItemListener.toggleMessageFlag(messageListItem)
+        listItemListener.onToggleMessageFlag(messageListItem)
+    }
+
+    private val contactPictureClickListener = OnClickListener { view: View ->
+        val parentView = view.parent.parent as View
+        val messageViewHolder = parentView.tag as MessageViewHolder
+        val messageListItem = getItem(messageViewHolder.position)
+        listItemListener.onToggleMessageSelection(messageListItem)
     }
 
     private fun recipientSigil(toMe: Boolean, ccMe: Boolean): String {
@@ -105,7 +112,9 @@ class MessageListAdapter internal constructor(
 
         val holder = MessageViewHolder(view)
 
-        holder.contactPicture.isVisible = appearance.showContactPicture
+        view.findViewById<View>(R.id.contact_picture_container).isVisible = appearance.showContactPicture
+        holder.contactPicture.setOnClickListener(contactPictureClickListener)
+
         holder.chip.isVisible = appearance.showAccountChip
 
         appearance.fontSizes.setViewTextSize(holder.subject, subjectViewFontSize)
@@ -132,6 +141,16 @@ class MessageListAdapter internal constructor(
 
         val holder = view.tag as MessageViewHolder
 
+        if (appearance.showContactPicture) {
+            if (isSelected) {
+                holder.contactPicture.isVisible = false
+                holder.selected.isVisible = true
+            } else {
+                holder.selected.isVisible = false
+                holder.contactPicture.isVisible = true
+            }
+        }
+
         with(message) {
             val maybeBoldTypeface = if (isRead) Typeface.NORMAL else Typeface.BOLD
             val displayDate = DateUtils.getRelativeTimeSpanString(context, messageDate)
@@ -148,7 +167,7 @@ class MessageListAdapter internal constructor(
                 holder.flagged.isChecked = isStarred
             }
             holder.position = position
-            if (holder.contactPicture.isVisible) {
+            if (appearance.showContactPicture && holder.contactPicture.isVisible) {
                 setContactPicture(holder.contactPicture, counterPartyAddress)
             }
             setBackgroundColor(view, isSelected, isRead, isActive)
@@ -282,5 +301,6 @@ class MessageListAdapter internal constructor(
 }
 
 interface MessageListItemActionListener {
-    fun toggleMessageFlag(item: MessageListItem)
+    fun onToggleMessageSelection(item: MessageListItem)
+    fun onToggleMessageFlag(item: MessageListItem)
 }

@@ -7,7 +7,6 @@ import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.CheckBox
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.isGone
@@ -105,7 +104,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView()
 
-        assertTrue(view.contactPictureView.isGone)
+        assertTrue(view.contactPictureContainerView.isGone)
     }
 
     @Test
@@ -114,7 +113,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView()
 
-        assertTrue(view.contactPictureView.isVisible)
+        assertTrue(view.contactPictureContainerView.isVisible)
     }
 
     @Test
@@ -525,7 +524,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
     val View.accountChipView: View get() = findViewById(R.id.account_color_chip)
     val View.starView: CheckBox get() = findViewById(R.id.star)
-    val View.contactPictureView: ImageView get() = findViewById(R.id.contact_picture)
+    val View.contactPictureContainerView: View get() = findViewById(R.id.contact_picture_container)
     val View.threadCountView: TextView get() = findViewById(R.id.thread_count)
     val View.firstLineView: TextView get() = findViewById(R.id.subject)
     val View.secondLineView: TextView get() = findViewById(R.id.preview)
