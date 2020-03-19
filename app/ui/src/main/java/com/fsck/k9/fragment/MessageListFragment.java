@@ -69,6 +69,8 @@ import com.fsck.k9.ui.messagelist.MessageListViewModel;
 
 import net.jcip.annotations.GuardedBy;
 
+import org.jetbrains.annotations.NotNull;
+
 import timber.log.Timber;
 
 import static com.fsck.k9.Account.Expunge.EXPUNGE_MANUALLY;
@@ -1180,17 +1182,22 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             return;
         }
 
-        toggleMessageSelectWithAdapterPosition(adapterPosition);
+        MessageListItem messageListItem = adapter.getItem(adapterPosition);
+        toggleMessageSelect(messageListItem);
     }
 
     @Override
-    public void toggleMessageFlag(MessageListItem messageListItem) {
+    public void onToggleMessageSelection(@NotNull MessageListItem messageListItem) {
+        toggleMessageSelect(messageListItem);
+    }
+
+    @Override
+    public void onToggleMessageFlag(MessageListItem messageListItem) {
         boolean flagged = messageListItem.isStarred();
         setFlag(messageListItem, Flag.FLAGGED, !flagged);
     }
 
-    private void toggleMessageSelectWithAdapterPosition(int adapterPosition) {
-        MessageListItem messageListItem = adapter.getItem(adapterPosition);
+    private void toggleMessageSelect(MessageListItem messageListItem) {
         long uniqueId = messageListItem.getUniqueId();
 
         boolean selected = this.selected.contains(uniqueId);

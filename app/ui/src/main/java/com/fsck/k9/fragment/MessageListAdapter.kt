@@ -17,6 +17,7 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
@@ -24,7 +25,6 @@ import com.fsck.k9.FontSizes
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.mail.Address
-import com.fsck.k9.ui.ContactBadge
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.messagelist.MessageListAppearance
 import com.fsck.k9.ui.messagelist.MessageListItem
@@ -71,7 +71,14 @@ class MessageListAdapter internal constructor(
     private val flagClickListener = OnClickListener { view: View ->
         val messageViewHolder = view.tag as MessageViewHolder
         val messageListItem = getItem(messageViewHolder.position)
-        listItemListener.toggleMessageFlag(messageListItem)
+        listItemListener.onToggleMessageFlag(messageListItem)
+    }
+
+    private val contactPictureClickListener = OnClickListener { view: View ->
+        val parentView = view.parent.parent as View
+        val messageViewHolder = parentView.tag as MessageViewHolder
+        val messageListItem = getItem(messageViewHolder.position)
+        listItemListener.onToggleMessageSelection(messageListItem)
     }
 
     private fun recipientSigil(toMe: Boolean, ccMe: Boolean): String {
@@ -105,7 +112,9 @@ class MessageListAdapter internal constructor(
 
         val holder = MessageViewHolder(view)
 
-        holder.contactBadge.isVisible = appearance.showContactPicture
+        view.findViewById<View>(R.id.contact_picture_container).isVisible = appearance.showContactPicture
+        holder.contactPicture.setOnClickListener(contactPictureClickListener)
+
         holder.chip.isVisible = appearance.showAccountChip
 
         appearance.fontSizes.setViewTextSize(holder.subject, subjectViewFontSize)
@@ -132,6 +141,16 @@ class MessageListAdapter internal constructor(
 
         val holder = view.tag as MessageViewHolder
 
+        if (appearance.showContactPicture) {
+            if (isSelected) {
+                holder.contactPicture.isVisible = false
+                holder.selected.isVisible = true
+            } else {
+                holder.selected.isVisible = false
+                holder.contactPicture.isVisible = true
+            }
+        }
+
         with(message) {
             val maybeBoldTypeface = if (isRead) Typeface.NORMAL else Typeface.BOLD
             val displayDate = DateUtils.getRelativeTimeSpanString(context, messageDate)
@@ -148,8 +167,8 @@ class MessageListAdapter internal constructor(
                 holder.flagged.isChecked = isStarred
             }
             holder.position = position
-            if (holder.contactBadge.isVisible) {
-                updateContactBadge(holder.contactBadge, counterPartyAddress)
+            if (appearance.showContactPicture && holder.contactPicture.isVisible) {
+                setContactPicture(holder.contactPicture, counterPartyAddress)
             }
             setBackgroundColor(view, isSelected, isRead, isActive)
             updateWithThreadCount(holder, displayThreadCount)
@@ -223,19 +242,11 @@ class MessageListAdapter internal constructor(
         }
     }
 
-    private fun updateContactBadge(contactBadge: ContactBadge, counterpartyAddress: Address?) {
+    private fun setContactPicture(contactPictureView: ImageView, counterpartyAddress: Address?) {
         if (counterpartyAddress != null) {
-            contactBadge.setContact(counterpartyAddress)
-            /*
-                     * At least in Android 2.2 a different background + padding is used when no
-                     * email address is available. ListView reuses the views but ContactBadge
-                     * doesn't reset the padding, so we do it ourselves.
-                     */
-            contactBadge.setPadding(0, 0, 0, 0)
-            contactsPictureLoader.setContactPicture(contactBadge, counterpartyAddress)
+            contactsPictureLoader.setContactPicture(contactPictureView, counterpartyAddress)
         } else {
-            contactBadge.assignContactUri(null)
-            contactBadge.setImageResource(R.drawable.ic_contact_picture)
+            contactPictureView.setImageResource(R.drawable.ic_contact_picture)
         }
     }
 
@@ -290,5 +301,6 @@ class MessageListAdapter internal constructor(
 }
 
 interface MessageListItemActionListener {
-    fun toggleMessageFlag(item: MessageListItem)
+    fun onToggleMessageSelection(item: MessageListItem)
+    fun onToggleMessageFlag(item: MessageListItem)
 }

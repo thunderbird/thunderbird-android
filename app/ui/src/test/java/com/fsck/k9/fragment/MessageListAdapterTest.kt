@@ -19,7 +19,6 @@ import com.fsck.k9.RobolectricTest
 import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.mail.Address
 import com.fsck.k9.textString
-import com.fsck.k9.ui.ContactBadge
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.messagelist.MessageListAppearance
 import com.fsck.k9.ui.messagelist.MessageListItem
@@ -105,7 +104,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView()
 
-        assertTrue(view.contactPictureView.isGone)
+        assertTrue(view.contactPictureContainerView.isGone)
     }
 
     @Test
@@ -114,7 +113,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
         val view = adapter.createAndBindView()
 
-        assertTrue(view.contactPictureView.isVisible)
+        assertTrue(view.contactPictureContainerView.isVisible)
     }
 
     @Test
@@ -525,7 +524,7 @@ class MessageListAdapterTest : RobolectricTest() {
 
     val View.accountChipView: View get() = findViewById(R.id.account_color_chip)
     val View.starView: CheckBox get() = findViewById(R.id.star)
-    val View.contactPictureView: ContactBadge get() = findViewById(R.id.contact_badge)
+    val View.contactPictureContainerView: View get() = findViewById(R.id.contact_picture_container)
     val View.threadCountView: TextView get() = findViewById(R.id.thread_count)
     val View.firstLineView: TextView get() = findViewById(R.id.subject)
     val View.secondLineView: TextView get() = findViewById(R.id.preview)
