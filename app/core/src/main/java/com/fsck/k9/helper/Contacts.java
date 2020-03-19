@@ -200,24 +200,10 @@ public class Contacts {
 
     /**
      * Mark contacts with the provided email addresses as contacted.
-     *
-     * @param addresses Array of {@link Address} objects describing the
-     *        contacts to be marked as contacted.
      */
     public void markAsContacted(final Address[] addresses) {
-        //TODO: Optimize! Potentially a lot of database queries
-        for (final Address address : addresses) {
-            final Cursor c = getContactByAddress(address.getAddress());
-
-            if (c != null) {
-                if (c.getCount() > 0) {
-                    c.moveToFirst();
-                    final long personId = c.getLong(CONTACT_ID_INDEX);
-                    ContactsContract.Contacts.markAsContacted(mContentResolver, personId);
-                }
-                c.close();
-            }
-        }
+        //TODO: Keep track of this information in a local database. Then use this information when sorting contacts for
+        // auto-completion.
     }
 
     /**
