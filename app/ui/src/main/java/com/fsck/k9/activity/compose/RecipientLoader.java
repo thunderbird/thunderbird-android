@@ -290,11 +290,8 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
     }
 
     private boolean hasContactPermission() {
-        boolean canRead = ContextCompat.checkSelfPermission(getContext(),
+        return ContextCompat.checkSelfPermission(getContext(),
                 Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
-        boolean canWrite = ContextCompat.checkSelfPermission(getContext(),
-                Manifest.permission.WRITE_CONTACTS) == PackageManager.PERMISSION_GRANTED;
-        return  canRead && canWrite;
     }
 
     private Cursor getNicknameCursor(String nickname) {
