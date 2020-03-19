@@ -972,6 +972,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         } else if (id == R.id.forward_as_attachment) {
             messageViewFragment.onForwardAsAttachment();
             return true;
+        } else if (id == R.id.edit_as_new_message) {
+            messageViewFragment.onEditAsNewMessage();
+            return true;
         } else if (id == R.id.share) {
             messageViewFragment.onSendAlternate();
             return true;
@@ -1259,6 +1262,11 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     @Override
     public void onForwardAsAttachment(MessageReference messageReference, Parcelable decryptionResultForReply) {
         MessageActions.actionForwardAsAttachment(this, messageReference, decryptionResultForReply);
+    }
+
+    @Override
+    public void onEditAsNewMessage(MessageReference messageReference) {
+        MessageActions.actionEditDraft(this, messageReference);
     }
 
     @Override
