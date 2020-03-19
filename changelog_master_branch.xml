@@ -8,6 +8,14 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.708" versioncode="27008">
+        <change>Long-press on message in message list now selects the message</change>
+        <change>Click on contact picture in message list now selects the message</change>
+        <change>Fixed bug that disabled auto-completion when composing messages</change>
+        <change>Fixed dark/light theme issues</change>
+        <change>Removed 'Gestures' setting</change>
+        <change>Renamed "send again" to "edit as new message"</change>
+    </release>
     <release version="5.707" versioncode="27007">
         <change>Fixed a bug in the new 'back button opens default folder' code</change>
         <change>Fixed a crash on Android 5.x devices with old WebView versions</change>
