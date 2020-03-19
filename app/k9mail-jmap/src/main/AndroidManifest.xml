@@ -18,9 +18,6 @@
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
 
-    <!-- Needed to mark a contact as contacted -->
-    <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.VIBRATE"/>

@@ -20,7 +20,6 @@ import timber.log.Timber;
 
 public abstract class K9Activity extends AppCompatActivity {
     public static final int PERMISSIONS_REQUEST_READ_CONTACTS  = 1;
-    public static final int PERMISSIONS_REQUEST_WRITE_CONTACTS = 2;
     private static final String FRAGMENT_TAG_RATIONALE = "rationale";
 
 
@@ -85,12 +84,6 @@ public abstract class K9Activity extends AppCompatActivity {
         READ_CONTACTS(
                 Manifest.permission.READ_CONTACTS,
                 PERMISSIONS_REQUEST_READ_CONTACTS,
-                R.string.permission_contacts_rationale_title,
-                R.string.permission_contacts_rationale_message
-        ),
-        WRITE_CONTACTS(
-                Manifest.permission.WRITE_CONTACTS,
-                PERMISSIONS_REQUEST_WRITE_CONTACTS,
                 R.string.permission_contacts_rationale_title,
                 R.string.permission_contacts_rationale_message
         );
