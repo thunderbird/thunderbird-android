@@ -24,6 +24,7 @@ import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.DefaultBodyFactory;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.MimeType;
 import com.fsck.k9.mail.Multipart;
 import com.fsck.k9.mail.Part;
 import org.apache.commons.io.IOUtils;
@@ -176,7 +177,7 @@ public class MimeMessage extends Message {
     @Override
     public String getContentType() {
         String contentType = getFirstHeader(MimeHeader.HEADER_CONTENT_TYPE);
-        return (contentType == null) ? "text/plain" : contentType;
+        return (contentType == null) ? DEFAULT_MIME_TYPE : contentType;
     }
 
     @Override
@@ -191,7 +192,9 @@ public class MimeMessage extends Message {
 
     @Override
     public String getMimeType() {
-        return MimeUtility.getHeaderParameter(getContentType(), null);
+        String mimeTypeFromHeader = MimeUtility.getHeaderParameter(getContentType(), null);
+        MimeType mimeType = MimeType.parseOrNull(mimeTypeFromHeader);
+        return mimeType != null ? mimeType.toString() : DEFAULT_MIME_TYPE;
     }
 
     @Override

@@ -18,6 +18,7 @@ import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.MimeType;
 import com.fsck.k9.mail.internet.AddressHeaderBuilder;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.message.MessageHeaderParser;
@@ -119,7 +120,8 @@ public class LocalMessage extends MimeMessage {
         setFlagInternal(Flag.FORWARDED, forwarded);
 
         setMessagePartId(cursor.getLong(LocalStore.MSG_INDEX_MESSAGE_PART_ID));
-        mimeType = cursor.getString(LocalStore.MSG_INDEX_MIME_TYPE);
+        MimeType mimeType = MimeType.parseOrNull(cursor.getString(LocalStore.MSG_INDEX_MIME_TYPE));
+        this.mimeType = mimeType != null ? mimeType.toString() : DEFAULT_MIME_TYPE;
 
         byte[] header = cursor.getBlob(LocalStore.MSG_INDEX_HEADER_DATA);
         if (header != null) {
