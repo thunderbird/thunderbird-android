@@ -15,6 +15,8 @@ import timber.log.Timber;
 
 
 public abstract class Message implements Part, Body {
+    protected static final String DEFAULT_MIME_TYPE = "text/plain";
+
 
     public enum RecipientType {
         TO, CC, BCC, X_ORIGINAL_TO, DELIVERED_TO, X_ENVELOPE_TO
