@@ -8,7 +8,7 @@ import java.util.UUID
 class MessageIdGenerator(private val uuidGenerator: UuidGenerator) {
     fun generateMessageId(message: Message): String {
         val uuid = uuidGenerator.randomUuid()
-        val hostname = message.from.firstHostname ?: message.replyTo.firstHostname ?: "email.android.com"
+        val hostname = message.from.firstHostname ?: message.replyTo.firstHostname ?: "fallback.k9mail.app"
 
         return "<$uuid@$hostname>"
     }

@@ -43,6 +43,6 @@ public class MessageIdGeneratorTest {
         
         String result = messageIdGenerator.generateMessageId(message);
         
-        assertEquals("<00000000-0000-4000-0000-000000000000@email.android.com>", result);
+        assertEquals("<00000000-0000-4000-0000-000000000000@fallback.k9mail.app>", result);
     }
 }
