@@ -4,7 +4,7 @@ package com.fsck.k9.mail.internet;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 import com.fsck.k9.mail.Message;
-import org.junit.Before;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -13,18 +13,8 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(K9LibRobolectricTestRunner.class)
 public class MessageIdGeneratorTest {
-    private MessageIdGenerator messageIdGenerator;
+    private MessageIdGenerator messageIdGenerator = new MessageIdGenerator(() -> "00000000-0000-4000-0000-000000000000");
 
-    
-    @Before
-    public void setUp() throws Exception {
-        messageIdGenerator = new MessageIdGenerator() {
-            @Override
-            protected String generateUuid() {
-                return "00000000-0000-4000-0000-000000000000";
-            }
-        };
-    }
 
     @Test
     public void generateMessageId_withFromAndReplyToAddress() throws Exception {
