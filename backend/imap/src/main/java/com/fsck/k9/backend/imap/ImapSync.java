@@ -35,6 +35,8 @@ import timber.log.Timber;
 
 
 class ImapSync {
+    private static final String EXTRA_UID_VALIDITY = "imapUidValidity";
+
     private final String accountName;
     private final BackendStorage backendStorage;
     private final ImapStore imapStore;
@@ -60,15 +62,6 @@ class ImapSync {
             backendFolder = backendStorage.getFolder(folder);
 
             listener.syncStarted(folder);
-
-            /*
-             * Get the message list from the local store and create an index of
-             * the uids within the list.
-             */
-
-            Long lastUid = backendFolder.getLastUid();
-
-            Map<String, Long> localUidMap = backendFolder.getAllMessagesAndEffectiveDates();
 
             Timber.v("SYNC: About to get remote folder %s", folder);
             remoteFolder = imapStore.getFolder(folder);
@@ -103,6 +96,26 @@ class ImapSync {
             remoteFolder.open(ImapFolder.OPEN_MODE_RO);
 
             listener.syncAuthenticationSuccess();
+
+            Long uidValidity = remoteFolder.getUidValidity();
+            Long oldUidValidity = backendFolder.getFolderExtraNumber(EXTRA_UID_VALIDITY);
+            if (oldUidValidity == null && uidValidity != null) {
+                Timber.d("SYNC: Saving UIDVALIDITY for %s", folder);
+                backendFolder.setFolderExtraNumber(EXTRA_UID_VALIDITY, uidValidity);
+            } else if (oldUidValidity != null && !oldUidValidity.equals(uidValidity)) {
+                Timber.d("SYNC: UIDVALIDITY for %s changed; clearing local message cache", folder);
+                backendFolder.clearAllMessages();
+                backendFolder.setFolderExtraNumber(EXTRA_UID_VALIDITY, uidValidity);
+            }
+
+            /*
+             * Get the message list from the local store and create an index of
+             * the uids within the list.
+             */
+
+            Long lastUid = backendFolder.getLastUid();
+
+            Map<String, Long> localUidMap = backendFolder.getAllMessagesAndEffectiveDates();
 
             /*
              * Get the remote message count.

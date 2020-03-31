@@ -30,7 +30,6 @@ import timber.log.Timber;
 
 /**
  * <pre>
- * TODO Need to start keeping track of UIDVALIDITY
  * TODO Need a default response handler for things like folder updates
  * </pre>
  */
