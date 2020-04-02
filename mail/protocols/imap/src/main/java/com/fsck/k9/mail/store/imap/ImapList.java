@@ -42,6 +42,24 @@ class ImapList extends ArrayList<Object> {
         return inRange(index) && get(index) instanceof String;
     }
 
+    public boolean isLong(int index) {
+        if (!inRange(index)) {
+            return false;
+        }
+
+        Object value = get(index);
+        if (!(value instanceof String)) {
+            return false;
+        }
+
+        try {
+            Long.parseLong((String) value);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
     public long getLong(int index) {
         return Long.parseLong(getString(index));
     }

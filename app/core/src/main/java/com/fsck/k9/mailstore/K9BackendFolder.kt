@@ -93,6 +93,11 @@ class K9BackendFolder(
         localFolder.destroyMessages(localMessages)
     }
 
+    override fun clearAllMessages() {
+        val messageServerIds = getMessageServerIds().toList()
+        destroyMessages(messageServerIds)
+    }
+
     override fun getMoreMessages(): MoreMessages {
         val moreMessages = database.getString(column = "more_messages") ?: "unknown"
         return moreMessages.toMoreMessages()

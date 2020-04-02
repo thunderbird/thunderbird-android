@@ -45,8 +45,10 @@ import static org.mockito.Mockito.when;
 
 @SuppressWarnings("unchecked")
 public class ImapSyncTest {
+    private static final String EXTRA_UID_VALIDITY = "imapUidValidity";
     private static final String ACCOUNT_NAME = "Account";
     private static final String FOLDER_NAME = "Folder";
+    private static final Long FOLDER_UID_VALIDITY = 42L;
     private static final int MAXIMUM_SMALL_MESSAGE_SIZE = 1000;
     private static final String MESSAGE_UID1 = "message-uid1";
     private static final int DEFAULT_VISIBLE_LIMIT = 25;
@@ -248,6 +250,35 @@ public class ImapSyncTest {
         assertEquals(FetchProfile.Item.BODY_SANE, fetchProfileCaptor.getAllValues().get(3).get(0));
     }
 
+    @Test
+    public void sync_withUidValidityChange_shouldClearAllMessages() {
+        when(backendFolder.getFolderExtraNumber(EXTRA_UID_VALIDITY)).thenReturn(23L);
+
+        imapSync.sync(FOLDER_NAME, syncConfig, listener);
+
+        verify(backendFolder).clearAllMessages();
+        verify(backendFolder).setFolderExtraNumber(EXTRA_UID_VALIDITY, FOLDER_UID_VALIDITY);
+    }
+
+    @Test
+    public void sync_withoutUidValidityChange_shouldNotClearAllMessages() {
+        when(backendFolder.getFolderExtraNumber(EXTRA_UID_VALIDITY)).thenReturn(FOLDER_UID_VALIDITY);
+
+        imapSync.sync(FOLDER_NAME, syncConfig, listener);
+
+        verify(backendFolder, never()).clearAllMessages();
+    }
+
+    @Test
+    public void sync_withFirstUidValidityValue_shouldNotClearAllMessages() {
+        when(backendFolder.getFolderExtraNumber(EXTRA_UID_VALIDITY)).thenReturn(null);
+
+        imapSync.sync(FOLDER_NAME, syncConfig, listener);
+
+        verify(backendFolder, never()).clearAllMessages();
+        verify(backendFolder).setFolderExtraNumber(EXTRA_UID_VALIDITY, FOLDER_UID_VALIDITY);
+    }
+
     private void respondToFetchEnvelopesWithMessage(final ImapMessage message) throws MessagingException {
         doAnswer(new Answer() {
             @Override
@@ -315,6 +346,7 @@ public class ImapSyncTest {
     private void configureRemoteStoreWithFolder() {
         when(remoteStore.getFolder(FOLDER_NAME)).thenReturn(remoteFolder);
         when(remoteFolder.getServerId()).thenReturn(FOLDER_NAME);
+        when(remoteFolder.getUidValidity()).thenReturn(FOLDER_UID_VALIDITY);
     }
 
     private void configureBackendStorage() {

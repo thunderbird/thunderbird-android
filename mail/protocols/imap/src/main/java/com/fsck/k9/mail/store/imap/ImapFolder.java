@@ -67,6 +67,7 @@ public class ImapFolder {
     private volatile boolean exists;
     private boolean inSearch = false;
     private boolean canCreateKeywords = false;
+    private Long uidValidity = null;
 
 
     public ImapFolder(ImapStore store, String name) {
@@ -86,6 +87,14 @@ public class ImapFolder {
 
     public void setType(FolderType type) {
         this.type = type;
+    }
+
+    public Long getUidValidity() {
+        if (!isOpen()) {
+            throw new IllegalStateException("ImapFolder needs to be open");
+        }
+
+        return uidValidity;
     }
 
     private String getPrefixedName() throws MessagingException {
@@ -164,6 +173,7 @@ public class ImapFolder {
             this.mode = mode;
 
             for (ImapResponse response : responses) {
+                extractUidValidity(response);
                 handlePermanentFlags(response);
             }
 
@@ -177,6 +187,13 @@ public class ImapFolder {
         } catch (MessagingException me) {
             Timber.e(me, "Unable to open connection for %s", getLogId());
             throw me;
+        }
+    }
+
+    private void extractUidValidity(ImapResponse response) {
+        UidValidityResponse uidValidityResponse = UidValidityResponse.parse(response);
+        if (uidValidityResponse != null) {
+            uidValidity = uidValidityResponse.getUidValidity();
         }
     }
 

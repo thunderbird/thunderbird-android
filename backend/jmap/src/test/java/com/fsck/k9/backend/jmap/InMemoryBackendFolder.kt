@@ -67,6 +67,10 @@ class InMemoryBackendFolder(override var name: String, var type: FolderType) : B
         }
     }
 
+    override fun clearAllMessages() {
+        destroyMessages(messages.keys.toList())
+    }
+
     override fun getLastUid(): Long? {
         throw UnsupportedOperationException("not implemented")
     }
