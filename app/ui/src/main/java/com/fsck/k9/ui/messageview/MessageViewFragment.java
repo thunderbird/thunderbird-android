@@ -6,6 +6,7 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.app.DownloadManager;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -822,7 +823,11 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         intent.putExtra(Intent.EXTRA_TITLE, attachment.displayName);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
 
-        startActivityForResult(intent, REQUEST_CODE_CREATE_DOCUMENT);
+        try {
+            startActivityForResult(intent, REQUEST_CODE_CREATE_DOCUMENT);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(requireContext(), R.string.error_activity_not_found, Toast.LENGTH_LONG).show();
+        }
     }
 
     private AttachmentController getAttachmentController(AttachmentViewInfo attachment) {
