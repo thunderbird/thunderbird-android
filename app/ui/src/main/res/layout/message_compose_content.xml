@@ -43,16 +43,6 @@
             android:layout_height="1dp"
             android:background="?android:attr/listDivider" />
 
-        <!--
-            Empty container for storing attachments. We'll stick
-            instances of message_compose_attachment.xml in here.
-        -->
-        <LinearLayout
-            android:id="@+id/attachments"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
-
         <!-- We have to use "wrap_content" (not "0dip") for "layout_height", otherwise the
              EditText won't properly grow in height while the user is typing the message -->
         <view
@@ -148,6 +138,18 @@
             android:hint="@string/message_compose_signature_hint"
             android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
             android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <!--
+            Empty container for storing attachments. We'll stick
+            instances of message_compose_attachment.xml in here.
+        -->
+        <LinearLayout
+            android:id="@+id/attachments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical" />
 
     </LinearLayout>
 

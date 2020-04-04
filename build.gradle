@@ -20,6 +20,7 @@ buildscript {
                 'androidxFragment': '1.2.1',
                 'androidxLocalBroadcastManager': '1.0.0',
                 'androidxCore': '1.2.0',
+                'androidxCardView': '1.0.0',
                 'materialComponents': '1.1.0',
                 'preferencesFix': '1.1.0',
                 'okio': '2.4.3',

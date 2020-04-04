@@ -86,6 +86,7 @@
         <attr name="messageViewBackgroundColor" format="reference|color"/>
         <attr name="messageViewAttachmentBackground" format="reference"/>
         <attr name="messageComposeAddContactImage" format="reference"/>
+        <attr name="attachmentCardBackground" format="reference|color"/>
         <attr name="composerBackgroundColor" format="color"/>
         <attr name="contactPictureFallbackDefaultBackgroundColor" format="reference|color"/>
         <attr name="contactTokenBackgroundColor" format="reference|color"/>
