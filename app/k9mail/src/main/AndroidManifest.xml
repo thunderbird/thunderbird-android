@@ -361,14 +361,6 @@
             android:enabled="true"/>
 
         <service
-            android:name=".service.PushService"
-            android:enabled="true"/>
-
-        <service
-            android:name=".service.SleepService"
-            android:enabled="true"/>
-
-        <service
             android:name=".service.DatabaseUpgradeService"
             android:exported="false"/>
 

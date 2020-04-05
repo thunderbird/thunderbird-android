@@ -9,8 +9,6 @@ import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Part
-import com.fsck.k9.mail.PushReceiver
-import com.fsck.k9.mail.Pusher
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.OkHttpClient
 import rs.ltt.jmap.client.JmapClient
@@ -119,10 +117,6 @@ class JmapBackend(
 
     override fun uploadMessage(folderServerId: String, message: Message): String? {
         return commandUpload.uploadMessage(folderServerId, message)
-    }
-
-    override fun createPusher(receiver: PushReceiver): Pusher {
-        throw UnsupportedOperationException("not implemented")
     }
 
     override fun checkIncomingServerSettings() {

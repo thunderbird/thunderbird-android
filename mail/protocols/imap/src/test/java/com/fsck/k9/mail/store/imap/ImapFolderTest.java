@@ -967,28 +967,6 @@ public class ImapFolderTest {
     }
 
     @Test
-    public void getNewPushState_withNewerUid_shouldReturnNewPushState() throws Exception {
-        ImapFolder folder = createFolder("Folder");
-        prepareImapFolderForOpen(OPEN_MODE_RW);
-        ImapMessage message = createImapMessage("2");
-
-        String newPushState = folder.getNewPushState("uidNext=2", message);
-
-        assertEquals("uidNext=3", newPushState);
-    }
-
-    @Test
-    public void getNewPushState_withoutNewerUid_shouldReturnNull() throws Exception {
-        ImapFolder folder = createFolder("Folder");
-        prepareImapFolderForOpen(OPEN_MODE_RW);
-        ImapMessage message = createImapMessage("1");
-
-        String newPushState = folder.getNewPushState("uidNext=2", message);
-
-        assertNull(newPushState);
-    }
-
-    @Test
     public void search_withFullTextSearchEnabled_shouldIssueRespectiveCommand() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RO);

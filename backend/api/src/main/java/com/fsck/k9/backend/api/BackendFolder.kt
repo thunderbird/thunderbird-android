@@ -18,8 +18,6 @@ interface BackendFolder {
     fun setMoreMessages(moreMessages: MoreMessages)
     fun setLastChecked(timestamp: Long)
     fun setStatus(status: String?)
-    fun getPushState(): String?
-    fun setPushState(pushState: String?)
     fun isMessagePresent(messageServerId: String): Boolean
     fun getMessageFlags(messageServerId: String): Set<Flag>
     fun setMessageFlag(messageServerId: String, flag: Flag, value: Boolean)

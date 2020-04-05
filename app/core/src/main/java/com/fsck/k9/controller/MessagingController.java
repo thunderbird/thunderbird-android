@@ -7,14 +7,12 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -69,8 +67,6 @@ import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.PushReceiver;
-import com.fsck.k9.mail.Pusher;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.LocalFolder;
@@ -127,7 +123,6 @@ public class MessagingController {
 
     private final BlockingQueue<Command> queuedCommands = new PriorityBlockingQueue<>();
     private final Set<MessagingListener> listeners = new CopyOnWriteArraySet<>();
-    private final ConcurrentHashMap<Account, Pusher> pushers = new ConcurrentHashMap<>();
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private final MemorizingMessagingListener memorizingMessagingListener = new MemorizingMessagingListener();
     private final UnreadMessageCountProvider unreadMessageCountProvider;
@@ -2654,116 +2649,6 @@ public class MessagingController {
         this.checkMailListener = checkMailListener;
         if (this.checkMailListener != null) {
             addListener(this.checkMailListener);
-        }
-    }
-
-    public Collection<Pusher> getPushers() {
-        return pushers.values();
-    }
-
-    public Pusher getPusher(Account account) {
-        return pushers.get(account);
-    }
-
-    public boolean setupPushing(final Account account) {
-        try {
-            Pusher previousPusher = pushers.remove(account);
-            if (previousPusher != null) {
-                previousPusher.stop();
-            }
-
-            Account.FolderMode aDisplayMode = account.getFolderDisplayMode();
-            Account.FolderMode aPushMode = account.getFolderPushMode();
-
-            List<String> names = new ArrayList<>();
-
-            LocalStore localStore = localStoreProvider.getInstance(account);
-            for (final LocalFolder folder : localStore.getPersonalNamespaces(false)) {
-                if (folder.getServerId().equals(account.getOutboxFolder())) {
-                    continue;
-                }
-                folder.open();
-
-                FolderClass fDisplayClass = folder.getDisplayClass();
-                FolderClass fPushClass = folder.getPushClass();
-
-                if (LocalFolder.isModeMismatch(aDisplayMode, fDisplayClass)) {
-                    // Never push a folder that isn't displayed
-                    /*
-                    if (K9.DEBUG) {
-                        Log.v(K9.LOG_TAG, "Not pushing folder " + folder.getName() +
-                              " which is in display class " + fDisplayClass + " while account is in display mode " + aDisplayMode);
-                    }
-                    */
-
-                    continue;
-                }
-
-                if (LocalFolder.isModeMismatch(aPushMode, fPushClass)) {
-                    // Do not push folders in the wrong class
-                    /*
-                    if (K9.DEBUG) {
-                        Log.v(K9.LOG_TAG, "Not pushing folder " + folder.getName() +
-                              " which is in push mode " + fPushClass + " while account is in push mode " + aPushMode);
-                    }
-                    */
-
-                    continue;
-                }
-
-                Timber.i("Starting pusher for %s:%s", account.getDescription(), folder.getServerId());
-
-                names.add(folder.getServerId());
-            }
-
-            if (!names.isEmpty()) {
-                PushReceiver receiver = new MessagingControllerPushReceiver(context, localStoreProvider, account, this);
-                int maxPushFolders = account.getMaxPushFolders();
-
-                if (names.size() > maxPushFolders) {
-                    Timber.i("Count of folders to push for account %s is %d, greater than limit of %d, truncating",
-                            account.getDescription(), names.size(), maxPushFolders);
-
-                    names = names.subList(0, maxPushFolders);
-                }
-
-                try {
-                    Backend backend = getBackend(account);
-                    if (!backend.isPushCapable()) {
-                        Timber.i("Account %s is not push capable, skipping", account.getDescription());
-
-                        return false;
-                    }
-                    Pusher pusher = backend.createPusher(receiver);
-                    Pusher oldPusher = pushers.putIfAbsent(account, pusher);
-                    if (oldPusher == null) {
-                        pusher.start(names);
-                    }
-                } catch (Exception e) {
-                    Timber.e(e, "Could not get remote store");
-                    return false;
-                }
-
-                return true;
-            } else {
-                Timber.i("No folders are configured for pushing in account %s", account.getDescription());
-                return false;
-            }
-
-        } catch (Exception e) {
-            Timber.e(e, "Got exception while setting up pushing");
-        }
-        return false;
-    }
-
-    public void stopAllPushing() {
-        Timber.i("Stopping all pushers");
-
-        Iterator<Pusher> iter = pushers.values().iterator();
-        while (iter.hasNext()) {
-            Pusher pusher = iter.next();
-            iter.remove();
-            pusher.stop();
         }
     }
 
