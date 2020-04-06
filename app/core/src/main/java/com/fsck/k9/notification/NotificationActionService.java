@@ -4,8 +4,12 @@ package com.fsck.k9.notification;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.IBinder;
+
+import androidx.annotation.Nullable;
 
 import timber.log.Timber;
 
@@ -15,13 +19,12 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.service.CoreService;
 
 import static com.fsck.k9.controller.MessageReferenceHelper.toMessageReferenceList;
 import static com.fsck.k9.controller.MessageReferenceHelper.toMessageReferenceStringList;
 
 
-public class NotificationActionService extends CoreService {
+public class NotificationActionService extends Service {
     private static final String ACTION_MARK_AS_READ = "ACTION_MARK_AS_READ";
     private static final String ACTION_DELETE = "ACTION_DELETE";
     private static final String ACTION_ARCHIVE = "ACTION_ARCHIVE";
@@ -123,7 +126,7 @@ public class NotificationActionService extends CoreService {
     }
 
     @Override
-    public int startService(Intent intent, int startId) {
+    public final int onStartCommand(Intent intent, int flags, int startId) {
         Timber.i("NotificationActionService started with startId = %d", startId);
 
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT_UUID);
@@ -153,6 +156,12 @@ public class NotificationActionService extends CoreService {
         cancelNotifications(intent, account, controller);
 
         return START_NOT_STICKY;
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 
     private void markMessagesAsRead(Intent intent, Account account, MessagingController controller) {

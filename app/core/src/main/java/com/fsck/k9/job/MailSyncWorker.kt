@@ -1,11 +1,12 @@
 package com.fsck.k9.job
 
+import android.content.ContentResolver
 import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
-import com.fsck.k9.service.CoreService
 import timber.log.Timber
 
 class MailSyncWorker(
@@ -21,7 +22,7 @@ class MailSyncWorker(
 
         Timber.d("Executing periodic mail sync for account %s", accountUuid)
 
-        if (!CoreService.isBackgroundSyncAllowed()) {
+        if (isBackgroundSyncDisabled()) {
             Timber.d("Background sync is disabled. Skipping mail sync.")
             return Result.success()
         }
@@ -31,6 +32,14 @@ class MailSyncWorker(
         }
 
         return Result.success()
+    }
+
+    private fun isBackgroundSyncDisabled(): Boolean {
+        return when (K9.backgroundOps) {
+            K9.BACKGROUND_OPS.NEVER -> true
+            K9.BACKGROUND_OPS.ALWAYS -> false
+            K9.BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC -> !ContentResolver.getMasterSyncAutomatically()
+        }
     }
 
     companion object {
