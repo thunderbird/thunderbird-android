@@ -1,6 +1,7 @@
 package com.fsck.k9.activity;
 
 
+import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -40,10 +41,13 @@ import android.view.View.OnFocusChangeListener;
 import android.view.ViewStub;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.DI;
@@ -85,6 +89,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeMessage;
+import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.message.AutocryptStatusInteractor;
@@ -103,6 +108,7 @@ import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.ThemeManager;
 import com.fsck.k9.ui.compose.QuotedMessageMvpView;
 import com.fsck.k9.ui.compose.QuotedMessagePresenter;
+import com.fsck.k9.ui.helper.SizeFormatter;
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider;
 
 import org.openintents.openpgp.OpenPgpApiManager;
@@ -175,6 +181,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private QuotedMessagePresenter quotedMessagePresenter;
     private MessageLoaderHelper messageLoaderHelper;
     private AttachmentPresenter attachmentPresenter;
+    private SizeFormatter sizeFormatter;
 
     private Contacts contacts;
 
@@ -240,6 +247,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         setLayout(R.layout.message_compose);
         ViewStub contentContainer = findViewById(R.id.message_compose_content);
+
+        sizeFormatter = new SizeFormatter(getResources());
 
         ThemeManager themeManager = getThemeManager();
         int messageComposeThemeResourceId = themeManager.getMessageComposeThemeResourceId();
@@ -1731,6 +1740,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         @Override
         public void addAttachmentView(final Attachment attachment) {
+            attachmentsView.setVisibility(View.VISIBLE);
+
             View view = getLayoutInflater().inflate(R.layout.message_compose_attachment, attachmentsView, false);
             attachmentViews.put(attachment.uri, view);
 
@@ -1761,9 +1772,30 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 nameView.setText(R.string.loading_attachment);
             }
 
+            if (attachment.size != null && attachment.size >= 0) {
+                TextView sizeView = view.findViewById(R.id.attachment_size);
+                sizeView.setText(sizeFormatter.formatSize(attachment.size));
+            }
+
             View progressBar = view.findViewById(R.id.progressBar);
             boolean isLoadingComplete = (attachment.state == Attachment.LoadingState.COMPLETE);
-            progressBar.setVisibility(isLoadingComplete ? View.GONE : View.VISIBLE);
+            if (isLoadingComplete) {
+                if (MimeUtility.isSupportedImageType(attachment.contentType)) {
+                    ImageView attachmentTypeView = view.findViewById(R.id.attachment_type);
+                    attachmentTypeView.setImageResource(R.drawable.ic_attachment_image);
+
+                    ImageView preview = view.findViewById(R.id.attachment_preview);
+                    preview.setVisibility(View.VISIBLE);
+                    Glide.with(MessageCompose.this)
+                            .load(new File(attachment.filename))
+                            .centerCrop()
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .into(preview);
+                }
+                progressBar.setVisibility(View.GONE);
+            } else {
+                progressBar.setVisibility(View.VISIBLE);
+            }
         }
 
         @Override
@@ -1771,6 +1803,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             View view = attachmentViews.get(attachment.uri);
             attachmentsView.removeView(view);
             attachmentViews.remove(attachment.uri);
+
+            if (attachmentViews.isEmpty()) {
+                attachmentsView.setVisibility(View.GONE);
+            }
         }
 
         @Override
