@@ -68,6 +68,7 @@ public class AttachmentController {
         downloadAttachment(localPart, new Runnable() {
             @Override
             public void run() {
+                messageViewFragment.refreshAttachmentThumbnail(attachment);
                 viewLocalAttachment();
             }
         });

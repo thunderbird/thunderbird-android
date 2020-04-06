@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.ShowPictures;
+import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Address;
@@ -354,6 +355,13 @@ public class MessageTopView extends LinearLayout {
         SavedState savedState = (SavedState) state;
         super.onRestoreInstanceState(savedState.getSuperState());
         showPicturesButtonClicked = savedState.showPicturesButtonClicked;
+    }
+
+    public void refreshAttachmentThumbnail(AttachmentViewInfo attachment) {
+        View messageContainerViewCandidate = containerView.getChildAt(0);
+        if (messageContainerViewCandidate instanceof MessageContainerView) {
+            ((MessageContainerView) messageContainerViewCandidate).refreshAttachmentThumbnail(attachment);
+        }
     }
 
     private static class SavedState extends BaseSavedState {
