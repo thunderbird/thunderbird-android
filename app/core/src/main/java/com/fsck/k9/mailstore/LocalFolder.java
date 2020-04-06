@@ -84,7 +84,6 @@ public class LocalFolder {
 
     private String status = null;
     private long lastChecked = 0;
-    private long lastPush = 0;
     private FolderType type = FolderType.REGULAR;
     private String serverId = null;
     private String name;
@@ -97,7 +96,6 @@ public class LocalFolder {
     private FolderClass pushClass = FolderClass.SECOND_CLASS;
     private FolderClass notifyClass = FolderClass.INHERITED;
 
-    private String pushState = null;
     private boolean isInTopGroup = false;
     private boolean isIntegrate = false;
 
@@ -144,10 +142,6 @@ public class LocalFolder {
 
     public String getStatus() {
         return status;
-    }
-
-    public long getLastUpdate() {
-        return Math.max(lastChecked, lastPush);
     }
 
     public long getDatabaseId() {
@@ -209,12 +203,10 @@ public class LocalFolder {
         databaseId = cursor.getInt(LocalStore.FOLDER_ID_INDEX);
         serverId = cursor.getString(LocalStore.FOLDER_SERVER_ID_INDEX);
         visibleLimit = cursor.getInt(LocalStore.FOLDER_VISIBLE_LIMIT_INDEX);
-        pushState = cursor.getString(LocalStore.FOLDER_PUSH_STATE_INDEX);
         status = cursor.getString(LocalStore.FOLDER_STATUS_INDEX);
         // Only want to set the local variable stored in the super class.  This class
         // does a DB update on setLastChecked
         lastChecked = cursor.getLong(LocalStore.FOLDER_LAST_CHECKED_INDEX);
-        lastPush = cursor.getLong(LocalStore.FOLDER_LAST_PUSHED_INDEX);
         isInTopGroup = cursor.getInt(LocalStore.FOLDER_TOP_GROUP_INDEX) == 1;
         isIntegrate = cursor.getInt(LocalStore.FOLDER_INTEGRATE_INDEX) == 1;
         String noClass = FolderClass.NO_CLASS.toString();
@@ -389,16 +381,6 @@ public class LocalFolder {
         updateFolderColumn("last_updated", lastChecked);
     }
 
-    public void setLastPush(final long lastPush) throws MessagingException {
-        try {
-            open();
-            this.lastPush = lastPush;
-        } catch (MessagingException e) {
-            throw new WrappedException(e);
-        }
-        updateFolderColumn("last_pushed", lastPush);
-    }
-
     public int getVisibleLimit() throws MessagingException {
         open();
         return visibleLimit;
@@ -428,11 +410,6 @@ public class LocalFolder {
         updateFolderColumn("status", status);
     }
 
-    public void setPushState(final String pushState) throws MessagingException {
-        this.pushState = pushState;
-        updateFolderColumn("push_state", pushState);
-    }
-
     private void updateFolderColumn(final String column, final Object value) throws MessagingException {
         try {
             this.localStore.getDatabase().execute(false, new DbCallback<Void>() {
@@ -450,10 +427,6 @@ public class LocalFolder {
         } catch (WrappedException e) {
             throw(MessagingException) e.getCause();
         }
-    }
-
-    public String getPushState() {
-        return pushState;
     }
 
     public FolderClass getDisplayClass() {
@@ -1642,8 +1615,6 @@ public class LocalFolder {
 
         this.localStore.notifyChange();
 
-        setPushState(null);
-        setLastPush(0);
         setLastChecked(0);
         setVisibleLimit(getAccount().getDisplayCount());
     }

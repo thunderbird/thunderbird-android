@@ -118,7 +118,7 @@ public class LocalStore {
     static final int MSG_INDEX_HEADER_DATA = 25;
 
     static final String GET_FOLDER_COLS =
-        "folders.id, name, visible_limit, last_updated, status, push_state, last_pushed, " +
+        "folders.id, name, visible_limit, last_updated, status, " +
         "integrate, top_group, poll_class, push_class, display_class, notify_class, more_messages, server_id, " +
         "local_only, type";
 
@@ -127,18 +127,16 @@ public class LocalStore {
     static final int FOLDER_VISIBLE_LIMIT_INDEX = 2;
     static final int FOLDER_LAST_CHECKED_INDEX = 3;
     static final int FOLDER_STATUS_INDEX = 4;
-    static final int FOLDER_PUSH_STATE_INDEX = 5;
-    static final int FOLDER_LAST_PUSHED_INDEX = 6;
-    static final int FOLDER_INTEGRATE_INDEX = 7;
-    static final int FOLDER_TOP_GROUP_INDEX = 8;
-    static final int FOLDER_SYNC_CLASS_INDEX = 9;
-    static final int FOLDER_PUSH_CLASS_INDEX = 10;
-    static final int FOLDER_DISPLAY_CLASS_INDEX = 11;
-    static final int FOLDER_NOTIFY_CLASS_INDEX = 12;
-    static final int MORE_MESSAGES_INDEX = 13;
-    static final int FOLDER_SERVER_ID_INDEX = 14;
-    static final int LOCAL_ONLY_INDEX = 15;
-    static final int TYPE_INDEX = 16;
+    static final int FOLDER_INTEGRATE_INDEX = 5;
+    static final int FOLDER_TOP_GROUP_INDEX = 6;
+    static final int FOLDER_SYNC_CLASS_INDEX = 7;
+    static final int FOLDER_PUSH_CLASS_INDEX = 8;
+    static final int FOLDER_DISPLAY_CLASS_INDEX = 9;
+    static final int FOLDER_NOTIFY_CLASS_INDEX = 10;
+    static final int MORE_MESSAGES_INDEX = 11;
+    static final int FOLDER_SERVER_ID_INDEX = 12;
+    static final int LOCAL_ONLY_INDEX = 13;
+    static final int TYPE_INDEX = 14;
 
     static final String[] UID_CHECK_PROJECTION = { "uid" };
 

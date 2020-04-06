@@ -21,7 +21,7 @@ public class FolderInfoHolder {
     public FolderInfoHolder(FolderNameFormatter folderNameFormatter, LocalFolder localFolder, Account account) {
         this.folderNameFormatter = folderNameFormatter;
         this.serverId = localFolder.getServerId();
-        this.lastChecked = localFolder.getLastUpdate();
+        this.lastChecked = localFolder.getLastChecked();
         this.displayName = getDisplayName(account, localFolder);
         moreMessages = localFolder.hasMoreMessages();
     }

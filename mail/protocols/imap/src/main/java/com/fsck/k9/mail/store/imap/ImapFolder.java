@@ -1261,27 +1261,6 @@ public class ImapFolder {
         }
     }
 
-    public String getNewPushState(String oldSerializedPushState, Message message) {
-        try {
-            String uid = message.getUid();
-            long messageUid = Long.parseLong(uid);
-
-            ImapPushState oldPushState = ImapPushState.parse(oldSerializedPushState);
-
-            if (messageUid >= oldPushState.uidNext) {
-                long uidNext = messageUid + 1;
-                ImapPushState newPushState = new ImapPushState(uidNext);
-
-                return newPushState.toString();
-            } else {
-                return null;
-            }
-        } catch (Exception e) {
-            Timber.e(e, "Exception while updated push state for %s", getLogId());
-            return null;
-        }
-    }
-
     public void setFlags(List<? extends Message> messages, final Set<Flag> flags, boolean value)
             throws MessagingException {
         open(OPEN_MODE_RW);

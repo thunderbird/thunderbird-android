@@ -115,14 +115,6 @@ class K9BackendFolder(
         database.setString(column = "status", value = status)
     }
 
-    override fun getPushState(): String? {
-        return database.getString(column = "push_state")
-    }
-
-    override fun setPushState(pushState: String?) {
-        return database.setString(column = "push_state", value = pushState)
-    }
-
     override fun isMessagePresent(messageServerId: String): Boolean {
         return database.execute(false) { db ->
             val cursor = db.query(

@@ -12,7 +12,7 @@ import timber.log.Timber;
 
 
 class StoreSchemaDefinition implements SchemaDefinition {
-    static final int DB_VERSION = 69;
+    static final int DB_VERSION = 70;
 
     private final MigrationsHelper migrationsHelper;
 
@@ -89,8 +89,6 @@ class StoreSchemaDefinition implements SchemaDefinition {
                 "unread_count INTEGER, " +
                 "visible_limit INTEGER, " +
                 "status TEXT, " +
-                "push_state TEXT, " +
-                "last_pushed INTEGER, " +
                 "flagged_count INTEGER default 0, " +
                 "integrate INTEGER, " +
                 "top_group INTEGER, " +

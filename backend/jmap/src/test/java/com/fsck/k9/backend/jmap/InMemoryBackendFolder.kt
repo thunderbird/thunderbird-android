@@ -91,14 +91,6 @@ class InMemoryBackendFolder(override var name: String, var type: FolderType) : B
         throw UnsupportedOperationException("not implemented")
     }
 
-    override fun getPushState(): String? {
-        throw UnsupportedOperationException("not implemented")
-    }
-
-    override fun setPushState(pushState: String?) {
-        throw UnsupportedOperationException("not implemented")
-    }
-
     override fun isMessagePresent(messageServerId: String): Boolean {
         throw UnsupportedOperationException("not implemented")
     }

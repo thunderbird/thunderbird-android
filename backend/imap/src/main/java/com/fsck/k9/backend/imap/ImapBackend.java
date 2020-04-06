@@ -16,10 +16,7 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.PushReceiver;
-import com.fsck.k9.mail.Pusher;
 import com.fsck.k9.mail.power.PowerManager;
-import com.fsck.k9.mail.store.imap.ImapPusher;
 import com.fsck.k9.mail.store.imap.ImapStore;
 import com.fsck.k9.mail.transport.smtp.SmtpTransport;
 import org.jetbrains.annotations.NotNull;
@@ -213,12 +210,6 @@ public class ImapBackend implements Backend {
     @Override
     public String uploadMessage(@NotNull String folderServerId, @NotNull Message message) throws MessagingException {
         return commandUploadMessage.uploadMessage(folderServerId, message);
-    }
-
-    @NotNull
-    @Override
-    public Pusher createPusher(@NotNull PushReceiver receiver) {
-        return new ImapPusher(imapStore, receiver, powerManager);
     }
 
     @Override
