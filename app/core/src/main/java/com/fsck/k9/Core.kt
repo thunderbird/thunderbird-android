@@ -10,7 +10,6 @@ import android.os.Looper
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.mail.internet.BinaryTempFileBody
 import com.fsck.k9.service.BootReceiver
-import com.fsck.k9.service.ShutdownReceiver
 import com.fsck.k9.service.StorageGoneReceiver
 import java.util.concurrent.SynchronousQueue
 import timber.log.Timber
@@ -117,8 +116,5 @@ object Core : EarlyInit {
         } catch (e: InterruptedException) {
             Timber.e(e, "Unable to register unmount receiver")
         }
-
-        context.registerReceiver(ShutdownReceiver(), IntentFilter(Intent.ACTION_SHUTDOWN))
-        Timber.i("Registered: shutdown receiver")
     }
 }
