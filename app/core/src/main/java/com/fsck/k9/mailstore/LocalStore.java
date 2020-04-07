@@ -57,7 +57,6 @@ import com.fsck.k9.message.extractors.AttachmentCounter;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 import com.fsck.k9.message.extractors.MessageFulltextCreator;
 import com.fsck.k9.message.extractors.MessagePreviewCreator;
-import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.MessageColumns;
 import com.fsck.k9.search.LocalSearch;
@@ -245,16 +244,8 @@ public class LocalStore {
         database.switchProvider(newStorageProviderId);
     }
 
-    Context getContext() {
-        return context;
-    }
-
     Account getAccount() {
         return account;
-    }
-
-    protected Storage getStorage() {
-        return Preferences.getPreferences(context).getStorage();
     }
 
     protected Preferences getPreferences() {
@@ -1332,33 +1323,8 @@ public class LocalStore {
 
     class RealMigrationsHelper implements MigrationsHelper {
         @Override
-        public LocalStore getLocalStore() {
-            return LocalStore.this;
-        }
-
-        @Override
-        public Storage getStorage() {
-            return LocalStore.this.getStorage();
-        }
-
-        @Override
-        public Preferences getPreferences() {
-            return LocalStore.this.getPreferences();
-        }
-
-        @Override
         public Account getAccount() {
             return LocalStore.this.getAccount();
-        }
-
-        @Override
-        public Context getContext() {
-            return LocalStore.this.getContext();
-        }
-
-        @Override
-        public String serializeFlags(List<Flag> flags) {
-            return LocalStore.serializeFlags(flags);
         }
     }
 }

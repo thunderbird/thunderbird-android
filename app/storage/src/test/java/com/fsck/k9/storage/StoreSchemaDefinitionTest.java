@@ -8,21 +8,17 @@ import java.util.List;
 
 import android.app.Application;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.Preferences;
 import com.fsck.k9.core.BuildConfig;
-import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LockableDatabase;
 import com.fsck.k9.mailstore.MigrationsHelper;
 import com.fsck.k9.mailstore.StorageManager;
-import com.fsck.k9.preferences.Storage;
 import org.junit.Before;
 import org.junit.Test;
 import org.robolectric.RuntimeEnvironment;
@@ -72,7 +68,7 @@ public class StoreSchemaDefinitionTest extends K9RobolectricTest {
     public void doDbUpgrade_withBadDatabase_shouldThrowInDebugBuild() {
         if (BuildConfig.DEBUG) {
             SQLiteDatabase database = SQLiteDatabase.create(null);
-            database.setVersion(29);
+            database.setVersion(61);
 
             try {
                 storeSchemaDefinition.doDbUpgrade(database);
@@ -84,8 +80,8 @@ public class StoreSchemaDefinitionTest extends K9RobolectricTest {
     }
 
     @Test
-    public void doDbUpgrade_withV29_shouldUpgradeDatabaseToLatestVersion() {
-        SQLiteDatabase database = createV29Database();
+    public void doDbUpgrade_withV61_shouldUpgradeDatabaseToLatestVersion() {
+        SQLiteDatabase database = createV61Database();
 
         storeSchemaDefinition.doDbUpgrade(database);
 
@@ -93,8 +89,8 @@ public class StoreSchemaDefinitionTest extends K9RobolectricTest {
     }
 
     @Test
-    public void doDbUpgrade_withV29() {
-        SQLiteDatabase database = createV29Database();
+    public void doDbUpgrade_withV61() {
+        SQLiteDatabase database = createV61Database();
         insertMessageWithSubject(database, "Test Email");
 
         storeSchemaDefinition.doDbUpgrade(database);
@@ -103,9 +99,9 @@ public class StoreSchemaDefinitionTest extends K9RobolectricTest {
     }
 
     @Test
-    public void doDbUpgrade_fromV29_shouldResultInSameTables() {
+    public void doDbUpgrade_fromV61_shouldResultInSameTables() {
         SQLiteDatabase newDatabase = createNewDatabase();
-        SQLiteDatabase upgradedDatabase = createV29Database();
+        SQLiteDatabase upgradedDatabase = createV61Database();
 
         storeSchemaDefinition.doDbUpgrade(upgradedDatabase);
 
@@ -113,9 +109,9 @@ public class StoreSchemaDefinitionTest extends K9RobolectricTest {
     }
 
     @Test
-    public void doDbUpgrade_fromV29_shouldResultInSameTriggers() {
+    public void doDbUpgrade_fromV61_shouldResultInSameTriggers() {
         SQLiteDatabase newDatabase = createNewDatabase();
-        SQLiteDatabase upgradedDatabase = createV29Database();
+        SQLiteDatabase upgradedDatabase = createV61Database();
 
         storeSchemaDefinition.doDbUpgrade(upgradedDatabase);
 
@@ -123,9 +119,9 @@ public class StoreSchemaDefinitionTest extends K9RobolectricTest {
     }
 
     @Test
-    public void doDbUpgrade_fromV29_shouldResultInSameIndexes() {
+    public void doDbUpgrade_fromV61_shouldResultInSameIndexes() {
         SQLiteDatabase newDatabase = createNewDatabase();
-        SQLiteDatabase upgradedDatabase = createV29Database();
+        SQLiteDatabase upgradedDatabase = createV61Database();
 
         storeSchemaDefinition.doDbUpgrade(upgradedDatabase);
 
@@ -133,20 +129,17 @@ public class StoreSchemaDefinitionTest extends K9RobolectricTest {
     }
 
 
-    private SQLiteDatabase createV29Database() {
+    private SQLiteDatabase createV61Database() {
         SQLiteDatabase database = SQLiteDatabase.create(null);
-        initV29Database(database);
+        initV61Database(database);
         return database;
     }
 
-    private void initV29Database(SQLiteDatabase db) {
-        /*
-         * There is no precise definition of a v29 database. This function approximates it by creating a database
-         * that could be upgraded to the latest database as of v58
-         */
+    private void initV61Database(SQLiteDatabase db) {
 
         db.beginTransaction();
 
+        db.execSQL("DROP TABLE IF EXISTS folders");
         db.execSQL("CREATE TABLE folders (" +
                 "id INTEGER PRIMARY KEY," +
                 "name TEXT, " +
@@ -155,11 +148,22 @@ public class StoreSchemaDefinitionTest extends K9RobolectricTest {
                 "visible_limit INTEGER, " +
                 "status TEXT, " +
                 "push_state TEXT, " +
-                "last_pushed INTEGER " +
+                "last_pushed INTEGER, " +
+                "flagged_count INTEGER default 0, " +
+                "integrate INTEGER, " +
+                "top_group INTEGER, " +
+                "poll_class TEXT, " +
+                "push_class TEXT, " +
+                "display_class TEXT, " +
+                "notify_class TEXT default 'INHERITED', " +
+                "more_messages TEXT default \"unknown\"" +
                 ")");
 
+        db.execSQL("CREATE INDEX IF NOT EXISTS folder_name ON folders (name)");
+        db.execSQL("DROP TABLE IF EXISTS messages");
         db.execSQL("CREATE TABLE messages (" +
                 "id INTEGER PRIMARY KEY, " +
+                "deleted INTEGER default 0, " +
                 "folder_id INTEGER, " +
                 "uid TEXT, " +
                 "subject TEXT, " +
@@ -173,29 +177,65 @@ public class StoreSchemaDefinitionTest extends K9RobolectricTest {
                 "attachment_count INTEGER, " +
                 "internal_date INTEGER, " +
                 "message_id TEXT, " +
-                "html_content TEXT, " +
-                "text_content TEXT, " +
                 "preview_type TEXT default \"none\", " +
+                "preview TEXT, " +
+                "mime_type TEXT, "+
+                "normalized_subject_hash INTEGER, " +
+                "empty INTEGER default 0, " +
+                "read INTEGER default 0, " +
+                "flagged INTEGER default 0, " +
+                "answered INTEGER default 0, " +
+                "forwarded INTEGER default 0, " +
                 "message_part_id INTEGER" +
                 ")");
 
-        db.execSQL("CREATE TABLE attachments (" +
+        db.execSQL("DROP TABLE IF EXISTS message_parts");
+        db.execSQL("CREATE TABLE message_parts (" +
                 "id INTEGER PRIMARY KEY, " +
-                "size INTEGER, " +
-                "name TEXT, " +
+                "type INTEGER NOT NULL, " +
+                "root INTEGER, " +
+                "parent INTEGER NOT NULL, " +
+                "seq INTEGER NOT NULL, " +
                 "mime_type TEXT, " +
-                "store_data TEXT, " +
-                "content_uri TEXT, " +
-                "message_id INTEGER" +
+                "decoded_body_size INTEGER, " +
+                "display_name TEXT, " +
+                "header TEXT, " +
+                "encoding TEXT, " +
+                "charset TEXT, " +
+                "data_location INTEGER NOT NULL, " +
+                "data BLOB, " +
+                "preamble TEXT, " +
+                "epilogue TEXT, " +
+                "boundary TEXT, " +
+                "content_id TEXT, " +
+                "server_extra TEXT" +
                 ")");
 
-        db.execSQL("CREATE TABLE headers (" +
-                "id INTEGER PRIMARY KEY, " +
-                "name TEXT, " +
-                "value TEXT, " +
-                "message_id INTEGER" +
-                ")");
+        db.execSQL("CREATE TRIGGER set_message_part_root " +
+                "AFTER INSERT ON message_parts " +
+                "BEGIN " +
+                "UPDATE message_parts SET root=id WHERE root IS NULL AND ROWID = NEW.ROWID; " +
+                "END");
 
+        db.execSQL("CREATE INDEX IF NOT EXISTS msg_uid ON messages (uid, folder_id)");
+        db.execSQL("DROP INDEX IF EXISTS msg_folder_id");
+        db.execSQL("DROP INDEX IF EXISTS msg_folder_id_date");
+        db.execSQL("CREATE INDEX IF NOT EXISTS msg_folder_id_deleted_date ON messages (folder_id,deleted,internal_date)");
+
+        db.execSQL("DROP INDEX IF EXISTS msg_empty");
+        db.execSQL("CREATE INDEX IF NOT EXISTS msg_empty ON messages (empty)");
+
+        db.execSQL("DROP INDEX IF EXISTS msg_read");
+        db.execSQL("CREATE INDEX IF NOT EXISTS msg_read ON messages (read)");
+
+        db.execSQL("DROP INDEX IF EXISTS msg_flagged");
+        db.execSQL("CREATE INDEX IF NOT EXISTS msg_flagged ON messages (flagged)");
+
+        db.execSQL("DROP INDEX IF EXISTS msg_composite");
+        db.execSQL("CREATE INDEX IF NOT EXISTS msg_composite ON messages (deleted, empty,folder_id,flagged,read)");
+
+
+        db.execSQL("DROP TABLE IF EXISTS threads");
         db.execSQL("CREATE TABLE threads (" +
                 "id INTEGER PRIMARY KEY, " +
                 "message_id INTEGER, " +
@@ -203,30 +243,30 @@ public class StoreSchemaDefinitionTest extends K9RobolectricTest {
                 "parent INTEGER" +
                 ")");
 
-        db.execSQL("CREATE TABLE pending_commands (" +
-                "id INTEGER PRIMARY KEY, " +
-                "command TEXT, " +
-                "arguments TEXT" +
-                ")");
+        db.execSQL("DROP INDEX IF EXISTS threads_message_id");
+        db.execSQL("CREATE INDEX IF NOT EXISTS threads_message_id ON threads (message_id)");
 
-        db.execSQL("CREATE INDEX msg_uid ON messages (uid, folder_id)");
-        db.execSQL("CREATE INDEX folder_name ON folders (name)");
-        db.execSQL("CREATE INDEX threads_message_id ON threads (message_id)");
-        db.execSQL("CREATE INDEX threads_root ON threads (root)");
-        db.execSQL("CREATE INDEX threads_parent ON threads (parent)");
+        db.execSQL("DROP INDEX IF EXISTS threads_root");
+        db.execSQL("CREATE INDEX IF NOT EXISTS threads_root ON threads (root)");
 
+        db.execSQL("DROP INDEX IF EXISTS threads_parent");
+        db.execSQL("CREATE INDEX IF NOT EXISTS threads_parent ON threads (parent)");
+
+        db.execSQL("DROP TRIGGER IF EXISTS set_thread_root");
         db.execSQL("CREATE TRIGGER set_thread_root " +
                 "AFTER INSERT ON threads " +
                 "BEGIN " +
                 "UPDATE threads SET root=id WHERE root IS NULL AND ROWID = NEW.ROWID; " +
                 "END");
 
-        db.execSQL("CREATE TRIGGER delete_folder " +
-                "BEFORE DELETE ON folders " +
-                "BEGIN " +
-                "DELETE FROM messages WHERE old.id = folder_id; " +
-                "END;");
+        db.execSQL("DROP TABLE IF EXISTS pending_commands");
+        db.execSQL("CREATE TABLE pending_commands " +
+                "(id INTEGER PRIMARY KEY, command TEXT, data TEXT)");
 
+        db.execSQL("DROP TRIGGER IF EXISTS delete_folder");
+        db.execSQL("CREATE TRIGGER delete_folder BEFORE DELETE ON folders BEGIN DELETE FROM messages WHERE old.id = folder_id; END;");
+
+        db.execSQL("DROP TRIGGER IF EXISTS delete_message");
         db.execSQL("CREATE TRIGGER delete_message " +
                 "BEFORE DELETE ON messages " +
                 "BEGIN " +
@@ -234,7 +274,10 @@ public class StoreSchemaDefinitionTest extends K9RobolectricTest {
                 "DELETE FROM messages_fulltext WHERE docid = OLD.id; " +
                 "END");
 
-        db.setVersion(29);
+        db.execSQL("DROP TABLE IF EXISTS messages_fulltext");
+        db.execSQL("CREATE VIRTUAL TABLE messages_fulltext USING fts4 (fulltext)");
+
+        db.setVersion(61);
 
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -335,33 +378,8 @@ public class StoreSchemaDefinitionTest extends K9RobolectricTest {
 
         MigrationsHelper migrationsHelper = new MigrationsHelper() {
             @Override
-            public LocalStore getLocalStore() {
-                return localStore;
-            }
-
-            @Override
-            public Preferences getPreferences() {
-                return mock(Preferences.class);
-            }
-
-            @Override
-            public Storage getStorage() {
-                return mock(Storage.class);
-            }
-
-            @Override
             public Account getAccount() {
                 return account;
-            }
-
-            @Override
-            public Context getContext() {
-                return RuntimeEnvironment.application;
-            }
-
-            @Override
-            public String serializeFlags(List<Flag> flags) {
-                return null;
             }
         };
 

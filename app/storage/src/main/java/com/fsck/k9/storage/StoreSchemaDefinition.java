@@ -53,9 +53,8 @@ class StoreSchemaDefinition implements SchemaDefinition {
                         "clear app data.");
             }
 
-            // schema version 29 was when we moved to incremental updates
-            // in the case of a new db or a < v29 db, we blow away and start from scratch
-            if (db.getVersion() < 29) {
+            // We only support upgrades from K-9 Mail 5.301. For upgrades from earlier versions we start from scratch.
+            if (db.getVersion() < 61) {
                 dbCreateDatabaseFromScratch(db);
             } else {
                 Migrations.upgradeDatabase(db, migrationsHelper);
