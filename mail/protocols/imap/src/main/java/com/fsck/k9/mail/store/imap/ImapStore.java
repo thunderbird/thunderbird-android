@@ -119,20 +119,18 @@ public class ImapStore {
         return combinedPrefix;
     }
 
-    public List<ImapFolder> getPersonalNamespaces() throws MessagingException {
+    public List<FolderListItem> getFolders() throws MessagingException {
         ImapConnection connection = getConnection();
 
         try {
             List<FolderListItem> folders = listFolders(connection, false);
 
             if (!storeConfig.isSubscribedFoldersOnly()) {
-                return getFolders(folders);
+                return folders;
             }
 
             List<FolderListItem> subscribedFolders = listFolders(connection, true);
-
-            List<FolderListItem> filteredFolders = limitToSubscribedFolders(folders, subscribedFolders);
-            return getFolders(filteredFolders);
+            return limitToSubscribedFolders(folders, subscribedFolders);
         } catch (IOException | MessagingException ioe) {
             connection.close();
             throw new MessagingException("Unable to get folder list.", ioe);
@@ -145,12 +143,12 @@ public class ImapStore {
             List<FolderListItem> subscribedFolders) {
         Set<String> subscribedFolderNames = new HashSet<>(subscribedFolders.size());
         for (FolderListItem subscribedFolder : subscribedFolders) {
-            subscribedFolderNames.add(subscribedFolder.getName());
+            subscribedFolderNames.add(subscribedFolder.getServerId());
         }
 
         List<FolderListItem> filteredFolders = new ArrayList<>();
         for (FolderListItem folder : folders) {
-            if (subscribedFolderNames.contains(folder.getName())) {
+            if (subscribedFolderNames.contains(folder.getServerId())) {
                 filteredFolders.add(folder);
             }
         }
@@ -234,14 +232,16 @@ public class ImapStore {
                 type = FolderType.REGULAR;
             }
 
+            String name = folder;
+
             FolderListItem existingItem = folderMap.get(folder);
             if (existingItem == null || existingItem.getType() == FolderType.REGULAR) {
-                folderMap.put(folder, new FolderListItem(folder, type));
+                folderMap.put(folder, new FolderListItem(folder, name, type));
             }
         }
 
         List<FolderListItem> folders = new ArrayList<>(folderMap.size() + 1);
-        folders.add(new FolderListItem(ImapFolder.INBOX, FolderType.INBOX));
+        folders.add(new FolderListItem(ImapFolder.INBOX, ImapFolder.INBOX, FolderType.INBOX));
         folders.addAll(folderMap.values());
 
         return folders;
@@ -317,18 +317,6 @@ public class ImapStore {
 
     FolderNameCodec getFolderNameCodec() {
         return folderNameCodec;
-    }
-
-    private List<ImapFolder> getFolders(List<FolderListItem> folders) {
-        List<ImapFolder> imapFolders = new ArrayList<>(folders.size());
-
-        for (FolderListItem folder : folders) {
-            ImapFolder imapFolder = getFolder(folder.getName());
-            imapFolder.setType(folder.getType());
-            imapFolders.add(imapFolder);
-        }
-
-        return imapFolders;
     }
 
     StoreConfig getStoreConfig() {

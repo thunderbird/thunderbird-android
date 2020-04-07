@@ -9,7 +9,7 @@ internal class CommandRefreshFolderList(
     private val imapStore: ImapStore
 ) {
     fun refreshFolderList() {
-        val foldersOnServer = imapStore.personalNamespaces
+        val foldersOnServer = imapStore.folders
         val oldFolderServerIds = backendStorage.getFolderServerIds()
 
         val foldersToCreate = mutableListOf<FolderInfo>()

@@ -98,7 +98,7 @@ public class ImapStoreTest {
     }
 
     @Test
-    public void getPersonalNamespaces_withSpecialUseCapability_shouldReturnSpecialFolderInfo() throws Exception {
+    public void getFolders_withSpecialUseCapability_shouldReturnSpecialFolderInfo() throws Exception {
         ImapConnection imapConnection = mock(ImapConnection.class);
         when(imapConnection.hasCapability(Capabilities.LIST_EXTENDED)).thenReturn(true);
         when(imapConnection.hasCapability(Capabilities.SPECIAL_USE)).thenReturn(true);
@@ -117,9 +117,9 @@ public class ImapStoreTest {
         when(imapConnection.executeSimpleCommand("LIST \"\" \"*\" RETURN (SPECIAL-USE)")).thenReturn(imapResponses);
         imapStore.enqueueImapConnection(imapConnection);
 
-        List<ImapFolder> folders = imapStore.getPersonalNamespaces();
+        List<FolderListItem> folders = imapStore.getFolders();
 
-        Map<String, ImapFolder> folderMap = toFolderMap(folders);
+        Map<String, FolderListItem> folderMap = toFolderMap(folders);
         assertEquals(FolderType.INBOX, folderMap.get("INBOX").getType());
         assertEquals(FolderType.DRAFTS, folderMap.get("[Gmail]/Drafts").getType());
         assertEquals(FolderType.SENT, folderMap.get("[Gmail]/Sent Mail").getType());
@@ -129,33 +129,33 @@ public class ImapStoreTest {
     }
 
     @Test
-    public void getPersonalNamespaces_withoutSpecialUseCapability_shouldUseSimpleListCommand() throws Exception {
+    public void getFolders_withoutSpecialUseCapability_shouldUseSimpleListCommand() throws Exception {
         ImapConnection imapConnection = mock(ImapConnection.class);
         when(imapConnection.hasCapability(Capabilities.LIST_EXTENDED)).thenReturn(true);
         when(imapConnection.hasCapability(Capabilities.SPECIAL_USE)).thenReturn(false);
         imapStore.enqueueImapConnection(imapConnection);
 
-        imapStore.getPersonalNamespaces();
+        imapStore.getFolders();
 
         verify(imapConnection, never()).executeSimpleCommand("LIST \"\" \"*\" RETURN (SPECIAL-USE)");
         verify(imapConnection).executeSimpleCommand("LIST \"\" \"*\"");
     }
 
     @Test
-    public void getPersonalNamespaces_withoutListExtendedCapability_shouldUseSimpleListCommand() throws Exception {
+    public void getFolders_withoutListExtendedCapability_shouldUseSimpleListCommand() throws Exception {
         ImapConnection imapConnection = mock(ImapConnection.class);
         when(imapConnection.hasCapability(Capabilities.LIST_EXTENDED)).thenReturn(false);
         when(imapConnection.hasCapability(Capabilities.SPECIAL_USE)).thenReturn(true);
         imapStore.enqueueImapConnection(imapConnection);
 
-        imapStore.getPersonalNamespaces();
+        imapStore.getFolders();
 
         verify(imapConnection, never()).executeSimpleCommand("LIST \"\" \"*\" RETURN (SPECIAL-USE)");
         verify(imapConnection).executeSimpleCommand("LIST \"\" \"*\"");
     }
 
     @Test
-    public void getPersonalNamespaces_withoutSubscribedFoldersOnly() throws Exception {
+    public void getFolders_withoutSubscribedFoldersOnly() throws Exception {
         when(storeConfig.isSubscribedFoldersOnly()).thenReturn(false);
         ImapConnection imapConnection = mock(ImapConnection.class);
         List<ImapResponse> imapResponses = Arrays.asList(
@@ -167,14 +167,14 @@ public class ImapStoreTest {
         when(imapConnection.executeSimpleCommand("LIST \"\" \"*\"")).thenReturn(imapResponses);
         imapStore.enqueueImapConnection(imapConnection);
 
-        List<ImapFolder> result = imapStore.getPersonalNamespaces();
+        List<FolderListItem> result = imapStore.getFolders();
 
         assertNotNull(result);
         assertEquals(Sets.newSet("INBOX", "Folder.SubFolder"), extractFolderNames(result));
     }
 
     @Test
-    public void getPersonalNamespaces_withSubscribedFoldersOnly_shouldOnlyReturnExistingSubscribedFolders()
+    public void getFolders_withSubscribedFoldersOnly_shouldOnlyReturnExistingSubscribedFolders()
             throws Exception {
         when(storeConfig.isSubscribedFoldersOnly()).thenReturn(true);
         ImapConnection imapConnection = mock(ImapConnection.class);
@@ -195,14 +195,14 @@ public class ImapStoreTest {
         when(imapConnection.executeSimpleCommand("LIST \"\" \"*\"")).thenReturn(imapResponses);
         imapStore.enqueueImapConnection(imapConnection);
 
-        List<ImapFolder> result = imapStore.getPersonalNamespaces();
+        List<FolderListItem> result = imapStore.getFolders();
 
         assertNotNull(result);
         assertEquals(Sets.newSet("INBOX", "Folder.SubFolder"), extractFolderNames(result));
     }
 
     @Test
-    public void getPersonalNamespaces_withNamespacePrefix_shouldRemoveNamespacePrefix() throws Exception {
+    public void getFolders_withNamespacePrefix_shouldRemoveNamespacePrefix() throws Exception {
         ImapConnection imapConnection = mock(ImapConnection.class);
         List<ImapResponse> imapResponses = Arrays.asList(
                 createImapResponse("* LIST () \".\" \"INBOX\""),
@@ -214,14 +214,14 @@ public class ImapStoreTest {
         imapStore.enqueueImapConnection(imapConnection);
         imapStore.setTestCombinedPrefix("INBOX.");
 
-        List<ImapFolder> result = imapStore.getPersonalNamespaces();
+        List<FolderListItem> result = imapStore.getFolders();
 
         assertNotNull(result);
         assertEquals(Sets.newSet("INBOX", "FolderOne", "FolderTwo"), extractFolderNames(result));
     }
 
     @Test
-    public void getPersonalNamespaces_withFolderNotMatchingNamespacePrefix_shouldExcludeFolderWithoutPrefix()
+    public void getFolders_withFolderNotMatchingNamespacePrefix_shouldExcludeFolderWithoutPrefix()
             throws Exception {
         ImapConnection imapConnection = mock(ImapConnection.class);
         List<ImapResponse> imapResponses = Arrays.asList(
@@ -234,14 +234,14 @@ public class ImapStoreTest {
         imapStore.enqueueImapConnection(imapConnection);
         imapStore.setTestCombinedPrefix("INBOX.");
 
-        List<ImapFolder> result = imapStore.getPersonalNamespaces();
+        List<FolderListItem> result = imapStore.getFolders();
 
         assertNotNull(result);
         assertEquals(Sets.newSet("INBOX", "FolderOne"), extractFolderNames(result));
     }
 
     @Test
-    public void getPersonalNamespaces_withDuplicateFolderNames_shouldRemoveDuplicatesAndKeepFolderType()
+    public void getFolders_withDuplicateFolderNames_shouldRemoveDuplicatesAndKeepFolderType()
             throws Exception {
         ImapConnection imapConnection = mock(ImapConnection.class);
         when(imapConnection.hasCapability(Capabilities.LIST_EXTENDED)).thenReturn(true);
@@ -256,35 +256,35 @@ public class ImapStoreTest {
         when(imapConnection.executeSimpleCommand("LIST \"\" \"*\" RETURN (SPECIAL-USE)")).thenReturn(imapResponses);
         imapStore.enqueueImapConnection(imapConnection);
 
-        List<ImapFolder> result = imapStore.getPersonalNamespaces();
+        List<FolderListItem> result = imapStore.getFolders();
 
         assertNotNull(result);
         assertEquals(2, result.size());
-        ImapFolder junkFolder = getFolderByName(result, "Junk");
+        FolderListItem junkFolder = getFolderByName(result, "Junk");
         assertNotNull(junkFolder);
         assertEquals(FolderType.SPAM, junkFolder.getType());
     }
 
     @Test
-    public void getPersonalNamespaces_withoutException_shouldLeaveImapConnectionOpen() throws Exception {
+    public void getFolders_withoutException_shouldLeaveImapConnectionOpen() throws Exception {
         ImapConnection imapConnection = mock(ImapConnection.class);
         List<ImapResponse> imapResponses = Collections.singletonList(createImapResponse("5 OK Success"));
         when(imapConnection.executeSimpleCommand(anyString())).thenReturn(imapResponses);
         imapStore.enqueueImapConnection(imapConnection);
 
-        imapStore.getPersonalNamespaces();
+        imapStore.getFolders();
 
         verify(imapConnection, never()).close();
     }
 
     @Test
-    public void getPersonalNamespaces_withIoException_shouldCloseImapConnection() throws Exception {
+    public void getFolders_withIoException_shouldCloseImapConnection() throws Exception {
         ImapConnection imapConnection = mock(ImapConnection.class);
         doThrow(IOException.class).when(imapConnection).executeSimpleCommand("LIST \"\" \"*\"");
         imapStore.enqueueImapConnection(imapConnection);
 
         try {
-            imapStore.getPersonalNamespaces();
+            imapStore.getFolders();
             fail("Expected exception");
         } catch (MessagingException ignored) {
         }
@@ -382,27 +382,27 @@ public class ImapStoreTest {
         return storeConfig;
     }
 
-    private Set<String> extractFolderNames(List<ImapFolder> folders) {
+    private Set<String> extractFolderNames(List<FolderListItem> folders) {
         Set<String> folderNames = new HashSet<>(folders.size());
-        for (ImapFolder folder : folders) {
+        for (FolderListItem folder : folders) {
             folderNames.add(folder.getServerId());
         }
 
         return folderNames;
     }
 
-    private ImapFolder getFolderByName(List<ImapFolder> result, String folderName) {
-        for (ImapFolder imapFolder : result) {
-            if (imapFolder.getName().equals(folderName)) {
+    private FolderListItem getFolderByName(List<FolderListItem> result, String folderName) {
+        for (FolderListItem imapFolder : result) {
+            if (imapFolder.getServerId().equals(folderName)) {
                 return imapFolder;
             }
         }
         return null;
     }
 
-    private Map<String, ImapFolder> toFolderMap(List<ImapFolder> folders) {
-        Map<String, ImapFolder> folderMap = new HashMap<>();
-        for (ImapFolder folder : folders) {
+    private Map<String, FolderListItem> toFolderMap(List<FolderListItem> folders) {
+        Map<String, FolderListItem> folderMap = new HashMap<>();
+        for (FolderListItem folder : folders) {
             folderMap.put(folder.getServerId(), folder);
         }
 
