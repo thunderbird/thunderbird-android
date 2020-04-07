@@ -233,24 +233,6 @@
             android:label="@string/add_account_action" />
 
         <receiver
-            android:name="com.fsck.k9.service.BootReceiver"
-            android:enabled="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.net.conn.BACKGROUND_DATA_SETTING_CHANGED"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.android.sync.SYNC_CONN_STATUS_CHANGED"/>
-            </intent-filter>
-        </receiver>
-
-        <receiver
-            android:name="com.fsck.k9.service.CoreReceiver"
-            android:exported="false"/>
-
-        <receiver
             android:name="com.fsck.k9.service.StorageReceiver"
             android:enabled="true">
             <intent-filter>

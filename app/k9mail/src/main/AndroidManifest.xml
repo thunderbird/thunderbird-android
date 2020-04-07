@@ -286,24 +286,6 @@
             android:label="@string/account_settings_title_fmt" />
 
         <receiver
-            android:name=".service.BootReceiver"
-            android:enabled="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.net.conn.BACKGROUND_DATA_SETTING_CHANGED"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.android.sync.SYNC_CONN_STATUS_CHANGED"/>
-            </intent-filter>
-        </receiver>
-
-        <receiver
-            android:name=".service.CoreReceiver"
-            android:exported="false"/>
-
-        <receiver
             android:name=".service.StorageReceiver"
             android:enabled="true">
             <intent-filter>

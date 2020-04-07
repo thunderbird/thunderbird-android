@@ -9,8 +9,6 @@ import android.os.Handler
 import android.os.Looper
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.mail.internet.BinaryTempFileBody
-import com.fsck.k9.service.BootReceiver
-import com.fsck.k9.service.ShutdownReceiver
 import com.fsck.k9.service.StorageGoneReceiver
 import java.util.concurrent.SynchronousQueue
 import timber.log.Timber
@@ -19,8 +17,6 @@ object Core : EarlyInit {
     private val context: Context by inject()
     private val appConfig: AppConfig by inject()
     private val jobManager: K9JobManager by inject()
-
-    private val componentsToDisable = listOf(BootReceiver::class.java)
 
     /**
      * This needs to be called from [Application#onCreate][android.app.Application#onCreate] before calling through
@@ -63,8 +59,7 @@ object Core : EarlyInit {
     private fun setServicesEnabled(context: Context, enabled: Boolean) {
         val pm = context.packageManager
 
-        val classes = componentsToDisable + appConfig.componentsToDisable
-        for (clazz in classes) {
+        for (clazz in appConfig.componentsToDisable) {
             val alreadyEnabled = pm.getComponentEnabledSetting(ComponentName(context, clazz)) ==
                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED
 
@@ -117,8 +112,5 @@ object Core : EarlyInit {
         } catch (e: InterruptedException) {
             Timber.e(e, "Unable to register unmount receiver")
         }
-
-        context.registerReceiver(ShutdownReceiver(), IntentFilter(Intent.ACTION_SHUTDOWN))
-        Timber.i("Registered: shutdown receiver")
     }
 }
