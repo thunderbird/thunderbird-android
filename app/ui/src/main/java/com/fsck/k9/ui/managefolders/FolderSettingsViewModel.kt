@@ -19,22 +19,22 @@ class FolderSettingsViewModel(
 ) : ViewModel() {
     private var folderSettingsLiveData: LiveData<FolderSettingsData>? = null
 
-    fun getFolderSettingsLiveData(accountUuid: String, folderServerId: String): LiveData<FolderSettingsData> {
-        return folderSettingsLiveData ?: createFolderSettingsLiveData(accountUuid, folderServerId).also {
+    fun getFolderSettingsLiveData(accountUuid: String, folderId: Long): LiveData<FolderSettingsData> {
+        return folderSettingsLiveData ?: createFolderSettingsLiveData(accountUuid, folderId).also {
             folderSettingsLiveData = it
         }
     }
 
     private fun createFolderSettingsLiveData(
         accountUuid: String,
-        folderServerId: String
+        folderId: Long
     ): LiveData<FolderSettingsData> {
         return liveData(context = viewModelScope.coroutineContext) {
             val account = loadAccount(accountUuid)
-            val localFolder = loadLocalFolder(account, folderServerId)
+            val localFolder = loadLocalFolder(account, folderId)
 
             val folderSettingsData = FolderSettingsData(
-                folder = createFolderObject(account, folderServerId, localFolder),
+                folder = createFolderObject(account, localFolder),
                 dataStore = FolderSettingsDataStore(localFolder)
             )
             emit(folderSettingsData)
@@ -47,18 +47,23 @@ class FolderSettingsViewModel(
         }
     }
 
-    private suspend fun loadLocalFolder(account: Account, folderServerId: String): LocalFolder {
+    private suspend fun loadLocalFolder(account: Account, folderId: Long): LocalFolder {
         return withContext(Dispatchers.IO) {
             val localStore = localStoreProvider.getInstance(account)
-            val folder = localStore.getFolder(folderServerId)
+            val folder = localStore.getFolder(folderId)
             folder.open()
             folder
         }
     }
 
-    private fun createFolderObject(account: Account, folderServerId: String, localFolder: LocalFolder): Folder {
-        val folderType = FolderInfoHolder.getFolderType(account, folderServerId)
-        return Folder(id = -1, serverId = folderServerId, name = localFolder.name, type = folderType)
+    private fun createFolderObject(account: Account, localFolder: LocalFolder): Folder {
+        val folderType = FolderInfoHolder.getFolderType(account, localFolder.serverId)
+        return Folder(
+            id = localFolder.databaseId,
+            serverId = localFolder.serverId,
+            name = localFolder.name,
+            type = folderType
+        )
     }
 }
 
