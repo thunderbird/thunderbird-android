@@ -170,7 +170,7 @@ public class ImapStoreTest {
         List<FolderListItem> result = imapStore.getFolders();
 
         assertNotNull(result);
-        assertEquals(Sets.newSet("INBOX", "Folder.SubFolder"), extractFolderNames(result));
+        assertEquals(Sets.newSet("INBOX", "Folder.SubFolder"), extractFolderServerIds(result));
     }
 
     @Test
@@ -198,11 +198,11 @@ public class ImapStoreTest {
         List<FolderListItem> result = imapStore.getFolders();
 
         assertNotNull(result);
-        assertEquals(Sets.newSet("INBOX", "Folder.SubFolder"), extractFolderNames(result));
+        assertEquals(Sets.newSet("INBOX", "Folder.SubFolder"), extractFolderServerIds(result));
     }
 
     @Test
-    public void getFolders_withNamespacePrefix_shouldRemoveNamespacePrefix() throws Exception {
+    public void getFolders_withNamespacePrefix() throws Exception {
         ImapConnection imapConnection = mock(ImapConnection.class);
         List<ImapResponse> imapResponses = Arrays.asList(
                 createImapResponse("* LIST () \".\" \"INBOX\""),
@@ -217,12 +217,13 @@ public class ImapStoreTest {
         List<FolderListItem> result = imapStore.getFolders();
 
         assertNotNull(result);
+        assertEquals(Sets.newSet("INBOX", "INBOX.FolderOne", "INBOX.FolderTwo"), extractFolderServerIds(result));
         assertEquals(Sets.newSet("INBOX", "FolderOne", "FolderTwo"), extractFolderNames(result));
+        assertEquals(Sets.newSet("INBOX", "FolderOne", "FolderTwo"), extractOldFolderServerIds(result));
     }
 
     @Test
-    public void getFolders_withFolderNotMatchingNamespacePrefix_shouldExcludeFolderWithoutPrefix()
-            throws Exception {
+    public void getFolders_withFolderNotMatchingNamespacePrefix() throws Exception {
         ImapConnection imapConnection = mock(ImapConnection.class);
         List<ImapResponse> imapResponses = Arrays.asList(
                 createImapResponse("* LIST () \".\" \"INBOX\""),
@@ -237,7 +238,9 @@ public class ImapStoreTest {
         List<FolderListItem> result = imapStore.getFolders();
 
         assertNotNull(result);
-        assertEquals(Sets.newSet("INBOX", "FolderOne"), extractFolderNames(result));
+        assertEquals(Sets.newSet("INBOX", "INBOX.FolderOne", "FolderTwo"), extractFolderServerIds(result));
+        assertEquals(Sets.newSet("INBOX", "FolderOne", "FolderTwo"), extractFolderNames(result));
+        assertEquals(Sets.newSet("INBOX", "FolderOne"), extractOldFolderServerIds(result));
     }
 
     @Test
@@ -260,7 +263,7 @@ public class ImapStoreTest {
 
         assertNotNull(result);
         assertEquals(2, result.size());
-        FolderListItem junkFolder = getFolderByName(result, "Junk");
+        FolderListItem junkFolder = getFolderByServerId(result, "Junk");
         assertNotNull(junkFolder);
         assertEquals(FolderType.SPAM, junkFolder.getType());
     }
@@ -382,18 +385,39 @@ public class ImapStoreTest {
         return storeConfig;
     }
 
+    private Set<String> extractFolderServerIds(List<FolderListItem> folders) {
+        Set<String> folderServerIds = new HashSet<>(folders.size());
+        for (FolderListItem folder : folders) {
+            folderServerIds.add(folder.getServerId());
+        }
+
+        return folderServerIds;
+    }
+
     private Set<String> extractFolderNames(List<FolderListItem> folders) {
         Set<String> folderNames = new HashSet<>(folders.size());
         for (FolderListItem folder : folders) {
-            folderNames.add(folder.getServerId());
+            folderNames.add(folder.getName());
         }
 
         return folderNames;
     }
 
-    private FolderListItem getFolderByName(List<FolderListItem> result, String folderName) {
+    private Set<String> extractOldFolderServerIds(List<FolderListItem> folders) {
+        Set<String> folderNames = new HashSet<>(folders.size());
+        for (FolderListItem folder : folders) {
+            String oldServerId = folder.getOldServerId();
+            if (oldServerId != null) {
+                folderNames.add(oldServerId);
+            }
+        }
+
+        return folderNames;
+    }
+
+    private FolderListItem getFolderByServerId(List<FolderListItem> result, String serverId) {
         for (FolderListItem imapFolder : result) {
-            if (imapFolder.getServerId().equals(folderName)) {
+            if (imapFolder.getServerId().equals(serverId)) {
                 return imapFolder;
             }
         }

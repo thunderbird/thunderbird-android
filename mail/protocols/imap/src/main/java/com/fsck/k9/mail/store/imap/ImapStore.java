@@ -178,30 +178,16 @@ public class ImapStore {
 
         Map<String, FolderListItem> folderMap = new HashMap<>(listResponses.size());
         for (ListResponse listResponse : listResponses) {
-            String decodedFolderName;
-            try {
-                decodedFolderName = folderNameCodec.decode(listResponse.getName());
-            } catch (CharacterCodingException e) {
-                Timber.w(e, "Folder name not correctly encoded with the UTF-7 variant as defined by RFC 3501: %s",
-                        listResponse.getName());
-
-                //TODO: Use the raw name returned by the server for all commands that require
-                //      a folder name. Use the decoded name only for showing it to the user.
-
-                // We currently just skip folders with malformed names.
-                continue;
-            }
-
-            String folder = decodedFolderName;
+            String serverId = listResponse.getName();
 
             if (pathDelimiter == null) {
                 pathDelimiter = listResponse.getHierarchyDelimiter();
                 combinedPrefix = null;
             }
 
-            if (ImapFolder.INBOX.equalsIgnoreCase(folder)) {
+            if (ImapFolder.INBOX.equalsIgnoreCase(serverId)) {
                 continue;
-            } else if (folder.equals(storeConfig.getOutboxFolder())) {
+            } else if (serverId.equals(storeConfig.getOutboxFolder())) {
                 /*
                  * There is a folder on the server with the same name as our local
                  * outbox. Until we have a good plan to deal with this situation
@@ -212,10 +198,8 @@ public class ImapStore {
                 continue;
             }
 
-            folder = removePrefixFromFolderName(folder);
-            if (folder == null) {
-                continue;
-            }
+            String name = getFolderDisplayName(serverId);
+            String oldServerId = getOldServerId(serverId);
 
             FolderType type;
             if (listResponse.hasAttribute("\\Archive") || listResponse.hasAttribute("\\All")) {
@@ -232,19 +216,45 @@ public class ImapStore {
                 type = FolderType.REGULAR;
             }
 
-            String name = folder;
-
-            FolderListItem existingItem = folderMap.get(folder);
+            FolderListItem existingItem = folderMap.get(serverId);
             if (existingItem == null || existingItem.getType() == FolderType.REGULAR) {
-                folderMap.put(folder, new FolderListItem(folder, name, type));
+                folderMap.put(serverId, new FolderListItem(serverId, name, type, oldServerId));
             }
         }
 
         List<FolderListItem> folders = new ArrayList<>(folderMap.size() + 1);
-        folders.add(new FolderListItem(ImapFolder.INBOX, ImapFolder.INBOX, FolderType.INBOX));
+        folders.add(new FolderListItem(ImapFolder.INBOX, ImapFolder.INBOX, FolderType.INBOX, ImapFolder.INBOX));
         folders.addAll(folderMap.values());
 
         return folders;
+    }
+
+    private String getFolderDisplayName(String serverId) {
+        String decodedFolderName;
+        try {
+            decodedFolderName = folderNameCodec.decode(serverId);
+        } catch (CharacterCodingException e) {
+            Timber.w(e, "Folder name not correctly encoded with the UTF-7 variant as defined by RFC 3501: %s",
+                    serverId);
+
+            decodedFolderName = serverId;
+        }
+
+        String folderNameWithoutPrefix = removePrefixFromFolderName(decodedFolderName);
+        return folderNameWithoutPrefix != null ? folderNameWithoutPrefix : decodedFolderName;
+    }
+
+    @Nullable
+    private String getOldServerId(String serverId) {
+        String decodedFolderName;
+        try {
+            decodedFolderName = folderNameCodec.decode(serverId);
+        } catch (CharacterCodingException e) {
+            // Previous versions of K-9 Mail ignored folders with invalid UTF-7 encoding
+            return null;
+        }
+
+        return removePrefixFromFolderName(decodedFolderName);
     }
 
     @Nullable
