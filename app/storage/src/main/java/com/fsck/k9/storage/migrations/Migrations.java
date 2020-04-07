@@ -10,7 +10,6 @@ import com.fsck.k9.mailstore.MigrationsHelper;
 public class Migrations {
     @SuppressWarnings("fallthrough")
     public static void upgradeDatabase(SQLiteDatabase db, MigrationsHelper migrationsHelper) {
-        boolean shouldBuildFtsTable = false;
         switch (db.getVersion()) {
             case 61:
                 MigrationTo62.addServerIdColumnToFoldersTable(db);
@@ -29,15 +28,5 @@ public class Migrations {
             case 69:
                 new MigrationTo70(db).removePushState();
         }
-
-        if (shouldBuildFtsTable) {
-            buildFtsTable(db, migrationsHelper);
-        }
-    }
-
-    private static void buildFtsTable(SQLiteDatabase db, MigrationsHelper migrationsHelper) {
-        LocalStore localStore = migrationsHelper.getLocalStore();
-        FullTextIndexer fullTextIndexer = new FullTextIndexer(localStore, db);
-        fullTextIndexer.indexAllMessages();
     }
 }

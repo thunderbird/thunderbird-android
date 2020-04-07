@@ -8,21 +8,17 @@ import java.util.List;
 
 import android.app.Application;
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.Preferences;
 import com.fsck.k9.core.BuildConfig;
-import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LockableDatabase;
 import com.fsck.k9.mailstore.MigrationsHelper;
 import com.fsck.k9.mailstore.StorageManager;
-import com.fsck.k9.preferences.Storage;
 import org.junit.Before;
 import org.junit.Test;
 import org.robolectric.RuntimeEnvironment;
@@ -382,33 +378,8 @@ public class StoreSchemaDefinitionTest extends K9RobolectricTest {
 
         MigrationsHelper migrationsHelper = new MigrationsHelper() {
             @Override
-            public LocalStore getLocalStore() {
-                return localStore;
-            }
-
-            @Override
-            public Preferences getPreferences() {
-                return mock(Preferences.class);
-            }
-
-            @Override
-            public Storage getStorage() {
-                return mock(Storage.class);
-            }
-
-            @Override
             public Account getAccount() {
                 return account;
-            }
-
-            @Override
-            public Context getContext() {
-                return RuntimeEnvironment.application;
-            }
-
-            @Override
-            public String serializeFlags(List<Flag> flags) {
-                return null;
             }
         };
 
