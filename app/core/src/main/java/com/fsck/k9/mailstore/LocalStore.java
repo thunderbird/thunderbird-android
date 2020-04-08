@@ -934,7 +934,7 @@ public class LocalStore {
             folder.create();
         }
         folder.setName(folderName);
-        folder.setSyncClass(FolderClass.NONE);
+        folder.setSyncClass(FolderClass.NO_CLASS);
     }
 
     static String serializeFlags(Iterable<Flag> flags) {
