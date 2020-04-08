@@ -122,6 +122,7 @@
         <item name="iconAboutAuthors">@drawable/ic_code_light</item>
         <item name="iconAboutLicense">@drawable/ic_description_light</item>
 
+        <item name="unencryptedAttachmentUnlock">@drawable/ic_visibility_light</item>
         <item name="openpgp_black">#000</item>
         <item name="openpgp_orange">#FF8800</item>
         <item name="openpgp_red">#CC0000</item>
@@ -245,6 +246,7 @@
         <item name="iconAboutAuthors">@drawable/ic_code_dark</item>
         <item name="iconAboutLicense">@drawable/ic_description_dark</item>
 
+        <item name="unencryptedAttachmentUnlock">@drawable/ic_visibility_dark</item>
         <item name="openpgp_black">#fff</item>
         <item name="openpgp_orange">#ee7700</item>
         <item name="openpgp_red">#CC0000</item>

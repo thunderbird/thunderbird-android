@@ -660,7 +660,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public void refreshAttachmentThumbnail(AttachmentViewInfo attachment) {
-        // mMessageView.refreshAttachmentThumbnail(attachment);
+        mMessageView.refreshAttachmentThumbnail(attachment);
     }
 
     private MessageCryptoMvpView messageCryptoMvpView = new MessageCryptoMvpView() {

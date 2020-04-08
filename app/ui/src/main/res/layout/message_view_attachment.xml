@@ -1,85 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.fsck.k9.ui.messageview.AttachmentView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+<com.fsck.k9.ui.messageview.AttachmentView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingBottom="4dip"
+    android:paddingBottom="4dp"
     android:id="@+id/attachment">
-    <LinearLayout
-        android:layout_width="fill_parent"
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:paddingLeft="4dip">
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/messageViewAttachmentBackground"
-            android:gravity="center_vertical">
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        android:orientation="vertical"
+        android:foreground="?attr/selectableItemBackground"
+        app:cardBackgroundColor="?attr/attachmentCardBackground"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="1dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
             <ImageView
-                android:id="@+id/attachment_icon"
-                android:layout_width="62dip"
-                android:layout_height="62dip"
-                android:src="@drawable/attached_image_placeholder"
-                android:layout_marginLeft="4dip"
-                android:layout_marginRight="4dip"
-                android:layout_marginBottom="4dip"
-                android:layout_marginTop="4dip" />
+                android:id="@+id/attachment_preview"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="?android:attr/windowBackground"
+                android:contentDescription="@null"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/attachment_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_attachment_generic"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/attachment_preview"
+                app:tint="?attr/colorAccent" />
+
             <TextView
                 android:id="@+id/attachment_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="?android:attr/textColorSecondary"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:ellipsize="start"
                 android:singleLine="true"
-                android:ellipsize="middle"
-                android:layout_alignParentTop="true"
-                android:layout_toRightOf="@id/attachment_icon"
-                android:layout_alignParentRight="true"
-                android:layout_alignWithParentIfMissing="true" />
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toTopOf="@+id/attachment_size"
+                app:layout_constraintEnd_toStartOf="@+id/save_button"
+                app:layout_constraintStart_toEndOf="@+id/attachment_type"
+                app:layout_constraintTop_toBottomOf="@+id/attachment_preview"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="filename.ext" />
+
             <TextView
-                android:id="@+id/attachment_info"
-                android:layout_width="wrap_content"
+                android:id="@+id/attachment_size"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textColor="?android:attr/textColorTertiary"
+                android:layout_marginBottom="8dp"
                 android:singleLine="true"
-                android:ellipsize="middle"
-                android:layout_alignLeft="@id/attachment_name"
-                android:layout_below="@id/attachment_name"
-                android:layout_alignWithParentIfMissing="true" />
-            <Button
-                android:id="@+id/download"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="?android:attr/buttonStyleSmall"
-                android:paddingLeft="20dip"
-                android:paddingRight="20dip"
-                android:text="@string/message_view_attachment_download_action"
-                android:singleLine="true"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/attachment_name"
-                android:layout_marginTop="6dip" />
-            <Button
-                android:id="@+id/view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="?android:attr/buttonStyleSmall"
-                android:paddingLeft="20dip"
-                android:paddingRight="20dip"
-                android:text="@string/message_view_attachment_view_action"
-                android:singleLine="true"
-                android:layout_toLeftOf="@id/download"
-                android:layout_alignWithParentIfMissing="true"
-                android:layout_below="@id/attachment_name"
-                android:layout_marginTop="6dip" />
-        </RelativeLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center_vertical">
-        <ImageView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:src="@drawable/ic_email_attachment" />
-    </LinearLayout>
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/attachment_name"
+                app:layout_constraintStart_toStartOf="@+id/attachment_name"
+                app:layout_constraintTop_toBottomOf="@+id/attachment_name"
+                app:layout_constraintVertical_bias="0.0"
+                tools:text="99 KB" />
+
+            <ImageButton
+                android:id="@+id/save_button"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/remove_attachment_action"
+                android:src="?attr/iconActionSave"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/attachment_preview" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
 </com.fsck.k9.ui.messageview.AttachmentView>

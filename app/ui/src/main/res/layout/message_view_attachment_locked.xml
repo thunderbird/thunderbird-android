@@ -1,92 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.fsck.k9.ui.messageview.LockedAttachmentView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<com.fsck.k9.ui.messageview.LockedAttachmentView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:paddingBottom="4dip"
     android:inAnimation="@anim/fade_in"
     android:outAnimation="@anim/fade_out"
-    custom:previewInitialChild="0"
-    tools:layout_height="80dp"
-    >
+    app:previewInitialChild="0">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+    <androidx.cardview.widget.CardView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        android:orientation="vertical"
+        app:cardBackgroundColor="?attr/attachmentCardBackground"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="1dp">
 
-        <FrameLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="4dp"
-            android:background="?attr/messageViewAttachmentBackground"
-            >
-        </FrameLayout>
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/lock_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:src="@drawable/status_signature_unknown"
-            android:tint="?attr/openpgp_red"
-            android:layout_marginTop="8dip"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:padding="14dp"
-            />
+            <ImageView
+                android:id="@+id/lock_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:contentDescription="@null"
+                android:src="@drawable/status_signature_unknown"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="?attr/openpgp_red" />
 
-        <TextView
-            android:id="@+id/locked_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@id/lock_icon"
-            android:layout_alignParentRight="true"
-            android:layout_alignWithParentIfMissing="true"
-            android:layout_marginTop="8dp"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="?android:attr/textColorSecondary"
-            android:singleLine="true"
-            android:ellipsize="middle"
-            android:text="@string/locked_attach_title"/>
+            <TextView
+                android:id="@+id/locked_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/locked_attach_title"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toTopOf="@+id/locked_info"
+                app:layout_constraintEnd_toStartOf="@+id/locked_button"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/lock_icon"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/locked_button"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:paddingLeft="20dip"
-            android:paddingRight="20dip"
-            android:singleLine="true"
-            android:text="@string/locked_attach_unlock"
-            style="?android:attr/buttonStyleSmall"
-            />
+            <TextView
+                android:id="@+id/locked_info"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/locked_attach_unencrypted"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/locked_name"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/locked_name"
+                app:layout_constraintTop_toBottomOf="@+id/locked_name" />
 
-        <TextView
-            android:id="@+id/locked_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="?android:attr/textColorTertiary"
-            android:layout_alignLeft="@id/locked_name"
-            android:layout_toLeftOf="@id/locked_button"
-            android:layout_below="@id/locked_name"
-            android:layout_alignWithParentIfMissing="true"
-            android:layout_marginBottom="12dp"
-            android:text="@string/locked_attach_unencrypted" />
+            <ImageButton
+                android:id="@+id/locked_button"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/locked_attach_unlock"
+                android:src="?attr/unencryptedAttachmentUnlock"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/locked_name"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:src="@drawable/ic_email_attachment" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 
     <ViewStub
         android:layout_width="match_parent"

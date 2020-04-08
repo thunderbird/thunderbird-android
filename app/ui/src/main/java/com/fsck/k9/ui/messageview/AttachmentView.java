@@ -5,13 +5,14 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.fsck.k9.K9;
+import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.helper.SizeFormatter;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
@@ -23,8 +24,9 @@ public class AttachmentView extends FrameLayout implements OnClickListener {
     private AttachmentViewInfo attachment;
     private AttachmentViewCallback callback;
 
-    private Button viewButton;
-    private Button downloadButton;
+    private View saveButton;
+    private ImageView preview;
+    private ImageView attachmentType;
 
 
     public AttachmentView(Context context, AttributeSet attrs, int defStyle) {
@@ -40,18 +42,26 @@ public class AttachmentView extends FrameLayout implements OnClickListener {
         this(context, null);
     }
 
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        saveButton = findViewById(R.id.save_button);
+        preview = findViewById(R.id.attachment_preview);
+        attachmentType = findViewById(R.id.attachment_type);
+    }
+
     public AttachmentViewInfo getAttachment() {
         return attachment;
     }
 
     public void enableButtons() {
-        viewButton.setEnabled(true);
-        downloadButton.setEnabled(true);
+        setEnabled(true);
+        saveButton.setVisibility(View.INVISIBLE);
     }
 
     public void disableButtons() {
-        viewButton.setEnabled(false);
-        downloadButton.setEnabled(false);
+        setEnabled(false);
+        saveButton.setVisibility(View.VISIBLE);
     }
 
     public void setAttachment(AttachmentViewInfo attachment) {
@@ -61,27 +71,30 @@ public class AttachmentView extends FrameLayout implements OnClickListener {
     }
 
     private void displayAttachmentInformation() {
-        viewButton = findViewById(R.id.view);
-        downloadButton = findViewById(R.id.download);
-
         if (attachment.size > K9.MAX_ATTACHMENT_DOWNLOAD_SIZE) {
-            viewButton.setVisibility(View.GONE);
-            downloadButton.setVisibility(View.GONE);
+            saveButton.setVisibility(View.INVISIBLE);
         }
 
-        viewButton.setOnClickListener(this);
-        downloadButton.setOnClickListener(this);
+        setOnClickListener(this);
+        saveButton.setOnClickListener(this);
 
         TextView attachmentName = findViewById(R.id.attachment_name);
         attachmentName.setText(attachment.displayName);
 
         setAttachmentSize(attachment.size);
 
-        refreshThumbnail();
+        if (MimeUtility.isSupportedImageType(attachment.mimeType)) {
+            attachmentType.setImageResource(R.drawable.ic_attachment_image);
+            if (attachment.isContentAvailable()) {
+                refreshThumbnail();
+            }
+        } else {
+            preview.setVisibility(View.GONE);
+        }
     }
 
     private void setAttachmentSize(long size) {
-        TextView attachmentSize = findViewById(R.id.attachment_info);
+        TextView attachmentSize = findViewById(R.id.attachment_size);
         if (size == AttachmentViewInfo.UNKNOWN_SIZE) {
             attachmentSize.setText("");
         } else {
@@ -92,10 +105,9 @@ public class AttachmentView extends FrameLayout implements OnClickListener {
 
     @Override
     public void onClick(View view) {
-        int id = view.getId();
-        if (id == R.id.view) {
+        if (view == this) {
             onViewButtonClick();
-        } else if (id == R.id.download) {
+        } else if (view.getId() == R.id.save_button) {
             onSaveButtonClick();
         }
     }
@@ -113,11 +125,11 @@ public class AttachmentView extends FrameLayout implements OnClickListener {
     }
 
     public void refreshThumbnail() {
-        ImageView thumbnailView = findViewById(R.id.attachment_icon);
+        preview.setVisibility(View.VISIBLE);
         Glide.with(getContext())
                 .load(attachment.internalUri)
-                .placeholder(R.drawable.attached_image_placeholder)
                 .centerCrop()
-                .into(thumbnailView);
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(preview);
     }
 }
