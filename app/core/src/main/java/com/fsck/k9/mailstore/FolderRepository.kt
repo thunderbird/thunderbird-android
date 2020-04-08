@@ -5,13 +5,11 @@ import androidx.core.content.contentValuesOf
 import androidx.core.database.getStringOrNull
 import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
-import com.fsck.k9.Preferences
 import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.FolderType as RemoteFolderType
 
 class FolderRepository(
     private val localStoreProvider: LocalStoreProvider,
-    private val preferences: Preferences,
     private val account: Account
 ) {
     private val sortForDisplay =
@@ -96,46 +94,6 @@ class FolderRepository(
             )
             db.update("folders", contentValues, "id = ?", arrayOf(folderDetails.folder.id.toString()))
         }
-
-        saveFolderDetailsToPreferences(folderDetails)
-    }
-
-    private fun saveFolderDetailsToPreferences(folderDetails: FolderDetails) {
-        val folder = folderDetails.folder
-        val editor = preferences.createStorageEditor()
-
-        val id = "${account.uuid}:${folderDetails.folder.serverId}"
-
-        // There can be a lot of folders. For the defaults, let's not save prefs, saving space, except for INBOX.
-        val inboxServerId = account.inboxFolder
-        if (folderDetails.displayClass == FolderClass.NO_CLASS && folder.serverId != inboxServerId) {
-            editor.remove("$id.displayMode")
-        } else {
-            editor.putString("$id.displayMode", folderDetails.displayClass.name)
-        }
-
-        if (folderDetails.syncClass == FolderClass.INHERITED && folder.serverId != inboxServerId) {
-            editor.remove("$id.syncMode")
-        } else {
-            editor.putString("$id.syncMode", folderDetails.syncClass.name)
-        }
-
-        if (folderDetails.notifyClass == FolderClass.INHERITED && folder.serverId != inboxServerId) {
-            editor.remove("$id.notifyMode")
-        } else {
-            editor.putString("$id.notifyMode", folderDetails.notifyClass.name)
-        }
-
-        if (folderDetails.pushClass == FolderClass.SECOND_CLASS && folder.serverId != inboxServerId) {
-            editor.remove("$id.pushMode")
-        } else {
-            editor.putString("$id.pushMode", folderDetails.pushClass.name)
-        }
-
-        editor.putBoolean("$id.inTopGroup", folderDetails.isInTopGroup)
-        editor.putBoolean("$id.integrate", folderDetails.isIntegrate)
-
-        editor.commit()
     }
 
     private fun getDisplayFolders(db: SQLiteDatabase, displayMode: FolderMode): List<DisplayFolder> {

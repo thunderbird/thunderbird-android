@@ -530,45 +530,6 @@ public class LocalFolder {
         editor.commit();
     }
 
-    public void save() throws MessagingException {
-        StorageEditor editor = localStore.getPreferences().createStorageEditor();
-        save(editor);
-        editor.commit();
-    }
-
-    public void save(StorageEditor editor) throws MessagingException {
-        String id = getPrefId();
-
-        // there can be a lot of folders.  For the defaults, let's not save prefs, saving space, except for INBOX
-        if (displayClass == FolderClass.NO_CLASS && !getServerId().equals(getAccount().getInboxFolder())) {
-            editor.remove(id + ".displayMode");
-        } else {
-            editor.putString(id + ".displayMode", displayClass.name());
-        }
-
-        if (syncClass == FolderClass.INHERITED && !getServerId().equals(getAccount().getInboxFolder())) {
-            editor.remove(id + ".syncMode");
-        } else {
-            editor.putString(id + ".syncMode", syncClass.name());
-        }
-
-        if (notifyClass == FolderClass.INHERITED && !getServerId().equals(getAccount().getInboxFolder())) {
-            editor.remove(id + ".notifyMode");
-        } else {
-            editor.putString(id + ".notifyMode", notifyClass.name());
-        }
-
-        if (pushClass == FolderClass.SECOND_CLASS && !getServerId().equals(getAccount().getInboxFolder())) {
-            editor.remove(id + ".pushMode");
-        } else {
-            editor.putString(id + ".pushMode", pushClass.name());
-        }
-        editor.putBoolean(id + ".inTopGroup", isInTopGroup);
-
-        editor.putBoolean(id + ".integrate", isIntegrate);
-
-    }
-
     public void fetch(final List<LocalMessage> messages, final FetchProfile fp, final MessageRetrievalListener<LocalMessage> listener)
     throws MessagingException {
         try {
@@ -1642,8 +1603,6 @@ public class LocalFolder {
         } catch (WrappedException e) {
             throw(MessagingException) e.getCause();
         }
-
-        deleteSettings();
     }
 
     @Override
