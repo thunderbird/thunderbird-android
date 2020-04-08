@@ -2,13 +2,17 @@ package com.fsck.k9.ui.managefolders
 
 import androidx.preference.PreferenceDataStore
 import com.fsck.k9.mail.FolderClass
-import com.fsck.k9.mailstore.LocalFolder
+import com.fsck.k9.mailstore.FolderDetails
+import com.fsck.k9.mailstore.FolderRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class FolderSettingsDataStore(private val folder: LocalFolder) : PreferenceDataStore() {
+class FolderSettingsDataStore(
+    private val folderRepository: FolderRepository,
+    private var folder: FolderDetails
+) : PreferenceDataStore() {
     private val saveScope = CoroutineScope(GlobalScope.coroutineContext + Dispatchers.IO)
 
     override fun getBoolean(key: String?, defValue: Boolean): Boolean {
@@ -21,8 +25,8 @@ class FolderSettingsDataStore(private val folder: LocalFolder) : PreferenceDataS
 
     override fun putBoolean(key: String?, value: Boolean) {
         return when (key) {
-            "folder_settings_in_top_group" -> updateFolder { isInTopGroup = value }
-            "folder_settings_include_in_integrated_inbox" -> updateFolder { isIntegrate = value }
+            "folder_settings_in_top_group" -> updateFolder(folder.copy(isInTopGroup = value))
+            "folder_settings_include_in_integrated_inbox" -> updateFolder(folder.copy(isIntegrate = value))
             else -> error("Unknown key: $key")
         }
     }
@@ -30,8 +34,8 @@ class FolderSettingsDataStore(private val folder: LocalFolder) : PreferenceDataS
     override fun getString(key: String?, defValue: String?): String? {
         return when (key) {
             "folder_settings_folder_display_mode" -> folder.displayClass.name
-            "folder_settings_folder_sync_mode" -> folder.rawSyncClass.name
-            "folder_settings_folder_notify_mode" -> folder.rawNotifyClass.name
+            "folder_settings_folder_sync_mode" -> folder.syncClass.name
+            "folder_settings_folder_notify_mode" -> folder.notifyClass.name
             else -> error("Unknown key: $key")
         }
     }
@@ -40,17 +44,23 @@ class FolderSettingsDataStore(private val folder: LocalFolder) : PreferenceDataS
         val newValue = requireNotNull(value) { "'value' can't be null" }
 
         when (key) {
-            "folder_settings_folder_display_mode" -> updateFolder { displayClass = FolderClass.valueOf(newValue) }
-            "folder_settings_folder_sync_mode" -> updateFolder { syncClass = FolderClass.valueOf(newValue) }
-            "folder_settings_folder_notify_mode" -> updateFolder { notifyClass = FolderClass.valueOf(newValue) }
+            "folder_settings_folder_display_mode" -> {
+                updateFolder(folder.copy(displayClass = FolderClass.valueOf(newValue)))
+            }
+            "folder_settings_folder_sync_mode" -> {
+                updateFolder(folder.copy(syncClass = FolderClass.valueOf(newValue)))
+            }
+            "folder_settings_folder_notify_mode" -> {
+                updateFolder(folder.copy(notifyClass = FolderClass.valueOf(newValue)))
+            }
             else -> error("Unknown key: $key")
         }
     }
 
-    private fun updateFolder(block: LocalFolder.() -> Unit) {
+    private fun updateFolder(newFolder: FolderDetails) {
+        folder = newFolder
         saveScope.launch {
-            block(folder)
-            folder.save()
+            folderRepository.updateFolderDetails(newFolder)
         }
     }
 }

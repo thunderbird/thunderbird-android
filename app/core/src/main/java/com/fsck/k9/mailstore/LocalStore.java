@@ -376,6 +376,10 @@ public class LocalStore {
         return new LocalFolder(this, serverId);
     }
 
+    public LocalFolder getFolder(long folderId) {
+        return new LocalFolder(this, folderId);
+    }
+
     public LocalFolder getFolder(String serverId, String name, FolderType type) {
         return new LocalFolder(this, serverId, name, type);
     }

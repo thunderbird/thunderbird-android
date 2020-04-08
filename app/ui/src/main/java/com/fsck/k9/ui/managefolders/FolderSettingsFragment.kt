@@ -2,6 +2,7 @@ package com.fsck.k9.ui.managefolders
 
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.folders.FolderNameFormatter
@@ -25,16 +26,26 @@ class FolderSettingsFragment : PreferenceFragmentCompat() {
 
         val arguments = arguments ?: error("Arguments missing")
         val accountUuid = arguments.getString(EXTRA_ACCOUNT) ?: error("Missing argument '$EXTRA_ACCOUNT'")
-        val folderServerId = arguments.getString(EXTRA_FOLDER_SERVER_ID)
-            ?: error("Missing argument '$EXTRA_FOLDER_SERVER_ID'")
+        val folderId = arguments.getLong(EXTRA_FOLDER_ID)
 
-        viewModel.getFolderSettingsLiveData(accountUuid, folderServerId)
-            .observeNotNull(viewLifecycleOwner) { folderSettings ->
-                preferenceManager.preferenceDataStore = folderSettings.dataStore
-                setPreferencesFromResource(R.xml.folder_settings_preferences, null)
-
-                setCategoryTitle(folderSettings)
+        viewModel.getFolderSettingsLiveData(accountUuid, folderId)
+            .observeNotNull(viewLifecycleOwner) { folderSettingsResult ->
+                when (folderSettingsResult) {
+                    is FolderNotFound -> navigateBack()
+                    is FolderSettingsData -> initPreferences(folderSettingsResult)
+                }
             }
+    }
+
+    private fun navigateBack() {
+        findNavController().popBackStack()
+    }
+
+    private fun initPreferences(folderSettings: FolderSettingsData) {
+        preferenceManager.preferenceDataStore = folderSettings.dataStore
+        setPreferencesFromResource(R.xml.folder_settings_preferences, null)
+
+        setCategoryTitle(folderSettings)
     }
 
     private fun setCategoryTitle(folderSettings: FolderSettingsData) {
@@ -44,7 +55,7 @@ class FolderSettingsFragment : PreferenceFragmentCompat() {
 
     companion object {
         const val EXTRA_ACCOUNT = "account"
-        const val EXTRA_FOLDER_SERVER_ID = "folderServerId"
+        const val EXTRA_FOLDER_ID = "folderId"
 
         private const val PREFERENCE_TOP_CATEGORY = "folder_settings"
     }

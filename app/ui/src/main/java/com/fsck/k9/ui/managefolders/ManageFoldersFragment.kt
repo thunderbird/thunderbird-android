@@ -65,7 +65,7 @@ class ManageFoldersFragment : Fragment() {
         val folderListAdapter = FastAdapter.with(itemAdapter).apply {
             setHasStableIds(true)
             onClickListener = { _, _, item: FolderListItem, _ ->
-                openFolderSettings(item.serverId)
+                openFolderSettings(item.folderId)
                 true
             }
         }
@@ -79,18 +79,17 @@ class ManageFoldersFragment : Fragment() {
             val databaseId = displayFolder.folder.id
             val folderIconResource = folderIconProvider.getFolderIcon(displayFolder.folder.type)
             val displayName = folderNameFormatter.displayName(displayFolder.folder)
-            val serverId = displayFolder.folder.serverId
 
-            FolderListItem(databaseId, folderIconResource, displayName, serverId)
+            FolderListItem(databaseId, folderIconResource, displayName)
         }
 
         itemAdapter.set(folderListItems)
     }
 
-    private fun openFolderSettings(folderServerId: String) {
+    private fun openFolderSettings(folderId: Long) {
         val folderSettingsArguments = bundleOf(
             FolderSettingsFragment.EXTRA_ACCOUNT to account.uuid,
-            FolderSettingsFragment.EXTRA_FOLDER_SERVER_ID to folderServerId
+            FolderSettingsFragment.EXTRA_FOLDER_ID to folderId
         )
         findNavController().navigate(R.id.action_manageFoldersScreen_to_folderSettingsScreen, folderSettingsArguments)
     }
