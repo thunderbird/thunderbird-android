@@ -8,18 +8,20 @@ import com.fsck.k9.Account
 import com.fsck.k9.Preferences
 import com.fsck.k9.activity.FolderInfoHolder
 import com.fsck.k9.mailstore.Folder
-import com.fsck.k9.mailstore.LocalFolder
-import com.fsck.k9.mailstore.LocalStoreProvider
+import com.fsck.k9.mailstore.FolderDetails
+import com.fsck.k9.mailstore.FolderRepository
+import com.fsck.k9.mailstore.FolderRepositoryManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 class FolderSettingsViewModel(
     private val preferences: Preferences,
-    private val localStoreProvider: LocalStoreProvider
+    private val folderRepositoryManager: FolderRepositoryManager
 ) : ViewModel() {
-    private var folderSettingsLiveData: LiveData<FolderSettingsData>? = null
+    private var folderSettingsLiveData: LiveData<FolderSettingsResult>? = null
 
-    fun getFolderSettingsLiveData(accountUuid: String, folderId: Long): LiveData<FolderSettingsData> {
+    fun getFolderSettingsLiveData(accountUuid: String, folderId: Long): LiveData<FolderSettingsResult> {
         return folderSettingsLiveData ?: createFolderSettingsLiveData(accountUuid, folderId).also {
             folderSettingsLiveData = it
         }
@@ -28,14 +30,20 @@ class FolderSettingsViewModel(
     private fun createFolderSettingsLiveData(
         accountUuid: String,
         folderId: Long
-    ): LiveData<FolderSettingsData> {
+    ): LiveData<FolderSettingsResult> {
         return liveData(context = viewModelScope.coroutineContext) {
             val account = loadAccount(accountUuid)
-            val localFolder = loadLocalFolder(account, folderId)
+            val folderRepository = folderRepositoryManager.getFolderRepository(account)
+            val folderDetails = folderRepository.loadFolderDetails(folderId)
+            if (folderDetails == null) {
+                Timber.w("Folder with ID $folderId not found")
+                emit(FolderNotFound)
+                return@liveData
+            }
 
             val folderSettingsData = FolderSettingsData(
-                folder = createFolderObject(account, localFolder),
-                dataStore = FolderSettingsDataStore(localFolder)
+                folder = createFolderObject(account, folderDetails.folder),
+                dataStore = FolderSettingsDataStore(folderRepository, folderDetails)
             )
             emit(folderSettingsData)
         }
@@ -47,24 +55,23 @@ class FolderSettingsViewModel(
         }
     }
 
-    private suspend fun loadLocalFolder(account: Account, folderId: Long): LocalFolder {
+    private suspend fun FolderRepository.loadFolderDetails(folderId: Long): FolderDetails? {
         return withContext(Dispatchers.IO) {
-            val localStore = localStoreProvider.getInstance(account)
-            val folder = localStore.getFolder(folderId)
-            folder.open()
-            folder
+            getFolderDetails(folderId)
         }
     }
 
-    private fun createFolderObject(account: Account, localFolder: LocalFolder): Folder {
-        val folderType = FolderInfoHolder.getFolderType(account, localFolder.serverId)
+    private fun createFolderObject(account: Account, folder: Folder): Folder {
+        val folderType = FolderInfoHolder.getFolderType(account, folder.serverId)
         return Folder(
-            id = localFolder.databaseId,
-            serverId = localFolder.serverId,
-            name = localFolder.name,
+            id = folder.id,
+            serverId = folder.serverId,
+            name = folder.name,
             type = folderType
         )
     }
 }
 
-data class FolderSettingsData(val folder: Folder, val dataStore: FolderSettingsDataStore)
+sealed class FolderSettingsResult
+object FolderNotFound : FolderSettingsResult()
+data class FolderSettingsData(val folder: Folder, val dataStore: FolderSettingsDataStore) : FolderSettingsResult()

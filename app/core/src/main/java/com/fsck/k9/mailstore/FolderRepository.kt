@@ -1,13 +1,17 @@
 package com.fsck.k9.mailstore
 
 import android.database.sqlite.SQLiteDatabase
+import androidx.core.content.contentValuesOf
+import androidx.core.database.getStringOrNull
 import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
+import com.fsck.k9.Preferences
 import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.FolderType as RemoteFolderType
 
 class FolderRepository(
     private val localStoreProvider: LocalStoreProvider,
+    private val preferences: Preferences,
     private val account: Account
 ) {
     private val sortForDisplay =
@@ -33,6 +37,105 @@ class FolderRepository(
         }
 
         return displayFolders.sortedWith(sortForDisplay)
+    }
+
+    fun getFolderDetails(folderId: Long): FolderDetails? {
+        val database = localStoreProvider.getInstance(account).database
+        return database.execute(false) { db ->
+            db.query(
+                "folders",
+                arrayOf(
+                    "server_id",
+                    "name",
+                    "top_group",
+                    "integrate",
+                    "poll_class",
+                    "display_class",
+                    "notify_class",
+                    "push_class"
+                ),
+                "id = ?",
+                arrayOf(folderId.toString()),
+                null,
+                null,
+                null
+            ).use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val serverId = cursor.getString(0)
+                    FolderDetails(
+                        folder = Folder(
+                            id = folderId,
+                            serverId = serverId,
+                            name = cursor.getString(1),
+                            type = folderTypeOf(serverId)
+                        ),
+                        isInTopGroup = cursor.getInt(2) == 1,
+                        isIntegrate = cursor.getInt(3) == 1,
+                        syncClass = cursor.getStringOrNull(4).toFolderClass(),
+                        displayClass = cursor.getStringOrNull(5).toFolderClass(),
+                        notifyClass = cursor.getStringOrNull(6).toFolderClass(),
+                        pushClass = cursor.getStringOrNull(7).toFolderClass()
+                    )
+                } else {
+                    null
+                }
+            }
+        }
+    }
+
+    fun updateFolderDetails(folderDetails: FolderDetails) {
+        val database = localStoreProvider.getInstance(account).database
+        database.execute(false) { db ->
+            val contentValues = contentValuesOf(
+                "top_group" to folderDetails.isInTopGroup,
+                "integrate" to folderDetails.isIntegrate,
+                "poll_class" to folderDetails.syncClass.name,
+                "display_class" to folderDetails.displayClass.name,
+                "notify_class" to folderDetails.notifyClass.name,
+                "push_class" to folderDetails.pushClass.name
+            )
+            db.update("folders", contentValues, "id = ?", arrayOf(folderDetails.folder.id.toString()))
+        }
+
+        saveFolderDetailsToPreferences(folderDetails)
+    }
+
+    private fun saveFolderDetailsToPreferences(folderDetails: FolderDetails) {
+        val folder = folderDetails.folder
+        val editor = preferences.createStorageEditor()
+
+        val id = "${account.uuid}:${folderDetails.folder.serverId}"
+
+        // There can be a lot of folders. For the defaults, let's not save prefs, saving space, except for INBOX.
+        val inboxServerId = account.inboxFolder
+        if (folderDetails.displayClass == FolderClass.NO_CLASS && folder.serverId != inboxServerId) {
+            editor.remove("$id.displayMode")
+        } else {
+            editor.putString("$id.displayMode", folderDetails.displayClass.name)
+        }
+
+        if (folderDetails.syncClass == FolderClass.INHERITED && folder.serverId != inboxServerId) {
+            editor.remove("$id.syncMode")
+        } else {
+            editor.putString("$id.syncMode", folderDetails.syncClass.name)
+        }
+
+        if (folderDetails.notifyClass == FolderClass.INHERITED && folder.serverId != inboxServerId) {
+            editor.remove("$id.notifyMode")
+        } else {
+            editor.putString("$id.notifyMode", folderDetails.notifyClass.name)
+        }
+
+        if (folderDetails.pushClass == FolderClass.SECOND_CLASS && folder.serverId != inboxServerId) {
+            editor.remove("$id.pushMode")
+        } else {
+            editor.putString("$id.pushMode", folderDetails.pushClass.name)
+        }
+
+        editor.putBoolean("$id.inTopGroup", folderDetails.isInTopGroup)
+        editor.putBoolean("$id.integrate", folderDetails.isIntegrate)
+
+        editor.commit()
     }
 
     private fun getDisplayFolders(db: SQLiteDatabase, displayMode: FolderMode): List<DisplayFolder> {
@@ -114,6 +217,10 @@ class FolderRepository(
         RemoteFolderType.ARCHIVE -> FolderType.ARCHIVE
     }
 
+    private fun String?.toFolderClass(): FolderClass {
+        return this?.let { FolderClass.valueOf(this) } ?: FolderClass.NO_CLASS
+    }
+
     fun setIncludeInUnifiedInbox(serverId: String, includeInUnifiedInbox: Boolean) {
         val localStore = localStoreProvider.getInstance(account)
         val folder = localStore.getFolder(serverId)
@@ -140,6 +247,16 @@ class FolderRepository(
 }
 
 data class Folder(val id: Long, val serverId: String, val name: String, val type: FolderType)
+
+data class FolderDetails(
+    val folder: Folder,
+    val isInTopGroup: Boolean,
+    val isIntegrate: Boolean,
+    val syncClass: FolderClass,
+    val displayClass: FolderClass,
+    val notifyClass: FolderClass,
+    val pushClass: FolderClass
+)
 
 data class DisplayFolder(
     val folder: Folder,

@@ -2,6 +2,7 @@ package com.fsck.k9.ui.managefolders
 
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.folders.FolderNameFormatter
@@ -28,12 +29,23 @@ class FolderSettingsFragment : PreferenceFragmentCompat() {
         val folderId = arguments.getLong(EXTRA_FOLDER_ID)
 
         viewModel.getFolderSettingsLiveData(accountUuid, folderId)
-            .observeNotNull(viewLifecycleOwner) { folderSettings ->
-                preferenceManager.preferenceDataStore = folderSettings.dataStore
-                setPreferencesFromResource(R.xml.folder_settings_preferences, null)
-
-                setCategoryTitle(folderSettings)
+            .observeNotNull(viewLifecycleOwner) { folderSettingsResult ->
+                when (folderSettingsResult) {
+                    is FolderNotFound -> navigateBack()
+                    is FolderSettingsData -> initPreferences(folderSettingsResult)
+                }
             }
+    }
+
+    private fun navigateBack() {
+        findNavController().popBackStack()
+    }
+
+    private fun initPreferences(folderSettings: FolderSettingsData) {
+        preferenceManager.preferenceDataStore = folderSettings.dataStore
+        setPreferencesFromResource(R.xml.folder_settings_preferences, null)
+
+        setCategoryTitle(folderSettings)
     }
 
     private fun setCategoryTitle(folderSettings: FolderSettingsData) {
