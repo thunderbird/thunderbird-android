@@ -1,7 +1,8 @@
 package com.fsck.k9.preferences
 
 import com.fsck.k9.K9RobolectricTest
-import com.fsck.k9.preferences.SettingsExporter.exportPreferences
+import com.fsck.k9.Preferences
+import com.fsck.k9.backend.BackendManager
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import org.jdom2.Document
@@ -10,9 +11,15 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Test
+import org.koin.core.inject
 import org.robolectric.RuntimeEnvironment
 
 class SettingsExporterTest : K9RobolectricTest() {
+    private val contentResolver = RuntimeEnvironment.application.contentResolver
+    private val preferences: Preferences by inject()
+    private val backendManager: BackendManager by inject()
+    private val settingsExporter = SettingsExporter(contentResolver, backendManager, preferences)
+
     @Test
     fun exportPreferences_producesXML() {
         val document = exportPreferences(false, emptySet())
@@ -50,7 +57,7 @@ class SettingsExporterTest : K9RobolectricTest() {
 
     private fun exportPreferences(globalSettings: Boolean, accounts: Set<String>): Document {
         return ByteArrayOutputStream().use { outputStream ->
-            exportPreferences(RuntimeEnvironment.application, outputStream, globalSettings, accounts)
+            settingsExporter.exportPreferences(outputStream, globalSettings, accounts)
             parseXml(outputStream.toByteArray())
         }
     }

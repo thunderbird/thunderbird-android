@@ -1,6 +1,6 @@
 package com.fsck.k9.preferences
 
-import android.content.Context
+import android.content.ContentResolver
 import android.net.Uri
 import android.util.Xml
 import com.fsck.k9.Account
@@ -8,7 +8,6 @@ import com.fsck.k9.AccountPreferenceSerializer.Companion.ACCOUNT_DESCRIPTION_KEY
 import com.fsck.k9.AccountPreferenceSerializer.Companion.IDENTITY_DESCRIPTION_KEY
 import com.fsck.k9.AccountPreferenceSerializer.Companion.IDENTITY_EMAIL_KEY
 import com.fsck.k9.AccountPreferenceSerializer.Companion.IDENTITY_NAME_KEY
-import com.fsck.k9.DI
 import com.fsck.k9.Preferences
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.preferences.ServerTypeConverter.fromServerSettingsType
@@ -20,68 +19,24 @@ import java.util.Calendar
 import org.xmlpull.v1.XmlSerializer
 import timber.log.Timber
 
-object SettingsExporter {
-    private const val EXPORT_FILENAME_PREFIX = "k9_settings_export"
-    private const val EXPORT_FILENAME_SUFFIX = "k9s"
-
-    /**
-     * File format version number.
-     *
-     * Increment this if you need to change the structure of the settings file. When you do this
-     * remember that we also have to be able to handle old file formats. So have fun adding support
-     * for that to [SettingsImporter] :)
-     */
-    const val FILE_FORMAT_VERSION = 1
-
-    const val ROOT_ELEMENT = "k9settings"
-    const val VERSION_ATTRIBUTE = "version"
-    const val FILE_FORMAT_ATTRIBUTE = "format"
-    const val GLOBAL_ELEMENT = "global"
-    const val SETTINGS_ELEMENT = "settings"
-    const val ACCOUNTS_ELEMENT = "accounts"
-    const val ACCOUNT_ELEMENT = "account"
-    const val UUID_ATTRIBUTE = "uuid"
-    const val INCOMING_SERVER_ELEMENT = "incoming-server"
-    const val OUTGOING_SERVER_ELEMENT = "outgoing-server"
-    const val TYPE_ATTRIBUTE = "type"
-    const val HOST_ELEMENT = "host"
-    const val PORT_ELEMENT = "port"
-    const val CONNECTION_SECURITY_ELEMENT = "connection-security"
-    const val AUTHENTICATION_TYPE_ELEMENT = "authentication-type"
-    const val USERNAME_ELEMENT = "username"
-    const val CLIENT_CERTIFICATE_ALIAS_ELEMENT = "client-cert-alias"
-    const val PASSWORD_ELEMENT = "password"
-    const val EXTRA_ELEMENT = "extra"
-    const val IDENTITIES_ELEMENT = "identities"
-    const val IDENTITY_ELEMENT = "identity"
-    const val FOLDERS_ELEMENT = "folders"
-    const val FOLDER_ELEMENT = "folder"
-    const val NAME_ATTRIBUTE = "name"
-    const val VALUE_ELEMENT = "value"
-    const val KEY_ATTRIBUTE = "key"
-    const val NAME_ELEMENT = "name"
-    const val EMAIL_ELEMENT = "email"
-    const val DESCRIPTION_ELEMENT = "description"
-
+class SettingsExporter(
+    private val contentResolver: ContentResolver,
+    private val backendManager: BackendManager,
+    private val preferences: Preferences
+) {
     @Throws(SettingsImportExportException::class)
-    fun exportToUri(context: Context, includeGlobals: Boolean, accountUuids: Set<String>, uri: Uri) {
+    fun exportToUri(includeGlobals: Boolean, accountUuids: Set<String>, uri: Uri) {
         try {
-            context.contentResolver.openOutputStream(uri)!!.use { outputStream ->
-                exportPreferences(context, outputStream, includeGlobals, accountUuids)
+            contentResolver.openOutputStream(uri)!!.use { outputStream ->
+                exportPreferences(outputStream, includeGlobals, accountUuids)
             }
         } catch (e: Exception) {
             throw SettingsImportExportException(e)
         }
     }
 
-    @JvmStatic
     @Throws(SettingsImportExportException::class)
-    fun exportPreferences(
-        context: Context,
-        outputStream: OutputStream,
-        includeGlobals: Boolean,
-        accountUuids: Set<String>
-    ) {
+    fun exportPreferences(outputStream: OutputStream, includeGlobals: Boolean, accountUuids: Set<String>) {
         try {
             val serializer = Xml.newSerializer()
             serializer.setOutput(outputStream, "UTF-8")
@@ -97,7 +52,6 @@ object SettingsExporter {
 
             Timber.i("Exporting preferences")
 
-            val preferences = Preferences.getPreferences(context)
             val storage = preferences.storage
 
             val prefs: Map<String, Any> = storage.all.toSortedMap()
@@ -158,7 +112,6 @@ object SettingsExporter {
         }
 
         // Write incoming server settings
-        val backendManager = DI.get(BackendManager::class.java)
         val incoming = backendManager.decodeStoreUri(account.storeUri)
         serializer.startTag(null, INCOMING_SERVER_ELEMENT)
         serializer.attribute(null, TYPE_ATTRIBUTE, fromServerSettingsType(incoming.type))
@@ -455,5 +408,49 @@ object SettingsExporter {
         val now = Calendar.getInstance()
         val dateFormat = SimpleDateFormat("yyyy-MM-dd")
         return String.format("%s_%s.%s", EXPORT_FILENAME_PREFIX, dateFormat.format(now.time), EXPORT_FILENAME_SUFFIX)
+    }
+
+    companion object {
+        private const val EXPORT_FILENAME_PREFIX = "k9_settings_export"
+        private const val EXPORT_FILENAME_SUFFIX = "k9s"
+
+        /**
+         * File format version number.
+         *
+         * Increment this if you need to change the structure of the settings file. When you do this
+         * remember that we also have to be able to handle old file formats. So have fun adding support
+         * for that to [SettingsImporter] :)
+         */
+        const val FILE_FORMAT_VERSION = 1
+
+        const val ROOT_ELEMENT = "k9settings"
+        const val VERSION_ATTRIBUTE = "version"
+        const val FILE_FORMAT_ATTRIBUTE = "format"
+        const val GLOBAL_ELEMENT = "global"
+        const val SETTINGS_ELEMENT = "settings"
+        const val ACCOUNTS_ELEMENT = "accounts"
+        const val ACCOUNT_ELEMENT = "account"
+        const val UUID_ATTRIBUTE = "uuid"
+        const val INCOMING_SERVER_ELEMENT = "incoming-server"
+        const val OUTGOING_SERVER_ELEMENT = "outgoing-server"
+        const val TYPE_ATTRIBUTE = "type"
+        const val HOST_ELEMENT = "host"
+        const val PORT_ELEMENT = "port"
+        const val CONNECTION_SECURITY_ELEMENT = "connection-security"
+        const val AUTHENTICATION_TYPE_ELEMENT = "authentication-type"
+        const val USERNAME_ELEMENT = "username"
+        const val CLIENT_CERTIFICATE_ALIAS_ELEMENT = "client-cert-alias"
+        const val PASSWORD_ELEMENT = "password"
+        const val EXTRA_ELEMENT = "extra"
+        const val IDENTITIES_ELEMENT = "identities"
+        const val IDENTITY_ELEMENT = "identity"
+        const val FOLDERS_ELEMENT = "folders"
+        const val FOLDER_ELEMENT = "folder"
+        const val NAME_ATTRIBUTE = "name"
+        const val VALUE_ELEMENT = "value"
+        const val KEY_ATTRIBUTE = "key"
+        const val NAME_ELEMENT = "name"
+        const val EMAIL_ELEMENT = "email"
+        const val DESCRIPTION_ELEMENT = "description"
     }
 }
