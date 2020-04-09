@@ -551,7 +551,7 @@ public class SettingsImporter {
             putString(editor, accountKeyPrefix + AccountPreferenceSerializer.IDENTITY_NAME_KEY + identitySuffix, identityName);
 
             // Validate email address
-            if (!IdentitySettings.isEmailAddressValid(identity.email)) {
+            if (!IdentitySettingsDescriptions.isEmailAddressValid(identity.email)) {
                 throw new InvalidSettingValueException();
             }
 
@@ -564,21 +564,21 @@ public class SettingsImporter {
 
             if (identity.settings != null) {
                 // Validate identity settings
-                Map<String, Object> validatedSettings = IdentitySettings.validate(
+                Map<String, Object> validatedSettings = IdentitySettingsDescriptions.validate(
                         contentVersion, identity.settings.settings, !mergeSettings);
 
                 // Upgrade identity settings to current content version
                 if (contentVersion != Settings.VERSION) {
-                    IdentitySettings.upgrade(contentVersion, validatedSettings);
+                    IdentitySettingsDescriptions.upgrade(contentVersion, validatedSettings);
                 }
 
                 // Convert identity settings to the representation used in preference storage
-                Map<String, String> stringSettings = IdentitySettings.convert(validatedSettings);
+                Map<String, String> stringSettings = IdentitySettingsDescriptions.convert(validatedSettings);
 
                 // Merge identity settings if necessary
                 Map<String, String> writeSettings;
                 if (mergeSettings) {
-                    writeSettings = new HashMap<>(IdentitySettings.getIdentitySettings(
+                    writeSettings = new HashMap<>(IdentitySettingsDescriptions.getIdentitySettings(
                             prefs.getStorage(), uuid, writeIdentityIndex));
                     writeSettings.putAll(stringSettings);
                 } else {

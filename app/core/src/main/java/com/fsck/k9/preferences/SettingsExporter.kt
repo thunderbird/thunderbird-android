@@ -303,7 +303,7 @@ class SettingsExporter(
                 continue
             }
 
-            val versionedSetting = IdentitySettings.SETTINGS[identityKey]
+            val versionedSetting = IdentitySettingsDescriptions.SETTINGS[identityKey]
             if (versionedSetting != null) {
                 val highestVersion = versionedSetting.lastKey()
                 val setting = versionedSetting[highestVersion]
