@@ -307,18 +307,18 @@ public class SettingsImporter {
             ImportedSettings settings) {
 
         // Validate global settings
-        Map<String, Object> validatedSettings = GlobalSettings.validate(contentVersion, settings.settings);
+        Map<String, Object> validatedSettings = GeneralSettingsDescriptions.validate(contentVersion, settings.settings);
 
         // Upgrade global settings to current content version
         if (contentVersion != Settings.VERSION) {
-            GlobalSettings.upgrade(contentVersion, validatedSettings);
+            GeneralSettingsDescriptions.upgrade(contentVersion, validatedSettings);
         }
 
         // Convert global settings to the string representation used in preference storage
-        Map<String, String> stringSettings = GlobalSettings.convert(validatedSettings);
+        Map<String, String> stringSettings = GeneralSettingsDescriptions.convert(validatedSettings);
 
         // Use current global settings as base and overwrite with validated settings read from the import file.
-        Map<String, String> mergedSettings = new HashMap<>(GlobalSettings.getGlobalSettings(storage));
+        Map<String, String> mergedSettings = new HashMap<>(GeneralSettingsDescriptions.getGlobalSettings(storage));
         mergedSettings.putAll(stringSettings);
 
         for (Map.Entry<String, String> setting : mergedSettings.entrySet()) {

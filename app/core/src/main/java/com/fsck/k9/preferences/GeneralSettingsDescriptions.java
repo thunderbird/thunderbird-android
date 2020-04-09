@@ -37,7 +37,7 @@ import com.fsck.k9.preferences.Settings.WebFontSizeSetting;
 import static com.fsck.k9.K9.LockScreenNotificationVisibility;
 
 
-public class GlobalSettings {
+public class GeneralSettingsDescriptions {
     static final Map<String, TreeMap<Integer, SettingsDescription>> SETTINGS;
     private static final Map<Integer, SettingsUpgrader> UPGRADERS;
 

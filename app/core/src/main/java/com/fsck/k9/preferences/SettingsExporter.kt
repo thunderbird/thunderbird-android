@@ -77,7 +77,7 @@ class SettingsExporter(
     }
 
     private fun writeSettings(serializer: XmlSerializer, prefs: Map<String, Any>) {
-        for ((key, versions) in GlobalSettings.SETTINGS) {
+        for ((key, versions) in GeneralSettingsDescriptions.SETTINGS) {
             val valueString = prefs[key] as String?
             val highestVersion = versions.lastKey()
             val setting = versions[highestVersion] ?: continue // Setting was removed
