@@ -204,7 +204,7 @@ class SettingsExporter(
                     continue
                 }
 
-                if (FolderSettings.SETTINGS.containsKey(thirdPart)) {
+                if (FolderSettingsDescriptions.SETTINGS.containsKey(thirdPart)) {
                     // This is a folder key. Save folder name for later...
                     folders.add(secondPart)
                     // ... but don't write it now.
@@ -347,7 +347,7 @@ class SettingsExporter(
                 continue
             }
 
-            val versionedSetting = FolderSettings.SETTINGS[folderKey]
+            val versionedSetting = FolderSettingsDescriptions.SETTINGS[folderKey]
             if (versionedSetting != null) {
                 val highestVersion = versionedSetting.lastKey()
                 val setting = versionedSetting[highestVersion]

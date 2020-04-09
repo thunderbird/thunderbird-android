@@ -473,20 +473,20 @@ public class SettingsImporter {
 
         // Validate folder settings
         Map<String, Object> validatedSettings =
-                FolderSettings.validate(contentVersion, folder.settings.settings, !overwrite);
+                FolderSettingsDescriptions.validate(contentVersion, folder.settings.settings, !overwrite);
 
         // Upgrade folder settings to current content version
         if (contentVersion != Settings.VERSION) {
-            FolderSettings.upgrade(contentVersion, validatedSettings);
+            FolderSettingsDescriptions.upgrade(contentVersion, validatedSettings);
         }
 
         // Convert folder settings to the string representation used in preference storage
-        Map<String, String> stringSettings = FolderSettings.convert(validatedSettings);
+        Map<String, String> stringSettings = FolderSettingsDescriptions.convert(validatedSettings);
 
         // Merge folder settings if necessary
         Map<String, String> writeSettings;
         if (overwrite) {
-            writeSettings = FolderSettings.getFolderSettings(prefs.getStorage(), uuid, folder.name);
+            writeSettings = FolderSettingsDescriptions.getFolderSettings(prefs.getStorage(), uuid, folder.name);
             writeSettings.putAll(stringSettings);
         } else {
             writeSettings = stringSettings;
