@@ -212,7 +212,7 @@ class SettingsExporter(
                 }
             }
 
-            val versionedSetting = AccountSettings.SETTINGS[keyPart]
+            val versionedSetting = AccountSettingsDescriptions.SETTINGS[keyPart]
             if (versionedSetting != null) {
                 val highestVersion = versionedSetting.lastKey()
 

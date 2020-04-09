@@ -414,20 +414,20 @@ public class SettingsImporter {
 
         // Validate account settings
         Map<String, Object> validatedSettings =
-                AccountSettings.validate(contentVersion, account.settings.settings, !mergeImportedAccount);
+                AccountSettingsDescriptions.validate(contentVersion, account.settings.settings, !mergeImportedAccount);
 
         // Upgrade account settings to current content version
         if (contentVersion != Settings.VERSION) {
-            AccountSettings.upgrade(contentVersion, validatedSettings);
+            AccountSettingsDescriptions.upgrade(contentVersion, validatedSettings);
         }
 
         // Convert account settings to the string representation used in preference storage
-        Map<String, String> stringSettings = AccountSettings.convert(validatedSettings);
+        Map<String, String> stringSettings = AccountSettingsDescriptions.convert(validatedSettings);
 
         // Merge account settings if necessary
         Map<String, String> writeSettings;
         if (mergeImportedAccount) {
-            writeSettings = new HashMap<>(AccountSettings.getAccountSettings(prefs.getStorage(), uuid));
+            writeSettings = new HashMap<>(AccountSettingsDescriptions.getAccountSettings(prefs.getStorage(), uuid));
             writeSettings.putAll(stringSettings);
         } else {
             writeSettings = stringSettings;
