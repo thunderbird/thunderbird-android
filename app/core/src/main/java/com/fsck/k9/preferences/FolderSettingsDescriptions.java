@@ -38,7 +38,8 @@ class FolderSettingsDescriptions {
                 new V(1, new EnumSetting<>(FolderClass.class, FolderClass.INHERITED))
         ));
         s.put("pushMode", Settings.versions(
-                new V(1, new EnumSetting<>(FolderClass.class, FolderClass.INHERITED))
+                new V(1, new EnumSetting<>(FolderClass.class, FolderClass.INHERITED)),
+                new V(66, new EnumSetting<>(FolderClass.class, FolderClass.SECOND_CLASS))
         ));
         s.put("inTopGroup", Settings.versions(
                 new V(1, new BooleanSetting(false))

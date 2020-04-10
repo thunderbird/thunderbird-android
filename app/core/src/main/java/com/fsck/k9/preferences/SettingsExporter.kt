@@ -22,7 +22,8 @@ import timber.log.Timber
 class SettingsExporter(
     private val contentResolver: ContentResolver,
     private val backendManager: BackendManager,
-    private val preferences: Preferences
+    private val preferences: Preferences,
+    private val folderSettingsProvider: FolderSettingsProvider
 ) {
     @Throws(SettingsImportExportException::class)
     fun exportToUri(includeGlobals: Boolean, accountUuids: Set<String>, uri: Uri) {
@@ -98,7 +99,6 @@ class SettingsExporter(
 
     private fun writeAccount(serializer: XmlSerializer, account: Account, prefs: Map<String, Any>) {
         val identities = mutableSetOf<Int>()
-        val folders = mutableSetOf<String>()
         val accountUuid = account.uuid
 
         serializer.startTag(null, ACCOUNT_ELEMENT)
@@ -205,9 +205,7 @@ class SettingsExporter(
                 }
 
                 if (FolderSettingsDescriptions.SETTINGS.containsKey(thirdPart)) {
-                    // This is a folder key. Save folder name for later...
-                    folders.add(secondPart)
-                    // ... but don't write it now.
+                    // This is a folder key. Ignore it.
                     continue
                 }
             }
@@ -242,10 +240,11 @@ class SettingsExporter(
             serializer.endTag(null, IDENTITIES_ELEMENT)
         }
 
+        val folders = folderSettingsProvider.getFolderSettings(account)
         if (folders.isNotEmpty()) {
             serializer.startTag(null, FOLDERS_ELEMENT)
             for (folder in folders) {
-                writeFolder(serializer, accountUuid, folder, prefs)
+                writeFolder(serializer, folder)
             }
             serializer.endTag(null, FOLDERS_ELEMENT)
         }
@@ -324,46 +323,36 @@ class SettingsExporter(
         serializer.endTag(null, IDENTITY_ELEMENT)
     }
 
-    private fun writeFolder(serializer: XmlSerializer, accountUuid: String, folder: String, prefs: Map<String, Any>) {
+    private fun writeFolder(serializer: XmlSerializer, folder: FolderSettings) {
         serializer.startTag(null, FOLDER_ELEMENT)
-        serializer.attribute(null, NAME_ATTRIBUTE, folder)
+        serializer.attribute(null, NAME_ATTRIBUTE, folder.serverId)
 
         // Write folder settings
-        for ((key, value) in prefs) {
-            val valueString = value.toString()
+        writeFolderSetting(serializer, "integrate", folder.isIntegrate.toString())
+        writeFolderSetting(serializer, "inTopGroup", folder.isInTopGroup.toString())
+        writeFolderSetting(serializer, "syncMode", folder.syncClass.name)
+        writeFolderSetting(serializer, "displayMode", folder.displayClass.name)
+        writeFolderSetting(serializer, "notifyMode", folder.notifyClass.name)
+        writeFolderSetting(serializer, "pushMode", folder.pushClass.name)
 
-            val indexOfFirstDot = key.indexOf('.')
-            val indexOfLastDot = key.lastIndexOf('.')
-            if (indexOfFirstDot == -1 || indexOfLastDot == -1 || indexOfFirstDot == indexOfLastDot) {
-                // Skip non-folder config entries
-                continue
-            }
+        serializer.endTag(null, FOLDER_ELEMENT)
+    }
 
-            val keyUuid = key.substring(0, indexOfFirstDot)
-            val folderName = key.substring(indexOfFirstDot + 1, indexOfLastDot)
-            val folderKey = key.substring(indexOfLastDot + 1)
-            if (keyUuid != accountUuid || folderName != folder) {
-                // Skip entries that belong to another folder
-                continue
-            }
-
-            val versionedSetting = FolderSettingsDescriptions.SETTINGS[folderKey]
-            if (versionedSetting != null) {
-                val highestVersion = versionedSetting.lastKey()
-                val setting = versionedSetting[highestVersion]
-                if (setting != null) {
-                    // Only write settings that have an entry in FolderSettings.SETTINGS
-                    try {
-                        writeKeyAndPrettyValueFromSetting(serializer, folderKey, setting, valueString)
-                    } catch (e: InvalidSettingValueException) {
-                        Timber.w("Folder setting \"%s\" has invalid value \"%s\" in preference storage. " +
-                            "This shouldn't happen!", folderKey, valueString
-                        )
-                    }
+    private fun writeFolderSetting(serializer: XmlSerializer, key: String, value: String) {
+        val versionedSetting = FolderSettingsDescriptions.SETTINGS[key]
+        if (versionedSetting != null) {
+            val highestVersion = versionedSetting.lastKey()
+            val setting = versionedSetting[highestVersion]
+            if (setting != null) {
+                // Only write settings that have an entry in FolderSettings.SETTINGS
+                try {
+                    writeKeyAndPrettyValueFromSetting(serializer, key, setting, value)
+                } catch (e: InvalidSettingValueException) {
+                    Timber.w("Folder setting \"%s\" has invalid value \"%s\" in preference storage. " +
+                        "This shouldn't happen!", key, value)
                 }
             }
         }
-        serializer.endTag(null, FOLDER_ELEMENT)
     }
 
     private fun writeElement(serializer: XmlSerializer, elementName: String, value: String?) {

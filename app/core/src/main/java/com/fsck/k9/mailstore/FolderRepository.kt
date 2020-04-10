@@ -5,6 +5,7 @@ import androidx.core.content.contentValuesOf
 import androidx.core.database.getStringOrNull
 import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
+import com.fsck.k9.helper.map
 import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.FolderType as RemoteFolderType
 
@@ -38,11 +39,20 @@ class FolderRepository(
     }
 
     fun getFolderDetails(folderId: Long): FolderDetails? {
+        return getFolderDetails(selection = "id = ?", selectionArgs = arrayOf(folderId.toString())).firstOrNull()
+    }
+
+    fun getFolderDetails(): List<FolderDetails> {
+        return getFolderDetails(selection = null, selectionArgs = null)
+    }
+
+    private fun getFolderDetails(selection: String?, selectionArgs: Array<String>?): List<FolderDetails> {
         val database = localStoreProvider.getInstance(account).database
         return database.execute(false) { db ->
             db.query(
                 "folders",
                 arrayOf(
+                    "id",
                     "server_id",
                     "name",
                     "top_group",
@@ -52,30 +62,28 @@ class FolderRepository(
                     "notify_class",
                     "push_class"
                 ),
-                "id = ?",
-                arrayOf(folderId.toString()),
+                selection,
+                selectionArgs,
                 null,
                 null,
                 null
             ).use { cursor ->
-                if (cursor.moveToFirst()) {
-                    val serverId = cursor.getString(0)
+                cursor.map {
+                    val serverId = cursor.getString(1)
                     FolderDetails(
                         folder = Folder(
-                            id = folderId,
+                            id = cursor.getLong(0),
                             serverId = serverId,
-                            name = cursor.getString(1),
+                            name = cursor.getString(2),
                             type = folderTypeOf(serverId)
                         ),
-                        isInTopGroup = cursor.getInt(2) == 1,
-                        isIntegrate = cursor.getInt(3) == 1,
-                        syncClass = cursor.getStringOrNull(4).toFolderClass(),
-                        displayClass = cursor.getStringOrNull(5).toFolderClass(),
-                        notifyClass = cursor.getStringOrNull(6).toFolderClass(),
-                        pushClass = cursor.getStringOrNull(7).toFolderClass()
+                        isInTopGroup = cursor.getInt(3) == 1,
+                        isIntegrate = cursor.getInt(4) == 1,
+                        syncClass = cursor.getStringOrNull(5).toFolderClass(),
+                        displayClass = cursor.getStringOrNull(6).toFolderClass(),
+                        notifyClass = cursor.getStringOrNull(7).toFolderClass(),
+                        pushClass = cursor.getStringOrNull(8).toFolderClass()
                     )
-                } else {
-                    null
                 }
             }
         }
