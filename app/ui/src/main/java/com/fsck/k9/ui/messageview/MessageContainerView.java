@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fsck.k9.DI;
+import com.fsck.k9.K9;
 import com.fsck.k9.message.html.DisplayHtml;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.helper.ClipboardManager;
@@ -39,6 +40,7 @@ import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.ui.helper.DisplayHtmlUiFactory;
 import com.fsck.k9.view.MessageWebView;
 import com.fsck.k9.view.MessageWebView.OnPageFinishedListener;
+import com.fsck.k9.view.MessageWebView.OnSwipeLeftOrRightListener;
 import com.fsck.k9.view.WebViewConfigProvider;
 
 import static android.app.DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED;
@@ -74,6 +76,7 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
 
     private boolean showingPictures;
     private LayoutInflater mInflater;
+    private OnSwipeLeftOrRightListener swipeLeftOrRightcallback;
     private AttachmentViewCallback attachmentCallback;
     private Map<AttachmentViewInfo, AttachmentView> attachmentViewMap = new HashMap<>();
     private Map<Uri, AttachmentViewInfo> attachments = new HashMap<>();
@@ -93,6 +96,21 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
         }
         mMessageContentView.setOnCreateContextMenuListener(this);
         mMessageContentView.setVisibility(View.VISIBLE);
+        if(K9.isUseSwipeForNavigation()) {
+            mMessageContentView.setSwipeActionListener(new MessageWebView.OnSwipeLeftOrRightListener() {
+                @Override
+                public void onSwipeLeft() {
+                    if (swipeLeftOrRightcallback != null)
+                        swipeLeftOrRightcallback.onSwipeLeft();
+                }
+
+                @Override
+                public void onSwipeRight() {
+                    if (swipeLeftOrRightcallback != null)
+                        swipeLeftOrRightcallback.onSwipeRight();
+                }
+            });
+        }
 
         mAttachmentsContainer = findViewById(R.id.attachments_container);
         mAttachments = findViewById(R.id.attachments);
@@ -524,6 +542,10 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
 
     private AttachmentView getAttachmentView(AttachmentViewInfo attachment) {
         return attachmentViewMap.get(attachment);
+    }
+
+    public void setSwipeLeftOrRightcallback(OnSwipeLeftOrRightListener swipeLeftOrRightcallback) {
+        this.swipeLeftOrRightcallback = swipeLeftOrRightcallback;
     }
 
     interface OnRenderingFinishedListener {

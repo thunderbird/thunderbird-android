@@ -215,7 +215,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     private boolean messageListWasDisplayed = false;
     private ViewSwitcher viewSwitcher;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -1072,8 +1071,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             menu.findItem(R.id.show_headers).setVisible(false);
             menu.findItem(R.id.hide_headers).setVisible(false);
         } else {
-            // hide prev/next buttons in split mode
-            if (displayMode != DisplayMode.MESSAGE_VIEW) {
+            // hide prev/next buttons in split mode or if explicitly disabled
+            if (displayMode != DisplayMode.MESSAGE_VIEW || !K9.isMessageViewArrowsActionVisible()) {
                 menu.findItem(R.id.next_message).setVisible(false);
                 menu.findItem(R.id.previous_message).setVisible(false);
             } else {
@@ -1090,6 +1089,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 MenuItem next = menu.findItem(R.id.next_message);
                 next.setEnabled(canDoNext);
                 next.getIcon().setAlpha(canDoNext ? 255 : 127);
+
+                prev.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+                next.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
             }
 
             MenuItem toggleTheme = menu.findItem(R.id.toggle_message_view_theme);
@@ -1117,14 +1119,21 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             TypedArray ta = obtainStyledAttributes(drawableAttr);
             menu.findItem(R.id.toggle_unread).setIcon(ta.getDrawable(0));
             ta.recycle();
+            menu.findItem(R.id.toggle_unread).setVisible(K9.isMessageViewReadUnreadActionVisible());
+            if (K9.isMessageViewReadUnreadActionVisible())
+                menu.findItem(R.id.toggle_unread).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
             menu.findItem(R.id.delete).setVisible(K9.isMessageViewDeleteActionVisible());
+            if (K9.isMessageViewDeleteActionVisible())
+                menu.findItem(R.id.delete).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
             /*
              * Set visibility of copy, move, archive, spam in action bar and refile submenu
              */
             if (messageViewFragment.isCopyCapable()) {
                 menu.findItem(R.id.copy).setVisible(K9.isMessageViewCopyActionVisible());
+                if (K9.isMessageViewCopyActionVisible())
+                    menu.findItem(R.id.copy).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
                 menu.findItem(R.id.refile_copy).setVisible(true);
             } else {
                 menu.findItem(R.id.copy).setVisible(false);
@@ -1136,10 +1145,16 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 boolean canMessageBeMovedToSpam = messageViewFragment.canMessageBeMovedToSpam();
 
                 menu.findItem(R.id.move).setVisible(K9.isMessageViewMoveActionVisible());
+                if (K9.isMessageViewMoveActionVisible())
+                    menu.findItem(R.id.move).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
                 menu.findItem(R.id.archive).setVisible(canMessageBeArchived &&
                         K9.isMessageViewArchiveActionVisible());
+                if (canMessageBeArchived && K9.isMessageViewArchiveActionVisible())
+                    menu.findItem(R.id.archive).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
                 menu.findItem(R.id.spam).setVisible(canMessageBeMovedToSpam &&
                         K9.isMessageViewSpamActionVisible());
+                if (canMessageBeMovedToSpam && K9.isMessageViewSpamActionVisible())
+                    menu.findItem(R.id.spam).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
                 menu.findItem(R.id.refile_move).setVisible(true);
                 menu.findItem(R.id.refile_archive).setVisible(canMessageBeArchived);
@@ -1429,6 +1444,19 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             } else {
                 showMessageList();
             }
+        }
+    }
+    @Override
+    public void showNextMessageOrDoNothing() {
+        if (messageViewFragment != null && displayMode != DisplayMode.MESSAGE_LIST) {
+            showNextMessage();
+        }
+    }
+
+    @Override
+    public void showPreviousMessageOrDoNothing() {
+        if (messageViewFragment != null && displayMode != DisplayMode.MESSAGE_LIST) {
+            showPreviousMessage();
         }
     }
 

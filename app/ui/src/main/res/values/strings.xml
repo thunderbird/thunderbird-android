@@ -115,6 +115,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="forward_as_attachment_action">Forward as attachment</string>
     <string name="edit_as_new_message_action">Edit as new message</string>
     <string name="move_action">Move</string>
+    <string name="readunread_action">Read/Unread</string>
+    <string name="arrows_action">Prev/Next buttons</string>
     <string name="single_message_options_action">Send…</string>
     <string name="refile_action">Refile…</string>
     <string name="done_action">Done</string>
@@ -298,6 +300,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="global_settings_messageview_return_to_list_summary">Return to message list after message deletion</string>
     <string name="global_settings_messageview_show_next_label">Show next message after delete</string>
     <string name="global_settings_messageview_show_next_summary">Show next message by default after message deletion</string>
+    <string name="global_settings_messageview_swipe_navigation_summary">Swipe left or right to navigate to previous or next message</string>
+    <string name="global_settings_messageview_swipe_navigation_label">Swipe to navigate through messages</string>
 
     <string name="global_settings_confirm_actions_title">Confirm actions</string>
     <string name="global_settings_confirm_actions_summary">Show a dialog whenever you perform selected actions</string>

@@ -275,6 +275,15 @@ public class GlobalSettings {
                 new V(49, new BooleanSetting(false)),
                 new V(56, null)
         ));
+        s.put("useSwipeForNavigation", Settings.versions(
+                new V(66, new BooleanSetting(false))
+        ));
+        s.put("messageViewReadUnreadActionVisible", Settings.versions(
+                new V(66, new BooleanSetting(true))
+        ));
+        s.put("messageViewArrowsActionVisible", Settings.versions(
+                new V(66, new BooleanSetting(true))
+        ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 

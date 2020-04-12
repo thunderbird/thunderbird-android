@@ -36,6 +36,7 @@ class GeneralSettingsDataStore(
             "messageview_autofit_width" -> K9.isAutoFitWidth
             "messageview_return_to_list" -> K9.isMessageViewReturnToList
             "messageview_show_next" -> K9.isMessageViewShowNext
+            "messageview_swipe_navigation" -> K9.isUseSwipeForNavigation
             "quiet_time_enabled" -> K9.isQuietTimeEnabled
             "disable_notifications_during_quiet_time" -> !K9.isNotificationDuringQuietTimeEnabled
             "privacy_hide_useragent" -> K9.isHideUserAgent
@@ -64,6 +65,7 @@ class GeneralSettingsDataStore(
             "messageview_autofit_width" -> K9.isAutoFitWidth = value
             "messageview_return_to_list" -> K9.isMessageViewReturnToList = value
             "messageview_show_next" -> K9.isMessageViewShowNext = value
+            "messageview_swipe_navigation" -> K9.isUseSwipeForNavigation = value
             "quiet_time_enabled" -> K9.isQuietTimeEnabled = value
             "disable_notifications_during_quiet_time" -> K9.isNotificationDuringQuietTimeEnabled = !value
             "privacy_hide_useragent" -> K9.isHideUserAgent = value
@@ -189,6 +191,8 @@ class GeneralSettingsDataStore(
                     if (K9.isMessageViewMoveActionVisible) add("move")
                     if (K9.isMessageViewCopyActionVisible) add("copy")
                     if (K9.isMessageViewSpamActionVisible) add("spam")
+                    if (K9.isMessageViewReadUnreadActionVisible) add("readunread")
+                    if (K9.isMessageViewArrowsActionVisible) add("arrows")
                 }
             }
             "volume_navigation" -> {
@@ -218,6 +222,8 @@ class GeneralSettingsDataStore(
                 K9.isMessageViewMoveActionVisible = "move" in checkedValues
                 K9.isMessageViewCopyActionVisible = "copy" in checkedValues
                 K9.isMessageViewSpamActionVisible = "spam" in checkedValues
+                K9.isMessageViewReadUnreadActionVisible = "readunread" in checkedValues
+                K9.isMessageViewArrowsActionVisible = "arrows" in checkedValues
             }
             "volume_navigation" -> {
                 K9.isUseVolumeKeysForNavigation = "message" in checkedValues

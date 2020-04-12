@@ -153,16 +153,17 @@
     </string-array>
 
     <string-array name="messageview_visible_refile_actions_entries">
-        <item>@string/delete_action</item>
         <item>@string/archive_action</item>
+        <item>@string/delete_action</item>
+        <item>@string/readunread_action</item>
+        <item>@string/arrows_action</item>
+        <item>@string/spam_action</item>
         <item>@string/move_action</item>
         <item>@string/copy_action</item>
-        <item>@string/spam_action</item>
     </string-array>
 
     <string-array name="volume_navigation_entries">
         <item>@string/volume_navigation_message</item>
         <item>@string/volume_navigation_list</item>
     </string-array>
-
 </resources>

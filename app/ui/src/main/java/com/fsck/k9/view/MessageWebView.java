@@ -7,7 +7,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import timber.log.Timber;
+
+import android.view.GestureDetector;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebSettings.RenderPriority;
@@ -20,8 +24,12 @@ import com.fsck.k9.mailstore.AttachmentResolver;
 
 public class MessageWebView extends WebView {
 
+    private Context mContext;
+    private OnSwipeLeftOrRightListener swipeLeftOrRightcallback;
+
     public MessageWebView(Context context) {
         super(context);
+        mContext = context;
     }
 
     public MessageWebView(Context context, AttributeSet attrs) {
@@ -30,6 +38,7 @@ public class MessageWebView extends WebView {
 
     public MessageWebView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        mContext = context;
     }
 
     /**
@@ -98,6 +107,77 @@ public class MessageWebView extends WebView {
         blockNetworkData(true);
     }
 
+    public void setSwipeActionListener(OnSwipeLeftOrRightListener swipeCallback) {
+        this.swipeLeftOrRightcallback = swipeCallback;
+        // gesture to identify swipe left/right
+        this.setOnTouchListener(new OnSwipeTouchListener(mContext) {
+            public void onSwipeRight() {
+                if(swipeLeftOrRightcallback != null) {
+                    swipeLeftOrRightcallback.onSwipeRight();
+                }
+            }
+            public void onSwipeLeft() {
+                if(swipeLeftOrRightcallback != null) {
+                    swipeLeftOrRightcallback.onSwipeLeft();
+                }
+            }
+        });
+    }
+
+    /**
+     * Detects left and right swipes across a view.
+     */
+    public class OnSwipeTouchListener implements View.OnTouchListener {
+
+        private final GestureDetector gestureDetector;
+
+        public OnSwipeTouchListener(Context context) {
+            gestureDetector = new GestureDetector(context, new GestureListener());
+        }
+
+        public void onSwipeLeft() {
+        }
+
+        public void onSwipeRight() {
+        }
+
+        public boolean onTouch(View v, MotionEvent event) {
+            gestureDetector.onTouchEvent(event);
+            return v.onTouchEvent(event);
+        }
+
+        private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
+
+            private static final int SWIPE_DISTANCE_THRESHOLD = 100;
+            private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+            private Boolean canStillScrollRight = false;
+            private Boolean canStillScrollLeft = false;
+
+            @Override
+            public boolean onDown(MotionEvent e) {
+                canStillScrollLeft = canScrollHorizontally(+1);
+                canStillScrollRight = canScrollHorizontally(-1);
+                return true;
+            }
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                if(e1 == null || e2 == null)
+                    return false;
+                float distanceX = e2.getX() - e1.getX();
+                float distanceY = e2.getY() - e1.getY();
+                if (Math.abs(distanceX) > Math.abs(distanceY) && Math.abs(distanceX) > SWIPE_DISTANCE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                    if (distanceX > 0 && !canStillScrollRight)
+                        onSwipeRight();
+                    else if(distanceX < 0 && !canStillScrollLeft)
+                        onSwipeLeft();
+                    return true;
+                }
+                return false;
+            }
+        }
+    }
+
     /**
      * Disable on-screen zoom controls on devices that support zooming via pinch-to-zoom.
      */
@@ -148,5 +228,10 @@ public class MessageWebView extends WebView {
 
     public interface OnPageFinishedListener {
         void onPageFinished();
+    }
+
+    public interface OnSwipeLeftOrRightListener {
+        void onSwipeLeft();
+        void onSwipeRight();
     }
 }

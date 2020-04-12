@@ -221,6 +221,9 @@ object K9 : EarlyInit {
     var isMessageViewShowNext = false
 
     @JvmStatic
+    var isUseSwipeForNavigation = false
+
+    @JvmStatic
     var isUseVolumeKeysForNavigation = false
 
     @JvmStatic
@@ -280,6 +283,12 @@ object K9 : EarlyInit {
     var isMessageViewSpamActionVisible = false
 
     @JvmStatic
+    var isMessageViewReadUnreadActionVisible = true
+
+    @JvmStatic
+    var isMessageViewArrowsActionVisible = true
+
+    @JvmStatic
     var pgpInlineDialogCounter: Int = 0
 
     @JvmStatic
@@ -336,6 +345,7 @@ object K9 : EarlyInit {
         isDebugLoggingEnabled = storage.getBoolean("enableDebugLogging", DEVELOPER_MODE)
         isSensitiveDebugLoggingEnabled = storage.getBoolean("enableSensitiveLogging", false)
         isShowAnimations = storage.getBoolean("animations", true)
+        isUseSwipeForNavigation = storage.getBoolean("useSwipeForNavigation", false)
         isUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
         isUseVolumeKeysForListNavigation = storage.getBoolean("useVolumeKeysForListNavigation", false)
         isHideSpecialAccounts = storage.getBoolean("hideSpecialAccounts", false)
@@ -394,6 +404,8 @@ object K9 : EarlyInit {
         isMessageViewMoveActionVisible = storage.getBoolean("messageViewMoveActionVisible", false)
         isMessageViewCopyActionVisible = storage.getBoolean("messageViewCopyActionVisible", false)
         isMessageViewSpamActionVisible = storage.getBoolean("messageViewSpamActionVisible", false)
+        isMessageViewArrowsActionVisible = storage.getBoolean("messageViewArrowsActionVisible", true)
+        isMessageViewReadUnreadActionVisible = storage.getBoolean("messageViewReadUnreadActionVisible", true)
 
         pgpInlineDialogCounter = storage.getInt("pgpInlineDialogCounter", 0)
         pgpSignOnlyDialogCounter = storage.getInt("pgpSignOnlyDialogCounter", 0)
@@ -413,6 +425,7 @@ object K9 : EarlyInit {
         editor.putBoolean("enableSensitiveLogging", isSensitiveDebugLoggingEnabled)
         editor.putEnum("backgroundOperations", backgroundOps)
         editor.putBoolean("animations", isShowAnimations)
+        editor.putBoolean("useSwipeForNavigation", isUseSwipeForNavigation)
         editor.putBoolean("useVolumeKeysForNavigation", isUseVolumeKeysForNavigation)
         editor.putBoolean("useVolumeKeysForListNavigation", isUseVolumeKeysForListNavigation)
         editor.putBoolean("autofitWidth", isAutoFitWidth)
@@ -466,6 +479,8 @@ object K9 : EarlyInit {
         editor.putBoolean("messageViewMoveActionVisible", isMessageViewMoveActionVisible)
         editor.putBoolean("messageViewCopyActionVisible", isMessageViewCopyActionVisible)
         editor.putBoolean("messageViewSpamActionVisible", isMessageViewSpamActionVisible)
+        editor.putBoolean("messageViewArrowsActionVisible", isMessageViewArrowsActionVisible)
+        editor.putBoolean("messageViewReadUnreadActionVisible", isMessageViewReadUnreadActionVisible)
 
         editor.putInt("pgpInlineDialogCounter", pgpInlineDialogCounter)
         editor.putInt("pgpSignOnlyDialogCounter", pgpSignOnlyDialogCounter)

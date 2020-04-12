@@ -11,7 +11,9 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -22,6 +24,7 @@ import android.widget.TextView;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.ShowPictures;
+import com.fsck.k9.K9;
 import com.fsck.k9.mailstore.AttachmentViewInfo;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.helper.Contacts;
@@ -30,6 +33,8 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.ui.messageview.MessageContainerView.OnRenderingFinishedListener;
 import com.fsck.k9.view.MessageHeader;
+import com.fsck.k9.view.MessageWebView;
+import com.fsck.k9.view.MessageWebView.OnSwipeLeftOrRightListener;
 import com.fsck.k9.view.ThemeUtils;
 import com.fsck.k9.view.ToolableViewAnimator;
 import org.openintents.openpgp.OpenPgpError;
@@ -54,12 +59,14 @@ public class MessageTopView extends LinearLayout {
     private Button showPicturesButton;
     private boolean isShowingProgress;
     private boolean showPicturesButtonClicked;
+    private OnSwipeLeftOrRightListener swipeLeftOrRightcallback;
 
     private MessageCryptoPresenter messageCryptoPresenter;
-
+    private Context mContext;
 
     public MessageTopView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mContext = context;
     }
 
     @Override
@@ -117,6 +124,34 @@ public class MessageTopView extends LinearLayout {
 
         MessageContainerView view = (MessageContainerView) mInflater.inflate(R.layout.message_container,
                 containerView, false);
+        if(K9.isUseSwipeForNavigation()) {
+            view.setSwipeLeftOrRightcallback(new MessageWebView.OnSwipeLeftOrRightListener() {
+                @Override
+                public void onSwipeLeft() {
+                    if (swipeLeftOrRightcallback != null)
+                        swipeLeftOrRightcallback.onSwipeLeft();
+                }
+
+                @Override
+                public void onSwipeRight() {
+                    if (swipeLeftOrRightcallback != null)
+                        swipeLeftOrRightcallback.onSwipeRight();
+                }
+            });
+            findViewById(R.id.message_scroll_view).setOnTouchListener(new OnSwipeTouchListener(mContext) {
+                @Override
+                public void onSwipeLeft() {
+                    if (swipeLeftOrRightcallback != null)
+                        swipeLeftOrRightcallback.onSwipeLeft();
+                }
+
+                @Override
+                public void onSwipeRight() {
+                    if (swipeLeftOrRightcallback != null)
+                        swipeLeftOrRightcallback.onSwipeRight();
+                }
+            });
+        }
         containerView.addView(view);
 
         boolean hideUnsignedTextDivider = account.isOpenPgpHideSignOnly();
@@ -357,6 +392,10 @@ public class MessageTopView extends LinearLayout {
         showPicturesButtonClicked = savedState.showPicturesButtonClicked;
     }
 
+    public void setSwipeLeftOrRightcallback(MessageWebView.OnSwipeLeftOrRightListener swipeLeftOrRightcallback) {
+        this.swipeLeftOrRightcallback = swipeLeftOrRightcallback;
+    }
+
     public void refreshAttachmentThumbnail(AttachmentViewInfo attachment) {
         View messageContainerViewCandidate = containerView.getChildAt(0);
         if (messageContainerViewCandidate instanceof MessageContainerView) {
@@ -392,6 +431,55 @@ public class MessageTopView extends LinearLayout {
         public void writeToParcel(Parcel out, int flags) {
             super.writeToParcel(out, flags);
             out.writeInt((this.showPicturesButtonClicked) ? 1 : 0);
+        }
+    }
+    /**
+     * Detects left and right swipes across a view.
+     */
+    public class OnSwipeTouchListener implements View.OnTouchListener {
+
+        private final GestureDetector gestureDetector;
+
+        public OnSwipeTouchListener(Context context) {
+            gestureDetector = new GestureDetector(context, new GestureListener());
+        }
+
+        public void onSwipeLeft() {
+        }
+
+        public void onSwipeRight() {
+        }
+
+        public boolean onTouch(View v, MotionEvent event) {
+            gestureDetector.onTouchEvent(event);
+            return v.onTouchEvent(event);
+        }
+
+        private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
+
+            private static final int SWIPE_DISTANCE_THRESHOLD = 100;
+            private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
+            @Override
+            public boolean onDown(MotionEvent e) {
+                return true;
+            }
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                if(e1 == null || e2 == null)
+                    return false;
+                float distanceX = e2.getX() - e1.getX();
+                float distanceY = e2.getY() - e1.getY();
+                if (Math.abs(distanceX) > Math.abs(distanceY) && Math.abs(distanceX) > SWIPE_DISTANCE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                    if (distanceX > 0)
+                        onSwipeRight();
+                    else if(distanceX < 0)
+                        onSwipeLeft();
+                    return true;
+                }
+                return false;
+            }
         }
     }
 }

@@ -385,6 +385,11 @@
             android:summary="@string/global_settings_confirm_actions_summary"
             android:title="@string/global_settings_confirm_actions_title" />
 
+        <CheckBoxPreference
+            android:key="messageview_swipe_navigation"
+            android:summary="@string/global_settings_messageview_swipe_navigation_summary"
+            android:title="@string/global_settings_messageview_swipe_navigation_label" />
+
     </PreferenceScreen>
 
     <PreferenceScreen
