@@ -122,9 +122,24 @@ public class MessageReferenceTest {
     }
 
     @Test
+    public void equalsWithSameMessageReferenceWithFlagShouldReturnTrue() {
+        MessageReference messageReference = createMessageReferenceWithFlag("account", "folder", "uid", Flag.ANSWERED);
+
+        assertTrue(messageReference.equals(messageReference));
+    }
+
+    @Test
     public void equalsWithMessageReferenceContainingSameDataShouldReturnTrue() {
         MessageReference messageReferenceOne = createMessageReference("account", "folder", "uid");
         MessageReference messageReferenceTwo = createMessageReference("account", "folder", "uid");
+
+        assertEqualsReturnsTrueSymmetrically(messageReferenceOne, messageReferenceTwo);
+    }
+
+    @Test
+    public void equalsWithMessageReferenceWithFlagContainingSameDataShouldReturnTrue() {
+        MessageReference messageReferenceOne = createMessageReferenceWithFlag("account", "folder", "uid", Flag.ANSWERED);
+        MessageReference messageReferenceTwo = createMessageReferenceWithFlag("account", "folder", "uid", Flag.ANSWERED);
 
         assertEqualsReturnsTrueSymmetrically(messageReferenceOne, messageReferenceTwo);
     }
@@ -154,10 +169,27 @@ public class MessageReferenceTest {
     }
 
     @Test
+    public void equalsWithMessageReferenceContainingDifferentFlagShouldReturnFalse() {
+        MessageReference messageReferenceOne = createMessageReference("account", "folder", "uid");
+        MessageReference messageReferenceTwo = messageReferenceOne.withModifiedFlag(Flag.ANSWERED);
+
+        assertEqualsReturnsFalseSymmetrically(messageReferenceOne, messageReferenceTwo);
+    }
+
+    @Test
     public void alternativeEquals() {
         MessageReference messageReference = createMessageReference("account", "folder", "uid");
 
         boolean equalsResult = messageReference.equals("account", "folder", "uid");
+
+        assertTrue(equalsResult);
+    }
+
+    @Test
+    public void alternativeEqualsWithFlag() {
+        MessageReference messageReference = createMessageReferenceWithFlag("account", "folder", "uid", Flag.ANSWERED);
+
+        boolean equalsResult = messageReference.equals("account", "folder", "uid", Flag.ANSWERED);
 
         assertTrue(equalsResult);
     }
@@ -185,6 +217,15 @@ public class MessageReferenceTest {
         MessageReference messageReference = createMessageReference("account", "folder", "uid");
 
         boolean equalsResult = messageReference.equals("account", "folder", null);
+
+        assertFalse(equalsResult);
+    }
+
+    @Test
+    public void equals_withNullFlag_shouldReturnFalse() {
+        MessageReference messageReference = createMessageReferenceWithFlag("account", "folder", "uid", Flag.ANSWERED);
+
+        boolean equalsResult = messageReference.equals("account", "folder", "uid",null);
 
         assertFalse(equalsResult);
     }

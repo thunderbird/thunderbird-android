@@ -82,11 +82,21 @@ public class MessageReference {
             return false;
         }
         MessageReference other = (MessageReference) o;
-        return equals(other.accountUuid, other.folderServerId, other.uid);
+        return equals(other.accountUuid, other.folderServerId, other.uid, other.flag);
     }
 
     public boolean equals(String accountUuid, String folderServerId, String uid) {
         return this.accountUuid.equals(accountUuid) && this.folderServerId.equals(folderServerId) && this.uid.equals(uid);
+    }
+
+    public boolean equals(String accountUuid, String folderServerId, String uid, Flag flag) {
+        if (this.flag == null && flag == null) {
+            return equals(accountUuid, folderServerId, uid);
+        } else if (this.flag == null || flag == null) {
+            return false;
+        } else {
+            return this.accountUuid.equals(accountUuid) && this.folderServerId.equals(folderServerId) && this.uid.equals(uid) && this.flag.equals(flag);
+        }
     }
 
     @Override
