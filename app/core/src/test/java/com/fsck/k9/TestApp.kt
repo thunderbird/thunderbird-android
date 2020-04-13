@@ -1,6 +1,7 @@
 package com.fsck.k9
 
 import android.app.Application
+import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.crypto.EncryptionExtractor
 import com.fsck.k9.preferences.InMemoryStoragePersister
 import com.fsck.k9.preferences.StoragePersister
@@ -25,4 +26,5 @@ val testModule = module {
     single { mock<CoreResourceProvider>() }
     single { mock<EncryptionExtractor>() }
     single<StoragePersister> { InMemoryStoragePersister() }
+    single { mock<BackendManager>() }
 }

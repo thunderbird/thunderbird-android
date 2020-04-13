@@ -307,18 +307,18 @@ public class SettingsImporter {
             ImportedSettings settings) {
 
         // Validate global settings
-        Map<String, Object> validatedSettings = GlobalSettings.validate(contentVersion, settings.settings);
+        Map<String, Object> validatedSettings = GeneralSettingsDescriptions.validate(contentVersion, settings.settings);
 
         // Upgrade global settings to current content version
         if (contentVersion != Settings.VERSION) {
-            GlobalSettings.upgrade(contentVersion, validatedSettings);
+            GeneralSettingsDescriptions.upgrade(contentVersion, validatedSettings);
         }
 
         // Convert global settings to the string representation used in preference storage
-        Map<String, String> stringSettings = GlobalSettings.convert(validatedSettings);
+        Map<String, String> stringSettings = GeneralSettingsDescriptions.convert(validatedSettings);
 
         // Use current global settings as base and overwrite with validated settings read from the import file.
-        Map<String, String> mergedSettings = new HashMap<>(GlobalSettings.getGlobalSettings(storage));
+        Map<String, String> mergedSettings = new HashMap<>(GeneralSettingsDescriptions.getGlobalSettings(storage));
         mergedSettings.putAll(stringSettings);
 
         for (Map.Entry<String, String> setting : mergedSettings.entrySet()) {
@@ -414,20 +414,20 @@ public class SettingsImporter {
 
         // Validate account settings
         Map<String, Object> validatedSettings =
-                AccountSettings.validate(contentVersion, account.settings.settings, !mergeImportedAccount);
+                AccountSettingsDescriptions.validate(contentVersion, account.settings.settings, !mergeImportedAccount);
 
         // Upgrade account settings to current content version
         if (contentVersion != Settings.VERSION) {
-            AccountSettings.upgrade(contentVersion, validatedSettings);
+            AccountSettingsDescriptions.upgrade(contentVersion, validatedSettings);
         }
 
         // Convert account settings to the string representation used in preference storage
-        Map<String, String> stringSettings = AccountSettings.convert(validatedSettings);
+        Map<String, String> stringSettings = AccountSettingsDescriptions.convert(validatedSettings);
 
         // Merge account settings if necessary
         Map<String, String> writeSettings;
         if (mergeImportedAccount) {
-            writeSettings = new HashMap<>(AccountSettings.getAccountSettings(prefs.getStorage(), uuid));
+            writeSettings = new HashMap<>(AccountSettingsDescriptions.getAccountSettings(prefs.getStorage(), uuid));
             writeSettings.putAll(stringSettings);
         } else {
             writeSettings = stringSettings;
@@ -473,20 +473,20 @@ public class SettingsImporter {
 
         // Validate folder settings
         Map<String, Object> validatedSettings =
-                FolderSettings.validate(contentVersion, folder.settings.settings, !overwrite);
+                FolderSettingsDescriptions.validate(contentVersion, folder.settings.settings, !overwrite);
 
         // Upgrade folder settings to current content version
         if (contentVersion != Settings.VERSION) {
-            FolderSettings.upgrade(contentVersion, validatedSettings);
+            FolderSettingsDescriptions.upgrade(contentVersion, validatedSettings);
         }
 
         // Convert folder settings to the string representation used in preference storage
-        Map<String, String> stringSettings = FolderSettings.convert(validatedSettings);
+        Map<String, String> stringSettings = FolderSettingsDescriptions.convert(validatedSettings);
 
         // Merge folder settings if necessary
         Map<String, String> writeSettings;
         if (overwrite) {
-            writeSettings = FolderSettings.getFolderSettings(prefs.getStorage(), uuid, folder.name);
+            writeSettings = FolderSettingsDescriptions.getFolderSettings(prefs.getStorage(), uuid, folder.name);
             writeSettings.putAll(stringSettings);
         } else {
             writeSettings = stringSettings;
@@ -551,7 +551,7 @@ public class SettingsImporter {
             putString(editor, accountKeyPrefix + AccountPreferenceSerializer.IDENTITY_NAME_KEY + identitySuffix, identityName);
 
             // Validate email address
-            if (!IdentitySettings.isEmailAddressValid(identity.email)) {
+            if (!IdentitySettingsDescriptions.isEmailAddressValid(identity.email)) {
                 throw new InvalidSettingValueException();
             }
 
@@ -564,21 +564,21 @@ public class SettingsImporter {
 
             if (identity.settings != null) {
                 // Validate identity settings
-                Map<String, Object> validatedSettings = IdentitySettings.validate(
+                Map<String, Object> validatedSettings = IdentitySettingsDescriptions.validate(
                         contentVersion, identity.settings.settings, !mergeSettings);
 
                 // Upgrade identity settings to current content version
                 if (contentVersion != Settings.VERSION) {
-                    IdentitySettings.upgrade(contentVersion, validatedSettings);
+                    IdentitySettingsDescriptions.upgrade(contentVersion, validatedSettings);
                 }
 
                 // Convert identity settings to the representation used in preference storage
-                Map<String, String> stringSettings = IdentitySettings.convert(validatedSettings);
+                Map<String, String> stringSettings = IdentitySettingsDescriptions.convert(validatedSettings);
 
                 // Merge identity settings if necessary
                 Map<String, String> writeSettings;
                 if (mergeSettings) {
-                    writeSettings = new HashMap<>(IdentitySettings.getIdentitySettings(
+                    writeSettings = new HashMap<>(IdentitySettingsDescriptions.getIdentitySettings(
                             prefs.getStorage(), uuid, writeIdentityIndex));
                     writeSettings.putAll(stringSettings);
                 } else {

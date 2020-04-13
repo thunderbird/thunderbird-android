@@ -4,6 +4,7 @@ import android.database.Cursor
 import com.fsck.k9.Preferences
 import com.fsck.k9.fragment.MLFProjectionInfo
 import com.fsck.k9.helper.MessageHelper
+import com.fsck.k9.helper.map
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.DatabasePreviewType
 
@@ -103,11 +104,4 @@ class MessageListExtractor(
     }
 
     private fun Cursor.getBoolean(columnIndex: Int): Boolean = getInt(columnIndex) == 1
-
-    private inline fun <T> Cursor.map(block: (Cursor) -> T): List<T> {
-        return List(count) { index ->
-            moveToPosition(index)
-            block(this)
-        }
-    }
 }

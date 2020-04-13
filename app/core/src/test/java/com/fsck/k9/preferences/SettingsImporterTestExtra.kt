@@ -39,6 +39,6 @@ fun setUpBackendManager() {
     }
 
     loadKoinModules(module {
-        single { BackendManager(mapOf("imap" to backendFactory)) }
+        single(override = true) { BackendManager(mapOf("imap" to backendFactory)) }
     })
 }

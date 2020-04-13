@@ -335,7 +335,7 @@ object K9 : EarlyInit {
      * Load preferences into our statics.
      *
      * If you're adding a preference here, odds are you'll need to add it to
-     * [com.fsck.k9.preferences.GlobalSettings], too.
+     * [com.fsck.k9.preferences.GeneralSettingsDescriptions], too.
      *
      * @param prefs Preferences to load
      */

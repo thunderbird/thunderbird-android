@@ -15,5 +15,6 @@ internal object StorageMigrations {
         if (oldVersion < 7) StorageMigrationTo7(db, migrationsHelper).rewriteEnumOrdinalsToNames()
         if (oldVersion < 8) StorageMigrationTo8(db, migrationsHelper).rewriteTheme()
         if (oldVersion < 9) StorageMigrationTo9(db, migrationsHelper).disablePush()
+        if (oldVersion < 10) StorageMigrationTo10(db, migrationsHelper).removeSavedFolderSettings()
     }
 }

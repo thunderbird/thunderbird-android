@@ -45,6 +45,7 @@ import com.fsck.k9.message.extractors.MessageFulltextCreator;
 import com.fsck.k9.message.extractors.MessagePreviewCreator;
 import com.fsck.k9.message.extractors.PreviewResult;
 import com.fsck.k9.message.extractors.PreviewResult.PreviewType;
+import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
 
 import org.apache.commons.io.IOUtils;
@@ -299,6 +300,42 @@ public class LocalFolder {
         return true;
     }
 
+    PreferencesHolder getPreferencesHolder() {
+        PreferencesHolder preferencesHolder = new PreferencesHolder();
+
+        Storage storage = localStore.getPreferences().getStorage();
+        String prefId = getPrefId(serverId);
+
+        String displayModeString = storage.getString(prefId + ".displayMode", null);
+        if (displayModeString != null) {
+            preferencesHolder.displayClass = FolderClass.valueOf(displayModeString);
+        }
+
+        String notifyModeString = storage.getString(prefId + ".notifyMode", null);
+        if (notifyModeString != null) {
+            preferencesHolder.notifyClass = FolderClass.valueOf(notifyModeString);
+        }
+
+        String syncModeString = storage.getString(prefId + ".syncMode", null);
+        if (syncModeString != null) {
+            preferencesHolder.syncClass = FolderClass.valueOf(syncModeString);
+        }
+
+        String pushModeString = storage.getString(prefId + ".pushMode", null);
+        if (pushModeString != null) {
+            preferencesHolder.pushClass = FolderClass.valueOf(pushModeString);
+        }
+
+        if (storage.contains(prefId + ".inTopGroup")) {
+            preferencesHolder.inTopGroup = storage.getBoolean(prefId + ".inTopGroup", isInTopGroup);
+        }
+
+        if (storage.contains(prefId + ".integrate")) {
+            preferencesHolder.integrate = storage.getBoolean(prefId + ".integrate", isIntegrate);
+        }
+
+        return preferencesHolder;
+    }
 
     class PreferencesHolder {
         FolderClass displayClass = LocalFolder.this.displayClass;
@@ -511,62 +548,19 @@ public class LocalFolder {
         return prefId;
     }
 
-    private String getPrefId() throws MessagingException {
-        open();
-        return getPrefId(serverId);
-    }
-
-    private void deleteSettings() throws MessagingException {
-        String id = getPrefId();
+    void deleteSavedSettings() {
+        String id = getPrefId(serverId);
 
         StorageEditor editor = localStore.getPreferences().createStorageEditor();
 
         editor.remove(id + ".displayMode");
         editor.remove(id + ".syncMode");
         editor.remove(id + ".pushMode");
+        editor.remove(id + ".notifyMode");
         editor.remove(id + ".inTopGroup");
         editor.remove(id + ".integrate");
 
         editor.commit();
-    }
-
-    public void save() throws MessagingException {
-        StorageEditor editor = localStore.getPreferences().createStorageEditor();
-        save(editor);
-        editor.commit();
-    }
-
-    public void save(StorageEditor editor) throws MessagingException {
-        String id = getPrefId();
-
-        // there can be a lot of folders.  For the defaults, let's not save prefs, saving space, except for INBOX
-        if (displayClass == FolderClass.NO_CLASS && !getServerId().equals(getAccount().getInboxFolder())) {
-            editor.remove(id + ".displayMode");
-        } else {
-            editor.putString(id + ".displayMode", displayClass.name());
-        }
-
-        if (syncClass == FolderClass.INHERITED && !getServerId().equals(getAccount().getInboxFolder())) {
-            editor.remove(id + ".syncMode");
-        } else {
-            editor.putString(id + ".syncMode", syncClass.name());
-        }
-
-        if (notifyClass == FolderClass.INHERITED && !getServerId().equals(getAccount().getInboxFolder())) {
-            editor.remove(id + ".notifyMode");
-        } else {
-            editor.putString(id + ".notifyMode", notifyClass.name());
-        }
-
-        if (pushClass == FolderClass.SECOND_CLASS && !getServerId().equals(getAccount().getInboxFolder())) {
-            editor.remove(id + ".pushMode");
-        } else {
-            editor.putString(id + ".pushMode", pushClass.name());
-        }
-        editor.putBoolean(id + ".inTopGroup", isInTopGroup);
-
-        editor.putBoolean(id + ".integrate", isIntegrate);
-
     }
 
     public void fetch(final List<LocalMessage> messages, final FetchProfile fp, final MessageRetrievalListener<LocalMessage> listener)
@@ -1642,8 +1636,6 @@ public class LocalFolder {
         } catch (WrappedException e) {
             throw(MessagingException) e.getCause();
         }
-
-        deleteSettings();
     }
 
     @Override

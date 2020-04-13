@@ -27,6 +27,8 @@ public class Migrations {
                 new MigrationTo69(db).createPendingDelete();
             case 69:
                 new MigrationTo70(db).removePushState();
+            case 70:
+                new MigrationTo71(db).cleanUpFolderClass();
         }
     }
 }

@@ -19,7 +19,11 @@ import kotlinx.coroutines.withContext
 private typealias AccountUuid = String
 private typealias AccountNumber = Int
 
-class SettingsExportViewModel(val context: Context, val preferences: Preferences) : ViewModel() {
+class SettingsExportViewModel(
+    val context: Context,
+    val preferences: Preferences,
+    val settingsExporter: SettingsExporter
+) : ViewModel() {
     private val uiModelLiveData = MutableLiveData<SettingsExportUiModel>()
     private val actionLiveData = SingleLiveEvent<Action>()
 
@@ -112,7 +116,7 @@ class SettingsExportViewModel(val context: Context, val preferences: Preferences
     }
 
     private fun startExportSettings() {
-        val exportFileName = SettingsExporter.generateDatedExportFileName()
+        val exportFileName = settingsExporter.generateDatedExportFileName()
         sendActionEvent(Action.PickDocument(exportFileName, SETTINGS_MIME_TYPE))
     }
 
@@ -130,7 +134,7 @@ class SettingsExportViewModel(val context: Context, val preferences: Preferences
             try {
                 val elapsed = measureRealtimeMillis {
                     withContext(Dispatchers.IO) {
-                        SettingsExporter.exportToUri(context, includeGeneralSettings, selectedAccounts, contentUri)
+                        settingsExporter.exportToUri(includeGeneralSettings, selectedAccounts, contentUri)
                     }
                 }
 
