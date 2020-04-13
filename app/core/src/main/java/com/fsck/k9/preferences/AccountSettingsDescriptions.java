@@ -37,7 +37,7 @@ import com.fsck.k9.preferences.Settings.StringSetting;
 import com.fsck.k9.preferences.Settings.V;
 
 
-public class AccountSettings {
+public class AccountSettingsDescriptions {
     static final Map<String, TreeMap<Integer, SettingsDescription>> SETTINGS;
     private static final Map<Integer, SettingsUpgrader> UPGRADERS;
 

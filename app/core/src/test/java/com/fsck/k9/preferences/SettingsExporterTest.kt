@@ -18,7 +18,13 @@ class SettingsExporterTest : K9RobolectricTest() {
     private val contentResolver = RuntimeEnvironment.application.contentResolver
     private val preferences: Preferences by inject()
     private val backendManager: BackendManager by inject()
-    private val settingsExporter = SettingsExporter(contentResolver, backendManager, preferences)
+    private val folderSettingsProvider: FolderSettingsProvider by inject()
+    private val settingsExporter = SettingsExporter(
+        contentResolver,
+        backendManager,
+        preferences,
+        folderSettingsProvider
+    )
 
     @Test
     fun exportPreferences_producesXML() {

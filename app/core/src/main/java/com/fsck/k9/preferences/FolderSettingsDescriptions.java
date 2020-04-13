@@ -16,7 +16,7 @@ import com.fsck.k9.preferences.Settings.SettingsUpgrader;
 import com.fsck.k9.preferences.Settings.V;
 
 
-class FolderSettings {
+class FolderSettingsDescriptions {
     static final Map<String, TreeMap<Integer, SettingsDescription>> SETTINGS;
     private static final Map<Integer, SettingsUpgrader> UPGRADERS;
 
@@ -38,7 +38,8 @@ class FolderSettings {
                 new V(1, new EnumSetting<>(FolderClass.class, FolderClass.INHERITED))
         ));
         s.put("pushMode", Settings.versions(
-                new V(1, new EnumSetting<>(FolderClass.class, FolderClass.INHERITED))
+                new V(1, new EnumSetting<>(FolderClass.class, FolderClass.INHERITED)),
+                new V(66, new EnumSetting<>(FolderClass.class, FolderClass.SECOND_CLASS))
         ));
         s.put("inTopGroup", Settings.versions(
                 new V(1, new BooleanSetting(false))

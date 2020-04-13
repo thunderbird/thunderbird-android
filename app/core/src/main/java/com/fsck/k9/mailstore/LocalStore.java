@@ -57,6 +57,7 @@ import com.fsck.k9.message.extractors.AttachmentCounter;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 import com.fsck.k9.message.extractors.MessageFulltextCreator;
 import com.fsck.k9.message.extractors.MessagePreviewCreator;
+import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.MessageColumns;
 import com.fsck.k9.search.LocalSearch;
@@ -906,7 +907,8 @@ public class LocalStore {
                         }
                     }
 
-                    final  LocalFolder.PreferencesHolder prefHolder = folder.new PreferencesHolder();
+                    final LocalFolder.PreferencesHolder prefHolder = folder.getPreferencesHolder();
+
                     db.execSQL("INSERT INTO folders (name, visible_limit, top_group, display_class, poll_class, notify_class, push_class, integrate, server_id, local_only, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", new Object[] {
                                    name,
                                    visibleLimit,
@@ -921,6 +923,7 @@ public class LocalStore {
                                    databaseFolderType
                                });
 
+                    folder.deleteSavedSettings();
                 }
                 return null;
             }

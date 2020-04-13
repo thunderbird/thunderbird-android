@@ -5,13 +5,12 @@ import androidx.core.content.contentValuesOf
 import androidx.core.database.getStringOrNull
 import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
-import com.fsck.k9.Preferences
+import com.fsck.k9.helper.map
 import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.FolderType as RemoteFolderType
 
 class FolderRepository(
     private val localStoreProvider: LocalStoreProvider,
-    private val preferences: Preferences,
     private val account: Account
 ) {
     private val sortForDisplay =
@@ -40,11 +39,20 @@ class FolderRepository(
     }
 
     fun getFolderDetails(folderId: Long): FolderDetails? {
+        return getFolderDetails(selection = "id = ?", selectionArgs = arrayOf(folderId.toString())).firstOrNull()
+    }
+
+    fun getFolderDetails(): List<FolderDetails> {
+        return getFolderDetails(selection = null, selectionArgs = null)
+    }
+
+    private fun getFolderDetails(selection: String?, selectionArgs: Array<String>?): List<FolderDetails> {
         val database = localStoreProvider.getInstance(account).database
         return database.execute(false) { db ->
             db.query(
                 "folders",
                 arrayOf(
+                    "id",
                     "server_id",
                     "name",
                     "top_group",
@@ -54,30 +62,28 @@ class FolderRepository(
                     "notify_class",
                     "push_class"
                 ),
-                "id = ?",
-                arrayOf(folderId.toString()),
+                selection,
+                selectionArgs,
                 null,
                 null,
                 null
             ).use { cursor ->
-                if (cursor.moveToFirst()) {
-                    val serverId = cursor.getString(0)
+                cursor.map {
+                    val serverId = cursor.getString(1)
                     FolderDetails(
                         folder = Folder(
-                            id = folderId,
+                            id = cursor.getLong(0),
                             serverId = serverId,
-                            name = cursor.getString(1),
+                            name = cursor.getString(2),
                             type = folderTypeOf(serverId)
                         ),
-                        isInTopGroup = cursor.getInt(2) == 1,
-                        isIntegrate = cursor.getInt(3) == 1,
-                        syncClass = cursor.getStringOrNull(4).toFolderClass(),
-                        displayClass = cursor.getStringOrNull(5).toFolderClass(),
-                        notifyClass = cursor.getStringOrNull(6).toFolderClass(),
-                        pushClass = cursor.getStringOrNull(7).toFolderClass()
+                        isInTopGroup = cursor.getInt(3) == 1,
+                        isIntegrate = cursor.getInt(4) == 1,
+                        syncClass = cursor.getStringOrNull(5).toFolderClass(),
+                        displayClass = cursor.getStringOrNull(6).toFolderClass(),
+                        notifyClass = cursor.getStringOrNull(7).toFolderClass(),
+                        pushClass = cursor.getStringOrNull(8).toFolderClass()
                     )
-                } else {
-                    null
                 }
             }
         }
@@ -96,46 +102,6 @@ class FolderRepository(
             )
             db.update("folders", contentValues, "id = ?", arrayOf(folderDetails.folder.id.toString()))
         }
-
-        saveFolderDetailsToPreferences(folderDetails)
-    }
-
-    private fun saveFolderDetailsToPreferences(folderDetails: FolderDetails) {
-        val folder = folderDetails.folder
-        val editor = preferences.createStorageEditor()
-
-        val id = "${account.uuid}:${folderDetails.folder.serverId}"
-
-        // There can be a lot of folders. For the defaults, let's not save prefs, saving space, except for INBOX.
-        val inboxServerId = account.inboxFolder
-        if (folderDetails.displayClass == FolderClass.NO_CLASS && folder.serverId != inboxServerId) {
-            editor.remove("$id.displayMode")
-        } else {
-            editor.putString("$id.displayMode", folderDetails.displayClass.name)
-        }
-
-        if (folderDetails.syncClass == FolderClass.INHERITED && folder.serverId != inboxServerId) {
-            editor.remove("$id.syncMode")
-        } else {
-            editor.putString("$id.syncMode", folderDetails.syncClass.name)
-        }
-
-        if (folderDetails.notifyClass == FolderClass.INHERITED && folder.serverId != inboxServerId) {
-            editor.remove("$id.notifyMode")
-        } else {
-            editor.putString("$id.notifyMode", folderDetails.notifyClass.name)
-        }
-
-        if (folderDetails.pushClass == FolderClass.SECOND_CLASS && folder.serverId != inboxServerId) {
-            editor.remove("$id.pushMode")
-        } else {
-            editor.putString("$id.pushMode", folderDetails.pushClass.name)
-        }
-
-        editor.putBoolean("$id.inTopGroup", folderDetails.isInTopGroup)
-        editor.putBoolean("$id.integrate", folderDetails.isIntegrate)
-
-        editor.commit()
     }
 
     private fun getDisplayFolders(db: SQLiteDatabase, displayMode: FolderMode): List<DisplayFolder> {

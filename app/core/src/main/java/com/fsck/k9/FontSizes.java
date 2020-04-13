@@ -3,7 +3,7 @@ package com.fsck.k9;
 import android.util.TypedValue;
 import android.widget.TextView;
 
-import com.fsck.k9.preferences.GlobalSettings;
+import com.fsck.k9.preferences.GeneralSettingsDescriptions;
 import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.preferences.StorageEditor;
 
@@ -139,7 +139,7 @@ public class FontSizes {
         int fallbackValue = 100;
         if (!storage.contains(MESSAGE_VIEW_CONTENT_PERCENT)) {
             int oldValue = storage.getInt(MESSAGE_VIEW_CONTENT, 3);
-            fallbackValue = GlobalSettings.SettingsUpgraderV31.convertFromOldSize(oldValue);
+            fallbackValue = GeneralSettingsDescriptions.SettingsUpgraderV31.convertFromOldSize(oldValue);
         }
 
         setMessageViewContentAsPercent(storage.getInt(MESSAGE_VIEW_CONTENT_PERCENT, fallbackValue));
