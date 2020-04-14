@@ -182,7 +182,7 @@ object K9 : EarlyInit {
     var notificationHideSubject = NotificationHideSubject.NEVER
 
     @JvmStatic
-    var notificationQuickDeleteBehaviour = NotificationQuickDelete.NEVER
+    var notificationQuickDeleteBehaviour = NotificationQuickDelete.ALWAYS
 
     @JvmStatic
     var lockScreenNotificationVisibility = LockScreenNotificationVisibility.MESSAGE_COUNT
@@ -374,7 +374,7 @@ object K9 : EarlyInit {
         sortAscending[sortType] = sortAscendingSetting
 
         notificationHideSubject = storage.getEnum("notificationHideSubject", NotificationHideSubject.NEVER)
-        notificationQuickDeleteBehaviour = storage.getEnum("notificationQuickDelete", NotificationQuickDelete.NEVER)
+        notificationQuickDeleteBehaviour = storage.getEnum("notificationQuickDelete", NotificationQuickDelete.ALWAYS)
 
         lockScreenNotificationVisibility = storage.getEnum("lockScreenNotificationVisibility",
                 LockScreenNotificationVisibility.MESSAGE_COUNT)
