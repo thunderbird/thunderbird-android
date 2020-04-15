@@ -24,7 +24,7 @@ buildscript {
                 'androidxPreference': '1.1.1',
                 'materialComponents': '1.1.0',
                 'preferencesFix': '1.1.0',
-                'okio': '2.4.3',
+                'okio': '2.5.0',
                 'moshi': '1.9.2',
                 'timber': '4.7.1',
                 'koin': '2.1.5',
