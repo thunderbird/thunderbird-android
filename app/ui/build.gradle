@@ -17,6 +17,7 @@ dependencies {
     implementation project(':plugins:openpgp-api-lib:openpgp-api')
 
     implementation "androidx.appcompat:appcompat:${versions.androidxAppCompat}"
+    implementation "androidx.preference:preference:${versions.androidxPreference}"
     implementation "com.takisoft.preferencex:preferencex:${versions.preferencesFix}"
     implementation "com.takisoft.preferencex:preferencex-datetimepicker:${versions.preferencesFix}"
     implementation "com.takisoft.preferencex:preferencex-colorpicker:${versions.preferencesFix}"

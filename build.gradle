@@ -21,6 +21,7 @@ buildscript {
                 'androidxLocalBroadcastManager': '1.0.0',
                 'androidxCore': '1.2.0',
                 'androidxCardView': '1.0.0',
+                'androidxPreference': '1.1.1',
                 'materialComponents': '1.1.0',
                 'preferencesFix': '1.1.0',
                 'okio': '2.4.3',
