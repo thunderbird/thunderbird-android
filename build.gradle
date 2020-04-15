@@ -9,7 +9,7 @@ buildscript {
         ]
 
         versions = [
-                'kotlin': '1.3.61',
+                'kotlin': '1.3.72',
                 'androidxAppCompat': '1.2.0-alpha02',
                 'androidxRecyclerView': '1.1.0',
                 'androidxLifecycle': '2.2.0',
