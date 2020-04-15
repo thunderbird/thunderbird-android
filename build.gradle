@@ -30,7 +30,7 @@ buildscript {
                 'koin': '2.1.5',
                 'commonsIo': '2.6',
                 'mime4j': '0.8.1',
-                'okhttp': '4.2.1',
+                'okhttp': '4.5.0',
 
                 'androidxTestRunner': '1.1.1',
                 'junit': '4.13',
