@@ -33,7 +33,7 @@ buildscript {
                 'okhttp': '4.2.1',
 
                 'androidxTestRunner': '1.1.1',
-                'junit': '4.12',
+                'junit': '4.13',
                 'robolectric': '4.2.1',
                 'mockito': '3.2.4',
                 'mockitoKotlin': '2.2.0',
