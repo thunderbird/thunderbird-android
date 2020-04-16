@@ -14,14 +14,14 @@ import com.fsck.k9.ui.settings.account.AccountSettingsActivity
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.Section
-import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import kotlinx.android.synthetic.main.fragment_settings_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsListFragment : Fragment() {
     private val viewModel: SettingsViewModel by viewModel()
 
-    private lateinit var settingsAdapter: GroupAdapter<ViewHolder>
+    private lateinit var settingsAdapter: GroupAdapter<GroupieViewHolder>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_settings_list, container, false)
