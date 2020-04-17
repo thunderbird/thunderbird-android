@@ -86,6 +86,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="spam_action">Spam</string>
   <string name="forward_action">Doorsturen</string>
   <string name="forward_as_attachment_action">Doorsturen als bijlage</string>
+  <string name="edit_as_new_message_action">Bewerken als nieuw bericht</string>
   <string name="move_action">Verplaatsen</string>
   <string name="single_message_options_action">Verzend…</string>
   <string name="refile_action">Opnieuw opslaan…</string>
@@ -201,6 +202,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="message_compose_show_quoted_text_action">Geciteerd bericht bijvoegen</string>
   <string name="message_compose_description_delete_quoted_text">Citaattekst verwijderen</string>
   <string name="message_compose_description_edit_quoted_text">Citaattekst bewerken</string>
+  <string name="remove_attachment_action">Bijlage verwijderen</string>
   <string name="message_view_from_format">Van: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">Aan:</string>
   <string name="message_view_cc_label">CC:</string>
@@ -392,7 +394,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_setup_failed_dlg_auth_message_fmt">Gebruikersnaam of wachtwoord ongeldig.\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_certificate_message_fmt">De server presenteerde een ongeldig SSL certificaat. Dit kan komen door een verkeerd geconfigureerde server. Dit kan ook komen doordat iemand U of Uw mailserver aan probeert te vallen. Als U niet zeker weet wat er aan de hand is klik dan op Reject en neem contact op met de beheerder van Uw mailserver.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
   <string name="account_setup_failed_dlg_server_message_fmt">Kan geen verbinding met server maken.\n(<xliff:g id="error">%s</xliff:g>)</string>
-  <string name="account_setup_failed_dlg_edit_details_action">Aanpassen details</string>
+  <string name="account_setup_failed_dlg_edit_details_action">Details aanpassen</string>
   <string name="account_setup_failed_dlg_continue_action">Doorgaan</string>
   <string name="account_settings_push_advanced_title">Geavanceerd</string>
   <string name="account_settings_title_fmt">Algemene instellingen</string>
@@ -569,7 +571,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_settings_identities_summary">Instellen alternatieve \'Van\' adressen en handtekeningen</string>
   <string name="manage_identities_title">Beheer identiteiten</string>
   <string name="manage_identities_context_menu_title">Beheer identiteit</string>
-  <string name="edit_identity_title">Aanpassen identiteit</string>
+  <string name="edit_identity_title">Identiteit aanpassen</string>
   <string name="new_identity_action">Nieuwe identiteit</string>
   <string name="account_settings_always_bcc_label">Bcc alle berichten naar</string>
   <string name="manage_identities_edit_action">Aanpassen</string>
@@ -620,7 +622,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Verwerp Sleutel</string>
   <string name="message_view_help_key">Del (of D) - Verwijderen\nR - Antwoord\nA - Iedereen antwoorden\nC - Opstellen\nF - Doorsturen\nM - Verplaatsen\nV - Archiveren\nY - Kopiëren\nZ - Markeer (on)gelezen\nG - Ster\nO - Sorteer type\nI - Sorteer volgorde\nQ - Terug naar Mappen\nS - Selecteer/deselecteer\nJ of P - Vorig bericht\nK of N - Volgende bericht</string>
   <string name="message_list_help_key">Del (of D) - Verwijderen\nC - Opstellen\nM - Verplaatsen\nV - Archiveren\nY - Kopiëren\nZ - Markeer (on)gelezen\nG - Ster\nO - Sorteer type\nI - Sorteer volgorde\nQ - Terug naar Mappen\nS - Selecteer/deselecteer</string>
-  <string name="folder_list_help_key">1 - Laat alleen 1e klasse mappen zien\n2 - Laat 1e en 2e klasse mappen zien\n3 - Laat alles zien behalve 2e klasse mappen\n4 - Laat alle mappen zien\nQ - Terug naar Accounts\nS - Aanpassen Account Instellingen</string>
   <string name="folder_list_filter_hint">Mapnaam bevat</string>
   <string name="folder_list_display_mode_label">Mappen</string>
   <string name="folder_list_display_mode_all">Laat alle mappen zien</string>
@@ -668,8 +669,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_setup_push_limit_1000">1000 mappen</string>
   <string name="animations_title">Animatie</string>
   <string name="animations_summary">Gebruik opzichtige visuele effecten</string>
-  <string name="gestures_title">Gebaren</string>
-  <string name="gestures_summary">Gebaren sturing toestaan</string>
   <string name="volume_navigation_title">Volume op/neer navigatie</string>
   <string name="volume_navigation_message">Bericht beeld</string>
   <string name="volume_navigation_list">Variabele lijst weergave</string>

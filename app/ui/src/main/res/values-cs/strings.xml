@@ -89,6 +89,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="spam_action">Nevyžádaná</string>
   <string name="forward_action">Přeposlat</string>
   <string name="forward_as_attachment_action">Přeposlat jako přílohu</string>
+  <string name="edit_as_new_message_action">Upravit jako novou zprávu</string>
   <string name="move_action">Přesunout</string>
   <string name="single_message_options_action">Odeslat…</string>
   <string name="refile_action">Přesměrovat…</string>
@@ -209,6 +210,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="message_compose_show_quoted_text_action">Zahrnout citovanou zprávu</string>
   <string name="message_compose_description_delete_quoted_text">Odstranit citovaný text</string>
   <string name="message_compose_description_edit_quoted_text">Upravit citovaný text</string>
+  <string name="remove_attachment_action">Odebrat přílohu</string>
   <string name="message_view_from_format">Odesílatel: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">Komu:</string>
   <string name="message_view_cc_label">Kopie:</string>
@@ -614,7 +616,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Odmítnout klíč</string>
   <string name="message_view_help_key">Delete (nebo D) – Smazat\nR – Odpovědět\nA – Odpovědět všem\nC – Vytvořit\nF – Přeposlat\nM – Přesunout\nV - Archivovat\nY – Kopírovat\nZ – Označit (Ne)přečtené\nG – Hvězdička\nO – Uspořádat podle typu\nI – Uspořádat podle pořadí\nQ – Zpět ke složkám\nS – Označit/odznačit\nJ nebo P – Předešlá zpráva\nK nebo N – Další zpráva</string>
   <string name="message_list_help_key">Delete (nebo D) – Smazat\nC – Vytvořit\nM – Přesunout\nV – Archivovat\nY – Zkopírovat\nZ – Označit jako (ne)přečtené\nG – Označit hvězdičkou\nO – Typ řazení\nI – Pořadí řazení\nQ – Návrat na složky\nS – Označit / zrušit označení</string>
-  <string name="folder_list_help_key">1 - Zobrazit jen složky 1. třídy\n2 - Zobrazit složky 1. a 2. třídy\n3 - Zobrazit všechny mimo složek 2. třídy\n4 - Zobrazit všechny složky\nQ - Návrat k účtům\nS - Upravit nastavení účtu</string>
   <string name="folder_list_filter_hint">Název složky obsahuje</string>
   <string name="folder_list_display_mode_label">Zobrazit složky…</string>
   <string name="folder_list_display_mode_all">Všechny složky</string>
@@ -662,8 +663,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_setup_push_limit_1000">1000 složek</string>
   <string name="animations_title">Animace</string>
   <string name="animations_summary">Používat okázalé vizuální efekty</string>
-  <string name="gestures_title">Gesta</string>
-  <string name="gestures_summary">Používat ovládání gesty</string>
   <string name="volume_navigation_title">Navigace tlačítky hlasitosti</string>
   <string name="volume_navigation_message">Zobrazení zpráv</string>
   <string name="volume_navigation_list">Různá zobrazení seznamů</string>

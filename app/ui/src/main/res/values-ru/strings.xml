@@ -71,7 +71,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="status_sending_account">отправка <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_processing_account">обработка <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
-  <string name="status_syncing_off">синхронизация откл.</string>
+  <string name="status_syncing_off">Синхронизация откл.</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> выбрано</string>
   <string name="next_action">Далее</string>
   <string name="previous_action">Назад</string>
@@ -141,6 +141,10 @@ K-9 Mail — почтовый клиент для Android.
   <string name="status_invalid_id_error">Сообщение не найдено</string>
   <string name="status_loading_error">Сбой загрузки сообщения</string>
   <string name="load_more_messages_fmt">Получить до <xliff:g id="messages_to_load">%d</xliff:g> следующих</string>
+  <string name="size_format_gigabytes">%.1f ГБ</string>
+  <string name="size_format_megabytes">%.1f МБ</string>
+  <string name="size_format_kilobytes">%.1f кБ</string>
+  <string name="size_format_bytes">%d Б</string>
   <string name="account_size_changed">Ящик \"<xliff:g id="account">%s</xliff:g>\" изменился с <xliff:g id="oldSize">%s</xliff:g> до <xliff:g id="newSize">%s</xliff:g></string>
   <string name="compacting_account">Сжатие ящика \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Новая почта</string>
@@ -225,7 +229,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="debug_delete_local_body">Отладка / Очистка тела сообщения</string>
   <string name="message_discarded_toast">Сообщение отменено</string>
   <string name="message_saved_toast">Черновик сохранён</string>
-  <string name="global_settings_flag_label">Показать звёзды</string>
+  <string name="global_settings_flag_label">Показать важное</string>
   <string name="global_settings_flag_summary">Для управления важностью сообщений</string>
   <string name="global_settings_preview_lines_label">Строки предпросмотра</string>
   <string name="global_settings_show_correspondent_names_label">Имя вместо адреса</string>
@@ -278,7 +282,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="quiet_time_ends">Конец</string>
   <string name="account_setup_basics_title">Новый ящик</string>
   <string name="account_setup_basics_email_hint">адрес email</string>
-  <string name="account_setup_basics_password_hint">пароль</string>
+  <string name="account_setup_basics_password_hint">Пароль</string>
   <string name="account_setup_basics_show_password">Показать пароль</string>
   <string name="account_setup_basics_manual_setup_action">Вручную</string>
   <string name="account_setup_check_settings_title"/>
@@ -468,6 +472,20 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_settings_led_color_summary">Цвет LED-индикатора для оповещений этого ящика</string>
   <string name="account_settings_mail_display_count_label">Отображать сообщений</string>
   <string name="account_settings_autodownload_message_size_label">Загружать фрагмент</string>
+  <string name="account_settings_autodownload_message_size_1">1 КиБ</string>
+  <string name="account_settings_autodownload_message_size_2">2 КиБ</string>
+  <string name="account_settings_autodownload_message_size_4">4 КиБ</string>
+  <string name="account_settings_autodownload_message_size_8">8 КиБ</string>
+  <string name="account_settings_autodownload_message_size_16">16 КиБ</string>
+  <string name="account_settings_autodownload_message_size_32">32 КиБ</string>
+  <string name="account_settings_autodownload_message_size_64">64 КиБ</string>
+  <string name="account_settings_autodownload_message_size_128">128 КиБ</string>
+  <string name="account_settings_autodownload_message_size_256">256 КиБ</string>
+  <string name="account_settings_autodownload_message_size_512">512 КиБ</string>
+  <string name="account_settings_autodownload_message_size_1024">1 МиБ</string>
+  <string name="account_settings_autodownload_message_size_2048">2 МиБ</string>
+  <string name="account_settings_autodownload_message_size_5120">5 МиБ</string>
+  <string name="account_settings_autodownload_message_size_10240">10 МиБ</string>
   <string name="account_settings_autodownload_message_size_any">Полностью</string>
   <string name="account_settings_message_age_label">Глубина синхронизации</string>
   <string name="account_settings_message_age_any">Всё время</string>
@@ -607,7 +625,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Отклонить</string>
   <string name="message_view_help_key">Del (или D) – удалить\nR – ответить\nA – ответить всем\nC – создать\nF – переслать\nM – переместить\nV – в архив\nY – копировать\nZ – (не) прочитано\nG – важное\nO – сортировка\nI – порядок\nQ – папки\nS – выбрать\nJ или P – назад\nK или N – далее</string>
   <string name="message_list_help_key">Del (или D) – удалить\nC – создать\nM – переместить\nV – в архив\nY – копировать\nZ – (не) прочитано\nG – важное\nO – сортировка\nI – порядок\nQ – папки\nS – выбрать</string>
-  <string name="folder_list_help_key">1 – 1 класс папок\n2 – 1 и 2 классы папок\n3 – все, кроме 2 класса\n4 – видны все папки\nQ – список ящиков\nS – настройки ящика</string>
   <string name="folder_list_filter_hint">Поиск папки</string>
   <string name="folder_list_display_mode_label">Видимость папок</string>
   <string name="folder_list_display_mode_all">Все папки</string>
@@ -634,6 +651,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="settings_message_theme_label">Тема просмотра</string>
   <string name="settings_compose_theme_label">Тема редактора</string>
   <string name="settings_language_label">Язык</string>
+  <string name="preference_search_no_results">Настройки не найдены</string>
   <string name="settings_message_theme_selection_label">Фиксированный просмотр</string>
   <string name="settings_message_theme_selection_summary_off">Разрешить выбор темы при чтении сообщения</string>
   <string name="settings_message_theme_selection_summary_on">Отключить выбор темы при чтении сообщения</string>
@@ -654,8 +672,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_setup_push_limit_1000">1000 папок</string>
   <string name="animations_title">Анимация</string>
   <string name="animations_summary">Анимация интерфейса</string>
-  <string name="gestures_title">Жесты</string>
-  <string name="gestures_summary">Управление жестами</string>
   <string name="volume_navigation_title">Прокрутка кнопками Vol+/-</string>
   <string name="volume_navigation_message">В сообщении</string>
   <string name="volume_navigation_list">В списке</string>
@@ -751,9 +767,13 @@ K-9 Mail — почтовый клиент для Android.
   <string name="settings_export_success_generic">Настройки успешно экспортированы</string>
   <string name="settings_export_failure">Сбой экспорта настроек</string>
   <string name="settings_import_title">Импорт</string>
+  <string name="settings_import_pick_document_button">Выберите файл</string>
   <string name="settings_import_button">Импорт</string>
+  <string name="settings_import_status_password_required">Требуется пароль</string>
+  <string name="settings_import_later_button">Позже</string>
   <string name="settings_import">Импорт</string>
   <string name="settings_importing">Импорт настроек…</string>
+  <string name="server_name_format">Названия серверов: <xliff:g id="hostname">%s</xliff:g></string>
   <string name="unread_widget_select_account">Счётчик непрочитанных</string>
   <string name="unread_widget_account_title">Ящик</string>
   <string name="unread_widget_account_summary">Ящик для отображения счётчика непрочитанных</string>
@@ -992,7 +1012,7 @@ K-9 Mail — почтовый клиент для Android.
 </string>
   <string name="ac_transfer_error_send">Сбой при отправке сообщения. Проверьте соединение с сетью и настройки сервера исходящей почты.</string>
   <string name="switch_on">Вкл</string>
-  <string name="switch_off">Откл</string>
+  <string name="switch_off">Отключить</string>
   <string name="navigation_drawer_open">Открыть</string>
   <string name="navigation_drawer_close">Закрыть</string>
   <!--permissions-->

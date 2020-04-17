@@ -580,8 +580,6 @@
   <string name="account_setup_push_limit_1000">1000개 폴더</string>
   <string name="animations_title">애니메이션</string>
   <string name="animations_summary">매끄러운 시각 효과 사용</string>
-  <string name="gestures_title">제스처</string>
-  <string name="gestures_summary">제스처를 이용합니다</string>
   <string name="volume_navigation_title">볼륨 키 탐색</string>
   <string name="volume_navigation_message">메시지 뷰</string>
   <string name="volume_navigation_list">다양한 리스트 뷰</string>

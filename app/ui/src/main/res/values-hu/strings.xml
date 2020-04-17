@@ -46,7 +46,7 @@ Küldjön hibajelentéseket, járuljon hozzá új funkciókkal, és tegyen fel k
 </p>
     ]]></string>
   <!--Default signature-->
-  <string name="default_signature">-- \nAz Android készülékemről elküldve a K-9 Mail használatával. Elnézést kérek a rövid szövegért.</string>
+  <string name="default_signature">-- \nAz androidos készülékemről küldve a K-9 Mail használatával. Elnézést kérek a rövid szövegért.</string>
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">A(z) „<xliff:g id="account">%s</xliff:g>” fiók el lesz távolítva a K-9 Mail alkalmazásból.</string>
   <!--=== General strings ==================================================================-->
@@ -91,6 +91,7 @@ Küldjön hibajelentéseket, járuljon hozzá új funkciókkal, és tegyen fel k
   <string name="spam_action">Levélszemét</string>
   <string name="forward_action">Továbbítás</string>
   <string name="forward_as_attachment_action">Továbbítás mellékletként</string>
+  <string name="edit_as_new_message_action">Szerkesztés új üzenetként</string>
   <string name="move_action">Áthelyezés</string>
   <string name="single_message_options_action">Küldés…</string>
   <string name="refile_action">Újraküldés…</string>
@@ -141,6 +142,10 @@ Küldjön hibajelentéseket, járuljon hozzá új funkciókkal, és tegyen fel k
   <string name="status_loading_error">Üzenetbetöltési hiba</string>
   <string name="load_more_messages_fmt">Legfeljebb még
     <xliff:g id="messages_to_load">%d</xliff:g> betöltése</string>
+  <string name="size_format_gigabytes">%.1f GB</string>
+  <string name="size_format_megabytes">%.1f MB</string>
+  <string name="size_format_kilobytes">%.1f kB</string>
+  <string name="size_format_bytes">%d B</string>
   <string name="account_size_changed">A(z) „<xliff:g id="account">%s</xliff:g>” fiók tömörítve: <xliff:g id="oldSize">%s</xliff:g> helyett <xliff:g id="newSize">%s</xliff:g></string>
   <string name="compacting_account">A(z) „<xliff:g id="account">%s</xliff:g>” fiók tömörítése</string>
   <string name="notification_new_title">Új levél</string>
@@ -469,6 +474,20 @@ Küldjön hibajelentéseket, járuljon hozzá új funkciókkal, és tegyen fel k
   <string name="account_settings_led_color_summary">Az eszköz LED színének villognia kell ennél a fióknál</string>
   <string name="account_settings_mail_display_count_label">Helyi mappa mérete</string>
   <string name="account_settings_autodownload_message_size_label">Üzenetek letöltése, amely legfeljebb</string>
+  <string name="account_settings_autodownload_message_size_1">1 KiB</string>
+  <string name="account_settings_autodownload_message_size_2">2 KiB</string>
+  <string name="account_settings_autodownload_message_size_4">4 KiB</string>
+  <string name="account_settings_autodownload_message_size_8">8 KiB</string>
+  <string name="account_settings_autodownload_message_size_16">16 KiB</string>
+  <string name="account_settings_autodownload_message_size_32">32 KiB</string>
+  <string name="account_settings_autodownload_message_size_64">64 KiB</string>
+  <string name="account_settings_autodownload_message_size_128">128 KiB</string>
+  <string name="account_settings_autodownload_message_size_256">256 KiB</string>
+  <string name="account_settings_autodownload_message_size_512">512 KiB</string>
+  <string name="account_settings_autodownload_message_size_1024">1 MiB</string>
+  <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
+  <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
+  <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
   <string name="account_settings_autodownload_message_size_any">bármilyen méretű (nincs korlát)</string>
   <string name="account_settings_message_age_label">Üzenetek szinkronizálása ekkortól</string>
   <string name="account_settings_message_age_any">bármely idő (nincs korlát)</string>
@@ -608,7 +627,6 @@ Küldjön hibajelentéseket, járuljon hozzá új funkciókkal, és tegyen fel k
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Kulcs visszautasítása</string>
   <string name="message_view_help_key">Del (vagy D) – Törlés\nR – Válasz\nA – Válasz mindenkinek\nC – Írás\nF – Továbbítás\nM – Áthelyezés\nV – Archiválás\nY – Másolás\nZ – Megjelölés olvasottként/olvasatlanként\nG – Csillagozás\nO – Rendezés típusa\nI – Rendezési sorrend\nQ – Visszatérés a mappákhoz\nS – Kijelölés/Kijelölés megszüntetése\nJ vagy P – Előző üzenet\nK vagy N – Következő üzenet</string>
   <string name="message_list_help_key">Del (vagy D) – Törlés\nC – Írás\nM – Áthelyezés\nV – Archiválás\nY – Másolás\nZ – Megjelölés olvasottként/olvasatlanként\nG – Csillagozás\nO – Rendezés típusa\nI – Rendezési sorrend\nQ – Visszatérés a mappákhoz\nS – Kijelölés/Kijelölés megszüntetése</string>
-  <string name="folder_list_help_key">1 – Csak első osztályú mappák megjelenítése\n2 – Első és második osztályú mappák megjelenítése\n3 – Az összes, kivéve a második osztályú mappák megjelenítése\n4 – Az összes mappa megjelenítése\nQ – Visszatérés a fiókokhoz\nS – Fiókbeállítások szerkesztése</string>
   <string name="folder_list_filter_hint">Mappa neve tartalmazza</string>
   <string name="folder_list_display_mode_label">Mappák megjelenítése…</string>
   <string name="folder_list_display_mode_all">Összes mappa</string>
@@ -635,6 +653,7 @@ Küldjön hibajelentéseket, járuljon hozzá új funkciókkal, és tegyen fel k
   <string name="settings_message_theme_label">Üzenet nézetének témája</string>
   <string name="settings_compose_theme_label">Üzenetírás témája</string>
   <string name="settings_language_label">Nyelv</string>
+  <string name="preference_search_no_results">Nem találhatók beállítások</string>
   <string name="settings_message_theme_selection_label">Rögzített üzenet téma</string>
   <string name="settings_message_theme_selection_summary_off">Az üzenetmegtekintési téma kiválasztása, miközben megtekinti az üzenetet</string>
   <string name="settings_message_theme_selection_summary_on">Rögzített üzenetmegtekintési téma használata</string>
@@ -655,8 +674,6 @@ Küldjön hibajelentéseket, járuljon hozzá új funkciókkal, és tegyen fel k
   <string name="account_setup_push_limit_1000">1000 mappa</string>
   <string name="animations_title">Animációk</string>
   <string name="animations_summary">Rikító látható hatások használata</string>
-  <string name="gestures_title">Kézmozdulatok</string>
-  <string name="gestures_summary">Kézmozdulatokkal történő vezérlés engedélyezése</string>
   <string name="volume_navigation_title">Hangerő gomb navigáció</string>
   <string name="volume_navigation_message">Üzenetnézetekben</string>
   <string name="volume_navigation_list">Listanézetekben</string>
@@ -740,9 +757,9 @@ Küldjön hibajelentéseket, járuljon hozzá új funkciókkal, és tegyen fel k
   <string name="dialog_attachment_progress_title">Melléklet letöltése</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="settings_list_backup_category">Adatok mentése</string>
+  <string name="settings_list_backup_category">Biztonsági mentés</string>
   <string name="settings_list_miscellaneous_category">Egyebek</string>
-  <string name="settings_export_title">Exportálás beállítások</string>
+  <string name="settings_export_title">Beállítások exportálása</string>
   <string name="settings_export_button">Exportálás</string>
   <string name="settings_export_share_button">Megosztás</string>
   <string name="settings_export_progress_text">Beállítások exportálása…</string>

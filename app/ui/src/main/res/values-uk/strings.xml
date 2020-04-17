@@ -143,6 +143,10 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="status_loading_error">Помилка завантаження повідомлення</string>
   <string name="load_more_messages_fmt">Завантажити
     ще <xliff:g id="messages_to_load">%d</xliff:g> листів</string>
+  <string name="size_format_gigabytes">%.1f ГБ</string>
+  <string name="size_format_megabytes">%.1f МБ</string>
+  <string name="size_format_kilobytes">%.1f кБ</string>
+  <string name="size_format_bytes">%d Б</string>
   <string name="account_size_changed">Розмір облікового запису \"<xliff:g id="account">%s</xliff:g>\" зменшився з <xliff:g id="oldSize">%s</xliff:g> до <xliff:g id="newSize">%s</xliff:g></string>
   <string name="compacting_account">Стиснення облікового запису \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Нова пошта</string>
@@ -423,6 +427,8 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_settings_notification_opens_unread_summary">Шукає непрочитані повідомлення, коли відкрито сповіщення</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Позначати повідомлення прочитаним після відкриття</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Позначати повідомлення прочитаним після відкриття для перегляду</string>
+  <string name="account_settings_mark_message_as_read_on_delete_label">Позначити прочитаним після видалення</string>
+  <string name="account_settings_mark_message_as_read_on_delete_summary">Позначити повідомлення прочитаним після видалення</string>
   <string name="account_settings_notification_open_system_notifications_label">Налаштування сповіщень</string>
   <string name="account_settings_notification_open_system_notifications_summary">Відкрити системні налаштування сповіщень</string>
   <string name="account_settings_show_pictures_label">Завжди показувати зображення</string>
@@ -610,7 +616,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Відхилити ключ</string>
   <string name="message_view_help_key">Del (або D) - Видалити\nR - Відповісти\nA - Відповісти всім\nC - Написати лист\nF - Переслати\nM - Перемістити\nV - Архівувати\nY - Копіювати\nZ - Позначити (не)прочитаним\nG - Позначити зірочкою\nO - Тип сортування\nI - Порядок сортування\nQ - Повернутися до тек\nS - Вибрати / Зняти вибір\nJ або P - Попереднє повідомлення\nK або N - Наступне повідомлення</string>
   <string name="message_list_help_key">Del (або D) - Видалити\nC - Написати лист\nM - Перемістити\nV - Архівувати\nY - Копіювати\nZ - Позначити (не)прочитаним\nG - Позначити зірочкою\nO - Тип сортування\nI - Порядок сортування\nQ - Поввернутися до тек\nS - Вибрати / Зняти вибір</string>
-  <string name="folder_list_help_key">1 - Показувати лише теки 1-го класу\n2 - Показувати теки 1-го та 2-го класів\n3 - Показувати всі теки, окрім 2-го класу\n4 - Показувати всі теки\nQ - Повернутися до облікових записів\nS - Змінити налаштування облікового запису</string>
   <string name="folder_list_filter_hint">Назва теки містить</string>
   <string name="folder_list_display_mode_label">Показати теки…</string>
   <string name="folder_list_display_mode_all">Відображати усі теки</string>
@@ -637,6 +642,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="settings_message_theme_label">Тема екрану перегляду повідомлення</string>
   <string name="settings_compose_theme_label">Тема екрану створення повідомлення</string>
   <string name="settings_language_label">Мова</string>
+  <string name="preference_search_no_results">Налаштування не знайдені</string>
   <string name="settings_message_theme_selection_label">Фіксована тема повідомлення</string>
   <string name="settings_message_theme_selection_summary_off">Виберіть тему екрану перегляду повідомлення під час перегляду повідомлення</string>
   <string name="settings_message_theme_selection_summary_on">Використовувати фіксовану тему перегляду повідомлення</string>
@@ -657,8 +663,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_setup_push_limit_1000">1000 тек</string>
   <string name="animations_title">Анімація</string>
   <string name="animations_summary">Використовувати яскраві візуальні ефекти</string>
-  <string name="gestures_title">Жести</string>
-  <string name="gestures_summary">Увімкнути управління жестами</string>
   <string name="volume_navigation_title">Навігація кнопками зміни гучності</string>
   <string name="volume_navigation_message">при перегляді повідомлень</string>
   <string name="volume_navigation_list">у списках</string>

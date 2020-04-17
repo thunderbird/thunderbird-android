@@ -520,8 +520,6 @@
   <string name="account_setup_push_limit_1000">1000 aplankų</string>
   <string name="animations_title">Animacija</string>
   <string name="animations_summary">Naudoti įmantrius vizualinius efektus</string>
-  <string name="gestures_title">Gestai</string>
-  <string name="gestures_summary">Įjungti valdymą gestais</string>
   <string name="volume_navigation_title">Navigacija garso klavišais</string>
   <string name="volume_navigation_message">Pranešimų rodinyje</string>
   <string name="volume_navigation_list">Sąrašo rodiniuose</string>

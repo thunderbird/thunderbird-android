@@ -611,7 +611,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Nac’h an alc’hwez</string>
   <string name="message_view_help_key">Del (pe D) - Dilemel\nR - Respont\nA - Respont d’an holl\nC - Skridaozañ\nF - Treuzkas\nM - Dilec’hiañ\nV - Diellaouiñ\nY - Eilañ\nZ - Merkañ evel (An)lennet\nG - Steredenniñ\nO - Doare urzhiañ\nI - Tu an urzh\nQ - Distreiñ d’an teuliadoù\nS - (Di)ziuzañ\nJ or P - Kemennadenn gent\nK pe N - Kemennadenn da heul</string>
   <string name="message_list_help_key">Del (pe D) - Dilemel\nC - Skridaozañ\nM - Dilec’hiañ\nV - Diellaouiñ\nY - Eilañ\nZ - Merkañ evel (An)Lennet\nG - Steredenniñ\nO - Doare urzhiañ\nI - Tu an urzhiañ\nQ - Distreiñ d’an teuliadoù\nS - (Di)ziuzañ</string>
-  <string name="folder_list_help_key">1 - Skrammañ teuliadoù ar rummad 1añ\n2 - Skrammañ teuliadoù an eil rummad\n3 - Skrammañ an holl estreget teuliadoù an eil rummad\n4 - Skrammañ an holl deuliadoù\nQ - Distreiñ d’ar c’hontoù\nS - Embann arventennoù ar gont</string>
   <string name="folder_list_filter_hint">Anv an teuliad a endalc’h</string>
   <string name="folder_list_display_mode_label">Diskouez an teuliadoù</string>
   <string name="folder_list_display_mode_all">An holl deuliadoù</string>
@@ -657,8 +656,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="account_setup_push_limit_1000">1000 teuliad</string>
   <string name="animations_title">Bliverezh</string>
   <string name="animations_summary">Ober gant efedoù gwel gaudy</string>
-  <string name="gestures_title">Fiñvoù</string>
-  <string name="gestures_summary">Gweredekaat ar reoliañ dre fiñvoù</string>
   <string name="volume_navigation_title">Merdeiñ dre afelloù an ampled</string>
   <string name="volume_navigation_message">Er gwel kemennadenn</string>
   <string name="volume_navigation_list">Er gwel roll</string>

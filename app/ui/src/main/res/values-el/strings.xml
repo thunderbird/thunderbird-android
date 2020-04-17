@@ -166,6 +166,7 @@
   <string name="special_mailbox_name_trash">Διαγραμμένα</string>
   <string name="special_mailbox_name_sent">Απεσταλμένα</string>
   <string name="send_failure_subject">Αποτυχία αποστολής μερικών μηνυμάτων</string>
+  <string name="version">\'Εκδοση</string>
   <string name="debug_enable_debug_logging_title">Ενεργοποίηση καταγραφών αποσφαλμάτωσης</string>
   <string name="debug_enable_debug_logging_summary">Καταγραφή πρόσθετων διαγνωστικών πληροφοριών</string>
   <string name="debug_enable_sensitive_logging_title">Καταγραφή ευαίσθητων πληροφοριών</string>
@@ -405,6 +406,7 @@
   <string name="account_settings_notification_opens_unread_summary">Αναζητά μη αναγνωσμένα μηνύματα όταν ανοίγεται η ειδοποίηση</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Σημείωση ως αναγνωσμένου με την ανάγνωση</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Σημείωση ως αναγνωσμένου με την προβολή</string>
+  <string name="account_settings_notification_open_system_notifications_label">Ρυθμίσεις ειδοποιήσεων</string>
   <string name="account_settings_show_pictures_label">Προβολή εικόνων πάντα</string>
   <string name="account_settings_show_pictures_never">Όχι</string>
   <string name="account_settings_show_pictures_only_from_contacts">Από τις Επαφές</string>
@@ -570,7 +572,6 @@
   <string name="account_setup_failed_dlg_invalid_certificate_title">Άγνωστο πιστοποιητικό</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Αποδοχή κλειδιού</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Απόρριψη κλειδιού</string>
-  <string name="folder_list_help_key">1 - Προβολή μόνο φακέλων 1ου επιπέδου\n2 - Προβολή φακέλων 1ου και 2ου επιπέδου\n3 - Προβολή όλων των φακέλων εκτός 2ου επιπέδου\n4 - Προβολή όλων των φακέλων\nQ - Επιστροφή στους λογαριασμούς\nS - Αλλαγή ρυθμίσεων λογαριασμού</string>
   <string name="folder_list_filter_hint">Το όνομα του φακέλου περιέχει</string>
   <string name="folder_list_display_mode_label">Φάκελοι</string>
   <string name="folder_list_display_mode_all">Προβολή όλων</string>
@@ -616,8 +617,6 @@
   <string name="account_setup_push_limit_1000">1000 φάκελοι</string>
   <string name="animations_title">Κινούμενα σχέδια</string>
   <string name="animations_summary">Χρήση οπτικών εφέ gaudy</string>
-  <string name="gestures_title">Χειρονομίες</string>
-  <string name="gestures_summary">Αποδοχή ελέγχου με χειρονομίες</string>
   <string name="volume_navigation_title">Πλοήγηση με πλήκτρο έντασης</string>
   <string name="volume_navigation_message">Προβολή μηνύματος</string>
   <string name="volume_navigation_list">Διάφορες προβολές λίστας</string>
@@ -705,6 +704,7 @@
   <string name="settings_export_failure">Αποτυχία εξαγωγής ρυθμίσεων</string>
   <string name="settings_import_title">Εισαγωγή ρυθμίσεων</string>
   <string name="settings_import_button">Εισαγωγή</string>
+  <string name="settings_import_later_button">Αργότερα</string>
   <string name="settings_import">Εισαγωγή ρυθμίσεων</string>
   <string name="settings_importing">Εισαγωγή ρυθμίσεων σε εξέλιξη…</string>
   <string name="unread_widget_select_account">Προβολή πλήθους μη αναγνωσμένων για…</string>

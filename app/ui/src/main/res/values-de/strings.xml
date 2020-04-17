@@ -91,6 +91,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="spam_action">Spam</string>
   <string name="forward_action">Weiterleiten</string>
   <string name="forward_as_attachment_action">Als Anhang weiterleiten</string>
+  <string name="edit_as_new_message_action">Editiere als neue Meldung</string>
   <string name="move_action">Verschieben</string>
   <string name="single_message_options_action">Senden…</string>
   <string name="refile_action">Umsortieren…</string>
@@ -206,6 +207,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="message_compose_show_quoted_text_action">Zitierte Nachricht einfügen</string>
   <string name="message_compose_description_delete_quoted_text">Zitierten Text entfernen</string>
   <string name="message_compose_description_edit_quoted_text">Zitierten Text bearbeiten</string>
+  <string name="remove_attachment_action">Anhang entfernen</string>
   <string name="message_view_from_format">Von: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">An:</string>
   <string name="message_view_cc_label">CC:</string>
@@ -367,7 +369,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_setup_options_mail_check_frequency_24hour">Alle 24 Stunden</string>
   <string name="push_poll_on_connect_label">Abruf beim Start der Push-Verbindung</string>
   <string name="account_setup_options_enable_push_label">Push-Mail für dieses Konto aktivieren</string>
-  <string name="account_setup_options_enable_push_summary">Neue Nachrichten werden nach dem Eintreffen umgehend abgerufen, falls Ihr Server dies unterstützt. Diese Einstellung kann die Akkulaufzeit des Gerätes stark beeinflussen</string>
+  <string name="account_setup_options_enable_push_summary">Neue Nachrichten werden nach dem Eintreffen umgehend abgerufen, falls Ihr Server dies unterstützt. Diese Einstellung kann die Akkulaufzeit des Gerätes stark beeinflussen.</string>
   <string name="idle_refresh_period_label">Push-Verbindung erneuern</string>
   <string name="idle_refresh_period_1min">Jede Minute</string>
   <string name="idle_refresh_period_2min">Alle 2 Minuten</string>
@@ -626,7 +628,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Zertifikat ablehnen</string>
   <string name="message_view_help_key">Entf (oder D) - Löschen\nR - Antworten\nA - Allen Antworten\nC - Verfassen\nF - Weiterleiten\nM - Verschieben\nV - Archivieren\nY - Kopieren\nZ - Als (un)gelesen markieren\nG - Wichtig\nO - Sortiertyp\nI - Sortierreihenfolge\nQ - Zurück zu den Ordnern\nS - Auswählen/Abwählen\nJ oder P - Vorherige Nachricht\nK oder N - Nächste Nachricht</string>
   <string name="message_list_help_key">Entf (oder D) - Löschen\nC - Verfassen\nM - Verschieben\nV - Archivieren\nY - Kopieren\nZ - Als (un)gelesen markieren\nG - Wichtig\nO - Sortiertyp\nI - Sortierreihenfolge\nQ - Zurück zu den Ordnern\nS - Auswählen/Abwählen</string>
-  <string name="folder_list_help_key">1 - Nur Hauptordner anzeigen\n2 - Haupt- und Nebenordner anzeigen\n3 - Alle außer Nebenordner anzeigen\n4 - Alle Ordner anzeigen\nQ - Zurück zu den Konten\nS - Kontoeinstellungen bearbeiten</string>
   <string name="folder_list_filter_hint">Ordnername enthält</string>
   <string name="folder_list_display_mode_label">Ordner</string>
   <string name="folder_list_display_mode_all">Alle Ordner anzeigen</string>
@@ -673,9 +674,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_setup_push_limit_500">500 Ordner</string>
   <string name="account_setup_push_limit_1000">1000 Ordner</string>
   <string name="animations_title">Animationen</string>
-  <string name="animations_summary">Aufwändige visuelle Effekte benutzen</string>
-  <string name="gestures_title">Gesten</string>
-  <string name="gestures_summary">Gesten für vorherige/nächste Nachricht aktivieren</string>
+  <string name="animations_summary">Aufwendige visuelle Effekte benutzen</string>
   <string name="volume_navigation_title">Lauter/Leiser-Navigation</string>
   <string name="volume_navigation_message">Nachrichtenansicht</string>
   <string name="volume_navigation_list">Diverse Listenansichten</string>
