@@ -201,6 +201,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * have already been added from the restore of the view state.
      */
     private boolean relatedMessageProcessed = false;
+    private MessageViewInfo currentMessageViewInfo;
 
     private RecipientPresenter recipientPresenter;
     private MessageBuilder currentMessageBuilder;
@@ -1183,7 +1184,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             throw new IllegalStateException("tried to edit quoted message with no referenced message");
         }
 
-        messageLoaderHelper.asyncStartOrResumeLoadingMessage(relatedMessageReference, null);
+        if (currentMessageViewInfo != null) {
+            loadLocalMessageForDisplay(currentMessageViewInfo, action);
+        }
     }
 
     /**
@@ -1580,6 +1583,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     public void loadLocalMessageForDisplay(MessageViewInfo messageViewInfo, Action action) {
+        currentMessageViewInfo = messageViewInfo;
+
         // We check to see if we've previously processed the source message since this
         // could be called when switching from HTML to text replies. If that happens, we
         // only want to update the UI with quoted text (which picks the appropriate
