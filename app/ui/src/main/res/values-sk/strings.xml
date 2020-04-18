@@ -567,7 +567,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_setup_failed_dlg_invalid_certificate_title">Neznámy certifikát</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Prijať kľúč</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Odmietnuť kľúč</string>
-  <string name="folder_list_help_key">1 - Zobraziť len priečinky 1. triedy\n2 - Zobraziť priečinky 1. a 2. triedy\n3 - Zobraziť  všetky okrem priečinkov 2. triedy\n4 - Zobraziť  všetky priečinky\nQ - Návrat do účtov\nS - Upraviť nastavenia účtov</string>
   <string name="folder_list_display_mode_label">Zobraziť priečinky…</string>
   <string name="folder_list_display_mode_all">Všetky priečinky</string>
   <string name="folder_list_display_mode_first_class">Priečinky 1. triedy</string>
@@ -611,8 +610,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_setup_push_limit_1000">1000 priečinkov</string>
   <string name="animations_title">Animácie</string>
   <string name="animations_summary">Používať krikľavý vizuálny efekt</string>
-  <string name="gestures_title">Gestá</string>
-  <string name="gestures_summary">Povoliť ovládanie gestami</string>
   <string name="volume_navigation_title">Navigácia tlačidlami hlasitosti</string>
   <string name="volume_navigation_message">V zobrazení správ</string>
   <string name="volume_navigation_list">V zobrazení zoznamu</string>

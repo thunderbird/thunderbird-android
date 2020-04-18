@@ -597,7 +597,6 @@
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Odbij ključ</string>
   <string name="message_view_help_key">Del (ili D) - Obriši\nR - Odgovori\nA - Odgovori svima\nC - Sastavi\nF - Proslijedi\nM - Pomakni\nV - Arhiviraj\nY - Kopiraj\nZ - Označi (Ne)pročitano\nG - Dodaj zvijezdicu\nO - Način sortiranja\nI - Poredak sortiranja\nQ - Nazad na mape\nS - Označi/odznači\nJ ili P - Prethodna poruka\nK ili N - Sljedeća poruka</string>
   <string name="message_list_help_key">Del (ili D) - Obriši\nC - Sastavi\nM - Pomakni\nV - Arhiviraj\nY - Kopiraj\nZ - Označi (Ne)pročitano\nG - Dodaj zvijezdicu\nO - Način sortiranja\nI - Poredak sortiranja\nQ - Nazad na mape\nS - Označi/odznači</string>
-  <string name="folder_list_help_key">1 - Prikaži samo mape 1. Razreda\n2 - Prikaži mape 1. i 2. Razreda\n3 - Prikaži sve osim mapa 2. Razreda\n4 - Prikaži sve mape\nQ - Povratak na Račune\nS - Uredi Postavei Računa</string>
   <string name="folder_list_filter_hint">Naziv mape sadrži</string>
   <string name="folder_list_display_mode_label">Prikaži mape…</string>
   <string name="folder_list_display_mode_all">Sve mape</string>
@@ -645,8 +644,6 @@
   <string name="account_setup_push_limit_1000">1000 mapa</string>
   <string name="animations_title">Animacija</string>
   <string name="animations_summary">Koristi šarolike vizualne efekte</string>
-  <string name="gestures_title">Geste</string>
-  <string name="gestures_summary">Omogući upravljanje gestama</string>
   <string name="volume_navigation_title">Navigacija tipkama glasnoće</string>
   <string name="volume_navigation_message">U pregledu poruka</string>
   <string name="volume_navigation_list">U pregledu popisa</string>

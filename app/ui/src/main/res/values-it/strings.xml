@@ -91,6 +91,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="spam_action">Spam</string>
   <string name="forward_action">Inoltra</string>
   <string name="forward_as_attachment_action">Inoltra come allegato</string>
+  <string name="edit_as_new_message_action">Modifica come nuovo messaggio</string>
   <string name="move_action">Sposta</string>
   <string name="single_message_options_action">Invio…</string>
   <string name="refile_action">Riarchivia…</string>
@@ -207,6 +208,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="message_compose_show_quoted_text_action">Includi messaggio citato</string>
   <string name="message_compose_description_delete_quoted_text">Rimuovi testo citato</string>
   <string name="message_compose_description_edit_quoted_text">Modifica testo citato</string>
+  <string name="remove_attachment_action">Rimuovi allegato</string>
   <string name="message_view_from_format">Da: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">A:</string>
   <string name="message_view_cc_label">Cc:</string>
@@ -626,7 +628,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rifiuta chiave</string>
   <string name="message_view_help_key">Canc (o D) - Elimina\nR - Rispondi\nA - Rispondi a tutti\nC - Componi\nF - Inoltra\nM - Sposta\nV - Archivia\nY - Copia\nZ - Marca come (non) letto\nG - Stella\nO - Tipo di ordinamento\nI - Ordinamento\nQ - Ritorna alle cartelle\nS - Seleziona/deseleziona\nJ o P - Messaggio precedente\nK o N - Messaggio successivo</string>
   <string name="message_list_help_key">Canc (o D) - Elimina\nC - Componi\nM - Sposta\nV - Archivia\nY - Copia\nZ - Marca come (non) letto\nG - Stella\nO - Tipo di ordinamento\nI - Ordinamento\nQ - Ritorna alle cartelle\nS - Seleziona/deseleziona</string>
-  <string name="folder_list_help_key">1 - Visualizza soltanto cartelle di 1a classe\n2 - Visualizza cartelle di 1a e 2a classe\n3 - Visualizza tutte eccetto le cartelle di 2a classe\n4 - Visualizza tutte le cartelle\nQ - Ritorna agli account\nS - Modifica le impostazioni dell\'account</string>
   <string name="folder_list_filter_hint">Il nome della cartella contiene</string>
   <string name="folder_list_display_mode_label">Mostra cartelle…</string>
   <string name="folder_list_display_mode_all">Tutte le cartelle</string>
@@ -674,8 +675,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_setup_push_limit_1000">1000 cartelle</string>
   <string name="animations_title">Animazione</string>
   <string name="animations_summary">Utilizza effetti visivi vistosi</string>
-  <string name="gestures_title">Gestione con tocco</string>
-  <string name="gestures_summary">Attiva la gestione con il tocco</string>
   <string name="volume_navigation_title">Navigazione con tasti volume</string>
   <string name="volume_navigation_message">In visualizzazione messaggi</string>
   <string name="volume_navigation_list">In visualizzazione elenco</string>

@@ -610,7 +610,6 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Gwrthod Allwedd</string>
   <string name="message_view_help_key">Del (neu D) - Dileu\nR - Ateb\nA - Ateb i bawb\nC - Cyfansoddi\nF - Anfon ymlaen\nM - Symud\nV - Archifo\nY - Copïo\nZ - Nodi heb/wedi ei darllen\nG - Serennu\nO - Math o drefn\nI - Trefn sortio\nQ - Nôl i\'r ffolderi\nS - Dewis/dad-ddewis\nJ neu P - Neges flaenorol\nK neu N - Neges nesaf</string>
   <string name="message_list_help_key">Del (neu D) - Dileu\nC - Cyfansoddi\nM - Symud\nV - Archive\nY - Copy\nZ -Nodi wedi/heb ei darllen\nG - Serennu\nO - Math o drefn\nI - Trefn\nQ - Nôl i\'r ffolderi\nS - Dewis/dad-ddewis</string>
-  <string name="folder_list_help_key">1 - Dangos ffolderi rhenc 1af yn unig\n2 - Dangos ffolderi Rhenc 1af ac 2ail\n3 - Dangos pob ffolder ond rhai 2ail renc\n4 - Dangos pob ffolder\nQ - Dychwelyd i gyfrifon\nS - Golygu Gosodiadau Cyfrif</string>
   <string name="folder_list_filter_hint">Enw ffolder yn cynnwys</string>
   <string name="folder_list_display_mode_label">Dangos ffolderi…</string>
   <string name="folder_list_display_mode_all">Pob ffolder</string>
@@ -657,8 +656,6 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="account_setup_push_limit_1000">1000 o ffolderi</string>
   <string name="animations_title">Animeiddiad</string>
   <string name="animations_summary">Defnyddio effeithiau gweledol dros ben llestri</string>
-  <string name="gestures_title">Ystumiadau</string>
-  <string name="gestures_summary">Galluogi rheoli trwy ystumiadau</string>
   <string name="volume_navigation_title">Pori gyda\'r botymau sain</string>
   <string name="volume_navigation_message">Wrth edrych ar neges</string>
   <string name="volume_navigation_list">Wrth edrych ar restr</string>

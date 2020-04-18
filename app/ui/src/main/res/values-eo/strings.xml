@@ -89,6 +89,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="spam_action">Trudmesaĝo</string>
   <string name="forward_action">Plusendi</string>
   <string name="forward_as_attachment_action">Plusendi kiel kunsendaĵon</string>
+  <string name="edit_as_new_message_action">Redakti kiel novan mesaĝon</string>
   <string name="move_action">Movi</string>
   <string name="single_message_options_action">Sendi…</string>
   <string name="refile_action">Agoj…</string>
@@ -204,6 +205,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="message_compose_show_quoted_text_action">Enhavi citatan mesaĝon</string>
   <string name="message_compose_description_delete_quoted_text">Forigi citatan tekston</string>
   <string name="message_compose_description_edit_quoted_text">Redakti citatan tekston</string>
+  <string name="remove_attachment_action">Forigi kunsendaĵon</string>
   <string name="message_view_from_format">De: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">Al:</string>
   <string name="message_view_cc_label">Kopio:</string>
@@ -623,7 +625,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rifuzi ŝlosilon</string>
   <string name="message_view_help_key">Del (aŭ D) - forigi\nR - respondi\nA - respondi al ĉiuj\nC - krei\nF - plusendi\nM - movi\nV - arĥivigi\nY - kopii\nZ - marki kiel (ne)legitan\nG - steletigi\nO - ordiga tipo\nI - ordigo\nQ - reveni al mesaĝujoj\nS - (mal)elekti\nJ aŭ P -antaŭa mesaĝo\nK aŭ N - sekva mesaĝo</string>
   <string name="message_list_help_key">Del (aŭ D) - forigi\nC - krei\nM - movi\nV - arĥivigi\nY - kopii\nZ - marki kiel (ne)legitan\nG - steletigi\nO - ordiga tipo\nI - ordigo\nQ - reveni al mesaĝujoj\nS - (mal)elekti</string>
-  <string name="folder_list_help_key">1 - vidigi nur mesaĝujojn de klaso 1\n2 - vidigi mesaĝujojn de klasoj 1 kaj 2\n3 - vidigi ĉiujn mesaĝujojn escepte de klaso 2\n4 - vidigi ĉiujn mesaĝujojn\nQ - reveni al kontoj\nS - redakti agordojn de konto</string>
   <string name="folder_list_filter_hint">Nomo de mesaĝujo enhavas</string>
   <string name="folder_list_display_mode_label">Montri mesaĝujojn…</string>
   <string name="folder_list_display_mode_all">Ĉiuj mesaĝujoj</string>
@@ -671,8 +672,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="account_setup_push_limit_1000">Maksimume 1000 mesaĝujoj</string>
   <string name="animations_title">Movbildoj</string>
   <string name="animations_summary">Uzas afablajn vidajn efektojn</string>
-  <string name="gestures_title">Gestoj</string>
-  <string name="gestures_summary">Ebligas regi per gestoj</string>
   <string name="volume_navigation_title">Navigado per sonfortecaj butonoj</string>
   <string name="volume_navigation_message">En vido de mesaĝoj</string>
   <string name="volume_navigation_list">En vidoj de listoj</string>

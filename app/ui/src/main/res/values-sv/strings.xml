@@ -90,11 +90,12 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="spam_action">Skräppost</string>
   <string name="forward_action">Vidarebefordra</string>
   <string name="forward_as_attachment_action">Vidarebefordra som bilaga</string>
+  <string name="edit_as_new_message_action">Redigera som nytt meddelande</string>
   <string name="move_action">Flytta</string>
   <string name="single_message_options_action">Skicka…</string>
   <string name="refile_action">Omarkivera…</string>
   <string name="done_action">Klar</string>
-  <string name="discard_action">Kassera</string>
+  <string name="discard_action">Kasta</string>
   <string name="save_draft_action">Spara som utkast</string>
   <string name="check_mail_action">Kontrollera e-post</string>
   <string name="send_messages_action">Skicka meddelanden</string>
@@ -206,6 +207,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="message_compose_show_quoted_text_action">Inkludera citerat meddelande</string>
   <string name="message_compose_description_delete_quoted_text">Ta bort citerad text</string>
   <string name="message_compose_description_edit_quoted_text">Redigera citerad text</string>
+  <string name="remove_attachment_action">Ta bort bilaga</string>
   <string name="message_view_from_format">Från: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">Till:</string>
   <string name="message_view_cc_label">Kopia:</string>
@@ -224,7 +226,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="from_same_sender">Mer från den här avsändaren</string>
   <string name="search_from_format">Från <xliff:g id="sender">%s</xliff:g></string>
   <string name="debug_delete_local_body">Felsök / Rensa meddelandets brödtext</string>
-  <string name="message_discarded_toast">Meddelandet kasserat</string>
+  <string name="message_discarded_toast">Meddelandet kastat</string>
   <string name="message_saved_toast">Meddelandet sparat som utkast</string>
   <string name="global_settings_flag_label">Visa stjärnor</string>
   <string name="global_settings_flag_summary">Stjärnor indikerar flaggade meddelanden</string>
@@ -250,7 +252,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="global_settings_confirm_action_delete">Ta bort</string>
   <string name="global_settings_confirm_action_delete_starred">Ta bort stjärnmarkerade (i meddelandevyn)</string>
   <string name="global_settings_confirm_action_spam">Skräp</string>
-  <string name="global_settings_confirm_menu_discard">Kassera meddelandet</string>
+  <string name="global_settings_confirm_menu_discard">Kasta meddelandet</string>
   <string name="global_settings_confirm_menu_mark_all_read">Markera alla meddelanden som lästa</string>
   <string name="global_settings_confirm_action_delete_notif">Ta bort (från avisering)</string>
   <string name="global_settings_privacy_hide_useragent">Dölj e-postklient</string>
@@ -625,7 +627,6 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Neka nyckel</string>
   <string name="message_view_help_key">Del (or D) - Ta bort\nR - Svara\nA - Svara alla\nC - Skriva\nF - Vidarebefordra\nM - Flytta\nV - Arkivera\nY - Kopiera\nZ - Markera (o)lästa\nG - Stjärna\nO - Sorteringstyp\nI - Sorteringsordning\nQ - Återgå till mappar\nS - Välj/välj bort\nJ or P - Föregående meddelande\nK or N - Nästa meddelande</string>
   <string name="message_list_help_key">Del (or D) - Ta bort\nC - Skriva\nM - Flytta\nV - Arkivera\nY - Kopiera\nZ - Markera (o)lästa\nG - Stjärna\nO - Sorteringstyp\nI - Sorteringsordning\nQ - Återgå till mappar\nS - Välj/välj bort</string>
-  <string name="folder_list_help_key">1 - Visa endast 1:a klassens mappar\n2 - Visa 1:a och 2:a klassens mappar\n3 - Visa alla utom 2:a klassens mappar\n4 - Visa alla mappar\nQ - Återvänd till konton\nS - Redigera kontoinställningar</string>
   <string name="folder_list_filter_hint">Mappnamn innehåller</string>
   <string name="folder_list_display_mode_label">Visa mappar…</string>
   <string name="folder_list_display_mode_all">Alla mappar</string>
@@ -673,8 +674,6 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_setup_push_limit_1000">1000 mappar</string>
   <string name="animations_title">Animering</string>
   <string name="animations_summary">Använd snygga visuella effekter</string>
-  <string name="gestures_title">Gester</string>
-  <string name="gestures_summary">Aktivera styrning med gester</string>
   <string name="volume_navigation_title">Navigering med volymknapp</string>
   <string name="volume_navigation_message">I meddelandelistor</string>
   <string name="volume_navigation_list">I listvyer</string>
@@ -685,7 +684,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="search_all_messages_detail">Alla meddelanden i sökbara mappar</string>
   <string name="integrated_inbox_title">Samlad inkorg</string>
   <string name="integrated_inbox_detail">Alla meddelanden i samlade mappar</string>
-  <string name="folder_settings_include_in_integrated_inbox_label">Slå samman</string>
+  <string name="folder_settings_include_in_integrated_inbox_label">Förena</string>
   <string name="folder_settings_include_in_integrated_inbox_summary">Alla meddelanden visas i samlad inkorg</string>
   <string name="account_settings_searchable_label">Mappar att genomsöka</string>
   <string name="account_settings_searchable_all">Alla</string>
@@ -730,9 +729,9 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="error_activity_not_found">Hittade ingen passande applikation för den här åtgärden.</string>
   <string name="send_failed_reason">Det gick inte att skicka: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Spara utkast?</string>
-  <string name="save_or_discard_draft_message_instructions_fmt">Spara eller kassera detta meddelande?</string>
-  <string name="confirm_discard_draft_message_title">Kassera meddelandet?</string>
-  <string name="confirm_discard_draft_message">Är du säker på att du vill kassera detta meddelande?</string>
+  <string name="save_or_discard_draft_message_instructions_fmt">Spara eller kasta detta meddelande?</string>
+  <string name="confirm_discard_draft_message_title">Kasta meddelandet?</string>
+  <string name="confirm_discard_draft_message">Är du säker på att du vill kasta detta meddelande?</string>
   <string name="select_text_now">Välj text att kopiera.</string>
   <string name="dialog_confirm_delete_title">Bekräfta borttagning</string>
   <string name="dialog_confirm_delete_message">Vill du ta bort detta meddelande?</string>
@@ -840,7 +839,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   </plurals>
   <string name="remote_search_error">Fjärrsökning misslyckades</string>
   <string name="account_settings_search">Sök</string>
-  <string name="account_settings_remote_search_enabled">Aktivera sökning på servern</string>
+  <string name="account_settings_remote_search_enabled">Aktivera serversökning</string>
   <string name="account_settings_remote_search_enabled_summary">Sök även meddelanden på servern utöver de som finns på din enhet</string>
   <string name="action_remote_search">Sök meddelanden på servern</string>
   <string name="remote_search_unavailable_no_network">Nätverksanslutning krävs för att söka på servern.</string>

@@ -629,7 +629,6 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Odrzuć</string>
   <string name="message_view_help_key">Del (lub D) - Usuń\nR - Odpowiedz\nA - Odpowiedz wszystkim\nC - Stwórz\nF - Przekaż\nM - Przenieś\nV - Archiwizuj\nY - Kopiuj\nZ - Zaznacz (Nie)przeczytane\nG - Gwiazdka\nO - Typ sortowania\nl - Kolejność sortowania\nQ - Wróć do folderów\nS - Wybierz/odznacz\nJ lub P - Poprzednia wiadomość\nK lub N - Następna wiadomość</string>
   <string name="message_list_help_key">Del (lub D) - Usuń\nR - Odpowiedz\nA - Odpowiedz wszystkim\nC - Stwórz\nF - Przekaż\nM - Przenieś\nV - Archiwizuj\nY - Kopiuj\nZ - Zaznacz (Nie)przeczytane\nG - Gwiazdka\nO - Typ sortowania\nl - Kolejność sortowania\nQ - Wróć do folderów\nS - Wybierz/odznacz</string>
-  <string name="folder_list_help_key">1 - Wyśw. tylko foldery klasy 1\n2 - Wyśw. foldery klasy 1 oraz 2\n3 - Wyśw. wszystkie foldery poza klasą 2\n4 - Wyświetl wszystkie foldery\nQ - Lista kont\nS - Edytuj ustawienia konta</string>
   <string name="folder_list_filter_hint">Nazwa katalogu zawiera</string>
   <string name="folder_list_display_mode_label">Wyświetlanie folderów</string>
   <string name="folder_list_display_mode_all">Wszystkie</string>
@@ -676,8 +675,6 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="account_setup_push_limit_1000">Do 1000 folderów</string>
   <string name="animations_title">Animacje</string>
   <string name="animations_summary">Używaj efektów wizualnych</string>
-  <string name="gestures_title">Gesty</string>
-  <string name="gestures_summary">Pozwól na sterowanie gestami</string>
   <string name="volume_navigation_title">Nawigacja przyciskiem głośności</string>
   <string name="volume_navigation_message">Wygląd wiadomości</string>
   <string name="volume_navigation_list">Różne widoki list</string>

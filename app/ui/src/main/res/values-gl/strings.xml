@@ -575,7 +575,6 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rexeitar certificado</string>
   <string name="message_view_help_key">Del (ou D) - Eliminar\nR - Respostar\nA - Respostar a todos\nC - Compoñer\nF - Reenviar\nM - Mover\nV - Arquivar\nY - Copiar\nZ - Marcar (Non)lido\nG - Estrela\nO - Sort type\nI - Sort order\nQ - Voltar aos cartafoles\nS - Seleccionar/Non seleccionar\nJ ou P - Mensaxe anterior\nK ou N - Seguinte mensaxe</string>
   <string name="message_list_help_key">Del (ou D) - Eliminar\nC - Compoñer\nM - Mover\nV - Arquivar\nY - Copiar\nZ - Marcar (Non)lido\nG - Estrela\nO - Tipo de orde\nI - Establecer orde\nQ - Voltar aos cartafoles\nS - Seleccionar/Non Seleccionar</string>
-  <string name="folder_list_help_key">1 - Mostar só cartafoles de 1ª Clase\n2 - Mostrar cartafoles de 1ª e 2ª Clase\3 - Mostar todos menos os de 2ª clase\n4 - Mostrar todos os cartafoles\nQ - Volvar a Contas\nS - Editar axustes da conta</string>
   <string name="folder_list_filter_hint">Nome do cartafol contén</string>
   <string name="folder_list_display_mode_label">Carpetas</string>
   <string name="folder_list_display_mode_all">Ver todas as carpetas</string>
@@ -621,8 +620,6 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="account_setup_push_limit_1000">1000 carpetas</string>
   <string name="animations_title">Animacións</string>
   <string name="animations_summary">Usar animacións</string>
-  <string name="gestures_title">Xestos</string>
-  <string name="gestures_summary">Aceptar controles xestuáis</string>
   <string name="volume_navigation_title">Navegación con teclas de volume</string>
   <string name="volume_navigation_message">Vista de mensaxe</string>
   <string name="volume_navigation_list">Listas de mensaxes</string>

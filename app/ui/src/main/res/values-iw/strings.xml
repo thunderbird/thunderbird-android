@@ -480,8 +480,6 @@
   <string name="account_setup_push_limit_1000">1000 תיקיות</string>
   <string name="animations_title">אנימציה</string>
   <string name="animations_summary">השתמש באפקטים חזותיים ססגונים</string>
-  <string name="gestures_title">מחוות</string>
-  <string name="gestures_summary">קבל כפתור מחווה</string>
   <string name="volume_navigation_title">נייוט באמצעות מקשי הווליום</string>
   <string name="volume_navigation_message">הצגת הודעה</string>
   <string name="volume_navigation_list">רשימת תצוגות שונות</string>

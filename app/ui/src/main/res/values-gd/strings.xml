@@ -572,7 +572,6 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="account_setup_failed_dlg_invalid_certificate_title">Teisteanas neo-aithnichte</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Gach ris an iuchair</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Diùlt an iuchair</string>
-  <string name="folder_list_help_key">1 - Na seall ach pasganan na 1ad ìre\n2 - Seall pasganan na 1ad is na 2na ìre\n3 - Seall na h-uile ach pasganan na 2na ìre\n4 - Seall a h-uile pasgan\nQ - Till gu na cunntasan\nS - Deasaich roghainnean a’ chunntais</string>
   <string name="folder_list_display_mode_label">Seall pasganan…</string>
   <string name="folder_list_display_mode_all">Na h-uile pasgan</string>
   <string name="folder_list_display_mode_first_class">Pasganan na 1ad ìre</string>
@@ -614,8 +613,6 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="account_setup_push_limit_1000">1,000 pasgan</string>
   <string name="animations_title">Beòthachadh</string>
   <string name="animations_summary">Cleachd èifeachdan lèirsinneach leòmach</string>
-  <string name="gestures_title">Gluasadan</string>
-  <string name="gestures_summary">Cuir an comas stiùireadh slighe ghluasadan</string>
   <string name="volume_navigation_title">Seòladaireachd slighe putanan àirde na fuaime</string>
   <string name="volume_navigation_message">Ann an seallaidhean theachdaireachdan</string>
   <string name="volume_navigation_list">Ann an seallaidhean liostaichean</string>
