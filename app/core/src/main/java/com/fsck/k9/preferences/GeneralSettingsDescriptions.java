@@ -254,7 +254,8 @@ public class GeneralSettingsDescriptions {
                 new V(38, new BooleanSetting(false))
         ));
         s.put("notificationQuickDelete", Settings.versions(
-                new V(38, new EnumSetting<>(NotificationQuickDelete.class, NotificationQuickDelete.NEVER))
+                new V(38, new EnumSetting<>(NotificationQuickDelete.class, NotificationQuickDelete.NEVER)),
+                new V(67, new EnumSetting<>(NotificationQuickDelete.class, NotificationQuickDelete.ALWAYS))
         ));
         s.put("notificationDuringQuietTimeEnabled", Settings.versions(
                 new V(39, new BooleanSetting(true))
