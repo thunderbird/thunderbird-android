@@ -459,6 +459,11 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode != AccountSetupCheckSettings.ACTIVITY_REQUEST_CODE) {
+            super.onActivityResult(requestCode, resultCode, data);
+            return;
+        }
+
         if (resultCode == RESULT_OK) {
             if (Intent.ACTION_EDIT.equals(getIntent().getAction())) {
                 Preferences.getPreferences(getApplicationContext()).saveAccount(mAccount);

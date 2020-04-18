@@ -284,6 +284,11 @@ public class AccountSetupBasics extends K9Activity
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode != AccountSetupCheckSettings.ACTIVITY_REQUEST_CODE) {
+            super.onActivityResult(requestCode, resultCode, data);
+            return;
+        }
+
         if (resultCode == RESULT_OK) {
             if (!mCheckedIncoming) {
                 //We've successfully checked incoming.  Now check outgoing.

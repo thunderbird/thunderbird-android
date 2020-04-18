@@ -131,10 +131,4 @@ public class AccountSetupComposition extends K9Activity {
         super.onSaveInstanceState(outState);
         outState.putSerializable(EXTRA_ACCOUNT, mAccount.getUuid());
     }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Preferences.getPreferences(getApplicationContext()).saveAccount(mAccount);
-        finish();
-    }
 }

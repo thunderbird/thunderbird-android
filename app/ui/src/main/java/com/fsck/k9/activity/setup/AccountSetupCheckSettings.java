@@ -313,8 +313,12 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 
     @Override
     public void onActivityResult(int reqCode, int resCode, Intent data) {
-        setResult(resCode);
-        finish();
+        if (reqCode == ACTIVITY_REQUEST_CODE) {
+            setResult(resCode);
+            finish();
+        } else {
+            super.onActivityResult(reqCode, resCode, data);
+        }
     }
 
     private void onCancel() {
