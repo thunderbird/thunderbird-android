@@ -66,7 +66,6 @@ public class RecipientPresenterTest extends K9RobolectricTest {
     private ComposePgpEnableByDefaultDecider composePgpEnableByDefaultDecider;
     private Account account;
     private RecipientMvpView recipientMvpView;
-    private RecipientPresenter.RecipientsChangedListener listener;
     private AutocryptStatusInteractor autocryptStatusInteractor;
     private RecipientAutocryptStatus noRecipientsAutocryptResult;
     private OpenPgpApiManager openPgpApiManager;
@@ -86,13 +85,12 @@ public class RecipientPresenterTest extends K9RobolectricTest {
         autocryptStatusInteractor = mock(AutocryptStatusInteractor.class);
         replyToParser = mock(ReplyToParser.class);
         LoaderManager loaderManager = mock(LoaderManager.class);
-        listener = mock(RecipientPresenter.RecipientsChangedListener.class);
 
         when(openPgpApiManager.getOpenPgpProviderState()).thenReturn(OpenPgpProviderState.UNCONFIGURED);
 
         recipientPresenter = new RecipientPresenter(
                 context, loaderManager, openPgpApiManager, recipientMvpView, account, composePgpInlineDecider,
-                composePgpEnableByDefaultDecider, autocryptStatusInteractor, replyToParser, listener,
+                composePgpEnableByDefaultDecider, autocryptStatusInteractor, replyToParser,
                 DI.get(AutocryptDraftStateHeaderParser.class)
         );
 
@@ -277,60 +275,6 @@ public class RecipientPresenterTest extends K9RobolectricTest {
         assertEquals(CryptoStatusDisplayType.UNAVAILABLE, status.getDisplayType());
         assertTrue(status.isProviderStateOk());
         assertTrue(status.isPgpInlineModeEnabled());
-    }
-
-    @Test
-    public void onToTokenAdded_notifiesListenerOfRecipientChange() {
-        recipientPresenter.onToTokenAdded();
-        verify(listener).onRecipientsChanged();
-    }
-
-    @Test
-    public void onToTokenChanged_notifiesListenerOfRecipientChange() {
-        recipientPresenter.onToTokenChanged();
-        verify(listener).onRecipientsChanged();
-    }
-
-    @Test
-    public void onToTokenRemoved_notifiesListenerOfRecipientChange() {
-        recipientPresenter.onToTokenRemoved();
-        verify(listener).onRecipientsChanged();
-    }
-
-    @Test
-    public void onCcTokenAdded_notifiesListenerOfRecipientChange() {
-        recipientPresenter.onCcTokenAdded();
-        verify(listener).onRecipientsChanged();
-    }
-
-    @Test
-    public void onCcTokenChanged_notifiesListenerOfRecipientChange() {
-        recipientPresenter.onCcTokenChanged();
-        verify(listener).onRecipientsChanged();
-    }
-
-    @Test
-    public void onCcTokenRemoved_notifiesListenerOfRecipientChange() {
-        recipientPresenter.onCcTokenRemoved();
-        verify(listener).onRecipientsChanged();
-    }
-
-    @Test
-    public void onBccTokenAdded_notifiesListenerOfRecipientChange() {
-        recipientPresenter.onBccTokenAdded();
-        verify(listener).onRecipientsChanged();
-    }
-
-    @Test
-    public void onBccTokenChanged_notifiesListenerOfRecipientChange() {
-        recipientPresenter.onBccTokenChanged();
-        verify(listener).onRecipientsChanged();
-    }
-
-    @Test
-    public void onBccTokenRemoved_notifiesListenerOfRecipientChange() {
-        recipientPresenter.onBccTokenRemoved();
-        verify(listener).onRecipientsChanged();
     }
 
     private void runBackgroundTask() {

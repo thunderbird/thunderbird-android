@@ -3,7 +3,9 @@ package com.fsck.k9.activity.compose;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import android.app.PendingIntent;
 import androidx.loader.app.LoaderManager;
@@ -13,6 +15,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewAnimator;
 
@@ -49,6 +52,7 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
     private final ToolableViewAnimator cryptoStatusView;
     private final ViewAnimator recipientExpanderContainer;
     private final ToolableViewAnimator cryptoSpecialModeIndicator;
+    private final Set<TextWatcher> textWatchers = new HashSet<>();
     private RecipientPresenter presenter;
 
 
@@ -146,9 +150,23 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
     }
 
     public void addTextChangedListener(TextWatcher textWatcher) {
+        textWatchers.add(textWatcher);
+
         toView.addTextChangedListener(textWatcher);
         ccView.addTextChangedListener(textWatcher);
         bccView.addTextChangedListener(textWatcher);
+    }
+
+    private void removeAllTextChangedListeners(TextView view) {
+        for (TextWatcher textWatcher : textWatchers) {
+            view.removeTextChangedListener(textWatcher);
+        }
+    }
+
+    private void addAllTextChangedListeners(TextView view) {
+        for (TextWatcher textWatcher : textWatchers) {
+            view.addTextChangedListener(textWatcher);
+        }
     }
 
     public void setRecipientTokensShowCryptoEnabled(boolean isEnabled) {
@@ -199,18 +217,34 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
         }
     }
 
-    public void removeBccAddresses(Address[] addressesToRemove) {
+    public void silentlyAddBccAddresses(Recipient... recipients) {
+        removeAllTextChangedListeners(bccView);
+
+        // The actual modification of the view is deferred via View.post()…
+        bccView.addRecipients(recipients);
+
+        // … so we do the same to add back the listeners.
+        bccView.post(() -> addAllTextChangedListeners(bccView));
+    }
+
+    public void silentlyRemoveBccAddresses(Address[] addressesToRemove) {
         if (addressesToRemove.length == 0) {
             return;
         }
 
         List<Recipient> bccRecipients = new ArrayList<>(getBccRecipients());
         for (Recipient recipient : bccRecipients) {
+            removeAllTextChangedListeners(bccView);
+
             for (Address address : addressesToRemove) {
                 if (recipient.address.equals(address)) {
+                    // The actual modification of the view is deferred via View.post()…
                     bccView.removeObject(recipient);
                 }
             }
+
+            // … so we do the same to add back the listeners.
+            bccView.post(() -> addAllTextChangedListeners(bccView));
         }
     }
 

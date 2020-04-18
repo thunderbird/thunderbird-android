@@ -120,8 +120,7 @@ import timber.log.Timber;
 public class MessageCompose extends K9Activity implements OnClickListener,
         CancelListener, AttachmentDownloadCancelListener, OnFocusChangeListener,
         OnOpenPgpInlineChangeListener, OnOpenPgpSignOnlyChangeListener, MessageBuilder.Callback,
-        AttachmentPresenter.AttachmentsChangedListener, RecipientPresenter.RecipientsChangedListener,
-        OnOpenPgpDisableListener {
+        AttachmentPresenter.AttachmentsChangedListener, OnOpenPgpDisableListener {
 
     private static final int DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE = 1;
     private static final int DIALOG_CONFIRM_DISCARD_ON_BACK = 2;
@@ -310,7 +309,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         OpenPgpApiManager openPgpApiManager = new OpenPgpApiManager(getApplicationContext(), this);
         recipientPresenter = new RecipientPresenter(getApplicationContext(), getSupportLoaderManager(),
                 openPgpApiManager, recipientMvpView, account, composePgpInlineDecider, composePgpEnableByDefaultDecider,
-                AutocryptStatusInteractor.getInstance(), new ReplyToParser(), this,
+                AutocryptStatusInteractor.getInstance(), new ReplyToParser(),
                 DI.get(AutocryptDraftStateHeaderParser.class));
         recipientPresenter.asyncUpdateCryptoStatus();
 
@@ -948,11 +947,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     @Override
     public void onAttachmentRemoved() {
-        changesMadeSinceLastSave = true;
-    }
-
-    @Override
-    public void onRecipientsChanged() {
         changesMadeSinceLastSave = true;
     }
 
