@@ -94,15 +94,6 @@ public class InsertableHtmlContent implements Serializable {
     }
 
     /**
-     * Remove all quoted content.
-     */
-    public void clearQuotedContent() {
-        quotedContent.setLength(0);
-        footerInsertionPoint = 0;
-        headerInsertionPoint = 0;
-    }
-
-    /**
      * Set the inserted content to the specified content. Replaces anything currently in the
      * inserted content buffer.
      * @param content

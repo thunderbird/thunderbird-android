@@ -50,10 +50,6 @@ public class AttachmentView extends FrameLayout implements OnClickListener {
         attachmentType = findViewById(R.id.attachment_type);
     }
 
-    public AttachmentViewInfo getAttachment() {
-        return attachment;
-    }
-
     public void enableButtons() {
         setEnabled(true);
         saveButton.setVisibility(View.INVISIBLE);

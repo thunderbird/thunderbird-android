@@ -88,7 +88,6 @@ public class MimeBodyPart extends BodyPart {
         this.mBody = body;
     }
 
-    @Override
     public void setEncoding(String encoding) throws MessagingException {
         if (mBody != null) {
             mBody.setEncoding(encoding);

@@ -50,15 +50,6 @@ public abstract class K9Activity extends AppCompatActivity {
         setSupportActionBar(toolbar);
     }
 
-    protected void setLayout(View view) {
-        setContentView(view);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        if (toolbar == null) {
-            throw new IllegalArgumentException("K9 layouts must provide a toolbar with id='toolbar'.");
-        }
-        setSupportActionBar(toolbar);
-    }
-
     public boolean hasPermission(Permission permission) {
         return ContextCompat.checkSelfPermission(this, permission.permission) == PackageManager.PERMISSION_GRANTED;
     }

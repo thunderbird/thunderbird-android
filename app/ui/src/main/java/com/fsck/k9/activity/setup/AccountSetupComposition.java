@@ -29,12 +29,6 @@ public class AccountSetupComposition extends K9Activity {
     private RadioButton mAccountSignatureAfterLocation;
     private LinearLayout mAccountSignatureLayout;
 
-    public static void actionEditCompositionSettings(Activity context, Account account) {
-        Intent i = new Intent(context, AccountSetupComposition.class);
-        i.setAction(Intent.ACTION_EDIT);
-        i.putExtra(EXTRA_ACCOUNT, account.getUuid());
-        context.startActivity(i);
-    }
 
     public static void actionEditCompositionSettings(Activity context, String accountUuid) {
         Intent intent = new Intent(context, AccountSetupComposition.class);

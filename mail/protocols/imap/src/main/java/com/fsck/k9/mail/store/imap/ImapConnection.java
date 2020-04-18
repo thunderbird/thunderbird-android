@@ -91,7 +91,6 @@ class ImapConnection {
     private Exception stacktraceForClose;
     private boolean open = false;
     private boolean retryXoauth2WithNewToken = true;
-    private int lineLengthLimit;
 
 
     public ImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
@@ -772,11 +771,6 @@ class ImapConnection {
         return responses;
     }
 
-    public List<ImapResponse> readStatusResponse(String tag, String commandToLog, UntaggedHandler untaggedHandler)
-            throws IOException, NegativeImapResponseException {
-        return responseParser.readStatusResponse(tag, commandToLog, getLogId(), untaggedHandler);
-    }
-
     public String sendSaslIrCommand(String command, String initialClientResponse, boolean sensitive)
             throws IOException, MessagingException {
         try {
@@ -853,13 +847,6 @@ class ImapConnection {
         } catch (IOException e) {
             close();
             throw e;
-        }
-    }
-
-    protected void setReadTimeout(int millis) throws SocketException {
-        Socket sock = socket;
-        if (sock != null) {
-            sock.setSoTimeout(millis);
         }
     }
 

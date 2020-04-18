@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Locale;
 
 import timber.log.Timber;
 
@@ -13,61 +12,6 @@ import org.apache.commons.io.IOUtils;
 
 
 public class FileHelper {
-
-    /**
-     * Regular expression that represents characters we won't allow in file names.
-     *
-     * <p>
-     * Allowed are:
-     * <ul>
-     *   <li>word characters (letters, digits, and underscores): {@code \w}</li>
-     *   <li>spaces: {@code " "}</li>
-     *   <li>special characters: {@code !}, {@code #}, {@code $}, {@code %}, {@code &}, {@code '},
-     *       {@code (}, {@code )}, {@code -}, {@code @}, {@code ^}, {@code `}, <code>&#123;</code>,
-     *       <code>&#125;</code>, {@code ~}, {@code .}, {@code ,}</li>
-     * </ul></p>
-     *
-     * @see #sanitizeFilename(String)
-     */
-    private static final String INVALID_CHARACTERS = "[^\\w !#$%&'()\\-@\\^`{}~.,]";
-
-    /**
-     * Invalid characters in a file name are replaced by this character.
-     *
-     * @see #sanitizeFilename(String)
-     */
-    private static final String REPLACEMENT_CHARACTER = "_";
-
-
-    /**
-     * Creates a unique file in the given directory by appending a hyphen
-     * and a number to the given filename.
-     */
-    public static File createUniqueFile(File directory, String filename) {
-        File file = new File(directory, filename);
-        if (!file.exists()) {
-            return file;
-        }
-        // Get the extension of the file, if any.
-        int index = filename.lastIndexOf('.');
-        String name;
-        String extension;
-        if (index != -1) {
-            name = filename.substring(0, index);
-            extension = filename.substring(index);
-        } else {
-            name = filename;
-            extension = "";
-        }
-        for (int i = 2; i < Integer.MAX_VALUE; i++) {
-            file = new File(directory, String.format(Locale.US, "%s-%d%s", name, i, extension));
-            if (!file.exists()) {
-                return file;
-            }
-        }
-        return null;
-    }
-
     public static void touchFile(final File parentDir, final String name) {
         final File file = new File(parentDir, name);
         try {
@@ -199,17 +143,5 @@ public class FileHelper {
         if (!fromDir.delete()) {
             Timber.w("cannot delete %s", fromDir.getAbsolutePath());
         }
-    }
-
-    /**
-     * Replace characters we don't allow in file names with a replacement character.
-     *
-     * @param filename
-     *         The original file name.
-     *
-     * @return The sanitized file name containing only allowed characters.
-     */
-    public static String sanitizeFilename(String filename) {
-        return filename.replaceAll(INVALID_CHARACTERS, REPLACEMENT_CHARACTER);
     }
 }

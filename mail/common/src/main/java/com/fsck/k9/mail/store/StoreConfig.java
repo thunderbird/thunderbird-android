@@ -15,10 +15,4 @@ public interface StoreConfig {
 
     boolean isAllowRemoteSearch();
     boolean isRemoteSearchFullText();
-
-    boolean isPushPollOnConnect();
-
-    int getDisplayCount();
-
-    int getIdleRefreshMinutes();
 }
