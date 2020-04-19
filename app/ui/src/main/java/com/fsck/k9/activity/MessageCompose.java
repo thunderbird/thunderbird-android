@@ -843,7 +843,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if ((requestCode & REQUEST_MASK_ATTACHMENT_PRESENTER) == REQUEST_MASK_ATTACHMENT_PRESENTER) {
             requestCode ^= REQUEST_MASK_ATTACHMENT_PRESENTER;
             attachmentPresenter.onActivityResult(resultCode, requestCode, data);
+            return;
         }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void onAccountChosen(Account account, Identity identity) {
