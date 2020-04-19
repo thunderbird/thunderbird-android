@@ -80,11 +80,6 @@ class SimpleImapSettings implements ImapSettings {
     }
 
     @Override
-    public String getCombinedPrefix() {
-        return combinedPrefix;
-    }
-
-    @Override
     public void setCombinedPrefix(String prefix) {
         combinedPrefix = prefix;
     }

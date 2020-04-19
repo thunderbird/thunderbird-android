@@ -51,8 +51,4 @@ abstract class BinaryAttachmentBody implements Body {
     public void setEncoding(String encoding) throws MessagingException {
         mEncoding = encoding;
     }
-
-    public String getEncoding() {
-        return mEncoding;
-    }
 }

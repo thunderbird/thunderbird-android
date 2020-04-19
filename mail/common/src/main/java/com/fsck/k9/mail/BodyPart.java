@@ -22,6 +22,4 @@ public abstract class BodyPart implements Part {
     public void setParent(Multipart parent) {
         this.parent = parent;
     }
-
-    public abstract void setEncoding(String encoding) throws MessagingException;
 }

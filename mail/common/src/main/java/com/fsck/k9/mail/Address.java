@@ -98,26 +98,8 @@ public class Address implements Serializable {
         return mAddress.substring(hostIdx + 1);
     }
 
-    public void setAddress(String address) {
-        if (address == null) {
-            throw new IllegalArgumentException("address");
-        }
-        this.mAddress = address;
-    }
-
     public String getPersonal() {
         return mPersonal;
-    }
-
-    public void setPersonal(String newPersonal) {
-        String personal = newPersonal;
-        if ("".equals(personal)) {
-            personal = null;
-        }
-        if (personal != null) {
-            personal = personal.trim();
-        }
-        this.mPersonal = personal;
     }
 
     /**

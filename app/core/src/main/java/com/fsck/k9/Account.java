@@ -66,10 +66,6 @@ public class Account implements BaseAccount, StoreConfig {
             this.setting = setting;
         }
 
-        public String preferenceString() {
-            return Integer.toString(setting);
-        }
-
         public static DeletePolicy fromInt(int initialSetting) {
             for (DeletePolicy policy: values()) {
                 if (policy.setting == initialSetting) {
@@ -275,7 +271,6 @@ public class Account implements BaseAccount, StoreConfig {
         return description;
     }
 
-    @Override
     public synchronized void setDescription(String description) {
         this.description = description;
     }
@@ -316,7 +311,6 @@ public class Account implements BaseAccount, StoreConfig {
         return identities.get(0).getEmail();
     }
 
-    @Override
     public synchronized void setEmail(String email) {
         Identity newIdentity = identities.get(0).withEmail(email);
         identities.set(0, newIdentity);

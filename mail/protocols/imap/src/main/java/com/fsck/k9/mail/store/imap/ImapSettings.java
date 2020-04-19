@@ -32,7 +32,5 @@ interface ImapSettings {
 
     void setPathDelimiter(String delimiter);
 
-    String getCombinedPrefix();
-
     void setCombinedPrefix(String prefix);
 }

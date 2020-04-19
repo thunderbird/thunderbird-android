@@ -53,7 +53,6 @@ public class SearchAccount implements BaseAccount {
         return mEmail;
     }
 
-    @Override
     public synchronized void setEmail(String email) {
         this.mEmail = email;
     }
@@ -63,7 +62,6 @@ public class SearchAccount implements BaseAccount {
         return mDescription;
     }
 
-    @Override
     public void setDescription(String description) {
         this.mDescription = description;
     }

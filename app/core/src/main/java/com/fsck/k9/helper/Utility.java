@@ -12,13 +12,10 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
-import android.os.Looper;
-import android.text.Editable;
 import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.apache.james.mime4j.util.MimeUtil;
 import timber.log.Timber;
 
 public class Utility {
@@ -42,15 +39,6 @@ public class Utility {
     public static boolean arrayContains(Object[] a, Object o) {
         for (Object element : a) {
             if (element.equals(o)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static boolean isAnyMimeType(String o, String... a) {
-        for (String element : a) {
-            if (MimeUtil.isSameMimeType(element, o)) {
                 return true;
             }
         }
@@ -102,10 +90,6 @@ public class Utility {
         return view.getText() != null && view.getText().length() > 0;
     }
 
-
-    public static boolean requiredFieldValid(Editable s) {
-        return s != null && s.length() > 0;
-    }
 
     public static boolean domainFieldValid(EditText view) {
         if (view.getText() != null) {
@@ -310,17 +294,5 @@ public class Utility {
         }
 
         return null;
-    }
-
-    /**
-     * @return a {@link Handler} tied to the main thread.
-     */
-    public static Handler getMainThreadHandler() {
-        if (sMainThreadHandler == null) {
-            // No need to synchronize -- it's okay to create an extra Handler, which will be used
-            // only once and then thrown away.
-            sMainThreadHandler = new Handler(Looper.getMainLooper());
-        }
-        return sMainThreadHandler;
     }
 }

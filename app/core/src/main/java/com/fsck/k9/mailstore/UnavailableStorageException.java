@@ -14,14 +14,4 @@ public class UnavailableStorageException extends MessagingException {
     public UnavailableStorageException(String message, boolean perm) {
         super(message, perm);
     }
-
-    public UnavailableStorageException(String message, Throwable throwable) {
-        // consider this exception as permanent failure by default
-        this(message, true, throwable);
-    }
-
-    public UnavailableStorageException(String message, boolean perm, Throwable throwable) {
-        super(message, perm, throwable);
-    }
-
 }
