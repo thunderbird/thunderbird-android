@@ -579,7 +579,6 @@
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Одбиј кључ</string>
   <string name="message_view_help_key">Del (или D) - обриши\nR - одговори\nA - одговори свима\nC - састави\nF - проследи\nM - помери\nV - архивирај\nY - копирај\nZ - означи као (не)прочитано\nG - обележи звездицом\nO - поређај по\nI - ред ређања\nQ - повратак на фасцикле\nS - означи/уклони ознаку\nJ или P - претходна порука\nK или N - следећа порука</string>
   <string name="message_list_help_key">Del (или D) - обриши\nC - састави\nM - помери\nV - архивирај\nY - копирај\nZ - означи као (не)прочитано\nO - поређај по\nI - ред ређања\nQ - повратак на фасцикле\nS - означи/уклони ознаку</string>
-  <string name="folder_list_help_key">1 - приказ само фасцикли 1. класе\n2 - приказ фасцикли 1. и 2. класе\n3 - приказ свих осим фасцикли 2. класе\n4 - приказ свих фасцикли\nQ - повратак на налог\nS - уређивање поставки налога</string>
   <string name="folder_list_filter_hint">Назив фасцикле садржи</string>
   <string name="folder_list_display_mode_label">Прикажи фасцикле…</string>
   <string name="folder_list_display_mode_all">Све фасцикле</string>
@@ -624,8 +623,6 @@
   <string name="account_setup_push_limit_1000">1000 фасцикли</string>
   <string name="animations_title">Анимација</string>
   <string name="animations_summary">Користи гиздаве визуелне ефекте</string>
-  <string name="gestures_title">Гестови</string>
-  <string name="gestures_summary">Омогући контролу гестом</string>
   <string name="volume_navigation_title">Навигација тастерима за јачину звука</string>
   <string name="volume_navigation_message">У приказу порука</string>
   <string name="volume_navigation_list">У приказу спискова</string>

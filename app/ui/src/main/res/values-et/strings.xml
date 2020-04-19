@@ -623,8 +623,6 @@
   <string name="account_setup_push_limit_1000">1000 kausta</string>
   <string name="animations_title">Animatsioon</string>
   <string name="animations_summary">Kasuta erinevaid visuaalseid efekte</string>
-  <string name="gestures_title">Viiped</string>
-  <string name="gestures_summary">Luba viipega juhtimine</string>
   <string name="volume_navigation_title">Helitugevuse nupuga liikumine</string>
   <string name="volume_navigation_message">Sõnumite vaadetes</string>
   <string name="volume_navigation_list">Nimekirja vaadetes</string>

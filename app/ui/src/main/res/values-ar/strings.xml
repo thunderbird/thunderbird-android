@@ -4,23 +4,57 @@
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">بريد K-9</string>
-  <string name="shortcuts_title">حسابات K-9</string>
-  <string name="unread_widget_label">K-9 غير المقروء</string>
+  <string name="shortcuts_title">حسابات البريد</string>
+  <string name="unread_widget_label">الغير مقروء</string>
   <!--Used in the about dialog-->
+  <string name="app_authors">فريق The K-9 Dog Walkers</string>
+  <string name="app_copyright_fmt">حقوق النشر محفوظة 2008 - <xliff:g>%s</xliff:g> The K-9 Dog Walkers. جزء من حقوق النشر محفوظة 2006 - <xliff:g>%s</xliff:g> the Android Open Source Project.</string>
   <string name="source_code">المَصدر</string>
   <string name="app_license">Apache License, Version 2.0</string>
   <string name="about_libraries">المكتبات</string>
   <string name="license">الرخصة</string>
   <!--Welcome message-->
   <string name="welcome_message_title">أهلا بكم في بريد K-9</string>
+  <string name="accounts_welcome"><![CDATA[
+<p>
+تطبيق K-9 عبارة عن تطبيق بريد متقدم لنظام أندرويد
+</p><p>
+حصائصة المُحسّنة تشمل:
+</p>
+<ul>
+<li>دفع البريد من خلال IMAP IDLE</li>
+<li>أداء أفضل</li>
+<li>إعادة تعبئة الرسائل</li>
+<li>توقيع البريد</li>
+<li>نسخة مخفية لنفسك</li>
+<li>الإشتراك في المجلدات</li>
+<li>مزامنة جميع المجلدات</li>
+<li>إعدادات عنوان الرد</li>
+<li>اختصارات لوحة المفاتيح</li>
+<li>دعم أفضل لبروتوكول IMAP</li>
+<li>حفظ المرفقات الى بطاقة الذاكرة</li>
+<li>تفريغ المحذوفات</li>
+<li>تصنيف الرسائل</li>
+<li>... والمزيد</li>
+</ul>
+<p>
+يرجى الملاحظة أن K-9 لا يدعم معظم حسابات Hotmail المجانية وكما هو الحال في معظم برامج البريد، هذا البرنامج يعاني من مشاكل غريبة مع Microsoft Exchange.
+</p><p>
+يرجى التبليغ عن الأخطاء، المساهمة في الكود، أو طرح الأسئلة على الرابط:
+<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>
+</p>
+ ]]></string>
   <!--Default signature-->
+  <string name="default_signature">-- \nتم الإرسال من هاتفي الأندرويد بواسطة برنامج K-9. أعتذر عن الإيجاز.</string>
   <!--General strings that include the app name-->
-  <string name="account_delete_dlg_instructions_fmt">سيُحذف الحساب \"<xliff:g id="account">%s</xliff:g>\" من بريد كيه-9.</string>
+  <string name="account_delete_dlg_instructions_fmt">سيُحذف الحساب \"<xliff:g id="account">%s</xliff:g>\" من الحسابات.</string>
   <!--=== General strings ==================================================================-->
-  <string name="read_messages_label">رسائل مقروءة</string>
-  <string name="read_messages_desc">اسمح لهذا التطبيق بقراءة رسائلك</string>
-  <string name="delete_messages_label">احذف الرسائل</string>
-  <string name="delete_messages_desc">اسمح لهذا التطبيق بحذف رسائلك</string>
+  <string name="authors">الناشرين</string>
+  <string name="app_revision">معلومات المراجعة</string>
+  <string name="read_messages_label">الرسائل المقروءة</string>
+  <string name="read_messages_desc">السماح لهذا التطبيق بقراءة البريد الإلكتروني</string>
+  <string name="delete_messages_label">حذف الرسائل</string>
+  <string name="delete_messages_desc">السماح لهذا التطبيق بحذف رسائل البريد الإلكتروني</string>
   <string name="about_title">عن بريد K-9</string>
   <string name="accounts_title">الحسابات</string>
   <string name="folders_title">المجلدات</string>
@@ -28,11 +62,16 @@
   <string name="compose_title_compose">أنشِئ</string>
   <string name="compose_title_reply">رُد</string>
   <string name="compose_title_reply_all">رٌد على الكل</string>
-  <string name="compose_title_forward">مَرّر</string>
-  <string name="compose_title_forward_as_attachment">تحويل كملف مُرفَق</string>
-  <string name="choose_account_title">أختر الحساب</string>
-  <string name="choose_folder_title">اختر مجلد</string>
-  <string name="status_syncing_off">المُزامنه غير مفعلة</string>
+  <string name="compose_title_forward">إعادة توجيه</string>
+  <string name="compose_title_forward_as_attachment">إعادة توجيه كمرفقات</string>
+  <string name="choose_account_title">إختر حساب</string>
+  <string name="choose_folder_title">إختر مجلد</string>
+  <string name="status_loading_account_folder">تحديث <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> <xliff:g id="progress">%s</xliff:g></string>
+  <string name="status_loading_account_folder_headers">سحب الترويسات <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g> <xliff:g id="progress">%s</xliff:g></string>
+  <string name="status_sending_account">إرسال <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+  <string name="status_processing_account">معالجة <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+  <string name="folder_progress">\u0020 <xliff:g id="completed">%d</xliff:g>\<xliff:g id="total">%d</xliff:g></string>
+  <string name="status_syncing_off">المُزامنه معطلة</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> محدد</string>
   <string name="next_action">التالي</string>
   <string name="previous_action">السابق</string>
@@ -51,6 +90,7 @@
   <string name="spam_action">بريد مزعج</string>
   <string name="forward_action">مَرّر</string>
   <string name="forward_as_attachment_action">تحويل كملف مُرفَق</string>
+  <string name="edit_as_new_message_action">تحرير كرسالة جديدة</string>
   <string name="move_action">حَرِّكْ</string>
   <string name="single_message_options_action">يُرسل…</string>
   <string name="refile_action">إعادة الترتيب جارية …</string>
@@ -103,6 +143,14 @@
   <string name="status_network_error">خطأ في الإتصال</string>
   <string name="status_invalid_id_error">رسالة غير موجودة</string>
   <string name="status_loading_error">خطأ في تحميل الرسالة</string>
+  <string name="load_more_messages_fmt">تحميل
+باقي <xliff:g id="messages_to_load">%d</xliff:g></string>
+  <string name="size_format_gigabytes">%.1f جيجا</string>
+  <string name="size_format_megabytes">%.1f ميجا</string>
+  <string name="size_format_kilobytes">%.1f كيلو</string>
+  <string name="size_format_bytes">%d بايت</string>
+  <string name="account_size_changed">تم تقليص الحساب \"<xliff:g id="account">%s</xliff:g> من <xliff:g id="oldSize">%s</xliff:g> الى <xliff:g id="newSize">%s</xliff:g></string>
+  <string name="compacting_account">يتم ضغط \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">رسالة جديدة</string>
   <plurals name="notification_new_messages_title">
     <item quantity="zero"><xliff:g id="new_message_count">%d</xliff:g> ﻻ رسائل</item>
@@ -110,7 +158,7 @@
     <item quantity="two"><xliff:g id="new_message_count">%d</xliff:g> رسالتان</item>
     <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> رسائل</item>
     <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> رسالة</item>
-    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> رسالة</item>
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> رسالة جديدة</item>
   </plurals>
   <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> غير مقروئة (<xliff:g id="account">%s</xliff:g>)</string>
   <string name="notification_action_reply">رُد</string>
@@ -121,14 +169,19 @@
   <string name="notification_action_archive">أرشيف</string>
   <string name="notification_action_archive_all">أرشفة الكل</string>
   <string name="notification_action_spam">بريد مُزعج</string>
+  <string name="notification_certificate_error_title">خطأ في شهادة <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">تأكد من إعدادات الخادم</string>
   <string name="notification_authentication_error_title">فشل المصادقة</string>
+  <string name="notification_authentication_error_text">فشل مصادقة <xliff:g id="account">%s</xliff:g>. يرجى تحديث إعدادات الخادم.</string>
+  <string name="notification_bg_sync_ticker">تفقد البريد: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
   <string name="notification_bg_sync_title">التحقق من البريد</string>
+  <string name="notification_bg_send_ticker">إرسال البريد: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">إرسال البريد</string>
   <string name="notification_bg_title_separator">:</string>
   <string name="notification_channel_messages_title">الرسائل</string>
   <string name="notification_channel_messages_description">إشعارات ذات علاقة بالرسائل</string>
   <string name="notification_channel_miscellaneous_title">مُتنوع</string>
+  <string name="notification_channel_miscellaneous_description">تنبيهات متفرقة مثل الأخطاء وغيرها من الأمور.</string>
   <string name="special_mailbox_name_inbox">الوارد</string>
   <string name="special_mailbox_name_outbox">الصادر</string>
   <string name="special_mailbox_name_drafts">المسودات</string>
@@ -137,6 +190,7 @@
   <string name="send_failure_subject">فشِلَت عملية إرسال بعض الرسائل</string>
   <string name="version">الإصدار</string>
   <string name="debug_enable_debug_logging_title">تمكين تسجيل التحاليل</string>
+  <string name="debug_enable_debug_logging_summary">عمل سجل ببيانات تشخيصية إضافية</string>
   <string name="debug_enable_sensitive_logging_title">إضافة البيانات الحساسة إلى السجل</string>
   <string name="debug_enable_sensitive_logging_summary">يمكن أن يُظهر الكلمات السرية في السجلّات.</string>
   <string name="message_list_load_more_messages_action">تحميل رسائل إضافية</string>
@@ -151,24 +205,32 @@
   <string name="message_compose_quote_header_to">إلى :</string>
   <string name="message_compose_quote_header_cc">نسخة كربونية :</string>
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> كَتَب :</string>
+  <string name="message_compose_reply_header_fmt_with_date">بتاريخ <xliff:g id="sent_date">%1$s</xliff:g>، <xliff:g id="sender">%2$s</xliff:g> الرسالة:</string>
   <string name="message_compose_error_no_recipients">يجب إضافة عنوان مُتَلقٍ واحد على الأقل.</string>
   <string name="error_contact_address_not_found">لم نتمكن من العثور على أي عنوان بريد إلكتروني لجهة الإتصال هذه.</string>
+  <string name="message_compose_attachments_skipped_toast">لا يمكن إعادة توجيه بعض المرفقات لأنه لم يتم تنزيلها بعد.</string>
+  <string name="message_compose_attachments_forward_toast">لا يمكن إعادة توجيه الرسالة لوجود بعض المرفقات التي يتم تنزيلها بعد.</string>
   <string name="message_compose_show_quoted_text_action">إدماج نص الرسالة المُقتبَس</string>
   <string name="message_compose_description_delete_quoted_text">حذف النص المقتبَس</string>
   <string name="message_compose_description_edit_quoted_text">تعديل النص المقتبَس</string>
   <string name="message_view_from_format">من: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">إلى :</string>
   <string name="message_view_cc_label">نسخة كربونية :</string>
+  <string name="message_view_bcc_label">نسخة مخفية:</string>
   <string name="message_view_attachment_view_action">افتح</string>
   <string name="message_view_attachment_download_action">احفظ</string>
   <string name="message_view_status_attachment_not_saved">غير قادر على حفظ المرفق.</string>
   <string name="message_view_show_pictures_action">اظهر الصور</string>
+  <string name="message_view_no_viewer">يتعذر إيجاب تطبيق لعرض <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">تنزيل الرسالة كاملةً</string>
   <string name="message_view_toast_unable_to_display_message">ﻻ يُمكن عرض الرسالة</string>
   <string name="message_view_sender_label">عبر %1$s</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
+  <string name="message_no_additional_headers_available">تم تنزيل جميع الترويسات ولكن لا يوجد ترويسات إضافية لعرضها.</string>
+  <string name="message_additional_headers_retrieval_failed">فشل استرداد الترويسات الإضافية من قاعدة بيانات أو من الخادم.</string>
   <string name="from_same_sender">المزيد من هذا المُرسِل</string>
   <string name="search_from_format">مِن طرف <xliff:g id="sender">%s</xliff:g></string>
+  <string name="debug_delete_local_body">تشخيص \ حذف محتويات الرسالة</string>
   <string name="message_discarded_toast">تم إلغاء الرسالة</string>
   <string name="message_saved_toast">تم الإحتفاظ بالرسالة كمسودة</string>
   <string name="global_settings_flag_label">إظهار النجوم</string>
@@ -178,7 +240,7 @@
   <string name="global_settings_sender_above_subject_label">المُراسل فوق موضوع الرسالة</string>
   <string name="global_settings_show_contact_name_label">اظهر أسماء المتراسيلن</string>
   <string name="global_settings_registered_name_color_label">تلوين المُتراسِلين</string>
-  <string name="global_settings_registered_name_color_changed">تاريخ الأسماء في قائمة مراسليك</string>
+  <string name="global_settings_registered_name_color_changed">تلوين أسماء جهات الإتصال</string>
   <string name="global_settings_messageview_fixedwidth_label">حجم خط ثابت</string>
   <string name="global_settings_messageview_autofit_width_label">ﻻئم الرسالة تلقائيًا</string>
   <string name="global_settings_messageview_autofit_width_summary">تقليص الرسالة لتناسب الشاشة</string>
@@ -532,7 +594,6 @@
   <string name="account_setup_push_limit_500">500 مجلد</string>
   <string name="account_setup_push_limit_1000">1000 مجلد</string>
   <string name="animations_title">الحركة</string>
-  <string name="gestures_title">الإيماءات</string>
   <string name="volume_navigation_title">التصفح عبر أزرار التحكم في الصوت</string>
   <string name="unread_modifier"> - غير المقروءة</string>
   <string name="search_all_messages_title">كل الرسائل</string>

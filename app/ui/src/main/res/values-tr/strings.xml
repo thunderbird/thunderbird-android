@@ -90,6 +90,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="spam_action">Gereksiz posta</string>
   <string name="forward_action">İlet</string>
   <string name="forward_as_attachment_action">Ek olarak ilet</string>
+  <string name="edit_as_new_message_action">Yeni bir ileti olarak düzenle</string>
   <string name="move_action">Taşı</string>
   <string name="single_message_options_action">Gönder…</string>
   <string name="refile_action">Yeniden işlem…</string>
@@ -205,6 +206,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="message_compose_show_quoted_text_action">Alıntılanmış iletileri içerir</string>
   <string name="message_compose_description_delete_quoted_text">Alıntı yapılan metni sil</string>
   <string name="message_compose_description_edit_quoted_text">Alıntı yapılan metni düzenle</string>
+  <string name="remove_attachment_action">Eki kaldır</string>
   <string name="message_view_from_format">Kimden: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">Kime:</string>
   <string name="message_view_cc_label">Bilgi:</string>
@@ -624,7 +626,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Reddetme Tuşu</string>
   <string name="message_view_help_key">Del (veya D) - Sil\nR - Yanıtla\nA - Hepsini yanıtla\nC - Oluştur\nF - İlet\nM - Taşı\nV - Arşiv\nY - Kopyala\nZ - Okun(ma)mış olarak İşaretle\nG - Yıldız\nO - Sıralama türü\nI - Sıralama düzeni\nQ - Klasörlere Geri Dön\nS - Seç/Seçimi kaldır\nK veya P - Önceki İleti\nK veya N - Sonraki İleti</string>
   <string name="message_list_help_key">Del (veya D) - Sil\nC - Oluştur\nM - Taşı\nV - Arşiv\nY - Kopyala\nZ - Okun(ma)dı\nG - Yıldız\nO - Sıralama türü\nI - Sıralama düzeni\nQ - Klasörlere Geri Dön\nS - Seç/seçimi kaldır</string>
-  <string name="folder_list_help_key">1 - Yalnız 1. sınıf klasörleri göster\n2 - Yalnız 1. ve 2. sınıf klasörleri göster\n3 - 2. Sınıf klasörler hariç hepsini göster\n4 - Bütün klasörleri göster\nQ - Hesaplara dön\nS - Hesap ayarlarını düzenle</string>
   <string name="folder_list_filter_hint">Klasör adı içeriği</string>
   <string name="folder_list_display_mode_label">Klasörleri göster…</string>
   <string name="folder_list_display_mode_all">Bütün klasörleri göster</string>
@@ -672,8 +673,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_setup_push_limit_1000">1000 klasör</string>
   <string name="animations_title">Animasyon</string>
   <string name="animations_summary">Gösterişli görsel efektleri kullan</string>
-  <string name="gestures_title">Hareketler</string>
-  <string name="gestures_summary">Hareket kontrolünü etkinleştir</string>
   <string name="volume_navigation_title">Ses Düğmesi ile dolaşma</string>
   <string name="volume_navigation_message">İleti görünümlerinde</string>
   <string name="volume_navigation_list">liste görünümlerinde</string>

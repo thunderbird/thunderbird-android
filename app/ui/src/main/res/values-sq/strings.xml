@@ -91,6 +91,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="spam_action">Mesazh i Padëshiruar</string>
   <string name="forward_action">Përcille</string>
   <string name="forward_as_attachment_action">Përcille si bashkëngjitje</string>
+  <string name="edit_as_new_message_action">Përpunojeni si mesazh të ri</string>
   <string name="move_action">Lëvizeni</string>
   <string name="single_message_options_action">Dërgoni…</string>
   <string name="refile_action">Riskedojeni…</string>
@@ -207,6 +208,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="message_compose_show_quoted_text_action">Përfshije mesazhin e cituar</string>
   <string name="message_compose_description_delete_quoted_text">Hiqe tekstin e cituar</string>
   <string name="message_compose_description_edit_quoted_text">Përpunoni tekstin e cituar</string>
+  <string name="remove_attachment_action">Hiqe bashkëngjitjen</string>
   <string name="message_view_from_format">Nga: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">Për:</string>
   <string name="message_view_cc_label">Cc:</string>
@@ -626,7 +628,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Hidhe tej Kyçin</string>
   <string name="message_view_help_key">Del (ose D) - Fshije\nR - Përgjigju\nA - Përgjigju të Tërëve\nC - Hartoni\nF - Përcille\nM - Lëvize\nV - Arkivoje\nY - Kopjoje\nZ - Vëri shenjë/hiqi shenjë si i (Pa)Lexuar\nG - Vëri Yll\nO - Lloj renditjeje\nI - Rend renditjeje\nQ - Rikthehu te Dosjet\nS - Përzgjidhe/shpërzgjidhe\nJ ose P - Mesai i Mëparshëm\nK ose N - Mesazhi Pasues</string>
   <string name="message_list_help_key">Del (ose D) - Fshije\nC - Hartoni\nM - Lëvize\nV - Arkivoje\nY - Kopjoje\nZ - Vëri shenjë/hiqi shenjë si i (Pa)Lexuar\nG - Vëri Yll\nO - Lloj renditjeje\nI - Rend renditjeje\nQ - Rikthehu te Dosjet\nS - Përzgjidhe/shpërzgjidhe</string>
-  <string name="folder_list_help_key">1 - Shfaq vetëm dosje të Klasës së 1-rë\n2 - Shfaq vetëm dosje të Klasës së 1-rë dhe të 2-të\n3 - Shfaqi krejt, hiq dosje të Klasës së 2-të\n4 - Shfaqi krejt dosjet\nQ - Rikthehu te Llogaritë\nS - Përpunoni Rregullime Llogarie</string>
   <string name="folder_list_filter_hint">Emri i dosjes përmban</string>
   <string name="folder_list_display_mode_label">Shfaq dosje…</string>
   <string name="folder_list_display_mode_all">Krejt dosjet</string>
@@ -674,8 +675,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_setup_push_limit_1000">1000 dosje</string>
   <string name="animations_title">Animacion</string>
   <string name="animations_summary">Përdor efekteve pamore Gaudy</string>
-  <string name="gestures_title">Gjeste</string>
-  <string name="gestures_summary">Aktivizo kontroll gjestesh</string>
   <string name="volume_navigation_title">Lëvizje me buton volumi</string>
   <string name="volume_navigation_message">Në skenë mesazhi</string>
   <string name="volume_navigation_list">Në skenë liste</string>

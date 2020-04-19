@@ -8,6 +8,13 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.709" versioncode="27009">
+        <change>Display larger preview for image attachments</change>
+        <change>Fixed import and export of folder settings</change>
+        <change>IMAP: Properly handle UIDVALIDITY changes</change>
+        <change>Various smaller bug fixes</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.708" versioncode="27008">
         <change>Long-press on message in message list now selects the message</change>
         <change>Click on contact picture in message list now selects the message</change>

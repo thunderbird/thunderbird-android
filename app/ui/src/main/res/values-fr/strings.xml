@@ -32,7 +32,7 @@ Ses fonctions améliorées incluent :
   <li>Configuration de l’adresse de retour</li>
   <li>Raccourcis-clavier</li>
   <li>Meilleure prise en charge IMAP</li>
-  <li>Enregistrement des pièces jointes sur la carte SD</li>
+  <li>Enregistrement des fichiers joints sur la carte SD</li>
   <li>Vidage de la corbeille</li>
   <li>Tri des courriels</li>
   <li>et plus…</li>
@@ -63,7 +63,7 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="compose_title_reply">Répondre</string>
   <string name="compose_title_reply_all">Répondre à tous</string>
   <string name="compose_title_forward">Transférer</string>
-  <string name="compose_title_forward_as_attachment">Transférer comme pièce jointe</string>
+  <string name="compose_title_forward_as_attachment">Transférer en tant que fichier joint</string>
   <string name="choose_account_title">Choisir un  compte</string>
   <string name="choose_folder_title">Choisir un dossier</string>
   <string name="status_loading_account_folder">Récup. <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -89,7 +89,8 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="archive_action">Archiver</string>
   <string name="spam_action">Pourriel</string>
   <string name="forward_action">Transférer</string>
-  <string name="forward_as_attachment_action">Transférer comme pièce jointe</string>
+  <string name="forward_as_attachment_action">Transférer en tant que fichier joint</string>
+  <string name="edit_as_new_message_action">Éditer en tant que nouveau courriel</string>
   <string name="move_action">Déplacer</string>
   <string name="single_message_options_action">Envoyer…</string>
   <string name="refile_action">Reclasser…</string>
@@ -127,7 +128,7 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="read_receipt">Accusé de lecture</string>
   <string name="read_receipt_enabled">Un accusé de lecture sera demandé</string>
   <string name="read_receipt_disabled">Un accusé de lecture ne sera pas demandé</string>
-  <string name="add_attachment_action">Ajouter une pièce jointe</string>
+  <string name="add_attachment_action">Ajouter un fichier joint</string>
   <string name="empty_trash_action">Vider la corbeille</string>
   <string name="expunge_action">Supprimer</string>
   <string name="about_action">À propos de Courriel K-9 Mail</string>
@@ -202,11 +203,12 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="message_compose_error_no_recipients">Vous devez ajouter au moins un destinataire.</string>
   <string name="compose_error_incomplete_recipient">Le champ des destinataires contient une entrée incomplète !</string>
   <string name="error_contact_address_not_found">Aucune adresse courriel de trouvée pour ce contact.</string>
-  <string name="message_compose_attachments_skipped_toast">Certaines pièces jointes ne peuvent pas être transférées car elles n’ont pas été téléchargées.</string>
-  <string name="message_compose_attachments_forward_toast">Le courriel ne peut pas être transféré, car certaines pièces jointes n’ont pas été téléchargées</string>
+  <string name="message_compose_attachments_skipped_toast">Certains fichiers joints ne peuvent pas être transférés, car ils n’ont pas été téléchargés.</string>
+  <string name="message_compose_attachments_forward_toast">Le courriel ne peut pas être transféré, car certains fichiers joints n’ont pas été téléchargés</string>
   <string name="message_compose_show_quoted_text_action">Citer le courriel original</string>
   <string name="message_compose_description_delete_quoted_text">Supprimer le texte entre guillemets</string>
   <string name="message_compose_description_edit_quoted_text">Modifier le texte entre guillemets</string>
+  <string name="remove_attachment_action">Supprimer le fichier joint</string>
   <string name="message_view_from_format">De : <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">À :</string>
   <string name="message_view_cc_label">Cc :</string>
@@ -610,8 +612,8 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="sort_flagged_last">Courriels sans étoiles en premier</string>
   <string name="sort_unread_first">Courriels non lus en premier</string>
   <string name="sort_unread_last">Courriels lus en premier</string>
-  <string name="sort_attach_first">Courriels avec des pièces jointes en premier</string>
-  <string name="sort_unattached_first">Courriels sans pièce jointe en premier</string>
+  <string name="sort_attach_first">Courriels avec des fichiers joints en premier</string>
+  <string name="sort_unattached_first">Courriels sans fichiers joints en premier</string>
   <string name="sort_by">Trier par…</string>
   <string name="sort_by_date">Date</string>
   <string name="sort_by_arrival">Date de réception</string>
@@ -619,14 +621,13 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="sort_by_sender">Expéditeur</string>
   <string name="sort_by_flag">Étoile</string>
   <string name="sort_by_unread">Lu/non lu</string>
-  <string name="sort_by_attach">Pièces jointes</string>
+  <string name="sort_by_attach">Fichiers joints</string>
   <string name="account_delete_dlg_title">Retirer le compte</string>
   <string name="account_setup_failed_dlg_invalid_certificate_title">Certificat non reconnu</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Accepter la clé</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rejeter la clé</string>
   <string name="message_view_help_key">Suppr (ou D) - Supprimer\nR - Répondre\nA - Répondre à tous\nC - Rédiger\nF - Transférer\nM - Déplacer\nV - Archiver\nY - Copier\nZ - Marquer comme lu ou non\nG - Étoile\nO - Type de tri\nI - Ordre de tri\nQ - Retourner aux dossiers\nS - Sélectionner/dessélectionner\nJ ou P - Courriel précédent\nK ou N - Courriel suivant</string>
   <string name="message_list_help_key">Suppr (ou D) - Supprimer\nC - Rédiger\nM - Déplacer\nV - Archiver\nY - Copier\nZ - Marquer comme lu ou non\nG - Étoile\nO - Type de tri\nI - Ordre de tri\nQ - Retourner aux dossiers\nS - Sélectionner/dessélectionner</string>
-  <string name="folder_list_help_key">1 - Afficher seulement les dossiers de 1re classe\n2 - Afficher les dossiers de 1re et 2e classe\n3 - Afficher tous les dossiers sauf 2e classe\n4 - Afficher tous les dossiers\nQ - Retourner aux Comptes\nS - Modifier les paramètres du compte</string>
   <string name="folder_list_filter_hint">Le nom de dossier comprend</string>
   <string name="folder_list_display_mode_label">Afficher les dossiers…</string>
   <string name="folder_list_display_mode_all">Tous les dossiers</string>
@@ -674,8 +675,6 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="account_setup_push_limit_1000">1 000 dossiers</string>
   <string name="animations_title">Animation</string>
   <string name="animations_summary">Utiliser des effets visuels voyants</string>
-  <string name="gestures_title">Interface gestuelle</string>
-  <string name="gestures_summary">Activer le contrôle par gestes</string>
   <string name="volume_navigation_title">Navigation à l’aide de la touche de volume</string>
   <string name="volume_navigation_message">Dans les vues des courriels</string>
   <string name="volume_navigation_list">Dans les vues en liste</string>
@@ -756,7 +755,7 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   </plurals>
   <string name="dialog_confirm_spam_confirm_button">Oui</string>
   <string name="dialog_confirm_spam_cancel_button">Non</string>
-  <string name="dialog_attachment_progress_title">Téléchargement de la pièce jointe</string>
+  <string name="dialog_attachment_progress_title">Téléchargement du fichier joint</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_backup_category">Sauvegarde</string>
@@ -864,10 +863,10 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="global_settings_colorize_missing_contact_pictures_summary">Colorer les photos de contact manquantes</string>
   <string name="global_settings_messageview_visible_refile_actions_title">Actions visibles dans les courriels</string>
   <string name="global_settings_messageview_visible_refile_actions_summary">Afficher les actions sélectionnées dans le menu de visualisation des courriels</string>
-  <string name="loading_attachment">Chargement de la pièce jointe…</string>
+  <string name="loading_attachment">Chargement du fichier joint…</string>
   <string name="fetching_attachment_dialog_title_send">Envoi du courriel</string>
   <string name="fetching_attachment_dialog_title_save">Enregistrement du brouillon</string>
-  <string name="fetching_attachment_dialog_message">Récupération de la pièce jointe…</string>
+  <string name="fetching_attachment_dialog_message">Récupération du fichier joint…</string>
   <string name="auth_external_error">L’authentification est impossible. Le serveur n’annonce pas la fonction SASL EXTERNE. Cela pourrait être causé par un problème avec le certificat client (expiré, autorité de certification inconnue) ou quelque autre problème de configuration.</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Utiliser le certificat client</string>
@@ -902,7 +901,7 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="openpgp_inline_text">Ce courriel est envoyé au format PGP/INTÉGRÉ.\nCe format ne devrait être utilisé que pour des raisons de compatibilité :</string>
   <string name="openpgp_inline_plus_compat">Certains clients ne prennent que ce format en charge</string>
   <string name="openpgp_inline_minus_transit">Les signatures pourraient se briser pendant le transit</string>
-  <string name="openpgp_inline_minus_attach">Les pièces jointes ne sont pas prises en charge</string>
+  <string name="openpgp_inline_minus_attach">Les fichiers joints ne sont pas pris en charge</string>
   <string name="openpgp_inline_ok">D’accord !</string>
   <string name="openpgp_inline_disable">Désactiver</string>
   <string name="openpgp_inline_keep_enabled">Garder activé</string>
@@ -913,7 +912,7 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="openpgp_dialog_sign_only_text">Dans ce mode, votre clé PGP sera utilisée pour créer une signature cryptographique d’un courriel non signé.</string>
   <string name="openpgp_dialog_sign_only_plus_verified">Ce mode ne chiffre pas le courriel, mais certifie qu’il a été envoyé à partir de votre clé.</string>
   <string name="openpgp_dialog_sign_only_minus_break">Les signatures pourraient se briser lorsqu’elles sont envoyées à des listes de diffusion.</string>
-  <string name="openpgp_dialog_sign_only_minus_attach">Les signatures pourraient être affichées en tant que pièces jointes « signature.asc » dans certains clients.</string>
+  <string name="openpgp_dialog_sign_only_minus_attach">Les signatures pourraient être affichées en tant que fichiers joints « signature.asc » dans certains clients.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Les courriels chiffrés incluent toujours une signature.</string>
   <string name="crypto_msg_title_plaintext">Texte brut</string>
   <string name="crypto_msg_unencrypted_sign_error">La signature de bout en bout contenait une erreur</string>
@@ -952,7 +951,7 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="crypto_info_view_security_warning">Détails</string>
   <string name="locked_attach_unlock">Déverrrouiller</string>
   <string name="locked_attach_unencrypted">Cette partie n’a pas été chiffrée et pourrait ne pas être fiable.</string>
-  <string name="locked_attach_title">Pièce jointe non protégée</string>
+  <string name="locked_attach_title">Fichier joint non protégé</string>
   <string name="message_progress_text">Chargement…</string>
   <string name="messageview_decrypt_cancelled">Le déchiffrement a été annulé.</string>
   <string name="messageview_decrypt_retry">Ressayer</string>

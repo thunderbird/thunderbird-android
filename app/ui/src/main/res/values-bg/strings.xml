@@ -604,7 +604,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Отхвърли ключа</string>
   <string name="message_view_help_key">Del (or D) - Изтриване\nR - Отговор\nA - Отговор на всички\nC - Създаване\nF - Препращане\nM - Премесване\nV - Архивиране\nY - Копиране\nZ - Отбелязване като (не)прочетно\nG - Звезда\nO - Сортиране\nI - Приоритет на сортиране\nQ - Обратно към папките\nS - Отбелязване/премахване на отбелязване\nJ или P - Предно съобщение\nK или N - Следващо съобщение</string>
   <string name="message_list_help_key">Del (or D) - Изтриване\nC - Създаване\nM - Премесване\nV - Архивиране\nC - Копиране\nZ - Отбелязване като (не)прочетно\nG - Звезда\nO - Сортиране\nI - Приоритет на сортиране\nQ - Обратно към папките\nS - Отбелязване/премахване на отбелязване</string>
-  <string name="folder_list_help_key">1 - Показване само на папки от 1во ниво\n2 - Показване на папки от 1во и 2ро ниво\n3 - Показване на всички папки без 2ро ниво\n4 - Показване на всички папки\nQ - Връщане към Профили\nS - Редактиране на настройките на профила</string>
   <string name="folder_list_filter_hint">Името на папката съдържа</string>
   <string name="folder_list_display_mode_label">Покажи папките…</string>
   <string name="folder_list_display_mode_all">Всички папки</string>
@@ -651,8 +650,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_setup_push_limit_1000">1000 папки</string>
   <string name="animations_title">Анимация</string>
   <string name="animations_summary">Изплозване на ярки виулани ефекти</string>
-  <string name="gestures_title">Жестове</string>
-  <string name="gestures_summary">Включи контрол с жестове</string>
   <string name="volume_navigation_title">Навигация с клавиш за звука</string>
   <string name="volume_navigation_message">В преглед на съобщението</string>
   <string name="volume_navigation_list">В списъка със съобщения</string>

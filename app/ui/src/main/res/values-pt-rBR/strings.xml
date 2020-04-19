@@ -624,7 +624,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Rejeitar chave</string>
   <string name="message_view_help_key">Del (ou D) - Excluir\nR - Responder\nA - Responder a todos\nC - Escrever\nF - Encaminhar\nM - Mover\nV - Arquivar\nY - Copiar\nZ - Marcar como (não) lida\nG - Sinalizar\nO - Tipo de ordenação\nI - Ordem de classificação\nQ - Retornar às pastas\nS - Marcar/desmarcar\nJ ou P - Mensagem anterior\nK ou N - Próxima Mensagem</string>
   <string name="message_list_help_key">Del (ou D) - Excluir\nC - Escrever\nM - Mover\nV - Arquivar\nY - Copiar\nZ - Marcar como (não) lida\nG - Sinalizar\nO - Tipo de ordenação\nI - Ordem de classificação\nQ - Retornar às pastas\nS - Marcar/Desmarcar</string>
-  <string name="folder_list_help_key">1 - Exibir apenas pastas de 1ª classe\n2 - Exibir pastas de 1ª e 2ª classes\n3 - Exibir todas, exceto as de 2ª classe\n4 - Exibir todas as pastas\nQ - Retornar para as contas\nS - Editar configurações da conta</string>
   <string name="folder_list_filter_hint">O nome da pasta contém</string>
   <string name="folder_list_display_mode_label">Exibir pastas…</string>
   <string name="folder_list_display_mode_all">Todas as pastas</string>
@@ -672,8 +671,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="account_setup_push_limit_1000">1000 pastas</string>
   <string name="animations_title">Animação</string>
   <string name="animations_summary">Utilizar efeitos visuais extravagantes</string>
-  <string name="gestures_title">Gestos</string>
-  <string name="gestures_summary">Habilita controle de gestos</string>
   <string name="volume_navigation_title">Navegação com a tecla de volume</string>
   <string name="volume_navigation_message">Nas visualizações das mensagens</string>
   <string name="volume_navigation_list">Nas visualizações das listas</string>

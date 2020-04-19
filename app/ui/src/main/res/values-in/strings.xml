@@ -583,7 +583,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Tolak kunci</string>
   <string name="message_view_help_key">Del (atau D) - Hapus\nR - Balas\nA - Balas Semua\nC - Tulis\nF - Teruskan\nM - Pindah\nV - Arsipkan\nY - Copy\nZ - Tandai (belum) baca\nG - Star\nO - Urutkan jenis\nI - Urutan sortir\nQ - Kembali ke Folder\nS - Pilih/batalkan pilihan\nJ atau P - Pesan Sebelumnya\nK atau N - Pesan Berikutnya</string>
   <string name="message_list_help_key">Del (atau D) - Hapus\nC - Tulis\nM - Pindah\nV - Arsipkan\nY - Copy\nZ - Tandai (belum) baca\nG - Star\nO - Urutkan jenis\nI - Urutan sortir\nQ - Kembali ke Folder\nS - Pilih/batalkan pilihan</string>
-  <string name="folder_list_help_key">1 - Tampilkan hanya folder Kelas 1 \n2 - Menampilkan folder Kelas 1 dan 2 \n3 - Menampilkan semua kecuali folder Kelas 2 \n4 - Menampilkan semua folder \nQ - Kembali ke Akun \nS - Edit Pengaturan Akun</string>
   <string name="folder_list_filter_hint">Nama folder mengandung</string>
   <string name="folder_list_display_mode_label">Perlihatkan folder...</string>
   <string name="folder_list_display_mode_all">Semua folder</string>
@@ -629,8 +628,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_setup_push_limit_1000">1000 folder</string>
   <string name="animations_title">Animasi</string>
   <string name="animations_summary">Gunakan efek visual mencolok</string>
-  <string name="gestures_title">Gerakan</string>
-  <string name="gestures_summary">Aktifkan kontrol gerakan</string>
   <string name="volume_navigation_title">Navigasi tombol volume</string>
   <string name="volume_navigation_message">Dalam tampilan pesan</string>
   <string name="volume_navigation_list">Dalam tampilan daftar</string>

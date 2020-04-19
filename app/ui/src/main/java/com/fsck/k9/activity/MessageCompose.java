@@ -120,8 +120,7 @@ import timber.log.Timber;
 public class MessageCompose extends K9Activity implements OnClickListener,
         CancelListener, AttachmentDownloadCancelListener, OnFocusChangeListener,
         OnOpenPgpInlineChangeListener, OnOpenPgpSignOnlyChangeListener, MessageBuilder.Callback,
-        AttachmentPresenter.AttachmentsChangedListener, RecipientPresenter.RecipientsChangedListener,
-        OnOpenPgpDisableListener {
+        AttachmentPresenter.AttachmentsChangedListener, OnOpenPgpDisableListener {
 
     private static final int DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE = 1;
     private static final int DIALOG_CONFIRM_DISCARD_ON_BACK = 2;
@@ -201,6 +200,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
      * have already been added from the restore of the view state.
      */
     private boolean relatedMessageProcessed = false;
+    private MessageViewInfo currentMessageViewInfo;
 
     private RecipientPresenter recipientPresenter;
     private MessageBuilder currentMessageBuilder;
@@ -309,7 +309,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         OpenPgpApiManager openPgpApiManager = new OpenPgpApiManager(getApplicationContext(), this);
         recipientPresenter = new RecipientPresenter(getApplicationContext(), getSupportLoaderManager(),
                 openPgpApiManager, recipientMvpView, account, composePgpInlineDecider, composePgpEnableByDefaultDecider,
-                AutocryptStatusInteractor.getInstance(), new ReplyToParser(), this,
+                AutocryptStatusInteractor.getInstance(), new ReplyToParser(),
                 DI.get(AutocryptDraftStateHeaderParser.class));
         recipientPresenter.asyncUpdateCryptoStatus();
 
@@ -951,11 +951,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     @Override
-    public void onRecipientsChanged() {
-        changesMadeSinceLastSave = true;
-    }
-
-    @Override
     public void onClick(View view) {
         if (view.getId() == R.id.identity) {
             showDialog(DIALOG_CHOOSE_IDENTITY);
@@ -1183,7 +1178,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             throw new IllegalStateException("tried to edit quoted message with no referenced message");
         }
 
-        messageLoaderHelper.asyncStartOrResumeLoadingMessage(relatedMessageReference, null);
+        if (currentMessageViewInfo != null) {
+            loadLocalMessageForDisplay(currentMessageViewInfo, action);
+        }
     }
 
     /**
@@ -1580,6 +1577,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     public void loadLocalMessageForDisplay(MessageViewInfo messageViewInfo, Action action) {
+        currentMessageViewInfo = messageViewInfo;
+
         // We check to see if we've previously processed the source message since this
         // could be called when switching from HTML to text replies. If that happens, we
         // only want to update the UI with quoted text (which picks the appropriate
