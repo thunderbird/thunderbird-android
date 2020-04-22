@@ -1,34 +1,21 @@
-package com.fsck.k9.storage.migrations;
+package com.fsck.k9.storage.migrations
 
+import android.database.sqlite.SQLiteDatabase
+import com.fsck.k9.mailstore.MigrationsHelper
 
-import android.database.sqlite.SQLiteDatabase;
+object Migrations {
+    @JvmStatic
+    fun upgradeDatabase(db: SQLiteDatabase, migrationsHelper: MigrationsHelper) {
+        val oldVersion = db.version
 
-import com.fsck.k9.mailstore.LocalStore;
-import com.fsck.k9.mailstore.MigrationsHelper;
-
-
-public class Migrations {
-    @SuppressWarnings("fallthrough")
-    public static void upgradeDatabase(SQLiteDatabase db, MigrationsHelper migrationsHelper) {
-        switch (db.getVersion()) {
-            case 61:
-                MigrationTo62.addServerIdColumnToFoldersTable(db);
-            case 63:
-                MigrationTo64.addExtraValuesTables(db);
-            case 64:
-                MigrationTo65.addLocalOnlyColumnToFoldersTable(db, migrationsHelper);
-            case 65:
-                MigrationTo66.addEncryptionTypeColumnToMessagesTable(db);
-            case 66:
-                MigrationTo67.addTypeColumnToFoldersTable(db, migrationsHelper);
-            case 67:
-                MigrationTo68.addOutboxStateTable(db);
-            case 68:
-                new MigrationTo69(db).createPendingDelete();
-            case 69:
-                new MigrationTo70(db).removePushState();
-            case 70:
-                new MigrationTo71(db).cleanUpFolderClass();
-        }
+        if (oldVersion < 62) MigrationTo62.addServerIdColumnToFoldersTable(db)
+        if (oldVersion < 64) MigrationTo64.addExtraValuesTables(db)
+        if (oldVersion < 65) MigrationTo65.addLocalOnlyColumnToFoldersTable(db, migrationsHelper)
+        if (oldVersion < 66) MigrationTo66.addEncryptionTypeColumnToMessagesTable(db)
+        if (oldVersion < 67) MigrationTo67.addTypeColumnToFoldersTable(db, migrationsHelper)
+        if (oldVersion < 68) MigrationTo68.addOutboxStateTable(db)
+        if (oldVersion < 69) MigrationTo69(db).createPendingDelete()
+        if (oldVersion < 70) MigrationTo70(db).removePushState()
+        if (oldVersion < 71) MigrationTo71(db).cleanUpFolderClass()
     }
 }
