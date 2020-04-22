@@ -12,7 +12,7 @@ import timber.log.Timber;
 
 
 class StoreSchemaDefinition implements SchemaDefinition {
-    static final int DB_VERSION = 71;
+    static final int DB_VERSION = 72;
 
     private final MigrationsHelper migrationsHelper;
 
@@ -188,6 +188,8 @@ class StoreSchemaDefinition implements SchemaDefinition {
         db.execSQL("DROP INDEX IF EXISTS msg_composite");
         db.execSQL("CREATE INDEX IF NOT EXISTS msg_composite ON messages (deleted, empty,folder_id,flagged,read)");
 
+        db.execSQL("DROP INDEX IF EXISTS message_parts_root");
+        db.execSQL("CREATE INDEX IF NOT EXISTS message_parts_root ON message_parts (root)");
 
         db.execSQL("DROP TABLE IF EXISTS threads");
         db.execSQL("CREATE TABLE threads (" +

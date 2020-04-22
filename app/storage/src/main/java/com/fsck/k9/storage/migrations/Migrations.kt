@@ -17,5 +17,6 @@ object Migrations {
         if (oldVersion < 69) MigrationTo69(db).createPendingDelete()
         if (oldVersion < 70) MigrationTo70(db).removePushState()
         if (oldVersion < 71) MigrationTo71(db).cleanUpFolderClass()
+        if (oldVersion < 72) MigrationTo72(db).createMessagePartsRootIndex()
     }
 }
