@@ -89,6 +89,7 @@ import timber.log.Timber;
 
 import static com.fsck.k9.K9.MAX_SEND_ATTEMPTS;
 import static com.fsck.k9.helper.ExceptionHelper.getRootCauseMessage;
+import static com.fsck.k9.helper.Preconditions.checkNotNull;
 import static com.fsck.k9.mail.Flag.X_REMOTE_COPY_STARTED;
 import static com.fsck.k9.search.LocalSearchExtensions.getAccountsFromLocalSearch;
 
@@ -843,10 +844,10 @@ public class MessagingController {
     @VisibleForTesting
     void processPendingMoveOrCopy(Account account, String srcFolder, String destFolder, List<String> uids,
                                   MoveOrCopyFlavor operation, Map<String, String> newUidMap) throws MessagingException {
-        LocalFolder localDestFolder;
+        checkNotNull(newUidMap);
 
         LocalStore localStore = localStoreProvider.getInstance(account);
-        localDestFolder = localStore.getFolder(destFolder);
+        LocalFolder localDestFolder = localStore.getFolder(destFolder);
 
         Backend backend = getBackend(account);
 
@@ -871,28 +872,32 @@ public class MessagingController {
             backend.expungeMessages(srcFolder, uids);
         }
 
-        /*
-         * This next part is used to bring the local UIDs of the local destination folder
-         * upto speed with the remote UIDs of remote destination folder.
-         */
-        if (newUidMap != null && remoteUidMap != null && !remoteUidMap.isEmpty()) {
-            Timber.i("processingPendingMoveOrCopy: changing local uids of %d messages", remoteUidMap.size());
-            for (Entry<String, String> entry : remoteUidMap.entrySet()) {
-                String remoteSrcUid = entry.getKey();
-                String newUid = entry.getValue();
-                String localDestUid = newUidMap.get(remoteSrcUid);
-                if (localDestUid == null) {
-                    continue;
-                }
+        // TODO: Change Backend interface to ensure we never receive null for remoteUidMap
+        if (remoteUidMap == null) {
+            remoteUidMap = Collections.emptyMap();
+        }
 
-                Message localDestMessage = localDestFolder.getMessage(localDestUid);
-                if (localDestMessage != null) {
-                    localDestMessage.setUid(newUid);
-                    localDestFolder.changeUid((LocalMessage) localDestMessage);
-                    for (MessagingListener l : getListeners()) {
-                        l.messageUidChanged(account, destFolder, localDestUid, newUid);
-                    }
+        // Update local messages (that currently have local UIDs) with new server IDs
+        for (String uid : uids) {
+            String localUid = newUidMap.get(uid);
+            String newUid = remoteUidMap.get(uid);
+
+            LocalMessage localMessage = localDestFolder.getMessage(localUid);
+            if (localMessage == null) {
+                // Local message no longer exists
+                continue;
+            }
+
+            if (newUid != null) {
+                // Update local message with new server ID
+                localMessage.setUid(newUid);
+                localDestFolder.changeUid(localMessage);
+                for (MessagingListener l : getListeners()) {
+                    l.messageUidChanged(account, destFolder, localUid, newUid);
                 }
+            } else {
+                // New server ID wasn't provided. Remove local message.
+                localMessage.destroy();
             }
         }
     }
