@@ -2034,7 +2034,7 @@ public class MessagingController {
             localFolder = localStore.getFolder(folder);
             Map<String, String> uidMap = null;
             if (folder.equals(account.getTrashFolder()) || !account.hasTrashFolder() ||
-                    !backend.isDeleteMoveToTrash()) {
+                    (backend.getSupportsTrashFolder() && !backend.isDeleteMoveToTrash())) {
                 Timber.d("Not moving deleted messages to local Trash folder. Removing local copies.");
 
                 if (!localOnlyMessages.isEmpty()) {
