@@ -249,4 +249,22 @@ public class HtmlConverterTest {
         String result = HtmlConverter.textToHtml(text);
         assertEquals("<pre class=\"k9mail\">hello<hr>world<br></pre>", result);
     }
+
+    @Test
+    public void htmlToText_withLineBreaks() {
+        String input = "One<br>Two<br><br>Three";
+
+        String result = HtmlConverter.htmlToText(input);
+
+        assertEquals("One\nTwo\n\nThree", result);
+    }
+
+    @Test
+    public void htmlToText_withBlockElements() {
+        String input = "<p>One</p><p>Two<br>Three</p><div>Four</div>";
+
+        String result = HtmlConverter.htmlToText(input);
+
+        assertEquals("One\n\nTwo\nThree\n\nFour", result);
+    }
 }

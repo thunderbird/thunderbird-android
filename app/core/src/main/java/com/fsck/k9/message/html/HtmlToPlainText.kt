@@ -41,6 +41,7 @@ private class FormattingVisitor : NodeVisitor {
         val name = node.nodeName()
         when {
             name == "li" -> append("\n")
+            name == "br" -> append("\n")
             node is Element && node.isBlock -> {
                 if (node.hasText()) {
                     addEmptyLine()
