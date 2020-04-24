@@ -201,18 +201,17 @@ public class MessagingControllerCommands {
     }
 
     public static class PendingDelete extends PendingCommand {
-        public final String folder;
+        public final long folderId;
         public final List<String> uids;
 
 
-        public static PendingDelete create(String folder, List<String> uids) {
-            checkNotNull(folder);
+        public static PendingDelete create(long folderId, List<String> uids) {
             requireValidUids(uids);
-            return new PendingDelete(folder, uids);
+            return new PendingDelete(folderId, uids);
         }
 
-        private PendingDelete(String folder, List<String> uids) {
-            this.folder = folder;
+        private PendingDelete(long folderId, List<String> uids) {
+            this.folderId = folderId;
             this.uids = uids;
         }
 

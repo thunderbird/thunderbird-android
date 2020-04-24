@@ -927,20 +927,18 @@ public class MessagingController {
         backend.setFlag(command.folder, command.uids, command.flag, command.newState);
     }
 
-    private void queueDelete(final Account account, final String folderServerId, final List<String> uids) {
-        putBackground("queueDelete " + account.getDescription() + ":" + folderServerId, null, new Runnable() {
-            @Override
-            public void run() {
-                PendingCommand command = PendingDelete.create(folderServerId, uids);
-                queuePendingCommand(account, command);
-                processPendingCommands(account);
-            }
+    private void queueDelete(Account account, long folderId, List<String> uids) {
+        putBackground("queueDelete", null, () -> {
+            PendingCommand command = PendingDelete.create(folderId, uids);
+            queuePendingCommand(account, command);
+            processPendingCommands(account);
         });
     }
 
     void processPendingDelete(PendingDelete command, Account account) throws MessagingException {
         Backend backend = getBackend(account);
-        backend.deleteMessages(command.folder, command.uids);
+        String folderServerId = getFolderServerId(account, command.folderId);
+        backend.deleteMessages(folderServerId, command.uids);
     }
 
     private void queueExpunge(Account account, long folderId) {
@@ -2080,7 +2078,8 @@ public class MessagingController {
                 if (account.getDeletePolicy() == DeletePolicy.ON_DELETE) {
                     if (!account.hasTrashFolder() || folder.equals(account.getTrashFolder()) ||
                             !backend.isDeleteMoveToTrash()) {
-                        queueDelete(account, folder, syncedMessageUids);
+                        long folderId = localFolder.getDatabaseId();
+                        queueDelete(account, folderId, syncedMessageUids);
                     } else if (account.isMarkMessageAsReadOnDelete()) {
                         queueMoveOrCopy(account, folder, account.getTrashFolder(),
                                 MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ, uidMap);

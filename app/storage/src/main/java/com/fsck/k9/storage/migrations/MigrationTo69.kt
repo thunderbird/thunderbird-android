@@ -2,10 +2,10 @@ package com.fsck.k9.storage.migrations
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
-import com.fsck.k9.controller.MessagingControllerCommands.PendingDelete
 import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag
 import com.fsck.k9.controller.PendingCommandSerializer
 import com.fsck.k9.mail.Flag
+import com.squareup.moshi.Moshi
 
 internal class MigrationTo69(private val db: SQLiteDatabase) {
     private val serializer: PendingCommandSerializer = PendingCommandSerializer.getInstance()
@@ -26,11 +26,14 @@ internal class MigrationTo69(private val db: SQLiteDatabase) {
             }
         }
 
+        val moshi = Moshi.Builder().build()
+        val adapter = moshi.adapter(LegacyPendingDelete::class.java)
+
         for (pendingSetFlag in pendingSetFlagsToConvert) {
-            val pendingDelete = PendingDelete.create(pendingSetFlag.folder, pendingSetFlag.uids)
+            val pendingDelete = LegacyPendingDelete.create(pendingSetFlag.folder, pendingSetFlag.uids)
             val contentValues = ContentValues().apply {
                 put("command", "delete")
-                put("data", serializer.serialize(pendingDelete))
+                put("data", adapter.toJson(pendingDelete))
             }
 
             db.update("pending_commands", contentValues, "id = ?", arrayOf(pendingSetFlag.databaseId.toString()))

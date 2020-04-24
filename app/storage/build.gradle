@@ -10,6 +10,7 @@ dependencies {
     implementation project(":app:core")
     implementation "com.jakewharton.timber:timber:${versions.timber}"
     implementation "org.apache.james:apache-mime4j-core:${versions.mime4j}"
+    implementation "com.squareup.moshi:moshi:${versions.moshi}"
 
     testImplementation project(':mail:testing')
     testImplementation project(':app:testing')
