@@ -279,6 +279,11 @@ public class MessagingController {
         }
     }
 
+    private String getFolderServerId(Account account, long folderId) throws MessagingException {
+        LocalStore localStore = getLocalStoreOrThrow(account);
+        return localStore.getFolderServerId(folderId);
+    }
+
     public void addListener(MessagingListener listener) {
         listeners.add(listener);
         refreshListener(listener);
@@ -938,20 +943,15 @@ public class MessagingController {
         backend.deleteMessages(command.folder, command.uids);
     }
 
-    private void queueExpunge(final Account account, final String folderServerId) {
-        putBackground("queueExpunge " + account.getDescription() + ":" + folderServerId, null, new Runnable() {
-            @Override
-            public void run() {
-                PendingCommand command = PendingExpunge.create(folderServerId);
-                queuePendingCommand(account, command);
-                processPendingCommands(account);
-            }
-        });
+    private void queueExpunge(Account account, long folderId) {
+        PendingCommand command = PendingExpunge.create(folderId);
+        queuePendingCommand(account, command);
     }
 
     void processPendingExpunge(PendingExpunge command, Account account) throws MessagingException {
         Backend backend = getBackend(account);
-        backend.expunge(command.folder);
+        String folderServerId = getFolderServerId(account, command.folderId);
+        backend.expunge(folderServerId);
     }
 
     void processPendingMarkAllAsRead(PendingMarkAllAsRead command, Account account) throws MessagingException {
@@ -1887,12 +1887,10 @@ public class MessagingController {
         }
     }
 
-    public void expunge(final Account account, final String folder) {
-        putBackground("expunge", null, new Runnable() {
-            @Override
-            public void run() {
-                queueExpunge(account, folder);
-            }
+    public void expunge(Account account, long folderId) {
+        putBackground("expunge", null, () -> {
+            queueExpunge(account, folderId);
+            processPendingCommands(account);
         });
     }
 

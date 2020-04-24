@@ -57,7 +57,6 @@ import com.fsck.k9.message.extractors.AttachmentCounter;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 import com.fsck.k9.message.extractors.MessageFulltextCreator;
 import com.fsck.k9.message.extractors.MessagePreviewCreator;
-import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.MessageColumns;
 import com.fsck.k9.search.LocalSearch;
@@ -872,6 +871,21 @@ public class LocalStore {
         final File attachmentDirectory = storageManager.getAttachmentDirectory(
                 account.getUuid(), database.getStorageProviderId());
         return new File(attachmentDirectory, attachmentId);
+    }
+
+    public String getFolderServerId(long folderId) throws MessagingException {
+        return database.execute(false, db -> {
+            try (Cursor cursor = db.query("folders", new String[] { "server_id" },
+                    "id = ?", new String[] { Long.toString(folderId) },
+                    null, null, null)
+            ) {
+                if (cursor.moveToFirst() && !cursor.isNull(0)) {
+                    return cursor.getString(0);
+                } else {
+                    throw new MessagingException("Folder not found by database ID: " + folderId, true);
+                }
+            }
+        });
     }
 
     public static class AttachmentInfo {

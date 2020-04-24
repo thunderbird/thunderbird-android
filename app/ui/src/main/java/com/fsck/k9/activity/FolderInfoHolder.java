@@ -11,6 +11,7 @@ import com.fsck.k9.ui.folders.FolderNameFormatter;
 public class FolderInfoHolder {
     private final FolderNameFormatter folderNameFormatter;
 
+    public final long databaseId;
     public final String serverId;
     public final String displayName;
     public final long lastChecked;
@@ -19,6 +20,7 @@ public class FolderInfoHolder {
 
 
     public FolderInfoHolder(FolderNameFormatter folderNameFormatter, LocalFolder localFolder, Account account) {
+        this.databaseId = localFolder.getDatabaseId();
         this.folderNameFormatter = folderNameFormatter;
         this.serverId = localFolder.getServerId();
         this.lastChecked = localFolder.getLastChecked();

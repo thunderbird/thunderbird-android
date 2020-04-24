@@ -786,12 +786,12 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     public void onExpunge() {
         if (currentFolder != null) {
-            onExpunge(account, currentFolder.serverId);
+            onExpunge(account, currentFolder.databaseId);
         }
     }
 
-    private void onExpunge(final Account account, String folderServerId) {
-        messagingController.expunge(account, folderServerId);
+    private void onExpunge(final Account account, long folderId) {
+        messagingController.expunge(account, folderId);
     }
 
     public void onEmptyTrash() {
@@ -900,7 +900,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             return true;
         } else if (id == R.id.expunge) {
             if (currentFolder != null) {
-                onExpunge(account, currentFolder.serverId);
+                onExpunge(account, currentFolder.databaseId);
             }
             return true;
         } else {

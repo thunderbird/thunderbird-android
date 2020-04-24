@@ -229,16 +229,15 @@ public class MessagingControllerCommands {
     }
 
     public static class PendingExpunge extends PendingCommand {
-        public final String folder;
+        public final long folderId;
 
 
-        public static PendingExpunge create(String folderServerId) {
-            checkNotNull(folderServerId);
-            return new PendingExpunge(folderServerId);
+        public static PendingExpunge create(long folderId) {
+            return new PendingExpunge(folderId);
         }
 
-        private PendingExpunge(String folder) {
-            this.folder = folder;
+        private PendingExpunge(long folderId) {
+            this.folderId = folderId;
         }
 
         @Override
