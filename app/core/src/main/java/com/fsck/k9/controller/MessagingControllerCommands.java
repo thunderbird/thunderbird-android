@@ -119,21 +119,20 @@ public class MessagingControllerCommands {
     }
 
     public static class PendingSetFlag extends PendingCommand {
-        public final String folder;
+        public final long folderId;
         public final boolean newState;
         public final Flag flag;
         public final List<String> uids;
 
 
-        public static PendingSetFlag create(String folder, boolean newState, Flag flag, List<String> uids) {
-            checkNotNull(folder);
+        public static PendingSetFlag create(long folderId, boolean newState, Flag flag, List<String> uids) {
             checkNotNull(flag);
             requireValidUids(uids);
-            return new PendingSetFlag(folder, newState, flag, uids);
+            return new PendingSetFlag(folderId, newState, flag, uids);
         }
 
-        private PendingSetFlag(String folder, boolean newState, Flag flag, List<String> uids) {
-            this.folder = folder;
+        private PendingSetFlag(long folderId, boolean newState, Flag flag, List<String> uids) {
+            this.folderId = folderId;
             this.newState = newState;
             this.flag = flag;
             this.uids = uids;

@@ -910,15 +910,11 @@ public class MessagingController {
         }
     }
 
-    private void queueSetFlag(final Account account, final String folderServerId,
-            final boolean newState, final Flag flag, final List<String> uids) {
-        putBackground("queueSetFlag " + account.getDescription() + ":" + folderServerId, null, new Runnable() {
-            @Override
-            public void run() {
-                PendingCommand command = PendingSetFlag.create(folderServerId, newState, flag, uids);
-                queuePendingCommand(account, command);
-                processPendingCommands(account);
-            }
+    private void queueSetFlag(Account account, long folderId, boolean newState, Flag flag, List<String> uids) {
+        putBackground("queueSetFlag", null, () -> {
+            PendingCommand command = PendingSetFlag.create(folderId, newState, flag, uids);
+            queuePendingCommand(account, command);
+            processPendingCommands(account);
         });
     }
 
@@ -927,7 +923,8 @@ public class MessagingController {
      */
     void processPendingSetFlag(PendingSetFlag command, Account account) throws MessagingException {
         Backend backend = getBackend(account);
-        backend.setFlag(command.folder, command.uids, command.flag, command.newState);
+        String folderServerId = getFolderServerId(account, command.folderId);
+        backend.setFlag(folderServerId, command.uids, command.flag, command.newState);
     }
 
     private void queueDelete(Account account, long folderId, List<String> uids) {
@@ -1065,8 +1062,13 @@ public class MessagingController {
             // TODO: Skip the remote part for all local-only folders
 
             // Send flag change to server
-            queueSetFlag(account, folderServerId, newState, flag, entry.getValue());
-            processPendingCommands(account);
+            try {
+                long folderId = getFolderId(account, folderServerId);
+                queueSetFlag(account, folderId, newState, flag, entry.getValue());
+                processPendingCommands(account);
+            } catch (MessagingException e) {
+                Timber.e(e, "Error while trying to set flags");
+            }
         }
     }
 
@@ -1113,7 +1115,7 @@ public class MessagingController {
             // TODO: Skip the remote part for all local-only folders
 
             List<String> uids = getUidsFromMessages(messages);
-            queueSetFlag(account, folderServerId, newState, flag, uids);
+            queueSetFlag(account, localFolder.getDatabaseId(), newState, flag, uids);
             processPendingCommands(account);
         } catch (MessagingException me) {
             throw new RuntimeException(me);
@@ -2093,7 +2095,7 @@ public class MessagingController {
                     }
                     processPendingCommands(account);
                 } else if (account.getDeletePolicy() == DeletePolicy.MARK_AS_READ) {
-                    queueSetFlag(account, folder, true, Flag.SEEN, syncedMessageUids);
+                    queueSetFlag(account, localFolder.getDatabaseId(), true, Flag.SEEN, syncedMessageUids);
                     processPendingCommands(account);
                 } else {
                     Timber.d("Delete policy %s prevents delete from server", account.getDeletePolicy());
