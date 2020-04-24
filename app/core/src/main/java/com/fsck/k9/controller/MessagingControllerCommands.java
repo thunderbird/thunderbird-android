@@ -33,29 +33,23 @@ public class MessagingControllerCommands {
     }
 
     public static class PendingMoveOrCopy extends PendingCommand {
-        public final String srcFolder;
-        public final String destFolder;
+        public final long srcFolderId;
+        public final long destFolderId;
         public final boolean isCopy;
         public final List<String> uids;
         public final Map<String, String> newUidMap;
 
 
-        public static PendingMoveOrCopy create(String srcFolder, String destFolder, boolean isCopy,
+        public static PendingMoveOrCopy create(long srcFolderId, long destFolderId, boolean isCopy,
                 Map<String, String> uidMap) {
-            checkNotNull(srcFolder);
-            checkNotNull(destFolder);
             requireValidUids(uidMap);
-            return new PendingMoveOrCopy(srcFolder, destFolder, isCopy, null, uidMap);
+            return new PendingMoveOrCopy(srcFolderId, destFolderId, isCopy, null, uidMap);
         }
 
-        public static PendingMoveOrCopy createLegacy(String srcFolder, String destFolder, boolean isCopy, List<String> uids) {
-            return new PendingMoveOrCopy(srcFolder, destFolder, isCopy, uids, null);
-        }
-
-        private PendingMoveOrCopy(String srcFolder, String destFolder, boolean isCopy, List<String> uids,
+        private PendingMoveOrCopy(long srcFolderId, long destFolderId, boolean isCopy, List<String> uids,
                 Map<String, String> newUidMap) {
-            this.srcFolder = srcFolder;
-            this.destFolder = destFolder;
+            this.srcFolderId = srcFolderId;
+            this.destFolderId = destFolderId;
             this.isCopy = isCopy;
             this.uids = uids;
             this.newUidMap = newUidMap;
@@ -73,21 +67,19 @@ public class MessagingControllerCommands {
     }
 
     public static class PendingMoveAndMarkAsRead extends PendingCommand {
-        public final String srcFolder;
-        public final String destFolder;
+        public final long srcFolderId;
+        public final long destFolderId;
         public final Map<String, String> newUidMap;
 
 
-        public static PendingMoveAndMarkAsRead create(String srcFolder, String destFolder, Map<String, String> uidMap) {
-            checkNotNull(srcFolder);
-            checkNotNull(destFolder);
+        public static PendingMoveAndMarkAsRead create(long srcFolderId, long destFolderId, Map<String, String> uidMap) {
             requireValidUids(uidMap);
-            return new PendingMoveAndMarkAsRead(srcFolder, destFolder, uidMap);
+            return new PendingMoveAndMarkAsRead(srcFolderId, destFolderId, uidMap);
         }
 
-        private PendingMoveAndMarkAsRead(String srcFolder, String destFolder, Map<String, String> newUidMap) {
-            this.srcFolder = srcFolder;
-            this.destFolder = destFolder;
+        private PendingMoveAndMarkAsRead(long srcFolderId, long destFolderId, Map<String, String> newUidMap) {
+            this.srcFolderId = srcFolderId;
+            this.destFolderId = destFolderId;
             this.newUidMap = newUidMap;
         }
 

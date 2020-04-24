@@ -809,18 +809,18 @@ public class MessagingController {
         }
     }
 
-    private void queueMoveOrCopy(Account account, String srcFolder, String destFolder, MoveOrCopyFlavor operation,
+    private void queueMoveOrCopy(Account account, long srcFolderId, long destFolderId, MoveOrCopyFlavor operation,
             Map<String, String> uidMap) {
         PendingCommand command;
         switch (operation) {
             case MOVE:
-                command = PendingMoveOrCopy.create(srcFolder, destFolder, false, uidMap);
+                command = PendingMoveOrCopy.create(srcFolderId, destFolderId, false, uidMap);
                 break;
             case COPY:
-                command = PendingMoveOrCopy.create(srcFolder, destFolder, true, uidMap);
+                command = PendingMoveOrCopy.create(srcFolderId, destFolderId, true, uidMap);
                 break;
             case MOVE_AND_MARK_AS_READ:
-                command = PendingMoveAndMarkAsRead.create(srcFolder, destFolder, uidMap);
+                command = PendingMoveAndMarkAsRead.create(srcFolderId, destFolderId, uidMap);
                 break;
             default:
                 return;
@@ -829,8 +829,8 @@ public class MessagingController {
     }
 
     void processPendingMoveOrCopy(PendingMoveOrCopy command, Account account) throws MessagingException {
-        String srcFolder = command.srcFolder;
-        String destFolder = command.destFolder;
+        long srcFolder = command.srcFolderId;
+        long destFolder = command.destFolderId;
         MoveOrCopyFlavor operation = command.isCopy ? MoveOrCopyFlavor.COPY : MoveOrCopyFlavor.MOVE;
 
         Map<String, String> newUidMap = command.newUidMap;
@@ -840,8 +840,8 @@ public class MessagingController {
     }
 
     void processPendingMoveAndRead(PendingMoveAndMarkAsRead command, Account account) throws MessagingException {
-        String srcFolder = command.srcFolder;
-        String destFolder = command.destFolder;
+        long srcFolder = command.srcFolderId;
+        long destFolder = command.destFolderId;
         Map<String, String> newUidMap = command.newUidMap;
         List<String> uids = new ArrayList<>(newUidMap.keySet());
 
@@ -850,25 +850,32 @@ public class MessagingController {
     }
 
     @VisibleForTesting
-    void processPendingMoveOrCopy(Account account, String srcFolder, String destFolder, List<String> uids,
+    void processPendingMoveOrCopy(Account account, long srcFolderId, long destFolderId, List<String> uids,
                                   MoveOrCopyFlavor operation, Map<String, String> newUidMap) throws MessagingException {
         checkNotNull(newUidMap);
 
         LocalStore localStore = localStoreProvider.getInstance(account);
-        LocalFolder localDestFolder = localStore.getFolder(destFolder);
+
+        LocalFolder localSourceFolder = localStore.getFolder(srcFolderId);
+        localSourceFolder.open();
+        String srcFolderServerId = localSourceFolder.getServerId();
+
+        LocalFolder localDestFolder = localStore.getFolder(destFolderId);
+        localDestFolder.open();
+        String destFolderServerId = localDestFolder.getServerId();
 
         Backend backend = getBackend(account);
 
         Map<String, String> remoteUidMap;
         switch (operation) {
             case COPY:
-                remoteUidMap = backend.copyMessages(srcFolder, destFolder, uids);
+                remoteUidMap = backend.copyMessages(srcFolderServerId, destFolderServerId, uids);
                 break;
             case MOVE:
-                remoteUidMap = backend.moveMessages(srcFolder, destFolder, uids);
+                remoteUidMap = backend.moveMessages(srcFolderServerId, destFolderServerId, uids);
                 break;
             case MOVE_AND_MARK_AS_READ:
-                remoteUidMap = backend.moveMessagesAndMarkAsRead(srcFolder, destFolder, uids);
+                remoteUidMap = backend.moveMessagesAndMarkAsRead(srcFolderServerId, destFolderServerId, uids);
                 break;
             default:
                 throw new RuntimeException("Unsupported messaging operation");
@@ -876,8 +883,8 @@ public class MessagingController {
 
         if (operation != MoveOrCopyFlavor.COPY && backend.getSupportsExpunge()
                 && account.getExpungePolicy() == Expunge.EXPUNGE_IMMEDIATELY) {
-            Timber.i("processingPendingMoveOrCopy expunging folder %s:%s", account.getDescription(), srcFolder);
-            backend.expungeMessages(srcFolder, uids);
+            Timber.i("processingPendingMoveOrCopy expunging folder %s:%s", account.getDescription(), srcFolderServerId);
+            backend.expungeMessages(srcFolderServerId, uids);
         }
 
         // TODO: Change Backend interface to ensure we never receive null for remoteUidMap
@@ -901,7 +908,7 @@ public class MessagingController {
                 localMessage.setUid(newUid);
                 localDestFolder.changeUid(localMessage);
                 for (MessagingListener l : getListeners()) {
-                    l.messageUidChanged(account, destFolder, localUid, newUid);
+                    l.messageUidChanged(account, destFolderServerId, localUid, newUid);
                 }
             } else {
                 // New server ID wasn't provided. Remove local message.
@@ -1812,7 +1819,10 @@ public class MessagingController {
             }
 
             LocalFolder localSrcFolder = localStore.getFolder(srcFolder);
+            localSrcFolder.open();
+
             LocalFolder localDestFolder = localStore.getFolder(destFolder);
+            localDestFolder.open();
 
             boolean unreadCountAffected = false;
             List<String> uids = new LinkedList<>();
@@ -1881,7 +1891,8 @@ public class MessagingController {
                     }
                 }
 
-                queueMoveOrCopy(account, srcFolder, destFolder, operation, uidMap);
+                queueMoveOrCopy(account, localSrcFolder.getDatabaseId(), localDestFolder.getDatabaseId(),
+                        operation, uidMap);
             }
 
             processPendingCommands(account);
@@ -2041,6 +2052,8 @@ public class MessagingController {
 
             LocalStore localStore = localStoreProvider.getInstance(account);
             localFolder = localStore.getFolder(folder);
+            localFolder.open();
+
             Map<String, String> uidMap = null;
             if (folder.equals(account.getTrashFolder()) || !account.hasTrashFolder() ||
                     (backend.getSupportsTrashFolder() && !backend.isDeleteMoveToTrash())) {
@@ -2082,15 +2095,17 @@ public class MessagingController {
                 processPendingCommands(account);
             } else if (!syncedMessageUids.isEmpty()) {
                 if (account.getDeletePolicy() == DeletePolicy.ON_DELETE) {
+                    long folderId = localFolder.getDatabaseId();
                     if (!account.hasTrashFolder() || folder.equals(account.getTrashFolder()) ||
                             !backend.isDeleteMoveToTrash()) {
-                        long folderId = localFolder.getDatabaseId();
                         queueDelete(account, folderId, syncedMessageUids);
                     } else if (account.isMarkMessageAsReadOnDelete()) {
-                        queueMoveOrCopy(account, folder, account.getTrashFolder(),
+                        long trashFolderId = getFolderId(account, account.getTrashFolder());
+                        queueMoveOrCopy(account, folderId, trashFolderId,
                                 MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ, uidMap);
                     } else {
-                        queueMoveOrCopy(account, folder, account.getTrashFolder(),
+                        long trashFolderId = getFolderId(account, account.getTrashFolder());
+                        queueMoveOrCopy(account, folderId, trashFolderId,
                                 MoveOrCopyFlavor.MOVE, uidMap);
                     }
                     processPendingCommands(account);
