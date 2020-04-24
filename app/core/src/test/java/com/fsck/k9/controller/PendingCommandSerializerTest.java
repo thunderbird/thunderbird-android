@@ -17,6 +17,7 @@ public class PendingCommandSerializerTest {
     static final int DATABASE_ID = 123;
     static final String UID = "uid";
     static final String SOURCE_FOLDER = "source_folder";
+    static final long SOURCE_FOLDER_ID = 42;
     static final String DEST_FOLDER = "dest_folder";
     static final HashMap<String, String> UID_MAP = new HashMap<>();
     public static final boolean IS_COPY = true;
@@ -43,14 +44,14 @@ public class PendingCommandSerializerTest {
 
     @Test
     public void testSerializeDeserialize__withArguments() {
-        PendingCommand pendingCommand = PendingAppend.create(SOURCE_FOLDER, UID);
+        PendingCommand pendingCommand = PendingAppend.create(SOURCE_FOLDER_ID, UID);
 
         String serializedCommand = pendingCommandSerializer.serialize(pendingCommand);
         PendingAppend unserializedCommand = (PendingAppend) pendingCommandSerializer.unserialize(
                 DATABASE_ID, pendingCommand.getCommandName(), serializedCommand);
 
         assertEquals(DATABASE_ID, unserializedCommand.databaseId);
-        assertEquals(SOURCE_FOLDER, unserializedCommand.folder);
+        assertEquals(SOURCE_FOLDER_ID, unserializedCommand.folderId);
         assertEquals(UID, unserializedCommand.uid);
     }
 

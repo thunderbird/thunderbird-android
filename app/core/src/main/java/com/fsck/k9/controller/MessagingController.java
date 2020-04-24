@@ -284,6 +284,11 @@ public class MessagingController {
         return localStore.getFolderServerId(folderId);
     }
 
+    private long getFolderId(Account account, String folderServerId) throws MessagingException {
+        LocalStore localStore = getLocalStoreOrThrow(account);
+        return localStore.getFolderId(folderServerId);
+    }
+
     public void addListener(MessagingListener listener) {
         listeners.add(listener);
         refreshListener(listener);
@@ -729,19 +734,17 @@ public class MessagingController {
      * the local message. Once the local message is successfully processed it is deleted so
      * that the server message will be synchronized down without an additional copy being
      * created.
-     * TODO update the local message UID instead of deleting it
      */
     void processPendingAppend(PendingAppend command, Account account) throws MessagingException {
-        LocalFolder localFolder = null;
+        LocalStore localStore = localStoreProvider.getInstance(account);
+        LocalFolder localFolder = localStore.getFolder(command.folderId);
         try {
+            localFolder.open();
 
-            String folder = command.folder;
+            String folderServerId = localFolder.getServerId();
             String uid = command.uid;
 
-            LocalStore localStore = localStoreProvider.getInstance(account);
-            localFolder = localStore.getFolder(folder);
             LocalMessage localMessage = localFolder.getMessage(uid);
-
             if (localMessage == null) {
                 return;
             }
@@ -757,7 +760,7 @@ public class MessagingController {
                 Timber.w("Local message with uid %s has flag %s  already set, checking for remote message with " +
                         "same message id", localMessage.getUid(), X_REMOTE_COPY_STARTED);
 
-                String messageServerId = backend.findByMessageId(folder, localMessage.getMessageId());
+                String messageServerId = backend.findByMessageId(folderServerId, localMessage.getMessageId());
                 if (messageServerId != null) {
                     Timber.w("Local message has flag %s already set, and there is a remote message with uid %s, " +
                             "assuming message was already copied and aborting this copy",
@@ -768,7 +771,7 @@ public class MessagingController {
                     localFolder.changeUid(localMessage);
 
                     for (MessagingListener l : getListeners()) {
-                        l.messageUidChanged(account, folder, oldUid, localMessage.getUid());
+                        l.messageUidChanged(account, folderServerId, oldUid, localMessage.getUid());
                     }
 
                     return;
@@ -787,7 +790,7 @@ public class MessagingController {
             String oldUid = localMessage.getUid();
             localMessage.setFlag(Flag.X_REMOTE_COPY_STARTED, true);
 
-            String messageServerId = backend.uploadMessage(folder, localMessage);
+            String messageServerId = backend.uploadMessage(folderServerId, localMessage);
 
             if (messageServerId == null) {
                 // We didn't get the server UID of the uploaded message. Remove the local message now. The uploaded
@@ -798,11 +801,11 @@ public class MessagingController {
                 localFolder.changeUid(localMessage);
 
                 for (MessagingListener l : getListeners()) {
-                    l.messageUidChanged(account, folder, oldUid, localMessage.getUid());
+                    l.messageUidChanged(account, folderServerId, oldUid, localMessage.getUid());
                 }
             }
         } finally {
-            closeFolder(localFolder);
+            localFolder.close();
         }
     }
 
@@ -1602,7 +1605,7 @@ public class MessagingController {
 
             Timber.i("Moved sent message to folder '%s' (%d)", account.getSentFolder(), localSentFolder.getDatabaseId());
 
-            PendingCommand command = PendingAppend.create(localSentFolder.getServerId(), message.getUid());
+            PendingCommand command = PendingAppend.create(localSentFolder.getDatabaseId(), message.getUid());
             queuePendingCommand(account, command);
             processPendingCommands(account);
         }
@@ -2070,7 +2073,8 @@ public class MessagingController {
                 for (Message message : messages) {
                     // If the message was in the Outbox, then it has been copied to local Trash, and has
                     // to be copied to remote trash
-                    PendingCommand command = PendingAppend.create(account.getTrashFolder(), message.getUid());
+                    long trashFolderId = getFolderId(account, account.getTrashFolder());
+                    PendingCommand command = PendingAppend.create(trashFolderId, message.getUid());
                     queuePendingCommand(account, command);
                 }
                 processPendingCommands(account);
@@ -2598,7 +2602,7 @@ public class MessagingController {
             }
 
             if (saveRemotely) {
-                PendingCommand command = PendingAppend.create(localFolder.getServerId(), localMessage.getUid());
+                PendingCommand command = PendingAppend.create(localFolder.getDatabaseId(), localMessage.getUid());
                 queuePendingCommand(account, command);
                 processPendingCommands(account);
             }

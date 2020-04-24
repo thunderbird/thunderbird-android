@@ -888,6 +888,21 @@ public class LocalStore {
         });
     }
 
+    public long getFolderId(String folderServerId) throws MessagingException {
+        return database.execute(false, db -> {
+            try (Cursor cursor = db.query("folders", new String[] { "id" },
+                    "server_id = ?", new String[] { folderServerId },
+                    null, null, null)
+            ) {
+                if (cursor.moveToFirst()) {
+                    return cursor.getLong(0);
+                } else {
+                    throw new MessagingException("Folder not found by server ID: " + folderServerId);
+                }
+            }
+        });
+    }
+
     public static class AttachmentInfo {
         public String name;
         public long size;

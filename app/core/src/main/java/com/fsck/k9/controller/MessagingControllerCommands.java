@@ -151,18 +151,17 @@ public class MessagingControllerCommands {
     }
 
     public static class PendingAppend extends PendingCommand {
-        public final String folder;
+        public final long folderId;
         public final String uid;
 
 
-        public static PendingAppend create(String folderServerId, String uid) {
-            checkNotNull(folderServerId);
+        public static PendingAppend create(long folderId, String uid) {
             checkNotNull(uid);
-            return new PendingAppend(folderServerId, uid);
+            return new PendingAppend(folderId, uid);
         }
 
-        private PendingAppend(String folder, String uid) {
-            this.folder = folder;
+        private PendingAppend(long folderId, String uid) {
+            this.folderId = folderId;
             this.uid = uid;
         }
 
