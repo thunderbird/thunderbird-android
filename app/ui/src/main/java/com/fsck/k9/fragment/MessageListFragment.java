@@ -2343,7 +2343,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     private void markAllAsRead() {
         if (isMarkAllAsReadSupported()) {
-            messagingController.markAllMessagesRead(account, folderServerId);
+            messagingController.markAllMessagesRead(account, currentFolder.databaseId);
         }
     }
 

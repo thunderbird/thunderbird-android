@@ -178,16 +178,15 @@ public class MessagingControllerCommands {
     }
 
     public static class PendingMarkAllAsRead extends PendingCommand {
-        public final String folder;
+        public final long folderId;
 
 
-        public static PendingMarkAllAsRead create(String folder) {
-            checkNotNull(folder);
-            return new PendingMarkAllAsRead(folder);
+        public static PendingMarkAllAsRead create(long folderId) {
+            return new PendingMarkAllAsRead(folderId);
         }
 
-        private PendingMarkAllAsRead(String folder) {
-            this.folder = folder;
+        private PendingMarkAllAsRead(long folderId) {
+            this.folderId = folderId;
         }
 
         @Override

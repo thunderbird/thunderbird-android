@@ -955,13 +955,18 @@ public class MessagingController {
     }
 
     void processPendingMarkAllAsRead(PendingMarkAllAsRead command, Account account) throws MessagingException {
-        String folder = command.folder;
-        LocalFolder localFolder = null;
+        LocalStore localStore = localStoreProvider.getInstance(account);
+        LocalFolder localFolder = localStore.getFolder(command.folderId);
+
+        String folderServerId;
         try {
-            LocalStore localStore = localStoreProvider.getInstance(account);
-            localFolder = localStore.getFolder(folder);
             localFolder.open();
-            List<? extends Message> messages = localFolder.getMessages(null, false);
+            folderServerId = localFolder.getServerId();
+
+            Timber.i("Marking all messages in %s:%s as read", account, folderServerId);
+
+            // TODO: Make this one database UPDATE operation
+            List<LocalMessage> messages = localFolder.getMessages(null, false);
             for (Message message : messages) {
                 if (!message.isSet(Flag.SEEN)) {
                     message.setFlag(Flag.SEEN, true);
@@ -969,22 +974,20 @@ public class MessagingController {
             }
 
             for (MessagingListener l : getListeners()) {
-                l.folderStatusChanged(account, folder);
+                l.folderStatusChanged(account, folderServerId);
             }
         } finally {
-            closeFolder(localFolder);
+            localFolder.close();
         }
 
         Backend backend = getBackend(account);
         if (backend.getSupportsSeenFlag()) {
-            backend.markAllAsRead(folder);
+            backend.markAllAsRead(folderServerId);
         }
     }
 
-    public void markAllMessagesRead(final Account account, final String folder) {
-        Timber.i("Marking all messages in %s:%s as read", account.getDescription(), folder);
-
-        PendingCommand command = PendingMarkAllAsRead.create(folder);
+    public void markAllMessagesRead(Account account, long folderId) {
+        PendingCommand command = PendingMarkAllAsRead.create(folderId);
         queuePendingCommand(account, command);
         processPendingCommands(account);
     }
