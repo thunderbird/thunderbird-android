@@ -722,6 +722,10 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
      * @return {@code true} if this event was consumed.
      */
     public boolean onCustomKeyDown(final int keyCode, final KeyEvent event) {
+        if (!event.hasNoModifiers()) {
+            return false;
+        }
+
         switch (keyCode) {
             case KeyEvent.KEYCODE_VOLUME_UP: {
                 if (messageViewFragment != null && displayMode != DisplayMode.MESSAGE_LIST &&

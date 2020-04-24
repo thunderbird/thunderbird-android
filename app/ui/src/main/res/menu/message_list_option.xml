@@ -36,7 +36,6 @@
     <!-- MessageView -->
     <item
         android:id="@+id/delete"
-        android:alphabeticShortcut="q"
         android:icon="?attr/iconActionDelete"
         app:showAsAction="always"
         android:title="@string/delete_action"/>
@@ -45,7 +44,6 @@
     <item
         android:id="@+id/toggle_unread"
         android:icon="?attr/iconActionMarkAsUnread"
-        android:alphabeticShortcut="u"
         app:showAsAction="always"
         android:title="@string/mark_as_unread_action"/>
 
@@ -152,7 +150,6 @@
     <!-- always -->
     <item
         android:id="@+id/compose"
-        android:alphabeticShortcut="c"
         android:icon="?attr/iconActionCompose"
         app:showAsAction="ifRoom"
         android:title="@string/compose_action"/>
@@ -204,7 +201,6 @@
     <!-- MessageList -->
     <item
         android:id="@+id/send_messages"
-        android:alphabeticShortcut="r"
         android:icon="?attr/iconActionUpload"
         app:showAsAction="never"
         android:title="@string/send_messages_action"/>
@@ -212,7 +208,6 @@
     <!-- MessageList -->
     <item
         android:id="@+id/empty_trash"
-        android:alphabeticShortcut="e"
         android:title="@string/empty_trash_action"
         app:showAsAction="never" />
 
