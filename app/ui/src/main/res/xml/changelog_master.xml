@@ -8,6 +8,13 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.710" versioncode="27010">
+        <change>Fixed duplicate message bug after moving a message</change>
+        <change>Removed keyboard shortcuts for menu items; on some devices they conflicted with system shortcuts</change>
+        <change>Don't show fullscreen keyboard in landscape mode</change>
+        <change>Fixed bug where line breaks were ignored when loading draft messages</change>
+        <change>POP3: Fixed moving deleted messages to the Trash folder</change>
+    </release>
     <release version="5.709" versioncode="27009">
         <change>Display larger preview for image attachments</change>
         <change>Fixed import and export of folder settings</change>
