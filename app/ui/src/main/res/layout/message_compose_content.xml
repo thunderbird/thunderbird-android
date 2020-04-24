@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/message_compose_subject_hint"
                 android:inputType="textEmailSubject|textAutoCorrect|textCapSentences"
-                android:imeOptions="actionNext"
+                android:imeOptions="actionNext|flagNoExtractUi"
                 android:singleLine="true"
                 android:background="@android:color/transparent"
                 android:paddingTop="10dp"
@@ -54,7 +54,7 @@
             android:gravity="top"
             android:hint="@string/message_compose_content_hint"
             android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
-            android:imeOptions="actionDone|flagNoEnterAction"
+            android:imeOptions="actionDone|flagNoEnterAction|flagNoExtractUi"
             android:minLines="3"
             android:paddingLeft="12dip"
             android:paddingRight="12dip"
@@ -70,6 +70,7 @@
             android:minLines="0"
             android:hint="@string/message_compose_signature_hint"
             android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
+            android:imeOptions="flagNoExtractUi"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <Button
@@ -95,6 +96,7 @@
                 android:gravity="top"
                 android:minLines="3"
                 android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
+                android:imeOptions="flagNoExtractUi"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <com.fsck.k9.view.MessageWebView
@@ -137,6 +139,7 @@
             android:minLines="0"
             android:hint="@string/message_compose_signature_hint"
             android:inputType="textMultiLine|textAutoCorrect|textCapSentences"
+            android:imeOptions="flagNoExtractUi"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <!--
