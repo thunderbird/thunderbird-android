@@ -67,7 +67,7 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     }
 
     @Override
-    public void loadMessageRemoteFailed(Account account, String folderServerId, String uid, Throwable t) {
+    public void loadMessageRemoteFailed(Account account, long folderId, String uid, Throwable t) {
     }
 
     @Override

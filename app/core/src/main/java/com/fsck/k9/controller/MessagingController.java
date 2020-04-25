@@ -1209,34 +1209,27 @@ public class MessagingController {
         }
     }
 
-    public void loadMessageRemotePartial(final Account account, final String folder,
-            final String uid, final MessagingListener listener) {
-        put("loadMessageRemotePartial", listener, new Runnable() {
-            @Override
-            public void run() {
-                loadMessageRemoteSynchronous(account, folder, uid, listener, true);
-            }
-        });
+    public void loadMessageRemotePartial(Account account, long folderId, String uid, MessagingListener listener) {
+        put("loadMessageRemotePartial", listener, () ->
+            loadMessageRemoteSynchronous(account, folderId, uid, listener, true)
+        );
     }
 
     //TODO: Fix the callback mess. See GH-782
-    public void loadMessageRemote(final Account account, final String folder,
-            final String uid, final MessagingListener listener) {
-        put("loadMessageRemote", listener, new Runnable() {
-            @Override
-            public void run() {
-                loadMessageRemoteSynchronous(account, folder, uid, listener, false);
-            }
-        });
+    public void loadMessageRemote(Account account, long folderId, String uid, MessagingListener listener) {
+        put("loadMessageRemote", listener, () ->
+            loadMessageRemoteSynchronous(account, folderId, uid, listener, false)
+        );
     }
 
-    private boolean loadMessageRemoteSynchronous(final Account account, final String folder,
-            final String uid, final MessagingListener listener, final boolean loadPartialFromSearch) {
+    private void loadMessageRemoteSynchronous(Account account, long folderId, String uid,
+            MessagingListener listener, boolean loadPartialFromSearch) {
         LocalFolder localFolder = null;
         try {
             LocalStore localStore = localStoreProvider.getInstance(account);
-            localFolder = localStore.getFolder(folder);
+            localFolder = localStore.getFolder(folderId);
             localFolder.open();
+            String folderServerId = localFolder.getServerId();
 
             LocalMessage message = localFolder.getMessage(uid);
 
@@ -1255,13 +1248,13 @@ public class MessagingController {
 
                 if (loadPartialFromSearch) {
                     SyncConfig syncConfig = createSyncConfig(account);
-                    backend.downloadMessage(syncConfig, folder, uid);
+                    backend.downloadMessage(syncConfig, folderServerId, uid);
                 } else {
                     FetchProfile fp = new FetchProfile();
                     fp.add(FetchProfile.Item.BODY);
                     fp.add(FetchProfile.Item.FLAGS);
                     int maxDownloadSize = account.getMaximumAutoDownloadMessageSize();
-                    Message remoteMessage = backend.fetchMessage(folder, uid, fp, maxDownloadSize);
+                    Message remoteMessage = backend.fetchMessage(folderServerId, uid, fp, maxDownloadSize);
                     localFolder.appendMessages(Collections.singletonList(remoteMessage));
                 }
 
@@ -1274,17 +1267,14 @@ public class MessagingController {
 
             // now that we have the full message, refresh the headers
             for (MessagingListener l : getListeners(listener)) {
-                l.loadMessageRemoteFinished(account, folder, uid);
+                l.loadMessageRemoteFinished(account, folderServerId, uid);
             }
-
-            return true;
         } catch (Exception e) {
             for (MessagingListener l : getListeners(listener)) {
-                l.loadMessageRemoteFailed(account, folder, uid, e);
+                l.loadMessageRemoteFailed(account, folderId, uid, e);
             }
             notifyUserIfCertificateProblem(account, e, true);
             Timber.e(e, "Error while loading remote message");
-            return false;
         } finally {
             closeFolder(localFolder);
         }

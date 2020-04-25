@@ -30,7 +30,7 @@ public interface MessagingListener {
     void synchronizeMailboxFailed(Account account, String folderServerId, String message);
 
     void loadMessageRemoteFinished(Account account, String folderServerId, String uid);
-    void loadMessageRemoteFailed(Account account, String folderServerId, String uid, Throwable t);
+    void loadMessageRemoteFailed(Account account, long folderId, String uid, Throwable t);
 
     void checkMailStarted(Context context, Account account);
     void checkMailFinished(Context context, Account account);
