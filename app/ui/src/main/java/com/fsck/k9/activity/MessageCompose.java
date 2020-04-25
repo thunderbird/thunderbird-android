@@ -1670,18 +1670,19 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     public MessagingListener messagingListener = new SimpleMessagingListener() {
 
         @Override
-        public void messageUidChanged(Account account, String folderServerId, String oldUid, String newUid) {
+        public void messageUidChanged(Account account, long folderId, String oldUid, String newUid) {
             if (relatedMessageReference == null) {
                 return;
             }
 
-            Account sourceAccount = Preferences.getPreferences(MessageCompose.this)
-                    .getAccount(relatedMessageReference.getAccountUuid());
-            String sourceFolder = relatedMessageReference.getFolderServerId();
+            String sourceAccountUuid = relatedMessageReference.getAccountUuid();
+            long sourceFolderId = relatedMessageReference.getFolderId();
             String sourceMessageUid = relatedMessageReference.getUid();
 
-            boolean changedMessageIsCurrent =
-                    account.equals(sourceAccount) && folderServerId.equals(sourceFolder) && oldUid.equals(sourceMessageUid);
+            boolean changedMessageIsCurrent = account.getUuid().equals(sourceAccountUuid) &&
+                    folderId == sourceFolderId &&
+                    oldUid.equals(sourceMessageUid);
+
             if (changedMessageIsCurrent) {
                 relatedMessageReference = relatedMessageReference.withModifiedUid(newUid);
             }

@@ -37,7 +37,7 @@ public interface MessagingListener {
 
     void folderStatusChanged(Account account, String folderServerId);
 
-    void messageUidChanged(Account account, String folderServerId, String oldUid, String newUid);
+    void messageUidChanged(Account account, long folderId, String oldUid, String newUid);
 
     void loadAttachmentFinished(Account account, Message message, Part part);
     void loadAttachmentFailed(Account account, Message message, Part part, String reason);

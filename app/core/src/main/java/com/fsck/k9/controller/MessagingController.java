@@ -741,7 +741,8 @@ public class MessagingController {
      */
     void processPendingAppend(PendingAppend command, Account account) throws MessagingException {
         LocalStore localStore = localStoreProvider.getInstance(account);
-        LocalFolder localFolder = localStore.getFolder(command.folderId);
+        long folderId = command.folderId;
+        LocalFolder localFolder = localStore.getFolder(folderId);
         try {
             localFolder.open();
 
@@ -775,7 +776,7 @@ public class MessagingController {
                     localFolder.changeUid(localMessage);
 
                     for (MessagingListener l : getListeners()) {
-                        l.messageUidChanged(account, folderServerId, oldUid, localMessage.getUid());
+                        l.messageUidChanged(account, folderId, oldUid, localMessage.getUid());
                     }
 
                     return;
@@ -805,7 +806,7 @@ public class MessagingController {
                 localFolder.changeUid(localMessage);
 
                 for (MessagingListener l : getListeners()) {
-                    l.messageUidChanged(account, folderServerId, oldUid, localMessage.getUid());
+                    l.messageUidChanged(account, folderId, oldUid, localMessage.getUid());
                 }
             }
         } finally {
@@ -915,7 +916,7 @@ public class MessagingController {
                 localMessage.setUid(newUid);
                 localDestFolder.changeUid(localMessage);
                 for (MessagingListener l : getListeners()) {
-                    l.messageUidChanged(account, destFolderServerId, localUid, newUid);
+                    l.messageUidChanged(account, destFolderId, localUid, newUid);
                 }
             } else {
                 // New server ID wasn't provided. Remove local message.
@@ -1847,7 +1848,7 @@ public class MessagingController {
                         String origUid = entry.getKey();
                         Message message = entry.getValue();
                         for (MessagingListener l : getListeners()) {
-                            l.messageUidChanged(account, srcFolderServerId, origUid, message.getUid());
+                            l.messageUidChanged(account, srcFolderId, origUid, message.getUid());
                         }
                     }
                     if (operation == MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ) {
