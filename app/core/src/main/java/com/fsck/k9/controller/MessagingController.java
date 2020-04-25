@@ -1290,13 +1290,14 @@ public class MessagingController {
         }
     }
 
-    public LocalMessage loadMessage(Account account, String folderServerId, String uid) throws MessagingException {
+    public LocalMessage loadMessage(Account account, long folderId, String uid) throws MessagingException {
         LocalStore localStore = localStoreProvider.getInstance(account);
-        LocalFolder localFolder = localStore.getFolder(folderServerId);
+        LocalFolder localFolder = localStore.getFolder(folderId);
         localFolder.open();
 
         LocalMessage message = localFolder.getMessage(uid);
         if (message == null || message.getDatabaseId() == 0) {
+            String folderServerId = localFolder.getServerId();
             throw new IllegalArgumentException("Message not found: folder=" + folderServerId + ", uid=" + uid);
         }
 
@@ -1311,13 +1312,14 @@ public class MessagingController {
         return message;
     }
 
-    public LocalMessage loadMessageMetadata(Account account, String folderServerId, String uid) throws MessagingException {
+    public LocalMessage loadMessageMetadata(Account account, long folderId, String uid) throws MessagingException {
         LocalStore localStore = localStoreProvider.getInstance(account);
-        LocalFolder localFolder = localStore.getFolder(folderServerId);
+        LocalFolder localFolder = localStore.getFolder(folderId);
         localFolder.open();
 
         LocalMessage message = localFolder.getMessage(uid);
         if (message == null || message.getDatabaseId() == 0) {
+            String folderServerId = localFolder.getServerId();
             throw new IllegalArgumentException("Message not found: folder=" + folderServerId + ", uid=" + uid);
         }
 
