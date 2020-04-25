@@ -383,7 +383,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     public void onToggleFlagged() {
         if (mMessage != null) {
             boolean newState = !mMessage.isSet(Flag.FLAGGED);
-            mController.setFlag(mAccount, mMessage.getFolder().getServerId(),
+            mController.setFlag(mAccount, mMessage.getFolder().getDatabaseId(),
                     Collections.singletonList(mMessage), Flag.FLAGGED, newState);
             mMessageView.setHeaders(mMessage, mAccount);
         }
@@ -501,7 +501,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     public void onToggleRead() {
         if (mMessage != null) {
-            mController.setFlag(mAccount, mMessage.getFolder().getServerId(),
+            mController.setFlag(mAccount, mMessage.getFolder().getDatabaseId(),
                     Collections.singletonList(mMessage), Flag.SEEN, !mMessage.isSet(Flag.SEEN));
             mMessageView.setHeaders(mMessage, mAccount);
             mFragmentListener.updateMenu();

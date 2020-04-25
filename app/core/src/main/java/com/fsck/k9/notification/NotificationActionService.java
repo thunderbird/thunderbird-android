@@ -170,9 +170,9 @@ public class NotificationActionService extends Service {
         List<String> messageReferenceStrings = intent.getStringArrayListExtra(EXTRA_MESSAGE_REFERENCES);
         List<MessageReference> messageReferences = toMessageReferenceList(messageReferenceStrings);
         for (MessageReference messageReference : messageReferences) {
-            String folderServerId = messageReference.getFolderServerId();
+            long folderId = messageReference.getFolderId();
             String uid = messageReference.getUid();
-            controller.setFlag(account, folderServerId, uid, Flag.SEEN, true);
+            controller.setFlag(account, folderId, uid, Flag.SEEN, true);
         }
     }
 

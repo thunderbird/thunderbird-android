@@ -1117,34 +1117,22 @@ public class MessagingController {
     /**
      * Set or remove a flag for a set of messages in a specific folder.
      * <p>
-     * <p>
      * The {@link Message} objects passed in are updated to reflect the new flag state.
      * </p>
-     *
-     * @param account
-     *         The account the folder containing the messages belongs to.
-     * @param folderServerId
-     *         The server ID of the folder.
-     * @param messages
-     *         The messages to change the flag for.
-     * @param flag
-     *         The flag to change.
-     * @param newState
-     *         {@code true}, if the flag should be set. {@code false} if it should be removed.
      */
-    public void setFlag(Account account, String folderServerId, List<LocalMessage> messages, Flag flag,
-            boolean newState) {
+    public void setFlag(Account account, long folderId, List<LocalMessage> messages, Flag flag, boolean newState) {
         // TODO: Put this into the background, but right now some callers depend on the message
         //       objects being modified right after this method returns.
         LocalFolder localFolder = null;
         try {
             LocalStore localStore = localStoreProvider.getInstance(account);
-            localFolder = localStore.getFolder(folderServerId);
+            localFolder = localStore.getFolder(folderId);
             localFolder.open();
 
             // Update the messages in the local store
             localFolder.setFlags(messages, Collections.singleton(flag), newState);
 
+            String folderServerId = localFolder.getServerId();
             for (MessagingListener l : getListeners()) {
                 l.folderStatusChanged(account, folderServerId);
             }
@@ -1157,7 +1145,7 @@ public class MessagingController {
             // TODO: Skip the remote part for all local-only folders
 
             List<String> uids = getUidsFromMessages(messages);
-            queueSetFlag(account, localFolder.getDatabaseId(), newState, flag, uids);
+            queueSetFlag(account, folderId, newState, flag, uids);
             processPendingCommands(account);
         } catch (MessagingException me) {
             throw new RuntimeException(me);
@@ -1168,29 +1156,17 @@ public class MessagingController {
 
     /**
      * Set or remove a flag for a message referenced by message UID.
-     *
-     * @param account
-     *         The account the folder containing the message belongs to.
-     * @param folderServerId
-     *         The server ID of the folder.
-     * @param uid
-     *         The UID of the message to change the flag for.
-     * @param flag
-     *         The flag to change.
-     * @param newState
-     *         {@code true}, if the flag should be set. {@code false} if it should be removed.
      */
-    public void setFlag(Account account, String folderServerId, String uid, Flag flag,
-            boolean newState) {
+    public void setFlag(Account account, long folderId, String uid, Flag flag, boolean newState) {
         LocalFolder localFolder = null;
         try {
             LocalStore localStore = localStoreProvider.getInstance(account);
-            localFolder = localStore.getFolder(folderServerId);
+            localFolder = localStore.getFolder(folderId);
             localFolder.open();
 
             LocalMessage message = localFolder.getMessage(uid);
             if (message != null) {
-                setFlag(account, folderServerId, Collections.singletonList(message), flag, newState);
+                setFlag(account, folderId, Collections.singletonList(message), flag, newState);
             }
         } catch (MessagingException me) {
             throw new RuntimeException(me);

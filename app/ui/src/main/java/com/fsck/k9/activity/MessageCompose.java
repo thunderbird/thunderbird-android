@@ -1441,17 +1441,16 @@ public class MessageCompose extends K9Activity implements OnClickListener,
          **/
         private void updateReferencedMessage() {
             if (messageReference != null && messageReference.getFlag() != null) {
-                Timber.d("Setting referenced message (%s, %s) flag to %s",
-                        messageReference.getFolderServerId(),
-                        messageReference.getUid(),
-                        messageReference.getFlag());
+                String accountUuid = messageReference.getAccountUuid();
+                Account account = Preferences.getPreferences(context).getAccount(accountUuid);
+                long folderId = messageReference.getFolderId();
+                String sourceMessageUid = messageReference.getUid();
+                Flag flag = messageReference.getFlag();
 
-                final Account account = Preferences.getPreferences(context)
-                        .getAccount(messageReference.getAccountUuid());
-                final String folderServerId = messageReference.getFolderServerId();
-                final String sourceMessageUid = messageReference.getUid();
-                MessagingController.getInstance(context).setFlag(account, folderServerId,
-                        sourceMessageUid, messageReference.getFlag(), true);
+                Timber.d("Setting referenced message (%d, %s) flag to %s", folderId, sourceMessageUid, flag);
+
+                MessagingController messagingController = MessagingController.getInstance(context);
+                messagingController.setFlag(account, folderId, sourceMessageUid, flag, true);
             }
         }
     }
