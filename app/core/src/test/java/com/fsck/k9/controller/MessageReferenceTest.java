@@ -34,7 +34,7 @@ public class MessageReferenceTest {
 
         assertNotNull(messageReference);
         assertEquals("o hai!", messageReference.getAccountUuid());
-        assertEquals("folder", messageReference.getFolderServerId());
+        assertEquals(2, messageReference.getFolderId());
         assertEquals("10101010", messageReference.getUid());
         assertNull(messageReference.getFlag());
     }
@@ -45,7 +45,7 @@ public class MessageReferenceTest {
 
         assertNotNull(messageReference);
         assertEquals("o hai!", messageReference.getAccountUuid());
-        assertEquals("folder", messageReference.getFolderServerId());
+        assertEquals(2, messageReference.getFolderId());
         assertEquals("10101010", messageReference.getUid());
         assertEquals(Flag.ANSWERED, messageReference.getFlag());
     }
@@ -58,7 +58,7 @@ public class MessageReferenceTest {
         MessageReference messageReferenceTwo = messageReferenceOne.withModifiedUid("---");
 
         assertEquals("account", messageReferenceTwo.getAccountUuid());
-        assertEquals("folder", messageReferenceTwo.getFolderServerId());
+        assertEquals(1, messageReferenceTwo.getFolderId());
         assertEquals("---", messageReferenceTwo.getUid());
         assertEquals(Flag.ANSWERED, messageReferenceTwo.getFlag());
     }
@@ -71,7 +71,7 @@ public class MessageReferenceTest {
         MessageReference messageReferenceTwo = messageReferenceOne.withModifiedFlag(Flag.DELETED);
 
         assertEquals("account", messageReferenceTwo.getAccountUuid());
-        assertEquals("folder", messageReferenceTwo.getFolderServerId());
+        assertEquals(1, messageReferenceTwo.getFolderId());
         assertEquals("uid", messageReferenceTwo.getUid());
         assertEquals(Flag.DELETED, messageReferenceTwo.getFlag());
     }
