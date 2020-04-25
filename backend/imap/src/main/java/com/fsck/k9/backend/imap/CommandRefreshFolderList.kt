@@ -9,15 +9,18 @@ internal class CommandRefreshFolderList(
     private val imapStore: ImapStore
 ) {
     fun refreshFolderList() {
-        val foldersOnServer = imapStore.personalNamespaces
+        val foldersOnServer = imapStore.folders
         val oldFolderServerIds = backendStorage.getFolderServerIds()
 
         val foldersToCreate = mutableListOf<FolderInfo>()
         for (folder in foldersOnServer) {
-            if (folder.serverId !in oldFolderServerIds) {
-                foldersToCreate.add(FolderInfo(folder.serverId, folder.name, folder.type))
+            // TODO: Start using the proper server ID. For now we still use the old server ID.
+            val serverId = folder.oldServerId ?: continue
+
+            if (serverId !in oldFolderServerIds) {
+                foldersToCreate.add(FolderInfo(serverId, folder.name, folder.type))
             } else {
-                backendStorage.changeFolder(folder.serverId, folder.name, folder.type)
+                backendStorage.changeFolder(serverId, folder.name, folder.type)
             }
         }
         backendStorage.createFolders(foldersToCreate)
