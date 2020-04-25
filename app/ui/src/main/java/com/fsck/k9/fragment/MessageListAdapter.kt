@@ -295,7 +295,7 @@ class MessageListAdapter internal constructor(
         val activeMessage = this.activeMessage ?: return false
 
         return item.account.uuid == activeMessage.accountUuid &&
-            item.folderServerId == activeMessage.folderServerId &&
+            item.folderId == activeMessage.folderId &&
             item.messageUid == activeMessage.uid
     }
 }
