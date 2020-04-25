@@ -844,14 +844,14 @@ public class LocalFolder {
         open();
 
         String accountUuid = getAccountUuid();
-        String folderServerId = getServerId();
+        long folderId = getDatabaseId();
 
         List<LocalMessage> messages = new ArrayList<>();
         for (MessageReference messageReference : messageReferences) {
             if (!accountUuid.equals(messageReference.getAccountUuid())) {
                 throw new IllegalArgumentException("all message references must belong to this Account!");
             }
-            if (!folderServerId.equals(messageReference.getFolderServerId())) {
+            if (folderId != messageReference.getFolderId()) {
                 throw new IllegalArgumentException("all message references must belong to this LocalFolder!");
             }
 
