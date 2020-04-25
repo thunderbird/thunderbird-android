@@ -424,11 +424,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             Collection<Account> accounts = preferences.getAvailableAccounts();
             for (Account account : accounts) {
                 if (String.valueOf(account.getAccountNumber()).equals(accountId)) {
-                    // FIXME: Change URI to include folder database ID instead of server ID
-                    long folderId = -1;
-                    String folderServerId = segmentList.get(1);
+                    long folderId = Long.parseLong(segmentList.get(1));
                     String messageUid = segmentList.get(2);
-                    messageReference = new MessageReference(account.getUuid(), folderId, folderServerId,
+                    messageReference = new MessageReference(account.getUuid(), folderId, "dummyValue",
                             messageUid, null);
                     break;
                 }

@@ -415,7 +415,7 @@ public class LocalMessage extends MimeMessage {
     }
 
     public String getUri() {
-        return "email://messages/" +  getAccount().getAccountNumber() + "/" + getFolder().getServerId() + "/" + getUid();
+        return "k9mail://messages/" +  getAccount().getAccountNumber() + "/" + getFolder().getDatabaseId() + "/" + getUid();
     }
 
     @Override

@@ -192,7 +192,7 @@
                 <action android:name="android.intent.action.VIEW"/>
                 <data
                     android:host="messages"
-                    android:scheme="email"/>
+                    android:scheme="k9mail"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
