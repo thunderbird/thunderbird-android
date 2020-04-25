@@ -172,7 +172,7 @@ public class RawMessageProvider extends ContentProvider {
 
     private LocalMessage loadMessage(MessageReference messageReference) {
         String accountUuid = messageReference.getAccountUuid();
-        String folderServerId = messageReference.getFolderServerId();
+        long folderId = messageReference.getFolderId();
         String uid = messageReference.getUid();
 
         Account account = Preferences.getPreferences(getContext()).getAccount(accountUuid);
@@ -183,8 +183,9 @@ public class RawMessageProvider extends ContentProvider {
 
         try {
             LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
-            LocalFolder localFolder = localStore.getFolder(folderServerId);
+            LocalFolder localFolder = localStore.getFolder(folderId);
             localFolder.open();
+            String folderServerId = localFolder.getServerId();
 
             LocalMessage message = localFolder.getMessage(uid);
             if (message == null || message.getDatabaseId() == 0) {
@@ -199,7 +200,7 @@ public class RawMessageProvider extends ContentProvider {
 
             return message;
         } catch (MessagingException e) {
-            Timber.e(e, "Error loading message: folder=%s, uid=%s", folderServerId, uid);
+            Timber.e(e, "Error loading message: folder=%d, uid=%s", folderId, uid);
             return null;
         }
     }
