@@ -616,13 +616,21 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public boolean canMessageBeArchived() {
-        return (!mMessageReference.getFolderServerId().equals(mAccount.getArchiveFolder())
-                && mAccount.hasArchiveFolder());
+        Long archiveFolderId = mAccount.getArchiveFolderId();
+        if (archiveFolderId == null) {
+            return false;
+        }
+
+        return mMessageReference.getFolderId() != archiveFolderId;
     }
 
     public boolean canMessageBeMovedToSpam() {
-        return (!mMessageReference.getFolderServerId().equals(mAccount.getSpamFolder())
-                && mAccount.hasSpamFolder());
+        Long spamFolderId = mAccount.getSpamFolderId();
+        if (spamFolderId == null) {
+            return false;
+        }
+
+        return mMessageReference.getFolderId() != spamFolderId;
     }
 
     public Context getApplicationContext() {
