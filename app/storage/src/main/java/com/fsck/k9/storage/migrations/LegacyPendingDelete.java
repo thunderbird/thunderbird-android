@@ -5,7 +5,7 @@ import java.util.List;
 import static com.fsck.k9.controller.Preconditions.requireValidUids;
 import static com.fsck.k9.helper.Preconditions.checkNotNull;
 
-class LegacyPendingDelete {
+class LegacyPendingDelete extends LegacyPendingCommand {
     public final String folder;
     public final List<String> uids;
 
