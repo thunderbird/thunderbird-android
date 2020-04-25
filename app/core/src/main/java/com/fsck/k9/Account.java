@@ -16,11 +16,16 @@ import android.text.TextUtils;
 
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
+import com.fsck.k9.mailstore.LocalStore;
+import com.fsck.k9.mailstore.LocalStoreProvider;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.mailstore.StorageManager.StorageProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import timber.log.Timber;
 
 
 /**
@@ -473,6 +478,22 @@ public class Account implements BaseAccount {
         return archiveFolder;
     }
 
+    public Long getArchiveFolderId() {
+        // FIXME: Persist folder ID instead of folder server ID
+        if (!hasArchiveFolder()) {
+            return null;
+        }
+
+        LocalStoreProvider localStoreProvider = DI.get(LocalStoreProvider.class);
+        try {
+            LocalStore localStore = localStoreProvider.getInstance(this);
+            return localStore.getFolderId(getArchiveFolder());
+        } catch (MessagingException e) {
+            Timber.e(e, "Couldn't load folder ID");
+            return null;
+        }
+    }
+
     public synchronized void setArchiveFolder(String archiveFolder, SpecialFolderSelection selection) {
         this.archiveFolder = archiveFolder;
         archiveFolderSelection = selection;
@@ -488,6 +509,22 @@ public class Account implements BaseAccount {
 
     public synchronized String getSpamFolder() {
         return spamFolder;
+    }
+
+    public Long getSpamFolderId() {
+        // FIXME: Persist folder ID instead of folder server ID
+        if (!hasSpamFolder()) {
+            return null;
+        }
+
+        LocalStoreProvider localStoreProvider = DI.get(LocalStoreProvider.class);
+        try {
+            LocalStore localStore = localStoreProvider.getInstance(this);
+            return localStore.getFolderId(getSpamFolder());
+        } catch (MessagingException e) {
+            Timber.e(e, "Couldn't load folder ID");
+            return null;
+        }
     }
 
     public synchronized void setSpamFolder(String name, SpecialFolderSelection selection) {

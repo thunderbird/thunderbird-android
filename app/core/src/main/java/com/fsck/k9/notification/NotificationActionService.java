@@ -187,10 +187,8 @@ public class NotificationActionService extends Service {
     private void archiveMessages(Intent intent, Account account, MessagingController controller) {
         Timber.i("NotificationActionService archiving messages");
 
-        String archiveFolderName = account.getArchiveFolder();
-        if (archiveFolderName == null ||
-                (archiveFolderName.equals(account.getSpamFolder()) && K9.isConfirmSpam()) ||
-                !isMovePossible(controller, account, archiveFolderName)) {
+        Long archiveFolderId = account.getArchiveFolderId();
+        if (!isMovePossible(controller, account, archiveFolderId)) {
             Timber.w("Can not archive messages");
             return;
         }
@@ -199,8 +197,8 @@ public class NotificationActionService extends Service {
         List<MessageReference> messageReferences = toMessageReferenceList(messageReferenceStrings);
         for (MessageReference messageReference : messageReferences) {
             if (controller.isMoveCapable(messageReference)) {
-                String sourceFolderName = messageReference.getFolderServerId();
-                controller.moveMessage(account, sourceFolderName, messageReference, archiveFolderName);
+                long sourceFolderId = messageReference.getFolderId();
+                controller.moveMessage(account, sourceFolderId, messageReference, archiveFolderId);
             }
         }
     }
@@ -215,10 +213,10 @@ public class NotificationActionService extends Service {
             return;
         }
 
-        String spamFolderName = account.getSpamFolder();
-        if (!K9.isConfirmSpam() && isMovePossible(controller, account, spamFolderName)) {
-            String sourceFolderName = messageReference.getFolderServerId();
-            controller.moveMessage(account, sourceFolderName, messageReference, spamFolderName);
+        Long spamFolderId = account.getSpamFolderId();
+        if (!K9.isConfirmSpam() && isMovePossible(controller, account, spamFolderId)) {
+            long sourceFolderId = messageReference.getFolderId();
+            controller.moveMessage(account, sourceFolderId, messageReference, spamFolderId);
         }
     }
 
@@ -242,8 +240,8 @@ public class NotificationActionService extends Service {
         }
     }
 
-    private boolean isMovePossible(MessagingController controller, Account account, String destinationFolderName) {
-        boolean isSpecialFolderConfigured = destinationFolderName != null;
+    private boolean isMovePossible(MessagingController controller, Account account, Long destinationFolderId) {
+        boolean isSpecialFolderConfigured = destinationFolderId != null;
         return isSpecialFolderConfigured && controller.isMoveCapable(account);
     }
 }

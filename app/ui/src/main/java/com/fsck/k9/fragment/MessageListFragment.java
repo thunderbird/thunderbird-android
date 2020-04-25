@@ -758,11 +758,11 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                     return;
                 }
 
+                long destinationFolderId = data.getLongExtra(ChooseFolderActivity.RESULT_SELECTED_FOLDER_ID, -1L);
                 final String destFolder = data.getStringExtra(ChooseFolderActivity.RESULT_SELECTED_FOLDER);
                 final List<MessageReference> messages = activeMessages;
 
-                if (destFolder != null) {
-
+                if (destinationFolderId != -1L) {
                     activeMessages = null; // don't need it any more
 
                     if (messages.size() > 0) {
@@ -771,11 +771,11 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
                     switch (requestCode) {
                         case ACTIVITY_CHOOSE_FOLDER_MOVE:
-                            move(messages, destFolder);
+                            move(messages, destinationFolderId);
                             break;
 
                         case ACTIVITY_CHOOSE_FOLDER_COPY:
-                            copy(messages, destFolder);
+                            copy(messages, destinationFolderId);
                             break;
                         }
                 }
@@ -1435,10 +1435,9 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
         for (Entry<Account, List<MessageReference>> entry : messagesByAccount.entrySet()) {
             Account account = entry.getKey();
-            String archiveFolder = account.getArchiveFolder();
-
-            if (archiveFolder != null) {
-                move(entry.getValue(), archiveFolder);
+            Long archiveFolderId = account.getArchiveFolderId();
+            if (archiveFolderId != null) {
+                move(entry.getValue(), archiveFolderId);
             }
         }
     }
@@ -1480,10 +1479,9 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
         for (Entry<Account, List<MessageReference>> entry : messagesByAccount.entrySet()) {
             Account account = entry.getKey();
-            String spamFolder = account.getSpamFolder();
-
-            if (spamFolder != null) {
-                move(entry.getValue(), spamFolder);
+            Long spamFolderId = account.getSpamFolderId();
+            if (spamFolderId != null) {
+                move(entry.getValue(), spamFolderId);
             }
         }
     }
@@ -1533,44 +1531,20 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     /**
      * Copy the specified messages to the specified folder.
-     *
-     * @param messages
-     *         List of messages to copy. Never {@code null}.
-     * @param destination
-     *         The name of the destination folder. Never {@code null}.
      */
-    private void copy(List<MessageReference> messages, final String destination) {
-        copyOrMove(messages, destination, FolderOperation.COPY);
+    private void copy(List<MessageReference> messages, long folderId) {
+        copyOrMove(messages, folderId, FolderOperation.COPY);
     }
 
     /**
      * Move the specified messages to the specified folder.
-     *
-     * @param messages
-     *         The list of messages to move. Never {@code null}.
-     * @param destination
-     *         The name of the destination folder. Never {@code null}.
      */
-    private void move(List<MessageReference> messages, final String destination) {
-        copyOrMove(messages, destination, FolderOperation.MOVE);
+    private void move(List<MessageReference> messages, long folderId) {
+        copyOrMove(messages, folderId, FolderOperation.MOVE);
     }
 
-    /**
-     * The underlying implementation for {@link #copy(List, String)} and
-     * {@link #move(List, String)}. This method was added mainly because those 2
-     * methods share common behavior.
-     *
-     * @param messages
-     *         The list of messages to copy or move. Never {@code null}.
-     * @param destination
-     *         The name of the destination folder. Never {@code null}.
-     * @param operation
-     *         Specifies what operation to perform. Never {@code null}.
-     */
-    private void copyOrMove(List<MessageReference> messages, final String destination,
-            final FolderOperation operation) {
-
-        Map<String, List<MessageReference>> folderMap = new HashMap<>();
+    private void copyOrMove(List<MessageReference> messages, long destinationFolderId, FolderOperation operation) {
+        Map<Long, List<MessageReference>> folderMap = new HashMap<>();
 
         for (MessageReference message : messages) {
             if ((operation == FolderOperation.MOVE && !messagingController.isMoveCapable(message)) ||
@@ -1585,37 +1559,37 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 return;
             }
 
-            String folderServerId = message.getFolderServerId();
-            if (folderServerId.equals(destination)) {
+            long folderId = message.getFolderId();
+            if (folderId == destinationFolderId) {
                 // Skip messages already in the destination folder
                 continue;
             }
 
-            List<MessageReference> outMessages = folderMap.get(folderServerId);
+            List<MessageReference> outMessages = folderMap.get(folderId);
             if (outMessages == null) {
                 outMessages = new ArrayList<>();
-                folderMap.put(folderServerId, outMessages);
+                folderMap.put(folderId, outMessages);
             }
 
             outMessages.add(message);
         }
 
-        for (Map.Entry<String, List<MessageReference>> entry : folderMap.entrySet()) {
-            String folderServerId = entry.getKey();
+        for (Map.Entry<Long, List<MessageReference>> entry : folderMap.entrySet()) {
+            long folderId = entry.getKey();
             List<MessageReference> outMessages = entry.getValue();
             Account account = preferences.getAccount(outMessages.get(0).getAccountUuid());
 
             if (operation == FolderOperation.MOVE) {
                 if (showingThreadedList) {
-                    messagingController.moveMessagesInThread(account, folderServerId, outMessages, destination);
+                    messagingController.moveMessagesInThread(account, folderId, outMessages, destinationFolderId);
                 } else {
-                    messagingController.moveMessages(account, folderServerId, outMessages, destination);
+                    messagingController.moveMessages(account, folderId, outMessages, destinationFolderId);
                 }
             } else {
                 if (showingThreadedList) {
-                    messagingController.copyMessagesInThread(account, folderServerId, outMessages, destination);
+                    messagingController.copyMessagesInThread(account, folderId, outMessages, destinationFolderId);
                 } else {
-                    messagingController.copyMessages(account, folderServerId, outMessages, destination);
+                    messagingController.copyMessages(account, folderId, outMessages, destinationFolderId);
                 }
             }
         }

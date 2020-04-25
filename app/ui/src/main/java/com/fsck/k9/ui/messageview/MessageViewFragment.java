@@ -99,7 +99,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
      * Used to temporarily store the destination folder for refile operations if a confirmation
      * dialog is shown.
      */
-    private String mDstFolder;
+    private Long destinationFolderId;
 
     private MessageViewFragmentListener mFragmentListener;
 
@@ -321,7 +321,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         }
     }
 
-    public void onRefile(String dstFolder) {
+    public void onRefile(long dstFolderId) {
         if (!mController.isMoveCapable(mAccount)) {
             return;
         }
@@ -331,23 +331,19 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             return;
         }
 
-        if (dstFolder == null) {
-            return;
-        }
-
-        if (dstFolder.equals(mAccount.getSpamFolder()) && K9.isConfirmSpam()) {
-            mDstFolder = dstFolder;
+        if (dstFolderId == mAccount.getSpamFolderId() && K9.isConfirmSpam()) {
+            destinationFolderId = dstFolderId;
             showDialog(R.id.dialog_confirm_spam);
         } else {
-            refileMessage(dstFolder);
+            refileMessage(dstFolderId);
         }
     }
 
-    private void refileMessage(String dstFolder) {
-        String srcFolder = mMessageReference.getFolderServerId();
+    private void refileMessage(long dstFolderId) {
+        long srcFolderId = mMessageReference.getFolderId();
         MessageReference messageToMove = mMessageReference;
         mFragmentListener.showNextMessageOrReturn();
-        mController.moveMessage(mAccount, srcFolder, messageToMove, dstFolder);
+        mController.moveMessage(mAccount, srcFolderId, messageToMove, dstFolderId);
     }
 
     public void onReply() {
@@ -419,11 +415,11 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public void onArchive() {
-        onRefile(mAccount.getArchiveFolder());
+        onRefile(mAccount.getArchiveFolderId());
     }
 
     public void onSpam() {
-        onRefile(mAccount.getSpamFolder());
+        onRefile(mAccount.getSpamFolderId());
     }
 
     private void startRefileActivity(int requestCode) {
@@ -471,6 +467,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                     return;
                 }
 
+                long destFolderId = data.getLongExtra(ChooseFolderActivity.RESULT_SELECTED_FOLDER_ID, -1L);
                 String destFolder = data.getStringExtra(ChooseFolderActivity.RESULT_SELECTED_FOLDER);
                 String messageReferenceString = data.getStringExtra(ChooseFolderActivity.RESULT_MESSAGE_REFERENCE);
                 MessageReference ref = MessageReference.parse(messageReferenceString);
@@ -479,11 +476,11 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                     switch (requestCode) {
                         case ACTIVITY_CHOOSE_FOLDER_MOVE: {
                             mFragmentListener.showNextMessageOrReturn();
-                            moveMessage(ref, destFolder);
+                            moveMessage(ref, destFolderId);
                             break;
                         }
                         case ACTIVITY_CHOOSE_FOLDER_COPY: {
-                            copyMessage(ref, destFolder);
+                            copyMessage(ref, destFolderId);
                             break;
                         }
                     }
@@ -514,12 +511,12 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         }
     }
 
-    public void moveMessage(MessageReference reference, String destFolderName) {
-        mController.moveMessage(mAccount, mMessageReference.getFolderServerId(), reference, destFolderName);
+    public void moveMessage(MessageReference reference, long folderId) {
+        mController.moveMessage(mAccount, mMessageReference.getFolderId(), reference, folderId);
     }
 
-    public void copyMessage(MessageReference reference, String destFolderName) {
-        mController.copyMessage(mAccount, mMessageReference.getFolderServerId(), reference, destFolderName);
+    public void copyMessage(MessageReference reference, long folderId) {
+        mController.copyMessage(mAccount, mMessageReference.getFolderId(), reference, folderId);
     }
 
     private void showDialog(int dialogId) {
@@ -584,8 +581,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         if (dialogId == R.id.dialog_confirm_delete) {
             delete();
         } else if (dialogId == R.id.dialog_confirm_spam) {
-            refileMessage(mDstFolder);
-            mDstFolder = null;
+            refileMessage(destinationFolderId);
+            destinationFolderId = null;
         }
     }
 
