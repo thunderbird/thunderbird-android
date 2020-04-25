@@ -94,7 +94,7 @@ class ChooseFolderActivity : K9Activity() {
         val folderListAdapter = FastAdapter.with(itemAdapter).apply {
             setHasStableIds(true)
             onClickListener = { _, _, item: FolderListItem, _ ->
-                returnResult(item.serverId, item.displayName)
+                returnResult(item.databaseId, item.serverId, item.displayName)
                 true
             }
         }
@@ -191,8 +191,9 @@ class ChooseFolderActivity : K9Activity() {
         }
     }
 
-    private fun returnResult(folderServerId: String, displayName: String) {
+    private fun returnResult(folderId: Long, folderServerId: String, displayName: String) {
         val result = Intent().apply {
+            putExtra(RESULT_SELECTED_FOLDER_ID, folderId)
             putExtra(RESULT_SELECTED_FOLDER, folderServerId)
             putExtra(RESULT_FOLDER_DISPLAY_NAME, displayName)
             putExtra(RESULT_MESSAGE_REFERENCE, messageReference)
@@ -220,7 +221,9 @@ class ChooseFolderActivity : K9Activity() {
         private const val EXTRA_SCROLL_TO_FOLDER = "scrollToFolder"
         private const val EXTRA_MESSAGE_REFERENCE = "messageReference"
         private const val EXTRA_SHOW_DISPLAYABLE_ONLY = "showDisplayableOnly"
+        @Deprecated(message = "Use RESULT_SELECTED_FOLDER_ID instead")
         const val RESULT_SELECTED_FOLDER = "selectedFolder"
+        const val RESULT_SELECTED_FOLDER_ID = "selectedFolderId"
         const val RESULT_FOLDER_DISPLAY_NAME = "folderDisplayName"
         const val RESULT_MESSAGE_REFERENCE = "messageReference"
 
