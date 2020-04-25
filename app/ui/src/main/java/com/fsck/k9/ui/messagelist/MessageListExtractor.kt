@@ -48,6 +48,7 @@ class MessageListExtractor(
         val isMessageEncrypted = previewType == DatabasePreviewType.ENCRYPTED
         val previewText = getPreviewText(previewType, cursor)
         val uniqueId = cursor.getLong(uniqueIdColumn)
+        val folderId = cursor.getLong(MLFProjectionInfo.FOLDER_ID_COLUMN)
         val folderServerId = cursor.getString(MLFProjectionInfo.FOLDER_SERVER_ID_COLUMN)
         val messageUid = cursor.getString(MLFProjectionInfo.UID_COLUMN)
         val databaseId = cursor.getLong(MLFProjectionInfo.ID_COLUMN)
@@ -73,6 +74,7 @@ class MessageListExtractor(
                 isForwarded,
                 hasAttachments,
                 uniqueId,
+                folderId,
                 folderServerId,
                 messageUid,
                 databaseId,

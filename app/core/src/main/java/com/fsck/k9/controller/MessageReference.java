@@ -8,15 +8,18 @@ import androidx.annotation.Nullable;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.filter.Base64;
 
+import org.jetbrains.annotations.NotNull;
+
 import static com.fsck.k9.helper.Preconditions.checkNotNull;
 
 
 public class MessageReference {
-    private static final char IDENTITY_VERSION_1 = '!';
+    private static final char IDENTITY_VERSION_2 = '#';
     private static final String IDENTITY_SEPARATOR = ":";
 
 
     private final String accountUuid;
+    private final long folderId;
     private final String folderServerId;
     private final String uid;
     private final Flag flag;
@@ -24,7 +27,7 @@ public class MessageReference {
 
     @Nullable
     public static MessageReference parse(String identity) {
-        if (identity == null || identity.length() < 1 || identity.charAt(0) != IDENTITY_VERSION_1) {
+        if (identity == null || identity.length() < 1 || identity.charAt(0) != IDENTITY_VERSION_2) {
             return null;
         }
 
@@ -34,11 +37,12 @@ public class MessageReference {
         }
 
         String accountUuid = Base64.decode(tokens.nextToken());
+        long folderId = Long.parseLong(Base64.decode(tokens.nextToken()));
         String folderServerId = Base64.decode(tokens.nextToken());
         String uid = Base64.decode(tokens.nextToken());
 
         if (!tokens.hasMoreTokens()) {
-            return new MessageReference(accountUuid, folderServerId, uid, null);
+            return new MessageReference(accountUuid, folderId, folderServerId, uid, null);
         }
 
         Flag flag;
@@ -48,11 +52,12 @@ public class MessageReference {
             return null;
         }
 
-        return new MessageReference(accountUuid, folderServerId, uid, flag);
+        return new MessageReference(accountUuid, folderId, folderServerId, uid, flag);
     }
 
-    public MessageReference(String accountUuid, String folderServerId, String uid, Flag flag) {
+    public MessageReference(String accountUuid, long folderId, String folderServerId, String uid, Flag flag) {
         this.accountUuid = checkNotNull(accountUuid);
+        this.folderId = folderId;
         this.folderServerId = checkNotNull(folderServerId);
         this.uid = checkNotNull(uid);
         this.flag = flag;
@@ -61,9 +66,11 @@ public class MessageReference {
     public String toIdentityString() {
         StringBuilder refString = new StringBuilder();
 
-        refString.append(IDENTITY_VERSION_1);
+        refString.append(IDENTITY_VERSION_2);
         refString.append(IDENTITY_SEPARATOR);
         refString.append(Base64.encode(accountUuid));
+        refString.append(IDENTITY_SEPARATOR);
+        refString.append(Base64.encode(Long.toString(folderId)));
         refString.append(IDENTITY_SEPARATOR);
         refString.append(Base64.encode(folderServerId));
         refString.append(IDENTITY_SEPARATOR);
@@ -100,10 +107,12 @@ public class MessageReference {
         return result;
     }
 
+    @NotNull
     @Override
     public String toString() {
         return "MessageReference{" +
                "accountUuid='" + accountUuid + '\'' +
+               ", folderId='" + folderId + '\'' +
                ", folderServerId='" + folderServerId + '\'' +
                ", uid='" + uid + '\'' +
                ", flag=" + flag +
@@ -112,6 +121,10 @@ public class MessageReference {
 
     public String getAccountUuid() {
         return accountUuid;
+    }
+
+    public long getFolderId() {
+        return folderId;
     }
 
     public String getFolderServerId() {
@@ -127,10 +140,10 @@ public class MessageReference {
     }
 
     public MessageReference withModifiedUid(String newUid) {
-        return new MessageReference(accountUuid, folderServerId, newUid, flag);
+        return new MessageReference(accountUuid, folderId, folderServerId, newUid, flag);
     }
 
     public MessageReference withModifiedFlag(Flag newFlag) {
-        return new MessageReference(accountUuid, folderServerId, uid, newFlag);
+        return new MessageReference(accountUuid, folderId, folderServerId, uid, newFlag);
     }
 }

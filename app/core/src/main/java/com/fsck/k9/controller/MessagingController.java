@@ -1951,12 +1951,14 @@ public class MessagingController {
         LocalFolder localFolder = null;
         try {
             LocalStore localStore = localStoreProvider.getInstance(account);
-            localFolder = localStore.getFolder(account.getDraftsFolder());
+            String folderServerId = account.getDraftsFolder();
+            localFolder = localStore.getFolder(folderServerId);
             localFolder.open();
             String uid = localFolder.getMessageUidById(id);
             if (uid != null) {
+                long folderId = localFolder.getDatabaseId();
                 MessageReference messageReference = new MessageReference(
-                        account.getUuid(), account.getDraftsFolder(), uid, null);
+                        account.getUuid(), folderId, folderServerId, uid, null);
                 deleteMessage(messageReference, null);
             }
         } catch (MessagingException me) {
