@@ -1360,17 +1360,17 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             return;
         }
 
-        String folderServerId;
+        Long folderId;
         if (isThreadDisplay) {
-            folderServerId = messages.get(0).getFolderServerId();
+            folderId = messages.get(0).getFolderId();
         } else if (singleFolderMode) {
-            folderServerId = currentFolder.serverId;
+            folderId = currentFolder.databaseId;
         } else {
-            folderServerId = null;
+            folderId = null;
         }
 
 
-        displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_MOVE, folderServerId,
+        displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_MOVE, folderId,
                 messages.get(0).getAccountUuid(), null,
                 messages);
     }
@@ -1390,16 +1390,16 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             return;
         }
 
-        String folderServerId;
+        Long folderId;
         if (isThreadDisplay) {
-            folderServerId = messages.get(0).getFolderServerId();
+            folderId = messages.get(0).getFolderId();
         } else if (singleFolderMode) {
-            folderServerId = currentFolder.serverId;
+            folderId = currentFolder.databaseId;
         } else {
-            folderServerId = null;
+            folderId = null;
         }
 
-        displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_COPY, folderServerId,
+        displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_COPY, folderId,
                 messages.get(0).getAccountUuid(),
                 null,
                 messages);
@@ -1415,10 +1415,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
      *
      * @see #startActivityForResult(Intent, int)
      */
-    private void displayFolderChoice(int requestCode, String sourceFolder,
+    private void displayFolderChoice(int requestCode, Long sourceFolderId,
             String accountUuid, String lastSelectedFolder,
             List<MessageReference> messages) {
-        Intent intent = ChooseFolderActivity.buildLaunchIntent(requireContext(), accountUuid, sourceFolder,
+        Intent intent = ChooseFolderActivity.buildLaunchIntent(requireContext(), accountUuid, sourceFolderId,
                 lastSelectedFolder, false, null);
 
         // remember the selected messages for #onActivityResult

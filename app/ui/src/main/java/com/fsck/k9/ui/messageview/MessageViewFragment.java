@@ -428,9 +428,9 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     private void startRefileActivity(int requestCode) {
         String accountUuid = mAccount.getUuid();
-        String currentFolder = mMessageReference.getFolderServerId();
+        long currentFolderId = mMessageReference.getFolderId();
         String scrollToFolder = mAccount.getLastSelectedFolder();
-        Intent intent = ChooseFolderActivity.buildLaunchIntent(requireActivity(), accountUuid, currentFolder,
+        Intent intent = ChooseFolderActivity.buildLaunchIntent(requireActivity(), accountUuid, currentFolderId,
                 scrollToFolder, false, mMessageReference);
 
         startActivityForResult(intent, requestCode);

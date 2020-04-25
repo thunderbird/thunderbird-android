@@ -16,6 +16,7 @@ import com.fsck.k9.activity.K9Activity
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.mailstore.DisplayFolder
+import com.fsck.k9.mailstore.FolderType
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.folders.FolderIconProvider
 import com.fsck.k9.ui.folders.FolderNameFormatter
@@ -37,7 +38,7 @@ class ChooseFolderActivity : K9Activity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var itemAdapter: ItemAdapter<FolderListItem>
     private lateinit var account: Account
-    private var currentFolder: String? = null
+    private var currentFolderId: Long? = null
     private var scrollToFolder: String? = null
     private var messageReference: String? = null
     private var showDisplayableOnly = false
@@ -71,7 +72,7 @@ class ChooseFolderActivity : K9Activity() {
         account = preferences.getAccount(accountUuid) ?: return false
 
         messageReference = intent.getStringExtra(EXTRA_MESSAGE_REFERENCE)
-        currentFolder = intent.getStringExtra(EXTRA_CURRENT_FOLDER)
+        currentFolderId = intent.getLongExtraOrNull(EXTRA_CURRENT_FOLDER_ID)
         showDisplayableOnly = intent.getBooleanExtra(EXTRA_SHOW_DISPLAYABLE_ONLY, false)
 
         scrollToFolder = if (savedInstanceState != null) {
@@ -104,14 +105,9 @@ class ChooseFolderActivity : K9Activity() {
     }
 
     private fun updateFolderList(displayFolders: List<DisplayFolder>) {
-        val foldersToHide = if (currentFolder != null) {
-            setOf(currentFolder, Account.OUTBOX)
-        } else {
-            setOf(Account.OUTBOX)
-        }
-
         val folderListItems = displayFolders.asSequence()
-            .filterNot { it.folder.serverId in foldersToHide }
+            .filterNot { it.folder.type == FolderType.OUTBOX }
+            .filterNot { it.folder.id == currentFolderId }
             .map { displayFolder ->
                 val databaseId = displayFolder.folder.id
                 val folderIconResource = folderIconProvider.getFolderIcon(displayFolder.folder.type)
@@ -213,11 +209,18 @@ class ChooseFolderActivity : K9Activity() {
             .any { it in displayName }
     }
 
+    private fun Intent.getLongExtraOrNull(name: String): Long? {
+        if (!hasExtra(name)) return null
+
+        val value = getLongExtra(name, -1L)
+        return if (value != -1L) value else null
+    }
+
     companion object {
         private const val STATE_SCROLL_TO_FOLDER = "scrollToFolder"
         private const val STATE_DISPLAY_MODE = "displayMode"
         private const val EXTRA_ACCOUNT = "accountUuid"
-        private const val EXTRA_CURRENT_FOLDER = "currentFolder"
+        private const val EXTRA_CURRENT_FOLDER_ID = "currentFolderId"
         private const val EXTRA_SCROLL_TO_FOLDER = "scrollToFolder"
         private const val EXTRA_MESSAGE_REFERENCE = "messageReference"
         private const val EXTRA_SHOW_DISPLAYABLE_ONLY = "showDisplayableOnly"
@@ -231,14 +234,14 @@ class ChooseFolderActivity : K9Activity() {
         fun buildLaunchIntent(
             context: Context,
             accountUuid: String,
-            currentFolder: String? = null,
+            currentFolderId: Long? = null,
             scrollToFolder: String? = null,
             showDisplayableOnly: Boolean = false,
             messageReference: MessageReference? = null
         ): Intent {
             return Intent(context, ChooseFolderActivity::class.java).apply {
                 putExtra(EXTRA_ACCOUNT, accountUuid)
-                putExtra(EXTRA_CURRENT_FOLDER, currentFolder)
+                currentFolderId?.let { putExtra(EXTRA_CURRENT_FOLDER_ID, currentFolderId) }
                 putExtra(EXTRA_SCROLL_TO_FOLDER, scrollToFolder)
                 putExtra(EXTRA_SHOW_DISPLAYABLE_ONLY, showDisplayableOnly)
                 messageReference?.let { putExtra(EXTRA_MESSAGE_REFERENCE, it.toIdentityString()) }
