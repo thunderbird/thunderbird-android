@@ -38,6 +38,12 @@ class SettingsExportViewModel(
                     ?: uiModel.settingsList.first { it is SettingsListItem.GeneralSettings }.selected
         }
 
+    private val includePasswords: Boolean
+        get() {
+            return savedSelection?.includePasswords
+                    ?: uiModel.settingsList.first { it is SettingsListItem.Passwords }.selected
+        }
+
     private val selectedAccounts: Set<AccountUuid>
         get() {
             return savedSelection?.selectedAccountUuids
@@ -65,6 +71,9 @@ class SettingsExportViewModel(
                     val generalSettings = SettingsListItem.GeneralSettings.apply {
                         selected = savedState == null || savedState.includeGeneralSettings
                     }
+                    val passwords = SettingsListItem.Passwords.apply {
+                        selected = savedState == null || savedState.includePasswords
+                    }
 
                     val accountListItems = accounts.map { account ->
                         SettingsListItem.Account(account.accountNumber, account.displayName, account.email).apply {
@@ -72,7 +81,7 @@ class SettingsExportViewModel(
                         }
                     }
 
-                    listOf(generalSettings) + accountListItems
+                    listOf(generalSettings, passwords) + accountListItems
                 }
 
                 updateUiModel {
@@ -87,6 +96,7 @@ class SettingsExportViewModel(
     fun initializeFromSavedState(savedInstanceState: Bundle) {
         savedSelection = SavedListItemSelection(
                 includeGeneralSettings = savedInstanceState.getBoolean(STATE_INCLUDE_GENERAL_SETTINGS),
+                includePasswords = savedInstanceState.getBoolean(STATE_INCLUDE_PASSWORDS),
                 selectedAccountUuids = savedInstanceState.getStringArray(STATE_SELECTED_ACCOUNTS)?.toSet() ?: emptySet()
         )
 
@@ -128,13 +138,14 @@ class SettingsExportViewModel(
         }
 
         val includeGeneralSettings = this.includeGeneralSettings
+        val includePasswords = this.includePasswords
         val selectedAccounts = this.selectedAccounts
 
         viewModelScope.launch {
             try {
                 val elapsed = measureRealtimeMillis {
                     withContext(Dispatchers.IO) {
-                        settingsExporter.exportToUri(includeGeneralSettings, selectedAccounts, contentUri)
+                        settingsExporter.exportToUri(includeGeneralSettings, selectedAccounts, contentUri, includePasswords)
                     }
                 }
 
@@ -167,6 +178,7 @@ class SettingsExportViewModel(
         outState.putString(STATE_STATUS_TEXT, uiModel.statusText.name)
 
         outState.putBoolean(STATE_INCLUDE_GENERAL_SETTINGS, includeGeneralSettings)
+        outState.putBoolean(STATE_INCLUDE_PASSWORDS, includePasswords)
         outState.putStringArray(STATE_SELECTED_ACCOUNTS, selectedAccounts.toTypedArray())
 
         outState.putParcelable(STATE_CONTENT_URI, contentUri)
@@ -199,6 +211,7 @@ class SettingsExportViewModel(
         private const val STATE_PROGRESS_VISIBLE = "progressVisible"
         private const val STATE_STATUS_TEXT = "statusText"
         private const val STATE_INCLUDE_GENERAL_SETTINGS = "includeGeneralSettings"
+        private const val STATE_INCLUDE_PASSWORDS = "includePasswords"
         private const val STATE_SELECTED_ACCOUNTS = "selectedAccounts"
         private const val STATE_CONTENT_URI = "contentUri"
     }
@@ -211,5 +224,6 @@ sealed class Action {
 
 private data class SavedListItemSelection(
     val includeGeneralSettings: Boolean,
+    val includePasswords: Boolean,
     val selectedAccountUuids: Set<AccountUuid>
 )

@@ -1,21 +1,11 @@
 package com.fsck.k9.preferences;
 
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 import android.content.Context;
 import android.content.SharedPreferences;
-import androidx.annotation.VisibleForTesting;
 import android.text.TextUtils;
+
+import androidx.annotation.VisibleForTesting;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountPreferenceSerializer;
@@ -31,9 +21,22 @@ import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator;
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 import timber.log.Timber;
 
 
@@ -81,8 +84,8 @@ public class SettingsImporter {
         public final String outgoingServerName;
 
         private AccountDescriptionPair(AccountDescription original, AccountDescription imported,
-                boolean overwritten, boolean incomingPasswordNeeded, boolean outgoingPasswordNeeded,
-                String incomingServerName, String outgoingServerName) {
+                                       boolean overwritten, boolean incomingPasswordNeeded, boolean outgoingPasswordNeeded,
+                                       String incomingServerName, String outgoingServerName) {
             this.original = original;
             this.imported = imported;
             this.overwritten = overwritten;
@@ -99,7 +102,7 @@ public class SettingsImporter {
         public final List<AccountDescription> erroneousAccounts;
 
         private ImportResults(boolean globalSettings, List<AccountDescriptionPair> importedAccounts,
-                List<AccountDescription> erroneousAccounts) {
+                              List<AccountDescription> erroneousAccounts) {
             this.globalSettings = globalSettings;
             this.importedAccounts = importedAccounts;
             this.erroneousAccounts = erroneousAccounts;
@@ -111,14 +114,10 @@ public class SettingsImporter {
      * settings and/or account settings. For all account configurations found, the name of the
      * account along with the account UUID is returned.
      *
-     * @param inputStream
-     *         An {@code InputStream} to read the settings from.
-     *
+     * @param inputStream An {@code InputStream} to read the settings from.
      * @return An {@link ImportContents} instance containing information about the contents of the
-     *         settings file.
-     *
-     * @throws SettingsImportExportException
-     *         In case of an error.
+     * settings file.
+     * @throws SettingsImportExportException In case of an error.
      */
     public static ImportContents getImportStreamContents(InputStream inputStream)
             throws SettingsImportExportException {
@@ -155,24 +154,17 @@ public class SettingsImporter {
      * Reads an import {@link InputStream} and imports the global settings and/or account
      * configurations specified by the arguments.
      *
-     * @param context
-     *         A {@link Context} instance.
-     * @param inputStream
-     *         The {@code InputStream} to read the settings from.
-     * @param globalSettings
-     *         {@code true} if global settings should be imported from the file.
-     * @param accountUuids
-     *         A list of UUIDs of the accounts that should be imported.
-     * @param overwrite
-     *         {@code true} if existing accounts should be overwritten when an account with the
-     *         same UUID is found in the settings file.<br>
-     *         <strong>Note:</strong> This can have side-effects we currently don't handle, e.g.
-     *         changing the account type from IMAP to POP3. So don't use this for now!
+     * @param context        A {@link Context} instance.
+     * @param inputStream    The {@code InputStream} to read the settings from.
+     * @param globalSettings {@code true} if global settings should be imported from the file.
+     * @param accountUuids   A list of UUIDs of the accounts that should be imported.
+     * @param overwrite      {@code true} if existing accounts should be overwritten when an account with the
+     *                       same UUID is found in the settings file.<br>
+     *                       <strong>Note:</strong> This can have side-effects we currently don't handle, e.g.
+     *                       changing the account type from IMAP to POP3. So don't use this for now!
      * @return An {@link ImportResults} instance containing information about errors and
-     *         successfully imported accounts.
-     *
-     * @throws SettingsImportExportException
-     *         In case of an error.
+     * successfully imported accounts.
+     * @throws SettingsImportExportException In case of an error.
      */
     public static ImportResults importSettings(Context context, InputStream inputStream, boolean globalSettings,
                                                List<String> accountUuids, boolean overwrite) throws SettingsImportExportException {
@@ -284,8 +276,7 @@ public class SettingsImporter {
 
             // Create special local folders
             for (AccountDescriptionPair importedAccount : importedAccounts) {
-                String accountUuid = importedAccount.imported.uuid;
-                Account account = preferences.getAccount(accountUuid);
+                String accountUuid = importedAccount.imported.uuid;Account account = preferences.getAccount(accountUuid);
 
                 localFoldersCreator.createSpecialLocalFolders(account);
             }
@@ -303,7 +294,7 @@ public class SettingsImporter {
     }
 
     private static void importGlobalSettings(Storage storage, StorageEditor editor, int contentVersion,
-            ImportedSettings settings) {
+                                             ImportedSettings settings) {
 
         // Validate global settings
         Map<String, Object> validatedSettings = GeneralSettingsDescriptions.validate(contentVersion, settings.settings);
@@ -328,7 +319,7 @@ public class SettingsImporter {
     }
 
     private static AccountDescriptionPair importAccount(Context context, StorageEditor editor, int contentVersion,
-            ImportedAccount account, boolean overwrite) throws InvalidSettingValueException {
+                                                        ImportedAccount account, boolean overwrite) throws InvalidSettingValueException {
 
         AccountDescription original = new AccountDescription(account.name, account.uuid);
 
@@ -393,7 +384,7 @@ public class SettingsImporter {
 
             /*
              * Mark account as disabled if the settings file contained a username but no password. However, no password
-             * is required for the outgoing server for WebDAV accounts, because incoming and outgoing servers are 
+             * is required for the outgoing server for WebDAV accounts, because incoming and outgoing servers are
              * identical for this account type. Nor is a password required if the AuthType is EXTERNAL.
              */
             String outgoingServerType = ServerTypeConverter.toServerSettingsType(outgoing.type);
@@ -468,7 +459,7 @@ public class SettingsImporter {
     }
 
     private static void importFolder(StorageEditor editor, int contentVersion, String uuid, ImportedFolder folder,
-            boolean overwrite, Preferences prefs) {
+                                     boolean overwrite, Preferences prefs) {
 
         // Validate folder settings
         Map<String, Object> validatedSettings =
@@ -501,7 +492,7 @@ public class SettingsImporter {
     }
 
     private static void importIdentities(StorageEditor editor, int contentVersion, String uuid, ImportedAccount account,
-            boolean overwrite, Account existingAccount, Preferences prefs) throws InvalidSettingValueException {
+                                         boolean overwrite, Account existingAccount, Preferences prefs) throws InvalidSettingValueException {
 
         String accountKeyPrefix = uuid + ".";
 
@@ -631,12 +622,9 @@ public class SettingsImporter {
      * Write to an {@link SharedPreferences.Editor} while logging what is written if debug logging
      * is enabled.
      *
-     * @param editor
-     *         The {@code Editor} to write to.
-     * @param key
-     *         The name of the preference to modify.
-     * @param value
-     *         The new value for the preference.
+     * @param editor The {@code Editor} to write to.
+     * @param key    The name of the preference to modify.
+     * @param value  The new value for the preference.
      */
     private static void putString(StorageEditor editor, String key, String value) {
         if (K9.isDebugLoggingEnabled()) {
@@ -651,7 +639,7 @@ public class SettingsImporter {
 
     @VisibleForTesting
     static Imported parseSettings(InputStream inputStream, boolean globalSettings, List<String> accountUuids,
-            boolean overview) throws SettingsImportExportException {
+                                  boolean overview) throws SettingsImportExportException {
 
         if (!overview && accountUuids == null) {
             throw new IllegalArgumentException("Argument 'accountUuids' must not be null.");
@@ -704,7 +692,7 @@ public class SettingsImporter {
     }
 
     private static Imported parseRoot(XmlPullParser xpp, boolean globalSettings, List<String> accountUuids,
-            boolean overview) throws XmlPullParserException, IOException, SettingsImportExportException {
+                                      boolean overview) throws XmlPullParserException, IOException, SettingsImportExportException {
 
         Imported result = new Imported();
 
@@ -823,7 +811,7 @@ public class SettingsImporter {
     }
 
     private static Map<String, ImportedAccount> parseAccounts(XmlPullParser xpp, List<String> accountUuids,
-            boolean overview) throws XmlPullParserException, IOException {
+                                                              boolean overview) throws XmlPullParserException, IOException {
 
         Map<String, ImportedAccount> accounts = null;
 

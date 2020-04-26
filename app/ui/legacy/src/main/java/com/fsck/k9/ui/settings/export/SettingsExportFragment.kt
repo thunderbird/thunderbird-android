@@ -97,6 +97,7 @@ class SettingsExportFragment : Fragment() {
         val checkBoxItems = items.map { item ->
             val checkBoxItem = when (item) {
                 is SettingsListItem.GeneralSettings -> GeneralSettingsItem()
+                is SettingsListItem.Passwords -> PasswordItem()
                 is SettingsListItem.Account -> AccountItem(item)
             }
 

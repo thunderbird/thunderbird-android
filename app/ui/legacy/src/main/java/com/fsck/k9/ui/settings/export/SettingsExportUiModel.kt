@@ -70,9 +70,10 @@ class SettingsExportUiModel {
 }
 
 sealed class SettingsListItem {
-    var selected: Boolean = true
+        var selected: Boolean = true
 
     object GeneralSettings : SettingsListItem()
+    object Passwords : SettingsListItem()
     data class Account(
         val accountNumber: Int,
         val displayName: String,

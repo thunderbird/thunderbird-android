@@ -29,10 +29,10 @@ class SettingsExporter(
     private val folderRepositoryManager: FolderRepositoryManager
 ) {
     @Throws(SettingsImportExportException::class)
-    fun exportToUri(includeGlobals: Boolean, accountUuids: Set<String>, uri: Uri) {
+    fun exportToUri(includeGlobals: Boolean, accountUuids: Set<String>, uri: Uri, withPassword: Boolean) {
         try {
             contentResolver.openOutputStream(uri)!!.use { outputStream ->
-                exportPreferences(outputStream, includeGlobals, accountUuids)
+                exportPreferences(outputStream, includeGlobals, accountUuids, withPassword)
             }
         } catch (e: Exception) {
             throw SettingsImportExportException(e)
@@ -40,7 +40,7 @@ class SettingsExporter(
     }
 
     @Throws(SettingsImportExportException::class)
-    fun exportPreferences(outputStream: OutputStream, includeGlobals: Boolean, accountUuids: Set<String>) {
+    fun exportPreferences(outputStream: OutputStream, includeGlobals: Boolean, accountUuids: Set<String>, withPassword: Boolean) {
         try {
             val serializer = Xml.newSerializer()
             serializer.setOutput(outputStream, "UTF-8")
@@ -68,7 +68,7 @@ class SettingsExporter(
             serializer.startTag(null, ACCOUNTS_ELEMENT)
             for (accountUuid in accountUuids) {
                 val account = preferences.getAccount(accountUuid)
-                writeAccount(serializer, account, prefs)
+                writeAccount(serializer, account, prefs, withPassword)
             }
             serializer.endTag(null, ACCOUNTS_ELEMENT)
 
@@ -90,8 +90,10 @@ class SettingsExporter(
                 try {
                     writeKeyAndPrettyValueFromSetting(serializer, key, setting, valueString)
                 } catch (e: InvalidSettingValueException) {
-                    Timber.w("Global setting \"%s\" has invalid value \"%s\" in preference storage. " +
-                        "This shouldn't happen!", key, valueString)
+                    Timber.w(
+                        "Global setting \"%s\" has invalid value \"%s\" in preference storage. " +
+                            "This shouldn't happen!", key, valueString
+                    )
                 }
             } else {
                 Timber.d("Couldn't find key \"%s\" in preference storage. Using default value.", key)
@@ -100,7 +102,7 @@ class SettingsExporter(
         }
     }
 
-    private fun writeAccount(serializer: XmlSerializer, account: Account, prefs: Map<String, Any>) {
+    private fun writeAccount(serializer: XmlSerializer, account: Account, prefs: Map<String, Any>, withPassword: Boolean) {
         val identities = mutableSetOf<Int>()
         val accountUuid = account.uuid
 
@@ -130,9 +132,9 @@ class SettingsExporter(
             writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, incoming.authenticationType.name)
         }
         writeElement(serializer, USERNAME_ELEMENT, incoming.username)
+        if (withPassword)
+            writeElement(serializer, PASSWORD_ELEMENT, incoming.password)
         writeElement(serializer, CLIENT_CERTIFICATE_ALIAS_ELEMENT, incoming.clientCertificateAlias)
-        // XXX For now we don't export the password
-        // writeElement(serializer, PASSWORD_ELEMENT, incoming.password);
 
         var extras = incoming.extra
         if (!extras.isNullOrEmpty()) {
@@ -160,9 +162,9 @@ class SettingsExporter(
             writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, outgoing.authenticationType.name)
         }
         writeElement(serializer, USERNAME_ELEMENT, outgoing.username)
+        if (withPassword)
+            writeElement(serializer, PASSWORD_ELEMENT, outgoing.password)
         writeElement(serializer, CLIENT_CERTIFICATE_ALIAS_ELEMENT, outgoing.clientCertificateAlias)
-        // XXX For now we don't export the password
-        // writeElement(serializer, PASSWORD_ELEMENT, outgoing.password);
 
         extras = outgoing.extra
         if (!extras.isNullOrEmpty()) {
@@ -353,8 +355,9 @@ class SettingsExporter(
                     try {
                         writeKeyAndPrettyValueFromSetting(serializer, identityKey, setting, valueString)
                     } catch (e: InvalidSettingValueException) {
-                        Timber.w("Identity setting \"%s\" has invalid value \"%s\" in preference storage. " +
-                            "This shouldn't happen!", identityKey, valueString
+                        Timber.w(
+                            "Identity setting \"%s\" has invalid value \"%s\" in preference storage. " +
+                                "This shouldn't happen!", identityKey, valueString
                         )
                     }
                 }
@@ -390,8 +393,10 @@ class SettingsExporter(
                 try {
                     writeKeyAndPrettyValueFromSetting(serializer, key, setting, value)
                 } catch (e: InvalidSettingValueException) {
-                    Timber.w("Folder setting \"%s\" has invalid value \"%s\" in preference storage. " +
-                        "This shouldn't happen!", key, value)
+                    Timber.w(
+                        "Folder setting \"%s\" has invalid value \"%s\" in preference storage. " +
+                            "This shouldn't happen!", key, value
+                    )
                 }
             }
         }
