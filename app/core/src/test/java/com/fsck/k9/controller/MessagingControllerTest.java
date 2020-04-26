@@ -382,7 +382,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
         controller.sendPendingMessagesSynchronous(account);
 
-        verify(listener).synchronizeMailboxProgress(account, "Sent", 0, 1);
+        verify(listener).synchronizeMailboxProgress(account, FOLDER_ID, 0, 1);
     }
 
     @Test
@@ -421,7 +421,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
         controller.sendPendingMessagesSynchronous(account);
 
-        verify(listener).synchronizeMailboxProgress(account, "Sent", 1, 1);
+        verify(listener).synchronizeMailboxProgress(account, FOLDER_ID, 1, 1);
     }
 
     @Test
@@ -430,7 +430,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
         controller.sendPendingMessagesSynchronous(account);
 
-        verify(listener).synchronizeMailboxProgress(account, "Sent", 1, 1);
+        verify(listener).synchronizeMailboxProgress(account, FOLDER_ID, 1, 1);
     }
 
     @Test

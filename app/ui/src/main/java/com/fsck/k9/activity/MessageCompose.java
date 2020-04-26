@@ -1063,10 +1063,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void openDefaultFolder() {
-        String folder = defaultFolderProvider.getDefaultFolder(account);
-        LocalSearch search = new LocalSearch(folder);
+        long folderId = defaultFolderProvider.getDefaultFolder(account);
+        LocalSearch search = new LocalSearch();
         search.addAccountUuid(account.getUuid());
-        search.addAllowedFolder(folder);
+        search.addAllowedFolder(folderId);
         MessageList.actionDisplaySearch(this, search, false, true);
         finish();
     }

@@ -58,7 +58,7 @@ class MessageListLoader(
                 threadCountIncluded = config.showingThreadedList
             )
         }
-        val hasMoreMessages = loadHasMoreMessages(accounts, config.search.folderServerIds)
+        val hasMoreMessages = loadHasMoreMessages(accounts, config.search.folderIds)
 
         return MessageListInfo(messageListItems, hasMoreMessages)
     }
@@ -172,12 +172,12 @@ class MessageListLoader(
         return ComparatorChain(chain)
     }
 
-    private fun loadHasMoreMessages(accounts: List<Account>, folderServerIds: List<String>): Boolean {
-        return if (accounts.size == 1 && folderServerIds.size == 1) {
+    private fun loadHasMoreMessages(accounts: List<Account>, folderIds: List<Long>): Boolean {
+        return if (accounts.size == 1 && folderIds.size == 1) {
             val account = accounts[0]
-            val folderServerId = folderServerIds[0]
+            val folderId = folderIds[0]
             val localStore = localStoreProvider.getInstance(account)
-            val localFolder = localStore.getFolder(folderServerId)
+            val localFolder = localStore.getFolder(folderId)
             localFolder.open()
             localFolder.hasMoreMessages()
         } else {

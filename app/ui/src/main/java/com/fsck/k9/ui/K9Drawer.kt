@@ -55,7 +55,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private var unifiedInboxSelected: Boolean = false
     private var accentColor: Int = 0
     private var selectedColor: Int = 0
-    private var openedFolderServerId: String? = null
+    private var openedFolderId: Long? = null
 
     val layout: DrawerLayout
         get() = drawer.drawerLayout
@@ -210,7 +210,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                     DRAWER_ID_FOLDERS -> parent.launchManageFoldersScreen()
                     else -> {
                         val folder = drawerItem.tag as Folder
-                        parent.openFolder(folder.serverId)
+                        parent.openFolder(folder.id)
                     }
                 }
                 return false
@@ -247,7 +247,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
             userFolderDrawerIds.add(drawerId)
 
-            if (folder.serverId == openedFolderServerId) {
+            if (folder.id == openedFolderId) {
                 openedFolderDrawerId = drawerId
             }
         }
@@ -262,12 +262,12 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         userFolderDrawerIds.clear()
     }
 
-    fun selectFolder(folderServerId: String) {
+    fun selectFolder(folderId: Long) {
         unifiedInboxSelected = false
-        openedFolderServerId = folderServerId
+        openedFolderId = folderId
         for (drawerId in userFolderDrawerIds) {
             val folder = drawer.getDrawerItem(drawerId)!!.tag as Folder
-            if (folder.serverId == folderServerId) {
+            if (folder.id == folderId) {
                 drawer.setSelection(drawerId, false)
                 return
             }
@@ -277,13 +277,13 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
     fun deselect() {
         unifiedInboxSelected = false
-        openedFolderServerId = null
+        openedFolderId = null
         drawer.deselect()
     }
 
     fun selectUnifiedInbox() {
         unifiedInboxSelected = true
-        openedFolderServerId = null
+        openedFolderId = null
         accentColor = 0 // Unified inbox does not have folders, so color does not matter
         selectedColor = 0
         accountHeader.setActiveProfile(DRAWER_ID_UNIFIED_INBOX)

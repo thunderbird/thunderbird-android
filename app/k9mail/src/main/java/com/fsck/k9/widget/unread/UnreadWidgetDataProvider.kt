@@ -20,7 +20,7 @@ class UnreadWidgetDataProvider(
     fun loadUnreadWidgetData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? = with(configuration) {
         if (SearchAccount.UNIFIED_INBOX == accountUuid) {
             loadSearchAccountData(configuration)
-        } else if (folderServerId != null) {
+        } else if (folderId != null) {
             loadFolderData(configuration)
         } else {
             loadAccountData(configuration)
@@ -51,29 +51,29 @@ class UnreadWidgetDataProvider(
     }
 
     private fun getClickIntentForAccount(account: Account): Intent {
-        val folderServerId = defaultFolderProvider.getDefaultFolder(account)
-        return getClickIntentForFolder(account, folderServerId)
+        val folderId = defaultFolderProvider.getDefaultFolder(account)
+        return getClickIntentForFolder(account, folderId)
     }
 
     private fun loadFolderData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? {
         val accountUuid = configuration.accountUuid
         val account = preferences.getAccount(accountUuid) ?: return null
-        val folderServerId = configuration.folderServerId ?: return null
+        val folderId = configuration.folderId ?: return null
 
         val accountName = account.description
-        // FIXME: Use folder display name instead of folderServerId for title
-        val title = context.getString(R.string.unread_widget_title, accountName, folderServerId)
+        // FIXME: Load folder display name for title
+        val title = context.getString(R.string.unread_widget_title, accountName, "FIXME: folder name")
 
-        val unreadCount = messagingController.getFolderUnreadMessageCount(account, folderServerId)
+        val unreadCount = messagingController.getFolderUnreadMessageCount(account, folderId)
 
-        val clickIntent = getClickIntentForFolder(account, folderServerId)
+        val clickIntent = getClickIntentForFolder(account, folderId)
 
         return UnreadWidgetData(configuration, title, unreadCount, clickIntent)
     }
 
-    private fun getClickIntentForFolder(account: Account, folderServerId: String): Intent {
-        val search = LocalSearch(folderServerId)
-        search.addAllowedFolder(folderServerId)
+    private fun getClickIntentForFolder(account: Account, folderId: Long): Intent {
+        val search = LocalSearch()
+        search.addAllowedFolder(folderId)
         search.addAccountUuid(account.uuid)
 
         val clickIntent = MessageList.intentDisplaySearch(context, search, false, true, true)

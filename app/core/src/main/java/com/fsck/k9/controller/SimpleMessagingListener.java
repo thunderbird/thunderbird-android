@@ -26,7 +26,7 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     }
 
     @Override
-    public void synchronizeMailboxStarted(Account account, String folderServerId) {
+    public void synchronizeMailboxStarted(Account account, long folderId) {
     }
 
     @Override
@@ -43,7 +43,7 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     }
 
     @Override
-    public void synchronizeMailboxProgress(Account account, String folderServerId, int completed, int total) {
+    public void synchronizeMailboxProgress(Account account, long folderId, int completed, int total) {
     }
 
     @Override
@@ -55,11 +55,11 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     }
 
     @Override
-    public void synchronizeMailboxFinished(Account account, String folderServerId) {
+    public void synchronizeMailboxFinished(Account account, long folderId) {
     }
 
     @Override
-    public void synchronizeMailboxFailed(Account account, String folderServerId, String message) {
+    public void synchronizeMailboxFailed(Account account, long folderId, String message) {
     }
 
     @Override

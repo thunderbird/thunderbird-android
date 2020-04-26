@@ -70,12 +70,12 @@ class AccountSearchConditions {
      * The `LocalSearch` instance to modify.
      */
     fun excludeSpecialFolders(account: Account, search: LocalSearch) {
-        excludeSpecialFolder(search, account.trashFolder)
-        excludeSpecialFolder(search, account.draftsFolder)
-        excludeSpecialFolder(search, account.spamFolder)
-        excludeSpecialFolder(search, account.outboxFolder)
-        excludeSpecialFolder(search, account.sentFolder)
-        search.or(SearchCondition(SearchField.FOLDER, Attribute.EQUALS, account.getInboxFolder()))
+        excludeSpecialFolder(search, account.trashFolderId)
+        excludeSpecialFolder(search, account.draftsFolderId)
+        excludeSpecialFolder(search, account.spamFolderId)
+        excludeSpecialFolder(search, account.outboxFolderId)
+        excludeSpecialFolder(search, account.sentFolderId)
+        search.or(SearchCondition(SearchField.FOLDER, Attribute.EQUALS, account.inboxFolderId.toString()))
     }
 
     /**
@@ -94,15 +94,15 @@ class AccountSearchConditions {
      * The `LocalSearch` instance to modify.
      */
     fun excludeUnwantedFolders(account: Account, search: LocalSearch) {
-        excludeSpecialFolder(search, account.trashFolder)
-        excludeSpecialFolder(search, account.spamFolder)
-        excludeSpecialFolder(search, account.outboxFolder)
-        search.or(SearchCondition(SearchField.FOLDER, Attribute.EQUALS, account.inboxFolder))
+        excludeSpecialFolder(search, account.trashFolderId)
+        excludeSpecialFolder(search, account.spamFolderId)
+        excludeSpecialFolder(search, account.outboxFolderId)
+        search.or(SearchCondition(SearchField.FOLDER, Attribute.EQUALS, account.inboxFolderId.toString()))
     }
 
-    private fun excludeSpecialFolder(search: LocalSearch, folderServerId: String?) {
-        if (folderServerId != null) {
-            search.and(SearchField.FOLDER, folderServerId, Attribute.NOT_EQUALS)
+    private fun excludeSpecialFolder(search: LocalSearch, folderId: Long?) {
+        if (folderId != null) {
+            search.and(SearchField.FOLDER, folderId.toString(), Attribute.NOT_EQUALS)
         }
     }
 

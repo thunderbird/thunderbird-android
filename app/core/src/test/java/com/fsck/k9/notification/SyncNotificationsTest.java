@@ -16,7 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.robolectric.RuntimeEnvironment;
 
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
@@ -146,7 +146,7 @@ public class SyncNotificationsTest extends RobolectricTest {
 
     private NotificationActionCreator createActionBuilder(PendingIntent contentIntent) {
         NotificationActionCreator actionBuilder = mock(NotificationActionCreator.class);
-        when(actionBuilder.createViewFolderPendingIntent(eq(account), anyString(), anyInt()))
+        when(actionBuilder.createViewFolderPendingIntent(eq(account), anyLong(), anyInt()))
                 .thenReturn(contentIntent);
         return actionBuilder;
     }

@@ -18,16 +18,16 @@ public interface MessagingListener {
     void listLocalMessagesAddMessages(Account account, String folderServerId, List<LocalMessage> messages);
     void listLocalMessagesFinished();
 
-    void synchronizeMailboxStarted(Account account, String folderServerId);
+    void synchronizeMailboxStarted(Account account, long folderId);
     void synchronizeMailboxHeadersStarted(Account account, String folderServerId);
     void synchronizeMailboxHeadersProgress(Account account, String folderServerId, int completed, int total);
     void synchronizeMailboxHeadersFinished(Account account, String folderServerId, int totalMessagesInMailbox,
             int numNewMessages);
-    void synchronizeMailboxProgress(Account account, String folderServerId, int completed, int total);
+    void synchronizeMailboxProgress(Account account, long folderId, int completed, int total);
     void synchronizeMailboxNewMessage(Account account, String folderServerId, Message message);
     void synchronizeMailboxRemovedMessage(Account account, String folderServerId, String messageServerId);
-    void synchronizeMailboxFinished(Account account, String folderServerId);
-    void synchronizeMailboxFailed(Account account, String folderServerId, String message);
+    void synchronizeMailboxFinished(Account account, long folderId);
+    void synchronizeMailboxFailed(Account account, long folderId, String message);
 
     void loadMessageRemoteFinished(Account account, String folderServerId, String uid);
     void loadMessageRemoteFailed(Account account, long folderId, String uid, Throwable t);

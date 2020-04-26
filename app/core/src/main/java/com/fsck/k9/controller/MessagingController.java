@@ -290,6 +290,15 @@ public class MessagingController {
         return localStore.getFolderId(folderServerId);
     }
 
+    private long getFolderIdOrThrow(Account account, String folderServerId) {
+        LocalStore localStore = getLocalStoreOrThrow(account);
+        try {
+            return localStore.getFolderId(folderServerId);
+        } catch (MessagingException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     public void addListener(MessagingListener listener) {
         listeners.add(listener);
         refreshListener(listener);
@@ -607,7 +616,7 @@ public class MessagingController {
         syncFolder(account, folder, listener, remoteMessageStore);
     }
 
-    private void syncFolder(Account account, String folder, MessagingListener listener, Backend remoteMessageStore) {
+    private void syncFolder(Account account, String folderServerId, MessagingListener listener, Backend backend) {
         Exception commandException = null;
         try {
             processPendingCommandsSynchronous(account);
@@ -617,20 +626,21 @@ public class MessagingController {
         }
 
         // We don't ever sync the Outbox
-        if (folder.equals(account.getOutboxFolder())) {
+        if (folderServerId.equals(account.getOutboxFolder())) {
             return;
         }
 
         SyncConfig syncConfig = createSyncConfig(account);
 
         ControllerSyncListener syncListener = new ControllerSyncListener(account, listener);
-        remoteMessageStore.sync(folder, syncConfig, syncListener);
+        backend.sync(folderServerId, syncConfig, syncListener);
 
         if (commandException != null && !syncListener.syncFailed) {
             String rootMessage = getRootCauseMessage(commandException);
-            Timber.e("Root cause failure in %s:%s was '%s'", account.getDescription(), folder, rootMessage);
-            updateFolderStatus(account, folder, rootMessage);
-            listener.synchronizeMailboxFailed(account, folder, rootMessage);
+            Timber.e("Root cause failure in %s:%s was '%s'", account.getDescription(), folderServerId, rootMessage);
+            updateFolderStatus(account, folderServerId, rootMessage);
+            long folderId = getFolderIdOrThrow(account, folderServerId);
+            listener.synchronizeMailboxFailed(account, folderId, rootMessage);
         }
     }
 
@@ -1473,8 +1483,7 @@ public class MessagingController {
         try {
             LocalStore localStore = localStoreProvider.getInstance(account);
             OutboxStateRepository outboxStateRepository = localStore.getOutboxStateRepository();
-            localFolder = localStore.getFolder(
-                    account.getOutboxFolder());
+            localFolder = localStore.getFolder(account.getOutboxFolder());
             if (!localFolder.exists()) {
                 Timber.v("Outbox does not exist");
                 return;
@@ -1482,11 +1491,13 @@ public class MessagingController {
 
             localFolder.open();
 
+            long outboxFolderId = localFolder.getDatabaseId();
+
             List<LocalMessage> localMessages = localFolder.getMessages(null);
             int progress = 0;
             int todo = localMessages.size();
             for (MessagingListener l : getListeners()) {
-                l.synchronizeMailboxProgress(account, account.getSentFolder(), progress, todo);
+                l.synchronizeMailboxProgress(account, outboxFolderId, progress, todo);
             }
             /*
              * The profile we will use to pull all of the content
@@ -1541,7 +1552,7 @@ public class MessagingController {
                         message.setFlag(Flag.SEEN, true);
                         progress++;
                         for (MessagingListener l : getListeners()) {
-                            l.synchronizeMailboxProgress(account, account.getSentFolder(), progress, todo);
+                            l.synchronizeMailboxProgress(account, outboxFolderId, progress, todo);
                         }
                         moveOrDeleteSentMessage(account, localStore, localFolder, message);
 
@@ -1635,10 +1646,10 @@ public class MessagingController {
     }
 
     private void notifySynchronizeMailboxFailed(Account account, LocalFolder localFolder, Exception exception) {
-        String folderServerId = localFolder.getServerId();
+        long folderId = localFolder.getDatabaseId();
         String errorMessage = getRootCauseMessage(exception);
         for (MessagingListener listener : getListeners()) {
-            listener.synchronizeMailboxFailed(account, folderServerId, errorMessage);
+            listener.synchronizeMailboxFailed(account, folderId, errorMessage);
         }
     }
 
@@ -1650,29 +1661,9 @@ public class MessagingController {
         return unreadMessageCountProvider.getUnreadMessageCount(searchAccount);
     }
 
-    public void getFolderUnreadMessageCount(final Account account, final String folderServerId,
-            final MessagingListener l) {
-        Runnable unreadRunnable = new Runnable() {
-            @Override
-            public void run() {
-
-                int unreadMessageCount = 0;
-                try {
-                    unreadMessageCount = getFolderUnreadMessageCount(account, folderServerId);
-                } catch (MessagingException me) {
-                    Timber.e(me, "Count not get unread count for account %s", account.getDescription());
-                }
-                l.folderStatusChanged(account, folderServerId);
-            }
-        };
-
-
-        put("getFolderUnread:" + account.getDescription() + ":" + folderServerId, l, unreadRunnable);
-    }
-
-    public int getFolderUnreadMessageCount(Account account, String folderServerId) throws MessagingException {
+    public int getFolderUnreadMessageCount(Account account, Long folderId) throws MessagingException {
         LocalStore localStore = localStoreProvider.getInstance(account);
-        LocalFolder localFolder = localStore.getFolder(folderServerId);
+        LocalFolder localFolder = localStore.getFolder(folderId);
         return localFolder.getUnreadMessageCount();
     }
 
@@ -2755,8 +2746,9 @@ public class MessagingController {
 
         @Override
         public void syncStarted(@NotNull String folderServerId) {
+            long folderId = getFolderIdOrThrow(account, folderServerId);
             for (MessagingListener messagingListener : getListeners(listener)) {
-                messagingListener.synchronizeMailboxStarted(account, folderServerId);
+                messagingListener.synchronizeMailboxStarted(account, folderId);
             }
         }
 
@@ -2790,8 +2782,9 @@ public class MessagingController {
 
         @Override
         public void syncProgress(@NotNull String folderServerId, int completed, int total) {
+            long folderId = getFolderIdOrThrow(account, folderServerId);
             for (MessagingListener messagingListener : getListeners(listener)) {
-                messagingListener.synchronizeMailboxProgress(account, folderServerId, completed, total);
+                messagingListener.synchronizeMailboxProgress(account, folderId, completed, total);
             }
         }
 
@@ -2843,8 +2836,9 @@ public class MessagingController {
 
         @Override
         public void syncFinished(@NotNull String folderServerId) {
+            long folderId = getFolderIdOrThrow(account, folderServerId);
             for (MessagingListener messagingListener : getListeners(listener)) {
-                messagingListener.synchronizeMailboxFinished(account, folderServerId);
+                messagingListener.synchronizeMailboxFinished(account, folderId);
             }
         }
 
@@ -2858,8 +2852,9 @@ public class MessagingController {
                 notifyUserIfCertificateProblem(account, exception, true);
             }
 
+            long folderId = getFolderIdOrThrow(account, folderServerId);
             for (MessagingListener messagingListener : getListeners(listener)) {
-                messagingListener.synchronizeMailboxFailed(account, folderServerId, message);
+                messagingListener.synchronizeMailboxFailed(account, folderId, message);
             }
         }
 

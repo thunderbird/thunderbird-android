@@ -22,9 +22,9 @@ import static com.fsck.k9.fragment.MLFProjectionInfo.SENDER_LIST_COLUMN;
 
 public class MlfUtils {
 
-    static LocalFolder getOpenFolder(String folderServerId, Account account) throws MessagingException {
+    static LocalFolder getOpenFolder(long folderId, Account account) throws MessagingException {
         LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
-        LocalFolder localFolder = localStore.getFolder(folderServerId);
+        LocalFolder localFolder = localStore.getFolder(folderId);
         localFolder.open();
         return localFolder;
     }
