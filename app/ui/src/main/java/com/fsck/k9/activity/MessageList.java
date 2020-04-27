@@ -426,8 +426,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 if (String.valueOf(account.getAccountNumber()).equals(accountId)) {
                     long folderId = Long.parseLong(segmentList.get(1));
                     String messageUid = segmentList.get(2);
-                    messageReference = new MessageReference(account.getUuid(), folderId, "dummyValue",
-                            messageUid, null);
+                    messageReference = new MessageReference(account.getUuid(), folderId, messageUid, null);
                     break;
                 }
             }

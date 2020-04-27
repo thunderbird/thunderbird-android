@@ -266,7 +266,7 @@ public class WearNotificationsTest extends RobolectricTest {
     }
 
     private MessageReference createMessageReference(int number) {
-        return new MessageReference("account", 1, "folder", String.valueOf(number), null);
+        return new MessageReference("account", 1, String.valueOf(number), null);
     }
 
     private PendingIntent createFakePendingIntent(int requestCode) {

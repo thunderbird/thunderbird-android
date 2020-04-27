@@ -1912,9 +1912,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
         String accountUuid = messageListItem.getAccount().getUuid();
         long folderId = messageListItem.getFolderId();
-        String folderServerId = messageListItem.getFolderServerId();
         String messageUid = messageListItem.getMessageUid();
-        return new MessageReference(accountUuid, folderId, folderServerId, messageUid, null);
+        return new MessageReference(accountUuid, folderId, messageUid, null);
     }
 
     private void openMessageAtPosition(int position) {
@@ -1992,10 +1991,9 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
         String accountUuid = messageListItem.getAccount().getUuid();
         long folderId = messageListItem.getFolderId();
-        String folderServerId = messageListItem.getFolderServerId();
         String messageUid = messageListItem.getMessageUid();
 
-        return new MessageReference(accountUuid, folderId, folderServerId, messageUid, null);
+        return new MessageReference(accountUuid, folderId, messageUid, null);
     }
 
     private List<MessageReference> getCheckedMessages() {

@@ -296,7 +296,7 @@ public class NotificationDataTest extends RobolectricTest {
     }
 
     private MessageReference createMessageReference(String uid) {
-        return new MessageReference(ACCOUNT_UUID, FOLDER_ID, FOLDER_NAME, uid, null);
+        return new MessageReference(ACCOUNT_UUID, FOLDER_ID, uid, null);
     }
 
     private NotificationContent createNotificationContent(String uid) {

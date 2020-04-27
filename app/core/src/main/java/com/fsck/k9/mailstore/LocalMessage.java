@@ -404,8 +404,9 @@ public class LocalMessage extends MimeMessage {
 
     public MessageReference makeMessageReference() {
         if (messageReference == null) {
-            messageReference = new MessageReference(getFolder().getAccountUuid(), getFolder().getDatabaseId(),
-                    getFolder().getServerId(), mUid, null);
+            String accountUuid = getFolder().getAccountUuid();
+            long folderId = getFolder().getDatabaseId();
+            messageReference = new MessageReference(accountUuid, folderId, mUid, null);
         }
         return messageReference;
     }

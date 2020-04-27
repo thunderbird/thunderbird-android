@@ -162,7 +162,7 @@ public class NotificationContentCreatorTest extends RobolectricTest {
     }
 
     private MessageReference createMessageReference() {
-        return new MessageReference(ACCOUNT_UUID, FOLDER_ID, FOLDER_NAME, UID, null);
+        return new MessageReference(ACCOUNT_UUID, FOLDER_ID, UID, null);
     }
 
     private LocalMessage createFakeLocalMessage(MessageReference messageReference) {

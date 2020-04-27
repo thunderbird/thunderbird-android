@@ -1254,7 +1254,7 @@ public class MessagingController {
 
             // now that we have the full message, refresh the headers
             for (MessagingListener l : getListeners(listener)) {
-                l.loadMessageRemoteFinished(account, folderServerId, uid);
+                l.loadMessageRemoteFinished(account, folderId, uid);
             }
         } catch (Exception e) {
             for (MessagingListener l : getListeners(listener)) {
@@ -1890,8 +1890,7 @@ public class MessagingController {
             String uid = localFolder.getMessageUidById(id);
             if (uid != null) {
                 long folderId = localFolder.getDatabaseId();
-                MessageReference messageReference = new MessageReference(
-                        account.getUuid(), folderId, folderServerId, uid, null);
+                MessageReference messageReference = new MessageReference(account.getUuid(), folderId, uid, null);
                 deleteMessage(messageReference, null);
             }
         } catch (MessagingException me) {

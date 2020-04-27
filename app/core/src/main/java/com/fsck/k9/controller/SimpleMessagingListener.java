@@ -63,7 +63,7 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     }
 
     @Override
-    public void loadMessageRemoteFinished(Account account, String folderServerId, String uid) {
+    public void loadMessageRemoteFinished(Account account, long folderId, String uid) {
     }
 
     @Override

@@ -486,15 +486,12 @@ public class MessageLoaderHelper {
 
     MessagingListener downloadMessageListener = new SimpleMessagingListener() {
         @Override
-        public void loadMessageRemoteFinished(final Account account, final String folderServerId, final String uid) {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (!messageReference.equals(account.getUuid(), folderServerId, uid)) {
-                        return;
-                    }
-                    onMessageDownloadFinished();
+        public void loadMessageRemoteFinished(final Account account, final long folderId, final String uid) {
+            handler.post(() -> {
+                if (!messageReference.equals(account.getUuid(), folderId, uid)) {
+                    return;
                 }
+                onMessageDownloadFinished();
             });
         }
 
