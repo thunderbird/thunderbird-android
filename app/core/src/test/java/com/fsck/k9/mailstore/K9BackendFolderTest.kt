@@ -8,6 +8,7 @@ import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.Preferences
 import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.FolderInfo
+import com.fsck.k9.backend.api.updateFolders
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderType
@@ -117,7 +118,9 @@ class K9BackendFolderTest : K9RobolectricTest() {
     fun createBackendFolder(): BackendFolder {
         val localStore: LocalStore = localStoreProvider.getInstance(account)
         val backendStorage = K9BackendStorage(preferences, account, localStore, emptyList())
-        backendStorage.createFolders(listOf(FolderInfo(FOLDER_SERVER_ID, FOLDER_NAME, FOLDER_TYPE)))
+        backendStorage.updateFolders {
+            createFolders(listOf(FolderInfo(FOLDER_SERVER_ID, FOLDER_NAME, FOLDER_TYPE)))
+        }
 
         val folderServerIds = backendStorage.getFolderServerIds()
         assertTrue(FOLDER_SERVER_ID in folderServerIds)

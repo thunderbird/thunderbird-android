@@ -1,6 +1,8 @@
 package com.fsck.k9.backend.jmap
 
+import com.fsck.k9.backend.api.BackendFolderUpdater
 import com.fsck.k9.backend.api.FolderInfo
+import com.fsck.k9.backend.api.updateFolders
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.MessagingException
@@ -139,17 +141,19 @@ class CommandRefreshFolderListTest {
 
     @Suppress("SameParameterValue")
     private fun createFoldersInBackendStorage(state: String) {
-        createFolderInBackendStorage("id_inbox", "Inbox", FolderType.INBOX)
-        createFolderInBackendStorage("id_archive", "Archive", FolderType.ARCHIVE)
-        createFolderInBackendStorage("id_drafts", "Drafts", FolderType.DRAFTS)
-        createFolderInBackendStorage("id_sent", "Sent", FolderType.SENT)
-        createFolderInBackendStorage("id_trash", "Trash", FolderType.TRASH)
-        createFolderInBackendStorage("id_folder1", "folder1", FolderType.REGULAR)
+        backendStorage.updateFolders {
+            createFolder("id_inbox", "Inbox", FolderType.INBOX)
+            createFolder("id_archive", "Archive", FolderType.ARCHIVE)
+            createFolder("id_drafts", "Drafts", FolderType.DRAFTS)
+            createFolder("id_sent", "Sent", FolderType.SENT)
+            createFolder("id_trash", "Trash", FolderType.TRASH)
+            createFolder("id_folder1", "folder1", FolderType.REGULAR)
+        }
         setMailboxState(state)
     }
 
-    private fun createFolderInBackendStorage(serverId: String, name: String, type: FolderType) {
-        backendStorage.createFolders(listOf(FolderInfo(serverId, name, type)))
+    private fun BackendFolderUpdater.createFolder(serverId: String, name: String, type: FolderType) {
+        createFolders(listOf(FolderInfo(serverId, name, type)))
     }
 
     private fun setMailboxState(state: String) {

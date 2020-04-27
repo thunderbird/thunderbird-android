@@ -3,6 +3,7 @@ package com.fsck.k9.backend.jmap
 import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy
+import com.fsck.k9.backend.api.updateFolders
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderType
@@ -234,7 +235,9 @@ class CommandSyncTest {
     }
 
     private fun createFolderInBackendStorage() {
-        backendStorage.createFolders(listOf(FolderInfo(FOLDER_SERVER_ID, "Regular folder", FolderType.REGULAR)))
+        backendStorage.updateFolders {
+            createFolders(listOf(FolderInfo(FOLDER_SERVER_ID, "Regular folder", FolderType.REGULAR)))
+        }
     }
 
     private fun MockWebServer.assertRequestUrlPath(expected: String) {
