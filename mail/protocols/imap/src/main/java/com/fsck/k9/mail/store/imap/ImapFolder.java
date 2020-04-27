@@ -345,7 +345,7 @@ public class ImapFolder {
      *
      * <p>
      * <strong>Note:</strong>
-     * Only the UIDs of the given {@link Message} instances are used. It is assumed that all
+     * Only the UIDs of the given {@link ImapMessage} instances are used. It is assumed that all
      * UIDs represent valid messages in this folder.
      * </p>
      *
@@ -356,7 +356,7 @@ public class ImapFolder {
      *
      * @return The mapping of original message UIDs to the new server UIDs.
      */
-    public Map<String, String> copyMessages(List<? extends Message> messages, ImapFolder folder) throws MessagingException {
+    public Map<String, String> copyMessages(List<ImapMessage> messages, ImapFolder folder) throws MessagingException {
         if (messages.isEmpty()) {
             return null;
         }
@@ -392,7 +392,7 @@ public class ImapFolder {
         }
     }
 
-    public Map<String, String> moveMessages(List<? extends Message> messages, ImapFolder folder) throws MessagingException {
+    public Map<String, String> moveMessages(List<ImapMessage> messages, ImapFolder folder) throws MessagingException {
         if (messages.isEmpty()) {
             return null;
         }
@@ -615,8 +615,8 @@ public class ImapFolder {
         checkOpen();
 
         List<String> uids = new ArrayList<>(messages.size());
-        HashMap<String, Message> messageMap = new HashMap<>();
-        for (Message message : messages) {
+        HashMap<String, ImapMessage> messageMap = new HashMap<>();
+        for (ImapMessage message : messages) {
             String uid = message.getUid();
             uids.add(uid);
             messageMap.put(uid, message);
@@ -691,7 +691,7 @@ public class ImapFolder {
                             }
                         }
 
-                        Message message = messageMap.get(uid);
+                        ImapMessage message = messageMap.get(uid);
                         if (message == null) {
                             if (K9MailLib.isDebug()) {
                                 Timber.d("Do not have message in messageMap for UID %s for %s", uid, getLogId());
@@ -705,14 +705,13 @@ public class ImapFolder {
                             listener.messageStarted(uid, messageNumber++, messageMap.size());
                         }
 
-                        ImapMessage imapMessage = (ImapMessage) message;
-                        Object literal = handleFetchResponse(imapMessage, fetchList);
+                        Object literal = handleFetchResponse(message, fetchList);
 
                         if (literal != null) {
                             if (literal instanceof String) {
                                 String bodyString = (String) literal;
                                 InputStream bodyStream = new ByteArrayInputStream(bodyString.getBytes());
-                                imapMessage.parse(bodyStream);
+                                message.parse(bodyStream);
                             } else if (literal instanceof Integer) {
                                 // All the work was done in FetchBodyCallback.foundLiteral()
                             } else {
@@ -722,7 +721,7 @@ public class ImapFolder {
                         }
 
                         if (listener != null) {
-                            listener.messageFinished(imapMessage, messageNumber, messageMap.size());
+                            listener.messageFinished(message, messageNumber, messageMap.size());
                         }
                     } else {
                         handleUntaggedResponse(response);
@@ -735,7 +734,7 @@ public class ImapFolder {
         }
     }
 
-    public void fetchPart(Message message, Part part, MessageRetrievalListener<Message> listener,
+    public void fetchPart(ImapMessage message, Part part, MessageRetrievalListener<ImapMessage> listener,
             BodyFactory bodyFactory) throws MessagingException {
         checkOpen();
 
@@ -778,9 +777,7 @@ public class ImapFolder {
                         listener.messageStarted(uid, messageNumber++, 1);
                     }
 
-                    ImapMessage imapMessage = (ImapMessage) message;
-
-                    Object literal = handleFetchResponse(imapMessage, fetchList);
+                    Object literal = handleFetchResponse(message, fetchList);
 
                     if (literal != null) {
                         if (literal instanceof Body) {
@@ -1261,13 +1258,13 @@ public class ImapFolder {
         }
     }
 
-    public void setFlags(List<? extends Message> messages, final Set<Flag> flags, boolean value)
+    public void setFlags(List<ImapMessage> messages, final Set<Flag> flags, boolean value)
             throws MessagingException {
         open(OPEN_MODE_RW);
         checkOpen();
 
         Set<Long> uids = new HashSet<>(messages.size());
-        for (Message message : messages) {
+        for (ImapMessage message : messages) {
             uids.add(Long.parseLong(message.getUid()));
         }
 
