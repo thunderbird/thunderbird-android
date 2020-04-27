@@ -6,9 +6,9 @@ import java.util.Collections;
 import java.util.List;
 
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.pop3.Pop3Folder;
+import com.fsck.k9.mail.store.pop3.Pop3Message;
 import com.fsck.k9.mail.store.pop3.Pop3Store;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,7 +31,7 @@ class CommandSetFlag {
 
         try {
             remoteFolder.open();
-            List<Message> messages = new ArrayList<>();
+            List<Pop3Message> messages = new ArrayList<>();
             for (String uid : messageServerIds) {
                 messages.add(remoteFolder.getMessage(uid));
             }
