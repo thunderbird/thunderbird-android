@@ -1095,7 +1095,7 @@ public class ImapFolder {
      *
      * @return The mapping of original message UIDs to the new server UIDs.
      */
-    public Map<String, String> appendMessages(List<? extends Message> messages) throws MessagingException {
+    public Map<String, String> appendMessages(List<Message> messages) throws MessagingException {
         open(OPEN_MODE_RW);
         checkOpen();
 

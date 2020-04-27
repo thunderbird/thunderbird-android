@@ -997,7 +997,7 @@ public class LocalFolder {
      * fact, in most cases, they are not). Therefore, if you want to make local changes only to a
      * message, retrieve the appropriate local message instance first (if it already exists).
      */
-    public Map<String, String> appendMessages(List<? extends Message> messages) throws MessagingException {
+    public Map<String, String> appendMessages(List<Message> messages) throws MessagingException {
         return appendMessages(messages, false);
     }
 

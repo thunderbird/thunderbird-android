@@ -934,7 +934,7 @@ public class WebDavStore {
         return dataset;
     }
 
-    public void sendMessages(List<? extends Message> messages) throws MessagingException {
+    public void sendMessages(List<Message> messages) throws MessagingException {
         WebDavFolder tmpFolder = getFolder(storeConfig.getDraftsFolder());
         try {
             tmpFolder.open();

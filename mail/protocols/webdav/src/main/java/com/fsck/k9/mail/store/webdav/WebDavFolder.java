@@ -597,12 +597,12 @@ public class WebDavFolder {
         return store.getUrl() + "Deleted%20Items/" + filename;
     }
 
-    public Map<String, String> appendMessages(List<? extends Message> messages) throws MessagingException {
+    public Map<String, String> appendMessages(List<Message> messages) throws MessagingException {
         appendWebDavMessages(messages);
         return null;
     }
 
-    public List<WebDavMessage> appendWebDavMessages(List<? extends Message> messages) throws MessagingException {
+    public List<WebDavMessage> appendWebDavMessages(List<Message> messages) throws MessagingException {
         List<WebDavMessage> retMessages = new ArrayList<>(messages.size());
 
         WebDavHttpClient httpclient = store.getHttpClient();
