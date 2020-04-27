@@ -938,7 +938,7 @@ public class WebDavStore {
         WebDavFolder tmpFolder = getFolder(storeConfig.getDraftsFolder());
         try {
             tmpFolder.open();
-            List<? extends Message> retMessages = tmpFolder.appendWebDavMessages(messages);
+            List<WebDavMessage> retMessages = tmpFolder.appendWebDavMessages(messages);
 
             tmpFolder.moveMessages(retMessages, getSendSpoolFolder());
         } finally {

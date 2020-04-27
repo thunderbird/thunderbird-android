@@ -513,7 +513,7 @@ public class WebDavFolderTest {
         String messageUid = "testMessageUid";
         when(existingMessage.getUid()).thenReturn(messageUid);
 
-        List<? extends Message> response = folder.appendWebDavMessages(existingMessages);
+        List<WebDavMessage> response = folder.appendWebDavMessages(existingMessages);
 
         assertEquals(1, response.size(), 1);
         assertEquals(WebDavMessage.class, response.get(0).getClass());

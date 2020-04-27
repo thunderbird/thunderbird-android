@@ -100,19 +100,19 @@ public class WebDavFolder {
         this.mIsOpen = true;
     }
 
-    public Map<String, String> copyMessages(List<? extends Message> messages, WebDavFolder folder)
+    public Map<String, String> copyMessages(List<WebDavMessage> messages, WebDavFolder folder)
             throws MessagingException {
         moveOrCopyMessages(messages, folder.getServerId(), false);
         return null;
     }
 
-    public Map<String, String> moveMessages(List<? extends Message> messages, WebDavFolder folder)
+    public Map<String, String> moveMessages(List<WebDavMessage> messages, WebDavFolder folder)
             throws MessagingException {
         moveOrCopyMessages(messages, folder.getServerId(), true);
         return null;
     }
 
-    private void moveOrCopyMessages(List<? extends Message> messages, String folderName, boolean isMove)
+    private void moveOrCopyMessages(List<WebDavMessage> messages, String folderName, boolean isMove)
             throws MessagingException {
         String[] uids = new String[messages.size()];
 
@@ -126,9 +126,9 @@ public class WebDavFolder {
 
         for (int i = 0, count = uids.length; i < count; i++) {
             urls[i] = uidToUrl.get(uids[i]);
-            if (urls[i] == null && messages.get(i) instanceof WebDavMessage) {
-                WebDavMessage wdMessage = (WebDavMessage) messages.get(i);
-                urls[i] = wdMessage.getUrl();
+            if (urls[i] == null) {
+                WebDavMessage message = messages.get(i);
+                urls[i] = message.getUrl();
             }
         }
 
@@ -419,7 +419,7 @@ public class WebDavFolder {
     private void fetchFlags(List<WebDavMessage> startMessages, MessageRetrievalListener<WebDavMessage> listener) throws MessagingException {
         HashMap<String, String> headers = new HashMap<>();
         String messageBody;
-        List<Message> messages = new ArrayList<>(20);
+        List<WebDavMessage> messages = new ArrayList<>(20);
         String[] uids;
 
         if (startMessages == null ||
@@ -458,14 +458,9 @@ public class WebDavFolder {
 
         Map<String, Boolean> uidToReadStatus = dataset.getUidToRead();
 
-        for (int i = 0, count = messages.size(); i < count; i++) {
-            if (!(messages.get(i) instanceof WebDavMessage)) {
-                throw new MessagingException("WebDavStore fetch called with non-WebDavMessage");
-            }
-            WebDavMessage wdMessage = (WebDavMessage) messages.get(i);
-
+        for (WebDavMessage message : messages) {
             try {
-                wdMessage.setFlag(Flag.SEEN, uidToReadStatus.get(wdMessage.getUid()));
+                message.setFlag(Flag.SEEN, uidToReadStatus.get(message.getUid()));
             } catch (NullPointerException e) {
                 Timber.v(e, "Under some weird circumstances, " +
                         "setting the read status when syncing from webdav threw an NPE. Skipping.");
@@ -539,7 +534,7 @@ public class WebDavFolder {
         }
     }
 
-    public void setFlags(List<? extends Message> messages, final Set<Flag> flags, boolean value)
+    public void setFlags(List<WebDavMessage> messages, final Set<Flag> flags, boolean value)
             throws MessagingException {
         String[] uids = new String[messages.size()];
 
@@ -607,8 +602,8 @@ public class WebDavFolder {
         return null;
     }
 
-    public List<? extends Message> appendWebDavMessages(List<? extends Message> messages) throws MessagingException {
-        List<Message> retMessages = new ArrayList<>(messages.size());
+    public List<WebDavMessage> appendWebDavMessages(List<? extends Message> messages) throws MessagingException {
+        List<WebDavMessage> retMessages = new ArrayList<>(messages.size());
 
         WebDavHttpClient httpclient = store.getHttpClient();
 
