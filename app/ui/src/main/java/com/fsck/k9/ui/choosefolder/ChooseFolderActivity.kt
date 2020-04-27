@@ -39,7 +39,7 @@ class ChooseFolderActivity : K9Activity() {
     private lateinit var itemAdapter: ItemAdapter<FolderListItem>
     private lateinit var account: Account
     private var currentFolderId: Long? = null
-    private var scrollToFolder: String? = null
+    private var scrollToFolderId: Long? = null
     private var messageReference: String? = null
     private var showDisplayableOnly = false
     private var foldersLiveData: FoldersLiveData? = null
@@ -75,10 +75,10 @@ class ChooseFolderActivity : K9Activity() {
         currentFolderId = intent.getLongExtraOrNull(EXTRA_CURRENT_FOLDER_ID)
         showDisplayableOnly = intent.getBooleanExtra(EXTRA_SHOW_DISPLAYABLE_ONLY, false)
 
-        scrollToFolder = if (savedInstanceState != null) {
-            savedInstanceState.getString(STATE_SCROLL_TO_FOLDER)
+        scrollToFolderId = if (savedInstanceState != null) {
+            savedInstanceState.getLongOrNull(STATE_SCROLL_TO_FOLDER_ID)
         } else {
-            intent.getStringExtra(EXTRA_SCROLL_TO_FOLDER)
+            intent.getLongExtraOrNull(EXTRA_SCROLL_TO_FOLDER_ID)
         }
 
         return true
@@ -124,19 +124,19 @@ class ChooseFolderActivity : K9Activity() {
     }
 
     private fun scrollToFolder(folders: List<FolderListItem>) {
-        if (scrollToFolder == null) return
+        if (scrollToFolderId == null) return
 
-        val index = folders.indexOfFirst { it.serverId == scrollToFolder }
+        val index = folders.indexOfFirst { it.databaseId == scrollToFolderId }
         if (index != -1) {
             recyclerView.scrollToPosition(index)
         }
 
-        scrollToFolder = null
+        scrollToFolderId = null
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(STATE_SCROLL_TO_FOLDER, scrollToFolder)
+        scrollToFolderId?.let { folderId -> outState.putLong(STATE_SCROLL_TO_FOLDER_ID, folderId) }
         outState.putString(STATE_DISPLAY_MODE, foldersLiveData?.displayMode?.name)
     }
 
@@ -216,12 +216,16 @@ class ChooseFolderActivity : K9Activity() {
         return if (value != -1L) value else null
     }
 
+    private fun Bundle.getLongOrNull(name: String): Long? {
+        return if (containsKey(name)) getLong(name) else null
+    }
+
     companion object {
-        private const val STATE_SCROLL_TO_FOLDER = "scrollToFolder"
+        private const val STATE_SCROLL_TO_FOLDER_ID = "scrollToFolderId"
         private const val STATE_DISPLAY_MODE = "displayMode"
         private const val EXTRA_ACCOUNT = "accountUuid"
         private const val EXTRA_CURRENT_FOLDER_ID = "currentFolderId"
-        private const val EXTRA_SCROLL_TO_FOLDER = "scrollToFolder"
+        private const val EXTRA_SCROLL_TO_FOLDER_ID = "scrollToFolderId"
         private const val EXTRA_MESSAGE_REFERENCE = "messageReference"
         private const val EXTRA_SHOW_DISPLAYABLE_ONLY = "showDisplayableOnly"
         @Deprecated(message = "Use RESULT_SELECTED_FOLDER_ID instead")
@@ -235,14 +239,14 @@ class ChooseFolderActivity : K9Activity() {
             context: Context,
             accountUuid: String,
             currentFolderId: Long? = null,
-            scrollToFolder: String? = null,
+            scrollToFolderId: Long? = null,
             showDisplayableOnly: Boolean = false,
             messageReference: MessageReference? = null
         ): Intent {
             return Intent(context, ChooseFolderActivity::class.java).apply {
                 putExtra(EXTRA_ACCOUNT, accountUuid)
                 currentFolderId?.let { putExtra(EXTRA_CURRENT_FOLDER_ID, currentFolderId) }
-                putExtra(EXTRA_SCROLL_TO_FOLDER, scrollToFolder)
+                scrollToFolderId?.let { putExtra(EXTRA_SCROLL_TO_FOLDER_ID, scrollToFolderId) }
                 putExtra(EXTRA_SHOW_DISPLAYABLE_ONLY, showDisplayableOnly)
                 messageReference?.let { putExtra(EXTRA_MESSAGE_REFERENCE, it.toIdentityString()) }
             }

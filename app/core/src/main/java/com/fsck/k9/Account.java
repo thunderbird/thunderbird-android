@@ -200,12 +200,11 @@ public class Account implements BaseAccount {
     private boolean isEnabled;
 
     /**
-     * Name of the folder that was last selected for a copy or move operation.
+     * Database ID of the folder that was last selected for a copy or move operation.
      *
-     * Note: For now this value isn't persisted. So it will be reset when
-     *       K-9 Mail is restarted.
+     * Note: For now this value isn't persisted. So it will be reset when K-9 Mail is restarted.
      */
-    private String lastSelectedFolder = null;
+    private Long lastSelectedFolderId = null;
 
     private List<Identity> identities;
 
@@ -1129,12 +1128,12 @@ public class Account implements BaseAccount {
         this.syncRemoteDeletions = syncRemoteDeletions;
     }
 
-    public synchronized String getLastSelectedFolder() {
-        return lastSelectedFolder;
+    public synchronized Long getLastSelectedFolderId() {
+        return lastSelectedFolderId;
     }
 
-    public synchronized void setLastSelectedFolder(String folderServerId) {
-        lastSelectedFolder = folderServerId;
+    public synchronized void setLastSelectedFolderId(long folderId) {
+        lastSelectedFolderId = folderId;
     }
 
     public synchronized NotificationSetting getNotificationSetting() {

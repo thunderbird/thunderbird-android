@@ -29,11 +29,10 @@ public class MlfUtils {
         return localFolder;
     }
 
-    static void setLastSelectedFolder(Preferences preferences,
-            List<MessageReference> messages, String destFolderName) {
+    static void setLastSelectedFolder(Preferences preferences, List<MessageReference> messages, long folderId) {
         MessageReference firstMsg = messages.get(0);
         Account account = preferences.getAccount(firstMsg.getAccountUuid());
-        account.setLastSelectedFolder(destFolderName);
+        account.setLastSelectedFolderId(folderId);
     }
 
     static String getSenderAddressFromCursor(Cursor cursor) {

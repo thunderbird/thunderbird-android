@@ -747,14 +747,13 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 }
 
                 long destinationFolderId = data.getLongExtra(ChooseFolderActivity.RESULT_SELECTED_FOLDER_ID, -1L);
-                final String destFolder = data.getStringExtra(ChooseFolderActivity.RESULT_SELECTED_FOLDER);
                 final List<MessageReference> messages = activeMessages;
 
                 if (destinationFolderId != -1L) {
                     activeMessages = null; // don't need it any more
 
                     if (messages.size() > 0) {
-                        MlfUtils.setLastSelectedFolder(preferences, messages, destFolder);
+                        MlfUtils.setLastSelectedFolder(preferences, messages, destinationFolderId);
                     }
 
                     switch (requestCode) {
@@ -1404,10 +1403,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
      * @see #startActivityForResult(Intent, int)
      */
     private void displayFolderChoice(int requestCode, Long sourceFolderId,
-            String accountUuid, String lastSelectedFolder,
+            String accountUuid, Long lastSelectedFolderId,
             List<MessageReference> messages) {
         Intent intent = ChooseFolderActivity.buildLaunchIntent(requireContext(), accountUuid, sourceFolderId,
-                lastSelectedFolder, false, null);
+                lastSelectedFolderId, false, null);
 
         // remember the selected messages for #onActivityResult
         activeMessages = messages;

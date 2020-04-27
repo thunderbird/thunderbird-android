@@ -425,9 +425,9 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private void startRefileActivity(int requestCode) {
         String accountUuid = mAccount.getUuid();
         long currentFolderId = mMessageReference.getFolderId();
-        String scrollToFolder = mAccount.getLastSelectedFolder();
+        Long scrollToFolderId = mAccount.getLastSelectedFolderId();
         Intent intent = ChooseFolderActivity.buildLaunchIntent(requireActivity(), accountUuid, currentFolderId,
-                scrollToFolder, false, mMessageReference);
+                scrollToFolderId, false, mMessageReference);
 
         startActivityForResult(intent, requestCode);
     }
@@ -468,11 +468,10 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
                 }
 
                 long destFolderId = data.getLongExtra(ChooseFolderActivity.RESULT_SELECTED_FOLDER_ID, -1L);
-                String destFolder = data.getStringExtra(ChooseFolderActivity.RESULT_SELECTED_FOLDER);
                 String messageReferenceString = data.getStringExtra(ChooseFolderActivity.RESULT_MESSAGE_REFERENCE);
                 MessageReference ref = MessageReference.parse(messageReferenceString);
                 if (mMessageReference.equals(ref)) {
-                    mAccount.setLastSelectedFolder(destFolder);
+                    mAccount.setLastSelectedFolderId(destFolderId);
                     switch (requestCode) {
                         case ACTIVITY_CHOOSE_FOLDER_MOVE: {
                             mFragmentListener.showNextMessageOrReturn();
