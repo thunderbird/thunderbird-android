@@ -6,4 +6,6 @@ val accountModule = module {
     factory { AccountRemover(get(), get(), get()) }
     factory { BackgroundAccountRemover(get()) }
     factory { AccountCreator(get(), get()) }
+    factory { AccountCleaner(get(), get()) }
+    factory { BackgroundAccountCleaner(get()) }
 }

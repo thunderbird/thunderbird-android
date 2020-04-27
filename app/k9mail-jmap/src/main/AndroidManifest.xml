@@ -268,6 +268,10 @@
             android:name="com.fsck.k9.account.AccountRemoverService"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
 
+        <service
+            android:name="com.fsck.k9.account.AccountCleanerService"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
+
         <provider
             android:name="com.fsck.k9.provider.AttachmentProvider"
             android:authorities="${applicationId}.attachmentprovider"

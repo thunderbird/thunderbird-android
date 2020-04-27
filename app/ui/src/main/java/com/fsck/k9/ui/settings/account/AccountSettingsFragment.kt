@@ -11,6 +11,7 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.SwitchPreference
 import com.fsck.k9.Account
+import com.fsck.k9.account.BackgroundAccountCleaner
 import com.fsck.k9.account.BackgroundAccountRemover
 import com.fsck.k9.activity.ManageIdentities
 import com.fsck.k9.activity.setup.AccountSetupComposition
@@ -43,6 +44,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     private val dataStoreFactory: AccountSettingsDataStoreFactory by inject()
     private val openPgpApiManager: OpenPgpApiManager by inject { parametersOf(this) }
     private val messagingController: MessagingController by inject()
+    private val accountCleaner: BackgroundAccountCleaner by inject()
     private val accountRemover: BackgroundAccountRemover by inject()
     private lateinit var dataStore: AccountSettingsDataStore
 
@@ -60,6 +62,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         title = preferenceScreen.title
         setHasOptionsMenu(true)
 
+        initializeAccountClearAction()
         initializeIncomingServer()
         initializeComposition()
         initializeManageIdentities()
@@ -100,6 +103,12 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun initializeAccountClearAction() {
+        findPreference<Preference>(ACCOUNT_CLEAR_ACTION)?.onClick {
+            onClearAccount()
         }
     }
 
@@ -327,9 +336,29 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         dialogFragment.show(requireFragmentManager(), TAG_DELETE_ACCOUNT_CONFIRMATION)
     }
 
+    private fun onClearAccount() {
+        val dialogFragment = ConfirmationDialogFragment.newInstance(
+                DIALOG_CLEAR_ACCOUNT,
+                getString(R.string.dialog_confirm_delete_title),
+                getString(R.string.dialog_confirm_delete_message),
+                getString(R.string.okay_action),
+                getString(R.string.cancel_action)
+        )
+        dialogFragment.setTargetFragment(this, REQUEST_CLEAR_ACCOUNT)
+        dialogFragment.show(requireFragmentManager(), TAG_CLEAR_ACCOUNT_CONFIRMATION)
+    }
+
     override fun doPositiveClick(dialogId: Int) {
-        accountRemover.removeAccountAsync(accountUuid)
-        closeAccountSettings()
+        when (dialogId) {
+            DIALOG_CLEAR_ACCOUNT -> {
+                accountCleaner.clearAccountAsync(accountUuid)
+                closeAccountSettings()
+            }
+            DIALOG_DELETE_ACCOUNT -> {
+                accountRemover.removeAccountAsync(accountUuid)
+                closeAccountSettings()
+            }
+        }
     }
 
     override fun doNegativeClick(dialogId: Int) = Unit
@@ -378,6 +407,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val PREFERENCE_TRASH_FOLDER = "trash_folder"
         private const val PREFERENCE_OPEN_NOTIFICATION_SETTINGS = "open_notification_settings"
         private const val DELETE_POLICY_MARK_AS_READ = "MARK_AS_READ"
+        private const val ACCOUNT_CLEAR_ACTION = "account_settings_clear_action"
 
         private val PRE_SDK26_NOTIFICATION_PREFERENCES = arrayOf(
                 "account_ringtone",
@@ -391,6 +421,10 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val DIALOG_DELETE_ACCOUNT = 1
         private const val REQUEST_DELETE_ACCOUNT = 1
         private const val TAG_DELETE_ACCOUNT_CONFIRMATION = "delete_account_confirmation"
+
+        private const val DIALOG_CLEAR_ACCOUNT = 2
+        private const val REQUEST_CLEAR_ACCOUNT = 2
+        private const val TAG_CLEAR_ACCOUNT_CONFIRMATION = "clear_account_confirmation"
 
         fun create(accountUuid: String, rootKey: String?) = AccountSettingsFragment().withArguments(
                 ARG_ACCOUNT_UUID to accountUuid,

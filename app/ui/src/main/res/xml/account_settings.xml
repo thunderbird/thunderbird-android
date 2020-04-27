@@ -27,6 +27,10 @@
             android:title="@string/account_settings_color_label"
             app:pref_colors="@array/account_colors" />
 
+        <Preference
+            android:key="account_settings_clear_action"
+            android:title="@string/account_settings_clear_account_action" />
+
     </PreferenceScreen>
 
     <PreferenceScreen
