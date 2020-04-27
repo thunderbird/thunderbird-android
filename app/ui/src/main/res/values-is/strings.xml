@@ -108,6 +108,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="folders_action">Sýsla með möppur</string>
   <string name="account_settings_action">Aðgangsstillingar</string>
   <string name="remove_account_action">Fjarlægja aðganginn</string>
+  <string name="account_settings_clear_account_action">Hreinsa skilaboð (áhættusamt!)</string>
   <string name="mark_as_read_action">Merkja sem lesið</string>
   <string name="send_alternate_action">Deila</string>
   <string name="send_alternate_chooser_title">Veldu sendanda</string>

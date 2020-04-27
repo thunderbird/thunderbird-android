@@ -109,6 +109,7 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="folders_action">Zarządzaj folderami</string>
   <string name="account_settings_action">Ustawienia konta</string>
   <string name="remove_account_action">Usuń konto</string>
+  <string name="account_settings_clear_account_action">Usuń wszystkie dane (niebezpieczne!)</string>
   <string name="mark_as_read_action">Oznacz jako przeczytane</string>
   <string name="send_alternate_action">Prześlij dalej (alternatywne)</string>
   <string name="send_alternate_chooser_title">Wybierz nadawcę</string>

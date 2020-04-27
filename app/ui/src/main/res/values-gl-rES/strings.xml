@@ -65,6 +65,7 @@
   <string name="preferences_action">Axustes</string>
   <string name="account_settings_action">Axustes da conta</string>
   <string name="remove_account_action">Eliminar conta</string>
+  <string name="account_settings_clear_account_action">Limpar mensaxes (perigoso!)</string>
   <string name="mark_as_read_action">Marcar como lida</string>
   <string name="send_alternate_action">Compartir</string>
   <string name="send_alternate_chooser_title">Seleccionar remitente</string>

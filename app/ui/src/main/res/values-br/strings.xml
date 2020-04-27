@@ -108,6 +108,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="folders_action">Merañ an teuliadoù</string>
   <string name="account_settings_action">Arventennoù ar gont</string>
   <string name="remove_account_action">Dilemel ar gont</string>
+  <string name="account_settings_clear_account_action">Skarzhañ ar c’hemennadennoù (arvarus!)</string>
   <string name="mark_as_read_action">Merkañ evel lennet</string>
   <string name="send_alternate_action">Rannañ</string>
   <string name="send_alternate_chooser_title">Dibab ar c’haser</string>

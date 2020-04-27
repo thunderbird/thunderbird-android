@@ -64,6 +64,7 @@
   <string name="preferences_action">設定</string>
   <string name="account_settings_action">帳戶設定</string>
   <string name="remove_account_action">刪除帳戶</string>
+  <string name="account_settings_clear_account_action">清除郵件（慎用）</string>
   <string name="mark_as_read_action">標記為已讀</string>
   <string name="send_alternate_action">分享</string>
   <string name="send_alternate_chooser_title">選擇寄件人</string>

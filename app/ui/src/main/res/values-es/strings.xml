@@ -108,6 +108,7 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="folders_action">Administrar carpetas</string>
   <string name="account_settings_action">Configuración de cuenta</string>
   <string name="remove_account_action">Eliminar cuenta</string>
+  <string name="account_settings_clear_account_action">Limpiar mensajes (¡peligroso!)</string>
   <string name="mark_as_read_action">Marcar como leído</string>
   <string name="send_alternate_action">Compartir</string>
   <string name="send_alternate_chooser_title">Seleccionar remitente</string>

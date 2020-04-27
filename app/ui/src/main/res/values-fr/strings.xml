@@ -110,6 +110,7 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="folders_action">Gérer les dossiers</string>
   <string name="account_settings_action">Paramètres du compte</string>
   <string name="remove_account_action">Supprimer le compte</string>
+  <string name="account_settings_clear_account_action">Vider les courriels (dangeru00A0!)</string>
   <string name="mark_as_read_action">Marquer comme lu</string>
   <string name="send_alternate_action">Partager</string>
   <string name="send_alternate_chooser_title">Choisir l’expéditeur</string>

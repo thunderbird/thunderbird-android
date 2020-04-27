@@ -108,6 +108,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="folders_action">Управление на папки</string>
   <string name="account_settings_action">Настройки на профила</string>
   <string name="remove_account_action">Премахни профила</string>
+  <string name="account_settings_clear_account_action">Изтрий всички съобщения (опасно!)</string>
   <string name="mark_as_read_action">Маркирай като прочетено</string>
   <string name="send_alternate_action">Сподели</string>
   <string name="send_alternate_chooser_title">Избери изпращащ</string>

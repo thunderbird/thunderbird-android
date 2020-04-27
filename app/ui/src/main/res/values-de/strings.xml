@@ -110,6 +110,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="folders_action">Ordner verwalten</string>
   <string name="account_settings_action">Kontoeinstellungen</string>
   <string name="remove_account_action">Konto entfernen</string>
+  <string name="account_settings_clear_account_action">Alle Daten löschen (Vorsicht!)</string>
   <string name="mark_as_read_action">Als gelesen markieren</string>
   <string name="send_alternate_action">Teilen</string>
   <string name="send_alternate_chooser_title">Absender auswählen</string>

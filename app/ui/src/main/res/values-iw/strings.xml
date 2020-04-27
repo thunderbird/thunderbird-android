@@ -67,6 +67,7 @@
   <string name="preferences_action">הגדרות</string>
   <string name="account_settings_action">הגדרות חשבון</string>
   <string name="remove_account_action">מחק חשבון</string>
+  <string name="account_settings_clear_account_action">נקה ההודעות (סכנה!)</string>
   <string name="mark_as_read_action">סמן כנקרא</string>
   <string name="send_alternate_action">שתף</string>
   <string name="send_alternate_chooser_title">בחר את השולח</string>

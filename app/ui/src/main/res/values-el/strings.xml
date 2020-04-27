@@ -100,6 +100,7 @@
   <string name="preferences_action">Ρυθμίσεις</string>
   <string name="account_settings_action">Ρυθμίσεις λογαριασμού</string>
   <string name="remove_account_action">Διαγραφή λογαριασμού</string>
+  <string name="account_settings_clear_account_action">Καθαρισμός μηνυμάτων (Κίνδυνος!)</string>
   <string name="mark_as_read_action">Σήμανση ως αναγνωσμένου</string>
   <string name="send_alternate_action">Διανομή</string>
   <string name="send_alternate_chooser_title">Επιλογή αποστολέα</string>

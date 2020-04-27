@@ -108,6 +108,7 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="folders_action">Kudeatu karpetak</string>
   <string name="account_settings_action">Kontu ezarpenak</string>
   <string name="remove_account_action">Kendu kontua</string>
+  <string name="account_settings_clear_account_action">Mezuak garbitu (kontuz!)</string>
   <string name="mark_as_read_action">Markatu irakurritako gisa</string>
   <string name="send_alternate_action">Partekatu</string>
   <string name="send_alternate_chooser_title">Aukeratu bidaltzailea</string>

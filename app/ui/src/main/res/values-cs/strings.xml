@@ -108,6 +108,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="folders_action">Spravovat složky</string>
   <string name="account_settings_action">Nastavení účtu</string>
   <string name="remove_account_action">Odstranit účet</string>
+  <string name="account_settings_clear_account_action">Vyčistit zprávy (nebezpečné!)</string>
   <string name="mark_as_read_action">Označit jako přečtené</string>
   <string name="send_alternate_action">Sdílet</string>
   <string name="send_alternate_chooser_title">Vybrat odesílatele</string>

@@ -109,6 +109,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="folders_action">Gerir pastas</string>
   <string name="account_settings_action">Configurações da conta</string>
   <string name="remove_account_action">Remover conta</string>
+  <string name="account_settings_clear_account_action">Limpar mensagens (perigo!)</string>
   <string name="mark_as_read_action">Marcar como lido</string>
   <string name="send_alternate_action">Partilhar</string>
   <string name="send_alternate_chooser_title">Escolher remetente</string>

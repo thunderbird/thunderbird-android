@@ -70,6 +70,7 @@
   <string name="preferences_action">설정</string>
   <string name="account_settings_action">계정 설정</string>
   <string name="remove_account_action">계정 삭제</string>
+  <string name="account_settings_clear_account_action">편지 비우기 (위험!)</string>
   <string name="mark_as_read_action">읽은 메일로 표시</string>
   <string name="send_alternate_action">공유</string>
   <string name="send_alternate_chooser_title">발신자 선택</string>

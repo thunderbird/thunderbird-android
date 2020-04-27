@@ -110,6 +110,7 @@ K-9 Mail 是 Android 上一款功能强大的自由 email 客户端。
   <string name="folders_action">管理文件夹</string>
   <string name="account_settings_action">账户设置</string>
   <string name="remove_account_action">移除账户</string>
+  <string name="account_settings_clear_account_action">清除邮件（慎用）</string>
   <string name="mark_as_read_action">标记为已读</string>
   <string name="send_alternate_action">分享</string>
   <string name="send_alternate_chooser_title">选择发件人</string>

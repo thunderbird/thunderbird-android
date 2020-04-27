@@ -100,6 +100,7 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="preferences_action">Configuración</string>
   <string name="account_settings_action">Configurar conta</string>
   <string name="remove_account_action">Eliminar conta</string>
+  <string name="account_settings_clear_account_action">Limpar mensaxes (perigroso!)</string>
   <string name="mark_as_read_action">Marcar coma Lido</string>
   <string name="send_alternate_action">Compartir</string>
   <string name="send_alternate_chooser_title">Seleccionar Remitente</string>

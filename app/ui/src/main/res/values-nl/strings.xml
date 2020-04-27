@@ -105,6 +105,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="folders_action">Beheer mappen</string>
   <string name="account_settings_action">Account instellingen</string>
   <string name="remove_account_action">Verwijder account</string>
+  <string name="account_settings_clear_account_action">Wis berichten (gevaar!)</string>
   <string name="mark_as_read_action">Markeer als gelezen</string>
   <string name="send_alternate_action">Delen</string>
   <string name="send_alternate_chooser_title">Kies afzender</string>

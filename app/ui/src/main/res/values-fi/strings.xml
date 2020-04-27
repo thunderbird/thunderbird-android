@@ -109,6 +109,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="folders_action">Hallitse kansioita</string>
   <string name="account_settings_action">Tilin asetukset</string>
   <string name="remove_account_action">Poista tili</string>
+  <string name="account_settings_clear_account_action">Tyhjennä viestit (vaarallinen!)</string>
   <string name="mark_as_read_action">Merkitse luetuksi</string>
   <string name="send_alternate_action">Jaa</string>
   <string name="send_alternate_chooser_title">Valitse lähettäjä</string>

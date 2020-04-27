@@ -109,6 +109,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="folders_action">Gestioneu les carpetes</string>
   <string name="account_settings_action">Configuració del compte</string>
   <string name="remove_account_action">Elimina el compte</string>
+  <string name="account_settings_clear_account_action">Neteja els missatges (Compte!)</string>
   <string name="mark_as_read_action">Marca com a llegit</string>
   <string name="send_alternate_action">Comparteix</string>
   <string name="send_alternate_chooser_title">Selecciona remitent</string>

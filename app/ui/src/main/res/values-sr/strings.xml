@@ -101,6 +101,7 @@
   <string name="preferences_action">Поставке</string>
   <string name="account_settings_action">Поставке налога</string>
   <string name="remove_account_action">Уклони налог</string>
+  <string name="account_settings_clear_account_action">Очисти поруке (пажња!)</string>
   <string name="mark_as_read_action">Означи као прочитано</string>
   <string name="send_alternate_action">Подели</string>
   <string name="send_alternate_chooser_title">Изаберите пошиљаоца</string>

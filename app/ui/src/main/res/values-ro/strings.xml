@@ -108,6 +108,7 @@ Vă rugăm să ne raportați defecte, să contribuiți cu funcționalități noi
   <string name="folders_action">Gestionează dosarele</string>
   <string name="account_settings_action">Opțiuni cont</string>
   <string name="remove_account_action">Ștergeți contul</string>
+  <string name="account_settings_clear_account_action">Curăţă mesajele (pericol!)</string>
   <string name="mark_as_read_action">Marchează ca citit</string>
   <string name="send_alternate_action">Distribuie</string>
   <string name="send_alternate_chooser_title">Alege expeditor</string>

@@ -109,6 +109,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="folders_action">Klasörleri yönet</string>
   <string name="account_settings_action">Hesap Ayarları</string>
   <string name="remove_account_action">Hesabı Kaldır</string>
+  <string name="account_settings_clear_account_action">İletileri temizle (riskli!)</string>
   <string name="mark_as_read_action">Okundu olarak işaretle</string>
   <string name="send_alternate_action">Paylaş</string>
   <string name="send_alternate_chooser_title">Gönderici Seç</string>

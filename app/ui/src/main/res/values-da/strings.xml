@@ -108,6 +108,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="folders_action">Håndtere mapper</string>
   <string name="account_settings_action">Konto opsætning</string>
   <string name="remove_account_action">Slet konto</string>
+  <string name="account_settings_clear_account_action">Ryd mails (farligt!)</string>
   <string name="mark_as_read_action">Marker som læst</string>
   <string name="send_alternate_action">Del</string>
   <string name="send_alternate_chooser_title">Vælg afsender</string>

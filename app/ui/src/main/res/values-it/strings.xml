@@ -110,6 +110,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="folders_action">Gestisci cartelle</string>
   <string name="account_settings_action">Impostazioni account</string>
   <string name="remove_account_action">Rimuovi account</string>
+  <string name="account_settings_clear_account_action">Cancella i messaggi (pericolo!)</string>
   <string name="mark_as_read_action">Marca come letto</string>
   <string name="send_alternate_action">Condividi</string>
   <string name="send_alternate_chooser_title">Scegli il mittente</string>

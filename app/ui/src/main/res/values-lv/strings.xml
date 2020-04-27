@@ -99,6 +99,7 @@ Lūdzu, iesniedziet kļūdu ziņojumus, ierosiniet jaunas iespējas un uzdodiet 
   <string name="preferences_action">Iestatījumi</string>
   <string name="account_settings_action">Konta iestatījumi</string>
   <string name="remove_account_action">Noņemt kontu</string>
+  <string name="account_settings_clear_account_action">Izmest vēstules (bīstami!)</string>
   <string name="mark_as_read_action">Atzīmēt kā izlasītu</string>
   <string name="send_alternate_action">Dalīties</string>
   <string name="send_alternate_chooser_title">Izvēlēties sūtītāju</string>

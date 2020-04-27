@@ -100,6 +100,7 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="preferences_action">Pengaturan</string>
   <string name="account_settings_action">Pengaturan akun</string>
   <string name="remove_account_action">Buang akun</string>
+  <string name="account_settings_clear_account_action">Bersihkan pesan (bahaya!)</string>
   <string name="mark_as_read_action">Tandai sudah dibaca</string>
   <string name="send_alternate_action">Bagikan</string>
   <string name="send_alternate_chooser_title">Pilih pengirim</string>

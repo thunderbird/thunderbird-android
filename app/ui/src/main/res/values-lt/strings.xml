@@ -65,6 +65,7 @@
   <string name="preferences_action">Nustatymai</string>
   <string name="account_settings_action">Paskyros nustatymai</string>
   <string name="remove_account_action">Pašalinti paskyrą</string>
+  <string name="account_settings_clear_account_action">Išvalyti laiškus (pavojinga!)</string>
   <string name="mark_as_read_action">Pažymėti kaip skaitytą</string>
   <string name="send_alternate_action">Dalintis</string>
   <string name="send_alternate_chooser_title">Pasirinkti siuntėją</string>

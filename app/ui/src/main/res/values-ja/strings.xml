@@ -110,6 +110,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="folders_action">フォルダ管理</string>
   <string name="account_settings_action">アカウント設定</string>
   <string name="remove_account_action">アカウント削除</string>
+  <string name="account_settings_clear_account_action">アカウントクリア (危険！)</string>
   <string name="mark_as_read_action">既読にする</string>
   <string name="send_alternate_action">共有</string>
   <string name="send_alternate_chooser_title">アプリケーションを選択</string>

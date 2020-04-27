@@ -108,6 +108,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="folders_action">Выбрать папки</string>
   <string name="account_settings_action">Настройки ящика</string>
   <string name="remove_account_action">Удалить ящик</string>
+  <string name="account_settings_clear_account_action">Стереть сообщения (!)</string>
   <string name="mark_as_read_action">Прочитано</string>
   <string name="send_alternate_action">Передать</string>
   <string name="send_alternate_chooser_title">Способ передачи</string>

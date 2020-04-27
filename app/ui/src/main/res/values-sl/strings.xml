@@ -109,6 +109,7 @@ Poročila o napakah, predloge za nove funkcije in vprašanja lahko pošljete na
   <string name="folders_action">Upravljanje z mapami</string>
   <string name="account_settings_action">Nastavitve računa</string>
   <string name="remove_account_action">Odstrani račun</string>
+  <string name="account_settings_clear_account_action">Izbriši vsa sporočila računa (!)</string>
   <string name="mark_as_read_action">Označi kot prebrano</string>
   <string name="send_alternate_action">Objavi z …</string>
   <string name="send_alternate_chooser_title">Izberi pošiljatelja</string>

@@ -109,6 +109,7 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="folders_action">Rheoli ffolderi</string>
   <string name="account_settings_action">Gosodiadau cyfrif</string>
   <string name="remove_account_action">Tynnu\'r cyfrif</string>
+  <string name="account_settings_clear_account_action">Clirio negeseuon (pergyl!)</string>
   <string name="mark_as_read_action">Nodi wedi eu darllen</string>
   <string name="send_alternate_action">Rhannu</string>
   <string name="send_alternate_chooser_title">Dewis anfonwr</string>

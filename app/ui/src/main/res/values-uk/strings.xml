@@ -109,6 +109,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="folders_action">Керування теками</string>
   <string name="account_settings_action">Налаштування облікового запису</string>
   <string name="remove_account_action">Видалити обліковий запис</string>
+  <string name="account_settings_clear_account_action">Вилучити повідомлення (небезпечно!)</string>
   <string name="mark_as_read_action">Позначити прочитаним</string>
   <string name="send_alternate_action">Поділитися</string>
   <string name="send_alternate_chooser_title">Вибрати відправника</string>

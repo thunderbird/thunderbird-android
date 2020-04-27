@@ -109,6 +109,7 @@
   <string name="folders_action">مدیریت پوشه‌ها</string>
   <string name="account_settings_action">تنظیمات حساب</string>
   <string name="remove_account_action">حذف حساب</string>
+  <string name="account_settings_clear_account_action">پاک کردن پیام ها (خطر)</string>
   <string name="mark_as_read_action">خوانده شد</string>
   <string name="send_alternate_action">اشتراک‌گذاری</string>
   <string name="send_alternate_chooser_title">انتخاب فرستنده</string>

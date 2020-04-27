@@ -132,6 +132,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="folders_action">Manage folders</string>
     <string name="account_settings_action">Account settings</string>
     <string name="remove_account_action">Remove account</string>
+    <string name="account_settings_clear_account_action">Clear messages (danger!)</string>
 
     <string name="mark_as_read_action">Mark as read</string>
     <string name="send_alternate_action">Share</string>

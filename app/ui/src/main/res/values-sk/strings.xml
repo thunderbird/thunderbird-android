@@ -97,6 +97,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="preferences_action">Nastavenia</string>
   <string name="account_settings_action">Nastavenia účtu</string>
   <string name="remove_account_action">Odstrániť účet</string>
+  <string name="account_settings_clear_account_action">Vyčistiť správy (nebezpečné)</string>
   <string name="mark_as_read_action">Označiť ako prečítané</string>
   <string name="send_alternate_action">Zdieľať</string>
   <string name="send_alternate_chooser_title">Vybrať odosielateľa</string>
