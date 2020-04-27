@@ -40,6 +40,7 @@ import com.fsck.k9.K9.Intents;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.backend.api.Backend;
+import com.fsck.k9.backend.api.BuildConfig;
 import com.fsck.k9.backend.api.SyncConfig;
 import com.fsck.k9.backend.api.SyncListener;
 import com.fsck.k9.cache.EmailProviderCache;
@@ -881,10 +882,13 @@ public class MessagingController {
                 throw new RuntimeException("Unsupported messaging operation");
         }
 
-        if (operation != MoveOrCopyFlavor.COPY && backend.getSupportsExpunge()
-                && account.getExpungePolicy() == Expunge.EXPUNGE_IMMEDIATELY) {
-            Timber.i("processingPendingMoveOrCopy expunging folder %s:%s", account.getDescription(), srcFolderServerId);
-            backend.expungeMessages(srcFolderServerId, uids);
+        if (operation != MoveOrCopyFlavor.COPY) {
+            if (backend.getSupportsExpunge() && account.getExpungePolicy() == Expunge.EXPUNGE_IMMEDIATELY) {
+                Timber.i("processingPendingMoveOrCopy expunging folder %s:%s", account.getDescription(), srcFolderServerId);
+                backend.expungeMessages(srcFolderServerId, uids);
+            }
+
+            destroyPlaceholderMessages(localSourceFolder, uids);
         }
 
         // TODO: Change Backend interface to ensure we never receive null for remoteUidMap
@@ -913,6 +917,26 @@ public class MessagingController {
             } else {
                 // New server ID wasn't provided. Remove local message.
                 localMessage.destroy();
+            }
+        }
+    }
+
+    private void destroyPlaceholderMessages(LocalFolder localFolder, List<String> uids) throws MessagingException {
+        for (String uid : uids) {
+            LocalMessage placeholderMessage = localFolder.getMessage(uid);
+            if (placeholderMessage == null) {
+                continue;
+            }
+
+            if (placeholderMessage.isSet(Flag.DELETED)) {
+                placeholderMessage.destroy();
+            } else {
+                Timber.w("Expected local message %s in folder %s to be a placeholder, but DELETE flag wasn't set",
+                        uid, localFolder.getServerId());
+
+                if (BuildConfig.DEBUG) {
+                    throw new AssertionError("Placeholder message must have the DELETED flag set");
+                }
             }
         }
     }
