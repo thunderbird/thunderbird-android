@@ -1,5 +1,6 @@
 package com.fsck.k9.backend.jmap
 
+import com.fsck.k9.backend.api.BackendFolderUpdater
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.mail.AuthenticationFailedException
@@ -26,11 +27,13 @@ internal class CommandRefreshFolderList(
 ) {
     fun refreshFolderList() {
         try {
-            val state = backendStorage.getExtraString(STATE)
-            if (state == null) {
-                fetchMailboxes()
-            } else {
-                fetchMailboxUpdates(state)
+            backendStorage.createFolderUpdater().use { folderUpdater ->
+                val state = backendStorage.getExtraString(STATE)
+                if (state == null) {
+                    fetchMailboxes(folderUpdater)
+                } else {
+                    fetchMailboxUpdates(folderUpdater, state)
+                }
             }
         } catch (e: UnauthorizedException) {
             throw AuthenticationFailedException("Authentication failed", e)
@@ -45,7 +48,7 @@ internal class CommandRefreshFolderList(
         }
     }
 
-    private fun fetchMailboxes() {
+    private fun fetchMailboxes(folderUpdater: BackendFolderUpdater) {
         val call = jmapClient.call(
             GetMailboxMethodCall.builder().accountId(accountId).build()
         )
@@ -56,42 +59,42 @@ internal class CommandRefreshFolderList(
         val (foldersToUpdate, foldersToCreate) = foldersOnServer.partition { it.id in oldFolderServerIds }
 
         for (folder in foldersToUpdate) {
-            backendStorage.changeFolder(folder.id, folder.name, folder.type)
+            folderUpdater.changeFolder(folder.id, folder.name, folder.type)
         }
 
         val newFolders = foldersToCreate.map { folder ->
             FolderInfo(folder.id, folder.name, folder.type)
         }
-        backendStorage.createFolders(newFolders)
+        folderUpdater.createFolders(newFolders)
 
         val newFolderServerIds = foldersOnServer.map { it.id }
         val removedFolderServerIds = oldFolderServerIds - newFolderServerIds
-        backendStorage.deleteFolders(removedFolderServerIds)
+        folderUpdater.deleteFolders(removedFolderServerIds)
 
         backendStorage.setExtraString(STATE, response.state)
     }
 
-    private fun fetchMailboxUpdates(state: String) {
+    private fun fetchMailboxUpdates(folderUpdater: BackendFolderUpdater, state: String) {
         try {
-            fetchAllMailboxChanges(state)
+            fetchAllMailboxChanges(folderUpdater, state)
         } catch (e: MethodErrorResponseException) {
             if (e.methodErrorResponse.type == ERROR_CANNOT_CALCULATE_CHANGES) {
-                fetchMailboxes()
+                fetchMailboxes(folderUpdater)
             } else {
                 throw e
             }
         }
     }
 
-    private fun fetchAllMailboxChanges(state: String) {
+    private fun fetchAllMailboxChanges(folderUpdater: BackendFolderUpdater, state: String) {
         var currentState = state
         do {
-            val (newState, hasMoreChanges) = fetchMailboxChanges(currentState)
+            val (newState, hasMoreChanges) = fetchMailboxChanges(folderUpdater, currentState)
             currentState = newState
         } while (hasMoreChanges)
     }
 
-    private fun fetchMailboxChanges(state: String): UpdateState {
+    private fun fetchMailboxChanges(folderUpdater: BackendFolderUpdater, state: String): UpdateState {
         val multiCall = jmapClient.newMultiCall()
         val mailboxChangesCall = multiCall.call(
             ChangesMailboxMethodCall.builder()
@@ -120,15 +123,15 @@ internal class CommandRefreshFolderList(
         val foldersToCreate = createdMailboxResponse.list.map { folder ->
             FolderInfo(folder.id, folder.name, folder.type)
         }
-        backendStorage.createFolders(foldersToCreate)
+        folderUpdater.createFolders(foldersToCreate)
 
         for (folder in changedMailboxResponse.list) {
-            backendStorage.changeFolder(folder.id, folder.name, folder.type)
+            folderUpdater.changeFolder(folder.id, folder.name, folder.type)
         }
 
         val destroyed = mailboxChangesResponse.destroyed
         destroyed?.let {
-            backendStorage.deleteFolders(it.toList())
+            folderUpdater.deleteFolders(it.toList())
         }
 
         backendStorage.setExtraString(STATE, mailboxChangesResponse.newState)

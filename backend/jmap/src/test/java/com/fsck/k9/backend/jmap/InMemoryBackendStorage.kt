@@ -1,5 +1,6 @@
 package com.fsck.k9.backend.jmap
 
+import com.fsck.k9.backend.api.BackendFolderUpdater
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.mail.FolderType
@@ -17,24 +18,8 @@ class InMemoryBackendStorage : BackendStorage {
         return folders.keys.toList()
     }
 
-    override fun createFolders(folders: List<FolderInfo>) {
-        folders.forEach { folder ->
-            if (this.folders.containsKey(folder.serverId)) error("Folder ${folder.serverId} already present")
-
-            this.folders[folder.serverId] = InMemoryBackendFolder(folder.name, folder.type)
-        }
-    }
-
-    override fun deleteFolders(folderServerIds: List<String>) {
-        for (folderServerId in folderServerIds) {
-            folders.remove(folderServerId) ?: error("Folder $folderServerId not found")
-        }
-    }
-
-    override fun changeFolder(folderServerId: String, name: String, type: FolderType) {
-        val folder = folders[folderServerId] ?: error("Folder $folderServerId not found")
-        folder.name = name
-        folder.type = type
+    override fun createFolderUpdater(): BackendFolderUpdater {
+        return InMemoryBackendFolderUpdater()
     }
 
     override fun getExtraString(name: String): String? = extraStrings[name]
@@ -47,5 +32,29 @@ class InMemoryBackendStorage : BackendStorage {
 
     override fun setExtraNumber(name: String, value: Long) {
         extraNumbers[name] = value
+    }
+
+    private inner class InMemoryBackendFolderUpdater : BackendFolderUpdater {
+        override fun createFolders(foldersToCreate: List<FolderInfo>) {
+            foldersToCreate.forEach { folder ->
+                if (folders.containsKey(folder.serverId)) error("Folder ${folder.serverId} already present")
+
+                folders[folder.serverId] = InMemoryBackendFolder(folder.name, folder.type)
+            }
+        }
+
+        override fun deleteFolders(folderServerIds: List<String>) {
+            for (folderServerId in folderServerIds) {
+                folders.remove(folderServerId) ?: error("Folder $folderServerId not found")
+            }
+        }
+
+        override fun changeFolder(folderServerId: String, name: String, type: FolderType) {
+            val folder = folders[folderServerId] ?: error("Folder $folderServerId not found")
+            folder.name = name
+            folder.type = type
+        }
+
+        override fun close() = Unit
     }
 }
