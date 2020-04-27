@@ -20,7 +20,6 @@ import com.fsck.k9.fragment.MessageListFragmentComparators.UnreadComparator
 import com.fsck.k9.helper.MergeCursorWithUniqueId
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.provider.EmailProvider
-import com.fsck.k9.provider.EmailProvider.SpecialColumns
 import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchSpecification.SearchField
 import com.fsck.k9.search.SqlQueryBuilder
@@ -94,9 +93,9 @@ class MessageListLoader(
             val activeMessage = config.activeMessage
             val selectActive = activeMessage != null && activeMessage.accountUuid == accountUuid
             if (selectActive && activeMessage != null) {
-                query.append("(${EmailProvider.MessageColumns.UID} = ? AND ${SpecialColumns.FOLDER_SERVER_ID} = ?) OR (")
+                query.append("(${EmailProvider.MessageColumns.UID} = ? AND ${EmailProvider.MessageColumns.FOLDER_ID} = ?) OR (")
                 queryArgs.add(activeMessage.uid)
-                queryArgs.add(activeMessage.folderServerId)
+                queryArgs.add(activeMessage.folderId.toString())
             }
 
             SqlQueryBuilder.buildWhereClause(account, config.search.conditions, query, queryArgs)
