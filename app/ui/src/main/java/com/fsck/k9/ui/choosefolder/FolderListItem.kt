@@ -10,8 +10,7 @@ import com.mikepenz.fastadapter.items.AbstractItem
 class FolderListItem(
     val databaseId: Long,
     private val folderIconResource: Int,
-    val displayName: String,
-    val serverId: String
+    val displayName: String
 ) : AbstractItem<FolderListViewHolder>() {
     override var identifier = databaseId
 
