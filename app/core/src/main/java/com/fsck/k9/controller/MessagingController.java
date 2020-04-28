@@ -327,7 +327,7 @@ public class MessagingController {
         cache.hideMessages(messages);
     }
 
-    private void unsuppressMessages(Account account, List<? extends Message> messages) {
+    private void unsuppressMessages(Account account, List<LocalMessage> messages) {
         EmailProviderCache cache = EmailProviderCache.getCache(account.getUuid(), context);
         cache.unhideMessages(messages);
     }
@@ -1121,7 +1121,7 @@ public class MessagingController {
      * @param newState
      *         {@code true}, if the flag should be set. {@code false} if it should be removed.
      */
-    public void setFlag(Account account, String folderServerId, List<? extends Message> messages, Flag flag,
+    public void setFlag(Account account, String folderServerId, List<LocalMessage> messages, Flag flag,
             boolean newState) {
         // TODO: Put this into the background, but right now some callers depend on the message
         //       objects being modified right after this method returns.
@@ -1177,7 +1177,7 @@ public class MessagingController {
             localFolder = localStore.getFolder(folderServerId);
             localFolder.open();
 
-            Message message = localFolder.getMessage(uid);
+            LocalMessage message = localFolder.getMessage(uid);
             if (message != null) {
                 setFlag(account, folderServerId, Collections.singletonList(message), flag, newState);
             }
@@ -1767,7 +1767,7 @@ public class MessagingController {
                     @Override
                     public void run() {
                         try {
-                            List<Message> messagesInThreads = collectMessagesInThreads(account, messages);
+                            List<LocalMessage> messagesInThreads = collectMessagesInThreads(account, messages);
                             moveOrCopyMessageSynchronous(account, srcFolder, messagesInThreads, destFolder,
                                     MoveOrCopyFlavor.MOVE);
                         } catch (MessagingException e) {
@@ -1809,7 +1809,7 @@ public class MessagingController {
                     @Override
                     public void run() {
                         try {
-                            List<Message> messagesInThreads = collectMessagesInThreads(account, messages);
+                            List<LocalMessage> messagesInThreads = collectMessagesInThreads(account, messages);
                             moveOrCopyMessageSynchronous(account, srcFolder, messagesInThreads, destFolder,
                                     MoveOrCopyFlavor.COPY);
                         } catch (MessagingException e) {
@@ -1828,7 +1828,7 @@ public class MessagingController {
     }
 
     private void moveOrCopyMessageSynchronous(final Account account, final String srcFolder,
-            final List<? extends Message> inMessages, final String destFolder,
+            final List<LocalMessage> inMessages, final String destFolder,
             MoveOrCopyFlavor operation) {
 
         try {
@@ -1971,9 +1971,9 @@ public class MessagingController {
         });
     }
 
-    private void deleteThreadsSynchronous(Account account, String folderServerId, List<? extends Message> messages) {
+    private void deleteThreadsSynchronous(Account account, String folderServerId, List<LocalMessage> messages) {
         try {
-            List<Message> messagesToDelete = collectMessagesInThreads(account, messages);
+            List<LocalMessage> messagesToDelete = collectMessagesInThreads(account, messages);
 
             deleteMessagesSynchronous(account, folderServerId,
                     messagesToDelete, null);
@@ -1982,18 +1982,17 @@ public class MessagingController {
         }
     }
 
-    private List<Message> collectMessagesInThreads(Account account, List<? extends Message> messages)
+    private List<LocalMessage> collectMessagesInThreads(Account account, List<LocalMessage> messages)
             throws MessagingException {
 
         LocalStore localStore = localStoreProvider.getInstance(account);
 
-        List<Message> messagesInThreads = new ArrayList<>();
-        for (Message message : messages) {
-            LocalMessage localMessage = (LocalMessage) message;
-            long rootId = localMessage.getRootId();
-            long threadId = (rootId == -1) ? localMessage.getThreadId() : rootId;
+        List<LocalMessage> messagesInThreads = new ArrayList<>();
+        for (LocalMessage message : messages) {
+            long rootId = message.getRootId();
+            long threadId = (rootId == -1) ? message.getThreadId() : rootId;
 
-            List<? extends Message> messagesInThread = localStore.getMessagesInThread(threadId);
+            List<LocalMessage> messagesInThread = localStore.getMessagesInThread(threadId);
 
             messagesInThreads.addAll(messagesInThread);
         }
@@ -2054,15 +2053,15 @@ public class MessagingController {
     }
 
     private void deleteMessagesSynchronous(final Account account, final String folder,
-            final List<? extends Message> messages,
+            final List<LocalMessage> messages,
             MessagingListener listener) {
         LocalFolder localFolder = null;
         LocalFolder localTrashFolder = null;
         try {
-            List<Message> localOnlyMessages = new ArrayList<>();
-            List<Message> syncedMessages = new ArrayList<>();
+            List<LocalMessage> localOnlyMessages = new ArrayList<>();
+            List<LocalMessage> syncedMessages = new ArrayList<>();
             List<String> syncedMessageUids = new ArrayList<>();
-            for (Message message : messages) {
+            for (LocalMessage message : messages) {
                 String uid = message.getUid();
                 if (uid.startsWith(K9.LOCAL_UID_PREFIX)) {
                     localOnlyMessages.add(message);
@@ -2153,7 +2152,7 @@ public class MessagingController {
         }
     }
 
-    private static List<String> getUidsFromMessages(List<? extends Message> messages) {
+    private static List<String> getUidsFromMessages(List<LocalMessage> messages) {
         List<String> uids = new ArrayList<>(messages.size());
         for (int i = 0; i < messages.size(); i++) {
             uids.add(messages.get(i).getUid());

@@ -892,7 +892,7 @@ public class ImapFolderTest {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         folder.open(OPEN_MODE_RW);
-        List<ImapMessage> messages = createImapMessages("1");
+        List<Message> messages = singletonList(createImapMessage("1"));
         when(imapConnection.readResponse()).thenReturn(createImapResponse("x OK [APPENDUID 1 23]"));
 
         folder.appendMessages(messages);

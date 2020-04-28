@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.net.Uri;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.fsck.k9.mail.Message;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.provider.EmailProvider;
 
@@ -139,12 +138,11 @@ public class EmailProviderCache {
         }
     }
 
-    public void unhideMessages(List<? extends Message> messages) {
+    public void unhideMessages(List<LocalMessage> messages) {
         synchronized (mHiddenMessageCache) {
-            for (Message message : messages) {
-                LocalMessage localMessage = (LocalMessage) message;
-                long messageId = localMessage.getDatabaseId();
-                long folderId = localMessage.getFolder().getDatabaseId();
+            for (LocalMessage message : messages) {
+                long messageId = message.getDatabaseId();
+                long folderId = message.getFolder().getDatabaseId();
                 Long hiddenInFolder = mHiddenMessageCache.get(messageId);
 
                 if (hiddenInFolder != null && hiddenInFolder == folderId) {

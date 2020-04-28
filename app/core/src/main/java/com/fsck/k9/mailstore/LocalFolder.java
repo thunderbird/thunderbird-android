@@ -572,10 +572,8 @@ public class LocalFolder {
                     try {
                         open();
                         if (fp.contains(FetchProfile.Item.BODY)) {
-                            for (Message message : messages) {
-                                LocalMessage localMessage = (LocalMessage) message;
-
-                                loadMessageParts(db, localMessage);
+                            for (LocalMessage message : messages) {
+                                loadMessageParts(db, message);
                             }
                         }
                     } catch (MessagingException e) {
@@ -865,11 +863,11 @@ public class LocalFolder {
         return messages;
     }
 
-    public Map<String, String> copyMessages(List<? extends Message> msgs, LocalFolder folder) throws MessagingException {
+    public Map<String, String> copyMessages(List<LocalMessage> msgs, LocalFolder folder) throws MessagingException {
         return folder.appendMessages(msgs, true);
     }
 
-    public Map<String, String> moveMessages(final List<? extends Message> msgs, final LocalFolder destFolder) throws MessagingException {
+    public Map<String, String> moveMessages(final List<LocalMessage> msgs, final LocalFolder destFolder) throws MessagingException {
         final Map<String, String> uidMap = new HashMap<>();
 
         try {
@@ -878,16 +876,14 @@ public class LocalFolder {
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
                     try {
                         destFolder.open();
-                        for (Message message : msgs) {
-                            LocalMessage lMessage = (LocalMessage)message;
-
+                        for (LocalMessage message : msgs) {
                             String oldUID = message.getUid();
 
                             Timber.d("Updating folder_id to %s for message with UID %s, " +
                                     "id %d currently in folder %s",
                                     destFolder.getDatabaseId(),
                                     message.getUid(),
-                                    lMessage.getDatabaseId(),
+                                    message.getDatabaseId(),
                                     getServerId());
 
                             String newUid = K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString();
@@ -901,7 +897,7 @@ public class LocalFolder {
                             /*
                              * "Move" the message into the new folder
                              */
-                            long msgId = lMessage.getDatabaseId();
+                            long msgId = message.getDatabaseId();
                             String[] idArg = new String[] { Long.toString(msgId) };
 
                             ContentValues cv = new ContentValues();
@@ -972,7 +968,7 @@ public class LocalFolder {
                             cv.clear();
                             cv.put("message_id", newId);
                             db.update("threads", cv, "id = ?",
-                                    new String[] { Long.toString(lMessage.getThreadId()) });
+                                    new String[] { Long.toString(message.getThreadId()) });
                         }
                     } catch (MessagingException e) {
                         throw new WrappedException(e);
@@ -1001,16 +997,16 @@ public class LocalFolder {
      * fact, in most cases, they are not). Therefore, if you want to make local changes only to a
      * message, retrieve the appropriate local message instance first (if it already exists).
      */
-    public Map<String, String> appendMessages(List<? extends Message> messages) throws MessagingException {
+    public Map<String, String> appendMessages(List<Message> messages) throws MessagingException {
         return appendMessages(messages, false);
     }
 
-    public void destroyMessages(final List<? extends Message> messages) {
+    public void destroyMessages(final List<LocalMessage> messages) {
         try {
             this.localStore.getDatabase().execute(true, new DbCallback<Void>() {
                 @Override
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
-                    for (Message message : messages) {
+                    for (LocalMessage message : messages) {
                         try {
                             message.destroy();
                         } catch (MessagingException e) {
@@ -1534,7 +1530,7 @@ public class LocalFolder {
         this.localStore.notifyChange();
     }
 
-    public void setFlags(final List<? extends Message> messages, final Set<Flag> flags, final boolean value)
+    public void setFlags(final List<LocalMessage> messages, final Set<Flag> flags, final boolean value)
     throws MessagingException {
         open();
 
@@ -1545,7 +1541,7 @@ public class LocalFolder {
                 public Void doDbWork(final SQLiteDatabase db) throws WrappedException,
                         UnavailableStorageException {
 
-                    for (Message message : messages) {
+                    for (LocalMessage message : messages) {
                         try {
                             message.setFlags(flags, value);
                         } catch (MessagingException e) {
@@ -1564,7 +1560,7 @@ public class LocalFolder {
     public void setFlags(final Set<Flag> flags, boolean value)
     throws MessagingException {
         open();
-        for (Message message : getMessages(null)) {
+        for (LocalMessage message : getMessages(null)) {
             message.setFlags(flags, value);
         }
     }

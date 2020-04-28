@@ -6,9 +6,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.webdav.WebDavFolder;
+import com.fsck.k9.mail.store.webdav.WebDavMessage;
 import com.fsck.k9.mail.store.webdav.WebDavStore;
 import org.jetbrains.annotations.NotNull;
 import timber.log.Timber;
@@ -40,7 +40,7 @@ class CommandMoveOrCopyMessages {
         try {
             remoteSrcFolder = webDavStore.getFolder(srcFolder);
 
-            List<Message> messages = new ArrayList<>();
+            List<WebDavMessage> messages = new ArrayList<>();
 
             for (String uid : uids) {
                 messages.add(remoteSrcFolder.getMessage(uid));

@@ -15,7 +15,6 @@ import android.annotation.SuppressLint;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.K9MailLib;
-import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import timber.log.Timber;
@@ -297,7 +296,7 @@ public class Pop3Folder {
             return;
         }
         List<String> uids = new ArrayList<>();
-        for (Message message : messages) {
+        for (Pop3Message message : messages) {
             uids.add(message.getUid());
         }
         try {
@@ -356,7 +355,7 @@ public class Pop3Folder {
     private void fetchEnvelope(List<Pop3Message> messages,
                                MessageRetrievalListener<Pop3Message> listener)  throws IOException, MessagingException {
         int unsizedMessages = 0;
-        for (Message message : messages) {
+        for (Pop3Message message : messages) {
             if (message.getSize() == -1) {
                 unsizedMessages++;
             }
@@ -387,7 +386,7 @@ public class Pop3Folder {
             }
         } else {
             Set<String> msgUidIndex = new HashSet<>();
-            for (Message message : messages) {
+            for (Pop3Message message : messages) {
                 msgUidIndex.add(message.getUid());
             }
             int i = 0, count = messages.size();
@@ -481,7 +480,7 @@ public class Pop3Folder {
         }
     }
 
-    public void setFlags(List<? extends Message> messages, final Set<Flag> flags, boolean value)
+    public void setFlags(List<Pop3Message> messages, final Set<Flag> flags, boolean value)
     throws MessagingException {
         if (!value || !flags.contains(Flag.DELETED)) {
             /*
@@ -491,7 +490,7 @@ public class Pop3Folder {
         }
         List<String> uids = new ArrayList<>();
         try {
-            for (Message message : messages) {
+            for (Pop3Message message : messages) {
                 uids.add(message.getUid());
             }
 
@@ -499,7 +498,7 @@ public class Pop3Folder {
         } catch (IOException ioe) {
             throw new MessagingException("Could not get message number for uid " + uids, ioe);
         }
-        for (Message message : messages) {
+        for (Pop3Message message : messages) {
 
             Integer msgNum = uidToMsgNumMap.get(message.getUid());
             if (msgNum == null) {
