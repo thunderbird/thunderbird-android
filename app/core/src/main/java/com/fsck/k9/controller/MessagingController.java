@@ -2174,12 +2174,11 @@ public class MessagingController {
             backend.expunge(trashFolderServerId);
         }
 
-        // When we empty trash, we need to actually synchronize the folder
-        // or local deletes will never get cleaned up
+        // Remove all messages marked as deleted
         LocalStore localStore = localStoreProvider.getInstance(account);
         LocalFolder folder = localStore.getFolder(trashFolderServerId);
         folder.open();
-        synchronizeFolder(account, folder, true, 0, null);
+        folder.destroyDeletedMessages();
 
         compact(account, null);
     }
@@ -2199,6 +2198,7 @@ public class MessagingController {
                     if (isTrashLocalOnly) {
                         localFolder.clearAllMessages();
                     } else {
+                        localFolder.destroyLocalOnlyMessages();
                         localFolder.setFlags(Collections.singleton(Flag.DELETED), true);
                     }
 
