@@ -2199,6 +2199,7 @@ public class MessagingController {
                     if (isTrashLocalOnly) {
                         localFolder.clearAllMessages();
                     } else {
+                        localFolder.destroyLocalOnlyMessages();
                         localFolder.setFlags(Collections.singleton(Flag.DELETED), true);
                     }
 

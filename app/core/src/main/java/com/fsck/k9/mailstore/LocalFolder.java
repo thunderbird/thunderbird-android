@@ -1609,6 +1609,29 @@ public class LocalFolder {
         setVisibleLimit(getAccount().getDisplayCount());
     }
 
+    public void destroyLocalOnlyMessages() throws MessagingException {
+        localStore.getDatabase().execute(false, (DbCallback<Void>) db -> {
+            try (Cursor cursor = db.query(
+                    "messages",
+                    new String[] { "id", "message_part_id", "message_id" },
+                    "folder_id = ? AND uid LIKE '" + K9.LOCAL_UID_PREFIX + "%'",
+                    new String[] { Long.toString(databaseId) },
+                    null,
+                    null,
+                    null)
+            ) {
+                while (cursor.moveToNext()) {
+                    long messageId = cursor.getLong(0);
+                    long messagePartId = cursor.getLong(1);
+                    String messageIdHeader = cursor.getString(2);
+                    destroyMessage(messageId, messagePartId, messageIdHeader);
+                }
+            }
+
+            return null;
+        });
+    }
+
     public void delete() throws MessagingException {
         try {
             this.localStore.getDatabase().execute(false, new DbCallback<Void>() {
