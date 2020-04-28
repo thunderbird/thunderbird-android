@@ -1,9 +1,14 @@
 package com.fsck.k9.ui.managefolders
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
+import com.fsck.k9.fragment.ConfirmationDialogFragment
+import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.observeNotNull
@@ -12,13 +17,33 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class FolderSettingsFragment : PreferenceFragmentCompat() {
+class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFragmentListener {
     private val viewModel: FolderSettingsViewModel by viewModel()
     private val folderNameFormatter: FolderNameFormatter by inject { parametersOf(requireActivity()) }
 
     override fun onCreatePreferencesFix(savedInstanceState: Bundle?, rootKey: String?) {
         // Set empty preferences resource while data is being loaded
         setPreferencesFromResource(R.xml.empty_preferences, null)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.folder_settings_option, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.clear_local_folder -> {
+                viewModel.showClearFolderConfirmationDialog()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,6 +60,8 @@ class FolderSettingsFragment : PreferenceFragmentCompat() {
                     is FolderSettingsData -> initPreferences(folderSettingsResult)
                 }
             }
+
+        viewModel.getActionEvents().observeNotNull(this) { handleActionEvents(it) }
     }
 
     private fun navigateBack() {
@@ -53,9 +80,43 @@ class FolderSettingsFragment : PreferenceFragmentCompat() {
         findPreference<Preference>(PREFERENCE_TOP_CATEGORY)!!.title = folderDisplayName
     }
 
+    private fun handleActionEvents(action: Action) {
+        when (action) {
+            is Action.ShowClearFolderConfirmationDialog -> showClearFolderConfirmationDialog()
+        }
+    }
+
+    private fun showClearFolderConfirmationDialog() {
+        val dialogFragment = ConfirmationDialogFragment.newInstance(
+                DIALOG_CLEAR_FOLDER,
+                getString(R.string.dialog_confirm_clear_local_folder_title),
+                getString(R.string.dialog_confirm_clear_local_folder_message),
+                getString(R.string.okay_action),
+                getString(R.string.cancel_action)
+        )
+        dialogFragment.setTargetFragment(this, REQUEST_CLEAR_FOLDER)
+        dialogFragment.show(requireFragmentManager(), TAG_CLEAR_FOLDER_CONFIRMATION)
+    }
+
+    override fun doPositiveClick(dialogId: Int) {
+        when (dialogId) {
+            DIALOG_CLEAR_FOLDER -> {
+                viewModel.onClearFolderConfirmation()
+            }
+        }
+    }
+
+    override fun doNegativeClick(dialogId: Int) = Unit
+
+    override fun dialogCancelled(dialogId: Int) = Unit
+
     companion object {
         const val EXTRA_ACCOUNT = "account"
         const val EXTRA_FOLDER_ID = "folderId"
+
+        private const val DIALOG_CLEAR_FOLDER = 1
+        private const val REQUEST_CLEAR_FOLDER = 1
+        private const val TAG_CLEAR_FOLDER_CONFIRMATION = "clear_folder_confirmation"
 
         private const val PREFERENCE_TOP_CATEGORY = "folder_settings"
     }

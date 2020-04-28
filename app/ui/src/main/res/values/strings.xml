@@ -662,6 +662,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="folder_settings_folder_notify_mode_first_class">1st Class</string>
     <string name="folder_settings_folder_notify_mode_second_class">2nd Class</string>
     <string name="folder_settings_folder_notify_mode_inherited">Same as push class</string>
+    <string name="folder_settings_clear_local_folder_action">Clear local messages</string>
 
     <string name="account_settings_incoming_label">Incoming server</string>
     <string name="account_settings_incoming_summary">Configure the incoming mail server</string>
@@ -892,6 +893,9 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="confirm_discard_draft_message">Are you sure you want to discard this message?</string>
 
     <string name="select_text_now">Select text to copy.</string>
+
+    <string name="dialog_confirm_clear_local_folder_title">Confirm local folder clear</string>
+    <string name="dialog_confirm_clear_local_folder_message">Do you really want to delete all local messages from this folder?</string>
 
     <string name="dialog_confirm_delete_title">Confirm deletion</string>
     <string name="dialog_confirm_delete_message">Do you want to delete this message?</string>
