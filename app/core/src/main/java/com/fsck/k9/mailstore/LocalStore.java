@@ -1362,5 +1362,10 @@ public class LocalStore {
         public Account getAccount() {
             return LocalStore.this.getAccount();
         }
+
+        @Override
+        public void saveAccount() {
+            getPreferences().saveAccount(account);
+        }
     }
 }

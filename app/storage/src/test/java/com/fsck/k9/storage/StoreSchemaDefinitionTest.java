@@ -381,6 +381,11 @@ public class StoreSchemaDefinitionTest extends K9RobolectricTest {
             public Account getAccount() {
                 return account;
             }
+
+            @Override
+            public void saveAccount() {
+                // Do nothing
+            }
         };
 
         return new StoreSchemaDefinition(migrationsHelper);

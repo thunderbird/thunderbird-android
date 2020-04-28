@@ -75,7 +75,7 @@ class AccountSearchConditions {
         excludeSpecialFolder(search, account.spamFolderId)
         excludeSpecialFolder(search, account.outboxFolderId)
         excludeSpecialFolder(search, account.sentFolderId)
-        search.or(SearchCondition(SearchField.FOLDER, Attribute.EQUALS, account.inboxFolderId.toString()))
+        search.or(SearchCondition(SearchField.FOLDER, Attribute.EQUALS, account.inboxFolderId!!.toString()))
     }
 
     /**

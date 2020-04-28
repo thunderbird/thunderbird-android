@@ -20,5 +20,6 @@ object Migrations {
         if (oldVersion < 72) MigrationTo72(db).createMessagePartsRootIndex()
         if (oldVersion < 73) MigrationTo73(db).rewritePendingCommandsToUseFolderIds()
         if (oldVersion < 74) MigrationTo74(db, migrationsHelper.account).removeDeletedMessages()
+        if (oldVersion < 75) MigrationTo75(db, migrationsHelper).updateAccountWithSpecialFolderIds()
     }
 }

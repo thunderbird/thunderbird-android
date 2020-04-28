@@ -11,7 +11,6 @@ import java.util.Set;
 import android.content.Context;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.Account.SpecialFolderSelection;
 import com.fsck.k9.AccountPreferenceSerializer;
 import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.DI;
@@ -75,7 +74,7 @@ import static org.mockito.Mockito.when;
 public class MessagingControllerTest extends K9RobolectricTest {
     private static final long FOLDER_ID = 23;
     private static final String FOLDER_NAME = "Folder";
-    private static final String SENT_FOLDER_NAME = "Sent";
+    private static final long SENT_FOLDER_ID = 10;
     private static final int MAXIMUM_SMALL_MESSAGE_SIZE = 1000;
     private static final String ACCOUNT_UUID = "1";
 
@@ -455,9 +454,9 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
     private void setupAccountWithMessageToSend() throws MessagingException {
         when(account.getOutboxFolderId()).thenReturn(FOLDER_ID);
-        account.setSentFolder(SENT_FOLDER_NAME, SpecialFolderSelection.AUTOMATIC);
-        when(localStore.getFolder(SENT_FOLDER_NAME)).thenReturn(sentFolder);
-        when(sentFolder.getDatabaseId()).thenReturn(1L);
+        account.setSentFolderId(SENT_FOLDER_ID);
+        when(localStore.getFolder(SENT_FOLDER_ID)).thenReturn(sentFolder);
+        when(sentFolder.getDatabaseId()).thenReturn(SENT_FOLDER_ID);
         when(localFolder.exists()).thenReturn(true);
         when(localFolder.getMessages(null)).thenReturn(Collections.singletonList(localMessageToSend1));
         when(localMessageToSend1.getUid()).thenReturn("localMessageToSend1");
@@ -486,6 +485,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     }
 
     private void configureLocalStore() throws MessagingException {
+        when(localStore.getFolder(FOLDER_ID)).thenReturn(localFolder);
         when(localStore.getFolder(FOLDER_NAME)).thenReturn(localFolder);
         when(localStore.getFolder(FOLDER_ID)).thenReturn(localFolder);
         when(localFolder.getDatabaseId()).thenReturn(FOLDER_ID);

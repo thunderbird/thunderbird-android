@@ -16,16 +16,11 @@ import android.text.TextUtils;
 
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy;
 import com.fsck.k9.mail.Address;
-import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
-import com.fsck.k9.mailstore.LocalStore;
-import com.fsck.k9.mailstore.LocalStoreProvider;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.mailstore.StorageManager.StorageProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import timber.log.Timber;
 
 
 /**
@@ -135,12 +130,20 @@ public class Account implements BaseAccount {
     private String trashFolder;
     private String archiveFolder;
     private String spamFolder;
+    private Long inboxFolderId;
+    private Long outboxFolderId;
+    private Long draftsFolderId;
+    private Long sentFolderId;
+    private Long trashFolderId;
+    private Long archiveFolderId;
+    private Long spamFolderId;
     private SpecialFolderSelection draftsFolderSelection;
     private SpecialFolderSelection sentFolderSelection;
     private SpecialFolderSelection trashFolderSelection;
     private SpecialFolderSelection archiveFolderSelection;
     private SpecialFolderSelection spamFolderSelection;
     private String autoExpandFolder;
+    private Long autoExpandFolderId;
     private FolderMode folderDisplayMode;
     private FolderMode folderSyncMode;
     private FolderMode folderPushMode;
@@ -415,25 +418,18 @@ public class Account implements BaseAccount {
         return draftsFolder;
     }
 
-    public Long getDraftsFolderId() {
-        // FIXME: Persist folder ID instead of folder server ID
-        if (!hasDraftsFolder()) {
-            return null;
-        }
-
-        LocalStoreProvider localStoreProvider = DI.get(LocalStoreProvider.class);
-        try {
-            LocalStore localStore = localStoreProvider.getInstance(this);
-            return localStore.getFolderId(getDraftsFolder());
-        } catch (MessagingException e) {
-            Timber.e(e, "Couldn't load folder ID");
-            return null;
-        }
-    }
-
     public synchronized void setDraftsFolder(String name, SpecialFolderSelection selection) {
         draftsFolder = name;
         draftsFolderSelection = selection;
+    }
+
+    @Nullable
+    public synchronized Long getDraftsFolderId() {
+        return draftsFolderId;
+    }
+
+    public synchronized void setDraftsFolderId(@Nullable Long folderId) {
+        draftsFolderId = folderId;
     }
 
     /**
@@ -448,25 +444,18 @@ public class Account implements BaseAccount {
         return sentFolder;
     }
 
-    public Long getSentFolderId() {
-        // FIXME: Persist folder ID instead of folder server ID
-        if (!hasSentFolder()) {
-            return null;
-        }
-
-        LocalStoreProvider localStoreProvider = DI.get(LocalStoreProvider.class);
-        try {
-            LocalStore localStore = localStoreProvider.getInstance(this);
-            return localStore.getFolderId(getSentFolder());
-        } catch (MessagingException e) {
-            Timber.e(e, "Couldn't load folder ID");
-            return null;
-        }
-    }
-
     public synchronized void setSentFolder(String name, SpecialFolderSelection selection) {
         sentFolder = name;
         sentFolderSelection = selection;
+    }
+
+    @Nullable
+    public synchronized Long getSentFolderId() {
+        return sentFolderId;
+    }
+
+    public synchronized void setSentFolderId(@Nullable Long folderId) {
+        sentFolderId = folderId;
     }
 
     /**
@@ -482,25 +471,18 @@ public class Account implements BaseAccount {
         return trashFolder;
     }
 
-    public Long getTrashFolderId() {
-        // FIXME: Persist folder ID instead of folder server ID
-        if (!hasTrashFolder()) {
-            return null;
-        }
-
-        LocalStoreProvider localStoreProvider = DI.get(LocalStoreProvider.class);
-        try {
-            LocalStore localStore = localStoreProvider.getInstance(this);
-            return localStore.getFolderId(getTrashFolder());
-        } catch (MessagingException e) {
-            Timber.e(e, "Couldn't load folder ID");
-            return null;
-        }
-    }
-
     public synchronized void setTrashFolder(String name, SpecialFolderSelection selection) {
         trashFolder = name;
         trashFolderSelection = selection;
+    }
+
+    @Nullable
+    public synchronized Long getTrashFolderId() {
+        return trashFolderId;
+    }
+
+    public synchronized void setTrashFolderId(@Nullable Long folderId) {
+        trashFolderId = folderId;
     }
 
     /**
@@ -515,25 +497,18 @@ public class Account implements BaseAccount {
         return archiveFolder;
     }
 
-    public Long getArchiveFolderId() {
-        // FIXME: Persist folder ID instead of folder server ID
-        if (!hasArchiveFolder()) {
-            return null;
-        }
-
-        LocalStoreProvider localStoreProvider = DI.get(LocalStoreProvider.class);
-        try {
-            LocalStore localStore = localStoreProvider.getInstance(this);
-            return localStore.getFolderId(getArchiveFolder());
-        } catch (MessagingException e) {
-            Timber.e(e, "Couldn't load folder ID");
-            return null;
-        }
-    }
-
     public synchronized void setArchiveFolder(String archiveFolder, SpecialFolderSelection selection) {
         this.archiveFolder = archiveFolder;
         archiveFolderSelection = selection;
+    }
+
+    @Nullable
+    public synchronized Long getArchiveFolderId() {
+        return archiveFolderId;
+    }
+
+    public synchronized void setArchiveFolderId(@Nullable Long folderId) {
+        archiveFolderId = folderId;
     }
 
     /**
@@ -548,25 +523,18 @@ public class Account implements BaseAccount {
         return spamFolder;
     }
 
-    public Long getSpamFolderId() {
-        // FIXME: Persist folder ID instead of folder server ID
-        if (!hasSpamFolder()) {
-            return null;
-        }
-
-        LocalStoreProvider localStoreProvider = DI.get(LocalStoreProvider.class);
-        try {
-            LocalStore localStore = localStoreProvider.getInstance(this);
-            return localStore.getFolderId(getSpamFolder());
-        } catch (MessagingException e) {
-            Timber.e(e, "Couldn't load folder ID");
-            return null;
-        }
-    }
-
     public synchronized void setSpamFolder(String name, SpecialFolderSelection selection) {
         spamFolder = name;
         spamFolderSelection = selection;
+    }
+
+    @Nullable
+    public synchronized Long getSpamFolderId() {
+        return spamFolderId;
+    }
+
+    public synchronized void setSpamFolderId(@Nullable Long folderId) {
+        spamFolderId = folderId;
     }
 
     /**
@@ -602,40 +570,30 @@ public class Account implements BaseAccount {
         return spamFolderSelection;
     }
 
-    public Long getOutboxFolderId() {
-        // FIXME: Persist folder ID instead of folder server ID
-        LocalStoreProvider localStoreProvider = DI.get(LocalStoreProvider.class);
-        try {
-            LocalStore localStore = localStoreProvider.getInstance(this);
-            return localStore.getFolderId(OUTBOX);
-        } catch (MessagingException e) {
-            throw new IllegalStateException("Couldn't find Outbox folder", e);
-        }
+    @Nullable
+    public synchronized Long getOutboxFolderId() {
+        return outboxFolderId;
+    }
+
+    public synchronized void setOutboxFolderId(@Nullable Long folderId) {
+        outboxFolderId = folderId;
     }
 
     public synchronized String getAutoExpandFolder() {
         return autoExpandFolder;
     }
 
-    public Long getAutoExpandFolderId() {
-        // FIXME: Persist folder ID instead of folder server ID
-        String autoExpandFolder = getAutoExpandFolder();
-        if (autoExpandFolder == null) {
-            return null;
-        }
-
-        LocalStoreProvider localStoreProvider = DI.get(LocalStoreProvider.class);
-        try {
-            LocalStore localStore = localStoreProvider.getInstance(this);
-            return localStore.getFolderId(autoExpandFolder);
-        } catch (MessagingException e) {
-            Timber.e(e, "Couldn't load folder ID");
-            return null;
-        }
-    }
-
     public synchronized void setAutoExpandFolder(String name) {
         autoExpandFolder = name;
+    }
+
+    @Nullable
+    public synchronized Long getAutoExpandFolderId() {
+        return autoExpandFolderId;
+    }
+
+    public synchronized void setAutoExpandFolderId(@Nullable Long folderId) {
+        autoExpandFolderId = folderId;
     }
 
     public synchronized int getAccountNumber() {
@@ -1085,25 +1043,17 @@ public class Account implements BaseAccount {
         return inboxFolder;
     }
 
-    public Long getInboxFolderId() {
-        // FIXME: Persist folder ID instead of folder server ID
-        String inboxFolder = getInboxFolder();
-        if (inboxFolder == null) {
-            return null;
-        }
-
-        LocalStoreProvider localStoreProvider = DI.get(LocalStoreProvider.class);
-        try {
-            LocalStore localStore = localStoreProvider.getInstance(this);
-            return localStore.getFolderId(inboxFolder);
-        } catch (MessagingException e) {
-            Timber.e(e, "Couldn't load folder ID");
-            return null;
-        }
-    }
-
     public void setInboxFolder(String name) {
         this.inboxFolder = name;
+    }
+
+    @Nullable
+    public synchronized Long getInboxFolderId() {
+        return inboxFolderId;
+    }
+
+    public synchronized void setInboxFolderId(@Nullable Long folderId) {
+        inboxFolderId = folderId;
     }
 
     public synchronized boolean isSyncRemoteDeletions() {
