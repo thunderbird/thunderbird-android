@@ -967,9 +967,17 @@ public class MessagingController {
     }
 
     void processPendingDelete(PendingDelete command, Account account) throws MessagingException {
+        long folderId = command.folderId;
+        List<String> uids = command.uids;
+
         Backend backend = getBackend(account);
-        String folderServerId = getFolderServerId(account, command.folderId);
-        backend.deleteMessages(folderServerId, command.uids);
+        String folderServerId = getFolderServerId(account, folderId);
+        backend.deleteMessages(folderServerId, uids);
+
+        LocalStore localStore = localStoreProvider.getInstance(account);
+        LocalFolder localFolder = localStore.getFolder(folderId);
+        localFolder.open();
+        destroyPlaceholderMessages(localFolder, uids);
     }
 
     private void queueExpunge(Account account, long folderId) {
