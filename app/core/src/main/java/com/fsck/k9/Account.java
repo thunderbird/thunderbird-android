@@ -363,6 +363,10 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public synchronized void setDisplayCount(int displayCount) {
+        if (this.displayCount == displayCount) {
+            return;
+        }
+
         if (displayCount != -1) {
             this.displayCount = displayCount;
         } else {

@@ -157,6 +157,8 @@ class AccountPreferenceSerializer(
             if (description == null) {
                 description = email
             }
+
+            resetChangeMarkers()
         }
     }
 
@@ -579,6 +581,8 @@ class AccountPreferenceSerializer(
                 ringtone = "content://settings/system/notification_sound"
                 ledColor = chipColor
             }
+
+            resetChangeMarkers()
         }
     }
 
