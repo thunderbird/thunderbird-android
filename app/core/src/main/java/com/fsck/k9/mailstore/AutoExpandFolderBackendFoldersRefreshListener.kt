@@ -19,9 +19,9 @@ class AutoExpandFolderBackendFoldersRefreshListener(
     }
 
     private fun checkAutoExpandFolder() {
-        account.autoExpandFolder?.let { autoExpandFolderServerId ->
-            if (!folderRepository.isFolderPresent(autoExpandFolderServerId)) {
-                account.autoExpandFolder = null
+        account.autoExpandFolderId?.let { autoExpandFolderId ->
+            if (!folderRepository.isFolderPresent(autoExpandFolderId)) {
+                account.autoExpandFolderId = null
                 preferences.saveAccount(account)
             }
         }
