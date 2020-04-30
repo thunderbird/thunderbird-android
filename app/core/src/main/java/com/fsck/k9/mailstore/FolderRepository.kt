@@ -14,9 +14,9 @@ class FolderRepository(
     private val account: Account
 ) {
     private val sortForDisplay =
-            compareByDescending<DisplayFolder> { it.folder.serverId == account.inboxFolder }
-            .thenByDescending { it.folder.serverId == account.outboxFolder }
-            .thenByDescending { account.isSpecialFolder(it.folder.serverId) }
+        compareByDescending<DisplayFolder> { it.folder.type == FolderType.INBOX }
+            .thenByDescending { it.folder.type == FolderType.OUTBOX }
+            .thenByDescending { it.folder.type != FolderType.REGULAR }
             .thenByDescending { it.isInTopGroup }
             .thenBy(String.CASE_INSENSITIVE_ORDER) { it.folder.name }
 
@@ -86,13 +86,13 @@ class FolderRepository(
                 null
             ).use { cursor ->
                 cursor.map {
-                    val serverId = cursor.getString(1)
+                    val id = cursor.getLong(0)
                     FolderDetails(
                         folder = Folder(
-                            id = cursor.getLong(0),
-                            serverId = serverId,
+                            id = id,
+                            serverId = cursor.getString(1),
                             name = cursor.getString(2),
-                            type = folderTypeOf(serverId)
+                            type = folderTypeOf(id)
                         ),
                         isInTopGroup = cursor.getInt(3) == 1,
                         isIntegrate = cursor.getInt(4) == 1,
@@ -142,7 +142,7 @@ class FolderRepository(
                 val id = cursor.getLong(0)
                 val serverId = cursor.getString(1)
                 val name = cursor.getString(2)
-                val type = folderTypeOf(serverId)
+                val type = folderTypeOf(id)
                 val isInTopGroup = cursor.getInt(3) == 1
                 val unreadCount = cursor.getInt(4)
 
@@ -178,14 +178,14 @@ class FolderRepository(
         }
     }
 
-    private fun folderTypeOf(serverId: String) = when (serverId) {
-        account.inboxFolder -> FolderType.INBOX
-        account.outboxFolder -> FolderType.OUTBOX
-        account.sentFolder -> FolderType.SENT
-        account.trashFolder -> FolderType.TRASH
-        account.draftsFolder -> FolderType.DRAFTS
-        account.archiveFolder -> FolderType.ARCHIVE
-        account.spamFolder -> FolderType.SPAM
+    private fun folderTypeOf(folderId: Long) = when (folderId) {
+        account.inboxFolderId -> FolderType.INBOX
+        account.outboxFolderId -> FolderType.OUTBOX
+        account.sentFolderId -> FolderType.SENT
+        account.trashFolderId -> FolderType.TRASH
+        account.draftsFolderId -> FolderType.DRAFTS
+        account.archiveFolderId -> FolderType.ARCHIVE
+        account.spamFolderId -> FolderType.SPAM
         else -> FolderType.REGULAR
     }
 

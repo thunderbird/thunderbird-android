@@ -411,16 +411,6 @@ public class Account implements BaseAccount {
         this.deletePolicy = deletePolicy;
     }
 
-    public boolean isSpecialFolder(String folderServerId) {
-        return (folderServerId != null && (folderServerId.equals(getInboxFolder()) ||
-                folderServerId.equals(getTrashFolder()) ||
-                folderServerId.equals(getDraftsFolder()) ||
-                folderServerId.equals(getArchiveFolder()) ||
-                folderServerId.equals(getSpamFolder()) ||
-                folderServerId.equals(getOutboxFolder()) ||
-                folderServerId.equals(getSentFolder())));
-    }
-
     public synchronized String getDraftsFolder() {
         return draftsFolder;
     }

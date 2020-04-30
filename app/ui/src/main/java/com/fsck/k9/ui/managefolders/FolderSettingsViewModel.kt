@@ -77,7 +77,7 @@ class FolderSettingsViewModel(
     }
 
     private fun createFolderObject(account: Account, folder: Folder): Folder {
-        val folderType = FolderInfoHolder.getFolderType(account, folder.serverId)
+        val folderType = FolderInfoHolder.getFolderType(account, folder.id)
         return Folder(
             id = folder.id,
             serverId = folder.serverId,

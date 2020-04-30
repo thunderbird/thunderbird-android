@@ -18,27 +18,27 @@ class FolderInfoHolder(
     @JvmField var moreMessages = localFolder.hasMoreMessages()
 
     private fun getDisplayName(account: Account, localFolder: LocalFolder): String {
-        val serverId = localFolder.serverId
+        val folderId = localFolder.databaseId
         val folder = Folder(
-            localFolder.databaseId,
-            serverId,
-            localFolder.name,
-            getFolderType(account, serverId)
+            id = folderId,
+            serverId = localFolder.serverId,
+            name = localFolder.name,
+            type = getFolderType(account, folderId)
         )
         return folderNameFormatter.displayName(folder)
     }
 
     companion object {
         @JvmStatic
-        fun getFolderType(account: Account, serverId: String): FolderType {
-            return when (serverId) {
-                account.inboxFolder -> FolderType.INBOX
-                account.outboxFolder -> FolderType.OUTBOX
-                account.archiveFolder -> FolderType.ARCHIVE
-                account.draftsFolder -> FolderType.DRAFTS
-                account.sentFolder -> FolderType.SENT
-                account.spamFolder -> FolderType.SPAM
-                account.trashFolder -> FolderType.TRASH
+        fun getFolderType(account: Account, folderId: Long): FolderType {
+            return when (folderId) {
+                account.inboxFolderId -> FolderType.INBOX
+                account.outboxFolderId -> FolderType.OUTBOX
+                account.archiveFolderId -> FolderType.ARCHIVE
+                account.draftsFolderId -> FolderType.DRAFTS
+                account.sentFolderId -> FolderType.SENT
+                account.spamFolderId -> FolderType.SPAM
+                account.trashFolderId -> FolderType.TRASH
                 else -> FolderType.REGULAR
             }
         }
