@@ -269,8 +269,8 @@ public class LocalFolder {
             public Boolean doDbWork(final SQLiteDatabase db) throws WrappedException {
                 Cursor cursor = null;
                 try {
-                    cursor = db.rawQuery("SELECT id FROM folders where folders.server_id = ?",
-                            new String[] { LocalFolder.this.getServerId() });
+                    cursor = db.rawQuery("SELECT id FROM folders where id = ?",
+                            new String[] { Long.toString(getDatabaseId()) });
                     if (cursor.moveToFirst()) {
                         int folderId = cursor.getInt(0);
                         return (folderId > 0);

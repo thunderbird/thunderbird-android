@@ -625,8 +625,11 @@ public class MessagingController {
             commandException = e;
         }
 
+        long folderId = getFolderIdOrThrow(account, folderServerId);
+
         // We don't ever sync the Outbox
-        if (folderServerId.equals(account.getOutboxFolder())) {
+        Long outboxFolderId = account.getOutboxFolderId();
+        if (outboxFolderId != null && outboxFolderId == folderId) {
             return;
         }
 
@@ -639,7 +642,6 @@ public class MessagingController {
             String rootMessage = getRootCauseMessage(commandException);
             Timber.e("Root cause failure in %s:%s was '%s'", account.getDescription(), folderServerId, rootMessage);
             updateFolderStatus(account, folderServerId, rootMessage);
-            long folderId = getFolderIdOrThrow(account, folderServerId);
             listener.synchronizeMailboxFailed(account, folderId, rootMessage);
         }
     }
@@ -1373,7 +1375,7 @@ public class MessagingController {
             MessagingListener listener) {
         try {
             LocalStore localStore = localStoreProvider.getInstance(account);
-            LocalFolder localFolder = localStore.getFolder(account.getOutboxFolder());
+            LocalFolder localFolder = localStore.getFolder(account.getOutboxFolderId());
             localFolder.open();
             localFolder.appendMessages(Collections.singletonList(message));
             LocalMessage localMessage = localFolder.getMessage(message.getUid());
@@ -1453,8 +1455,7 @@ public class MessagingController {
     private boolean messagesPendingSend(final Account account) {
         LocalFolder localFolder = null;
         try {
-            localFolder = localStoreProvider.getInstance(account).getFolder(
-                    account.getOutboxFolder());
+            localFolder = localStoreProvider.getInstance(account).getFolder(account.getOutboxFolderId());
             if (!localFolder.exists()) {
                 return false;
             }
@@ -1483,7 +1484,7 @@ public class MessagingController {
         try {
             LocalStore localStore = localStoreProvider.getInstance(account);
             OutboxStateRepository outboxStateRepository = localStore.getOutboxStateRepository();
-            localFolder = localStore.getFolder(account.getOutboxFolder());
+            localFolder = localStore.getFolder(account.getOutboxFolderId());
             if (!localFolder.exists()) {
                 Timber.v("Outbox does not exist");
                 return;
@@ -1507,8 +1508,7 @@ public class MessagingController {
             fp.add(FetchProfile.Item.ENVELOPE);
             fp.add(FetchProfile.Item.BODY);
 
-            Timber.i("Scanning folder '%s' (%d) for messages to send",
-                    account.getOutboxFolder(), localFolder.getDatabaseId());
+            Timber.i("Scanning Outbox folder for messages to send");
 
             Backend backend = getBackend(account);
 
@@ -2020,6 +2020,7 @@ public class MessagingController {
             LocalStore localStore = localStoreProvider.getInstance(account);
             localFolder = localStore.getFolder(folder);
             localFolder.open();
+            long folderId = localFolder.getDatabaseId();
 
             Map<String, String> uidMap = null;
             if (folder.equals(account.getTrashFolder()) || !account.hasTrashFolder() ||
@@ -2051,7 +2052,8 @@ public class MessagingController {
 
             Timber.d("Delete policy for account %s is %s", account.getDescription(), account.getDeletePolicy());
 
-            if (folder.equals(account.getOutboxFolder())) {
+            Long outboxFolderId = account.getOutboxFolderId();
+            if (outboxFolderId != null && folderId == outboxFolderId) {
                 for (Message message : messages) {
                     // If the message was in the Outbox, then it has been copied to local Trash, and has
                     // to be copied to remote trash
@@ -2062,7 +2064,6 @@ public class MessagingController {
                 processPendingCommands(account);
             } else if (!syncedMessageUids.isEmpty()) {
                 if (account.getDeletePolicy() == DeletePolicy.ON_DELETE) {
-                    long folderId = localFolder.getDatabaseId();
                     if (!account.hasTrashFolder() || folder.equals(account.getTrashFolder()) ||
                             !backend.isDeleteMoveToTrash()) {
                         queueDelete(account, folderId, syncedMessageUids);

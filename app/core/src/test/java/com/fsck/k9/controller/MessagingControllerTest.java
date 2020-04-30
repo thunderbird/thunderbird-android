@@ -367,7 +367,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
     @Test
     public void sendPendingMessagesSynchronous_withNonExistentOutbox_shouldNotStartSync() throws MessagingException {
-        when(account.getOutboxFolder()).thenReturn(FOLDER_NAME);
+        when(account.getOutboxFolderId()).thenReturn(FOLDER_ID);
         when(localFolder.exists()).thenReturn(false);
         controller.addListener(listener);
 
@@ -454,7 +454,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     }
 
     private void setupAccountWithMessageToSend() throws MessagingException {
-        when(account.getOutboxFolder()).thenReturn(FOLDER_NAME);
+        when(account.getOutboxFolderId()).thenReturn(FOLDER_ID);
         account.setSentFolder(SENT_FOLDER_NAME, SpecialFolderSelection.AUTOMATIC);
         when(localStore.getFolder(SENT_FOLDER_NAME)).thenReturn(sentFolder);
         when(sentFolder.getDatabaseId()).thenReturn(1L);

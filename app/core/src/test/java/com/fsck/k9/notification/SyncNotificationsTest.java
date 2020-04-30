@@ -135,7 +135,7 @@ public class SyncNotificationsTest extends RobolectricTest {
         Account account = mock(Account.class);
         when(account.getAccountNumber()).thenReturn(ACCOUNT_NUMBER);
         when(account.getDescription()).thenReturn(ACCOUNT_NAME);
-        when(account.getOutboxFolder()).thenReturn("OUTBOX");
+        when(account.getOutboxFolderId()).thenReturn(33L);
 
         return account;
     }

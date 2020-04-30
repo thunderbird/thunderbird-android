@@ -602,10 +602,6 @@ public class Account implements BaseAccount {
         return spamFolderSelection;
     }
 
-    public String getOutboxFolder() {
-        return OUTBOX;
-    }
-
     public Long getOutboxFolderId() {
         // FIXME: Persist folder ID instead of folder server ID
         LocalStoreProvider localStoreProvider = DI.get(LocalStoreProvider.class);

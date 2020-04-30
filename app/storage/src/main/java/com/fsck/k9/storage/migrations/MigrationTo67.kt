@@ -10,7 +10,7 @@ internal object MigrationTo67 {
 
         val account = migrationsHelper.account
         setFolderType(db, account.inboxFolder, "inbox")
-        setFolderType(db, account.outboxFolder, "outbox")
+        setFolderType(db, "K9MAIL_INTERNAL_OUTBOX", "outbox")
         setFolderType(db, account.trashFolder, "trash")
         setFolderType(db, account.draftsFolder, "drafts")
         setFolderType(db, account.spamFolder, "spam")
