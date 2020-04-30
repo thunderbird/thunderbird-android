@@ -16,6 +16,14 @@ internal class MigrationTo75(private val db: SQLiteDatabase, private val migrati
         setSpecialFolderId(account.spamFolder, account::setSpamFolderId)
         setSpecialFolderId(account.autoExpandFolder, account::setAutoExpandFolderId)
 
+        account.inboxFolder = null
+        account.draftsFolder = null
+        account.sentFolder = null
+        account.trashFolder = null
+        account.archiveFolder = null
+        account.spamFolder = null
+        account.autoExpandFolder = null
+
         migrationsHelper.saveAccount()
     }
 
