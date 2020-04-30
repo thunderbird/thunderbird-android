@@ -111,7 +111,6 @@ class K9BackendStorage(
 
         override fun deleteFolders(folderServerIds: List<String>) {
             folderServerIds.asSequence()
-                .filterNot { account.isSpecialFolder(it) }
                 .map { localStore.getFolder(it) }
                 .forEach { it.delete() }
         }
