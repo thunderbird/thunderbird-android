@@ -418,9 +418,8 @@ public class Account implements BaseAccount {
         return draftsFolder;
     }
 
-    public synchronized void setDraftsFolder(String name, SpecialFolderSelection selection) {
-        draftsFolder = name;
-        draftsFolderSelection = selection;
+    public synchronized void setDraftsFolder(String folderServerId) {
+        draftsFolder = folderServerId;
     }
 
     @Nullable
@@ -430,6 +429,11 @@ public class Account implements BaseAccount {
 
     public synchronized void setDraftsFolderId(@Nullable Long folderId) {
         draftsFolderId = folderId;
+    }
+
+    public synchronized void setDraftsFolderId(@Nullable Long folderId, SpecialFolderSelection selection) {
+        draftsFolderId = folderId;
+        draftsFolderSelection = selection;
     }
 
     /**
@@ -444,9 +448,8 @@ public class Account implements BaseAccount {
         return sentFolder;
     }
 
-    public synchronized void setSentFolder(String name, SpecialFolderSelection selection) {
-        sentFolder = name;
-        sentFolderSelection = selection;
+    public synchronized void setSentFolder(String folderServerId) {
+        sentFolder = folderServerId;
     }
 
     @Nullable
@@ -456,6 +459,11 @@ public class Account implements BaseAccount {
 
     public synchronized void setSentFolderId(@Nullable Long folderId) {
         sentFolderId = folderId;
+    }
+
+    public synchronized void setSentFolderId(@Nullable Long folderId, SpecialFolderSelection selection) {
+        sentFolderId = folderId;
+        sentFolderSelection = selection;
     }
 
     /**
@@ -471,9 +479,8 @@ public class Account implements BaseAccount {
         return trashFolder;
     }
 
-    public synchronized void setTrashFolder(String name, SpecialFolderSelection selection) {
-        trashFolder = name;
-        trashFolderSelection = selection;
+    public synchronized void setTrashFolder(String folderServerId) {
+        trashFolder = folderServerId;
     }
 
     @Nullable
@@ -483,6 +490,11 @@ public class Account implements BaseAccount {
 
     public synchronized void setTrashFolderId(@Nullable Long folderId) {
         trashFolderId = folderId;
+    }
+
+    public synchronized void setTrashFolderId(@Nullable Long folderId, SpecialFolderSelection selection) {
+        trashFolderId = folderId;
+        trashFolderSelection = selection;
     }
 
     /**
@@ -497,9 +509,8 @@ public class Account implements BaseAccount {
         return archiveFolder;
     }
 
-    public synchronized void setArchiveFolder(String archiveFolder, SpecialFolderSelection selection) {
+    public synchronized void setArchiveFolder(String archiveFolder) {
         this.archiveFolder = archiveFolder;
-        archiveFolderSelection = selection;
     }
 
     @Nullable
@@ -509,6 +520,11 @@ public class Account implements BaseAccount {
 
     public synchronized void setArchiveFolderId(@Nullable Long folderId) {
         archiveFolderId = folderId;
+    }
+
+    public synchronized void setArchiveFolderId(@Nullable Long folderId, SpecialFolderSelection selection) {
+        this.archiveFolderId = folderId;
+        archiveFolderSelection = selection;
     }
 
     /**
@@ -523,9 +539,8 @@ public class Account implements BaseAccount {
         return spamFolder;
     }
 
-    public synchronized void setSpamFolder(String name, SpecialFolderSelection selection) {
-        spamFolder = name;
-        spamFolderSelection = selection;
+    public synchronized void setSpamFolder(String folderServerId) {
+        spamFolder = folderServerId;
     }
 
     @Nullable
@@ -535,6 +550,11 @@ public class Account implements BaseAccount {
 
     public synchronized void setSpamFolderId(@Nullable Long folderId) {
         spamFolderId = folderId;
+    }
+
+    public synchronized void setSpamFolderId(@Nullable Long folderId, SpecialFolderSelection selection) {
+        spamFolderId = folderId;
+        spamFolderSelection = selection;
     }
 
     /**

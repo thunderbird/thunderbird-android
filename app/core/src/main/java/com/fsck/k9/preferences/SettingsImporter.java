@@ -27,6 +27,7 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.FolderType;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mailstore.LocalStore;
@@ -287,7 +288,9 @@ public class SettingsImporter {
             for (Account account: preferences.getAccounts()) {
                 if (accountUuids.contains(account.getUuid())) {
                     LocalStore localStore = localStoreProvider.getInstance(account);
-                    localStore.createLocalFolder(Account.OUTBOX, Account.OUTBOX_NAME);
+                    long outboxFolderId = localStore.createLocalFolder(Account.OUTBOX_NAME, FolderType.OUTBOX);
+                    account.setOutboxFolderId(outboxFolderId);
+                    preferences.saveAccount(account);
                 }
             }
 

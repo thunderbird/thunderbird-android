@@ -221,27 +221,27 @@ class FolderRepository(
         return this?.let { FolderClass.valueOf(this) } ?: FolderClass.NO_CLASS
     }
 
-    fun setIncludeInUnifiedInbox(serverId: String, includeInUnifiedInbox: Boolean) {
+    fun setIncludeInUnifiedInbox(folderId: Long, includeInUnifiedInbox: Boolean) {
         val localStore = localStoreProvider.getInstance(account)
-        val folder = localStore.getFolder(serverId)
+        val folder = localStore.getFolder(folderId)
         folder.isIntegrate = includeInUnifiedInbox
     }
 
-    fun setDisplayClass(serverId: String, folderClass: FolderClass) {
+    fun setDisplayClass(folderId: Long, folderClass: FolderClass) {
         val localStore = localStoreProvider.getInstance(account)
-        val folder = localStore.getFolder(serverId)
+        val folder = localStore.getFolder(folderId)
         folder.displayClass = folderClass
     }
 
-    fun setSyncClass(serverId: String, folderClass: FolderClass) {
+    fun setSyncClass(folderId: Long, folderClass: FolderClass) {
         val localStore = localStoreProvider.getInstance(account)
-        val folder = localStore.getFolder(serverId)
+        val folder = localStore.getFolder(folderId)
         folder.syncClass = folderClass
     }
 
-    fun setNotificationClass(serverId: String, folderClass: FolderClass) {
+    fun setNotificationClass(folderId: Long, folderClass: FolderClass) {
         val localStore = localStoreProvider.getInstance(account)
-        val folder = localStore.getFolder(serverId)
+        val folder = localStore.getFolder(folderId)
         folder.notifyClass = folderClass
     }
 }

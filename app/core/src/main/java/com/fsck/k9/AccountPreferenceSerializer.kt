@@ -52,40 +52,41 @@ class AccountPreferenceSerializer(
             isNotifySync = storage.getBoolean("$accountUuid.notifyMailCheck", false)
             deletePolicy = DeletePolicy.fromInt(storage.getInt("$accountUuid.deletePolicy", DeletePolicy.NEVER.setting))
             inboxFolder = storage.getString("$accountUuid.inboxFolderName", null)
+            draftsFolder = storage.getString("$accountUuid.draftsFolderName", null)
+            sentFolder = storage.getString("$accountUuid.sentFolderName", null)
+            trashFolder = storage.getString("$accountUuid.trashFolderName", null)
+            archiveFolder = storage.getString("$accountUuid.archiveFolderName", null)
+            spamFolder = storage.getString("$accountUuid.spamFolderName", null)
 
-            val draftsFolder = storage.getString("$accountUuid.draftsFolderName", null)
+            inboxFolderId = storage.getString("$accountUuid.inboxFolderId", null)?.toLongOrNull()
+            outboxFolderId = storage.getString("$accountUuid.outboxFolderId", null)?.toLongOrNull()
+
+            val draftsFolderId = storage.getString("$accountUuid.draftsFolderId", null)?.toLongOrNull()
             val draftsFolderSelection = getEnumStringPref<SpecialFolderSelection>(storage, "$accountUuid.draftsFolderSelection",
-                    SpecialFolderSelection.AUTOMATIC)
-            setDraftsFolder(draftsFolder, draftsFolderSelection)
+                SpecialFolderSelection.AUTOMATIC)
+            setDraftsFolderId(draftsFolderId, draftsFolderSelection)
 
-            val sentFolder = storage.getString("$accountUuid.sentFolderName", null)
+            val sentFolderId = storage.getString("$accountUuid.sentFolderId", null)?.toLongOrNull()
             val sentFolderSelection = getEnumStringPref<SpecialFolderSelection>(storage, "$accountUuid.sentFolderSelection",
-                    SpecialFolderSelection.AUTOMATIC)
-            setSentFolder(sentFolder, sentFolderSelection)
+                SpecialFolderSelection.AUTOMATIC)
+            setSentFolderId(sentFolderId, sentFolderSelection)
 
-            val trashFolder = storage.getString("$accountUuid.trashFolderName", null)
+            val trashFolderId = storage.getString("$accountUuid.trashFolderId", null)?.toLongOrNull()
             val trashFolderSelection = getEnumStringPref<SpecialFolderSelection>(storage, "$accountUuid.trashFolderSelection",
-                    SpecialFolderSelection.AUTOMATIC)
-            setTrashFolder(trashFolder, trashFolderSelection)
+                SpecialFolderSelection.AUTOMATIC)
+            setTrashFolderId(trashFolderId, trashFolderSelection)
 
-            val archiveFolder = storage.getString("$accountUuid.archiveFolderName", null)
+            val archiveFolderId = storage.getString("$accountUuid.archiveFolderId", null)?.toLongOrNull()
             val archiveFolderSelection = getEnumStringPref<SpecialFolderSelection>(storage, "$accountUuid.archiveFolderSelection",
-                    SpecialFolderSelection.AUTOMATIC)
-            setArchiveFolder(archiveFolder, archiveFolderSelection)
+                SpecialFolderSelection.AUTOMATIC)
+            setArchiveFolderId(archiveFolderId, archiveFolderSelection)
 
-            val spamFolder = storage.getString("$accountUuid.spamFolderName", null)
+            val spamFolderId = storage.getString("$accountUuid.spamFolderId", null)?.toLongOrNull()
             val spamFolderSelection = getEnumStringPref<SpecialFolderSelection>(storage, "$accountUuid.spamFolderSelection",
-                    SpecialFolderSelection.AUTOMATIC)
-            setSpamFolder(spamFolder, spamFolderSelection)
+                SpecialFolderSelection.AUTOMATIC)
+            setSpamFolderId(spamFolderId, spamFolderSelection)
 
-            account.inboxFolderId = storage.getString("$accountUuid.inboxFolderId", null)?.toLongOrNull()
-            account.outboxFolderId = storage.getString("$accountUuid.outboxFolderId", null)?.toLongOrNull()
-            account.draftsFolderId = storage.getString("$accountUuid.draftsFolderId", null)?.toLongOrNull()
-            account.sentFolderId = storage.getString("$accountUuid.sentFolderId", null)?.toLongOrNull()
-            account.trashFolderId = storage.getString("$accountUuid.trashFolderId", null)?.toLongOrNull()
-            account.archiveFolderId = storage.getString("$accountUuid.archiveFolderId", null)?.toLongOrNull()
-            account.spamFolderId = storage.getString("$accountUuid.spamFolderId", null)?.toLongOrNull()
-            account.autoExpandFolderId = storage.getString("$accountUuid.autoExpandFolderId", null)?.toLongOrNull()
+            autoExpandFolderId = storage.getString("$accountUuid.autoExpandFolderId", null)?.toLongOrNull()
 
             expungePolicy = getEnumStringPref<Expunge>(storage, "$accountUuid.expungePolicy", Expunge.EXPUNGE_IMMEDIATELY)
             isSyncRemoteDeletions = storage.getBoolean("$accountUuid.syncRemoteDeletions", true)
@@ -581,12 +582,12 @@ class AccountPreferenceSerializer(
             isMarkMessageAsReadOnDelete = true
             isAlwaysShowCcBcc = false
 
-            setArchiveFolder(null, SpecialFolderSelection.AUTOMATIC)
-            setDraftsFolder(null, SpecialFolderSelection.AUTOMATIC)
-            setSentFolder(null, SpecialFolderSelection.AUTOMATIC)
-            setSpamFolder(null, SpecialFolderSelection.AUTOMATIC)
-            setTrashFolder(null, SpecialFolderSelection.AUTOMATIC)
-            setArchiveFolder(null, SpecialFolderSelection.AUTOMATIC)
+            setArchiveFolderId(null, SpecialFolderSelection.AUTOMATIC)
+            setDraftsFolderId(null, SpecialFolderSelection.AUTOMATIC)
+            setSentFolderId(null, SpecialFolderSelection.AUTOMATIC)
+            setSpamFolderId(null, SpecialFolderSelection.AUTOMATIC)
+            setTrashFolderId(null, SpecialFolderSelection.AUTOMATIC)
+            setArchiveFolderId(null, SpecialFolderSelection.AUTOMATIC)
 
             searchableFolders = Searchable.ALL
 

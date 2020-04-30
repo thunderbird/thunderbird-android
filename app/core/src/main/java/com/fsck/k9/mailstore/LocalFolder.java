@@ -278,22 +278,6 @@ public class LocalFolder {
         });
     }
 
-    /**
-     * Creates a local-only folder.
-     */
-    public boolean create() throws MessagingException {
-        if (exists()) {
-            throw new MessagingException("Folder " + serverId + " already exists.");
-        }
-
-        localOnly = true;
-
-        int visibleLimit = getAccount().getDisplayCount();
-        this.localStore.createFolders(Collections.singletonList(this), visibleLimit);
-
-        return true;
-    }
-
     PreferencesHolder getPreferencesHolder() {
         PreferencesHolder preferencesHolder = new PreferencesHolder();
 

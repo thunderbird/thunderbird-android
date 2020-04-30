@@ -7,6 +7,7 @@ import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.backend.jmap.JmapDiscoveryResult.JmapAccount
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
+import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mailstore.LocalStoreProvider
 
@@ -28,9 +29,10 @@ class JmapAccountCreator(
             chipColor = accountCreator.pickColor()
             deletePolicy = Account.DeletePolicy.ON_DELETE
         }
-        preferences.saveAccount(account)
 
         createOutboxFolder(account)
+        preferences.saveAccount(account)
+
         fetchFolderList(account)
     }
 
@@ -50,7 +52,7 @@ class JmapAccountCreator(
 
     private fun createOutboxFolder(account: Account) {
         val localStore = localStoreProvider.getInstance(account)
-        localStore.createLocalFolder(Account.OUTBOX, Account.OUTBOX_NAME)
+        account.outboxFolderId = localStore.createLocalFolder(Account.OUTBOX_NAME, FolderType.OUTBOX)
     }
 
     private fun fetchFolderList(account: Account) {
