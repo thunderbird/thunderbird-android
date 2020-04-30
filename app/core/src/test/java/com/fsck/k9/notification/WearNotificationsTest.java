@@ -201,7 +201,7 @@ public class WearNotificationsTest extends RobolectricTest {
     }
 
     private void disableSpamAction() {
-        when(account.getSpamFolder()).thenReturn(null);
+        when(account.getSpamFolderId()).thenReturn(null);
     }
 
     private void enableDeleteAction() {
@@ -214,7 +214,7 @@ public class WearNotificationsTest extends RobolectricTest {
     }
 
     private void enableSpamAction() {
-        when(account.getSpamFolder()).thenReturn("Spam");
+        when(account.getSpamFolderId()).thenReturn(11L);
     }
 
     private void disableOptionalSummaryActions() {
