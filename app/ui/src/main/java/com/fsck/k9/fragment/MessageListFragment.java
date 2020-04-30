@@ -788,7 +788,12 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     public boolean isShowingTrashFolder() {
-        return singleFolderMode && currentFolder != null && currentFolder.serverId.equals(account.getTrashFolder());
+        if (!singleFolderMode || currentFolder == null) {
+            return false;
+        }
+
+        Long trashFolderId = account.getTrashFolderId();
+        return trashFolderId != null && currentFolder.databaseId == trashFolderId;
     }
 
     private void showDialog(int dialogId) {

@@ -2028,7 +2028,8 @@ public class MessagingController {
             long folderId = localFolder.getDatabaseId();
 
             Map<String, String> uidMap = null;
-            if (folder.equals(account.getTrashFolder()) || !account.hasTrashFolder() ||
+            Long trashFolderId = account.getTrashFolderId();
+            if (!account.hasTrashFolder() || folderId == trashFolderId ||
                     (backend.getSupportsTrashFolder() && !backend.isDeleteMoveToTrash())) {
                 Timber.d("Not moving deleted messages to local Trash folder. Removing local copies.");
 
@@ -2040,7 +2041,7 @@ public class MessagingController {
                 }
             } else {
                 Timber.d("Deleting messages in normal folder, moving");
-                localTrashFolder = localStore.getFolder(account.getTrashFolder());
+                localTrashFolder = localStore.getFolder(trashFolderId);
                 uidMap = localFolder.moveMessages(messages, localTrashFolder);
 
                 if (account.isMarkMessageAsReadOnDelete()) {
@@ -2051,7 +2052,7 @@ public class MessagingController {
             for (MessagingListener l : getListeners()) {
                 l.folderStatusChanged(account, folder);
                 if (localTrashFolder != null) {
-                    l.folderStatusChanged(account, account.getTrashFolder());
+                    l.folderStatusChanged(account, localTrashFolder.getServerId());
                 }
             }
 
@@ -2062,22 +2063,19 @@ public class MessagingController {
                 for (Message message : messages) {
                     // If the message was in the Outbox, then it has been copied to local Trash, and has
                     // to be copied to remote trash
-                    long trashFolderId = getFolderId(account, account.getTrashFolder());
                     PendingCommand command = PendingAppend.create(trashFolderId, message.getUid());
                     queuePendingCommand(account, command);
                 }
                 processPendingCommands(account);
             } else if (!syncedMessageUids.isEmpty()) {
                 if (account.getDeletePolicy() == DeletePolicy.ON_DELETE) {
-                    if (!account.hasTrashFolder() || folder.equals(account.getTrashFolder()) ||
+                    if (!account.hasTrashFolder() || folderId == trashFolderId ||
                             !backend.isDeleteMoveToTrash()) {
                         queueDelete(account, folderId, syncedMessageUids);
                     } else if (account.isMarkMessageAsReadOnDelete()) {
-                        long trashFolderId = getFolderId(account, account.getTrashFolder());
                         queueMoveOrCopy(account, folderId, trashFolderId,
                                 MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ, uidMap);
                     } else {
-                        long trashFolderId = getFolderId(account, account.getTrashFolder());
                         queueMoveOrCopy(account, folderId, trashFolderId,
                                 MoveOrCopyFlavor.MOVE, uidMap);
                     }
@@ -2115,9 +2113,13 @@ public class MessagingController {
             return;
         }
 
-        Backend backend = getBackend(account);
+        long trashFolderId = account.getTrashFolderId();
+        LocalStore localStore = localStoreProvider.getInstance(account);
+        LocalFolder folder = localStore.getFolder(trashFolderId);
+        folder.open();
+        String trashFolderServerId = folder.getServerId();
 
-        String trashFolderServerId = account.getTrashFolder();
+        Backend backend = getBackend(account);
         backend.deleteAllMessages(trashFolderServerId);
 
         if (account.getExpungePolicy() == Expunge.EXPUNGE_IMMEDIATELY && backend.getSupportsExpunge()) {
@@ -2125,9 +2127,6 @@ public class MessagingController {
         }
 
         // Remove all messages marked as deleted
-        LocalStore localStore = localStoreProvider.getInstance(account);
-        LocalFolder folder = localStore.getFolder(trashFolderServerId);
-        folder.open();
         folder.destroyDeletedMessages();
 
         compact(account, null);
@@ -2140,9 +2139,10 @@ public class MessagingController {
                 LocalFolder localFolder = null;
                 try {
                     LocalStore localStore = localStoreProvider.getInstance(account);
-                    String trashFolderServerId = account.getTrashFolder();
-                    localFolder = localStore.getFolder(trashFolderServerId);
+                    long trashFolderId = account.getTrashFolderId();
+                    localFolder = localStore.getFolder(trashFolderId);
                     localFolder.open();
+                    String trashFolderServerId = localFolder.getServerId();
 
                     boolean isTrashLocalOnly = isTrashLocalOnly(account);
                     if (isTrashLocalOnly) {

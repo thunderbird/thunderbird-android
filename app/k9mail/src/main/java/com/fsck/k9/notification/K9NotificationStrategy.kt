@@ -50,8 +50,9 @@ class K9NotificationStrategy(val contacts: Contacts) : NotificationStrategy {
         // No notification for new messages in Trash, Drafts, Spam or Sent folder.
         val folder = message.folder
         if (folder != null) {
+            val folderId = folder.databaseId
             val folderServerId = folder.serverId
-            if (folderServerId == account.trashFolder ||
+            if (folderId == account.trashFolderId ||
                 folderServerId == account.draftsFolder ||
                 folderServerId == account.spamFolder ||
                 folderServerId == account.sentFolder
