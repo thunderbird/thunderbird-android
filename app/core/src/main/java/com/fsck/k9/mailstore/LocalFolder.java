@@ -118,12 +118,6 @@ public class LocalFolder {
         this.name = name;
         this.type = type;
         attachmentInfoExtractor = localStore.getAttachmentInfoExtractor();
-
-        if (getServerId().equals(getAccount().getInboxFolder())) {
-            syncClass =  FolderClass.FIRST_CLASS;
-            pushClass =  FolderClass.FIRST_CLASS;
-            isInTopGroup = true;
-        }
     }
 
     public LocalFolder(LocalStore localStore, long databaseId) {

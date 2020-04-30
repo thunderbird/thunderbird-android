@@ -232,8 +232,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         if (view == footerView) {
             if (currentFolder != null && !search.isManualSearch() && currentFolder.moreMessages) {
 
-                String folderServerId = currentFolder.serverId;
-                messagingController.loadMoreMessages(account, folderServerId, null);
+                long folderId = currentFolder.databaseId;
+                messagingController.loadMoreMessages(account, folderId, null);
 
             } else if (currentFolder != null && isRemoteSearch() &&
                     extraSearchResults != null && extraSearchResults.size() > 0) {
@@ -1804,8 +1804,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     public void checkMail() {
         if (isSingleAccountMode() && isSingleFolderMode()) {
-            String folderServerId = currentFolder.serverId;
-            messagingController.synchronizeMailbox(account, folderServerId, activityListener);
+            long folderId = currentFolder.databaseId;
+            messagingController.synchronizeMailbox(account, folderId, activityListener);
             messagingController.sendPendingMessages(account, activityListener);
         } else if (allAccounts) {
             messagingController.checkMail(context, null, true, true, activityListener);

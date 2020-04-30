@@ -579,14 +579,14 @@ public class MessagingController {
     }
 
 
-    public void loadMoreMessages(Account account, String folder, MessagingListener listener) {
+    public void loadMoreMessages(Account account, long folderId, MessagingListener listener) {
         try {
             LocalStore localStore = localStoreProvider.getInstance(account);
-            LocalFolder localFolder = localStore.getFolder(folder);
+            LocalFolder localFolder = localStore.getFolder(folderId);
             if (localFolder.getVisibleLimit() > 0) {
                 localFolder.setVisibleLimit(localFolder.getVisibleLimit() + account.getDisplayCount());
             }
-            synchronizeMailbox(account, folder, listener);
+            synchronizeMailbox(account, folderId, listener);
         } catch (MessagingException me) {
             throw new RuntimeException("Unable to set visible limit on folder", me);
         }
@@ -595,13 +595,10 @@ public class MessagingController {
     /**
      * Start background synchronization of the specified folder.
      */
-    public void synchronizeMailbox(final Account account, final String folder, final MessagingListener listener) {
-        putBackground("synchronizeMailbox", listener, new Runnable() {
-            @Override
-            public void run() {
-                synchronizeMailboxSynchronous(account, folder, listener);
-            }
-        });
+    public void synchronizeMailbox(Account account, long folderId, MessagingListener listener) {
+        putBackground("synchronizeMailbox", listener, () ->
+                synchronizeMailboxSynchronous(account, folderId, listener)
+        );
     }
 
     /**
@@ -611,12 +608,12 @@ public class MessagingController {
      * TODO Break this method up into smaller chunks.
      */
     @VisibleForTesting
-    void synchronizeMailboxSynchronous(final Account account, final String folder, final MessagingListener listener) {
-        Backend remoteMessageStore = getBackend(account);
-        syncFolder(account, folder, listener, remoteMessageStore);
+    void synchronizeMailboxSynchronous(Account account, long folderId, MessagingListener listener) {
+        Backend backend = getBackend(account);
+        syncFolder(account, folderId, listener, backend);
     }
 
-    private void syncFolder(Account account, String folderServerId, MessagingListener listener, Backend backend) {
+    private void syncFolder(Account account, long folderId, MessagingListener listener, Backend backend) {
         Exception commandException = null;
         try {
             processPendingCommandsSynchronous(account);
@@ -625,17 +622,25 @@ public class MessagingController {
             commandException = e;
         }
 
-        long folderId = getFolderIdOrThrow(account, folderServerId);
-
-        // We don't ever sync the Outbox
-        Long outboxFolderId = account.getOutboxFolderId();
-        if (outboxFolderId != null && outboxFolderId == folderId) {
+        LocalFolder localFolder;
+        try {
+            LocalStore localStore = localStoreProvider.getInstance(account);
+            localFolder = localStore.getFolder(folderId);
+            localFolder.open();
+        } catch (MessagingException e) {
+            Timber.e(e, "syncFolder: Couldn't load local folder %d", folderId);
             return;
         }
 
-        SyncConfig syncConfig = createSyncConfig(account);
+        // We can't sync local folders
+        if (localFolder.isLocalOnly()) {
+            return;
+        }
 
+        String folderServerId = localFolder.getServerId();
+        SyncConfig syncConfig = createSyncConfig(account);
         ControllerSyncListener syncListener = new ControllerSyncListener(account, listener);
+
         backend.sync(folderServerId, syncConfig, syncListener);
 
         if (commandException != null && !syncListener.syncFailed) {
@@ -2449,7 +2454,7 @@ public class MessagingController {
                             }
                             showFetchingMailNotificationIfNecessary(account, folder);
                             try {
-                                synchronizeMailboxSynchronous(account, folder.getServerId(), listener);
+                                synchronizeMailboxSynchronous(account, folder.getDatabaseId(), listener);
                             } finally {
                                 clearFetchingMailNotificationIfNecessary(account);
                             }
