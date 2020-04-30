@@ -197,7 +197,7 @@ public class WearNotificationsTest extends RobolectricTest {
     }
 
     private void disableArchiveAction() {
-        when(account.getArchiveFolder()).thenReturn(null);
+        when(account.getArchiveFolderId()).thenReturn(null);
     }
 
     private void disableSpamAction() {
@@ -210,7 +210,7 @@ public class WearNotificationsTest extends RobolectricTest {
     }
 
     private void enableArchiveAction() {
-        when(account.getArchiveFolder()).thenReturn("Archive");
+        when(account.getArchiveFolderId()).thenReturn(22L);
     }
 
     private void enableSpamAction() {
