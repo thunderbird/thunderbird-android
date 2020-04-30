@@ -53,7 +53,7 @@ class K9NotificationStrategy(val contacts: Contacts) : NotificationStrategy {
             val folderId = folder.databaseId
             val folderServerId = folder.serverId
             if (folderId == account.trashFolderId ||
-                folderServerId == account.draftsFolder ||
+                folderId == account.draftsFolderId ||
                 folderServerId == account.spamFolder ||
                 folderServerId == account.sentFolder
             ) {

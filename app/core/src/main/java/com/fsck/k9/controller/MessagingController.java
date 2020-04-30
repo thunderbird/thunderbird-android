@@ -1889,12 +1889,11 @@ public class MessagingController {
         LocalFolder localFolder = null;
         try {
             LocalStore localStore = localStoreProvider.getInstance(account);
-            String folderServerId = account.getDraftsFolder();
-            localFolder = localStore.getFolder(folderServerId);
+            long folderId = account.getDraftsFolderId();
+            localFolder = localStore.getFolder(folderId);
             localFolder.open();
             String uid = localFolder.getMessageUidById(id);
             if (uid != null) {
-                long folderId = localFolder.getDatabaseId();
                 MessageReference messageReference = new MessageReference(account.getUuid(), folderId, uid, null);
                 deleteMessage(messageReference, null);
             }
@@ -2571,7 +2570,7 @@ public class MessagingController {
         LocalMessage localMessage = null;
         try {
             LocalStore localStore = localStoreProvider.getInstance(account);
-            LocalFolder localFolder = localStore.getFolder(account.getDraftsFolder());
+            LocalFolder localFolder = localStore.getFolder(account.getDraftsFolderId());
             localFolder.open();
 
             if (existingDraftId != INVALID_MESSAGE_ID) {
