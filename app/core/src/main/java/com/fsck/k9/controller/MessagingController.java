@@ -1628,14 +1628,17 @@ public class MessagingController {
             Timber.i("Not uploading sent message; deleting local message");
             message.destroy();
         } else {
-            LocalFolder localSentFolder = localStore.getFolder(account.getSentFolder());
-            Timber.i("Moving sent message to folder '%s' (%d)", account.getSentFolder(), localSentFolder.getDatabaseId());
+            long sentFolderId = account.getSentFolderId();
+            LocalFolder sentFolder = localStore.getFolder(sentFolderId);
+            sentFolder.open();
+            String sentFolderServerId = sentFolder.getServerId();
+            Timber.i("Moving sent message to folder '%s' (%d)", sentFolderServerId, sentFolderId);
 
-            localFolder.moveMessages(Collections.singletonList(message), localSentFolder);
+            localFolder.moveMessages(Collections.singletonList(message), sentFolder);
 
-            Timber.i("Moved sent message to folder '%s' (%d)", account.getSentFolder(), localSentFolder.getDatabaseId());
+            Timber.i("Moved sent message to folder '%s' (%d)", sentFolderServerId, sentFolderId);
 
-            PendingCommand command = PendingAppend.create(localSentFolder.getDatabaseId(), message.getUid());
+            PendingCommand command = PendingAppend.create(sentFolderId, message.getUid());
             queuePendingCommand(account, command);
             processPendingCommands(account);
         }

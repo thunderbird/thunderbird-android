@@ -51,11 +51,10 @@ class K9NotificationStrategy(val contacts: Contacts) : NotificationStrategy {
         val folder = message.folder
         if (folder != null) {
             val folderId = folder.databaseId
-            val folderServerId = folder.serverId
             if (folderId == account.trashFolderId ||
                 folderId == account.draftsFolderId ||
                 folderId == account.spamFolderId ||
-                folderServerId == account.sentFolder
+                folderId == account.sentFolderId
             ) {
                 return false
             }
