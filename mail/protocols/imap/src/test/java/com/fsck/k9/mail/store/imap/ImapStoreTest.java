@@ -39,13 +39,12 @@ import static org.mockito.Mockito.when;
 
 
 public class ImapStoreTest {
-    private StoreConfig storeConfig;
+    private StoreConfig storeConfig = mock(StoreConfig.class);
     private TestImapStore imapStore;
 
     @Before
     public void setUp() throws Exception {
         ImapStoreSettings serverSettings = createImapStoreSettings();
-        storeConfig = createStoreConfig();
         TrustedSocketFactory trustedSocketFactory = mock(TrustedSocketFactory.class);
         ConnectivityManager connectivityManager = mock(ConnectivityManager.class);
         OAuth2TokenProvider oauth2TokenProvider = mock(OAuth2TokenProvider.class);
@@ -376,13 +375,6 @@ public class ImapStoreTest {
                 null,
                 true,
                 null);
-    }
-
-    private StoreConfig createStoreConfig() {
-        StoreConfig storeConfig = mock(StoreConfig.class);
-        when(storeConfig.getInboxFolder()).thenReturn("INBOX");
-
-        return storeConfig;
     }
 
     private Set<String> extractFolderServerIds(List<FolderListItem> folders) {

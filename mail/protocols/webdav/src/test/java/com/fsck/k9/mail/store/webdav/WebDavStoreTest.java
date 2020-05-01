@@ -47,12 +47,10 @@ import org.mockito.stubbing.OngoingStubbing;
 import static junit.framework.Assert.assertSame;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-@SuppressWarnings("deprecation")
 @RunWith(K9LibRobolectricTestRunner.class)
 public class WebDavStoreTest {
     private static final HttpResponse OK_200_RESPONSE = createOkResponse();
@@ -70,10 +68,11 @@ public class WebDavStoreTest {
     private SchemeRegistry mockSchemeRegistry;
     @Mock
     private TrustManagerFactory trustManagerFactory;
+    @Mock
+    private StoreConfig storeConfig;
 
     private ArgumentCaptor<HttpGeneric> requestCaptor;
 
-    private StoreConfig storeConfig;
     private WebDavStoreSettings serverSettings;
     private WebDavStore webDavStore;
 
@@ -88,7 +87,6 @@ public class WebDavStoreTest {
         when(mockHttpClient.getConnectionManager()).thenReturn(mockClientConnectionManager);
         when(mockClientConnectionManager.getSchemeRegistry()).thenReturn(mockSchemeRegistry);
 
-        storeConfig = createStoreConfig();
         serverSettings = createWebDavStoreSettings(ConnectionSecurity.SSL_TLS_REQUIRED);
         webDavStore = createWebDavStore();
     }
@@ -336,12 +334,6 @@ public class WebDavStoreTest {
                 return OK_200_RESPONSE;
             }
         };
-    }
-
-    private StoreConfig createStoreConfig() {
-        StoreConfig storeConfig = mock(StoreConfig.class);
-        when(storeConfig.getInboxFolder()).thenReturn("INBOX");
-        return storeConfig;
     }
 
     private WebDavStoreSettings createWebDavStoreSettings(ConnectionSecurity connectionSecurity) {

@@ -61,7 +61,6 @@ public class Pop3StoreTest {
     @Before
     public void setUp() throws Exception {
         ServerSettings serverSettings = createServerSettings();
-        when(mockStoreConfig.getInboxFolder()).thenReturn(Pop3Folder.INBOX);
         when(mockTrustedSocketFactory.createSocket(null, "server", 12345, null)).thenReturn(mockSocket);
         when(mockSocket.isConnected()).thenReturn(true);
         when(mockSocket.isClosed()).thenReturn(false);
