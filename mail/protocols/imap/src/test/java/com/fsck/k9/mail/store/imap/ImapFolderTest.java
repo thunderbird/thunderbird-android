@@ -23,7 +23,6 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeHeader;
-import com.fsck.k9.mail.store.StoreConfig;
 import okio.Buffer;
 import org.apache.james.mime4j.util.MimeUtil;
 import org.junit.Before;
@@ -67,15 +66,13 @@ public class ImapFolderTest {
 
     private ImapStore imapStore;
     private ImapConnection imapConnection;
-    private StoreConfig storeConfig;
 
     @Before
     public void setUp() throws Exception {
         BinaryTempFileBody.setTempDirectory(RuntimeEnvironment.application.getCacheDir());
         imapStore = mock(ImapStore.class);
-        storeConfig = mock(StoreConfig.class);
         when(imapStore.getCombinedPrefix()).thenReturn("");
-        when(imapStore.getStoreConfig()).thenReturn(storeConfig);
+        when(imapStore.getLogLabel()).thenReturn("Account");
 
         imapConnection = mock(ImapConnection.class);
     }

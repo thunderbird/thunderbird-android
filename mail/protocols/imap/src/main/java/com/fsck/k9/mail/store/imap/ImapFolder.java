@@ -1313,7 +1313,7 @@ public class ImapFolder {
     }
 
     protected String getLogId() {
-        String id = store.getStoreConfig().toString() + ":" + getServerId() + "/" + Thread.currentThread().getName();
+        String id = store.getLogLabel() + ":" + getServerId() + "/" + Thread.currentThread().getName();
         if (connection != null) {
             id += "/" + connection.getLogId();
         }
