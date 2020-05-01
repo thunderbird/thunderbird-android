@@ -11,6 +11,5 @@ public interface StoreConfig {
 
     int getMaximumAutoDownloadMessageSize();
 
-    boolean isAllowRemoteSearch();
     boolean isRemoteSearchFullText();
 }

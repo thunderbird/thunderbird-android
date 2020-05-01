@@ -1334,10 +1334,6 @@ public class ImapFolder {
     public List<ImapMessage> search(final String queryString, final Set<Flag> requiredFlags,
             final Set<Flag> forbiddenFlags) throws MessagingException {
 
-        if (!store.getStoreConfig().isAllowRemoteSearch()) {
-            throw new MessagingException("Your settings do not allow remote searching of this account");
-        }
-
         try {
             open(OPEN_MODE_RO);
             checkOpen();
