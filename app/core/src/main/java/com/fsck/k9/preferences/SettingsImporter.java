@@ -285,13 +285,15 @@ public class SettingsImporter {
             LocalStoreProvider localStoreProvider = DI.get(LocalStoreProvider.class);
 
             // create missing OUTBOX folders
-            for (Account account: preferences.getAccounts()) {
-                if (accountUuids.contains(account.getUuid())) {
-                    LocalStore localStore = localStoreProvider.getInstance(account);
-                    long outboxFolderId = localStore.createLocalFolder(Account.OUTBOX_NAME, FolderType.OUTBOX);
-                    account.setOutboxFolderId(outboxFolderId);
-                    preferences.saveAccount(account);
-                }
+            for (AccountDescriptionPair importedAccount : importedAccounts) {
+                String accountUuid = importedAccount.imported.uuid;
+                Account account = preferences.getAccount(accountUuid);
+                LocalStore localStore = localStoreProvider.getInstance(account);
+
+                long outboxFolderId = localStore.createLocalFolder(Account.OUTBOX_NAME, FolderType.OUTBOX);
+                account.setOutboxFolderId(outboxFolderId);
+
+                preferences.saveAccount(account);
             }
 
             K9.loadPrefs(preferences);
