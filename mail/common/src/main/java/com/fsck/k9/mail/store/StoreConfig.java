@@ -7,7 +7,6 @@ public interface StoreConfig {
     boolean isSubscribedFoldersOnly();
     boolean useCompression(NetworkType type);
 
-    String getOutboxFolder();
     String getDraftsFolder();
 
     int getMaximumAutoDownloadMessageSize();

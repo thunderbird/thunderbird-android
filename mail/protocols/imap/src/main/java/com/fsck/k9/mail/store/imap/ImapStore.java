@@ -187,7 +187,7 @@ public class ImapStore {
 
             if (ImapFolder.INBOX.equalsIgnoreCase(serverId)) {
                 continue;
-            } else if (serverId.equals(storeConfig.getOutboxFolder())) {
+            } else if (serverId.equals("K9MAIL_INTERNAL_OUTBOX")) {
                 /*
                  * There is a folder on the server with the same name as our local
                  * outbox. Until we have a good plan to deal with this situation
