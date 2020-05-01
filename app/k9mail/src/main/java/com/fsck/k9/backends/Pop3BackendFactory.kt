@@ -31,7 +31,7 @@ class Pop3BackendFactory(
 
     private fun createPop3Store(account: Account): Pop3Store {
         val serverSettings = decodeStoreUri(account.storeUri)
-        return Pop3Store(serverSettings, account, trustedSocketFactory)
+        return Pop3Store(serverSettings, trustedSocketFactory)
     }
 
     private fun createSmtpTransport(account: Account): SmtpTransport {

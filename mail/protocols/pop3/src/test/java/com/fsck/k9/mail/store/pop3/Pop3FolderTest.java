@@ -6,7 +6,6 @@ import com.fsck.k9.mail.FetchProfile.Item;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
-import com.fsck.k9.mail.store.StoreConfig;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +33,6 @@ public class Pop3FolderTest {
 
     private Pop3Store mockStore;
     private Pop3Connection mockConnection;
-    private StoreConfig mockStoreConfig;
     private MessageRetrievalListener<Pop3Message> mockListener;
     private Pop3Folder folder;
 
@@ -42,9 +40,7 @@ public class Pop3FolderTest {
     public void before() throws MessagingException {
         mockStore = mock(Pop3Store.class);
         mockConnection = mock(Pop3Connection.class);
-        mockStoreConfig = mock(StoreConfig.class);
         mockListener = mock(MessageRetrievalListener.class);
-        when(mockStore.getConfig()).thenReturn(mockStoreConfig);
         when(mockStore.createConnection()).thenReturn(mockConnection);
         when(mockConnection.executeSimpleCommand(Pop3Commands.STAT_COMMAND)).thenReturn("+OK 10 0");
         folder = new Pop3Folder(mockStore, Pop3Folder.INBOX);

@@ -17,7 +17,6 @@ import android.text.TextUtils;
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.NetworkType;
-import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.mailstore.StorageManager.StorageProvider;
 import org.jetbrains.annotations.NotNull;
@@ -27,7 +26,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Account stores all of the settings for a single account defined by the user. Each account is defined by a UUID.
  */
-public class Account implements BaseAccount, StoreConfig {
+public class Account implements BaseAccount {
     /**
      * This local folder is used to store messages to be sent.
      */
