@@ -16,7 +16,7 @@ import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.ssl.TrustManagerFactory;
-import com.fsck.k9.mail.store.StoreConfig;
+
 import javax.net.ssl.SSLException;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -69,7 +69,7 @@ public class WebDavStoreTest {
     @Mock
     private TrustManagerFactory trustManagerFactory;
     @Mock
-    private StoreConfig storeConfig;
+    private DraftsFolderProvider draftsFolderProvider;
 
     private ArgumentCaptor<HttpGeneric> requestCaptor;
 
@@ -352,12 +352,12 @@ public class WebDavStoreTest {
     }
 
     private WebDavStore createWebDavStore() {
-        return new WebDavStore(trustManagerFactory, serverSettings, storeConfig, mockHttpClientFactory);
+        return new WebDavStore(trustManagerFactory, serverSettings, draftsFolderProvider, mockHttpClientFactory);
     }
 
     private WebDavStore createWebDavStore(ConnectionSecurity connectionSecurity) {
         WebDavStoreSettings serverSettings = createWebDavStoreSettings(connectionSecurity);
-        return new WebDavStore(trustManagerFactory, serverSettings, storeConfig, mockHttpClientFactory);
+        return new WebDavStore(trustManagerFactory, serverSettings, draftsFolderProvider, mockHttpClientFactory);
     }
 
     private void configureHttpResponses(HttpResponse... responses) throws IOException {

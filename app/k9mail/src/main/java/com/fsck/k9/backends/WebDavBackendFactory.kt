@@ -8,8 +8,8 @@ import com.fsck.k9.backend.webdav.WebDavStoreUriCreator
 import com.fsck.k9.backend.webdav.WebDavStoreUriDecoder
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.ssl.TrustManagerFactory
+import com.fsck.k9.mail.store.webdav.DraftsFolderProvider
 import com.fsck.k9.mail.store.webdav.WebDavStore
-import com.fsck.k9.mail.store.webdav.WebDavStoreSettings
 import com.fsck.k9.mail.transport.WebDavTransport
 import com.fsck.k9.mailstore.K9BackendStorageFactory
 
@@ -23,13 +23,16 @@ class WebDavBackendFactory(
         val accountName = account.displayName
         val backendStorage = backendStorageFactory.createBackendStorage(account)
         val serverSettings = WebDavStoreUriDecoder.decode(account.storeUri)
-        val webDavStore = createWebDavStore(serverSettings, account)
-        val webDavTransport = WebDavTransport(trustManagerFactory, serverSettings, account)
+        val draftsFolderProvider = createDraftsFolderProvider(account)
+        val webDavStore = WebDavStore(trustManagerFactory, serverSettings, draftsFolderProvider)
+        val webDavTransport = WebDavTransport(trustManagerFactory, serverSettings, draftsFolderProvider)
         return WebDavBackend(accountName, backendStorage, webDavStore, webDavTransport)
     }
 
-    private fun createWebDavStore(serverSettings: WebDavStoreSettings, account: Account): WebDavStore {
-        return WebDavStore(trustManagerFactory, serverSettings, account)
+    private fun createDraftsFolderProvider(account: Account): DraftsFolderProvider {
+        return DraftsFolderProvider {
+            account.draftsFolder ?: error("No Drafts folder configured")
+        }
     }
 
     override fun decodeStoreUri(storeUri: String): ServerSettings {

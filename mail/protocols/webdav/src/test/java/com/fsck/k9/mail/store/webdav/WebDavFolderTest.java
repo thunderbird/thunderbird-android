@@ -16,7 +16,6 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
-import com.fsck.k9.mail.store.StoreConfig;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -62,12 +61,6 @@ public class WebDavFolderTest {
     private DataSet mockDataSet;
     @Mock
     private WebDavHttpClient mockHttpClient;
-    @Mock
-    private StoreConfig mockStoreConfig;
-    @Mock
-    private HttpResponse mockHttpResponse;
-    @Mock
-    private StatusLine mockStatusLine;
     @Captor
     private ArgumentCaptor<Map<String, String>> headerCaptor;
     @Captor
@@ -89,7 +82,6 @@ public class WebDavFolderTest {
         MockitoAnnotations.initMocks(this);
         when(mockStore.getUrl()).thenReturn(storeUrl);
         when(mockStore.getHttpClient()).thenReturn(mockHttpClient);
-        when(mockStore.getStoreConfig()).thenReturn(mockStoreConfig);
         when(mockStore.getMessageEnvelopeXml(any(String[].class))).thenReturn("mockEnvelopeXml");
         when(mockStore.getMessageFlagsXml(any(String[].class))).thenReturn("mockFlagsXml");
         folder = new WebDavFolder(mockStore, folderName);
