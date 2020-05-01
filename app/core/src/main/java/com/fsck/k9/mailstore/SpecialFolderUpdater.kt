@@ -25,6 +25,7 @@ class SpecialFolderUpdater(
         updateSpecialFolder(FolderType.SPAM, folders)
         updateSpecialFolder(FolderType.TRASH, folders)
 
+        removeImportedSpecialFoldersData()
         saveAccount()
     }
 
@@ -48,6 +49,15 @@ class SpecialFolderUpdater(
     }
 
     private fun updateSpecialFolder(type: FolderType, folders: List<Folder>) {
+        val importedServerId = getImportedSpecialFolderServerId(type)
+        if (importedServerId != null) {
+            val folderId = folders.firstOrNull { it.serverId == importedServerId }?.id
+            if (folderId != null) {
+                setSpecialFolder(type, folderId, getSpecialFolderSelection(type))
+                return
+            }
+        }
+
         when (getSpecialFolderSelection(type)) {
             SpecialFolderSelection.AUTOMATIC -> {
                 val specialFolder = specialFolderSelectionStrategy.selectSpecialFolder(folders, type)
@@ -79,6 +89,15 @@ class SpecialFolderUpdater(
         else -> throw AssertionError("Unsupported: $type")
     }
 
+    private fun getImportedSpecialFolderServerId(type: FolderType): String? = when (type) {
+        FolderType.ARCHIVE -> account.importedArchiveFolder
+        FolderType.DRAFTS -> account.importedDraftsFolder
+        FolderType.SENT -> account.importedSentFolder
+        FolderType.SPAM -> account.importedSpamFolder
+        FolderType.TRASH -> account.importedTrashFolder
+        else -> throw AssertionError("Unsupported: $type")
+    }
+
     private fun setSpecialFolder(type: FolderType, folderId: Long?, selection: SpecialFolderSelection) {
         if (getSpecialFolderId(type) == folderId) return
 
@@ -95,6 +114,14 @@ class SpecialFolderUpdater(
             folderRepository.setDisplayClass(folderId, FolderClass.FIRST_CLASS)
             folderRepository.setSyncClass(folderId, FolderClass.NO_CLASS)
         }
+    }
+
+    private fun removeImportedSpecialFoldersData() {
+        account.importedArchiveFolder = null
+        account.importedDraftsFolder = null
+        account.importedSentFolder = null
+        account.importedSpamFolder = null
+        account.importedTrashFolder = null
     }
 
     private fun saveAccount() {
