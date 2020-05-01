@@ -14,7 +14,6 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
-import com.fsck.k9.mail.store.StoreConfig;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -52,7 +51,6 @@ public class Pop3StoreTest {
 
 
     private Pop3Store store;
-    private StoreConfig mockStoreConfig = mock(StoreConfig.class);
     private TrustedSocketFactory mockTrustedSocketFactory = mock(TrustedSocketFactory.class);
     private Socket mockSocket = mock(Socket.class);
     private OutputStream mockOutputStream = mock(OutputStream.class);
@@ -61,13 +59,12 @@ public class Pop3StoreTest {
     @Before
     public void setUp() throws Exception {
         ServerSettings serverSettings = createServerSettings();
-        when(mockStoreConfig.getInboxFolder()).thenReturn(Pop3Folder.INBOX);
         when(mockTrustedSocketFactory.createSocket(null, "server", 12345, null)).thenReturn(mockSocket);
         when(mockSocket.isConnected()).thenReturn(true);
         when(mockSocket.isClosed()).thenReturn(false);
 
         when(mockSocket.getOutputStream()).thenReturn(mockOutputStream);
-        store = new Pop3Store(serverSettings, mockStoreConfig, mockTrustedSocketFactory);
+        store = new Pop3Store(serverSettings, mockTrustedSocketFactory);
     }
 
     @Test

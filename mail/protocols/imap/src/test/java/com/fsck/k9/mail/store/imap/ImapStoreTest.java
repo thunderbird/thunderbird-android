@@ -20,7 +20,6 @@ import com.fsck.k9.mail.FolderType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
-import com.fsck.k9.mail.store.StoreConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.internal.util.collections.Sets;
@@ -39,18 +38,17 @@ import static org.mockito.Mockito.when;
 
 
 public class ImapStoreTest {
-    private StoreConfig storeConfig;
+    private ImapStoreConfig config = mock(ImapStoreConfig.class);
     private TestImapStore imapStore;
 
     @Before
     public void setUp() throws Exception {
         ImapStoreSettings serverSettings = createImapStoreSettings();
-        storeConfig = createStoreConfig();
         TrustedSocketFactory trustedSocketFactory = mock(TrustedSocketFactory.class);
         ConnectivityManager connectivityManager = mock(ConnectivityManager.class);
         OAuth2TokenProvider oauth2TokenProvider = mock(OAuth2TokenProvider.class);
 
-        imapStore = new TestImapStore(serverSettings, storeConfig, trustedSocketFactory, connectivityManager,
+        imapStore = new TestImapStore(serverSettings, config, trustedSocketFactory, connectivityManager,
                 oauth2TokenProvider);
     }
 
@@ -156,7 +154,7 @@ public class ImapStoreTest {
 
     @Test
     public void getFolders_withoutSubscribedFoldersOnly() throws Exception {
-        when(storeConfig.isSubscribedFoldersOnly()).thenReturn(false);
+        when(config.isSubscribedFoldersOnly()).thenReturn(false);
         ImapConnection imapConnection = mock(ImapConnection.class);
         List<ImapResponse> imapResponses = Arrays.asList(
                 createImapResponse("* LIST (\\HasNoChildren) \".\" \"INBOX\""),
@@ -176,7 +174,7 @@ public class ImapStoreTest {
     @Test
     public void getFolders_withSubscribedFoldersOnly_shouldOnlyReturnExistingSubscribedFolders()
             throws Exception {
-        when(storeConfig.isSubscribedFoldersOnly()).thenReturn(true);
+        when(config.isSubscribedFoldersOnly()).thenReturn(true);
         ImapConnection imapConnection = mock(ImapConnection.class);
         List<ImapResponse> lsubResponses = Arrays.asList(
                 createImapResponse("* LSUB (\\HasNoChildren) \".\" \"INBOX\""),
@@ -378,13 +376,6 @@ public class ImapStoreTest {
                 null);
     }
 
-    private StoreConfig createStoreConfig() {
-        StoreConfig storeConfig = mock(StoreConfig.class);
-        when(storeConfig.getInboxFolder()).thenReturn("INBOX");
-
-        return storeConfig;
-    }
-
     private Set<String> extractFolderServerIds(List<FolderListItem> folders) {
         Set<String> folderServerIds = new HashSet<>(folders.size());
         for (FolderListItem folder : folders) {
@@ -438,10 +429,10 @@ public class ImapStoreTest {
         private Deque<ImapConnection> imapConnections = new ArrayDeque<>();
         private String testCombinedPrefix;
 
-        public TestImapStore(ImapStoreSettings serverSettings, StoreConfig storeConfig,
+        public TestImapStore(ImapStoreSettings serverSettings, ImapStoreConfig config,
                 TrustedSocketFactory trustedSocketFactory, ConnectivityManager connectivityManager,
                 OAuth2TokenProvider oauth2TokenProvider) {
-            super(serverSettings, storeConfig, trustedSocketFactory, connectivityManager, oauth2TokenProvider);
+            super(serverSettings, config, trustedSocketFactory, connectivityManager, oauth2TokenProvider);
         }
 
         @Override

@@ -290,7 +290,7 @@ public class Pop3Folder {
      * @param fp The contents to populate
      */
     public void fetch(List<Pop3Message> messages, FetchProfile fp,
-            MessageRetrievalListener<Pop3Message> listener)
+            MessageRetrievalListener<Pop3Message> listener, int maxDownloadSize)
     throws MessagingException {
         if (messages == null || messages.isEmpty()) {
             return;
@@ -330,9 +330,8 @@ public class Pop3Folder {
                      * To convert the suggested download size we take the size
                      * divided by the maximum line size (76).
                      */
-                    if (pop3Store.getConfig().getMaximumAutoDownloadMessageSize() > 0) {
-                        fetchBody(pop3Message,
-                                  (pop3Store.getConfig().getMaximumAutoDownloadMessageSize() / 76));
+                    if (maxDownloadSize > 0) {
+                        fetchBody(pop3Message, maxDownloadSize / 76);
                     } else {
                         fetchBody(pop3Message, -1);
                     }

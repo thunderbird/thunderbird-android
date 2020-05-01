@@ -97,13 +97,19 @@ class Pop3Backend(
         folderServerId: String,
         query: String?,
         requiredFlags: Set<Flag>?,
-        forbiddenFlags: Set<Flag>?
+        forbiddenFlags: Set<Flag>?,
+        performFullTextSearch: Boolean
     ): List<String> {
         throw UnsupportedOperationException("not supported")
     }
 
-    override fun fetchMessage(folderServerId: String, messageServerId: String, fetchProfile: FetchProfile): Message {
-        return commandFetchMessage.fetchMessage(folderServerId, messageServerId, fetchProfile)
+    override fun fetchMessage(
+        folderServerId: String,
+        messageServerId: String,
+        fetchProfile: FetchProfile,
+        maxDownloadSize: Int
+    ): Message {
+        return commandFetchMessage.fetchMessage(folderServerId, messageServerId, fetchProfile, maxDownloadSize)
     }
 
     override fun fetchPart(folderServerId: String, messageServerId: String, part: Part, bodyFactory: BodyFactory) {

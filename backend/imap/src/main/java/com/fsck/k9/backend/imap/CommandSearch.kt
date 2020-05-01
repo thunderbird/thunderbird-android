@@ -9,11 +9,12 @@ internal class CommandSearch(private val imapStore: ImapStore) {
         folderServerId: String,
         query: String?,
         requiredFlags: Set<Flag>?,
-        forbiddenFlags: Set<Flag>?
+        forbiddenFlags: Set<Flag>?,
+        performFullTextSearch: Boolean
     ): List<String> {
         val folder = imapStore.getFolder(folderServerId)
         try {
-            return folder.search(query, requiredFlags, forbiddenFlags)
+            return folder.search(query, requiredFlags, forbiddenFlags, performFullTextSearch)
                     .sortedWith(UidReverseComparator())
                     .map { it.uid }
         } finally {

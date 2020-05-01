@@ -476,7 +476,9 @@ public class MessagingController {
 
             Backend backend = getBackend(acct);
 
-            List<String> messageServerIds = backend.search(folderServerId, query, requiredFlags, forbiddenFlags);
+            boolean performFullTextSearch = acct.isRemoteSearchFullText();
+            List<String> messageServerIds = backend.search(folderServerId, query, requiredFlags, forbiddenFlags,
+                    performFullTextSearch);
 
             Timber.i("Remote search got %d results", messageServerIds.size());
 
@@ -560,7 +562,8 @@ public class MessagingController {
             LocalMessage localMessage = localFolder.getMessage(messageServerId);
 
             if (localMessage == null) {
-                Message message = backend.fetchMessage(folderServerId, messageServerId, fetchProfile);
+                int maxDownloadSize = account.getMaximumAutoDownloadMessageSize();
+                Message message = backend.fetchMessage(folderServerId, messageServerId, fetchProfile, maxDownloadSize);
                 localFolder.appendMessages(Collections.singletonList(message));
             }
         }
@@ -1257,7 +1260,8 @@ public class MessagingController {
                     FetchProfile fp = new FetchProfile();
                     fp.add(FetchProfile.Item.BODY);
                     fp.add(FetchProfile.Item.FLAGS);
-                    Message remoteMessage = backend.fetchMessage(folder, uid, fp);
+                    int maxDownloadSize = account.getMaximumAutoDownloadMessageSize();
+                    Message remoteMessage = backend.fetchMessage(folder, uid, fp, maxDownloadSize);
                     localFolder.appendMessages(Collections.singletonList(remoteMessage));
                 }
 

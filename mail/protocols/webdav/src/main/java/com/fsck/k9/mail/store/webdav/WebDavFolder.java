@@ -267,10 +267,9 @@ public class WebDavFolder {
         return dataset.getUidToUrl();
     }
 
-    public void fetch(List<WebDavMessage> messages, FetchProfile fp, MessageRetrievalListener<WebDavMessage> listener)
-            throws MessagingException {
-        if (messages == null ||
-                messages.isEmpty()) {
+    public void fetch(List<WebDavMessage> messages, FetchProfile fp, MessageRetrievalListener<WebDavMessage> listener,
+            int maxDownloadSize) throws MessagingException {
+        if (messages == null || messages.isEmpty()) {
             return;
         }
 
@@ -288,9 +287,8 @@ public class WebDavFolder {
         }
 
         if (fp.contains(FetchProfile.Item.BODY_SANE)) {
-            int maximumAutoDownloadSize = store.getStoreConfig().getMaximumAutoDownloadMessageSize();
-            if (maximumAutoDownloadSize > 0) {
-                fetchMessages(messages, listener, (maximumAutoDownloadSize / 76));
+            if (maxDownloadSize > 0) {
+                fetchMessages(messages, listener, (maxDownloadSize / 76));
             } else {
                 fetchMessages(messages, listener, -1);
             }

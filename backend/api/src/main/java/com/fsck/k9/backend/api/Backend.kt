@@ -71,11 +71,17 @@ interface Backend {
         folderServerId: String,
         query: String?,
         requiredFlags: Set<Flag>?,
-        forbiddenFlags: Set<Flag>?
+        forbiddenFlags: Set<Flag>?,
+        performFullTextSearch: Boolean
     ): List<String>
 
     @Throws(MessagingException::class)
-    fun fetchMessage(folderServerId: String, messageServerId: String, fetchProfile: FetchProfile): Message
+    fun fetchMessage(
+        folderServerId: String,
+        messageServerId: String,
+        fetchProfile: FetchProfile,
+        maxDownloadSize: Int
+    ): Message
 
     @Throws(MessagingException::class)
     fun fetchPart(folderServerId: String, messageServerId: String, part: Part, bodyFactory: BodyFactory)

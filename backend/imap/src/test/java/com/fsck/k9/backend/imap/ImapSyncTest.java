@@ -211,7 +211,7 @@ public class ImapSyncTest {
         imapSync.sync(FOLDER_NAME, syncConfig, listener);
 
         verify(remoteFolder, atLeastOnce()).fetch(any(List.class), fetchProfileCaptor.capture(),
-                nullable(MessageRetrievalListener.class));
+                nullable(MessageRetrievalListener.class), anyInt());
         assertTrue(fetchProfileCaptor.getAllValues().get(0).contains(FetchProfile.Item.FLAGS));
         assertTrue(fetchProfileCaptor.getAllValues().get(0).contains(FetchProfile.Item.ENVELOPE));
         assertEquals(2, fetchProfileCaptor.getAllValues().get(0).size());
@@ -227,7 +227,7 @@ public class ImapSyncTest {
         imapSync.sync(FOLDER_NAME, syncConfig, listener);
 
         verify(remoteFolder, atLeast(2)).fetch(any(List.class), fetchProfileCaptor.capture(),
-                nullable(MessageRetrievalListener.class));
+                nullable(MessageRetrievalListener.class), anyInt());
         assertEquals(1, fetchProfileCaptor.getAllValues().get(1).size());
         assertTrue(fetchProfileCaptor.getAllValues().get(1).contains(FetchProfile.Item.BODY));
     }
@@ -243,7 +243,7 @@ public class ImapSyncTest {
 
         //TODO: Don't bother fetching messages of a size we don't have
         verify(remoteFolder, atLeast(4)).fetch(any(List.class), fetchProfileCaptor.capture(),
-                nullable(MessageRetrievalListener.class));
+                nullable(MessageRetrievalListener.class), anyInt());
         assertEquals(1, fetchProfileCaptor.getAllValues().get(2).size());
         assertEquals(FetchProfile.Item.STRUCTURE, fetchProfileCaptor.getAllValues().get(2).get(0));
         assertEquals(1, fetchProfileCaptor.getAllValues().get(3).size());
@@ -294,7 +294,8 @@ public class ImapSyncTest {
                 }
                 return null;
             }
-        }).when(remoteFolder).fetch(any(List.class), any(FetchProfile.class), nullable(MessageRetrievalListener.class));
+        }).when(remoteFolder).fetch(any(List.class), any(FetchProfile.class), nullable(MessageRetrievalListener.class),
+                anyInt());
     }
 
     private ImapMessage buildSmallNewMessage() {

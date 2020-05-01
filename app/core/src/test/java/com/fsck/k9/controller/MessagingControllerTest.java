@@ -244,7 +244,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
         when(localNewMessage1.getUid()).thenReturn("newMessageUid1");
         when(localNewMessage2.getUid()).thenReturn("newMessageUid2");
-        when(backend.search(eq(FOLDER_NAME), anyString(), nullable(Set.class), nullable(Set.class)))
+        when(backend.search(eq(FOLDER_NAME), anyString(), nullable(Set.class), nullable(Set.class), eq(false)))
                 .thenReturn(remoteMessages);
         when(localFolder.extractNewMessages(ArgumentMatchers.<String>anyList())).thenReturn(newRemoteMessages);
         when(localFolder.getMessage("newMessageUid1")).thenReturn(localNewMessage1);
@@ -269,7 +269,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
         }).when(backend).fetchMessage(
             eq(FOLDER_NAME),
             eq("newMessageUid2"),
-            any(FetchProfile.class));
+            any(FetchProfile.class),
+            eq(MAXIMUM_SMALL_MESSAGE_SIZE));
         reqFlags = Collections.singleton(Flag.ANSWERED);
         forbiddenFlags = Collections.singleton(Flag.DELETED);
 
@@ -291,7 +292,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
         controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
 
-        verify(backend).search(FOLDER_NAME, "query", reqFlags, forbiddenFlags);
+        verify(backend).search(FOLDER_NAME, "query", reqFlags, forbiddenFlags, false);
     }
 
     @Test
@@ -327,7 +328,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
         controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
 
-        verify(backend).fetchMessage(eq(FOLDER_NAME), eq("newMessageUid2"), fetchProfileCaptor.capture());
+        verify(backend).fetchMessage(eq(FOLDER_NAME), eq("newMessageUid2"), fetchProfileCaptor.capture(),
+                eq(MAXIMUM_SMALL_MESSAGE_SIZE));
     }
 
     @Test
@@ -336,13 +338,14 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
         controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
 
-        verify(backend, never()).fetchMessage(eq(FOLDER_NAME), eq("newMessageUid1"), fetchProfileCaptor.capture());
+        verify(backend, never()).fetchMessage(eq(FOLDER_NAME), eq("newMessageUid1"), fetchProfileCaptor.capture(),
+                eq(MAXIMUM_SMALL_MESSAGE_SIZE));
     }
 
     @Test
     public void searchRemoteMessagesSynchronous_shouldNotifyOnFailure() throws Exception {
         setupRemoteSearch();
-        when(backend.search(anyString(), anyString(), nullable(Set.class), nullable(Set.class)))
+        when(backend.search(anyString(), anyString(), nullable(Set.class), nullable(Set.class), eq(false)))
                 .thenThrow(new MessagingException("Test"));
 
         controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
@@ -353,7 +356,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     @Test
     public void searchRemoteMessagesSynchronous_shouldNotifyOnFinish() throws Exception {
         setupRemoteSearch();
-        when(backend.search(anyString(), nullable(String.class), nullable(Set.class), nullable(Set.class)))
+        when(backend.search(anyString(), nullable(String.class), nullable(Set.class), nullable(Set.class), eq(false)))
                 .thenThrow(new MessagingException("Test"));
 
         controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);

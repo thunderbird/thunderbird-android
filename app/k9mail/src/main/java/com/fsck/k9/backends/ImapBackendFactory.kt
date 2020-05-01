@@ -8,11 +8,13 @@ import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.backend.imap.ImapBackend
 import com.fsck.k9.backend.imap.ImapStoreUriCreator
 import com.fsck.k9.backend.imap.ImapStoreUriDecoder
+import com.fsck.k9.mail.NetworkType
 import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.power.PowerManager
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import com.fsck.k9.mail.store.imap.ImapStore
+import com.fsck.k9.mail.store.imap.ImapStoreConfig
 import com.fsck.k9.mail.transport.smtp.SmtpTransport
 import com.fsck.k9.mail.transport.smtp.SmtpTransportUriCreator
 import com.fsck.k9.mail.transport.smtp.SmtpTransportUriDecoder
@@ -37,13 +39,25 @@ class ImapBackendFactory(
     private fun createImapStore(account: Account): ImapStore {
         val oAuth2TokenProvider: OAuth2TokenProvider? = null
         val serverSettings = ImapStoreUriDecoder.decode(account.storeUri)
+        val config = createImapStoreConfig(account)
         return ImapStore(
                 serverSettings,
-                account,
+                config,
                 trustedSocketFactory,
                 context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager,
                 oAuth2TokenProvider
         )
+    }
+
+    private fun createImapStoreConfig(account: Account): ImapStoreConfig {
+        return object : ImapStoreConfig {
+            override val logLabel
+                get() = account.description
+
+            override fun isSubscribedFoldersOnly() = account.isSubscribedFoldersOnly
+
+            override fun useCompression(type: NetworkType) = account.useCompression(type)
+        }
     }
 
     private fun createSmtpTransport(account: Account): SmtpTransport {

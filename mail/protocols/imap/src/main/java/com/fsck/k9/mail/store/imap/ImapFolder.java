@@ -607,7 +607,7 @@ public class ImapFolder {
     }
 
     public void fetch(List<ImapMessage> messages, FetchProfile fetchProfile,
-            MessageRetrievalListener<ImapMessage> listener) throws MessagingException {
+            MessageRetrievalListener<ImapMessage> listener, int maxDownloadSize) throws MessagingException {
         if (messages == null || messages.isEmpty()) {
             return;
         }
@@ -641,9 +641,8 @@ public class ImapFolder {
         }
 
         if (fetchProfile.contains(FetchProfile.Item.BODY_SANE)) {
-            int maximumAutoDownloadMessageSize = store.getStoreConfig().getMaximumAutoDownloadMessageSize();
-            if (maximumAutoDownloadMessageSize > 0) {
-                fetchFields.add(String.format(Locale.US, "BODY.PEEK[]<0.%d>", maximumAutoDownloadMessageSize));
+            if (maxDownloadSize > 0) {
+                fetchFields.add(String.format(Locale.US, "BODY.PEEK[]<0.%d>", maxDownloadSize));
             } else {
                 fetchFields.add("BODY.PEEK[]");
             }
@@ -735,15 +734,14 @@ public class ImapFolder {
     }
 
     public void fetchPart(ImapMessage message, Part part, MessageRetrievalListener<ImapMessage> listener,
-            BodyFactory bodyFactory) throws MessagingException {
+            BodyFactory bodyFactory, int maxDownloadSize) throws MessagingException {
         checkOpen();
 
         String partId = part.getServerExtra();
 
         String fetch;
         if ("TEXT".equalsIgnoreCase(partId)) {
-            int maximumAutoDownloadMessageSize = store.getStoreConfig().getMaximumAutoDownloadMessageSize();
-            fetch = String.format(Locale.US, "BODY.PEEK[TEXT]<0.%d>", maximumAutoDownloadMessageSize);
+            fetch = String.format(Locale.US, "BODY.PEEK[TEXT]<0.%d>", maxDownloadSize);
         } else {
             fetch = String.format("BODY.PEEK[%s]", partId);
         }
@@ -1315,7 +1313,7 @@ public class ImapFolder {
     }
 
     protected String getLogId() {
-        String id = store.getStoreConfig().toString() + ":" + getServerId() + "/" + Thread.currentThread().getName();
+        String id = store.getLogLabel() + ":" + getServerId() + "/" + Thread.currentThread().getName();
         if (connection != null) {
             id += "/" + connection.getLogId();
         }
@@ -1332,11 +1330,7 @@ public class ImapFolder {
      * @throws MessagingException On any error.
      */
     public List<ImapMessage> search(final String queryString, final Set<Flag> requiredFlags,
-            final Set<Flag> forbiddenFlags) throws MessagingException {
-
-        if (!store.getStoreConfig().isAllowRemoteSearch()) {
-            throw new MessagingException("Your settings do not allow remote searching of this account");
-        }
+            final Set<Flag> forbiddenFlags, boolean performFullTextSearch) throws MessagingException {
 
         try {
             open(OPEN_MODE_RO);
@@ -1346,7 +1340,7 @@ public class ImapFolder {
 
             String searchCommand = new UidSearchCommandBuilder()
                     .queryString(queryString)
-                    .performFullTextSearch(store.getStoreConfig().isRemoteSearchFullText())
+                    .performFullTextSearch(performFullTextSearch)
                     .requiredFlags(requiredFlags)
                     .forbiddenFlags(forbiddenFlags)
                     .build();

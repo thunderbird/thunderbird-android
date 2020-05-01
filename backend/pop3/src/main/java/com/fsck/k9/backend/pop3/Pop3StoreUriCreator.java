@@ -6,7 +6,6 @@ import java.net.URISyntaxException;
 
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.store.StoreConfig;
 
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8;
 

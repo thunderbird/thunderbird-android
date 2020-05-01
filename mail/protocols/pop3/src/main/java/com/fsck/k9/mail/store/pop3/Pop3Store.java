@@ -11,11 +11,9 @@ import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
-import com.fsck.k9.mail.store.StoreConfig;
 
 
 public class Pop3Store {
-    private final StoreConfig storeConfig;
     private final TrustedSocketFactory trustedSocketFactory;
     private final String host;
     private final int port;
@@ -27,8 +25,7 @@ public class Pop3Store {
 
     private Map<String, Pop3Folder> mFolders = new HashMap<>();
 
-    public Pop3Store(ServerSettings serverSettings, StoreConfig storeConfig, TrustedSocketFactory socketFactory) {
-        this.storeConfig = storeConfig;
+    public Pop3Store(ServerSettings serverSettings, TrustedSocketFactory socketFactory) {
         trustedSocketFactory = socketFactory;
         host = serverSettings.host;
         port = serverSettings.port;
@@ -58,10 +55,6 @@ public class Pop3Store {
         finally {
             folder.close();
         }
-    }
-
-    StoreConfig getConfig() {
-        return storeConfig;
     }
 
     public Pop3Connection createConnection() throws MessagingException {

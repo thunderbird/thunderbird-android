@@ -6,7 +6,6 @@ import com.fsck.k9.mail.FetchProfile.Item;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
-import com.fsck.k9.mail.store.StoreConfig;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,9 +29,10 @@ import static org.mockito.Mockito.when;
 
 
 public class Pop3FolderTest {
+    private static final int MAX_DOWNLOAD_SIZE = -1;
+
     private Pop3Store mockStore;
     private Pop3Connection mockConnection;
-    private StoreConfig mockStoreConfig;
     private MessageRetrievalListener<Pop3Message> mockListener;
     private Pop3Folder folder;
 
@@ -40,10 +40,7 @@ public class Pop3FolderTest {
     public void before() throws MessagingException {
         mockStore = mock(Pop3Store.class);
         mockConnection = mock(Pop3Connection.class);
-        mockStoreConfig = mock(StoreConfig.class);
         mockListener = mock(MessageRetrievalListener.class);
-        when(mockStore.getConfig()).thenReturn(mockStoreConfig);
-        when(mockStoreConfig.getInboxFolder()).thenReturn(Pop3Folder.INBOX);
         when(mockStore.createConnection()).thenReturn(mockConnection);
         when(mockConnection.executeSimpleCommand(Pop3Commands.STAT_COMMAND)).thenReturn("+OK 10 0");
         folder = new Pop3Folder(mockStore, Pop3Folder.INBOX);
@@ -225,7 +222,7 @@ public class Pop3FolderTest {
         fetchProfile.add(Item.ENVELOPE);
         when(mockConnection.readLine()).thenReturn("1 100").thenReturn(".");
 
-        folder.fetch(messageList, fetchProfile, mockListener);
+        folder.fetch(messageList, fetchProfile, mockListener, MAX_DOWNLOAD_SIZE);
 
         assertEquals(100, messageList.get(0).getSize());
     }
@@ -248,7 +245,7 @@ public class Pop3FolderTest {
         when(mockConnection.readLine()).thenReturn("1 100").thenReturn(".");
         when(mockConnection.getInputStream()).thenReturn(messageInputStream);
 
-        folder.fetch(messageList, fetchProfile, mockListener);
+        folder.fetch(messageList, fetchProfile, mockListener, MAX_DOWNLOAD_SIZE);
 
         ByteArrayOutputStream bodyData = new ByteArrayOutputStream();
         messageList.get(0).getBody().writeTo(bodyData);

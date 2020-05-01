@@ -10,7 +10,12 @@ import com.fsck.k9.mail.store.imap.ImapStore
 
 internal class CommandFetchMessage(private val imapStore: ImapStore) {
 
-    fun fetchMessage(folderServerId: String, messageServerId: String, fetchProfile: FetchProfile): Message {
+    fun fetchMessage(
+        folderServerId: String,
+        messageServerId: String,
+        fetchProfile: FetchProfile,
+        maxDownloadSize: Int
+    ): Message {
         val folder = imapStore.getFolder(folderServerId)
         try {
             folder.open(ImapFolder.OPEN_MODE_RO)
@@ -23,10 +28,10 @@ internal class CommandFetchMessage(private val imapStore: ImapStore) {
                 val headerFetchProfile = fetchProfile.without(FetchProfile.Item.STRUCTURE)
                 val structureFetchProfile = FetchProfile().apply { add(FetchProfile.Item.STRUCTURE) }
 
-                fetchMessage(folder, message, headerFetchProfile)
-                fetchMessage(folder, message, structureFetchProfile)
+                fetchMessage(folder, message, headerFetchProfile, maxDownloadSize)
+                fetchMessage(folder, message, structureFetchProfile, maxDownloadSize)
             } else {
-                fetchMessage(folder, message, fetchProfile)
+                fetchMessage(folder, message, fetchProfile, maxDownloadSize)
             }
 
             return message
@@ -41,14 +46,19 @@ internal class CommandFetchMessage(private val imapStore: ImapStore) {
             folder.open(ImapFolder.OPEN_MODE_RW)
 
             val message = folder.getMessage(messageServerId)
-            folder.fetchPart(message, part, null, bodyFactory)
+            folder.fetchPart(message, part, null, bodyFactory, -1)
         } finally {
             folder.close()
         }
     }
 
-    private fun fetchMessage(remoteFolder: ImapFolder, message: ImapMessage, fetchProfile: FetchProfile) {
-        remoteFolder.fetch(listOf(message), fetchProfile, null)
+    private fun fetchMessage(
+        remoteFolder: ImapFolder,
+        message: ImapMessage,
+        fetchProfile: FetchProfile,
+        maxDownloadSize: Int
+    ) {
+        remoteFolder.fetch(listOf(message), fetchProfile, null, maxDownloadSize)
     }
 
     private fun FetchProfile.without(item: FetchProfile.Item) = FetchProfile().apply {

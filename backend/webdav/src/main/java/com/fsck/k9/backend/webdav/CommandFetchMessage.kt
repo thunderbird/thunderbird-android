@@ -6,12 +6,17 @@ import com.fsck.k9.mail.store.webdav.WebDavStore
 
 internal class CommandFetchMessage(private val webDavStore: WebDavStore) {
 
-    fun fetchMessage(folderServerId: String, messageServerId: String, fetchProfile: FetchProfile): Message {
+    fun fetchMessage(
+        folderServerId: String,
+        messageServerId: String,
+        fetchProfile: FetchProfile,
+        maxDownloadSize: Int
+    ): Message {
         val folder = webDavStore.getFolder(folderServerId)
         try {
             val message = folder.getMessage(messageServerId)
 
-            folder.fetch(listOf(message), fetchProfile, null)
+            folder.fetch(listOf(message), fetchProfile, null, maxDownloadSize)
 
             return message
         } finally {

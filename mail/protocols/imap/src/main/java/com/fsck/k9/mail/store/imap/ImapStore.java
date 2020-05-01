@@ -24,7 +24,6 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
-import com.fsck.k9.mail.store.StoreConfig;
 import timber.log.Timber;
 
 
@@ -34,7 +33,7 @@ import timber.log.Timber;
  * </pre>
  */
 public class ImapStore {
-    private final StoreConfig storeConfig;
+    private final ImapStoreConfig config;
     private final TrustedSocketFactory trustedSocketFactory;
     private Set<Flag> permanentFlagsIndex = EnumSet.noneOf(Flag.class);
     private ConnectivityManager connectivityManager;
@@ -62,10 +61,10 @@ public class ImapStore {
     private final Map<String, ImapFolder> folderCache = new HashMap<>();
 
 
-    public ImapStore(ImapStoreSettings serverSettings, StoreConfig storeConfig,
+    public ImapStore(ImapStoreSettings serverSettings, ImapStoreConfig config,
             TrustedSocketFactory trustedSocketFactory, ConnectivityManager connectivityManager,
             OAuth2TokenProvider oauthTokenProvider) {
-        this.storeConfig = storeConfig;
+        this.config = config;
         this.trustedSocketFactory = trustedSocketFactory;
 
         host = serverSettings.host;
@@ -125,7 +124,7 @@ public class ImapStore {
         try {
             List<FolderListItem> folders = listFolders(connection, false);
 
-            if (!storeConfig.isSubscribedFoldersOnly()) {
+            if (!config.isSubscribedFoldersOnly()) {
                 return folders;
             }
 
@@ -187,7 +186,7 @@ public class ImapStore {
 
             if (ImapFolder.INBOX.equalsIgnoreCase(serverId)) {
                 continue;
-            } else if (serverId.equals(storeConfig.getOutboxFolder())) {
+            } else if (serverId.equals("K9MAIL_INTERNAL_OUTBOX")) {
                 /*
                  * There is a folder on the server with the same name as our local
                  * outbox. Until we have a good plan to deal with this situation
@@ -329,8 +328,8 @@ public class ImapStore {
         return folderNameCodec;
     }
 
-    StoreConfig getStoreConfig() {
-        return storeConfig;
+    String getLogLabel() {
+        return config.getLogLabel();
     }
 
     Set<Flag> getPermanentFlagsIndex() {
@@ -376,7 +375,7 @@ public class ImapStore {
 
         @Override
         public boolean useCompression(final NetworkType type) {
-            return storeConfig.useCompression(type);
+            return config.useCompression(type);
         }
 
         @Override
