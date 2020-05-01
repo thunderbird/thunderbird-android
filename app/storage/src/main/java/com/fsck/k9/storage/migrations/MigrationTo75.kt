@@ -9,19 +9,19 @@ internal class MigrationTo75(private val db: SQLiteDatabase, private val migrati
 
         setSpecialFolderId(account.legacyInboxFolder, account::setInboxFolderId)
         setSpecialFolderId("K9MAIL_INTERNAL_OUTBOX", account::setOutboxFolderId)
-        setSpecialFolderId(account.draftsFolder, account::setDraftsFolderId)
-        setSpecialFolderId(account.sentFolder, account::setSentFolderId)
-        setSpecialFolderId(account.trashFolder, account::setTrashFolderId)
-        setSpecialFolderId(account.archiveFolder, account::setArchiveFolderId)
-        setSpecialFolderId(account.spamFolder, account::setSpamFolderId)
-        setSpecialFolderId(account.autoExpandFolder, account::setAutoExpandFolderId)
+        setSpecialFolderId(account.importedDraftsFolder, account::setDraftsFolderId)
+        setSpecialFolderId(account.importedSentFolder, account::setSentFolderId)
+        setSpecialFolderId(account.importedTrashFolder, account::setTrashFolderId)
+        setSpecialFolderId(account.importedArchiveFolder, account::setArchiveFolderId)
+        setSpecialFolderId(account.importedSpamFolder, account::setSpamFolderId)
+        setSpecialFolderId(account.importedAutoExpandFolder, account::setAutoExpandFolderId)
 
-        account.draftsFolder = null
-        account.sentFolder = null
-        account.trashFolder = null
-        account.archiveFolder = null
-        account.spamFolder = null
-        account.autoExpandFolder = null
+        account.importedDraftsFolder = null
+        account.importedSentFolder = null
+        account.importedTrashFolder = null
+        account.importedArchiveFolder = null
+        account.importedSpamFolder = null
+        account.importedAutoExpandFolder = null
 
         migrationsHelper.saveAccount()
     }

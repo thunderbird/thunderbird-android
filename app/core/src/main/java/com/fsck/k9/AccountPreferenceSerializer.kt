@@ -52,11 +52,11 @@ class AccountPreferenceSerializer(
             isNotifySync = storage.getBoolean("$accountUuid.notifyMailCheck", false)
             deletePolicy = DeletePolicy.fromInt(storage.getInt("$accountUuid.deletePolicy", DeletePolicy.NEVER.setting))
             legacyInboxFolder = storage.getString("$accountUuid.inboxFolderName", null)
-            draftsFolder = storage.getString("$accountUuid.draftsFolderName", null)
-            sentFolder = storage.getString("$accountUuid.sentFolderName", null)
-            trashFolder = storage.getString("$accountUuid.trashFolderName", null)
-            archiveFolder = storage.getString("$accountUuid.archiveFolderName", null)
-            spamFolder = storage.getString("$accountUuid.spamFolderName", null)
+            importedDraftsFolder = storage.getString("$accountUuid.draftsFolderName", null)
+            importedSentFolder = storage.getString("$accountUuid.sentFolderName", null)
+            importedTrashFolder = storage.getString("$accountUuid.trashFolderName", null)
+            importedArchiveFolder = storage.getString("$accountUuid.archiveFolderName", null)
+            importedSpamFolder = storage.getString("$accountUuid.spamFolderName", null)
 
             inboxFolderId = storage.getString("$accountUuid.inboxFolderId", null)?.toLongOrNull()
             outboxFolderId = storage.getString("$accountUuid.outboxFolderId", null)?.toLongOrNull()
@@ -113,7 +113,7 @@ class AccountPreferenceSerializer(
                 setCompression(type, useCompression)
             }
 
-            autoExpandFolder = storage.getString("$accountUuid.autoExpandFolderName", null)
+            importedAutoExpandFolder = storage.getString("$accountUuid.autoExpandFolderName", null)
 
             accountNumber = storage.getInt("$accountUuid.accountNumber", UNASSIGNED_ACCOUNT_NUMBER)
 
@@ -246,11 +246,11 @@ class AccountPreferenceSerializer(
             editor.putBoolean("$accountUuid.notifyMailCheck", isNotifySync)
             editor.putInt("$accountUuid.deletePolicy", deletePolicy.setting)
             editor.putString("$accountUuid.inboxFolderName", legacyInboxFolder)
-            editor.putString("$accountUuid.draftsFolderName", draftsFolder)
-            editor.putString("$accountUuid.sentFolderName", sentFolder)
-            editor.putString("$accountUuid.trashFolderName", trashFolder)
-            editor.putString("$accountUuid.archiveFolderName", archiveFolder)
-            editor.putString("$accountUuid.spamFolderName", spamFolder)
+            editor.putString("$accountUuid.draftsFolderName", importedDraftsFolder)
+            editor.putString("$accountUuid.sentFolderName", importedSentFolder)
+            editor.putString("$accountUuid.trashFolderName", importedTrashFolder)
+            editor.putString("$accountUuid.archiveFolderName", importedArchiveFolder)
+            editor.putString("$accountUuid.spamFolderName", importedSpamFolder)
             editor.putString("$accountUuid.inboxFolderId", inboxFolderId?.toString())
             editor.putString("$accountUuid.outboxFolderId", outboxFolderId?.toString())
             editor.putString("$accountUuid.draftsFolderId", draftsFolderId?.toString())
@@ -263,7 +263,7 @@ class AccountPreferenceSerializer(
             editor.putString("$accountUuid.sentFolderSelection", sentFolderSelection.name)
             editor.putString("$accountUuid.spamFolderSelection", spamFolderSelection.name)
             editor.putString("$accountUuid.trashFolderSelection", trashFolderSelection.name)
-            editor.putString("$accountUuid.autoExpandFolderName", autoExpandFolder)
+            editor.putString("$accountUuid.autoExpandFolderName", importedAutoExpandFolder)
             editor.putString("$accountUuid.autoExpandFolderId", autoExpandFolderId?.toString())
             editor.putInt("$accountUuid.accountNumber", accountNumber)
             editor.putString("$accountUuid.sortTypeEnum", sortType.name)
@@ -556,7 +556,7 @@ class AccountPreferenceSerializer(
             showPictures = ShowPictures.NEVER
             isSignatureBeforeQuotedText = false
             expungePolicy = Expunge.EXPUNGE_IMMEDIATELY
-            autoExpandFolder = null
+            importedAutoExpandFolder = null
             legacyInboxFolder = null
             maxPushFolders = 10
             isGoToUnreadMessageSearch = false

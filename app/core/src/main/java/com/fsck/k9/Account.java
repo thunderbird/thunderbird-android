@@ -125,11 +125,11 @@ public class Account implements BaseAccount {
     private boolean notifySelfNewMail;
     private boolean notifyContactsMailOnly;
     private String legacyInboxFolder;
-    private String draftsFolder;
-    private String sentFolder;
-    private String trashFolder;
-    private String archiveFolder;
-    private String spamFolder;
+    private String importedDraftsFolder;
+    private String importedSentFolder;
+    private String importedTrashFolder;
+    private String importedArchiveFolder;
+    private String importedSpamFolder;
     private Long inboxFolderId;
     private Long outboxFolderId;
     private Long draftsFolderId;
@@ -142,7 +142,7 @@ public class Account implements BaseAccount {
     private SpecialFolderSelection trashFolderSelection;
     private SpecialFolderSelection archiveFolderSelection;
     private SpecialFolderSelection spamFolderSelection;
-    private String autoExpandFolder;
+    private String importedAutoExpandFolder;
     private Long autoExpandFolderId;
     private FolderMode folderDisplayMode;
     private FolderMode folderSyncMode;
@@ -414,12 +414,12 @@ public class Account implements BaseAccount {
         this.deletePolicy = deletePolicy;
     }
 
-    public synchronized String getDraftsFolder() {
-        return draftsFolder;
+    public synchronized String getImportedDraftsFolder() {
+        return importedDraftsFolder;
     }
 
-    public synchronized void setDraftsFolder(String folderServerId) {
-        draftsFolder = folderServerId;
+    public synchronized void setImportedDraftsFolder(String folderServerId) {
+        importedDraftsFolder = folderServerId;
     }
 
     @Nullable
@@ -436,20 +436,16 @@ public class Account implements BaseAccount {
         draftsFolderSelection = selection;
     }
 
-    /**
-     * Checks if this account has a drafts folder set.
-     * @return true if account has a drafts folder set.
-     */
     public synchronized boolean hasDraftsFolder() {
-        return draftsFolder != null;
+        return draftsFolderId != null;
     }
 
-    public synchronized String getSentFolder() {
-        return sentFolder;
+    public synchronized String getImportedSentFolder() {
+        return importedSentFolder;
     }
 
-    public synchronized void setSentFolder(String folderServerId) {
-        sentFolder = folderServerId;
+    public synchronized void setImportedSentFolder(String folderServerId) {
+        importedSentFolder = folderServerId;
     }
 
     @Nullable
@@ -466,21 +462,16 @@ public class Account implements BaseAccount {
         sentFolderSelection = selection;
     }
 
-    /**
-     * Checks if this account has a sent folder set.
-     * @return true if account has a sent folder set.
-     */
     public synchronized boolean hasSentFolder() {
-        return sentFolder != null;
+        return sentFolderId != null;
     }
 
-
-    public synchronized String getTrashFolder() {
-        return trashFolder;
+    public synchronized String getImportedTrashFolder() {
+        return importedTrashFolder;
     }
 
-    public synchronized void setTrashFolder(String folderServerId) {
-        trashFolder = folderServerId;
+    public synchronized void setImportedTrashFolder(String folderServerId) {
+        importedTrashFolder = folderServerId;
     }
 
     @Nullable
@@ -497,20 +488,16 @@ public class Account implements BaseAccount {
         trashFolderSelection = selection;
     }
 
-    /**
-     * Checks if this account has a trash folder set.
-     * @return true if account has a trash folder set.
-     */
     public synchronized boolean hasTrashFolder() {
-        return trashFolder != null;
+        return trashFolderId != null;
     }
 
-    public synchronized String getArchiveFolder() {
-        return archiveFolder;
+    public synchronized String getImportedArchiveFolder() {
+        return importedArchiveFolder;
     }
 
-    public synchronized void setArchiveFolder(String archiveFolder) {
-        this.archiveFolder = archiveFolder;
+    public synchronized void setImportedArchiveFolder(String archiveFolder) {
+        this.importedArchiveFolder = archiveFolder;
     }
 
     @Nullable
@@ -527,20 +514,16 @@ public class Account implements BaseAccount {
         archiveFolderSelection = selection;
     }
 
-    /**
-     * Checks if this account has an archive folder set.
-     * @return true if account has an archive folder set.
-     */
     public synchronized boolean hasArchiveFolder() {
-        return archiveFolder != null;
+        return archiveFolderId != null;
     }
 
-    public synchronized String getSpamFolder() {
-        return spamFolder;
+    public synchronized String getImportedSpamFolder() {
+        return importedSpamFolder;
     }
 
-    public synchronized void setSpamFolder(String folderServerId) {
-        spamFolder = folderServerId;
+    public synchronized void setImportedSpamFolder(String folderServerId) {
+        importedSpamFolder = folderServerId;
     }
 
     @Nullable
@@ -557,12 +540,8 @@ public class Account implements BaseAccount {
         spamFolderSelection = selection;
     }
 
-    /**
-     * Checks if this account has a spam folder set.
-     * @return true if account has a spam folder set.
-     */
     public synchronized boolean hasSpamFolder() {
-        return spamFolder != null;
+        return spamFolderId != null;
     }
 
     @NotNull
@@ -599,12 +578,12 @@ public class Account implements BaseAccount {
         outboxFolderId = folderId;
     }
 
-    public synchronized String getAutoExpandFolder() {
-        return autoExpandFolder;
+    public synchronized String getImportedAutoExpandFolder() {
+        return importedAutoExpandFolder;
     }
 
-    public synchronized void setAutoExpandFolder(String name) {
-        autoExpandFolder = name;
+    public synchronized void setImportedAutoExpandFolder(String name) {
+        importedAutoExpandFolder = name;
     }
 
     @Nullable
