@@ -269,7 +269,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
         }).when(backend).fetchMessage(
             eq(FOLDER_NAME),
             eq("newMessageUid2"),
-            any(FetchProfile.class));
+            any(FetchProfile.class),
+            eq(MAXIMUM_SMALL_MESSAGE_SIZE));
         reqFlags = Collections.singleton(Flag.ANSWERED);
         forbiddenFlags = Collections.singleton(Flag.DELETED);
 
@@ -327,7 +328,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
         controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
 
-        verify(backend).fetchMessage(eq(FOLDER_NAME), eq("newMessageUid2"), fetchProfileCaptor.capture());
+        verify(backend).fetchMessage(eq(FOLDER_NAME), eq("newMessageUid2"), fetchProfileCaptor.capture(),
+                eq(MAXIMUM_SMALL_MESSAGE_SIZE));
     }
 
     @Test
@@ -336,7 +338,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
         controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
 
-        verify(backend, never()).fetchMessage(eq(FOLDER_NAME), eq("newMessageUid1"), fetchProfileCaptor.capture());
+        verify(backend, never()).fetchMessage(eq(FOLDER_NAME), eq("newMessageUid1"), fetchProfileCaptor.capture(),
+                eq(MAXIMUM_SMALL_MESSAGE_SIZE));
     }
 
     @Test

@@ -52,6 +52,8 @@ import static org.mockito.Mockito.when;
 
 @SuppressWarnings("deprecation")
 public class WebDavFolderTest {
+    private static final int MAX_DOWNLOAD_SIZE = 1900;
+
     @Mock
     private MessageRetrievalListener<WebDavMessage> listener;
     @Mock
@@ -156,7 +158,7 @@ public class WebDavFolderTest {
 
         FetchProfile profile = new FetchProfile();
         profile.add(FetchProfile.Item.ENVELOPE);
-        folder.fetch(messages, profile, listener);
+        folder.fetch(messages, profile, listener, MAX_DOWNLOAD_SIZE);
     }
 
     @Test
@@ -172,7 +174,7 @@ public class WebDavFolderTest {
         }
         FetchProfile profile = new FetchProfile();
         profile.add(FetchProfile.Item.ENVELOPE);
-        folder.fetch(messages, profile, listener);
+        folder.fetch(messages, profile, listener, MAX_DOWNLOAD_SIZE);
     }
 
     @Test
@@ -188,7 +190,7 @@ public class WebDavFolderTest {
         }
         FetchProfile profile = new FetchProfile();
         profile.add(FetchProfile.Item.FLAGS);
-        folder.fetch(messages, profile, listener);
+        folder.fetch(messages, profile, listener, MAX_DOWNLOAD_SIZE);
     }
 
     @Test
@@ -205,7 +207,7 @@ public class WebDavFolderTest {
 
         FetchProfile profile = new FetchProfile();
         profile.add(FetchProfile.Item.FLAGS);
-        folder.fetch(messages, profile, listener);
+        folder.fetch(messages, profile, listener, MAX_DOWNLOAD_SIZE);
     }
 
     @Test
@@ -233,7 +235,7 @@ public class WebDavFolderTest {
 
         FetchProfile profile = new FetchProfile();
         profile.add(FetchProfile.Item.BODY_SANE);
-        folder.fetch(messages, profile, listener);
+        folder.fetch(messages, profile, listener, MAX_DOWNLOAD_SIZE);
         verify(listener, times(25)).messageStarted(any(String.class), anyInt(), eq(25));
         verify(listener, times(25)).messageFinished(any(WebDavMessage.class), anyInt(), eq(25));
     }
@@ -266,14 +268,13 @@ public class WebDavFolderTest {
         FetchProfile profile = new FetchProfile();
         profile.add(FetchProfile.Item.FLAGS);
         profile.add(FetchProfile.Item.BODY);
-        folder.fetch(messages, profile, listener);
+        folder.fetch(messages, profile, listener, MAX_DOWNLOAD_SIZE);
         verify(listener, times(25)).messageStarted(any(String.class), anyInt(), anyInt());
         verify(listener, times(25)).messageFinished(any(WebDavMessage.class), anyInt(), anyInt());
     }
 
     private void setupStoreForMessageFetching() {
         String authString = "authString";
-        when(mockStoreConfig.getMaximumAutoDownloadMessageSize()).thenReturn(1900);
         when(mockStore.getAuthentication()).thenReturn(WebDavConstants.AUTH_TYPE_BASIC);
         when(mockStore.getAuthString()).thenReturn(authString);
     }
@@ -308,7 +309,7 @@ public class WebDavFolderTest {
 
         FetchProfile profile = new FetchProfile();
         profile.add(FetchProfile.Item.BODY_SANE);
-        folder.fetch(messages, profile, listener);
+        folder.fetch(messages, profile, listener, MAX_DOWNLOAD_SIZE);
         verify(listener, times(25)).messageStarted(any(String.class), anyInt(), eq(25));
         verify(listener, times(25)).messageFinished(any(WebDavMessage.class), anyInt(), eq(25));
     }
@@ -339,7 +340,7 @@ public class WebDavFolderTest {
 
         FetchProfile profile = new FetchProfile();
         profile.add(FetchProfile.Item.BODY_SANE);
-        folder.fetch(messages, profile, listener);
+        folder.fetch(messages, profile, listener, MAX_DOWNLOAD_SIZE);
         verify(listener, times(25)).messageStarted(any(String.class), anyInt(), eq(25));
         verify(listener, times(25)).messageFinished(any(WebDavMessage.class), anyInt(), eq(25));
     }

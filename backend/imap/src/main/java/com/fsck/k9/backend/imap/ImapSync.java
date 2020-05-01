@@ -348,6 +348,7 @@ class ImapSync {
          * be very fast and at very worst will be a single up of a few bytes and a single
          * download of 625k.
          */
+        int maxDownloadSize = syncConfig.getMaximumAutoDownloadMessageSize();
         FetchProfile fp = new FetchProfile();
         //TODO: Only fetch small and large messages if we have some
         fp.add(FetchProfile.Item.BODY);
@@ -362,7 +363,7 @@ class ImapSync {
         fp = new FetchProfile();
         fp.add(FetchProfile.Item.STRUCTURE);
         downloadLargeMessages(remoteFolder, backendFolder, largeMessages, progress, newMessages, todo, fp,
-                lastUid, listener);
+                lastUid, listener, maxDownloadSize);
         largeMessages.clear();
 
         /*
@@ -478,7 +479,8 @@ class ImapSync {
                         // FIXME this method is almost never invoked by various Stores! Don't rely on it unless fixed!!
                     }
 
-                });
+                },
+                syncConfig.getMaximumAutoDownloadMessageSize());
     }
 
     private void downloadSmallMessages(
@@ -532,7 +534,8 @@ class ImapSync {
                     @Override
                     public void messagesFinished(int total) {
                     }
-                });
+                },
+                -1);
 
         Timber.d("SYNC: Done fetching small messages for folder %s", folder);
     }
@@ -546,17 +549,18 @@ class ImapSync {
             final int todo,
             FetchProfile fp,
             Long lastUid,
-            SyncListener listener) throws MessagingException {
+            SyncListener listener,
+            int maxDownloadSize) throws MessagingException {
         final String folder = remoteFolder.getServerId();
 
         Timber.d("SYNC: Fetching large messages for folder %s", folder);
 
-        remoteFolder.fetch(largeMessages, fp, null);
+        remoteFolder.fetch(largeMessages, fp, null, maxDownloadSize);
         for (ImapMessage message : largeMessages) {
             if (message.getBody() == null) {
-                downloadSaneBody(remoteFolder, backendFolder, message);
+                downloadSaneBody(remoteFolder, backendFolder, message, maxDownloadSize);
             } else {
-                downloadPartial(remoteFolder, backendFolder, message);
+                downloadPartial(remoteFolder, backendFolder, message, maxDownloadSize);
             }
 
             String messageServerId = message.getUid();
@@ -606,7 +610,8 @@ class ImapSync {
             }
         }
 
-        remoteFolder.fetch(undeletedMessages, fp, null);
+        int maxDownloadSize = syncConfig.getMaximumAutoDownloadMessageSize();
+        remoteFolder.fetch(undeletedMessages, fp, null, maxDownloadSize);
         for (ImapMessage remoteMessage : syncFlagMessages) {
             boolean messageChanged = syncFlags(syncConfig, backendFolder, remoteMessage);
             if (messageChanged) {
@@ -617,8 +622,8 @@ class ImapSync {
         }
     }
 
-    private void downloadSaneBody(ImapFolder remoteFolder, BackendFolder backendFolder, ImapMessage message)
-            throws MessagingException {
+    private void downloadSaneBody(ImapFolder remoteFolder, BackendFolder backendFolder, ImapMessage message,
+            int maxDownloadSize) throws MessagingException {
         /*
          * The provider was unable to get the structure of the message, so
          * we'll download a reasonable portion of the messge and mark it as
@@ -633,14 +638,14 @@ class ImapSync {
                  *  they equal we can mark this SYNCHRONIZED instead of PARTIALLY_SYNCHRONIZED
                  */
 
-        remoteFolder.fetch(Collections.singletonList(message), fp, null);
+        remoteFolder.fetch(Collections.singletonList(message), fp, null, maxDownloadSize);
 
         // Store the updated message locally
         backendFolder.savePartialMessage(message);
     }
 
-    private void downloadPartial(ImapFolder remoteFolder, BackendFolder backendFolder, ImapMessage message)
-            throws MessagingException {
+    private void downloadPartial(ImapFolder remoteFolder, BackendFolder backendFolder, ImapMessage message,
+            int maxDownloadSize) throws MessagingException {
         /*
          * We have a structure to deal with, from which
          * we can pull down the parts we want to actually store.
@@ -655,7 +660,7 @@ class ImapSync {
          */
         BodyFactory bodyFactory = new DefaultBodyFactory();
         for (Part part : viewables) {
-            remoteFolder.fetchPart(message, part, null, bodyFactory);
+            remoteFolder.fetchPart(message, part, null, bodyFactory, maxDownloadSize);
         }
         // Store the updated message locally
         backendFolder.savePartialMessage(message);

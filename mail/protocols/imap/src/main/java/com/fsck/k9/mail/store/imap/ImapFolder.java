@@ -607,7 +607,7 @@ public class ImapFolder {
     }
 
     public void fetch(List<ImapMessage> messages, FetchProfile fetchProfile,
-            MessageRetrievalListener<ImapMessage> listener) throws MessagingException {
+            MessageRetrievalListener<ImapMessage> listener, int maxDownloadSize) throws MessagingException {
         if (messages == null || messages.isEmpty()) {
             return;
         }
@@ -641,9 +641,8 @@ public class ImapFolder {
         }
 
         if (fetchProfile.contains(FetchProfile.Item.BODY_SANE)) {
-            int maximumAutoDownloadMessageSize = store.getStoreConfig().getMaximumAutoDownloadMessageSize();
-            if (maximumAutoDownloadMessageSize > 0) {
-                fetchFields.add(String.format(Locale.US, "BODY.PEEK[]<0.%d>", maximumAutoDownloadMessageSize));
+            if (maxDownloadSize > 0) {
+                fetchFields.add(String.format(Locale.US, "BODY.PEEK[]<0.%d>", maxDownloadSize));
             } else {
                 fetchFields.add("BODY.PEEK[]");
             }
@@ -735,15 +734,14 @@ public class ImapFolder {
     }
 
     public void fetchPart(ImapMessage message, Part part, MessageRetrievalListener<ImapMessage> listener,
-            BodyFactory bodyFactory) throws MessagingException {
+            BodyFactory bodyFactory, int maxDownloadSize) throws MessagingException {
         checkOpen();
 
         String partId = part.getServerExtra();
 
         String fetch;
         if ("TEXT".equalsIgnoreCase(partId)) {
-            int maximumAutoDownloadMessageSize = store.getStoreConfig().getMaximumAutoDownloadMessageSize();
-            fetch = String.format(Locale.US, "BODY.PEEK[TEXT]<0.%d>", maximumAutoDownloadMessageSize);
+            fetch = String.format(Locale.US, "BODY.PEEK[TEXT]<0.%d>", maxDownloadSize);
         } else {
             fetch = String.format("BODY.PEEK[%s]", partId);
         }

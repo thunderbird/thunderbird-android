@@ -109,7 +109,12 @@ class JmapBackend(
         throw UnsupportedOperationException("not implemented")
     }
 
-    override fun fetchMessage(folderServerId: String, messageServerId: String, fetchProfile: FetchProfile): Message {
+    override fun fetchMessage(
+        folderServerId: String,
+        messageServerId: String,
+        fetchProfile: FetchProfile,
+        maxDownloadSize: Int
+    ): Message {
         throw UnsupportedOperationException("not implemented")
     }
 

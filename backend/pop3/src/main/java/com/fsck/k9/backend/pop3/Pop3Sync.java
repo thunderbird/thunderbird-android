@@ -449,7 +449,8 @@ class Pop3Sync {
                         // FIXME this method is almost never invoked by various Stores! Don't rely on it unless fixed!!
                     }
 
-                });
+                },
+                syncConfig.getMaximumAutoDownloadMessageSize());
     }
 
     private void downloadSmallMessages(
@@ -502,7 +503,8 @@ class Pop3Sync {
                     @Override
                     public void messagesFinished(int total) {
                     }
-                });
+                },
+                -1);
 
         Timber.d("SYNC: Done fetching small messages for folder %s", folder);
     }
@@ -525,7 +527,8 @@ class Pop3Sync {
 
         Timber.d("SYNC: Fetching large messages for folder %s", folder);
 
-        remoteFolder.fetch(largeMessages, fp, null);
+        int maxDownloadSize = syncConfig.getMaximumAutoDownloadMessageSize();
+        remoteFolder.fetch(largeMessages, fp, null, maxDownloadSize);
         for (Pop3Message message : largeMessages) {
 
             downloadSaneBody(syncConfig, remoteFolder, backendFolder, message);
@@ -570,7 +573,8 @@ class Pop3Sync {
          *  they equal we can mark this SYNCHRONIZED instead of PARTIALLY_SYNCHRONIZED
          */
 
-        remoteFolder.fetch(Collections.singletonList(message), fp, null);
+        int maxDownloadSize = syncConfig.getMaximumAutoDownloadMessageSize();
+        remoteFolder.fetch(Collections.singletonList(message), fp, null, maxDownloadSize);
 
         boolean completeMessage = false;
         // Certain (POP3) servers give you the whole message even when you ask for only the first x Kb

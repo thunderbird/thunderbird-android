@@ -8,6 +8,4 @@ public interface StoreConfig {
     boolean useCompression(NetworkType type);
 
     String getDraftsFolder();
-
-    int getMaximumAutoDownloadMessageSize();
 }

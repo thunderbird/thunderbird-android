@@ -76,7 +76,12 @@ interface Backend {
     ): List<String>
 
     @Throws(MessagingException::class)
-    fun fetchMessage(folderServerId: String, messageServerId: String, fetchProfile: FetchProfile): Message
+    fun fetchMessage(
+        folderServerId: String,
+        messageServerId: String,
+        fetchProfile: FetchProfile,
+        maxDownloadSize: Int
+    ): Message
 
     @Throws(MessagingException::class)
     fun fetchPart(folderServerId: String, messageServerId: String, part: Part, bodyFactory: BodyFactory)

@@ -30,6 +30,8 @@ import static org.mockito.Mockito.when;
 
 
 public class Pop3FolderTest {
+    private static final int MAX_DOWNLOAD_SIZE = -1;
+
     private Pop3Store mockStore;
     private Pop3Connection mockConnection;
     private StoreConfig mockStoreConfig;
@@ -224,7 +226,7 @@ public class Pop3FolderTest {
         fetchProfile.add(Item.ENVELOPE);
         when(mockConnection.readLine()).thenReturn("1 100").thenReturn(".");
 
-        folder.fetch(messageList, fetchProfile, mockListener);
+        folder.fetch(messageList, fetchProfile, mockListener, MAX_DOWNLOAD_SIZE);
 
         assertEquals(100, messageList.get(0).getSize());
     }
@@ -247,7 +249,7 @@ public class Pop3FolderTest {
         when(mockConnection.readLine()).thenReturn("1 100").thenReturn(".");
         when(mockConnection.getInputStream()).thenReturn(messageInputStream);
 
-        folder.fetch(messageList, fetchProfile, mockListener);
+        folder.fetch(messageList, fetchProfile, mockListener, MAX_DOWNLOAD_SIZE);
 
         ByteArrayOutputStream bodyData = new ByteArrayOutputStream();
         messageList.get(0).getBody().writeTo(bodyData);
