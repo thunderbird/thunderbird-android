@@ -9,7 +9,7 @@ internal object MigrationTo67 {
         db.execSQL("ALTER TABLE folders ADD type TEXT DEFAULT \"regular\"")
 
         val account = migrationsHelper.account
-        setFolderType(db, account.inboxFolder, "inbox")
+        setFolderType(db, account.legacyInboxFolder, "inbox")
         setFolderType(db, "K9MAIL_INTERNAL_OUTBOX", "outbox")
         setFolderType(db, account.trashFolder, "trash")
         setFolderType(db, account.draftsFolder, "drafts")

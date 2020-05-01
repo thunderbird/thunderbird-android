@@ -399,7 +399,7 @@ public class StoreSchemaDefinitionTest extends K9RobolectricTest {
 
     private Account createAccount() {
         Account account = mock(Account.class);
-        when(account.getInboxFolder()).thenReturn("Inbox");
+        when(account.getLegacyInboxFolder()).thenReturn("Inbox");
         when(account.getTrashFolder()).thenReturn("Trash");
         when(account.getDraftsFolder()).thenReturn("Drafts");
         when(account.getSpamFolder()).thenReturn("Spam");

@@ -7,7 +7,7 @@ internal class MigrationTo75(private val db: SQLiteDatabase, private val migrati
     fun updateAccountWithSpecialFolderIds() {
         val account = migrationsHelper.account
 
-        setSpecialFolderId(account.inboxFolder, account::setInboxFolderId)
+        setSpecialFolderId(account.legacyInboxFolder, account::setInboxFolderId)
         setSpecialFolderId("K9MAIL_INTERNAL_OUTBOX", account::setOutboxFolderId)
         setSpecialFolderId(account.draftsFolder, account::setDraftsFolderId)
         setSpecialFolderId(account.sentFolder, account::setSentFolderId)
@@ -16,7 +16,6 @@ internal class MigrationTo75(private val db: SQLiteDatabase, private val migrati
         setSpecialFolderId(account.spamFolder, account::setSpamFolderId)
         setSpecialFolderId(account.autoExpandFolder, account::setAutoExpandFolderId)
 
-        account.inboxFolder = null
         account.draftsFolder = null
         account.sentFolder = null
         account.trashFolder = null

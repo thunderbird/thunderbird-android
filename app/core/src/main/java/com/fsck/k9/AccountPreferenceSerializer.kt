@@ -51,7 +51,7 @@ class AccountPreferenceSerializer(
             isNotifyContactsMailOnly = storage.getBoolean("$accountUuid.notifyContactsMailOnly", false)
             isNotifySync = storage.getBoolean("$accountUuid.notifyMailCheck", false)
             deletePolicy = DeletePolicy.fromInt(storage.getInt("$accountUuid.deletePolicy", DeletePolicy.NEVER.setting))
-            inboxFolder = storage.getString("$accountUuid.inboxFolderName", null)
+            legacyInboxFolder = storage.getString("$accountUuid.inboxFolderName", null)
             draftsFolder = storage.getString("$accountUuid.draftsFolderName", null)
             sentFolder = storage.getString("$accountUuid.sentFolderName", null)
             trashFolder = storage.getString("$accountUuid.trashFolderName", null)
@@ -245,7 +245,7 @@ class AccountPreferenceSerializer(
             editor.putBoolean("$accountUuid.notifyContactsMailOnly", isNotifyContactsMailOnly)
             editor.putBoolean("$accountUuid.notifyMailCheck", isNotifySync)
             editor.putInt("$accountUuid.deletePolicy", deletePolicy.setting)
-            editor.putString("$accountUuid.inboxFolderName", inboxFolder)
+            editor.putString("$accountUuid.inboxFolderName", legacyInboxFolder)
             editor.putString("$accountUuid.draftsFolderName", draftsFolder)
             editor.putString("$accountUuid.sentFolderName", sentFolder)
             editor.putString("$accountUuid.trashFolderName", trashFolder)
@@ -557,7 +557,7 @@ class AccountPreferenceSerializer(
             isSignatureBeforeQuotedText = false
             expungePolicy = Expunge.EXPUNGE_IMMEDIATELY
             autoExpandFolder = null
-            inboxFolder = null
+            legacyInboxFolder = null
             maxPushFolders = 10
             isGoToUnreadMessageSearch = false
             isSubscribedFoldersOnly = false

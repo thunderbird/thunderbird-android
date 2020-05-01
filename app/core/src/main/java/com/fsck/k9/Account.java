@@ -124,7 +124,7 @@ public class Account implements BaseAccount {
     private FolderMode folderNotifyNewMailMode;
     private boolean notifySelfNewMail;
     private boolean notifyContactsMailOnly;
-    private String inboxFolder;
+    private String legacyInboxFolder;
     private String draftsFolder;
     private String sentFolder;
     private String trashFolder;
@@ -1059,12 +1059,12 @@ public class Account implements BaseAccount {
         this.uploadSentMessages = uploadSentMessages;
     }
 
-    public String getInboxFolder() {
-        return inboxFolder;
+    public String getLegacyInboxFolder() {
+        return legacyInboxFolder;
     }
 
-    public void setInboxFolder(String name) {
-        this.inboxFolder = name;
+    void setLegacyInboxFolder(String name) {
+        this.legacyInboxFolder = name;
     }
 
     @Nullable
