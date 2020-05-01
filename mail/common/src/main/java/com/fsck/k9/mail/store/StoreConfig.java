@@ -10,6 +10,4 @@ public interface StoreConfig {
     String getDraftsFolder();
 
     int getMaximumAutoDownloadMessageSize();
-
-    boolean isRemoteSearchFullText();
 }

@@ -1332,7 +1332,7 @@ public class ImapFolder {
      * @throws MessagingException On any error.
      */
     public List<ImapMessage> search(final String queryString, final Set<Flag> requiredFlags,
-            final Set<Flag> forbiddenFlags) throws MessagingException {
+            final Set<Flag> forbiddenFlags, boolean performFullTextSearch) throws MessagingException {
 
         try {
             open(OPEN_MODE_RO);
@@ -1342,7 +1342,7 @@ public class ImapFolder {
 
             String searchCommand = new UidSearchCommandBuilder()
                     .queryString(queryString)
-                    .performFullTextSearch(store.getStoreConfig().isRemoteSearchFullText())
+                    .performFullTextSearch(performFullTextSearch)
                     .requiredFlags(requiredFlags)
                     .forbiddenFlags(forbiddenFlags)
                     .build();

@@ -182,9 +182,9 @@ public class ImapBackend implements Backend {
     @NotNull
     @Override
     public List<String> search(@NotNull String folderServerId, @Nullable String query,
-            @Nullable Set<? extends Flag> requiredFlags, @Nullable Set<? extends Flag> forbiddenFlags)
-            throws MessagingException {
-        return commandSearch.search(folderServerId, query, requiredFlags, forbiddenFlags);
+            @Nullable Set<? extends Flag> requiredFlags, @Nullable Set<? extends Flag> forbiddenFlags,
+            boolean performFullTextSearch) {
+        return commandSearch.search(folderServerId, query, requiredFlags, forbiddenFlags, performFullTextSearch);
     }
 
     @NotNull

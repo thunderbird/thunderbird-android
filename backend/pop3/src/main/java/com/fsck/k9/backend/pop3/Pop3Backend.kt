@@ -97,7 +97,8 @@ class Pop3Backend(
         folderServerId: String,
         query: String?,
         requiredFlags: Set<Flag>?,
-        forbiddenFlags: Set<Flag>?
+        forbiddenFlags: Set<Flag>?,
+        performFullTextSearch: Boolean
     ): List<String> {
         throw UnsupportedOperationException("not supported")
     }

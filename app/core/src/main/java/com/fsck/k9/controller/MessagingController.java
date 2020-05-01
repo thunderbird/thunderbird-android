@@ -476,7 +476,9 @@ public class MessagingController {
 
             Backend backend = getBackend(acct);
 
-            List<String> messageServerIds = backend.search(folderServerId, query, requiredFlags, forbiddenFlags);
+            boolean performFullTextSearch = acct.isRemoteSearchFullText();
+            List<String> messageServerIds = backend.search(folderServerId, query, requiredFlags, forbiddenFlags,
+                    performFullTextSearch);
 
             Timber.i("Remote search got %d results", messageServerIds.size());
 

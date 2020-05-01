@@ -99,7 +99,13 @@ class JmapBackend(
         return messageServerIds.associateWith { it }
     }
 
-    override fun search(folderServerId: String, query: String?, requiredFlags: Set<Flag>?, forbiddenFlags: Set<Flag>?): List<String> {
+    override fun search(
+        folderServerId: String,
+        query: String?,
+        requiredFlags: Set<Flag>?,
+        forbiddenFlags: Set<Flag>?,
+        performFullTextSearch: Boolean
+    ): List<String> {
         throw UnsupportedOperationException("not implemented")
     }
 

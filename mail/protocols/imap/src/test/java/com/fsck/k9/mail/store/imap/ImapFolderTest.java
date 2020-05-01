@@ -969,10 +969,9 @@ public class ImapFolderTest {
     public void search_withFullTextSearchEnabled_shouldIssueRespectiveCommand() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RO);
-        when(storeConfig.isRemoteSearchFullText()).thenReturn(true);
         setupUidSearchResponses("1 OK SEARCH completed");
 
-        folder.search("query", newSet(Flag.SEEN), Collections.<Flag>emptySet());
+        folder.search("query", newSet(Flag.SEEN), Collections.<Flag>emptySet(), true);
 
         assertCommandIssued("UID SEARCH TEXT \"query\" SEEN");
     }
@@ -981,10 +980,9 @@ public class ImapFolderTest {
     public void search_withFullTextSearchDisabled_shouldIssueRespectiveCommand() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RO);
-        when(storeConfig.isRemoteSearchFullText()).thenReturn(false);
         setupUidSearchResponses("1 OK SEARCH completed");
 
-        folder.search("query", Collections.<Flag>emptySet(), Collections.<Flag>emptySet());
+        folder.search("query", Collections.<Flag>emptySet(), Collections.<Flag>emptySet(), false);
 
         assertCommandIssued("UID SEARCH OR SUBJECT \"query\" FROM \"query\"");
     }
