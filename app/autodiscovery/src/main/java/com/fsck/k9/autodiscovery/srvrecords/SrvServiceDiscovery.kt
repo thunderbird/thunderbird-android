@@ -24,27 +24,25 @@ data class MailService(
     var security: ConnectionSecurity?
 )
 
-fun pickMailService(a: MailService?, b: MailService?): MailService? {
-    return if (a == null || b == null) {
-        a ?: b
-    } else {
-        minOf(a, b, compareBy { it.priority })
-    }
-}
-
 interface SrvResolver {
-    fun srvLookup(domain: String, type: SrvType): MailService?
+    fun srvLookup(domain: String, type: SrvType): List<MailService>
 }
 
 class SrvServiceDiscovery : ConnectionSettingsDiscovery, SrvResolver {
 
     override fun discover(email: String): ConnectionSettings? {
         val domain = EmailHelper.getDomainFromEmailAddress(email) ?: return null
-        val outgoingService = this.srvLookup(domain, SrvType.SUBMISSION) ?: return null
-        val incomingService = pickMailService(
-            this.srvLookup(domain, SrvType.IMAPS),
-            this.srvLookup(domain, SrvType.IMAP)
-        ) ?: return null
+        val pickMailService = compareBy<MailService> { it.priority }.thenByDescending { it.security }
+
+        val submissionServices = this.srvLookup(domain, SrvType.SUBMISSION)
+        val imapServices =
+            this.srvLookup(domain, SrvType.IMAPS
+        ).plus(
+            this.srvLookup(domain, SrvType.IMAP))
+
+        val outgoingService = submissionServices.minWith(pickMailService) ?: return null
+        val incomingService = imapServices.minWith(pickMailService) ?: return null
+
         return ConnectionSettings(
             incoming = ServerSettings(
                 incomingService.srvType.protocol,
@@ -69,22 +67,23 @@ class SrvServiceDiscovery : ConnectionSettingsDiscovery, SrvResolver {
         )
     }
 
-    override fun srvLookup(domain: String, type: SrvType): MailService? {
+    override fun srvLookup(domain: String, type: SrvType): List<MailService> {
         val result = ResolverApi.INSTANCE.resolveSrv(
             DnsName.from(type.label),
             SrvProto.tcp.dnsName,
             DnsName.from(domain)
         )
-        val answer = result?.answersOrEmptySet?.minBy { it.priority } ?: return null
-        return MailService(
+        return result?.answersOrEmptySet?.map {
+            MailService(
                 type,
-                answer.target.toString(),
-                answer.port,
-                answer.priority,
+                it.target.toString(),
+                it.port,
+                it.priority,
                 if (type.assumeTls)
                     ConnectionSecurity.SSL_TLS_REQUIRED
                 else
                     ConnectionSecurity.STARTTLS_REQUIRED
-        )
+            )
+        } ?: listOf()
     }
 }
