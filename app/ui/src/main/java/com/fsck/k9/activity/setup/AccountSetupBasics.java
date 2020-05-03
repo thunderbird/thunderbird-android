@@ -25,6 +25,7 @@ import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.autodiscovery.ConnectionSettings;
 import com.fsck.k9.autodiscovery.providersxml.ProvidersXmlDiscovery;
+import com.fsck.k9.autodiscovery.srvrecords.SrvServiceDiscovery;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.helper.EmailHelper;
 import com.fsck.k9.helper.Utility;
@@ -52,6 +53,7 @@ public class AccountSetupBasics extends K9Activity
 
     private final BackendManager backendManager = DI.get(BackendManager.class);
     private final ProvidersXmlDiscovery providersXmlDiscovery = DI.get(ProvidersXmlDiscovery.class);
+    private final SrvServiceDiscovery srvServiceDiscovery = new SrvServiceDiscovery();
     private final AccountCreator accountCreator = DI.get(AccountCreator.class);
 
     private EditText mEmailView;
@@ -274,6 +276,9 @@ public class AccountSetupBasics extends K9Activity
         String email = mEmailView.getText().toString();
 
         ConnectionSettings connectionSettings = providersXmlDiscovery.discover(email);
+        if (connectionSettings == null) {
+            connectionSettings = srvServiceDiscovery.discover(email);
+        }
         if (connectionSettings != null) {
             finishAutoSetup(connectionSettings);
         } else {

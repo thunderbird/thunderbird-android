@@ -10,6 +10,7 @@ dependencies {
 
     implementation "com.jakewharton.timber:timber:${versions.timber}"
     implementation "com.squareup.okhttp3:okhttp:${versions.okhttp}"
+    implementation "org.minidns:minidns-hla:${versions.minidns}"
 
     testImplementation project(':app:testing')
     testImplementation project(":backend:imap")
