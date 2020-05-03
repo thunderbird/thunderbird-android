@@ -6,17 +6,14 @@ import com.fsck.k9.helper.EmailHelper
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
-import java.util.Locale
 import org.minidns.dnsname.DnsName
 import org.minidns.hla.ResolverApi
 import org.minidns.hla.SrvProto
 
-enum class SrvType(var protocol: String, var assumeTls: Boolean) {
-    SUBMISSION("smtp", false),
-    IMAPS("imap", true),
-    POP3S("pop", true),
-    IMAP("imap", false),
-    POP3("pop3", false)
+enum class SrvType(var label: String, var protocol: String, var assumeTls: Boolean) {
+    SUBMISSION("_submission", "smtp", false),
+    IMAPS("_imaps", "imap", true),
+    IMAP("_imap", "imap", false)
 }
 
 data class MailService(
@@ -28,29 +25,26 @@ data class MailService(
 )
 
 fun pickMailService(a: MailService?, b: MailService?): MailService? {
-    if (a == null || b == null) {
-        return a ?: b
+    return if (a == null || b == null) {
+        a ?: b
     } else {
-        return minOf(a, b, compareBy { it.priority })
+        minOf(a, b, compareBy { it.priority })
     }
 }
 
-class SrvServiceDiscovery : ConnectionSettingsDiscovery {
+interface SrvResolver {
+    fun srvLookup(domain: String, type: SrvType): MailService?
+}
 
-    private var domain: String? = null
+class SrvServiceDiscovery : ConnectionSettingsDiscovery, SrvResolver {
 
     override fun discover(email: String): ConnectionSettings? {
-        this.domain = EmailHelper.getDomainFromEmailAddress(email)
-
-        val outgoingService = this.srvLookup(SrvType.SUBMISSION) ?: return null
+        val domain = EmailHelper.getDomainFromEmailAddress(email) ?: return null
+        val outgoingService = this.srvLookup(domain, SrvType.SUBMISSION) ?: return null
         val incomingService = pickMailService(
-            this.srvLookup(SrvType.IMAPS),
-            this.srvLookup(SrvType.POP3S)
-        ) ?: pickMailService(
-            this.srvLookup(SrvType.IMAP),
-            this.srvLookup(SrvType.POP3)
+            this.srvLookup(domain, SrvType.IMAPS),
+            this.srvLookup(domain, SrvType.IMAP)
         ) ?: return null
-
         return ConnectionSettings(
             incoming = ServerSettings(
                 incomingService.srvType.protocol,
@@ -75,11 +69,11 @@ class SrvServiceDiscovery : ConnectionSettingsDiscovery {
         )
     }
 
-    private fun srvLookup(type: SrvType): MailService? {
+    override fun srvLookup(domain: String, type: SrvType): MailService? {
         val result = ResolverApi.INSTANCE.resolveSrv(
-            DnsName.from('_' + type.name.toLowerCase(Locale.ROOT)),
+            DnsName.from(type.label),
             SrvProto.tcp.dnsName,
-            DnsName.from(this.domain)
+            DnsName.from(domain)
         )
         val answer = result?.answersOrEmptySet?.minBy { it.priority } ?: return null
         return MailService(
