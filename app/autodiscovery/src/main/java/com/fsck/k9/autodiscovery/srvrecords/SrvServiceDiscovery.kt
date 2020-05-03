@@ -6,10 +6,10 @@ import com.fsck.k9.helper.EmailHelper
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
+import java.util.Locale
 import org.minidns.dnsname.DnsName
 import org.minidns.hla.ResolverApi
 import org.minidns.hla.SrvProto
-import java.util.Locale
 
 enum class SrvType(var protocol: String, var assumeTls: Boolean) {
     SUBMISSION("smtp", false),
@@ -28,7 +28,7 @@ data class MailService(
 )
 
 fun pickMailService(a: MailService?, b: MailService?): MailService? {
-    if (a == null || b == null ) {
+    if (a == null || b == null) {
         return a ?: b
     } else {
         return minOf(a, b, compareBy { it.priority })
@@ -77,7 +77,7 @@ class SrvServiceDiscovery : ConnectionSettingsDiscovery {
 
     private fun srvLookup(type: SrvType): MailService? {
         val result = ResolverApi.INSTANCE.resolveSrv(
-            DnsName.from('_'+type.name.toLowerCase(Locale.ROOT)),
+            DnsName.from('_' + type.name.toLowerCase(Locale.ROOT)),
             SrvProto.tcp.dnsName,
             DnsName.from(this.domain)
         )
