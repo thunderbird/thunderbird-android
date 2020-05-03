@@ -170,7 +170,7 @@ public class PgpMessageBuilder extends MessageBuilder {
 
                 boolean payloadSupportsMimeHeaders = !isPgpInlineMode;
                 if (payloadSupportsMimeHeaders) {
-                    if (cryptoStatus.isEncryptSubject()) {
+                    if (cryptoStatus.isEncryptSubject() && shouldEncrypt) {
                         moveSubjectIntoEncryptedPayload();
                     }
                     maybeAddGossipHeadersToBodyPart();
