@@ -252,7 +252,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                     updateFooter(null);
                 }
 
-                messagingController.loadSearchResults(account, currentFolder.serverId, toProcess, activityListener);
+                messagingController.loadSearchResults(account, currentFolder.databaseId, toProcess, activityListener);
             }
 
             return;
@@ -622,17 +622,13 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
      * User has requested a remote search.  Setup the bundle and start the intent.
      */
     private void onRemoteSearchRequested() {
-        String searchAccount;
-        String searchFolder;
-
-        searchAccount = account.getUuid();
-        searchFolder = currentFolder.serverId;
-
+        String searchAccount = account.getUuid();
+        long folderId = currentFolder.databaseId;
         String queryString = search.getRemoteSearchArguments();
 
         remoteSearchPerformed = true;
-        remoteSearchFuture = messagingController.searchRemoteMessages(searchAccount, searchFolder,
-                queryString, null, null, activityListener);
+        remoteSearchFuture = messagingController.searchRemoteMessages(searchAccount, folderId, queryString,
+                null, null, activityListener);
 
         swipeRefreshLayout.setEnabled(false);
 
@@ -941,7 +937,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
         @Override
-        public void remoteSearchStarted(String folder) {
+        public void remoteSearchStarted(long folderId) {
             handler.progress(true);
             handler.updateFooter(context.getString(R.string.remote_search_sending_query));
         }
@@ -952,7 +948,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
         @Override
-        public void remoteSearchFinished(String folderServerId, int numResults, int maxResults, List<String> extraResults) {
+        public void remoteSearchFinished(long folderId, int numResults, int maxResults, List<String> extraResults) {
             handler.progress(false);
             handler.remoteSearchFinished();
             extraSearchResults = extraResults;
@@ -964,7 +960,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
         @Override
-        public void remoteSearchServerQueryComplete(String folderServerId, int numResults, int maxResults) {
+        public void remoteSearchServerQueryComplete(long folderId, int numResults, int maxResults) {
             handler.progress(true);
             if (maxResults != 0 && numResults > maxResults) {
                 handler.updateFooter(context.getResources().getQuantityString(R.plurals.remote_search_downloading_limited,
@@ -1839,8 +1835,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 // Closing the folder will kill off the connection if we're mid-search.
                 final Account searchAccount = account;
                 // Send a remoteSearchFinished() message for good measure.
-                activityListener
-                        .remoteSearchFinished(currentFolder.serverId, 0, searchAccount.getRemoteSearchNumResults(), null);
+                activityListener.remoteSearchFinished(currentFolder.databaseId, 0,
+                        searchAccount.getRemoteSearchNumResults(), null);
             } catch (Exception e) {
                 // Since the user is going back, log and squash any exceptions.
                 Timber.e(e, "Could not abort remote search before going back");

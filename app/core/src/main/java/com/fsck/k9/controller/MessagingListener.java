@@ -42,9 +42,9 @@ public interface MessagingListener {
     void loadAttachmentFinished(Account account, Message message, Part part);
     void loadAttachmentFailed(Account account, Message message, Part part, String reason);
 
-    void remoteSearchStarted(String folder);
-    void remoteSearchServerQueryComplete(String folderServerId, int numResults, int maxResults);
-    void remoteSearchFinished(String folderServerId, int numResults, int maxResults, List<String> extraResults);
+    void remoteSearchStarted(long folderId);
+    void remoteSearchServerQueryComplete(long folderId, int numResults, int maxResults);
+    void remoteSearchFinished(long folderId, int numResults, int maxResults, List<String> extraResults);
     void remoteSearchFailed(String folderServerId, String err);
 
     void enableProgressIndicator(boolean enable);

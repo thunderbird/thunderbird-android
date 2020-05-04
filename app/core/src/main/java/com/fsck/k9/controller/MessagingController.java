@@ -452,40 +452,40 @@ public class MessagingController {
         }
     }
 
-    public Future<?> searchRemoteMessages(final String acctUuid, final String folderServerId, final String query,
-            final Set<Flag> requiredFlags, final Set<Flag> forbiddenFlags, final MessagingListener listener) {
-        Timber.i("searchRemoteMessages (acct = %s, folderServerId = %s, query = %s)", acctUuid, folderServerId, query);
+    public Future<?> searchRemoteMessages(String acctUuid, long folderId, String query, Set<Flag> requiredFlags,
+            Set<Flag> forbiddenFlags, MessagingListener listener) {
+        Timber.i("searchRemoteMessages (acct = %s, folderId = %d, query = %s)", acctUuid, folderId, query);
 
-        return threadPool.submit(new Runnable() {
-            @Override
-            public void run() {
-                searchRemoteMessagesSynchronous(acctUuid, folderServerId, query, requiredFlags, forbiddenFlags,
-                        listener);
-            }
-        });
+        return threadPool.submit(() ->
+                searchRemoteMessagesSynchronous(acctUuid, folderId, query, requiredFlags, forbiddenFlags, listener)
+        );
     }
 
     @VisibleForTesting
-    void searchRemoteMessagesSynchronous(final String acctUuid, final String folderServerId, final String query,
-            final Set<Flag> requiredFlags, final Set<Flag> forbiddenFlags, final MessagingListener listener) {
-        final Account acct = Preferences.getPreferences(context).getAccount(acctUuid);
+    void searchRemoteMessagesSynchronous(String acctUuid, long folderId, String query, Set<Flag> requiredFlags,
+            Set<Flag> forbiddenFlags, MessagingListener listener) {
+
+        Account account = Preferences.getPreferences(context).getAccount(acctUuid);
 
         if (listener != null) {
-            listener.remoteSearchStarted(folderServerId);
+            listener.remoteSearchStarted(folderId);
         }
 
         List<String> extraResults = new ArrayList<>();
         try {
-            LocalStore localStore = localStoreProvider.getInstance(acct);
+            LocalStore localStore = localStoreProvider.getInstance(account);
 
-            LocalFolder localFolder = localStore.getFolder(folderServerId);
-            if (localFolder == null) {
+            LocalFolder localFolder = localStore.getFolder(folderId);
+            if (!localFolder.exists()) {
                 throw new MessagingException("Folder not found");
             }
 
-            Backend backend = getBackend(acct);
+            localFolder.open();
+            String folderServerId = localFolder.getServerId();
 
-            boolean performFullTextSearch = acct.isRemoteSearchFullText();
+            Backend backend = getBackend(account);
+
+            boolean performFullTextSearch = account.isRemoteSearchFullText();
             List<String> messageServerIds = backend.search(folderServerId, query, requiredFlags, forbiddenFlags,
                     performFullTextSearch);
 
@@ -495,17 +495,17 @@ public class MessagingController {
             messageServerIds = localFolder.extractNewMessages(messageServerIds);
 
             if (listener != null) {
-                listener.remoteSearchServerQueryComplete(folderServerId, messageServerIds.size(),
-                        acct.getRemoteSearchNumResults());
+                listener.remoteSearchServerQueryComplete(folderId, messageServerIds.size(),
+                        account.getRemoteSearchNumResults());
             }
 
-            int resultLimit = acct.getRemoteSearchNumResults();
+            int resultLimit = account.getRemoteSearchNumResults();
             if (resultLimit > 0 && messageServerIds.size() > resultLimit) {
                 extraResults = messageServerIds.subList(resultLimit, messageServerIds.size());
                 messageServerIds = messageServerIds.subList(0, resultLimit);
             }
 
-            loadSearchResultsSynchronous(acct, messageServerIds, localFolder);
+            loadSearchResultsSynchronous(account, messageServerIds, localFolder);
         } catch (Exception e) {
             if (Thread.currentThread().isInterrupted()) {
                 Timber.i(e, "Caught exception on aborted remote search; safe to ignore.");
@@ -518,39 +518,34 @@ public class MessagingController {
             }
         } finally {
             if (listener != null) {
-                listener.remoteSearchFinished(folderServerId, 0, acct.getRemoteSearchNumResults(), extraResults);
+                listener.remoteSearchFinished(folderId, 0, account.getRemoteSearchNumResults(), extraResults);
             }
         }
 
     }
 
-    public void loadSearchResults(final Account account, final String folderServerId,
-            final List<String> messageServerIds, final MessagingListener listener) {
-        threadPool.execute(new Runnable() {
-            @Override
-            public void run() {
-                if (listener != null) {
-                    listener.enableProgressIndicator(true);
+    public void loadSearchResults(Account account, long folderId, List<String> messageServerIds,
+            MessagingListener listener) {
+        threadPool.execute(() -> {
+            if (listener != null) {
+                listener.enableProgressIndicator(true);
+            }
+
+            try {
+                LocalStore localStore = localStoreProvider.getInstance(account);
+                LocalFolder localFolder = localStore.getFolder(folderId);
+                if (!localFolder.exists()) {
+                    throw new MessagingException("Folder not found");
                 }
-                try {
-                    LocalStore localStore = localStoreProvider.getInstance(account);
 
-                    if (localStore == null) {
-                        throw new MessagingException("Could not get store");
-                    }
+                localFolder.open();
 
-                    LocalFolder localFolder = localStore.getFolder(folderServerId);
-                    if (localFolder == null) {
-                        throw new MessagingException("Folder not found");
-                    }
-
-                    loadSearchResultsSynchronous(account, messageServerIds, localFolder);
-                } catch (MessagingException e) {
-                    Timber.e(e, "Exception in loadSearchResults");
-                } finally {
-                    if (listener != null) {
-                        listener.enableProgressIndicator(false);
-                    }
+                loadSearchResultsSynchronous(account, messageServerIds, localFolder);
+            } catch (MessagingException e) {
+                Timber.e(e, "Exception in loadSearchResults");
+            } finally {
+                if (listener != null) {
+                    listener.enableProgressIndicator(false);
                 }
             }
         });

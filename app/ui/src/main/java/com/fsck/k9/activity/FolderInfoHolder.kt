@@ -12,7 +12,6 @@ class FolderInfoHolder(
     account: Account
 ) {
     @JvmField val databaseId = localFolder.databaseId
-    @JvmField val serverId: String = localFolder.serverId
     @JvmField val displayName = getDisplayName(account, localFolder)
     @JvmField var loading = false
     @JvmField var moreMessages = localFolder.hasMoreMessages()
