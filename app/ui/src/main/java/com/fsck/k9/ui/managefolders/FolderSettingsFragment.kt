@@ -52,6 +52,9 @@ class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFra
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.folder_settings_option, menu)
+
+        val clearFolderItem = menu.findItem(R.id.clear_local_folder)
+        clearFolderItem.isVisible = viewModel.showClearFolderInMenu
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -73,6 +76,11 @@ class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFra
         setPreferencesFromResource(R.xml.folder_settings_preferences, null)
 
         setCategoryTitle(folderSettings)
+        updateMenu()
+    }
+
+    private fun updateMenu() {
+        requireActivity().invalidateOptionsMenu()
     }
 
     private fun setCategoryTitle(folderSettings: FolderSettingsData) {

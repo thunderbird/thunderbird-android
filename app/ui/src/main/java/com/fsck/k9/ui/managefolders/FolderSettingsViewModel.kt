@@ -28,6 +28,9 @@ class FolderSettingsViewModel(
     private lateinit var folderAccount: Account
     private lateinit var folderServerId: String
 
+    val showClearFolderInMenu: Boolean
+        get() = this::folderAccount.isInitialized && this::folderServerId.isInitialized
+
     fun getFolderSettingsLiveData(accountUuid: String, folderId: Long): LiveData<FolderSettingsResult> {
         return folderSettingsLiveData ?: createFolderSettingsLiveData(accountUuid, folderId).also {
             folderSettingsLiveData = it
