@@ -8,7 +8,8 @@ val preferencesModule = module {
             contentResolver = get(),
             backendManager = get(),
             preferences = get(),
-            folderSettingsProvider = get()
+            folderSettingsProvider = get(),
+            folderRepositoryManager = get()
         )
     }
     factory { FolderSettingsProvider(folderRepositoryManager = get()) }
