@@ -39,9 +39,8 @@ class FolderSettingsViewModel(
         folderId: Long
     ): LiveData<FolderSettingsResult> {
         return liveData(context = viewModelScope.coroutineContext) {
-            folderAccount = loadAccount(accountUuid)
-
-            val folderRepository = folderRepositoryManager.getFolderRepository(folderAccount)
+            val account = loadAccount(accountUuid)
+            val folderRepository = folderRepositoryManager.getFolderRepository(account)
             val folderDetails = folderRepository.loadFolderDetails(folderId)
             if (folderDetails == null) {
                 Timber.w("Folder with ID $folderId not found")
@@ -49,10 +48,11 @@ class FolderSettingsViewModel(
                 return@liveData
             }
 
+            folderAccount = account
             folderServerId = folderDetails.folder.serverId
 
             val folderSettingsData = FolderSettingsData(
-                folder = createFolderObject(folderAccount, folderDetails.folder),
+                folder = createFolderObject(account, folderDetails.folder),
                 dataStore = FolderSettingsDataStore(folderRepository, folderDetails)
             )
             emit(folderSettingsData)

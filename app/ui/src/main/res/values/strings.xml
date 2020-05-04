@@ -894,8 +894,9 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="select_text_now">Select text to copy.</string>
 
-    <string name="dialog_confirm_clear_local_folder_title">Confirm local folder clear</string>
-    <string name="dialog_confirm_clear_local_folder_message">Do you really want to delete all local messages from this folder?</string>
+    <string name="dialog_confirm_clear_local_folder_title">Clear local messages?</string>
+    <string name="dialog_confirm_clear_local_folder_message">This will remove all local messages from the folder. No messages will be deleted from the server.</string>
+    <string name="dialog_confirm_clear_local_folder_action">Clear messages</string>
 
     <string name="dialog_confirm_delete_title">Confirm deletion</string>
     <string name="dialog_confirm_delete_message">Do you want to delete this message?</string>

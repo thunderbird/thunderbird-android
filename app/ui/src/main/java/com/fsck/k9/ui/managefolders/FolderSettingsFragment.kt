@@ -21,29 +21,14 @@ class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFra
     private val viewModel: FolderSettingsViewModel by viewModel()
     private val folderNameFormatter: FolderNameFormatter by inject { parametersOf(requireActivity()) }
 
-    override fun onCreatePreferencesFix(savedInstanceState: Bundle?, rootKey: String?) {
-        // Set empty preferences resource while data is being loaded
-        setPreferencesFromResource(R.xml.empty_preferences, null)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.folder_settings_option, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.clear_local_folder -> {
-                viewModel.showClearFolderConfirmationDialog()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+    }
+
+    override fun onCreatePreferencesFix(savedInstanceState: Bundle?, rootKey: String?) {
+        // Set empty preferences resource while data is being loaded
+        setPreferencesFromResource(R.xml.empty_preferences, null)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,6 +47,21 @@ class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFra
             }
 
         viewModel.getActionEvents().observeNotNull(this) { handleActionEvents(it) }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.folder_settings_option, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.clear_local_folder -> {
+                viewModel.showClearFolderConfirmationDialog()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun navigateBack() {
@@ -91,7 +91,7 @@ class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFra
                 DIALOG_CLEAR_FOLDER,
                 getString(R.string.dialog_confirm_clear_local_folder_title),
                 getString(R.string.dialog_confirm_clear_local_folder_message),
-                getString(R.string.okay_action),
+                getString(R.string.dialog_confirm_clear_local_folder_action),
                 getString(R.string.cancel_action)
         )
         dialogFragment.setTargetFragment(this, REQUEST_CLEAR_FOLDER)
