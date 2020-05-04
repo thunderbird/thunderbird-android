@@ -1636,6 +1636,8 @@ public class LocalFolder {
                 }
             }
 
+            compactFulltextEntries(db);
+
             return null;
         });
     }
@@ -1822,6 +1824,10 @@ public class LocalFolder {
     void deleteFulltextIndexEntry(SQLiteDatabase db, long messageId) {
         String[] idArg = { Long.toString(messageId) };
         db.delete("messages_fulltext", "docid = ?", idArg);
+    }
+
+    void compactFulltextEntries(SQLiteDatabase db) {
+        db.execSQL("INSERT INTO messages_fulltext(messages_fulltext) VALUES('optimize')");
     }
 
     void deleteMessagePartsAndDataFromDisk(final long rootMessagePartId) throws MessagingException {
