@@ -266,11 +266,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         } else {
             if (showingThreadedList && messageListItem.getThreadCount() > 1) {
                 Account account = messageListItem.getAccount();
-                String folderServerId = messageListItem.getFolderServerId();
 
                 // If threading is enabled and this item represents a thread, display the thread contents.
                 long rootId = messageListItem.getThreadRoot();
-                fragmentListener.showThread(account, folderServerId, rootId);
+                fragmentListener.showThread(account, rootId);
             } else {
                 // This item represents a message; just display the message.
                 openMessageAtPosition(adapterPosition);
@@ -1960,7 +1959,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
         void setMessageListProgressEnabled(boolean enable);
         void setMessageListProgress(int level);
-        void showThread(Account account, String folderServerId, long rootId);
+        void showThread(Account account, long rootId);
         void openMessage(MessageReference messageReference);
         void setMessageListTitle(String title);
         void onCompose(Account account);

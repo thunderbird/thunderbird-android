@@ -1364,7 +1364,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
     @Override
-    public void showThread(Account account, String folderServerId, long threadRootId) {
+    public void showThread(Account account, long threadRootId) {
         showMessageViewPlaceHolder();
 
         LocalSearch tmpSearch = new LocalSearch();
