@@ -2235,20 +2235,17 @@ public class MessagingController {
         });
     }
 
-    public void clearFolder(final Account account, final String folderServerId, final MessagingListener listener) {
-        putBackground("clearFolder", listener, new Runnable() {
-            @Override
-            public void run() {
-                clearFolderSynchronous(account, folderServerId, listener);
-            }
-        });
+    public void clearFolder(Account account, long folderId) {
+        putBackground("clearFolder", null, () ->
+                clearFolderSynchronous(account, folderId)
+        );
     }
 
     @VisibleForTesting
-    protected void clearFolderSynchronous(Account account, String folderServerId, MessagingListener listener) {
+    protected void clearFolderSynchronous(Account account, long folderId) {
         LocalFolder localFolder = null;
         try {
-            localFolder = localStoreProvider.getInstance(account).getFolder(folderServerId);
+            localFolder = localStoreProvider.getInstance(account).getFolder(folderId);
             localFolder.open();
             localFolder.clearAllMessages();
         } catch (UnavailableStorageException e) {

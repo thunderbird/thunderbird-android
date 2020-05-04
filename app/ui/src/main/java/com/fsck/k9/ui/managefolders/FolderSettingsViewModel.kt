@@ -17,6 +17,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
+private const val NO_FOLDER_ID = 0L
+
 class FolderSettingsViewModel(
     private val preferences: Preferences,
     private val folderRepositoryManager: FolderRepositoryManager,
@@ -25,11 +27,11 @@ class FolderSettingsViewModel(
     private val actionLiveData = SingleLiveEvent<Action>()
     private var folderSettingsLiveData: LiveData<FolderSettingsResult>? = null
 
-    private lateinit var folderAccount: Account
-    private lateinit var folderServerId: String
+    private lateinit var account: Account
+    private var folderId: Long = NO_FOLDER_ID
 
     val showClearFolderInMenu: Boolean
-        get() = this::folderAccount.isInitialized && this::folderServerId.isInitialized
+        get() = this::account.isInitialized && folderId != NO_FOLDER_ID
 
     fun getFolderSettingsLiveData(accountUuid: String, folderId: Long): LiveData<FolderSettingsResult> {
         return folderSettingsLiveData ?: createFolderSettingsLiveData(accountUuid, folderId).also {
@@ -51,8 +53,8 @@ class FolderSettingsViewModel(
                 return@liveData
             }
 
-            folderAccount = account
-            folderServerId = folderDetails.folder.serverId
+            this@FolderSettingsViewModel.account = account
+            this@FolderSettingsViewModel.folderId = folderId
 
             val folderSettingsData = FolderSettingsData(
                 folder = createFolderObject(account, folderDetails.folder),
@@ -89,7 +91,7 @@ class FolderSettingsViewModel(
     }
 
     fun onClearFolderConfirmation() {
-        messagingController.clearFolder(folderAccount, folderServerId, null)
+        messagingController.clearFolder(account, folderId)
     }
 
     fun getActionEvents(): LiveData<Action> = actionLiveData

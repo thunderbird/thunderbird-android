@@ -73,6 +73,7 @@ import static org.mockito.Mockito.when;
 
 @SuppressWarnings("unchecked")
 public class MessagingControllerTest extends K9RobolectricTest {
+    private static final long FOLDER_ID = 23;
     private static final String FOLDER_NAME = "Folder";
     private static final String SENT_FOLDER_NAME = "Sent";
     private static final int MAXIMUM_SMALL_MESSAGE_SIZE = 1000;
@@ -158,21 +159,21 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
     @Test
     public void clearFolderSynchronous_shouldOpenFolderForWriting() throws MessagingException {
-        controller.clearFolderSynchronous(account, FOLDER_NAME, listener);
+        controller.clearFolderSynchronous(account, FOLDER_ID);
 
         verify(localFolder).open();
     }
 
     @Test
     public void clearFolderSynchronous_shouldClearAllMessagesInTheFolder() throws MessagingException {
-        controller.clearFolderSynchronous(account, FOLDER_NAME, listener);
+        controller.clearFolderSynchronous(account, FOLDER_ID);
 
         verify(localFolder).clearAllMessages();
     }
 
     @Test
     public void clearFolderSynchronous_shouldCloseTheFolder() throws MessagingException {
-        controller.clearFolderSynchronous(account, FOLDER_NAME, listener);
+        controller.clearFolderSynchronous(account, FOLDER_ID);
 
         verify(localFolder, atLeastOnce()).close();
     }
@@ -181,7 +182,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     public void clearFolderSynchronous_whenStorageUnavailable_shouldThrowUnavailableAccountException() throws MessagingException {
         doThrow(new UnavailableStorageException("Test")).when(localFolder).open();
 
-        controller.clearFolderSynchronous(account, FOLDER_NAME, listener);
+        controller.clearFolderSynchronous(account, FOLDER_ID);
     }
 
     @Test()
@@ -189,7 +190,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
         doThrow(new RuntimeException("Test")).when(localFolder).open();
 
         try {
-            controller.clearFolderSynchronous(account, FOLDER_NAME, listener);
+            controller.clearFolderSynchronous(account, FOLDER_ID);
         } catch (Exception ignored){
         }
 
@@ -486,6 +487,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
     private void configureLocalStore() throws MessagingException {
         when(localStore.getFolder(FOLDER_NAME)).thenReturn(localFolder);
+        when(localStore.getFolder(FOLDER_ID)).thenReturn(localFolder);
+        when(localFolder.getDatabaseId()).thenReturn(FOLDER_ID);
         when(localFolder.getServerId()).thenReturn(FOLDER_NAME);
         when(localStore.getPersonalNamespaces(false)).thenReturn(Collections.singletonList(localFolder));
         when(localStoreProvider.getInstance(account)).thenReturn(localStore);
