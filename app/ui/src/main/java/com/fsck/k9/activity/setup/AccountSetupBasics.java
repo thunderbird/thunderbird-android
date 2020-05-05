@@ -53,7 +53,7 @@ public class AccountSetupBasics extends K9Activity
 
     private final BackendManager backendManager = DI.get(BackendManager.class);
     private final ProvidersXmlDiscovery providersXmlDiscovery = DI.get(ProvidersXmlDiscovery.class);
-    private final SrvServiceDiscovery srvServiceDiscovery = new SrvServiceDiscovery();
+    private final SrvServiceDiscovery srvServiceDiscovery = DI.get(SrvServiceDiscovery.class);
     private final AccountCreator accountCreator = DI.get(AccountCreator.class);
 
     private EditText mEmailView;

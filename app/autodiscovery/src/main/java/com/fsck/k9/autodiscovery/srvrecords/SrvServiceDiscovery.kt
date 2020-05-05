@@ -24,21 +24,44 @@ data class MailService(
     var security: ConnectionSecurity?
 )
 
-interface SrvResolver {
-    fun srvLookup(domain: String, type: SrvType): List<MailService>
+interface SrvResolution {
+    fun lookup(domain: String, type: SrvType): List<MailService>
 }
 
-class SrvServiceDiscovery : ConnectionSettingsDiscovery, SrvResolver {
+class SrvResolver() : SrvResolution {
+    override fun lookup(domain: String, type: SrvType): List<MailService> {
+        val result = ResolverApi.INSTANCE.resolveSrv(
+            DnsName.from(type.label),
+            SrvProto.tcp.dnsName,
+            DnsName.from(domain)
+        )
+        return result?.answersOrEmptySet?.map {
+            MailService(
+                type,
+                it.target.toString(),
+                it.port,
+                it.priority,
+                if (type.assumeTls)
+                    ConnectionSecurity.SSL_TLS_REQUIRED
+                else
+                    ConnectionSecurity.STARTTLS_REQUIRED
+            )
+        } ?: listOf()
+    }
+}
 
+class SrvServiceDiscovery(
+    private val srvResolver: SrvResolver
+) : ConnectionSettingsDiscovery {
     override fun discover(email: String): ConnectionSettings? {
         val domain = EmailHelper.getDomainFromEmailAddress(email) ?: return null
         val pickMailService = compareBy<MailService> { it.priority }.thenByDescending { it.security }
 
-        val submissionServices = this.srvLookup(domain, SrvType.SUBMISSION)
+        val submissionServices = this.srvResolver.lookup(domain, SrvType.SUBMISSION)
         val imapServices =
-            this.srvLookup(domain, SrvType.IMAPS
+            this.srvResolver.lookup(domain, SrvType.IMAPS
         ).plus(
-            this.srvLookup(domain, SrvType.IMAP))
+            this.srvResolver.lookup(domain, SrvType.IMAP))
 
         val outgoingService = submissionServices.minWith(pickMailService) ?: return null
         val incomingService = imapServices.minWith(pickMailService) ?: return null
@@ -65,25 +88,5 @@ class SrvServiceDiscovery : ConnectionSettingsDiscovery, SrvResolver {
                 null
             )
         )
-    }
-
-    override fun srvLookup(domain: String, type: SrvType): List<MailService> {
-        val result = ResolverApi.INSTANCE.resolveSrv(
-            DnsName.from(type.label),
-            SrvProto.tcp.dnsName,
-            DnsName.from(domain)
-        )
-        return result?.answersOrEmptySet?.map {
-            MailService(
-                type,
-                it.target.toString(),
-                it.port,
-                it.priority,
-                if (type.assumeTls)
-                    ConnectionSecurity.SSL_TLS_REQUIRED
-                else
-                    ConnectionSecurity.STARTTLS_REQUIRED
-            )
-        } ?: listOf()
     }
 }
