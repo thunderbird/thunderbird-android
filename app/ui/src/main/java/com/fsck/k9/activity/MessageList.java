@@ -1244,7 +1244,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         Account account = preferences.getAccount(messageReference.getAccountUuid());
         long folderId = messageReference.getFolderId();
 
-        if (folderId == account.getDraftsFolderId()) {
+        Long draftsFolderId = account.getDraftsFolderId();
+        if (draftsFolderId != null && folderId == draftsFolderId) {
             MessageActions.actionEditDraft(this, messageReference);
         } else {
             if (messageListFragment != null) {

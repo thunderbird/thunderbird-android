@@ -1886,8 +1886,13 @@ public class MessagingController {
     public void deleteDraft(final Account account, long id) {
         LocalFolder localFolder = null;
         try {
+            Long folderId = account.getDraftsFolderId();
+            if (folderId == null) {
+                Timber.w("No Drafts folder configured. Can't delete draft.");
+                return;
+            }
+
             LocalStore localStore = localStoreProvider.getInstance(account);
-            long folderId = account.getDraftsFolderId();
             localFolder = localStore.getFolder(folderId);
             localFolder.open();
             String uid = localFolder.getMessageUidById(id);
@@ -2135,8 +2140,13 @@ public class MessagingController {
             public void run() {
                 LocalFolder localFolder = null;
                 try {
+                    Long trashFolderId = account.getTrashFolderId();
+                    if (trashFolderId == null) {
+                        Timber.w("No Trash folder configured. Can't empty trash.");
+                        return;
+                    }
+
                     LocalStore localStore = localStoreProvider.getInstance(account);
-                    long trashFolderId = account.getTrashFolderId();
                     localFolder = localStore.getFolder(trashFolderId);
                     localFolder.open();
                     String trashFolderServerId = localFolder.getServerId();
@@ -2567,8 +2577,13 @@ public class MessagingController {
     public Message saveDraft(final Account account, final Message message, long existingDraftId, String plaintextSubject, boolean saveRemotely) {
         LocalMessage localMessage = null;
         try {
+            Long draftsFolderId = account.getDraftsFolderId();
+            if (draftsFolderId == null) {
+                throw new IllegalStateException("No Drafts folder configured");
+            }
+
             LocalStore localStore = localStoreProvider.getInstance(account);
-            LocalFolder localFolder = localStore.getFolder(account.getDraftsFolderId());
+            LocalFolder localFolder = localStore.getFolder(draftsFolderId);
             localFolder.open();
 
             if (existingDraftId != INVALID_MESSAGE_ID) {

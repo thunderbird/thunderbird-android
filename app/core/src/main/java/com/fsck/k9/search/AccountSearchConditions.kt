@@ -75,7 +75,9 @@ class AccountSearchConditions {
         excludeSpecialFolder(search, account.spamFolderId)
         excludeSpecialFolder(search, account.outboxFolderId)
         excludeSpecialFolder(search, account.sentFolderId)
-        search.or(SearchCondition(SearchField.FOLDER, Attribute.EQUALS, account.inboxFolderId!!.toString()))
+        account.inboxFolderId?.let { inboxFolderId ->
+            search.or(SearchCondition(SearchField.FOLDER, Attribute.EQUALS, inboxFolderId.toString()))
+        }
     }
 
     /**
@@ -97,7 +99,9 @@ class AccountSearchConditions {
         excludeSpecialFolder(search, account.trashFolderId)
         excludeSpecialFolder(search, account.spamFolderId)
         excludeSpecialFolder(search, account.outboxFolderId)
-        search.or(SearchCondition(SearchField.FOLDER, Attribute.EQUALS, account.inboxFolderId.toString()))
+        account.inboxFolderId?.let { inboxFolderId ->
+            search.or(SearchCondition(SearchField.FOLDER, Attribute.EQUALS, inboxFolderId.toString()))
+        }
     }
 
     private fun excludeSpecialFolder(search: LocalSearch, folderId: Long?) {

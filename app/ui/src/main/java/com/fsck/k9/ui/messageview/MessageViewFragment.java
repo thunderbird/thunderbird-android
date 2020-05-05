@@ -321,8 +321,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         }
     }
 
-    public void onRefile(long dstFolderId) {
-        if (!mController.isMoveCapable(mAccount)) {
+    public void onRefile(Long dstFolderId) {
+        if (dstFolderId == null || !mController.isMoveCapable(mAccount)) {
             return;
         }
         if (!mController.isMoveCapable(mMessageReference)) {
@@ -331,7 +331,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             return;
         }
 
-        if (dstFolderId == mAccount.getSpamFolderId() && K9.isConfirmSpam()) {
+        if (dstFolderId.equals(mAccount.getSpamFolderId()) && K9.isConfirmSpam()) {
             destinationFolderId = dstFolderId;
             showDialog(R.id.dialog_confirm_spam);
         } else {
