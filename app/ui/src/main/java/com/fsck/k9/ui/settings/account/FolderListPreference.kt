@@ -50,7 +50,7 @@ constructor(
         } else {
             context.getString(R.string.account_settings_no_folder_selected)
         }
-        val automaticFolderValue = AUTOMATIC_PREFIX + (automaticFolder?.serverId ?: NO_FOLDER_VALUE)
+        val automaticFolderValue = AUTOMATIC_PREFIX + (automaticFolder?.id?.toString() ?: NO_FOLDER_VALUE)
 
         automaticFolderOption = context.getString(R.string.account_settings_automatic_special_folder,
                 automaticFolderName).italicize()
@@ -75,7 +75,7 @@ constructor(
 
     private fun getFolderDisplayNames(folders: List<Folder>) = folders.map { folderNameFormatter.displayName(it) }
 
-    private fun getFolderValues(folders: List<Folder>) = folders.map { MANUAL_PREFIX + it.serverId }
+    private fun getFolderValues(folders: List<Folder>) = folders.map { MANUAL_PREFIX + it.id.toString() }
 
     private fun String.italicize(): CharSequence {
         return SpannableString(this).apply { setSpan(StyleSpan(Typeface.ITALIC), 0, this.length, 0) }

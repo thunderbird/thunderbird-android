@@ -6,7 +6,6 @@ import java.util.List;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.text.TextUtils;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
@@ -50,8 +49,8 @@ class K9NotificationActionCreator implements NotificationActionCreator {
     }
 
     @Override
-    public PendingIntent createViewFolderPendingIntent(Account account, String folderServerId, int notificationId) {
-        Intent intent = createMessageListIntent(account, folderServerId);
+    public PendingIntent createViewFolderPendingIntent(Account account, long folderId, int notificationId) {
+        Intent intent = createMessageListIntent(account, folderId);
         return PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
@@ -63,7 +62,7 @@ class K9NotificationActionCreator implements NotificationActionCreator {
         if (account.isGoToUnreadMessageSearch()) {
             intent = createUnreadIntent(account);
         } else {
-            String folderServerId = getFolderServerIdOfAllMessages(messageReferences);
+            Long folderServerId = getFolderIdOfAllMessages(messageReferences);
 
             if (folderServerId == null) {
                 intent = createMessageListIntent(account);
@@ -212,16 +211,16 @@ class K9NotificationActionCreator implements NotificationActionCreator {
     }
 
     private Intent createMessageListIntent(Account account) {
-        String folderServerId = defaultFolderProvider.getDefaultFolder(account);
-        LocalSearch search = new LocalSearch(folderServerId);
-        search.addAllowedFolder(folderServerId);
+        long folderId = defaultFolderProvider.getDefaultFolder(account);
+        LocalSearch search = new LocalSearch();
+        search.addAllowedFolder(folderId);
         search.addAccountUuid(account.getUuid());
         return MessageList.intentDisplaySearch(context, search, false, true, true);
     }
 
-    private Intent createMessageListIntent(Account account, String folderServerId) {
-        LocalSearch search = new LocalSearch(folderServerId);
-        search.addAllowedFolder(folderServerId);
+    private Intent createMessageListIntent(Account account, long folderId) {
+        LocalSearch search = new LocalSearch();
+        search.addAllowedFolder(folderId);
         search.addAccountUuid(account.getUuid());
         return MessageList.intentDisplaySearch(context, search, false, true, true);
     }
@@ -230,16 +229,16 @@ class K9NotificationActionCreator implements NotificationActionCreator {
         return MessageList.actionDisplayMessageIntent(context, message);
     }
 
-    private String getFolderServerIdOfAllMessages(List<MessageReference> messageReferences) {
+    private Long getFolderIdOfAllMessages(List<MessageReference> messageReferences) {
         MessageReference firstMessage = messageReferences.get(0);
-        String folderServerId = firstMessage.getFolderServerId();
+        long folderId = firstMessage.getFolderId();
 
         for (MessageReference messageReference : messageReferences) {
-            if (!TextUtils.equals(folderServerId, messageReference.getFolderServerId())) {
+            if (folderId != messageReference.getFolderId()) {
                 return null;
             }
         }
 
-        return folderServerId;
+        return folderId;
     }
 }

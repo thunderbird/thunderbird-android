@@ -37,6 +37,7 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
+import com.fsck.k9.mail.FolderType;
 import com.fsck.k9.mail.MailServerDirection;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.Hex;
@@ -507,9 +508,12 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
             if (isWebDavAccount()) {
                 publishProgress(R.string.account_setup_check_settings_fetch);
             }
-            MessagingController.getInstance(getApplication()).refreshFolderListSynchronous(account);
-            MessagingController.getInstance(getApplication())
-                    .synchronizeMailbox(account, account.getInboxFolder(), null);
+
+            messagingController.refreshFolderListSynchronous(account);
+            Long inboxFolderId = account.getInboxFolderId();
+            if (inboxFolderId != null) {
+                messagingController.synchronizeMailbox(account, inboxFolderId, null);
+            }
         }
 
         private boolean isWebDavAccount() {
@@ -522,23 +526,23 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
             }
 
             LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
-            localStore.createLocalFolder(Account.OUTBOX, Account.OUTBOX_NAME);
+            long outboxFolderId = localStore.createLocalFolder(Account.OUTBOX_NAME, FolderType.OUTBOX);
+            account.setOutboxFolderId(outboxFolderId);
 
             if  (!account.getStoreUri().startsWith("pop3")) {
                 return;
             }
 
-            String draftsFolderInternalId = "Drafts";
-            String sentFolderInternalId = "Sent";
-            String trashFolderInternalId = "Trash";
+            long draftsFolderId = localStore.createLocalFolder(
+                    getString(R.string.special_mailbox_name_drafts), FolderType.DRAFTS);
+            long sentFolderId = localStore.createLocalFolder(
+                    getString(R.string.special_mailbox_name_sent), FolderType.SENT);
+            long trashFolderId = localStore.createLocalFolder(
+                    getString(R.string.special_mailbox_name_trash), FolderType.TRASH);
 
-            localStore.createLocalFolder(draftsFolderInternalId, getString(R.string.special_mailbox_name_drafts));
-            localStore.createLocalFolder(sentFolderInternalId, getString(R.string.special_mailbox_name_sent));
-            localStore.createLocalFolder(trashFolderInternalId, getString(R.string.special_mailbox_name_trash));
-
-            account.setDraftsFolder(draftsFolderInternalId, SpecialFolderSelection.MANUAL);
-            account.setSentFolder(sentFolderInternalId, SpecialFolderSelection.MANUAL);
-            account.setTrashFolder(trashFolderInternalId, SpecialFolderSelection.MANUAL);
+            account.setDraftsFolderId(draftsFolderId, SpecialFolderSelection.MANUAL);
+            account.setSentFolderId(sentFolderId, SpecialFolderSelection.MANUAL);
+            account.setTrashFolderId(trashFolderId, SpecialFolderSelection.MANUAL);
         }
 
         @Override

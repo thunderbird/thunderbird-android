@@ -8,11 +8,11 @@ import com.fsck.k9.ui.R
 import com.mikepenz.fastadapter.items.AbstractItem
 
 class FolderListItem(
-    override var identifier: Long,
+    val databaseId: Long,
     private val folderIconResource: Int,
-    val displayName: String,
-    val serverId: String
+    val displayName: String
 ) : AbstractItem<FolderListViewHolder>() {
+    override var identifier = databaseId
 
     override val layoutRes = R.layout.folder_list_item
     override val type: Int = 1

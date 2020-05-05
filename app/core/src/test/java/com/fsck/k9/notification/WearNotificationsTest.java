@@ -197,11 +197,11 @@ public class WearNotificationsTest extends RobolectricTest {
     }
 
     private void disableArchiveAction() {
-        when(account.getArchiveFolder()).thenReturn(null);
+        when(account.getArchiveFolderId()).thenReturn(null);
     }
 
     private void disableSpamAction() {
-        when(account.getSpamFolder()).thenReturn(null);
+        when(account.getSpamFolderId()).thenReturn(null);
     }
 
     private void enableDeleteAction() {
@@ -210,11 +210,11 @@ public class WearNotificationsTest extends RobolectricTest {
     }
 
     private void enableArchiveAction() {
-        when(account.getArchiveFolder()).thenReturn("Archive");
+        when(account.getArchiveFolderId()).thenReturn(22L);
     }
 
     private void enableSpamAction() {
-        when(account.getSpamFolder()).thenReturn("Spam");
+        when(account.getSpamFolderId()).thenReturn(11L);
     }
 
     private void disableOptionalSummaryActions() {
@@ -266,7 +266,7 @@ public class WearNotificationsTest extends RobolectricTest {
     }
 
     private MessageReference createMessageReference(int number) {
-        return new MessageReference("account", "folder", String.valueOf(number), null);
+        return new MessageReference("account", 1, String.valueOf(number), null);
     }
 
     private PendingIntent createFakePendingIntent(int requestCode) {

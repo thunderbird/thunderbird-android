@@ -9,4 +9,5 @@ import com.fsck.k9.Account;
  */
 public interface MigrationsHelper {
     Account getAccount();
+    void saveAccount();
 }

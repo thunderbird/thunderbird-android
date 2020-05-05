@@ -10,6 +10,8 @@ import com.fsck.k9.AccountPreferenceSerializer.Companion.IDENTITY_EMAIL_KEY
 import com.fsck.k9.AccountPreferenceSerializer.Companion.IDENTITY_NAME_KEY
 import com.fsck.k9.Preferences
 import com.fsck.k9.backend.BackendManager
+import com.fsck.k9.mailstore.FolderRepository
+import com.fsck.k9.mailstore.FolderRepositoryManager
 import com.fsck.k9.preferences.ServerTypeConverter.fromServerSettingsType
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException
 import com.fsck.k9.preferences.Settings.SettingsDescription
@@ -23,7 +25,8 @@ class SettingsExporter(
     private val contentResolver: ContentResolver,
     private val backendManager: BackendManager,
     private val preferences: Preferences,
-    private val folderSettingsProvider: FolderSettingsProvider
+    private val folderSettingsProvider: FolderSettingsProvider,
+    private val folderRepositoryManager: FolderRepositoryManager
 ) {
     @Throws(SettingsImportExportException::class)
     fun exportToUri(includeGlobals: Boolean, accountUuids: Set<String>, uri: Uri) {
@@ -210,22 +213,13 @@ class SettingsExporter(
                 }
             }
 
-            val versionedSetting = AccountSettingsDescriptions.SETTINGS[keyPart]
-            if (versionedSetting != null) {
-                val highestVersion = versionedSetting.lastKey()
-
-                val setting = versionedSetting[highestVersion]
-                if (setting != null) {
-                    // Only export account settings that can be found in AccountSettings.SETTINGS
-                    try {
-                        writeKeyAndPrettyValueFromSetting(serializer, keyPart, setting, valueString)
-                    } catch (e: InvalidSettingValueException) {
-                        Timber.w("Account setting \"%s\" (%s) has invalid value \"%s\" in preference storage. " +
-                            "This shouldn't happen!", keyPart, account.description, valueString)
-                    }
-                }
+            if (keyPart !in FOLDER_NAME_KEYS) {
+                writeAccountSettingIfValid(serializer, keyPart, valueString, account)
             }
         }
+
+        val folderRepository = folderRepositoryManager.getFolderRepository(account)
+        writeFolderNameSettings(account, folderRepository, serializer)
 
         serializer.endTag(null, SETTINGS_ELEMENT)
 
@@ -250,6 +244,54 @@ class SettingsExporter(
         }
 
         serializer.endTag(null, ACCOUNT_ELEMENT)
+    }
+
+    private fun writeAccountSettingIfValid(
+        serializer: XmlSerializer,
+        keyPart: String,
+        valueString: String,
+        account: Account
+    ) {
+        val versionedSetting = AccountSettingsDescriptions.SETTINGS[keyPart]
+        if (versionedSetting != null) {
+            val highestVersion = versionedSetting.lastKey()
+
+            val setting = versionedSetting[highestVersion]
+            if (setting != null) {
+                // Only export account settings that can be found in AccountSettings.SETTINGS
+                try {
+                    writeKeyAndPrettyValueFromSetting(serializer, keyPart, setting, valueString)
+                } catch (e: InvalidSettingValueException) {
+                    Timber.w(
+                        "Account setting \"%s\" (%s) has invalid value \"%s\" in preference storage. " +
+                            "This shouldn't happen!", keyPart, account.description, valueString
+                    )
+                }
+            }
+        }
+    }
+
+    private fun writeFolderNameSettings(
+        account: Account,
+        folderRepository: FolderRepository,
+        serializer: XmlSerializer
+    ) {
+        fun writeFolderNameSetting(key: String, folderId: Long?, importedFolderServerId: String?) {
+            val folderServerId = folderId?.let {
+                folderRepository.getFolderServerId(folderId)
+            } ?: importedFolderServerId
+
+            if (folderServerId != null) {
+                writeAccountSettingIfValid(serializer, key, folderServerId, account)
+            }
+        }
+
+        writeFolderNameSetting("autoExpandFolderName", account.autoExpandFolderId, account.importedAutoExpandFolder)
+        writeFolderNameSetting("archiveFolderName", account.archiveFolderId, account.importedArchiveFolder)
+        writeFolderNameSetting("draftsFolderName", account.draftsFolderId, account.importedDraftsFolder)
+        writeFolderNameSetting("sentFolderName", account.sentFolderId, account.importedSentFolder)
+        writeFolderNameSetting("spamFolderName", account.spamFolderId, account.importedSpamFolder)
+        writeFolderNameSetting("trashFolderName", account.trashFolderId, account.importedTrashFolder)
     }
 
     private fun writeIdentity(
@@ -441,5 +483,14 @@ class SettingsExporter(
         const val NAME_ELEMENT = "name"
         const val EMAIL_ELEMENT = "email"
         const val DESCRIPTION_ELEMENT = "description"
+
+        private val FOLDER_NAME_KEYS = setOf(
+            "autoExpandFolderName",
+            "archiveFolderName",
+            "draftsFolderName",
+            "sentFolderName",
+            "spamFolderName",
+            "trashFolderName"
+        )
     }
 }

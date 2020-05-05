@@ -26,7 +26,7 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     }
 
     @Override
-    public void synchronizeMailboxStarted(Account account, String folderServerId) {
+    public void synchronizeMailboxStarted(Account account, long folderId) {
     }
 
     @Override
@@ -43,7 +43,7 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     }
 
     @Override
-    public void synchronizeMailboxProgress(Account account, String folderServerId, int completed, int total) {
+    public void synchronizeMailboxProgress(Account account, long folderId, int completed, int total) {
     }
 
     @Override
@@ -55,19 +55,19 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     }
 
     @Override
-    public void synchronizeMailboxFinished(Account account, String folderServerId) {
+    public void synchronizeMailboxFinished(Account account, long folderId) {
     }
 
     @Override
-    public void synchronizeMailboxFailed(Account account, String folderServerId, String message) {
+    public void synchronizeMailboxFailed(Account account, long folderId, String message) {
     }
 
     @Override
-    public void loadMessageRemoteFinished(Account account, String folderServerId, String uid) {
+    public void loadMessageRemoteFinished(Account account, long folderId, String uid) {
     }
 
     @Override
-    public void loadMessageRemoteFailed(Account account, String folderServerId, String uid, Throwable t) {
+    public void loadMessageRemoteFailed(Account account, long folderId, String uid, Throwable t) {
     }
 
     @Override
@@ -83,7 +83,7 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     }
 
     @Override
-    public void messageUidChanged(Account account, String folderServerId, String oldUid, String newUid) {
+    public void messageUidChanged(Account account, long folderId, String oldUid, String newUid) {
     }
 
     @Override
@@ -95,15 +95,15 @@ public abstract class SimpleMessagingListener implements MessagingListener {
     }
 
     @Override
-    public void remoteSearchStarted(String folder) {
+    public void remoteSearchStarted(long folderId) {
     }
 
     @Override
-    public void remoteSearchServerQueryComplete(String folderServerId, int numResults, int maxResults) {
+    public void remoteSearchServerQueryComplete(long folderId, int numResults, int maxResults) {
     }
 
     @Override
-    public void remoteSearchFinished(String folderServerId, int numResults, int maxResults, List<String> extraResults) {
+    public void remoteSearchFinished(long folderId, int numResults, int maxResults, List<String> extraResults) {
     }
 
     @Override

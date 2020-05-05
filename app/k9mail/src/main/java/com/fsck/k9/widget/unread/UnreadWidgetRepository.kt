@@ -11,16 +11,16 @@ class UnreadWidgetRepository(
         val appWidgetId = configuration.appWidgetId
         val editor = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit()
         editor.putString(PREF_PREFIX_KEY + appWidgetId, configuration.accountUuid)
-        editor.putString(PREF_PREFIX_KEY + appWidgetId + PREF_FOLDER_NAME_SUFFIX_KEY, configuration.folderServerId)
+        editor.putString(PREF_PREFIX_KEY + appWidgetId + PREF_FOLDER_ID_SUFFIX_KEY, configuration.folderId?.toString())
         editor.apply()
     }
 
     fun getWidgetData(appWidgetId: Int): UnreadWidgetData? {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val accountUuid = prefs.getString(PREF_PREFIX_KEY + appWidgetId, null) ?: return null
-        val folderServerId = prefs.getString(PREF_PREFIX_KEY + appWidgetId + PREF_FOLDER_NAME_SUFFIX_KEY, null)
+        val folderId = prefs.getString(PREF_PREFIX_KEY + appWidgetId + PREF_FOLDER_ID_SUFFIX_KEY, null)?.toLongOrNull()
 
-        val configuration = UnreadWidgetConfiguration(appWidgetId, accountUuid, folderServerId)
+        val configuration = UnreadWidgetConfiguration(appWidgetId, accountUuid, folderId)
 
         return dataRetriever.loadUnreadWidgetData(configuration)
     }
@@ -28,7 +28,7 @@ class UnreadWidgetRepository(
     fun deleteWidgetConfiguration(appWidgetId: Int) {
         val editor = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE).edit()
         editor.remove(PREF_PREFIX_KEY + appWidgetId)
-        editor.remove(PREF_PREFIX_KEY + appWidgetId + PREF_FOLDER_NAME_SUFFIX_KEY)
+        editor.remove(PREF_PREFIX_KEY + appWidgetId + PREF_FOLDER_ID_SUFFIX_KEY)
         editor.apply()
     }
 
@@ -37,7 +37,8 @@ class UnreadWidgetRepository(
 
         private const val PREF_PREFIX_KEY = "unread_widget."
         private const val PREF_FOLDER_NAME_SUFFIX_KEY = ".folder_name"
+        private const val PREF_FOLDER_ID_SUFFIX_KEY = ".folder_id"
     }
 }
 
-data class UnreadWidgetConfiguration(val appWidgetId: Int, val accountUuid: String, val folderServerId: String?)
+data class UnreadWidgetConfiguration(val appWidgetId: Int, val accountUuid: String, val folderId: Long?)

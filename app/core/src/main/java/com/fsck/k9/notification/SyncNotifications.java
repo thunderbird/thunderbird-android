@@ -33,9 +33,9 @@ class SyncNotifications {
         String tickerText = resourceProvider.sendingMailBody(accountName);
 
         int notificationId = NotificationIds.getFetchingMailNotificationId(account);
-        String outboxFolder = account.getOutboxFolder();
+        long outboxFolderId = account.getOutboxFolderId();
         PendingIntent showMessageListPendingIntent = actionBuilder.createViewFolderPendingIntent(
-                account, outboxFolder, notificationId);
+                account, outboxFolderId, notificationId);
 
         NotificationCompat.Builder builder = notificationHelper.createNotificationBuilder(account,
                 NotificationChannelManager.ChannelType.MISCELLANEOUS)
@@ -64,7 +64,7 @@ class SyncNotifications {
 
     public void showFetchingMailNotification(Account account, LocalFolder folder) {
         String accountName = account.getDescription();
-        String folderServerId = folder.getServerId();
+        long folderId = folder.getDatabaseId();
         String folderName = folder.getName();
 
         String tickerText = resourceProvider.checkingMailTicker(accountName, folderName);
@@ -74,7 +74,7 @@ class SyncNotifications {
 
         int notificationId = NotificationIds.getFetchingMailNotificationId(account);
         PendingIntent showMessageListPendingIntent = actionBuilder.createViewFolderPendingIntent(
-                account, folderServerId, notificationId);
+                account, folderId, notificationId);
 
         NotificationCompat.Builder builder = notificationHelper.createNotificationBuilder(account,
                 NotificationChannelManager.ChannelType.MISCELLANEOUS)

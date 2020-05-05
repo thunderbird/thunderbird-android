@@ -144,7 +144,7 @@ public class MessageProvider extends ContentProvider {
 
         List<String> segments = uri.getPathSegments();
         int accountId = Integer.parseInt(segments.get(1));
-        String folderServerId = segments.get(2);
+        long folderId = Long.parseLong(segments.get(2));
         String msgUid = segments.get(3);
 
         // get account
@@ -164,7 +164,7 @@ public class MessageProvider extends ContentProvider {
         }
 
         if (myAccount != null) {
-            MessageReference messageReference = new MessageReference(myAccount.getUuid(), folderServerId, msgUid, null);
+            MessageReference messageReference = new MessageReference(myAccount.getUuid(), folderId, msgUid, null);
             MessagingController controller = MessagingController.getInstance(getContext());
             controller.deleteMessage(messageReference, null);
         }
@@ -388,7 +388,7 @@ public class MessageProvider extends ContentProvider {
             return CONTENT_URI.buildUpon()
                     .appendPath("delete_message")
                     .appendPath(Integer.toString(accountNumber))
-                    .appendPath(message.getFolder().getServerId())
+                    .appendPath(Long.toString(message.getFolder().getDatabaseId()))
                     .appendPath(message.getUid())
                     .build()
                     .toString();

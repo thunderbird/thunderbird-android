@@ -9,13 +9,13 @@ internal object MigrationTo67 {
         db.execSQL("ALTER TABLE folders ADD type TEXT DEFAULT \"regular\"")
 
         val account = migrationsHelper.account
-        setFolderType(db, account.inboxFolder, "inbox")
-        setFolderType(db, account.outboxFolder, "outbox")
-        setFolderType(db, account.trashFolder, "trash")
-        setFolderType(db, account.draftsFolder, "drafts")
-        setFolderType(db, account.spamFolder, "spam")
-        setFolderType(db, account.sentFolder, "sent")
-        setFolderType(db, account.archiveFolder, "archive")
+        setFolderType(db, account.legacyInboxFolder, "inbox")
+        setFolderType(db, "K9MAIL_INTERNAL_OUTBOX", "outbox")
+        setFolderType(db, account.importedTrashFolder, "trash")
+        setFolderType(db, account.importedDraftsFolder, "drafts")
+        setFolderType(db, account.importedSpamFolder, "spam")
+        setFolderType(db, account.importedSentFolder, "sent")
+        setFolderType(db, account.importedArchiveFolder, "archive")
     }
 
     private fun setFolderType(db: SQLiteDatabase, serverId: String?, type: String) {

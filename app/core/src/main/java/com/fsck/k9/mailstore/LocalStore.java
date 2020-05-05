@@ -40,8 +40,8 @@ import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.FetchProfile.Item;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.FolderType;
 import com.fsck.k9.mail.FolderClass;
+import com.fsck.k9.mail.FolderType;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
@@ -959,14 +959,19 @@ public class LocalStore {
         });
     }
 
-    public void createLocalFolder(String internalId, String folderName)
-            throws MessagingException {
-        LocalFolder folder = getFolder(internalId);
-        if (!folder.exists()) {
-            folder.create();
-        }
-        folder.setName(folderName);
-        folder.setSyncClass(FolderClass.NO_CLASS);
+    public long createLocalFolder(String folderName, FolderType type) throws MessagingException {
+        return database.execute(true, (DbCallback<Long>) db -> {
+            ContentValues values = new ContentValues();
+            values.put("name", folderName);
+            values.put("server_id", folderName);
+            values.put("local_only", 1);
+            values.put("type", FolderTypeConverter.toDatabaseFolderType(type));
+            values.put("visible_limit", 0);
+            values.put("more_messages", MoreMessages.FALSE.getDatabaseName());
+            values.put("display_class", FolderClass.FIRST_CLASS.name());
+
+            return db.insert("folders", null, values);
+        });
     }
 
     static String serializeFlags(Iterable<Flag> flags) {
@@ -1361,6 +1366,11 @@ public class LocalStore {
         @Override
         public Account getAccount() {
             return LocalStore.this.getAccount();
+        }
+
+        @Override
+        public void saveAccount() {
+            getPreferences().saveAccount(account);
         }
     }
 }

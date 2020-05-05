@@ -11,11 +11,13 @@ import com.fsck.k9.mail.ssl.TrustManagerFactory
 import com.fsck.k9.mail.store.webdav.DraftsFolderProvider
 import com.fsck.k9.mail.store.webdav.WebDavStore
 import com.fsck.k9.mail.transport.WebDavTransport
+import com.fsck.k9.mailstore.FolderRepositoryManager
 import com.fsck.k9.mailstore.K9BackendStorageFactory
 
 class WebDavBackendFactory(
     private val backendStorageFactory: K9BackendStorageFactory,
-    private val trustManagerFactory: TrustManagerFactory
+    private val trustManagerFactory: TrustManagerFactory,
+    private val folderRepositoryManager: FolderRepositoryManager
 ) : BackendFactory {
     override val transportUriPrefix = "webdav"
 
@@ -30,8 +32,10 @@ class WebDavBackendFactory(
     }
 
     private fun createDraftsFolderProvider(account: Account): DraftsFolderProvider {
+        val folderRepository = folderRepositoryManager.getFolderRepository(account)
         return DraftsFolderProvider {
-            account.draftsFolder ?: error("No Drafts folder configured")
+            val draftsFolderId = account.draftsFolderId ?: error("No Drafts folder configured")
+            folderRepository.getFolderServerId(draftsFolderId) ?: error("Couldn't find local Drafts folder")
         }
     }
 

@@ -404,7 +404,9 @@ public class LocalMessage extends MimeMessage {
 
     public MessageReference makeMessageReference() {
         if (messageReference == null) {
-            messageReference = new MessageReference(getFolder().getAccountUuid(), getFolder().getServerId(), mUid, null);
+            String accountUuid = getFolder().getAccountUuid();
+            long folderId = getFolder().getDatabaseId();
+            messageReference = new MessageReference(accountUuid, folderId, mUid, null);
         }
         return messageReference;
     }
@@ -414,7 +416,7 @@ public class LocalMessage extends MimeMessage {
     }
 
     public String getUri() {
-        return "email://messages/" +  getAccount().getAccountNumber() + "/" + getFolder().getServerId() + "/" + getUid();
+        return "k9mail://messages/" +  getAccount().getAccountNumber() + "/" + getFolder().getDatabaseId() + "/" + getUid();
     }
 
     @Override

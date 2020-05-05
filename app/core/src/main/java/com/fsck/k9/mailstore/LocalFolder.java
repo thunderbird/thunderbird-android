@@ -118,12 +118,6 @@ public class LocalFolder {
         this.name = name;
         this.type = type;
         attachmentInfoExtractor = localStore.getAttachmentInfoExtractor();
-
-        if (getServerId().equals(getAccount().getInboxFolder())) {
-            syncClass =  FolderClass.FIRST_CLASS;
-            pushClass =  FolderClass.FIRST_CLASS;
-            isInTopGroup = true;
-        }
     }
 
     public LocalFolder(LocalStore localStore, long databaseId) {
@@ -269,8 +263,8 @@ public class LocalFolder {
             public Boolean doDbWork(final SQLiteDatabase db) throws WrappedException {
                 Cursor cursor = null;
                 try {
-                    cursor = db.rawQuery("SELECT id FROM folders where folders.server_id = ?",
-                            new String[] { LocalFolder.this.getServerId() });
+                    cursor = db.rawQuery("SELECT id FROM folders where id = ?",
+                            new String[] { Long.toString(getDatabaseId()) });
                     if (cursor.moveToFirst()) {
                         int folderId = cursor.getInt(0);
                         return (folderId > 0);
@@ -282,22 +276,6 @@ public class LocalFolder {
                 }
             }
         });
-    }
-
-    /**
-     * Creates a local-only folder.
-     */
-    public boolean create() throws MessagingException {
-        if (exists()) {
-            throw new MessagingException("Folder " + serverId + " already exists.");
-        }
-
-        localOnly = true;
-
-        int visibleLimit = getAccount().getDisplayCount();
-        this.localStore.createFolders(Collections.singletonList(this), visibleLimit);
-
-        return true;
     }
 
     PreferencesHolder getPreferencesHolder() {
@@ -844,14 +822,14 @@ public class LocalFolder {
         open();
 
         String accountUuid = getAccountUuid();
-        String folderServerId = getServerId();
+        long folderId = getDatabaseId();
 
         List<LocalMessage> messages = new ArrayList<>();
         for (MessageReference messageReference : messageReferences) {
             if (!accountUuid.equals(messageReference.getAccountUuid())) {
                 throw new IllegalArgumentException("all message references must belong to this Account!");
             }
-            if (!folderServerId.equals(messageReference.getFolderServerId())) {
+            if (folderId != messageReference.getFolderId()) {
                 throw new IllegalArgumentException("all message references must belong to this LocalFolder!");
             }
 

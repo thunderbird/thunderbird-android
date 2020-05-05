@@ -51,32 +51,42 @@ class AccountPreferenceSerializer(
             isNotifyContactsMailOnly = storage.getBoolean("$accountUuid.notifyContactsMailOnly", false)
             isNotifySync = storage.getBoolean("$accountUuid.notifyMailCheck", false)
             deletePolicy = DeletePolicy.fromInt(storage.getInt("$accountUuid.deletePolicy", DeletePolicy.NEVER.setting))
-            inboxFolder = storage.getString("$accountUuid.inboxFolderName", null)
+            legacyInboxFolder = storage.getString("$accountUuid.inboxFolderName", null)
+            importedDraftsFolder = storage.getString("$accountUuid.draftsFolderName", null)
+            importedSentFolder = storage.getString("$accountUuid.sentFolderName", null)
+            importedTrashFolder = storage.getString("$accountUuid.trashFolderName", null)
+            importedArchiveFolder = storage.getString("$accountUuid.archiveFolderName", null)
+            importedSpamFolder = storage.getString("$accountUuid.spamFolderName", null)
 
-            val draftsFolder = storage.getString("$accountUuid.draftsFolderName", null)
+            inboxFolderId = storage.getString("$accountUuid.inboxFolderId", null)?.toLongOrNull()
+            outboxFolderId = storage.getString("$accountUuid.outboxFolderId", null)?.toLongOrNull()
+
+            val draftsFolderId = storage.getString("$accountUuid.draftsFolderId", null)?.toLongOrNull()
             val draftsFolderSelection = getEnumStringPref<SpecialFolderSelection>(storage, "$accountUuid.draftsFolderSelection",
-                    SpecialFolderSelection.AUTOMATIC)
-            setDraftsFolder(draftsFolder, draftsFolderSelection)
+                SpecialFolderSelection.AUTOMATIC)
+            setDraftsFolderId(draftsFolderId, draftsFolderSelection)
 
-            val sentFolder = storage.getString("$accountUuid.sentFolderName", null)
+            val sentFolderId = storage.getString("$accountUuid.sentFolderId", null)?.toLongOrNull()
             val sentFolderSelection = getEnumStringPref<SpecialFolderSelection>(storage, "$accountUuid.sentFolderSelection",
-                    SpecialFolderSelection.AUTOMATIC)
-            setSentFolder(sentFolder, sentFolderSelection)
+                SpecialFolderSelection.AUTOMATIC)
+            setSentFolderId(sentFolderId, sentFolderSelection)
 
-            val trashFolder = storage.getString("$accountUuid.trashFolderName", null)
+            val trashFolderId = storage.getString("$accountUuid.trashFolderId", null)?.toLongOrNull()
             val trashFolderSelection = getEnumStringPref<SpecialFolderSelection>(storage, "$accountUuid.trashFolderSelection",
-                    SpecialFolderSelection.AUTOMATIC)
-            setTrashFolder(trashFolder, trashFolderSelection)
+                SpecialFolderSelection.AUTOMATIC)
+            setTrashFolderId(trashFolderId, trashFolderSelection)
 
-            val archiveFolder = storage.getString("$accountUuid.archiveFolderName", null)
+            val archiveFolderId = storage.getString("$accountUuid.archiveFolderId", null)?.toLongOrNull()
             val archiveFolderSelection = getEnumStringPref<SpecialFolderSelection>(storage, "$accountUuid.archiveFolderSelection",
-                    SpecialFolderSelection.AUTOMATIC)
-            setArchiveFolder(archiveFolder, archiveFolderSelection)
+                SpecialFolderSelection.AUTOMATIC)
+            setArchiveFolderId(archiveFolderId, archiveFolderSelection)
 
-            val spamFolder = storage.getString("$accountUuid.spamFolderName", null)
+            val spamFolderId = storage.getString("$accountUuid.spamFolderId", null)?.toLongOrNull()
             val spamFolderSelection = getEnumStringPref<SpecialFolderSelection>(storage, "$accountUuid.spamFolderSelection",
-                    SpecialFolderSelection.AUTOMATIC)
-            setSpamFolder(spamFolder, spamFolderSelection)
+                SpecialFolderSelection.AUTOMATIC)
+            setSpamFolderId(spamFolderId, spamFolderSelection)
+
+            autoExpandFolderId = storage.getString("$accountUuid.autoExpandFolderId", null)?.toLongOrNull()
 
             expungePolicy = getEnumStringPref<Expunge>(storage, "$accountUuid.expungePolicy", Expunge.EXPUNGE_IMMEDIATELY)
             isSyncRemoteDeletions = storage.getBoolean("$accountUuid.syncRemoteDeletions", true)
@@ -103,7 +113,7 @@ class AccountPreferenceSerializer(
                 setCompression(type, useCompression)
             }
 
-            autoExpandFolder = storage.getString("$accountUuid.autoExpandFolderName", null)
+            importedAutoExpandFolder = storage.getString("$accountUuid.autoExpandFolderName", null)
 
             accountNumber = storage.getInt("$accountUuid.accountNumber", UNASSIGNED_ACCOUNT_NUMBER)
 
@@ -235,18 +245,26 @@ class AccountPreferenceSerializer(
             editor.putBoolean("$accountUuid.notifyContactsMailOnly", isNotifyContactsMailOnly)
             editor.putBoolean("$accountUuid.notifyMailCheck", isNotifySync)
             editor.putInt("$accountUuid.deletePolicy", deletePolicy.setting)
-            editor.putString("$accountUuid.inboxFolderName", inboxFolder)
-            editor.putString("$accountUuid.draftsFolderName", draftsFolder)
-            editor.putString("$accountUuid.sentFolderName", sentFolder)
-            editor.putString("$accountUuid.trashFolderName", trashFolder)
-            editor.putString("$accountUuid.archiveFolderName", archiveFolder)
-            editor.putString("$accountUuid.spamFolderName", spamFolder)
+            editor.putString("$accountUuid.inboxFolderName", legacyInboxFolder)
+            editor.putString("$accountUuid.draftsFolderName", importedDraftsFolder)
+            editor.putString("$accountUuid.sentFolderName", importedSentFolder)
+            editor.putString("$accountUuid.trashFolderName", importedTrashFolder)
+            editor.putString("$accountUuid.archiveFolderName", importedArchiveFolder)
+            editor.putString("$accountUuid.spamFolderName", importedSpamFolder)
+            editor.putString("$accountUuid.inboxFolderId", inboxFolderId?.toString())
+            editor.putString("$accountUuid.outboxFolderId", outboxFolderId?.toString())
+            editor.putString("$accountUuid.draftsFolderId", draftsFolderId?.toString())
+            editor.putString("$accountUuid.sentFolderId", sentFolderId?.toString())
+            editor.putString("$accountUuid.trashFolderId", trashFolderId?.toString())
+            editor.putString("$accountUuid.archiveFolderId", archiveFolderId?.toString())
+            editor.putString("$accountUuid.spamFolderId", spamFolderId?.toString())
             editor.putString("$accountUuid.archiveFolderSelection", archiveFolderSelection.name)
             editor.putString("$accountUuid.draftsFolderSelection", draftsFolderSelection.name)
             editor.putString("$accountUuid.sentFolderSelection", sentFolderSelection.name)
             editor.putString("$accountUuid.spamFolderSelection", spamFolderSelection.name)
             editor.putString("$accountUuid.trashFolderSelection", trashFolderSelection.name)
-            editor.putString("$accountUuid.autoExpandFolderName", autoExpandFolder)
+            editor.putString("$accountUuid.autoExpandFolderName", importedAutoExpandFolder)
+            editor.putString("$accountUuid.autoExpandFolderId", autoExpandFolderId?.toString())
             editor.putInt("$accountUuid.accountNumber", accountNumber)
             editor.putString("$accountUuid.sortTypeEnum", sortType.name)
             editor.putBoolean("$accountUuid.sortAscending", isSortAscending(sortType))
@@ -417,6 +435,15 @@ class AccountPreferenceSerializer(
         editor.remove("$accountUuid.messageFormat")
         editor.remove("$accountUuid.messageReadReceipt")
         editor.remove("$accountUuid.notifyMailCheck")
+        editor.remove("$accountUuid.inboxFolderId")
+        editor.remove("$accountUuid.outboxFolderId")
+        editor.remove("$accountUuid.draftsFolderId")
+        editor.remove("$accountUuid.sentFolderId")
+        editor.remove("$accountUuid.trashFolderId")
+        editor.remove("$accountUuid.archiveFolderId")
+        editor.remove("$accountUuid.spamFolderId")
+        editor.remove("$accountUuid.autoExpandFolderId")
+
         for (type in NetworkType.values()) {
             editor.remove("$accountUuid.useCompression." + type.name)
         }
@@ -529,8 +556,8 @@ class AccountPreferenceSerializer(
             showPictures = ShowPictures.NEVER
             isSignatureBeforeQuotedText = false
             expungePolicy = Expunge.EXPUNGE_IMMEDIATELY
-            autoExpandFolder = null
-            inboxFolder = null
+            importedAutoExpandFolder = null
+            legacyInboxFolder = null
             maxPushFolders = 10
             isGoToUnreadMessageSearch = false
             isSubscribedFoldersOnly = false
@@ -555,12 +582,12 @@ class AccountPreferenceSerializer(
             isMarkMessageAsReadOnDelete = true
             isAlwaysShowCcBcc = false
 
-            setArchiveFolder(null, SpecialFolderSelection.AUTOMATIC)
-            setDraftsFolder(null, SpecialFolderSelection.AUTOMATIC)
-            setSentFolder(null, SpecialFolderSelection.AUTOMATIC)
-            setSpamFolder(null, SpecialFolderSelection.AUTOMATIC)
-            setTrashFolder(null, SpecialFolderSelection.AUTOMATIC)
-            setArchiveFolder(null, SpecialFolderSelection.AUTOMATIC)
+            setArchiveFolderId(null, SpecialFolderSelection.AUTOMATIC)
+            setDraftsFolderId(null, SpecialFolderSelection.AUTOMATIC)
+            setSentFolderId(null, SpecialFolderSelection.AUTOMATIC)
+            setSpamFolderId(null, SpecialFolderSelection.AUTOMATIC)
+            setTrashFolderId(null, SpecialFolderSelection.AUTOMATIC)
+            setArchiveFolderId(null, SpecialFolderSelection.AUTOMATIC)
 
             searchableFolders = Searchable.ALL
 

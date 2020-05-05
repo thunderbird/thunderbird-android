@@ -61,11 +61,11 @@ public class LocalMessageLoader extends AsyncTaskLoader<LocalMessage> {
     }
 
     private LocalMessage loadMessageMetadataFromDatabase() throws MessagingException {
-        return controller.loadMessageMetadata(account, messageReference.getFolderServerId(), messageReference.getUid());
+        return controller.loadMessageMetadata(account, messageReference.getFolderId(), messageReference.getUid());
     }
 
     private LocalMessage loadMessageFromDatabase() throws MessagingException {
-        return controller.loadMessage(account, messageReference.getFolderServerId(), messageReference.getUid());
+        return controller.loadMessage(account, messageReference.getFolderId(), messageReference.getUid());
     }
 
     public boolean isCreatedFor(MessageReference messageReference) {

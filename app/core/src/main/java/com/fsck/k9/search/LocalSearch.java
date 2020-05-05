@@ -227,29 +227,27 @@ public class LocalSearch implements SearchSpecification {
      * Add the folder as another folder to search in. The folder
      * will be added AND to the root if no 'folder subtree' was found.
      * Otherwise the folder will be added OR to that tree.
-     *
-     * @param name Name of the folder to add.
      */
-    public void addAllowedFolder(String name) {
+    public void addAllowedFolder(long folderId) {
         /*
          *  TODO find folder sub-tree
          *          - do and on root of it & rest of search
          *          - do or between folder nodes
          */
-        mConditions = and(new SearchCondition(SearchField.FOLDER, Attribute.EQUALS, name));
+        mConditions = and(new SearchCondition(SearchField.FOLDER, Attribute.EQUALS, Long.toString(folderId)));
     }
 
     /*
      * TODO make this more advanced!
-     * This is a temporarely solution that does NOT WORK for
+     * This is a temporary solution that does NOT WORK for
      * real searches because of possible extra conditions to a folder requirement.
      */
-    public List<String> getFolderServerIds() {
-        List<String> results = new ArrayList<>();
+    public List<Long> getFolderIds() {
+        List<Long> results = new ArrayList<>();
         for (ConditionsTreeNode node : mLeafSet) {
             if (node.mCondition.field == SearchField.FOLDER &&
                     node.mCondition.attribute == Attribute.EQUALS) {
-                results.add(node.mCondition.value);
+                results.add(Long.valueOf(node.mCondition.value));
             }
         }
         return results;

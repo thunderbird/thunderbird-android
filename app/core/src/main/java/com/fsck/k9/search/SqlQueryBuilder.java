@@ -3,13 +3,9 @@ package com.fsck.k9.search;
 import java.util.List;
 
 import com.fsck.k9.DI;
-import com.fsck.k9.mailstore.LocalStoreProvider;
 import timber.log.Timber;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mailstore.LocalFolder;
-import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.search.SearchSpecification.Attribute;
 import com.fsck.k9.search.SearchSpecification.SearchCondition;
 import com.fsck.k9.search.SearchSpecification.SearchField;
@@ -32,17 +28,6 @@ public class SqlQueryBuilder {
             AccountSearchConditions accountSearchConditions = DI.get(AccountSearchConditions.class);
             SearchCondition condition = node.mCondition;
             switch (condition.field) {
-                case FOLDER: {
-                    String folderServerId = condition.value;
-                    long folderId = getFolderId(account, folderServerId);
-                    if (condition.attribute == Attribute.EQUALS) {
-                        query.append("folder_id = ?");
-                    } else {
-                        query.append("folder_id != ?");
-                    }
-                    selectionArgs.add(Long.toString(folderId));
-                    break;
-                }
                 case SEARCHABLE: {
                     switch (account.getSearchableFolders()) {
                         case ALL: {
@@ -106,21 +91,6 @@ public class SqlQueryBuilder {
         appendExprRight(condition, query, selectionArgs);
     }
 
-    private static long getFolderId(Account account, String folderServerId) {
-        long folderId = 0;
-        try {
-            LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
-            LocalFolder folder = localStore.getFolder(folderServerId);
-            folder.open();
-            folderId = folder.getDatabaseId();
-        } catch (MessagingException e) {
-            //FIXME
-            e.printStackTrace();
-        }
-
-        return folderId;
-    }
-
     private static String getColumnName(SearchCondition condition) {
         String columnName = null;
         switch (condition.field) {
@@ -134,6 +104,10 @@ public class SqlQueryBuilder {
             }
             case CC: {
                 columnName = "cc_list";
+                break;
+            }
+            case FOLDER: {
+                columnName = "folder_id";
                 break;
             }
             case DATE: {
@@ -193,7 +167,6 @@ public class SqlQueryBuilder {
                 break;
             }
             case MESSAGE_CONTENTS:
-            case FOLDER:
             case SEARCHABLE: {
                 // Special cases handled in buildWhereClauseInternal()
                 break;

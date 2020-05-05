@@ -39,10 +39,10 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
                             syncStarted = memory;
                             break;
                         case FINISHED:
-                            other.synchronizeMailboxFinished(memory.account, memory.folderServerId);
+                            other.synchronizeMailboxFinished(memory.account, memory.folderId);
                             break;
                         case FAILED:
-                            other.synchronizeMailboxFailed(memory.account, memory.folderServerId,
+                            other.synchronizeMailboxFailed(memory.account, memory.folderId,
                                     memory.failureMessage);
                             break;
                     }
@@ -50,11 +50,11 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
             }
             Memory somethingStarted = null;
             if (syncStarted != null) {
-                other.synchronizeMailboxStarted(syncStarted.account, syncStarted.folderServerId);
+                other.synchronizeMailboxStarted(syncStarted.account, syncStarted.folderId);
                 somethingStarted = syncStarted;
             }
             if (somethingStarted != null && somethingStarted.folderTotal > 0) {
-                other.synchronizeMailboxProgress(somethingStarted.account, somethingStarted.folderServerId,
+                other.synchronizeMailboxProgress(somethingStarted.account, somethingStarted.folderId,
                         somethingStarted.folderCompleted, somethingStarted.folderTotal);
             }
 
@@ -62,63 +62,63 @@ class MemorizingMessagingListener extends SimpleMessagingListener {
     }
 
     @Override
-    public synchronized void synchronizeMailboxStarted(Account account, String folderServerId) {
-        Memory memory = getMemory(account, folderServerId);
+    public synchronized void synchronizeMailboxStarted(Account account, long folderId) {
+        Memory memory = getMemory(account, folderId);
         memory.syncingState = MemorizingState.STARTED;
         memory.folderCompleted = 0;
         memory.folderTotal = 0;
     }
 
     @Override
-    public synchronized void synchronizeMailboxFinished(Account account, String folderServerId) {
-        Memory memory = getMemory(account, folderServerId);
+    public synchronized void synchronizeMailboxFinished(Account account, long folderId) {
+        Memory memory = getMemory(account, folderId);
         memory.syncingState = MemorizingState.FINISHED;
     }
 
     @Override
-    public synchronized void synchronizeMailboxFailed(Account account, String folderServerId,
+    public synchronized void synchronizeMailboxFailed(Account account, long folderId,
             String message) {
 
-        Memory memory = getMemory(account, folderServerId);
+        Memory memory = getMemory(account, folderId);
         memory.syncingState = MemorizingState.FAILED;
         memory.failureMessage = message;
     }
 
     @Override
-    public synchronized void synchronizeMailboxProgress(Account account, String folderServerId, int completed,
+    public synchronized void synchronizeMailboxProgress(Account account, long folderId, int completed,
             int total) {
-        Memory memory = getMemory(account, folderServerId);
+        Memory memory = getMemory(account, folderId);
         memory.folderCompleted = completed;
         memory.folderTotal = total;
     }
 
-    private Memory getMemory(Account account, String folderServerId) {
-        Memory memory = memories.get(getMemoryKey(account, folderServerId));
+    private Memory getMemory(Account account, long folderId) {
+        Memory memory = memories.get(getMemoryKey(account, folderId));
         if (memory == null) {
-            memory = new Memory(account, folderServerId);
-            memories.put(getMemoryKey(memory.account, memory.folderServerId), memory);
+            memory = new Memory(account, folderId);
+            memories.put(getMemoryKey(memory.account, memory.folderId), memory);
         }
         return memory;
     }
 
-    private static String getMemoryKey(Account account, String folderServerId) {
-        return account.getDescription() + ":" + folderServerId;
+    private static String getMemoryKey(Account account, long folderId) {
+        return account.getDescription() + ":" + folderId;
     }
 
     private enum MemorizingState { STARTED, FINISHED, FAILED }
 
     private static class Memory {
         Account account;
-        String folderServerId;
+        long folderId;
         MemorizingState syncingState = null;
         String failureMessage = null;
 
         int folderCompleted = 0;
         int folderTotal = 0;
 
-        Memory(Account account, String folderServerId) {
+        Memory(Account account, long folderId) {
             this.account = account;
-            this.folderServerId = folderServerId;
+            this.folderId = folderId;
         }
     }
 }

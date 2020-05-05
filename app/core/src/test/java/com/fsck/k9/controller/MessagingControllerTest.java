@@ -11,7 +11,6 @@ import java.util.Set;
 import android.content.Context;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.Account.SpecialFolderSelection;
 import com.fsck.k9.AccountPreferenceSerializer;
 import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.DI;
@@ -75,7 +74,7 @@ import static org.mockito.Mockito.when;
 public class MessagingControllerTest extends K9RobolectricTest {
     private static final long FOLDER_ID = 23;
     private static final String FOLDER_NAME = "Folder";
-    private static final String SENT_FOLDER_NAME = "Sent";
+    private static final long SENT_FOLDER_ID = 10;
     private static final int MAXIMUM_SMALL_MESSAGE_SIZE = 1000;
     private static final String ACCOUNT_UUID = "1";
 
@@ -282,16 +281,16 @@ public class MessagingControllerTest extends K9RobolectricTest {
     public void searchRemoteMessagesSynchronous_shouldNotifyStartedListingRemoteMessages() throws Exception {
         setupRemoteSearch();
 
-        controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
+        controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_ID, "query", reqFlags, forbiddenFlags, listener);
 
-        verify(listener).remoteSearchStarted(FOLDER_NAME);
+        verify(listener).remoteSearchStarted(FOLDER_ID);
     }
 
     @Test
     public void searchRemoteMessagesSynchronous_shouldQueryRemoteFolder() throws Exception {
         setupRemoteSearch();
 
-        controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
+        controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_ID, "query", reqFlags, forbiddenFlags, listener);
 
         verify(backend).search(FOLDER_NAME, "query", reqFlags, forbiddenFlags, false);
     }
@@ -300,7 +299,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     public void searchRemoteMessagesSynchronous_shouldAskLocalFolderToDetermineNewMessages() throws Exception {
         setupRemoteSearch();
 
-        controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
+        controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_ID, "query", reqFlags, forbiddenFlags, listener);
 
         verify(localFolder).extractNewMessages(remoteMessages);
     }
@@ -309,7 +308,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     public void searchRemoteMessagesSynchronous_shouldTryAndGetNewMessages() throws Exception {
         setupRemoteSearch();
 
-        controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
+        controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_ID, "query", reqFlags, forbiddenFlags, listener);
 
         verify(localFolder).getMessage("newMessageUid1");
     }
@@ -318,7 +317,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     public void searchRemoteMessagesSynchronous_shouldNotTryAndGetOldMessages() throws Exception {
         setupRemoteSearch();
 
-        controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
+        controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_ID, "query", reqFlags, forbiddenFlags, listener);
 
         verify(localFolder, never()).getMessage("oldMessageUid");
     }
@@ -327,7 +326,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     public void searchRemoteMessagesSynchronous_shouldFetchNewMessages() throws Exception {
         setupRemoteSearch();
 
-        controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
+        controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_ID, "query", reqFlags, forbiddenFlags, listener);
 
         verify(backend).fetchMessage(eq(FOLDER_NAME), eq("newMessageUid2"), fetchProfileCaptor.capture(),
                 eq(MAXIMUM_SMALL_MESSAGE_SIZE));
@@ -337,7 +336,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     public void searchRemoteMessagesSynchronous_shouldNotFetchExistingMessages() throws Exception {
         setupRemoteSearch();
 
-        controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
+        controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_ID, "query", reqFlags, forbiddenFlags, listener);
 
         verify(backend, never()).fetchMessage(eq(FOLDER_NAME), eq("newMessageUid1"), fetchProfileCaptor.capture(),
                 eq(MAXIMUM_SMALL_MESSAGE_SIZE));
@@ -349,7 +348,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
         when(backend.search(anyString(), anyString(), nullable(Set.class), nullable(Set.class), eq(false)))
                 .thenThrow(new MessagingException("Test"));
 
-        controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
+        controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_ID, "query", reqFlags, forbiddenFlags, listener);
 
         verify(listener).remoteSearchFailed(null, "Test");
     }
@@ -360,14 +359,14 @@ public class MessagingControllerTest extends K9RobolectricTest {
         when(backend.search(anyString(), nullable(String.class), nullable(Set.class), nullable(Set.class), eq(false)))
                 .thenThrow(new MessagingException("Test"));
 
-        controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_NAME, "query", reqFlags, forbiddenFlags, listener);
+        controller.searchRemoteMessagesSynchronous(ACCOUNT_UUID, FOLDER_ID, "query", reqFlags, forbiddenFlags, listener);
 
-        verify(listener).remoteSearchFinished(FOLDER_NAME, 0, 50, Collections.<String>emptyList());
+        verify(listener).remoteSearchFinished(FOLDER_ID, 0, 50, Collections.<String>emptyList());
     }
 
     @Test
     public void sendPendingMessagesSynchronous_withNonExistentOutbox_shouldNotStartSync() throws MessagingException {
-        when(account.getOutboxFolder()).thenReturn(FOLDER_NAME);
+        when(account.getOutboxFolderId()).thenReturn(FOLDER_ID);
         when(localFolder.exists()).thenReturn(false);
         controller.addListener(listener);
 
@@ -382,7 +381,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
         controller.sendPendingMessagesSynchronous(account);
 
-        verify(listener).synchronizeMailboxProgress(account, "Sent", 0, 1);
+        verify(listener).synchronizeMailboxProgress(account, FOLDER_ID, 0, 1);
     }
 
     @Test
@@ -421,7 +420,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
         controller.sendPendingMessagesSynchronous(account);
 
-        verify(listener).synchronizeMailboxProgress(account, "Sent", 1, 1);
+        verify(listener).synchronizeMailboxProgress(account, FOLDER_ID, 1, 1);
     }
 
     @Test
@@ -430,7 +429,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
         controller.sendPendingMessagesSynchronous(account);
 
-        verify(listener).synchronizeMailboxProgress(account, "Sent", 1, 1);
+        verify(listener).synchronizeMailboxProgress(account, FOLDER_ID, 1, 1);
     }
 
     @Test
@@ -454,10 +453,10 @@ public class MessagingControllerTest extends K9RobolectricTest {
     }
 
     private void setupAccountWithMessageToSend() throws MessagingException {
-        when(account.getOutboxFolder()).thenReturn(FOLDER_NAME);
-        account.setSentFolder(SENT_FOLDER_NAME, SpecialFolderSelection.AUTOMATIC);
-        when(localStore.getFolder(SENT_FOLDER_NAME)).thenReturn(sentFolder);
-        when(sentFolder.getDatabaseId()).thenReturn(1L);
+        when(account.getOutboxFolderId()).thenReturn(FOLDER_ID);
+        account.setSentFolderId(SENT_FOLDER_ID);
+        when(localStore.getFolder(SENT_FOLDER_ID)).thenReturn(sentFolder);
+        when(sentFolder.getDatabaseId()).thenReturn(SENT_FOLDER_ID);
         when(localFolder.exists()).thenReturn(true);
         when(localFolder.getMessages(null)).thenReturn(Collections.singletonList(localMessageToSend1));
         when(localMessageToSend1.getUid()).thenReturn("localMessageToSend1");
@@ -488,6 +487,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
     private void configureLocalStore() throws MessagingException {
         when(localStore.getFolder(FOLDER_NAME)).thenReturn(localFolder);
         when(localStore.getFolder(FOLDER_ID)).thenReturn(localFolder);
+        when(localFolder.exists()).thenReturn(true);
         when(localFolder.getDatabaseId()).thenReturn(FOLDER_ID);
         when(localFolder.getServerId()).thenReturn(FOLDER_NAME);
         when(localStore.getPersonalNamespaces(false)).thenReturn(Collections.singletonList(localFolder));

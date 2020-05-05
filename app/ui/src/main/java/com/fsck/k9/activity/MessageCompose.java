@@ -1063,10 +1063,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void openDefaultFolder() {
-        String folder = defaultFolderProvider.getDefaultFolder(account);
-        LocalSearch search = new LocalSearch(folder);
+        long folderId = defaultFolderProvider.getDefaultFolder(account);
+        LocalSearch search = new LocalSearch();
         search.addAccountUuid(account.getUuid());
-        search.addAllowedFolder(folder);
+        search.addAllowedFolder(folderId);
         MessageList.actionDisplaySearch(this, search, false, true);
         finish();
     }
@@ -1441,17 +1441,16 @@ public class MessageCompose extends K9Activity implements OnClickListener,
          **/
         private void updateReferencedMessage() {
             if (messageReference != null && messageReference.getFlag() != null) {
-                Timber.d("Setting referenced message (%s, %s) flag to %s",
-                        messageReference.getFolderServerId(),
-                        messageReference.getUid(),
-                        messageReference.getFlag());
+                String accountUuid = messageReference.getAccountUuid();
+                Account account = Preferences.getPreferences(context).getAccount(accountUuid);
+                long folderId = messageReference.getFolderId();
+                String sourceMessageUid = messageReference.getUid();
+                Flag flag = messageReference.getFlag();
 
-                final Account account = Preferences.getPreferences(context)
-                        .getAccount(messageReference.getAccountUuid());
-                final String folderServerId = messageReference.getFolderServerId();
-                final String sourceMessageUid = messageReference.getUid();
-                MessagingController.getInstance(context).setFlag(account, folderServerId,
-                        sourceMessageUid, messageReference.getFlag(), true);
+                Timber.d("Setting referenced message (%d, %s) flag to %s", folderId, sourceMessageUid, flag);
+
+                MessagingController messagingController = MessagingController.getInstance(context);
+                messagingController.setFlag(account, folderId, sourceMessageUid, flag, true);
             }
         }
     }
@@ -1671,18 +1670,19 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     public MessagingListener messagingListener = new SimpleMessagingListener() {
 
         @Override
-        public void messageUidChanged(Account account, String folderServerId, String oldUid, String newUid) {
+        public void messageUidChanged(Account account, long folderId, String oldUid, String newUid) {
             if (relatedMessageReference == null) {
                 return;
             }
 
-            Account sourceAccount = Preferences.getPreferences(MessageCompose.this)
-                    .getAccount(relatedMessageReference.getAccountUuid());
-            String sourceFolder = relatedMessageReference.getFolderServerId();
+            String sourceAccountUuid = relatedMessageReference.getAccountUuid();
+            long sourceFolderId = relatedMessageReference.getFolderId();
             String sourceMessageUid = relatedMessageReference.getUid();
 
-            boolean changedMessageIsCurrent =
-                    account.equals(sourceAccount) && folderServerId.equals(sourceFolder) && oldUid.equals(sourceMessageUid);
+            boolean changedMessageIsCurrent = account.getUuid().equals(sourceAccountUuid) &&
+                    folderId == sourceFolderId &&
+                    oldUid.equals(sourceMessageUid);
+
             if (changedMessageIsCurrent) {
                 relatedMessageReference = relatedMessageReference.withModifiedUid(newUid);
             }

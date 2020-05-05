@@ -22,7 +22,7 @@ data class MessageListItem(
     val isForwarded: Boolean,
     val hasAttachments: Boolean,
     val uniqueId: Long,
-    val folderServerId: String,
+    val folderId: Long,
     val messageUid: String,
     val databaseId: Long,
     val senderAddress: String?,

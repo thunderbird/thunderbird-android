@@ -48,14 +48,14 @@ class K9NotificationStrategy(val contacts: Contacts) : NotificationStrategy {
         }
 
         // No notification for new messages in Trash, Drafts, Spam or Sent folder.
-        // But do notify if it's the INBOX (see issue 1817).
         val folder = message.folder
         if (folder != null) {
-            val folderServerId = folder.serverId
-            if (folderServerId != account.inboxFolder && (folderServerId == account.trashFolder ||
-                            folderServerId == account.draftsFolder ||
-                            folderServerId == account.spamFolder ||
-                            folderServerId == account.sentFolder)) {
+            val folderId = folder.databaseId
+            if (folderId == account.trashFolderId ||
+                folderId == account.draftsFolderId ||
+                folderId == account.spamFolderId ||
+                folderId == account.sentFolderId
+            ) {
                 return false
             }
         }

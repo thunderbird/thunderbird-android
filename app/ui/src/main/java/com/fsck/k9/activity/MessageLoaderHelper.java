@@ -453,10 +453,10 @@ public class MessageLoaderHelper {
     private void startDownloadingMessageBody(boolean downloadComplete) {
         if (downloadComplete) {
             MessagingController.getInstance(context).loadMessageRemote(
-                    account, messageReference.getFolderServerId(), messageReference.getUid(), downloadMessageListener);
+                    account, messageReference.getFolderId(), messageReference.getUid(), downloadMessageListener);
         } else {
             MessagingController.getInstance(context).loadMessageRemotePartial(
-                    account, messageReference.getFolderServerId(), messageReference.getUid(), downloadMessageListener);
+                    account, messageReference.getFolderId(), messageReference.getUid(), downloadMessageListener);
         }
     }
 
@@ -486,20 +486,17 @@ public class MessageLoaderHelper {
 
     MessagingListener downloadMessageListener = new SimpleMessagingListener() {
         @Override
-        public void loadMessageRemoteFinished(final Account account, final String folderServerId, final String uid) {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (!messageReference.equals(account.getUuid(), folderServerId, uid)) {
-                        return;
-                    }
-                    onMessageDownloadFinished();
+        public void loadMessageRemoteFinished(final Account account, final long folderId, final String uid) {
+            handler.post(() -> {
+                if (!messageReference.equals(account.getUuid(), folderId, uid)) {
+                    return;
                 }
+                onMessageDownloadFinished();
             });
         }
 
         @Override
-        public void loadMessageRemoteFailed(Account account, String folderServerId, String uid, final Throwable t) {
+        public void loadMessageRemoteFailed(Account account, long folderId, String uid, final Throwable t) {
             handler.post(new Runnable() {
                 @Override
                 public void run() {

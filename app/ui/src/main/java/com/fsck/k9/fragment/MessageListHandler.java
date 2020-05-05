@@ -32,9 +32,9 @@ public class MessageListHandler extends Handler {
     public MessageListHandler(MessageListFragment fragment) {
         mFragment = new WeakReference<>(fragment);
     }
-    public void folderLoading(String folder, boolean loading) {
+    public void folderLoading(long folderId, boolean loading) {
         android.os.Message msg = android.os.Message.obtain(this, ACTION_FOLDER_LOADING,
-                (loading) ? 1 : 0, 0, folder);
+                (loading) ? 1 : 0, 0, folderId);
         sendMessage(msg);
     }
 
@@ -110,9 +110,9 @@ public class MessageListHandler extends Handler {
 
         switch (msg.what) {
             case ACTION_FOLDER_LOADING: {
-                String folder = (String) msg.obj;
+                long folderId = (Long) msg.obj;
                 boolean loading = (msg.arg1 == 1);
-                fragment.folderLoading(folder, loading);
+                fragment.folderLoading(folderId, loading);
                 break;
             }
             case ACTION_REFRESH_TITLE: {

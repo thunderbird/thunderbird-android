@@ -381,6 +381,11 @@ public class StoreSchemaDefinitionTest extends K9RobolectricTest {
             public Account getAccount() {
                 return account;
             }
+
+            @Override
+            public void saveAccount() {
+                // Do nothing
+            }
         };
 
         return new StoreSchemaDefinition(migrationsHelper);
@@ -394,13 +399,12 @@ public class StoreSchemaDefinitionTest extends K9RobolectricTest {
 
     private Account createAccount() {
         Account account = mock(Account.class);
-        when(account.getInboxFolder()).thenReturn("Inbox");
-        when(account.getOutboxFolder()).thenReturn(Account.OUTBOX);
-        when(account.getTrashFolder()).thenReturn("Trash");
-        when(account.getDraftsFolder()).thenReturn("Drafts");
-        when(account.getSpamFolder()).thenReturn("Spam");
-        when(account.getSentFolder()).thenReturn("Sent");
-        when(account.getArchiveFolder()).thenReturn(null);
+        when(account.getLegacyInboxFolder()).thenReturn("Inbox");
+        when(account.getImportedTrashFolder()).thenReturn("Trash");
+        when(account.getImportedDraftsFolder()).thenReturn("Drafts");
+        when(account.getImportedSpamFolder()).thenReturn("Spam");
+        when(account.getImportedSentFolder()).thenReturn("Sent");
+        when(account.getImportedArchiveFolder()).thenReturn(null);
         when(account.getLocalStorageProviderId()).thenReturn(StorageManager.InternalStorageProvider.ID);
         when(account.getStoreUri()).thenReturn("dummy://");
         return account;

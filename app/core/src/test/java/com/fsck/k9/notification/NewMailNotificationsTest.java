@@ -330,7 +330,7 @@ public class NewMailNotificationsTest extends K9RobolectricTest {
     }
 
     private MessageReference createMessageReference(int number) {
-        return new MessageReference("account", "folder", String.valueOf(number), null);
+        return new MessageReference("account", 1, String.valueOf(number), null);
     }
 
     private void addToWearNotifications(NotificationHolder notificationHolder, Notification notificationToReturn) {

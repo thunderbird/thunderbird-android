@@ -30,7 +30,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
     private lateinit var unreadFolder: Preference
 
     private var selectedAccountUuid: String? = null
-    private var selectedFolder: String? = null
+    private var selectedFolderId: Long? = null
 
     override fun onCreatePreferencesFix(savedInstanceState: Bundle?, rootKey: String?) {
         setHasOptionsMenu(true)
@@ -48,7 +48,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
         unreadFolderEnabled = findPreference(PREFERENCE_UNREAD_FOLDER_ENABLED)!!
         unreadFolderEnabled.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, _ ->
             unreadFolder.summary = getString(R.string.unread_widget_folder_summary)
-            selectedFolder = null
+            selectedFolderId = null
             true
         }
 
@@ -72,9 +72,9 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
                     handleChooseAccount(accountUuid)
                 }
                 REQUEST_CHOOSE_FOLDER -> {
-                    val folderServerId = data.getStringExtra(ChooseFolderActivity.RESULT_SELECTED_FOLDER)!!
+                    val folderId = data.getLongExtra(ChooseFolderActivity.RESULT_SELECTED_FOLDER_ID, -1L)
                     val folderDisplayName = data.getStringExtra(ChooseFolderActivity.RESULT_FOLDER_DISPLAY_NAME)!!
-                    handleChooseFolder(folderServerId, folderDisplayName)
+                    handleChooseFolder(folderId, folderDisplayName)
                 }
             }
         }
@@ -88,7 +88,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
         }
 
         selectedAccountUuid = accountUuid
-        selectedFolder = null
+        selectedFolderId = null
         unreadFolder.summary = getString(R.string.unread_widget_folder_summary)
         if (SearchAccount.UNIFIED_INBOX == selectedAccountUuid) {
             handleSearchAccount()
@@ -104,7 +104,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
         unreadFolderEnabled.isEnabled = false
         unreadFolderEnabled.isChecked = false
         unreadFolder.isEnabled = false
-        selectedFolder = null
+        selectedFolderId = null
     }
 
     private fun handleRegularAccount() {
@@ -117,8 +117,8 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
         unreadFolder.isEnabled = true
     }
 
-    private fun handleChooseFolder(folderServerId: String, folderDisplayName: String) {
-        selectedFolder = folderServerId
+    private fun handleChooseFolder(folderId: Long, folderDisplayName: String) {
+        selectedFolderId = folderId
         unreadFolder.summary = folderDisplayName
     }
 
@@ -142,7 +142,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
         if (selectedAccountUuid == null) {
             Toast.makeText(requireContext(), R.string.unread_widget_account_not_selected, Toast.LENGTH_LONG).show()
             return false
-        } else if (unreadFolderEnabled.isChecked && selectedFolder == null) {
+        } else if (unreadFolderEnabled.isChecked && selectedFolderId == null) {
             Toast.makeText(requireContext(), R.string.unread_widget_folder_not_selected, Toast.LENGTH_LONG).show()
             return false
         }
@@ -150,7 +150,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
     }
 
     private fun updateWidgetAndExit() {
-        val configuration = UnreadWidgetConfiguration(appWidgetId, selectedAccountUuid!!, selectedFolder)
+        val configuration = UnreadWidgetConfiguration(appWidgetId, selectedAccountUuid!!, selectedFolderId)
         repository.saveWidgetConfiguration(configuration)
 
         unreadWidgetUpdater.update(appWidgetId)
