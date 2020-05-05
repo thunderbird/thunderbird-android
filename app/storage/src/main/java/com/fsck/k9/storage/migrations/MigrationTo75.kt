@@ -7,14 +7,14 @@ internal class MigrationTo75(private val db: SQLiteDatabase, private val migrati
     fun updateAccountWithSpecialFolderIds() {
         val account = migrationsHelper.account
 
-        setSpecialFolderId(account.legacyInboxFolder, account::setInboxFolderId)
-        setSpecialFolderId("K9MAIL_INTERNAL_OUTBOX", account::setOutboxFolderId)
-        setSpecialFolderId(account.importedDraftsFolder, account::setDraftsFolderId)
-        setSpecialFolderId(account.importedSentFolder, account::setSentFolderId)
-        setSpecialFolderId(account.importedTrashFolder, account::setTrashFolderId)
-        setSpecialFolderId(account.importedArchiveFolder, account::setArchiveFolderId)
-        setSpecialFolderId(account.importedSpamFolder, account::setSpamFolderId)
-        setSpecialFolderId(account.importedAutoExpandFolder, account::setAutoExpandFolderId)
+        account.inboxFolderId = getFolderId(account.legacyInboxFolder)
+        account.outboxFolderId = getFolderId("K9MAIL_INTERNAL_OUTBOX")
+        account.draftsFolderId = getFolderId(account.importedDraftsFolder)
+        account.sentFolderId = getFolderId(account.importedSentFolder)
+        account.trashFolderId = getFolderId(account.importedTrashFolder)
+        account.archiveFolderId = getFolderId(account.importedArchiveFolder)
+        account.spamFolderId = getFolderId(account.importedSpamFolder)
+        account.autoExpandFolderId = getFolderId(account.importedAutoExpandFolder)
 
         account.importedDraftsFolder = null
         account.importedSentFolder = null
@@ -26,14 +26,11 @@ internal class MigrationTo75(private val db: SQLiteDatabase, private val migrati
         migrationsHelper.saveAccount()
     }
 
-    private fun setSpecialFolderId(serverId: String?, setFolderId: (Long) -> Unit) {
-        if (serverId == null) return
+    private fun getFolderId(serverId: String?): Long? {
+        if (serverId == null) return null
 
-        db.query("folders", arrayOf("id"), "server_id = ?", arrayOf(serverId), null, null, null).use { cursor ->
-            if (cursor.moveToFirst()) {
-                val folderId = cursor.getLong(0)
-                setFolderId(folderId)
-            }
+        return db.query("folders", arrayOf("id"), "server_id = ?", arrayOf(serverId), null, null, null).use { cursor ->
+            if (cursor.moveToFirst() && !cursor.isNull(0)) cursor.getLong(0) else null
         }
     }
 }
