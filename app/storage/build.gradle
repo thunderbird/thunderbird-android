@@ -24,7 +24,6 @@ dependencies {
 
 android {
     compileSdkVersion buildConfig.compileSdk
-    buildToolsVersion buildConfig.buildTools
 
     defaultConfig {
         minSdkVersion buildConfig.minSdk

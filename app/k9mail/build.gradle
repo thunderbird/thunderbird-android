@@ -34,7 +34,6 @@ dependencies {
 
 android {
     compileSdkVersion buildConfig.compileSdk
-    buildToolsVersion buildConfig.buildTools
 
     defaultConfig {
         applicationId "com.fsck.k9"
