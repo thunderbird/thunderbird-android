@@ -1,5 +1,6 @@
 package com.fsck.k9.job
 
+import androidx.work.BackoffPolicy
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
@@ -42,6 +43,7 @@ class MailSyncWorkerManager(private val workManager: WorkManager, val clock: Clo
 
             val mailSyncRequest = PeriodicWorkRequestBuilder<MailSyncWorker>(syncInterval)
                 .setInitialDelay(initialDelay)
+                .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, INITIAL_BACKOFF_DELAY)
                 .setConstraints(constraints)
                 .setInputData(data)
                 .addTag(MAIL_SYNC_TAG)
@@ -80,5 +82,6 @@ class MailSyncWorkerManager(private val workManager: WorkManager, val clock: Clo
 
     companion object {
         const val MAIL_SYNC_TAG = "MailSync"
+        private val INITIAL_BACKOFF_DELAY = Duration.ofMinutes(5)
     }
 }

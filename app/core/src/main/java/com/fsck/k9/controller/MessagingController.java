@@ -2265,7 +2265,7 @@ public class MessagingController {
         context.startActivity(chooserIntent);
     }
 
-    public void performPeriodicMailSync(Account account) {
+    public boolean performPeriodicMailSync(Account account) {
         final CountDownLatch latch = new CountDownLatch(1);
         MutableBoolean syncError = new MutableBoolean(false);
         checkMail(context, account, false, false, new SimpleMessagingListener() {
@@ -2296,6 +2296,8 @@ public class MessagingController {
             account.setLastSyncTime(now);
             Preferences.getPreferences(context).saveAccount(account);
         }
+
+        return success;
     }
 
     /**
