@@ -13,6 +13,12 @@ import timber.log.Timber
 
 class MailSyncWorkerManager(private val workManager: WorkManager) {
 
+    fun cancelMailSync(account: Account) {
+        Timber.v("Canceling mail sync worker for %s", account.description)
+        val uniqueWorkName = createUniqueWorkName(account.uuid)
+        workManager.cancelUniqueWork(uniqueWorkName)
+    }
+
     fun scheduleMailSync(account: Account) {
         if (isNeverSyncInBackground()) return
 
