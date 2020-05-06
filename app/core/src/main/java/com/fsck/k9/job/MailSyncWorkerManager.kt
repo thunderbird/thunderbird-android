@@ -7,12 +7,15 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.fsck.k9.Account
+import com.fsck.k9.K9
 import java.util.concurrent.TimeUnit
 import timber.log.Timber
 
 class MailSyncWorkerManager(private val workManager: WorkManager) {
 
     fun scheduleMailSync(account: Account) {
+        if (isNeverSyncInBackground()) return
+
         getSyncIntervalInMinutesIfEnabled(account)?.let { syncInterval ->
             Timber.v("Scheduling mail sync worker for %s", account.description)
 
@@ -33,6 +36,8 @@ class MailSyncWorkerManager(private val workManager: WorkManager) {
             workManager.enqueueUniquePeriodicWork(uniqueWorkName, ExistingPeriodicWorkPolicy.REPLACE, mailSyncRequest)
         }
     }
+
+    private fun isNeverSyncInBackground() = K9.backgroundOps == K9.BACKGROUND_OPS.NEVER
 
     private fun getSyncIntervalInMinutesIfEnabled(account: Account): Long? {
         val intervalMinutes = account.automaticCheckIntervalMinutes
