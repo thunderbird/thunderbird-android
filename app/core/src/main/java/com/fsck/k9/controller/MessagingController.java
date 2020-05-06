@@ -2264,7 +2264,7 @@ public class MessagingController {
         context.startActivity(chooserIntent);
     }
 
-    public void checkMailBlocking(Account account) {
+    public void performPeriodicMailSync(Account account) {
         final CountDownLatch latch = new CountDownLatch(1);
         checkMail(context, account, true, false, new SimpleMessagingListener() {
             @Override
@@ -2273,11 +2273,11 @@ public class MessagingController {
             }
         });
 
-        Timber.v("checkMailBlocking(%s) about to await latch release", account.getDescription());
+        Timber.v("performPeriodicMailSync(%s) about to await latch release", account.getDescription());
 
         try {
             latch.await();
-            Timber.v("checkMailBlocking(%s) got latch release", account.getDescription());
+            Timber.v("performPeriodicMailSync(%s) got latch release", account.getDescription());
         } catch (Exception e) {
             Timber.e(e, "Interrupted while awaiting latch release");
         }
