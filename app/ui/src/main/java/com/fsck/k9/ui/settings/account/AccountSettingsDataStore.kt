@@ -215,7 +215,7 @@ class AccountSettingsDataStore(
     }
 
     private fun reschedulePoll() {
-        jobManager.scheduleMailSync()
+        jobManager.scheduleMailSync(account)
     }
 
     private fun restartPushers() {

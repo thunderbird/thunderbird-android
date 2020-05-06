@@ -1,6 +1,7 @@
 package com.fsck.k9.job
 
 import androidx.work.WorkManager
+import com.fsck.k9.Account
 import com.fsck.k9.Preferences
 import timber.log.Timber
 
@@ -14,16 +15,21 @@ class K9JobManager(
         scheduleMailSync()
     }
 
-    fun scheduleMailSync() {
+    fun scheduleMailSync(account: Account) {
+        mailSyncWorkerManager.cancelMailSync(account)
+        mailSyncWorkerManager.scheduleMailSync(account)
+    }
+
+    fun schedulePusherRefresh() {
+        // Push is temporarily disabled. See GH-4253
+    }
+
+    private fun scheduleMailSync() {
         cancelAllMailSyncJobs()
 
         preferences.availableAccounts?.forEach { account ->
             mailSyncWorkerManager.scheduleMailSync(account)
         }
-    }
-
-    fun schedulePusherRefresh() {
-        // Push is temporarily disabled. See GH-4253
     }
 
     private fun cancelAllMailSyncJobs() {
