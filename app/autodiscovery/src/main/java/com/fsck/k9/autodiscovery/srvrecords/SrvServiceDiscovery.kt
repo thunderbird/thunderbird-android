@@ -11,6 +11,7 @@ import org.minidns.hla.ResolverApi
 import org.minidns.hla.SrvProto
 
 enum class SrvType(var label: String, var protocol: String, var assumeTls: Boolean) {
+    SUBMISSIONS("_submissions", "smtp", true),
     SUBMISSION("_submission", "smtp", false),
     IMAPS("_imaps", "imap", true),
     IMAP("_imap", "imap", false)
@@ -57,10 +58,11 @@ class SrvServiceDiscovery(
         val domain = EmailHelper.getDomainFromEmailAddress(email) ?: return null
         val pickMailService = compareBy<MailService> { it.priority }.thenByDescending { it.security }
 
-        val submissionServices = this.srvResolver.lookup(domain, SrvType.SUBMISSION)
+        val submissionServices =
+            this.srvResolver.lookup(domain, SrvType.SUBMISSIONS).plus(
+            this.srvResolver.lookup(domain, SrvType.SUBMISSION))
         val imapServices =
-            this.srvResolver.lookup(domain, SrvType.IMAPS
-        ).plus(
+            this.srvResolver.lookup(domain, SrvType.IMAPS).plus(
             this.srvResolver.lookup(domain, SrvType.IMAP))
 
         val outgoingService = submissionServices.minWith(pickMailService) ?: return null
