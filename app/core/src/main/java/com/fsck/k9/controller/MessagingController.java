@@ -56,6 +56,7 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveOrCopy;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag;
 import com.fsck.k9.controller.ProgressBodyFactory.ProgressListener;
 import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.helper.MutableBoolean;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
@@ -2266,10 +2267,16 @@ public class MessagingController {
 
     public void performPeriodicMailSync(Account account) {
         final CountDownLatch latch = new CountDownLatch(1);
+        MutableBoolean syncError = new MutableBoolean(false);
         checkMail(context, account, false, false, new SimpleMessagingListener() {
             @Override
             public void checkMailFinished(Context context, Account account) {
                 latch.countDown();
+            }
+
+            @Override
+            public void synchronizeMailboxFailed(Account account, long folderId, String message) {
+                syncError.setValue(true);
             }
         });
 
@@ -2280,6 +2287,14 @@ public class MessagingController {
             Timber.v("performPeriodicMailSync(%s) got latch release", account.getDescription());
         } catch (Exception e) {
             Timber.e(e, "Interrupted while awaiting latch release");
+        }
+
+        boolean success = !syncError.getValue();
+        if (success) {
+            long now = System.currentTimeMillis();
+            Timber.v("Account %s successfully synced @ %tc", account, now);
+            account.setLastSyncTime(now);
+            Preferences.getPreferences(context).saveAccount(account);
         }
     }
 
