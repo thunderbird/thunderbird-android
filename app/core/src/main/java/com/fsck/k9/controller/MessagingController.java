@@ -2357,11 +2357,6 @@ public class MessagingController {
             Timber.i("Skipping synchronizing unavailable account %s", account.getDescription());
             return;
         }
-        final long accountInterval = account.getAutomaticCheckIntervalMinutes() * 60 * 1000;
-        if (!ignoreLastCheckedTime && accountInterval <= 0) {
-            Timber.i("Skipping synchronizing account %s", account.getDescription());
-            return;
-        }
 
         Timber.i("Synchronizing account %s", account.getDescription());
 
@@ -2403,7 +2398,7 @@ public class MessagingController {
 
                     continue;
                 }
-                synchronizeFolder(account, folder, ignoreLastCheckedTime, accountInterval, listener);
+                synchronizeFolder(account, folder, ignoreLastCheckedTime, listener);
             }
         } catch (MessagingException e) {
             Timber.e(e, "Unable to synchronize account %s", account.getName());
@@ -2425,57 +2420,47 @@ public class MessagingController {
 
     }
 
+    private void synchronizeFolder(Account account, LocalFolder folder, boolean ignoreLastCheckedTime,
+            MessagingListener listener) {
+        putBackground("sync" + folder.getServerId(), null, () -> {
+            synchronizeFolderInBackground(account, folder, ignoreLastCheckedTime, listener);
+        });
+    }
 
-    private void synchronizeFolder(
-            final Account account,
-            final LocalFolder folder,
-            final boolean ignoreLastCheckedTime,
-            final long accountInterval,
-            final MessagingListener listener) {
-
+    private void synchronizeFolderInBackground(Account account, LocalFolder folder, boolean ignoreLastCheckedTime,
+            MessagingListener listener) {
         Timber.v("Folder %s was last synced @ %tc", folder.getServerId(), folder.getLastChecked());
 
-        if (!ignoreLastCheckedTime && folder.getLastChecked() > System.currentTimeMillis() - accountInterval) {
-            Timber.v("Not syncing folder %s, previously synced @ %tc which would be too recent for the account " +
-                    "period", folder.getServerId(), folder.getLastChecked());
-            return;
+        if (!ignoreLastCheckedTime) {
+            long lastCheckedTime = folder.getLastChecked();
+            long now = System.currentTimeMillis();
+
+            if (lastCheckedTime > now) {
+                // The time this folder was last checked lies in the future. We better ignore this and sync now.
+            } else {
+                long syncInterval = account.getAutomaticCheckIntervalMinutes() * 60L * 1000L;
+                long nextSyncTime = lastCheckedTime + syncInterval;
+                if (nextSyncTime > now) {
+                    Timber.v("Not syncing folder %s, previously synced @ %tc which would be too recent for the " +
+                            "account sync interval", folder.getServerId(), lastCheckedTime);
+                    return;
+                }
+            }
         }
 
-        putBackground("sync" + folder.getServerId(), null, new Runnable() {
-                    @Override
-                    public void run() {
-                        LocalFolder tLocalFolder = null;
-                        try {
-                            // In case multiple Commands get enqueued, don't run more than
-                            // once
-                            final LocalStore localStore = localStoreProvider.getInstance(account);
-                            tLocalFolder = localStore.getFolder(folder.getServerId());
-                            tLocalFolder.open();
+        try {
+            showFetchingMailNotificationIfNecessary(account, folder);
+            try {
+                synchronizeMailboxSynchronous(account, folder.getDatabaseId(), listener);
 
-                            if (!ignoreLastCheckedTime && tLocalFolder.getLastChecked() >
-                                    (System.currentTimeMillis() - accountInterval)) {
-                                Timber.v("Not running Command for folder %s, previously synced @ %tc which would " +
-                                        "be too recent for the account period",
-                                        folder.getServerId(), folder.getLastChecked());
-                                return;
-                            }
-                            showFetchingMailNotificationIfNecessary(account, folder);
-                            try {
-                                synchronizeMailboxSynchronous(account, folder.getDatabaseId(), listener);
-                            } finally {
-                                clearFetchingMailNotificationIfNecessary(account);
-                            }
-                        } catch (Exception e) {
-                            Timber.e(e, "Exception while processing folder %s:%s",
-                                    account.getDescription(), folder.getServerId());
-                        } finally {
-                            closeFolder(tLocalFolder);
-                        }
-                    }
-                }
-        );
-
-
+                long now = System.currentTimeMillis();
+                folder.setLastChecked(now);
+            } finally {
+                clearFetchingMailNotificationIfNecessary(account);
+            }
+        } catch (Exception e) {
+            Timber.e(e, "Exception while processing folder %s:%s", account.getDescription(), folder.getServerId());
+        }
     }
 
     private void showFetchingMailNotificationIfNecessary(Account account, LocalFolder folder) {
