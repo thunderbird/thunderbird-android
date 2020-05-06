@@ -39,9 +39,9 @@ class MailSyncWorker(
             return Result.success()
         }
 
-        messagingController.performPeriodicMailSync(account)
+        val success = messagingController.performPeriodicMailSync(account)
 
-        return Result.success()
+        return if (success) Result.success() else Result.retry()
     }
 
     private fun isBackgroundSyncDisabled(): Boolean {
