@@ -2266,7 +2266,7 @@ public class MessagingController {
 
     public void performPeriodicMailSync(Account account) {
         final CountDownLatch latch = new CountDownLatch(1);
-        checkMail(context, account, true, false, new SimpleMessagingListener() {
+        checkMail(context, account, false, false, new SimpleMessagingListener() {
             @Override
             public void checkMailFinished(Context context, Account account) {
                 latch.countDown();
