@@ -189,6 +189,7 @@ public class Account implements BaseAccount {
     private boolean remoteSearchFullText;
     private int remoteSearchNumResults;
     private boolean uploadSentMessages;
+    private long lastSyncTime;
 
     private boolean changedVisibleLimits = false;
 
@@ -1123,6 +1124,14 @@ public class Account implements BaseAccount {
 
     public void setRemoteSearchFullText(boolean val) {
         remoteSearchFullText = val;
+    }
+
+    public synchronized long getLastSyncTime() {
+        return lastSyncTime;
+    }
+
+    public synchronized void setLastSyncTime(long lastSyncTime) {
+        this.lastSyncTime = lastSyncTime;
     }
 
     boolean isChangedVisibleLimits() {
