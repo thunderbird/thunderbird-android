@@ -496,6 +496,7 @@
   <string name="folder_settings_folder_notify_mode_first_class">Πρώτο επίπεδο</string>
   <string name="folder_settings_folder_notify_mode_second_class">Δεύτερο επίπεδο</string>
   <string name="folder_settings_folder_notify_mode_inherited">Όπως το επίπεδο σπρωξίματος </string>
+  <string name="folder_settings_clear_local_folder_action">Καθαρισμός τοπικών μηνυμάτων</string>
   <string name="account_settings_incoming_label">Ρυθμίσεις εισερχομένων</string>
   <string name="account_settings_incoming_summary">Ρύθμιση εξυπηρέτη εισερχόμενης αλληλογραφίας</string>
   <string name="account_settings_outgoing_label">Ρυθμίσεις εξερχομένων</string>

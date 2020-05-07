@@ -533,6 +533,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="folder_settings_folder_notify_mode_first_class">1añ rummad</string>
   <string name="folder_settings_folder_notify_mode_second_class">Eil rummad</string>
   <string name="folder_settings_folder_notify_mode_inherited">An hevelep hini hag ar rummad bountañ</string>
+  <string name="folder_settings_clear_local_folder_action">Skarzhañ ar c’hemennadennoù lec’hel</string>
   <string name="account_settings_incoming_label">Dafariad degemer</string>
   <string name="account_settings_incoming_summary">Kefluniañ an dafariad postel degemer</string>
   <string name="account_settings_outgoing_label">Dafariad ermaeziañ</string>

@@ -550,6 +550,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="folder_settings_folder_notify_mode_first_class">Klasa e 1-rë</string>
   <string name="folder_settings_folder_notify_mode_second_class">Klasa e 2-të</string>
   <string name="folder_settings_folder_notify_mode_inherited">Njësoj si klasa push</string>
+  <string name="folder_settings_clear_local_folder_action">Pastro mesazhet vendore</string>
   <string name="account_settings_incoming_label">Shërbyes për marrje</string>
   <string name="account_settings_incoming_summary">Formësoni shërbyesin për marrje</string>
   <string name="account_settings_outgoing_label">Shërbyes për dërgim</string>
@@ -734,6 +735,9 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="confirm_discard_draft_message_title">Të hidhet tej mesazhi?</string>
   <string name="confirm_discard_draft_message">Jeni i sigurt se doni të hidhet tej ky mesazh?</string>
   <string name="select_text_now">Përzgjidhni tekst për kopjim.</string>
+  <string name="dialog_confirm_clear_local_folder_title">Të spastrohen mesazhe vendore?</string>
+  <string name="dialog_confirm_clear_local_folder_message">Kjo do të heqë nga dosja krejt mesazhet vendore. Prej shërbyesit s’do të fshihet ndonjë mesazh.</string>
+  <string name="dialog_confirm_clear_local_folder_action">Spastroji mesazhet</string>
   <string name="dialog_confirm_delete_title">Ripohoni fshirjen</string>
   <string name="dialog_confirm_delete_message">Doni të fshihet ky mesazh?</string>
   <plurals name="dialog_confirm_delete_messages">

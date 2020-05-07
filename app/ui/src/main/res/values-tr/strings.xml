@@ -10,7 +10,7 @@
   <string name="app_authors">K-9 Köpek Gezdiricileri</string>
   <string name="app_copyright_fmt">Telif Hakkı 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Telif hakkı 2006-<xliff:g>%s</xliff:g> Android Açık Kaynak Projesi.</string>
   <string name="source_code">Kaynak</string>
-  <string name="app_license">Apache Lisansı Sürüm 2.0</string>
+  <string name="app_license">Apache Lisansı Uyarlama 2.0</string>
   <string name="about_libraries">Kütüphaneler</string>
   <string name="license">Lisans</string>
   <!--Welcome message-->
@@ -73,7 +73,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
   <string name="status_syncing_off">Eşzamanlama devredışı</string>
   <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> seçildi</string>
-  <string name="next_action">İleri</string>
+  <string name="next_action">Sonraki</string>
   <string name="previous_action">Önceki</string>
   <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
   <string name="okay_action">Tamam</string>
@@ -180,7 +180,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="special_mailbox_name_trash">Çöp</string>
   <string name="special_mailbox_name_sent">Gönderilen</string>
   <string name="send_failure_subject">Bazı iletilerin gönderilmesi başarısız</string>
-  <string name="version">Sürüm</string>
+  <string name="version">Uyarlama</string>
   <string name="debug_enable_debug_logging_title">Onarma günlüğünü etkinleştir</string>
   <string name="debug_enable_debug_logging_summary">Extra tanı bilgisini günlüğe kaydet</string>
   <string name="debug_enable_sensitive_logging_title">Hassas bilgi günlüğü tut</string>
@@ -548,6 +548,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="folder_settings_folder_notify_mode_first_class">1. Sınıf</string>
   <string name="folder_settings_folder_notify_mode_second_class">2. Sınıf</string>
   <string name="folder_settings_folder_notify_mode_inherited">İtme sınıfıyla aynı</string>
+  <string name="folder_settings_clear_local_folder_action">Yerel iletileri temizle</string>
   <string name="account_settings_incoming_label">Gelen Sunucu</string>
   <string name="account_settings_incoming_summary">Gelen posta sunucusunu yapılandır</string>
   <string name="account_settings_outgoing_label">Giden sunucu</string>
@@ -887,7 +888,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="address_type_mobile">Mobil</string>
   <string name="compose_error_no_draft_folder">Bu hesap için Taslak klasörü ayarlanmamış!</string>
   <string name="compose_error_no_key_configured">Bu hesap için yapılandırılmış bir anahtar yok! Ayarlarınızı gözden geçirin.</string>
-  <string name="error_crypto_provider_incompatible">Şifreleme sağlayıcısı uyumsuz sürüm kullanıyor.Lütfen ayarlarınızı gözden geçirin!</string>
+  <string name="error_crypto_provider_incompatible">Şifreleme sağlayıcısı uyumsuz uyarlama kullanıyor.Lütfen ayarlarınızı gözden geçirin!</string>
   <string name="error_crypto_provider_connect">Kripto sağlayıcısına bağlanılamadı, ayarlarınızı kontrol edin veya yeniden denemek için kripto simgesini tıklatın!</string>
   <string name="error_crypto_provider_ui_required">Uçtan uca şifreleme başlatılamadı, lütfen ayarlarınızı kontrol edin</string>
   <string name="error_crypto_inline_attach">PGP/INLINE kipi eklentileri desteklemez!</string>

@@ -90,6 +90,7 @@ Vă rugăm să ne raportați defecte, să contribuiți cu funcționalități noi
   <string name="spam_action">Spam</string>
   <string name="forward_action">Redirecționează</string>
   <string name="forward_as_attachment_action">Trimite atașat</string>
+  <string name="edit_as_new_message_action">Editează ca și mesaj nou</string>
   <string name="move_action">Mută</string>
   <string name="single_message_options_action">Trimite…</string>
   <string name="refile_action">Reîndosariază…</string>
@@ -208,6 +209,7 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
   <string name="message_compose_show_quoted_text_action">Include mesajul citat</string>
   <string name="message_compose_description_delete_quoted_text">Elimină textul citat</string>
   <string name="message_compose_description_edit_quoted_text">Editează textul citat</string>
+  <string name="remove_attachment_action">Elimină atașamentul</string>
   <string name="message_view_from_format">De la: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">La:</string>
   <string name="message_view_cc_label">Cc:</string>
@@ -551,6 +553,7 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="folder_settings_folder_notify_mode_first_class">Nivel 1</string>
   <string name="folder_settings_folder_notify_mode_second_class">Nivel 2</string>
   <string name="folder_settings_folder_notify_mode_inherited">Același cu nivelul Push</string>
+  <string name="folder_settings_clear_local_folder_action">Curăță mesajele locale</string>
   <string name="account_settings_incoming_label">Server primire</string>
   <string name="account_settings_incoming_summary">Configurare server primire</string>
   <string name="account_settings_outgoing_label">Server trimitere</string>

@@ -399,6 +399,7 @@
   <string name="folder_settings_folder_push_mode_inherited">使用與同步層別相同的層別</string>
   <string name="folder_settings_folder_notify_mode_first_class">上層</string>
   <string name="folder_settings_folder_notify_mode_second_class">下層</string>
+  <string name="folder_settings_clear_local_folder_action">清除本地郵件</string>
   <string name="account_settings_incoming_label">內送伺服器</string>
   <string name="account_settings_incoming_summary">配置內送伺服器</string>
   <string name="account_settings_outgoing_label">外寄伺服器</string>

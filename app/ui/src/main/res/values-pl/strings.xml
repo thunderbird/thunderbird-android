@@ -551,6 +551,7 @@ Wysłane za pomocą K-9 Mail.</string>
   <string name="folder_settings_folder_notify_mode_first_class">Klasa 1</string>
   <string name="folder_settings_folder_notify_mode_second_class">Klasa 2</string>
   <string name="folder_settings_folder_notify_mode_inherited">Taka jak klasa Push</string>
+  <string name="folder_settings_clear_local_folder_action">Wyczyść wiadomości lokalne</string>
   <string name="account_settings_incoming_label">Poczta przychodząca</string>
   <string name="account_settings_incoming_summary">Ustawienia serwera poczty przychodzącej</string>
   <string name="account_settings_outgoing_label">Poczta wychodząca</string>
