@@ -549,6 +549,7 @@
   <string name="folder_settings_folder_notify_mode_first_class">سطح ۱</string>
   <string name="folder_settings_folder_notify_mode_second_class">سطح ۲</string>
   <string name="folder_settings_folder_notify_mode_inherited">همانند سطح پیشرانی (Push)</string>
+  <string name="folder_settings_clear_local_folder_action">پاک‌کردن پیام‌ها از روی دستگاه</string>
   <string name="account_settings_incoming_label">کارساز ورودی</string>
   <string name="account_settings_incoming_summary">کارساز ورودی رایانامه را پیکربندی کنید</string>
   <string name="account_settings_outgoing_label">کارساز خروجی</string>
@@ -733,6 +734,9 @@
   <string name="confirm_discard_draft_message_title">پیام از بین برود؟</string>
   <string name="confirm_discard_draft_message">آیا از دورانداختن این پیام مطمئن هستید؟</string>
   <string name="select_text_now">متن را انتخاب کنید تا کپی شود.</string>
+  <string name="dialog_confirm_clear_local_folder_title">پیام‌ها از روی دستگاه پاک شود؟</string>
+  <string name="dialog_confirm_clear_local_folder_message">این کار همهٔ پیام‌ها را از پوشهٔ روی دستگاه پاک می‌کند. هیچ پیامی از روی کارساز پاک نمی‌شود.</string>
+  <string name="dialog_confirm_clear_local_folder_action">پاک‌کردن پیام‌ها</string>
   <string name="dialog_confirm_delete_title">تأیید حذف</string>
   <string name="dialog_confirm_delete_message">آیا این پیام حذف شود؟</string>
   <plurals name="dialog_confirm_delete_messages">

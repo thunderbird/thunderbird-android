@@ -527,6 +527,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="folder_settings_folder_notify_mode_first_class">Primære</string>
   <string name="folder_settings_folder_notify_mode_second_class">Sekundære</string>
   <string name="folder_settings_folder_notify_mode_inherited">Samme som Push-klasse</string>
+  <string name="folder_settings_clear_local_folder_action">Fjern lokalt lagrede mails</string>
   <string name="account_settings_incoming_label">Indgående server</string>
   <string name="account_settings_incoming_summary">Konfigurer indgående mail server</string>
   <string name="account_settings_outgoing_label">Udgående server</string>

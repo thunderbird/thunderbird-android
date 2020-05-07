@@ -547,6 +547,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="folder_settings_folder_notify_mode_first_class">1 класс</string>
   <string name="folder_settings_folder_notify_mode_second_class">2 класс</string>
   <string name="folder_settings_folder_notify_mode_inherited">Как push</string>
+  <string name="folder_settings_clear_local_folder_action">Стереть локальные</string>
   <string name="account_settings_incoming_label">Сервер входящих</string>
   <string name="account_settings_incoming_summary">Настройки сервера входящей почты</string>
   <string name="account_settings_outgoing_label">Сервер исходящих</string>

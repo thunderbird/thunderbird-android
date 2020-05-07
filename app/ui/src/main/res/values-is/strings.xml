@@ -547,6 +547,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="folder_settings_folder_notify_mode_first_class">1. flokkur</string>
   <string name="folder_settings_folder_notify_mode_second_class">2. flokkur</string>
   <string name="folder_settings_folder_notify_mode_inherited">Sami og ýtingarflokkur</string>
+  <string name="folder_settings_clear_local_folder_action">Hreinsa staðvær skilaboð</string>
   <string name="account_settings_incoming_label">Inn-póstþjónn</string>
   <string name="account_settings_incoming_summary">Stilla móttöku-póstþjón</string>
   <string name="account_settings_outgoing_label">Sendinga-póstþjónn</string>

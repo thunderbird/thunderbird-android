@@ -507,6 +507,7 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="folder_settings_folder_notify_mode_first_class">1. kategorija</string>
   <string name="folder_settings_folder_notify_mode_second_class">2. kategorija</string>
   <string name="folder_settings_folder_notify_mode_inherited">Tāda pati, kā lejupielādēšanas kategorija</string>
+  <string name="folder_settings_clear_local_folder_action">Izdzēst ierīcē esošās vēstules</string>
   <string name="account_settings_incoming_label">Ienākošais serveris</string>
   <string name="account_settings_incoming_summary">Iestatīt ienākošā pasta serveri</string>
   <string name="account_settings_outgoing_label">Izejošais serveris</string>

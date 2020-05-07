@@ -547,6 +547,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="folder_settings_folder_notify_mode_first_class">Klaso 1</string>
   <string name="folder_settings_folder_notify_mode_second_class">Klaso 2</string>
   <string name="folder_settings_folder_notify_mode_inherited">Sama kiel puŝ-kontrol-klaso</string>
+  <string name="folder_settings_clear_local_folder_action">Forviŝi lokajn mesaĝojn</string>
   <string name="account_settings_incoming_label">Enira servilo</string>
   <string name="account_settings_incoming_summary">Agordoj de enira retpoŝta servilo</string>
   <string name="account_settings_outgoing_label">Elira servilo</string>
@@ -731,6 +732,9 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="confirm_discard_draft_message_title">Ĉu forigi mesaĝon?</string>
   <string name="confirm_discard_draft_message">Ĉu vi certe volas forigi tiun ĉi mesaĝon?</string>
   <string name="select_text_now">Elektu tekston por kopii.</string>
+  <string name="dialog_confirm_clear_local_folder_title">Ĉu forviŝi lokajn mesaĝojn?</string>
+  <string name="dialog_confirm_clear_local_folder_message">Tio ĉi forigos ĉiujn lokajn mesaĝojn el la mesaĝujo. Neniuj mesaĝoj estos forigitaj el la servilo.</string>
+  <string name="dialog_confirm_clear_local_folder_action">Forviŝi mesaĝojn</string>
   <string name="dialog_confirm_delete_title">Konfirmi forigon</string>
   <string name="dialog_confirm_delete_message">Ĉu vi volas forigi tiun ĉi mesaĝon?</string>
   <plurals name="dialog_confirm_delete_messages">

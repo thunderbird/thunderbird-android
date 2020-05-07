@@ -549,6 +549,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="folder_settings_folder_notify_mode_first_class">1a classe</string>
   <string name="folder_settings_folder_notify_mode_second_class">2a classe</string>
   <string name="folder_settings_folder_notify_mode_inherited">El mateix que la classe de tramesa</string>
+  <string name="folder_settings_clear_local_folder_action">Neteja els missatges locals</string>
   <string name="account_settings_incoming_label">Servidor d\'entrada</string>
   <string name="account_settings_incoming_summary">Configura el servidor d\'entrada</string>
   <string name="account_settings_outgoing_label">Servidor de sortida</string>
@@ -733,6 +734,9 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="confirm_discard_draft_message_title">Descarto el missatge?</string>
   <string name="confirm_discard_draft_message">Segur que voleu descartar aquest missatge?</string>
   <string name="select_text_now">Seleccioneu el text a copiar.</string>
+  <string name="dialog_confirm_clear_local_folder_title">Voleu netejar els missatges locals?</string>
+  <string name="dialog_confirm_clear_local_folder_message">Això suprimirà tots els missatges locals de la carpeta. No se suprimirà cap missatge del servidor.</string>
+  <string name="dialog_confirm_clear_local_folder_action">Neteja els missatges</string>
   <string name="dialog_confirm_delete_title">Confirmeu l\'eliminació</string>
   <string name="dialog_confirm_delete_message">Voleu eliminar aquest missatge?</string>
   <plurals name="dialog_confirm_delete_messages">

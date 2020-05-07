@@ -526,6 +526,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="folder_settings_folder_notify_mode_first_class">1-ви Клас</string>
   <string name="folder_settings_folder_notify_mode_second_class">2-ри Клас</string>
   <string name="folder_settings_folder_notify_mode_inherited">Същото като push нивото</string>
+  <string name="folder_settings_clear_local_folder_action">Изчисти локалните съобщения</string>
   <string name="account_settings_incoming_label">Сървър за входяща поща</string>
   <string name="account_settings_incoming_summary">Конфигуриране на сървър за входяща поща</string>
   <string name="account_settings_outgoing_label">Сървър изходяща поща</string>

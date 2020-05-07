@@ -496,6 +496,7 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="folder_settings_folder_notify_mode_first_class">1ad ìre</string>
   <string name="folder_settings_folder_notify_mode_second_class">2na ìre</string>
   <string name="folder_settings_folder_notify_mode_inherited">Co-ionnann ris an ìre push</string>
+  <string name="folder_settings_clear_local_folder_action">Falamhaich na teachdaireachdan ionadail</string>
   <string name="account_settings_incoming_label">Am frithealaiche a-steach</string>
   <string name="account_settings_incoming_summary">Rèitich frithealaiche a’ phuist a-steach</string>
   <string name="account_settings_outgoing_label">Am frithealaiche a-mach</string>

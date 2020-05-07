@@ -528,6 +528,7 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="folder_settings_folder_notify_mode_first_class">1. klasea</string>
   <string name="folder_settings_folder_notify_mode_second_class">2. klasea</string>
   <string name="folder_settings_folder_notify_mode_inherited">\"Push\" duten klasearen berdina</string>
+  <string name="folder_settings_clear_local_folder_action">Garbitu mezu lokalak</string>
   <string name="account_settings_incoming_label">Sarrerako zerbitzaria</string>
   <string name="account_settings_incoming_summary">Konfiguratu sarrerako posta zerbitzaria</string>
   <string name="account_settings_outgoing_label">Irteerako zerbitzaria</string>

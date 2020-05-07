@@ -205,6 +205,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="message_compose_show_quoted_text_action">引用文を含める</string>
   <string name="message_compose_description_delete_quoted_text">引用文を削除します</string>
   <string name="message_compose_description_edit_quoted_text">引用文を編集します</string>
+  <string name="remove_attachment_action">添付ファイルの削除</string>
   <string name="message_view_from_format">送信者: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">宛先:</string>
   <string name="message_view_cc_label">Cc:</string>
@@ -546,6 +547,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="folder_settings_folder_notify_mode_first_class">1st クラス</string>
   <string name="folder_settings_folder_notify_mode_second_class">2nd クラス</string>
   <string name="folder_settings_folder_notify_mode_inherited">プッシュクラスと同一設定</string>
+  <string name="folder_settings_clear_local_folder_action">ローカルのメッセージをクリア</string>
   <string name="account_settings_incoming_label">受信メールサーバ設定</string>
   <string name="account_settings_incoming_summary">受信メールサーバの設定を行う</string>
   <string name="account_settings_outgoing_label">送信メールサーバ設定</string>
@@ -730,6 +732,9 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="confirm_discard_draft_message_title">メッセージ破棄？</string>
   <string name="confirm_discard_draft_message">このメッセージを破棄しますか？</string>
   <string name="select_text_now">選択したテキストをコピーします</string>
+  <string name="dialog_confirm_clear_local_folder_title">ローカルのメッセージをクリアしますか?</string>
+  <string name="dialog_confirm_clear_local_folder_message">これによりすべてのローカルメッセージがフォルダーから削除されます。 サーバーからメッセージは削除されません。</string>
+  <string name="dialog_confirm_clear_local_folder_action">メッセージのクリア</string>
   <string name="dialog_confirm_delete_title">削除の確認</string>
   <string name="dialog_confirm_delete_message">このメッセージを削除しますか？</string>
   <plurals name="dialog_confirm_delete_messages">

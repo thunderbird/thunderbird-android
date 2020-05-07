@@ -497,6 +497,7 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="folder_settings_folder_notify_mode_first_class">1a Clase</string>
   <string name="folder_settings_folder_notify_mode_second_class">2a Clase</string>
   <string name="folder_settings_folder_notify_mode_inherited">Igual que Clase no envío</string>
+  <string name="folder_settings_clear_local_folder_action">Borrar mensaxes locais</string>
   <string name="account_settings_incoming_label">Servidor de entrada</string>
   <string name="account_settings_incoming_summary">Configurar servidor de entrada</string>
   <string name="account_settings_outgoing_label">Servidor de saída</string>
