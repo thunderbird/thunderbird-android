@@ -8,7 +8,9 @@ val unreadWidgetModule = module {
         context = get(),
         preferences = get(),
         messagingController = get(),
-        defaultFolderProvider = get()
+        defaultFolderProvider = get(),
+        folderRepositoryManager = get(),
+        folderNameFormatterFactory = get()
     ) }
     single { UnreadWidgetUpdater(context = get()) }
     single { UnreadWidgetUpdateListener(unreadWidgetUpdater = get()) }
