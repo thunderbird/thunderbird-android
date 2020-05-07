@@ -90,6 +90,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="spam_action">Spam</string>
   <string name="forward_action">Encaminhar</string>
   <string name="forward_as_attachment_action">Encaminhar como anexo</string>
+  <string name="edit_as_new_message_action">Editar como uma nova mensagem</string>
   <string name="move_action">Mover</string>
   <string name="single_message_options_action">Enviar…</string>
   <string name="refile_action">Movimentar...</string>
@@ -141,7 +142,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="load_more_messages_fmt">Toque para ver mais <xliff:g id="messages_to_load">%d</xliff:g> msgs.</string>
   <string name="size_format_gigabytes">%.1f GB</string>
   <string name="size_format_megabytes">%.1f MB</string>
-  <string name="size_format_kilobytes">%.1f kB</string>
+  <string name="size_format_kilobytes">%.1f KB</string>
   <string name="size_format_bytes">%d B</string>
   <string name="account_size_changed">A conta \"<xliff:g id="account">%s</xliff:g>\" reduziu de <xliff:g id="oldSize">%s</xliff:g> para <xliff:g id="newSize">%s</xliff:g></string>
   <string name="compacting_account">Compactando a conta \"<xliff:g id="account">%s</xliff:g>\"</string>
@@ -205,6 +206,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="message_compose_show_quoted_text_action">Incluir mensagem citada</string>
   <string name="message_compose_description_delete_quoted_text">Remover o texto citado</string>
   <string name="message_compose_description_edit_quoted_text">Editar o texto citado</string>
+  <string name="remove_attachment_action">Remover anexo</string>
   <string name="message_view_from_format">De: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">Para:</string>
   <string name="message_view_cc_label">CC:</string>
@@ -546,6 +548,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="folder_settings_folder_notify_mode_first_class">1ª classe</string>
   <string name="folder_settings_folder_notify_mode_second_class">2ª classe</string>
   <string name="folder_settings_folder_notify_mode_inherited">Igual à classe de sincronização</string>
+  <string name="folder_settings_clear_local_folder_action">Limpar mensagens locais</string>
   <string name="account_settings_incoming_label">Servidor de entrada</string>
   <string name="account_settings_incoming_summary">Configure o servidor recebimento de mensagens</string>
   <string name="account_settings_outgoing_label">Servidor de saída</string>
@@ -650,7 +653,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="settings_message_theme_label">Tema da visualização de mensagens</string>
   <string name="settings_compose_theme_label">Tema do editor</string>
   <string name="settings_language_label">Idioma</string>
-  <string name="preference_search_no_results">Configurações não encontradas</string>
+  <string name="preference_search_no_results">Não foi encontrar nenhuma configuração</string>
   <string name="settings_message_theme_selection_label">Tema fixo de mensagens</string>
   <string name="settings_message_theme_selection_summary_off">Seleciona o tema de visualização ao ver a mensagem</string>
   <string name="settings_message_theme_selection_summary_on">Usa um tema fixo para visualizar mensagens</string>
@@ -730,6 +733,9 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="confirm_discard_draft_message_title">Descartar a mensagem?</string>
   <string name="confirm_discard_draft_message">Tem certeza que deseja descartar esta mensagem?</string>
   <string name="select_text_now">Selecione o texto a ser copiado.</string>
+  <string name="dialog_confirm_clear_local_folder_title">Limpar mensagens locais?</string>
+  <string name="dialog_confirm_clear_local_folder_message">Isso removerá todas as mensagens locais da pasta. Nenhuma mensagem será excluída no servidor.</string>
+  <string name="dialog_confirm_clear_local_folder_action">Limpar mensagens</string>
   <string name="dialog_confirm_delete_title">Confirmar exclusão</string>
   <string name="dialog_confirm_delete_message">Deseja excluir esta mensagem?</string>
   <plurals name="dialog_confirm_delete_messages">

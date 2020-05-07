@@ -369,7 +369,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_setup_options_mail_check_frequency_12hour">Ogni 12 ore</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Ogni 24 ore</string>
   <string name="push_poll_on_connect_label">Recupera durante la connessione per l\'invio</string>
-  <string name="account_setup_options_enable_push_label">Abilita ricezione email push per questo account (IMAP IDLE)</string>
+  <string name="account_setup_options_enable_push_label">Abilita email push per questo account</string>
   <string name="account_setup_options_enable_push_summary">Se il server lo supporta, i nuovi messaggi appariranno istantaneamente. Questa opzione può migliorare o peggiorare notevolmente le prestazioni.</string>
   <string name="idle_refresh_period_label">Aggiorna connessione inattiva</string>
   <string name="idle_refresh_period_1min">Ogni minuto</string>
@@ -514,7 +514,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_settings_folder_sync_mode_first_and_second_class">Cartelle di 1a e 2a classe</string>
   <string name="account_settings_folder_sync_mode_not_second_class">Tutte eccetto le cartelle di 2a classe</string>
   <string name="account_settings_folder_sync_mode_none">Nessuna</string>
-  <string name="account_settings_folder_push_mode_label">Cartelle push (IMAP IDLE)</string>
+  <string name="account_settings_folder_push_mode_label">Cartelle push</string>
   <string name="account_settings_folder_push_mode_all">Tutte</string>
   <string name="account_settings_folder_push_mode_first_class">Solo cartelle di 1a classe</string>
   <string name="account_settings_folder_push_mode_first_and_second_class">Cartelle di 1a e 2a classe</string>
@@ -540,7 +540,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="folder_settings_folder_sync_mode_first_class">1a classe</string>
   <string name="folder_settings_folder_sync_mode_second_class">2a classe</string>
   <string name="folder_settings_folder_sync_mode_inherited">Uguale alla classe di visualizzazione</string>
-  <string name="folder_settings_folder_push_mode_label">Classe delle cartelle push (IMAP IDLE)</string>
+  <string name="folder_settings_folder_push_mode_label">Classe delle cartelle push</string>
   <string name="folder_settings_folder_push_mode_normal">Nessuna classe</string>
   <string name="folder_settings_folder_push_mode_first_class">1a classe</string>
   <string name="folder_settings_folder_push_mode_second_class">2a classe</string>
@@ -550,6 +550,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="folder_settings_folder_notify_mode_first_class">1a classe</string>
   <string name="folder_settings_folder_notify_mode_second_class">2a classe</string>
   <string name="folder_settings_folder_notify_mode_inherited">Uguale alla classe di push</string>
+  <string name="folder_settings_clear_local_folder_action">Cancella messaggi locali</string>
   <string name="account_settings_incoming_label">Server della posta in arrivo</string>
   <string name="account_settings_incoming_summary">Configura il server della posta in arrivo</string>
   <string name="account_settings_outgoing_label">Server della posta in uscita</string>
@@ -664,7 +665,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="background_ops_always">Sempre</string>
   <string name="background_ops_auto_sync_only">Quando \'Sincronizzazione automatica\' è selezionato</string>
   <string name="batch_select_all">Seleziona tutto</string>
-  <string name="account_setup_push_limit_label">Limite di cartelle da sincronizzare in push (IMAP IDLE)</string>
+  <string name="account_setup_push_limit_label">Limite di cartelle da sincronizzare in push</string>
   <string name="account_setup_push_limit_5">5 cartelle</string>
   <string name="account_setup_push_limit_10">10 cartelle</string>
   <string name="account_setup_push_limit_25">25 cartelle</string>
@@ -734,6 +735,9 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="confirm_discard_draft_message_title">Vuoi eliminare il messaggio?</string>
   <string name="confirm_discard_draft_message">Sei sicuro di voler eliminare questo messaggio?</string>
   <string name="select_text_now">Seleziona il testo da copiare.</string>
+  <string name="dialog_confirm_clear_local_folder_title">Vuoi cancellare i messaggi locali?</string>
+  <string name="dialog_confirm_clear_local_folder_message">Questo rimuoverà tutti i messaggi locali dalla cartella. Nessun messaggio sarà eliminato dal server.</string>
+  <string name="dialog_confirm_clear_local_folder_action">Cancella messaggi</string>
   <string name="dialog_confirm_delete_title">Conferma l\'eliminazione</string>
   <string name="dialog_confirm_delete_message">Vuoi eliminare questo messaggio?</string>
   <plurals name="dialog_confirm_delete_messages">

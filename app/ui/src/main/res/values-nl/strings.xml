@@ -544,6 +544,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="folder_settings_folder_notify_mode_first_class">1e klasse</string>
   <string name="folder_settings_folder_notify_mode_second_class">2e klasse</string>
   <string name="folder_settings_folder_notify_mode_inherited">Zelfde als push klasse</string>
+  <string name="folder_settings_clear_local_folder_action">Lokale berichten wissen</string>
   <string name="account_settings_incoming_label">Inkomende server</string>
   <string name="account_settings_incoming_summary">Instellen van de inkomende mail server</string>
   <string name="account_settings_outgoing_label">Uitgaande server</string>
@@ -728,6 +729,9 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="confirm_discard_draft_message_title">Bericht afbreken?</string>
   <string name="confirm_discard_draft_message">Weet je zeker dat je dit bericht wilt verwijderen?</string>
   <string name="select_text_now">Selecteer tekst om te kopiëren.</string>
+  <string name="dialog_confirm_clear_local_folder_title">Lokale berichten wissen?</string>
+  <string name="dialog_confirm_clear_local_folder_message">Dit zal alle lokale berichten uit deze map wissen. Er worden geen berichten van de server gewist.</string>
+  <string name="dialog_confirm_clear_local_folder_action">Berichten wissen</string>
   <string name="dialog_confirm_delete_title">Bevestig verwijderen</string>
   <string name="dialog_confirm_delete_message">Wil je dit bericht verwijderen?</string>
   <plurals name="dialog_confirm_delete_messages">

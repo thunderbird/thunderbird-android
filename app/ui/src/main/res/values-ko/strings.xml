@@ -461,6 +461,7 @@
   <string name="folder_settings_folder_notify_mode_first_class">제 1종</string>
   <string name="folder_settings_folder_notify_mode_second_class">제 2종</string>
   <string name="folder_settings_folder_notify_mode_inherited">푸시 클래스와 같음</string>
+  <string name="folder_settings_clear_local_folder_action">로컬 메시지 삭제</string>
   <string name="account_settings_incoming_label">받기 서버</string>
   <string name="account_settings_incoming_summary">메일 받기 서버 수정</string>
   <string name="account_settings_outgoing_label">보내기 서버</string>

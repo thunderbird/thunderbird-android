@@ -427,6 +427,7 @@
   <string name="folder_settings_folder_notify_mode_label">Clase para o cartafol de notificación</string>
   <string name="folder_settings_folder_notify_mode_first_class">1ª Clase</string>
   <string name="folder_settings_folder_notify_mode_second_class">2ª Clase</string>
+  <string name="folder_settings_clear_local_folder_action">Limpar mensaxes locais</string>
   <string name="account_settings_incoming_label">Servidor de entrada</string>
   <string name="account_settings_incoming_summary">Configurar o servidor de correo entrante</string>
   <string name="account_settings_outgoing_label">Servidor de saída</string>

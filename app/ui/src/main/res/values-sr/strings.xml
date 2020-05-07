@@ -501,6 +501,7 @@
   <string name="folder_settings_folder_notify_mode_first_class">1. класа</string>
   <string name="folder_settings_folder_notify_mode_second_class">2. класа</string>
   <string name="folder_settings_folder_notify_mode_inherited">Иста као класа гурања</string>
+  <string name="folder_settings_clear_local_folder_action">Очисти локалне поруке</string>
   <string name="account_settings_incoming_label">Долазни сервер</string>
   <string name="account_settings_incoming_summary">Поставке долазног сервера за пошту</string>
   <string name="account_settings_outgoing_label">Одлазни сервер</string>

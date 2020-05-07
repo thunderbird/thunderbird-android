@@ -547,6 +547,7 @@ K-9 Mail 是 Android 上一款功能强大的自由 email 客户端。
   <string name="folder_settings_folder_notify_mode_first_class">1 级</string>
   <string name="folder_settings_folder_notify_mode_second_class">2 级</string>
   <string name="folder_settings_folder_notify_mode_inherited">与推送级别相同</string>
+  <string name="folder_settings_clear_local_folder_action">清空本地邮件</string>
   <string name="account_settings_incoming_label">收件服务器</string>
   <string name="account_settings_incoming_summary">配置收件服务器</string>
   <string name="account_settings_outgoing_label">发件服务器</string>
@@ -731,6 +732,9 @@ K-9 Mail 是 Android 上一款功能强大的自由 email 客户端。
   <string name="confirm_discard_draft_message_title">丢弃该邮件？</string>
   <string name="confirm_discard_draft_message">确定丢弃该邮件？</string>
   <string name="select_text_now">选择需要拷贝的文本。</string>
+  <string name="dialog_confirm_clear_local_folder_title">清除本地消息？</string>
+  <string name="dialog_confirm_clear_local_folder_message">这将从文件夹中删除所有本地邮件。 没有消息会从服务器中被删除。</string>
+  <string name="dialog_confirm_clear_local_folder_action">清除消息</string>
   <string name="dialog_confirm_delete_title">删除确认</string>
   <string name="dialog_confirm_delete_message">你确定要删除这封邮件么？</string>
   <plurals name="dialog_confirm_delete_messages">

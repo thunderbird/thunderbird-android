@@ -505,6 +505,7 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="folder_settings_folder_notify_mode_first_class">Kelas 1</string>
   <string name="folder_settings_folder_notify_mode_second_class">Kelas 2</string>
   <string name="folder_settings_folder_notify_mode_inherited">Sama seperti kelas dorong</string>
+  <string name="folder_settings_clear_local_folder_action">Bersihkan pesan lokal</string>
   <string name="account_settings_incoming_label">Server masuk</string>
   <string name="account_settings_incoming_summary">Konfigurasikan server surat masuk</string>
   <string name="account_settings_outgoing_label">Server keluar</string>

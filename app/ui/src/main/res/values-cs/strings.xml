@@ -538,6 +538,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="folder_settings_folder_notify_mode_first_class">1. třída</string>
   <string name="folder_settings_folder_notify_mode_second_class">2. třída</string>
   <string name="folder_settings_folder_notify_mode_inherited">Stejná jako třída PUSH</string>
+  <string name="folder_settings_clear_local_folder_action">Vyčistit místní zprávy</string>
   <string name="account_settings_incoming_label">Server příchozí pošty</string>
   <string name="account_settings_incoming_summary">Konfigurace serveru příchozí pošty</string>
   <string name="account_settings_outgoing_label">Server odchozí pošty</string>
@@ -722,6 +723,9 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="confirm_discard_draft_message_title">Zahodit zprávu?</string>
   <string name="confirm_discard_draft_message">Opravdu chcete tuto zprávu zahodit?</string>
   <string name="select_text_now">Vyberte text pro kopírování.</string>
+  <string name="dialog_confirm_clear_local_folder_title">Vymazat zprávy uložené lokálně?</string>
+  <string name="dialog_confirm_clear_local_folder_message">Toto ze složky odebere všechny lokálně uložené zprávy. Ze serveru nebudou vymazány žádné zprávy.</string>
+  <string name="dialog_confirm_clear_local_folder_action">Vyčistit zprávy</string>
   <string name="dialog_confirm_delete_title">Potvrzení mazání</string>
   <string name="dialog_confirm_delete_message">Chcete smazat tuto zprávu?</string>
   <plurals name="dialog_confirm_delete_messages">
