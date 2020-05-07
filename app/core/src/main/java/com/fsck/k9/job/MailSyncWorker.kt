@@ -4,6 +4,7 @@ import android.content.ContentResolver
 import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
@@ -27,11 +28,20 @@ class MailSyncWorker(
             return Result.success()
         }
 
-        preferences.getAccount(accountUuid)?.let { account ->
-            messagingController.checkMailBlocking(account)
+        val account = preferences.getAccount(accountUuid)
+        if (account == null) {
+            Timber.e("Account %s not found. Can't perform mail sync.", accountUuid)
+            return Result.failure()
         }
 
-        return Result.success()
+        if (account.isPeriodicMailSyncDisabled) {
+            Timber.d("Periodic mail sync has been disabled for this account. Skipping mail sync.")
+            return Result.success()
+        }
+
+        val success = messagingController.performPeriodicMailSync(account)
+
+        return if (success) Result.success() else Result.retry()
     }
 
     private fun isBackgroundSyncDisabled(): Boolean {
@@ -41,6 +51,9 @@ class MailSyncWorker(
             K9.BACKGROUND_OPS.WHEN_CHECKED_AUTO_SYNC -> !ContentResolver.getMasterSyncAutomatically()
         }
     }
+
+    private val Account.isPeriodicMailSyncDisabled
+        get() = automaticCheckIntervalMinutes <= 0
 
     companion object {
         const val EXTRA_ACCOUNT_UUID = "accountUuid"
