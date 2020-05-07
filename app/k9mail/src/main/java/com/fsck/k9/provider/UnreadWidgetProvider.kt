@@ -14,6 +14,9 @@ import com.fsck.k9.inject
 import com.fsck.k9.widget.unread.UnreadWidgetConfigurationActivity
 import com.fsck.k9.widget.unread.UnreadWidgetData
 import com.fsck.k9.widget.unread.UnreadWidgetRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
@@ -28,11 +31,18 @@ class UnreadWidgetProvider : AppWidgetProvider(), EarlyInit {
     private val repository: UnreadWidgetRepository by inject()
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
+        val pendingResult = goAsync()
+
+        GlobalScope.launch(Dispatchers.IO) {
+            updateWidgets(context, appWidgetManager, appWidgetIds)
+            pendingResult.finish()
+        }
+    }
+
+    private fun updateWidgets(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         for (widgetId in appWidgetIds) {
-            val widgetData = repository.getWidgetData(widgetId)
-            widgetData?.let {
-                updateWidget(context, appWidgetManager, it)
-            }
+            val widgetData = repository.getWidgetData(widgetId) ?: continue
+            updateWidget(context, appWidgetManager, widgetData)
         }
     }
 

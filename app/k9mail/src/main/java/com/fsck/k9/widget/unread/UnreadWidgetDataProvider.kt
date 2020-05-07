@@ -7,15 +7,20 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.R
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.controller.MessagingController
+import com.fsck.k9.mailstore.FolderRepositoryManager
 import com.fsck.k9.search.LocalSearch
 import com.fsck.k9.search.SearchAccount
+import com.fsck.k9.ui.folders.FolderNameFormatterFactory
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
+import timber.log.Timber
 
 class UnreadWidgetDataProvider(
     private val context: Context,
     private val preferences: Preferences,
     private val messagingController: MessagingController,
-    private val defaultFolderProvider: DefaultFolderProvider
+    private val defaultFolderProvider: DefaultFolderProvider,
+    private val folderRepositoryManager: FolderRepositoryManager,
+    private val folderNameFormatterFactory: FolderNameFormatterFactory
 ) {
     fun loadUnreadWidgetData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? = with(configuration) {
         if (SearchAccount.UNIFIED_INBOX == accountUuid) {
@@ -61,14 +66,26 @@ class UnreadWidgetDataProvider(
         val folderId = configuration.folderId ?: return null
 
         val accountName = account.description
-        // FIXME: Load folder display name for title
-        val title = context.getString(R.string.unread_widget_title, accountName, "FIXME: folder name")
+        val folderDisplayName = getFolderDisplayName(account, folderId)
+        val title = context.getString(R.string.unread_widget_title, accountName, folderDisplayName)
 
         val unreadCount = messagingController.getFolderUnreadMessageCount(account, folderId)
 
         val clickIntent = getClickIntentForFolder(account, folderId)
 
         return UnreadWidgetData(configuration, title, unreadCount, clickIntent)
+    }
+
+    private fun getFolderDisplayName(account: Account, folderId: Long): String {
+        val folderRepository = folderRepositoryManager.getFolderRepository(account)
+        val folderDetails = folderRepository.getFolderDetails(folderId)
+        return if (folderDetails != null) {
+            val folderNameFormatter = folderNameFormatterFactory.create(context)
+            folderNameFormatter.displayName(folderDetails.folder)
+        } else {
+            Timber.e("Error loading folder for account %s, folder ID: %d", account, folderId)
+            ""
+        }
     }
 
     private fun getClickIntentForFolder(account: Account, folderId: Long): Intent {

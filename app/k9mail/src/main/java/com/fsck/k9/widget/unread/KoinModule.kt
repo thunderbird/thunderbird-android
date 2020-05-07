@@ -3,8 +3,16 @@ package com.fsck.k9.widget.unread
 import org.koin.dsl.module
 
 val unreadWidgetModule = module {
-    single { UnreadWidgetRepository(get(), get()) }
-    single { UnreadWidgetDataProvider(get(), get(), get(), get()) }
-    single { UnreadWidgetUpdater(get()) }
-    single { UnreadWidgetUpdateListener(get()) }
+    single { UnreadWidgetRepository(context = get(), dataRetriever = get(), migrations = get()) }
+    single { UnreadWidgetDataProvider(
+        context = get(),
+        preferences = get(),
+        messagingController = get(),
+        defaultFolderProvider = get(),
+        folderRepositoryManager = get(),
+        folderNameFormatterFactory = get()
+    ) }
+    single { UnreadWidgetUpdater(context = get()) }
+    single { UnreadWidgetUpdateListener(unreadWidgetUpdater = get()) }
+    single { UnreadWidgetMigrations(accountRepository = get(), folderRepositoryManager = get()) }
 }

@@ -22,6 +22,7 @@ dependencies {
     implementation "androidx.core:core-ktx:${versions.coreKtx}"
     implementation "com.takisoft.preferencex:preferencex:${versions.preferencesFix}"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinCoroutines}"
 
     testImplementation "org.robolectric:robolectric:${versions.robolectric}"
     testImplementation "junit:junit:${versions.junit}"
