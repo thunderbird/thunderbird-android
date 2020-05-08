@@ -6,9 +6,6 @@ import com.fsck.k9.helper.EmailHelper
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
-import org.minidns.dnsname.DnsName
-import org.minidns.hla.ResolverApi
-import org.minidns.hla.SrvProto
 
 enum class SrvType(val label: String, val protocol: String, val assumeTls: Boolean) {
     SUBMISSIONS("_submissions", "smtp", true),
@@ -25,34 +22,12 @@ data class MailService(
     val security: ConnectionSecurity?
 )
 
-interface SrvResolution {
+interface SrvResolver {
     fun lookup(domain: String, type: SrvType): List<MailService>
 }
 
-class SrvResolver() : SrvResolution {
-    override fun lookup(domain: String, type: SrvType): List<MailService> {
-        val result = ResolverApi.INSTANCE.resolveSrv(
-            DnsName.from(type.label),
-            SrvProto.tcp.dnsName,
-            DnsName.from(domain)
-        )
-        return result?.answersOrEmptySet?.map {
-            MailService(
-                type,
-                it.target.toString(),
-                it.port,
-                it.priority,
-                if (type.assumeTls)
-                    ConnectionSecurity.SSL_TLS_REQUIRED
-                else
-                    ConnectionSecurity.STARTTLS_REQUIRED
-            )
-        } ?: listOf()
-    }
-}
-
 class SrvServiceDiscovery(
-    private val srvResolver: SrvResolver
+    private val srvResolver: MiniDnsSrvResolver
 ) : ConnectionSettingsDiscovery {
     override fun discover(email: String): ConnectionSettings? {
         val domain = EmailHelper.getDomainFromEmailAddress(email) ?: return null
