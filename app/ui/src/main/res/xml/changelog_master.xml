@@ -8,6 +8,14 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.711" versioncode="27011">
+        <change>Fixed some bugs with periodic mail sync (mail was usually checked too often)</change>
+        <change>Fixed a couple of bugs where unnecessary data was kept in the local database</change>
+        <change>Fixed bug where a special folder wasn't removed locally when removed from the server</change>
+        <change>Fixed bug when creating signed-only messages with 'encrypt message subjects' enabled</change>
+        <change>Lots of internal changes</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.710" versioncode="27010">
         <change>Fixed duplicate message bug after moving a message</change>
         <change>Removed keyboard shortcuts for menu items; on some devices they conflicted with system shortcuts</change>
