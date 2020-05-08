@@ -60,7 +60,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -322,10 +321,6 @@ public class LocalFolder {
         FolderClass pushClass = LocalFolder.this.pushClass;
         boolean inTopGroup = isInTopGroup;
         boolean integrate = isIntegrate;
-    }
-
-    public void close() {
-        databaseId = -1;
     }
 
     public int getMessageCount() throws MessagingException {
