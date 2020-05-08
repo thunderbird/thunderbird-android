@@ -10,7 +10,7 @@ import org.minidns.dnsname.DnsName
 import org.minidns.hla.ResolverApi
 import org.minidns.hla.SrvProto
 
-enum class SrvType(var label: String, var protocol: String, var assumeTls: Boolean) {
+enum class SrvType(val label: String, val protocol: String, val assumeTls: Boolean) {
     SUBMISSIONS("_submissions", "smtp", true),
     SUBMISSION("_submission", "smtp", false),
     IMAPS("_imaps", "imap", true),
@@ -18,11 +18,11 @@ enum class SrvType(var label: String, var protocol: String, var assumeTls: Boole
 }
 
 data class MailService(
-    var srvType: SrvType,
-    var host: String,
-    var port: Int,
-    var priority: Int,
-    var security: ConnectionSecurity?
+    val srvType: SrvType,
+    val host: String,
+    val port: Int,
+    val priority: Int,
+    val security: ConnectionSecurity?
 )
 
 interface SrvResolution {
