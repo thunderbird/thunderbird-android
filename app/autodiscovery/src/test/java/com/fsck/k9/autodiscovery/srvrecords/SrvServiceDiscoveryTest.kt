@@ -49,11 +49,10 @@ class SrvServiceDiscoveryTest : RobolectricTest() {
 
     @Test
     fun discover_whenNoSMTP_shouldReturnNull() {
-        val srvResolver = newMockSrvResolver(imapServices = listOf(
-            newMailService(port = 143, srvType = SrvType.IMAP)
-        ), imapsServices = listOf(
-            newMailService(port = 993, srvType = SrvType.IMAPS, security = ConnectionSecurity.SSL_TLS_REQUIRED)
-        ))
+        val srvResolver = newMockSrvResolver(
+            imapServices = listOf(newMailService(port = 143, srvType = IMAP)),
+            imapsServices = listOf(newMailService(port = 993, srvType = IMAPS, security = SSL_TLS_REQUIRED))
+        )
         val srvServiceDiscovery = SrvServiceDiscovery(srvResolver)
         val result = srvServiceDiscovery.discover("test@example.com")
         Assert.assertNull(result)
