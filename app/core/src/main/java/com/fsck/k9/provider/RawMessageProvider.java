@@ -196,7 +196,6 @@ public class RawMessageProvider extends ContentProvider {
             FetchProfile fetchProfile = new FetchProfile();
             fetchProfile.add(FetchProfile.Item.BODY);
             localFolder.fetch(Collections.singletonList(message), fetchProfile, null);
-            localFolder.close();
 
             return message;
         } catch (MessagingException e) {
