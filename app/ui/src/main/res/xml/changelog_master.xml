@@ -8,6 +8,9 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.713" versioncode="27013">
+        <change>Fixed bug where reply/reply all/forward would open an empty new message screen</change>
+    </release>
     <release version="5.712" versioncode="27012">
         <change>Fixed crash on startup with Android 7 and older</change>
     </release>
