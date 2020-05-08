@@ -170,30 +170,11 @@ public class MessagingControllerTest extends K9RobolectricTest {
         verify(localFolder).clearAllMessages();
     }
 
-    @Test
-    public void clearFolderSynchronous_shouldCloseTheFolder() throws MessagingException {
-        controller.clearFolderSynchronous(account, FOLDER_ID);
-
-        verify(localFolder, atLeastOnce()).close();
-    }
-
     @Test(expected = UnavailableAccountException.class)
     public void clearFolderSynchronous_whenStorageUnavailable_shouldThrowUnavailableAccountException() throws MessagingException {
         doThrow(new UnavailableStorageException("Test")).when(localFolder).open();
 
         controller.clearFolderSynchronous(account, FOLDER_ID);
-    }
-
-    @Test()
-    public void clearFolderSynchronous_whenExceptionThrown_shouldStillCloseFolder() throws MessagingException {
-        doThrow(new RuntimeException("Test")).when(localFolder).open();
-
-        try {
-            controller.clearFolderSynchronous(account, FOLDER_ID);
-        } catch (Exception ignored){
-        }
-
-        verify(localFolder, atLeastOnce()).close();
     }
 
     @Test
