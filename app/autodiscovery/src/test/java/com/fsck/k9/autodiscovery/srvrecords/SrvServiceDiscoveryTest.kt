@@ -10,31 +10,6 @@ import org.junit.Test
 
 class SrvServiceDiscoveryTest : RobolectricTest() {
 
-    private fun newMailService(
-        host: String = "example.com",
-        priority: Int = 0,
-        security: ConnectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED,
-        srvType: SrvType,
-        port: Int
-    ): MailService {
-        return MailService(srvType, host, port, priority, security)
-    }
-
-    private fun newMockSrvResolver(
-        host: String = "example.com",
-        submissionServices: List<MailService> = listOf(),
-        submissionsServices: List<MailService> = listOf(),
-        imapServices: List<MailService> = listOf(),
-        imapsServices: List<MailService> = listOf()
-    ): MiniDnsSrvResolver {
-        return mock {
-            on { lookup(host, SrvType.SUBMISSION) } doReturn submissionServices
-            on { lookup(host, SrvType.SUBMISSIONS) } doReturn submissionsServices
-            on { lookup(host, SrvType.IMAP) } doReturn imapServices
-            on { lookup(host, SrvType.IMAPS) } doReturn imapsServices
-        }
-    }
-
     @Test
     fun discover_whenNoMailServices_shouldReturnNull() {
         val srvResolver = newMockSrvResolver()
@@ -108,5 +83,30 @@ class SrvServiceDiscoveryTest : RobolectricTest() {
 
         assertEquals("smtp3.example.com", result?.outgoing?.host)
         assertEquals("imaps1.example.com", result?.incoming?.host)
+    }
+
+    private fun newMailService(
+        host: String = "example.com",
+        priority: Int = 0,
+        security: ConnectionSecurity = ConnectionSecurity.STARTTLS_REQUIRED,
+        srvType: SrvType,
+        port: Int
+    ): MailService {
+        return MailService(srvType, host, port, priority, security)
+    }
+
+    private fun newMockSrvResolver(
+        host: String = "example.com",
+        submissionServices: List<MailService> = listOf(),
+        submissionsServices: List<MailService> = listOf(),
+        imapServices: List<MailService> = listOf(),
+        imapsServices: List<MailService> = listOf()
+    ): MiniDnsSrvResolver {
+        return mock {
+            on { lookup(host, SrvType.SUBMISSION) } doReturn submissionServices
+            on { lookup(host, SrvType.SUBMISSIONS) } doReturn submissionsServices
+            on { lookup(host, SrvType.IMAP) } doReturn imapServices
+            on { lookup(host, SrvType.IMAPS) } doReturn imapsServices
+        }
     }
 }
