@@ -2,7 +2,6 @@
 <LinearLayout
         android:id="@+id/accounts_item_layout"
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?android:attr/listPreferredItemHeight"
@@ -47,35 +46,4 @@
 
     </LinearLayout>
 
-    <include layout="@layout/accounts_folders_icons"/>
-
-    <LinearLayout
-            android:id="@+id/folder_button_wrapper"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
-
-        <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="2dip"
-                android:layout_marginRight="4dip"
-                android:background="?android:attr/dividerVertical" />
-
-        <ImageButton
-                android:id="@+id/folders"
-                android:gravity="center_vertical"
-                android:focusable="false"
-                android:layout_marginRight="3dip"
-                app:srcCompat="?attr/iconFolder"
-                android:background="?selectableItemBackground"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:padding="8dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                />
-
-    </LinearLayout>
 </LinearLayout>
