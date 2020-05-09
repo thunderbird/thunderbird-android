@@ -32,6 +32,7 @@ buildscript {
                 'commonsIo': '2.6',
                 'mime4j': '0.8.1',
                 'okhttp': '4.5.0',
+                'minidns': '0.3.4',
 
                 'androidxTestRunner': '1.1.1',
                 'junit': '4.13',
