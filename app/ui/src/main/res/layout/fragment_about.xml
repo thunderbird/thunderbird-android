@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_height="fill_parent"
               android:layout_width="fill_parent">
@@ -14,7 +15,7 @@
                   android:layout_width="fill_parent">
 
             <ImageView
-                    android:src="@mipmap/icon"
+                    app:srcCompat="@mipmap/icon"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_gravity="center"
@@ -44,7 +45,7 @@
                     android:focusable="true"
                     android:background="?attr/selectableItemBackground">
                 <ImageView
-                        android:src="?attr/iconSettingsAbout"
+                        app:srcCompat="?attr/iconSettingsAbout"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center" />
@@ -81,7 +82,7 @@
                     android:focusable="true"
                     android:background="?attr/selectableItemBackground">
                 <ImageView
-                        android:src="?attr/iconAboutAuthors"
+                        app:srcCompat="?attr/iconAboutAuthors"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center" />
@@ -118,7 +119,7 @@
                     android:focusable="true"
                     android:background="?attr/selectableItemBackground">
                 <ImageView
-                        android:src="?attr/iconAboutLicense"
+                        app:srcCompat="?attr/iconAboutLicense"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center" />

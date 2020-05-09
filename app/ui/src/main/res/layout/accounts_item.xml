@@ -2,6 +2,7 @@
 <LinearLayout
         android:id="@+id/accounts_item_layout"
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?android:attr/listPreferredItemHeight"
@@ -67,7 +68,7 @@
                 android:gravity="center_vertical"
                 android:focusable="false"
                 android:layout_marginRight="3dip"
-                android:src="?attr/iconFolder"
+                app:srcCompat="?attr/iconFolder"
                 android:background="?selectableItemBackground"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"

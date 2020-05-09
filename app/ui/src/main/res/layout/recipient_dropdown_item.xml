@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -57,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left|center_vertical"
-            android:src="@drawable/status_dots"
+            app:srcCompat="@drawable/status_dots"
             android:tint="?attr/openpgp_grey"
             />
 
@@ -78,7 +79,7 @@
         android:layout_gravity="center_vertical"
         android:layout_margin="13dp"
         android:id="@+id/contact_crypto_status_icon_simple"
-        android:src="@drawable/status_lock"
+        app:srcCompat="@drawable/status_lock"
         android:tint="?attr/openpgp_black"
         android:visibility="gone"
         tools:visibility="visible"

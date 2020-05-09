@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
@@ -28,7 +29,7 @@
             android:id="@+id/selected"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_check_circle_large"
+            app:srcCompat="@drawable/ic_check_circle_large"
             android:visibility="gone"
             android:contentDescription="@null" />
 
@@ -78,13 +79,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="4dp"
-                android:src="@drawable/ic_account_color" />
+                app:srcCompat="@drawable/ic_account_color" />
 
             <ImageView
                 android:id="@+id/status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="?attr/messageListAnswered"
+                app:srcCompat="?attr/messageListAnswered"
                 tools:src="@drawable/ic_messagelist_answered_light"/>
 
             <TextView
@@ -121,7 +122,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/date"
                 android:layout_alignBottom="@+id/date"
-                android:src="?attr/messageListAttachment"
+                app:srcCompat="?attr/messageListAttachment"
                 android:layout_alignWithParentIfMissing="true"
                 android:layout_toStartOf="@+id/date" />
 

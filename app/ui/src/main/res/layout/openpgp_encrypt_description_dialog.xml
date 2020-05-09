@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -20,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/status_signature"
+            app:srcCompat="@drawable/status_signature"
             android:scaleType="fitCenter"
             android:tint="@color/light_black"
             />
@@ -55,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="6dp"
-            android:src="@drawable/status_lock_disabled"
+            app:srcCompat="@drawable/status_lock_disabled"
             android:tint="?attr/openpgp_dark_grey"
             />
 
@@ -63,14 +64,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:src="?attr/iconActionNextStatus"
+            app:srcCompat="?attr/iconActionNextStatus"
             />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="6dp"
-            android:src="@drawable/status_lock"
+            app:srcCompat="@drawable/status_lock"
             android:tint="?attr/openpgp_green"
             />
 
