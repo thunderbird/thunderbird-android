@@ -128,4 +128,8 @@
         <attr name="summaryOff" format="string" />
     </declare-styleable>
 
+    <declare-styleable name="SimpleHighlightView">
+        <attr name="highlightBackgroundColor" format="color|reference" />
+    </declare-styleable>
+
 </resources>
