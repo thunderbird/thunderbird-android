@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.fsck.k9.view.MessageHeader
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/header_container"
     android:layout_width="match_parent"
@@ -50,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:padding="6dp"
-                    android:src="@drawable/status_lock_disabled"
+                    app:srcCompat="@drawable/status_lock_disabled"
                     android:tint="?attr/openpgp_grey"
                     android:background="?selectableItemBackground"
                     android:visibility="gone"
@@ -265,7 +266,7 @@
                             android:id="@+id/icon_single_message_options"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="?iconActionSingleMessageOptions"
+                            app:srcCompat="?iconActionSingleMessageOptions"
                             android:padding="8dp"
                             android:background="?selectableItemBackground"
                             />

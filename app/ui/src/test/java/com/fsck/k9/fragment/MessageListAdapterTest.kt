@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.fsck.k9.Account
@@ -29,7 +30,7 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Ignore
 import org.junit.Test
-import org.robolectric.RuntimeEnvironment
+import org.robolectric.Robolectric
 
 private const val SOME_ACCOUNT_UUID = "6b84207b-25de-4dab-97c3-953bbf03fec6"
 private const val FIRST_LINE_DEFAULT_FONT_SIZE = 18f
@@ -37,7 +38,8 @@ private const val SECOND_LINE_DEFAULT_FONT_SIZE = 14f
 private const val DATE_DEFAULT_FONT_SIZE = 14f
 
 class MessageListAdapterTest : RobolectricTest() {
-    val context: Context = ContextThemeWrapper(RuntimeEnvironment.application, R.style.Theme_K9_Light)
+    val activity = Robolectric.buildActivity(AppCompatActivity::class.java).create().get()
+    val context: Context = ContextThemeWrapper(activity, R.style.Theme_K9_Light)
 
     val contactsPictureLoader: ContactPictureLoader = mock()
     val listItemListener: MessageListItemActionListener = mock()
