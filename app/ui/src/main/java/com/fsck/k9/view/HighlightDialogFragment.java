@@ -10,9 +10,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.fsck.k9.ui.R;
-import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.ShowcaseView.Builder;
-import com.github.amlcurran.showcaseview.targets.ViewTarget;
+import com.fsck.k9.ui.compose.SimpleHighlightView;
 
 
 public class HighlightDialogFragment extends DialogFragment {
@@ -20,7 +18,7 @@ public class HighlightDialogFragment extends DialogFragment {
     public static final float BACKGROUND_DIM_AMOUNT = 0.25f;
 
 
-    private ShowcaseView showcaseView;
+    private SimpleHighlightView highlightView;
 
 
     protected void highlightViewInBackground() {
@@ -33,20 +31,14 @@ public class HighlightDialogFragment extends DialogFragment {
             throw new IllegalStateException("fragment must be attached to set highlight!");
         }
 
-        boolean alreadyShowing = showcaseView != null && showcaseView.isShowing();
+        boolean alreadyShowing = highlightView != null;
         if (alreadyShowing) {
             return;
         }
 
-        int highlightedView = getArguments().getInt(ARG_HIGHLIGHT_VIEW);
-        showcaseView = new Builder(activity)
-                .setTarget(new ViewTarget(highlightedView, activity))
-                .hideOnTouchOutside()
-                .blockAllTouches()
-                .withMaterialShowcase()
-                .setStyle(R.style.ShowcaseTheme)
-                .build();
-        showcaseView.hideButton();
+        int highlightedViewId = getArguments().getInt(ARG_HIGHLIGHT_VIEW);
+        View highlightedView = activity.findViewById(highlightedViewId);
+        highlightView = SimpleHighlightView.createAndInsert(activity, highlightedView, R.style.MessageComposeHighlight);
     }
 
     @Override
@@ -62,7 +54,7 @@ public class HighlightDialogFragment extends DialogFragment {
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
 
-        hideShowcaseView();
+        hideHighlightView();
     }
 
     private void setDialogBackgroundDim() {
@@ -89,10 +81,10 @@ public class HighlightDialogFragment extends DialogFragment {
         inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
-    private void hideShowcaseView() {
-        if (showcaseView != null && showcaseView.isShowing()) {
-            showcaseView.hide();
+    private void hideHighlightView() {
+        if (highlightView != null) {
+            highlightView.remove();
+            highlightView = null;
         }
-        showcaseView = null;
     }
 }
