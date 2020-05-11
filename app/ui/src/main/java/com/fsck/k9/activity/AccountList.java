@@ -111,8 +111,6 @@ public abstract class AccountList extends K9ListActivity implements OnItemClickL
                 view = convertView;
             } else {
                 view = getLayoutInflater().inflate(R.layout.accounts_item, parent, false);
-                view.findViewById(R.id.active_icons).setVisibility(View.GONE);
-                view.findViewById(R.id.folders).setVisibility(View.GONE);
             }
 
             AccountViewHolder holder = (AccountViewHolder) view.getTag();
