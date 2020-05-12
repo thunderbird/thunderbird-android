@@ -139,7 +139,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                             val account = (profile as ProfileDrawerItem).tag as Account
                             parent.openRealAccount(account)
                             updateUserAccountsAndFolders(account)
-                            return false
+                            return true
                         }
                     }
                 })
