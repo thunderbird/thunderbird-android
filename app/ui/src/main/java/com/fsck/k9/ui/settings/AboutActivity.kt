@@ -77,21 +77,31 @@ class AboutFragment : Fragment() {
 
     companion object {
         private val USED_LIBRARIES = arrayOf(
-                Library("Android Support Library", "https://developer.android.com/topic/libraries/support-library/index.html", "Apache License, Version 2.0"),
-                Library("Android-Support-Preference-V7-Fix", "https://github.com/Gericop/Android-Support-Preference-V7-Fix", "Unlicense/Apache License, Version 2.0"),
-                Library("ckChangeLog", "https://github.com/cketti/ckChangeLog", "Apache License, Version 2.0"),
-                Library("Commons IO", "https://commons.apache.org/io/", "Apache License, Version 2.0"),
-                Library("Glide", "https://github.com/bumptech/glide", "Mixed License"),
-                Library("jsoup", "https://jsoup.org/", "MIT License"),
-                Library("jutf7", "http://jutf7.sourceforge.net/", "MIT License"),
-                Library("JZlib", "http://www.jcraft.com/jzlib/", "BSD-style License"),
-                Library("Mime4j", "http://james.apache.org/mime4j/", "Apache License, Version 2.0"),
-                Library("Moshi", "https://github.com/square/moshi", "Apache License, Version 2.0"),
-                Library("Okio", "https://github.com/square/okio", "Apache License, Version 2.0"),
-                Library("SafeContentResolver", "https://github.com/cketti/SafeContentResolver", "Apache License, Version 2.0"),
-                Library("ShowcaseView", "https://github.com/amlcurran/ShowcaseView", "Apache License, Version 2.0"),
-                Library("Timber", "https://github.com/JakeWharton/timber", "Apache License, Version 2.0"),
-                Library("TokenAutoComplete", "https://github.com/splitwise/TokenAutoComplete/", "Apache License, Version 2.0"))
+            Library("Android Jetpack libraries", "https://developer.android.com/jetpack", "Apache License, Version 2.0"),
+            Library("AndroidX Preference eXtended", "https://github.com/Gericop/Android-Support-Preference-V7-Fix", "Apache License, Version 2.0"),
+            Library("CircleImageView", "https://github.com/hdodenhof/CircleImageView", "Apache License, Version 2.0"),
+            Library("ckChangeLog", "https://github.com/cketti/ckChangeLog", "Apache License, Version 2.0"),
+            Library("Commons IO", "https://commons.apache.org/io/", "Apache License, Version 2.0"),
+            Library("FastAdapter", "https://github.com/mikepenz/FastAdapter", "Apache License, Version 2.0"),
+            Library("Glide", "https://github.com/bumptech/glide", "BSD, part MIT and Apache 2.0"),
+            Library("Groupie", "https://github.com/lisawray/groupie", "MIT License"),
+            Library("jsoup", "https://jsoup.org/", "MIT License"),
+            Library("jutf7", "http://jutf7.sourceforge.net/", "MIT License"),
+            Library("JZlib", "http://www.jcraft.com/jzlib/", "BSD-style License"),
+            Library("Kotlin Standard Library", "https://kotlinlang.org/api/latest/jvm/stdlib/", "Apache License, Version 2.0"),
+            Library("KotlinX coroutines", "https://github.com/Kotlin/kotlinx.coroutines", "Apache License, Version 2.0"),
+            Library("Material Components for Android", "https://github.com/material-components/material-components-android", "Apache License, Version 2.0"),
+            Library("Material Drawer", "https://github.com/mikepenz/MaterialDrawer", "Apache License, Version 2.0"),
+            Library("Mime4j", "https://james.apache.org/mime4j/", "Apache License, Version 2.0"),
+            Library("MiniDNS", "https://github.com/MiniDNS/minidns", "Multiple, Apache License, Version 2.0"),
+            Library("Moshi", "https://github.com/square/moshi", "Apache License, Version 2.0"),
+            Library("OkHttp", "https://github.com/square/okhttp", "Apache License, Version 2.0"),
+            Library("Okio", "https://github.com/square/okio", "Apache License, Version 2.0"),
+            Library("SafeContentResolver", "https://github.com/cketti/SafeContentResolver", "Apache License, Version 2.0"),
+            Library("SearchPreference", "https://github.com/ByteHamster/SearchPreference", "MIT License"),
+            Library("Timber", "https://github.com/JakeWharton/timber", "Apache License, Version 2.0"),
+            Library("TokenAutoComplete", "https://github.com/splitwise/TokenAutoComplete/", "Apache License, Version 2.0")
+        )
     }
 }
 
