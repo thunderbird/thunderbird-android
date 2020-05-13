@@ -178,7 +178,7 @@ public class LocalFolder {
                             }
                         } else {
                             throw new MessagingException("LocalFolder.open(): Folder not found: " +
-                                    serverId + " (" + databaseId + ")");
+                                    serverId + " (" + databaseId + ")", true);
                         }
                     } catch (MessagingException e) {
                         throw new WrappedException(e);
