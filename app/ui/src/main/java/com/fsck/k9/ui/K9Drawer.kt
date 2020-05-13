@@ -1,5 +1,6 @@
 package com.fsck.k9.ui
 
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.PorterDuff
@@ -8,10 +9,13 @@ import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import com.fsck.k9.activity.MessageList
+import com.fsck.k9.controller.MessagingController
+import com.fsck.k9.controller.SimpleMessagingListener
 import com.fsck.k9.helper.Contacts
 import com.fsck.k9.mailstore.DisplayFolder
 import com.fsck.k9.mailstore.Folder
@@ -46,10 +50,12 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private val preferences: Preferences by inject()
     private val themeManager: ThemeManager by inject()
     private val resources: Resources by inject()
+    private val messagingController: MessagingController by inject()
 
     private val drawer: Drawer
     private val accountHeader: AccountHeader
     private val folderIconProvider: FolderIconProvider = FolderIconProvider(parent.theme)
+    private val swipeRefreshLayout: SwipeRefreshLayout
 
     private val userFolderDrawerIds = ArrayList<Long>()
     private var unifiedInboxSelected: Boolean = false
@@ -73,6 +79,11 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 .withSavedInstance(savedInstanceState)
                 .withAccountHeader(accountHeader)
                 .build()
+        swipeRefreshLayout = drawer.slider.findViewById(R.id.material_drawer_swipe_refresh)
+        accountHeader.view.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+            val headerHeight = accountHeader.view.measuredHeight
+            swipeRefreshLayout.setProgressViewOffset(true, headerHeight, (headerHeight * 1.1f).toInt())
+        }
 
         addFooterItems()
 
@@ -190,6 +201,14 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
             accountHeader.setActiveProfile((account.accountNumber + 1 shl DRAWER_ACCOUNT_SHIFT).toLong())
             accountHeader.headerBackgroundView.setColorFilter(account.chipColor, PorterDuff.Mode.MULTIPLY)
+
+            swipeRefreshLayout.setOnRefreshListener {
+                messagingController.checkMail(parent, account, true, true, object : SimpleMessagingListener() {
+                    override fun checkMailFinished(context: Context?, account: Account?) {
+                        swipeRefreshLayout.isRefreshing = false
+                    }
+                })
+            }
 
             viewModel.loadFolders(account)
 
