@@ -79,10 +79,17 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 .withSavedInstance(savedInstanceState)
                 .withAccountHeader(accountHeader)
                 .build()
+
         swipeRefreshLayout = drawer.slider.findViewById(R.id.material_drawer_swipe_refresh)
-        accountHeader.view.addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
-            val headerHeight = accountHeader.view.measuredHeight
-            swipeRefreshLayout.setProgressViewOffset(true, headerHeight, (headerHeight * 1.1f).toInt())
+        accountHeader.view.addOnLayoutChangeListener { view, _, _, _, _, _, _, _, _ ->
+            val densityMultiplier = view.resources.displayMetrics.density
+
+            val progressViewStart = view.measuredHeight
+            val progressViewEnd = progressViewStart + (PROGRESS_VIEW_END_OFFSET * densityMultiplier).toInt()
+            swipeRefreshLayout.setProgressViewOffset(true, progressViewStart, progressViewEnd)
+
+            val slingshotDistance = (PROGRESS_VIEW_SLINGSHOT_DISTANCE * densityMultiplier).toInt()
+            swipeRefreshLayout.setSlingshotDistance(slingshotDistance)
         }
 
         addFooterItems()
@@ -360,5 +367,8 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         private const val DRAWER_ID_UNIFIED_INBOX: Long = 0
         private const val DRAWER_ID_PREFERENCES: Long = 1
         private const val DRAWER_ID_FOLDERS: Long = 2
+
+        private const val PROGRESS_VIEW_END_OFFSET = 32
+        private const val PROGRESS_VIEW_SLINGSHOT_DISTANCE = 48
     }
 }
