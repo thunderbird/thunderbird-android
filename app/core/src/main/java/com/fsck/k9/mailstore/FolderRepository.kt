@@ -25,7 +25,7 @@ class FolderRepository(
 
         return folders
                 .filterNot { it.isLocalOnly }
-                .map { Folder(it.databaseId, it.serverId, it.name, it.type.toFolderType()) }
+                .map { Folder(it.databaseId, it.serverId, it.name, it.type.toFolderType(), isLocalOnly = false) }
     }
 
     fun getDisplayFolders(displayMode: FolderMode?): List<DisplayFolder> {
@@ -111,7 +111,8 @@ class FolderRepository(
                     "poll_class",
                     "display_class",
                     "notify_class",
-                    "push_class"
+                    "push_class",
+                    "local_only"
                 ),
                 selection,
                 selectionArgs,
@@ -126,7 +127,8 @@ class FolderRepository(
                             id = id,
                             serverId = cursor.getString(1),
                             name = cursor.getString(2),
-                            type = folderTypeOf(id)
+                            type = folderTypeOf(id),
+                            isLocalOnly = cursor.getInt(9) == 1
                         ),
                         isInTopGroup = cursor.getInt(3) == 1,
                         isIntegrate = cursor.getInt(4) == 1,
@@ -157,7 +159,7 @@ class FolderRepository(
 
     private fun getDisplayFolders(db: SQLiteDatabase, displayMode: FolderMode): List<DisplayFolder> {
         val queryBuilder = StringBuilder("""
-            SELECT f.id, f.server_id, f.name, f.top_group, (
+            SELECT f.id, f.server_id, f.name, f.top_group, f.local_only, (
                 SELECT COUNT(m.id) 
                 FROM messages m 
                 WHERE m.folder_id = f.id AND m.empty = 0 AND m.deleted = 0 AND m.read = 0
@@ -178,9 +180,10 @@ class FolderRepository(
                 val name = cursor.getString(2)
                 val type = folderTypeOf(id)
                 val isInTopGroup = cursor.getInt(3) == 1
-                val unreadCount = cursor.getInt(4)
+                val isLocalOnly = cursor.getInt(4) == 1
+                val unreadCount = cursor.getInt(5)
 
-                val folder = Folder(id, serverId, name, type)
+                val folder = Folder(id, serverId, name, type, isLocalOnly)
                 displayFolders.add(DisplayFolder(folder, isInTopGroup, unreadCount))
             }
 
@@ -263,7 +266,7 @@ class FolderRepository(
     }
 }
 
-data class Folder(val id: Long, val serverId: String, val name: String, val type: FolderType)
+data class Folder(val id: Long, val serverId: String, val name: String, val type: FolderType, val isLocalOnly: Boolean)
 
 data class FolderDetails(
     val folder: Folder,

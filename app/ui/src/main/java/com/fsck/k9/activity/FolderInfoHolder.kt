@@ -22,7 +22,8 @@ class FolderInfoHolder(
             id = folderId,
             serverId = localFolder.serverId,
             name = localFolder.name,
-            type = getFolderType(account, folderId)
+            type = getFolderType(account, folderId),
+            isLocalOnly = localFolder.isLocalOnly
         )
         return folderNameFormatter.displayName(folder)
     }
