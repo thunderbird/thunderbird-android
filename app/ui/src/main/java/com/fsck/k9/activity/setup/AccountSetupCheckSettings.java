@@ -39,7 +39,6 @@ import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.MailServerDirection;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.Hex;
-import com.fsck.k9.mailstore.SpecialLocalFoldersCreator;
 import com.fsck.k9.ui.R;
 import timber.log.Timber;
 
@@ -435,8 +434,6 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                     return null;
                 }
 
-                createSpecialLocalFolders(direction);
-
                 setResult(RESULT_OK);
                 finish();
 
@@ -515,15 +512,6 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 
         private boolean isWebDavAccount() {
             return account.getStoreUri().startsWith("webdav");
-        }
-
-        private void createSpecialLocalFolders(CheckDirection direction) throws MessagingException {
-            if (direction != CheckDirection.INCOMING) {
-                return;
-            }
-
-            SpecialLocalFoldersCreator localFoldersCreator = DI.get(SpecialLocalFoldersCreator.class);
-            localFoldersCreator.createSpecialLocalFolders(account);
         }
 
         @Override
