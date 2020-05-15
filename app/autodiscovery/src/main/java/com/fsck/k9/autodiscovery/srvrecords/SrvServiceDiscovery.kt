@@ -10,7 +10,12 @@ import com.fsck.k9.mail.ServerSettings
 class SrvServiceDiscovery(
     private val srvResolver: MiniDnsSrvResolver
 ) : ConnectionSettingsDiscovery {
+
     override fun discover(email: String): ConnectionSettings? {
+        return discover(email, outgoing = true, incoming = true)
+    }
+
+    fun discover(email: String, outgoing: Boolean, incoming: Boolean): ConnectionSettings? {
         val domain = EmailHelper.getDomainFromEmailAddress(email) ?: return null
         val pickMailService = compareBy<MailService> { it.priority }.thenByDescending { it.security }
 

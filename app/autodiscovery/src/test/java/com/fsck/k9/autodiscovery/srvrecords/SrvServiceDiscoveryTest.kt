@@ -41,7 +41,7 @@ class SrvServiceDiscoveryTest : RobolectricTest() {
         ))
 
         val srvServiceDiscovery = SrvServiceDiscovery(srvResolver)
-        val result = srvServiceDiscovery.discover("test@example.com")
+        val result = srvServiceDiscovery.discover("test@example.com", outgoing = true, incoming = true)
 
         assertNull(result)
     }
@@ -79,7 +79,7 @@ class SrvServiceDiscoveryTest : RobolectricTest() {
         ))
 
         val srvServiceDiscovery = SrvServiceDiscovery(srvResolver)
-        val result = srvServiceDiscovery.discover("test@example.com")
+        val result = srvServiceDiscovery.discover("test@example.com", outgoing = true, incoming = true)
 
         assertEquals("smtp3.example.com", result?.outgoing?.host)
         assertEquals("imaps1.example.com", result?.incoming?.host)

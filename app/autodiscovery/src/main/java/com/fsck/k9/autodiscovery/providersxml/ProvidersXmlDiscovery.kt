@@ -17,6 +17,10 @@ class ProvidersXmlDiscovery(
 ) : ConnectionSettingsDiscovery {
 
     override fun discover(email: String): ConnectionSettings? {
+        return discover(email, outgoing = true, incoming = true)
+    }
+
+    private fun discover(email: String, outgoing: Boolean, incoming: Boolean): ConnectionSettings? {
         val password = ""
 
         val user = EmailHelper.getLocalPartFromEmailAddress(email) ?: return null
