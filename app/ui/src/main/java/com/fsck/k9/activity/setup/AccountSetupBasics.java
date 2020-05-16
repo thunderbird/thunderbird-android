@@ -259,6 +259,7 @@ public class AccountSetupBasics extends K9Activity
         ServerSettings outgoingServerSettings = connectionSettings.getOutgoing().newPassword(password);
         String transportUri = backendManager.createTransportUri(outgoingServerSettings);
         mAccount.setTransportUri(transportUri);
+
         mAccount.setDeletePolicy(accountCreator.getDefaultDeletePolicy(incomingServerSettings.type));
 
         // Check incoming here.  Then check outgoing in onActivityResult()

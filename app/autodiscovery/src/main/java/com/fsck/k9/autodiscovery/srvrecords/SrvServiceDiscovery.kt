@@ -16,11 +16,15 @@ class SrvServiceDiscovery(
         val domain = EmailHelper.getDomainFromEmailAddress(email) ?: return null
         val pickMailService = compareBy<MailService> { it.priority }.thenByDescending { it.security }
 
-        val outgoingSettings = listOf(SrvType.SUBMISSIONS, SrvType.SUBMISSION)
-            .flatMap { srvResolver.lookup(domain, it) }.sortedWith(pickMailService).map{ newServerSettings(it, email) }
+        val outgoingSettings = if (target.outgoing)
+            listOf(SrvType.SUBMISSIONS, SrvType.SUBMISSION).flatMap { srvResolver.lookup(domain, it) }
+                .sortedWith(pickMailService).map { newServerSettings(it, email) }
+        else listOf()
 
-        val incomingSettings = listOf(SrvType.IMAPS, SrvType.IMAP)
-            .flatMap { srvResolver.lookup(domain, it) }.sortedWith(pickMailService).map{ newServerSettings(it, email) }
+        val incomingSettings = if (target.incoming)
+            listOf(SrvType.IMAPS, SrvType.IMAP).flatMap { srvResolver.lookup(domain, it) }
+                .sortedWith(pickMailService).map { newServerSettings(it, email) }
+        else listOf()
 
         return DiscoveryResults(incoming = incomingSettings, outgoing = outgoingSettings)
     }
