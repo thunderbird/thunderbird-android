@@ -1,6 +1,7 @@
 package com.fsck.k9.autodiscovery.providersxml
 
 import com.fsck.k9.RobolectricTest
+import com.fsck.k9.autodiscovery.DiscoveryTarget
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.backend.imap.ImapStoreUriDecoder
 import com.fsck.k9.mail.AuthType
@@ -25,19 +26,19 @@ class ProvidersXmlDiscoveryTest : RobolectricTest() {
 
     @Test
     fun discover_withGmailDomain_shouldReturnCorrectSettings() {
-        val connectionSettings = providersXmlDiscovery.discover("user@gmail.com")
+        val connectionSettings = providersXmlDiscovery.discover("user@gmail.com", DiscoveryTarget.INCOMING_AND_OUTGOING)
 
         assertThat(connectionSettings).isNotNull()
-        with(connectionSettings!!.incoming) {
+        with(connectionSettings!!.incoming.first()) {
             assertThat(host).isEqualTo("imap.gmail.com")
-            assertThat(connectionSecurity).isEqualTo(ConnectionSecurity.SSL_TLS_REQUIRED)
-            assertThat(authenticationType).isEqualTo(AuthType.PLAIN)
+            assertThat(security).isEqualTo(ConnectionSecurity.SSL_TLS_REQUIRED)
+            assertThat(authType).isEqualTo(AuthType.PLAIN)
             assertThat(username).isEqualTo("user@gmail.com")
         }
-        with(connectionSettings.outgoing) {
+        with(connectionSettings.outgoing.first()) {
             assertThat(host).isEqualTo("smtp.gmail.com")
-            assertThat(connectionSecurity).isEqualTo(ConnectionSecurity.SSL_TLS_REQUIRED)
-            assertThat(authenticationType).isEqualTo(AuthType.PLAIN)
+            assertThat(security).isEqualTo(ConnectionSecurity.SSL_TLS_REQUIRED)
+            assertThat(authType).isEqualTo(AuthType.PLAIN)
             assertThat(username).isEqualTo("user@gmail.com")
         }
     }
@@ -45,7 +46,7 @@ class ProvidersXmlDiscoveryTest : RobolectricTest() {
     @Test
     fun discover_withUnknownDomain_shouldReturnNull() {
         val connectionSettings = providersXmlDiscovery.discover(
-            "user@not.present.in.providers.xml.example")
+            "user@not.present.in.providers.xml.example", DiscoveryTarget.INCOMING_AND_OUTGOING)
 
         assertThat(connectionSettings).isNull()
     }

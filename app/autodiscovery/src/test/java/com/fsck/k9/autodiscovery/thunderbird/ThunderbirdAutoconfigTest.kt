@@ -41,12 +41,12 @@ class ThunderbirdAutoconfigTest : RobolectricTest() {
         assertThat(connectionSettings).isNotNull()
         assertThat(connectionSettings!!.incoming).isNotNull()
         assertThat(connectionSettings.outgoing).isNotNull()
-        with(connectionSettings.incoming) {
-            assertThat(host).isEqualTo("imap.googlemail.com")
-            assertThat(port).isEqualTo(993)
-            assertThat(username).isEqualTo("test@metacode.biz")
+        with(connectionSettings.incoming.first()) {
+            assertThat(this.port).isEqualTo(993)
+            assertThat(this.host).isEqualTo("imap.googlemail.com")
+            assertThat(this.username).isEqualTo("test@metacode.biz")
         }
-        with(connectionSettings.outgoing) {
+        with(connectionSettings.outgoing.first()) {
             assertThat(host).isEqualTo("smtp.googlemail.com")
             assertThat(port).isEqualTo(465)
             assertThat(username).isEqualTo("test@metacode.biz")
@@ -96,7 +96,7 @@ class ThunderbirdAutoconfigTest : RobolectricTest() {
 
         assertThat(connectionSettings).isNotNull()
         assertThat(connectionSettings!!.outgoing).isNotNull()
-        with(connectionSettings.outgoing) {
+        with(connectionSettings.outgoing.first()) {
             assertThat(host).isEqualTo("first")
             assertThat(port).isEqualTo(465)
             assertThat(username).isEqualTo("test@metacode.biz")

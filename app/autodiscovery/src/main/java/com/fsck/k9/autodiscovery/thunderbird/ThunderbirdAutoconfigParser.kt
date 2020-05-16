@@ -1,9 +1,9 @@
 package com.fsck.k9.autodiscovery.thunderbird
 
-import com.fsck.k9.autodiscovery.ConnectionSettings
+import com.fsck.k9.autodiscovery.DiscoveredServerSettings
+import com.fsck.k9.autodiscovery.DiscoveryResults
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
-import com.fsck.k9.mail.ServerSettings
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
@@ -16,9 +16,9 @@ import org.xmlpull.v1.XmlPullParserFactory
  * [Autoconfig file format](https://wiki.mozilla.org/Thunderbird:Autoconfiguration:ConfigFileFormat)
  */
 class ThunderbirdAutoconfigParser {
-    fun parseSettings(stream: InputStream, email: String): ConnectionSettings? {
-        var incoming: ServerSettings? = null
-        var outgoing: ServerSettings? = null
+    fun parseSettings(stream: InputStream, email: String): DiscoveryResults? {
+        var incoming: DiscoveredServerSettings? = null
+        var outgoing: DiscoveredServerSettings? = null
 
         val factory = XmlPullParserFactory.newInstance()
         val xpp = factory.newPullParser()
@@ -38,7 +38,7 @@ class ThunderbirdAutoconfigParser {
                 }
 
                 if (incoming != null && outgoing != null) {
-                    return ConnectionSettings(incoming, outgoing)
+                    return DiscoveryResults(listOf(incoming), listOf(outgoing))
                 }
             }
             eventType = xpp.next()
@@ -46,7 +46,7 @@ class ThunderbirdAutoconfigParser {
         return null
     }
 
-    private fun parseServer(xpp: XmlPullParser, nodeName: String, email: String): ServerSettings {
+    private fun parseServer(xpp: XmlPullParser, nodeName: String, email: String): DiscoveredServerSettings {
         val type = xpp.getAttributeValue(null, "type")
         var host: String? = null
         var username: String? = null
@@ -78,7 +78,7 @@ class ThunderbirdAutoconfigParser {
             eventType = xpp.next()
         }
 
-        return ServerSettings(type, host, port!!, connectionSecurity, authType, username, null, null)
+        return DiscoveredServerSettings(type, host!!, port!!, connectionSecurity!!, authType, username)
     }
 
     private fun parseAuthType(authentication: String): AuthType? {

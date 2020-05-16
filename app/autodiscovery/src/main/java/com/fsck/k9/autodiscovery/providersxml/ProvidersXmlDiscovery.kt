@@ -1,8 +1,10 @@
 package com.fsck.k9.autodiscovery.providersxml
 
 import android.content.res.XmlResourceParser
-import com.fsck.k9.autodiscovery.ConnectionSettings
 import com.fsck.k9.autodiscovery.ConnectionSettingsDiscovery
+import com.fsck.k9.autodiscovery.DiscoveredServerSettings
+import com.fsck.k9.autodiscovery.DiscoveryResults
+import com.fsck.k9.autodiscovery.DiscoveryTarget
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.helper.EmailHelper
 import com.fsck.k9.helper.UrlEncodingHelper
@@ -16,11 +18,7 @@ class ProvidersXmlDiscovery(
     private val xmlProvider: ProvidersXmlProvider
 ) : ConnectionSettingsDiscovery {
 
-    override fun discover(email: String): ConnectionSettings? {
-        return discover(email, outgoing = true, incoming = true)
-    }
-
-    private fun discover(email: String, outgoing: Boolean, incoming: Boolean): ConnectionSettings? {
+    override fun discover(email: String, target: DiscoveryTarget): DiscoveryResults? {
         val password = ""
 
         val user = EmailHelper.getLocalPartFromEmailAddress(email) ?: return null
@@ -38,7 +36,16 @@ class ProvidersXmlDiscovery(
             val incomingUri = with(URI(provider.incomingUriTemplate)) {
                 URI(scheme, "$incomingUserUrlEncoded:$password", host, port, null, null, null).toString()
             }
-            val incomingSettings = backendManager.decodeStoreUri(incomingUri)
+            val incomingSettings = backendManager.decodeStoreUri(incomingUri).let {
+                listOf(DiscoveredServerSettings(
+                    it.type,
+                    it.host,
+                    it.port,
+                    it.connectionSecurity,
+                    it.authenticationType,
+                    email
+                ))
+            }
 
             val outgoingUserUrlEncoded = provider.outgoingUsernameTemplate
                     ?.replace("\$email", emailUrlEncoded)
@@ -48,9 +55,18 @@ class ProvidersXmlDiscovery(
             val outgoingUri = with(URI(provider.outgoingUriTemplate)) {
                 URI(scheme, outgoingUserInfo, host, port, null, null, null).toString()
             }
-            val outgoingSettings = backendManager.decodeTransportUri(outgoingUri)
+            val outgoingSettings = backendManager.decodeTransportUri(outgoingUri).let {
+                listOf(DiscoveredServerSettings(
+                    it.type,
+                    it.host,
+                    it.port,
+                    it.connectionSecurity,
+                    it.authenticationType,
+                    email
+                ))
+            }
 
-            return ConnectionSettings(incomingSettings, outgoingSettings)
+            return DiscoveryResults(incomingSettings, outgoingSettings)
         } catch (use: URISyntaxException) {
             return null
         }

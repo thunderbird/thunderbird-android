@@ -24,6 +24,9 @@ import com.fsck.k9.account.AccountCreator;
 import com.fsck.k9.activity.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.autodiscovery.ConnectionSettings;
+import com.fsck.k9.autodiscovery.DiscoveredServerSettings;
+import com.fsck.k9.autodiscovery.DiscoveryResults;
+import com.fsck.k9.autodiscovery.DiscoveryTarget;
 import com.fsck.k9.autodiscovery.providersxml.ProvidersXmlDiscovery;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.helper.EmailHelper;
@@ -256,11 +259,38 @@ public class AccountSetupBasics extends K9Activity
         ServerSettings outgoingServerSettings = connectionSettings.getOutgoing().newPassword(password);
         String transportUri = backendManager.createTransportUri(outgoingServerSettings);
         mAccount.setTransportUri(transportUri);
-
         mAccount.setDeletePolicy(accountCreator.getDefaultDeletePolicy(incomingServerSettings.type));
 
         // Check incoming here.  Then check outgoing in onActivityResult()
         AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.INCOMING);
+    }
+
+    private ConnectionSettings providersXmlDiscoveryDiscover(String email, DiscoveryTarget discoveryTarget) {
+        DiscoveryResults discoveryResults = providersXmlDiscovery.discover(email, DiscoveryTarget.INCOMING_AND_OUTGOING);
+        if (discoveryResults == null || (discoveryResults.getIncoming().size() != 1 || discoveryResults.getOutgoing().size() != 1)) {
+            return null;
+        }
+        DiscoveredServerSettings incoming = discoveryResults.getIncoming().get(0);
+        DiscoveredServerSettings outgoing = discoveryResults.getOutgoing().get(0);
+        return new ConnectionSettings(new ServerSettings(
+                incoming.getProtocol(),
+                incoming.getHost(),
+                incoming.getPort(),
+                incoming.getSecurity(),
+                incoming.getAuthType(),
+                incoming.getUsername(),
+                null,
+                null
+        ), new ServerSettings(
+                outgoing.getProtocol(),
+                outgoing.getHost(),
+                outgoing.getPort(),
+                outgoing.getSecurity(),
+                outgoing.getAuthType(),
+                outgoing.getUsername(),
+                null,
+                null
+        ));
     }
 
     private void onNext() {
@@ -273,7 +303,7 @@ public class AccountSetupBasics extends K9Activity
 
         String email = mEmailView.getText().toString();
 
-        ConnectionSettings connectionSettings = providersXmlDiscovery.discover(email);
+        ConnectionSettings connectionSettings = providersXmlDiscoveryDiscover(email, DiscoveryTarget.INCOMING_AND_OUTGOING);
         if (connectionSettings != null) {
             finishAutoSetup(connectionSettings);
         } else {
