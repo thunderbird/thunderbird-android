@@ -17,33 +17,28 @@ import org.xmlpull.v1.XmlPullParserFactory
  */
 class ThunderbirdAutoconfigParser {
     fun parseSettings(stream: InputStream, email: String): DiscoveryResults? {
-        var incoming: DiscoveredServerSettings? = null
-        var outgoing: DiscoveredServerSettings? = null
-
         val factory = XmlPullParserFactory.newInstance()
         val xpp = factory.newPullParser()
 
         xpp.setInput(InputStreamReader(stream))
 
+        val incomingServers = mutableListOf<DiscoveredServerSettings>()
+        val outgoingServers = mutableListOf<DiscoveredServerSettings>()
         var eventType = xpp.eventType
         while (eventType != XmlPullParser.END_DOCUMENT) {
             if (eventType == XmlPullParser.START_TAG) {
                 when (xpp.name) {
                     "incomingServer" -> {
-                        incoming = parseServer(xpp, "incomingServer", email)
+                        incomingServers += parseServer(xpp, "incomingServer", email)
                     }
                     "outgoingServer" -> {
-                        outgoing = parseServer(xpp, "outgoingServer", email)
+                        outgoingServers += parseServer(xpp, "outgoingServer", email)
                     }
-                }
-
-                if (incoming != null && outgoing != null) {
-                    return DiscoveryResults(listOf(incoming), listOf(outgoing))
                 }
             }
             eventType = xpp.next()
         }
-        return null
+        return DiscoveryResults(incomingServers, outgoingServers)
     }
 
     private fun parseServer(xpp: XmlPullParser, nodeName: String, email: String): DiscoveredServerSettings {

@@ -43,7 +43,7 @@ class ProvidersXmlDiscovery(
                     it.port,
                     it.connectionSecurity,
                     it.authenticationType,
-                    email
+                    it.username
                 ))
             }
 
@@ -62,7 +62,7 @@ class ProvidersXmlDiscovery(
                     it.port,
                     it.connectionSecurity,
                     it.authenticationType,
-                    email
+                    it.username
                 ))
             }
 

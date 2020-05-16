@@ -268,7 +268,7 @@ public class AccountSetupBasics extends K9Activity
 
     private ConnectionSettings providersXmlDiscoveryDiscover(String email, DiscoveryTarget discoveryTarget) {
         DiscoveryResults discoveryResults = providersXmlDiscovery.discover(email, DiscoveryTarget.INCOMING_AND_OUTGOING);
-        if (discoveryResults == null || (discoveryResults.getIncoming().size() != 1 || discoveryResults.getOutgoing().size() != 1)) {
+        if (discoveryResults == null || (discoveryResults.getIncoming().size() < 1 || discoveryResults.getOutgoing().size() < 1)) {
             return null;
         }
         DiscoveredServerSettings incoming = discoveryResults.getIncoming().get(0);
