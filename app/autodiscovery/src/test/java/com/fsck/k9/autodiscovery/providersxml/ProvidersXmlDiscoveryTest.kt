@@ -1,5 +1,6 @@
 package com.fsck.k9.autodiscovery.providersxml
 
+import androidx.test.core.app.ApplicationProvider
 import com.fsck.k9.RobolectricTest
 import com.fsck.k9.autodiscovery.DiscoveryTarget
 import com.fsck.k9.backend.BackendManager
@@ -12,17 +13,16 @@ import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyString
-import org.robolectric.RuntimeEnvironment
 
 class ProvidersXmlDiscoveryTest : RobolectricTest() {
-    val backendManager = mock<BackendManager> {
+    private val backendManager = mock<BackendManager> {
         on { decodeStoreUri(anyString()) } doAnswer { mock -> ImapStoreUriDecoder.decode(mock.getArgument(0)) }
         on { decodeTransportUri(anyString()) } doAnswer { mock ->
             SmtpTransportUriDecoder.decodeSmtpUri(mock.getArgument(0))
         }
     }
-    val xmlProvider = ProvidersXmlProvider(RuntimeEnvironment.application)
-    val providersXmlDiscovery = ProvidersXmlDiscovery(backendManager, xmlProvider)
+    private val xmlProvider = ProvidersXmlProvider(ApplicationProvider.getApplicationContext())
+    private val providersXmlDiscovery = ProvidersXmlDiscovery(backendManager, xmlProvider)
 
     @Test
     fun discover_withGmailDomain_shouldReturnCorrectSettings() {
