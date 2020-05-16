@@ -1,5 +1,6 @@
 package com.fsck.k9.ui
 
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.PorterDuff
@@ -8,10 +9,13 @@ import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import com.fsck.k9.activity.MessageList
+import com.fsck.k9.controller.MessagingController
+import com.fsck.k9.controller.SimpleMessagingListener
 import com.fsck.k9.helper.Contacts
 import com.fsck.k9.mailstore.DisplayFolder
 import com.fsck.k9.mailstore.Folder
@@ -46,10 +50,12 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private val preferences: Preferences by inject()
     private val themeManager: ThemeManager by inject()
     private val resources: Resources by inject()
+    private val messagingController: MessagingController by inject()
 
     private val drawer: Drawer
     private val accountHeader: AccountHeader
     private val folderIconProvider: FolderIconProvider = FolderIconProvider(parent.theme)
+    private val swipeRefreshLayout: SwipeRefreshLayout
 
     private val userFolderDrawerIds = ArrayList<Long>()
     private var unifiedInboxSelected: Boolean = false
@@ -73,6 +79,18 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 .withSavedInstance(savedInstanceState)
                 .withAccountHeader(accountHeader)
                 .build()
+
+        swipeRefreshLayout = drawer.slider.findViewById(R.id.material_drawer_swipe_refresh)
+        accountHeader.view.addOnLayoutChangeListener { view, _, _, _, _, _, _, _, _ ->
+            val densityMultiplier = view.resources.displayMetrics.density
+
+            val progressViewStart = view.measuredHeight
+            val progressViewEnd = progressViewStart + (PROGRESS_VIEW_END_OFFSET * densityMultiplier).toInt()
+            swipeRefreshLayout.setProgressViewOffset(true, progressViewStart, progressViewEnd)
+
+            val slingshotDistance = (PROGRESS_VIEW_SLINGSHOT_DISTANCE * densityMultiplier).toInt()
+            swipeRefreshLayout.setSlingshotDistance(slingshotDistance)
+        }
 
         addFooterItems()
 
@@ -190,10 +208,19 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
             accountHeader.setActiveProfile((account.accountNumber + 1 shl DRAWER_ACCOUNT_SHIFT).toLong())
             accountHeader.headerBackgroundView.setColorFilter(account.chipColor, PorterDuff.Mode.MULTIPLY)
-
             viewModel.loadFolders(account)
 
             updateFooterItems()
+        }
+
+        // Account can be null to refresh all (unified inbox or account list).
+        swipeRefreshLayout.setOnRefreshListener {
+            val accountToRefresh = if (accountHeader.isSelectionListShown) null else account
+            messagingController.checkMail(parent, accountToRefresh, true, true, object : SimpleMessagingListener() {
+                override fun checkMailFinished(context: Context?, account: Account?) {
+                    swipeRefreshLayout.isRefreshing = false
+                }
+            })
         }
     }
 
@@ -341,5 +368,8 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         private const val DRAWER_ID_UNIFIED_INBOX: Long = 0
         private const val DRAWER_ID_PREFERENCES: Long = 1
         private const val DRAWER_ID_FOLDERS: Long = 2
+
+        private const val PROGRESS_VIEW_END_OFFSET = 32
+        private const val PROGRESS_VIEW_SLINGSHOT_DISTANCE = 48
     }
 }
