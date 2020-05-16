@@ -208,18 +208,19 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
             accountHeader.setActiveProfile((account.accountNumber + 1 shl DRAWER_ACCOUNT_SHIFT).toLong())
             accountHeader.headerBackgroundView.setColorFilter(account.chipColor, PorterDuff.Mode.MULTIPLY)
-
-            swipeRefreshLayout.setOnRefreshListener {
-                messagingController.checkMail(parent, account, true, true, object : SimpleMessagingListener() {
-                    override fun checkMailFinished(context: Context?, account: Account?) {
-                        swipeRefreshLayout.isRefreshing = false
-                    }
-                })
-            }
-
             viewModel.loadFolders(account)
 
             updateFooterItems()
+        }
+
+        // Account can be null to refresh all (unified inbox or account list).
+        swipeRefreshLayout.setOnRefreshListener {
+            val accountToRefresh = if (accountHeader.isSelectionListShown) null else account
+            messagingController.checkMail(parent, accountToRefresh, true, true, object : SimpleMessagingListener() {
+                override fun checkMailFinished(context: Context?, account: Account?) {
+                    swipeRefreshLayout.isRefreshing = false
+                }
+            })
         }
     }
 
