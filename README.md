@@ -29,7 +29,7 @@ If the app is not behaving like it should, you might find these resources helpfu
 
 - [User Manual](https://k9mail.github.io/documentation)
 - [Frequently Asked Questions](https://k9mail.github.io/documentation/faq.html)
-- [Support Forum/Mailing List](https://groups.google.com/group/k-9-mail)
+- [Support Forum](https://forum.k9mail.app/)
 
 
 ## Translations
