@@ -2,7 +2,7 @@ package com.fsck.k9
 
 import com.fsck.k9.account.accountModule
 import com.fsck.k9.activity.activityModule
-import com.fsck.k9.autodiscovery.autodiscoveryModule
+import com.fsck.k9.autodiscovery.providersxml.autodiscoveryProvidersXmlModule
 import com.fsck.k9.contacts.contactsModule
 import com.fsck.k9.fragment.fragmentModule
 import com.fsck.k9.ui.choosefolder.chooseFolderUiModule
@@ -26,6 +26,6 @@ val uiModules = listOf(
         fragmentModule,
         contactsModule,
         accountModule,
-        autodiscoveryModule,
+        autodiscoveryProvidersXmlModule,
         viewModule
 )
