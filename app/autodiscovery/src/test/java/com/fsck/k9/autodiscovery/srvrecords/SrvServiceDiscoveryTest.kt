@@ -1,49 +1,56 @@
 package com.fsck.k9.autodiscovery.srvrecords
 
 import com.fsck.k9.RobolectricTest
+import com.fsck.k9.autodiscovery.DiscoveredServerSettings
+import com.fsck.k9.autodiscovery.DiscoveryResults
+import com.fsck.k9.autodiscovery.DiscoveryTarget
 import com.fsck.k9.mail.ConnectionSecurity
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
 import org.junit.Test
 
 class SrvServiceDiscoveryTest : RobolectricTest() {
 
     @Test
-    fun discover_whenNoMailServices_shouldReturnNull() {
+    fun discover_whenNoMailServices_shouldReturnNoResults() {
         val srvResolver = newMockSrvResolver()
 
         val srvServiceDiscovery = SrvServiceDiscovery(srvResolver)
-        val result = srvServiceDiscovery.discover("test@example.com")
+        val result = srvServiceDiscovery.discover("test@example.com", DiscoveryTarget.INCOMING_AND_OUTGOING)
 
-        assertNull(result)
+        assertEquals(DiscoveryResults(listOf(), listOf()), result)
     }
 
     @Test
-    fun discover_whenNoSMTP_shouldReturnNull() {
+    fun discover_whenNoSMTP_shouldReturnJustIMAP() {
         val srvResolver = newMockSrvResolver(
             imapServices = listOf(newMailService(port = 143, srvType = SrvType.IMAP)),
             imapsServices = listOf(newMailService(port = 993, srvType = SrvType.IMAPS,
                 security = ConnectionSecurity.SSL_TLS_REQUIRED))
         )
-        val srvServiceDiscovery = SrvServiceDiscovery(srvResolver)
-        val result = srvServiceDiscovery.discover("test@example.com")
 
-        assertNull(result)
+        val srvServiceDiscovery = SrvServiceDiscovery(srvResolver)
+        val result = srvServiceDiscovery.discover("test@example.com", DiscoveryTarget.INCOMING_AND_OUTGOING)
+
+        assertEquals(2, result!!.incoming.size)
+        assertEquals(0, result.outgoing.size)
     }
 
     @Test
-    fun discover_whenNoIMAP_shouldReturnNull() {
+    fun discover_whenNoIMAP_shouldReturnJustSMTP() {
         val srvResolver = newMockSrvResolver(submissionServices = listOf(
             newMailService(port = 25, srvType = SrvType.SUBMISSION, security = ConnectionSecurity.STARTTLS_REQUIRED),
             newMailService(port = 465, srvType = SrvType.SUBMISSIONS, security = ConnectionSecurity.SSL_TLS_REQUIRED)
         ))
 
         val srvServiceDiscovery = SrvServiceDiscovery(srvResolver)
-        val result = srvServiceDiscovery.discover("test@example.com")
+        val result = srvServiceDiscovery.discover("test@example.com", DiscoveryTarget.INCOMING_AND_OUTGOING)
 
-        assertNull(result)
+        assertEquals(0, result!!.incoming.size)
+        assertEquals(2, result.outgoing.size)
     }
 
     @Test
@@ -79,10 +86,60 @@ class SrvServiceDiscoveryTest : RobolectricTest() {
         ))
 
         val srvServiceDiscovery = SrvServiceDiscovery(srvResolver)
-        val result = srvServiceDiscovery.discover("test@example.com")
+        val result = srvServiceDiscovery.discover("test@example.com", DiscoveryTarget.INCOMING_AND_OUTGOING)
 
-        assertEquals("smtp3.example.com", result?.outgoing?.host)
-        assertEquals("imaps1.example.com", result?.incoming?.host)
+        assertEquals(listOf(
+            "smtp3.example.com",
+            "smtp1.example.com",
+            "smtp4.example.com",
+            "smtp2.example.com"
+        ),
+            result?.outgoing?.map { it.host }
+        )
+        assertEquals(listOf(
+            "imaps1.example.com",
+            "imap1.example.com",
+            "imaps2.example.com",
+            "imap2.example.com"
+        ),
+            result?.incoming?.map { it.host }
+        )
+    }
+
+    @Test
+    fun discover_whenOnlyOutgoingTrue_shouldOnlyFetchOutgoing() {
+        val srvResolver = newMockSrvResolver(submissionServices = listOf(
+            newMailService(
+                host = "smtp.example.com", port = 465, srvType = SrvType.SUBMISSIONS,
+                security = ConnectionSecurity.SSL_TLS_REQUIRED, priority = 0)
+        ))
+
+        val srvServiceDiscovery = SrvServiceDiscovery(srvResolver)
+        val result = srvServiceDiscovery.discover("test@example.com", DiscoveryTarget.OUTGOING)
+
+        verify(srvResolver).lookup("example.com", SrvType.SUBMISSIONS)
+        verify(srvResolver).lookup("example.com", SrvType.SUBMISSION)
+        verifyNoMoreInteractions(srvResolver)
+        assertEquals(1, result!!.outgoing.size)
+        assertEquals(listOf<DiscoveredServerSettings>(), result.incoming)
+    }
+
+    @Test
+    fun discover_whenOnlyIncomingTrue_shouldOnlyFetchIncoming() {
+        val srvResolver = newMockSrvResolver(imapsServices = listOf(
+            newMailService(
+                host = "imaps.example.com", port = 993, srvType = SrvType.IMAPS,
+                security = ConnectionSecurity.SSL_TLS_REQUIRED, priority = 0)
+        ))
+
+        val srvServiceDiscovery = SrvServiceDiscovery(srvResolver)
+        val result = srvServiceDiscovery.discover("test@example.com", DiscoveryTarget.INCOMING)
+
+        verify(srvResolver).lookup("example.com", SrvType.IMAPS)
+        verify(srvResolver).lookup("example.com", SrvType.IMAP)
+        verifyNoMoreInteractions(srvResolver)
+        assertEquals(1, result!!.incoming.size)
+        assertEquals(listOf<DiscoveredServerSettings>(), result.outgoing)
     }
 
     private fun newMailService(

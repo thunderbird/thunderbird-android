@@ -1,6 +1,10 @@
 package com.fsck.k9.autodiscovery.thunderbird
 
 import com.fsck.k9.RobolectricTest
+import com.fsck.k9.autodiscovery.DiscoveredServerSettings
+import com.fsck.k9.autodiscovery.DiscoveryResults
+import com.fsck.k9.mail.AuthType
+import com.fsck.k9.mail.ConnectionSecurity
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
@@ -41,12 +45,12 @@ class ThunderbirdAutoconfigTest : RobolectricTest() {
         assertThat(connectionSettings).isNotNull()
         assertThat(connectionSettings!!.incoming).isNotNull()
         assertThat(connectionSettings.outgoing).isNotNull()
-        with(connectionSettings.incoming) {
+        with(connectionSettings.incoming.first()) {
             assertThat(host).isEqualTo("imap.googlemail.com")
             assertThat(port).isEqualTo(993)
             assertThat(username).isEqualTo("test@metacode.biz")
         }
-        with(connectionSettings.outgoing) {
+        with(connectionSettings.outgoing.first()) {
             assertThat(host).isEqualTo("smtp.googlemail.com")
             assertThat(port).isEqualTo(465)
             assertThat(username).isEqualTo("test@metacode.biz")
@@ -54,7 +58,7 @@ class ThunderbirdAutoconfigTest : RobolectricTest() {
     }
 
     @Test
-    fun pickFirstServer() {
+    fun multipleServers() {
         val input = """<?xml version="1.0"?>
             <clientConfig version="1.1">
                 <emailProvider id="metacode.biz">
@@ -92,12 +96,17 @@ class ThunderbirdAutoconfigTest : RobolectricTest() {
         </clientConfig>
         """.trimIndent().byteInputStream()
 
-        val connectionSettings = parser.parseSettings(input, "test@metacode.biz")
+        val discoveryResults = parser.parseSettings(input, "test@metacode.biz")
 
-        assertThat(connectionSettings).isNotNull()
-        assertThat(connectionSettings!!.outgoing).isNotNull()
-        with(connectionSettings.outgoing) {
+        assertThat(discoveryResults).isNotNull()
+        assertThat(discoveryResults!!.outgoing).isNotNull()
+        with(discoveryResults.outgoing[0]) {
             assertThat(host).isEqualTo("first")
+            assertThat(port).isEqualTo(465)
+            assertThat(username).isEqualTo("test@metacode.biz")
+        }
+        with(discoveryResults.outgoing[1]) {
+            assertThat(host).isEqualTo("second")
             assertThat(port).isEqualTo(465)
             assertThat(username).isEqualTo("test@metacode.biz")
         }
@@ -113,7 +122,7 @@ class ThunderbirdAutoconfigTest : RobolectricTest() {
 
         val connectionSettings = parser.parseSettings(input, "test@metacode.biz")
 
-        assertThat(connectionSettings).isNull()
+        assertThat(connectionSettings).isEqualTo(DiscoveryResults(listOf(), listOf()))
     }
 
     @Test
@@ -137,7 +146,12 @@ class ThunderbirdAutoconfigTest : RobolectricTest() {
 
         val connectionSettings = parser.parseSettings(input, "test@metacode.biz")
 
-        assertThat(connectionSettings).isNull()
+        assertThat(connectionSettings).isEqualTo(DiscoveryResults(listOf(
+            DiscoveredServerSettings(
+                protocol = "imap", host = "imap.googlemail.com", port = 993,
+                security = ConnectionSecurity.SSL_TLS_REQUIRED, authType = AuthType.PLAIN,
+                username = "test@metacode.biz")
+        ), listOf()))
     }
 
     @Test

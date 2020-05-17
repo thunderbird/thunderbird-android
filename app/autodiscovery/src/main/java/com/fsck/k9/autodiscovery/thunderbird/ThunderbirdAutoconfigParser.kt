@@ -1,9 +1,9 @@
 package com.fsck.k9.autodiscovery.thunderbird
 
-import com.fsck.k9.autodiscovery.ConnectionSettings
+import com.fsck.k9.autodiscovery.DiscoveredServerSettings
+import com.fsck.k9.autodiscovery.DiscoveryResults
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
-import com.fsck.k9.mail.ServerSettings
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
@@ -16,37 +16,32 @@ import org.xmlpull.v1.XmlPullParserFactory
  * [Autoconfig file format](https://wiki.mozilla.org/Thunderbird:Autoconfiguration:ConfigFileFormat)
  */
 class ThunderbirdAutoconfigParser {
-    fun parseSettings(stream: InputStream, email: String): ConnectionSettings? {
-        var incoming: ServerSettings? = null
-        var outgoing: ServerSettings? = null
-
+    fun parseSettings(stream: InputStream, email: String): DiscoveryResults? {
         val factory = XmlPullParserFactory.newInstance()
         val xpp = factory.newPullParser()
 
         xpp.setInput(InputStreamReader(stream))
 
+        val incomingServers = mutableListOf<DiscoveredServerSettings>()
+        val outgoingServers = mutableListOf<DiscoveredServerSettings>()
         var eventType = xpp.eventType
         while (eventType != XmlPullParser.END_DOCUMENT) {
             if (eventType == XmlPullParser.START_TAG) {
                 when (xpp.name) {
                     "incomingServer" -> {
-                        incoming = parseServer(xpp, "incomingServer", email)
+                        incomingServers += parseServer(xpp, "incomingServer", email)
                     }
                     "outgoingServer" -> {
-                        outgoing = parseServer(xpp, "outgoingServer", email)
+                        outgoingServers += parseServer(xpp, "outgoingServer", email)
                     }
-                }
-
-                if (incoming != null && outgoing != null) {
-                    return ConnectionSettings(incoming, outgoing)
                 }
             }
             eventType = xpp.next()
         }
-        return null
+        return DiscoveryResults(incomingServers, outgoingServers)
     }
 
-    private fun parseServer(xpp: XmlPullParser, nodeName: String, email: String): ServerSettings {
+    private fun parseServer(xpp: XmlPullParser, nodeName: String, email: String): DiscoveredServerSettings {
         val type = xpp.getAttributeValue(null, "type")
         var host: String? = null
         var username: String? = null
@@ -78,7 +73,7 @@ class ThunderbirdAutoconfigParser {
             eventType = xpp.next()
         }
 
-        return ServerSettings(type, host, port!!, connectionSecurity, authType, username, null, null)
+        return DiscoveredServerSettings(type, host!!, port!!, connectionSecurity!!, authType, username)
     }
 
     private fun parseAuthType(authentication: String): AuthType? {

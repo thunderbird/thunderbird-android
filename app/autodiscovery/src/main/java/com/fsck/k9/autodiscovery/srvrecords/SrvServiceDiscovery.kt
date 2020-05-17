@@ -1,47 +1,44 @@
 package com.fsck.k9.autodiscovery.srvrecords
 
-import com.fsck.k9.autodiscovery.ConnectionSettings
 import com.fsck.k9.autodiscovery.ConnectionSettingsDiscovery
+import com.fsck.k9.autodiscovery.DiscoveredServerSettings
+import com.fsck.k9.autodiscovery.DiscoveryResults
+import com.fsck.k9.autodiscovery.DiscoveryTarget
 import com.fsck.k9.helper.EmailHelper
 import com.fsck.k9.mail.AuthType
 import com.fsck.k9.mail.ConnectionSecurity
-import com.fsck.k9.mail.ServerSettings
 
 class SrvServiceDiscovery(
     private val srvResolver: MiniDnsSrvResolver
 ) : ConnectionSettingsDiscovery {
-    override fun discover(email: String): ConnectionSettings? {
+
+    override fun discover(email: String, target: DiscoveryTarget): DiscoveryResults? {
         val domain = EmailHelper.getDomainFromEmailAddress(email) ?: return null
-        val pickMailService = compareBy<MailService> { it.priority }.thenByDescending { it.security }
+        val mailServicePriority = compareBy<MailService> { it.priority }.thenByDescending { it.security }
 
-        val outgoingService = listOf(SrvType.SUBMISSIONS, SrvType.SUBMISSION).flatMap { srvResolver.lookup(domain, it) }
-            .minWith(pickMailService) ?: return null
-        val incomingService = listOf(SrvType.IMAPS, SrvType.IMAP).flatMap { srvResolver.lookup(domain, it) }
-            .minWith(pickMailService) ?: return null
+        val outgoingSettings = if (target.outgoing)
+            listOf(SrvType.SUBMISSIONS, SrvType.SUBMISSION).flatMap { srvResolver.lookup(domain, it) }
+                .sortedWith(mailServicePriority).map { newServerSettings(it, email) }
+        else listOf()
 
-        return ConnectionSettings(
-            incoming = ServerSettings(
-                incomingService.srvType.protocol,
-                incomingService.host,
-                incomingService.port,
-                incomingService.security,
-                AuthType.PLAIN,
-                email,
-                null,
-                null
-            ),
-            outgoing = ServerSettings(
-                outgoingService.srvType.protocol,
-                outgoingService.host,
-                outgoingService.port,
-                outgoingService.security,
-                AuthType.PLAIN,
-                email,
-                null,
-                null
-            )
-        )
+        val incomingSettings = if (target.incoming)
+            listOf(SrvType.IMAPS, SrvType.IMAP).flatMap { srvResolver.lookup(domain, it) }
+                .sortedWith(mailServicePriority).map { newServerSettings(it, email) }
+        else listOf()
+
+        return DiscoveryResults(incoming = incomingSettings, outgoing = outgoingSettings)
     }
+}
+
+fun newServerSettings(service: MailService, email: String): DiscoveredServerSettings {
+    return DiscoveredServerSettings(
+        service.srvType.protocol,
+        service.host,
+        service.port,
+        service.security,
+        AuthType.PLAIN,
+        email
+    )
 }
 
 enum class SrvType(val label: String, val protocol: String, val assumeTls: Boolean) {
@@ -56,5 +53,5 @@ data class MailService(
     val host: String,
     val port: Int,
     val priority: Int,
-    val security: ConnectionSecurity?
+    val security: ConnectionSecurity
 )
