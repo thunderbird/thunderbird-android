@@ -9,7 +9,8 @@ import org.koin.dsl.module
 
 val uiModule = module {
     single { HtmlToSpanned() }
-    single { ThemeManager(get()) }
+    single<ThemeProvider> { K9ThemeProvider() }
+    single { ThemeManager(context = get(), themeProvider = get()) }
     single { HtmlSettingsProvider(get()) }
     single { DisplayHtmlUiFactory(get()) }
     factory { (context: Context) -> SizeFormatter(context.resources) }

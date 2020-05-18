@@ -9,7 +9,10 @@ import com.fsck.k9.K9
 import com.fsck.k9.K9.AppTheme
 import com.fsck.k9.K9.SubTheme
 
-class ThemeManager(private val context: Context) {
+class ThemeManager(
+    private val context: Context,
+    private val themeProvider: ThemeProvider
+) {
     val appTheme: Theme
         get() = when (K9.appTheme) {
             AppTheme.LIGHT -> Theme.LIGHT
@@ -24,10 +27,10 @@ class ThemeManager(private val context: Context) {
         get() = resolveTheme(K9.messageComposeTheme)
 
     @get:StyleRes
-    val appThemeResourceId: Int = R.style.Theme_K9_DayNight
+    val appThemeResourceId: Int = themeProvider.appThemeResourceId
 
     @get:StyleRes
-    val appActionBarThemeResourceId: Int = R.style.Theme_K9_DayNight_ActionBar
+    val appActionBarThemeResourceId: Int = themeProvider.appActionBarThemeResourceId
 
     @get:StyleRes
     val messageViewThemeResourceId: Int
@@ -38,10 +41,10 @@ class ThemeManager(private val context: Context) {
         get() = getSubThemeResourceId(K9.messageComposeTheme)
 
     @get:StyleRes
-    val dialogThemeResourceId: Int = R.style.Theme_K9_Dialog_DayNight
+    val dialogThemeResourceId: Int = themeProvider.dialogThemeResourceId
 
     @get:StyleRes
-    val translucentDialogThemeResourceId: Int = R.style.Theme_K9_Dialog_Translucent_DayNight
+    val translucentDialogThemeResourceId: Int = themeProvider.translucentDialogThemeResourceId
 
     fun init() {
         updateAppTheme()
@@ -73,9 +76,9 @@ class ThemeManager(private val context: Context) {
     }
 
     private fun getSubThemeResourceId(subTheme: SubTheme): Int = when (subTheme) {
-        SubTheme.LIGHT -> R.style.Theme_K9_Light
-        SubTheme.DARK -> R.style.Theme_K9_Dark
-        SubTheme.USE_GLOBAL -> R.style.Theme_K9_DayNight
+        SubTheme.LIGHT -> themeProvider.appLightThemeResourceId
+        SubTheme.DARK -> themeProvider.appDarkThemeResourceId
+        SubTheme.USE_GLOBAL -> themeProvider.appThemeResourceId
     }
 
     private fun resolveTheme(theme: SubTheme): Theme = when (theme) {
