@@ -110,7 +110,11 @@ import com.fsck.k9.ui.compose.QuotedMessageMvpView;
 import com.fsck.k9.ui.compose.QuotedMessagePresenter;
 import com.fsck.k9.ui.helper.SizeFormatter;
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider;
+import com.fsck.k9.ui.permissions.K9PermissionUiHelper;
+import com.fsck.k9.ui.permissions.Permission;
+import com.fsck.k9.ui.permissions.PermissionUiHelper;
 
+import org.jetbrains.annotations.NotNull;
 import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.util.OpenPgpApi;
 import timber.log.Timber;
@@ -120,7 +124,7 @@ import timber.log.Timber;
 public class MessageCompose extends K9Activity implements OnClickListener,
         CancelListener, AttachmentDownloadCancelListener, OnFocusChangeListener,
         OnOpenPgpInlineChangeListener, OnOpenPgpSignOnlyChangeListener, MessageBuilder.Callback,
-        AttachmentPresenter.AttachmentsChangedListener, OnOpenPgpDisableListener {
+        AttachmentPresenter.AttachmentsChangedListener, OnOpenPgpDisableListener, PermissionUiHelper {
 
     private static final int DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE = 1;
     private static final int DIALOG_CONFIRM_DISCARD_ON_BACK = 2;
@@ -176,6 +180,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private final MessageLoaderHelperFactory messageLoaderHelperFactory = DI.get(MessageLoaderHelperFactory.class);
     private final DefaultFolderProvider defaultFolderProvider = DI.get(DefaultFolderProvider.class);
+
+    private final PermissionUiHelper permissionUiHelper = new K9PermissionUiHelper(this);
 
     private QuotedMessagePresenter quotedMessagePresenter;
     private MessageLoaderHelper messageLoaderHelper;
@@ -1883,4 +1889,20 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             return titleResource;
         }
     }
+
+    @Override
+    public boolean hasPermission(@NotNull Permission permission) {
+        return permissionUiHelper.hasPermission(permission);
+    }
+
+    @Override
+    public void requestPermissionOrShowRationale(@NotNull Permission permission) {
+        permissionUiHelper.requestPermissionOrShowRationale(permission);
+    }
+
+    @Override
+    public void requestPermission(@NotNull Permission permission) {
+        permissionUiHelper.requestPermission(permission);
+    }
+
 }

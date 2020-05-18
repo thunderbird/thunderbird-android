@@ -60,9 +60,15 @@ import com.fsck.k9.ui.messageview.MessageViewFragment;
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener;
 import com.fsck.k9.ui.messageview.PlaceholderFragment;
 import com.fsck.k9.ui.onboarding.OnboardingActivity;
+import com.fsck.k9.ui.permissions.K9PermissionUiHelper;
+import com.fsck.k9.ui.permissions.Permission;
+import com.fsck.k9.ui.permissions.PermissionUiHelper;
 import com.fsck.k9.view.ViewSwitcher;
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener;
 import com.mikepenz.materialdrawer.Drawer.OnDrawerListener;
+
+import org.jetbrains.annotations.NotNull;
+
 import timber.log.Timber;
 
 
@@ -72,7 +78,7 @@ import timber.log.Timber;
  * From this Activity the user can perform all standard message operations.
  */
 public class MessageList extends K9Activity implements MessageListFragmentListener,
-        MessageViewFragmentListener, OnBackStackChangedListener, OnSwitchCompleteListener {
+        MessageViewFragmentListener, OnBackStackChangedListener, OnSwitchCompleteListener, PermissionUiHelper {
 
     private static final String EXTRA_SEARCH = "search_bytes";
     private static final String EXTRA_NO_THREADING = "no_threading";
@@ -177,6 +183,8 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     private final Preferences preferences = DI.get(Preferences.class);
     private final NotificationChannelManager channelUtils = DI.get(NotificationChannelManager.class);
     private final DefaultFolderProvider defaultFolderProvider = DI.get(DefaultFolderProvider.class);
+
+    private final PermissionUiHelper permissionUiHelper = new K9PermissionUiHelper(this);
 
     private ActionBar actionBar;
     private ActionBarDrawerToggle drawerToggle;
@@ -1621,5 +1629,20 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         } else {
             drawer.deselect();
         }
+    }
+
+    @Override
+    public boolean hasPermission(@NotNull Permission permission) {
+        return permissionUiHelper.hasPermission(permission);
+    }
+
+    @Override
+    public void requestPermissionOrShowRationale(@NotNull Permission permission) {
+        permissionUiHelper.requestPermissionOrShowRationale(permission);
+    }
+
+    @Override
+    public void requestPermission(@NotNull Permission permission) {
+        permissionUiHelper.requestPermission(permission);
     }
 }
