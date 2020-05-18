@@ -6,6 +6,7 @@ apply plugin: 'org.jlleitschuh.gradle.ktlint'
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
 
+    api project(":app:ui:base")
     implementation project(":app:core")
     implementation project(":app:autodiscovery:api")
     implementation project(":app:autodiscovery:providersxml")
@@ -46,7 +47,7 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
     implementation "commons-io:commons-io:${versions.commonsIo}"
-    implementation "androidx.core:core-ktx:${versions.coreKtx}"
+    implementation "androidx.core:core-ktx:${versions.androidxCore}"
     implementation "net.jcip:jcip-annotations:1.0"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
     implementation "org.apache.james:apache-mime4j-core:${versions.mime4j}"

@@ -6,8 +6,8 @@ import android.os.Bundle
 import androidx.navigation.NavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
-import com.fsck.k9.activity.K9Activity
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.base.K9Activity
 import com.fsck.k9.ui.findNavController
 
 class SettingsActivity : K9Activity() {

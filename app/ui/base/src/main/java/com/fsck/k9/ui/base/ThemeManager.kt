@@ -1,4 +1,4 @@
-package com.fsck.k9.ui
+package com.fsck.k9.ui.base
 
 import android.content.Context
 import android.content.res.Configuration

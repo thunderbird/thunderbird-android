@@ -1,11 +1,9 @@
-package com.fsck.k9.activity
+package com.fsck.k9.ui.base
 
 import android.app.Activity
 import android.content.res.Resources
 import android.text.TextUtils
 import com.fsck.k9.K9
-import com.fsck.k9.ui.Theme
-import com.fsck.k9.ui.ThemeManager
 import java.util.Locale
 import org.koin.core.KoinComponent
 import org.koin.core.inject

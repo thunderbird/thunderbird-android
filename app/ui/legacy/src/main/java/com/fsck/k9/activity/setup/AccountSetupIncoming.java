@@ -28,7 +28,7 @@ import com.fsck.k9.DI;
 import com.fsck.k9.LocalKeyStoreManager;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.account.AccountCreator;
-import com.fsck.k9.activity.K9Activity;
+import com.fsck.k9.ui.base.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.controller.MessagingController;

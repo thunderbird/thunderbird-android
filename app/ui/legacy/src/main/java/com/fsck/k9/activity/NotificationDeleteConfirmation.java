@@ -18,6 +18,8 @@ import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.notification.NotificationActionService;
+import com.fsck.k9.ui.base.K9ActivityCommon;
+import com.fsck.k9.ui.base.ThemeType;
 
 import static com.fsck.k9.controller.MessageReferenceHelper.toMessageReferenceList;
 import static com.fsck.k9.controller.MessageReferenceHelper.toMessageReferenceStringList;

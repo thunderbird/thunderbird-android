@@ -28,8 +28,8 @@ import android.widget.ListAdapter;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.activity.K9ActivityCommon;
-import com.fsck.k9.activity.ThemeType;
+import com.fsck.k9.ui.base.K9ActivityCommon;
+import com.fsck.k9.ui.base.ThemeType;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.dialog.ApgDeprecationWarningDialog;
 import org.openintents.openpgp.util.OpenPgpApi;

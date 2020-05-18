@@ -16,7 +16,7 @@ import android.widget.EditText;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.activity.K9Activity;
+import com.fsck.k9.ui.base.K9Activity;
 import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.helper.Utility;

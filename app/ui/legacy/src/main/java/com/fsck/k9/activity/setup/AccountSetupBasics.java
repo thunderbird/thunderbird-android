@@ -21,7 +21,7 @@ import com.fsck.k9.DI;
 import com.fsck.k9.EmailAddressValidator;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.account.AccountCreator;
-import com.fsck.k9.activity.K9Activity;
+import com.fsck.k9.ui.base.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.autodiscovery.api.DiscoveredServerSettings;
 import com.fsck.k9.autodiscovery.api.DiscoveryResults;

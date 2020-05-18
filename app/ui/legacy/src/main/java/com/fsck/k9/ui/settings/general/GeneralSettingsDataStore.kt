@@ -7,7 +7,7 @@ import com.fsck.k9.K9.AppTheme
 import com.fsck.k9.K9.SubTheme
 import com.fsck.k9.Preferences
 import com.fsck.k9.job.K9JobManager
-import com.fsck.k9.ui.ThemeManager
+import com.fsck.k9.ui.base.ThemeManager
 import java.util.concurrent.ExecutorService
 
 class GeneralSettingsDataStore(

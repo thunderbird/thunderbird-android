@@ -6,12 +6,12 @@ import android.os.Bundle
 import android.view.View
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
-import com.fsck.k9.activity.K9Activity
 import com.fsck.k9.helper.EmailHelper.getDomainFromEmailAddress
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import com.fsck.k9.preferences.Protocols
 import com.fsck.k9.setup.ServerNameSuggester
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.base.K9Activity
 import java.net.URI
 import org.koin.android.ext.android.inject
 

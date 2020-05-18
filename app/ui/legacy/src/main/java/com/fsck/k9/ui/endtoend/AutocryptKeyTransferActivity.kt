@@ -9,9 +9,9 @@ import android.transition.TransitionInflater
 import android.transition.TransitionManager
 import android.view.MenuItem
 import android.view.View
-import com.fsck.k9.activity.K9Activity
 import com.fsck.k9.finishWithErrorToast
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.base.K9Activity
 import com.fsck.k9.view.StatusIndicator
 import kotlinx.android.synthetic.main.crypto_key_transfer.*
 import kotlinx.coroutines.delay

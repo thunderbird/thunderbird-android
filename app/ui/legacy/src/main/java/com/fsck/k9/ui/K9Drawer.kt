@@ -19,6 +19,8 @@ import com.fsck.k9.controller.SimpleMessagingListener
 import com.fsck.k9.helper.Contacts
 import com.fsck.k9.mailstore.DisplayFolder
 import com.fsck.k9.mailstore.Folder
+import com.fsck.k9.ui.base.Theme
+import com.fsck.k9.ui.base.ThemeManager
 import com.fsck.k9.ui.folders.FolderIconProvider
 import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.folders.FoldersViewModel

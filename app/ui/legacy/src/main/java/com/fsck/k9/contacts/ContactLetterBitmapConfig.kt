@@ -5,8 +5,8 @@ import android.util.TypedValue
 import android.view.ContextThemeWrapper
 import com.fsck.k9.K9
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.Theme
-import com.fsck.k9.ui.ThemeManager
+import com.fsck.k9.ui.base.Theme
+import com.fsck.k9.ui.base.ThemeManager
 
 class ContactLetterBitmapConfig(context: Context, themeManager: ThemeManager) {
     val hasDefaultBackgroundColor: Boolean = !K9.isColorizeMissingContactPictures

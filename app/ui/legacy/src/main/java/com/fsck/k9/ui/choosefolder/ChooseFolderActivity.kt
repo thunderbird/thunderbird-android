@@ -12,12 +12,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.Preferences
-import com.fsck.k9.activity.K9Activity
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.mailstore.DisplayFolder
 import com.fsck.k9.mailstore.FolderType
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.base.K9Activity
 import com.fsck.k9.ui.folders.FolderIconProvider
 import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.folders.FoldersLiveData

@@ -19,7 +19,7 @@ dependencies {
     implementation project(":backend:webdav")
 
     implementation "androidx.appcompat:appcompat:${versions.androidxAppCompat}"
-    implementation "androidx.core:core-ktx:${versions.coreKtx}"
+    implementation "androidx.core:core-ktx:${versions.androidxCore}"
     implementation "com.takisoft.preferencex:preferencex:${versions.preferencesFix}"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinCoroutines}"

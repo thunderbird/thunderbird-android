@@ -1,5 +1,6 @@
 include ':app:k9mail'
 include ':app:k9mail-jmap'
+include ':app:ui:base'
 include ':app:ui:legacy'
 include ':app:core'
 include ':app:storage'

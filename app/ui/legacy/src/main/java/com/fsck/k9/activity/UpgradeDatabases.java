@@ -18,6 +18,7 @@ import com.fsck.k9.ui.R;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.service.DatabaseUpgradeService;
+import com.fsck.k9.ui.base.K9Activity;
 
 
 /**

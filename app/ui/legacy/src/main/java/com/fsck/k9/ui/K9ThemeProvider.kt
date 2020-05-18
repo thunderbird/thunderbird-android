@@ -1,5 +1,7 @@
 package com.fsck.k9.ui
 
+import com.fsck.k9.ui.base.ThemeProvider
+
 // TODO: Move this class and the theme resources to the main app module
 class K9ThemeProvider : ThemeProvider {
     override val appThemeResourceId = R.style.Theme_K9_DayNight

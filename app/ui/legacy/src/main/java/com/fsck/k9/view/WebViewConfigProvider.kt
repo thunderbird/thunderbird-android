@@ -1,8 +1,8 @@
 package com.fsck.k9.view
 
 import com.fsck.k9.K9
-import com.fsck.k9.ui.Theme
-import com.fsck.k9.ui.ThemeManager
+import com.fsck.k9.ui.base.Theme
+import com.fsck.k9.ui.base.ThemeManager
 
 class WebViewConfigProvider(private val themeManager: ThemeManager) {
     fun createForMessageView() = createWebViewConfig(themeManager.messageViewTheme)
