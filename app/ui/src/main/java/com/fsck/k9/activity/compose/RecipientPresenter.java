@@ -802,7 +802,7 @@ public class RecipientPresenter {
     }
 
     public void onCryptoPgpClickDisable() {
-        onCryptoModeChanged(CryptoMode.NO_CHOICE);
+        onCryptoModeChanged(CryptoMode.CHOICE_DISABLED);
     }
 
     public void onCryptoPgpSignOnlyDisabled() {
