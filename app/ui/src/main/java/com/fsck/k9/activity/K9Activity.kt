@@ -1,41 +1,33 @@
-package com.fsck.k9.activity;
+package com.fsck.k9.activity
 
+import android.os.Bundle
+import androidx.annotation.LayoutRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import com.fsck.k9.ui.R
+import com.fsck.k9.ui.ThemeManager
 
-import android.os.Bundle;
+abstract class K9Activity : AppCompatActivity() {
+    private val base = K9ActivityCommon(this, ThemeType.DEFAULT)
 
-import androidx.annotation.LayoutRes;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+    val themeManager: ThemeManager
+        get() = base.themeManager
 
-import com.fsck.k9.ui.R;
-import com.fsck.k9.ui.ThemeManager;
-
-
-public abstract class K9Activity extends AppCompatActivity {
-    private final K9ActivityCommon base = new K9ActivityCommon(this, ThemeType.DEFAULT);
-
-    public ThemeManager getThemeManager() {
-        return base.getThemeManager();
+    override fun onCreate(savedInstanceState: Bundle?) {
+        base.preOnCreate()
+        super.onCreate(savedInstanceState)
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        base.preOnCreate();
-        super.onCreate(savedInstanceState);
+    override fun onResume() {
+        base.preOnResume()
+        super.onResume()
     }
 
-    @Override
-    protected void onResume() {
-        base.preOnResume();
-        super.onResume();
-    }
+    protected fun setLayout(@LayoutRes layoutResId: Int) {
+        setContentView(layoutResId)
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+            ?: error("K9 layouts must provide a toolbar with id='toolbar'.")
 
-    protected void setLayout(@LayoutRes int layoutResId) {
-        setContentView(layoutResId);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        if (toolbar == null) {
-            throw new IllegalArgumentException("K9 layouts must provide a toolbar with id='toolbar'.");
-        }
-        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar)
     }
 }
