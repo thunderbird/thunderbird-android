@@ -16,7 +16,7 @@ class SpecialFolderUpdater(
     private val account: Account
 ) {
     fun updateSpecialFolders() {
-        val folders = folderRepository.getRemoteFolders()
+        val folders = folderRepository.getFolders()
 
         updateInbox(folders)
         updateSpecialFolder(FolderType.ARCHIVE, folders)

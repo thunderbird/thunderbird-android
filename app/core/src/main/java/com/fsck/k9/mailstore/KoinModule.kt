@@ -9,4 +9,5 @@ val mailStoreModule = module {
     single { SearchStatusManager() }
     single { SpecialFolderSelectionStrategy() }
     single { K9BackendStorageFactory(get(), get(), get(), get()) }
+    factory { SpecialLocalFoldersCreator(preferences = get(), localStoreProvider = get()) }
 }

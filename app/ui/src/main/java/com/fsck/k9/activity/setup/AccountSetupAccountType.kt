@@ -8,6 +8,7 @@ import com.fsck.k9.Account
 import com.fsck.k9.Preferences
 import com.fsck.k9.activity.K9Activity
 import com.fsck.k9.helper.EmailHelper.getDomainFromEmailAddress
+import com.fsck.k9.mailstore.SpecialLocalFoldersCreator
 import com.fsck.k9.preferences.Protocols
 import com.fsck.k9.setup.ServerNameSuggester
 import com.fsck.k9.ui.R
@@ -22,6 +23,7 @@ import org.koin.android.ext.android.inject
 class AccountSetupAccountType : K9Activity() {
     private val preferences: Preferences by inject()
     private val serverNameSuggester: ServerNameSuggester by inject()
+    private val localFoldersCreator: SpecialLocalFoldersCreator by inject()
 
     private lateinit var account: Account
     private var makeDefault = false
@@ -52,6 +54,7 @@ class AccountSetupAccountType : K9Activity() {
 
     private fun setupAccount(serverType: String, schemePrefix: String) {
         setupStoreAndSmtpTransport(serverType, schemePrefix)
+        createSpecialLocalFolders()
         returnAccountTypeSelectionResult()
     }
 
@@ -80,6 +83,10 @@ class AccountSetupAccountType : K9Activity() {
             transportUriForDecode.port, null, null, null
         )
         account.transportUri = transportUri.toString()
+    }
+
+    private fun createSpecialLocalFolders() {
+        localFoldersCreator.createSpecialLocalFolders(account)
     }
 
     private fun returnAccountTypeSelectionResult() {

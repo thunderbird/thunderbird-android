@@ -82,7 +82,8 @@ class FolderSettingsViewModel(
             id = folder.id,
             serverId = folder.serverId,
             name = folder.name,
-            type = folderType
+            type = folderType,
+            isLocalOnly = folder.isLocalOnly
         )
     }
 

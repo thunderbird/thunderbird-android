@@ -27,11 +27,9 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
-import com.fsck.k9.mail.FolderType;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.filter.Base64;
-import com.fsck.k9.mailstore.LocalStore;
-import com.fsck.k9.mailstore.LocalStoreProvider;
+import com.fsck.k9.mailstore.SpecialLocalFoldersCreator;
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -282,18 +280,14 @@ public class SettingsImporter {
 
             preferences.loadAccounts();
 
-            LocalStoreProvider localStoreProvider = DI.get(LocalStoreProvider.class);
+            SpecialLocalFoldersCreator localFoldersCreator = DI.get(SpecialLocalFoldersCreator.class);
 
-            // create missing OUTBOX folders
+            // Create special local folders
             for (AccountDescriptionPair importedAccount : importedAccounts) {
                 String accountUuid = importedAccount.imported.uuid;
                 Account account = preferences.getAccount(accountUuid);
-                LocalStore localStore = localStoreProvider.getInstance(account);
 
-                long outboxFolderId = localStore.createLocalFolder(Account.OUTBOX_NAME, FolderType.OUTBOX);
-                account.setOutboxFolderId(outboxFolderId);
-
-                preferences.saveAccount(account);
+                localFoldersCreator.createSpecialLocalFolders(account);
             }
 
             K9.loadPrefs(preferences);
