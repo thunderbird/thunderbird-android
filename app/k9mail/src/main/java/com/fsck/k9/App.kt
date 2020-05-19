@@ -4,7 +4,7 @@ import android.app.Application
 import com.fsck.k9.activity.MessageCompose
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.external.MessageProvider
-import com.fsck.k9.ui.ThemeManager
+import com.fsck.k9.ui.base.ThemeManager
 import org.koin.android.ext.android.inject
 
 class App : Application() {
