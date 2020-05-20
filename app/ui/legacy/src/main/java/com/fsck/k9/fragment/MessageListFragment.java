@@ -16,6 +16,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.TextUtils;
@@ -573,7 +575,16 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                     new SwipeRefreshLayout.OnRefreshListener() {
                         @Override
                         public void onRefresh() {
+                            ConnectivityManager cm = (ConnectivityManager)  context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+                            if (activeNetwork == null) {
+                                Toast.makeText(context,"No Internet Connection",Toast.LENGTH_LONG).show();
+                                swipeRefreshLayout.setRefreshing(false);
+                            }
+                            else
+                            {
                             onRemoteSearchRequested();
+                            }
                         }
                     }
             );
@@ -582,7 +593,16 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                     new SwipeRefreshLayout.OnRefreshListener() {
                         @Override
                         public void onRefresh() {
-                            checkMail();
+                            ConnectivityManager cm = (ConnectivityManager)  context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+                            if (activeNetwork == null) {
+                                Toast.makeText(context,"No Internet Connection",Toast.LENGTH_LONG).show();
+                                swipeRefreshLayout.setRefreshing(false);
+                            }
+                            else
+                            {
+                                checkMail();
+                            }
                         }
                     }
             );
