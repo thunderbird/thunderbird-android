@@ -8,6 +8,8 @@ dependencies {
     implementation project(":app:core")
 
     api "androidx.appcompat:appcompat:${versions.androidxAppCompat}"
+    api "androidx.navigation:navigation-fragment-ktx:${versions.androidxNavigation}"
+    api "androidx.navigation:navigation-ui-ktx:${versions.androidxNavigation}"
 
     implementation "androidx.core:core-ktx:${versions.androidxCore}"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
