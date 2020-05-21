@@ -78,6 +78,8 @@ class SettingsListFragment : Fragment() {
                     R.attr.iconSettingsAccountAdd
             )
             add(addAccountActionItem)
+
+            NewSetupUiHack.addSettingsActionItem(this)
         }
         accountSection.setHeader(SettingsDividerItem(getString(R.string.accounts_title)))
         settingsAdapter.add(accountSection)

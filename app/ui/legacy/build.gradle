@@ -7,6 +7,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
 
     api project(":app:ui:base")
+    debugImplementation project(":app:ui:setup")
     implementation project(":app:core")
     implementation project(":app:autodiscovery:api")
     implementation project(":app:autodiscovery:providersxml")
