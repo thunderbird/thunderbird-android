@@ -74,6 +74,16 @@ android {
         targetSdkVersion buildConfig.robolectricSdk
     }
 
+    buildTypes {
+        debug {
+            def useNewSetupUi = project.hasProperty('k9mail.useNewSetupUi') ? project.property('k9mail.useNewSetupUi') : "false"
+            buildConfigField "boolean", "USE_NEW_SETUP_UI_FOR_ONBOARDING", useNewSetupUi
+        }
+        release {
+            buildConfigField "boolean", "USE_NEW_SETUP_UI_FOR_ONBOARDING", "false"
+        }
+    }
+
     lintOptions {
         abortOnError false
         lintConfig file("$rootProject.projectDir/config/lint/lint.xml")
