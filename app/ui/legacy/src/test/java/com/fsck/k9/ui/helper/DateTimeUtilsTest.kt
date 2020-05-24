@@ -2,15 +2,15 @@ package com.fsck.k9.ui.helper
 
 import android.os.SystemClock
 import com.fsck.k9.RobolectricTest
-import org.junit.Assert.*
-import org.junit.Before
-import org.junit.Test
-import org.robolectric.RuntimeEnvironment
-import org.robolectric.annotation.Config
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.TimeZone
+import org.junit.Assert.assertEquals
+import org.junit.Before
+import org.junit.Test
+import org.robolectric.RuntimeEnvironment
+import org.robolectric.annotation.Config
 
 @Config(qualifiers = "en")
 class DateTimeUtilsTest : RobolectricTest() {
@@ -98,5 +98,4 @@ class DateTimeUtilsTest : RobolectricTest() {
     }
 
     private fun LocalDateTime.toEpochMilli() = this.atZone(ZoneId.of(zoneId)).toInstant().toEpochMilli()
-
 }
