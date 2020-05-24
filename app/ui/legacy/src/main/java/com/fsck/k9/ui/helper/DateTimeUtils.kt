@@ -2,7 +2,6 @@ package com.fsck.k9.ui.helper
 
 import android.content.Context
 import android.text.format.DateUtils
-import android.text.format.DateUtils.FORMAT_SHOW_DATE
 import java.util.Calendar
 import kotlin.math.abs
 
@@ -35,5 +34,5 @@ fun formatMessageDate(context: Context, messageDate: Long): CharSequence {
         DateUtils.formatDateRange(context, messageDate, messageDate, DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_ABBREV_MONTH)
     else
     // Show date with year
-        DateUtils.formatDateRange(context, messageDate, messageDate, FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_YEAR or DateUtils.FORMAT_NUMERIC_DATE)
+        DateUtils.formatDateRange(context, messageDate, messageDate, DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_YEAR or DateUtils.FORMAT_NUMERIC_DATE)
 }
