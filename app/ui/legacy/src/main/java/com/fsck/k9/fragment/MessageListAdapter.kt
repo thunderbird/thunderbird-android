@@ -8,7 +8,6 @@ import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.text.Spannable
 import android.text.SpannableStringBuilder
-import android.text.format.DateUtils
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
@@ -26,6 +25,7 @@ import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.fsck.k9.ui.messagelist.MessageListAppearance
 import com.fsck.k9.ui.messagelist.MessageListItem
 import com.fsck.k9.ui.resolveColorAttribute
@@ -39,7 +39,8 @@ class MessageListAdapter internal constructor(
     private val layoutInflater: LayoutInflater,
     private val contactsPictureLoader: ContactPictureLoader,
     private val listItemListener: MessageListItemActionListener,
-    private val appearance: MessageListAppearance
+    private val appearance: MessageListAppearance,
+    private val relativeDateTimeFormatter: RelativeDateTimeFormatter
 ) : BaseAdapter() {
 
     private val forwardedIcon: Drawable = theme.resolveDrawableAttribute(R.attr.messageListForwarded)
@@ -153,7 +154,7 @@ class MessageListAdapter internal constructor(
 
         with(message) {
             val maybeBoldTypeface = if (isRead) Typeface.NORMAL else Typeface.BOLD
-            val displayDate = DateUtils.getRelativeTimeSpanString(context, messageDate)
+            val displayDate = relativeDateTimeFormatter.formatDate(messageDate)
             val displayThreadCount = if (appearance.showingThreadedList) threadCount else 0
             val subject = MlfUtils.buildSubject(subject, res.getString(R.string.general_no_subject), displayThreadCount)
 

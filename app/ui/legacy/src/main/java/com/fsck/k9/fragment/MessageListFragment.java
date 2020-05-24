@@ -40,6 +40,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.SortType;
+import com.fsck.k9.Clock;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
@@ -60,6 +61,7 @@ import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.folders.FolderNameFormatter;
 import com.fsck.k9.ui.folders.FolderNameFormatterFactory;
+import com.fsck.k9.ui.helper.RelativeDateTimeFormatter;
 import com.fsck.k9.ui.messagelist.MessageListAppearance;
 import com.fsck.k9.ui.messagelist.MessageListConfig;
 import com.fsck.k9.ui.messagelist.MessageListFragmentDiContainer;
@@ -475,7 +477,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 layoutInflater,
                 ContactPicture.getContactPictureLoader(),
                 this,
-                getMessageListAppearance()
+                getMessageListAppearance(),
+                new RelativeDateTimeFormatter(requireContext(), Clock.INSTANCE)
         );
 
         if (singleFolderMode) {
