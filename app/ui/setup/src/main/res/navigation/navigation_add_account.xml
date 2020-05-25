@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_add_account"
+    app:startDestination="@id/enterEmailAddressScreen">
+
+    <fragment
+        android:id="@+id/enterEmailAddressScreen"
+        android:name="com.fsck.k9.ui.setup.EnterEmailAddressFragment"
+        android:label="@string/add_account_title"
+        tools:layout="@layout/fragment_enter_email_address">
+    </fragment>
+
+</navigation>

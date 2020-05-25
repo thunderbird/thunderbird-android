@@ -7,6 +7,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
 
     api project(":app:ui:base")
+    debugImplementation project(":app:ui:setup")
     implementation project(":app:core")
     implementation project(":app:autodiscovery:api")
     implementation project(":app:autodiscovery:providersxml")
@@ -27,8 +28,6 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:${versions.androidxRecyclerView}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.androidxLifecycle}"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:${versions.androidxLifecycle}"
-    implementation "androidx.navigation:navigation-fragment-ktx:${versions.androidxNavigation}"
-    implementation "androidx.navigation:navigation-ui-ktx:${versions.androidxNavigation}"
     implementation "androidx.constraintlayout:constraintlayout:${versions.androidxConstraintLayout}"
     implementation "androidx.cardview:cardview:${versions.androidxCardView}"
     implementation "androidx.localbroadcastmanager:localbroadcastmanager:1.0.0"
@@ -73,6 +72,16 @@ android {
     defaultConfig {
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.robolectricSdk
+    }
+
+    buildTypes {
+        debug {
+            def useNewSetupUi = project.hasProperty('k9mail.useNewSetupUi') ? project.property('k9mail.useNewSetupUi') : "false"
+            buildConfigField "boolean", "USE_NEW_SETUP_UI_FOR_ONBOARDING", useNewSetupUi
+        }
+        release {
+            buildConfigField "boolean", "USE_NEW_SETUP_UI_FOR_ONBOARDING", "false"
+        }
     }
 
     lintOptions {

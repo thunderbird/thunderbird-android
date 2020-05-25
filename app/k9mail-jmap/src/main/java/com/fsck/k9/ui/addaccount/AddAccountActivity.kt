@@ -6,7 +6,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.fsck.k9.jmap.R
 import com.fsck.k9.ui.base.K9Activity
-import com.fsck.k9.ui.findNavController
+import com.fsck.k9.ui.base.extensions.findNavController
 
 class AddAccountActivity : K9Activity() {
     private lateinit var navController: NavController
