@@ -838,8 +838,8 @@
     <item quantity="other">واکشی %d نتیجه</item>
   </plurals>
   <plurals name="remote_search_downloading_limited">
-    <item quantity="one">واکشی نتیجهٔ %1$d از %2$d نتیجه</item>
-    <item quantity="other">واکشی نتیجهٔ %1$d از %2$d نتیجه</item>
+    <item quantity="one">واکشی %1$d از %2$d نتیجه</item>
+    <item quantity="other">واکشی %1$d از %2$d نتیجه</item>
   </plurals>
   <string name="remote_search_error">جستجو از دور ناموفق بود</string>
   <string name="account_settings_search">جستجو</string>
