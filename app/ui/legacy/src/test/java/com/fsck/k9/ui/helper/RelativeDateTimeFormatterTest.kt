@@ -34,7 +34,7 @@ class RelativeDateTimeFormatterTest : RobolectricTest() {
     }
 
     @Test
-    fun inFiveMinutes_shouldReturnDay() {
+    fun inFiveMinutesOnNextDay_shouldReturnDay() {
         setClockTo("2020-05-17T23:58")
         val date = "2020-05-18T00:03".toEpochMillis()
 
