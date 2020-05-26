@@ -8,6 +8,13 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.715" versioncode="27015">
+        <change>Added swipe to refresh to side drawer</change>
+        <change>Display day of the week in the message list for messages younger than 7 days</change>
+        <change>Fixed bug that could lead to duplicated folders</change>
+        <change>Fixed bug that didn't allow to turn off encryption when replying to an encrypted email</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.714" versioncode="27014">
         <change>IMAP: Fixed refreshing the folder list</change>
         <change>Keep drawer open after selecting an account</change>
