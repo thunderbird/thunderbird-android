@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.TimeZone
 import org.junit.Assert.assertEquals
-import org.junit.Before
+import org.junit.BeforeClass
 import org.junit.Test
 import org.mockito.Mockito
 import org.robolectric.RuntimeEnvironment
@@ -19,90 +19,118 @@ import org.robolectric.annotation.Config
 class RelativeDateTimeFormatterTest : RobolectricTest() {
 
     private val context = RuntimeEnvironment.application.applicationContext
-
     private val clock = Mockito.mock(Clock::class.java)
-    private val zoneId = "Europe/Berlin"
-    private val now = LocalDateTime.parse("2020-05-17T15:42")
-    private val nowInMillis = now.toEpochMilli()
-
     private val dateTimeFormatter = RelativeDateTimeFormatter(context, clock)
 
-    @Before
-    fun setUp() {
-        TimeZone.setDefault(TimeZone.getTimeZone(zoneId))
-        SystemClock.setCurrentTimeMillis(nowInMillis) // Is handled by ShadowSystemClock
-        whenever(clock.time).thenReturn(nowInMillis)
+    companion object {
+
+        private const val zoneId = "Europe/Berlin"
+
+        @BeforeClass
+        @JvmStatic
+        fun setUp() {
+            TimeZone.setDefault(TimeZone.getTimeZone(zoneId))
+        }
     }
 
     @Test
-    fun formatMessageDate_asTime_now() {
-        val displayDate = dateTimeFormatter.formatMessageDate(nowInMillis)
+    fun inFiveMinutes_shouldReturnDay() {
+        setClockTo("2020-05-17T23:58")
+        val date = "2020-05-18T00:03".toEpochMillis()
 
-        assertEquals("3:42 PM", displayDate)
+        val displayDate = dateTimeFormatter.formatDate(date)
+
+        assertEquals("May 18", displayDate)
     }
 
     @Test
-    fun formatMessageDate_asTime_earlier_today() {
-        val messageDate = now.minusHours(6).toEpochMilli()
+    fun oneMinuteAgo_shouldReturnTime() {
+        setClockTo("2020-05-17T15:42")
+        val date = "2020-05-17T15:41".toEpochMillis()
 
-        val displayDate = dateTimeFormatter.formatMessageDate(messageDate)
+        val displayDate = dateTimeFormatter.formatDate(date)
+
+        assertEquals("3:41 PM", displayDate)
+    }
+
+    @Test
+    fun sixHoursAgo_shouldReturnTime() {
+        setClockTo("2020-05-17T15:42")
+        val date = "2020-05-17T09:42".toEpochMillis()
+
+        val displayDate = dateTimeFormatter.formatDate(date)
 
         assertEquals("9:42 AM", displayDate)
     }
 
     @Test
-    fun formatMessageDate_asWeekDay_yesterday() {
-        val messageDate = now.minusDays(1).toEpochMilli()
+    fun yesterday_shouldReturnWeekday() {
+        setClockTo("2020-05-17T15:42")
+        val date = "2020-05-16T15:42".toEpochMillis()
 
-        val displayDate = dateTimeFormatter.formatMessageDate(messageDate)
+        val displayDate = dateTimeFormatter.formatDate(date)
 
         assertEquals("Sat", displayDate)
     }
 
     @Test
-    fun formatMessageDate_asWeekday_6_days_ago() {
-        val messageDate = now.minusDays(6).minusHours(6).toEpochMilli()
+    fun sixDaysAgo_shouldReturnWeekday() {
+        setClockTo("2020-05-17T15:42")
+        val date = "2020-05-11T09:42".toEpochMillis()
 
-        val displayDate = dateTimeFormatter.formatMessageDate(messageDate)
+        val displayDate = dateTimeFormatter.formatDate(date)
 
         assertEquals("Mon", displayDate)
     }
 
     @Test
-    fun formatMessageDate_asDay_6_days_and_22_hours_ago() {
-        val messageDate = now.minusDays(7).plusHours(2).toEpochMilli()
+    fun sixDaysAndTwentyHours_shouldReturnDay() {
+        setClockTo("2020-05-17T15:42")
+        val date = "2020-05-10T17:42".toEpochMillis()
 
-        val displayDate = dateTimeFormatter.formatMessageDate(messageDate)
-
-        assertEquals("May 10", displayDate)
-    }
-
-    @Test
-    fun formatMessageDate_asDay_7_days_and_2_hours_ago() {
-        val messageDate = now.minusDays(7).minusHours(2).toEpochMilli()
-
-        val displayDate = dateTimeFormatter.formatMessageDate(messageDate)
+        val displayDate = dateTimeFormatter.formatDate(date)
 
         assertEquals("May 10", displayDate)
     }
 
     @Test
-    fun formatMessageDate_asDay_start_of_year() {
-        val messageDate = LocalDate.parse("2020-01-01").atStartOfDay().toEpochMilli()
+    fun sevenDaysAndTwoHours_shouldReturnDay() {
+        setClockTo("2020-05-17T15:42")
+        val date = "2020-05-10T13:42".toEpochMillis()
 
-        val displayDate = dateTimeFormatter.formatMessageDate(messageDate)
+        val displayDate = dateTimeFormatter.formatDate(date)
+
+        assertEquals("May 10", displayDate)
+    }
+
+    @Test
+    fun startOfYear_shouldReturnDay() {
+        setClockTo("2020-05-17T15:42")
+        val date = LocalDate.parse("2020-01-01").atStartOfDay().toEpochMillis()
+
+        val displayDate = dateTimeFormatter.formatDate(date)
 
         assertEquals("Jan 1", displayDate)
     }
 
     @Test
-    fun formatMessageDate_asDate_end_of_last_year() {
-        val messageDate = LocalDateTime.parse("2019-12-31T23:59").toEpochMilli()
+    fun endOfLastYear_shouldReturnDate() {
+        setClockTo("2020-05-17T15:42")
+        val date = LocalDateTime.parse("2019-12-31T23:59").toEpochMillis()
 
-        val displayDate = dateTimeFormatter.formatMessageDate(messageDate)
+        val displayDate = dateTimeFormatter.formatDate(date)
 
         assertEquals("12/31/2019", displayDate)
     }
 
-    private fun LocalDateTime.toEpochMilli() = this.atZone(ZoneId.of(zoneId)).toInstant().toEpochMilli()
+    private fun setClockTo(time: String) {
+        val dateTime = LocalDateTime.parse(time)
+        val timeInMillis = dateTime.toEpochMillis()
+        SystemClock.setCurrentTimeMillis(timeInMillis) // Is handled by ShadowSystemClock
+        whenever(clock.time).thenReturn(timeInMillis)
+    }
+
+    private fun String.toEpochMillis() = LocalDateTime.parse(this).toEpochMillis()
+
+    private fun LocalDateTime.toEpochMillis() = this.atZone(ZoneId.of(zoneId)).toInstant().toEpochMilli()
 }
