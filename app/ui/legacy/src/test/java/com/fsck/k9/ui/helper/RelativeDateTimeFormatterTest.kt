@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.TimeZone
 import org.junit.Assert.assertEquals
-import org.junit.BeforeClass
+import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
 import org.robolectric.RuntimeEnvironment
@@ -22,20 +22,16 @@ class RelativeDateTimeFormatterTest : RobolectricTest() {
     private val clock = Mockito.mock(Clock::class.java)
     private val dateTimeFormatter = RelativeDateTimeFormatter(context, clock)
 
-    companion object {
+    private val zoneId = "Europe/Berlin"
 
-        private const val zoneId = "Europe/Berlin"
-
-        @BeforeClass
-        @JvmStatic
-        fun setUp() {
-            TimeZone.setDefault(TimeZone.getTimeZone(zoneId))
-        }
+    @Before
+    fun setUp() {
+        TimeZone.setDefault(TimeZone.getTimeZone(zoneId))
     }
 
     @Test
-    fun onNextDay_shouldReturnDay() {
-        setClockTo("2020-05-17T15:42")
+    fun inFiveMinutesOnNextDay_shouldReturnDay() {
+        setClockTo("2020-05-17T23:58")
         val date = "2020-05-18T00:03".toEpochMillis()
 
         val displayDate = dateTimeFormatter.formatDate(date)
