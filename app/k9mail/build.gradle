@@ -94,8 +94,12 @@ android {
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/README'
+        exclude 'META-INF/README.md'
+        exclude 'META-INF/CHANGES'
         exclude 'LICENSE.txt'
         exclude 'META-INF/*.kotlin_module'
+        exclude 'META-INF/*.version'
+        exclude 'kotlin/**'
     }
 
     compileOptions {
