@@ -72,11 +72,4 @@ subprojects {
         jcenter()
         maven { url 'https://jitpack.io' }
     }
-
-    configurations.all {
-        resolutionStrategy {
-            // com.github.amlcurran.showcaseview:library depends on com.android.support:support-v4
-            force "androidx.legacy:legacy-support-v4:1.0.0"
-        }
-    }
 }
