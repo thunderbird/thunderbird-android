@@ -6,21 +6,6 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
 
     implementation project(":app:core")
-    implementation project(":mail:common")
-
-    implementation "com.jakewharton.timber:timber:${versions.timber}"
-    implementation "com.squareup.okhttp3:okhttp:${versions.okhttp}"
-    implementation "org.minidns:minidns-hla:${versions.minidns}"
-
-    testImplementation project(':app:testing')
-    testImplementation project(":backend:imap")
-    testImplementation "org.robolectric:robolectric:${versions.robolectric}"
-    testImplementation "androidx.test:core:${versions.androidxCore}"
-    testImplementation "junit:junit:${versions.junit}"
-    testImplementation "com.google.truth:truth:${versions.truth}"
-    testImplementation "org.mockito:mockito-core:${versions.mockito}"
-    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:${versions.mockitoKotlin}"
-    testImplementation "org.koin:koin-test:${versions.koin}"
 }
 
 android {
@@ -44,11 +29,5 @@ android {
 
     kotlinOptions {
         jvmTarget = kotlinJvmVersion
-    }
-
-    testOptions {
-        unitTests {
-            includeAndroidResources = true
-        }
     }
 }
