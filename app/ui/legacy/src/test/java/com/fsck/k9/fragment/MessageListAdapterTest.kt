@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.fsck.k9.Account
+import com.fsck.k9.Clock
 import com.fsck.k9.FontSizes
 import com.fsck.k9.FontSizes.FONT_DEFAULT
 import com.fsck.k9.FontSizes.LARGE
@@ -21,6 +22,7 @@ import com.fsck.k9.contacts.ContactPictureLoader
 import com.fsck.k9.mail.Address
 import com.fsck.k9.textString
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
 import com.fsck.k9.ui.messagelist.MessageListAppearance
 import com.fsck.k9.ui.messagelist.MessageListItem
 import com.nhaarman.mockitokotlin2.mock
@@ -455,13 +457,14 @@ class MessageListAdapterTest : RobolectricTest() {
         )
 
         return MessageListAdapter(
-                context = context,
-                theme = context.theme,
-                res = context.resources,
-                layoutInflater = LayoutInflater.from(context),
-                contactsPictureLoader = contactsPictureLoader,
-                listItemListener = listItemListener,
-                appearance = appearance
+            context = context,
+            theme = context.theme,
+            res = context.resources,
+            layoutInflater = LayoutInflater.from(context),
+            contactsPictureLoader = contactsPictureLoader,
+            listItemListener = listItemListener,
+            appearance = appearance,
+            relativeDateTimeFormatter = RelativeDateTimeFormatter(context, Clock.INSTANCE)
         )
     }
 
