@@ -22,5 +22,6 @@ object Migrations {
         if (oldVersion < 74) MigrationTo74(db, migrationsHelper.account).removeDeletedMessages()
         if (oldVersion < 75) MigrationTo75(db, migrationsHelper).updateAccountWithSpecialFolderIds()
         if (oldVersion < 76) MigrationTo76(db, migrationsHelper).cleanUpSpecialLocalFolders()
+        if (oldVersion < 77) MigrationTo77(db).cleanUpOutboxServerId()
     }
 }
