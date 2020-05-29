@@ -16,11 +16,13 @@ import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 
 import android.text.TextUtils;
 
@@ -41,7 +43,6 @@ import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.filter.LineWrapOutputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.filter.SmtpDataStuffing;
-import com.fsck.k9.mail.internet.CharsetSupport;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.oauth.XOAuth2ChallengeParser;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
@@ -372,37 +373,22 @@ public class SmtpTransport extends Transport {
 
     @Override
     public void sendMessage(Message message) throws MessagingException {
-        List<Address> addresses = new ArrayList<>();
-        {
-            addresses.addAll(Arrays.asList(message.getRecipients(RecipientType.TO)));
-            addresses.addAll(Arrays.asList(message.getRecipients(RecipientType.CC)));
-            addresses.addAll(Arrays.asList(message.getRecipients(RecipientType.BCC)));
+        Set<String> addresses = new LinkedHashSet<>();
+        for (Address address : message.getRecipients(RecipientType.TO)) {
+            addresses.add(address.getAddress());
+        }
+        for (Address address : message.getRecipients(RecipientType.CC)) {
+            addresses.add(address.getAddress());
+        }
+        for (Address address : message.getRecipients(RecipientType.BCC)) {
+            addresses.add(address.getAddress());
         }
         message.removeHeader("Bcc");
 
-        Map<String, List<String>> charsetAddressesMap = new HashMap<>();
-        for (Address address : addresses) {
-            String addressString = address.getAddress();
-            String charset = CharsetSupport.getCharsetFromAddress(addressString);
-            List<String> addressesOfCharset = charsetAddressesMap.get(charset);
-            if (addressesOfCharset == null) {
-                addressesOfCharset = new ArrayList<>();
-                charsetAddressesMap.put(charset, addressesOfCharset);
-            }
-            addressesOfCharset.add(addressString);
+        if (addresses.isEmpty()) {
+            return;
         }
 
-        for (Map.Entry<String, List<String>> charsetAddressesMapEntry :
-                charsetAddressesMap.entrySet()) {
-            String charset = charsetAddressesMapEntry.getKey();
-            List<String> addressesOfCharset = charsetAddressesMapEntry.getValue();
-            message.setCharset(charset);
-            sendMessageTo(addressesOfCharset, message);
-        }
-    }
-
-    private void sendMessageTo(List<String> addresses, Message message)
-            throws MessagingException {
         close();
         open();
 
