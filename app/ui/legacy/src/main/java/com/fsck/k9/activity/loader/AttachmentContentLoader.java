@@ -60,6 +60,13 @@ public class AttachmentContentLoader extends AsyncTaskLoader<Attachment> {
 
             SafeContentResolver safeContentResolver = SafeContentResolver.newInstance(context);
             InputStream in = safeContentResolver.openInputStream(sourceAttachment.uri);
+            if (in == null) {
+                Timber.w("Error opening attachment for reading: %s", sourceAttachment.uri);
+
+                cachedResultAttachment = sourceAttachment.deriveWithLoadCancelled();
+                return cachedResultAttachment;
+            }
+
             try {
                 FileOutputStream out = new FileOutputStream(file);
                 try {
