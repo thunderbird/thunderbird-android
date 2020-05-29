@@ -52,7 +52,7 @@ class JmapAccountCreator(
 
     private fun createOutboxFolder(account: Account) {
         val localStore = localStoreProvider.getInstance(account)
-        account.outboxFolderId = localStore.createLocalFolder(Account.OUTBOX_NAME, FolderType.OUTBOX)
+        account.outboxFolderId = localStore.createLocalFolder(Account.OUTBOX, Account.OUTBOX_NAME, FolderType.OUTBOX)
     }
 
     private fun fetchFolderList(account: Account) {

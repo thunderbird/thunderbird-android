@@ -14,7 +14,7 @@ class SpecialLocalFoldersCreator(
 
         val localStore = localStoreProvider.getInstance(account)
 
-        account.outboxFolderId = localStore.createLocalFolder(OUTBOX_FOLDER_NAME, FolderType.OUTBOX)
+        account.outboxFolderId = localStore.createLocalFolder(OUTBOX_SERVER_ID, OUTBOX_FOLDER_NAME, FolderType.OUTBOX)
 
         if (account.isPop3()) {
             check(account.draftsFolderId == null) { "Drafts folder was already set up" }
@@ -37,6 +37,7 @@ class SpecialLocalFoldersCreator(
     private fun Account.isPop3() = storeUri.startsWith("pop3")
 
     companion object {
+        private const val OUTBOX_SERVER_ID = Account.OUTBOX
         private const val OUTBOX_FOLDER_NAME = Account.OUTBOX_NAME
         private const val DRAFTS_FOLDER_NAME = "Drafts"
         private const val SENT_FOLDER_NAME = "Sent"
