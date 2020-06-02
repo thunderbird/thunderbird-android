@@ -52,7 +52,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
         } else {
             unreadFolderEnabled.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, _ ->
                 unreadFolder.summary = getString(R.string.unread_widget_folder_summary)
-                selectedFolder = null
+                selectedFolderId = null
                 true
         }
         }
