@@ -3,14 +3,14 @@ package com.fsck.k9.message.html
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.safety.Cleaner
-import org.jsoup.safety.Whitelist
+import org.jsoup.safety.Whitelist as AllowList
 
 class HtmlSanitizer {
     private val headCleaner: HeadCleaner
     private val cleaner: Cleaner
 
     init {
-        val whitelist = Whitelist.relaxed()
+        val allowList = AllowList.relaxed()
             .addTags("font", "hr", "ins", "del", "center", "map", "area")
             .addAttributes("font", "color", "face", "size")
             .addAttributes(
@@ -36,7 +36,7 @@ class HtmlSanitizer {
             .addProtocols("img", "src", "http", "https", "cid", "data")
             .addProtocols("a", "href", "tel", "sip", "bitcoin", "ethereum", "rtsp")
 
-        cleaner = Cleaner(whitelist)
+        cleaner = Cleaner(allowList)
         headCleaner = HeadCleaner()
     }
 

@@ -202,7 +202,7 @@ public class HtmlSanitizerTest {
     }
 
     @Test
-    public void shouldKeepWhitelistedElementsInHeadAndSkipTheRest() {
+    public void shouldKeepAllowedElementsInHeadAndSkipTheRest() {
         String html = "<html><head>" +
                 "<title>remove this</title>" +
                 "<style>keep this</style>" +
