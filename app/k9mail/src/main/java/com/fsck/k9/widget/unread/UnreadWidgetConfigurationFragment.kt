@@ -53,13 +53,22 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
         }
 
         unreadFolder = findPreference(PREFERENCE_UNREAD_FOLDER)!!
-        unreadFolder.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            val intent = ChooseFolderActivity.buildLaunchIntent(
-                context = requireContext(),
-                accountUuid = selectedAccountUuid!!,
-                showDisplayableOnly = true
-            )
-            startActivityForResult(intent, REQUEST_CHOOSE_FOLDER)
+    unreadFolder.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+
+            if (selectedAccountUuid == null) {
+                Toast.makeText(getActivity(), "Please select a account",
+                        Toast.LENGTH_LONG).show();
+            } else {
+                val intent = ChooseFolderActivity.buildLaunchIntent(
+                        context = requireContext(),
+                        accountUuid = selectedAccountUuid!!,
+                        showDisplayableOnly = true
+
+                )
+                startActivityForResult(intent, REQUEST_CHOOSE_FOLDER)
+
+            }
+
             false
         }
     }
