@@ -22,7 +22,7 @@ public class DozeChecker {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public boolean isAppWhitelisted() {
+    public boolean isIgnoringBatteryOptimizations() {
         return powerManager.isIgnoringBatteryOptimizations(packageName);
     }
 }

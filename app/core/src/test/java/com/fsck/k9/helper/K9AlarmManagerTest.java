@@ -45,7 +45,7 @@ public class K9AlarmManagerTest {
     }
 
     @Test
-    public void set_withDozeSupportAndNotWhiteListed_shouldCallSetOnAlarmManager() throws Exception {
+    public void set_withDozeSupportAndNotExemptedFromBatteryOptimizations_shouldCallSetOnAlarmManager() throws Exception {
         configureDozeSupport(true);
 
         alarmManager.set(TIMER_TYPE, TIMEOUT, PENDING_INTENT);
@@ -54,9 +54,9 @@ public class K9AlarmManagerTest {
     }
 
     @Test
-    public void set_withDozeSupportAndWhiteListed_shouldCallSetAndAllowWhileIdleOnAlarmManager() throws Exception {
+    public void set_withDozeSupportAndExemptedFromBatteryOptimizations_shouldCallSetAndAllowWhileIdleOnAlarmManager() throws Exception {
         configureDozeSupport(true);
-        addAppToBatteryOptimizationWhitelist();
+        addAppToIgnoreBatteryOptimizationsList();
 
         alarmManager.set(TIMER_TYPE, TIMEOUT, PENDING_INTENT);
 
@@ -66,7 +66,7 @@ public class K9AlarmManagerTest {
     @Test
     public void cancel_shouldCallCancelOnAlarmManager() throws Exception {
         configureDozeSupport(true);
-        addAppToBatteryOptimizationWhitelist();
+        addAppToIgnoreBatteryOptimizationsList();
 
         alarmManager.cancel(PENDING_INTENT);
 
@@ -78,8 +78,8 @@ public class K9AlarmManagerTest {
         when(dozeChecker.isDeviceIdleModeSupported()).thenReturn(supported);
     }
 
-    private void addAppToBatteryOptimizationWhitelist() {
-        when(dozeChecker.isAppWhitelisted()).thenReturn(true);
+    private void addAppToIgnoreBatteryOptimizationsList() {
+        when(dozeChecker.isIgnoringBatteryOptimizations()).thenReturn(true);
     }
 
     private static PendingIntent createDummyPendingIntent() {
