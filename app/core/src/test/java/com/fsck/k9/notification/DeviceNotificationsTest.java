@@ -6,10 +6,10 @@ import java.util.List;
 
 import android.app.Application;
 import android.app.Notification;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationCompat.BigTextStyle;
-import android.support.v4.app.NotificationCompat.Builder;
-import android.support.v4.app.NotificationCompat.InboxStyle;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationCompat.BigTextStyle;
+import androidx.core.app.NotificationCompat.Builder;
+import androidx.core.app.NotificationCompat.InboxStyle;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;

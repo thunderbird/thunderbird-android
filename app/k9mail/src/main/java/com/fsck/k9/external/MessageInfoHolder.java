@@ -27,7 +27,7 @@ class MessageInfoHolder {
 
     public static MessageInfoHolder create(Context context, LocalMessage message,
             Account account) {
-        Contacts contactHelper = K9.showContactName() ? Contacts.getInstance(context) : null;
+        Contacts contactHelper = K9.isShowContactName() ? Contacts.getInstance(context) : null;
 
         MessageInfoHolder target = new MessageInfoHolder();
 

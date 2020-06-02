@@ -1,8 +1,6 @@
 package com.fsck.k9.storage.migrations
 
-
 import android.database.sqlite.SQLiteDatabase
-
 
 internal object MigrationTo64 {
     @JvmStatic

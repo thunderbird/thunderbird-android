@@ -1,0 +1,60 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'org.jlleitschuh.gradle.ktlint'
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
+
+    api project(":app:ui:base")
+    implementation project(":app:core")
+    implementation project(":app:autodiscovery:api")
+    implementation project(":mail:common")
+
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.androidxLifecycle}"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:${versions.androidxLifecycle}"
+    implementation "androidx.constraintlayout:constraintlayout:${versions.androidxConstraintLayout}"
+    implementation "com.google.android.material:material:${versions.materialComponents}"
+    implementation "androidx.core:core-ktx:${versions.androidxCore}"
+    implementation "com.jakewharton.timber:timber:${versions.timber}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinCoroutines}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlinCoroutines}"
+
+    testImplementation project(':mail:testing')
+    testImplementation project(':app:testing')
+    testImplementation "org.robolectric:robolectric:${versions.robolectric}"
+    testImplementation "junit:junit:${versions.junit}"
+    testImplementation "com.google.truth:truth:${versions.truth}"
+    testImplementation "org.mockito:mockito-core:${versions.mockito}"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:${versions.mockitoKotlin}"
+    testImplementation "org.koin:koin-test:${versions.koin}"
+}
+
+android {
+    compileSdkVersion buildConfig.compileSdk
+    buildToolsVersion buildConfig.buildTools
+
+    defaultConfig {
+        minSdkVersion buildConfig.minSdk
+        targetSdkVersion buildConfig.robolectricSdk
+    }
+
+    lintOptions {
+        abortOnError false
+        lintConfig file("$rootProject.projectDir/config/lint/lint.xml")
+    }
+
+    compileOptions {
+        sourceCompatibility javaVersion
+        targetCompatibility javaVersion
+    }
+
+    kotlinOptions {
+        jvmTarget = kotlinJvmVersion
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+}

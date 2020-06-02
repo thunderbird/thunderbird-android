@@ -3,20 +3,20 @@ package com.fsck.k9.notification;
 
 import android.app.Notification;
 import android.app.PendingIntent;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationCompat.Builder;
-import android.support.v4.app.NotificationManagerCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationCompat.Builder;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.fsck.k9.Account;
+import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.testing.MockHelper;
 import com.fsck.k9.RobolectricTest;
-import com.fsck.k9.mail.Folder;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.robolectric.RuntimeEnvironment;
 
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
@@ -80,10 +80,10 @@ public class SyncNotificationsTest extends RobolectricTest {
 
     @Test
     public void testGetFetchingMailNotificationId() throws Exception {
-        Folder folder = createFakeFolder();
+        LocalFolder localFolder = createFakeLocalFolder();
         int notificationId = NotificationIds.getFetchingMailNotificationId(account);
 
-        syncNotifications.showFetchingMailNotification(account, folder);
+        syncNotifications.showFetchingMailNotification(account, localFolder);
 
         verify(notificationManager).notify(notificationId, notification);
         verify(builder).setSmallIcon(resourceProvider.getIconCheckingMail());
@@ -135,7 +135,7 @@ public class SyncNotificationsTest extends RobolectricTest {
         Account account = mock(Account.class);
         when(account.getAccountNumber()).thenReturn(ACCOUNT_NUMBER);
         when(account.getDescription()).thenReturn(ACCOUNT_NAME);
-        when(account.getOutboxFolder()).thenReturn("OUTBOX");
+        when(account.getOutboxFolderId()).thenReturn(33L);
 
         return account;
     }
@@ -146,13 +146,13 @@ public class SyncNotificationsTest extends RobolectricTest {
 
     private NotificationActionCreator createActionBuilder(PendingIntent contentIntent) {
         NotificationActionCreator actionBuilder = mock(NotificationActionCreator.class);
-        when(actionBuilder.createViewFolderPendingIntent(eq(account), anyString(), anyInt()))
+        when(actionBuilder.createViewFolderPendingIntent(eq(account), anyLong(), anyInt()))
                 .thenReturn(contentIntent);
         return actionBuilder;
     }
 
-    private Folder createFakeFolder() {
-        Folder folder = mock(Folder.class);
+    private LocalFolder createFakeLocalFolder() {
+        LocalFolder folder = mock(LocalFolder.class);
         when(folder.getServerId()).thenReturn(FOLDER_SERVER_ID);
         when(folder.getName()).thenReturn(FOLDER_NAME);
         return folder;

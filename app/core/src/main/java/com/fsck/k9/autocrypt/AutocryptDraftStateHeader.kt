@@ -2,13 +2,14 @@ package com.fsck.k9.autocrypt
 
 import com.fsck.k9.message.CryptoStatus
 
-
-data class AutocryptDraftStateHeader(val isEncrypt: Boolean,
-                                              val isSignOnly: Boolean,
-                                              val isReply: Boolean,
-                                              val isByChoice: Boolean,
-                                              val isPgpInline: Boolean,
-                                              val parameters: Map<String, String> = mapOf()) {
+data class AutocryptDraftStateHeader(
+    val isEncrypt: Boolean,
+    val isSignOnly: Boolean,
+    val isReply: Boolean,
+    val isByChoice: Boolean,
+    val isPgpInline: Boolean,
+    val parameters: Map<String, String> = mapOf()
+) {
 
     fun toHeaderValue(): String {
         val builder = StringBuilder()
@@ -42,7 +43,7 @@ data class AutocryptDraftStateHeader(val isEncrypt: Boolean,
         const val PARAM_PGP_INLINE = "_pgp-inline"
         const val PARAM_SIGN_ONLY = "_sign-only"
 
-        const val VALUE_YES = "yes";
+        const val VALUE_YES = "yes"
 
         @JvmStatic
         fun fromCryptoStatus(cryptoStatus: CryptoStatus): AutocryptDraftStateHeader {

@@ -1,14 +1,12 @@
 package com.fsck.k9.mail.store.webdav;
 
-import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeMessage;
-import timber.log.Timber;
 
-import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
+
+import timber.log.Timber;
 
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.decodeUtf8;
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8;
@@ -17,10 +15,11 @@ import static com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8;
  * A WebDav Message
  */
 public class WebDavMessage extends MimeMessage {
+    private final WebDavFolder mFolder;
     private String mUrl = "";
 
 
-    WebDavMessage(String uid, Folder folder) {
+    WebDavMessage(String uid, WebDavFolder folder) {
         this.mUid = uid;
         this.mFolder = folder;
     }
@@ -74,10 +73,6 @@ public class WebDavMessage extends MimeMessage {
         this.mSize = size;
     }
 
-    public void setFlagInternal(Flag flag, boolean set) throws MessagingException {
-        super.setFlag(flag, set);
-    }
-
     public void setNewHeaders(ParsedMessageEnvelope envelope) throws MessagingException {
         String[] headers = envelope.getHeaderList();
         Map<String, String> messageHeaders = envelope.getMessageHeaders();
@@ -93,18 +88,5 @@ public class WebDavMessage extends MimeMessage {
                 this.addHeader(header, headerValue);
             }
         }
-    }
-
-    @Override
-    public void delete(String trashFolder) throws MessagingException {
-        WebDavFolder wdFolder = (WebDavFolder) getFolder();
-        Timber.i("Deleting message by moving to %s", trashFolder);
-        wdFolder.moveMessages(Collections.singletonList(this), wdFolder.getStore().getFolder(trashFolder));
-    }
-
-    @Override
-    public void setFlag(Flag flag, boolean set) throws MessagingException {
-        super.setFlag(flag, set);
-        mFolder.setFlags(Collections.singletonList(this), Collections.singleton(flag), set);
     }
 }

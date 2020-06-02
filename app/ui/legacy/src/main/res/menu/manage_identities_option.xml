@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/new_identity"
+        android:title="@string/new_identity_action"
+        android:icon="?attr/iconActionAdd"
+    />
+</menu>

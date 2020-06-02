@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <include
+        layout="@layout/toolbar"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true" />
+
+    <ProgressBar
+        android:id="@+id/message_list_progress"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-6dp"
+        android:elevation="8dp"
+        android:max="10000"
+        android:visibility="invisible"
+        android:layout_below="@id/toolbar" />
+
+    <LinearLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:layout_below="@id/toolbar">
+
+        <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/message_list_container"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="5"/>
+
+        <View
+                android:id="@+id/message_list_divider"
+                android:layout_width="1px"
+                android:layout_height="fill_parent"
+                android:background="?attr/messageListDividerColor"
+                tools:ignore="PxUsage"/>
+
+        <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/message_view_container"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="3"/>
+
+    </LinearLayout>
+</RelativeLayout>

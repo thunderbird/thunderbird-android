@@ -1,23 +1,21 @@
 package com.fsck.k9.preferences
 
-
 import android.content.Context
 import com.fsck.k9.preferences.K9StoragePersister.StoragePersistOperationCallback
 import com.fsck.k9.preferences.K9StoragePersister.StoragePersistOperations
 import com.fsck.k9.storage.K9RobolectricTest
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.inOrder
-import com.nhaarman.mockito_kotlin.never
-import com.nhaarman.mockito_kotlin.spy
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.inOrder
+import com.nhaarman.mockitokotlin2.never
+import com.nhaarman.mockitokotlin2.spy
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Test
 import org.robolectric.RuntimeEnvironment
-
 
 class StoragePersisterTest : K9RobolectricTest() {
     private var context: Context = RuntimeEnvironment.application
@@ -103,9 +101,9 @@ class StoragePersisterTest : K9RobolectricTest() {
     }
 
     private fun prepareCallback(
-            persistOp: ((StoragePersistOperations) -> Unit)? = null,
-            before: ((MutableMap<String, String>) -> Unit)? = null,
-            onSuccess: ((Map<String, String>) -> Unit)? = null
+        persistOp: ((StoragePersistOperations) -> Unit)? = null,
+        before: ((MutableMap<String, String>) -> Unit)? = null,
+        onSuccess: ((Map<String, String>) -> Unit)? = null
     ): StoragePersistOperationCallback = spy(object : StoragePersistOperationCallback {
         override fun beforePersistTransaction(workingStorage: MutableMap<String, String>) {
             before?.invoke(workingStorage)

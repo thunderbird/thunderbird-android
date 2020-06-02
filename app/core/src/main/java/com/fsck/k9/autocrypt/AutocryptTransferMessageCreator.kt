@@ -1,11 +1,9 @@
 package com.fsck.k9.autocrypt
 
-
 import com.fsck.k9.K9
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
-import com.fsck.k9.mail.Message.RecipientType
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.internet.MimeBodyPart
 import com.fsck.k9.mail.internet.MimeHeader
@@ -15,7 +13,6 @@ import com.fsck.k9.mail.internet.MimeMultipart
 import com.fsck.k9.mail.internet.TextBody
 import com.fsck.k9.mailstore.BinaryMemoryBody
 import java.util.Date
-
 
 class AutocryptTransferMessageCreator(private val stringProvider: AutocryptStringProvider) {
     fun createAutocryptTransferMessage(data: ByteArray, address: Address): Message {
@@ -41,9 +38,9 @@ class AutocryptTransferMessageCreator(private val stringProvider: AutocryptStrin
             message.subject = subjectText
             message.setHeader("Autocrypt-Setup-Message", "v1")
             message.internalDate = nowDate
-            message.addSentDate(nowDate, K9.hideTimeZone())
+            message.addSentDate(nowDate, K9.isHideTimeZone)
             message.setFrom(address)
-            message.setRecipients(RecipientType.TO, arrayOf(address))
+            message.setHeader("To", address.toEncodedString())
 
             return message
         } catch (e: MessagingException) {

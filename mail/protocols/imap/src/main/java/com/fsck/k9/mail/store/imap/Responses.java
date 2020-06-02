@@ -16,4 +16,5 @@ class Responses {
     public static final String PERMANENTFLAGS = "PERMANENTFLAGS";
     public static final String COPYUID = "COPYUID";
     public static final String SEARCH = "SEARCH";
+    public static final String UIDVALIDITY = "UIDVALIDITY";
 }

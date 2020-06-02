@@ -1,8 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.android'
-
-apply from: "${rootProject.projectDir}/gradle/plugins/checkstyle-android.gradle"
-apply from: "${rootProject.projectDir}/gradle/plugins/findbugs-android.gradle"
+apply plugin: 'org.jlleitschuh.gradle.ktlint'
 
 if (rootProject.testCoverage) {
     apply plugin: 'jacoco'
@@ -17,7 +15,7 @@ dependencies {
     implementation "com.beetstra.jutf7:jutf7:1.0.0"
     implementation "commons-io:commons-io:${versions.commonsIo}"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
-    implementation "com.android.support:support-annotations:${versions.supportLibrary}"
+    implementation "androidx.annotation:annotation:${versions.androidxAnnotation}"
 
     testImplementation project(":mail:testing")
     testImplementation "org.robolectric:robolectric:${versions.robolectric}"
@@ -48,7 +46,11 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility javaVersion
+        targetCompatibility javaVersion
+    }
+
+    kotlinOptions {
+        jvmTarget = kotlinJvmVersion
     }
 }

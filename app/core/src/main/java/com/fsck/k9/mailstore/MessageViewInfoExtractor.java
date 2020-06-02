@@ -6,9 +6,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
-import android.support.annotation.WorkerThread;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
+import androidx.annotation.WorkerThread;
 
 import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.crypto.MessageCryptoStructureDetector;

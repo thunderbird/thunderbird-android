@@ -24,11 +24,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.fsck.k9.Account;
-import com.fsck.k9.AccountStats;
 import com.fsck.k9.Clock;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
@@ -41,8 +40,8 @@ import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.FetchProfile.Item;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Folder.FolderType;
+import com.fsck.k9.mail.FolderClass;
+import com.fsck.k9.mail.FolderType;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Multipart;
@@ -52,12 +51,12 @@ import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.SchemaDefinition;
 import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
+import com.fsck.k9.mailstore.StorageManager.InternalStorageProvider;
 import com.fsck.k9.mailstore.StorageManager.StorageProvider;
 import com.fsck.k9.message.extractors.AttachmentCounter;
 import com.fsck.k9.message.extractors.AttachmentInfoExtractor;
 import com.fsck.k9.message.extractors.MessageFulltextCreator;
 import com.fsck.k9.message.extractors.MessagePreviewCreator;
-import com.fsck.k9.preferences.Storage;
 import com.fsck.k9.provider.EmailProvider;
 import com.fsck.k9.provider.EmailProvider.MessageColumns;
 import com.fsck.k9.search.LocalSearch;
@@ -118,7 +117,7 @@ public class LocalStore {
     static final int MSG_INDEX_HEADER_DATA = 25;
 
     static final String GET_FOLDER_COLS =
-        "folders.id, name, visible_limit, last_updated, status, push_state, last_pushed, " +
+        "folders.id, name, visible_limit, last_updated, status, " +
         "integrate, top_group, poll_class, push_class, display_class, notify_class, more_messages, server_id, " +
         "local_only, type";
 
@@ -127,18 +126,16 @@ public class LocalStore {
     static final int FOLDER_VISIBLE_LIMIT_INDEX = 2;
     static final int FOLDER_LAST_CHECKED_INDEX = 3;
     static final int FOLDER_STATUS_INDEX = 4;
-    static final int FOLDER_PUSH_STATE_INDEX = 5;
-    static final int FOLDER_LAST_PUSHED_INDEX = 6;
-    static final int FOLDER_INTEGRATE_INDEX = 7;
-    static final int FOLDER_TOP_GROUP_INDEX = 8;
-    static final int FOLDER_SYNC_CLASS_INDEX = 9;
-    static final int FOLDER_PUSH_CLASS_INDEX = 10;
-    static final int FOLDER_DISPLAY_CLASS_INDEX = 11;
-    static final int FOLDER_NOTIFY_CLASS_INDEX = 12;
-    static final int MORE_MESSAGES_INDEX = 13;
-    static final int FOLDER_SERVER_ID_INDEX = 14;
-    static final int LOCAL_ONLY_INDEX = 15;
-    static final int TYPE_INDEX = 16;
+    static final int FOLDER_INTEGRATE_INDEX = 5;
+    static final int FOLDER_TOP_GROUP_INDEX = 6;
+    static final int FOLDER_SYNC_CLASS_INDEX = 7;
+    static final int FOLDER_PUSH_CLASS_INDEX = 8;
+    static final int FOLDER_DISPLAY_CLASS_INDEX = 9;
+    static final int FOLDER_NOTIFY_CLASS_INDEX = 10;
+    static final int MORE_MESSAGES_INDEX = 11;
+    static final int FOLDER_SERVER_ID_INDEX = 12;
+    static final int LOCAL_ONLY_INDEX = 13;
+    static final int TYPE_INDEX = 14;
 
     static final String[] UID_CHECK_PROJECTION = { "uid" };
 
@@ -214,6 +211,16 @@ public class LocalStore {
 
         Clock clock = DI.get(Clock.class);
         outboxStateRepository = new OutboxStateRepository(database, clock);
+
+        // If "External storage" is selected as storage location, move database to internal storage
+        //TODO: Remove this code after 2020-12-31.
+        // If the database is still on external storage after this date, we'll just ignore it and create a new one on
+        // internal storage.
+        if (!InternalStorageProvider.ID.equals(account.getLocalStorageProviderId())) {
+            switchLocalStorage(InternalStorageProvider.ID);
+            account.setLocalStorageProviderId(InternalStorageProvider.ID);
+            getPreferences().saveAccount(account);
+        }
     }
 
     public static int getDbVersion() {
@@ -237,16 +244,8 @@ public class LocalStore {
         database.switchProvider(newStorageProviderId);
     }
 
-    Context getContext() {
-        return context;
-    }
-
     Account getAccount() {
         return account;
-    }
-
-    protected Storage getStorage() {
-        return Preferences.getPreferences(context).getStorage();
     }
 
     protected Preferences getPreferences() {
@@ -284,7 +283,7 @@ public class LocalStore {
     }
 
     public void compact() throws MessagingException {
-        if (K9.isDebug()) {
+        if (K9.isDebugLoggingEnabled()) {
             Timber.i("Before compaction size = %d", getSize());
         }
 
@@ -296,20 +295,20 @@ public class LocalStore {
             }
         });
 
-        if (K9.isDebug()) {
+        if (K9.isDebugLoggingEnabled()) {
             Timber.i("After compaction size = %d", getSize());
         }
     }
 
 
     public void clear() throws MessagingException {
-        if (K9.isDebug()) {
+        if (K9.isDebugLoggingEnabled()) {
             Timber.i("Before prune size = %d", getSize());
         }
 
         deleteAllMessageDataFromDisk();
 
-        if (K9.isDebug()) {
+        if (K9.isDebugLoggingEnabled()) {
             Timber.i("After prune / before compaction size = %d", getSize());
             Timber.i("Before clear folder count = %d", getFolderCount());
             Timber.i("Before clear message count = %d", getMessageCount());
@@ -335,7 +334,7 @@ public class LocalStore {
 
         compact();
 
-        if (K9.isDebug()) {
+        if (K9.isDebugLoggingEnabled()) {
             Timber.i("After clear message count = %d", getMessageCount());
             Timber.i("After clear size = %d", getSize());
         }
@@ -377,6 +376,10 @@ public class LocalStore {
         return new LocalFolder(this, serverId);
     }
 
+    public LocalFolder getFolder(long folderId) {
+        return new LocalFolder(this, folderId);
+    }
+
     public LocalFolder getFolder(String serverId, String name, FolderType type) {
         return new LocalFolder(this, serverId, name, type);
     }
@@ -385,9 +388,9 @@ public class LocalStore {
     public List<LocalFolder> getPersonalNamespaces(boolean forceListAll) throws MessagingException {
         final List<LocalFolder> folders = new LinkedList<>();
         try {
-            database.execute(false, new DbCallback < List <? extends Folder >> () {
+            database.execute(false, new DbCallback<List<LocalFolder>>() {
                 @Override
-                public List <? extends Folder > doDbWork(final SQLiteDatabase db) throws WrappedException {
+                public List<LocalFolder> doDbWork(final SQLiteDatabase db) throws WrappedException {
                     Cursor cursor = null;
 
                     try {
@@ -870,6 +873,36 @@ public class LocalStore {
         return new File(attachmentDirectory, attachmentId);
     }
 
+    public String getFolderServerId(long folderId) throws MessagingException {
+        return database.execute(false, db -> {
+            try (Cursor cursor = db.query("folders", new String[] { "server_id" },
+                    "id = ?", new String[] { Long.toString(folderId) },
+                    null, null, null)
+            ) {
+                if (cursor.moveToFirst() && !cursor.isNull(0)) {
+                    return cursor.getString(0);
+                } else {
+                    throw new MessagingException("Folder not found by database ID: " + folderId, true);
+                }
+            }
+        });
+    }
+
+    public long getFolderId(String folderServerId) throws MessagingException {
+        return database.execute(false, db -> {
+            try (Cursor cursor = db.query("folders", new String[] { "id" },
+                    "server_id = ?", new String[] { folderServerId },
+                    null, null, null)
+            ) {
+                if (cursor.moveToFirst()) {
+                    return cursor.getLong(0);
+                } else {
+                    throw new MessagingException("Folder not found by server ID: " + folderServerId);
+                }
+            }
+        });
+    }
+
     public static class AttachmentInfo {
         public String name;
         public long size;
@@ -903,29 +936,7 @@ public class LocalStore {
                         }
                     }
 
-                    final  LocalFolder.PreferencesHolder prefHolder = folder.new PreferencesHolder();
-
-                    // When created, special folders should always be displayed
-                    // inbox should be integrated
-                    // and the inbox and drafts folders should be syncced by default
-                    if (account.isSpecialFolder(serverId)) {
-                        prefHolder.inTopGroup = true;
-                        prefHolder.displayClass = LocalFolder.FolderClass.FIRST_CLASS;
-                        if (serverId.equals(account.getInboxFolder())) {
-                            prefHolder.integrate = true;
-                            prefHolder.notifyClass = LocalFolder.FolderClass.FIRST_CLASS;
-                            prefHolder.pushClass = LocalFolder.FolderClass.FIRST_CLASS;
-                        } else {
-                            prefHolder.pushClass = LocalFolder.FolderClass.INHERITED;
-
-                        }
-                        if (serverId.equals(account.getInboxFolder()) || serverId.equals(account.getDraftsFolder())) {
-                            prefHolder.syncClass = LocalFolder.FolderClass.FIRST_CLASS;
-                        } else {
-                            prefHolder.syncClass = LocalFolder.FolderClass.NO_CLASS;
-                        }
-                    }
-                    folder.refresh(serverId, prefHolder);   // Recover settings from Preferences
+                    final LocalFolder.PreferencesHolder prefHolder = folder.getPreferencesHolder();
 
                     db.execSQL("INSERT INTO folders (name, visible_limit, top_group, display_class, poll_class, notify_class, push_class, integrate, server_id, local_only, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", new Object[] {
                                    name,
@@ -941,20 +952,30 @@ public class LocalStore {
                                    databaseFolderType
                                });
 
+                    folder.deleteSavedSettings();
                 }
                 return null;
             }
         });
     }
 
-    public void createLocalFolder(String internalId, String folderName)
-            throws MessagingException {
-        LocalFolder folder = getFolder(internalId);
-        if (!folder.exists()) {
-            folder.create();
-        }
-        folder.setName(folderName);
-        folder.setSyncClass(Folder.FolderClass.NONE);
+    public long createLocalFolder(String folderName, FolderType type) throws MessagingException {
+        return createLocalFolder(folderName, folderName, type);
+    }
+
+    public long createLocalFolder(String folderServerId, String folderName, FolderType type) throws MessagingException {
+        return database.execute(true, (DbCallback<Long>) db -> {
+            ContentValues values = new ContentValues();
+            values.put("name", folderName);
+            values.put("server_id", folderServerId);
+            values.put("local_only", 1);
+            values.put("type", FolderTypeConverter.toDatabaseFolderType(type));
+            values.put("visible_limit", 0);
+            values.put("more_messages", MoreMessages.FALSE.getDatabaseName());
+            values.put("display_class", FolderClass.FIRST_CLASS.name());
+
+            return db.insert("folders", null, values);
+        });
     }
 
     static String serializeFlags(Iterable<Flag> flags) {
@@ -1293,7 +1314,7 @@ public class LocalStore {
         return folderMap;
     }
 
-    public AccountStats getAccountStats(LocalSearch search) throws MessagingException {
+    public int getUnreadMessageCount(LocalSearch search) throws MessagingException {
         StringBuilder whereBuilder = new StringBuilder();
         List<String> queryArgs = new ArrayList<>();
         SqlQueryBuilder.buildWhereClause(account, search.getConditions(), whereBuilder, queryArgs);
@@ -1301,24 +1322,22 @@ public class LocalStore {
         String where = whereBuilder.toString();
         final String[] selectionArgs = queryArgs.toArray(new String[queryArgs.size()]);
 
-        final String sqlQuery = "SELECT SUM(read=0), SUM(flagged) " +
+        final String sqlQuery = "SELECT SUM(read=0) " +
                 "FROM messages " +
                 "JOIN folders ON (folders.id = messages.folder_id) " +
                 "WHERE (messages.empty = 0 AND messages.deleted = 0)" +
                 (!TextUtils.isEmpty(where) ? " AND (" + where + ")" : "");
 
-        return database.execute(false, new DbCallback<AccountStats>() {
+        return database.execute(false, new DbCallback<Integer>() {
             @Override
-            public AccountStats doDbWork(SQLiteDatabase db) throws WrappedException, MessagingException {
+            public Integer doDbWork(SQLiteDatabase db) throws WrappedException, MessagingException {
                 Cursor cursor = db.rawQuery(sqlQuery, selectionArgs);
                 try {
-                    AccountStats accountStats = new AccountStats();
                     if (cursor.moveToFirst()) {
-                        accountStats.unreadMessageCount = cursor.getInt(0);
-                        accountStats.flaggedMessageCount = cursor.getInt(1);
+                        return cursor.getInt(0);
+                    } else {
+                        return 0;
                     }
-
-                    return accountStats;
                 } finally {
                     cursor.close();
                 }
@@ -1349,33 +1368,13 @@ public class LocalStore {
 
     class RealMigrationsHelper implements MigrationsHelper {
         @Override
-        public LocalStore getLocalStore() {
-            return LocalStore.this;
-        }
-
-        @Override
-        public Storage getStorage() {
-            return LocalStore.this.getStorage();
-        }
-
-        @Override
-        public Preferences getPreferences() {
-            return LocalStore.this.getPreferences();
-        }
-
-        @Override
         public Account getAccount() {
             return LocalStore.this.getAccount();
         }
 
         @Override
-        public Context getContext() {
-            return LocalStore.this.getContext();
-        }
-
-        @Override
-        public String serializeFlags(List<Flag> flags) {
-            return LocalStore.serializeFlags(flags);
+        public void saveAccount() {
+            getPreferences().saveAccount(account);
         }
     }
 }

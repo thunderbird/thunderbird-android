@@ -4,8 +4,12 @@ package com.fsck.k9.notification;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.os.IBinder;
+
+import androidx.annotation.Nullable;
 
 import timber.log.Timber;
 
@@ -15,13 +19,12 @@ import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.service.CoreService;
 
 import static com.fsck.k9.controller.MessageReferenceHelper.toMessageReferenceList;
 import static com.fsck.k9.controller.MessageReferenceHelper.toMessageReferenceStringList;
 
 
-public class NotificationActionService extends CoreService {
+public class NotificationActionService extends Service {
     private static final String ACTION_MARK_AS_READ = "ACTION_MARK_AS_READ";
     private static final String ACTION_DELETE = "ACTION_DELETE";
     private static final String ACTION_ARCHIVE = "ACTION_ARCHIVE";
@@ -123,7 +126,7 @@ public class NotificationActionService extends CoreService {
     }
 
     @Override
-    public int startService(Intent intent, int startId) {
+    public final int onStartCommand(Intent intent, int flags, int startId) {
         Timber.i("NotificationActionService started with startId = %d", startId);
 
         String accountUuid = intent.getStringExtra(EXTRA_ACCOUNT_UUID);
@@ -155,15 +158,21 @@ public class NotificationActionService extends CoreService {
         return START_NOT_STICKY;
     }
 
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
     private void markMessagesAsRead(Intent intent, Account account, MessagingController controller) {
         Timber.i("NotificationActionService marking messages as read");
 
         List<String> messageReferenceStrings = intent.getStringArrayListExtra(EXTRA_MESSAGE_REFERENCES);
         List<MessageReference> messageReferences = toMessageReferenceList(messageReferenceStrings);
         for (MessageReference messageReference : messageReferences) {
-            String folderServerId = messageReference.getFolderServerId();
+            long folderId = messageReference.getFolderId();
             String uid = messageReference.getUid();
-            controller.setFlag(account, folderServerId, uid, Flag.SEEN, true);
+            controller.setFlag(account, folderId, uid, Flag.SEEN, true);
         }
     }
 
@@ -178,10 +187,8 @@ public class NotificationActionService extends CoreService {
     private void archiveMessages(Intent intent, Account account, MessagingController controller) {
         Timber.i("NotificationActionService archiving messages");
 
-        String archiveFolderName = account.getArchiveFolder();
-        if (archiveFolderName == null ||
-                (archiveFolderName.equals(account.getSpamFolder()) && K9.confirmSpam()) ||
-                !isMovePossible(controller, account, archiveFolderName)) {
+        Long archiveFolderId = account.getArchiveFolderId();
+        if (!isMovePossible(controller, account, archiveFolderId)) {
             Timber.w("Can not archive messages");
             return;
         }
@@ -190,8 +197,8 @@ public class NotificationActionService extends CoreService {
         List<MessageReference> messageReferences = toMessageReferenceList(messageReferenceStrings);
         for (MessageReference messageReference : messageReferences) {
             if (controller.isMoveCapable(messageReference)) {
-                String sourceFolderName = messageReference.getFolderServerId();
-                controller.moveMessage(account, sourceFolderName, messageReference, archiveFolderName);
+                long sourceFolderId = messageReference.getFolderId();
+                controller.moveMessage(account, sourceFolderId, messageReference, archiveFolderId);
             }
         }
     }
@@ -206,10 +213,10 @@ public class NotificationActionService extends CoreService {
             return;
         }
 
-        String spamFolderName = account.getSpamFolder();
-        if (!K9.confirmSpam() && isMovePossible(controller, account, spamFolderName)) {
-            String sourceFolderName = messageReference.getFolderServerId();
-            controller.moveMessage(account, sourceFolderName, messageReference, spamFolderName);
+        Long spamFolderId = account.getSpamFolderId();
+        if (!K9.isConfirmSpam() && isMovePossible(controller, account, spamFolderId)) {
+            long sourceFolderId = messageReference.getFolderId();
+            controller.moveMessage(account, sourceFolderId, messageReference, spamFolderId);
         }
     }
 
@@ -233,8 +240,8 @@ public class NotificationActionService extends CoreService {
         }
     }
 
-    private boolean isMovePossible(MessagingController controller, Account account, String destinationFolderName) {
-        boolean isSpecialFolderConfigured = destinationFolderName != null;
+    private boolean isMovePossible(MessagingController controller, Account account, Long destinationFolderId) {
+        boolean isSpecialFolderConfigured = destinationFolderId != null;
         return isSpecialFolderConfigured && controller.isMoveCapable(account);
     }
 }

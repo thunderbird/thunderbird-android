@@ -2,13 +2,13 @@ package org.openintents.openpgp;
 
 
 import android.app.PendingIntent;
-import android.arch.lifecycle.Lifecycle.Event;
-import android.arch.lifecycle.LifecycleObserver;
-import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.OnLifecycleEvent;
+import androidx.lifecycle.Lifecycle.Event;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.OnLifecycleEvent;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 
 import org.openintents.openpgp.util.OpenPgpApi;
@@ -76,6 +76,12 @@ public class OpenPgpApiManager implements LifecycleObserver {
             return;
         }
 
+        if (openPgpServiceConnection != null) {
+            // An OpenPgpServiceConnection has already been created, but hasn't been bound yet.
+            // We'll just wait for OnBound.onBound() to be called.
+            return;
+        }
+
         setOpenPgpProviderState(OpenPgpProviderState.UNINITIALIZED);
         openPgpServiceConnection = new OpenPgpServiceConnection(context, openPgpProvider, new OnBound() {
             @Override
@@ -126,7 +132,9 @@ public class OpenPgpApiManager implements LifecycleObserver {
         getOpenPgpApi().executeApiAsync(intent, null, null, new IOpenPgpCallback() {
             @Override
             public void onReturn(Intent result) {
-                onPgpPermissionCheckResult(result);
+                if (openPgpProviderState != OpenPgpProviderState.UNCONFIGURED) {
+                    onPgpPermissionCheckResult(result);
+                }
             }
         });
     }

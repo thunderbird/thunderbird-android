@@ -9,9 +9,9 @@ interface EncryptionExtractor {
 }
 
 data class EncryptionResult(
-        val encryptionType: String,
-        val attachmentCount: Int,
-        val previewResult: PreviewResult = PreviewResult.encrypted(),
-        val textForSearchIndex: String? = null,
-        val extraContentValues: ContentValues? = null
+    val encryptionType: String,
+    val attachmentCount: Int,
+    val previewResult: PreviewResult = PreviewResult.encrypted(),
+    val textForSearchIndex: String? = null,
+    val extraContentValues: ContentValues? = null
 )

@@ -7,7 +7,7 @@ import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
 
 class LocalKeyStoreManager(
-        private val localKeyStore: LocalKeyStore
+    private val localKeyStore: LocalKeyStore
 ) {
     /**
      * Add a new certificate for the incoming or outgoing server to the local key store.

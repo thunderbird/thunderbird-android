@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress AndroidElementNotAllowed -->
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:search="http://schemas.android.com/apk/com.bytehamster.lib.preferencesearch"
+    android:title="@string/general_settings_title"
+    search:ignore="true">
+
+    <PreferenceScreen
+        android:icon="?attr/iconPreferencesDisplay"
+        android:key="display_preferences"
+        android:title="@string/display_preferences"
+        search:ignore="true">
+
+        <PreferenceCategory
+            android:key="global_preferences"
+            android:title="@string/global_preferences">
+
+            <com.fsck.k9.ui.settings.general.LanguagePreference
+                android:dialogTitle="@string/settings_language_label"
+                android:entries="@array/language_entries"
+                android:entryValues="@array/language_values"
+                android:key="language"
+                android:summary="%s"
+                search:summary=""
+                android:title="@string/settings_language_label" />
+
+            <ListPreference
+                android:dialogTitle="@string/settings_theme_label"
+                android:entries="@array/theme_entries"
+                android:entryValues="@array/theme_values"
+                android:key="theme"
+                android:summary="%s"
+                search:summary=""
+                android:title="@string/settings_theme_label" />
+
+            <CheckBoxPreference
+                android:key="fixed_message_view_theme"
+                android:summaryOff="@string/settings_message_theme_selection_summary_off"
+                android:summaryOn="@string/settings_message_theme_selection_summary_on"
+                search:summary=""
+                android:title="@string/settings_message_theme_selection_label" />
+
+            <ListPreference
+                android:dependency="fixed_message_view_theme"
+                android:dialogTitle="@string/settings_message_theme_label"
+                android:entries="@array/message_theme_entries"
+                android:entryValues="@array/message_theme_values"
+                android:key="messageViewTheme"
+                android:summary="%s"
+                search:summary=""
+                android:title="@string/settings_message_theme_label" />
+
+            <ListPreference
+                android:dialogTitle="@string/settings_compose_theme_label"
+                android:entries="@array/message_theme_entries"
+                android:entryValues="@array/message_theme_values"
+                android:key="message_compose_theme"
+                android:summary="%s"
+                search:summary=""
+                android:title="@string/settings_compose_theme_label" />
+
+            <PreferenceScreen
+                android:key="font_size"
+                android:summary="@string/font_size_settings_description"
+                android:title="@string/font_size_settings_title">
+
+                <PreferenceCategory
+                    android:title="@string/font_size_account_list"
+                    android:key="account_list_fonts">
+
+                    <ListPreference
+                        android:key="account_name_font"
+                        android:title="@string/font_size_account_name"
+                        android:summary="%s"
+                        android:entries="@array/font_entries"
+                        android:entryValues="@array/font_values"
+                        android:dialogTitle="@string/font_size_account_name" />
+
+                    <ListPreference
+                        android:key="account_description_font"
+                        android:title="@string/font_size_account_description"
+                        android:summary="%s"
+                        android:entries="@array/font_entries"
+                        android:entryValues="@array/font_values"
+                        android:dialogTitle="@string/font_size_account_description" />
+
+                </PreferenceCategory>
+
+                <PreferenceCategory
+                    android:title="@string/font_size_folder_list"
+                    android:key="folder_list_fonts">
+
+                    <ListPreference
+                        android:key="folder_name_font"
+                        android:title="@string/font_size_folder_name"
+                        android:summary="%s"
+                        android:entries="@array/font_entries"
+                        android:entryValues="@array/font_values"
+                        android:dialogTitle="@string/font_size_folder_name" />
+
+                    <ListPreference
+                        android:key="folder_status_font"
+                        android:title="@string/font_size_folder_status"
+                        android:summary="%s"
+                        android:entries="@array/font_entries"
+                        android:entryValues="@array/font_values"
+                        android:dialogTitle="@string/font_size_folder_status" />
+
+                </PreferenceCategory>
+
+                <PreferenceCategory
+                    android:title="@string/font_size_message_list"
+                    android:key="message_list_fonts">
+
+                    <ListPreference
+                        android:key="message_list_subject_font"
+                        android:title="@string/font_size_message_list_subject"
+                        android:summary="%s"
+                        android:entries="@array/font_entries"
+                        android:entryValues="@array/font_values"
+                        android:dialogTitle="@string/font_size_message_list_subject" />
+
+                    <ListPreference
+                        android:key="message_list_sender_font"
+                        android:title="@string/font_size_message_list_sender"
+                        android:summary="%s"
+                        android:entries="@array/font_entries"
+                        android:entryValues="@array/font_values"
+                        android:dialogTitle="@string/font_size_message_list_sender" />
+
+                    <ListPreference
+                        android:key="message_list_date_font"
+                        android:title="@string/font_size_message_list_date"
+                        android:summary="%s"
+                        android:entries="@array/font_entries"
+                        android:entryValues="@array/font_values"
+                        android:dialogTitle="@string/font_size_message_list_date" />
+
+                    <ListPreference
+                        android:key="message_list_preview_font"
+                        android:title="@string/font_size_message_list_preview"
+                        android:summary="%s"
+                        android:entries="@array/font_entries"
+                        android:entryValues="@array/font_values"
+                        android:dialogTitle="@string/font_size_message_list_preview" />
+
+                </PreferenceCategory>
+
+                <PreferenceCategory
+                    android:title="@string/font_size_message_view"
+                    android:key="message_view_fonts">
+
+                    <ListPreference
+                        android:key="message_view_sender_font"
+                        android:title="@string/font_size_message_view_sender"
+                        android:summary="%s"
+                        android:entries="@array/font_entries"
+                        android:entryValues="@array/font_values"
+                        android:dialogTitle="@string/font_size_message_view_sender" />
+
+                    <ListPreference
+                        android:key="message_view_to_font"
+                        android:title="@string/font_size_message_view_to"
+                        android:summary="%s"
+                        android:entries="@array/font_entries"
+                        android:entryValues="@array/font_values"
+                        android:dialogTitle="@string/font_size_message_view_to" />
+
+                    <ListPreference
+                        android:key="message_view_cc_font"
+                        android:title="@string/font_size_message_view_cc"
+                        android:summary="%s"
+                        android:entries="@array/font_entries"
+                        android:entryValues="@array/font_values"
+                        android:dialogTitle="@string/font_size_message_view_cc" />
+
+                    <ListPreference
+                        android:key="message_view_bcc_font"
+                        android:title="@string/font_size_message_view_bcc"
+                        android:summary="%s"
+                        android:entries="@array/font_entries"
+                        android:entryValues="@array/font_values"
+                        android:dialogTitle="@string/font_size_message_view_bcc" />
+
+                    <ListPreference
+                        android:key="message_view_subject_font"
+                        android:title="@string/font_size_message_view_subject"
+                        android:summary="%s"
+                        android:entries="@array/font_entries"
+                        android:entryValues="@array/font_values"
+                        android:dialogTitle="@string/font_size_message_view_subject" />
+
+                    <ListPreference
+                        android:key="message_view_date_font"
+                        android:title="@string/font_size_message_view_date"
+                        android:summary="%s"
+                        android:entries="@array/font_entries"
+                        android:entryValues="@array/font_values"
+                        android:dialogTitle="@string/font_size_message_view_date" />
+
+                    <ListPreference
+                        android:key="message_view_additional_headers_font"
+                        android:title="@string/font_size_message_view_additional_headers"
+                        android:summary="%s"
+                        android:entries="@array/font_entries"
+                        android:entryValues="@array/font_values"
+                        android:dialogTitle="@string/font_size_message_view_additional_headers" />
+
+                    <SeekBarPreference
+                        android:key="message_view_content_font_slider"
+                        android:title="@string/font_size_message_view_content"
+                        app:showSeekBarValue="true"
+                        app:min="40"
+                        android:max="250" />
+
+                </PreferenceCategory>
+
+                <PreferenceCategory
+                    android:title="@string/font_size_message_compose"
+                    android:key="message_compose_fonts">
+
+                    <ListPreference
+                        android:key="message_compose_input_font"
+                        android:title="@string/font_size_message_compose_input"
+                        android:summary="%s"
+                        android:entries="@array/font_entries"
+                        android:entryValues="@array/font_values"
+                        android:dialogTitle="@string/font_size_message_compose_input" />
+
+                </PreferenceCategory>
+
+            </PreferenceScreen>
+
+            <CheckBoxPreference
+                android:key="animations"
+                android:summary="@string/animations_summary"
+                android:title="@string/animations_title" />
+
+        </PreferenceCategory>
+
+        <PreferenceCategory
+            android:key="accountlist_preferences"
+            android:title="@string/accountlist_preferences">
+
+            <CheckBoxPreference
+                android:disableDependentsState="true"
+                android:key="hide_special_accounts"
+                android:title="@string/hide_special_accounts_title" />
+
+        </PreferenceCategory>
+
+        <PreferenceCategory
+            android:key="messagelist_preferences"
+            android:title="@string/messagelist_preferences">
+
+            <ListPreference
+                android:dialogTitle="@string/global_settings_preview_lines_label"
+                android:entries="@array/preview_lines_entries"
+                android:entryValues="@array/preview_lines_values"
+                android:key="messagelist_preview_lines"
+                android:summary="%s"
+                search:summary=""
+                android:title="@string/global_settings_preview_lines_label" />
+
+            <CheckBoxPreference
+                android:key="messagelist_stars"
+                android:summary="@string/global_settings_flag_summary"
+                android:title="@string/global_settings_flag_label" />
+
+            <CheckBoxPreference
+                android:key="messagelist_show_correspondent_names"
+                android:summary="@string/global_settings_show_correspondent_names_summary"
+                android:title="@string/global_settings_show_correspondent_names_label" />
+
+            <CheckBoxPreference
+                android:key="messagelist_sender_above_subject"
+                android:summary="@string/global_settings_sender_above_subject_summary"
+                android:title="@string/global_settings_sender_above_subject_label" />
+
+            <CheckBoxPreference
+                android:dependency="messagelist_show_correspondent_names"
+                android:key="messagelist_show_contact_name"
+                android:summary="@string/global_settings_show_contact_name_summary"
+                android:title="@string/global_settings_show_contact_name_label" />
+
+            <CheckBoxPreference
+                android:dependency="messagelist_show_contact_name"
+                android:key="messagelist_change_contact_name_color"
+                android:summary="@string/global_settings_registered_name_color_changed"
+                android:title="@string/global_settings_registered_name_color_label" />
+
+            <com.takisoft.preferencex.ColorPickerPreference
+                android:dependency="messagelist_change_contact_name_color"
+                android:key="messagelist_contact_name_color"
+                android:title="Contact name color" />
+
+            <CheckBoxPreference
+                android:key="messagelist_show_contact_picture"
+                android:summary="@string/global_settings_show_contact_picture_summary"
+                android:title="@string/global_settings_show_contact_picture_label" />
+
+            <CheckBoxPreference
+                android:dependency="messagelist_show_contact_picture"
+                android:key="messagelist_colorize_missing_contact_pictures"
+                android:summary="@string/global_settings_colorize_missing_contact_pictures_summary"
+                android:title="@string/global_settings_colorize_missing_contact_pictures_label" />
+
+            <CheckBoxPreference
+                android:key="messagelist_background_as_unread_indicator"
+                android:summary="@string/global_settings_background_as_unread_indicator_summary"
+                android:title="@string/global_settings_background_as_unread_indicator_label" />
+
+            <CheckBoxPreference
+                android:key="threaded_view"
+                android:summary="@string/global_settings_threaded_view_summary"
+                android:title="@string/global_settings_threaded_view_label" />
+
+            <ListPreference
+                android:dialogTitle="@string/global_settings_splitview_mode_label"
+                android:entries="@array/splitview_mode_entries"
+                android:entryValues="@array/splitview_mode_values"
+                android:key="splitview_mode"
+                android:summary="%s"
+                search:summary=""
+                android:title="@string/global_settings_splitview_mode_label" />
+
+        </PreferenceCategory>
+
+        <PreferenceCategory
+            android:key="messageview_preferences"
+            android:title="@string/messageview_preferences">
+
+            <CheckBoxPreference
+                android:key="messageview_fixedwidth_font"
+                android:summary="@string/global_settings_messageview_fixedwidth_summary"
+                android:title="@string/global_settings_messageview_fixedwidth_label" />
+
+            <MultiSelectListPreference
+                android:dialogTitle="@string/global_settings_messageview_visible_refile_actions_title"
+                android:entries="@array/messageview_visible_refile_actions_entries"
+                android:entryValues="@array/messageview_visible_refile_actions_values"
+                android:key="messageview_visible_refile_actions"
+                android:summary="@string/global_settings_messageview_visible_refile_actions_summary"
+                android:title="@string/global_settings_messageview_visible_refile_actions_title" />
+
+            <CheckBoxPreference
+                android:key="messageview_autofit_width"
+                android:summary="@string/global_settings_messageview_autofit_width_summary"
+                android:title="@string/global_settings_messageview_autofit_width_label" />
+
+        </PreferenceCategory>
+
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:icon="?attr/iconPreferencesInteraction"
+        android:key="interaction_preferences"
+        android:title="@string/interaction_preferences"
+        search:ignore="true">
+
+        <MultiSelectListPreference
+            android:dialogTitle="@string/volume_navigation_title"
+            android:entries="@array/volume_navigation_entries"
+            android:entryValues="@array/volume_navigation_values"
+            android:key="volume_navigation"
+            android:title="@string/volume_navigation_title" />
+
+        <CheckBoxPreference
+            android:key="messageview_return_to_list"
+            android:summary="@string/global_settings_messageview_return_to_list_summary"
+            android:title="@string/global_settings_messageview_return_to_list_label" />
+
+        <CheckBoxPreference
+            android:key="messageview_show_next"
+            android:summary="@string/global_settings_messageview_show_next_summary"
+            android:title="@string/global_settings_messageview_show_next_label" />
+
+        <MultiSelectListPreference
+            android:dialogTitle="@string/global_settings_confirm_actions_title"
+            android:entries="@array/confirm_action_entries"
+            android:entryValues="@array/confirm_action_values"
+            android:key="confirm_actions"
+            android:summary="@string/global_settings_confirm_actions_summary"
+            android:title="@string/global_settings_confirm_actions_title" />
+
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:icon="?attr/iconPreferencesNotifications"
+        android:key="notification_preferences"
+        android:title="@string/notifications_title"
+        search:ignore="true">
+
+        <CheckBoxPreference
+            android:key="quiet_time_enabled"
+            android:summary="@string/quiet_time_description"
+            android:title="@string/quiet_time" />
+
+        <CheckBoxPreference
+            android:dependency="quiet_time_enabled"
+            android:key="disable_notifications_during_quiet_time"
+            android:summary="@string/quiet_time_notification_description"
+            android:title="@string/quiet_time_notification" />
+
+        <com.takisoft.preferencex.TimePickerPreference
+            android:dependency="quiet_time_enabled"
+            android:key="quiet_time_starts"
+            android:title="@string/quiet_time_starts"
+            app:pref_hourFormat="h24"
+            search:summary=""
+            app:pref_summaryHasTime="%s" />
+
+        <com.takisoft.preferencex.TimePickerPreference
+            android:dependency="quiet_time_enabled"
+            android:key="quiet_time_ends"
+            android:title="@string/quiet_time_ends"
+            app:pref_hourFormat="h24"
+            search:summary=""
+            app:pref_summaryHasTime="%s" />
+
+        <ListPreference
+            android:dialogTitle="@string/global_settings_notification_quick_delete_title"
+            android:entries="@array/notification_quick_delete_entries"
+            android:entryValues="@array/notification_quick_delete_values"
+            android:key="notification_quick_delete"
+            android:summary="%s"
+            search:summary=""
+            android:title="@string/global_settings_notification_quick_delete_title" />
+
+        <ListPreference
+            android:dialogTitle="@string/global_settings_lock_screen_notification_visibility_title"
+            android:entries="@array/lock_screen_notification_visibility_entries"
+            android:entryValues="@array/lock_screen_notification_visibility_values"
+            android:key="lock_screen_notification_visibility"
+            android:summary="%s"
+            search:summary=""
+            android:title="@string/global_settings_lock_screen_notification_visibility_title" />
+
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:icon="?attr/iconPreferencesNetwork"
+        android:key="network_preferences"
+        android:title="@string/network_preferences"
+        search:ignore="true">
+
+        <ListPreference
+            android:dialogTitle="@string/background_ops_label"
+            android:entries="@array/background_ops_entries"
+            android:entryValues="@array/background_ops_values"
+            android:key="background_ops"
+            android:summary="%s"
+            search:summary=""
+            android:title="@string/background_ops_label" />
+
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:icon="?attr/iconPreferencesPrivacy"
+        android:key="privacy_preferences"
+        android:title="@string/privacy_preferences"
+        search:ignore="true">
+
+        <ListPreference
+            android:entries="@array/notification_hide_subject_entries"
+            android:entryValues="@array/notification_hide_subject_values"
+            android:key="notification_hide_subject"
+            android:summary="%s"
+            search:summary=""
+            android:title="@string/global_settings_notification_hide_subject_title" />
+
+        <CheckBoxPreference
+            android:key="privacy_hide_useragent"
+            android:summary="@string/global_settings_privacy_hide_useragent_detail"
+            android:title="@string/global_settings_privacy_hide_useragent" />
+
+        <CheckBoxPreference
+            android:key="privacy_hide_timezone"
+            android:summary="@string/global_settings_privacy_hide_timezone_detail"
+            android:title="@string/global_settings_privacy_hide_timezone" />
+
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:icon="?attr/iconPreferencesDebug"
+        android:key="debug_preferences"
+        android:title="@string/debug_preferences"
+        search:ignore="true">
+
+        <CheckBoxPreference
+            android:key="debug_logging"
+            android:summary="@string/debug_enable_debug_logging_summary"
+            android:title="@string/debug_enable_debug_logging_title" />
+
+        <CheckBoxPreference
+            android:key="sensitive_logging"
+            android:summary="@string/debug_enable_sensitive_logging_summary"
+            android:title="@string/debug_enable_sensitive_logging_title" />
+
+    </PreferenceScreen>
+
+</PreferenceScreen>

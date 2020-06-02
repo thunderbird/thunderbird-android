@@ -7,7 +7,7 @@ class EmailAddressValidatorTest {
 
     @Test
     fun testEmailValidation() {
-        //Most of the tests based on https://en.wikipedia.org/wiki/Email_address#Examples
+        // Most of the tests based on https://en.wikipedia.org/wiki/Email_address#Examples
         val validator = EmailAddressValidator()
         Assert.assertTrue(validator.isValidAddressOnly("simple@example.com"))
         Assert.assertTrue(validator.isValidAddressOnly("very.common@example.com"))

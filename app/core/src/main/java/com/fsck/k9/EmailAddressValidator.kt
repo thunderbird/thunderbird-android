@@ -1,22 +1,15 @@
 package com.fsck.k9
 
-import android.text.util.Rfc822Tokenizer
-import android.widget.AutoCompleteTextView.Validator
-
 import java.util.regex.Pattern
 
-class EmailAddressValidator : Validator {
-
-    override fun fixText(invalidText: CharSequence): CharSequence = ""
-
-    override fun isValid(text: CharSequence): Boolean = Rfc822Tokenizer.tokenize(text).isNotEmpty()
+class EmailAddressValidator {
 
     fun isValidAddressOnly(text: CharSequence): Boolean = EMAIL_ADDRESS_PATTERN.matcher(text).matches()
 
     companion object {
 
-        //https://www.rfc-editor.org/rfc/rfc2396.txt (3.2.2)
-        //https://www.rfc-editor.org/rfc/rfc5321.txt (4.1.2)
+        // https://www.rfc-editor.org/rfc/rfc2396.txt (3.2.2)
+        // https://www.rfc-editor.org/rfc/rfc5321.txt (4.1.2)
 
         private const val ALPHA = "[a-zA-Z]"
         private const val ALPHANUM = "[a-zA-Z0-9]"

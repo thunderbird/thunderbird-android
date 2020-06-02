@@ -4,6 +4,7 @@ package com.fsck.k9.mail.internet;
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.MimeType;
 import com.fsck.k9.mail.Multipart;
 
 import java.io.BufferedWriter;
@@ -11,7 +12,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
+
+import org.jetbrains.annotations.NotNull;
 
 import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;
 
@@ -85,7 +88,6 @@ public class MimeBodyPart extends BodyPart {
         this.mBody = body;
     }
 
-    @Override
     public void setEncoding(String encoding) throws MessagingException {
         if (mBody != null) {
             mBody.setEncoding(encoding);
@@ -100,6 +102,11 @@ public class MimeBodyPart extends BodyPart {
             return contentType;
         }
 
+        return getDefaultMimeType();
+    }
+
+    @NotNull
+    private String getDefaultMimeType() {
         Multipart parent = getParent();
         if (parent != null && isSameMimeType(parent.getMimeType(), "multipart/digest")) {
             return "message/rfc822";
@@ -130,7 +137,9 @@ public class MimeBodyPart extends BodyPart {
 
     @Override
     public String getMimeType() {
-        return MimeUtility.getHeaderParameter(getContentType(), null);
+        String mimeTypeFromHeader = MimeUtility.getHeaderParameter(getContentType(), null);
+        MimeType mimeType = MimeType.parseOrNull(mimeTypeFromHeader);
+        return mimeType != null ? mimeType.toString() : getDefaultMimeType();
     }
 
     @Override

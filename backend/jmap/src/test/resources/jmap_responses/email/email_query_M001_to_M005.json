@@ -1,0 +1,27 @@
+{
+  "methodResponses": [
+    [
+      "Email/query",
+      {
+        "filter": {
+          "inMailbox": "id_folder"
+        },
+        "queryState": "50:0",
+        "canCalculateChanges": true,
+        "position": 0,
+        "total": 5,
+        "ids": [
+          "M001",
+          "M002",
+          "M003",
+          "M004",
+          "M005"
+        ],
+        "collapseThreads": false,
+        "accountId": "test@example.com"
+      },
+      "0"
+    ]
+  ],
+  "sessionState": "0"
+}

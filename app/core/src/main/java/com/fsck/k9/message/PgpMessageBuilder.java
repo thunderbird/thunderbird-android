@@ -9,9 +9,9 @@ import java.util.Arrays;
 
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 
 import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.DI;
@@ -170,7 +170,7 @@ public class PgpMessageBuilder extends MessageBuilder {
 
                 boolean payloadSupportsMimeHeaders = !isPgpInlineMode;
                 if (payloadSupportsMimeHeaders) {
-                    if (cryptoStatus.isEncryptSubject()) {
+                    if (cryptoStatus.isEncryptSubject() && shouldEncrypt) {
                         moveSubjectIntoEncryptedPayload();
                     }
                     maybeAddGossipHeadersToBodyPart();

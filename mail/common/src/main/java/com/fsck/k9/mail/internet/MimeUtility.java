@@ -9,7 +9,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyPart;
@@ -32,7 +33,8 @@ public class MimeUtility {
      * +
      * http://www.stdicon.com/mimetypes
      */
-    private static final String[][] MIME_TYPE_BY_EXTENSION_MAP = new String[][] {
+    @VisibleForTesting
+    static final String[][] MIME_TYPE_BY_EXTENSION_MAP = new String[][] {
     //* Do not delete the next three lines
     { "", DEFAULT_ATTACHMENT_MIME_TYPE },
     { "k9s", K9_SETTINGS_MIME_TYPE},
@@ -1128,5 +1130,10 @@ public class MimeUtility {
 
     public static boolean isSameMimeType(String mimeType, String otherMimeType) {
         return mimeType != null && mimeType.equalsIgnoreCase(otherMimeType);
+    }
+
+    public static boolean isSupportedImageType(String mimeType) {
+        return isSameMimeType(mimeType, "image/jpeg") || isSameMimeType(mimeType, "image/png") ||
+                isSameMimeType(mimeType, "image/gif") || isSameMimeType(mimeType, "image/webp");
     }
 }

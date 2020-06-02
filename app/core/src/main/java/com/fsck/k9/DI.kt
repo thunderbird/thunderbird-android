@@ -2,38 +2,39 @@ package com.fsck.k9
 
 import android.app.Application
 import com.fsck.k9.core.BuildConfig
-import org.koin.Koin
-import org.koin.KoinContext
-import org.koin.android.ext.koin.with
-import org.koin.android.logger.AndroidLogger
-import org.koin.core.parameter.Parameters
-import org.koin.dsl.module.Module
-import org.koin.log.EmptyLogger
-import org.koin.standalone.StandAloneContext
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
+import org.koin.core.module.Module
+import org.koin.core.parameter.ParametersDefinition
+import org.koin.core.qualifier.Qualifier
+import org.koin.java.KoinJavaComponent.get as koinGet
+import org.koin.java.KoinJavaComponent.getKoin
 
 object DI {
+    private const val DEBUG = false
+
     @JvmStatic fun start(application: Application, modules: List<Module>) {
-        @Suppress("ConstantConditionIf")
-        Koin.logger = if (BuildConfig.DEBUG) AndroidLogger() else EmptyLogger()
+        startKoin {
+            if (BuildConfig.DEBUG && DEBUG) {
+                androidLogger()
+            }
 
-        StandAloneContext.startKoin(modules) with application
-    }
-
-    @JvmOverloads
-    @JvmStatic
-    fun <T : Any> get(clazz: Class<T>, name: String = "", parameters: Parameters = { emptyMap() }): T {
-        val koinContext = StandAloneContext.koinContext as KoinContext
-        val kClass = clazz.kotlin
-
-        return if (name.isEmpty()) {
-            koinContext.resolveInstance(kClass, parameters) { koinContext.beanRegistry.searchAll(kClass) }
-        } else {
-            koinContext.resolveInstance(kClass, parameters) { koinContext.beanRegistry.searchByName(name) }
+            androidContext(application)
+            modules(modules)
         }
     }
 
-    inline fun <reified T : Any> get(name: String = "", noinline parameters: Parameters = { emptyMap() }): T {
-        val koinContext = StandAloneContext.koinContext as KoinContext
-        return koinContext.get(name, parameters)
+    @JvmStatic
+    fun <T : Any> get(clazz: Class<T>): T {
+        return koinGet(clazz)
     }
 }
+
+interface EarlyInit
+
+// Copied from ComponentCallbacks.inject()
+inline fun <reified T : Any> EarlyInit.inject(
+    qualifier: Qualifier? = null,
+    noinline parameters: ParametersDefinition? = null
+) = lazy { getKoin().get<T>(qualifier, parameters) }

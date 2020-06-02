@@ -12,26 +12,21 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.NetworkType;
-import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.mailstore.StorageManager.StorageProvider;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 
 /**
  * Account stores all of the settings for a single account defined by the user. Each account is defined by a UUID.
  */
-public class Account implements BaseAccount, StoreConfig {
-    /**
-     * Default value for the inbox folder (never changes for POP3 and IMAP)
-     */
-    public static final String INBOX = "INBOX";
-
+public class Account implements BaseAccount {
     /**
      * This local folder is used to store messages to be sent.
      */
@@ -70,10 +65,6 @@ public class Account implements BaseAccount, StoreConfig {
             this.setting = setting;
         }
 
-        public String preferenceString() {
-            return Integer.toString(setting);
-        }
-
         public static DeletePolicy fromInt(int initialSetting) {
             for (DeletePolicy policy: values()) {
                 if (policy.setting == initialSetting) {
@@ -110,6 +101,7 @@ public class Account implements BaseAccount, StoreConfig {
     public static final int UNASSIGNED_ACCOUNT_NUMBER = -1;
 
     public static final int INTERVAL_MINUTES_NEVER = -1;
+    public static final int DEFAULT_SYNC_INTERVAL = 60;
 
     private DeletePolicy deletePolicy = DeletePolicy.NEVER;
 
@@ -132,18 +124,26 @@ public class Account implements BaseAccount, StoreConfig {
     private FolderMode folderNotifyNewMailMode;
     private boolean notifySelfNewMail;
     private boolean notifyContactsMailOnly;
-    private String inboxFolder;
-    private String draftsFolder;
-    private String sentFolder;
-    private String trashFolder;
-    private String archiveFolder;
-    private String spamFolder;
+    private String legacyInboxFolder;
+    private String importedDraftsFolder;
+    private String importedSentFolder;
+    private String importedTrashFolder;
+    private String importedArchiveFolder;
+    private String importedSpamFolder;
+    private Long inboxFolderId;
+    private Long outboxFolderId;
+    private Long draftsFolderId;
+    private Long sentFolderId;
+    private Long trashFolderId;
+    private Long archiveFolderId;
+    private Long spamFolderId;
     private SpecialFolderSelection draftsFolderSelection;
     private SpecialFolderSelection sentFolderSelection;
     private SpecialFolderSelection trashFolderSelection;
     private SpecialFolderSelection archiveFolderSelection;
     private SpecialFolderSelection spamFolderSelection;
-    private String autoExpandFolder;
+    private String importedAutoExpandFolder;
+    private Long autoExpandFolderId;
     private FolderMode folderDisplayMode;
     private FolderMode folderSyncMode;
     private FolderMode folderPushMode;
@@ -183,14 +183,15 @@ public class Account implements BaseAccount, StoreConfig {
     private boolean openPgpEncryptSubject;
     private boolean openPgpEncryptAllDrafts;
     private boolean markMessageAsReadOnView;
+    private boolean markMessageAsReadOnDelete;
     private boolean alwaysShowCcBcc;
     private boolean allowRemoteSearch;
     private boolean remoteSearchFullText;
     private int remoteSearchNumResults;
     private boolean uploadSentMessages;
+    private long lastSyncTime;
 
     private boolean changedVisibleLimits = false;
-    private boolean changedLocalStorageProviderId = false;
 
     /**
      * Indicates whether this account is enabled, i.e. ready for use, or not.
@@ -203,12 +204,11 @@ public class Account implements BaseAccount, StoreConfig {
     private boolean isEnabled;
 
     /**
-     * Name of the folder that was last selected for a copy or move operation.
+     * Database ID of the folder that was last selected for a copy or move operation.
      *
-     * Note: For now this value isn't persisted. So it will be reset when
-     *       K-9 Mail is restarted.
+     * Note: For now this value isn't persisted. So it will be reset when K-9 Mail is restarted.
      */
-    private String lastSelectedFolder = null;
+    private Long lastSelectedFolderId = null;
 
     private List<Identity> identities;
 
@@ -278,7 +278,6 @@ public class Account implements BaseAccount, StoreConfig {
         return description;
     }
 
-    @Override
     public synchronized void setDescription(String description) {
         this.description = description;
     }
@@ -292,7 +291,8 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public synchronized void setName(String name) {
-        identities.get(0).setName(name);
+        Identity newIdentity = identities.get(0).withName(name);
+        identities.set(0, newIdentity);
     }
 
     public synchronized boolean getSignatureUse() {
@@ -300,7 +300,8 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public synchronized void setSignatureUse(boolean signatureUse) {
-        identities.get(0).setSignatureUse(signatureUse);
+        Identity newIdentity = identities.get(0).withSignatureUse(signatureUse);
+        identities.set(0, newIdentity);
     }
 
     public synchronized String getSignature() {
@@ -308,7 +309,8 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public synchronized void setSignature(String signature) {
-        identities.get(0).setSignature(signature);
+        Identity newIdentity = identities.get(0).withSignature(signature);
+        identities.set(0, newIdentity);
     }
 
     @Override
@@ -316,9 +318,9 @@ public class Account implements BaseAccount, StoreConfig {
         return identities.get(0).getEmail();
     }
 
-    @Override
     public synchronized void setEmail(String email) {
-        identities.get(0).setEmail(email);
+        Identity newIdentity = identities.get(0).withEmail(email);
+        identities.set(0, newIdentity);
     }
 
     public synchronized String getAlwaysBcc() {
@@ -343,10 +345,7 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public void setLocalStorageProviderId(String id) {
-        if (localStorageProviderId == null || !localStorageProviderId.equals(id)) {
-            this.localStorageProviderId = id;
-            changedLocalStorageProviderId = true;
-        }
+        localStorageProviderId = id;
     }
 
     /**
@@ -371,6 +370,10 @@ public class Account implements BaseAccount, StoreConfig {
     }
 
     public synchronized void setDisplayCount(int displayCount) {
+        if (this.displayCount == displayCount) {
+            return;
+        }
+
         if (displayCount != -1) {
             this.displayCount = displayCount;
         } else {
@@ -412,100 +415,134 @@ public class Account implements BaseAccount, StoreConfig {
         this.deletePolicy = deletePolicy;
     }
 
-    public boolean isSpecialFolder(String folderServerId) {
-        return (folderServerId != null && (folderServerId.equals(getInboxFolder()) ||
-                folderServerId.equals(getTrashFolder()) ||
-                folderServerId.equals(getDraftsFolder()) ||
-                folderServerId.equals(getArchiveFolder()) ||
-                folderServerId.equals(getSpamFolder()) ||
-                folderServerId.equals(getOutboxFolder()) ||
-                folderServerId.equals(getSentFolder())));
+    public synchronized String getImportedDraftsFolder() {
+        return importedDraftsFolder;
     }
 
-    public synchronized String getDraftsFolder() {
-        return draftsFolder;
+    public synchronized void setImportedDraftsFolder(String folderServerId) {
+        importedDraftsFolder = folderServerId;
     }
 
-    public synchronized void setDraftsFolder(String name, SpecialFolderSelection selection) {
-        draftsFolder = name;
+    @Nullable
+    public synchronized Long getDraftsFolderId() {
+        return draftsFolderId;
+    }
+
+    public synchronized void setDraftsFolderId(@Nullable Long folderId) {
+        draftsFolderId = folderId;
+    }
+
+    public synchronized void setDraftsFolderId(@Nullable Long folderId, SpecialFolderSelection selection) {
+        draftsFolderId = folderId;
         draftsFolderSelection = selection;
     }
 
-    /**
-     * Checks if this account has a drafts folder set.
-     * @return true if account has a drafts folder set.
-     */
     public synchronized boolean hasDraftsFolder() {
-        return draftsFolder != null;
+        return draftsFolderId != null;
     }
 
-    public synchronized String getSentFolder() {
-        return sentFolder;
+    public synchronized String getImportedSentFolder() {
+        return importedSentFolder;
     }
 
-    public synchronized void setSentFolder(String name, SpecialFolderSelection selection) {
-        sentFolder = name;
+    public synchronized void setImportedSentFolder(String folderServerId) {
+        importedSentFolder = folderServerId;
+    }
+
+    @Nullable
+    public synchronized Long getSentFolderId() {
+        return sentFolderId;
+    }
+
+    public synchronized void setSentFolderId(@Nullable Long folderId) {
+        sentFolderId = folderId;
+    }
+
+    public synchronized void setSentFolderId(@Nullable Long folderId, SpecialFolderSelection selection) {
+        sentFolderId = folderId;
         sentFolderSelection = selection;
     }
 
-    /**
-     * Checks if this account has a sent folder set.
-     * @return true if account has a sent folder set.
-     */
     public synchronized boolean hasSentFolder() {
-        return sentFolder != null;
+        return sentFolderId != null;
     }
 
-
-    public synchronized String getTrashFolder() {
-        return trashFolder;
+    public synchronized String getImportedTrashFolder() {
+        return importedTrashFolder;
     }
 
-    public synchronized void setTrashFolder(String name, SpecialFolderSelection selection) {
-        trashFolder = name;
+    public synchronized void setImportedTrashFolder(String folderServerId) {
+        importedTrashFolder = folderServerId;
+    }
+
+    @Nullable
+    public synchronized Long getTrashFolderId() {
+        return trashFolderId;
+    }
+
+    public synchronized void setTrashFolderId(@Nullable Long folderId) {
+        trashFolderId = folderId;
+    }
+
+    public synchronized void setTrashFolderId(@Nullable Long folderId, SpecialFolderSelection selection) {
+        trashFolderId = folderId;
         trashFolderSelection = selection;
     }
 
-    /**
-     * Checks if this account has a trash folder set.
-     * @return true if account has a trash folder set.
-     */
     public synchronized boolean hasTrashFolder() {
-        return trashFolder != null;
+        return trashFolderId != null;
     }
 
-    public synchronized String getArchiveFolder() {
-        return archiveFolder;
+    public synchronized String getImportedArchiveFolder() {
+        return importedArchiveFolder;
     }
 
-    public synchronized void setArchiveFolder(String archiveFolder, SpecialFolderSelection selection) {
-        this.archiveFolder = archiveFolder;
+    public synchronized void setImportedArchiveFolder(String archiveFolder) {
+        this.importedArchiveFolder = archiveFolder;
+    }
+
+    @Nullable
+    public synchronized Long getArchiveFolderId() {
+        return archiveFolderId;
+    }
+
+    public synchronized void setArchiveFolderId(@Nullable Long folderId) {
+        archiveFolderId = folderId;
+    }
+
+    public synchronized void setArchiveFolderId(@Nullable Long folderId, SpecialFolderSelection selection) {
+        this.archiveFolderId = folderId;
         archiveFolderSelection = selection;
     }
 
-    /**
-     * Checks if this account has an archive folder set.
-     * @return true if account has an archive folder set.
-     */
     public synchronized boolean hasArchiveFolder() {
-        return archiveFolder != null;
+        return archiveFolderId != null;
     }
 
-    public synchronized String getSpamFolder() {
-        return spamFolder;
+    public synchronized String getImportedSpamFolder() {
+        return importedSpamFolder;
     }
 
-    public synchronized void setSpamFolder(String name, SpecialFolderSelection selection) {
-        spamFolder = name;
+    public synchronized void setImportedSpamFolder(String folderServerId) {
+        importedSpamFolder = folderServerId;
+    }
+
+    @Nullable
+    public synchronized Long getSpamFolderId() {
+        return spamFolderId;
+    }
+
+    public synchronized void setSpamFolderId(@Nullable Long folderId) {
+        spamFolderId = folderId;
+    }
+
+    public synchronized void setSpamFolderId(@Nullable Long folderId, SpecialFolderSelection selection) {
+        spamFolderId = folderId;
         spamFolderSelection = selection;
     }
 
-    /**
-     * Checks if this account has a spam folder set.
-     * @return true if account has a spam folder set.
-     */
     public synchronized boolean hasSpamFolder() {
-        return spamFolder != null;
+        return spamFolderId != null;
     }
 
     @NotNull
@@ -533,16 +570,30 @@ public class Account implements BaseAccount, StoreConfig {
         return spamFolderSelection;
     }
 
-    public String getOutboxFolder() {
-        return OUTBOX;
+    @Nullable
+    public synchronized Long getOutboxFolderId() {
+        return outboxFolderId;
     }
 
-    public synchronized String getAutoExpandFolder() {
-        return autoExpandFolder;
+    public synchronized void setOutboxFolderId(@Nullable Long folderId) {
+        outboxFolderId = folderId;
     }
 
-    public synchronized void setAutoExpandFolder(String name) {
-        autoExpandFolder = name;
+    public synchronized String getImportedAutoExpandFolder() {
+        return importedAutoExpandFolder;
+    }
+
+    public synchronized void setImportedAutoExpandFolder(String name) {
+        importedAutoExpandFolder = name;
+    }
+
+    @Nullable
+    public synchronized Long getAutoExpandFolderId() {
+        return autoExpandFolderId;
+    }
+
+    public synchronized void setAutoExpandFolderId(@Nullable Long folderId) {
+        autoExpandFolderId = folderId;
     }
 
     public synchronized int getAccountNumber() {
@@ -988,12 +1039,21 @@ public class Account implements BaseAccount, StoreConfig {
         this.uploadSentMessages = uploadSentMessages;
     }
 
-    public String getInboxFolder() {
-        return inboxFolder;
+    public String getLegacyInboxFolder() {
+        return legacyInboxFolder;
     }
 
-    public void setInboxFolder(String name) {
-        this.inboxFolder = name;
+    void setLegacyInboxFolder(String name) {
+        this.legacyInboxFolder = name;
+    }
+
+    @Nullable
+    public synchronized Long getInboxFolderId() {
+        return inboxFolderId;
+    }
+
+    public synchronized void setInboxFolderId(@Nullable Long folderId) {
+        inboxFolderId = folderId;
     }
 
     public synchronized boolean isSyncRemoteDeletions() {
@@ -1004,12 +1064,12 @@ public class Account implements BaseAccount, StoreConfig {
         this.syncRemoteDeletions = syncRemoteDeletions;
     }
 
-    public synchronized String getLastSelectedFolder() {
-        return lastSelectedFolder;
+    public synchronized Long getLastSelectedFolderId() {
+        return lastSelectedFolderId;
     }
 
-    public synchronized void setLastSelectedFolder(String folderServerId) {
-        lastSelectedFolder = folderServerId;
+    public synchronized void setLastSelectedFolderId(long folderId) {
+        lastSelectedFolderId = folderId;
     }
 
     public synchronized NotificationSetting getNotificationSetting() {
@@ -1042,6 +1102,14 @@ public class Account implements BaseAccount, StoreConfig {
         markMessageAsReadOnView = value;
     }
 
+    public synchronized boolean isMarkMessageAsReadOnDelete() {
+        return markMessageAsReadOnDelete;
+    }
+
+    public synchronized void setMarkMessageAsReadOnDelete(boolean value) {
+        markMessageAsReadOnDelete = value;
+    }
+
     public synchronized boolean isAlwaysShowCcBcc() {
         return alwaysShowCcBcc;
     }
@@ -1058,17 +1126,20 @@ public class Account implements BaseAccount, StoreConfig {
         remoteSearchFullText = val;
     }
 
+    public synchronized long getLastSyncTime() {
+        return lastSyncTime;
+    }
+
+    public synchronized void setLastSyncTime(long lastSyncTime) {
+        this.lastSyncTime = lastSyncTime;
+    }
+
     boolean isChangedVisibleLimits() {
         return changedVisibleLimits;
     }
 
-    boolean isChangedLocalStorageProviderId() {
-        return changedLocalStorageProviderId;
-    }
-
     void resetChangeMarkers() {
         changedVisibleLimits = false;
-        changedLocalStorageProviderId = false;
     }
 
 }

@@ -41,6 +41,7 @@ private class FormattingVisitor : NodeVisitor {
         val name = node.nodeName()
         when {
             name == "li" -> append("\n")
+            name == "br" -> append("\n")
             node is Element && node.isBlock -> {
                 if (node.hasText()) {
                     addEmptyLine()
@@ -116,7 +117,6 @@ private class FormattingVisitor : NodeVisitor {
 
         return output.substring(0, lastIndex + 1)
     }
-
 
     companion object {
         private const val MAX_WIDTH = 76

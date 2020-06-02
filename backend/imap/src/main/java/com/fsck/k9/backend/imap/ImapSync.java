@@ -15,7 +15,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.fsck.k9.backend.api.BackendFolder;
 import com.fsck.k9.backend.api.BackendFolder.MoreMessages;
 import com.fsck.k9.backend.api.BackendStorage;
-import com.fsck.k9.backend.api.MessageRemovalListener;
 import com.fsck.k9.backend.api.SyncConfig;
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy;
 import com.fsck.k9.backend.api.SyncListener;
@@ -25,18 +24,19 @@ import com.fsck.k9.mail.BodyFactory;
 import com.fsck.k9.mail.DefaultBodyFactory;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.MessageExtractor;
 import com.fsck.k9.mail.store.imap.ImapFolder;
+import com.fsck.k9.mail.store.imap.ImapMessage;
 import com.fsck.k9.mail.store.imap.ImapStore;
 import timber.log.Timber;
 
 
 class ImapSync {
+    private static final String EXTRA_UID_VALIDITY = "imapUidValidity";
+
     private final String accountName;
     private final BackendStorage backendStorage;
     private final ImapStore imapStore;
@@ -48,23 +48,65 @@ class ImapSync {
         this.imapStore = imapStore;
     }
 
-    void sync(String folder, SyncConfig syncConfig, SyncListener listener, Folder providedRemoteFolder) {
-        synchronizeMailboxSynchronous(folder, syncConfig, listener, providedRemoteFolder);
+    void sync(String folder, SyncConfig syncConfig, SyncListener listener) {
+        synchronizeMailboxSynchronous(folder, syncConfig, listener);
     }
 
-    void synchronizeMailboxSynchronous(final String folder, SyncConfig syncConfig, final SyncListener listener,
-            Folder providedRemoteFolder) {
-        Folder remoteFolder = null;
-
+    void synchronizeMailboxSynchronous(final String folder, SyncConfig syncConfig, final SyncListener listener) {
         Timber.i("Synchronizing folder %s:%s", accountName, folder);
 
+        ImapFolder remoteFolder = null;
         BackendFolder backendFolder = null;
         try {
             Timber.v("SYNC: About to get local folder %s", folder);
             backendFolder = backendStorage.getFolder(folder);
-            String folderName = backendFolder.getName();
 
-            listener.syncStarted(folder, folderName);
+            listener.syncStarted(folder);
+
+            Timber.v("SYNC: About to get remote folder %s", folder);
+            remoteFolder = imapStore.getFolder(folder);
+
+            /*
+             * Synchronization process:
+             *
+            Open the folder
+            Upload any local messages that are marked as PENDING_UPLOAD (Drafts, Sent, Trash)
+            Get the message count
+            Get the list of the newest K9.DEFAULT_VISIBLE_LIMIT messages
+            getMessages(messageCount - K9.DEFAULT_VISIBLE_LIMIT, messageCount)
+            See if we have each message locally, if not fetch it's flags and envelope
+            Get and update the unread count for the folder
+            Update the remote flags of any messages we have locally with an internal date newer than the remote message.
+            Get the current flags for any messages we have locally but did not just download
+            Update local flags
+            For any message we have locally but not remotely, delete the local message to keep cache clean.
+            Download larger parts of any new messages.
+            (Optional) Download small attachments in the background.
+             */
+
+            /*
+             * Open the remote folder. This pre-loads certain metadata like message count.
+             */
+            Timber.v("SYNC: About to open remote folder %s", folder);
+
+            if (syncConfig.getExpungePolicy() == ExpungePolicy.ON_POLL) {
+                Timber.d("SYNC: Expunging folder %s:%s", accountName, folder);
+                remoteFolder.expunge();
+            }
+            remoteFolder.open(ImapFolder.OPEN_MODE_RO);
+
+            listener.syncAuthenticationSuccess();
+
+            Long uidValidity = remoteFolder.getUidValidity();
+            Long oldUidValidity = backendFolder.getFolderExtraNumber(EXTRA_UID_VALIDITY);
+            if (oldUidValidity == null && uidValidity != null) {
+                Timber.d("SYNC: Saving UIDVALIDITY for %s", folder);
+                backendFolder.setFolderExtraNumber(EXTRA_UID_VALIDITY, uidValidity);
+            } else if (oldUidValidity != null && !oldUidValidity.equals(uidValidity)) {
+                Timber.d("SYNC: UIDVALIDITY for %s changed; clearing local message cache", folder);
+                backendFolder.clearAllMessages();
+                backendFolder.setFolderExtraNumber(EXTRA_UID_VALIDITY, uidValidity);
+            }
 
             /*
              * Get the message list from the local store and create an index of
@@ -74,46 +116,6 @@ class ImapSync {
             Long lastUid = backendFolder.getLastUid();
 
             Map<String, Long> localUidMap = backendFolder.getAllMessagesAndEffectiveDates();
-
-            if (providedRemoteFolder != null) {
-                Timber.v("SYNC: using providedRemoteFolder %s", folder);
-                remoteFolder = providedRemoteFolder;
-            } else {
-                Timber.v("SYNC: About to get remote folder %s", folder);
-                remoteFolder = imapStore.getFolder(folder);
-
-                /*
-                 * Synchronization process:
-                 *
-                Open the folder
-                Upload any local messages that are marked as PENDING_UPLOAD (Drafts, Sent, Trash)
-                Get the message count
-                Get the list of the newest K9.DEFAULT_VISIBLE_LIMIT messages
-                getMessages(messageCount - K9.DEFAULT_VISIBLE_LIMIT, messageCount)
-                See if we have each message locally, if not fetch it's flags and envelope
-                Get and update the unread count for the folder
-                Update the remote flags of any messages we have locally with an internal date newer than the remote message.
-                Get the current flags for any messages we have locally but did not just download
-                Update local flags
-                For any message we have locally but not remotely, delete the local message to keep cache clean.
-                Download larger parts of any new messages.
-                (Optional) Download small attachments in the background.
-                 */
-
-                /*
-                 * Open the remote folder. This pre-loads certain metadata like message count.
-                 */
-                Timber.v("SYNC: About to open remote folder %s", folder);
-
-                if (syncConfig.getExpungePolicy() == ExpungePolicy.ON_POLL) {
-                    Timber.d("SYNC: Expunging folder %s:%s", accountName, folder);
-                    remoteFolder.expunge();
-                }
-                remoteFolder.open(Folder.OPEN_MODE_RO);
-
-            }
-
-            listener.syncAuthenticationSuccess();
 
             /*
              * Get the remote message count.
@@ -126,8 +128,8 @@ class ImapSync {
                 visibleLimit = syncConfig.getDefaultVisibleLimit();
             }
 
-            final List<Message> remoteMessages = new ArrayList<>();
-            Map<String, Message> remoteUidMap = new HashMap<>();
+            final List<ImapMessage> remoteMessages = new ArrayList<>();
+            Map<String, ImapMessage> remoteUidMap = new HashMap<>();
 
             Timber.v("SYNC: Remote message count for folder %s is %d", folder, remoteMessageCount);
 
@@ -148,15 +150,15 @@ class ImapSync {
                         remoteStart, remoteMessageCount, folder);
 
                 final AtomicInteger headerProgress = new AtomicInteger(0);
-                listener.syncHeadersStarted(folder, folderName);
+                listener.syncHeadersStarted(folder);
 
 
-                List<? extends Message> remoteMessageArray =
+                List<ImapMessage> remoteMessageArray =
                         remoteFolder.getMessages(remoteStart, remoteMessageCount, earliestDate, null);
 
                 int messageCount = remoteMessageArray.size();
 
-                for (Message thisMess : remoteMessageArray) {
+                for (ImapMessage thisMess : remoteMessageArray) {
                     headerProgress.incrementAndGet();
                     listener.syncHeadersProgress(folder, headerProgress.get(), messageCount);
 
@@ -182,8 +184,7 @@ class ImapSync {
             if (syncConfig.getSyncRemoteDeletions()) {
                 List<String> destroyMessageUids = new ArrayList<>();
                 for (String localMessageUid : localUidMap.keySet()) {
-                    if (!localMessageUid.startsWith(BackendFolder.LOCAL_UID_PREFIX) &&
-                            remoteUidMap.get(localMessageUid) == null) {
+                    if (remoteUidMap.get(localMessageUid) == null) {
                         destroyMessageUids.add(localMessageUid);
                     }
                 }
@@ -208,10 +209,9 @@ class ImapSync {
              * Now we download the actual content of messages.
              */
             int newMessages = downloadMessages(syncConfig, remoteFolder, backendFolder, remoteMessages, false,
-                    true, lastUid, listener);
+                    lastUid, listener);
 
-            int unreadMessageCount = backendFolder.getUnreadMessageCount();
-            listener.folderStatusChanged(folder, unreadMessageCount);
+            listener.folderStatusChanged(folder);
 
             /* Notify listeners that we're finally done. */
 
@@ -224,7 +224,7 @@ class ImapSync {
                     System.currentTimeMillis(),
                     newMessages);
 
-            listener.syncFinished(folder, remoteMessageCount, newMessages);
+            listener.syncFinished(folder);
 
             Timber.i("Done synchronizing folder %s:%s", accountName, folder);
 
@@ -250,9 +250,7 @@ class ImapSync {
                     System.currentTimeMillis());
 
         } finally {
-            if (providedRemoteFolder == null) {
-                closeFolder(remoteFolder);
-            }
+            closeFolder(remoteFolder);
         }
 
     }
@@ -262,15 +260,14 @@ class ImapSync {
         BackendFolder backendFolder = backendStorage.getFolder(folderServerId);
         ImapFolder remoteFolder = imapStore.getFolder(folderServerId);
         try {
-            remoteFolder.open(Folder.OPEN_MODE_RO);
-            Message remoteMessage = remoteFolder.getMessage(messageServerId);
+            remoteFolder.open(ImapFolder.OPEN_MODE_RO);
+            ImapMessage remoteMessage = remoteFolder.getMessage(messageServerId);
 
             downloadMessages(
                     syncConfig,
                     remoteFolder,
                     backendFolder,
                     Collections.singletonList(remoteMessage),
-                    false,
                     false,
                     null,
                     new SimpleSyncListener());
@@ -291,31 +288,23 @@ class ImapSync {
      *         A list of messages objects that store the UIDs of which messages to download.
      * @param flagSyncOnly
      *         Only flags will be fetched from the remote store if this is {@code true}.
-     * @param purgeToVisibleLimit
-     *         If true, local messages will be purged down to the limit of visible messages.
-     *
      * @return The number of downloaded messages that are not flagged as {@link Flag#SEEN}.
      *
      * @throws MessagingException
      */
-    private int downloadMessages(SyncConfig syncConfig, Folder remoteFolder, BackendFolder backendFolder,
-            List<Message> inputMessages, boolean flagSyncOnly, boolean purgeToVisibleLimit, Long lastUid,
+    private int downloadMessages(SyncConfig syncConfig, ImapFolder remoteFolder, BackendFolder backendFolder,
+            List<ImapMessage> inputMessages, boolean flagSyncOnly, Long lastUid,
             final SyncListener listener) throws MessagingException {
 
-        final Date earliestDate = syncConfig.getEarliestPollDate();
-
-        if (earliestDate != null) {
-            Timber.d("Only syncing messages after %s", earliestDate);
-        }
         final String folder = remoteFolder.getServerId();
 
-        List<Message> syncFlagMessages = new ArrayList<>();
-        List<Message> unsyncedMessages = new ArrayList<>();
+        List<ImapMessage> syncFlagMessages = new ArrayList<>();
+        List<ImapMessage> unsyncedMessages = new ArrayList<>();
         final AtomicInteger newMessages = new AtomicInteger(0);
 
-        List<Message> messages = new ArrayList<>(inputMessages);
+        List<ImapMessage> messages = new ArrayList<>(inputMessages);
 
-        for (Message message : messages) {
+        for (ImapMessage message : messages) {
             evaluateMessageForDownload(message, backendFolder, remoteFolder, unsyncedMessages, syncFlagMessages,
                     flagSyncOnly);
         }
@@ -327,8 +316,8 @@ class ImapSync {
         Timber.d("SYNC: Have %d unsynced messages", unsyncedMessages.size());
 
         messages.clear();
-        final List<Message> largeMessages = new ArrayList<>();
-        final List<Message> smallMessages = new ArrayList<>();
+        final List<ImapMessage> largeMessages = new ArrayList<>();
+        final List<ImapMessage> smallMessages = new ArrayList<>();
         if (!unsyncedMessages.isEmpty()) {
             Collections.sort(unsyncedMessages, new UidReverseComparator());
             int visibleLimit = backendFolder.getVisibleLimit();
@@ -347,15 +336,6 @@ class ImapSync {
             fetchUnsyncedMessages(syncConfig, remoteFolder, unsyncedMessages, smallMessages, largeMessages, progress,
                     todo, fp, listener);
 
-            String updatedPushState = backendFolder.getPushState();
-            for (Message message : unsyncedMessages) {
-                String newPushState = remoteFolder.getNewPushState(updatedPushState, message);
-                if (newPushState != null) {
-                    updatedPushState = newPushState;
-                }
-            }
-            backendFolder.setPushState(updatedPushState);
-
             Timber.d("SYNC: Synced unsynced messages for folder %s", folder);
         }
 
@@ -368,12 +348,13 @@ class ImapSync {
          * be very fast and at very worst will be a single up of a few bytes and a single
          * download of 625k.
          */
+        int maxDownloadSize = syncConfig.getMaximumAutoDownloadMessageSize();
         FetchProfile fp = new FetchProfile();
         //TODO: Only fetch small and large messages if we have some
         fp.add(FetchProfile.Item.BODY);
         //        fp.add(FetchProfile.Item.FLAGS);
         //        fp.add(FetchProfile.Item.ENVELOPE);
-        downloadSmallMessages(syncConfig, remoteFolder, backendFolder, smallMessages, progress, newMessages, todo, fp,
+        downloadSmallMessages(remoteFolder, backendFolder, smallMessages, progress, newMessages, todo, fp,
                 lastUid, listener);
         smallMessages.clear();
         /*
@@ -381,8 +362,8 @@ class ImapSync {
          */
         fp = new FetchProfile();
         fp.add(FetchProfile.Item.STRUCTURE);
-        downloadLargeMessages(syncConfig, remoteFolder, backendFolder, largeMessages, progress, newMessages, todo, fp,
-                lastUid, listener);
+        downloadLargeMessages(remoteFolder, backendFolder, largeMessages, progress, newMessages, todo, fp,
+                lastUid, listener, maxDownloadSize);
         largeMessages.clear();
 
         /*
@@ -394,21 +375,11 @@ class ImapSync {
 
         Timber.d("SYNC: Synced remote messages for folder %s, %d new messages", folder, newMessages.get());
 
-        if (purgeToVisibleLimit) {
-            backendFolder.purgeToVisibleLimit(new MessageRemovalListener() {
-                @Override
-                public void messageRemoved(Message message) {
-                    listener.syncRemovedMessage(folder, message.getUid());
-                }
-
-            });
-        }
-
         return newMessages.get();
     }
 
-    private void evaluateMessageForDownload(Message message, BackendFolder backendFolder, Folder remoteFolder,
-            List<Message> unsyncedMessages, List<Message> syncFlagMessages, boolean flagSyncOnly) {
+    private void evaluateMessageForDownload(ImapMessage message, BackendFolder backendFolder, ImapFolder remoteFolder,
+            List<ImapMessage> unsyncedMessages, List<ImapMessage> syncFlagMessages, boolean flagSyncOnly) {
 
         String messageServerId = message.getUid();
         if (message.isSet(Flag.DELETED)) {
@@ -437,10 +408,6 @@ class ImapSync {
 
                 unsyncedMessages.add(message);
             } else {
-                String newPushState = remoteFolder.getNewPushState(backendFolder.getPushState(), message);
-                if (newPushState != null) {
-                    backendFolder.setPushState(newPushState);
-                }
                 syncFlagMessages.add(message);
             }
         } else {
@@ -463,32 +430,26 @@ class ImapSync {
         return false;
     }
 
-    private <T extends Message> void fetchUnsyncedMessages(
+    private void fetchUnsyncedMessages(
             final SyncConfig syncConfig,
-            final Folder<T> remoteFolder,
-            List<T> unsyncedMessages,
-            final List<Message> smallMessages,
-            final List<Message> largeMessages,
+            final ImapFolder remoteFolder,
+            List<ImapMessage> unsyncedMessages,
+            final List<ImapMessage> smallMessages,
+            final List<ImapMessage> largeMessages,
             final AtomicInteger progress,
             final int todo,
             FetchProfile fp,
             final SyncListener listener) throws MessagingException {
         final String folder = remoteFolder.getServerId();
 
-        final Date earliestDate = syncConfig.getEarliestPollDate();
         remoteFolder.fetch(unsyncedMessages, fp,
-                new MessageRetrievalListener<T>() {
+                new MessageRetrievalListener<ImapMessage>() {
                     @Override
-                    public void messageFinished(T message, int number, int ofTotal) {
+                    public void messageFinished(ImapMessage message, int number, int ofTotal) {
                         try {
-                            if (message.isSet(Flag.DELETED) || message.olderThan(earliestDate)) {
-                                if (message.isSet(Flag.DELETED)) {
-                                    Timber.v("Newly downloaded message %s:%s:%s was marked deleted on server, " +
-                                            "skipping", accountName, folder, message.getUid());
-                                } else {
-                                    Timber.d("Newly downloaded message %s is older than %s, skipping",
-                                            message.getUid(), earliestDate);
-                                }
+                            if (message.isSet(Flag.DELETED)) {
+                                Timber.v("Newly downloaded message %s:%s:%s was marked deleted on server, skipping",
+                                        accountName, folder, message.getUid());
 
                                 progress.incrementAndGet();
 
@@ -518,14 +479,14 @@ class ImapSync {
                         // FIXME this method is almost never invoked by various Stores! Don't rely on it unless fixed!!
                     }
 
-                });
+                },
+                syncConfig.getMaximumAutoDownloadMessageSize());
     }
 
-    private <T extends Message> void downloadSmallMessages(
-            SyncConfig syncConfig,
-            final Folder<T> remoteFolder,
+    private void downloadSmallMessages(
+            final ImapFolder remoteFolder,
             final BackendFolder backendFolder,
-            List<T> smallMessages,
+            List<ImapMessage> smallMessages,
             final AtomicInteger progress,
             final AtomicInteger newMessages,
             final int todo,
@@ -534,21 +495,13 @@ class ImapSync {
             final SyncListener listener) throws MessagingException {
         final String folder = remoteFolder.getServerId();
 
-        final Date earliestDate = syncConfig.getEarliestPollDate();
-
         Timber.d("SYNC: Fetching %d small messages for folder %s", smallMessages.size(), folder);
 
         remoteFolder.fetch(smallMessages,
-                fp, new MessageRetrievalListener<T>() {
+                fp, new MessageRetrievalListener<ImapMessage>() {
                     @Override
-                    public void messageFinished(final T message, int number, int ofTotal) {
+                    public void messageFinished(final ImapMessage message, int number, int ofTotal) {
                         try {
-                            if (!shouldImportMessage(message, earliestDate)) {
-                                progress.incrementAndGet();
-
-                                return;
-                            }
-
                             // Store the updated message locally
                             backendFolder.saveCompleteMessage(message);
                             progress.incrementAndGet();
@@ -581,39 +534,33 @@ class ImapSync {
                     @Override
                     public void messagesFinished(int total) {
                     }
-                });
+                },
+                -1);
 
         Timber.d("SYNC: Done fetching small messages for folder %s", folder);
     }
 
-    private <T extends Message> void downloadLargeMessages(
-            SyncConfig syncConfig,
-            final Folder<T> remoteFolder,
+    private void downloadLargeMessages(
+            final ImapFolder remoteFolder,
             final BackendFolder backendFolder,
-            List<T> largeMessages,
+            List<ImapMessage> largeMessages,
             final AtomicInteger progress,
             final AtomicInteger newMessages,
             final int todo,
             FetchProfile fp,
             Long lastUid,
-            SyncListener listener) throws MessagingException {
+            SyncListener listener,
+            int maxDownloadSize) throws MessagingException {
         final String folder = remoteFolder.getServerId();
-        final Date earliestDate = syncConfig.getEarliestPollDate();
 
         Timber.d("SYNC: Fetching large messages for folder %s", folder);
 
-        remoteFolder.fetch(largeMessages, fp, null);
-        for (T message : largeMessages) {
-
-            if (!shouldImportMessage(message, earliestDate)) {
-                progress.incrementAndGet();
-                continue;
-            }
-
+        remoteFolder.fetch(largeMessages, fp, null, maxDownloadSize);
+        for (ImapMessage message : largeMessages) {
             if (message.getBody() == null) {
-                downloadSaneBody(remoteFolder, backendFolder, message);
+                downloadSaneBody(remoteFolder, backendFolder, message, maxDownloadSize);
             } else {
-                downloadPartial(remoteFolder, backendFolder, message);
+                downloadPartial(remoteFolder, backendFolder, message, maxDownloadSize);
             }
 
             String messageServerId = message.getUid();
@@ -642,9 +589,9 @@ class ImapSync {
 
     private void refreshLocalMessageFlags(
             SyncConfig syncConfig,
-            final Folder remoteFolder,
+            final ImapFolder remoteFolder,
             final BackendFolder backendFolder,
-            List<Message> syncFlagMessages,
+            List<ImapMessage> syncFlagMessages,
             final AtomicInteger progress,
             final int todo,
             SyncListener listener
@@ -656,15 +603,16 @@ class ImapSync {
         FetchProfile fp = new FetchProfile();
         fp.add(FetchProfile.Item.FLAGS);
 
-        List<Message> undeletedMessages = new LinkedList<>();
-        for (Message message : syncFlagMessages) {
+        List<ImapMessage> undeletedMessages = new LinkedList<>();
+        for (ImapMessage message : syncFlagMessages) {
             if (!message.isSet(Flag.DELETED)) {
                 undeletedMessages.add(message);
             }
         }
 
-        remoteFolder.fetch(undeletedMessages, fp, null);
-        for (Message remoteMessage : syncFlagMessages) {
+        int maxDownloadSize = syncConfig.getMaximumAutoDownloadMessageSize();
+        remoteFolder.fetch(undeletedMessages, fp, null, maxDownloadSize);
+        for (ImapMessage remoteMessage : syncFlagMessages) {
             boolean messageChanged = syncFlags(syncConfig, backendFolder, remoteMessage);
             if (messageChanged) {
                 listener.syncFlagChanged(folder, remoteMessage.getUid());
@@ -674,8 +622,8 @@ class ImapSync {
         }
     }
 
-    private void downloadSaneBody(Folder remoteFolder, BackendFolder backendFolder, Message message)
-            throws MessagingException {
+    private void downloadSaneBody(ImapFolder remoteFolder, BackendFolder backendFolder, ImapMessage message,
+            int maxDownloadSize) throws MessagingException {
         /*
          * The provider was unable to get the structure of the message, so
          * we'll download a reasonable portion of the messge and mark it as
@@ -690,14 +638,14 @@ class ImapSync {
                  *  they equal we can mark this SYNCHRONIZED instead of PARTIALLY_SYNCHRONIZED
                  */
 
-        remoteFolder.fetch(Collections.singletonList(message), fp, null);
+        remoteFolder.fetch(Collections.singletonList(message), fp, null, maxDownloadSize);
 
         // Store the updated message locally
         backendFolder.savePartialMessage(message);
     }
 
-    private void downloadPartial(Folder remoteFolder, BackendFolder backendFolder, Message message)
-            throws MessagingException {
+    private void downloadPartial(ImapFolder remoteFolder, BackendFolder backendFolder, ImapMessage message,
+            int maxDownloadSize) throws MessagingException {
         /*
          * We have a structure to deal with, from which
          * we can pull down the parts we want to actually store.
@@ -712,13 +660,13 @@ class ImapSync {
          */
         BodyFactory bodyFactory = new DefaultBodyFactory();
         for (Part part : viewables) {
-            remoteFolder.fetchPart(message, part, null, bodyFactory);
+            remoteFolder.fetchPart(message, part, null, bodyFactory, maxDownloadSize);
         }
         // Store the updated message locally
         backendFolder.savePartialMessage(message);
     }
 
-    private boolean syncFlags(SyncConfig syncConfig, BackendFolder backendFolder, Message remoteMessage) {
+    private boolean syncFlags(SyncConfig syncConfig, BackendFolder backendFolder, ImapMessage remoteMessage) {
         String messageServerId = remoteMessage.getUid();
 
         if (!backendFolder.isMessagePresent(messageServerId)) {
@@ -747,21 +695,13 @@ class ImapSync {
         return messageChanged;
     }
 
-    private boolean shouldImportMessage(Message message, Date earliestDate) {
-        if (message.olderThan(earliestDate)) {
-            Timber.d("Message %s is older than %s, hence not saving", message.getUid(), earliestDate);
-            return false;
-        }
-        return true;
-    }
-
-    private static void closeFolder(Folder folder) {
+    private static void closeFolder(ImapFolder folder) {
         if (folder != null) {
             folder.close();
         }
     }
 
-    private void updateMoreMessages(Folder remoteFolder, BackendFolder backendFolder, Date earliestDate, int remoteStart)
+    private void updateMoreMessages(ImapFolder remoteFolder, BackendFolder backendFolder, Date earliestDate, int remoteStart)
             throws MessagingException, IOException {
 
         if (remoteStart == 1) {

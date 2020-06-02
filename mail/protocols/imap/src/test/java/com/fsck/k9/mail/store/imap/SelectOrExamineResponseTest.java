@@ -3,8 +3,8 @@ package com.fsck.k9.mail.store.imap;
 
 import org.junit.Test;
 
-import static com.fsck.k9.mail.Folder.OPEN_MODE_RO;
-import static com.fsck.k9.mail.Folder.OPEN_MODE_RW;
+import static com.fsck.k9.mail.store.imap.ImapFolder.OPEN_MODE_RO;
+import static com.fsck.k9.mail.store.imap.ImapFolder.OPEN_MODE_RW;
 import static com.fsck.k9.mail.store.imap.ImapResponseHelper.createImapResponse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

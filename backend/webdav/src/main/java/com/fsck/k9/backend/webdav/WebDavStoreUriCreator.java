@@ -1,7 +1,6 @@
 package com.fsck.k9.backend.webdav;
 
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.store.StoreConfig;
 import com.fsck.k9.mail.store.webdav.WebDavStoreSettings;
 
 import java.net.URI;

@@ -1,9 +1,8 @@
 package com.fsck.k9.preferences
 
-
 import com.fsck.k9.storage.K9RobolectricTest
-import com.nhaarman.mockito_kotlin.verifyNoMoreInteractions
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
+import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -16,14 +15,13 @@ import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 
-
 class StorageEditorTest : K9RobolectricTest() {
     @Mock private lateinit var storage: Storage
     @Mock private lateinit var storagePersister: K9StoragePersister
     @Mock private lateinit var storagePersisterOps: K9StoragePersister.StoragePersistOperations
     private lateinit var editor: K9StorageEditor
 
-    private val workingMap = mutableMapOf<String,String>()
+    private val workingMap = mutableMapOf<String, String>()
     private val storageMap = mapOf(
             "storage-key" to "storage-value"
     )

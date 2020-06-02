@@ -6,11 +6,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import com.fsck.k9.backend.api.BackendFolder;
-import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.imap.ImapFolder;
+import com.fsck.k9.mail.store.imap.ImapMessage;
 import com.fsck.k9.mail.store.imap.ImapStore;
 import org.jetbrains.annotations.NotNull;
 import timber.log.Timber;
@@ -42,13 +40,10 @@ class CommandMoveOrCopyMessages {
         try {
             remoteSrcFolder = imapStore.getFolder(srcFolder);
 
-            List<Message> messages = new ArrayList<>();
+            List<ImapMessage> messages = new ArrayList<>();
 
             for (String uid : uids) {
-                // TODO: Local messages should never end up here. Throw in debug builds.
-                if (!uid.startsWith(BackendFolder.LOCAL_UID_PREFIX)) {
-                    messages.add(remoteSrcFolder.getMessage(uid));
-                }
+                messages.add(remoteSrcFolder.getMessage(uid));
             }
 
             if (messages.isEmpty()) {
@@ -61,8 +56,8 @@ class CommandMoveOrCopyMessages {
                         " does not exist", true);
             }
 
-            remoteSrcFolder.open(Folder.OPEN_MODE_RW);
-            if (remoteSrcFolder.getMode() != Folder.OPEN_MODE_RW) {
+            remoteSrcFolder.open(ImapFolder.OPEN_MODE_RW);
+            if (remoteSrcFolder.getMode() != ImapFolder.OPEN_MODE_RW) {
                 throw new MessagingException("processingPendingMoveOrCopy: could not open remoteSrcFolder " +
                         srcFolder + " read/write", true);
             }

@@ -43,7 +43,7 @@ object Hex {
         var j = 0
         while (i < l) {
             out[j++] = LOWER_CASE[data[i].toInt() shr 4 and 0x0F]
-            out[j++] = LOWER_CASE[data[i].toInt()       and 0x0F]
+            out[j++] = LOWER_CASE[data[i].toInt() and 0x0F]
             i++
         }
 
@@ -53,6 +53,6 @@ object Hex {
     fun StringBuilder.appendHex(value: Byte, lowerCase: Boolean = true) {
         val digits = if (lowerCase) LOWER_CASE else UPPER_CASE
         append(digits[value.toInt() shr 4 and 0x0F])
-        append(digits[value.toInt()       and 0x0F])
+        append(digits[value.toInt() and 0x0F])
     }
 }

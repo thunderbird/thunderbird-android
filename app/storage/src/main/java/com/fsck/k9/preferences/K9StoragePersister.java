@@ -10,7 +10,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.os.SystemClock;
-import android.support.annotation.CheckResult;
+import androidx.annotation.CheckResult;
 
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.preferences.migrations.StorageMigrations;
@@ -21,7 +21,7 @@ import timber.log.Timber;
 
 
 public class K9StoragePersister implements StoragePersister {
-    private static final int DB_VERSION = 5;
+    private static final int DB_VERSION = 11;
     private static final String DB_NAME = "preferences_storage";
 
     private final Context context;
@@ -35,6 +35,11 @@ public class K9StoragePersister implements StoragePersister {
 
         db.beginTransaction();
         try {
+            if (db.getVersion() > DB_VERSION) {
+                throw new AssertionError("Database downgrades are not supported. " +
+                        "Please fix the database '" + DB_NAME + "' manually or clear app data.");
+            }
+
             if (db.getVersion() < 1) {
                 createStorageDatabase(db);
             } else {
@@ -136,13 +141,20 @@ public class K9StoragePersister implements StoragePersister {
     public Map<String, String> loadValues() {
         long startTime = SystemClock.elapsedRealtime();
         Timber.i("Loading preferences from DB into Storage");
+
+        try (SQLiteDatabase database = openDB()) {
+            return readAllValues(database);
+        } finally {
+            long endTime = SystemClock.elapsedRealtime();
+            Timber.i("Preferences load took %d ms", endTime - startTime);
+        }
+    }
+
+    private Map<String, String> readAllValues(SQLiteDatabase database) {
         HashMap<String, String> loadedValues = new HashMap<>();
         Cursor cursor = null;
-        SQLiteDatabase mDb = null;
         try {
-            mDb = openDB();
-
-            cursor = mDb.rawQuery("SELECT primkey, value FROM preferences_storage", null);
+            cursor = database.rawQuery("SELECT primkey, value FROM preferences_storage", null);
             while (cursor.moveToNext()) {
                 String key = cursor.getString(0);
                 String value = cursor.getString(1);
@@ -151,11 +163,6 @@ public class K9StoragePersister implements StoragePersister {
             }
         } finally {
             Utility.closeQuietly(cursor);
-            if (mDb != null) {
-                mDb.close();
-            }
-            long endTime = SystemClock.elapsedRealtime();
-            Timber.i("Preferences load took %d ms", endTime - startTime);
         }
 
         return loadedValues;
@@ -222,6 +229,12 @@ public class K9StoragePersister implements StoragePersister {
         @Override
         public void writeValue(@NotNull SQLiteDatabase db, @NotNull String key, String value) {
             K9StoragePersister.this.writeValue(db, key, value);
+        }
+
+        @NotNull
+        @Override
+        public Map<String, String> readAllValues(@NotNull SQLiteDatabase db) {
+            return K9StoragePersister.this.readAllValues(db);
         }
 
         @Override

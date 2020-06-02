@@ -1,8 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.android'
-
-apply from: "${rootProject.projectDir}/gradle/plugins/checkstyle-android.gradle"
-apply from: "${rootProject.projectDir}/gradle/plugins/findbugs-android.gradle"
+apply plugin: 'org.jlleitschuh.gradle.ktlint'
 
 if (rootProject.testCoverage) {
     apply plugin: 'jacoco'
@@ -15,11 +13,8 @@ dependencies {
     implementation "org.apache.james:apache-mime4j-dom:${versions.mime4j}"
     implementation "com.squareup.okio:okio:${versions.okio}"
     implementation "commons-io:commons-io:${versions.commonsIo}"
-    implementation "com.android.support:support-annotations:${versions.supportLibrary}"
+    implementation "androidx.annotation:annotation:${versions.androidxAnnotation}"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
-
-    androidTestImplementation "com.android.support.test:runner:0.4.1"
-    androidTestImplementation "com.madgag.spongycastle:pg:1.51.0.0"
 
     testImplementation project(":mail:testing")
     testImplementation "org.robolectric:robolectric:${versions.robolectric}"
@@ -35,7 +30,7 @@ android {
     defaultConfig {
         minSdkVersion buildConfig.minSdk
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -50,7 +45,11 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility javaVersion
+        targetCompatibility javaVersion
+    }
+
+    kotlinOptions {
+        jvmTarget = kotlinJvmVersion
     }
 }

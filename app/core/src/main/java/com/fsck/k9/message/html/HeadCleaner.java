@@ -27,8 +27,7 @@ class HeadCleaner {
 
     private void copySafeNodes(Element source, Element destination) {
         CleaningVisitor cleaningVisitor = new CleaningVisitor(source, destination);
-        NodeTraversor traversor = new NodeTraversor(cleaningVisitor);
-        traversor.traverse(source);
+        NodeTraversor.traverse(cleaningVisitor, source);
     }
 
 
@@ -63,11 +62,11 @@ class HeadCleaner {
                 }
             } else if (source instanceof TextNode) {
                 TextNode sourceText = (TextNode) source;
-                TextNode destinationText = new TextNode(sourceText.getWholeText(), source.baseUri());
+                TextNode destinationText = new TextNode(sourceText.getWholeText());
                 destination.appendChild(destinationText);
             } else if (source instanceof DataNode && isSafeTag(source.parent())) {
                 DataNode sourceData = (DataNode) source;
-                DataNode destinationData = new DataNode(sourceData.getWholeData(), source.baseUri());
+                DataNode destinationData = new DataNode(sourceData.getWholeData());
                 destination.appendChild(destinationData);
             }
         }

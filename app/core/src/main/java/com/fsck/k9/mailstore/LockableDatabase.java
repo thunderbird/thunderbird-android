@@ -264,7 +264,7 @@ public class LockableDatabase {
         lockRead();
         final boolean doTransaction = transactional && inTransaction.get() == null;
         try {
-            final boolean debug = K9.isDebug();
+            final boolean debug = K9.isDebugLoggingEnabled();
             if (doTransaction) {
                 inTransaction.set(Boolean.TRUE);
                 mDb.beginTransaction();
@@ -310,6 +310,8 @@ public class LockableDatabase {
             Timber.v("LockableDatabase: Ignoring provider switch request as they are equal: %s", newProviderId);
             return;
         }
+
+        Timber.v("LockableDatabase: Switching provider from %s to %s", mStorageProviderId, newProviderId);
 
         final String oldProviderId = mStorageProviderId;
         lockWrite(oldProviderId);

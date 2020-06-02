@@ -2,7 +2,7 @@ package com.fsck.k9.message;
 
 
 import android.content.Intent;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 
 import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.DI;

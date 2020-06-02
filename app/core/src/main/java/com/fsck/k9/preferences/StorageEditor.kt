@@ -2,7 +2,6 @@ package com.fsck.k9.preferences
 
 import android.content.SharedPreferences
 
-
 interface StorageEditor {
     fun copy(input: SharedPreferences)
 

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Must be kept in sync with arrays_account_settings_values.xml/account_colors -->
+    <integer-array name="drawer_account_accent_color_dark_theme">
+        <item>0xFFFFB300</item> <!-- Amber 600 -->
+        <item>0xFFFF9800</item> <!-- Orange 500 -->
+        <item>0xFFFF7043</item> <!-- Deep orange 400 -->
+        <item>0xFFEF5350</item> <!-- Red 400 -->
+
+        <item>0xFFC0CA33</item> <!-- Lime 600 -->
+        <item>0xFF7CB342</item> <!-- Light green 600 -->
+        <item>0xFF4CAF50</item> <!-- Green 500 -->
+        <item>0xFF4DB6AC</item> <!-- Teal 300 -->
+
+        <item>0xFF00ACC1</item> <!-- Cyan 600 -->
+        <item>0xFF03A9F4</item> <!-- Light blue 500 -->
+        <item>0xFF42A5F5</item> <!-- Blue 400 -->
+        <item>0xFF9FA8DA</item> <!-- Indigo 200 -->
+
+        <item>0xFFF48FB1</item> <!-- Pink 200 -->
+        <item>0xFFCE93D8</item> <!-- Purple 200 -->
+        <item>0xFFB39DDB</item> <!-- Deep purple 200 -->
+        <item>0xFF90A4AE</item> <!-- Blue gray 300 -->
+    </integer-array>
+
+</resources>

@@ -1,13 +1,14 @@
 package com.fsck.k9.mail.internet;
 
 
+import android.net.Uri;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import android.net.MailTo;
-
+import com.fsck.k9.helper.MailTo;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Message;
 
@@ -63,8 +64,8 @@ public class ListHeaders {
             return null;
         }
 
-        String mailToUri = matcher.group(1);
-        String emailAddress = MailTo.parse(mailToUri).getTo();
-        return new Address(emailAddress);
+        Uri mailToUri = Uri.parse(matcher.group(1));
+        Address[] emailAddress = MailTo.parse(mailToUri).getTo();
+        return emailAddress.length >= 1 ? emailAddress[0] : null;
     }
 }

@@ -11,13 +11,12 @@ import java.util.Map;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.ConnectionSecurity;
-import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Folder.FolderType;
+import com.fsck.k9.mail.FolderType;
 import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.ssl.TrustManagerFactory;
-import com.fsck.k9.mail.store.StoreConfig;
+
 import javax.net.ssl.SSLException;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -48,12 +47,10 @@ import org.mockito.stubbing.OngoingStubbing;
 import static junit.framework.Assert.assertSame;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-@SuppressWarnings("deprecation")
 @RunWith(K9LibRobolectricTestRunner.class)
 public class WebDavStoreTest {
     private static final HttpResponse OK_200_RESPONSE = createOkResponse();
@@ -71,10 +68,11 @@ public class WebDavStoreTest {
     private SchemeRegistry mockSchemeRegistry;
     @Mock
     private TrustManagerFactory trustManagerFactory;
+    @Mock
+    private DraftsFolderProvider draftsFolderProvider;
 
     private ArgumentCaptor<HttpGeneric> requestCaptor;
 
-    private StoreConfig storeConfig;
     private WebDavStoreSettings serverSettings;
     private WebDavStore webDavStore;
 
@@ -89,7 +87,6 @@ public class WebDavStoreTest {
         when(mockHttpClient.getConnectionManager()).thenReturn(mockClientConnectionManager);
         when(mockClientConnectionManager.getSchemeRegistry()).thenReturn(mockSchemeRegistry);
 
-        storeConfig = createStoreConfig();
         serverSettings = createWebDavStoreSettings(ConnectionSecurity.SSL_TLS_REQUIRED);
         webDavStore = createWebDavStore();
     }
@@ -197,7 +194,7 @@ public class WebDavStoreTest {
 
     @Test
     public void getFolder_shouldReturnWebDavFolderInstance() {
-        Folder result = webDavStore.getFolder("INBOX");
+        WebDavFolder result = webDavStore.getFolder("INBOX");
 
         assertEquals(WebDavFolder.class, result.getClass());
     }
@@ -205,9 +202,9 @@ public class WebDavStoreTest {
     @Test
     public void getFolder_calledTwice_shouldReturnFirstInstance() {
         String folderName = "Trash";
-        Folder webDavFolder = webDavStore.getFolder(folderName);
+        WebDavFolder webDavFolder = webDavStore.getFolder(folderName);
 
-        Folder result = webDavStore.getFolder(folderName);
+        WebDavFolder result = webDavStore.getFolder(folderName);
 
         assertSame(webDavFolder, result);
     }
@@ -229,10 +226,10 @@ public class WebDavStoreTest {
         configureHttpResponses(UNAUTHORIZED_401_RESPONSE, OK_200_RESPONSE, createOkPropfindResponse(),
                 createOkSearchResponse());
 
-        List<? extends Folder> folders = webDavStore.getPersonalNamespaces();
+        List<WebDavFolder> folders = webDavStore.getPersonalNamespaces();
 
         Map<String, FolderType> folderNameToTypeMap = new HashMap<>();
-        for (Folder folder : folders) {
+        for (WebDavFolder folder : folders) {
             folderNameToTypeMap.put(folder.getName(), folder.getType());
         }
         assertEquals(FolderType.INBOX, folderNameToTypeMap.get("Inbox"));
@@ -257,7 +254,7 @@ public class WebDavStoreTest {
         configureHttpResponses(UNAUTHORIZED_401_RESPONSE, OK_200_RESPONSE, createOkPropfindResponse(),
                 createOkSearchResponse());
 
-        List<? extends Folder> folders = webDavStore.getPersonalNamespaces();
+        List<WebDavFolder> folders = webDavStore.getPersonalNamespaces();
 
         List<HttpGeneric> requests = requestCaptor.getAllValues();
 
@@ -339,12 +336,6 @@ public class WebDavStoreTest {
         };
     }
 
-    private StoreConfig createStoreConfig() {
-        StoreConfig storeConfig = mock(StoreConfig.class);
-        when(storeConfig.getInboxFolder()).thenReturn("INBOX");
-        return storeConfig;
-    }
-
     private WebDavStoreSettings createWebDavStoreSettings(ConnectionSecurity connectionSecurity) {
         return new WebDavStoreSettings(
                 "webdav.example.org",
@@ -361,12 +352,12 @@ public class WebDavStoreTest {
     }
 
     private WebDavStore createWebDavStore() {
-        return new WebDavStore(trustManagerFactory, serverSettings, storeConfig, mockHttpClientFactory);
+        return new WebDavStore(trustManagerFactory, serverSettings, draftsFolderProvider, mockHttpClientFactory);
     }
 
     private WebDavStore createWebDavStore(ConnectionSecurity connectionSecurity) {
         WebDavStoreSettings serverSettings = createWebDavStoreSettings(connectionSecurity);
-        return new WebDavStore(trustManagerFactory, serverSettings, storeConfig, mockHttpClientFactory);
+        return new WebDavStore(trustManagerFactory, serverSettings, draftsFolderProvider, mockHttpClientFactory);
     }
 
     private void configureHttpResponses(HttpResponse... responses) throws IOException {

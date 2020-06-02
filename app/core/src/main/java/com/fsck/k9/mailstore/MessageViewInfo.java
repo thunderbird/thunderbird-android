@@ -4,8 +4,12 @@ package com.fsck.k9.mailstore;
 import java.util.Collections;
 import java.util.List;
 
+import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.internet.MimeBodyPart;
+import com.fsck.k9.mail.internet.TextBody;
 
 
 public class MessageViewInfo {
@@ -50,7 +54,15 @@ public class MessageViewInfo {
     }
 
     public static MessageViewInfo createWithErrorState(Message message, boolean isMessageIncomplete) {
-        return new MessageViewInfo(message, isMessageIncomplete, null, null, false, null, null, null, null, null, null);
+        try {
+            Body emptyBody = new TextBody("");
+            Part emptyPart = new MimeBodyPart(emptyBody, "text/plain");
+            String subject = message.getSubject();
+            return new MessageViewInfo(message, isMessageIncomplete, emptyPart, subject, false, null, null, null, null,
+                    null, null);
+        } catch (MessagingException e) {
+            throw new AssertionError(e);
+        }
     }
 
     public static MessageViewInfo createForMetadataOnly(Message message, boolean isMessageIncomplete) {

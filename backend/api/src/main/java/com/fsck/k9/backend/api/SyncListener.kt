@@ -1,11 +1,11 @@
 package com.fsck.k9.backend.api
 
 interface SyncListener {
-    fun syncStarted(folderServerId: String, folderName: String)
+    fun syncStarted(folderServerId: String)
 
     fun syncAuthenticationSuccess()
 
-    fun syncHeadersStarted(folderServerId: String, folderName: String)
+    fun syncHeadersStarted(folderServerId: String)
     fun syncHeadersProgress(folderServerId: String, completed: Int, total: Int)
     fun syncHeadersFinished(folderServerId: String, totalMessagesInMailbox: Int, numNewMessages: Int)
 
@@ -14,8 +14,8 @@ interface SyncListener {
     fun syncRemovedMessage(folderServerId: String, messageServerId: String)
     fun syncFlagChanged(folderServerId: String, messageServerId: String)
 
-    fun syncFinished(folderServerId: String, totalMessagesInMailbox: Int, numNewMessages: Int)
+    fun syncFinished(folderServerId: String)
     fun syncFailed(folderServerId: String, message: String, exception: Exception?)
 
-    fun folderStatusChanged(folderServerId: String, unreadMessageCount: Int)
+    fun folderStatusChanged(folderServerId: String)
 }

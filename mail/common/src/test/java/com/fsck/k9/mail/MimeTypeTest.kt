@@ -1,0 +1,84 @@
+package com.fsck.k9.mail
+
+import com.fsck.k9.mail.MimeType.Companion.toMimeType
+import com.fsck.k9.mail.MimeType.Companion.toMimeTypeOrNull
+import com.fsck.k9.mail.internet.getMimeTypes
+import java.lang.IllegalArgumentException
+import org.hamcrest.Matchers
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertThat
+import org.junit.Assert.fail
+import org.junit.Test
+
+class MimeTypeTest {
+    @Test
+    fun commonTypes() {
+        assertParsedMimeType("text/plain", type = "text", subtype = "plain")
+        assertParsedMimeType("text/html", type = "text", subtype = "html")
+        assertParsedMimeType("application/octet-stream", type = "application", subtype = "octet-stream")
+        assertParsedMimeType("message/rfc822", type = "message", subtype = "rfc822")
+        assertParsedMimeType("message/global", type = "message", subtype = "global")
+        assertParsedMimeType("multipart/alternative", type = "multipart", subtype = "alternative")
+        assertParsedMimeType("multipart/mixed", type = "multipart", subtype = "mixed")
+        assertParsedMimeType("multipart/encrypted", type = "multipart", subtype = "encrypted")
+    }
+
+    @Test
+    fun checkListOfMimeTypes() {
+        for (mimeTypeString in getMimeTypes()) {
+            // If there's an invalid MIME type this will throw
+            mimeTypeString.toMimeType()
+        }
+    }
+
+    @Test
+    fun lowerCasing() {
+        assertParsedMimeType("text/plain", type = "text", subtype = "plain")
+        assertParsedMimeType("text/PLAIN", type = "text", subtype = "plain")
+        assertParsedMimeType("TEXT/plain", type = "text", subtype = "plain")
+        assertParsedMimeType("TEXT/PLAIN", type = "text", subtype = "plain")
+        assertParsedMimeType("TeXt/pLaIn", type = "text", subtype = "plain")
+        assertParsedMimeType("APPLICATION/OCTET-STREAM", type = "application", subtype = "octet-stream")
+    }
+
+    @Test
+    fun invalidMimeTypes() {
+        assertInvalidMimeType("")
+        assertInvalidMimeType("text")
+        assertInvalidMimeType("text plain")
+        assertInvalidMimeType("image/ png")
+        assertInvalidMimeType("message /rfc822")
+        assertInvalidMimeType("application/something(odd)")
+    }
+
+    @Test
+    fun invalidMimeTypesReturnNull() {
+        assertInvalidMimeTypeReturnsNull("")
+        assertInvalidMimeTypeReturnsNull("text")
+        assertInvalidMimeTypeReturnsNull("text plain")
+        assertInvalidMimeTypeReturnsNull("image/ png")
+        assertInvalidMimeTypeReturnsNull("message /rfc822")
+        assertInvalidMimeTypeReturnsNull("application/something(odd)")
+    }
+
+    private fun assertParsedMimeType(input: String, type: String, subtype: String) {
+        val mimeType = input.toMimeType()
+
+        assertEquals(type, mimeType.type)
+        assertEquals(subtype, mimeType.subtype)
+    }
+
+    private fun assertInvalidMimeType(input: String) {
+        try {
+            input.toMimeType()
+            fail("Expected exception")
+        } catch (e: IllegalArgumentException) {
+            assertThat(e.message, Matchers.startsWith("Invalid MIME type: "))
+        }
+    }
+
+    private fun assertInvalidMimeTypeReturnsNull(input: String) {
+        assertNull(input.toMimeTypeOrNull())
+    }
+}

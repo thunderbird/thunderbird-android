@@ -51,8 +51,8 @@ import timber.log.Timber;
 
 import static com.fsck.k9.mail.ConnectionSecurity.STARTTLS_REQUIRED;
 import static com.fsck.k9.mail.K9MailLib.DEBUG_PROTOCOL_IMAP;
-import static com.fsck.k9.mail.store.RemoteStore.SOCKET_CONNECT_TIMEOUT;
-import static com.fsck.k9.mail.store.RemoteStore.SOCKET_READ_TIMEOUT;
+import static com.fsck.k9.mail.NetworkTimeouts.SOCKET_CONNECT_TIMEOUT;
+import static com.fsck.k9.mail.NetworkTimeouts.SOCKET_READ_TIMEOUT;
 import static com.fsck.k9.mail.store.imap.ImapResponseParser.equalsIgnoreCase;
 
 
@@ -91,7 +91,6 @@ class ImapConnection {
     private Exception stacktraceForClose;
     private boolean open = false;
     private boolean retryXoauth2WithNewToken = true;
-    private int lineLengthLimit;
 
 
     public ImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
@@ -265,31 +264,24 @@ class ImapConnection {
         extractCapabilities(Collections.singletonList(initialResponse));
     }
 
-    private List<ImapResponse> extractCapabilities(List<ImapResponse> responses) {
+    private boolean extractCapabilities(List<ImapResponse> responses) {
         CapabilityResponse capabilityResponse = CapabilityResponse.parse(responses);
-        if (capabilityResponse != null) {
-            Set<String> receivedCapabilities = capabilityResponse.getCapabilities();
-            if (K9MailLib.isDebug()) {
-                Timber.d("Saving %s capabilities for %s", receivedCapabilities, getLogId());
-            }
-            capabilities = receivedCapabilities;
+        if (capabilityResponse == null) {
+            return false;
         }
-        return responses;
+
+        Set<String> receivedCapabilities = capabilityResponse.getCapabilities();
+        Timber.d("Saving %s capabilities for %s", receivedCapabilities, getLogId());
+        capabilities = receivedCapabilities;
+
+        return true;
     }
 
-    private List<ImapResponse> extractOrRequestCapabilities(List<ImapResponse> responses)
-            throws IOException, MessagingException {
-        CapabilityResponse capabilityResponse = CapabilityResponse.parse(responses);
-        if (capabilityResponse != null) {
-            Set<String> receivedCapabilities = capabilityResponse.getCapabilities();
-            Timber.d("Saving %s capabilities for %s", receivedCapabilities, getLogId());
-            capabilities = receivedCapabilities;
-        } else {
+    private void extractOrRequestCapabilities(List<ImapResponse> responses) throws IOException, MessagingException {
+        if (!extractCapabilities(responses)) {
             Timber.i("Did not get capabilities in post-auth banner, requesting CAPABILITY for %s", getLogId());
             requestCapabilities();
         }
-
-        return responses;
     }
 
     private void requestCapabilitiesIfNecessary() throws IOException, MessagingException {
@@ -303,8 +295,7 @@ class ImapConnection {
     }
 
     private void requestCapabilities() throws IOException, MessagingException {
-        List<ImapResponse> responses = extractCapabilities(executeSimpleCommand(Commands.CAPABILITY));
-        if (responses.size() != 2) {
+        if (!extractCapabilities(executeSimpleCommand(Commands.CAPABILITY))) {
             throw new MessagingException("Invalid CAPABILITY response received");
         }
     }
@@ -780,11 +771,6 @@ class ImapConnection {
         return responses;
     }
 
-    public List<ImapResponse> readStatusResponse(String tag, String commandToLog, UntaggedHandler untaggedHandler)
-            throws IOException, NegativeImapResponseException {
-        return responseParser.readStatusResponse(tag, commandToLog, getLogId(), untaggedHandler);
-    }
-
     public String sendSaslIrCommand(String command, String initialClientResponse, boolean sensitive)
             throws IOException, MessagingException {
         try {
@@ -861,13 +847,6 @@ class ImapConnection {
         } catch (IOException e) {
             close();
             throw e;
-        }
-    }
-
-    protected void setReadTimeout(int millis) throws SocketException {
-        Socket sock = socket;
-        if (sock != null) {
-            sock.setSoTimeout(millis);
         }
     }
 

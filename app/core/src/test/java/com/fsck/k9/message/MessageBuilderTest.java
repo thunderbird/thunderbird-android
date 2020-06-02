@@ -65,7 +65,7 @@ public class MessageBuilderTest extends RobolectricTest {
     private static final String MESSAGE_HEADERS = "" +
             "Date: Sun, 26 Apr 1970 17:46:40 +0000\r\n" +
             "From: tester <test@example.org>\r\n" +
-            "To: recip 1 <to1@example.org>,recip 2 <to2@example.org>\r\n" +
+            "To: recip 1 <to1@example.org>, recip 2 <to2@example.org>\r\n" +
             "CC: cc recip <cc@example.org>\r\n" +
             "BCC: bcc recip <bcc@example.org>\r\n" +
             "Subject: test_subject\r\n" +
@@ -424,11 +424,13 @@ public class MessageBuilderTest extends RobolectricTest {
     }
 
     private Identity createIdentity() {
-        Identity identity = new Identity();
-        identity.setName(TEST_IDENTITY_ADDRESS.getPersonal());
-        identity.setEmail(TEST_IDENTITY_ADDRESS.getAddress());
-        identity.setDescription("test identity");
-        identity.setSignatureUse(false);
-        return identity;
+        return new Identity(
+                "test identity",
+                TEST_IDENTITY_ADDRESS.getPersonal(),
+                TEST_IDENTITY_ADDRESS.getAddress(),
+                null,
+                false,
+                null
+        );
     }
 }

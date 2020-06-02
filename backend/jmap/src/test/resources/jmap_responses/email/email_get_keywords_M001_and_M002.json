@@ -1,0 +1,26 @@
+{
+  "methodResponses": [
+    [
+      "Email/get",
+      {
+        "state": "50",
+        "list": [
+          {
+            "id": "M001",
+            "keywords": {}
+          },
+          {
+            "id": "M002",
+            "keywords": {
+              "$seen": true
+            }
+          }
+        ],
+        "notFound": [],
+        "accountId": "test@example.com"
+      },
+      "0"
+    ]
+  ],
+  "sessionState": "0"
+}

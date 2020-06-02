@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="button_minWidth">100sp</dimen>
+    <dimen name="widget_padding">8dp</dimen>
+    <dimen name="highlight_radius">48dp</dimen>
+</resources>

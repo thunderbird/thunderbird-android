@@ -20,6 +20,7 @@ import static org.mockito.Mockito.when;
 public class NotificationDataTest extends RobolectricTest {
     private static final String ACCOUNT_UUID = "1-2-3";
     private static final int ACCOUNT_NUMBER = 23;
+    private static final long FOLDER_ID = 42;
     private static final String FOLDER_NAME = "INBOX";
 
 
@@ -295,7 +296,7 @@ public class NotificationDataTest extends RobolectricTest {
     }
 
     private MessageReference createMessageReference(String uid) {
-        return new MessageReference(ACCOUNT_UUID, FOLDER_NAME, uid, null);
+        return new MessageReference(ACCOUNT_UUID, FOLDER_ID, uid, null);
     }
 
     private NotificationContent createNotificationContent(String uid) {

@@ -1,0 +1,159 @@
+{
+  "methodResponses": [
+    [
+      "Mailbox/get",
+      {
+        "accountId": "test@example.com",
+        "state": "23",
+        "list": [
+          {
+            "id": "id_inbox",
+            "name": "Inbox",
+            "parentId": null,
+            "myRights": {
+              "mayReadItems": true,
+              "mayAddItems": true,
+              "mayRemoveItems": true,
+              "mayCreateChild": true,
+              "mayDelete": false,
+              "maySubmit": true,
+              "maySetSeen": true,
+              "maySetKeywords": true,
+              "mayAdmin": true,
+              "mayRename": false
+            },
+            "role": "inbox",
+            "totalEmails": 238,
+            "unreadEmails": 6,
+            "totalThreads": 80,
+            "unreadThreads": 4,
+            "sortOrder": 1,
+            "isSubscribed": false
+          },
+          {
+            "id": "id_archive",
+            "name": "Archive",
+            "parentId": null,
+            "myRights": {
+              "mayReadItems": true,
+              "mayAddItems": true,
+              "mayRemoveItems": true,
+              "mayCreateChild": true,
+              "mayDelete": true,
+              "maySubmit": true,
+              "maySetSeen": true,
+              "maySetKeywords": true,
+              "mayAdmin": true,
+              "mayRename": true
+            },
+            "role": "archive",
+            "totalEmails": 295,
+            "unreadEmails": 36,
+            "totalThreads": 136,
+            "unreadThreads": 17,
+            "sortOrder": 3,
+            "isSubscribed": false
+          },
+          {
+            "id": "id_drafts",
+            "name": "Drafts",
+            "parentId": null,
+            "myRights": {
+              "mayReadItems": true,
+              "mayAddItems": true,
+              "mayRemoveItems": true,
+              "mayCreateChild": true,
+              "mayDelete": true,
+              "maySubmit": true,
+              "maySetSeen": true,
+              "maySetKeywords": true,
+              "mayAdmin": true,
+              "mayRename": true
+            },
+            "role": "drafts",
+            "totalEmails": 0,
+            "unreadEmails": 0,
+            "totalThreads": 0,
+            "unreadThreads": 0,
+            "sortOrder": 4,
+            "isSubscribed": false
+          },
+          {
+            "id": "id_sent",
+            "name": "Sent",
+            "parentId": null,
+            "myRights": {
+              "mayReadItems": true,
+              "mayAddItems": true,
+              "mayRemoveItems": true,
+              "mayCreateChild": true,
+              "mayDelete": true,
+              "maySubmit": true,
+              "maySetSeen": true,
+              "maySetKeywords": true,
+              "mayAdmin": true,
+              "mayRename": true
+            },
+            "role": "sent",
+            "totalEmails": 2,
+            "unreadEmails": 0,
+            "totalThreads": 2,
+            "unreadThreads": 0,
+            "sortOrder": 5,
+            "isSubscribed": false
+          },
+          {
+            "id": "id_trash",
+            "name": "Trash",
+            "parentId": null,
+            "myRights": {
+              "mayReadItems": true,
+              "mayAddItems": true,
+              "mayRemoveItems": true,
+              "mayCreateChild": true,
+              "mayDelete": true,
+              "maySubmit": true,
+              "maySetSeen": true,
+              "maySetKeywords": true,
+              "mayAdmin": true,
+              "mayRename": true
+            },
+            "role": "trash",
+            "totalEmails": 2,
+            "unreadEmails": 0,
+            "totalThreads": 2,
+            "unreadThreads": 0,
+            "sortOrder": 7,
+            "isSubscribed": false
+          },
+          {
+            "id": "id_folder1",
+            "name": "folder1",
+            "parentId": null,
+            "myRights": {
+              "mayReadItems": true,
+              "mayAddItems": true,
+              "mayRemoveItems": true,
+              "mayCreateChild": true,
+              "mayDelete": true,
+              "maySubmit": true,
+              "maySetSeen": true,
+              "maySetKeywords": true,
+              "mayAdmin": true,
+              "mayRename": true
+            },
+            "role": null,
+            "totalEmails": 0,
+            "unreadEmails": 0,
+            "totalThreads": 0,
+            "unreadThreads": 0,
+            "sortOrder": 10,
+            "isSubscribed": false
+          }
+        ]
+      },
+      "0"
+    ]
+  ],
+  "sessionState": "0"
+}

@@ -16,7 +16,6 @@ import com.fsck.k9.mail.DefaultBodyFactory;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.FetchProfile.Item;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
@@ -24,7 +23,6 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
 import com.fsck.k9.mail.internet.MimeHeader;
-import com.fsck.k9.mail.store.StoreConfig;
 import okio.Buffer;
 import org.apache.james.mime4j.util.MimeUtil;
 import org.junit.Before;
@@ -35,8 +33,8 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.robolectric.RuntimeEnvironment;
 
-import static com.fsck.k9.mail.Folder.OPEN_MODE_RO;
-import static com.fsck.k9.mail.Folder.OPEN_MODE_RW;
+import static com.fsck.k9.mail.store.imap.ImapFolder.OPEN_MODE_RO;
+import static com.fsck.k9.mail.store.imap.ImapFolder.OPEN_MODE_RW;
 import static com.fsck.k9.mail.store.imap.ImapResponseHelper.createImapResponse;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singleton;
@@ -64,18 +62,17 @@ import static org.mockito.internal.util.collections.Sets.newSet;
 
 @RunWith(K9LibRobolectricTestRunner.class)
 public class ImapFolderTest {
+    private static final int MAX_DOWNLOAD_SIZE = -1;
+
     private ImapStore imapStore;
     private ImapConnection imapConnection;
-    private StoreConfig storeConfig;
 
     @Before
     public void setUp() throws Exception {
         BinaryTempFileBody.setTempDirectory(RuntimeEnvironment.application.getCacheDir());
         imapStore = mock(ImapStore.class);
-        storeConfig = mock(StoreConfig.class);
-        when(storeConfig.getInboxFolder()).thenReturn("INBOX");
         when(imapStore.getCombinedPrefix()).thenReturn("");
-        when(imapStore.getStoreConfig()).thenReturn(storeConfig);
+        when(imapStore.getLogLabel()).thenReturn("Account");
 
         imapConnection = mock(ImapConnection.class);
     }
@@ -285,20 +282,6 @@ public class ImapFolderTest {
     }
 
     @Test
-    public void copyMessages_withoutDestinationFolderOfWrongType_shouldThrow() throws Exception {
-        ImapFolder sourceFolder = createFolder("Source");
-        Folder destinationFolder = mock(Folder.class);
-        List<ImapMessage> messages = singletonList(mock(ImapMessage.class));
-
-        try {
-            sourceFolder.copyMessages(messages, destinationFolder);
-            fail("Expected exception");
-        } catch (MessagingException e) {
-            assertEquals("ImapFolder.copyMessages passed non-ImapFolder", e.getMessage());
-        }
-    }
-
-    @Test
     public void copyMessages_withEmptyMessageList_shouldReturnNull() throws Exception {
         ImapFolder sourceFolder = createFolder("Source");
         ImapFolder destinationFolder = createFolder("Destination");
@@ -377,66 +360,6 @@ public class ImapFolderTest {
         Map<String, String> uidMapping = sourceFolder.moveMessages(messages, destinationFolder);
 
         assertNull(uidMapping);
-    }
-
-    @Test
-    public void delete_withEmptyMessageList_shouldNotInteractWithImapConnection() throws Exception {
-        ImapFolder folder = createFolder("Source");
-        List<ImapMessage> messages = Collections.emptyList();
-
-        folder.delete(messages, "Trash");
-
-        verifyNoMoreInteractions(imapConnection);
-    }
-
-    @Test
-    public void delete_fromTrashFolder_shouldIssueUidStoreFlagsCommand() throws Exception {
-        ImapFolder folder = createFolder("Folder");
-        prepareImapFolderForOpen(OPEN_MODE_RW);
-        List<ImapMessage> messages = singletonList(createImapMessage("23"));
-        folder.open(OPEN_MODE_RW);
-
-        folder.delete(messages, "Folder");
-
-        assertCommandWithIdsIssued("UID STORE 23 +FLAGS.SILENT (\\Deleted)");
-    }
-
-    @Test
-    public void delete_shouldMoveMessagesToTrashFolder() throws Exception {
-        ImapFolder folder = createFolder("Folder");
-        prepareImapFolderForOpen(OPEN_MODE_RW);
-        ImapFolder trashFolder = createFolder("Trash");
-        when(imapStore.getFolder("Trash")).thenReturn(trashFolder);
-        List<ImapMessage> messages = singletonList(createImapMessage("2"));
-        setupCopyResponse("x OK [COPYUID 23 2 102] Success");
-        folder.open(OPEN_MODE_RW);
-
-        folder.delete(messages, "Trash");
-
-        assertCommandWithIdsIssued("UID STORE 2 +FLAGS.SILENT (\\Deleted)");
-    }
-
-    @Test
-    public void delete_withoutTrashFolderExisting_shouldThrow() throws Exception {
-        ImapFolder folder = createFolder("Folder");
-        prepareImapFolderForOpen(OPEN_MODE_RW);
-        ImapFolder trashFolder = createFolder("Trash");
-        when(imapStore.getFolder("Trash")).thenReturn(trashFolder);
-        List<ImapMessage> messages = singletonList(createImapMessage("2"));
-        List<ImapResponse> copyResponses = singletonList(
-                createImapResponse("x OK [COPYUID 23 2 102] Success")
-        );
-        when(imapConnection.executeSimpleCommand("UID COPY 2 \"Trash\"")).thenReturn(copyResponses);
-        folder.open(OPEN_MODE_RW);
-        doThrow(NegativeImapResponseException.class).doReturn(Collections.emptyList())
-                .when(imapConnection).executeSimpleCommand("STATUS \"Trash\" (RECENT)");
-
-        try {
-            folder.delete(messages, "Trash");
-            fail("Expected exception");
-        } catch (FolderNotFoundException e) {
-            assertEquals("Trash", e.getFolderServerId());
-        }
     }
 
     @Test
@@ -777,7 +700,7 @@ public class ImapFolderTest {
         ImapFolder folder = createFolder("Folder");
         FetchProfile fetchProfile = createFetchProfile();
 
-        folder.fetch(null, fetchProfile, null);
+        folder.fetch(null, fetchProfile, null, MAX_DOWNLOAD_SIZE);
 
         verifyNoMoreInteractions(imapStore);
     }
@@ -787,7 +710,7 @@ public class ImapFolderTest {
         ImapFolder folder = createFolder("Folder");
         FetchProfile fetchProfile = createFetchProfile();
 
-        folder.fetch(Collections.<ImapMessage>emptyList(), fetchProfile, null);
+        folder.fetch(Collections.<ImapMessage>emptyList(), fetchProfile, null, MAX_DOWNLOAD_SIZE);
 
         verifyNoMoreInteractions(imapStore);
     }
@@ -801,7 +724,7 @@ public class ImapFolderTest {
         List<ImapMessage> messages = createImapMessages("1");
         FetchProfile fetchProfile = createFetchProfile(Item.FLAGS);
 
-        folder.fetch(messages, fetchProfile, null);
+        folder.fetch(messages, fetchProfile, null, MAX_DOWNLOAD_SIZE);
 
         verify(imapConnection).sendCommand("UID FETCH 1 (UID FLAGS)", false);
     }
@@ -815,7 +738,7 @@ public class ImapFolderTest {
         List<ImapMessage> messages = createImapMessages("1");
         FetchProfile fetchProfile = createFetchProfile(Item.ENVELOPE);
 
-        folder.fetch(messages, fetchProfile, null);
+        folder.fetch(messages, fetchProfile, null, MAX_DOWNLOAD_SIZE);
 
         verify(imapConnection).sendCommand("UID FETCH 1 (UID INTERNALDATE RFC822.SIZE BODY.PEEK[HEADER.FIELDS " +
                 "(date subject from content-type to cc reply-to message-id references in-reply-to X-K9mail-Identity)]" +
@@ -831,7 +754,7 @@ public class ImapFolderTest {
         List<ImapMessage> messages = createImapMessages("1");
         FetchProfile fetchProfile = createFetchProfile(Item.STRUCTURE);
 
-        folder.fetch(messages, fetchProfile, null);
+        folder.fetch(messages, fetchProfile, null, MAX_DOWNLOAD_SIZE);
 
         verify(imapConnection).sendCommand("UID FETCH 1 (UID BODYSTRUCTURE)", false);
     }
@@ -848,7 +771,7 @@ public class ImapFolderTest {
         List<ImapMessage> messages = createImapMessages("1");
         FetchProfile fetchProfile = createFetchProfile(Item.STRUCTURE);
 
-        folder.fetch(messages, fetchProfile, null);
+        folder.fetch(messages, fetchProfile, null, MAX_DOWNLOAD_SIZE);
 
         verify(messages.get(0)).setHeader(MimeHeader.HEADER_CONTENT_TYPE, "text/plain;\r\n CHARSET=\"US-ASCII\"");
     }
@@ -861,9 +784,8 @@ public class ImapFolderTest {
         when(imapConnection.readResponse(nullable(ImapResponseCallback.class))).thenReturn(createImapResponse("x OK"));
         List<ImapMessage> messages = createImapMessages("1");
         FetchProfile fetchProfile = createFetchProfile(Item.BODY_SANE);
-        when(storeConfig.getMaximumAutoDownloadMessageSize()).thenReturn(4096);
 
-        folder.fetch(messages, fetchProfile, null);
+        folder.fetch(messages, fetchProfile, null, 4096);
 
         verify(imapConnection).sendCommand("UID FETCH 1 (UID BODY.PEEK[]<0.4096>)", false);
     }
@@ -876,9 +798,8 @@ public class ImapFolderTest {
         when(imapConnection.readResponse(nullable(ImapResponseCallback.class))).thenReturn(createImapResponse("x OK"));
         List<ImapMessage> messages = createImapMessages("1");
         FetchProfile fetchProfile = createFetchProfile(Item.BODY_SANE);
-        when(storeConfig.getMaximumAutoDownloadMessageSize()).thenReturn(0);
 
-        folder.fetch(messages, fetchProfile, null);
+        folder.fetch(messages, fetchProfile, null, 0);
 
         verify(imapConnection).sendCommand("UID FETCH 1 (UID BODY.PEEK[])", false);
     }
@@ -892,7 +813,7 @@ public class ImapFolderTest {
         List<ImapMessage> messages = createImapMessages("1");
         FetchProfile fetchProfile = createFetchProfile(Item.BODY);
 
-        folder.fetch(messages, fetchProfile, null);
+        folder.fetch(messages, fetchProfile, null, MAX_DOWNLOAD_SIZE);
 
         verify(imapConnection).sendCommand("UID FETCH 1 (UID BODY.PEEK[])", false);
     }
@@ -908,23 +829,22 @@ public class ImapFolderTest {
                 .thenReturn(createImapResponse("* 1 FETCH (FLAGS (\\Seen) UID 1)"))
                 .thenReturn(createImapResponse("x OK"));
 
-        folder.fetch(messages, fetchProfile, null);
+        folder.fetch(messages, fetchProfile, null, MAX_DOWNLOAD_SIZE);
 
         ImapMessage imapMessage = messages.get(0);
-        verify(imapMessage).setFlagInternal(Flag.SEEN, true);
+        verify(imapMessage).setFlag(Flag.SEEN, true);
     }
 
     @Test
     public void fetchPart_withTextSection_shouldIssueRespectiveCommand() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RO);
-        when(storeConfig.getMaximumAutoDownloadMessageSize()).thenReturn(4096);
         folder.open(OPEN_MODE_RO);
         ImapMessage message = createImapMessage("1");
         Part part = createPart("TEXT");
         when(imapConnection.readResponse(nullable(ImapResponseCallback.class))).thenReturn(createImapResponse("x OK"));
 
-        folder.fetchPart(message, part, null, null);
+        folder.fetchPart(message, part, null, null, 4096);
 
         verify(imapConnection).sendCommand("UID FETCH 1 (UID BODY.PEEK[TEXT]<0.4096>)", false);
     }
@@ -938,7 +858,7 @@ public class ImapFolderTest {
         Part part = createPart("1.1");
         when(imapConnection.readResponse(nullable(ImapResponseCallback.class))).thenReturn(createImapResponse("x OK"));
 
-        folder.fetchPart(message, part, null, null);
+        folder.fetchPart(message, part, null, null, MAX_DOWNLOAD_SIZE);
 
         verify(imapConnection).sendCommand("UID FETCH 1 (UID BODY.PEEK[1.1])", false);
     }
@@ -952,7 +872,7 @@ public class ImapFolderTest {
         Part part = createPlainTextPart("1.1");
         setupSingleFetchResponseToCallback();
 
-        folder.fetchPart(message, part, null, new DefaultBodyFactory());
+        folder.fetchPart(message, part, null, new DefaultBodyFactory(), MAX_DOWNLOAD_SIZE);
 
         ArgumentCaptor<Body> bodyArgumentCaptor = ArgumentCaptor.forClass(Body.class);
         verify(part).setBody(bodyArgumentCaptor.capture());
@@ -967,7 +887,7 @@ public class ImapFolderTest {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RW);
         folder.open(OPEN_MODE_RW);
-        List<ImapMessage> messages = createImapMessages("1");
+        List<Message> messages = singletonList(createImapMessage("1"));
         when(imapConnection.readResponse()).thenReturn(createImapResponse("x OK [APPENDUID 1 23]"));
 
         folder.appendMessages(messages);
@@ -1042,36 +962,12 @@ public class ImapFolderTest {
     }
 
     @Test
-    public void getNewPushState_withNewerUid_shouldReturnNewPushState() throws Exception {
-        ImapFolder folder = createFolder("Folder");
-        prepareImapFolderForOpen(OPEN_MODE_RW);
-        ImapMessage message = createImapMessage("2");
-
-        String newPushState = folder.getNewPushState("uidNext=2", message);
-
-        assertEquals("uidNext=3", newPushState);
-    }
-
-    @Test
-    public void getNewPushState_withoutNewerUid_shouldReturnNull() throws Exception {
-        ImapFolder folder = createFolder("Folder");
-        prepareImapFolderForOpen(OPEN_MODE_RW);
-        ImapMessage message = createImapMessage("1");
-
-        String newPushState = folder.getNewPushState("uidNext=2", message);
-
-        assertNull(newPushState);
-    }
-
-    @Test
     public void search_withFullTextSearchEnabled_shouldIssueRespectiveCommand() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RO);
-        when(storeConfig.isAllowRemoteSearch()).thenReturn(true);
-        when(storeConfig.isRemoteSearchFullText()).thenReturn(true);
         setupUidSearchResponses("1 OK SEARCH completed");
 
-        folder.search("query", newSet(Flag.SEEN), Collections.<Flag>emptySet());
+        folder.search("query", newSet(Flag.SEEN), Collections.<Flag>emptySet(), true);
 
         assertCommandIssued("UID SEARCH TEXT \"query\" SEEN");
     }
@@ -1080,36 +976,20 @@ public class ImapFolderTest {
     public void search_withFullTextSearchDisabled_shouldIssueRespectiveCommand() throws Exception {
         ImapFolder folder = createFolder("Folder");
         prepareImapFolderForOpen(OPEN_MODE_RO);
-        when(storeConfig.isAllowRemoteSearch()).thenReturn(true);
-        when(storeConfig.isRemoteSearchFullText()).thenReturn(false);
         setupUidSearchResponses("1 OK SEARCH completed");
 
-        folder.search("query", Collections.<Flag>emptySet(), Collections.<Flag>emptySet());
+        folder.search("query", Collections.<Flag>emptySet(), Collections.<Flag>emptySet(), false);
 
         assertCommandIssued("UID SEARCH OR SUBJECT \"query\" FROM \"query\"");
     }
 
     @Test
-    public void search_withRemoteSearchDisabled_shouldThrow() throws Exception {
-        ImapFolder folder = createFolder("Folder");
-        when(storeConfig.isAllowRemoteSearch()).thenReturn(false);
-
-        try {
-            folder.search("query", Collections.<Flag>emptySet(), Collections.<Flag>emptySet());
-            fail("Expected exception");
-        } catch (MessagingException e) {
-            assertEquals("Your settings do not allow remote searching of this account", e.getMessage());
-        }
-    }
-
-    @Test
-    public void getMessageByUid_returnsNewImapMessageWithUidInFolder() throws Exception {
+    public void getMessageByUid_returnsNewImapMessageWithUid() throws Exception {
         ImapFolder folder = createFolder("Folder");
 
         ImapMessage message = folder.getMessage("uid");
 
         assertEquals("uid", message.getUid());
-        assertEquals(folder, message.getFolder());
     }
 
     private Part createPlainTextPart(String serverExtra) {

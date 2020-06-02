@@ -90,7 +90,6 @@ class EmailSection private constructor(builder: Builder) : CharSequence {
         }
     }.toString()
 
-
     internal data class Segment(val startIndex: Int, val endIndex: Int)
 
     class Builder(val text: String, val quoteDepth: Int) {
@@ -114,4 +113,3 @@ class EmailSection private constructor(builder: Builder) : CharSequence {
         fun build() = EmailSection(this)
     }
 }
-

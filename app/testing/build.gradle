@@ -1,14 +1,17 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'org.jlleitschuh.gradle.ktlint'
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
 
     implementation project(':app:core')
 
+    api "junit:junit:${versions.junit}"
+    api "org.robolectric:robolectric:${versions.robolectric}"
     api "org.koin:koin-core:${versions.koin}"
     api "org.mockito:mockito-core:${versions.mockito}"
-    api "com.nhaarman:mockito-kotlin:${versions.mockitoKotlin}"
+    api "com.nhaarman.mockitokotlin2:mockito-kotlin:${versions.mockitoKotlin}"
 }
 
 android {
@@ -17,8 +20,7 @@ android {
 
     defaultConfig {
         minSdkVersion buildConfig.minSdk
-        // For Robolectric tests
-        targetSdkVersion 22
+        targetSdkVersion buildConfig.robolectricSdk
     }
 
     lintOptions {
@@ -27,7 +29,11 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility javaVersion
+        targetCompatibility javaVersion
+    }
+
+    kotlinOptions {
+        jvmTarget = kotlinJvmVersion
     }
 }

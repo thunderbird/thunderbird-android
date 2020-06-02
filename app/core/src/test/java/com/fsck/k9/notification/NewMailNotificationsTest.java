@@ -2,7 +2,7 @@ package com.fsck.k9.notification;
 
 
 import android.app.Notification;
-import android.support.v4.app.NotificationManagerCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -330,7 +330,7 @@ public class NewMailNotificationsTest extends K9RobolectricTest {
     }
 
     private MessageReference createMessageReference(int number) {
-        return new MessageReference("account", "folder", String.valueOf(number), null);
+        return new MessageReference("account", 1, String.valueOf(number), null);
     }
 
     private void addToWearNotifications(NotificationHolder notificationHolder, Notification notificationToReturn) {

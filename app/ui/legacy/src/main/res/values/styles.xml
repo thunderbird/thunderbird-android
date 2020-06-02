@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ComposeTextLabel" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">#aaa</item>
+    </style>
+    <style name="ComposeEditText" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColorHint">#aaa</item>
+    </style>
+    <style name="ComposeEditTextLarge" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColorHint">#aaa</item>
+    </style>
+
+    <style name="MessageComposeHighlight">
+        <item name="highlightBackgroundColor">#99444444</item>
+    </style>
+
+    <style name="PositiveBulletPoint">
+        <item name="srcCompat">@drawable/bullet_point_positive</item>
+        <item name="android:tint">?attr/tintColorBulletPointPositive</item>
+    </style>
+
+    <style name="NeutralBulletPoint">
+        <item name="srcCompat">@drawable/bullet_point_neutral</item>
+        <item name="android:tint">?attr/tintColorBulletPointNeutral</item>
+    </style>
+
+    <style name="NegativeBulletPoint">
+        <item name="srcCompat">@drawable/bullet_point_negative</item>
+        <item name="android:tint">?attr/tintColorBulletPointNegative</item>
+    </style>
+
+    <style name="MessageStarStyle">
+        <item name="android:button">?attr/messageStar</item>
+    </style>
+
+</resources>
+

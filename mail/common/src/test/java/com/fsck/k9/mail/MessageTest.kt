@@ -1,18 +1,24 @@
 package com.fsck.k9.mail
 
-
-import com.fsck.k9.mail.Message.RecipientType
-import com.fsck.k9.mail.internet.*
+import com.fsck.k9.mail.internet.BinaryTempFileBody
+import com.fsck.k9.mail.internet.BinaryTempFileMessageBody
+import com.fsck.k9.mail.internet.CharsetSupport
+import com.fsck.k9.mail.internet.MimeBodyPart
+import com.fsck.k9.mail.internet.MimeHeader
+import com.fsck.k9.mail.internet.MimeMessage
+import com.fsck.k9.mail.internet.MimeMessageHelper
+import com.fsck.k9.mail.internet.MimeMultipart
+import com.fsck.k9.mail.internet.TextBody
 import com.google.common.truth.Truth.assertThat
+import java.io.ByteArrayOutputStream
+import java.util.Date
+import java.util.TimeZone
 import okio.Buffer
 import org.apache.james.mime4j.util.MimeUtil
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RuntimeEnvironment
-import java.io.ByteArrayOutputStream
-import java.util.*
-
 
 @RunWith(K9LibRobolectricTestRunner::class)
 class MessageTest {
@@ -255,11 +261,10 @@ class MessageTest {
             """.trimIndent().crlf())
     }
 
-
     private fun sampleMessage(): MimeMessage {
         val message = MimeMessage().apply {
             setFrom(Address("from@example.com"))
-            setRecipient(RecipientType.TO, Address("to@example.com"))
+            setHeader("To", "to@example.com")
             subject = "Test Message"
             setHeader("Date", "Wed, 28 Aug 2013 08:51:09 -0400")
             setEncoding(MimeUtil.ENC_7BIT)

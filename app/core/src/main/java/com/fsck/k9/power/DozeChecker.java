@@ -4,7 +4,7 @@ package com.fsck.k9.power;
 import android.content.Context;
 import android.os.Build;
 import android.os.PowerManager;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 
 
 public class DozeChecker {

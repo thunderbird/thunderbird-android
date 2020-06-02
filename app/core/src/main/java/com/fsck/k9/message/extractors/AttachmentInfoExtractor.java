@@ -9,11 +9,11 @@ import java.util.Locale;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 
 import timber.log.Timber;
-import android.support.annotation.WorkerThread;
+import androidx.annotation.WorkerThread;
 
 import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.MessagingException;

@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress AndroidElementNotAllowed -->
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:key="main"
+    android:title="@string/account_settings_title_fmt">
+
+    <PreferenceScreen
+        android:icon="?attr/iconSettingsGeneral"
+        android:key="account_settings"
+        android:title="@string/account_settings_general_title">
+
+        <com.takisoft.preferencex.AutoSummaryEditTextPreference
+            android:dialogTitle="@string/account_settings_description_label"
+            android:key="account_description"
+            android:title="@string/account_settings_description_label" />
+
+        <CheckBoxPreference
+            android:key="account_default"
+            android:summary="@string/account_settings_default_summary"
+            android:title="@string/account_settings_default_label" />
+
+        <com.takisoft.preferencex.ColorPickerPreference
+            android:key="chip_color"
+            android:summary="@string/account_settings_color_summary"
+            android:title="@string/account_settings_color_label"
+            app:pref_colors="@array/account_colors" />
+
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:icon="?attr/iconPreferencesReadMail"
+        android:key="reading_mail"
+        android:title="@string/account_settings_reading_mail">
+
+        <ListPreference
+            android:dialogTitle="@string/account_settings_show_pictures_label"
+            android:entries="@array/show_pictures_entries"
+            android:entryValues="@array/show_pictures_values"
+            android:key="show_pictures_enum"
+            android:summary="%s"
+            android:title="@string/account_settings_show_pictures_label" />
+
+        <CheckBoxPreference
+            android:key="mark_message_as_read_on_view"
+            android:summary="@string/account_settings_mark_message_as_read_on_view_summary"
+            android:title="@string/account_settings_mark_message_as_read_on_view_label" />
+
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:icon="?attr/iconPreferencesFetchMail"
+        android:key="incoming_prefs"
+        android:title="@string/account_settings_sync">
+
+        <ListPreference
+            android:dialogTitle="@string/account_settings_mail_display_count_label"
+            android:entries="@array/display_count_entries"
+            android:entryValues="@array/display_count_values"
+            android:key="account_display_count"
+            android:summary="%s"
+            android:title="@string/account_settings_mail_display_count_label" />
+
+        <ListPreference
+            android:dialogTitle="@string/account_settings_message_age_label"
+            android:entries="@array/message_age_entries"
+            android:entryValues="@array/message_age_values"
+            android:key="account_message_age"
+            android:summary="%s"
+            android:title="@string/account_settings_message_age_label" />
+
+        <ListPreference
+            android:dialogTitle="@string/account_settings_autodownload_message_size_label"
+            android:entries="@array/autodownload_message_size_entries"
+            android:entryValues="@array/autodownload_message_size_values"
+            android:key="account_autodownload_size"
+            android:summary="%s"
+            android:title="@string/account_settings_autodownload_message_size_label" />
+
+        <ListPreference
+            android:dialogTitle="@string/account_settings_mail_check_frequency_label"
+            android:entries="@array/check_frequency_entries"
+            android:entryValues="@array/check_frequency_values"
+            android:key="account_check_frequency"
+            android:summary="%s"
+            android:title="@string/account_settings_mail_check_frequency_label" />
+
+        <ListPreference
+            android:dialogTitle="@string/account_settings_folder_sync_mode_label"
+            android:entries="@array/folder_sync_mode_entries"
+            android:entryValues="@array/folder_sync_mode_values"
+            android:key="folder_sync_mode"
+            android:summary="%s"
+            android:title="@string/account_settings_folder_sync_mode_label" />
+
+        <!-- Temporarily disabled. See GH-4253
+        <ListPreference
+            android:dialogTitle="@string/account_settings_folder_push_mode_label"
+            android:entries="@array/folder_push_mode_entries"
+            android:entryValues="@array/folder_push_mode_values"
+            android:key="folder_push_mode"
+            android:summary="%s"
+            android:title="@string/account_settings_folder_push_mode_label" />
+        -->
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="account_sync_remote_deletetions"
+            android:summary="@string/account_settings_sync_remote_deletetions_summary"
+            android:title="@string/account_settings_sync_remote_deletetions_label" />
+
+        <CheckBoxPreference
+            android:key="mark_message_as_read_on_delete"
+            android:summary="@string/account_settings_mark_message_as_read_on_delete_summary"
+            android:title="@string/account_settings_mark_message_as_read_on_delete_label" />
+
+        <ListPreference
+            android:dialogTitle="@string/account_setup_incoming_delete_policy_label"
+            android:entries="@array/delete_policy_entries"
+            android:entryValues="@array/delete_policy_values"
+            android:key="delete_policy"
+            android:summary="%s"
+            android:title="@string/account_setup_incoming_delete_policy_label" />
+
+        <ListPreference
+            android:dialogTitle="@string/account_setup_expunge_policy_label"
+            android:entries="@array/expunge_policy_entries"
+            android:entryValues="@array/expunge_policy_values"
+            android:key="expunge_policy"
+            android:summary="%s"
+            android:title="@string/account_setup_expunge_policy_label" />
+
+        <Preference
+            android:key="incoming"
+            android:summary="@string/account_settings_incoming_summary"
+            android:title="@string/account_settings_incoming_label" />
+
+        <!-- Temporarily disabled. See GH-4253
+        <PreferenceScreen
+            android:key="push_advanced"
+            android:title="@string/account_settings_push_advanced_title">
+
+            <CheckBoxPreference
+                android:key="push_poll_on_connect"
+                android:title="@string/push_poll_on_connect_label" />
+
+            <ListPreference
+                android:entries="@array/push_limit_entries"
+                android:entryValues="@array/push_limit_values"
+                android:key="max_push_folders"
+                android:summary="%s"
+                android:title="@string/account_setup_push_limit_label" />
+
+            <ListPreference
+                android:entries="@array/idle_refresh_period_entries"
+                android:entryValues="@array/idle_refresh_period_values"
+                android:key="idle_refresh_period"
+                android:summary="%s"
+                android:title="@string/idle_refresh_period_label" />
+
+        </PreferenceScreen>
+        -->
+
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:icon="?attr/iconPreferencesCompose"
+        android:key="composing"
+        android:title="@string/account_settings_composition">
+
+        <Preference
+            android:key="composition"
+            android:summary="@string/account_settings_composition_summary"
+            android:title="@string/account_settings_composition_label" />
+
+        <Preference
+            android:key="manage_identities"
+            android:summary="@string/account_settings_identities_summary"
+            android:title="@string/account_settings_identities_label" />
+
+        <ListPreference
+            android:entries="@array/message_format_entries"
+            android:entryValues="@array/message_format_values"
+            android:key="message_format"
+            android:summary="%s"
+            android:title="@string/account_settings_message_format_label" />
+
+        <CheckBoxPreference
+            android:key="always_show_cc_bcc"
+            android:title="@string/account_settings_always_show_cc_bcc_label" />
+
+        <CheckBoxPreference
+            android:key="message_read_receipt"
+            android:summary="@string/account_settings_message_read_receipt_summary"
+            android:title="@string/account_settings_message_read_receipt_label" />
+
+        <ListPreference
+            android:entries="@array/quote_style_entries"
+            android:entryValues="@array/quote_style_values"
+            android:key="quote_style"
+            android:summary="%s"
+            android:title="@string/account_settings_quote_style_label" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="default_quoted_text_shown"
+            android:summary="@string/account_settings_default_quoted_text_shown_summary"
+            android:title="@string/account_settings_default_quoted_text_shown_label" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:dependency="quote_style"
+            android:key="reply_after_quote"
+            android:summary="@string/account_settings_reply_after_quote_summary"
+            android:title="@string/account_settings_reply_after_quote_label" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="strip_signature"
+            android:summary="@string/account_settings_strip_signature_summary"
+            android:title="@string/account_settings_strip_signature_label" />
+
+        <com.takisoft.preferencex.AutoSummaryEditTextPreference
+            android:dependency="quote_style"
+            android:dialogTitle="@string/account_settings_quote_prefix_label"
+            android:key="account_quote_prefix"
+            android:title="@string/account_settings_quote_prefix_label" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="upload_sent_messages"
+            android:summary="@string/account_settings_upload_sent_messages_summary"
+            android:title="@string/account_settings_upload_sent_messages_label" />
+
+        <PreferenceScreen
+            android:key="outgoing"
+            android:summary="@string/account_settings_outgoing_summary"
+            android:title="@string/account_settings_outgoing_label" />
+
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:icon="?attr/iconPreferencesFolders"
+        android:key="folders"
+        android:title="@string/account_settings_folders">
+
+        <com.fsck.k9.ui.settings.account.FolderListPreference
+            android:key="account_setup_auto_expand_folder"
+            android:summary="%s"
+            android:title="@string/account_setup_auto_expand_folder" />
+
+        <ListPreference
+            android:dialogTitle="@string/account_settings_folder_display_mode_label"
+            android:entries="@array/folder_display_mode_entries"
+            android:entryValues="@array/folder_display_mode_values"
+            android:key="folder_display_mode"
+            android:summary="%s"
+            android:title="@string/account_settings_folder_display_mode_label" />
+
+        <ListPreference
+            android:dialogTitle="@string/account_settings_folder_target_mode_label"
+            android:entries="@array/folder_target_mode_entries"
+            android:entryValues="@array/folder_target_mode_values"
+            android:key="folder_target_mode"
+            android:summary="%s"
+            android:title="@string/account_settings_folder_target_mode_label" />
+
+        <ListPreference
+            android:dialogTitle="@string/account_settings_searchable_label"
+            android:entries="@array/searchable_entries"
+            android:entryValues="@array/searchable_values"
+            android:key="searchable_folders"
+            android:summary="%s"
+            android:title="@string/account_settings_searchable_label" />
+
+        <com.fsck.k9.ui.settings.account.FolderListPreference
+            android:key="archive_folder"
+            android:summary="%s"
+            android:title="@string/archive_folder_label" />
+
+        <com.fsck.k9.ui.settings.account.FolderListPreference
+            android:key="drafts_folder"
+            android:summary="%s"
+            android:title="@string/drafts_folder_label" />
+
+        <com.fsck.k9.ui.settings.account.FolderListPreference
+            android:key="sent_folder"
+            android:summary="%s"
+            android:title="@string/sent_folder_label" />
+
+        <com.fsck.k9.ui.settings.account.FolderListPreference
+            android:key="spam_folder"
+            android:summary="%s"
+            android:title="@string/spam_folder_label" />
+
+        <com.fsck.k9.ui.settings.account.FolderListPreference
+            android:key="trash_folder"
+            android:summary="%s"
+            android:title="@string/trash_folder_label" />
+
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:icon="?attr/iconPreferencesNotifications"
+        android:key="notifications"
+        android:title="@string/notifications_title">
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="account_notify"
+            android:summary="@string/account_settings_notify_summary"
+            android:title="@string/account_settings_notify_label" />
+
+        <ListPreference
+            android:dependency="account_notify"
+            android:dialogTitle="@string/account_settings_folder_notify_new_mail_mode_label"
+            android:entries="@array/folder_notify_new_mail_mode_entries"
+            android:entryValues="@array/folder_notify_new_mail_mode_values"
+            android:key="folder_notify_new_mail_mode"
+            android:summary="%s"
+            android:title="@string/account_settings_folder_notify_new_mail_mode_label" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="account_notify"
+            android:key="account_notify_self"
+            android:summary="@string/account_settings_notify_self_summary"
+            android:title="@string/account_settings_notify_self_label" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:dependency="account_notify"
+            android:key="account_notify_contacts_mail_only"
+            android:summary="@string/account_notify_contacts_mail_only_summary"
+            android:title="@string/account_notify_contacts_mail_only_label" />
+
+        <com.takisoft.preferencex.RingtonePreference
+            android:defaultValue="content://settings/system/notification_sound"
+            android:dependency="account_notify"
+            android:key="account_ringtone"
+            android:ringtoneType="notification"
+            android:showSilent="true"
+            android:title="@string/account_settings_ringtone"
+            app:pref_summaryHasRingtone="%s" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:dependency="account_notify"
+            android:key="account_vibrate"
+            android:summary="@string/account_settings_vibrate_summary"
+            android:title="@string/account_settings_vibrate_enable" />
+
+        <ListPreference
+            android:dependency="account_vibrate"
+            android:dialogTitle="@string/account_settings_vibrate_pattern_label"
+            android:entries="@array/vibrate_pattern_entries"
+            android:entryValues="@array/vibrate_pattern_values"
+            android:key="account_vibrate_pattern"
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:summary="%s"
+            android:title="@string/account_settings_vibrate_pattern_label" />
+
+        <ListPreference
+            android:dependency="account_vibrate"
+            android:dialogTitle="@string/account_settings_vibrate_times"
+            android:entries="@array/vibrate_times_label"
+            android:entryValues="@array/vibrate_times_label"
+            android:key="account_vibrate_times"
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:summary="%s"
+            android:title="@string/account_settings_vibrate_times" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="account_notify"
+            android:key="account_led"
+            android:summary="@string/account_settings_led_summary"
+            android:title="@string/account_settings_led_label" />
+
+        <com.takisoft.preferencex.ColorPickerPreference
+            android:dependency="account_led"
+            android:key="led_color"
+            android:summary="@string/account_settings_led_color_summary"
+            android:title="@string/account_settings_led_color_label" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="account_notify_sync"
+            android:summary="@string/account_settings_notify_sync_summary"
+            android:title="@string/account_settings_notify_sync_label" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="notification_opens_unread"
+            android:summary="@string/account_settings_notification_opens_unread_summary"
+            android:title="@string/account_settings_notification_opens_unread_label" />
+
+        <com.fsck.k9.ui.settings.account.NotificationsPreference
+            android:key="open_notification_settings"
+            android:summary="@string/account_settings_notification_open_system_notifications_summary"
+            android:title="@string/account_settings_notification_open_system_notifications_label" />
+
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:icon="?attr/iconPreferencesSearch"
+        android:key="search"
+        android:title="@string/account_settings_search">
+
+        <CheckBoxPreference
+            android:key="remote_search_enabled"
+            android:summary="@string/account_settings_remote_search_enabled_summary"
+            android:title="@string/account_settings_remote_search_enabled" />
+
+        <ListPreference
+            android:dependency="remote_search_enabled"
+            android:dialogTitle="@string/account_settings_remote_search_num_label"
+            android:entries="@array/remote_search_num_results_entries"
+            android:entryValues="@array/remote_search_num_results_values"
+            android:key="account_remote_search_num_results"
+            android:summary="%s"
+            android:title="@string/account_settings_remote_search_num_label" />
+
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:icon="?attr/iconPreferencesCrypto"
+        android:key="openpgp"
+        android:title="@string/account_settings_crypto">
+
+        <SwitchPreference
+            android:key="openpgp_provider"
+            android:title="@string/account_settings_crypto_app" />
+
+        <org.openintents.openpgp.util.OpenPgpKeyPreference
+            android:dependency="openpgp_provider"
+            android:key="openpgp_key"
+            android:title="@string/account_settings_crypto_key" />
+
+        <com.fsck.k9.ui.settings.account.AutocryptPreferEncryptPreference
+            android:dependency="openpgp_key"
+            android:key="autocrypt_prefer_encrypt"
+            android:title="@string/account_settings_crypto_prefer_encrypt"
+            app:summaryOff="@string/switch_off"
+            app:summaryOn="@string/switch_on" />
+
+        <SwitchPreference
+            android:dependency="openpgp_key"
+            android:key="openpgp_hide_sign_only"
+            android:summaryOff="@string/account_settings_crypto_hide_sign_only_off"
+            android:summaryOn="@string/account_settings_crypto_hide_sign_only_on"
+            android:title="@string/account_settings_crypto_hide_sign_only" />
+
+        <SwitchPreference
+            android:dependency="openpgp_key"
+            android:key="openpgp_encrypt_subject"
+            android:summary="@string/account_settings_crypto_encrypt_subject_subtitle"
+            android:title="@string/account_settings_crypto_encrypt_subject" />
+
+        <SwitchPreference
+            android:dependency="openpgp_key"
+            android:key="openpgp_encrypt_all_drafts"
+            android:title="@string/account_settings_crypto_encrypt_all_drafts"
+            android:summaryOn="@string/account_settings_crypto_encrypt_all_drafts_on"
+            android:summaryOff="@string/account_settings_crypto_encrypt_all_drafts_off"
+            />
+
+        <Preference
+            android:dependency="openpgp_key"
+            android:key="autocrypt_transfer"
+            android:summary="@string/ac_transfer_setting_summary"
+            android:title="@string/ac_transfer_setting_title" />
+
+    </PreferenceScreen>
+
+</PreferenceScreen>

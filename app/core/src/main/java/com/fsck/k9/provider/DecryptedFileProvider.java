@@ -14,10 +14,10 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.ParcelFileDescriptor;
-import android.support.annotation.MainThread;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.FileProvider;
+import androidx.annotation.MainThread;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 import android.text.TextUtils;
 import timber.log.Timber;
 
@@ -89,7 +89,7 @@ public class DecryptedFileProvider extends FileProvider {
                     allFilesDeleted = false;
                 }
             } else {
-                if (K9.isDebug()) {
+                if (K9.isDebugLoggingEnabled()) {
                     String timeLeftStr = String.format(
                             Locale.ENGLISH, "%.2f", (lastModified - deletionThreshold) / 1000 / 60.0);
                     Timber.e("Not deleting temp file (for another %s minutes)", timeLeftStr);

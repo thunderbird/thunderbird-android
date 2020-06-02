@@ -1,13 +1,11 @@
 package com.fsck.k9
 
-
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockitokotlin2.whenever
+import java.util.Calendar
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.mockito.Mockito.mock
-import java.util.Calendar
-
 
 class QuietTimeCheckerTest {
     private val clock = mock(Clock::class.java)
@@ -107,7 +105,6 @@ class QuietTimeCheckerTest {
 
         assertFalse(quietTimeChecker.isQuietTime)
     }
-
 
     private fun setClockTo(time: String) {
         val (hourOfDay, minute) = time.split(':').map { it.toInt() }

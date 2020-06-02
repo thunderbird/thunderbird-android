@@ -35,18 +35,6 @@ public class CharsetSupport {
                 part.getMimeType() + ";\r\n charset=" + getExternalCharset(charset));
     }
 
-
-    public static String getCharsetFromAddress(String address) {
-        String variant = JisSupport.getJisVariantFromAddress(address);
-        if (variant != null) {
-            String charset = "x-" + variant + "-shift_jis-2007";
-            if (Charset.isSupported(charset))
-                return charset;
-        }
-
-        return "UTF-8";
-    }
-
     static String getExternalCharset(String charset) {
         if (JisSupport.isShiftJis(charset)) {
             return SHIFT_JIS;

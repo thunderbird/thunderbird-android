@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_settings"
+    app:startDestination="@id/settingsListScreen">
+
+    <include app:graph="@navigation/navigation_add_account" />
+
+    <fragment
+        android:id="@+id/settingsListScreen"
+        android:name="com.fsck.k9.ui.settings.SettingsListFragment"
+        android:label="@string/prefs_title"
+        tools:layout="@layout/fragment_settings_list">
+
+        <action
+            android:id="@+id/action_settingsListScreen_to_onboardingScreen"
+            app:destination="@id/onboardingScreen" />
+
+        <action
+            android:id="@+id/action_settingsListScreen_to_aboutScreen"
+            app:destination="@id/aboutScreen" />
+
+        <action
+            android:id="@+id/action_settingsListScreen_to_generalSettingsScreen"
+            app:destination="@id/generalSettingsScreen" />
+
+        <action
+            android:id="@+id/action_settingsListScreen_to_addAccountScreen"
+            app:destination="@id/addAccountScreen" />
+
+        <action
+            android:id="@+id/action_settingsListScreen_to_newAddAccountScreen"
+            app:destination="@id/navigation_add_account" />
+
+        <action
+            android:id="@+id/action_settingsListScreen_to_settingsExportScreen"
+            app:destination="@id/settingsExportScreen" />
+
+        <action
+            android:id="@+id/action_settingsListScreen_to_settingsImportScreen"
+            app:destination="@id/settingsImportScreen" />
+    </fragment>
+
+    <activity
+        android:id="@+id/onboardingScreen"
+        android:name="com.fsck.k9.ui.onboarding.OnboardingActivity"
+        android:label="@string/welcome_message_title"
+        tools:layout="@layout/activity_onboarding"/>
+
+    <fragment
+        android:id="@+id/aboutScreen"
+        android:name="com.fsck.k9.ui.settings.AboutFragment"
+        android:label="@string/about_action"
+        tools:layout="@layout/fragment_about"/>
+
+    <activity
+        android:id="@+id/generalSettingsScreen"
+        android:name="com.fsck.k9.ui.settings.general.GeneralSettingsActivity"
+        android:label="@string/general_settings_title" />
+
+    <activity
+        android:id="@+id/addAccountScreen"
+        android:name="com.fsck.k9.activity.setup.AccountSetupBasics"
+        android:label="@string/account_setup_basics_title"
+        tools:layout="@layout/account_setup_basics"/>
+
+    <fragment
+        android:id="@+id/settingsExportScreen"
+        android:name="com.fsck.k9.ui.settings.export.SettingsExportFragment"
+        android:label="@string/settings_export_title"
+        tools:layout="@layout/fragment_settings_export"/>
+
+    <fragment
+        android:id="@+id/settingsImportScreen"
+        android:name="com.fsck.k9.ui.settings.import.SettingsImportFragment"
+        android:label="@string/settings_import_title"
+        tools:layout="@layout/fragment_settings_import"/>
+
+</navigation>

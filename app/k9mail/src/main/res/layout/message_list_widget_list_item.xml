@@ -4,14 +4,14 @@
     android:id="@+id/mail_list_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:background="@color/md_white_1000">
+    tools:background="#fff">
 
     <!-- A regular View breaks things for some reason, but a TextView does the job -->
     <TextView
         android:id="@+id/chip"
         android:layout_width="8dip"
         android:layout_height="match_parent"
-        tools:background="@color/orange"
+        tools:background="#0099CC"
         android:visibility="visible" />
 
     <RelativeLayout
@@ -39,7 +39,7 @@
             android:layout_marginLeft="4dp"
             android:layout_toStartOf="@+id/mail_date"
             android:layout_toLeftOf="@+id/mail_date"
-            android:src="@drawable/ic_email_attachment_small"
+            android:src="@drawable/ic_messagelist_attachment_light"
             android:visibility="gone"
             tools:visibility="visible" />
 

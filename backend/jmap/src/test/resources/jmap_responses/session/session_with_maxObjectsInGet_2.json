@@ -1,0 +1,64 @@
+{
+  "username": "test",
+  "apiUrl": "/jmap/",
+  "downloadUrl": "/jmap/download/{accountId}/{blobId}/{name}?accept={type}",
+  "uploadUrl": "/jmap/upload/{accountId}/",
+  "eventSourceUrl": "/jmap/eventsource/?types={types}&closeafter={closeafter}&ping={ping}",
+  "accounts": {
+    "test@example.com": {
+      "name": "test@example.com",
+      "isPersonal": true,
+      "isReadOnly": false,
+      "accountCapabilities": {
+        "urn:ietf:params:jmap:core": {},
+        "urn:ietf:params:jmap:submission": {
+          "maxDelayedSend": 44236800,
+          "submissionExtensions": {
+            "size": [
+              "10240000"
+            ],
+            "dsn": []
+          }
+        },
+        "urn:ietf:params:jmap:mail": {
+          "emailQuerySortOptions": [
+            "receivedAt",
+            "sentAt",
+            "from",
+            "id",
+            "emailstate",
+            "size",
+            "subject",
+            "to",
+            "hasKeyword",
+            "someInThreadHaveKeyword",
+            "addedDates",
+            "threadSize",
+            "spamScore",
+            "snoozedUntil"
+          ],
+          "maxKeywordsPerEmail": 100,
+          "maxSizeAttachmentsPerEmail": 10485760,
+          "maxMailboxesPerEmail": 20,
+          "mayCreateTopLevelMailbox": true,
+          "maxSizeMailboxName": 500
+        },
+        "urn:ietf:params:jmap:vacationresponse": {}
+      }
+    }
+  },
+  "capabilities": {
+    "urn:ietf:params:jmap:core": {
+      "maxSizeUpload": 1073741824,
+      "maxConcurrentUpload": 5,
+      "maxCallsInRequest": 50,
+      "maxObjectsInGet": 2,
+      "maxObjectsInSet": 4096,
+      "collationAlgorithms": []
+    },
+    "urn:ietf:params:jmap:submission": {},
+    "urn:ietf:params:jmap:mail": {},
+    "urn:ietf:params:jmap:vacationresponse": {}
+  },
+  "state": "0"
+}

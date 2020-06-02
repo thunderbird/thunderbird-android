@@ -1,6 +1,6 @@
 package com.fsck.k9.message.html
 
-import java.util.*
+import java.util.Locale
 
 object UriMatcher {
     private val SUPPORTED_URIS = { httpUriParser: HttpUriParser ->
@@ -19,7 +19,6 @@ object UriMatcher {
             "$ALLOWED_SEPARATORS_PATTERN(${ SUPPORTED_URIS.keys.joinToString("|") })",
             RegexOption.IGNORE_CASE
     )
-
 
     fun findUris(text: CharSequence): List<UriMatch> {
         return URI_SCHEME.findAll(text).map { matchResult ->

@@ -1,11 +1,9 @@
 package com.fsck.k9.notification;
 
 
-import android.os.Build;
-
 import com.fsck.k9.Account;
 import com.fsck.k9.controller.MessageReference;
-import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 
 
@@ -15,11 +13,6 @@ public class NotificationController {
     private final SyncNotifications syncNotifications;
     private final SendFailedNotifications sendFailedNotifications;
     private final NewMailNotifications newMailNotifications;
-
-
-    public static boolean platformSupportsLockScreenNotifications() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
-    }
 
 
     NotificationController(
@@ -68,7 +61,7 @@ public class NotificationController {
         sendFailedNotifications.clearSendFailedNotification(account);
     }
 
-    public void showFetchingMailNotification(Account account, Folder folder) {
+    public void showFetchingMailNotification(Account account, LocalFolder folder) {
         syncNotifications.showFetchingMailNotification(account, folder);
     }
 

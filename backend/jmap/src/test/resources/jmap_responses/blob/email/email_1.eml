@@ -1,0 +1,14 @@
+From: alice@domain.example
+To: bob@domain.example
+Message-ID: <message001@domain.example>
+Date: Mon, 10 Feb 2020 10:20:30 +0100
+Subject: Hello there
+Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
+
+Hi Bob,
+
+this is a message from me to you.
+
+Cheers,
+Alice

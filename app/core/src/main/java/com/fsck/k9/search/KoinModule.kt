@@ -1,8 +1,7 @@
 package com.fsck.k9.search
 
-import com.fsck.k9.mailstore.*
-import org.koin.dsl.module.applicationContext
+import org.koin.dsl.module
 
-val searchModule = applicationContext {
-    bean { AccountSearchConditions() }
+val searchModule = module {
+    single { AccountSearchConditions() }
 }

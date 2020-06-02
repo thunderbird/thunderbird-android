@@ -4,15 +4,14 @@ package com.fsck.k9.mail.store.imap;
 import java.io.IOException;
 import java.util.Map;
 
-import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.FixedLengthInputStream;
 
 
 class FetchBodyCallback implements ImapResponseCallback {
-    private Map<String, Message> mMessageMap;
+    private Map<String, ImapMessage> mMessageMap;
 
-    FetchBodyCallback(Map<String, Message> messageMap) {
+    FetchBodyCallback(Map<String, ImapMessage> messageMap) {
         mMessageMap = messageMap;
     }
 
@@ -24,7 +23,7 @@ class FetchBodyCallback implements ImapResponseCallback {
             ImapList fetchList = (ImapList)response.getKeyedValue("FETCH");
             String uid = fetchList.getKeyedString("UID");
 
-            ImapMessage message = (ImapMessage) mMessageMap.get(uid);
+            ImapMessage message = mMessageMap.get(uid);
             message.parse(literal);
 
             // Return placeholder object

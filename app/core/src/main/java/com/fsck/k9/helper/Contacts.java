@@ -6,13 +6,12 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.AbstractCursor;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import timber.log.Timber;
 import android.provider.ContactsContract.CommonDataKinds.Photo;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 
 import com.fsck.k9.mail.Address;
 
@@ -201,24 +200,10 @@ public class Contacts {
 
     /**
      * Mark contacts with the provided email addresses as contacted.
-     *
-     * @param addresses Array of {@link Address} objects describing the
-     *        contacts to be marked as contacted.
      */
     public void markAsContacted(final Address[] addresses) {
-        //TODO: Optimize! Potentially a lot of database queries
-        for (final Address address : addresses) {
-            final Cursor c = getContactByAddress(address.getAddress());
-
-            if (c != null) {
-                if (c.getCount() > 0) {
-                    c.moveToFirst();
-                    final long personId = c.getLong(CONTACT_ID_INDEX);
-                    ContactsContract.Contacts.markAsContacted(mContentResolver, personId);
-                }
-                c.close();
-            }
-        }
+        //TODO: Keep track of this information in a local database. Then use this information when sorting contacts for
+        // auto-completion.
     }
 
     /**
@@ -268,11 +253,8 @@ public class Contacts {
     }
 
     private boolean hasContactPermission() {
-        boolean canRead = ContextCompat.checkSelfPermission(mContext,
+        return ContextCompat.checkSelfPermission(mContext,
                 Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
-        boolean canWrite = ContextCompat.checkSelfPermission(mContext,
-                Manifest.permission.WRITE_CONTACTS) == PackageManager.PERMISSION_GRANTED;
-        return  canRead && canWrite;
     }
 
     /**

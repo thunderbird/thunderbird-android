@@ -1,0 +1,110 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'org.jetbrains.kotlin.android.extensions'
+apply plugin: 'org.jlleitschuh.gradle.ktlint'
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
+
+    api project(":app:ui:base")
+    debugImplementation project(":app:ui:setup")
+    implementation project(":app:core")
+    implementation project(":app:autodiscovery:api")
+    implementation project(":app:autodiscovery:providersxml")
+    implementation project(":mail:common")
+
+    //TODO: Remove AccountSetupIncoming's dependency on these
+    compileOnly project(":mail:protocols:imap")
+    compileOnly project(":mail:protocols:webdav")
+
+    implementation project(':plugins:openpgp-api-lib:openpgp-api')
+
+    implementation "androidx.appcompat:appcompat:${versions.androidxAppCompat}"
+    implementation "androidx.preference:preference:${versions.androidxPreference}"
+    implementation "com.takisoft.preferencex:preferencex:${versions.preferencesFix}"
+    implementation "com.takisoft.preferencex:preferencex-datetimepicker:${versions.preferencesFix}"
+    implementation "com.takisoft.preferencex:preferencex-colorpicker:${versions.preferencesFix}"
+    implementation "com.takisoft.preferencex:preferencex-ringtone:${versions.preferencesFix}"
+    implementation "androidx.recyclerview:recyclerview:${versions.androidxRecyclerView}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.androidxLifecycle}"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:${versions.androidxLifecycle}"
+    implementation "androidx.constraintlayout:constraintlayout:${versions.androidxConstraintLayout}"
+    implementation "androidx.cardview:cardview:${versions.androidxCardView}"
+    implementation "androidx.localbroadcastmanager:localbroadcastmanager:1.0.0"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+    implementation "com.google.android.material:material:${versions.materialComponents}"
+    implementation "de.cketti.library.changelog:ckchangelog:1.2.1"
+    implementation "com.github.bumptech.glide:glide:3.6.1"
+    implementation "com.splitwise:tokenautocomplete:2.0.7"
+    implementation "de.cketti.safecontentresolver:safe-content-resolver-v21:0.9.0"
+    implementation "com.xwray:groupie:2.8.0"
+    implementation "com.xwray:groupie-kotlin-android-extensions:2.8.0"
+    implementation 'com.mikepenz:materialdrawer:7.0.0'
+    implementation 'com.mikepenz:fontawesome-typeface:5.9.0.0-kotlin@aar'
+    implementation 'com.github.ByteHamster:SearchPreference:v2.0.0'
+    implementation 'com.mikepenz:fastadapter:4.1.2'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    implementation "commons-io:commons-io:${versions.commonsIo}"
+    implementation "androidx.core:core-ktx:${versions.androidxCore}"
+    implementation "net.jcip:jcip-annotations:1.0"
+    implementation "com.jakewharton.timber:timber:${versions.timber}"
+    implementation "org.apache.james:apache-mime4j-core:${versions.mime4j}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinCoroutines}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlinCoroutines}"
+
+    testImplementation project(':mail:testing')
+    testImplementation project(':app:storage')
+    testImplementation project(':app:testing')
+    testImplementation "org.robolectric:robolectric:${versions.robolectric}"
+    testImplementation "junit:junit:${versions.junit}"
+    testImplementation "com.google.truth:truth:${versions.truth}"
+    testImplementation "org.mockito:mockito-core:${versions.mockito}"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:${versions.mockitoKotlin}"
+    testImplementation "org.jdom:jdom2:2.0.6"
+    testImplementation "org.koin:koin-test:${versions.koin}"
+}
+
+android {
+    compileSdkVersion buildConfig.compileSdk
+    buildToolsVersion buildConfig.buildTools
+
+    defaultConfig {
+        minSdkVersion buildConfig.minSdk
+        targetSdkVersion buildConfig.robolectricSdk
+    }
+
+    buildTypes {
+        debug {
+            def useNewSetupUi = project.hasProperty('k9mail.useNewSetupUi') ? project.property('k9mail.useNewSetupUi') : "false"
+            buildConfigField "boolean", "USE_NEW_SETUP_UI_FOR_ONBOARDING", useNewSetupUi
+        }
+        release {
+            buildConfigField "boolean", "USE_NEW_SETUP_UI_FOR_ONBOARDING", "false"
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+        lintConfig file("$rootProject.projectDir/config/lint/lint.xml")
+    }
+
+    compileOptions {
+        sourceCompatibility javaVersion
+        targetCompatibility javaVersion
+    }
+
+    kotlinOptions {
+        jvmTarget = kotlinJvmVersion
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
+}
+
+androidExtensions {
+    experimental = true
+}

@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +16,6 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
-import com.fsck.k9.mail.store.StoreConfig;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -34,8 +32,6 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-import static com.fsck.k9.mail.Folder.OPEN_MODE_RO;
-import static com.fsck.k9.mail.Folder.OPEN_MODE_RW;
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -55,6 +51,8 @@ import static org.mockito.Mockito.when;
 
 @SuppressWarnings("deprecation")
 public class WebDavFolderTest {
+    private static final int MAX_DOWNLOAD_SIZE = 1900;
+
     @Mock
     private MessageRetrievalListener<WebDavMessage> listener;
     @Mock
@@ -63,12 +61,6 @@ public class WebDavFolderTest {
     private DataSet mockDataSet;
     @Mock
     private WebDavHttpClient mockHttpClient;
-    @Mock
-    private StoreConfig mockStoreConfig;
-    @Mock
-    private HttpResponse mockHttpResponse;
-    @Mock
-    private StatusLine mockStatusLine;
     @Captor
     private ArgumentCaptor<Map<String, String>> headerCaptor;
     @Captor
@@ -90,7 +82,6 @@ public class WebDavFolderTest {
         MockitoAnnotations.initMocks(this);
         when(mockStore.getUrl()).thenReturn(storeUrl);
         when(mockStore.getHttpClient()).thenReturn(mockHttpClient);
-        when(mockStore.getStoreConfig()).thenReturn(mockStoreConfig);
         when(mockStore.getMessageEnvelopeXml(any(String[].class))).thenReturn("mockEnvelopeXml");
         when(mockStore.getMessageFlagsXml(any(String[].class))).thenReturn("mockFlagsXml");
         folder = new WebDavFolder(mockStore, folderName);
@@ -159,7 +150,7 @@ public class WebDavFolderTest {
 
         FetchProfile profile = new FetchProfile();
         profile.add(FetchProfile.Item.ENVELOPE);
-        folder.fetch(messages, profile, listener);
+        folder.fetch(messages, profile, listener, MAX_DOWNLOAD_SIZE);
     }
 
     @Test
@@ -175,7 +166,7 @@ public class WebDavFolderTest {
         }
         FetchProfile profile = new FetchProfile();
         profile.add(FetchProfile.Item.ENVELOPE);
-        folder.fetch(messages, profile, listener);
+        folder.fetch(messages, profile, listener, MAX_DOWNLOAD_SIZE);
     }
 
     @Test
@@ -191,7 +182,7 @@ public class WebDavFolderTest {
         }
         FetchProfile profile = new FetchProfile();
         profile.add(FetchProfile.Item.FLAGS);
-        folder.fetch(messages, profile, listener);
+        folder.fetch(messages, profile, listener, MAX_DOWNLOAD_SIZE);
     }
 
     @Test
@@ -208,7 +199,7 @@ public class WebDavFolderTest {
 
         FetchProfile profile = new FetchProfile();
         profile.add(FetchProfile.Item.FLAGS);
-        folder.fetch(messages, profile, listener);
+        folder.fetch(messages, profile, listener, MAX_DOWNLOAD_SIZE);
     }
 
     @Test
@@ -236,7 +227,7 @@ public class WebDavFolderTest {
 
         FetchProfile profile = new FetchProfile();
         profile.add(FetchProfile.Item.BODY_SANE);
-        folder.fetch(messages, profile, listener);
+        folder.fetch(messages, profile, listener, MAX_DOWNLOAD_SIZE);
         verify(listener, times(25)).messageStarted(any(String.class), anyInt(), eq(25));
         verify(listener, times(25)).messageFinished(any(WebDavMessage.class), anyInt(), eq(25));
     }
@@ -269,14 +260,13 @@ public class WebDavFolderTest {
         FetchProfile profile = new FetchProfile();
         profile.add(FetchProfile.Item.FLAGS);
         profile.add(FetchProfile.Item.BODY);
-        folder.fetch(messages, profile, listener);
+        folder.fetch(messages, profile, listener, MAX_DOWNLOAD_SIZE);
         verify(listener, times(25)).messageStarted(any(String.class), anyInt(), anyInt());
         verify(listener, times(25)).messageFinished(any(WebDavMessage.class), anyInt(), anyInt());
     }
 
     private void setupStoreForMessageFetching() {
         String authString = "authString";
-        when(mockStoreConfig.getMaximumAutoDownloadMessageSize()).thenReturn(1900);
         when(mockStore.getAuthentication()).thenReturn(WebDavConstants.AUTH_TYPE_BASIC);
         when(mockStore.getAuthString()).thenReturn(authString);
     }
@@ -311,7 +301,7 @@ public class WebDavFolderTest {
 
         FetchProfile profile = new FetchProfile();
         profile.add(FetchProfile.Item.BODY_SANE);
-        folder.fetch(messages, profile, listener);
+        folder.fetch(messages, profile, listener, MAX_DOWNLOAD_SIZE);
         verify(listener, times(25)).messageStarted(any(String.class), anyInt(), eq(25));
         verify(listener, times(25)).messageFinished(any(WebDavMessage.class), anyInt(), eq(25));
     }
@@ -342,7 +332,7 @@ public class WebDavFolderTest {
 
         FetchProfile profile = new FetchProfile();
         profile.add(FetchProfile.Item.BODY_SANE);
-        folder.fetch(messages, profile, listener);
+        folder.fetch(messages, profile, listener, MAX_DOWNLOAD_SIZE);
         verify(listener, times(25)).messageStarted(any(String.class), anyInt(), eq(25));
         verify(listener, times(25)).messageFinished(any(WebDavMessage.class), anyInt(), eq(25));
     }
@@ -354,7 +344,7 @@ public class WebDavFolderTest {
 
     @Test
     public void open_should_open_folder() throws MessagingException {
-        folder.open(OPEN_MODE_RW);
+        folder.open();
         assertTrue(folder.isOpen());
     }
 
@@ -362,18 +352,6 @@ public class WebDavFolderTest {
     public void close_should_close_folder() throws MessagingException {
         folder.close();
         assertFalse(folder.isOpen());
-    }
-
-    @Test
-    public void mode_is_always_readwrite() throws Exception {
-        assertEquals(OPEN_MODE_RW, folder.getMode());
-        folder.open(OPEN_MODE_RO);
-        assertEquals(OPEN_MODE_RW, folder.getMode());
-    }
-
-    @Test
-    public void exists_is_always_true() throws Exception {
-        assertTrue(folder.exists());
     }
 
     @Test
@@ -420,7 +398,7 @@ public class WebDavFolderTest {
         when(mockStore.processRequest(eq("https://localhost/webDavStoreUrl/testFolder"), eq("SEARCH"),
                 eq(messagesXml), Matchers.<Map<String, String>>any())).thenReturn(mockDataSet);
 
-        folder.getMessages(messageStart, messageEnd, new Date(), listener);
+        folder.getMessages(messageStart, messageEnd, listener);
 
         verify(listener, times(5)).messageStarted(anyString(), anyInt(), eq(5));
         verify(listener, times(5)).messageFinished(any(WebDavMessage.class), anyInt(), eq(5));
@@ -438,7 +416,7 @@ public class WebDavFolderTest {
         when(mockStore.processRequest(eq("https://localhost/webDavStoreUrl/testFolder"), eq("SEARCH"),
                 eq(messagesXml), Matchers.<Map<String, String>>any())).thenReturn(mockDataSet);
 
-        folder.getMessages(messageStart, messageEnd, new Date(), listener);
+        folder.getMessages(messageStart, messageEnd, listener);
 
         verify(mockStore, times(2)).processRequest(anyString(), anyString(), anyString(),
                 headerCaptor.capture());
@@ -464,7 +442,7 @@ public class WebDavFolderTest {
     @Test(expected = MessagingException.class)
     public void getMessages_should_throw_message_exception_if_requesting_messages_from_empty_folder()
             throws MessagingException {
-        folder.getMessages(0, 10, new Date(), listener);
+        folder.getMessages(0, 10, listener);
     }
 
     private void setupMoveOrCopy() throws MessagingException {
@@ -528,7 +506,7 @@ public class WebDavFolderTest {
         String messageUid = "testMessageUid";
         when(existingMessage.getUid()).thenReturn(messageUid);
 
-        List<? extends Message> response = folder.appendWebDavMessages(existingMessages);
+        List<WebDavMessage> response = folder.appendWebDavMessages(existingMessages);
 
         assertEquals(1, response.size(), 1);
         assertEquals(WebDavMessage.class, response.get(0).getClass());

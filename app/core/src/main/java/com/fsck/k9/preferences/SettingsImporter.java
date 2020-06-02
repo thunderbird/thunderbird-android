@@ -14,7 +14,7 @@ import java.util.UUID;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 import android.text.TextUtils;
 
 import com.fsck.k9.Account;
@@ -29,8 +29,7 @@ import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.filter.Base64;
-import com.fsck.k9.mailstore.LocalStore;
-import com.fsck.k9.mailstore.LocalStoreProvider;
+import com.fsck.k9.mailstore.SpecialLocalFoldersCreator;
 import com.fsck.k9.preferences.Settings.InvalidSettingValueException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -76,11 +75,21 @@ public class SettingsImporter {
         public final AccountDescription original;
         public final AccountDescription imported;
         public final boolean overwritten;
+        public final boolean incomingPasswordNeeded;
+        public final boolean outgoingPasswordNeeded;
+        public final String incomingServerName;
+        public final String outgoingServerName;
 
-        private AccountDescriptionPair(AccountDescription original, AccountDescription imported, boolean overwritten) {
+        private AccountDescriptionPair(AccountDescription original, AccountDescription imported,
+                boolean overwritten, boolean incomingPasswordNeeded, boolean outgoingPasswordNeeded,
+                String incomingServerName, String outgoingServerName) {
             this.original = original;
             this.imported = imported;
             this.overwritten = overwritten;
+            this.incomingPasswordNeeded = incomingPasswordNeeded;
+            this.outgoingPasswordNeeded = outgoingPasswordNeeded;
+            this.incomingServerName = incomingServerName;
+            this.outgoingServerName = outgoingServerName;
         }
     }
 
@@ -271,14 +280,14 @@ public class SettingsImporter {
 
             preferences.loadAccounts();
 
-            LocalStoreProvider localStoreProvider = DI.get(LocalStoreProvider.class);
+            SpecialLocalFoldersCreator localFoldersCreator = DI.get(SpecialLocalFoldersCreator.class);
 
-            // create missing OUTBOX folders
-            for (Account account: preferences.getAccounts()) {
-                if (accountUuids.contains(account.getUuid())) {
-                    LocalStore localStore = localStoreProvider.getInstance(account);
-                    localStore.createLocalFolder(Account.OUTBOX, Account.OUTBOX_NAME);
-                }
+            // Create special local folders
+            for (AccountDescriptionPair importedAccount : importedAccounts) {
+                String accountUuid = importedAccount.imported.uuid;
+                Account account = preferences.getAccount(accountUuid);
+
+                localFoldersCreator.createSpecialLocalFolders(account);
             }
 
             K9.loadPrefs(preferences);
@@ -297,18 +306,18 @@ public class SettingsImporter {
             ImportedSettings settings) {
 
         // Validate global settings
-        Map<String, Object> validatedSettings = GlobalSettings.validate(contentVersion, settings.settings);
+        Map<String, Object> validatedSettings = GeneralSettingsDescriptions.validate(contentVersion, settings.settings);
 
         // Upgrade global settings to current content version
         if (contentVersion != Settings.VERSION) {
-            GlobalSettings.upgrade(contentVersion, validatedSettings);
+            GeneralSettingsDescriptions.upgrade(contentVersion, validatedSettings);
         }
 
         // Convert global settings to the string representation used in preference storage
-        Map<String, String> stringSettings = GlobalSettings.convert(validatedSettings);
+        Map<String, String> stringSettings = GeneralSettingsDescriptions.convert(validatedSettings);
 
         // Use current global settings as base and overwrite with validated settings read from the import file.
-        Map<String, String> mergedSettings = new HashMap<>(GlobalSettings.getGlobalSettings(storage));
+        Map<String, String> mergedSettings = new HashMap<>(GeneralSettingsDescriptions.getGlobalSettings(storage));
         mergedSettings.putAll(stringSettings);
 
         for (Map.Entry<String, String> setting : mergedSettings.entrySet()) {
@@ -364,9 +373,8 @@ public class SettingsImporter {
         String storeUri = backendManager.createStoreUri(incoming);
         putString(editor, accountKeyPrefix + AccountPreferenceSerializer.STORE_URI_KEY, Base64.encode(storeUri));
 
-        // Mark account as disabled if the AuthType isn't EXTERNAL and the
-        // settings file didn't contain a password
-        boolean createAccountDisabled = AuthType.EXTERNAL != incoming.authenticationType &&
+        String incomingServerName = incoming.host;
+        boolean incomingPasswordNeeded = AuthType.EXTERNAL != incoming.authenticationType &&
                 (incoming.password == null || incoming.password.isEmpty());
 
         String incomingServerType = ServerTypeConverter.toServerSettingsType(account.incoming.type);
@@ -375,6 +383,8 @@ public class SettingsImporter {
             throw new InvalidSettingValueException();
         }
 
+        String outgoingServerName = null;
+        boolean outgoingPasswordNeeded = false;
         if (account.outgoing != null) {
             // Write outgoing server settings (transportUri)
             ServerSettings outgoing = new ImportedServerSettings(account.outgoing);
@@ -387,35 +397,36 @@ public class SettingsImporter {
              * identical for this account type. Nor is a password required if the AuthType is EXTERNAL.
              */
             String outgoingServerType = ServerTypeConverter.toServerSettingsType(outgoing.type);
-            boolean outgoingPasswordNeeded = AuthType.EXTERNAL != outgoing.authenticationType &&
+            outgoingPasswordNeeded = AuthType.EXTERNAL != outgoing.authenticationType &&
                     !outgoingServerType.equals(Protocols.WEBDAV) &&
                     outgoing.username != null &&
                     !outgoing.username.isEmpty() &&
                     (outgoing.password == null || outgoing.password.isEmpty());
-            createAccountDisabled = outgoingPasswordNeeded || createAccountDisabled;
+
+            outgoingServerName = outgoing.host;
         }
 
-        // Write key to mark account as disabled if necessary
+        boolean createAccountDisabled = incomingPasswordNeeded || outgoingPasswordNeeded;
         if (createAccountDisabled) {
             editor.putBoolean(accountKeyPrefix + "enabled", false);
         }
 
         // Validate account settings
         Map<String, Object> validatedSettings =
-                AccountSettings.validate(contentVersion, account.settings.settings, !mergeImportedAccount);
+                AccountSettingsDescriptions.validate(contentVersion, account.settings.settings, !mergeImportedAccount);
 
         // Upgrade account settings to current content version
         if (contentVersion != Settings.VERSION) {
-            AccountSettings.upgrade(contentVersion, validatedSettings);
+            AccountSettingsDescriptions.upgrade(contentVersion, validatedSettings);
         }
 
         // Convert account settings to the string representation used in preference storage
-        Map<String, String> stringSettings = AccountSettings.convert(validatedSettings);
+        Map<String, String> stringSettings = AccountSettingsDescriptions.convert(validatedSettings);
 
         // Merge account settings if necessary
         Map<String, String> writeSettings;
         if (mergeImportedAccount) {
-            writeSettings = new HashMap<>(AccountSettings.getAccountSettings(prefs.getStorage(), uuid));
+            writeSettings = new HashMap<>(AccountSettingsDescriptions.getAccountSettings(prefs.getStorage(), uuid));
             writeSettings.putAll(stringSettings);
         } else {
             writeSettings = stringSettings;
@@ -452,7 +463,8 @@ public class SettingsImporter {
         //TODO: sync folder settings with localstore?
 
         AccountDescription imported = new AccountDescription(accountName, uuid);
-        return new AccountDescriptionPair(original, imported, mergeImportedAccount);
+        return new AccountDescriptionPair(original, imported, mergeImportedAccount,
+                incomingPasswordNeeded, outgoingPasswordNeeded, incomingServerName, outgoingServerName);
     }
 
     private static void importFolder(StorageEditor editor, int contentVersion, String uuid, ImportedFolder folder,
@@ -460,20 +472,20 @@ public class SettingsImporter {
 
         // Validate folder settings
         Map<String, Object> validatedSettings =
-                FolderSettings.validate(contentVersion, folder.settings.settings, !overwrite);
+                FolderSettingsDescriptions.validate(contentVersion, folder.settings.settings, !overwrite);
 
         // Upgrade folder settings to current content version
         if (contentVersion != Settings.VERSION) {
-            FolderSettings.upgrade(contentVersion, validatedSettings);
+            FolderSettingsDescriptions.upgrade(contentVersion, validatedSettings);
         }
 
         // Convert folder settings to the string representation used in preference storage
-        Map<String, String> stringSettings = FolderSettings.convert(validatedSettings);
+        Map<String, String> stringSettings = FolderSettingsDescriptions.convert(validatedSettings);
 
         // Merge folder settings if necessary
         Map<String, String> writeSettings;
         if (overwrite) {
-            writeSettings = FolderSettings.getFolderSettings(prefs.getStorage(), uuid, folder.name);
+            writeSettings = FolderSettingsDescriptions.getFolderSettings(prefs.getStorage(), uuid, folder.name);
             writeSettings.putAll(stringSettings);
         } else {
             writeSettings = stringSettings;
@@ -538,7 +550,7 @@ public class SettingsImporter {
             putString(editor, accountKeyPrefix + AccountPreferenceSerializer.IDENTITY_NAME_KEY + identitySuffix, identityName);
 
             // Validate email address
-            if (!IdentitySettings.isEmailAddressValid(identity.email)) {
+            if (!IdentitySettingsDescriptions.isEmailAddressValid(identity.email)) {
                 throw new InvalidSettingValueException();
             }
 
@@ -551,21 +563,21 @@ public class SettingsImporter {
 
             if (identity.settings != null) {
                 // Validate identity settings
-                Map<String, Object> validatedSettings = IdentitySettings.validate(
+                Map<String, Object> validatedSettings = IdentitySettingsDescriptions.validate(
                         contentVersion, identity.settings.settings, !mergeSettings);
 
                 // Upgrade identity settings to current content version
                 if (contentVersion != Settings.VERSION) {
-                    IdentitySettings.upgrade(contentVersion, validatedSettings);
+                    IdentitySettingsDescriptions.upgrade(contentVersion, validatedSettings);
                 }
 
                 // Convert identity settings to the representation used in preference storage
-                Map<String, String> stringSettings = IdentitySettings.convert(validatedSettings);
+                Map<String, String> stringSettings = IdentitySettingsDescriptions.convert(validatedSettings);
 
                 // Merge identity settings if necessary
                 Map<String, String> writeSettings;
                 if (mergeSettings) {
-                    writeSettings = new HashMap<>(IdentitySettings.getIdentitySettings(
+                    writeSettings = new HashMap<>(IdentitySettingsDescriptions.getIdentitySettings(
                             prefs.getStorage(), uuid, writeIdentityIndex));
                     writeSettings.putAll(stringSettings);
                 } else {
@@ -627,9 +639,9 @@ public class SettingsImporter {
      *         The new value for the preference.
      */
     private static void putString(StorageEditor editor, String key, String value) {
-        if (K9.isDebug()) {
+        if (K9.isDebugLoggingEnabled()) {
             String outputValue = value;
-            if (!K9.DEBUG_SENSITIVE && (key.endsWith(".transportUri") || key.endsWith(".storeUri"))) {
+            if (!K9.isSensitiveDebugLoggingEnabled() && (key.endsWith(".transportUri") || key.endsWith(".storeUri"))) {
                 outputValue = "*sensitive*";
             }
             Timber.v("Setting %s=%s", key, outputValue);

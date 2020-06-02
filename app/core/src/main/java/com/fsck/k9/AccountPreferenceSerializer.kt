@@ -2,10 +2,10 @@ package com.fsck.k9
 
 import com.fsck.k9.Account.DEFAULT_SORT_ASCENDING
 import com.fsck.k9.Account.DEFAULT_SORT_TYPE
+import com.fsck.k9.Account.DEFAULT_SYNC_INTERVAL
 import com.fsck.k9.Account.DeletePolicy
 import com.fsck.k9.Account.Expunge
 import com.fsck.k9.Account.FolderMode
-import com.fsck.k9.Account.INBOX
 import com.fsck.k9.Account.MessageFormat
 import com.fsck.k9.Account.NO_OPENPGP_KEY
 import com.fsck.k9.Account.QuoteStyle
@@ -21,23 +21,22 @@ import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
 import timber.log.Timber
-import java.util.ArrayList
 
 class AccountPreferenceSerializer(
-        private val storageManager: StorageManager,
-        private val resourceProvider: CoreResourceProvider
+    private val storageManager: StorageManager,
+    private val resourceProvider: CoreResourceProvider
 ) {
 
     @Synchronized
     fun loadAccount(account: Account, storage: Storage) {
         val accountUuid = account.uuid
-        with (account) {
+        with(account) {
             storeUri = Base64.decode(storage.getString("$accountUuid.storeUri", null))
             localStorageProviderId = storage.getString("$accountUuid.localStorageProvider", storageManager.defaultProviderId)
             transportUri = Base64.decode(storage.getString("$accountUuid.transportUri", null))
             description = storage.getString("$accountUuid.description", null)
             alwaysBcc = storage.getString("$accountUuid.alwaysBcc", alwaysBcc)
-            automaticCheckIntervalMinutes = storage.getInt("$accountUuid.automaticCheckIntervalMinutes", Account.INTERVAL_MINUTES_NEVER)
+            automaticCheckIntervalMinutes = storage.getInt("$accountUuid.automaticCheckIntervalMinutes", DEFAULT_SYNC_INTERVAL)
             idleRefreshMinutes = storage.getInt("$accountUuid.idleRefreshMinutes", 24)
             isPushPollOnConnect = storage.getBoolean("$accountUuid.pushPollOnConnect", true)
             displayCount = storage.getInt("$accountUuid.displayCount", K9.DEFAULT_VISIBLE_LIMIT)
@@ -52,32 +51,42 @@ class AccountPreferenceSerializer(
             isNotifyContactsMailOnly = storage.getBoolean("$accountUuid.notifyContactsMailOnly", false)
             isNotifySync = storage.getBoolean("$accountUuid.notifyMailCheck", false)
             deletePolicy = DeletePolicy.fromInt(storage.getInt("$accountUuid.deletePolicy", DeletePolicy.NEVER.setting))
-            inboxFolder = storage.getString("$accountUuid.inboxFolderName", INBOX)
+            legacyInboxFolder = storage.getString("$accountUuid.inboxFolderName", null)
+            importedDraftsFolder = storage.getString("$accountUuid.draftsFolderName", null)
+            importedSentFolder = storage.getString("$accountUuid.sentFolderName", null)
+            importedTrashFolder = storage.getString("$accountUuid.trashFolderName", null)
+            importedArchiveFolder = storage.getString("$accountUuid.archiveFolderName", null)
+            importedSpamFolder = storage.getString("$accountUuid.spamFolderName", null)
 
-            val draftsFolder = storage.getString("$accountUuid.draftsFolderName", null)
+            inboxFolderId = storage.getString("$accountUuid.inboxFolderId", null)?.toLongOrNull()
+            outboxFolderId = storage.getString("$accountUuid.outboxFolderId", null)?.toLongOrNull()
+
+            val draftsFolderId = storage.getString("$accountUuid.draftsFolderId", null)?.toLongOrNull()
             val draftsFolderSelection = getEnumStringPref<SpecialFolderSelection>(storage, "$accountUuid.draftsFolderSelection",
-                    SpecialFolderSelection.AUTOMATIC)
-            setDraftsFolder(draftsFolder, draftsFolderSelection)
+                SpecialFolderSelection.AUTOMATIC)
+            setDraftsFolderId(draftsFolderId, draftsFolderSelection)
 
-            val sentFolder = storage.getString("$accountUuid.sentFolderName", null)
+            val sentFolderId = storage.getString("$accountUuid.sentFolderId", null)?.toLongOrNull()
             val sentFolderSelection = getEnumStringPref<SpecialFolderSelection>(storage, "$accountUuid.sentFolderSelection",
-                    SpecialFolderSelection.AUTOMATIC)
-            setSentFolder(sentFolder, sentFolderSelection)
+                SpecialFolderSelection.AUTOMATIC)
+            setSentFolderId(sentFolderId, sentFolderSelection)
 
-            val trashFolder = storage.getString("$accountUuid.trashFolderName", null)
+            val trashFolderId = storage.getString("$accountUuid.trashFolderId", null)?.toLongOrNull()
             val trashFolderSelection = getEnumStringPref<SpecialFolderSelection>(storage, "$accountUuid.trashFolderSelection",
-                    SpecialFolderSelection.AUTOMATIC)
-            setTrashFolder(trashFolder, trashFolderSelection)
+                SpecialFolderSelection.AUTOMATIC)
+            setTrashFolderId(trashFolderId, trashFolderSelection)
 
-            val archiveFolder = storage.getString("$accountUuid.archiveFolderName", null)
+            val archiveFolderId = storage.getString("$accountUuid.archiveFolderId", null)?.toLongOrNull()
             val archiveFolderSelection = getEnumStringPref<SpecialFolderSelection>(storage, "$accountUuid.archiveFolderSelection",
-                    SpecialFolderSelection.AUTOMATIC)
-            setArchiveFolder(archiveFolder, archiveFolderSelection)
+                SpecialFolderSelection.AUTOMATIC)
+            setArchiveFolderId(archiveFolderId, archiveFolderSelection)
 
-            val spamFolder = storage.getString("$accountUuid.spamFolderName", null)
+            val spamFolderId = storage.getString("$accountUuid.spamFolderId", null)?.toLongOrNull()
             val spamFolderSelection = getEnumStringPref<SpecialFolderSelection>(storage, "$accountUuid.spamFolderSelection",
-                    SpecialFolderSelection.AUTOMATIC)
-            setSpamFolder(spamFolder, spamFolderSelection)
+                SpecialFolderSelection.AUTOMATIC)
+            setSpamFolderId(spamFolderId, spamFolderSelection)
+
+            autoExpandFolderId = storage.getString("$accountUuid.autoExpandFolderId", null)?.toLongOrNull()
 
             expungePolicy = getEnumStringPref<Expunge>(storage, "$accountUuid.expungePolicy", Expunge.EXPUNGE_IMMEDIATELY)
             isSyncRemoteDeletions = storage.getBoolean("$accountUuid.syncRemoteDeletions", true)
@@ -104,7 +113,7 @@ class AccountPreferenceSerializer(
                 setCompression(type, useCompression)
             }
 
-            autoExpandFolder = storage.getString("$accountUuid.autoExpandFolderName", INBOX)
+            importedAutoExpandFolder = storage.getString("$accountUuid.autoExpandFolderName", null)
 
             accountNumber = storage.getInt("$accountUuid.accountNumber", UNASSIGNED_ACCOUNT_NUMBER)
 
@@ -151,12 +160,16 @@ class AccountPreferenceSerializer(
 
             isEnabled = storage.getBoolean("$accountUuid.enabled", true)
             isMarkMessageAsReadOnView = storage.getBoolean("$accountUuid.markMessageAsReadOnView", true)
+            isMarkMessageAsReadOnDelete = storage.getBoolean("$accountUuid.markMessageAsReadOnDelete", true)
             isAlwaysShowCcBcc = storage.getBoolean("$accountUuid.alwaysShowCcBcc", false)
+            lastSyncTime = storage.getLong("$accountUuid.lastSyncTime", 0L)
 
             // Use email address as account description if necessary
             if (description == null) {
                 description = email
             }
+
+            resetChangeMarkers()
         }
     }
 
@@ -174,13 +187,14 @@ class AccountPreferenceSerializer(
             val description = storage.getString("$accountUuid.$IDENTITY_DESCRIPTION_KEY.$ident", null)
             val replyTo = storage.getString("$accountUuid.replyTo.$ident", null)
             if (email != null) {
-                val identity = Identity()
-                identity.name = name
-                identity.email = email
-                identity.signatureUse = signatureUse
-                identity.signature = signature
-                identity.description = description
-                identity.replyTo = replyTo
+                val identity = Identity(
+                    name = name,
+                    email = email,
+                    signatureUse = signatureUse,
+                    signature = signature,
+                    description = description,
+                    replyTo = replyTo
+                )
                 newIdentities.add(identity)
                 gotOne = true
             }
@@ -192,12 +206,13 @@ class AccountPreferenceSerializer(
             val email = storage.getString("$accountUuid.email", null)
             val signatureUse = storage.getBoolean("$accountUuid.signatureUse", true)
             val signature = storage.getString("$accountUuid.signature", null)
-            val identity = Identity()
-            identity.name = name
-            identity.email = email
-            identity.signatureUse = signatureUse
-            identity.signature = signature
-            identity.description = email
+            val identity = Identity(
+                name = name,
+                email = email,
+                signatureUse = signatureUse,
+                signature = signature,
+                description = email
+            )
             newIdentities.add(identity)
         }
 
@@ -214,7 +229,7 @@ class AccountPreferenceSerializer(
             editor.putString("accountUuids", accountUuids)
         }
 
-        with (account) {
+        with(account) {
             editor.putString("$accountUuid.storeUri", Base64.encode(storeUri))
             editor.putString("$accountUuid.localStorageProvider", localStorageProviderId)
             editor.putString("$accountUuid.transportUri", Base64.encode(transportUri))
@@ -231,18 +246,26 @@ class AccountPreferenceSerializer(
             editor.putBoolean("$accountUuid.notifyContactsMailOnly", isNotifyContactsMailOnly)
             editor.putBoolean("$accountUuid.notifyMailCheck", isNotifySync)
             editor.putInt("$accountUuid.deletePolicy", deletePolicy.setting)
-            editor.putString("$accountUuid.inboxFolderName", inboxFolder)
-            editor.putString("$accountUuid.draftsFolderName", draftsFolder)
-            editor.putString("$accountUuid.sentFolderName", sentFolder)
-            editor.putString("$accountUuid.trashFolderName", trashFolder)
-            editor.putString("$accountUuid.archiveFolderName", archiveFolder)
-            editor.putString("$accountUuid.spamFolderName", spamFolder)
+            editor.putString("$accountUuid.inboxFolderName", legacyInboxFolder)
+            editor.putString("$accountUuid.draftsFolderName", importedDraftsFolder)
+            editor.putString("$accountUuid.sentFolderName", importedSentFolder)
+            editor.putString("$accountUuid.trashFolderName", importedTrashFolder)
+            editor.putString("$accountUuid.archiveFolderName", importedArchiveFolder)
+            editor.putString("$accountUuid.spamFolderName", importedSpamFolder)
+            editor.putString("$accountUuid.inboxFolderId", inboxFolderId?.toString())
+            editor.putString("$accountUuid.outboxFolderId", outboxFolderId?.toString())
+            editor.putString("$accountUuid.draftsFolderId", draftsFolderId?.toString())
+            editor.putString("$accountUuid.sentFolderId", sentFolderId?.toString())
+            editor.putString("$accountUuid.trashFolderId", trashFolderId?.toString())
+            editor.putString("$accountUuid.archiveFolderId", archiveFolderId?.toString())
+            editor.putString("$accountUuid.spamFolderId", spamFolderId?.toString())
             editor.putString("$accountUuid.archiveFolderSelection", archiveFolderSelection.name)
             editor.putString("$accountUuid.draftsFolderSelection", draftsFolderSelection.name)
             editor.putString("$accountUuid.sentFolderSelection", sentFolderSelection.name)
             editor.putString("$accountUuid.spamFolderSelection", spamFolderSelection.name)
             editor.putString("$accountUuid.trashFolderSelection", trashFolderSelection.name)
-            editor.putString("$accountUuid.autoExpandFolderName", autoExpandFolder)
+            editor.putString("$accountUuid.autoExpandFolderName", importedAutoExpandFolder)
+            editor.putString("$accountUuid.autoExpandFolderId", autoExpandFolderId?.toString())
             editor.putInt("$accountUuid.accountNumber", accountNumber)
             editor.putString("$accountUuid.sortTypeEnum", sortType.name)
             editor.putBoolean("$accountUuid.sortAscending", isSortAscending(sortType))
@@ -261,10 +284,10 @@ class AccountPreferenceSerializer(
             editor.putBoolean("$accountUuid.subscribedFoldersOnly", isSubscribedFoldersOnly)
             editor.putInt("$accountUuid.maximumPolledMessageAge", maximumPolledMessageAge)
             editor.putInt("$accountUuid.maximumAutoDownloadMessageSize", maximumAutoDownloadMessageSize)
-            val messageFormatAuto = if (Account.MessageFormat.AUTO == messageFormat) {
+            val messageFormatAuto = if (MessageFormat.AUTO == messageFormat) {
                 // saving MessageFormat.AUTO as is to the database will cause downgrades to crash on
                 // startup, so we save as MessageFormat.TEXT instead with a separate flag for auto.
-                editor.putString("$accountUuid.messageFormat", Account.MessageFormat.TEXT.name)
+                editor.putString("$accountUuid.messageFormat", MessageFormat.TEXT.name)
                 true
             } else {
                 editor.putString("$accountUuid.messageFormat", messageFormat.name)
@@ -289,6 +312,7 @@ class AccountPreferenceSerializer(
             editor.putBoolean("$accountUuid.uploadSentMessages", isUploadSentMessages)
             editor.putBoolean("$accountUuid.enabled", isEnabled)
             editor.putBoolean("$accountUuid.markMessageAsReadOnView", isMarkMessageAsReadOnView)
+            editor.putBoolean("$accountUuid.markMessageAsReadOnDelete", isMarkMessageAsReadOnDelete)
             editor.putBoolean("$accountUuid.alwaysShowCcBcc", isAlwaysShowCcBcc)
 
             editor.putBoolean("$accountUuid.vibrate", notificationSetting.isVibrateEnabled)
@@ -298,6 +322,7 @@ class AccountPreferenceSerializer(
             editor.putString("$accountUuid.ringtone", notificationSetting.ringtone)
             editor.putBoolean("$accountUuid.led", notificationSetting.isLedEnabled)
             editor.putInt("$accountUuid.ledColor", notificationSetting.ledColor)
+            editor.putLong("$accountUuid.lastSyncTime", lastSyncTime)
 
             for (type in NetworkType.values()) {
                 val useCompression = compressionMap[type]
@@ -309,7 +334,6 @@ class AccountPreferenceSerializer(
 
         saveIdentities(account, storage, editor)
     }
-
 
     @Synchronized
     fun delete(editor: StorageEditor, storage: Storage, account: Account) {
@@ -400,6 +424,7 @@ class AccountPreferenceSerializer(
         editor.remove("$accountUuid.autocryptMutualMode")
         editor.remove("$accountUuid.enabled")
         editor.remove("$accountUuid.markMessageAsReadOnView")
+        editor.remove("$accountUuid.markMessageAsReadOnDelete")
         editor.remove("$accountUuid.alwaysShowCcBcc")
         editor.remove("$accountUuid.allowRemoteSearch")
         editor.remove("$accountUuid.remoteSearchFullText")
@@ -412,6 +437,16 @@ class AccountPreferenceSerializer(
         editor.remove("$accountUuid.messageFormat")
         editor.remove("$accountUuid.messageReadReceipt")
         editor.remove("$accountUuid.notifyMailCheck")
+        editor.remove("$accountUuid.inboxFolderId")
+        editor.remove("$accountUuid.outboxFolderId")
+        editor.remove("$accountUuid.draftsFolderId")
+        editor.remove("$accountUuid.sentFolderId")
+        editor.remove("$accountUuid.trashFolderId")
+        editor.remove("$accountUuid.archiveFolderId")
+        editor.remove("$accountUuid.spamFolderId")
+        editor.remove("$accountUuid.autoExpandFolderId")
+        editor.remove("$accountUuid.lastSyncTime")
+
         for (type in NetworkType.values()) {
             editor.remove("$accountUuid.useCompression." + type.name)
         }
@@ -424,7 +459,7 @@ class AccountPreferenceSerializer(
         deleteIdentities(account, storage, editor)
         var ident = 0
 
-        with (account) {
+        with(account) {
             for (identity in identities) {
                 editor.putString("$uuid.$IDENTITY_NAME_KEY.$ident", identity.name)
                 editor.putString("$uuid.$IDENTITY_EMAIL_KEY.$ident", identity.email)
@@ -499,21 +534,20 @@ class AccountPreferenceSerializer(
 
                 defaultEnum
             }
-
         }
     }
 
     fun loadDefaults(account: Account) {
-        with (account) {
+        with(account) {
             localStorageProviderId = storageManager.defaultProviderId
-            automaticCheckIntervalMinutes = Account.INTERVAL_MINUTES_NEVER
+            automaticCheckIntervalMinutes = DEFAULT_SYNC_INTERVAL
             idleRefreshMinutes = 24
             isPushPollOnConnect = true
             displayCount = K9.DEFAULT_VISIBLE_LIMIT
             accountNumber = UNASSIGNED_ACCOUNT_NUMBER
             isNotifyNewMail = true
             folderNotifyNewMailMode = FolderMode.ALL
-            isNotifySync = true
+            isNotifySync = false
             isNotifySelfNewMail = true
             isNotifyContactsMailOnly = false
             folderDisplayMode = FolderMode.NOT_SECOND_CLASS
@@ -525,8 +559,8 @@ class AccountPreferenceSerializer(
             showPictures = ShowPictures.NEVER
             isSignatureBeforeQuotedText = false
             expungePolicy = Expunge.EXPUNGE_IMMEDIATELY
-            autoExpandFolder = INBOX
-            inboxFolder = INBOX
+            importedAutoExpandFolder = null
+            legacyInboxFolder = null
             maxPushFolders = 10
             isGoToUnreadMessageSearch = false
             isSubscribedFoldersOnly = false
@@ -548,27 +582,29 @@ class AccountPreferenceSerializer(
             isUploadSentMessages = true
             isEnabled = true
             isMarkMessageAsReadOnView = true
+            isMarkMessageAsReadOnDelete = true
             isAlwaysShowCcBcc = false
+            lastSyncTime = 0L
 
-            setArchiveFolder(null, SpecialFolderSelection.AUTOMATIC)
-            setDraftsFolder(null, SpecialFolderSelection.AUTOMATIC)
-            setSentFolder(null, SpecialFolderSelection.AUTOMATIC)
-            setSpamFolder(null, SpecialFolderSelection.AUTOMATIC)
-            setTrashFolder(null, SpecialFolderSelection.AUTOMATIC)
-            setArchiveFolder(null, SpecialFolderSelection.AUTOMATIC)
+            setArchiveFolderId(null, SpecialFolderSelection.AUTOMATIC)
+            setDraftsFolderId(null, SpecialFolderSelection.AUTOMATIC)
+            setSentFolderId(null, SpecialFolderSelection.AUTOMATIC)
+            setSpamFolderId(null, SpecialFolderSelection.AUTOMATIC)
+            setTrashFolderId(null, SpecialFolderSelection.AUTOMATIC)
+            setArchiveFolderId(null, SpecialFolderSelection.AUTOMATIC)
 
             searchableFolders = Searchable.ALL
 
             identities = ArrayList<Identity>()
 
-            val identity = Identity().apply {
-                signatureUse = true
-                signature = resourceProvider.defaultSignature()
+            val identity = Identity(
+                signatureUse = true,
+                signature = resourceProvider.defaultSignature(),
                 description = resourceProvider.defaultIdentityDescription()
-            }
+            )
             identities.add(identity)
 
-            with (notificationSetting) {
+            with(notificationSetting) {
                 isVibrateEnabled = false
                 vibratePattern = 0
                 vibrateTimes = 5
@@ -576,6 +612,8 @@ class AccountPreferenceSerializer(
                 ringtone = "content://settings/system/notification_sound"
                 ledColor = chipColor
             }
+
+            resetChangeMarkers()
         }
     }
 

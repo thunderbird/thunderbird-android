@@ -55,7 +55,6 @@ class EmailTextToHtml private constructor(private val text: String) {
         else -> "#ccc"
     }
 
-
     companion object {
         private const val EXTRA_BUFFER_LENGTH = 2048
         const val K9MAIL_CSS_CLASS = "k9mail"

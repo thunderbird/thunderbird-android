@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.fsck.k9.view.MessageHeader
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/header_container"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <!-- Color chip -->
+        <View
+            android:id="@+id/chip"
+            android:layout_width="8dip"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                >
+
+                <TextView
+                    android:id="@+id/subject"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    tools:text="(no subject)"
+                    />
+
+                <ImageView
+                    android:id="@+id/crypto_status_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="6dp"
+                    app:srcCompat="@drawable/status_lock_disabled"
+                    android:tint="?attr/openpgp_grey"
+                    android:background="?selectableItemBackground"
+                    android:visibility="gone"
+                    />
+
+                <CheckBox
+                    android:id="@+id/flagged"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:focusable="false"
+                    android:checked="false"
+                    style="@style/MessageStarStyle"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <com.fsck.k9.ui.ContactBadge
+                        android:id="@+id/contact_badge"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginLeft="8dp" />
+
+                    <!-- State icons -->
+                    <LinearLayout
+                        android:id="@+id/icon_container"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dip"
+                        android:layout_marginBottom="2dip"
+                        android:layout_below="@+id/contact_badge"
+                        android:layout_centerHorizontal="true"
+                        android:orientation="vertical" >
+
+                        <View
+                            android:id="@+id/answered"
+                            android:layout_width="32sp"
+                            android:layout_height="32sp"
+                            android:paddingRight="2dip"
+                            android:background="?attr/messageListAnswered" />
+
+                        <View
+                            android:id="@+id/forwarded"
+                            android:layout_width="22sp"
+                            android:layout_height="22sp"
+                            android:paddingRight="4dip"
+                            android:background="?attr/messageListForwarded" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="6dip"
+                    android:layout_marginLeft="2dp" >
+
+                    <!-- From -->
+                    <TextView
+                        android:id="@+id/from"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@+id/status_icon_strip"
+                        android:layout_alignBottom="@+id/status_icon_strip"
+                        android:paddingTop="0dp"
+                        android:paddingRight="6dip"
+                        android:singleLine="true"
+                        android:ellipsize="end"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textStyle="bold"
+                        android:text="@string/general_no_sender"
+                        android:gravity="center_vertical"
+                        />
+
+                    <!-- Sender -->
+                    <TextView
+                        android:id="@+id/sender"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@+id/status_icon_strip"
+                        android:paddingTop="0dp"
+                        android:layout_below="@+id/from"
+                        android:ellipsize="end"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        android:gravity="center_vertical"
+                        />
+                    
+                    <!-- To -->
+                    <TextView
+                        android:id="@+id/to_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/from"
+                        android:layout_alignBaseline="@+id/to"
+                        android:paddingTop="2dp"
+                        android:paddingRight="4dp"
+                        android:text="@string/message_to_label"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textAppearance="@android:style/TextAppearance.Medium"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/to"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/to_label"
+                        android:layout_below="@+id/sender"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:paddingTop="2dp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textAppearance="@android:style/TextAppearance.Medium" />
+                    
+                    <!-- CC -->
+                    <TextView
+                        android:id="@+id/cc_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/to_label"
+                        android:layout_alignLeft="@+id/to_label"
+                        android:layout_alignBaseline="@+id/cc"
+                        android:paddingTop="2dp"
+                        android:paddingRight="4dp"
+                        android:text="@string/message_view_cc_label"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textStyle="bold"
+                        android:textAppearance="@android:style/TextAppearance.Medium" />
+                    
+                    <TextView
+                        android:id="@+id/cc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/cc_label"
+                        android:layout_below="@+id/to"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:paddingTop="2dp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textAppearance="@android:style/TextAppearance.Medium" />
+
+                    <!-- BCC -->
+                    <TextView
+                        android:id="@+id/bcc_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/cc_label"
+                        android:layout_alignLeft="@+id/cc_label"
+                        android:layout_alignBaseline="@+id/bcc"
+                        android:paddingTop="2dp"
+                        android:paddingRight="4dp"
+                        android:text="@string/message_view_bcc_label"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textStyle="bold"
+                        android:textAppearance="@android:style/TextAppearance.Medium" />
+
+                    <TextView
+                        android:id="@+id/bcc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/bcc_label"
+                        android:layout_below="@+id/cc"
+                        android:maxLines="2"
+                        android:ellipsize="end"
+                        android:paddingTop="2dp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textAppearance="@android:style/TextAppearance.Medium" />
+                    
+                    <!-- Date -->
+                    <TextView
+                        android:id="@+id/date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/bcc"
+                        android:layout_alignParentRight="true"
+                        android:paddingTop="8dp"
+                        android:singleLine="true"
+                        android:ellipsize="none"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="?android:attr/textColorSecondary" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:id="@+id/status_icon_strip"
+                        >
+
+                        <ImageView
+                            android:id="@+id/icon_single_message_options"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="?iconActionSingleMessageOptions"
+                            android:padding="8dp"
+                            android:background="?selectableItemBackground"
+                            />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/additional_headers_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:layout_marginRight="6dip"
+                android:singleLine="false"
+                android:ellipsize="none"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textIsSelectable="true" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_height="1dip"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="4dip"
+        android:background="@drawable/divider_horizontal_email" />
+
+</com.fsck.k9.view.MessageHeader>

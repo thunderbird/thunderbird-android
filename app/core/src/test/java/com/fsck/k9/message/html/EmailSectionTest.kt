@@ -1,9 +1,7 @@
 package com.fsck.k9.message.html
 
-
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
-
 
 class EmailSectionTest {
     @Test
@@ -47,7 +45,7 @@ class EmailSectionTest {
     fun subSequence() {
         val section = "[ One][ Two][ Three]".asEmailSection()
 
-        assertThat(section.subSequence(0, 11)).isSameAs(section)
+        assertThat(section.subSequence(0, 11)).isSameInstanceAs(section)
         assertThat(section.subSequence(0, 3).asString()).isEqualTo("One")
         assertThat(section.subSequence(0, 2).asString()).isEqualTo("On")
         assertThat(section.subSequence(1, 3).asString()).isEqualTo("ne")
@@ -64,7 +62,6 @@ class EmailSectionTest {
         assertThat(section.subSequence(7, 10).asString()).isEqualTo("hre")
         assertThat(section.subSequence(6, 11).asString()).isEqualTo("Three")
     }
-
 
     private fun CharSequence.asString() = StringBuilder(length).apply {
         this@asString.forEach { append(it) }

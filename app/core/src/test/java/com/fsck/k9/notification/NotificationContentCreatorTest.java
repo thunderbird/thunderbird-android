@@ -23,6 +23,7 @@ import static org.mockito.Mockito.when;
 
 public class NotificationContentCreatorTest extends RobolectricTest {
     private static final String ACCOUNT_UUID = "1-2-3";
+    private static final long FOLDER_ID = 23;
     private static final String FOLDER_NAME = "INBOX";
     private static final String UID = "42";
     private static final String PREVIEW = "Message preview text";
@@ -161,7 +162,7 @@ public class NotificationContentCreatorTest extends RobolectricTest {
     }
 
     private MessageReference createMessageReference() {
-        return new MessageReference(ACCOUNT_UUID, FOLDER_NAME, UID, null);
+        return new MessageReference(ACCOUNT_UUID, FOLDER_ID, UID, null);
     }
 
     private LocalMessage createFakeLocalMessage(MessageReference messageReference) {

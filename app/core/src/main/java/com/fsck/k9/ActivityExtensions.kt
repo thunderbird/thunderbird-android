@@ -1,8 +1,8 @@
 package com.fsck.k9
 
 import android.app.Activity
-import android.support.annotation.StringRes
 import android.widget.Toast
+import androidx.annotation.StringRes
 
 fun Activity.finishWithErrorToast(@StringRes errorRes: Int, vararg formatArgs: String) {
     val text = getString(errorRes, *formatArgs)

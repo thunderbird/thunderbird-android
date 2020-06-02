@@ -4,7 +4,6 @@ import com.fsck.k9.mail.crlf
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
-
 class MimeParameterEncoderTest {
     @Test
     fun valueWithoutParameters() {

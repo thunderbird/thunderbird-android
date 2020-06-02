@@ -121,10 +121,6 @@ public class LocalSearch implements SearchSpecification {
      * @param uuid Uuid of the account to be added.
      */
     public void addAccountUuid(String uuid) {
-        if (uuid.equals(ALL_ACCOUNTS)) {
-            mAccountUuids.clear();
-            return;
-        }
         mAccountUuids.add(uuid);
     }
 
@@ -231,29 +227,27 @@ public class LocalSearch implements SearchSpecification {
      * Add the folder as another folder to search in. The folder
      * will be added AND to the root if no 'folder subtree' was found.
      * Otherwise the folder will be added OR to that tree.
-     *
-     * @param name Name of the folder to add.
      */
-    public void addAllowedFolder(String name) {
+    public void addAllowedFolder(long folderId) {
         /*
          *  TODO find folder sub-tree
          *          - do and on root of it & rest of search
          *          - do or between folder nodes
          */
-        mConditions = and(new SearchCondition(SearchField.FOLDER, Attribute.EQUALS, name));
+        mConditions = and(new SearchCondition(SearchField.FOLDER, Attribute.EQUALS, Long.toString(folderId)));
     }
 
     /*
      * TODO make this more advanced!
-     * This is a temporarely solution that does NOT WORK for
+     * This is a temporary solution that does NOT WORK for
      * real searches because of possible extra conditions to a folder requirement.
      */
-    public List<String> getFolderServerIds() {
-        List<String> results = new ArrayList<>();
+    public List<Long> getFolderIds() {
+        List<Long> results = new ArrayList<>();
         for (ConditionsTreeNode node : mLeafSet) {
             if (node.mCondition.field == SearchField.FOLDER &&
                     node.mCondition.attribute == Attribute.EQUALS) {
-                results.add(node.mCondition.value);
+                results.add(Long.valueOf(node.mCondition.value));
             }
         }
         return results;
@@ -327,17 +321,11 @@ public class LocalSearch implements SearchSpecification {
     }
 
     /**
-     * Returns all the account uuids that this search will try to
-     * match against.
-     *
-     * @return Array of account uuids.
+     * Returns all the account uuids that this search will try to match against. Might be an empty array, in which case
+     * all accounts should be included in the search.
      */
     @Override
     public String[] getAccountUuids() {
-        if (mAccountUuids.isEmpty()) {
-            return new String[] { SearchSpecification.ALL_ACCOUNTS };
-        }
-
         String[] tmp = new String[mAccountUuids.size()];
         mAccountUuids.toArray(tmp);
         return tmp;

@@ -3,8 +3,8 @@ package com.fsck.k9.storage;
 
 import android.database.sqlite.SQLiteDatabase;
 
-import com.fsck.k9.core.BuildConfig;
-import com.fsck.k9.mail.Folder;
+import com.fsck.k9.K9;
+import com.fsck.k9.mail.FolderClass;
 import com.fsck.k9.mailstore.LockableDatabase.SchemaDefinition;
 import com.fsck.k9.mailstore.MigrationsHelper;
 import com.fsck.k9.storage.migrations.Migrations;
@@ -12,7 +12,7 @@ import timber.log.Timber;
 
 
 class StoreSchemaDefinition implements SchemaDefinition {
-    static final int DB_VERSION = 68;
+    static final int DB_VERSION = 77;
 
     private final MigrationsHelper migrationsHelper;
 
@@ -31,7 +31,7 @@ class StoreSchemaDefinition implements SchemaDefinition {
         try {
             upgradeDatabase(db);
         } catch (Exception e) {
-            if (BuildConfig.DEBUG) {
+            if (K9.DEVELOPER_MODE) {
                 throw new Error("Exception while upgrading database", e);
             }
 
@@ -46,9 +46,15 @@ class StoreSchemaDefinition implements SchemaDefinition {
 
         db.beginTransaction();
         try {
-            // schema version 29 was when we moved to incremental updates
-            // in the case of a new db or a < v29 db, we blow away and start from scratch
-            if (db.getVersion() < 29) {
+            if (db.getVersion() > DB_VERSION) {
+                String accountUuid = migrationsHelper.getAccount().getUuid();
+                throw new AssertionError("Database downgrades are not supported. " +
+                        "Please fix the account database '" + accountUuid + "' manually or " +
+                        "clear app data.");
+            }
+
+            // We only support upgrades from K-9 Mail 5.301. For upgrades from earlier versions we start from scratch.
+            if (db.getVersion() < 61) {
                 dbCreateDatabaseFromScratch(db);
             } else {
                 Migrations.upgradeDatabase(db, migrationsHelper);
@@ -82,15 +88,13 @@ class StoreSchemaDefinition implements SchemaDefinition {
                 "unread_count INTEGER, " +
                 "visible_limit INTEGER, " +
                 "status TEXT, " +
-                "push_state TEXT, " +
-                "last_pushed INTEGER, " +
                 "flagged_count INTEGER default 0, " +
                 "integrate INTEGER, " +
                 "top_group INTEGER, " +
                 "poll_class TEXT, " +
                 "push_class TEXT, " +
                 "display_class TEXT, " +
-                "notify_class TEXT default '"+ Folder.FolderClass.INHERITED.name() + "', " +
+                "notify_class TEXT default '"+ FolderClass.INHERITED.name() + "', " +
                 "more_messages TEXT default \"unknown\", " +
                 "server_id TEXT, " +
                 "local_only INTEGER, " +
@@ -184,6 +188,8 @@ class StoreSchemaDefinition implements SchemaDefinition {
         db.execSQL("DROP INDEX IF EXISTS msg_composite");
         db.execSQL("CREATE INDEX IF NOT EXISTS msg_composite ON messages (deleted, empty,folder_id,flagged,read)");
 
+        db.execSQL("DROP INDEX IF EXISTS message_parts_root");
+        db.execSQL("CREATE INDEX IF NOT EXISTS message_parts_root ON message_parts (root)");
 
         db.execSQL("DROP TABLE IF EXISTS threads");
         db.execSQL("CREATE TABLE threads (" +

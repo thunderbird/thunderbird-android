@@ -23,7 +23,7 @@ import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyFactory;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
+import com.fsck.k9.mail.FolderType;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
@@ -40,7 +40,10 @@ import timber.log.Timber;
 import static com.fsck.k9.mail.store.imap.ImapUtility.getLastResponse;
 
 
-public class ImapFolder extends Folder<ImapMessage> {
+public class ImapFolder {
+    public static final int OPEN_MODE_RW = 0;
+    public static final int OPEN_MODE_RO = 1;
+
     static final String INBOX = "INBOX";
     private static final ThreadLocal<SimpleDateFormat> RFC3501_DATE = new ThreadLocal<SimpleDateFormat>() {
         @Override
@@ -55,14 +58,16 @@ public class ImapFolder extends Folder<ImapMessage> {
     protected volatile int messageCount = -1;
     protected volatile long uidNext = -1L;
     protected volatile ImapConnection connection;
-    protected ImapStore store = null;
+    protected ImapStore store;
     protected Map<Long, String> msgSeqUidMap = new ConcurrentHashMap<>();
     private final FolderNameCodec folderNameCodec;
     private final String name;
+    private FolderType type = FolderType.REGULAR;
     private int mode;
     private volatile boolean exists;
     private boolean inSearch = false;
     private boolean canCreateKeywords = false;
+    private Long uidValidity = null;
 
 
     public ImapFolder(ImapStore store, String name) {
@@ -74,6 +79,22 @@ public class ImapFolder extends Folder<ImapMessage> {
         this.store = store;
         this.name = name;
         this.folderNameCodec = folderNameCodec;
+    }
+
+    public FolderType getType() {
+        return type;
+    }
+
+    public void setType(FolderType type) {
+        this.type = type;
+    }
+
+    public Long getUidValidity() {
+        if (!isOpen()) {
+            throw new IllegalStateException("ImapFolder needs to be open");
+        }
+
+        return uidValidity;
     }
 
     private String getPrefixedName() throws MessagingException {
@@ -111,7 +132,6 @@ public class ImapFolder extends Folder<ImapMessage> {
         return handleUntaggedResponses(connection.executeSimpleCommand(command));
     }
 
-    @Override
     public void open(int mode) throws MessagingException {
         internalOpen(mode);
 
@@ -153,6 +173,7 @@ public class ImapFolder extends Folder<ImapMessage> {
             this.mode = mode;
 
             for (ImapResponse response : responses) {
+                extractUidValidity(response);
                 handlePermanentFlags(response);
             }
 
@@ -166,6 +187,13 @@ public class ImapFolder extends Folder<ImapMessage> {
         } catch (MessagingException me) {
             Timber.e(me, "Unable to open connection for %s", getLogId());
             throw me;
+        }
+    }
+
+    private void extractUidValidity(ImapResponse response) {
+        UidValidityResponse uidValidityResponse = UidValidityResponse.parse(response);
+        if (uidValidityResponse != null) {
+            uidValidity = uidValidityResponse.getUidValidity();
         }
     }
 
@@ -192,17 +220,14 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    @Override
     public boolean isOpen() {
         return connection != null;
     }
 
-    @Override
     public int getMode() {
         return mode;
     }
 
-    @Override
     public void close() {
         messageCount = -1;
 
@@ -223,12 +248,10 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    @Override
     public String getServerId() {
         return name;
     }
 
-    @Override
     public String getName() {
         return name;
     }
@@ -247,7 +270,6 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    @Override
     public boolean exists() throws MessagingException {
         if (exists) {
             return true;
@@ -286,7 +308,6 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    @Override
     public boolean create() throws MessagingException {
         /*
          * This method needs to operate in the unselected mode as well as the selected mode
@@ -324,7 +345,7 @@ public class ImapFolder extends Folder<ImapMessage> {
      *
      * <p>
      * <strong>Note:</strong>
-     * Only the UIDs of the given {@link Message} instances are used. It is assumed that all
+     * Only the UIDs of the given {@link ImapMessage} instances are used. It is assumed that all
      * UIDs represent valid messages in this folder.
      * </p>
      *
@@ -335,17 +356,11 @@ public class ImapFolder extends Folder<ImapMessage> {
      *
      * @return The mapping of original message UIDs to the new server UIDs.
      */
-    @Override
-    public Map<String, String> copyMessages(List<? extends Message> messages, Folder folder) throws MessagingException {
-        if (!(folder instanceof ImapFolder)) {
-            throw new MessagingException("ImapFolder.copyMessages passed non-ImapFolder");
-        }
-
+    public Map<String, String> copyMessages(List<ImapMessage> messages, ImapFolder folder) throws MessagingException {
         if (messages.isEmpty()) {
             return null;
         }
 
-        ImapFolder imapFolder = (ImapFolder) folder;
         checkOpen(); //only need READ access
 
         Set<Long> uids = new HashSet<>(messages.size());
@@ -353,7 +368,7 @@ public class ImapFolder extends Folder<ImapMessage> {
             uids.add(Long.parseLong(messages.get(i).getUid()));
         }
 
-        String encodedDestinationFolderName = folderNameCodec.encode(imapFolder.getPrefixedName());
+        String encodedDestinationFolderName = folderNameCodec.encode(folder.getPrefixedName());
         String escapedDestinationFolderName = ImapUtility.encodeString(encodedDestinationFolderName);
 
         //TODO: Just perform the operation and only check for existence of the folder if the operation fails.
@@ -363,7 +378,7 @@ public class ImapFolder extends Folder<ImapMessage> {
                         escapedDestinationFolderName, getLogId());
             }
 
-            throw new FolderNotFoundException(imapFolder.getServerId());
+            throw new FolderNotFoundException(folder.getServerId());
         }
 
         try {
@@ -377,8 +392,7 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    @Override
-    public Map<String, String> moveMessages(List<? extends Message> messages, Folder folder) throws MessagingException {
+    public Map<String, String> moveMessages(List<ImapMessage> messages, ImapFolder folder) throws MessagingException {
         if (messages.isEmpty()) {
             return null;
         }
@@ -390,37 +404,6 @@ public class ImapFolder extends Folder<ImapMessage> {
         return uidMapping;
     }
 
-    @Override
-    public void delete(List<? extends Message> messages, String trashFolder) throws MessagingException {
-        if (messages.isEmpty()) {
-            return;
-        }
-
-        if (trashFolder == null || getServerId().equals(trashFolder)) {
-            setFlags(messages, Collections.singleton(Flag.DELETED), true);
-        } else {
-            ImapFolder remoteTrashFolder = getStore().getFolder(trashFolder);
-            String encodedTrashFolderName = folderNameCodec.encode(remoteTrashFolder.getPrefixedName());
-            String escapedTrashFolderName = ImapUtility.encodeString(encodedTrashFolderName);
-
-            if (!exists(escapedTrashFolderName)) {
-                if (K9MailLib.isDebug()) {
-                    Timber.i("ImapFolder.delete: couldn't find remote trash folder '%s' for %s",
-                            trashFolder, getLogId());
-                }
-                throw new FolderNotFoundException(remoteTrashFolder.getServerId());
-            }
-
-            if (K9MailLib.isDebug()) {
-                Timber.d("IMAPMessage.delete: copying remote %d messages to '%s' for %s",
-                        messages.size(), trashFolder, getLogId());
-            }
-
-            moveMessages(messages, remoteTrashFolder);
-        }
-    }
-
-    @Override
     public int getMessageCount() {
         return messageCount;
     }
@@ -447,12 +430,10 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    @Override
     public int getUnreadMessageCount() throws MessagingException {
         return getRemoteMessageCount("UNSEEN NOT DELETED");
     }
 
-    @Override
     public int getFlaggedMessageCount() throws MessagingException {
         return getRemoteMessageCount("FLAGGED NOT DELETED");
     }
@@ -485,12 +466,10 @@ public class ImapFolder extends Folder<ImapMessage> {
         return uids.get(0);
     }
 
-    @Override
-    public ImapMessage getMessage(String uid) throws MessagingException {
-        return new ImapMessage(uid, this);
+    public ImapMessage getMessage(String uid) {
+        return new ImapMessage(uid);
     }
 
-    @Override
     public List<ImapMessage> getMessages(int start, int end, Date earliestDate,
             MessageRetrievalListener<ImapMessage> listener) throws MessagingException {
         return getMessages(start, end, earliestDate, false, listener);
@@ -527,7 +506,6 @@ public class ImapFolder extends Folder<ImapMessage> {
         return " SINCE " + RFC3501_DATE.get().format(earliestDate);
     }
 
-    @Override
     public boolean areMoreMessagesAvailable(int indexOfOldestMessage, Date earliestDate) throws IOException,
             MessagingException {
 
@@ -599,8 +577,8 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    private List<ImapMessage> getMessages(SearchResponse searchResponse, MessageRetrievalListener<ImapMessage> listener)
-            throws MessagingException {
+    private List<ImapMessage> getMessages(SearchResponse searchResponse,
+            MessageRetrievalListener<ImapMessage> listener) {
 
         List<ImapMessage> messages = new ArrayList<>();
         List<Long> uids = searchResponse.getNumbers();
@@ -617,7 +595,7 @@ public class ImapFolder extends Folder<ImapMessage> {
                 listener.messageStarted(uid, i, count);
             }
 
-            ImapMessage message = new ImapMessage(uid, this);
+            ImapMessage message = new ImapMessage(uid);
             messages.add(message);
 
             if (listener != null) {
@@ -628,9 +606,8 @@ public class ImapFolder extends Folder<ImapMessage> {
         return messages;
     }
 
-    @Override
     public void fetch(List<ImapMessage> messages, FetchProfile fetchProfile,
-            MessageRetrievalListener<ImapMessage> listener) throws MessagingException {
+            MessageRetrievalListener<ImapMessage> listener, int maxDownloadSize) throws MessagingException {
         if (messages == null || messages.isEmpty()) {
             return;
         }
@@ -638,8 +615,8 @@ public class ImapFolder extends Folder<ImapMessage> {
         checkOpen();
 
         List<String> uids = new ArrayList<>(messages.size());
-        HashMap<String, Message> messageMap = new HashMap<>();
-        for (Message message : messages) {
+        HashMap<String, ImapMessage> messageMap = new HashMap<>();
+        for (ImapMessage message : messages) {
             String uid = message.getUid();
             uids.add(uid);
             messageMap.put(uid, message);
@@ -664,9 +641,8 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
 
         if (fetchProfile.contains(FetchProfile.Item.BODY_SANE)) {
-            int maximumAutoDownloadMessageSize = store.getStoreConfig().getMaximumAutoDownloadMessageSize();
-            if (maximumAutoDownloadMessageSize > 0) {
-                fetchFields.add(String.format(Locale.US, "BODY.PEEK[]<0.%d>", maximumAutoDownloadMessageSize));
+            if (maxDownloadSize > 0) {
+                fetchFields.add(String.format(Locale.US, "BODY.PEEK[]<0.%d>", maxDownloadSize));
             } else {
                 fetchFields.add("BODY.PEEK[]");
             }
@@ -714,7 +690,7 @@ public class ImapFolder extends Folder<ImapMessage> {
                             }
                         }
 
-                        Message message = messageMap.get(uid);
+                        ImapMessage message = messageMap.get(uid);
                         if (message == null) {
                             if (K9MailLib.isDebug()) {
                                 Timber.d("Do not have message in messageMap for UID %s for %s", uid, getLogId());
@@ -728,14 +704,13 @@ public class ImapFolder extends Folder<ImapMessage> {
                             listener.messageStarted(uid, messageNumber++, messageMap.size());
                         }
 
-                        ImapMessage imapMessage = (ImapMessage) message;
-                        Object literal = handleFetchResponse(imapMessage, fetchList);
+                        Object literal = handleFetchResponse(message, fetchList);
 
                         if (literal != null) {
                             if (literal instanceof String) {
                                 String bodyString = (String) literal;
                                 InputStream bodyStream = new ByteArrayInputStream(bodyString.getBytes());
-                                imapMessage.parse(bodyStream);
+                                message.parse(bodyStream);
                             } else if (literal instanceof Integer) {
                                 // All the work was done in FetchBodyCallback.foundLiteral()
                             } else {
@@ -745,7 +720,7 @@ public class ImapFolder extends Folder<ImapMessage> {
                         }
 
                         if (listener != null) {
-                            listener.messageFinished(imapMessage, messageNumber, messageMap.size());
+                            listener.messageFinished(message, messageNumber, messageMap.size());
                         }
                     } else {
                         handleUntaggedResponse(response);
@@ -758,17 +733,15 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    @Override
-    public void fetchPart(Message message, Part part, MessageRetrievalListener<Message> listener,
-            BodyFactory bodyFactory) throws MessagingException {
+    public void fetchPart(ImapMessage message, Part part, MessageRetrievalListener<ImapMessage> listener,
+            BodyFactory bodyFactory, int maxDownloadSize) throws MessagingException {
         checkOpen();
 
         String partId = part.getServerExtra();
 
         String fetch;
         if ("TEXT".equalsIgnoreCase(partId)) {
-            int maximumAutoDownloadMessageSize = store.getStoreConfig().getMaximumAutoDownloadMessageSize();
-            fetch = String.format(Locale.US, "BODY.PEEK[TEXT]<0.%d>", maximumAutoDownloadMessageSize);
+            fetch = String.format(Locale.US, "BODY.PEEK[TEXT]<0.%d>", maxDownloadSize);
         } else {
             fetch = String.format("BODY.PEEK[%s]", partId);
         }
@@ -802,9 +775,7 @@ public class ImapFolder extends Folder<ImapMessage> {
                         listener.messageStarted(uid, messageNumber++, 1);
                     }
 
-                    ImapMessage imapMessage = (ImapMessage) message;
-
-                    Object literal = handleFetchResponse(imapMessage, fetchList);
+                    Object literal = handleFetchResponse(message, fetchList);
 
                     if (literal != null) {
                         if (literal instanceof Body) {
@@ -847,19 +818,19 @@ public class ImapFolder extends Folder<ImapMessage> {
                 for (int i = 0, count = flags.size(); i < count; i++) {
                     String flag = flags.getString(i);
                     if (flag.equalsIgnoreCase("\\Deleted")) {
-                        message.setFlagInternal(Flag.DELETED, true);
+                        message.setFlag(Flag.DELETED, true);
                     } else if (flag.equalsIgnoreCase("\\Answered")) {
-                        message.setFlagInternal(Flag.ANSWERED, true);
+                        message.setFlag(Flag.ANSWERED, true);
                     } else if (flag.equalsIgnoreCase("\\Seen")) {
-                        message.setFlagInternal(Flag.SEEN, true);
+                        message.setFlag(Flag.SEEN, true);
                     } else if (flag.equalsIgnoreCase("\\Flagged")) {
-                        message.setFlagInternal(Flag.FLAGGED, true);
+                        message.setFlag(Flag.FLAGGED, true);
                     } else if (flag.equalsIgnoreCase("$Forwarded")) {
-                        message.setFlagInternal(Flag.FORWARDED, true);
+                        message.setFlag(Flag.FORWARDED, true);
                         /* a message contains FORWARDED FLAG -> so we can also create them */
                         store.getPermanentFlagsIndex().add(Flag.FORWARDED);
                     } else if (flag.equalsIgnoreCase("\\Draft")){
-                        message.setFlagInternal(Flag.DRAFT, true);
+                        message.setFlag(Flag.DRAFT, true);
                     }
                 }
             }
@@ -1122,8 +1093,7 @@ public class ImapFolder extends Folder<ImapMessage> {
      *
      * @return The mapping of original message UIDs to the new server UIDs.
      */
-    @Override
-    public Map<String, String> appendMessages(List<? extends Message> messages) throws MessagingException {
+    public Map<String, String> appendMessages(List<Message> messages) throws MessagingException {
         open(OPEN_MODE_RW);
         checkOpen();
 
@@ -1212,7 +1182,6 @@ public class ImapFolder extends Folder<ImapMessage> {
         return messageIdHeader.length == 0 ? null : messageIdHeader[0];
     }
 
-    @Override
     public String getUidFromMessageId(String messageId) throws MessagingException {
         if (K9MailLib.isDebug()) {
             Timber.d("Looking for UID for message with message-id %s for %s", messageId, getLogId());
@@ -1236,7 +1205,6 @@ public class ImapFolder extends Folder<ImapMessage> {
         return null;
     }
 
-    @Override
     public void expunge() throws MessagingException {
         open(OPEN_MODE_RW);
         checkOpen();
@@ -1248,7 +1216,6 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    @Override
     public void expungeUids(List<String> uids) throws MessagingException {
         if (uids == null || uids.isEmpty()) {
             throw new IllegalArgumentException("expungeUids() must be called with a non-empty set of UIDs");
@@ -1272,7 +1239,6 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    @Override
     public void setFlags(Set<Flag> flags, boolean value) throws MessagingException {
         open(OPEN_MODE_RW);
         checkOpen();
@@ -1290,36 +1256,13 @@ public class ImapFolder extends Folder<ImapMessage> {
         }
     }
 
-    @Override
-    public String getNewPushState(String oldSerializedPushState, Message message) {
-        try {
-            String uid = message.getUid();
-            long messageUid = Long.parseLong(uid);
-
-            ImapPushState oldPushState = ImapPushState.parse(oldSerializedPushState);
-
-            if (messageUid >= oldPushState.uidNext) {
-                long uidNext = messageUid + 1;
-                ImapPushState newPushState = new ImapPushState(uidNext);
-
-                return newPushState.toString();
-            } else {
-                return null;
-            }
-        } catch (Exception e) {
-            Timber.e(e, "Exception while updated push state for %s", getLogId());
-            return null;
-        }
-    }
-
-    @Override
-    public void setFlags(List<? extends Message> messages, final Set<Flag> flags, boolean value)
+    public void setFlags(List<ImapMessage> messages, final Set<Flag> flags, boolean value)
             throws MessagingException {
         open(OPEN_MODE_RW);
         checkOpen();
 
         Set<Long> uids = new HashSet<>(messages.size());
-        for (Message message : messages) {
+        for (ImapMessage message : messages) {
             uids.add(Long.parseLong(message.getUid()));
         }
 
@@ -1369,12 +1312,8 @@ public class ImapFolder extends Folder<ImapMessage> {
         return getServerId().hashCode();
     }
 
-    private ImapStore getStore() {
-        return store;
-    }
-
     protected String getLogId() {
-        String id = store.getStoreConfig().toString() + ":" + getServerId() + "/" + Thread.currentThread().getName();
+        String id = store.getLogLabel() + ":" + getServerId() + "/" + Thread.currentThread().getName();
         if (connection != null) {
             id += "/" + connection.getLogId();
         }
@@ -1390,13 +1329,8 @@ public class ImapFolder extends Folder<ImapMessage> {
      * @return List of messages found
      * @throws MessagingException On any error.
      */
-    @Override
     public List<ImapMessage> search(final String queryString, final Set<Flag> requiredFlags,
-            final Set<Flag> forbiddenFlags) throws MessagingException {
-
-        if (!store.getStoreConfig().isAllowRemoteSearch()) {
-            throw new MessagingException("Your settings do not allow remote searching of this account");
-        }
+            final Set<Flag> forbiddenFlags, boolean performFullTextSearch) throws MessagingException {
 
         try {
             open(OPEN_MODE_RO);
@@ -1406,7 +1340,7 @@ public class ImapFolder extends Folder<ImapMessage> {
 
             String searchCommand = new UidSearchCommandBuilder()
                     .queryString(queryString)
-                    .performFullTextSearch(store.getStoreConfig().isRemoteSearchFullText())
+                    .performFullTextSearch(performFullTextSearch)
                     .requiredFlags(requiredFlags)
                     .forbiddenFlags(forbiddenFlags)
                     .build();

@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+    <string name="app_name">K-9 JMAP</string>
+    <string name="empty_string" translatable="false" />
+
+    <string name="add_account__email_address_error">Please enter a valid email address</string>
+    <string name="add_account__password_error">"Couldn't sign in. Please make sure your password is correct."</string>
+    <string name="add_account__generic_failure">Unknown error while discovering server settings</string>
+    <string name="add_account__no_email_account_found">"Couldn't find an email account on the JMAP server"</string>
+    <string name="add_account__jmap_server_not_found">"Couldn't find the JMAP server from your email address"</string>
+</resources>

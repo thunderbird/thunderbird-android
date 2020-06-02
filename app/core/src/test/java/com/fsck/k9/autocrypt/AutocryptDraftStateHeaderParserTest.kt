@@ -1,10 +1,8 @@
 package com.fsck.k9.autocrypt
 
-
 import com.fsck.k9.RobolectricTest
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
-
 
 class AutocryptDraftStateHeaderParserTest : RobolectricTest() {
     internal var autocryptHeaderParser = AutocryptDraftStateHeaderParser()
@@ -18,18 +16,18 @@ class AutocryptDraftStateHeaderParserTest : RobolectricTest() {
         assertThat(parsedHeader).isEqualTo(draftStateHeader)
     }
 
-     @Test
-     fun testSignOnly() {
-         val parsedHeader = autocryptHeaderParser.parseAutocryptDraftStateHeader("encrypt=no; _by-choice=yes; _sign-only=yes")
+    @Test
+    fun testSignOnly() {
+        val parsedHeader = autocryptHeaderParser.parseAutocryptDraftStateHeader("encrypt=no; _by-choice=yes; _sign-only=yes")
 
-         with(parsedHeader!!) {
-             assertThat(isEncrypt).isFalse()
-             assertThat(isByChoice).isTrue()
-             assertThat(isSignOnly).isTrue()
-             assertThat(isPgpInline).isFalse()
-             assertThat(isReply).isFalse()
-         }
-     }
+        with(parsedHeader!!) {
+            assertThat(isEncrypt).isFalse()
+            assertThat(isByChoice).isTrue()
+            assertThat(isSignOnly).isTrue()
+            assertThat(isPgpInline).isFalse()
+            assertThat(isReply).isFalse()
+        }
+    }
 
     @Test
     fun badCritical() {

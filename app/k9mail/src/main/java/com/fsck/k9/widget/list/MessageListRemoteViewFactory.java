@@ -11,7 +11,7 @@ import android.database.Cursor;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Binder;
-import android.support.v4.content.ContextCompat;
+import androidx.core.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.view.View;
@@ -51,7 +51,7 @@ public class MessageListRemoteViewFactory implements RemoteViewsService.RemoteVi
 
     @Override
     public void onCreate() {
-        senderAboveSubject = K9.messageListSenderAboveSubject();
+        senderAboveSubject = K9.isMessageListSenderAboveSubject();
         readTextColor = ContextCompat.getColor(context, R.color.message_list_widget_text_read);
         unreadTextColor = ContextCompat.getColor(context, R.color.message_list_widget_text_unread);
     }

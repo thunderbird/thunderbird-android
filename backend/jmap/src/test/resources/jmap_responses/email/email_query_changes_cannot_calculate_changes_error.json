@@ -1,0 +1,12 @@
+{
+  "methodResponses": [
+    [
+      "error",
+      {
+        "type": "cannotCalculateChanges"
+      },
+      "0"
+    ]
+  ],
+  "sessionState": "0"
+}

@@ -4,10 +4,10 @@ package com.fsck.k9.notification;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.support.v4.app.NotificationCompat.Action;
-import android.support.v4.app.NotificationCompat.Builder;
-import android.support.v4.app.NotificationCompat.Extender;
-import android.support.v4.app.NotificationCompat.WearableExtender;
+import androidx.core.app.NotificationCompat.Action;
+import androidx.core.app.NotificationCompat.Builder;
+import androidx.core.app.NotificationCompat.Extender;
+import androidx.core.app.NotificationCompat.WearableExtender;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.K9;
@@ -197,11 +197,11 @@ public class WearNotificationsTest extends RobolectricTest {
     }
 
     private void disableArchiveAction() {
-        when(account.getArchiveFolder()).thenReturn(null);
+        when(account.getArchiveFolderId()).thenReturn(null);
     }
 
     private void disableSpamAction() {
-        when(account.getSpamFolder()).thenReturn(null);
+        when(account.getSpamFolderId()).thenReturn(null);
     }
 
     private void enableDeleteAction() {
@@ -210,11 +210,11 @@ public class WearNotificationsTest extends RobolectricTest {
     }
 
     private void enableArchiveAction() {
-        when(account.getArchiveFolder()).thenReturn("Archive");
+        when(account.getArchiveFolderId()).thenReturn(22L);
     }
 
     private void enableSpamAction() {
-        when(account.getSpamFolder()).thenReturn("Spam");
+        when(account.getSpamFolderId()).thenReturn(11L);
     }
 
     private void disableOptionalSummaryActions() {
@@ -266,7 +266,7 @@ public class WearNotificationsTest extends RobolectricTest {
     }
 
     private MessageReference createMessageReference(int number) {
-        return new MessageReference("account", "folder", String.valueOf(number), null);
+        return new MessageReference("account", 1, String.valueOf(number), null);
     }
 
     private PendingIntent createFakePendingIntent(int requestCode) {

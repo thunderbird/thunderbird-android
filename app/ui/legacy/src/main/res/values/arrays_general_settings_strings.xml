@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="language_entries" translatable="false">
+        <item>@string/setting_language_system</item>
+        <item>Afrikaans</item>
+        <item>Azərbaycan</item>
+        <item>Bahasa indonesia</item>
+        <item>Bahasa melayu</item>
+        <item>Bamanankan</item>
+        <item>Brezhoneg</item>
+        <item>Català</item>
+        <item>Čeština</item>
+        <item>Cymraeg</item>
+        <item>Dansk</item>
+        <item>Deutsch</item>
+        <item>Eesti</item>
+        <item>English</item>
+        <item>Español</item>
+        <item>Esperanto</item>
+        <item>Euskera</item>
+        <item>Ɛʋɛ</item>
+        <item>Français</item>
+        <item>Français (Canada)</item>
+        <item>Fulfulde, Pulaar, Pular</item>
+        <item>Gaeilge</item>
+        <item>Gàidhlig</item>
+        <item>Galego</item>
+        <item>Hausa</item>
+        <item>Hrvatski</item>
+        <item>isiXhosa</item>
+        <item>isiZulu</item>
+        <item>Íslenska</item>
+        <item>Italiano</item>
+        <item>Kinyarwanda</item>
+        <item>Kirundi</item>
+        <item>Kiswahili</item>
+        <item>Latviešu</item>
+        <item>Lietuvių</item>
+        <item>Magyar</item>
+        <item>Malti</item>
+        <item>Nederlands</item>
+        <item>Norsk</item>
+        <item>Norsk Bokmål</item>
+        <item>O\'zbek</item>
+        <item>Polski</item>
+        <item>Português</item>
+        <item>Português (Brasil)</item>
+        <item>Pyccĸий</item>
+        <item>Română</item>
+        <item>Shqip</item>
+        <item>Slovenčina</item>
+        <item>Slovenščina</item>
+        <item>Somali</item>
+        <item>Suomi</item>
+        <item>Svenska</item>
+        <item>Tiếng Việt</item>
+        <item>Tϋrkçe</item>
+        <item>Wolof</item>
+        <item>Yorùbá</item>
+        <item>Ελληνικά</item>
+        <item>аҧсуа бызшәа</item>
+        <item>Беларуская</item>
+        <item>Български</item>
+        <item>Кыргыз</item>
+        <item>Қазақ</item>
+        <item>Македонски</item>
+        <item>Српски</item>
+        <item>Українська</item>
+        <item>Հայերեն</item>
+        <item>עברית</item>
+        <item>اردو</item>
+        <item>العربية</item>
+        <item>پښتو</item>
+        <item>فارسی</item>
+        <item>አማርኛ</item>
+        <item>हिंदी</item>
+        <item>తెలుగు</item>
+        <item>ಕನ್ನಡ</item>
+        <item>ภาษาไทย</item>
+        <item>한국어</item>
+        <item>中文(简体)</item>
+        <item>中文(繁體)</item>
+        <item>日本語</item>
+    </string-array>
+
+    <string-array name="theme_entries_legacy">
+        <item>@string/setting_theme_light</item>
+        <item>@string/setting_theme_dark</item>
+    </string-array>
+
+    <string-array name="theme_entries">
+        <item>@string/setting_theme_light</item>
+        <item>@string/setting_theme_dark</item>
+        <item>@string/setting_theme_follow_system</item>
+    </string-array>
+
+    <string-array name="message_theme_entries">
+        <item>@string/setting_theme_light</item>
+        <item>@string/setting_theme_dark</item>
+        <item>@string/setting_theme_global</item>
+    </string-array>
+
+    <string-array name="background_ops_entries">
+        <item>@string/background_ops_auto_sync_only</item>
+        <item>@string/background_ops_always</item>
+        <item>@string/background_ops_never</item>
+    </string-array>
+
+    <string-array name="preview_lines_entries">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
+
+    <string-array name="notification_hide_subject_entries">
+        <item name="1">@string/global_settings_notification_hide_subject_never</item>
+        <item name="2">@string/global_settings_notification_hide_subject_when_locked</item>
+        <item name="3">@string/global_settings_notification_hide_subject_always</item>
+    </string-array>
+
+    <string-array name="notification_quick_delete_entries">
+        <item name="1">@string/global_settings_notification_quick_delete_never</item>
+        <item name="2">@string/global_settings_notification_quick_delete_when_single_msg</item>
+        <item name="3">@string/global_settings_notification_quick_delete_always</item>
+    </string-array>
+
+    <string-array name="lock_screen_notification_visibility_entries">
+        <item name="0">@string/global_settings_lock_screen_notification_visibility_nothing</item>
+        <item name="1">@string/global_settings_lock_screen_notification_visibility_app_name</item>
+        <item name="2">@string/global_settings_lock_screen_notification_visibility_message_count</item>
+        <item name="3">@string/global_settings_lock_screen_notification_visibility_senders</item>
+        <item name="4">@string/global_settings_lock_screen_notification_visibility_everything</item>
+    </string-array>
+
+    <string-array name="splitview_mode_entries">
+        <item>@string/global_settings_splitview_always</item>
+        <item>@string/global_settings_splitview_never</item>
+        <item>@string/global_settings_splitview_when_in_landscape</item>
+    </string-array>
+
+    <string-array name="confirm_action_entries">
+        <item>@string/global_settings_confirm_action_delete</item>
+        <item>@string/global_settings_confirm_action_delete_starred</item>
+        <item>@string/global_settings_confirm_action_delete_notif</item>
+        <item>@string/global_settings_confirm_action_spam</item>
+        <item>@string/global_settings_confirm_menu_discard</item>
+        <item>@string/global_settings_confirm_menu_mark_all_read</item>
+    </string-array>
+
+    <string-array name="messageview_visible_refile_actions_entries">
+        <item>@string/delete_action</item>
+        <item>@string/archive_action</item>
+        <item>@string/move_action</item>
+        <item>@string/copy_action</item>
+        <item>@string/spam_action</item>
+    </string-array>
+
+    <string-array name="volume_navigation_entries">
+        <item>@string/volume_navigation_message</item>
+        <item>@string/volume_navigation_list</item>
+    </string-array>
+
+</resources>

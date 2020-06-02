@@ -1,9 +1,7 @@
 package com.fsck.k9.message.html
 
-
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
-
 
 class EmailSectionExtractorTest {
     @Test

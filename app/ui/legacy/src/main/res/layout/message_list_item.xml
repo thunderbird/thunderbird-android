@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:layout_gravity="center_vertical"
+        >
+
+    <FrameLayout
+        android:id="@+id/contact_picture_container"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="3dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/contact_picture"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            tools:src="@drawable/ic_contact_picture" />
+
+        <ImageView
+            android:id="@+id/selected"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/ic_check_circle_large"
+            android:visibility="gone"
+            android:contentDescription="@null" />
+
+    </FrameLayout>
+
+    <RelativeLayout
+            android:id="@+id/list_item_inner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:paddingTop="5dip"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:layout_gravity="center_vertical"
+            android:paddingBottom="6dp">
+
+        <TextView
+                android:id="@+id/preview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/star"
+                android:layout_marginLeft="1dip"
+                android:layout_marginRight="3dip"
+                android:bufferType="spannable"
+                android:layout_below="@+id/subject_wrapper"
+                android:singleLine="false"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="?android:attr/textColorPrimary"
+                android:longClickable="false"
+                android:layout_alignWithParentIfMissing="false"
+                android:gravity="top"
+                android:layout_alignParentBottom="false"/>
+
+        <LinearLayout
+                android:id="@+id/subject_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/attachment">
+
+            <ImageView
+                android:id="@+id/account_color_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="4dp"
+                app:srcCompat="@drawable/ic_account_color" />
+
+            <ImageView
+                android:id="@+id/status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="?attr/messageListAnswered"
+                tools:src="@drawable/ic_messagelist_answered_light"/>
+
+            <TextView
+                    android:id="@+id/subject"
+                    android:layout_width="0dp"
+                    android:layout_weight="0.7"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dip"
+                    android:layout_marginLeft="1dip"
+                    android:ellipsize="marquee"
+                    android:singleLine="true"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:attr/textColorPrimary"
+                    />
+
+            <TextView
+                    android:id="@+id/thread_count"
+                    android:textColor="?attr/messageListThreadCountForegroundColor"
+                    android:background="?attr/messageListThreadCountBackground"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dip"
+                    android:layout_marginRight="4dip"
+                    android:paddingRight="4dip"
+                    android:paddingBottom="1dip"
+                    android:paddingLeft="4dip"
+                    android:focusable="false"
+                    />
+        </LinearLayout>
+
+        <ImageView
+                android:id="@+id/attachment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/date"
+                android:layout_alignBottom="@+id/date"
+                app:srcCompat="?attr/messageListAttachment"
+                android:layout_alignWithParentIfMissing="true"
+                android:layout_toStartOf="@+id/date" />
+
+        <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/subject_wrapper"
+                android:layout_alignWithParentIfMissing="true"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:paddingLeft="3dip"
+                android:paddingRight="8dip"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="?android:attr/textColorSecondary"/>
+
+        <CheckBox
+                android:id="@+id/star"
+                style="@style/MessageStarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_below="@+id/date"
+                android:layout_alignParentRight="true"
+                android:paddingTop="5dip"
+                android:paddingLeft="2dip"
+                android:paddingRight="4dip"
+                android:focusable="false"
+                android:visibility="visible"
+                android:gravity="center_vertical"/>
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

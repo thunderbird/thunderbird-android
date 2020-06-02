@@ -25,11 +25,6 @@ public interface SearchSpecification extends Parcelable {
      */
     ConditionsTreeNode getConditions();
 
-    /*
-     * Some meta names for certain conditions.
-     */
-    String ALL_ACCOUNTS = "allAccounts";
-
     ///////////////////////////////////////////////////////////////
     // ATTRIBUTE enum
     ///////////////////////////////////////////////////////////////

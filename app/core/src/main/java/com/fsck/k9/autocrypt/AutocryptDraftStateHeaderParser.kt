@@ -1,8 +1,6 @@
 package com.fsck.k9.autocrypt
 
-
 import com.fsck.k9.mail.internet.MimeUtility
-
 
 class AutocryptDraftStateHeaderParser internal constructor() {
 

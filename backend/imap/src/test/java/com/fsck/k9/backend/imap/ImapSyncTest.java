@@ -14,11 +14,10 @@ import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy;
 import com.fsck.k9.backend.api.SyncListener;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder;
-import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.imap.ImapFolder;
+import com.fsck.k9.mail.store.imap.ImapMessage;
 import com.fsck.k9.mail.store.imap.ImapStore;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,8 +45,10 @@ import static org.mockito.Mockito.when;
 
 @SuppressWarnings("unchecked")
 public class ImapSyncTest {
+    private static final String EXTRA_UID_VALIDITY = "imapUidValidity";
     private static final String ACCOUNT_NAME = "Account";
     private static final String FOLDER_NAME = "Folder";
+    private static final Long FOLDER_UID_VALIDITY = 42L;
     private static final int MAXIMUM_SMALL_MESSAGE_SIZE = 1000;
     private static final String MESSAGE_UID1 = "message-uid1";
     private static final int DEFAULT_VISIBLE_LIMIT = 25;
@@ -81,70 +82,51 @@ public class ImapSyncTest {
 
         configureSyncConfig();
         configureBackendStorage();
+        configureRemoteStoreWithFolder();
     }
 
     @Test
     public void sync_withOneMessageInRemoteFolder_shouldFinishWithoutError() {
         messageCountInRemoteFolder(1);
 
-        imapSync.sync(FOLDER_NAME, syncConfig, listener, remoteFolder);
+        imapSync.sync(FOLDER_NAME, syncConfig, listener);
 
-        verify(listener).syncFinished(FOLDER_NAME, 1, 0);
+        verify(listener).syncFinished(FOLDER_NAME);
     }
 
     @Test
     public void sync_withEmptyRemoteFolder_shouldFinishWithoutError() {
         messageCountInRemoteFolder(0);
 
-        imapSync.sync(FOLDER_NAME, syncConfig, listener, remoteFolder);
+        imapSync.sync(FOLDER_NAME, syncConfig, listener);
 
-        verify(listener).syncFinished(FOLDER_NAME, 0, 0);
+        verify(listener).syncFinished(FOLDER_NAME);
     }
 
     @Test
     public void sync_withNegativeMessageCountInRemoteFolder_shouldFinishWithError() {
         messageCountInRemoteFolder(-1);
 
-        imapSync.sync(FOLDER_NAME, syncConfig, listener, remoteFolder);
+        imapSync.sync(FOLDER_NAME, syncConfig, listener);
 
         verify(listener).syncFailed(eq(FOLDER_NAME), eq("Exception: Message count -1 for folder Folder"),
                 any(Exception.class));
     }
 
     @Test
-    public void sync_withRemoteFolderProvided_shouldNotOpenRemoteFolder() throws Exception {
+    public void sync_shouldOpenRemoteFolder() throws Exception {
         messageCountInRemoteFolder(1);
 
-        imapSync.sync(FOLDER_NAME, syncConfig, listener, remoteFolder);
+        imapSync.sync(FOLDER_NAME, syncConfig, listener);
 
-        verify(remoteFolder, never()).open(Folder.OPEN_MODE_RW);
+        verify(remoteFolder).open(ImapFolder.OPEN_MODE_RO);
     }
 
     @Test
-    public void sync_withNoRemoteFolderProvided_shouldOpenRemoteFolderFromStore() throws Exception {
-        messageCountInRemoteFolder(1);
-        configureRemoteStoreWithFolder();
-
-        imapSync.sync(FOLDER_NAME, syncConfig, listener, null);
-
-        verify(remoteFolder).open(Folder.OPEN_MODE_RO);
-    }
-
-    @Test
-    public void sync_withRemoteFolderProvided_shouldNotCloseRemoteFolder() {
+    public void sync_shouldCloseRemoteFolder() {
         messageCountInRemoteFolder(1);
 
-        imapSync.sync(FOLDER_NAME, syncConfig, listener, remoteFolder);
-
-        verify(remoteFolder, never()).close();
-    }
-
-    @Test
-    public void sync_withNoRemoteFolderProvided_shouldCloseRemoteFolderFromStore() {
-        messageCountInRemoteFolder(1);
-        configureRemoteStoreWithFolder();
-
-        imapSync.sync(FOLDER_NAME, syncConfig, listener, null);
+        imapSync.sync(FOLDER_NAME, syncConfig, listener);
 
         verify(remoteFolder).close();
     }
@@ -153,9 +135,8 @@ public class ImapSyncTest {
     public void sync_withAccountPolicySetToExpungeOnPoll_shouldExpungeRemoteFolder() throws Exception {
         messageCountInRemoteFolder(1);
         configureSyncConfigWithExpungePolicy(ExpungePolicy.ON_POLL);
-        configureRemoteStoreWithFolder();
 
-        imapSync.sync(FOLDER_NAME, syncConfig, listener, null);
+        imapSync.sync(FOLDER_NAME, syncConfig, listener);
 
         verify(remoteFolder).expunge();
     }
@@ -165,7 +146,7 @@ public class ImapSyncTest {
         messageCountInRemoteFolder(1);
         configureSyncConfigWithExpungePolicy(ExpungePolicy.MANUALLY);
 
-        imapSync.sync(FOLDER_NAME, syncConfig, listener, null);
+        imapSync.sync(FOLDER_NAME, syncConfig, listener);
 
         verify(remoteFolder, never()).expunge();
     }
@@ -176,7 +157,7 @@ public class ImapSyncTest {
         configureSyncConfigWithSyncRemoteDeletions(true);
         when(backendFolder.getAllMessagesAndEffectiveDates()).thenReturn(Collections.singletonMap(MESSAGE_UID1, 0L));
 
-        imapSync.sync(FOLDER_NAME, syncConfig, listener, remoteFolder);
+        imapSync.sync(FOLDER_NAME, syncConfig, listener);
 
         verify(backendFolder).destroyMessages(messageListCaptor.capture());
         assertEquals(MESSAGE_UID1, messageListCaptor.getValue().get(0));
@@ -187,11 +168,11 @@ public class ImapSyncTest {
             throws Exception {
         messageCountInRemoteFolder(1);
         Date dateOfEarliestPoll = new Date();
-        Message remoteMessage = messageOnServer();
+        ImapMessage remoteMessage = messageOnServer();
         configureSyncConfigWithSyncRemoteDeletionsAndEarliestPollDate(dateOfEarliestPoll);
         when(remoteMessage.olderThan(dateOfEarliestPoll)).thenReturn(false);
 
-        imapSync.sync(FOLDER_NAME, syncConfig, listener, remoteFolder);
+        imapSync.sync(FOLDER_NAME, syncConfig, listener);
 
         verify(backendFolder, never()).destroyMessages(messageListCaptor.capture());
     }
@@ -200,13 +181,13 @@ public class ImapSyncTest {
     public void sync_withAccountSetToSyncRemoteDeletions_shouldDeleteLocalCopiesOfExistingMessagesBeforeEarliestPollDate()
             throws Exception {
         messageCountInRemoteFolder(1);
-        Message remoteMessage = messageOnServer();
+        ImapMessage remoteMessage = messageOnServer();
         Date dateOfEarliestPoll = new Date();
         configureSyncConfigWithSyncRemoteDeletionsAndEarliestPollDate(dateOfEarliestPoll);
         when(remoteMessage.olderThan(dateOfEarliestPoll)).thenReturn(true);
         when(backendFolder.getAllMessagesAndEffectiveDates()).thenReturn(Collections.singletonMap(MESSAGE_UID1, 0L));
 
-        imapSync.sync(FOLDER_NAME, syncConfig, listener, remoteFolder);
+        imapSync.sync(FOLDER_NAME, syncConfig, listener);
 
         verify(backendFolder).destroyMessages(messageListCaptor.capture());
         assertEquals(MESSAGE_UID1, messageListCaptor.getValue().get(0));
@@ -217,7 +198,7 @@ public class ImapSyncTest {
         messageCountInRemoteFolder(0);
         configureSyncConfigWithSyncRemoteDeletions(false);
 
-        imapSync.sync(FOLDER_NAME, syncConfig, listener, remoteFolder);
+        imapSync.sync(FOLDER_NAME, syncConfig, listener);
 
         verify(backendFolder, never()).destroyMessages(messageListCaptor.capture());
     }
@@ -226,12 +207,11 @@ public class ImapSyncTest {
     public void sync_shouldFetchUnsynchronizedMessagesListAndFlags() throws Exception {
         messageCountInRemoteFolder(1);
         hasUnsyncedRemoteMessage();
-        when(remoteFolder.supportsFetchingFlags()).thenReturn(true);
 
-        imapSync.sync(FOLDER_NAME, syncConfig, listener, remoteFolder);
+        imapSync.sync(FOLDER_NAME, syncConfig, listener);
 
         verify(remoteFolder, atLeastOnce()).fetch(any(List.class), fetchProfileCaptor.capture(),
-                nullable(MessageRetrievalListener.class));
+                nullable(MessageRetrievalListener.class), anyInt());
         assertTrue(fetchProfileCaptor.getAllValues().get(0).contains(FetchProfile.Item.FLAGS));
         assertTrue(fetchProfileCaptor.getAllValues().get(0).contains(FetchProfile.Item.ENVELOPE));
         assertEquals(2, fetchProfileCaptor.getAllValues().get(0).size());
@@ -239,40 +219,67 @@ public class ImapSyncTest {
 
     @Test
     public void sync_withUnsyncedNewSmallMessage_shouldFetchBodyOfSmallMessage() throws Exception {
-        Message smallMessage = buildSmallNewMessage();
+        ImapMessage smallMessage = buildSmallNewMessage();
         messageCountInRemoteFolder(1);
         hasUnsyncedRemoteMessage();
-        when(remoteFolder.supportsFetchingFlags()).thenReturn(false);
         respondToFetchEnvelopesWithMessage(smallMessage);
 
-        imapSync.sync(FOLDER_NAME, syncConfig, listener, remoteFolder);
+        imapSync.sync(FOLDER_NAME, syncConfig, listener);
 
         verify(remoteFolder, atLeast(2)).fetch(any(List.class), fetchProfileCaptor.capture(),
-                nullable(MessageRetrievalListener.class));
+                nullable(MessageRetrievalListener.class), anyInt());
         assertEquals(1, fetchProfileCaptor.getAllValues().get(1).size());
         assertTrue(fetchProfileCaptor.getAllValues().get(1).contains(FetchProfile.Item.BODY));
     }
 
     @Test
     public void sync_withUnsyncedNewSmallMessage_shouldFetchStructureAndLimitedBodyOfLargeMessage() throws Exception {
-        Message largeMessage = buildLargeNewMessage();
+        ImapMessage largeMessage = buildLargeNewMessage();
         messageCountInRemoteFolder(1);
         hasUnsyncedRemoteMessage();
-        when(remoteFolder.supportsFetchingFlags()).thenReturn(false);
         respondToFetchEnvelopesWithMessage(largeMessage);
 
-        imapSync.sync(FOLDER_NAME, syncConfig, listener, remoteFolder);
+        imapSync.sync(FOLDER_NAME, syncConfig, listener);
 
         //TODO: Don't bother fetching messages of a size we don't have
         verify(remoteFolder, atLeast(4)).fetch(any(List.class), fetchProfileCaptor.capture(),
-                nullable(MessageRetrievalListener.class));
+                nullable(MessageRetrievalListener.class), anyInt());
         assertEquals(1, fetchProfileCaptor.getAllValues().get(2).size());
         assertEquals(FetchProfile.Item.STRUCTURE, fetchProfileCaptor.getAllValues().get(2).get(0));
         assertEquals(1, fetchProfileCaptor.getAllValues().get(3).size());
         assertEquals(FetchProfile.Item.BODY_SANE, fetchProfileCaptor.getAllValues().get(3).get(0));
     }
 
-    private void respondToFetchEnvelopesWithMessage(final Message message) throws MessagingException {
+    @Test
+    public void sync_withUidValidityChange_shouldClearAllMessages() {
+        when(backendFolder.getFolderExtraNumber(EXTRA_UID_VALIDITY)).thenReturn(23L);
+
+        imapSync.sync(FOLDER_NAME, syncConfig, listener);
+
+        verify(backendFolder).clearAllMessages();
+        verify(backendFolder).setFolderExtraNumber(EXTRA_UID_VALIDITY, FOLDER_UID_VALIDITY);
+    }
+
+    @Test
+    public void sync_withoutUidValidityChange_shouldNotClearAllMessages() {
+        when(backendFolder.getFolderExtraNumber(EXTRA_UID_VALIDITY)).thenReturn(FOLDER_UID_VALIDITY);
+
+        imapSync.sync(FOLDER_NAME, syncConfig, listener);
+
+        verify(backendFolder, never()).clearAllMessages();
+    }
+
+    @Test
+    public void sync_withFirstUidValidityValue_shouldNotClearAllMessages() {
+        when(backendFolder.getFolderExtraNumber(EXTRA_UID_VALIDITY)).thenReturn(null);
+
+        imapSync.sync(FOLDER_NAME, syncConfig, listener);
+
+        verify(backendFolder, never()).clearAllMessages();
+        verify(backendFolder).setFolderExtraNumber(EXTRA_UID_VALIDITY, FOLDER_UID_VALIDITY);
+    }
+
+    private void respondToFetchEnvelopesWithMessage(final ImapMessage message) throws MessagingException {
         doAnswer(new Answer() {
             @Override
             public Void answer(InvocationOnMock invocation) {
@@ -287,18 +294,19 @@ public class ImapSyncTest {
                 }
                 return null;
             }
-        }).when(remoteFolder).fetch(any(List.class), any(FetchProfile.class), nullable(MessageRetrievalListener.class));
+        }).when(remoteFolder).fetch(any(List.class), any(FetchProfile.class), nullable(MessageRetrievalListener.class),
+                anyInt());
     }
 
-    private Message buildSmallNewMessage() {
-        Message message = mock(Message.class);
+    private ImapMessage buildSmallNewMessage() {
+        ImapMessage message = mock(ImapMessage.class);
         when(message.olderThan(nullable(Date.class))).thenReturn(false);
         when(message.getSize()).thenReturn((long) MAXIMUM_SMALL_MESSAGE_SIZE);
         return message;
     }
 
-    private Message buildLargeNewMessage() {
-        Message message = mock(Message.class);
+    private ImapMessage buildLargeNewMessage() {
+        ImapMessage message = mock(ImapMessage.class);
         when(message.olderThan(nullable(Date.class))).thenReturn(false);
         when(message.getSize()).thenReturn((long) (MAXIMUM_SMALL_MESSAGE_SIZE + 1));
         return message;
@@ -308,9 +316,9 @@ public class ImapSyncTest {
         when(remoteFolder.getMessageCount()).thenReturn(value);
     }
 
-    private Message messageOnServer() throws MessagingException {
+    private ImapMessage messageOnServer() throws MessagingException {
         String messageUid = "UID";
-        Message remoteMessage = mock(Message.class);
+        ImapMessage remoteMessage = mock(ImapMessage.class);
 
         when(remoteMessage.getUid()).thenReturn(messageUid);
         when(remoteFolder.getMessages(anyInt(), anyInt(), nullable(Date.class),
@@ -320,7 +328,7 @@ public class ImapSyncTest {
 
     private void hasUnsyncedRemoteMessage() throws MessagingException {
         String messageUid = "UID";
-        Message remoteMessage = mock(Message.class);
+        ImapMessage remoteMessage = mock(ImapMessage.class);
         when(remoteMessage.getUid()).thenReturn(messageUid);
         when(remoteFolder.getMessages(anyInt(), anyInt(), nullable(Date.class),
                 nullable(MessageRetrievalListener.class))).thenReturn(Collections.singletonList(remoteMessage));
@@ -339,6 +347,7 @@ public class ImapSyncTest {
     private void configureRemoteStoreWithFolder() {
         when(remoteStore.getFolder(FOLDER_NAME)).thenReturn(remoteFolder);
         when(remoteFolder.getServerId()).thenReturn(FOLDER_NAME);
+        when(remoteFolder.getUidValidity()).thenReturn(FOLDER_UID_VALIDITY);
     }
 
     private void configureBackendStorage() {

@@ -3,8 +3,10 @@ package com.fsck.k9.search
 import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.BaseAccount
-import com.fsck.k9.mail.Folder.FolderClass
-import com.fsck.k9.search.SearchSpecification.*
+import com.fsck.k9.mail.FolderClass
+import com.fsck.k9.search.SearchSpecification.Attribute
+import com.fsck.k9.search.SearchSpecification.SearchCondition
+import com.fsck.k9.search.SearchSpecification.SearchField
 
 class AccountSearchConditions {
     /**
@@ -31,7 +33,8 @@ class AccountSearchConditions {
 
                 // TODO: Create a proper interface for creating arbitrary condition trees
                 val searchCondition = SearchCondition(
-                        SearchField.DISPLAY_CLASS, Attribute.EQUALS, FolderClass.SECOND_CLASS.name)
+                    SearchField.DISPLAY_CLASS, Attribute.EQUALS, FolderClass.SECOND_CLASS.name
+                )
                 val root = search.conditions
                 if (root.mRight != null) {
                     root.mRight.or(searchCondition)
@@ -67,12 +70,14 @@ class AccountSearchConditions {
      * The `LocalSearch` instance to modify.
      */
     fun excludeSpecialFolders(account: Account, search: LocalSearch) {
-        excludeSpecialFolder(search, account.trashFolder)
-        excludeSpecialFolder(search, account.draftsFolder)
-        excludeSpecialFolder(search, account.spamFolder)
-        excludeSpecialFolder(search, account.outboxFolder)
-        excludeSpecialFolder(search, account.sentFolder)
-        search.or(SearchCondition(SearchField.FOLDER, Attribute.EQUALS, account.getInboxFolder()))
+        excludeSpecialFolder(search, account.trashFolderId)
+        excludeSpecialFolder(search, account.draftsFolderId)
+        excludeSpecialFolder(search, account.spamFolderId)
+        excludeSpecialFolder(search, account.outboxFolderId)
+        excludeSpecialFolder(search, account.sentFolderId)
+        account.inboxFolderId?.let { inboxFolderId ->
+            search.or(SearchCondition(SearchField.FOLDER, Attribute.EQUALS, inboxFolderId.toString()))
+        }
     }
 
     /**
@@ -91,15 +96,17 @@ class AccountSearchConditions {
      * The `LocalSearch` instance to modify.
      */
     fun excludeUnwantedFolders(account: Account, search: LocalSearch) {
-        excludeSpecialFolder(search, account.trashFolder)
-        excludeSpecialFolder(search, account.spamFolder)
-        excludeSpecialFolder(search, account.outboxFolder)
-        search.or(SearchCondition(SearchField.FOLDER, Attribute.EQUALS, account.inboxFolder))
+        excludeSpecialFolder(search, account.trashFolderId)
+        excludeSpecialFolder(search, account.spamFolderId)
+        excludeSpecialFolder(search, account.outboxFolderId)
+        account.inboxFolderId?.let { inboxFolderId ->
+            search.or(SearchCondition(SearchField.FOLDER, Attribute.EQUALS, inboxFolderId.toString()))
+        }
     }
 
-    private fun excludeSpecialFolder(search: LocalSearch, folderServerId: String?) {
-        if (folderServerId != null) {
-            search.and(SearchField.FOLDER, folderServerId, Attribute.NOT_EQUALS)
+    private fun excludeSpecialFolder(search: LocalSearch, folderId: Long?) {
+        if (folderId != null) {
+            search.and(SearchField.FOLDER, folderId.toString(), Attribute.NOT_EQUALS)
         }
     }
 

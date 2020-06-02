@@ -132,10 +132,6 @@ public class ParcelFileDescriptorUtil {
     }
 
     private static boolean isIOExceptionCausedByEPIPE(IOException e) {
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
-            return e.getMessage().contains("EPIPE");
-        }
-
         Throwable cause = e.getCause();
         return cause instanceof ErrnoException && ((ErrnoException) cause).errno == OsConstants.EPIPE;
     }

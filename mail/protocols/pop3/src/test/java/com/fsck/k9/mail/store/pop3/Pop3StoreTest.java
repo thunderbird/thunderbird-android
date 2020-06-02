@@ -6,22 +6,18 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.util.List;
 
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.ConnectionSecurity;
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
-import com.fsck.k9.mail.store.StoreConfig;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
@@ -55,7 +51,6 @@ public class Pop3StoreTest {
 
 
     private Pop3Store store;
-    private StoreConfig mockStoreConfig = mock(StoreConfig.class);
     private TrustedSocketFactory mockTrustedSocketFactory = mock(TrustedSocketFactory.class);
     private Socket mockSocket = mock(Socket.class);
     private OutputStream mockOutputStream = mock(OutputStream.class);
@@ -64,13 +59,12 @@ public class Pop3StoreTest {
     @Before
     public void setUp() throws Exception {
         ServerSettings serverSettings = createServerSettings();
-        when(mockStoreConfig.getInboxFolder()).thenReturn(Pop3Folder.INBOX);
         when(mockTrustedSocketFactory.createSocket(null, "server", 12345, null)).thenReturn(mockSocket);
         when(mockSocket.isConnected()).thenReturn(true);
         when(mockSocket.isClosed()).thenReturn(false);
 
         when(mockSocket.getOutputStream()).thenReturn(mockOutputStream);
-        store = new Pop3Store(serverSettings, mockStoreConfig, mockTrustedSocketFactory);
+        store = new Pop3Store(serverSettings, mockTrustedSocketFactory);
     }
 
     @Test
@@ -86,21 +80,6 @@ public class Pop3StoreTest {
         Pop3Folder folder = store.getFolder("TestFolder");
 
         assertEquals("TestFolder", folder.getServerId());
-    }
-
-    @Test
-    public void getPersonalNamespace_shouldReturnListConsistingOfInbox() throws Exception {
-        List<Pop3Folder> folders = store.getPersonalNamespaces();
-
-        assertEquals(1, folders.size());
-        assertEquals("INBOX", folders.get(0).getServerId());
-    }
-
-    @Test
-    public void isSeenFlagSupported_shouldReturnFalse() throws Exception {
-        boolean result = store.isSeenFlagSupported();
-
-        assertFalse(result);
     }
 
     @Test(expected = MessagingException.class)
@@ -155,7 +134,7 @@ public class Pop3StoreTest {
         when(mockSocket.getOutputStream()).thenReturn(byteArrayOutputStream);
         Pop3Folder folder = store.getFolder(Pop3Folder.INBOX);
 
-        folder.open(Folder.OPEN_MODE_RW);
+        folder.open();
 
         assertEquals(20, folder.getMessageCount());
         assertEquals(AUTH + CAPA + AUTH_PLAIN_WITH_LOGIN + STAT, byteArrayOutputStream.toString("UTF-8"));
@@ -170,7 +149,7 @@ public class Pop3StoreTest {
         when(mockSocket.getInputStream()).thenReturn(new ByteArrayInputStream(response.getBytes("UTF-8")));
         Pop3Folder folder = store.getFolder(Pop3Folder.INBOX);
 
-        folder.open(Folder.OPEN_MODE_RW);
+        folder.open();
     }
 
     private ServerSettings createServerSettings() {

@@ -13,10 +13,10 @@ import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import android.content.Context;
-import android.support.annotation.GuardedBy;
-import android.support.annotation.NonNull;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.RestrictTo.Scope;
+import androidx.annotation.GuardedBy;
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.RestrictTo.Scope;
 
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.mail.MessagingException;
@@ -267,14 +267,6 @@ public class Preferences {
         if (account.isChangedVisibleLimits()) {
             try {
                 localStoreProvider.getInstance(account).resetVisibleLimits(account.getDisplayCount());
-            } catch (MessagingException e) {
-                Timber.e(e, "Failed to load LocalStore!");
-            }
-        }
-
-        if (account.isChangedLocalStorageProviderId()) {
-            try {
-                localStoreProvider.getInstance(account).switchLocalStorage(account.getLocalStorageProviderId());
             } catch (MessagingException e) {
                 Timber.e(e, "Failed to load LocalStore!");
             }

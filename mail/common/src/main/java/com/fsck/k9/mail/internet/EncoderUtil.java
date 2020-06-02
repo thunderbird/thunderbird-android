@@ -91,11 +91,17 @@ class EncoderUtil {
         if (totalLength <= ENCODED_WORD_MAX_LENGTH) {
             return prefix + org.apache.james.mime4j.codec.EncoderUtil.encodeB(bytes) + ENC_WORD_SUFFIX;
         } else {
-            String part1 = text.substring(0, text.length() / 2);
+            int splitAt = text.length() / 2;
+
+            if (Character.isHighSurrogate(text.charAt(splitAt - 1))) {
+                splitAt--;
+            }
+
+            String part1 = text.substring(0, splitAt);
             byte[] bytes1 = encode(part1, charset);
             String word1 = encodeB(prefix, part1, charset, bytes1);
 
-            String part2 = text.substring(text.length() / 2);
+            String part2 = text.substring(splitAt);
             byte[] bytes2 = encode(part2, charset);
             String word2 = encodeB(prefix, part2, charset, bytes2);
 
@@ -115,11 +121,17 @@ class EncoderUtil {
         if (totalLength <= ENCODED_WORD_MAX_LENGTH) {
             return prefix + org.apache.james.mime4j.codec.EncoderUtil.encodeQ(bytes, org.apache.james.mime4j.codec.EncoderUtil.Usage.WORD_ENTITY) + ENC_WORD_SUFFIX;
         } else {
-            String part1 = text.substring(0, text.length() / 2);
+            int splitAt = text.length() / 2;
+
+            if (Character.isHighSurrogate(text.charAt(splitAt - 1))) {
+                splitAt--;
+            }
+
+            String part1 = text.substring(0, splitAt);
             byte[] bytes1 = encode(part1, charset);
             String word1 = encodeQ(prefix, part1, charset, bytes1);
 
-            String part2 = text.substring(text.length() / 2);
+            String part2 = text.substring(splitAt);
             byte[] bytes2 = encode(part2, charset);
             String word2 = encodeQ(prefix, part2, charset, bytes2);
 

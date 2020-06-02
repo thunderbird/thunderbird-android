@@ -1,9 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.android'
 apply plugin: 'org.jetbrains.kotlin.android.extensions'
-
-apply from: "${rootProject.projectDir}/gradle/plugins/checkstyle-android.gradle"
-apply from: "${rootProject.projectDir}/gradle/plugins/findbugs-android.gradle"
+apply plugin: 'org.jlleitschuh.gradle.ktlint'
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
@@ -13,16 +11,20 @@ dependencies {
 
     api project(':plugins:openpgp-api-lib:openpgp-api')
 
-    api "org.koin:koin-android-architecture:${versions.koin}"
+    api "org.koin:koin-androidx-viewmodel:${versions.koin}"
+
+    api "androidx.annotation:annotation:${versions.androidxAnnotation}"
 
     implementation "com.squareup.okio:okio:${versions.okio}"
     implementation "commons-io:commons-io:${versions.commonsIo}"
-    implementation "androidx.core:core-ktx:${versions.coreKtx}"
-    implementation "org.jsoup:jsoup:1.11.2"
-    implementation "com.squareup.moshi:moshi:1.2.0"
+    implementation "androidx.core:core-ktx:${versions.androidxCore}"
+    implementation "androidx.work:work-runtime-ktx:${versions.androidxWorkManager}"
+    implementation "androidx.fragment:fragment:${versions.androidxFragment}"
+    implementation "androidx.localbroadcastmanager:localbroadcastmanager:${versions.androidxLocalBroadcastManager}"
+    implementation "org.jsoup:jsoup:1.13.1"
+    implementation "com.squareup.moshi:moshi:${versions.moshi}"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
     implementation "org.apache.james:apache-mime4j-core:${versions.mime4j}"
-    implementation 'com.evernote:android-job:1.2.6'
 
     testImplementation project(':mail:testing')
     testImplementation project(":backend:imap")
@@ -34,7 +36,7 @@ dependencies {
     testImplementation "junit:junit:${versions.junit}"
     testImplementation "com.google.truth:truth:${versions.truth}"
     testImplementation "org.mockito:mockito-core:${versions.mockito}"
-    testImplementation "com.nhaarman:mockito-kotlin:${versions.mockitoKotlin}"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:${versions.mockitoKotlin}"
     testImplementation "org.jdom:jdom2:2.0.6"
     testImplementation "org.koin:koin-test:${versions.koin}"
 }
@@ -45,8 +47,7 @@ android {
 
     defaultConfig {
         minSdkVersion buildConfig.minSdk
-        // For Robolectric tests
-        targetSdkVersion 22
+        targetSdkVersion buildConfig.robolectricSdk
     }
 
     lintOptions {
@@ -55,8 +56,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility javaVersion
+        targetCompatibility javaVersion
+    }
+
+    kotlinOptions {
+        jvmTarget = kotlinJvmVersion
     }
 
     testOptions {
@@ -68,10 +73,4 @@ android {
 
 androidExtensions {
     experimental = true
-}
-
-kotlin {
-    experimental {
-        coroutines "enable"
-    }
 }

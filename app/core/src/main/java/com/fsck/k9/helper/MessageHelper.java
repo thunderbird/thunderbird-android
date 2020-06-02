@@ -47,7 +47,7 @@ public class MessageHelper {
     }
 
     public CharSequence getDisplayName(Account account, Address[] fromAddrs, Address[] toAddrs) {
-        final Contacts contactHelper = K9.showContactName() ? Contacts.getInstance(mContext) : null;
+        final Contacts contactHelper = K9.isShowContactName() ? Contacts.getInstance(mContext) : null;
 
         CharSequence displayName;
         if (fromAddrs.length > 0 && account.isAnIdentity(fromAddrs[0])) {
@@ -83,8 +83,8 @@ public class MessageHelper {
      */
     public static CharSequence toFriendly(Address address, Contacts contacts) {
         return toFriendly(address,contacts,
-                K9.showCorrespondentNames(),
-                K9.changeContactNameColor(),
+                K9.isShowCorrespondentNames(),
+                K9.isChangeContactNameColor(),
                 K9.getContactNameColor());
     }
 

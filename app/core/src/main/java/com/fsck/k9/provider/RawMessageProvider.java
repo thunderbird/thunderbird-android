@@ -14,15 +14,14 @@ import android.database.MatrixCursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.OpenableColumns;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.mail.FetchProfile;
-import com.fsck.k9.mail.Folder;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mailstore.LocalFolder;
@@ -173,7 +172,7 @@ public class RawMessageProvider extends ContentProvider {
 
     private LocalMessage loadMessage(MessageReference messageReference) {
         String accountUuid = messageReference.getAccountUuid();
-        String folderServerId = messageReference.getFolderServerId();
+        long folderId = messageReference.getFolderId();
         String uid = messageReference.getUid();
 
         Account account = Preferences.getPreferences(getContext()).getAccount(accountUuid);
@@ -184,8 +183,9 @@ public class RawMessageProvider extends ContentProvider {
 
         try {
             LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
-            LocalFolder localFolder = localStore.getFolder(folderServerId);
-            localFolder.open(Folder.OPEN_MODE_RW);
+            LocalFolder localFolder = localStore.getFolder(folderId);
+            localFolder.open();
+            String folderServerId = localFolder.getServerId();
 
             LocalMessage message = localFolder.getMessage(uid);
             if (message == null || message.getDatabaseId() == 0) {
@@ -196,11 +196,10 @@ public class RawMessageProvider extends ContentProvider {
             FetchProfile fetchProfile = new FetchProfile();
             fetchProfile.add(FetchProfile.Item.BODY);
             localFolder.fetch(Collections.singletonList(message), fetchProfile, null);
-            localFolder.close();
 
             return message;
         } catch (MessagingException e) {
-            Timber.e(e, "Error loading message: folder=%s, uid=%s", folderServerId, uid);
+            Timber.e(e, "Error loading message: folder=%d, uid=%s", folderId, uid);
             return null;
         }
     }

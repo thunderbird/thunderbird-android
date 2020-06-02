@@ -14,28 +14,27 @@ import java.util.Map;
 import java.util.Set;
 
 import android.net.ConnectivityManager;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Folder.FolderType;
+import com.fsck.k9.mail.FolderType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
-import com.fsck.k9.mail.store.RemoteStore;
-import com.fsck.k9.mail.store.StoreConfig;
 import timber.log.Timber;
 
 
 /**
  * <pre>
- * TODO Need to start keeping track of UIDVALIDITY
  * TODO Need a default response handler for things like folder updates
  * </pre>
  */
-public class ImapStore extends RemoteStore {
+public class ImapStore {
+    private final ImapStoreConfig config;
+    private final TrustedSocketFactory trustedSocketFactory;
     private Set<Flag> permanentFlagsIndex = EnumSet.noneOf(Flag.class);
     private ConnectivityManager connectivityManager;
     private OAuth2TokenProvider oauthTokenProvider;
@@ -62,10 +61,11 @@ public class ImapStore extends RemoteStore {
     private final Map<String, ImapFolder> folderCache = new HashMap<>();
 
 
-    public ImapStore(ImapStoreSettings serverSettings, StoreConfig storeConfig,
+    public ImapStore(ImapStoreSettings serverSettings, ImapStoreConfig config,
             TrustedSocketFactory trustedSocketFactory, ConnectivityManager connectivityManager,
             OAuth2TokenProvider oauthTokenProvider) {
-        super(storeConfig, trustedSocketFactory);
+        this.config = config;
+        this.trustedSocketFactory = trustedSocketFactory;
 
         host = serverSettings.host;
         port = serverSettings.port;
@@ -85,7 +85,6 @@ public class ImapStore extends RemoteStore {
         folderNameCodec = FolderNameCodec.newInstance();
     }
 
-    @Override
     public ImapFolder getFolder(String name) {
         ImapFolder folder;
         synchronized (folderCache) {
@@ -119,21 +118,18 @@ public class ImapStore extends RemoteStore {
         return combinedPrefix;
     }
 
-    @Override
-    public List<ImapFolder> getPersonalNamespaces() throws MessagingException {
+    public List<FolderListItem> getFolders() throws MessagingException {
         ImapConnection connection = getConnection();
 
         try {
             List<FolderListItem> folders = listFolders(connection, false);
 
-            if (!mStoreConfig.isSubscribedFoldersOnly()) {
-                return getFolders(folders);
+            if (!config.isSubscribedFoldersOnly()) {
+                return folders;
             }
 
             List<FolderListItem> subscribedFolders = listFolders(connection, true);
-
-            List<FolderListItem> filteredFolders = limitToSubscribedFolders(folders, subscribedFolders);
-            return getFolders(filteredFolders);
+            return limitToSubscribedFolders(folders, subscribedFolders);
         } catch (IOException | MessagingException ioe) {
             connection.close();
             throw new MessagingException("Unable to get folder list.", ioe);
@@ -146,12 +142,12 @@ public class ImapStore extends RemoteStore {
             List<FolderListItem> subscribedFolders) {
         Set<String> subscribedFolderNames = new HashSet<>(subscribedFolders.size());
         for (FolderListItem subscribedFolder : subscribedFolders) {
-            subscribedFolderNames.add(subscribedFolder.getName());
+            subscribedFolderNames.add(subscribedFolder.getServerId());
         }
 
         List<FolderListItem> filteredFolders = new ArrayList<>();
         for (FolderListItem folder : folders) {
-            if (subscribedFolderNames.contains(folder.getName())) {
+            if (subscribedFolderNames.contains(folder.getServerId())) {
                 filteredFolders.add(folder);
             }
         }
@@ -179,46 +175,23 @@ public class ImapStore extends RemoteStore {
                 ListResponse.parseLsub(responses) :
                 ListResponse.parseList(responses);
 
-        List<FolderListItem> folders = new ArrayList<>(listResponses.size());
+        Map<String, FolderListItem> folderMap = new HashMap<>(listResponses.size());
         for (ListResponse listResponse : listResponses) {
-            String decodedFolderName;
-            try {
-                decodedFolderName = folderNameCodec.decode(listResponse.getName());
-            } catch (CharacterCodingException e) {
-                Timber.w(e, "Folder name not correctly encoded with the UTF-7 variant as defined by RFC 3501: %s",
-                        listResponse.getName());
-
-                //TODO: Use the raw name returned by the server for all commands that require
-                //      a folder name. Use the decoded name only for showing it to the user.
-
-                // We currently just skip folders with malformed names.
-                continue;
-            }
-
-            String folder = decodedFolderName;
+            String serverId = listResponse.getName();
 
             if (pathDelimiter == null) {
                 pathDelimiter = listResponse.getHierarchyDelimiter();
                 combinedPrefix = null;
             }
 
-            if (ImapFolder.INBOX.equalsIgnoreCase(folder)) {
-                continue;
-            } else if (folder.equals(mStoreConfig.getOutboxFolder())) {
-                /*
-                 * There is a folder on the server with the same name as our local
-                 * outbox. Until we have a good plan to deal with this situation
-                 * we simply ignore the folder on the server.
-                 */
+            if (ImapFolder.INBOX.equalsIgnoreCase(serverId)) {
                 continue;
             } else if (listResponse.hasAttribute("\\NoSelect")) {
                 continue;
             }
 
-            folder = removePrefixFromFolderName(folder);
-            if (folder == null) {
-                continue;
-            }
+            String name = getFolderDisplayName(serverId);
+            String oldServerId = getOldServerId(serverId);
 
             FolderType type;
             if (listResponse.hasAttribute("\\Archive") || listResponse.hasAttribute("\\All")) {
@@ -235,12 +208,45 @@ public class ImapStore extends RemoteStore {
                 type = FolderType.REGULAR;
             }
 
-            folders.add(new FolderListItem(folder, type));
+            FolderListItem existingItem = folderMap.get(serverId);
+            if (existingItem == null || existingItem.getType() == FolderType.REGULAR) {
+                folderMap.put(serverId, new FolderListItem(serverId, name, type, oldServerId));
+            }
         }
 
-        folders.add(new FolderListItem(ImapFolder.INBOX, FolderType.INBOX));
+        List<FolderListItem> folders = new ArrayList<>(folderMap.size() + 1);
+        folders.add(new FolderListItem(ImapFolder.INBOX, ImapFolder.INBOX, FolderType.INBOX, ImapFolder.INBOX));
+        folders.addAll(folderMap.values());
 
         return folders;
+    }
+
+    private String getFolderDisplayName(String serverId) {
+        String decodedFolderName;
+        try {
+            decodedFolderName = folderNameCodec.decode(serverId);
+        } catch (CharacterCodingException e) {
+            Timber.w(e, "Folder name not correctly encoded with the UTF-7 variant as defined by RFC 3501: %s",
+                    serverId);
+
+            decodedFolderName = serverId;
+        }
+
+        String folderNameWithoutPrefix = removePrefixFromFolderName(decodedFolderName);
+        return folderNameWithoutPrefix != null ? folderNameWithoutPrefix : decodedFolderName;
+    }
+
+    @Nullable
+    private String getOldServerId(String serverId) {
+        String decodedFolderName;
+        try {
+            decodedFolderName = folderNameCodec.decode(serverId);
+        } catch (CharacterCodingException e) {
+            // Previous versions of K-9 Mail ignored folders with invalid UTF-7 encoding
+            return null;
+        }
+
+        return removePrefixFromFolderName(decodedFolderName);
     }
 
     @Nullable
@@ -260,7 +266,6 @@ public class ImapStore extends RemoteStore {
         return folderName.substring(prefixLength);
     }
 
-    @Override
     public void checkSettings() throws MessagingException {
         try {
             ImapConnection connection = createImapConnection();
@@ -307,7 +312,7 @@ public class ImapStore extends RemoteStore {
     ImapConnection createImapConnection() {
         return new ImapConnection(
                 new StoreImapSettings(),
-                mTrustedSocketFactory,
+                trustedSocketFactory,
                 connectivityManager,
                 oauthTokenProvider);
     }
@@ -316,40 +321,8 @@ public class ImapStore extends RemoteStore {
         return folderNameCodec;
     }
 
-    private List<ImapFolder> getFolders(List<FolderListItem> folders) {
-        List<ImapFolder> imapFolders = new ArrayList<>(folders.size());
-
-        for (FolderListItem folder : folders) {
-            ImapFolder imapFolder = getFolder(folder.getName());
-            imapFolder.setType(folder.getType());
-            imapFolders.add(imapFolder);
-        }
-
-        return imapFolders;
-    }
-
-    @Override
-    public boolean isMoveCapable() {
-        return true;
-    }
-
-    @Override
-    public boolean isCopyCapable() {
-        return true;
-    }
-
-    @Override
-    public boolean isPushCapable() {
-        return true;
-    }
-
-    @Override
-    public boolean isExpungeCapable() {
-        return true;
-    }
-
-    StoreConfig getStoreConfig() {
-        return mStoreConfig;
+    String getLogLabel() {
+        return config.getLogLabel();
     }
 
     Set<Flag> getPermanentFlagsIndex() {
@@ -395,7 +368,7 @@ public class ImapStore extends RemoteStore {
 
         @Override
         public boolean useCompression(final NetworkType type) {
-            return mStoreConfig.useCompression(type);
+            return config.useCompression(type);
         }
 
         @Override
@@ -416,11 +389,6 @@ public class ImapStore extends RemoteStore {
         @Override
         public void setPathDelimiter(String delimiter) {
             pathDelimiter = delimiter;
-        }
-
-        @Override
-        public String getCombinedPrefix() {
-            return combinedPrefix;
         }
 
         @Override

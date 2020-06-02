@@ -1,8 +1,8 @@
 
 package com.fsck.k9.mail;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -98,26 +98,8 @@ public class Address implements Serializable {
         return mAddress.substring(hostIdx + 1);
     }
 
-    public void setAddress(String address) {
-        if (address == null) {
-            throw new IllegalArgumentException("address");
-        }
-        this.mAddress = address;
-    }
-
     public String getPersonal() {
         return mPersonal;
-    }
-
-    public void setPersonal(String newPersonal) {
-        String personal = newPersonal;
-        if ("".equals(personal)) {
-            personal = null;
-        }
-        if (personal != null) {
-            personal = personal.trim();
-        }
-        this.mPersonal = personal;
     }
 
     /**
@@ -221,21 +203,6 @@ public class Address implements Serializable {
             return mAddress;
         }
     }
-
-    public static String toEncodedString(Address[] addresses) {
-        if (addresses == null) {
-            return null;
-        }
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < addresses.length; i++) {
-            sb.append(addresses[i].toEncodedString());
-            if (i < addresses.length - 1) {
-                sb.append(',');
-            }
-        }
-        return sb.toString();
-    }
-
 
     /**
      * Unpacks an address list previously packed with packAddressList()

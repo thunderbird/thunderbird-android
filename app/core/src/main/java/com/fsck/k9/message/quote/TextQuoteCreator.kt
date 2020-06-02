@@ -1,6 +1,5 @@
 package com.fsck.k9.message.quote
 
-
 import com.fsck.k9.Account.QuoteStyle
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.mail.Address
@@ -8,16 +7,14 @@ import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Message.RecipientType
 import com.fsck.k9.message.quote.QuoteHelper.Companion.QUOTE_BUFFER_LENGTH
 
-
 class TextQuoteCreator(private val quoteHelper: QuoteHelper, private val resourceProvider: CoreResourceProvider) {
     private val prefixInsertionRegex = Regex("(?m)^")
 
-
     fun quoteOriginalTextMessage(
-            originalMessage: Message,
-            messageBody: String?,
-            quoteStyle: QuoteStyle,
-            prefix: String
+        originalMessage: Message,
+        messageBody: String?,
+        quoteStyle: QuoteStyle,
+        prefix: String
     ): String {
         val body = messageBody ?: ""
         return when (quoteStyle) {
@@ -95,7 +92,6 @@ class TextQuoteCreator(private val quoteHelper: QuoteHelper, private val resourc
     }
 
     private fun Array<Address>.displayString() = Address.toString(this)?.let { if (it.isEmpty()) null else it }
-
 
     companion object {
         private const val CRLF = "\r\n"
