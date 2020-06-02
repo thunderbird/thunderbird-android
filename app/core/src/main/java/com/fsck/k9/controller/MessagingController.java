@@ -2767,6 +2767,7 @@ public class MessagingController {
             LocalMessage message = loadMessage(folderServerId, messageServerId);
             LocalFolder localFolder = message.getFolder();
             if (notificationStrategy.shouldNotifyForMessage(account, localFolder, message, isOldMessage)) {
+                Timber.v("Creating notification for message %s:%s", localFolder.getName(), message.getUid());
                 // Notify with the localMessage so that we don't have to recalculate the content preview.
                 notificationController.addNewMailNotification(account, message, previousUnreadMessageCount);
             }
