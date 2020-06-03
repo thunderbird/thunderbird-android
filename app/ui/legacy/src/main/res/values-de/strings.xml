@@ -644,7 +644,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="setting_theme_follow_system">Systemvorgabe verwenden</string>
   <string name="display_preferences">Anzeige</string>
   <string name="global_preferences">Globale Einstellungen</string>
-  <string name="debug_preferences">Fehlersuchvorgang</string>
+  <string name="debug_preferences">Debugging</string>
   <string name="privacy_preferences">Datenschutz</string>
   <string name="network_preferences">Netzwerk</string>
   <string name="interaction_preferences">Interaktion</string>
