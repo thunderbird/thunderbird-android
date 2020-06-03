@@ -33,7 +33,7 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
     private static final String[] ENABLED_CIPHERS;
     private static final String[] ENABLED_PROTOCOLS;
 
-    private static final String[] BLACKLISTED_CIPHERS = {
+    private static final String[] DISALLOWED_CIPHERS = {
             "SSL_RSA_WITH_DES_CBC_SHA",
             "SSL_DHE_RSA_WITH_DES_CBC_SHA",
             "SSL_DHE_DSS_WITH_DES_CBC_SHA",
@@ -57,7 +57,7 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
             "TLS_RSA_WITH_NULL_SHA256"
     };
 
-    private static final String[] BLACKLISTED_PROTOCOLS = {
+    private static final String[] DISALLOWED_PROTOCOLS = {
             "SSLv3"
     };
 
@@ -82,8 +82,8 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
             Timber.e(e, "Error getting information about available SSL/TLS ciphers and protocols");
         }
 
-        ENABLED_CIPHERS = (enabledCiphers == null) ? null : remove(enabledCiphers, BLACKLISTED_CIPHERS);
-        ENABLED_PROTOCOLS = (supportedProtocols == null) ? null : remove(supportedProtocols, BLACKLISTED_PROTOCOLS);
+        ENABLED_CIPHERS = (enabledCiphers == null) ? null : remove(enabledCiphers, DISALLOWED_CIPHERS);
+        ENABLED_PROTOCOLS = (supportedProtocols == null) ? null : remove(supportedProtocols, DISALLOWED_PROTOCOLS);
     }
 
     private final Context context;
@@ -94,13 +94,12 @@ public class DefaultTrustedSocketFactory implements TrustedSocketFactory {
         this.trustManagerFactory = trustManagerFactory;
     }
 
-    protected static String[] remove(String[] enabled, String[] blacklisted) {
+    protected static String[] remove(String[] enabled, String[] disallowed) {
         List<String> items = new ArrayList<>();
         Collections.addAll(items, enabled);
 
-        // Remove blacklisted items
-        if (blacklisted != null) {
-            for (String item : blacklisted) {
+        if (disallowed != null) {
+            for (String item : disallowed) {
                 items.remove(item);
             }
         }

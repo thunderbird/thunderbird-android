@@ -141,7 +141,7 @@ public class OpenPgpAppSelectDialog extends FragmentActivity {
             // search for OpenPGP providers...
             Intent intent = new Intent(OpenPgpApi.SERVICE_INTENT_2);
             List<ResolveInfo> resInfo = getActivity().getPackageManager().queryIntentServices(intent, 0);
-            boolean hasNonBlacklistedChoices = false;
+            boolean hasAllowedChoices = false;
             if (resInfo != null) {
                 for (ResolveInfo resolveInfo : resInfo) {
                     if (resolveInfo.serviceInfo == null) {
@@ -152,14 +152,14 @@ public class OpenPgpAppSelectDialog extends FragmentActivity {
                     String simpleName = String.valueOf(resolveInfo.serviceInfo.loadLabel(context.getPackageManager()));
                     Drawable icon = resolveInfo.serviceInfo.loadIcon(context.getPackageManager());
 
-                    if (!OpenPgpProviderUtil.isBlacklisted(packageName)) {
+                    if (OpenPgpProviderUtil.isProviderAllowed(packageName)) {
                         openPgpProviderList.add(new OpenPgpProviderEntry(packageName, simpleName, icon));
-                        hasNonBlacklistedChoices = true;
+                        hasAllowedChoices = true;
                     }
                 }
             }
 
-            if (!hasNonBlacklistedChoices) {
+            if (!hasAllowedChoices) {
                 // add install links if provider list is empty
                 resInfo = context.getPackageManager().queryIntentActivities(MARKET_INTENT, 0);
                 for (ResolveInfo resolveInfo : resInfo) {

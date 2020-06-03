@@ -29,7 +29,7 @@ public class K9AlarmManager {
     }
 
     public void set(int type, long triggerAtMillis, PendingIntent operation) {
-        if (dozeChecker.isDeviceIdleModeSupported() && dozeChecker.isAppWhitelisted()) {
+        if (dozeChecker.isDeviceIdleModeSupported() && dozeChecker.isIgnoringBatteryOptimizations()) {
             setAndAllowWhileIdle(type, triggerAtMillis, operation);
         } else {
             alarmManager.set(type, triggerAtMillis, operation);
