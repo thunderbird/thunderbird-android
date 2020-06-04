@@ -8,6 +8,13 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.716" versioncode="27016">
+        <change>Fixed bug that hid folders in the drawer behind the sticky footer</change>
+        <change>Fixed crash when server contains a folder named 'Outbox'</change>
+        <change>Avoid crash when adding an attachment fails</change>
+        <change>Removed support for using Shift JIS charsets when sending a message</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.715" versioncode="27015">
         <change>Added swipe to refresh to side drawer</change>
         <change>Display day of the week in the message list for messages younger than 7 days</change>
@@ -423,7 +430,7 @@
         <change>Add posteo.de to providers.xml</change>
         <change>Return proper error message when certificate couldn't be verified against global key store</change>
         <change>Add support for bitcoin URIs</change>
-        <change>Change the way we harden SSL/TLS sockets Blacklist a couple of weak ciphers, bring known ones in a defined order and sort unknown ciphers at the end. Also re-enable SSLv3 because it's still used a lot.</change>
+        <change>Change the way we harden SSL/TLS sockets. Disallow a couple of weak ciphers, bring known ones in a defined order and sort unknown ciphers at the end. Also re-enable SSLv3 because it's still used a lot.</change>
         <change>Implement pruning of old certificates from LocalKeyStore. Certificates are deleted whenever server settings are changed or an account is deleted.</change>
         <change>Fix inadequate certificate validation. Proper host name validation was not being performed for certificates kept in the local keystore.  If an attacker could convince a user to accept and store an attacker's certificate, then that certificate could be used for MITM attacks, giving the attacker access to all connections to all servers in all accounts in K-9.</change>
         <change>Users can now use different certificates for different servers on the same host (listening to different ports).</change>
