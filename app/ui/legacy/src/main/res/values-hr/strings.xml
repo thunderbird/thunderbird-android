@@ -61,6 +61,7 @@
   <string name="spam_action">Neželjena pošta</string>
   <string name="forward_action">Proslijedi</string>
   <string name="forward_as_attachment_action">Proslijedi kao privitak</string>
+  <string name="edit_as_new_message_action">Uređuj kao novu poruku</string>
   <string name="move_action">Premjesti</string>
   <string name="single_message_options_action">Pošalji…</string>
   <string name="refile_action">Ponovno punjenje…</string>
@@ -179,6 +180,7 @@
   <string name="message_compose_show_quoted_text_action">Uključuj citirane poruke</string>
   <string name="message_compose_description_delete_quoted_text">Maknuti citirani tekst</string>
   <string name="message_compose_description_edit_quoted_text">Urediti citirani tekst</string>
+  <string name="remove_attachment_action">Ukloni privitak</string>
   <string name="message_view_from_format">Od: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">Za:</string>
   <string name="message_view_cc_label">Cc:</string>
@@ -704,6 +706,8 @@
   <string name="confirm_discard_draft_message_title">Odbaciti poruku?</string>
   <string name="confirm_discard_draft_message">Jeste li sigurni da želite odbaciti ovu poruku?</string>
   <string name="select_text_now">Odaberi tekst za kopiranje..</string>
+  <string name="dialog_confirm_clear_local_folder_title">Očistiti lokalne poruke?</string>
+  <string name="dialog_confirm_clear_local_folder_action">Očisti poruke</string>
   <string name="dialog_confirm_delete_title">Potvrda brisanja</string>
   <string name="dialog_confirm_delete_message">Da li želite obrisati ovu poruku?</string>
   <plurals name="dialog_confirm_delete_messages">
@@ -862,6 +866,7 @@
   <string name="address_type_other">Ostalo</string>
   <string name="address_type_mobile">Mobilna</string>
   <string name="compose_error_no_key_configured">Nema podešenog ključa za ovaj račun! Molimo provjerite vaše postavke.</string>
+  <string name="error_crypto_provider_ui_required">Greška pri učitavanju šifriranja s kraja na kraj, molimo provjerite vaše postavke</string>
   <string name="error_crypto_inline_attach">PGP/INLINE mod ne podržava privitke!</string>
   <string name="enable_inline_pgp">Uključi PGP/INLINE</string>
   <string name="disable_inline_pgp">Isključi PGP/INLINE</string>
