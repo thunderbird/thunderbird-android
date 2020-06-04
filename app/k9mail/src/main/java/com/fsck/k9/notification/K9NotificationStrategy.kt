@@ -38,6 +38,9 @@ class K9NotificationStrategy(private val contacts: Contacts) : NotificationStrat
         val folder = message.folder
         if (folder != null) {
             when (folder.databaseId) {
+                account.inboxFolderId -> {
+                    // Don't skip notifications if the Inbox folder is also configured as another special folder
+                }
                 account.trashFolderId -> {
                     Timber.v("No notification: Message is in Trash folder")
                     return false
