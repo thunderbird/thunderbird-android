@@ -52,4 +52,8 @@ android {
     kotlinOptions {
         jvmTarget = kotlinJvmVersion
     }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+    }
 }
