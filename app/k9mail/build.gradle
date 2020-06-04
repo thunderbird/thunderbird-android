@@ -43,8 +43,8 @@ android {
         applicationId "com.fsck.k9"
         testApplicationId "com.fsck.k9.tests"
 
-        versionCode 27015
-        versionName '5.716-SNAPSHOT'
+        versionCode 27016
+        versionName '5.716'
 
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk

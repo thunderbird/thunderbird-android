@@ -8,6 +8,13 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.716" versioncode="27016">
+        <change>Fixed bug that hid folders in the drawer behind the sticky footer</change>
+        <change>Fixed crash when server contains a folder named 'Outbox'</change>
+        <change>Avoid crash when adding an attachment fails</change>
+        <change>Removed support for using Shift JIS charsets when sending a message</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.715" versioncode="27015">
         <change>Added swipe to refresh to side drawer</change>
         <change>Display day of the week in the message list for messages younger than 7 days</change>
