@@ -46,23 +46,18 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
         }
 
         unreadFolderEnabled = findPreference(PREFERENCE_UNREAD_FOLDER_ENABLED)!!
-        if (selectedAccountUuid == null) {
-            unreadFolderEnabled.isEnabled = false
-            unreadFolderEnabled.isChecked = false
-        } else {
-            unreadFolderEnabled.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, _ ->
-                unreadFolder.summary = getString(R.string.unread_widget_folder_summary)
-                selectedFolderId = null
-                true
-        }
+        unreadFolderEnabled.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, _ ->
+            unreadFolder.summary = getString(R.string.unread_widget_folder_summary)
+            selectedFolderId = null
+            true
         }
 
         unreadFolder = findPreference(PREFERENCE_UNREAD_FOLDER)!!
-     unreadFolder.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+        unreadFolder.onPreferenceClickListener = Preference.OnPreferenceClickListener {
             val intent = ChooseFolderActivity.buildLaunchIntent(
-                    context = requireContext(),
-                    accountUuid = selectedAccountUuid!!,
-                    showDisplayableOnly = true
+                context = requireContext(),
+                accountUuid = selectedAccountUuid!!,
+                showDisplayableOnly = true
             )
             startActivityForResult(intent, REQUEST_CHOOSE_FOLDER)
             false
