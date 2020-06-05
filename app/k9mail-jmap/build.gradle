@@ -10,6 +10,7 @@ if (rootProject.testCoverage) {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:${versions.desugar_jdk_libs}"
 
     implementation project(":app:ui:legacy")
     implementation project(":app:core")
@@ -101,6 +102,7 @@ android {
     }
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility javaVersion
         targetCompatibility javaVersion
     }

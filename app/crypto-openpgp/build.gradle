@@ -4,6 +4,7 @@ apply plugin: 'org.jlleitschuh.gradle.ktlint'
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:${versions.desugar_jdk_libs}"
 
     implementation project(":app:core")
 
@@ -25,6 +26,7 @@ android {
     }
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility javaVersion
         targetCompatibility javaVersion
     }

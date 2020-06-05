@@ -6,6 +6,7 @@ if (rootProject.testCoverage) {
 
 dependencies {
     api project(":mail:common")
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:${versions.desugar_jdk_libs}"
 
     implementation "commons-io:commons-io:${versions.commonsIo}"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
@@ -45,6 +46,7 @@ android {
     }
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility javaVersion
         targetCompatibility javaVersion
     }
