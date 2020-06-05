@@ -11,6 +11,7 @@
     <CheckBoxPreference
         android:key="unread_folder_enabled"
         android:persistent="false"
+        android:enabled="false"
         android:summary="@string/unread_widget_folder_enabled_summary"
         android:title="@string/unread_widget_folder_enabled_title" />
 
