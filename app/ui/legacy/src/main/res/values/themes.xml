@@ -6,8 +6,8 @@
     </style>
 
     <!-- Empty base themes that can be easily replaced by RRO (Runtime Resource Overlay) themes -->
-    <style name="Theme.K9.Light.Base" parent="Theme.AppCompat.Light.NoActionBar" />
-    <style name="Theme.K9.Dark.Base" parent="Theme.AppCompat.NoActionBar" />
+    <style name="Theme.K9.Light.Base" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge" />
+    <style name="Theme.K9.Dark.Base" parent="Theme.MaterialComponents.NoActionBar.Bridge" />
 
     <style name="Theme.K9.Light.Common" parent="Theme.K9.Light.Base">
         <item name="windowActionModeOverlay">true</item>
@@ -279,7 +279,7 @@
         <item name="backgroundColorChooseAccountHeader">#404040</item>
     </style>
 
-    <style name="Theme.K9.Dialog.Translucent.Dark" parent="Theme.AppCompat.Dialog">
+    <style name="Theme.K9.Dialog.Translucent.Dark" parent="Theme.MaterialComponents.Dialog.Bridge">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
@@ -292,7 +292,7 @@
         <item name="tintColorBulletPointNeutral">#bbb</item>
     </style>
 
-    <style name="Theme.K9.Dialog.Translucent.Light" parent="Theme.AppCompat.Light.Dialog">
+    <style name="Theme.K9.Dialog.Translucent.Light" parent="Theme.MaterialComponents.Light.Dialog.Bridge">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowIsTranslucent">true</item>
