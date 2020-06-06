@@ -36,5 +36,22 @@
         <item name="android:button">?attr/messageStar</item>
     </style>
 
+    <style name="Widget.MaterialDrawerStyleCustom" parent="Widget.MaterialDrawerStyle">
+        <item name="materialDrawerInsetForeground">#4000</item>
+        <!-- MaterialDrawer specific values -->
+        <item name="materialDrawerBackground">?colorSurface</item>
+        <item name="materialDrawerPrimaryText">?android:textColorPrimary</item>
+        <item name="materialDrawerPrimaryIcon">?android:textColorSecondary</item>
+        <item name="materialDrawerSecondaryText">?android:textColorSecondary</item>
+        <item name="materialDrawerSecondaryIcon">?android:textColorSecondary</item>
+        <item name="materialDrawerDividerColor">?android:textColorHint</item>
+        <item name="materialDrawerSelectedBackgroundColor">?colorAccent</item>
+    </style>
+
+    <style name="Widget.MaterialDrawerHeaderStyleCustom" parent="">
+        <item name="materialDrawerCompactStyle">false</item>
+        <item name="materialDrawerHeaderSelectionText">?colorOnSurface</item>
+        <item name="materialDrawerHeaderSelectionSubtext">?colorOnSurface</item>
+    </style>
 </resources>
 

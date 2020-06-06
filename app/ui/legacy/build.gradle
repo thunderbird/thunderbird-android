@@ -39,7 +39,8 @@ dependencies {
     implementation "de.cketti.safecontentresolver:safe-content-resolver-v21:0.9.0"
     implementation "com.xwray:groupie:2.8.0"
     implementation "com.xwray:groupie-kotlin-android-extensions:2.8.0"
-    implementation 'com.mikepenz:materialdrawer:7.0.0'
+    implementation 'com.mikepenz:materialdrawer:8.1.0'
+    implementation 'com.mikepenz:materialdrawer-iconics:8.0.3'
     implementation 'com.mikepenz:fontawesome-typeface:5.9.0.0-kotlin@aar'
     implementation 'com.github.ByteHamster:SearchPreference:v2.0.0'
     implementation 'com.mikepenz:fastadapter:5.1.0'

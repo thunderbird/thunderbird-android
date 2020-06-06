@@ -66,7 +66,6 @@ import com.fsck.k9.ui.permissions.Permission;
 import com.fsck.k9.ui.permissions.PermissionUiHelper;
 import com.fsck.k9.view.ViewSwitcher;
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener;
-import com.mikepenz.materialdrawer.Drawer.OnDrawerListener;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -609,14 +608,19 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         drawerToggle.syncState();
     }
 
-    public OnDrawerListener createOnDrawerListener() {
-        return new OnDrawerListener() {
+    public DrawerLayout.DrawerListener createOnDrawerListener() {
+        return new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerClosed(View drawerView) {
                 if (openFolderTransaction != null) {
                     openFolderTransaction.commit();
                     openFolderTransaction = null;
                 }
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+                // Do nothing
             }
 
             @Override

@@ -16,18 +16,6 @@
         <item name="colorPrimaryDark">@color/md_grey_100</item>
         <item name="bottomBarBackground">@color/md_grey_50</item>
 
-        <item name="material_drawer_background">@color/material_drawer_background</item>
-        <item name="material_drawer_primary_text">@color/material_drawer_primary_text</item>
-        <item name="material_drawer_primary_icon">@color/material_drawer_primary_icon</item>
-        <item name="material_drawer_secondary_text">@color/material_drawer_secondary_text</item>
-        <item name="material_drawer_hint_text">@color/material_drawer_hint_text</item>
-        <item name="material_drawer_hint_icon">@color/material_drawer_hint_icon</item>
-        <item name="material_drawer_divider">@color/material_drawer_divider</item>
-        <item name="material_drawer_selected">@color/material_drawer_selected</item>
-        <item name="material_drawer_selected_text">@color/material_drawer_selected_text</item>
-        <item name="material_drawer_header_selection_text">@color/material_drawer_dark_header_selection_text</item>
-        <item name="material_drawer_header_selection_subtext">@color/material_drawer_dark_header_selection_subtext</item>
-
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <item name="iconUnifiedInbox">@drawable/ic_inbox_multiple_light</item>
         <item name="iconFolder">@drawable/ic_folder_light</item>
@@ -130,6 +118,9 @@
         <item name="openpgp_blue">#336699</item>
         <item name="openpgp_grey">#bbb</item>
         <item name="openpgp_dark_grey">#888</item>
+
+        <item name="materialDrawerStyle">@style/Widget.MaterialDrawerStyleCustom</item>
+        <item name="materialDrawerHeaderStyle">@style/Widget.MaterialDrawerHeaderStyleCustom</item>
     </style>
 
     <style name="Theme.K9.Dark.Common" parent="Theme.K9.Dark.Base">
@@ -139,18 +130,6 @@
         <item name="colorPrimary">@color/md_grey_900</item>
         <item name="colorPrimaryDark">@color/md_grey_900</item>
         <item name="bottomBarBackground">@color/md_grey_900</item>
-
-        <item name="material_drawer_background">@color/material_drawer_dark_background</item>
-        <item name="material_drawer_primary_text">@color/material_drawer_dark_primary_text</item>
-        <item name="material_drawer_primary_icon">@color/material_drawer_dark_primary_icon</item>
-        <item name="material_drawer_secondary_text">@color/material_drawer_dark_secondary_text</item>
-        <item name="material_drawer_hint_text">@color/material_drawer_dark_hint_text</item>
-        <item name="material_drawer_hint_icon">@color/material_drawer_dark_hint_icon</item>
-        <item name="material_drawer_divider">@color/material_drawer_dark_divider</item>
-        <item name="material_drawer_selected">@color/material_drawer_dark_selected</item>
-        <item name="material_drawer_selected_text">@color/material_drawer_dark_selected_text</item>
-        <item name="material_drawer_header_selection_text">@color/material_drawer_dark_header_selection_text</item>
-        <item name="material_drawer_header_selection_subtext">@color/material_drawer_dark_header_selection_subtext</item>
 
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <item name="iconUnifiedInbox">@drawable/ic_inbox_multiple_dark</item>
@@ -254,6 +233,9 @@
         <item name="openpgp_blue">#6699cc</item>
         <item name="openpgp_grey">#888</item>
         <item name="openpgp_dark_grey">#bbb</item>
+
+        <item name="materialDrawerStyle">@style/Widget.MaterialDrawerStyleCustom</item>
+        <item name="materialDrawerHeaderStyle">@style/Widget.MaterialDrawerHeaderStyleCustom</item>
     </style>
 
     <style name="Theme.K9.Light" parent="Theme.K9.Light.Common" />
