@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.KeyEvent
@@ -16,6 +17,8 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.fsck.k9.Account
@@ -56,7 +59,6 @@ import com.fsck.k9.ui.permissions.Permission
 import com.fsck.k9.ui.permissions.PermissionUiHelper
 import com.fsck.k9.view.ViewSwitcher
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener
-import com.mikepenz.materialdrawer.Drawer.OnDrawerListener
 import org.koin.android.ext.android.inject
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -146,6 +148,18 @@ open class MessageList :
                 secondOutAnimation = AnimationUtils.loadAnimation(this@MessageList, R.anim.slide_out_left)
                 setOnSwitchCompleteListener(this@MessageList)
             }
+        }
+
+        window.statusBarColor = Color.TRANSPARENT
+
+        val rootLayout = findViewById<View>(R.id.drawerLayout)
+        rootLayout.systemUiVisibility = rootLayout.systemUiVisibility or View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        toolbar.setOnApplyWindowInsetsListener { view, insets ->
+            view.setPadding(view.paddingLeft, insets.systemWindowInsetTop, view.paddingRight, view.paddingBottom)
+            insets
         }
 
         initializeActionBar()
@@ -517,14 +531,16 @@ open class MessageList :
         drawerToggle!!.syncState()
     }
 
-    fun createOnDrawerListener(): OnDrawerListener {
-        return object : OnDrawerListener {
+    fun createDrawerListener(): DrawerListener {
+        return object : DrawerListener {
             override fun onDrawerClosed(drawerView: View) {
                 if (openFolderTransaction != null) {
                     openFolderTransaction!!.commit()
                     openFolderTransaction = null
                 }
             }
+
+            override fun onDrawerStateChanged(newState: Int) = Unit
 
             override fun onDrawerOpened(drawerView: View) = Unit
 

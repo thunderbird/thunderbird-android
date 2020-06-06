@@ -1,12 +1,13 @@
 package com.fsck.k9.ui
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.PorterDuff
 import android.net.Uri
 import android.os.Bundle
 import android.util.TypedValue
-import android.view.View
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.fsck.k9.Account
@@ -24,21 +25,32 @@ import com.fsck.k9.ui.folders.FolderIconProvider
 import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.folders.FoldersViewModel
 import com.fsck.k9.ui.settings.SettingsActivity
-import com.mikepenz.iconics.IconicsColor
 import com.mikepenz.iconics.IconicsDrawable
-import com.mikepenz.iconics.IconicsSize
 import com.mikepenz.iconics.typeface.library.fontawesome.FontAwesome
+import com.mikepenz.iconics.utils.backgroundColorInt
 import com.mikepenz.iconics.utils.colorRes
-import com.mikepenz.materialdrawer.AccountHeader
-import com.mikepenz.materialdrawer.AccountHeaderBuilder
-import com.mikepenz.materialdrawer.Drawer
-import com.mikepenz.materialdrawer.Drawer.OnDrawerItemClickListener
-import com.mikepenz.materialdrawer.DrawerBuilder
+import com.mikepenz.iconics.utils.paddingDp
+import com.mikepenz.iconics.utils.sizeDp
+import com.mikepenz.materialdrawer.holder.BadgeStyle
+import com.mikepenz.materialdrawer.holder.ImageHolder
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
-import com.mikepenz.materialdrawer.model.interfaces.IProfile
+import com.mikepenz.materialdrawer.model.interfaces.badgeText
+import com.mikepenz.materialdrawer.model.interfaces.descriptionText
+import com.mikepenz.materialdrawer.model.interfaces.iconDrawable
+import com.mikepenz.materialdrawer.model.interfaces.iconRes
+import com.mikepenz.materialdrawer.model.interfaces.nameRes
+import com.mikepenz.materialdrawer.model.interfaces.nameText
+import com.mikepenz.materialdrawer.model.interfaces.selectedColorInt
+import com.mikepenz.materialdrawer.util.addItems
+import com.mikepenz.materialdrawer.util.addStickyFooterItem
+import com.mikepenz.materialdrawer.util.getDrawerItem
+import com.mikepenz.materialdrawer.util.removeAllItems
+import com.mikepenz.materialdrawer.util.removeAllStickyFooterItems
+import com.mikepenz.materialdrawer.widget.AccountHeaderView
+import com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView
 import java.util.ArrayList
 import java.util.HashSet
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -54,38 +66,46 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private val resources: Resources by inject()
     private val messagingController: MessagingController by inject()
 
-    private val drawer: Drawer
-    private val accountHeader: AccountHeader
+    private val drawer: DrawerLayout = parent.findViewById(R.id.drawerLayout)
+    private val sliderView: MaterialDrawerSliderView = parent.findViewById(R.id.material_drawer_slider)
+    private val headerView: AccountHeaderView = AccountHeaderView(parent).apply {
+        attachToSliderView(this@K9Drawer.sliderView)
+        dividerBelowHeader = false
+    }
     private val folderIconProvider: FolderIconProvider = FolderIconProvider(parent.theme)
     private val swipeRefreshLayout: SwipeRefreshLayout
 
     private val userFolderDrawerIds = ArrayList<Long>()
     private var unifiedInboxSelected: Boolean = false
-    private var accentColor: Int = 0
-    private var selectedColor: Int = 0
+    private val textColor: Int
+    private var selectedTextColor: ColorStateList? = null
+    private var selectedBackgroundColor: Int = 0
+    private var folderBadgeStyle: BadgeStyle? = null
     private var openedFolderId: Long? = null
 
     val layout: DrawerLayout
-        get() = drawer.drawerLayout
+        get() = drawer
 
     val isOpen: Boolean
-        get() = drawer.isDrawerOpen
+        get() = drawer.isOpen
 
     init {
-        accountHeader = buildAccountHeader()
+        textColor = parent.obtainDrawerTextColor()
 
-        drawer = DrawerBuilder()
-            .withActivity(parent)
-            .withOnDrawerItemClickListener(createItemClickListener())
-            .withOnDrawerListener(parent.createOnDrawerListener())
-            .withSavedInstance(savedInstanceState)
-            .withAccountHeader(accountHeader)
-            .build()
+        configureAccountHeader()
 
-        swipeRefreshLayout = drawer.slider.findViewById(R.id.material_drawer_swipe_refresh)
-        accountHeader.view.addOnLayoutChangeListener { view, _, _, _, _, _, _, _, _ ->
+        drawer.addDrawerListener(parent.createDrawerListener())
+        sliderView.tintStatusBar = true
+        sliderView.onDrawerItemClickListener = { _, item, _ ->
+            handleItemClickListener(item)
+            false
+        }
+        sliderView.setSavedInstance(savedInstanceState)
+        headerView.withSavedInstance(savedInstanceState)
+
+        swipeRefreshLayout = parent.findViewById(R.id.material_drawer_swipe_refresh)
+        headerView.addOnLayoutChangeListener { view, _, _, _, _, _, _, _, _ ->
             val densityMultiplier = view.resources.displayMetrics.density
-
             val progressViewStart = view.measuredHeight
             val progressViewEnd = progressViewStart + (PROGRESS_VIEW_END_OFFSET * densityMultiplier).toInt()
 
@@ -106,67 +126,68 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         }
     }
 
-    private fun buildAccountHeader(): AccountHeader {
-        val headerBuilder = AccountHeaderBuilder()
-            .withActivity(parent)
-            .withHeaderBackground(R.drawable.drawer_header_background)
+    private fun configureAccountHeader() {
+        headerView.headerBackground = ImageHolder(R.drawable.drawer_header_background)
 
         val photoUris = HashSet<Uri>()
 
         for (account in preferences.accounts) {
             val drawerId = (account.accountNumber + 1 shl DRAWER_ACCOUNT_SHIFT).toLong()
 
-            val pdi = ProfileDrawerItem()
-                .withNameShown(true)
-                .withName(account.description)
-                .withEmail(account.email)
-                .withIdentifier(drawerId)
-                .withSelected(false)
-                .withTag(account)
+            val drawerColors = getDrawerColorsForAccount(account)
+            val selectedTextColor = drawerColors.accentColor.toSelectedColorStateList()
+
+            val pdi = ProfileDrawerItem().apply {
+                isNameShown = true
+                nameText = account.description
+                descriptionText = account.email
+                identifier = drawerId
+                tag = account
+                textColor = selectedTextColor
+                descriptionTextColor = selectedTextColor
+                selectedColorInt = drawerColors.selectedColor
+            }
 
             val photoUri = Contacts.getInstance(parent).getPhotoUri(account.email)
             if (photoUri != null && !photoUris.contains(photoUri)) {
                 photoUris.add(photoUri)
-                pdi.withIcon(photoUri)
+                pdi.icon = ImageHolder(photoUri)
             } else {
-                pdi.withIcon(
-                    IconicsDrawable(parent, FontAwesome.Icon.faw_user_alt)
-                        .colorRes(R.color.material_drawer_background)
-                        .backgroundColor(IconicsColor.colorInt(account.chipColor))
-                        .size(IconicsSize.dp(56))
-                        .padding(IconicsSize.dp(14))
-                )
+                pdi.iconDrawable = IconicsDrawable(parent, FontAwesome.Icon.faw_user_alt).apply {
+                    colorRes = R.color.material_drawer_profile_icon
+                    backgroundColorInt = account.chipColor
+                    sizeDp = 56
+                    paddingDp = 12
+                }
             }
-            headerBuilder.addProfiles(pdi)
+            headerView.addProfiles(pdi)
         }
 
-        return headerBuilder
-            .withOnAccountHeaderListener(object : AccountHeader.OnAccountHeaderListener {
-                override fun onProfileChanged(view: View?, profile: IProfile<*>, current: Boolean): Boolean {
-                    val account = (profile as ProfileDrawerItem).tag as Account
-                    parent.openRealAccount(account)
-                    updateUserAccountsAndFolders(account)
-                    return true
-                }
-            })
-            .build()
+        headerView.onAccountHeaderListener = { _, profile, _ ->
+            val account = (profile as ProfileDrawerItem).tag as Account
+            parent.openRealAccount(account)
+            updateUserAccountsAndFolders(account)
+            true
+        }
     }
 
     private fun addFooterItems() {
-        drawer.addStickyFooterItem(
-            PrimaryDrawerItem()
-                .withName(R.string.folders_action)
-                .withIcon(folderIconProvider.iconFolderResId)
-                .withIdentifier(DRAWER_ID_FOLDERS)
-                .withSelectable(false)
+        sliderView.addStickyFooterItem(
+            PrimaryDrawerItem().apply {
+                nameRes = R.string.folders_action
+                iconRes = folderIconProvider.iconFolderResId
+                identifier = DRAWER_ID_FOLDERS
+                isSelectable = false
+            }
         )
 
-        drawer.addStickyFooterItem(
-            PrimaryDrawerItem()
-                .withName(R.string.preferences_action)
-                .withIcon(getResId(R.attr.iconActionSettings))
-                .withIdentifier(DRAWER_ID_PREFERENCES)
-                .withSelectable(false)
+        sliderView.addStickyFooterItem(
+            PrimaryDrawerItem().apply {
+                nameRes = R.string.preferences_action
+                iconRes = getResId(R.attr.iconActionSettings)
+                identifier = DRAWER_ID_PREFERENCES
+                isSelectable = false
+            }
         )
     }
 
@@ -186,12 +207,16 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     fun updateUserAccountsAndFolders(account: Account?) {
         if (account != null) {
             getDrawerColorsForAccount(account).let { drawerColors ->
-                accentColor = drawerColors.accentColor
-                selectedColor = drawerColors.selectedColor
+                selectedBackgroundColor = drawerColors.selectedColor
+                val selectedTextColor = drawerColors.accentColor.toSelectedColorStateList()
+                this.selectedTextColor = selectedTextColor
+                folderBadgeStyle = BadgeStyle().apply {
+                    textColorStateList = selectedTextColor
+                }
             }
 
-            accountHeader.setActiveProfile((account.accountNumber + 1 shl DRAWER_ACCOUNT_SHIFT).toLong())
-            accountHeader.headerBackgroundView.setColorFilter(account.chipColor, PorterDuff.Mode.MULTIPLY)
+            headerView.setActiveProfile((account.accountNumber + 1 shl DRAWER_ACCOUNT_SHIFT).toLong())
+            headerView.accountHeaderBackground.setColorFilter(account.chipColor, PorterDuff.Mode.MULTIPLY)
             viewModel.loadFolders(account)
 
             updateFooterItems()
@@ -199,7 +224,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
         // Account can be null to refresh all (unified inbox or account list).
         swipeRefreshLayout.setOnRefreshListener {
-            val accountToRefresh = if (accountHeader.isSelectionListShown) null else account
+            val accountToRefresh = if (headerView.selectionListShown) null else account
             messagingController.checkMail(
                 accountToRefresh, true, true,
                 object : SimpleMessagingListener() {
@@ -212,23 +237,18 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     }
 
     private fun updateFooterItems() {
-        drawer.removeAllStickyFooterItems()
+        sliderView.removeAllStickyFooterItems()
         addFooterItems()
     }
 
-    private fun createItemClickListener(): OnDrawerItemClickListener {
-        return object : OnDrawerItemClickListener {
-            override fun onItemClick(view: View?, position: Int, drawerItem: IDrawerItem<*>): Boolean {
-                when (drawerItem.identifier) {
-                    DRAWER_ID_PREFERENCES -> SettingsActivity.launch(parent)
-                    DRAWER_ID_FOLDERS -> parent.launchManageFoldersScreen()
-                    DRAWER_ID_UNIFIED_INBOX -> parent.openUnifiedInbox()
-                    else -> {
-                        val folder = drawerItem.tag as Folder
-                        parent.openFolder(folder.id)
-                    }
-                }
-                return false
+    private fun handleItemClickListener(drawerItem: IDrawerItem<*>) {
+        when (drawerItem.identifier) {
+            DRAWER_ID_PREFERENCES -> SettingsActivity.launch(parent)
+            DRAWER_ID_FOLDERS -> parent.launchManageFoldersScreen()
+            DRAWER_ID_UNIFIED_INBOX -> parent.openUnifiedInbox()
+            else -> {
+                val folder = drawerItem.tag as Folder
+                parent.openFolder(folder.id)
             }
         }
     }
@@ -239,15 +259,17 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         var openedFolderDrawerId: Long = -1
 
         if (K9.isShowUnifiedInbox) {
-            val drawerItem = PrimaryDrawerItem()
-                .withIcon(R.drawable.ic_inbox_multiple)
-                .withIdentifier(DRAWER_ID_UNIFIED_INBOX)
-                .withSelectedColor(selectedColor)
-                .withSelectedTextColor(accentColor)
-                .withName(R.string.integrated_inbox_title)
+            val unifiedInboxItem = PrimaryDrawerItem().apply {
+                iconRes = R.drawable.ic_inbox_multiple
+                identifier = DRAWER_ID_UNIFIED_INBOX
+                nameRes = R.string.integrated_inbox_title
+                selectedColorInt = selectedBackgroundColor
+                textColor = selectedTextColor
+                isSelected = unifiedInboxSelected
+            }
 
-            drawer.addItem(drawerItem)
-            drawer.addItem(DividerDrawerItem())
+            sliderView.addItems(unifiedInboxItem)
+            sliderView.addItems(DividerDrawerItem())
 
             if (unifiedInboxSelected) {
                 openedFolderDrawerId = DRAWER_ID_UNIFIED_INBOX
@@ -262,45 +284,45 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
             val folder = displayFolder.folder
             val drawerId = folder.id shl DRAWER_FOLDER_SHIFT
 
-            val drawerItem = PrimaryDrawerItem()
-                .withIcon(folderIconProvider.getFolderIcon(folder.type))
-                .withIdentifier(drawerId)
-                .withTag(folder)
-                .withSelectedColor(selectedColor)
-                .withSelectedTextColor(accentColor)
-                .withName(getFolderDisplayName(folder))
-
-            val unreadCount = displayFolder.unreadCount
-            if (unreadCount > 0) {
-                drawerItem.withBadge(unreadCount.toString())
+            val drawerItem = PrimaryDrawerItem().apply {
+                iconRes = folderIconProvider.getFolderIcon(folder.type)
+                identifier = drawerId
+                tag = folder
+                nameText = getFolderDisplayName(folder)
+                displayFolder.unreadCount.takeIf { it > 0 }?.let {
+                    badgeText = it.toString()
+                    badgeStyle = folderBadgeStyle
+                }
+                selectedColorInt = selectedBackgroundColor
+                textColor = selectedTextColor
             }
 
-            drawer.addItem(drawerItem)
-
+            sliderView.addItems(drawerItem)
             userFolderDrawerIds.add(drawerId)
-
             if (folder.id == openedFolderId) {
                 openedFolderDrawerId = drawerId
             }
         }
 
         if (openedFolderDrawerId != -1L) {
-            drawer.setSelection(openedFolderDrawerId, false)
+            sliderView.setSelection(openedFolderDrawerId, false)
         }
     }
 
     private fun clearUserFolders() {
-        drawer.removeAllItems()
+        // remove old items first
+        sliderView.selectExtension.deselect()
+        sliderView.removeAllItems()
         userFolderDrawerIds.clear()
     }
 
     fun selectFolder(folderId: Long) {
-        unifiedInboxSelected = false
+        deselect()
         openedFolderId = folderId
         for (drawerId in userFolderDrawerIds) {
-            val folder = drawer.getDrawerItem(drawerId)!!.tag as Folder
-            if (folder.id == folderId) {
-                drawer.setSelection(drawerId, false)
+            val folder = sliderView.getDrawerItem(drawerId)?.tag as? Folder
+            if (folder?.id == folderId) {
+                sliderView.setSelection(drawerId, false)
                 return
             }
         }
@@ -310,12 +332,13 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     fun deselect() {
         unifiedInboxSelected = false
         openedFolderId = null
-        drawer.deselect()
+        sliderView.selectExtension.deselect()
     }
 
     fun selectUnifiedInbox() {
+        deselect()
         unifiedInboxSelected = true
-        drawer.setSelection(DRAWER_ID_UNIFIED_INBOX, false)
+        sliderView.setSelection(DRAWER_ID_UNIFIED_INBOX, false)
         updateFooterItems()
     }
 
@@ -344,19 +367,33 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     }
 
     fun open() {
-        drawer.openDrawer()
+        drawer.openDrawer(GravityCompat.START)
     }
 
     fun close() {
-        drawer.closeDrawer()
+        drawer.closeDrawer(GravityCompat.START)
     }
 
     fun lock() {
-        drawer.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
     }
 
     fun unlock() {
-        drawer.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+    }
+
+    private fun Int.toSelectedColorStateList(): ColorStateList {
+        val states = arrayOf(
+            intArrayOf(android.R.attr.state_selected),
+            intArrayOf()
+        )
+
+        val colors = intArrayOf(
+            this,
+            textColor
+        )
+
+        return ColorStateList(states, colors)
     }
 
     companion object {
@@ -371,4 +408,17 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         private const val PROGRESS_VIEW_END_OFFSET = 32
         private const val PROGRESS_VIEW_SLINGSHOT_DISTANCE = 48
     }
+}
+
+private fun Context.obtainDrawerTextColor(): Int {
+    val styledAttributes = obtainStyledAttributes(
+        null,
+        R.styleable.MaterialDrawerSliderView,
+        R.attr.materialDrawerStyle,
+        R.style.Widget_MaterialDrawerStyle
+    )
+    val textColor = styledAttributes.getColor(R.styleable.MaterialDrawerSliderView_materialDrawerPrimaryText, 0)
+    styledAttributes.recycle()
+
+    return textColor
 }
