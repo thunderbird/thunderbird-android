@@ -18,7 +18,7 @@ class FolderListItem(
 
     override fun getViewHolder(v: View) = FolderListViewHolder(v)
 
-    override fun bindView(holder: FolderListViewHolder, payloads: MutableList<Any>) {
+    override fun bindView(holder: FolderListViewHolder, payloads: List<Any>) {
         super.bindView(holder, payloads)
         holder.icon.setImageResource(folderIconResource)
         holder.name.text = displayName

@@ -18,7 +18,7 @@ class AccountItem(account: SettingsListItem.Account) : CheckBoxItem(account.acco
     override val type = R.id.settings_export_list_account_item
     override val layoutRes = R.layout.settings_export_account_list_item
 
-    override fun bindView(viewHolder: CheckBoxViewHolder, payloads: MutableList<Any>) {
+    override fun bindView(viewHolder: CheckBoxViewHolder, payloads: List<Any>) {
         super.bindView(viewHolder, payloads)
         viewHolder.accountDisplayName.text = displayName
         viewHolder.accountEmail.text = email
