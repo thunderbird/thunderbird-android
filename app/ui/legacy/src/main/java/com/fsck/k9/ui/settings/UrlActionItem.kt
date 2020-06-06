@@ -24,7 +24,7 @@ internal class UrlActionItem(
         val text: TextView = view.findViewById(R.id.text)
         val icon: ImageView = view.findViewById(R.id.icon)
 
-        override fun bindView(item: UrlActionItem, payloads: MutableList<Any>) {
+        override fun bindView(item: UrlActionItem, payloads: List<Any>) {
             text.text = item.text
 
             val outValue = TypedValue()
