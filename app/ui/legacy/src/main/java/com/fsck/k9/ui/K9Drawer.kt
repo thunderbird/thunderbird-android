@@ -44,7 +44,6 @@ import com.mikepenz.materialdrawer.model.interfaces.withTag
 import com.mikepenz.materialdrawer.util.addItems
 import com.mikepenz.materialdrawer.util.addStickyFooterItem
 import com.mikepenz.materialdrawer.util.getDrawerItem
-import com.mikepenz.materialdrawer.util.removeAllItems
 import com.mikepenz.materialdrawer.util.removeAllStickyFooterItems
 import com.mikepenz.materialdrawer.widget.AccountHeaderView
 import com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView
@@ -130,7 +129,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                     .withName(R.string.integrated_inbox_title)
                     .withEmail(parent.getString(R.string.integrated_inbox_detail))
                     .withIcon(IconicsDrawable(parent, FontAwesome.Icon.faw_users).apply {
-                        //colorRes = R.color.material_drawer_background
+                        // colorRes = R.color.material_drawer_background
                         backgroundColorInt = Color.GRAY
                         sizeDp = 56
                         paddingDp = 8
@@ -263,10 +262,10 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 .withIcon(folderIconProvider.getFolderIcon(folder.type))
                 .withIdentifier(drawerId)
                 .withTag(folder)
-                //.withSelectedColor(selectedColor)
-                //.apply {
+                // .withSelectedColor(selectedColor)
+                // .apply {
                 //    textColorInt = accentColor
-                //}
+                // }
                 .withName(getFolderDisplayName(folder))
 
             val unreadCount = displayFolder.unreadCount
