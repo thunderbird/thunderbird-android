@@ -22,6 +22,7 @@ dependencies {
     testImplementation "junit:junit:${versions.junit}"
     testImplementation "com.google.truth:truth:${versions.truth}"
     testImplementation "org.mockito:mockito-core:${versions.mockito}"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:${versions.mockitoKotlin}"
     testImplementation "com.squareup.okio:okio:${versions.okio}"
     testImplementation "org.apache.james:apache-mime4j-core:${versions.mime4j}"
 }
