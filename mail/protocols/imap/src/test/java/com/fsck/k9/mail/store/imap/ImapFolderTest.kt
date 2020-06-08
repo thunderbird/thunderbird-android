@@ -81,7 +81,7 @@ class ImapFolderTest {
 
         imapFolder.open(ImapFolder.OPEN_MODE_RW)
 
-        assertEquals(23, imapFolder.getMessageCount())
+        assertEquals(23, imapFolder.messageCount)
     }
 
     @Test
@@ -297,7 +297,7 @@ class ImapFolderTest {
         val uidMapping = sourceFolder.copyMessages(messages, destinationFolder)
 
         assertNotNull(uidMapping)
-        assertEquals("101", uidMapping["1"])
+        assertEquals("101", uidMapping!!["1"])
     }
 
     @Test
@@ -312,7 +312,7 @@ class ImapFolderTest {
         val uidMapping = sourceFolder.moveMessages(messages, destinationFolder)
 
         assertNotNull(uidMapping)
-        assertEquals("101", uidMapping["1"])
+        assertEquals("101", uidMapping!!["1"])
     }
 
     @Test
@@ -818,7 +818,7 @@ class ImapFolderTest {
         val part = createPart("TEXT")
         whenever(imapConnection.readResponse(anyOrNull())).thenReturn(createImapResponse("x OK"))
 
-        folder.fetchPart(message, part, null, null, 4096)
+        folder.fetchPart(message, part, null, mock(), 4096)
 
         verify(imapConnection).sendCommand("UID FETCH 1 (UID BODY.PEEK[TEXT]<0.4096>)", false)
     }
@@ -832,7 +832,7 @@ class ImapFolderTest {
         val part = createPart("1.1")
         whenever(imapConnection.readResponse(anyOrNull())).thenReturn(createImapResponse("x OK"))
 
-        folder.fetchPart(message, part, null, null, MAX_DOWNLOAD_SIZE)
+        folder.fetchPart(message, part, null, mock(), MAX_DOWNLOAD_SIZE)
 
         verify(imapConnection).sendCommand("UID FETCH 1 (UID BODY.PEEK[1.1])", false)
     }
