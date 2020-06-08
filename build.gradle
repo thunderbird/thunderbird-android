@@ -35,6 +35,7 @@ buildscript {
                 'okhttp': '4.8.0',
                 'minidns': '0.3.4',
                 'glide': '4.11.0',
+                'retrofit': '2.7.2',
 
                 'androidxTestRunner': '1.2.0',
                 'junit': '4.13',
