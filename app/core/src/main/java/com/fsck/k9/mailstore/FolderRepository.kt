@@ -71,11 +71,92 @@ class FolderRepository(
     }
 
     fun getFolderDetails(folderId: Long): FolderDetails? {
-        return getFolderDetails(selection = "id = ?", selectionArgs = arrayOf(folderId.toString())).firstOrNull()
+        val database = localStoreProvider.getInstance(account).database
+        return database.execute(false) { db ->
+            db.query(
+                "folders",
+                arrayOf(
+                    "id",
+                    "server_id",
+                    "name",
+                    "top_group",
+                    "integrate",
+                    "poll_class",
+                    "display_class",
+                    "notify_class",
+                    "push_class",
+                    "local_only"
+                ),
+                "id = ?",
+                arrayOf(folderId.toString()),
+                null,
+                null,
+                null
+            ).use { cursor ->
+                cursor.map {
+                    val id = cursor.getLong(0)
+                    FolderDetails(
+                        folder = Folder(
+                            id = id,
+                            serverId = cursor.getString(1),
+                            name = cursor.getString(2),
+                            type = folderTypeOf(id),
+                            isLocalOnly = cursor.getInt(9) == 1
+                        ),
+                        isInTopGroup = cursor.getInt(3) == 1,
+                        isIntegrate = cursor.getInt(4) == 1,
+                        syncClass = cursor.getStringOrNull(5).toFolderClass(),
+                        displayClass = cursor.getStringOrNull(6).toFolderClass(),
+                        notifyClass = cursor.getStringOrNull(7).toFolderClass(),
+                        pushClass = cursor.getStringOrNull(8).toFolderClass()
+                    )
+                }
+            }
+        }.firstOrNull()
     }
 
-    fun getFolderDetails(): List<FolderDetails> {
-        return getFolderDetails(selection = null, selectionArgs = null)
+    fun getRemoteFolderDetails(): List<RemoteFolderDetails> {
+        val database = localStoreProvider.getInstance(account).database
+        return database.execute(false) { db ->
+            db.query(
+                "folders",
+                arrayOf(
+                    "id",
+                    "server_id",
+                    "name",
+                    "type",
+                    "top_group",
+                    "integrate",
+                    "poll_class",
+                    "display_class",
+                    "notify_class",
+                    "push_class"
+                ),
+                "local_only = 0",
+                null,
+                null,
+                null,
+                null
+            ).use { cursor ->
+                cursor.map {
+                    val id = cursor.getLong(0)
+                    RemoteFolderDetails(
+                        folder = RemoteFolder(
+                            id = id,
+                            serverId = cursor.getString(1),
+                            name = cursor.getString(2),
+                            type = cursor.getString(3).toFolderType().toFolderType()
+                        ),
+                        isInTopGroup = cursor.getInt(4) == 1,
+                        isIntegrate = cursor.getInt(5) == 1,
+                        syncClass = cursor.getStringOrNull(6).toFolderClass(),
+                        displayClass = cursor.getStringOrNull(7).toFolderClass(),
+                        notifyClass = cursor.getStringOrNull(8).toFolderClass(),
+                        pushClass = cursor.getStringOrNull(9).toFolderClass()
+                    )
+                }
+            }
+        }
     }
 
     fun getFolderServerId(folderId: Long): String? {
@@ -125,51 +206,6 @@ class FolderRepository(
                 null
             ).use { cursor ->
                 cursor.count != 0
-            }
-        }
-    }
-
-    private fun getFolderDetails(selection: String?, selectionArgs: Array<String>?): List<FolderDetails> {
-        val database = localStoreProvider.getInstance(account).database
-        return database.execute(false) { db ->
-            db.query(
-                "folders",
-                arrayOf(
-                    "id",
-                    "server_id",
-                    "name",
-                    "top_group",
-                    "integrate",
-                    "poll_class",
-                    "display_class",
-                    "notify_class",
-                    "push_class",
-                    "local_only"
-                ),
-                selection,
-                selectionArgs,
-                null,
-                null,
-                null
-            ).use { cursor ->
-                cursor.map {
-                    val id = cursor.getLong(0)
-                    FolderDetails(
-                        folder = Folder(
-                            id = id,
-                            serverId = cursor.getString(1),
-                            name = cursor.getString(2),
-                            type = folderTypeOf(id),
-                            isLocalOnly = cursor.getInt(9) == 1
-                        ),
-                        isInTopGroup = cursor.getInt(3) == 1,
-                        isIntegrate = cursor.getInt(4) == 1,
-                        syncClass = cursor.getStringOrNull(5).toFolderClass(),
-                        displayClass = cursor.getStringOrNull(6).toFolderClass(),
-                        notifyClass = cursor.getStringOrNull(7).toFolderClass(),
-                        pushClass = cursor.getStringOrNull(8).toFolderClass()
-                    )
-                }
             }
         }
     }
@@ -304,6 +340,16 @@ data class RemoteFolder(val id: Long, val serverId: String, val name: String, va
 
 data class FolderDetails(
     val folder: Folder,
+    val isInTopGroup: Boolean,
+    val isIntegrate: Boolean,
+    val syncClass: FolderClass,
+    val displayClass: FolderClass,
+    val notifyClass: FolderClass,
+    val pushClass: FolderClass
+)
+
+data class RemoteFolderDetails(
+    val folder: RemoteFolder,
     val isInTopGroup: Boolean,
     val isIntegrate: Boolean,
     val syncClass: FolderClass,
