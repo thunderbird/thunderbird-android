@@ -3,6 +3,7 @@ package com.fsck.k9.ui.folders
 import android.content.res.Resources
 import com.fsck.k9.mailstore.Folder
 import com.fsck.k9.mailstore.FolderType
+import com.fsck.k9.mailstore.RemoteFolder
 import com.fsck.k9.ui.R
 
 class FolderNameFormatter(private val resources: Resources) {
@@ -23,6 +24,11 @@ class FolderNameFormatter(private val resources: Resources) {
     }
 
     private fun remoteFolderDisplayName(folder: Folder) = when (folder.type) {
+        FolderType.INBOX -> resources.getString(R.string.special_mailbox_name_inbox)
+        else -> folder.name
+    }
+
+    fun displayName(folder: RemoteFolder) = when (folder.type) {
         FolderType.INBOX -> resources.getString(R.string.special_mailbox_name_inbox)
         else -> folder.name
     }

@@ -20,17 +20,11 @@ class FolderRepository(
             .thenByDescending { it.isInTopGroup }
             .thenBy(String.CASE_INSENSITIVE_ORDER) { it.folder.name }
 
-    fun getFolders(): List<Folder> {
+    fun getRemoteFolders(): List<RemoteFolder> {
         val folders = localStoreProvider.getInstance(account).getPersonalNamespaces(false)
-        return folders.map { Folder(it.databaseId, it.serverId, it.name, it.type.toFolderType(), it.isLocalOnly) }
-    }
-
-    fun getRemoteFolders(): List<Folder> {
-        val folders = localStoreProvider.getInstance(account).getPersonalNamespaces(false)
-
         return folders
                 .filterNot { it.isLocalOnly }
-                .map { Folder(it.databaseId, it.serverId, it.name, it.type.toFolderType(), isLocalOnly = false) }
+                .map { RemoteFolder(it.databaseId, it.serverId, it.name, it.type.toFolderType()) }
     }
 
     fun getDisplayFolders(displayMode: FolderMode?): List<DisplayFolder> {
@@ -272,6 +266,8 @@ class FolderRepository(
 }
 
 data class Folder(val id: Long, val serverId: String, val name: String, val type: FolderType, val isLocalOnly: Boolean)
+
+data class RemoteFolder(val id: Long, val serverId: String, val name: String, val type: FolderType)
 
 data class FolderDetails(
     val folder: Folder,

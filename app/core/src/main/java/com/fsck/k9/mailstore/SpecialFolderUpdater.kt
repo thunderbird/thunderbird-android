@@ -16,7 +16,7 @@ class SpecialFolderUpdater(
     private val account: Account
 ) {
     fun updateSpecialFolders() {
-        val folders = folderRepository.getFolders()
+        val folders = folderRepository.getRemoteFolders()
 
         updateInbox(folders)
         updateSpecialFolder(FolderType.ARCHIVE, folders)
@@ -29,7 +29,7 @@ class SpecialFolderUpdater(
         saveAccount()
     }
 
-    private fun updateInbox(folders: List<Folder>) {
+    private fun updateInbox(folders: List<RemoteFolder>) {
         val oldInboxId = account.inboxFolderId
         val newInboxId = folders.firstOrNull { it.type == FolderType.INBOX }?.id
         if (newInboxId == oldInboxId) return
@@ -48,7 +48,7 @@ class SpecialFolderUpdater(
         }
     }
 
-    private fun updateSpecialFolder(type: FolderType, folders: List<Folder>) {
+    private fun updateSpecialFolder(type: FolderType, folders: List<RemoteFolder>) {
         val importedServerId = getImportedSpecialFolderServerId(type)
         if (importedServerId != null) {
             val folderId = folders.firstOrNull { it.serverId == importedServerId }?.id
