@@ -87,7 +87,7 @@ public class LocalFolder {
     private FolderType type = FolderType.REGULAR;
     private String serverId = null;
     private String name;
-    private long databaseId = -1;
+    private long databaseId = -1L;
     private int visibleLimit = -1;
     private String prefId = null;
 
@@ -172,10 +172,7 @@ public class LocalFolder {
                         }
 
                         if (cursor.moveToFirst() && !cursor.isNull(LocalStore.FOLDER_ID_INDEX)) {
-                            int folderId = cursor.getInt(LocalStore.FOLDER_ID_INDEX);
-                            if (folderId > 0) {
-                                open(cursor);
-                            }
+                            open(cursor);
                         } else {
                             throw new MessagingException("LocalFolder.open(): Folder not found: " +
                                     serverId + " (" + databaseId + ")", true);
@@ -194,7 +191,7 @@ public class LocalFolder {
     }
 
     void open(Cursor cursor) throws MessagingException {
-        databaseId = cursor.getInt(LocalStore.FOLDER_ID_INDEX);
+        databaseId = cursor.getLong(LocalStore.FOLDER_ID_INDEX);
         serverId = cursor.getString(LocalStore.FOLDER_SERVER_ID_INDEX);
         visibleLimit = cursor.getInt(LocalStore.FOLDER_VISIBLE_LIMIT_INDEX);
         status = cursor.getString(LocalStore.FOLDER_STATUS_INDEX);
@@ -221,7 +218,7 @@ public class LocalFolder {
     }
 
     public boolean isOpen() {
-        return (databaseId != -1 && serverId != null);
+        return (databaseId != -1L && serverId != null);
     }
 
     public String getServerId() {
@@ -352,7 +349,7 @@ public class LocalFolder {
     }
 
     public int getUnreadMessageCount() throws MessagingException {
-        if (databaseId == -1) {
+        if (databaseId == -1L) {
             open();
         }
 
