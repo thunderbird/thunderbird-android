@@ -400,8 +400,8 @@ public class LocalStore {
                             if (cursor.isNull(FOLDER_ID_INDEX)) {
                                 continue;
                             }
-                            String folderServerId = cursor.getString(FOLDER_SERVER_ID_INDEX);
-                            LocalFolder folder = new LocalFolder(LocalStore.this, folderServerId);
+                            long folderId = cursor.getLong(FOLDER_ID_INDEX);
+                            LocalFolder folder = new LocalFolder(LocalStore.this, folderId);
                             folder.open(cursor);
 
                             folders.add(folder);
