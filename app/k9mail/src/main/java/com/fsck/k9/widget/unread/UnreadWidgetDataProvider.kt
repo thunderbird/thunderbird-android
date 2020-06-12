@@ -78,10 +78,10 @@ class UnreadWidgetDataProvider(
 
     private fun getFolderDisplayName(account: Account, folderId: Long): String {
         val folderRepository = folderRepositoryManager.getFolderRepository(account)
-        val folderDetails = folderRepository.getFolderDetails(folderId)
-        return if (folderDetails != null) {
+        val folder = folderRepository.getFolder(folderId)
+        return if (folder != null) {
             val folderNameFormatter = folderNameFormatterFactory.create(context)
-            folderNameFormatter.displayName(folderDetails.folder)
+            folderNameFormatter.displayName(folder)
         } else {
             Timber.e("Error loading folder for account %s, folder ID: %d", account, folderId)
             ""

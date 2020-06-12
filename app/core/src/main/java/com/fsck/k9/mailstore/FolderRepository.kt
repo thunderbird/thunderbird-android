@@ -37,6 +37,39 @@ class FolderRepository(
         return displayFolders.sortedWith(sortForDisplay)
     }
 
+    fun getFolder(folderId: Long): Folder? {
+        val database = localStoreProvider.getInstance(account).database
+        return database.execute(false) { db ->
+            db.query(
+                "folders",
+                arrayOf(
+                    "id",
+                    "server_id",
+                    "name",
+                    "local_only"
+                ),
+                "id = ?",
+                arrayOf(folderId.toString()),
+                null,
+                null,
+                null
+            ).use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val id = cursor.getLong(0)
+                    Folder(
+                        id = id,
+                        serverId = cursor.getString(1),
+                        name = cursor.getString(2),
+                        type = folderTypeOf(id),
+                        isLocalOnly = cursor.getInt(3) == 1
+                    )
+                } else {
+                    null
+                }
+            }
+        }
+    }
+
     fun getFolderDetails(folderId: Long): FolderDetails? {
         return getFolderDetails(selection = "id = ?", selectionArgs = arrayOf(folderId.toString())).firstOrNull()
     }
