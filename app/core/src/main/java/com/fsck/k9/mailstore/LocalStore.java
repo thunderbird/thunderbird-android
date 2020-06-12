@@ -793,17 +793,16 @@ public class LocalStore {
 
     @Nullable
     private LocalMessage loadLocalMessageByMessageId(long messageId) throws MessagingException {
-        Map<String, List<String>> foldersAndUids =
-                getFoldersAndUids(Collections.singletonList(messageId), false);
-        if (foldersAndUids.isEmpty()) {
+        Map<Long, List<String>> folderIdsAndUids = getFolderIdsAndUids(Collections.singletonList(messageId), false);
+        if (folderIdsAndUids.isEmpty()) {
             return null;
         }
 
-        Map.Entry<String,List<String>> entry = foldersAndUids.entrySet().iterator().next();
-        String folderServerId = entry.getKey();
+        Map.Entry<Long, List<String>> entry = folderIdsAndUids.entrySet().iterator().next();
+        long folderId = entry.getKey();
         String uid = entry.getValue().get(0);
 
-        LocalFolder folder = getFolder(folderServerId);
+        LocalFolder folder = getFolder(folderId);
         LocalMessage localMessage = folder.getMessage(uid);
 
         FetchProfile fp = new FetchProfile();
@@ -1230,7 +1229,7 @@ public class LocalStore {
     }
 
     /**
-     * Get folder server ID and UID for the supplied messages.
+     * Get folder ID and UID for the supplied messages.
      *
      * @param messageIds
      *         A list of primary keys in the "messages" table.
@@ -1240,13 +1239,13 @@ public class LocalStore {
      *         If this is {@code false} only the UIDs for messages in {@code messageIds} are
      *         returned.
      *
-     * @return The list of UIDs for the messages grouped by folder server ID.
+     * @return The list of UIDs for the messages grouped by folder ID.
      *
      */
-    public Map<String, List<String>> getFoldersAndUids(final List<Long> messageIds,
+    public Map<Long, List<String>> getFolderIdsAndUids(final List<Long> messageIds,
             final boolean threadedList) throws MessagingException {
 
-        final Map<String, List<String>> folderMap = new HashMap<>();
+        final Map<Long, List<String>> folderMap = new HashMap<>();
 
         doBatchSetSelection(new BatchSetSelection() {
 
@@ -1265,10 +1264,9 @@ public class LocalStore {
                     throws UnavailableStorageException {
 
                 if (threadedList) {
-                    String sql = "SELECT m.uid, f.server_id " +
+                    String sql = "SELECT m.uid, m.folder_id " +
                             "FROM threads t " +
                             "LEFT JOIN messages m ON (t.message_id = m.id) " +
-                            "LEFT JOIN folders f ON (m.folder_id = f.id) " +
                             "WHERE m.empty = 0 AND m.deleted = 0 " +
                             "AND t.root" + selectionSet;
 
@@ -1276,10 +1274,9 @@ public class LocalStore {
 
                 } else {
                     String sql =
-                            "SELECT m.uid, f.server_id " +
-                            "FROM messages m " +
-                            "LEFT JOIN folders f ON (m.folder_id = f.id) " +
-                            "WHERE m.empty = 0 AND m.id" + selectionSet;
+                            "SELECT uid, folder_id " +
+                            "FROM messages " +
+                            "WHERE empty = 0 AND id" + selectionSet;
 
                     getDataFromCursor(db.rawQuery(sql, selectionArgs));
                 }
@@ -1289,12 +1286,12 @@ public class LocalStore {
                 try {
                     while (cursor.moveToNext()) {
                         String uid = cursor.getString(0);
-                        String folderServerId = cursor.getString(1);
+                        Long folderId = cursor.getLong(1);
 
-                        List<String> uidList = folderMap.get(folderServerId);
+                        List<String> uidList = folderMap.get(folderId);
                         if (uidList == null) {
                             uidList = new ArrayList<>();
-                            folderMap.put(folderServerId, uidList);
+                            folderMap.put(folderId, uidList);
                         }
 
                         uidList.add(uid);

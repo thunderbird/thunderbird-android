@@ -1083,19 +1083,19 @@ public class MessagingController {
             Timber.e(e, "Couldn't set flags in local database");
         }
 
-        // Read folder name and UID of messages from the database
-        Map<String, List<String>> folderMap;
+        // Read folder ID and UID of messages from the database
+        Map<Long, List<String>> folderMap;
         try {
-            folderMap = localStore.getFoldersAndUids(ids, threadedList);
+            folderMap = localStore.getFolderIdsAndUids(ids, threadedList);
         } catch (MessagingException e) {
             Timber.e(e, "Couldn't get folder name and UID of messages");
             return;
         }
 
         // Loop over all folders
-        for (Entry<String, List<String>> entry : folderMap.entrySet()) {
-            String folderServerId = entry.getKey();
-            long folderId = getFolderIdOrThrow(account, folderServerId);
+        for (Entry<Long, List<String>> entry : folderMap.entrySet()) {
+            long folderId = entry.getKey();
+            List<String> uids = entry.getValue();
 
             // Notify listeners of changed folder status
             for (MessagingListener l : getListeners()) {
@@ -1105,7 +1105,7 @@ public class MessagingController {
             // TODO: Skip the remote part for all local-only folders
 
             // Send flag change to server
-            queueSetFlag(account, folderId, newState, flag, entry.getValue());
+            queueSetFlag(account, folderId, newState, flag, uids);
             processPendingCommands(account);
         }
     }
