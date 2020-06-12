@@ -132,7 +132,6 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
         const val LOCALIZED_FOLDER_NAME = "Posteingang"
         val FOLDER = Folder(
             id = FOLDER_ID,
-            serverId = "irrelevant",
             name = "INBOX",
             type = FolderType.INBOX,
             isLocalOnly = false
