@@ -6,7 +6,6 @@ import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
-import com.fsck.k9.activity.FolderInfoHolder
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.helper.SingleLiveEvent
 import com.fsck.k9.mailstore.Folder
@@ -57,7 +56,7 @@ class FolderSettingsViewModel(
             this@FolderSettingsViewModel.folderId = folderId
 
             val folderSettingsData = FolderSettingsData(
-                folder = createFolderObject(account, folderDetails.folder),
+                folder = folderDetails.folder,
                 dataStore = FolderSettingsDataStore(folderRepository, folderDetails)
             )
             emit(folderSettingsData)
@@ -74,17 +73,6 @@ class FolderSettingsViewModel(
         return withContext(Dispatchers.IO) {
             getFolderDetails(folderId)
         }
-    }
-
-    private fun createFolderObject(account: Account, folder: Folder): Folder {
-        val folderType = FolderInfoHolder.getFolderType(account, folder.id)
-        return Folder(
-            id = folder.id,
-            serverId = folder.serverId,
-            name = folder.name,
-            type = folderType,
-            isLocalOnly = folder.isLocalOnly
-        )
     }
 
     fun showClearFolderConfirmationDialog() {
