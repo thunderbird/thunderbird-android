@@ -23,7 +23,7 @@ class UnreadWidgetUpdateListener(private val unreadWidgetUpdater: UnreadWidgetUp
         updateUnreadWidget()
     }
 
-    override fun folderStatusChanged(account: Account, folderServerId: String) {
+    override fun folderStatusChanged(account: Account, folderId: Long) {
         updateUnreadWidget()
     }
 }

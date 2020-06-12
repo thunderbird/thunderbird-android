@@ -35,7 +35,7 @@ public interface MessagingListener {
     void checkMailStarted(Context context, Account account);
     void checkMailFinished(Context context, Account account);
 
-    void folderStatusChanged(Account account, String folderServerId);
+    void folderStatusChanged(Account account, long folderId);
 
     void messageUidChanged(Account account, long folderId, String oldUid, String newUid);
 

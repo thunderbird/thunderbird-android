@@ -999,8 +999,9 @@ public class MessagingController {
     }
 
     void processPendingMarkAllAsRead(PendingMarkAllAsRead command, Account account) throws MessagingException {
+        long folderId = command.folderId;
         LocalStore localStore = localStoreProvider.getInstance(account);
-        LocalFolder localFolder = localStore.getFolder(command.folderId);
+        LocalFolder localFolder = localStore.getFolder(folderId);
 
         localFolder.open();
         String folderServerId = localFolder.getServerId();
@@ -1016,7 +1017,7 @@ public class MessagingController {
         }
 
         for (MessagingListener l : getListeners()) {
-            l.folderStatusChanged(account, folderServerId);
+            l.folderStatusChanged(account, folderId);
         }
 
         Backend backend = getBackend(account);
@@ -1094,22 +1095,18 @@ public class MessagingController {
         // Loop over all folders
         for (Entry<String, List<String>> entry : folderMap.entrySet()) {
             String folderServerId = entry.getKey();
+            long folderId = getFolderIdOrThrow(account, folderServerId);
 
             // Notify listeners of changed folder status
             for (MessagingListener l : getListeners()) {
-                l.folderStatusChanged(account, folderServerId);
+                l.folderStatusChanged(account, folderId);
             }
 
             // TODO: Skip the remote part for all local-only folders
 
             // Send flag change to server
-            try {
-                long folderId = getFolderId(account, folderServerId);
-                queueSetFlag(account, folderId, newState, flag, entry.getValue());
-                processPendingCommands(account);
-            } catch (MessagingException e) {
-                Timber.e(e, "Error while trying to set flags");
-            }
+            queueSetFlag(account, folderId, newState, flag, entry.getValue());
+            processPendingCommands(account);
         }
     }
 
@@ -1130,9 +1127,8 @@ public class MessagingController {
             // Update the messages in the local store
             localFolder.setFlags(messages, Collections.singleton(flag), newState);
 
-            String folderServerId = localFolder.getServerId();
             for (MessagingListener l : getListeners()) {
-                l.folderStatusChanged(account, folderServerId);
+                l.folderStatusChanged(account, folderId);
             }
 
 
@@ -1756,11 +1752,9 @@ public class MessagingController {
 
             LocalFolder localSrcFolder = localStore.getFolder(srcFolderId);
             localSrcFolder.open();
-            String srcFolderServerId = localSrcFolder.getServerId();
 
             LocalFolder localDestFolder = localStore.getFolder(destFolderId);
             localDestFolder.open();
-            String destFolderServerId = localDestFolder.getServerId();
 
             boolean unreadCountAffected = false;
             List<String> uids = new LinkedList<>();
@@ -1799,7 +1793,7 @@ public class MessagingController {
                         // If this copy operation changes the unread count in the destination
                         // folder, notify the listeners.
                         for (MessagingListener l : getListeners()) {
-                            l.folderStatusChanged(account, destFolderServerId);
+                            l.folderStatusChanged(account, destFolderId);
                         }
                     }
                 } else {
@@ -1823,8 +1817,8 @@ public class MessagingController {
                         int unreadMessageCountSrc = localSrcFolder.getUnreadMessageCount();
                         int unreadMessageCountDest = localDestFolder.getUnreadMessageCount();
                         for (MessagingListener l : getListeners()) {
-                            l.folderStatusChanged(account, srcFolderServerId);
-                            l.folderStatusChanged(account, destFolderServerId);
+                            l.folderStatusChanged(account, srcFolderId);
+                            l.folderStatusChanged(account, destFolderId);
                         }
                     }
                 }
@@ -2014,9 +2008,9 @@ public class MessagingController {
             }
 
             for (MessagingListener l : getListeners()) {
-                l.folderStatusChanged(account, folder);
+                l.folderStatusChanged(account, folderId);
                 if (localTrashFolder != null) {
-                    l.folderStatusChanged(account, localTrashFolder.getServerId());
+                    l.folderStatusChanged(account, trashFolderId);
                 }
             }
 
@@ -2107,7 +2101,6 @@ public class MessagingController {
                     LocalStore localStore = localStoreProvider.getInstance(account);
                     LocalFolder localFolder = localStore.getFolder(trashFolderId);
                     localFolder.open();
-                    String trashFolderServerId = localFolder.getServerId();
 
                     boolean isTrashLocalOnly = isTrashLocalOnly(account);
                     if (isTrashLocalOnly) {
@@ -2118,7 +2111,7 @@ public class MessagingController {
                     }
 
                     for (MessagingListener l : getListeners()) {
-                        l.folderStatusChanged(account, trashFolderServerId);
+                        l.folderStatusChanged(account, trashFolderId);
                     }
 
                     if (!isTrashLocalOnly) {
@@ -2832,8 +2825,9 @@ public class MessagingController {
 
         @Override
         public void folderStatusChanged(@NotNull String folderServerId) {
+            long folderId = getFolderIdOrThrow(account, folderServerId);
             for (MessagingListener messagingListener : getListeners(listener)) {
-                messagingListener.folderStatusChanged(account, folderServerId);
+                messagingListener.folderStatusChanged(account, folderId);
             }
         }
 

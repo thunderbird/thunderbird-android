@@ -29,7 +29,7 @@ class MessageListWidgetUpdateListener(private val context: Context) : SimpleMess
         updateMailListWidget()
     }
 
-    override fun folderStatusChanged(account: Account, folderServerId: String) {
+    override fun folderStatusChanged(account: Account, folderId: Long) {
         updateMailListWidget()
     }
 }
