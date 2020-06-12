@@ -1249,8 +1249,8 @@ public class MessagingController {
 
         LocalMessage message = localFolder.getMessage(uid);
         if (message == null || message.getDatabaseId() == 0) {
-            String folderServerId = localFolder.getServerId();
-            throw new IllegalArgumentException("Message not found: folder=" + folderServerId + ", uid=" + uid);
+            String folderName = localFolder.getName();
+            throw new IllegalArgumentException("Message not found: folder=" + folderName + ", uid=" + uid);
         }
 
         FetchProfile fp = new FetchProfile();
@@ -1270,8 +1270,8 @@ public class MessagingController {
 
         LocalMessage message = localFolder.getMessage(uid);
         if (message == null || message.getDatabaseId() == 0) {
-            String folderServerId = localFolder.getServerId();
-            throw new IllegalArgumentException("Message not found: folder=" + folderServerId + ", uid=" + uid);
+            String folderName = localFolder.getName();
+            throw new IllegalArgumentException("Message not found: folder=" + folderName + ", uid=" + uid);
         }
 
         FetchProfile fp = new FetchProfile();

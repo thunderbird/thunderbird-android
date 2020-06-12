@@ -918,17 +918,15 @@ public class LocalStore {
                     boolean localOnly = folder.isLocalOnly();
                     String databaseFolderType = FolderTypeConverter.toDatabaseFolderType(folder.getType());
 
-                    if (K9.DEVELOPER_MODE) {
-                        Cursor cursor = db.query("folders", new String[] { "id", "server_id" },
-                                "server_id = ?", new String[] { serverId },null, null, null);
+                    if (K9.DEVELOPER_MODE && localOnly) {
+                        Cursor cursor = db.query("folders", new String[] { "id" },
+                                "name = ? AND local_only = 1", new String[] { name },null, null, null);
                         try {
                             if (cursor.moveToNext()) {
                                 long folderId = cursor.getLong(0);
-                                String folderServerId = cursor.getString(1);
 
-                                throw new AssertionError("Tried to create folder '" + serverId + "'" +
-                                        " that already exists in the database as '" + folderServerId + "'" +
-                                        " (" + folderId + ")");
+                                throw new AssertionError("Tried to create local folder '" + name + "'" +
+                                        " that already exists in the database with ID " + folderId);
                             }
                         } finally {
                             cursor.close();

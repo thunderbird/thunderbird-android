@@ -218,7 +218,7 @@ public class LocalFolder {
     }
 
     public boolean isOpen() {
-        return (databaseId != -1L && serverId != null);
+        return (databaseId != -1L && name != null);
     }
 
     public String getServerId() {
@@ -854,7 +854,7 @@ public class LocalFolder {
                                     destFolder.getDatabaseId(),
                                     message.getUid(),
                                     message.getDatabaseId(),
-                                    getServerId());
+                                    getName());
 
                             String newUid = K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString();
                             message.setUid(newUid);
@@ -1640,14 +1640,15 @@ public class LocalFolder {
     @Override
     public boolean equals(Object o) {
         if (o instanceof LocalFolder) {
-            return ((LocalFolder)o).serverId.equals(serverId);
+            return ((LocalFolder)o).databaseId == databaseId;
         }
         return super.equals(o);
     }
 
     @Override
     public int hashCode() {
-        return serverId.hashCode();
+        long value = databaseId;
+        return (int) (value ^ (value >>> 32));
     }
 
     void destroyMessage(LocalMessage localMessage) throws MessagingException {
