@@ -1857,7 +1857,7 @@ public class MessagingController {
             String uid = localFolder.getMessageUidById(id);
             if (uid != null) {
                 MessageReference messageReference = new MessageReference(account.getUuid(), folderId, uid, null);
-                deleteMessage(messageReference, null);
+                deleteMessage(messageReference);
             }
         } catch (MessagingException me) {
             Timber.e(me, "Error deleting draft");
@@ -1865,26 +1865,18 @@ public class MessagingController {
     }
 
     public void deleteThreads(final List<MessageReference> messages) {
-        actOnMessagesGroupedByAccountAndFolder(messages, new MessageActor() {
-            @Override
-            public void act(final Account account, final LocalFolder messageFolder,
-                    final List<LocalMessage> accountMessages) {
-                suppressMessages(account, accountMessages);
-
-                putBackground("deleteThreads", null, new Runnable() {
-                    @Override
-                    public void run() {
-                        deleteThreadsSynchronous(account, messageFolder.getServerId(), accountMessages);
-                    }
-                });
-            }
+        actOnMessagesGroupedByAccountAndFolder(messages, (account, messageFolder, accountMessages) -> {
+            suppressMessages(account, accountMessages);
+            putBackground("deleteThreads", null, () ->
+                    deleteThreadsSynchronous(account, messageFolder.getDatabaseId(), accountMessages)
+            );
         });
     }
 
-    private void deleteThreadsSynchronous(Account account, String folderServerId, List<LocalMessage> messages) {
+    private void deleteThreadsSynchronous(Account account, long folderId, List<LocalMessage> messages) {
         try {
             List<LocalMessage> messagesToDelete = collectMessagesInThreads(account, messages);
-            deleteMessagesSynchronous(account, folderServerId, messagesToDelete, null);
+            deleteMessagesSynchronous(account, folderId, messagesToDelete);
         } catch (MessagingException e) {
             Timber.e(e, "Something went wrong while deleting threads");
         }
@@ -1908,26 +1900,16 @@ public class MessagingController {
         return messagesInThreads;
     }
 
-    public void deleteMessage(MessageReference message, final MessagingListener listener) {
-        deleteMessages(Collections.singletonList(message), listener);
+    public void deleteMessage(MessageReference message) {
+        deleteMessages(Collections.singletonList(message));
     }
 
-    public void deleteMessages(List<MessageReference> messages, final MessagingListener listener) {
-        actOnMessagesGroupedByAccountAndFolder(messages, new MessageActor() {
-
-            @Override
-            public void act(final Account account, final LocalFolder messageFolder,
-                    final List<LocalMessage> accountMessages) {
-                suppressMessages(account, accountMessages);
-
-                putBackground("deleteMessages", null, new Runnable() {
-                    @Override
-                    public void run() {
-                        deleteMessagesSynchronous(account, messageFolder.getServerId(), accountMessages, listener);
-                    }
-                });
-            }
-
+    public void deleteMessages(List<MessageReference> messages) {
+        actOnMessagesGroupedByAccountAndFolder(messages, (account, messageFolder, accountMessages) -> {
+            suppressMessages(account, accountMessages);
+            putBackground("deleteMessages", null, () ->
+                    deleteMessagesSynchronous(account, messageFolder.getDatabaseId(), accountMessages)
+            );
         });
     }
 
@@ -1960,9 +1942,7 @@ public class MessagingController {
 
     }
 
-    private void deleteMessagesSynchronous(final Account account, final String folder,
-            final List<LocalMessage> messages,
-            MessagingListener listener) {
+    private void deleteMessagesSynchronous(Account account, long folderId, List<LocalMessage> messages) {
         try {
             List<LocalMessage> localOnlyMessages = new ArrayList<>();
             List<LocalMessage> syncedMessages = new ArrayList<>();
@@ -1980,9 +1960,8 @@ public class MessagingController {
             Backend backend = getBackend(account);
 
             LocalStore localStore = localStoreProvider.getInstance(account);
-            LocalFolder localFolder = localStore.getFolder(folder);
+            LocalFolder localFolder = localStore.getFolder(folderId);
             localFolder.open();
-            long folderId = localFolder.getDatabaseId();
 
             Map<String, String> uidMap = null;
             Long trashFolderId = account.getTrashFolderId();

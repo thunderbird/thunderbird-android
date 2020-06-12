@@ -166,7 +166,7 @@ public class MessageProvider extends ContentProvider {
         if (myAccount != null) {
             MessageReference messageReference = new MessageReference(myAccount.getUuid(), folderId, msgUid, null);
             MessagingController controller = MessagingController.getInstance(getContext());
-            controller.deleteMessage(messageReference, null);
+            controller.deleteMessage(messageReference);
         }
 
         // FIXME return the actual number of deleted messages

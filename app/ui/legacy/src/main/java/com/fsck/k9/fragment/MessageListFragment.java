@@ -727,7 +727,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         if (showingThreadedList) {
             messagingController.deleteThreads(messages);
         } else {
-            messagingController.deleteMessages(messages, null);
+            messagingController.deleteMessages(messages);
         }
     }
 
