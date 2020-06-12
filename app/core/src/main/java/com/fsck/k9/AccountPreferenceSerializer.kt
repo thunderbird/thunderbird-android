@@ -182,7 +182,7 @@ class AccountPreferenceSerializer(
             gotOne = false
             val name = storage.getString("$accountUuid.$IDENTITY_NAME_KEY.$ident", null)
             val email = storage.getString("$accountUuid.$IDENTITY_EMAIL_KEY.$ident", null)
-            val signatureUse = storage.getBoolean("$accountUuid.signatureUse.$ident", true)
+            val signatureUse = storage.getBoolean("$accountUuid.signatureUse.$ident", false)
             val signature = storage.getString("$accountUuid.signature.$ident", null)
             val description = storage.getString("$accountUuid.$IDENTITY_DESCRIPTION_KEY.$ident", null)
             val replyTo = storage.getString("$accountUuid.replyTo.$ident", null)
@@ -204,7 +204,7 @@ class AccountPreferenceSerializer(
         if (newIdentities.isEmpty()) {
             val name = storage.getString("$accountUuid.name", null)
             val email = storage.getString("$accountUuid.email", null)
-            val signatureUse = storage.getBoolean("$accountUuid.signatureUse", true)
+            val signatureUse = storage.getBoolean("$accountUuid.signatureUse", false)
             val signature = storage.getString("$accountUuid.signature", null)
             val identity = Identity(
                 name = name,
@@ -598,7 +598,7 @@ class AccountPreferenceSerializer(
             identities = ArrayList<Identity>()
 
             val identity = Identity(
-                signatureUse = true,
+                signatureUse = false,
                 signature = resourceProvider.defaultSignature(),
                 description = resourceProvider.defaultIdentityDescription()
             )

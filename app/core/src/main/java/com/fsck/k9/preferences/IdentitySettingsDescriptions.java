@@ -34,7 +34,8 @@ class IdentitySettingsDescriptions {
                 new V(1, new SignatureSetting())
         ));
         s.put("signatureUse", Settings.versions(
-                new V(1, new BooleanSetting(true))
+                new V(1, new BooleanSetting(true)),
+                new V(68, new BooleanSetting(false))
         ));
         s.put("replyTo", Settings.versions(
                 new V(1, new OptionalEmailAddressSetting())
