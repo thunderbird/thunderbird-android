@@ -9,6 +9,7 @@ import com.fsck.k9.mail.FolderClass
  * Updates special folders in [Account] if they are marked as [SpecialFolderSelection.AUTOMATIC] or if they are marked
  * as [SpecialFolderSelection.MANUAL] but have been deleted from the server.
  */
+// TODO: Find a better way to deal with local-only special folders
 class SpecialFolderUpdater(
     private val preferences: Preferences,
     private val folderRepository: FolderRepository,
@@ -19,11 +20,14 @@ class SpecialFolderUpdater(
         val folders = folderRepository.getRemoteFolders()
 
         updateInbox(folders)
-        updateSpecialFolder(FolderType.ARCHIVE, folders)
-        updateSpecialFolder(FolderType.DRAFTS, folders)
-        updateSpecialFolder(FolderType.SENT, folders)
-        updateSpecialFolder(FolderType.SPAM, folders)
-        updateSpecialFolder(FolderType.TRASH, folders)
+
+        if (!account.isPop3()) {
+            updateSpecialFolder(FolderType.ARCHIVE, folders)
+            updateSpecialFolder(FolderType.DRAFTS, folders)
+            updateSpecialFolder(FolderType.SENT, folders)
+            updateSpecialFolder(FolderType.SPAM, folders)
+            updateSpecialFolder(FolderType.TRASH, folders)
+        }
 
         removeImportedSpecialFoldersData()
         saveAccount()
@@ -127,4 +131,6 @@ class SpecialFolderUpdater(
     private fun saveAccount() {
         preferences.saveAccount(account)
     }
+
+    private fun Account.isPop3() = storeUri.startsWith("pop3")
 }
