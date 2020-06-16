@@ -101,7 +101,7 @@ public class MessageProvider extends ContentProvider {
         MessagingController messagingController = DI.get(MessagingController.class);
         messagingController.addListener(new SimpleMessagingListener() {
             @Override
-            public void folderStatusChanged(Account account, String folderServerId) {
+            public void folderStatusChanged(Account account, long folderId) {
                 context.getContentResolver().notifyChange(CONTENT_URI, null);
             }
         });
@@ -166,7 +166,7 @@ public class MessageProvider extends ContentProvider {
         if (myAccount != null) {
             MessageReference messageReference = new MessageReference(myAccount.getUuid(), folderId, msgUid, null);
             MessagingController controller = MessagingController.getInstance(getContext());
-            controller.deleteMessage(messageReference, null);
+            controller.deleteMessage(messageReference);
         }
 
         // FIXME return the actual number of deleted messages

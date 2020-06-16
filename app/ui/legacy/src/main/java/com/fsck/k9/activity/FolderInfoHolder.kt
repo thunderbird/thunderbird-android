@@ -20,7 +20,6 @@ class FolderInfoHolder(
         val folderId = localFolder.databaseId
         val folder = Folder(
             id = folderId,
-            serverId = localFolder.serverId,
             name = localFolder.name,
             type = getFolderType(account, folderId),
             isLocalOnly = localFolder.isLocalOnly

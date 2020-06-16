@@ -28,11 +28,6 @@ import org.jetbrains.annotations.Nullable;
  */
 public class Account implements BaseAccount {
     /**
-     * This local folder is used to store messages to be sent.
-     */
-    public static final String OUTBOX = "K9MAIL_INTERNAL_OUTBOX";
-
-    /**
      * Fixed name of outbox - not actually displayed.
      */
     public static final String OUTBOX_NAME = "Outbox";

@@ -25,7 +25,7 @@ class FoldersLiveData(
     private val messagingListener = object : SimpleMessagingListener() {
         override fun folderStatusChanged(
             account: Account,
-            folderServerId: String
+            folderId: Long
         ) {
             if (account?.uuid == accountUuid) {
                 loadFoldersAsync()

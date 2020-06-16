@@ -181,7 +181,7 @@ public class NotificationActionService extends Service {
 
         List<String> messageReferenceStrings = intent.getStringArrayListExtra(EXTRA_MESSAGE_REFERENCES);
         List<MessageReference> messageReferences = toMessageReferenceList(messageReferenceStrings);
-        controller.deleteMessages(messageReferences, null);
+        controller.deleteMessages(messageReferences);
     }
 
     private void archiveMessages(Intent intent, Account account, MessagingController controller) {

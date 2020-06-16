@@ -2,18 +2,18 @@ package com.fsck.k9.preferences
 
 import com.fsck.k9.Account
 import com.fsck.k9.mail.FolderClass
-import com.fsck.k9.mailstore.FolderDetails
 import com.fsck.k9.mailstore.FolderRepositoryManager
+import com.fsck.k9.mailstore.RemoteFolderDetails
 
 class FolderSettingsProvider(private val folderRepositoryManager: FolderRepositoryManager) {
     fun getFolderSettings(account: Account): List<FolderSettings> {
         val folderRepository = folderRepositoryManager.getFolderRepository(account)
-        return folderRepository.getFolderDetails()
+        return folderRepository.getRemoteFolderDetails()
             .filterNot { it.containsOnlyDefaultValues() }
             .map { it.toFolderSettings() }
     }
 
-    private fun FolderDetails.containsOnlyDefaultValues(): Boolean {
+    private fun RemoteFolderDetails.containsOnlyDefaultValues(): Boolean {
         return isInTopGroup == getDefaultValue("inTopGroup") &&
             isIntegrate == getDefaultValue("integrate") &&
             syncClass == getDefaultValue("syncMode") &&
@@ -29,7 +29,7 @@ class FolderSettingsProvider(private val folderRepositoryManager: FolderReposito
         return setting.defaultValue
     }
 
-    private fun FolderDetails.toFolderSettings(): FolderSettings {
+    private fun RemoteFolderDetails.toFolderSettings(): FolderSettings {
         return FolderSettings(
             folder.serverId,
             isInTopGroup,

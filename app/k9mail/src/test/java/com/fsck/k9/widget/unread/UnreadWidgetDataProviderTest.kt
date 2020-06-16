@@ -5,9 +5,7 @@ import com.fsck.k9.Account
 import com.fsck.k9.AppRobolectricTest
 import com.fsck.k9.Preferences
 import com.fsck.k9.controller.MessagingController
-import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mailstore.Folder
-import com.fsck.k9.mailstore.FolderDetails
 import com.fsck.k9.mailstore.FolderRepository
 import com.fsck.k9.mailstore.FolderRepositoryManager
 import com.fsck.k9.mailstore.FolderType
@@ -109,15 +107,7 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
 
     fun createFolderRepository(): FolderRepository {
         return mock {
-            on { getFolderDetails(FOLDER_ID) } doReturn FolderDetails(
-                folder = FOLDER,
-                isInTopGroup = true,
-                isIntegrate = true,
-                syncClass = FolderClass.NO_CLASS,
-                displayClass = FolderClass.FIRST_CLASS,
-                notifyClass = FolderClass.NO_CLASS,
-                pushClass = FolderClass.NO_CLASS
-            )
+            on { getFolder(FOLDER_ID) } doReturn FOLDER
         }
     }
 
@@ -142,7 +132,6 @@ class UnreadWidgetDataProviderTest : AppRobolectricTest() {
         const val LOCALIZED_FOLDER_NAME = "Posteingang"
         val FOLDER = Folder(
             id = FOLDER_ID,
-            serverId = "irrelevant",
             name = "INBOX",
             type = FolderType.INBOX,
             isLocalOnly = false

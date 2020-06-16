@@ -8,7 +8,7 @@ import android.text.style.StyleSpan
 import android.util.AttributeSet
 import androidx.core.content.res.TypedArrayUtils
 import androidx.preference.ListPreference
-import com.fsck.k9.mailstore.Folder
+import com.fsck.k9.mailstore.RemoteFolder
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.folders.FolderNameFormatter
 import org.koin.core.KoinComponent
@@ -38,13 +38,13 @@ constructor(
         isEnabled = false
     }
 
-    fun setFolders(folders: List<Folder>) {
+    fun setFolders(folders: List<RemoteFolder>) {
         entries = (listOf(noFolderSelectedName) + getFolderDisplayNames(folders)).toTypedArray()
         entryValues = (listOf(NO_FOLDER_SELECTED_VALUE) + getFolderValues(folders)).toTypedArray()
         isEnabled = true
     }
 
-    fun setFolders(folders: List<Folder>, automaticFolder: Folder?) {
+    fun setFolders(folders: List<RemoteFolder>, automaticFolder: RemoteFolder?) {
         val automaticFolderName = if (automaticFolder != null) {
             folderNameFormatter.displayName(automaticFolder)
         } else {
@@ -73,9 +73,9 @@ constructor(
         }
     }
 
-    private fun getFolderDisplayNames(folders: List<Folder>) = folders.map { folderNameFormatter.displayName(it) }
+    private fun getFolderDisplayNames(folders: List<RemoteFolder>) = folders.map { folderNameFormatter.displayName(it) }
 
-    private fun getFolderValues(folders: List<Folder>) = folders.map { MANUAL_PREFIX + it.id.toString() }
+    private fun getFolderValues(folders: List<RemoteFolder>) = folders.map { MANUAL_PREFIX + it.id.toString() }
 
     private fun String.italicize(): CharSequence {
         return SpannableString(this).apply { setSpan(StyleSpan(Typeface.ITALIC), 0, this.length, 0) }

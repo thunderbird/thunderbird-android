@@ -400,8 +400,8 @@ public class LocalStore {
                             if (cursor.isNull(FOLDER_ID_INDEX)) {
                                 continue;
                             }
-                            String folderServerId = cursor.getString(FOLDER_SERVER_ID_INDEX);
-                            LocalFolder folder = new LocalFolder(LocalStore.this, folderServerId);
+                            long folderId = cursor.getLong(FOLDER_ID_INDEX);
+                            LocalFolder folder = new LocalFolder(LocalStore.this, folderId);
                             folder.open(cursor);
 
                             folders.add(folder);
@@ -793,17 +793,16 @@ public class LocalStore {
 
     @Nullable
     private LocalMessage loadLocalMessageByMessageId(long messageId) throws MessagingException {
-        Map<String, List<String>> foldersAndUids =
-                getFoldersAndUids(Collections.singletonList(messageId), false);
-        if (foldersAndUids.isEmpty()) {
+        Map<Long, List<String>> folderIdsAndUids = getFolderIdsAndUids(Collections.singletonList(messageId), false);
+        if (folderIdsAndUids.isEmpty()) {
             return null;
         }
 
-        Map.Entry<String,List<String>> entry = foldersAndUids.entrySet().iterator().next();
-        String folderServerId = entry.getKey();
+        Map.Entry<Long, List<String>> entry = folderIdsAndUids.entrySet().iterator().next();
+        long folderId = entry.getKey();
         String uid = entry.getValue().get(0);
 
-        LocalFolder folder = getFolder(folderServerId);
+        LocalFolder folder = getFolder(folderId);
         LocalMessage localMessage = folder.getMessage(uid);
 
         FetchProfile fp = new FetchProfile();
@@ -919,17 +918,15 @@ public class LocalStore {
                     boolean localOnly = folder.isLocalOnly();
                     String databaseFolderType = FolderTypeConverter.toDatabaseFolderType(folder.getType());
 
-                    if (K9.DEVELOPER_MODE) {
-                        Cursor cursor = db.query("folders", new String[] { "id", "server_id" },
-                                "server_id = ?", new String[] { serverId },null, null, null);
+                    if (K9.DEVELOPER_MODE && localOnly) {
+                        Cursor cursor = db.query("folders", new String[] { "id" },
+                                "name = ? AND local_only = 1", new String[] { name },null, null, null);
                         try {
                             if (cursor.moveToNext()) {
                                 long folderId = cursor.getLong(0);
-                                String folderServerId = cursor.getString(1);
 
-                                throw new AssertionError("Tried to create folder '" + serverId + "'" +
-                                        " that already exists in the database as '" + folderServerId + "'" +
-                                        " (" + folderId + ")");
+                                throw new AssertionError("Tried to create local folder '" + name + "'" +
+                                        " that already exists in the database with ID " + folderId);
                             }
                         } finally {
                             cursor.close();
@@ -960,14 +957,10 @@ public class LocalStore {
     }
 
     public long createLocalFolder(String folderName, FolderType type) throws MessagingException {
-        return createLocalFolder(folderName, folderName, type);
-    }
-
-    public long createLocalFolder(String folderServerId, String folderName, FolderType type) throws MessagingException {
         return database.execute(true, (DbCallback<Long>) db -> {
             ContentValues values = new ContentValues();
             values.put("name", folderName);
-            values.put("server_id", folderServerId);
+            values.putNull("server_id");
             values.put("local_only", 1);
             values.put("type", FolderTypeConverter.toDatabaseFolderType(type));
             values.put("visible_limit", 0);
@@ -1230,7 +1223,7 @@ public class LocalStore {
     }
 
     /**
-     * Get folder server ID and UID for the supplied messages.
+     * Get folder ID and UID for the supplied messages.
      *
      * @param messageIds
      *         A list of primary keys in the "messages" table.
@@ -1240,13 +1233,13 @@ public class LocalStore {
      *         If this is {@code false} only the UIDs for messages in {@code messageIds} are
      *         returned.
      *
-     * @return The list of UIDs for the messages grouped by folder server ID.
+     * @return The list of UIDs for the messages grouped by folder ID.
      *
      */
-    public Map<String, List<String>> getFoldersAndUids(final List<Long> messageIds,
+    public Map<Long, List<String>> getFolderIdsAndUids(final List<Long> messageIds,
             final boolean threadedList) throws MessagingException {
 
-        final Map<String, List<String>> folderMap = new HashMap<>();
+        final Map<Long, List<String>> folderMap = new HashMap<>();
 
         doBatchSetSelection(new BatchSetSelection() {
 
@@ -1265,10 +1258,9 @@ public class LocalStore {
                     throws UnavailableStorageException {
 
                 if (threadedList) {
-                    String sql = "SELECT m.uid, f.server_id " +
+                    String sql = "SELECT m.uid, m.folder_id " +
                             "FROM threads t " +
                             "LEFT JOIN messages m ON (t.message_id = m.id) " +
-                            "LEFT JOIN folders f ON (m.folder_id = f.id) " +
                             "WHERE m.empty = 0 AND m.deleted = 0 " +
                             "AND t.root" + selectionSet;
 
@@ -1276,10 +1268,9 @@ public class LocalStore {
 
                 } else {
                     String sql =
-                            "SELECT m.uid, f.server_id " +
-                            "FROM messages m " +
-                            "LEFT JOIN folders f ON (m.folder_id = f.id) " +
-                            "WHERE m.empty = 0 AND m.id" + selectionSet;
+                            "SELECT uid, folder_id " +
+                            "FROM messages " +
+                            "WHERE empty = 0 AND id" + selectionSet;
 
                     getDataFromCursor(db.rawQuery(sql, selectionArgs));
                 }
@@ -1289,12 +1280,12 @@ public class LocalStore {
                 try {
                     while (cursor.moveToNext()) {
                         String uid = cursor.getString(0);
-                        String folderServerId = cursor.getString(1);
+                        Long folderId = cursor.getLong(1);
 
-                        List<String> uidList = folderMap.get(folderServerId);
+                        List<String> uidList = folderMap.get(folderId);
                         if (uidList == null) {
                             uidList = new ArrayList<>();
-                            folderMap.put(folderServerId, uidList);
+                            folderMap.put(folderId, uidList);
                         }
 
                         uidList.add(uid);

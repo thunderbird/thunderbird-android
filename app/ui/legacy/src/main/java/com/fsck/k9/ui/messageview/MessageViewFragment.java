@@ -317,7 +317,7 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
             mFragmentListener.disableDeleteAction();
             LocalMessage messageToDelete = mMessage;
             mFragmentListener.showNextMessageOrReturn();
-            mController.deleteMessage(mMessageReference, null);
+            mController.deleteMessage(mMessageReference);
         }
     }
 

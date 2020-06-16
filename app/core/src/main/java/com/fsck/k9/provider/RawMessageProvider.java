@@ -185,11 +185,10 @@ public class RawMessageProvider extends ContentProvider {
             LocalStore localStore = DI.get(LocalStoreProvider.class).getInstance(account);
             LocalFolder localFolder = localStore.getFolder(folderId);
             localFolder.open();
-            String folderServerId = localFolder.getServerId();
 
             LocalMessage message = localFolder.getMessage(uid);
             if (message == null || message.getDatabaseId() == 0) {
-                Timber.w("Message not found: folder=%s, uid=%s", folderServerId, uid);
+                Timber.w("Message not found: folder=%s, uid=%s", folderId, uid);
                 return null;
             }
 

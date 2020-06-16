@@ -9,6 +9,7 @@ import com.fsck.k9.mail.FolderClass
  * Updates special folders in [Account] if they are marked as [SpecialFolderSelection.AUTOMATIC] or if they are marked
  * as [SpecialFolderSelection.MANUAL] but have been deleted from the server.
  */
+// TODO: Find a better way to deal with local-only special folders
 class SpecialFolderUpdater(
     private val preferences: Preferences,
     private val folderRepository: FolderRepository,
@@ -16,20 +17,23 @@ class SpecialFolderUpdater(
     private val account: Account
 ) {
     fun updateSpecialFolders() {
-        val folders = folderRepository.getFolders()
+        val folders = folderRepository.getRemoteFolders()
 
         updateInbox(folders)
-        updateSpecialFolder(FolderType.ARCHIVE, folders)
-        updateSpecialFolder(FolderType.DRAFTS, folders)
-        updateSpecialFolder(FolderType.SENT, folders)
-        updateSpecialFolder(FolderType.SPAM, folders)
-        updateSpecialFolder(FolderType.TRASH, folders)
+
+        if (!account.isPop3()) {
+            updateSpecialFolder(FolderType.ARCHIVE, folders)
+            updateSpecialFolder(FolderType.DRAFTS, folders)
+            updateSpecialFolder(FolderType.SENT, folders)
+            updateSpecialFolder(FolderType.SPAM, folders)
+            updateSpecialFolder(FolderType.TRASH, folders)
+        }
 
         removeImportedSpecialFoldersData()
         saveAccount()
     }
 
-    private fun updateInbox(folders: List<Folder>) {
+    private fun updateInbox(folders: List<RemoteFolder>) {
         val oldInboxId = account.inboxFolderId
         val newInboxId = folders.firstOrNull { it.type == FolderType.INBOX }?.id
         if (newInboxId == oldInboxId) return
@@ -48,7 +52,7 @@ class SpecialFolderUpdater(
         }
     }
 
-    private fun updateSpecialFolder(type: FolderType, folders: List<Folder>) {
+    private fun updateSpecialFolder(type: FolderType, folders: List<RemoteFolder>) {
         val importedServerId = getImportedSpecialFolderServerId(type)
         if (importedServerId != null) {
             val folderId = folders.firstOrNull { it.serverId == importedServerId }?.id
@@ -127,4 +131,6 @@ class SpecialFolderUpdater(
     private fun saveAccount() {
         preferences.saveAccount(account)
     }
+
+    private fun Account.isPop3() = storeUri.startsWith("pop3")
 }

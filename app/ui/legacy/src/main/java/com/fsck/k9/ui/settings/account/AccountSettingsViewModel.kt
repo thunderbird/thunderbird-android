@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
-import com.fsck.k9.mailstore.Folder
 import com.fsck.k9.mailstore.FolderRepositoryManager
 import com.fsck.k9.mailstore.FolderType
+import com.fsck.k9.mailstore.RemoteFolder
 import com.fsck.k9.mailstore.SpecialFolderSelectionStrategy
 import com.fsck.k9.ui.account.AccountsLiveData
 import kotlinx.coroutines.Dispatchers
@@ -68,7 +68,7 @@ class AccountSettingsViewModel(
         }
     }
 
-    private fun getAutomaticSpecialFolders(folders: List<Folder>): Map<FolderType, Folder?> {
+    private fun getAutomaticSpecialFolders(folders: List<RemoteFolder>): Map<FolderType, RemoteFolder?> {
         return mapOf(
             FolderType.ARCHIVE to specialFolderSelectionStrategy.selectSpecialFolder(folders, FolderType.ARCHIVE),
             FolderType.DRAFTS to specialFolderSelectionStrategy.selectSpecialFolder(folders, FolderType.DRAFTS),
@@ -79,4 +79,7 @@ class AccountSettingsViewModel(
     }
 }
 
-data class RemoteFolderInfo(val folders: List<Folder>, val automaticSpecialFolders: Map<FolderType, Folder?>)
+data class RemoteFolderInfo(
+    val folders: List<RemoteFolder>,
+    val automaticSpecialFolders: Map<FolderType, RemoteFolder?>
+)
