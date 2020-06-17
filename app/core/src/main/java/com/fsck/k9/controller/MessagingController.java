@@ -1601,9 +1601,11 @@ public class MessagingController {
 
             Timber.i("Moved sent message to folder '%s' (%d)", sentFolderServerId, sentFolderId);
 
-            PendingCommand command = PendingAppend.create(sentFolderId, message.getUid());
-            queuePendingCommand(account, command);
-            processPendingCommands(account);
+            if (!sentFolder.isLocalOnly()) {
+                PendingCommand command = PendingAppend.create(sentFolderId, message.getUid());
+                queuePendingCommand(account, command);
+                processPendingCommands(account);
+            }
         }
     }
 
