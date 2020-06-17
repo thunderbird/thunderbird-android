@@ -1092,6 +1092,8 @@ public class MessagingController {
             return;
         }
 
+        boolean accountSupportsFlags = supportsFlags(account);
+
         // Loop over all folders
         for (Entry<Long, List<String>> entry : folderMap.entrySet()) {
             long folderId = entry.getKey();
@@ -1102,11 +1104,19 @@ public class MessagingController {
                 l.folderStatusChanged(account, folderId);
             }
 
-            // TODO: Skip the remote part for all local-only folders
-
-            // Send flag change to server
-            queueSetFlag(account, folderId, newState, flag, uids);
-            processPendingCommands(account);
+            if (accountSupportsFlags) {
+                LocalFolder localFolder = localStore.getFolder(folderId);
+                try {
+                    localFolder.open();
+                    if (!localFolder.isLocalOnly()) {
+                        // Send flag change to server
+                        queueSetFlag(account, folderId, newState, flag, uids);
+                        processPendingCommands(account);
+                    }
+                } catch (MessagingException e) {
+                    Timber.e(e, "Couldn't open folder. Account: %s, folder ID: %d", account, folderId);
+                }
+            }
         }
     }
 
@@ -1131,16 +1141,12 @@ public class MessagingController {
                 l.folderStatusChanged(account, folderId);
             }
 
-
-            /*
-             * Handle the remote side
-             */
-
-            // TODO: Skip the remote part for all local-only folders
-
-            List<String> uids = getUidsFromMessages(messages);
-            queueSetFlag(account, folderId, newState, flag, uids);
-            processPendingCommands(account);
+            // Handle the remote side
+            if (supportsFlags(account) && !localFolder.isLocalOnly()) {
+                List<String> uids = getUidsFromMessages(messages);
+                queueSetFlag(account, folderId, newState, flag, uids);
+                processPendingCommands(account);
+            }
         } catch (MessagingException me) {
             throw new RuntimeException(me);
         }
