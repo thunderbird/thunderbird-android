@@ -2536,7 +2536,7 @@ public class MessagingController {
                 localMessage.setCachedDecryptedSubject(plaintextSubject);
             }
 
-            if (saveRemotely) {
+            if (saveRemotely && supportsUpload(account)) {
                 PendingCommand command = PendingAppend.create(localFolder.getDatabaseId(), localMessage.getUid());
                 queuePendingCommand(account, command);
                 processPendingCommands(account);
