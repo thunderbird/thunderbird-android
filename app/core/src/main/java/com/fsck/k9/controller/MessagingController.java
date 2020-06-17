@@ -2002,7 +2002,7 @@ public class MessagingController {
             Timber.d("Delete policy for account %s is %s", account.getDescription(), account.getDeletePolicy());
 
             Long outboxFolderId = account.getOutboxFolderId();
-            if (outboxFolderId != null && folderId == outboxFolderId) {
+            if (outboxFolderId != null && folderId == outboxFolderId && supportsUpload(account)) {
                 for (Message message : messages) {
                     // If the message was in the Outbox, then it has been copied to local Trash, and has
                     // to be copied to remote trash
@@ -2010,6 +2010,8 @@ public class MessagingController {
                     queuePendingCommand(account, command);
                 }
                 processPendingCommands(account);
+            } else if (localFolder.isLocalOnly()) {
+                // Nothing to do on the remote side
             } else if (!syncedMessageUids.isEmpty()) {
                 if (account.getDeletePolicy() == DeletePolicy.ON_DELETE) {
                     if (!account.hasTrashFolder() || folderId == trashFolderId ||
