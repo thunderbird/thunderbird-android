@@ -23,7 +23,7 @@ class Pop3Backend(
     private val commandSetFlag = CommandSetFlag(pop3Store)
     private val commandFetchMessage = CommandFetchMessage(pop3Store)
 
-    override val supportsSeenFlag = false
+    override val supportsFlags = false
     override val supportsExpunge = false
     override val supportsMove = false
     override val supportsCopy = false

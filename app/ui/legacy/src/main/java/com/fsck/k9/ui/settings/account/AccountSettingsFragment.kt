@@ -147,7 +147,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
     private fun initializeDeletePolicy(account: Account) {
         (findPreference(PREFERENCE_DELETE_POLICY) as? ListPreference)?.apply {
-            if (!messagingController.supportsSeenFlag(account)) {
+            if (!messagingController.supportsFlags(account)) {
                 removeEntry(DELETE_POLICY_MARK_AS_READ)
             }
         }

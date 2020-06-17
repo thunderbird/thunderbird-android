@@ -8,7 +8,7 @@ import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.Part
 
 interface Backend {
-    val supportsSeenFlag: Boolean
+    val supportsFlags: Boolean
     val supportsExpunge: Boolean
     val supportsMove: Boolean
     val supportsCopy: Boolean

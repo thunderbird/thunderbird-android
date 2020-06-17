@@ -30,7 +30,7 @@ class JmapBackend(
     private val commandDelete = CommandDelete(jmapClient, accountId)
     private val commandMove = CommandMove(jmapClient, accountId)
     private val commandUpload = CommandUpload(jmapClient, okHttpClient, httpAuthentication, accountId)
-    override val supportsSeenFlag = true
+    override val supportsFlags = true
     override val supportsExpunge = false
     override val supportsMove = true
     override val supportsCopy = true

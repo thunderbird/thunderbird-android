@@ -1021,7 +1021,7 @@ public class MessagingController {
         }
 
         Backend backend = getBackend(account);
-        if (backend.getSupportsSeenFlag()) {
+        if (backend.getSupportsFlags()) {
             backend.markAllAsRead(folderServerId);
         }
     }
@@ -1652,8 +1652,8 @@ public class MessagingController {
         return getBackend(account).isPushCapable();
     }
 
-    public boolean supportsSeenFlag(Account account) {
-        return getBackend(account).getSupportsSeenFlag();
+    public boolean supportsFlags(Account account) {
+        return getBackend(account).getSupportsFlags();
     }
 
     public boolean supportsExpunge(Account account) {
