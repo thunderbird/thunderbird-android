@@ -27,7 +27,7 @@ class WebDavBackend(
     private val commandFetchMessage = CommandFetchMessage(webDavStore)
     private val commandUploadMessage = CommandUploadMessage(webDavStore)
 
-    override val supportsSeenFlag = true
+    override val supportsFlags = true
     override val supportsExpunge = true
     override val supportsMove = true
     override val supportsCopy = true

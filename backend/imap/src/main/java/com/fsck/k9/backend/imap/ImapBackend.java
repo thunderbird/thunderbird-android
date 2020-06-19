@@ -60,7 +60,7 @@ public class ImapBackend implements Backend {
     }
 
     @Override
-    public boolean getSupportsSeenFlag() {
+    public boolean getSupportsFlags() {
         return true;
     }
 
