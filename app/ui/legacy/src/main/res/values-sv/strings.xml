@@ -638,8 +638,8 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_settings_signature__location_before_quoted_text">Före citerad text</string>
   <string name="account_settings_signature__location_after_quoted_text">Efter citerad text</string>
   <string name="setting_theme_global">Använd appens tema</string>
-  <string name="setting_theme_dark">Mörk</string>
-  <string name="setting_theme_light">Ljus</string>
+  <string name="setting_theme_dark">Mörkt</string>
+  <string name="setting_theme_light">Ljust</string>
   <string name="setting_theme_follow_system">Använd systemstandard</string>
   <string name="display_preferences">Utseende</string>
   <string name="global_preferences">Globala</string>
