@@ -22,7 +22,7 @@ class EmailTextToHtml private constructor(private val text: String) {
     }
 
     private fun appendHtmlPrefix() {
-        html.append("<pre class=\"$K9MAIL_CSS_CLASS\">")
+        html.append("<pre dir=\"auto\" class=\"$K9MAIL_CSS_CLASS\">")
     }
 
     private fun appendHtmlSuffix() {

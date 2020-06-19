@@ -124,7 +124,7 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
         ViewableExtractedText container = messageViewInfoExtractor.extractTextFromViewables(outputViewableParts);
 
         String expectedHtml =
-                "<pre class=\"k9mail\">" +
+                "<pre dir=\"auto\" class=\"k9mail\">" +
                 "K-9 Mail rocks :&gt;" +
                 "</pre>";
 
@@ -151,7 +151,7 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
         String expectedText = "K-9 Mail rocks :> flowed line\r\n" +
                 "not flowed line";
         String expectedHtml =
-                "<pre class=\"k9mail\">" +
+                "<pre dir=\"auto\" class=\"k9mail\">" +
                         "K-9 Mail rocks :&gt; flowed line<br>not flowed line" +
                         "</pre>";
 
@@ -212,12 +212,12 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
                 "------------------------------------------------------------------------\r\n\r\n" +
                 bodyText2;
         String expectedHtml =
-                "<pre class=\"k9mail\">" +
+                "<pre dir=\"auto\" class=\"k9mail\">" +
                 bodyText1 +
                 "</pre>" +
                 "<p style=\"margin-top: 2.5em; margin-bottom: 1em; " +
                         "border-bottom: 1px solid #000\"></p>" +
-                "<pre class=\"k9mail\">" +
+                "<pre dir=\"auto\" class=\"k9mail\">" +
                 bodyText2 +
                 "</pre>";
 
@@ -278,7 +278,7 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
                 "\r\n" +
                 innerBodyText;
         String expectedHtml =
-                "<pre class=\"k9mail\">" +
+                "<pre dir=\"auto\" class=\"k9mail\">" +
                         BODY_TEXT_HTML +
                 "</pre>" +
                 "<p style=\"margin-top: 2.5em; margin-bottom: 1em; border-bottom: " +
@@ -298,7 +298,7 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
                 "<td>Subject</td>" +
                 "</tr>" +
                 "</table>" +
-                "<pre class=\"k9mail\">" +
+                "<pre dir=\"auto\" class=\"k9mail\">" +
                 innerBodyText +
                 "</pre>";
 
@@ -354,12 +354,12 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
         String expectedHtmlText = "<table style=\"border: 0\">" +
                 "<tr><th style=\"text-align: left; vertical-align: top;\">Subject:</th><td>(No subject)</td></tr>" +
                 "</table>" +
-                "<pre class=\"k9mail\">text body of first message<br></pre>" +
+                "<pre dir=\"auto\" class=\"k9mail\">text body of first message<br></pre>" +
                 "<p style=\"margin-top: 2.5em; margin-bottom: 1em; border-bottom: 1px solid #000\"></p>" +
                 "<table style=\"border: 0\">" +
                 "<tr><th style=\"text-align: left; vertical-align: top;\">Subject:</th><td>subject of second message</td></tr>" +
                 "</table>" +
-                "<pre class=\"k9mail\">text part of second message<br></pre>";
+                "<pre dir=\"auto\" class=\"k9mail\">text part of second message<br></pre>";
 
 
         assertEquals(4, outputViewableParts.size());
@@ -387,7 +387,7 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
                 false);
 
 
-        assertEquals("<pre class=\"k9mail\">text</pre>", messageViewInfo.text);
+        assertEquals("<pre dir=\"auto\" class=\"k9mail\">text</pre>", messageViewInfo.text);
         assertSame(attachmentViewInfo, messageViewInfo.attachments.get(0));
         assertNull(messageViewInfo.cryptoResultAnnotation);
         assertTrue(messageViewInfo.extraAttachments.isEmpty());
@@ -409,7 +409,7 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
                 false);
 
 
-        assertEquals("<pre class=\"k9mail\">text</pre>", messageViewInfo.text);
+        assertEquals("<pre dir=\"auto\" class=\"k9mail\">text</pre>", messageViewInfo.text);
         assertSame(annotation, messageViewInfo.cryptoResultAnnotation);
         assertSame(message, messageViewInfo.message);
         assertSame(message, messageViewInfo.rootPart);
@@ -434,7 +434,7 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
                 false);
 
 
-        assertEquals("<pre class=\"k9mail\">replacement text</pre>", messageViewInfo.text);
+        assertEquals("<pre dir=\"auto\" class=\"k9mail\">replacement text</pre>", messageViewInfo.text);
         assertSame(annotation, messageViewInfo.cryptoResultAnnotation);
         assertSame(message, messageViewInfo.message);
         assertSame(replacementPart, messageViewInfo.rootPart);
@@ -462,7 +462,7 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
                 false);
 
 
-        assertEquals("<pre class=\"k9mail\">text</pre>", messageViewInfo.text);
+        assertEquals("<pre dir=\"auto\" class=\"k9mail\">text</pre>", messageViewInfo.text);
         assertSame(annotation, messageViewInfo.cryptoResultAnnotation);
         assertEquals("extra text", messageViewInfo.extraText);
         assertTrue(messageViewInfo.attachments.isEmpty());
@@ -492,7 +492,7 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
                 false);
 
 
-        assertEquals("<pre class=\"k9mail\">text</pre>", messageViewInfo.text);
+        assertEquals("<pre dir=\"auto\" class=\"k9mail\">text</pre>", messageViewInfo.text);
         assertSame(annotation, messageViewInfo.cryptoResultAnnotation);
         assertSame(attachmentViewInfo, messageViewInfo.extraAttachments.get(0));
         assertTrue(messageViewInfo.attachments.isEmpty());
@@ -533,7 +533,7 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
                 true);
 
         assertSame(openPgpResultAnnotation, messageViewInfo.cryptoResultAnnotation);
-        assertEquals("<pre class=\"k9mail\">encrypted text</pre>", messageViewInfo.text);
+        assertEquals("<pre dir=\"auto\" class=\"k9mail\">encrypted text</pre>", messageViewInfo.text);
         assertTrue(messageViewInfo.attachments.isEmpty());
         assertTrue(messageViewInfo.extraAttachments.isEmpty());
     }
@@ -560,7 +560,7 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
                 true);
 
         assertSame(openPgpResultAnnotation, messageViewInfo.cryptoResultAnnotation);
-        assertEquals("<pre class=\"k9mail\">encrypted text</pre>", messageViewInfo.text);
+        assertEquals("<pre dir=\"auto\" class=\"k9mail\">encrypted text</pre>", messageViewInfo.text);
         assertEquals(PROTECTED_SUBJECT, messageViewInfo.subject);
         assertTrue(messageViewInfo.attachments.isEmpty());
         assertTrue(messageViewInfo.extraAttachments.isEmpty());
@@ -578,7 +578,7 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
         MessageViewInfo messageViewInfo = messageViewInfoExtractor.extractMessageForView(message, null,
                 false);
 
-        assertEquals("<pre class=\"k9mail\">text</pre>", messageViewInfo.text);
+        assertEquals("<pre dir=\"auto\" class=\"k9mail\">text</pre>", messageViewInfo.text);
         assertNull(messageViewInfo.cryptoResultAnnotation);
         assertTrue(messageViewInfo.attachments.isEmpty());
         assertTrue(messageViewInfo.extraAttachments.isEmpty());
@@ -602,7 +602,7 @@ public class MessageViewInfoExtractorTest extends K9RobolectricTest {
         MessageViewInfo messageViewInfo = messageViewInfoExtractor.extractMessageForView(message, null,
                 false);
 
-        assertEquals("<pre class=\"k9mail\">text</pre>", messageViewInfo.text);
+        assertEquals("<pre dir=\"auto\" class=\"k9mail\">text</pre>", messageViewInfo.text);
         assertNull(messageViewInfo.cryptoResultAnnotation);
         assertSame(mock, messageViewInfo.attachments.get(0));
         assertTrue(messageViewInfo.extraAttachments.isEmpty());
