@@ -1013,7 +1013,9 @@ class ImapFolder internal constructor(
                     }
                 } while (response.tag == null)
 
-                if (response.size > 1) {
+                if (response.size < 1 || !ImapResponseParser.equalsIgnoreCase(response[0], Responses.OK)) {
+                    throw NegativeImapResponseException("APPEND failed", listOf(response))
+                } else if (response.size > 1) {
                     /*
                      * If the server supports UIDPLUS, then along with the APPEND response it
                      * will return an APPENDUID response code, e.g.
