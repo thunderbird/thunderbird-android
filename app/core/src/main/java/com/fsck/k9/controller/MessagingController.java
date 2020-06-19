@@ -730,7 +730,18 @@ public class MessagingController {
                     } else {
                         throw me;
                     }
+                } catch (Exception e) {
+                    Timber.e("Unexpected exception with command '%s', removing command from queue", command);
+                    localStore.removePendingCommand(processingCommand);
+
+                    if (K9.DEVELOPER_MODE) {
+                        throw new AssertionError("Unexpected exception while processing pending command", e);
+                    }
                 }
+
+                // TODO: When removing a pending command due to an error the local changes should be reverted. Pending
+                //  commands that depend on this command should be canceled and local changes be reverted. In most cases
+                //  the user should be notified about the failure as well.
             }
         } catch (MessagingException me) {
             notifyUserIfCertificateProblem(account, me, true);
