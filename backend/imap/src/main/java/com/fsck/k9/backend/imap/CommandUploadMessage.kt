@@ -14,7 +14,7 @@ internal class CommandUploadMessage(private val imapStore: ImapStore) {
             val localUid = message.uid
             val uidMap = folder.appendMessages(listOf(message))
 
-            return uidMap[localUid]
+            return uidMap?.get(localUid)
         } finally {
             folder.close()
         }
