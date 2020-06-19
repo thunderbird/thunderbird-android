@@ -870,6 +870,40 @@ class ImapFolderTest {
     }
 
     @Test
+    fun appendMessages_withNegativeResponse_shouldThrow() {
+        val folder = createFolder("Folder")
+        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
+        folder.open(ImapFolder.OPEN_MODE_RW)
+        val messages = listOf(createImapMessage("1"))
+        whenever(imapConnection.readResponse()).thenReturn(createImapResponse("x NO Can't append to this folder"))
+
+        try {
+            folder.appendMessages(messages)
+            fail("Expected exception")
+        } catch (e: NegativeImapResponseException) {
+            assertEquals("APPEND failed", e.message)
+            assertEquals("NO", e.lastResponse[0])
+        }
+    }
+
+    @Test
+    fun appendMessages_withBadResponse_shouldThrow() {
+        val folder = createFolder("Folder")
+        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
+        folder.open(ImapFolder.OPEN_MODE_RW)
+        val messages = listOf(createImapMessage("1"))
+        whenever(imapConnection.readResponse()).thenReturn(createImapResponse("x BAD [TOOBIG] Message too large."))
+
+        try {
+            folder.appendMessages(messages)
+            fail("Expected exception")
+        } catch (e: NegativeImapResponseException) {
+            assertEquals("APPEND failed", e.message)
+            assertEquals("BAD", e.lastResponse[0])
+        }
+    }
+
+    @Test
     fun getUidFromMessageId_withMessageIdHeader_shouldIssueUidSearchCommand() {
         val folder = createFolder("Folder")
         prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
