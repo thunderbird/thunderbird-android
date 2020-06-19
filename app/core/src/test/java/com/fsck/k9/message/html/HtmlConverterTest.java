@@ -23,7 +23,7 @@ public class HtmlConverterTest {
 
         String result = HtmlConverter.textToHtml(message);
 
-        assertEquals("<pre class=\"k9mail\">"
+        assertEquals("<pre dir=\"auto\" class=\"k9mail\">"
                 + "Panama!<br>"
                 + "<br>"
                 + "Bob Barker &lt;bob@aol.com&gt; wrote:<br>"
@@ -63,7 +63,7 @@ public class HtmlConverterTest {
 
         String result = HtmlConverter.textToHtml(message);
 
-        assertEquals("<pre class=\"k9mail\">"
+        assertEquals("<pre dir=\"auto\" class=\"k9mail\">"
                 + "*facepalm*<br>"
                 + "<br>"
                 + "Bob Barker &lt;bob@aol.com&gt; wrote:<br>"
@@ -89,7 +89,7 @@ public class HtmlConverterTest {
 
         String result = HtmlConverter.textToHtml(message);
 
-        assertEquals("<pre class=\"k9mail\">"
+        assertEquals("<pre dir=\"auto\" class=\"k9mail\">"
                 + "zero<br>"
                 + "<blockquote class=\"gmail_quote\" style=\"margin: 0pt 0pt 1ex 0.8ex; border-left: 1px solid #729fcf; padding-left: 1ex;\">"
                 +   "one<br>"
@@ -120,7 +120,7 @@ public class HtmlConverterTest {
 
         String result = HtmlConverter.textToHtml(message);
 
-        assertEquals("<pre class=\"k9mail\">"
+        assertEquals("<pre dir=\"auto\" class=\"k9mail\">"
                 + "foo<br>"
                 + " bar<br>"
                 + "  baz<br>"
@@ -138,7 +138,7 @@ public class HtmlConverterTest {
 
         String result = HtmlConverter.textToHtml(message);
 
-        assertEquals("<pre class=\"k9mail\">"
+        assertEquals("<pre dir=\"auto\" class=\"k9mail\">"
                 + " <br>"
                 + "  &amp;<br>"
                 + "    <br>"
@@ -163,7 +163,7 @@ public class HtmlConverterTest {
                 "-- 8< --\n" +
                 "end";
         String result = HtmlConverter.textToHtml(text);
-        assertEquals("<pre class=\"k9mail\">text<hr>" +
+        assertEquals("<pre dir=\"auto\" class=\"k9mail\">text<hr>" +
                 "some other text<hr>" +
                 "more text<hr>" +
                 "scissors below<hr>" +
@@ -176,7 +176,7 @@ public class HtmlConverterTest {
     public void dashesContainingSpacesIgnoredAsHR() {
         String text = "hello\n--- --- --- --- ---\nfoo bar";
         String result = HtmlConverter.textToHtml(text);
-        assertEquals("<pre class=\"k9mail\">hello<br>--- --- --- --- ---<br>foo bar</pre>",
+        assertEquals("<pre dir=\"auto\" class=\"k9mail\">hello<br>--- --- --- --- ---<br>foo bar</pre>",
                 result);
     }
 
@@ -184,70 +184,70 @@ public class HtmlConverterTest {
     public void mergeConsecutiveBreaksIntoOne() {
         String text = "hello\n------------\n---------------\nfoo bar";
         String result = HtmlConverter.textToHtml(text);
-        assertEquals("<pre class=\"k9mail\">hello<hr>foo bar</pre>", result);
+        assertEquals("<pre dir=\"auto\" class=\"k9mail\">hello<hr>foo bar</pre>", result);
     }
 
     @Test
     public void dashedHorizontalRulePrefixedWithTextIgnoredAsHR() {
         String text = "hello----\n\n";
         String result = HtmlConverter.textToHtml(text);
-        assertEquals("<pre class=\"k9mail\">hello----<br><br></pre>", result);
+        assertEquals("<pre dir=\"auto\" class=\"k9mail\">hello----<br><br></pre>", result);
     }
 
     @Test
     public void doubleMinusIgnoredAsHR() {
         String text = "--\n";
         String result = HtmlConverter.textToHtml(text);
-        assertEquals("<pre class=\"k9mail\">--<br></pre>", result);
+        assertEquals("<pre dir=\"auto\" class=\"k9mail\">--<br></pre>", result);
     }
 
     @Test
     public void doubleEqualsIgnoredAsHR() {
         String text = "==\n";
         String result = HtmlConverter.textToHtml(text);
-        assertEquals("<pre class=\"k9mail\">==<br></pre>", result);
+        assertEquals("<pre dir=\"auto\" class=\"k9mail\">==<br></pre>", result);
     }
 
     @Test
     public void doubleUnderscoreIgnoredAsHR() {
         String text = "__\n";
         String result = HtmlConverter.textToHtml(text);
-        assertEquals("<pre class=\"k9mail\">__<br></pre>", result);
+        assertEquals("<pre dir=\"auto\" class=\"k9mail\">__<br></pre>", result);
     }
 
     @Test
     public void anyTripletIsHRuledOut() {
         String text = "--=\n-=-\n===\n___\n\n";
         String result = HtmlConverter.textToHtml(text);
-        assertEquals("<pre class=\"k9mail\"><hr></pre>", result);
+        assertEquals("<pre dir=\"auto\" class=\"k9mail\"><hr></pre>", result);
     }
 
     @Test
     public void replaceSpaceSeparatedDashesWithHR() {
         String text = "hello\n---------------------------\nfoo bar";
         String result = HtmlConverter.textToHtml(text);
-        assertEquals("<pre class=\"k9mail\">hello<hr>foo bar</pre>", result);
+        assertEquals("<pre dir=\"auto\" class=\"k9mail\">hello<hr>foo bar</pre>", result);
     }
 
     @Test
     public void replacementWithHRAtBeginning() {
         String text = "---------------------------\nfoo bar";
         String result = HtmlConverter.textToHtml(text);
-        assertEquals("<pre class=\"k9mail\"><hr>foo bar</pre>", result);
+        assertEquals("<pre dir=\"auto\" class=\"k9mail\"><hr>foo bar</pre>", result);
     }
 
     @Test
     public void replacementWithHRAtEnd() {
         String text = "hello\n__________________________________";
         String result = HtmlConverter.textToHtml(text);
-        assertEquals("<pre class=\"k9mail\">hello<hr></pre>", result);
+        assertEquals("<pre dir=\"auto\" class=\"k9mail\">hello<hr></pre>", result);
     }
 
     @Test
     public void replacementOfScissorsByHR() {
         String text = "hello\n-- %< -------------- >8 --\nworld\n";
         String result = HtmlConverter.textToHtml(text);
-        assertEquals("<pre class=\"k9mail\">hello<hr>world<br></pre>", result);
+        assertEquals("<pre dir=\"auto\" class=\"k9mail\">hello<hr>world<br></pre>", result);
     }
 
     @Test
