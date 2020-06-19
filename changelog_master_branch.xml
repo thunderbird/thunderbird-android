@@ -8,6 +8,15 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.717" versioncode="27017">
+        <change>Fixed display of text/plain parts containing text in a right-to-left language</change>
+        <change>Don't retry remote commands that failed with an error</change>
+        <change>Don't use default signature when setting up a new account</change>
+        <change>Fixed a bug that caused new message notifications to be skipped</change>
+        <change>Fixed a bug when uploading messages via IMAP failed</change>
+        <change>Fixed various bugs with POP3 accounts</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.716" versioncode="27016">
         <change>Fixed bug that hid folders in the drawer behind the sticky footer</change>
         <change>Fixed crash when server contains a folder named 'Outbox'</change>
