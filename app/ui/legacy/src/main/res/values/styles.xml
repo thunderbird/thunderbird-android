@@ -50,8 +50,8 @@
 
     <style name="Widget.MaterialDrawerHeaderStyleCustom" parent="">
         <item name="materialDrawerCompactStyle">false</item>
-        <item name="materialDrawerHeaderSelectionText">?colorOnSurface</item>
-        <item name="materialDrawerHeaderSelectionSubtext">?colorOnSurface</item>
+        <item name="materialDrawerHeaderSelectionText">?colorOnBackground</item>
+        <item name="materialDrawerHeaderSelectionSubtext">?colorOnBackground</item>
     </style>
 </resources>
 
