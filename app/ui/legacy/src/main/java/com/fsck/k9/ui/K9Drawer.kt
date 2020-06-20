@@ -7,9 +7,11 @@ import android.graphics.PorterDuff
 import android.net.Uri
 import android.os.Bundle
 import android.util.TypedValue
+
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+
 import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
@@ -33,24 +35,26 @@ import com.mikepenz.iconics.utils.sizeDp
 import com.mikepenz.materialdrawer.holder.ImageHolder
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
-import com.mikepenz.materialdrawer.model.interfaces.withBadge
-import com.mikepenz.materialdrawer.model.interfaces.withEmail
-import com.mikepenz.materialdrawer.model.interfaces.withIcon
-import com.mikepenz.materialdrawer.model.interfaces.withIdentifier
-import com.mikepenz.materialdrawer.model.interfaces.withName
-import com.mikepenz.materialdrawer.model.interfaces.withSelectable
-import com.mikepenz.materialdrawer.model.interfaces.withSelected
-import com.mikepenz.materialdrawer.model.interfaces.withTag
+import com.mikepenz.materialdrawer.model.interfaces.badgeText
+import com.mikepenz.materialdrawer.model.interfaces.descriptionRes
+import com.mikepenz.materialdrawer.model.interfaces.descriptionText
+import com.mikepenz.materialdrawer.model.interfaces.iconDrawable
+import com.mikepenz.materialdrawer.model.interfaces.iconRes
+import com.mikepenz.materialdrawer.model.interfaces.nameRes
+import com.mikepenz.materialdrawer.model.interfaces.nameText
 import com.mikepenz.materialdrawer.util.addItems
 import com.mikepenz.materialdrawer.util.addStickyFooterItem
 import com.mikepenz.materialdrawer.util.getDrawerItem
+import com.mikepenz.materialdrawer.util.removeAllItems
 import com.mikepenz.materialdrawer.util.removeAllStickyFooterItems
 import com.mikepenz.materialdrawer.widget.AccountHeaderView
 import com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView
+
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import org.koin.core.parameter.parametersOf
+
 import java.util.ArrayList
 import java.util.HashSet
 
@@ -85,8 +89,8 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     init {
         configureAccountHeader()
 
-        drawer.setDrawerListener(parent.createOnDrawerListener())
-        sliderView.onDrawerItemClickListener = { view, item, position ->
+        drawer.addDrawerListener(parent.createOnDrawerListener())
+        sliderView.onDrawerItemClickListener = { _, item, _ ->
             when (item.identifier) {
                 DRAWER_ID_PREFERENCES -> SettingsActivity.launch(parent)
                 DRAWER_ID_FOLDERS -> parent.launchManageFoldersScreen()
@@ -103,7 +107,6 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         swipeRefreshLayout = parent.findViewById(R.id.material_drawer_swipe_refresh)
         headerView.addOnLayoutChangeListener { view, _, _, _, _, _, _, _, _ ->
             val densityMultiplier = view.resources.displayMetrics.density
-
             val progressViewStart = view.measuredHeight
             val progressViewEnd = progressViewStart + (PROGRESS_VIEW_END_OFFSET * densityMultiplier).toInt()
             swipeRefreshLayout.setProgressViewOffset(true, progressViewStart, progressViewEnd)
@@ -124,18 +127,19 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
         if (!K9.isHideSpecialAccounts) {
             headerView.addProfiles(
-                ProfileDrawerItem()
-                    .withNameShown(true)
-                    .withName(R.string.integrated_inbox_title)
-                    .withEmail(parent.getString(R.string.integrated_inbox_detail))
-                    .withIcon(IconicsDrawable(parent, FontAwesome.Icon.faw_users).apply {
+                ProfileDrawerItem().apply {
+                    isNameShown = true
+                    nameRes = R.string.integrated_inbox_title
+                    descriptionRes = R.string.integrated_inbox_detail
+                    iconDrawable = IconicsDrawable(this@K9Drawer.parent, FontAwesome.Icon.faw_users).apply {
                         // colorRes = R.color.material_drawer_background
                         backgroundColorInt = Color.GRAY
                         sizeDp = 56
                         paddingDp = 8
-                    })
-                    .withSelected(unifiedInboxSelected)
-                    .withIdentifier(DRAWER_ID_UNIFIED_INBOX)
+                    }
+                    isSelected = unifiedInboxSelected
+                    identifier = DRAWER_ID_UNIFIED_INBOX
+                }
             )
         }
 
@@ -144,30 +148,30 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         for (account in preferences.accounts) {
             val drawerId = (account.accountNumber + 1 shl DRAWER_ACCOUNT_SHIFT).toLong()
 
-            val pdi = ProfileDrawerItem()
-                .withNameShown(true)
-                .withName(account.description)
-                .withEmail(account.email)
-                .withIdentifier(drawerId)
-                .withSelected(false)
-                .withTag(account)
+            val pdi = ProfileDrawerItem().apply {
+                isNameShown = true
+                nameText = account.description
+                descriptionText = account.email
+                identifier = drawerId
+                tag = account
+            }
 
             val photoUri = Contacts.getInstance(parent).getPhotoUri(account.email)
             if (photoUri != null && !photoUris.contains(photoUri)) {
                 photoUris.add(photoUri)
-                pdi.withIcon(photoUri)
+                pdi.icon = ImageHolder(photoUri)
             } else {
-                pdi.withIcon(IconicsDrawable(parent, FontAwesome.Icon.faw_user_alt).apply {
+                pdi.iconDrawable = IconicsDrawable(parent, FontAwesome.Icon.faw_user_alt).apply {
                     // TODO colorRes = R.color.material_drawer_background
                     backgroundColorInt = account.chipColor
                     sizeDp = 56
                     paddingDp = 12
-                })
+                }
             }
             headerView.addProfiles(pdi)
         }
 
-        headerView.onAccountHeaderListener = { view, profile, current ->
+        headerView.onAccountHeaderListener = { _, profile, _ ->
             if (profile.identifier == DRAWER_ID_UNIFIED_INBOX) {
                 parent.openUnifiedInbox()
                 false
@@ -183,20 +187,22 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private fun addFooterItems() {
         if (!unifiedInboxSelected) {
             sliderView.addStickyFooterItem(
-                PrimaryDrawerItem()
-                    .withName(R.string.folders_action)
-                    .withIcon(folderIconProvider.iconFolderResId)
-                    .withIdentifier(DRAWER_ID_FOLDERS)
-                    .withSelectable(false)
+                PrimaryDrawerItem().apply {
+                    nameRes = R.string.folders_action
+                    iconRes = folderIconProvider.iconFolderResId
+                    identifier = DRAWER_ID_FOLDERS
+                    isSelectable = false
+                }
             )
         }
 
         sliderView.addStickyFooterItem(
-            PrimaryDrawerItem()
-                .withName(R.string.preferences_action)
-                .withIcon(getResId(R.attr.iconActionSettings))
-                .withIdentifier(DRAWER_ID_PREFERENCES)
-                .withSelectable(false)
+            PrimaryDrawerItem().apply {
+                nameRes = R.string.preferences_action
+                iconRes = getResId(R.attr.iconActionSettings)
+                identifier = DRAWER_ID_PREFERENCES
+                isSelectable = false
+            }
         )
     }
 
@@ -258,25 +264,22 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
             val folder = displayFolder.folder
             val drawerId = folder.id shl DRAWER_FOLDER_SHIFT
 
-            val drawerItem = PrimaryDrawerItem()
-                .withIcon(folderIconProvider.getFolderIcon(folder.type))
-                .withIdentifier(drawerId)
-                .withTag(folder)
-                // .withSelectedColor(selectedColor)
-                // .apply {
-                //    textColorInt = accentColor
-                // }
-                .withName(getFolderDisplayName(folder))
-
-            val unreadCount = displayFolder.unreadCount
-            if (unreadCount > 0) {
-                drawerItem.withBadge(unreadCount.toString())
+            val drawerItem = PrimaryDrawerItem().apply {
+                iconRes = folderIconProvider.getFolderIcon(folder.type)
+                identifier = drawerId
+                tag = folder
+                nameText = getFolderDisplayName(folder)
+                displayFolder.unreadCount.takeIf { it > 0 }?.also {
+                    badgeText = it.toString()
+                }
             }
+            // .withSelectedColor(selectedColor)
+            // .apply {
+            //    textColorInt = accentColor
+            // }
 
             sliderView.addItems(drawerItem)
-
             userFolderDrawerIds.add(drawerId)
-
             if (folder.id == openedFolderId) {
                 openedFolderDrawerId = drawerId
             }
@@ -289,7 +292,8 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
     private fun clearUserFolders() {
         // remove old items first
-        sliderView.itemAdapter.clear()
+        sliderView.selectExtension.deselect()
+        sliderView.removeAllItems()
         userFolderDrawerIds.clear()
     }
 
@@ -297,8 +301,8 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         unifiedInboxSelected = false
         openedFolderId = folderId
         for (drawerId in userFolderDrawerIds) {
-            val folder = sliderView.getDrawerItem(drawerId)!!.tag as Folder
-            if (folder.id == folderId) {
+            val folder = sliderView.getDrawerItem(drawerId)?.tag as? Folder
+            if (folder?.id == folderId) {
                 sliderView.setSelection(drawerId, false)
                 return
             }
