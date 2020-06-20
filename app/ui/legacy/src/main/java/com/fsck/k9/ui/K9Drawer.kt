@@ -7,11 +7,9 @@ import android.graphics.PorterDuff
 import android.net.Uri
 import android.os.Bundle
 import android.util.TypedValue
-
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-
 import com.fsck.k9.Account
 import com.fsck.k9.K9
 import com.fsck.k9.Preferences
@@ -49,14 +47,12 @@ import com.mikepenz.materialdrawer.util.removeAllItems
 import com.mikepenz.materialdrawer.util.removeAllStickyFooterItems
 import com.mikepenz.materialdrawer.widget.AccountHeaderView
 import com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView
-
+import java.util.ArrayList
+import java.util.HashSet
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import org.koin.core.parameter.parametersOf
-
-import java.util.ArrayList
-import java.util.HashSet
 
 class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : KoinComponent {
     private val viewModel: FoldersViewModel by parent.viewModel()
