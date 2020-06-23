@@ -26,6 +26,9 @@ dependencies {
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.3'
 
+    // Required for DependencyInjectionTest to be able to resolve OpenPgpApiManager
+    testImplementation project(':plugins:openpgp-api-lib:openpgp-api')
+
     testImplementation "org.robolectric:robolectric:${versions.robolectric}"
     testImplementation "junit:junit:${versions.junit}"
     testImplementation "com.google.truth:truth:${versions.truth}"
