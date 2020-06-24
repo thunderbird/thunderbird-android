@@ -29,6 +29,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.androidxLifecycle}"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:${versions.androidxLifecycle}"
 
+    // Required for DependencyInjectionTest to be able to resolve OpenPgpApiManager
+    testImplementation project(':plugins:openpgp-api-lib:openpgp-api')
+
     testImplementation "org.robolectric:robolectric:${versions.robolectric}"
     testImplementation "junit:junit:${versions.junit}"
     testImplementation "com.google.truth:truth:${versions.truth}"
