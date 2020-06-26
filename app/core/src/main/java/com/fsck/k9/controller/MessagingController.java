@@ -55,7 +55,6 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveAndMarkAsRe
 import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveOrCopy;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag;
 import com.fsck.k9.controller.ProgressBodyFactory.ProgressListener;
-import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MutableBoolean;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.AuthenticationFailedException;
@@ -116,11 +115,11 @@ public class MessagingController {
 
 
     private final Context context;
-    private final Contacts contacts;
     private final NotificationController notificationController;
     private final NotificationStrategy notificationStrategy;
     private final LocalStoreProvider localStoreProvider;
     private final BackendManager backendManager;
+    private final Preferences preferences;
 
     private final Thread controllerThread;
 
@@ -142,18 +141,17 @@ public class MessagingController {
 
 
     MessagingController(Context context, NotificationController notificationController,
-            NotificationStrategy notificationStrategy,
-            LocalStoreProvider localStoreProvider, Contacts contacts,
+            NotificationStrategy notificationStrategy, LocalStoreProvider localStoreProvider,
             UnreadMessageCountProvider unreadMessageCountProvider, CoreResourceProvider resourceProvider,
-            BackendManager backendManager, List<ControllerExtension> controllerExtensions) {
+            BackendManager backendManager, Preferences preferences, List<ControllerExtension> controllerExtensions) {
         this.context = context;
         this.notificationController = notificationController;
         this.notificationStrategy = notificationStrategy;
         this.localStoreProvider = localStoreProvider;
-        this.contacts = contacts;
         this.unreadMessageCountProvider = unreadMessageCountProvider;
         this.resourceProvider = resourceProvider;
         this.backendManager = backendManager;
+        this.preferences = preferences;
 
         controllerThread = new Thread(new Runnable() {
             @Override
@@ -411,7 +409,6 @@ public class MessagingController {
 
     @VisibleForTesting
     void searchLocalMessagesSynchronous(final LocalSearch search, final MessagingListener listener) {
-        Preferences preferences = Preferences.getPreferences(context);
         List<Account> searchAccounts = getAccountsFromLocalSearch(search, preferences);
 
         for (final Account account : searchAccounts) {
@@ -466,7 +463,7 @@ public class MessagingController {
     void searchRemoteMessagesSynchronous(String acctUuid, long folderId, String query, Set<Flag> requiredFlags,
             Set<Flag> forbiddenFlags, MessagingListener listener) {
 
-        Account account = Preferences.getPreferences(context).getAccount(acctUuid);
+        Account account = preferences.getAccount(acctUuid);
 
         if (listener != null) {
             listener.remoteSearchStarted(folderId);
@@ -1392,8 +1389,7 @@ public class MessagingController {
     }
 
     public void sendPendingMessages(MessagingListener listener) {
-        final Preferences prefs = Preferences.getPreferences(context);
-        for (Account account : prefs.getAvailableAccounts()) {
+        for (Account account : preferences.getAvailableAccounts()) {
             sendPendingMessages(account, listener);
         }
     }
@@ -2239,7 +2235,7 @@ public class MessagingController {
             long now = System.currentTimeMillis();
             Timber.v("Account %s successfully synced @ %tc", account, now);
             account.setLastSyncTime(now);
-            Preferences.getPreferences(context).saveAccount(account);
+            preferences.saveAccount(account);
         }
 
         return success;
@@ -2274,14 +2270,12 @@ public class MessagingController {
                 try {
                     Timber.i("Starting mail check");
 
-                    Preferences prefs = Preferences.getPreferences(context);
-
                     Collection<Account> accounts;
                     if (account != null) {
                         accounts = new ArrayList<>(1);
                         accounts.add(account);
                     } else {
-                        accounts = prefs.getAvailableAccounts();
+                        accounts = preferences.getAvailableAccounts();
                     }
 
                     for (final Account account : accounts) {
@@ -2637,7 +2631,7 @@ public class MessagingController {
 
         for (Map.Entry<String, Map<Long, List<MessageReference>>> entry : accountMap.entrySet()) {
             String accountUuid = entry.getKey();
-            Account account = Preferences.getPreferences(context).getAccount(accountUuid);
+            Account account = preferences.getAccount(accountUuid);
 
             Map<Long, List<MessageReference>> folderMap = entry.getValue();
             for (Map.Entry<Long, List<MessageReference>> folderEntry : folderMap.entrySet()) {
