@@ -121,6 +121,7 @@ public class MessagingController {
     private final NotificationStrategy notificationStrategy;
     private final LocalStoreProvider localStoreProvider;
     private final BackendManager backendManager;
+    private final Preferences preferences;
 
     private final Thread controllerThread;
 
@@ -145,7 +146,7 @@ public class MessagingController {
             NotificationStrategy notificationStrategy,
             LocalStoreProvider localStoreProvider, Contacts contacts,
             UnreadMessageCountProvider unreadMessageCountProvider, CoreResourceProvider resourceProvider,
-            BackendManager backendManager, List<ControllerExtension> controllerExtensions) {
+            BackendManager backendManager, Preferences preferences, List<ControllerExtension> controllerExtensions) {
         this.context = context;
         this.notificationController = notificationController;
         this.notificationStrategy = notificationStrategy;
@@ -154,6 +155,7 @@ public class MessagingController {
         this.unreadMessageCountProvider = unreadMessageCountProvider;
         this.resourceProvider = resourceProvider;
         this.backendManager = backendManager;
+        this.preferences = preferences;
 
         controllerThread = new Thread(new Runnable() {
             @Override
