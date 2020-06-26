@@ -113,6 +113,7 @@ public class MessagingController {
 
     public static final Set<Flag> SYNC_FLAGS = EnumSet.of(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED);
 
+    private static final long FOLDER_LIST_STALENESS_THRESHOLD = 30 * 60 * 1000L;
 
     private final Context context;
     private final NotificationController notificationController;
@@ -390,6 +391,12 @@ public class MessagingController {
         try {
             Backend backend = getBackend(account);
             backend.refreshFolderList();
+
+            long now = System.currentTimeMillis();
+            Timber.d("Folder list successfully refreshed @ %tc", now);
+
+            account.setLastFolderListRefreshTime(now);
+            preferences.saveAccount(account);
         } catch (Exception e) {
             Timber.e(e);
         }
@@ -602,8 +609,22 @@ public class MessagingController {
      */
     @VisibleForTesting
     void synchronizeMailboxSynchronous(Account account, long folderId, MessagingListener listener) {
+        refreshFolderListIfStale(account);
+
         Backend backend = getBackend(account);
         syncFolder(account, folderId, listener, backend);
+    }
+
+    private void refreshFolderListIfStale(Account account) {
+        long lastFolderListRefresh = account.getLastFolderListRefreshTime();
+        long now = System.currentTimeMillis();
+
+        if (lastFolderListRefresh > now || lastFolderListRefresh + FOLDER_LIST_STALENESS_THRESHOLD <= now) {
+            Timber.d("Last folder list refresh @ %tc. Refreshing now…", lastFolderListRefresh);
+            refreshFolderListSynchronous(account);
+        } else {
+            Timber.d("Last folder list refresh @ %tc. Not refreshing now.", lastFolderListRefresh);
+        }
     }
 
     private void syncFolder(Account account, long folderId, MessagingListener listener, Backend backend) {

@@ -185,6 +185,7 @@ public class Account implements BaseAccount {
     private int remoteSearchNumResults;
     private boolean uploadSentMessages;
     private long lastSyncTime;
+    private long lastFolderListRefreshTime;
 
     private boolean changedVisibleLimits = false;
 
@@ -1127,6 +1128,14 @@ public class Account implements BaseAccount {
 
     public synchronized void setLastSyncTime(long lastSyncTime) {
         this.lastSyncTime = lastSyncTime;
+    }
+
+    public synchronized long getLastFolderListRefreshTime() {
+        return lastFolderListRefreshTime;
+    }
+
+    public synchronized void setLastFolderListRefreshTime(long lastFolderListRefreshTime) {
+        this.lastFolderListRefreshTime = lastFolderListRefreshTime;
     }
 
     boolean isChangedVisibleLimits() {

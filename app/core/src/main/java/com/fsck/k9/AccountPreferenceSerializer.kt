@@ -163,6 +163,7 @@ class AccountPreferenceSerializer(
             isMarkMessageAsReadOnDelete = storage.getBoolean("$accountUuid.markMessageAsReadOnDelete", true)
             isAlwaysShowCcBcc = storage.getBoolean("$accountUuid.alwaysShowCcBcc", false)
             lastSyncTime = storage.getLong("$accountUuid.lastSyncTime", 0L)
+            lastFolderListRefreshTime = storage.getLong("$accountUuid.lastFolderListRefreshTime", 0L)
 
             // Use email address as account description if necessary
             if (description == null) {
@@ -323,6 +324,7 @@ class AccountPreferenceSerializer(
             editor.putBoolean("$accountUuid.led", notificationSetting.isLedEnabled)
             editor.putInt("$accountUuid.ledColor", notificationSetting.ledColor)
             editor.putLong("$accountUuid.lastSyncTime", lastSyncTime)
+            editor.putLong("$accountUuid.lastFolderListRefreshTime", lastFolderListRefreshTime)
 
             for (type in NetworkType.values()) {
                 val useCompression = compressionMap[type]
@@ -446,6 +448,7 @@ class AccountPreferenceSerializer(
         editor.remove("$accountUuid.spamFolderId")
         editor.remove("$accountUuid.autoExpandFolderId")
         editor.remove("$accountUuid.lastSyncTime")
+        editor.remove("$accountUuid.lastFolderListRefreshTime")
 
         for (type in NetworkType.values()) {
             editor.remove("$accountUuid.useCompression." + type.name)
@@ -585,6 +588,7 @@ class AccountPreferenceSerializer(
             isMarkMessageAsReadOnDelete = true
             isAlwaysShowCcBcc = false
             lastSyncTime = 0L
+            lastFolderListRefreshTime = 0L
 
             setArchiveFolderId(null, SpecialFolderSelection.AUTOMATIC)
             setDraftsFolderId(null, SpecialFolderSelection.AUTOMATIC)
