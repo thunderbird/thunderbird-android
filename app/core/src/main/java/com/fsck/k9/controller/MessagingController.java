@@ -413,7 +413,6 @@ public class MessagingController {
 
     @VisibleForTesting
     void searchLocalMessagesSynchronous(final LocalSearch search, final MessagingListener listener) {
-        Preferences preferences = Preferences.getPreferences(context);
         List<Account> searchAccounts = getAccountsFromLocalSearch(search, preferences);
 
         for (final Account account : searchAccounts) {
@@ -468,7 +467,7 @@ public class MessagingController {
     void searchRemoteMessagesSynchronous(String acctUuid, long folderId, String query, Set<Flag> requiredFlags,
             Set<Flag> forbiddenFlags, MessagingListener listener) {
 
-        Account account = Preferences.getPreferences(context).getAccount(acctUuid);
+        Account account = preferences.getAccount(acctUuid);
 
         if (listener != null) {
             listener.remoteSearchStarted(folderId);
@@ -1394,8 +1393,7 @@ public class MessagingController {
     }
 
     public void sendPendingMessages(MessagingListener listener) {
-        final Preferences prefs = Preferences.getPreferences(context);
-        for (Account account : prefs.getAvailableAccounts()) {
+        for (Account account : preferences.getAvailableAccounts()) {
             sendPendingMessages(account, listener);
         }
     }
@@ -2241,7 +2239,7 @@ public class MessagingController {
             long now = System.currentTimeMillis();
             Timber.v("Account %s successfully synced @ %tc", account, now);
             account.setLastSyncTime(now);
-            Preferences.getPreferences(context).saveAccount(account);
+            preferences.saveAccount(account);
         }
 
         return success;
@@ -2276,14 +2274,12 @@ public class MessagingController {
                 try {
                     Timber.i("Starting mail check");
 
-                    Preferences prefs = Preferences.getPreferences(context);
-
                     Collection<Account> accounts;
                     if (account != null) {
                         accounts = new ArrayList<>(1);
                         accounts.add(account);
                     } else {
-                        accounts = prefs.getAvailableAccounts();
+                        accounts = preferences.getAvailableAccounts();
                     }
 
                     for (final Account account : accounts) {
@@ -2639,7 +2635,7 @@ public class MessagingController {
 
         for (Map.Entry<String, Map<Long, List<MessageReference>>> entry : accountMap.entrySet()) {
             String accountUuid = entry.getKey();
-            Account account = Preferences.getPreferences(context).getAccount(accountUuid);
+            Account account = preferences.getAccount(accountUuid);
 
             Map<Long, List<MessageReference>> folderMap = entry.getValue();
             for (Map.Entry<Long, List<MessageReference>> folderEntry : folderMap.entrySet()) {
