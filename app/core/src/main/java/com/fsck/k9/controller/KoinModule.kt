@@ -4,7 +4,6 @@ import android.content.Context
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.Preferences
 import com.fsck.k9.backend.BackendManager
-import com.fsck.k9.helper.Contacts
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.notification.NotificationController
 import com.fsck.k9.notification.NotificationStrategy
@@ -18,7 +17,6 @@ val controllerModule = module {
             get<NotificationController>(),
             get<NotificationStrategy>(),
             get<LocalStoreProvider>(),
-            get<Contacts>(),
             get<UnreadMessageCountProvider>(),
             get<CoreResourceProvider>(),
             get<BackendManager>(),

@@ -55,7 +55,6 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveAndMarkAsRe
 import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveOrCopy;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag;
 import com.fsck.k9.controller.ProgressBodyFactory.ProgressListener;
-import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MutableBoolean;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.AuthenticationFailedException;
@@ -116,7 +115,6 @@ public class MessagingController {
 
 
     private final Context context;
-    private final Contacts contacts;
     private final NotificationController notificationController;
     private final NotificationStrategy notificationStrategy;
     private final LocalStoreProvider localStoreProvider;
@@ -143,15 +141,13 @@ public class MessagingController {
 
 
     MessagingController(Context context, NotificationController notificationController,
-            NotificationStrategy notificationStrategy,
-            LocalStoreProvider localStoreProvider, Contacts contacts,
+            NotificationStrategy notificationStrategy, LocalStoreProvider localStoreProvider,
             UnreadMessageCountProvider unreadMessageCountProvider, CoreResourceProvider resourceProvider,
             BackendManager backendManager, Preferences preferences, List<ControllerExtension> controllerExtensions) {
         this.context = context;
         this.notificationController = notificationController;
         this.notificationStrategy = notificationStrategy;
         this.localStoreProvider = localStoreProvider;
-        this.contacts = contacts;
         this.unreadMessageCountProvider = unreadMessageCountProvider;
         this.resourceProvider = resourceProvider;
         this.backendManager = backendManager;

@@ -19,7 +19,6 @@ import com.fsck.k9.K9RobolectricTest;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.backend.api.Backend;
-import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.FetchProfile;
@@ -58,7 +57,6 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.inOrder;
@@ -86,8 +84,6 @@ public class MessagingControllerTest extends K9RobolectricTest {
     private Backend backend;
     @Mock
     private LocalStoreProvider localStoreProvider;
-    @Mock
-    private Contacts contacts;
     @Mock
     private SimpleMessagingListener listener;
     @Mock
@@ -142,7 +138,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
         Preferences preferences = Preferences.getPreferences(appContext);
 
         controller = new MessagingController(appContext, notificationController, notificationStrategy,
-                localStoreProvider, contacts,
+                localStoreProvider,
                 unreadMessageCountProvider, mock(CoreResourceProvider.class), backendManager, preferences,
                 Collections.<ControllerExtension>emptyList());
 
