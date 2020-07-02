@@ -105,6 +105,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     private static final int NEXT = 2;
 
     public static final int REQUEST_MASK_PENDING_INTENT = 1 << 15;
+    private MessageListActivityAppearance messageListActivityAppearance;
 
     public static void actionDisplaySearch(Context context, SearchSpecification search,
             boolean noThreading, boolean newTask) {
@@ -551,6 +552,12 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     @Override
     public void onResume() {
         super.onResume();
+
+        if (messageListActivityAppearance == null) {
+            messageListActivityAppearance = MessageListActivityAppearance.create();
+        } else if (!messageListActivityAppearance.equals(MessageListActivityAppearance.create())) {
+            recreate();
+        }
 
         if (!(this instanceof Search)) {
             //necessary b/c no guarantee Search.onStop will be called before MessageList.onResume
