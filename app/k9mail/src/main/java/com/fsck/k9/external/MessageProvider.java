@@ -536,7 +536,7 @@ public class MessageProvider extends ContentProvider {
                 if (MessageColumns._ID.equals(field)) {
                     extractors.put(field, new IdExtractor());
                 } else if (MessageColumns._COUNT.equals(field)) {
-                    extractors.put(field, new CountExtractor<MessageInfoHolder>(count));
+                    extractors.put(field, new CountExtractor<>(count));
                 } else if (MessageColumns.SUBJECT.equals(field)) {
                     extractors.put(field, new SubjectExtractor());
                 } else if (MessageColumns.SENDER.equals(field)) {

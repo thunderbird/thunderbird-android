@@ -119,7 +119,7 @@ public class AttachmentPresenter {
     }
 
     public List<com.fsck.k9.message.Attachment> getAttachments() {
-        return new ArrayList<com.fsck.k9.message.Attachment>(attachments.values());
+        return new ArrayList<>(attachments.values());
     }
 
     public void onClickAddAttachment(RecipientPresenter recipientPresenter) {

@@ -234,7 +234,7 @@ public class MessageExtractor {
     public static List<Part> collectAttachments(Message message) throws MessagingException {
         try {
             List<Part> attachments = new ArrayList<>();
-            findViewablesAndAttachments(message, new ArrayList<Viewable>(), attachments);
+            findViewablesAndAttachments(message, new ArrayList<>(), attachments);
             return attachments;
         } catch (Exception e) {
             throw new MessagingException("Couldn't collect attachment parts", e);
