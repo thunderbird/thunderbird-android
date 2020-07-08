@@ -277,7 +277,7 @@ class MessageListAdapter internal constructor(
 
     private fun updateWithThreadCount(holder: MessageViewHolder, threadCount: Int) {
         if (threadCount > 1) {
-            holder.threadCount.setText(String.format("%d", threadCount))
+            holder.threadCount.text = String.format("%d", threadCount)
             holder.threadCount.visibility = View.VISIBLE
         } else {
             holder.threadCount.visibility = View.GONE

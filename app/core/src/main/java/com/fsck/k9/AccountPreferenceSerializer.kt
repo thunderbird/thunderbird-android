@@ -125,7 +125,7 @@ class AccountPreferenceSerializer(
 
             showPictures = getEnumStringPref<ShowPictures>(storage, "$accountUuid.showPicturesEnum", ShowPictures.NEVER)
 
-            notificationSetting.setVibrateEnabled(storage.getBoolean("$accountUuid.vibrate", false))
+            notificationSetting.isVibrateEnabled = storage.getBoolean("$accountUuid.vibrate", false)
             notificationSetting.vibratePattern = storage.getInt("$accountUuid.vibratePattern", 0)
             notificationSetting.vibrateTimes = storage.getInt("$accountUuid.vibrateTimes", 5)
             notificationSetting.isRingEnabled = storage.getBoolean("$accountUuid.ring", true)
