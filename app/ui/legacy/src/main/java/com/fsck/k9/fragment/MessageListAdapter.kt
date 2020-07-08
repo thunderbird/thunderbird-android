@@ -82,14 +82,10 @@ class MessageListAdapter internal constructor(
         listItemListener.onToggleMessageSelection(messageListItem)
     }
 
-    private fun recipientSigil(toMe: Boolean, ccMe: Boolean): String {
-        return if (toMe) {
-            res.getString(R.string.messagelist_sent_to_me_sigil)
-        } else if (ccMe) {
-            res.getString(R.string.messagelist_sent_cc_me_sigil)
-        } else {
-            ""
-        }
+    private fun recipientSigil(toMe: Boolean, ccMe: Boolean) = when {
+        toMe -> res.getString(R.string.messagelist_sent_to_me_sigil)
+        ccMe -> res.getString(R.string.messagelist_sent_cc_me_sigil)
+        else -> ""
     }
 
     override fun hasStableIds(): Boolean = true
