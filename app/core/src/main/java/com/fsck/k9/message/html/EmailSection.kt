@@ -97,7 +97,7 @@ class EmailSection private constructor(builder: Builder) : CharSequence {
         internal var indent = Int.MAX_VALUE
 
         val hasSegments
-            get() = !segments.isEmpty()
+            get() = segments.isNotEmpty()
 
         fun addSegment(leadingSpaces: Int, startIndex: Int, endIndex: Int): Builder {
             indent = minOf(indent, leadingSpaces)

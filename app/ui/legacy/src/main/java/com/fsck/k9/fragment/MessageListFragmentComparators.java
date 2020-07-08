@@ -111,13 +111,7 @@ public class MessageListFragmentComparators {
         public int compare(Cursor cursor1, Cursor cursor2) {
             long o1Date = cursor1.getLong(MLFProjectionInfo.DATE_COLUMN);
             long o2Date = cursor2.getLong(MLFProjectionInfo.DATE_COLUMN);
-            if (o1Date < o2Date) {
-                return -1;
-            } else if (o1Date == o2Date) {
-                return 0;
-            } else {
-                return 1;
-            }
+            return Long.compare(o1Date, o2Date);
         }
     }
 
@@ -127,13 +121,7 @@ public class MessageListFragmentComparators {
         public int compare(Cursor cursor1, Cursor cursor2) {
             long o1Date = cursor1.getLong(MLFProjectionInfo.INTERNAL_DATE_COLUMN);
             long o2Date = cursor2.getLong(MLFProjectionInfo.INTERNAL_DATE_COLUMN);
-            if (o1Date == o2Date) {
-                return 0;
-            } else if (o1Date < o2Date) {
-                return -1;
-            } else {
-                return 1;
-            }
+            return Long.compare(o1Date, o2Date);
         }
     }
 

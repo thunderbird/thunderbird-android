@@ -30,7 +30,7 @@ class AboutFragment : Fragment() {
         version.text = getVersionNumber()
         versionLayout.setOnClickListener { displayChangeLog() }
 
-        val year = Integer.toString(Calendar.getInstance().get(Calendar.YEAR))
+        val year = Calendar.getInstance().get(Calendar.YEAR).toString()
         copyright.text = getString(R.string.app_copyright_fmt, year, year)
 
         authorsLayout.setOnClickListener {
@@ -55,8 +55,8 @@ class AboutFragment : Fragment() {
         libraries.apply {
             layoutManager = manager
             adapter = LibrariesAdapter(USED_LIBRARIES)
-            setNestedScrollingEnabled(false)
-            setFocusable(false)
+            isNestedScrollingEnabled = false
+            isFocusable = false
         }
     }
 
@@ -120,7 +120,7 @@ private class LibrariesAdapter(private val dataset: Array<Library>) :
         holder.view.name.text = library.name
         holder.view.license.text = library.license
         holder.view.setOnClickListener {
-            holder.view.getContext()
+            holder.view.context
                 .startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(library.URL)))
         }
     }

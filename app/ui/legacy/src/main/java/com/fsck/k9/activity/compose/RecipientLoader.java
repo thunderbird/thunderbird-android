@@ -381,7 +381,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             return recipients;
         }
 
-        fillContactDataFromCursor(cursor, recipients, new HashMap<String, Recipient>(), null, maxRecipients);
+        fillContactDataFromCursor(cursor, recipients, new HashMap<>(), null, maxRecipients);
 
         return recipients;
     }

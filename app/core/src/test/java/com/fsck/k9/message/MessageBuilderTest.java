@@ -404,7 +404,7 @@ public class MessageBuilderTest extends RobolectricTest {
                 .setIdentity(identity)
                 .setMessageFormat(SimpleMessageFormat.TEXT)
                 .setText(TEST_MESSAGE_TEXT)
-                .setAttachments(new ArrayList<Attachment>())
+                .setAttachments(new ArrayList<>())
                 .setSignature("signature")
                 .setQuoteStyle(QuoteStyle.PREFIX)
                 .setQuotedTextMode(QuotedTextMode.NONE)
