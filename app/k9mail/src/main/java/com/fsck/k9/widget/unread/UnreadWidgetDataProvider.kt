@@ -23,6 +23,7 @@ class UnreadWidgetDataProvider(
     private val folderNameFormatterFactory: FolderNameFormatterFactory
 ) {
     fun loadUnreadWidgetData(configuration: UnreadWidgetConfiguration): UnreadWidgetData? = with(configuration) {
+        @Suppress("CascadeIf")
         if (SearchAccount.UNIFIED_INBOX == accountUuid) {
             loadSearchAccountData(configuration)
         } else if (folderId != null) {
