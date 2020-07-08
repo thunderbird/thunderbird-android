@@ -653,10 +653,10 @@ class PgpMessageBuilderTest : K9RobolectricTest() {
     }
 
     companion object {
-        private val TEST_KEY_ID = 123L
-        private val TEST_MESSAGE_TEXT = "message text with a ☭ CCCP symbol"
+        private const val TEST_KEY_ID = 123L
+        private const val TEST_MESSAGE_TEXT = "message text with a ☭ CCCP symbol"
         private val AUTOCRYPT_KEY_MATERIAL = byteArrayOf(1, 2, 3)
-        private val SENDER_EMAIL = "test@example.org"
+        private const val SENDER_EMAIL = "test@example.org"
 
         private fun createDefaultPgpMessageBuilder(
             openPgpApi: OpenPgpApi,
