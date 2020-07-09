@@ -8,7 +8,7 @@ import android.os.Bundle
 import android.transition.TransitionInflater
 import android.transition.TransitionManager
 import android.view.MenuItem
-import android.view.View
+import androidx.core.view.isVisible
 import com.fsck.k9.finishWithErrorToast
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
@@ -51,37 +51,37 @@ class AutocryptKeyTransferActivity : K9Activity() {
     }
 
     fun sceneBegin() {
-        transferSendButton.visibility = View.VISIBLE
-        transferMsgInfo.visibility = View.VISIBLE
-        transferLayoutGenerating.visibility = View.GONE
-        transferLayoutSending.visibility = View.GONE
-        transferLayoutFinish.visibility = View.GONE
-        transferErrorSend.visibility = View.GONE
-        transferButtonShowCode.visibility = View.GONE
+        transferSendButton.isVisible = true
+        transferMsgInfo.isVisible = true
+        transferLayoutGenerating.isVisible = false
+        transferLayoutSending.isVisible = false
+        transferLayoutFinish.isVisible = false
+        transferErrorSend.isVisible = false
+        transferButtonShowCode.isVisible = false
     }
 
     fun sceneGeneratingAndSending() {
         setupSceneTransition()
 
-        transferSendButton.visibility = View.GONE
-        transferMsgInfo.visibility = View.GONE
-        transferLayoutGenerating.visibility = View.VISIBLE
-        transferLayoutSending.visibility = View.VISIBLE
-        transferLayoutFinish.visibility = View.GONE
-        transferErrorSend.visibility = View.GONE
-        transferButtonShowCode.visibility = View.GONE
+        transferSendButton.isVisible = false
+        transferMsgInfo.isVisible = false
+        transferLayoutGenerating.isVisible = true
+        transferLayoutSending.isVisible = true
+        transferLayoutFinish.isVisible = false
+        transferErrorSend.isVisible = false
+        transferButtonShowCode.isVisible = false
     }
 
     fun sceneSendError() {
         setupSceneTransition()
 
-        transferSendButton.visibility = View.GONE
-        transferMsgInfo.visibility = View.GONE
-        transferLayoutGenerating.visibility = View.VISIBLE
-        transferLayoutSending.visibility = View.VISIBLE
-        transferLayoutFinish.visibility = View.GONE
-        transferErrorSend.visibility = View.VISIBLE
-        transferButtonShowCode.visibility = View.GONE
+        transferSendButton.isVisible = false
+        transferMsgInfo.isVisible = false
+        transferLayoutGenerating.isVisible = true
+        transferLayoutSending.isVisible = true
+        transferLayoutFinish.isVisible = false
+        transferErrorSend.isVisible = true
+        transferButtonShowCode.isVisible = false
     }
 
     fun sceneFinished(transition: Boolean = false) {
@@ -89,13 +89,13 @@ class AutocryptKeyTransferActivity : K9Activity() {
             setupSceneTransition()
         }
 
-        transferSendButton.visibility = View.GONE
-        transferMsgInfo.visibility = View.GONE
-        transferLayoutGenerating.visibility = View.VISIBLE
-        transferLayoutSending.visibility = View.VISIBLE
-        transferLayoutFinish.visibility = View.VISIBLE
-        transferErrorSend.visibility = View.GONE
-        transferButtonShowCode.visibility = View.VISIBLE
+        transferSendButton.isVisible = false
+        transferMsgInfo.isVisible = false
+        transferLayoutGenerating.isVisible = true
+        transferLayoutSending.isVisible = true
+        transferLayoutFinish.isVisible = true
+        transferErrorSend.isVisible = false
+        transferButtonShowCode.isVisible = true
     }
 
     fun setLoadingStateGenerating() {

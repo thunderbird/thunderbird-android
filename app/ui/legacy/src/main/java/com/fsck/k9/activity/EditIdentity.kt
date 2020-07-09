@@ -1,7 +1,7 @@
 package com.fsck.k9.activity
 
 import android.os.Bundle
-import android.view.View
+import androidx.core.view.isVisible
 import com.fsck.k9.Account
 import com.fsck.k9.Identity
 import com.fsck.k9.Preferences
@@ -39,17 +39,17 @@ class EditIdentity : K9Activity() {
         signature_use.isChecked = identity.signatureUse
         signature_use.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                signature_layout.visibility = View.VISIBLE
+                signature_layout.isVisible = true
                 signature.setText(identity.signature)
             } else {
-                signature_layout.visibility = View.GONE
+                signature_layout.isVisible = false
             }
         }
 
         if (signature_use.isChecked) {
             signature.setText(identity.signature)
         } else {
-            signature_layout.visibility = View.GONE
+            signature_layout.isVisible = false
         }
     }
 
