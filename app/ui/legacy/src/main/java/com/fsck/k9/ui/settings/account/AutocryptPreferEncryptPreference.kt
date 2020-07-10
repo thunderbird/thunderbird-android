@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import androidx.core.content.res.TypedArrayUtils
+import androidx.core.content.withStyledAttributes
 import androidx.preference.PreferenceViewHolder
 import androidx.preference.TwoStatePreference
 import com.fsck.k9.ui.R
@@ -21,13 +22,10 @@ constructor(
 ) : TwoStatePreference(context, attrs, defStyleAttr, defStyleRes) {
 
     init {
-        val attributes = context.obtainStyledAttributes(attrs, R.styleable.AutocryptPreferEncryptPreference,
-                defStyleAttr, defStyleRes)
-
-        summaryOn = attributes.getString(R.styleable.AutocryptPreferEncryptPreference_summaryOn)
-        summaryOff = attributes.getString(R.styleable.AutocryptPreferEncryptPreference_summaryOff)
-
-        attributes.recycle()
+        context.withStyledAttributes(attrs, R.styleable.AutocryptPreferEncryptPreference, defStyleAttr, defStyleRes) {
+            summaryOn = getString(R.styleable.AutocryptPreferEncryptPreference_summaryOn)
+            summaryOff = getString(R.styleable.AutocryptPreferEncryptPreference_summaryOff)
+        }
     }
 
     override fun onClick() {

@@ -189,14 +189,14 @@ class MessageListAdapter internal constructor(
             }
 
             holder.date.text = displayDate
-            holder.attachment.visibility = if (hasAttachments) View.VISIBLE else View.GONE
+            holder.attachment.isVisible = hasAttachments
 
             val statusHolder = buildStatusHolder(isForwarded, isAnswered)
             if (statusHolder != null) {
                 holder.status.setImageDrawable(statusHolder)
-                holder.status.visibility = View.VISIBLE
+                holder.status.isVisible = true
             } else {
-                holder.status.visibility = View.GONE
+                holder.status.isVisible = false
             }
         }
     }
@@ -274,9 +274,9 @@ class MessageListAdapter internal constructor(
     private fun updateWithThreadCount(holder: MessageViewHolder, threadCount: Int) {
         if (threadCount > 1) {
             holder.threadCount.text = String.format("%d", threadCount)
-            holder.threadCount.visibility = View.VISIBLE
+            holder.threadCount.isVisible = true
         } else {
-            holder.threadCount.visibility = View.GONE
+            holder.threadCount.isVisible = false
         }
     }
 

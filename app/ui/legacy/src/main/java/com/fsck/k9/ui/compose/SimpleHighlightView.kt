@@ -33,6 +33,7 @@ import android.graphics.PorterDuffXfermode
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.core.view.isVisible
 import com.fsck.k9.ui.R
 
 /**
@@ -173,7 +174,7 @@ class SimpleHighlightView private constructor(context: Context, style: Int) : Fr
     private fun fadeInHighlight() {
         ObjectAnimator.ofFloat(this, ALPHA, INVISIBLE, VISIBLE)
             .setDuration(fadeInMillis)
-            .onAnimationStart { visibility = View.VISIBLE }
+            .onAnimationStart { isVisible = true }
             .start()
     }
 
@@ -181,7 +182,7 @@ class SimpleHighlightView private constructor(context: Context, style: Int) : Fr
         ObjectAnimator.ofFloat(this, ALPHA, INVISIBLE)
             .setDuration(fadeOutMillis)
             .onAnimationEnd {
-                visibility = View.GONE
+                isVisible = false
                 clearBitmap()
                 parent?.removeView(this@SimpleHighlightView)
             }

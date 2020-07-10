@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.ui.R
@@ -59,32 +60,32 @@ class SettingsExportFragment : Fragment() {
     private fun updateUi(model: SettingsExportUiModel) {
         when (model.exportButton) {
             ButtonState.DISABLED -> {
-                exportButton.visibility = View.VISIBLE
+                exportButton.isVisible = true
                 exportButton.isEnabled = false
             }
             ButtonState.ENABLED -> {
-                exportButton.visibility = View.VISIBLE
+                exportButton.isVisible = true
                 exportButton.isEnabled = true
             }
             ButtonState.INVISIBLE -> exportButton.visibility = View.INVISIBLE
             ButtonState.GONE -> exportButton.visibility = View.GONE
         }
 
-        shareButton.visibility = if (model.isShareButtonVisible) View.VISIBLE else View.GONE
-        progressBar.visibility = if (model.isProgressVisible) View.VISIBLE else View.GONE
+        shareButton.isVisible = model.isShareButtonVisible
+        progressBar.isVisible = model.isProgressVisible
 
         when (model.statusText) {
-            StatusText.HIDDEN -> statusText.visibility = View.GONE
+            StatusText.HIDDEN -> statusText.isVisible = false
             StatusText.EXPORT_SUCCESS -> {
-                statusText.visibility = View.VISIBLE
+                statusText.isVisible = true
                 statusText.text = getString(R.string.settings_export_success_generic)
             }
             StatusText.PROGRESS -> {
-                statusText.visibility = View.VISIBLE
+                statusText.isVisible = true
                 statusText.text = getString(R.string.settings_export_progress_text)
             }
             StatusText.EXPORT_FAILURE -> {
-                statusText.visibility = View.VISIBLE
+                statusText.isVisible = true
                 statusText.text = getString(R.string.settings_export_failure)
             }
         }
