@@ -104,6 +104,11 @@ android {
         exclude 'kotlin/**'
     }
 
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
+    }
+
     compileOptions {
         sourceCompatibility javaVersion
         targetCompatibility javaVersion
