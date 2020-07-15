@@ -31,7 +31,7 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:${versions.androidxConstraintLayout}"
     implementation "androidx.cardview:cardview:${versions.androidxCardView}"
     implementation "androidx.localbroadcastmanager:localbroadcastmanager:${versions.androidxLocalBroadcastManager}"
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     implementation "com.google.android.material:material:${versions.materialComponents}"
     implementation "de.cketti.library.changelog:ckchangelog:1.2.1"
     implementation "com.github.bumptech.glide:glide:3.6.1"
