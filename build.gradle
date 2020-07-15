@@ -26,7 +26,7 @@ buildscript {
                 'androidxTestCore': '1.2.0',
                 'materialComponents': '1.1.0',
                 'preferencesFix': '1.1.0',
-                'okio': '2.5.0',
+                'okio': '2.7.0',
                 'moshi': '1.9.2',
                 'timber': '4.7.1',
                 'koin': '2.1.5',
