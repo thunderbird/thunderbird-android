@@ -29,7 +29,7 @@ buildscript {
                 'okio': '2.7.0',
                 'moshi': '1.9.3',
                 'timber': '4.7.1',
-                'koin': '2.1.5',
+                'koin': '2.1.6',
                 'commonsIo': '2.6',
                 'mime4j': '0.8.1',
                 'okhttp': '4.5.0',
