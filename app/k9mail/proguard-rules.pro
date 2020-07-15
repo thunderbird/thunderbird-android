@@ -17,6 +17,14 @@
 -dontwarn okio.**
 -dontwarn com.squareup.moshi.**
 
+# Glide
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
+-keep public class * extends com.bumptech.glide.module.LibraryGlideModule
+-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+
 # Project specific rules
 -dontnote com.fsck.k9.ui.messageview.**
 -dontnote com.fsck.k9.view.**

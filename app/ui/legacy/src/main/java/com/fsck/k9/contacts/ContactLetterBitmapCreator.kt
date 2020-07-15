@@ -4,8 +4,6 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
-import com.bumptech.glide.load.Key
-import com.bumptech.glide.signature.StringSignature
 import com.fsck.k9.mail.Address
 import com.fsck.k9.ui.helper.MaterialColors
 
@@ -57,10 +55,8 @@ class ContactLetterBitmapCreator(
         }
     }
 
-    fun signatureOf(address: Address): Key {
-        val letter = letterExtractor.extractContactLetter(address)
-        val backgroundColor = calcUnknownContactColor(address)
-        return StringSignature(letter + backgroundColor)
+    fun signatureOf(address: Address): String {
+        return calcUnknownContactColor(address).toString()
     }
 
     companion object {

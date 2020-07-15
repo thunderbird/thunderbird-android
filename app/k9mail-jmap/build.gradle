@@ -29,6 +29,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.androidxLifecycle}"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:${versions.androidxLifecycle}"
 
+    implementation "com.github.bumptech.glide:glide:${versions.glide}"
+    kapt "com.github.bumptech.glide:compiler:${versions.glide}"
+
     // Required for DependencyInjectionTest to be able to resolve OpenPgpApiManager
     testImplementation project(':plugins:openpgp-api-lib:openpgp-api')
 
