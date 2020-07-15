@@ -18,7 +18,7 @@ buildscript {
                 'androidxNavigation': '2.3.0',
                 'androidxConstraintLayout': '1.1.3',
                 'androidxWorkManager': '2.3.4',
-                'androidxFragment': '1.2.4',
+                'androidxFragment': '1.2.5',
                 'androidxLocalBroadcastManager': '1.0.0',
                 'androidxCore': '1.2.0',
                 'androidxCardView': '1.0.0',
