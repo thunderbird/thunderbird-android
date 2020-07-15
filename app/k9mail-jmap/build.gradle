@@ -112,8 +112,8 @@ android {
         jvmTarget = kotlinJvmVersion
     }
 
-    dataBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding = true
     }
 
     testOptions {
