@@ -33,10 +33,8 @@ import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpApiManagerCallback;
 import org.openintents.openpgp.OpenPgpApiManager.OpenPgpProviderState;
 import org.openintents.openpgp.util.OpenPgpApi;
-import org.openintents.openpgp.util.ShadowOpenPgpAsyncTask;
 import org.robolectric.Robolectric;
 import org.robolectric.RuntimeEnvironment;
-import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -51,7 +49,6 @@ import static org.mockito.Mockito.when;
 
 
 @SuppressWarnings("ConstantConditions")
-@Config(shadows = { ShadowOpenPgpAsyncTask.class })
 public class RecipientPresenterTest extends K9RobolectricTest {
     private static final ReplyToAddresses TO_ADDRESSES = new ReplyToAddresses(Address.parse("to@example.org"));
     private static final List<Address> ALL_TO_ADDRESSES = Arrays.asList(Address.parse("allTo@example.org"));
