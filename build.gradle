@@ -35,7 +35,7 @@ buildscript {
                 'okhttp': '4.8.0',
                 'minidns': '0.3.4',
 
-                'androidxTestRunner': '1.1.1',
+                'androidxTestRunner': '1.2.0',
                 'junit': '4.13',
                 'robolectric': '4.2.1',
                 'mockito': '3.3.3',
