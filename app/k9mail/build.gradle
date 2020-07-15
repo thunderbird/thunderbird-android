@@ -24,7 +24,7 @@ dependencies {
     implementation "com.jakewharton.timber:timber:${versions.timber}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinCoroutines}"
 
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.3'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'
 
     // Required for DependencyInjectionTest to be able to resolve OpenPgpApiManager
     testImplementation project(':plugins:openpgp-api-lib:openpgp-api')
