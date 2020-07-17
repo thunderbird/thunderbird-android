@@ -34,7 +34,6 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     implementation "com.google.android.material:material:${versions.materialComponents}"
     implementation "de.cketti.library.changelog:ckchangelog:1.2.1"
-    implementation "com.github.bumptech.glide:glide:3.6.1"
     implementation "com.splitwise:tokenautocomplete:2.0.7"
     implementation "de.cketti.safecontentresolver:safe-content-resolver-v21:1.0.0"
     implementation "com.xwray:groupie:2.8.0"
@@ -52,6 +51,9 @@ dependencies {
     implementation "org.apache.james:apache-mime4j-core:${versions.mime4j}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinCoroutines}"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.kotlinCoroutines}"
+
+    implementation "com.github.bumptech.glide:glide:${versions.glide}"
+    annotationProcessor "com.github.bumptech.glide:compiler:${versions.glide}"
 
     testImplementation project(':mail:testing')
     testImplementation project(':app:storage')

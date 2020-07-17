@@ -4,7 +4,9 @@ import org.koin.dsl.module
 
 val contactsModule = module {
     single { ContactLetterExtractor() }
-    factory { ContactLetterBitmapConfig(get(), get()) }
-    factory { ContactLetterBitmapCreator(get(), get()) }
-    factory { ContactPictureLoader(get(), get()) }
+    factory { ContactLetterBitmapConfig(context = get(), themeManager = get()) }
+    factory { ContactLetterBitmapCreator(letterExtractor = get(), config = get()) }
+    factory { ContactPhotoLoader(contentResolver = get(), contacts = get()) }
+    factory { ContactPictureLoader(context = get(), contactLetterBitmapCreator = get()) }
+    factory { ContactImageBitmapDecoderFactory(contactPhotoLoader = get()) }
 }
