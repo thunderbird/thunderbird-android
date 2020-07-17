@@ -112,6 +112,11 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
             public void onTokenChanged(Recipient recipient) {
                 presenter.onToTokenChanged();
             }
+
+            @Override
+            public void onTokenIgnored(Recipient token) {
+                // Do nothing
+            }
         });
 
         ccView.setTokenListener(new TokenListener<Recipient>() {
@@ -129,6 +134,11 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
             public void onTokenChanged(Recipient recipient) {
                 presenter.onCcTokenChanged();
             }
+
+            @Override
+            public void onTokenIgnored(Recipient token) {
+                // Do nothing
+            }
         });
 
         bccView.setTokenListener(new TokenListener<Recipient>() {
@@ -145,6 +155,11 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
             @Override
             public void onTokenChanged(Recipient recipient) {
                 presenter.onBccTokenChanged();
+            }
+
+            @Override
+            public void onTokenIgnored(Recipient token) {
+                // Do nothing
             }
         });
     }
@@ -220,11 +235,9 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
     public void silentlyAddBccAddresses(Recipient... recipients) {
         removeAllTextChangedListeners(bccView);
 
-        // The actual modification of the view is deferred via View.post()…
         bccView.addRecipients(recipients);
 
-        // … so we do the same to add back the listeners.
-        bccView.post(() -> addAllTextChangedListeners(bccView));
+        addAllTextChangedListeners(bccView);
     }
 
     public void silentlyRemoveBccAddresses(Address[] addressesToRemove) {
@@ -238,13 +251,11 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
 
             for (Address address : addressesToRemove) {
                 if (recipient.address.equals(address)) {
-                    // The actual modification of the view is deferred via View.post()…
-                    bccView.removeObject(recipient);
+                    bccView.removeObjectSync(recipient);
                 }
             }
 
-            // … so we do the same to add back the listeners.
-            bccView.post(() -> addAllTextChangedListeners(bccView));
+            addAllTextChangedListeners(bccView);
         }
     }
 

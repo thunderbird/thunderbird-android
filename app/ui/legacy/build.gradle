@@ -34,7 +34,7 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     implementation "com.google.android.material:material:${versions.materialComponents}"
     implementation "de.cketti.library.changelog:ckchangelog:1.2.1"
-    implementation "com.splitwise:tokenautocomplete:2.0.7"
+    implementation "com.splitwise:tokenautocomplete:4.0.0-beta01"
     implementation "de.cketti.safecontentresolver:safe-content-resolver-v21:1.0.0"
     implementation "com.xwray:groupie:2.8.0"
     implementation "com.xwray:groupie-kotlin-android-extensions:2.8.0"

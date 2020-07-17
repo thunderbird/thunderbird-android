@@ -92,9 +92,6 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         alternatesAdapter = new AlternateRecipientAdapter(context, this);
         alternatesPopup.setAdapter(alternatesAdapter);
 
-        // don't allow duplicates, based on equality of recipient objects, which is email addresses
-        allowDuplicates(false);
-
         // if a token is completed, pick an entry based on best guess.
         // Note that we override performCompletion, so this doesn't actually do anything
         performBestGuess(true);
@@ -103,6 +100,12 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         setAdapter(adapter);
 
         setLongClickable(true);
+    }
+
+    @Override
+    public boolean shouldIgnoreToken(Recipient token) {
+        // don't allow duplicates, based on equality of recipient objects, which is email addresses
+        return getObjects().contains(token);
     }
 
     @Override
@@ -255,12 +258,12 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     }
 
     @Override
-    protected void performFiltering(@NonNull CharSequence text, int start, int end, int keyCode) {
+    protected void performFiltering(@NonNull CharSequence text, int keyCode) {
         if (loaderManager == null) {
             return;
         }
 
-        String query = text.subSequence(start, end).toString();
+        String query = currentCompletionText();
         if (TextUtils.isEmpty(query) || query.length() < MINIMUM_LENGTH_FOR_FILTERING) {
             loaderManager.destroyLoader(LOADER_ID_FILTERING);
             return;
@@ -300,7 +303,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
     public void addRecipients(Recipient... recipients) {
         for (Recipient recipient : recipients) {
-            addObject(recipient);
+            addObjectSync(recipient);
         }
     }
 
@@ -437,7 +440,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     @Override
     public void onRecipientRemove(Recipient currentRecipient) {
         alternatesPopup.dismiss();
-        removeObject(currentRecipient);
+        removeObjectSync(currentRecipient);
     }
 
     @Override
@@ -483,7 +486,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         }
 
         View tokenView = getViewForObject(obj);
-        return new RecipientTokenSpan(tokenView, obj, (int) maxTextWidth());
+        return new RecipientTokenSpan(tokenView, obj);
     }
 
     /**
@@ -531,8 +534,8 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         private final View view;
 
 
-        public RecipientTokenSpan(View view, Recipient recipient, int token) {
-            super(view, recipient, token);
+        public RecipientTokenSpan(View view, Recipient recipient) {
+            super(view, recipient);
             this.view = view;
         }
     }
@@ -700,6 +703,12 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         public boolean equals(Object o) {
             // Equality is entirely up to the address
             return o instanceof Recipient && address.equals(((Recipient) o).address);
+        }
+
+        @NonNull
+        @Override
+        public String toString() {
+            return address.toString();
         }
 
         private void writeObject(ObjectOutputStream oos) throws IOException {
