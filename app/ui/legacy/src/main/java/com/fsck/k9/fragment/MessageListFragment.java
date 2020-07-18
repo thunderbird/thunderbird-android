@@ -794,6 +794,15 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         return trashFolderId != null && currentFolder.databaseId == trashFolderId;
     }
 
+    public boolean isShowingOutboxFolder() {
+        if (!singleFolderMode || currentFolder == null) {
+            return false;
+        }
+
+        Long outboxFolderId = account.getOutboxFolderId();
+        return outboxFolderId != null && currentFolder.databaseId == outboxFolderId;
+    }
+
     private void showDialog(int dialogId) {
         DialogFragment fragment;
         if (dialogId == R.id.dialog_confirm_spam) {
@@ -1533,6 +1542,14 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         copyOrMove(messages, folderId, FolderOperation.MOVE);
     }
 
+    private void moveToDrafts(List<MessageReference> messages) {
+        Long draftsFolderID = account.getDraftsFolderId();
+        activeMessages = null;
+        if(draftsFolderID != null) {
+            move(messages, draftsFolderID);
+        }
+    }
+
     private void copyOrMove(List<MessageReference> messages, long destinationFolderId, FolderOperation operation) {
         Map<Long, List<MessageReference>> folderMap = new HashMap<>();
 
@@ -1707,6 +1724,20 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                     menu.findItem(R.id.spam).setVisible(false);
                 }
             }
+
+            // if the item is in outbox then only available context menu items should be 'move to draft' and 'delete'
+            if(isShowingOutboxFolder()) {
+                menu.findItem(R.id.mark_as_read).setVisible(false);
+                menu.findItem(R.id.mark_as_unread).setVisible(false);
+                menu.findItem(R.id.archive).setVisible(false);
+                menu.findItem(R.id.copy).setVisible(false);
+                menu.findItem(R.id.flag).setVisible(false);
+                menu.findItem(R.id.unflag).setVisible(false);
+                menu.findItem(R.id.spam).setVisible(false);
+
+                MenuItem moveMenuItemView = (MenuItem) menu.findItem(R.id.move);
+                moveMenuItemView.setTitle(R.string.move_to_draft_action);
+            }
         }
 
         public void showSelectAll(boolean show) {
@@ -1760,7 +1791,11 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 onSpam(getCheckedMessages());
                 selectedCount = 0;
             } else if (id == R.id.move) {
-                onMove(getCheckedMessages());
+                if(isShowingOutboxFolder()) {
+                    moveToDrafts(getCheckedMessages());
+                } else {
+                    onMove(getCheckedMessages());
+                }
                 selectedCount = 0;
             } else if (id == R.id.copy) {
                 onCopy(getCheckedMessages());
