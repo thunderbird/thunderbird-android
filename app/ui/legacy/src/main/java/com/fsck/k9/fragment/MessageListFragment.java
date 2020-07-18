@@ -1589,6 +1589,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
     }
 
+    private void onMoveToDraftsFolder(List<MessageReference> messages){
+        messagingController.moveToDraftsFolder(messages, account, currentFolder.databaseId);
+        activeMessages = null;
+    }
 
     class ActionModeCallback implements ActionMode.Callback {
         private MenuItem mSelectAll;
@@ -1711,6 +1715,23 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                     menu.findItem(R.id.spam).setVisible(false);
                 }
             }
+
+            if (!account.hasDraftsFolder() || !isOutbox()) {
+                menu.findItem(R.id.move_to_drafts).setVisible(false);
+            }
+
+            if (isOutbox()) {
+                menu.findItem(R.id.mark_as_read).setVisible(false);
+                menu.findItem(R.id.mark_as_unread).setVisible(false);
+                menu.findItem(R.id.archive).setVisible(false);
+                menu.findItem(R.id.copy).setVisible(false);
+                menu.findItem(R.id.flag).setVisible(false);
+                menu.findItem(R.id.unflag).setVisible(false);
+                menu.findItem(R.id.spam).setVisible(false);
+                menu.findItem(R.id.move).setVisible(false);
+                boolean hasDrafts = account.hasDraftsFolder();
+                menu.findItem(R.id.move_to_drafts).setVisible(hasDrafts);
+            }
         }
 
         public void showSelectAll(boolean show) {
@@ -1765,6 +1786,9 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 selectedCount = 0;
             } else if (id == R.id.move) {
                 onMove(getCheckedMessages());
+                selectedCount = 0;
+            } else if (id == R.id.move_to_drafts) {
+                onMoveToDraftsFolder(getCheckedMessages());
                 selectedCount = 0;
             } else if (id == R.id.copy) {
                 onCopy(getCheckedMessages());
