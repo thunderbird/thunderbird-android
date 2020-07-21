@@ -1598,14 +1598,14 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                             MessagingController.INVALID_MESSAGE_ID, message.getSubject(), true);
 
                 //did save to draft succeed? we need to remove it from outbox
-                if(draftMessage != null) {
-                    draftsSaved.add(messageReference);
+                if(draftMessage != null && message != null) {
+                    message.destroy();
                 }
             } catch (MessagingException e) {
                 Timber.e(e, "Error loading message. Draft was not saved.");
             }
         }
-        onDeleteConfirmed(draftsSaved);
+
 
         activeMessages = null;
     }
