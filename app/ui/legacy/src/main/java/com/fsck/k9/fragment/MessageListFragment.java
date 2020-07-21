@@ -54,6 +54,7 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.preferences.StorageEditor;
@@ -792,15 +793,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
         Long trashFolderId = account.getTrashFolderId();
         return trashFolderId != null && currentFolder.databaseId == trashFolderId;
-    }
-
-    public boolean isShowingOutboxFolder() {
-        if (!singleFolderMode || currentFolder == null) {
-            return false;
-        }
-
-        Long outboxFolderId = account.getOutboxFolderId();
-        return outboxFolderId != null && currentFolder.databaseId == outboxFolderId;
     }
 
     private void showDialog(int dialogId) {
@@ -1542,14 +1534,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         copyOrMove(messages, folderId, FolderOperation.MOVE);
     }
 
-    private void moveToDrafts(List<MessageReference> messages) {
-        Long draftsFolderID = account.getDraftsFolderId();
-        activeMessages = null;
-        if(draftsFolderID != null) {
-            move(messages, draftsFolderID);
-        }
-    }
-
     private void copyOrMove(List<MessageReference> messages, long destinationFolderId, FolderOperation operation) {
         Map<Long, List<MessageReference>> folderMap = new HashMap<>();
 
@@ -1602,6 +1586,29 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
     }
 
+    private void saveToDraftAndRemove(List<MessageReference> messages){
+
+        List<MessageReference> draftsSaved = new ArrayList<>(selected.size());
+        for(MessageReference mr: messages) {
+            Message draftMessage = null;
+            try {
+
+                Message message = messagingController.loadMessage(account, currentFolder.databaseId, mr.getUid());
+                draftMessage = messagingController.saveDraft(account, message,
+                            MessagingController.INVALID_MESSAGE_ID, message.getSubject(), true);
+
+                //did save to draft succeed? we need to remove it from outbox
+                if(draftMessage != null) {
+                    draftsSaved.add(mr);
+                }
+            } catch (MessagingException e) {
+                Timber.e(e, "Error loading message. Draft was not saved.");
+            }
+        }
+        onDeleteConfirmed(draftsSaved);
+
+        activeMessages = null;
+    }
 
     class ActionModeCallback implements ActionMode.Callback {
         private MenuItem mSelectAll;
@@ -1725,8 +1732,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 }
             }
 
-            // if the item is in outbox then only available context menu items should be 'move to draft' and 'delete'
-            if(isShowingOutboxFolder()) {
+            // if currentFolder is outbox: reduce available menu items to 'move to draft' and 'delete'
+            if(isOutbox()) {
                 menu.findItem(R.id.mark_as_read).setVisible(false);
                 menu.findItem(R.id.mark_as_unread).setVisible(false);
                 menu.findItem(R.id.archive).setVisible(false);
@@ -1791,8 +1798,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 onSpam(getCheckedMessages());
                 selectedCount = 0;
             } else if (id == R.id.move) {
-                if(isShowingOutboxFolder()) {
-                    moveToDrafts(getCheckedMessages());
+                if(isOutbox()) {
+                    saveToDraftAndRemove(getCheckedMessages());
                 } else {
                     onMove(getCheckedMessages());
                 }
