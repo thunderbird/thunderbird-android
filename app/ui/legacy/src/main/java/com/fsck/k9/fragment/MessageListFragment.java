@@ -1589,17 +1589,17 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private void saveToDraftAndRemove(List<MessageReference> messages){
 
         List<MessageReference> draftsSaved = new ArrayList<>(selected.size());
-        for(MessageReference mr: messages) {
+        for(MessageReference messageReference: messages) {
             Message draftMessage = null;
             try {
 
-                Message message = messagingController.loadMessage(account, currentFolder.databaseId, mr.getUid());
+                Message message = messagingController.loadMessage(account, currentFolder.databaseId, messageReference.getUid());
                 draftMessage = messagingController.saveDraft(account, message,
                             MessagingController.INVALID_MESSAGE_ID, message.getSubject(), true);
 
                 //did save to draft succeed? we need to remove it from outbox
                 if(draftMessage != null) {
-                    draftsSaved.add(mr);
+                    draftsSaved.add(messageReference);
                 }
             } catch (MessagingException e) {
                 Timber.e(e, "Error loading message. Draft was not saved.");
