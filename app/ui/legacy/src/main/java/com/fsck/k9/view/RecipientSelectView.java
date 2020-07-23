@@ -338,6 +338,15 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     }
 
     @Override
+    public boolean onKeyPreIme(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && alternatesPopup.isShowing()) {
+            alternatesPopup.dismiss();
+            return true;
+        }
+        return super.onKeyPreIme(keyCode, event);
+    }
+
+    @Override
     public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
         alternatesPopup.dismiss();
         return super.onKeyDown(keyCode, event);
