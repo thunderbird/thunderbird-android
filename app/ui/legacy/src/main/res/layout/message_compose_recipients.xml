@@ -221,7 +221,7 @@
             android:dropDownWidth="wrap_content"
             android:dropDownAnchor="@id/to_wrapper"
             tools:text="Recipient"
-            style="@style/ComposeEditText"
+            style="@style/RecipientEditText"
             />
 
         <ViewAnimator
@@ -291,7 +291,7 @@
             android:paddingBottom="10dp"
             android:dropDownWidth="wrap_content"
             android:dropDownAnchor="@id/cc_wrapper"
-            style="@style/ComposeEditText"
+            style="@style/RecipientEditText"
             />
 
     </LinearLayout>
@@ -337,7 +337,7 @@
             android:paddingBottom="10dp"
             android:dropDownWidth="wrap_content"
             android:dropDownAnchor="@id/bcc_wrapper"
-            style="@style/ComposeEditText"
+            style="@style/RecipientEditText"
             />
 
     </LinearLayout>

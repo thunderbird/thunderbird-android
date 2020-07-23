@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.fsck.k9.ui.compose.RecipientTokenConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
@@ -20,6 +20,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:contentDescription="@null"
+        android:minHeight="32dp"
         app:layout_constraintBottom_toBottomOf="@android:id/text1"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toStartOf="parent"
@@ -132,4 +133,4 @@
         app:srcCompat="@drawable/status_dots_3"
         app:tint="?attr/openpgp_green" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</com.fsck.k9.ui.compose.RecipientTokenConstraintLayout>
