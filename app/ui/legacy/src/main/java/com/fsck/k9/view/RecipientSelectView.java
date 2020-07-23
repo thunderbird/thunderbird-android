@@ -24,7 +24,6 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ListPopupWindow;
@@ -150,26 +149,6 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
             boolean isVerified = recipient.cryptoStatus == RecipientCryptoStatus.AVAILABLE_TRUSTED;
             holder.showAdvancedCryptoState(isAvailable, isVerified);
         }
-    }
-
-    @Override
-    public boolean onTouchEvent(@NonNull MotionEvent event) {
-        int action = event.getActionMasked();
-        Editable text = getText();
-
-        if (text != null && action == MotionEvent.ACTION_UP) {
-            int offset = getOffsetForPosition(event.getX(), event.getY());
-
-            if (offset != -1) {
-                TokenImageSpan[] links = text.getSpans(offset, offset, RecipientTokenSpan.class);
-                if (links.length > 0) {
-                    showAlternates(links[0].getToken());
-                    return true;
-                }
-            }
-        }
-
-        return super.onTouchEvent(event);
     }
 
     @Override
@@ -537,6 +516,11 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         public RecipientTokenSpan(View view, Recipient recipient) {
             super(view, recipient);
             this.view = view;
+        }
+
+        @Override
+        public void onClick() {
+            showAlternates(getToken());
         }
     }
 
