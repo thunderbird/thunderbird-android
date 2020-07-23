@@ -1,104 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
     android:layout_width="wrap_content"
-    android:layout_height="32dp">
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="?attr/contactTokenBackgroundColor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/background_position_helper"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:gravity="center_vertical"
         android:id="@+id/contact_photo"
-        tools:src="@drawable/ic_contact_picture"
-        />
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@null"
+        app:layout_constraintBottom_toBottomOf="@android:id/text1"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@android:id/text1"
+        tools:src="@drawable/ic_contact_picture" />
 
-    <LinearLayout
+    <View
+        android:id="@+id/background_position_helper"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/contact_photo"
+        app:layout_constraintEnd_toEndOf="@+id/contact_photo"
+        app:layout_constraintStart_toStartOf="@+id/contact_photo"
+        app:layout_constraintTop_toTopOf="@+id/contact_photo" />
+
+    <TextView
+        android:id="@android:id/text1"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:background="?attr/contactTokenBackgroundColor"
-        android:layout_marginLeft="-16dp"
-        >
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingTop="4dp"
+        android:paddingEnd="14dp"
+        android:paddingBottom="4dp"
+        android:textAppearance="@android:style/TextAppearance.Medium"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/contact_photo"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Jane Doe" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@android:id/text1"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="8dp"
-            android:maxLines="1"
-            android:ellipsize="end"
-            tools:text="Name"
-            />
+    <ImageView
+        android:id="@+id/contact_crypto_status_icon_simple"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_status_corner"
+        app:tint="?openpgp_black"
+        tools:visibility="gone" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/contact_crypto_status_icon_simple"
-            app:srcCompat="@drawable/ic_status_corner"
-            android:visibility="gone"
-            android:tint="?openpgp_black"
-            tools:visibility="visible"
-            />
+    <ImageView
+        android:id="@+id/contact_crypto_status_icon_simple_enabled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_status_corner"
+        app:tint="?openpgp_green"
+        tools:visibility="gone" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/contact_crypto_status_icon_simple_enabled"
-            app:srcCompat="@drawable/ic_status_corner"
-            android:visibility="gone"
-            android:tint="?openpgp_green"
-            tools:visibility="visible"
-            />
+    <ImageView
+        android:id="@+id/contact_crypto_status_icon_simple_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_status_corner"
+        app:tint="?openpgp_red"
+        tools:visibility="gone" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/contact_crypto_status_icon_simple_error"
-            app:srcCompat="@drawable/ic_status_corner"
-            android:visibility="gone"
-            android:tint="?openpgp_red"
-            tools:visibility="visible"
-            />
+    <ImageView
+        android:id="@+id/contact_crypto_status_red"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="6dp"
+        android:contentDescription="@null"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@android:id/text1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/status_dots_1"
+        app:tint="?attr/openpgp_red"
+        tools:visibility="gone" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="6dp"
-            android:layout_marginEnd="6dp"
-            android:layout_gravity="center_vertical"
-            android:id="@+id/contact_crypto_status_red"
-            app:srcCompat="@drawable/status_dots_1"
-            android:tint="?attr/openpgp_red"
-            android:visibility="gone"
-            />
+    <ImageView
+        android:id="@+id/contact_crypto_status_orange"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="6dp"
+        android:contentDescription="@null"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@android:id/text1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/status_dots_2"
+        app:tint="?attr/openpgp_orange"
+        tools:visibility="gone" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="6dp"
-            android:layout_marginEnd="6dp"
-            android:layout_gravity="center_vertical"
-            android:id="@+id/contact_crypto_status_orange"
-            app:srcCompat="@drawable/status_dots_2"
-            android:tint="?attr/openpgp_orange"
-            android:visibility="gone"
-            />
+    <ImageView
+        android:id="@+id/contact_crypto_status_green"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@android:id/text1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/status_dots_3"
+        app:tint="?attr/openpgp_green" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="6dp"
-            android:layout_marginEnd="6dp"
-            android:layout_gravity="center_vertical"
-            android:id="@+id/contact_crypto_status_green"
-            app:srcCompat="@drawable/status_dots_3"
-            android:tint="?attr/openpgp_green"
-            android:visibility="gone"
-            />
-
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

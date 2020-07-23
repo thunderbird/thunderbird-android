@@ -29,6 +29,15 @@ import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.TokenListener;
 import com.fsck.k9.view.ToolableViewAnimator;
 
+import static com.fsck.k9.FontSizes.FONT_10SP;
+import static com.fsck.k9.FontSizes.FONT_12SP;
+import static com.fsck.k9.FontSizes.FONT_16SP;
+import static com.fsck.k9.FontSizes.FONT_20SP;
+import static com.fsck.k9.FontSizes.FONT_DEFAULT;
+import static com.fsck.k9.FontSizes.LARGE;
+import static com.fsck.k9.FontSizes.MEDIUM;
+import static com.fsck.k9.FontSizes.SMALL;
+
 
 public class RecipientMvpView implements OnFocusChangeListener, OnClickListener {
     private static final int VIEW_INDEX_HIDDEN = -1;
@@ -210,9 +219,26 @@ public class RecipientMvpView implements OnFocusChangeListener, OnClickListener 
     }
 
     public void setFontSizes(FontSizes fontSizes, int fontSize) {
+        int tokenTextSize = getTokenTextSize(fontSize);
+        toView.setTokenTextSize(tokenTextSize);
+        ccView.setTokenTextSize(tokenTextSize);
+        bccView.setTokenTextSize(tokenTextSize);
         fontSizes.setViewTextSize(toView, fontSize);
         fontSizes.setViewTextSize(ccView, fontSize);
         fontSizes.setViewTextSize(bccView, fontSize);
+    }
+
+    private int getTokenTextSize(int fontSize) {
+        switch (fontSize) {
+            case FONT_10SP: return FONT_10SP;
+            case FONT_12SP: return FONT_12SP;
+            case SMALL: return SMALL;
+            case FONT_16SP: return 15;
+            case MEDIUM: return FONT_16SP;
+            case FONT_20SP: return MEDIUM;
+            case LARGE: return FONT_20SP;
+            default: return FONT_DEFAULT;
+        }
     }
 
     public void addRecipients(RecipientType recipientType, Recipient... recipients) {

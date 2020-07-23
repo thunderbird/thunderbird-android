@@ -22,6 +22,7 @@ import androidx.loader.content.Loader;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +43,8 @@ import com.tokenautocomplete.TokenCompleteTextView;
 import org.apache.james.mime4j.util.CharsetUtil;
 import timber.log.Timber;
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.fsck.k9.FontSizes.FONT_DEFAULT;
 
 
 public class RecipientSelectView extends TokenCompleteTextView<Recipient> implements LoaderCallbacks<List<Recipient>>,
@@ -67,6 +70,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     private AlternateRecipientAdapter alternatesAdapter;
     private Recipient alternatesPopupRecipient;
     private TokenListener<Recipient> listener;
+    private int tokenTextSize = FONT_DEFAULT;
 
 
     public RecipientSelectView(Context context) {
@@ -107,6 +111,10 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         return getObjects().contains(token);
     }
 
+    public void setTokenTextSize(int tokenTextSize) {
+        this.tokenTextSize = tokenTextSize;
+    }
+
     @Override
     protected View getViewForObject(Recipient recipient) {
         View view = inflateLayout();
@@ -123,17 +131,38 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     private View inflateLayout() {
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
         View layout = layoutInflater.inflate(R.layout.recipient_token_item, null, false);
-        View contactPhoto = layout.findViewById(R.id.contact_photo);
-        contactPhoto.setZ(1.f);
+        layout.addOnLayoutChangeListener(recipientTokenItemLayoutChangeListener);
         return layout;
     }
 
+    private final OnLayoutChangeListener recipientTokenItemLayoutChangeListener = new OnLayoutChangeListener() {
+        @Override
+        public void onLayoutChange(View view, int left, int top, int right, int bottom, int oldLeft, int oldTop,
+                int oldRight, int oldBottom) {
+
+            RecipientTokenViewHolder holder = (RecipientTokenViewHolder) view.getTag();
+            Recipient recipient = (Recipient) view.getTag(R.id.recipient_token_recipient_value);
+            if (holder != null && recipient != null) {
+                RecipientAdapter.setContactPhotoOrPlaceholder(getContext(), holder.vContactPhoto, recipient);
+            }
+        }
+    };
+
     private void bindObjectView(Recipient recipient, View view) {
+        view.setTag(R.id.recipient_token_recipient_value, recipient);
+
         RecipientTokenViewHolder holder = (RecipientTokenViewHolder) view.getTag();
 
         holder.vName.setText(recipient.getDisplayNameOrAddress());
+        if (tokenTextSize != FONT_DEFAULT) {
+            holder.vName.setTextSize(TypedValue.COMPLEX_UNIT_SP, tokenTextSize);
+        }
 
-        RecipientAdapter.setContactPhotoOrPlaceholder(getContext(), holder.vContactPhoto, recipient);
+        if (holder.vContactPhoto.getHeight() == 0) {
+            // The view hasn't been laid out yet. We'll trigger image loading in recipientTokenItemLayoutChangeListener.
+        } else {
+            RecipientAdapter.setContactPhotoOrPlaceholder(getContext(), holder.vContactPhoto, recipient);
+        }
 
         boolean hasCryptoProvider = cryptoProvider != null;
         if (!hasCryptoProvider) {
