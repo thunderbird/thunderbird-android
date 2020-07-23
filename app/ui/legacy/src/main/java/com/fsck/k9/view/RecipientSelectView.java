@@ -754,12 +754,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
                 return null;
             }
 
-            String displayName = address.getPersonal();
-            if (addressLabel != null) {
-                displayName += " (" + addressLabel + ")";
-            }
-
-            return displayName;
+            return address.getPersonal();
         }
 
         @NonNull
