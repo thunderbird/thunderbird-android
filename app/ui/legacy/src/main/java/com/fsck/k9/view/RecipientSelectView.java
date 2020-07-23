@@ -9,6 +9,8 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
@@ -307,6 +309,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         }
 
         invalidate();
+        invalidateCursorPositionHack();
     }
 
     public void addRecipients(Recipient... recipients) {
@@ -489,6 +492,23 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         }
 
         invalidate();
+        invalidateCursorPositionHack();
+    }
+
+    /**
+     * Changing the size of our RecipientTokenSpan doesn't seem to redraw the cursor in the new position. This will
+     * make sure the cursor position is recalculated.
+     */
+    private void invalidateCursorPositionHack() {
+        int oldStart = getSelectionStart();
+        int oldEnd = getSelectionEnd();
+
+        // The selection values need to actually change in order for the cursor to be redrawn. If the cursor already
+        // is at position 0 this won't trigger a redraw. But that's fine because the size of our span can't influence
+        // cursor position 0.
+        setSelection(0);
+
+        setSelection(oldStart, oldEnd);
     }
 
     /**
@@ -549,7 +569,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
     private class RecipientTokenSpan extends TokenImageSpan {
         private final View view;
-
+        private boolean initialLayoutPerformed = false;
 
         public RecipientTokenSpan(View view, Recipient recipient) {
             super(view, recipient);
@@ -559,6 +579,45 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         @Override
         public void onClick() {
             showAlternates(getToken());
+        }
+
+        @Override
+        public int getSize(@NonNull Paint paint, CharSequence charSequence, int start, int end,
+                @Nullable Paint.FontMetricsInt fontMetricsInt) {
+            if (initialLayoutPerformed && view.isLayoutRequested()) {
+                relayoutView();
+            }
+
+            int size = super.getSize(paint, charSequence, start, end, fontMetricsInt);
+            initialLayoutPerformed = true;
+            return size;
+        }
+
+        @Override
+        public void draw(@NonNull Canvas canvas, CharSequence text, int start, int end, float x, int top, int y,
+                int bottom, @NonNull Paint paint) {
+            if (initialLayoutPerformed && view.isLayoutRequested()) {
+                relayoutView();
+            }
+            super.draw(canvas, text, start, end, x, top, y, bottom, paint);
+            initialLayoutPerformed = true;
+        }
+
+        // Hack to support layout changes
+        // TODO: Remove once a TokenAutoComplete release includes https://github.com/splitwise/TokenAutoComplete/pull/403
+        private void relayoutView() {
+            int maxViewSpanWidth = getMaxViewSpanWidth();
+
+            int spec = View.MeasureSpec.AT_MOST;
+            if (maxViewSpanWidth == 0) {
+                //If the width is 0, allow the view to choose it's own content size
+                spec = View.MeasureSpec.UNSPECIFIED;
+            }
+            int widthSpec = View.MeasureSpec.makeMeasureSpec(maxViewSpanWidth, spec);
+            int heightSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+
+            view.measure(widthSpec, heightSpec);
+            view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
         }
     }
 
