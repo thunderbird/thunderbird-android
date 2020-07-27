@@ -1872,6 +1872,31 @@ public class MessagingController {
         }
     }
 
+
+
+    public void moveToDraftsFolder(List<MessageReference> messages, Account account, long folderId){
+
+        putBackground("moveToDraft", null, () -> {
+            List<MessageReference> draftsSaved = new ArrayList<>(messages.size());
+            for(MessageReference messageReference: messages) {
+                Message draftMessage = null;
+                try {
+
+                    Message message = loadMessage(account, folderId, messageReference.getUid());
+                    draftMessage = saveDraft(account, message,
+                            MessagingController.INVALID_MESSAGE_ID, message.getSubject(), true);
+
+                    //did save to draft succeed? we need to remove it from outbox
+                    if(draftMessage != null) {
+                        message.destroy();
+                    }
+                } catch (MessagingException e) {
+                    Timber.e(e, "Error loading message. Draft was not saved.");
+                }
+            }
+        });
+    }
+
     public void expunge(Account account, long folderId) {
         putBackground("expunge", null, () -> {
             queueExpunge(account, folderId);

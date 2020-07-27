@@ -1586,25 +1586,9 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
     }
 
-    private void saveToDraftAndRemove(List<MessageReference> messages){
+    private void moveToDraftsFolder(List<MessageReference> messages){
 
-        List<MessageReference> draftsSaved = new ArrayList<>(selected.size());
-        for(MessageReference messageReference: messages) {
-            Message draftMessage = null;
-            try {
-
-                Message message = messagingController.loadMessage(account, currentFolder.databaseId, messageReference.getUid());
-                draftMessage = messagingController.saveDraft(account, message,
-                            MessagingController.INVALID_MESSAGE_ID, message.getSubject(), true);
-
-                //did save to draft succeed? we need to remove it from outbox
-                if(draftMessage != null && message != null) {
-                    message.destroy();
-                }
-            } catch (MessagingException e) {
-                Timber.e(e, "Error loading message. Draft was not saved.");
-            }
-        }
+        messagingController.moveToDraftsFolder(messages, account, currentFolder.databaseId);
 
 
         activeMessages = null;
@@ -1732,7 +1716,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 }
             }
 
-            // if currentFolder is outbox: reduce available menu items to 'move to draft' and 'delete'
+            if(!account.hasDraftsFolder() || !isOutbox()) {
+                menu.findItem(R.id.move_to_drafts).setVisible(false);
+            }
+
             if(isOutbox()) {
                 menu.findItem(R.id.mark_as_read).setVisible(false);
                 menu.findItem(R.id.mark_as_unread).setVisible(false);
@@ -1741,9 +1728,9 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 menu.findItem(R.id.flag).setVisible(false);
                 menu.findItem(R.id.unflag).setVisible(false);
                 menu.findItem(R.id.spam).setVisible(false);
-
-                MenuItem moveMenuItemView = (MenuItem) menu.findItem(R.id.move);
-                moveMenuItemView.setTitle(R.string.move_to_draft_action);
+                menu.findItem(R.id.move).setVisible(false);
+                boolean hasDrafts = account.hasDraftsFolder();
+                menu.findItem(R.id.move_to_drafts).setVisible(hasDrafts);
             }
         }
 
@@ -1798,11 +1785,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 onSpam(getCheckedMessages());
                 selectedCount = 0;
             } else if (id == R.id.move) {
-                if(isOutbox()) {
-                    saveToDraftAndRemove(getCheckedMessages());
-                } else {
-                    onMove(getCheckedMessages());
-                }
+                onMove(getCheckedMessages());
+                selectedCount = 0;
+            } else if (id == R.id.move_to_drafts) {
+                moveToDraftsFolder(getCheckedMessages());
                 selectedCount = 0;
             } else if (id == R.id.copy) {
                 onCopy(getCheckedMessages());
