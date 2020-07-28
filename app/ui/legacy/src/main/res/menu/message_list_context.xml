@@ -32,6 +32,11 @@
         android:icon="?attr/iconActionMove"
     />
     <item
+        android:id="@+id/move_to_drafts"
+        android:title="@string/move_to_drafts_action"
+        app:showAsAction="never"
+        />
+    <item
         android:id="@+id/copy"
         android:title="@string/copy_action"
         android:icon="?attr/iconActionCopy"
