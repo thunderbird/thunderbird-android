@@ -1,0 +1,143 @@
+<component name="ProjectCodeStyleConfiguration">
+  <code_scheme name="Project" version="173">
+    <option name="AUTODETECT_INDENTS" value="false" />
+    <option name="LINE_SEPARATOR" value="&#10;" />
+    <option name="RIGHT_MARGIN" value="120" />
+    <option name="SOFT_MARGINS" value="120" />
+    <JetCodeStyleSettings>
+      <option name="PACKAGES_TO_USE_STAR_IMPORTS">
+        <value>
+          <package name="kotlinx.android.synthetic" withSubpackages="true" static="false" />
+        </value>
+      </option>
+      <option name="NAME_COUNT_TO_USE_STAR_IMPORT" value="2147483647" />
+      <option name="NAME_COUNT_TO_USE_STAR_IMPORT_FOR_MEMBERS" value="2147483647" />
+    </JetCodeStyleSettings>
+    <codeStyleSettings language="XML">
+      <indentOptions>
+        <option name="CONTINUATION_INDENT_SIZE" value="4" />
+      </indentOptions>
+      <arrangement>
+        <rules>
+          <section>
+            <rule>
+              <match>
+                <AND>
+                  <NAME>xmlns:android</NAME>
+                  <XML_ATTRIBUTE />
+                  <XML_NAMESPACE>^$</XML_NAMESPACE>
+                </AND>
+              </match>
+            </rule>
+          </section>
+          <section>
+            <rule>
+              <match>
+                <AND>
+                  <NAME>xmlns:.*</NAME>
+                  <XML_ATTRIBUTE />
+                  <XML_NAMESPACE>^$</XML_NAMESPACE>
+                </AND>
+              </match>
+              <order>BY_NAME</order>
+            </rule>
+          </section>
+          <section>
+            <rule>
+              <match>
+                <AND>
+                  <NAME>.*:id</NAME>
+                  <XML_ATTRIBUTE />
+                  <XML_NAMESPACE>http://schemas.android.com/apk/res/android</XML_NAMESPACE>
+                </AND>
+              </match>
+            </rule>
+          </section>
+          <section>
+            <rule>
+              <match>
+                <AND>
+                  <NAME>.*:name</NAME>
+                  <XML_ATTRIBUTE />
+                  <XML_NAMESPACE>http://schemas.android.com/apk/res/android</XML_NAMESPACE>
+                </AND>
+              </match>
+            </rule>
+          </section>
+          <section>
+            <rule>
+              <match>
+                <AND>
+                  <NAME>name</NAME>
+                  <XML_ATTRIBUTE />
+                  <XML_NAMESPACE>^$</XML_NAMESPACE>
+                </AND>
+              </match>
+            </rule>
+          </section>
+          <section>
+            <rule>
+              <match>
+                <AND>
+                  <NAME>style</NAME>
+                  <XML_ATTRIBUTE />
+                  <XML_NAMESPACE>^$</XML_NAMESPACE>
+                </AND>
+              </match>
+            </rule>
+          </section>
+          <section>
+            <rule>
+              <match>
+                <AND>
+                  <NAME>.*</NAME>
+                  <XML_ATTRIBUTE />
+                  <XML_NAMESPACE>^$</XML_NAMESPACE>
+                </AND>
+              </match>
+              <order>BY_NAME</order>
+            </rule>
+          </section>
+          <section>
+            <rule>
+              <match>
+                <AND>
+                  <NAME>.*</NAME>
+                  <XML_ATTRIBUTE />
+                  <XML_NAMESPACE>http://schemas.android.com/apk/res/android</XML_NAMESPACE>
+                </AND>
+              </match>
+              <order>ANDROID_ATTRIBUTE_ORDER</order>
+            </rule>
+          </section>
+          <section>
+            <rule>
+              <match>
+                <AND>
+                  <NAME>.*</NAME>
+                  <XML_ATTRIBUTE />
+                  <XML_NAMESPACE>.*</XML_NAMESPACE>
+                </AND>
+              </match>
+              <order>BY_NAME</order>
+            </rule>
+          </section>
+        </rules>
+      </arrangement>
+    </codeStyleSettings>
+    <codeStyleSettings language="kotlin">
+      <option name="KEEP_BLANK_LINES_IN_DECLARATIONS" value="1" />
+      <option name="KEEP_BLANK_LINES_IN_CODE" value="1" />
+      <option name="KEEP_BLANK_LINES_BEFORE_RBRACE" value="0" />
+      <option name="ALIGN_MULTILINE_PARAMETERS" value="false" />
+      <option name="CALL_PARAMETERS_LPAREN_ON_NEXT_LINE" value="true" />
+      <option name="CALL_PARAMETERS_RPAREN_ON_NEXT_LINE" value="true" />
+      <option name="METHOD_PARAMETERS_LPAREN_ON_NEXT_LINE" value="true" />
+      <option name="METHOD_PARAMETERS_RPAREN_ON_NEXT_LINE" value="true" />
+      <option name="ASSIGNMENT_WRAP" value="1" />
+      <indentOptions>
+        <option name="CONTINUATION_INDENT_SIZE" value="4" />
+      </indentOptions>
+    </codeStyleSettings>
+  </code_scheme>
+</component>
