@@ -12,10 +12,7 @@
         <attr name="iconFolderSent" format="reference" />
         <attr name="iconFolderSpam" format="reference" />
         <attr name="iconFolderTrash" format="reference" />
-        <attr name="iconListItemMenu" format="reference" />
-        <attr name="iconMenuInfoDetails" format="reference" />
         <attr name="iconActionAddAttachment" format="reference" />
-        <attr name="iconActionAddCcBcc" format="reference" />
         <attr name="iconActionArchive" format="reference" />
         <attr name="iconActionCompose" format="reference" />
         <attr name="iconActionDelete" format="reference" />
@@ -37,7 +34,6 @@
         <attr name="iconActionMarkAsRead" format="reference" />
         <attr name="iconActionMarkAsUnread" format="reference" />
         <attr name="iconActionRemoteSearch" format="reference" />
-        <attr name="iconActionAbout" format="reference" />
         <attr name="iconActionAdd" format="reference" />
         <attr name="iconActionImportExport" format="reference" />
         <attr name="iconActionUpload" format="reference" />
@@ -77,14 +73,12 @@
         <attr name="messageListActiveItemBackgroundColor" format="reference|color"/>
         <attr name="messageListPreviewTextColor" format="reference|color"/>
         <attr name="messageListDividerColor" format="reference|color"/>
-        <attr name="messageListCheckbox" format="reference"/>
         <attr name="messageListAttachment" format="reference"/>
         <attr name="messageListAnswered" format="reference"/>
         <attr name="messageListForwarded" format="reference"/>
         <attr name="messageListAnsweredForwarded" format="reference"/>
         <attr name="messageStar" format="reference"/>
         <attr name="messageViewBackgroundColor" format="reference|color"/>
-        <attr name="messageViewAttachmentBackground" format="reference"/>
         <attr name="messageComposeAddContactImage" format="reference"/>
         <attr name="attachmentCardBackground" format="reference|color"/>
         <attr name="composerBackgroundColor" format="color"/>
