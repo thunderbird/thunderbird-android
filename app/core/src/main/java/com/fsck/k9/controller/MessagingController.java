@@ -1878,7 +1878,7 @@ public class MessagingController {
 
         putBackground("moveToDraft", null, () -> {
             List<MessageReference> draftsSaved = new ArrayList<>(messages.size());
-            for(MessageReference messageReference: messages) {
+            for (MessageReference messageReference: messages) {
                 Message draftMessage = null;
                 try {
 
@@ -1887,7 +1887,7 @@ public class MessagingController {
                             MessagingController.INVALID_MESSAGE_ID, message.getSubject(), true);
 
                     //did save to draft succeed? we need to remove it from outbox
-                    if(draftMessage != null) {
+                    if (draftMessage != null) {
                         message.destroy();
                     }
                 } catch (MessagingException e) {

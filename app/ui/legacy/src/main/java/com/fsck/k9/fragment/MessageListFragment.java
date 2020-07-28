@@ -54,7 +54,6 @@ import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.preferences.StorageEditor;
@@ -1586,11 +1585,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
     }
 
-    private void moveToDraftsFolder(List<MessageReference> messages){
-
+    private void onMoveToDraftsFolder(List<MessageReference> messages){
         messagingController.moveToDraftsFolder(messages, account, currentFolder.databaseId);
-
-
         activeMessages = null;
     }
 
@@ -1716,11 +1712,11 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 }
             }
 
-            if(!account.hasDraftsFolder() || !isOutbox()) {
+            if (!account.hasDraftsFolder() || !isOutbox()) {
                 menu.findItem(R.id.move_to_drafts).setVisible(false);
             }
 
-            if(isOutbox()) {
+            if (isOutbox()) {
                 menu.findItem(R.id.mark_as_read).setVisible(false);
                 menu.findItem(R.id.mark_as_unread).setVisible(false);
                 menu.findItem(R.id.archive).setVisible(false);
@@ -1788,7 +1784,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 onMove(getCheckedMessages());
                 selectedCount = 0;
             } else if (id == R.id.move_to_drafts) {
-                moveToDraftsFolder(getCheckedMessages());
+                onMoveToDraftsFolder(getCheckedMessages());
                 selectedCount = 0;
             } else if (id == R.id.copy) {
                 onCopy(getCheckedMessages());
