@@ -9,6 +9,8 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,9 +24,9 @@ import androidx.loader.content.Loader;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ListPopupWindow;
@@ -43,6 +45,8 @@ import com.tokenautocomplete.TokenCompleteTextView;
 import org.apache.james.mime4j.util.CharsetUtil;
 import timber.log.Timber;
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.fsck.k9.FontSizes.FONT_DEFAULT;
 
 
 public class RecipientSelectView extends TokenCompleteTextView<Recipient> implements LoaderCallbacks<List<Recipient>>,
@@ -68,6 +72,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     private AlternateRecipientAdapter alternatesAdapter;
     private Recipient alternatesPopupRecipient;
     private TokenListener<Recipient> listener;
+    private int tokenTextSize = FONT_DEFAULT;
 
 
     public RecipientSelectView(Context context) {
@@ -92,9 +97,6 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         alternatesAdapter = new AlternateRecipientAdapter(context, this);
         alternatesPopup.setAdapter(alternatesAdapter);
 
-        // don't allow duplicates, based on equality of recipient objects, which is email addresses
-        allowDuplicates(false);
-
         // if a token is completed, pick an entry based on best guess.
         // Note that we override performCompletion, so this doesn't actually do anything
         performBestGuess(true);
@@ -103,6 +105,16 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         setAdapter(adapter);
 
         setLongClickable(true);
+    }
+
+    @Override
+    public boolean shouldIgnoreToken(Recipient token) {
+        // don't allow duplicates, based on equality of recipient objects, which is email addresses
+        return getObjects().contains(token);
+    }
+
+    public void setTokenTextSize(int tokenTextSize) {
+        this.tokenTextSize = tokenTextSize;
     }
 
     @Override
@@ -121,17 +133,38 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     private View inflateLayout() {
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
         View layout = layoutInflater.inflate(R.layout.recipient_token_item, null, false);
-        View contactPhoto = layout.findViewById(R.id.contact_photo);
-        contactPhoto.setZ(1.f);
+        layout.addOnLayoutChangeListener(recipientTokenItemLayoutChangeListener);
         return layout;
     }
 
+    private final OnLayoutChangeListener recipientTokenItemLayoutChangeListener = new OnLayoutChangeListener() {
+        @Override
+        public void onLayoutChange(View view, int left, int top, int right, int bottom, int oldLeft, int oldTop,
+                int oldRight, int oldBottom) {
+
+            RecipientTokenViewHolder holder = (RecipientTokenViewHolder) view.getTag();
+            Recipient recipient = (Recipient) view.getTag(R.id.recipient_token_recipient_value);
+            if (holder != null && recipient != null) {
+                RecipientAdapter.setContactPhotoOrPlaceholder(getContext(), holder.vContactPhoto, recipient);
+            }
+        }
+    };
+
     private void bindObjectView(Recipient recipient, View view) {
+        view.setTag(R.id.recipient_token_recipient_value, recipient);
+
         RecipientTokenViewHolder holder = (RecipientTokenViewHolder) view.getTag();
 
         holder.vName.setText(recipient.getDisplayNameOrAddress());
+        if (tokenTextSize != FONT_DEFAULT) {
+            holder.vName.setTextSize(TypedValue.COMPLEX_UNIT_SP, tokenTextSize);
+        }
 
-        RecipientAdapter.setContactPhotoOrPlaceholder(getContext(), holder.vContactPhoto, recipient);
+        if (holder.vContactPhoto.getHeight() == 0) {
+            // The view hasn't been laid out yet. We'll trigger image loading in recipientTokenItemLayoutChangeListener.
+        } else {
+            RecipientAdapter.setContactPhotoOrPlaceholder(getContext(), holder.vContactPhoto, recipient);
+        }
 
         boolean hasCryptoProvider = cryptoProvider != null;
         if (!hasCryptoProvider) {
@@ -147,26 +180,6 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
             boolean isVerified = recipient.cryptoStatus == RecipientCryptoStatus.AVAILABLE_TRUSTED;
             holder.showAdvancedCryptoState(isAvailable, isVerified);
         }
-    }
-
-    @Override
-    public boolean onTouchEvent(@NonNull MotionEvent event) {
-        int action = event.getActionMasked();
-        Editable text = getText();
-
-        if (text != null && action == MotionEvent.ACTION_UP) {
-            int offset = getOffsetForPosition(event.getX(), event.getY());
-
-            if (offset != -1) {
-                TokenImageSpan[] links = text.getSpans(offset, offset, RecipientTokenSpan.class);
-                if (links.length > 0) {
-                    showAlternates(links[0].getToken());
-                    return true;
-                }
-            }
-        }
-
-        return super.onTouchEvent(event);
     }
 
     @Override
@@ -255,12 +268,12 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     }
 
     @Override
-    protected void performFiltering(@NonNull CharSequence text, int start, int end, int keyCode) {
+    protected void performFiltering(@NonNull CharSequence text, int keyCode) {
         if (loaderManager == null) {
             return;
         }
 
-        String query = text.subSequence(start, end).toString();
+        String query = currentCompletionText();
         if (TextUtils.isEmpty(query) || query.length() < MINIMUM_LENGTH_FOR_FILTERING) {
             loaderManager.destroyLoader(LOADER_ID_FILTERING);
             return;
@@ -296,11 +309,12 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         }
 
         invalidate();
+        invalidateCursorPositionHack();
     }
 
     public void addRecipients(Recipient... recipients) {
         for (Recipient recipient : recipients) {
-            addObject(recipient);
+            addObjectSync(recipient);
         }
     }
 
@@ -353,6 +367,15 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         alternatesPopup.show();
         ListView listView = alternatesPopup.getListView();
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+    }
+
+    @Override
+    public boolean onKeyPreIme(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && alternatesPopup.isShowing()) {
+            alternatesPopup.dismiss();
+            return true;
+        }
+        return super.onKeyPreIme(keyCode, event);
     }
 
     @Override
@@ -437,7 +460,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     @Override
     public void onRecipientRemove(Recipient currentRecipient) {
         alternatesPopup.dismiss();
-        removeObject(currentRecipient);
+        removeObjectSync(currentRecipient);
     }
 
     @Override
@@ -469,6 +492,23 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         }
 
         invalidate();
+        invalidateCursorPositionHack();
+    }
+
+    /**
+     * Changing the size of our RecipientTokenSpan doesn't seem to redraw the cursor in the new position. This will
+     * make sure the cursor position is recalculated.
+     */
+    private void invalidateCursorPositionHack() {
+        int oldStart = getSelectionStart();
+        int oldEnd = getSelectionEnd();
+
+        // The selection values need to actually change in order for the cursor to be redrawn. If the cursor already
+        // is at position 0 this won't trigger a redraw. But that's fine because the size of our span can't influence
+        // cursor position 0.
+        setSelection(0);
+
+        setSelection(oldStart, oldEnd);
     }
 
     /**
@@ -483,7 +523,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         }
 
         View tokenView = getViewForObject(obj);
-        return new RecipientTokenSpan(tokenView, obj, (int) maxTextWidth());
+        return new RecipientTokenSpan(tokenView, obj);
     }
 
     /**
@@ -529,11 +569,55 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
     private class RecipientTokenSpan extends TokenImageSpan {
         private final View view;
+        private boolean initialLayoutPerformed = false;
 
-
-        public RecipientTokenSpan(View view, Recipient recipient, int token) {
-            super(view, recipient, token);
+        public RecipientTokenSpan(View view, Recipient recipient) {
+            super(view, recipient);
             this.view = view;
+        }
+
+        @Override
+        public void onClick() {
+            showAlternates(getToken());
+        }
+
+        @Override
+        public int getSize(@NonNull Paint paint, CharSequence charSequence, int start, int end,
+                @Nullable Paint.FontMetricsInt fontMetricsInt) {
+            if (initialLayoutPerformed && view.isLayoutRequested()) {
+                relayoutView();
+            }
+
+            int size = super.getSize(paint, charSequence, start, end, fontMetricsInt);
+            initialLayoutPerformed = true;
+            return size;
+        }
+
+        @Override
+        public void draw(@NonNull Canvas canvas, CharSequence text, int start, int end, float x, int top, int y,
+                int bottom, @NonNull Paint paint) {
+            if (initialLayoutPerformed && view.isLayoutRequested()) {
+                relayoutView();
+            }
+            super.draw(canvas, text, start, end, x, top, y, bottom, paint);
+            initialLayoutPerformed = true;
+        }
+
+        // Hack to support layout changes
+        // TODO: Remove once a TokenAutoComplete release includes https://github.com/splitwise/TokenAutoComplete/pull/403
+        private void relayoutView() {
+            int maxViewSpanWidth = getMaxViewSpanWidth();
+
+            int spec = View.MeasureSpec.AT_MOST;
+            if (maxViewSpanWidth == 0) {
+                //If the width is 0, allow the view to choose it's own content size
+                spec = View.MeasureSpec.UNSPECIFIED;
+            }
+            int widthSpec = View.MeasureSpec.makeMeasureSpec(maxViewSpanWidth, spec);
+            int heightSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+
+            view.measure(widthSpec, heightSpec);
+            view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
         }
     }
 
@@ -670,12 +754,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
                 return null;
             }
 
-            String displayName = address.getPersonal();
-            if (addressLabel != null) {
-                displayName += " (" + addressLabel + ")";
-            }
-
-            return displayName;
+            return address.getPersonal();
         }
 
         @NonNull
@@ -700,6 +779,12 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         public boolean equals(Object o) {
             // Equality is entirely up to the address
             return o instanceof Recipient && address.equals(((Recipient) o).address);
+        }
+
+        @NonNull
+        @Override
+        public String toString() {
+            return address.toString();
         }
 
         private void writeObject(ObjectOutputStream oos) throws IOException {

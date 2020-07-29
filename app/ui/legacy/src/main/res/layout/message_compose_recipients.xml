@@ -215,14 +215,13 @@
             android:layout_marginEnd="30dp"
             android:inputType="textEmailAddress|textMultiLine"
             android:imeOptions="actionNext"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:background="@android:color/transparent"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:dropDownWidth="wrap_content"
             android:dropDownAnchor="@id/to_wrapper"
             tools:text="Recipient"
-            style="@style/ComposeEditText"
+            style="@style/RecipientEditText"
             />
 
         <ViewAnimator
@@ -292,7 +291,7 @@
             android:paddingBottom="10dp"
             android:dropDownWidth="wrap_content"
             android:dropDownAnchor="@id/cc_wrapper"
-            style="@style/ComposeEditText"
+            style="@style/RecipientEditText"
             />
 
     </LinearLayout>
@@ -338,7 +337,7 @@
             android:paddingBottom="10dp"
             android:dropDownWidth="wrap_content"
             android:dropDownAnchor="@id/bcc_wrapper"
-            style="@style/ComposeEditText"
+            style="@style/RecipientEditText"
             />
 
     </LinearLayout>
