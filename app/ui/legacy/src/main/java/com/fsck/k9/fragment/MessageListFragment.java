@@ -1109,10 +1109,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         FooterViewHolder holder = (FooterViewHolder) footerView.getTag();
 
         if (text != null) {
+            if (listView.getFooterViewsCount() == 0) listView.addFooterView(footerView);
             holder.main.setText(text);
-            holder.main.setVisibility(View.VISIBLE);
-        } else {
-            holder.main.setVisibility(View.GONE);
+        } else if (listView.getFooterViewsCount() > 0) {
+            listView.removeFooterView(footerView);
         }
     }
 
