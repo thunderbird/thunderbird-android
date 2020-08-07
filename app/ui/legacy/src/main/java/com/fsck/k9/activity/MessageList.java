@@ -172,6 +172,16 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         context.startActivity(intent);
     }
 
+    public static void launch(Context context, Account account) {
+        launch(context);
+
+        long folderId = DI.get(DefaultFolderProvider.class).getDefaultFolder(account);
+
+        LocalSearch search = new LocalSearch();
+        search.addAllowedFolder(folderId);
+        search.addAccountUuid(account.getUuid());
+        actionDisplaySearch(context, search, false, false);
+    }
 
     private enum DisplayMode {
         MESSAGE_LIST,
