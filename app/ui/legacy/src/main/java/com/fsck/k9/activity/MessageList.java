@@ -173,8 +173,6 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
     }
 
     public static void launch(Context context, Account account) {
-        launch(context);
-
         long folderId = DI.get(DefaultFolderProvider.class).getDefaultFolder(account);
 
         LocalSearch search = new LocalSearch();
