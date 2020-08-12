@@ -166,9 +166,9 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 
                 mProgressBar.setIndeterminate(false);
                 StringBuilder chainInfo = new StringBuilder(100);
-                MessageDigest sha1 = null;
+                MessageDigest sha512 = null;
                 try {
-                    sha1 = MessageDigest.getInstance("SHA-1");
+                    sha512 = MessageDigest.getInstance("SHA-512");
                 } catch (NoSuchAlgorithmException e) {
                     Timber.e(e, "Error while initializing MessageDigest");
                 }
@@ -251,11 +251,11 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                     }
 
                     chainInfo.append("Issuer: ").append(chain[i].getIssuerDN().toString()).append("\n");
-                    if (sha1 != null) {
-                        sha1.reset();
+                    if (sha512 != null) {
+                        sha512.reset();
                         try {
-                            String sha1sum = Hex.encodeHex(sha1.digest(chain[i].getEncoded()));
-                            chainInfo.append("Fingerprint (SHA-1): ").append(sha1sum).append("\n");
+                            String sha512sum = Hex.encodeHex(sha512.digest(chain[i].getEncoded()));
+                            chainInfo.append("Fingerprint (SHA-512): ").append(sha512sum).append("\n");
                         } catch (CertificateEncodingException e) {
                             Timber.e(e, "Error while encoding certificate");
                         }
