@@ -1872,6 +1872,26 @@ public class MessagingController {
         }
     }
 
+    public void moveToDraftsFolder(Account account, long folderId, List<MessageReference> messages){
+        putBackground("moveToDrafts", null, () -> moveToDraftsFolderInBackground(account, folderId, messages));
+    }
+
+    private void moveToDraftsFolderInBackground(Account account, long folderId, List<MessageReference> messages) {
+        for (MessageReference messageReference : messages) {
+            try {
+                Message message = loadMessage(account, folderId, messageReference.getUid());
+                Message draftMessage = saveDraft(account, message, INVALID_MESSAGE_ID, message.getSubject(), true);
+
+                boolean draftSavedSuccessfully = draftMessage != null;
+                if (draftSavedSuccessfully) {
+                    message.destroy();
+                }
+            } catch (MessagingException e) {
+                Timber.e(e, "Error loading message. Draft was not saved.");
+            }
+        }
+    }
+
     public void expunge(Account account, long folderId) {
         putBackground("expunge", null, () -> {
             queueExpunge(account, folderId);
