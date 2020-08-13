@@ -1106,14 +1106,18 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             return;
         }
 
-        FooterViewHolder holder = (FooterViewHolder) footerView.getTag();
-
-        if (text != null) {
-            if (listView.getFooterViewsCount() == 0) listView.addFooterView(footerView);
-            holder.main.setText(text);
-        } else if (listView.getFooterViewsCount() > 0) {
+        boolean shouldHideFooter = text == null;
+        if (shouldHideFooter) {
             listView.removeFooterView(footerView);
+        } else {
+            boolean isFooterViewAddedToListView = listView.getFooterViewsCount() > 0;
+            if (!isFooterViewAddedToListView) {
+                listView.addFooterView(footerView);
+            }
         }
+
+        FooterViewHolder holder = (FooterViewHolder) footerView.getTag();
+        holder.main.setText(text);
     }
 
     static class FooterViewHolder {
