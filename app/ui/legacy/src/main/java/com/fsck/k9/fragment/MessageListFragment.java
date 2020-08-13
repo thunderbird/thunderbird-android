@@ -1590,7 +1590,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     private void onMoveToDraftsFolder(List<MessageReference> messages){
-        messagingController.moveToDraftsFolder(messages, account, currentFolder.databaseId);
+        messagingController.moveToDraftsFolder(account, currentFolder.databaseId, messages);
         activeMessages = null;
     }
 
@@ -1716,10 +1716,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 }
             }
 
-            if (!account.hasDraftsFolder() || !isOutbox()) {
-                menu.findItem(R.id.move_to_drafts).setVisible(false);
-            }
-
             if (isOutbox()) {
                 menu.findItem(R.id.mark_as_read).setVisible(false);
                 menu.findItem(R.id.mark_as_unread).setVisible(false);
@@ -1729,8 +1725,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 menu.findItem(R.id.unflag).setVisible(false);
                 menu.findItem(R.id.spam).setVisible(false);
                 menu.findItem(R.id.move).setVisible(false);
-                boolean hasDrafts = account.hasDraftsFolder();
-                menu.findItem(R.id.move_to_drafts).setVisible(hasDrafts);
+
+                if (account.hasDraftsFolder()) {
+                    menu.findItem(R.id.move_to_drafts).setVisible(true);
+                }
             }
         }
 
