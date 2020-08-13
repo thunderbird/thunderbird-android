@@ -40,6 +40,7 @@ import com.fsck.k9.activity.AlternateRecipientAdapter.AlternateRecipientListener
 import com.fsck.k9.activity.compose.RecipientAdapter;
 import com.fsck.k9.activity.compose.RecipientLoader;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.ui.compose.RecipientCircleImageView;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.tokenautocomplete.TokenCompleteTextView;
 import org.apache.james.mime4j.util.CharsetUtil;
@@ -132,27 +133,17 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
     @SuppressLint("InflateParams")
     private View inflateLayout() {
         LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-        View layout = layoutInflater.inflate(R.layout.recipient_token_item, null, false);
-        layout.addOnLayoutChangeListener(recipientTokenItemLayoutChangeListener);
-        return layout;
+        View view = layoutInflater.inflate(R.layout.recipient_token_item, null, false);
+
+        // Since the recipient chip views are not part of the view hierarchy we need to manually invalidate this
+        // RecipientSelectView whenever a contact picture was loaded in order for the image to be drawn.
+        RecipientCircleImageView contactPhotoView = view.findViewById(R.id.contact_photo);
+        contactPhotoView.setOnSetImageDrawableListener(this::postInvalidate);
+
+        return view;
     }
 
-    private final OnLayoutChangeListener recipientTokenItemLayoutChangeListener = new OnLayoutChangeListener() {
-        @Override
-        public void onLayoutChange(View view, int left, int top, int right, int bottom, int oldLeft, int oldTop,
-                int oldRight, int oldBottom) {
-
-            RecipientTokenViewHolder holder = (RecipientTokenViewHolder) view.getTag();
-            Recipient recipient = (Recipient) view.getTag(R.id.recipient_token_recipient_value);
-            if (holder != null && recipient != null) {
-                RecipientAdapter.setContactPhotoOrPlaceholder(getContext(), holder.vContactPhoto, recipient);
-            }
-        }
-    };
-
     private void bindObjectView(Recipient recipient, View view) {
-        view.setTag(R.id.recipient_token_recipient_value, recipient);
-
         RecipientTokenViewHolder holder = (RecipientTokenViewHolder) view.getTag();
 
         holder.vName.setText(recipient.getDisplayNameOrAddress());
@@ -160,11 +151,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
             holder.vName.setTextSize(TypedValue.COMPLEX_UNIT_SP, tokenTextSize);
         }
 
-        if (holder.vContactPhoto.getHeight() == 0) {
-            // The view hasn't been laid out yet. We'll trigger image loading in recipientTokenItemLayoutChangeListener.
-        } else {
-            RecipientAdapter.setContactPhotoOrPlaceholder(getContext(), holder.vContactPhoto, recipient);
-        }
+        RecipientAdapter.setContactPhotoOrPlaceholder(getContext(), holder.vContactPhoto, recipient);
 
         boolean hasCryptoProvider = cryptoProvider != null;
         if (!hasCryptoProvider) {
@@ -599,7 +586,12 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
             if (initialLayoutPerformed && view.isLayoutRequested()) {
                 relayoutView();
             }
+
             super.draw(canvas, text, start, end, x, top, y, bottom, paint);
+
+            // Dispatch onPreDraw event so image loading using Glide will work properly.
+            view.findViewById(R.id.contact_photo).getViewTreeObserver().dispatchOnPreDraw();
+
             initialLayoutPerformed = true;
         }
 

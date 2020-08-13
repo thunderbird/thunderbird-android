@@ -15,7 +15,7 @@
         app:layout_constraintStart_toEndOf="@id/background_position_helper"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <com.fsck.k9.ui.compose.RecipientCircleImageView
         android:id="@+id/contact_photo"
         android:layout_width="0dp"
         android:layout_height="0dp"
