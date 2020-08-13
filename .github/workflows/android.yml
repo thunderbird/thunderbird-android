@@ -13,4 +13,4 @@ jobs:
       with:
         java-version: 8.0.252
     - name: Build with Gradle
-      run: ./gradlew -i :app:core:testDebugUnitTest
+      run: ./gradlew assembleDebug testDebugUnitTest ktlintCheck
