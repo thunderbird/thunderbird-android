@@ -93,6 +93,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="forward_as_attachment_action">Përcille si bashkëngjitje</string>
   <string name="edit_as_new_message_action">Përpunojeni si mesazh të ri</string>
   <string name="move_action">Lëvizeni</string>
+  <string name="move_to_drafts_action">Kaloje te Skicat</string>
   <string name="single_message_options_action">Dërgoni…</string>
   <string name="refile_action">Riskedojeni…</string>
   <string name="done_action">U bë</string>

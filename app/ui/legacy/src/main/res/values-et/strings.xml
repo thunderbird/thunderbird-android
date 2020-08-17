@@ -22,7 +22,7 @@
   <!--=== General strings ==================================================================-->
   <string name="authors">Autorid</string>
   <string name="app_revision">Parandusteave</string>
-  <string name="read_messages_label">Loe meilisõnumeid</string>
+  <string name="read_messages_label">Loe e-kirju</string>
   <string name="read_messages_desc">Lubab sellel rakendusel lugeda sinu e-kirju.</string>
   <string name="delete_messages_label">Kustuta e-kirjad</string>
   <string name="delete_messages_desc">Lubab sellel rakendusel kustutada sinu e-kirju.</string>
@@ -47,7 +47,7 @@
   <string name="next_action">Järgmine</string>
   <string name="previous_action">Eelmine</string>
   <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
-  <string name="okay_action">OK</string>
+  <string name="okay_action">Ok</string>
   <string name="cancel_action">Tühista</string>
   <string name="send_action">Saada</string>
   <string name="send_again_action">Saada uuesti</string>
@@ -61,6 +61,7 @@
   <string name="spam_action">Rämpspost</string>
   <string name="forward_action">Saada edasi</string>
   <string name="forward_as_attachment_action">Saada edasi manusena</string>
+  <string name="edit_as_new_message_action">Ava uue e-kirjana</string>
   <string name="move_action">Teisalda</string>
   <string name="single_message_options_action">Saada…</string>
   <string name="refile_action">Paiguta ümber…</string>
@@ -95,8 +96,8 @@
   <string name="message_view_theme_action_light">Lülitu heledale teemale</string>
   <string name="mark_as_unread_action">Märgi mitteloetuks</string>
   <string name="read_receipt">Lugemise kinnitus</string>
-  <string name="read_receipt_enabled">Taotleb lugemise kinnitust</string>
-  <string name="read_receipt_disabled">Ei taotle lugemise kinnitust</string>
+  <string name="read_receipt_enabled">Taotletakse lugemise kinnitust</string>
+  <string name="read_receipt_disabled">Ei taotleta lugemise kinnitust</string>
   <string name="add_attachment_action">Lisa manus</string>
   <string name="empty_trash_action">Tühjenda prügikast</string>
   <string name="expunge_action">Pühi ära</string>
@@ -108,11 +109,15 @@
   <string name="status_loading_more">Laadib kirju\u2026</string>
   <string name="status_network_error">Ühenduse viga</string>
   <string name="status_invalid_id_error">Kirja ei leita</string>
-  <string name="status_loading_error">Sõnumi laadimise viga</string>
-  <string name="load_more_messages_fmt">Laadi üles
+  <string name="status_loading_error">Kirja laadimise viga</string>
+  <string name="load_more_messages_fmt">Laadi alla
     <xliff:g id="messages_to_load">%d</xliff:g> rohkem</string>
+  <string name="size_format_gigabytes">%.1f GB</string>
+  <string name="size_format_megabytes">%.1f MB</string>
+  <string name="size_format_kilobytes">%.1f kB</string>
+  <string name="size_format_bytes">%d B</string>
   <string name="account_size_changed">Konto\"<xliff:g id="account">%s</xliff:g>\" kahanenud <xliff:g id="oldSize">%s</xliff:g> <xliff:g id="newSize">%s</xliff:g></string>
-  <string name="compacting_account">Tihendab kontot \"<xliff:g id="account">%s</xliff:g>\"</string>
+  <string name="compacting_account">Tihendatakse kontot \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Uus e-kiri</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> uus kiri</item>
@@ -129,20 +134,20 @@
   <string name="notification_action_archive_all">Arhiveeri kõik</string>
   <string name="notification_action_spam">Rämps</string>
   <string name="notification_certificate_error_title">Sertifikaadi viga kontol <xliff:g id="account">%s</xliff:g></string>
-  <string name="notification_certificate_error_text">Kontrolli oma serveri sätteid</string>
+  <string name="notification_certificate_error_text">Kontrolli serveri sätteid</string>
   <string name="notification_authentication_error_title">Autentimine ebaõnnestus</string>
-  <string name="notification_authentication_error_text">Autentimine ebaõnnestus konto <xliff:g id="account">%s</xliff:g> jaoks. Uuenda oma serveri seadeid.</string>
-  <string name="notification_bg_sync_ticker">Kontrollib emaili: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
-  <string name="notification_bg_sync_title">Kontrollib meili</string>
-  <string name="notification_bg_send_ticker">Saadab meili: <xliff:g id="account">%s</xliff:g></string>
-  <string name="notification_bg_send_title">Saadab meilisõnumit</string>
+  <string name="notification_authentication_error_text">Autentimine ebaõnnestus konto <xliff:g id="account">%s</xliff:g> puhul. Uuenda serveri seadeid.</string>
+  <string name="notification_bg_sync_ticker">Kontrollib e-kirju: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_title">Kontrollib e-kirju</string>
+  <string name="notification_bg_send_ticker">Saadab e-kirja: <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_bg_send_title">Saadab e-kirja</string>
   <string name="notification_bg_title_separator">:</string>
-  <string name="notification_channel_messages_title">Sõnumid</string>
-  <string name="notification_channel_messages_description">Sõnumitega seotud teated</string>
+  <string name="notification_channel_messages_title">E-kirjad</string>
+  <string name="notification_channel_messages_description">E-kirjadega seotud teated</string>
   <string name="notification_channel_miscellaneous_title">Muu</string>
   <string name="notification_channel_miscellaneous_description">Mitmesugused teated nagu vead jms</string>
-  <string name="special_mailbox_name_inbox">Sisse</string>
-  <string name="special_mailbox_name_outbox">Välja</string>
+  <string name="special_mailbox_name_inbox">Sisendkast</string>
+  <string name="special_mailbox_name_outbox">Väljundkast</string>
   <string name="special_mailbox_name_drafts">Mustandid</string>
   <string name="special_mailbox_name_trash">Prügikast</string>
   <string name="special_mailbox_name_sent">Saadetud</string>
@@ -165,14 +170,15 @@
   <string name="message_compose_quote_header_cc">Koopia:</string>
   <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> kirjutas:</string>
   <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g>  kirjutas:</string>
-  <string name="message_compose_error_no_recipients">Pead lisama vähemalt ühe adressaadi.</string>
+  <string name="message_compose_error_no_recipients">Pead lisama vähemalt ühe vastuvõtja.</string>
   <string name="compose_error_incomplete_recipient">Vastuvõtja väli on puudulikult täidetud!</string>
   <string name="error_contact_address_not_found">Selle kontakti e-posti aadressi ei leita</string>
   <string name="message_compose_attachments_skipped_toast">Mõnda manust ei saa edasi saata, kuna seda pole alla laaditud</string>
   <string name="message_compose_attachments_forward_toast">Sõnumit ei saa edastada kuna mõnda manust pole alla laaditud.</string>
-  <string name="message_compose_show_quoted_text_action">Kaasa osundatud sõnum</string>
+  <string name="message_compose_show_quoted_text_action">Kaasa osundatud kiri</string>
   <string name="message_compose_description_delete_quoted_text">Eemalda osundatud tekst</string>
   <string name="message_compose_description_edit_quoted_text">Muuda osundatud teksti</string>
+  <string name="remove_attachment_action">Eemalda manus</string>
   <string name="message_view_from_format">Kellelt: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">Kellele:</string>
   <string name="message_view_cc_label">Koopia:</string>
@@ -181,9 +187,9 @@
   <string name="message_view_attachment_download_action">Salvesta</string>
   <string name="message_view_status_attachment_not_saved">Manuse salvestamine ebaõnnestus</string>
   <string name="message_view_show_pictures_action">Näita pilte</string>
-  <string name="message_view_no_viewer">Ei leia <xliff:g id="mimetype">%s</xliff:g> käivitamiseks programmi.</string>
+  <string name="message_view_no_viewer">Ei leia <xliff:g id="mimetype">%s</xliff:g> kuvamiseks programmi.</string>
   <string name="message_view_download_remainder">Laadi kogu kiri alla</string>
-  <string name="message_view_toast_unable_to_display_message">Ei saa kuvada sõnumit</string>
+  <string name="message_view_toast_unable_to_display_message">Kirja kuvamine ebaõnnestus</string>
   <string name="message_view_sender_label">%1$s kaudu</string>
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="message_no_additional_headers_available">Kõik pealkirjad on alla laaditud, kuid näitamiseks pole ühtegi täiendavat pealkirja.</string>
@@ -213,11 +219,11 @@
   <string name="global_settings_messageview_show_next_label">Peale kustutamist näita järgmist kirja</string>
   <string name="global_settings_messageview_show_next_summary">Peale mõne kirja kustutamist näita järgmist kirja</string>
   <string name="global_settings_confirm_actions_title">Kinnita toiming</string>
-  <string name="global_settings_confirm_actions_summary">Näita alati dialoogiakent kui teed valitud toimingut</string>
+  <string name="global_settings_confirm_actions_summary">Näita alati dialoogiakent kui teed valitud toiminguid</string>
   <string name="global_settings_confirm_action_delete">Kustuta</string>
   <string name="global_settings_confirm_action_delete_starred">Kustuta tärniga tähistatud (kirjade vaates)</string>
   <string name="global_settings_confirm_action_spam">Rämpspost</string>
-  <string name="global_settings_confirm_menu_discard">Eira kirja</string>
+  <string name="global_settings_confirm_menu_discard">Loobu kirjast</string>
   <string name="global_settings_confirm_menu_mark_all_read">Märgi kõik sõnumid loetuks</string>
   <string name="global_settings_confirm_action_delete_notif">Kustuta (teadetest)</string>
   <string name="global_settings_privacy_hide_useragent">Peida meiliklient</string>

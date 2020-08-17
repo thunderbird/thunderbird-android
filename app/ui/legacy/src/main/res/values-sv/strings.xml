@@ -92,6 +92,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="forward_as_attachment_action">Vidarebefordra som bilaga</string>
   <string name="edit_as_new_message_action">Redigera som nytt meddelande</string>
   <string name="move_action">Flytta</string>
+  <string name="move_to_drafts_action">Flytta till utkast</string>
   <string name="single_message_options_action">Skicka…</string>
   <string name="refile_action">Omarkivera…</string>
   <string name="done_action">Klar</string>

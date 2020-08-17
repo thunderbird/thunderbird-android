@@ -93,6 +93,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="forward_as_attachment_action">Inoltra come allegato</string>
   <string name="edit_as_new_message_action">Modifica come nuovo messaggio</string>
   <string name="move_action">Sposta</string>
+  <string name="move_to_drafts_action">Sposta in Bozze</string>
   <string name="single_message_options_action">Invio…</string>
   <string name="refile_action">Riarchivia…</string>
   <string name="done_action">Fatto</string>
