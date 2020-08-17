@@ -41,6 +41,7 @@ class ContactPictureLoader(
     private fun setContactPicture(imageView: ImageView, contactPictureUri: Uri) {
         Glide.with(imageView.context)
             .load(contactPictureUri)
+            .placeholder(R.drawable.ic_contact_picture)
             .error(R.drawable.ic_contact_picture)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .dontAnimate()
