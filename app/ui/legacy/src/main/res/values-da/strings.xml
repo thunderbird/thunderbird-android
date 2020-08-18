@@ -90,6 +90,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="spam_action">Spam</string>
   <string name="forward_action">Videresend</string>
   <string name="forward_as_attachment_action">Videresend som vedhæftet fil</string>
+  <string name="edit_as_new_message_action">Rediger som ny besked besked</string>
   <string name="move_action">Flyt</string>
   <string name="single_message_options_action">Send…</string>
   <string name="refile_action">Genarkivering…</string>
@@ -104,9 +105,9 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="compose_action">Skriv</string>
   <string name="search_action">Søg</string>
   <string name="search_results">Søgeresultater</string>
-  <string name="preferences_action">Opsætning</string>
+  <string name="preferences_action">Indstillinger</string>
   <string name="folders_action">Håndtere mapper</string>
-  <string name="account_settings_action">Konto opsætning</string>
+  <string name="account_settings_action">Kontoindstillinger</string>
   <string name="remove_account_action">Slet konto</string>
   <string name="mark_as_read_action">Marker som læst</string>
   <string name="send_alternate_action">Del</string>
@@ -130,7 +131,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="empty_trash_action">Tøm papirkurv</string>
   <string name="expunge_action">Ryd helt</string>
   <string name="about_action">Om</string>
-  <string name="prefs_title">Opsætning</string>
+  <string name="prefs_title">Indstillinger</string>
   <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
   <string name="general_no_subject">(Intet emne)</string>
   <string name="general_no_sender">Ingen afsender</string>
@@ -158,7 +159,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="notification_action_archive_all">Arkivér alle</string>
   <string name="notification_action_spam">Spam</string>
   <string name="notification_certificate_error_title">Certifikat fejl for <xliff:g id="account">%s</xliff:g></string>
-  <string name="notification_certificate_error_text">Kontrollere server opsætning</string>
+  <string name="notification_certificate_error_text">Kontroller dine serverindstillinger</string>
   <string name="notification_authentication_error_title">Godkendelse mislykkedes</string>
   <string name="notification_authentication_error_text">Godkendelse mislykkedes for <xliff:g id="account">%s</xliff:g>. Opdater dine serverindstillinger.</string>
   <string name="notification_bg_sync_ticker">Synkroniserer mail: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
@@ -202,6 +203,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="message_compose_show_quoted_text_action">Medtage citeret besked</string>
   <string name="message_compose_description_delete_quoted_text">Fjerne citeret tekst</string>
   <string name="message_compose_description_edit_quoted_text">Redigere citeret tekst</string>
+  <string name="remove_attachment_action">Fjern vedhæftning</string>
   <string name="message_view_from_format">Fra: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">Til:</string>
   <string name="message_view_cc_label">Cc:</string>
@@ -296,7 +298,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_setup_auth_type_insecure_password">Kodeord; sendt usikret</string>
   <string name="account_setup_auth_type_encrypted_password">Krypteret kodeord</string>
   <string name="account_setup_auth_type_tls_client_certificate">Klient certifikat</string>
-  <string name="account_setup_incoming_title">Indgående server opsætning</string>
+  <string name="account_setup_incoming_title">Indgående serverindstillinger</string>
   <string name="account_setup_incoming_username_label">Brugernavn</string>
   <string name="account_setup_incoming_password_label">Password</string>
   <string name="account_setup_incoming_client_certificate_label">Klient certifikat</string>
@@ -339,7 +341,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_setup_incoming_webdav_auth_path_hint">Frivilligt</string>
   <string name="account_setup_incoming_webdav_mailbox_path_label">Sti til mailboks (alias)</string>
   <string name="account_setup_incoming_webdav_mailbox_path_hint">Frivilligt</string>
-  <string name="account_setup_outgoing_title">Udgående server opsætning</string>
+  <string name="account_setup_outgoing_title">Udgående serverindstillinger</string>
   <string name="account_setup_outgoing_smtp_server_label">SMTP server</string>
   <string name="account_setup_outgoing_port_label">Port</string>
   <string name="account_setup_outgoing_security_label">Sikkerhedstype</string>
@@ -418,6 +420,8 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_settings_notification_opens_unread_summary">Søger efter ulæste meddelelser når besked åbnes</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marker som læst ved åbning</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marker som læst når meddelses åbnes for læsning</string>
+  <string name="account_settings_mark_message_as_read_on_delete_label">Marker som læst ved sletning</string>
+  <string name="account_settings_mark_message_as_read_on_delete_summary">Marker en besked som læst når den bliver slettet</string>
   <string name="account_settings_notification_open_system_notifications_label">Påmindelse opsætning</string>
   <string name="account_settings_notification_open_system_notifications_summary">Åbne system påmindelse opsætning</string>
   <string name="account_settings_show_pictures_label">Vis altid billeder</string>
@@ -618,6 +622,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="setting_theme_global">Benyt app-tema</string>
   <string name="setting_theme_dark">Mørk</string>
   <string name="setting_theme_light">Lys</string>
+  <string name="setting_theme_follow_system">Brug systemstandard</string>
   <string name="display_preferences">Visning</string>
   <string name="global_preferences">Globalt</string>
   <string name="debug_preferences">Fejlsøgning</string>
@@ -631,6 +636,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="settings_message_theme_label">Meddelelsesvisnings-tema</string>
   <string name="settings_compose_theme_label">Editor-tema</string>
   <string name="settings_language_label">Sprog</string>
+  <string name="preference_search_no_results">Ingen indstillinger fundet</string>
   <string name="settings_message_theme_selection_label">Fixed meddelelses-tema</string>
   <string name="settings_message_theme_selection_summary_off">Benyt meddelelsesvisnings-tema når meddelelser læses</string>
   <string name="settings_message_theme_selection_summary_on">Benyt et fixed meddelelsesvisnings-tema</string>
@@ -654,6 +660,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="volume_navigation_title">Volume-knap navigation</string>
   <string name="volume_navigation_message">Mail-visning</string>
   <string name="volume_navigation_list">Diverse listevisninger</string>
+  <string name="hide_special_accounts_title">Skjul Fælles indbakke</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Ulæste</string>
   <string name="search_all_messages_title">Alle mails</string>
@@ -709,6 +716,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="confirm_discard_draft_message_title">Annuller meddelelse?</string>
   <string name="confirm_discard_draft_message">Er du sikker på at du ønsker at annullere denne meddelelse?</string>
   <string name="select_text_now">Vælg tekst som skal kopieres.</string>
+  <string name="dialog_confirm_clear_local_folder_title">Ryd lokale beskeder</string>
   <string name="dialog_confirm_delete_title">Bekræft sletning</string>
   <string name="dialog_confirm_delete_message">Ønsker du at slette denne mail?</string>
   <plurals name="dialog_confirm_delete_messages">

@@ -91,6 +91,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="forward_as_attachment_action">Plusendi kiel kunsendaĵon</string>
   <string name="edit_as_new_message_action">Redakti kiel novan mesaĝon</string>
   <string name="move_action">Movi</string>
+  <string name="move_to_drafts_action">Movi al malnetujo</string>
   <string name="single_message_options_action">Sendi…</string>
   <string name="refile_action">Agoj…</string>
   <string name="done_action">Farita</string>

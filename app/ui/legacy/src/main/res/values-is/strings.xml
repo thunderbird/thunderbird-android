@@ -90,6 +90,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="spam_action">Ruslpóstur</string>
   <string name="forward_action">Framsenda</string>
   <string name="forward_as_attachment_action">Áframsenda sem viðhengi</string>
+  <string name="edit_as_new_message_action">Breyta sem nýjum skilaboðum</string>
   <string name="move_action">Færa</string>
   <string name="single_message_options_action">Senda…</string>
   <string name="refile_action">Endurraða…</string>
@@ -206,6 +207,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="message_compose_show_quoted_text_action">Hafa með tilvitnuð skilaboð</string>
   <string name="message_compose_description_delete_quoted_text">Fjarlægja tilvitnun</string>
   <string name="message_compose_description_edit_quoted_text">Breyta tilvitnun</string>
+  <string name="remove_attachment_action">Fjarlægja viðhengi</string>
   <string name="message_view_from_format">Frá: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">Til:</string>
   <string name="message_view_cc_label">Afrit:</string>
@@ -732,6 +734,9 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="confirm_discard_draft_message_title">Henda skilaboðum?</string>
   <string name="confirm_discard_draft_message">Ertu viss um að þú viljir henda þessum skilaboðum?</string>
   <string name="select_text_now">Veldu texta til að afrita.</string>
+  <string name="dialog_confirm_clear_local_folder_title">Hreinsa staðvær skilaboð?</string>
+  <string name="dialog_confirm_clear_local_folder_message">Þetta mun fjarlægja öll staðvær skilaboð úr þessari möppu. Engum skilaboðum verður eytt af póstþjóninum.</string>
+  <string name="dialog_confirm_clear_local_folder_action">Hreinsa skilaboð</string>
   <string name="dialog_confirm_delete_title">Staðfesta eyðingu</string>
   <string name="dialog_confirm_delete_message">Viltu eyða þessum skilaboðum?</string>
   <plurals name="dialog_confirm_delete_messages">
