@@ -8,6 +8,15 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.718" versioncode="27018">
+        <change>Hide empty footer view in message list</change>
+        <change>Don't show standard message actions for messages in the Outbox</change>
+        <change>Tweaked UX of recipient chips</change>
+        <change>Refresh the list of folders when refreshing a folder</change>
+        <change>Apply global display settings to the message list when returning from settings screen</change>
+        <change>Many internal changes</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.717" versioncode="27017">
         <change>Fixed display of text/plain parts containing text in a right-to-left language</change>
         <change>Don't retry remote commands that failed with an error</change>
