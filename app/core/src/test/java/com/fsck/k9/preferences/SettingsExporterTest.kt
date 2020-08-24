@@ -4,7 +4,6 @@ import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.Preferences
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.mailstore.FolderRepositoryManager
-import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import org.jdom2.Document
 import org.jdom2.input.SAXBuilder
@@ -72,6 +71,6 @@ class SettingsExporterTest : K9RobolectricTest() {
     }
 
     private fun parseXml(xml: ByteArray): Document {
-        return SAXBuilder().build(ByteArrayInputStream(xml))
+        return SAXBuilder().build(xml.inputStream())
     }
 }

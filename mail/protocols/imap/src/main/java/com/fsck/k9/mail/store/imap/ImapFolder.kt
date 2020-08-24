@@ -16,7 +16,6 @@ import com.fsck.k9.mail.internet.MimeHeader
 import com.fsck.k9.mail.internet.MimeMessageHelper
 import com.fsck.k9.mail.internet.MimeMultipart
 import com.fsck.k9.mail.internet.MimeUtility
-import java.io.ByteArrayInputStream
 import java.io.IOException
 import java.io.InputStream
 import java.text.SimpleDateFormat
@@ -621,7 +620,7 @@ class ImapFolder internal constructor(
                         if (literal != null) {
                             when (literal) {
                                 is String -> {
-                                    val bodyStream: InputStream = ByteArrayInputStream(literal.toByteArray())
+                                    val bodyStream: InputStream = literal.toByteArray().inputStream()
                                     message.parse(bodyStream)
                                 }
                                 is Int -> {
@@ -697,7 +696,7 @@ class ImapFolder internal constructor(
                                 MimeMessageHelper.setBody(part, literal as Body?)
                             }
                             is String -> {
-                                val bodyStream: InputStream = ByteArrayInputStream(literal.toByteArray())
+                                val bodyStream: InputStream = literal.toByteArray().inputStream()
                                 val contentTransferEncoding =
                                     part.getHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING)[0]
                                 val contentType = part.getHeader(MimeHeader.HEADER_CONTENT_TYPE)[0]
