@@ -107,7 +107,7 @@ public class MessageViewInfoExtractor {
 
         boolean hasProtectedSubject = "v1".equalsIgnoreCase(protectedHeadersParam) && protectedSubjectHeader.length > 0;
         if (hasProtectedSubject) {
-            return protectedSubjectHeader[0];
+            return MimeUtility.unfoldAndDecode(protectedSubjectHeader[0]);
         }
 
         return null;
