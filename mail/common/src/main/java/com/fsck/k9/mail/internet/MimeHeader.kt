@@ -2,10 +2,8 @@ package com.fsck.k9.mail.internet
 
 import com.fsck.k9.mail.internet.MimeHeader.Field.NameValueField
 import com.fsck.k9.mail.internet.MimeHeader.Field.RawField
-import java.io.BufferedWriter
 import java.io.IOException
 import java.io.OutputStream
-import java.io.OutputStreamWriter
 import java.nio.charset.Charset
 import java.util.ArrayList
 import java.util.LinkedHashSet
@@ -60,7 +58,7 @@ class MimeHeader {
 
     @Throws(IOException::class)
     fun writeTo(out: OutputStream) {
-        val writer = BufferedWriter(OutputStreamWriter(out), 1024)
+        val writer = out.writer().buffered(1024)
         writer.appendFields()
         writer.flush()
     }
