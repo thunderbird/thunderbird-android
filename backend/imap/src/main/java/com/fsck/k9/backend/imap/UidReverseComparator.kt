@@ -1,34 +1,24 @@
-package com.fsck.k9.backend.imap;
+package com.fsck.k9.backend.imap
 
+import com.fsck.k9.mail.Message
+import java.util.Comparator
 
-import java.util.Comparator;
-
-import com.fsck.k9.mail.Message;
-
-
-class UidReverseComparator implements Comparator<Message> {
-    @Override
-    public int compare(Message messageLeft, Message messageRight) {
-        Long uidLeft = getUidForMessage(messageLeft);
-        Long uidRight = getUidForMessage(messageRight);
-
+internal class UidReverseComparator : Comparator<Message> {
+    override fun compare(messageLeft: Message, messageRight: Message): Int {
+        val uidLeft = messageLeft.uidOrNull
+        val uidRight = messageRight.uidOrNull
         if (uidLeft == null && uidRight == null) {
-            return 0;
+            return 0
         } else if (uidLeft == null) {
-            return 1;
+            return 1
         } else if (uidRight == null) {
-            return -1;
+            return -1
         }
 
         // reverse order
-        return uidRight.compareTo(uidLeft);
+        return uidRight.compareTo(uidLeft)
     }
 
-    private Long getUidForMessage(Message message) {
-        try {
-            return Long.parseLong(message.getUid());
-        } catch (NullPointerException | NumberFormatException e) {
-            return null;
-        }
-    }
+    private val Message.uidOrNull
+        get() = uid?.toLongOrNull()
 }
