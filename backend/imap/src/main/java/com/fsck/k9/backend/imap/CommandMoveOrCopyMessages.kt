@@ -1,87 +1,72 @@
-package com.fsck.k9.backend.imap;
+package com.fsck.k9.backend.imap
 
+import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.mail.store.imap.ImapFolder
+import com.fsck.k9.mail.store.imap.ImapStore
+import timber.log.Timber
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+internal class CommandMoveOrCopyMessages(private val imapStore: ImapStore) {
 
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.store.imap.ImapFolder;
-import com.fsck.k9.mail.store.imap.ImapMessage;
-import com.fsck.k9.mail.store.imap.ImapStore;
-import org.jetbrains.annotations.NotNull;
-import timber.log.Timber;
-
-
-class CommandMoveOrCopyMessages {
-    private final ImapStore imapStore;
-
-
-    CommandMoveOrCopyMessages(ImapStore imapStore) {
-        this.imapStore = imapStore;
+    fun moveMessages(
+        sourceFolderServerId: String,
+        targetFolderServerId: String,
+        messageServerIds: List<String>
+    ): Map<String, String>? {
+        return moveOrCopyMessages(sourceFolderServerId, targetFolderServerId, messageServerIds, false)
     }
 
-    Map<String, String> moveMessages(@NotNull String sourceFolderServerId, @NotNull String targetFolderServerId,
-            @NotNull List<String> messageServerIds) throws MessagingException {
-        return moveOrCopyMessages(sourceFolderServerId, targetFolderServerId, messageServerIds, false);
+    fun copyMessages(
+        sourceFolderServerId: String,
+        targetFolderServerId: String,
+        messageServerIds: List<String>
+    ): Map<String, String>? {
+        return moveOrCopyMessages(sourceFolderServerId, targetFolderServerId, messageServerIds, true)
     }
 
-    Map<String, String> copyMessages(@NotNull String sourceFolderServerId, @NotNull String targetFolderServerId,
-            @NotNull List<String> messageServerIds) throws MessagingException {
-        return moveOrCopyMessages(sourceFolderServerId, targetFolderServerId, messageServerIds, true);
-    }
+    private fun moveOrCopyMessages(
+        srcFolder: String,
+        destFolder: String,
+        uids: Collection<String>,
+        isCopy: Boolean
+    ): Map<String, String>? {
+        var remoteSrcFolder: ImapFolder? = null
+        var remoteDestFolder: ImapFolder? = null
 
-    private Map<String, String> moveOrCopyMessages(String srcFolder, String destFolder, Collection<String> uids,
-            boolean isCopy) throws MessagingException {
-        ImapFolder remoteSrcFolder = null;
-        ImapFolder remoteDestFolder = null;
+        return try {
+            remoteSrcFolder = imapStore.getFolder(srcFolder)
 
-        try {
-            remoteSrcFolder = imapStore.getFolder(srcFolder);
-
-            List<ImapMessage> messages = new ArrayList<>();
-
-            for (String uid : uids) {
-                messages.add(remoteSrcFolder.getMessage(uid));
-            }
-
-            if (messages.isEmpty()) {
-                Timber.i("processingPendingMoveOrCopy: no remote messages to move, skipping");
-                return null;
+            if (uids.isEmpty()) {
+                Timber.i("moveOrCopyMessages: no remote messages to move, skipping")
+                return null
             }
 
             if (!remoteSrcFolder.exists()) {
-                throw new MessagingException("processingPendingMoveOrCopy: remoteFolder " + srcFolder +
-                        " does not exist", true);
+                throw MessagingException("moveOrCopyMessages: remoteFolder $srcFolder does not exist", true)
             }
 
-            remoteSrcFolder.open(ImapFolder.OPEN_MODE_RW);
-            if (remoteSrcFolder.getMode() != ImapFolder.OPEN_MODE_RW) {
-                throw new MessagingException("processingPendingMoveOrCopy: could not open remoteSrcFolder " +
-                        srcFolder + " read/write", true);
+            remoteSrcFolder.open(ImapFolder.OPEN_MODE_RW)
+            if (remoteSrcFolder.mode != ImapFolder.OPEN_MODE_RW) {
+                throw MessagingException(
+                    "moveOrCopyMessages: could not open remoteSrcFolder $srcFolder read/write", true
+                )
             }
 
-            Timber.d("processingPendingMoveOrCopy: source folder = %s, %d messages, " +
-                    "destination folder = %s, isCopy = %s", srcFolder, messages.size(), destFolder, isCopy);
+            val messages = uids.map { uid -> remoteSrcFolder.getMessage(uid) }
 
+            Timber.d(
+                "moveOrCopyMessages: source folder = %s, %d messages, destination folder = %s, isCopy = %s",
+                srcFolder, messages.size, destFolder, isCopy
+            )
 
-            remoteDestFolder = imapStore.getFolder(destFolder);
-
+            remoteDestFolder = imapStore.getFolder(destFolder)
             if (isCopy) {
-                return remoteSrcFolder.copyMessages(messages, remoteDestFolder);
+                remoteSrcFolder.copyMessages(messages, remoteDestFolder)
             } else {
-                return remoteSrcFolder.moveMessages(messages, remoteDestFolder);
+                remoteSrcFolder.moveMessages(messages, remoteDestFolder)
             }
         } finally {
-            closeFolder(remoteSrcFolder);
-            closeFolder(remoteDestFolder);
-        }
-    }
-
-    private static void closeFolder(ImapFolder folder) {
-        if (folder != null) {
-            folder.close();
+            remoteSrcFolder?.close()
+            remoteDestFolder?.close()
         }
     }
 }
