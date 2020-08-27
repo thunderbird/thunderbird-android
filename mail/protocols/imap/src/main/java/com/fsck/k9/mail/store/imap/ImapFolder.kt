@@ -526,7 +526,7 @@ class ImapFolder internal constructor(
     fun fetch(
         messages: List<ImapMessage>?,
         fetchProfile: FetchProfile,
-        listener: MessageRetrievalListener<ImapMessage?>?,
+        listener: MessageRetrievalListener<ImapMessage>?,
         maxDownloadSize: Int
     ) {
         if (messages == null || messages.isEmpty()) {
