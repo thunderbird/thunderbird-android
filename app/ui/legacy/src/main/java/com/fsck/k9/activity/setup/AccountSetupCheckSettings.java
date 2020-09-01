@@ -165,14 +165,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                 }
 
                 mProgressBar.setIndeterminate(false);
-                StringBuilder chainInfo = new StringBuilder(100);
-                MessageDigest sha1 = null;
-                try {
-                    sha1 = MessageDigest.getInstance("SHA-1");
-                } catch (NoSuchAlgorithmException e) {
-                    Timber.e(e, "Error while initializing MessageDigest");
-                }
-
+                StringBuilder chainInfo = new StringBuilder(200);
                 final X509Certificate[] chain = ex.getCertChain();
                 // We already know chain != null (tested before calling this method)
                 for (int i = 0; i < chain.length; i++) {
@@ -251,13 +244,24 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                     }
 
                     chainInfo.append("Issuer: ").append(chain[i].getIssuerDN().toString()).append("\n");
-                    if (sha1 != null) {
-                        sha1.reset();
+                    String[] digestAlgorithms = new String[] {"SHA-1", "SHA-256", "SHA-512"};
+
+                    for (String algorithm : digestAlgorithms) {
+                        MessageDigest digest = null;
                         try {
-                            String sha1sum = Hex.encodeHex(sha1.digest(chain[i].getEncoded()));
-                            chainInfo.append("Fingerprint (SHA-1): ").append(sha1sum).append("\n");
-                        } catch (CertificateEncodingException e) {
-                            Timber.e(e, "Error while encoding certificate");
+                            digest = MessageDigest.getInstance(algorithm);
+                        } catch (NoSuchAlgorithmException e) {
+                            Timber.e(e, "Error while initializing MessageDigest (" + algorithm + ")");
+                        }
+
+                        if (digest != null) {
+                            digest.reset();
+                            try {
+                                String hash = Hex.encodeHex(digest.digest(chain[i].getEncoded()));
+                                chainInfo.append("Fingerprint ("+ algorithm +"): ").append("\n").append(hash).append("\n");
+                            } catch (CertificateEncodingException e) {
+                                Timber.e(e, "Error while encoding certificate");
+                            }
                         }
                     }
                 }
