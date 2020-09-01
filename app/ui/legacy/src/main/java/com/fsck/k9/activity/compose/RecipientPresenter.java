@@ -364,6 +364,7 @@ public class RecipientPresenter {
     public void onSwitchIdentity(Identity identity) {
 
         // TODO decide what actually to do on identity switch?
+        asyncUpdateCryptoStatus();
         /*
         if (mIdentityChanged) {
             mBccWrapper.setVisibility(View.VISIBLE);
