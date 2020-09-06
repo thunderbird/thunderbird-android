@@ -12,9 +12,8 @@ K-9 Mail can be downloaded from a couple of sources:
 - [Google Play](https://play.google.com/store/apps/details?id=com.fsck.k9)
 - [F-Droid](https://f-droid.org/repository/browse/?fdid=com.fsck.k9)
 - [Github Releases](https://github.com/k9mail/k-9/releases)
-- [Amazon Appstore for Android](http://www.amazon.com/dp/B004JK61K0)
 
-You might also be interested in becoming a [tester](https://play.google.com/apps/testing/com.fsck.k9) to get an early look at new versions.
+You might also be interested in becoming a [tester](https://forum.k9mail.app/t/how-do-i-become-a-beta-tester/68) to get an early look at new versions.
 
 
 ## Release Notes
@@ -27,8 +26,8 @@ in each version of K-9 Mail.
 
 If the app is not behaving like it should, you might find these resources helpful:
 
-- [User Manual](https://k9mail.github.io/documentation)
-- [Frequently Asked Questions](https://k9mail.github.io/documentation/faq.html)
+- [User Manual](https://k9mail.app/documentation/)
+- [Frequently Asked Questions](https://forum.k9mail.app/c/faq)
 - [Support Forum](https://forum.k9mail.app/)
 
 
