@@ -89,7 +89,6 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MimeMessage;
-import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.MessageViewInfo;
 import com.fsck.k9.message.AutocryptStatusInteractor;
@@ -1789,7 +1788,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             View progressBar = view.findViewById(R.id.progressBar);
             boolean isLoadingComplete = (attachment.state == Attachment.LoadingState.COMPLETE);
             if (isLoadingComplete) {
-                if (MimeUtility.isSupportedImageType(attachment.contentType)) {
+                if (attachment.isSupportedImage()) {
                     ImageView attachmentTypeView = view.findViewById(R.id.attachment_type);
                     attachmentTypeView.setImageResource(R.drawable.ic_attachment_image);
 

@@ -4,6 +4,7 @@ package com.fsck.k9.mailstore;
 import android.net.Uri;
 
 import com.fsck.k9.mail.Part;
+import com.fsck.k9.mail.internet.MimeUtility;
 
 
 public class AttachmentViewInfo {
@@ -40,5 +41,15 @@ public class AttachmentViewInfo {
 
     public void setContentAvailable() {
         this.contentAvailable = true;
+    }
+
+    public boolean isSupportedImage() {
+        if (mimeType == null) {
+            return false;
+        }
+
+        return MimeUtility.isSupportedImageType(mimeType) || (
+                MimeUtility.isSameMimeType(MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE, mimeType) &&
+                MimeUtility.isSupportedImageExtension(displayName));
     }
 }
