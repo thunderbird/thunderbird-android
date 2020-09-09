@@ -1136,4 +1136,9 @@ public class MimeUtility {
         return isSameMimeType(mimeType, "image/jpeg") || isSameMimeType(mimeType, "image/png") ||
                 isSameMimeType(mimeType, "image/gif") || isSameMimeType(mimeType, "image/webp");
     }
+
+    public static boolean isSupportedImageExtension(String filename) {
+        String mimeType = getMimeTypeByExtension(filename);
+        return isSupportedImageType(mimeType);
+    }
 }

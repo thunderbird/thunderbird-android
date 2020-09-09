@@ -4,6 +4,8 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fsck.k9.mail.internet.MimeUtility;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -92,6 +94,16 @@ public class Attachment implements Parcelable, com.fsck.k9.message.Attachment {
     @Override
     public Long getSize() {
         return size;
+    }
+
+    public boolean isSupportedImage() {
+        if (contentType == null) {
+            return false;
+        }
+
+        return MimeUtility.isSupportedImageType(contentType) || (
+                MimeUtility.isSameMimeType(MimeUtility.DEFAULT_ATTACHMENT_MIME_TYPE, contentType) &&
+                MimeUtility.isSupportedImageExtension(filename));
     }
 
     private Attachment(Uri uri, LoadingState state, int loaderId, String contentType, boolean allowMessageType,
