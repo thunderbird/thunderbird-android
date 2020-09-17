@@ -16,7 +16,7 @@ buildscript {
                 'androidxLifecycle': '2.2.0',
                 'androidxAnnotation': '1.1.0',
                 'androidxNavigation': '2.3.0',
-                'androidxConstraintLayout': '2.0.0-beta8',
+                'androidxConstraintLayout': '2.0.1',
                 'androidxWorkManager': '2.3.4',
                 'androidxFragment': '1.2.5',
                 'androidxLocalBroadcastManager': '1.0.0',
