@@ -9,10 +9,12 @@ import java.util.UUID;
 import com.fsck.k9.K9RobolectricTest;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.AuthType;
-import org.apache.tools.ant.filters.StringInputStream;
 import org.junit.Before;
 import org.junit.Test;
 import org.robolectric.RuntimeEnvironment;
+
+import kotlin.text.Charsets;
+import okio.Buffer;
 
 import static com.fsck.k9.preferences.MessagingControllerTestExtra.setUpBackendManager;
 import static org.junit.Assert.assertEquals;
@@ -36,7 +38,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
 
     @Test(expected = SettingsImportExportException.class)
     public void importSettings_throwsExceptionOnBlankFile() throws SettingsImportExportException {
-        InputStream inputStream = new StringInputStream("");
+        InputStream inputStream = inputStreamOf("");
         List<String> accountUuids = new ArrayList<>();
 
         SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true);
@@ -44,7 +46,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
 
     @Test(expected = SettingsImportExportException.class)
     public void importSettings_throwsExceptionOnMissingFormat() throws SettingsImportExportException {
-        InputStream inputStream = new StringInputStream("<k9settings version=\"1\"></k9settings>");
+        InputStream inputStream = inputStreamOf("<k9settings version=\"1\"></k9settings>");
         List<String> accountUuids = new ArrayList<>();
 
         SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true);
@@ -52,7 +54,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
 
     @Test(expected = SettingsImportExportException.class)
     public void importSettings_throwsExceptionOnInvalidFormat() throws SettingsImportExportException {
-        InputStream inputStream = new StringInputStream("<k9settings version=\"1\" format=\"A\"></k9settings>");
+        InputStream inputStream = inputStreamOf("<k9settings version=\"1\" format=\"A\"></k9settings>");
         List<String> accountUuids = new ArrayList<>();
 
         SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true);
@@ -60,7 +62,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
 
     @Test(expected = SettingsImportExportException.class)
     public void importSettings_throwsExceptionOnNonPositiveFormat() throws SettingsImportExportException {
-        InputStream inputStream = new StringInputStream("<k9settings version=\"1\" format=\"0\"></k9settings>");
+        InputStream inputStream = inputStreamOf("<k9settings version=\"1\" format=\"0\"></k9settings>");
         List<String> accountUuids = new ArrayList<>();
 
         SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true);
@@ -68,7 +70,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
 
     @Test(expected = SettingsImportExportException.class)
     public void importSettings_throwsExceptionOnMissingVersion() throws SettingsImportExportException {
-        InputStream inputStream = new StringInputStream("<k9settings format=\"1\"></k9settings>");
+        InputStream inputStream = inputStreamOf("<k9settings format=\"1\"></k9settings>");
         List<String> accountUuids = new ArrayList<>();
 
         SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true);
@@ -76,7 +78,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
 
     @Test(expected = SettingsImportExportException.class)
     public void importSettings_throwsExceptionOnInvalidVersion() throws SettingsImportExportException {
-        InputStream inputStream = new StringInputStream("<k9settings format=\"1\" version=\"A\"></k9settings>");
+        InputStream inputStream = inputStreamOf("<k9settings format=\"1\" version=\"A\"></k9settings>");
         List<String> accountUuids = new ArrayList<>();
 
         SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true);
@@ -84,7 +86,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
 
     @Test(expected = SettingsImportExportException.class)
     public void importSettings_throwsExceptionOnNonPositiveVersion() throws SettingsImportExportException {
-        InputStream inputStream = new StringInputStream("<k9settings format=\"1\" version=\"0\"></k9settings>");
+        InputStream inputStream = inputStreamOf("<k9settings format=\"1\" version=\"0\"></k9settings>");
         List<String> accountUuids = new ArrayList<>();
 
         SettingsImporter.importSettings(RuntimeEnvironment.application, inputStream, true, accountUuids, true);
@@ -93,7 +95,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
     @Test
     public void parseSettings_account() throws SettingsImportExportException {
         String validUUID = UUID.randomUUID().toString();
-        InputStream inputStream = new StringInputStream("<k9settings format=\"1\" version=\"1\">" +
+        InputStream inputStream = inputStreamOf("<k9settings format=\"1\" version=\"1\">" +
                 "<accounts><account uuid=\"" + validUUID + "\"><name>Account</name></account></accounts></k9settings>");
         List<String> accountUuids = new ArrayList<>();
         accountUuids.add("1");
@@ -108,7 +110,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
     @Test
     public void parseSettings_account_identities() throws SettingsImportExportException {
         String validUUID = UUID.randomUUID().toString();
-        InputStream inputStream = new StringInputStream("<k9settings format=\"1\" version=\"1\">" +
+        InputStream inputStream = inputStreamOf("<k9settings format=\"1\" version=\"1\">" +
                 "<accounts><account uuid=\"" + validUUID + "\"><name>Account</name>" +
                 "<identities><identity><email>user@gmail.com</email></identity></identities>" +
                 "</account></accounts></k9settings>");
@@ -127,7 +129,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
     @Test
     public void parseSettings_account_cram_md5() throws SettingsImportExportException {
         String validUUID = UUID.randomUUID().toString();
-        InputStream inputStream = new StringInputStream("<k9settings format=\"1\" version=\"1\">" +
+        InputStream inputStream = inputStreamOf("<k9settings format=\"1\" version=\"1\">" +
                 "<accounts><account uuid=\"" + validUUID + "\"><name>Account</name>" +
                 "<incoming-server><authentication-type>CRAM_MD5</authentication-type></incoming-server>" +
                 "</account></accounts></k9settings>");
@@ -144,7 +146,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
     @Test
     public void importSettings_disablesAccountsNeedingPasswords() throws SettingsImportExportException {
         String validUUID = UUID.randomUUID().toString();
-        InputStream inputStream = new StringInputStream("<k9settings format=\"1\" version=\"1\">" +
+        InputStream inputStream = inputStreamOf("<k9settings format=\"1\" version=\"1\">" +
                 "<accounts><account uuid=\"" + validUUID + "\"><name>Account</name>" +
                 "<incoming-server type=\"IMAP\">" +
                     "<connection-security>SSL_TLS_REQUIRED</connection-security>" +
@@ -181,7 +183,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
     @Test
     public void getImportStreamContents_account() throws SettingsImportExportException {
         String validUUID = UUID.randomUUID().toString();
-        InputStream inputStream = new StringInputStream("<k9settings format=\"1\" version=\"1\">" +
+        InputStream inputStream = inputStreamOf("<k9settings format=\"1\" version=\"1\">" +
                 "<accounts>" +
                     "<account uuid=\"" + validUUID + "\">" +
                         "<name>Account</name>" +
@@ -204,7 +206,7 @@ public class SettingsImporterTest extends K9RobolectricTest {
     @Test
     public void getImportStreamContents_alternativeName() throws SettingsImportExportException {
         String validUUID = UUID.randomUUID().toString();
-        InputStream inputStream = new StringInputStream("<k9settings format=\"1\" version=\"1\">" +
+        InputStream inputStream = inputStreamOf("<k9settings format=\"1\" version=\"1\">" +
                 "<accounts>" +
                     "<account uuid=\"" + validUUID + "\">" +
                         "<name></name>" +
@@ -222,5 +224,11 @@ public class SettingsImporterTest extends K9RobolectricTest {
         assertEquals(1, results.accounts.size());
         assertEquals("user@gmail.com", results.accounts.get(0).name);
         assertEquals(validUUID, results.accounts.get(0).uuid);
+    }
+
+    private InputStream inputStreamOf(String data) {
+        return new Buffer()
+                .writeString(data, Charsets.UTF_8)
+                .inputStream();
     }
 }
