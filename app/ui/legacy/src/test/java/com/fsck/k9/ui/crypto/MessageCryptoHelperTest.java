@@ -32,6 +32,7 @@ import org.openintents.openpgp.util.OpenPgpApi.IOpenPgpSinkResultCallback;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSink;
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource;
 import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.LooperMode;
 
 import static com.fsck.k9.mail.TestMessageConstructionUtils.bodypart;
 import static com.fsck.k9.mail.TestMessageConstructionUtils.messageFromBody;
@@ -50,6 +51,7 @@ import static org.mockito.Mockito.when;
 
 
 @SuppressWarnings("unchecked")
+@LooperMode(LooperMode.Mode.LEGACY)
 public class MessageCryptoHelperTest extends RobolectricTest {
     private MessageCryptoHelper messageCryptoHelper;
     private OpenPgpApi openPgpApi;

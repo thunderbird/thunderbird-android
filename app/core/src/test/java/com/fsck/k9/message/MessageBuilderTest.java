@@ -31,6 +31,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.robolectric.Robolectric;
+import org.robolectric.annotation.LooperMode;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -42,6 +43,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 
+@LooperMode(LooperMode.Mode.LEGACY)
 public class MessageBuilderTest extends RobolectricTest {
     private static final String TEST_MESSAGE_TEXT = "soviet message\r\ntext ☭";
     private static final String TEST_ATTACHMENT_TEXT = "text data in attachment";

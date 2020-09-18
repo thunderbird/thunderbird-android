@@ -3,11 +3,8 @@ package com.fsck.k9.mail
 import com.fsck.k9.mail.MimeType.Companion.toMimeType
 import com.fsck.k9.mail.MimeType.Companion.toMimeTypeOrNull
 import com.fsck.k9.mail.internet.getMimeTypes
+import com.google.common.truth.Truth.assertThat
 import java.lang.IllegalArgumentException
-import org.hamcrest.Matchers
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
-import org.junit.Assert.assertThat
 import org.junit.Assert.fail
 import org.junit.Test
 
@@ -65,8 +62,8 @@ class MimeTypeTest {
     private fun assertParsedMimeType(input: String, type: String, subtype: String) {
         val mimeType = input.toMimeType()
 
-        assertEquals(type, mimeType.type)
-        assertEquals(subtype, mimeType.subtype)
+        assertThat(mimeType.type).isEqualTo(type)
+        assertThat(mimeType.subtype).isEqualTo(subtype)
     }
 
     private fun assertInvalidMimeType(input: String) {
@@ -74,11 +71,11 @@ class MimeTypeTest {
             input.toMimeType()
             fail("Expected exception")
         } catch (e: IllegalArgumentException) {
-            assertThat(e.message, Matchers.startsWith("Invalid MIME type: "))
+            assertThat(e.message).startsWith("Invalid MIME type: ")
         }
     }
 
     private fun assertInvalidMimeTypeReturnsNull(input: String) {
-        assertNull(input.toMimeTypeOrNull())
+        assertThat(input.toMimeTypeOrNull()).isNull()
     }
 }

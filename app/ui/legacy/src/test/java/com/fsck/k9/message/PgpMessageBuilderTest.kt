@@ -57,7 +57,9 @@ import org.openintents.openpgp.OpenPgpError
 import org.openintents.openpgp.util.OpenPgpApi
 import org.openintents.openpgp.util.OpenPgpApi.OpenPgpDataSource
 import org.robolectric.RuntimeEnvironment
+import org.robolectric.annotation.LooperMode
 
+@LooperMode(LooperMode.Mode.LEGACY)
 class PgpMessageBuilderTest : K9RobolectricTest() {
 
     private val defaultCryptoStatus = ComposeCryptoStatus(
