@@ -1,16 +1,14 @@
 package com.fsck.k9.message.quote
 
-import android.content.res.Resources
 import com.fsck.k9.K9
 import java.text.DateFormat
 import java.util.Date
-import java.util.Locale
 import java.util.TimeZone
 
 /**
  * Convert a date into a locale-specific date string suitable for use in a header for a quoted message.
  */
-class QuoteDateFormatter(private val resources: Resources) {
+class QuoteDateFormatter {
 
     fun format(date: Date): String {
         return try {
@@ -22,13 +20,10 @@ class QuoteDateFormatter(private val resources: Resources) {
     }
 
     private fun createDateFormat(): DateFormat {
-        return if (K9.isHideTimeZone) {
-            DateFormat.getDateTimeInstance(DATE_STYLE, TIME_STYLE, Locale.ROOT).apply {
+        return DateFormat.getDateTimeInstance(DATE_STYLE, TIME_STYLE).apply {
+            if (K9.isHideTimeZone) {
                 timeZone = TimeZone.getTimeZone("UTC")
             }
-        } else {
-            val locale = resources.configuration.locale
-            DateFormat.getDateTimeInstance(DATE_STYLE, TIME_STYLE, locale)
         }
     }
 
