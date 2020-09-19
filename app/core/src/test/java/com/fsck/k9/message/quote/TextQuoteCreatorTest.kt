@@ -29,7 +29,7 @@ class TextQuoteCreatorTest : RobolectricTest() {
         on { getRecipients(RecipientType.CC) } doReturn emptyArray<Address>()
         on { subject } doReturn "Message subject"
     }
-    val textQuoteCreator = TextQuoteCreator(QuoteHelper(resources), TestCoreResourceProvider())
+    val textQuoteCreator = TextQuoteCreator(QuoteDateFormatter(resources), TestCoreResourceProvider())
 
     @Before
     fun setUp() {

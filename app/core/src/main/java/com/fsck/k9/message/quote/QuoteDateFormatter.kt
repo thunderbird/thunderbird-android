@@ -2,24 +2,19 @@ package com.fsck.k9.message.quote
 
 import android.content.res.Resources
 import com.fsck.k9.K9
-import com.fsck.k9.mail.Message
 import java.text.DateFormat
+import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 
-class QuoteHelper(private val resources: Resources) {
+/**
+ * Convert a date into a locale-specific date string suitable for use in a header for a quoted message.
+ */
+class QuoteDateFormatter(private val resources: Resources) {
 
-    /**
-     * Extract the date from a message and convert it into a locale-specific
-     * date string suitable for use in a header for a quoted message.
-     *
-     * @return A string with the formatted date/time
-     */
-    fun getSentDateText(message: Message): String {
+    fun format(date: Date): String {
         return try {
             val dateFormat = createDateFormat()
-            val date = message.sentDate
-
             dateFormat.format(date)
         } catch (e: Exception) {
             ""

@@ -6,7 +6,10 @@ import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Message.RecipientType
 
-class TextQuoteCreator(private val quoteHelper: QuoteHelper, private val resourceProvider: CoreResourceProvider) {
+class TextQuoteCreator(
+    private val quoteDateFormatter: QuoteDateFormatter,
+    private val resourceProvider: CoreResourceProvider
+) {
     private val prefixInsertionRegex = Regex("(?m)^")
 
     fun quoteOriginalTextMessage(
@@ -23,7 +26,7 @@ class TextQuoteCreator(private val quoteHelper: QuoteHelper, private val resourc
     }
 
     private fun prefixQuoteText(body: String, originalMessage: Message, prefix: String): String {
-        val sentDate = quoteHelper.getSentDateText(originalMessage)
+        val sentDate = quoteDateFormatter.format(originalMessage.sentDate)
         val sender = Address.toString(originalMessage.from)
 
         return buildString {
@@ -43,7 +46,7 @@ class TextQuoteCreator(private val quoteHelper: QuoteHelper, private val resourc
     }
 
     private fun headerQuoteText(body: String, originalMessage: Message): String {
-        val sentDate = quoteHelper.getSentDateText(originalMessage)
+        val sentDate = quoteDateFormatter.format(originalMessage.sentDate)
 
         return buildString {
             append(CRLF)
