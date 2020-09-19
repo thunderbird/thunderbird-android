@@ -38,9 +38,6 @@ class QuoteHelper(private val resources: Resources) {
     }
 
     companion object {
-        // amount of extra buffer to allocate to accommodate quoting headers or prefixes
-        const val QUOTE_BUFFER_LENGTH = 512
-
         private const val DATE_STYLE = DateFormat.LONG
         private const val TIME_STYLE = DateFormat.LONG
     }
