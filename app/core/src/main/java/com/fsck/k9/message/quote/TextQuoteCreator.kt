@@ -5,9 +5,11 @@ import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Message.RecipientType
-import com.fsck.k9.message.quote.QuoteHelper.Companion.QUOTE_BUFFER_LENGTH
 
-class TextQuoteCreator(private val quoteHelper: QuoteHelper, private val resourceProvider: CoreResourceProvider) {
+class TextQuoteCreator(
+    private val quoteDateFormatter: QuoteDateFormatter,
+    private val resourceProvider: CoreResourceProvider
+) {
     private val prefixInsertionRegex = Regex("(?m)^")
 
     fun quoteOriginalTextMessage(
@@ -24,10 +26,10 @@ class TextQuoteCreator(private val quoteHelper: QuoteHelper, private val resourc
     }
 
     private fun prefixQuoteText(body: String, originalMessage: Message, prefix: String): String {
-        val sentDate = quoteHelper.getSentDateText(originalMessage)
+        val sentDate = quoteDateFormatter.format(originalMessage.sentDate)
         val sender = Address.toString(originalMessage.from)
 
-        return StringBuilder(body.length + QUOTE_BUFFER_LENGTH).apply {
+        return buildString {
             val replyHeader = if (sentDate.isEmpty()) {
                 resourceProvider.replyHeader(sender)
             } else {
@@ -40,13 +42,13 @@ class TextQuoteCreator(private val quoteHelper: QuoteHelper, private val resourc
             val prefixedText = body.replace(prefixInsertionRegex, escapedPrefix)
 
             append(prefixedText)
-        }.toString()
+        }
     }
 
     private fun headerQuoteText(body: String, originalMessage: Message): String {
-        val sentDate = quoteHelper.getSentDateText(originalMessage)
+        val sentDate = quoteDateFormatter.format(originalMessage.sentDate)
 
-        return StringBuilder(body.length + QUOTE_BUFFER_LENGTH).apply {
+        return buildString {
             append(CRLF)
             append(resourceProvider.messageHeaderSeparator())
             append(CRLF)
@@ -88,7 +90,7 @@ class TextQuoteCreator(private val quoteHelper: QuoteHelper, private val resourc
 
             append(CRLF)
             append(body)
-        }.toString()
+        }
     }
 
     private fun Array<Address>.displayString() = Address.toString(this)?.let { if (it.isEmpty()) null else it }

@@ -74,4 +74,13 @@ subprojects {
         jcenter()
         maven { url 'https://jitpack.io' }
     }
+
+    tasks.withType(Test) {
+        testLogging {
+            exceptionFormat "full"
+            showCauses true
+            showExceptions true
+            showStackTraces true
+        }
+    }
 }

@@ -49,10 +49,10 @@ public class HtmlQuoteCreator {
         CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
         InsertableHtmlContent insertable = findInsertionPoints(messageBody);
 
-        String sentDate = new QuoteHelper(resources).getSentDateText(originalMessage);
+        String sentDate = new QuoteDateFormatter().format(originalMessage.getSentDate());
         String fromAddress = Address.toString(originalMessage.getFrom());
         if (quoteStyle == QuoteStyle.PREFIX) {
-            StringBuilder header = new StringBuilder(QuoteHelper.QUOTE_BUFFER_LENGTH);
+            StringBuilder header = new StringBuilder();
             header.append("<div class=\"gmail_quote\">");
             if (sentDate.length() != 0) {
                 String replyHeader = resourceProvider.replyHeader(fromAddress, sentDate);
