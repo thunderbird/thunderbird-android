@@ -16,8 +16,6 @@ class HtmlSanitizerTest {
             </html>
             """.trimIndent().trimLineBreaks()
 
-        println(html)
-
         val result = htmlSanitizer.sanitize(html)
 
         assertThat(result.toCompactString()).isEqualTo("<html><head></head><body>Message</body></html>")
@@ -338,6 +336,26 @@ class HtmlSanitizerTest {
         val result = htmlSanitizer.sanitize(html)
 
         assertThat(result.toCompactString()).isEqualTo(html)
+    }
+
+    @Test
+    fun shouldKeepAllowedBodyAttributes() {
+        val html = """
+            <html>
+            <body style="color: #fff" onload="alert()" class="body" id></body>
+            </html>
+            """.trimIndent().trimLineBreaks()
+
+        val result = htmlSanitizer.sanitize(html)
+
+        assertThat(result.toCompactString()).isEqualTo(
+            """
+            <html>
+            <head></head>
+            <body style="color: #fff" class="body" id></body>
+            </html>
+            """.trimIndent().trimLineBreaks()
+        )
     }
 
     private fun Document.toCompactString() = HtmlProcessor.toCompactString(this)
