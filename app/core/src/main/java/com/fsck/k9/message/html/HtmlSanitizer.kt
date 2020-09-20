@@ -11,7 +11,7 @@ class HtmlSanitizer {
 
     init {
         val allowList = AllowList.relaxed()
-            .addTags("font", "hr", "ins", "del", "center", "map", "area")
+            .addTags("font", "hr", "ins", "del", "center", "map", "area", "title")
             .addAttributes("font", "color", "face", "size")
             .addAttributes(
                 "table", "align", "background", "bgcolor", "border", "cellpadding", "cellspacing",
