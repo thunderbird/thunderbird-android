@@ -8,9 +8,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: set up JDK 1.8
+    - name: set up JDK 11
       uses: actions/setup-java@v1
       with:
-        java-version: 8.0.252
+        java-version: 11
     - name: Build with Gradle
       run: ./gradlew assembleDebug testDebugUnitTest ktlintCheck
