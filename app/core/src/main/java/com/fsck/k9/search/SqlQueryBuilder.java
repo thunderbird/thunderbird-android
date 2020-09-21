@@ -66,7 +66,14 @@ public class SqlQueryBuilder {
                     if (condition.attribute != Attribute.CONTAINS) {
                         Timber.e("message contents can only be matched!");
                     }
-                    query.append("m.id IN (SELECT docid FROM messages_fulltext WHERE fulltext MATCH ?)");
+                    query.append("m.id IN (SELECT docid FROM messages_fulltext WHERE fulltext MATCH ");
+
+                    if (fulltextQueryString.startsWith("-")) {
+                        fulltextQueryString = fulltextQueryString.replace("-","");
+                        query.append("(printf(\"%c\", 45) || ?))");
+                    } else {
+                        query.append("?)");
+                    }
                     selectionArgs.add(fulltextQueryString);
                     break;
                 }
