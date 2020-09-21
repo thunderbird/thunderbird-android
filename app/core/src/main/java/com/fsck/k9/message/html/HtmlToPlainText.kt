@@ -1,5 +1,6 @@
 package com.fsck.k9.message.html
 
+import android.webkit.URLUtil
 import org.jsoup.nodes.Element
 import org.jsoup.nodes.Node
 import org.jsoup.nodes.TextNode
@@ -28,7 +29,11 @@ private class FormattingVisitor : NodeVisitor {
     override fun head(node: Node, depth: Int) {
         val name = node.nodeName()
         when {
-            node is TextNode -> append(node.text())
+            node is TextNode -> {
+                if (!URLUtil.isValidUrl(node.text())) {
+                    append(node.text())
+                }
+            }
             name == "li" -> {
                 startNewLine()
                 append("* ")
@@ -47,6 +52,7 @@ private class FormattingVisitor : NodeVisitor {
                     addEmptyLine()
                 }
             }
+
             name == "a" -> {
                 if (node.absUrl("href").isNotEmpty()) {
                     append(" <${node.attr("href")}>")
