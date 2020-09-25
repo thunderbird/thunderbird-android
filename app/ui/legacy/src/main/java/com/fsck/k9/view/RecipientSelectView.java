@@ -678,6 +678,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
         public String addressLabel;
         public final int timesContacted;
         public final String sortKey;
+        public final boolean starred;
 
         @Nullable // null if the contact has no photo. transient because we serialize this manually, see below.
         public transient Uri photoThumbnailUri;
@@ -692,14 +693,26 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
             this.contactLookupKey = null;
             timesContacted = 0;
             sortKey = null;
+            starred = false;
+        }
+
+        public Recipient(Recipient origin) {
+            this.address = new Address(origin.address);
+            this.addressLabel = origin.addressLabel;
+            this.contactId = origin.contactId;
+            this.cryptoStatus = origin.cryptoStatus;
+            this.contactLookupKey = origin.contactLookupKey;
+            this.timesContacted = origin.timesContacted;
+            this.sortKey = origin.sortKey;
+            this.starred = origin.starred;
         }
 
         public Recipient(String name, String email, String addressLabel, long contactId, String lookupKey) {
-            this(name, email, addressLabel, contactId, lookupKey, 0, null);
+            this(name, email, addressLabel, contactId, lookupKey, 0, null, false);
         }
 
         public Recipient(String name, String email, String addressLabel, long contactId, String lookupKey,
-                int timesContacted, String sortKey) {
+                int timesContacted, String sortKey, boolean starred) {
             this.address = new Address(email, name);
             this.contactId = contactId;
             this.addressLabel = addressLabel;
@@ -707,6 +720,7 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
             this.contactLookupKey = lookupKey;
             this.timesContacted = timesContacted;
             this.sortKey = sortKey;
+            this.starred = starred;
         }
 
         public String getDisplayNameOrAddress() {
