@@ -52,7 +52,6 @@ private class FormattingVisitor : NodeVisitor {
                     addEmptyLine()
                 }
             }
-
             name == "a" -> {
                 if (node.absUrl("href").isNotEmpty()) {
                     append(" <${node.attr("href")}>")
