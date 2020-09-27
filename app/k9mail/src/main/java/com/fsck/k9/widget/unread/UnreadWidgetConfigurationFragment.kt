@@ -31,6 +31,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
 
     private var selectedAccountUuid: String? = null
     private var selectedFolderId: Long? = null
+    private var selectedFolderDisplayName: String? = null
 
     override fun onCreatePreferencesFix(savedInstanceState: Bundle?, rootKey: String?) {
         setHasOptionsMenu(true)
@@ -49,6 +50,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
         unreadFolderEnabled.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, _ ->
             unreadFolder.summary = getString(R.string.unread_widget_folder_summary)
             selectedFolderId = null
+            selectedFolderDisplayName = null
             true
         }
 
@@ -61,6 +63,29 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
             )
             startActivityForResult(intent, REQUEST_CHOOSE_FOLDER)
             false
+        }
+
+        if (savedInstanceState != null) {
+            restoreInstanceState(savedInstanceState)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(STATE_SELECTED_ACCOUNT_UUID, selectedAccountUuid)
+        outState.putLongIfPresent(STATE_SELECTED_FOLDER_ID, selectedFolderId)
+        outState.putString(STATE_SELECTED_FOLDER_DISPLAY_NAME, selectedFolderDisplayName)
+    }
+
+    private fun restoreInstanceState(savedInstanceState: Bundle) {
+        val accountUuid = savedInstanceState.getString(STATE_SELECTED_ACCOUNT_UUID)
+        if (accountUuid != null) {
+            handleChooseAccount(accountUuid)
+            val folderId = savedInstanceState.getLongOrNull(STATE_SELECTED_FOLDER_ID)
+            val folderSummary = savedInstanceState.getString(STATE_SELECTED_FOLDER_DISPLAY_NAME)
+            if (folderId != null && folderSummary != null) {
+                handleChooseFolder(folderId, folderSummary)
+            }
         }
     }
 
@@ -89,6 +114,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
 
         selectedAccountUuid = accountUuid
         selectedFolderId = null
+        selectedFolderDisplayName = null
         unreadFolder.summary = getString(R.string.unread_widget_folder_summary)
         if (SearchAccount.UNIFIED_INBOX == selectedAccountUuid) {
             handleSearchAccount()
@@ -105,6 +131,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
         unreadFolderEnabled.isChecked = false
         unreadFolder.isEnabled = false
         selectedFolderId = null
+        selectedFolderDisplayName = null
     }
 
     private fun handleRegularAccount() {
@@ -119,6 +146,7 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
 
     private fun handleChooseFolder(folderId: Long, folderDisplayName: String) {
         selectedFolderId = folderId
+        selectedFolderDisplayName = folderDisplayName
         unreadFolder.summary = folderDisplayName
     }
 
@@ -164,6 +192,16 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
         activity.finish()
     }
 
+    private fun Bundle.putLongIfPresent(key: String, value: Long?) {
+        if (value != null) {
+            putLong(key, value)
+        }
+    }
+
+    private fun Bundle.getLongOrNull(key: String): Long? {
+        return if (containsKey(key)) getLong(key) else null
+    }
+
     companion object {
         private const val ARGUMENT_APP_WIDGET_ID = "app_widget_id"
 
@@ -173,6 +211,10 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
 
         private const val REQUEST_CHOOSE_ACCOUNT = 1
         private const val REQUEST_CHOOSE_FOLDER = 2
+
+        private const val STATE_SELECTED_ACCOUNT_UUID = "com.fsck.k9.widget.unread.selectedAccountUuid"
+        private const val STATE_SELECTED_FOLDER_ID = "com.fsck.k9.widget.unread.selectedFolderId"
+        private const val STATE_SELECTED_FOLDER_DISPLAY_NAME = "com.fsck.k9.widget.unread.selectedFolderDisplayName"
 
         fun create(appWidgetId: Int): UnreadWidgetConfigurationFragment {
             return UnreadWidgetConfigurationFragment().apply {
