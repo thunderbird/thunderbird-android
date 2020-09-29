@@ -1,69 +1,61 @@
-package com.fsck.k9.message.extractors;
+package com.fsck.k9.message.extractors
 
+import com.fsck.k9.mail.Part
+import com.fsck.k9.mail.internet.MessageExtractor
+import com.fsck.k9.mail.internet.MimeUtility.isSameMimeType
+import com.fsck.k9.message.html.HtmlConverter.htmlToText
 
-import androidx.annotation.NonNull;
+internal class PreviewTextExtractor {
+    @Throws(PreviewExtractionException::class)
+    fun extractPreview(textPart: Part): String {
+        val text = MessageExtractor.getTextFromPart(textPart, MAX_CHARACTERS_CHECKED_FOR_PREVIEW.toLong())
+            ?: throw PreviewExtractionException("Couldn't get text from part")
 
-import com.fsck.k9.message.html.HtmlConverter;
-import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.internet.MessageExtractor;
-
-import static com.fsck.k9.mail.internet.MimeUtility.isSameMimeType;
-
-
-class PreviewTextExtractor {
-    private static final int MAX_PREVIEW_LENGTH = 512;
-    private static final int MAX_CHARACTERS_CHECKED_FOR_PREVIEW = 8192;
-
-
-    @NonNull
-    public String extractPreview(@NonNull Part textPart) throws PreviewExtractionException {
-        String text = MessageExtractor.getTextFromPart(textPart, MAX_CHARACTERS_CHECKED_FOR_PREVIEW);
-        if (text == null) {
-            throw new PreviewExtractionException("Couldn't get text from part");
-        }
-
-        String plainText = convertFromHtmlIfNecessary(textPart, text);
-
-        return stripTextForPreview(plainText);
+        val plainText = convertFromHtmlIfNecessary(textPart, text)
+        return stripTextForPreview(plainText)
     }
 
-    private String convertFromHtmlIfNecessary(Part textPart, String text) {
-        String mimeType = textPart.getMimeType();
-        if (!isSameMimeType(mimeType, "text/html")) {
-            return text;
+    private fun convertFromHtmlIfNecessary(textPart: Part, text: String): String {
+        return if (isSameMimeType(textPart.mimeType, "text/html")) {
+            htmlToText(text)
+        } else {
+            text
         }
-
-        return HtmlConverter.htmlToText(text);
     }
 
-    private String stripTextForPreview(String text) {
-        if (text == null) {
-            return "";
-        }
-
+    private fun stripTextForPreview(text: String): String {
         // Remove (correctly delimited by '-- \n') signatures
-        text = text.replaceAll("(?ms)^-- [\\r\\n]+.*", "");
+        var text = text.replace("(?ms)^-- [\\r\\n]+.*".toRegex(), "")
         // try to remove lines of dashes in the preview
-        text = text.replaceAll("(?m)^----.*?$", "");
+        text = text.replace("(?m)^----.*?$".toRegex(), "")
         // remove quoted text from the preview
-        text = text.replaceAll("(?m)^[#>].*$", "");
+        text = text.replace("(?m)^[#>].*$".toRegex(), "")
         // Remove a common quote header from the preview
-        text = text.replaceAll("(?m)^On .*wrote.?$", "");
+        text = text.replace("(?m)^On .*wrote.?$".toRegex(), "")
         // Remove a more generic quote header from the preview
-        text = text.replaceAll("(?m)^.*\\w+:$", "");
+        text = text.replace("(?m)^.*\\w+:$".toRegex(), "")
         // Remove horizontal rules.
-        text = text.replaceAll("\\s*([-=_]{30,}+)\\s*", " ");
+        text = text.replace("\\s*([-=_]{30,}+)\\s*".toRegex(), " ")
 
         // URLs in the preview should just be shown as "..." - They're not
         // clickable and they usually overwhelm the preview
-        text = text.replaceAll("https?://\\S+", "...");
+        text = text.replace("https?://\\S+".toRegex(), "...")
         // Don't show newlines in the preview
-        text = text.replaceAll("(\\r|\\n)+", " ");
+        text = text.replace("(\\r|\\n)+".toRegex(), " ")
         // Collapse whitespace in the preview
-        text = text.replaceAll("\\s+", " ");
+        text = text.replace("\\s+".toRegex(), " ")
         // Remove any whitespace at the beginning and end of the string.
-        text = text.trim();
+        text = text.trim { it <= ' ' }
 
-        return (text.length() > MAX_PREVIEW_LENGTH) ? text.substring(0, MAX_PREVIEW_LENGTH - 1) + "…" : text;
+        return if (text.length > MAX_PREVIEW_LENGTH) {
+            text.substring(0, MAX_PREVIEW_LENGTH - 1) + "…"
+        } else {
+            text
+        }
+    }
+
+    companion object {
+        private const val MAX_PREVIEW_LENGTH = 512
+        private const val MAX_CHARACTERS_CHECKED_FOR_PREVIEW = 8192
     }
 }
