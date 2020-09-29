@@ -24,14 +24,27 @@ object HtmlToPlainText {
 private class FormattingVisitor : NodeVisitor {
     private var width = 0
     private val output = StringBuilder()
+    private var collectLinkText = false
+    private var linkText = StringBuilder()
 
     override fun head(node: Node, depth: Int) {
         val name = node.nodeName()
         when {
-            node is TextNode -> append(node.text())
+            node is TextNode -> {
+                val text = node.text()
+                append(text)
+
+                if (collectLinkText) {
+                    linkText.append(text)
+                }
+            }
             name == "li" -> {
                 startNewLine()
                 append("* ")
+            }
+            name == "a" && node.hasAttr("href") -> {
+                collectLinkText = true
+                linkText.clear()
             }
             node is Element && node.isBlock -> startNewLine()
         }
@@ -47,9 +60,13 @@ private class FormattingVisitor : NodeVisitor {
                     addEmptyLine()
                 }
             }
-            name == "a" -> {
+            name == "a" && node.hasAttr("href") -> {
+                collectLinkText = false
+
                 if (node.absUrl("href").isNotEmpty()) {
-                    append(" <${node.attr("href")}>")
+                    if (linkText.toString() != node.attr("href")) {
+                        append(" <${node.attr("href")}>")
+                    }
                 }
             }
         }

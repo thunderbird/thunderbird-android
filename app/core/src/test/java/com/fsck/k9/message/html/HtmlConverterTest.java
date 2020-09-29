@@ -279,4 +279,31 @@ public class HtmlConverterTest {
 
         assertEquals("One\n\nTwo\nThree\n\nFour", result);
     }
+
+    @Test
+    public void htmlToText_withLink() {
+        String input = "<a href='https://domain.example/'>Link text</a>";
+
+        String result = HtmlConverter.htmlToText(input);
+
+        assertEquals("Link text <https://domain.example/>", result);
+    }
+
+    @Test
+    public void htmlToText_withLinkifiedUrl() {
+        String input = "Text <a href='https://domain.example/path/'>https://domain.example/path/</a> more text";
+
+        String result = HtmlConverter.htmlToText(input);
+
+        assertEquals("Text https://domain.example/path/ more text", result);
+    }
+
+    @Test
+    public void htmlToText_withLinkifiedUrlContainingFormatting() {
+        String input = "<a href='https://domain.example/path/'>https://<b>domain.example</b>/path/</a>";
+
+        String result = HtmlConverter.htmlToText(input);
+
+        assertEquals("https://domain.example/path/", result);
+    }
 }
