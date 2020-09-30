@@ -88,10 +88,10 @@ class PreviewTextExtractorTest {
     fun extractPreview_shouldStripQuoteHeaderAndQuotedText() {
         val text = """
             some text
-            On 01/02/03 someone wrote
-            > some quoted text
-            # some other quoted text
             
+            On 01/02/03 someone wrote:
+            > some quoted text
+            > some other quoted text
             """.trimIndent()
         val part = MessageCreationHelper.createTextPart("text/plain", text)
 
@@ -146,5 +146,55 @@ class PreviewTextExtractorTest {
         val preview = previewTextExtractor.extractPreview(part)
 
         assertThat(preview).isEqualTo("whitespace is fun")
+    }
+
+    @Test
+    fun extractPreview_lineEndingWithColon() {
+        val text = """
+            Here's a list:
+            - item 1
+            - item 2
+            """.trimIndent()
+        val part = MessageCreationHelper.createTextPart("text/plain", text)
+
+        val preview = previewTextExtractor.extractPreview(part)
+
+        assertThat(preview).isEqualTo("Here's a list: - item 1 - item 2")
+    }
+
+    @Test
+    fun extractPreview_inlineReplies() {
+        val text = """
+            On 2020-09-30 at 03:12 Bob wrote:
+            > Hi Alice
+            Hi Bob
+            
+            > How are you?
+            I'm fine. Thanks for asking.
+            
+            > Bye
+            See you tomorrow
+            """.trimIndent()
+        val part = MessageCreationHelper.createTextPart("text/plain", text)
+
+        val preview = previewTextExtractor.extractPreview(part)
+
+        assertThat(preview).isEqualTo("Hi Bob […] I'm fine. Thanks for asking. […] See you tomorrow")
+    }
+
+    @Test
+    fun extractPreview_quoteHeaderContainingLineBreak() {
+        val text = """
+            Reply text
+            
+            On 2020-09-30 at 03:12
+            Bob wrote:
+            > Quoted text
+            """.trimIndent()
+        val part = MessageCreationHelper.createTextPart("text/plain", text)
+
+        val preview = previewTextExtractor.extractPreview(part)
+
+        assertThat(preview).isEqualTo("Reply text")
     }
 }
