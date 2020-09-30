@@ -87,17 +87,40 @@ internal class PreviewTextExtractor {
     }
 
     private fun stripQuoteHeader(emailSection: EmailSection): String {
-        val matchResult = REGEX_QUOTE_HEADER.find(emailSection) ?: return emailSection.toString()
-        return emailSection.substring(startIndex = 0, endIndex = matchResult.range.first)
+        val quoteHeaderIndex = emailSection.quoteHeaderIndex
+        if (quoteHeaderIndex == -1) return emailSection.toString()
+        return emailSection.substring(startIndex = 0, endIndex = quoteHeaderIndex)
     }
 
-    private fun EmailSection.isQuoteHeaderOnly() = matches(REGEX_QUOTE_HEADER)
+    private fun EmailSection.isQuoteHeaderOnly(): Boolean {
+        return quoteHeaderIndex == 0
+    }
+
+    private val EmailSection.quoteHeaderIndex: Int
+        get() {
+            var quoteHeaderIndex = lastIndex
+            while (quoteHeaderIndex > 0 && this[quoteHeaderIndex] == '\n') {
+                quoteHeaderIndex--
+            }
+            if (this[quoteHeaderIndex] != ':') return -1
+
+            var newlineCount = 0
+            while (quoteHeaderIndex > 0) {
+                when {
+                    this[quoteHeaderIndex] == '\n' -> newlineCount++
+                    newlineCount > 1 -> return quoteHeaderIndex + 1
+                    else -> newlineCount = 0
+                }
+                quoteHeaderIndex--
+            }
+
+            return 0
+        }
 
     companion object {
         private const val MAX_PREVIEW_LENGTH = 512
         private const val MAX_CHARACTERS_CHECKED_FOR_PREVIEW = 8192L
 
         private val REGEX_CRLF = "(\\r\\n|\\r)".toRegex()
-        private val REGEX_QUOTE_HEADER = "\\n*(?:[^\\n]+\\n?)+:\\n+$".toRegex()
     }
 }
