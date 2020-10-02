@@ -55,6 +55,8 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:${versions.glide}"
     annotationProcessor "com.github.bumptech.glide:compiler:${versions.glide}"
 
+    implementation 'com.github.starshipcoder:Android-Rich-text-Editor:e73153b'
+
     testImplementation project(':mail:testing')
     testImplementation project(':app:storage')
     testImplementation project(':app:testing')

@@ -48,6 +48,13 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.chinalwb.are.AREditText;
+import com.chinalwb.are.styles.toolbar.IARE_Toolbar;
+import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Bold;
+import com.chinalwb.are.styles.toolitems.ARE_ToolItem_FontColor;
+import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Italic;
+import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Strikethrough;
+import com.chinalwb.are.styles.toolitems.ARE_ToolItem_Underline;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.MessageFormat;
 import com.fsck.k9.DI;
@@ -229,7 +236,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private TextView chooseIdentityButton;
     private EditText subjectView;
     private EolConvertingEditText signatureView;
-    private EolConvertingEditText messageContentView;
+    private AREditText messageContentView;
     private LinearLayout attachmentsView;
 
     private String referencedMessageIds;
@@ -482,6 +489,15 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (savedInstanceState == null) {
             checkAndRequestPermissions();
         }
+
+        IARE_Toolbar toolbar = findViewById(R.id.formattingToolbar);
+        toolbar.addToolbarItem(new ARE_ToolItem_Bold(R.drawable.ic_baseline_format_bold_24));
+        toolbar.addToolbarItem(new ARE_ToolItem_Italic(R.drawable.ic_baseline_format_italic_24));
+        toolbar.addToolbarItem(new ARE_ToolItem_Underline(R.drawable.ic_baseline_format_underlined_24));
+        toolbar.addToolbarItem(new ARE_ToolItem_Strikethrough(R.drawable.ic_baseline_format_strikethrough_24));
+        toolbar.addToolbarItem(new ARE_ToolItem_FontColor(findViewById(R.id.colorPickerView), R.drawable.ic_baseline_color_lens_24));
+
+        messageContentView.setToolbar(toolbar);
     }
 
     /**
@@ -542,7 +558,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             CharSequence text = intent.getCharSequenceExtra(Intent.EXTRA_TEXT);
             // Only use EXTRA_TEXT if the body hasn't already been set by the mailto URI
             if (text != null && messageContentView.getText().length() == 0) {
-                messageContentView.setCharacters(text);
+                messageContentView.fromHtml(text.toString());
             }
 
             String type = intent.getType();
@@ -708,7 +724,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 .setRequestReadReceipt(requestReadReceipt)
                 .setIdentity(identity)
                 .setMessageFormat(currentMessageFormat)
-                .setText(messageContentView.getCharacters())
+                .setText(messageContentView.getHtml())
                 .setAttachments(attachmentPresenter.getAttachments())
                 .setSignature(signatureView.getCharacters())
                 .setSignatureBeforeQuotedText(account.isSignatureBeforeQuotedText())
@@ -1479,7 +1495,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         String body = mailTo.getBody();
         if (body != null && !body.isEmpty()) {
-            messageContentView.setCharacters(body);
+            messageContentView.fromHtml(body);
         }
     }
 

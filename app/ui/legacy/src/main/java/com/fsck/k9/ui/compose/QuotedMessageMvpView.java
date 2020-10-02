@@ -9,6 +9,7 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.chinalwb.are.AREditText;
 import com.fsck.k9.DI;
 import com.fsck.k9.FontSizes;
 import com.fsck.k9.message.html.DisplayHtml;
@@ -32,7 +33,7 @@ public class QuotedMessageMvpView {
     private final ImageButton mQuotedTextEdit;
     private final EolConvertingEditText mQuotedText;
     private final MessageWebView mQuotedHTML;
-    private final EolConvertingEditText mMessageContentView;
+    private final AREditText mMessageContentView;
     private final ImageButton mQuotedTextDelete;
 
 
@@ -138,7 +139,7 @@ public class QuotedMessageMvpView {
     }
 
     public void setMessageContentCharacters(String text) {
-        mMessageContentView.setCharacters(text);
+        mMessageContentView.fromHtml(text);
     }
 
     public void setMessageContentCursorPosition(int messageContentCursorPosition) {

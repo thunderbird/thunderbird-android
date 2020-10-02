@@ -122,7 +122,7 @@ public class QuotedMessagePresenter {
 
             // TODO: Also strip the signature from the text/plain part
             view.setQuotedText(textQuoteCreator.quoteOriginalTextMessage(messageViewInfo.message,
-                    BodyTextExtractor.getBodyTextFromMessage(messageViewInfo.rootPart, SimpleMessageFormat.TEXT),
+                    BodyTextExtractor.getBodyTextFromMessage(messageViewInfo.rootPart, SimpleMessageFormat.HTML),
                     quoteStyle, account.getQuotePrefix()));
 
         } else if (quotedTextFormat == SimpleMessageFormat.TEXT) {
@@ -239,7 +239,7 @@ public class QuotedMessagePresenter {
             // composition window. If that's the case, try and convert it to text to
             // match the behavior in text mode.
             view.setMessageContentCharacters(
-                    BodyTextExtractor.getBodyTextFromMessage(messageViewInfo.rootPart, SimpleMessageFormat.TEXT));
+                    BodyTextExtractor.getBodyTextFromMessage(messageViewInfo.rootPart, SimpleMessageFormat.HTML));
             forcePlainText = true;
 
             showOrHideQuotedText(quotedMode);
@@ -269,7 +269,7 @@ public class QuotedMessagePresenter {
                     // Grab our reply text.
                     bodyText = text.substring(bodyOffset, bodyOffset + bodyLength);
                 }
-                view.setMessageContentCharacters(HtmlConverter.htmlToText(bodyText));
+                view.setMessageContentCharacters(bodyText);
 
                 // Regenerate the quoted html without our user content in it.
                 StringBuilder quotedHTML = new StringBuilder();

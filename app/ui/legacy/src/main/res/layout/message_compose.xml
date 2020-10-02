@@ -1,16 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical">
 
     <include layout="@layout/toolbar" />
 
+    <com.chinalwb.are.styles.toolbar.ARE_ToolbarDefault
+        android:id="@+id/formattingToolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        app:toolbarIconBackground="@drawable/bg_icon"
+        app:toolbarIconMargin="4dp"
+        app:toolbarIconSize="36dp" />
+
     <ViewStub
         android:id="@+id/message_compose_content"
-        android:layout="@layout/message_compose_content"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_height="match_parent"
+        android:layout_below="@id/formattingToolbar"
+        android:layout="@layout/message_compose_content" />
 
-</LinearLayout>
+    <com.chinalwb.are.colorpicker.ColorPickerView
+        android:id="@+id/colorPickerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/formattingToolbar"
+        android:background="#FFF"
+        android:padding="10dp"
+        android:visibility="gone"
+        app:colorViewCheckedType="checkMark"
+        app:colorViewHeight="30dp"
+        app:colorViewMarginLeft="2dp"
+        app:colorViewMarginRight="2dp"
+        app:colorViewWidth="30dp"
+        app:colors="@array/colorPickerColors" />
+
+</RelativeLayout>

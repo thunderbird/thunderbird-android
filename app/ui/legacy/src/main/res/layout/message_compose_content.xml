@@ -46,7 +46,7 @@
         <!-- We have to use "wrap_content" (not "0dip") for "layout_height", otherwise the
              EditText won't properly grow in height while the user is typing the message -->
         <view
-            class="com.fsck.k9.ui.EolConvertingEditText"
+            class="com.chinalwb.are.AREditText"
             android:id="@+id/message_content"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

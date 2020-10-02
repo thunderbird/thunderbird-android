@@ -54,12 +54,9 @@ class TextBodyBuilder {
             if (mAppendSignature) {
                 // Append signature to the reply
                 if (mReplyAfterQuote || mSignatureBeforeQuotedText) {
-                    text += getSignature();
+                    text += getSignatureHtml();
                 }
             }
-
-            // Convert the text to HTML
-            text = textToHtmlFragment(text);
 
             /*
              * Set the insertion location based upon our reply after quote
@@ -100,11 +97,8 @@ class TextBodyBuilder {
         } else {
             // There is no text to quote so simply append the signature if available
             if (mAppendSignature) {
-                text += getSignature();
+                text += getSignatureHtml();
             }
-
-            // Convert the text to HTML
-            text = textToHtmlFragment(text);
 
             //TODO: Wrap this in proper HTML tags
 

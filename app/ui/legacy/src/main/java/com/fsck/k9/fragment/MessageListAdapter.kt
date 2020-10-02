@@ -19,6 +19,7 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import com.fsck.k9.FontSizes
 import com.fsck.k9.contacts.ContactPictureLoader
@@ -174,7 +175,7 @@ class MessageListAdapter internal constructor(
             val messageStringBuilder = SpannableStringBuilder(sigil)
                     .append(beforePreviewText)
             if (appearance.previewLines > 0) {
-                val preview = getPreview(isMessageEncrypted, previewText)
+                val preview = HtmlCompat.fromHtml(getPreview(isMessageEncrypted, previewText), HtmlCompat.FROM_HTML_MODE_COMPACT)
                 messageStringBuilder.append(" ").append(preview)
             }
             holder.preview.setText(messageStringBuilder, TextView.BufferType.SPANNABLE)
