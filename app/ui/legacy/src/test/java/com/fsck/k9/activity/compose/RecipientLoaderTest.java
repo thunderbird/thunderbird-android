@@ -45,7 +45,8 @@ public class RecipientLoaderTest extends RobolectricTest {
             ContactsContract.CommonDataKinds.Email.CONTACT_ID,
             ContactsContract.Contacts.PHOTO_THUMBNAIL_URI,
             ContactsContract.CommonDataKinds.Email.TIMES_CONTACTED,
-            ContactsContract.Contacts.SORT_KEY_PRIMARY
+            ContactsContract.Contacts.SORT_KEY_PRIMARY,
+            ContactsContract.Contacts.STARRED
     };
     static final String[] PROJECTION_NICKNAME = {
             ContactsContract.Data.CONTACT_ID,
@@ -57,14 +58,14 @@ public class RecipientLoaderTest extends RobolectricTest {
     static final Address CONTACT_ADDRESS_2 = Address.parse("Other Contact Name <address_two@example.org>")[0];
     static final String TYPE = "" + TYPE_HOME;
     static final String[] CONTACT_1 =
-            new String[] { "0", "Bob", "bob", "bob@host.com", TYPE, null, "1", null, "100", "Bob" };
+            new String[] { "0", "Bob", "bob", "bob@host.com", TYPE, null, "1", null, "100", "Bob", "0" };
     static final String[] CONTACT_2 =
-            new String[] { "2", "Bob2", "bob2", "bob2@host.com", TYPE, null, "2", null, "99", "Bob2" };
+            new String[] { "2", "Bob2", "bob2", "bob2@host.com", TYPE, null, "2", null, "99", "Bob2", "0" };
     static final String[] CONTACT_NO_EMAIL =
-            new String[] { "0", "Bob", "bob", null, TYPE, null, "1", null, "10", "Bob_noMail" };
+            new String[] { "0", "Bob", "bob", null, TYPE, null, "1", null, "10", "Bob_noMail", "0" };
     static final String[] CONTACT_WITH_NICKNAME_NOT_CONTACTED =
             new String[] { "0", "Eve_notContacted", "eve_notContacted", "eve_notContacted@host.com", TYPE, null, "2",
-                    null, "0", "Eve" };
+                    null, "0", "Eve", "0" };
     static final String[] NICKNAME_NOT_CONTACTED = new String[] { "2", "Eves_Nickname_Bob" };
 
     static final String QUERYSTRING = "querystring";

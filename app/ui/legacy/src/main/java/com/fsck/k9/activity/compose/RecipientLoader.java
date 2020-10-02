@@ -30,6 +30,8 @@ import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
 import timber.log.Timber;
 
+import static java.lang.String.CASE_INSENSITIVE_ORDER;
+
 
 public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
     /*
@@ -44,6 +46,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
     private static final int INDEX_PHOTO_URI = 7;
     private static final int INDEX_TIMES_CONTACTED = 8;
     private static final int INDEX_KEY_PRIMARY = 9;
+    private static final int INDEX_STARRED = 10;
 
     private static final String[] PROJECTION = {
             ContactsContract.CommonDataKinds.Email._ID,
@@ -55,7 +58,8 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             ContactsContract.CommonDataKinds.Email.CONTACT_ID,
             ContactsContract.Contacts.PHOTO_THUMBNAIL_URI,
             ContactsContract.CommonDataKinds.Email.TIMES_CONTACTED,
-            ContactsContract.Contacts.SORT_KEY_PRIMARY
+            ContactsContract.Contacts.SORT_KEY_PRIMARY,
+            ContactsContract.Contacts.STARRED,
     };
 
     private static final String SORT_ORDER = "" +
@@ -93,6 +97,10 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
     private static final Comparator<Recipient> RECIPIENT_COMPARATOR = new Comparator<Recipient>() {
         @Override
         public int compare(Recipient lhs, Recipient rhs) {
+            if (rhs.starred != lhs.starred) {
+                return rhs.starred ? 1 : -1;
+            }
+
             int timesContactedDiff = rhs.timesContacted - lhs.timesContacted;
             if (timesContactedDiff != 0) {
                 return timesContactedDiff;
@@ -102,7 +110,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
                 return 0;
             }
 
-            return lhs.sortKey.compareTo(rhs.sortKey);
+            return CASE_INSENSITIVE_ORDER.compare(lhs.sortKey, rhs.sortKey);
         }
     };
 
@@ -436,7 +444,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             String lookupKey = cursor.getString(INDEX_LOOKUP_KEY);
             int timesContacted = cursor.getInt(INDEX_TIMES_CONTACTED);
             String sortKey = cursor.getString(INDEX_KEY_PRIMARY);
-
+            boolean starred = cursor.getInt(INDEX_STARRED) == 1;
             int addressType = cursor.getInt(INDEX_EMAIL_TYPE);
             String addressLabel = null;
             switch (addressType) {
@@ -464,7 +472,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             }
 
             Recipient recipient = new Recipient(name, email, addressLabel, contactId, lookupKey,
-                    timesContacted, sortKey);
+                    timesContacted, sortKey, starred);
 
             if (recipient.isValidEmailAddress()) {
 
