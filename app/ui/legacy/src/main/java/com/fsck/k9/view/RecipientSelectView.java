@@ -696,21 +696,6 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
             starred = false;
         }
 
-        public Recipient(Recipient origin) {
-            this.address = new Address(origin.address);
-            this.addressLabel = origin.addressLabel;
-            this.contactId = origin.contactId;
-            this.cryptoStatus = origin.cryptoStatus;
-            this.contactLookupKey = origin.contactLookupKey;
-            this.timesContacted = origin.timesContacted;
-            this.sortKey = origin.sortKey;
-            this.starred = origin.starred;
-        }
-
-        public Recipient(String name, String email, String addressLabel, long contactId, String lookupKey) {
-            this(name, email, addressLabel, contactId, lookupKey, 0, null, false);
-        }
-
         public Recipient(String name, String email, String addressLabel, long contactId, String lookupKey,
                 int timesContacted, String sortKey, boolean starred) {
             this.address = new Address(email, name);

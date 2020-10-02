@@ -97,11 +97,10 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
     private static final Comparator<Recipient> RECIPIENT_COMPARATOR = new Comparator<Recipient>() {
         @Override
         public int compare(Recipient lhs, Recipient rhs) {
-
             if (rhs.starred != lhs.starred) {
-                if (rhs.starred) return 1;
-                return -1;
+                return rhs.starred ? 1 : -1;
             }
+
             int timesContactedDiff = rhs.timesContacted - lhs.timesContacted;
             if (timesContactedDiff != 0) {
                 return timesContactedDiff;
