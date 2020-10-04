@@ -88,6 +88,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="forward_as_attachment_action">Doorsturen als bijlage</string>
   <string name="edit_as_new_message_action">Bewerken als nieuw bericht</string>
   <string name="move_action">Verplaatsen</string>
+  <string name="move_to_drafts_action">Verplaatsen naar concepten</string>
   <string name="single_message_options_action">Verzend…</string>
   <string name="refile_action">Opnieuw opslaan…</string>
   <string name="done_action">Klaar</string>

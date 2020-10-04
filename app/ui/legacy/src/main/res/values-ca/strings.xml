@@ -92,6 +92,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="forward_as_attachment_action">Reenvia com a adjunt</string>
   <string name="edit_as_new_message_action">Edita\'l com a missatge nou</string>
   <string name="move_action">Mou</string>
+  <string name="move_to_drafts_action">Mou als esborranys</string>
   <string name="single_message_options_action">Opcions del missatge…</string>
   <string name="refile_action">Rearxiva…</string>
   <string name="done_action">Fet</string>

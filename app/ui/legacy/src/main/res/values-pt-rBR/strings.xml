@@ -92,6 +92,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="forward_as_attachment_action">Encaminhar como anexo</string>
   <string name="edit_as_new_message_action">Editar como uma nova mensagem</string>
   <string name="move_action">Mover</string>
+  <string name="move_to_drafts_action">Mover para Rascunhos</string>
   <string name="single_message_options_action">Enviar…</string>
   <string name="refile_action">Movimentar...</string>
   <string name="done_action">Concluído</string>

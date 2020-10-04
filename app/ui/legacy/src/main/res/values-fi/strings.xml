@@ -92,6 +92,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="forward_as_attachment_action">Välitä liitteenä</string>
   <string name="edit_as_new_message_action">Muokkaa uutena viestinä</string>
   <string name="move_action">Siirrä</string>
+  <string name="move_to_drafts_action">Siirrä luonnoksiin</string>
   <string name="single_message_options_action">Lähetä...</string>
   <string name="refile_action">Siirrä kansioon...</string>
   <string name="done_action">Valmis</string>
