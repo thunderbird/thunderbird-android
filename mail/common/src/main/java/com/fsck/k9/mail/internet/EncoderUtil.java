@@ -164,20 +164,14 @@ class EncoderUtil {
     }
 
     private static Charset determineCharset(String text) {
-        // it is an important property of iso-8859-1 that it directly maps
-        // unicode code points 0000 to 00ff to byte values 00 to ff.
-        boolean ascii = true;
         final int len = text.length();
         for (int index = 0; index < len; index++) {
             char ch = text.charAt(index);
-            if (ch > 0xff) {
+            if (ch > 0x7f) {
                 return Charsets.UTF_8;
             }
-            if (ch > 0x7f) {
-                ascii = false;
-            }
         }
-        return ascii ? Charsets.US_ASCII : Charsets.ISO_8859_1;
+        return Charsets.US_ASCII;
     }
 
     private static Encoding determineEncoding(byte[] bytes) {
