@@ -157,8 +157,6 @@ public abstract class Message implements Part, Body {
     @Override
     public abstract void setEncoding(String encoding) throws MessagingException;
 
-    public abstract void setCharset(String charset) throws MessagingException;
-
     public long calculateSize() {
         try {
 

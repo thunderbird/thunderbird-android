@@ -7,9 +7,6 @@ import java.util.List;
 
 import org.apache.james.mime4j.util.MimeUtil;
 
-import com.fsck.k9.mail.internet.CharsetSupport;
-import com.fsck.k9.mail.internet.TextBody;
-
 public abstract class Multipart implements Body {
     private Part mParent;
 
@@ -52,18 +49,6 @@ public abstract class Multipart implements Body {
         }
 
         /* Nothing else to do.  Each subpart has its own separate encoding */
-    }
-
-    public void setCharset(String charset) throws MessagingException {
-        if (mParts.isEmpty())
-            return;
-
-        BodyPart part = mParts.get(0);
-        Body body = part.getBody();
-        if (body instanceof TextBody) {
-            CharsetSupport.setCharset(charset, part);
-            ((TextBody)body).setCharset(charset);
-        }
     }
 
     public abstract byte[] getPreamble();

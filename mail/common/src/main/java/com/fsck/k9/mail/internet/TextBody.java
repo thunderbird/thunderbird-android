@@ -6,7 +6,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 
 import androidx.annotation.Nullable;
 
@@ -14,9 +13,10 @@ import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.CountingOutputStream;
 import com.fsck.k9.mail.filter.SignSafeOutputStream;
+
+import org.apache.james.mime4j.Charsets;
 import org.apache.james.mime4j.codec.QuotedPrintableOutputStream;
 import org.apache.james.mime4j.util.MimeUtil;
-import timber.log.Timber;
 
 
 public class TextBody implements Body, SizeAware {
@@ -25,7 +25,6 @@ public class TextBody implements Body, SizeAware {
 
     private final String text;
     private String encoding;
-    private String charset = "UTF-8";
     // Length of the message composed (as opposed to quoted). I don't like the name of this variable and am open to
     // suggestions as to what it should otherwise be. -achen 20101207
     @Nullable
@@ -41,7 +40,7 @@ public class TextBody implements Body, SizeAware {
     @Override
     public void writeTo(OutputStream out) throws IOException, MessagingException {
         if (text != null) {
-            byte[] bytes = text.getBytes(charset);
+            byte[] bytes = text.getBytes(Charsets.UTF_8);
             if (MimeUtil.ENC_QUOTED_PRINTABLE.equalsIgnoreCase(encoding)) {
                 writeSignSafeQuotedPrintable(out, bytes);
             } else if (MimeUtil.ENC_8BIT.equalsIgnoreCase(encoding)) {
@@ -58,18 +57,13 @@ public class TextBody implements Body, SizeAware {
 
     @Override
     public InputStream getInputStream() throws MessagingException {
-        try {
-            byte[] b;
-            if (text != null) {
-                b = text.getBytes(charset);
-            } else {
-                b = EMPTY_BYTE_ARRAY;
-            }
-            return new ByteArrayInputStream(b);
-        } catch (UnsupportedEncodingException uee) {
-            Timber.e(uee, "Unsupported charset: %s", charset);
-            return null;
+        byte[] b;
+        if (text != null) {
+            b = text.getBytes(Charsets.UTF_8);
+        } else {
+            b = EMPTY_BYTE_ARRAY;
         }
+        return new ByteArrayInputStream(b);
     }
 
     @Override
@@ -81,10 +75,6 @@ public class TextBody implements Body, SizeAware {
         }
 
         this.encoding = encoding;
-    }
-
-    public void setCharset(String charset) {
-        this.charset = charset;
     }
 
     @Nullable
@@ -108,7 +98,7 @@ public class TextBody implements Body, SizeAware {
     @Override
     public long getSize() {
         try {
-            byte[] bytes = text.getBytes(charset);
+            byte[] bytes = text.getBytes(Charsets.UTF_8);
 
             if (MimeUtil.ENC_QUOTED_PRINTABLE.equalsIgnoreCase(encoding)) {
                 return getLengthWhenQuotedPrintableEncoded(bytes);

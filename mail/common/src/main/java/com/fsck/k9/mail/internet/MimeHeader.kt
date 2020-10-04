@@ -9,7 +9,6 @@ import java.util.LinkedHashSet
 
 class MimeHeader {
     private val fields: MutableList<Field> = ArrayList()
-    private var charset: String? = null
 
     val headerNames: Set<String>
         get() = fields.mapTo(LinkedHashSet()) { it.name }
@@ -88,10 +87,6 @@ class MimeHeader {
     // encode non printable characters except LF/CR/TAB codes.
     private fun hasToBeEncoded(text: String): Boolean {
         return text.any { !it.isVChar() && !it.isWspOrCrlf() }
-    }
-
-    fun setCharset(charset: String?) {
-        this.charset = charset
     }
 
     companion object {
