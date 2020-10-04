@@ -104,6 +104,7 @@ android {
         exclude 'META-INF/*.kotlin_module'
         exclude 'META-INF/*.version'
         exclude 'kotlin/**'
+        exclude 'DebugProbesKt.bin'
     }
 
     dependenciesInfo {
