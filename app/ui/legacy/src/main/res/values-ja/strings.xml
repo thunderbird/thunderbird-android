@@ -93,6 +93,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="forward_as_attachment_action">添付として転送</string>
   <string name="edit_as_new_message_action">新しいメッセージとして編集</string>
   <string name="move_action">移動</string>
+  <string name="move_to_drafts_action">下書きに移動</string>
   <string name="single_message_options_action">メッセージ操作…</string>
   <string name="refile_action">整理…</string>
   <string name="done_action">完了</string>

@@ -848,7 +848,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_settings_remote_search_enabled">Serverseitige Suche</string>
   <string name="account_settings_remote_search_enabled_summary">Nachrichten nicht nur auf dem Gerät, sondern auch auf dem Server suchen</string>
   <string name="action_remote_search">Nachrichten auf Server suchen</string>
-  <string name="remote_search_unavailable_no_network">Serverseitige Suche kann ohne Netzverbindung nicht durchgeführt werden.</string>
+  <string name="remote_search_unavailable_no_network">Für die Suche auf dem Server ist eine Netzverbindung nötig.</string>
   <string name="global_settings_background_as_unread_indicator_label">Farbe ändern, wenn gelesen</string>
   <string name="global_settings_background_as_unread_indicator_summary">Ein anderer Hintergrund zeigt, dass die Nachricht gelesen wurde</string>
   <string name="global_settings_threaded_view_label">Nachrichten gruppieren</string>
@@ -1011,28 +1011,28 @@ Um sie zu lesen, muss eine kompatible OpenPGP-App installiert und konfiguriert w
   <string name="toast_account_not_found">Interner Fehler: Ungültiges Konto!</string>
   <string name="toast_openpgp_provider_error">Fehler beim Verbinden mit %s!</string>
   <string name="ac_transfer_setting_title">Autocrypt-Setup-Nachricht senden</string>
-  <string name="ac_transfer_setting_summary">Teile das Ende-zu-Ende-Setup auf sichere Art und Weise mit anderen Geräten</string>
+  <string name="ac_transfer_setting_summary">Das Ende-zu-Ende-Setup auf sichere Art mit anderen Geräten teilen</string>
   <string name="ac_transfer_title">Autocrypt-Setup-Nachricht</string>
-  <string name="ac_transfer_intro">Eine Autocrypt-Setup-Nachricht teilt dein Ende-zu-Ende-Setup auf sichere Art und Weise mit anderen Geräten</string>
+  <string name="ac_transfer_intro">Eine Autocrypt-Setup-Nachricht teilt Ihr Ende-zu-Ende-Setup auf sichere Art und Weise mit anderen Geräten</string>
   <string name="ac_transfer_button_send">Setup-Nachricht senden</string>
-  <string name="ac_transfer_will_be_sent">Diese Nachricht wird an deine Adresse gesendet:</string>
+  <string name="ac_transfer_will_be_sent">Diese Nachricht wird an Ihre Adresse gesendet:</string>
   <string name="ac_transfer_generating">Erstelle Setup-Nachricht…</string>
   <string name="ac_transfer_sending_to">Sende Nachricht an:</string>
-  <string name="ac_transfer_finish">Um abzuschließen, öffne die Nachricht auf deinem anderen Gerät und gib den Setup-Code ein.</string>
+  <string name="ac_transfer_finish">Um abzuschließen, öffnen Sie die Nachricht auf einem anderen Gerät und geben Sie den Setup-Code ein.</string>
   <string name="ac_transfer_show_code">Setup-Code anzeigen</string>
   <string name="ac_transfer_msg_subject">Autocrypt-Setup-Nachricht</string>
-  <string name="ac_transfer_msg_body">Diese Nachricht enthält alle Information um deine Autocrypt-Einstellung zusammen mit deinem geheimen Schlüssel auf sichere Art und Weise von deinem ursprünglichen Gerät zu übertragen.
+  <string name="ac_transfer_msg_body">Diese Nachricht enthält alle Informationen, um Ihre Autocrypt-Einstellungen zusammen mit Ihrem geheimen Schlüssel von Ihrem ursprünglichen Gerät sicher zu übertragen.
 
-Um dein neues Gerät für Autocrypt einzurichten, folge bitte den Anweisungen, die von deinem neuen Gerät angezeigt werden sollten.
+Um Ihr neues Gerät für Autocrypt einzurichten, folgen Sie bitte den Anweisungen, die auf dem neuen Gerät angezeigt werden.
 
-Du kannst diese Nachricht behalten und als Backup für deinen geheimen Schlüssel benutzen. Wenn du das willst, solltest du dir das Passwort notieren und sicher verwahren.
+Sie können diese Nachricht aufheben und sie als Backup für Ihren geheimen Schlüssel nutzen. Wenn Sie das tun möchten, sollten Sie sich das Passwort notieren und sicher verwahren.
 </string>
-  <string name="ac_transfer_error_send">Ein Fehler beim Senden der Nachricht ist aufgetreten. Bitte überprüfe deine Netzwerkverbindung und die Konfiguration ausgehender Server.</string>
+  <string name="ac_transfer_error_send">Beim Senden der Nachricht trat ein Fehler auf. Bitte überprüfen Sie die Netzwerkverbindung und die Konfiguration ausgehender Server.</string>
   <string name="switch_on">An</string>
   <string name="switch_off">Aus</string>
   <string name="navigation_drawer_open">Öffnen</string>
   <string name="navigation_drawer_close">Schließen</string>
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Zugriff auf Kontakte erlauben</string>
-  <string name="permission_contacts_rationale_message">Um Kontakte vorzuschlagen und Namen und Fotos der Kontakte anzuzeigen, benötigt die App Zugriff auf deine Kontakte.</string>
+  <string name="permission_contacts_rationale_message">Damit die App Kontakte vorschlagen sowie Namen und Fotos der Kontakte anzeigen kann, benötigt sie Zugriff auf Ihre Kontakte.</string>
 </resources>
