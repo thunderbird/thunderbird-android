@@ -8,6 +8,19 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.719" versioncode="27019">
+        <change>Show image previews for attachments with application/octet-stream MIME type</change>
+        <change>Improved display of certain HTML messages</change>
+        <change>When auto-completing email addresses show starred contacts first</change>
+        <change>Improved preview text extraction</change>
+        <change>Improved support for encrypted subjects</change>
+        <change>Extended certificate dialog to show SHA-256 and SHA-512 fingerprints</change>
+        <change>Use correct OpenPGP key when sending signed-only email after switching identities</change>
+        <change>Fixed bug where using certain search text would crash the app</change>
+        <change>Fixed bug where state was lost on screen rotation in unread widget configuration</change>
+        <change>Many internal changes</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.718" versioncode="27018">
         <change>Hide empty footer view in message list</change>
         <change>Don't show standard message actions for messages in the Outbox</change>
