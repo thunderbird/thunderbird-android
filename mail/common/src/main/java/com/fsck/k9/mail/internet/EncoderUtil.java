@@ -12,9 +12,7 @@ import org.apache.james.mime4j.Charsets;
  * as defined in <a href='http://www.faqs.org/rfcs/rfc2047.html'>RFC 2047</a>
  * or display-names of an e-mail address, for example.
  *
- * This class is copied from the org.apache.james.mime4j.decoder.EncoderUtil class.  It's modified here in order to
- * encode emoji characters in the Subject headers.  The method to decode emoji depends on the MimeMessage class because
- * it has to be determined with the sender address.
+ * This class is copied from the org.apache.james.mime4j.decoder.EncoderUtil class.
  */
 class EncoderUtil {
     private static final BitSet Q_RESTRICTED_CHARS = initChars("=_?\"#$%&'(),.:;<>@[\\]^`{|}~");
@@ -54,21 +52,15 @@ class EncoderUtil {
      *
      * @param text
      *            text to encode.
-     * @param charset
-     *            the Java charset that should be used to encode the specified
-     *            string into a byte array. A suitable charset is detected
-     *            automatically if this parameter is <code>null</code>.
      * @return the encoded word (or sequence of encoded words if the given text
      *         does not fit in a single encoded word).
      */
-    public static String encodeEncodedWord(String text, Charset charset) {
+    public static String encodeEncodedWord(String text) {
         if (text == null)
             throw new IllegalArgumentException();
 
-        if (charset == null)
-            charset = determineCharset(text);
-
-        String mimeCharset = CharsetSupport.getExternalCharset(charset.name());
+        Charset charset = determineCharset(text);
+        String mimeCharset = charset.name();
 
         byte[] bytes = encode(text, charset);
 

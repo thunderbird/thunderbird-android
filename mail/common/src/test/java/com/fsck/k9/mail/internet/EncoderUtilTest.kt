@@ -27,7 +27,7 @@ class EncoderUtilTest {
     }
 
     private fun assertInputEncodesToExpected(input: String, expected: String) {
-        val encodedText = EncoderUtil.encodeEncodedWord(input, null)
+        val encodedText = EncoderUtil.encodeEncodedWord(input)
         assertEquals(expected, encodedText)
     }
 }
