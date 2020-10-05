@@ -21,5 +21,9 @@ internal object DividerReplacer : TextToHtml.HtmlModifier {
         override fun replace(textToHtml: TextToHtml) {
             textToHtml.appendHtml("<hr>")
         }
+
+        override fun toString(): String {
+            return "Divider{startIndex=$startIndex, endIndex=$endIndex}"
+        }
     }
 }

@@ -1,27 +1,48 @@
 package com.fsck.k9.message.html
 
+import java.util.ArrayDeque
+
 class TextToHtml private constructor(private val text: CharSequence, private val html: StringBuilder) {
     fun appendAsHtmlFragment() {
         val modifications = HTML_MODIFIERS
                 .flatMap { it.findModifications(text) }
                 .sortedBy { it.startIndex }
 
+        val modificationStack = ArrayDeque<HtmlModification.Wrap>()
         var currentIndex = 0
         modifications.forEach { modification ->
+            while (modification.startIndex >= modificationStack.peek()?.endIndex ?: Int.MAX_VALUE) {
+                val outerModification = modificationStack.pop()
+                appendHtmlEncoded(currentIndex, outerModification.endIndex)
+                outerModification.appendSuffix(this)
+                currentIndex = outerModification.endIndex
+            }
+
             appendHtmlEncoded(currentIndex, modification.startIndex)
+
+            if (modification.endIndex > modificationStack.peek()?.endIndex ?: Int.MAX_VALUE) {
+                error("HtmlModification $modification must be fully contained within " +
+                    "outer HtmlModification ${modificationStack.peek()}")
+            }
 
             when (modification) {
                 is HtmlModification.Wrap -> {
                     modification.appendPrefix(this)
-                    appendHtmlEncoded(modification.startIndex, modification.endIndex)
-                    modification.appendSuffix(this)
+                    modificationStack.push(modification)
+                    currentIndex = modification.startIndex
                 }
                 is HtmlModification.Replace -> {
                     modification.replace(this)
+                    currentIndex = modification.endIndex
                 }
             }
+        }
 
-            currentIndex = modification.endIndex
+        while (modificationStack.isNotEmpty()) {
+            val outerModification = modificationStack.pop()
+            appendHtmlEncoded(currentIndex, outerModification.endIndex)
+            outerModification.appendSuffix(this)
+            currentIndex = outerModification.endIndex
         }
 
         appendHtmlEncoded(currentIndex, text.length)
@@ -43,7 +64,7 @@ class TextToHtml private constructor(private val text: CharSequence, private val
             '<' -> html.append("&lt;")
             '>' -> html.append("&gt;")
             '\r' -> Unit
-            '\n' -> html.append(TextToHtml.HTML_NEWLINE)
+            '\n' -> html.append(HTML_NEWLINE)
             else -> html.append(ch)
         }
     }
