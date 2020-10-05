@@ -5,10 +5,6 @@ class TestCoreResourceProvider : CoreResourceProvider {
 
     override fun defaultIdentityDescription() = "initial identity"
 
-    override fun sendAlternateChooserTitle(): String {
-        throw UnsupportedOperationException("not implemented")
-    }
-
     override fun internalStorageProviderName(): String {
         throw UnsupportedOperationException("not implemented")
     }

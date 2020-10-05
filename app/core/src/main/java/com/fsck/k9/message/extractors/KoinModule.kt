@@ -4,4 +4,5 @@ import org.koin.dsl.module
 
 val extractorModule = module {
     single { AttachmentInfoExtractor(get()) }
+    single { TextPartFinder() }
 }
