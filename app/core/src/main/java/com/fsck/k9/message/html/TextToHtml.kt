@@ -81,7 +81,7 @@ class TextToHtml private constructor(private val text: CharSequence, private val
     }
 
     companion object {
-        private val HTML_MODIFIERS = listOf(DividerReplacer, UriLinkifier)
+        private val HTML_MODIFIERS = listOf(DividerReplacer, UriLinkifier, SignatureWrapper)
         private const val HTML_NEWLINE = "<br>"
         private const val TEXT_TO_HTML_EXTRA_BUFFER_LENGTH = 512
 

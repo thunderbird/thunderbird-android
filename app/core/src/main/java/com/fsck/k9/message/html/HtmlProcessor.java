@@ -24,7 +24,8 @@ public class HtmlProcessor {
     private void addCustomHeadContents(Document document) {
         document.head().append("<meta name=\"viewport\" content=\"width=device-width\"/>" +
                 displayHtml.cssStyleTheme() +
-                displayHtml.cssStylePre());
+                displayHtml.cssStylePre() +
+                displayHtml.cssStyleSignature());
     }
 
     public static String toCompactString(Document document) {
