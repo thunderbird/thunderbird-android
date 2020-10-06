@@ -42,4 +42,8 @@ class DisplayHtml(private val settings: HtmlSettings) {
                 " {white-space: pre-wrap; word-wrap:break-word; " +
                 "font-family: " + font + "; margin-top: 0px}</style>"
     }
+
+    fun cssStyleSignature(): String {
+        return """<style type="text/css">.k9mail-signature { opacity: 0.5 }</style>"""
+    }
 }

@@ -22,5 +22,9 @@ internal object UriLinkifier : TextToHtml.HtmlModifier {
         override fun appendSuffix(textToHtml: TextToHtml) {
             textToHtml.appendHtml("</a>")
         }
+
+        override fun toString(): String {
+            return "LinkifyUri{startIndex=$startIndex, endIndex=$endIndex, uri='$uri'}"
+        }
     }
 }
