@@ -197,4 +197,14 @@ class PreviewTextExtractorTest {
 
         assertThat(preview).isEqualTo("Reply text")
     }
+
+    @Test
+    fun extractPreview_emptyBody() {
+        val text = ""
+        val part = MessageCreationHelper.createTextPart("text/plain", text)
+
+        val preview = previewTextExtractor.extractPreview(part)
+
+        assertThat(preview).isEqualTo("")
+    }
 }

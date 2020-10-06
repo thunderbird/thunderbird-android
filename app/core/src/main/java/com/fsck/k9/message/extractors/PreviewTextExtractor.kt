@@ -65,10 +65,9 @@ internal class PreviewTextExtractor {
     }
 
     private fun extractUnquotedText(text: String): String {
+        if (text.isEmpty()) return ""
         val emailSections = EmailSectionExtractor.extract(text)
-        if (emailSections.isEmpty()) {
-            return ""
-        }
+        if (emailSections.isEmpty()) return ""
 
         val firstEmailSection = emailSections.first()
         val replySections = if (firstEmailSection.quoteDepth == 0) {
@@ -99,6 +98,8 @@ internal class PreviewTextExtractor {
     private val EmailSection.quoteHeaderIndex: Int
         get() {
             var quoteHeaderIndex = lastIndex
+            if (quoteHeaderIndex == -1) return -1
+
             while (quoteHeaderIndex > 0 && this[quoteHeaderIndex] == '\n') {
                 quoteHeaderIndex--
             }
