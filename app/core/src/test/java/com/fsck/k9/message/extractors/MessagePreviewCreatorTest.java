@@ -83,6 +83,19 @@ public class MessagePreviewCreatorTest {
         assertEquals(PreviewType.ERROR, result.getPreviewType());
     }
 
+    @Test
+    public void createPreview_withPreviewTextExtractorThrowingUnexpectedException() throws Exception {
+        Message message = createDummyMessage();
+        Part textPart = createTextPart("text/plain");
+        when(textPartFinder.findFirstTextPart(message)).thenReturn(textPart);
+        when(previewTextExtractor.extractPreview(textPart)).thenThrow(new IllegalStateException(""));
+
+        PreviewResult result = previewCreator.createPreview(message);
+
+        assertFalse(result.isPreviewTextAvailable());
+        assertEquals(PreviewType.ERROR, result.getPreviewType());
+    }
+
     private Message createDummyMessage() {
         return new MimeMessage();
     }

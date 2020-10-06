@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Part;
 
+import timber.log.Timber;
+
 
 public class MessagePreviewCreator {
     private final TextPartFinder textPartFinder;
@@ -33,6 +35,10 @@ public class MessagePreviewCreator {
             String previewText = previewTextExtractor.extractPreview(textPart);
             return PreviewResult.text(previewText);
         } catch (PreviewExtractionException e) {
+            Timber.w(e, "Failed to extract preview text");
+            return PreviewResult.error();
+        } catch (Exception e) {
+            Timber.e(e, "Unexpected error while trying to extract preview text");
             return PreviewResult.error();
         }
     }
