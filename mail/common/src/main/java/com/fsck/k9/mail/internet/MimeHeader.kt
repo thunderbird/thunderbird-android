@@ -4,13 +4,11 @@ import com.fsck.k9.mail.internet.MimeHeader.Field.NameValueField
 import com.fsck.k9.mail.internet.MimeHeader.Field.RawField
 import java.io.IOException
 import java.io.OutputStream
-import java.nio.charset.Charset
 import java.util.ArrayList
 import java.util.LinkedHashSet
 
 class MimeHeader {
     private val fields: MutableList<Field> = ArrayList()
-    private var charset: String? = null
 
     val headerNames: Set<String>
         get() = fields.mapTo(LinkedHashSet()) { it.name }
@@ -76,8 +74,7 @@ class MimeHeader {
     private fun Appendable.appendNameValueField(field: Field) {
         val value = field.value
         val encodedValue = if (hasToBeEncoded(value)) {
-            val charset = this@MimeHeader.charset?.let { Charset.forName(it) }
-            EncoderUtil.encodeEncodedWord(value, charset)
+            EncoderUtil.encodeEncodedWord(value)
         } else {
             value
         }
@@ -90,10 +87,6 @@ class MimeHeader {
     // encode non printable characters except LF/CR/TAB codes.
     private fun hasToBeEncoded(text: String): Boolean {
         return text.any { !it.isVChar() && !it.isWspOrCrlf() }
-    }
-
-    fun setCharset(charset: String?) {
-        this.charset = charset
     }
 
     companion object {

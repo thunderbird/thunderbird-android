@@ -466,17 +466,6 @@ public class MimeMessage extends Message {
         setHeader(MimeHeader.HEADER_CONTENT_TRANSFER_ENCODING, encoding);
     }
 
-    @Override
-    public void setCharset(String charset) throws MessagingException {
-        mHeader.setCharset(charset);
-        if (mBody instanceof Multipart) {
-            ((Multipart)mBody).setCharset(charset);
-        } else if (mBody instanceof TextBody) {
-            CharsetSupport.setCharset(charset, this);
-            ((TextBody)mBody).setCharset(charset);
-        }
-    }
-
     private class MimeMessageBuilder implements ContentHandler {
         private final LinkedList<Object> stack = new LinkedList<>();
         private final BodyFactory bodyFactory;

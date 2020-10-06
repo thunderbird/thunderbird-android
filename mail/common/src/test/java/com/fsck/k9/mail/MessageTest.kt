@@ -2,7 +2,6 @@ package com.fsck.k9.mail
 
 import com.fsck.k9.mail.internet.BinaryTempFileBody
 import com.fsck.k9.mail.internet.BinaryTempFileMessageBody
-import com.fsck.k9.mail.internet.CharsetSupport
 import com.fsck.k9.mail.internet.MimeBodyPart
 import com.fsck.k9.mail.internet.MimeHeader
 import com.fsck.k9.mail.internet.MimeMessage
@@ -78,9 +77,9 @@ class MessageTest {
             Content-Transfer-Encoding: 7bit
 
             ------Boundary103
-            Content-Transfer-Encoding: quoted-printable
             Content-Type: text/plain;
              charset=utf-8
+            Content-Transfer-Encoding: quoted-printable
 
             Testing=2E
             This is a text body with some greek characters=2E
@@ -108,9 +107,9 @@ class MessageTest {
             Content-Transfer-Encoding: 7bit
 
             ------Boundary102
-            Content-Transfer-Encoding: quoted-printable
             Content-Type: text/plain;
              charset=utf-8
+            Content-Transfer-Encoding: quoted-printable
 
             Testing=2E
             This is a text body with some greek characters=2E
@@ -138,9 +137,9 @@ class MessageTest {
             Content-Transfer-Encoding: 7bit
 
             ------Boundary101
-            Content-Transfer-Encoding: quoted-printable
             Content-Type: text/plain;
              charset=utf-8
+            Content-Transfer-Encoding: quoted-printable
 
             Testing=2E
             This is a text body with some greek characters=2E
@@ -177,9 +176,9 @@ class MessageTest {
             Content-Transfer-Encoding: 7bit
 
             ------Boundary103
-            Content-Transfer-Encoding: quoted-printable
             Content-Type: text/plain;
              charset=utf-8
+            Content-Transfer-Encoding: quoted-printable
 
             Testing=2E
             This is a text body with some greek characters=2E
@@ -207,9 +206,9 @@ class MessageTest {
             Content-Transfer-Encoding: 7bit
 
             ------Boundary102
-            Content-Transfer-Encoding: quoted-printable
             Content-Type: text/plain;
              charset=utf-8
+            Content-Transfer-Encoding: quoted-printable
 
             Testing=2E
             This is a text body with some greek characters=2E
@@ -237,9 +236,9 @@ class MessageTest {
             Content-Transfer-Encoding: 7bit
 
             ------Boundary101
-            Content-Transfer-Encoding: quoted-printable
             Content-Type: text/plain;
              charset=utf-8
+            Content-Transfer-Encoding: quoted-printable
 
             Testing=2E
             This is a text body with some greek characters=2E
@@ -315,13 +314,10 @@ class MessageTest {
             End of test.
 
             """.trimIndent().crlf()
-        ).apply {
-            setCharset("utf-8")
-        }
+        )
 
         return MimeBodyPart().apply {
             MimeMessageHelper.setBody(this, textBody)
-            CharsetSupport.setCharset("utf-8", this)
         }
     }
 

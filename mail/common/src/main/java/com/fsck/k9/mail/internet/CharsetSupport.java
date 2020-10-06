@@ -30,19 +30,6 @@ public class CharsetSupport {
     };
 
 
-    public static void setCharset(String charset, Part part) {
-        part.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
-                part.getMimeType() + ";\r\n charset=" + getExternalCharset(charset));
-    }
-
-    static String getExternalCharset(String charset) {
-        if (JisSupport.isShiftJis(charset)) {
-            return SHIFT_JIS;
-        } else {
-            return charset;
-        }
-    }
-
     static String fixupCharset(String charset, Message message) throws MessagingException {
         if (charset == null || "0".equals(charset))
             charset = "US-ASCII";  // No encoding, so use us-ascii, which is the standard.

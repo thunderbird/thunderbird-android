@@ -6,12 +6,12 @@ import org.junit.Test
 class EncoderUtilTest {
     @Test
     fun singleNonAsciiCharacter() {
-        assertInputEncodesToExpected("123456789Ä", "=?ISO-8859-1?Q?123456789=C4?=")
+        assertInputEncodesToExpected("123456789Ä", "=?UTF-8?Q?123456789=C3=84?=")
     }
 
     @Test
     fun onlyNonAsciiCharacters() {
-        assertInputEncodesToExpected("ÄÖÜÄÖÜÄÖÜÄ", "=?ISO-8859-1?B?xNbcxNbcxNbcxA==?=")
+        assertInputEncodesToExpected("ÄÖÜÄÖÜÄÖÜÄ", "=?UTF-8?B?w4TDlsOcw4TDlsOcw4TDlsOcw4Q=?=")
     }
 
     @Test
@@ -27,7 +27,7 @@ class EncoderUtilTest {
     }
 
     private fun assertInputEncodesToExpected(input: String, expected: String) {
-        val encodedText = EncoderUtil.encodeEncodedWord(input, null)
+        val encodedText = EncoderUtil.encodeEncodedWord(input)
         assertEquals(expected, encodedText)
     }
 }
