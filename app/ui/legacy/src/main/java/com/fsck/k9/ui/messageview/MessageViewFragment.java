@@ -52,6 +52,7 @@ import com.fsck.k9.ui.base.ThemeManager;
 import com.fsck.k9.ui.messageview.CryptoInfoDialog.OnClickShowCryptoKeyListener;
 import com.fsck.k9.ui.messageview.MessageCryptoPresenter.MessageCryptoMvpView;
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity;
+import com.fsck.k9.ui.share.ShareIntentBuilder;
 import com.fsck.k9.view.MessageCryptoDisplayStatus;
 import timber.log.Timber;
 
@@ -491,7 +492,13 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
     public void onSendAlternate() {
         if (mMessage != null) {
-            mController.sendAlternate(getActivity(), mAccount, mMessage);
+            ShareIntentBuilder shareIntentBuilder = DI.get(ShareIntentBuilder.class);
+            Intent shareIntent = shareIntentBuilder.createShareIntent(mMessage);
+
+            String shareTitle = getString(R.string.send_alternate_chooser_title);
+            Intent chooserIntent = Intent.createChooser(shareIntent, shareTitle);
+
+            startActivity(chooserIntent);
         }
     }
 

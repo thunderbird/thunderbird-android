@@ -8,8 +8,6 @@ class K9CoreResourceProvider(private val context: Context) : CoreResourceProvide
     override fun defaultSignature(): String = context.getString(R.string.default_signature)
     override fun defaultIdentityDescription(): String = context.getString(R.string.default_identity_description)
 
-    override fun sendAlternateChooserTitle(): String = context.getString(R.string.send_alternate_chooser_title)
-
     override fun internalStorageProviderName(): String =
             context.getString(R.string.local_storage_provider_internal_label)
 

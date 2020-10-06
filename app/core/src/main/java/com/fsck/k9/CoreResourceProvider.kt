@@ -4,8 +4,6 @@ interface CoreResourceProvider {
     fun defaultSignature(): String
     fun defaultIdentityDescription(): String
 
-    fun sendAlternateChooserTitle(): String
-
     fun internalStorageProviderName(): String
     fun externalStorageProviderName(): String
 

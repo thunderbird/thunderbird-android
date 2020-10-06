@@ -23,7 +23,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.os.PowerManager;
 import android.os.Process;
 import android.os.SystemClock;
@@ -36,7 +35,6 @@ import com.fsck.k9.Account.Expunge;
 import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
-import com.fsck.k9.K9.Intents;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.backend.api.Backend;
@@ -56,7 +54,6 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveOrCopy;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag;
 import com.fsck.k9.controller.ProgressBodyFactory.ProgressListener;
 import com.fsck.k9.helper.MutableBoolean;
-import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.FetchProfile;
@@ -64,12 +61,9 @@ import com.fsck.k9.mail.FetchProfile.Item;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.FolderClass;
 import com.fsck.k9.mail.Message;
-import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
-import com.fsck.k9.mail.internet.MessageExtractor;
-import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
@@ -2201,50 +2195,6 @@ public class MessagingController {
     private boolean isTrashLocalOnly(Account account) {
         Backend backend = getBackend(account);
         return !backend.getSupportsTrashFolder();
-    }
-
-    public void sendAlternate(Context context, Account account, LocalMessage message) {
-        Timber.d("Got message %s:%s:%s for sendAlternate",
-                account.getDescription(), message.getFolder(), message.getUid());
-
-        Intent msg = new Intent(Intent.ACTION_SEND);
-        String quotedText = null;
-        Part part = MimeUtility.findFirstPartByMimeType(message, "text/plain");
-        if (part == null) {
-            part = MimeUtility.findFirstPartByMimeType(message, "text/html");
-        }
-        if (part != null) {
-            quotedText = MessageExtractor.getTextFromPart(part);
-        }
-        if (quotedText != null) {
-            msg.putExtra(Intent.EXTRA_TEXT, quotedText);
-        }
-        msg.putExtra(Intent.EXTRA_SUBJECT, message.getSubject());
-
-        Address[] from = message.getFrom();
-        String[] senders = new String[from.length];
-        for (int i = 0; i < from.length; i++) {
-            senders[i] = from[i].toString();
-        }
-        msg.putExtra(Intents.Share.EXTRA_FROM, senders);
-
-        Address[] to = message.getRecipients(RecipientType.TO);
-        String[] recipientsTo = new String[to.length];
-        for (int i = 0; i < to.length; i++) {
-            recipientsTo[i] = to[i].toString();
-        }
-        msg.putExtra(Intent.EXTRA_EMAIL, recipientsTo);
-
-        Address[] cc = message.getRecipients(RecipientType.CC);
-        String[] recipientsCc = new String[cc.length];
-        for (int i = 0; i < cc.length; i++) {
-            recipientsCc[i] = cc[i].toString();
-        }
-        msg.putExtra(Intent.EXTRA_CC, recipientsCc);
-
-        msg.setType("text/plain");
-        Intent chooserIntent = Intent.createChooser(msg, resourceProvider.sendAlternateChooserTitle());
-        context.startActivity(chooserIntent);
     }
 
     public boolean performPeriodicMailSync(Account account) {
