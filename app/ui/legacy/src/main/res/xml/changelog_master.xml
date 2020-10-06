@@ -8,6 +8,12 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.720&#8203;" versioncode="27020">
+        <change>Fixed bug in preview text extraction that could stop synchronization</change>
+        <change>When displaying text/plain parts the signature is de-emphasized</change>
+        <change>Sharing a message now includes subject, date, sender, and recipients</change>
+        <change>No longer use ISO-8859-1 encoding for headers</change>
+    </release>
     <release version="5.719" versioncode="27019">
         <change>Show image previews for attachments with application/octet-stream MIME type</change>
         <change>Improved display of certain HTML messages</change>
