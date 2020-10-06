@@ -51,6 +51,11 @@ android {
         versionCode 27019
         versionName '5.720-SNAPSHOT'
 
+        // Keep in sync with the resource string array 'supported_languages'
+        resConfigs "in", "br", "ca", "cs", "cy", "da", "de", "et", "en", "es", "eo", "eu", "fr", "gd", "gl", "hr",
+                "is", "it", "lv", "lt", "hu", "nl", "nb", "pl", "pt_PT", "pt_BR", "ru", "ro", "sq", "sk", "sl", "fi",
+                "sv", "tr", "el", "bg", "sr", "uk", "iw", "ar", "fa", "ko", "zh_CN", "zh_TW", "ja"
+
         minSdkVersion buildConfig.minSdk
         targetSdkVersion buildConfig.targetSdk
 
