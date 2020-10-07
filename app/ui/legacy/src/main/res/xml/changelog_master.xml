@@ -8,6 +8,11 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.721" versioncode="27021">
+        <change>Fixed bug that lead to the message body not being displayed when it contained a signature ending with a URL</change>
+        <change>Added 'copy link text to clipboard' option when long-pressing links</change>
+        <change>Treat all whitespace as separator when detecting URLs</change>
+    </release>
     <release version="5.720&#8203;" versioncode="27020">
         <change>Fixed bug in preview text extraction that could stop synchronization</change>
         <change>When displaying text/plain parts the signature is de-emphasized</change>
