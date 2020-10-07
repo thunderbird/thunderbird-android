@@ -251,6 +251,18 @@ public class HtmlConverterTest {
     }
 
     @Test
+    public void signatureEndingWithUrl() {
+        String text = "text\n-- \nsignature with url: https://domain.example/";
+        String result = HtmlConverter.textToHtml(text);
+        assertEquals("<pre dir=\"auto\" class=\"k9mail\">" +
+                "text<br>" +
+                "<div class='k9mail-signature'>" +
+                "-- <br>" +
+                "signature with url: <a href=\"https://domain.example/\">https://domain.example/</a>" +
+                "</div></pre>", result);
+    }
+
+    @Test
     public void htmlToText_withLineBreaks() {
         String input = "One<br>Two<br><br>Three";
 

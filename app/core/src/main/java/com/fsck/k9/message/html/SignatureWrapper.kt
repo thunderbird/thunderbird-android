@@ -5,7 +5,7 @@ internal object SignatureWrapper : TextToHtml.HtmlModifier {
 
     override fun findModifications(text: CharSequence): List<HtmlModification> {
         val matchResult = SIGNATURE_REGEX.find(text) ?: return emptyList()
-        return listOf(Signature(matchResult.range.first, text.lastIndex))
+        return listOf(Signature(matchResult.range.first, text.length))
     }
 
     class Signature(startIndex: Int, endIndex: Int) : HtmlModification.Wrap(startIndex, endIndex) {
