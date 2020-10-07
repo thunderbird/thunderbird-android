@@ -30,6 +30,11 @@ public class UriMatcherTest {
     }
 
     @Test
+    public void uriPrecededByTab() {
+        assertUrisFound("\thttp://example.org", "http://example.org");
+    }
+
+    @Test
     public void uriPrecededByOpeningParenthesis() {
         assertUrisFound("(http://example.org", "http://example.org");
     }

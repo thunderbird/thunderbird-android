@@ -13,7 +13,7 @@ object UriMatcher {
         )
     }.invoke(HttpUriParser())
 
-    private const val SCHEME_SEPARATORS = " (\\n<"
+    private const val SCHEME_SEPARATORS = "\\s(\\n<"
     private const val ALLOWED_SEPARATORS_PATTERN = "(?:^|[$SCHEME_SEPARATORS])"
     private val URI_SCHEME = Regex(
             "$ALLOWED_SEPARATORS_PATTERN(${ SUPPORTED_URIS.keys.joinToString("|") })",
