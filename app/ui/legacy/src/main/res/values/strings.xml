@@ -986,6 +986,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="webview_contextmenu_link_share_action">Share link</string>
     <string name="webview_contextmenu_link_copy_action">Copy link to clipboard</string>
     <string name="webview_contextmenu_link_clipboard_label">Link</string>
+    <string name="webview_contextmenu_link_text_copy_action">Copy link text to clipboard</string>
+    <string name="webview_contextmenu_link_text_clipboard_label">Link text</string>
 
     <string name="webview_contextmenu_image_title">Image</string>
     <string name="webview_contextmenu_image_view_action">View image</string>

@@ -9,6 +9,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.ContextMenu;
@@ -48,6 +49,7 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
     private static final int MENU_ITEM_LINK_VIEW = Menu.FIRST;
     private static final int MENU_ITEM_LINK_SHARE = Menu.FIRST + 1;
     private static final int MENU_ITEM_LINK_COPY = Menu.FIRST + 2;
+    private static final int MENU_ITEM_LINK_TEXT_COPY = Menu.FIRST + 3;
 
     private static final int MENU_ITEM_IMAGE_VIEW = Menu.FIRST;
     private static final int MENU_ITEM_IMAGE_SAVE = Menu.FIRST + 1;
@@ -146,6 +148,12 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
                                 clipboardManager.setText(label, url);
                                 break;
                             }
+                            case MENU_ITEM_LINK_TEXT_COPY: {
+                                LinkTextHandler linkTextHandler = DI.get(LinkTextHandler.class);
+                                Message message = linkTextHandler.obtainMessage();
+                                webview.requestFocusNodeHref(message);
+                                break;
+                            }
                         }
                         return true;
                     }
@@ -163,6 +171,10 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
 
                 menu.add(Menu.NONE, MENU_ITEM_LINK_COPY, 2,
                         context.getString(R.string.webview_contextmenu_link_copy_action))
+                        .setOnMenuItemClickListener(listener);
+
+                menu.add(Menu.NONE, MENU_ITEM_LINK_TEXT_COPY, 3,
+                        context.getString(R.string.webview_contextmenu_link_text_copy_action))
                         .setOnMenuItemClickListener(listener);
 
                 break;
