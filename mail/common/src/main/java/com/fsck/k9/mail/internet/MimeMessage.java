@@ -11,8 +11,8 @@ import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 import java.util.TimeZone;
 
 import androidx.annotation.NonNull;
@@ -22,6 +22,7 @@ import com.fsck.k9.mail.Body;
 import com.fsck.k9.mail.BodyFactory;
 import com.fsck.k9.mail.BodyPart;
 import com.fsck.k9.mail.DefaultBodyFactory;
+import com.fsck.k9.mail.Header;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.MimeType;
@@ -432,8 +433,8 @@ public class MimeMessage extends Message {
     }
 
     @Override
-    public Set<String> getHeaderNames() {
-        return mHeader.getHeaderNames();
+    public List<Header> getHeaders() {
+        return mHeader.getHeaders();
     }
 
     @Override

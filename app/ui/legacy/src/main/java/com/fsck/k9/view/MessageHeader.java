@@ -2,10 +2,7 @@ package com.fsck.k9.view;
 
 
 import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -41,6 +38,7 @@ import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.helper.MessageHelper;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.Header;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.ui.ContactBadge;
@@ -85,19 +83,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private OnCryptoClickListener onCryptoClickListener;
     private OnMenuItemClickListener onMenuItemClickListener;
 
-    /**
-     * Pair class is only available since API Level 5, so we need
-     * this helper class unfortunately
-     */
-    private static class HeaderEntry {
-        public String label;
-        public String value;
-
-        public HeaderEntry(String label, String value) {
-            this.label = label;
-            this.value = value;
-        }
-    }
 
     public MessageHeader(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -248,7 +233,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         Integer messageToShow = null;
         try {
             // Retrieve additional headers
-            List<HeaderEntry> additionalHeaders = getAdditionalHeaders(mMessage);
+            List<Header> additionalHeaders = mMessage.getHeaders();
             if (!additionalHeaders.isEmpty()) {
                 // Show the additional headers that we have got.
                 populateAdditionalHeadersView(additionalHeaders);
@@ -422,19 +407,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
        }
     }
 
-    private List<HeaderEntry> getAdditionalHeaders(final Message message) {
-        List<HeaderEntry> additionalHeaders = new LinkedList<>();
-
-        Set<String> headerNames = new LinkedHashSet<>(message.getHeaderNames());
-        for (String headerName : headerNames) {
-            String[] headerValues = message.getHeader(headerName);
-            for (String headerValue : headerValues) {
-                additionalHeaders.add(new HeaderEntry(headerName, headerValue));
-            }
-        }
-        return additionalHeaders;
-    }
-
     /**
      * Set up the additional headers text view with the supplied header data.
      *
@@ -445,20 +417,20 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
      *                          This method is always called from within the UI thread by
      *                          {@link #showAdditionalHeaders()}.
      */
-    private void populateAdditionalHeadersView(final List<HeaderEntry> additionalHeaders) {
+    private void populateAdditionalHeadersView(final List<Header> additionalHeaders) {
         SpannableStringBuilder sb = new SpannableStringBuilder();
         boolean first = true;
-        for (HeaderEntry additionalHeader : additionalHeaders) {
+        for (Header additionalHeader : additionalHeaders) {
             if (!first) {
                 sb.append("\n");
             } else {
                 first = false;
             }
             StyleSpan boldSpan = new StyleSpan(Typeface.BOLD);
-            SpannableString label = new SpannableString(additionalHeader.label + ": ");
+            SpannableString label = new SpannableString(additionalHeader.getName() + ": ");
             label.setSpan(boldSpan, 0, label.length(), 0);
             sb.append(label);
-            sb.append(MimeUtility.unfoldAndDecode(additionalHeader.value));
+            sb.append(MimeUtility.unfoldAndDecode(additionalHeader.getValue()));
         }
         mAdditionalHeadersView.setText(sb);
     }
