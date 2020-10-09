@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 
 import androidx.annotation.NonNull;
@@ -101,7 +102,7 @@ public abstract class Message implements Part, Body {
     @Override
     public abstract String[] getHeader(String name);
 
-    public abstract Set<String> getHeaderNames();
+    public abstract List<Header> getHeaders();
 
     @Override
     public abstract void removeHeader(String name);

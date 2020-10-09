@@ -1,5 +1,6 @@
 package com.fsck.k9.mail.internet
 
+import com.fsck.k9.mail.Header
 import com.fsck.k9.mail.internet.MimeHeader.Field.NameValueField
 import com.fsck.k9.mail.internet.MimeHeader.Field.RawField
 import java.io.IOException
@@ -12,6 +13,9 @@ class MimeHeader {
 
     val headerNames: Set<String>
         get() = fields.mapTo(LinkedHashSet()) { it.name }
+
+    val headers: List<Header>
+        get() = fields.map { Header(it.name, it.value) }
 
     fun clear() {
         fields.clear()
