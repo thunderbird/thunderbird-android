@@ -17,6 +17,8 @@ class MimeHeader {
     val headers: List<Header>
         get() = fields.map { Header(it.name, it.value) }
 
+    var checkHeaders = false
+
     fun clear() {
         fields.clear()
     }
@@ -26,11 +28,13 @@ class MimeHeader {
     }
 
     fun addHeader(name: String, value: String) {
-        val field = NameValueField(name, MimeUtility.foldAndEncode(value))
+        requireValidHeader(name, value)
+        val field = NameValueField(name, value)
         fields.add(field)
     }
 
     fun addRawHeader(name: String, raw: String) {
+        requireValidRawHeader(name, raw)
         val field = RawField(name, raw)
         fields.add(field)
     }
@@ -79,6 +83,31 @@ class MimeHeader {
         append(field.name)
         append(": ")
         append(field.value)
+    }
+
+    private fun requireValidHeader(name: String, value: String) {
+        if (checkHeaders) {
+            checkHeader(name, value)
+        }
+    }
+
+    private fun requireValidRawHeader(name: String, raw: String) {
+        if (checkHeaders) {
+            if (!raw.startsWith(name)) throw AssertionError("Raw header value needs to start with header name")
+            val delimiterIndex = raw.indexOf(':')
+            val value = if (delimiterIndex == raw.lastIndex) "" else raw.substring(delimiterIndex + 1).trimStart()
+
+            checkHeader(name, value)
+        }
+    }
+
+    private fun checkHeader(name: String, value: String) {
+        try {
+            MimeHeaderChecker.checkHeader(name, value)
+        } catch (e: MimeHeaderParserException) {
+            // Use AssertionError so we crash the app
+            throw AssertionError("Invalid header", e)
+        }
     }
 
     companion object {
