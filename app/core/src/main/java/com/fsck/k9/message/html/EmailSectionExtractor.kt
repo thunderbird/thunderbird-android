@@ -65,7 +65,9 @@ class EmailSectionExtractor private constructor(val text: String) {
                     finishSection()
                     sectionStartIndex = index - spaces
                 }
-                addQuotedLineToSection(startIndex = index - spaces, endIndex = index + 1)
+                if (currentQuoteDepth > 0) {
+                    sectionBuilder.addBlankSegment(startIndex = index - spaces, endIndex = index + 1)
+                }
             }
             else -> {
                 isStartOfLine = false

@@ -11,7 +11,11 @@ class EmailSection private constructor(builder: Builder) : CharSequence {
     private val segments: List<Segment> = if (builder.indent == 0) {
         builder.segments.toList()
     } else {
-        builder.segments.map { Segment(it.startIndex + builder.indent, it.endIndex) }
+        builder.segments.map { segment ->
+            val minLength = if (text[segment.endIndex - 1] == '\n') 1 else 0
+            val adjustedStartIndex = (segment.startIndex + builder.indent).coerceAtMost(segment.endIndex - minLength)
+            Segment(adjustedStartIndex, segment.endIndex)
+        }
     }
 
     override val length = segments.map { it.endIndex - it.startIndex }.sum()
@@ -105,11 +109,18 @@ class EmailSection private constructor(builder: Builder) : CharSequence {
             return this
         }
 
+        fun addBlankSegment(startIndex: Int, endIndex: Int) {
+            segments.add(Segment(startIndex, endIndex))
+        }
+
         internal fun addSegment(segment: Segment) {
             indent = 0
             segments.add(segment)
         }
 
-        fun build() = EmailSection(this)
+        fun build(): EmailSection {
+            if (indent == Int.MAX_VALUE) indent = 0
+            return EmailSection(this)
+        }
     }
 }

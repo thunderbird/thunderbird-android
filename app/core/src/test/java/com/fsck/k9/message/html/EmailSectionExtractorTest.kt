@@ -160,4 +160,22 @@ class EmailSectionExtractorTest {
             assertThat(toString()).isEqualTo("\nQuoted text")
         }
     }
+
+    @Test
+    fun quotedBlankLinesShouldNotContributeToIndentValue() {
+        val message =
+            ">\n" +
+            ">  Quoted text\n" +
+            ">   \n" +
+            "> \n" +
+            ">  More quoted text"
+
+        val sections = EmailSectionExtractor.extract(message)
+
+        assertThat(sections.size).isEqualTo(1)
+        with(sections[0]) {
+            assertThat(quoteDepth).isEqualTo(1)
+            assertThat(toString()).isEqualTo("\nQuoted text\n \n\nMore quoted text")
+        }
+    }
 }
