@@ -1707,11 +1707,17 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                     menu.findItem(R.id.spam).setVisible(false);
                 }
 
-                if (!account.hasArchiveFolder()) {
+                Long archiveFolderId = account.getArchiveFolderId();
+                boolean hideArchiveAction = archiveFolderId == null ||
+                        (singleFolderMode && currentFolder.databaseId == archiveFolderId);
+                if (hideArchiveAction) {
                     menu.findItem(R.id.archive).setVisible(false);
                 }
 
-                if (!account.hasSpamFolder()) {
+                Long spamFolderId = account.getSpamFolderId();
+                boolean hideSpamAction = spamFolderId == null ||
+                        (singleFolderMode && currentFolder.databaseId == spamFolderId);
+                if (hideSpamAction) {
                     menu.findItem(R.id.spam).setVisible(false);
                 }
             }
