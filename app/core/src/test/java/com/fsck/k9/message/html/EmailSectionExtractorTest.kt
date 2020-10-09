@@ -139,4 +139,25 @@ class EmailSectionExtractorTest {
             assertThat(toString()).isEqualTo("Two\n")
         }
     }
+
+    @Test
+    fun quotedSectionStartingWithEmptyLine() {
+        val message = """
+            Quote header:
+            > 
+            > Quoted text
+            """.trimIndent()
+
+        val sections = EmailSectionExtractor.extract(message)
+
+        assertThat(sections.size).isEqualTo(2)
+        with(sections[0]) {
+            assertThat(quoteDepth).isEqualTo(0)
+            assertThat(toString()).isEqualTo("Quote header:\n")
+        }
+        with(sections[1]) {
+            assertThat(quoteDepth).isEqualTo(1)
+            assertThat(toString()).isEqualTo("\nQuoted text")
+        }
+    }
 }
