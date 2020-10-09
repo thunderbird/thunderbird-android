@@ -197,6 +197,97 @@ public class HttpUriParserTest {
         assertUriMatch("http://google.com/", uriMatch, prefix.length());
     }
 
+    @Test
+    public void uriWrappedInParentheses() {
+        String input = "(https://domain.example/)";
+
+        UriMatch uriMatch = parser.parseUri(input, 1);
+
+        assertUriMatch("https://domain.example/", uriMatch, 1);
+    }
+
+    @Test
+    public void uriContainingParentheses() {
+        String input = "https://domain.example/(parentheses)";
+
+        UriMatch uriMatch = parser.parseUri(input, 0);
+
+        assertUriMatch("https://domain.example/(parentheses)", uriMatch, 0);
+    }
+
+    @Test
+    public void uriContainingParenthesesWrappedInParentheses() {
+        String input = "(https://domain.example/(parentheses))";
+
+        UriMatch uriMatch = parser.parseUri(input, 1);
+
+        assertUriMatch("https://domain.example/(parentheses)", uriMatch, 1);
+    }
+
+    @Test
+    public void uriEndingInDotAtEndOfText() {
+        String input = "URL: https://domain.example/path.";
+
+        UriMatch uriMatch = parser.parseUri(input, 5);
+
+        assertUriMatch("https://domain.example/path", uriMatch, 5);
+    }
+
+
+    @Test
+    public void uriEndingInDotWithAdditionalText() {
+        String input = "URL: https://domain.example/path. Some other text";
+
+        UriMatch uriMatch = parser.parseUri(input, 5);
+
+        assertUriMatch("https://domain.example/path", uriMatch, 5);
+    }
+
+    @Test
+    public void uriWrappedInAngleBracketsEndingInDot() {
+        String input = "URL: <https://domain.example/path.>";
+
+        UriMatch uriMatch = parser.parseUri(input, 6);
+
+        assertUriMatch("https://domain.example/path.", uriMatch, 6);
+    }
+
+    @Test
+    public void uriWrappedInParenthesesEndingInDot() {
+        String input = "URL: (https://domain.example/path.)";
+
+        UriMatch uriMatch = parser.parseUri(input, 6);
+
+        assertUriMatch("https://domain.example/path.", uriMatch, 6);
+    }
+
+    @Test
+    public void uriWrappedInParenthesesFollowedByADot() {
+        String input = "URL: (https://domain.example/path).";
+
+        UriMatch uriMatch = parser.parseUri(input, 6);
+
+        assertUriMatch("https://domain.example/path", uriMatch, 6);
+    }
+
+    @Test
+    public void uriWrappedInParenthesesFollowedByADotAndSomeOtherText() {
+        String input = "URL: (https://domain.example/path). Some other text";
+
+        UriMatch uriMatch = parser.parseUri(input, 6);
+
+        assertUriMatch("https://domain.example/path", uriMatch, 6);
+    }
+
+    @Test
+    public void uriWrappedInParenthesesFollowedByAQuestionMarkAndSomeOtherText() {
+        String input = "URL: (https://domain.example/path)? Some other text";
+
+        UriMatch uriMatch = parser.parseUri(input, 6);
+
+        assertUriMatch("https://domain.example/path", uriMatch, 6);
+    }
+
 
     private void assertValidUri(String uri) {
         UriMatch uriMatch = parser.parseUri(uri, 0);

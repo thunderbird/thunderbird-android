@@ -14,6 +14,7 @@ internal class HttpUriParser : UriParser {
         val matchResult = SCHEME_REGEX.find(text, startPos) ?: return null
         if (matchResult.range.first != startPos) return null
 
+        val skipChar = getSkipChar(text, startPos)
         var currentPos = matchResult.range.last + 1
 
         // Authority
@@ -36,8 +37,25 @@ internal class HttpUriParser : UriParser {
             currentPos = matchUnreservedPCTEncodedSubDelimClassesGreedy(text, currentPos + 1, ":@/?")
         }
 
+        if (text.isEndOfSentence(currentPos - 1)) {
+            currentPos--
+        }
+
+        if (text[currentPos - 1] == skipChar) {
+            currentPos--
+        }
+
         val uri = text.subSequence(startPos, currentPos)
         return UriMatch(startPos, currentPos, uri)
+    }
+
+    private fun getSkipChar(text: CharSequence, startPos: Int): Char? {
+        if (startPos == 0) return null
+
+        return when (text[startPos - 1]) {
+            '(' -> ')'
+            else -> null
+        }
     }
 
     private fun tryMatchAuthority(text: CharSequence, startPos: Int): Int {
@@ -230,6 +248,16 @@ internal class HttpUriParser : UriParser {
 
     private fun isHexDigit(c: Char): Boolean {
         return c in 'a'..'z' || c in 'A'..'Z' || c in '0'..'9'
+    }
+
+    // This checks if the URL ends in a character that should be ignored because it most likely indicates the end of
+    // a sentence rather than being part of the URL
+    private fun CharSequence.isEndOfSentence(position: Int): Boolean {
+        // We want to keep everything if the URL is wrapped in angle brackets.
+        // Example: <https://domain.example/path.>
+        if (position < lastIndex && this[position + 1] == '>') return false
+
+        return this[position] in ".?!" && (position == lastIndex || this[position + 1].isWhitespace())
     }
 
     companion object {
