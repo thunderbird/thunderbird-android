@@ -27,6 +27,20 @@ public class MimeBodyPart extends BodyPart {
     private final MimeHeader mHeader;
     private Body mBody;
 
+    /**
+     * Creates an instance that will check the header field syntax when adding headers.
+     */
+    public static MimeBodyPart create(Body body) throws MessagingException {
+        return new MimeBodyPart(body, null, true);
+    }
+
+    /**
+     * Creates an instance that will check the header field syntax when adding headers.
+     */
+    public static MimeBodyPart create(Body body, String contentType) throws MessagingException {
+        return new MimeBodyPart(body, contentType, true);
+    }
+
     public MimeBodyPart() throws MessagingException {
         this(null);
     }
@@ -36,7 +50,12 @@ public class MimeBodyPart extends BodyPart {
     }
 
     public MimeBodyPart(Body body, String contentType) throws MessagingException {
+        this(body, contentType, false);
+    }
+
+    private MimeBodyPart(Body body, String contentType, boolean checkHeaders) throws MessagingException {
         mHeader = new MimeHeader();
+        mHeader.setCheckHeaders(checkHeaders);
         if (contentType != null) {
             addHeader(MimeHeader.HEADER_CONTENT_TYPE, contentType);
         }

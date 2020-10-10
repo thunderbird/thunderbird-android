@@ -75,7 +75,19 @@ public class MimeMessage extends Message {
         return mimeMessage;
     }
 
+    /**
+     * Creates an instance that will check the header field syntax when adding headers.
+     */
+    public static MimeMessage create() {
+        return new MimeMessage(true);
+    }
+
     public MimeMessage() {
+        this(false);
+    }
+
+    private MimeMessage(boolean checkHeaders) {
+        mHeader.setCheckHeaders(checkHeaders);
     }
 
     /**

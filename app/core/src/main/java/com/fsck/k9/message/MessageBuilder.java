@@ -84,7 +84,7 @@ public abstract class MessageBuilder {
     protected MimeMessage build() throws MessagingException {
         //FIXME: check arguments
 
-        MimeMessage message = new MimeMessage();
+        MimeMessage message = MimeMessage.create();
 
         buildHeader(message);
         buildBody(message);
@@ -168,8 +168,8 @@ public abstract class MessageBuilder {
             composedMimeMessage.setSubType("alternative");
             // Let the receiver select either the text or the HTML part.
             bodyPlain = buildText(isDraft, SimpleMessageFormat.TEXT);
-            composedMimeMessage.addBodyPart(new MimeBodyPart(bodyPlain, "text/plain"));
-            composedMimeMessage.addBodyPart(new MimeBodyPart(body, "text/html"));
+            composedMimeMessage.addBodyPart(MimeBodyPart.create(bodyPlain, "text/plain"));
+            composedMimeMessage.addBodyPart(MimeBodyPart.create(body, "text/html"));
 
             if (hasAttachments) {
                 // If we're HTML and have attachments, we have a MimeMultipart container to hold the
@@ -177,7 +177,7 @@ public abstract class MessageBuilder {
                 // (composedMimeMessage) with the user's composed messages, and subsequent parts for
                 // the attachments.
                 MimeMultipart mp = createMimeMultipart();
-                mp.addBodyPart(new MimeBodyPart(composedMimeMessage));
+                mp.addBodyPart(MimeBodyPart.create(composedMimeMessage));
                 addAttachmentsToMessage(mp);
                 MimeMessageHelper.setBody(message, mp);
             } else {
@@ -188,7 +188,7 @@ public abstract class MessageBuilder {
             // Text-only message.
             if (hasAttachments) {
                 MimeMultipart mp = createMimeMultipart();
-                mp.addBodyPart(new MimeBodyPart(body, "text/plain"));
+                mp.addBodyPart(MimeBodyPart.create(body, "text/plain"));
                 addAttachmentsToMessage(mp);
                 MimeMessageHelper.setBody(message, mp);
             } else {
@@ -233,7 +233,7 @@ public abstract class MessageBuilder {
             }
 
             Body body = new TempFileBody(attachment.getFileName());
-            MimeBodyPart bp = new MimeBodyPart(body);
+            MimeBodyPart bp = MimeBodyPart.create(body);
 
             addContentType(bp, attachment.getContentType(), attachment.getName());
             addContentDisposition(bp, attachment.getName(), attachment.getSize());
