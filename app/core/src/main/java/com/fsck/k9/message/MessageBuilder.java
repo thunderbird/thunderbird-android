@@ -26,6 +26,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MessageIdGenerator;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
+import com.fsck.k9.mail.internet.MimeHeaderEncoder;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMessageHelper;
 import com.fsck.k9.mail.internet.MimeMultipart;
@@ -108,7 +109,8 @@ public abstract class MessageBuilder {
         }
 
         if (!K9.isHideUserAgent()) {
-            message.setHeader("User-Agent", resourceProvider.userAgent());
+            String encodedUserAgent = MimeHeaderEncoder.encode("User-Agent", resourceProvider.userAgent());
+            message.setHeader("User-Agent", encodedUserAgent);
         }
 
         final String replyTo = identity.getReplyTo();

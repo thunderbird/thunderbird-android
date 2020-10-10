@@ -261,12 +261,13 @@ public class MimeMessage extends Message {
      */
     @Override
     public String getSubject() {
-        return MimeUtility.unfoldAndDecode(getFirstHeader("Subject"), this);
+        return MimeUtility.unfoldAndDecode(getFirstHeader(MimeHeader.SUBJECT), this);
     }
 
     @Override
     public void setSubject(String subject) {
-        setHeader("Subject", subject);
+        String encodedSubject = MimeHeaderEncoder.encode(MimeHeader.SUBJECT, subject);
+        setHeader(MimeHeader.SUBJECT, encodedSubject);
     }
 
     @Override

@@ -27,6 +27,7 @@ import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
+import com.fsck.k9.mail.internet.Headers;
 import com.fsck.k9.mail.internet.MessageIdGenerator;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
@@ -219,7 +220,7 @@ public class PgpMessageBuilder extends MessageBuilder {
             messageContentBodyPart.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
                     messageContentBodyPart.getContentType() + "; protected-headers=\"v1\"");
             messageContentBodyPart.setHeader(MimeHeader.SUBJECT, subjects[0]);
-            currentProcessedMimeMessage.setHeader(MimeHeader.SUBJECT, resourceProvider.encryptedSubject());
+            currentProcessedMimeMessage.setSubject(resourceProvider.encryptedSubject());
         }
     }
 

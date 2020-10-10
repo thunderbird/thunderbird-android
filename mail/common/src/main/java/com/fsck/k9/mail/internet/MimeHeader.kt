@@ -76,21 +76,9 @@ class MimeHeader {
     }
 
     private fun Appendable.appendNameValueField(field: Field) {
-        val value = field.value
-        val encodedValue = if (hasToBeEncoded(value)) {
-            EncoderUtil.encodeEncodedWord(value)
-        } else {
-            value
-        }
-
         append(field.name)
         append(": ")
-        append(encodedValue)
-    }
-
-    // encode non printable characters except LF/CR/TAB codes.
-    private fun hasToBeEncoded(text: String): Boolean {
-        return text.any { !it.isVChar() && !it.isWspOrCrlf() }
+        append(field.value)
     }
 
     companion object {
