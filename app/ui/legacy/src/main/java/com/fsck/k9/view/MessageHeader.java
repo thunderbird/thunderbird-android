@@ -48,6 +48,8 @@ import timber.log.Timber;
 
 
 public class MessageHeader extends LinearLayout implements OnClickListener, OnLongClickListener {
+    private static final int DEFAULT_SUBJECT_LINES = 3;
+
     private final ClipboardManager clipboardManager = DI.get(ClipboardManager.class);
 
     private Context mContext;
@@ -130,6 +132,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
         singleMessageOptionIcon.setOnClickListener(this);
 
+        mSubjectView.setOnClickListener(this);
         mFromView.setOnClickListener(this);
         mToView.setOnClickListener(this);
         mCcView.setOnClickListener(this);
@@ -151,7 +154,9 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        if (id == R.id.from) {
+        if (id == R.id.subject) {
+            toggleSubjectViewMaxLines();
+        } else if (id == R.id.from) {
             onAddSenderToContacts();
         } else if (id == R.id.to || id == R.id.cc || id == R.id.bcc) {
             expand((TextView)view, ((TextView)view).getEllipsize() != null);
@@ -177,6 +182,14 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         }
 
         return true;
+    }
+
+    private void toggleSubjectViewMaxLines() {
+        if (mSubjectView.getMaxLines() == DEFAULT_SUBJECT_LINES) {
+            mSubjectView.setMaxLines(Integer.MAX_VALUE);
+        } else {
+            mSubjectView.setMaxLines(DEFAULT_SUBJECT_LINES);
+        }
     }
 
     private void onAddSenderToContacts() {

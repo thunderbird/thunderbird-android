@@ -39,7 +39,7 @@
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="4dp"
                     android:ellipsize="end"
-                    android:maxLines="2"
+                    android:maxLines="3"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     tools:text="(no subject)"
