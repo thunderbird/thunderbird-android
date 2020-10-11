@@ -7,6 +7,7 @@ import com.fsck.k9.helper.MessageHelper
 import com.fsck.k9.helper.map
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.DatabasePreviewType
+import com.fsck.k9.ui.helper.DisplayAddressHelper
 
 class MessageListExtractor(
     private val preferences: Preferences,
@@ -30,11 +31,8 @@ class MessageListExtractor(
         val fromAddresses = Address.unpack(fromList)
         val toAddresses = Address.unpack(toList)
         val ccAddresses = Address.unpack(ccList)
-        val fromMe = messageHelper.toMe(account, fromAddresses)
         val toMe = messageHelper.toMe(account, toAddresses)
         val ccMe = messageHelper.toMe(account, ccAddresses)
-        val counterPartyAddress = getCounterPartyAddress(fromMe, toAddresses, ccAddresses, fromAddresses)
-        val displayName = messageHelper.getDisplayName(account, fromAddresses, toAddresses)
         val messageDate = cursor.getLong(MLFProjectionInfo.DATE_COLUMN)
         val threadCount = if (threadCountIncluded) cursor.getInt(MLFProjectionInfo.THREAD_COUNT_COLUMN) else 0
         val subject = cursor.getString(MLFProjectionInfo.SUBJECT_COLUMN)
@@ -52,6 +50,13 @@ class MessageListExtractor(
         val messageUid = cursor.getString(MLFProjectionInfo.UID_COLUMN)
         val databaseId = cursor.getLong(MLFProjectionInfo.ID_COLUMN)
         val threadRoot = cursor.getLong(MLFProjectionInfo.THREAD_ROOT_COLUMN)
+        val showRecipients = DisplayAddressHelper.shouldShowRecipients(account, folderId)
+        val displayAddress = if (showRecipients) toAddresses.firstOrNull() else fromAddresses.firstOrNull()
+        val displayName = if (showRecipients) {
+            messageHelper.getRecipientDisplayNames(toAddresses)
+        } else {
+            messageHelper.getSenderDisplayName(displayAddress)
+        }
 
         return MessageListItem(
             position,
@@ -60,7 +65,7 @@ class MessageListExtractor(
             threadCount,
             messageDate,
             displayName,
-            counterPartyAddress,
+            displayAddress,
             toMe,
             ccMe,
             previewText,
@@ -76,20 +81,6 @@ class MessageListExtractor(
             databaseId,
             threadRoot
         )
-    }
-
-    private fun getCounterPartyAddress(
-        fromMe: Boolean,
-        toAddresses: Array<Address>,
-        ccAddresses: Array<Address>,
-        fromAddresses: Array<Address>
-    ): Address? {
-        return when {
-            fromMe && toAddresses.isNotEmpty() -> toAddresses[0]
-            fromMe && ccAddresses.isNotEmpty() -> ccAddresses[0]
-            fromAddresses.isNotEmpty() -> fromAddresses[0]
-            else -> null
-        }
     }
 
     private fun getPreviewText(previewType: DatabasePreviewType?, cursor: Cursor): String {

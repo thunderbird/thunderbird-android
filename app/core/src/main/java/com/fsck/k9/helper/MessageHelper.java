@@ -46,19 +46,23 @@ public class MessageHelper {
         this.resourceProvider = resourceProvider;
     }
 
-    public CharSequence getDisplayName(Account account, Address[] fromAddrs, Address[] toAddrs) {
-        final Contacts contactHelper = K9.isShowContactName() ? Contacts.getInstance(mContext) : null;
-
-        CharSequence displayName;
-        if (fromAddrs.length > 0 && account.isAnIdentity(fromAddrs[0])) {
-            CharSequence to = toFriendly(toAddrs, contactHelper);
-            displayName = new SpannableStringBuilder(
-                    resourceProvider.contactDisplayNamePrefix()).append(to);
-        } else {
-            displayName = toFriendly(fromAddrs, contactHelper);
+    public CharSequence getSenderDisplayName(Address address) {
+        if (address == null) {
+            return resourceProvider.contactUnknownSender();
         }
 
-        return displayName;
+        Contacts contactHelper = K9.isShowContactName() ? Contacts.getInstance(mContext) : null;
+        return toFriendly(address, contactHelper);
+    }
+
+    public CharSequence getRecipientDisplayNames(Address[] addresses) {
+        if (addresses == null || addresses.length == 0) {
+            return resourceProvider.contactUnknownRecipient();
+        }
+
+        Contacts contactHelper = K9.isShowContactName() ? Contacts.getInstance(mContext) : null;
+        CharSequence recipients = toFriendly(addresses, contactHelper);
+        return new SpannableStringBuilder(resourceProvider.contactDisplayNamePrefix()).append(recipients);
     }
 
     public boolean toMe(Account account, Address[] toAddrs) {

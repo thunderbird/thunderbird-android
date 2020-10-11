@@ -10,7 +10,7 @@ data class MessageListItem(
     val threadCount: Int,
     val messageDate: Long,
     val displayName: CharSequence,
-    val counterPartyAddress: Address?,
+    val displayAddress: Address?,
     val toMe: Boolean,
     val ccMe: Boolean,
     val previewText: String,

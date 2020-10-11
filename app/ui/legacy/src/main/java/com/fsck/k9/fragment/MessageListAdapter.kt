@@ -165,7 +165,7 @@ class MessageListAdapter internal constructor(
             }
             holder.position = position
             if (appearance.showContactPicture && holder.contactPicture.isVisible) {
-                setContactPicture(holder.contactPicture, counterPartyAddress)
+                setContactPicture(holder.contactPicture, displayAddress)
             }
             setBackgroundColor(view, isSelected, isRead, isActive)
             updateWithThreadCount(holder, displayThreadCount)
@@ -239,9 +239,9 @@ class MessageListAdapter internal constructor(
         }
     }
 
-    private fun setContactPicture(contactPictureView: ImageView, counterpartyAddress: Address?) {
-        if (counterpartyAddress != null) {
-            contactsPictureLoader.setContactPicture(contactPictureView, counterpartyAddress)
+    private fun setContactPicture(contactPictureView: ImageView, displayAddress: Address?) {
+        if (displayAddress != null) {
+            contactsPictureLoader.setContactPicture(contactPictureView, displayAddress)
         } else {
             contactPictureView.setImageResource(R.drawable.ic_contact_picture)
         }
