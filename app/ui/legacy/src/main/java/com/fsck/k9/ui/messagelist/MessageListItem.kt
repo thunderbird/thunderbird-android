@@ -11,7 +11,6 @@ data class MessageListItem(
     val messageDate: Long,
     val displayName: CharSequence,
     val counterPartyAddress: Address?,
-    val fromMe: Boolean,
     val toMe: Boolean,
     val ccMe: Boolean,
     val previewText: String,
@@ -25,6 +24,5 @@ data class MessageListItem(
     val folderId: Long,
     val messageUid: String,
     val databaseId: Long,
-    val senderAddress: String?,
     val threadRoot: Long
 )

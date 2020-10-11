@@ -476,7 +476,6 @@ class MessageListAdapterTest : RobolectricTest() {
         messageDate: Long = 0L,
         displayName: CharSequence = "irrelevant",
         counterPartyAddress: Address? = Address.parse("irrelevant@domain.example").first(),
-        fromMe: Boolean = false,
         toMe: Boolean = false,
         ccMe: Boolean = false,
         previewText: String = "irrelevant",
@@ -490,7 +489,6 @@ class MessageListAdapterTest : RobolectricTest() {
         folderId: Long = 0L,
         messageUid: String = "irrelevant",
         databaseId: Long = 0L,
-        senderAddress: String? = null,
         threadRoot: Long = 0L
     ): MessageListItem {
         return MessageListItem(
@@ -501,7 +499,6 @@ class MessageListAdapterTest : RobolectricTest() {
             messageDate,
             displayName,
             counterPartyAddress,
-            fromMe,
             toMe,
             ccMe,
             previewText,
@@ -515,7 +512,6 @@ class MessageListAdapterTest : RobolectricTest() {
             folderId,
             messageUid,
             databaseId,
-            senderAddress,
             threadRoot
         )
     }

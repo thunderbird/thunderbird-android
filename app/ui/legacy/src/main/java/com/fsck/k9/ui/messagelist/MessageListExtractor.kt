@@ -51,7 +51,6 @@ class MessageListExtractor(
         val folderId = cursor.getLong(MLFProjectionInfo.FOLDER_ID_COLUMN)
         val messageUid = cursor.getString(MLFProjectionInfo.UID_COLUMN)
         val databaseId = cursor.getLong(MLFProjectionInfo.ID_COLUMN)
-        val senderAddress = fromAddresses.getOrNull(0)?.address
         val threadRoot = cursor.getLong(MLFProjectionInfo.THREAD_ROOT_COLUMN)
 
         return MessageListItem(
@@ -62,7 +61,6 @@ class MessageListExtractor(
             messageDate,
             displayName,
             counterPartyAddress,
-            fromMe,
             toMe,
             ccMe,
             previewText,
@@ -76,7 +74,6 @@ class MessageListExtractor(
             folderId,
             messageUid,
             databaseId,
-            senderAddress,
             threadRoot
         )
     }
