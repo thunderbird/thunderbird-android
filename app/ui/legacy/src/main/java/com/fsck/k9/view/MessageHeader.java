@@ -255,27 +255,17 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     }
 
     public void populate(final Message message, final Account account) {
+        Address fromAddress = null;
+        Address[] fromAddresses = message.getFrom();
+        if (fromAddresses.length > 0) {
+            fromAddress = fromAddresses[0];
+        }
+
         final Contacts contacts = K9.isShowContactName() ? mContacts : null;
-        final CharSequence from = MessageHelper.toFriendly(message.getFrom(), contacts);
+        final CharSequence from = mMessageHelper.getSenderDisplayName(fromAddress);
         final CharSequence to = MessageHelper.toFriendly(message.getRecipients(Message.RecipientType.TO), contacts);
         final CharSequence cc = MessageHelper.toFriendly(message.getRecipients(Message.RecipientType.CC), contacts);
         final CharSequence bcc = MessageHelper.toFriendly(message.getRecipients(Message.RecipientType.BCC), contacts);
-
-        Address[] fromAddrs = message.getFrom();
-        Address[] toAddrs = message.getRecipients(Message.RecipientType.TO);
-        Address[] ccAddrs = message.getRecipients(Message.RecipientType.CC);
-        boolean fromMe = mMessageHelper.toMe(account, fromAddrs);
-
-        Address counterpartyAddress = null;
-        if (fromMe) {
-            if (toAddrs.length > 0) {
-                counterpartyAddress = toAddrs[0];
-            } else if (ccAddrs.length > 0) {
-                counterpartyAddress = ccAddrs[0];
-            }
-        } else if (fromAddrs.length > 0) {
-            counterpartyAddress = fromAddrs[0];
-        }
 
         mMessage = message;
         mAccount = account;
@@ -305,9 +295,9 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mDateView.setText(dateTime);
 
         if (K9.isShowContactPicture()) {
-            if (counterpartyAddress != null) {
-                mContactBadge.setContact(counterpartyAddress);
-                mContactsPictureLoader.setContactPicture(mContactBadge, counterpartyAddress);
+            if (fromAddress != null) {
+                mContactBadge.setContact(fromAddress);
+                mContactsPictureLoader.setContactPicture(mContactBadge, fromAddress);
             } else {
                 mContactBadge.setImageResource(R.drawable.ic_contact_picture);
             }
