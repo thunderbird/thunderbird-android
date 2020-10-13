@@ -54,22 +54,26 @@ class EmailSectionExtractor private constructor(val text: String) {
         when (character) {
             ' ' -> spaces++
             '>' -> {
+                if (quoteDepth == 0 && currentQuoteDepth == 0) {
+                    addUnquotedLineToSection(newlineIndex + 1)
+                }
                 currentQuoteDepth++
                 spaces = 0
             }
             '\n' -> {
-                if (quoteDepth == currentQuoteDepth) {
-                    addQuotedLineToSection(startIndex = index - spaces, endIndex = index + 1)
-                } else {
-                    finishSection(index + 1)
+                if (quoteDepth != currentQuoteDepth) {
+                    finishSection()
                     sectionStartIndex = index - spaces
+                }
+                if (currentQuoteDepth > 0) {
+                    sectionBuilder.addBlankSegment(startIndex = index - spaces, endIndex = index + 1)
                 }
             }
             else -> {
                 isStartOfLine = false
                 startOfContentIndex = index - spaces
                 if (quoteDepth != currentQuoteDepth) {
-                    finishSection(newlineIndex + 1)
+                    finishSection()
                     sectionStartIndex = startOfContentIndex
                 }
             }
@@ -77,7 +81,7 @@ class EmailSectionExtractor private constructor(val text: String) {
     }
 
     private fun addUnquotedLineToSection(endIndex: Int) {
-        if (quoteDepth == 0 && sectionStartIndex != endIndex) {
+        if (sectionStartIndex != endIndex) {
             sectionBuilder.addSegment(0, sectionStartIndex, endIndex)
         }
     }
@@ -88,8 +92,7 @@ class EmailSectionExtractor private constructor(val text: String) {
         }
     }
 
-    private fun finishSection(endIndex: Int) {
-        addUnquotedLineToSection(endIndex)
+    private fun finishSection() {
         appendSection()
         sectionBuilder = EmailSection.Builder(text, currentQuoteDepth)
         quoteDepth = currentQuoteDepth
