@@ -14,6 +14,8 @@ class TestCoreResourceProvider : CoreResourceProvider {
     }
 
     override fun contactDisplayNamePrefix() = "To:"
+    override fun contactUnknownSender() = "<Unknown Sender>"
+    override fun contactUnknownRecipient() = "<Unknown Recipient>"
 
     override fun messageHeaderFrom() = "From:"
     override fun messageHeaderTo() = "To:"
