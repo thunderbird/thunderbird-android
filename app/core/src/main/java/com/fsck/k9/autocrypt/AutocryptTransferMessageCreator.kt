@@ -20,8 +20,8 @@ class AutocryptTransferMessageCreator(private val stringProvider: AutocryptStrin
             val subjectText = stringProvider.transferMessageSubject()
             val messageText = stringProvider.transferMessageBody()
 
-            val textBodyPart = MimeBodyPart(TextBody(messageText))
-            val dataBodyPart = MimeBodyPart(BinaryMemoryBody(data, "7bit"))
+            val textBodyPart = MimeBodyPart.create(TextBody(messageText))
+            val dataBodyPart = MimeBodyPart.create(BinaryMemoryBody(data, "7bit"))
             dataBodyPart.setHeader(MimeHeader.HEADER_CONTENT_TYPE, "application/autocrypt-setup")
             dataBodyPart.setHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, "attachment; filename=\"autocrypt-setup-message\"")
 
@@ -29,7 +29,7 @@ class AutocryptTransferMessageCreator(private val stringProvider: AutocryptStrin
             messageBody.addBodyPart(textBodyPart)
             messageBody.addBodyPart(dataBodyPart)
 
-            val message = MimeMessage()
+            val message = MimeMessage.create()
             MimeMessageHelper.setBody(message, messageBody)
 
             val nowDate = Date()

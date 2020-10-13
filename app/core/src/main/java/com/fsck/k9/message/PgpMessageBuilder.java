@@ -27,6 +27,7 @@ import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.internet.BinaryTempFileBody;
+import com.fsck.k9.mail.internet.Headers;
 import com.fsck.k9.mail.internet.MessageIdGenerator;
 import com.fsck.k9.mail.internet.MimeBodyPart;
 import com.fsck.k9.mail.internet.MimeHeader;
@@ -219,7 +220,7 @@ public class PgpMessageBuilder extends MessageBuilder {
             messageContentBodyPart.setHeader(MimeHeader.HEADER_CONTENT_TYPE,
                     messageContentBodyPart.getContentType() + "; protected-headers=\"v1\"");
             messageContentBodyPart.setHeader(MimeHeader.SUBJECT, subjects[0]);
-            currentProcessedMimeMessage.setHeader(MimeHeader.SUBJECT, resourceProvider.encryptedSubject());
+            currentProcessedMimeMessage.setSubject(resourceProvider.encryptedSubject());
         }
     }
 
@@ -394,7 +395,7 @@ public class PgpMessageBuilder extends MessageBuilder {
         multipartSigned.setSubType("signed");
         multipartSigned.addBodyPart(signedBodyPart);
         multipartSigned.addBodyPart(
-                new MimeBodyPart(new BinaryMemoryBody(signedData, MimeUtil.ENC_7BIT),
+                MimeBodyPart.create(new BinaryMemoryBody(signedData, MimeUtil.ENC_7BIT),
                         "application/pgp-signature; name=\"signature.asc\""));
         MimeMessageHelper.setBody(currentProcessedMimeMessage, multipartSigned);
 
@@ -413,8 +414,8 @@ public class PgpMessageBuilder extends MessageBuilder {
     private void mimeBuildEncryptedMessage(@NonNull Body encryptedBodyPart) throws MessagingException {
         MimeMultipart multipartEncrypted = createMimeMultipart();
         multipartEncrypted.setSubType("encrypted");
-        multipartEncrypted.addBodyPart(new MimeBodyPart(new TextBody("Version: 1"), "application/pgp-encrypted"));
-        MimeBodyPart encryptedPart = new MimeBodyPart(encryptedBodyPart, "application/octet-stream; name=\"encrypted.asc\"");
+        multipartEncrypted.addBodyPart(MimeBodyPart.create(new TextBody("Version: 1"), "application/pgp-encrypted"));
+        MimeBodyPart encryptedPart = MimeBodyPart.create(encryptedBodyPart, "application/octet-stream; name=\"encrypted.asc\"");
         encryptedPart.addHeader(MimeHeader.HEADER_CONTENT_DISPOSITION, "inline; filename=\"encrypted.asc\"");
         multipartEncrypted.addBodyPart(encryptedPart);
         MimeMessageHelper.setBody(currentProcessedMimeMessage, multipartEncrypted);

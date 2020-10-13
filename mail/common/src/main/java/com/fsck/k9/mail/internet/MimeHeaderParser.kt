@@ -183,4 +183,4 @@ class MimeHeaderParser(private val input: String) {
     }
 }
 
-class MimeHeaderParserException(message: String, val errorIndex: Int) : RuntimeException(message)
+class MimeHeaderParserException(message: String, val errorIndex: Int = -1) : RuntimeException(message)
