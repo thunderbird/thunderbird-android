@@ -8,3 +8,18 @@ fun <T> Cursor.map(block: (Cursor) -> T): List<T> {
         block(this)
     }
 }
+
+fun Cursor.getStringOrNull(columnName: String): String? {
+    val columnIndex = getColumnIndex(columnName)
+    return if (isNull(columnIndex)) null else getString(columnIndex)
+}
+
+fun Cursor.getIntOrNull(columnName: String): Int? {
+    val columnIndex = getColumnIndex(columnName)
+    return if (isNull(columnIndex)) null else getInt(columnIndex)
+}
+
+fun Cursor.getLongOrNull(columnName: String): Long? {
+    val columnIndex = getColumnIndex(columnName)
+    return if (isNull(columnIndex)) null else getLong(columnIndex)
+}

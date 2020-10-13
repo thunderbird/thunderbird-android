@@ -1,6 +1,6 @@
 package com.fsck.k9.mailstore;
 
-class ThreadInfo {
+public class ThreadInfo {
     public final long threadId;
     public final long msgId;
     public final String messageId;

@@ -1,0 +1,160 @@
+package com.fsck.k9.storage.messages
+
+import android.content.ContentValues
+import android.database.sqlite.SQLiteDatabase
+import com.fsck.k9.helper.getIntOrNull
+import com.fsck.k9.helper.getLongOrNull
+import com.fsck.k9.helper.getStringOrNull
+import com.fsck.k9.helper.map
+import com.fsck.k9.mailstore.DatabasePreviewType
+import com.fsck.k9.mailstore.LockableDatabase
+import com.fsck.k9.mailstore.MigrationsHelper
+import com.fsck.k9.storage.K9SchemaDefinitionFactory
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.doAnswer
+import com.nhaarman.mockitokotlin2.mock
+import org.mockito.ArgumentMatchers
+
+fun createLockableDatabaseMock(sqliteDatabase: SQLiteDatabase): LockableDatabase {
+    return mock {
+        on { execute(ArgumentMatchers.anyBoolean(), any<LockableDatabase.DbCallback<Any>>()) } doAnswer { stubbing ->
+            val callback: LockableDatabase.DbCallback<Any> = stubbing.getArgument(1)
+            callback.doDbWork(sqliteDatabase)
+        }
+    }
+}
+
+fun createDatabase(): SQLiteDatabase {
+    val migrationsHelper = mock<MigrationsHelper>()
+
+    val sqliteDatabase = SQLiteDatabase.create(null)
+    val schemaDefinitionFactory = K9SchemaDefinitionFactory()
+    val schemaDefinition = schemaDefinitionFactory.createSchemaDefinition(migrationsHelper)
+
+    schemaDefinition.doDbUpgrade(sqliteDatabase)
+
+    return sqliteDatabase
+}
+
+fun SQLiteDatabase.createMessage(
+    deleted: Boolean = false,
+    folderId: Long,
+    uid: String,
+    subject: String = "",
+    date: Long = 0L,
+    flags: String = "",
+    senderList: String = "",
+    toList: String = "",
+    ccList: String = "",
+    bccList: String = "",
+    replyToList: String = "",
+    attachmentCount: Int = 0,
+    internalDate: Long = 0L,
+    messageId: String = "",
+    previewType: DatabasePreviewType = DatabasePreviewType.NONE,
+    preview: String = "",
+    mimeType: String = "text/plain",
+    normalizedSubjectHash: Long = 0L,
+    empty: Boolean = false,
+    read: Boolean = false,
+    flagged: Boolean = false,
+    answered: Boolean = false,
+    forwarded: Boolean = false,
+    messagePartId: Long = 0L,
+    encryptionType: String? = null
+): Long {
+    val values = ContentValues().apply {
+        put("deleted", if (deleted) 1 else 0)
+        put("folder_id", folderId)
+        put("uid", uid)
+        put("subject", subject)
+        put("date", date)
+        put("flags", flags)
+        put("sender_list", senderList)
+        put("to_list", toList)
+        put("cc_list", ccList)
+        put("bcc_list", bccList)
+        put("reply_to_list", replyToList)
+        put("attachment_count", attachmentCount)
+        put("internal_date", internalDate)
+        put("message_id", messageId)
+        put("preview_type", previewType.databaseValue)
+        put("preview", preview)
+        put("mime_type", mimeType)
+        put("normalized_subject_hash", normalizedSubjectHash)
+        put("empty", if (empty) 1 else 0)
+        put("read", if (read) 1 else 0)
+        put("flagged", if (flagged) 1 else 0)
+        put("answered", if (answered) 1 else 0)
+        put("forwarded", if (forwarded) 1 else 0)
+        put("message_part_id", messagePartId)
+        put("encryption_type", encryptionType)
+    }
+
+    return insert("messages", null, values)
+}
+
+fun SQLiteDatabase.readMessages(): List<MessageEntry> {
+    val cursor = rawQuery("SELECT * FROM messages", null)
+    return cursor.use {
+        cursor.map {
+            MessageEntry(
+                id = cursor.getLongOrNull("id"),
+                deleted = cursor.getIntOrNull("deleted"),
+                folderId = cursor.getLongOrNull("folder_id"),
+                uid = cursor.getStringOrNull("uid"),
+                subject = cursor.getStringOrNull("subject"),
+                date = cursor.getLongOrNull("date"),
+                flags = cursor.getStringOrNull("flags"),
+                senderList = cursor.getStringOrNull("sender_list"),
+                toList = cursor.getStringOrNull("to_list"),
+                ccList = cursor.getStringOrNull("cc_list"),
+                bccList = cursor.getStringOrNull("bcc_list"),
+                replyToList = cursor.getStringOrNull("reply_to_list"),
+                attachmentCount = cursor.getIntOrNull("attachment_count"),
+                internalDate = cursor.getLongOrNull("internal_date"),
+                messageId = cursor.getStringOrNull("message_id"),
+                previewType = cursor.getStringOrNull("preview_type"),
+                preview = cursor.getStringOrNull("preview"),
+                mimeType = cursor.getStringOrNull("mime_type"),
+                normalizedSubjectHash = cursor.getLongOrNull("normalized_subject_hash"),
+                empty = cursor.getIntOrNull("empty"),
+                read = cursor.getIntOrNull("read"),
+                flagged = cursor.getIntOrNull("flagged"),
+                answered = cursor.getIntOrNull("answered"),
+                forwarded = cursor.getIntOrNull("forwarded"),
+                messagePartId = cursor.getLongOrNull("message_part_id"),
+                encryptionType = cursor.getStringOrNull("encryption_type")
+            )
+        }
+    }
+}
+
+data class MessageEntry(
+    val id: Long?,
+    val deleted: Int?,
+    val folderId: Long?,
+    val uid: String?,
+    val subject: String?,
+    val date: Long?,
+    val flags: String?,
+    val senderList: String?,
+    val toList: String?,
+    val ccList: String?,
+    val bccList: String?,
+    val replyToList: String?,
+    val attachmentCount: Int?,
+    val internalDate: Long?,
+    val messageId: String?,
+    val previewType: String?,
+    val preview: String?,
+    val mimeType: String?,
+    val normalizedSubjectHash: Long?,
+    val empty: Int?,
+    val read: Int?,
+    val flagged: Int?,
+    val answered: Int?,
+    val forwarded: Int?,
+    val messagePartId: Long?,
+    val encryptionType: String?
+)
