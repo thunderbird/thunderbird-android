@@ -1278,11 +1278,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         quotedMessagePresenter.initFromReplyToMessage(messageViewInfo, action);
 
         if (action == Action.REPLY || action == Action.REPLY_ALL) {
-            Identity useIdentity = IdentityHelper.getRecipientIdentityFromMessage(account, message);
-            Identity defaultIdentity = account.getIdentity(0);
-            if (useIdentity != defaultIdentity) {
-                switchToIdentity(useIdentity);
-            }
+            setIdentityFromMessage(message);
         }
 
     }
@@ -1314,6 +1310,15 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         } else {
             quotedMessagePresenter.processMessageToForward(messageViewInfo);
             attachmentPresenter.processMessageToForward(messageViewInfo);
+        }
+        setIdentityFromMessage(message);
+    }
+
+    private void setIdentityFromMessage(Message message) {
+        Identity useIdentity = IdentityHelper.getRecipientIdentityFromMessage(account, message);
+        Identity defaultIdentity = account.getIdentity(0);
+        if (useIdentity != defaultIdentity) {
+            switchToIdentity(useIdentity);
         }
     }
 
