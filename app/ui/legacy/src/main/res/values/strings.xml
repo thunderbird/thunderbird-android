@@ -1082,8 +1082,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="recipient_bcc">Bcc</string>
     <string name="recipient_to">To</string>
     <string name="recipient_from">From</string>
-    <string name="unknown_recipient"><![CDATA[<Unknown Recipient>]]></string>
-    <string name="unknown_sender"><![CDATA[<Unknown Sender>]]></string>
+    <string name="unknown_recipient">&lt;Unknown Recipient&gt;</string>
+    <string name="unknown_sender">&lt;Unknown Sender&gt;</string>
     <string name="address_type_home">Home</string>
     <string name="address_type_work">Work</string>
     <string name="address_type_other">Other</string>
