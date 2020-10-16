@@ -53,9 +53,11 @@ class SettingsImportFragment : Fragment() {
                 viewModel.onSettingsListItemClicked(position)
                 true
             }
-            addEventHook(ImportListItemClickEvent { position ->
-                viewModel.onSettingsListItemClicked(position)
-            })
+            addEventHook(
+                ImportListItemClickEvent { position ->
+                    viewModel.onSettingsListItemClicked(position)
+                }
+            )
         }
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.settingsImportList)
@@ -158,14 +160,14 @@ class SettingsImportFragment : Fragment() {
 
     private fun showPasswordPrompt(action: Action.PasswordPrompt) {
         val dialogFragment = PasswordPromptDialogFragment.create(
-                action.accountUuid,
-                action.accountName,
-                action.inputIncomingServerPassword,
-                action.incomingServerName,
-                action.inputOutgoingServerPassword,
-                action.outgoingServerName,
-                targetFragment = this,
-                requestCode = REQUEST_PASSWORD_PROMPT
+            action.accountUuid,
+            action.accountName,
+            action.inputIncomingServerPassword,
+            action.incomingServerName,
+            action.inputOutgoingServerPassword,
+            action.outgoingServerName,
+            targetFragment = this,
+            requestCode = REQUEST_PASSWORD_PROMPT
         )
         dialogFragment.show(requireFragmentManager(), null)
     }

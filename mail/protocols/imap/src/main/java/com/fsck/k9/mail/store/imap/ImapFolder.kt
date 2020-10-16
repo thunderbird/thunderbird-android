@@ -39,6 +39,7 @@ class ImapFolder internal constructor(
     @Volatile
     private var connection: ImapConnection? = null
     private var msgSeqUidMap: MutableMap<Long, String> = ConcurrentHashMap()
+
     @Volatile
     private var exists = false
     private var inSearch = false
@@ -408,7 +409,8 @@ class ImapFolder internal constructor(
         checkOpen()
 
         val dateSearchString = getDateSearchString(earliestDate)
-        val command = String.format(Locale.US, "UID SEARCH %d:%d%s%s",
+        val command = String.format(
+            Locale.US, "UID SEARCH %d:%d%s%s",
             start,
             end,
             dateSearchString,
@@ -583,7 +585,8 @@ class ImapFolder internal constructor(
                 var messageNumber = 0
                 var callback: ImapResponseCallback? = null
                 if (fetchProfile.contains(FetchProfile.Item.BODY) ||
-                    fetchProfile.contains(FetchProfile.Item.BODY_SANE)) {
+                    fetchProfile.contains(FetchProfile.Item.BODY_SANE)
+                ) {
                     callback = FetchBodyCallback(messageMap)
                 }
 

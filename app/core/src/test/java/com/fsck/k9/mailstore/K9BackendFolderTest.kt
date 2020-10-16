@@ -17,7 +17,6 @@ import com.fsck.k9.mail.internet.MimeMessage
 import com.fsck.k9.mail.internet.MimeMessageHelper
 import com.fsck.k9.mail.internet.TextBody
 import com.fsck.k9.provider.EmailProvider
-import java.lang.IllegalStateException
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -151,10 +150,10 @@ class K9BackendFolderTest : K9RobolectricTest() {
     private fun setFlagsColumnToNull() {
         dbOperation { db ->
             val numberOfUpdatedRows = db.update(
-                    "messages",
-                    contentValuesOf("flags" to null),
-                    "uid = ?",
-                    arrayOf(MESSAGE_SERVER_ID)
+                "messages",
+                contentValuesOf("flags" to null),
+                "uid = ?",
+                arrayOf(MESSAGE_SERVER_ID)
             )
             assertEquals(1, numberOfUpdatedRows)
         }

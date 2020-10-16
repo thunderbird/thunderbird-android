@@ -25,33 +25,43 @@ class MimeParameterDecoderTest {
 
     @Test
     fun rfc2231_example1() {
-        val mimeValue = MimeParameterDecoder.decode("message/external-body; access-type=URL;\r\n" +
+        val mimeValue = MimeParameterDecoder.decode(
+            "message/external-body; access-type=URL;\r\n" +
                 " URL*0=\"ftp://\";\r\n" +
-                " URL*1=\"cs.utk.edu/pub/moore/bulk-mailer/bulk-mailer.tar\"")
+                " URL*1=\"cs.utk.edu/pub/moore/bulk-mailer/bulk-mailer.tar\""
+        )
 
         assertEquals("message/external-body", mimeValue.value)
-        assertParametersEquals(mimeValue,
-                "access-type" to "URL",
-                "url" to "ftp://cs.utk.edu/pub/moore/bulk-mailer/bulk-mailer.tar")
+        assertParametersEquals(
+            mimeValue,
+            "access-type" to "URL",
+            "url" to "ftp://cs.utk.edu/pub/moore/bulk-mailer/bulk-mailer.tar"
+        )
         assertTrue(mimeValue.ignoredParameters.isEmpty())
     }
 
     @Test
     fun rfc2231_example2() {
-        val mimeValue = MimeParameterDecoder.decode("message/external-body; access-type=URL;\r\n" +
-                " URL=\"ftp://cs.utk.edu/pub/moore/bulk-mailer/bulk-mailer.tar\"")
+        val mimeValue = MimeParameterDecoder.decode(
+            "message/external-body; access-type=URL;\r\n" +
+                " URL=\"ftp://cs.utk.edu/pub/moore/bulk-mailer/bulk-mailer.tar\""
+        )
 
         assertEquals("message/external-body", mimeValue.value)
-        assertParametersEquals(mimeValue,
-                "access-type" to "URL",
-                "url" to "ftp://cs.utk.edu/pub/moore/bulk-mailer/bulk-mailer.tar")
+        assertParametersEquals(
+            mimeValue,
+            "access-type" to "URL",
+            "url" to "ftp://cs.utk.edu/pub/moore/bulk-mailer/bulk-mailer.tar"
+        )
         assertTrue(mimeValue.ignoredParameters.isEmpty())
     }
 
     @Test
     fun rfc2231_example3() {
-        val mimeValue = MimeParameterDecoder.decode("application/x-stuff;\r\n" +
-                " name*=us-ascii'en-us'This%20is%20%2A%2A%2Afun%2A%2A%2A")
+        val mimeValue = MimeParameterDecoder.decode(
+            "application/x-stuff;\r\n" +
+                " name*=us-ascii'en-us'This%20is%20%2A%2A%2Afun%2A%2A%2A"
+        )
 
         assertEquals("application/x-stuff", mimeValue.value)
         assertParametersEquals(mimeValue, "name" to "This is ***fun***")
@@ -60,10 +70,12 @@ class MimeParameterDecoderTest {
 
     @Test
     fun rfc2231_example4() {
-        val mimeValue = MimeParameterDecoder.decode("application/x-stuff;\r\n" +
+        val mimeValue = MimeParameterDecoder.decode(
+            "application/x-stuff;\r\n" +
                 " name*0*=us-ascii'en'This%20is%20even%20more%20;\r\n" +
                 " name*1*=%2A%2A%2Afun%2A%2A%2A%20;\r\n" +
-                " name*2=\"isn't it!\"")
+                " name*2=\"isn't it!\""
+        )
 
         assertEquals("application/x-stuff", mimeValue.value)
         assertParametersEquals(mimeValue, "name" to "This is even more ***fun*** isn't it!")
@@ -72,10 +84,12 @@ class MimeParameterDecoderTest {
 
     @Test
     fun multiple_sections_out_of_order() {
-        val mimeValue = MimeParameterDecoder.decode("application/x-stuff;\r\n" +
+        val mimeValue = MimeParameterDecoder.decode(
+            "application/x-stuff;\r\n" +
                 " name*2=\"[three]\";\r\n" +
                 " name*1=\"[two]\";\r\n" +
-                " name*0=\"[one]\"")
+                " name*0=\"[one]\""
+        )
 
         assertParametersEquals(mimeValue, "name" to "[one][two][three]")
         assertTrue(mimeValue.ignoredParameters.isEmpty())
@@ -83,10 +97,12 @@ class MimeParameterDecoderTest {
 
     @Test
     fun multiple_sections_differently_cased() {
-        val mimeValue = MimeParameterDecoder.decode("application/x-stuff;\r\n" +
+        val mimeValue = MimeParameterDecoder.decode(
+            "application/x-stuff;\r\n" +
                 " name*0=\"[one]\";\r\n" +
                 " name*1=\"[two]\";\r\n" +
-                " name*2=\"[three]\"")
+                " name*2=\"[three]\""
+        )
 
         assertParametersEquals(mimeValue, "name" to "[one][two][three]")
         assertTrue(mimeValue.ignoredParameters.isEmpty())
@@ -94,13 +110,15 @@ class MimeParameterDecoderTest {
 
     @Test
     fun multiple_sections_switching_between_extended_and_regular_value() {
-        val mimeValue = MimeParameterDecoder.decode("application/x-stuff;\r\n" +
+        val mimeValue = MimeParameterDecoder.decode(
+            "application/x-stuff;\r\n" +
                 " name*0*=utf-8'en'%5Bone%5D;\r\n" +
                 " name*1*=%5btwo%5d;\r\n" +
                 " name*2=\"[three]\";\r\n" +
                 " name*3*=%5Bfour%5D;\r\n" +
                 " name*4=\"[five]\";\r\n" +
-                " name*5=six")
+                " name*5=six"
+        )
 
         assertParametersEquals(mimeValue, "name" to "[one][two][three][four][five]six")
         assertTrue(mimeValue.ignoredParameters.isEmpty())
@@ -108,9 +126,11 @@ class MimeParameterDecoderTest {
 
     @Test
     fun rfc2045_and_rfc2231_style_parameters_should_use_rfc2231() {
-        val mimeValue = MimeParameterDecoder.decode("application/x-stuff;\r\n" +
+        val mimeValue = MimeParameterDecoder.decode(
+            "application/x-stuff;\r\n" +
                 " name=\"filename.ext\";\r\n" +
-                " name*=utf-8''filen%C3%A4me.ext")
+                " name*=utf-8''filen%C3%A4me.ext"
+        )
 
         assertParametersEquals(mimeValue, "name" to "filenäme.ext")
         assertIgnoredParametersEquals(mimeValue, "name" to "filename.ext")
@@ -118,10 +138,12 @@ class MimeParameterDecoderTest {
 
     @Test
     fun duplicate_parameter_names() {
-        val mimeValue = MimeParameterDecoder.decode("application/x-stuff;\r\n" +
+        val mimeValue = MimeParameterDecoder.decode(
+            "application/x-stuff;\r\n" +
                 " name=one;\r\n" +
                 " extra=something;\r\n" +
-                " name=two")
+                " name=two"
+        )
 
         assertParametersEquals(mimeValue, "extra" to "something")
         assertIgnoredParametersEquals(mimeValue, "name" to "one", "name" to "two")
@@ -129,10 +151,12 @@ class MimeParameterDecoderTest {
 
     @Test
     fun duplicate_parameter_names_differing_in_case() {
-        val mimeValue = MimeParameterDecoder.decode("application/x-stuff;\r\n" +
+        val mimeValue = MimeParameterDecoder.decode(
+            "application/x-stuff;\r\n" +
                 " name=one;\r\n" +
                 " extra=something;\r\n" +
-                " NAME=two")
+                " NAME=two"
+        )
 
         assertParametersEquals(mimeValue, "extra" to "something")
         assertIgnoredParametersEquals(mimeValue, "name" to "one", "name" to "two")
@@ -158,10 +182,12 @@ class MimeParameterDecoderTest {
 
     @Test
     fun comments_everywhere() {
-        val mimeValue = MimeParameterDecoder.decode("(comment)application(comment)/(comment)x-stuff" +
+        val mimeValue = MimeParameterDecoder.decode(
+            "(comment)application(comment)/(comment)x-stuff" +
                 "(comment);(comment)\r\n" +
                 " (comment)name(comment)=(comment)one(comment);(comment)\r\n" +
-                "  (comment) extra (comment) = (comment) something (comment)")
+                "  (comment) extra (comment) = (comment) something (comment)"
+        )
 
         assertParametersEquals(mimeValue, "name" to "one", "extra" to "something")
         assertTrue(mimeValue.ignoredParameters.isEmpty())
@@ -233,9 +259,11 @@ class MimeParameterDecoderTest {
 
     @Test
     fun section_index_with_leading_zero() {
-        val mimeValue = MimeParameterDecoder.decode("application/x-stuff;\r\n" +
+        val mimeValue = MimeParameterDecoder.decode(
+            "application/x-stuff;\r\n" +
                 " name*0=one;\r\n" +
-                " name*01=two")
+                " name*01=two"
+        )
 
         assertParametersEquals(mimeValue, "name" to "one", "name*01" to "two")
         assertTrue(mimeValue.ignoredParameters.isEmpty())
@@ -243,8 +271,10 @@ class MimeParameterDecoderTest {
 
     @Test
     fun section_index_with_huge_number() {
-        val mimeValue = MimeParameterDecoder.decode("application/x-stuff;\r\n" +
-                " name*10000000000000000000=filename")
+        val mimeValue = MimeParameterDecoder.decode(
+            "application/x-stuff;\r\n" +
+                " name*10000000000000000000=filename"
+        )
 
         assertParametersEquals(mimeValue, "name*10000000000000000000" to "filename")
         assertTrue(mimeValue.ignoredParameters.isEmpty())
@@ -324,8 +354,10 @@ class MimeParameterDecoderTest {
 
     @Test
     fun rfc2047_encoded() {
-        val mimeValue = MimeParameterDecoder.decode("application/x-stuff;\r\n" +
-                " name=\"=?UTF-8?Q?filn=C3=A4me=2Eext?=\"")
+        val mimeValue = MimeParameterDecoder.decode(
+            "application/x-stuff;\r\n" +
+                " name=\"=?UTF-8?Q?filn=C3=A4me=2Eext?=\""
+        )
 
         assertParametersEquals(mimeValue, "name" to "filnäme.ext")
         assertTrue(mimeValue.ignoredParameters.isEmpty())
@@ -333,13 +365,18 @@ class MimeParameterDecoderTest {
 
     @Test
     fun rfc2047_encoded_multiple_lines() {
-        val mimeValue = MimeParameterDecoder.decode("application/x-stuff;\r\n" +
+        val mimeValue = MimeParameterDecoder.decode(
+            "application/x-stuff;\r\n" +
                 " name=\"=?UTF-8?Q?File_name_that_is_so_long_it_likes_to_be_wrapped_i?=\r\n" +
                 " =?UTF-8?Q?nto_multiple_lines=2E_Also_?=\r\n" +
-                " =?UTF-8?Q?non-ASCII_characters=3A_=C3=A4=E2=82=AC=F0=9F=8C=9E?=\"")
+                " =?UTF-8?Q?non-ASCII_characters=3A_=C3=A4=E2=82=AC=F0=9F=8C=9E?=\""
+        )
 
-        assertParametersEquals(mimeValue, "name" to "File name that is so long it likes to be wrapped " +
-                "into multiple lines. Also non-ASCII characters: ä€\uD83C\uDF1E")
+        assertParametersEquals(
+            mimeValue,
+            "name" to "File name that is so long it likes to be wrapped " +
+                "into multiple lines. Also non-ASCII characters: ä€\uD83C\uDF1E"
+        )
         assertTrue(mimeValue.ignoredParameters.isEmpty())
     }
 

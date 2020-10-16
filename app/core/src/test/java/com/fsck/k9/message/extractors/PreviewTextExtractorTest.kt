@@ -58,7 +58,8 @@ class PreviewTextExtractorTest {
 
     @Test
     fun extractPreview_shouldStripSignature() {
-        val text = """
+        val text =
+            """
             Some text
             -- 
             Signature
@@ -72,7 +73,8 @@ class PreviewTextExtractorTest {
 
     @Test
     fun extractPreview_shouldStripHorizontalLine() {
-        val text = """
+        val text =
+            """
             line 1
             ----
             line 2
@@ -86,7 +88,8 @@ class PreviewTextExtractorTest {
 
     @Test
     fun extractPreview_shouldStripQuoteHeaderAndQuotedText() {
-        val text = """
+        val text =
+            """
             some text
             
             On 01/02/03 someone wrote:
@@ -102,7 +105,8 @@ class PreviewTextExtractorTest {
 
     @Test
     fun extractPreview_shouldStripGenericQuoteHeader() {
-        val text = """
+        val text =
+            """
             Am 13.12.2015 um 23:42 schrieb Hans:
             > hallo
             hi there
@@ -117,7 +121,8 @@ class PreviewTextExtractorTest {
 
     @Test
     fun extractPreview_shouldStripHorizontalRules() {
-        val text = """
+        val text =
+            """
             line 1------------------------------
             line 2
             """.trimIndent()
@@ -150,7 +155,8 @@ class PreviewTextExtractorTest {
 
     @Test
     fun extractPreview_lineEndingWithColon() {
-        val text = """
+        val text =
+            """
             Here's a list:
             - item 1
             - item 2
@@ -164,7 +170,8 @@ class PreviewTextExtractorTest {
 
     @Test
     fun extractPreview_inlineReplies() {
-        val text = """
+        val text =
+            """
             On 2020-09-30 at 03:12 Bob wrote:
             > Hi Alice
             Hi Bob
@@ -184,7 +191,8 @@ class PreviewTextExtractorTest {
 
     @Test
     fun extractPreview_quoteHeaderContainingLineBreak() {
-        val text = """
+        val text =
+            """
             Reply text
             
             On 2020-09-30 at 03:12

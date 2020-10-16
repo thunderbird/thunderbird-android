@@ -27,34 +27,36 @@ class K9NotificationResourceProvider(private val context: Context) : Notificatio
         get() = context.getString(R.string.notification_channel_miscellaneous_description)
 
     override fun authenticationErrorTitle(): String =
-            context.getString(R.string.notification_authentication_error_title)
+        context.getString(R.string.notification_authentication_error_title)
 
     override fun authenticationErrorBody(accountName: String): String =
-            context.getString(R.string.notification_authentication_error_text, accountName)
+        context.getString(R.string.notification_authentication_error_text, accountName)
 
     override fun certificateErrorTitle(accountName: String): String =
-            context.getString(R.string.notification_certificate_error_title, accountName)
+        context.getString(R.string.notification_certificate_error_title, accountName)
 
     override fun certificateErrorBody(): String = context.getString(R.string.notification_certificate_error_text)
 
     override fun newMailTitle(): String = context.getString(R.string.notification_new_title)
 
     override fun newMailUnreadMessageCount(unreadMessageCount: Int, accountName: String): String =
-            context.getString(R.string.notification_new_one_account_fmt, unreadMessageCount, accountName)
+        context.getString(R.string.notification_new_one_account_fmt, unreadMessageCount, accountName)
 
     override fun newMessagesTitle(newMessagesCount: Int): String =
-            context.resources.getQuantityString(R.plurals.notification_new_messages_title,
-                    newMessagesCount, newMessagesCount)
+        context.resources.getQuantityString(
+            R.plurals.notification_new_messages_title,
+            newMessagesCount, newMessagesCount
+        )
 
     override fun additionalMessages(overflowMessagesCount: Int, accountName: String): String =
-            context.getString(R.string.notification_additional_messages, overflowMessagesCount, accountName)
+        context.getString(R.string.notification_additional_messages, overflowMessagesCount, accountName)
 
     override fun previewEncrypted(): String = context.getString(R.string.preview_encrypted)
 
     override fun noSubject(): String = context.getString(R.string.general_no_subject)
 
     override fun recipientDisplayName(recipientDisplayName: String): String =
-            context.getString(R.string.message_to_fmt, recipientDisplayName)
+        context.getString(R.string.message_to_fmt, recipientDisplayName)
 
     override fun noSender(): String = context.getString(R.string.general_no_sender)
 
@@ -63,16 +65,16 @@ class K9NotificationResourceProvider(private val context: Context) : Notificatio
     override fun sendingMailTitle(): String = context.getString(R.string.notification_bg_send_title)
 
     override fun sendingMailBody(accountName: String): String =
-            context.getString(R.string.notification_bg_send_ticker, accountName)
+        context.getString(R.string.notification_bg_send_ticker, accountName)
 
     override fun checkingMailTicker(accountName: String, folderName: String): String =
-            context.getString(R.string.notification_bg_sync_ticker, accountName, folderName)
+        context.getString(R.string.notification_bg_sync_ticker, accountName, folderName)
 
     override fun checkingMailTitle(): String =
-            context.getString(R.string.notification_bg_sync_title)
+        context.getString(R.string.notification_bg_sync_title)
 
     override fun checkingMailSeparator(): String =
-            context.getString(R.string.notification_bg_title_separator)
+        context.getString(R.string.notification_bg_title_separator)
 
     override fun actionMarkAsRead(): String = context.getString(R.string.notification_action_mark_as_read)
 

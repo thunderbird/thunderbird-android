@@ -28,8 +28,8 @@ object HtmlConverter {
     fun htmlToText(html: String): String {
         val document = Jsoup.parse(html)
         return HtmlToPlainText.toPlainText(document.body())
-                .replace(PREVIEW_OBJECT_CHARACTER, PREVIEW_OBJECT_REPLACEMENT)
-                .replace(NBSP_CHARACTER, NBSP_REPLACEMENT)
+            .replace(PREVIEW_OBJECT_CHARACTER, PREVIEW_OBJECT_REPLACEMENT)
+            .replace(NBSP_CHARACTER, NBSP_REPLACEMENT)
     }
 
     /**

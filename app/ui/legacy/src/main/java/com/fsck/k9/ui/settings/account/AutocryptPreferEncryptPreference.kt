@@ -16,8 +16,10 @@ class AutocryptPreferEncryptPreference
 constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = TypedArrayUtils.getAttr(context, androidx.preference.R.attr.preferenceStyle,
-            android.R.attr.preferenceStyle),
+    defStyleAttr: Int = TypedArrayUtils.getAttr(
+        context, androidx.preference.R.attr.preferenceStyle,
+        android.R.attr.preferenceStyle
+    ),
     defStyleRes: Int = 0
 ) : TwoStatePreference(context, attrs, defStyleAttr, defStyleRes) {
 
@@ -46,7 +48,8 @@ constructor(
     companion object {
         init {
             PreferenceFragmentCompat.registerPreferenceFragment(
-                    AutocryptPreferEncryptPreference::class.java, AutocryptPreferEncryptDialogFragment::class.java)
+                AutocryptPreferEncryptPreference::class.java, AutocryptPreferEncryptDialogFragment::class.java
+            )
         }
     }
 }

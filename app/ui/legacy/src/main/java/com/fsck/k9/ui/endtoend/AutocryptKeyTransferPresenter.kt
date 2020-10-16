@@ -37,17 +37,20 @@ class AutocryptKeyTransferPresenter internal constructor(
 
         account = preferences.getAccount(accountUuid)
 
-        openPgpApiManager.setOpenPgpProvider(account.openPgpProvider, object : OpenPgpApiManagerCallback {
-            override fun onOpenPgpProviderStatusChanged() {
-                if (openPgpApiManager.openPgpProviderState == OpenPgpApiManager.OpenPgpProviderState.UI_REQUIRED) {
+        openPgpApiManager.setOpenPgpProvider(
+            account.openPgpProvider,
+            object : OpenPgpApiManagerCallback {
+                override fun onOpenPgpProviderStatusChanged() {
+                    if (openPgpApiManager.openPgpProviderState == OpenPgpApiManager.OpenPgpProviderState.UI_REQUIRED) {
+                        view.finishWithProviderConnectError(openPgpApiManager.readableOpenPgpProviderName)
+                    }
+                }
+
+                override fun onOpenPgpProviderError(error: OpenPgpProviderError) {
                     view.finishWithProviderConnectError(openPgpApiManager.readableOpenPgpProviderName)
                 }
             }
-
-            override fun onOpenPgpProviderError(error: OpenPgpProviderError) {
-                view.finishWithProviderConnectError(openPgpApiManager.readableOpenPgpProviderName)
-            }
-        })
+        )
 
         view.setAddress(account.identities[0].email!!)
 

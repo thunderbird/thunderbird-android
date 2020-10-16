@@ -8,8 +8,8 @@ import androidx.work.WorkerFactory
 class WorkManagerProvider(private val context: Context, private val workerFactory: WorkerFactory) {
     fun getWorkManager(): WorkManager {
         val configuration = Configuration.Builder()
-                .setWorkerFactory(workerFactory)
-                .build()
+            .setWorkerFactory(workerFactory)
+            .build()
 
         WorkManager.initialize(context, configuration)
 

@@ -48,9 +48,11 @@ class SettingsExportFragment : Fragment() {
                 viewModel.onSettingsListItemSelected(position, !item.isSelected)
                 true
             }
-            addEventHook(CheckBoxClickEvent { position, isSelected ->
-                viewModel.onSettingsListItemSelected(position, isSelected)
-            })
+            addEventHook(
+                CheckBoxClickEvent { position, isSelected ->
+                    viewModel.onSettingsListItemSelected(position, isSelected)
+                }
+            )
         }
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.settingsExportList)

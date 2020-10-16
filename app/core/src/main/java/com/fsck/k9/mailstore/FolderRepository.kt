@@ -23,8 +23,8 @@ class FolderRepository(
     fun getRemoteFolders(): List<RemoteFolder> {
         val folders = localStoreProvider.getInstance(account).getPersonalNamespaces(false)
         return folders
-                .filterNot { it.isLocalOnly }
-                .map { RemoteFolder(it.databaseId, it.serverId, it.name, it.type.toFolderType()) }
+            .filterNot { it.isLocalOnly }
+            .map { RemoteFolder(it.databaseId, it.serverId, it.name, it.type.toFolderType()) }
     }
 
     fun getDisplayFolders(displayMode: FolderMode?): List<DisplayFolder> {
@@ -222,7 +222,8 @@ class FolderRepository(
     }
 
     private fun getDisplayFolders(db: SQLiteDatabase, displayMode: FolderMode): List<DisplayFolder> {
-        val queryBuilder = StringBuilder("""
+        val queryBuilder = StringBuilder(
+            """
             SELECT f.id, f.name, f.top_group, f.local_only, (
                 SELECT COUNT(m.id) 
                 FROM messages m 
@@ -259,20 +260,20 @@ class FolderRepository(
             FolderMode.ALL -> Unit // Return all folders
             FolderMode.FIRST_CLASS -> {
                 query.append(" WHERE f.display_class = '")
-                        .append(FolderClass.FIRST_CLASS.name)
-                        .append("'")
+                    .append(FolderClass.FIRST_CLASS.name)
+                    .append("'")
             }
             FolderMode.FIRST_AND_SECOND_CLASS -> {
                 query.append(" WHERE f.display_class IN ('")
-                        .append(FolderClass.FIRST_CLASS.name)
-                        .append("', '")
-                        .append(FolderClass.SECOND_CLASS.name)
-                        .append("')")
+                    .append(FolderClass.FIRST_CLASS.name)
+                    .append("', '")
+                    .append(FolderClass.SECOND_CLASS.name)
+                    .append("')")
             }
             FolderMode.NOT_SECOND_CLASS -> {
                 query.append(" WHERE f.display_class != '")
-                        .append(FolderClass.SECOND_CLASS.name)
-                        .append("'")
+                    .append(FolderClass.SECOND_CLASS.name)
+                    .append("'")
             }
             FolderMode.NONE -> throw AssertionError("Invalid folder display mode: $displayMode")
         }

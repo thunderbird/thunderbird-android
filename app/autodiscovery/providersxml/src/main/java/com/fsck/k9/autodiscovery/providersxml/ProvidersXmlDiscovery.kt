@@ -30,40 +30,44 @@ class ProvidersXmlDiscovery(
             val emailUrlEncoded = UrlEncodingHelper.encodeUtf8(email)
 
             val incomingUserUrlEncoded = provider.incomingUsernameTemplate
-                    .replace("\$email", emailUrlEncoded)
-                    .replace("\$user", userUrlEncoded)
-                    .replace("\$domain", domain)
+                .replace("\$email", emailUrlEncoded)
+                .replace("\$user", userUrlEncoded)
+                .replace("\$domain", domain)
             val incomingUri = with(URI(provider.incomingUriTemplate)) {
                 URI(scheme, "$incomingUserUrlEncoded:$password", host, port, null, null, null).toString()
             }
             val incomingSettings = backendManager.decodeStoreUri(incomingUri).let {
-                listOf(DiscoveredServerSettings(
-                    it.type,
-                    it.host,
-                    it.port,
-                    it.connectionSecurity,
-                    it.authenticationType,
-                    it.username
-                ))
+                listOf(
+                    DiscoveredServerSettings(
+                        it.type,
+                        it.host,
+                        it.port,
+                        it.connectionSecurity,
+                        it.authenticationType,
+                        it.username
+                    )
+                )
             }
 
             val outgoingUserUrlEncoded = provider.outgoingUsernameTemplate
-                    ?.replace("\$email", emailUrlEncoded)
-                    ?.replace("\$user", userUrlEncoded)
-                    ?.replace("\$domain", domain)
+                ?.replace("\$email", emailUrlEncoded)
+                ?.replace("\$user", userUrlEncoded)
+                ?.replace("\$domain", domain)
             val outgoingUserInfo = if (outgoingUserUrlEncoded != null) "$outgoingUserUrlEncoded:$password" else null
             val outgoingUri = with(URI(provider.outgoingUriTemplate)) {
                 URI(scheme, outgoingUserInfo, host, port, null, null, null).toString()
             }
             val outgoingSettings = backendManager.decodeTransportUri(outgoingUri).let {
-                listOf(DiscoveredServerSettings(
-                    it.type,
-                    it.host,
-                    it.port,
-                    it.connectionSecurity,
-                    it.authenticationType,
-                    it.username
-                ))
+                listOf(
+                    DiscoveredServerSettings(
+                        it.type,
+                        it.host,
+                        it.port,
+                        it.connectionSecurity,
+                        it.authenticationType,
+                        it.username
+                    )
+                )
             }
 
             return DiscoveryResults(incomingSettings, outgoingSettings)
@@ -120,8 +124,7 @@ class ProvidersXmlDiscovery(
             }
         } while (!(xmlEventType == XmlPullParser.END_TAG && xml.name == "provider"))
 
-        return if (incomingUriTemplate != null && incomingUsernameTemplate != null &&
-                outgoingUriTemplate != null) {
+        return if (incomingUriTemplate != null && incomingUsernameTemplate != null && outgoingUriTemplate != null) {
             Provider(incomingUriTemplate, incomingUsernameTemplate, outgoingUriTemplate, outgoingUsernameTemplate)
         } else {
             null

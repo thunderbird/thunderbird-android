@@ -1,7 +1,6 @@
 package com.fsck.k9.backend.jmap
 
 import com.fsck.k9.backend.api.SyncListener
-import java.lang.AssertionError
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
@@ -92,5 +91,6 @@ sealed class SyncListenerEvent {
         val message: String,
         val exception: Exception?
     ) : SyncListenerEvent()
+
     data class SyncProgress(val folderServerId: String, val completed: Int, val total: Int) : SyncListenerEvent()
 }

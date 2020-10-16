@@ -59,9 +59,9 @@ class SettingsListFragment : Fragment() {
 
         val generalSection = Section().apply {
             val generalSettingsActionItem = SettingsActionItem(
-                    getString(R.string.general_settings_title),
-                    R.id.action_settingsListScreen_to_generalSettingsScreen,
-                    R.attr.iconSettingsGeneral
+                getString(R.string.general_settings_title),
+                R.id.action_settingsListScreen_to_generalSettingsScreen,
+                R.attr.iconSettingsGeneral
             )
             add(generalSettingsActionItem)
         }
@@ -73,9 +73,9 @@ class SettingsListFragment : Fragment() {
             }
 
             val addAccountActionItem = SettingsActionItem(
-                    getString(R.string.add_account_action),
-                    R.id.action_settingsListScreen_to_addAccountScreen,
-                    R.attr.iconSettingsAccountAdd
+                getString(R.string.add_account_action),
+                R.id.action_settingsListScreen_to_addAccountScreen,
+                R.attr.iconSettingsAccountAdd
             )
             add(addAccountActionItem)
 
@@ -86,16 +86,16 @@ class SettingsListFragment : Fragment() {
 
         val backupSection = Section().apply {
             val exportSettingsActionItem = SettingsActionItem(
-                    getString(R.string.settings_export_title),
-                    R.id.action_settingsListScreen_to_settingsExportScreen,
-                    R.attr.iconSettingsExport
+                getString(R.string.settings_export_title),
+                R.id.action_settingsListScreen_to_settingsExportScreen,
+                R.attr.iconSettingsExport
             )
             add(exportSettingsActionItem)
 
             val importSettingsActionItem = SettingsActionItem(
-                    getString(R.string.settings_import_title),
-                    R.id.action_settingsListScreen_to_settingsImportScreen,
-                    R.attr.iconSettingsImport
+                getString(R.string.settings_import_title),
+                R.id.action_settingsListScreen_to_settingsImportScreen,
+                R.attr.iconSettingsImport
             )
             add(importSettingsActionItem)
         }

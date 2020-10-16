@@ -10,11 +10,11 @@ val endToEndUiModule = module {
     factory { AutocryptSetupTransferLiveEvent(get()) }
     factory { (lifecycleOwner: LifecycleOwner, autocryptTransferView: AutocryptKeyTransferActivity) ->
         AutocryptKeyTransferPresenter(
-                lifecycleOwner,
-                get { parametersOf(lifecycleOwner) },
-                get(),
-                get(),
-                autocryptTransferView
+            lifecycleOwner,
+            get { parametersOf(lifecycleOwner) },
+            get(),
+            get(),
+            autocryptTransferView
         )
     }
     viewModel { AutocryptKeyTransferViewModel(get(), get()) }

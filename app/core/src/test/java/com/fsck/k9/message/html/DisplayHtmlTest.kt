@@ -49,7 +49,9 @@ class DisplayHtmlTest {
     private fun assertHtmlContainsElement(html: String, cssQuery: String, numberOfExpectedOccurrences: Int = 1) {
         val document = Jsoup.parse(html)
         val numberOfFoundElements = document.select(cssQuery).size
-        assertEquals("Expected to find '$cssQuery' $numberOfExpectedOccurrences time(s) in:\n$html",
-                numberOfExpectedOccurrences, numberOfFoundElements)
+        assertEquals(
+            "Expected to find '$cssQuery' $numberOfExpectedOccurrences time(s) in:\n$html",
+            numberOfExpectedOccurrences, numberOfFoundElements
+        )
     }
 }

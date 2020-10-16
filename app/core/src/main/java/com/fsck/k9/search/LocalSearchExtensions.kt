@@ -1,4 +1,5 @@
 @file:JvmName("LocalSearchExtensions")
+
 package com.fsck.k9.search
 
 import com.fsck.k9.Account

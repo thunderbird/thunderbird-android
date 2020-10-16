@@ -7,11 +7,11 @@ import com.fsck.k9.mail.Message.RecipientType
 
 object IdentityHelper {
     private val RECIPIENT_TYPES = listOf(
-            RecipientType.TO,
-            RecipientType.CC,
-            RecipientType.X_ORIGINAL_TO,
-            RecipientType.DELIVERED_TO,
-            RecipientType.X_ENVELOPE_TO
+        RecipientType.TO,
+        RecipientType.CC,
+        RecipientType.X_ORIGINAL_TO,
+        RecipientType.DELIVERED_TO,
+        RecipientType.X_ENVELOPE_TO
     )
 
     /**
@@ -30,10 +30,10 @@ object IdentityHelper {
     @JvmStatic
     fun getRecipientIdentityFromMessage(account: Account, message: Message): Identity {
         val recipient: Identity? = RECIPIENT_TYPES.asSequence()
-                .flatMap { recipientType -> message.getRecipients(recipientType).asSequence() }
-                .map { address -> account.findIdentity(address) }
-                .filterNotNull()
-                .firstOrNull()
+            .flatMap { recipientType -> message.getRecipients(recipientType).asSequence() }
+            .map { address -> account.findIdentity(address) }
+            .filterNotNull()
+            .firstOrNull()
 
         return recipient ?: account.getIdentity(0)
     }

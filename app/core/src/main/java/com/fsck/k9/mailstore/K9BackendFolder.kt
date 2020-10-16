@@ -29,16 +29,16 @@ class K9BackendFolder(
         data class Init(val databaseId: String, val name: String, val visibleLimit: Int)
 
         val init = database.query(
-                "folders",
-                arrayOf("id", "name", "visible_limit"),
-                "server_id = ?",
-                folderServerId
+            "folders",
+            arrayOf("id", "name", "visible_limit"),
+            "server_id = ?",
+            folderServerId
         ) { cursor ->
             if (cursor.moveToFirst()) {
                 Init(
-                        databaseId = cursor.getString(0),
-                        name = cursor.getString(1),
-                        visibleLimit = cursor.getInt(2)
+                    databaseId = cursor.getString(0),
+                    name = cursor.getString(1),
+                    visibleLimit = cursor.getInt(2)
                 )
             } else {
                 throw IllegalStateException("Couldn't find folder $folderServerId")
@@ -61,9 +61,12 @@ class K9BackendFolder(
     }
 
     override fun getMessageServerIds(): Set<String> {
-        return database.rawQuery("SELECT uid FROM messages" +
-            " WHERE empty = 0 AND deleted = 0 AND folder_id = ? AND uid NOT LIKE '${K9.LOCAL_UID_PREFIX}%'" +
-            " ORDER BY date DESC", databaseId) { cursor ->
+        return database.rawQuery(
+            "SELECT uid FROM messages" +
+                " WHERE empty = 0 AND deleted = 0 AND folder_id = ? AND uid NOT LIKE '${K9.LOCAL_UID_PREFIX}%'" +
+                " ORDER BY date DESC",
+            databaseId
+        ) { cursor ->
             val result = mutableSetOf<String>()
             while (cursor.moveToNext()) {
                 val uid = cursor.getString(0)
@@ -74,9 +77,12 @@ class K9BackendFolder(
     }
 
     override fun getAllMessagesAndEffectiveDates(): Map<String, Long?> {
-        return database.rawQuery("SELECT uid, date FROM messages" +
+        return database.rawQuery(
+            "SELECT uid, date FROM messages" +
                 " WHERE empty = 0 AND deleted = 0 AND folder_id = ? AND uid NOT LIKE '${K9.LOCAL_UID_PREFIX}%'" +
-                " ORDER BY date DESC", databaseId) { cursor ->
+                " ORDER BY date DESC",
+            databaseId
+        ) { cursor ->
             val result = mutableMapOf<String, Long?>()
             while (cursor.moveToNext()) {
                 val uid = cursor.getString(0)
@@ -142,11 +148,12 @@ class K9BackendFolder(
 
         return database.execute(false) { db ->
             val cursor = db.query(
-                    "messages",
-                    arrayOf("deleted", "read", "flagged", "answered", "forwarded", "flags"),
-                    "folder_id = ? AND uid = ?",
-                    arrayOf(databaseId, messageServerId),
-                    null, null, null)
+                "messages",
+                arrayOf("deleted", "read", "flagged", "answered", "forwarded", "flags"),
+                "folder_id = ? AND uid = ?",
+                arrayOf(databaseId, messageServerId),
+                null, null, null
+            )
 
             cursor.use {
                 if (!cursor.moveToFirst()) {
@@ -182,10 +189,10 @@ class K9BackendFolder(
             Flag.FORWARDED -> database.setMessagesBoolean(messageServerId, "forwarded", value)
             else -> {
                 val flagsColumnValue = database.getString(
-                        table = "messages",
-                        column = "flags",
-                        selection = "folder_id = ? AND uid = ?",
-                        selectionArgs = *arrayOf(databaseId, messageServerId)
+                    table = "messages",
+                    column = "flags",
+                    selection = "folder_id = ? AND uid = ?",
+                    selectionArgs = *arrayOf(databaseId, messageServerId)
                 ) ?: ""
 
                 val flags = flagsColumnValue.split(',').toMutableSet()
@@ -198,11 +205,11 @@ class K9BackendFolder(
                 val serializedFlags = flags.joinToString(separator = ",")
 
                 database.setString(
-                        table = "messages",
-                        column = "flags",
-                        selection = "folder_id = ? AND uid = ?",
-                        selectionArgs = *arrayOf(databaseId, messageServerId),
-                        value = serializedFlags
+                    table = "messages",
+                    column = "flags",
+                    selection = "folder_id = ? AND uid = ?",
+                    selectionArgs = *arrayOf(databaseId, messageServerId),
+                    value = serializedFlags
                 )
             }
         }

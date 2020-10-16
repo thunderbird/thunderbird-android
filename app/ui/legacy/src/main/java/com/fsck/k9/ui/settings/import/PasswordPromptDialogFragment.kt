@@ -36,18 +36,18 @@ class PasswordPromptDialogFragment : DialogFragment() {
         }
 
         dialogView = createView(
-                accountName,
-                inputIncomingServerPassword,
-                incomingServerName,
-                inputOutgoingServerPassword,
-                outgoingServerName
+            accountName,
+            inputIncomingServerPassword,
+            incomingServerName,
+            inputOutgoingServerPassword,
+            outgoingServerName
         )
 
         return AlertDialog.Builder(requireContext())
-                .setView(dialogView)
-                .setPositiveButton(R.string.okay_action) { _, _ -> deliverPasswordPromptResult() }
-                .setNegativeButton(R.string.cancel_action, null)
-                .create()
+            .setView(dialogView)
+            .setPositiveButton(R.string.okay_action) { _, _ -> deliverPasswordPromptResult() }
+            .setNegativeButton(R.string.cancel_action, null)
+            .create()
     }
 
     @SuppressLint("InflateParams")
@@ -63,9 +63,9 @@ class PasswordPromptDialogFragment : DialogFragment() {
 
         val quantity = if (inputIncomingServerPassword && inputOutgoingServerPassword) 2 else 1
         view.passwordPromptIntro.text = resources.getQuantityString(
-                R.plurals.settings_import_password_prompt,
-                quantity,
-                accountName
+            R.plurals.settings_import_password_prompt,
+            quantity,
+            accountName
         )
         view.incomingServerName.text = getString(R.string.server_name_format, incomingServerName)
         view.outgoingServerName.text = getString(R.string.server_name_format, outgoingServerName)
@@ -125,12 +125,12 @@ class PasswordPromptDialogFragment : DialogFragment() {
             requestCode: Int
         ) = PasswordPromptDialogFragment().apply {
             arguments = bundleOf(
-                    ARG_ACCOUNT_UUID to accountUuid,
-                    ARG_ACCOUNT_NAME to accountName,
-                    ARG_INPUT_INCOMING_SERVER_PASSWORD to inputIncomingServerPassword,
-                    ARG_INCOMING_SERVER_NAME to incomingServerName,
-                    ARG_INPUT_OUTGOING_SERVER_PASSWORD to inputOutgoingServerPassword,
-                    ARG_OUTGOING_SERVER_NAME to outgoingServerName
+                ARG_ACCOUNT_UUID to accountUuid,
+                ARG_ACCOUNT_NAME to accountName,
+                ARG_INPUT_INCOMING_SERVER_PASSWORD to inputIncomingServerPassword,
+                ARG_INCOMING_SERVER_NAME to incomingServerName,
+                ARG_INPUT_OUTGOING_SERVER_PASSWORD to inputOutgoingServerPassword,
+                ARG_OUTGOING_SERVER_NAME to outgoingServerName
             )
             setTargetFragment(targetFragment, requestCode)
         }

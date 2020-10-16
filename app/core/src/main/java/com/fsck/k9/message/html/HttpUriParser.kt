@@ -178,7 +178,8 @@ internal class HttpUriParser : UriParser {
             // 1) No compression and full address, everything fine
             // 2) Compression enabled and whole address parsed, everything fine as well
             if (!compressionEnabled && beginSegmentsCount + endSegmentsCount == 8 ||
-                compressionEnabled && beginSegmentsCount + endSegmentsCount < 8) {
+                compressionEnabled && beginSegmentsCount + endSegmentsCount < 8
+            ) {
                 // Only optional port left, skip address bracket
                 currentPos++
             } else {

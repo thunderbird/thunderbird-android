@@ -22,8 +22,8 @@ class AddressHeaderBuilderTest {
     @Test
     fun createHeaderValue_withTwoAddressesThatFitOnSingleLine() {
         val addresses = arrayOf(
-                Address("one@domain.example"),
-                Address("two@domain.example")
+            Address("one@domain.example"),
+            Address("two@domain.example")
         )
 
         val headerValue = AddressHeaderBuilder.createHeaderValue(addresses)
@@ -34,21 +34,24 @@ class AddressHeaderBuilderTest {
     @Test
     fun createHeaderValue_withMultipleAddressesThatNeedWrapping() {
         val addresses = arrayOf(
-                Address("one@domain.example", "Person One"),
-                Address("two+because.i.can@this.is.quite.some.domain.example", "Person \"Long Email Address\" Two"),
-                Address("three@domain.example", "Person Three"),
-                Address("four@domain.example", "Person Four"),
-                Address("five@domain.example", "Person Five")
+            Address("one@domain.example", "Person One"),
+            Address("two+because.i.can@this.is.quite.some.domain.example", "Person \"Long Email Address\" Two"),
+            Address("three@domain.example", "Person Three"),
+            Address("four@domain.example", "Person Four"),
+            Address("five@domain.example", "Person Five")
         )
 
         val headerValue = AddressHeaderBuilder.createHeaderValue(addresses)
 
-        assertEquals("""
+        assertEquals(
+            """
             |Person One <one@domain.example>,
             | "Person \"Long Email Address\" Two" <two+because.i.can@this.is.quite.some.domain.example>,
             | Person Three <three@domain.example>, Person Four <four@domain.example>,
             | Person Five <five@domain.example>
-        """.trimMargin().crlf(), headerValue)
+            """.trimMargin().crlf(),
+            headerValue
+        )
     }
 
     @Test(expected = IllegalArgumentException::class)

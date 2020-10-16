@@ -29,11 +29,11 @@ class ThunderbirdAutoconfigFetcher(private val okHttpClient: OkHttpClient) {
             requireNotNull(domain) { "Couldn't extract domain from email address: $email" }
 
             return HttpUrl.Builder()
-                    .scheme("https")
-                    .host(domain)
-                    .addEncodedPathSegments(".well-known/autoconfig/mail/config-v1.1.xml")
-                    .addQueryParameter("emailaddress", email)
-                    .build()
+                .scheme("https")
+                .host(domain)
+                .addEncodedPathSegments(".well-known/autoconfig/mail/config-v1.1.xml")
+                .addQueryParameter("emailaddress", email)
+                .build()
         }
     }
 }

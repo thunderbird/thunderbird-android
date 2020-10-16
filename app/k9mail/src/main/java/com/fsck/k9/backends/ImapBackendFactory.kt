@@ -41,11 +41,11 @@ class ImapBackendFactory(
         val serverSettings = ImapStoreUriDecoder.decode(account.storeUri)
         val config = createImapStoreConfig(account)
         return ImapStore(
-                serverSettings,
-                config,
-                trustedSocketFactory,
-                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager,
-                oAuth2TokenProvider
+            serverSettings,
+            config,
+            trustedSocketFactory,
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager,
+            oAuth2TokenProvider
         )
     }
 

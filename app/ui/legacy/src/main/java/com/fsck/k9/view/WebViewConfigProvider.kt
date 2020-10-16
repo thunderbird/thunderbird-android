@@ -11,9 +11,9 @@ class WebViewConfigProvider(private val themeManager: ThemeManager) {
 
     private fun createWebViewConfig(theme: Theme): WebViewConfig {
         return WebViewConfig(
-                useDarkMode = theme == Theme.DARK,
-                autoFitWidth = K9.isAutoFitWidth,
-                textZoom = K9.fontSizes.messageViewContentAsPercent
+            useDarkMode = theme == Theme.DARK,
+            autoFitWidth = K9.isAutoFitWidth,
+            textZoom = K9.fontSizes.messageViewContentAsPercent
         )
     }
 }

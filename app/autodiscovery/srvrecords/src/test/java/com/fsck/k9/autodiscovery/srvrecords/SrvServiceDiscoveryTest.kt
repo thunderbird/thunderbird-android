@@ -28,8 +28,9 @@ class SrvServiceDiscoveryTest : RobolectricTest() {
     fun discover_whenNoSMTP_shouldReturnJustIMAP() {
         val srvResolver = newMockSrvResolver(
             imapServices = listOf(newMailService(port = 143, srvType = SrvType.IMAP)),
-            imapsServices = listOf(newMailService(port = 993, srvType = SrvType.IMAPS,
-                security = ConnectionSecurity.SSL_TLS_REQUIRED))
+            imapsServices = listOf(
+                newMailService(port = 993, srvType = SrvType.IMAPS, security = ConnectionSecurity.SSL_TLS_REQUIRED)
+            )
         )
 
         val srvServiceDiscovery = SrvServiceDiscovery(srvResolver)
@@ -41,10 +42,20 @@ class SrvServiceDiscoveryTest : RobolectricTest() {
 
     @Test
     fun discover_whenNoIMAP_shouldReturnJustSMTP() {
-        val srvResolver = newMockSrvResolver(submissionServices = listOf(
-            newMailService(port = 25, srvType = SrvType.SUBMISSION, security = ConnectionSecurity.STARTTLS_REQUIRED),
-            newMailService(port = 465, srvType = SrvType.SUBMISSIONS, security = ConnectionSecurity.SSL_TLS_REQUIRED)
-        ))
+        val srvResolver = newMockSrvResolver(
+            submissionServices = listOf(
+                newMailService(
+                    port = 25,
+                    srvType = SrvType.SUBMISSION,
+                    security = ConnectionSecurity.STARTTLS_REQUIRED
+                ),
+                newMailService(
+                    port = 465,
+                    srvType = SrvType.SUBMISSIONS,
+                    security = ConnectionSecurity.SSL_TLS_REQUIRED
+                )
+            )
+        )
 
         val srvServiceDiscovery = SrvServiceDiscovery(srvResolver)
         val result = srvServiceDiscovery.discover("test@example.com", DiscoveryTarget.INCOMING_AND_OUTGOING)
@@ -55,64 +66,109 @@ class SrvServiceDiscoveryTest : RobolectricTest() {
 
     @Test
     fun discover_withRequiredServices_shouldCorrectlyPrioritize() {
-        val srvResolver = newMockSrvResolver(submissionServices = listOf(
-            newMailService(
-                host = "smtp1.example.com", port = 25, srvType = SrvType.SUBMISSION,
-                security = ConnectionSecurity.STARTTLS_REQUIRED, priority = 0),
-            newMailService(
-                host = "smtp2.example.com", port = 25, srvType = SrvType.SUBMISSION,
-                security = ConnectionSecurity.STARTTLS_REQUIRED, priority = 1)
-        ), submissionsServices = listOf(
-            newMailService(
-                host = "smtp3.example.com", port = 465, srvType = SrvType.SUBMISSIONS,
-                security = ConnectionSecurity.SSL_TLS_REQUIRED, priority = 0),
-            newMailService(
-                host = "smtp4.example.com", port = 465, srvType = SrvType.SUBMISSIONS,
-                security = ConnectionSecurity.SSL_TLS_REQUIRED, priority = 1)
-        ), imapServices = listOf(
-            newMailService(
-                host = "imap1.example.com", port = 143, srvType = SrvType.IMAP,
-                security = ConnectionSecurity.STARTTLS_REQUIRED, priority = 0),
-            newMailService(
-                host = "imap2.example.com", port = 143, srvType = SrvType.IMAP,
-                security = ConnectionSecurity.STARTTLS_REQUIRED, priority = 1)
-        ), imapsServices = listOf(
-            newMailService(
-                host = "imaps1.example.com", port = 993, srvType = SrvType.IMAPS,
-                security = ConnectionSecurity.SSL_TLS_REQUIRED, priority = 0),
-            newMailService(
-                host = "imaps2.example.com", port = 993, srvType = SrvType.IMAPS,
-                security = ConnectionSecurity.SSL_TLS_REQUIRED, priority = 1)
-        ))
+        val srvResolver = newMockSrvResolver(
+            submissionServices = listOf(
+                newMailService(
+                    host = "smtp1.example.com",
+                    port = 25,
+                    srvType = SrvType.SUBMISSION,
+                    security = ConnectionSecurity.STARTTLS_REQUIRED,
+                    priority = 0
+                ),
+                newMailService(
+                    host = "smtp2.example.com",
+                    port = 25,
+                    srvType = SrvType.SUBMISSION,
+                    security = ConnectionSecurity.STARTTLS_REQUIRED,
+                    priority = 1
+                )
+            ),
+            submissionsServices = listOf(
+                newMailService(
+                    host = "smtp3.example.com",
+                    port = 465,
+                    srvType = SrvType.SUBMISSIONS,
+                    security = ConnectionSecurity.SSL_TLS_REQUIRED,
+                    priority = 0
+                ),
+                newMailService(
+                    host = "smtp4.example.com",
+                    port = 465,
+                    srvType = SrvType.SUBMISSIONS,
+                    security = ConnectionSecurity.SSL_TLS_REQUIRED,
+                    priority = 1
+                )
+            ),
+            imapServices = listOf(
+                newMailService(
+                    host = "imap1.example.com",
+                    port = 143,
+                    srvType = SrvType.IMAP,
+                    security = ConnectionSecurity.STARTTLS_REQUIRED,
+                    priority = 0
+                ),
+                newMailService(
+                    host = "imap2.example.com",
+                    port = 143,
+                    srvType = SrvType.IMAP,
+                    security = ConnectionSecurity.STARTTLS_REQUIRED,
+                    priority = 1
+                )
+            ),
+            imapsServices = listOf(
+                newMailService(
+                    host = "imaps1.example.com",
+                    port = 993,
+                    srvType = SrvType.IMAPS,
+                    security = ConnectionSecurity.SSL_TLS_REQUIRED,
+                    priority = 0
+                ),
+                newMailService(
+                    host = "imaps2.example.com",
+                    port = 993,
+                    srvType = SrvType.IMAPS,
+                    security = ConnectionSecurity.SSL_TLS_REQUIRED,
+                    priority = 1
+                )
+            )
+        )
 
         val srvServiceDiscovery = SrvServiceDiscovery(srvResolver)
         val result = srvServiceDiscovery.discover("test@example.com", DiscoveryTarget.INCOMING_AND_OUTGOING)
 
-        assertEquals(listOf(
-            "smtp3.example.com",
-            "smtp1.example.com",
-            "smtp4.example.com",
-            "smtp2.example.com"
-        ),
+        assertEquals(
+            listOf(
+                "smtp3.example.com",
+                "smtp1.example.com",
+                "smtp4.example.com",
+                "smtp2.example.com"
+            ),
             result?.outgoing?.map { it.host }
         )
-        assertEquals(listOf(
-            "imaps1.example.com",
-            "imap1.example.com",
-            "imaps2.example.com",
-            "imap2.example.com"
-        ),
+        assertEquals(
+            listOf(
+                "imaps1.example.com",
+                "imap1.example.com",
+                "imaps2.example.com",
+                "imap2.example.com"
+            ),
             result?.incoming?.map { it.host }
         )
     }
 
     @Test
     fun discover_whenOnlyOutgoingTrue_shouldOnlyFetchOutgoing() {
-        val srvResolver = newMockSrvResolver(submissionServices = listOf(
-            newMailService(
-                host = "smtp.example.com", port = 465, srvType = SrvType.SUBMISSIONS,
-                security = ConnectionSecurity.SSL_TLS_REQUIRED, priority = 0)
-        ))
+        val srvResolver = newMockSrvResolver(
+            submissionServices = listOf(
+                newMailService(
+                    host = "smtp.example.com",
+                    port = 465,
+                    srvType = SrvType.SUBMISSIONS,
+                    security = ConnectionSecurity.SSL_TLS_REQUIRED,
+                    priority = 0
+                )
+            )
+        )
 
         val srvServiceDiscovery = SrvServiceDiscovery(srvResolver)
         val result = srvServiceDiscovery.discover("test@example.com", DiscoveryTarget.OUTGOING)
@@ -126,11 +182,17 @@ class SrvServiceDiscoveryTest : RobolectricTest() {
 
     @Test
     fun discover_whenOnlyIncomingTrue_shouldOnlyFetchIncoming() {
-        val srvResolver = newMockSrvResolver(imapsServices = listOf(
-            newMailService(
-                host = "imaps.example.com", port = 993, srvType = SrvType.IMAPS,
-                security = ConnectionSecurity.SSL_TLS_REQUIRED, priority = 0)
-        ))
+        val srvResolver = newMockSrvResolver(
+            imapsServices = listOf(
+                newMailService(
+                    host = "imaps.example.com",
+                    port = 993,
+                    srvType = SrvType.IMAPS,
+                    security = ConnectionSecurity.SSL_TLS_REQUIRED,
+                    priority = 0
+                )
+            )
+        )
 
         val srvServiceDiscovery = SrvServiceDiscovery(srvResolver)
         val result = srvServiceDiscovery.discover("test@example.com", DiscoveryTarget.INCOMING)

@@ -6,9 +6,9 @@ import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
-import org.junit.Assert.fail as junitFail
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyLong
+import org.junit.Assert.fail as junitFail
 
 private const val SOURCE_FOLDER_ID = 3L
 private const val DESTINATION_FOLDER_ID = 23L

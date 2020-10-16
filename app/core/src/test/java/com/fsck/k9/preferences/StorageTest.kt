@@ -12,8 +12,8 @@ private const val TEST_INT_VALUE = "4"
 private const val TEST_STRING_DEFAULT = "z"
 private const val TEST_INT_DEFAULT = 2
 private val TEST_MAP = mapOf(
-        TEST_STRING_KEY to TEST_STRING_VALUE,
-        TEST_INT_KEY to TEST_INT_VALUE
+    TEST_STRING_KEY to TEST_STRING_VALUE,
+    TEST_INT_KEY to TEST_INT_VALUE
 )
 
 class StorageTest {

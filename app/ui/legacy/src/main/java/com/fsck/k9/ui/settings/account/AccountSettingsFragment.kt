@@ -317,11 +317,11 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
 
     private fun onDeleteAccount() {
         val dialogFragment = ConfirmationDialogFragment.newInstance(
-                DIALOG_DELETE_ACCOUNT,
-                getString(R.string.account_delete_dlg_title),
-                getString(R.string.account_delete_dlg_instructions_fmt, getAccount().description),
-                getString(R.string.okay_action),
-                getString(R.string.cancel_action)
+            DIALOG_DELETE_ACCOUNT,
+            getString(R.string.account_delete_dlg_title),
+            getString(R.string.account_delete_dlg_instructions_fmt, getAccount().description),
+            getString(R.string.okay_action),
+            getString(R.string.cancel_action)
         )
         dialogFragment.setTargetFragment(this, REQUEST_DELETE_ACCOUNT)
         dialogFragment.show(requireFragmentManager(), TAG_DELETE_ACCOUNT_CONFIRMATION)
@@ -380,12 +380,12 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val DELETE_POLICY_MARK_AS_READ = "MARK_AS_READ"
 
         private val PRE_SDK26_NOTIFICATION_PREFERENCES = arrayOf(
-                "account_ringtone",
-                "account_vibrate",
-                "account_vibrate_pattern",
-                "account_vibrate_times",
-                "account_led",
-                "led_color"
+            "account_ringtone",
+            "account_vibrate",
+            "account_vibrate_pattern",
+            "account_vibrate_times",
+            "account_led",
+            "led_color"
         )
 
         private const val DIALOG_DELETE_ACCOUNT = 1
@@ -393,7 +393,8 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
         private const val TAG_DELETE_ACCOUNT_CONFIRMATION = "delete_account_confirmation"
 
         fun create(accountUuid: String, rootKey: String?) = AccountSettingsFragment().withArguments(
-                ARG_ACCOUNT_UUID to accountUuid,
-                PreferenceFragmentCompat.ARG_PREFERENCE_ROOT to rootKey)
+            ARG_ACCOUNT_UUID to accountUuid,
+            PreferenceFragmentCompat.ARG_PREFERENCE_ROOT to rootKey
+        )
     }
 }

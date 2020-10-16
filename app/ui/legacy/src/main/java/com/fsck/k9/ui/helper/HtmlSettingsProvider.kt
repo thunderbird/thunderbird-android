@@ -7,12 +7,12 @@ import com.fsck.k9.ui.base.ThemeManager
 
 class HtmlSettingsProvider(private val themeManager: ThemeManager) {
     fun createForMessageView() = HtmlSettings(
-            useDarkMode = themeManager.messageViewTheme == Theme.DARK,
-            useFixedWidthFont = K9.isUseMessageViewFixedWidthFont
+        useDarkMode = themeManager.messageViewTheme == Theme.DARK,
+        useFixedWidthFont = K9.isUseMessageViewFixedWidthFont
     )
 
     fun createForMessageCompose() = HtmlSettings(
-            useDarkMode = themeManager.messageComposeTheme == Theme.DARK,
-            useFixedWidthFont = false
+        useDarkMode = themeManager.messageComposeTheme == Theme.DARK,
+        useFixedWidthFont = false
     )
 }

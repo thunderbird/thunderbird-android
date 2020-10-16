@@ -172,7 +172,7 @@ class MessageListAdapter internal constructor(
             val beforePreviewText = if (appearance.senderAboveSubject) subject else displayName
             val sigil = recipientSigil(toMe, ccMe)
             val messageStringBuilder = SpannableStringBuilder(sigil)
-                    .append(beforePreviewText)
+                .append(beforePreviewText)
             if (appearance.previewLines > 0) {
                 val preview = getPreview(isMessageEncrypted, previewText)
                 messageStringBuilder.append(" ").append(preview)
@@ -214,10 +214,10 @@ class MessageListAdapter internal constructor(
 
         // Set span (color) for preview message
         previewText.setSpan(
-                ForegroundColorSpan(previewTextColor),
-                beforePreviewLength,
-                previewText.length,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            ForegroundColorSpan(previewTextColor),
+            beforePreviewLength,
+            previewText.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
     }
 

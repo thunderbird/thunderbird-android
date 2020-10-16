@@ -37,11 +37,11 @@ class AutocryptPreferEncryptDialogFragment : DialogFragment() {
         }
 
         return AlertDialog.Builder(requireContext())
-                // TODO add autocrypt logo?
-                // .setIcon(R.drawable.autocrypt)
-                .setView(view)
-                .setPositiveButton(R.string.done_action, null)
-                .create()
+            // TODO add autocrypt logo?
+            // .setIcon(R.drawable.autocrypt)
+            .setView(view)
+            .setPositiveButton(R.string.done_action, null)
+            .create()
     }
 
     private fun TextView.makeLinksClickable() {

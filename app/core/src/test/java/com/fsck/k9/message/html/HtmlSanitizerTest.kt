@@ -9,7 +9,8 @@ class HtmlSanitizerTest {
 
     @Test
     fun shouldRemoveMetaRefreshInHead() {
-        val html = """
+        val html =
+            """
             <html>
             <head><meta http-equiv="refresh" content="1; URL=http://example.com/"></head>
             <body>Message</body>
@@ -23,7 +24,8 @@ class HtmlSanitizerTest {
 
     @Test
     fun shouldRemoveMetaRefreshBetweenHeadAndBody() {
-        val html = """
+        val html =
+            """
             <html>
             <head></head>
             <meta http-equiv="refresh" content="1; URL=http://example.com/">
@@ -38,11 +40,13 @@ class HtmlSanitizerTest {
 
     @Test
     fun shouldRemoveMetaRefreshInBody() {
-        val html = """
+        val html =
+            """
             <html>
             <head></head>
             <body><meta http-equiv="refresh" content="1; URL=http://example.com/">Message</body>
-            </html>""".trimIndent().trimLineBreaks()
+            </html>
+            """.trimIndent().trimLineBreaks()
 
         val result = htmlSanitizer.sanitize(html)
 
@@ -51,7 +55,8 @@ class HtmlSanitizerTest {
 
     @Test
     fun shouldRemoveMetaRefreshWithUpperCaseAttributeValue() {
-        val html = """
+        val html =
+            """
             <html>
             <head><meta http-equiv="REFRESH" content="1; URL=http://example.com/"></head>
             <body>Message</body>
@@ -65,7 +70,8 @@ class HtmlSanitizerTest {
 
     @Test
     fun shouldRemoveMetaRefreshWithMixedCaseAttributeValue() {
-        val html = """
+        val html =
+            """
             <html>
             <head><meta http-equiv="Refresh" content="1; URL=http://example.com/"></head>
             <body>Message</body>
@@ -79,7 +85,8 @@ class HtmlSanitizerTest {
 
     @Test
     fun shouldRemoveMetaRefreshWithoutQuotesAroundAttributeValue() {
-        val html = """
+        val html =
+            """
             <html>
             <head><meta http-equiv=refresh content="1; URL=http://example.com/"></head>
             <body>Message</body>
@@ -93,7 +100,8 @@ class HtmlSanitizerTest {
 
     @Test
     fun shouldRemoveMetaRefreshWithSpacesInAttributeValue() {
-        val html = """
+        val html =
+            """
             <html>
             <head><meta http-equiv="refresh " content="1; URL=http://example.com/"></head>
             <body>Message</body>
@@ -107,7 +115,8 @@ class HtmlSanitizerTest {
 
     @Test
     fun shouldRemoveMultipleMetaRefreshTags() {
-        val html = """
+        val html =
+            """
             <html>
             <head><meta http-equiv="refresh" content="1; URL=http://example.com/"></head>
             <body><meta http-equiv="refresh" content="1; URL=http://example.com/">Message</body>
@@ -121,7 +130,8 @@ class HtmlSanitizerTest {
 
     @Test
     fun shouldRemoveMetaRefreshButKeepOtherMetaTags() {
-        val html = """
+        val html =
+            """
             <html>
             <head>
             <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -145,7 +155,8 @@ class HtmlSanitizerTest {
 
     @Test
     fun shouldProduceValidHtmlFromHtmlWithXmlDeclaration() {
-        val html = """
+        val html =
+            """
             <?xml version="1.0" encoding="UTF-8"?>
             <html>
             <head></head>
@@ -171,7 +182,8 @@ class HtmlSanitizerTest {
 
     @Test
     fun shouldHtmlEncodeXmlDirectives() {
-        val html = """
+        val html =
+            """
             <html>
             <head></head>
             <body>
@@ -212,7 +224,8 @@ class HtmlSanitizerTest {
 
     @Test
     fun shouldKeepMapAreaTags() {
-        val html = """
+        val html =
+            """
             <html>
             <head></head>
             <body>
@@ -232,7 +245,8 @@ class HtmlSanitizerTest {
 
     @Test
     fun shouldKeepImgUsemap() {
-        val html = """
+        val html =
+            """
             <html>
             <head></head>
             <body><img src="http://domain.com/image.jpg" usemap="#planetmap"></body>
@@ -246,7 +260,8 @@ class HtmlSanitizerTest {
 
     @Test
     fun shouldKeepAllowedElementsInHeadAndSkipTheRest() {
-        val html = """
+        val html =
+            """
             <html>
             <head>
             <title>remove this</title>
@@ -288,7 +303,8 @@ class HtmlSanitizerTest {
 
     @Test
     fun shouldKeepUris() {
-        val html = """
+        val html =
+            """
             <html>
             <body>
             <a href="http://example.com/index.html">HTTP</a>
@@ -326,7 +342,8 @@ class HtmlSanitizerTest {
 
     @Test
     fun shouldKeepDirAttribute() {
-        val html = """
+        val html =
+            """
             <html>
             <head></head>
             <body><table><tbody><tr><td dir="rtl"></td></tr></tbody></table></body>
@@ -340,7 +357,8 @@ class HtmlSanitizerTest {
 
     @Test
     fun shouldKeepAllowedBodyAttributes() {
-        val html = """
+        val html =
+            """
             <html>
             <body style="color: #fff" onload="alert()" class="body" id></body>
             </html>

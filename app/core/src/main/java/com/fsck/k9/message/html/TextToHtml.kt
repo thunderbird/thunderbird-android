@@ -5,8 +5,8 @@ import java.util.ArrayDeque
 class TextToHtml private constructor(private val text: CharSequence, private val html: StringBuilder) {
     fun appendAsHtmlFragment() {
         val modifications = HTML_MODIFIERS
-                .flatMap { it.findModifications(text) }
-                .sortedBy { it.startIndex }
+            .flatMap { it.findModifications(text) }
+            .sortedBy { it.startIndex }
 
         val modificationStack = ArrayDeque<HtmlModification.Wrap>()
         var currentIndex = 0
@@ -21,8 +21,10 @@ class TextToHtml private constructor(private val text: CharSequence, private val
             appendHtmlEncoded(currentIndex, modification.startIndex)
 
             if (modification.endIndex > modificationStack.peek()?.endIndex ?: Int.MAX_VALUE) {
-                error("HtmlModification $modification must be fully contained within " +
-                    "outer HtmlModification ${modificationStack.peek()}")
+                error(
+                    "HtmlModification $modification must be fully contained within " +
+                        "outer HtmlModification ${modificationStack.peek()}"
+                )
             }
 
             when (modification) {

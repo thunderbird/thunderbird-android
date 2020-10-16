@@ -68,8 +68,10 @@ class NotificationHelper(
         account: Account,
         channelType: NotificationChannelManager.ChannelType
     ): NotificationCompat.Builder {
-        return NotificationCompat.Builder(context,
-                channelUtils.getChannelIdFor(account, channelType))
+        return NotificationCompat.Builder(
+            context,
+            channelUtils.getChannelIdFor(account, channelType)
+        )
     }
 
     companion object {

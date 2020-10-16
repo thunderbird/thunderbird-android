@@ -24,7 +24,8 @@ internal class CommandFetchMessage(private val imapStore: ImapStore) {
 
             // fun fact: ImapFolder.fetch can't handle getting STRUCTURE at same time as headers
             if (fetchProfile.contains(FetchProfile.Item.STRUCTURE) &&
-                    fetchProfile.contains(FetchProfile.Item.ENVELOPE)) {
+                fetchProfile.contains(FetchProfile.Item.ENVELOPE)
+            ) {
                 val headerFetchProfile = fetchProfile.without(FetchProfile.Item.STRUCTURE)
                 val structureFetchProfile = FetchProfile().apply { add(FetchProfile.Item.STRUCTURE) }
 

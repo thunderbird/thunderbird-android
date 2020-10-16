@@ -6,7 +6,8 @@ import org.junit.Test
 class EmailSectionExtractorTest {
     @Test
     fun simpleMessageWithoutQuotes() {
-        val message = """
+        val message =
+            """
             Hi Alice,
 
             are we still on for new Thursday?
@@ -39,7 +40,8 @@ class EmailSectionExtractorTest {
 
     @Test
     fun quoteFollowedByReply() {
-        val message = """
+        val message =
+            """
             Alice <alice@example.org> wrote:
             > Hi there
 
@@ -65,7 +67,8 @@ class EmailSectionExtractorTest {
 
     @Test
     fun replyFollowedByTwoQuoteLevels() {
-        val message = """
+        val message =
+            """
             Three
 
             Bob <bob@example.org> wrote:
@@ -94,9 +97,11 @@ class EmailSectionExtractorTest {
 
     @Test
     fun quoteEndingWithEmptyLineButNoNewline() {
-        val message = """
+        val message =
+            """
             > Quoted text
-            > """.trimIndent()
+            > 
+            """.trimIndent()
 
         val sections = EmailSectionExtractor.extract(message)
 
@@ -112,7 +117,8 @@ class EmailSectionExtractorTest {
 
     @Test
     fun chaosQuoting() {
-        val message = """
+        val message =
+            """
             >>> One
             > Three
             Four
@@ -142,7 +148,8 @@ class EmailSectionExtractorTest {
 
     @Test
     fun quotedSectionStartingWithEmptyLine() {
-        val message = """
+        val message =
+            """
             Quote header:
             > 
             > Quoted text
@@ -163,7 +170,7 @@ class EmailSectionExtractorTest {
 
     @Test
     fun quotedBlankLinesShouldNotContributeToIndentValue() {
-        val message =
+        val message = "" +
             ">\n" +
             ">  Quoted text\n" +
             ">   \n" +

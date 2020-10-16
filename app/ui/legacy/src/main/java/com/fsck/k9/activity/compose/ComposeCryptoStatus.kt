@@ -38,9 +38,10 @@ data class ComposeCryptoStatus(
         isEncryptSubject: Boolean,
         cryptoMode: CryptoMode
     ) : this(
-            openPgpProviderState, openPgpKeyId,
-            recipientAddresses.map { it.address.address },
-            isPgpInlineModeEnabled, isSenderPreferEncryptMutual, isReplyToEncrypted, isEncryptAllDrafts, isEncryptSubject, cryptoMode)
+        openPgpProviderState, openPgpKeyId,
+        recipientAddresses.map { it.address.address },
+        isPgpInlineModeEnabled, isSenderPreferEncryptMutual, isReplyToEncrypted, isEncryptAllDrafts, isEncryptSubject, cryptoMode
+    )
 
     private val recipientAutocryptStatusType = recipientAutocryptStatus?.type
     private val isRecipientsPreferEncryptMutual = recipientAutocryptStatus?.type?.isMutual ?: false
@@ -99,12 +100,12 @@ data class ComposeCryptoStatus(
     }
 
     val displayType =
-            displayTypeFromProviderError
-                    ?: displayTypeFromAutocryptError
-                    ?: displayTypeFromEnabledAutocryptStatus
-                    ?: displayTypeFromSignOnly
-                    ?: displayTypeFromEncryptionAvailable
-                    ?: CryptoStatusDisplayType.UNAVAILABLE
+        displayTypeFromProviderError
+            ?: displayTypeFromAutocryptError
+            ?: displayTypeFromEnabledAutocryptStatus
+            ?: displayTypeFromSignOnly
+            ?: displayTypeFromEncryptionAvailable
+            ?: CryptoStatusDisplayType.UNAVAILABLE
 
     val specialModeDisplayType = when {
         openPgpProviderState != OpenPgpProviderState.OK -> CryptoSpecialModeDisplayType.NONE
@@ -140,16 +141,16 @@ data class ComposeCryptoStatus(
     override fun getRecipientAddresses() = recipientAddresses.toTypedArray()
 
     fun withRecipientAutocryptStatus(recipientAutocryptStatusType: RecipientAutocryptStatus) = ComposeCryptoStatus(
-            openPgpProviderState = openPgpProviderState,
-            cryptoMode = cryptoMode,
-            openPgpKeyId = openPgpKeyId,
-            isPgpInlineModeEnabled = isPgpInlineModeEnabled,
-            isSenderPreferEncryptMutual = isSenderPreferEncryptMutual,
-            isReplyToEncrypted = isReplyToEncrypted,
-            isEncryptAllDrafts = isEncryptAllDrafts,
-            isEncryptSubject = isEncryptSubject,
-            recipientAddresses = recipientAddresses,
-            recipientAutocryptStatus = recipientAutocryptStatusType
+        openPgpProviderState = openPgpProviderState,
+        cryptoMode = cryptoMode,
+        openPgpKeyId = openPgpKeyId,
+        isPgpInlineModeEnabled = isPgpInlineModeEnabled,
+        isSenderPreferEncryptMutual = isSenderPreferEncryptMutual,
+        isReplyToEncrypted = isReplyToEncrypted,
+        isEncryptAllDrafts = isEncryptAllDrafts,
+        isEncryptSubject = isEncryptSubject,
+        recipientAddresses = recipientAddresses,
+        recipientAutocryptStatus = recipientAutocryptStatusType
     )
 
     enum class SendErrorState {

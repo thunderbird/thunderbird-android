@@ -36,12 +36,14 @@ class TextQuoteCreatorTest : RobolectricTest() {
 
         val quote = createQuote(messageBody, quoteStyle, quotePrefix)
 
-        assertThat(quote).isEqualTo("""
+        assertThat(quote).isEqualTo(
+            """
             On January 18, 1970 7:53:41 PM UTC, Alice <alice@sender.example> wrote:
             > Line 1
             > Line 2
             > Line 3
-            """.trimIndent().crlf())
+            """.trimIndent().crlf()
+        )
     }
 
     @Test
@@ -52,16 +54,19 @@ class TextQuoteCreatorTest : RobolectricTest() {
 
         val quote = createQuote(messageBody, quoteStyle, quotePrefix)
 
-        assertThat(quote).isEqualTo("""
+        assertThat(quote).isEqualTo(
+            """
             On January 18, 1970 7:53:41 PM UTC, Alice <alice@sender.example> wrote:
             $1\t Line 1
             $1\t Line 2
-            """.trimIndent().crlf())
+            """.trimIndent().crlf()
+        )
     }
 
     @Test
     fun prefixQuote_withLongLines() {
-        val messageBody = """
+        val messageBody =
+            """
             [-------] [-------] [-------] [-------] [-------] [-------] [-------] [-------] [-------] [-------]
             [-------------------------------------------------------------------------------------------------]
             """.trimIndent().crlf()
@@ -70,11 +75,13 @@ class TextQuoteCreatorTest : RobolectricTest() {
 
         val quote = createQuote(messageBody, quoteStyle, quotePrefix)
 
-        assertThat(quote).isEqualTo("""
+        assertThat(quote).isEqualTo(
+            """
             On January 18, 1970 7:53:41 PM UTC, Alice <alice@sender.example> wrote:
             > [-------] [-------] [-------] [-------] [-------] [-------] [-------] [-------] [-------] [-------]
             > [-------------------------------------------------------------------------------------------------]
-            """.trimIndent().crlf())
+            """.trimIndent().crlf()
+        )
     }
 
     @Test
@@ -84,7 +91,8 @@ class TextQuoteCreatorTest : RobolectricTest() {
 
         val quote = createQuote(messageBody, quoteStyle)
 
-        assertThat(quote).isEqualTo("""
+        assertThat(quote).isEqualTo(
+            """
 
             -------- Original Message --------
             From: Alice <alice@sender.example>
@@ -95,7 +103,8 @@ class TextQuoteCreatorTest : RobolectricTest() {
             Line 1
             Line 2
             Line 3
-            """.trimIndent().crlf())
+            """.trimIndent().crlf()
+        )
     }
 
     private fun createQuote(messageBody: String, quoteStyle: QuoteStyle, quotePrefix: String = ""): String {

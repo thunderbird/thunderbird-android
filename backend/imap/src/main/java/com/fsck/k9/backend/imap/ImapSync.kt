@@ -486,7 +486,8 @@ internal class ImapSync(
                         }
 
                         if (syncConfig.maximumAutoDownloadMessageSize > 0 &&
-                            message.size > syncConfig.maximumAutoDownloadMessageSize) {
+                            message.size > syncConfig.maximumAutoDownloadMessageSize
+                        ) {
                             largeMessages.add(message)
                         } else {
                             smallMessages.add(message)
