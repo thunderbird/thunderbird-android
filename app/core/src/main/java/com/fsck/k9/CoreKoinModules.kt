@@ -14,17 +14,17 @@ import com.fsck.k9.preferences.preferencesModule
 import com.fsck.k9.search.searchModule
 
 val coreModules = listOf(
-        mainModule,
-        openPgpModule,
-        autocryptModule,
-        mailStoreModule,
-        searchModule,
-        extractorModule,
-        htmlModule,
-        quoteModule,
-        coreNotificationModule,
-        controllerModule,
-        jobModule,
-        helperModule,
-        preferencesModule
+    mainModule,
+    openPgpModule,
+    autocryptModule,
+    mailStoreModule,
+    searchModule,
+    extractorModule,
+    htmlModule,
+    quoteModule,
+    coreNotificationModule,
+    controllerModule,
+    jobModule,
+    helperModule,
+    preferencesModule
 )

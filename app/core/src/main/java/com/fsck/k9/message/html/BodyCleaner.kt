@@ -6,8 +6,10 @@ import org.jsoup.safety.Whitelist as AllowList
 
 internal class BodyCleaner {
     private val cleaner: Cleaner
-    private val allowedBodyAttributes = setOf("id", "class", "dir", "lang", "style",
-        "alink", "background", "bgcolor", "link", "text", "vlink")
+    private val allowedBodyAttributes = setOf(
+        "id", "class", "dir", "lang", "style",
+        "alink", "background", "bgcolor", "link", "text", "vlink"
+    )
 
     init {
         val allowList = AllowList.relaxed()

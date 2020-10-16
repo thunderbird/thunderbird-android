@@ -6,7 +6,6 @@ import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.MessagingException
-import java.lang.Exception
 import rs.ltt.jmap.client.JmapClient
 import rs.ltt.jmap.client.api.ErrorResponseException
 import rs.ltt.jmap.client.api.InvalidSessionResourceException

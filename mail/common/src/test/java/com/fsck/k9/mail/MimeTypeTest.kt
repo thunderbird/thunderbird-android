@@ -4,7 +4,6 @@ import com.fsck.k9.mail.MimeType.Companion.toMimeType
 import com.fsck.k9.mail.MimeType.Companion.toMimeTypeOrNull
 import com.fsck.k9.mail.internet.getMimeTypes
 import com.google.common.truth.Truth.assertThat
-import java.lang.IllegalArgumentException
 import org.junit.Assert.fail
 import org.junit.Test
 

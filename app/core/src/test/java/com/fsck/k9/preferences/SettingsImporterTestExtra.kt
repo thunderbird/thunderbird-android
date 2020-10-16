@@ -1,4 +1,5 @@
 @file:JvmName("MessagingControllerTestExtra")
+
 package com.fsck.k9.preferences
 
 import com.fsck.k9.Account
@@ -38,7 +39,9 @@ fun setUpBackendManager() {
         }
     }
 
-    loadKoinModules(module {
-        single(override = true) { BackendManager(mapOf("imap" to backendFactory)) }
-    })
+    loadKoinModules(
+        module {
+            single(override = true) { BackendManager(mapOf("imap" to backendFactory)) }
+        }
+    )
 }

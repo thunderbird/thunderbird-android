@@ -59,17 +59,18 @@ class CommandSetFlag(
             Timber.v("Trying to mark up to %d messages in %s as read", limit, folderServerId)
 
             val queryEmailCall = jmapClient.call(
-                    QueryEmailMethodCall.builder()
-                            .accountId(accountId)
-                            .filter(EmailFilterCondition.builder()
-                                .inMailbox(folderServerId)
-                                .notKeyword("\$seen")
-                                .build()
-                            )
-                            .calculateTotal(true)
-                            .limit(limit)
+                QueryEmailMethodCall.builder()
+                    .accountId(accountId)
+                    .filter(
+                        EmailFilterCondition.builder()
+                            .inMailbox(folderServerId)
+                            .notKeyword("\$seen")
                             .build()
                     )
+                    .calculateTotal(true)
+                    .limit(limit)
+                    .build()
+            )
 
             val queryEmailResponse = queryEmailCall.getMainResponseBlocking<QueryEmailMethodResponse>()
             val numberOfReturnedEmails = queryEmailResponse.ids.size

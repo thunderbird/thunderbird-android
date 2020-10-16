@@ -96,11 +96,11 @@ class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFra
 
     private fun showClearFolderConfirmationDialog() {
         val dialogFragment = ConfirmationDialogFragment.newInstance(
-                DIALOG_CLEAR_FOLDER,
-                getString(R.string.dialog_confirm_clear_local_folder_title),
-                getString(R.string.dialog_confirm_clear_local_folder_message),
-                getString(R.string.dialog_confirm_clear_local_folder_action),
-                getString(R.string.cancel_action)
+            DIALOG_CLEAR_FOLDER,
+            getString(R.string.dialog_confirm_clear_local_folder_title),
+            getString(R.string.dialog_confirm_clear_local_folder_message),
+            getString(R.string.dialog_confirm_clear_local_folder_action),
+            getString(R.string.cancel_action)
         )
         dialogFragment.setTargetFragment(this, REQUEST_CLEAR_FOLDER)
         dialogFragment.show(requireFragmentManager(), TAG_CLEAR_FOLDER_CONFIRMATION)

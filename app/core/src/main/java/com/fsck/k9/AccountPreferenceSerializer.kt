@@ -62,28 +62,38 @@ class AccountPreferenceSerializer(
             outboxFolderId = storage.getString("$accountUuid.outboxFolderId", null)?.toLongOrNull()
 
             val draftsFolderId = storage.getString("$accountUuid.draftsFolderId", null)?.toLongOrNull()
-            val draftsFolderSelection = getEnumStringPref<SpecialFolderSelection>(storage, "$accountUuid.draftsFolderSelection",
-                SpecialFolderSelection.AUTOMATIC)
+            val draftsFolderSelection = getEnumStringPref<SpecialFolderSelection>(
+                storage, "$accountUuid.draftsFolderSelection",
+                SpecialFolderSelection.AUTOMATIC
+            )
             setDraftsFolderId(draftsFolderId, draftsFolderSelection)
 
             val sentFolderId = storage.getString("$accountUuid.sentFolderId", null)?.toLongOrNull()
-            val sentFolderSelection = getEnumStringPref<SpecialFolderSelection>(storage, "$accountUuid.sentFolderSelection",
-                SpecialFolderSelection.AUTOMATIC)
+            val sentFolderSelection = getEnumStringPref<SpecialFolderSelection>(
+                storage, "$accountUuid.sentFolderSelection",
+                SpecialFolderSelection.AUTOMATIC
+            )
             setSentFolderId(sentFolderId, sentFolderSelection)
 
             val trashFolderId = storage.getString("$accountUuid.trashFolderId", null)?.toLongOrNull()
-            val trashFolderSelection = getEnumStringPref<SpecialFolderSelection>(storage, "$accountUuid.trashFolderSelection",
-                SpecialFolderSelection.AUTOMATIC)
+            val trashFolderSelection = getEnumStringPref<SpecialFolderSelection>(
+                storage, "$accountUuid.trashFolderSelection",
+                SpecialFolderSelection.AUTOMATIC
+            )
             setTrashFolderId(trashFolderId, trashFolderSelection)
 
             val archiveFolderId = storage.getString("$accountUuid.archiveFolderId", null)?.toLongOrNull()
-            val archiveFolderSelection = getEnumStringPref<SpecialFolderSelection>(storage, "$accountUuid.archiveFolderSelection",
-                SpecialFolderSelection.AUTOMATIC)
+            val archiveFolderSelection = getEnumStringPref<SpecialFolderSelection>(
+                storage, "$accountUuid.archiveFolderSelection",
+                SpecialFolderSelection.AUTOMATIC
+            )
             setArchiveFolderId(archiveFolderId, archiveFolderSelection)
 
             val spamFolderId = storage.getString("$accountUuid.spamFolderId", null)?.toLongOrNull()
-            val spamFolderSelection = getEnumStringPref<SpecialFolderSelection>(storage, "$accountUuid.spamFolderSelection",
-                SpecialFolderSelection.AUTOMATIC)
+            val spamFolderSelection = getEnumStringPref<SpecialFolderSelection>(
+                storage, "$accountUuid.spamFolderSelection",
+                SpecialFolderSelection.AUTOMATIC
+            )
             setSpamFolderId(spamFolderId, spamFolderSelection)
 
             autoExpandFolderId = storage.getString("$accountUuid.autoExpandFolderId", null)?.toLongOrNull()
@@ -108,8 +118,7 @@ class AccountPreferenceSerializer(
             isReplyAfterQuote = storage.getBoolean("$accountUuid.replyAfterQuote", DEFAULT_REPLY_AFTER_QUOTE)
             isStripSignature = storage.getBoolean("$accountUuid.stripSignature", DEFAULT_STRIP_SIGNATURE)
             for (type in NetworkType.values()) {
-                val useCompression = storage.getBoolean("$accountUuid.useCompression.$type",
-                        true)
+                val useCompression = storage.getBoolean("$accountUuid.useCompression.$type", true)
                 setCompression(type, useCompression)
             }
 
@@ -129,8 +138,10 @@ class AccountPreferenceSerializer(
             notificationSetting.vibratePattern = storage.getInt("$accountUuid.vibratePattern", 0)
             notificationSetting.vibrateTimes = storage.getInt("$accountUuid.vibrateTimes", 5)
             notificationSetting.isRingEnabled = storage.getBoolean("$accountUuid.ring", true)
-            notificationSetting.ringtone = storage.getString("$accountUuid.ringtone",
-                    "content://settings/system/notification_sound")
+            notificationSetting.ringtone = storage.getString(
+                "$accountUuid.ringtone",
+                "content://settings/system/notification_sound"
+            )
             notificationSetting.setLed(storage.getBoolean("$accountUuid.led", true))
             notificationSetting.ledColor = storage.getInt("$accountUuid.ledColor", chipColor)
 
@@ -532,8 +543,10 @@ class AccountPreferenceSerializer(
             try {
                 java.lang.Enum.valueOf<T>(defaultEnum.declaringClass, stringPref)
             } catch (ex: IllegalArgumentException) {
-                Timber.w(ex, "Unable to convert preference key [%s] value [%s] to enum of type %s",
-                        key, stringPref, defaultEnum.declaringClass)
+                Timber.w(
+                    ex, "Unable to convert preference key [%s] value [%s] to enum of type %s",
+                    key, stringPref, defaultEnum.declaringClass
+                )
 
                 defaultEnum
             }
@@ -634,6 +647,7 @@ class AccountPreferenceSerializer(
 
         @JvmField
         val DEFAULT_MESSAGE_FORMAT = MessageFormat.HTML
+
         @JvmField
         val DEFAULT_QUOTE_STYLE = QuoteStyle.PREFIX
         const val DEFAULT_MESSAGE_FORMAT_AUTO = false

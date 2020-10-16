@@ -9,7 +9,7 @@ enum class SendState(val databaseName: String) {
         @JvmStatic
         fun fromDatabaseName(databaseName: String): SendState {
             return SendState.values().firstOrNull { it.databaseName == databaseName }
-                    ?: throw IllegalArgumentException("Unknown value: $databaseName")
+                ?: throw IllegalArgumentException("Unknown value: $databaseName")
         }
     }
 }

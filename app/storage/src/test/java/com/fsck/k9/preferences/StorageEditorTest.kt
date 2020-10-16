@@ -23,7 +23,7 @@ class StorageEditorTest : K9RobolectricTest() {
 
     private val workingMap = mutableMapOf<String, String>()
     private val storageMap = mapOf(
-            "storage-key" to "storage-value"
+        "storage-key" to "storage-value"
     )
 
     @Before

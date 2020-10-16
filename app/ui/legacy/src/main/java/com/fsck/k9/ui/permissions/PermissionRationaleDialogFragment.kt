@@ -25,8 +25,10 @@ class PermissionRationaleDialogFragment : DialogFragment() {
             .setMessage(permission.rationaleMessage)
             .setPositiveButton(R.string.okay_action) { _, _ ->
                 val permissionUiHelper = requireActivity() as? PermissionUiHelper
-                        ?: throw AssertionError("Activities using PermissionRationaleDialogFragment need to " +
-                            "implement PermissionUiHelper")
+                    ?: throw AssertionError(
+                        "Activities using PermissionRationaleDialogFragment need to " +
+                            "implement PermissionUiHelper"
+                    )
 
                 permissionUiHelper.requestPermission(permission)
             }.create()

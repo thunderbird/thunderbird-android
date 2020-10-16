@@ -124,9 +124,9 @@ object K9 : EarlyInit {
         }
 
         preferences.createStorageEditor()
-                .remove("openPgpProvider")
-                .remove("openPgpSupportSignOnly")
-                .commit()
+            .remove("openPgpProvider")
+            .remove("openPgpSupportSignOnly")
+            .commit()
     }
 
     @JvmStatic
@@ -376,8 +376,10 @@ object K9 : EarlyInit {
         notificationHideSubject = storage.getEnum("notificationHideSubject", NotificationHideSubject.NEVER)
         notificationQuickDeleteBehaviour = storage.getEnum("notificationQuickDelete", NotificationQuickDelete.ALWAYS)
 
-        lockScreenNotificationVisibility = storage.getEnum("lockScreenNotificationVisibility",
-                LockScreenNotificationVisibility.MESSAGE_COUNT)
+        lockScreenNotificationVisibility = storage.getEnum(
+            "lockScreenNotificationVisibility",
+            LockScreenNotificationVisibility.MESSAGE_COUNT
+        )
 
         splitViewMode = storage.getEnum("splitViewMode", SplitViewMode.NEVER)
 

@@ -46,7 +46,8 @@ class ProvidersXmlDiscoveryTest : RobolectricTest() {
     @Test
     fun discover_withUnknownDomain_shouldReturnNull() {
         val connectionSettings = providersXmlDiscovery.discover(
-            "user@not.present.in.providers.xml.example", DiscoveryTarget.INCOMING_AND_OUTGOING)
+            "user@not.present.in.providers.xml.example", DiscoveryTarget.INCOMING_AND_OUTGOING
+        )
 
         assertThat(connectionSettings).isNull()
     }

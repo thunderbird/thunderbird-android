@@ -22,10 +22,10 @@ private val mainAppModule = module {
 }
 
 val appModules = listOf(
-        mainAppModule,
-        notificationModule,
-        resourcesModule,
-        backendsModule,
-        storageModule,
-        uiAddAccountModule
+    mainAppModule,
+    notificationModule,
+    resourcesModule,
+    backendsModule,
+    storageModule,
+    uiAddAccountModule
 )

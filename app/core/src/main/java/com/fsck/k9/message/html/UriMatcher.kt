@@ -5,19 +5,19 @@ import java.util.Locale
 object UriMatcher {
     private val SUPPORTED_URIS = { httpUriParser: HttpUriParser ->
         mapOf(
-                "ethereum:" to EthereumUriParser(),
-                "bitcoin:" to BitcoinUriParser(),
-                "http:" to httpUriParser,
-                "https:" to httpUriParser,
-                "rtsp:" to httpUriParser
+            "ethereum:" to EthereumUriParser(),
+            "bitcoin:" to BitcoinUriParser(),
+            "http:" to httpUriParser,
+            "https:" to httpUriParser,
+            "rtsp:" to httpUriParser
         )
     }.invoke(HttpUriParser())
 
     private const val SCHEME_SEPARATORS = "\\s(\\n<"
     private const val ALLOWED_SEPARATORS_PATTERN = "(?:^|[$SCHEME_SEPARATORS])"
     private val URI_SCHEME = Regex(
-            "$ALLOWED_SEPARATORS_PATTERN(${ SUPPORTED_URIS.keys.joinToString("|") })",
-            RegexOption.IGNORE_CASE
+        "$ALLOWED_SEPARATORS_PATTERN(${ SUPPORTED_URIS.keys.joinToString("|") })",
+        RegexOption.IGNORE_CASE
     )
 
     fun findUris(text: CharSequence): List<UriMatch> {

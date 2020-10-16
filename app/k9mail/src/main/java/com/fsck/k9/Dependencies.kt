@@ -18,11 +18,13 @@ import org.koin.dsl.module
 
 private val mainAppModule = module {
     single { App.appConfig }
-    single { MessagingListenerProvider(
+    single {
+        MessagingListenerProvider(
             listOf(
-                    get<UnreadWidgetUpdateListener>(),
-                    get<MessageListWidgetUpdateListener>()
-            ))
+                get<UnreadWidgetUpdateListener>(),
+                get<MessageListWidgetUpdateListener>()
+            )
+        )
     }
     single(named("controllerExtensions")) { emptyList<ControllerExtension>() }
     single<EncryptionExtractor> { OpenPgpEncryptionExtractor.newInstance() }
@@ -30,11 +32,11 @@ private val mainAppModule = module {
 }
 
 val appModules = listOf(
-        mainAppModule,
-        messageListWidgetModule,
-        unreadWidgetModule,
-        notificationModule,
-        resourcesModule,
-        backendsModule,
-        storageModule
+    mainAppModule,
+    messageListWidgetModule,
+    unreadWidgetModule,
+    notificationModule,
+    resourcesModule,
+    backendsModule,
+    storageModule
 )

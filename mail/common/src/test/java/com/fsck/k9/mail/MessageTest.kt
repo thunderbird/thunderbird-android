@@ -66,7 +66,8 @@ class MessageTest {
 
         message.writeTo(out)
 
-        assertThat(out.toString()).isEqualTo("""
+        assertThat(out.toString()).isEqualTo(
+            """
             From: from@example.com
             To: to@example.com
             Subject: Test Message
@@ -158,7 +159,8 @@ class MessageTest {
 
             ------Boundary103--
 
-            """.trimIndent().crlf())
+            """.trimIndent().crlf()
+        )
     }
 
     @Test
@@ -170,7 +172,8 @@ class MessageTest {
 
         bodyPart.writeTo(out)
 
-        assertThat(out.toString()).isEqualTo("""
+        assertThat(out.toString()).isEqualTo(
+            """
             Content-Type: multipart/mixed;
              boundary=----Boundary103
             Content-Transfer-Encoding: 7bit
@@ -257,7 +260,8 @@ class MessageTest {
 
             ------Boundary103--
 
-            """.trimIndent().crlf())
+            """.trimIndent().crlf()
+        )
     }
 
     private fun sampleMessage(): MimeMessage {
@@ -307,7 +311,8 @@ class MessageTest {
     }
 
     private fun textBodyPart(): MimeBodyPart {
-        val textBody = TextBody("""
+        val textBody = TextBody(
+            """
             Testing.
             This is a text body with some greek characters.
             αβγδεζηθ

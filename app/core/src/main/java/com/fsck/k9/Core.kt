@@ -61,16 +61,17 @@ object Core : EarlyInit {
 
         for (clazz in appConfig.componentsToDisable) {
             val alreadyEnabled = pm.getComponentEnabledSetting(ComponentName(context, clazz)) ==
-                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED
 
             if (enabled != alreadyEnabled) {
                 pm.setComponentEnabledSetting(
-                        ComponentName(context, clazz),
-                        if (enabled)
-                            PackageManager.COMPONENT_ENABLED_STATE_ENABLED
-                        else
-                            PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                        PackageManager.DONT_KILL_APP)
+                    ComponentName(context, clazz),
+                    if (enabled)
+                        PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+                    else
+                        PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                    PackageManager.DONT_KILL_APP
+                )
             }
         }
 
@@ -94,16 +95,19 @@ object Core : EarlyInit {
         val queue = SynchronousQueue<Handler>()
 
         // starting a new thread to handle unmount events
-        Thread(Runnable {
-            Looper.prepare()
-            try {
-                queue.put(Handler())
-            } catch (e: InterruptedException) {
-                Timber.e(e)
-            }
+        Thread(
+            Runnable {
+                Looper.prepare()
+                try {
+                    queue.put(Handler())
+                } catch (e: InterruptedException) {
+                    Timber.e(e)
+                }
 
-            Looper.loop()
-        }, "Unmount-thread").start()
+                Looper.loop()
+            },
+            "Unmount-thread"
+        ).start()
 
         try {
             val storageGoneHandler = queue.take()

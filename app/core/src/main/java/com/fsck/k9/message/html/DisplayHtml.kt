@@ -9,19 +9,19 @@ class DisplayHtml(private val settings: HtmlSettings) {
     fun wrapMessageContent(messageContent: CharSequence): String {
         // Include a meta tag so the WebView will not use a fixed viewport width of 980 px
         return "<html dir=\"auto\"><head><meta name=\"viewport\" content=\"width=device-width\"/>" +
-                cssStyleTheme() +
-                cssStylePre() +
-                "</head><body>" +
-                messageContent +
-                "</body></html>"
+            cssStyleTheme() +
+            cssStylePre() +
+            "</head><body>" +
+            messageContent +
+            "</body></html>"
     }
 
     fun cssStyleTheme(): String {
         return if (settings.useDarkMode) {
             "<style type=\"text/css\">" +
-                    "* { background: black ! important; color: #F3F3F3 !important }" +
-                    ":link, :link * { color: #CCFF33 !important }" +
-                    ":visited, :visited * { color: #551A8B !important }</style> "
+                "* { background: black ! important; color: #F3F3F3 !important }" +
+                ":link, :link * { color: #CCFF33 !important }" +
+                ":visited, :visited * { color: #551A8B !important }</style> "
         } else {
             ""
         }
@@ -39,8 +39,8 @@ class DisplayHtml(private val settings: HtmlSettings) {
         val font = if (settings.useFixedWidthFont) "monospace" else "sans-serif"
 
         return "<style type=\"text/css\"> pre." + EmailTextToHtml.K9MAIL_CSS_CLASS +
-                " {white-space: pre-wrap; word-wrap:break-word; " +
-                "font-family: " + font + "; margin-top: 0px}</style>"
+            " {white-space: pre-wrap; word-wrap:break-word; " +
+            "font-family: " + font + "; margin-top: 0px}</style>"
     }
 
     fun cssStyleSignature(): String {

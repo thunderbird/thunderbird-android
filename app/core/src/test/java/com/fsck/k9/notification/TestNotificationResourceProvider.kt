@@ -22,7 +22,7 @@ class TestNotificationResourceProvider : NotificationResourceProvider {
     override fun authenticationErrorTitle(): String = "Authentication failed"
 
     override fun authenticationErrorBody(accountName: String): String =
-            "Authentication failed for $accountName. Update your server settings."
+        "Authentication failed for $accountName. Update your server settings."
 
     override fun certificateErrorTitle(accountName: String): String = "Certificate error for $accountName"
 
@@ -31,7 +31,7 @@ class TestNotificationResourceProvider : NotificationResourceProvider {
     override fun newMailTitle(): String = "New mail"
 
     override fun newMailUnreadMessageCount(unreadMessageCount: Int, accountName: String): String =
-            "$unreadMessageCount Unread ($accountName)"
+        "$unreadMessageCount Unread ($accountName)"
 
     override fun newMessagesTitle(newMessagesCount: Int): String = when (newMessagesCount) {
         1 -> "1 new message"
@@ -39,7 +39,7 @@ class TestNotificationResourceProvider : NotificationResourceProvider {
     }
 
     override fun additionalMessages(overflowMessagesCount: Int, accountName: String): String =
-            "+ $overflowMessagesCount more on $accountName"
+        "+ $overflowMessagesCount more on $accountName"
 
     override fun previewEncrypted(): String = "*Encrypted*"
 
@@ -56,7 +56,7 @@ class TestNotificationResourceProvider : NotificationResourceProvider {
     override fun sendingMailBody(accountName: String): String = "Sending mail: $accountName"
 
     override fun checkingMailTicker(accountName: String, folderName: String): String =
-            "Checking mail: $accountName:$folderName"
+        "Checking mail: $accountName:$folderName"
 
     override fun checkingMailTitle(): String = "Checking mail"
 

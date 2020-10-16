@@ -69,7 +69,7 @@ class AccountSelectionSpinner : Spinner {
             val account = getItem(position) ?: error("No item at position $position")
 
             val view = convertView
-                    ?: LayoutInflater.from(context).inflate(R.layout.account_spinner_dropdown_item, parent, false)
+                ?: LayoutInflater.from(context).inflate(R.layout.account_spinner_dropdown_item, parent, false)
 
             return view.apply {
                 name.text = account.description

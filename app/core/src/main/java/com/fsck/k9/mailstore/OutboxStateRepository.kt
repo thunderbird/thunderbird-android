@@ -8,10 +8,10 @@ class OutboxStateRepository(private val database: LockableDatabase, private val 
     fun getOutboxState(messageId: Long): OutboxState {
         return database.execute(false) { db ->
             db.query(
-                    TABLE_NAME,
-                    COLUMNS,
-                    "$COLUMN_MESSAGE_ID = ?",
-                    arrayOf(messageId.toString()), null, null, null
+                TABLE_NAME,
+                COLUMNS,
+                "$COLUMN_MESSAGE_ID = ?",
+                arrayOf(messageId.toString()), null, null, null
             ).use { cursor ->
                 if (!cursor.moveToFirst()) {
                     throw IllegalStateException("No outbox_state entry for message with id $messageId")
@@ -49,20 +49,22 @@ class OutboxStateRepository(private val database: LockableDatabase, private val 
 
     fun incrementSendAttempts(messageId: Long) {
         database.execute(false) { db ->
-            db.execSQL("UPDATE $TABLE_NAME " +
+            db.execSQL(
+                "UPDATE $TABLE_NAME " +
                     "SET $COLUMN_NUMBER_OF_SEND_ATTEMPTS = $COLUMN_NUMBER_OF_SEND_ATTEMPTS + 1 " +
                     "WHERE $COLUMN_MESSAGE_ID = ?",
-                    arrayOf(messageId.toString())
+                arrayOf(messageId.toString())
             )
         }
     }
 
     fun decrementSendAttempts(messageId: Long) {
         database.execute(false) { db ->
-            db.execSQL("UPDATE $TABLE_NAME " +
+            db.execSQL(
+                "UPDATE $TABLE_NAME " +
                     "SET $COLUMN_NUMBER_OF_SEND_ATTEMPTS = $COLUMN_NUMBER_OF_SEND_ATTEMPTS - 1 " +
                     "WHERE $COLUMN_MESSAGE_ID = ?",
-                    arrayOf(messageId.toString())
+                arrayOf(messageId.toString())
             )
         }
     }
@@ -104,10 +106,10 @@ class OutboxStateRepository(private val database: LockableDatabase, private val 
         private const val COLUMN_ERROR = "error"
 
         private val COLUMNS = arrayOf(
-                COLUMN_SEND_STATE,
-                COLUMN_NUMBER_OF_SEND_ATTEMPTS,
-                COLUMN_ERROR_TIMESTAMP,
-                COLUMN_ERROR
+            COLUMN_SEND_STATE,
+            COLUMN_NUMBER_OF_SEND_ATTEMPTS,
+            COLUMN_ERROR_TIMESTAMP,
+            COLUMN_ERROR
         )
     }
 }

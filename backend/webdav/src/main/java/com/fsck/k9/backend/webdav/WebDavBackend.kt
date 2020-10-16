@@ -88,7 +88,7 @@ class WebDavBackend(
         messageServerIds: List<String>
     ): Map<String, String>? {
         val uidMapping = commandMoveOrCopyMessages
-                .moveMessages(sourceFolderServerId, targetFolderServerId, messageServerIds)
+            .moveMessages(sourceFolderServerId, targetFolderServerId, messageServerIds)
         if (uidMapping != null) {
             setFlag(targetFolderServerId, uidMapping.values.toList(), Flag.SEEN, true)
         }

@@ -37,11 +37,11 @@ class StoragePersisterTest : K9RobolectricTest() {
     @Test
     fun doInTransaction_put() {
         val operationCallback = prepareCallback(
-                persistOp = { ops -> ops.put("x", "y") },
-                onSuccess = { map ->
-                    assertEquals(1, map.size)
-                    assertEquals("y", map["x"])
-                }
+            persistOp = { ops -> ops.put("x", "y") },
+            onSuccess = { map ->
+                assertEquals(1, map.size)
+                assertEquals("y", map["x"])
+            }
         )
 
         storagePersister.doInTransaction(operationCallback)
@@ -55,10 +55,10 @@ class StoragePersisterTest : K9RobolectricTest() {
     fun doInTransaction_putAndThrow() {
         val exception = Exception("boom")
         val operationCallback = prepareCallback(
-                persistOp = { ops ->
-                    ops.put("x", "y")
-                    throw exception
-                }
+            persistOp = { ops ->
+                ops.put("x", "y")
+                throw exception
+            }
         )
 
         try {
@@ -76,9 +76,9 @@ class StoragePersisterTest : K9RobolectricTest() {
     @Test
     fun doInTransaction_remove() {
         val operationCallback = prepareCallback(
-                before = { map -> map["x"] = "y" },
-                persistOp = { ops -> ops.remove("x") },
-                onSuccess = { map -> assertTrue(map.isEmpty()) }
+            before = { map -> map["x"] = "y" },
+            persistOp = { ops -> ops.remove("x") },
+            onSuccess = { map -> assertTrue(map.isEmpty()) }
         )
 
         storagePersister.doInTransaction(operationCallback)
@@ -90,8 +90,8 @@ class StoragePersisterTest : K9RobolectricTest() {
     @Test
     fun doInTransaction_before_preserveButNotPersist() {
         val operationCallback = prepareCallback(
-                before = { map -> map["x"] = "y" },
-                onSuccess = { map -> assertEquals("y", map["x"]) }
+            before = { map -> map["x"] = "y" },
+            onSuccess = { map -> assertEquals("y", map["x"]) }
         )
 
         storagePersister.doInTransaction(operationCallback)

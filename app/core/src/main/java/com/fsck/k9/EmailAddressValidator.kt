@@ -20,8 +20,8 @@ class EmailAddressValidator {
         private const val HOST_NAME = "((($DOMAIN_LABEL\\.)+$TOP_LABEL)|$DOMAIN_LABEL)"
 
         private val EMAIL_ADDRESS_PATTERN = Pattern.compile(
-                "^($ATEXT+(\\.$ATEXT+)*|\"$QCONTENT+\")" +
-                        "\\@$HOST_NAME"
+            "^($ATEXT+(\\.$ATEXT+)*|\"$QCONTENT+\")" +
+                "\\@$HOST_NAME"
         )
     }
 }

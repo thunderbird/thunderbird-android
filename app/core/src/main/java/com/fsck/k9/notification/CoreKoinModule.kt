@@ -13,10 +13,10 @@ val coreNotificationModule = module {
     single { NotificationHelper(get(), get(), get()) }
     single {
         NotificationChannelManager(
-                get(),
-                Executors.newSingleThreadExecutor(),
-                get<Context>().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager,
-                get()
+            get(),
+            Executors.newSingleThreadExecutor(),
+            get<Context>().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager,
+            get()
         )
     }
     single { AccountPreferenceSerializer(get(), get()) }

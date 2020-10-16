@@ -14,7 +14,7 @@ class AccountRemoverService : JobIntentService(), KoinComponent {
 
     override fun onHandleWork(intent: Intent) {
         val accountUuid = intent.getStringExtra(ARG_ACCOUNT_UUID)
-                ?: throw IllegalArgumentException("No account UUID provided")
+            ?: throw IllegalArgumentException("No account UUID provided")
 
         accountRemover.removeAccount(accountUuid)
     }

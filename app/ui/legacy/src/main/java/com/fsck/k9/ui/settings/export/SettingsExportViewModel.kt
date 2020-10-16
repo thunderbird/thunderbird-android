@@ -35,19 +35,19 @@ class SettingsExportViewModel(
     private val includeGeneralSettings: Boolean
         get() {
             return savedSelection?.includeGeneralSettings
-                    ?: uiModel.settingsList.first { it is SettingsListItem.GeneralSettings }.selected
+                ?: uiModel.settingsList.first { it is SettingsListItem.GeneralSettings }.selected
         }
 
     private val selectedAccounts: Set<AccountUuid>
         get() {
             return savedSelection?.selectedAccountUuids
-                    ?: uiModel.settingsList.asSequence()
-                            .filterIsInstance<SettingsListItem.Account>()
-                            .filter { it.selected }
-                            .map {
-                                accountsMap[it.accountNumber] ?: error("Unknown account number: ${it.accountNumber}")
-                            }
-                            .toSet()
+                ?: uiModel.settingsList.asSequence()
+                    .filterIsInstance<SettingsListItem.Account>()
+                    .filter { it.selected }
+                    .map {
+                        accountsMap[it.accountNumber] ?: error("Unknown account number: ${it.accountNumber}")
+                    }
+                    .toSet()
         }
 
     fun getActionEvents(): LiveData<Action> = actionLiveData
@@ -86,14 +86,14 @@ class SettingsExportViewModel(
 
     fun initializeFromSavedState(savedInstanceState: Bundle) {
         savedSelection = SavedListItemSelection(
-                includeGeneralSettings = savedInstanceState.getBoolean(STATE_INCLUDE_GENERAL_SETTINGS),
-                selectedAccountUuids = savedInstanceState.getStringArray(STATE_SELECTED_ACCOUNTS)?.toSet() ?: emptySet()
+            includeGeneralSettings = savedInstanceState.getBoolean(STATE_INCLUDE_GENERAL_SETTINGS),
+            selectedAccountUuids = savedInstanceState.getStringArray(STATE_SELECTED_ACCOUNTS)?.toSet() ?: emptySet()
         )
 
         uiModel.apply {
             isSettingsListEnabled = savedInstanceState.getBoolean(STATE_SETTINGS_LIST_ENABLED)
             exportButton = ButtonState.valueOf(
-                    savedInstanceState.getString(STATE_EXPORT_BUTTON, ButtonState.DISABLED.name)
+                savedInstanceState.getString(STATE_EXPORT_BUTTON, ButtonState.DISABLED.name)
             )
             isShareButtonVisible = savedInstanceState.getBoolean(STATE_SHARE_BUTTON_VISIBLE)
             isProgressVisible = savedInstanceState.getBoolean(STATE_PROGRESS_VISIBLE)

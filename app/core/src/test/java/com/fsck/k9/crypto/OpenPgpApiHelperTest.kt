@@ -9,8 +9,8 @@ class OpenPgpApiHelperTest {
     @Test
     fun buildUserId_withName_shouldCreateOpenPgpAccountName() {
         val identity = Identity(
-                email = "user@domain.com",
-                name = "Name"
+            email = "user@domain.com",
+            name = "Name"
         )
 
         val result = OpenPgpApiHelper.buildUserId(identity)
@@ -21,7 +21,7 @@ class OpenPgpApiHelperTest {
     @Test
     fun buildUserId_withoutName_shouldCreateOpenPgpAccountName() {
         val identity = Identity(
-                email = "user@domain.com"
+            email = "user@domain.com"
         )
 
         val result = OpenPgpApiHelper.buildUserId(identity)

@@ -119,14 +119,17 @@ class SimpleHighlightView private constructor(context: Context, style: Int) : Fr
     }
 
     private fun setTarget(targetView: View) {
-        postDelayed({
-            if (canUpdateBitmap()) {
-                updateBitmap()
-            }
+        postDelayed(
+            {
+                if (canUpdateBitmap()) {
+                    updateBitmap()
+                }
 
-            val point = targetView.getHighlightPoint()
-            setHighlightPosition(point.x, point.y)
-        }, 100)
+                val point = targetView.getHighlightPoint()
+                setHighlightPosition(point.x, point.y)
+            },
+            100
+        )
     }
 
     private fun canUpdateBitmap(): Boolean {

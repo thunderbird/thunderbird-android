@@ -154,19 +154,29 @@ class ThunderbirdAutoconfigTest : RobolectricTest() {
 
         val connectionSettings = parser.parseSettings(input, "test@metacode.biz")
 
-        assertThat(connectionSettings).isEqualTo(DiscoveryResults(listOf(
-            DiscoveredServerSettings(
-                protocol = "imap", host = "imap.googlemail.com", port = 993,
-                security = ConnectionSecurity.SSL_TLS_REQUIRED, authType = AuthType.PLAIN,
-                username = "test@metacode.biz")
-        ), listOf()))
+        assertThat(connectionSettings).isEqualTo(
+            DiscoveryResults(
+                listOf(
+                    DiscoveredServerSettings(
+                        protocol = "imap",
+                        host = "imap.googlemail.com",
+                        port = 993,
+                        security = ConnectionSecurity.SSL_TLS_REQUIRED,
+                        authType = AuthType.PLAIN,
+                        username = "test@metacode.biz"
+                    )
+                ),
+                listOf()
+            )
+        )
     }
 
     @Test
     fun generatedUrls() {
         val autoDiscoveryAddress = ThunderbirdAutoconfigFetcher.getAutodiscoveryAddress("test@metacode.biz")
 
-        assertThat(autoDiscoveryAddress.toString()).isEqualTo("https://metacode.biz/" +
-                ".well-known/autoconfig/mail/config-v1.1.xml?emailaddress=test%40metacode.biz")
+        assertThat(autoDiscoveryAddress.toString()).isEqualTo(
+            "https://metacode.biz/.well-known/autoconfig/mail/config-v1.1.xml?emailaddress=test%40metacode.biz"
+        )
     }
 }

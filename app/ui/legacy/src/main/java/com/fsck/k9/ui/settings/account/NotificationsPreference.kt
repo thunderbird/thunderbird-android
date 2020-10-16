@@ -17,8 +17,10 @@ class NotificationsPreference
 constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = TypedArrayUtils.getAttr(context, androidx.preference.R.attr.preferenceStyle,
-            android.R.attr.preferenceStyle),
+    defStyleAttr: Int = TypedArrayUtils.getAttr(
+        context, androidx.preference.R.attr.preferenceStyle,
+        android.R.attr.preferenceStyle
+    ),
     defStyleRes: Int = 0
 ) : Preference(context, attrs, defStyleAttr, defStyleRes) {
 
@@ -31,7 +33,8 @@ constructor(
     companion object {
         init {
             PreferenceFragmentCompat.registerPreferenceFragment(
-                    NotificationsPreference::class.java, DialogFragment::class.java)
+                NotificationsPreference::class.java, DialogFragment::class.java
+            )
         }
     }
 }

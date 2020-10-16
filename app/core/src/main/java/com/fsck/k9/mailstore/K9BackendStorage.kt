@@ -42,11 +42,12 @@ class K9BackendStorage(
     override fun getExtraString(name: String): String? {
         return database.execute(false) { db ->
             val cursor = db.query(
-                    "account_extra_values",
-                    arrayOf("value_text"),
-                    "name = ?",
-                    arrayOf(name),
-                    null, null, null)
+                "account_extra_values",
+                arrayOf("value_text"),
+                "name = ?",
+                arrayOf(name),
+                null, null, null
+            )
             cursor.use {
                 if (it.moveToFirst()) {
                     it.getStringOrNull(0)
@@ -70,11 +71,12 @@ class K9BackendStorage(
     override fun getExtraNumber(name: String): Long? {
         return database.execute(false) { db ->
             val cursor = db.query(
-                    "account_extra_values",
-                    arrayOf("value_integer"),
-                    "name = ?",
-                    arrayOf(name),
-                    null, null, null)
+                "account_extra_values",
+                arrayOf("value_integer"),
+                "name = ?",
+                arrayOf(name),
+                null, null, null
+            )
             cursor.use {
                 if (it.moveToFirst()) {
                     it.getLongOrNull(0)

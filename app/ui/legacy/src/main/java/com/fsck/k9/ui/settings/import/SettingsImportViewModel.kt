@@ -46,12 +46,12 @@ class SettingsImportViewModel(
     private val selectedAccounts: Set<AccountUuid>
         get() {
             return uiModel.settingsList.asSequence()
-                    .filterIsInstance<SettingsListItem.Account>()
-                    .filter { it.selected }
-                    .map {
-                        accountsMap[it.accountIndex] ?: error("Unknown account index: ${it.accountIndex}")
-                    }
-                    .toSet()
+                .filterIsInstance<SettingsListItem.Account>()
+                .filter { it.selected }
+                .map {
+                    accountsMap[it.accountIndex] ?: error("Unknown account index: ${it.accountIndex}")
+                }
+                .toSet()
         }
 
     fun getActionEvents(): LiveData<Action> = actionLiveData
@@ -83,8 +83,10 @@ class SettingsImportViewModel(
             if (!hasDocumentBeenRead) return@updateUiModel
 
             val includeGeneralSettings = savedInstanceState.getBoolean(STATE_INCLUDE_GENERAL_SETTINGS)
-            val generalSettingsImportState = savedInstanceState.getEnum(STATE_GENERAL_SETTINGS_IMPORT_STATUS,
-                    ImportStatus.NOT_AVAILABLE)
+            val generalSettingsImportState = savedInstanceState.getEnum(
+                STATE_GENERAL_SETTINGS_IMPORT_STATUS,
+                ImportStatus.NOT_AVAILABLE
+            )
 
             val generalSettingsItem = SettingsListItem.GeneralSettings().apply {
                 selected = includeGeneralSettings
@@ -97,10 +99,10 @@ class SettingsImportViewModel(
             savedAccountList.forEach { saved ->
                 accountsMap[saved.accountIndex] = saved.accountUuid
                 accountStateMap[saved.accountIndex] = AccountState(
-                        saved.incomingServerName,
-                        saved.outgoingServerName,
-                        saved.incomingServerPasswordNeeded,
-                        saved.outgoingServerPasswordNeeded
+                    saved.incomingServerName,
+                    saved.outgoingServerName,
+                    saved.incomingServerPasswordNeeded,
+                    saved.outgoingServerPasswordNeeded
                 )
             }
 
@@ -227,9 +229,9 @@ class SettingsImportViewModel(
                 }
 
                 accountsMap = contents.accounts
-                        .asSequence()
-                        .mapIndexed { index, account -> index to account.uuid }
-                        .toMap(mutableMapOf())
+                    .asSequence()
+                    .mapIndexed { index, account -> index to account.uuid }
+                    .toMap(mutableMapOf())
 
                 val items = mutableListOf<SettingsListItem>(SettingsListItem.GeneralSettings())
                 contents.accounts.mapIndexedTo(items) { index, accountDescription ->
@@ -312,10 +314,10 @@ class SettingsImportViewModel(
 
                     if (accountPair.incomingPasswordNeeded || accountPair.outgoingPasswordNeeded) {
                         accountStateMap[accountIndex] = AccountState(
-                                accountPair.incomingServerName,
-                                accountPair.outgoingServerName,
-                                accountPair.incomingPasswordNeeded,
-                                accountPair.outgoingPasswordNeeded
+                            accountPair.incomingServerName,
+                            accountPair.outgoingServerName,
+                            accountPair.incomingPasswordNeeded,
+                            accountPair.outgoingPasswordNeeded
                         )
 
                         setSettingsListState(index, ImportStatus.IMPORT_SUCCESS_PASSWORD_REQUIRED)
@@ -347,14 +349,16 @@ class SettingsImportViewModel(
         val accountUuid = accountsMap[accountIndex]!!
         val accountState = accountStateMap[accountIndex]!!
 
-        sendActionEvent(Action.PasswordPrompt(
+        sendActionEvent(
+            Action.PasswordPrompt(
                 accountUuid,
                 settingsListItem.displayName,
                 accountState.incomingServerPasswordNeeded,
                 accountState.incomingServerName,
                 accountState.outgoingServerPasswordNeeded,
                 accountState.outgoingServerName
-        ))
+            )
+        )
     }
 
     private fun updateUiModel(block: SettingsImportUiModel.() -> Unit) {
@@ -368,24 +372,24 @@ class SettingsImportViewModel(
 
     private fun createSavedAccountList(): ArrayList<SavedAccountState> {
         return uiModel.settingsList
-                .asSequence()
-                .filterIsInstance<SettingsListItem.Account>()
-                .map { accountItem ->
-                    val accountIndex = accountItem.accountIndex
-                    val accountState = accountStateMap[accountIndex]
-                    SavedAccountState(
-                            accountIndex = accountIndex,
-                            displayName = accountItem.displayName,
-                            accountUuid = accountsMap[accountIndex]!!,
-                            selected = accountItem.selected,
-                            importStatus = accountItem.importStatus,
-                            incomingServerName = accountState?.incomingServerName,
-                            outgoingServerName = accountState?.outgoingServerName,
-                            incomingServerPasswordNeeded = accountState?.incomingServerPasswordNeeded ?: false,
-                            outgoingServerPasswordNeeded = accountState?.outgoingServerPasswordNeeded ?: false
-                    )
-                }
-                .toCollection(ArrayList(uiModel.settingsList.size - 1))
+            .asSequence()
+            .filterIsInstance<SettingsListItem.Account>()
+            .map { accountItem ->
+                val accountIndex = accountItem.accountIndex
+                val accountState = accountStateMap[accountIndex]
+                SavedAccountState(
+                    accountIndex = accountIndex,
+                    displayName = accountItem.displayName,
+                    accountUuid = accountsMap[accountIndex]!!,
+                    selected = accountItem.selected,
+                    importStatus = accountItem.importStatus,
+                    incomingServerName = accountState?.incomingServerName,
+                    outgoingServerName = accountState?.outgoingServerName,
+                    incomingServerPasswordNeeded = accountState?.incomingServerPasswordNeeded ?: false,
+                    outgoingServerPasswordNeeded = accountState?.outgoingServerPasswordNeeded ?: false
+                )
+            }
+            .toCollection(ArrayList(uiModel.settingsList.size - 1))
     }
 
     companion object {

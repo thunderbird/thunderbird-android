@@ -31,7 +31,7 @@ class App : Application() {
 
     companion object {
         val appConfig = AppConfig(
-                componentsToDisable = listOf(MessageCompose::class.java)
+            componentsToDisable = listOf(MessageCompose::class.java)
         )
     }
 }

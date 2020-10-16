@@ -106,7 +106,7 @@ class AboutFragment : Fragment() {
 }
 
 private class LibrariesAdapter(private val dataset: Array<Library>) :
-        RecyclerView.Adapter<LibrariesAdapter.ViewHolder>() {
+    RecyclerView.Adapter<LibrariesAdapter.ViewHolder>() {
 
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view)
 
