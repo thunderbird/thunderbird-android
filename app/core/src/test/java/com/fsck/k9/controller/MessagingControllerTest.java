@@ -29,6 +29,7 @@ import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStoreProvider;
+import com.fsck.k9.mailstore.MessagesStoreProvider;
 import com.fsck.k9.mailstore.OutboxState;
 import com.fsck.k9.mailstore.OutboxStateRepository;
 import com.fsck.k9.mailstore.SendState;
@@ -85,6 +86,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
     @Mock
     private LocalStoreProvider localStoreProvider;
     @Mock
+    private MessagesStoreProvider messagesStoreProvider;
+    @Mock
     private SimpleMessagingListener listener;
     @Mock
     private LocalSearch search;
@@ -140,7 +143,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
         controller = new MessagingController(appContext, notificationController, notificationStrategy,
                 localStoreProvider,
                 unreadMessageCountProvider, mock(CoreResourceProvider.class), backendManager, preferences,
-                Collections.<ControllerExtension>emptyList());
+                messagesStoreProvider, Collections.<ControllerExtension>emptyList());
 
         configureAccount();
         configureBackendManager();

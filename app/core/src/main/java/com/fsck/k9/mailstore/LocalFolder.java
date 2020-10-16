@@ -837,125 +837,6 @@ public class LocalFolder {
         return folder.appendMessages(msgs, true);
     }
 
-    public Map<String, String> moveMessages(final List<LocalMessage> msgs, final LocalFolder destFolder) throws MessagingException {
-        final Map<String, String> uidMap = new HashMap<>();
-
-        try {
-            this.localStore.getDatabase().execute(false, new DbCallback<Void>() {
-                @Override
-                public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
-                    try {
-                        destFolder.open();
-                        for (LocalMessage message : msgs) {
-                            String oldUID = message.getUid();
-
-                            Timber.d("Updating folder_id to %s for message with UID %s, " +
-                                    "id %d currently in folder %s",
-                                    destFolder.getDatabaseId(),
-                                    message.getUid(),
-                                    message.getDatabaseId(),
-                                    getName());
-
-                            String newUid = K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString();
-                            message.setUid(newUid);
-
-                            uidMap.put(oldUID, newUid);
-
-                            // Message threading in the target folder
-                            ThreadInfo threadInfo = destFolder.doMessageThreading(db, message);
-
-                            /*
-                             * "Move" the message into the new folder
-                             */
-                            long msgId = message.getDatabaseId();
-                            String[] idArg = new String[] { Long.toString(msgId) };
-
-                            ContentValues cv = new ContentValues();
-                            cv.put("folder_id", destFolder.getDatabaseId());
-                            cv.put("uid", newUid);
-
-                            db.update("messages", cv, "id = ?", idArg);
-
-                            // Create/update entry in 'threads' table for the message in the
-                            // target folder
-                            cv.clear();
-                            cv.put("message_id", msgId);
-                            if (threadInfo.threadId == -1) {
-                                if (threadInfo.rootId != -1) {
-                                    cv.put("root", threadInfo.rootId);
-                                }
-
-                                if (threadInfo.parentId != -1) {
-                                    cv.put("parent", threadInfo.parentId);
-                                }
-
-                                db.insert("threads", null, cv);
-                            } else {
-                                db.update("threads", cv, "id = ?",
-                                        new String[] { Long.toString(threadInfo.threadId) });
-                            }
-
-                            /*
-                             * Add a placeholder message so we won't download the original
-                             * message again if we synchronize before the remote move is
-                             * complete.
-                             */
-
-                            // We need to open this folder to get the folder id
-                            open();
-
-                            cv.clear();
-                            cv.put("uid", oldUID);
-                            cv.putNull("flags");
-                            cv.put("read", 1);
-                            cv.put("deleted", 1);
-                            cv.put("folder_id", databaseId);
-                            cv.put("empty", 0);
-
-                            String messageId = message.getMessageId();
-                            if (messageId != null) {
-                                cv.put("message_id", messageId);
-                            }
-
-                            final long newId;
-                            if (threadInfo.msgId != -1) {
-                                // There already existed an empty message in the target folder.
-                                // Let's use it as placeholder.
-
-                                newId = threadInfo.msgId;
-
-                                db.update("messages", cv, "id = ?",
-                                        new String[] { Long.toString(newId) });
-                            } else {
-                                newId = db.insert("messages", null, cv);
-                            }
-
-                            /*
-                             * Update old entry in 'threads' table to point to the newly
-                             * created placeholder.
-                             */
-
-                            cv.clear();
-                            cv.put("message_id", newId);
-                            db.update("threads", cv, "id = ?",
-                                    new String[] { Long.toString(message.getThreadId()) });
-                        }
-                    } catch (MessagingException e) {
-                        throw new WrappedException(e);
-                    }
-                    return null;
-                }
-            });
-
-            this.localStore.notifyChange();
-
-            return uidMap;
-        } catch (WrappedException e) {
-            throw(MessagingException) e.getCause();
-        }
-
-    }
-
     /**
      * The method differs slightly from the contract; If an incoming message already has a uid
      * assigned and it matches the uid of an existing message then this message will replace the
@@ -1854,7 +1735,7 @@ public class LocalFolder {
         updateFolderColumn("top_group", isInTopGroup ? 1 : 0);
     }
 
-    private ThreadInfo doMessageThreading(SQLiteDatabase db, Message message) {
+    public ThreadInfo doMessageThreading(SQLiteDatabase db, Message message) {
         long rootId = -1;
         long parentId = -1;
 

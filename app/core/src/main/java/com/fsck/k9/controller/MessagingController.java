@@ -68,6 +68,8 @@ import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStoreProvider;
+import com.fsck.k9.mailstore.MessageStore;
+import com.fsck.k9.mailstore.MessagesStoreProvider;
 import com.fsck.k9.mailstore.OutboxState;
 import com.fsck.k9.mailstore.OutboxStateRepository;
 import com.fsck.k9.mailstore.SendState;
@@ -115,6 +117,7 @@ public class MessagingController {
     private final LocalStoreProvider localStoreProvider;
     private final BackendManager backendManager;
     private final Preferences preferences;
+    private final MessagesStoreProvider messagesStoreProvider;
 
     private final Thread controllerThread;
 
@@ -138,7 +141,8 @@ public class MessagingController {
     MessagingController(Context context, NotificationController notificationController,
             NotificationStrategy notificationStrategy, LocalStoreProvider localStoreProvider,
             UnreadMessageCountProvider unreadMessageCountProvider, CoreResourceProvider resourceProvider,
-            BackendManager backendManager, Preferences preferences, List<ControllerExtension> controllerExtensions) {
+            BackendManager backendManager, Preferences preferences, MessagesStoreProvider messagesStoreProvider,
+            List<ControllerExtension> controllerExtensions) {
         this.context = context;
         this.notificationController = notificationController;
         this.notificationStrategy = notificationStrategy;
@@ -147,6 +151,7 @@ public class MessagingController {
         this.resourceProvider = resourceProvider;
         this.backendManager = backendManager;
         this.preferences = preferences;
+        this.messagesStoreProvider = messagesStoreProvider;
 
         controllerThread = new Thread(new Runnable() {
             @Override
@@ -1619,12 +1624,14 @@ public class MessagingController {
             String sentFolderServerId = sentFolder.getServerId();
             Timber.i("Moving sent message to folder '%s' (%d)", sentFolderServerId, sentFolderId);
 
-            localFolder.moveMessages(Collections.singletonList(message), sentFolder);
+            MessageStore messageStore = messagesStoreProvider.getMessageStore(account);
+            long destinationMessageId = messageStore.moveMessage(message.getDatabaseId(), sentFolderId);
 
             Timber.i("Moved sent message to folder '%s' (%d)", sentFolderServerId, sentFolderId);
 
             if (!sentFolder.isLocalOnly()) {
-                PendingCommand command = PendingAppend.create(sentFolderId, message.getUid());
+                String destinationUid = messageStore.getMessageServerId(destinationMessageId);
+                PendingCommand command = PendingAppend.create(sentFolderId, destinationUid);
                 queuePendingCommand(account, command);
                 processPendingCommands(account);
             }
@@ -1769,11 +1776,13 @@ public class MessagingController {
     private void moveOrCopyMessageSynchronous(Account account, long srcFolderId, List<LocalMessage> inMessages,
             long destFolderId, MoveOrCopyFlavor operation) {
 
+        if (operation == MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ) {
+            throw new UnsupportedOperationException("MOVE_AND_MARK_AS_READ unsupported");
+        }
+
         try {
             LocalStore localStore = localStoreProvider.getInstance(account);
-            if ((operation == MoveOrCopyFlavor.MOVE
-                        || operation == MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ)
-                    && !isMoveCapable(account)) {
+            if (operation == MoveOrCopyFlavor.MOVE && !isMoveCapable(account)) {
                 return;
             }
             if (operation == MoveOrCopyFlavor.COPY && !isCopyCapable(account)) {
@@ -1801,12 +1810,6 @@ public class MessagingController {
 
             List<LocalMessage> messages = localSrcFolder.getMessagesByUids(uids);
             if (messages.size() > 0) {
-                Map<String, Message> origUidMap = new HashMap<>();
-
-                for (Message message : messages) {
-                    origUidMap.put(message.getUid(), message);
-                }
-
                 Timber.i("moveOrCopyMessageSynchronous: source folder = %s, %d messages, destination folder = %s, " +
                         "operation = %s", srcFolderId, messages.size(), destFolderId, operation.name());
 
@@ -1827,25 +1830,35 @@ public class MessagingController {
                         }
                     }
                 } else {
-                    uidMap = localSrcFolder.moveMessages(messages, localDestFolder);
-                    for (Entry<String, Message> entry : origUidMap.entrySet()) {
-                        String origUid = entry.getKey();
-                        Message message = entry.getValue();
-                        for (MessagingListener l : getListeners()) {
-                            l.messageUidChanged(account, srcFolderId, origUid, message.getUid());
-                        }
+                    MessageStore messageStore = messagesStoreProvider.getMessageStore(account);
+
+                    List<Long> messageIds = new ArrayList<>();
+                    Map<Long, String> messageIdToUidMapping = new HashMap<>();
+                    for (LocalMessage message : messages) {
+                        long messageId = message.getDatabaseId();
+                        messageIds.add(messageId);
+                        messageIdToUidMapping.put(messageId, message.getUid());
                     }
-                    if (operation == MoveOrCopyFlavor.MOVE_AND_MARK_AS_READ) {
-                        localDestFolder.setFlags(messages, Collections.singleton(Flag.SEEN), true);
-                        unreadCountAffected = true;
+
+                    Map<Long, Long> moveMessageIdMapping = messageStore.moveMessages(messageIds, destFolderId);
+
+                    Map<Long, String> destinationMapping =
+                            messageStore.getMessageServerIds(moveMessageIdMapping.values());
+
+                    uidMap = new HashMap<>();
+                    for (Entry<Long, Long> entry : moveMessageIdMapping.entrySet()) {
+                        long sourceMessageId = entry.getKey();
+                        long destinationMessageId = entry.getValue();
+
+                        String sourceUid = messageIdToUidMapping.get(sourceMessageId);
+                        String destinationUid = destinationMapping.get(destinationMessageId);
+                        uidMap.put(sourceUid, destinationUid);
                     }
                     unsuppressMessages(account, messages);
 
                     if (unreadCountAffected) {
                         // If this move operation changes the unread count, notify the listeners
                         // that the unread count changed in both the source and destination folder.
-                        int unreadMessageCountSrc = localSrcFolder.getUnreadMessageCount();
-                        int unreadMessageCountDest = localDestFolder.getUnreadMessageCount();
                         for (MessagingListener l : getListeners()) {
                             l.folderStatusChanged(account, srcFolderId);
                             l.folderStatusChanged(account, destFolderId);
@@ -2029,10 +2042,33 @@ public class MessagingController {
             } else {
                 Timber.d("Deleting messages in normal folder, moving");
                 localTrashFolder = localStore.getFolder(trashFolderId);
-                uidMap = localFolder.moveMessages(messages, localTrashFolder);
+
+                MessageStore messageStore = messagesStoreProvider.getMessageStore(account);
+
+                List<Long> messageIds = new ArrayList<>();
+                Map<Long, String> messageIdToUidMapping = new HashMap<>();
+                for (LocalMessage message : messages) {
+                    long messageId = message.getDatabaseId();
+                    messageIds.add(messageId);
+                    messageIdToUidMapping.put(messageId, message.getUid());
+                }
+
+                Map<Long, Long> moveMessageIdMapping = messageStore.moveMessages(messageIds, trashFolderId);
+
+                Map<Long, String> destinationMapping = messageStore.getMessageServerIds(moveMessageIdMapping.values());
+                uidMap = new HashMap<>();
+                for (Entry<Long, Long> entry : moveMessageIdMapping.entrySet()) {
+                    long sourceMessageId = entry.getKey();
+                    long destinationMessageId = entry.getValue();
+
+                    String sourceUid = messageIdToUidMapping.get(sourceMessageId);
+                    String destinationUid = destinationMapping.get(destinationMessageId);
+                    uidMap.put(sourceUid, destinationUid);
+                }
 
                 if (account.isMarkMessageAsReadOnDelete()) {
-                    localTrashFolder.setFlags(messages, Collections.singleton(Flag.SEEN), true);
+                    Collection<Long> destinationMessageIds = moveMessageIdMapping.values();
+                    messageStore.setFlag(destinationMessageIds, Flag.SEEN, true);
                 }
             }
 
@@ -2047,10 +2083,10 @@ public class MessagingController {
 
             Long outboxFolderId = account.getOutboxFolderId();
             if (outboxFolderId != null && folderId == outboxFolderId && supportsUpload(account)) {
-                for (Message message : messages) {
+                for (String destinationUid : uidMap.values()) {
                     // If the message was in the Outbox, then it has been copied to local Trash, and has
                     // to be copied to remote trash
-                    PendingCommand command = PendingAppend.create(trashFolderId, message.getUid());
+                    PendingCommand command = PendingAppend.create(trashFolderId, destinationUid);
                     queuePendingCommand(account, command);
                 }
                 processPendingCommands(account);
