@@ -13,8 +13,7 @@ internal class DraftOperations(private val messagingController: MessagingControl
         account: Account,
         message: Message,
         existingDraftId: Long?,
-        plaintextSubject: String?,
-        saveRemotely: Boolean
+        plaintextSubject: String?
     ): Message? {
         return try {
             val draftsFolderId = account.draftsFolderId ?: error("No Drafts folder configured")
@@ -38,7 +37,7 @@ internal class DraftOperations(private val messagingController: MessagingControl
                 localMessage.setCachedDecryptedSubject(plaintextSubject)
             }
 
-            if (saveRemotely && messagingController.supportsUpload(account)) {
+            if (messagingController.supportsUpload(account)) {
                 val command = PendingAppend.create(localFolder.databaseId, localMessage.uid)
                 messagingController.queuePendingCommand(account, command)
                 messagingController.processPendingCommands(account)

@@ -1540,7 +1540,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
 
             new SaveMessageTask(getApplicationContext(), account, contacts, internalMessageHandler,
-                    message, draftMessageId, plaintextSubject, true).execute();
+                    message, draftMessageId, plaintextSubject).execute();
             if (finishAfterDraftSaved) {
                 finish();
             } else {
