@@ -16,12 +16,12 @@ public class SaveMessageTask extends AsyncTask<Void, Void, Void> {
     Contacts contacts;
     Handler handler;
     Message message;
-    long draftId;
+    Long draftId;
     String plaintextSubject;
     boolean saveRemotely;
 
     public SaveMessageTask(Context context, Account account, Contacts contacts,
-                           Handler handler, Message message, long draftId, String plaintextSubject, boolean saveRemotely) {
+                           Handler handler, Message message, Long draftId, String plaintextSubject, boolean saveRemotely) {
         this.context = context;
         this.account = account;
         this.contacts = contacts;

@@ -105,8 +105,6 @@ import static com.fsck.k9.search.LocalSearchExtensions.getAccountsFromLocalSearc
  */
 @SuppressWarnings("unchecked") // TODO change architecture to actually work with generics
 public class MessagingController {
-    public static final long INVALID_MESSAGE_ID = -1;
-
     public static final Set<Flag> SYNC_FLAGS = EnumSet.of(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED);
 
     private static final long FOLDER_LIST_STALENESS_THRESHOLD = 30 * 60 * 1000L;
@@ -1890,7 +1888,7 @@ public class MessagingController {
         for (MessageReference messageReference : messages) {
             try {
                 Message message = loadMessage(account, folderId, messageReference.getUid());
-                Message draftMessage = saveDraft(account, message, INVALID_MESSAGE_ID, message.getSubject(), true);
+                Message draftMessage = saveDraft(account, message, null, message.getSubject(), true);
 
                 boolean draftSavedSuccessfully = draftMessage != null;
                 if (draftSavedSuccessfully) {
@@ -2538,21 +2536,18 @@ public class MessagingController {
     /**
      * Save a draft message.
      */
-    public Message saveDraft(Account account, Message message, long existingDraftId, String plaintextSubject,
+    public Message saveDraft(Account account, Message message, Long existingDraftId, String plaintextSubject,
             boolean saveRemotely) {
         return draftOperations.saveDraft(account, message, existingDraftId, plaintextSubject, saveRemotely);
     }
 
-    public long getId(Message message) {
-        long id;
+    public Long getId(Message message) {
         if (message instanceof LocalMessage) {
-            id = ((LocalMessage) message).getDatabaseId();
+            return ((LocalMessage) message).getDatabaseId();
         } else {
             Timber.w("MessagingController.getId() called without a LocalMessage");
-            id = INVALID_MESSAGE_ID;
+            return null;
         }
-
-        return id;
     }
 
     private static AtomicInteger sequencing = new AtomicInteger(0);

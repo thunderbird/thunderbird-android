@@ -12,7 +12,7 @@ internal class DraftOperations(private val messagingController: MessagingControl
     fun saveDraft(
         account: Account,
         message: Message,
-        existingDraftId: Long,
+        existingDraftId: Long?,
         plaintextSubject: String?,
         saveRemotely: Boolean
     ): Message? {
@@ -23,7 +23,7 @@ internal class DraftOperations(private val messagingController: MessagingControl
             val localFolder = localStore.getFolder(draftsFolderId)
             localFolder.open()
 
-            if (existingDraftId != MessagingController.INVALID_MESSAGE_ID) {
+            if (existingDraftId != null) {
                 val uid = localFolder.getMessageUidById(existingDraftId)
                 message.uid = uid
             }
