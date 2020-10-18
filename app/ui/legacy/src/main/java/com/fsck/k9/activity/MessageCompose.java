@@ -1535,10 +1535,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             changesMadeSinceLastSave = false;
             currentMessageBuilder = null;
 
-            if (action == Action.EDIT_DRAFT && relatedMessageReference != null) {
-                message.setUid(relatedMessageReference.getUid());
-            }
-
             new SaveMessageTask(getApplicationContext(), account, contacts, internalMessageHandler,
                     message, draftMessageId, plaintextSubject).execute();
             if (finishAfterDraftSaved) {

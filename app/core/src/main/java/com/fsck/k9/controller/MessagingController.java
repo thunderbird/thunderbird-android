@@ -51,6 +51,7 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingExpunge;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingMarkAllAsRead;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveAndMarkAsRead;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveOrCopy;
+import com.fsck.k9.controller.MessagingControllerCommands.PendingReplace;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag;
 import com.fsck.k9.controller.ProgressBodyFactory.ProgressListener;
 import com.fsck.k9.helper.MutableBoolean;
@@ -268,7 +269,7 @@ public class MessagingController {
         throw new Error(e);
     }
 
-    private Backend getBackend(Account account) {
+    Backend getBackend(Account account) {
         return backendManager.getBackend(account);
     }
 
@@ -846,6 +847,10 @@ public class MessagingController {
         }
     }
 
+    void processPendingReplace(PendingReplace pendingReplace, Account account) {
+        draftOperations.processPendingReplace(pendingReplace, account);
+    }
+
     private void queueMoveOrCopy(Account account, long srcFolderId, long destFolderId, MoveOrCopyFlavor operation,
             Map<String, String> uidMap) {
         PendingCommand command;
@@ -957,7 +962,7 @@ public class MessagingController {
         }
     }
 
-    private void destroyPlaceholderMessages(LocalFolder localFolder, List<String> uids) throws MessagingException {
+    void destroyPlaceholderMessages(LocalFolder localFolder, List<String> uids) throws MessagingException {
         for (String uid : uids) {
             LocalMessage placeholderMessage = localFolder.getMessage(uid);
             if (placeholderMessage == null) {

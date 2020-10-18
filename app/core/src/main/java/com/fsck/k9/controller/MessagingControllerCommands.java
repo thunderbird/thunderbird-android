@@ -14,6 +14,7 @@ import static com.fsck.k9.helper.Preconditions.checkNotNull;
 
 public class MessagingControllerCommands {
     static final String COMMAND_APPEND = "append";
+    static final String COMMAND_REPLACE = "replace";
     static final String COMMAND_MARK_ALL_AS_READ = "mark_all_as_read";
     static final String COMMAND_SET_FLAG = "set_flag";
     static final String COMMAND_DELETE = "delete";
@@ -164,6 +165,33 @@ public class MessagingControllerCommands {
         @Override
         public void execute(MessagingController controller, Account account) throws MessagingException {
             controller.processPendingAppend(this, account);
+        }
+    }
+
+    public static class PendingReplace extends PendingCommand {
+        public final long folderId;
+        public final long uploadMessageId;
+        public final long deleteMessageId;
+
+
+        public static PendingReplace create(long folderId, long uploadMessageId, long deleteMessageId) {
+            return new PendingReplace(folderId, uploadMessageId, deleteMessageId);
+        }
+
+        private PendingReplace(long folderId, long uploadMessageId, long deleteMessageId) {
+            this.folderId = folderId;
+            this.uploadMessageId = uploadMessageId;
+            this.deleteMessageId = deleteMessageId;
+        }
+
+        @Override
+        public String getCommandName() {
+            return COMMAND_REPLACE;
+        }
+
+        @Override
+        public void execute(MessagingController controller, Account account) throws MessagingException {
+            controller.processPendingReplace(this, account);
         }
     }
 
