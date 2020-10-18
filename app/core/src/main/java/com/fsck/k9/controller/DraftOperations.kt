@@ -20,7 +20,7 @@ internal class DraftOperations(private val messagingController: MessagingControl
         message: Message,
         existingDraftId: Long?,
         plaintextSubject: String?
-    ): Message? {
+    ): Long? {
         return try {
             val draftsFolderId = account.draftsFolderId ?: error("No Drafts folder configured")
 
@@ -39,7 +39,7 @@ internal class DraftOperations(private val messagingController: MessagingControl
                 localMessage.setCachedDecryptedSubject(plaintextSubject)
             }
 
-            localMessage
+            localMessage.databaseId
         } catch (e: MessagingException) {
             Timber.e(e, "Unable to save message as draft.")
             null

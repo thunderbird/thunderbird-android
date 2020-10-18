@@ -1893,9 +1893,9 @@ public class MessagingController {
         for (MessageReference messageReference : messages) {
             try {
                 Message message = loadMessage(account, folderId, messageReference.getUid());
-                Message draftMessage = saveDraft(account, message, null, message.getSubject());
+                Long draftMessageId = saveDraft(account, message, null, message.getSubject());
 
-                boolean draftSavedSuccessfully = draftMessage != null;
+                boolean draftSavedSuccessfully = draftMessageId != null;
                 if (draftSavedSuccessfully) {
                     message.destroy();
                 }
@@ -2541,7 +2541,7 @@ public class MessagingController {
     /**
      * Save a draft message.
      */
-    public Message saveDraft(Account account, Message message, Long existingDraftId, String plaintextSubject) {
+    public Long saveDraft(Account account, Message message, Long existingDraftId, String plaintextSubject) {
         return draftOperations.saveDraft(account, message, existingDraftId, plaintextSubject);
     }
 
