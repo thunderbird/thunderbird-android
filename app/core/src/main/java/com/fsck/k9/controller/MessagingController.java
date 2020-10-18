@@ -127,6 +127,7 @@ public class MessagingController {
     private final MemorizingMessagingListener memorizingMessagingListener = new MemorizingMessagingListener();
     private final UnreadMessageCountProvider unreadMessageCountProvider;
     private final CoreResourceProvider resourceProvider;
+    private final DraftOperations draftOperations;
 
 
     private MessagingListener checkMailListener = null;
@@ -164,6 +165,8 @@ public class MessagingController {
         addListener(memorizingMessagingListener);
 
         initializeControllerExtensions(controllerExtensions);
+
+        draftOperations = new DraftOperations(this);
     }
 
     private void initializeControllerExtensions(List<ControllerExtension> controllerExtensions) {
@@ -271,7 +274,7 @@ public class MessagingController {
         return backendManager.getBackend(account);
     }
 
-    private LocalStore getLocalStoreOrThrow(Account account) {
+    LocalStore getLocalStoreOrThrow(Account account) {
         try {
             return localStoreProvider.getInstance(account);
         } catch (MessagingException e) {
@@ -688,7 +691,7 @@ public class MessagingController {
         notificationController.showAuthenticationErrorNotification(account, incoming);
     }
 
-    private void queuePendingCommand(Account account, PendingCommand command) {
+    void queuePendingCommand(Account account, PendingCommand command) {
         try {
             LocalStore localStore = localStoreProvider.getInstance(account);
             localStore.addPendingCommand(command);
@@ -697,7 +700,7 @@ public class MessagingController {
         }
     }
 
-    private void processPendingCommands(final Account account) {
+    void processPendingCommands(final Account account) {
         putBackground("processPendingCommands", null, new Runnable() {
             @Override
             public void run() {
@@ -2534,50 +2537,10 @@ public class MessagingController {
 
     /**
      * Save a draft message.
-     *
-     * @param account
-     *         Account we are saving for.
-     * @param message
-     *         Message to save.
-     *
-     * @return Message representing the entry in the local store.
      */
-    public Message saveDraft(final Account account, final Message message, long existingDraftId, String plaintextSubject, boolean saveRemotely) {
-        LocalMessage localMessage = null;
-        try {
-            Long draftsFolderId = account.getDraftsFolderId();
-            if (draftsFolderId == null) {
-                throw new IllegalStateException("No Drafts folder configured");
-            }
-
-            LocalStore localStore = localStoreProvider.getInstance(account);
-            LocalFolder localFolder = localStore.getFolder(draftsFolderId);
-            localFolder.open();
-
-            if (existingDraftId != INVALID_MESSAGE_ID) {
-                String uid = localFolder.getMessageUidById(existingDraftId);
-                message.setUid(uid);
-            }
-
-            // Save the message to the store.
-            localFolder.appendMessages(Collections.singletonList(message));
-            // Fetch the message back from the store.  This is the Message that's returned to the caller.
-            localMessage = localFolder.getMessage(message.getUid());
-            localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
-            if (plaintextSubject != null) {
-                localMessage.setCachedDecryptedSubject(plaintextSubject);
-            }
-
-            if (saveRemotely && supportsUpload(account)) {
-                PendingCommand command = PendingAppend.create(localFolder.getDatabaseId(), localMessage.getUid());
-                queuePendingCommand(account, command);
-                processPendingCommands(account);
-            }
-
-        } catch (MessagingException e) {
-            Timber.e(e, "Unable to save message as draft.");
-        }
-        return localMessage;
+    public Message saveDraft(Account account, Message message, long existingDraftId, String plaintextSubject,
+            boolean saveRemotely) {
+        return draftOperations.saveDraft(account, message, existingDraftId, plaintextSubject, saveRemotely);
     }
 
     public long getId(Message message) {
