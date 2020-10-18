@@ -743,13 +743,13 @@ public class MessagingController {
                     Timber.d("Done processing pending command '%s'", command);
                 } catch (MessagingException me) {
                     if (me.isPermanentFailure()) {
-                        Timber.e("Failure of command '%s' was permanent, removing command from queue", command);
+                        Timber.e(me, "Failure of command '%s' was permanent, removing command from queue", command);
                         localStore.removePendingCommand(processingCommand);
                     } else {
                         throw me;
                     }
                 } catch (Exception e) {
-                    Timber.e("Unexpected exception with command '%s', removing command from queue", command);
+                    Timber.e(e, "Unexpected exception with command '%s', removing command from queue", command);
                     localStore.removePendingCommand(processingCommand);
 
                     if (K9.DEVELOPER_MODE) {
