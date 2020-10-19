@@ -12,7 +12,6 @@ import android.content.Context;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.AccountPreferenceSerializer;
-import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.K9RobolectricTest;
@@ -141,9 +140,8 @@ public class MessagingControllerTest extends K9RobolectricTest {
         Preferences preferences = Preferences.getPreferences(appContext);
 
         controller = new MessagingController(appContext, notificationController, notificationStrategy,
-                localStoreProvider,
-                unreadMessageCountProvider, mock(CoreResourceProvider.class), backendManager, preferences,
-                messageStoreProvider, Collections.<ControllerExtension>emptyList());
+                localStoreProvider, unreadMessageCountProvider, backendManager, preferences, messageStoreProvider,
+                Collections.<ControllerExtension>emptyList());
 
         configureAccount();
         configureBackendManager();

@@ -125,7 +125,6 @@ public class MessagingController {
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private final MemorizingMessagingListener memorizingMessagingListener = new MemorizingMessagingListener();
     private final UnreadMessageCountProvider unreadMessageCountProvider;
-    private final CoreResourceProvider resourceProvider;
     private final DraftOperations draftOperations;
 
 
@@ -140,15 +139,14 @@ public class MessagingController {
 
     MessagingController(Context context, NotificationController notificationController,
             NotificationStrategy notificationStrategy, LocalStoreProvider localStoreProvider,
-            UnreadMessageCountProvider unreadMessageCountProvider, CoreResourceProvider resourceProvider,
-            BackendManager backendManager, Preferences preferences, MessageStoreProvider messageStoreProvider,
+            UnreadMessageCountProvider unreadMessageCountProvider, BackendManager backendManager,
+            Preferences preferences, MessageStoreProvider messageStoreProvider,
             List<ControllerExtension> controllerExtensions) {
         this.context = context;
         this.notificationController = notificationController;
         this.notificationStrategy = notificationStrategy;
         this.localStoreProvider = localStoreProvider;
         this.unreadMessageCountProvider = unreadMessageCountProvider;
-        this.resourceProvider = resourceProvider;
         this.backendManager = backendManager;
         this.preferences = preferences;
         this.messageStoreProvider = messageStoreProvider;
