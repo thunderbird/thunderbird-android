@@ -1,42 +1,39 @@
 package com.fsck.k9.activity.compose;
 
-import android.content.Context;
+
 import android.os.AsyncTask;
 import android.os.Handler;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.helper.Contacts;
 import com.fsck.k9.mail.Message;
 
 public class SaveMessageTask extends AsyncTask<Void, Void, Void> {
-    Context context;
-    Account account;
-    Contacts contacts;
-    Handler handler;
-    Message message;
-    Long draftId;
-    String plaintextSubject;
+    private final MessagingController messagingController;
+    private final Account account;
+    private final Handler handler;
+    private final Message message;
+    private final Long existingDraftId;
+    private final String plaintextSubject;
 
-    public SaveMessageTask(Context context, Account account, Contacts contacts, Handler handler, Message message,
-            Long draftId, String plaintextSubject) {
-        this.context = context;
+    public SaveMessageTask(MessagingController messagingController, Account account, Handler handler, Message message,
+            Long existingDraftId, String plaintextSubject) {
+        this.messagingController = messagingController;
         this.account = account;
-        this.contacts = contacts;
         this.handler = handler;
         this.message = message;
-        this.draftId = draftId;
+        this.existingDraftId = existingDraftId;
         this.plaintextSubject = plaintextSubject;
     }
 
     @Override
     protected Void doInBackground(Void... params) {
-        final MessagingController messagingController = MessagingController.getInstance(context);
-        draftId = messagingController.saveDraft(account, message, draftId, plaintextSubject);
+        Long messageId = messagingController.saveDraft(account, message, existingDraftId, plaintextSubject);
 
-        android.os.Message msg = android.os.Message.obtain(handler, MessageCompose.MSG_SAVED_DRAFT, draftId);
+        android.os.Message msg = android.os.Message.obtain(handler, MessageCompose.MSG_SAVED_DRAFT, messageId);
         handler.sendMessage(msg);
+
         return null;
     }
 }

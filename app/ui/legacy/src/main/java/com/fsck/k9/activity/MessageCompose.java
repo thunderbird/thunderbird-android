@@ -1537,8 +1537,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             changesMadeSinceLastSave = false;
             currentMessageBuilder = null;
 
-            new SaveMessageTask(getApplicationContext(), account, contacts, internalMessageHandler,
-                    message, draftMessageId, plaintextSubject).execute();
+            new SaveMessageTask(messagingController, account, internalMessageHandler, message, draftMessageId,
+                    plaintextSubject).execute();
             if (finishAfterDraftSaved) {
                 finish();
             } else {
