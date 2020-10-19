@@ -1556,7 +1556,7 @@ public class MessagingController {
                         for (MessagingListener l : getListeners()) {
                             l.synchronizeMailboxProgress(account, outboxFolderId, progress, todo);
                         }
-                        moveOrDeleteSentMessage(account, localStore, localFolder, message);
+                        moveOrDeleteSentMessage(account, localStore, message);
 
                         outboxStateRepository.removeOutboxState(messageId);
                     } catch (AuthenticationFailedException e) {
@@ -1618,8 +1618,8 @@ public class MessagingController {
         }
     }
 
-    private void moveOrDeleteSentMessage(Account account, LocalStore localStore,
-            LocalFolder localFolder, LocalMessage message) throws MessagingException {
+    private void moveOrDeleteSentMessage(Account account, LocalStore localStore, LocalMessage message)
+            throws MessagingException {
         if (!account.hasSentFolder() || !account.isUploadSentMessages()) {
             Timber.i("Not uploading sent message; deleting local message");
             message.destroy();
