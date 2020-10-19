@@ -729,7 +729,8 @@ public class MessagingController {
         try {
             for (PendingCommand command : commands) {
                 processingCommand = command;
-                Timber.d("Processing pending command '%s'", command);
+                String commandName = command.getCommandName();
+                Timber.d("Processing pending command '%s'", commandName);
 
                 /*
                  * We specifically do not catch any exceptions here. If a command fails it is
@@ -741,16 +742,16 @@ public class MessagingController {
 
                     localStore.removePendingCommand(command);
 
-                    Timber.d("Done processing pending command '%s'", command);
+                    Timber.d("Done processing pending command '%s'", commandName);
                 } catch (MessagingException me) {
                     if (me.isPermanentFailure()) {
-                        Timber.e(me, "Failure of command '%s' was permanent, removing command from queue", command);
+                        Timber.e(me, "Failure of command '%s' was permanent, removing command from queue", commandName);
                         localStore.removePendingCommand(processingCommand);
                     } else {
                         throw me;
                     }
                 } catch (Exception e) {
-                    Timber.e(e, "Unexpected exception with command '%s', removing command from queue", command);
+                    Timber.e(e, "Unexpected exception with command '%s', removing command from queue", commandName);
                     localStore.removePendingCommand(processingCommand);
 
                     if (K9.DEVELOPER_MODE) {
