@@ -51,6 +51,12 @@ public class LocalMessage extends MimeMessage {
         this.mFolder = folder;
     }
 
+    LocalMessage(LocalStore localStore, long databaseId, LocalFolder folder) {
+        this.localStore = localStore;
+        this.databaseId = databaseId;
+        this.mFolder = folder;
+    }
+
 
     void populateFromGetMessageCursor(Cursor cursor) throws MessagingException {
         final String subject = cursor.getString(LocalStore.MSG_INDEX_SUBJECT);
@@ -300,7 +306,7 @@ public class LocalMessage extends MimeMessage {
      * If a message is being marked as deleted we want to clear out its content. Delete will not actually remove the
      * row since we need to retain the UID for synchronization purposes.
      */
-    private void delete() throws MessagingException {
+    public void delete() throws MessagingException {
         try {
             localStore.getDatabase().execute(true, new DbCallback<Void>() {
                 @Override

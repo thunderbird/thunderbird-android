@@ -51,6 +51,7 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingExpunge;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingMarkAllAsRead;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveAndMarkAsRead;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingMoveOrCopy;
+import com.fsck.k9.controller.MessagingControllerCommands.PendingReplace;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingSetFlag;
 import com.fsck.k9.controller.ProgressBodyFactory.ProgressListener;
 import com.fsck.k9.helper.MutableBoolean;
@@ -105,8 +106,6 @@ import static com.fsck.k9.search.LocalSearchExtensions.getAccountsFromLocalSearc
  */
 @SuppressWarnings("unchecked") // TODO change architecture to actually work with generics
 public class MessagingController {
-    public static final long INVALID_MESSAGE_ID = -1;
-
     public static final Set<Flag> SYNC_FLAGS = EnumSet.of(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED);
 
     private static final long FOLDER_LIST_STALENESS_THRESHOLD = 30 * 60 * 1000L;
@@ -127,6 +126,7 @@ public class MessagingController {
     private final MemorizingMessagingListener memorizingMessagingListener = new MemorizingMessagingListener();
     private final UnreadMessageCountProvider unreadMessageCountProvider;
     private final CoreResourceProvider resourceProvider;
+    private final DraftOperations draftOperations;
 
 
     private MessagingListener checkMailListener = null;
@@ -164,6 +164,8 @@ public class MessagingController {
         addListener(memorizingMessagingListener);
 
         initializeControllerExtensions(controllerExtensions);
+
+        draftOperations = new DraftOperations(this);
     }
 
     private void initializeControllerExtensions(List<ControllerExtension> controllerExtensions) {
@@ -267,11 +269,11 @@ public class MessagingController {
         throw new Error(e);
     }
 
-    private Backend getBackend(Account account) {
+    Backend getBackend(Account account) {
         return backendManager.getBackend(account);
     }
 
-    private LocalStore getLocalStoreOrThrow(Account account) {
+    LocalStore getLocalStoreOrThrow(Account account) {
         try {
             return localStoreProvider.getInstance(account);
         } catch (MessagingException e) {
@@ -688,7 +690,7 @@ public class MessagingController {
         notificationController.showAuthenticationErrorNotification(account, incoming);
     }
 
-    private void queuePendingCommand(Account account, PendingCommand command) {
+    void queuePendingCommand(Account account, PendingCommand command) {
         try {
             LocalStore localStore = localStoreProvider.getInstance(account);
             localStore.addPendingCommand(command);
@@ -697,7 +699,7 @@ public class MessagingController {
         }
     }
 
-    private void processPendingCommands(final Account account) {
+    void processPendingCommands(final Account account) {
         putBackground("processPendingCommands", null, new Runnable() {
             @Override
             public void run() {
@@ -742,13 +744,13 @@ public class MessagingController {
                     Timber.d("Done processing pending command '%s'", command);
                 } catch (MessagingException me) {
                     if (me.isPermanentFailure()) {
-                        Timber.e("Failure of command '%s' was permanent, removing command from queue", command);
+                        Timber.e(me, "Failure of command '%s' was permanent, removing command from queue", command);
                         localStore.removePendingCommand(processingCommand);
                     } else {
                         throw me;
                     }
                 } catch (Exception e) {
-                    Timber.e("Unexpected exception with command '%s', removing command from queue", command);
+                    Timber.e(e, "Unexpected exception with command '%s', removing command from queue", command);
                     localStore.removePendingCommand(processingCommand);
 
                     if (K9.DEVELOPER_MODE) {
@@ -843,6 +845,10 @@ public class MessagingController {
                 l.messageUidChanged(account, folderId, oldUid, localMessage.getUid());
             }
         }
+    }
+
+    void processPendingReplace(PendingReplace pendingReplace, Account account) {
+        draftOperations.processPendingReplace(pendingReplace, account);
     }
 
     private void queueMoveOrCopy(Account account, long srcFolderId, long destFolderId, MoveOrCopyFlavor operation,
@@ -956,7 +962,7 @@ public class MessagingController {
         }
     }
 
-    private void destroyPlaceholderMessages(LocalFolder localFolder, List<String> uids) throws MessagingException {
+    void destroyPlaceholderMessages(LocalFolder localFolder, List<String> uids) throws MessagingException {
         for (String uid : uids) {
             LocalMessage placeholderMessage = localFolder.getMessage(uid);
             if (placeholderMessage == null) {
@@ -1887,9 +1893,9 @@ public class MessagingController {
         for (MessageReference messageReference : messages) {
             try {
                 Message message = loadMessage(account, folderId, messageReference.getUid());
-                Message draftMessage = saveDraft(account, message, INVALID_MESSAGE_ID, message.getSubject(), true);
+                Long draftMessageId = saveDraft(account, message, null, message.getSubject());
 
-                boolean draftSavedSuccessfully = draftMessage != null;
+                boolean draftSavedSuccessfully = draftMessageId != null;
                 if (draftSavedSuccessfully) {
                     message.destroy();
                 }
@@ -2534,62 +2540,18 @@ public class MessagingController {
 
     /**
      * Save a draft message.
-     *
-     * @param account
-     *         Account we are saving for.
-     * @param message
-     *         Message to save.
-     *
-     * @return Message representing the entry in the local store.
      */
-    public Message saveDraft(final Account account, final Message message, long existingDraftId, String plaintextSubject, boolean saveRemotely) {
-        LocalMessage localMessage = null;
-        try {
-            Long draftsFolderId = account.getDraftsFolderId();
-            if (draftsFolderId == null) {
-                throw new IllegalStateException("No Drafts folder configured");
-            }
-
-            LocalStore localStore = localStoreProvider.getInstance(account);
-            LocalFolder localFolder = localStore.getFolder(draftsFolderId);
-            localFolder.open();
-
-            if (existingDraftId != INVALID_MESSAGE_ID) {
-                String uid = localFolder.getMessageUidById(existingDraftId);
-                message.setUid(uid);
-            }
-
-            // Save the message to the store.
-            localFolder.appendMessages(Collections.singletonList(message));
-            // Fetch the message back from the store.  This is the Message that's returned to the caller.
-            localMessage = localFolder.getMessage(message.getUid());
-            localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
-            if (plaintextSubject != null) {
-                localMessage.setCachedDecryptedSubject(plaintextSubject);
-            }
-
-            if (saveRemotely && supportsUpload(account)) {
-                PendingCommand command = PendingAppend.create(localFolder.getDatabaseId(), localMessage.getUid());
-                queuePendingCommand(account, command);
-                processPendingCommands(account);
-            }
-
-        } catch (MessagingException e) {
-            Timber.e(e, "Unable to save message as draft.");
-        }
-        return localMessage;
+    public Long saveDraft(Account account, Message message, Long existingDraftId, String plaintextSubject) {
+        return draftOperations.saveDraft(account, message, existingDraftId, plaintextSubject);
     }
 
-    public long getId(Message message) {
-        long id;
+    public Long getId(Message message) {
         if (message instanceof LocalMessage) {
-            id = ((LocalMessage) message).getDatabaseId();
+            return ((LocalMessage) message).getDatabaseId();
         } else {
             Timber.w("MessagingController.getId() called without a LocalMessage");
-            id = INVALID_MESSAGE_ID;
+            return null;
         }
-
-        return id;
     }
 
     private static AtomicInteger sequencing = new AtomicInteger(0);

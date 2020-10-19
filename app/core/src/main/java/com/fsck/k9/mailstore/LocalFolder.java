@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import androidx.annotation.NonNull;
 
+import androidx.annotation.Nullable;
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
@@ -728,6 +729,34 @@ public class LocalFolder {
         } catch (WrappedException e) {
             throw(MessagingException) e.getCause();
         }
+    }
+
+    @Nullable
+    public LocalMessage getMessage(long messageId) throws MessagingException {
+        return localStore.getDatabase().execute(false, db -> {
+            open();
+            LocalMessage message = new LocalMessage(localStore, messageId, LocalFolder.this);
+
+            Cursor cursor = db.rawQuery(
+                    "SELECT " +
+                            LocalStore.GET_MESSAGES_COLS +
+                            "FROM messages " +
+                            "LEFT JOIN message_parts ON (message_parts.id = messages.message_part_id) " +
+                            "LEFT JOIN threads ON (threads.message_id = messages.id) " +
+                            "WHERE messages.id = ? AND folder_id = ?",
+                    new String[] { Long.toString(messageId), Long.toString(databaseId) });
+            try {
+                if (cursor.moveToNext()) {
+                    message.populateFromGetMessageCursor(cursor);
+                } else {
+                    return null;
+                }
+            } finally {
+                Utility.closeQuietly(cursor);
+            }
+
+            return message;
+        });
     }
 
     public List<LocalMessage> getMessages(MessageRetrievalListener<LocalMessage> listener) throws MessagingException {

@@ -131,8 +131,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private static final int DIALOG_CHOOSE_IDENTITY = 3;
     private static final int DIALOG_CONFIRM_DISCARD = 4;
 
-    private static final long INVALID_DRAFT_ID = MessagingController.INVALID_MESSAGE_ID;
-
     public static final String ACTION_COMPOSE = "com.fsck.k9.intent.action.COMPOSE";
     public static final String ACTION_REPLY = "com.fsck.k9.intent.action.REPLY";
     public static final String ACTION_REPLY_ALL = "com.fsck.k9.intent.action.REPLY_ALL";
@@ -214,12 +212,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private boolean alreadyNotifiedUserOfEmptySubject = false;
     private boolean changesMadeSinceLastSave = false;
 
-    /**
-     * The database ID of this message's draft. This is used when saving drafts so the message in
-     * the database is updated instead of being created anew. This property is INVALID_DRAFT_ID
-     * until the first save.
-     */
-    private long draftId = INVALID_DRAFT_ID;
+    private Long draftMessageId = null;
 
     private Action action;
 
@@ -617,7 +610,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         super.onSaveInstanceState(outState);
 
         outState.putBoolean(STATE_KEY_SOURCE_MESSAGE_PROCED, relatedMessageProcessed);
-        outState.putLong(STATE_KEY_DRAFT_ID, draftId);
+        if (draftMessageId != null) {
+            outState.putLong(STATE_KEY_DRAFT_ID, draftMessageId);
+        }
         outState.putParcelable(STATE_IDENTITY, identity);
         outState.putBoolean(STATE_IDENTITY_CHANGED, identityChanged);
         outState.putString(STATE_IN_REPLY_TO, repliedToMessageId);
@@ -651,7 +646,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         quotedMessagePresenter.onRestoreInstanceState(savedInstanceState);
         attachmentPresenter.onRestoreInstanceState(savedInstanceState);
 
-        draftId = savedInstanceState.getLong(STATE_KEY_DRAFT_ID);
+        if (savedInstanceState.containsKey(STATE_KEY_DRAFT_ID)) {
+            draftMessageId = savedInstanceState.getLong(STATE_KEY_DRAFT_ID);
+        } else {
+            draftMessageId = null;
+        }
         identity = savedInstanceState.getParcelable(STATE_IDENTITY);
         identityChanged = savedInstanceState.getBoolean(STATE_IDENTITY_CHANGED);
         repliedToMessageId = savedInstanceState.getString(STATE_IN_REPLY_TO);
@@ -786,9 +785,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     private void onDiscard() {
-        if (draftId != INVALID_DRAFT_ID) {
-            MessagingController.getInstance(getApplication()).deleteDraft(account, draftId);
-            draftId = INVALID_DRAFT_ID;
+        if (draftMessageId != null) {
+            MessagingController.getInstance(getApplication()).deleteDraft(account, draftMessageId);
+            draftMessageId = null;
         }
         internalMessageHandler.sendEmptyMessage(MSG_DISCARDED_DRAFT);
         changesMadeSinceLastSave = false;
@@ -865,12 +864,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
 
             // test whether there is something to save
-            if (changesMadeSinceLastSave || (draftId != INVALID_DRAFT_ID)) {
-                final long previousDraftId = draftId;
+            if (changesMadeSinceLastSave || (draftMessageId != null)) {
+                final Long previousDraftId = draftMessageId;
                 final Account previousAccount = this.account;
 
                 // make current message appear as new
-                draftId = INVALID_DRAFT_ID;
+                draftMessageId = null;
 
                 // actual account switch
                 this.account = account;
@@ -878,7 +877,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 Timber.v("Account switch, saving new draft in new account");
                 checkToSaveDraftImplicitly();
 
-                if (previousDraftId != INVALID_DRAFT_ID) {
+                if (previousDraftId != null) {
                     Timber.v("Account switch, deleting draft from previous account: %d", previousDraftId);
 
                     MessagingController.getInstance(getApplication()).deleteDraft(previousAccount,
@@ -1056,7 +1055,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
         } else {
             // Check if editing an existing draft.
-            if (draftId == INVALID_DRAFT_ID) {
+            if (draftMessageId == null) {
                 onDiscard();
             } else {
                 if (navigateUp) {
@@ -1324,7 +1323,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private void processDraftMessage(MessageViewInfo messageViewInfo) {
         Message message = messageViewInfo.message;
-        draftId = MessagingController.getInstance(getApplication()).getId(message);
+        draftMessageId = MessagingController.getInstance(getApplication()).getId(message);
         subjectView.setText(messageViewInfo.subject);
 
         recipientPresenter.initFromDraftMessage(message);
@@ -1536,12 +1535,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             changesMadeSinceLastSave = false;
             currentMessageBuilder = null;
 
-            if (action == Action.EDIT_DRAFT && relatedMessageReference != null) {
-                message.setUid(relatedMessageReference.getUid());
-            }
-
             new SaveMessageTask(getApplicationContext(), account, contacts, internalMessageHandler,
-                    message, draftId, plaintextSubject, true).execute();
+                    message, draftMessageId, plaintextSubject).execute();
             if (finishAfterDraftSaved) {
                 finish();
             } else {
@@ -1550,7 +1545,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         } else {
             currentMessageBuilder = null;
             new SendMessageTask(getApplicationContext(), account, contacts, message,
-                    draftId != INVALID_DRAFT_ID ? draftId : null, plaintextSubject, relatedMessageReference).execute();
+                    draftMessageId, plaintextSubject, relatedMessageReference).execute();
             finish();
         }
     }
@@ -1856,7 +1851,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     setProgressBarIndeterminateVisibility(false);
                     break;
                 case MSG_SAVED_DRAFT:
-                    draftId = (Long) msg.obj;
+                    draftMessageId = (Long) msg.obj;
                     Toast.makeText(
                             MessageCompose.this,
                             getString(R.string.message_saved_toast),

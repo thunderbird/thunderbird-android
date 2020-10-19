@@ -16,12 +16,11 @@ public class SaveMessageTask extends AsyncTask<Void, Void, Void> {
     Contacts contacts;
     Handler handler;
     Message message;
-    long draftId;
+    Long draftId;
     String plaintextSubject;
-    boolean saveRemotely;
 
-    public SaveMessageTask(Context context, Account account, Contacts contacts,
-                           Handler handler, Message message, long draftId, String plaintextSubject, boolean saveRemotely) {
+    public SaveMessageTask(Context context, Account account, Contacts contacts, Handler handler, Message message,
+            Long draftId, String plaintextSubject) {
         this.context = context;
         this.account = account;
         this.contacts = contacts;
@@ -29,14 +28,12 @@ public class SaveMessageTask extends AsyncTask<Void, Void, Void> {
         this.message = message;
         this.draftId = draftId;
         this.plaintextSubject = plaintextSubject;
-        this.saveRemotely = saveRemotely;
     }
 
     @Override
     protected Void doInBackground(Void... params) {
         final MessagingController messagingController = MessagingController.getInstance(context);
-        Message draftMessage = messagingController.saveDraft(account, message, draftId, plaintextSubject, saveRemotely);
-        draftId = messagingController.getId(draftMessage);
+        draftId = messagingController.saveDraft(account, message, draftId, plaintextSubject);
 
         android.os.Message msg = android.os.Message.obtain(handler, MessageCompose.MSG_SAVED_DRAFT, draftId);
         handler.sendMessage(msg);
