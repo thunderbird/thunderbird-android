@@ -883,7 +883,6 @@ Hibajelentések beküldésével hozzájárulhatunk új funkciókhoz és kérdés
   <string name="recipient_bcc">Titkos másolat</string>
   <string name="recipient_to">Címzett</string>
   <string name="recipient_from">Feladó</string>
-  <string name="unknown_recipient"><![CDATA[<Unknown Recipient>]]></string>
   <string name="address_type_home">Otthon</string>
   <string name="address_type_work">Munkahely</string>
   <string name="address_type_other">Egyéb</string>

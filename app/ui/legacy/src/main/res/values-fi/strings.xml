@@ -809,6 +809,8 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="webview_contextmenu_link_share_action">Jaa linkki</string>
   <string name="webview_contextmenu_link_copy_action">Kopioi linkki leikepöydälle</string>
   <string name="webview_contextmenu_link_clipboard_label">Linkki</string>
+  <string name="webview_contextmenu_link_text_copy_action">Kopioi linkin teksti leikepöydälle</string>
+  <string name="webview_contextmenu_link_text_clipboard_label">Linkin teksti</string>
   <string name="webview_contextmenu_image_title">Kuva</string>
   <string name="webview_contextmenu_image_view_action">Näytä kuva</string>
   <string name="webview_contextmenu_image_save_action">Tallenna kuva</string>
@@ -885,7 +887,8 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="recipient_bcc">Piilokopio</string>
   <string name="recipient_to">Vastaanottaja</string>
   <string name="recipient_from">Lähettäjä</string>
-  <string name="unknown_recipient"><![CDATA[<Tuntematon vastaanottaja>]]></string>
+  <string name="unknown_recipient">&lt;Tuntematon vastaanottaja&gt;</string>
+  <string name="unknown_sender">&lt;Tuntematon lähettäjä&gt;</string>
   <string name="address_type_home">Koti</string>
   <string name="address_type_work">Työ</string>
   <string name="address_type_other">Muu</string>

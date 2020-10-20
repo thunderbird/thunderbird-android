@@ -894,7 +894,6 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="recipient_bcc">Bcc</string>
   <string name="recipient_to">Către</string>
   <string name="recipient_from">De la</string>
-  <string name="unknown_recipient"><![CDATA[<Unknown Recipient>]]></string>
   <string name="address_type_home">Acasă</string>
   <string name="address_type_work">Birou</string>
   <string name="address_type_other">Alta</string>

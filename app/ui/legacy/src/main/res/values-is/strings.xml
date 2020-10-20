@@ -886,7 +886,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="recipient_bcc">Falið afrit</string>
   <string name="recipient_to">Til</string>
   <string name="recipient_from">Frá</string>
-  <string name="unknown_recipient"><![CDATA[<Unknown Recipient>]]></string>
   <string name="address_type_home">Heima</string>
   <string name="address_type_work">Vinna</string>
   <string name="address_type_other">Annað</string>

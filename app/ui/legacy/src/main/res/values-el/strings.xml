@@ -790,7 +790,6 @@
   <string name="recipient_bcc">Κρυφή Κοιν:</string>
   <string name="recipient_to">Προς</string>
   <string name="recipient_from">Από:</string>
-  <string name="unknown_recipient"><![CDATA[<Άγνωστος Παραλήπτης>]]></string>
   <string name="address_type_home">Οικία</string>
   <string name="address_type_work">Εργασία</string>
   <string name="address_type_other">\'Αλλο</string>

@@ -806,6 +806,8 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="webview_contextmenu_link_share_action">リンクを共有</string>
   <string name="webview_contextmenu_link_copy_action">リンクをコピー</string>
   <string name="webview_contextmenu_link_clipboard_label">リンク</string>
+  <string name="webview_contextmenu_link_text_copy_action">リンクテキストをクリップボードにコピー</string>
+  <string name="webview_contextmenu_link_text_clipboard_label">リンクテキスト</string>
   <string name="webview_contextmenu_image_title">画像</string>
   <string name="webview_contextmenu_image_view_action">表示</string>
   <string name="webview_contextmenu_image_save_action">画像を保存</string>
@@ -880,7 +882,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="recipient_bcc">Bcc</string>
   <string name="recipient_to">宛先</string>
   <string name="recipient_from">送信者</string>
-  <string name="unknown_recipient"><![CDATA[<不明な受信者>]]></string>
   <string name="address_type_home">自宅</string>
   <string name="address_type_work">仕事</string>
   <string name="address_type_other">その他</string>

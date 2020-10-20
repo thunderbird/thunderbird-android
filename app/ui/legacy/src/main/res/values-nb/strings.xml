@@ -875,7 +875,6 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="recipient_bcc">Blindkopi</string>
   <string name="recipient_to">Til</string>
   <string name="recipient_from">Fra</string>
-  <string name="unknown_recipient"><![CDATA[<Ukjent mottaker>]]></string>
   <string name="address_type_home">Hjemme</string>
   <string name="address_type_work">Arbeid</string>
   <string name="address_type_other">Annet</string>

@@ -885,7 +885,6 @@
   <string name="recipient_bcc">مخفیانه به</string>
   <string name="recipient_to">به</string>
   <string name="recipient_from">از</string>
-  <string name="unknown_recipient"><![CDATA[<Unknown Recipient>]]></string>
   <string name="address_type_home">خانه</string>
   <string name="address_type_work">کار</string>
   <string name="address_type_other">سایر</string>

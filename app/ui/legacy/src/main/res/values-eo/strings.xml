@@ -884,7 +884,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="recipient_bcc">Kaŝkopio</string>
   <string name="recipient_to">Al</string>
   <string name="recipient_from">De</string>
-  <string name="unknown_recipient"><![CDATA[<Nekonata ricevonto>]]></string>
   <string name="address_type_home">Hejmo</string>
   <string name="address_type_work">Laboro</string>
   <string name="address_type_other">Aliaj</string>

@@ -811,6 +811,8 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="webview_contextmenu_link_share_action">Condividi collegamento</string>
   <string name="webview_contextmenu_link_copy_action">Copia collegamento negli appunti</string>
   <string name="webview_contextmenu_link_clipboard_label">Collegamento</string>
+  <string name="webview_contextmenu_link_text_copy_action">Copia testo del collegamento negli appunti</string>
+  <string name="webview_contextmenu_link_text_clipboard_label">Testo del collegamento</string>
   <string name="webview_contextmenu_image_title">Immagine</string>
   <string name="webview_contextmenu_image_view_action">Visualizza immagine</string>
   <string name="webview_contextmenu_image_save_action">Salva immagine</string>
@@ -887,7 +889,8 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="recipient_bcc">Ccn</string>
   <string name="recipient_to">A</string>
   <string name="recipient_from">Da</string>
-  <string name="unknown_recipient"><![CDATA[<Destinatario sconosciuto>]]></string>
+  <string name="unknown_recipient">&lt;Destinatario sconosciuto&gt;</string>
+  <string name="unknown_sender">&lt;Mittente sconosciuto&gt;</string>
   <string name="address_type_home">Casa</string>
   <string name="address_type_work">Lavoro</string>
   <string name="address_type_other">Altro</string>

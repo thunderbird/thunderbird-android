@@ -884,7 +884,6 @@
   <string name="recipient_bcc">Бцц</string>
   <string name="recipient_to">За</string>
   <string name="recipient_from">Од</string>
-  <string name="unknown_recipient"><![CDATA[<Непознат прималац>]]></string>
   <string name="address_type_home">Кућа</string>
   <string name="address_type_work">Посао</string>
   <string name="address_type_other">Остало</string>

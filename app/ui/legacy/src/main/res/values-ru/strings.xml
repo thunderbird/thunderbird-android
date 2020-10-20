@@ -884,7 +884,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="recipient_bcc">Скрытая</string>
   <string name="recipient_to">Кому</string>
   <string name="recipient_from">От</string>
-  <string name="unknown_recipient"><![CDATA[<Неизвестный адресат>]]></string>
   <string name="address_type_home">Дом</string>
   <string name="address_type_work">Работа</string>
   <string name="address_type_other">Прочее</string>

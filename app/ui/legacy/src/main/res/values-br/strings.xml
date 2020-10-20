@@ -854,7 +854,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="recipient_bcc">Bcc</string>
   <string name="recipient_to">Da</string>
   <string name="recipient_from">A-berzh</string>
-  <string name="unknown_recipient"><![CDATA[<Unknown Recipient>]]></string>
   <string name="address_type_home">D’ar gêr</string>
   <string name="address_type_work">Labour</string>
   <string name="address_type_other">All</string>

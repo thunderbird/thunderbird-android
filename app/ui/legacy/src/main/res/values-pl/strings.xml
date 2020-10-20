@@ -899,7 +899,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="recipient_bcc">UDW</string>
   <string name="recipient_to">Do</string>
   <string name="recipient_from">Od</string>
-  <string name="unknown_recipient"><![CDATA[<Nieznany odbiorca>]]></string>
   <string name="address_type_home">Dom</string>
   <string name="address_type_work">Praca</string>
   <string name="address_type_other">Inne</string>

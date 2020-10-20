@@ -747,7 +747,6 @@
   <string name="recipient_bcc">숨은 참조</string>
   <string name="recipient_to">받는 사람</string>
   <string name="recipient_from">보낸 사람</string>
-  <string name="unknown_recipient"><![CDATA[<Unknown Recipient>]]></string>
   <string name="address_type_home">가정</string>
   <string name="address_type_work">직장</string>
   <string name="address_type_other">기타</string>

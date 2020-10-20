@@ -860,7 +860,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="recipient_bcc">Bcc</string>
   <string name="recipient_to">Nori</string>
   <string name="recipient_from">Nork</string>
-  <string name="unknown_recipient"><![CDATA[<Unknown Recipient>]]></string>
   <string name="address_type_home">Etxekoa</string>
   <string name="address_type_work">Lanekoa</string>
   <string name="address_type_other">Bestelakoak</string>

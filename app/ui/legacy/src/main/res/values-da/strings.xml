@@ -844,7 +844,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="recipient_bcc">Bcc</string>
   <string name="recipient_to">Til</string>
   <string name="recipient_from">Fra</string>
-  <string name="unknown_recipient"><![CDATA[<Unknown Recipient>]]></string>
   <string name="address_type_home">Hjem</string>
   <string name="address_type_work">Arbejde</string>
   <string name="address_type_other">Anden</string>

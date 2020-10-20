@@ -808,9 +808,11 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="unread_widget_folder_not_selected">Kein Ordner ausgewählt</string>
   <string name="webview_empty_message">Kein Nachrichtentext</string>
   <string name="webview_contextmenu_link_view_action">Öffnen</string>
-  <string name="webview_contextmenu_link_share_action">Link weitergeben</string>
+  <string name="webview_contextmenu_link_share_action">Link teilen</string>
   <string name="webview_contextmenu_link_copy_action">Link kopieren</string>
   <string name="webview_contextmenu_link_clipboard_label">Link</string>
+  <string name="webview_contextmenu_link_text_copy_action">Linktext kopieren</string>
+  <string name="webview_contextmenu_link_text_clipboard_label">Linktext</string>
   <string name="webview_contextmenu_image_title">Bild</string>
   <string name="webview_contextmenu_image_view_action">Bild anzeigen</string>
   <string name="webview_contextmenu_image_save_action">Bild speichern</string>
@@ -887,7 +889,8 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="recipient_bcc">BCC</string>
   <string name="recipient_to">An</string>
   <string name="recipient_from">Von</string>
-  <string name="unknown_recipient"><![CDATA[<Unbekannter Empfänger>]]></string>
+  <string name="unknown_recipient">&lt;Unbekannter Empfänger&gt;</string>
+  <string name="unknown_sender">&lt;Unbekannter Absender&gt;</string>
   <string name="address_type_home">Zuhause</string>
   <string name="address_type_work">Arbeit</string>
   <string name="address_type_other">Anderes</string>

@@ -809,6 +809,8 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="webview_contextmenu_link_share_action">Compartilhar link</string>
   <string name="webview_contextmenu_link_copy_action">Copiar link para a área de transferência</string>
   <string name="webview_contextmenu_link_clipboard_label">Link</string>
+  <string name="webview_contextmenu_link_text_copy_action">Copiar o texto do link para a área de transferência</string>
+  <string name="webview_contextmenu_link_text_clipboard_label">Texto do link</string>
   <string name="webview_contextmenu_image_title">Imagem</string>
   <string name="webview_contextmenu_image_view_action">Ver imagem</string>
   <string name="webview_contextmenu_image_save_action">Salvar imagem</string>
@@ -885,7 +887,8 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="recipient_bcc">Cco</string>
   <string name="recipient_to">Para</string>
   <string name="recipient_from">De</string>
-  <string name="unknown_recipient"><![CDATA[<Destinatário Desconhecido>]]></string>
+  <string name="unknown_recipient">&lt;Destinatário desconhecido&gt;</string>
+  <string name="unknown_sender">&lt;Remetente desconhecido&gt;</string>
   <string name="address_type_home">Casa</string>
   <string name="address_type_work">Trabalho</string>
   <string name="address_type_other">Outro</string>

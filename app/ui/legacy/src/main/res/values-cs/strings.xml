@@ -805,6 +805,8 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="webview_contextmenu_link_share_action">Sdílet odkaz</string>
   <string name="webview_contextmenu_link_copy_action">Zkopírovat odkaz do schránky</string>
   <string name="webview_contextmenu_link_clipboard_label">Odkaz</string>
+  <string name="webview_contextmenu_link_text_copy_action">Zkopírovat text odkazu do schránky</string>
+  <string name="webview_contextmenu_link_text_clipboard_label">Text odkazu</string>
   <string name="webview_contextmenu_image_title">Obrázek</string>
   <string name="webview_contextmenu_image_view_action">Zobrazit obrázek</string>
   <string name="webview_contextmenu_image_save_action">Uložit obrázek</string>
@@ -885,7 +887,8 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="recipient_bcc">Skrytá kopie</string>
   <string name="recipient_to">Komu</string>
   <string name="recipient_from">Odesílatel</string>
-  <string name="unknown_recipient"><![CDATA[<Unknown Recipient>]]></string>
+  <string name="unknown_recipient">&lt;Neznámý příjemce&gt;</string>
+  <string name="unknown_sender">&lt;Neznámý odesilatel&gt;</string>
   <string name="address_type_home">Domov</string>
   <string name="address_type_work">Práce</string>
   <string name="address_type_other">Ostatní</string>

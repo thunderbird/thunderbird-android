@@ -831,7 +831,6 @@
   <string name="recipient_bcc">Pimekoopia</string>
   <string name="recipient_to">Kellele</string>
   <string name="recipient_from">Kellelt</string>
-  <string name="unknown_recipient"><![CDATA[<Unknown Recipient>]]></string>
   <string name="address_type_home">Kodu</string>
   <string name="address_type_work">Töö</string>
   <string name="address_type_other">Muu</string>
