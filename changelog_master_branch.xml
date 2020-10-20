@@ -8,6 +8,16 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.722" versioncode="27022">
+        <change>Fixed bug where updating drafts wouldn't upload the change to the server</change>
+        <change>Fixed bug where URLs were duplicated when saving drafts</change>
+        <change>Improved HTTP URL detection when URL is wrapped in parentheses</change>
+        <change>Don't show archive or spam action when displaying the corresponding folder</change>
+        <change>Show recipient name for all messages in Sent, Drafts, and Outbox folders</change>
+        <change>Use automatic identity selection when forwarding emails</change>
+        <change>Display message headers in original order</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.721" versioncode="27021">
         <change>Fixed bug that lead to the message body not being displayed when it contained a signature ending with a URL</change>
         <change>Added 'copy link text to clipboard' option when long-pressing links</change>
