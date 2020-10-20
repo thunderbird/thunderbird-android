@@ -1,11 +1,10 @@
 package com.fsck.k9.controller
 
 import android.content.Context
-import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.Preferences
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.mailstore.LocalStoreProvider
-import com.fsck.k9.mailstore.MessagesStoreProvider
+import com.fsck.k9.mailstore.MessageStoreProvider
 import com.fsck.k9.notification.NotificationController
 import com.fsck.k9.notification.NotificationStrategy
 import org.koin.core.qualifier.named
@@ -19,10 +18,9 @@ val controllerModule = module {
             get<NotificationStrategy>(),
             get<LocalStoreProvider>(),
             get<UnreadMessageCountProvider>(),
-            get<CoreResourceProvider>(),
             get<BackendManager>(),
             get<Preferences>(),
-            get<MessagesStoreProvider>(),
+            get<MessageStoreProvider>(),
             get(named("controllerExtensions"))
         )
     }

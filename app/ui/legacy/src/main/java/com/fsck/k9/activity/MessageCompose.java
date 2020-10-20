@@ -178,6 +178,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private final MessageLoaderHelperFactory messageLoaderHelperFactory = DI.get(MessageLoaderHelperFactory.class);
     private final DefaultFolderProvider defaultFolderProvider = DI.get(DefaultFolderProvider.class);
+    private final MessagingController messagingController = DI.get(MessagingController.class);
+    private final Preferences preferences = DI.get(Preferences.class);
 
     private final PermissionUiHelper permissionUiHelper = new K9PermissionUiHelper(this);
 
@@ -279,10 +281,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 relatedMessageReference.getAccountUuid() :
                 intent.getStringExtra(EXTRA_ACCOUNT);
 
-        account = Preferences.getPreferences(this).getAccount(accountUuid);
+        account = preferences.getAccount(accountUuid);
 
         if (account == null) {
-            account = Preferences.getPreferences(this).getDefaultAccount();
+            account = preferences.getDefaultAccount();
         }
 
         if (account == null) {
@@ -578,13 +580,13 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     @Override
     protected void onResume() {
         super.onResume();
-        MessagingController.getInstance(this).addListener(messagingListener);
+        messagingController.addListener(messagingListener);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        MessagingController.getInstance(this).removeListener(messagingListener);
+        messagingController.removeListener(messagingListener);
 
         boolean isPausingOnConfigurationChange = (getChangingConfigurations() & ActivityInfo.CONFIG_ORIENTATION)
                 == ActivityInfo.CONFIG_ORIENTATION;
@@ -786,7 +788,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private void onDiscard() {
         if (draftMessageId != null) {
-            MessagingController.getInstance(getApplication()).deleteDraft(account, draftMessageId);
+            messagingController.deleteDraft(account, draftMessageId);
             draftMessageId = null;
         }
         internalMessageHandler.sendEmptyMessage(MSG_DISCARDED_DRAFT);
@@ -880,8 +882,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 if (previousDraftId != null) {
                     Timber.v("Account switch, deleting draft from previous account: %d", previousDraftId);
 
-                    MessagingController.getInstance(getApplication()).deleteDraft(previousAccount,
-                            previousDraftId);
+                    messagingController.deleteDraft(previousAccount, previousDraftId);
                 }
             } else {
                 this.account = account;
@@ -1323,7 +1324,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private void processDraftMessage(MessageViewInfo messageViewInfo) {
         Message message = messageViewInfo.message;
-        draftMessageId = MessagingController.getInstance(getApplication()).getId(message);
+        draftMessageId = messagingController.getId(message);
         subjectView.setText(messageViewInfo.subject);
 
         recipientPresenter.initFromDraftMessage(message);
@@ -1390,8 +1391,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
             if (messageReference != null) {
                 // Check if this is a valid account in our database
-                Preferences prefs = Preferences.getPreferences(getApplicationContext());
-                Account account = prefs.getAccount(messageReference.getAccountUuid());
+                Account account = preferences.getAccount(messageReference.getAccountUuid());
                 if (account != null) {
                     relatedMessageReference = messageReference;
                 }
@@ -1407,7 +1407,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     }
 
     static class SendMessageTask extends AsyncTask<Void, Void, Void> {
-        final Context context;
+        final MessagingController messagingController;
+        final Preferences preferences;
         final Account account;
         final Contacts contacts;
         final Message message;
@@ -1415,9 +1416,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         final String plaintextSubject;
         final MessageReference messageReference;
 
-        SendMessageTask(Context context, Account account, Contacts contacts, Message message,
-                Long draftId, String plaintextSubject, MessageReference messageReference) {
-            this.context = context;
+        SendMessageTask(MessagingController messagingController, Preferences preferences, Account account,
+                Contacts contacts, Message message, Long draftId, String plaintextSubject,
+                MessageReference messageReference) {
+            this.messagingController = messagingController;
+            this.preferences = preferences;
             this.account = account;
             this.contacts = contacts;
             this.message = message;
@@ -1437,10 +1440,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 Timber.e(e, "Failed to mark contact as contacted.");
             }
 
-            MessagingController.getInstance(context).sendMessage(account, message, plaintextSubject, null);
+            messagingController.sendMessage(account, message, plaintextSubject, null);
             if (draftId != null) {
                 // TODO set draft id to invalid in MessageCompose!
-                MessagingController.getInstance(context).deleteDraft(account, draftId);
+                messagingController.deleteDraft(account, draftId);
             }
 
             return null;
@@ -1452,14 +1455,13 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         private void updateReferencedMessage() {
             if (messageReference != null && messageReference.getFlag() != null) {
                 String accountUuid = messageReference.getAccountUuid();
-                Account account = Preferences.getPreferences(context).getAccount(accountUuid);
+                Account account = preferences.getAccount(accountUuid);
                 long folderId = messageReference.getFolderId();
                 String sourceMessageUid = messageReference.getUid();
                 Flag flag = messageReference.getFlag();
 
                 Timber.d("Setting referenced message (%d, %s) flag to %s", folderId, sourceMessageUid, flag);
 
-                MessagingController messagingController = MessagingController.getInstance(context);
                 messagingController.setFlag(account, folderId, sourceMessageUid, flag, true);
             }
         }
@@ -1535,8 +1537,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             changesMadeSinceLastSave = false;
             currentMessageBuilder = null;
 
-            new SaveMessageTask(getApplicationContext(), account, contacts, internalMessageHandler,
-                    message, draftMessageId, plaintextSubject).execute();
+            new SaveMessageTask(messagingController, account, internalMessageHandler, message, draftMessageId,
+                    plaintextSubject).execute();
             if (finishAfterDraftSaved) {
                 finish();
             } else {
@@ -1544,7 +1546,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             }
         } else {
             currentMessageBuilder = null;
-            new SendMessageTask(getApplicationContext(), account, contacts, message,
+            new SendMessageTask(messagingController, preferences, account, contacts, message,
                     draftMessageId, plaintextSubject, relatedMessageReference).execute();
             finish();
         }

@@ -70,7 +70,7 @@ import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStoreProvider;
 import com.fsck.k9.mailstore.MessageStore;
-import com.fsck.k9.mailstore.MessagesStoreProvider;
+import com.fsck.k9.mailstore.MessageStoreProvider;
 import com.fsck.k9.mailstore.OutboxState;
 import com.fsck.k9.mailstore.OutboxStateRepository;
 import com.fsck.k9.mailstore.SendState;
@@ -116,7 +116,7 @@ public class MessagingController {
     private final LocalStoreProvider localStoreProvider;
     private final BackendManager backendManager;
     private final Preferences preferences;
-    private final MessagesStoreProvider messagesStoreProvider;
+    private final MessageStoreProvider messageStoreProvider;
 
     private final Thread controllerThread;
 
@@ -125,7 +125,6 @@ public class MessagingController {
     private final ExecutorService threadPool = Executors.newCachedThreadPool();
     private final MemorizingMessagingListener memorizingMessagingListener = new MemorizingMessagingListener();
     private final UnreadMessageCountProvider unreadMessageCountProvider;
-    private final CoreResourceProvider resourceProvider;
     private final DraftOperations draftOperations;
 
 
@@ -140,18 +139,17 @@ public class MessagingController {
 
     MessagingController(Context context, NotificationController notificationController,
             NotificationStrategy notificationStrategy, LocalStoreProvider localStoreProvider,
-            UnreadMessageCountProvider unreadMessageCountProvider, CoreResourceProvider resourceProvider,
-            BackendManager backendManager, Preferences preferences, MessagesStoreProvider messagesStoreProvider,
+            UnreadMessageCountProvider unreadMessageCountProvider, BackendManager backendManager,
+            Preferences preferences, MessageStoreProvider messageStoreProvider,
             List<ControllerExtension> controllerExtensions) {
         this.context = context;
         this.notificationController = notificationController;
         this.notificationStrategy = notificationStrategy;
         this.localStoreProvider = localStoreProvider;
         this.unreadMessageCountProvider = unreadMessageCountProvider;
-        this.resourceProvider = resourceProvider;
         this.backendManager = backendManager;
         this.preferences = preferences;
-        this.messagesStoreProvider = messagesStoreProvider;
+        this.messageStoreProvider = messageStoreProvider;
 
         controllerThread = new Thread(new Runnable() {
             @Override
@@ -729,7 +727,8 @@ public class MessagingController {
         try {
             for (PendingCommand command : commands) {
                 processingCommand = command;
-                Timber.d("Processing pending command '%s'", command);
+                String commandName = command.getCommandName();
+                Timber.d("Processing pending command '%s'", commandName);
 
                 /*
                  * We specifically do not catch any exceptions here. If a command fails it is
@@ -741,16 +740,16 @@ public class MessagingController {
 
                     localStore.removePendingCommand(command);
 
-                    Timber.d("Done processing pending command '%s'", command);
+                    Timber.d("Done processing pending command '%s'", commandName);
                 } catch (MessagingException me) {
                     if (me.isPermanentFailure()) {
-                        Timber.e(me, "Failure of command '%s' was permanent, removing command from queue", command);
+                        Timber.e(me, "Failure of command '%s' was permanent, removing command from queue", commandName);
                         localStore.removePendingCommand(processingCommand);
                     } else {
                         throw me;
                     }
                 } catch (Exception e) {
-                    Timber.e(e, "Unexpected exception with command '%s', removing command from queue", command);
+                    Timber.e(e, "Unexpected exception with command '%s', removing command from queue", commandName);
                     localStore.removePendingCommand(processingCommand);
 
                     if (K9.DEVELOPER_MODE) {
@@ -1556,7 +1555,7 @@ public class MessagingController {
                         for (MessagingListener l : getListeners()) {
                             l.synchronizeMailboxProgress(account, outboxFolderId, progress, todo);
                         }
-                        moveOrDeleteSentMessage(account, localStore, localFolder, message);
+                        moveOrDeleteSentMessage(account, localStore, message);
 
                         outboxStateRepository.removeOutboxState(messageId);
                     } catch (AuthenticationFailedException e) {
@@ -1618,8 +1617,8 @@ public class MessagingController {
         }
     }
 
-    private void moveOrDeleteSentMessage(Account account, LocalStore localStore,
-            LocalFolder localFolder, LocalMessage message) throws MessagingException {
+    private void moveOrDeleteSentMessage(Account account, LocalStore localStore, LocalMessage message)
+            throws MessagingException {
         if (!account.hasSentFolder() || !account.isUploadSentMessages()) {
             Timber.i("Not uploading sent message; deleting local message");
             message.destroy();
@@ -1630,7 +1629,7 @@ public class MessagingController {
             String sentFolderServerId = sentFolder.getServerId();
             Timber.i("Moving sent message to folder '%s' (%d)", sentFolderServerId, sentFolderId);
 
-            MessageStore messageStore = messagesStoreProvider.getMessageStore(account);
+            MessageStore messageStore = messageStoreProvider.getMessageStore(account);
             long destinationMessageId = messageStore.moveMessage(message.getDatabaseId(), sentFolderId);
 
             Timber.i("Moved sent message to folder '%s' (%d)", sentFolderServerId, sentFolderId);
@@ -1836,7 +1835,7 @@ public class MessagingController {
                         }
                     }
                 } else {
-                    MessageStore messageStore = messagesStoreProvider.getMessageStore(account);
+                    MessageStore messageStore = messageStoreProvider.getMessageStore(account);
 
                     List<Long> messageIds = new ArrayList<>();
                     Map<Long, String> messageIdToUidMapping = new HashMap<>();
@@ -2049,7 +2048,7 @@ public class MessagingController {
                 Timber.d("Deleting messages in normal folder, moving");
                 localTrashFolder = localStore.getFolder(trashFolderId);
 
-                MessageStore messageStore = messagesStoreProvider.getMessageStore(account);
+                MessageStore messageStore = messageStoreProvider.getMessageStore(account);
 
                 List<Long> messageIds = new ArrayList<>();
                 Map<Long, String> messageIdToUidMapping = new HashMap<>();
