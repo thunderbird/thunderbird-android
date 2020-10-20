@@ -860,7 +860,6 @@
   <string name="recipient_bcc">Bcc</string>
   <string name="recipient_to">Za</string>
   <string name="recipient_from">Od</string>
-  <string name="unknown_recipient"><![CDATA[<Unknown Recipient>]]></string>
   <string name="address_type_home">Glavna</string>
   <string name="address_type_work">Posao</string>
   <string name="address_type_other">Ostalo</string>

@@ -781,7 +781,6 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="recipient_bcc">Bcc</string>
   <string name="recipient_to">Gu</string>
   <string name="recipient_from">O</string>
-  <string name="unknown_recipient"><![CDATA[<Unknown Recipient>]]></string>
   <string name="address_type_home">Taigh</string>
   <string name="address_type_work">Obair</string>
   <string name="address_type_other">Eile</string>

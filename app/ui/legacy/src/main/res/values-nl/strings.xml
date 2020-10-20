@@ -31,7 +31,7 @@
 <li>Bijlage opslaan naar SD</li> 
 <li>Prullenbak legen</li> 
 <li>Berichten sorteren</li> 
-<li>…en meer</li> 
+<li>en meer …</li> 
 </ul> 
 <p> 
 Houd er rekening mee dat K-9 de meeste gratis Hotmail-accounts niet ondersteund, en net als veel e-mailclients, problemen kan hebben om te verbinden met Microsoft Exchange. 
@@ -89,8 +89,8 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="edit_as_new_message_action">Bewerken als nieuw bericht</string>
   <string name="move_action">Verplaatsen</string>
   <string name="move_to_drafts_action">Verplaatsen naar concepten</string>
-  <string name="single_message_options_action">Verzend…</string>
-  <string name="refile_action">Opnieuw opslaan…</string>
+  <string name="single_message_options_action">Verzenden …</string>
+  <string name="refile_action">Opnieuw opslaan …</string>
   <string name="done_action">Klaar</string>
   <string name="discard_action">Vergeten</string>
   <string name="save_draft_action">Opslaan als concept</string>
@@ -458,7 +458,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_settings_crypto_key">Eind-tot-eind sleutel instellen</string>
   <string name="account_settings_crypto_summary_off">Geen OpenPGP app ingesteld</string>
   <string name="account_settings_crypto_summary_on">Verbonden met %s</string>
-  <string name="account_settings_crypto_summary_config">Aan het configureren...</string>
+  <string name="account_settings_crypto_summary_config">Aan het configureren ...</string>
   <string name="account_settings_crypto_encrypt_all_drafts">Sla alle concepten versleuteld op.</string>
   <string name="account_settings_crypto_encrypt_all_drafts_on">Alle concepten zullen versleuteld worden opgeslagen</string>
   <string name="account_settings_crypto_encrypt_all_drafts_off">Versleutel concepten alleen als versleuteling is ingeschakeld</string>
@@ -610,7 +610,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="sort_unread_last">Gelezen berichten eerst</string>
   <string name="sort_attach_first">Berichten met bijlagen eerst</string>
   <string name="sort_unattached_first">Berichten zonder bijlagen eerst</string>
-  <string name="sort_by">Sorteer volgens…</string>
+  <string name="sort_by">Sorteren volgens …</string>
   <string name="sort_by_date">Datum</string>
   <string name="sort_by_arrival">Aankomst</string>
   <string name="sort_by_subject">Onderwerp</string>
@@ -762,7 +762,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="settings_export_title">Exporteer instellingen</string>
   <string name="settings_export_button">Export</string>
   <string name="settings_export_share_button">Delen</string>
-  <string name="settings_export_progress_text">Instellingen exporteren…</string>
+  <string name="settings_export_progress_text">Instellingen exporteren …</string>
   <string name="settings_export_success_generic">Instellingen succesvol geëxporteerd</string>
   <string name="settings_export_failure">Instellingen exporteren mislukt</string>
   <string name="settings_import_title">Instellingen importeren</string>
@@ -779,7 +779,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="settings_import_status_error">Importeren mislukt</string>
   <string name="settings_import_later_button">Later</string>
   <string name="settings_import">Import instellingen</string>
-  <string name="settings_importing">Instellingen importeren…</string>
+  <string name="settings_importing">Instellingen importeren …</string>
   <plurals name="settings_import_password_prompt">
     <item quantity="one">Om het account \"<xliff:g id="account">%s</xliff:g>\" te gebruiken moet je het wachtwoord van de server opgeven.</item>
     <item quantity="other">Om het account \"<xliff:g id="account">%s</xliff:g>\" te gebruiken moet je de wachtwoorden van de server opgeven.</item>
@@ -788,7 +788,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="settings_import_outgoing_server_password_hint">Uitgaandeserver-wachtwoord</string>
   <string name="settings_import_use_same_password_for_outgoing_server">Gebruik het zelfde wachtwoord voor de uitgaandeserver</string>
   <string name="server_name_format">Servernaam: <xliff:g id="hostname">%s</xliff:g></string>
-  <string name="unread_widget_select_account">Ongelezen aantal weergeven voor…</string>
+  <string name="unread_widget_select_account">Ongelezen aantal weergeven voor …</string>
   <string name="unread_widget_account_title">Account</string>
   <string name="unread_widget_account_summary">Het account waarvan het aantal ongelezen berichten wordt getoond</string>
   <string name="unread_widget_unified_inbox_account_summary">Gecombineerde postvak-in</string>
@@ -805,6 +805,8 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="webview_contextmenu_link_share_action">Deel link</string>
   <string name="webview_contextmenu_link_copy_action">Kopieer link naar klembord</string>
   <string name="webview_contextmenu_link_clipboard_label">Link</string>
+  <string name="webview_contextmenu_link_text_copy_action">Verwijzingstekst naar klembord kopiëren</string>
+  <string name="webview_contextmenu_link_text_clipboard_label">Verwijzingstekst</string>
   <string name="webview_contextmenu_image_title">Afbeelding</string>
   <string name="webview_contextmenu_image_view_action">Afbeelding laten zien</string>
   <string name="webview_contextmenu_image_save_action">Afbeelding opslaan</string>
@@ -848,7 +850,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="global_settings_threaded_view_label">Gesprek overzicht</string>
   <string name="global_settings_threaded_view_summary">Groepeer berichten per gesprek</string>
   <string name="upgrade_databases_title">Gegevensbanken bijwerken</string>
-  <string name="upgrade_databases_unspecified">Gegevensbanken bijwerken…</string>
+  <string name="upgrade_databases_unspecified">Gegevensbanken aan het bijwerken …</string>
   <string name="upgrade_database_format">Gegevensbanken van account \"<xliff:g id="account">%s</xliff:g>\" bijwerken</string>
   <string name="global_settings_splitview_mode_label">Gespleten-scherm laten zien</string>
   <string name="global_settings_splitview_always">Altijd</string>
@@ -862,10 +864,10 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="global_settings_colorize_missing_contact_pictures_summary">Voorzie afwezige contactafbeeldingen van een kleur</string>
   <string name="global_settings_messageview_visible_refile_actions_title">Zichtbare berichtacties</string>
   <string name="global_settings_messageview_visible_refile_actions_summary">Toon de geselecteerde acties in het Berichten-menu</string>
-  <string name="loading_attachment">Bijlage laden…</string>
+  <string name="loading_attachment">Bijlage aan het laden …</string>
   <string name="fetching_attachment_dialog_title_send">Bericht wordt verstuurd</string>
   <string name="fetching_attachment_dialog_title_save">Concept wordt opgeslagen</string>
-  <string name="fetching_attachment_dialog_message">Bijlage ophalen…</string>
+  <string name="fetching_attachment_dialog_message">Bijlage aan het ophalen …</string>
   <string name="auth_external_error">Kan niet authenticeren. De server ondersteunt geen SASL EXTERNAL. Dit kan komen door een probleem met het client certificaat (verlopen of onbekende CA) of een ander configuratieprobleem.</string>
   <!--=== Client certificates specific ==================================================================-->
   <string name="account_setup_basics_client_certificate">Gebruik client certificaat</string>
@@ -881,7 +883,8 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="recipient_bcc">BCC</string>
   <string name="recipient_to">Aan</string>
   <string name="recipient_from">Van</string>
-  <string name="unknown_recipient"><![CDATA[<Onbekende ontvanger>]]></string>
+  <string name="unknown_recipient">&lt;Onbekende ontvanger&gt;</string>
+  <string name="unknown_sender">&lt;Onbekende verzender&gt;</string>
   <string name="address_type_home">Privé</string>
   <string name="address_type_work">Werk</string>
   <string name="address_type_other">Anders</string>
@@ -951,7 +954,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="locked_attach_unlock">Deblokkeer</string>
   <string name="locked_attach_unencrypted">Dit onderdeel is niet versleuteld en is misschien niet veilig.</string>
   <string name="locked_attach_title">Onbeveiligde Bijlage</string>
-  <string name="message_progress_text">Laden…</string>
+  <string name="message_progress_text">Aan het laden …</string>
   <string name="messageview_decrypt_cancelled">Ontsleuteling is gestopt.</string>
   <string name="messageview_decrypt_retry">Opnieuw</string>
   <string name="messageview_decrypt_incomplete">Versleuteld bericht moet gedownload zijn voor ontsleuteling.</string>
@@ -975,7 +978,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="crypto_no_provider_message">Deze e-mail is OpenPGP versleuteld.\nInstalleer en stel een OpenPGP App in om de e-mail te lezen.</string>
   <string name="crypto_no_provider_button">Ga naar Instellingen</string>
   <string name="mail_list_widget_text">K-9 Bericht Lijst</string>
-  <string name="mail_list_widget_loading">Berichten laden…</string>
+  <string name="mail_list_widget_loading">Berichten aan het laden …</string>
   <string name="fetching_folders_failed">Ophalen maplijst niet gelukt</string>
   <string name="error_recipient_crypto_retrieve">Fout bij ophalen status van de OpenPGP provider!</string>
   <string name="openpgp_enabled_error_title">Versleuteling niet mogelijk</string>
@@ -1009,7 +1012,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="ac_transfer_intro">Een Autocrypt Setup bericht deelt uw eind-tot-eind instellingen op een beveiligde manier met andere apparaten.</string>
   <string name="ac_transfer_button_send">Verstuur Setup bericht</string>
   <string name="ac_transfer_will_be_sent">Het bericht wordt verstuurd naar uw adres:</string>
-  <string name="ac_transfer_generating">Genereren Setup bericht...</string>
+  <string name="ac_transfer_generating">Instelbericht aan het genereren ...</string>
   <string name="ac_transfer_sending_to">Bericht sturen naar:</string>
   <string name="ac_transfer_finish">Om te voltooien, open het bericht op uw andere apparaat en voer de Setup Code in.</string>
   <string name="ac_transfer_show_code">Setup Code weergeven</string>

@@ -879,7 +879,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="recipient_bcc">Bcc</string>
   <string name="recipient_to">Kepada</string>
   <string name="recipient_from">Dari</string>
-  <string name="unknown_recipient"><![CDATA[<Unknown Recipient>]]></string>
   <string name="address_type_home">Rumah</string>
   <string name="address_type_work">Kerja</string>
   <string name="address_type_other">Lainnya</string>

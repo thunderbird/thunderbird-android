@@ -92,6 +92,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="forward_as_attachment_action">Ek olarak ilet</string>
   <string name="edit_as_new_message_action">Yeni bir ileti olarak düzenle</string>
   <string name="move_action">Taşı</string>
+  <string name="move_to_drafts_action">Taslaklara Taşı</string>
   <string name="single_message_options_action">Gönder…</string>
   <string name="refile_action">Yeniden işlem…</string>
   <string name="done_action">Tamam</string>
@@ -808,6 +809,8 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="webview_contextmenu_link_share_action">Bağlantıyı paylaş</string>
   <string name="webview_contextmenu_link_copy_action">Bağlantıyı panoya kopyala</string>
   <string name="webview_contextmenu_link_clipboard_label">Bağlantı</string>
+  <string name="webview_contextmenu_link_text_copy_action">Bağlantı metnini panoya kopyala</string>
+  <string name="webview_contextmenu_link_text_clipboard_label">Bağlantı metni</string>
   <string name="webview_contextmenu_image_title">Resim</string>
   <string name="webview_contextmenu_image_view_action">Resmi göster</string>
   <string name="webview_contextmenu_image_save_action">Resmi kaydet</string>
@@ -884,7 +887,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="recipient_bcc">Gizli Kopya</string>
   <string name="recipient_to">Kime</string>
   <string name="recipient_from">Kimden</string>
-  <string name="unknown_recipient"><![CDATA[<Unknown Recipient>]]></string>
   <string name="address_type_home">Ev</string>
   <string name="address_type_work">İş</string>
   <string name="address_type_other">Diğer</string>

@@ -803,7 +803,6 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="recipient_bcc">CCo</string>
   <string name="recipient_to">Para</string>
   <string name="recipient_from">Desde</string>
-  <string name="unknown_recipient"><![CDATA[<Unknown Recipient>]]></string>
   <string name="address_type_home">Inicio</string>
   <string name="address_type_work">Traballo</string>
   <string name="address_type_other">Outras</string>

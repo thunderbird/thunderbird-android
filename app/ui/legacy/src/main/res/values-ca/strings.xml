@@ -886,7 +886,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="recipient_bcc">C/o</string>
   <string name="recipient_to">A</string>
   <string name="recipient_from">De:</string>
-  <string name="unknown_recipient"><![CDATA[<Destinatari desconegut>]]></string>
   <string name="address_type_home">Casa</string>
   <string name="address_type_work">Feina</string>
   <string name="address_type_other">Altres</string>

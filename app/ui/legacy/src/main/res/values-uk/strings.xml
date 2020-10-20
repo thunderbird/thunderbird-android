@@ -881,7 +881,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="recipient_bcc">Прихована копія</string>
   <string name="recipient_to">До</string>
   <string name="recipient_from">Від</string>
-  <string name="unknown_recipient"><![CDATA[<Unknown Recipient>]]></string>
   <string name="address_type_home">Домашній</string>
   <string name="address_type_work">Робочий</string>
   <string name="address_type_other">Інший</string>

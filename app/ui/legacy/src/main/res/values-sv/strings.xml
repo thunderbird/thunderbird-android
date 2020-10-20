@@ -810,6 +810,8 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="webview_contextmenu_link_share_action">Dela länk</string>
   <string name="webview_contextmenu_link_copy_action">Kopiera länk</string>
   <string name="webview_contextmenu_link_clipboard_label">Länk</string>
+  <string name="webview_contextmenu_link_text_copy_action">Kopiera länktext till urklipp</string>
+  <string name="webview_contextmenu_link_text_clipboard_label">Länktext</string>
   <string name="webview_contextmenu_image_title">Bild</string>
   <string name="webview_contextmenu_image_view_action">Visa bild</string>
   <string name="webview_contextmenu_image_save_action">Spara bild</string>
@@ -886,7 +888,8 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="recipient_bcc">Blindkopia</string>
   <string name="recipient_to">Till</string>
   <string name="recipient_from">Från</string>
-  <string name="unknown_recipient"><![CDATA[<Unknown Recipient>]]></string>
+  <string name="unknown_recipient">&lt;Okänd mottagare&gt;</string>
+  <string name="unknown_sender">&lt;Okänd avsändare&gt;</string>
   <string name="address_type_home">Hem</string>
   <string name="address_type_work">Arbete</string>
   <string name="address_type_other">Annat</string>

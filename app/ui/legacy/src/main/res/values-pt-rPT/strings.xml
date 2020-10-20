@@ -867,7 +867,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="recipient_bcc">Bcc</string>
   <string name="recipient_to">Para</string>
   <string name="recipient_from">De</string>
-  <string name="unknown_recipient"><![CDATA[<Destinatário desconhecido>]]></string>
   <string name="address_type_home">Casa</string>
   <string name="address_type_work">Trabalho</string>
   <string name="address_type_other">Outro</string>

@@ -778,7 +778,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="recipient_bcc">Skrytá kópia</string>
   <string name="recipient_to">Komu</string>
   <string name="recipient_from">Od</string>
-  <string name="unknown_recipient"><![CDATA[<Neznámy príjemca>]]></string>
   <string name="address_type_home">Domov</string>
   <string name="address_type_work">Práca</string>
   <string name="address_type_other">Iná</string>

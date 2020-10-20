@@ -901,7 +901,6 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="recipient_bcc">Bcc</string>
   <string name="recipient_to">At</string>
   <string name="recipient_from">Oddi wrth</string>
-  <string name="unknown_recipient"><![CDATA[<Unknown Recipient>]]></string>
   <string name="address_type_home">Cartref</string>
   <string name="address_type_work">Gwaith</string>
   <string name="address_type_other">Arall</string>
