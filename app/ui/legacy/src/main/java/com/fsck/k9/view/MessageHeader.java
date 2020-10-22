@@ -267,7 +267,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
 
     }
 
-    public void populate(final Message message, final Account account) {
+    public void populate(final Message message, final Account account, boolean showStar) {
         Address fromAddress = null;
         Address[] fromAddresses = message.getFrom();
         if (fromAddresses.length > 0) {
@@ -323,7 +323,13 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         updateAddressField(mBccView, bcc, mBccLabel);
         mAnsweredIcon.setVisibility(message.isSet(Flag.ANSWERED) ? View.VISIBLE : View.GONE);
         mForwardedIcon.setVisibility(message.isSet(Flag.FORWARDED) ? View.VISIBLE : View.GONE);
-        mFlagged.setChecked(message.isSet(Flag.FLAGGED));
+
+        if (showStar) {
+            mFlagged.setVisibility(View.VISIBLE);
+            mFlagged.setChecked(message.isSet(Flag.FLAGGED));
+        } else {
+            mFlagged.setVisibility(View.GONE);
+        }
 
         mChip.setBackgroundColor(mAccount.getChipColor());
 

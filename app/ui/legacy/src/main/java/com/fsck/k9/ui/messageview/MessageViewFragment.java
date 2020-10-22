@@ -276,7 +276,8 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     private void displayHeaderForLoadingMessage(LocalMessage message) {
-        mMessageView.setHeaders(message, mAccount);
+        boolean showStar = !isOutbox();
+        mMessageView.setHeaders(message, mAccount, showStar);
         if (mAccount.isOpenPgpProviderConfigured()) {
             mMessageView.getMessageHeaderView().setCryptoStatusLoading();
         }
@@ -378,11 +379,11 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public void onToggleFlagged() {
-        if (mMessage != null) {
+        if (mMessage != null && !isOutbox()) {
             boolean newState = !mMessage.isSet(Flag.FLAGGED);
             mController.setFlag(mAccount, mMessage.getFolder().getDatabaseId(),
                     Collections.singletonList(mMessage), Flag.FLAGGED, newState);
-            mMessageView.setHeaders(mMessage, mAccount);
+            mMessageView.setHeaders(mMessage, mAccount, true);
         }
     }
 
@@ -503,10 +504,11 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public void onToggleRead() {
-        if (mMessage != null) {
+        if (mMessage != null && !isOutbox()) {
             mController.setFlag(mAccount, mMessage.getFolder().getDatabaseId(),
                     Collections.singletonList(mMessage), Flag.SEEN, !mMessage.isSet(Flag.SEEN));
-            mMessageView.setHeaders(mMessage, mAccount);
+
+            mMessageView.setHeaders(mMessage, mAccount, true);
             mFragmentListener.updateMenu();
         }
     }
@@ -609,16 +611,26 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         return mMessageReference;
     }
 
+    public boolean isOutbox() {
+        if (mMessage == null || mAccount == null) {
+            return false;
+        }
+
+        long folderId = mMessage.getFolder().getDatabaseId();
+        Long outboxFolderId = mAccount.getOutboxFolderId();
+        return outboxFolderId != null && outboxFolderId == folderId;
+    }
+
     public boolean isMessageRead() {
         return (mMessage != null) && mMessage.isSet(Flag.SEEN);
     }
 
     public boolean isCopyCapable() {
-        return mController.isCopyCapable(mAccount);
+        return !isOutbox() && mController.isCopyCapable(mAccount);
     }
 
     public boolean isMoveCapable() {
-        return mController.isMoveCapable(mAccount);
+        return !isOutbox() && mController.isMoveCapable(mAccount);
     }
 
     public boolean canMessageBeArchived() {

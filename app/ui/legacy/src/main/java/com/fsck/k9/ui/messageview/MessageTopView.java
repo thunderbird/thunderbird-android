@@ -207,8 +207,8 @@ public class MessageTopView extends LinearLayout {
         return mHeaderContainer;
     }
 
-    public void setHeaders(Message message, Account account) {
-        mHeaderContainer.populate(message, account);
+    public void setHeaders(Message message, Account account, boolean showStar) {
+        mHeaderContainer.populate(message, account, showStar);
         mHeaderContainer.setVisibility(View.VISIBLE);
     }
 
