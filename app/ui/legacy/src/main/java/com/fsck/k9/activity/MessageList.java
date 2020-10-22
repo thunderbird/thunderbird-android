@@ -1213,8 +1213,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             menu.findItem(R.id.set_sort).setVisible(true);
             menu.findItem(R.id.select_all).setVisible(true);
             menu.findItem(R.id.compose).setVisible(true);
-            menu.findItem(R.id.mark_all_as_read).setVisible(
-                    messageListFragment.isMarkAllAsReadSupported());
+            menu.findItem(R.id.mark_all_as_read).setVisible(messageListFragment.isMarkAllAsReadSupported());
 
             if (!messageListFragment.isSingleAccountMode()) {
                 menu.findItem(R.id.expunge).setVisible(false);

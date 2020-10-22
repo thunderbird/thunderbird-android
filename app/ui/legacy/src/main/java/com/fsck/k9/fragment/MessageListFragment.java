@@ -491,10 +491,11 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
     private MessageListAppearance getMessageListAppearance() {
         boolean showAccountChip = !isSingleAccountMode();
+        boolean showStars = !isOutbox() && K9.isShowMessageListStars();
         return new MessageListAppearance(
                 K9.getFontSizes(),
                 K9.getMessageListPreviewLines(),
-                K9.isShowMessageListStars(),
+                showStars,
                 K9.isMessageListSenderAboveSubject(),
                 K9.isShowContactPicture(),
                 showingThreadedList,
@@ -1600,6 +1601,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         private MenuItem mMarkAsUnread;
         private MenuItem mFlag;
         private MenuItem mUnflag;
+        private boolean disableMarkAsRead;
+        private boolean disableFlag;
 
         @Override
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
@@ -1731,6 +1734,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
                 menu.findItem(R.id.unflag).setVisible(false);
                 menu.findItem(R.id.spam).setVisible(false);
                 menu.findItem(R.id.move).setVisible(false);
+                disableMarkAsRead = true;
+                disableFlag = true;
 
                 if (account.hasDraftsFolder()) {
                     menu.findItem(R.id.move_to_drafts).setVisible(true);
@@ -1745,14 +1750,14 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         }
 
         public void showMarkAsRead(boolean show) {
-            if (actionMode != null) {
+            if (actionMode != null && !disableMarkAsRead) {
                 mMarkAsRead.setVisible(show);
                 mMarkAsUnread.setVisible(!show);
             }
         }
 
         public void showFlag(boolean show) {
-            if (actionMode != null) {
+            if (actionMode != null && !disableFlag) {
                 mFlag.setVisible(show);
                 mUnflag.setVisible(!show);
             }
@@ -2349,7 +2354,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     }
 
     public boolean isMarkAllAsReadSupported() {
-        return (isSingleAccountMode() && isSingleFolderMode());
+        return isSingleAccountMode() && isSingleFolderMode() && !isOutbox();
     }
 
     public void confirmMarkAllAsRead() {
