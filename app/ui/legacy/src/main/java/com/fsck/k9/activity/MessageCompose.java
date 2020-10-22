@@ -79,6 +79,7 @@ import com.fsck.k9.fragment.AttachmentDownloadDialogFragment.AttachmentDownloadC
 import com.fsck.k9.fragment.ProgressDialogFragment;
 import com.fsck.k9.fragment.ProgressDialogFragment.CancelListener;
 import com.fsck.k9.helper.Contacts;
+import com.fsck.k9.helper.CrLfConverter;
 import com.fsck.k9.helper.IdentityHelper;
 import com.fsck.k9.helper.MailTo;
 import com.fsck.k9.helper.ReplyToParser;
@@ -102,7 +103,6 @@ import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageBuilder;
 import com.fsck.k9.message.SimpleMessageFormat;
 import com.fsck.k9.search.LocalSearch;
-import com.fsck.k9.ui.EolConvertingEditText;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.base.K9Activity;
 import com.fsck.k9.ui.base.ThemeManager;
@@ -222,8 +222,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private TextView chooseIdentityButton;
     private EditText subjectView;
-    private EolConvertingEditText signatureView;
-    private EolConvertingEditText messageContentView;
+    private EditText signatureView;
+    private EditText messageContentView;
     private LinearLayout attachmentsView;
 
     private String referencedMessageIds;
@@ -318,8 +318,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         subjectView = findViewById(R.id.subject);
         subjectView.getInputExtras(true).putBoolean("allowEmoji", true);
 
-        EolConvertingEditText upperSignature = findViewById(R.id.upper_signature);
-        EolConvertingEditText lowerSignature = findViewById(R.id.lower_signature);
+        EditText upperSignature = findViewById(R.id.upper_signature);
+        EditText lowerSignature = findViewById(R.id.lower_signature);
 
         QuotedMessageMvpView quotedMessageMvpView = new QuotedMessageMvpView(this);
         quotedMessagePresenter = new QuotedMessagePresenter(this, quotedMessageMvpView, account);
@@ -536,7 +536,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             CharSequence text = intent.getCharSequenceExtra(Intent.EXTRA_TEXT);
             // Only use EXTRA_TEXT if the body hasn't already been set by the mailto URI
             if (text != null && messageContentView.getText().length() == 0) {
-                messageContentView.setCharacters(text);
+                messageContentView.setText(CrLfConverter.toLf(text));
             }
 
             String type = intent.getType();
@@ -708,9 +708,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 .setRequestReadReceipt(requestReadReceipt)
                 .setIdentity(identity)
                 .setMessageFormat(currentMessageFormat)
-                .setText(messageContentView.getCharacters())
+                .setText(CrLfConverter.toCrLf(messageContentView.getText()))
                 .setAttachments(attachmentPresenter.getAttachments())
-                .setSignature(signatureView.getCharacters())
+                .setSignature(CrLfConverter.toCrLf(signatureView.getText()))
                 .setSignatureBeforeQuotedText(account.isSignatureBeforeQuotedText())
                 .setIdentityChanged(identityChanged)
                 .setSignatureChanged(signatureChanged)
@@ -917,7 +917,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private void updateSignature() {
         if (identity.getSignatureUse()) {
-            signatureView.setCharacters(identity.getSignature());
+            String signature = CrLfConverter.toLf(identity.getSignature());
+            signatureView.setText(signature);
             signatureView.setVisibility(View.VISIBLE);
         } else {
             signatureView.setVisibility(View.GONE);
@@ -1484,7 +1485,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         String body = mailTo.getBody();
         if (body != null && !body.isEmpty()) {
-            messageContentView.setCharacters(body);
+            messageContentView.setText(CrLfConverter.toLf(body));
         }
     }
 
