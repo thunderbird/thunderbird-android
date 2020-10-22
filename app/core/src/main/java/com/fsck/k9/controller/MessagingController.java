@@ -1899,6 +1899,10 @@ public class MessagingController {
                 if (draftSavedSuccessfully) {
                     message.destroy();
                 }
+
+                for (MessagingListener listener : getListeners()) {
+                    listener.folderStatusChanged(account, folderId);
+                }
             } catch (MessagingException e) {
                 Timber.e(e, "Error loading message. Draft was not saved.");
             }
