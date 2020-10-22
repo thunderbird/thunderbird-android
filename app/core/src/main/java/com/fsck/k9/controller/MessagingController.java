@@ -1384,6 +1384,7 @@ public class MessagingController {
             LocalStore localStore = localStoreProvider.getInstance(account);
             LocalFolder localFolder = localStore.getFolder(account.getOutboxFolderId());
             localFolder.open();
+            message.setFlag(Flag.SEEN, true);
             localFolder.appendMessages(Collections.singletonList(message));
             LocalMessage localMessage = localFolder.getMessage(message.getUid());
             long messageId = localMessage.getDatabaseId();
