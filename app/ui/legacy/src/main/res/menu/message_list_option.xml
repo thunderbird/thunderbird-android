@@ -85,6 +85,13 @@
 
     <!-- MessageView -->
     <item
+        android:id="@+id/move_to_drafts"
+        android:title="@string/move_to_drafts_action"
+        app:showAsAction="never"
+        android:visible="false"/>
+
+    <!-- MessageView -->
+    <item
         android:id="@+id/single_message_options"
         android:icon="?attr/iconActionSingleMessageOptions"
         app:showAsAction="ifRoom"

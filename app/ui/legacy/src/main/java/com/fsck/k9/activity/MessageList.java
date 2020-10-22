@@ -1026,6 +1026,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         } else if (id == R.id.copy || id == R.id.refile_copy) {
             messageViewFragment.onCopy();
             return true;
+        } else if (id == R.id.move_to_drafts) {
+            messageViewFragment.onMoveToDrafts();
+            return true;
         } else if (id == R.id.show_headers || id == R.id.hide_headers) {
             messageViewFragment.onToggleAllHeadersView();
             updateMenu();
@@ -1187,6 +1190,10 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 menu.findItem(R.id.spam).setVisible(false);
 
                 menu.findItem(R.id.refile).setVisible(false);
+            }
+
+            if (messageViewFragment.isOutbox()) {
+                menu.findItem(R.id.move_to_drafts).setVisible(true);
             }
 
             if (messageViewFragment.allHeadersVisible()) {

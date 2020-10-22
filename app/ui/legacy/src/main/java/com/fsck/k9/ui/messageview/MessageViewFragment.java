@@ -2,6 +2,7 @@ package com.fsck.k9.ui.messageview;
 
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 
 import android.app.Activity;
@@ -414,6 +415,16 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         }
 
         startRefileActivity(ACTIVITY_CHOOSE_FOLDER_COPY);
+    }
+
+    public void onMoveToDrafts() {
+        Account account = mAccount;
+        long folderId = mMessageReference.getFolderId();
+        List<MessageReference> messages = Collections.singletonList(mMessageReference);
+
+        mFragmentListener.showNextMessageOrReturn();
+
+        mController.moveToDraftsFolder(account, folderId, messages);
     }
 
     public void onArchive() {
