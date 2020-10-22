@@ -222,12 +222,13 @@ class FolderRepository(
     }
 
     private fun getDisplayFolders(db: SQLiteDatabase, displayMode: FolderMode): List<DisplayFolder> {
+        val outboxFolderId = account.outboxFolderId
         val queryBuilder = StringBuilder(
             """
             SELECT f.id, f.name, f.top_group, f.local_only, (
                 SELECT COUNT(m.id) 
                 FROM messages m 
-                WHERE m.folder_id = f.id AND m.empty = 0 AND m.deleted = 0 AND m.read = 0
+                WHERE m.folder_id = f.id AND m.empty = 0 AND m.deleted = 0 AND (m.read = 0 OR f.id = ?)
             )
             FROM folders f
             """.trimIndent()
@@ -236,7 +237,7 @@ class FolderRepository(
         addDisplayClassSelection(queryBuilder, displayMode)
 
         val query = queryBuilder.toString()
-        db.rawQuery(query, null).use { cursor ->
+        db.rawQuery(query, arrayOf(outboxFolderId.toString())).use { cursor ->
             val displayFolders = mutableListOf<DisplayFolder>()
 
             while (cursor.moveToNext()) {
