@@ -7,17 +7,18 @@ import android.view.View.OnClickListener;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.fsck.k9.DI;
 import com.fsck.k9.FontSizes;
+import com.fsck.k9.helper.CrLfConverter;
 import com.fsck.k9.message.html.DisplayHtml;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.activity.MessageCompose;
 import com.fsck.k9.mailstore.AttachmentResolver;
 import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageFormat;
-import com.fsck.k9.ui.EolConvertingEditText;
 import com.fsck.k9.ui.helper.DisplayHtmlUiFactory;
 import com.fsck.k9.view.MessageWebView;
 import com.fsck.k9.view.WebViewConfigProvider;
@@ -30,9 +31,9 @@ public class QuotedMessageMvpView {
     private final Button mQuotedTextShow;
     private final View mQuotedTextBar;
     private final ImageButton mQuotedTextEdit;
-    private final EolConvertingEditText mQuotedText;
+    private final EditText mQuotedText;
     private final MessageWebView mQuotedHTML;
-    private final EolConvertingEditText mMessageContentView;
+    private final EditText mMessageContentView;
     private final ImageButton mQuotedTextDelete;
 
 
@@ -129,16 +130,16 @@ public class QuotedMessageMvpView {
     }
 
     public void setQuotedText(String quotedText) {
-        mQuotedText.setCharacters(quotedText);
+        mQuotedText.setText(CrLfConverter.toLf(quotedText));
     }
 
     // TODO we shouldn't have to retrieve the state from the view here
     public String getQuotedText() {
-        return mQuotedText.getCharacters();
+        return CrLfConverter.toCrLf(mQuotedText.getText());
     }
 
     public void setMessageContentCharacters(String text) {
-        mMessageContentView.setCharacters(text);
+        mMessageContentView.setText(CrLfConverter.toLf(text));
     }
 
     public void setMessageContentCursorPosition(int messageContentCursorPosition) {
