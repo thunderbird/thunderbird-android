@@ -1026,6 +1026,9 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
         } else if (id == R.id.copy || id == R.id.refile_copy) {
             messageViewFragment.onCopy();
             return true;
+        } else if (id == R.id.move_to_drafts) {
+            messageViewFragment.onMoveToDrafts();
+            return true;
         } else if (id == R.id.show_headers || id == R.id.hide_headers) {
             messageViewFragment.onToggleAllHeadersView();
             updateMenu();
@@ -1138,18 +1141,22 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 toggleTheme.setVisible(true);
             }
 
-            // Set title of menu item to toggle the read state of the currently displayed message
-            int[] drawableAttr;
-            if (messageViewFragment.isMessageRead()) {
-                menu.findItem(R.id.toggle_unread).setTitle(R.string.mark_as_unread_action);
-                drawableAttr = new int[] { R.attr.iconActionMarkAsUnread };
+            if (messageViewFragment.isOutbox()) {
+                menu.findItem(R.id.toggle_unread).setVisible(false);
             } else {
-                menu.findItem(R.id.toggle_unread).setTitle(R.string.mark_as_read_action);
-                drawableAttr = new int[] { R.attr.iconActionMarkAsRead };
+                // Set title of menu item to toggle the read state of the currently displayed message
+                int[] drawableAttr;
+                if (messageViewFragment.isMessageRead()) {
+                    menu.findItem(R.id.toggle_unread).setTitle(R.string.mark_as_unread_action);
+                    drawableAttr = new int[] { R.attr.iconActionMarkAsUnread };
+                } else {
+                    menu.findItem(R.id.toggle_unread).setTitle(R.string.mark_as_read_action);
+                    drawableAttr = new int[] { R.attr.iconActionMarkAsRead };
+                }
+                TypedArray ta = obtainStyledAttributes(drawableAttr);
+                menu.findItem(R.id.toggle_unread).setIcon(ta.getDrawable(0));
+                ta.recycle();
             }
-            TypedArray ta = obtainStyledAttributes(drawableAttr);
-            menu.findItem(R.id.toggle_unread).setIcon(ta.getDrawable(0));
-            ta.recycle();
 
             menu.findItem(R.id.delete).setVisible(K9.isMessageViewDeleteActionVisible());
 
@@ -1185,6 +1192,10 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
                 menu.findItem(R.id.refile).setVisible(false);
             }
 
+            if (messageViewFragment.isOutbox()) {
+                menu.findItem(R.id.move_to_drafts).setVisible(true);
+            }
+
             if (messageViewFragment.allHeadersVisible()) {
                 menu.findItem(R.id.show_headers).setVisible(false);
             } else {
@@ -1213,8 +1224,7 @@ public class MessageList extends K9Activity implements MessageListFragmentListen
             menu.findItem(R.id.set_sort).setVisible(true);
             menu.findItem(R.id.select_all).setVisible(true);
             menu.findItem(R.id.compose).setVisible(true);
-            menu.findItem(R.id.mark_all_as_read).setVisible(
-                    messageListFragment.isMarkAllAsReadSupported());
+            menu.findItem(R.id.mark_all_as_read).setVisible(messageListFragment.isMarkAllAsReadSupported());
 
             if (!messageListFragment.isSingleAccountMode()) {
                 menu.findItem(R.id.expunge).setVisible(false);

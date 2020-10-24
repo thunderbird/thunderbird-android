@@ -1384,6 +1384,7 @@ public class MessagingController {
             LocalStore localStore = localStoreProvider.getInstance(account);
             LocalFolder localFolder = localStore.getFolder(account.getOutboxFolderId());
             localFolder.open();
+            message.setFlag(Flag.SEEN, true);
             localFolder.appendMessages(Collections.singletonList(message));
             LocalMessage localMessage = localFolder.getMessage(message.getUid());
             long messageId = localMessage.getDatabaseId();
@@ -1897,6 +1898,10 @@ public class MessagingController {
                 boolean draftSavedSuccessfully = draftMessageId != null;
                 if (draftSavedSuccessfully) {
                     message.destroy();
+                }
+
+                for (MessagingListener listener : getListeners()) {
+                    listener.folderStatusChanged(account, folderId);
                 }
             } catch (MessagingException e) {
                 Timber.e(e, "Error loading message. Draft was not saved.");
