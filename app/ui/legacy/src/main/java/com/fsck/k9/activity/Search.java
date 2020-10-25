@@ -4,13 +4,13 @@ package com.fsck.k9.activity;
 public class Search extends MessageList {
     @Override
     public void onStart() {
-        searchStatusManager.setActive(true);
+        getSearchStatusManager().setActive(true);
         super.onStart();
     }
 
     @Override
     public void onStop() {
-        searchStatusManager.setActive(false);
+        getSearchStatusManager().setActive(false);
         super.onStop();
     }
 

@@ -73,7 +73,7 @@ public class ViewSwitcher extends ViewAnimator implements AnimationListener {
         this.mFirstInAnimation = inAnimation;
     }
 
-    public Animation getmFirstOutAnimation() {
+    public Animation getFirstOutAnimation() {
         return mFirstOutAnimation;
     }
 
