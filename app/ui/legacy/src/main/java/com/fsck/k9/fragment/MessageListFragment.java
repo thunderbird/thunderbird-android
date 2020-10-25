@@ -483,7 +483,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
 
         if (singleFolderMode) {
             listView.addFooterView(getFooterView(listView));
-            updateFooterView();
+            updateFooter(null);
         }
 
         listView.setAdapter(adapter);
