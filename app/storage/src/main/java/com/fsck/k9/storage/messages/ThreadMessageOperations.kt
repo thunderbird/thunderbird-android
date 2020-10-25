@@ -85,7 +85,7 @@ internal class ThreadMessageOperations(private val localStore: LocalStore) {
 internal data class ThreadInfo(
     val threadId: Long?,
     val messageId: Long?,
-    val messageIdHeader: String,
+    val messageIdHeader: String?,
     val rootId: Long?,
     val parentId: Long?
 )

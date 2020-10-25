@@ -50,7 +50,7 @@ fun SQLiteDatabase.createMessage(
     replyToList: String = "",
     attachmentCount: Int = 0,
     internalDate: Long = 0L,
-    messageId: String = "",
+    messageIdHeader: String? = null,
     previewType: DatabasePreviewType = DatabasePreviewType.NONE,
     preview: String = "",
     mimeType: String = "text/plain",
@@ -77,7 +77,7 @@ fun SQLiteDatabase.createMessage(
         put("reply_to_list", replyToList)
         put("attachment_count", attachmentCount)
         put("internal_date", internalDate)
-        put("message_id", messageId)
+        put("message_id", messageIdHeader)
         put("preview_type", previewType.databaseValue)
         put("preview", preview)
         put("mime_type", mimeType)
