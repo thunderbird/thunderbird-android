@@ -20,7 +20,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.fsck.k9.Account
 import com.fsck.k9.Account.SortType
-import com.fsck.k9.DI
 import com.fsck.k9.K9
 import com.fsck.k9.K9.SplitViewMode
 import com.fsck.k9.Preferences
@@ -56,6 +55,9 @@ import com.fsck.k9.ui.permissions.PermissionUiHelper
 import com.fsck.k9.view.ViewSwitcher
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener
 import com.mikepenz.materialdrawer.Drawer.OnDrawerListener
+import org.koin.android.ext.android.inject
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import timber.log.Timber
 
 /**
@@ -71,10 +73,10 @@ open class MessageList :
     OnSwitchCompleteListener,
     PermissionUiHelper {
 
-    protected val searchStatusManager = DI.get(SearchStatusManager::class.java)
-    private val preferences = DI.get(Preferences::class.java)
-    private val channelUtils = DI.get(NotificationChannelManager::class.java)
-    private val defaultFolderProvider = DI.get(DefaultFolderProvider::class.java)
+    protected val searchStatusManager: SearchStatusManager by inject()
+    private val preferences: Preferences by inject()
+    private val channelUtils: NotificationChannelManager by inject()
+    private val defaultFolderProvider: DefaultFolderProvider by inject()
 
     private val storageListener: StorageListener = StorageListenerImplementation()
     private val permissionUiHelper: PermissionUiHelper = K9PermissionUiHelper(this)
@@ -1445,7 +1447,7 @@ open class MessageList :
         MESSAGE_LIST, MESSAGE_VIEW, SPLIT_VIEW
     }
 
-    companion object {
+    companion object : KoinComponent {
         private const val EXTRA_SEARCH = "search_bytes"
         private const val EXTRA_NO_THREADING = "no_threading"
 
@@ -1470,6 +1472,8 @@ open class MessageList :
         private const val NEXT = 2
 
         const val REQUEST_MASK_PENDING_INTENT = 1 shl 15
+
+        private val defaultFolderProvider: DefaultFolderProvider by inject()
 
         @JvmStatic
         @JvmOverloads
@@ -1516,7 +1520,6 @@ open class MessageList :
 
         @JvmStatic
         fun shortcutIntentForAccount(context: Context?, account: Account): Intent {
-            val defaultFolderProvider = DI.get(DefaultFolderProvider::class.java)
             val folderId = defaultFolderProvider.getDefaultFolder(account)
 
             val search = LocalSearch().apply {
@@ -1550,7 +1553,6 @@ open class MessageList :
 
         @JvmStatic
         fun launch(context: Context, account: Account) {
-            val defaultFolderProvider = DI.get(DefaultFolderProvider::class.java)
             val folderId = defaultFolderProvider.getDefaultFolder(account)
 
             val search = LocalSearch().apply {
