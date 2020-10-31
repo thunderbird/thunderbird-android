@@ -8,6 +8,13 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.723" versioncode="27023">
+        <change>Fixed bug that prevented some messages from being moved</change>
+        <change>Fixed message list display bug when multiple roles were assigned to the same folder</change>
+        <change>Number of messages in Outbox folder are now displayed in the side drawer</change>
+        <change>Tweaked message list appearance of Outbox</change>
+        <change>Message list footer is now hidden while list is loading</change>
+    </release>
     <release version="5.722" versioncode="27022">
         <change>Fixed bug where updating drafts wouldn't upload the change to the server</change>
         <change>Fixed bug where URLs were duplicated when saving drafts</change>
