@@ -118,8 +118,8 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="show_headers_action">Montri mesaĝokapojn</string>
   <string name="hide_headers_action">Kaŝi mesaĝokapojn</string>
   <plurals name="copy_address_to_clipboard">
-    <item quantity="one">Adreso kopiita al tondejo</item>
-    <item quantity="other">Adresoj kopiitaj al tondejo</item>
+    <item quantity="one">Adreso kopiita al tondujo</item>
+    <item quantity="other">Adresoj kopiitaj al tondujo</item>
   </plurals>
   <string name="message_view_theme_action_dark">Baskuligi malhelan etoson</string>
   <string name="message_view_theme_action_light">Baskuligi helan etoson</string>
@@ -806,21 +806,23 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="webview_empty_message">Nenia teksto</string>
   <string name="webview_contextmenu_link_view_action">Malfermi ligilon</string>
   <string name="webview_contextmenu_link_share_action">Kunhavigi ligilon</string>
-  <string name="webview_contextmenu_link_copy_action">Kopii ligilon al tondejo</string>
+  <string name="webview_contextmenu_link_copy_action">Kopii ligilon al tondujo</string>
   <string name="webview_contextmenu_link_clipboard_label">Ligilo</string>
+  <string name="webview_contextmenu_link_text_copy_action">Kopii tekston de ligilo al tondujo</string>
+  <string name="webview_contextmenu_link_text_clipboard_label">Teksto de ligilo</string>
   <string name="webview_contextmenu_image_title">Bildo</string>
   <string name="webview_contextmenu_image_view_action">Vidi bildon</string>
   <string name="webview_contextmenu_image_save_action">Konservi bildon</string>
   <string name="webview_contextmenu_image_download_action">Elŝuti bildon</string>
-  <string name="webview_contextmenu_image_copy_action">Kopii adreson de bildo al tondejo</string>
+  <string name="webview_contextmenu_image_copy_action">Kopii adreson de bildo al tondujo</string>
   <string name="webview_contextmenu_image_clipboard_label">Bilda adreso</string>
   <string name="webview_contextmenu_phone_call_action">Telefoni numeron</string>
   <string name="webview_contextmenu_phone_save_action">Konservi al kontaktoj</string>
-  <string name="webview_contextmenu_phone_copy_action">Kopii numeron al tondejo</string>
+  <string name="webview_contextmenu_phone_copy_action">Kopii numeron al tondujo</string>
   <string name="webview_contextmenu_phone_clipboard_label">Telefonnumero</string>
   <string name="webview_contextmenu_email_send_action">Sendi retleteron</string>
   <string name="webview_contextmenu_email_save_action">Konservi al kontaktoj</string>
-  <string name="webview_contextmenu_email_copy_action">Kopii adreson al tondejo</string>
+  <string name="webview_contextmenu_email_copy_action">Kopii adreson al tondujo</string>
   <string name="webview_contextmenu_email_clipboard_label">Retpoŝta adreso</string>
   <string name="account_settings_remote_search_num_results_entries_all">Senlima</string>
   <string name="account_settings_remote_search_num_results_entries_10">10</string>
@@ -884,6 +886,8 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="recipient_bcc">Kaŝkopio</string>
   <string name="recipient_to">Al</string>
   <string name="recipient_from">De</string>
+  <string name="unknown_recipient">&lt;nekonata ricevonto&gt;</string>
+  <string name="unknown_sender">&lt;nekonata sendinto&gt;</string>
   <string name="address_type_home">Hejmo</string>
   <string name="address_type_work">Laboro</string>
   <string name="address_type_other">Aliaj</string>
