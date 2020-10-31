@@ -1,21 +1,41 @@
 package com.fsck.k9.ui.settings
 
 import android.util.TypedValue
+import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.IdRes
 import com.fsck.k9.ui.R
-import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
-import com.xwray.groupie.kotlinandroidextensions.Item
-import kotlinx.android.synthetic.main.text_icon_list_item.*
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.items.AbstractItem
 
-internal class SettingsActionItem(val text: String, @IdRes val navigationAction: Int, val icon: Int) : Item() {
+internal class SettingsActionItem(
+    override var identifier: Long,
+    val text: String,
+    @IdRes val navigationAction: Int,
+    val icon: Int
+) : AbstractItem<SettingsActionItem.ViewHolder>() {
+    override val type = R.id.settings_list_action_item
 
-    override fun getLayout(): Int = R.layout.text_icon_list_item
+    override val layoutRes = R.layout.text_icon_list_item
 
-    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-        viewHolder.text.text = text
+    override fun getViewHolder(v: View) = ViewHolder(v)
 
-        val outValue = TypedValue()
-        viewHolder.icon.context.theme.resolveAttribute(icon, outValue, true)
-        viewHolder.icon.setImageResource(outValue.resourceId)
+    class ViewHolder(view: View) : FastAdapter.ViewHolder<SettingsActionItem>(view) {
+        val text: TextView = view.findViewById(R.id.text)
+        val icon: ImageView = view.findViewById(R.id.icon)
+
+        override fun bindView(item: SettingsActionItem, payloads: MutableList<Any>) {
+            text.text = item.text
+
+            val outValue = TypedValue()
+            icon.context.theme.resolveAttribute(item.icon, outValue, true)
+            icon.setImageResource(outValue.resourceId)
+        }
+
+        override fun unbindView(item: SettingsActionItem) {
+            text.text = null
+            icon.setImageDrawable(null)
+        }
     }
 }

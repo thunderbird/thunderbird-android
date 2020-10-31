@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.AttrRes
+import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,17 +13,16 @@ import com.fsck.k9.Account
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.observeNotNull
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.Item
-import com.xwray.groupie.Section
-import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.GenericItem
+import com.mikepenz.fastadapter.adapters.ItemAdapter
 import kotlinx.android.synthetic.main.fragment_settings_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsListFragment : Fragment() {
     private val viewModel: SettingsViewModel by viewModel()
 
-    private lateinit var settingsAdapter: GroupAdapter<GroupieViewHolder>
+    private lateinit var itemAdapter: ItemAdapter<GenericItem>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_settings_list, container, false)
@@ -33,13 +34,18 @@ class SettingsListFragment : Fragment() {
     }
 
     private fun initializeSettingsList() {
-        settingsAdapter = GroupAdapter()
-        settingsAdapter.setOnItemClickListener { item, _ ->
-            handleItemClick(item)
+        itemAdapter = ItemAdapter()
+
+        val settingsListAdapter = FastAdapter.with(itemAdapter).apply {
+            setHasStableIds(true)
+            onClickListener = { _, _, item, _ ->
+                handleItemClick(item)
+                true
+            }
         }
 
         with(settings_list) {
-            adapter = settingsAdapter
+            adapter = settingsListAdapter
             layoutManager = LinearLayoutManager(context)
         }
     }
@@ -55,66 +61,54 @@ class SettingsListFragment : Fragment() {
     }
 
     private fun populateSettingsList(accounts: List<Account>) {
-        settingsAdapter.clear()
-
-        val generalSection = Section().apply {
-            val generalSettingsActionItem = SettingsActionItem(
-                getString(R.string.general_settings_title),
-                R.id.action_settingsListScreen_to_generalSettingsScreen,
-                R.attr.iconSettingsGeneral
+        val listItems = buildSettingsList {
+            addAction(
+                text = getString(R.string.general_settings_title),
+                navigationAction = R.id.action_settingsListScreen_to_generalSettingsScreen,
+                icon = R.attr.iconSettingsGeneral
             )
-            add(generalSettingsActionItem)
-        }
-        settingsAdapter.add(generalSection)
 
-        val accountSection = Section().apply {
-            for (account in accounts) {
-                add(AccountItem(account))
+            addSection(title = getString(R.string.accounts_title)) {
+                for (account in accounts) {
+                    addAccount(account)
+                }
+
+                addAction(
+                    text = getString(R.string.add_account_action),
+                    navigationAction = R.id.action_settingsListScreen_to_addAccountScreen,
+                    icon = R.attr.iconSettingsAccountAdd
+                )
+
+                NewSetupUiHack.addAction(this)
             }
 
-            val addAccountActionItem = SettingsActionItem(
-                getString(R.string.add_account_action),
-                R.id.action_settingsListScreen_to_addAccountScreen,
-                R.attr.iconSettingsAccountAdd
-            )
-            add(addAccountActionItem)
+            addSection(title = getString(R.string.settings_list_backup_category)) {
+                addAction(
+                    text = getString(R.string.settings_export_title),
+                    navigationAction = R.id.action_settingsListScreen_to_settingsExportScreen,
+                    icon = R.attr.iconSettingsExport
+                )
 
-            NewSetupUiHack.addSettingsActionItem(this)
+                addAction(
+                    text = getString(R.string.settings_import_title),
+                    navigationAction = R.id.action_settingsListScreen_to_settingsImportScreen,
+                    icon = R.attr.iconSettingsImport
+                )
+            }
+
+            addSection(title = getString(R.string.settings_list_miscellaneous_category)) {
+                addAction(
+                    text = getString(R.string.about_action),
+                    navigationAction = R.id.action_settingsListScreen_to_aboutScreen,
+                    icon = R.attr.iconSettingsAbout
+                )
+            }
         }
-        accountSection.setHeader(SettingsDividerItem(getString(R.string.accounts_title)))
-        settingsAdapter.add(accountSection)
 
-        val backupSection = Section().apply {
-            val exportSettingsActionItem = SettingsActionItem(
-                getString(R.string.settings_export_title),
-                R.id.action_settingsListScreen_to_settingsExportScreen,
-                R.attr.iconSettingsExport
-            )
-            add(exportSettingsActionItem)
-
-            val importSettingsActionItem = SettingsActionItem(
-                getString(R.string.settings_import_title),
-                R.id.action_settingsListScreen_to_settingsImportScreen,
-                R.attr.iconSettingsImport
-            )
-            add(importSettingsActionItem)
-        }
-        backupSection.setHeader(SettingsDividerItem(getString(R.string.settings_list_backup_category)))
-        settingsAdapter.add(backupSection)
-
-        val miscSection = Section().apply {
-            val accountActionItem = SettingsActionItem(
-                getString(R.string.about_action),
-                R.id.action_settingsListScreen_to_aboutScreen,
-                R.attr.iconSettingsAbout
-            )
-            add(accountActionItem)
-        }
-        miscSection.setHeader(SettingsDividerItem(getString(R.string.settings_list_miscellaneous_category)))
-        settingsAdapter.add(miscSection)
+        itemAdapter.setNewList(listItems)
     }
 
-    private fun handleItemClick(item: Item<*>) {
+    private fun handleItemClick(item: GenericItem) {
         when (item) {
             is AccountItem -> launchAccountSettings(item.account)
             is SettingsActionItem -> findNavController().navigate(item.navigationAction)
@@ -128,5 +122,31 @@ class SettingsListFragment : Fragment() {
     private fun launchOnboarding() {
         findNavController().navigate(R.id.action_settingsListScreen_to_onboardingScreen)
         requireActivity().finish()
+    }
+
+    private fun buildSettingsList(block: SettingsListBuilder.() -> Unit): List<GenericItem> {
+        return SettingsListBuilder().apply(block).toList()
+    }
+
+    internal class SettingsListBuilder {
+        private val settingsList = mutableListOf<GenericItem>()
+        private var itemId = 0L
+
+        fun addAction(text: String, @IdRes navigationAction: Int, @AttrRes icon: Int) {
+            itemId++
+            settingsList.add(SettingsActionItem(itemId, text, navigationAction, icon))
+        }
+
+        fun addAccount(account: Account) {
+            settingsList.add(AccountItem(account))
+        }
+
+        fun addSection(title: String, block: SettingsListBuilder.() -> Unit) {
+            itemId++
+            settingsList.add(SettingsDividerItem(itemId, title))
+            block()
+        }
+
+        fun toList(): List<GenericItem> = settingsList
     }
 }

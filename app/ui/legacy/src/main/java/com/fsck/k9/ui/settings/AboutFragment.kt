@@ -84,7 +84,6 @@ class AboutFragment : Fragment() {
             Library("Commons IO", "https://commons.apache.org/io/", "Apache License, Version 2.0"),
             Library("FastAdapter", "https://github.com/mikepenz/FastAdapter", "Apache License, Version 2.0"),
             Library("Glide", "https://github.com/bumptech/glide", "BSD, part MIT and Apache 2.0"),
-            Library("Groupie", "https://github.com/lisawray/groupie", "MIT License"),
             Library("jsoup", "https://jsoup.org/", "MIT License"),
             Library("jutf7", "http://jutf7.sourceforge.net/", "MIT License"),
             Library("JZlib", "http://www.jcraft.com/jzlib/", "BSD-style License"),
