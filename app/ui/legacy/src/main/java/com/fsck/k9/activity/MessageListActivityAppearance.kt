@@ -33,7 +33,6 @@ data class MessageListActivityAppearance(
 ) {
 
     companion object {
-        @JvmStatic
         fun create() = MessageListActivityAppearance(
             appTheme = K9.appTheme,
             k9Language = K9.k9Language,
