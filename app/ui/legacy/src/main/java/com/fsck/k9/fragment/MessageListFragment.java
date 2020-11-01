@@ -32,6 +32,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.ActionMode;
 import androidx.fragment.app.DialogFragment;
@@ -1998,8 +1999,8 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         void showThread(Account account, long rootId);
         void openMessage(MessageReference messageReference);
         void setMessageListTitle(String title);
-        void onCompose(Account account);
-        boolean startSearch(Account account, Long folderId);
+        void onCompose(@Nullable Account account);
+        boolean startSearch(@Nullable Account account, @Nullable Long folderId);
         void remoteSearchStarted();
         void goBack();
         void updateMenu();
