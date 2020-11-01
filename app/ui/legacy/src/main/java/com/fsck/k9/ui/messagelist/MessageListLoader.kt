@@ -45,14 +45,19 @@ class MessageListLoader(
             .mapNotNull { loadMessageListForAccount(it, config) }
             .toTypedArray()
 
+        if (cursors.isEmpty()) {
+            Timber.w("Couldn't get message list")
+            return MessageListInfo(messageListItems = emptyList(), hasMoreMessages = false)
+        }
+
         val cursor: Cursor
         val uniqueIdColumn: Int
-        if (cursors.size > 1) {
-            cursor = MergeCursorWithUniqueId(cursors, getComparator(config))
-            uniqueIdColumn = cursor.getColumnIndex("_id")
-        } else {
+        if (cursors.size == 1) {
             cursor = cursors[0]
             uniqueIdColumn = MLFProjectionInfo.ID_COLUMN
+        } else {
+            cursor = MergeCursorWithUniqueId(cursors, getComparator(config))
+            uniqueIdColumn = cursor.getColumnIndex("_id")
         }
 
         val messageListItems = cursor.use {
