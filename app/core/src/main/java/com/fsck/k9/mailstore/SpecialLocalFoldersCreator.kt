@@ -4,31 +4,46 @@ import com.fsck.k9.Account
 import com.fsck.k9.Account.SpecialFolderSelection
 import com.fsck.k9.Preferences
 import com.fsck.k9.mail.FolderType
+import timber.log.Timber
 
 class SpecialLocalFoldersCreator(
     private val preferences: Preferences,
     private val localStoreProvider: LocalStoreProvider
 ) {
+    // TODO: When rewriting the account setup code make sure this method is only called once. Until then this can be
+    //  called multiple times and we have to make sure folders are only created once.
     fun createSpecialLocalFolders(account: Account) {
-        check(account.outboxFolderId == null) { "Outbox folder was already set up" }
+        Timber.d("Creating special local folders")
 
         val localStore = localStoreProvider.getInstance(account)
 
-        account.outboxFolderId = localStore.createLocalFolder(OUTBOX_FOLDER_NAME, FolderType.OUTBOX)
+        if (account.outboxFolderId == null) {
+            account.outboxFolderId = localStore.createLocalFolder(OUTBOX_FOLDER_NAME, FolderType.OUTBOX)
+        } else {
+            Timber.d("Outbox folder was already set up")
+        }
 
         if (account.isPop3()) {
-            check(account.draftsFolderId == null) { "Drafts folder was already set up" }
-            check(account.sentFolderId == null) { "Sent folder was already set up" }
-            check(account.trashFolderId == null) { "Trash folder was already set up" }
+            if (account.draftsFolderId == null) {
+                val draftsFolderId = localStore.createLocalFolder(DRAFTS_FOLDER_NAME, FolderType.DRAFTS)
+                account.setDraftsFolderId(draftsFolderId, SpecialFolderSelection.MANUAL)
+            } else {
+                Timber.d("Drafts folder was already set up")
+            }
 
-            val draftsFolderId = localStore.createLocalFolder(DRAFTS_FOLDER_NAME, FolderType.DRAFTS)
-            account.setDraftsFolderId(draftsFolderId, SpecialFolderSelection.MANUAL)
+            if (account.sentFolderId == null) {
+                val sentFolderId = localStore.createLocalFolder(SENT_FOLDER_NAME, FolderType.SENT)
+                account.setSentFolderId(sentFolderId, SpecialFolderSelection.MANUAL)
+            } else {
+                Timber.d("Sent folder was already set up")
+            }
 
-            val sentFolderId = localStore.createLocalFolder(SENT_FOLDER_NAME, FolderType.SENT)
-            account.setSentFolderId(sentFolderId, SpecialFolderSelection.MANUAL)
-
-            val trashFolderId = localStore.createLocalFolder(TRASH_FOLDER_NAME, FolderType.TRASH)
-            account.setTrashFolderId(trashFolderId, SpecialFolderSelection.MANUAL)
+            if (account.trashFolderId == null) {
+                val trashFolderId = localStore.createLocalFolder(TRASH_FOLDER_NAME, FolderType.TRASH)
+                account.setTrashFolderId(trashFolderId, SpecialFolderSelection.MANUAL)
+            } else {
+                Timber.d("Trash folder was already set up")
+            }
         }
 
         preferences.saveAccount(account)
