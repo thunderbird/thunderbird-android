@@ -8,6 +8,12 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.724" versioncode="27024">
+        <change>Fixed crash when trying to forward or reply to a message</change>
+        <change>Fixed crash when trying to compose a message from a search view</change>
+        <change>Fixed crash when message list couldn't be loaded</change>
+        <change>Fixed crash when setting up an account didn't work right away, e.g. wrong password was entered</change>
+    </release>
     <release version="5.723" versioncode="27023">
         <change>Fixed bug that prevented some messages from being moved</change>
         <change>Fixed message list display bug when multiple roles were assigned to the same folder</change>
