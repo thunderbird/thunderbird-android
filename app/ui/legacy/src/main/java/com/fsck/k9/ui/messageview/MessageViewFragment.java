@@ -16,6 +16,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.os.SystemClock;
+
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -751,12 +753,12 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     }
 
     public interface MessageViewFragmentListener {
-        void onForward(MessageReference messageReference, Parcelable decryptionResultForReply);
-        void onForwardAsAttachment(MessageReference messageReference, Parcelable decryptionResultForReply);
+        void onForward(MessageReference messageReference, @Nullable Parcelable decryptionResultForReply);
+        void onForwardAsAttachment(MessageReference messageReference, @Nullable Parcelable decryptionResultForReply);
         void onEditAsNewMessage(MessageReference messageReference);
         void disableDeleteAction();
-        void onReplyAll(MessageReference messageReference, Parcelable decryptionResultForReply);
-        void onReply(MessageReference messageReference, Parcelable decryptionResultForReply);
+        void onReplyAll(MessageReference messageReference, @Nullable Parcelable decryptionResultForReply);
+        void onReply(MessageReference messageReference, @Nullable Parcelable decryptionResultForReply);
         void setProgress(boolean b);
         void showNextMessageOrReturn();
         void updateMenu();

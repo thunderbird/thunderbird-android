@@ -1107,11 +1107,11 @@ open class MessageList :
         }
     }
 
-    override fun onForward(messageReference: MessageReference, decryptionResultForReply: Parcelable) {
+    override fun onForward(messageReference: MessageReference, decryptionResultForReply: Parcelable?) {
         MessageActions.actionForward(this, messageReference, decryptionResultForReply)
     }
 
-    override fun onForwardAsAttachment(messageReference: MessageReference, decryptionResultForReply: Parcelable) {
+    override fun onForwardAsAttachment(messageReference: MessageReference, decryptionResultForReply: Parcelable?) {
         MessageActions.actionForwardAsAttachment(this, messageReference, decryptionResultForReply)
     }
 
@@ -1119,15 +1119,15 @@ open class MessageList :
         MessageActions.actionEditDraft(this, messageReference)
     }
 
-    override fun onReply(messageReference: MessageReference, decryptionResultForReply: Parcelable) {
+    override fun onReply(messageReference: MessageReference, decryptionResultForReply: Parcelable?) {
         MessageActions.actionReply(this, messageReference, false, decryptionResultForReply)
     }
 
-    override fun onReplyAll(messageReference: MessageReference, decryptionResultForReply: Parcelable) {
+    override fun onReplyAll(messageReference: MessageReference, decryptionResultForReply: Parcelable?) {
         MessageActions.actionReply(this, messageReference, true, decryptionResultForReply)
     }
 
-    override fun onCompose(account: Account) {
+    override fun onCompose(account: Account?) {
         MessageActions.actionCompose(this, account)
     }
 
