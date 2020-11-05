@@ -154,7 +154,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     MessageListFragmentListener fragmentListener;
     private boolean showingThreadedList;
     private boolean isThreadDisplay;
-    private Context context;
     private final MessageListActivityListener activityListener = new MessageListActivityListener();
     private Preferences preferences;
     private MessageReference activeMessage;
@@ -292,8 +291,6 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-
-        context = activity.getApplicationContext();
 
         try {
             fragmentListener = (MessageListFragmentListener) activity;
@@ -941,7 +938,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         @Override
         public void remoteSearchStarted(long folderId) {
             handler.progress(true);
-            handler.updateFooter(context.getString(R.string.remote_search_sending_query));
+            handler.updateFooter(getString(R.string.remote_search_sending_query));
         }
 
         @Override
@@ -955,7 +952,7 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             handler.remoteSearchFinished();
             extraSearchResults = extraResults;
             if (extraResults != null && extraResults.size() > 0) {
-                handler.updateFooter(String.format(context.getString(R.string.load_more_messages_fmt), maxResults));
+                handler.updateFooter(String.format(getString(R.string.load_more_messages_fmt), maxResults));
             } else {
                 handler.updateFooter(null);
             }
@@ -965,10 +962,10 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
         public void remoteSearchServerQueryComplete(long folderId, int numResults, int maxResults) {
             handler.progress(true);
             if (maxResults != 0 && numResults > maxResults) {
-                handler.updateFooter(context.getResources().getQuantityString(R.plurals.remote_search_downloading_limited,
+                handler.updateFooter(getResources().getQuantityString(R.plurals.remote_search_downloading_limited,
                         maxResults, maxResults, numResults));
             } else {
-                handler.updateFooter(context.getResources().getQuantityString(R.plurals.remote_search_downloading,
+                handler.updateFooter(getResources().getQuantityString(R.plurals.remote_search_downloading,
                         numResults, numResults));
             }
 
@@ -1082,15 +1079,15 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
     private void updateFooterView() {
         if (!search.isManualSearch() && currentFolder != null && account != null) {
             if (currentFolder.loading) {
-                updateFooter(context.getString(R.string.status_loading_more));
+                updateFooter(getString(R.string.status_loading_more));
             } else if (!currentFolder.moreMessages) {
                 updateFooter(null);
             } else {
                 String message;
                 if (account.getDisplayCount() == 0) {
-                    message = context.getString(R.string.message_list_load_more_messages_action);
+                    message = getString(R.string.message_list_load_more_messages_action);
                 } else {
-                    message = String.format(context.getString(R.string.load_more_messages_fmt),
+                    message = String.format(getString(R.string.load_more_messages_fmt),
                             account.getDisplayCount());
                 }
                 updateFooter(message);
@@ -1846,11 +1843,11 @@ public class MessageListFragment extends Fragment implements OnItemClickListener
             messagingController.synchronizeMailbox(account, folderId, activityListener);
             messagingController.sendPendingMessages(account, activityListener);
         } else if (allAccounts) {
-            messagingController.checkMail(context, null, true, true, activityListener);
+            messagingController.checkMail(null, true, true, activityListener);
         } else {
             for (String accountUuid : accountUuids) {
                 Account account = preferences.getAccount(accountUuid);
-                messagingController.checkMail(context, account, true, true, activityListener);
+                messagingController.checkMail(account, true, true, activityListener);
             }
         }
     }
