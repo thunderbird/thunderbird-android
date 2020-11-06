@@ -1,2392 +1,1929 @@
-package com.fsck.k9.fragment;
+package com.fsck.k9.fragment
 
+import android.app.Activity
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.os.Bundle
+import android.os.Parcelable
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemClickListener
+import android.widget.AdapterView.OnItemLongClickListener
+import android.widget.ListView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ActionMode
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.fsck.k9.Account
+import com.fsck.k9.Account.Expunge
+import com.fsck.k9.Account.SortType
+import com.fsck.k9.Clock
+import com.fsck.k9.K9
+import com.fsck.k9.Preferences
+import com.fsck.k9.activity.FolderInfoHolder
+import com.fsck.k9.activity.misc.ContactPicture
+import com.fsck.k9.cache.EmailProviderCache
+import com.fsck.k9.controller.MessageReference
+import com.fsck.k9.controller.MessagingController
+import com.fsck.k9.controller.SimpleMessagingListener
+import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
+import com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener.Companion.MAX_PROGRESS
+import com.fsck.k9.helper.Utility
+import com.fsck.k9.mail.Flag
+import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.search.LocalSearch
+import com.fsck.k9.search.getAccounts
+import com.fsck.k9.ui.R
+import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
+import com.fsck.k9.ui.folders.FolderNameFormatter
+import com.fsck.k9.ui.folders.FolderNameFormatterFactory
+import com.fsck.k9.ui.helper.RelativeDateTimeFormatter
+import com.fsck.k9.ui.messagelist.MessageListAppearance
+import com.fsck.k9.ui.messagelist.MessageListConfig
+import com.fsck.k9.ui.messagelist.MessageListInfo
+import com.fsck.k9.ui.messagelist.MessageListItem
+import com.fsck.k9.ui.messagelist.MessageListViewModel
+import java.util.HashSet
+import java.util.concurrent.Future
+import net.jcip.annotations.GuardedBy
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.concurrent.Future;
+class MessageListFragment :
+    Fragment(),
+    OnItemClickListener,
+    OnItemLongClickListener,
+    ConfirmationDialogFragmentListener,
+    MessageListItemActionListener {
 
-import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Bundle;
-import android.os.Parcelable;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+    private val viewModel: MessageListViewModel by viewModel()
+    private val sortTypeToastProvider: SortTypeToastProvider by inject()
+    private val folderNameFormatterFactory: FolderNameFormatterFactory by inject()
+    private val folderNameFormatter: FolderNameFormatter by lazy { folderNameFormatterFactory.create(requireContext()) }
+    private val messagingController: MessagingController by inject()
+    private val preferences: Preferences by inject()
+    private val localBroadcastManager: LocalBroadcastManager by inject()
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.ActionMode;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import com.fsck.k9.Account;
-import com.fsck.k9.Account.SortType;
-import com.fsck.k9.Clock;
-import com.fsck.k9.DI;
-import com.fsck.k9.K9;
-import com.fsck.k9.Preferences;
-import com.fsck.k9.controller.SimpleMessagingListener;
-import com.fsck.k9.ui.choosefolder.ChooseFolderActivity;
-import com.fsck.k9.activity.FolderInfoHolder;
-import com.fsck.k9.activity.misc.ContactPicture;
-import com.fsck.k9.cache.EmailProviderCache;
-import com.fsck.k9.controller.MessageReference;
-import com.fsck.k9.controller.MessagingController;
-import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
-import com.fsck.k9.helper.Utility;
-import com.fsck.k9.mail.Flag;
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mailstore.LocalFolder;
-import com.fsck.k9.preferences.StorageEditor;
-import com.fsck.k9.search.LocalSearch;
-import com.fsck.k9.ui.R;
-import com.fsck.k9.ui.folders.FolderNameFormatter;
-import com.fsck.k9.ui.folders.FolderNameFormatterFactory;
-import com.fsck.k9.ui.helper.RelativeDateTimeFormatter;
-import com.fsck.k9.ui.messagelist.MessageListAppearance;
-import com.fsck.k9.ui.messagelist.MessageListConfig;
-import com.fsck.k9.ui.messagelist.MessageListFragmentDiContainer;
-import com.fsck.k9.ui.messagelist.MessageListInfo;
-import com.fsck.k9.ui.messagelist.MessageListItem;
-import com.fsck.k9.ui.messagelist.MessageListViewModel;
+    private val handler = MessageListHandler(this)
+    private val activityListener = MessageListActivityListener()
+    private val actionModeCallback = ActionModeCallback()
 
-import net.jcip.annotations.GuardedBy;
+    private lateinit var fragmentListener: MessageListFragmentListener
 
-import org.jetbrains.annotations.NotNull;
+    private lateinit var listView: ListView
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var adapter: MessageListAdapter
+    private var footerView: View? = null
 
-import timber.log.Timber;
+    private var savedListState: Parcelable? = null
 
-import static com.fsck.k9.Account.Expunge.EXPUNGE_MANUALLY;
-import static com.fsck.k9.fragment.MessageListFragment.MessageListFragmentListener.MAX_PROGRESS;
-import static com.fsck.k9.search.LocalSearchExtensions.getAccountsFromLocalSearch;
+    private lateinit var accountUuids: Array<String>
+    private var account: Account? = null
+    private var currentFolder: FolderInfoHolder? = null
+    private var remoteSearchFuture: Future<*>? = null
+    private var extraSearchResults: List<String>? = null
+    private var title: String? = null
+    private var allAccounts = false
+    private var sortType = SortType.SORT_DATE
+    private var sortAscending = true
+    private var sortDateAscending = false
+    private var selectedCount = 0
+    private var selected: MutableSet<Long> = HashSet()
+    private var actionMode: ActionMode? = null
+    private var hasConnectivity: Boolean? = null
 
-
-public class MessageListFragment extends Fragment implements OnItemClickListener, OnItemLongClickListener,
-        ConfirmationDialogFragmentListener, MessageListItemActionListener {
-
-    public static MessageListFragment newInstance(
-            LocalSearch search, boolean isThreadDisplay, boolean threadedList) {
-        MessageListFragment fragment = new MessageListFragment();
-        Bundle args = new Bundle();
-        args.putParcelable(ARG_SEARCH, search);
-        args.putBoolean(ARG_IS_THREAD_DISPLAY, isThreadDisplay);
-        args.putBoolean(ARG_THREADED_LIST, threadedList);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    private static final int ACTIVITY_CHOOSE_FOLDER_MOVE = 1;
-    private static final int ACTIVITY_CHOOSE_FOLDER_COPY = 2;
-
-    private static final String ARG_SEARCH = "searchObject";
-    private static final String ARG_THREADED_LIST = "showingThreadedList";
-    private static final String ARG_IS_THREAD_DISPLAY = "isThreadedDisplay";
-
-    private static final String STATE_SELECTED_MESSAGES = "selectedMessages";
-    private static final String STATE_ACTIVE_MESSAGE = "activeMessage";
-    private static final String STATE_REMOTE_SEARCH_PERFORMED = "remoteSearchPerformed";
-    private static final String STATE_MESSAGE_LIST = "listState";
-
-    private final SortTypeToastProvider sortTypeToastProvider = DI.get(SortTypeToastProvider.class);
-    private final MessageListFragmentDiContainer diContainer = new MessageListFragmentDiContainer(this);
-    private final FolderNameFormatterFactory folderNameFormatterFactory = DI.get(FolderNameFormatterFactory.class);
-    private FolderNameFormatter folderNameFormatter;
-
-    ListView listView;
-    private SwipeRefreshLayout swipeRefreshLayout;
-    Parcelable savedListState;
-
-    private MessageListAdapter adapter;
-    private boolean messageListLoaded;
-    private View footerView;
-    private FolderInfoHolder currentFolder;
-    private MessagingController messagingController;
-
-    private Account account;
-    private String[] accountUuids;
-
-    private boolean remoteSearchPerformed = false;
-    private Future<?> remoteSearchFuture = null;
-    private List<String> extraSearchResults;
-
-    private String title;
-    private LocalSearch search = null;
-    private boolean singleAccountMode;
-    private boolean singleFolderMode;
-    private boolean allAccounts;
-
-    private final MessageListHandler handler = new MessageListHandler(this);
-
-    private SortType sortType = SortType.SORT_DATE;
-    private boolean sortAscending = true;
-    private boolean sortDateAscending = false;
-
-    private int selectedCount = 0;
-    private Set<Long> selected = new HashSet<>();
-    private ActionMode actionMode;
-    private Boolean hasConnectivity;
     /**
      * Relevant messages for the current context when we have to remember the chosen messages
      * between user interactions (e.g. selecting a folder for move operation).
      */
-    private List<MessageReference> activeMessages;
-    private final ActionModeCallback actionModeCallback = new ActionModeCallback();
-    MessageListFragmentListener fragmentListener;
-    private boolean showingThreadedList;
-    private boolean isThreadDisplay;
-    private final MessageListActivityListener activityListener = new MessageListActivityListener();
-    private Preferences preferences;
-    private MessageReference activeMessage;
+    private var activeMessages: List<MessageReference>? = null
+    private var showingThreadedList = false
+    private var isThreadDisplay = false
+    private var activeMessage: MessageReference? = null
+
+    var isLoadFinished = false
+        private set
+    lateinit var localSearch: LocalSearch
+        private set
+    var isSingleAccountMode = false
+        private set
+    var isSingleFolderMode = false
+        private set
+    var isRemoteSearch = false
+        private set
+
     /**
-     * {@code true} after {@link #onCreate(Bundle)} was executed. Used in {@link #updateTitle()} to
+     * `true` after [.onCreate] was executed. Used in [.updateTitle] to
      * make sure we don't access member variables before initialization is complete.
      */
-    private boolean initialized = false;
-    private LocalBroadcastManager localBroadcastManager;
-    private BroadcastReceiver cacheBroadcastReceiver;
-    private IntentFilter cacheIntentFilter;
+    var isInitialized = false
+        private set
 
-
-    private MessageListViewModel getViewModel() {
-        return diContainer.getViewModel();
-    }
-
-    void folderLoading(long folderId, boolean loading) {
-        if (currentFolder != null && currentFolder.databaseId == folderId) {
-            currentFolder.loading = loading;
-        }
-        updateFooterView();
-    }
-
-    public void updateTitle() {
-        if (!initialized) {
-            return;
-        }
-
-        setWindowTitle();
-        if (!search.isManualSearch()) {
-            setWindowProgress();
+    private val cacheIntentFilter = IntentFilter(EmailProviderCache.ACTION_CACHE_UPDATED)
+    private val cacheBroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            adapter.notifyDataSetChanged()
         }
     }
 
-    private void setWindowProgress() {
-        int level = 0;
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
 
-        if (currentFolder != null && currentFolder.loading) {
-            int folderTotal = activityListener.getFolderTotal();
-            if (folderTotal > 0) {
-                level = (MAX_PROGRESS * activityListener.getFolderCompleted()) / folderTotal;
-                if (level > MAX_PROGRESS) {
-                    level = MAX_PROGRESS;
-                }
-            }
+        fragmentListener = try {
+            context as MessageListFragmentListener
+        } catch (e: ClassCastException) {
+            error("${context.javaClass} must implement MessageListFragmentListener")
         }
-
-        fragmentListener.setMessageListProgress(level);
     }
 
-    private void setWindowTitle() {
-        // regular folder content display
-        if (!isManualSearch() && singleFolderMode) {
-            fragmentListener.setMessageListTitle(currentFolder.displayName);
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        restoreInstanceState(savedInstanceState)
+        decodeArguments()
+
+        viewModel.getMessageListLiveData().observe(this) { messageListInfo: MessageListInfo ->
+            setMessageList(messageListInfo)
+        }
+
+        isInitialized = true
+    }
+
+    private fun restoreInstanceState(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) return
+
+        restoreSelectedMessages(savedInstanceState)
+        isRemoteSearch = savedInstanceState.getBoolean(STATE_REMOTE_SEARCH_PERFORMED)
+        savedListState = savedInstanceState.getParcelable(STATE_MESSAGE_LIST)
+        val messageReferenceString = savedInstanceState.getString(STATE_ACTIVE_MESSAGE)
+        activeMessage = MessageReference.parse(messageReferenceString)
+    }
+
+    private fun restoreSelectedMessages(savedInstanceState: Bundle) {
+        val selectedIds = savedInstanceState.getLongArray(STATE_SELECTED_MESSAGES) ?: return
+        for (id in selectedIds) {
+            selected.add(id)
+        }
+    }
+
+    fun restoreListState(savedListState: Parcelable) {
+        listView.onRestoreInstanceState(savedListState)
+    }
+
+    private fun decodeArguments() {
+        val arguments = requireArguments()
+        showingThreadedList = arguments.getBoolean(ARG_THREADED_LIST, false)
+        isThreadDisplay = arguments.getBoolean(ARG_IS_THREAD_DISPLAY, false)
+        localSearch = arguments.getParcelable(ARG_SEARCH)!!
+
+        title = localSearch.name
+
+        allAccounts = localSearch.searchAllAccounts()
+        val searchAccounts = localSearch.getAccounts(preferences)
+        if (searchAccounts.size == 1) {
+            isSingleAccountMode = true
+            val singleAccount = searchAccounts[0]
+            account = singleAccount
+            accountUuids = arrayOf(singleAccount.uuid)
         } else {
-            // query result display.  This may be for a search folder as opposed to a user-initiated search.
-            if (title != null) {
-                // This was a search folder; the search folder has overridden our title.
-                fragmentListener.setMessageListTitle(title);
-            } else {
-                // This is a search result; set it to the default search result line.
-                fragmentListener.setMessageListTitle(getString(R.string.search_results));
-            }
+            isSingleAccountMode = false
+            account = null
+            accountUuids = searchAccounts.map { it.uuid }.toTypedArray()
+        }
+
+        isSingleFolderMode = false
+        if (isSingleAccountMode && localSearch.folderIds.size == 1) {
+            isSingleFolderMode = true
+            val folderId = localSearch.folderIds[0]
+            currentFolder = getFolderInfoHolder(folderId, account!!)
         }
     }
 
-    void progress(final boolean progress) {
-        if (swipeRefreshLayout != null && !progress) {
-            swipeRefreshLayout.setRefreshing(false);
-        }
-        fragmentListener.setMessageListProgressEnabled(progress);
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (view == footerView) {
-            if (currentFolder != null && !search.isManualSearch() && currentFolder.moreMessages) {
-
-                long folderId = currentFolder.databaseId;
-                messagingController.loadMoreMessages(account, folderId, null);
-
-            } else if (currentFolder != null && isRemoteSearch() &&
-                    extraSearchResults != null && extraSearchResults.size() > 0) {
-
-                int numResults = extraSearchResults.size();
-                int limit = account.getRemoteSearchNumResults();
-
-                List<String> toProcess = extraSearchResults;
-
-                if (limit > 0 && numResults > limit) {
-                    toProcess = toProcess.subList(0, limit);
-                    extraSearchResults = extraSearchResults.subList(limit,
-                            extraSearchResults.size());
-                } else {
-                    extraSearchResults = null;
-                    updateFooter(null);
-                }
-
-                messagingController.loadSearchResults(account, currentFolder.databaseId, toProcess, activityListener);
-            }
-
-            return;
-        }
-
-        int adapterPosition = listViewToAdapterPosition(position);
-        MessageListItem messageListItem = adapter.getItem(adapterPosition);
-
-        if (selectedCount > 0) {
-            toggleMessageSelect(position);
-        } else {
-            if (showingThreadedList && messageListItem.getThreadCount() > 1) {
-                Account account = messageListItem.getAccount();
-
-                // If threading is enabled and this item represents a thread, display the thread contents.
-                long rootId = messageListItem.getThreadRoot();
-                fragmentListener.showThread(account, rootId);
-            } else {
-                // This item represents a message; just display the message.
-                openMessageAtPosition(adapterPosition);
-            }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.message_list_fragment, container, false).apply {
+            initializeSwipeRefreshLayout(this)
+            initializeListView(this)
         }
     }
 
-    @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        if (view == footerView) {
-            return false;
-        }
+    private fun initializeSwipeRefreshLayout(view: View) {
+        swipeRefreshLayout = view.findViewById(R.id.swiperefresh)
 
-        toggleMessageSelect(position);
-        return true;
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-        try {
-            fragmentListener = (MessageListFragmentListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.getClass() +
-                    " must implement MessageListFragmentListener");
-        }
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        folderNameFormatter = folderNameFormatterFactory.create(requireActivity());
-        Context appContext = getActivity().getApplicationContext();
-
-        preferences = Preferences.getPreferences(appContext);
-        messagingController = MessagingController.getInstance(getActivity().getApplication());
-
-        restoreInstanceState(savedInstanceState);
-        decodeArguments();
-
-        createCacheBroadcastReceiver(appContext);
-
-        getViewModel().getMessageListLiveData().observe(this, this::setMessageList);
-
-        initialized = true;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.message_list_fragment, container, false);
-
-        initializePullToRefresh(view);
-
-        initializeLayout();
-        listView.setVerticalFadingEdgeEnabled(false);
-
-        return view;
-    }
-
-    @Override
-    public void onDestroyView() {
-        savedListState = listView.onSaveInstanceState();
-        super.onDestroyView();
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        initializeMessageList();
-
-        // This needs to be done before loading the message list below
-        initializeSortSettings();
-
-        loadMessageList();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        saveSelectedMessages(outState);
-        saveListState(outState);
-
-        outState.putBoolean(STATE_REMOTE_SEARCH_PERFORMED, remoteSearchPerformed);
-        if (activeMessage != null) {
-            outState.putString(STATE_ACTIVE_MESSAGE, activeMessage.toIdentityString());
-        }
-    }
-
-    /**
-     * Restore the state of a previous {@link MessageListFragment} instance.
-     *
-     * @see #onSaveInstanceState(Bundle)
-     */
-    private void restoreInstanceState(Bundle savedInstanceState) {
-        if (savedInstanceState == null) {
-            return;
-        }
-
-        restoreSelectedMessages(savedInstanceState);
-
-        remoteSearchPerformed = savedInstanceState.getBoolean(STATE_REMOTE_SEARCH_PERFORMED);
-        savedListState = savedInstanceState.getParcelable(STATE_MESSAGE_LIST);
-        String messageReferenceString = savedInstanceState.getString(STATE_ACTIVE_MESSAGE);
-        activeMessage = MessageReference.parse(messageReferenceString);
-        if (adapter != null) adapter.setActiveMessage(activeMessage);
-    }
-
-    /**
-     * Write the unique IDs of selected messages to a {@link Bundle}.
-     */
-    private void saveSelectedMessages(Bundle outState) {
-        long[] selected = new long[this.selected.size()];
-        int i = 0;
-        for (Long id : this.selected) {
-            selected[i++] = id;
-        }
-        outState.putLongArray(STATE_SELECTED_MESSAGES, selected);
-    }
-
-    /**
-     * Restore selected messages from a {@link Bundle}.
-     */
-    private void restoreSelectedMessages(Bundle savedInstanceState) {
-        long[] selected = savedInstanceState.getLongArray(STATE_SELECTED_MESSAGES);
-        if (selected != null) {
-            for (long id : selected) {
-                this.selected.add(id);
-            }
-        }
-    }
-
-    private void saveListState(Bundle outState) {
-        if (savedListState != null) {
-            // The previously saved state was never restored, so just use that.
-            outState.putParcelable(STATE_MESSAGE_LIST, savedListState);
-        } else if (listView != null) {
-            outState.putParcelable(STATE_MESSAGE_LIST, listView.onSaveInstanceState());
-        }
-    }
-
-    private void initializeSortSettings() {
-        if (singleAccountMode) {
-            sortType = account.getSortType();
-            sortAscending = account.isSortAscending(sortType);
-            sortDateAscending = account.isSortAscending(SortType.SORT_DATE);
-        } else {
-            sortType = K9.getSortType();
-            sortAscending = K9.isSortAscending(sortType);
-            sortDateAscending = K9.isSortAscending(SortType.SORT_DATE);
-        }
-    }
-
-    private void decodeArguments() {
-        Bundle args = getArguments();
-
-        showingThreadedList = args.getBoolean(ARG_THREADED_LIST, false);
-        isThreadDisplay = args.getBoolean(ARG_IS_THREAD_DISPLAY, false);
-        search = args.getParcelable(ARG_SEARCH);
-        title = search.getName();
-
-        List<Account> searchAccounts = getAccountsFromLocalSearch(search, preferences);
-        allAccounts = search.searchAllAccounts();
-        if (searchAccounts.size() == 1) {
-            Account singleAccount = searchAccounts.get(0);
-
-            singleAccountMode = true;
-            account = singleAccount;
-            accountUuids = new String[] { singleAccount.getUuid() };
-        } else {
-            String[] searchAccountUuids = new String[searchAccounts.size()];
-            for (int i = 0, len = searchAccounts.size(); i < len; i++) {
-                searchAccountUuids[i] = searchAccounts.get(i).getUuid();
-            }
-
-            singleAccountMode = false;
-            account = null;
-            accountUuids = searchAccountUuids;
-        }
-
-        singleFolderMode = false;
-        if (singleAccountMode && (search.getFolderIds().size() == 1)) {
-            singleFolderMode = true;
-            long folderId = search.getFolderIds().get(0);
-            currentFolder = getFolderInfoHolder(folderId, account);
-        }
-    }
-
-    private void initializeMessageList() {
-        adapter = new MessageListAdapter(
-                requireContext(),
-                requireActivity().getTheme(),
-                getResources(),
-                getLayoutInflater(),
-                ContactPicture.getContactPictureLoader(),
-                this,
-                getMessageListAppearance(),
-                new RelativeDateTimeFormatter(requireContext(), Clock.INSTANCE)
-        );
-
-        if (singleFolderMode) {
-            listView.addFooterView(getFooterView(listView));
-            updateFooter(null);
-        }
-
-        listView.setAdapter(adapter);
-    }
-
-    private MessageListAppearance getMessageListAppearance() {
-        boolean showAccountChip = !isSingleAccountMode();
-        boolean showStars = !isOutbox() && K9.isShowMessageListStars();
-        return new MessageListAppearance(
-                K9.getFontSizes(),
-                K9.getMessageListPreviewLines(),
-                showStars,
-                K9.isMessageListSenderAboveSubject(),
-                K9.isShowContactPicture(),
-                showingThreadedList,
-                K9.isUseBackgroundAsUnreadIndicator(),
-                showAccountChip
-        );
-    }
-
-    private void createCacheBroadcastReceiver(Context appContext) {
-        localBroadcastManager = LocalBroadcastManager.getInstance(appContext);
-
-        cacheBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                adapter.notifyDataSetChanged();
-            }
-        };
-
-        cacheIntentFilter = new IntentFilter(EmailProviderCache.ACTION_CACHE_UPDATED);
-    }
-
-    private FolderInfoHolder getFolderInfoHolder(long folderId, Account account) {
-        try {
-            LocalFolder localFolder = MlfUtils.getOpenFolder(folderId, account);
-            return new FolderInfoHolder(folderNameFormatter, localFolder, account);
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        localBroadcastManager.unregisterReceiver(cacheBroadcastReceiver);
-        messagingController.removeListener(activityListener);
-    }
-
-    /**
-     * On resume we refresh messages for the folder that is currently open.
-     * This guarantees that things like unread message count and read status
-     * are updated.
-     */
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        // Check if we have connectivity.  Cache the value.
-        if (hasConnectivity == null) {
-            hasConnectivity = Utility.hasConnectivity(getActivity().getApplication());
-        }
-
-        localBroadcastManager.registerReceiver(cacheBroadcastReceiver, cacheIntentFilter);
-        messagingController.addListener(activityListener);
-
-        //Cancel pending new mail notifications when we open an account
-        List<Account> accountsWithNotification;
-
-        Account account = this.account;
-        if (account != null) {
-            accountsWithNotification = Collections.singletonList(account);
-        } else {
-            accountsWithNotification = preferences.getAccounts();
-        }
-
-        for (Account accountWithNotification : accountsWithNotification) {
-            messagingController.cancelNotificationsForAccount(accountWithNotification);
-        }
-
-        updateTitle();
-    }
-
-    private void initializePullToRefresh(View layout) {
-        swipeRefreshLayout = layout.findViewById(R.id.swiperefresh);
-        listView = layout.findViewById(R.id.message_list);
-
-        if (isRemoteSearchAllowed()) {
-            swipeRefreshLayout.setOnRefreshListener(
-                    new SwipeRefreshLayout.OnRefreshListener() {
-                        @Override
-                        public void onRefresh() {
-                            onRemoteSearchRequested();
-                        }
-                    }
-            );
-        } else if (isCheckMailSupported()) {
-            swipeRefreshLayout.setOnRefreshListener(
-                    new SwipeRefreshLayout.OnRefreshListener() {
-                        @Override
-                        public void onRefresh() {
-                            checkMail();
-                        }
-                    }
-            );
+        if (isRemoteSearchAllowed) {
+            swipeRefreshLayout.setOnRefreshListener { onRemoteSearchRequested() }
+        } else if (isCheckMailSupported) {
+            swipeRefreshLayout.setOnRefreshListener { checkMail() }
         }
 
         // Disable pull-to-refresh until the message list has been loaded
-        swipeRefreshLayout.setEnabled(false);
+        swipeRefreshLayout.isEnabled = false
     }
 
-    private void initializeLayout() {
-        listView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        listView.setLongClickable(true);
-        listView.setFastScrollEnabled(true);
-        listView.setScrollingCacheEnabled(false);
-        listView.setOnItemClickListener(this);
-        listView.setOnItemLongClickListener(this);
-    }
-
-    public void onCompose() {
-        if (!singleAccountMode) {
-            /*
-             * If we have a query string, we don't have an account to let
-             * compose start the default action.
-             */
-            fragmentListener.onCompose(null);
-        } else {
-            fragmentListener.onCompose(account);
+    private fun initializeListView(view: View) {
+        listView = view.findViewById(R.id.message_list)
+        with(listView) {
+            scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
+            isLongClickable = true
+            isFastScrollEnabled = true
+            isVerticalFadingEdgeEnabled = false
+            isScrollingCacheEnabled = false
+            onItemClickListener = this@MessageListFragment
+            onItemLongClickListener = this@MessageListFragment
         }
     }
 
-    public void changeSort(SortType sortType) {
-        Boolean sortAscending = (this.sortType == sortType) ? !this.sortAscending : null;
-        changeSort(sortType, sortAscending);
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        initializeMessageList()
+
+        // This needs to be done before loading the message list below
+        initializeSortSettings()
+        loadMessageList()
     }
 
-    /**
-     * User has requested a remote search.  Setup the bundle and start the intent.
-     */
-    private void onRemoteSearchRequested() {
-        String searchAccount = account.getUuid();
-        long folderId = currentFolder.databaseId;
-        String queryString = search.getRemoteSearchArguments();
+    private fun initializeMessageList() {
+        adapter = MessageListAdapter(
+            context = requireContext(),
+            theme = requireActivity().theme,
+            res = resources,
+            layoutInflater = layoutInflater,
+            contactsPictureLoader = ContactPicture.getContactPictureLoader(),
+            listItemListener = this,
+            appearance = messageListAppearance,
+            relativeDateTimeFormatter = RelativeDateTimeFormatter(requireContext(), Clock.INSTANCE)
+        )
 
-        remoteSearchPerformed = true;
-        remoteSearchFuture = messagingController.searchRemoteMessages(searchAccount, folderId, queryString,
-                null, null, activityListener);
+        adapter.activeMessage = activeMessage
 
-        swipeRefreshLayout.setEnabled(false);
+        if (isSingleFolderMode) {
+            listView.addFooterView(getFooterView(listView))
+            updateFooter(null)
+        }
 
-        fragmentListener.remoteSearchStarted();
+        listView.adapter = adapter
+    }
+
+    private fun initializeSortSettings() {
+        if (isSingleAccountMode) {
+            val account = this.account!!
+            sortType = account.sortType
+            sortAscending = account.isSortAscending(sortType)
+            sortDateAscending = account.isSortAscending(SortType.SORT_DATE)
+        } else {
+            sortType = K9.sortType
+            sortAscending = K9.isSortAscending(sortType)
+            sortDateAscending = K9.isSortAscending(SortType.SORT_DATE)
+        }
+    }
+
+    private fun loadMessageList() {
+        val config = MessageListConfig(
+            localSearch,
+            showingThreadedList,
+            sortType,
+            sortAscending,
+            sortDateAscending,
+            activeMessage
+        )
+        viewModel.loadMessageList(config)
+    }
+
+    fun folderLoading(folderId: Long, loading: Boolean) {
+        currentFolder?.let {
+            if (it.databaseId == folderId) {
+                it.loading = loading
+            }
+        }
+
+        updateFooterView()
+    }
+
+    fun updateTitle() {
+        if (!isInitialized) return
+
+        setWindowTitle()
+
+        if (!localSearch.isManualSearch) {
+            setWindowProgress()
+        }
+    }
+
+    private fun setWindowProgress() {
+        var level = 0
+        if (currentFolder?.loading == true) {
+            val folderTotal = activityListener.getFolderTotal()
+            if (folderTotal > 0) {
+                level = (MAX_PROGRESS * activityListener.getFolderCompleted() / folderTotal).coerceAtMost(MAX_PROGRESS)
+            }
+        }
+
+        fragmentListener.setMessageListProgress(level)
+    }
+
+    private fun setWindowTitle() {
+        // regular folder content display
+        if (!isManualSearch && isSingleFolderMode) {
+            fragmentListener.setMessageListTitle(currentFolder!!.displayName)
+        } else {
+            // query result display.  This may be for a search folder as opposed to a user-initiated search.
+            val title = this.title
+            if (title != null) {
+                // This was a search folder; the search folder has overridden our title.
+                fragmentListener.setMessageListTitle(title)
+            } else {
+                // This is a search result; set it to the default search result line.
+                fragmentListener.setMessageListTitle(getString(R.string.search_results))
+            }
+        }
+    }
+
+    fun progress(progress: Boolean) {
+        if (!progress) {
+            swipeRefreshLayout.isRefreshing = false
+        }
+
+        fragmentListener.setMessageListProgressEnabled(progress)
+    }
+
+    override fun onItemClick(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
+        if (view === footerView) {
+            handleFooterClick()
+        } else {
+            handleListItemClick(position)
+        }
+    }
+
+    private fun handleFooterClick() {
+        val currentFolder = this.currentFolder ?: return
+
+        if (currentFolder.moreMessages && !localSearch.isManualSearch) {
+            val folderId = currentFolder.databaseId
+            messagingController.loadMoreMessages(account, folderId, null)
+        } else if (isRemoteSearch) {
+            val additionalSearchResults = extraSearchResults ?: return
+            if (additionalSearchResults.isEmpty()) return
+
+            val loadSearchResults: List<String>
+
+            val limit = account!!.remoteSearchNumResults
+            if (limit in 1 until additionalSearchResults.size) {
+                extraSearchResults = additionalSearchResults.subList(limit, additionalSearchResults.size)
+                loadSearchResults = additionalSearchResults.subList(0, limit)
+            } else {
+                extraSearchResults = null
+                loadSearchResults = additionalSearchResults
+                updateFooter(null)
+            }
+
+            messagingController.loadSearchResults(
+                account,
+                currentFolder.databaseId,
+                loadSearchResults,
+                activityListener
+            )
+        }
+    }
+
+    private fun handleListItemClick(position: Int) {
+        if (selectedCount > 0) {
+            toggleMessageSelect(position)
+        } else {
+            val adapterPosition = listViewToAdapterPosition(position)
+            val messageListItem = adapter.getItem(adapterPosition)
+
+            if (showingThreadedList && messageListItem.threadCount > 1) {
+                fragmentListener.showThread(messageListItem.account, messageListItem.threadRoot)
+            } else {
+                openMessageAtPosition(adapterPosition)
+            }
+        }
+    }
+
+    override fun onItemLongClick(parent: AdapterView<*>?, view: View, position: Int, id: Long): Boolean {
+        if (view === footerView) return false
+
+        toggleMessageSelect(position)
+        return true
+    }
+
+    override fun onDestroyView() {
+        savedListState = listView.onSaveInstanceState()
+        super.onDestroyView()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        saveListState(outState)
+        outState.putLongArray(STATE_SELECTED_MESSAGES, selected.toLongArray())
+        outState.putBoolean(STATE_REMOTE_SEARCH_PERFORMED, isRemoteSearch)
+        if (activeMessage != null) {
+            outState.putString(STATE_ACTIVE_MESSAGE, activeMessage!!.toIdentityString())
+        }
+    }
+
+    private fun saveListState(outState: Bundle) {
+        if (savedListState != null) {
+            // The previously saved state was never restored, so just use that.
+            outState.putParcelable(STATE_MESSAGE_LIST, savedListState)
+        } else {
+            outState.putParcelable(STATE_MESSAGE_LIST, listView.onSaveInstanceState())
+        }
+    }
+
+    private val messageListAppearance: MessageListAppearance
+        get() = MessageListAppearance(
+            fontSizes = K9.fontSizes,
+            previewLines = K9.messageListPreviewLines,
+            stars = !isOutbox && K9.isShowMessageListStars,
+            senderAboveSubject = K9.isMessageListSenderAboveSubject,
+            showContactPicture = K9.isShowContactPicture,
+            showingThreadedList = showingThreadedList,
+            backGroundAsReadIndicator = K9.isUseBackgroundAsUnreadIndicator,
+            showAccountChip = !isSingleAccountMode
+        )
+
+    private fun getFolderInfoHolder(folderId: Long, account: Account): FolderInfoHolder {
+        return try {
+            val localFolder = MlfUtils.getOpenFolder(folderId, account)
+            FolderInfoHolder(folderNameFormatter, localFolder, account)
+        } catch (e: MessagingException) {
+            throw RuntimeException(e)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (hasConnectivity == null) {
+            hasConnectivity = Utility.hasConnectivity(requireActivity().application)
+        }
+
+        localBroadcastManager.registerReceiver(cacheBroadcastReceiver, cacheIntentFilter)
+        messagingController.addListener(activityListener)
+
+        for (account in localSearch.getAccounts(preferences)) {
+            messagingController.cancelNotificationsForAccount(account)
+        }
+
+        updateTitle()
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        localBroadcastManager.unregisterReceiver(cacheBroadcastReceiver)
+        messagingController.removeListener(activityListener)
+    }
+
+    fun goBack() {
+        fragmentListener.goBack()
+    }
+
+    fun onCompose() {
+        if (!isSingleAccountMode) {
+            fragmentListener.onCompose(null)
+        } else {
+            fragmentListener.onCompose(account)
+        }
+    }
+
+    fun changeSort(sortType: SortType) {
+        val sortAscending = if (this.sortType == sortType) !sortAscending else null
+        changeSort(sortType, sortAscending)
+    }
+
+    private fun onRemoteSearchRequested() {
+        val searchAccount = account!!.uuid
+        val folderId = currentFolder!!.databaseId
+        val queryString = localSearch.remoteSearchArguments
+
+        isRemoteSearch = true
+        swipeRefreshLayout.isEnabled = false
+
+        remoteSearchFuture = messagingController.searchRemoteMessages(
+            searchAccount,
+            folderId,
+            queryString,
+            null,
+            null,
+            activityListener
+        )
+
+        fragmentListener.remoteSearchStarted()
     }
 
     /**
      * Change the sort type and sort order used for the message list.
      *
-     * @param sortType
-     *         Specifies which field to use for sorting the message list.
-     * @param sortAscending
-     *         Specifies the sort order. If this argument is {@code null} the default search order
-     *         for the sort type is used.
+     * @param sortType Specifies which field to use for sorting the message list.
+     * @param sortAscending Specifies the sort order. If this argument is `null` the default search order for the
+     *   sort type is used.
      */
     // FIXME: Don't save the changes in the UI thread
-    private void changeSort(SortType sortType, Boolean sortAscending) {
-        this.sortType = sortType;
+    private fun changeSort(sortType: SortType, sortAscending: Boolean?) {
+        this.sortType = sortType
 
-        Account account = this.account;
-
+        val account = account
         if (account != null) {
-            account.setSortType(this.sortType);
-
+            account.sortType = this.sortType
             if (sortAscending == null) {
-                this.sortAscending = account.isSortAscending(this.sortType);
+                this.sortAscending = account.isSortAscending(this.sortType)
             } else {
-                this.sortAscending = sortAscending;
+                this.sortAscending = sortAscending
             }
-            account.setSortAscending(this.sortType, this.sortAscending);
-            sortDateAscending = account.isSortAscending(SortType.SORT_DATE);
+            account.setSortAscending(this.sortType, this.sortAscending)
+            sortDateAscending = account.isSortAscending(SortType.SORT_DATE)
 
-            Preferences.getPreferences(getContext()).saveAccount(account);
+            preferences.saveAccount(account)
         } else {
-            K9.setSortType(this.sortType);
-
+            K9.sortType = this.sortType
             if (sortAscending == null) {
-                this.sortAscending = K9.isSortAscending(this.sortType);
+                this.sortAscending = K9.isSortAscending(this.sortType)
             } else {
-                this.sortAscending = sortAscending;
+                this.sortAscending = sortAscending
             }
-            K9.setSortAscending(this.sortType, this.sortAscending);
-            sortDateAscending = K9.isSortAscending(SortType.SORT_DATE);
+            K9.setSortAscending(this.sortType, this.sortAscending)
+            sortDateAscending = K9.isSortAscending(SortType.SORT_DATE)
 
-            StorageEditor editor = preferences.createStorageEditor();
-            K9.save(editor);
-            editor.commit();
+            val editor = preferences.createStorageEditor()
+            K9.save(editor)
+            editor.commit()
         }
 
-        reSort();
+        reSort()
     }
 
-    private void reSort() {
-        int toastString = sortTypeToastProvider.getToast(sortType, sortAscending);
-
-        Toast toast = Toast.makeText(getActivity(), toastString, Toast.LENGTH_SHORT);
-        toast.show();
-
-        loadMessageList();
+    private fun reSort() {
+        val toastString = sortTypeToastProvider.getToast(sortType, sortAscending)
+        Toast.makeText(activity, toastString, Toast.LENGTH_SHORT).show()
+        loadMessageList()
     }
 
-    public void onCycleSort() {
-        SortType[] sorts = SortType.values();
-        int curIndex = 0;
-
-        for (int i = 0; i < sorts.length; i++) {
-            if (sorts[i] == sortType) {
-                curIndex = i;
-                break;
-            }
-        }
-
-        curIndex++;
-
-        if (curIndex == sorts.length) {
-            curIndex = 0;
-        }
-
-        changeSort(sorts[curIndex]);
+    fun onCycleSort() {
+        val sortTypes = SortType.values()
+        val currentIndex = sortTypes.indexOf(sortType)
+        val newIndex = if (currentIndex == sortTypes.lastIndex) 0 else currentIndex + 1
+        val nextSortType = sortTypes[newIndex]
+        changeSort(nextSortType)
     }
 
-    private void onDelete(List<MessageReference> messages) {
-        if (K9.isConfirmDelete()) {
+    private fun onDelete(messages: List<MessageReference>) {
+        if (K9.isConfirmDelete) {
             // remember the message selection for #onCreateDialog(int)
-            activeMessages = messages;
-            showDialog(R.id.dialog_confirm_delete);
+            activeMessages = messages
+            showDialog(R.id.dialog_confirm_delete)
         } else {
-            onDeleteConfirmed(messages);
+            onDeleteConfirmed(messages)
         }
     }
 
-    private void onDeleteConfirmed(List<MessageReference> messages) {
+    private fun onDeleteConfirmed(messages: List<MessageReference>) {
         if (showingThreadedList) {
-            messagingController.deleteThreads(messages);
+            messagingController.deleteThreads(messages)
         } else {
-            messagingController.deleteMessages(messages);
+            messagingController.deleteMessages(messages)
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_OK) {
-            return;
-        }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode != Activity.RESULT_OK) return
 
-        switch (requestCode) {
-            case ACTIVITY_CHOOSE_FOLDER_MOVE:
-            case ACTIVITY_CHOOSE_FOLDER_COPY: {
-                if (data == null) {
-                    return;
-                }
+        when (requestCode) {
+            ACTIVITY_CHOOSE_FOLDER_MOVE,
+            ACTIVITY_CHOOSE_FOLDER_COPY -> {
+                if (data == null) return
 
-                long destinationFolderId = data.getLongExtra(ChooseFolderActivity.RESULT_SELECTED_FOLDER_ID, -1L);
-                final List<MessageReference> messages = activeMessages;
-
+                val destinationFolderId = data.getLongExtra(ChooseFolderActivity.RESULT_SELECTED_FOLDER_ID, -1L)
+                val messages = activeMessages!!
                 if (destinationFolderId != -1L) {
-                    activeMessages = null; // don't need it any more
+                    activeMessages = null
 
-                    if (messages.size() > 0) {
-                        MlfUtils.setLastSelectedFolder(preferences, messages, destinationFolderId);
+                    if (messages.isNotEmpty()) {
+                        MlfUtils.setLastSelectedFolder(preferences, messages, destinationFolderId)
                     }
 
-                    switch (requestCode) {
-                        case ACTIVITY_CHOOSE_FOLDER_MOVE:
-                            move(messages, destinationFolderId);
-                            break;
-
-                        case ACTIVITY_CHOOSE_FOLDER_COPY:
-                            copy(messages, destinationFolderId);
-                            break;
-                        }
+                    when (requestCode) {
+                        ACTIVITY_CHOOSE_FOLDER_MOVE -> move(messages, destinationFolderId)
+                        ACTIVITY_CHOOSE_FOLDER_COPY -> copy(messages, destinationFolderId)
+                    }
                 }
-                break;
             }
         }
     }
 
-    public void onExpunge() {
-        if (currentFolder != null) {
-            onExpunge(account, currentFolder.databaseId);
+    fun onExpunge() {
+        currentFolder?.let { folderInfoHolder ->
+            onExpunge(account, folderInfoHolder.databaseId)
         }
     }
 
-    private void onExpunge(final Account account, long folderId) {
-        messagingController.expunge(account, folderId);
+    private fun onExpunge(account: Account?, folderId: Long) {
+        messagingController.expunge(account, folderId)
     }
 
-    public void onEmptyTrash() {
-        if (isShowingTrashFolder()) {
-            showDialog(R.id.dialog_confirm_empty_trash);
+    fun onEmptyTrash() {
+        if (isShowingTrashFolder) {
+            showDialog(R.id.dialog_confirm_empty_trash)
         }
     }
 
-    public boolean isShowingTrashFolder() {
-        if (!singleFolderMode || currentFolder == null) {
-            return false;
+    val isShowingTrashFolder: Boolean
+        get() {
+            if (!isSingleFolderMode) return false
+            return currentFolder!!.databaseId == account!!.trashFolderId
         }
 
-        Long trashFolderId = account.getTrashFolderId();
-        return trashFolderId != null && currentFolder.databaseId == trashFolderId;
-    }
-
-    private void showDialog(int dialogId) {
-        DialogFragment fragment;
-        if (dialogId == R.id.dialog_confirm_spam) {
-            String title = getString(R.string.dialog_confirm_spam_title);
-
-            int selectionSize = activeMessages.size();
-            String message = getResources().getQuantityString(
-                    R.plurals.dialog_confirm_spam_message, selectionSize, selectionSize);
-
-            String confirmText = getString(R.string.dialog_confirm_spam_confirm_button);
-            String cancelText = getString(R.string.dialog_confirm_spam_cancel_button);
-
-            fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message,
-                    confirmText, cancelText);
-        } else if (dialogId == R.id.dialog_confirm_delete) {
-            String title = getString(R.string.dialog_confirm_delete_title);
-
-            int selectionSize = activeMessages.size();
-            String message = getResources().getQuantityString(
-                    R.plurals.dialog_confirm_delete_messages, selectionSize,
-                    selectionSize);
-
-            String confirmText = getString(R.string.dialog_confirm_delete_confirm_button);
-            String cancelText = getString(R.string.dialog_confirm_delete_cancel_button);
-
-            fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message,
-                    confirmText, cancelText);
-        } else if (dialogId == R.id.dialog_confirm_mark_all_as_read) {
-            String title = getString(R.string.dialog_confirm_mark_all_as_read_title);
-            String message = getString(R.string.dialog_confirm_mark_all_as_read_message);
-
-            String confirmText = getString(R.string.dialog_confirm_mark_all_as_read_confirm_button);
-            String cancelText = getString(R.string.dialog_confirm_mark_all_as_read_cancel_button);
-
-            fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message, confirmText, cancelText);
-        } else if (dialogId == R.id.dialog_confirm_empty_trash) {
-            String title = getString(R.string.dialog_confirm_empty_trash_title);
-            String message = getString(R.string.dialog_confirm_empty_trash_message);
-
-            String confirmText = getString(R.string.dialog_confirm_delete_confirm_button);
-            String cancelText = getString(R.string.dialog_confirm_delete_cancel_button);
-
-            fragment = ConfirmationDialogFragment.newInstance(dialogId, title, message,
-                    confirmText, cancelText);
-        } else {
-            throw new RuntimeException("Called showDialog(int) with unknown dialog id.");
+    private fun showDialog(dialogId: Int) {
+        val dialogFragment = when (dialogId) {
+            R.id.dialog_confirm_spam -> {
+                val title = getString(R.string.dialog_confirm_spam_title)
+                val selectionSize = activeMessages!!.size
+                val message = resources.getQuantityString(
+                    R.plurals.dialog_confirm_spam_message,
+                    selectionSize,
+                    selectionSize
+                )
+                val confirmText = getString(R.string.dialog_confirm_spam_confirm_button)
+                val cancelText = getString(R.string.dialog_confirm_spam_cancel_button)
+                ConfirmationDialogFragment.newInstance(dialogId, title, message, confirmText, cancelText)
+            }
+            R.id.dialog_confirm_delete -> {
+                val title = getString(R.string.dialog_confirm_delete_title)
+                val selectionSize = activeMessages!!.size
+                val message = resources.getQuantityString(
+                    R.plurals.dialog_confirm_delete_messages,
+                    selectionSize,
+                    selectionSize
+                )
+                val confirmText = getString(R.string.dialog_confirm_delete_confirm_button)
+                val cancelText = getString(R.string.dialog_confirm_delete_cancel_button)
+                ConfirmationDialogFragment.newInstance(dialogId, title, message, confirmText, cancelText)
+            }
+            R.id.dialog_confirm_mark_all_as_read -> {
+                val title = getString(R.string.dialog_confirm_mark_all_as_read_title)
+                val message = getString(R.string.dialog_confirm_mark_all_as_read_message)
+                val confirmText = getString(R.string.dialog_confirm_mark_all_as_read_confirm_button)
+                val cancelText = getString(R.string.dialog_confirm_mark_all_as_read_cancel_button)
+                ConfirmationDialogFragment.newInstance(dialogId, title, message, confirmText, cancelText)
+            }
+            R.id.dialog_confirm_empty_trash -> {
+                val title = getString(R.string.dialog_confirm_empty_trash_title)
+                val message = getString(R.string.dialog_confirm_empty_trash_message)
+                val confirmText = getString(R.string.dialog_confirm_delete_confirm_button)
+                val cancelText = getString(R.string.dialog_confirm_delete_cancel_button)
+                ConfirmationDialogFragment.newInstance(dialogId, title, message, confirmText, cancelText)
+            }
+            else -> {
+                throw RuntimeException("Called showDialog(int) with unknown dialog id.")
+            }
         }
 
-        fragment.setTargetFragment(this, dialogId);
-        fragment.show(getParentFragmentManager(), getDialogTag(dialogId));
+        dialogFragment.setTargetFragment(this, dialogId)
+        dialogFragment.show(parentFragmentManager, getDialogTag(dialogId))
     }
 
-    private String getDialogTag(int dialogId) {
-        return "dialog-" + dialogId;
+    private fun getDialogTag(dialogId: Int): String {
+        return "dialog-$dialogId"
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
         if (id == R.id.set_sort_date) {
-            changeSort(SortType.SORT_DATE);
-            return true;
+            changeSort(SortType.SORT_DATE)
+            return true
         } else if (id == R.id.set_sort_arrival) {
-            changeSort(SortType.SORT_ARRIVAL);
-            return true;
+            changeSort(SortType.SORT_ARRIVAL)
+            return true
         } else if (id == R.id.set_sort_subject) {
-            changeSort(SortType.SORT_SUBJECT);
-            return true;
+            changeSort(SortType.SORT_SUBJECT)
+            return true
         } else if (id == R.id.set_sort_sender) {
-            changeSort(SortType.SORT_SENDER);
-            return true;
+            changeSort(SortType.SORT_SENDER)
+            return true
         } else if (id == R.id.set_sort_flag) {
-            changeSort(SortType.SORT_FLAGGED);
-            return true;
+            changeSort(SortType.SORT_FLAGGED)
+            return true
         } else if (id == R.id.set_sort_unread) {
-            changeSort(SortType.SORT_UNREAD);
-            return true;
+            changeSort(SortType.SORT_UNREAD)
+            return true
         } else if (id == R.id.set_sort_attach) {
-            changeSort(SortType.SORT_ATTACHMENT);
-            return true;
+            changeSort(SortType.SORT_ATTACHMENT)
+            return true
         } else if (id == R.id.select_all) {
-            selectAll();
-            return true;
+            selectAll()
+            return true
         }
 
-        if (!singleAccountMode) {
+        if (!isSingleAccountMode) {
             // None of the options after this point are "safe" for search results
-            //TODO: This is not true for "unread" and "starred" searches in regular folders
-            return false;
+            // TODO: This is not true for "unread" and "starred" searches in regular folders
+            return false
         }
 
         if (id == R.id.send_messages) {
-            onSendPendingMessages();
-            return true;
+            onSendPendingMessages()
+            return true
         } else if (id == R.id.expunge) {
-            if (currentFolder != null) {
-                onExpunge(account, currentFolder.databaseId);
+            currentFolder?.let { folderInfoHolder ->
+                onExpunge(account, folderInfoHolder.databaseId)
             }
-            return true;
+            return true
         } else {
-            return super.onOptionsItemSelected(item);
+            return super.onOptionsItemSelected(item)
         }
     }
 
-    public void onSendPendingMessages() {
-        messagingController.sendPendingMessages(account, null);
+    fun onSendPendingMessages() {
+        messagingController.sendPendingMessages(account, null)
     }
 
-    private int listViewToAdapterPosition(int position) {
-        if (position >= 0 && position < adapter.getCount()) {
-            return position;
-        }
-
-        return AdapterView.INVALID_POSITION;
+    private fun listViewToAdapterPosition(position: Int): Int {
+        return if (position in 0 until adapter.count) position else AdapterView.INVALID_POSITION
     }
 
-    private int adapterToListViewPosition(int position) {
-        if (position >= 0 && position < adapter.getCount()) {
-            return position;
-        }
-
-        return AdapterView.INVALID_POSITION;
+    private fun adapterToListViewPosition(position: Int): Int {
+        return if (position in 0 until adapter.count) position else AdapterView.INVALID_POSITION
     }
 
-    class MessageListActivityListener extends SimpleMessagingListener {
-        private final Object lock = new Object();
+    private fun getFooterView(parent: ViewGroup?): View? {
+        return footerView ?: createFooterView(parent).also { footerView = it }
+    }
 
-        @GuardedBy("lock") private int folderCompleted = 0;
-        @GuardedBy("lock") private int folderTotal = 0;
-
-
-        @Override
-        public void remoteSearchFailed(String folderServerId, final String err) {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    Activity activity = getActivity();
-                    if (activity != null) {
-                        Toast.makeText(activity, R.string.remote_search_error,
-                                Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
-        }
-
-        @Override
-        public void remoteSearchStarted(long folderId) {
-            handler.progress(true);
-            handler.updateFooter(getString(R.string.remote_search_sending_query));
-        }
-
-        @Override
-        public void enableProgressIndicator(boolean enable) {
-            handler.progress(enable);
-        }
-
-        @Override
-        public void remoteSearchFinished(long folderId, int numResults, int maxResults, List<String> extraResults) {
-            handler.progress(false);
-            handler.remoteSearchFinished();
-            extraSearchResults = extraResults;
-            if (extraResults != null && extraResults.size() > 0) {
-                handler.updateFooter(String.format(getString(R.string.load_more_messages_fmt), maxResults));
-            } else {
-                handler.updateFooter(null);
-            }
-        }
-
-        @Override
-        public void remoteSearchServerQueryComplete(long folderId, int numResults, int maxResults) {
-            handler.progress(true);
-            if (maxResults != 0 && numResults > maxResults) {
-                handler.updateFooter(getResources().getQuantityString(R.plurals.remote_search_downloading_limited,
-                        maxResults, maxResults, numResults));
-            } else {
-                handler.updateFooter(getResources().getQuantityString(R.plurals.remote_search_downloading,
-                        numResults, numResults));
-            }
-
-            informUserOfStatus();
-        }
-
-        private void informUserOfStatus() {
-            handler.refreshTitle();
-        }
-
-        @Override
-        public void synchronizeMailboxStarted(Account account, long folderId) {
-            if (updateForMe(account, folderId)) {
-                handler.progress(true);
-                handler.folderLoading(folderId, true);
-
-                synchronized (lock) {
-                    folderCompleted = 0;
-                    folderTotal = 0;
-                }
-
-                informUserOfStatus();
-            }
-        }
-
-        @Override
-        public void synchronizeMailboxHeadersProgress(Account account, String folderServerId, int completed, int total) {
-            synchronized (lock) {
-                folderCompleted = completed;
-                folderTotal = total;
-            }
-
-            informUserOfStatus();
-        }
-
-        @Override
-        public void synchronizeMailboxHeadersFinished(Account account, String folderServerId, int total, int completed) {
-            synchronized (lock) {
-                folderCompleted = 0;
-                folderTotal = 0;
-            }
-
-            informUserOfStatus();
-        }
-
-        @Override
-        public void synchronizeMailboxProgress(Account account, long folderId, int completed, int total) {
-            synchronized (lock) {
-                folderCompleted = completed;
-                folderTotal = total;
-            }
-
-            informUserOfStatus();
-        }
-
-        @Override
-        public void synchronizeMailboxFinished(Account account, long folderId) {
-            if (updateForMe(account, folderId)) {
-                handler.progress(false);
-                handler.folderLoading(folderId, false);
-            }
-        }
-
-        @Override
-        public void synchronizeMailboxFailed(Account account, long folderId, String message) {
-
-            if (updateForMe(account, folderId)) {
-                handler.progress(false);
-                handler.folderLoading(folderId, false);
-            }
-        }
-
-        private boolean updateForMe(Account account, long folderId) {
-            if (account == null) {
-                return false;
-            }
-
-            if (!Utility.arrayContains(accountUuids, account.getUuid())) {
-                return false;
-            }
-
-            List<Long> folderIds = search.getFolderIds();
-            return (folderIds.isEmpty() || folderIds.contains(folderId));
-        }
-
-        public int getFolderCompleted() {
-            synchronized (lock) {
-                return folderCompleted;
-            }
-        }
-
-        public int getFolderTotal() {
-            synchronized (lock) {
-                return folderTotal;
-            }
+    private fun createFooterView(parent: ViewGroup?): View {
+        return layoutInflater.inflate(R.layout.message_list_item_footer, parent, false).apply {
+            tag = FooterViewHolder(this)
         }
     }
 
+    private fun updateFooterView() {
+        val currentFolder = this.currentFolder
+        val account = this.account
 
-    private View getFooterView(ViewGroup parent) {
-        if (footerView == null) {
-            footerView = getLayoutInflater().inflate(R.layout.message_list_item_footer, parent, false);
-            FooterViewHolder holder = new FooterViewHolder();
-            holder.main = footerView.findViewById(R.id.main_text);
-            footerView.setTag(holder);
+        if (localSearch.isManualSearch || currentFolder == null || account == null) {
+            updateFooter(null)
+            return
         }
 
-        return footerView;
-    }
-
-    private void updateFooterView() {
-        if (!search.isManualSearch() && currentFolder != null && account != null) {
-            if (currentFolder.loading) {
-                updateFooter(getString(R.string.status_loading_more));
-            } else if (!currentFolder.moreMessages) {
-                updateFooter(null);
-            } else {
-                String message;
-                if (account.getDisplayCount() == 0) {
-                    message = getString(R.string.message_list_load_more_messages_action);
-                } else {
-                    message = String.format(getString(R.string.load_more_messages_fmt),
-                            account.getDisplayCount());
-                }
-                updateFooter(message);
-            }
+        val footerText = if (currentFolder.loading) {
+            getString(R.string.status_loading_more)
+        } else if (!currentFolder.moreMessages) {
+            null
+        } else if (account.displayCount == 0) {
+            getString(R.string.message_list_load_more_messages_action)
         } else {
-            updateFooter(null);
+            getString(R.string.load_more_messages_fmt, account.displayCount)
         }
+
+        updateFooter(footerText)
     }
 
-    public void updateFooter(final String text) {
-        if (footerView == null) {
-            return;
-        }
+    fun updateFooter(text: String?) {
+        val footerView = this.footerView ?: return
 
-        boolean shouldHideFooter = text == null;
+        val shouldHideFooter = text == null
         if (shouldHideFooter) {
-            listView.removeFooterView(footerView);
+            listView.removeFooterView(footerView)
         } else {
-            boolean isFooterViewAddedToListView = listView.getFooterViewsCount() > 0;
+            val isFooterViewAddedToListView = listView.footerViewsCount > 0
             if (!isFooterViewAddedToListView) {
-                listView.addFooterView(footerView);
+                listView.addFooterView(footerView)
             }
         }
 
-        FooterViewHolder holder = (FooterViewHolder) footerView.getTag();
-        holder.main.setText(text);
+        val holder = footerView.tag as FooterViewHolder
+        holder.main.text = text
     }
 
-    static class FooterViewHolder {
-        public TextView main;
-    }
-
-    /**
-     * Set selection state for all messages.
-     *
-     * @param selected
-     *         If {@code true} all messages get selected. Otherwise, all messages get deselected and
-     *         action mode is finished.
-     */
-    private void setSelectionState(boolean selected) {
+    private fun setSelectionState(selected: Boolean) {
         if (selected) {
-            if (adapter.getCount() == 0) {
+            if (adapter.count == 0) {
                 // Nothing to do if there are no messages
-                return;
+                return
             }
 
-            selectedCount = 0;
-            for (int i = 0, end = adapter.getCount(); i < end; i++) {
-                MessageListItem messageListItem = adapter.getItem(i);
-                long uniqueId = messageListItem.getUniqueId();
-                this.selected.add(uniqueId);
+            selectedCount = 0
+            for (i in 0 until adapter.count) {
+                val messageListItem = adapter.getItem(i)
+                this.selected.add(messageListItem.uniqueId)
 
                 if (showingThreadedList) {
-                    int threadCount = messageListItem.getThreadCount();
-                    selectedCount += (threadCount > 1) ? threadCount : 1;
+                    selectedCount += messageListItem.threadCount.coerceAtLeast(1)
                 } else {
-                    selectedCount++;
+                    selectedCount++
                 }
             }
 
             if (actionMode == null) {
-                startAndPrepareActionMode();
+                startAndPrepareActionMode()
             }
-            computeBatchDirection();
-            updateActionModeTitle();
-            computeSelectAllVisibility();
+
+            computeBatchDirection()
+            updateActionModeTitle()
+            computeSelectAllVisibility()
         } else {
-            this.selected.clear();
-            selectedCount = 0;
-            if (actionMode != null) {
-                actionMode.finish();
-                actionMode = null;
-            }
+            this.selected.clear()
+            selectedCount = 0
+
+            actionMode?.finish()
+            actionMode = null
         }
 
-        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged()
     }
 
-    private void toggleMessageSelect(int listViewPosition) {
-        int adapterPosition = listViewToAdapterPosition(listViewPosition);
-        if (adapterPosition == AdapterView.INVALID_POSITION) {
-            return;
-        }
+    private fun toggleMessageSelect(listViewPosition: Int) {
+        val adapterPosition = listViewToAdapterPosition(listViewPosition)
+        if (adapterPosition == AdapterView.INVALID_POSITION) return
 
-        MessageListItem messageListItem = adapter.getItem(adapterPosition);
-        toggleMessageSelect(messageListItem);
+        val messageListItem = adapter.getItem(adapterPosition)
+        toggleMessageSelect(messageListItem)
     }
 
-    @Override
-    public void onToggleMessageSelection(@NotNull MessageListItem messageListItem) {
-        toggleMessageSelect(messageListItem);
-    }
-
-    @Override
-    public void onToggleMessageFlag(MessageListItem messageListItem) {
-        boolean flagged = messageListItem.isStarred();
-        setFlag(messageListItem, Flag.FLAGGED, !flagged);
-    }
-
-    private void toggleMessageSelect(MessageListItem messageListItem) {
-        long uniqueId = messageListItem.getUniqueId();
-
-        boolean selected = this.selected.contains(uniqueId);
+    private fun toggleMessageSelect(messageListItem: MessageListItem) {
+        val uniqueId = messageListItem.uniqueId
+        val selected = selected.contains(uniqueId)
         if (!selected) {
-            this.selected.add(uniqueId);
+            this.selected.add(uniqueId)
         } else {
-            this.selected.remove(uniqueId);
+            this.selected.remove(uniqueId)
         }
 
-        int selectedCountDelta = 1;
+        var selectedCountDelta = 1
         if (showingThreadedList) {
-            int threadCount = messageListItem.getThreadCount();
+            val threadCount = messageListItem.threadCount
             if (threadCount > 1) {
-                selectedCountDelta = threadCount;
+                selectedCountDelta = threadCount
             }
         }
 
         if (actionMode != null) {
-            if (selectedCount == selectedCountDelta && selected) {
-                actionMode.finish();
-                actionMode = null;
-                return;
+            if (selected && selectedCount - selectedCountDelta == 0) {
+                actionMode?.finish()
+                actionMode = null
+                return
             }
         } else {
-            startAndPrepareActionMode();
+            startAndPrepareActionMode()
         }
 
         if (selected) {
-            selectedCount -= selectedCountDelta;
+            selectedCount -= selectedCountDelta
         } else {
-            selectedCount += selectedCountDelta;
+            selectedCount += selectedCountDelta
         }
 
-        computeBatchDirection();
-        updateActionModeTitle();
+        computeBatchDirection()
+        updateActionModeTitle()
+        computeSelectAllVisibility()
 
-        computeSelectAllVisibility();
-
-        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged()
     }
 
-    private void updateActionModeTitle() {
-        actionMode.setTitle(String.format(getString(R.string.actionbar_selected), selectedCount));
+    override fun onToggleMessageSelection(item: MessageListItem) {
+        toggleMessageSelect(item)
     }
 
-    private void computeSelectAllVisibility() {
-        actionModeCallback.showSelectAll(selected.size() != adapter.getCount());
+    override fun onToggleMessageFlag(item: MessageListItem) {
+        setFlag(item, Flag.FLAGGED, !item.isStarred)
     }
 
-    private void computeBatchDirection() {
-        boolean isBatchFlag = false;
-        boolean isBatchRead = false;
+    private fun updateActionModeTitle() {
+        actionMode!!.title = getString(R.string.actionbar_selected, selectedCount)
+    }
 
-        for (int i = 0, end = adapter.getCount(); i < end; i++) {
-            MessageListItem messageListItem = adapter.getItem(i);
-            long uniqueId = messageListItem.getUniqueId();
+    private fun computeSelectAllVisibility() {
+        actionModeCallback.showSelectAll(selected.size != adapter.count)
+    }
 
-            if (selected.contains(uniqueId)) {
-                boolean read = messageListItem.isRead();
-                boolean flagged = messageListItem.isStarred();
-
-                if (!flagged) {
-                    isBatchFlag = true;
+    private fun computeBatchDirection() {
+        var isBatchFlag = false
+        var isBatchRead = false
+        for (i in 0 until adapter.count) {
+            val messageListItem = adapter.getItem(i)
+            if (selected.contains(messageListItem.uniqueId)) {
+                if (!messageListItem.isStarred) {
+                    isBatchFlag = true
                 }
-                if (!read) {
-                    isBatchRead = true;
+
+                if (!messageListItem.isRead) {
+                    isBatchRead = true
                 }
 
                 if (isBatchFlag && isBatchRead) {
-                    break;
+                    break
                 }
             }
         }
 
-        actionModeCallback.showMarkAsRead(isBatchRead);
-        actionModeCallback.showFlag(isBatchFlag);
+        actionModeCallback.showMarkAsRead(isBatchRead)
+        actionModeCallback.showFlag(isBatchFlag)
     }
 
-    private void setFlag(MessageListItem messageListItem, final Flag flag, final boolean newState) {
-        Account account = messageListItem.getAccount();
-
-        if (showingThreadedList && messageListItem.getThreadCount() > 1) {
-            long threadRootId = messageListItem.getThreadRoot();
-            messagingController.setFlagForThreads(account,
-                    Collections.singletonList(threadRootId), flag, newState);
+    private fun setFlag(messageListItem: MessageListItem, flag: Flag, newState: Boolean) {
+        val account = messageListItem.account
+        if (showingThreadedList && messageListItem.threadCount > 1) {
+            val threadRootId = messageListItem.threadRoot
+            messagingController.setFlagForThreads(account, listOf(threadRootId), flag, newState)
         } else {
-            long id = messageListItem.getDatabaseId();
-            messagingController.setFlag(account, Collections.singletonList(id), flag,
-                    newState);
+            val messageId = messageListItem.databaseId
+            messagingController.setFlag(account, listOf(messageId), flag, newState)
         }
 
-        computeBatchDirection();
+        computeBatchDirection()
     }
 
-    private void setFlagForSelected(final Flag flag, final boolean newState) {
-        if (selected.isEmpty()) {
-            return;
-        }
+    private fun setFlagForSelected(flag: Flag, newState: Boolean) {
+        if (selected.isEmpty()) return
 
-        Map<Account, List<Long>> messageMap = new HashMap<>();
-        Map<Account, List<Long>> threadMap = new HashMap<>();
-        Set<Account> accounts = new HashSet<>();
+        val messageMap: MutableMap<Account, MutableList<Long>> = mutableMapOf()
+        val threadMap: MutableMap<Account, MutableList<Long>> = mutableMapOf()
+        val accounts: MutableSet<Account> = mutableSetOf()
 
-        for (int position = 0, end = adapter.getCount(); position < end; position++) {
-            MessageListItem messageListItem = adapter.getItem(position);
-            long uniqueId = messageListItem.getUniqueId();
+        for (position in 0 until adapter.count) {
+            val messageListItem = adapter.getItem(position)
+            val account = messageListItem.account
+            if (messageListItem.uniqueId in selected) {
+                accounts.add(account)
 
-            if (selected.contains(uniqueId)) {
-                Account account = messageListItem.getAccount();
-                accounts.add(account);
-
-                if (showingThreadedList && messageListItem.getThreadCount() > 1) {
-                    List<Long> threadRootIdList = threadMap.get(account);
-                    if (threadRootIdList == null) {
-                        threadRootIdList = new ArrayList<>();
-                        threadMap.put(account, threadRootIdList);
-                    }
-
-                    threadRootIdList.add(messageListItem.getThreadRoot());
+                if (showingThreadedList && messageListItem.threadCount > 1) {
+                    val threadRootIdList = threadMap.getOrPut(account) { mutableListOf() }
+                    threadRootIdList.add(messageListItem.threadRoot)
                 } else {
-                    List<Long> messageIdList = messageMap.get(account);
-                    if (messageIdList == null) {
-                        messageIdList = new ArrayList<>();
-                        messageMap.put(account, messageIdList);
-                    }
-
-                    messageIdList.add(messageListItem.getDatabaseId());
+                    val messageIdList = messageMap.getOrPut(account) { mutableListOf() }
+                    messageIdList.add(messageListItem.databaseId)
                 }
             }
         }
 
-        for (Account account : accounts) {
-            List<Long> messageIds = messageMap.get(account);
-            List<Long> threadRootIds = threadMap.get(account);
-
-            if (messageIds != null) {
-                messagingController.setFlag(account, messageIds, flag, newState);
+        for (account in accounts) {
+            messageMap[account]?.let { messageIds ->
+                messagingController.setFlag(account, messageIds, flag, newState)
             }
 
-            if (threadRootIds != null) {
-                messagingController.setFlagForThreads(account, threadRootIds, flag, newState);
+            threadMap[account]?.let { threadRootIds ->
+                messagingController.setFlagForThreads(account, threadRootIds, flag, newState)
             }
         }
 
-        computeBatchDirection();
+        computeBatchDirection()
     }
 
-    private void onMove(MessageReference message) {
-        onMove(Collections.singletonList(message));
+    private fun onMove(message: MessageReference) {
+        onMove(listOf(message))
     }
 
-    /**
-     * Display the message move activity.
-     *
-     * @param messages
-     *         Never {@code null}.
-     */
-    private void onMove(List<MessageReference> messages) {
-        if (!checkCopyOrMovePossible(messages, FolderOperation.MOVE)) {
-            return;
+    private fun onMove(messages: List<MessageReference>) {
+        if (!checkCopyOrMovePossible(messages, FolderOperation.MOVE)) return
+
+        val folderId = when {
+            isThreadDisplay -> messages.first().folderId
+            isSingleFolderMode -> currentFolder!!.databaseId
+            else -> null
         }
 
-        Long folderId;
-        if (isThreadDisplay) {
-            folderId = messages.get(0).getFolderId();
-        } else if (singleFolderMode) {
-            folderId = currentFolder.databaseId;
-        } else {
-            folderId = null;
-        }
-
-
-        displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_MOVE, folderId,
-                messages.get(0).getAccountUuid(), null,
-                messages);
+        displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_MOVE, folderId, messages.first().accountUuid, null, messages)
     }
 
-    private void onCopy(MessageReference message) {
-        onCopy(Collections.singletonList(message));
+    private fun onCopy(message: MessageReference) {
+        onCopy(listOf(message))
     }
 
-    /**
-     * Display the message copy activity.
-     *
-     * @param messages
-     *         Never {@code null}.
-     */
-    private void onCopy(List<MessageReference> messages) {
-        if (!checkCopyOrMovePossible(messages, FolderOperation.COPY)) {
-            return;
+    private fun onCopy(messages: List<MessageReference>) {
+        if (!checkCopyOrMovePossible(messages, FolderOperation.COPY)) return
+
+        val folderId = when {
+            isThreadDisplay -> messages.first().folderId
+            isSingleFolderMode -> currentFolder!!.databaseId
+            else -> null
         }
 
-        Long folderId;
-        if (isThreadDisplay) {
-            folderId = messages.get(0).getFolderId();
-        } else if (singleFolderMode) {
-            folderId = currentFolder.databaseId;
-        } else {
-            folderId = null;
-        }
-
-        displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_COPY, folderId,
-                messages.get(0).getAccountUuid(),
-                null,
-                messages);
+        displayFolderChoice(ACTIVITY_CHOOSE_FOLDER_COPY, folderId, messages.first().accountUuid, null, messages)
     }
 
-    /**
-     * Helper method to manage the invocation of {@link #startActivityForResult(Intent, int)} for a
-     * folder operation ({@link ChooseFolderActivity} activity), while saving a list of associated messages.
-     *
-     * @param requestCode
-     *         If {@code >= 0}, this code will be returned in {@code onActivityResult()} when the
-     *         activity exits.
-     *
-     * @see #startActivityForResult(Intent, int)
-     */
-    private void displayFolderChoice(int requestCode, Long sourceFolderId,
-            String accountUuid, Long lastSelectedFolderId,
-            List<MessageReference> messages) {
-        Intent intent = ChooseFolderActivity.buildLaunchIntent(requireContext(), accountUuid, sourceFolderId,
-                lastSelectedFolderId, false, null);
+    private fun displayFolderChoice(
+        requestCode: Int,
+        sourceFolderId: Long?,
+        accountUuid: String,
+        lastSelectedFolderId: Long?,
+        messages: List<MessageReference>
+    ) {
+        val intent = ChooseFolderActivity.buildLaunchIntent(
+            context = requireContext(),
+            accountUuid = accountUuid,
+            currentFolderId = sourceFolderId,
+            scrollToFolderId = lastSelectedFolderId,
+            showDisplayableOnly = false,
+            messageReference = null
+        )
 
         // remember the selected messages for #onActivityResult
-        activeMessages = messages;
-        startActivityForResult(intent, requestCode);
+        activeMessages = messages
+
+        startActivityForResult(intent, requestCode)
     }
 
-    private void onArchive(MessageReference message) {
-        onArchive(Collections.singletonList(message));
+    private fun onArchive(message: MessageReference) {
+        onArchive(listOf(message))
     }
 
-    private void onArchive(final List<MessageReference> messages) {
-        Map<Account, List<MessageReference>> messagesByAccount = groupMessagesByAccount(messages);
-
-        for (Entry<Account, List<MessageReference>> entry : messagesByAccount.entrySet()) {
-            Account account = entry.getKey();
-            Long archiveFolderId = account.getArchiveFolderId();
-            if (archiveFolderId != null) {
-                move(entry.getValue(), archiveFolderId);
+    private fun onArchive(messages: List<MessageReference>) {
+        for ((account, messagesInAccount) in groupMessagesByAccount(messages)) {
+            account.archiveFolderId?.let { archiveFolderId ->
+                move(messagesInAccount, archiveFolderId)
             }
         }
     }
 
-    private Map<Account, List<MessageReference>> groupMessagesByAccount(final List<MessageReference> messages) {
-        Map<Account, List<MessageReference>> messagesByAccount = new HashMap<>();
-        for (MessageReference message : messages) {
-            Account account = preferences.getAccount(message.getAccountUuid());
-
-            List<MessageReference> msgList = messagesByAccount.get(account);
-            if (msgList == null) {
-                msgList = new ArrayList<>();
-                messagesByAccount.put(account, msgList);
-            }
-
-            msgList.add(message);
-        }
-        return messagesByAccount;
+    private fun groupMessagesByAccount(messages: List<MessageReference>): Map<Account, List<MessageReference>> {
+        return messages.groupBy { preferences.getAccount(it.accountUuid) }
     }
 
-    /**
-     * Move messages to the spam folder.
-     *
-     * @param messages
-     *         The messages to move to the spam folder. Never {@code null}.
-     */
-    private void onSpam(List<MessageReference> messages) {
-        if (K9.isConfirmSpam()) {
+    private fun onSpam(messages: List<MessageReference>) {
+        if (K9.isConfirmSpam) {
             // remember the message selection for #onCreateDialog(int)
-            activeMessages = messages;
-            showDialog(R.id.dialog_confirm_spam);
+            activeMessages = messages
+            showDialog(R.id.dialog_confirm_spam)
         } else {
-            onSpamConfirmed(messages);
+            onSpamConfirmed(messages)
         }
     }
 
-    private void onSpamConfirmed(List<MessageReference> messages) {
-        Map<Account, List<MessageReference>> messagesByAccount = groupMessagesByAccount(messages);
-
-        for (Entry<Account, List<MessageReference>> entry : messagesByAccount.entrySet()) {
-            Account account = entry.getKey();
-            Long spamFolderId = account.getSpamFolderId();
-            if (spamFolderId != null) {
-                move(entry.getValue(), spamFolderId);
+    private fun onSpamConfirmed(messages: List<MessageReference>) {
+        for ((account, messagesInAccount) in groupMessagesByAccount(messages)) {
+            account.spamFolderId?.let { spamFolderId ->
+                move(messagesInAccount, spamFolderId)
             }
         }
     }
 
-    private enum FolderOperation {
-        COPY, MOVE
-    }
+    private fun checkCopyOrMovePossible(messages: List<MessageReference>, operation: FolderOperation): Boolean {
+        if (messages.isEmpty()) return false
 
-    /**
-     * Display a Toast message if any message isn't synchronized
-     *
-     * @param messages
-     *         The messages to copy or move. Never {@code null}.
-     * @param operation
-     *         The type of operation to perform. Never {@code null}.
-     *
-     * @return {@code true}, if operation is possible.
-     */
-    private boolean checkCopyOrMovePossible(final List<MessageReference> messages,
-            final FolderOperation operation) {
-
-        if (messages.isEmpty()) {
-            return false;
+        val account = preferences.getAccount(messages.first().accountUuid)
+        if (operation == FolderOperation.MOVE && !messagingController.isMoveCapable(account) ||
+            operation == FolderOperation.COPY && !messagingController.isCopyCapable(account)
+        ) {
+            return false
         }
 
-        boolean first = true;
-        for (MessageReference message : messages) {
-            if (first) {
-                first = false;
-                Account account = preferences.getAccount(message.getAccountUuid());
-                if ((operation == FolderOperation.MOVE && !messagingController.isMoveCapable(account)) ||
-                        (operation == FolderOperation.COPY && !messagingController.isCopyCapable(account))) {
-                    return false;
-                }
-            }
-            // message check
-            if ((operation == FolderOperation.MOVE && !messagingController.isMoveCapable(message)) ||
-                    (operation == FolderOperation.COPY && !messagingController.isCopyCapable(message))) {
-                final Toast toast = Toast.makeText(getActivity(), R.string.move_copy_cannot_copy_unsynced_message,
-                                                   Toast.LENGTH_LONG);
-                toast.show();
-                return false;
+        for (message in messages) {
+            if (operation == FolderOperation.MOVE && !messagingController.isMoveCapable(message) ||
+                operation == FolderOperation.COPY && !messagingController.isCopyCapable(message)
+            ) {
+                val toast = Toast.makeText(
+                    activity, R.string.move_copy_cannot_copy_unsynced_message,
+                    Toast.LENGTH_LONG
+                )
+                toast.show()
+                return false
             }
         }
-        return true;
+
+        return true
     }
 
-    /**
-     * Copy the specified messages to the specified folder.
-     */
-    private void copy(List<MessageReference> messages, long folderId) {
-        copyOrMove(messages, folderId, FolderOperation.COPY);
+    private fun copy(messages: List<MessageReference>, folderId: Long) {
+        copyOrMove(messages, folderId, FolderOperation.COPY)
     }
 
-    /**
-     * Move the specified messages to the specified folder.
-     */
-    private void move(List<MessageReference> messages, long folderId) {
-        copyOrMove(messages, folderId, FolderOperation.MOVE);
+    private fun move(messages: List<MessageReference>, folderId: Long) {
+        copyOrMove(messages, folderId, FolderOperation.MOVE)
     }
 
-    private void copyOrMove(List<MessageReference> messages, long destinationFolderId, FolderOperation operation) {
-        Map<Long, List<MessageReference>> folderMap = new HashMap<>();
+    private fun copyOrMove(messages: List<MessageReference>, destinationFolderId: Long, operation: FolderOperation) {
+        if (!checkCopyOrMovePossible(messages, operation)) return
 
-        for (MessageReference message : messages) {
-            if ((operation == FolderOperation.MOVE && !messagingController.isMoveCapable(message)) ||
-                    (operation == FolderOperation.COPY && !messagingController.isCopyCapable(message))) {
+        val folderMap = messages.asSequence()
+            .filterNot { it.folderId == destinationFolderId }
+            .groupBy { it.folderId }
 
-                Toast.makeText(getActivity(), R.string.move_copy_cannot_copy_unsynced_message,
-                        Toast.LENGTH_LONG).show();
-
-                // XXX return meaningful error value?
-
-                // message isn't synchronized
-                return;
-            }
-
-            long folderId = message.getFolderId();
-            if (folderId == destinationFolderId) {
-                // Skip messages already in the destination folder
-                continue;
-            }
-
-            List<MessageReference> outMessages = folderMap.get(folderId);
-            if (outMessages == null) {
-                outMessages = new ArrayList<>();
-                folderMap.put(folderId, outMessages);
-            }
-
-            outMessages.add(message);
-        }
-
-        for (Map.Entry<Long, List<MessageReference>> entry : folderMap.entrySet()) {
-            long folderId = entry.getKey();
-            List<MessageReference> outMessages = entry.getValue();
-            Account account = preferences.getAccount(outMessages.get(0).getAccountUuid());
+        for ((folderId, messagesInFolder) in folderMap) {
+            val account = preferences.getAccount(messagesInFolder.first().accountUuid)
 
             if (operation == FolderOperation.MOVE) {
                 if (showingThreadedList) {
-                    messagingController.moveMessagesInThread(account, folderId, outMessages, destinationFolderId);
+                    messagingController.moveMessagesInThread(account, folderId, messagesInFolder, destinationFolderId)
                 } else {
-                    messagingController.moveMessages(account, folderId, outMessages, destinationFolderId);
+                    messagingController.moveMessages(account, folderId, messagesInFolder, destinationFolderId)
                 }
             } else {
                 if (showingThreadedList) {
-                    messagingController.copyMessagesInThread(account, folderId, outMessages, destinationFolderId);
+                    messagingController.copyMessagesInThread(account, folderId, messagesInFolder, destinationFolderId)
                 } else {
-                    messagingController.copyMessages(account, folderId, outMessages, destinationFolderId);
+                    messagingController.copyMessages(account, folderId, messagesInFolder, destinationFolderId)
                 }
             }
         }
     }
 
-    private void onMoveToDraftsFolder(List<MessageReference> messages){
-        messagingController.moveToDraftsFolder(account, currentFolder.databaseId, messages);
-        activeMessages = null;
+    private fun onMoveToDraftsFolder(messages: List<MessageReference>) {
+        messagingController.moveToDraftsFolder(account, currentFolder!!.databaseId, messages)
+        activeMessages = null
     }
 
-    class ActionModeCallback implements ActionMode.Callback {
-        private MenuItem mSelectAll;
-        private MenuItem mMarkAsRead;
-        private MenuItem mMarkAsUnread;
-        private MenuItem mFlag;
-        private MenuItem mUnflag;
-        private boolean disableMarkAsRead;
-        private boolean disableFlag;
-
-        @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-            mSelectAll = menu.findItem(R.id.select_all);
-            mMarkAsRead = menu.findItem(R.id.mark_as_read);
-            mMarkAsUnread = menu.findItem(R.id.mark_as_unread);
-            mFlag = menu.findItem(R.id.flag);
-            mUnflag = menu.findItem(R.id.unflag);
-
-            // we don't support cross account actions atm
-            if (!singleAccountMode) {
-                // show all
-                menu.findItem(R.id.move).setVisible(true);
-                menu.findItem(R.id.archive).setVisible(true);
-                menu.findItem(R.id.spam).setVisible(true);
-                menu.findItem(R.id.copy).setVisible(true);
-
-                Set<String> accountUuids = getAccountUuidsForSelected();
-
-                for (String accountUuid : accountUuids) {
-                    Account account = preferences.getAccount(accountUuid);
-                    if (account != null) {
-                        setContextCapabilities(account, menu);
-                    }
-                }
-
+    override fun doPositiveClick(dialogId: Int) {
+        when (dialogId) {
+            R.id.dialog_confirm_spam -> {
+                onSpamConfirmed(activeMessages!!)
+                activeMessages = null
             }
-            return true;
-        }
-
-        /**
-         * Get the set of account UUIDs for the selected messages.
-         */
-        private Set<String> getAccountUuidsForSelected() {
-            int maxAccounts = accountUuids.length;
-            Set<String> accountUuids = new HashSet<>(maxAccounts);
-
-            for (int position = 0, end = adapter.getCount(); position < end; position++) {
-                MessageListItem messageListItem = adapter.getItem(position);
-                long uniqueId = messageListItem.getUniqueId();
-
-                if (selected.contains(uniqueId)) {
-                    String accountUuid = messageListItem.getAccount().getUuid();
-                    accountUuids.add(accountUuid);
-
-                    if (accountUuids.size() == MessageListFragment.this.accountUuids.length) {
-                        break;
-                    }
-                }
+            R.id.dialog_confirm_delete -> {
+                onDeleteConfirmed(activeMessages!!)
+                activeMessage = null
+                adapter.activeMessage = null
             }
-
-            return accountUuids;
-        }
-
-        @Override
-        public void onDestroyActionMode(ActionMode mode) {
-            actionMode = null;
-            mSelectAll = null;
-            mMarkAsRead = null;
-            mMarkAsUnread = null;
-            mFlag = null;
-            mUnflag = null;
-            setSelectionState(false);
-        }
-
-        @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-            MenuInflater inflater = mode.getMenuInflater();
-            inflater.inflate(R.menu.message_list_context, menu);
-
-            // check capabilities
-            setContextCapabilities(account, menu);
-
-            return true;
-        }
-
-        /**
-         * Disables menu options not supported by the account type or current "search view".
-         *
-         * @param account
-         *         The account to query for its capabilities.
-         * @param menu
-         *         The menu to adapt.
-         */
-        private void setContextCapabilities(Account account, Menu menu) {
-            if (!singleAccountMode) {
-                // We don't support cross-account copy/move operations right now
-                menu.findItem(R.id.move).setVisible(false);
-                menu.findItem(R.id.copy).setVisible(false);
-
-                //TODO: we could support the archive and spam operations if all selected messages
-                // belong to non-POP3 accounts
-                menu.findItem(R.id.archive).setVisible(false);
-                menu.findItem(R.id.spam).setVisible(false);
-
-            } else {
-                // hide unsupported
-                if (!messagingController.isCopyCapable(account)) {
-                    menu.findItem(R.id.copy).setVisible(false);
-                }
-
-                if (!messagingController.isMoveCapable(account)) {
-                    menu.findItem(R.id.move).setVisible(false);
-                    menu.findItem(R.id.archive).setVisible(false);
-                    menu.findItem(R.id.spam).setVisible(false);
-                }
-
-                Long archiveFolderId = account.getArchiveFolderId();
-                boolean hideArchiveAction = archiveFolderId == null ||
-                        (singleFolderMode && currentFolder.databaseId == archiveFolderId);
-                if (hideArchiveAction) {
-                    menu.findItem(R.id.archive).setVisible(false);
-                }
-
-                Long spamFolderId = account.getSpamFolderId();
-                boolean hideSpamAction = spamFolderId == null ||
-                        (singleFolderMode && currentFolder.databaseId == spamFolderId);
-                if (hideSpamAction) {
-                    menu.findItem(R.id.spam).setVisible(false);
-                }
+            R.id.dialog_confirm_mark_all_as_read -> {
+                markAllAsRead()
             }
-
-            if (isOutbox()) {
-                menu.findItem(R.id.mark_as_read).setVisible(false);
-                menu.findItem(R.id.mark_as_unread).setVisible(false);
-                menu.findItem(R.id.archive).setVisible(false);
-                menu.findItem(R.id.copy).setVisible(false);
-                menu.findItem(R.id.flag).setVisible(false);
-                menu.findItem(R.id.unflag).setVisible(false);
-                menu.findItem(R.id.spam).setVisible(false);
-                menu.findItem(R.id.move).setVisible(false);
-                disableMarkAsRead = true;
-                disableFlag = true;
-
-                if (account.hasDraftsFolder()) {
-                    menu.findItem(R.id.move_to_drafts).setVisible(true);
-                }
+            R.id.dialog_confirm_empty_trash -> {
+                messagingController.emptyTrash(account, null)
             }
-        }
-
-        public void showSelectAll(boolean show) {
-            if (actionMode != null) {
-                mSelectAll.setVisible(show);
-            }
-        }
-
-        public void showMarkAsRead(boolean show) {
-            if (actionMode != null && !disableMarkAsRead) {
-                mMarkAsRead.setVisible(show);
-                mMarkAsUnread.setVisible(!show);
-            }
-        }
-
-        public void showFlag(boolean show) {
-            if (actionMode != null && !disableFlag) {
-                mFlag.setVisible(show);
-                mUnflag.setVisible(!show);
-            }
-        }
-
-        @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-            /*
-             * In the following we assume that we can't move or copy
-             * mails to the same folder. Also that spam isn't available if we are
-             * in the spam folder,same for archive.
-             *
-             * This is the case currently so safe assumption.
-             */
-            int id = item.getItemId();
-            if (id == R.id.delete) {
-                List<MessageReference> messages = getCheckedMessages();
-                onDelete(messages);
-                selectedCount = 0;
-            } else if (id == R.id.mark_as_read) {
-                setFlagForSelected(Flag.SEEN, true);
-            } else if (id == R.id.mark_as_unread) {
-                setFlagForSelected(Flag.SEEN, false);
-            } else if (id == R.id.flag) {
-                setFlagForSelected(Flag.FLAGGED, true);
-            } else if (id == R.id.unflag) {
-                setFlagForSelected(Flag.FLAGGED, false);
-            } else if (id == R.id.select_all) {
-                selectAll();
-            } else if (id == R.id.archive) {    // only if the account supports this
-                onArchive(getCheckedMessages());
-                selectedCount = 0;
-            } else if (id == R.id.spam) {
-                onSpam(getCheckedMessages());
-                selectedCount = 0;
-            } else if (id == R.id.move) {
-                onMove(getCheckedMessages());
-                selectedCount = 0;
-            } else if (id == R.id.move_to_drafts) {
-                onMoveToDraftsFolder(getCheckedMessages());
-                selectedCount = 0;
-            } else if (id == R.id.copy) {
-                onCopy(getCheckedMessages());
-                selectedCount = 0;
-            }
-
-            if (selectedCount == 0) {
-                actionMode.finish();
-            }
-
-            return true;
         }
     }
 
-    @Override
-    public void doPositiveClick(int dialogId) {
-        if (dialogId == R.id.dialog_confirm_spam) {
-            onSpamConfirmed(activeMessages);
-            // No further need for this reference
-            activeMessages = null;
-        } else if (dialogId == R.id.dialog_confirm_delete) {
-            onDeleteConfirmed(activeMessages);
-            activeMessage = null;
-            if (adapter != null) adapter.setActiveMessage(null);
-        } else if (dialogId == R.id.dialog_confirm_mark_all_as_read) {
-            markAllAsRead();
-        } else if (dialogId == R.id.dialog_confirm_empty_trash) {
-            messagingController.emptyTrash(account, null);
-        }
-    }
-
-    @Override
-    public void doNegativeClick(int dialogId) {
+    override fun doNegativeClick(dialogId: Int) {
         if (dialogId == R.id.dialog_confirm_spam || dialogId == R.id.dialog_confirm_delete) {
             // No further need for this reference
-            activeMessages = null;
+            activeMessages = null
         }
     }
 
-    @Override
-    public void dialogCancelled(int dialogId) {
-        doNegativeClick(dialogId);
+    override fun dialogCancelled(dialogId: Int) {
+        doNegativeClick(dialogId)
     }
 
-    public void checkMail() {
-        if (isSingleAccountMode() && isSingleFolderMode()) {
-            long folderId = currentFolder.databaseId;
-            messagingController.synchronizeMailbox(account, folderId, activityListener);
-            messagingController.sendPendingMessages(account, activityListener);
+    private fun checkMail() {
+        if (isSingleAccountMode && isSingleFolderMode) {
+            val folderId = currentFolder!!.databaseId
+            messagingController.synchronizeMailbox(account, folderId, activityListener)
+            messagingController.sendPendingMessages(account, activityListener)
         } else if (allAccounts) {
-            messagingController.checkMail(null, true, true, activityListener);
+            messagingController.checkMail(null, true, true, activityListener)
         } else {
-            for (String accountUuid : accountUuids) {
-                Account account = preferences.getAccount(accountUuid);
-                messagingController.checkMail(account, true, true, activityListener);
+            for (accountUuid in accountUuids) {
+                val account = preferences.getAccount(accountUuid)
+                messagingController.checkMail(account, true, true, activityListener)
             }
         }
     }
 
-    /**
-     * We need to do some special clean up when leaving a remote search result screen. If no
-     * remote search is in progress, this method does nothing special.
-     */
-    @Override
-    public void onStop() {
+    override fun onStop() {
         // If we represent a remote search, then kill that before going back.
-        if (isRemoteSearch() && remoteSearchFuture != null) {
+        if (isRemoteSearch && remoteSearchFuture != null) {
             try {
-                Timber.i("Remote search in progress, attempting to abort...");
+                Timber.i("Remote search in progress, attempting to abort...")
+
                 // Canceling the future stops any message fetches in progress.
-                final boolean cancelSuccess = remoteSearchFuture.cancel(true);   // mayInterruptIfRunning = true
+                val cancelSuccess = remoteSearchFuture!!.cancel(true) // mayInterruptIfRunning = true
                 if (!cancelSuccess) {
-                    Timber.e("Could not cancel remote search future.");
+                    Timber.e("Could not cancel remote search future.")
                 }
+
                 // Closing the folder will kill off the connection if we're mid-search.
-                final Account searchAccount = account;
+                val searchAccount = account!!
+
                 // Send a remoteSearchFinished() message for good measure.
-                activityListener.remoteSearchFinished(currentFolder.databaseId, 0,
-                        searchAccount.getRemoteSearchNumResults(), null);
-            } catch (Exception e) {
+                activityListener.remoteSearchFinished(
+                    currentFolder!!.databaseId,
+                    0,
+                    searchAccount.remoteSearchNumResults,
+                    null
+                )
+            } catch (e: Exception) {
                 // Since the user is going back, log and squash any exceptions.
-                Timber.e(e, "Could not abort remote search before going back");
+                Timber.e(e, "Could not abort remote search before going back")
             }
         }
 
-        // Workaround for Android bug https://issuetracker.google.com/issues/37008170
-        if (swipeRefreshLayout != null) {
-            swipeRefreshLayout.setRefreshing(false);
-            swipeRefreshLayout.destroyDrawingCache();
-            swipeRefreshLayout.clearAnimation();
-        }
-
-        super.onStop();
+        super.onStop()
     }
 
-    public void selectAll() {
-        setSelectionState(true);
+    fun selectAll() {
+        setSelectionState(true)
     }
 
-    public void onMoveUp() {
-        int currentPosition = listView.getSelectedItemPosition();
-        if (currentPosition == AdapterView.INVALID_POSITION || listView.isInTouchMode()) {
-            currentPosition = listView.getFirstVisiblePosition();
+    fun onMoveUp() {
+        var currentPosition = listView.selectedItemPosition
+        if (currentPosition == AdapterView.INVALID_POSITION || listView.isInTouchMode) {
+            currentPosition = listView.firstVisiblePosition
         }
+
         if (currentPosition > 0) {
-            listView.setSelection(currentPosition - 1);
+            listView.setSelection(currentPosition - 1)
         }
     }
 
-    public void onMoveDown() {
-        int currentPosition = listView.getSelectedItemPosition();
-        if (currentPosition == AdapterView.INVALID_POSITION || listView.isInTouchMode()) {
-            currentPosition = listView.getFirstVisiblePosition();
+    fun onMoveDown() {
+        var currentPosition = listView.selectedItemPosition
+        if (currentPosition == AdapterView.INVALID_POSITION || listView.isInTouchMode) {
+            currentPosition = listView.firstVisiblePosition
         }
 
-        if (currentPosition < listView.getCount()) {
-            listView.setSelection(currentPosition + 1);
+        if (currentPosition < listView.count) {
+            listView.setSelection(currentPosition + 1)
         }
     }
 
-    public boolean openPrevious(MessageReference messageReference) {
-        int position = getPosition(messageReference);
-        if (position <= 0) {
-            return false;
-        }
+    fun openPrevious(messageReference: MessageReference): Boolean {
+        val position = getPosition(messageReference)
+        if (position <= 0) return false
 
-        openMessageAtPosition(position - 1);
-        return true;
+        openMessageAtPosition(position - 1)
+        return true
     }
 
-    public boolean openNext(MessageReference messageReference) {
-        int position = getPosition(messageReference);
-        if (position < 0 || position == adapter.getCount() - 1) {
-            return false;
-        }
+    fun openNext(messageReference: MessageReference): Boolean {
+        val position = getPosition(messageReference)
+        if (position < 0 || position == adapter.count - 1) return false
 
-        openMessageAtPosition(position + 1);
-        return true;
+        openMessageAtPosition(position + 1)
+        return true
     }
 
-    public boolean isFirst(MessageReference messageReference) {
-        return adapter.isEmpty() || messageReference.equals(getReferenceForPosition(0));
+    fun isFirst(messageReference: MessageReference): Boolean {
+        return adapter.isEmpty || messageReference == getReferenceForPosition(0)
     }
 
-    public boolean isLast(MessageReference messageReference) {
-        return adapter.isEmpty() || messageReference.equals(getReferenceForPosition(adapter.getCount() - 1));
+    fun isLast(messageReference: MessageReference): Boolean {
+        return adapter.isEmpty || messageReference == getReferenceForPosition(adapter.count - 1)
     }
 
-    private MessageReference getReferenceForPosition(int position) {
-        MessageListItem messageListItem = adapter.getItem(position);
-
-        String accountUuid = messageListItem.getAccount().getUuid();
-        long folderId = messageListItem.getFolderId();
-        String messageUid = messageListItem.getMessageUid();
-        return new MessageReference(accountUuid, folderId, messageUid, null);
+    private fun getReferenceForPosition(position: Int): MessageReference {
+        val item = adapter.getItem(position)
+        return MessageReference(item.account.uuid, item.folderId, item.messageUid, null)
     }
 
-    private void openMessageAtPosition(int position) {
+    private fun openMessageAtPosition(position: Int) {
         // Scroll message into view if necessary
-        int listViewPosition = adapterToListViewPosition(position);
+        val listViewPosition = adapterToListViewPosition(position)
         if (listViewPosition != AdapterView.INVALID_POSITION &&
-                (listViewPosition < listView.getFirstVisiblePosition() ||
-                listViewPosition > listView.getLastVisiblePosition())) {
-            listView.setSelection(listViewPosition);
+            (listViewPosition < listView.firstVisiblePosition || listViewPosition > listView.lastVisiblePosition)
+        ) {
+            listView.setSelection(listViewPosition)
         }
 
-        MessageReference ref = getReferenceForPosition(position);
+        val messageReference = getReferenceForPosition(position)
 
         // For some reason the listView.setSelection() above won't do anything when we call
         // onOpenMessage() (and consequently adapter.notifyDataSetChanged()) right away. So we
         // defer the call using MessageListHandler.
-        handler.openMessage(ref);
+        handler.openMessage(messageReference)
     }
 
-    private int getPosition(MessageReference messageReference) {
-        for (int i = 0, len = adapter.getCount(); i < len; i++) {
-            MessageListItem messageListItem = adapter.getItem(i);
+    fun openMessage(messageReference: MessageReference) {
+        fragmentListener.openMessage(messageReference)
+    }
 
-            String accountUuid = messageListItem.getAccount().getUuid();
-            long folderId = messageListItem.getFolderId();
-            String uid = messageListItem.getMessageUid();
+    private fun getPosition(messageReference: MessageReference): Int {
+        return adapter.messages.indexOfFirst { messageListItem ->
+            messageListItem.account.uuid == messageReference.accountUuid &&
+                messageListItem.folderId == messageReference.folderId &&
+                messageListItem.messageUid == messageReference.uid
+        }
+    }
 
-            if (accountUuid.equals(messageReference.getAccountUuid()) &&
-                    folderId == messageReference.getFolderId() &&
-                    uid.equals(messageReference.getUid())) {
-                return i;
+    fun onReverseSort() {
+        changeSort(sortType)
+    }
+
+    private val selectedMessage: MessageReference?
+        get() {
+            val listViewPosition = listView.selectedItemPosition
+            val adapterPosition = listViewToAdapterPosition(listViewPosition)
+            if (adapterPosition == AdapterView.INVALID_POSITION) return null
+            return getReferenceForPosition(adapterPosition)
+        }
+
+    private val adapterPositionForSelectedMessage: Int
+        get() {
+            val listViewPosition = listView.selectedItemPosition
+            return listViewToAdapterPosition(listViewPosition)
+        }
+
+    private val checkedMessages: List<MessageReference>
+        get() {
+            return adapter.messages
+                .asSequence()
+                .filter { it.uniqueId in selected }
+                .map { MessageReference(it.account.uuid, it.folderId, it.messageUid, null) }
+                .toList()
+        }
+
+    fun onDelete() {
+        selectedMessage?.let { message ->
+            onDelete(listOf(message))
+        }
+    }
+
+    fun toggleMessageSelect() {
+        toggleMessageSelect(listView.selectedItemPosition)
+    }
+
+    fun onToggleFlagged() {
+        toggleFlag(Flag.FLAGGED)
+    }
+
+    fun onToggleRead() {
+        toggleFlag(Flag.SEEN)
+    }
+
+    private fun toggleFlag(flag: Flag) {
+        val adapterPosition = adapterPositionForSelectedMessage
+        if (adapterPosition == ListView.INVALID_POSITION) return
+
+        val messageListItem = adapter.getItem(adapterPosition)
+        val flagState = when (flag) {
+            Flag.SEEN -> messageListItem.isRead
+            Flag.FLAGGED -> messageListItem.isStarred
+            else -> false
+        }
+
+        setFlag(messageListItem, flag, !flagState)
+    }
+
+    fun onMove() {
+        selectedMessage?.let { message ->
+            onMove(message)
+        }
+    }
+
+    fun onArchive() {
+        selectedMessage?.let { message ->
+            onArchive(message)
+        }
+    }
+
+    fun onCopy() {
+        selectedMessage?.let { message ->
+            onCopy(message)
+        }
+    }
+
+    val isOutbox: Boolean
+        get() {
+            val currentFolder = currentFolder ?: return false
+            return currentFolder.databaseId == account!!.outboxFolderId
+        }
+
+    private val isInbox: Boolean
+        get() {
+            val currentFolder = currentFolder ?: return false
+            return currentFolder.databaseId == account!!.inboxFolderId
+        }
+
+    val isRemoteFolder: Boolean
+        get() {
+            if (localSearch.isManualSearch || isOutbox) return false
+
+            return if (!messagingController.isMoveCapable(account)) {
+                // For POP3 accounts only the Inbox is a remote folder.
+                isInbox
+            } else {
+                true
             }
         }
 
-        return -1;
+    val isManualSearch: Boolean
+        get() = localSearch.isManualSearch
+
+    fun shouldShowExpungeAction(): Boolean {
+        val account = this.account ?: return false
+        return account.expungePolicy == Expunge.EXPUNGE_MANUALLY && messagingController.supportsExpunge(account)
     }
 
-    public interface MessageListFragmentListener {
-        int MAX_PROGRESS = 10000;
-
-        void setMessageListProgressEnabled(boolean enable);
-        void setMessageListProgress(int level);
-        void showThread(Account account, long rootId);
-        void openMessage(MessageReference messageReference);
-        void setMessageListTitle(String title);
-        void onCompose(@Nullable Account account);
-        boolean startSearch(@Nullable Account account, @Nullable Long folderId);
-        void remoteSearchStarted();
-        void goBack();
-        void updateMenu();
-    }
-
-    public void onReverseSort() {
-        changeSort(sortType);
-    }
-
-    private MessageReference getSelectedMessage() {
-        int listViewPosition = listView.getSelectedItemPosition();
-        int adapterPosition = listViewToAdapterPosition(listViewPosition);
-
-        return getMessageAtPosition(adapterPosition);
-    }
-
-    private int getAdapterPositionForSelectedMessage() {
-        int listViewPosition = listView.getSelectedItemPosition();
-        return listViewToAdapterPosition(listViewPosition);
-    }
-
-    private MessageReference getMessageAtPosition(int adapterPosition) {
-        if (adapterPosition == AdapterView.INVALID_POSITION) {
-            return null;
-        }
-
-        MessageListItem messageListItem = adapter.getItem(adapterPosition);
-
-        String accountUuid = messageListItem.getAccount().getUuid();
-        long folderId = messageListItem.getFolderId();
-        String messageUid = messageListItem.getMessageUid();
-
-        return new MessageReference(accountUuid, folderId, messageUid, null);
-    }
-
-    private List<MessageReference> getCheckedMessages() {
-        List<MessageReference> messages = new ArrayList<>(selected.size());
-        for (int position = 0, end = adapter.getCount(); position < end; position++) {
-            MessageListItem messageListItem = adapter.getItem(position);
-            long uniqueId = messageListItem.getUniqueId();
-
-            if (selected.contains(uniqueId)) {
-                MessageReference message = getMessageAtPosition(position);
-                if (message != null) {
-                    messages.add(message);
-                }
-            }
-        }
-
-        return messages;
-    }
-
-    public void onDelete() {
-        MessageReference message = getSelectedMessage();
-        if (message != null) {
-            onDelete(Collections.singletonList(message));
-        }
-    }
-
-    public void toggleMessageSelect() {
-        toggleMessageSelect(listView.getSelectedItemPosition());
-    }
-
-    public void onToggleFlagged() {
-        onToggleFlag(Flag.FLAGGED);
-    }
-
-    public void onToggleRead() {
-        onToggleFlag(Flag.SEEN);
-    }
-
-    private void onToggleFlag(Flag flag) {
-        int adapterPosition = getAdapterPositionForSelectedMessage();
-        if (adapterPosition == ListView.INVALID_POSITION) {
-            return;
-        }
-
-        MessageListItem messageListItem = adapter.getItem(adapterPosition);
-        boolean flagState = false;
-        if (flag == Flag.SEEN) {
-            flagState = messageListItem.isRead();
-        } else if (flag == Flag.FLAGGED) {
-            flagState = messageListItem.isStarred();
-        }
-        setFlag(messageListItem, flag, !flagState);
-    }
-
-    public void onMove() {
-        MessageReference message = getSelectedMessage();
-        if (message != null) {
-            onMove(message);
-        }
-    }
-
-    public void onArchive() {
-        MessageReference message = getSelectedMessage();
-        if (message != null) {
-            onArchive(message);
-        }
-    }
-
-    public void onCopy() {
-        MessageReference message = getSelectedMessage();
-        if (message != null) {
-            onCopy(message);
-        }
-    }
-
-    public boolean isOutbox() {
-        if (currentFolder == null) {
-            return false;
-        }
-
-        Long outboxFolderId = account.getOutboxFolderId();
-        if (outboxFolderId == null) {
-            return false;
-        }
-
-        return currentFolder.databaseId == outboxFolderId;
-    }
-
-    private boolean isInbox() {
-        if (currentFolder == null) {
-            return false;
-        }
-
-        Long inboxFolderId = account.getInboxFolderId();
-        if (inboxFolderId == null) {
-            return false;
-        }
-
-        return currentFolder.databaseId == inboxFolderId;
-    }
-
-    public boolean isRemoteFolder() {
-        if (search.isManualSearch() || isOutbox()) {
-            return false;
-        }
-
-        if (!messagingController.isMoveCapable(account)) {
-            // For POP3 accounts only the Inbox is a remote folder.
-            return isInbox();
-        }
-
-        return true;
-    }
-
-    public boolean isManualSearch() {
-        return search.isManualSearch();
-    }
-
-    public boolean shouldShowExpungeAction() {
-        return account != null && account.getExpungePolicy() == EXPUNGE_MANUALLY &&
-                messagingController.supportsExpunge(account);
-    }
-
-    public void onRemoteSearch() {
+    fun onRemoteSearch() {
         // Remote search is useless without the network.
-        if (hasConnectivity) {
-            onRemoteSearchRequested();
+        if (hasConnectivity == true) {
+            onRemoteSearchRequested()
         } else {
-            Toast.makeText(getActivity(), getText(R.string.remote_search_unavailable_no_network),
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, getText(R.string.remote_search_unavailable_no_network), Toast.LENGTH_SHORT).show()
         }
     }
 
-    public boolean isRemoteSearch() {
-        return remoteSearchPerformed;
+    val isRemoteSearchAllowed: Boolean
+        get() = isManualSearch && !isRemoteSearch && isSingleFolderMode && account?.isAllowRemoteSearch == true
+
+    fun onSearchRequested(): Boolean {
+        val folderId = currentFolder?.databaseId
+        return fragmentListener.startSearch(account, folderId)
     }
 
-    public boolean isRemoteSearchAllowed() {
-        if (!search.isManualSearch() || remoteSearchPerformed || !singleFolderMode) {
-            return false;
-        }
-
-        boolean allowRemoteSearch = false;
-        final Account searchAccount = account;
-        if (searchAccount != null) {
-            allowRemoteSearch = searchAccount.isAllowRemoteSearch();
-        }
-
-        return allowRemoteSearch;
-    }
-
-    public boolean onSearchRequested() {
-        Long folderId = (currentFolder != null) ? currentFolder.databaseId : null;
-        return fragmentListener.startSearch(account, folderId);
-   }
-
-    public void setMessageList(MessageListInfo messageListInfo) {
-        List<MessageListItem> messageListItems = messageListInfo.getMessageListItems();
+    fun setMessageList(messageListInfo: MessageListInfo) {
+        val messageListItems = messageListInfo.messageListItems
         if (isThreadDisplay && messageListItems.isEmpty()) {
-            handler.goBack();
-            return;
+            handler.goBack()
+            return
         }
 
-        swipeRefreshLayout.setRefreshing(false);
-        swipeRefreshLayout.setEnabled(isPullToRefreshAllowed());
+        swipeRefreshLayout.isRefreshing = false
+        swipeRefreshLayout.isEnabled = isPullToRefreshAllowed
 
         if (isThreadDisplay) {
-            if (!messageListItems.isEmpty()) {
-                MessageListItem messageListItem = messageListItems.get(0);
-                title = messageListItem.getSubject();
-                if (!TextUtils.isEmpty(title)) {
-                    title = Utility.stripSubject(title);
+            if (messageListItems.isNotEmpty()) {
+                val strippedSubject = messageListItems.first().subject?.let { Utility.stripSubject(it) }
+                title = if (strippedSubject.isNullOrEmpty()) {
+                    getString(R.string.general_no_subject)
+                } else {
+                    strippedSubject
                 }
-                if (TextUtils.isEmpty(title)) {
-                    title = getString(R.string.general_no_subject);
-                }
-                updateTitle();
+                updateTitle()
             } else {
-                //TODO: empty thread view -> return to full message list
+                // TODO: empty thread view -> return to full message list
             }
         }
 
-        cleanupSelected(messageListItems);
-        adapter.setSelected(selected);
+        cleanupSelected(messageListItems)
+        adapter.selected = selected
 
-        adapter.setMessages(messageListItems);
+        adapter.messages = messageListItems
 
-        resetActionMode();
-        computeBatchDirection();
+        resetActionMode()
+        computeBatchDirection()
 
-        messageListLoaded = true;
+        isLoadFinished = true
 
         if (savedListState != null) {
-            handler.restoreListPosition();
+            handler.restoreListPosition(savedListState)
+            savedListState = null
         }
 
-        fragmentListener.updateMenu();
+        fragmentListener.updateMenu()
 
-        if (currentFolder != null) {
-            currentFolder.moreMessages = messageListInfo.getHasMoreMessages();
-            updateFooterView();
+        currentFolder?.let { currentFolder ->
+            currentFolder.moreMessages = messageListInfo.hasMoreMessages
+            updateFooterView()
         }
     }
 
-    public boolean isLoadFinished() {
-        return messageListLoaded;
+    private fun cleanupSelected(messageListItems: List<MessageListItem>) {
+        if (selected.isEmpty()) return
+
+        selected = messageListItems.asSequence()
+            .map { it.uniqueId }
+            .filter { it in selected }
+            .toMutableSet()
     }
 
-    private void cleanupSelected(List<MessageListItem> messageListItems) {
+    private fun resetActionMode() {
         if (selected.isEmpty()) {
-            return;
-        }
-
-        Set<Long> selected = new HashSet<>();
-        for (MessageListItem messageListItem : messageListItems) {
-            long uniqueId = messageListItem.getUniqueId();
-            if (this.selected.contains(uniqueId)) {
-                selected.add(uniqueId);
-            }
-        }
-
-        this.selected = selected;
-    }
-
-    /**
-     * Starts or finishes the action mode when necessary.
-     */
-    private void resetActionMode() {
-        if (selected.isEmpty()) {
-            if (actionMode != null) {
-                actionMode.finish();
-            }
-            return;
+            actionMode?.finish()
+            return
         }
 
         if (actionMode == null) {
-            startAndPrepareActionMode();
+            startAndPrepareActionMode()
         }
 
-        recalculateSelectionCount();
-        updateActionModeTitle();
+        recalculateSelectionCount()
+        updateActionModeTitle()
     }
 
-    private void startAndPrepareActionMode() {
-        AppCompatActivity activity = (AppCompatActivity) requireActivity();
-        ActionMode actionMode = activity.startSupportActionMode(actionModeCallback);
-        this.actionMode = actionMode;
-        if (actionMode != null) {
-            actionMode.invalidate();
-        }
+    private fun startAndPrepareActionMode() {
+        val activity = requireActivity() as AppCompatActivity
+        actionMode = activity.startSupportActionMode(actionModeCallback)
+        actionMode?.invalidate()
     }
 
-    /**
-     * Recalculates the selection count.
-     *
-     * <p>
-     * For non-threaded lists this is simply the number of visibly selected messages. If threaded
-     * view is enabled this method counts the number of messages in the selected threads.
-     * </p>
-     */
-    private void recalculateSelectionCount() {
+    private fun recalculateSelectionCount() {
         if (!showingThreadedList) {
-            selectedCount = selected.size();
-            return;
+            selectedCount = selected.size
+            return
         }
 
-        selectedCount = 0;
-        for (int i = 0, end = adapter.getCount(); i < end; i++) {
-            MessageListItem messageListItem = adapter.getItem(i);
-            long uniqueId = messageListItem.getUniqueId();
+        selectedCount = adapter.messages
+            .asSequence()
+            .filter { it.uniqueId in selected }
+            .sumBy { it.threadCount.coerceAtLeast(1) }
+    }
 
-            if (selected.contains(uniqueId)) {
-                int threadCount = messageListItem.getThreadCount();
-                selectedCount += (threadCount > 1) ? threadCount : 1;
+    fun remoteSearchFinished() {
+        remoteSearchFuture = null
+    }
+
+    fun setActiveMessage(messageReference: MessageReference?) {
+        activeMessage = messageReference
+
+        // Reload message list with modified query that always includes the active message
+        if (isAdded) {
+            loadMessageList()
+        }
+
+        // Redraw list immediately
+        if (::adapter.isInitialized) {
+            adapter.activeMessage = activeMessage
+            adapter.notifyDataSetChanged()
+        }
+    }
+
+    val isMarkAllAsReadSupported: Boolean
+        get() = isSingleAccountMode && isSingleFolderMode && !isOutbox
+
+    fun confirmMarkAllAsRead() {
+        if (K9.isConfirmMarkAllRead) {
+            showDialog(R.id.dialog_confirm_mark_all_as_read)
+        } else {
+            markAllAsRead()
+        }
+    }
+
+    private fun markAllAsRead() {
+        if (isMarkAllAsReadSupported) {
+            messagingController.markAllMessagesRead(account, currentFolder!!.databaseId)
+        }
+    }
+
+    val isCheckMailSupported: Boolean
+        get() = allAccounts || !isSingleAccountMode || !isSingleFolderMode || isRemoteFolder
+
+    private val isCheckMailAllowed: Boolean
+        get() = !isManualSearch && isCheckMailSupported
+
+    private val isPullToRefreshAllowed: Boolean
+        get() = isRemoteSearchAllowed || isCheckMailAllowed
+
+    internal inner class MessageListActivityListener : SimpleMessagingListener() {
+        private val lock = Any()
+
+        @GuardedBy("lock")
+        private var folderCompleted = 0
+
+        @GuardedBy("lock")
+        private var folderTotal = 0
+
+        override fun remoteSearchFailed(folderServerId: String?, err: String?) {
+            handler.post {
+                activity?.let { activity ->
+                    Toast.makeText(activity, R.string.remote_search_error, Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+
+        override fun remoteSearchStarted(folderId: Long) {
+            handler.progress(true)
+            handler.updateFooter(getString(R.string.remote_search_sending_query))
+        }
+
+        override fun enableProgressIndicator(enable: Boolean) {
+            handler.progress(enable)
+        }
+
+        override fun remoteSearchFinished(
+            folderId: Long,
+            numResults: Int,
+            maxResults: Int,
+            extraResults: List<String>?
+        ) {
+            handler.progress(false)
+            handler.remoteSearchFinished()
+
+            extraSearchResults = extraResults
+            if (extraResults != null && extraResults.isNotEmpty()) {
+                handler.updateFooter(String.format(getString(R.string.load_more_messages_fmt), maxResults))
+            } else {
+                handler.updateFooter(null)
+            }
+        }
+
+        override fun remoteSearchServerQueryComplete(folderId: Long, numResults: Int, maxResults: Int) {
+            handler.progress(true)
+
+            val footerText = if (maxResults != 0 && numResults > maxResults) {
+                resources.getQuantityString(
+                    R.plurals.remote_search_downloading_limited,
+                    maxResults,
+                    maxResults,
+                    numResults
+                )
+            } else {
+                resources.getQuantityString(R.plurals.remote_search_downloading, numResults, numResults)
+            }
+
+            handler.updateFooter(footerText)
+            informUserOfStatus()
+        }
+
+        private fun informUserOfStatus() {
+            handler.refreshTitle()
+        }
+
+        override fun synchronizeMailboxStarted(account: Account, folderId: Long) {
+            if (updateForMe(account, folderId)) {
+                handler.progress(true)
+                handler.folderLoading(folderId, true)
+
+                synchronized(lock) {
+                    folderCompleted = 0
+                    folderTotal = 0
+                }
+
+                informUserOfStatus()
+            }
+        }
+
+        override fun synchronizeMailboxHeadersProgress(
+            account: Account,
+            folderServerId: String,
+            completed: Int,
+            total: Int
+        ) {
+            synchronized(lock) {
+                folderCompleted = completed
+                folderTotal = total
+            }
+
+            informUserOfStatus()
+        }
+
+        override fun synchronizeMailboxHeadersFinished(
+            account: Account,
+            folderServerId: String,
+            total: Int,
+            completed: Int
+        ) {
+            synchronized(lock) {
+                folderCompleted = 0
+                folderTotal = 0
+            }
+
+            informUserOfStatus()
+        }
+
+        override fun synchronizeMailboxProgress(account: Account, folderId: Long, completed: Int, total: Int) {
+            synchronized(lock) {
+                folderCompleted = completed
+                folderTotal = total
+            }
+
+            informUserOfStatus()
+        }
+
+        override fun synchronizeMailboxFinished(account: Account, folderId: Long) {
+            if (updateForMe(account, folderId)) {
+                handler.progress(false)
+                handler.folderLoading(folderId, false)
+            }
+        }
+
+        override fun synchronizeMailboxFailed(account: Account, folderId: Long, message: String) {
+            if (updateForMe(account, folderId)) {
+                handler.progress(false)
+                handler.folderLoading(folderId, false)
+            }
+        }
+
+        private fun updateForMe(account: Account?, folderId: Long): Boolean {
+            if (account == null || account.uuid !in accountUuids) return false
+
+            val folderIds = localSearch.folderIds
+            return folderIds.isEmpty() || folderId in folderIds
+        }
+
+        fun getFolderCompleted(): Int {
+            synchronized(lock) {
+                return folderCompleted
+            }
+        }
+
+        fun getFolderTotal(): Int {
+            synchronized(lock) {
+                return folderTotal
             }
         }
     }
 
-    void remoteSearchFinished() {
-        remoteSearchFuture = null;
-    }
+    internal inner class ActionModeCallback : ActionMode.Callback {
+        private var selectAll: MenuItem? = null
+        private var markAsRead: MenuItem? = null
+        private var markAsUnread: MenuItem? = null
+        private var flag: MenuItem? = null
+        private var unflag: MenuItem? = null
+        private var disableMarkAsRead = false
+        private var disableFlag = false
 
-    /**
-     * Mark a message as 'active'.
-     *
-     * <p>
-     * The active message is the one currently displayed in the message view portion of the split
-     * view.
-     * </p>
-     *
-     * @param messageReference
-     *         {@code null} to not mark any message as being 'active'.
-     */
-    public void setActiveMessage(MessageReference messageReference) {
-        activeMessage = messageReference;
+        override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
+            selectAll = menu.findItem(R.id.select_all)
+            markAsRead = menu.findItem(R.id.mark_as_read)
+            markAsUnread = menu.findItem(R.id.mark_as_unread)
+            flag = menu.findItem(R.id.flag)
+            unflag = menu.findItem(R.id.unflag)
 
-        // Reload message list with modified query that always includes the active message
-        if (isAdded()) {
-            loadMessageList();
+            // we don't support cross account actions atm
+            if (!isSingleAccountMode) {
+                // show all
+                menu.findItem(R.id.move).isVisible = true
+                menu.findItem(R.id.archive).isVisible = true
+                menu.findItem(R.id.spam).isVisible = true
+                menu.findItem(R.id.copy).isVisible = true
+
+                for (accountUuid in accountUuidsForSelected) {
+                    val account = preferences.getAccount(accountUuid)
+                    account?.let { setContextCapabilities(it, menu) }
+                }
+            }
+
+            return true
         }
 
-        // Redraw list immediately
-        if (adapter != null) {
-            adapter.setActiveMessage(activeMessage);
-            adapter.notifyDataSetChanged();
+        private val accountUuidsForSelected: Set<String>
+            get() {
+                return adapter.messages.asSequence()
+                    .filter { it.uniqueId in selected }
+                    .map { it.account.uuid }
+                    .toSet()
+            }
+
+        override fun onDestroyActionMode(mode: ActionMode) {
+            actionMode = null
+            selectAll = null
+            markAsRead = null
+            markAsUnread = null
+            flag = null
+            unflag = null
+
+            setSelectionState(false)
+        }
+
+        override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
+            mode.menuInflater.inflate(R.menu.message_list_context, menu)
+
+            setContextCapabilities(account, menu)
+            return true
+        }
+
+        private fun setContextCapabilities(account: Account?, menu: Menu) {
+            if (!isSingleAccountMode || account == null) {
+                // We don't support cross-account copy/move operations right now
+                menu.findItem(R.id.move).isVisible = false
+                menu.findItem(R.id.copy).isVisible = false
+
+                // TODO: we could support the archive and spam operations if all selected messages
+                // belong to non-POP3 accounts
+                menu.findItem(R.id.archive).isVisible = false
+                menu.findItem(R.id.spam).isVisible = false
+            } else {
+                // hide unsupported
+                if (!messagingController.isCopyCapable(account)) {
+                    menu.findItem(R.id.copy).isVisible = false
+                }
+
+                if (!messagingController.isMoveCapable(account)) {
+                    menu.findItem(R.id.move).isVisible = false
+                    menu.findItem(R.id.archive).isVisible = false
+                    menu.findItem(R.id.spam).isVisible = false
+                }
+
+                val hideArchiveAction = isSingleFolderMode && currentFolder!!.databaseId == account.archiveFolderId
+                if (hideArchiveAction) {
+                    menu.findItem(R.id.archive).isVisible = false
+                }
+
+                val hideSpamAction = isSingleFolderMode && currentFolder!!.databaseId == account.spamFolderId
+                if (hideSpamAction) {
+                    menu.findItem(R.id.spam).isVisible = false
+                }
+
+                if (isOutbox) {
+                    menu.findItem(R.id.mark_as_read).isVisible = false
+                    menu.findItem(R.id.mark_as_unread).isVisible = false
+                    menu.findItem(R.id.archive).isVisible = false
+                    menu.findItem(R.id.copy).isVisible = false
+                    menu.findItem(R.id.flag).isVisible = false
+                    menu.findItem(R.id.unflag).isVisible = false
+                    menu.findItem(R.id.spam).isVisible = false
+                    menu.findItem(R.id.move).isVisible = false
+
+                    disableMarkAsRead = true
+                    disableFlag = true
+
+                    if (account.hasDraftsFolder()) {
+                        menu.findItem(R.id.move_to_drafts).isVisible = true
+                    }
+                }
+            }
+        }
+
+        fun showSelectAll(show: Boolean) {
+            selectAll?.isVisible = show
+        }
+
+        fun showMarkAsRead(show: Boolean) {
+            if (!disableMarkAsRead) {
+                markAsRead?.isVisible = show
+                markAsUnread?.isVisible = !show
+            }
+        }
+
+        fun showFlag(show: Boolean) {
+            if (!disableFlag) {
+                flag?.isVisible = show
+                unflag?.isVisible = !show
+            }
+        }
+
+        override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
+            // In the following we assume that we can't move or copy mails to the same folder. Also that spam isn't
+            // available if we are in the spam folder, same for archive.
+            when (item.itemId) {
+                R.id.delete -> {
+                    val messages = checkedMessages
+                    onDelete(messages)
+                    selectedCount = 0
+                }
+                R.id.mark_as_read -> setFlagForSelected(Flag.SEEN, true)
+                R.id.mark_as_unread -> setFlagForSelected(Flag.SEEN, false)
+                R.id.flag -> setFlagForSelected(Flag.FLAGGED, true)
+                R.id.unflag -> setFlagForSelected(Flag.FLAGGED, false)
+                R.id.select_all -> selectAll()
+                R.id.archive -> {
+                    // only if the account supports this
+                    onArchive(checkedMessages)
+                    selectedCount = 0
+                }
+                R.id.spam -> {
+                    onSpam(checkedMessages)
+                    selectedCount = 0
+                }
+                R.id.move -> {
+                    onMove(checkedMessages)
+                    selectedCount = 0
+                }
+                R.id.move_to_drafts -> {
+                    onMoveToDraftsFolder(checkedMessages)
+                    selectedCount = 0
+                }
+                R.id.copy -> {
+                    onCopy(checkedMessages)
+                    selectedCount = 0
+                }
+            }
+
+            if (selectedCount == 0) {
+                mode.finish()
+            }
+
+            return true
         }
     }
 
-    public boolean isSingleAccountMode() {
-        return singleAccountMode;
+    internal class FooterViewHolder(view: View) {
+        val main: TextView = view.findViewById(R.id.main_text)
     }
 
-    public boolean isSingleFolderMode() {
-        return singleFolderMode;
+    private enum class FolderOperation {
+        COPY, MOVE
     }
 
-    public boolean isInitialized() {
-        return initialized;
-    }
+    interface MessageListFragmentListener {
+        fun setMessageListProgressEnabled(enable: Boolean)
+        fun setMessageListProgress(level: Int)
+        fun showThread(account: Account, threadRootId: Long)
+        fun openMessage(messageReference: MessageReference)
+        fun setMessageListTitle(title: String)
+        fun onCompose(account: Account?)
+        fun startSearch(account: Account?, folderId: Long?): Boolean
+        fun remoteSearchStarted()
+        fun goBack()
+        fun updateMenu()
 
-    public boolean isMarkAllAsReadSupported() {
-        return isSingleAccountMode() && isSingleFolderMode() && !isOutbox();
-    }
-
-    public void confirmMarkAllAsRead() {
-        if (K9.isConfirmMarkAllRead()) {
-            showDialog(R.id.dialog_confirm_mark_all_as_read);
-        } else {
-            markAllAsRead();
+        companion object {
+            const val MAX_PROGRESS = 10000
         }
     }
 
-    private void markAllAsRead() {
-        if (isMarkAllAsReadSupported()) {
-            messagingController.markAllMessagesRead(account, currentFolder.databaseId);
+    companion object {
+        private const val ACTIVITY_CHOOSE_FOLDER_MOVE = 1
+        private const val ACTIVITY_CHOOSE_FOLDER_COPY = 2
+
+        private const val ARG_SEARCH = "searchObject"
+        private const val ARG_THREADED_LIST = "showingThreadedList"
+        private const val ARG_IS_THREAD_DISPLAY = "isThreadedDisplay"
+
+        private const val STATE_SELECTED_MESSAGES = "selectedMessages"
+        private const val STATE_ACTIVE_MESSAGE = "activeMessage"
+        private const val STATE_REMOTE_SEARCH_PERFORMED = "remoteSearchPerformed"
+        private const val STATE_MESSAGE_LIST = "listState"
+
+        fun newInstance(search: LocalSearch, isThreadDisplay: Boolean, threadedList: Boolean): MessageListFragment {
+            return MessageListFragment().apply {
+                arguments = bundleOf(
+                    ARG_SEARCH to search,
+                    ARG_IS_THREAD_DISPLAY to isThreadDisplay,
+                    ARG_THREADED_LIST to threadedList,
+                )
+            }
         }
-    }
-
-    public boolean isCheckMailSupported() {
-        return (allAccounts || !isSingleAccountMode() || !isSingleFolderMode() ||
-                isRemoteFolder());
-    }
-
-    private boolean isCheckMailAllowed() {
-        return (!isManualSearch() && isCheckMailSupported());
-    }
-
-    private boolean isPullToRefreshAllowed() {
-        return (isRemoteSearchAllowed() || isCheckMailAllowed());
-    }
-
-    public LocalSearch getLocalSearch() {
-        return search;
-    }
-
-    private void loadMessageList() {
-        MessageListConfig config = new MessageListConfig(search, showingThreadedList, sortType, sortAscending,
-                sortDateAscending, activeMessage);
-
-        getViewModel().loadMessageList(config);
     }
 }
