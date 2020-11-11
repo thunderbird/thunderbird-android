@@ -32,7 +32,7 @@ buildscript {
                 'koin': '2.1.6',
                 'commonsIo': '2.6',
                 'mime4j': '0.8.3',
-                'okhttp': '4.8.1',
+                'okhttp': '4.9.0',
                 'minidns': '1.0.0',
                 'glide': '4.11.0',
 
