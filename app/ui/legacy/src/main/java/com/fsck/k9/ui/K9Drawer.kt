@@ -224,7 +224,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         swipeRefreshLayout.setOnRefreshListener {
             val accountToRefresh = if (accountHeader.isSelectionListShown) null else account
             messagingController.checkMail(
-                parent, accountToRefresh, true, true,
+                accountToRefresh, true, true,
                 object : SimpleMessagingListener() {
                     override fun checkMailFinished(context: Context?, account: Account?) {
                         swipeRefreshLayout.isRefreshing = false

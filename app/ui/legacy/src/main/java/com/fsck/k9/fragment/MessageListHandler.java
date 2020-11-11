@@ -71,12 +71,10 @@ public class MessageListHandler extends Handler {
         sendMessage(msg);
     }
 
-    public void restoreListPosition() {
+    public void restoreListPosition(Parcelable savedListState) {
         MessageListFragment fragment = mFragment.get();
         if (fragment != null) {
-            android.os.Message msg = android.os.Message.obtain(this, ACTION_RESTORE_LIST_POSITION,
-                    fragment.savedListState);
-            fragment.savedListState = null;
+            android.os.Message msg = android.os.Message.obtain(this, ACTION_RESTORE_LIST_POSITION, savedListState);
             sendMessage(msg);
         }
     }
@@ -125,16 +123,17 @@ public class MessageListHandler extends Handler {
                 break;
             }
             case ACTION_GO_BACK: {
-                fragment.fragmentListener.goBack();
+                fragment.goBack();
                 break;
             }
             case ACTION_RESTORE_LIST_POSITION: {
-                fragment.listView.onRestoreInstanceState((Parcelable) msg.obj);
+                Parcelable savedListState = (Parcelable) msg.obj;
+                fragment.restoreListState(savedListState);
                 break;
             }
             case ACTION_OPEN_MESSAGE: {
                 MessageReference messageReference = (MessageReference) msg.obj;
-                fragment.fragmentListener.openMessage(messageReference);
+                fragment.openMessage(messageReference);
                 break;
             }
         }

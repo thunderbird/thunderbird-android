@@ -32,7 +32,6 @@ import androidx.annotation.VisibleForTesting;
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.Account.Expunge;
-import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.Preferences;
@@ -2246,7 +2245,7 @@ public class MessagingController {
     public boolean performPeriodicMailSync(Account account) {
         final CountDownLatch latch = new CountDownLatch(1);
         MutableBoolean syncError = new MutableBoolean(false);
-        checkMail(context, account, false, false, new SimpleMessagingListener() {
+        checkMail(account, false, false, new SimpleMessagingListener() {
             @Override
             public void checkMailFinished(Context context, Account account) {
                 latch.countDown();
@@ -2282,7 +2281,7 @@ public class MessagingController {
      * Checks mail for one or multiple accounts. If account is null all accounts
      * are checked.
      */
-    public void checkMail(final Context context, final Account account,
+    public void checkMail(final Account account,
             final boolean ignoreLastCheckedTime,
             final boolean useManualWakeLock,
             final MessagingListener listener) {
