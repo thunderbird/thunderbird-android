@@ -27,7 +27,7 @@ buildscript {
                 'materialComponents': '1.2.1',
                 'preferencesFix': '1.1.0',
                 'okio': '2.9.0',
-                'moshi': '1.9.3',
+                'moshi': '1.11.0',
                 'timber': '4.7.1',
                 'koin': '2.1.6',
                 'commonsIo': '2.6',
