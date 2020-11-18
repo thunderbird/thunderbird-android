@@ -50,7 +50,7 @@ android {
         testApplicationId "com.fsck.k9.tests"
 
         versionCode 27025
-        versionName '5.725'
+        versionName '5.726-SNAPSHOT'
 
         // Keep in sync with the resource string array 'supported_languages'
         resConfigs "in", "br", "ca", "cs", "cy", "da", "de", "et", "en", "es", "eo", "eu", "fr", "gd", "gl", "hr",
