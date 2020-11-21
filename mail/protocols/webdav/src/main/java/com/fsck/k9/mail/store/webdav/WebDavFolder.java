@@ -602,14 +602,7 @@ public class WebDavFolder {
     public List<WebDavMessage> appendWebDavMessages(List<Message> messages) throws MessagingException {
         List<WebDavMessage> retMessages = new ArrayList<>(messages.size());
 
-        WebDavHttpClient httpclient = store.getHttpClient();
-
         for (Message message : messages) {
-            HttpGeneric httpmethod;
-            HttpResponse response;
-            StringEntity bodyEntity;
-            int statusCode;
-
             try {
                 ByteArrayOutputStream out;
 
@@ -624,7 +617,7 @@ public class WebDavFolder {
                 message.writeTo(bufferedOut);
                 bufferedOut.flush();
 
-                bodyEntity = new StringEntity(out.toString(), "UTF-8");
+                final StringEntity bodyEntity = new StringEntity(out.toString(), "UTF-8");
                 bodyEntity.setContentType("message/rfc822");
 
                 String messageURL = mFolderUrl;
