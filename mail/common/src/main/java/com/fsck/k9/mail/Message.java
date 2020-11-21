@@ -11,7 +11,6 @@ import java.util.Set;
 import androidx.annotation.NonNull;
 
 import com.fsck.k9.mail.filter.CountingOutputStream;
-import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import timber.log.Timber;
 
 
@@ -162,9 +161,8 @@ public abstract class Message implements Part, Body {
         try {
 
             CountingOutputStream out = new CountingOutputStream();
-            EOLConvertingOutputStream eolOut = new EOLConvertingOutputStream(out);
-            writeTo(eolOut);
-            eolOut.flush();
+            writeTo(out);
+            out.flush();
             return out.getCount();
         } catch (IOException e) {
             Timber.e(e, "Failed to calculate a message size");
