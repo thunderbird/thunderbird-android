@@ -7,7 +7,6 @@ import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
@@ -621,10 +620,9 @@ public class WebDavFolder {
                 out = new ByteArrayOutputStream((int) size);
 
                 open();
-                EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
-                        new BufferedOutputStream(out, 1024));
-                message.writeTo(msgOut);
-                msgOut.flush();
+                BufferedOutputStream bufferedOut = new BufferedOutputStream(out, 1024);
+                message.writeTo(bufferedOut);
+                bufferedOut.flush();
 
                 bodyEntity = new StringEntity(out.toString(), "UTF-8");
                 bodyEntity.setContentType("message/rfc822");
