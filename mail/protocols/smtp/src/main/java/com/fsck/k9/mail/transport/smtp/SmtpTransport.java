@@ -428,6 +428,8 @@ public class SmtpTransport extends Transport {
             LineWrapOutputStream out = new LineWrapOutputStream(new SmtpDataStuffing(outputStream), 1000);
 
             message.writeTo(out);
+            out.write('\r');
+            out.write('\n');
             out.flush();
 
             entireMessageSent = true; // After the "\r\n." is attempted, we may have sent the message
