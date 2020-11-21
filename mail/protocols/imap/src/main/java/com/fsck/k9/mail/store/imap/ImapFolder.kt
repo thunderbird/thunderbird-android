@@ -10,7 +10,6 @@ import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessageRetrievalListener
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.Part
-import com.fsck.k9.mail.filter.EOLConvertingOutputStream
 import com.fsck.k9.mail.internet.MimeBodyPart
 import com.fsck.k9.mail.internet.MimeHeader
 import com.fsck.k9.mail.internet.MimeMessageHelper
@@ -1007,11 +1006,11 @@ class ImapFolder internal constructor(
                     handleUntaggedResponse(response)
 
                     if (response.isContinuationRequested) {
-                        val eolOut = EOLConvertingOutputStream(connection!!.outputStream)
-                        message.writeTo(eolOut)
-                        eolOut.write('\r'.toInt())
-                        eolOut.write('\n'.toInt())
-                        eolOut.flush()
+                        val out = connection!!.outputStream
+                        message.writeTo(out)
+                        out.write('\r'.toInt())
+                        out.write('\n'.toInt())
+                        out.flush()
                     }
                 } while (response.tag == null)
 
