@@ -39,7 +39,6 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.filter.Base64;
-import com.fsck.k9.mail.filter.EOLConvertingOutputStream;
 import com.fsck.k9.mail.filter.LineWrapOutputStream;
 import com.fsck.k9.mail.filter.PeekableInputStream;
 import com.fsck.k9.mail.filter.SmtpDataStuffing;
@@ -426,11 +425,10 @@ public class SmtpTransport extends Transport {
                 executeCommand("DATA");
             }
 
-            EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
-                    new LineWrapOutputStream(new SmtpDataStuffing(outputStream), 1000));
+            LineWrapOutputStream out = new LineWrapOutputStream(new SmtpDataStuffing(outputStream), 1000);
 
-            message.writeTo(msgOut);
-            msgOut.endWithCrLfAndFlush();
+            message.writeTo(out);
+            out.flush();
 
             entireMessageSent = true; // After the "\r\n." is attempted, we may have sent the message
             executeCommand(".");
