@@ -146,6 +146,7 @@ class AccountSettingsDataStore(
             "account_vibrate_times" -> account.notificationSetting.vibrateTimes.toString()
             "account_remote_search_num_results" -> account.remoteSearchNumResults.toString()
             "account_ringtone" -> account.notificationSetting.ringtone
+            "notification_suppressions" -> account.notificationSuppressions
             else -> defValue
         }
     }
@@ -198,6 +199,7 @@ class AccountSettingsDataStore(
                 isRingEnabled = true
                 ringtone = value
             }
+            "notification_suppressions" -> account.notificationSuppressions = value
             else -> return
         }
 

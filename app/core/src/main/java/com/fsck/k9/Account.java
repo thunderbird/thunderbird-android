@@ -10,13 +10,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
 
 import android.content.Context;
 import android.text.TextUtils;
 
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Header;
 import com.fsck.k9.mail.NetworkType;
+import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.mailstore.StorageManager.StorageProvider;
 import org.jetbrains.annotations.NotNull;
@@ -186,6 +189,8 @@ public class Account implements BaseAccount {
     private boolean uploadSentMessages;
     private long lastSyncTime;
     private long lastFolderListRefreshTime;
+    private String notificationSuppressionsAsString;
+    private Pattern[] notificationSuppressions;
 
     private boolean changedVisibleLimits = false;
 
@@ -401,6 +406,33 @@ public class Account implements BaseAccount {
 
     public synchronized void setFolderNotifyNewMailMode(FolderMode folderNotifyNewMailMode) {
         this.folderNotifyNewMailMode = folderNotifyNewMailMode;
+    }
+
+    public synchronized String getNotificationSuppressions() {
+        return notificationSuppressionsAsString;
+    }
+
+    public synchronized void setNotificationSuppressions(String patterns) {
+        notificationSuppressionsAsString = patterns;
+        if (patterns == null || patterns.equals("")) {
+            notificationSuppressions = null;
+            return;
+        }
+        String[] split = patterns.split("\n");
+        notificationSuppressions = new Pattern[split.length];
+        for (int i = 0; i < split.length; i++)
+            notificationSuppressions[i] = Pattern.compile(split[i], Pattern.CASE_INSENSITIVE);
+    }
+
+    public boolean isNotificationSuppressed(LocalMessage message) {
+        if (notificationSuppressions == null)
+            return false;
+        for (Header header : message.getHeaders()) {
+            for (Pattern pattern : notificationSuppressions)
+                if (pattern.matcher(header.getName() + ": " + header.getValue()).matches())
+                    return true;
+        }
+        return false;
     }
 
     public synchronized DeletePolicy getDeletePolicy() {
