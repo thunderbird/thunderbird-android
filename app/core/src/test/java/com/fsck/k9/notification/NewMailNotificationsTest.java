@@ -11,6 +11,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.K9RobolectricTest;
 import com.fsck.k9.controller.MessageReference;
+import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mailstore.LocalMessage;
 import org.junit.Before;
@@ -291,6 +292,19 @@ public class NewMailNotificationsTest extends K9RobolectricTest {
 
         final Account account = new Account("uuid");
         account.setMuteMailingLists(true);
+
+        assertTrue(account.isNotificationSuppressed(message));
+    }
+
+    @Test
+    public void testMutedSender() throws Exception {
+        final String BOB_ADDRESS = "bob@example.com";
+
+        LocalMessage message = createLocalMessage();
+        when(message.getSender()).thenReturn(new Address[] { new Address(BOB_ADDRESS) });
+
+        final Account account = new Account("uuid");
+        account.setMutedSenders(BOB_ADDRESS);
 
         assertTrue(account.isNotificationSuppressed(message));
     }
