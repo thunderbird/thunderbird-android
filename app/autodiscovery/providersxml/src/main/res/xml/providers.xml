@@ -707,6 +707,12 @@
         <incoming uri="imap+ssl+://mail.fairnatics.net" username="$email" />
         <outgoing uri="smtp+tls+://mail.fairnatics.net:25" username="$email" />
     </provider>
+
+    <!-- eFoundation -->
+    <provider id="e.foundation" label="/e/" domain="e.email">
+        <incoming uri="imap+ssl+://mail.ecloud.global" username="$email" />
+        <outgoing uri="smtp+tls+://mail.ecloud.global" username="$email" />
+    </provider>
     
     <!-- Developers' vanity providers -->
     <provider id="fsck.com" label="Jesse's personal mail" domain="fsck.com" >
