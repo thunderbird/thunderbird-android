@@ -175,16 +175,6 @@ public class AccountSetupBasics extends K9Activity
         }
     }
 
-    private void showPassword(boolean show) {
-        int cursorPosition = mPasswordView.getSelectionStart();
-        if (show) {
-            mPasswordView.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        } else {
-            mPasswordView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        }
-        mPasswordView.setSelection(cursorPosition);
-    }
-
     private void validateFields() {
         boolean clientCertificateChecked = mClientCertificateCheckBox.isChecked();
         String clientCertificateAlias = mClientCertificateSpinner.getAlias();
