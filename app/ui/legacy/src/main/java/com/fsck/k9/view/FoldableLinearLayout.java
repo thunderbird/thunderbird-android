@@ -121,9 +121,9 @@ public class FoldableLinearLayout extends LinearLayout {
         }
     }
 
-    static class SavedState extends BaseSavedState {
+    public static class SavedState extends BaseSavedState {
 
-        static final Parcelable.Creator<SavedState> CREATOR =
+        public static final Parcelable.Creator<SavedState> CREATOR =
                 new Parcelable.Creator<FoldableLinearLayout.SavedState>() {
 
             @Override
