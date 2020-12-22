@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +50,8 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import timber.log.Timber;
 
 public class AccountSetupIncoming extends K9Activity implements OnClickListener {
@@ -65,23 +66,23 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private final AccountCreator accountCreator = DI.get(AccountCreator.class);
 
     private String mStoreType;
-    private EditText mUsernameView;
-    private EditText mPasswordView;
+    private TextInputEditText mUsernameView;
+    private TextInputEditText mPasswordView;
     private ClientCertificateSpinner mClientCertificateSpinner;
     private TextView mClientCertificateLabelView;
-    private TextView mPasswordLabelView;
-    private EditText mServerView;
-    private EditText mPortView;
+    private TextInputLayout mPasswordLayoutView;
+    private TextInputEditText mServerView;
+    private TextInputEditText mPortView;
     private String mCurrentPortViewSetting;
     private Spinner mSecurityTypeView;
     private int mCurrentSecurityTypeViewPosition;
     private Spinner mAuthTypeView;
     private int mCurrentAuthTypeViewPosition;
     private CheckBox mImapAutoDetectNamespaceView;
-    private EditText mImapPathPrefixView;
-    private EditText mWebdavPathPrefixView;
-    private EditText mWebdavAuthPathView;
-    private EditText mWebdavMailboxPathView;
+    private TextInputEditText mImapPathPrefixView;
+    private TextInputEditText mWebdavPathPrefixView;
+    private TextInputEditText mWebdavAuthPathView;
+    private TextInputEditText mWebdavMailboxPathView;
     private Button mNextButton;
     private Account mAccount;
     private boolean mMakeDefault;
@@ -123,8 +124,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         mPasswordView = findViewById(R.id.account_password);
         mClientCertificateSpinner = findViewById(R.id.account_client_certificate_spinner);
         mClientCertificateLabelView = findViewById(R.id.account_client_certificate_label);
-        mPasswordLabelView = findViewById(R.id.account_password_label);
-        TextView serverLabelView = findViewById(R.id.account_server_label);
+        mPasswordLayoutView = findViewById(R.id.account_password_layout);
         mServerView = findViewById(R.id.account_server);
         mPortView = findViewById(R.id.account_port);
         mSecurityTypeView = findViewById(R.id.account_security_type);
@@ -139,6 +139,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         mCompressionWifi = findViewById(R.id.compression_wifi);
         mCompressionOther = findViewById(R.id.compression_other);
         mSubscribedFoldersOnly = findViewById(R.id.subscribed_folders_only);
+        TextInputLayout serverLayoutView = findViewById(R.id.account_server_layout);
 
         mNextButton.setOnClickListener(this);
 
@@ -203,7 +204,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
             mStoreType = settings.type;
             if (settings.type.equals(Protocols.POP3)) {
-                serverLabelView.setText(R.string.account_setup_incoming_pop_server_label);
+                serverLayoutView.setHint(getString(R.string.account_setup_incoming_pop_server_label));
                 findViewById(R.id.imap_path_prefix_section).setVisibility(View.GONE);
                 findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
                 findViewById(R.id.webdav_mailbox_alias_section).setVisibility(View.GONE);
@@ -213,7 +214,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 findViewById(R.id.compression_label).setVisibility(View.GONE);
                 mSubscribedFoldersOnly.setVisibility(View.GONE);
             } else if (settings.type.equals(Protocols.IMAP)) {
-                serverLabelView.setText(R.string.account_setup_incoming_imap_server_label);
+                serverLayoutView.setHint(getString(R.string.account_setup_incoming_imap_server_label));
 
                 ImapStoreSettings imapSettings = (ImapStoreSettings) settings;
 
@@ -231,7 +232,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                     findViewById(R.id.imap_folder_setup_section).setVisibility(View.GONE);
                 }
             } else if (settings.type.equals(Protocols.WEBDAV)) {
-                serverLabelView.setText(R.string.account_setup_incoming_webdav_server_label);
+                serverLayoutView.setHint(getString(R.string.account_setup_incoming_webdav_server_label));
                 mConnectionSecurityChoices = new ConnectionSecurity[] {
                         ConnectionSecurity.NONE,
                         ConnectionSecurity.SSL_TLS_REQUIRED };
@@ -410,15 +411,13 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         if (isAuthTypeExternal) {
 
             // hide password fields, show client certificate fields
-            mPasswordView.setVisibility(View.GONE);
-            mPasswordLabelView.setVisibility(View.GONE);
+            mPasswordLayoutView.setVisibility(View.GONE);
             mClientCertificateLabelView.setVisibility(View.VISIBLE);
             mClientCertificateSpinner.setVisibility(View.VISIBLE);
         } else {
 
             // show password fields, hide client certificate fields
-            mPasswordView.setVisibility(View.VISIBLE);
-            mPasswordLabelView.setVisibility(View.VISIBLE);
+            mPasswordLayoutView.setVisibility(View.VISIBLE);
             mClientCertificateLabelView.setVisibility(View.GONE);
             mClientCertificateSpinner.setVisibility(View.GONE);
         }

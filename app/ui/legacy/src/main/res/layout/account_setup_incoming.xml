@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-        android:layout_height="fill_parent"
-        android:layout_width="fill_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
 
     <include layout="@layout/toolbar"/>
 
     <ScrollView
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:padding="6dip"
@@ -19,29 +20,29 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-            <!-- This text may be changed in code if the server is IMAP, etc. -->
-            <TextView
-                    android:id="@+id/account_server_label"
-                    android:text="@string/account_setup_incoming_pop_server_label"
-                    android:layout_height="wrap_content"
-                    android:layout_width="fill_parent"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:contentDescription="@string/account_setup_incoming_password_label"/>
 
-            <EditText
-                    android:id="@+id/account_server"
-                    android:singleLine="true"
-                    android:inputType="textUri"
+            <!-- The hint text may be changed in code if the server is IMAP, etc. -->
+            <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/account_server_layout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_width="fill_parent"/>
+                    android:layout_marginTop="@dimen/account_setup_margin_between_items_incoming_and_outgoing">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/account_server"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textUri"
+                        android:hint="@string/account_setup_incoming_pop_server_label"
+                        android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                     android:text="@string/account_setup_incoming_security_label"
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="?android:attr/textColorPrimary"/>
+                    style="@style/InputLabel"
+                    android:layout_marginTop="6dp"/>
 
             <Spinner
                     android:id="@+id/account_security_type"
@@ -49,84 +50,87 @@
                     android:layout_width="fill_parent"
                     android:contentDescription="@string/account_setup_incoming_security_label"/>
 
-            <TextView
-                    android:text="@string/account_setup_incoming_port_label"
+            <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_width="fill_parent"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="?android:attr/textColorPrimary"/>
+                    android:layout_marginTop="@dimen/account_setup_margin_between_items_incoming_and_outgoing">
 
-            <EditText
-                    android:id="@+id/account_port"
-                    android:singleLine="true"
-                    android:inputType="number"
-                    android:layout_height="wrap_content"
-                    android:layout_width="fill_parent"
-                    android:contentDescription="@string/account_setup_incoming_port_label"/>
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/account_port"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:hint="@string/account_setup_incoming_port_label"
+                        android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                    android:text="@string/account_setup_incoming_username_label"
+            <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_width="fill_parent"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="?android:attr/textColorPrimary"/>
+                    android:layout_marginTop="@dimen/account_setup_margin_between_items_incoming_and_outgoing">
 
-            <EditText
-                    android:id="@+id/account_username"
-                    android:singleLine="true"
-                    android:inputType="textEmailAddress"
-                    android:layout_height="wrap_content"
-                    android:layout_width="fill_parent"
-                    android:contentDescription="@string/account_setup_incoming_username_label"/>
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/account_username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textEmailAddress"
+                        android:hint="@string/account_setup_incoming_username_label"
+                        android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                     android:id="@+id/account_auth_type_label"
                     android:text="@string/account_setup_incoming_auth_type_label"
                     android:layout_height="wrap_content"
-                    android:layout_width="fill_parent"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="?android:attr/textColorPrimary"/>
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="6dp"
+                    style="@style/InputLabel"/>
 
             <Spinner
                     android:id="@+id/account_auth_type"
                     android:layout_height="wrap_content"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:contentDescription="@string/account_setup_incoming_auth_type_label"/>
 
-            <TextView
-                    android:id="@+id/account_password_label"
-                    android:text="@string/account_setup_incoming_password_label"
+            <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/account_password_layout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_width="fill_parent"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="?android:attr/textColorPrimary"/>
+                    android:layout_marginTop="@dimen/account_setup_margin_between_items_incoming_and_outgoing"
+                    app:passwordToggleEnabled="true">
 
-            <EditText
-                    android:id="@+id/account_password"
-                    android:inputType="textPassword"
-                    android:singleLine="true"
-                    android:layout_height="wrap_content"
-                    android:layout_width="fill_parent"/>
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/account_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/account_setup_incoming_password_label"
+                        android:singleLine="true"
+                        android:inputType="textPassword"
+                        android:nextFocusDown="@+id/next"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                     android:id="@+id/account_client_certificate_label"
                     android:text="@string/account_setup_incoming_client_certificate_label"
                     android:layout_height="wrap_content"
-                    android:layout_width="fill_parent"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="?android:attr/textColorPrimary"
-                    android:visibility="gone"/>
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="6dp"
+                    style="@style/InputLabel"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
 
             <com.fsck.k9.view.ClientCertificateSpinner
                     android:id="@+id/account_client_certificate_spinner"
                     android:layout_height="wrap_content"
-                    android:layout_width="fill_parent"
-                    android:visibility="gone"/>
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
 
             <LinearLayout
                     android:id="@+id/imap_path_prefix_section"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
                     android:orientation="vertical">
 
                 <CheckBox
@@ -135,23 +139,21 @@
                         android:layout_width="wrap_content"
                         android:text="@string/account_setup_incoming_autodetect_namespace_label"/>
 
-                <TextView
-                        android:text="@string/account_setup_incoming_imap_path_prefix_label"
-                        android:layout_height="wrap_content"
-                        android:layout_width="fill_parent"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="?android:attr/textColorPrimary"/>
+                <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                <EditText
-                        android:id="@+id/imap_path_prefix"
-                        android:singleLine="true"
-                        android:layout_height="wrap_content"
-                        android:layout_width="fill_parent"
-                        android:contentDescription="@string/account_setup_incoming_imap_path_prefix_label"/>
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/imap_path_prefix"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/account_setup_incoming_imap_path_prefix_label"
+                            android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <LinearLayout
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/imap_folder_setup_section"
                     android:orientation="vertical">
@@ -166,14 +168,14 @@
 
             <LinearLayout
                     android:id="@+id/webdav_advanced_header"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                 <TextView
                         android:text="@string/advanced"
                         android:layout_height="wrap_content"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="?android:attr/textColorPrimary"
                         android:textStyle="bold"
@@ -186,20 +188,17 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                <TextView
-                        android:text="@string/account_setup_incoming_webdav_mailbox_path_label"
-                        android:layout_height="wrap_content"
-                        android:layout_width="fill_parent"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="?android:attr/textColorPrimary"/>
+                <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                <EditText
-                        android:id="@+id/webdav_mailbox_path"
-                        android:hint="@string/account_setup_incoming_webdav_mailbox_path_hint"
-                        android:singleLine="true"
-                        android:layout_height="wrap_content"
-                        android:layout_width="fill_parent"
-                        android:contentDescription="@string/account_setup_incoming_webdav_mailbox_path_label"/>
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/webdav_mailbox_path"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/account_setup_incoming_webdav_mailbox_path_label"
+                            android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -208,20 +207,18 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                <TextView
-                        android:text="@string/account_setup_incoming_webdav_path_prefix_label"
-                        android:layout_height="wrap_content"
-                        android:layout_width="fill_parent"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="?android:attr/textColorPrimary"/>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/account_setup_margin_between_items_incoming_and_outgoing">
 
-                <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/webdav_path_prefix"
-                        android:hint="@string/account_setup_incoming_webdav_path_prefix_hint"
-                        android:singleLine="true"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_width="fill_parent"
-                        android:contentDescription="@string/account_setup_incoming_webdav_path_prefix_label"/>
+                        android:hint="@string/account_setup_incoming_webdav_path_prefix_label"
+                        android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -230,33 +227,31 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                <TextView
-                        android:text="@string/account_setup_incoming_webdav_auth_path_label"
-                        android:layout_height="wrap_content"
-                        android:layout_width="fill_parent"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="?android:attr/textColorPrimary"/>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/account_setup_margin_between_items_incoming_and_outgoing">
 
-                <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/webdav_auth_path"
-                        android:hint="@string/account_setup_incoming_webdav_auth_path_hint"
-                        android:singleLine="true"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_width="fill_parent"
-                        android:contentDescription="@string/account_setup_incoming_webdav_auth_path_label"/>
+                        android:hint="@string/account_setup_incoming_webdav_auth_path_label"
+                        android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
             <TextView
                     android:id="@+id/compression_label"
                     android:text="@string/account_setup_incoming_compression_label"
                     android:layout_height="wrap_content"
-                    android:layout_width="fill_parent"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="?android:attr/textColorPrimary"/>
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="6dp"
+                    style="@style/InputLabel"/>
 
             <LinearLayout
                     android:id="@+id/compression_section"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
@@ -285,7 +280,7 @@
             </LinearLayout>
 
             <View
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="0dip"
                     android:layout_weight="1"/>
         </LinearLayout>

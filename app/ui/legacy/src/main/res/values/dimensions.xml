@@ -3,4 +3,8 @@
     <dimen name="button_minWidth">100sp</dimen>
     <dimen name="widget_padding">8dp</dimen>
     <dimen name="highlight_radius">48dp</dimen>
+
+    <dimen name="input_label_vertical_spacing">8dp</dimen>
+    <dimen name="input_label_horizontal_spacing">4dp</dimen>
+    <dimen name="account_setup_margin_between_items_incoming_and_outgoing">12dp</dimen>
 </resources>
