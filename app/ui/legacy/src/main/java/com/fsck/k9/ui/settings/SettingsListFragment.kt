@@ -121,7 +121,7 @@ class SettingsListFragment : Fragment() {
 
     private fun launchOnboarding() {
         findNavController().navigate(R.id.action_settingsListScreen_to_onboardingScreen)
-        requireActivity().finish()
+        requireActivity().finishAffinity()
     }
 
     private fun buildSettingsList(block: SettingsListBuilder.() -> Unit): List<GenericItem> {

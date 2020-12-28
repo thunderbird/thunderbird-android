@@ -291,6 +291,13 @@ public class Account implements BaseAccount {
         identities.set(0, newIdentity);
     }
 
+    /**
+     * an account is only setup when it has a name (as it's the last required step of the setup)
+     */
+    public synchronized boolean isFinishedSetup() {
+        return getName() != null && !getName().isEmpty();
+    }
+
     public synchronized boolean getSignatureUse() {
         return identities.get(0).getSignatureUse();
     }

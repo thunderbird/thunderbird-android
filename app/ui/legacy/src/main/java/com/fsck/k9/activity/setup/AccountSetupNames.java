@@ -90,8 +90,8 @@ public class AccountSetupNames extends K9Activity implements OnClickListener {
         }
         mAccount.setName(mName.getText().toString());
         Preferences.getPreferences(getApplicationContext()).saveAccount(mAccount);
+        finishAffinity();
         MessageList.launch(this, mAccount);
-        finish();
     }
 
     public void onClick(View v) {

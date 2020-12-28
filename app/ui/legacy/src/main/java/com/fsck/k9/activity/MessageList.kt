@@ -23,6 +23,7 @@ import com.fsck.k9.Account.SortType
 import com.fsck.k9.K9
 import com.fsck.k9.K9.SplitViewMode
 import com.fsck.k9.Preferences
+import com.fsck.k9.account.BackgroundAccountRemover
 import com.fsck.k9.activity.compose.MessageActions
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.fragment.MessageListFragment
@@ -77,6 +78,7 @@ open class MessageList :
     private val preferences: Preferences by inject()
     private val channelUtils: NotificationChannelManager by inject()
     private val defaultFolderProvider: DefaultFolderProvider by inject()
+    private val accountRemover: BackgroundAccountRemover by inject()
 
     private val storageListener: StorageListener = StorageListenerImplementation()
     private val permissionUiHelper: PermissionUiHelper = K9PermissionUiHelper(this)
@@ -119,7 +121,9 @@ open class MessageList :
         super.onCreate(savedInstanceState)
 
         val accounts = preferences.accounts
-        if (accounts.isEmpty()) {
+        deleteIncompleteAccounts(accounts)
+        val hasAccountSetup = accounts.any { it.isFinishedSetup }
+        if (!hasAccountSetup) {
             OnboardingActivity.launch(this)
             finish()
             return
@@ -197,6 +201,12 @@ open class MessageList :
         initializeDisplayMode(null)
         initializeFragments()
         displayViews()
+    }
+
+    private fun deleteIncompleteAccounts(accounts: List<Account>) {
+        accounts.filter { !it.isFinishedSetup }.forEach {
+            accountRemover.removeAccountAsync(it.uuid)
+        }
     }
 
     private fun findFragments() {

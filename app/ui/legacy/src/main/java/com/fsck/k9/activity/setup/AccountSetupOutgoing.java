@@ -465,7 +465,6 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
                 finish();
             } else {
                 AccountSetupOptions.actionOptions(this, mAccount, mMakeDefault);
-                finish();
             }
         }
     }

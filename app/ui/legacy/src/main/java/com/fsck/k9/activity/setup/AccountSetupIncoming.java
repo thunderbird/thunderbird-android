@@ -551,9 +551,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                      */
                 }
 
-
                 AccountSetupOutgoing.actionOutgoingSettings(this, mAccount, mMakeDefault);
-                finish();
             }
         }
     }
