@@ -175,7 +175,7 @@ class AccountPreferenceSerializer(
             isAlwaysShowCcBcc = storage.getBoolean("$accountUuid.alwaysShowCcBcc", false)
             lastSyncTime = storage.getLong("$accountUuid.lastSyncTime", 0L)
             lastFolderListRefreshTime = storage.getLong("$accountUuid.lastFolderListRefreshTime", 0L)
-            val isFinishedSetup = storage.getBoolean("$accountUuid.isFinishedSetup", false)
+            val isFinishedSetup = storage.getBoolean("$accountUuid.isFinishedSetup", true)
             if (isFinishedSetup) markSetupFinished()
 
             // Use email address as account description if necessary
