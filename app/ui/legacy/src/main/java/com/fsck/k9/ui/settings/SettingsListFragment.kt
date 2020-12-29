@@ -52,10 +52,11 @@ class SettingsListFragment : Fragment() {
 
     private fun populateSettingsList() {
         viewModel.accounts.observeNotNull(this) { accounts ->
-            if (accounts.isEmpty()) {
+            val accountsFinishedSetup = accounts.filter { it.isFinishedSetup }
+            if (accountsFinishedSetup.isEmpty()) {
                 launchOnboarding()
             } else {
-                populateSettingsList(accounts)
+                populateSettingsList(accountsFinishedSetup)
             }
         }
     }

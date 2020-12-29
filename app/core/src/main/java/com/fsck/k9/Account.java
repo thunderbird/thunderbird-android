@@ -186,6 +186,7 @@ public class Account implements BaseAccount {
     private boolean uploadSentMessages;
     private long lastSyncTime;
     private long lastFolderListRefreshTime;
+    private boolean isFinishedSetup = false;
 
     private boolean changedVisibleLimits = false;
 
@@ -289,13 +290,6 @@ public class Account implements BaseAccount {
     public synchronized void setName(String name) {
         Identity newIdentity = identities.get(0).withName(name);
         identities.set(0, newIdentity);
-    }
-
-    /**
-     * an account is only setup when it has a name (as it's the last required step of the setup)
-     */
-    public synchronized boolean isFinishedSetup() {
-        return getName() != null && !getName().isEmpty();
     }
 
     public synchronized boolean getSignatureUse() {
@@ -1153,4 +1147,11 @@ public class Account implements BaseAccount {
         changedVisibleLimits = false;
     }
 
+    public synchronized boolean isFinishedSetup() {
+        return isFinishedSetup;
+    }
+
+    public void markSetupFinished() {
+        isFinishedSetup = true;
+    }
 }
