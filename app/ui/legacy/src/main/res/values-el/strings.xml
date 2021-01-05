@@ -189,14 +189,17 @@
   <string name="error_contact_address_not_found">Δεν βρέθηκαν διευθύνσεις ηλεκτρονικού ταχυδρομείου.</string>
   <string name="message_compose_attachments_skipped_toast">Μερικά συνημμένα δεν μπορούν να προωθηθούν γιατί δεν έχουν κατεβεί.</string>
   <string name="message_compose_attachments_forward_toast">Το μήνυμα δεν μπορεί να προωθηθεί επειδή μερικά συνημμένα δεν έχουν κατεβεί.</string>
+  <string name="message_compose_show_quoted_text_action">Συμπερίληψη του παραθετιμένου μηνύματος</string>
   <string name="message_compose_description_delete_quoted_text">Αφαίρεση κειμένου προηγ. μηνύματος</string>
   <string name="message_compose_description_edit_quoted_text">Αλλαγή κειμένου προηγ. μηνύματος</string>
+  <string name="remove_attachment_action">Αφαίρεση συνημμένου</string>
   <string name="message_view_from_format">Από: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">Προς:</string>
   <string name="message_view_cc_label">Κοιν:</string>
   <string name="message_view_bcc_label">Κρυφή Κοιν:</string>
   <string name="message_view_attachment_view_action">Άνοιγμα</string>
   <string name="message_view_attachment_download_action">Αποθήκευση</string>
+  <string name="message_view_status_attachment_not_saved">Αδυναμία αποθήκευσης συνημμένου.</string>
   <string name="message_view_show_pictures_action">Προβολή εικόνων</string>
   <string name="message_view_no_viewer">Δεν υπάρχει πρόγραμμα προβολής για <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Κατέβασμα πλήρους μηνύματος</string>
@@ -406,7 +409,10 @@
   <string name="account_settings_notification_opens_unread_summary">Αναζητά μη αναγνωσμένα μηνύματα όταν ανοίγεται η ειδοποίηση</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Σημείωση ως αναγνωσμένου με την ανάγνωση</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Σημείωση ως αναγνωσμένου με την προβολή</string>
+  <string name="account_settings_mark_message_as_read_on_delete_label">Σήμανση ως αναγνωσμένο κατά τη διαγραφή</string>
+  <string name="account_settings_mark_message_as_read_on_delete_summary">Να γίνεται σήμανση του μηνύματος ως αναγνωσμένο όταν διαγράφεται</string>
   <string name="account_settings_notification_open_system_notifications_label">Ρυθμίσεις ειδοποιήσεων</string>
+  <string name="account_settings_notification_open_system_notifications_summary">Άνοιγμα ρυθμίσεων ειδοποιήσεων συστήματος</string>
   <string name="account_settings_show_pictures_label">Προβολή εικόνων πάντα</string>
   <string name="account_settings_show_pictures_never">Όχι</string>
   <string name="account_settings_show_pictures_only_from_contacts">Από τις Επαφές</string>
@@ -433,6 +439,12 @@
   <string name="account_settings_sync">Συγχρονισμός ταχυδρομείου</string>
   <string name="account_settings_folders">Φάκελοι</string>
   <string name="account_settings_quote_prefix_label">Πρόθεμα κειμένου παράθεσης</string>
+  <string name="account_settings_crypto">Κρυπτογράφηση από άκρο σε άκρο</string>
+  <string name="account_settings_crypto_app">Ενεργοποίηση υποστήριξης OpenPGP</string>
+  <string name="account_settings_crypto_app_select_title">Επιλογή εφαρμογής OpenPGP</string>
+  <string name="account_settings_crypto_key">Ρύθμιση κλειδιού απ\' άκρο-σε-άκρο</string>
+  <string name="account_settings_crypto_summary_off">Δεν έχει ρυθμιστεί εφαρμογή OpenPGP</string>
+  <string name="account_settings_crypto_summary_on">Συνδεδεμένος σε %s</string>
   <string name="account_settings_mail_check_frequency_label">Συχνότητα ενημέρωσης φακέλων</string>
   <string name="account_settings_color_label">Χρώμα λογαριασμού</string>
   <string name="account_settings_color_summary">Επιλογή χρώματος για χρήση στους φακέλους και τη λίστα των λογαριασμών</string>
@@ -440,6 +452,20 @@
   <string name="account_settings_led_color_summary">Επιλογή του χρώματος που θα αναβοσβήνει η λυχνία του κινητού για αυτό το λογαριασμό</string>
   <string name="account_settings_mail_display_count_label">Μέγεθος τοπικού φακέλου</string>
   <string name="account_settings_autodownload_message_size_label">Ανάκτηση μηνυμάτων μέχρι</string>
+  <string name="account_settings_autodownload_message_size_1">1 KiB</string>
+  <string name="account_settings_autodownload_message_size_2">2 KiB</string>
+  <string name="account_settings_autodownload_message_size_4">4 KiB</string>
+  <string name="account_settings_autodownload_message_size_8">8 KiB</string>
+  <string name="account_settings_autodownload_message_size_16">16 KiB</string>
+  <string name="account_settings_autodownload_message_size_32">32 KiB</string>
+  <string name="account_settings_autodownload_message_size_64">64 KiB</string>
+  <string name="account_settings_autodownload_message_size_128">128 KiB</string>
+  <string name="account_settings_autodownload_message_size_256">256 KiB</string>
+  <string name="account_settings_autodownload_message_size_512">512 KiB</string>
+  <string name="account_settings_autodownload_message_size_1024">1 MiB</string>
+  <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
+  <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
+  <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
   <string name="account_settings_autodownload_message_size_any">Χωρίς όριο</string>
   <string name="account_settings_message_age_label">Συγχρονισμός μηνυμάτων από</string>
   <string name="account_settings_message_age_any">Οποτεδήποτε (χωρίς όριο)</string>
@@ -598,7 +624,7 @@
   <string name="settings_message_theme_label">Θέμα προβολής μηνύματος</string>
   <string name="settings_compose_theme_label">Θέμα σύνθεσης</string>
   <string name="settings_language_label">Γλώσσα</string>
-  <string name="settings_message_theme_selection_label">Θέμα σταθερού μηνύματος</string>
+  <string name="settings_message_theme_selection_label">Σταθερό θέμα μηνύματος</string>
   <string name="settings_message_theme_selection_summary_off">Επιλογή του θέματος προβολής μηνύματος κατά την προβολή του μηνύματος</string>
   <string name="settings_message_theme_selection_summary_on">Χρήση θέματος σταθερού μηνύματος</string>
   <string name="setting_language_system">Εξ ορισμού του συστήματος</string>
@@ -806,10 +832,10 @@
   <string name="openpgp_inline_plus_compat">Κάποιες εφαρμογές υποστηρίχουν μόνο αυτή τη μπργοποίηση</string>
   <string name="openpgp_inline_minus_transit">Οι υπογραφές μπορεί να καταστραφούν κατά την μετακίνηση</string>
   <string name="openpgp_inline_minus_attach">Τα συνημμένα αρχεία δεν υποστηρίζονται!</string>
-  <string name="openpgp_inline_ok">Το\' πιασα!</string>
+  <string name="openpgp_inline_ok">Το \'πιασα!</string>
   <string name="openpgp_inline_disable">Απενεργοποίηση</string>
   <string name="openpgp_inline_keep_enabled">Να μείνει Ενεργοποιημένο</string>
-  <string name="openpgp_sign_only_ok">Το\' πιασα!</string>
+  <string name="openpgp_sign_only_ok">Το \'πιασα!</string>
   <string name="openpgp_sign_only_disable">Απενεργοποίηση</string>
   <string name="openpgp_sign_only_keep_enabled">Να μείνει Ενεργοποιημένο</string>
   <string name="openpgp_dialog_sign_only_title">Λειτουργία PGP υπογραφής μόνο</string>
@@ -839,7 +865,7 @@
   <string name="apg_deprecated_bullet_1">Η ανάπτυξη σταμάτησε στις αρχές του 2014</string>
   <string name="apg_deprecated_bullet_2">Περιέχει μη λυμένα θέματα ασφάλειας</string>
   <string name="apg_learn_more">Μπορείτε να <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">κάνετε κλικ εδώ</a> για να μάθετε περισσότερα.</string>
-  <string name="apg_deprecated_ok">Το\' πιασα!</string>
+  <string name="apg_deprecated_ok">Το \'πιασα!</string>
   <string name="apg">APG</string>
   <string name="openpgp_enabled_error_back">Πίσω</string>
   <string name="general_settings_title">Γενικές ρυθμίσεις</string>

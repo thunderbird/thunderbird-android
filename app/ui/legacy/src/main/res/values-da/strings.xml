@@ -92,6 +92,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="forward_as_attachment_action">Videresend som vedhæftet fil</string>
   <string name="edit_as_new_message_action">Rediger som ny besked besked</string>
   <string name="move_action">Flyt</string>
+  <string name="move_to_drafts_action">Flyt til kladder</string>
   <string name="single_message_options_action">Send…</string>
   <string name="refile_action">Genarkivering…</string>
   <string name="done_action">Afslut</string>
@@ -717,6 +718,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="confirm_discard_draft_message">Er du sikker på at du ønsker at annullere denne meddelelse?</string>
   <string name="select_text_now">Vælg tekst som skal kopieres.</string>
   <string name="dialog_confirm_clear_local_folder_title">Ryd lokale beskeder</string>
+  <string name="dialog_confirm_clear_local_folder_action">Rens beskeder</string>
   <string name="dialog_confirm_delete_title">Bekræft sletning</string>
   <string name="dialog_confirm_delete_message">Ønsker du at slette denne mail?</string>
   <plurals name="dialog_confirm_delete_messages">
@@ -741,14 +743,20 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="dialog_attachment_progress_title">Henter vedhæftning</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
+  <string name="settings_list_backup_category">Sikkerhedskopi</string>
   <string name="settings_list_miscellaneous_category">Diverse</string>
+  <string name="settings_export_title">Eksportere opsætning</string>
   <string name="settings_export_button">Eksporter</string>
   <string name="settings_export_share_button">Del</string>
   <string name="settings_export_progress_text">Eksportere opsætning...</string>
   <string name="settings_export_success_generic">Indstillinger succesfuldt eksporteret</string>
   <string name="settings_export_failure">Eksport af indstillinger fejlede</string>
   <string name="settings_import_title">Importere opsætning</string>
+  <string name="settings_import_pick_document_button">Vælg fil</string>
   <string name="settings_import_button">Importer</string>
+  <string name="settings_import_status_not_imported">Ikke importeret</string>
+  <string name="settings_import_status_error">Import fejlede</string>
+  <string name="settings_import_later_button">Senere</string>
   <string name="settings_import">Importere opsætning</string>
   <string name="settings_importing">Importere opsætning…</string>
   <string name="unread_widget_select_account">Vis antal ulæste for…</string>
@@ -768,6 +776,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="webview_contextmenu_link_share_action">Del link</string>
   <string name="webview_contextmenu_link_copy_action">Kopier link til clipboard</string>
   <string name="webview_contextmenu_link_clipboard_label">Link</string>
+  <string name="webview_contextmenu_link_text_clipboard_label">Henvisnings tekst</string>
   <string name="webview_contextmenu_image_title">Bilelde</string>
   <string name="webview_contextmenu_image_view_action">Vis billede</string>
   <string name="webview_contextmenu_image_save_action">Gem billede</string>
@@ -844,6 +853,8 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="recipient_bcc">Bcc</string>
   <string name="recipient_to">Til</string>
   <string name="recipient_from">Fra</string>
+  <string name="unknown_recipient">&lt;Ukendt modtager&gt;</string>
+  <string name="unknown_sender">&lt;Ukendt afsender&gt;</string>
   <string name="address_type_home">Hjem</string>
   <string name="address_type_work">Arbejde</string>
   <string name="address_type_other">Anden</string>

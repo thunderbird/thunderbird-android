@@ -91,6 +91,7 @@ Hibajelentések beküldésével hozzájárulhatunk új funkciókhoz és kérdés
   <string name="forward_as_attachment_action">Továbbítás mellékletként</string>
   <string name="edit_as_new_message_action">Szerkesztés új üzenetként</string>
   <string name="move_action">Áthelyezés</string>
+  <string name="move_to_drafts_action">Áthelyezés a Piszkozatokhoz</string>
   <string name="single_message_options_action">Küldés…</string>
   <string name="refile_action">Iktatás…</string>
   <string name="done_action">Kész</string>
@@ -807,6 +808,8 @@ Hibajelentések beküldésével hozzájárulhatunk új funkciókhoz és kérdés
   <string name="webview_contextmenu_link_share_action">Hivatkozás megosztása</string>
   <string name="webview_contextmenu_link_copy_action">Hivatkozás másolása a vágólapra</string>
   <string name="webview_contextmenu_link_clipboard_label">Hivatkozás</string>
+  <string name="webview_contextmenu_link_text_copy_action">Link szövegének másolása a Vágólapra</string>
+  <string name="webview_contextmenu_link_text_clipboard_label">Link szövege</string>
   <string name="webview_contextmenu_image_title">Kép</string>
   <string name="webview_contextmenu_image_view_action">Kép megtekintése</string>
   <string name="webview_contextmenu_image_save_action">Kép mentése</string>
@@ -883,6 +886,8 @@ Hibajelentések beküldésével hozzájárulhatunk új funkciókhoz és kérdés
   <string name="recipient_bcc">Titkos másolat</string>
   <string name="recipient_to">Címzett</string>
   <string name="recipient_from">Feladó</string>
+  <string name="unknown_recipient">&lt;Címzett ismeretlen&gt;</string>
+  <string name="unknown_sender">&lt;Feladó ismeretlen&gt;</string>
   <string name="address_type_home">Otthon</string>
   <string name="address_type_work">Munkahely</string>
   <string name="address_type_other">Egyéb</string>

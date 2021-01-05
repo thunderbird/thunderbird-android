@@ -887,6 +887,8 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="recipient_bcc">Gizli Kopya</string>
   <string name="recipient_to">Kime</string>
   <string name="recipient_from">Kimden</string>
+  <string name="unknown_recipient">&lt;Bilinmeyen Alıcı&gt;</string>
+  <string name="unknown_sender">&lt;Bilinmeyen Gönderici&gt;</string>
   <string name="address_type_home">Ev</string>
   <string name="address_type_work">İş</string>
   <string name="address_type_other">Diğer</string>
