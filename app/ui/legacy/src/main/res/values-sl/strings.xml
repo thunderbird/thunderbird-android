@@ -92,7 +92,7 @@ Poročila o napakah, predloge za nove funkcije in vprašanja lahko pošljete na
   <string name="forward_as_attachment_action">Posreduj kot prilogo</string>
   <string name="edit_as_new_message_action">Uredi kot novo sporočilo</string>
   <string name="move_action">Premakni</string>
-  <string name="move_to_drafts_action">Premakni v Osnutke</string>
+  <string name="move_to_drafts_action">Premakni med Osnutke</string>
   <string name="single_message_options_action">Pošlji …</string>
   <string name="refile_action">Določi mapo …</string>
   <string name="done_action">Končano</string>
@@ -739,7 +739,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="confirm_discard_draft_message_title">Ali želite zavreči sporočilo?</string>
   <string name="confirm_discard_draft_message">Ali ste prepričani, da želite zavreči to sporočilo?</string>
   <string name="select_text_now">Izberite besedilo za kopiranje.</string>
-  <string name="dialog_confirm_clear_local_folder_title">Naj počistim krajevna sporočila?</string>
+  <string name="dialog_confirm_clear_local_folder_title">Ali želite počistiti krajevna sporočila?</string>
   <string name="dialog_confirm_clear_local_folder_message">S tem bodo iz mape odstranjena vsa krajevna sporočila. Nobeno sporočilo ne bo izbrisano s strežnika.</string>
   <string name="dialog_confirm_clear_local_folder_action">Počisti sporočila</string>
   <string name="dialog_confirm_delete_title">Potrditev brisanja</string>
