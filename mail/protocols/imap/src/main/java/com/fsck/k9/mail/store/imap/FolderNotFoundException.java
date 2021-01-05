@@ -9,7 +9,7 @@ public class FolderNotFoundException extends MessagingException {
 
 
     public FolderNotFoundException(String folderServerId) {
-        super("Folder not found: " + folderServerId);
+        super("Folder not found: " + folderServerId, true);
         this.folderServerId = folderServerId;
     }
 
