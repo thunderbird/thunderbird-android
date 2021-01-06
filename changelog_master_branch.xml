@@ -8,6 +8,12 @@
      They are automatically updated with "ant bump-version".
 -->
 <changelog>
+    <release version="5.726" versioncode="27026">
+        <change>Updated password input fields to be able to reveal passwords</change>
+        <change>Added support for going back to previous steps when setting up an account</change>
+        <change>Fixed a couple of crashes</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.725" versioncode="27025">
         <change>Prefer email addresses marked as default in email auto-completion popup</change>
         <change>Internal changes</change>
