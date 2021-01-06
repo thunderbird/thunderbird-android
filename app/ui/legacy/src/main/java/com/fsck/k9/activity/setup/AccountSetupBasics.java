@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -312,7 +311,6 @@ public class AccountSetupBasics extends K9Activity
                 Preferences.getPreferences(this).saveAccount(mAccount);
                 Core.setServicesEnabled(this);
                 AccountSetupNames.actionSetNames(this, mAccount);
-                finish();
             }
         }
     }
@@ -351,8 +349,6 @@ public class AccountSetupBasics extends K9Activity
         mAccount.setTransportUri(transportUri);
 
         AccountSetupAccountType.actionSelectAccountType(this, mAccount, false);
-
-        finish();
     }
 
     public void onClick(View v) {

@@ -52,10 +52,11 @@ class SettingsListFragment : Fragment() {
 
     private fun populateSettingsList() {
         viewModel.accounts.observeNotNull(this) { accounts ->
-            if (accounts.isEmpty()) {
+            val accountsFinishedSetup = accounts.filter { it.isFinishedSetup }
+            if (accountsFinishedSetup.isEmpty()) {
                 launchOnboarding()
             } else {
-                populateSettingsList(accounts)
+                populateSettingsList(accountsFinishedSetup)
             }
         }
     }
@@ -121,7 +122,7 @@ class SettingsListFragment : Fragment() {
 
     private fun launchOnboarding() {
         findNavController().navigate(R.id.action_settingsListScreen_to_onboardingScreen)
-        requireActivity().finish()
+        requireActivity().finishAffinity()
     }
 
     private fun buildSettingsList(block: SettingsListBuilder.() -> Unit): List<GenericItem> {

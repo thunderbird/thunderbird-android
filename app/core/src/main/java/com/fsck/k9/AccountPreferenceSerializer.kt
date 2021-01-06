@@ -175,6 +175,8 @@ class AccountPreferenceSerializer(
             isAlwaysShowCcBcc = storage.getBoolean("$accountUuid.alwaysShowCcBcc", false)
             lastSyncTime = storage.getLong("$accountUuid.lastSyncTime", 0L)
             lastFolderListRefreshTime = storage.getLong("$accountUuid.lastFolderListRefreshTime", 0L)
+            val isFinishedSetup = storage.getBoolean("$accountUuid.isFinishedSetup", true)
+            if (isFinishedSetup) markSetupFinished()
 
             // Use email address as account description if necessary
             if (description == null) {
@@ -336,6 +338,7 @@ class AccountPreferenceSerializer(
             editor.putInt("$accountUuid.ledColor", notificationSetting.ledColor)
             editor.putLong("$accountUuid.lastSyncTime", lastSyncTime)
             editor.putLong("$accountUuid.lastFolderListRefreshTime", lastFolderListRefreshTime)
+            editor.putBoolean("$accountUuid.isFinishedSetup", isFinishedSetup)
 
             for (type in NetworkType.values()) {
                 val useCompression = compressionMap[type]
@@ -460,6 +463,7 @@ class AccountPreferenceSerializer(
         editor.remove("$accountUuid.autoExpandFolderId")
         editor.remove("$accountUuid.lastSyncTime")
         editor.remove("$accountUuid.lastFolderListRefreshTime")
+        editor.remove("$accountUuid.isFinishedSetup")
 
         for (type in NetworkType.values()) {
             editor.remove("$accountUuid.useCompression." + type.name)

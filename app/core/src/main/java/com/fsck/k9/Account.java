@@ -186,6 +186,7 @@ public class Account implements BaseAccount {
     private boolean uploadSentMessages;
     private long lastSyncTime;
     private long lastFolderListRefreshTime;
+    private boolean isFinishedSetup = false;
 
     private boolean changedVisibleLimits = false;
 
@@ -1146,4 +1147,11 @@ public class Account implements BaseAccount {
         changedVisibleLimits = false;
     }
 
+    public synchronized boolean isFinishedSetup() {
+        return isFinishedSetup;
+    }
+
+    public void markSetupFinished() {
+        isFinishedSetup = true;
+    }
 }
