@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.ui.R
 import de.cketti.library.changelog.ChangeLog
-import java.util.Calendar
 import timber.log.Timber
 
 class AboutFragment : Fragment() {
@@ -33,10 +32,6 @@ class AboutFragment : Fragment() {
         val versionLayout = view.findViewById<View>(R.id.versionLayout)
         versionLayout.setOnClickListener { displayChangeLog() }
 
-        val year = Calendar.getInstance().get(Calendar.YEAR).toString()
-        val copyrightTextView = view.findViewById<TextView>(R.id.copyright)
-        copyrightTextView.text = getString(R.string.app_copyright_fmt, year, year)
-
         val authorsLayout = view.findViewById<View>(R.id.authorsLayout)
         authorsLayout.setOnClickListener {
             openUrl(getString(R.string.app_authors_url))
@@ -47,17 +42,29 @@ class AboutFragment : Fragment() {
             openUrl(getString(R.string.app_license_url))
         }
 
-        val sourceButton = view.findViewById<View>(R.id.source)
-        sourceButton.setOnClickListener {
+        val sourceCodeLayout = view.findViewById<View>(R.id.sourceCodeLayout)
+        sourceCodeLayout.setOnClickListener {
             openUrl(getString(R.string.app_source_url))
         }
 
-        val changelogButton = view.findViewById<View>(R.id.changelog)
-        changelogButton.setOnClickListener { displayChangeLog() }
+        val websiteLayout = view.findViewById<View>(R.id.websiteLayout)
+        websiteLayout.setOnClickListener {
+            openUrl(getString(R.string.app_webpage_url))
+        }
 
-        val revisionsButton = view.findViewById<View>(R.id.revisions)
-        revisionsButton.setOnClickListener {
-            openUrl(getString(R.string.app_revision_url))
+        val userForumLayout = view.findViewById<View>(R.id.userForumLayout)
+        userForumLayout.setOnClickListener {
+            openUrl(getString(R.string.user_forum_url))
+        }
+
+        val fediverseLayout = view.findViewById<View>(R.id.fediverseLayout)
+        fediverseLayout.setOnClickListener {
+            openUrl(getString(R.string.fediverse_url))
+        }
+
+        val twitterLayout = view.findViewById<View>(R.id.twitterLayout)
+        twitterLayout.setOnClickListener {
+            openUrl(getString(R.string.twitter_url))
         }
 
         val manager = LinearLayoutManager(view.context)
