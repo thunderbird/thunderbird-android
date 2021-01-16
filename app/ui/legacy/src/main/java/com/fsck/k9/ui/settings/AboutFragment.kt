@@ -7,14 +7,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.ui.R
 import de.cketti.library.changelog.ChangeLog
 import java.util.Calendar
-import kotlinx.android.synthetic.main.about_library.view.*
-import kotlinx.android.synthetic.main.fragment_about.*
 import timber.log.Timber
 
 private data class Library(val name: String, val URL: String, val license: String)
@@ -27,32 +26,42 @@ class AboutFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        version.text = getVersionNumber()
+        val versionTextView = view.findViewById<TextView>(R.id.version)
+        versionTextView.text = getVersionNumber()
+
+        val versionLayout = view.findViewById<View>(R.id.versionLayout)
         versionLayout.setOnClickListener { displayChangeLog() }
 
         val year = Calendar.getInstance().get(Calendar.YEAR).toString()
-        copyright.text = getString(R.string.app_copyright_fmt, year, year)
+        val copyrightTextView = view.findViewById<TextView>(R.id.copyright)
+        copyrightTextView.text = getString(R.string.app_copyright_fmt, year, year)
 
+        val authorsLayout = view.findViewById<View>(R.id.authorsLayout)
         authorsLayout.setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_authors_url))))
         }
 
+        val licenseLayout = view.findViewById<View>(R.id.licenseLayout)
         licenseLayout.setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_license_url))))
         }
 
-        source.setOnClickListener {
+        val sourceButton = view.findViewById<View>(R.id.source)
+        sourceButton.setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_source_url))))
         }
 
-        changelog.setOnClickListener { displayChangeLog() }
+        val changelogButton = view.findViewById<View>(R.id.changelog)
+        changelogButton.setOnClickListener { displayChangeLog() }
 
-        revisions.setOnClickListener {
+        val revisionsButton = view.findViewById<View>(R.id.revisions)
+        revisionsButton.setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_revision_url))))
         }
 
         val manager = LinearLayoutManager(view.context)
-        libraries.apply {
+        val librariesRecyclerView = view.findViewById<RecyclerView>(R.id.libraries)
+        librariesRecyclerView.apply {
             layoutManager = manager
             adapter = LibrariesAdapter(USED_LIBRARIES)
             isNestedScrollingEnabled = false
@@ -107,7 +116,10 @@ class AboutFragment : Fragment() {
 private class LibrariesAdapter(private val dataset: Array<Library>) :
     RecyclerView.Adapter<LibrariesAdapter.ViewHolder>() {
 
-    class ViewHolder(val view: View) : RecyclerView.ViewHolder(view)
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val name: TextView = view.findViewById(R.id.name)
+        val license: TextView = view.findViewById(R.id.license)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.about_library, parent, false)
@@ -116,10 +128,10 @@ private class LibrariesAdapter(private val dataset: Array<Library>) :
 
     override fun onBindViewHolder(holder: ViewHolder, index: Int) {
         val library = dataset[index]
-        holder.view.name.text = library.name
-        holder.view.license.text = library.license
-        holder.view.setOnClickListener {
-            holder.view.context
+        holder.name.text = library.name
+        holder.license.text = library.license
+        holder.itemView.setOnClickListener {
+            holder.itemView.context
                 .startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(library.URL)))
         }
     }
