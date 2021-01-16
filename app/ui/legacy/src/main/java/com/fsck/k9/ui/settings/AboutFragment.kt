@@ -1,5 +1,7 @@
 package com.fsck.k9.ui.settings
 
+import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -8,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,8 +18,6 @@ import com.fsck.k9.ui.R
 import de.cketti.library.changelog.ChangeLog
 import java.util.Calendar
 import timber.log.Timber
-
-private data class Library(val name: String, val URL: String, val license: String)
 
 class AboutFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -38,17 +39,17 @@ class AboutFragment : Fragment() {
 
         val authorsLayout = view.findViewById<View>(R.id.authorsLayout)
         authorsLayout.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_authors_url))))
+            openUrl(getString(R.string.app_authors_url))
         }
 
         val licenseLayout = view.findViewById<View>(R.id.licenseLayout)
         licenseLayout.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_license_url))))
+            openUrl(getString(R.string.app_license_url))
         }
 
         val sourceButton = view.findViewById<View>(R.id.source)
         sourceButton.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_source_url))))
+            openUrl(getString(R.string.app_source_url))
         }
 
         val changelogButton = view.findViewById<View>(R.id.changelog)
@@ -56,7 +57,7 @@ class AboutFragment : Fragment() {
 
         val revisionsButton = view.findViewById<View>(R.id.revisions)
         revisionsButton.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_revision_url))))
+            openUrl(getString(R.string.app_revision_url))
         }
 
         val manager = LinearLayoutManager(view.context)
@@ -113,6 +114,19 @@ class AboutFragment : Fragment() {
     }
 }
 
+private fun Fragment.openUrl(url: String) = requireContext().openUrl(url)
+
+private fun Context.openUrl(url: String) {
+    try {
+        val viewIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(viewIntent)
+    } catch (e: ActivityNotFoundException) {
+        Toast.makeText(this, R.string.error_activity_not_found, Toast.LENGTH_SHORT).show()
+    }
+}
+
+private data class Library(val name: String, val url: String, val license: String)
+
 private class LibrariesAdapter(private val dataset: Array<Library>) :
     RecyclerView.Adapter<LibrariesAdapter.ViewHolder>() {
 
@@ -131,8 +145,7 @@ private class LibrariesAdapter(private val dataset: Array<Library>) :
         holder.name.text = library.name
         holder.license.text = library.license
         holder.itemView.setOnClickListener {
-            holder.itemView.context
-                .startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(library.URL)))
+            holder.itemView.context.openUrl(library.url)
         }
     }
 
