@@ -86,7 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="?attr/messageListAnswered"
-                tools:src="@drawable/ic_messagelist_answered_light"/>
+                tools:src="@drawable/ic_messagelist_answered"/>
 
             <TextView
                     android:id="@+id/subject"
