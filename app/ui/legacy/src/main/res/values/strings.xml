@@ -14,8 +14,13 @@
     <!-- Used in the about dialog -->
     <string name="app_authors">The K-9 Dog Walkers</string>
     <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-    <string name="source_code">Source</string>
+    <string name="source_code">Source code</string>
     <string name="app_license">Apache License, Version 2.0</string>
+    <string name="about_project_title">Open Source Project</string>
+    <string name="about_website_title">Website</string>
+    <string name="user_forum_title">User forum</string>
+    <string name="about_fediverse_title">Fediverse</string>
+    <string name="about_twitter_title">Twitter</string>
     <string name="about_libraries">Libraries</string>
     <string name="license">License</string>
 

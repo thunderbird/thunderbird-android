@@ -1,5 +1,7 @@
 package com.fsck.k9.ui.settings
 
+import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -7,17 +9,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.ui.R
 import de.cketti.library.changelog.ChangeLog
-import java.util.Calendar
-import kotlinx.android.synthetic.main.about_library.view.*
-import kotlinx.android.synthetic.main.fragment_about.*
 import timber.log.Timber
-
-private data class Library(val name: String, val URL: String, val license: String)
 
 class AboutFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -27,32 +26,50 @@ class AboutFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        version.text = getVersionNumber()
+        val versionTextView = view.findViewById<TextView>(R.id.version)
+        versionTextView.text = getVersionNumber()
+
+        val versionLayout = view.findViewById<View>(R.id.versionLayout)
         versionLayout.setOnClickListener { displayChangeLog() }
 
-        val year = Calendar.getInstance().get(Calendar.YEAR).toString()
-        copyright.text = getString(R.string.app_copyright_fmt, year, year)
-
+        val authorsLayout = view.findViewById<View>(R.id.authorsLayout)
         authorsLayout.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_authors_url))))
+            openUrl(getString(R.string.app_authors_url))
         }
 
+        val licenseLayout = view.findViewById<View>(R.id.licenseLayout)
         licenseLayout.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_license_url))))
+            openUrl(getString(R.string.app_license_url))
         }
 
-        source.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_source_url))))
+        val sourceCodeLayout = view.findViewById<View>(R.id.sourceCodeLayout)
+        sourceCodeLayout.setOnClickListener {
+            openUrl(getString(R.string.app_source_url))
         }
 
-        changelog.setOnClickListener { displayChangeLog() }
+        val websiteLayout = view.findViewById<View>(R.id.websiteLayout)
+        websiteLayout.setOnClickListener {
+            openUrl(getString(R.string.app_webpage_url))
+        }
 
-        revisions.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.app_revision_url))))
+        val userForumLayout = view.findViewById<View>(R.id.userForumLayout)
+        userForumLayout.setOnClickListener {
+            openUrl(getString(R.string.user_forum_url))
+        }
+
+        val fediverseLayout = view.findViewById<View>(R.id.fediverseLayout)
+        fediverseLayout.setOnClickListener {
+            openUrl(getString(R.string.fediverse_url))
+        }
+
+        val twitterLayout = view.findViewById<View>(R.id.twitterLayout)
+        twitterLayout.setOnClickListener {
+            openUrl(getString(R.string.twitter_url))
         }
 
         val manager = LinearLayoutManager(view.context)
-        libraries.apply {
+        val librariesRecyclerView = view.findViewById<RecyclerView>(R.id.libraries)
+        librariesRecyclerView.apply {
             layoutManager = manager
             adapter = LibrariesAdapter(USED_LIBRARIES)
             isNestedScrollingEnabled = false
@@ -104,10 +121,26 @@ class AboutFragment : Fragment() {
     }
 }
 
+private fun Fragment.openUrl(url: String) = requireContext().openUrl(url)
+
+private fun Context.openUrl(url: String) {
+    try {
+        val viewIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(viewIntent)
+    } catch (e: ActivityNotFoundException) {
+        Toast.makeText(this, R.string.error_activity_not_found, Toast.LENGTH_SHORT).show()
+    }
+}
+
+private data class Library(val name: String, val url: String, val license: String)
+
 private class LibrariesAdapter(private val dataset: Array<Library>) :
     RecyclerView.Adapter<LibrariesAdapter.ViewHolder>() {
 
-    class ViewHolder(val view: View) : RecyclerView.ViewHolder(view)
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val name: TextView = view.findViewById(R.id.name)
+        val license: TextView = view.findViewById(R.id.license)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.about_library, parent, false)
@@ -116,11 +149,10 @@ private class LibrariesAdapter(private val dataset: Array<Library>) :
 
     override fun onBindViewHolder(holder: ViewHolder, index: Int) {
         val library = dataset[index]
-        holder.view.name.text = library.name
-        holder.view.license.text = library.license
-        holder.view.setOnClickListener {
-            holder.view.context
-                .startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(library.URL)))
+        holder.name.text = library.name
+        holder.license.text = library.license
+        holder.itemView.setOnClickListener {
+            holder.itemView.context.openUrl(library.url)
         }
     }
 
