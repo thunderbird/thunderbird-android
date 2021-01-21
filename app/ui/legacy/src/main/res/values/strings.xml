@@ -23,6 +23,9 @@
     <string name="about_twitter_title">Twitter</string>
     <string name="about_libraries">Libraries</string>
     <string name="license">License</string>
+    <string name="changelog_title">Changelog</string>
+    <string name="changelog_loading_error">Couldn\'t load the changelog.</string>
+    <string name="changelog_version_title">Version %s</string>
 
 
     <!-- Welcome message -->

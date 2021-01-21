@@ -12,10 +12,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.ui.R
-import de.cketti.library.changelog.ChangeLog
 import timber.log.Timber
 
 class AboutFragment : Fragment() {
@@ -78,7 +78,7 @@ class AboutFragment : Fragment() {
     }
 
     private fun displayChangeLog() {
-        ChangeLog(requireActivity()).fullLogDialog.show()
+        findNavController().navigate(R.id.action_aboutScreen_to_changelogScreen)
     }
 
     private fun getVersionNumber(): String {

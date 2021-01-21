@@ -52,7 +52,12 @@
         android:id="@+id/aboutScreen"
         android:name="com.fsck.k9.ui.settings.AboutFragment"
         android:label="@string/about_action"
-        tools:layout="@layout/fragment_about"/>
+        tools:layout="@layout/fragment_about">
+
+        <action
+            android:id="@+id/action_aboutScreen_to_changelogScreen"
+            app:destination="@id/changelogScreen" />
+    </fragment>
 
     <activity
         android:id="@+id/generalSettingsScreen"
@@ -76,5 +81,11 @@
         android:name="com.fsck.k9.ui.settings.import.SettingsImportFragment"
         android:label="@string/settings_import_title"
         tools:layout="@layout/fragment_settings_import"/>
+
+    <fragment
+        android:id="@+id/changelogScreen"
+        android:name="com.fsck.k9.ui.changelog.ChangelogFragment"
+        android:label="@string/changelog_title"
+        tools:layout="@layout/fragment_changelog"/>
 
 </navigation>

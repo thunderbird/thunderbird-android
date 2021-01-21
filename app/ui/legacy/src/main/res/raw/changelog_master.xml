@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="changelog_style.xsl"?>
 <!--
-     The master change log is kept in res/xml/changelog_master.xml.
-     Locale specific versions are kept in res/xml-<locale qualifier>/changelog.xml.
-
-     Don't edit the changelog_<name>_branch.xml files in the gh-pages branch.
-     They are automatically updated with "ant bump-version".
+     The master change log is kept in res/raw/changelog_master.xml.
+     Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
     <release version="5.726" versioncode="27026">
@@ -47,7 +44,7 @@
         <change>Added 'copy link text to clipboard' option when long-pressing links</change>
         <change>Treat all whitespace as separator when detecting URLs</change>
     </release>
-    <release version="5.720&#8203;" versioncode="27020">
+    <release version="5.720" versioncode="27020">
         <change>Fixed bug in preview text extraction that could stop synchronization</change>
         <change>When displaying text/plain parts the signature is de-emphasized</change>
         <change>Sharing a message now includes subject, date, sender, and recipients</change>
@@ -118,7 +115,7 @@
         <change>Lots of internal changes</change>
         <change>Updated translations</change>
     </release>
-    <release version="5.710&#8203;" versioncode="27010">
+    <release version="5.710" versioncode="27010">
         <change>Fixed duplicate message bug after moving a message</change>
         <change>Removed keyboard shortcuts for menu items; on some devices they conflicted with system shortcuts</change>
         <change>Don't show fullscreen keyboard in landscape mode</change>
@@ -196,7 +193,7 @@
         <change>Fixed bug where work was accidentally done in the main thread</change>
         <change>Updated translations</change>
     </release>
-    <release version="5.700&#8203;" versioncode="27000">
+    <release version="5.700" versioncode="27000">
         <change>Major redesign of the user interface</change>
         <change>Temporarily disabled Push (IMAP IDLE) until we can make it work reliable; your accounts will be polled every 15 minutes instead</change>
         <change>Deprecated support for the WebDAV protocol; new accounts can no longer be added</change>
@@ -208,7 +205,7 @@
         <change>Removed the 'remote control' interface third-party apps could use to change some settings in K-9 Mail</change>
         <change>Fixed a lot of bugs and probably introduced some new ones. Please report bugs.</change>
     </release>
-    <release version="5.600&#8203;" versioncode="26000">
+    <release version="5.600" versioncode="26000">
         <change>Allow some outdated HTML attributes so emails from popular internet services are displayed as intended</change>
         <change>Fixed bug when moving or copying message (IMAP)</change>
     </release>
@@ -222,7 +219,7 @@
     <release version="5.501" versioncode="25010">
         <change>Fixed bug that lead to important files being stripped from the APK</change>
     </release>
-    <release version="5.500&#8203;" versioncode="25000">
+    <release version="5.500" versioncode="25000">
         <change>Further improvements to encryption user experience</change>
         <change>Added ability to forward a message as attachment</change>
         <change>Improved the way we display text/plain messages</change>
@@ -245,7 +242,7 @@
     <release version="5.401" versioncode="23610">
         <change>Fixed bug that lead to some messages showing as empty</change>
     </release>
-    <release version="5.400&#8203;" versioncode="23600">
+    <release version="5.400" versioncode="23600">
         <change>Avoid crash on Android 8.1</change>
         <change>Updated translations</change>
         <change>Added Albanian translation</change>
@@ -268,7 +265,7 @@
         <change>Various bug fixes</change>
         <change>Updated translations</change>
     </release>
-    <release version="5.300&#8203;" versioncode="23500">
+    <release version="5.300" versioncode="23500">
         <change>New app icon</change>
         <change>New widget: Message List</change>
         <change>New OpenPGP flow, adhering to Autocrypt specification</change>
@@ -321,7 +318,7 @@
         <change>Fixed crash during database upgrade</change>
         <change>Fixed various minor bugs</change>
     </release>
-    <release version="5.200&#8203;" versioncode="23200">
+    <release version="5.200" versioncode="23200">
         <change>Fixed bug with status display of signed messages</change>
         <change>Updated translations</change>
     </release>
@@ -382,7 +379,7 @@
         <change>Removed broken support for sending messages as 8-bit via SMTP</change>
         <change>Lots of internal changes and minor bug fixes</change>
     </release>
-    <release version="5.110&#8203;" versioncode="23100" >
+    <release version="5.110" versioncode="23100" >
         <change>New option: only notify for messages from contacts</change>
         <change>Added auto-configuration support for more providers</change>
         <change>Improved PGP/MIME experience</change>
@@ -447,7 +444,7 @@
     <release version="5.101" versioncode="23010">
         <change>Fixed build problems that caused v5.100 to request the permissions READ_CALL_LOG and WRITE_CALL_LOG</change>
     </release>
-    <release version="5.100&#8203;" versioncode="23000">
+    <release version="5.100" versioncode="23000">
         <change>Removed SSL/TLS session caching because it was causing problems</change>
     </release>
     <release version="4.905" versioncode="21008">
@@ -494,7 +491,7 @@
         <change>More bug fixes</change>
         <change>Updated Japanese translation</change>
     </release>
-    <release version="4.900&#8203;" versioncode="21003" >
+    <release version="4.900" versioncode="21003" >
         <change>Fix issue 6064: Inline images don't display on KitKat</change>
         <change>Update list of German Internet providers</change>
         <change>Add provider Outlook.sk and Azet.sk to provider list</change>
@@ -524,7 +521,7 @@
         <change>Worked around a bug in KitKat that stopped settings import from working</change>
         <change>Updated German, Greek, Japanese, Korean, Lithuanian, Portugese, Russian and Slovak translations</change>
     </release>
-    <release version="4.700&#8203;" versioncode="19001" >
+    <release version="4.700" versioncode="19001" >
         <change>Code cleanups</change>
         <change>Fixed a bug that could have caused message drafts to be sent before they were ready</change>
         <change>Updates to German, Japanese, Russian, Slovak translations</change>
@@ -547,7 +544,7 @@
         <change>Remove icons from the "Refile" submenu, as we don't show icons in any other submenu.</change>
         <change>Add icon for the copy action</change>
     </release>
-    <release version="4.510&#8203;" versioncode="18010" >
+    <release version="4.510" versioncode="18010" >
         <change>Fix erroneous SSL certificate warnings when connecting to a server that speaks STARTTLS</change>
         <change>Updates to Russian and Slovakian translations</change>
         <change>Major performance updates when opening folder lists</change>
@@ -632,7 +629,7 @@
         <change>Many bug fixes</change>
     </release>
 
-    <release version="4.330&#8203;" versioncode="17031" >
+    <release version="4.330" versioncode="17031" >
         <change>Changed appearance of the unread widget</change>
         <change>Fixed crash when opening the app from notifications</change>
         <change>Updated Finnish, Catalan translations</change>
@@ -731,7 +728,7 @@
         <change>Performance improvements</change>
     </release>
 
-    <release version="4.320&#8203;" versioncode="17021" >
+    <release version="4.320" versioncode="17021" >
         <change>Added 'Account settings' back to the account context menu</change>
         <change>Added 'Refresh' and 'Settings' back to the folder context menu</change>
         <change>Minor bug fixes</change>
