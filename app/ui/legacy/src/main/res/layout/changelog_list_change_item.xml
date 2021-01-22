@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="4dp"
+        android:paddingBottom="4dp"
+        android:text="•"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/change_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingTop="4dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="4dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        tools:text="Bug fixes and minor improvements" />
+</LinearLayout>

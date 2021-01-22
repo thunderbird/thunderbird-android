@@ -32,7 +32,7 @@ dependencies {
     implementation "androidx.localbroadcastmanager:localbroadcastmanager:${versions.androidxLocalBroadcastManager}"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     implementation "com.google.android.material:material:${versions.materialComponents}"
-    implementation "de.cketti.library.changelog:ckchangelog:1.2.1"
+    implementation "de.cketti.library.changelog:ckchangelog-core:2.0.0-beta01"
     implementation "com.splitwise:tokenautocomplete:4.0.0-beta01"
     implementation "de.cketti.safecontentresolver:safe-content-resolver-v21:1.0.0"
     implementation 'com.mikepenz:materialdrawer:7.0.0'
