@@ -9,13 +9,13 @@ class K9NotificationResourceProvider(private val context: Context) : Notificatio
     override val iconDelete: Int = R.drawable.notification_action_delete
     override val iconReply: Int = R.drawable.notification_action_reply
     override val iconNewMail: Int = R.drawable.notification_icon_new_mail
-    override val iconSendingMail: Int = R.drawable.ic_notify_check_mail
-    override val iconCheckingMail: Int = R.drawable.ic_notify_check_mail
-    override val wearIconMarkAsRead: Int = R.drawable.ic_opened_envelope
-    override val wearIconDelete: Int = R.drawable.ic_trash_can
-    override val wearIconArchive: Int = R.drawable.ic_archive
-    override val wearIconReplyAll: Int = R.drawable.ic_reply_all
-    override val wearIconMarkAsSpam: Int = R.drawable.ic_alert_octagon
+    override val iconSendingMail: Int = R.drawable.notification_icon_check_mail
+    override val iconCheckingMail: Int = R.drawable.notification_icon_check_mail
+    override val wearIconMarkAsRead: Int = R.drawable.notification_action_mark_as_read
+    override val wearIconDelete: Int = R.drawable.notification_action_delete
+    override val wearIconArchive: Int = R.drawable.notification_action_archive
+    override val wearIconReplyAll: Int = R.drawable.notification_action_reply
+    override val wearIconMarkAsSpam: Int = R.drawable.notification_action_mark_as_spam
 
     override val messagesChannelName: String
         get() = context.getString(R.string.notification_channel_messages_title)
