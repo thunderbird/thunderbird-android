@@ -3,12 +3,16 @@ package com.fsck.k9;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import android.content.Context;
@@ -189,6 +193,7 @@ public class Account implements BaseAccount {
     private long lastFolderListRefreshTime;
     private boolean isFinishedSetup = false;
     private boolean muteMailingLists;
+    private Set<String> mutedSenders;
 
     private boolean changedVisibleLimits = false;
 
@@ -396,8 +401,45 @@ public class Account implements BaseAccount {
         this.muteMailingLists = muteMailingLists;
     }
 
+    public synchronized String getMutedSendersAsString() {
+        return TextUtils.join(";", getMutedSenders());
+    }
+
+    public synchronized String[] getMutedSenders() {
+        if (mutedSenders == null) return new String[0];
+
+        final String[] result = mutedSenders.toArray(new String[mutedSenders.size()]);
+        Arrays.sort(result);
+        return result;
+    }
+
+    public synchronized void setMutedSenders(String mutedSenders) {
+        final List<String> list = mutedSenders == null || mutedSenders.equals("")
+                ? Collections.emptyList()
+                : Arrays.asList(TextUtils.split(mutedSenders, ";"));
+        this.mutedSenders = new HashSet<String>(list);
+    }
+
+    public synchronized void setMutedSenders(Collection<String> mutedSenders) {
+        this.mutedSenders = new HashSet<String>(mutedSenders);
+    }
+
     public boolean isNotificationSuppressed(MimeMessage message) {
-        return muteMailingLists && message.getHeader("List-ID").length > 0;
+        if (muteMailingLists && message.getHeader("List-ID").length > 0)
+            return true;
+
+        if (mutedSenders != null && !mutedSenders.isEmpty()) {
+            for (Address address : message.getSender()) {
+                if (mutedSenders.contains(address.getAddress()))
+                    return true;
+            }
+            for (Address address : message.getFrom()) {
+                if (mutedSenders.contains(address.getAddress()))
+                    return true;
+            }
+        }
+
+        return false;
     }
 
     public synchronized DeletePolicy getDeletePolicy() {
