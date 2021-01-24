@@ -46,7 +46,8 @@ class AccountSetupAccountType : K9Activity() {
         val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT) ?: error("No account UUID provided")
         account = preferences.getAccount(accountUuid) ?: error("No account with given UUID found")
         makeDefault = intent.getBooleanExtra(EXTRA_MAKE_DEFAULT, false)
-        initialAccountSettings = intent.getParcelableExtra(EXTRA_DEFAULT_SETTINGS) as InitialAccountSettings
+        initialAccountSettings = intent.getParcelableExtra(EXTRA_INITIAL_ACCOUNT_SETTINGS)
+            ?: error("Initial account settings are missing")
     }
 
     private fun setupPop3Account() {
@@ -113,14 +114,19 @@ class AccountSetupAccountType : K9Activity() {
     companion object {
         private const val EXTRA_ACCOUNT = "account"
         private const val EXTRA_MAKE_DEFAULT = "makeDefault"
-        private const val EXTRA_DEFAULT_SETTINGS = "defaultAccountSettings"
+        private const val EXTRA_INITIAL_ACCOUNT_SETTINGS = "initialAccountSettings"
 
         @JvmStatic
-        fun actionSelectAccountType(context: Context, account: Account, makeDefault: Boolean, initialAccountSettings: InitialAccountSettings) {
+        fun actionSelectAccountType(
+            context: Context,
+            account: Account,
+            makeDefault: Boolean,
+            initialAccountSettings: InitialAccountSettings
+        ) {
             val intent = Intent(context, AccountSetupAccountType::class.java).apply {
                 putExtra(EXTRA_ACCOUNT, account.uuid)
                 putExtra(EXTRA_MAKE_DEFAULT, makeDefault)
-                putExtra(EXTRA_DEFAULT_SETTINGS, initialAccountSettings)
+                putExtra(EXTRA_INITIAL_ACCOUNT_SETTINGS, initialAccountSettings)
             }
             context.startActivity(intent)
         }

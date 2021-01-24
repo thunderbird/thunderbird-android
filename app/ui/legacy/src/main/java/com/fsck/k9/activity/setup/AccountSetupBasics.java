@@ -333,7 +333,8 @@ public class AccountSetupBasics extends K9Activity
         mAccount.setName(getOwnerName());
         mAccount.setEmail(email);
 
-        InitialAccountSettings initialAccountSettings = new InitialAccountSettings(authenticationType, email, password, clientCertificateAlias);
+        InitialAccountSettings initialAccountSettings = new InitialAccountSettings(authenticationType, email, password,
+                clientCertificateAlias);
 
         AccountSetupAccountType.actionSelectAccountType(this, mAccount, false, initialAccountSettings);
     }
