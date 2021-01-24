@@ -27,6 +27,8 @@ import com.fsck.k9.DI;
 import com.fsck.k9.LocalKeyStoreManager;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.account.AccountCreator;
+import com.fsck.k9.helper.EmailHelper;
+import com.fsck.k9.setup.ServerNameSuggester;
 import com.fsck.k9.ui.base.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
 import com.fsck.k9.backend.BackendManager;
@@ -45,8 +47,6 @@ import com.fsck.k9.ui.R;
 import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,6 +64,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private final BackendManager backendManager = DI.get(BackendManager.class);
     private final K9JobManager jobManager = DI.get(K9JobManager.class);
     private final AccountCreator accountCreator = DI.get(AccountCreator.class);
+    private final ServerNameSuggester serverNameSuggester = DI.get(ServerNameSuggester.class);
 
     private String mStoreType;
     private TextInputEditText mUsernameView;
@@ -526,30 +527,24 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                  * Set the username and password for the outgoing settings to the username and
                  * password the user just set for incoming.
                  */
-                try {
-                    String username = mUsernameView.getText().toString();
+                String username = mUsernameView.getText().toString();
 
-                    String password = null;
-                    String clientCertificateAlias = null;
-                    AuthType authType = getSelectedAuthType();
-                    if (AuthType.EXTERNAL == authType) {
-                        clientCertificateAlias = mClientCertificateSpinner.getAlias();
-                    } else {
-                        password = mPasswordView.getText().toString();
-                    }
-
-                    URI oldUri = new URI(mAccount.getTransportUri());
-                    ServerSettings transportServer = new ServerSettings(Protocols.SMTP, oldUri.getHost(),
-                            oldUri.getPort(), ConnectionSecurity.SSL_TLS_REQUIRED, authType, username, password,
-                            clientCertificateAlias);
-                    String transportUri = backendManager.createTransportUri(transportServer);
-                    mAccount.setTransportUri(transportUri);
-                } catch (URISyntaxException use) {
-                    /*
-                     * If we can't set up the URL we just continue. It's only for
-                     * convenience.
-                     */
+                String password = null;
+                String clientCertificateAlias = null;
+                AuthType authType = getSelectedAuthType();
+                if (AuthType.EXTERNAL == authType) {
+                    clientCertificateAlias = mClientCertificateSpinner.getAlias();
+                } else {
+                    password = mPasswordView.getText().toString();
                 }
+
+                String domain = EmailHelper.getDomainFromEmailAddress(mAccount.getEmail());
+                String host = serverNameSuggester.suggestServerName(Protocols.SMTP, domain);
+                ServerSettings transportServer = new ServerSettings(Protocols.SMTP, host,
+                        -1, ConnectionSecurity.SSL_TLS_REQUIRED, authType, username, password,
+                        clientCertificateAlias);
+                String transportUri = backendManager.createTransportUri(transportServer);
+                mAccount.setTransportUri(transportUri);
 
                 AccountSetupOutgoing.actionOutgoingSettings(this, mAccount, mMakeDefault);
             }

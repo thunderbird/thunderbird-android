@@ -26,13 +26,10 @@ import com.fsck.k9.autodiscovery.api.DiscoveryResults;
 import com.fsck.k9.autodiscovery.api.DiscoveryTarget;
 import com.fsck.k9.autodiscovery.providersxml.ProvidersXmlDiscovery;
 import com.fsck.k9.backend.BackendManager;
-import com.fsck.k9.helper.EmailHelper;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.AuthType;
-import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mailstore.SpecialLocalFoldersCreator;
-import com.fsck.k9.preferences.Protocols;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.ConnectionSettings;
 import com.fsck.k9.view.ClientCertificateSpinner;
@@ -317,7 +314,6 @@ public class AccountSetupBasics extends K9Activity
 
     private void onManualSetup() {
         String email = mEmailView.getText().toString();
-        String domain = EmailHelper.getDomainFromEmailAddress(email);
 
         String password = null;
         String clientCertificateAlias = null;
@@ -337,18 +333,10 @@ public class AccountSetupBasics extends K9Activity
         mAccount.setName(getOwnerName());
         mAccount.setEmail(email);
 
-        // set default uris
-        // NOTE: they will be changed again in AccountSetupAccountType!
-        ServerSettings storeServer = new ServerSettings(Protocols.IMAP, "mail." + domain, -1,
-                ConnectionSecurity.SSL_TLS_REQUIRED, authenticationType, email, password, clientCertificateAlias);
-        ServerSettings transportServer = new ServerSettings(Protocols.SMTP, "mail." + domain, -1,
-                ConnectionSecurity.SSL_TLS_REQUIRED, authenticationType, email, password, clientCertificateAlias);
-        String storeUri = backendManager.createStoreUri(storeServer);
-        String transportUri = backendManager.createTransportUri(transportServer);
-        mAccount.setStoreUri(storeUri);
-        mAccount.setTransportUri(transportUri);
+        InitialAccountSettings initialAccountSettings = new InitialAccountSettings(authenticationType, email, password,
+                clientCertificateAlias);
 
-        AccountSetupAccountType.actionSelectAccountType(this, mAccount, false);
+        AccountSetupAccountType.actionSelectAccountType(this, mAccount, false, initialAccountSettings);
     }
 
     public void onClick(View v) {
