@@ -73,6 +73,7 @@
         <attr name="messageListActiveItemBackgroundColor" format="reference|color"/>
         <attr name="messageListPreviewTextColor" format="reference|color"/>
         <attr name="messageListDividerColor" format="reference|color"/>
+        <attr name="messageListStateIconTint" format="reference|color"/>
         <attr name="messageListAttachment" format="reference"/>
         <attr name="messageListAnswered" format="reference"/>
         <attr name="messageListForwarded" format="reference"/>

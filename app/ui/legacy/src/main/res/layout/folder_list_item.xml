@@ -18,7 +18,7 @@
         android:layout_height="24dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="32dp"
-        app:srcCompat="@drawable/ic_drafts_folder_light" />
+        tools:src="@drawable/ic_drafts_folder" />
 
     <TextView
         android:id="@+id/folder_name"
