@@ -5,6 +5,14 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.727" versioncode="27027" date="2021-01-25">
+        <change>Updated "About" screen</change>
+        <change>Changed appearance of "Changelog" screen</change>
+        <change>Added "User forum" link to the "Settings" screen</change>
+        <change>Cleaned up some of the icons used in the app</change>
+        <change>Fixed bug when going back to previous steps when setting up an account</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.726" versioncode="27026">
         <change>Updated password input fields to be able to reveal passwords</change>
         <change>Added support for going back to previous steps when setting up an account</change>
