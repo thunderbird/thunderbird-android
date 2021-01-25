@@ -8,6 +8,9 @@
   <string name="unread_widget_label">Μη αναγνωσμένα K-9</string>
   <!--Used in the about dialog-->
   <string name="app_copyright_fmt">Πνευματικά δικαιώματα 2008-<xliff:g>%s</xliff:g> από The K-9 Dog Walkers. Τμηματικά πνευματικά δικαιώματα 2006-<xliff:g>%s</xliff:g> από το Android Open Source Project.</string>
+  <string name="app_license">Άδεια χρήσης Apache, έκδοση 2.0.</string>
+  <string name="about_libraries">Βιβλιοθήκες</string>
+  <string name="license">Άδεια</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Καλώς ήλθατε στο K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -45,10 +48,13 @@
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Ο λογαριασμός \'<xliff:g id="account">%s</xliff:g>\' θα διαγραφεί από το K-9 Mail.</string>
   <!--=== General strings ==================================================================-->
+  <string name="authors">Συντελεστές</string>
+  <string name="app_revision">Πληροφορίες έκδοσης</string>
   <string name="read_messages_label">Ανάγνωση μηνυμάτων</string>
   <string name="read_messages_desc">Επιτρέπει στην εφαρμογή να διαβάζει τα email.</string>
   <string name="delete_messages_label">Διαγραφή μηνυμάτων</string>
   <string name="delete_messages_desc">Επιτρέπει στην εφαρμογή να σβήνει τα email.</string>
+  <string name="about_title">Σχετικά με το K-9 Mail</string>
   <string name="accounts_title">Λογαριασμοί</string>
   <string name="folders_title">Φάκελοι</string>
   <string name="advanced">Προχωρημένα</string>
@@ -84,6 +90,7 @@
   <string name="forward_action">Προώθηση</string>
   <string name="forward_as_attachment_action">Προώθηση σαν συνημέννο</string>
   <string name="move_action">Μετακίνηση</string>
+  <string name="move_to_drafts_action">Μετακίνηση στα πρόχειρα</string>
   <string name="single_message_options_action">Επιλογές μηνύματος…</string>
   <string name="refile_action">Επαναρχειοθέτηση…</string>
   <string name="done_action">Συμπληρώθηκε</string>
@@ -98,6 +105,7 @@
   <string name="search_action">Αναζήτηση</string>
   <string name="search_results">Αποτελέσματα αναζήτησης</string>
   <string name="preferences_action">Ρυθμίσεις</string>
+  <string name="folders_action">Διαχείριση φακέλων</string>
   <string name="account_settings_action">Ρυθμίσεις λογαριασμού</string>
   <string name="remove_account_action">Διαγραφή λογαριασμού</string>
   <string name="mark_as_read_action">Σήμανση ως αναγνωσμένου</string>
@@ -132,6 +140,10 @@
   <string name="status_loading_error">Σφάλμα φόρτωση μηνύματος</string>
   <string name="load_more_messages_fmt">Φόρτωση
     έως <xliff:g id="messages_to_load">%d</xliff:g> περισσότερων</string>
+  <string name="size_format_gigabytes">%.1f GB</string>
+  <string name="size_format_megabytes">%.1f MB</string>
+  <string name="size_format_kilobytes">%.1f kB</string>
+  <string name="size_format_bytes">%d B</string>
   <string name="account_size_changed">Ο λογαριασμός \'<xliff:g id="account">%s</xliff:g>\' συμπυκνώθηκε από <xliff:g id="oldSize">%s</xliff:g>    σε <xliff:g id="newSize">%s</xliff:g></string>
   <string name="compacting_account">Συμπύκνωση λογαριασμού \'<xliff:g id="account">%s</xliff:g>\'</string>
   <string name="notification_new_title">Νέο μήνυμα</string>
@@ -448,6 +460,7 @@
   <string name="account_settings_mail_check_frequency_label">Συχνότητα ενημέρωσης φακέλων</string>
   <string name="account_settings_color_label">Χρώμα λογαριασμού</string>
   <string name="account_settings_color_summary">Επιλογή χρώματος για χρήση στους φακέλους και τη λίστα των λογαριασμών</string>
+  <string name="account_settings_color_none">Χωρίς χρώμα</string>
   <string name="account_settings_led_color_label">Χρώμα ειδοποίησης LED</string>
   <string name="account_settings_led_color_summary">Επιλογή του χρώματος που θα αναβοσβήνει η λυχνία του κινητού για αυτό το λογαριασμό</string>
   <string name="account_settings_mail_display_count_label">Μέγεθος τοπικού φακέλου</string>
@@ -624,6 +637,7 @@
   <string name="settings_message_theme_label">Θέμα προβολής μηνύματος</string>
   <string name="settings_compose_theme_label">Θέμα σύνθεσης</string>
   <string name="settings_language_label">Γλώσσα</string>
+  <string name="preference_search_no_results">Δεν βρέθηκαν ρυθμίσεις</string>
   <string name="settings_message_theme_selection_label">Σταθερό θέμα μηνύματος</string>
   <string name="settings_message_theme_selection_summary_off">Επιλογή του θέματος προβολής μηνύματος κατά την προβολή του μηνύματος</string>
   <string name="settings_message_theme_selection_summary_on">Χρήση θέματος σταθερού μηνύματος</string>
@@ -647,6 +661,7 @@
   <string name="volume_navigation_title">Πλοήγηση με πλήκτρο έντασης</string>
   <string name="volume_navigation_message">Προβολή μηνύματος</string>
   <string name="volume_navigation_list">Διάφορες προβολές λίστας</string>
+  <string name="hide_special_accounts_title">Απόκρυψη Ενοποιημένων Εισερχομένων</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Μη αναγνωσμένα</string>
   <string name="search_all_messages_title">Όλα τα μηνύματα</string>
@@ -660,6 +675,7 @@
   <string name="account_settings_searchable_displayable">Προβαλλόμενοι</string>
   <string name="account_settings_searchable_none">Κανένας</string>
   <string name="account_settings_no_folder_selected">Κανένας</string>
+  <string name="account_settings_automatic_special_folder">Αυτόματα (%s)</string>
   <string name="font_size_settings_title">Μέγεθος γραμματοσειράς</string>
   <string name="font_size_settings_description">Ρύθμιση μεγέθους γραμματοσειράς</string>
   <string name="font_size_account_list">Λίστα λογαριασμών</string>
@@ -701,6 +717,9 @@
   <string name="confirm_discard_draft_message_title">Απόρριψη μηνύματος;</string>
   <string name="confirm_discard_draft_message">Είστε σίγουροι ότι θέλετε να απορρίψετε αυτό το μήνυμα;</string>
   <string name="select_text_now">Επιλογή κειμένου για αντιγραφή</string>
+  <string name="dialog_confirm_clear_local_folder_title">Καθαρισμός τοπικών μηνυμάτων;</string>
+  <string name="dialog_confirm_clear_local_folder_message">Αυτό θα καταργήσει όλα τα τοπικά μηνύματα από το φάκελο. Δεν θα διαγραφούν μηνύματα από το διακομιστή.</string>
+  <string name="dialog_confirm_clear_local_folder_action">Καθαρισμός μηνυμάτων</string>
   <string name="dialog_confirm_delete_title">Επιβεβαίωση διαγραφής</string>
   <string name="dialog_confirm_delete_message">Θέλετε να διαγράψετε αυτό το μήνυμα;</string>
   <plurals name="dialog_confirm_delete_messages">
@@ -711,6 +730,8 @@
   <string name="dialog_confirm_delete_cancel_button">Άκυρο</string>
   <string name="dialog_confirm_mark_all_as_read_title">Επιβεβαίωση σήμανσης όλων ως αναγνωσμένα</string>
   <string name="dialog_confirm_mark_all_as_read_message">Θέλετε να σημανθούν όλα τα μηνύματα ως αναγνωσμένα;</string>
+  <string name="dialog_confirm_empty_trash_title">Επιβεβαίωση εκκαθάρισης απορριμμάτων</string>
+  <string name="dialog_confirm_empty_trash_message">Θέλετε να αδειάσετε το φάκελο απορριμμάτων;</string>
   <string name="dialog_confirm_mark_all_as_read_confirm_button">Ναι</string>
   <string name="dialog_confirm_mark_all_as_read_cancel_button">Όχι</string>
   <string name="dialog_confirm_spam_title">Επιβεβαίωση μετακίνησης στο φάκελο σκουπιδιών</string>
@@ -723,19 +744,38 @@
   <string name="dialog_attachment_progress_title">Κατέβασμα συνημμένου</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
+  <string name="settings_list_backup_category">Αντίγραφο ασφαλείας</string>
   <string name="settings_list_miscellaneous_category">Διάφορα</string>
+  <string name="settings_export_title">Εξαγωγή ρυθμίσεων</string>
   <string name="settings_export_button">Εξαγωγή</string>
   <string name="settings_export_share_button">Διανομή</string>
   <string name="settings_export_progress_text">Εξαγωγή ρυθμίσεων σε εξέλιξη…</string>
   <string name="settings_export_success_generic">Οι ρυθμίσεις έχουν εξαχθεί με επιτυχία</string>
   <string name="settings_export_failure">Αποτυχία εξαγωγής ρυθμίσεων</string>
   <string name="settings_import_title">Εισαγωγή ρυθμίσεων</string>
+  <string name="settings_import_pick_document_button">Επιλογή αρχείου</string>
   <string name="settings_import_button">Εισαγωγή</string>
+  <string name="settings_import_success_generic">Οι ρυθμίσεις έχουν εισαχθεί με επιτυχία</string>
+  <string name="settings_import_failure">Αποτυχία εισαγωγής ρυθμίσεων</string>
+  <string name="settings_import_partial_failure">Αποτυχία εισαγωγής ορισμένων ρυθμίσεων</string>
+  <string name="settings_import_status_success">Η εισαγωγή ολοκληρώθηκε με επιτυχία</string>
+  <string name="settings_import_status_password_required">Απαιτείται κωδικός πρόσβασης</string>
+  <string name="settings_import_status_not_imported">Δεν έχει εισαχθεί</string>
+  <string name="settings_import_status_error">Αποτυχία εισαγωγής</string>
   <string name="settings_import_later_button">Αργότερα</string>
   <string name="settings_import">Εισαγωγή ρυθμίσεων</string>
   <string name="settings_importing">Εισαγωγή ρυθμίσεων σε εξέλιξη…</string>
+  <plurals name="settings_import_password_prompt">
+    <item quantity="one">Για να χρησιμοποιήσετε το λογαριασμό «<xliff:g id="account">%s</xliff:g>» πρέπει να εισάγετε τον κωδικό πρόσβασης του διακομιστή.</item>
+    <item quantity="other">Για να χρησιμοποιήσετε το λογαριασμό «<xliff:g id="account">%s</xliff:g>» πρέπει να εισάγετε τους κωδικούς πρόσβασης του διακομιστή.</item>
+  </plurals>
+  <string name="settings_import_incoming_server_password_hint">Κωδικός πρόσβασης διακομιστή εισερχομένων</string>
+  <string name="settings_import_outgoing_server_password_hint">Κωδικός πρόσβασης διακομιστή εξερχομένων</string>
+  <string name="settings_import_use_same_password_for_outgoing_server">Χρήση του ίδιου κωδικού πρόσβασης και για το διακομιστή εξερχομένων</string>
+  <string name="server_name_format">Όνομα διακομιστή: <xliff:g id="hostname">%s</xliff:g></string>
   <string name="unread_widget_select_account">Προβολή πλήθους μη αναγνωσμένων για…</string>
   <string name="unread_widget_account_title">Λογαριασμός</string>
+  <string name="unread_widget_unified_inbox_account_summary">Ενιαία Εισερχόμενα</string>
   <string name="unread_widget_folder_title">Φάκελος</string>
   <string name="unread_widget_action_done">Ολοκληρώθηκε</string>
   <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
@@ -780,6 +820,8 @@
   <string name="account_settings_remote_search_enabled_summary">Αναζήτηση μηνυμάτων στον εξυπηρέτη επιπρόσθετα αυτών που είναι στη συσκευή σας</string>
   <string name="action_remote_search">Αναζήτηση μηνυμάτων στον εξυπηρέτη</string>
   <string name="remote_search_unavailable_no_network">Η απομακρυσμένη αναζήτηση δεν είναι διαθέσιμη χωρίς σύνδεση δικτύου.</string>
+  <string name="global_settings_background_as_unread_indicator_label">Αλλαγή χρώματος μετά την ανάγνωση</string>
+  <string name="global_settings_background_as_unread_indicator_summary">Ένα διαφορετικό φόντο θα δείχνει ότι το μήνυμα έχει διαβαστεί</string>
   <string name="global_settings_threaded_view_label">Προβολή συζήτησης</string>
   <string name="global_settings_threaded_view_summary">Σύντμηση μηνυμάτων που ανήκουν στον ίδιο νήμα</string>
   <string name="upgrade_databases_title">Αναβάθμιση βάσεων δεδομένων</string>
@@ -816,12 +858,17 @@
   <string name="recipient_bcc">Κρυφή Κοιν:</string>
   <string name="recipient_to">Προς</string>
   <string name="recipient_from">Από:</string>
+  <string name="unknown_recipient">&lt;Άγνωστος Παραλήπτης&gt;</string>
+  <string name="unknown_sender">&lt;Άγνωστος Αποστολέας&gt;</string>
   <string name="address_type_home">Οικία</string>
   <string name="address_type_work">Εργασία</string>
   <string name="address_type_other">\'Αλλο</string>
   <string name="address_type_mobile">Κινητό</string>
   <string name="compose_error_no_draft_folder">Δεν υπάρχει φάκελος Πρόχειρα για αυτόν τον λογαριασμό!</string>
+  <string name="compose_error_no_key_configured">Δεν έχει ρυθμιστεί κλειδί για αυτόν το λογαριασμό! Ελέγξτε τις ρυθμίσεις σας.</string>
+  <string name="error_crypto_provider_incompatible">Η υπηρεσία παροχής κρυπτογράφησης χρησιμοποιεί μη συμβατή έκδοση. Ελέγξτε τις ρυθμίσεις σας!</string>
   <string name="error_crypto_provider_connect">Δεν είναι δυνατή η σύνδεση με τον πάροχο κρυπτογράφησης, ελέγξτε τις ρυθμίσεις σας ή πιέστε το εικονίδιο κρυπτογράφηση για επανάληψη!</string>
+  <string name="error_crypto_provider_ui_required">Απέτυχε η προετοιμασία της κρυπτογράφησης από άκρο σε άκρο, ελέγξτε τις ρυθμίσεις σας</string>
   <string name="error_crypto_inline_attach">Η λειτουργία σε PGP/INLINE δεν υποστιρίχει συνημμένα αρχεία!</string>
   <string name="enable_inline_pgp">Ενεργοποίηση PGP/INLINE</string>
   <string name="disable_inline_pgp">Απενεργοποίηση PGP/INLINE</string>
@@ -844,9 +891,18 @@
   <string name="openpgp_dialog_sign_only_minus_break">Οι υπογραφές μπορεί να καταστραφούν όταν στέλνονται σε λίστες αλληλογραφίας.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">Οι υπογραφές μπορεί να εμφανίζονται ως συνημμένα «signature.asc» σε μερικά προγράμματα.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Τα κρυπτογραφημένα μηνύματα περιλαμβάνουν πάντα μια υπογραφή.</string>
+  <string name="crypto_msg_title_plaintext">Aπλό κείμενο</string>
+  <string name="crypto_msg_unencrypted_sign_error">Η υπογραφή κρυπτογράφησης από άκρο σε άκρο περιείχε σφάλμα</string>
   <string name="crypto_msg_unsupported_encrypted">Το μήνυμα είναι κρυπτογραφημένο σε μη υποστηριζόμενη μορφοποίηση</string>
   <string name="crypto_msg_cancelled">Το μήνυμα είναι κρυπτογραφημένο, αλλά η αποκρυπτογράφηση ακυρώθηκε.</string>
+  <string name="crypto_msg_title_encrypted_unknown">Κρυπτογραφημένο </string>
+  <string name="crypto_msg_title_encrypted_unsigned">Κρυπτογραφημένο</string>
+  <string name="crypto_msg_title_encrypted_signed">Κρυπτογραφημένο</string>
   <string name="crypto_info_ok">Εντάξει</string>
+  <string name="crypto_info_search_key">Αναζήτηση Κλειδιού</string>
+  <string name="crypto_info_view_signer">Προβολή Υπογράφοντα</string>
+  <string name="crypto_info_view_sender">Προβολή Αποστολέα</string>
+  <string name="crypto_info_view_security_warning">Λεπτομέρειες</string>
   <string name="locked_attach_unlock">Ξεκλείδωσε</string>
   <string name="locked_attach_unencrypted">Αυτό το τμήμα δεν ήταν κρυπτογραφημένο και μπορεί να μην είναι ασφαλή.</string>
   <string name="locked_attach_title">Το συνημμένο αρχείο δεν είναι προστατευμένο </string>
@@ -857,6 +913,9 @@
   <string name="messageview_crypto_error_title">Σφάλμα αποκρυπτογράφησης μηνύματος</string>
   <string name="recipient_error_non_ascii">Δεν υποστηρίζονται ειδικοί χαρακτήρες!</string>
   <string name="recipient_error_parse_failed">Σφάλμα στη διεύθυνση!</string>
+  <string name="account_settings_crypto_hide_sign_only">Απόκρυψη μη κρυπτογραφημένων υπογραφών</string>
+  <string name="account_settings_crypto_hide_sign_only_on">Θα εμφανίζονται μόνο κρυπτογραφημένες υπογραφές</string>
+  <string name="account_settings_crypto_hide_sign_only_off">Θα εμφανίζονται όλες οι υπογραφές</string>
   <string name="error_sign_only_no_encryption">Η κρυπτογράφηση δεν είναι διαθέσιμη στη λειτουργία υπογραφής μόνο!</string>
   <string name="unsigned_text_divider_label">Ανυπόγραφο κείμενο</string>
   <string name="apg_deprecated_title">Προειδοποίηση απόρριψης APG</string>
@@ -867,9 +926,32 @@
   <string name="apg_learn_more">Μπορείτε να <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">κάνετε κλικ εδώ</a> για να μάθετε περισσότερα.</string>
   <string name="apg_deprecated_ok">Το \'πιασα!</string>
   <string name="apg">APG</string>
+  <string name="crypto_no_provider_title">Αυτό το μήνυμα είναι κρυπτογραφημένο</string>
+  <string name="crypto_no_provider_message">Αυτό το μήνυμα έχει κρυπτογραφηθεί με το OpenPGP.\nΓια να το διαβάσετε, πρέπει να εγκαταστήσετε και να ρυθμίσετε τις παραμέτρους μιας συμβατής εφαρμογής OpenPGP.</string>
+  <string name="crypto_no_provider_button">Μετάβαση στις Ρυθμίσεις</string>
+  <string name="mail_list_widget_text">Λίστα Μηνυμάτων του K-9</string>
+  <string name="mail_list_widget_loading">Φόρτωση μηνυμάτων...</string>
+  <string name="fetching_folders_failed">Η λήψη της λίστας φακέλων απέτυχε</string>
+  <string name="error_recipient_crypto_retrieve">Παρουσιάστηκε σφάλμα κατά την ανάκτηση της κατάστασης του παραλήπτη από την υπηρεσία παροχής OpenPGP!</string>
+  <string name="openpgp_enabled_error_title">Δεν είναι δυνατή η κρυπτογράφηση</string>
+  <string name="openpgp_enabled_error_msg">Ορισμένοι από τους επιλεγμένους παραλήπτες δεν υποστηρίζουν αυτήν τη δυνατότητα!</string>
+  <string name="enable_encryption">Ενεργοποίηση Κρυπτογράφησης</string>
+  <string name="disable_encryption">Απενεργοποίηση Κρυπτογράφησης</string>
+  <string name="openpgp_description_text1">Η κρυπτογράφηση μηνυμάτων εξασφαλίζει ότι μπορούν να διαβαστούν από τον παραλήπτη και από κανέναν άλλο.</string>
+  <string name="openpgp_description_text3">Η κρυπτογράφηση θα εμφανίζεται μόνο εάν υποστηρίζεται από όλους τους παραλήπτες, και πρέπει να σας έχουν στείλει ένα μήνυμα ηλεκτρονικού ταχυδρομείου στο παρελθόν.</string>
+  <string name="openpgp_description_text2">Εναλλαγή κρυπτογράφησης κάνοντας κλικ σε αυτό το εικονίδιο.</string>
+  <string name="openpgp_enabled_error_gotit">Το \'πιασα</string>
   <string name="openpgp_enabled_error_back">Πίσω</string>
+  <string name="openpgp_enabled_error_disable">Απενεργοποίηση Κρυπτογράφησης</string>
+  <string name="openpgp_encryption">Κρυπτογράφηση OpenPGP</string>
   <string name="general_settings_title">Γενικές ρυθμίσεις</string>
+  <string name="encrypted_subject">Κρυπτογραφημένο μήνυμα</string>
+  <string name="ac_transfer_sending_to">Αποστολή μηνύματος σε:</string>
+  <string name="switch_on">Ενεργό</string>
+  <string name="switch_off">Ανενεργό</string>
   <string name="navigation_drawer_open">Άνοιγμα</string>
   <string name="navigation_drawer_close">Κλείσιμο</string>
   <!--permissions-->
+  <string name="permission_contacts_rationale_title">Να επιτρέπεται η πρόσβαση στις επαφές</string>
+  <string name="permission_contacts_rationale_message">Για να είναι δυνατή η παροχή προτάσεων επαφών και η εμφάνιση των ονομάτων και φωτογραφιών των επαφών, η εφαρμογή χρειάζεται πρόσβαση στις επαφές σας.</string>
 </resources>

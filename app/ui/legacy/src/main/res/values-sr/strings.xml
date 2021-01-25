@@ -9,10 +9,18 @@
   <!--Used in the about dialog-->
   <string name="app_authors">К-9 развојни тим</string>
   <string name="app_copyright_fmt">Ауторска права 2008-<xliff:g>%s</xliff:g> K-9 развојни тим. Део ауторских права 2006-<xliff:g>%s</xliff:g> Андроид пројекат отвореног кoда.</string>
-  <string name="source_code">Извор</string>
+  <string name="source_code">Изворни код</string>
   <string name="app_license">Апач лиценца, верзије 2.0</string>
+  <string name="about_project_title">Пројекат отвореног кода</string>
+  <string name="about_website_title">Веб сајт</string>
+  <string name="user_forum_title">Кориснички форум</string>
+  <string name="about_fediverse_title">Федерација</string>
+  <string name="about_twitter_title">Твитер</string>
   <string name="about_libraries">Библиотеке</string>
   <string name="license">Лиценца</string>
+  <string name="changelog_title">Дневник измена</string>
+  <string name="changelog_loading_error">Не могу да учитам дневник измена.</string>
+  <string name="changelog_version_title">Верзија %s</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Добро дошли у К-9 Пошту</string>
   <string name="accounts_welcome"><![CDATA[

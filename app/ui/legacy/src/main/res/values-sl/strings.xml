@@ -9,10 +9,18 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Sprehajalci psov v skupini The K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Avtorske pravice 2008–<xliff:g>%s</xliff:g> The K-9 Dog Walkers in 2006–<xliff:g>%s</xliff:g> Odprtokodna skupnost projekta Android.</string>
-  <string name="source_code">Vir</string>
+  <string name="source_code">Izvorna koda</string>
   <string name="app_license">Licenca Apache, različica 2.0</string>
+  <string name="about_project_title">Odprtokodni projekt</string>
+  <string name="about_website_title">Spletna stran</string>
+  <string name="user_forum_title">Uporabniški forum</string>
+  <string name="about_fediverse_title">Fediverse</string>
+  <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">Knjižnice</string>
   <string name="license">Dovoljenje</string>
+  <string name="changelog_title">Dnevnik sprememb</string>
+  <string name="changelog_loading_error">Dnevnika sprememb ni bilo mogoče naložiti.</string>
+  <string name="changelog_version_title">Različica %s</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Dobrodošli v K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -22,20 +30,20 @@ K-9 Mail je zmogljiv brezplačni odjemalec elektronske pošte za okolje Android.
 Podpira različne storitve, kot so:
 </p>
 <ul>
-<li>potisno pošiljanje pošte z uporabo IMAP IDLE</li>
-<li>hitro in odzivno delovanje</li>
-<li>prerazporejanje sporočil</li>
-<li>podpora različnim podpisom sporočila</li>
-<li>slepa povratnica poslanega sporočila</li>
-<li>prilagajanje prikazovanja map</li>
-<li>izbirno usklajevanje</li>
-<li>nastavljanje poljubnega povratnega naslova</li>
-<li>tipkovne bližnjice</li>
-<li>izboljšana podpora protokolu IMAP</li>
-<li>podpora shranjevanja prilog na kartico SD</li>
-<li>prilagojeno praznjenje smeti</li>
-<li>različne možnosti razvrščanja sporočil</li>
-<li>… in še mnogo več.</li>
+  <li>potisno pošiljanje pošte z uporabo IMAP IDLE</li>
+  <li>hitro in odzivno delovanje</li>
+  <li>prerazporejanje sporočil</li>
+  <li>podpora različnim podpisom sporočila</li>
+  <li>slepa povratnica poslanega sporočila</li>
+  <li>prilagajanje prikazovanja map</li>
+  <li>izbirno usklajevanje</li>
+  <li>nastavljanje poljubnega povratnega naslova</li>
+  <li>tipkovne bližnjice</li>
+  <li>izboljšana podpora protokolu IMAP</li>
+  <li>podpora shranjevanja prilog na kartico SD</li>
+  <li>prilagojeno praznjenje smeti</li>
+  <li>različne možnosti razvrščanja sporočil</li>
+  <li>… in še mnogo več.</li>
 </ul>
 <p>
 Program K-9 Mail ne podpira brezplačnih računov Hotmail in ima (kot tudi mnogo drugih odjemalcev) nekaj težav s podporo Microsoft Exchange.
@@ -43,7 +51,7 @@ Program K-9 Mail ne podpira brezplačnih računov Hotmail in ima (kot tudi mnogo
 Poročila o napakah, predloge za nove funkcije in vprašanja lahko pošljete na
 <a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
 </p>
-]]></string>
+    ]]></string>
   <!--Default signature-->
   <string name="default_signature">-- \nPoslano s programom K-9 Mail.</string>
   <!--General strings that include the app name-->
@@ -774,7 +782,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="settings_list_miscellaneous_category">Razno</string>
   <string name="settings_export_title">Izvozi nastavitve</string>
   <string name="settings_export_button">Izvozi</string>
-  <string name="settings_export_share_button">Objavi z …</string>
+  <string name="settings_export_share_button">Deli</string>
   <string name="settings_export_progress_text">Izvažanje nastavitev …</string>
   <string name="settings_export_success_generic">Nastavitve so bile uspešno izvožene</string>
   <string name="settings_export_failure">Napaka pri izvozu nastavitev</string>
@@ -1028,7 +1036,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="ac_transfer_setting_title">Pošlji nastavitveno sporočilo šifriranja AutoCrypt</string>
   <string name="ac_transfer_setting_summary">Varna izmenjava nastavitev šifriranja med različnimi napravami</string>
   <string name="ac_transfer_title">Nastavitveno sporočilo šifriranja AutoCrypt</string>
-  <string name="ac_transfer_intro">Nastavitveno sporočilo šifriranja AutoCrypt</string>
+  <string name="ac_transfer_intro">Nastavitveno sporočilo šifriranja AutoCrypt varno deli vašo celovito nastavitev z drugimi napravami.</string>
   <string name="ac_transfer_button_send">Pošlji nastavitveno sporočilo</string>
   <string name="ac_transfer_will_be_sent">Sporočilo bo poslano na naslov:</string>
   <string name="ac_transfer_generating">Poteka ustvarjanje nastavitvenega sporočila ...</string>

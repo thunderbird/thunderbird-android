@@ -9,10 +9,18 @@
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Të drejta kopjimi 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Të drejta kopjimi Mbi Pjesë 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="source_code">Burim</string>
+  <string name="source_code">Kod burim</string>
   <string name="app_license">Apache License, Version 2.0</string>
+  <string name="about_project_title">Projekt Me Burim të Hapët</string>
+  <string name="about_website_title">Sajt</string>
+  <string name="user_forum_title">Forum përdoruesish</string>
+  <string name="about_fediverse_title">Fedivers</string>
+  <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">Librari</string>
   <string name="license">Licencë</string>
+  <string name="changelog_title">Regjistër ndryshimesh</string>
+  <string name="changelog_loading_error">S’u ngarkua dot regjistri i ndryshimeve.</string>
+  <string name="changelog_version_title">Version %s</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Mirë se vini te K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[

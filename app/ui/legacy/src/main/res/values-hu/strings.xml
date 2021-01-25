@@ -9,7 +9,6 @@
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> a The K-9 Dog Walkers. Részleges Copyright 2006-<xliff:g>%s</xliff:g> az Android Nyílt Forráskódú Projekt.</string>
-  <string name="source_code">Forrás</string>
   <string name="app_license">Apache licensz, 2.0 verzió</string>
   <string name="about_libraries">Programkönyvtárak</string>
   <string name="license">Licensz</string>

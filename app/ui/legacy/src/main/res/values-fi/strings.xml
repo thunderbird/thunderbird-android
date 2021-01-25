@@ -11,8 +11,15 @@
   <string name="app_copyright_fmt">Tekijänoikeudet 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Osittaiset tekijänoikeudet -<xliff:g>%s</xliff:g> Androidin avoimen lähdekoodin hanke.</string>
   <string name="source_code">Lähdekoodi</string>
   <string name="app_license">Apache-lisenssi, versio 2.0</string>
+  <string name="about_project_title">Avoimen lähdekoodin projekti</string>
+  <string name="about_website_title">Verkkosivusto</string>
+  <string name="user_forum_title">Käyttäjäfoorumi</string>
+  <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">Kirjastot</string>
   <string name="license">Lisenssi</string>
+  <string name="changelog_title">Muutosloki</string>
+  <string name="changelog_loading_error">Muutoslokia ei voitu ladata.</string>
+  <string name="changelog_version_title">Versio %s</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Tervetuloa K-9 Mailiin</string>
   <string name="accounts_welcome"><![CDATA[

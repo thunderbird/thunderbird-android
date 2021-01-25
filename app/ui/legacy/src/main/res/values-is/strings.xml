@@ -9,7 +9,6 @@
   <!--Used in the about dialog-->
   <string name="app_authors">K-9 hundatemjararnir</string>
   <string name="app_copyright_fmt">Höfundarréttur 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Höfundarréttur að hluta 2006-<xliff:g>%s</xliff:g> til Android Open Source verkefnisins.</string>
-  <string name="source_code">Uppruni</string>
   <string name="app_license">Apache notkunarleyfi, útgáfa 2.0</string>
   <string name="about_libraries">Aðgerðasöfn</string>
   <string name="license">Notkunarleyfi</string>
