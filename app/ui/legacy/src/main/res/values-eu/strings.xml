@@ -9,7 +9,6 @@
   <!--Used in the about dialog-->
   <string name="app_authors">K-9 Txakur-paseatzaileak</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project-en zatiak.</string>
-  <string name="source_code">Iturria</string>
   <string name="app_license">Apache lizentzia, 2.0 bertsioa</string>
   <string name="about_libraries">Liburutegiak</string>
   <string name="license">Lizentziak</string>

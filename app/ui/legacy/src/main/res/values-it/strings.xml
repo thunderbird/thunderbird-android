@@ -9,10 +9,18 @@
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="source_code">Sorgenti</string>
+  <string name="source_code">Codice sorgente</string>
   <string name="app_license">Apache License, Versione 2.0</string>
+  <string name="about_project_title">Progetto Open Source</string>
+  <string name="about_website_title">Sito web</string>
+  <string name="user_forum_title">Forum utenti</string>
+  <string name="about_fediverse_title">Fediverse</string>
+  <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">Librerie</string>
   <string name="license">Licenza</string>
+  <string name="changelog_title">Novità</string>
+  <string name="changelog_loading_error">Impossibile caricare le novità.</string>
+  <string name="changelog_version_title">Versione %s</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Benvenuto in K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[

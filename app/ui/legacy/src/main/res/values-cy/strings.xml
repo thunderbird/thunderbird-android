@@ -9,8 +9,11 @@
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Hawlfraint 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Hawlfraint Cyfrannau 2006-<xliff:g>%s</xliff:g> Android Open Source Project.</string>
-  <string name="source_code">Ffynhonnell</string>
+  <string name="source_code">Cod ffynhonnell</string>
   <string name="app_license">Trwydded Apache, Fersiwn 2.0</string>
+  <string name="about_project_title">Prosiect Cod Agored</string>
+  <string name="about_website_title">Gwefan</string>
+  <string name="user_forum_title">Fforwm defnyddiwyr</string>
   <string name="about_libraries">Llyfrgelloedd</string>
   <string name="license">Trwydded</string>
   <!--Welcome message-->
@@ -821,6 +824,8 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="webview_contextmenu_link_share_action">Rhannu dolen</string>
   <string name="webview_contextmenu_link_copy_action">Copïo\'r ddolen i\'r clipfwrdd</string>
   <string name="webview_contextmenu_link_clipboard_label">Dolen</string>
+  <string name="webview_contextmenu_link_text_copy_action">Copïo testun y ddolen i\'r clipfwrdd</string>
+  <string name="webview_contextmenu_link_text_clipboard_label">Testun dolen</string>
   <string name="webview_contextmenu_image_title">Delwedd</string>
   <string name="webview_contextmenu_image_view_action">Gweld delwedd</string>
   <string name="webview_contextmenu_image_save_action">Cadw\'r ddelwedd</string>
@@ -901,6 +906,8 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="recipient_bcc">Bcc</string>
   <string name="recipient_to">At</string>
   <string name="recipient_from">Oddi wrth</string>
+  <string name="unknown_recipient">&lt;Derbyniwr Anhysbys&gt;</string>
+  <string name="unknown_sender">&lt;Anfonwr Anhysbys&gt;</string>
   <string name="address_type_home">Cartref</string>
   <string name="address_type_work">Gwaith</string>
   <string name="address_type_other">Arall</string>

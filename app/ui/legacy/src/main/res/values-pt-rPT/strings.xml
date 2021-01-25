@@ -9,7 +9,6 @@
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Partes protegidas por Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
-  <string name="source_code">Fonte</string>
   <string name="app_license">Licença Apache, versão 2.0.</string>
   <string name="about_libraries">Bibliotecas</string>
   <string name="license">Licença</string>
@@ -93,6 +92,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="forward_as_attachment_action">Encaminhar como anexo</string>
   <string name="edit_as_new_message_action">Editar como nova mensagem</string>
   <string name="move_action">Mover</string>
+  <string name="move_to_drafts_action">Mover para os Rascunhos</string>
   <string name="single_message_options_action">Enviar…</string>
   <string name="refile_action">Relocar…</string>
   <string name="done_action">Terminado</string>
@@ -474,6 +474,20 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_settings_led_color_summary">A cor que o LED do dispositivo deve piscar para esta conta</string>
   <string name="account_settings_mail_display_count_label">Tamanho da pasta local</string>
   <string name="account_settings_autodownload_message_size_label">Obter mensagens até</string>
+  <string name="account_settings_autodownload_message_size_1">1 KiB</string>
+  <string name="account_settings_autodownload_message_size_2">2 KiB</string>
+  <string name="account_settings_autodownload_message_size_4">4 KiB</string>
+  <string name="account_settings_autodownload_message_size_8">8 KiB</string>
+  <string name="account_settings_autodownload_message_size_16">16 KiB</string>
+  <string name="account_settings_autodownload_message_size_32">32 KiB</string>
+  <string name="account_settings_autodownload_message_size_64">64 KiB</string>
+  <string name="account_settings_autodownload_message_size_128">128 KiB</string>
+  <string name="account_settings_autodownload_message_size_256">256 KiB</string>
+  <string name="account_settings_autodownload_message_size_512">512 KiB</string>
+  <string name="account_settings_autodownload_message_size_1024">1 MiB</string>
+  <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
+  <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
+  <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
   <string name="account_settings_autodownload_message_size_any">qualquer tamanho (sem limite)</string>
   <string name="account_settings_message_age_label">Sincronizar mensagens desde</string>
   <string name="account_settings_message_age_any">qualquer altura (sem limite)</string>
@@ -770,6 +784,10 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="settings_import_later_button">Posteriormente</string>
   <string name="settings_import">Importar configurações</string>
   <string name="settings_importing">A importar configurações…</string>
+  <plurals name="settings_import_password_prompt">
+    <item quantity="one">Para poder utilizar a conta \"<xliff:g id="account">%s</xliff:g>\" tem de fornecer as senhas do servidor.</item>
+    <item quantity="other">Para poder utilizar a conta \"<xliff:g id="account">%s</xliff:g>\" tem de fornecer as senhas do servidor.</item>
+  </plurals>
   <string name="settings_import_incoming_server_password_hint">Palavra-passe do servidor de entrada</string>
   <string name="settings_import_outgoing_server_password_hint">Palavra-passe do servidor de saída</string>
   <string name="settings_import_use_same_password_for_outgoing_server">Utilizar a mesma palavra-passe para o servidor de saída</string>
@@ -791,6 +809,8 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="webview_contextmenu_link_share_action">Partilhar hiperligação</string>
   <string name="webview_contextmenu_link_copy_action">Copiar hiperligação para a área de transferência</string>
   <string name="webview_contextmenu_link_clipboard_label">Hiperligação</string>
+  <string name="webview_contextmenu_link_text_copy_action"> Copiar texto do apontador para a área de transferência</string>
+  <string name="webview_contextmenu_link_text_clipboard_label">Texto do apontador</string>
   <string name="webview_contextmenu_image_title">Imagem</string>
   <string name="webview_contextmenu_image_view_action">Ver imagem</string>
   <string name="webview_contextmenu_image_save_action">Guardar imagem</string>
@@ -867,6 +887,8 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="recipient_bcc">Bcc</string>
   <string name="recipient_to">Para</string>
   <string name="recipient_from">De</string>
+  <string name="unknown_recipient">&lt;Recipiente desconhecido&gt;</string>
+  <string name="unknown_sender">&lt;Remetente Desconhecido&gt;</string>
   <string name="address_type_home">Casa</string>
   <string name="address_type_work">Trabalho</string>
   <string name="address_type_other">Outro</string>

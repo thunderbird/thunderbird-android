@@ -9,8 +9,13 @@
   <!--Used in the about dialog-->
   <string name="app_authors">Els passejadors de gossos K-9</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Porcions de Copyright 2006-<xliff:g>%s</xliff:g> Projecte de codi obert d\'Android.</string>
-  <string name="source_code">Font</string>
+  <string name="source_code">Codi font</string>
   <string name="app_license">Llicència d\'Apache, versió 2.0</string>
+  <string name="about_project_title">Projecte de codi obert</string>
+  <string name="about_website_title">Lloc web</string>
+  <string name="user_forum_title">Fòrum d\'usuaris</string>
+  <string name="about_fediverse_title">Fediverse</string>
+  <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">Biblioteques</string>
   <string name="license">Llicència</string>
   <!--Welcome message-->

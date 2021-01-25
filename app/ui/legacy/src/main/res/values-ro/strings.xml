@@ -9,7 +9,6 @@
   <!--Used in the about dialog-->
   <string name="app_authors">K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Anumite porțiuni Copyright 2006-<xliff:g>%s</xliff:g> Proiectul Android Open Source.</string>
-  <string name="source_code">Sursă</string>
   <string name="app_license">Licență Apache, Versiune 2.0</string>
   <string name="about_libraries">Biblioteci</string>
   <string name="license">Licență</string>

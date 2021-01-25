@@ -11,6 +11,11 @@
   <string name="app_copyright_fmt">Kopirajto 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Parta kopirajto 2006-<xliff:g>%s</xliff:g> la Malfermkoda Projekto Android (AOSP).</string>
   <string name="source_code">Fontkodo</string>
   <string name="app_license">Apache License, versio 2.0</string>
+  <string name="about_project_title">Malfermkoda projekto</string>
+  <string name="about_website_title">Retejo</string>
+  <string name="user_forum_title">Forumo</string>
+  <string name="about_fediverse_title">Fediverso</string>
+  <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">Bibliotekoj</string>
   <string name="license">Permesilo</string>
   <!--Welcome message-->
