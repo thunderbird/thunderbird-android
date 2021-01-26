@@ -18,6 +18,7 @@ import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.mailstore.StorageManager.StorageProvider;
 import org.jetbrains.annotations.NotNull;
@@ -187,6 +188,7 @@ public class Account implements BaseAccount {
     private long lastSyncTime;
     private long lastFolderListRefreshTime;
     private boolean isFinishedSetup = false;
+    private boolean muteMailingLists;
 
     private boolean changedVisibleLimits = false;
 
@@ -384,6 +386,18 @@ public class Account implements BaseAccount {
 
     public synchronized void setFolderNotifyNewMailMode(FolderMode folderNotifyNewMailMode) {
         this.folderNotifyNewMailMode = folderNotifyNewMailMode;
+    }
+
+    public synchronized boolean getMuteMailingLists() {
+        return muteMailingLists;
+    }
+
+    public synchronized void setMuteMailingLists(boolean muteMailingLists) {
+        this.muteMailingLists = muteMailingLists;
+    }
+
+    public boolean isNotificationSuppressed(MimeMessage message) {
+        return muteMailingLists && message.getHeader("List-ID").length > 0;
     }
 
     public synchronized DeletePolicy getDeletePolicy() {
