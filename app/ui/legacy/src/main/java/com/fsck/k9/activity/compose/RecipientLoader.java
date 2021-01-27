@@ -65,7 +65,9 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
     private static final String SORT_ORDER = "" +
             ContactsContract.CommonDataKinds.Email.TIMES_CONTACTED + " DESC, " +
             ContactsContract.Contacts.SORT_KEY_PRIMARY + "," +
-            ContactsContract.CommonDataKinds.Email.IS_SUPER_PRIMARY + " DESC";
+            ContactsContract.CommonDataKinds.Email.IS_SUPER_PRIMARY + " DESC, " +
+            ContactsContract.CommonDataKinds.Email.IS_PRIMARY + " DESC, " +
+            ContactsContract.Contacts._ID;
 
     private static final String[] PROJECTION_NICKNAME = {
             ContactsContract.Data.CONTACT_ID,
