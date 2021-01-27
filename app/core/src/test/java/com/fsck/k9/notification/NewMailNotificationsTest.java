@@ -1,6 +1,8 @@
 package com.fsck.k9.notification;
 
 
+import java.io.ByteArrayInputStream;
+
 import android.app.Notification;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -9,10 +11,12 @@ import com.fsck.k9.K9;
 import com.fsck.k9.K9.NotificationHideSubject;
 import com.fsck.k9.K9RobolectricTest;
 import com.fsck.k9.controller.MessageReference;
+import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mailstore.LocalMessage;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyInt;
@@ -272,6 +276,23 @@ public class NewMailNotificationsTest extends K9RobolectricTest {
 
         verify(notificationManager).cancel(notificationId);
         verify(notificationManager).cancel(NotificationIds.getNewMailSummaryNotificationId(account));
+    }
+
+    @Test
+    public void testMuteMailingLists() throws Exception {
+        final String MESSAGE = "From: lena@example.com\n"
+                + "List-Id: \"Lena's Personal Joke List\" <lenas-jokes.localhost>\n"
+                + "Date: Apr 1st Wed Apr  1 23:44:53 CEST 2020\n"
+                + "\n"
+                + "Hi!\n";
+
+        MimeMessage message = new MimeMessage();
+        message.parse(new ByteArrayInputStream(MESSAGE.getBytes()));
+
+        final Account account = new Account("uuid");
+        account.setMuteMailingLists(true);
+
+        assertTrue(account.isNotificationSuppressed(message));
     }
 
     private Account createAccount() {
