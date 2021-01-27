@@ -520,6 +520,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_settings_mark_message_as_read_on_delete_summary">Mark a message as read when it is deleted</string>
     <string name="account_settings_notification_open_system_notifications_label">Notification settings</string>
     <string name="account_settings_notification_open_system_notifications_summary">Open system notification settings</string>
+    <string name="account_settings_mute_mailing_lists_label">Mute mailing lists</string>
+    <string name="account_settings_mute_mailing_lists_summary">Suppress notifications for mails sent via mailing lists</string>
 
     <string name="account_settings_show_pictures_label">Always show images</string>
     <string name="account_settings_show_pictures_never">No</string>
