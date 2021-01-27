@@ -2356,6 +2356,8 @@ public class MessagingController {
 
         sendPendingMessages(account, listener);
 
+        refreshFolderListIfStale(account);
+
         try {
             Account.FolderMode aDisplayMode = account.getFolderDisplayMode();
             Account.FolderMode aSyncMode = account.getFolderSyncMode();
