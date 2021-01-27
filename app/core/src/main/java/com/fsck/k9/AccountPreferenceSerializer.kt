@@ -51,6 +51,7 @@ class AccountPreferenceSerializer(
             isNotifyNewMail = storage.getBoolean("$accountUuid.notifyNewMail", false)
             setMuteMailingLists(storage.getBoolean("$accountUuid.muteMailingLists", false))
             setMutedSenders(storage.getString("$accountUuid.mutedSenders", ""))
+            setMuteIfSentTo(storage.getString("$accountUuid.muteIfSentTo", ""))
 
             folderNotifyNewMailMode = getEnumStringPref<FolderMode>(storage, "$accountUuid.folderNotifyNewMailMode", FolderMode.ALL)
             isNotifySelfNewMail = storage.getBoolean("$accountUuid.notifySelfNewMail", true)
@@ -261,6 +262,7 @@ class AccountPreferenceSerializer(
             editor.putBoolean("$accountUuid.notifyNewMail", isNotifyNewMail)
             editor.putBoolean("$accountUuid.muteMailingLists", getMuteMailingLists())
             editor.putString("$accountUuid.mutedSenders", getMutedSendersAsString())
+            editor.putString("$accountUuid.muteIfSentTo", getMuteIfSentToAsString())
             editor.putString("$accountUuid.folderNotifyNewMailMode", folderNotifyNewMailMode.name)
             editor.putBoolean("$accountUuid.notifySelfNewMail", isNotifySelfNewMail)
             editor.putBoolean("$accountUuid.notifyContactsMailOnly", isNotifyContactsMailOnly)
@@ -572,6 +574,7 @@ class AccountPreferenceSerializer(
             isNotifyNewMail = true
             muteMailingLists = false
             setMutedSenders(Collections.emptyList())
+            setMuteIfSentTo(Collections.emptyList())
             folderNotifyNewMailMode = FolderMode.ALL
             isNotifySync = false
             isNotifySelfNewMail = true

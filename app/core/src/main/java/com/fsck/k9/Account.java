@@ -20,6 +20,7 @@ import android.text.TextUtils;
 
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy;
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.internet.MimeMessage;
@@ -193,7 +194,7 @@ public class Account implements BaseAccount {
     private long lastFolderListRefreshTime;
     private boolean isFinishedSetup = false;
     private boolean muteMailingLists;
-    private Set<String> mutedSenders;
+    private Set<String> mutedSenders, muteIfSentTo;
 
     private boolean changedVisibleLimits = false;
 
@@ -424,6 +425,29 @@ public class Account implements BaseAccount {
         this.mutedSenders = new HashSet<String>(mutedSenders);
     }
 
+    public synchronized String getMuteIfSentToAsString() {
+        return TextUtils.join(";", getMuteIfSentTo());
+    }
+
+    public synchronized String[] getMuteIfSentTo() {
+        if (muteIfSentTo == null) return new String[0];
+
+        final String[] result = muteIfSentTo.toArray(new String[muteIfSentTo.size()]);
+        Arrays.sort(result);
+        return result;
+    }
+
+    public synchronized void setMuteIfSentTo(String muteIfSentTo) {
+        final List<String> list = muteIfSentTo == null || muteIfSentTo.equals("")
+                ? Collections.emptyList()
+                : Arrays.asList(TextUtils.split(muteIfSentTo, ";"));
+        this.muteIfSentTo = new HashSet<String>(list);
+    }
+
+    public synchronized void setMuteIfSentTo(Collection<String> muteIfSentTo) {
+        this.muteIfSentTo = new HashSet<String>(muteIfSentTo);
+    }
+
     public boolean isNotificationSuppressed(MimeMessage message) {
         if (muteMailingLists && message.getHeader("List-ID").length > 0)
             return true;
@@ -436,6 +460,15 @@ public class Account implements BaseAccount {
             for (Address address : message.getFrom()) {
                 if (mutedSenders.contains(address.getAddress()))
                     return true;
+            }
+        }
+
+        if (muteIfSentTo != null && !muteIfSentTo.isEmpty()) {
+            for (RecipientType type : RecipientType.values()) {
+                for (Address address : message.getRecipients(type)) {
+                    if (muteIfSentTo.contains(address.getAddress()))
+                        return true;
+                }
             }
         }
 
