@@ -17,6 +17,7 @@ import com.fsck.k9.mailstore.LocalMessage;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
@@ -307,6 +308,36 @@ public class NewMailNotificationsTest extends K9RobolectricTest {
         account.setMutedSenders(BOB_ADDRESS);
 
         assertTrue(account.isNotificationSuppressed(message));
+    }
+
+    @Test
+    public void testMuteIfSentTo() throws Exception {
+        final String ALICE_ADDRESS = "alice@example.com";
+        final String LIST_ADDRESS = "list@example.com";
+        final String ME_ADDRESS = "me@example.com";
+        final String MESSAGE = "From: Alice <" + ALICE_ADDRESS + ">\n"
+                + "To: Myself <" + ME_ADDRESS + ">\n"
+                + "Cc: Somebody Else <someone@example.com>, The List <" + LIST_ADDRESS + ">\n"
+                + "Date: Apr 1st Wed Apr  1 23:44:53 CEST 2020\n"
+                + "\n"
+                + "Hi!\n";
+
+        MimeMessage message = new MimeMessage();
+        message.parse(new ByteArrayInputStream(MESSAGE.getBytes()));
+
+        final Account account = new Account("uuid");
+
+        account.setMuteIfSentTo(LIST_ADDRESS + ";" + ME_ADDRESS);
+        assertTrue(account.isNotificationSuppressed(message));
+
+        account.setMuteIfSentTo(ME_ADDRESS);
+        assertTrue(account.isNotificationSuppressed(message));
+
+        account.setMuteIfSentTo(LIST_ADDRESS);
+        assertTrue(account.isNotificationSuppressed(message));
+
+        account.setMuteIfSentTo(ALICE_ADDRESS);
+        assertFalse(account.isNotificationSuppressed(message));
     }
 
     private Account createAccount() {
