@@ -19,12 +19,17 @@ import com.fsck.k9.Account
 import com.fsck.k9.Preferences
 import com.fsck.k9.ui.R
 
+enum class EmailAddressListType {
+    MUTED_SENDERS, MUTE_IF_SENT_TO
+}
+
 interface EditEmailAddressListDialogListener {
     fun onModifyEmail(oldEmail: String?, newEmail: String?)
 }
 
 class EditEmailAddressList : K9ListActivity(), OnItemClickListener, EditEmailAddressListDialogListener {
     private lateinit var account: Account
+    private lateinit var listType: EmailAddressListType
     private lateinit var arrayAdapter: ArrayAdapter<String>
     private val emailAddresses = HashSet<String>()
 
@@ -38,6 +43,8 @@ class EditEmailAddressList : K9ListActivity(), OnItemClickListener, EditEmailAdd
 
         val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT)
         account = Preferences.getPreferences(this).getAccount(accountUuid)
+
+        listType = intent.getSerializableExtra(EXTRA_LIST_TYPE) as EmailAddressListType
 
         arrayAdapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1)
 
@@ -54,7 +61,11 @@ class EditEmailAddressList : K9ListActivity(), OnItemClickListener, EditEmailAdd
         arrayAdapter.setNotifyOnChange(false)
         arrayAdapter.clear()
         emailAddresses.clear()
-        for (emailAddress in account.mutedSenders) {
+        val addresses = when (listType) {
+            EmailAddressListType.MUTED_SENDERS -> account.mutedSenders
+            EmailAddressListType.MUTE_IF_SENT_TO -> account.muteIfSentTo
+        }
+        for (emailAddress in addresses) {
             arrayAdapter.add(emailAddress)
             emailAddresses.add(emailAddress)
         }
@@ -100,7 +111,10 @@ class EditEmailAddressList : K9ListActivity(), OnItemClickListener, EditEmailAdd
     }
 
     private fun saveEmailAddresses() {
-        account.setMutedSenders(emailAddresses)
+        when (listType) {
+            EmailAddressListType.MUTED_SENDERS -> account.setMutedSenders(emailAddresses)
+            EmailAddressListType.MUTE_IF_SENT_TO -> account.setMuteIfSentTo(emailAddresses)
+        }
         Preferences.getPreferences(applicationContext).saveAccount(account)
     }
 
@@ -172,12 +186,14 @@ class EditEmailAddressList : K9ListActivity(), OnItemClickListener, EditEmailAdd
     }
 
     companion object {
-        fun start(activity: Activity, accountUuid: String) {
+        fun start(activity: Activity, accountUuid: String, list: EmailAddressListType) {
             val intent = Intent(activity, EditEmailAddressList::class.java)
             intent.putExtra(EditEmailAddressList.EXTRA_ACCOUNT, accountUuid)
+            intent.putExtra(EditEmailAddressList.EXTRA_LIST_TYPE, list)
             activity.startActivity(intent)
         }
 
         const val EXTRA_ACCOUNT = "com.fsck.k9.EditEmailAddressList_account"
+        const val EXTRA_LIST_TYPE = "com.fsck.k9.EditEmailAddressList_list_type"
     }
 }
