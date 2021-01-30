@@ -3,12 +3,14 @@ package com.fsck.k9.backend.imap;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.store.imap.ImapStoreSettings;
 
+import static com.fsck.k9.mail.helper.UrlEncodingHelper.buildQuery;
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.encodeUtf8;
 
 
@@ -26,6 +28,27 @@ public class ImapStoreUriCreator {
         String passwordEnc = (server.password != null) ? encodeUtf8(server.password) : "";
         String clientCertificateAliasEnc = (server.clientCertificateAlias != null) ?
                 encodeUtf8(server.clientCertificateAlias) : "";
+
+        HashMap<String,String> params = new HashMap<>();
+
+        // this has a little duplicate logic w.r.t. the legacy uri encoding below, , but it's better that way
+        //  so we can remove the legacy format in the future
+
+        if (! clientCertificateAliasEnc.equals("") ) {
+            params.put("tls-cert",clientCertificateAliasEnc);
+        }
+        params.put("auth-type",server.authenticationType.name().toLowerCase());
+        if ((server.getExtra() == null) ||
+                ( server.getExtra().get(ImapStoreSettings.AUTODETECT_NAMESPACE_KEY).equals("true") )) {
+            params.put("prefix","auto");
+        } else if (( server.getExtra().get(ImapStoreSettings.PATH_PREFIX_KEY) != null) &&
+                (! server.getExtra().get(ImapStoreSettings.PATH_PREFIX_KEY).equals("") ) ) {
+            params.put("prefix", "/" + server.getExtra().get(ImapStoreSettings.PATH_PREFIX_KEY) );
+        } else {
+            params.put("prefix", "/");
+        }
+
+        String query = buildQuery(params);
 
         String scheme;
         switch (server.connectionSecurity) {
@@ -61,7 +84,7 @@ public class ImapStoreUriCreator {
             } else {
                 path = "/1|";
             }
-            return new URI(scheme, userInfo, server.host, server.port, path, null, null).toString();
+            return new URI(scheme, userInfo, server.host, server.port, path, query, null).toString();
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException("Can't create ImapStore URI", e);
         }

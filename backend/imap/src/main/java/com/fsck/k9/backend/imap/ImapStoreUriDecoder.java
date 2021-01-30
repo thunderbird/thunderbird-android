@@ -3,13 +3,16 @@ package com.fsck.k9.backend.imap;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Map;
 
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.store.imap.ImapStoreSettings;
 
+
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.decodeUtf8;
+import static com.fsck.k9.mail.helper.UrlEncodingHelper.splitQuery;
 
 
 public class ImapStoreUriDecoder {
@@ -96,6 +99,11 @@ public class ImapStoreUriDecoder {
                     authenticationType = AuthType.PLAIN;
                     username = decodeUtf8(userInfoParts[0]);
                 }
+            } else if (userInfoParts.length == 1) {
+                // clean style of encoding
+                // username
+                authenticationType = AuthType.PLAIN;  // can be overidden by queuy
+                username = userinfo;
             } else if (userInfoParts.length == 2) {
                 // Old/standard style of encoding - PLAIN auth only:
                 // username:password
@@ -134,6 +142,25 @@ public class ImapStoreUriDecoder {
                 }
             }
         }
+        String query = imapUri.getQuery();
+        Map<String,String> queryParams = splitQuery(query);
+        if (queryParams.containsKey("prefix")) {
+            if (queryParams.get("prefix").toLowerCase().equals("auto")) {
+                autoDetectNamespace = true;
+                pathPrefix = null;
+            } else {
+                autoDetectNamespace = false;
+                pathPrefix = queryParams.get("prefix").substring(1);
+            }
+        }
+        if (queryParams.containsKey("auth-type")) {
+            authenticationType = AuthType.valueOf(queryParams.get("auth-type").toUpperCase());
+        }
+        if (queryParams.containsKey("tls-cert")) {
+            clientCertificateAlias = queryParams.get("tls-cert");
+        }
+
+
 
         return new ImapStoreSettings(host, port, connectionSecurity, authenticationType, username,
                 password, clientCertificateAlias, autoDetectNamespace, pathPrefix);
