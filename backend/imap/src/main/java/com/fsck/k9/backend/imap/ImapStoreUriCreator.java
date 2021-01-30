@@ -52,10 +52,8 @@ public class ImapStoreUriCreator {
             Map<String, String> extra = server.getExtra();
             String path;
             if (extra != null) {
-                boolean autoDetectNamespace = Boolean.TRUE.toString().equals(
-                        extra.get(ImapStoreSettings.AUTODETECT_NAMESPACE_KEY));
-                String pathPrefix = (autoDetectNamespace) ?
-                        null : extra.get(ImapStoreSettings.PATH_PREFIX_KEY);
+                boolean autoDetectNamespace = ImapStoreSettings.getAutoDetectNamespace(server);
+                String pathPrefix = (autoDetectNamespace) ? null : ImapStoreSettings.getPathPrefix(server);
                 path = "/" + (autoDetectNamespace ? "1" : "0") + "|" +
                         ((pathPrefix == null) ? "" : pathPrefix);
             } else {

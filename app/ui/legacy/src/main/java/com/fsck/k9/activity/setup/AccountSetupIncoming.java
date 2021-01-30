@@ -217,11 +217,12 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             } else if (settings.type.equals(Protocols.IMAP)) {
                 serverLayoutView.setHint(getString(R.string.account_setup_incoming_imap_server_label));
 
-                ImapStoreSettings imapSettings = (ImapStoreSettings) settings;
+                boolean autoDetectNamespace = ImapStoreSettings.getAutoDetectNamespace(settings);
+                String pathPrefix = ImapStoreSettings.getPathPrefix(settings);
 
-                mImapAutoDetectNamespaceView.setChecked(imapSettings.autoDetectNamespace);
-                if (imapSettings.pathPrefix != null) {
-                    mImapPathPrefixView.setText(imapSettings.pathPrefix);
+                mImapAutoDetectNamespaceView.setChecked(autoDetectNamespace);
+                if (pathPrefix != null) {
+                    mImapPathPrefixView.setText(pathPrefix);
                 }
 
                 findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
@@ -570,11 +571,9 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
             Map<String, String> extra = null;
             if (mStoreType.equals(Protocols.IMAP)) {
-                extra = new HashMap<>();
-                extra.put(ImapStoreSettings.AUTODETECT_NAMESPACE_KEY,
-                        Boolean.toString(mImapAutoDetectNamespaceView.isChecked()));
-                extra.put(ImapStoreSettings.PATH_PREFIX_KEY,
-                        mImapPathPrefixView.getText().toString());
+                boolean autoDetectNamespace = mImapAutoDetectNamespaceView.isChecked();
+                String pathPrefix = mImapPathPrefixView.getText().toString();
+                extra = ImapStoreSettings.createExtra(autoDetectNamespace, pathPrefix);
             } else if (mStoreType.equals(Protocols.WEBDAV)) {
                 extra = new HashMap<>();
                 extra.put(WebDavStoreSettings.PATH_KEY,

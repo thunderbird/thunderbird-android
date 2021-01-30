@@ -18,6 +18,7 @@ import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.FolderType;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import org.junit.Before;
@@ -43,7 +44,7 @@ public class ImapStoreTest {
 
     @Before
     public void setUp() throws Exception {
-        ImapStoreSettings serverSettings = createImapStoreSettings();
+        ServerSettings serverSettings = createServerSettings();
         TrustedSocketFactory trustedSocketFactory = mock(TrustedSocketFactory.class);
         ConnectivityManager connectivityManager = mock(ConnectivityManager.class);
         OAuth2TokenProvider oauth2TokenProvider = mock(OAuth2TokenProvider.class);
@@ -363,8 +364,10 @@ public class ImapStoreTest {
     }
 
 
-    private ImapStoreSettings createImapStoreSettings() {
-        return new ImapStoreSettings(
+    private ServerSettings createServerSettings() {
+        Map<String, String> extra = ImapStoreSettings.createExtra(true, null);
+        return new ServerSettings(
+                "imap",
                 "imap.example.org",
                 143,
                 ConnectionSecurity.NONE,
@@ -372,8 +375,7 @@ public class ImapStoreTest {
                 "user",
                 "password",
                 null,
-                true,
-                null);
+                extra);
     }
 
     private Set<String> extractFolderServerIds(List<FolderListItem> folders) {
@@ -429,7 +431,7 @@ public class ImapStoreTest {
         private Deque<ImapConnection> imapConnections = new ArrayDeque<>();
         private String testCombinedPrefix;
 
-        public TestImapStore(ImapStoreSettings serverSettings, ImapStoreConfig config,
+        public TestImapStore(ServerSettings serverSettings, ImapStoreConfig config,
                 TrustedSocketFactory trustedSocketFactory, ConnectivityManager connectivityManager,
                 OAuth2TokenProvider oauth2TokenProvider) {
             super(serverSettings, config, trustedSocketFactory, connectivityManager, oauth2TokenProvider);
