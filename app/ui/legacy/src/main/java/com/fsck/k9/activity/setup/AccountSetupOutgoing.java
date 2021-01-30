@@ -489,7 +489,8 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
         String newHost = mServerView.getText().toString();
         int newPort = Integer.parseInt(mPortView.getText().toString());
-        ServerSettings server = new ServerSettings(Protocols.SMTP, newHost, newPort, securityType, authType, username, password, clientCertificateAlias);
+        ServerSettings server = new ServerSettings(Protocols.SMTP, newHost, newPort, securityType, authType, username,
+                password, clientCertificateAlias);
         uri = backendManager.createTransportUri(server);
         DI.get(LocalKeyStoreManager.class).deleteCertificate(mAccount, newHost, newPort, MailServerDirection.OUTGOING);
         mAccount.setTransportUri(uri);

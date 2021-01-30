@@ -24,7 +24,7 @@ class JmapBackendFactory(
         val serverSettings = decodeStoreUri(account.storeUri)
         val jmapConfig = JmapConfig(
             username = serverSettings.username,
-            password = serverSettings.password,
+            password = serverSettings.password!!,
             baseUrl = serverSettings.host,
             accountId = serverSettings.extra["accountId"]!!
         )
@@ -34,7 +34,7 @@ class JmapBackendFactory(
 
     override fun decodeStoreUri(storeUri: String): ServerSettings {
         val uri = Uri.parse(storeUri)
-        val username = uri.getQueryParameter("username")
+        val username = uri.getQueryParameter("username")!!
         val password = uri.getQueryParameter("password")
         val baseUrl = uri.getQueryParameter("baseUrl")
         val accountId = uri.getQueryParameter("accountId")
@@ -43,7 +43,17 @@ class JmapBackendFactory(
             "accountId" to accountId
         )
 
-        return ServerSettings("jmap", baseUrl, 433, ConnectionSecurity.SSL_TLS_REQUIRED, AuthType.PLAIN, username, password, null, extra)
+        return ServerSettings(
+            type = "jmap",
+            host = baseUrl,
+            port = 433,
+            connectionSecurity = ConnectionSecurity.SSL_TLS_REQUIRED,
+            authenticationType = AuthType.PLAIN,
+            username = username,
+            password = password,
+            clientCertificateAlias = null,
+            extra = extra
+        )
     }
 
     override fun createStoreUri(serverSettings: ServerSettings): String {

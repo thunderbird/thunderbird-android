@@ -36,6 +36,9 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 import timber.log.Timber;
 
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.unmodifiableMap;
+
 
 public class SettingsImporter {
 
@@ -1058,7 +1061,7 @@ public class SettingsImporter {
         int port = convertPort(importedServer.port);
         ConnectionSecurity connectionSecurity = convertConnectionSecurity(importedServer.connectionSecurity);
         Map<String, String> extra = importedServer.extras != null ?
-                Collections.unmodifiableMap(importedServer.extras.settings) : null;
+                unmodifiableMap(importedServer.extras.settings) : emptyMap();
 
         return new ServerSettings(type, importedServer.host, port, connectionSecurity,
                 importedServer.authenticationType, importedServer.username, importedServer.password,

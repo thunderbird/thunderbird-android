@@ -53,6 +53,9 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import timber.log.Timber;
 
+import static java.util.Collections.emptyMap;
+
+
 public class AccountSetupIncoming extends K9Activity implements OnClickListener {
     private static final String EXTRA_ACCOUNT = "account";
     private static final String EXTRA_MAKE_DEFAULT = "makeDefault";
@@ -569,7 +572,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             String host = mServerView.getText().toString();
             int port = Integer.parseInt(mPortView.getText().toString());
 
-            Map<String, String> extra = null;
+            Map<String, String> extra = emptyMap();
             if (mStoreType.equals(Protocols.IMAP)) {
                 boolean autoDetectNamespace = mImapAutoDetectNamespaceView.isChecked();
                 String pathPrefix = mImapPathPrefixView.getText().toString();

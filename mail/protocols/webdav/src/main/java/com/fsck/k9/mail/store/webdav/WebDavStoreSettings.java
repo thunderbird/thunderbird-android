@@ -17,23 +17,19 @@ public class WebDavStoreSettings {
     private static final String MAILBOX_PATH_KEY = "mailboxPath";
 
     public static String getAlias(ServerSettings serverSettings) {
-        Map<String, String> extra = serverSettings.getExtra();
-        return extra == null ? null : extra.get(ALIAS_KEY);
+        return serverSettings.getExtra().get(ALIAS_KEY);
     }
 
     public static String getPath(ServerSettings serverSettings) {
-        Map<String, String> extra = serverSettings.getExtra();
-        return extra == null ? null : extra.get(PATH_KEY);
+        return serverSettings.getExtra().get(PATH_KEY);
     }
 
     public static String getAuthPath(ServerSettings serverSettings) {
-        Map<String, String> extra = serverSettings.getExtra();
-        return extra == null ? null : extra.get(AUTH_PATH_KEY);
+        return serverSettings.getExtra().get(AUTH_PATH_KEY);
     }
 
     public static String getMailboxPath(ServerSettings serverSettings) {
-        Map<String, String> extra = serverSettings.getExtra();
-        return extra == null ? null : extra.get(MAILBOX_PATH_KEY);
+        return serverSettings.getExtra().get(MAILBOX_PATH_KEY);
     }
 
     public static Map<String, String> createExtra(String alias, String path, String authPath, String mailboxPath) {

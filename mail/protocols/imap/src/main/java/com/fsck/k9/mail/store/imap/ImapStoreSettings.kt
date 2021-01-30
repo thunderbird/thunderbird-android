@@ -11,15 +11,11 @@ object ImapStoreSettings {
 
     @JvmStatic
     val ServerSettings.autoDetectNamespace: Boolean
-        get() {
-            return extra?.get(AUTODETECT_NAMESPACE_KEY)?.toBoolean() ?: true
-        }
+        get() = extra[AUTODETECT_NAMESPACE_KEY]?.toBoolean() ?: true
 
     @JvmStatic
     val ServerSettings.pathPrefix: String?
-        get() {
-            return extra?.get(PATH_PREFIX_KEY)
-        }
+        get() = extra[PATH_PREFIX_KEY]
 
     @JvmStatic
     fun createExtra(autoDetectNamespace: Boolean, pathPrefix: String?): Map<String, String?> {
