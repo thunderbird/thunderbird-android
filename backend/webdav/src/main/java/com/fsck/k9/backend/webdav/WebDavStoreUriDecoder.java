@@ -2,10 +2,12 @@ package com.fsck.k9.backend.webdav;
 
 
 import com.fsck.k9.mail.ConnectionSecurity;
+import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.store.webdav.WebDavStoreSettings;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Map;
 
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.decodeUtf8;
 
@@ -20,7 +22,7 @@ public class WebDavStoreUriDecoder {
      * webdav+ssl+://user:password@server:port ConnectionSecurity.SSL_TLS_REQUIRED
      * </pre>
      */
-    public static WebDavStoreSettings decode(String uri) {
+    public static ServerSettings decode(String uri) {
         String host;
         int port;
         ConnectionSecurity connectionSecurity;
@@ -106,7 +108,8 @@ public class WebDavStoreUriDecoder {
             }
         }
 
-        return new WebDavStoreSettings(host, port, connectionSecurity, null, username, password,
-                null, alias, path, authPath, mailboxPath);
+        Map<String, String> extra = WebDavStoreSettings.createExtra(alias, path, authPath, mailboxPath);
+
+        return new ServerSettings("webdav", host, port, connectionSecurity, null, username, password, null, extra);
     }
 }

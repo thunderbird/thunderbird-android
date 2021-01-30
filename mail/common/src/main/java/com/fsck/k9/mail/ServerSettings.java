@@ -171,12 +171,6 @@ public class ServerSettings {
         return extra;
     }
 
-    protected void putIfNotNull(Map<String, String> map, String key, String value) {
-        if (value != null) {
-            map.put(key, value);
-        }
-    }
-
     public ServerSettings newPassword(String newPassword) {
         return new ServerSettings(type, host, port, connectionSecurity, authenticationType,
                 username, newPassword, clientCertificateAlias);

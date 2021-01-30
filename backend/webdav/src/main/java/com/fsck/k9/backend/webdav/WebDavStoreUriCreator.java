@@ -38,11 +38,11 @@ public class WebDavStoreUriCreator {
         String uriPath;
         Map<String, String> extra = server.getExtra();
         if (extra != null) {
-            String path = extra.get(WebDavStoreSettings.PATH_KEY);
+            String path = WebDavStoreSettings.getPath(server);
             path = (path != null) ? path : "";
-            String authPath = extra.get(WebDavStoreSettings.AUTH_PATH_KEY);
+            String authPath = WebDavStoreSettings.getAuthPath(server);
             authPath = (authPath != null) ? authPath : "";
-            String mailboxPath = extra.get(WebDavStoreSettings.MAILBOX_PATH_KEY);
+            String mailboxPath = WebDavStoreSettings.getMailboxPath(server);
             mailboxPath = (mailboxPath != null) ? mailboxPath : "";
             uriPath = "/" + path + "|" + authPath + "|" + mailboxPath;
         } else {

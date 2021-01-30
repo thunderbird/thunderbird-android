@@ -6,17 +6,17 @@ import java.util.Collections;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.Transport;
 import com.fsck.k9.mail.ssl.TrustManagerFactory;
 import com.fsck.k9.mail.store.webdav.DraftsFolderProvider;
 import com.fsck.k9.mail.store.webdav.WebDavStore;
-import com.fsck.k9.mail.store.webdav.WebDavStoreSettings;
 import timber.log.Timber;
 
 public class WebDavTransport extends Transport {
     private WebDavStore store;
 
-    public WebDavTransport(TrustManagerFactory trustManagerFactory, WebDavStoreSettings serverSettings,
+    public WebDavTransport(TrustManagerFactory trustManagerFactory, ServerSettings serverSettings,
             DraftsFolderProvider draftsFolderProvider) {
         store = new WebDavStore(trustManagerFactory, serverSettings, draftsFolderProvider);
 
