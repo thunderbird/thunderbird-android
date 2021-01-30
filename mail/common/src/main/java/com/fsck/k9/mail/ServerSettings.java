@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Generic container to hold server settings.
  */
-public class ServerSettings {
+public final class ServerSettings {
     /**
      * Name of the protocol these server settings belong to. Must be all lower case.
      */
