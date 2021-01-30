@@ -46,7 +46,7 @@ public class SmtpTransportUriCreatorTest {
 
         String result = SmtpTransportUriCreator.createSmtpUri(serverSettings);
 
-        assertEquals("smtp+ssl+://user:clientCert:EXTERNAL@server:123456", result);
+        assertEquals("smtp+ssl+://user:clientCert:EXTERNAL@server:123456?tls-cert=clientCert&auth-type=external", result);
     }
 
     @Test
@@ -58,7 +58,7 @@ public class SmtpTransportUriCreatorTest {
 
         String result = SmtpTransportUriCreator.createSmtpUri(serverSettings);
 
-        assertEquals("smtp+tls+://user:password:PLAIN@server:123456", result);
+        assertEquals("smtp+tls+://user:password:PLAIN@server:123456?tls-cert=clientCert&auth-type=plain", result);
     }
 
     @Test
@@ -66,10 +66,10 @@ public class SmtpTransportUriCreatorTest {
         ServerSettings serverSettings = new ServerSettings(
                 "smtp", "server", 123456,
                 ConnectionSecurity.NONE, AuthType.CRAM_MD5,
-                "user", "password", "clientCert");
+                "user", "password", null);
 
         String result = SmtpTransportUriCreator.createSmtpUri(serverSettings);
 
-        assertEquals("smtp://user:password:CRAM_MD5@server:123456", result);
+        assertEquals("smtp://user:password:CRAM_MD5@server:123456?auth-type=cram_md5", result);
     }
 }

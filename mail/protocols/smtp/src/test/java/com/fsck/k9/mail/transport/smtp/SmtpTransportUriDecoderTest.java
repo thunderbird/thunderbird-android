@@ -115,4 +115,43 @@ public class SmtpTransportUriDecoderTest {
 
         SmtpTransportUriDecoder.decodeSmtpUri(storeUri);
     }
+
+    @Test
+    public void decodeTransportUri_canDecodeCleanishURI() {
+        String storeUri = "smtp+ssl+://user@server/?auth-type=external&tls-cert=clientCert";
+
+        ServerSettings result = SmtpTransportUriDecoder.decodeSmtpUri(storeUri);
+
+        assertEquals("clientCert", result.clientCertificateAlias);
+        assertEquals(AuthType.EXTERNAL, result.authenticationType);
+        assertEquals(465, result.port);
+
+    }
+
+    @Test
+    public void decodeTransportUri_canDecodeHybridURI() {
+        String storeUri = "smtp+tls+://user:password:PLAIN@server:25/?auth-type=PLAIN&tls-cert=clientCert";
+
+        ServerSettings result = SmtpTransportUriDecoder.decodeSmtpUri(storeUri);
+
+        assertEquals("clientCert", result.clientCertificateAlias);
+        assertEquals(AuthType.PLAIN, result.authenticationType);
+        assertEquals("password", result.password);
+
+        assertEquals(25, result.port);
+    }
+
+    @Test
+    public void decodeTransportUri_canHybridParamsWinURI() {
+        String storeUri = "smtp+tls+://user:never:EXTERNAL@server?auth-type=PLAIN&tls-cert=clientCert";
+
+        ServerSettings result = SmtpTransportUriDecoder.decodeSmtpUri(storeUri);
+
+        assertEquals("clientCert", result.clientCertificateAlias);
+        assertEquals(AuthType.PLAIN, result.authenticationType);
+        assertEquals(587, result.port);
+    }
+
+
+
 }

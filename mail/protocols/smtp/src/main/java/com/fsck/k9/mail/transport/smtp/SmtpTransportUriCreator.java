@@ -5,9 +5,11 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.util.HashMap;
 
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ServerSettings;
+import static com.fsck.k9.mail.helper.UrlEncodingHelper.buildQuery;
 
 
 public class SmtpTransportUriCreator {
@@ -27,6 +29,20 @@ public class SmtpTransportUriCreator {
                 encodeUtf8(server.password) : "";
         String clientCertificateAliasEnc = (server.clientCertificateAlias != null) ?
                 encodeUtf8(server.clientCertificateAlias) : "";
+
+
+        HashMap<String,String> params = new HashMap<>();
+
+        // this has a little duplicate logic w.r.t. the legacy uri encoding below, , but it's better that way
+        //  so we can remove the legacy format in the future
+
+        if (! clientCertificateAliasEnc.equals("") ) {
+            params.put("tls-cert",clientCertificateAliasEnc);
+        }
+        params.put("auth-type",server.authenticationType.name().toLowerCase());
+        String query = buildQuery(params);
+
+
 
         String scheme;
         switch (server.connectionSecurity) {
@@ -55,7 +71,7 @@ public class SmtpTransportUriCreator {
             userInfo = userEnc + ":" + passwordEnc;
         }
         try {
-            return new URI(scheme, userInfo, server.host, server.port, null, null,
+            return new URI(scheme, userInfo, server.host, server.port, null, query,
                     null).toString();
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException("Can't create SmtpTransport URI", e);

@@ -5,10 +5,12 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
+import java.util.Map;
 
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
+import static com.fsck.k9.mail.helper.UrlEncodingHelper.splitQuery;
 
 
 public class SmtpTransportUriDecoder {
@@ -94,6 +96,15 @@ public class SmtpTransportUriDecoder {
                     password = decodeUtf8(userInfoParts[1]);
                 }
             }
+        }
+
+        String query = smtpUri.getQuery();
+        Map<String,String> queryParams = splitQuery(query);
+        if (queryParams.containsKey("auth-type")) {
+            authType = AuthType.valueOf(queryParams.get("auth-type").toUpperCase());
+        }
+        if (queryParams.containsKey("tls-cert")) {
+            clientCertificateAlias = queryParams.get("tls-cert");
         }
 
         return new ServerSettings("smtp", host, port, connectionSecurity,
