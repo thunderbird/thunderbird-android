@@ -178,7 +178,7 @@ public class ImapStoreUriTest {
 
     @Test
     public void testDecodeStoreUriImapHybridPrefix() {
-        String uri = "imap://PLAIN:user:pass@server:143/0%7CcustomPathPrefix?prefix=/customPathPrefix&auth-type=plain";
+        String uri = "imap://PLAIN:user:pass@server:143/0%7CcustomPathPrefix?prefix=%2FcustomPathPrefix&auth-type=plain";
 
         ServerSettings settings = ImapStoreUriDecoder.decode(uri);
 
@@ -241,6 +241,19 @@ public class ImapStoreUriTest {
     }
 
     @Test
+    public void testDecodeStoreUriImapFunkyPrefixl() {
+        String uri = "imap+ssl+://PLAIN:user:pass@server:993?prefix=%2FThis%22Is%3F%3DNot%26+%23Healthy%2B&tls-cert=emailCert&auth-type=plain";
+
+        ServerSettings settings = ImapStoreUriDecoder.decode(uri);
+
+        assertEquals("This\"Is?=Not& #Healthy+", settings.getExtra().get("pathPrefix"));
+
+
+    }
+
+
+
+    @Test
     public void testCreateStoreUriImapPrefix() {
         Map<String, String> extra = new HashMap<>();
         extra.put("autoDetectNamespace", "false");
@@ -250,7 +263,7 @@ public class ImapStoreUriTest {
 
         String uri = ImapStoreUriCreator.create(settings);
 
-        assertEquals("imap://PLAIN:user:pass@server:143/0%7CcustomPathPrefix?prefix=/customPathPrefix&auth-type=plain", uri);
+        assertEquals("imap://PLAIN:user:pass@server:143/0%7CcustomPathPrefix?prefix=%2FcustomPathPrefix&auth-type=plain", uri);
     }
 
     @Test
@@ -263,7 +276,21 @@ public class ImapStoreUriTest {
 
         String uri = ImapStoreUriCreator.create(settings);
 
-        assertEquals("imap+ssl+://EXTERNAL:user:emailCert@server:993/0%7C?prefix=/&tls-cert=emailCert&auth-type=external", uri);
+        assertEquals("imap+ssl+://EXTERNAL:user:emailCert@server:993/0%7C?prefix=%2F&tls-cert=emailCert&auth-type=external", uri);
+    }
+
+
+    @Test
+    public void testCreateStoreUriImapFunkyPrefixl() {
+        Map<String, String> extra = new HashMap<>();
+        extra.put("autoDetectNamespace", "false");
+        extra.put("pathPrefix", "This\"Is?=Not& #Healthy+");
+        ServerSettings settings = new ServerSettings("imap", "server", 993,
+                ConnectionSecurity.SSL_TLS_REQUIRED, AuthType.PLAIN, "user", "pass", "emailCert", extra);
+
+        String uri = ImapStoreUriCreator.create(settings);
+
+        assertEquals("imap+ssl+://PLAIN:user:pass@server:993/0%7CThis%22Is%3F=Not&%20%23Healthy+?prefix=%2FThis%22Is%3F%3DNot%26+%23Healthy%2B&tls-cert=emailCert&auth-type=plain", uri);
     }
 
     @Test
@@ -276,7 +303,7 @@ public class ImapStoreUriTest {
 
         String uri = ImapStoreUriCreator.create(settings);
 
-        assertEquals("imap://PLAIN:user:pass@server:143/0%7C?prefix=/&auth-type=plain", uri);
+        assertEquals("imap://PLAIN:user:pass@server:143/0%7C?prefix=%2F&auth-type=plain", uri);
     }
 
     @Test

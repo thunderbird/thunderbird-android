@@ -142,7 +142,7 @@ public class ImapStoreUriDecoder {
                 }
             }
         }
-        String query = imapUri.getQuery();
+        String query = imapUri.getRawQuery();
         Map<String,String> queryParams = splitQuery(query);
         if (queryParams.containsKey("prefix")) {
             if (queryParams.get("prefix").toLowerCase().equals("auto")) {

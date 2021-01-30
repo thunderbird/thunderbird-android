@@ -84,7 +84,7 @@ public class ImapStoreUriCreator {
             } else {
                 path = "/1|";
             }
-            return new URI(scheme, userInfo, server.host, server.port, path, query, null).toString();
+            return new URI(scheme, userInfo, server.host, server.port, path, null, null).toString() + "?" + query;
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException("Can't create ImapStore URI", e);
         }

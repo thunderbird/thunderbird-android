@@ -19,7 +19,7 @@ public final class UrlEncodingHelper {
         String[] params = query.split("&");
         for(String param: params) {
             String[] parts = param.split("=");
-            queryParams.put(parts[0], parts[1]);
+            queryParams.put(parts[0], decodeUtf8(parts[1]));
         }
         return queryParams;
     }
@@ -29,7 +29,8 @@ public final class UrlEncodingHelper {
         for (String param: params.keySet()) {
             query.append(param);
             query.append('=');
-            query.append(params.get(param));
+            //query.append(params.get(param));
+            query.append(encodeUtf8(params.get(param)));
             query.append('&');
         }
         query.deleteCharAt(query.length()-1);
