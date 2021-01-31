@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.text.method.DigitsKeyListener;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
@@ -70,7 +71,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private TextInputEditText mUsernameView;
     private TextInputEditText mPasswordView;
     private ClientCertificateSpinner mClientCertificateSpinner;
-    private TextView mClientCertificateLabelView;
     private TextInputLayout mPasswordLayoutView;
     private TextInputEditText mServerView;
     private TextInputEditText mPortView;
@@ -84,6 +84,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private TextInputEditText mWebdavPathPrefixView;
     private TextInputEditText mWebdavAuthPathView;
     private TextInputEditText mWebdavMailboxPathView;
+    private ViewGroup mAllowClientCertificateView;
     private Button mNextButton;
     private Account mAccount;
     private boolean mMakeDefault;
@@ -124,7 +125,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         mUsernameView = findViewById(R.id.account_username);
         mPasswordView = findViewById(R.id.account_password);
         mClientCertificateSpinner = findViewById(R.id.account_client_certificate_spinner);
-        mClientCertificateLabelView = findViewById(R.id.account_client_certificate_label);
         mPasswordLayoutView = findViewById(R.id.account_password_layout);
         mServerView = findViewById(R.id.account_server);
         mPortView = findViewById(R.id.account_port);
@@ -140,6 +140,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         mCompressionWifi = findViewById(R.id.compression_wifi);
         mCompressionOther = findViewById(R.id.compression_other);
         mSubscribedFoldersOnly = findViewById(R.id.subscribed_folders_only);
+        mAllowClientCertificateView = findViewById(R.id.account_allow_client_certificate);
+
         TextInputLayout serverLayoutView = findViewById(R.id.account_server_layout);
 
         mNextButton.setOnClickListener(this);
@@ -290,6 +292,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             mSecurityTypeView.setSelection(mCurrentSecurityTypeViewPosition, false);
 
             updateAuthPlainTextFromSecurityType(settings.connectionSecurity);
+            updateViewFromSecurity();
 
             mCompressionMobile.setChecked(mAccount.useCompression(NetworkType.MOBILE));
             mCompressionWifi.setChecked(mAccount.useCompression(NetworkType.WIFI));
@@ -357,12 +360,12 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 }
 
                 updateViewFromAuthType();
+                updateViewFromSecurity();
                 validateFields();
                 AuthType selection = getSelectedAuthType();
 
-                // Have the user select (or confirm) the client certificate
-                if (AuthType.EXTERNAL == selection) {
-
+               // Have the user select the client certificate if not already selected
+               if ((AuthType.EXTERNAL == selection) && (mClientCertificateSpinner.getAlias() == null)) {
                     // This may again invoke validateFields()
                     mClientCertificateSpinner.chooseCertificate();
                 } else {
@@ -413,14 +416,25 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
             // hide password fields, show client certificate fields
             mPasswordLayoutView.setVisibility(View.GONE);
-            mClientCertificateLabelView.setVisibility(View.VISIBLE);
-            mClientCertificateSpinner.setVisibility(View.VISIBLE);
         } else {
 
             // show password fields, hide client certificate fields
             mPasswordLayoutView.setVisibility(View.VISIBLE);
-            mClientCertificateLabelView.setVisibility(View.GONE);
-            mClientCertificateSpinner.setVisibility(View.GONE);
+        }
+    }
+
+
+    /**
+     * Shows/hides client certificate spinner
+     */
+    private void updateViewFromSecurity() {
+        ConnectionSecurity security = getSelectedSecurity();
+        boolean isUsingTLS = ((ConnectionSecurity.SSL_TLS_REQUIRED  == security) || (ConnectionSecurity.STARTTLS_REQUIRED == security));
+
+        if (isUsingTLS) {
+            mAllowClientCertificateView.setVisibility(View.VISIBLE);
+        } else {
+            mAllowClientCertificateView.setVisibility(View.GONE);
         }
     }
 
@@ -452,12 +466,14 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             mAuthTypeView.setSelection(mCurrentAuthTypeViewPosition, false);
             mAuthTypeView.setOnItemSelectedListener(onItemSelectedListener);
             updateViewFromAuthType();
+            updateViewFromSecurity();
 
             onItemSelectedListener = mSecurityTypeView.getOnItemSelectedListener();
             mSecurityTypeView.setOnItemSelectedListener(null);
             mSecurityTypeView.setSelection(mCurrentSecurityTypeViewPosition, false);
             mSecurityTypeView.setOnItemSelectedListener(onItemSelectedListener);
             updateAuthPlainTextFromSecurityType(getSelectedSecurity());
+            updateViewFromSecurity();
 
             mPortView.removeTextChangedListener(validationTextWatcher);
             mPortView.setText(mCurrentPortViewSetting);
@@ -495,6 +511,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private void updatePortFromSecurityType() {
         ConnectionSecurity securityType = getSelectedSecurity();
         updateAuthPlainTextFromSecurityType(securityType);
+        updateViewFromSecurity();
 
         // Remove listener so as not to trigger validateFields() which is called
         // elsewhere as a result of user interaction.
@@ -532,9 +549,11 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 String password = null;
                 String clientCertificateAlias = null;
                 AuthType authType = getSelectedAuthType();
-                if (AuthType.EXTERNAL == authType) {
+                if ((ConnectionSecurity.SSL_TLS_REQUIRED == getSelectedSecurity()) ||
+                        (ConnectionSecurity.STARTTLS_REQUIRED == getSelectedSecurity()) ) {
                     clientCertificateAlias = mClientCertificateSpinner.getAlias();
-                } else {
+                }
+                if (AuthType.EXTERNAL != authType) {
                     password = mPasswordView.getText().toString();
                 }
 
@@ -559,9 +578,12 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             String clientCertificateAlias = null;
 
             AuthType authType = getSelectedAuthType();
-            if (authType == AuthType.EXTERNAL) {
+
+            if ((ConnectionSecurity.SSL_TLS_REQUIRED == connectionSecurity) ||
+                    (ConnectionSecurity.STARTTLS_REQUIRED == connectionSecurity) ) {
                 clientCertificateAlias = mClientCertificateSpinner.getAlias();
-            } else {
+            }
+            if (authType != AuthType.EXTERNAL) {
                 password = mPasswordView.getText().toString();
             }
             String host = mServerView.getText().toString();

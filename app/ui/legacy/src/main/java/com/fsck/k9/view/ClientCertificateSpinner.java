@@ -75,6 +75,7 @@ public class ClientCertificateSpinner extends LinearLayout {
             @Override
             public void run() {
                 updateView();
+                mDeleteButton.setVisibility((mAlias==null)?View.GONE: View.VISIBLE);
                 if (mListener != null) {
                     mListener.onClientCertificateChanged(mAlias);
                 }
@@ -93,6 +94,7 @@ public class ClientCertificateSpinner extends LinearLayout {
 
     private void onDelete() {
         setAlias(null);
+        mDeleteButton.setVisibility(View.GONE);
     }
 
     public void chooseCertificate() {
