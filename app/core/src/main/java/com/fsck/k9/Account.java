@@ -425,6 +425,10 @@ public class Account implements BaseAccount {
         this.mutedSenders = new HashSet<String>(mutedSenders);
     }
 
+    public synchronized void addMutedSender(String sender) {
+        this.mutedSenders.add(sender);
+    }
+
     public synchronized String getMuteIfSentToAsString() {
         return TextUtils.join(";", getMuteIfSentTo());
     }
