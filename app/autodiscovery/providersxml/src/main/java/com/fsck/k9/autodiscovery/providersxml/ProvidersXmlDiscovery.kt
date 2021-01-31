@@ -1,79 +1,30 @@
 package com.fsck.k9.autodiscovery.providersxml
 
 import android.content.res.XmlResourceParser
+import android.net.Uri
 import com.fsck.k9.autodiscovery.api.ConnectionSettingsDiscovery
 import com.fsck.k9.autodiscovery.api.DiscoveredServerSettings
 import com.fsck.k9.autodiscovery.api.DiscoveryResults
 import com.fsck.k9.autodiscovery.api.DiscoveryTarget
-import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.helper.EmailHelper
-import com.fsck.k9.helper.UrlEncodingHelper
-import java.net.URI
-import java.net.URISyntaxException
+import com.fsck.k9.mail.AuthType
+import com.fsck.k9.mail.ConnectionSecurity
+import com.fsck.k9.preferences.Protocols
 import org.xmlpull.v1.XmlPullParser
 import timber.log.Timber
 
 class ProvidersXmlDiscovery(
-    private val backendManager: BackendManager,
     private val xmlProvider: ProvidersXmlProvider
 ) : ConnectionSettingsDiscovery {
 
     override fun discover(email: String, target: DiscoveryTarget): DiscoveryResults? {
-        val password = ""
-
-        val user = EmailHelper.getLocalPartFromEmailAddress(email) ?: return null
         val domain = EmailHelper.getDomainFromEmailAddress(email) ?: return null
 
         val provider = findProviderForDomain(domain) ?: return null
-        try {
-            val userUrlEncoded = UrlEncodingHelper.encodeUtf8(user)
-            val emailUrlEncoded = UrlEncodingHelper.encodeUtf8(email)
 
-            val incomingUserUrlEncoded = provider.incomingUsernameTemplate
-                .replace("\$email", emailUrlEncoded)
-                .replace("\$user", userUrlEncoded)
-                .replace("\$domain", domain)
-            val incomingUri = with(URI(provider.incomingUriTemplate)) {
-                URI(scheme, "$incomingUserUrlEncoded:$password", host, port, null, null, null).toString()
-            }
-            val incomingSettings = backendManager.decodeStoreUri(incomingUri).let {
-                listOf(
-                    DiscoveredServerSettings(
-                        it.type,
-                        it.host,
-                        it.port,
-                        it.connectionSecurity,
-                        it.authenticationType,
-                        it.username
-                    )
-                )
-            }
-
-            val outgoingUserUrlEncoded = provider.outgoingUsernameTemplate
-                ?.replace("\$email", emailUrlEncoded)
-                ?.replace("\$user", userUrlEncoded)
-                ?.replace("\$domain", domain)
-            val outgoingUserInfo = if (outgoingUserUrlEncoded != null) "$outgoingUserUrlEncoded:$password" else null
-            val outgoingUri = with(URI(provider.outgoingUriTemplate)) {
-                URI(scheme, outgoingUserInfo, host, port, null, null, null).toString()
-            }
-            val outgoingSettings = backendManager.decodeTransportUri(outgoingUri).let {
-                listOf(
-                    DiscoveredServerSettings(
-                        it.type,
-                        it.host,
-                        it.port,
-                        it.connectionSecurity,
-                        it.authenticationType,
-                        it.username
-                    )
-                )
-            }
-
-            return DiscoveryResults(incomingSettings, outgoingSettings)
-        } catch (use: URISyntaxException) {
-            return null
-        }
+        val incomingSettings = provider.toIncomingServerSettings(email) ?: return null
+        val outgoingSettings = provider.toOutgoingServerSettings(email) ?: return null
+        return DiscoveryResults(listOf(incomingSettings), listOf(outgoingSettings))
     }
 
     private fun findProviderForDomain(domain: String): Provider? {
@@ -124,17 +75,69 @@ class ProvidersXmlDiscovery(
             }
         } while (!(xmlEventType == XmlPullParser.END_TAG && xml.name == "provider"))
 
-        return if (incomingUriTemplate != null && incomingUsernameTemplate != null && outgoingUriTemplate != null) {
+        return if (incomingUriTemplate != null && incomingUsernameTemplate != null && outgoingUriTemplate != null &&
+            outgoingUsernameTemplate != null
+        ) {
             Provider(incomingUriTemplate, incomingUsernameTemplate, outgoingUriTemplate, outgoingUsernameTemplate)
         } else {
             null
         }
     }
 
+    private fun Provider.toIncomingServerSettings(email: String): DiscoveredServerSettings? {
+        val user = EmailHelper.getLocalPartFromEmailAddress(email) ?: return null
+        val domain = EmailHelper.getDomainFromEmailAddress(email) ?: return null
+
+        val username = incomingUsernameTemplate.fillInUsernameTemplate(email, user, domain)
+
+        val security = when {
+            incomingUriTemplate.startsWith("imap+ssl") -> ConnectionSecurity.SSL_TLS_REQUIRED
+            incomingUriTemplate.startsWith("imap+tls") -> ConnectionSecurity.STARTTLS_REQUIRED
+            else -> error("Connection security required")
+        }
+
+        val uri = Uri.parse(incomingUriTemplate)
+        val host = uri.host ?: error("Host name required")
+        val port = if (uri.port == -1) {
+            if (security == ConnectionSecurity.STARTTLS_REQUIRED) 143 else 993
+        } else {
+            uri.port
+        }
+
+        return DiscoveredServerSettings(Protocols.IMAP, host, port, security, AuthType.PLAIN, username)
+    }
+
+    private fun Provider.toOutgoingServerSettings(email: String): DiscoveredServerSettings? {
+        val user = EmailHelper.getLocalPartFromEmailAddress(email) ?: return null
+        val domain = EmailHelper.getDomainFromEmailAddress(email) ?: return null
+
+        val username = outgoingUsernameTemplate.fillInUsernameTemplate(email, user, domain)
+
+        val security = when {
+            outgoingUriTemplate.startsWith("smtp+ssl") -> ConnectionSecurity.SSL_TLS_REQUIRED
+            outgoingUriTemplate.startsWith("smtp+tls") -> ConnectionSecurity.STARTTLS_REQUIRED
+            else -> error("Connection security required")
+        }
+
+        val uri = Uri.parse(outgoingUriTemplate)
+        val host = uri.host ?: error("Host name required")
+        val port = if (uri.port == -1) {
+            if (security == ConnectionSecurity.STARTTLS_REQUIRED) 587 else 465
+        } else {
+            uri.port
+        }
+
+        return DiscoveredServerSettings(Protocols.SMTP, host, port, security, AuthType.PLAIN, username)
+    }
+
+    private fun String.fillInUsernameTemplate(email: String, user: String, domain: String): String {
+        return this.replace("\$email", email).replace("\$user", user).replace("\$domain", domain)
+    }
+
     internal data class Provider(
         val incomingUriTemplate: String,
         val incomingUsernameTemplate: String,
         val outgoingUriTemplate: String,
-        val outgoingUsernameTemplate: String?
+        val outgoingUsernameTemplate: String
     )
 }
