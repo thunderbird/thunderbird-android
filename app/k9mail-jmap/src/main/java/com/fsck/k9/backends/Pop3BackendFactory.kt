@@ -30,12 +30,12 @@ class Pop3BackendFactory(
     }
 
     private fun createPop3Store(account: Account): Pop3Store {
-        val serverSettings = decodeStoreUri(account.storeUri)
+        val serverSettings = account.incomingServerSettings
         return Pop3Store(serverSettings, trustedSocketFactory)
     }
 
     private fun createSmtpTransport(account: Account): SmtpTransport {
-        val serverSettings = decodeTransportUri(account.transportUri)
+        val serverSettings = account.outgoingServerSettings
         val oauth2TokenProvider: OAuth2TokenProvider? = null
         return SmtpTransport(serverSettings, trustedSocketFactory, oauth2TokenProvider)
     }

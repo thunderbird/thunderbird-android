@@ -6,7 +6,6 @@ val preferencesModule = module {
     factory {
         SettingsExporter(
             contentResolver = get(),
-            backendManager = get(),
             preferences = get(),
             folderSettingsProvider = get(),
             folderRepositoryManager = get()

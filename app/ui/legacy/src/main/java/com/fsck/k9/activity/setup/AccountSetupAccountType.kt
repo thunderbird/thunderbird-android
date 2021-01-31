@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
-import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.helper.EmailHelper.getDomainFromEmailAddress
 import com.fsck.k9.mail.ConnectionSecurity
 import com.fsck.k9.mail.ServerSettings
@@ -26,7 +25,6 @@ class AccountSetupAccountType : K9Activity() {
     private val preferences: Preferences by inject()
     private val serverNameSuggester: ServerNameSuggester by inject()
     private val localFoldersCreator: SpecialLocalFoldersCreator by inject()
-    private val backendManager: BackendManager by inject()
 
     private lateinit var account: Account
     private var makeDefault = false
@@ -67,11 +65,11 @@ class AccountSetupAccountType : K9Activity() {
     private fun setupStoreAndSmtpTransport(serverType: String) {
         val domainPart = getDomainFromEmailAddress(account.email) ?: error("Couldn't get domain from email address")
 
-        setupStoreUri(serverType, domainPart)
-        setupTransportUri(domainPart)
+        initializeIncomingServerSettings(serverType, domainPart)
+        initializeOutgoingServerSettings(domainPart)
     }
 
-    private fun setupStoreUri(serverType: String, domainPart: String) {
+    private fun initializeIncomingServerSettings(serverType: String, domainPart: String) {
         val suggestedStoreServerName = serverNameSuggester.suggestServerName(serverType, domainPart)
         val storeServer = ServerSettings(
             serverType,
@@ -83,11 +81,10 @@ class AccountSetupAccountType : K9Activity() {
             initialAccountSettings.password,
             initialAccountSettings.clientCertificateAlias
         )
-        val storeUri = backendManager.createStoreUri(storeServer)
-        account.storeUri = storeUri
+        account.incomingServerSettings = storeServer
     }
 
-    private fun setupTransportUri(domainPart: String) {
+    private fun initializeOutgoingServerSettings(domainPart: String) {
         val suggestedTransportServerName = serverNameSuggester.suggestServerName(Protocols.SMTP, domainPart)
         val transportServer = ServerSettings(
             Protocols.SMTP,
@@ -99,8 +96,7 @@ class AccountSetupAccountType : K9Activity() {
             initialAccountSettings.password,
             initialAccountSettings.clientCertificateAlias
         )
-        val transportUri = backendManager.createTransportUri(transportServer)
-        account.transportUri = transportUri
+        account.outgoingServerSettings = transportServer
     }
 
     private fun createSpecialLocalFolders() {

@@ -17,6 +17,7 @@ import android.text.TextUtils;
 import com.fsck.k9.backend.api.SyncConfig.ExpungePolicy;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.NetworkType;
+import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mailstore.StorageManager;
 import com.fsck.k9.mailstore.StorageManager.StorageProvider;
 import org.jetbrains.annotations.NotNull;
@@ -101,14 +102,14 @@ public class Account implements BaseAccount {
     private DeletePolicy deletePolicy = DeletePolicy.NEVER;
 
     private final String accountUuid;
-    private String storeUri;
+    private ServerSettings incomingServerSettings;
+    private ServerSettings outgoingServerSettings;
 
     /**
      * Storage provider ID, used to locate and manage the underlying DB/file
      * storage
      */
     private String localStorageProviderId;
-    private String transportUri;
     private String description;
     private String alwaysBcc;
     private int automaticCheckIntervalMinutes;
@@ -254,20 +255,20 @@ public class Account implements BaseAccount {
         return accountUuid;
     }
 
-    public synchronized String getStoreUri() {
-        return storeUri;
+    public synchronized ServerSettings getIncomingServerSettings() {
+        return incomingServerSettings;
     }
 
-    public synchronized void setStoreUri(String storeUri) {
-        this.storeUri = storeUri;
+    public synchronized void setIncomingServerSettings(ServerSettings incomingServerSettings) {
+        this.incomingServerSettings = incomingServerSettings;
     }
 
-    public synchronized String getTransportUri() {
-        return transportUri;
+    public synchronized ServerSettings getOutgoingServerSettings() {
+        return outgoingServerSettings;
     }
 
-    public synchronized void setTransportUri(String transportUri) {
-        this.transportUri = transportUri;
+    public synchronized void setOutgoingServerSettings(ServerSettings outgoingServerSettings) {
+        this.outgoingServerSettings = outgoingServerSettings;
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.fsck.k9.Account
 import com.fsck.k9.Account.SpecialFolderSelection
 import com.fsck.k9.Preferences
 import com.fsck.k9.mail.FolderClass
+import com.fsck.k9.preferences.Protocols
 
 /**
  * Updates special folders in [Account] if they are marked as [SpecialFolderSelection.AUTOMATIC] or if they are marked
@@ -132,5 +133,5 @@ class SpecialFolderUpdater(
         preferences.saveAccount(account)
     }
 
-    private fun Account.isPop3() = storeUri.startsWith("pop3")
+    private fun Account.isPop3() = incomingServerSettings.type == Protocols.POP3
 }

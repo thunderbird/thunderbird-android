@@ -24,7 +24,7 @@ class WebDavBackendFactory(
     override fun createBackend(account: Account): Backend {
         val accountName = account.displayName
         val backendStorage = backendStorageFactory.createBackendStorage(account)
-        val serverSettings = WebDavStoreUriDecoder.decode(account.storeUri)
+        val serverSettings = account.incomingServerSettings
         val draftsFolderProvider = createDraftsFolderProvider(account)
         val webDavStore = WebDavStore(trustManagerFactory, serverSettings, draftsFolderProvider)
         val webDavTransport = WebDavTransport(trustManagerFactory, serverSettings, draftsFolderProvider)

@@ -4,7 +4,6 @@ import android.content.Context
 import com.fsck.k9.Account
 import com.fsck.k9.Core
 import com.fsck.k9.Preferences
-import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.controller.MessagingController
 
 /**
@@ -13,8 +12,7 @@ import com.fsck.k9.controller.MessagingController
 class AccountActivator(
     private val context: Context,
     private val preferences: Preferences,
-    private val messagingController: MessagingController,
-    private val backendManager: BackendManager
+    private val messagingController: MessagingController
 ) {
     fun enableAccount(accountUuid: String, incomingServerPassword: String?, outgoingServerPassword: String?) {
         val account = preferences.getAccount(accountUuid)
@@ -34,15 +32,11 @@ class AccountActivator(
         outgoingServerPassword: String?
     ) {
         if (incomingServerPassword != null) {
-            val incomingServerSettings = backendManager.decodeStoreUri(account.storeUri)
-            val newIncomingServerSettings = incomingServerSettings.newPassword(incomingServerPassword)
-            account.storeUri = backendManager.createStoreUri(newIncomingServerSettings)
+            account.incomingServerSettings = account.incomingServerSettings.newPassword(incomingServerPassword)
         }
 
         if (outgoingServerPassword != null) {
-            val outgoingServerSettings = backendManager.decodeTransportUri(account.transportUri)
-            val newOutgoingServerSettings = outgoingServerSettings.newPassword(outgoingServerPassword)
-            account.transportUri = backendManager.createTransportUri(newOutgoingServerSettings)
+            account.outgoingServerSettings = account.outgoingServerSettings.newPassword(outgoingServerPassword)
         }
 
         account.isEnabled = true

@@ -9,12 +9,11 @@ import java.util.UUID;
 import com.fsck.k9.K9RobolectricTest;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.mail.AuthType;
+import kotlin.text.Charsets;
+import okio.Buffer;
 import org.junit.Before;
 import org.junit.Test;
 import org.robolectric.RuntimeEnvironment;
-
-import kotlin.text.Charsets;
-import okio.Buffer;
 
 import static com.fsck.k9.preferences.MessagingControllerTestExtra.setUpBackendManager;
 import static org.junit.Assert.assertEquals;

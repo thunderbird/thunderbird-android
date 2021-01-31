@@ -15,22 +15,20 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentTransaction;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentTransaction;
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.LocalKeyStoreManager;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.ui.base.K9Activity;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.fragment.ConfirmationDialogFragment;
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener;
@@ -39,7 +37,9 @@ import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.MailServerDirection;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.filter.Hex;
+import com.fsck.k9.preferences.Protocols;
 import com.fsck.k9.ui.R;
+import com.fsck.k9.ui.base.K9Activity;
 import timber.log.Timber;
 
 
@@ -187,8 +187,8 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
                             altNamesText.append("Subject has ").append(subjectAlternativeNames.size()).append(" alternative names\n");
 
                             // we need these for matching
-                            String storeURIHost = (Uri.parse(mAccount.getStoreUri())).getHost();
-                            String transportURIHost = (Uri.parse(mAccount.getTransportUri())).getHost();
+                            String incomingServerHost = mAccount.getIncomingServerSettings().host;
+                            String outgoingServerHost = mAccount.getOutgoingServerSettings().host;
 
                             for (List<?> subjectAlternativeName : subjectAlternativeNames) {
                                 Integer type = (Integer)subjectAlternativeName.get(0);
@@ -226,12 +226,12 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
 
                                 // if some of the SubjectAltNames match the store or transport -host,
                                 // display them
-                                if (name.equalsIgnoreCase(storeURIHost) || name.equalsIgnoreCase(transportURIHost)) {
+                                if (name.equalsIgnoreCase(incomingServerHost) || name.equalsIgnoreCase(outgoingServerHost)) {
                                     //TODO: localize this string
                                     altNamesText.append("Subject(alt): ").append(name).append(",...\n");
                                 } else if (name.startsWith("*.") && (
-                                            storeURIHost.endsWith(name.substring(2)) ||
-                                            transportURIHost.endsWith(name.substring(2)))) {
+                                            incomingServerHost.endsWith(name.substring(2)) ||
+                                            outgoingServerHost.endsWith(name.substring(2)))) {
                                     //TODO: localize this string
                                     altNamesText.append("Subject(alt): ").append(name).append(",...\n");
                                 }
@@ -515,7 +515,7 @@ public class AccountSetupCheckSettings extends K9Activity implements OnClickList
         }
 
         private boolean isWebDavAccount() {
-            return account.getStoreUri().startsWith("webdav");
+            return account.getIncomingServerSettings().type.equals(Protocols.WEBDAV);
         }
 
         @Override

@@ -16,7 +16,6 @@ import com.fsck.k9.Account.SpecialFolderSelection
 import com.fsck.k9.Account.UNASSIGNED_ACCOUNT_NUMBER
 import com.fsck.k9.helper.Utility
 import com.fsck.k9.mail.NetworkType
-import com.fsck.k9.mail.filter.Base64
 import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
@@ -24,16 +23,17 @@ import timber.log.Timber
 
 class AccountPreferenceSerializer(
     private val storageManager: StorageManager,
-    private val resourceProvider: CoreResourceProvider
+    private val resourceProvider: CoreResourceProvider,
+    private val serverSettingsSerializer: ServerSettingsSerializer
 ) {
 
     @Synchronized
     fun loadAccount(account: Account, storage: Storage) {
         val accountUuid = account.uuid
         with(account) {
-            storeUri = Base64.decode(storage.getString("$accountUuid.storeUri", null))
+            incomingServerSettings = serverSettingsSerializer.deserializeIncoming(storage.getString("$accountUuid.storeUri", ""))
+            outgoingServerSettings = serverSettingsSerializer.deserializeOutgoing(storage.getString("$accountUuid.transportUri", ""))
             localStorageProviderId = storage.getString("$accountUuid.localStorageProvider", storageManager.defaultProviderId)
-            transportUri = Base64.decode(storage.getString("$accountUuid.transportUri", null))
             description = storage.getString("$accountUuid.description", null)
             alwaysBcc = storage.getString("$accountUuid.alwaysBcc", alwaysBcc)
             automaticCheckIntervalMinutes = storage.getInt("$accountUuid.automaticCheckIntervalMinutes", DEFAULT_SYNC_INTERVAL)
@@ -244,9 +244,9 @@ class AccountPreferenceSerializer(
         }
 
         with(account) {
-            editor.putString("$accountUuid.storeUri", Base64.encode(storeUri))
+            editor.putString("$accountUuid.storeUri", serverSettingsSerializer.serializeIncoming(incomingServerSettings))
+            editor.putString("$accountUuid.transportUri", serverSettingsSerializer.serializeOutgoing(outgoingServerSettings))
             editor.putString("$accountUuid.localStorageProvider", localStorageProviderId)
-            editor.putString("$accountUuid.transportUri", Base64.encode(transportUri))
             editor.putString("$accountUuid.description", description)
             editor.putString("$accountUuid.alwaysBcc", alwaysBcc)
             editor.putInt("$accountUuid.automaticCheckIntervalMinutes", automaticCheckIntervalMinutes)

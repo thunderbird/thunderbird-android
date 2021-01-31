@@ -2,6 +2,7 @@ package com.fsck.k9.storage.migrations
 
 import android.database.sqlite.SQLiteDatabase
 import com.fsck.k9.mailstore.MigrationsHelper
+import com.fsck.k9.preferences.Protocols
 
 internal object MigrationTo65 {
     @JvmStatic
@@ -16,6 +17,6 @@ internal object MigrationTo65 {
     }
 
     private fun isPop3Account(migrationsHelper: MigrationsHelper): Boolean {
-        return migrationsHelper.account.storeUri.startsWith("pop3")
+        return migrationsHelper.account.incomingServerSettings.type == Protocols.POP3
     }
 }

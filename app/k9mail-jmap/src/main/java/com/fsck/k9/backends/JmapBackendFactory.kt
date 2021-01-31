@@ -21,7 +21,7 @@ class JmapBackendFactory(
         val backendStorage = backendStorageFactory.createBackendStorage(account)
         val okHttpClient = okHttpClientProvider.getOkHttpClient()
 
-        val serverSettings = decodeStoreUri(account.storeUri)
+        val serverSettings = account.incomingServerSettings
         val jmapConfig = JmapConfig(
             username = serverSettings.username,
             password = serverSettings.password!!,

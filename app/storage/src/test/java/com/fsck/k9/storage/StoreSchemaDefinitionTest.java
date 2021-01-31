@@ -14,7 +14,10 @@ import android.text.TextUtils;
 
 import com.fsck.k9.Account;
 import com.fsck.k9.core.BuildConfig;
+import com.fsck.k9.mail.AuthType;
+import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LockableDatabase;
 import com.fsck.k9.mailstore.MigrationsHelper;
@@ -406,7 +409,10 @@ public class StoreSchemaDefinitionTest extends K9RobolectricTest {
         when(account.getImportedSentFolder()).thenReturn("Sent");
         when(account.getImportedArchiveFolder()).thenReturn(null);
         when(account.getLocalStorageProviderId()).thenReturn(StorageManager.InternalStorageProvider.ID);
-        when(account.getStoreUri()).thenReturn("dummy://");
+
+        ServerSettings incomingServerSettings = new ServerSettings("dummy", "", -1, ConnectionSecurity.NONE,
+                AuthType.AUTOMATIC, "", "", null);
+        when(account.getIncomingServerSettings()).thenReturn(incomingServerSettings);
         return account;
     }
 

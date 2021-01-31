@@ -31,7 +31,6 @@ import com.fsck.k9.helper.EmailHelper;
 import com.fsck.k9.setup.ServerNameSuggester;
 import com.fsck.k9.ui.base.K9Activity;
 import com.fsck.k9.activity.setup.AccountSetupCheckSettings.CheckDirection;
-import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.controller.MessagingController;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.job.K9JobManager;
@@ -63,7 +62,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     private static final String STATE_AUTH_TYPE_POSITION = "authTypePosition";
 
     private final MessagingController messagingController = DI.get(MessagingController.class);
-    private final BackendManager backendManager = DI.get(BackendManager.class);
     private final K9JobManager jobManager = DI.get(K9JobManager.class);
     private final AccountCreator accountCreator = DI.get(AccountCreator.class);
     private final ServerNameSuggester serverNameSuggester = DI.get(ServerNameSuggester.class);
@@ -182,7 +180,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
         boolean editSettings = Intent.ACTION_EDIT.equals(getIntent().getAction());
 
         try {
-            ServerSettings settings = backendManager.decodeStoreUri(mAccount.getStoreUri());
+            ServerSettings settings = mAccount.getIncomingServerSettings();
 
             if (savedInstanceState == null) {
                 // The first item is selected if settings.authenticationType is null or is not in mAuthTypeAdapter
@@ -193,9 +191,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             mAuthTypeView.setSelection(mCurrentAuthTypeViewPosition, false);
             updateViewFromAuthType();
 
-            if (settings.username != null) {
-                mUsernameView.setText(settings.username);
-            }
+            mUsernameView.setText(settings.username);
 
             if (settings.password != null) {
                 mPasswordView.setText(settings.password);
@@ -264,7 +260,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                     mWebdavMailboxPathView.setText(mailboxPath);
                 }
             } else {
-                throw new Exception("Unknown account type: " + mAccount.getStoreUri());
+                throw new Exception("Unknown account type: " + settings.type);
             }
 
             if (!editSettings) {
@@ -547,8 +543,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 ServerSettings transportServer = new ServerSettings(Protocols.SMTP, host,
                         -1, ConnectionSecurity.SSL_TLS_REQUIRED, authType, username, password,
                         clientCertificateAlias);
-                String transportUri = backendManager.createTransportUri(transportServer);
-                mAccount.setTransportUri(transportUri);
+                mAccount.setOutgoingServerSettings(transportServer);
 
                 AccountSetupOutgoing.actionOutgoingSettings(this, mAccount, mMakeDefault);
             }
@@ -588,7 +583,7 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             ServerSettings settings = new ServerSettings(mStoreType, host, port,
                     connectionSecurity, authType, username, password, clientCertificateAlias, extra);
 
-            mAccount.setStoreUri(backendManager.createStoreUri(settings));
+            mAccount.setIncomingServerSettings(settings);
 
             mAccount.setCompression(NetworkType.MOBILE, mCompressionMobile.isChecked());
             mAccount.setCompression(NetworkType.WIFI, mCompressionWifi.isChecked());
