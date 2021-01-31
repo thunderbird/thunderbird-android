@@ -39,7 +39,9 @@ public class SmtpTransportUriCreator {
         if (! clientCertificateAliasEnc.equals("") ) {
             params.put("tls-cert",clientCertificateAliasEnc);
         }
-        params.put("auth-type",server.authenticationType.name().toLowerCase());
+        if (server.authenticationType != null) {
+            params.put("auth-type", server.authenticationType.name().toLowerCase());
+        }
         String query = buildQuery(params);
 
 
@@ -69,6 +71,11 @@ public class SmtpTransportUriCreator {
             }
         } else {
             userInfo = userEnc + ":" + passwordEnc;
+            if (userInfo.equals(":")) {
+                userInfo = null;
+            } else if ((passwordEnc == null) || (passwordEnc.equals(""))) {
+                userInfo = userEnc;
+            }
         }
         try {
             return new URI(scheme, userInfo, server.host, server.port, null, query,

@@ -84,6 +84,7 @@ public class ImapStoreUriCreator {
             } else {
                 path = "/1|";
             }
+            // query is assumed to have at least one entry, and we have to do the encoding ourselves, due to limitations in URI
             return new URI(scheme, userInfo, server.host, server.port, path, null, null).toString() + "?" + query;
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException("Can't create ImapStore URI", e);

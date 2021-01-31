@@ -62,6 +62,31 @@ public class SmtpTransportUriCreatorTest {
     }
 
     @Test
+    public void createTransportUri_noAuthUri() {
+        ServerSettings serverSettings = new ServerSettings(
+                "smtp", "server", 123456,
+                ConnectionSecurity.STARTTLS_REQUIRED, null,
+                null, null, "clientCert");
+
+        String result = SmtpTransportUriCreator.createSmtpUri(serverSettings);
+
+        assertEquals("smtp+tls+://server:123456?tls-cert=clientCert", result);
+    }
+
+
+    @Test
+    public void createTransportUri_noQueryUri() {
+        ServerSettings serverSettings = new ServerSettings(
+                "smtp", "server", 123456,
+                ConnectionSecurity.NONE, null,
+                "user", null, null);
+
+        String result = SmtpTransportUriCreator.createSmtpUri(serverSettings);
+
+        assertEquals("smtp://user@server:123456", result);
+    }
+
+    @Test
     public void createTransportUri_canEncodeSmtpUri() {
         ServerSettings serverSettings = new ServerSettings(
                 "smtp", "server", 123456,

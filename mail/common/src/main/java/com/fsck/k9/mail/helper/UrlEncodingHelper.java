@@ -11,6 +11,7 @@ import java.util.Map;
 public final class UrlEncodingHelper {
     private UrlEncodingHelper() {
     }
+
     public static Map<String, String> splitQuery(String query) {
         Map<String, String> queryParams = new HashMap<>();
         if (query == null) {
@@ -25,19 +26,19 @@ public final class UrlEncodingHelper {
     }
 
     public static String buildQuery(Map<String, String> params) {
+        if (params.size() == 0) {
+            return null;
+        }
         StringBuffer query = new StringBuffer("");
         for (String param: params.keySet()) {
             query.append(param);
             query.append('=');
-            //query.append(params.get(param));
             query.append(encodeUtf8(params.get(param)));
             query.append('&');
         }
         query.deleteCharAt(query.length()-1);
         return query.toString();
     }
-
-
 
     public static String decodeUtf8(String s) {
         try {

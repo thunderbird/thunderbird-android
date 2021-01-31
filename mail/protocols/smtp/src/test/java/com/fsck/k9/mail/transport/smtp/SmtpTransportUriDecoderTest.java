@@ -7,6 +7,7 @@ import com.fsck.k9.mail.ServerSettings;
 import org.junit.Test;
 
 import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 
 public class SmtpTransportUriDecoderTest {
@@ -140,6 +141,33 @@ public class SmtpTransportUriDecoderTest {
 
         assertEquals(25, result.port);
     }
+
+    @Test
+    public void decodeTransportUri_decodeCleanishURI() {
+        String storeUri = "smtp+tls+://:@server:25/?auth-type=PLAIN&tls-cert=clientCert";
+
+        ServerSettings result = SmtpTransportUriDecoder.decodeSmtpUri(storeUri);
+
+        assertEquals("clientCert", result.clientCertificateAlias);
+        assertEquals(AuthType.PLAIN, result.authenticationType);
+        assertNull(result.password);
+
+        assertEquals(25, result.port);
+    }
+    @Test
+    public void decodeTransportUri_decodeAlmostEmptyURI() {
+        String storeUri = "smtp+tls+://server";
+
+        ServerSettings result = SmtpTransportUriDecoder.decodeSmtpUri(storeUri);
+
+        assertNull(result.clientCertificateAlias);
+        assertNull(result.authenticationType);
+        assertNull(result.password);
+
+        assertEquals(587, result.port);
+    }
+
+
 
     @Test
     public void decodeTransportUri_canHybridParamsWinURI() {
