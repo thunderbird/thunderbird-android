@@ -47,12 +47,14 @@ import com.fsck.k9.ui.R;
 import com.fsck.k9.view.ClientCertificateSpinner;
 import com.fsck.k9.view.ClientCertificateSpinner.OnClientCertificateChangedListener;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import timber.log.Timber;
+
+import static java.util.Collections.emptyMap;
+
 
 public class AccountSetupIncoming extends K9Activity implements OnClickListener {
     private static final String EXTRA_ACCOUNT = "account";
@@ -217,11 +219,12 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             } else if (settings.type.equals(Protocols.IMAP)) {
                 serverLayoutView.setHint(getString(R.string.account_setup_incoming_imap_server_label));
 
-                ImapStoreSettings imapSettings = (ImapStoreSettings) settings;
+                boolean autoDetectNamespace = ImapStoreSettings.getAutoDetectNamespace(settings);
+                String pathPrefix = ImapStoreSettings.getPathPrefix(settings);
 
-                mImapAutoDetectNamespaceView.setChecked(imapSettings.autoDetectNamespace);
-                if (imapSettings.pathPrefix != null) {
-                    mImapPathPrefixView.setText(imapSettings.pathPrefix);
+                mImapAutoDetectNamespaceView.setChecked(autoDetectNamespace);
+                if (pathPrefix != null) {
+                    mImapPathPrefixView.setText(pathPrefix);
                 }
 
                 findViewById(R.id.webdav_advanced_header).setVisibility(View.GONE);
@@ -246,18 +249,19 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
                 findViewById(R.id.compression_label).setVisibility(View.GONE);
                 mSubscribedFoldersOnly.setVisibility(View.GONE);
 
-                WebDavStoreSettings webDavSettings = (WebDavStoreSettings) settings;
-
-                if (webDavSettings.path != null) {
-                    mWebdavPathPrefixView.setText(webDavSettings.path);
+                String path = WebDavStoreSettings.getPath(settings);
+                if (path != null) {
+                    mWebdavPathPrefixView.setText(path);
                 }
 
-                if (webDavSettings.authPath != null) {
-                    mWebdavAuthPathView.setText(webDavSettings.authPath);
+                String authPath = WebDavStoreSettings.getAuthPath(settings);
+                if (authPath != null) {
+                    mWebdavAuthPathView.setText(authPath);
                 }
 
-                if (webDavSettings.mailboxPath != null) {
-                    mWebdavMailboxPathView.setText(webDavSettings.mailboxPath);
+                String mailboxPath = WebDavStoreSettings.getMailboxPath(settings);
+                if (mailboxPath != null) {
+                    mWebdavMailboxPathView.setText(mailboxPath);
                 }
             } else {
                 throw new Exception("Unknown account type: " + mAccount.getStoreUri());
@@ -568,21 +572,16 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
             String host = mServerView.getText().toString();
             int port = Integer.parseInt(mPortView.getText().toString());
 
-            Map<String, String> extra = null;
+            Map<String, String> extra = emptyMap();
             if (mStoreType.equals(Protocols.IMAP)) {
-                extra = new HashMap<>();
-                extra.put(ImapStoreSettings.AUTODETECT_NAMESPACE_KEY,
-                        Boolean.toString(mImapAutoDetectNamespaceView.isChecked()));
-                extra.put(ImapStoreSettings.PATH_PREFIX_KEY,
-                        mImapPathPrefixView.getText().toString());
+                boolean autoDetectNamespace = mImapAutoDetectNamespaceView.isChecked();
+                String pathPrefix = mImapPathPrefixView.getText().toString();
+                extra = ImapStoreSettings.createExtra(autoDetectNamespace, pathPrefix);
             } else if (mStoreType.equals(Protocols.WEBDAV)) {
-                extra = new HashMap<>();
-                extra.put(WebDavStoreSettings.PATH_KEY,
-                        mWebdavPathPrefixView.getText().toString());
-                extra.put(WebDavStoreSettings.AUTH_PATH_KEY,
-                        mWebdavAuthPathView.getText().toString());
-                extra.put(WebDavStoreSettings.MAILBOX_PATH_KEY,
-                        mWebdavMailboxPathView.getText().toString());
+                String path = mWebdavPathPrefixView.getText().toString();
+                String authPath = mWebdavAuthPathView.getText().toString();
+                String mailboxPath = mWebdavMailboxPathView.getText().toString();
+                extra = WebDavStoreSettings.createExtra(null, path, authPath, mailboxPath);
             }
 
             DI.get(LocalKeyStoreManager.class).deleteCertificate(mAccount, host, port, MailServerDirection.INCOMING);

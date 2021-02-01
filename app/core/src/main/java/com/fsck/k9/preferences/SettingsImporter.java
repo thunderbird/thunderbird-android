@@ -36,6 +36,9 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 import timber.log.Timber;
 
+import static java.util.Collections.emptyMap;
+import static java.util.Collections.unmodifiableMap;
+
 
 public class SettingsImporter {
 
@@ -368,7 +371,7 @@ public class SettingsImporter {
         }
 
         // Write incoming server settings (storeUri)
-        ServerSettings incoming = new ImportedServerSettings(account.incoming);
+        ServerSettings incoming = createServerSettings(account.incoming);
         BackendManager backendManager = DI.get(BackendManager.class);
         String storeUri = backendManager.createStoreUri(incoming);
         putString(editor, accountKeyPrefix + AccountPreferenceSerializer.STORE_URI_KEY, Base64.encode(storeUri));
@@ -387,7 +390,7 @@ public class SettingsImporter {
         boolean outgoingPasswordNeeded = false;
         if (account.outgoing != null) {
             // Write outgoing server settings (transportUri)
-            ServerSettings outgoing = new ImportedServerSettings(account.outgoing);
+            ServerSettings outgoing = createServerSettings(account.outgoing);
             String transportUri = backendManager.createTransportUri(outgoing);
             putString(editor, accountKeyPrefix + AccountPreferenceSerializer.TRANSPORT_URI_KEY, Base64.encode(transportUri));
 
@@ -1053,47 +1056,41 @@ public class SettingsImporter {
         return name;
     }
 
-    private static class ImportedServerSettings extends ServerSettings {
-        private final ImportedServer importedServer;
+    private static ServerSettings createServerSettings(ImportedServer importedServer) {
+        String type = ServerTypeConverter.toServerSettingsType(importedServer.type);
+        int port = convertPort(importedServer.port);
+        ConnectionSecurity connectionSecurity = convertConnectionSecurity(importedServer.connectionSecurity);
+        Map<String, String> extra = importedServer.extras != null ?
+                unmodifiableMap(importedServer.extras.settings) : emptyMap();
 
-        public ImportedServerSettings(ImportedServer server) {
-            super(ServerTypeConverter.toServerSettingsType(server.type), server.host, convertPort(server.port),
-                    convertConnectionSecurity(server.connectionSecurity),
-                    server.authenticationType, server.username, server.password,
-                    server.clientCertificateAlias);
-            importedServer = server;
+        return new ServerSettings(type, importedServer.host, port, connectionSecurity,
+                importedServer.authenticationType, importedServer.username, importedServer.password,
+                importedServer.clientCertificateAlias, extra);
+    }
+
+    private static int convertPort(String port) {
+        try {
+            return Integer.parseInt(port);
+        } catch (NumberFormatException e) {
+            return -1;
         }
+    }
 
-        @Override
-        public Map<String, String> getExtra() {
-            return (importedServer.extras != null) ?
-                    Collections.unmodifiableMap(importedServer.extras.settings) : null;
-        }
-
-        private static int convertPort(String port) {
-            try {
-                return Integer.parseInt(port);
-            } catch (NumberFormatException e) {
-                return -1;
-            }
-        }
-
-        private static ConnectionSecurity convertConnectionSecurity(String connectionSecurity) {
-            try {
-                /*
-                 * TODO:
-                 * Add proper settings validation and upgrade capability for server settings.
-                 * Once that exists, move this code into a SettingsUpgrader.
-                 */
-                if ("SSL_TLS_OPTIONAL".equals(connectionSecurity)) {
-                    return ConnectionSecurity.SSL_TLS_REQUIRED;
-                } else if ("STARTTLS_OPTIONAL".equals(connectionSecurity)) {
-                    return ConnectionSecurity.STARTTLS_REQUIRED;
-                }
-                return ConnectionSecurity.valueOf(connectionSecurity);
-            } catch (Exception e) {
+    private static ConnectionSecurity convertConnectionSecurity(String connectionSecurity) {
+        try {
+            /*
+             * TODO:
+             * Add proper settings validation and upgrade capability for server settings.
+             * Once that exists, move this code into a SettingsUpgrader.
+             */
+            if ("SSL_TLS_OPTIONAL".equals(connectionSecurity)) {
                 return ConnectionSecurity.SSL_TLS_REQUIRED;
+            } else if ("STARTTLS_OPTIONAL".equals(connectionSecurity)) {
+                return ConnectionSecurity.STARTTLS_REQUIRED;
             }
+            return ConnectionSecurity.valueOf(connectionSecurity);
+        } catch (Exception e) {
+            return ConnectionSecurity.SSL_TLS_REQUIRED;
         }
     }
 

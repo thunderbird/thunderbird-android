@@ -4,38 +4,35 @@ package com.fsck.k9.mail.store.webdav;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.fsck.k9.mail.AuthType;
-import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
 
 
 /**
- * This class is used to store the decoded contents of an WebDavStore URI.
+ * Extract WebDav-specific server settings from {@link ServerSettings}.
  */
-public class WebDavStoreSettings extends ServerSettings {
-    public static final String ALIAS_KEY = "alias";
-    public static final String PATH_KEY = "path";
-    public static final String AUTH_PATH_KEY = "authPath";
-    public static final String MAILBOX_PATH_KEY = "mailboxPath";
+public class WebDavStoreSettings {
+    private static final String ALIAS_KEY = "alias";
+    private static final String PATH_KEY = "path";
+    private static final String AUTH_PATH_KEY = "authPath";
+    private static final String MAILBOX_PATH_KEY = "mailboxPath";
 
-    public final String alias;
-    public final String path;
-    public final String authPath;
-    public final String mailboxPath;
-
-    public WebDavStoreSettings(String host, int port, ConnectionSecurity connectionSecurity,
-            AuthType authenticationType, String username, String password, String clientCertificateAlias, String alias,
-            String path, String authPath, String mailboxPath) {
-        super("webdav", host, port, connectionSecurity, authenticationType, username,
-                password, clientCertificateAlias);
-        this.alias = alias;
-        this.path = path;
-        this.authPath = authPath;
-        this.mailboxPath = mailboxPath;
+    public static String getAlias(ServerSettings serverSettings) {
+        return serverSettings.getExtra().get(ALIAS_KEY);
     }
 
-    @Override
-    public Map<String, String> getExtra() {
+    public static String getPath(ServerSettings serverSettings) {
+        return serverSettings.getExtra().get(PATH_KEY);
+    }
+
+    public static String getAuthPath(ServerSettings serverSettings) {
+        return serverSettings.getExtra().get(AUTH_PATH_KEY);
+    }
+
+    public static String getMailboxPath(ServerSettings serverSettings) {
+        return serverSettings.getExtra().get(MAILBOX_PATH_KEY);
+    }
+
+    public static Map<String, String> createExtra(String alias, String path, String authPath, String mailboxPath) {
         Map<String, String> extra = new HashMap<>();
         putIfNotNull(extra, ALIAS_KEY, alias);
         putIfNotNull(extra, PATH_KEY, path);
@@ -44,9 +41,9 @@ public class WebDavStoreSettings extends ServerSettings {
         return extra;
     }
 
-    @Override
-    public ServerSettings newPassword(String newPassword) {
-        return new WebDavStoreSettings(host, port, connectionSecurity, authenticationType,
-                username, newPassword, clientCertificateAlias, alias, path, authPath, mailboxPath);
+    private static void putIfNotNull(Map<String, String> map, String key, String value) {
+        if (value != null) {
+            map.put(key, value);
+        }
     }
 }

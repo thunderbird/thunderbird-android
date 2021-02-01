@@ -14,6 +14,7 @@ import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.FolderType;
 import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.ssl.TrustManagerFactory;
 
@@ -73,7 +74,7 @@ public class WebDavStoreTest {
 
     private ArgumentCaptor<HttpGeneric> requestCaptor;
 
-    private WebDavStoreSettings serverSettings;
+    private ServerSettings serverSettings;
     private WebDavStore webDavStore;
 
 
@@ -87,7 +88,7 @@ public class WebDavStoreTest {
         when(mockHttpClient.getConnectionManager()).thenReturn(mockClientConnectionManager);
         when(mockClientConnectionManager.getSchemeRegistry()).thenReturn(mockSchemeRegistry);
 
-        serverSettings = createWebDavStoreSettings(ConnectionSecurity.SSL_TLS_REQUIRED);
+        serverSettings = createServerSettings(ConnectionSecurity.SSL_TLS_REQUIRED);
         webDavStore = createWebDavStore();
     }
 
@@ -336,8 +337,10 @@ public class WebDavStoreTest {
         };
     }
 
-    private WebDavStoreSettings createWebDavStoreSettings(ConnectionSecurity connectionSecurity) {
-        return new WebDavStoreSettings(
+    private ServerSettings createServerSettings(ConnectionSecurity connectionSecurity) {
+        Map<String, String> extra = WebDavStoreSettings.createExtra(null, null, null, null);
+        return new ServerSettings(
+                "webdav",
                 "webdav.example.org",
                 443,
                 connectionSecurity,
@@ -345,10 +348,7 @@ public class WebDavStoreTest {
                 "user",
                 "password",
                 null,
-                null,
-                null,
-                null,
-                null);
+                extra);
     }
 
     private WebDavStore createWebDavStore() {
@@ -356,7 +356,7 @@ public class WebDavStoreTest {
     }
 
     private WebDavStore createWebDavStore(ConnectionSecurity connectionSecurity) {
-        WebDavStoreSettings serverSettings = createWebDavStoreSettings(connectionSecurity);
+        ServerSettings serverSettings = createServerSettings(connectionSecurity);
         return new WebDavStore(trustManagerFactory, serverSettings, draftsFolderProvider, mockHttpClientFactory);
     }
 

@@ -7,6 +7,7 @@ import java.util.Map;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
+import com.fsck.k9.mail.store.imap.ImapStoreSettings;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -227,7 +228,7 @@ public class ImapStoreUriTest {
     @Test
     public void testCreateDecodeStoreUriWithSpecialCharactersInUsernameAndPassword() {
         ServerSettings settings = new ServerSettings("imap", "server", 143,
-                ConnectionSecurity.NONE, AuthType.PLAIN, "user@doma:n", "p@ssw:rd%", null, null);
+                ConnectionSecurity.NONE, AuthType.PLAIN, "user@doma:n", "p@ssw:rd%", null);
 
         String uri = ImapStoreUriCreator.create(settings);
 

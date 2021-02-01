@@ -3,6 +3,7 @@ package com.fsck.k9.backend.imap;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Map;
 
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
@@ -31,7 +32,7 @@ public class ImapStoreUriDecoder {
      *
      * @param uri the store uri.
      */
-    public static ImapStoreSettings decode(String uri) {
+    public static ServerSettings decode(String uri) {
         String host;
         int port;
         ConnectionSecurity connectionSecurity;
@@ -135,7 +136,9 @@ public class ImapStoreUriDecoder {
             }
         }
 
-        return new ImapStoreSettings(host, port, connectionSecurity, authenticationType, username,
-                password, clientCertificateAlias, autoDetectNamespace, pathPrefix);
+        Map<String, String> extra = ImapStoreSettings.createExtra(autoDetectNamespace, pathPrefix);
+
+        return new ServerSettings("imap", host, port, connectionSecurity, authenticationType, username,
+                password, clientCertificateAlias, extra);
     }
 }

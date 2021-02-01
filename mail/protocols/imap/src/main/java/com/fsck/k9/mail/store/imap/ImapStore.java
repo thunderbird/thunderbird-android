@@ -22,6 +22,7 @@ import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.FolderType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.NetworkType;
+import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
 import timber.log.Timber;
@@ -61,7 +62,7 @@ public class ImapStore {
     private final Map<String, ImapFolder> folderCache = new HashMap<>();
 
 
-    public ImapStore(ImapStoreSettings serverSettings, ImapStoreConfig config,
+    public ImapStore(ServerSettings serverSettings, ImapStoreConfig config,
             TrustedSocketFactory trustedSocketFactory, ConnectivityManager connectivityManager,
             OAuth2TokenProvider oauthTokenProvider) {
         this.config = config;
@@ -79,8 +80,11 @@ public class ImapStore {
         password = serverSettings.password;
         clientCertificateAlias = serverSettings.clientCertificateAlias;
 
+        boolean autoDetectNamespace = ImapStoreSettings.getAutoDetectNamespace(serverSettings);
+        String pathPrefixSetting = ImapStoreSettings.getPathPrefix(serverSettings);
+
         // Make extra sure pathPrefix is null if "auto-detect namespace" is configured
-        pathPrefix = (serverSettings.autoDetectNamespace) ? null : serverSettings.pathPrefix;
+        pathPrefix = autoDetectNamespace ? null : pathPrefixSetting;
 
         folderNameCodec = FolderNameCodec.newInstance();
     }

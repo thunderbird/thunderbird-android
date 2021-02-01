@@ -22,6 +22,7 @@ import com.fsck.k9.mail.FolderType;
 import com.fsck.k9.mail.K9MailLib;
 import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.MessagingException;
+import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.filter.Base64;
 import com.fsck.k9.mail.ssl.TrustManagerFactory;
 import com.fsck.k9.mail.store.webdav.WebDavHttpClient.WebDavHttpClientFactory;
@@ -83,12 +84,12 @@ public class WebDavStore {
     private WebDavFolder sendFolder = null;
     private Map<String, WebDavFolder> folderList = new HashMap<>();
 
-    public WebDavStore(TrustManagerFactory trustManagerFactory, WebDavStoreSettings serverSettings,
+    public WebDavStore(TrustManagerFactory trustManagerFactory, ServerSettings serverSettings,
             DraftsFolderProvider draftsFolderProvider) {
         this(trustManagerFactory, serverSettings, draftsFolderProvider, new WebDavHttpClient.WebDavHttpClientFactory());
     }
 
-    public WebDavStore(TrustManagerFactory trustManagerFactory, WebDavStoreSettings serverSettings,
+    public WebDavStore(TrustManagerFactory trustManagerFactory, ServerSettings serverSettings,
             DraftsFolderProvider draftsFolderProvider, WebDavHttpClientFactory clientFactory) {
         this.draftsFolderProvider = draftsFolderProvider;
         httpClientFactory = clientFactory;
@@ -101,11 +102,11 @@ public class WebDavStore {
 
         username = serverSettings.username;
         password = serverSettings.password;
-        alias = serverSettings.alias;
+        alias = WebDavStoreSettings.getAlias(serverSettings);
 
-        path = serverSettings.path;
-        formBasedAuthPath = serverSettings.authPath;
-        mailboxPath = serverSettings.mailboxPath;
+        path = WebDavStoreSettings.getPath(serverSettings);
+        formBasedAuthPath = WebDavStoreSettings.getAuthPath(serverSettings);
+        mailboxPath = WebDavStoreSettings.getMailboxPath(serverSettings);
 
 
         if (path == null || path.equals("")) {
