@@ -371,8 +371,8 @@ public class SettingsImporter {
         // Write incoming server settings
         ServerSettings incoming = createServerSettings(account.incoming);
         ServerSettingsSerializer serverSettingsSerializer = DI.get(ServerSettingsSerializer.class);
-        String storeUri = serverSettingsSerializer.serializeIncoming(incoming);
-        putString(editor, accountKeyPrefix + AccountPreferenceSerializer.STORE_URI_KEY, storeUri);
+        String incomingServer = serverSettingsSerializer.serialize(incoming);
+        putString(editor, accountKeyPrefix + AccountPreferenceSerializer.INCOMING_SERVER_SETTINGS_KEY, incomingServer);
 
         String incomingServerName = incoming.host;
         boolean incomingPasswordNeeded = AuthType.EXTERNAL != incoming.authenticationType &&
@@ -389,8 +389,8 @@ public class SettingsImporter {
         if (account.outgoing != null) {
             // Write outgoing server settings
             ServerSettings outgoing = createServerSettings(account.outgoing);
-            String transportUri = serverSettingsSerializer.serializeOutgoing(outgoing);
-            putString(editor, accountKeyPrefix + AccountPreferenceSerializer.TRANSPORT_URI_KEY, transportUri);
+            String outgoingServer = serverSettingsSerializer.serialize(outgoing);
+            putString(editor, accountKeyPrefix + AccountPreferenceSerializer.OUTGOING_SERVER_SETTINGS_KEY, outgoingServer);
 
             /*
              * Mark account as disabled if the settings file contained a username but no password. However, no password
@@ -643,8 +643,8 @@ public class SettingsImporter {
         if (K9.isDebugLoggingEnabled()) {
             String outputValue = value;
             if (!K9.isSensitiveDebugLoggingEnabled() &&
-                    (key.endsWith("." + AccountPreferenceSerializer.TRANSPORT_URI_KEY) ||
-                            key.endsWith("." + AccountPreferenceSerializer.STORE_URI_KEY))) {
+                    (key.endsWith("." + AccountPreferenceSerializer.OUTGOING_SERVER_SETTINGS_KEY) ||
+                            key.endsWith("." + AccountPreferenceSerializer.INCOMING_SERVER_SETTINGS_KEY))) {
                 outputValue = "*sensitive*";
             }
             Timber.v("Setting %s=%s", key, outputValue);

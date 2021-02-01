@@ -31,8 +31,12 @@ class AccountPreferenceSerializer(
     fun loadAccount(account: Account, storage: Storage) {
         val accountUuid = account.uuid
         with(account) {
-            incomingServerSettings = serverSettingsSerializer.deserializeIncoming(storage.getString("$accountUuid.storeUri", ""))
-            outgoingServerSettings = serverSettingsSerializer.deserializeOutgoing(storage.getString("$accountUuid.transportUri", ""))
+            incomingServerSettings = serverSettingsSerializer.deserialize(
+                storage.getString("$accountUuid.$INCOMING_SERVER_SETTINGS_KEY", "")
+            )
+            outgoingServerSettings = serverSettingsSerializer.deserialize(
+                storage.getString("$accountUuid.$OUTGOING_SERVER_SETTINGS_KEY", "")
+            )
             localStorageProviderId = storage.getString("$accountUuid.localStorageProvider", storageManager.defaultProviderId)
             description = storage.getString("$accountUuid.description", null)
             alwaysBcc = storage.getString("$accountUuid.alwaysBcc", alwaysBcc)
@@ -244,8 +248,8 @@ class AccountPreferenceSerializer(
         }
 
         with(account) {
-            editor.putString("$accountUuid.storeUri", serverSettingsSerializer.serializeIncoming(incomingServerSettings))
-            editor.putString("$accountUuid.transportUri", serverSettingsSerializer.serializeOutgoing(outgoingServerSettings))
+            editor.putString("$accountUuid.$INCOMING_SERVER_SETTINGS_KEY", serverSettingsSerializer.serialize(incomingServerSettings))
+            editor.putString("$accountUuid.$OUTGOING_SERVER_SETTINGS_KEY", serverSettingsSerializer.serialize(outgoingServerSettings))
             editor.putString("$accountUuid.localStorageProvider", localStorageProviderId)
             editor.putString("$accountUuid.description", description)
             editor.putString("$accountUuid.alwaysBcc", alwaysBcc)
@@ -372,8 +376,8 @@ class AccountPreferenceSerializer(
             editor.putString("accountUuids", accountUuids)
         }
 
-        editor.remove("$accountUuid.storeUri")
-        editor.remove("$accountUuid.transportUri")
+        editor.remove("$accountUuid.$INCOMING_SERVER_SETTINGS_KEY")
+        editor.remove("$accountUuid.$OUTGOING_SERVER_SETTINGS_KEY")
         editor.remove("$accountUuid.description")
         editor.remove("$accountUuid.name")
         editor.remove("$accountUuid.email")
@@ -640,8 +644,8 @@ class AccountPreferenceSerializer(
 
     companion object {
         const val ACCOUNT_DESCRIPTION_KEY = "description"
-        const val STORE_URI_KEY = "storeUri"
-        const val TRANSPORT_URI_KEY = "transportUri"
+        const val INCOMING_SERVER_SETTINGS_KEY = "incomingServerSettings"
+        const val OUTGOING_SERVER_SETTINGS_KEY = "outgoingServerSettings"
 
         const val IDENTITY_NAME_KEY = "name"
         const val IDENTITY_EMAIL_KEY = "email"
