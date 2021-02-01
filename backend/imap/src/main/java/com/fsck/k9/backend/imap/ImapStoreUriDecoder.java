@@ -27,8 +27,8 @@ public class ImapStoreUriDecoder {
      * imap+ssl+://auth:user:password@server:port ConnectionSecurity.SSL_TLS_REQUIRED
      * </pre>
      *
-     * NOTE: this method expects the userinfo part of the uri to be encoded twice, due to a bug in
-     * {@link ImapStoreUriCreator#create(ServerSettings)}.
+     * NOTE: this method expects the userinfo part of the URI to be encoded twice, due to a bug in the URI creation
+     * code.
      *
      * @param uri the store uri.
      */
