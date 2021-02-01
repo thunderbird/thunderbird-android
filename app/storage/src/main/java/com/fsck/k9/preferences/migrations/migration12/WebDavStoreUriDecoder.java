@@ -1,12 +1,12 @@
-package com.fsck.k9.backend.webdav;
+package com.fsck.k9.preferences.migrations.migration12;
 
 
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.store.webdav.WebDavStoreSettings;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.decodeUtf8;
@@ -108,7 +108,11 @@ public class WebDavStoreUriDecoder {
             }
         }
 
-        Map<String, String> extra = WebDavStoreSettings.createExtra(alias, path, authPath, mailboxPath);
+        Map<String, String> extra = new HashMap<>();
+        extra.put("alias", alias);
+        extra.put("path", path);
+        extra.put("authPath", authPath);
+        extra.put("mailboxPath", mailboxPath);
 
         return new ServerSettings("webdav", host, port, connectionSecurity, null, username, password, null, extra);
     }

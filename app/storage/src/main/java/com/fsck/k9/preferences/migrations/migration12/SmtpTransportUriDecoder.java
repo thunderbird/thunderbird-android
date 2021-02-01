@@ -1,4 +1,4 @@
-package com.fsck.k9.mail.transport.smtp;
+package com.fsck.k9.preferences.migrations.migration12;
 
 
 import java.io.UnsupportedEncodingException;
