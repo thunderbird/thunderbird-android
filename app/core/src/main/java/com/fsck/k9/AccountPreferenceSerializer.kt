@@ -16,7 +16,6 @@ import com.fsck.k9.Account.SpecialFolderSelection
 import com.fsck.k9.Account.UNASSIGNED_ACCOUNT_NUMBER
 import com.fsck.k9.helper.Utility
 import com.fsck.k9.mail.NetworkType
-import com.fsck.k9.mail.filter.Base64
 import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
@@ -24,16 +23,21 @@ import timber.log.Timber
 
 class AccountPreferenceSerializer(
     private val storageManager: StorageManager,
-    private val resourceProvider: CoreResourceProvider
+    private val resourceProvider: CoreResourceProvider,
+    private val serverSettingsSerializer: ServerSettingsSerializer
 ) {
 
     @Synchronized
     fun loadAccount(account: Account, storage: Storage) {
         val accountUuid = account.uuid
         with(account) {
-            storeUri = Base64.decode(storage.getString("$accountUuid.storeUri", null))
+            incomingServerSettings = serverSettingsSerializer.deserialize(
+                storage.getString("$accountUuid.$INCOMING_SERVER_SETTINGS_KEY", "")
+            )
+            outgoingServerSettings = serverSettingsSerializer.deserialize(
+                storage.getString("$accountUuid.$OUTGOING_SERVER_SETTINGS_KEY", "")
+            )
             localStorageProviderId = storage.getString("$accountUuid.localStorageProvider", storageManager.defaultProviderId)
-            transportUri = Base64.decode(storage.getString("$accountUuid.transportUri", null))
             description = storage.getString("$accountUuid.description", null)
             alwaysBcc = storage.getString("$accountUuid.alwaysBcc", alwaysBcc)
             automaticCheckIntervalMinutes = storage.getInt("$accountUuid.automaticCheckIntervalMinutes", DEFAULT_SYNC_INTERVAL)
@@ -244,9 +248,9 @@ class AccountPreferenceSerializer(
         }
 
         with(account) {
-            editor.putString("$accountUuid.storeUri", Base64.encode(storeUri))
+            editor.putString("$accountUuid.$INCOMING_SERVER_SETTINGS_KEY", serverSettingsSerializer.serialize(incomingServerSettings))
+            editor.putString("$accountUuid.$OUTGOING_SERVER_SETTINGS_KEY", serverSettingsSerializer.serialize(outgoingServerSettings))
             editor.putString("$accountUuid.localStorageProvider", localStorageProviderId)
-            editor.putString("$accountUuid.transportUri", Base64.encode(transportUri))
             editor.putString("$accountUuid.description", description)
             editor.putString("$accountUuid.alwaysBcc", alwaysBcc)
             editor.putInt("$accountUuid.automaticCheckIntervalMinutes", automaticCheckIntervalMinutes)
@@ -372,8 +376,8 @@ class AccountPreferenceSerializer(
             editor.putString("accountUuids", accountUuids)
         }
 
-        editor.remove("$accountUuid.storeUri")
-        editor.remove("$accountUuid.transportUri")
+        editor.remove("$accountUuid.$INCOMING_SERVER_SETTINGS_KEY")
+        editor.remove("$accountUuid.$OUTGOING_SERVER_SETTINGS_KEY")
         editor.remove("$accountUuid.description")
         editor.remove("$accountUuid.name")
         editor.remove("$accountUuid.email")
@@ -640,8 +644,8 @@ class AccountPreferenceSerializer(
 
     companion object {
         const val ACCOUNT_DESCRIPTION_KEY = "description"
-        const val STORE_URI_KEY = "storeUri"
-        const val TRANSPORT_URI_KEY = "transportUri"
+        const val INCOMING_SERVER_SETTINGS_KEY = "incomingServerSettings"
+        const val OUTGOING_SERVER_SETTINGS_KEY = "outgoingServerSettings"
 
         const val IDENTITY_NAME_KEY = "name"
         const val IDENTITY_EMAIL_KEY = "email"

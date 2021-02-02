@@ -1,4 +1,4 @@
-package com.fsck.k9.backend.pop3;
+package com.fsck.k9.preferences.migrations.migration12;
 
 
 import java.net.URI;

@@ -14,14 +14,19 @@ class BackendManager(private val backendFactories: Map<String, BackendFactory>) 
                 container.backend
             } else {
                 createBackend(account).also { backend ->
-                    backendCache[account.uuid] = BackendContainer(backend, account.storeUri, account.transportUri)
+                    backendCache[account.uuid] = BackendContainer(
+                        backend,
+                        account.incomingServerSettings,
+                        account.outgoingServerSettings
+                    )
                 }
             }
         }
     }
 
     private fun isBackendStillValid(container: BackendContainer, account: Account): Boolean {
-        return container.storeUri == account.storeUri && container.transportUri == account.transportUri
+        return container.incomingServerSettings == account.incomingServerSettings &&
+            container.outgoingServerSettings == account.outgoingServerSettings
     }
 
     fun removeBackend(account: Account) {
@@ -31,55 +36,14 @@ class BackendManager(private val backendFactories: Map<String, BackendFactory>) 
     }
 
     private fun createBackend(account: Account): Backend {
-        val storeUri = account.storeUri
-        backendFactories.forEach { (storeUriPrefix, backendFactory) ->
-            if (storeUri.startsWith(storeUriPrefix)) {
-                return backendFactory.createBackend(account)
-            }
-        }
-
-        throw IllegalArgumentException("Unsupported account type")
+        val serverType = account.incomingServerSettings.type
+        val backendFactory = backendFactories[serverType] ?: error("Unsupported account type")
+        return backendFactory.createBackend(account)
     }
 
-    fun decodeStoreUri(storeUri: String): ServerSettings {
-        backendFactories.forEach { (storeUriPrefix, backendFactory) ->
-            if (storeUri.startsWith(storeUriPrefix)) {
-                return backendFactory.decodeStoreUri(storeUri)
-            }
-        }
-
-        throw IllegalArgumentException("Unsupported storeUri type")
-    }
-
-    fun createStoreUri(serverSettings: ServerSettings): String {
-        backendFactories.forEach { (storeUriPrefix, backendFactory) ->
-            if (serverSettings.type == storeUriPrefix) {
-                return backendFactory.createStoreUri(serverSettings)
-            }
-        }
-
-        throw IllegalArgumentException("Unsupported ServerSettings type")
-    }
-
-    fun decodeTransportUri(transportUri: String): ServerSettings {
-        backendFactories.forEach { (_, backendFactory) ->
-            if (transportUri.startsWith(backendFactory.transportUriPrefix)) {
-                return backendFactory.decodeTransportUri(transportUri)
-            }
-        }
-
-        throw IllegalArgumentException("Unsupported transportUri type")
-    }
-
-    fun createTransportUri(serverSettings: ServerSettings): String {
-        backendFactories.forEach { (_, backendFactory) ->
-            if (serverSettings.type == backendFactory.transportUriPrefix) {
-                return backendFactory.createTransportUri(serverSettings)
-            }
-        }
-
-        throw IllegalArgumentException("Unsupported ServerSettings type")
-    }
-
-    private data class BackendContainer(val backend: Backend, val storeUri: String, val transportUri: String)
+    private data class BackendContainer(
+        val backend: Backend,
+        val incomingServerSettings: ServerSettings,
+        val outgoingServerSettings: ServerSettings
+    )
 }

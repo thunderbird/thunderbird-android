@@ -1,6 +1,5 @@
 package com.fsck.k9
 
-import android.net.Uri
 import com.fsck.k9.mail.MailServerDirection
 import com.fsck.k9.mail.ssl.LocalKeyStore
 import java.security.cert.CertificateException
@@ -14,12 +13,12 @@ class LocalKeyStoreManager(
      */
     @Throws(CertificateException::class)
     fun addCertificate(account: Account, direction: MailServerDirection, certificate: X509Certificate) {
-        val uri = if (direction === MailServerDirection.INCOMING) {
-            Uri.parse(account.storeUri)
+        val serverSettings = if (direction === MailServerDirection.INCOMING) {
+            account.incomingServerSettings
         } else {
-            Uri.parse(account.transportUri)
+            account.outgoingServerSettings
         }
-        localKeyStore.addCertificate(uri.host, uri.port, certificate)
+        localKeyStore.addCertificate(serverSettings.host, serverSettings.port, certificate)
     }
 
     /**
@@ -28,13 +27,13 @@ class LocalKeyStoreManager(
      * old host/port.
      */
     fun deleteCertificate(account: Account, newHost: String, newPort: Int, direction: MailServerDirection) {
-        val uri = if (direction === MailServerDirection.INCOMING) {
-            Uri.parse(account.storeUri)
+        val serverSettings = if (direction === MailServerDirection.INCOMING) {
+            account.incomingServerSettings
         } else {
-            Uri.parse(account.transportUri)
+            account.outgoingServerSettings
         }
-        val oldHost = uri.host
-        val oldPort = uri.port
+        val oldHost = serverSettings.host
+        val oldPort = serverSettings.port
         if (oldPort == -1) {
             // This occurs when a new account is created
             return
@@ -49,15 +48,12 @@ class LocalKeyStoreManager(
      * certificates for the incoming and outgoing servers.
      */
     fun deleteCertificates(account: Account) {
-        val storeUri = account.storeUri
-        if (storeUri != null) {
-            val uri = Uri.parse(storeUri)
-            localKeyStore.deleteCertificate(uri.host, uri.port)
+        account.incomingServerSettings?.let { serverSettings ->
+            localKeyStore.deleteCertificate(serverSettings.host, serverSettings.port)
         }
-        val transportUri = account.transportUri
-        if (transportUri != null) {
-            val uri = Uri.parse(transportUri)
-            localKeyStore.deleteCertificate(uri.host, uri.port)
+
+        account.outgoingServerSettings?.let { serverSettings ->
+            localKeyStore.deleteCertificate(serverSettings.host, serverSettings.port)
         }
     }
 }

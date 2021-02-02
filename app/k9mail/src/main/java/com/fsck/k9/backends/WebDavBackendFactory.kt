@@ -4,9 +4,6 @@ import com.fsck.k9.Account
 import com.fsck.k9.backend.BackendFactory
 import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.backend.webdav.WebDavBackend
-import com.fsck.k9.backend.webdav.WebDavStoreUriCreator
-import com.fsck.k9.backend.webdav.WebDavStoreUriDecoder
-import com.fsck.k9.mail.ServerSettings
 import com.fsck.k9.mail.ssl.TrustManagerFactory
 import com.fsck.k9.mail.store.webdav.DraftsFolderProvider
 import com.fsck.k9.mail.store.webdav.WebDavStore
@@ -19,12 +16,10 @@ class WebDavBackendFactory(
     private val trustManagerFactory: TrustManagerFactory,
     private val folderRepositoryManager: FolderRepositoryManager
 ) : BackendFactory {
-    override val transportUriPrefix = "webdav"
-
     override fun createBackend(account: Account): Backend {
         val accountName = account.displayName
         val backendStorage = backendStorageFactory.createBackendStorage(account)
-        val serverSettings = WebDavStoreUriDecoder.decode(account.storeUri)
+        val serverSettings = account.incomingServerSettings
         val draftsFolderProvider = createDraftsFolderProvider(account)
         val webDavStore = WebDavStore(trustManagerFactory, serverSettings, draftsFolderProvider)
         val webDavTransport = WebDavTransport(trustManagerFactory, serverSettings, draftsFolderProvider)
@@ -37,21 +32,5 @@ class WebDavBackendFactory(
             val draftsFolderId = account.draftsFolderId ?: error("No Drafts folder configured")
             folderRepository.getFolderServerId(draftsFolderId) ?: error("Couldn't find local Drafts folder")
         }
-    }
-
-    override fun decodeStoreUri(storeUri: String): ServerSettings {
-        return WebDavStoreUriDecoder.decode(storeUri)
-    }
-
-    override fun createStoreUri(serverSettings: ServerSettings): String {
-        return WebDavStoreUriCreator.create(serverSettings)
-    }
-
-    override fun decodeTransportUri(transportUri: String): ServerSettings {
-        return WebDavStoreUriDecoder.decode(transportUri)
-    }
-
-    override fun createTransportUri(serverSettings: ServerSettings): String {
-        return WebDavStoreUriCreator.create(serverSettings)
     }
 }

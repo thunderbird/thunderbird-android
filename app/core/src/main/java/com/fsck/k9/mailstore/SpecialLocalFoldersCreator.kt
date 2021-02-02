@@ -4,6 +4,7 @@ import com.fsck.k9.Account
 import com.fsck.k9.Account.SpecialFolderSelection
 import com.fsck.k9.Preferences
 import com.fsck.k9.mail.FolderType
+import com.fsck.k9.preferences.Protocols
 import timber.log.Timber
 
 class SpecialLocalFoldersCreator(
@@ -49,7 +50,7 @@ class SpecialLocalFoldersCreator(
         preferences.saveAccount(account)
     }
 
-    private fun Account.isPop3() = storeUri.startsWith("pop3")
+    private fun Account.isPop3() = incomingServerSettings.type == Protocols.POP3
 
     companion object {
         private const val OUTBOX_FOLDER_NAME = Account.OUTBOX_NAME

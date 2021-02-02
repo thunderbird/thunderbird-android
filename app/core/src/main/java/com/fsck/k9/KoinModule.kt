@@ -26,4 +26,5 @@ val mainModule = module {
     single { Clock.INSTANCE }
     factory { ServerNameSuggester() }
     factory { EmailAddressValidator() }
+    factory { ServerSettingsSerializer() }
 }

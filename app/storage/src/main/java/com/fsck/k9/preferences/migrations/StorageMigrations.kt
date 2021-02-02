@@ -17,5 +17,6 @@ internal object StorageMigrations {
         if (oldVersion < 9) StorageMigrationTo9(db, migrationsHelper).disablePush()
         if (oldVersion < 10) StorageMigrationTo10(db, migrationsHelper).removeSavedFolderSettings()
         if (oldVersion < 11) StorageMigrationTo11(db, migrationsHelper).upgradeMessageViewContentFontSize()
+        if (oldVersion < 12) StorageMigrationTo12(db, migrationsHelper).removeStoreAndTransportUri()
     }
 }

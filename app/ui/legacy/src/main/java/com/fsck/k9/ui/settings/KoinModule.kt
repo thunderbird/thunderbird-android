@@ -30,5 +30,5 @@ val settingsUiModule = module {
     viewModel { SettingsImportViewModel(get(), get()) }
     viewModel { SettingsImportResultViewModel() }
 
-    single { AccountActivator(get(), get(), get(), get()) }
+    single { AccountActivator(get(), get(), get()) }
 }

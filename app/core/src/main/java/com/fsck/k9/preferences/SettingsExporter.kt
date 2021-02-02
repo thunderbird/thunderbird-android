@@ -9,7 +9,6 @@ import com.fsck.k9.AccountPreferenceSerializer.Companion.IDENTITY_DESCRIPTION_KE
 import com.fsck.k9.AccountPreferenceSerializer.Companion.IDENTITY_EMAIL_KEY
 import com.fsck.k9.AccountPreferenceSerializer.Companion.IDENTITY_NAME_KEY
 import com.fsck.k9.Preferences
-import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.mailstore.FolderRepository
 import com.fsck.k9.mailstore.FolderRepositoryManager
 import com.fsck.k9.preferences.ServerTypeConverter.fromServerSettingsType
@@ -23,7 +22,6 @@ import timber.log.Timber
 
 class SettingsExporter(
     private val contentResolver: ContentResolver,
-    private val backendManager: BackendManager,
     private val preferences: Preferences,
     private val folderSettingsProvider: FolderSettingsProvider,
     private val folderRepositoryManager: FolderRepositoryManager
@@ -117,7 +115,7 @@ class SettingsExporter(
         }
 
         // Write incoming server settings
-        val incoming = backendManager.decodeStoreUri(account.storeUri)
+        val incoming = account.incomingServerSettings
         serializer.startTag(null, INCOMING_SERVER_ELEMENT)
         serializer.attribute(null, TYPE_ATTRIBUTE, fromServerSettingsType(incoming.type))
 
@@ -125,12 +123,8 @@ class SettingsExporter(
         if (incoming.port != -1) {
             writeElement(serializer, PORT_ELEMENT, incoming.port.toString())
         }
-        if (incoming.connectionSecurity != null) {
-            writeElement(serializer, CONNECTION_SECURITY_ELEMENT, incoming.connectionSecurity.name)
-        }
-        if (incoming.authenticationType != null) {
-            writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, incoming.authenticationType.name)
-        }
+        writeElement(serializer, CONNECTION_SECURITY_ELEMENT, incoming.connectionSecurity.name)
+        writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, incoming.authenticationType.name)
         writeElement(serializer, USERNAME_ELEMENT, incoming.username)
         writeElement(serializer, CLIENT_CERTIFICATE_ALIAS_ELEMENT, incoming.clientCertificateAlias)
         // XXX For now we don't export the password
@@ -147,7 +141,7 @@ class SettingsExporter(
         serializer.endTag(null, INCOMING_SERVER_ELEMENT)
 
         // Write outgoing server settings
-        val outgoing = backendManager.decodeTransportUri(account.transportUri)
+        val outgoing = account.outgoingServerSettings
         serializer.startTag(null, OUTGOING_SERVER_ELEMENT)
         serializer.attribute(null, TYPE_ATTRIBUTE, fromServerSettingsType(outgoing.type))
 
@@ -155,12 +149,8 @@ class SettingsExporter(
         if (outgoing.port != -1) {
             writeElement(serializer, PORT_ELEMENT, outgoing.port.toString())
         }
-        if (outgoing.connectionSecurity != null) {
-            writeElement(serializer, CONNECTION_SECURITY_ELEMENT, outgoing.connectionSecurity.name)
-        }
-        if (outgoing.authenticationType != null) {
-            writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, outgoing.authenticationType.name)
-        }
+        writeElement(serializer, CONNECTION_SECURITY_ELEMENT, outgoing.connectionSecurity.name)
+        writeElement(serializer, AUTHENTICATION_TYPE_ELEMENT, outgoing.authenticationType.name)
         writeElement(serializer, USERNAME_ELEMENT, outgoing.username)
         writeElement(serializer, CLIENT_CERTIFICATE_ALIAS_ELEMENT, outgoing.clientCertificateAlias)
         // XXX For now we don't export the password

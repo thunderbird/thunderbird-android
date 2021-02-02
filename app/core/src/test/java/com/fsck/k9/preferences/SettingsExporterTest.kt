@@ -22,7 +22,6 @@ class SettingsExporterTest : K9RobolectricTest() {
     private val folderRepositoryManager: FolderRepositoryManager by inject()
     private val settingsExporter = SettingsExporter(
         contentResolver,
-        backendManager,
         preferences,
         folderSettingsProvider,
         folderRepositoryManager

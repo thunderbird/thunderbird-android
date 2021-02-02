@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase
 import com.fsck.k9.Account
 import com.fsck.k9.helper.map
 import com.fsck.k9.mailstore.MigrationsHelper
+import com.fsck.k9.preferences.Protocols
 import timber.log.Timber
 
 /**
@@ -119,7 +120,7 @@ internal class MigrationTo76(private val db: SQLiteDatabase, private val migrati
         db.delete("folders", "id = ?", arrayOf(folderId.toString()))
     }
 
-    private fun Account.isPop3() = storeUri.startsWith("pop3")
+    private fun Account.isPop3() = incomingServerSettings.type == Protocols.POP3
 
     companion object {
         private const val OUTBOX_FOLDER_TYPE = "outbox"

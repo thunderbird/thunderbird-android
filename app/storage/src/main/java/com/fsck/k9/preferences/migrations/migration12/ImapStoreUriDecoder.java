@@ -1,14 +1,14 @@
-package com.fsck.k9.backend.imap;
+package com.fsck.k9.preferences.migrations.migration12;
 
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
-import com.fsck.k9.mail.store.imap.ImapStoreSettings;
 
 import static com.fsck.k9.mail.helper.UrlEncodingHelper.decodeUtf8;
 
@@ -27,8 +27,8 @@ public class ImapStoreUriDecoder {
      * imap+ssl+://auth:user:password@server:port ConnectionSecurity.SSL_TLS_REQUIRED
      * </pre>
      *
-     * NOTE: this method expects the userinfo part of the uri to be encoded twice, due to a bug in
-     * {@link ImapStoreUriCreator#create(ServerSettings)}.
+     * NOTE: this method expects the userinfo part of the URI to be encoded twice, due to a bug in the URI creation
+     * code.
      *
      * @param uri the store uri.
      */
@@ -136,7 +136,9 @@ public class ImapStoreUriDecoder {
             }
         }
 
-        Map<String, String> extra = ImapStoreSettings.createExtra(autoDetectNamespace, pathPrefix);
+        Map<String, String> extra = new HashMap<>();
+        extra.put("autoDetectNamespace", Boolean.toString(autoDetectNamespace));
+        extra.put("pathPrefix", pathPrefix);
 
         return new ServerSettings("imap", host, port, connectionSecurity, authenticationType, username,
                 password, clientCertificateAlias, extra);

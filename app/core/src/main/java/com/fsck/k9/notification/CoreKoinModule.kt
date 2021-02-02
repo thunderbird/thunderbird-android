@@ -19,7 +19,13 @@ val coreNotificationModule = module {
             get()
         )
     }
-    single { AccountPreferenceSerializer(get(), get()) }
+    single {
+        AccountPreferenceSerializer(
+            storageManager = get(),
+            resourceProvider = get(),
+            serverSettingsSerializer = get()
+        )
+    }
     single { CertificateErrorNotifications(get(), get(), get()) }
     single { AuthenticationErrorNotifications(get(), get(), get()) }
     single { SyncNotifications(get(), get(), get()) }

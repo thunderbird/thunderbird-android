@@ -25,7 +25,6 @@ import com.fsck.k9.autodiscovery.api.DiscoveredServerSettings;
 import com.fsck.k9.autodiscovery.api.DiscoveryResults;
 import com.fsck.k9.autodiscovery.api.DiscoveryTarget;
 import com.fsck.k9.autodiscovery.providersxml.ProvidersXmlDiscovery;
-import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.helper.Utility;
 import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ServerSettings;
@@ -50,7 +49,6 @@ public class AccountSetupBasics extends K9Activity
     private final static String STATE_KEY_CHECKED_INCOMING = "com.fsck.k9.AccountSetupBasics.checkedIncoming";
 
 
-    private final BackendManager backendManager = DI.get(BackendManager.class);
     private final ProvidersXmlDiscovery providersXmlDiscovery = DI.get(ProvidersXmlDiscovery.class);
     private final AccountCreator accountCreator = DI.get(AccountCreator.class);
     private final SpecialLocalFoldersCreator localFoldersCreator = DI.get(SpecialLocalFoldersCreator.class);
@@ -228,12 +226,10 @@ public class AccountSetupBasics extends K9Activity
         mAccount.setEmail(email);
 
         ServerSettings incomingServerSettings = connectionSettings.getIncoming().newPassword(password);
-        String storeUri = backendManager.createStoreUri(incomingServerSettings);
-        mAccount.setStoreUri(storeUri);
+        mAccount.setIncomingServerSettings(incomingServerSettings);
 
         ServerSettings outgoingServerSettings = connectionSettings.getOutgoing().newPassword(password);
-        String transportUri = backendManager.createTransportUri(outgoingServerSettings);
-        mAccount.setTransportUri(transportUri);
+        mAccount.setOutgoingServerSettings(outgoingServerSettings);
 
         mAccount.setDeletePolicy(accountCreator.getDefaultDeletePolicy(incomingServerSettings.type));
 

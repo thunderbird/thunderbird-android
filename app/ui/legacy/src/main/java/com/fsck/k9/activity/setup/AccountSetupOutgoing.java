@@ -2,9 +2,6 @@
 package com.fsck.k9.activity.setup;
 
 
-import java.net.URI;
-import java.net.URISyntaxException;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,7 +25,6 @@ import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.LocalKeyStoreManager;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.preferences.Protocols;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.account.AccountCreator;
@@ -54,7 +50,6 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     private static final String STATE_AUTH_TYPE_POSITION = "authTypePosition";
 
 
-    private final BackendManager backendManager = DI.get(BackendManager.class);
     private final AccountCreator accountCreator = DI.get(AccountCreator.class);
 
     private TextInputEditText mUsernameView;
@@ -105,14 +100,10 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
-        try {
-            if (new URI(mAccount.getStoreUri()).getScheme().startsWith("webdav")) {
-                mAccount.setTransportUri(mAccount.getStoreUri());
-                AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.OUTGOING);
-            }
-        } catch (URISyntaxException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        ServerSettings incomingServerSettings = mAccount.getIncomingServerSettings();
+        if (incomingServerSettings.type.equals(Protocols.WEBDAV)) {
+            mAccount.setOutgoingServerSettings(incomingServerSettings);
+            AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.OUTGOING);
         }
 
 
@@ -156,7 +147,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         }
 
         try {
-            ServerSettings settings = backendManager.decodeTransportUri(mAccount.getTransportUri());
+            ServerSettings settings = mAccount.getOutgoingServerSettings();
 
             updateAuthPlainTextFromSecurityType(settings.connectionSecurity);
 
@@ -471,7 +462,6 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
     protected void onNext() {
         ConnectionSecurity securityType = getSelectedSecurity();
-        String uri;
         String username = null;
         String password = null;
         String clientCertificateAlias = null;
@@ -491,9 +481,8 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         int newPort = Integer.parseInt(mPortView.getText().toString());
         ServerSettings server = new ServerSettings(Protocols.SMTP, newHost, newPort, securityType, authType, username,
                 password, clientCertificateAlias);
-        uri = backendManager.createTransportUri(server);
         DI.get(LocalKeyStoreManager.class).deleteCertificate(mAccount, newHost, newPort, MailServerDirection.OUTGOING);
-        mAccount.setTransportUri(uri);
+        mAccount.setOutgoingServerSettings(server);
         AccountSetupCheckSettings.actionCheckSettings(this, mAccount, CheckDirection.OUTGOING);
     }
 

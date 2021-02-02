@@ -23,8 +23,8 @@ class JmapAccountCreator(
         val account = preferences.newAccount().apply {
             email = emailAddress
             description = jmapAccount.name
-            storeUri = backendManager.createStoreUri(serverSettings)
-            transportUri = backendManager.createTransportUri(serverSettings)
+            incomingServerSettings = serverSettings
+            outgoingServerSettings = serverSettings
 
             chipColor = accountCreator.pickColor()
             deletePolicy = Account.DeletePolicy.ON_DELETE
