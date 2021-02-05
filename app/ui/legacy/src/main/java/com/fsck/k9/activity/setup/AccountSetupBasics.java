@@ -8,6 +8,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -60,6 +61,7 @@ public class AccountSetupBasics extends K9Activity
     private Button mNextButton;
     private Button mManualSetupButton;
     private Account mAccount;
+    private ViewGroup mAllowClientCertificateView;
 
     private EmailAddressValidator mEmailValidator = new EmailAddressValidator();
     private boolean mCheckedIncoming = false;
@@ -77,6 +79,8 @@ public class AccountSetupBasics extends K9Activity
         mPasswordView = findViewById(R.id.account_password);
         mClientCertificateCheckBox = findViewById(R.id.account_client_certificate);
         mClientCertificateSpinner = findViewById(R.id.account_client_certificate_spinner);
+        mAllowClientCertificateView = findViewById(R.id.account_allow_client_certificate);
+
         mNextButton = findViewById(R.id.next);
         mManualSetupButton = findViewById(R.id.manual_setup);
         mNextButton.setOnClickListener(this);
@@ -151,21 +155,19 @@ public class AccountSetupBasics extends K9Activity
         updateViewVisibility(isChecked);
         validateFields();
 
-        // Have the user select (or confirm) the client certificate
-        if (isChecked) {
+        // Have the user select the client certificate if not already selected
+        if ((isChecked) && (mClientCertificateSpinner.getAlias() == null)) {
             mClientCertificateSpinner.chooseCertificate();
         }
     }
 
     private void updateViewVisibility(boolean usingCertificates) {
         if (usingCertificates) {
-            // hide password fields, show client certificate spinner
-            mPasswordView.setVisibility(View.GONE);
-            mClientCertificateSpinner.setVisibility(View.VISIBLE);
+            // show client certificate spinner
+            mAllowClientCertificateView.setVisibility(View.VISIBLE);
         } else {
-            // show password fields, hide client certificate spinner
-            mPasswordView.setVisibility(View.VISIBLE);
-            mClientCertificateSpinner.setVisibility(View.GONE);
+            // hide client certificate spinner
+            mAllowClientCertificateView.setVisibility(View.GONE);
         }
     }
 
@@ -314,12 +316,15 @@ public class AccountSetupBasics extends K9Activity
         String password = null;
         String clientCertificateAlias = null;
         AuthType authenticationType;
+
+        authenticationType = AuthType.PLAIN;
+        password = mPasswordView.getText().toString();
         if (mClientCertificateCheckBox.isChecked()) {
-            authenticationType = AuthType.EXTERNAL;
             clientCertificateAlias = mClientCertificateSpinner.getAlias();
-        } else {
-            authenticationType = AuthType.PLAIN;
-            password = mPasswordView.getText().toString();
+            if (mPasswordView.getText().toString().equals("")) {
+                authenticationType = AuthType.EXTERNAL;
+                password = null;
+            }
         }
 
         if (mAccount == null) {
