@@ -394,11 +394,10 @@ open class MessageList :
                 search!!.addAccountUuid(accountUuid)
                 search!!.addAllowedFolder(folderId)
             } else {
+                account = preferences.defaultAccount
                 if (K9.isShowUnifiedInbox) {
-                    account = null
                     search = SearchAccount.createUnifiedInboxAccount().relatedSearch
                 } else {
-                    account = preferences.defaultAccount
                     search = LocalSearch()
                     search!!.addAccountUuid(account!!.uuid)
                     val folderId = defaultFolderProvider.getDefaultFolder(account!!)
@@ -522,8 +521,6 @@ open class MessageList :
     }
 
     fun openUnifiedInbox() {
-        account = null
-        drawer!!.selectUnifiedInbox()
         actionDisplaySearch(this, SearchAccount.createUnifiedInboxAccount().relatedSearch, false, false)
     }
 
@@ -1406,9 +1403,7 @@ open class MessageList :
         this.search = search
         singleFolderMode = false
 
-        if (search!!.searchAllAccounts()) {
-            account = null
-        } else {
+        if (!search!!.searchAllAccounts()) {
             val accountUuids = search.accountUuids
             if (accountUuids.size == 1) {
                 account = preferences.getAccount(accountUuids[0])
