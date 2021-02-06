@@ -9,6 +9,7 @@
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:padding="6dp"
         android:text="@string/client_certificate_spinner_empty"
         android:freezesText="true" />
 
@@ -19,6 +20,7 @@
         android:background="?selectableItemBackground"
         android:contentDescription="@string/client_certificate_spinner_delete"
         android:padding="8dp"
+        android:visibility="gone"
         app:srcCompat="?attr/iconActionCancel" />
 
 </merge>

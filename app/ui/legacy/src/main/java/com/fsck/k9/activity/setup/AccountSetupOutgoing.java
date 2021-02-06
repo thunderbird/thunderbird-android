@@ -56,12 +56,13 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     private TextInputEditText mPasswordView;
     private TextInputLayout mPasswordLayoutView;
     private ClientCertificateSpinner mClientCertificateSpinner;
-    private TextView mClientCertificateLabelView;
     private TextInputEditText mServerView;
     private TextInputEditText mPortView;
     private String mCurrentPortViewSetting;
     private CheckBox mRequireLoginView;
     private ViewGroup mRequireLoginSettingsView;
+    private ViewGroup mAllowClientCertificateView;
+
     private Spinner mSecurityTypeView;
     private int mCurrentSecurityTypeViewPosition;
     private Spinner mAuthTypeView;
@@ -110,12 +111,13 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         mUsernameView = findViewById(R.id.account_username);
         mPasswordView = findViewById(R.id.account_password);
         mClientCertificateSpinner = findViewById(R.id.account_client_certificate_spinner);
-        mClientCertificateLabelView = findViewById(R.id.account_client_certificate_label);
         mPasswordLayoutView = findViewById(R.id.account_password_layout);
         mServerView = findViewById(R.id.account_server);
         mPortView = findViewById(R.id.account_port);
         mRequireLoginView = findViewById(R.id.account_require_login);
         mRequireLoginSettingsView = findViewById(R.id.account_require_login_settings);
+        mAllowClientCertificateView = findViewById(R.id.account_allow_client_certificate);
+
         mSecurityTypeView = findViewById(R.id.account_security_type);
         mAuthTypeView = findViewById(R.id.account_auth_type);
         mNextButton = findViewById(R.id.next);
@@ -150,7 +152,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             ServerSettings settings = mAccount.getOutgoingServerSettings();
 
             updateAuthPlainTextFromSecurityType(settings.connectionSecurity);
-
+            updateViewFromSecurity(settings.connectionSecurity);
             if (savedInstanceState == null) {
                 // The first item is selected if settings.authenticationType is null or is not in mAuthTypeAdapter
                 mCurrentAuthTypeViewPosition = mAuthTypeAdapter.getAuthPosition(settings.authenticationType);
@@ -238,7 +240,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
                  */
                 if (mCurrentSecurityTypeViewPosition != position) {
                     updatePortFromSecurityType();
-
+                    updateViewFromSecurity(getSelectedSecurity());
                     boolean isInsecure = (ConnectionSecurity.NONE == getSelectedSecurity());
                     boolean isAuthExternal = (AuthType.EXTERNAL == getSelectedAuthType());
                     boolean loginNotRequired = !mRequireLoginView.isChecked();
@@ -282,9 +284,8 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
                 validateFields();
                 AuthType selection = getSelectedAuthType();
 
-                // Have the user select (or confirm) the client certificate
-                if (AuthType.EXTERNAL == selection) {
-
+                // Have the user select the client certificate if not already selected
+                if ((AuthType.EXTERNAL == selection) && (mClientCertificateSpinner.getAlias() == null)) {
                     // This may again invoke validateFields()
                     mClientCertificateSpinner.chooseCertificate();
                 } else {
@@ -337,26 +338,34 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     }
 
     /**
-     * Shows/hides password field and client certificate spinner
+     * Shows/hides password field
      */
     private void updateViewFromAuthType() {
         AuthType authType = getSelectedAuthType();
         boolean isAuthTypeExternal = (AuthType.EXTERNAL == authType);
 
         if (isAuthTypeExternal) {
-
-            // hide password fields, show client certificate fields
+            // hide password fields
             mPasswordLayoutView.setVisibility(View.GONE);
-            mClientCertificateLabelView.setVisibility(View.VISIBLE);
-            mClientCertificateSpinner.setVisibility(View.VISIBLE);
         } else {
-
-            // show password fields, hide client certificate fields
+            // show password fields
             mPasswordLayoutView.setVisibility(View.VISIBLE);
-            mClientCertificateLabelView.setVisibility(View.GONE);
-            mClientCertificateSpinner.setVisibility(View.GONE);
         }
     }
+
+    /**
+     * Shows/hides client certificate spinner
+     */
+    private void updateViewFromSecurity(ConnectionSecurity security) {
+        boolean isUsingTLS = ((ConnectionSecurity.SSL_TLS_REQUIRED  == security) || (ConnectionSecurity.STARTTLS_REQUIRED == security));
+
+        if (isUsingTLS) {
+            mAllowClientCertificateView.setVisibility(View.VISIBLE);
+        } else {
+            mAllowClientCertificateView.setVisibility(View.GONE);
+        }
+    }
+
 
     /**
      * This is invoked only when the user makes changes to a widget, not when
@@ -386,6 +395,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
             mAuthTypeView.setSelection(mCurrentAuthTypeViewPosition, false);
             mAuthTypeView.setOnItemSelectedListener(onItemSelectedListener);
             updateViewFromAuthType();
+            updateViewFromSecurity(getSelectedSecurity());
 
             onItemSelectedListener = mSecurityTypeView.getOnItemSelectedListener();
             mSecurityTypeView.setOnItemSelectedListener(null);
@@ -466,13 +476,15 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
         String password = null;
         String clientCertificateAlias = null;
         AuthType authType = null;
+        if ((ConnectionSecurity.STARTTLS_REQUIRED == securityType) ||
+                (ConnectionSecurity.SSL_TLS_REQUIRED == securityType)) {
+            clientCertificateAlias = mClientCertificateSpinner.getAlias();
+        }
         if (mRequireLoginView.isChecked()) {
             username = mUsernameView.getText().toString();
-
             authType = getSelectedAuthType();
-            if (AuthType.EXTERNAL == authType) {
-                clientCertificateAlias = mClientCertificateSpinner.getAlias();
-            } else {
+
+            if (AuthType.EXTERNAL != authType) {
                 password = mPasswordView.getText().toString();
             }
         }
