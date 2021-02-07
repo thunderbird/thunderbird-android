@@ -129,7 +129,8 @@ public class GeneralSettingsDescriptions {
                 new V(1, new FontSizeSetting(FontSizes.FONT_DEFAULT))
         ));
         s.put("hideSpecialAccounts", Settings.versions(
-                new V(1, new BooleanSetting(false))
+                new V(1, new BooleanSetting(false)),
+                new V(69, null)
         ));
         s.put("keyguardPrivacy", Settings.versions(
                 new V(1, new BooleanSetting(false)),
@@ -170,6 +171,9 @@ public class GeneralSettingsDescriptions {
         ));
         s.put("showCorrespondentNames", Settings.versions(
                 new V(1, new BooleanSetting(true))
+        ));
+        s.put("showUnifiedInbox", Settings.versions(
+                new V(69, new BooleanSetting(true))
         ));
         s.put("sortTypeEnum", Settings.versions(
                 new V(10, new EnumSetting<>(SortType.class, Account.DEFAULT_SORT_TYPE))
@@ -284,6 +288,7 @@ public class GeneralSettingsDescriptions {
         u.put(24, new SettingsUpgraderV24());
         u.put(31, new SettingsUpgraderV31());
         u.put(58, new SettingsUpgraderV58());
+        u.put(69, new SettingsUpgraderV69());
 
         UPGRADERS = Collections.unmodifiableMap(u);
     }
@@ -415,6 +420,25 @@ public class GeneralSettingsDescriptions {
             }
 
             return null;
+        }
+    }
+
+    /**
+     * Upgrades the settings from version 68 to 69.
+     *
+     * <p>
+     * Renames {@code hideSpecialAccounts} to {@code showUnifiedInbox}.
+     * </p>
+     */
+    private static class SettingsUpgraderV69 implements SettingsUpgrader {
+
+        @Override
+        public Set<String> upgrade(Map<String, Object> settings) {
+            Boolean hideSpecialAccounts = (Boolean) settings.get("hideSpecialAccounts");
+            boolean showUnifiedInbox = hideSpecialAccounts == null || !hideSpecialAccounts;
+            settings.put("showUnifiedInbox", showUnifiedInbox);
+
+            return new HashSet<>(Collections.singleton("hideSpecialAccounts"));
         }
     }
 

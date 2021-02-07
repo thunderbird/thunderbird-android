@@ -691,7 +691,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="volume_navigation_title">Dovoli upravljanje programa s tipko za glasnost</string>
   <string name="volume_navigation_message">V pogledu sporočil</string>
   <string name="volume_navigation_list">V pogledu seznamov</string>
-  <string name="hide_special_accounts_title">Skrij skupno mapo prejetih sporočil</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- Neprebrano</string>
   <string name="search_all_messages_title">Vsa sporočila</string>

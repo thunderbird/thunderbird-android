@@ -70,7 +70,7 @@ public abstract class AccountList extends K9ListActivity implements OnItemClickL
     public void populateListView(List<Account> realAccounts) {
         List<BaseAccount> accounts = new ArrayList<>();
 
-        if (displaySpecialAccounts() && !K9.isHideSpecialAccounts()) {
+        if (displaySpecialAccounts() && K9.isShowUnifiedInbox()) {
             BaseAccount unifiedInboxAccount = SearchAccount.createUnifiedInboxAccount();
             accounts.add(unifiedInboxAccount);
         }

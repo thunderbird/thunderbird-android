@@ -666,7 +666,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="volume_navigation_title">Навігація кнопками зміни гучності</string>
   <string name="volume_navigation_message">при перегляді повідомлень</string>
   <string name="volume_navigation_list">у списках</string>
-  <string name="hide_special_accounts_title">Приховати \"Об\'єднані Вхідні\"</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Непрочитані</string>
   <string name="search_all_messages_title">Всі повідомлення</string>

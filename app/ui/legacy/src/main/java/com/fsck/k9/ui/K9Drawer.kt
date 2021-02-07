@@ -106,7 +106,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
             .withActivity(parent)
             .withHeaderBackground(R.drawable.drawer_header_background)
 
-        if (!K9.isHideSpecialAccounts) {
+        if (K9.isShowUnifiedInbox) {
             headerBuilder.addProfiles(
                 ProfileDrawerItem()
                     .withNameShown(true)

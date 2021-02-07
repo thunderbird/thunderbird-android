@@ -689,7 +689,6 @@
   <string name="volume_navigation_title">Навигација тастерима за јачину звука</string>
   <string name="volume_navigation_message">у приказу порука</string>
   <string name="volume_navigation_list">у приказу спискова</string>
-  <string name="hide_special_accounts_title">Сакриј обједињено сандуче</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - непрочитане</string>
   <string name="search_all_messages_title">Све поруке</string>
