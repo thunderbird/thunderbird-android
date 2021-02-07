@@ -685,7 +685,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="volume_navigation_title">Navigointi äänenvoimakkuusnäppäimillä</string>
   <string name="volume_navigation_message">Viestinäkymä</string>
   <string name="volume_navigation_list">Erilaisia listanäkymiä</string>
-  <string name="hide_special_accounts_title">Piilota yhdistetyt saapuneet</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Lukemattomat</string>
   <string name="search_all_messages_title">Kaikki viestit</string>

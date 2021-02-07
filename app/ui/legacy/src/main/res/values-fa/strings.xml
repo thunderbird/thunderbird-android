@@ -677,7 +677,6 @@
   <string name="volume_navigation_title">جابه‌جایی با کلیدهای تنظیم صدا</string>
   <string name="volume_navigation_message">در نماهای پیام</string>
   <string name="volume_navigation_list">در نماهای لیستی</string>
-  <string name="hide_special_accounts_title">پنهان‌کردن صندوق ورودی یکپارچه</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- نخوانده</string>
   <string name="search_all_messages_title">همهٔ پیام‌ها</string>

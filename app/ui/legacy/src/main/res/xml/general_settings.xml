@@ -245,9 +245,8 @@
             android:title="@string/accountlist_preferences">
 
             <CheckBoxPreference
-                android:disableDependentsState="true"
-                android:key="hide_special_accounts"
-                android:title="@string/hide_special_accounts_title" />
+                android:key="show_unified_inbox"
+                android:title="@string/show_unified_inbox_title" />
 
         </PreferenceCategory>
 
