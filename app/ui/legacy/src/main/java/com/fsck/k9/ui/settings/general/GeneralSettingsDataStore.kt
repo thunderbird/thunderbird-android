@@ -22,7 +22,7 @@ class GeneralSettingsDataStore(
         return when (key) {
             "fixed_message_view_theme" -> K9.isFixedMessageViewTheme
             "animations" -> K9.isShowAnimations
-            "show_unified_inbox" -> !K9.isHideSpecialAccounts
+            "show_unified_inbox" -> K9.isShowUnifiedInbox
             "messagelist_stars" -> K9.isShowMessageListStars
             "messagelist_show_correspondent_names" -> K9.isShowCorrespondentNames
             "messagelist_sender_above_subject" -> K9.isMessageListSenderAboveSubject
@@ -50,7 +50,7 @@ class GeneralSettingsDataStore(
         when (key) {
             "fixed_message_view_theme" -> K9.isFixedMessageViewTheme = value
             "animations" -> K9.isShowAnimations = value
-            "show_unified_inbox" -> K9.isHideSpecialAccounts = !value
+            "show_unified_inbox" -> K9.isShowUnifiedInbox = value
             "messagelist_stars" -> K9.isShowMessageListStars = value
             "messagelist_show_correspondent_names" -> K9.isShowCorrespondentNames = value
             "messagelist_sender_above_subject" -> K9.isMessageListSenderAboveSubject = value

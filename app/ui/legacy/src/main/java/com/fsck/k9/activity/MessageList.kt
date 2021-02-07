@@ -394,15 +394,15 @@ open class MessageList :
                 search!!.addAccountUuid(accountUuid)
                 search!!.addAllowedFolder(folderId)
             } else {
-                if (K9.isHideSpecialAccounts) {
+                if (K9.isShowUnifiedInbox) {
+                    account = null
+                    search = SearchAccount.createUnifiedInboxAccount().relatedSearch
+                } else {
                     account = preferences.defaultAccount
                     search = LocalSearch()
                     search!!.addAccountUuid(account!!.uuid)
                     val folderId = defaultFolderProvider.getDefaultFolder(account!!)
                     search!!.addAllowedFolder(folderId)
-                } else {
-                    account = null
-                    search = SearchAccount.createUnifiedInboxAccount().relatedSearch
                 }
             }
         }

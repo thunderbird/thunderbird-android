@@ -227,7 +227,7 @@ object K9 : EarlyInit {
     var isUseVolumeKeysForListNavigation = false
 
     @JvmStatic
-    var isHideSpecialAccounts = false
+    var isShowUnifiedInbox = true
 
     @JvmStatic
     var isAutoFitWidth: Boolean = false
@@ -338,7 +338,7 @@ object K9 : EarlyInit {
         isShowAnimations = storage.getBoolean("animations", true)
         isUseVolumeKeysForNavigation = storage.getBoolean("useVolumeKeysForNavigation", false)
         isUseVolumeKeysForListNavigation = storage.getBoolean("useVolumeKeysForListNavigation", false)
-        isHideSpecialAccounts = storage.getBoolean("hideSpecialAccounts", false)
+        isShowUnifiedInbox = !storage.getBoolean("hideSpecialAccounts", false)
         isMessageListSenderAboveSubject = storage.getBoolean("messageListSenderAboveSubject", false)
         isShowMessageListStars = storage.getBoolean("messageListStars", true)
         messageListPreviewLines = storage.getInt("messageListPreviewLines", 2)
@@ -424,7 +424,7 @@ object K9 : EarlyInit {
         editor.putString("quietTimeEnds", quietTimeEnds)
 
         editor.putBoolean("messageListSenderAboveSubject", isMessageListSenderAboveSubject)
-        editor.putBoolean("hideSpecialAccounts", isHideSpecialAccounts)
+        editor.putBoolean("hideSpecialAccounts", !isShowUnifiedInbox)
         editor.putBoolean("messageListStars", isShowMessageListStars)
         editor.putInt("messageListPreviewLines", messageListPreviewLines)
         editor.putBoolean("showCorrespondentNames", isShowCorrespondentNames)
