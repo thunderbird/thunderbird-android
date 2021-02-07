@@ -3,7 +3,7 @@ package com.fsck.k9.notification.rules
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.internet.MimeMessage
 
-class NotificationRuleClause(val property: PropertyType, val propertyExtra: String?, val match: MatchType, val matchExtra: String) {
+class NotificationRuleClause(val id: Long, val property: PropertyType, val propertyExtra: String?, val match: MatchType, val matchExtra: String) {
     fun matches(message: MimeMessage): Boolean {
         when (property) {
             PropertyType.SENDER -> {
@@ -68,5 +68,12 @@ class NotificationRuleClause(val property: PropertyType, val propertyExtra: Stri
         EQUALS_IGNORE_CASE,
         CONTAINS,
         STARTS_WITH
+    }
+
+    companion object {
+        @JvmStatic
+        fun create(id: Long, property: String, propertyExtra: String?, match: String, matchExtra: String): NotificationRuleClause {
+            return NotificationRuleClause(id, PropertyType.valueOf(property), propertyExtra, MatchType.valueOf(match), matchExtra)
+        }
     }
 }
