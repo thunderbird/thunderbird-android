@@ -21,11 +21,6 @@ public class LauncherShortcuts extends AccountList {
     }
 
     @Override
-    protected boolean displaySpecialAccounts() {
-        return true;
-    }
-
-    @Override
     protected void onAccountSelected(BaseAccount account) {
         Intent shortcutIntent;
         if (account instanceof SearchAccount) {
