@@ -233,7 +233,10 @@ class SettingsImportViewModel(
                     .mapIndexed { index, account -> index to account.uuid }
                     .toMap(mutableMapOf())
 
-                val items = mutableListOf<SettingsListItem>(SettingsListItem.GeneralSettings())
+                val items = mutableListOf<SettingsListItem>()
+                if (contents.globalSettings) {
+                    items.add(SettingsListItem.GeneralSettings())
+                }
                 contents.accounts.mapIndexedTo(items) { index, accountDescription ->
                     SettingsListItem.Account(index, accountDescription.name)
                 }
