@@ -18,5 +18,6 @@ internal object StorageMigrations {
         if (oldVersion < 10) StorageMigrationTo10(db, migrationsHelper).removeSavedFolderSettings()
         if (oldVersion < 11) StorageMigrationTo11(db, migrationsHelper).upgradeMessageViewContentFontSize()
         if (oldVersion < 12) StorageMigrationTo12(db, migrationsHelper).removeStoreAndTransportUri()
+        if (oldVersion < 13) StorageMigrationTo13(db, migrationsHelper).renameHideSpecialAccounts()
     }
 }
