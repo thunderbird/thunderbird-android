@@ -70,7 +70,7 @@ public abstract class AccountList extends K9ListActivity implements OnItemClickL
     public void populateListView(List<Account> realAccounts) {
         List<BaseAccount> accounts = new ArrayList<>();
 
-        if (displaySpecialAccounts() && K9.isShowUnifiedInbox()) {
+        if (K9.isShowUnifiedInbox()) {
             BaseAccount unifiedInboxAccount = SearchAccount.createUnifiedInboxAccount();
             accounts.add(unifiedInboxAccount);
         }
@@ -81,13 +81,6 @@ public abstract class AccountList extends K9ListActivity implements OnItemClickL
         listView.setAdapter(adapter);
         listView.invalidate();
     }
-
-    /**
-     * Implementing decide whether or not to display special accounts in the list.
-     *
-     * @return {@code true}, if special accounts should be listed. {@code false}, otherwise.
-     */
-    protected abstract boolean displaySpecialAccounts();
 
     /**
      * This method will be called when an account was selected.
