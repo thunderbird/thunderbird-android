@@ -377,6 +377,11 @@ open class MessageList :
             search!!.addAllowedFolder(folderId)
         }
 
+        // edgecase: someone disabled unified view, while looking at unified view
+        if ((search != null) && (search!!.id == SearchAccount.UNIFIED_INBOX) && !K9.isShowUnifiedInbox) {
+            search = null
+        }
+
         if (search == null) {
             val accountUuid = intent.getStringExtra("account")
             if (accountUuid != null) {
@@ -1421,6 +1426,8 @@ open class MessageList :
         val drawer = drawer ?: return
         when {
             singleFolderMode -> drawer.selectFolder(search!!.folderIds[0])
+            // deselect the view since we're still looking at unified mailbox
+            search!!.id == SearchAccount.UNIFIED_INBOX && !K9.isShowUnifiedInbox -> drawer.deselect()
             search!!.id == SearchAccount.UNIFIED_INBOX -> drawer.selectUnifiedInbox()
             else -> drawer.deselect()
         }
