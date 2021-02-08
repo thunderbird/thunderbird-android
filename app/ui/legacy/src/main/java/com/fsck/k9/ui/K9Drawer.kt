@@ -240,9 +240,11 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 .withSelectedColor(selectedColor)
                 .withSelectedTextColor(accentColor)
                 .withName(R.string.integrated_inbox_title)
+
             drawer.addItem(drawerItem)
             drawer.addItem(DividerDrawerItem())
-            if (unifiedInboxSelected == true) {
+
+            if (unifiedInboxSelected) {
                 openedFolderDrawerId = DRAWER_ID_UNIFIED_INBOX
             }
         }
