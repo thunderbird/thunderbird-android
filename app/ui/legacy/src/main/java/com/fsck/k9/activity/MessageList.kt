@@ -377,6 +377,11 @@ open class MessageList :
             search!!.addAllowedFolder(folderId)
         }
 
+        // Edge case: the Unified Inbox was disabled while it was being displayed
+        if (search != null && search!!.id == SearchAccount.UNIFIED_INBOX && !K9.isShowUnifiedInbox) {
+            search = null
+        }
+
         if (search == null) {
             val accountUuid = intent.getStringExtra("account")
             if (accountUuid != null) {
@@ -394,11 +399,10 @@ open class MessageList :
                 search!!.addAccountUuid(accountUuid)
                 search!!.addAllowedFolder(folderId)
             } else {
+                account = preferences.defaultAccount
                 if (K9.isShowUnifiedInbox) {
-                    account = null
                     search = SearchAccount.createUnifiedInboxAccount().relatedSearch
                 } else {
-                    account = preferences.defaultAccount
                     search = LocalSearch()
                     search!!.addAccountUuid(account!!.uuid)
                     val folderId = defaultFolderProvider.getDefaultFolder(account!!)
@@ -522,8 +526,6 @@ open class MessageList :
     }
 
     fun openUnifiedInbox() {
-        account = null
-        drawer!!.selectUnifiedInbox()
         actionDisplaySearch(this, SearchAccount.createUnifiedInboxAccount().relatedSearch, false, false)
     }
 
@@ -1406,9 +1408,7 @@ open class MessageList :
         this.search = search
         singleFolderMode = false
 
-        if (search!!.searchAllAccounts()) {
-            account = null
-        } else {
+        if (!search!!.searchAllAccounts()) {
             val accountUuids = search.accountUuids
             if (accountUuids.size == 1) {
                 account = preferences.getAccount(accountUuids[0])
@@ -1426,6 +1426,8 @@ open class MessageList :
         val drawer = drawer ?: return
         when {
             singleFolderMode -> drawer.selectFolder(search!!.folderIds[0])
+            // Don't select any item in the drawer because the Unified Inbox is displayed, but not listed in the drawer
+            search!!.id == SearchAccount.UNIFIED_INBOX && !K9.isShowUnifiedInbox -> drawer.deselect()
             search!!.id == SearchAccount.UNIFIED_INBOX -> drawer.selectUnifiedInbox()
             else -> drawer.deselect()
         }

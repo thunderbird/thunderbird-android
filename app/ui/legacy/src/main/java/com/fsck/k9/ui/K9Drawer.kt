@@ -2,7 +2,6 @@ package com.fsck.k9.ui
 
 import android.content.Context
 import android.content.res.Resources
-import android.graphics.Color
 import android.graphics.PorterDuff
 import android.net.Uri
 import android.os.Bundle
@@ -35,6 +34,7 @@ import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.Drawer
 import com.mikepenz.materialdrawer.Drawer.OnDrawerItemClickListener
 import com.mikepenz.materialdrawer.DrawerBuilder
+import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
@@ -106,24 +106,6 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
             .withActivity(parent)
             .withHeaderBackground(R.drawable.drawer_header_background)
 
-        if (K9.isShowUnifiedInbox) {
-            headerBuilder.addProfiles(
-                ProfileDrawerItem()
-                    .withNameShown(true)
-                    .withName(R.string.integrated_inbox_title)
-                    .withEmail(parent.getString(R.string.integrated_inbox_detail))
-                    .withIcon(
-                        IconicsDrawable(parent, FontAwesome.Icon.faw_users)
-                            .colorRes(R.color.material_drawer_background)
-                            .backgroundColor(IconicsColor.colorInt(Color.GRAY))
-                            .size(IconicsSize.dp(56))
-                            .padding(IconicsSize.dp(8))
-                    )
-                    .withSelected(unifiedInboxSelected)
-                    .withIdentifier(DRAWER_ID_UNIFIED_INBOX)
-            )
-        }
-
         val photoUris = HashSet<Uri>()
 
         for (account in preferences.accounts) {
@@ -156,30 +138,23 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         return headerBuilder
             .withOnAccountHeaderListener(object : AccountHeader.OnAccountHeaderListener {
                 override fun onProfileChanged(view: View?, profile: IProfile<*>, current: Boolean): Boolean {
-                    if (profile.identifier == DRAWER_ID_UNIFIED_INBOX) {
-                        parent.openUnifiedInbox()
-                        return false
-                    } else {
-                        val account = (profile as ProfileDrawerItem).tag as Account
-                        parent.openRealAccount(account)
-                        updateUserAccountsAndFolders(account)
-                        return true
-                    }
+                    val account = (profile as ProfileDrawerItem).tag as Account
+                    parent.openRealAccount(account)
+                    updateUserAccountsAndFolders(account)
+                    return true
                 }
             })
             .build()
     }
 
     private fun addFooterItems() {
-        if (!unifiedInboxSelected) {
-            drawer.addStickyFooterItem(
-                PrimaryDrawerItem()
-                    .withName(R.string.folders_action)
-                    .withIcon(folderIconProvider.iconFolderResId)
-                    .withIdentifier(DRAWER_ID_FOLDERS)
-                    .withSelectable(false)
-            )
-        }
+        drawer.addStickyFooterItem(
+            PrimaryDrawerItem()
+                .withName(R.string.folders_action)
+                .withIcon(folderIconProvider.iconFolderResId)
+                .withIdentifier(DRAWER_ID_FOLDERS)
+                .withSelectable(false)
+        )
 
         drawer.addStickyFooterItem(
             PrimaryDrawerItem()
@@ -204,10 +179,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     }
 
     fun updateUserAccountsAndFolders(account: Account?) {
-        if (account == null) {
-            selectUnifiedInbox()
-        } else {
-            unifiedInboxSelected = false
+        if (account != null) {
             getDrawerColorsForAccount(account).let { drawerColors ->
                 accentColor = drawerColors.accentColor
                 selectedColor = drawerColors.selectedColor
@@ -245,6 +217,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 when (drawerItem.identifier) {
                     DRAWER_ID_PREFERENCES -> SettingsActivity.launch(parent)
                     DRAWER_ID_FOLDERS -> parent.launchManageFoldersScreen()
+                    DRAWER_ID_UNIFIED_INBOX -> parent.openUnifiedInbox()
                     else -> {
                         val folder = drawerItem.tag as Folder
                         parent.openFolder(folder.id)
@@ -258,11 +231,28 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private fun setUserFolders(folders: List<DisplayFolder>?) {
         clearUserFolders()
 
+        var openedFolderDrawerId: Long = -1
+
+        if (K9.isShowUnifiedInbox) {
+            val drawerItem = PrimaryDrawerItem()
+                .withIcon(R.drawable.ic_inbox_multiple)
+                .withIdentifier(DRAWER_ID_UNIFIED_INBOX)
+                .withSelectedColor(selectedColor)
+                .withSelectedTextColor(accentColor)
+                .withName(R.string.integrated_inbox_title)
+
+            drawer.addItem(drawerItem)
+            drawer.addItem(DividerDrawerItem())
+
+            if (unifiedInboxSelected) {
+                openedFolderDrawerId = DRAWER_ID_UNIFIED_INBOX
+            }
+        }
+
         if (folders == null) {
             return
         }
 
-        var openedFolderDrawerId: Long = -1
         for (displayFolder in folders) {
             val folder = displayFolder.folder
             val drawerId = folder.id shl DRAWER_FOLDER_SHIFT
@@ -320,13 +310,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
     fun selectUnifiedInbox() {
         unifiedInboxSelected = true
-        openedFolderId = null
-        accentColor = 0 // Unified inbox does not have folders, so color does not matter
-        selectedColor = 0
-        accountHeader.setActiveProfile(DRAWER_ID_UNIFIED_INBOX)
-        accountHeader.headerBackgroundView.setColorFilter(0xFFFFFFFFL.toInt(), PorterDuff.Mode.MULTIPLY)
-        viewModel.stopLoadingFolders()
-        clearUserFolders()
+        drawer.setSelection(DRAWER_ID_UNIFIED_INBOX, false)
         updateFooterItems()
     }
 
