@@ -204,6 +204,10 @@ public class RecipientSelectView extends TokenCompleteTextView<Recipient> implem
 
     @Override
     public void onFocusChanged(boolean hasFocus, int direction, Rect previous) {
+        if (!hasFocus) {
+            performCompletion();
+        }
+
         super.onFocusChanged(hasFocus, direction, previous);
         if (hasFocus) {
             displayKeyboard();
