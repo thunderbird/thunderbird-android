@@ -5,6 +5,15 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.728" versioncode="27028" date="2021-02-10">
+        <change>Added support for using a client certificate and a password at the same time</change>
+        <change>Unified Inbox is now displayed on top of the folder list in the drawer</change>
+        <change>Improved the sort order of email addresses in the auto-complete popup</change>
+        <change>Fixed a bug when parsing recipient email addresses in the "compose" screen</change>
+        <change>Fixed bug where the folder list wasn't fetched from the server</change>
+        <change>Fixed a bug in the "import settings" screen</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.727" versioncode="27027" date="2021-01-25">
         <change>Updated "About" screen</change>
         <change>Changed appearance of "Changelog" screen</change>
