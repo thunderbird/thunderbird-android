@@ -18,6 +18,9 @@
   <string name="about_twitter_title">推特</string>
   <string name="about_libraries">库</string>
   <string name="license">许可</string>
+  <string name="changelog_title">变更记录</string>
+  <string name="changelog_loading_error">无法加载变更记录</string>
+  <string name="changelog_version_title">版本 %s</string>
   <!--Welcome message-->
   <string name="welcome_message_title">欢迎使用 K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -682,6 +685,7 @@ K-9 Mail 是 Android 上一款功能强大的自由 email 客户端。
   <string name="volume_navigation_title">音量键导航</string>
   <string name="volume_navigation_message">信息视图</string>
   <string name="volume_navigation_list">不同的列表视图</string>
+  <string name="show_unified_inbox_title">显示全局收件箱</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - 未读</string>
   <string name="search_all_messages_title">所有邮件</string>
@@ -795,7 +799,7 @@ K-9 Mail 是 Android 上一款功能强大的自由 email 客户端。
   <string name="unread_widget_select_account">显示未读数…</string>
   <string name="unread_widget_account_title">帐户</string>
   <string name="unread_widget_account_summary">显示该帐户的未读计数。</string>
-  <string name="unread_widget_unified_inbox_account_summary">合并收件箱</string>
+  <string name="unread_widget_unified_inbox_account_summary">全局收件箱</string>
   <string name="unread_widget_folder_enabled_title">文件夹数</string>
   <string name="unread_widget_folder_enabled_summary">显示单个文件夹中的未读计数</string>
   <string name="unread_widget_folder_title">文件夹</string>
@@ -936,9 +940,9 @@ K-9 Mail 是 Android 上一款功能强大的自由 email 客户端。
   <string name="crypto_msg_encrypted_error">然而存在解密错误</string>
   <string name="crypto_msg_encrypted_incomplete">必须下载加密的消息才能解密。</string>
   <string name="crypto_msg_encrypted_no_provider">但是未配置加密应用</string>
-  <string name="crypto_msg_title_encrypted_unsigned">已加密已加密</string>
+  <string name="crypto_msg_title_encrypted_unsigned">已加密</string>
   <string name="crypto_msg_encrypted_unsigned">但是不是端到端加密的</string>
-  <string name="crypto_msg_title_encrypted_signed_e2e">已端到端加密</string>
+  <string name="crypto_msg_title_encrypted_signed_e2e">端到端加密</string>
   <string name="crypto_msg_encrypted_sign_verified">来自已验证的发件人</string>
   <string name="crypto_msg_title_encrypted_signed">已加密</string>
   <string name="crypto_msg_encrypted_sign_unknown">来自于未知的端到端密钥</string>
@@ -959,7 +963,7 @@ K-9 Mail 是 Android 上一款功能强大的自由 email 客户端。
   <string name="message_progress_text">加载中…</string>
   <string name="messageview_decrypt_cancelled">解密被取消了。</string>
   <string name="messageview_decrypt_retry">重试</string>
-  <string name="messageview_decrypt_incomplete">必须下载加密的邮件才能解密。</string>
+  <string name="messageview_decrypt_incomplete">加密的邮件必须下载才能解密。</string>
   <string name="messageview_crypto_error_title">邮件解密错误</string>
   <string name="recipient_error_non_ascii">暂不支持特殊字符！</string>
   <string name="recipient_error_parse_failed">邮件地址解析错误！</string>
@@ -990,13 +994,13 @@ K-9 Mail 是 Android 上一款功能强大的自由 email 客户端。
   <string name="openpgp_description_text1">加密消息确保它们可以被接收者读取，而其他人则不可读。</string>
   <string name="openpgp_description_text3">只有所有收件人均支持加密，且他们以前给您发送过电子邮件，加密选项才会出现。</string>
   <string name="openpgp_description_text2">单击此图标切换加密。</string>
-  <string name="openpgp_enabled_error_gotit">已提取它</string>
+  <string name="openpgp_enabled_error_gotit">知道了</string>
   <string name="openpgp_enabled_error_back">返回</string>
   <string name="openpgp_enabled_error_disable">禁用加密</string>
   <string name="openpgp_encryption">OpenPGP 加密</string>
   <string name="account_settings_crypto_prefer_encrypt">Autocrypt 交互模式</string>
   <string name="dialog_autocrypt_mutual_title">Autocrypt 交互模式</string>
-  <string name="dialog_autocrypt_mutual_description_1">消息会按您的选择，或当回复加密消息时正常加密。</string>
+  <string name="dialog_autocrypt_mutual_description_1">消息通常会按您的选择，或当回复加密消息时加密。</string>
   <string name="dialog_autocrypt_mutual_description_2">如果发件人和收件人均启用了互动模式，加密默认会被启用。</string>
   <string name="dialog_autocrypt_mutual_learn_more">您可以<a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">点击这里</a>了解详情。</string>
   <string name="general_settings_title">常规设置</string>
@@ -1018,7 +1022,7 @@ K-9 Mail 是 Android 上一款功能强大的自由 email 客户端。
   <string name="ac_transfer_sending_to">发送消息到：</string>
   <string name="ac_transfer_finish">请在您的其它设备上打开消息并输入设置代码完成向导。</string>
   <string name="ac_transfer_show_code">显示设置代码</string>
-  <string name="ac_transfer_msg_subject">自动加密配置信息自动加密配置消息</string>
+  <string name="ac_transfer_msg_subject">自动加密配置信息</string>
   <string name="ac_transfer_msg_body">这条消息包含所有您的旧设备上的自动加密设置与您的私钥。
 
 要在您的新设备上设置自动加密，请按您的新设备上的提示操作。

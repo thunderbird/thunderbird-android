@@ -8,7 +8,7 @@
   <string name="unread_widget_label">K-9 Ongelezen</string>
   <!--Used in the about dialog-->
   <string name="app_authors">Het K-9 ontwikkelingsteam</string>
-  <string name="app_copyright_fmt">Auteursrecht 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Voor gedeeltes gelt auteursrecht 2006-<xliff:g>%s</xliff:g> het Android Open Source Project.</string>
+  <string name="app_copyright_fmt">Auteursrecht 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Voor gedeeltes geldt auteursrecht 2006-<xliff:g>%s</xliff:g> het Android Open Source Project.</string>
   <string name="source_code">Broncode</string>
   <string name="app_license">Apache Licentie, versie 2.0</string>
   <string name="about_project_title">Openbroncode-project</string>
@@ -682,6 +682,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="volume_navigation_title">Volume op/neer navigatie</string>
   <string name="volume_navigation_message">Bericht beeld</string>
   <string name="volume_navigation_list">Variabele lijst weergave</string>
+  <string name="show_unified_inbox_title">Gecombineerde postvak-in weergeven</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Ongelezen</string>
   <string name="search_all_messages_title">Alle berichten</string>

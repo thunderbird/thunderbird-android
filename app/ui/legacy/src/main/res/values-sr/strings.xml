@@ -354,7 +354,7 @@
   <string name="account_setup_incoming_webdav_path_prefix_hint">Необавезно</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Путања аутентификације</string>
   <string name="account_setup_incoming_webdav_auth_path_hint">Необавезно</string>
-  <string name="account_setup_incoming_webdav_mailbox_path_label">Псеудоним сандучета</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_label">Алијас сандучета</string>
   <string name="account_setup_incoming_webdav_mailbox_path_hint">Необавезно</string>
   <string name="account_setup_outgoing_title">Поставке за одлазни сервер</string>
   <string name="account_setup_outgoing_smtp_server_label">СМТП сервер</string>
@@ -689,6 +689,7 @@
   <string name="volume_navigation_title">Навигација тастерима за јачину звука</string>
   <string name="volume_navigation_message">у приказу порука</string>
   <string name="volume_navigation_list">у приказу спискова</string>
+  <string name="show_unified_inbox_title">Прикажи обједињено сандуче</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - непрочитане</string>
   <string name="search_all_messages_title">Све поруке</string>
@@ -807,16 +808,16 @@
   <string name="server_name_format">Назив сервера: <xliff:g id="hostname">%s</xliff:g></string>
   <string name="unread_widget_select_account">Прикажи број непрочитаних за…</string>
   <string name="unread_widget_account_title">Налог</string>
-  <string name="unread_widget_account_summary">Налог за који бројач непрочитаних порука треба бити приказан</string>
+  <string name="unread_widget_account_summary">Налог за који ће бројач непрочитаних порука бити приказан</string>
   <string name="unread_widget_unified_inbox_account_summary">Обједињено сандуче</string>
-  <string name="unread_widget_folder_enabled_title">Број фасцикли</string>
-  <string name="unread_widget_folder_enabled_summary">Прикажи бројач непрочитаних порука за једну фасиклу</string>
+  <string name="unread_widget_folder_enabled_title">Бројач за фасциклу</string>
+  <string name="unread_widget_folder_enabled_summary">Приказ броја непрочитаних само за једну фасиклу</string>
   <string name="unread_widget_folder_title">Фасцикла</string>
-  <string name="unread_widget_folder_summary">Фасцикла за коју бројач непрочитаних порука треба да буде приказан</string>
+  <string name="unread_widget_folder_summary">Фасцикла за коју ће бројач непрочитаних бити приказан</string>
   <string name="unread_widget_action_done">Заврши</string>
   <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
-  <string name="unread_widget_account_not_selected">Ниједан налог није изабран</string>
-  <string name="unread_widget_folder_not_selected">Ниједна фасцикла није изабрана</string>
+  <string name="unread_widget_account_not_selected">Није изабран налог</string>
+  <string name="unread_widget_folder_not_selected">Фасцикла није изабрана</string>
   <string name="webview_empty_message">Нема текста</string>
   <string name="webview_contextmenu_link_view_action">Отвори везу</string>
   <string name="webview_contextmenu_link_share_action">Дели везу</string>

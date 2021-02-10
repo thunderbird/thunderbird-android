@@ -691,6 +691,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="volume_navigation_title">Dovoli upravljanje programa s tipko za glasnost</string>
   <string name="volume_navigation_message">V pogledu sporočil</string>
   <string name="volume_navigation_list">V pogledu seznamov</string>
+  <string name="show_unified_inbox_title">Pokaži skupno mapo prejetih sporočil</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- Neprebrano</string>
   <string name="search_all_messages_title">Vsa sporočila</string>
@@ -1050,8 +1051,8 @@ Za nastavitev nove naprave za šifriranje AutoCrypt, sledite navodilom, prikazan
 Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. Če boste to storili, si geslo zapišite in ga varno shranite.
 </string>
   <string name="ac_transfer_error_send">Prišlo je do napake med pošiljanjem sporočila. Preverite omrežne nastavitve in nastavitve odhodnega strežnika.</string>
-  <string name="switch_on">On</string>
-  <string name="switch_off">Off</string>
+  <string name="switch_on">Vključi</string>
+  <string name="switch_off">Izključi</string>
   <string name="navigation_drawer_open">Odpri</string>
   <string name="navigation_drawer_close">Zapri</string>
   <!--permissions-->

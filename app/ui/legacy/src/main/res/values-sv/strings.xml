@@ -9,9 +9,18 @@
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Vissa delar har Copyright 2006-<xliff:g>%s</xliff:g> Android Open Source Project.</string>
+  <string name="source_code">Källkod</string>
   <string name="app_license">Apache License, Version 2.0</string>
+  <string name="about_project_title">Projekt med öppen källkod</string>
+  <string name="about_website_title">Webbplats</string>
+  <string name="user_forum_title">Användarforum</string>
+  <string name="about_fediverse_title">Fediversum</string>
+  <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">Bibliotek</string>
   <string name="license">Licens</string>
+  <string name="changelog_title">Ändringslogg</string>
+  <string name="changelog_loading_error">Det gick inte att läsa in ändringsloggen.</string>
+  <string name="changelog_version_title">Version %s</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Välkommen till K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -678,6 +687,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="volume_navigation_title">Navigering med volymknapp</string>
   <string name="volume_navigation_message">I meddelandelistor</string>
   <string name="volume_navigation_list">I listvyer</string>
+  <string name="show_unified_inbox_title">Visa samlad inkorg</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Olästa</string>
   <string name="search_all_messages_title">Alla meddelanden</string>
