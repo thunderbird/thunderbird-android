@@ -688,6 +688,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="volume_navigation_title">Lauter/Leiser-Navigation</string>
   <string name="volume_navigation_message">Nachrichtenansicht</string>
   <string name="volume_navigation_list">Diverse Listenansichten</string>
+  <string name="show_unified_inbox_title">Gemeinsamen Posteingang anzeigen</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Ungelesen</string>
   <string name="search_all_messages_title">Alle Nachrichten</string>

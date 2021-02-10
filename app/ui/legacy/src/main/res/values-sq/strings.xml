@@ -688,6 +688,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="volume_navigation_title">Lëvizje me buton volumi</string>
   <string name="volume_navigation_message">Në skenë mesazhi</string>
   <string name="volume_navigation_list">Në skenë liste</string>
+  <string name="show_unified_inbox_title">Shfaq Kuti Poste të Njësuar</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- Të palexuar</string>
   <string name="search_all_messages_title">Krejt mesazhet</string>

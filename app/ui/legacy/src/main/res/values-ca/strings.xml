@@ -18,6 +18,9 @@
   <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">Biblioteques</string>
   <string name="license">Llicència</string>
+  <string name="changelog_title">Registre de canvis</string>
+  <string name="changelog_loading_error">No s\'ha pogut carregar el registre de canvis.</string>
+  <string name="changelog_version_title">Versió %s</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Us donem la benvinguda al K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
