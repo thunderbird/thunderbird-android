@@ -36,8 +36,8 @@ public class ImapStoreUriDecoder {
         String host;
         int port;
         ConnectionSecurity connectionSecurity;
-        AuthType authenticationType = null;
-        String username = null;
+        AuthType authenticationType = AuthType.PLAIN;
+        String username = "";
         String password = null;
         String clientCertificateAlias = null;
         String pathPrefix = null;
@@ -94,13 +94,11 @@ public class ImapStoreUriDecoder {
                     authenticationType = AuthType.valueOf(userInfoParts[0]);
                     username = decodeUtf8(userInfoParts[1]);
                 } else {
-                    authenticationType = AuthType.PLAIN;
                     username = decodeUtf8(userInfoParts[0]);
                 }
             } else if (userInfoParts.length == 2) {
                 // Old/standard style of encoding - PLAIN auth only:
                 // username:password
-                authenticationType = AuthType.PLAIN;
                 username = decodeUtf8(userInfoParts[0]);
                 password = decodeUtf8(userInfoParts[1]);
             } else if (userInfoParts.length == 3) {

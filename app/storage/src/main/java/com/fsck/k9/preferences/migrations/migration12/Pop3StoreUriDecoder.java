@@ -35,7 +35,7 @@ public class Pop3StoreUriDecoder {
         String host;
         int port;
         ConnectionSecurity connectionSecurity;
-        String username = null;
+        String username = "";
         String password = null;
         String clientCertificateAlias = null;
 

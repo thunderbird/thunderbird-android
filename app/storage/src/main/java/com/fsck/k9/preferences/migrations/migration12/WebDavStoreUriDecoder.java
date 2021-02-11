@@ -1,6 +1,7 @@
 package com.fsck.k9.preferences.migrations.migration12;
 
 
+import com.fsck.k9.mail.AuthType;
 import com.fsck.k9.mail.ConnectionSecurity;
 import com.fsck.k9.mail.ServerSettings;
 
@@ -114,6 +115,6 @@ public class WebDavStoreUriDecoder {
         extra.put("authPath", authPath);
         extra.put("mailboxPath", mailboxPath);
 
-        return new ServerSettings("webdav", host, port, connectionSecurity, null, username, password, null, extra);
+        return new ServerSettings("webdav", host, port, connectionSecurity, AuthType.PLAIN, username, password, null, extra);
     }
 }
