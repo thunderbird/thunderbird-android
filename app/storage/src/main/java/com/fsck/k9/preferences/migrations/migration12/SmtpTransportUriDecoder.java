@@ -31,8 +31,8 @@ public class SmtpTransportUriDecoder {
         String host;
         int port;
         ConnectionSecurity connectionSecurity;
-        AuthType authType = null;
-        String username = null;
+        AuthType authType = AuthType.PLAIN;
+        String username = "";
         String password = null;
         String clientCertificateAlias = null;
 
@@ -78,10 +78,8 @@ public class SmtpTransportUriDecoder {
         if (smtpUri.getUserInfo() != null) {
             String[] userInfoParts = smtpUri.getUserInfo().split(":");
             if (userInfoParts.length == 1) {
-                authType = AuthType.PLAIN;
                 username = decodeUtf8(userInfoParts[0]);
             } else if (userInfoParts.length == 2) {
-                authType = AuthType.PLAIN;
                 username = decodeUtf8(userInfoParts[0]);
                 password = decodeUtf8(userInfoParts[1]);
             } else if (userInfoParts.length == 3) {
