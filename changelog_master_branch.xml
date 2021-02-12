@@ -5,6 +5,9 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.729" versioncode="27029" date="2021-02-12">
+        <change>Fixed a bug that could crash the app at startup</change>
+    </release>
     <release version="5.728" versioncode="27028" date="2021-02-10">
         <change>Added support for using a client certificate and a password at the same time</change>
         <change>Unified Inbox is now displayed on top of the folder list in the drawer</change>
