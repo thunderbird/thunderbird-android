@@ -88,10 +88,15 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
             val progressViewStart = view.measuredHeight
             val progressViewEnd = progressViewStart + (PROGRESS_VIEW_END_OFFSET * densityMultiplier).toInt()
-            swipeRefreshLayout.setProgressViewOffset(true, progressViewStart, progressViewEnd)
 
-            val slingshotDistance = (PROGRESS_VIEW_SLINGSHOT_DISTANCE * densityMultiplier).toInt()
-            swipeRefreshLayout.setSlingshotDistance(slingshotDistance)
+            val progressViewStartOld = swipeRefreshLayout.progressViewStartOffset
+            val progressViewEndOld = swipeRefreshLayout.progressViewEndOffset
+            if (progressViewStart != progressViewStartOld || progressViewEnd != progressViewEndOld) {
+                swipeRefreshLayout.setProgressViewOffset(true, progressViewStart, progressViewEnd)
+
+                val slingshotDistance = (PROGRESS_VIEW_SLINGSHOT_DISTANCE * densityMultiplier).toInt()
+                swipeRefreshLayout.setSlingshotDistance(slingshotDistance)
+            }
         }
 
         addFooterItems()
