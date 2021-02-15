@@ -192,16 +192,6 @@ public class Account implements BaseAccount {
     private boolean changedVisibleLimits = false;
 
     /**
-     * Indicates whether this account is enabled, i.e. ready for use, or not.
-     *
-     * <p>
-     * Right now newly imported accounts are disabled if the settings file didn't contain a
-     * password for the incoming and/or outgoing server.
-     * </p>
-     */
-    private boolean isEnabled;
-
-    /**
      * Database ID of the folder that was last selected for a copy or move operation.
      *
      * Note: For now this value isn't persisted. So it will be reset when K-9 Mail is restarted.
@@ -1082,14 +1072,6 @@ public class Account implements BaseAccount {
         String localStorageProviderId = getLocalStorageProviderId();
         boolean storageProviderIsInternalMemory = localStorageProviderId == null;
         return storageProviderIsInternalMemory || StorageManager.getInstance(context).isReady(localStorageProviderId);
-    }
-
-    public synchronized boolean isEnabled() {
-        return isEnabled;
-    }
-
-    public synchronized void setEnabled(boolean enabled) {
-        isEnabled = enabled;
     }
 
     public synchronized boolean isMarkMessageAsReadOnView() {

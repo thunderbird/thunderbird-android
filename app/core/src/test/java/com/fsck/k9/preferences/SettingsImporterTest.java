@@ -16,7 +16,6 @@ import org.junit.Test;
 import org.robolectric.RuntimeEnvironment;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
@@ -171,9 +170,6 @@ public class SettingsImporterTest extends K9RobolectricTest {
         assertEquals(validUUID, results.importedAccounts.get(0).imported.uuid);
         assertTrue(results.importedAccounts.get(0).incomingPasswordNeeded);
         assertTrue(results.importedAccounts.get(0).outgoingPasswordNeeded);
-
-        assertFalse(Preferences.getPreferences(RuntimeEnvironment.application)
-                .getAccount(validUUID).isEnabled());
     }
 
     @Test

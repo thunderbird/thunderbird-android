@@ -173,7 +173,6 @@ class AccountPreferenceSerializer(
             remoteSearchNumResults = storage.getInt("$accountUuid.remoteSearchNumResults", DEFAULT_REMOTE_SEARCH_NUM_RESULTS)
             isUploadSentMessages = storage.getBoolean("$accountUuid.uploadSentMessages", true)
 
-            isEnabled = storage.getBoolean("$accountUuid.enabled", true)
             isMarkMessageAsReadOnView = storage.getBoolean("$accountUuid.markMessageAsReadOnView", true)
             isMarkMessageAsReadOnDelete = storage.getBoolean("$accountUuid.markMessageAsReadOnDelete", true)
             isAlwaysShowCcBcc = storage.getBoolean("$accountUuid.alwaysShowCcBcc", false)
@@ -328,7 +327,6 @@ class AccountPreferenceSerializer(
             editor.putBoolean("$accountUuid.remoteSearchFullText", isRemoteSearchFullText)
             editor.putInt("$accountUuid.remoteSearchNumResults", remoteSearchNumResults)
             editor.putBoolean("$accountUuid.uploadSentMessages", isUploadSentMessages)
-            editor.putBoolean("$accountUuid.enabled", isEnabled)
             editor.putBoolean("$accountUuid.markMessageAsReadOnView", isMarkMessageAsReadOnView)
             editor.putBoolean("$accountUuid.markMessageAsReadOnDelete", isMarkMessageAsReadOnDelete)
             editor.putBoolean("$accountUuid.alwaysShowCcBcc", isAlwaysShowCcBcc)
@@ -604,7 +602,6 @@ class AccountPreferenceSerializer(
             isRemoteSearchFullText = false
             remoteSearchNumResults = DEFAULT_REMOTE_SEARCH_NUM_RESULTS
             isUploadSentMessages = true
-            isEnabled = true
             isMarkMessageAsReadOnView = true
             isMarkMessageAsReadOnDelete = true
             isAlwaysShowCcBcc = false
