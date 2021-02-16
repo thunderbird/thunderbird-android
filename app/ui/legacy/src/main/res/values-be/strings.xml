@@ -1,0 +1,1051 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!--=== App-specific strings =============================================================-->
+  <!--This should make it easier for forks to change the branding-->
+  <!--Used in AndroidManifest.xml-->
+  <string name="app_name">Пошта K-9</string>
+  <string name="shortcuts_title">Акаўнты</string>
+  <string name="unread_widget_label">Не прачытана</string>
+  <!--Used in the about dialog-->
+  <string name="app_authors">The K-9 Dog Walkers</string>
+  <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
+  <string name="app_license">Ліцэнзія Apache, версія 2.0</string>
+  <string name="about_libraries">Бібліятэкі</string>
+  <string name="license">Ліцэнзія</string>
+  <!--Welcome message-->
+  <string name="welcome_message_title">Вітаем у K-9</string>
+  <string name="accounts_welcome"><![CDATA[<p>
+K-9 Mail - шматфункцыянальны свабодны паштовы кліент для Android.
+</p><p>
+Магчымасці:
+</p>
+<ul>
+  <li>рush-апавяшчэнні</li>
+  <li>хуткая праца</li>
+  <li>перасылка лістоў</li>
+  <li>подпісы</li>
+  <li>схаваная копія для сябе</li>
+  <li>падпіска на каталогі</li>
+  <li>сінхранізацыя ўсіх каталогаў</li>
+  <li>адрас для адказу</li>
+  <li>гарачыя клавішы</li>
+  <li>палепшаная падтрымка IMAP</li>
+  <li>захаванне ўкладзеных файлаў</li>
+  <li>ачыстка сметніцы</li>
+  <li>сартаванне лістоў</li>
+  <li>…і іншае</li>
+</ul>
+<p>
+Калі ласка, звярніце ўвагу, што K-9 не падтрымлівае бясплатныя акаўнты Hotmail і не цалкам падтрымлівае Microsoft Exchange.
+</p><p>
+Пляцоўка распрацоўкі:
+<a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
+</p>
+    ]]></string>
+  <!--Default signature-->
+  <string name="default_signature">-- \nАдпраўлена з маёй прылады праз K-9 Mail. Выбачайце за сцісласць.</string>
+  <!--General strings that include the app name-->
+  <string name="account_delete_dlg_instructions_fmt">Акаўнт \"<xliff:g id="account">%s</xliff:g>\" будзе выдалены з K-9 Mail.</string>
+  <!--=== General strings ==================================================================-->
+  <string name="authors">Аўтары</string>
+  <string name="app_revision">Рэвізія</string>
+  <string name="read_messages_label">Чытанне электроннай пошты</string>
+  <string name="read_messages_desc">Дазваляе праграме чытаць электронную пошту.</string>
+  <string name="delete_messages_label">Чытанне электроннай пошты</string>
+  <string name="delete_messages_desc">Дазваляе праграме выдаляць электронную пошту.</string>
+  <string name="about_title">Пра K-9 Mail</string>
+  <string name="accounts_title">Акаўнты</string>
+  <string name="folders_title">Каталогі</string>
+  <string name="advanced">Дадаткова</string>
+  <string name="compose_title_compose">Стварыць</string>
+  <string name="compose_title_reply">Адказаць</string>
+  <string name="compose_title_reply_all">Адказаць усім</string>
+  <string name="compose_title_forward">Пераслаць</string>
+  <string name="compose_title_forward_as_attachment">Пераслаць як укладзены</string>
+  <string name="choose_account_title">Абраць акаўнт</string>
+  <string name="choose_folder_title">Абраць каталог</string>
+  <string name="status_loading_account_folder">Праверка <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+  <string name="status_loading_account_folder_headers">Прагляд <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+  <string name="status_sending_account">Адпраўленне <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+  <string name="status_processing_account">Апрацоўка <xliff:g id="account">%s</xliff:g>:<xliff:g id="command">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
+  <string name="folder_progress">\u0020<xliff:g id="completed">%d</xliff:g>/<xliff:g id="total">%d</xliff:g></string>
+  <string name="status_syncing_off">Сінхранізацыя адключаная</string>
+  <string name="actionbar_selected"><xliff:g id="selection_count">%d</xliff:g> абрана</string>
+  <string name="next_action">Далей</string>
+  <string name="previous_action">Назад</string>
+  <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
+  <string name="okay_action">Добра</string>
+  <string name="cancel_action">Скасаваць</string>
+  <string name="send_action">Адправіць</string>
+  <string name="send_again_action">Адправіць зноў</string>
+  <string name="empty_subject">Тэма пустая. Пстрыкніце яшчэ раз, каб адправіць без яе</string>
+  <string name="select_action">Абраць</string>
+  <string name="deselect_action">Зняць выбар</string>
+  <string name="reply_action">Адказаць</string>
+  <string name="reply_all_action">Адказаць усім</string>
+  <string name="delete_action">Выдаліць</string>
+  <string name="archive_action">Архіў</string>
+  <string name="spam_action">Спам</string>
+  <string name="forward_action">Пераслаць</string>
+  <string name="forward_as_attachment_action">Пераслаць як укладзены</string>
+  <string name="edit_as_new_message_action">Рэдагаваць як новы ліст</string>
+  <string name="move_action">Перамясціць</string>
+  <string name="move_to_drafts_action">Перамясціць у чарнавікі</string>
+  <string name="single_message_options_action">Адправіць…</string>
+  <string name="refile_action">Змяніць…</string>
+  <string name="done_action">Завершана</string>
+  <string name="discard_action">Адкінуць</string>
+  <string name="save_draft_action">Захаваць як чарнавік</string>
+  <string name="check_mail_action">Праверыць пошту</string>
+  <string name="send_messages_action">Адправіць лісты</string>
+  <string name="refresh_folders_action">Абнавіць спіс каталогаў</string>
+  <string name="filter_folders_action">Пошук каталога</string>
+  <string name="add_account_action">Дадаць акаўнт</string>
+  <string name="compose_action">Стварыць</string>
+  <string name="search_action">Пошук</string>
+  <string name="search_results">Вынікі пошуку</string>
+  <string name="preferences_action">Налады</string>
+  <string name="folders_action">Кіраванне каталогамі</string>
+  <string name="account_settings_action">Налады акаўнта</string>
+  <string name="remove_account_action">Выдаліць акаўнт</string>
+  <string name="mark_as_read_action">Пазначыць як прачытанае</string>
+  <string name="send_alternate_action">Падзяліцца</string>
+  <string name="send_alternate_chooser_title">Абраць адпраўніка</string>
+  <string name="flag_action">Адзначыць</string>
+  <string name="unflag_action">Выдаліць адзнаку</string>
+  <string name="copy_action">Капіяваць</string>
+  <string name="show_headers_action">Паказаць загалоўкі</string>
+  <string name="hide_headers_action">Схаваць загалоўкі</string>
+  <plurals name="copy_address_to_clipboard">
+    <item quantity="one">Адрас скапіяваны ў буфер абмену</item>
+    <item quantity="few">Адрасы скапіяваныя ў буфер абмену</item>
+    <item quantity="many">Адрасы скапіяваныя ў буфер абмену</item>
+    <item quantity="other">Адрасы скапіяваныя ў буфер абмену</item>
+  </plurals>
+  <string name="message_view_theme_action_dark">Цёмная тэма</string>
+  <string name="message_view_theme_action_light">Светлая тэма</string>
+  <string name="mark_as_unread_action">Пазначыць як нечытанае</string>
+  <string name="read_receipt">Апавяшчэнне</string>
+  <string name="read_receipt_enabled">Запытаць апавяшчэнне пра чытанне</string>
+  <string name="read_receipt_disabled">Без апавяшчэння пра чытанне</string>
+  <string name="add_attachment_action">Укласці файлы</string>
+  <string name="empty_trash_action">Ачысціць сметніцу</string>
+  <string name="expunge_action">Выдаліць</string>
+  <string name="about_action">Пра праграму</string>
+  <string name="prefs_title">Налады</string>
+  <!--Shown in place of the subject when a message has no subject. Showing this in parentheses is customary.-->
+  <string name="general_no_subject">(Тэма адсутнічае)</string>
+  <string name="general_no_sender">Адпраўнік не вызначаны</string>
+  <string name="status_loading_more">Загрузка лістоў\u2026</string>
+  <string name="status_network_error">Памылка злучэння</string>
+  <string name="status_invalid_id_error">Ліст не знойдзены</string>
+  <string name="status_loading_error">Не атрымалася загрузіць ліст</string>
+  <string name="load_more_messages_fmt">Загрузіць да
+    to <xliff:g id="messages_to_load">%d</xliff:g> наступных</string>
+  <string name="size_format_gigabytes">%.1f Гб</string>
+  <string name="size_format_megabytes">%.1f Мб</string>
+  <string name="size_format_kilobytes">%.1f Кб</string>
+  <string name="size_format_bytes">%d Б</string>
+  <string name="account_size_changed">Акаўнт \"<xliff:g id="account">%s</xliff:g>\" змяніўся з <xliff:g id="oldSize">%s</xliff:g> да <xliff:g id="newSize">%s</xliff:g></string>
+  <string name="compacting_account">Сцісканне акаўнта \"<xliff:g id="account">%s</xliff:g>\"</string>
+  <string name="notification_new_title">Новая пошта</string>
+  <plurals name="notification_new_messages_title">
+    <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> новыя ліст</item>
+    <item quantity="few"><xliff:g id="new_message_count">%d</xliff:g> новыя лісты</item>
+    <item quantity="many"><xliff:g id="new_message_count">%d</xliff:g> новых лістоў</item>
+    <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> новых лістоў</item>
+  </plurals>
+  <string name="notification_new_one_account_fmt"><xliff:g id="unread_message_count">%d</xliff:g> новых (<xliff:g id="account">%s</xliff:g>)</string>
+  <string name="notification_additional_messages">+ <xliff:g id="additional_messages">%1$d</xliff:g> яшчэ ў <xliff:g id="account">%2$s</xliff:g></string>
+  <string name="notification_action_reply">Адказаць</string>
+  <string name="notification_action_mark_as_read">Пазначыць прачытаным</string>
+  <string name="notification_action_mark_all_as_read">Пазначыць усё прачытаным</string>
+  <string name="notification_action_delete">Выдаліць</string>
+  <string name="notification_action_delete_all">Выдаліць усе</string>
+  <string name="notification_action_archive">Архіў</string>
+  <string name="notification_action_archive_all">Усе ў архіў</string>
+  <string name="notification_action_spam">Спам</string>
+  <string name="notification_certificate_error_title">Збой сертыфіката <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_certificate_error_text">Праверце налады сервера</string>
+  <string name="notification_authentication_error_title">Аўтэнтыфікацыя схібіла</string>
+  <string name="notification_authentication_error_text">Няўдалая аўтарызацыя для <xliff:g id="account">%s</xliff:g>. Змяніце налады сервера.</string>
+  <string name="notification_bg_sync_ticker">Праверка пошты: <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g></string>
+  <string name="notification_bg_sync_title">Праверка пошты</string>
+  <string name="notification_bg_send_ticker">Адпраўка пошты: <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_bg_send_title">Адпраўленне пошты</string>
+  <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_messages_title">Паведамленні</string>
+  <string name="notification_channel_messages_description">Апавяшчэнні пра лісты</string>
+  <string name="notification_channel_miscellaneous_title">Рознае</string>
+  <string name="notification_channel_miscellaneous_description">Іншыя апавяшчэнні.</string>
+  <string name="special_mailbox_name_inbox">Атрыманыя</string>
+  <string name="special_mailbox_name_outbox">Адпраўленыя</string>
+  <string name="special_mailbox_name_drafts">Чарнавікі</string>
+  <string name="special_mailbox_name_trash">Сметніца</string>
+  <string name="special_mailbox_name_sent">Адпраўлена</string>
+  <string name="send_failure_subject">Не атрымалася адправіць лісты</string>
+  <string name="version">Версія</string>
+  <string name="debug_enable_debug_logging_title">Уключыць журнал адладкі</string>
+  <string name="debug_enable_debug_logging_summary">Запіс звестак дыягностыкі</string>
+  <string name="debug_enable_sensitive_logging_title">Запіс асабістых звестак</string>
+  <string name="debug_enable_sensitive_logging_summary">Дазволіць запіс пароляў у журнал.</string>
+  <string name="message_list_load_more_messages_action">Загрузіць больш лістоў</string>
+  <string name="message_to_fmt">Каму:<xliff:g id="counterParty">%s</xliff:g></string>
+  <string name="message_compose_subject_hint">Тэма</string>
+  <string name="message_compose_content_hint">Тэкст</string>
+  <string name="message_compose_signature_hint">Подпіс</string>
+  <string name="message_compose_quote_header_separator">-------- Зыходны ліст --------</string>
+  <string name="message_compose_quote_header_subject">Тэма:</string>
+  <string name="message_compose_quote_header_send_date">Адпраўлена:</string>
+  <string name="message_compose_quote_header_from">Ад:</string>
+  <string name="message_compose_quote_header_to">Каму:</string>
+  <string name="message_compose_quote_header_cc">Копія:</string>
+  <string name="message_compose_reply_header_fmt"><xliff:g id="sender">%s</xliff:g> піша:</string>
+  <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sent_date">%1$s</xliff:g>, <xliff:g id="sender">%2$s</xliff:g> піша:</string>
+  <string name="message_compose_error_no_recipients">Вы мусіце дадаць прынамсі аднаго адрасата.</string>
+  <string name="compose_error_incomplete_recipient">Поле адрасата запоўнена не поўнасцю!</string>
+  <string name="error_contact_address_not_found">У кантакта няма звестак пра адрас электроннай пошты.</string>
+  <string name="message_compose_attachments_skipped_toast">Некаторыя файлы не былі спампаваныя, таму іх немагчыма пераслаць.</string>
+  <string name="message_compose_attachments_forward_toast">Ліст немагчыма пераслаць, бо ўкладзеныя файлы не былі спампаваныя.</string>
+  <string name="message_compose_show_quoted_text_action">Уключыць цытаваны ліст</string>
+  <string name="message_compose_description_delete_quoted_text">Выдаліць цытату</string>
+  <string name="message_compose_description_edit_quoted_text">Рэдагаваць цытату</string>
+  <string name="remove_attachment_action">Выдаліць укладзеныя файлы</string>
+  <string name="message_view_from_format">Ад: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
+  <string name="message_to_label">Каму:</string>
+  <string name="message_view_cc_label">Копія:</string>
+  <string name="message_view_bcc_label">Схаваная копія:</string>
+  <string name="message_view_attachment_view_action">Адкрыць</string>
+  <string name="message_view_attachment_download_action">Захаваць</string>
+  <string name="message_view_status_attachment_not_saved">Немагчыма захаваць укладзеныя файлы.</string>
+  <string name="message_view_show_pictures_action">Прагляд малюнкаў</string>
+  <string name="message_view_no_viewer">Няма праграмы для прагляду <xliff:g id="mimetype">%s</xliff:g>.</string>
+  <string name="message_view_download_remainder">Спампаваць ліст цалкам</string>
+  <string name="message_view_toast_unable_to_display_message">Немагчыма паказаць ліст</string>
+  <string name="message_view_sender_label">ад %1$s</string>
+  <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
+  <string name="message_no_additional_headers_available">Усе дадатковыя загалоўкі ўжо спампаваныя.</string>
+  <string name="message_additional_headers_retrieval_failed">Не ўдалося атрымаць дадатковыя загалоўкі.</string>
+  <string name="from_same_sender">Усё ліставанне</string>
+  <string name="search_from_format">Ад <xliff:g id="sender">%s</xliff:g></string>
+  <string name="debug_delete_local_body">Адладка / Ачыстка цела ліста</string>
+  <string name="message_discarded_toast">Ліст скасаваны</string>
+  <string name="message_saved_toast">Ліст захаваны як чарнавік</string>
+  <string name="global_settings_flag_label">Паказваць адзнакі</string>
+  <string name="global_settings_flag_summary">Зорачкай пазначаюцца адзначаныя лісты</string>
+  <string name="global_settings_preview_lines_label">Радкі папярэдняга прагляду</string>
+  <string name="global_settings_show_correspondent_names_label">Паказваць імя замест адраса</string>
+  <string name="global_settings_show_correspondent_names_summary">Паказваць імя замест адраса электроннай пошты</string>
+  <string name="global_settings_sender_above_subject_label">Адпраўнік па-над тэмай</string>
+  <string name="global_settings_sender_above_subject_summary">Паказваць імя адпраўніка па-над тэмай</string>
+  <string name="global_settings_show_contact_name_label">Паказваць назвы кантактаў</string>
+  <string name="global_settings_show_contact_name_summary">Выкарыстоўваць імёны адпраўнікоў з кантактаў</string>
+  <string name="global_settings_registered_name_color_label">Колер кантактаў</string>
+  <string name="global_settings_registered_name_color_changed">Афарбоўваць імёны з кантактаў</string>
+  <string name="global_settings_messageview_fixedwidth_label">Шрыфты з фіксаванай шырынёй</string>
+  <string name="global_settings_messageview_fixedwidth_summary">Выкарыстоўваць шрыфты з фіксаванай шырынёй для адлюстравання лістоў з простым тэкстам</string>
+  <string name="global_settings_messageview_autofit_width_label">Аўтазапаўненне лістоў</string>
+  <string name="global_settings_messageview_autofit_width_summary">Падладжваць тэкст лістоў да шырыні экрана</string>
+  <string name="global_settings_messageview_return_to_list_label">Вяртацца да спіса пасля выдалення</string>
+  <string name="global_settings_messageview_return_to_list_summary">Вяртацца да спіса лістоў пасля выдалення ліста</string>
+  <string name="global_settings_messageview_show_next_label">Паказваць наступны ліст пасля выдалення</string>
+  <string name="global_settings_messageview_show_next_summary">Паказваць наступны ліст пасля выдалення ліста</string>
+  <string name="global_settings_confirm_actions_title">Пацвярджаць дзеянні</string>
+  <string name="global_settings_confirm_actions_summary">Паказваць дыялог пацвярджэння дзеянняў</string>
+  <string name="global_settings_confirm_action_delete">Выдаліць</string>
+  <string name="global_settings_confirm_action_delete_starred">Выдаліць адзначаны (у праглядзе лістоў)</string>
+  <string name="global_settings_confirm_action_spam">Спам</string>
+  <string name="global_settings_confirm_menu_discard">Скасаваць ліст</string>
+  <string name="global_settings_confirm_menu_mark_all_read">Пазначыць усе лісты прачытанымі</string>
+  <string name="global_settings_confirm_action_delete_notif">Выдаліць (у апавяшчэнні)</string>
+  <string name="global_settings_privacy_hide_useragent">Схаваць паштовы кліент</string>
+  <string name="global_settings_privacy_hide_useragent_detail">Прыбраць \"K-9 User-Agent\" з загалоўкаў лістоў</string>
+  <string name="global_settings_privacy_hide_timezone">Схаваць часавы пояс</string>
+  <string name="global_settings_privacy_hide_timezone_detail">Выкарыстоўваць у загалоўках лістоў UTC замест мясцовага часу</string>
+  <string name="global_settings_notification_hide_subject_title">Схаваць тэму ў апавяшчэнні</string>
+  <string name="global_settings_notification_hide_subject_never">Ніколі</string>
+  <string name="global_settings_notification_hide_subject_when_locked">Калі прылада заблакаваная</string>
+  <string name="global_settings_notification_hide_subject_always">Заўсёды</string>
+  <string name="global_settings_notification_quick_delete_title">Паказваць кнопку выдалення</string>
+  <string name="global_settings_notification_quick_delete_never">Ніколі</string>
+  <string name="global_settings_notification_quick_delete_when_single_msg">Для аднаго ліста</string>
+  <string name="global_settings_notification_quick_delete_always">Заўсёды</string>
+  <string name="global_settings_lock_screen_notification_visibility_title">Апавяшчэнні на экране блакавання</string>
+  <string name="global_settings_lock_screen_notification_visibility_nothing">Прыбраць з экрана блакавання</string>
+  <string name="global_settings_lock_screen_notification_visibility_app_name">Назва праграмы</string>
+  <string name="global_settings_lock_screen_notification_visibility_message_count">Лічыльнік непрачытаных лістоў</string>
+  <string name="global_settings_lock_screen_notification_visibility_senders">Лічыльнік лістоў і адпраўнікі</string>
+  <string name="global_settings_lock_screen_notification_visibility_everything">Як без блакавання</string>
+  <string name="quiet_time">Перыяд цішыні</string>
+  <string name="quiet_time_description">Адключыць мелодыю, вібрацыю і індыкатар на ноч</string>
+  <string name="quiet_time_notification">Адключыць апявяшчэнні</string>
+  <string name="quiet_time_notification_description">Поўнасцю адключыць апавяшчэнні на перыяд цішыні</string>
+  <string name="quiet_time_starts">Пачатак</string>
+  <string name="quiet_time_ends">Канец</string>
+  <string name="account_setup_basics_title">Новы акаўнт</string>
+  <string name="account_setup_basics_email_hint">Адрас электроннай пошты</string>
+  <string name="account_setup_basics_password_hint">Пароль</string>
+  <string name="account_setup_basics_show_password">Паказаць пароль</string>
+  <string name="account_setup_basics_manual_setup_action">Уласнаручна</string>
+  <string name="account_setup_check_settings_title"/>
+  <string name="account_setup_check_settings_retr_info_msg">Атрыманне звестак\u2026</string>
+  <string name="account_setup_check_settings_check_incoming_msg">Праверка налад сервера ўваходнай пошты\u2026</string>
+  <string name="account_setup_check_settings_check_outgoing_msg">Праверка налад сервера выходнай пошты\u2026</string>
+  <string name="account_setup_check_settings_authenticate">Аўтэнтыфікацыя\u2026</string>
+  <string name="account_setup_check_settings_fetch">Атрыманне налад акаўнта\u2026</string>
+  <string name="account_setup_check_settings_canceling_msg">Скасаванне\u2026</string>
+  <string name="account_setup_names_title">Амаль завершана!</string>
+  <string name="account_setup_names_account_name_label">Даць акаўнту назву (неабавязкова):</string>
+  <string name="account_setup_names_user_name_label">Ваша імя (бачна адрасату):</string>
+  <string name="account_setup_account_type_title">Тып акаўнта</string>
+  <string name="account_setup_account_type_instructions">Што гэта за акаўнт?</string>
+  <string name="account_setup_account_type_pop_action">POP3</string>
+  <string name="account_setup_account_type_imap_action">IMAP</string>
+  <string name="account_setup_auth_type_normal_password">Звычайны пароль</string>
+  <string name="account_setup_auth_type_insecure_password">Пароль, перададзены небяспечна</string>
+  <string name="account_setup_auth_type_encrypted_password">Зашыфраваны пароль</string>
+  <string name="account_setup_auth_type_tls_client_certificate">Сертыфікат кліента</string>
+  <string name="account_setup_incoming_title">Сервер уваходнай пошты</string>
+  <string name="account_setup_incoming_username_label">Імя карыстальніка</string>
+  <string name="account_setup_incoming_password_label">Пароль</string>
+  <string name="account_setup_incoming_client_certificate_label">Сертыфікат кліента</string>
+  <string name="account_setup_incoming_pop_server_label">Сервер POP3</string>
+  <string name="account_setup_incoming_imap_server_label">Сервер IMAP</string>
+  <string name="account_setup_incoming_webdav_server_label">Сервер Exchange</string>
+  <string name="account_setup_incoming_port_label">Порт</string>
+  <string name="account_setup_incoming_security_label">Бяспека</string>
+  <string name="account_setup_incoming_auth_type_label">Аўтэнтыфікацыя</string>
+  <string name="account_setup_incoming_security_none_label">Няма</string>
+  <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
+  <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
+  <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" непрыдатны для \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
+  <string name="account_setup_incoming_delete_policy_label">Чаму я выдаліў ліст</string>
+  <string name="account_setup_incoming_delete_policy_never_label">Пакінуць на серверы</string>
+  <string name="account_setup_incoming_delete_policy_delete_label">Выдаліць з сервера</string>
+  <string name="account_setup_incoming_delete_policy_markread_label">Пазначыць на серверы як прачытанае</string>
+  <string name="account_setup_incoming_compression_label">Выкарыстоўваць сцісканне ў сетцы:</string>
+  <string name="account_setup_incoming_mobile_label">Мабільныя</string>
+  <string name="account_setup_incoming_wifi_label">Wi-Fi</string>
+  <string name="account_setup_incoming_other_label">Іншыя</string>
+  <string name="local_storage_provider_external_label">Вонкавае сховішча (картка памяці)</string>
+  <string name="local_storage_provider_internal_label">Унутранае сховішча</string>
+  <string name="account_setup_expunge_policy_label">Сціраць выдаленыя лісты з сервера</string>
+  <string name="account_setup_expunge_policy_immediately">Неадкладна</string>
+  <string name="account_setup_expunge_policy_on_poll">Падчас праверкі</string>
+  <string name="account_setup_expunge_policy_manual">Уласнаручна</string>
+  <string name="account_setup_incoming_autodetect_namespace_label">Аўтавызначэнне вобласці назваў IMAP</string>
+  <string name="account_setup_incoming_imap_path_prefix_label">Прэфікс шляху IMAP</string>
+  <string name="drafts_folder_label">Каталог чарнавікоў</string>
+  <string name="sent_folder_label">Каталог адпраўленых лістоў</string>
+  <string name="trash_folder_label">Каталог сметніцы</string>
+  <string name="archive_folder_label">Каталог архіва</string>
+  <string name="spam_folder_label">Каталог спаму</string>
+  <string name="account_setup_incoming_subscribed_folders_only_label">Паказваць толькі падпісаныя каталогі</string>
+  <string name="account_setup_auto_expand_folder">Аўтапераход у каталог</string>
+  <string name="account_setup_incoming_webdav_path_prefix_label">Шлях OWA</string>
+  <string name="account_setup_incoming_webdav_path_prefix_hint">Неабавязкова</string>
+  <string name="account_setup_incoming_webdav_auth_path_label">Шлях аўтэнтыфікацыі</string>
+  <string name="account_setup_incoming_webdav_auth_path_hint">Неабавязкова</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_label">Псеўданім скрыні</string>
+  <string name="account_setup_incoming_webdav_mailbox_path_hint">Неабавязкова</string>
+  <string name="account_setup_outgoing_title">Налады сервера выходнай пошты</string>
+  <string name="account_setup_outgoing_smtp_server_label">Сервер SMTP</string>
+  <string name="account_setup_outgoing_port_label">Порт</string>
+  <string name="account_setup_outgoing_security_label">Бяспека</string>
+  <string name="account_setup_outgoing_require_login_label">Аўтарызацыя.</string>
+  <string name="account_setup_outgoing_username_label">Імя карыстальніка</string>
+  <string name="account_setup_outgoing_password_label">Пароль</string>
+  <string name="account_setup_outgoing_authentication_label">Аўтэнтыфікацыя</string>
+  <string name="account_setup_outgoing_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" непрыдатны для \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
+  <string name="account_setup_bad_uri">Хібная наладка: <xliff:g id="err_mess">%s</xliff:g></string>
+  <string name="account_setup_options_title">Параметры акаўнта</string>
+  <string name="compact_action">Сціснуць акаўнт</string>
+  <string name="account_setup_options_mail_check_frequency_label">Чашчыня праверкі</string>
+  <string name="account_setup_options_mail_check_frequency_never">Ніколі</string>
+  <string name="account_setup_options_mail_check_frequency_15min">Кожныя 15 хвілін</string>
+  <string name="account_setup_options_mail_check_frequency_30min">Кожныя 30 хвілін</string>
+  <string name="account_setup_options_mail_check_frequency_1hour">Штогадзіну</string>
+  <string name="account_setup_options_mail_check_frequency_2hour">Кожныя 2 гадзіны</string>
+  <string name="account_setup_options_mail_check_frequency_3hour">Кожныя 3 гадзіны</string>
+  <string name="account_setup_options_mail_check_frequency_6hour">Кожныя 6 гадзін</string>
+  <string name="account_setup_options_mail_check_frequency_12hour">Кожныя 12 гадзін</string>
+  <string name="account_setup_options_mail_check_frequency_24hour">Кожныя 24 гадзіны</string>
+  <string name="push_poll_on_connect_label">Праверка пры злучэнні для push-апавяшчэнняў</string>
+  <string name="account_setup_options_enable_push_label">Уключыць push-апавяшчэнні для гэтага акаўнта</string>
+  <string name="account_setup_options_enable_push_summary">Імгненнае апавяшчэнне пра новыя лісты, калі гэта падтрымліваецца серверам.</string>
+  <string name="idle_refresh_period_label">Інтэрвал абнаўлення IDLE</string>
+  <string name="idle_refresh_period_1min">Штохвілінна</string>
+  <string name="idle_refresh_period_2min">Кожныя 2 хвіліны</string>
+  <string name="idle_refresh_period_3min">Кожныя 3 хвіліны</string>
+  <string name="idle_refresh_period_6min">Кожныя 6 хвілін</string>
+  <string name="idle_refresh_period_12min">Кожныя 12 хвілін</string>
+  <string name="idle_refresh_period_24min">Кожныя 24 хвіліны</string>
+  <string name="idle_refresh_period_36min">Кожныя 36 хвілін</string>
+  <string name="idle_refresh_period_48min">Кожныя 48 хвілін</string>
+  <string name="idle_refresh_period_60min">Кожныя 60 хвілін</string>
+  <string name="account_setup_options_notify_label">Апавяшчаць пра новую пошту</string>
+  <string name="account_setup_options_notify_sync_label">Апавяшчаць пра праверку пошты</string>
+  <string name="account_setup_options_mail_display_count_label">Колькасць лістоў для паказу</string>
+  <string name="account_setup_options_mail_display_count_10">10 лістоў</string>
+  <string name="account_setup_options_mail_display_count_25">25 лістоў</string>
+  <string name="account_setup_options_mail_display_count_50">50 лістоў</string>
+  <string name="account_setup_options_mail_display_count_100">100 лістоў</string>
+  <string name="account_setup_options_mail_display_count_250">250 лістоў</string>
+  <string name="account_setup_options_mail_display_count_500">500 лістоў</string>
+  <string name="account_setup_options_mail_display_count_1000">1000 лістоў</string>
+  <string name="account_setup_options_mail_display_count_2500">2500 лістоў</string>
+  <string name="account_setup_options_mail_display_count_5000">5000 лістоў</string>
+  <string name="account_setup_options_mail_display_count_10000">10000 лістоў</string>
+  <string name="account_setup_options_mail_display_count_all">усе лісты</string>
+  <string name="move_copy_cannot_copy_unsynced_message">Немагчыма скапіяваць ці перамясціць паведамленне, якое не сінхранізавана з серверам</string>
+  <string name="account_setup_failed_dlg_title">Наладка не завершаная</string>
+  <string name="account_setup_failed_dlg_auth_message_fmt">Хібныя лагін ці пароль.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_certificate_message_fmt">Сервер падае хібны сертыфікат SSL. Гэта можа адбывацца праз няправільныя налады. Таксама праз тое, што нехта спрабуе атакаваць ваш паштовы сервер альбо камп’ютар. Калі вы не ведаеце канкрэтнай прычыны, то адхіліце і звяжыцеся з тым, хто абслугоўвае сервер.\n\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_server_message_fmt">Не атрымалася злучыцца з серверам.\n(<xliff:g id="error">%s</xliff:g>)</string>
+  <string name="account_setup_failed_dlg_edit_details_action">Рэдагаваць падрабязнасці</string>
+  <string name="account_setup_failed_dlg_continue_action">Працягнуць</string>
+  <string name="account_settings_push_advanced_title">Дадаткова</string>
+  <string name="account_settings_title_fmt">Налады акаўнта</string>
+  <string name="account_settings_default_label">Прадвызначаны акаўнт</string>
+  <string name="account_settings_default_summary">Прадвызначана адпраўляць пошту з гэтага акаўнта</string>
+  <string name="account_settings_notify_label">Апавяшчэнне пра новую пошту</string>
+  <string name="account_settings_folder_notify_new_mail_mode_label">Апавяшчэнні каталогаў</string>
+  <string name="account_settings_folder_notify_new_mail_mode_all">Усе</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_class">1 клас</string>
+  <string name="account_settings_folder_notify_new_mail_mode_first_and_second_class">1 і 2 класы</string>
+  <string name="account_settings_folder_notify_new_mail_mode_not_second_class">Апроч 1 і 2 класаў</string>
+  <string name="account_settings_folder_notify_new_mail_mode_none">Няма</string>
+  <string name="account_settings_notify_sync_label">Апавяшчэнне пра сінхранізацыю</string>
+  <string name="account_settings_email_label">Ваш адрас электроннай пошты</string>
+  <string name="account_settings_notify_summary">Паказваць на панэлі стану апавяшчэнні пра новую пошту</string>
+  <string name="account_settings_notify_sync_summary">Паказваць на панэлі стану апавяшчэнні пра праверку пошты</string>
+  <string name="account_settings_notify_self_label">Уключаючы адпраўленую пошту</string>
+  <string name="account_settings_notify_self_summary">Паказваць апавяшчэнні пры атрыманні пошты</string>
+  <string name="account_notify_contacts_mail_only_label">Толькі кантакты</string>
+  <string name="account_notify_contacts_mail_only_summary">Апавяшчаць толькі пра лісты ад кантактаў</string>
+  <string name="account_settings_notification_opens_unread_label">Пераходзіць з апавяшчэння да непрачытаных лістоў</string>
+  <string name="account_settings_notification_opens_unread_summary">Пераходзіць да непрачытаных лістоў пры націсканні на апавяшчэнне</string>
+  <string name="account_settings_mark_message_as_read_on_view_label">Пазначаць прачытаным пры адкрыцці</string>
+  <string name="account_settings_mark_message_as_read_on_view_summary">Пазначаць ліст прачытаным пасля прагляду</string>
+  <string name="account_settings_mark_message_as_read_on_delete_label">Пазначаць як прачытанае пры выдаленні</string>
+  <string name="account_settings_mark_message_as_read_on_delete_summary">Пазначаць ліст як прачытаны пасля яго выдалення</string>
+  <string name="account_settings_notification_open_system_notifications_label">Налады апавяшчэнняў</string>
+  <string name="account_settings_notification_open_system_notifications_summary">Адкрыць сістэмныя налады апавяшчэнняў</string>
+  <string name="account_settings_show_pictures_label">Заўсёды паказваць выявы</string>
+  <string name="account_settings_show_pictures_never">Не</string>
+  <string name="account_settings_show_pictures_only_from_contacts">Ад кантактаў</string>
+  <string name="account_settings_show_pictures_always">Ад усіх</string>
+  <string name="account_settings_composition">Адпраўленне пошты</string>
+  <string name="account_settings_default_quoted_text_shown_label">Цытаваць пры адказе</string>
+  <string name="account_settings_default_quoted_text_shown_summary">Уключаць у адказ зыходны ліст.</string>
+  <string name="account_settings_reply_after_quote_label">Цытата па-над адказам</string>
+  <string name="account_settings_reply_after_quote_summary">Размяшчаць зыходны ліст па-над адказам.</string>
+  <string name="account_settings_strip_signature_label">Без подпісаў у цытаце</string>
+  <string name="account_settings_strip_signature_summary">Выдаляць подпісы з цытаваных лістоў</string>
+  <string name="account_settings_message_format_label">Фармат лістоў</string>
+  <string name="account_settings_message_format_text">Просты тэкст (выдаляць выявы і фарматаванне)</string>
+  <string name="account_settings_message_format_html">HTML (пакідаць выявы і фарматаванне)</string>
+  <string name="account_settings_message_format_auto">Аўтаматычна</string>
+  <string name="account_settings_always_show_cc_bcc_label">Заўсёды паказваць Копія / Схаваная копія</string>
+  <string name="account_settings_message_read_receipt_label">Апавяшчэнне пра чытанне</string>
+  <string name="account_settings_message_read_receipt_summary">Заўсёды запытваць апавяшчэнне пра чытанне</string>
+  <string name="account_settings_quote_style_label">Стыль цытавання</string>
+  <string name="account_settings_quote_style_prefix">Прэфікс (як у Gmail)</string>
+  <string name="account_settings_quote_style_header">Загаловак (як у Outlook)</string>
+  <string name="account_settings_upload_sent_messages_label">Запампаваць адпраўленыя лісты</string>
+  <string name="account_settings_upload_sent_messages_summary">Запампоўваць адпраўленыя лісты ў каталог адпраўленых</string>
+  <string name="account_settings_general_title">Асноўныя налады</string>
+  <string name="account_settings_reading_mail">Чытанне пошты</string>
+  <string name="account_settings_sync">Атрыманне пошты</string>
+  <string name="account_settings_folders">Каталогі</string>
+  <string name="account_settings_quote_prefix_label">Прэфікс цытаты</string>
+  <string name="account_settings_crypto">Скразное шыфраванне</string>
+  <string name="account_settings_crypto_app">Уключыць падтрымку OpenPGP</string>
+  <string name="account_settings_crypto_app_select_title">Праграма OpenPGP</string>
+  <string name="account_settings_crypto_key">Наладка ключа шыфравання</string>
+  <string name="account_settings_crypto_summary_off">Няма наладжанай праграмы OpenPGP</string>
+  <string name="account_settings_crypto_summary_on">Падлучана да %s</string>
+  <string name="account_settings_crypto_summary_config">Наладка…</string>
+  <string name="account_settings_crypto_encrypt_all_drafts">Захоўваць чарнавікі зашыфраванымі</string>
+  <string name="account_settings_crypto_encrypt_all_drafts_on">Усе чарнавікі будуць захоўвацца зашыфраванымі</string>
+  <string name="account_settings_crypto_encrypt_all_drafts_off">Шыфраваць чарнавікі, калі шыфраванне ўключана</string>
+  <string name="account_settings_mail_check_frequency_label">Чашчыня праверкі</string>
+  <string name="account_settings_color_label">Колер акаўнта</string>
+  <string name="account_settings_color_summary">Колер гэтага акаўнта для каталогаў і спіса акаўнтаў</string>
+  <string name="account_settings_color_none">Без колеру</string>
+  <string name="account_settings_led_color_label">Колер індыкатара</string>
+  <string name="account_settings_led_color_summary">Колер індыкатара для апавяшчэнняў для гэтага акаўнта</string>
+  <string name="account_settings_mail_display_count_label">Памер лакальнага каталога</string>
+  <string name="account_settings_autodownload_message_size_label">Атрымліваць фрагмент</string>
+  <string name="account_settings_autodownload_message_size_1">1 Кб</string>
+  <string name="account_settings_autodownload_message_size_2">2 Кб</string>
+  <string name="account_settings_autodownload_message_size_4">4 Кб</string>
+  <string name="account_settings_autodownload_message_size_8">8 Кб</string>
+  <string name="account_settings_autodownload_message_size_16">16 Кб</string>
+  <string name="account_settings_autodownload_message_size_32">32 Кб</string>
+  <string name="account_settings_autodownload_message_size_64">64 Кб</string>
+  <string name="account_settings_autodownload_message_size_128">128 Кб</string>
+  <string name="account_settings_autodownload_message_size_256">256 Кб</string>
+  <string name="account_settings_autodownload_message_size_512">512 Кб</string>
+  <string name="account_settings_autodownload_message_size_1024">1 Мб</string>
+  <string name="account_settings_autodownload_message_size_2048">2 Мб</string>
+  <string name="account_settings_autodownload_message_size_5120">5 Мб</string>
+  <string name="account_settings_autodownload_message_size_10240">10 Мб</string>
+  <string name="account_settings_autodownload_message_size_any">цалкам</string>
+  <string name="account_settings_message_age_label">Колькасць сінхранізацыі лістоў</string>
+  <string name="account_settings_message_age_any">увесь час</string>
+  <string name="account_settings_message_age_0">сёння</string>
+  <string name="account_settings_message_age_1">2 апошнія дні</string>
+  <string name="account_settings_message_age_2">3 апошнія дні</string>
+  <string name="account_settings_message_age_7">апошні тыдзень</string>
+  <string name="account_settings_message_age_14">2 апошнія тыдні</string>
+  <string name="account_settings_message_age_21">3 апошнія тыдні</string>
+  <string name="account_settings_message_age_1_month">апошні месяц</string>
+  <string name="account_settings_message_age_2_months">2 апошнія месяцы</string>
+  <string name="account_settings_message_age_3_months">3 апошнія месяцы</string>
+  <string name="account_settings_message_age_6_months">6 апошніх месяцаў</string>
+  <string name="account_settings_message_age_1_year">апошні год</string>
+  <string name="account_settings_folder_display_mode_label">Бачнасць каталогаў</string>
+  <string name="account_settings_folder_display_mode_all">Усе</string>
+  <string name="account_settings_folder_display_mode_first_class">1 клас</string>
+  <string name="account_settings_folder_display_mode_first_and_second_class">1 і 2 класы</string>
+  <string name="account_settings_folder_display_mode_not_second_class">Апроч 1 і 2 класаў</string>
+  <string name="account_settings_folder_sync_mode_label">Праверка каталогаў</string>
+  <string name="account_settings_folder_sync_mode_all">Усе</string>
+  <string name="account_settings_folder_sync_mode_first_class">1 клас</string>
+  <string name="account_settings_folder_sync_mode_first_and_second_class">1 і 2 класы</string>
+  <string name="account_settings_folder_sync_mode_not_second_class">Апроч 1 і 2 класаў</string>
+  <string name="account_settings_folder_sync_mode_none">Няма</string>
+  <string name="account_settings_folder_push_mode_label">Push</string>
+  <string name="account_settings_folder_push_mode_all">Усе</string>
+  <string name="account_settings_folder_push_mode_first_class">1 клас</string>
+  <string name="account_settings_folder_push_mode_first_and_second_class">1 і 2 класы</string>
+  <string name="account_settings_folder_push_mode_not_second_class">Апроч 1 і 2 класаў</string>
+  <string name="account_settings_folder_push_mode_none">Няма</string>
+  <string name="account_settings_folder_target_mode_label">Мэтавыя каталогі перамяшчэння / капіявання</string>
+  <string name="account_settings_folder_target_mode_all">Усе</string>
+  <string name="account_settings_folder_target_mode_first_class">1 клас</string>
+  <string name="account_settings_folder_target_mode_first_and_second_class">1 і 2 класы</string>
+  <string name="account_settings_folder_target_mode_not_second_class">Апроч 1 і 2 класаў</string>
+  <string name="account_settings_sync_remote_deletetions_label">Сінхроннае выдаленне</string>
+  <string name="account_settings_sync_remote_deletetions_summary">Выдаляць лісты пры выдаленні з сервера</string>
+  <string name="account_settings_openpgp_missing">Праграма OpenPGP адсутнічае. Яна была выдаленая?</string>
+  <string name="folder_settings_title">Налады каталога</string>
+  <string name="folder_settings_in_top_group_label">Паказваць у пачатку</string>
+  <string name="folder_settings_in_top_group_summary">Паказваць бліжэй да спіса каталогаў</string>
+  <string name="folder_settings_folder_display_mode_label">Бачнасць каталогаў</string>
+  <string name="folder_settings_folder_display_mode_normal">Без класа</string>
+  <string name="folder_settings_folder_display_mode_first_class">1 клас</string>
+  <string name="folder_settings_folder_display_mode_second_class">2 клас</string>
+  <string name="folder_settings_folder_sync_mode_label">Праверка каталогаў</string>
+  <string name="folder_settings_folder_sync_mode_normal">Няма</string>
+  <string name="folder_settings_folder_sync_mode_first_class">1 клас</string>
+  <string name="folder_settings_folder_sync_mode_second_class">2 клас</string>
+  <string name="folder_settings_folder_sync_mode_inherited">Як клас бачнасці</string>
+  <string name="folder_settings_folder_push_mode_label">Push</string>
+  <string name="folder_settings_folder_push_mode_normal">Без класа</string>
+  <string name="folder_settings_folder_push_mode_first_class">1 клас</string>
+  <string name="folder_settings_folder_push_mode_second_class">2 клас</string>
+  <string name="folder_settings_folder_push_mode_inherited">Як сінхранізацыі</string>
+  <string name="folder_settings_folder_notify_mode_label">Апавяшчэнне пра каталог</string>
+  <string name="folder_settings_folder_notify_mode_normal">Без класа</string>
+  <string name="folder_settings_folder_notify_mode_first_class">1 клас</string>
+  <string name="folder_settings_folder_notify_mode_second_class">2 клас</string>
+  <string name="folder_settings_folder_notify_mode_inherited">Як push</string>
+  <string name="folder_settings_clear_local_folder_action">Выдаліць лакальныя лісты</string>
+  <string name="account_settings_incoming_label">Сервер уваходных лістоў</string>
+  <string name="account_settings_incoming_summary">Наладка сервера ўваходнай пошты</string>
+  <string name="account_settings_outgoing_label">Сервер выходных лістоў</string>
+  <string name="account_settings_outgoing_summary">Наладка сервера выходнай пошты (SMTP)</string>
+  <string name="account_settings_description_label">Назва акаўнта</string>
+  <string name="account_settings_name_label">Ваша імя</string>
+  <string name="notifications_title">Апавяшчэнні</string>
+  <string name="account_settings_vibrate_enable">Вібрацыя</string>
+  <string name="account_settings_vibrate_summary">Вібрацыя пры атрыманні новай пошты</string>
+  <string name="account_settings_vibrate_pattern_label">Шаблоны вібрацыі</string>
+  <string name="account_settings_vibrate_pattern_default">прадвызначана</string>
+  <string name="account_settings_vibrate_pattern_1">шаблон 1</string>
+  <string name="account_settings_vibrate_pattern_2">шаблон 2</string>
+  <string name="account_settings_vibrate_pattern_3">шаблон 3</string>
+  <string name="account_settings_vibrate_pattern_4">шаблон 4</string>
+  <string name="account_settings_vibrate_pattern_5">шаблон 5</string>
+  <string name="account_settings_vibrate_times">Паўтор вібрацыі</string>
+  <string name="account_settings_ringtone">Мелодыя атрымання новай пошты</string>
+  <string name="account_settings_led_label">Мігцець індыкатарам</string>
+  <string name="account_settings_led_summary">Мігцець індыкатарам пры атрыманні новай пошты</string>
+  <string name="account_settings_composition_title">Параметры стварэння ліста</string>
+  <string name="account_settings_composition_label">Новы ліст</string>
+  <string name="account_settings_composition_summary">Прадвызначаныя адпраўнік, копія, схаваная копія</string>
+  <string name="account_settings_identities_label">Кіраванне ролямі</string>
+  <string name="account_settings_identities_summary">Наладзіць альтэрнатыўныя адпраўніка і подпісы</string>
+  <string name="manage_identities_title">Кіраванне ролямі</string>
+  <string name="manage_identities_context_menu_title">Кіраванне роляй</string>
+  <string name="edit_identity_title">Рэдагаванне ролі</string>
+  <string name="new_identity_action">Новая роля</string>
+  <string name="account_settings_always_bcc_label">Схаваная копія ўсіх паведамленняў</string>
+  <string name="manage_identities_edit_action">Рэдагаваць</string>
+  <string name="manage_identities_move_up_action">Перамясціць вышэй</string>
+  <string name="manage_identities_move_down_action">Перамясціць ніжэй</string>
+  <string name="manage_identities_move_top_action">Перамясціць вышэй / зрабіць прадвызначаным</string>
+  <string name="manage_identities_remove_action">Выдаліць</string>
+  <string name="edit_identity_description_label">Апісанне ролі</string>
+  <string name="edit_identity_description_hint">(Неабавязкова)</string>
+  <string name="edit_identity_name_label">Ваша імя</string>
+  <string name="edit_identity_name_hint">(Неабавязкова)</string>
+  <string name="edit_identity_email_label">Адрас электроннай пошты</string>
+  <string name="edit_identity_email_hint">(Патрабуецца)</string>
+  <string name="edit_identity_reply_to_label">Адрас для адказу</string>
+  <string name="edit_identity_reply_to_hint">(Неабавязкова)</string>
+  <string name="edit_identity_signature_label">Подпіс</string>
+  <string name="edit_identity_signature_hint">(Неабавязкова)</string>
+  <string name="account_settings_signature_use_label">Выкарыстоўваць подпіс</string>
+  <string name="account_settings_signature_label">Подпіс</string>
+  <string name="default_identity_description">Асноўная роля</string>
+  <string name="choose_identity_title">Абраць ролю</string>
+  <string name="send_as">Адпраўнік</string>
+  <string name="no_removable_identity">Нельга выдаліць асноўную ролю</string>
+  <string name="identity_has_no_email">Вы не можаце выкарыстоўваць ролю без адраса электроннай пошты</string>
+  <string name="sort_earliest_first">Спачатку старэйшыя лісты</string>
+  <string name="sort_latest_first">Спачатку найноўшыя лісты</string>
+  <string name="sort_subject_alpha">Тэма А-Я</string>
+  <string name="sort_subject_re_alpha">Тэма Я – А</string>
+  <string name="sort_sender_alpha">Адпраўнік А-Я</string>
+  <string name="sort_sender_re_alpha">Адпраўнік Я-А</string>
+  <string name="sort_flagged_first">Спачатку адзначаныя лісты</string>
+  <string name="sort_flagged_last">Спачатку не адзначаныя лісты</string>
+  <string name="sort_unread_first">Спачатку непрачытаныя лісты</string>
+  <string name="sort_unread_last">Спачатку прачытаныя лісты</string>
+  <string name="sort_attach_first">Спачатку лісты з укладзенымі файламі</string>
+  <string name="sort_unattached_first">Спачатку лісты без укладзеных файлаў</string>
+  <string name="sort_by">Сартаваць па…</string>
+  <string name="sort_by_date">Дата</string>
+  <string name="sort_by_arrival">Атрымана</string>
+  <string name="sort_by_subject">Тэма</string>
+  <string name="sort_by_sender">Адпраўнік</string>
+  <string name="sort_by_flag">Адзнака</string>
+  <string name="sort_by_unread">Прачытана / Не чытана</string>
+  <string name="sort_by_attach">Укладзеныя файлы</string>
+  <string name="account_delete_dlg_title">Выдаліць акаўнт</string>
+  <string name="account_setup_failed_dlg_invalid_certificate_title">Нераспазнаны сертыфікат</string>
+  <string name="account_setup_failed_dlg_invalid_certificate_accept">Ухваліць</string>
+  <string name="account_setup_failed_dlg_invalid_certificate_reject">Адхіліць</string>
+  <string name="message_view_help_key">Del (ці D) - Выдаліць\nR - Адказаць\nA - Адказаць усім\nC - Стварыць\nF - Пераслаць\nM - Перамясціць\nV - Адправіць у архіў\nY - Скапіяваць\nZ - Пазначыць (не)прачытаным\nG - Адзначыць\nO - Тып сартавання\nI - Парадак сартавання\nQ - Вярнуцца да каталогаў\nS - Абраць / Адкінуць выбар\nJ альбо P - Папярэдні ліст\nK альбо N - Наступны ліст</string>
+  <string name="message_list_help_key">Del (ці D) - Выдаліць\nC - Стварыць\nF - Пераслаць\nM - Перамясціць\nV - Адправіць у архіў\nY - Скапіяваць\nZ - Пазначыць (не)прачытаным\nG - Адзначыць\nO - Тып сартавання\nI - Парадак сартавання\nQ - Вярнуцца да каталогаў\nS - Абраць / Адкінуць выбар</string>
+  <string name="folder_list_filter_hint">Пошук каталога</string>
+  <string name="folder_list_display_mode_label">Паказваць каталогі…</string>
+  <string name="folder_list_display_mode_all">Усе каталогі</string>
+  <string name="folder_list_display_mode_first_class">1 клас</string>
+  <string name="folder_list_display_mode_first_and_second_class">1 і 2 класы</string>
+  <string name="folder_list_display_mode_not_second_class">Схаваць 2 клас</string>
+  <string name="account_settings_signature__location_label">Пазіцыя подпісу</string>
+  <string name="account_settings_signature__location_before_quoted_text">Перад цытатай</string>
+  <string name="account_settings_signature__location_after_quoted_text">Пасля цытаты</string>
+  <string name="setting_theme_global">Выкарыстоўваць тэму праграмы</string>
+  <string name="setting_theme_dark">Цёмная</string>
+  <string name="setting_theme_light">Светлая</string>
+  <string name="setting_theme_follow_system">Выкарыстоўваць прадвызначаныя сістэмныя параметры</string>
+  <string name="display_preferences">Выгляд</string>
+  <string name="global_preferences">Агульныя</string>
+  <string name="debug_preferences">Адладка</string>
+  <string name="privacy_preferences">Прыватнасць</string>
+  <string name="network_preferences">Сетка</string>
+  <string name="interaction_preferences">Інтэрфейс</string>
+  <string name="accountlist_preferences">Спіс акаўнтаў</string>
+  <string name="messagelist_preferences">Спіс лістоў</string>
+  <string name="messageview_preferences">Паведамленні</string>
+  <string name="settings_theme_label">Тэма</string>
+  <string name="settings_message_theme_label">Тэма прагляду лістоў</string>
+  <string name="settings_compose_theme_label">Тэма рэдактара</string>
+  <string name="settings_language_label">Мова</string>
+  <string name="preference_search_no_results">Налад не знойдзена</string>
+  <string name="settings_message_theme_selection_label">Фіксаваная тэма ліста</string>
+  <string name="settings_message_theme_selection_summary_off">Дазволіць змяняць тэму падчас прагляду ліста</string>
+  <string name="settings_message_theme_selection_summary_on">Выкарыстоўваць пры чытанні лістоў фіксаваную тэму</string>
+  <string name="setting_language_system">Прадвызначана</string>
+  <string name="background_ops_label">Фонавая сінхранізацыя</string>
+  <string name="background_ops_never">Ніколі</string>
+  <string name="background_ops_always">Заўсёды</string>
+  <string name="background_ops_auto_sync_only">Калі аўтасінхранізацыя ўключаная</string>
+  <string name="batch_select_all">Абраць усё</string>
+  <string name="account_setup_push_limit_label">Максімальная колькасць каталогаў для push-праверкі</string>
+  <string name="account_setup_push_limit_5">5 каталогаў</string>
+  <string name="account_setup_push_limit_10">10 каталогаў</string>
+  <string name="account_setup_push_limit_25">25 каталогаў</string>
+  <string name="account_setup_push_limit_50">50 каталогаў</string>
+  <string name="account_setup_push_limit_100">100 каталогаў</string>
+  <string name="account_setup_push_limit_250">250 каталогаў</string>
+  <string name="account_setup_push_limit_500">500 каталогаў</string>
+  <string name="account_setup_push_limit_1000">1000 каталогаў</string>
+  <string name="animations_title">Анімацыя</string>
+  <string name="animations_summary">Анімацыя інтэрфейсу</string>
+  <string name="volume_navigation_title">Навігацыя клавішамі гучнасці</string>
+  <string name="volume_navigation_message">У лісце</string>
+  <string name="volume_navigation_list">У спісе</string>
+  <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
+  <string name="unread_modifier"> - не прачытана</string>
+  <string name="search_all_messages_title">Усе лісты</string>
+  <string name="search_all_messages_detail">Усе лісты з бачных каталогаў</string>
+  <string name="integrated_inbox_title">Усе атрыманыя</string>
+  <string name="integrated_inbox_detail">Усе лісты са ўсіх каталогаў</string>
+  <string name="folder_settings_include_in_integrated_inbox_label">Усе атрыманыя</string>
+  <string name="folder_settings_include_in_integrated_inbox_summary">Усе лісты паказваюцца ў агульным каталозе</string>
+  <string name="account_settings_searchable_label">Каталогі для пошуку</string>
+  <string name="account_settings_searchable_all">Усе</string>
+  <string name="account_settings_searchable_displayable">Бачныя</string>
+  <string name="account_settings_searchable_none">Няма</string>
+  <string name="account_settings_no_folder_selected">Няма</string>
+  <string name="account_settings_automatic_special_folder">Аўтаматычна (%s)</string>
+  <string name="font_size_settings_title">Памер шрыфту</string>
+  <string name="font_size_settings_description">Наладка памеру шрыфтоў</string>
+  <string name="font_size_account_list">Спіс акаўнтаў</string>
+  <string name="font_size_account_name">Назва акаўнта</string>
+  <string name="font_size_account_description">Апісанне акаўнта</string>
+  <string name="font_size_folder_list">Спіс каталогаў</string>
+  <string name="font_size_folder_name">Назва каталога</string>
+  <string name="font_size_folder_status">Стан каталога</string>
+  <string name="font_size_message_list">Спіс лістоў</string>
+  <string name="font_size_message_list_subject">Тэма</string>
+  <string name="font_size_message_list_sender">Адпраўнік</string>
+  <string name="font_size_message_list_date">Дата</string>
+  <string name="font_size_message_list_preview">Папярэдні прагляд</string>
+  <string name="font_size_message_view">Паведамленне</string>
+  <string name="font_size_message_view_sender">Адпраўнік</string>
+  <string name="font_size_message_view_to">Каму</string>
+  <string name="font_size_message_view_cc">Копія</string>
+  <string name="font_size_message_view_bcc">Схаваная копія</string>
+  <string name="font_size_message_view_additional_headers">Дадатковыя загалоўкі</string>
+  <string name="font_size_message_view_subject">Тэма</string>
+  <string name="font_size_message_view_date">Час і дата</string>
+  <string name="font_size_message_view_content">Цела ліста</string>
+  <string name="font_size_message_view_content_summary"><xliff:g id="fontsize">%d</xliff:g>%%</string>
+  <string name="font_size_message_view_content_dialog_title"><xliff:g id="title">%1$s</xliff:g>: <xliff:g id="summary">%2$s</xliff:g></string>
+  <string name="font_size_message_compose">Рэдактар ліста</string>
+  <string name="font_size_message_compose_input">Палі ўводу тэксту</string>
+  <string name="font_size_default">Прадвызначана</string>
+  <string name="font_size_tiniest">Драбнюткі</string>
+  <string name="font_size_tiny">Дробны</string>
+  <string name="font_size_smaller">Невялікі</string>
+  <string name="font_size_small">Маленькі</string>
+  <string name="font_size_medium">Сярэдні</string>
+  <string name="font_size_large">Буйны</string>
+  <string name="font_size_larger">Вельмі вялікі</string>
+  <string name="error_activity_not_found">Патрэбнай праграмы не знойдзена.</string>
+  <string name="send_failed_reason">Не атрымалася адправіць: %s</string>
+  <string name="save_or_discard_draft_message_dlg_title">Захаваць чарнавік?</string>
+  <string name="save_or_discard_draft_message_instructions_fmt">Захаваць ці скасаваць ліст?</string>
+  <string name="confirm_discard_draft_message_title">Скасаваць ліст?</string>
+  <string name="confirm_discard_draft_message">Сапраўды хочаце скасаваць ліст?</string>
+  <string name="select_text_now">Абраць тэкст для капіявання.</string>
+  <string name="dialog_confirm_clear_local_folder_title">Выдаліць лакальныя лісты?</string>
+  <string name="dialog_confirm_clear_local_folder_message">Гэта выдаліць усе лакальныя лісты з каталога. Лісты на серверы не крануцца.</string>
+  <string name="dialog_confirm_clear_local_folder_action">Выдаліць лісты</string>
+  <string name="dialog_confirm_delete_title">Пацвердзіць выдаленне</string>
+  <string name="dialog_confirm_delete_message">Хочаце выдаліць гэты ліст?</string>
+  <plurals name="dialog_confirm_delete_messages">
+    <item quantity="one">Сапраўды хочаце выдаліць гэты ліст?</item>
+    <item quantity="few">Сапраўды хочаце выдаліць <xliff:g id="message_count">%1$d</xliff:g> лісты?</item>
+    <item quantity="many">Сапраўды хочаце выдаліць <xliff:g id="message_count">%1$d</xliff:g> лістоў?</item>
+    <item quantity="other">Сапраўды хочаце выдаліць <xliff:g id="message_count">%1$d</xliff:g> лістоў?</item>
+  </plurals>
+  <string name="dialog_confirm_delete_confirm_button">Так</string>
+  <string name="dialog_confirm_delete_cancel_button">Не</string>
+  <string name="dialog_confirm_mark_all_as_read_title">Пацвярджэнне прачытанага</string>
+  <string name="dialog_confirm_mark_all_as_read_message">Пазначыць усе лісты прачытанымі?</string>
+  <string name="dialog_confirm_empty_trash_title">Пацвердзіць ачыстку сметніцы</string>
+  <string name="dialog_confirm_empty_trash_message">Хочаце ачысціць сметніцу?</string>
+  <string name="dialog_confirm_mark_all_as_read_confirm_button">Так</string>
+  <string name="dialog_confirm_mark_all_as_read_cancel_button">Не</string>
+  <string name="dialog_confirm_spam_title">Пацвердзіць перамяшчэнне ў каталог спаму</string>
+  <plurals name="dialog_confirm_spam_message">
+    <item quantity="one">Сапраўды хочаце перамясціць ліст у каталог спаму?</item>
+    <item quantity="few">Сапраўды хочаце перамясціць <xliff:g id="message_count">%1$d</xliff:g> лісты ў каталог спаму?</item>
+    <item quantity="many">Сапраўды хочаце перамясціць <xliff:g id="message_count">%1$d</xliff:g> лістоў у каталог спаму?</item>
+    <item quantity="other">Сапраўды хочаце перамясціць <xliff:g id="message_count">%1$d</xliff:g> лістоў у каталог спаму?</item>
+  </plurals>
+  <string name="dialog_confirm_spam_confirm_button">Так</string>
+  <string name="dialog_confirm_spam_cancel_button">Не</string>
+  <string name="dialog_attachment_progress_title">Спампоўванне ўкладзеных файлаў</string>
+  <string name="messagelist_sent_to_me_sigil">»</string>
+  <string name="messagelist_sent_cc_me_sigil">›</string>
+  <string name="settings_list_backup_category">Рэзервовая копія</string>
+  <string name="settings_list_miscellaneous_category">Рознае</string>
+  <string name="settings_export_title">Экспартаваць налады</string>
+  <string name="settings_export_button">Экспарт</string>
+  <string name="settings_export_share_button">Падзяліцца</string>
+  <string name="settings_export_progress_text">Экспарт налад…</string>
+  <string name="settings_export_success_generic">Налады паспяхова экспартаваныя</string>
+  <string name="settings_export_failure">Не атрымалася экспартаваць налады</string>
+  <string name="settings_import_title">Імпартаваць налады</string>
+  <string name="settings_import_pick_document_button">Абраць файл</string>
+  <string name="settings_import_button">Імпарт</string>
+  <string name="settings_import_success_generic">Налады паспяхова імпартаваныя</string>
+  <string name="settings_import_password_required">Калі ласка, увядзіце пароль</string>
+  <string name="settings_import_failure">Не атрымалася імпартаваць налады</string>
+  <string name="settings_import_read_failure">Не атрымалася прачытаць файл налад</string>
+  <string name="settings_import_partial_failure">Не атрымалася імпартаваць некаторыя налады</string>
+  <string name="settings_import_status_success">Паспяхова імпартавана</string>
+  <string name="settings_import_status_password_required">Патрабуецца пароль</string>
+  <string name="settings_import_status_not_imported">Не імпартавана</string>
+  <string name="settings_import_status_error">Не атрымалася імпартаваць</string>
+  <string name="settings_import_later_button">Пазней</string>
+  <string name="settings_import">Імпартаваць налады</string>
+  <string name="settings_importing">Імпарт налад…</string>
+  <plurals name="settings_import_password_prompt">
+    <item quantity="one">Каб мець магчымасць выкарыстоўваць аказалі \"<xliff:g id="account">%s</xliff:g>\", вам неабходна ўвесці пароль для сервера.</item>
+    <item quantity="few">Каб мець магчымасць выкарыстоўваць аказалі \"<xliff:g id="account">%s</xliff:g>\", вам неабходна ўвесці паролі для сервера.</item>
+    <item quantity="many">Каб мець магчымасць выкарыстоўваць аказалі \"<xliff:g id="account">%s</xliff:g>\", вам неабходна ўвесці паролі для сервера.</item>
+    <item quantity="other">Каб мець магчымасць выкарыстоўваць аказалі \"<xliff:g id="account">%s</xliff:g>\", вам неабходна ўвесці паролі для сервера.</item>
+  </plurals>
+  <string name="settings_import_incoming_server_password_hint">Пароль для сервера ўваходнай пошты</string>
+  <string name="settings_import_outgoing_server_password_hint">Пароль для сервера выходнай пошты</string>
+  <string name="settings_import_use_same_password_for_outgoing_server">Выкарыстоўваць той жа пароль для сервера выходнай пошты</string>
+  <string name="server_name_format">Назва сервера: <xliff:g id="hostname">%s</xliff:g></string>
+  <string name="unread_widget_select_account">Лічыльнік непрачытаных…</string>
+  <string name="unread_widget_account_title">Акаўнт</string>
+  <string name="unread_widget_account_summary">Акаўнт для адлюстравання лічыльніка непрачытаных</string>
+  <string name="unread_widget_unified_inbox_account_summary">Усе атрыманыя</string>
+  <string name="unread_widget_folder_enabled_title">Лічыльнік каталогаў</string>
+  <string name="unread_widget_folder_enabled_summary">Паказваць лічыльнік непрачытаных лістоў толькі для асобнага каталога</string>
+  <string name="unread_widget_folder_title">Каталог</string>
+  <string name="unread_widget_folder_summary">Каталог для адлюстравання лічыльніка непрачытаных</string>
+  <string name="unread_widget_action_done">Завершана</string>
+  <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
+  <string name="unread_widget_account_not_selected">Акаўнт не абраны</string>
+  <string name="unread_widget_folder_not_selected">Каталог не абраны</string>
+  <string name="webview_empty_message">Тэкст адсутнічае</string>
+  <string name="webview_contextmenu_link_view_action">Адкрыць спасылку</string>
+  <string name="webview_contextmenu_link_share_action">Падзяліцца спасылкай</string>
+  <string name="webview_contextmenu_link_copy_action">Скапіяваць спасылку ў буфер абмену</string>
+  <string name="webview_contextmenu_link_clipboard_label">Спасылка</string>
+  <string name="webview_contextmenu_link_text_copy_action">Скапіяваць тэкст спасылкі ў буфер абмену</string>
+  <string name="webview_contextmenu_link_text_clipboard_label">Тэкст спасылкі</string>
+  <string name="webview_contextmenu_image_title">Выява</string>
+  <string name="webview_contextmenu_image_view_action">Праглядзець выяву</string>
+  <string name="webview_contextmenu_image_save_action">Захаваць выяву</string>
+  <string name="webview_contextmenu_image_download_action">Спампаваць выяву</string>
+  <string name="webview_contextmenu_image_copy_action">Скапіяваць URL у буфер абмену</string>
+  <string name="webview_contextmenu_image_clipboard_label">URL выявы</string>
+  <string name="webview_contextmenu_phone_call_action">Патэлефанаваць</string>
+  <string name="webview_contextmenu_phone_save_action">Захаваць у кантакты</string>
+  <string name="webview_contextmenu_phone_copy_action">Скапіяваць нумар у буфер абмену</string>
+  <string name="webview_contextmenu_phone_clipboard_label">Нумар тэлефона</string>
+  <string name="webview_contextmenu_email_send_action">Адправіць пошту</string>
+  <string name="webview_contextmenu_email_save_action">Захаваць у кантакты</string>
+  <string name="webview_contextmenu_email_copy_action">Скапіяваць адрас у буфер абмену</string>
+  <string name="webview_contextmenu_email_clipboard_label">Адрас электроннай пошты</string>
+  <string name="account_settings_remote_search_num_results_entries_all">Усе</string>
+  <string name="account_settings_remote_search_num_results_entries_10">10</string>
+  <string name="account_settings_remote_search_num_results_entries_25">25</string>
+  <string name="account_settings_remote_search_num_results_entries_50">50</string>
+  <string name="account_settings_remote_search_num_results_entries_100">100</string>
+  <string name="account_settings_remote_search_num_results_entries_250">250</string>
+  <string name="account_settings_remote_search_num_results_entries_500">500</string>
+  <string name="account_settings_remote_search_num_results_entries_1000">1000</string>
+  <string name="account_settings_remote_search_num_label">Ліміт пошуку на серверы</string>
+  <string name="remote_search_sending_query">Адпраўка запытаў на сервер</string>
+  <plurals name="remote_search_downloading">
+    <item quantity="one">Атрыманне %d выніку</item>
+    <item quantity="few">Атрыманне %d вынікаў</item>
+    <item quantity="many">Атрыманне %d вынікаў</item>
+    <item quantity="other">Атрыманне %d вынікаў</item>
+  </plurals>
+  <plurals name="remote_search_downloading_limited">
+    <item quantity="one">Атрыманне %1$d з %2$d вынікаў</item>
+    <item quantity="few">Атрыманне %1$d з %2$d вынікаў</item>
+    <item quantity="many">Атрыманне %1$d з %2$d вынікаў</item>
+    <item quantity="other">Атрыманне %1$d з %2$d вынікаў</item>
+  </plurals>
+  <string name="remote_search_error">Не атрымалася выканаць адлеглы пошук</string>
+  <string name="account_settings_search">Пошук</string>
+  <string name="account_settings_remote_search_enabled">Уключыць пошук на серверы</string>
+  <string name="account_settings_remote_search_enabled_summary">Шукаць лісты на серверы і прыладзе</string>
+  <string name="action_remote_search">Пошук лістоў на серверы</string>
+  <string name="remote_search_unavailable_no_network">Для пошуку на серверы патрабуецца злучэнне з сеткай.</string>
+  <string name="global_settings_background_as_unread_indicator_label">Змяняць колер падчас чытання</string>
+  <string name="global_settings_background_as_unread_indicator_summary">Для прачытаных лістоў будзе выкарыстоўвацца іншы фон</string>
+  <string name="global_settings_threaded_view_label">Ланцугі лістоў</string>
+  <string name="global_settings_threaded_view_summary">Групаваць лісты па гутарках</string>
+  <string name="upgrade_databases_title">Абнаўленне баз даных</string>
+  <string name="upgrade_databases_unspecified">Абнаўленне баз даных…</string>
+  <string name="upgrade_database_format">Абнаўленне базы даных акаўнта \"<xliff:g id="account">%s</xliff:g>\"</string>
+  <string name="global_settings_splitview_mode_label">Падзяліць экран</string>
+  <string name="global_settings_splitview_always">Заўсёды</string>
+  <string name="global_settings_splitview_never">Ніколі</string>
+  <string name="global_settings_splitview_when_in_landscape">У альбомнай арыентацыі</string>
+  <string name="message_view_empty">Калі ласка, абярыце злева ліст</string>
+  <string name="global_settings_show_contact_picture_label">Паказваць фота кантактаў</string>
+  <string name="global_settings_show_contact_picture_summary">Паказваць малюнкі кантактаў у спісе лістоў</string>
+  <string name="mark_all_as_read">Пазначыць усё як прачытанае</string>
+  <string name="global_settings_colorize_missing_contact_pictures_label">Афарбоўваць малюнкі кантактаў</string>
+  <string name="global_settings_colorize_missing_contact_pictures_summary">Афарбоўваць кантакты без малюнкаў</string>
+  <string name="global_settings_messageview_visible_refile_actions_title">Дзеянні для лістоў</string>
+  <string name="global_settings_messageview_visible_refile_actions_summary">Паказваць абраныя дзеянні ў меню ліста</string>
+  <string name="loading_attachment">Загрузка ўкладзеных файлаў…</string>
+  <string name="fetching_attachment_dialog_title_send">Адпраўка ліста</string>
+  <string name="fetching_attachment_dialog_title_save">Захаванне чарнавіка</string>
+  <string name="fetching_attachment_dialog_message">Атрыманне ўкладзеных файлаў…</string>
+  <string name="auth_external_error">Не атрымалася выканаць аўтэнтыфікацыю. Сервер не паведамляе пра сумяшчальнасць з SASL EXTERNAL. Прычынай можа быць хібны сертыфікат кліента (пратэрмінаваны, ад невядомага) альбо праблема канфігурацыі.</string>
+  <!--=== Client certificates specific ==================================================================-->
+  <string name="account_setup_basics_client_certificate">Выкарыстоўваць сертыфікат кліента</string>
+  <string name="client_certificate_spinner_empty">Не выкарыстоўваць сертыфікат</string>
+  <string name="client_certificate_spinner_delete">Адключыць выбар сертыфіката кліента</string>
+  <string name="client_certificate_retrieval_failure">Не ўдалося атрымаць сертыфікат кліента для \"<xliff:g id="alias">%s</xliff:g>\"</string>
+  <string name="client_certificate_advanced_options">Дадатковыя параметры</string>
+  <string name="client_certificate_expired">Тэрмін дзеяння сертыфіката кліента \"<xliff:g id="certificate_alias">%1$s</xliff:g>\" сыйшоў альбо яшчэ не надышоў (<xliff:g id="exception_message">%2$s</xliff:g>)</string>
+  <!--Note: This references message_view_download_remainder-->
+  <string name="preview_encrypted">*Зашыфравана*</string>
+  <string name="add_from_contacts">Дадаць з кантактаў</string>
+  <string name="recipient_cc">Копія</string>
+  <string name="recipient_bcc">Схаваная копія</string>
+  <string name="recipient_to">Каму</string>
+  <string name="recipient_from">Ад</string>
+  <string name="unknown_recipient">&lt;Невядомы атрымальнік&gt;</string>
+  <string name="unknown_sender">&lt;Невядомы адпраўнік&gt;</string>
+  <string name="address_type_home">Хатні</string>
+  <string name="address_type_work">Праца</string>
+  <string name="address_type_other">Іншае</string>
+  <string name="address_type_mobile">Мабільны</string>
+  <string name="compose_error_no_draft_folder">Для гэтага акаўнта не наладжаны каталог чарнавікоў!</string>
+  <string name="compose_error_no_key_configured">Для гэтага акаўнта ключоў не наладжана! Праверце свае налады.</string>
+  <string name="error_crypto_provider_incompatible">Крыптапастаўшчык выкарыстоўвае несумяшчальную версію. Калі ласка, праверце налады!</string>
+  <string name="error_crypto_provider_connect">Не атрымалася злучыцца з крыптапастаўшчыком. Праверце налады альбо зноў націсніце на значок шыфравання!</string>
+  <string name="error_crypto_provider_ui_required">Не атрымалася ініцыялізаваць скразное шыфраванне. Калі ласка, праверце налады</string>
+  <string name="error_crypto_inline_attach">Рэжым PGP/INLINE не падтрымлівае ўкладзеных файлаў!</string>
+  <string name="enable_inline_pgp">Уключыць PGP/INLINE</string>
+  <string name="disable_inline_pgp">Адключыць PGP/INLINE</string>
+  <string name="enable_sign_only">Уключыць PGP \"Толькі подпіс\"</string>
+  <string name="disable_sign_only">Выключыць PGP \"Толькі подпіс\"</string>
+  <string name="openpgp_inline_title">Рэжым PGP/INLINE</string>
+  <string name="openpgp_inline_text">Ліст адпраўлены ў фармаце PGP/INLINE.\nВыкарыстоўвайце толькі для сумяшчальнасці:</string>
+  <string name="openpgp_inline_plus_compat">Некаторыя кліенты падтрымліваюць толькі гэты фармат</string>
+  <string name="openpgp_inline_minus_transit">Падчас перадачы подпісы могуць пашкодзіцца</string>
+  <string name="openpgp_inline_minus_attach">Укладзеныя файлы не падтрымліваюцца</string>
+  <string name="openpgp_inline_ok">Зразумела!</string>
+  <string name="openpgp_inline_disable">Адключыць</string>
+  <string name="openpgp_inline_keep_enabled">Не адключаць</string>
+  <string name="openpgp_sign_only_ok">Зразумела!</string>
+  <string name="openpgp_sign_only_disable">Адключыць</string>
+  <string name="openpgp_sign_only_keep_enabled">Не адключаць</string>
+  <string name="openpgp_dialog_sign_only_title">Рэжым PGP \"Толькі подпіс\"</string>
+  <string name="openpgp_dialog_sign_only_text">У гэтым рэжыме ваш ключ PGP будзе выкарыстоўвацца для стварэння крыптаграфічнага подпісу да незашыфраванага ліста.</string>
+  <string name="openpgp_dialog_sign_only_plus_verified">Адрасат зможа пераканацца, што ліст сапраўдны і падпісаны вашым ключом.</string>
+  <string name="openpgp_dialog_sign_only_minus_break">Подпісы могуць пашкодзіцца пры адпраўцы некалькім адрасатам.</string>
+  <string name="openpgp_dialog_sign_only_minus_attach">Подпісы могуць паказвацца як укладзеныя файлы \"signature.asc\".</string>
+  <string name="openpgp_dialog_sign_only_neutral_encsigned">Зашыфраваныя лісты заўсёды змяшчаюць подпіс.</string>
+  <string name="crypto_msg_title_plaintext">Просты тэкст</string>
+  <string name="crypto_msg_unencrypted_sign_error">подпіс скразнога шыфравання змяшчае памылку</string>
+  <string name="crypto_msg_incomplete_signed">для праверкі подпісу патрэбна поўнасцю спампаваць ліст</string>
+  <string name="crypto_msg_unsupported_signed">змяшчае непадтрымліваемы подпіс скразнога шыфравання</string>
+  <string name="crypto_msg_unsupported_encrypted">Ліст зашыфраваны ў непадтрымліваемым фармаце.</string>
+  <string name="crypto_msg_cancelled">Ліст зашыфраваны, расшыфроўка скасаваная.</string>
+  <string name="crypto_msg_title_unencrypted_signed_e2e">Тэкст, падпісаны ключом скразнога шыфравання</string>
+  <string name="crypto_msg_unencrypted_sign_verified">ад праверанага падпісальніка</string>
+  <string name="crypto_msg_title_unencrypted_signed">Падпісаны просты тэкст</string>
+  <string name="crypto_msg_unencrypted_sign_mismatch">але ключ скразнога шыфравання не адпавядае адпраўніку</string>
+  <string name="crypto_msg_unencrypted_sign_expired">але ключ скразнога шыфравання пратэрмінаваны</string>
+  <string name="crypto_msg_unencrypted_sign_revoked">але ключ скразнога шыфравання адкліканы</string>
+  <string name="crypto_msg_unencrypted_sign_insecure">але ключ скразнога шыфравання небяспечны</string>
+  <string name="crypto_msg_unencrypted_sign_unknown">але ключ невядомы</string>
+  <string name="crypto_msg_title_encrypted_unknown">Зашыфравана</string>
+  <string name="crypto_msg_encrypted_error">але падчас расшыфроўкі адбылася памылка</string>
+  <string name="crypto_msg_encrypted_incomplete">для расшыфроўкі патрэбна поўнасцю спампаваць ліст</string>
+  <string name="crypto_msg_encrypted_no_provider">але няма наладжанай крыптапраграмы</string>
+  <string name="crypto_msg_title_encrypted_unsigned">Зашыфравана</string>
+  <string name="crypto_msg_encrypted_unsigned">але без скразнога шыфравання</string>
+  <string name="crypto_msg_title_encrypted_signed_e2e">Скразное шыфраванне</string>
+  <string name="crypto_msg_encrypted_sign_verified">ад праверанага адпраўніка</string>
+  <string name="crypto_msg_title_encrypted_signed">Зашыфравана</string>
+  <string name="crypto_msg_encrypted_sign_unknown">але ключ невядомы</string>
+  <string name="crypto_msg_encrypted_sign_mismatch">але ключ скразнога шыфравання не адпавядае адпраўніку</string>
+  <string name="crypto_msg_encrypted_sign_expired">але ключ скразнога шыфравання пратэрмінаваны</string>
+  <string name="crypto_msg_encrypted_sign_revoked">але ключ скразнога шыфравання адкліканы</string>
+  <string name="crypto_msg_encrypted_sign_insecure">але ключ скразнога шыфравання небяспечны</string>
+  <string name="crypto_msg_encrypted_sign_error">але ў даных скразнога шыфравання адбылася памылка</string>
+  <string name="crypto_msg_encrypted_insecure">але шыфраванне лічыцца небяспечным</string>
+  <string name="crypto_info_ok">Добра</string>
+  <string name="crypto_info_search_key">Пошук ключа</string>
+  <string name="crypto_info_view_signer">Хто падпісаў</string>
+  <string name="crypto_info_view_sender">Хто адправіў</string>
+  <string name="crypto_info_view_security_warning">Падрабязнасці</string>
+  <string name="locked_attach_unlock">Разблакаваць</string>
+  <string name="locked_attach_unencrypted">Гэтая частка незашыфраваная, таму небяспечная.</string>
+  <string name="locked_attach_title">Неабароненыя ўкладзеныя файлы</string>
+  <string name="message_progress_text">Загрузка...</string>
+  <string name="messageview_decrypt_cancelled">Расшыфроўка скасаваная.</string>
+  <string name="messageview_decrypt_retry">Паўтарыць</string>
+  <string name="messageview_decrypt_incomplete">Для расшыфроўкі зашыфраваны ліст патрэбна спампаваць.</string>
+  <string name="messageview_crypto_error_title">Не атрымалася расшыфраваць пошту</string>
+  <string name="recipient_error_non_ascii">Адмысловыя сімвалы зараз не падтрымліваюцца!</string>
+  <string name="recipient_error_parse_failed">Не атрымалася разабраць адрас!</string>
+  <string name="account_settings_crypto_hide_sign_only">Схаваць незашыфраваныя подпісы</string>
+  <string name="account_settings_crypto_hide_sign_only_on">Паказваюцца толькі зашыфраваныя подпісы</string>
+  <string name="account_settings_crypto_hide_sign_only_off">Паказваюцца ўсе подпісы</string>
+  <string name="error_sign_only_no_encryption">Шыфраванне недаступна ў рэжыме \"Толькі подпіс\"!</string>
+  <string name="unsigned_text_divider_label">Непадпісаны тэкст</string>
+  <string name="apg_deprecated_title">Спыненне падтрымкі APG</string>
+  <string name="apg_deprecated_1">APG больш не распрацоўваецца!</string>
+  <string name="apg_deprecated_2">Праз гэта K-9 Mail больш не падтрымлівае APG.</string>
+  <string name="apg_deprecated_bullet_1">Распрацоўка скончаная ў пачатку 2014</string>
+  <string name="apg_deprecated_bullet_2">Ёсць нявырашаныя праблемы бяспекі</string>
+  <string name="apg_learn_more">Націсніце <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">сюды</a>, каб даведацца больш.</string>
+  <string name="apg_deprecated_ok">Зразумела!</string>
+  <string name="apg">APG</string>
+  <string name="crypto_no_provider_title">Ліст зашыфраваны</string>
+  <string name="crypto_no_provider_message">Ліст зашыфраваны OpenPGP\nКаб прачытаць, неабходна ўсталяваць і наладзіць праграму OpenPGP.</string>
+  <string name="crypto_no_provider_button">Перайсці ў налады</string>
+  <string name="mail_list_widget_text">Лісты K-9</string>
+  <string name="mail_list_widget_loading">Загрузка лістоў…</string>
+  <string name="fetching_folders_failed">Не ўдалося атрымаць спіс каталогаў</string>
+  <string name="error_recipient_crypto_retrieve">Не ўдалося атрымаць статус адрасата ў пастаўшчыка OpenPGP!</string>
+  <string name="openpgp_enabled_error_title">Зашыфраваць немагчыма</string>
+  <string name="openpgp_enabled_error_msg">Некаторыя з гэтых адрасатаў не падтрымліваюць такую функцыю!</string>
+  <string name="enable_encryption">Уключыць шыфраванне</string>
+  <string name="disable_encryption">Адключыць шыфраванне</string>
+  <string name="openpgp_description_text1">Шыфраванне лістоў гарантуе, што ніхто, апроч адрасата не зможа іх прачытаць.</string>
+  <string name="openpgp_description_text3">Шыфраванне паказваецца, калі падтрымліваецца ўсімі адрасатамі, і яны раней вам пісалі.</string>
+  <string name="openpgp_description_text2">Уключыце шыфраванне, націснуўшы на гэты значок.</string>
+  <string name="openpgp_enabled_error_gotit">Зразумела</string>
+  <string name="openpgp_enabled_error_back">Назад</string>
+  <string name="openpgp_enabled_error_disable">Адключыць шыфраванне</string>
+  <string name="openpgp_encryption">Шыфраванне OpenPGP</string>
+  <string name="account_settings_crypto_prefer_encrypt">Узаемнае аўташыфраванне</string>
+  <string name="dialog_autocrypt_mutual_title">Узаемнае аўташыфраванне</string>
+  <string name="dialog_autocrypt_mutual_description_1">Лісты шыфруюцца па жаданні ці пры адказе на зашыфраваны ліст.</string>
+  <string name="dialog_autocrypt_mutual_description_2">Калі адпраўнік і адрасат уключылі ўзаемнае шыфраванне, шыфраванне будзе ўключацца прадвызначана.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Націсніце <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">сюды</a>, каб даведацца больш.</string>
+  <string name="general_settings_title">Асноўныя налады</string>
+  <string name="dialog_openkeychain_info_title">Няма ўсталяванай праграмы OpenPGP</string>
+  <string name="dialog_openkeychain_info_install">Усталяваць</string>
+  <string name="dialog_openkeychain_info_text">Для скразнога шыфравання ў K-9 Mail патрабуецца OpenKeychain.</string>
+  <string name="encrypted_subject">Зашыфраваны ліст</string>
+  <string name="account_settings_crypto_encrypt_subject">Шыфраваць тэмы лістоў</string>
+  <string name="account_settings_crypto_encrypt_subject_subtitle">Можа падтрымлівацца не ўсімі адрасатамі</string>
+  <string name="toast_account_not_found">Унутраная памылка: хібны акаўнт!</string>
+  <string name="toast_openpgp_provider_error">Не атрымалася злучыцца з %s!</string>
+  <string name="ac_transfer_setting_title">Адправіць налады аўташыфравання</string>
+  <string name="ac_transfer_setting_summary">Перадаць налады скразнога шыфравання на іншыя прылады</string>
+  <string name="ac_transfer_title">Наладка аўташыфравання</string>
+  <string name="ac_transfer_intro">Ліст з наладамі аўтаматычнага ўзаемнага шыфравання дае магчымасць бяспечна адправіць гэтыя налады на іншую прыладу.</string>
+  <string name="ac_transfer_button_send">Адправіць налады</string>
+  <string name="ac_transfer_will_be_sent">Ліст будзе адпраўлены на ваш адрас:</string>
+  <string name="ac_transfer_generating">Стварэнне ліста з наладамі…</string>
+  <string name="ac_transfer_sending_to">Адпраўка ліста для:</string>
+  <string name="ac_transfer_finish">Каб скончыць, адкрыйце ліст на іншай прыладзе і ўвядзіце код усталёўкі.</string>
+  <string name="ac_transfer_show_code">Паказаць код усталёўкі</string>
+  <string name="ac_transfer_msg_subject">Наладка аўташыфравання</string>
+  <string name="ac_transfer_msg_body">Гэты ліст змяшчае ўсе звесткі, якія неабходныя для пераносу налад узаемнага аўташыфравання разам з сакрэтным ключом з зыходнай прылады.
+
+
+Для наладкі ўзаемнага аўташыфравання на новай прыладзе выконвайце інструкцыі, якія паказваюцца на новай прыладзе. 
+
+
+Вы можаце пакінуць гэты ліст як рэзервовую копію вашага сакрэтнага ключа. Запішыце і надзейна захавайце пароль.</string>
+  <string name="ac_transfer_error_send">Падчас адпраўкі ліста адбылася памылка. Калі ласка, праверце злучэнне і канфігурацыю сервера выходнай пошты.</string>
+  <string name="switch_on">Укл</string>
+  <string name="switch_off">Выкл</string>
+  <string name="navigation_drawer_open">Адкрыць</string>
+  <string name="navigation_drawer_close">Закрыць</string>
+  <!--permissions-->
+  <string name="permission_contacts_rationale_title">Дазволіць доступ да кантактаў</string>
+  <string name="permission_contacts_rationale_message">Для вываду прапаноў імёнаў і фота праграме неабходна мець доступ да кантактаў.</string>
+</resources>
