@@ -413,7 +413,6 @@ public class SmtpTransport extends Transport {
                     pipelinedCommands.add(String.format("RCPT TO:<%s>", address));
                 }
 
-                pipelinedCommands.add("DATA");
                 executePipelinedCommands(pipelinedCommands);
                 readPipelinedResponse(pipelinedCommands);
             } else {
@@ -422,9 +421,9 @@ public class SmtpTransport extends Transport {
                 for (String address : addresses) {
                     executeCommand("RCPT TO:<%s>", address);
                 }
-
-                executeCommand("DATA");
             }
+
+            executeCommand("DATA");
 
             EOLConvertingOutputStream msgOut = new EOLConvertingOutputStream(
                     new LineWrapOutputStream(new SmtpDataStuffing(outputStream), 1000));
@@ -618,35 +617,23 @@ public class SmtpTransport extends Transport {
     private void readPipelinedResponse(Queue<String> pipelinedCommands) throws IOException, MessagingException {
         String responseLine;
         List<String> results = new ArrayList<>();
-        NegativeSmtpReplyException firstNegativeResponse = null;
-        boolean dataCommandOk = true;
-        for (String command : pipelinedCommands) {
+        MessagingException firstException = null;
+        for (int i = 0, size = pipelinedCommands.size(); i < size; i++) {
             results.clear();
             responseLine = readCommandResponseLine(results);
             try {
                 responseLineToCommandResponse(responseLine, results);
 
             } catch (MessagingException exception) {
-                if (command.equals("DATA")) {
-                    dataCommandOk = false;
-                }
-                if (firstNegativeResponse == null) {
-                    firstNegativeResponse = (NegativeSmtpReplyException) exception;
+                if (firstException == null) {
+                    firstException = exception;
                 }
             }
         }
 
-        if (firstNegativeResponse != null) {
-            try {
-                if (dataCommandOk) {
-                    executeCommand(".");
-                }
-                throw firstNegativeResponse;
-            } catch (NegativeSmtpReplyException e) {
-                throw firstNegativeResponse;
-            }
+        if (firstException != null) {
+            throw firstException;
         }
-
     }
 
     private CommandResponse responseLineToCommandResponse(String line, List<String> results) throws MessagingException {
