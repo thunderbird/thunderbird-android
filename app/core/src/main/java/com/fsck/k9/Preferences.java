@@ -149,7 +149,7 @@ public class Preferences {
         List<Account> allAccounts = getAccounts();
         Collection<Account> result = new ArrayList<>(allAccounts.size());
         for (Account account : allAccounts) {
-            if (account.isEnabled() && account.isAvailable(context)) {
+            if (account.isAvailable(context)) {
                 result.add(account);
             }
         }

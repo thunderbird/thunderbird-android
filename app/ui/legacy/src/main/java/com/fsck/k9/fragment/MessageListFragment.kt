@@ -1684,6 +1684,10 @@ class MessageListFragment :
             }
         }
 
+        override fun checkMailFinished(context: Context?, account: Account?) {
+            handler.progress(false)
+        }
+
         private fun updateForMe(account: Account?, folderId: Long): Boolean {
             if (account == null || account.uuid !in accountUuids) return false
 

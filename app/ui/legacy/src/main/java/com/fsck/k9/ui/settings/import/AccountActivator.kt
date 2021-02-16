@@ -39,8 +39,6 @@ class AccountActivator(
             account.outgoingServerSettings = account.outgoingServerSettings.newPassword(outgoingServerPassword)
         }
 
-        account.isEnabled = true
-
         preferences.saveAccount(account)
     }
 }
