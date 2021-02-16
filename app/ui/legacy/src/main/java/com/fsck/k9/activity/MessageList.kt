@@ -586,12 +586,20 @@ open class MessageList :
             showMessageList()
         } else {
             if (isDrawerEnabled && account != null && supportFragmentManager.backStackEntryCount == 0) {
-                val defaultFolderId = defaultFolderProvider.getDefaultFolder(account!!)
-                val currentFolder = if (singleFolderMode) search!!.folderIds[0] else null
-                if (currentFolder == null || defaultFolderId != currentFolder) {
-                    openFolderImmediately(defaultFolderId)
+                if (K9.isShowUnifiedInbox) {
+                    if (search!!.id != SearchAccount.UNIFIED_INBOX) {
+                        openUnifiedInbox()
+                    } else {
+                        super.onBackPressed()
+                    }
                 } else {
-                    super.onBackPressed()
+                    val defaultFolderId = defaultFolderProvider.getDefaultFolder(account!!)
+                    val currentFolder = if (singleFolderMode) search!!.folderIds[0] else null
+                    if (currentFolder == null || defaultFolderId != currentFolder) {
+                        openFolderImmediately(defaultFolderId)
+                    } else {
+                        super.onBackPressed()
+                    }
                 }
             } else {
                 super.onBackPressed()
