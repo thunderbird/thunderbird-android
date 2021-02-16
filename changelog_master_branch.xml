@@ -5,6 +5,14 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.730" versioncode="27030" date="2021-02-16">
+        <change>Fixed bug where account wouldn't refresh automatically</change>
+        <change>Fixed crash when trying to compose a message</change>
+        <change>Fixed bug that could have lead to an empty email being sent</change>
+        <change>Fixed bug where refresh indicator in drawer disappeared too early</change>
+        <change>Back button now opens Unified Inbox before exiting the app</change>
+        <change>Added translations: Belarusian, British English</change>
+    </release>
     <release version="5.729" versioncode="27029" date="2021-02-12">
         <change>Fixed a bug that could crash the app at startup</change>
     </release>
