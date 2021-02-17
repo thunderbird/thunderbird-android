@@ -68,7 +68,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private View mChip;
     private CheckBox mFlagged;
     private int defaultSubjectColor;
-    private TextView mAdditionalHeadersView;
     private View singleMessageOptionIcon;
     private View mAnsweredIcon;
     private View mForwardedIcon;
@@ -76,7 +75,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private Account mAccount;
     private FontSizes mFontSizes = K9.getFontSizes();
     private Contacts mContacts;
-    private SavedState mSavedState;
 
     private MessageHelper mMessageHelper;
     private ContactPictureLoader mContactsPictureLoader;
@@ -112,7 +110,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         singleMessageOptionIcon = findViewById(R.id.icon_single_message_options);
 
         mSubjectView = findViewById(R.id.subject);
-        mAdditionalHeadersView = findViewById(R.id.additional_headers_view);
         mChip = findViewById(R.id.chip);
         mDateView = findViewById(R.id.date);
         mFlagged = findViewById(R.id.flagged);
@@ -120,7 +117,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         defaultSubjectColor = mSubjectView.getCurrentTextColor();
         mFontSizes.setViewTextSize(mSubjectView, mFontSizes.getMessageViewSubject());
         mFontSizes.setViewTextSize(mDateView, mFontSizes.getMessageViewDate());
-        mFontSizes.setViewTextSize(mAdditionalHeadersView, mFontSizes.getMessageViewAdditionalHeaders());
 
         mFontSizes.setViewTextSize(mFromView, mFontSizes.getMessageViewSender());
         mFontSizes.setViewTextSize(mToView, mFontSizes.getMessageViewTo());
@@ -147,8 +143,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mCryptoStatusIcon.setOnClickListener(this);
 
         mMessageHelper = MessageHelper.getInstance(mContext);
-
-        hideAdditionalHeaders();
     }
 
     @Override
@@ -222,51 +216,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mFlagged.setOnClickListener(listener);
     }
 
-    public boolean additionalHeadersVisible() {
-        return (mAdditionalHeadersView != null &&
-                mAdditionalHeadersView.getVisibility() == View.VISIBLE);
-    }
-
-    /**
-     * Clear the text field for the additional headers display if they are
-     * not shown, to save UI resources.
-     */
-    private void hideAdditionalHeaders() {
-        mAdditionalHeadersView.setVisibility(View.GONE);
-        mAdditionalHeadersView.setText("");
-    }
-
-
-    /**
-     * Set up and then show the additional headers view. Called by
-     * {@link #onShowAdditionalHeaders()}
-     * (when switching between messages).
-     */
-    private void showAdditionalHeaders() {
-        Integer messageToShow = null;
-        try {
-            // Retrieve additional headers
-            List<Header> additionalHeaders = mMessage.getHeaders();
-            if (!additionalHeaders.isEmpty()) {
-                // Show the additional headers that we have got.
-                populateAdditionalHeadersView(additionalHeaders);
-                mAdditionalHeadersView.setVisibility(View.VISIBLE);
-            } else {
-                // All headers have been downloaded, but there are no additional headers.
-                messageToShow = R.string.message_no_additional_headers_available;
-            }
-        } catch (Exception e) {
-            messageToShow = R.string.message_additional_headers_retrieval_failed;
-        }
-        // Show a message to the user, if any
-        if (messageToShow != null) {
-            Toast toast = Toast.makeText(mContext, messageToShow, Toast.LENGTH_LONG);
-            toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
-            toast.show();
-        }
-
-    }
-
     public void populate(final Message message, final Account account, boolean showStar) {
         Address fromAddress = null;
         Address[] fromAddresses = message.getFrom();
@@ -334,15 +283,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mChip.setBackgroundColor(mAccount.getChipColor());
 
         setVisibility(View.VISIBLE);
-
-        if (mSavedState != null) {
-            if (mSavedState.additionalHeadersVisible) {
-                showAdditionalHeaders();
-            }
-            mSavedState = null;
-        } else {
-            hideAdditionalHeaders();
-        }
     }
 
     public void setSubject(@NonNull String subject) {
@@ -381,20 +321,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mCryptoStatusIcon.setColorFilter(color);
     }
 
-    public void onShowAdditionalHeaders() {
-        int currentVisibility = mAdditionalHeadersView.getVisibility();
-        if (currentVisibility == View.VISIBLE) {
-            hideAdditionalHeaders();
-            expand(mToView, false);
-            expand(mCcView, false);
-        } else {
-            showAdditionalHeaders();
-            expand(mToView, true);
-            expand(mCcView, true);
-        }
-    }
-
-
     private void updateAddressField(TextView v, CharSequence text, View label) {
         boolean hasText = !TextUtils.isEmpty(text);
 
@@ -414,91 +340,6 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
            v.setMaxLines(2);
            v.setEllipsize(android.text.TextUtils.TruncateAt.END);
        }
-    }
-
-    /**
-     * Set up the additional headers text view with the supplied header data.
-     *
-     * @param additionalHeaders List of header entries. Each entry consists of a header
-     *                          name and a header value. Header names may appear multiple
-     *                          times.
-     *                          <p/>
-     *                          This method is always called from within the UI thread by
-     *                          {@link #showAdditionalHeaders()}.
-     */
-    private void populateAdditionalHeadersView(final List<Header> additionalHeaders) {
-        SpannableStringBuilder sb = new SpannableStringBuilder();
-        boolean first = true;
-        for (Header additionalHeader : additionalHeaders) {
-            if (!first) {
-                sb.append("\n");
-            } else {
-                first = false;
-            }
-            StyleSpan boldSpan = new StyleSpan(Typeface.BOLD);
-            SpannableString label = new SpannableString(additionalHeader.getName() + ": ");
-            label.setSpan(boldSpan, 0, label.length(), 0);
-            sb.append(label);
-            sb.append(MimeUtility.unfoldAndDecode(additionalHeader.getValue()));
-        }
-        mAdditionalHeadersView.setText(sb);
-    }
-
-    @Override
-    public Parcelable onSaveInstanceState() {
-        Parcelable superState = super.onSaveInstanceState();
-
-        SavedState savedState = new SavedState(superState);
-
-        savedState.additionalHeadersVisible = additionalHeadersVisible();
-
-        return savedState;
-    }
-
-    @Override
-    public void onRestoreInstanceState(Parcelable state) {
-        if(!(state instanceof SavedState)) {
-            super.onRestoreInstanceState(state);
-            return;
-        }
-
-        SavedState savedState = (SavedState)state;
-        super.onRestoreInstanceState(savedState.getSuperState());
-
-        mSavedState = savedState;
-    }
-
-    static class SavedState extends BaseSavedState {
-        boolean additionalHeadersVisible;
-
-        public static final Parcelable.Creator<SavedState> CREATOR =
-                new Parcelable.Creator<SavedState>() {
-            @Override
-            public SavedState createFromParcel(Parcel in) {
-                return new SavedState(in);
-            }
-
-            @Override
-            public SavedState[] newArray(int size) {
-                return new SavedState[size];
-            }
-        };
-
-
-        SavedState(Parcelable superState) {
-            super(superState);
-        }
-
-        private SavedState(Parcel in) {
-            super(in);
-            this.additionalHeadersVisible = (in.readInt() != 0);
-        }
-
-        @Override
-        public void writeToParcel(Parcel out, int flags) {
-            super.writeToParcel(out, flags);
-            out.writeInt((this.additionalHeadersVisible) ? 1 : 0);
-        }
     }
 
     public void setOnCryptoClickListener(OnCryptoClickListener onCryptoClickListener) {

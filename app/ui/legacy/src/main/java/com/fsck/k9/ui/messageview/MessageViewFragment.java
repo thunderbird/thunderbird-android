@@ -307,14 +307,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         }
     }
 
-    public void onToggleAllHeadersView() {
-        mMessageView.getMessageHeaderView().onShowAdditionalHeaders();
-    }
-
-    public boolean allHeadersVisible() {
-        return mMessageView.getMessageHeaderView().additionalHeadersVisible();
-    }
-
     private void delete() {
         if (mMessage != null) {
             // Disable the delete button after it's tapped (to try to prevent

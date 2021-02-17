@@ -224,14 +224,6 @@ public class MessageTopView extends LinearLayout {
         mHeaderContainer.setOnMenuItemClickListener(listener);
     }
 
-    public void showAllHeaders() {
-        mHeaderContainer.onShowAdditionalHeaders();
-    }
-
-    public boolean additionalHeadersVisible() {
-        return mHeaderContainer.additionalHeadersVisible();
-    }
-
     private void hideHeaderView() {
         mHeaderContainer.setVisibility(View.GONE);
     }

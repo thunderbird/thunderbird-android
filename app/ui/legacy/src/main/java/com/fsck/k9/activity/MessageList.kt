@@ -46,6 +46,7 @@ import com.fsck.k9.ui.base.K9Activity
 import com.fsck.k9.ui.base.Theme
 import com.fsck.k9.ui.managefolders.ManageFoldersActivity
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
+import com.fsck.k9.ui.messagesource.MessageHeadersActivity
 import com.fsck.k9.ui.messageview.MessageViewFragment
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener
 import com.fsck.k9.ui.messageview.PlaceholderFragment
@@ -879,9 +880,8 @@ open class MessageList :
         } else if (id == R.id.move_to_drafts) {
             messageViewFragment!!.onMoveToDrafts()
             return true
-        } else if (id == R.id.show_headers || id == R.id.hide_headers) {
-            messageViewFragment!!.onToggleAllHeadersView()
-            updateMenu()
+        } else if (id == R.id.show_headers) {
+            startActivity(MessageHeadersActivity.createLaunchIntent(this, messageViewFragment!!.messageReference))
             return true
         }
 
@@ -949,7 +949,6 @@ open class MessageList :
             menu.findItem(R.id.toggle_unread).isVisible = false
             menu.findItem(R.id.toggle_message_view_theme).isVisible = false
             menu.findItem(R.id.show_headers).isVisible = false
-            menu.findItem(R.id.hide_headers).isVisible = false
         } else {
             // hide prev/next buttons in split mode
             if (displayMode != DisplayMode.MESSAGE_VIEW) {
@@ -1030,12 +1029,6 @@ open class MessageList :
 
             if (messageViewFragment!!.isOutbox) {
                 menu.findItem(R.id.move_to_drafts).isVisible = true
-            }
-
-            if (messageViewFragment!!.allHeadersVisible()) {
-                menu.findItem(R.id.show_headers).isVisible = false
-            } else {
-                menu.findItem(R.id.hide_headers).isVisible = false
             }
         }
 
