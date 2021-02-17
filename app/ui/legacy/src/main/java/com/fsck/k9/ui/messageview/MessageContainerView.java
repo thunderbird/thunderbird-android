@@ -9,6 +9,8 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -337,6 +339,10 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
 
     private void downloadImage(Uri uri) {
         DownloadManager.Request request = new DownloadManager.Request(uri);
+        if (Build.VERSION.SDK_INT >= 29) {
+            String filename = uri.getLastPathSegment();
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+        }
         request.setNotificationVisibility(VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
 
         DownloadManager downloadManager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
