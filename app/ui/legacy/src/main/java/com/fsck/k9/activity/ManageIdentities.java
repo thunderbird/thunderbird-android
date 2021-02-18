@@ -2,6 +2,7 @@ package com.fsck.k9.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
@@ -25,6 +26,12 @@ public class ManageIdentities extends ChooseIdentity {
         Intent intent = new Intent(activity, ManageIdentities.class);
         intent.putExtra(ChooseIdentity.EXTRA_ACCOUNT, accountUuid);
         activity.startActivity(intent);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -60,6 +67,8 @@ public class ManageIdentities extends ChooseIdentity {
             Intent intent = new Intent(ManageIdentities.this, EditIdentity.class);
             intent.putExtra(EditIdentity.EXTRA_ACCOUNT, mAccount.getUuid());
             startActivityForResult(intent, ACTIVITY_EDIT_IDENTITY);
+        } else if (item.getItemId() == android.R.id.home) {
+            finish();
         } else {
             return super.onOptionsItemSelected(item);
         }

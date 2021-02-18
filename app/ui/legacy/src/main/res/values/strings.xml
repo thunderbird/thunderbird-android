@@ -706,6 +706,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="manage_identities_context_menu_title">Manage identity</string>
 
     <string name="edit_identity_title">Edit identity</string>
+    <string name="edit_identity_save">Save</string>
     <string name="new_identity_action">New identity</string>
 
     <string name="account_settings_always_bcc_label">Bcc all messages to</string>

@@ -1,6 +1,8 @@
 package com.fsck.k9.activity
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.core.view.isVisible
 import com.fsck.k9.Account
 import com.fsck.k9.Identity
@@ -17,6 +19,7 @@ class EditIdentity : K9Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setLayout(R.layout.edit_identity)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         identityIndex = intent.getIntExtra(EXTRA_IDENTITY_INDEX, -1)
         val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT)
@@ -77,14 +80,26 @@ class EditIdentity : K9Activity() {
         finish()
     }
 
-    override fun onBackPressed() {
-        saveIdentity()
-        super.onBackPressed()
-    }
-
     public override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putParcelable(EXTRA_IDENTITY, identity)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.edit_identity_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            finish()
+            return true
+        } else if (item.itemId == R.id.edit_identity_save) {
+            saveIdentity()
+            finish()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     companion object {
