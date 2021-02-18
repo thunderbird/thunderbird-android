@@ -1,116 +1,72 @@
-package com.fsck.k9.mail.message;
+package com.fsck.k9.mail.message
 
+import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.mail.Part
+import java.io.IOException
+import java.io.InputStream
+import org.apache.james.mime4j.MimeException
+import org.apache.james.mime4j.parser.ContentHandler
+import org.apache.james.mime4j.parser.MimeStreamParser
+import org.apache.james.mime4j.stream.BodyDescriptor
+import org.apache.james.mime4j.stream.Field
+import org.apache.james.mime4j.stream.MimeConfig
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import com.fsck.k9.mail.MessagingException;
-import com.fsck.k9.mail.Part;
-import org.apache.james.mime4j.MimeException;
-import org.apache.james.mime4j.parser.ContentHandler;
-import org.apache.james.mime4j.parser.MimeStreamParser;
-import org.apache.james.mime4j.stream.BodyDescriptor;
-import org.apache.james.mime4j.stream.Field;
-import org.apache.james.mime4j.stream.MimeConfig;
-
-
-public class MessageHeaderParser {
-
-    public static void parse(final Part part, InputStream headerInputStream) throws MessagingException {
-        MimeStreamParser parser = getMimeStreamParser();
-        parser.setContentHandler(new MessageHeaderParserContentHandler(part));
+object MessageHeaderParser {
+    @Throws(MessagingException::class)
+    @JvmStatic
+    fun parse(part: Part, headerInputStream: InputStream) {
+        val parser = createMimeStreamParser().apply {
+            setContentHandler(MessageHeaderParserContentHandler(part))
+        }
 
         try {
-            parser.parse(headerInputStream);
-        } catch (MimeException me) {
-            throw new MessagingException("Error parsing headers", me);
-        } catch (IOException e) {
-            throw new MessagingException("I/O error parsing headers", e);
+            parser.parse(headerInputStream)
+        } catch (me: MimeException) {
+            throw MessagingException("Error parsing headers", me)
+        } catch (e: IOException) {
+            throw MessagingException("I/O error parsing headers", e)
         }
     }
 
-    private static MimeStreamParser getMimeStreamParser() {
-        MimeConfig parserConfig = new MimeConfig.Builder()
-                .setMaxHeaderLen(-1)
-                .setMaxLineLen(-1)
-                .setMaxHeaderCount(-1)
-                .build();
+    private fun createMimeStreamParser(): MimeStreamParser {
+        val parserConfig = MimeConfig.Builder()
+            .setMaxHeaderLen(-1)
+            .setMaxLineLen(-1)
+            .setMaxHeaderCount(-1)
+            .build()
 
-        return new MimeStreamParser(parserConfig);
+        return MimeStreamParser(parserConfig)
     }
 
-    private static class MessageHeaderParserContentHandler implements ContentHandler {
-        private final Part part;
-
-        public MessageHeaderParserContentHandler(Part part) {
-            this.part = part;
+    private class MessageHeaderParserContentHandler(private val part: Part) : ContentHandler {
+        override fun field(rawField: Field) {
+            val name = rawField.name
+            val raw = rawField.raw.toString()
+            part.addRawHeader(name, raw)
         }
 
-        @Override
-        public void field(Field rawField) throws MimeException {
-            String name = rawField.getName();
-            String raw = rawField.getRaw().toString();
-            part.addRawHeader(name, raw);
-        }
+        override fun startMessage() = Unit
 
-        @Override
-        public void startMessage() throws MimeException {
-            /* do nothing */
-        }
+        override fun endMessage() = Unit
 
-        @Override
-        public void endMessage() throws MimeException {
-            /* do nothing */
-        }
+        override fun startBodyPart() = Unit
 
-        @Override
-        public void startBodyPart() throws MimeException {
-            /* do nothing */
-        }
+        override fun endBodyPart() = Unit
 
-        @Override
-        public void endBodyPart() throws MimeException {
-            /* do nothing */
-        }
+        override fun startHeader() = Unit
 
-        @Override
-        public void startHeader() throws MimeException {
-            /* do nothing */
-        }
+        override fun endHeader() = Unit
 
-        @Override
-        public void endHeader() throws MimeException {
-            /* do nothing */
-        }
+        override fun preamble(inputStream: InputStream) = Unit
 
-        @Override
-        public void preamble(InputStream is) throws MimeException, IOException {
-            /* do nothing */
-        }
+        override fun epilogue(inputStream: InputStream) = Unit
 
-        @Override
-        public void epilogue(InputStream is) throws MimeException, IOException {
-            /* do nothing */
-        }
+        override fun startMultipart(bodyDescriptor: BodyDescriptor) = Unit
 
-        @Override
-        public void startMultipart(BodyDescriptor bd) throws MimeException {
-            /* do nothing */
-        }
+        override fun endMultipart() = Unit
 
-        @Override
-        public void endMultipart() throws MimeException {
-            /* do nothing */
-        }
+        override fun body(bodyDescriptor: BodyDescriptor, inputStream: InputStream) = Unit
 
-        @Override
-        public void body(BodyDescriptor bd, InputStream is) throws MimeException, IOException {
-            /* do nothing */
-        }
-
-        @Override
-        public void raw(InputStream is) throws MimeException, IOException {
-            /* do nothing */
-        }
+        override fun raw(inputStream: InputStream) = Unit
     }
 }
