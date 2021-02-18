@@ -37,6 +37,7 @@ import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.SizeAware;
+import com.fsck.k9.mail.message.MessageHeaderCollector;
 import com.fsck.k9.mail.message.MessageHeaderParser;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
@@ -660,7 +661,7 @@ public class LocalFolder {
     }
 
     private void parseHeaderBytes(Part part, byte[] header) throws MessagingException {
-        MessageHeaderParser.parse(part, new ByteArrayInputStream(header));
+        MessageHeaderParser.parse(new ByteArrayInputStream(header), part::addRawHeader);
     }
 
     public String getMessageUidById(final long id) throws MessagingException {
