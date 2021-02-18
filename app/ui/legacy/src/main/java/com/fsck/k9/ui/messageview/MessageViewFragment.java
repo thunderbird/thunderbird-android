@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Locale;
 
 import android.app.Activity;
-import android.app.DownloadManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -93,7 +92,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
     private MessageReference mMessageReference;
     private LocalMessage mMessage;
     private MessagingController mController;
-    private DownloadManager downloadManager;
     private Handler handler = new Handler();
     private MessageLoaderHelper messageLoaderHelper;
     private MessageCryptoPresenter messageCryptoPresenter;
@@ -140,7 +138,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
 
         Context context = getActivity().getApplicationContext();
         mController = MessagingController.getInstance(context);
-        downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
         messageCryptoPresenter = new MessageCryptoPresenter(messageCryptoMvpView);
         messageLoaderHelper = messageLoaderHelperFactory.createForMessageView(
                 context, getLoaderManager(), getParentFragmentManager(), messageLoaderCallbacks);
