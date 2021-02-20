@@ -12,6 +12,7 @@ import com.fsck.k9.ui.endtoend.endToEndUiModule
 import com.fsck.k9.ui.folders.foldersUiModule
 import com.fsck.k9.ui.managefolders.manageFoldersUiModule
 import com.fsck.k9.ui.messagelist.messageListUiModule
+import com.fsck.k9.ui.messagesource.messageSourceModule
 import com.fsck.k9.ui.settings.settingsUiModule
 import com.fsck.k9.ui.uiModule
 import com.fsck.k9.view.viewModule
@@ -31,5 +32,6 @@ val uiModules = listOf(
     accountModule,
     autodiscoveryProvidersXmlModule,
     viewModule,
-    changelogUiModule
+    changelogUiModule,
+    messageSourceModule
 )

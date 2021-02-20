@@ -13,43 +13,42 @@ import androidx.fragment.app.Fragment
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.mail.Header
 import com.fsck.k9.mail.internet.MimeUtility
-import com.fsck.k9.mailstore.MessageRepository
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.base.loader.observeLoading
 import com.fsck.k9.ui.withArguments
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MessageHeadersFragment : Fragment() {
-    private val messageRepository: MessageRepository by inject()
-    private var sourceText: TextView? = null
+    private val messageHeadersViewModel: MessageHeadersViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val root = inflater.inflate(R.layout.message_view_headers, container, false)
-        sourceText = root.findViewById(R.id.message_source)
-        sourceText!!.setText(R.string.message_progress_text)
-        return root
+        return inflater.inflate(R.layout.message_view_headers, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        val arguments = arguments
-        val messageReferenceString = arguments!!.getString(ARG_REFERENCE)
-        val messageReference = MessageReference.parse(messageReferenceString)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        GlobalScope.launch(Dispatchers.IO) {
-            val headers = messageRepository.getHeaders(messageReference!!)
-            GlobalScope.launch(Dispatchers.Main) {
-                populateHeadersList(headers)
-            }
+        val messageReferenceString = requireArguments().getString(ARG_REFERENCE)
+            ?: error("Missing argument $ARG_REFERENCE")
+        val messageReference = MessageReference.parse(messageReferenceString)
+            ?: error("Invalid message reference: $messageReferenceString")
+
+        val messageHeaderView = view.findViewById<TextView>(R.id.message_source)
+
+        messageHeadersViewModel.loadHeaders(messageReference).observeLoading(
+            owner = this,
+            loadingView = view.findViewById(R.id.message_headers_loading),
+            errorView = view.findViewById(R.id.message_headers_error),
+            dataView = view.findViewById(R.id.message_headers_data)
+        ) { headers ->
+            populateHeadersList(messageHeaderView, headers)
         }
     }
 
-    private fun populateHeadersList(additionalHeaders: List<Header>) {
+    private fun populateHeadersList(messageHeaderView: TextView, headers: List<Header>) {
         val sb = SpannableStringBuilder()
         var first = true
-        for ((name, value) in additionalHeaders) {
+        for ((name, value) in headers) {
             if (!first) {
                 sb.append("\n")
             } else {
@@ -61,7 +60,7 @@ class MessageHeadersFragment : Fragment() {
             sb.append(label)
             sb.append(MimeUtility.unfoldAndDecode(value))
         }
-        sourceText!!.text = sb
+        messageHeaderView.text = sb
     }
 
     companion object {
