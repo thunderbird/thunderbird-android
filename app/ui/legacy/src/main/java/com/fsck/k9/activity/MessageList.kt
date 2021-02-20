@@ -46,7 +46,7 @@ import com.fsck.k9.ui.base.K9Activity
 import com.fsck.k9.ui.base.Theme
 import com.fsck.k9.ui.managefolders.ManageFoldersActivity
 import com.fsck.k9.ui.messagelist.DefaultFolderProvider
-import com.fsck.k9.ui.messagesource.MessageHeadersActivity
+import com.fsck.k9.ui.messagesource.MessageSourceActivity
 import com.fsck.k9.ui.messageview.MessageViewFragment
 import com.fsck.k9.ui.messageview.MessageViewFragment.MessageViewFragmentListener
 import com.fsck.k9.ui.messageview.PlaceholderFragment
@@ -881,7 +881,7 @@ open class MessageList :
             messageViewFragment!!.onMoveToDrafts()
             return true
         } else if (id == R.id.show_headers) {
-            startActivity(MessageHeadersActivity.createLaunchIntent(this, messageViewFragment!!.messageReference))
+            startActivity(MessageSourceActivity.createLaunchIntent(this, messageViewFragment!!.messageReference))
             return true
         }
 

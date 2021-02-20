@@ -286,7 +286,7 @@
             android:label="@string/account_settings_title_fmt" />
 
         <activity
-            android:name=".ui.messagesource.MessageHeadersActivity"
+            android:name=".ui.messagesource.MessageSourceActivity"
             android:label="@string/show_headers_action" />
 
         <receiver
