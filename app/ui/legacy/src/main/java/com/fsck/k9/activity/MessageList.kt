@@ -155,6 +155,7 @@ open class MessageList :
         }
 
         if (isDrawerEnabled) {
+            configureDrawer()
             drawer!!.updateUserAccountsAndFolders(account)
         }
 
@@ -195,6 +196,7 @@ open class MessageList :
         }
 
         if (isDrawerEnabled) {
+            configureDrawer()
             drawer!!.updateUserAccountsAndFolders(account)
         }
 
@@ -305,120 +307,138 @@ open class MessageList :
     }
 
     private fun decodeExtras(intent: Intent): Boolean {
-        val action = intent.action
-        if (Intent.ACTION_VIEW == action && intent.data != null) {
-            val uri = intent.data!!
-            val segmentList = uri.pathSegments
+        val launchData = decodeExtrasToLaunchData(intent)
 
-            val accountId = segmentList[0]
-            val accounts = preferences.availableAccounts
-            for (account in accounts) {
-                if (account.accountNumber.toString() == accountId) {
-                    val folderId = segmentList[1].toLong()
-                    val messageUid = segmentList[2]
-                    messageReference = MessageReference(account.uuid, folderId, messageUid, null)
-                    break
-                }
-            }
-        } else if (ACTION_SHORTCUT == action) {
-            // Handle shortcut intents
-            val specialFolder = intent.getStringExtra(EXTRA_SPECIAL_FOLDER)
-            if (SearchAccount.UNIFIED_INBOX == specialFolder) {
-                search = SearchAccount.createUnifiedInboxAccount().relatedSearch
-            }
-        } else if (intent.getStringExtra(SearchManager.QUERY) != null) {
-            // check if this intent comes from the system search ( remote )
-            if (Intent.ACTION_SEARCH == intent.action) {
-                // Query was received from Search Dialog
-                val query = intent.getStringExtra(SearchManager.QUERY).trim()
-
-                search = LocalSearch(getString(R.string.search_results))
-                search!!.isManualSearch = true
-                noThreading = true
-
-                search!!.or(SearchCondition(SearchField.SENDER, SearchSpecification.Attribute.CONTAINS, query))
-                search!!.or(SearchCondition(SearchField.SUBJECT, SearchSpecification.Attribute.CONTAINS, query))
-                search!!.or(SearchCondition(SearchField.MESSAGE_CONTENTS, SearchSpecification.Attribute.CONTAINS, query))
-
-                val appData = intent.getBundleExtra(SearchManager.APP_DATA)
-                if (appData != null) {
-                    val searchAccountUuid = appData.getString(EXTRA_SEARCH_ACCOUNT)
-                    if (searchAccountUuid != null) {
-                        search!!.addAccountUuid(searchAccountUuid)
-                        // searches started from a folder list activity will provide an account, but no folder
-                        if (appData.containsKey(EXTRA_SEARCH_FOLDER)) {
-                            val folderId = appData.getLong(EXTRA_SEARCH_FOLDER)
-                            search!!.addAllowedFolder(folderId)
-                        }
-                    } else if (BuildConfig.DEBUG) {
-                        throw AssertionError("Invalid app data in search intent")
-                    }
-                }
-            }
+        // If Unified Inbox was disabled show default account instead
+        val search = if (launchData.search.isUnifiedInbox && !K9.isShowUnifiedInbox) {
+            createDefaultLocalSearch()
         } else {
-            // regular LocalSearch object was passed
-            search = if (intent.hasExtra(EXTRA_SEARCH)) {
-                ParcelableUtil.unmarshall(intent.getByteArrayExtra(EXTRA_SEARCH), LocalSearch.CREATOR)
-            } else {
-                null
-            }
-            noThreading = intent.getBooleanExtra(EXTRA_NO_THREADING, false)
+            launchData.search
         }
 
-        if (messageReference == null) {
-            val messageReferenceString = intent.getStringExtra(EXTRA_MESSAGE_REFERENCE)
-            messageReference = MessageReference.parse(messageReferenceString)
+        val account = search.firstAccount()
+        if (account == null) {
+            finish()
+            return false
         }
 
-        if (messageReference != null) {
-            search = LocalSearch()
-            search!!.addAccountUuid(messageReference!!.accountUuid)
-            val folderId = messageReference!!.folderId
-            search!!.addAllowedFolder(folderId)
-        }
+        this.account = account
+        this.search = search
+        singleFolderMode = search.folderIds.size == 1
+        noThreading = launchData.noThreading
+        messageReference = launchData.messageReference
 
-        // Edge case: the Unified Inbox was disabled while it was being displayed
-        if (search != null && search!!.id == SearchAccount.UNIFIED_INBOX && !K9.isShowUnifiedInbox) {
-            search = null
-        }
-
-        if (search == null) {
-            val accountUuid = intent.getStringExtra("account")
-            if (accountUuid != null) {
-                // We've most likely been started by an old unread widget or accounts shortcut
-                val folderServerId = intent.getStringExtra("folder")
-                val folderId: Long
-                if (folderServerId == null) {
-                    account = preferences.getAccount(accountUuid)
-                    folderId = defaultFolderProvider.getDefaultFolder(account!!)
-                } else {
-                    // FIXME: load folder ID for folderServerId
-                    folderId = 0
-                }
-                search = LocalSearch()
-                search!!.addAccountUuid(accountUuid)
-                search!!.addAllowedFolder(folderId)
-            } else {
-                account = preferences.defaultAccount
-                if (K9.isShowUnifiedInbox) {
-                    search = SearchAccount.createUnifiedInboxAccount().relatedSearch
-                } else {
-                    search = LocalSearch()
-                    search!!.addAccountUuid(account!!.uuid)
-                    val folderId = defaultFolderProvider.getDefaultFolder(account!!)
-                    search!!.addAllowedFolder(folderId)
-                }
-            }
-        }
-
-        initializeFromLocalSearch(search)
-
-        if (account != null && !account!!.isAvailable(this)) {
+        if (!account.isAvailable(this)) {
             onAccountUnavailable()
             return false
         }
 
         return true
+    }
+
+    private fun decodeExtrasToLaunchData(intent: Intent): LaunchData {
+        val action = intent.action
+        val data = intent.data
+        val queryString = intent.getStringExtra(SearchManager.QUERY)
+
+        if (action == Intent.ACTION_VIEW && data != null && data.pathSegments.size >= 3) {
+            val segmentList = data.pathSegments
+            val accountId = segmentList[0]
+            for (account in preferences.accounts) {
+                if (account.accountNumber.toString() == accountId) {
+                    val folderId = segmentList[1].toLong()
+                    val messageUid = segmentList[2]
+                    val messageReference = MessageReference(account.uuid, folderId, messageUid, null)
+
+                    return LaunchData(
+                        search = messageReference.toLocalSearch(),
+                        messageReference = messageReference
+                    )
+                }
+            }
+        } else if (action == ACTION_SHORTCUT) {
+            // Handle shortcut intents
+            val specialFolder = intent.getStringExtra(EXTRA_SPECIAL_FOLDER)
+            if (SearchAccount.UNIFIED_INBOX == specialFolder) {
+                return LaunchData(search = SearchAccount.createUnifiedInboxAccount().relatedSearch)
+            }
+        } else if (action == Intent.ACTION_SEARCH && queryString != null) {
+            // Query was received from Search Dialog
+            val query = queryString.trim()
+
+            val search = LocalSearch(getString(R.string.search_results)).apply {
+                isManualSearch = true
+                or(SearchCondition(SearchField.SENDER, SearchSpecification.Attribute.CONTAINS, query))
+                or(SearchCondition(SearchField.SUBJECT, SearchSpecification.Attribute.CONTAINS, query))
+                or(SearchCondition(SearchField.MESSAGE_CONTENTS, SearchSpecification.Attribute.CONTAINS, query))
+            }
+
+            val appData = intent.getBundleExtra(SearchManager.APP_DATA)
+            if (appData != null) {
+                val searchAccountUuid = appData.getString(EXTRA_SEARCH_ACCOUNT)
+                if (searchAccountUuid != null) {
+                    search.addAccountUuid(searchAccountUuid)
+                    // searches started from a folder list activity will provide an account, but no folder
+                    if (appData.containsKey(EXTRA_SEARCH_FOLDER)) {
+                        val folderId = appData.getLong(EXTRA_SEARCH_FOLDER)
+                        search.addAllowedFolder(folderId)
+                    }
+                } else if (BuildConfig.DEBUG) {
+                    throw AssertionError("Invalid app data in search intent")
+                }
+            }
+
+            return LaunchData(
+                search = search,
+                noThreading = true
+            )
+        } else if (intent.hasExtra(EXTRA_SEARCH)) {
+            // regular LocalSearch object was passed
+            val search = ParcelableUtil.unmarshall(intent.getByteArrayExtra(EXTRA_SEARCH), LocalSearch.CREATOR)
+            val noThreading = intent.getBooleanExtra(EXTRA_NO_THREADING, false)
+
+            return LaunchData(search = search, noThreading = noThreading)
+        } else if (intent.hasExtra(EXTRA_MESSAGE_REFERENCE)) {
+            val messageReferenceString = intent.getStringExtra(EXTRA_MESSAGE_REFERENCE)
+            val messageReference = MessageReference.parse(messageReferenceString)
+
+            if (messageReference != null) {
+                return LaunchData(
+                    search = messageReference.toLocalSearch(),
+                    messageReference = messageReference
+                )
+            }
+        } else if (intent.hasExtra("account")) {
+            val accountUuid = intent.getStringExtra("account")
+            if (accountUuid != null) {
+                // We've most likely been started by an old unread widget or accounts shortcut
+                val account = preferences.getAccount(accountUuid)
+                val folderId = defaultFolderProvider.getDefaultFolder(account)
+                val search = LocalSearch().apply {
+                    addAccountUuid(accountUuid)
+                    addAllowedFolder(folderId)
+                }
+
+                return LaunchData(search = search)
+            }
+        }
+
+        // Default action
+        val search = if (K9.isShowUnifiedInbox) {
+            SearchAccount.createUnifiedInboxAccount().relatedSearch
+        } else {
+            createDefaultLocalSearch()
+        }
+
+        return LaunchData(search)
+    }
+
+    private fun createDefaultLocalSearch(): LocalSearch {
+        val account = preferences.defaultAccount
+        return LocalSearch().apply {
+            addAccountUuid(account.uuid)
+            addAllowedFolder(defaultFolderProvider.getDefaultFolder(account))
+        }
     }
 
     private fun checkAndRequestPermissions() {
@@ -1430,6 +1450,25 @@ open class MessageList :
         configureDrawer()
     }
 
+    private fun LocalSearch.firstAccount(): Account? {
+        return if (searchAllAccounts()) {
+            preferences.defaultAccount
+        } else {
+            val accountUuid = accountUuids.first()
+            preferences.getAccount(accountUuid)
+        }
+    }
+
+    private val LocalSearch.isUnifiedInbox: Boolean
+        get() = id == SearchAccount.UNIFIED_INBOX
+
+    private fun MessageReference.toLocalSearch(): LocalSearch {
+        return LocalSearch().apply {
+            addAccountUuid(accountUuid)
+            addAllowedFolder(folderId)
+        }
+    }
+
     private fun configureDrawer() {
         val drawer = drawer ?: return
         when {
@@ -1466,6 +1505,12 @@ open class MessageList :
     private enum class DisplayMode {
         MESSAGE_LIST, MESSAGE_VIEW, SPLIT_VIEW
     }
+
+    private class LaunchData(
+        val search: LocalSearch,
+        val messageReference: MessageReference? = null,
+        val noThreading: Boolean = false
+    )
 
     companion object : KoinComponent {
         private const val EXTRA_SEARCH = "search_bytes"
