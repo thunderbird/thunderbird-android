@@ -5,12 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.base.loader.observeLoading
 import de.cketti.changelog.ReleaseItem
 import org.koin.android.ext.android.inject
 
@@ -25,32 +24,15 @@ class ChangelogFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        viewModel.changelogState.observe(viewLifecycleOwner, StateObserver(view))
-    }
+        val listView = view.findViewById<RecyclerView>(R.id.changelog_list)
 
-    class StateObserver(view: View) : Observer<ChangeLogState> {
-        private val loadingView: View = view.findViewById(R.id.changelog_loading)
-        private val errorView: View = view.findViewById(R.id.changelog_error)
-        private val listView: RecyclerView = view.findViewById(R.id.changelog_list)
-        private val allViews = setOf(loadingView, errorView, listView)
-
-        override fun onChanged(state: ChangeLogState?) {
-            when (state) {
-                is ChangeLogState.Loading -> loadingView.show()
-                is ChangeLogState.Error -> errorView.show()
-                is ChangeLogState.Data -> showChangelog(state.changeLog)
-            }
-        }
-
-        private fun showChangelog(changeLog: List<ReleaseItem>) {
+        viewModel.changelogState.observeLoading(
+            owner = viewLifecycleOwner,
+            loadingView = view.findViewById(R.id.changelog_loading),
+            errorView = view.findViewById(R.id.changelog_error),
+            dataView = listView
+        ) { changeLog ->
             listView.adapter = ChangelogAdapter(changeLog)
-            listView.show()
-        }
-
-        private fun View.show() {
-            for (view in allViews) {
-                view.isVisible = view === this
-            }
         }
     }
 }
