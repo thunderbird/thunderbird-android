@@ -131,7 +131,7 @@ public class LocalMessage extends MimeMessage {
 
         byte[] header = cursor.getBlob(LocalStore.MSG_INDEX_HEADER_DATA);
         if (header != null) {
-            MessageHeaderParser.parse(this, new ByteArrayInputStream(header));
+            MessageHeaderParser.parse(new ByteArrayInputStream(header), this::addRawHeader);
         } else {
             Timber.d("No headers available for this message!");
         }

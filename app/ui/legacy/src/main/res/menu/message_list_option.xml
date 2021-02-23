@@ -150,10 +150,6 @@
           app:showAsAction="never"
           android:title="@string/show_headers_action"/>
 
-    <item android:id="@+id/hide_headers"
-          app:showAsAction="never"
-          android:title="@string/hide_headers_action"/>
-
     <!-- always -->
     <item
         android:id="@+id/compose"

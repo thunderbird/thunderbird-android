@@ -22,6 +22,6 @@ inline fun FragmentActivity.fragmentTransactionWithBackStack(
     }
 }
 
-fun Fragment.withArguments(vararg argumentPairs: Pair<String, Any?>) = apply {
+fun <T : Fragment> T.withArguments(vararg argumentPairs: Pair<String, Any?>) = apply {
     arguments = bundleOf(*argumentPairs)
 }

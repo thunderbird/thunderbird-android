@@ -277,18 +277,6 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/additional_headers_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_marginRight="6dip"
-                android:singleLine="false"
-                android:ellipsize="none"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textIsSelectable="true" />
-
         </LinearLayout>
 
     </LinearLayout>

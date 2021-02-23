@@ -285,6 +285,10 @@
             android:name=".ui.settings.account.AccountSettingsActivity"
             android:label="@string/account_settings_title_fmt" />
 
+        <activity
+            android:name=".ui.messagesource.MessageSourceActivity"
+            android:label="@string/show_headers_action" />
+
         <receiver
             android:name=".service.StorageReceiver"
             android:enabled="true">
