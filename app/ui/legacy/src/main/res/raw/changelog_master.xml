@@ -5,6 +5,13 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.731" versioncode="27031" date="2021-02-23">
+        <change>Fixed display bug when opening Unified Inbox from a launcher shortcut</change>
+        <change>Fixed functionality to download and save linked images on Android 10+</change>
+        <change>Moved 'show headers' functionality to a separate screen</change>
+        <change>Added save button to 'edit identity' screen</change>
+        <change>Added translation: Malayalam</change>
+    </release>
     <release version="5.730" versioncode="27030" date="2021-02-16">
         <change>Fixed bug where account wouldn't refresh automatically</change>
         <change>Fixed crash when trying to compose a message</change>
