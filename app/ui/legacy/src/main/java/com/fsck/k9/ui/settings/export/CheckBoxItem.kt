@@ -12,7 +12,7 @@ import kotlinx.android.extensions.LayoutContainer
 abstract class CheckBoxItem(override var identifier: Long) : AbstractItem<CheckBoxViewHolder>() {
     override fun getViewHolder(v: View): CheckBoxViewHolder = CheckBoxViewHolder(v)
 
-    override fun bindView(holder: CheckBoxViewHolder, payloads: MutableList<Any>) {
+    override fun bindView(holder: CheckBoxViewHolder, payloads: List<Any>) {
         super.bindView(holder, payloads)
         holder.checkBox.isChecked = isSelected
         holder.itemView.isEnabled = isEnabled

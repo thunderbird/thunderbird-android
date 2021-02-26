@@ -20,7 +20,7 @@ internal class AccountItem(val account: Account) : AbstractItem<AccountItem.View
         val name: TextView = view.findViewById(R.id.name)
         val email: TextView = view.findViewById(R.id.email)
 
-        override fun bindView(item: AccountItem, payloads: MutableList<Any>) {
+        override fun bindView(item: AccountItem, payloads: List<Any>) {
             name.text = item.account.description
             email.text = item.account.email
         }

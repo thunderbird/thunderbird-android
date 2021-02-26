@@ -25,7 +25,7 @@ internal class SettingsActionItem(
         val text: TextView = view.findViewById(R.id.text)
         val icon: ImageView = view.findViewById(R.id.icon)
 
-        override fun bindView(item: SettingsActionItem, payloads: MutableList<Any>) {
+        override fun bindView(item: SettingsActionItem, payloads: List<Any>) {
             text.text = item.text
 
             val outValue = TypedValue()

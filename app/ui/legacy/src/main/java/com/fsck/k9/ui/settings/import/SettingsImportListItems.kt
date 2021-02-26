@@ -22,7 +22,7 @@ abstract class ImportListItem(override var identifier: Long, private val importS
         return ImportCheckBoxViewHolder(v)
     }
 
-    override fun bindView(holder: ImportCheckBoxViewHolder, payloads: MutableList<Any>) {
+    override fun bindView(holder: ImportCheckBoxViewHolder, payloads: List<Any>) {
         super.bindView(holder, payloads)
         holder.checkBox.isChecked = isSelected
         holder.itemView.isEnabled = isEnabled
@@ -90,7 +90,7 @@ class AccountItem(account: SettingsListItem.Account) :
     override val type = R.id.settings_import_list_account_item
     override val layoutRes = R.layout.settings_import_account_list_item
 
-    override fun bindView(holder: ImportCheckBoxViewHolder, payloads: MutableList<Any>) {
+    override fun bindView(holder: ImportCheckBoxViewHolder, payloads: List<Any>) {
         super.bindView(holder, payloads)
         holder.accountDisplayName.text = displayName
     }

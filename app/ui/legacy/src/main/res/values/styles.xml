@@ -46,6 +46,37 @@
         <item name="android:textColor">?android:attr/textColorHint</item>
     </style>
 
+    <style name="Widget.MaterialDrawerStyle.K9" parent="Widget.MaterialDrawerStyle">
+        <item name="materialDrawerBackground">?android:colorBackground</item>
+        <item name="materialDrawerPrimaryText">?android:textColorPrimary</item>
+        <item name="materialDrawerPrimaryIcon">?android:textColorSecondary</item>
+        <item name="materialDrawerSecondaryText">?android:textColorSecondary</item>
+        <item name="materialDrawerSecondaryIcon">?android:textColorSecondary</item>
+        <item name="materialDrawerSelectedBackgroundColor">?colorAccent</item>
+    </style>
 
+    <style name="Widget.MaterialDrawerStyle.K9.Light" parent="Widget.MaterialDrawerStyle.K9">
+        <item name="materialDrawerInsetForeground">#5aaa</item>
+        <item name="materialDrawerDividerColor">#eee</item>
+    </style>
+
+    <style name="Widget.MaterialDrawerStyle.K9.Dark" parent="Widget.MaterialDrawerStyle.K9">
+        <item name="materialDrawerInsetForeground">#4000</item>
+        <item name="materialDrawerDividerColor">#444</item>
+    </style>
+
+    <style name="Widget.MaterialDrawerHeaderStyle.K9">
+        <item name="materialDrawerCompactStyle">false</item>
+    </style>
+
+    <style name="Widget.MaterialDrawerHeaderStyle.K9.Light" parent="Widget.MaterialDrawerHeaderStyle.K9">
+        <item name="materialDrawerHeaderSelectionText">?android:textColorPrimaryInverse</item>
+        <item name="materialDrawerHeaderSelectionSubtext">?android:textColorSecondaryInverse</item>
+    </style>
+
+    <style name="Widget.MaterialDrawerHeaderStyle.K9.Dark" parent="Widget.MaterialDrawerHeaderStyle.K9">
+        <item name="materialDrawerHeaderSelectionText">?android:textColorPrimary</item>
+        <item name="materialDrawerHeaderSelectionSubtext">?android:textColorSecondary</item>
+    </style>
 </resources>
 
