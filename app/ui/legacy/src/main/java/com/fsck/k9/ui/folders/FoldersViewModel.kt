@@ -34,6 +34,7 @@ class FoldersViewModel(private val foldersLiveDataFactory: FoldersLiveDataFactor
 
     private fun removeCurrentFoldersLiveData() {
         currentFoldersLiveData?.let {
+            foldersLiveData.value = emptyList()
             currentFoldersLiveData = null
             foldersLiveData.removeSource(it)
         }
