@@ -261,7 +261,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
             }
 
             sliderView.addItems(unifiedInboxItem)
-            sliderView.addItems(DividerDrawerItem())
+            sliderView.addItems(FixedDividerDrawerItem(identifier = DRAWER_ID_DIVIDER))
 
             if (unifiedInboxSelected) {
                 openedFolderDrawerId = DRAWER_ID_UNIFIED_INBOX
@@ -388,12 +388,13 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
     companion object {
         // Bit shift for identifiers of user folders items, to leave space for other items
-        private const val DRAWER_FOLDER_SHIFT: Int = 2
-        private const val DRAWER_ACCOUNT_SHIFT: Int = 16
+        private const val DRAWER_FOLDER_SHIFT: Int = 20
+        private const val DRAWER_ACCOUNT_SHIFT: Int = 3
 
         private const val DRAWER_ID_UNIFIED_INBOX: Long = 0
-        private const val DRAWER_ID_PREFERENCES: Long = 1
-        private const val DRAWER_ID_FOLDERS: Long = 2
+        private const val DRAWER_ID_DIVIDER: Long = 1
+        private const val DRAWER_ID_PREFERENCES: Long = 2
+        private const val DRAWER_ID_FOLDERS: Long = 3
 
         private const val PROGRESS_VIEW_END_OFFSET = 32
         private const val PROGRESS_VIEW_SLINGSHOT_DISTANCE = 48
@@ -412,3 +413,5 @@ private fun Context.obtainDrawerTextColor(): Int {
 
     return textColor
 }
+
+private class FixedDividerDrawerItem(override var identifier: Long) : DividerDrawerItem()
