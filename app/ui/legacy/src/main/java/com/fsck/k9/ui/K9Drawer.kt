@@ -48,7 +48,6 @@ import com.mikepenz.materialdrawer.util.addItems
 import com.mikepenz.materialdrawer.util.addStickyFooterItem
 import com.mikepenz.materialdrawer.util.getDrawerItem
 import com.mikepenz.materialdrawer.util.removeAllItems
-import com.mikepenz.materialdrawer.util.removeAllStickyFooterItems
 import com.mikepenz.materialdrawer.widget.AccountHeaderView
 import com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView
 import java.util.ArrayList
@@ -218,8 +217,6 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
             headerView.setActiveProfile((account.accountNumber + 1 shl DRAWER_ACCOUNT_SHIFT).toLong())
             headerView.accountHeaderBackground.setColorFilter(account.chipColor, PorterDuff.Mode.MULTIPLY)
             viewModel.loadFolders(account)
-
-            updateFooterItems()
         }
 
         // Account can be null to refresh all (unified inbox or account list).
@@ -234,11 +231,6 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 }
             )
         }
-    }
-
-    private fun updateFooterItems() {
-        sliderView.removeAllStickyFooterItems()
-        addFooterItems()
     }
 
     private fun handleItemClickListener(drawerItem: IDrawerItem<*>) {
@@ -326,7 +318,6 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 return
             }
         }
-        updateFooterItems()
     }
 
     fun deselect() {
@@ -339,7 +330,6 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         deselect()
         unifiedInboxSelected = true
         sliderView.setSelection(DRAWER_ID_UNIFIED_INBOX, false)
-        updateFooterItems()
     }
 
     private data class DrawerColors(
