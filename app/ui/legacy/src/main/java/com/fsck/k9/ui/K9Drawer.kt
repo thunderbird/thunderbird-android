@@ -327,6 +327,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     }
 
     fun selectUnifiedInbox() {
+        headerView.selectionListShown = false
         deselect()
         unifiedInboxSelected = true
         sliderView.setSelection(DRAWER_ID_UNIFIED_INBOX, false)

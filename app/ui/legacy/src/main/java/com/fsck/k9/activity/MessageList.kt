@@ -331,7 +331,8 @@ open class MessageList :
             launchData.search
         }
 
-        val account = search.firstAccount()
+        // Don't switch the currently active account when opening the Unified Inbox
+        val account = account?.takeIf { launchData.search.isUnifiedInbox } ?: search.firstAccount()
         if (account == null) {
             finish()
             return false
