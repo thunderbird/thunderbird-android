@@ -328,8 +328,8 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     }
 
     override fun doPositiveClick(dialogId: Int) {
-        accountRemover.removeAccountAsync(accountUuid)
         closeAccountSettings()
+        accountRemover.removeAccountAsync(accountUuid)
     }
 
     override fun doNegativeClick(dialogId: Int) = Unit

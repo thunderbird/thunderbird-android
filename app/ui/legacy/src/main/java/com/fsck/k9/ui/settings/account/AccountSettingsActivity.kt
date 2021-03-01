@@ -59,7 +59,7 @@ class AccountSettingsActivity : K9Activity(), OnPreferenceStartScreenCallback {
     }
 
     private fun onAccountSelected(selectedAccountUuid: String) {
-        if (selectedAccountUuid != accountUuid) {
+        if (selectedAccountUuid != accountUuid && !isFinishing) {
             start(this, selectedAccountUuid)
             finish()
         }
