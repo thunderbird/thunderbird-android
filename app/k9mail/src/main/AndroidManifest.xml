@@ -150,7 +150,7 @@
             android:label="@string/edit_identity_title"/>
 
         <activity
-            android:name=".activity.NotificationDeleteConfirmation"
+            android:name=".ui.notification.NotificationDeleteConfirmation"
             android:excludeFromRecents="true"
             android:launchMode="singleTop"
             android:taskAffinity=""

@@ -1,4 +1,4 @@
-package com.fsck.k9.activity;
+package com.fsck.k9.ui.notification;
 
 
 import java.util.Collections;
@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
+import com.fsck.k9.activity.ConfirmationDialog;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.controller.MessagingController;

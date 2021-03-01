@@ -11,7 +11,7 @@ import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
 import com.fsck.k9.activity.MessageList;
-import com.fsck.k9.activity.NotificationDeleteConfirmation;
+import com.fsck.k9.ui.notification.NotificationDeleteConfirmation;
 import com.fsck.k9.activity.compose.MessageActions;
 import com.fsck.k9.activity.setup.AccountSetupIncoming;
 import com.fsck.k9.activity.setup.AccountSetupOutgoing;
