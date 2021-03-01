@@ -12,13 +12,13 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.fsck.k9.Account
 import com.fsck.k9.K9
-import com.fsck.k9.Preferences
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.controller.SimpleMessagingListener
 import com.fsck.k9.helper.Contacts
 import com.fsck.k9.mailstore.DisplayFolder
 import com.fsck.k9.mailstore.Folder
+import com.fsck.k9.ui.account.AccountsViewModel
 import com.fsck.k9.ui.base.Theme
 import com.fsck.k9.ui.base.ThemeManager
 import com.fsck.k9.ui.folders.FolderIconProvider
@@ -51,16 +51,15 @@ import com.mikepenz.materialdrawer.util.removeAllItems
 import com.mikepenz.materialdrawer.widget.AccountHeaderView
 import com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView
 import java.util.ArrayList
-import java.util.HashSet
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import org.koin.core.parameter.parametersOf
 
 class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : KoinComponent {
-    private val viewModel: FoldersViewModel by parent.viewModel()
+    private val foldersViewModel: FoldersViewModel by parent.viewModel()
+    private val accountsViewModel: AccountsViewModel by parent.viewModel()
     private val folderNameFormatter: FolderNameFormatter by inject { parametersOf(parent) }
-    private val preferences: Preferences by inject()
     private val themeManager: ThemeManager by inject()
     private val resources: Resources by inject()
     private val messagingController: MessagingController by inject()
@@ -120,7 +119,11 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
         addFooterItems()
 
-        viewModel.getFolderListLiveData().observe(parent) { folders ->
+        accountsViewModel.accountsLiveData.observeNotNull(parent) { accounts ->
+            setAccounts(accounts)
+        }
+
+        foldersViewModel.getFolderListLiveData().observe(parent) { folders ->
             setUserFolders(folders)
         }
     }
@@ -128,15 +131,24 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private fun configureAccountHeader() {
         headerView.headerBackground = ImageHolder(R.drawable.drawer_header_background)
 
-        val photoUris = HashSet<Uri>()
+        headerView.onAccountHeaderListener = { _, profile, _ ->
+            val account = (profile as ProfileDrawerItem).tag as Account
+            parent.openRealAccount(account)
+            updateUserAccountsAndFolders(account)
+            true
+        }
+    }
 
-        for (account in preferences.accounts) {
+    private fun setAccounts(accounts: List<Account>) {
+        val photoUris = mutableSetOf<Uri>()
+
+        val accountItems = accounts.map { account ->
             val drawerId = (account.accountNumber + 1 shl DRAWER_ACCOUNT_SHIFT).toLong()
 
             val drawerColors = getDrawerColorsForAccount(account)
             val selectedTextColor = drawerColors.accentColor.toSelectedColorStateList()
 
-            val pdi = ProfileDrawerItem().apply {
+            val accountItem = ProfileDrawerItem().apply {
                 isNameShown = true
                 nameText = account.description
                 descriptionText = account.email
@@ -147,27 +159,25 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 selectedColorInt = drawerColors.selectedColor
             }
 
+            // TODO: Use DrawerImageLoader to load contact image in background
             val photoUri = Contacts.getInstance(parent).getPhotoUri(account.email)
-            if (photoUri != null && !photoUris.contains(photoUri)) {
+            if (photoUri != null && photoUri !in photoUris) {
                 photoUris.add(photoUri)
-                pdi.icon = ImageHolder(photoUri)
+                accountItem.icon = ImageHolder(photoUri)
             } else {
-                pdi.iconDrawable = IconicsDrawable(parent, FontAwesome.Icon.faw_user_alt).apply {
+                accountItem.iconDrawable = IconicsDrawable(parent, FontAwesome.Icon.faw_user_alt).apply {
                     colorRes = R.color.material_drawer_profile_icon
                     backgroundColorInt = account.chipColor
                     sizeDp = 56
                     paddingDp = 12
                 }
             }
-            headerView.addProfiles(pdi)
-        }
 
-        headerView.onAccountHeaderListener = { _, profile, _ ->
-            val account = (profile as ProfileDrawerItem).tag as Account
-            parent.openRealAccount(account)
-            updateUserAccountsAndFolders(account)
-            true
-        }
+            accountItem
+        }.toTypedArray()
+
+        headerView.clear()
+        headerView.addProfiles(*accountItems)
     }
 
     private fun addFooterItems() {
@@ -216,7 +226,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
             headerView.setActiveProfile((account.accountNumber + 1 shl DRAWER_ACCOUNT_SHIFT).toLong())
             headerView.accountHeaderBackground.setColorFilter(account.chipColor, PorterDuff.Mode.MULTIPLY)
-            viewModel.loadFolders(account)
+            foldersViewModel.loadFolders(account)
         }
 
         // Account can be null to refresh all (unified inbox or account list).
