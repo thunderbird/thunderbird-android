@@ -13,7 +13,7 @@ import com.fsck.k9.K9;
 import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.controller.MessageReference;
-import com.fsck.k9.ui.notification.NotificationDeleteConfirmation;
+import com.fsck.k9.ui.notification.DeleteConfirmationActivity;
 import com.fsck.k9.activity.compose.MessageActions;
 import com.fsck.k9.activity.setup.AccountSetupIncoming;
 import com.fsck.k9.activity.setup.AccountSetupOutgoing;
@@ -151,7 +151,7 @@ class K9NotificationActionCreator implements NotificationActionCreator {
     }
 
     private PendingIntent createDeleteConfirmationPendingIntent(MessageReference messageReference, int notificationId) {
-        Intent intent = NotificationDeleteConfirmation.getIntent(context, messageReference);
+        Intent intent = DeleteConfirmationActivity.getIntent(context, messageReference);
 
         return PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
@@ -168,7 +168,7 @@ class K9NotificationActionCreator implements NotificationActionCreator {
 
     private PendingIntent getDeleteAllConfirmationPendingIntent(List<MessageReference> messageReferences,
             int notificationId) {
-        Intent intent = NotificationDeleteConfirmation.getIntent(context, messageReferences);
+        Intent intent = DeleteConfirmationActivity.getIntent(context, messageReferences);
 
         return PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
     }

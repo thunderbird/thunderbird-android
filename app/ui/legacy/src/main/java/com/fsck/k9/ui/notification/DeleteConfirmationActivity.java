@@ -26,7 +26,7 @@ import static com.fsck.k9.controller.MessageReferenceHelper.toMessageReferenceLi
 import static com.fsck.k9.controller.MessageReferenceHelper.toMessageReferenceStringList;
 
 
-public class NotificationDeleteConfirmation extends AppCompatActivity {
+public class DeleteConfirmationActivity extends AppCompatActivity {
     private final static String EXTRA_ACCOUNT_UUID = "accountUuid";
     private final static String EXTRA_MESSAGE_REFERENCES = "messageReferences";
 
@@ -46,7 +46,7 @@ public class NotificationDeleteConfirmation extends AppCompatActivity {
     public static Intent getIntent(Context context, List<MessageReference> messageReferences) {
         String accountUuid = messageReferences.get(0).getAccountUuid();
 
-        Intent intent = new Intent(context, NotificationDeleteConfirmation.class);
+        Intent intent = new Intent(context, DeleteConfirmationActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(EXTRA_ACCOUNT_UUID, accountUuid);
         intent.putExtra(EXTRA_MESSAGE_REFERENCES, toMessageReferenceStringList(messageReferences));
