@@ -1,23 +1,23 @@
 package com.fsck.k9.ui.notification
 
-import android.app.AlertDialog
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
-import com.fsck.k9.activity.ConfirmationDialog
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.controller.MessageReferenceHelper
 import com.fsck.k9.controller.MessagingController
+import com.fsck.k9.fragment.ConfirmationDialogFragment
+import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
 import com.fsck.k9.notification.NotificationActionService
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9ActivityCommon
 import com.fsck.k9.ui.base.ThemeType
 
-class DeleteConfirmationActivity : AppCompatActivity() {
+class DeleteConfirmationActivity : AppCompatActivity(), ConfirmationDialogFragmentListener {
     private val base = K9ActivityCommon(this, ThemeType.DIALOG)
 
     private lateinit var account: Account
@@ -29,7 +29,10 @@ class DeleteConfirmationActivity : AppCompatActivity() {
 
         extractExtras()
 
-        showDialog(DIALOG_CONFIRM)
+        if (savedInstanceState == null) {
+            val dialogFragment = createConfirmationDialogFragment()
+            dialogFragment.show(supportFragmentManager, DIALOG_TAG)
+        }
     }
 
     override fun onResume() {
@@ -52,42 +55,34 @@ class DeleteConfirmationActivity : AppCompatActivity() {
         this.messagesToDelete = messagesToDelete
     }
 
-    public override fun onCreateDialog(dialogId: Int): Dialog {
-        return when (dialogId) {
-            DIALOG_CONFIRM -> createDeleteConfirmationDialog(dialogId)
-            else -> super.onCreateDialog(dialogId)
-        }
-    }
-
-    public override fun onPrepareDialog(dialogId: Int, dialog: Dialog) {
-        when (dialogId) {
-            DIALOG_CONFIRM -> {
-                val alertDialog = dialog as AlertDialog
-                val messageCount = messagesToDelete.size
-                alertDialog.setMessage(
-                    resources.getQuantityString(R.plurals.dialog_confirm_delete_messages, messageCount, messageCount)
-                )
-            }
-            else -> super.onPrepareDialog(dialogId, dialog)
-        }
-    }
-
     private fun getAccountFromUuid(accountUuid: String): Account? {
         val preferences = Preferences.getPreferences(this)
         return preferences.getAccount(accountUuid)
     }
 
-    private fun createDeleteConfirmationDialog(dialogId: Int): Dialog {
-        return ConfirmationDialog.create(
-            this,
-            dialogId,
-            R.string.dialog_confirm_delete_title,
-            "",
-            R.string.dialog_confirm_delete_confirm_button,
-            R.string.dialog_confirm_delete_cancel_button,
-            { deleteAndFinish() },
-            { finish() }
+    private fun createConfirmationDialogFragment(): DialogFragment {
+        val messageCount = messagesToDelete.size
+        val message = resources.getQuantityString(R.plurals.dialog_confirm_delete_messages, messageCount, messageCount)
+
+        return ConfirmationDialogFragment.newInstance(
+            DIALOG_ID,
+            getString(R.string.dialog_confirm_delete_title),
+            message,
+            getString(R.string.dialog_confirm_delete_confirm_button),
+            getString(R.string.dialog_confirm_delete_cancel_button)
         )
+    }
+
+    override fun doPositiveClick(dialogId: Int) {
+        deleteAndFinish()
+    }
+
+    override fun doNegativeClick(dialogId: Int) {
+        finish()
+    }
+
+    override fun dialogCancelled(dialogId: Int) {
+        finish()
     }
 
     private fun deleteAndFinish() {
@@ -111,7 +106,8 @@ class DeleteConfirmationActivity : AppCompatActivity() {
     companion object {
         private const val EXTRA_ACCOUNT_UUID = "accountUuid"
         private const val EXTRA_MESSAGE_REFERENCES = "messageReferences"
-        private const val DIALOG_CONFIRM = 1
+        private const val DIALOG_ID = 1
+        private const val DIALOG_TAG = "dialog"
 
         @JvmStatic
         fun getIntent(context: Context, messageReference: MessageReference): Intent {
