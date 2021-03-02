@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.jetbrains.kotlin.android'
-apply plugin: 'org.jetbrains.kotlin.android.extensions'
 apply plugin: 'kotlin-kapt'
 
 if (rootProject.testCoverage) {
@@ -122,10 +121,6 @@ android {
             includeAndroidResources = true
         }
     }
-}
-
-androidExtensions {
-    experimental = true
 }
 
 if (project.hasProperty('keyAlias')) {
