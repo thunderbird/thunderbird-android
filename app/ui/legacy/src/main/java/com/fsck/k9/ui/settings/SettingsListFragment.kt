@@ -13,6 +13,7 @@ import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.Account
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.observeNotNull
@@ -20,7 +21,6 @@ import com.fsck.k9.ui.settings.account.AccountSettingsActivity
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.GenericItem
 import com.mikepenz.fastadapter.adapters.ItemAdapter
-import kotlinx.android.synthetic.main.fragment_settings_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsListFragment : Fragment() {
@@ -33,11 +33,11 @@ class SettingsListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        initializeSettingsList()
+        initializeSettingsList(recyclerView = view.findViewById(R.id.settings_list))
         populateSettingsList()
     }
 
-    private fun initializeSettingsList() {
+    private fun initializeSettingsList(recyclerView: RecyclerView) {
         itemAdapter = ItemAdapter()
 
         val settingsListAdapter = FastAdapter.with(itemAdapter).apply {
@@ -48,7 +48,7 @@ class SettingsListFragment : Fragment() {
             }
         }
 
-        with(settings_list) {
+        with(recyclerView) {
             adapter = settingsListAdapter
             layoutManager = LinearLayoutManager(context)
         }
