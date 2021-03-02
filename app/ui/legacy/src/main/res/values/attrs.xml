@@ -133,4 +133,9 @@
         <attr name="highlightBackgroundColor" format="color|reference" />
     </declare-styleable>
 
+    <declare-styleable name="DraggableFrameView">
+        <!-- State when a list item is being dragged. -->
+        <attr format="boolean" name="state_dragged"/>
+    </declare-styleable>
+
 </resources>
