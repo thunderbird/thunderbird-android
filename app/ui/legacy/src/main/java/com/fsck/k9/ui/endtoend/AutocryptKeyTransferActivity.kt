@@ -8,12 +8,13 @@ import android.os.Bundle
 import android.transition.TransitionInflater
 import android.transition.TransitionManager
 import android.view.MenuItem
+import android.view.View
+import android.widget.TextView
 import androidx.core.view.isVisible
 import com.fsck.k9.finishWithErrorToast
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
 import com.fsck.k9.view.StatusIndicator
-import kotlinx.android.synthetic.main.crypto_key_transfer.*
 import kotlinx.coroutines.delay
 import org.koin.android.ext.android.inject
 import org.koin.core.parameter.parametersOf
@@ -22,6 +23,18 @@ import timber.log.Timber
 class AutocryptKeyTransferActivity : K9Activity() {
     private val presenter: AutocryptKeyTransferPresenter by inject { parametersOf(this, this) }
 
+    private lateinit var transferSendButton: View
+    private lateinit var transferButtonShowCode: View
+    private lateinit var transferAddress1: TextView
+    private lateinit var transferAddress2: TextView
+    private lateinit var transferMsgInfo: View
+    private lateinit var transferLayoutGenerating: View
+    private lateinit var transferLayoutSending: View
+    private lateinit var transferLayoutFinish: View
+    private lateinit var transferErrorSend: View
+    private lateinit var transferProgressGenerating: StatusIndicator
+    private lateinit var transferProgressSending: StatusIndicator
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setLayout(R.layout.crypto_key_transfer)
@@ -29,6 +42,18 @@ class AutocryptKeyTransferActivity : K9Activity() {
         val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT)
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
+        transferSendButton = findViewById(R.id.transferSendButton)
+        transferButtonShowCode = findViewById(R.id.transferButtonShowCode)
+        transferAddress1 = findViewById(R.id.transferAddress1)
+        transferAddress2 = findViewById(R.id.transferAddress2)
+        transferMsgInfo = findViewById(R.id.transferMsgInfo)
+        transferLayoutGenerating = findViewById(R.id.transferLayoutGenerating)
+        transferLayoutSending = findViewById(R.id.transferLayoutSending)
+        transferLayoutFinish = findViewById(R.id.transferLayoutFinish)
+        transferErrorSend = findViewById(R.id.transferErrorSend)
+        transferProgressGenerating = findViewById(R.id.transferProgressGenerating)
+        transferProgressSending = findViewById(R.id.transferProgressSending)
 
         transferSendButton.setOnClickListener { presenter.onClickTransferSend() }
         transferButtonShowCode.setOnClickListener { presenter.onClickShowTransferCode() }
