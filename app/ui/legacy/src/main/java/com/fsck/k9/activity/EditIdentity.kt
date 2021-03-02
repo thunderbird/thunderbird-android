@@ -3,17 +3,28 @@ package com.fsck.k9.activity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.CheckBox
+import android.widget.TextView
 import androidx.core.view.isVisible
 import com.fsck.k9.Account
 import com.fsck.k9.Identity
 import com.fsck.k9.Preferences
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
-import kotlinx.android.synthetic.main.edit_identity.*
 
 class EditIdentity : K9Activity() {
     private lateinit var account: Account
     private lateinit var identity: Identity
+
+    private lateinit var description: TextView
+    private lateinit var name: TextView
+    private lateinit var email: TextView
+    private lateinit var replyTo: TextView
+    private lateinit var signatureUse: CheckBox
+    private lateinit var signature: TextView
+    private lateinit var signatureLayout: View
+
     private var identityIndex: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,28 +42,33 @@ class EditIdentity : K9Activity() {
             else -> Identity()
         }
 
-        description.setText(identity.description)
-        name.setText(identity.name)
-        email.setText(identity.email)
-        reply_to.setText(identity.replyTo)
+        description = findViewById(R.id.description)
+        name = findViewById(R.id.name)
+        email = findViewById(R.id.email)
+        replyTo = findViewById(R.id.reply_to)
+        signatureUse = findViewById(R.id.signature_use)
+        signature = findViewById(R.id.signature)
+        signatureLayout = findViewById(R.id.signature_layout)
 
-        //      mAccountAlwaysBcc = (EditText)findViewById(R.id.bcc);
-        //      mAccountAlwaysBcc.setText(identity.getAlwaysBcc());
+        description.text = identity.description
+        name.text = identity.name
+        email.text = identity.email
+        replyTo.text = identity.replyTo
 
-        signature_use.isChecked = identity.signatureUse
-        signature_use.setOnCheckedChangeListener { _, isChecked ->
+        signatureUse.isChecked = identity.signatureUse
+        signatureUse.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                signature_layout.isVisible = true
-                signature.setText(identity.signature)
+                signatureLayout.isVisible = true
+                signature.text = identity.signature
             } else {
-                signature_layout.isVisible = false
+                signatureLayout.isVisible = false
             }
         }
 
-        if (signature_use.isChecked) {
-            signature.setText(identity.signature)
+        if (signatureUse.isChecked) {
+            signature.text = identity.signature
         } else {
-            signature_layout.isVisible = false
+            signatureLayout.isVisible = false
         }
     }
 
@@ -61,11 +77,10 @@ class EditIdentity : K9Activity() {
             description = description.text.toString(),
             email = email.text.toString(),
             name = name.text.toString(),
-            signatureUse = signature_use.isChecked,
+            signatureUse = signatureUse.isChecked,
             signature = signature.text.toString(),
-            replyTo = if (reply_to.text.isNotEmpty()) reply_to.text.toString() else null
+            replyTo = if (replyTo.text.isNotEmpty()) replyTo.text.toString() else null
         )
-        // identity.setAlwaysBcc(mAccountAlwaysBcc.getText().toString());
 
         val identities = account.identities
         if (identityIndex == -1) {
