@@ -3,26 +3,23 @@ package com.fsck.k9.ui.settings.import
 import android.view.View
 import android.widget.CheckBox
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.ui.R
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 import com.mikepenz.fastadapter.listeners.ClickEventHook
-import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.settings_import_account_list_item.*
 
 private const val GENERAL_SETTINGS_ID = 0L
 private const val ACCOUNT_ITEMS_ID_OFFSET = 1L
 
-abstract class ImportListItem(override var identifier: Long, private val importStatus: ImportStatus) :
-    AbstractItem<ImportCheckBoxViewHolder>() {
+abstract class ImportListItem<VH : ImportCheckBoxViewHolder>(
+    override var identifier: Long,
+    private val importStatus: ImportStatus
+) : AbstractItem<VH>() {
 
-    override fun getViewHolder(v: View): ImportCheckBoxViewHolder {
-        return ImportCheckBoxViewHolder(v)
-    }
-
-    override fun bindView(holder: ImportCheckBoxViewHolder, payloads: List<Any>) {
+    override fun bindView(holder: VH, payloads: List<Any>) {
         super.bindView(holder, payloads)
         holder.checkBox.isChecked = isSelected
         holder.itemView.isEnabled = isEnabled
@@ -48,20 +45,18 @@ abstract class ImportListItem(override var identifier: Long, private val importS
                 ImportStatus.IMPORT_FAILURE -> R.string.settings_import_status_error
                 else -> error("Unexpected import status: $importStatus")
             }
-            val context = holder.containerView.context
+            val context = holder.statusIcon.context
             holder.statusIcon.contentDescription = context.getString(contentDescriptionStringResId)
         }
     }
 }
 
-class ImportCheckBoxViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), LayoutContainer {
+open class ImportCheckBoxViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val checkBox: CheckBox = itemView.findViewById(R.id.checkBox)
     val statusIcon: ImageView = itemView.findViewById(R.id.statusIcon)
-
-    override val containerView = itemView
 }
 
-class ImportListItemClickEvent(val action: (position: Int) -> Unit) : ClickEventHook<ImportListItem>() {
+class ImportListItemClickEvent(val action: (position: Int) -> Unit) : ClickEventHook<ImportListItem<*>>() {
 
     override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
         return if (viewHolder is ImportCheckBoxViewHolder) viewHolder.checkBox else null
@@ -70,27 +65,37 @@ class ImportListItemClickEvent(val action: (position: Int) -> Unit) : ClickEvent
     override fun onClick(
         v: View,
         position: Int,
-        fastAdapter: FastAdapter<ImportListItem>,
-        item: ImportListItem
+        fastAdapter: FastAdapter<ImportListItem<*>>,
+        item: ImportListItem<*>
     ) {
         action(position)
     }
 }
 
-class GeneralSettingsItem(importStatus: ImportStatus) : ImportListItem(GENERAL_SETTINGS_ID, importStatus) {
+class GeneralSettingsItem(importStatus: ImportStatus) :
+    ImportListItem<ImportCheckBoxViewHolder>(GENERAL_SETTINGS_ID, importStatus) {
+
     override val type = R.id.settings_import_list_general_item
     override val layoutRes = R.layout.settings_import_general_list_item
+
+    override fun getViewHolder(v: View) = ImportCheckBoxViewHolder(v)
+}
+
+class AccountViewHolder(view: View) : ImportCheckBoxViewHolder(view) {
+    val accountDisplayName: TextView = view.findViewById(R.id.accountDisplayName)
 }
 
 class AccountItem(account: SettingsListItem.Account) :
-    ImportListItem(account.accountIndex + ACCOUNT_ITEMS_ID_OFFSET, account.importStatus) {
+    ImportListItem<AccountViewHolder>(account.accountIndex + ACCOUNT_ITEMS_ID_OFFSET, account.importStatus) {
 
     private val displayName = account.displayName
 
     override val type = R.id.settings_import_list_account_item
     override val layoutRes = R.layout.settings_import_account_list_item
 
-    override fun bindView(holder: ImportCheckBoxViewHolder, payloads: List<Any>) {
+    override fun getViewHolder(v: View) = AccountViewHolder(v)
+
+    override fun bindView(holder: AccountViewHolder, payloads: List<Any>) {
         super.bindView(holder, payloads)
         holder.accountDisplayName.text = displayName
     }

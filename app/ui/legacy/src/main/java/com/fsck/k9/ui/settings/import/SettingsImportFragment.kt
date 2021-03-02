@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
@@ -16,7 +18,6 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.ui.observeNotNull
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
-import kotlinx.android.synthetic.main.fragment_settings_import.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -24,8 +25,8 @@ class SettingsImportFragment : Fragment() {
     private val viewModel: SettingsImportViewModel by viewModel()
     private val resultViewModel: SettingsImportResultViewModel by sharedViewModel()
 
-    private lateinit var settingsImportAdapter: FastAdapter<ImportListItem>
-    private lateinit var itemAdapter: ItemAdapter<ImportListItem>
+    private lateinit var settingsImportAdapter: FastAdapter<ImportListItem<*>>
+    private lateinit var itemAdapter: ItemAdapter<ImportListItem<*>>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_settings_import, container, false)
@@ -36,16 +37,18 @@ class SettingsImportFragment : Fragment() {
             viewModel.initializeFromSavedState(savedInstanceState)
         }
 
-        initializeSettingsImportList(view)
-        pickDocumentButton.setOnClickListener { viewModel.onPickDocumentButtonClicked() }
-        importButton.setOnClickListener { viewModel.onImportButtonClicked() }
-        closeButton.setOnClickListener { viewModel.onCloseButtonClicked() }
+        val viewHolder = ViewHolder(view)
 
-        viewModel.getUiModel().observeNotNull(this) { updateUi(it) }
+        initializeSettingsImportList(viewHolder.settingsImportList)
+        viewHolder.pickDocumentButton.setOnClickListener { viewModel.onPickDocumentButtonClicked() }
+        viewHolder.importButton.setOnClickListener { viewModel.onImportButtonClicked() }
+        viewHolder.closeButton.setOnClickListener { viewModel.onCloseButtonClicked() }
+
+        viewModel.getUiModel().observeNotNull(this) { viewHolder.updateUi(it) }
         viewModel.getActionEvents().observeNotNull(this) { handleActionEvents(it) }
     }
 
-    private fun initializeSettingsImportList(view: View) {
+    private fun initializeSettingsImportList(recyclerView: RecyclerView) {
         itemAdapter = ItemAdapter()
         settingsImportAdapter = FastAdapter.with(itemAdapter).apply {
             setHasStableIds(true)
@@ -60,11 +63,10 @@ class SettingsImportFragment : Fragment() {
             )
         }
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.settingsImportList)
         recyclerView.adapter = settingsImportAdapter
     }
 
-    private fun updateUi(model: SettingsImportUiModel) {
+    private fun ViewHolder.updateUi(model: SettingsImportUiModel) {
         when (model.importButton) {
             ButtonState.DISABLED -> {
                 importButton.isVisible = true
@@ -117,7 +119,7 @@ class SettingsImportFragment : Fragment() {
     }
 
     // TODO: Update list instead of replacing it completely
-    private fun setSettingsList(items: List<SettingsListItem>, enable: Boolean) {
+    private fun ViewHolder.setSettingsList(items: List<SettingsListItem>, enable: Boolean) {
         val importListItems = items.map { item ->
             val checkBoxItem = when (item) {
                 is SettingsListItem.GeneralSettings -> GeneralSettingsItem(item.importStatus)
@@ -205,4 +207,14 @@ class SettingsImportFragment : Fragment() {
         private const val REQUEST_PICK_DOCUMENT = Activity.RESULT_FIRST_USER
         private const val REQUEST_PASSWORD_PROMPT = Activity.RESULT_FIRST_USER + 1
     }
+}
+
+private class ViewHolder(view: View) {
+    val pickDocumentButton: View = view.findViewById(R.id.pickDocumentButton)
+    val importButton: View = view.findViewById(R.id.importButton)
+    val closeButton: Button = view.findViewById(R.id.closeButton)
+    val loadingProgressBar: View = view.findViewById(R.id.loadingProgressBar)
+    val importProgressBar: View = view.findViewById(R.id.importProgressBar)
+    val statusText: TextView = view.findViewById(R.id.statusText)
+    val settingsImportList: RecyclerView = view.findViewById(R.id.settingsImportList)
 }
