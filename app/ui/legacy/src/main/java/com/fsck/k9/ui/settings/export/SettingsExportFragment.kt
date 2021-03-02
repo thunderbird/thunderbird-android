@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -14,14 +15,13 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.ui.observeNotNull
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
-import kotlinx.android.synthetic.main.fragment_settings_export.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsExportFragment : Fragment() {
     private val viewModel: SettingsExportViewModel by viewModel()
 
-    private lateinit var settingsExportAdapter: FastAdapter<CheckBoxItem>
-    private lateinit var itemAdapter: ItemAdapter<CheckBoxItem>
+    private lateinit var settingsExportAdapter: FastAdapter<CheckBoxItem<*>>
+    private lateinit var itemAdapter: ItemAdapter<CheckBoxItem<*>>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_settings_export, container, false)
@@ -32,19 +32,21 @@ class SettingsExportFragment : Fragment() {
             viewModel.initializeFromSavedState(savedInstanceState)
         }
 
-        initializeSettingsExportList(view)
-        exportButton.setOnClickListener { viewModel.onExportButtonClicked() }
-        shareButton.setOnClickListener { viewModel.onShareButtonClicked() }
+        val viewHolder = ViewHolder(view)
+        initializeSettingsExportList(viewHolder.settingsExportList)
 
-        viewModel.getUiModel().observeNotNull(this) { updateUi(it) }
+        viewHolder.exportButton.setOnClickListener { viewModel.onExportButtonClicked() }
+        viewHolder.shareButton.setOnClickListener { viewModel.onShareButtonClicked() }
+
+        viewModel.getUiModel().observeNotNull(this) { viewHolder.updateUi(it) }
         viewModel.getActionEvents().observeNotNull(this) { handleActionEvents(it) }
     }
 
-    private fun initializeSettingsExportList(view: View) {
+    private fun initializeSettingsExportList(recyclerView: RecyclerView) {
         itemAdapter = ItemAdapter()
         settingsExportAdapter = FastAdapter.with(itemAdapter).apply {
             setHasStableIds(true)
-            onClickListener = { _, _, item: CheckBoxItem, position ->
+            onClickListener = { _, _, item: CheckBoxItem<*>, position ->
                 viewModel.onSettingsListItemSelected(position, !item.isSelected)
                 true
             }
@@ -55,11 +57,10 @@ class SettingsExportFragment : Fragment() {
             )
         }
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.settingsExportList)
         recyclerView.adapter = settingsExportAdapter
     }
 
-    private fun updateUi(model: SettingsExportUiModel) {
+    private fun ViewHolder.updateUi(model: SettingsExportUiModel) {
         when (model.exportButton) {
             ButtonState.DISABLED -> {
                 exportButton.isVisible = true
@@ -96,7 +97,7 @@ class SettingsExportFragment : Fragment() {
     }
 
     // TODO: Update list instead of replacing it completely
-    private fun setSettingsList(items: List<SettingsListItem>, enable: Boolean) {
+    private fun ViewHolder.setSettingsList(items: List<SettingsListItem>, enable: Boolean) {
         val checkBoxItems = items.map { item ->
             val checkBoxItem = when (item) {
                 is SettingsListItem.GeneralSettings -> GeneralSettingsItem()
@@ -159,4 +160,12 @@ class SettingsExportFragment : Fragment() {
     companion object {
         private const val RESULT_PICK_DOCUMENT = Activity.RESULT_FIRST_USER
     }
+}
+
+private class ViewHolder(view: View) {
+    val exportButton: View = view.findViewById(R.id.exportButton)
+    val shareButton: View = view.findViewById(R.id.shareButton)
+    val progressBar: View = view.findViewById(R.id.progressBar)
+    val statusText: TextView = view.findViewById(R.id.statusText)
+    val settingsExportList: RecyclerView = view.findViewById(R.id.settingsExportList)
 }
