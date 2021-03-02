@@ -124,7 +124,7 @@
             android:label="@string/edit_identity_title"/>
 
         <activity
-            android:name="com.fsck.k9.activity.NotificationDeleteConfirmation"
+            android:name="com.fsck.k9.ui.notification.DeleteConfirmationActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleTop"
             android:taskAffinity=""
