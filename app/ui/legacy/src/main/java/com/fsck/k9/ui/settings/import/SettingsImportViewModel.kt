@@ -37,6 +37,9 @@ class SettingsImportViewModel(
     private val accountStateMap: MutableMap<AccountNumber, AccountState> = mutableMapOf()
     private var contentUri: Uri? = null
 
+    private val containsGeneralSettings: Boolean
+        get() = uiModel.settingsList.any { it is SettingsListItem.GeneralSettings }
+
     private val includeGeneralSettings: Boolean
         get() = uiModel.settingsList.first { it is SettingsListItem.GeneralSettings }.selected
 
@@ -82,16 +85,20 @@ class SettingsImportViewModel(
 
             if (!hasDocumentBeenRead) return@updateUiModel
 
-            val includeGeneralSettings = savedInstanceState.getBoolean(STATE_INCLUDE_GENERAL_SETTINGS)
-            val generalSettingsImportState = savedInstanceState.getEnum(
-                STATE_GENERAL_SETTINGS_IMPORT_STATUS,
-                ImportStatus.NOT_AVAILABLE
-            )
+            val generalSettingsItem = if (savedInstanceState.getBoolean(STATE_CONTAINS_GENERAL_SETTINGS)) {
+                val includeGeneralSettings = savedInstanceState.getBoolean(STATE_INCLUDE_GENERAL_SETTINGS)
+                val generalSettingsImportState = savedInstanceState.getEnum(
+                    STATE_GENERAL_SETTINGS_IMPORT_STATUS,
+                    ImportStatus.NOT_AVAILABLE
+                )
 
-            val generalSettingsItem = SettingsListItem.GeneralSettings().apply {
-                selected = includeGeneralSettings
-                importStatus = generalSettingsImportState
-                enabled = !hasImportStarted
+                SettingsListItem.GeneralSettings().apply {
+                    selected = includeGeneralSettings
+                    importStatus = generalSettingsImportState
+                    enabled = !hasImportStarted
+                }
+            } else {
+                null
             }
 
             val savedAccountList = savedInstanceState.getParcelableArrayList<SavedAccountState>(STATE_ACCOUNT_LIST)!!
@@ -118,7 +125,11 @@ class SettingsImportViewModel(
                 }
             }
 
-            settingsList = listOf(generalSettingsItem) + accountSettingsItems
+            settingsList = if (generalSettingsItem != null) {
+                listOf(generalSettingsItem) + accountSettingsItems
+            } else {
+                accountSettingsItems
+            }
         }
     }
 
@@ -136,8 +147,12 @@ class SettingsImportViewModel(
             outState.putEnum(STATE_STATUS_TEXT, statusText)
 
             if (hasDocumentBeenRead) {
-                outState.putBoolean(STATE_INCLUDE_GENERAL_SETTINGS, includeGeneralSettings)
-                outState.putEnum(STATE_GENERAL_SETTINGS_IMPORT_STATUS, generalSettingsImportStatus)
+                val containsGeneralSettings = this@SettingsImportViewModel.containsGeneralSettings
+                outState.putBoolean(STATE_CONTAINS_GENERAL_SETTINGS, containsGeneralSettings)
+                if (containsGeneralSettings) {
+                    outState.putBoolean(STATE_INCLUDE_GENERAL_SETTINGS, includeGeneralSettings)
+                    outState.putEnum(STATE_GENERAL_SETTINGS_IMPORT_STATUS, generalSettingsImportStatus)
+                }
                 outState.putParcelableArrayList(STATE_ACCOUNT_LIST, createSavedAccountList())
             }
         }
@@ -258,7 +273,8 @@ class SettingsImportViewModel(
         val contentUri = this.contentUri ?: error("contentUri is missing")
         viewModelScope.launch {
             try {
-                val importGeneralSettings = includeGeneralSettings
+                val containsGeneralSettings = this@SettingsImportViewModel.containsGeneralSettings
+                val importGeneralSettings = containsGeneralSettings && includeGeneralSettings
                 val importAccounts = selectedAccounts.toList()
 
                 val (elapsed, importResults) = measureRealtimeMillisWithResult {
@@ -272,7 +288,9 @@ class SettingsImportViewModel(
                 }
 
                 updateUiModel {
-                    setGeneralSettingsImportStatus(importResults, importGeneralSettings)
+                    if (containsGeneralSettings) {
+                        setGeneralSettingsImportStatus(importResults, importGeneralSettings)
+                    }
                     setAccountsImportStatus(importResults)
 
                     updateCloseButtonAndImportStatusText()
@@ -408,6 +426,7 @@ class SettingsImportViewModel(
         private const val STATE_LOADING_PROGRESS_VISIBLE = "loadingProgressVisible"
         private const val STATE_IMPORT_PROGRESS_VISIBLE = "importProgressVisible"
         private const val STATE_STATUS_TEXT = "statusText"
+        private const val STATE_CONTAINS_GENERAL_SETTINGS = "containsGeneralSettings"
         private const val STATE_INCLUDE_GENERAL_SETTINGS = "includeGeneralSettings"
         private const val STATE_CONTENT_URI = "contentUri"
         private const val STATE_GENERAL_SETTINGS_IMPORT_STATUS = "generalSettingsImportStatus"
