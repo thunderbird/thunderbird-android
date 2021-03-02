@@ -226,7 +226,9 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 accountToRefresh, true, true,
                 object : SimpleMessagingListener() {
                     override fun checkMailFinished(context: Context?, account: Account?) {
-                        swipeRefreshLayout.isRefreshing = false
+                        swipeRefreshLayout.post {
+                            swipeRefreshLayout.isRefreshing = false
+                        }
                     }
                 }
             )
