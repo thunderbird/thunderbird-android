@@ -16,8 +16,12 @@ import com.fsck.k9.notification.NotificationActionService
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9ActivityCommon
 import com.fsck.k9.ui.base.ThemeType
+import org.koin.android.ext.android.inject
 
 class DeleteConfirmationActivity : AppCompatActivity(), ConfirmationDialogFragmentListener {
+    private val preferences: Preferences by inject()
+    private val messagingController: MessagingController by inject()
+
     private val base = K9ActivityCommon(this, ThemeType.DIALOG)
 
     private lateinit var account: Account
@@ -49,15 +53,11 @@ class DeleteConfirmationActivity : AppCompatActivity(), ConfirmationDialogFragme
         requireNotNull(messagesToDelete) { "$EXTRA_MESSAGE_REFERENCES can't be null" }
         require(messagesToDelete.isNotEmpty()) { "$EXTRA_MESSAGE_REFERENCES can't be empty" }
 
-        val account = getAccountFromUuid(accountUuid) ?: error("$EXTRA_ACCOUNT_UUID couldn't be resolved to an account")
+        val account = preferences.getAccount(accountUuid)
+            ?: error("$EXTRA_ACCOUNT_UUID couldn't be resolved to an account")
 
         this.account = account
         this.messagesToDelete = messagesToDelete
-    }
-
-    private fun getAccountFromUuid(accountUuid: String): Account? {
-        val preferences = Preferences.getPreferences(this)
-        return preferences.getAccount(accountUuid)
     }
 
     private fun createConfirmationDialogFragment(): DialogFragment {
@@ -92,9 +92,8 @@ class DeleteConfirmationActivity : AppCompatActivity(), ConfirmationDialogFragme
     }
 
     private fun cancelNotifications() {
-        val controller = MessagingController.getInstance(this)
         for (messageReference in messagesToDelete) {
-            controller.cancelNotificationForMessage(account, messageReference)
+            messagingController.cancelNotificationForMessage(account, messageReference)
         }
     }
 
