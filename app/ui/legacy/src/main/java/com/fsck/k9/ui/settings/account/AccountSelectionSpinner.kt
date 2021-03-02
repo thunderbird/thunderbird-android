@@ -7,12 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Spinner
+import androidx.appcompat.widget.AppCompatSpinner
 import com.fsck.k9.Account
 import com.fsck.k9.ui.R
 import kotlinx.android.synthetic.main.account_list_item.view.*
 
-class AccountSelectionSpinner : Spinner {
+class AccountSelectionSpinner : AppCompatSpinner {
     var selection: Account
         get() = selectedItem as Account
         set(account) {
