@@ -142,6 +142,9 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private fun setAccounts(accounts: List<Account>) {
         val photoUris = mutableSetOf<Uri>()
 
+        val selectedAccountUuid = (headerView.activeProfile?.tag as? Account)?.uuid
+        val oldSelectedBackgroundColor = selectedBackgroundColor
+
         val accountItems = accounts.map { account ->
             val drawerId = (account.accountNumber + 1 shl DRAWER_ACCOUNT_SHIFT).toLong()
 
@@ -173,11 +176,20 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 }
             }
 
+            if (account.uuid == selectedAccountUuid) {
+                initializeWithAccountColor(account)
+            }
+
             accountItem
         }.toTypedArray()
 
         headerView.clear()
         headerView.addProfiles(*accountItems)
+
+        if (oldSelectedBackgroundColor != selectedBackgroundColor) {
+            // Recreate list of folders with updated account color
+            setUserFolders(foldersViewModel.getFolderListLiveData().value)
+        }
     }
 
     private fun addFooterItems() {
@@ -215,17 +227,8 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
     fun updateUserAccountsAndFolders(account: Account?) {
         if (account != null) {
-            getDrawerColorsForAccount(account).let { drawerColors ->
-                selectedBackgroundColor = drawerColors.selectedColor
-                val selectedTextColor = drawerColors.accentColor.toSelectedColorStateList()
-                this.selectedTextColor = selectedTextColor
-                folderBadgeStyle = BadgeStyle().apply {
-                    textColorStateList = selectedTextColor
-                }
-            }
-
+            initializeWithAccountColor(account)
             headerView.setActiveProfile((account.accountNumber + 1 shl DRAWER_ACCOUNT_SHIFT).toLong())
-            headerView.accountHeaderBackground.setColorFilter(account.chipColor, PorterDuff.Mode.MULTIPLY)
             foldersViewModel.loadFolders(account)
         }
 
@@ -243,6 +246,18 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 }
             )
         }
+    }
+
+    private fun initializeWithAccountColor(account: Account) {
+        getDrawerColorsForAccount(account).let { drawerColors ->
+            selectedBackgroundColor = drawerColors.selectedColor
+            val selectedTextColor = drawerColors.accentColor.toSelectedColorStateList()
+            this.selectedTextColor = selectedTextColor
+            folderBadgeStyle = BadgeStyle().apply {
+                textColorStateList = selectedTextColor
+            }
+        }
+        headerView.accountHeaderBackground.setColorFilter(account.chipColor, PorterDuff.Mode.MULTIPLY)
     }
 
     private fun handleItemClickListener(drawerItem: IDrawerItem<*>) {
