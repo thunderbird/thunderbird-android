@@ -59,6 +59,7 @@ import com.fsck.k9.ui.permissions.Permission
 import com.fsck.k9.ui.permissions.PermissionUiHelper
 import com.fsck.k9.view.ViewSwitcher
 import com.fsck.k9.view.ViewSwitcher.OnSwitchCompleteListener
+import com.mikepenz.materialdrawer.util.getOptimalDrawerWidth
 import org.koin.android.ext.android.inject
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -161,6 +162,9 @@ open class MessageList :
             view.setPadding(view.paddingLeft, insets.systemWindowInsetTop, view.paddingRight, view.paddingBottom)
             insets
         }
+
+        val swipeRefreshLayout = findViewById<View>(R.id.material_drawer_swipe_refresh)
+        swipeRefreshLayout.layoutParams.width = getOptimalDrawerWidth(this)
 
         initializeActionBar()
         initializeDrawer(savedInstanceState)
