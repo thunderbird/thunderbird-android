@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.jetbrains.kotlin.android'
-apply plugin: 'org.jetbrains.kotlin.android.extensions'
 
 if (rootProject.testCoverage) {
     apply plugin: 'jacoco'
@@ -132,10 +131,6 @@ android {
             includeAndroidResources = true
         }
     }
-}
-
-androidExtensions {
-    experimental = true
 }
 
 if (project.hasProperty('keyAlias')) {

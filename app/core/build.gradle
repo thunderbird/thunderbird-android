@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.android'
-apply plugin: 'org.jetbrains.kotlin.android.extensions'
+apply plugin: 'org.jetbrains.kotlin.plugin.parcelize'
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
@@ -68,8 +68,4 @@ android {
             includeAndroidResources = true
         }
     }
-}
-
-androidExtensions {
-    experimental = true
 }

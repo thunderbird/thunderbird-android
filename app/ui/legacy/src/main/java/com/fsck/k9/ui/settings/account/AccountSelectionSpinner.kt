@@ -7,10 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatSpinner
 import com.fsck.k9.Account
 import com.fsck.k9.ui.R
-import kotlinx.android.synthetic.main.account_list_item.view.*
 
 class AccountSelectionSpinner : AppCompatSpinner {
     var selection: Account
@@ -59,6 +59,9 @@ class AccountSelectionSpinner : AppCompatSpinner {
 
             val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.account_spinner_item, parent, false)
 
+            val name: TextView = view.findViewById(R.id.name)
+            val email: TextView = view.findViewById(R.id.email)
+
             return view.apply {
                 name.text = title
                 email.text = account.email
@@ -70,6 +73,9 @@ class AccountSelectionSpinner : AppCompatSpinner {
 
             val view = convertView
                 ?: LayoutInflater.from(context).inflate(R.layout.account_spinner_dropdown_item, parent, false)
+
+            val name: TextView = view.findViewById(R.id.name)
+            val email: TextView = view.findViewById(R.id.email)
 
             return view.apply {
                 name.text = account.description

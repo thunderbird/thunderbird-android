@@ -14,12 +14,12 @@ import com.fsck.k9.preferences.SettingsImporter
 import com.fsck.k9.preferences.SettingsImporter.ImportResults
 import com.fsck.k9.ui.getEnum
 import com.fsck.k9.ui.putEnum
-import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.parcelize.Parcelize
 import timber.log.Timber
 
 private typealias AccountUuid = String
