@@ -18,7 +18,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fsck.k9.Account;
@@ -472,10 +471,10 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
 
     protected void onNext() {
         ConnectionSecurity securityType = getSelectedSecurity();
-        String username = null;
+        String username = "";
         String password = null;
         String clientCertificateAlias = null;
-        AuthType authType = null;
+        AuthType authType = AuthType.AUTOMATIC;
         if ((ConnectionSecurity.STARTTLS_REQUIRED == securityType) ||
                 (ConnectionSecurity.SSL_TLS_REQUIRED == securityType)) {
             clientCertificateAlias = mClientCertificateSpinner.getAlias();
