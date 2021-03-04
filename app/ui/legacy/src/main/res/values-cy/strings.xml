@@ -121,7 +121,6 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="unflag_action">Tynnu seren</string>
   <string name="copy_action">Copïo</string>
   <string name="show_headers_action">Dangos penynnau</string>
-  <string name="hide_headers_action">Cuddio penynnau</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Copïwyd y cyfeiriad i\'r clipfwrdd</item>
     <item quantity="two">Copïwyd y cyfeiriadau i\'r clipfwrdd</item>
@@ -587,6 +586,7 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="manage_identities_title">Rheoli hunaniaethau</string>
   <string name="manage_identities_context_menu_title">Rheoli hunaniaeth</string>
   <string name="edit_identity_title">Golygu hunaniaeth</string>
+  <string name="edit_identity_save">Cadw</string>
   <string name="new_identity_action">Hunaniaeth newydd</string>
   <string name="account_settings_always_bcc_label">Bcc pob neges at</string>
   <string name="manage_identities_edit_action">Golygu</string>

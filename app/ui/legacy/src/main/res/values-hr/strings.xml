@@ -86,7 +86,6 @@
   <string name="unflag_action">Ukloni zvjezdicu</string>
   <string name="copy_action">Kopiraj</string>
   <string name="show_headers_action">Prikaži zaglavlje</string>
-  <string name="hide_headers_action">Sakrij zaglavlje</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Adresa kopirana u međuspremnik</item>
     <item quantity="few">Adrese kopirane u međuspremnik</item>
@@ -549,6 +548,7 @@
   <string name="manage_identities_title">Upravljanje identitetima</string>
   <string name="manage_identities_context_menu_title">Upravljaj identitetom</string>
   <string name="edit_identity_title">Uređivanje identiteta</string>
+  <string name="edit_identity_save">Spremi</string>
   <string name="new_identity_action">Novi identitet</string>
   <string name="account_settings_always_bcc_label">Bcc sve poruke na</string>
   <string name="manage_identities_edit_action">Uredi</string>

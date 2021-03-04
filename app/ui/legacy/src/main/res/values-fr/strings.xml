@@ -126,7 +126,6 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="unflag_action">Supprimer l’étoile</string>
   <string name="copy_action">Copier</string>
   <string name="show_headers_action">Afficher les en-têtes</string>
-  <string name="hide_headers_action">Cacher les en-têtes</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Adresse copiée dans le presse-papiers</item>
     <item quantity="other">Adresses copiées dans le presse-papiers</item>
@@ -588,6 +587,7 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="manage_identities_title">Gérer les identités</string>
   <string name="manage_identities_context_menu_title">Gérer l’identité</string>
   <string name="edit_identity_title">Modifier l’identité</string>
+  <string name="edit_identity_save">Enregistrer</string>
   <string name="new_identity_action">Nouvelle identité</string>
   <string name="account_settings_always_bcc_label">Envoyer une copie Cci de tous les courriels à</string>
   <string name="manage_identities_edit_action">Modifier</string>
@@ -1040,4 +1040,5 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Autoriser l’accès au contact</string>
   <string name="permission_contacts_rationale_message">Afin de fournir des suggestions de contact et d’afficher les noms et les photos des contacts, l’appli a besoin d’accéder à vos contacts.</string>
+  <string name="generic_loading_error">Une erreur est survenue lors du chargement des données</string>
 </resources>

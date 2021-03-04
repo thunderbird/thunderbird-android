@@ -126,7 +126,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="unflag_action">Hiqi yll</string>
   <string name="copy_action">Kopjoje</string>
   <string name="show_headers_action">Shfaqi kryet</string>
-  <string name="hide_headers_action">Fshihi kryet</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Adresa u kopjua në të papastër</item>
     <item quantity="other">Adresat u kopjuan në të papastër</item>
@@ -588,6 +587,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="manage_identities_title">Administroni identitete</string>
   <string name="manage_identities_context_menu_title">Administroni identitet</string>
   <string name="edit_identity_title">Përpunoni identitet</string>
+  <string name="edit_identity_save">Ruaje</string>
   <string name="new_identity_action">Identitet i ri</string>
   <string name="account_settings_always_bcc_label">Bcc krejt mesazhet për</string>
   <string name="manage_identities_edit_action">Përpunoni</string>
@@ -1045,4 +1045,5 @@ Mund ta mbani këtë mesazh dhe ta përdorni si një kopjeruatje të kyçit tuaj
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Lejo hyrje te kontaktet</string>
   <string name="permission_contacts_rationale_message">Për të qenë në gjendje të jepen sugjerime kontaktesh dhe të shfaqen emra dhe telefona kontaktesh, aplikacioni ka nevojë të hyjë te kontaktet tuaja.</string>
+  <string name="generic_loading_error">Ndodhi një gabim teksa ngarkoheshin të dhënat</string>
 </resources>

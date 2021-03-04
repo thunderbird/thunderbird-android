@@ -86,7 +86,6 @@
   <string name="unflag_action">Eemalda tärn</string>
   <string name="copy_action">Kopeeri</string>
   <string name="show_headers_action">Näita päiseid</string>
-  <string name="hide_headers_action">Peida päised</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Aadress kopeeritud lõikelauale</item>
     <item quantity="other">Aadressid kopeeritud lõikelauale</item>
@@ -534,6 +533,7 @@
   <string name="manage_identities_title">Halda indentiteete</string>
   <string name="manage_identities_context_menu_title">Halda identiteeti</string>
   <string name="edit_identity_title">Muuda identiteeti</string>
+  <string name="edit_identity_save">Salvesta</string>
   <string name="new_identity_action">Uus identiteet</string>
   <string name="account_settings_always_bcc_label">Kõikide sõnumite Bcc saata</string>
   <string name="manage_identities_edit_action">Muuda</string>

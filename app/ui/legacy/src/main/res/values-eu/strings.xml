@@ -114,7 +114,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="unflag_action">Kendu izarra</string>
   <string name="copy_action">Kopiatu</string>
   <string name="show_headers_action">Erakutsi goiburuak</string>
-  <string name="hide_headers_action">Ezkutatu goiburuak</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Helbidea arbelera kopiatuta</item>
     <item quantity="other">Helbideak arbelera kopiatuta</item>
@@ -556,6 +555,7 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="manage_identities_title">Kudeatu identitateak</string>
   <string name="manage_identities_context_menu_title">Kudeatu identitatea</string>
   <string name="edit_identity_title">Editatu identitatea</string>
+  <string name="edit_identity_save">Gorde</string>
   <string name="new_identity_action">Identitate berria</string>
   <string name="account_settings_always_bcc_label">Mezu guztietarako Bcc</string>
   <string name="manage_identities_edit_action">Editatu</string>

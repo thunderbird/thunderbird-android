@@ -115,7 +115,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="unflag_action">Прибрати зірочку</string>
   <string name="copy_action">Копіювати</string>
   <string name="show_headers_action">Показати заголовки</string>
-  <string name="hide_headers_action">Приховати заголовки</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Адресу скопійовано до комірки обміну</item>
     <item quantity="few">Адресу скопійовано до комірки обміну</item>
@@ -566,6 +565,7 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="manage_identities_title">Управління особами</string>
   <string name="manage_identities_context_menu_title">Управління особою</string>
   <string name="edit_identity_title">Редагувати особу</string>
+  <string name="edit_identity_save">Зберегти</string>
   <string name="new_identity_action">Нова особа</string>
   <string name="account_settings_always_bcc_label">Прихована копія усіх повідомлень до </string>
   <string name="manage_identities_edit_action">Редагувати</string>

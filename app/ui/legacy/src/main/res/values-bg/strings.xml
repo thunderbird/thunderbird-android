@@ -114,7 +114,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="unflag_action">Премахни звезда</string>
   <string name="copy_action">Копирай</string>
   <string name="show_headers_action">Покажи заглавията</string>
-  <string name="hide_headers_action">Скрий заглавията</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Адресът е копиран</item>
     <item quantity="other">Адресите са копирани</item>
@@ -554,6 +553,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="manage_identities_title">Управление на самоличности</string>
   <string name="manage_identities_context_menu_title">Управление на самоличност</string>
   <string name="edit_identity_title">Редактиране на индентичноста</string>
+  <string name="edit_identity_save">Запиши</string>
   <string name="new_identity_action">Нова идентичност</string>
   <string name="account_settings_always_bcc_label">Всс всички съобщения до</string>
   <string name="manage_identities_edit_action">Редактирай</string>

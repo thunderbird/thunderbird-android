@@ -74,7 +74,6 @@
   <string name="unflag_action">מחק כוכב</string>
   <string name="copy_action">העתק</string>
   <string name="show_headers_action">הצג כותרות</string>
-  <string name="hide_headers_action">הסתר כותרות</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">כתובת הועתקה ללוח ההעתקה</item>
     <item quantity="two">כתובות הועתקו ללוח ההעתקה</item>
@@ -404,6 +403,7 @@
   <string name="manage_identities_title">נהל זהויות</string>
   <string name="manage_identities_context_menu_title">נהל זהות</string>
   <string name="edit_identity_title">ערוך זהות</string>
+  <string name="edit_identity_save">שמור</string>
   <string name="new_identity_action">זהות חדשה</string>
   <string name="account_settings_always_bcc_label">עותק מוסתר לכל ההודעות אל</string>
   <string name="manage_identities_edit_action">ערוך</string>

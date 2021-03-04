@@ -104,7 +104,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="unflag_action">Odstrániť hviezdičku</string>
   <string name="copy_action">Kopírovať</string>
   <string name="show_headers_action">Zobraziť hlavičky</string>
-  <string name="hide_headers_action">Skryť hlavičky</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Adresa bola skopírovaná do schránky.</item>
     <item quantity="few">Adresy boli skopírované do schránky.</item>
@@ -520,6 +519,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="manage_identities_title">Spravovanie identít</string>
   <string name="manage_identities_context_menu_title">Spravovať identitu</string>
   <string name="edit_identity_title">Upraviť identitu</string>
+  <string name="edit_identity_save">Uložiť</string>
   <string name="new_identity_action">Nová identita</string>
   <string name="account_settings_always_bcc_label">Skrytá kópia všetkých správ na</string>
   <string name="manage_identities_edit_action">Upraviť</string>

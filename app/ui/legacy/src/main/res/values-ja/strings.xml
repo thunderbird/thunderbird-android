@@ -9,9 +9,18 @@
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
+  <string name="source_code">ソースコード</string>
   <string name="app_license">Apache License, Version 2.0</string>
+  <string name="about_project_title">オープンソースプロジェクト</string>
+  <string name="about_website_title">Webサイト</string>
+  <string name="user_forum_title">ユーザーフォーラム</string>
+  <string name="about_fediverse_title">Fediverse</string>
+  <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">ライブラリー</string>
   <string name="license">ライセンス</string>
+  <string name="changelog_title">変更履歴</string>
+  <string name="changelog_loading_error">変更履歴を読み込みできませんでした。</string>
+  <string name="changelog_version_title">バージョン %s</string>
   <!--Welcome message-->
   <string name="welcome_message_title">K-9 Mailへようこそ</string>
   <string name="accounts_welcome"><![CDATA[
@@ -117,7 +126,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="unflag_action">スターをはずす</string>
   <string name="copy_action">コピー</string>
   <string name="show_headers_action">ヘッダを表示</string>
-  <string name="hide_headers_action">ヘッダを隠す</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="other">アドレスをクリップボードにコピーしました</item>
   </plurals>
@@ -576,6 +584,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="manage_identities_title">差出人情報管理</string>
   <string name="manage_identities_context_menu_title">差出人情報管理</string>
   <string name="edit_identity_title">差出人情報管理</string>
+  <string name="edit_identity_save">保存</string>
   <string name="new_identity_action">差出人情報の新規作成</string>
   <string name="account_settings_always_bcc_label">Bcc</string>
   <string name="manage_identities_edit_action">編集</string>
@@ -676,6 +685,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="volume_navigation_title">ボリュームキー操作</string>
   <string name="volume_navigation_message">メッセージ表示</string>
   <string name="volume_navigation_list">一覧表示</string>
+  <string name="show_unified_inbox_title">統合フォルダを表示</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - 未読</string>
   <string name="search_all_messages_title">全メッセージ</string>
@@ -1028,4 +1038,5 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <!--permissions-->
   <string name="permission_contacts_rationale_title">連絡先へのアクセスを許可</string>
   <string name="permission_contacts_rationale_message">連絡先の提案をできるようにし、連絡先の名前と写真を表示するには、アプリが連絡先にアクセスする必要があります。</string>
+  <string name="generic_loading_error">データの読み込み中にエラーが発生しました</string>
 </resources>

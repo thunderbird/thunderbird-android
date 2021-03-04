@@ -125,7 +125,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="unflag_action">Remover estrela</string>
   <string name="copy_action">Copiar</string>
   <string name="show_headers_action">Exibir cabeçalhos</string>
-  <string name="hide_headers_action">Ocultar cabeçalhos</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Endereço copiado para área de transferência</item>
     <item quantity="other">Endereços copiados para a área de transferência</item>
@@ -586,6 +585,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="manage_identities_title">Gerenciar identidades</string>
   <string name="manage_identities_context_menu_title">Gerenciar identidade</string>
   <string name="edit_identity_title">Editar identidade</string>
+  <string name="edit_identity_save">Salvar</string>
   <string name="new_identity_action">Nova identidade</string>
   <string name="account_settings_always_bcc_label">Encaminhar todas as mensagens via Cco para</string>
   <string name="manage_identities_edit_action">Editar</string>
@@ -1043,4 +1043,5 @@ Você pode manter esta mensagem e usá-la como um backup para a sua chave secret
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Permitir acesso aos contatos</string>
   <string name="permission_contacts_rationale_message">Para fornecer sugestões e exibir nomes e fotos de contatos, o app precisa de ter acesso aos seus contatos.</string>
+  <string name="generic_loading_error">Um erro ocorreu durante o carregamento dos dados</string>
 </resources>

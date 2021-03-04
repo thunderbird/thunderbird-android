@@ -114,7 +114,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="unflag_action">Dilemel ar steredenn</string>
   <string name="copy_action">Eilañ</string>
   <string name="show_headers_action">Diskouez an talbennoù</string>
-  <string name="hide_headers_action">Kuzhat an talbennoù</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Chomlec’h eilet er golver</item>
     <item quantity="two">Chomlec’hioù eilet er golver</item>
@@ -561,6 +560,7 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="manage_identities_title">Merañ ar pivelezhioù</string>
   <string name="manage_identities_context_menu_title">Merañ ar bivelezh</string>
   <string name="edit_identity_title">Embann ar bivelezh</string>
+  <string name="edit_identity_save">Enrollañ</string>
   <string name="new_identity_action">Pivelezh nevez</string>
   <string name="account_settings_always_bcc_label">Bcc an holl gemennadennoù da</string>
   <string name="manage_identities_edit_action">Embann</string>

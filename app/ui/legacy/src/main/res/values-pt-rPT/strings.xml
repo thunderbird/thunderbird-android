@@ -117,7 +117,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="unflag_action">Remover estrela</string>
   <string name="copy_action">Copiar</string>
   <string name="show_headers_action">Mostrar cabeçalhos</string>
-  <string name="hide_headers_action">Esconder cabeçalhos</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Endereço copiado para a área de transferência</item>
     <item quantity="other">Endereços copiados para a área de transferência</item>
@@ -457,7 +456,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_settings_folders">Pastas</string>
   <string name="account_settings_quote_prefix_label">Prefixo do texto citado</string>
   <string name="account_settings_crypto">Encriptação ponta-a-ponta</string>
-  <string name="account_settings_crypto_app">Ativar suporte OenPGP</string>
+  <string name="account_settings_crypto_app">Ativar suporte OpenPGP</string>
   <string name="account_settings_crypto_app_select_title">Selecionar aplicação OpenPGP</string>
   <string name="account_settings_crypto_key">Configurar chave ponta-a-ponta</string>
   <string name="account_settings_crypto_summary_off">Sem aplicação OpenPGP configurada</string>
@@ -578,6 +577,7 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="manage_identities_title">Gerir identidades</string>
   <string name="manage_identities_context_menu_title">Gerir identidade</string>
   <string name="edit_identity_title">Editar identidade</string>
+  <string name="edit_identity_save">Guardar</string>
   <string name="new_identity_action">Nova identidade</string>
   <string name="account_settings_always_bcc_label">Enviar Bcc em todas as mensagens para</string>
   <string name="manage_identities_edit_action">Editar</string>

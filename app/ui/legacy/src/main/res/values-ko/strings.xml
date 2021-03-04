@@ -77,7 +77,6 @@
   <string name="unflag_action">별표 해제하기</string>
   <string name="copy_action">복사</string>
   <string name="show_headers_action">헤더 보이기</string>
-  <string name="hide_headers_action">헤더 숨기기</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="other">클립보드에 이메일 주소 복사</item>
   </plurals>
@@ -490,6 +489,7 @@
   <string name="manage_identities_title">신원 관리</string>
   <string name="manage_identities_context_menu_title">신원 관리</string>
   <string name="edit_identity_title">신원 수정</string>
+  <string name="edit_identity_save">저장</string>
   <string name="new_identity_action">새로운 신원</string>
   <string name="account_settings_always_bcc_label">모든 메시지를 비밀 첨부 보냄</string>
   <string name="manage_identities_edit_action">수정</string>

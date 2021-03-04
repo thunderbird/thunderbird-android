@@ -124,7 +124,6 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="unflag_action">Malsteletigi</string>
   <string name="copy_action">Kopii</string>
   <string name="show_headers_action">Montri mesaĝokapojn</string>
-  <string name="hide_headers_action">Kaŝi mesaĝokapojn</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Adreso kopiita al tondujo</item>
     <item quantity="other">Adresoj kopiitaj al tondujo</item>
@@ -585,6 +584,7 @@ Bonvolu raporti erarojn, kontribui novajn eblojn kaj peti pri novaj funkcioj per
   <string name="manage_identities_title">Administri identigilojn</string>
   <string name="manage_identities_context_menu_title">Administri identigilon</string>
   <string name="edit_identity_title">Redakti identigilon</string>
+  <string name="edit_identity_save">Konservi</string>
   <string name="new_identity_action">Nova identigilo</string>
   <string name="account_settings_always_bcc_label">Kaŝkopii ĉiujn mesaĝojn al</string>
   <string name="manage_identities_edit_action">Redakti</string>
@@ -1042,4 +1042,5 @@ Vi povas konservi tiun ĉi mesaĝon kaj uzi ĝin kiel sekurkopion de via privata
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Permesu aliron al kontaktoj</string>
   <string name="permission_contacts_rationale_message">Por ebligi al K-9 sugesti kontaktojn kaj vidigi iliajn nomojn kaj fotojn, la aplikaĵo postulas aliron al viaj kontaktoj.</string>
+  <string name="generic_loading_error">Eraro okazis dum enlegi datumojn</string>
 </resources>

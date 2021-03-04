@@ -116,7 +116,6 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="unflag_action">Borrar estrella</string>
   <string name="copy_action">Copiar</string>
   <string name="show_headers_action">Mostrar cabeceras</string>
-  <string name="hide_headers_action">Ocultar cabeceras</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Se ha copiado la dirección al portapapeles</item>
     <item quantity="other">Se han copiado las direcciones al portapeles</item>
@@ -577,6 +576,7 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="manage_identities_title">Gestionar identidades</string>
   <string name="manage_identities_context_menu_title">Gestionar identidad</string>
   <string name="edit_identity_title">Editar identidad</string>
+  <string name="edit_identity_save">Guardar</string>
   <string name="new_identity_action">Nueva identidad</string>
   <string name="account_settings_always_bcc_label">Cco en todos los mensajes para</string>
   <string name="manage_identities_edit_action">Editar</string>

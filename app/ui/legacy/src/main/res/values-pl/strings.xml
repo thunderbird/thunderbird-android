@@ -119,7 +119,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="unflag_action">Usuń gwiazdkę</string>
   <string name="copy_action">Skopiuj</string>
   <string name="show_headers_action">Pokaż nagłówki</string>
-  <string name="hide_headers_action">Ukryj nagłówki</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Adres skopiowany do schowka</item>
     <item quantity="few">Adresy skopiowane do schowka</item>
@@ -584,6 +583,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="manage_identities_title">Zarządzaj tożsamościami</string>
   <string name="manage_identities_context_menu_title">Zarządzaj tożsamością</string>
   <string name="edit_identity_title">Edytcja tożsamość</string>
+  <string name="edit_identity_save">Zapisz</string>
   <string name="new_identity_action">Nowa tożsamość</string>
   <string name="account_settings_always_bcc_label">Adres UDW dla wysyłanych wiadomości (opcja)</string>
   <string name="manage_identities_edit_action">Edytuj</string>

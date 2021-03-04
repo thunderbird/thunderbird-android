@@ -121,7 +121,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="unflag_action">Verwijder ster</string>
   <string name="copy_action">Kopieer</string>
   <string name="show_headers_action">Laat koppen zien</string>
-  <string name="hide_headers_action">Verberg koppen</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Adres naar klembord gekopieerd</item>
     <item quantity="other">Adressen naar klembord gekopieerd</item>
@@ -582,6 +581,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="manage_identities_title">Beheer identiteiten</string>
   <string name="manage_identities_context_menu_title">Beheer identiteit</string>
   <string name="edit_identity_title">Identiteit aanpassen</string>
+  <string name="edit_identity_save">Bewaar</string>
   <string name="new_identity_action">Nieuwe identiteit</string>
   <string name="account_settings_always_bcc_label">Bcc alle berichten naar</string>
   <string name="manage_identities_edit_action">Aanpassen</string>
@@ -1039,4 +1039,5 @@ U kunt dit bericht bewaren als backup voor uw geheime sleutel. Als u dit wilt do
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Sta toegang tot contacten toe</string>
   <string name="permission_contacts_rationale_message">Om contact suggesties te kunnen bieden en om namen en/of foto\'s van contacten weer te geven, heeft de app toegang nodig tot je contactenlijst.</string>
+  <string name="generic_loading_error">Er is een fout opgetreden bij het laden van de gegevens</string>
 </resources>

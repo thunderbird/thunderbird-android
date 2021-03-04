@@ -126,7 +126,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="unflag_action">Wichtig-Markierung entfernen</string>
   <string name="copy_action">Kopieren</string>
   <string name="show_headers_action">Kopfzeilen anzeigen</string>
-  <string name="hide_headers_action">Kopfzeilen verbergen</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Adresse in Zwischenablage kopiert</item>
     <item quantity="other">Adressen in Zwischenablage kopiert</item>
@@ -588,6 +587,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="manage_identities_title">Identitäten verwalten</string>
   <string name="manage_identities_context_menu_title">Identität bearbeiten</string>
   <string name="edit_identity_title">Identität bearbeiten</string>
+  <string name="edit_identity_save">Speichern</string>
   <string name="new_identity_action">Neue Identität erstellen</string>
   <string name="account_settings_always_bcc_label">Alle Nachrichten als BCC an</string>
   <string name="manage_identities_edit_action">Bearbeiten</string>
@@ -1046,4 +1046,5 @@ Sie können diese Nachricht aufheben und sie als Backup für Ihren geheimen Schl
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Zugriff auf Kontakte erlauben</string>
   <string name="permission_contacts_rationale_message">Damit die App Kontakte vorschlagen sowie Namen und Fotos der Kontakte anzeigen kann, benötigt sie Zugriff auf Ihre Kontakte.</string>
+  <string name="generic_loading_error">Beim Laden der Daten ist ein Fehler aufgetreten</string>
 </resources>

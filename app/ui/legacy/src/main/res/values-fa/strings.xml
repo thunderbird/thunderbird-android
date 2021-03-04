@@ -115,7 +115,6 @@
   <string name="unflag_action">حذف ستاره</string>
   <string name="copy_action">کپی به</string>
   <string name="show_headers_action">نمایش سرایندها</string>
-  <string name="hide_headers_action">پنهان‌کردن سرایندها</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">نشانی‌ها در بریده‌دان کپی شد</item>
     <item quantity="other">نشانی‌ها در بریده‌دان کپی شد</item>
@@ -577,6 +576,7 @@
   <string name="manage_identities_title">مدیریت هویت‌ها</string>
   <string name="manage_identities_context_menu_title">مدیریت هویت</string>
   <string name="edit_identity_title">ویرایش هویت</string>
+  <string name="edit_identity_save">ذخیره</string>
   <string name="new_identity_action">هویت جدید</string>
   <string name="account_settings_always_bcc_label">همهٔ پیام‌ها «مخفیانه به» کجا ارسال شوند؟</string>
   <string name="manage_identities_edit_action">ویرایش</string>

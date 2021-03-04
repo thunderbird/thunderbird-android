@@ -117,7 +117,6 @@ Send feilmeldinger, bidra med nye funksjoner og still spørsmål her:
   <string name="unflag_action">Fjern stjerne</string>
   <string name="copy_action">Kopier</string>
   <string name="show_headers_action">Vis meldingshode</string>
-  <string name="hide_headers_action">Skul meldingshode</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Kopierte adressen til utklippstavlen</item>
     <item quantity="other">Kopierte adressene til utklippstavlen</item>
@@ -577,6 +576,7 @@ til <xliff:g id="messages_to_load">%d</xliff:g> flere</string>
   <string name="manage_identities_title">Behandle identiteter</string>
   <string name="manage_identities_context_menu_title">Behandle identitet</string>
   <string name="edit_identity_title">Rediger identitet</string>
+  <string name="edit_identity_save">Lagre</string>
   <string name="new_identity_action">Ny identitet</string>
   <string name="account_settings_always_bcc_label">Blindkopi til</string>
   <string name="manage_identities_edit_action">Rediger</string>

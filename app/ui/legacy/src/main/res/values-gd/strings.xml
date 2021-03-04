@@ -104,7 +104,6 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="unflag_action">Thoir an rionnag air falbh</string>
   <string name="copy_action">Lethbhreac</string>
   <string name="show_headers_action">Seall na bannan-cinn</string>
-  <string name="hide_headers_action">Falaich na bannan-cinn</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Chaidh an seòladh a chur air an stòr-bhòrd</item>
     <item quantity="two">Chaidh na seòlaidhean a chur air an stòr-bhòrd</item>
@@ -525,6 +524,7 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="manage_identities_title">Stiùirich na IDs</string>
   <string name="manage_identities_context_menu_title">Stiùirich an ID</string>
   <string name="edit_identity_title">Deasaich an ID</string>
+  <string name="edit_identity_save">Sàbhail</string>
   <string name="new_identity_action">ID ùr</string>
   <string name="account_settings_always_bcc_label">Cuir Bcc de gach teachdaireachd gu</string>
   <string name="manage_identities_edit_action">Deasaich</string>

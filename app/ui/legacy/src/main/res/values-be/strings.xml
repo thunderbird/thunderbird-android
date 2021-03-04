@@ -9,9 +9,18 @@
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
+  <string name="source_code">Зыходны код</string>
   <string name="app_license">Ліцэнзія Apache, версія 2.0</string>
+  <string name="about_project_title">Праект з адкрытым зыходным кодам</string>
+  <string name="about_website_title">Сайт</string>
+  <string name="user_forum_title">Форум</string>
+  <string name="about_fediverse_title">Fediverse</string>
+  <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">Бібліятэкі</string>
   <string name="license">Ліцэнзія</string>
+  <string name="changelog_title">Спіс змен</string>
+  <string name="changelog_loading_error">Не атрымалася загрузіць спіс змен.</string>
+  <string name="changelog_version_title">Версія %s</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Вітаем у K-9</string>
   <string name="accounts_welcome"><![CDATA[<p>
@@ -115,7 +124,6 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="unflag_action">Выдаліць адзнаку</string>
   <string name="copy_action">Капіяваць</string>
   <string name="show_headers_action">Паказаць загалоўкі</string>
-  <string name="hide_headers_action">Схаваць загалоўкі</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Адрас скапіяваны ў буфер абмену</item>
     <item quantity="few">Адрасы скапіяваныя ў буфер абмену</item>
@@ -319,7 +327,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_setup_incoming_security_ssl_label">SSL/TLS</string>
   <string name="account_setup_incoming_security_tls_label">STARTTLS</string>
   <string name="account_setup_incoming_invalid_setting_combo_notice">\"<xliff:g id="setting_1_label">%1$s</xliff:g> = <xliff:g id="setting_1_value">%2$s</xliff:g>\" непрыдатны для \"<xliff:g id="setting_2_label">%3$s</xliff:g> = <xliff:g id="setting_2_value">%4$s</xliff:g>\"</string>
-  <string name="account_setup_incoming_delete_policy_label">Чаму я выдаліў ліст</string>
+  <string name="account_setup_incoming_delete_policy_label">Дзеянне з лістамі на серверы</string>
   <string name="account_setup_incoming_delete_policy_never_label">Пакінуць на серверы</string>
   <string name="account_setup_incoming_delete_policy_delete_label">Выдаліць з сервера</string>
   <string name="account_setup_incoming_delete_policy_markread_label">Пазначыць на серверы як прачытанае</string>
@@ -329,7 +337,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_setup_incoming_other_label">Іншыя</string>
   <string name="local_storage_provider_external_label">Вонкавае сховішча (картка памяці)</string>
   <string name="local_storage_provider_internal_label">Унутранае сховішча</string>
-  <string name="account_setup_expunge_policy_label">Сціраць выдаленыя лісты з сервера</string>
+  <string name="account_setup_expunge_policy_label">Сціранне выдаленых лістоў з сервера</string>
   <string name="account_setup_expunge_policy_immediately">Неадкладна</string>
   <string name="account_setup_expunge_policy_on_poll">Падчас праверкі</string>
   <string name="account_setup_expunge_policy_manual">Уласнаручна</string>
@@ -476,7 +484,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_settings_led_color_label">Колер індыкатара</string>
   <string name="account_settings_led_color_summary">Колер індыкатара для апавяшчэнняў для гэтага акаўнта</string>
   <string name="account_settings_mail_display_count_label">Памер лакальнага каталога</string>
-  <string name="account_settings_autodownload_message_size_label">Атрымліваць фрагмент</string>
+  <string name="account_settings_autodownload_message_size_label">Памер атрымання</string>
   <string name="account_settings_autodownload_message_size_1">1 Кб</string>
   <string name="account_settings_autodownload_message_size_2">2 Кб</string>
   <string name="account_settings_autodownload_message_size_4">4 Кб</string>
@@ -492,7 +500,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_settings_autodownload_message_size_5120">5 Мб</string>
   <string name="account_settings_autodownload_message_size_10240">10 Мб</string>
   <string name="account_settings_autodownload_message_size_any">цалкам</string>
-  <string name="account_settings_message_age_label">Колькасць сінхранізацыі лістоў</string>
+  <string name="account_settings_message_age_label">Перыяд сінхранізацыі лістоў</string>
   <string name="account_settings_message_age_any">увесь час</string>
   <string name="account_settings_message_age_0">сёння</string>
   <string name="account_settings_message_age_1">2 апошнія дні</string>
@@ -581,6 +589,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="manage_identities_title">Кіраванне ролямі</string>
   <string name="manage_identities_context_menu_title">Кіраванне роляй</string>
   <string name="edit_identity_title">Рэдагаванне ролі</string>
+  <string name="edit_identity_save">Захаваць</string>
   <string name="new_identity_action">Новая роля</string>
   <string name="account_settings_always_bcc_label">Схаваная копія ўсіх паведамленняў</string>
   <string name="manage_identities_edit_action">Рэдагаваць</string>
@@ -681,6 +690,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="volume_navigation_title">Навігацыя клавішамі гучнасці</string>
   <string name="volume_navigation_message">У лісце</string>
   <string name="volume_navigation_list">У спісе</string>
+  <string name="show_unified_inbox_title">Агульная скрыня ўваходных лістоў для ўсіх акаўнтаў</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - не прачытана</string>
   <string name="search_all_messages_title">Усе лісты</string>
@@ -767,7 +777,7 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="dialog_attachment_progress_title">Спампоўванне ўкладзеных файлаў</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
-  <string name="settings_list_backup_category">Рэзервовая копія</string>
+  <string name="settings_list_backup_category">Рэзервовае капіяванне</string>
   <string name="settings_list_miscellaneous_category">Рознае</string>
   <string name="settings_export_title">Экспартаваць налады</string>
   <string name="settings_export_button">Экспарт</string>
@@ -1048,4 +1058,5 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Дазволіць доступ да кантактаў</string>
   <string name="permission_contacts_rationale_message">Для вываду прапаноў імёнаў і фота праграме неабходна мець доступ да кантактаў.</string>
+  <string name="generic_loading_error">Падчас загрузкі даных адбылася памылка</string>
 </resources>

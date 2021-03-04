@@ -7,10 +7,20 @@
   <string name="shortcuts_title">Λογαριασμοί K-9</string>
   <string name="unread_widget_label">Μη αναγνωσμένα K-9</string>
   <!--Used in the about dialog-->
+  <string name="app_authors">The K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Πνευματικά δικαιώματα 2008-<xliff:g>%s</xliff:g> από The K-9 Dog Walkers. Τμηματικά πνευματικά δικαιώματα 2006-<xliff:g>%s</xliff:g> από το Android Open Source Project.</string>
+  <string name="source_code">Πηγαίος κώδικας</string>
   <string name="app_license">Άδεια χρήσης Apache, έκδοση 2.0.</string>
+  <string name="about_project_title">Έργο Ανοιχτού Κώδικα</string>
+  <string name="about_website_title">Ιστότοπος</string>
+  <string name="user_forum_title">Χώρος συζητήσεων χρηστών</string>
+  <string name="about_fediverse_title">Fediverse</string>
+  <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">Βιβλιοθήκες</string>
   <string name="license">Άδεια</string>
+  <string name="changelog_title">Κατάλογος αλλαγών</string>
+  <string name="changelog_loading_error">Δεν ήταν δυνατή η φόρτωση του καταλόγου αλλαγών</string>
+  <string name="changelog_version_title">Έκδοση %s</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Καλώς ήλθατε στο K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -86,9 +96,10 @@
   <string name="reply_all_action">Απάντηση σε όλους</string>
   <string name="delete_action">Διαγραφή</string>
   <string name="archive_action">Αρχειοθέτηση</string>
-  <string name="spam_action">Σκουπιδοταχυδρομείο</string>
+  <string name="spam_action">Ανεπιθύμητα</string>
   <string name="forward_action">Προώθηση</string>
   <string name="forward_as_attachment_action">Προώθηση σαν συνημέννο</string>
+  <string name="edit_as_new_message_action">Επεξεργασία ως νέο μήνυμα</string>
   <string name="move_action">Μετακίνηση</string>
   <string name="move_to_drafts_action">Μετακίνηση στα πρόχειρα</string>
   <string name="single_message_options_action">Επιλογές μηνύματος…</string>
@@ -115,7 +126,6 @@
   <string name="unflag_action">Αφαίρεση αστεριού</string>
   <string name="copy_action">Αντιγραφή</string>
   <string name="show_headers_action">Προβολή επικεφαλίδων</string>
-  <string name="hide_headers_action">Απόκρυψη επικεφαλίδων</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Η διεύθυνση αντιγράφηκε στο πρόχειρο</item>
     <item quantity="other">Οι διευθύνσεις αντιγράφηκαν στο πρόχειρο </item>
@@ -160,7 +170,7 @@
   <string name="notification_action_delete_all">Διαγραφή όλων</string>
   <string name="notification_action_archive">Αρχειοθήκη</string>
   <string name="notification_action_archive_all">Αρχειοθέτηση όλων</string>
-  <string name="notification_action_spam">Σκουπίδια</string>
+  <string name="notification_action_spam">Ανεπιθύμητα</string>
   <string name="notification_certificate_error_title">Σφάλμα πιστοποιητικού για <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Ελέγξτε τις ρυθμίσεις του εξυπηρετητή</string>
   <string name="notification_authentication_error_title">Αποτυχία πιστοποίησης</string>
@@ -171,7 +181,9 @@
   <string name="notification_bg_send_title">Αποστολή μηνύματος</string>
   <string name="notification_bg_title_separator">:</string>
   <string name="notification_channel_messages_title">Μηνύματα</string>
+  <string name="notification_channel_messages_description">Ειδοποιήσεις που αφορούν μηνύματα</string>
   <string name="notification_channel_miscellaneous_title">Διάφορα</string>
+  <string name="notification_channel_miscellaneous_description">Διάφορες ειδοποιήσεις όπως σφάλματα κ.τ.λ.</string>
   <string name="special_mailbox_name_inbox">Εισερχόμενα</string>
   <string name="special_mailbox_name_outbox">Εξερχόμενα</string>
   <string name="special_mailbox_name_drafts">Πρόχειρα</string>
@@ -228,12 +240,12 @@
   <string name="global_settings_flag_label">Προβολή αστεριών</string>
   <string name="global_settings_flag_summary">Τα αστέρια υποδηλώνουν σημαντικά μηνύματα</string>
   <string name="global_settings_preview_lines_label">Προεπισκόπηση μηνυμάτων</string>
-  <string name="global_settings_show_correspondent_names_label">Προβολή ονόματος επιστολογράφων</string>
-  <string name="global_settings_show_correspondent_names_summary">Προβολή ονόματος επιστολογράφων παρά των διευθύνσεων ηλεκτρονικού ταχυδρομείου</string>
+  <string name="global_settings_show_correspondent_names_label">Εμφάνιση ονομάτων επιστολογράφων</string>
+  <string name="global_settings_show_correspondent_names_summary">Εμφάνιση των ονομάτων των επιστολογράφων αντί των διευθύνσεων ηλεκτρονικού ταχυδρομείου</string>
   <string name="global_settings_sender_above_subject_label">Αποστολέας πάνω από το θέμα</string>
-  <string name="global_settings_sender_above_subject_summary">Προβολή επιστολογράφων πάνω από τη γραμμή του θέματος και όχι από κάτω</string>
-  <string name="global_settings_show_contact_name_label">Προβολή ονομάτων επαφών</string>
-  <string name="global_settings_show_contact_name_summary">Όνομα επιστολογράφων από Επαφές όταν είναι διαθέσιμο</string>
+  <string name="global_settings_sender_above_subject_summary">Εμφάνιση των ονομάτων των επιστολογράφων πάνω από τη γραμμή του θέματος, όχι από κάτω</string>
+  <string name="global_settings_show_contact_name_label">Εμφάνιση ονομάτων επαφών</string>
+  <string name="global_settings_show_contact_name_summary">Χρήση ονομάτων επιστολογράφων από Επαφές όταν είναι διαθέσιμο</string>
   <string name="global_settings_registered_name_color_label">Χρωματισμός Επαφών</string>
   <string name="global_settings_registered_name_color_changed">Να χρωματίζονται τα ονόματα στη λίστα επαφών</string>
   <string name="global_settings_messageview_fixedwidth_label">Γραμματοσειρά σταθερού πλάτους</string>
@@ -248,7 +260,7 @@
   <string name="global_settings_confirm_actions_summary">Προβολή διαλόγου όποτε εκτελούνται επιλεγμένες ενέργειες</string>
   <string name="global_settings_confirm_action_delete">Διαγραφή</string>
   <string name="global_settings_confirm_action_delete_starred">Διαγραφή με αστέρι (προβολή μηνύματος μόνον)</string>
-  <string name="global_settings_confirm_action_spam">Σκουπίδια</string>
+  <string name="global_settings_confirm_action_spam">Ανεπιθύμητα</string>
   <string name="global_settings_confirm_menu_discard">Απόρριψη μηνύματος</string>
   <string name="global_settings_confirm_menu_mark_all_read">Μαρκάρισμα όλων των μηνυμάτων ως αναγνωσμένων</string>
   <string name="global_settings_confirm_action_delete_notif">Διαγραφή (από ειδοποίηση)</string>
@@ -333,7 +345,7 @@
   <string name="sent_folder_label">Φάκελος Απεσταλμένα</string>
   <string name="trash_folder_label">Φάκελος Διαγραμμένα</string>
   <string name="archive_folder_label">Φάκελος Αρχειοθέτηση</string>
-  <string name="spam_folder_label">Φάκελος Σκουπίδια</string>
+  <string name="spam_folder_label">Φάκελος Ανεπιθύμητα</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Προβολή μόνον φακέλων υπό παρακολούθηση</string>
   <string name="account_setup_auto_expand_folder">Αυτόματη επέκταση φακέλου</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">Μονοπάτι OWA</string>
@@ -444,19 +456,25 @@
   <string name="account_settings_message_read_receipt_label">Απόδειξη ανάγνωσης</string>
   <string name="account_settings_message_read_receipt_summary">Πάντοτε να απαιτείται απόδειξη ανάγνωσης</string>
   <string name="account_settings_quote_style_label">Μορφή παράθεσης για απάντηση</string>
-  <string name="account_settings_quote_style_prefix">Πρόθεση (όπως στο Gmail, Pine)</string>
+  <string name="account_settings_quote_style_prefix">Πρόθημα (όπως στο Gmail)</string>
   <string name="account_settings_quote_style_header">Επικεφαλίδα (όπως στο Outlook, Yahoo!, Hotmail)</string>
+  <string name="account_settings_upload_sent_messages_label">Αναφόρτωση (ανέβασμα) απεσταλμένων μηνυμάτων</string>
+  <string name="account_settings_upload_sent_messages_summary">Αναφόρτωση (ανέβασμα) μηνυμάτων στον φάκελο «Απεσταλμένα» μετά την αποστολή</string>
   <string name="account_settings_general_title">Γενικές ρυθμίσεις</string>
   <string name="account_settings_reading_mail">Ανάγνωση ταχυδρομείου</string>
   <string name="account_settings_sync">Συγχρονισμός ταχυδρομείου</string>
   <string name="account_settings_folders">Φάκελοι</string>
   <string name="account_settings_quote_prefix_label">Πρόθεμα κειμένου παράθεσης</string>
-  <string name="account_settings_crypto">Κρυπτογράφηση από άκρο σε άκρο</string>
+  <string name="account_settings_crypto">Διατερματική κρυπτογράφηση</string>
   <string name="account_settings_crypto_app">Ενεργοποίηση υποστήριξης OpenPGP</string>
   <string name="account_settings_crypto_app_select_title">Επιλογή εφαρμογής OpenPGP</string>
-  <string name="account_settings_crypto_key">Ρύθμιση κλειδιού απ\' άκρο-σε-άκρο</string>
+  <string name="account_settings_crypto_key">Ρύθμιση διατερματικού κλειδιού</string>
   <string name="account_settings_crypto_summary_off">Δεν έχει ρυθμιστεί εφαρμογή OpenPGP</string>
   <string name="account_settings_crypto_summary_on">Συνδεδεμένος σε %s</string>
+  <string name="account_settings_crypto_summary_config">Διαμόρφωση...</string>
+  <string name="account_settings_crypto_encrypt_all_drafts">Αποθήκευση όλων των πρόχειρων ως κρυπτογραφημένα</string>
+  <string name="account_settings_crypto_encrypt_all_drafts_on">Όλα τα πρόχειρα θα αποθηκεύονται κρυπτογραφημένα</string>
+  <string name="account_settings_crypto_encrypt_all_drafts_off">Κρυπτογράφηση πρόχειρων μόνο εάν είναι ενεργοποιημένη η λειτουργία κρυπτογράφησης</string>
   <string name="account_settings_mail_check_frequency_label">Συχνότητα ενημέρωσης φακέλων</string>
   <string name="account_settings_color_label">Χρώμα λογαριασμού</string>
   <string name="account_settings_color_summary">Επιλογή χρώματος για χρήση στους φακέλους και τη λίστα των λογαριασμών</string>
@@ -517,10 +535,12 @@
   <string name="account_settings_folder_target_mode_not_second_class">Όλοι εκτός από του 2ου επιπέδου</string>
   <string name="account_settings_sync_remote_deletetions_label">Συγχρονισμός διαγραφών στον εξυπηρέτη</string>
   <string name="account_settings_sync_remote_deletetions_summary">Διαγράφονται τα μηνύματα που διαγράφονται στον εξυπηρέτη.</string>
+  <string name="account_settings_openpgp_missing">Λείπει η εφαρμογή OpenPGP - απεγκαταστήθηκε;</string>
   <string name="folder_settings_title">Ρυθμίσεις φακέλων</string>
   <string name="folder_settings_in_top_group_label">Προβολή στην ομάδα κορυφής</string>
   <string name="folder_settings_in_top_group_summary">Προβολή κοντά στην κορυφή της λίστας των φακέλων</string>
   <string name="folder_settings_folder_display_mode_label">Επίπεδο προβολής φακέλου</string>
+  <string name="folder_settings_folder_display_mode_normal">Χωρίς Επίπεδο</string>
   <string name="folder_settings_folder_display_mode_first_class">Πρώτο επίπεδο</string>
   <string name="folder_settings_folder_display_mode_second_class">Δεύτερο επίπεδο</string>
   <string name="folder_settings_folder_sync_mode_normal">Κανένας</string>
@@ -528,10 +548,12 @@
   <string name="folder_settings_folder_sync_mode_second_class">Δεύτερο επίπεδο</string>
   <string name="folder_settings_folder_sync_mode_inherited">Όπως το επίπεδο προβολής</string>
   <string name="folder_settings_folder_push_mode_label">Επίπεδο σπρωξίματος φακέλου</string>
+  <string name="folder_settings_folder_push_mode_normal">Χωρίς Επίπεδο</string>
   <string name="folder_settings_folder_push_mode_first_class">Πρώτο επίπεδο</string>
   <string name="folder_settings_folder_push_mode_second_class">Δεύτερο επίπεδο</string>
   <string name="folder_settings_folder_push_mode_inherited">Όπως το επίπεδο συγχρονισμού</string>
   <string name="folder_settings_folder_notify_mode_label">Επίπεδο ειδοποίησης φακέλου</string>
+  <string name="folder_settings_folder_notify_mode_normal">Χωρίς Επίπεδο</string>
   <string name="folder_settings_folder_notify_mode_first_class">Πρώτο επίπεδο</string>
   <string name="folder_settings_folder_notify_mode_second_class">Δεύτερο επίπεδο</string>
   <string name="folder_settings_folder_notify_mode_inherited">Όπως το επίπεδο σπρωξίματος </string>
@@ -564,6 +586,7 @@
   <string name="manage_identities_title">Ρύθμιση ταυτοτήτων</string>
   <string name="manage_identities_context_menu_title">Ρύθμιση ταυτότητας</string>
   <string name="edit_identity_title">Διόρθωση ταυτότητας</string>
+  <string name="edit_identity_save">Αποθήκευση</string>
   <string name="new_identity_action">Νέα ταυτότητα</string>
   <string name="account_settings_always_bcc_label">Ιδιωτική κοινοποίηση όλων των μηνυμάτων προς</string>
   <string name="manage_identities_edit_action">Διόρθωση</string>
@@ -612,6 +635,8 @@
   <string name="account_setup_failed_dlg_invalid_certificate_title">Άγνωστο πιστοποιητικό</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Αποδοχή κλειδιού</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Απόρριψη κλειδιού</string>
+  <string name="message_view_help_key">Del (or D) - Διαγραφή\nR - Απάντηση\nA - Απάντηση Όλων\nC - Σύνθεση\nF - Προώθηση\nM - Μετακίνηση\nV - Αρχειοθέτηση\nY - Αντιγραφή\nZ - Σημείωση ως (μη) αναγνωσμένο\nG - Αστέρι\nO - Ταξινόμηση κατά τύπο\nI - Ταξινόμηση κατά σειρά\nQ - Επιστροφή στους Φακέλους\nS - Επιλογή/αποεπιλογή\nJ or P - Προηγούμενο Μήνυμα\nK or N - Επόμενο Μήνυμα</string>
+  <string name="message_list_help_key">Del (or D) - Διαγραφή\nC - Σύνθεση\nM - Μετακίνηση\nV - Αρχειοθέτηση\nY - Αντιγραφή\nZ - Σημείωση ως (μη) αναγνωσμένο\nG - Αστέρι\nO - Ταξινόμηση κατά τύπο\nI - Ταξινόμηση κατά σειρά\nQ - Επιστροφή στους Φακέλους\nS - Επιλογή/αποεπιλογή</string>
   <string name="folder_list_filter_hint">Το όνομα του φακέλου περιέχει</string>
   <string name="folder_list_display_mode_label">Φάκελοι</string>
   <string name="folder_list_display_mode_all">Προβολή όλων</string>
@@ -624,6 +649,7 @@
   <string name="setting_theme_global">Χρήση θέματος εφαρμογής</string>
   <string name="setting_theme_dark">Σκοτεινό</string>
   <string name="setting_theme_light">Ανοιχτόχρωμο</string>
+  <string name="setting_theme_follow_system">Χρήση προεπιλεγμένου</string>
   <string name="display_preferences">Προβολή</string>
   <string name="global_preferences">Γενικές</string>
   <string name="debug_preferences">Αποσφαλμάτωση</string>
@@ -661,6 +687,7 @@
   <string name="volume_navigation_title">Πλοήγηση με πλήκτρο έντασης</string>
   <string name="volume_navigation_message">Προβολή μηνύματος</string>
   <string name="volume_navigation_list">Διάφορες προβολές λίστας</string>
+  <string name="show_unified_inbox_title">Εμφάνιση Ενιαία Εισερχόμενα</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Μη αναγνωσμένα</string>
   <string name="search_all_messages_title">Όλα τα μηνύματα</string>
@@ -733,7 +760,7 @@
   <string name="dialog_confirm_empty_trash_message">Θέλετε να αδειάσετε το φάκελο απορριμμάτων;</string>
   <string name="dialog_confirm_mark_all_as_read_confirm_button">Ναι</string>
   <string name="dialog_confirm_mark_all_as_read_cancel_button">Όχι</string>
-  <string name="dialog_confirm_spam_title">Επιβεβαίωση μετακίνησης στο φάκελο σκουπιδιών</string>
+  <string name="dialog_confirm_spam_title">Επιβεβαίωση μετακίνησης στον φάκελο ανεπιθύμητης αλληλογραφίας</string>
   <plurals name="dialog_confirm_spam_message">
     <item quantity="one">Θέλετε πράγματι να μετακινήσετε αυτό το μήνυμα στο φάκελο σκουπιδιών;</item>
     <item quantity="other">Θέλετε πραγματικά να μετακινήσετε <xliff:g id="message_count">%1$d</xliff:g> μηνύματα στο φάκελο ανεπιθύμητης αλληλογραφίας;</item>
@@ -755,7 +782,9 @@
   <string name="settings_import_pick_document_button">Επιλογή αρχείου</string>
   <string name="settings_import_button">Εισαγωγή</string>
   <string name="settings_import_success_generic">Οι ρυθμίσεις έχουν εισαχθεί με επιτυχία</string>
+  <string name="settings_import_password_required">Παρακαλώ εισάγετε συνθηματικά</string>
   <string name="settings_import_failure">Αποτυχία εισαγωγής ρυθμίσεων</string>
+  <string name="settings_import_read_failure">Αποτυχία ανάγνωσης αρχείου ρυθμίσεων</string>
   <string name="settings_import_partial_failure">Αποτυχία εισαγωγής ορισμένων ρυθμίσεων</string>
   <string name="settings_import_status_success">Η εισαγωγή ολοκληρώθηκε με επιτυχία</string>
   <string name="settings_import_status_password_required">Απαιτείται κωδικός πρόσβασης</string>
@@ -774,8 +803,12 @@
   <string name="server_name_format">Όνομα διακομιστή: <xliff:g id="hostname">%s</xliff:g></string>
   <string name="unread_widget_select_account">Προβολή πλήθους μη αναγνωσμένων για…</string>
   <string name="unread_widget_account_title">Λογαριασμός</string>
+  <string name="unread_widget_account_summary">Ο λογαριασμός για τον οποίο θα πρέπει να εμφανίζεται ο αριθμός μη αναγνωσμένων</string>
   <string name="unread_widget_unified_inbox_account_summary">Ενιαία Εισερχόμενα</string>
+  <string name="unread_widget_folder_enabled_title">Αριθμός φακέλων</string>
+  <string name="unread_widget_folder_enabled_summary">Εμφάνιση του αριθμού μη αναγνωσμένων μηνυμάτων ενός μόνο φακέλου</string>
   <string name="unread_widget_folder_title">Φάκελος</string>
+  <string name="unread_widget_folder_summary">Ο φάκελος για τον οποίον να εμφανίζεται ο αριθμός μη αναγνωσμένων μηνυμάτων</string>
   <string name="unread_widget_action_done">Ολοκληρώθηκε</string>
   <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
   <string name="unread_widget_account_not_selected">Δεν έχει επιλεγεί λογαριασμός</string>
@@ -785,6 +818,7 @@
   <string name="webview_contextmenu_link_share_action">Κοινοποίηση συνδέσμου</string>
   <string name="webview_contextmenu_link_copy_action">Αντιγραφή συνδέσμου στο clipboard</string>
   <string name="webview_contextmenu_link_clipboard_label">Σύνδεσμος</string>
+  <string name="webview_contextmenu_link_text_copy_action">Αντιγραφή συνδέσμου στο πρόχειρο</string>
   <string name="webview_contextmenu_image_title">Εικόνα</string>
   <string name="webview_contextmenu_image_view_action">Προβολή εικόνας</string>
   <string name="webview_contextmenu_image_save_action">Αποθήκευση εικόνας</string>
@@ -867,7 +901,7 @@
   <string name="compose_error_no_key_configured">Δεν έχει ρυθμιστεί κλειδί για αυτόν το λογαριασμό! Ελέγξτε τις ρυθμίσεις σας.</string>
   <string name="error_crypto_provider_incompatible">Η υπηρεσία παροχής κρυπτογράφησης χρησιμοποιεί μη συμβατή έκδοση. Ελέγξτε τις ρυθμίσεις σας!</string>
   <string name="error_crypto_provider_connect">Δεν είναι δυνατή η σύνδεση με τον πάροχο κρυπτογράφησης, ελέγξτε τις ρυθμίσεις σας ή πιέστε το εικονίδιο κρυπτογράφηση για επανάληψη!</string>
-  <string name="error_crypto_provider_ui_required">Απέτυχε η προετοιμασία της κρυπτογράφησης από άκρο σε άκρο, ελέγξτε τις ρυθμίσεις σας</string>
+  <string name="error_crypto_provider_ui_required">Απέτυχε η προετοιμασία της διατερματικής κρυπτογράφησης, ελέγξτε τις ρυθμίσεις σας</string>
   <string name="error_crypto_inline_attach">Η λειτουργία σε PGP/INLINE δεν υποστιρίχει συνημμένα αρχεία!</string>
   <string name="enable_inline_pgp">Ενεργοποίηση PGP/INLINE</string>
   <string name="disable_inline_pgp">Απενεργοποίηση PGP/INLINE</string>
@@ -891,12 +925,33 @@
   <string name="openpgp_dialog_sign_only_minus_attach">Οι υπογραφές μπορεί να εμφανίζονται ως συνημμένα «signature.asc» σε μερικά προγράμματα.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Τα κρυπτογραφημένα μηνύματα περιλαμβάνουν πάντα μια υπογραφή.</string>
   <string name="crypto_msg_title_plaintext">Aπλό κείμενο</string>
-  <string name="crypto_msg_unencrypted_sign_error">Η υπογραφή κρυπτογράφησης από άκρο σε άκρο περιείχε σφάλμα</string>
+  <string name="crypto_msg_unencrypted_sign_error">η υπογραφή διατερματικής κρυπτογράφησης περιείχε σφάλμα</string>
+  <string name="crypto_msg_incomplete_signed">απαιτείται η πλήρης λήψη του μηνύματος για επεξεργασία υπογραφής </string>
+  <string name="crypto_msg_unsupported_signed">περιέχει μη υποστηριζομενη διατερματική υπογραφή</string>
   <string name="crypto_msg_unsupported_encrypted">Το μήνυμα είναι κρυπτογραφημένο σε μη υποστηριζόμενη μορφοποίηση</string>
   <string name="crypto_msg_cancelled">Το μήνυμα είναι κρυπτογραφημένο, αλλά η αποκρυπτογράφηση ακυρώθηκε.</string>
+  <string name="crypto_msg_title_unencrypted_signed_e2e">Διατερματικά υπογεγραμμένο απλό κείμενο</string>
+  <string name="crypto_msg_unencrypted_sign_verified">από επικυρωμένο υπογράφοντα</string>
+  <string name="crypto_msg_unencrypted_sign_mismatch">όμως το διατερματικό κλειδί δεν ταίριαξε με τον αποστολέα</string>
+  <string name="crypto_msg_unencrypted_sign_expired">όμως το διατερματικό κλειδί έχει λήξει</string>
+  <string name="crypto_msg_unencrypted_sign_revoked">όμως το διατερματικό κλειδί έχει ανακληθεί</string>
+  <string name="crypto_msg_unencrypted_sign_insecure">όμως το διατερματικό κλειδί δε θεωρείται ασφαλές</string>
+  <string name="crypto_msg_unencrypted_sign_unknown">από άγνωστο διατερματικό κλειδί</string>
   <string name="crypto_msg_title_encrypted_unknown">Κρυπτογραφημένο </string>
+  <string name="crypto_msg_encrypted_error">όμως υπήρξε ένα σφάλμα αποκρυπτογράφησης </string>
+  <string name="crypto_msg_encrypted_incomplete">απαιτείται πλήρης λήψη του μηνύματος για αποκρυπτογράφηση</string>
   <string name="crypto_msg_title_encrypted_unsigned">Κρυπτογραφημένο</string>
+  <string name="crypto_msg_encrypted_unsigned">όμως όχι διατερματικά</string>
+  <string name="crypto_msg_title_encrypted_signed_e2e">Διατερματικά κρυπτογραφημένο </string>
+  <string name="crypto_msg_encrypted_sign_verified">από επικυρωμένο αποστολέα</string>
   <string name="crypto_msg_title_encrypted_signed">Κρυπτογραφημένο</string>
+  <string name="crypto_msg_encrypted_sign_unknown">από άγνωστο από άκρο σε άκρο κλειδί</string>
+  <string name="crypto_msg_encrypted_sign_mismatch">όμως το διατερματικό κλειδί δεν ταίριαξε με τον αποστολέα</string>
+  <string name="crypto_msg_encrypted_sign_expired">όμως το διατερματικό κλειδί έχει λήξει</string>
+  <string name="crypto_msg_encrypted_sign_revoked">όμως το διατερματικό κλειδί έχει ανακληθεί</string>
+  <string name="crypto_msg_encrypted_sign_insecure">όμως το διατερματικό κλειδί δε θεωρείται ασφαλές</string>
+  <string name="crypto_msg_encrypted_sign_error">όμως τα διατερματικά δεδομένα έχουν σφάλματα</string>
+  <string name="crypto_msg_encrypted_insecure">όμως η κρυπτογράφηση δε θεωρείται ασφαλής</string>
   <string name="crypto_info_ok">Εντάξει</string>
   <string name="crypto_info_search_key">Αναζήτηση Κλειδιού</string>
   <string name="crypto_info_view_signer">Προβολή Υπογράφοντα</string>
@@ -943,9 +998,35 @@
   <string name="openpgp_enabled_error_back">Πίσω</string>
   <string name="openpgp_enabled_error_disable">Απενεργοποίηση Κρυπτογράφησης</string>
   <string name="openpgp_encryption">Κρυπτογράφηση OpenPGP</string>
+  <string name="dialog_autocrypt_mutual_description_1">Τα μηνύματα θα είναι, κανονικά, κρυπτογραφημένα από επιλογή ή όταν δίνονται ως απάντηση σε κρυπτογραφημένο μήνυμα.</string>
+  <string name="dialog_autocrypt_mutual_learn_more">Μπορείτε να πατήσετε <a href="https://k9mail.github.io/2018/02/26/OpenPGP-Considerations-Part-III-Autocrypt.html">εδώ</a> για να μάθετε περισσότερα.</string>
   <string name="general_settings_title">Γενικές ρυθμίσεις</string>
+  <string name="dialog_openkeychain_info_title">Δεν υπάρχει εγκατεστημένη εφαρμογή OpenPGP</string>
+  <string name="dialog_openkeychain_info_install">Εγκατάσταση</string>
+  <string name="dialog_openkeychain_info_text">Το K-9 Mail χρειάζεται το OpenKeychain για διατερματική κρυπτογράφηση.</string>
   <string name="encrypted_subject">Κρυπτογραφημένο μήνυμα</string>
+  <string name="account_settings_crypto_encrypt_subject">Κρυπτογράφηση θεμάτων των μηνυμάτων </string>
+  <string name="account_settings_crypto_encrypt_subject_subtitle">Ενδέχεται να μην υποστηρίζεται από ορισμένους παραλήπτες</string>
+  <string name="toast_account_not_found">Εσωτερικό σφάλμα: Μη έγκυρος λογαριασμός!</string>
+  <string name="toast_openpgp_provider_error">Σφάλμα σύνδεσης στο %s!</string>
+  <string name="ac_transfer_setting_title">Αποστολή Μηνύματος Ρύθμισης Autocrypt</string>
+  <string name="ac_transfer_setting_summary">Μοιραστείτε, με ασφάλεια, διατερματικές ρυθμίσεις με άλλες συσκευές</string>
+  <string name="ac_transfer_title">Μήνυμα Ρύθμισης Autocrypt</string>
+  <string name="ac_transfer_intro">Ένα Μήνυμα Ρύθμισης Autocrypt μοιράζεται, με ασφάλεια, τη διατερματική σας ρύθμιση με άλλες συσκευές.</string>
+  <string name="ac_transfer_button_send">Αποστολή Μηνύματος Ρύθμισης</string>
+  <string name="ac_transfer_will_be_sent">Το μήνυμα θα σταλεί στη διεύθυνσή σας:</string>
+  <string name="ac_transfer_generating">Δημιουργία μηνύματος ρύθμισης...</string>
   <string name="ac_transfer_sending_to">Αποστολή μηνύματος σε:</string>
+  <string name="ac_transfer_finish">Για να τελειώσετε, ανοίξτε το μήνυμα στην άλλη συσκευή σας και καταχωρίστε τον κωδικό ρύθμισης.</string>
+  <string name="ac_transfer_show_code">Εμφάνιση Κωδικού Ρύθμισης</string>
+  <string name="ac_transfer_msg_subject">Μήνυμα Ρύθμισης Autocrypt</string>
+  <string name="ac_transfer_msg_body">Αυτό το μήνυμα περιέχει όσες πληροφορίες χρειάζεστε για την ασφαλή μεταφορά των ρυθμίσεων Autocrypt μαζί με το μυστικό σας κλειδί από την αρχική συσκευή. 
+
+Για να ρυθμίσετε τη νέα σας συσκευή για Autocrypt, παρακαλώ ακολουθήστε τις οδηγίες που θα πρέπει να παρουσιάζονται από τη νέα σας συσκευή. 
+
+Μπορείτε να κρατήσετε αυτό το μήνυμα και να το χρησιμοποιήσετε ως εφεδρικό για το μυστικό σας κλειδί. Εάν αυτό επιθυμείτε, θα πρέπει να σημειώσετε τον κωδικό και να τον αποθηκεύσετε σε ασφαλές σημείο.
+</string>
+  <string name="ac_transfer_error_send">Προέκυψε ένα σφάλμα κατά την αποστολή του μηνύματος. Παρακαλώ ελέγξτε τη συνδεσιμότητα του δικτύου σας και τη διαμόρφωση του εξερχόμενου διακομιστή.</string>
   <string name="switch_on">Ενεργό</string>
   <string name="switch_off">Ανενεργό</string>
   <string name="navigation_drawer_open">Άνοιγμα</string>
@@ -953,4 +1034,5 @@
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Να επιτρέπεται η πρόσβαση στις επαφές</string>
   <string name="permission_contacts_rationale_message">Για να είναι δυνατή η παροχή προτάσεων επαφών και η εμφάνιση των ονομάτων και φωτογραφιών των επαφών, η εφαρμογή χρειάζεται πρόσβαση στις επαφές σας.</string>
+  <string name="generic_loading_error">Προέκυψε σφάλμα κατά τη φόρτωση των δεδομένων</string>
 </resources>

@@ -124,7 +124,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="unflag_action">Poista tähti</string>
   <string name="copy_action">Kopioi</string>
   <string name="show_headers_action">Näytä otsikot</string>
-  <string name="hide_headers_action">Piilota otsikot</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Osoite kopioitu leikepöydälle</item>
     <item quantity="other">Osoitteet kopioitu leikepöydälle</item>
@@ -585,6 +584,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="manage_identities_title">Identiteettien hallinta</string>
   <string name="manage_identities_context_menu_title">Identiteetin hallinta</string>
   <string name="edit_identity_title">Muokkaa identiteettiä</string>
+  <string name="edit_identity_save">Tallenna</string>
   <string name="new_identity_action">Uusi identiteetti</string>
   <string name="account_settings_always_bcc_label">Piilokopio kaikista viesteistä osoitteeseen</string>
   <string name="manage_identities_edit_action">Muokkaa</string>
@@ -685,14 +685,15 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="volume_navigation_title">Navigointi äänenvoimakkuusnäppäimillä</string>
   <string name="volume_navigation_message">Viestinäkymä</string>
   <string name="volume_navigation_list">Erilaisia listanäkymiä</string>
+  <string name="show_unified_inbox_title">Näytä \"Yhdistetty saapuneet\"</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Lukemattomat</string>
   <string name="search_all_messages_title">Kaikki viestit</string>
   <string name="search_all_messages_detail">Kaikki viestit kansioissa, joihin voidaan tehdä hakuja</string>
-  <string name="integrated_inbox_title">Yhdistetty Saapuneet-kansio</string>
-  <string name="integrated_inbox_detail">Kaikki viestit yhdistetyssä Saapuneet-kansiossa</string>
+  <string name="integrated_inbox_title">Yhdistetty saapuneet</string>
+  <string name="integrated_inbox_detail">Kaikki viestit Yhdistetty saapuneet -kansiossa</string>
   <string name="folder_settings_include_in_integrated_inbox_label">Yhdistä</string>
-  <string name="folder_settings_include_in_integrated_inbox_summary">Kaikki viestit näytetään yhdistetyssä Saapuneet-kansiossa</string>
+  <string name="folder_settings_include_in_integrated_inbox_summary">Kaikki viestit näytetään Yhdistetty saapuneet -kansiossa</string>
   <string name="account_settings_searchable_label">Etsi kansioista</string>
   <string name="account_settings_searchable_all">Kaikki</string>
   <string name="account_settings_searchable_displayable">Näytettävissä olevat</string>
@@ -1041,4 +1042,5 @@ Voit säilyttää tämän viestin ja käyttää sitä varmuuskopioina salausavai
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Salli pääsy yhteystietoihin</string>
   <string name="permission_contacts_rationale_message">Tämä sovellus vaatii käyttöoikeuden yhteystietoihisi, jotta sovellus voi tehdä ehdotuksia yhteystietoihin liittyen ja näyttää yhteystietojen nimiä sekä kuvia.</string>
+  <string name="generic_loading_error">Tietoja ladatessa tapahtui virhe</string>
 </resources>
