@@ -116,7 +116,6 @@ Lūdzu, iesniedziet kļūdu ziņojumus, ierosiniet jaunas iespējas un uzdodiet 
   <string name="unflag_action">Noņemt zvaigznīti</string>
   <string name="copy_action">Kopēt</string>
   <string name="show_headers_action">Rādīt vēstules papildinformāciju</string>
-  <string name="hide_headers_action">Noslēpt vēstules papildinformāciju</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="zero">Adrese nokopēta starpliktuvē</item>
     <item quantity="one">Adrese nokopēta starpliktuvē</item>
@@ -580,6 +579,7 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="manage_identities_title">Pārvaldīt identitātes</string>
   <string name="manage_identities_context_menu_title">Pārvaldīt identitāti</string>
   <string name="edit_identity_title">Rediģēt identitāti</string>
+  <string name="edit_identity_save">Saglabāt</string>
   <string name="new_identity_action">Jauna identitāte</string>
   <string name="account_settings_always_bcc_label">Bcc visas vēstules uz</string>
   <string name="manage_identities_edit_action">Rediģēt</string>

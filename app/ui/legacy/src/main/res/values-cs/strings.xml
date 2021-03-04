@@ -115,7 +115,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="unflag_action">Odebrat \u2606</string>
   <string name="copy_action">Kopírovat</string>
   <string name="show_headers_action">Zobraz hlavičku</string>
-  <string name="hide_headers_action">Skryj hlavičku</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Adresa zkopírována do schránky</item>
     <item quantity="few">Adresy zkopírovány do schránky</item>
@@ -567,6 +566,7 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="manage_identities_title">Správa identit</string>
   <string name="manage_identities_context_menu_title">Spravovat identitu</string>
   <string name="edit_identity_title">Upravit identitu</string>
+  <string name="edit_identity_save">Uložit</string>
   <string name="new_identity_action">Nová identita</string>
   <string name="account_settings_always_bcc_label">Kopii všech zpráv na adresu</string>
   <string name="manage_identities_edit_action">Upravit</string>

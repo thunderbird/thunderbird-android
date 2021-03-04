@@ -116,7 +116,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="unflag_action">Fjern stjernemarkering</string>
   <string name="copy_action">Kopier</string>
   <string name="show_headers_action">Vis headers</string>
-  <string name="hide_headers_action">Skjul headers</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Adresse kopieret til udklipsholder</item>
     <item quantity="other">Adresser kopieret til udklipsholder</item>
@@ -560,6 +559,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="manage_identities_title">Håndter identiteter</string>
   <string name="manage_identities_context_menu_title">Håndter identitet</string>
   <string name="edit_identity_title">Rediger identitet</string>
+  <string name="edit_identity_save">Gem</string>
   <string name="new_identity_action">Ny identitet</string>
   <string name="account_settings_always_bcc_label">Send altid Bcc til</string>
   <string name="manage_identities_edit_action">Rediger</string>

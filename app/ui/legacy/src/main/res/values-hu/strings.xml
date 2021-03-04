@@ -115,7 +115,6 @@ Hibajelentések beküldésével hozzájárulhatunk új funkciókhoz és kérdés
   <string name="unflag_action">Csillag eltávolítása</string>
   <string name="copy_action">Másolás</string>
   <string name="show_headers_action">Fejlécek megjelenítése</string>
-  <string name="hide_headers_action">Fejlécek elrejtése</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Cím a vágólapra másolva</item>
     <item quantity="other">A címek a vágólapra kerültek.</item>
@@ -576,6 +575,7 @@ Hibajelentések beküldésével hozzájárulhatunk új funkciókhoz és kérdés
   <string name="manage_identities_title">Személyazonosságok kezelése</string>
   <string name="manage_identities_context_menu_title">Személyazonosság kezelése</string>
   <string name="edit_identity_title">Személyazonosság szerkesztése</string>
+  <string name="edit_identity_save">Mentés</string>
   <string name="new_identity_action">Új személyazonosság</string>
   <string name="account_settings_always_bcc_label">Titkos másolat küldése az összes üzenetről ide</string>
   <string name="manage_identities_edit_action">Szerkesztés</string>

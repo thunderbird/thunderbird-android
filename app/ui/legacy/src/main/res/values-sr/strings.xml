@@ -125,7 +125,6 @@
   <string name="unflag_action">Уклони звездицу</string>
   <string name="copy_action">Копирај</string>
   <string name="show_headers_action">Прикажи заглавље</string>
-  <string name="hide_headers_action">Сакриј заглавље</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Адреса копирана на клипборд</item>
     <item quantity="few">Адресе копиране на клипборд</item>
@@ -589,6 +588,7 @@
   <string name="manage_identities_title">Управљање идентитетима</string>
   <string name="manage_identities_context_menu_title">Управљај идентитетом</string>
   <string name="edit_identity_title">Уреди идентитет</string>
+  <string name="edit_identity_save">Сачувај</string>
   <string name="new_identity_action">Нови идентитет</string>
   <string name="account_settings_always_bcc_label">СКоп све поруке на</string>
   <string name="manage_identities_edit_action">Уреди</string>

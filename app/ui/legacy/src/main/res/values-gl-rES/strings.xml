@@ -72,7 +72,6 @@
   <string name="unflag_action">Eliminar estrela</string>
   <string name="copy_action">Copiar</string>
   <string name="show_headers_action">Mostrar cabeceiras</string>
-  <string name="hide_headers_action">Agochar cabeceiras</string>
   <string name="message_view_theme_action_dark">Tema escuro</string>
   <string name="message_view_theme_action_light">Tema claro</string>
   <string name="mark_as_unread_action">Marcar como non lida</string>
@@ -456,6 +455,7 @@
   <string name="manage_identities_title">Administrar identidades</string>
   <string name="manage_identities_context_menu_title">Administrar identidade</string>
   <string name="edit_identity_title">Editar identidade</string>
+  <string name="edit_identity_save">Gardar</string>
   <string name="new_identity_action">Nova identidade</string>
   <string name="account_settings_always_bcc_label">Bcc todas as mensaxes a</string>
   <string name="manage_identities_edit_action">Editar</string>

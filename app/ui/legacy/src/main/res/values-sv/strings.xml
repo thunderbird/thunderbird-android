@@ -125,7 +125,6 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="unflag_action">Ta bort stjärna</string>
   <string name="copy_action">Kopiera</string>
   <string name="show_headers_action">Visa meddelanderubriker</string>
-  <string name="hide_headers_action">Dölj meddelanderubriker</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Adress kopierad till urklipp</item>
     <item quantity="other">Adresser kopierade till urklipp</item>
@@ -587,6 +586,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="manage_identities_title">Hantera identiteter</string>
   <string name="manage_identities_context_menu_title">Hantera identitet</string>
   <string name="edit_identity_title">Redigera identitet</string>
+  <string name="edit_identity_save">Spara</string>
   <string name="new_identity_action">Ny identitet</string>
   <string name="account_settings_always_bcc_label">Skicka alltid blindkopia till</string>
   <string name="manage_identities_edit_action">Redigera</string>
@@ -1044,4 +1044,5 @@ Du kan behålla det här meddelandet och använda det som en säkerhetskopia fö
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Tillåt åtkomst till kontakter</string>
   <string name="permission_contacts_rationale_message">För att kunna ge kontaktförslag och visa kontaktnamn och foton behöver appen tillgång till dina kontakter.</string>
+  <string name="generic_loading_error">Ett fel uppstod när data lästes in</string>
 </resources>

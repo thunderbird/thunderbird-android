@@ -116,7 +116,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="unflag_action">Fjarlægja stjörnu</string>
   <string name="copy_action">Afrita</string>
   <string name="show_headers_action">Birta hausa</string>
-  <string name="hide_headers_action">Fela hausa</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Netfang afritað á klippispjald</item>
     <item quantity="other">Netföng afrituð á klippispjald</item>
@@ -578,6 +577,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="manage_identities_title">Sýsla með persónuauðkenni</string>
   <string name="manage_identities_context_menu_title">Sýsla með persónuauðkennið</string>
   <string name="edit_identity_title">Breyta persónuauðkenni</string>
+  <string name="edit_identity_save">Vista</string>
   <string name="new_identity_action">Nýtt persónuauðkenni</string>
   <string name="account_settings_always_bcc_label">Falið afrit (BCC) á öll skilaboð til</string>
   <string name="manage_identities_edit_action">Breyta</string>

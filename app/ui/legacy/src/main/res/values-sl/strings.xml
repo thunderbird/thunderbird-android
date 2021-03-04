@@ -125,7 +125,6 @@ Poročila o napakah, predloge za nove funkcije in vprašanja lahko pošljete na
   <string name="unflag_action">Odstrani zvezdico</string>
   <string name="copy_action">Kopiraj</string>
   <string name="show_headers_action">Prikaži glave sporočil</string>
-  <string name="hide_headers_action">Skrij glave sporočil</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Naslov je kopiran v odložišče</item>
     <item quantity="two">Naslova sta kopirana v odložišče</item>
@@ -591,6 +590,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="manage_identities_title">Upravljanje profilov</string>
   <string name="manage_identities_context_menu_title">Upravljanje profila</string>
   <string name="edit_identity_title">Uredi profil</string>
+  <string name="edit_identity_save">Shrani</string>
   <string name="new_identity_action">Nov profil</string>
   <string name="account_settings_always_bcc_label">Vedno pošlji skrito kopijo na</string>
   <string name="manage_identities_edit_action">Uredi</string>
@@ -1058,4 +1058,5 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Dovoli dostop do stikov</string>
   <string name="permission_contacts_rationale_message">Če hočete dobiti predloge za stike in prikazati imena in fotografije stikov, aplikacija potrebuje dostop do vaših stikov.</string>
+  <string name="generic_loading_error">Med nalaganjem podatkov je prišlo do napake</string>
 </resources>

@@ -125,7 +125,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="unflag_action">Elimina l\'estel</string>
   <string name="copy_action">Copia</string>
   <string name="show_headers_action">Mostra les capçaleres</string>
-  <string name="hide_headers_action">Amaga les capçaleres</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Adreça copiada al porta-retalls</item>
     <item quantity="other">Adreces copiades al porta-retalls</item>
@@ -587,6 +586,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="manage_identities_title">Gestiona identitats</string>
   <string name="manage_identities_context_menu_title">Gestiona la identitat</string>
   <string name="edit_identity_title">Edita la identitat</string>
+  <string name="edit_identity_save">Desa</string>
   <string name="new_identity_action">Nova identitat</string>
   <string name="account_settings_always_bcc_label">A/c tots els missatges a</string>
   <string name="manage_identities_edit_action">Edita</string>
@@ -687,6 +687,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="volume_navigation_title">Navegació amb botons de volum</string>
   <string name="volume_navigation_message">Vista del missatge</string>
   <string name="volume_navigation_list">A la vista de llistes</string>
+  <string name="show_unified_inbox_title">Mostra la safata d\'entrada unificada</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- No llegit</string>
   <string name="search_all_messages_title">Tots els missatges</string>
@@ -1043,4 +1044,5 @@ Podeu guardar aquest missatge i usar-lo com a còpia de seguretat per a la vostr
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Permet l\'accés als contactes</string>
   <string name="permission_contacts_rationale_message">Per poder proporcionar suggeriments de contactes i mostrar-ne els noms i fotografies, l\'aplicació necessita accés als vostres contactes.</string>
+  <string name="generic_loading_error">S\'ha produït un error en carregar les dades</string>
 </resources>

@@ -125,7 +125,6 @@
   <string name="unflag_action">നക്ഷത്രം കളയുക</string>
   <string name="copy_action">പകർത്തുക</string>
   <string name="show_headers_action">തലക്കെട്ടുകൾ പ്രദർശിപ്പിക്കുക</string>
-  <string name="hide_headers_action">തലക്കെട്ടുകൾ അപ്രത്യക്ഷമാക്കുക</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">വിലാസം ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തി</item>
     <item quantity="other">വിലാസങ്ങൾ ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തി</item>

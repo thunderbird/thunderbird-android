@@ -126,7 +126,6 @@ K-9 Mail 是 Android 上一款功能強大，免費而自由的電子郵件用�
   <string name="unflag_action">移除星號</string>
   <string name="copy_action">複製</string>
   <string name="show_headers_action">顯示標題</string>
-  <string name="hide_headers_action">隱藏標題</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="other">位址已複製到剪貼簿</item>
   </plurals>
@@ -585,6 +584,7 @@ K-9 Mail 是 Android 上一款功能強大，免費而自由的電子郵件用�
   <string name="manage_identities_title">管理身份識別</string>
   <string name="manage_identities_context_menu_title">管理身份識別</string>
   <string name="edit_identity_title">編輯身份標識</string>
+  <string name="edit_identity_save">儲存</string>
   <string name="new_identity_action">新身份識別</string>
   <string name="account_settings_always_bcc_label">密件副本所有郵件</string>
   <string name="manage_identities_edit_action">編輯</string>

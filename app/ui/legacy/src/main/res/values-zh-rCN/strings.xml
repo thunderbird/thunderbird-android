@@ -126,7 +126,6 @@ K-9 Mail 是 Android 上一款功能强大的自由 email 客户端。
   <string name="unflag_action">移除星标</string>
   <string name="copy_action">复制</string>
   <string name="show_headers_action">显示邮件头</string>
-  <string name="hide_headers_action">隐藏邮件头</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="other">地址已复制到剪贴板</item>
   </plurals>
@@ -585,6 +584,7 @@ K-9 Mail 是 Android 上一款功能强大的自由 email 客户端。
   <string name="manage_identities_title">管理身份标识</string>
   <string name="manage_identities_context_menu_title">管理身份标识</string>
   <string name="edit_identity_title">编辑身份标识</string>
+  <string name="edit_identity_save">保存</string>
   <string name="new_identity_action">新身份标识</string>
   <string name="account_settings_always_bcc_label">暗送全部邮件到</string>
   <string name="manage_identities_edit_action">编辑</string>
@@ -1037,4 +1037,5 @@ K-9 Mail 是 Android 上一款功能强大的自由 email 客户端。
   <!--permissions-->
   <string name="permission_contacts_rationale_title">允许访问联系人</string>
   <string name="permission_contacts_rationale_message">为了能够提供联系人建议，并显示联系人姓名和照片，应用程序需要访问你的联系人。</string>
+  <string name="generic_loading_error">加载数据期间发生了一个错误</string>
 </resources>

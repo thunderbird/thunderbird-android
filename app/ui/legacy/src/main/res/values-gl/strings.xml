@@ -107,7 +107,6 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="unflag_action">Eliminar Estrela</string>
   <string name="copy_action">Copiar</string>
   <string name="show_headers_action">Mostrar cabeceiras</string>
-  <string name="hide_headers_action">Agochar cabeceiras</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Enderezo copiado ao portapapeis</item>
     <item quantity="other">Enderezos copiados ao portapapeis</item>
@@ -526,6 +525,7 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="manage_identities_title">Identidades</string>
   <string name="manage_identities_context_menu_title">Identidades</string>
   <string name="edit_identity_title">Editar identidade</string>
+  <string name="edit_identity_save">Gardar</string>
   <string name="new_identity_action">Nova identidade</string>
   <string name="account_settings_always_bcc_label">CCo todas as mensaxes para</string>
   <string name="manage_identities_edit_action">Editar</string>

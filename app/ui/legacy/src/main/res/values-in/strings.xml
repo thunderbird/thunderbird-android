@@ -116,7 +116,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="unflag_action">Buang bintang</string>
   <string name="copy_action">Salin</string>
   <string name="show_headers_action">Tampilkan tajuk</string>
-  <string name="hide_headers_action">Sembunyikan tajuk</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="other">Alamat disalin ke clipboard</item>
   </plurals>
@@ -576,6 +575,7 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="manage_identities_title">Mengelola identitas</string>
   <string name="manage_identities_context_menu_title">Mengelola identitas</string>
   <string name="edit_identity_title">Sunting identitas</string>
+  <string name="edit_identity_save">Simpan</string>
   <string name="new_identity_action">Identitas baru</string>
   <string name="account_settings_always_bcc_label">Bcc semua pesan ke</string>
   <string name="manage_identities_edit_action">Sunting</string>

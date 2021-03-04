@@ -72,7 +72,6 @@
   <string name="unflag_action">Pašalinti žvaigždutę</string>
   <string name="copy_action">Kopijuoti</string>
   <string name="show_headers_action">Rodyti antraštes</string>
-  <string name="hide_headers_action">Slėpti antraštes</string>
   <string name="message_view_theme_action_dark">Persijungti į tamsią temą</string>
   <string name="message_view_theme_action_light">Persijungti į šviesią temą</string>
   <string name="mark_as_unread_action">Pažymėti kaip neskaitytą</string>
@@ -430,6 +429,7 @@
   <string name="manage_identities_title">Tvarkyti tapatybes</string>
   <string name="manage_identities_context_menu_title">Tvarkyti tapatybę</string>
   <string name="edit_identity_title">Redaguoti tapatybę</string>
+  <string name="edit_identity_save">Išsaugoti</string>
   <string name="new_identity_action">Nauja tapatybė</string>
   <string name="account_settings_always_bcc_label">Siųsti slaptą visų laiškų kopiją į</string>
   <string name="manage_identities_edit_action">Keisti</string>

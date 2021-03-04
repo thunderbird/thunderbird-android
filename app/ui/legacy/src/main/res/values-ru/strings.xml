@@ -125,7 +125,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="unflag_action">Обычное</string>
   <string name="copy_action">Копировать</string>
   <string name="show_headers_action">Все заголовки</string>
-  <string name="hide_headers_action">Без заголовков</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Адрес скопирован в буфер</item>
     <item quantity="few">Адреса скопированы в буфер</item>
@@ -590,6 +589,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="manage_identities_title">Управление ролями</string>
   <string name="manage_identities_context_menu_title">Управление</string>
   <string name="edit_identity_title">Правка роли</string>
+  <string name="edit_identity_save">Сохранить</string>
   <string name="new_identity_action">Новая роль</string>
   <string name="account_settings_always_bcc_label">Скрытая копия всех сообщений</string>
   <string name="manage_identities_edit_action">Правка</string>
@@ -1057,4 +1057,5 @@ K-9 Mail — почтовый клиент для Android.
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Разрешить доступ к контактам</string>
   <string name="permission_contacts_rationale_message">Чтобы подсказывать имена и показывать фото, приложению нужен доступ к контактам</string>
+  <string name="generic_loading_error">При загрузке данных возникла ошибка</string>
 </resources>

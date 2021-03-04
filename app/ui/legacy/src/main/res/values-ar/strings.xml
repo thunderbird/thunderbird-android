@@ -116,7 +116,6 @@
   <string name="unflag_action">احذف النجمة</string>
   <string name="copy_action">انسخ</string>
   <string name="show_headers_action">أظهر الرؤوس</string>
-  <string name="hide_headers_action">اخفِ الرؤوس</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="zero">ﻻ عناوين نُسخت إلى الحافظة</item>
     <item quantity="one">عنوان واحد نُسخ إلى الحافظة</item>
@@ -516,6 +515,7 @@
   <string name="manage_identities_title">إدارة الهويات</string>
   <string name="manage_identities_context_menu_title">إدارة الهوية</string>
   <string name="edit_identity_title">تعديل الهوية</string>
+  <string name="edit_identity_save">احفظ</string>
   <string name="new_identity_action">هوية جديدة</string>
   <string name="manage_identities_edit_action">حرر</string>
   <string name="manage_identities_move_up_action">إلى الأعلى</string>

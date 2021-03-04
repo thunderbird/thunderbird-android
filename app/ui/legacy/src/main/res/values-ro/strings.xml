@@ -115,7 +115,6 @@ Vă rugăm să ne raportați defecte, să contribuiți cu funcționalități noi
   <string name="unflag_action">Șterge steluță</string>
   <string name="copy_action">Copiază</string>
   <string name="show_headers_action">Arată antete</string>
-  <string name="hide_headers_action">Ascunde antete</string>
   <plurals name="copy_address_to_clipboard">
     <item quantity="one">Adresa a fost copiată în clipboard</item>
     <item quantity="few">Adresele au fost copiate în clipboard</item>
@@ -581,6 +580,7 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="manage_identities_title">Gestionează identități</string>
   <string name="manage_identities_context_menu_title">Gestionează identitate</string>
   <string name="edit_identity_title">Modifică identitate</string>
+  <string name="edit_identity_save">Salvează</string>
   <string name="new_identity_action">Identitate nouă</string>
   <string name="account_settings_always_bcc_label">BCC toate mesajele către</string>
   <string name="manage_identities_edit_action">Modifică</string>
