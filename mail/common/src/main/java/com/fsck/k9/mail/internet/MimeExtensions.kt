@@ -6,6 +6,10 @@ internal const val RECOMMENDED_MAX_LINE_LENGTH = 78
 // RFC 2045: tspecials :=  "(" / ")" / "<" / ">" / "@" / "," / ";" / ":" / "\" / <"> / "/" / "[" / "]" / "?" / "="
 private val TSPECIALS = charArrayOf('(', ')', '<', '>', '@', ',', ';', ':', '\\', '"', '/', '[', ']', '?', '=')
 
+private val ATEXT_SPECIAL = charArrayOf(
+    '!', '#', '$', '%', '&', '\'', '*', '+', '-', '/', '=', '?', '^', '_', '`', '{', '|', '}', '~'
+)
+
 // RFC 5234: HTAB = %x09
 internal const val HTAB = '\t'
 
@@ -39,3 +43,20 @@ internal fun Char.isWspOrCrlf() = this == SPACE || this == HTAB || this == CR ||
 
 // RFC 2231: attribute-char := <any (US-ASCII) CHAR except SPACE, CTLs, "*", "'", "%", or tspecials>
 internal fun Char.isAttributeChar() = isVChar() && this != '*' && this != '\'' && this != '%' && !isTSpecial()
+
+// RFC 5322: ctext = %d33-39 / %d42-91 / %d93-126
+internal fun Char.isCText() = toInt().let { it in 33..39 || it in 42..91 || it in 93..126 }
+
+// RFC 5234: DIGIT = %x30-39 ; 0-9
+internal fun Char.isDIGIT() = this in '0'..'9'
+
+// RFC 5234: ALPHA = %x41-5A / %x61-7A ; A-Z / a-z
+internal fun Char.isALPHA() = this in 'A'..'Z' || this in 'a'..'z'
+
+// RFC 5322: atext = ALPHA / DIGIT / "!" / "#" / "$" / "%" / "&" / "'" / "*" / "+" / "-" / "/" / "=" / "?" / "^" /
+//                   "_" / "`" / "{" / "|" / "}" / "~"
+internal fun Char.isAText() = isALPHA() || isDIGIT() || this in ATEXT_SPECIAL
+
+// RFC 5322: Printable US-ASCII characters not including "[", "]", or "\"
+// dtext = %d33-90 / %d94-126 / obs-dtext
+internal fun Char.isDText() = toInt().let { it in 33..90 || it in 94..126 }
