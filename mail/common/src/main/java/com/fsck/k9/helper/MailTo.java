@@ -12,6 +12,7 @@ import java.util.List;
 public final class MailTo {
     private static final String MAILTO_SCHEME = "mailto";
     private static final String TO = "to";
+    private static final String IN_REPLY_TO = "in-reply-to";
     private static final String BODY = "body";
     private static final String CC = "cc";
     private static final String BCC = "bcc";
@@ -23,6 +24,7 @@ public final class MailTo {
     private final Address[] toAddresses;
     private final Address[] ccAddresses;
     private final Address[] bccAddresses;
+    private final String inReplyToMessageId;
     private final String subject;
     private final String body;
 
@@ -65,9 +67,10 @@ public final class MailTo {
         Address[] bccAddresses = toAddressArray(bccList);
 
         String subject = getFirstParameterValue(params, SUBJECT);
+        String inReplyToMessageId = getFirstParameterValue(params, IN_REPLY_TO);
         String body = getFirstParameterValue(params, BODY);
 
-        return new MailTo(toAddresses, ccAddresses, bccAddresses, subject, body);
+        return new MailTo(toAddresses, ccAddresses, bccAddresses, inReplyToMessageId, subject, body);
     }
 
     private static String getFirstParameterValue(CaseInsensitiveParamWrapper params, String paramName) {
@@ -95,10 +98,12 @@ public final class MailTo {
         return stringBuilder.toString();
     }
 
-    private MailTo(Address[] toAddresses, Address[] ccAddresses, Address[] bccAddresses, String subject, String body) {
+    private MailTo(Address[] toAddresses, Address[] ccAddresses, Address[] bccAddresses, String inReplyToMessageId,
+            String subject, String body) {
         this.toAddresses = toAddresses;
         this.ccAddresses = ccAddresses;
         this.bccAddresses = bccAddresses;
+        this.inReplyToMessageId = inReplyToMessageId;
         this.subject = subject;
         this.body = body;
     }
@@ -123,6 +128,7 @@ public final class MailTo {
         return body;
     }
 
+    public String getInReplyTo() { return inReplyToMessageId; }
 
     static class CaseInsensitiveParamWrapper {
         private final Uri uri;
