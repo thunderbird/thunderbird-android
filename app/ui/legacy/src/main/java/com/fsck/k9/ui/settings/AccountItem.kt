@@ -14,6 +14,9 @@ internal class AccountItem(val account: Account) : AbstractItem<AccountItem.View
 
     override val layoutRes = R.layout.account_list_item
 
+    val draggable
+        get() = true
+
     override fun getViewHolder(v: View) = ViewHolder(v)
 
     class ViewHolder(view: View) : FastAdapter.ViewHolder<AccountItem>(view) {

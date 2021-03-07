@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,16 +25,16 @@ import com.fsck.k9.ui.settings.account.AccountSettingsActivity
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.GenericItem
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import com.mikepenz.fastadapter.drag.IDraggable
 import com.mikepenz.fastadapter.drag.ItemTouchCallback
 import com.mikepenz.fastadapter.drag.SimpleDragCallback
 import com.mikepenz.fastadapter.expandable.getExpandableExtension
 import com.mikepenz.fastadapter.select.getSelectExtension
 import com.mikepenz.fastadapter.utils.DragDropUtil
 import kotlinx.android.synthetic.main.fragment_settings_list.*
-import kotlinx.android.synthetic.main.message_list_item.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SettingsListFragment : Fragment(), ItemTouchCallback {
+class SettingsListFragment : Fragment(), ItemTouchCallback, IDraggable {
     private val viewModel: SettingsViewModel by viewModel()
 
     private lateinit var settingsListAdapter: FastAdapter<GenericItem>
@@ -43,7 +44,12 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
     private lateinit var touchCallBack: SimpleDragCallback
     private lateinit var touchHelper: ItemTouchHelper
 
+    override val isDraggable: Boolean
+        get() = true
+
     private var numberOfAccounts = 0
+
+    private lateinit var myVH : RecyclerView.ViewHolder // TODO This is a hack
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_settings_list, container, false)
@@ -67,12 +73,13 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
             }
         }
 
+        touchCallBack = SimpleDragCallback(this)
+        touchHelper = ItemTouchHelper(touchCallBack)
+
         settingsListAdapter.getExpandableExtension()
         val selectExtension = settingsListAdapter.getSelectExtension()
         selectExtension.isSelectable = true
-
-        touchCallBack = SimpleDragCallback(this)
-        touchHelper = ItemTouchHelper(touchCallBack)
+        touchCallBack.setIsDragEnabled(true)
 
         with(settings_list) {
             adapter = settingsListAdapter
@@ -137,7 +144,6 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
                         )
                     }
                 }
-
                 itemAdapter.setNewList(listItems)
                 numberOfAccounts = accounts.size
             }
@@ -202,31 +208,31 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
     }
 
     override fun itemTouchOnMove(oldPosition: Int, newPosition: Int): Boolean {
-        val startPos = 2 // Accounts currently start as the third item in the List
-
-        val accountItem: AccountItem
-        // var moveUp: Boolean
+        val startDropPos = 2 // Accounts (the only draggable item) currently start as the third item in the List
+        val endDropPos = startDropPos + numberOfAccounts
+        // var accountItem = itemAdapter.getAdapterItem(newPosition) as AccountItem
         val preferences = Preferences.getPreferences(context)
 
-        if (newPosition < startPos + numberOfAccounts && numberOfAccounts > 1) {
-            DragDropUtil.onMove(itemAdapter, oldPosition, newPosition) // change position
+        if (numberOfAccounts > 1 &&
+            oldPosition >= startDropPos && oldPosition < endDropPos &&
+            newPosition >= startDropPos && newPosition < endDropPos) {
+            DragDropUtil.onMove(itemAdapter, oldPosition, newPosition)
             val moveUp = oldPosition <= newPosition
-            accountItem = itemAdapter.getAdapterItem(oldPosition) as AccountItem
+            val accountItem = itemAdapter.getAdapterItem(oldPosition) as AccountItem
             preferences.move(accountItem.account, moveUp)
-        }
-        return true
+            return true
+        } else return false
     }
-    
+
     override fun itemTouchDropped(oldPosition: Int, newPosition: Int) {
-        // TODO: cannot get this to work and can therefore not switch off the highlight on the dragged item
+        // TODO not working, but don't know why. This is where the background color should change back to the original
+        myVH.itemView.setBackgroundColor(Color.LTGRAY) // TODO This is a hack, but don't know how else to get the VH
     }
 
     override fun itemTouchStartDrag(viewHolder: RecyclerView.ViewHolder) {
-
         // add visual highlight to dragged item
         //TODO should follow a theme, not sure which one
-        if (numberOfAccounts > 1) {
-            viewHolder.itemView.setBackgroundColor(Color.LTGRAY)
-        }
+        viewHolder.itemView.setBackgroundColor(Color.BLUE)
+        myVH = viewHolder
     }
 }

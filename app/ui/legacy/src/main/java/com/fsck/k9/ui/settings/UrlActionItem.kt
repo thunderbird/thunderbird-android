@@ -18,6 +18,9 @@ internal class UrlActionItem(
 
     override val layoutRes = R.layout.text_icon_list_item
 
+    val draggable
+        get() = false
+
     override fun getViewHolder(v: View) = ViewHolder(v)
 
     class ViewHolder(view: View) : FastAdapter.ViewHolder<UrlActionItem>(view) {
