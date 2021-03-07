@@ -34,7 +34,7 @@ import com.mikepenz.fastadapter.utils.DragDropUtil
 import kotlinx.android.synthetic.main.fragment_settings_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SettingsListFragment : Fragment(), ItemTouchCallback, IDraggable {
+class SettingsListFragment : Fragment(), ItemTouchCallback {
     private val viewModel: SettingsViewModel by viewModel()
 
     private lateinit var settingsListAdapter: FastAdapter<GenericItem>
@@ -43,9 +43,6 @@ class SettingsListFragment : Fragment(), ItemTouchCallback, IDraggable {
     // drag & drop
     private lateinit var touchCallBack: SimpleDragCallback
     private lateinit var touchHelper: ItemTouchHelper
-
-    override val isDraggable: Boolean
-        get() = true
 
     private var numberOfAccounts = 0
 
@@ -225,8 +222,7 @@ class SettingsListFragment : Fragment(), ItemTouchCallback, IDraggable {
     }
 
     override fun itemTouchDropped(oldPosition: Int, newPosition: Int) {
-        // TODO not working, but don't know why. This is where the background color should change back to the original
-        myVH.itemView.setBackgroundColor(Color.LTGRAY) // TODO This is a hack, but don't know how else to get the VH
+        myVH.itemView.setBackgroundColor(Color.TRANSPARENT) // TODO This is a hack, but don't know how else to get the VH
     }
 
     override fun itemTouchStartDrag(viewHolder: RecyclerView.ViewHolder) {

@@ -5,17 +5,22 @@ import android.widget.TextView
 import com.fsck.k9.Account
 import com.fsck.k9.ui.R
 import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.drag.IDraggable
 import com.mikepenz.fastadapter.items.AbstractItem
 
-internal class AccountItem(val account: Account) : AbstractItem<AccountItem.ViewHolder>() {
+internal class AccountItem(val account: Account) : AbstractItem<AccountItem.ViewHolder>(), IDraggable {
     override var identifier = 200L + account.accountNumber
 
     override val type = R.id.settings_list_account_item
 
     override val layoutRes = R.layout.account_list_item
 
-    val draggable
-        get() = true
+    override var isDraggable = true
+
+    fun withIsDraggable(draggable: Boolean): AccountItem {
+        this.isDraggable = draggable
+        return this
+    }
 
     override fun getViewHolder(v: View) = ViewHolder(v)
 

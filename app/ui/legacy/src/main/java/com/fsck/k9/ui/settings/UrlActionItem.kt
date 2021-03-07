@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.fsck.k9.ui.R
 import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.drag.IDraggable
 import com.mikepenz.fastadapter.items.AbstractItem
 
 internal class UrlActionItem(
@@ -13,13 +14,17 @@ internal class UrlActionItem(
     val text: String,
     val url: String,
     val icon: Int
-) : AbstractItem<UrlActionItem.ViewHolder>() {
+) : AbstractItem<UrlActionItem.ViewHolder>(), IDraggable {
     override val type = R.id.settings_list_url_item
 
     override val layoutRes = R.layout.text_icon_list_item
 
-    val draggable
-        get() = false
+    override var isDraggable = false
+
+    fun withIsDraggable(draggable: Boolean): UrlActionItem {
+        this.isDraggable = draggable
+        return this
+    }
 
     override fun getViewHolder(v: View) = ViewHolder(v)
 

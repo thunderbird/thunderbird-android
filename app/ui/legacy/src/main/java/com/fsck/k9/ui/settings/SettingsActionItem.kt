@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.annotation.IdRes
 import com.fsck.k9.ui.R
 import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.drag.IDraggable
 import com.mikepenz.fastadapter.items.AbstractItem
 
 internal class SettingsActionItem(
@@ -14,13 +15,17 @@ internal class SettingsActionItem(
     val text: String,
     @IdRes val navigationAction: Int,
     val icon: Int
-) : AbstractItem<SettingsActionItem.ViewHolder>() {
+) : AbstractItem<SettingsActionItem.ViewHolder>(), IDraggable {
     override val type = R.id.settings_list_action_item
 
     override val layoutRes = R.layout.text_icon_list_item
 
-    val draggable
-        get() = false
+    override var isDraggable = false
+
+    fun withIsDraggable(draggable: Boolean): SettingsActionItem {
+        this.isDraggable = draggable
+        return this
+    }
 
     override fun getViewHolder(v: View) = ViewHolder(v)
 
