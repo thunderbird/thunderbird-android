@@ -4,6 +4,9 @@ package com.fsck.k9.helper;
 import android.net.Uri;
 
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.internet.MessageIdParser;
+import com.fsck.k9.mail.internet.MimeHeaderParserException;
+import timber.log.Timber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,8 +70,22 @@ public final class MailTo {
         Address[] bccAddresses = toAddressArray(bccList);
 
         String subject = getFirstParameterValue(params, SUBJECT);
-        String inReplyToMessageId = getFirstParameterValue(params, IN_REPLY_TO);
         String body = getFirstParameterValue(params, BODY);
+        String inReplyTo = getFirstParameterValue(params, IN_REPLY_TO);
+
+        String inReplyToMessageId = null;
+        if (inReplyTo != null) {
+            try {
+                List<String> inReplyToMessageIds = MessageIdParser.parseList(inReplyTo);
+                if (inReplyToMessageIds != null && !inReplyToMessageIds.isEmpty()) {
+                    String firstMessageId = inReplyToMessageIds.get(0);
+                    if (firstMessageId != null && !firstMessageId.isEmpty())
+                        inReplyToMessageId = firstMessageId;
+                }
+            } catch (MimeHeaderParserException e) {
+                Timber.w(e, "Ignoring invalid in-reply-to value within the mailto: link.");
+            }
+        }
 
         return new MailTo(toAddresses, ccAddresses, bccAddresses, inReplyToMessageId, subject, body);
     }

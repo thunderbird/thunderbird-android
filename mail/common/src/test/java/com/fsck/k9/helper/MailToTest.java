@@ -7,6 +7,7 @@ import com.fsck.k9.helper.MailTo.CaseInsensitiveParamWrapper;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 
+import com.fsck.k9.mail.internet.MimeHeaderParserException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -187,4 +188,52 @@ public class MailToTest {
 
         assertThat(Collections.<String>emptyList(), is(result));
     }
+
+    @Test
+    public void testGetInReplyTo_singleMessageId() {
+        Uri uri = Uri.parse("mailto:?in-reply-to=<7C72B202-73F3@somewhere>");
+
+        MailTo mailToHelper = MailTo.parse(uri);
+
+        assertEquals(mailToHelper.getInReplyTo(), "<7C72B202-73F3@somewhere>");
+    }
+
+    @Test
+    public void testGetInReplyTo_multipleMessageIds() {
+        Uri uri = Uri.parse("mailto:?in-reply-to=<7C72B202-73F3@somewhere>;<8A39-1A87CB40C114@somewhereelse>");
+
+        MailTo mailToHelper = MailTo.parse(uri);
+
+        assertEquals(mailToHelper.getInReplyTo(), null);
+    }
+
+
+    @Test
+    public void testGetInReplyTo_RFC6068Example() {
+        Uri uri = Uri.parse("mailto:list@example.org?In-Reply-To=%3C3469A91.D10AF4C@example.com%3E");
+
+        MailTo mailToHelper = MailTo.parse(uri);
+
+        assertEquals(mailToHelper.getInReplyTo(), "<3469A91.D10AF4C@example.com>");
+    }
+
+    @Test
+    public void testGetInReplyTo_invalid() {
+        Uri uri = Uri.parse("mailto:?in-reply-to=7C72B202-73F3somewhere");
+
+        MailTo mailToHelper = MailTo.parse(uri);
+
+        assertEquals(mailToHelper.getInReplyTo(), null);
+    }
+
+    @Test
+    public void testGetInReplyTo_empty() {
+        Uri uri = Uri.parse("mailto:?in-reply-to=");
+
+        MailTo mailToHelper = MailTo.parse(uri);
+
+        assertEquals(mailToHelper.getInReplyTo(), null);
+
+    }
+
 }

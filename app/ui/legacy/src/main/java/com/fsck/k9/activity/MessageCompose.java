@@ -1484,10 +1484,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         String inReplyTo = mailTo.getInReplyTo();
-        if (inReplyTo != null && !inReplyTo.isEmpty()) {
-            // See https://tools.ietf.org/html/rfc5322 section 3.6.4 msg-id format:
-            // msg-id          =   [CFWS] "<" id-left "@" id-right ">" [CFWS]
-            repliedToMessageId = "<" + inReplyTo + ">";
+        if (inReplyTo != null) {
+            repliedToMessageId = inReplyTo;
         }
 
         String body = mailTo.getBody();
