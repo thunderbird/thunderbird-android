@@ -7,7 +7,6 @@ import com.fsck.k9.helper.MailTo.CaseInsensitiveParamWrapper;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.mail.K9LibRobolectricTestRunner;
 
-import com.fsck.k9.mail.internet.MimeHeaderParserException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -191,20 +190,20 @@ public class MailToTest {
 
     @Test
     public void testGetInReplyTo_singleMessageId() {
-        Uri uri = Uri.parse("mailto:?in-reply-to=<7C72B202-73F3@somewhere>");
+        Uri uri = Uri.parse("mailto:?in-reply-to=%3C7C72B202-73F3@somewhere%3E");
 
         MailTo mailToHelper = MailTo.parse(uri);
 
-        assertEquals(mailToHelper.getInReplyTo(), "<7C72B202-73F3@somewhere>");
+        assertEquals("<7C72B202-73F3@somewhere>", mailToHelper.getInReplyTo());
     }
 
     @Test
     public void testGetInReplyTo_multipleMessageIds() {
-        Uri uri = Uri.parse("mailto:?in-reply-to=<7C72B202-73F3@somewhere>;<8A39-1A87CB40C114@somewhereelse>");
+        Uri uri = Uri.parse("mailto:?in-reply-to=%3C7C72B202-73F3@somewhere%3E%3C8A39-1A87CB40C114@somewhereelse%3E");
 
         MailTo mailToHelper = MailTo.parse(uri);
 
-        assertEquals(mailToHelper.getInReplyTo(), null);
+        assertEquals("<7C72B202-73F3@somewhere>", mailToHelper.getInReplyTo());
     }
 
 
@@ -214,7 +213,7 @@ public class MailToTest {
 
         MailTo mailToHelper = MailTo.parse(uri);
 
-        assertEquals(mailToHelper.getInReplyTo(), "<3469A91.D10AF4C@example.com>");
+        assertEquals("<3469A91.D10AF4C@example.com>", mailToHelper.getInReplyTo());
     }
 
     @Test
@@ -223,7 +222,7 @@ public class MailToTest {
 
         MailTo mailToHelper = MailTo.parse(uri);
 
-        assertEquals(mailToHelper.getInReplyTo(), null);
+        assertEquals(null, mailToHelper.getInReplyTo());
     }
 
     @Test
@@ -232,7 +231,7 @@ public class MailToTest {
 
         MailTo mailToHelper = MailTo.parse(uri);
 
-        assertEquals(mailToHelper.getInReplyTo(), null);
+        assertEquals(null, mailToHelper.getInReplyTo());
 
     }
 

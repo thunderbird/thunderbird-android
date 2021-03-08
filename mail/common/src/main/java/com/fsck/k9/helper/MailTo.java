@@ -77,11 +77,7 @@ public final class MailTo {
         if (inReplyTo != null) {
             try {
                 List<String> inReplyToMessageIds = MessageIdParser.parseList(inReplyTo);
-                if (inReplyToMessageIds != null && !inReplyToMessageIds.isEmpty()) {
-                    String firstMessageId = inReplyToMessageIds.get(0);
-                    if (firstMessageId != null && !firstMessageId.isEmpty())
-                        inReplyToMessageId = firstMessageId;
-                }
+                inReplyToMessageId = inReplyToMessageIds.get(0);
             } catch (MimeHeaderParserException e) {
                 Timber.w(e, "Ignoring invalid in-reply-to value within the mailto: link.");
             }
