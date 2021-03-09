@@ -1483,6 +1483,11 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             subjectView.setText(subject);
         }
 
+        String inReplyTo = mailTo.getInReplyTo();
+        if (inReplyTo != null) {
+            repliedToMessageId = inReplyTo;
+        }
+
         String body = mailTo.getBody();
         if (body != null && !body.isEmpty()) {
             messageContentView.setText(CrLfConverter.toLf(body));

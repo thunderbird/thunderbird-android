@@ -4,6 +4,9 @@ package com.fsck.k9.helper;
 import android.net.Uri;
 
 import com.fsck.k9.mail.Address;
+import com.fsck.k9.mail.internet.MessageIdParser;
+import com.fsck.k9.mail.internet.MimeHeaderParserException;
+import timber.log.Timber;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +15,7 @@ import java.util.List;
 public final class MailTo {
     private static final String MAILTO_SCHEME = "mailto";
     private static final String TO = "to";
+    private static final String IN_REPLY_TO = "in-reply-to";
     private static final String BODY = "body";
     private static final String CC = "cc";
     private static final String BCC = "bcc";
@@ -23,6 +27,7 @@ public final class MailTo {
     private final Address[] toAddresses;
     private final Address[] ccAddresses;
     private final Address[] bccAddresses;
+    private final String inReplyToMessageId;
     private final String subject;
     private final String body;
 
@@ -66,8 +71,19 @@ public final class MailTo {
 
         String subject = getFirstParameterValue(params, SUBJECT);
         String body = getFirstParameterValue(params, BODY);
+        String inReplyTo = getFirstParameterValue(params, IN_REPLY_TO);
 
-        return new MailTo(toAddresses, ccAddresses, bccAddresses, subject, body);
+        String inReplyToMessageId = null;
+        if (inReplyTo != null) {
+            try {
+                List<String> inReplyToMessageIds = MessageIdParser.parseList(inReplyTo);
+                inReplyToMessageId = inReplyToMessageIds.get(0);
+            } catch (MimeHeaderParserException e) {
+                Timber.w(e, "Ignoring invalid in-reply-to value within the mailto: link.");
+            }
+        }
+
+        return new MailTo(toAddresses, ccAddresses, bccAddresses, inReplyToMessageId, subject, body);
     }
 
     private static String getFirstParameterValue(CaseInsensitiveParamWrapper params, String paramName) {
@@ -95,10 +111,12 @@ public final class MailTo {
         return stringBuilder.toString();
     }
 
-    private MailTo(Address[] toAddresses, Address[] ccAddresses, Address[] bccAddresses, String subject, String body) {
+    private MailTo(Address[] toAddresses, Address[] ccAddresses, Address[] bccAddresses, String inReplyToMessageId,
+            String subject, String body) {
         this.toAddresses = toAddresses;
         this.ccAddresses = ccAddresses;
         this.bccAddresses = bccAddresses;
+        this.inReplyToMessageId = inReplyToMessageId;
         this.subject = subject;
         this.body = body;
     }
@@ -123,6 +141,7 @@ public final class MailTo {
         return body;
     }
 
+    public String getInReplyTo() { return inReplyToMessageId; }
 
     static class CaseInsensitiveParamWrapper {
         private final Uri uri;

@@ -187,4 +187,52 @@ public class MailToTest {
 
         assertThat(Collections.<String>emptyList(), is(result));
     }
+
+    @Test
+    public void testGetInReplyTo_singleMessageId() {
+        Uri uri = Uri.parse("mailto:?in-reply-to=%3C7C72B202-73F3@somewhere%3E");
+
+        MailTo mailToHelper = MailTo.parse(uri);
+
+        assertEquals("<7C72B202-73F3@somewhere>", mailToHelper.getInReplyTo());
+    }
+
+    @Test
+    public void testGetInReplyTo_multipleMessageIds() {
+        Uri uri = Uri.parse("mailto:?in-reply-to=%3C7C72B202-73F3@somewhere%3E%3C8A39-1A87CB40C114@somewhereelse%3E");
+
+        MailTo mailToHelper = MailTo.parse(uri);
+
+        assertEquals("<7C72B202-73F3@somewhere>", mailToHelper.getInReplyTo());
+    }
+
+
+    @Test
+    public void testGetInReplyTo_RFC6068Example() {
+        Uri uri = Uri.parse("mailto:list@example.org?In-Reply-To=%3C3469A91.D10AF4C@example.com%3E");
+
+        MailTo mailToHelper = MailTo.parse(uri);
+
+        assertEquals("<3469A91.D10AF4C@example.com>", mailToHelper.getInReplyTo());
+    }
+
+    @Test
+    public void testGetInReplyTo_invalid() {
+        Uri uri = Uri.parse("mailto:?in-reply-to=7C72B202-73F3somewhere");
+
+        MailTo mailToHelper = MailTo.parse(uri);
+
+        assertEquals(null, mailToHelper.getInReplyTo());
+    }
+
+    @Test
+    public void testGetInReplyTo_empty() {
+        Uri uri = Uri.parse("mailto:?in-reply-to=");
+
+        MailTo mailToHelper = MailTo.parse(uri);
+
+        assertEquals(null, mailToHelper.getInReplyTo());
+
+    }
+
 }
