@@ -15,6 +15,7 @@ class NotificationChannelManager(
     private val notificationManager: NotificationManager,
     private val resourceProvider: NotificationResourceProvider
 ) {
+    val pushChannelId = "push"
 
     enum class ChannelType {
         MESSAGES, MISCELLANEOUS
@@ -30,11 +31,18 @@ class NotificationChannelManager(
         }
 
         backgroundExecutor.execute {
+            addGeneralChannels()
+
             val accounts = preferences.accounts
 
             removeChannelsForNonExistingOrChangedAccounts(notificationManager, accounts)
             addChannelsForAccounts(notificationManager, accounts)
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private fun addGeneralChannels() {
+        notificationManager.createNotificationChannel(getChannelPush())
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -80,6 +88,21 @@ class NotificationChannelManager(
             if (shouldDelete) {
                 notificationManager.deleteNotificationChannelGroup(groupId)
             }
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private fun getChannelPush(): NotificationChannel {
+        val channelName = resourceProvider.pushChannelName
+        val channelDescription = resourceProvider.pushChannelDescription
+        val importance = NotificationManager.IMPORTANCE_LOW
+
+        return NotificationChannel(pushChannelId, channelName, importance).apply {
+            description = channelDescription
+            setShowBadge(false)
+            enableLights(false)
+            enableVibration(false)
+            setSound(null, null)
         }
     }
 

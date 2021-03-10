@@ -14,6 +14,8 @@ class TestNotificationResourceProvider : NotificationResourceProvider {
     override val wearIconReplyAll: Int = 11
     override val wearIconMarkAsSpam: Int = 12
 
+    override val pushChannelName = "Synchronize (Push)"
+    override val pushChannelDescription = "Displayed while waiting for new messages"
     override val messagesChannelName = "Messages"
     override val messagesChannelDescription = "Notifications related to messages"
     override val miscellaneousChannelName = "Miscellaneous"
