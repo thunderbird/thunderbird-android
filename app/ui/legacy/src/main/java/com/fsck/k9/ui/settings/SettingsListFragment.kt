@@ -25,7 +25,6 @@ import com.fsck.k9.ui.settings.account.AccountSettingsActivity
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.GenericItem
 import com.mikepenz.fastadapter.adapters.ItemAdapter
-import com.mikepenz.fastadapter.drag.IDraggable
 import com.mikepenz.fastadapter.drag.ItemTouchCallback
 import com.mikepenz.fastadapter.drag.SimpleDragCallback
 import com.mikepenz.fastadapter.expandable.getExpandableExtension
@@ -33,6 +32,7 @@ import com.mikepenz.fastadapter.select.getSelectExtension
 import com.mikepenz.fastadapter.utils.DragDropUtil
 import kotlinx.android.synthetic.main.fragment_settings_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.appcompat.app.AppCompatDelegate
 
 class SettingsListFragment : Fragment(), ItemTouchCallback {
     private val viewModel: SettingsViewModel by viewModel()
@@ -222,13 +222,12 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
     }
 
     override fun itemTouchDropped(oldPosition: Int, newPosition: Int) {
-        myVH.itemView.setBackgroundColor(Color.TRANSPARENT) // TODO This is a hack, but don't know how else to get the VH
+        myVH.itemView.setBackgroundColor(Color.TRANSPARENT)
     }
 
     override fun itemTouchStartDrag(viewHolder: RecyclerView.ViewHolder) {
         // add visual highlight to dragged item
-        //TODO should follow a theme, not sure which one
-        viewHolder.itemView.setBackgroundColor(Color.BLUE)
+        viewHolder.itemView.setBackgroundColor(Color.CYAN)
         myVH = viewHolder
     }
 }

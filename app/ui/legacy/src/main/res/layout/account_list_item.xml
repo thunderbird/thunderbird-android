@@ -23,9 +23,10 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="24dp"
-        android:paddingRight="16dp">
+        android:paddingRight="16dp"
+        android:foreground="?selectableItemBackground">
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,9 +35,10 @@
             android:paddingTop="8dp"
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceListItem"
+            android:fadeScrollbars="true"
             tools:text="Personal" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
