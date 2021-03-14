@@ -18,16 +18,15 @@ internal class AccountItem(val account: Account) : AbstractItem<AccountItem.View
 
     override var isDraggable = true
 
-    fun withIsDraggable(draggable: Boolean): AccountItem {
-        this.isDraggable = draggable
-        return this
+    fun withIsDraggable(): Boolean {
+        return isDraggable
     }
 
     override fun getViewHolder(v: View) = ViewHolder(v)
 
     class ViewHolder(view: View) : FastAdapter.ViewHolder<AccountItem>(view) {
-        val name: MaterialTextView = view.findViewById(R.id.name)
-        val email: MaterialTextView = view.findViewById(R.id.email)
+        val name: TextView = view.findViewById(R.id.name)
+        val email: TextView = view.findViewById(R.id.email)
 
         override fun bindView(item: AccountItem, payloads: List<Any>) {
             name.text = item.account.description

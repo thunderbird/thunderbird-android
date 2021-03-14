@@ -21,9 +21,8 @@ internal class UrlActionItem(
 
     override var isDraggable = false
 
-    fun withIsDraggable(draggable: Boolean): UrlActionItem {
-        this.isDraggable = draggable
-        return this
+    fun withIsDraggable(): Boolean {
+        return isDraggable
     }
 
     override fun getViewHolder(v: View) = ViewHolder(v)

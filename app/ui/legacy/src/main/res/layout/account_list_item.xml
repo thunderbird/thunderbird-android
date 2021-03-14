@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingLeft="8dp">
+    android:paddingLeft="8dp"
+    android:background="?android:attr/windowBackground"
+    android:foreground="?selectableItemBackground">
 
     <ImageView
         android:layout_width="40dp"
@@ -23,10 +24,9 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="24dp"
-        android:paddingRight="16dp"
-        android:foreground="?selectableItemBackground">
+        android:paddingRight="16dp">
 
-        <com.google.android.material.textview.MaterialTextView
+        <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
             android:fadeScrollbars="true"
             tools:text="Personal" />
 
-        <com.google.android.material.textview.MaterialTextView
+        <TextView
             android:id="@+id/email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

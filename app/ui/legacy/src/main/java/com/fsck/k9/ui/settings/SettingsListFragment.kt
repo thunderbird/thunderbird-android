@@ -27,12 +27,10 @@ import com.mikepenz.fastadapter.GenericItem
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.drag.ItemTouchCallback
 import com.mikepenz.fastadapter.drag.SimpleDragCallback
-import com.mikepenz.fastadapter.expandable.getExpandableExtension
-import com.mikepenz.fastadapter.select.getSelectExtension
 import com.mikepenz.fastadapter.utils.DragDropUtil
 import kotlinx.android.synthetic.main.fragment_settings_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import androidx.appcompat.app.AppCompatDelegate
+
 
 class SettingsListFragment : Fragment(), ItemTouchCallback {
     private val viewModel: SettingsViewModel by viewModel()
@@ -43,10 +41,9 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
     // drag & drop
     private lateinit var touchCallBack: SimpleDragCallback
     private lateinit var touchHelper: ItemTouchHelper
+    private lateinit var vh: AccountItem.ViewHolder
 
     private var numberOfAccounts = 0
-
-    private lateinit var myVH : RecyclerView.ViewHolder // TODO This is a hack
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_settings_list, container, false)
@@ -72,10 +69,6 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
 
         touchCallBack = SimpleDragCallback(this)
         touchHelper = ItemTouchHelper(touchCallBack)
-
-        settingsListAdapter.getExpandableExtension()
-        val selectExtension = settingsListAdapter.getSelectExtension()
-        selectExtension.isSelectable = true
         touchCallBack.setIsDragEnabled(true)
 
         with(settings_list) {
@@ -85,66 +78,71 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
         }
     }
 
+
     private fun populateSettingsList() {
         viewModel.accounts.observeNotNull(this) { accounts ->
             val accountsFinishedSetup = accounts.filter { it.isFinishedSetup }
             if (accountsFinishedSetup.isEmpty()) {
                 launchOnboarding()
             } else {
-                // populateSettingsList(accountsFinishedSetup)
-                val listItems = buildSettingsList {
-                    addAction(
-                        text = getString(R.string.general_settings_title),
-                        navigationAction = R.id.action_settingsListScreen_to_generalSettingsScreen,
-                        icon = R.attr.iconSettingsGeneral
-                    )
-
-                    addSection(title = getString(R.string.accounts_title)) {
-                        for (account in Preferences.getPreferences(context).accounts) {
-                            addAccount(account)
-                        }
-
-                        addAction(
-                            text = getString(R.string.add_account_action),
-                            navigationAction = R.id.action_settingsListScreen_to_addAccountScreen,
-                            icon = R.attr.iconSettingsAccountAdd
-                        )
-
-                        NewSetupUiHack.addAction(this)
-                    }
-
-                    addSection(title = getString(R.string.settings_list_backup_category)) {
-                        addAction(
-                            text = getString(R.string.settings_export_title),
-                            navigationAction = R.id.action_settingsListScreen_to_settingsExportScreen,
-                            icon = R.attr.iconSettingsExport
-                        )
-
-                        addAction(
-                            text = getString(R.string.settings_import_title),
-                            navigationAction = R.id.action_settingsListScreen_to_settingsImportScreen,
-                            icon = R.attr.iconSettingsImport
-                        )
-                    }
-
-                    addSection(title = getString(R.string.settings_list_miscellaneous_category)) {
-                        addAction(
-                            text = getString(R.string.about_action),
-                            navigationAction = R.id.action_settingsListScreen_to_aboutScreen,
-                            icon = R.attr.iconSettingsAbout
-                        )
-
-                        addUrlAction(
-                            text = getString(R.string.user_forum_title),
-                            url = getString(R.string.user_forum_url),
-                            icon = R.attr.iconUserForum
-                        )
-                    }
-                }
-                itemAdapter.setNewList(listItems)
-                numberOfAccounts = accounts.size
+                populateSettingsList(accountsFinishedSetup)
             }
         }
+    }
+
+    private fun populateSettingsList(accounts: List<Account>) {
+        val listItems = buildSettingsList {
+            addAction(
+                text = getString(R.string.general_settings_title),
+                navigationAction = R.id.action_settingsListScreen_to_generalSettingsScreen,
+                icon = R.attr.iconSettingsGeneral
+            )
+
+            addSection(title = getString(R.string.accounts_title)) {
+                for (account in accounts) {
+                    addAccount(account)
+                }
+
+                addAction(
+                    text = getString(R.string.add_account_action),
+                    navigationAction = R.id.action_settingsListScreen_to_addAccountScreen,
+                    icon = R.attr.iconSettingsAccountAdd
+                )
+
+                NewSetupUiHack.addAction(this)
+            }
+
+            addSection(title = getString(R.string.settings_list_backup_category)) {
+                addAction(
+                    text = getString(R.string.settings_export_title),
+                    navigationAction = R.id.action_settingsListScreen_to_settingsExportScreen,
+                    icon = R.attr.iconSettingsExport
+                )
+
+                addAction(
+                    text = getString(R.string.settings_import_title),
+                    navigationAction = R.id.action_settingsListScreen_to_settingsImportScreen,
+                    icon = R.attr.iconSettingsImport
+                )
+            }
+
+            addSection(title = getString(R.string.settings_list_miscellaneous_category)) {
+                addAction(
+                    text = getString(R.string.about_action),
+                    navigationAction = R.id.action_settingsListScreen_to_aboutScreen,
+                    icon = R.attr.iconSettingsAbout
+                )
+
+                addUrlAction(
+                    text = getString(R.string.user_forum_title),
+                    url = getString(R.string.user_forum_url),
+                    icon = R.attr.iconUserForum
+                )
+            }
+        }
+
+        itemAdapter.setNewList(listItems)
+        numberOfAccounts = accounts.size
     }
 
     private fun handleItemClick(item: GenericItem) {
@@ -205,29 +203,28 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
     }
 
     override fun itemTouchOnMove(oldPosition: Int, newPosition: Int): Boolean {
-        val startDropPos = 2 // Accounts (the only draggable item) currently start as the third item in the List
-        val endDropPos = startDropPos + numberOfAccounts
-        // var accountItem = itemAdapter.getAdapterItem(newPosition) as AccountItem
-        val preferences = Preferences.getPreferences(context)
-
-        if (numberOfAccounts > 1 &&
-            oldPosition >= startDropPos && oldPosition < endDropPos &&
-            newPosition >= startDropPos && newPosition < endDropPos) {
-            DragDropUtil.onMove(itemAdapter, oldPosition, newPosition)
-            val moveUp = oldPosition <= newPosition
-            val accountItem = itemAdapter.getAdapterItem(oldPosition) as AccountItem
-            preferences.move(accountItem.account, moveUp)
-            return true
+        if (numberOfAccounts > 1){
+            val  firstDropPosition = itemAdapter.adapterItems.indexOfFirst { it is AccountItem }
+            val lastDropPositional = itemAdapter.adapterItems.indexOfLast { it is AccountItem }
+            val preferences = Preferences.getPreferences(context)
+            if (oldPosition >=  firstDropPosition && oldPosition <= lastDropPositional &&
+                newPosition >=  firstDropPosition && newPosition <= lastDropPositional){
+                    DragDropUtil.onMove(itemAdapter, oldPosition, newPosition)
+                    val moveUp = oldPosition <= newPosition
+                    val accountItem = itemAdapter.getAdapterItem(oldPosition) as AccountItem
+                    preferences.move(accountItem.account, moveUp)
+                    return true
+                }
+                else return false
         } else return false
     }
 
     override fun itemTouchDropped(oldPosition: Int, newPosition: Int) {
-        myVH.itemView.setBackgroundColor(Color.TRANSPARENT)
+        vh.itemView.translationZ = resources.displayMetrics.density
     }
 
     override fun itemTouchStartDrag(viewHolder: RecyclerView.ViewHolder) {
-        // add visual highlight to dragged item
-        viewHolder.itemView.setBackgroundColor(Color.CYAN)
-        myVH = viewHolder
+        viewHolder.itemView.translationZ = 60f * resources.displayMetrics.density
+        vh = viewHolder as AccountItem.ViewHolder
     }
 }

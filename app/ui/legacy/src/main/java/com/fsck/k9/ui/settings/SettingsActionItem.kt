@@ -22,9 +22,8 @@ internal class SettingsActionItem(
 
     override var isDraggable = false
 
-    fun withIsDraggable(draggable: Boolean): SettingsActionItem {
-        this.isDraggable = draggable
-        return this
+    fun withIsDraggable(): Boolean {
+        return isDraggable
     }
 
     override fun getViewHolder(v: View) = ViewHolder(v)
