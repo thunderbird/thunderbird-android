@@ -15,9 +15,6 @@ import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,18 +23,20 @@ import android.widget.CheckedTextView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import com.fsck.k9.Account;
 import com.fsck.k9.Preferences;
-import com.fsck.k9.ui.base.K9ActivityCommon;
-import com.fsck.k9.ui.base.ThemeType;
 import com.fsck.k9.ui.R;
+import com.fsck.k9.ui.base.K9Activity;
+import com.fsck.k9.ui.base.ThemeType;
 import com.fsck.k9.ui.dialog.ApgDeprecationWarningDialog;
 import org.openintents.openpgp.util.OpenPgpApi;
 import org.openintents.openpgp.util.OpenPgpProviderUtil;
 import timber.log.Timber;
 
 
-public class OpenPgpAppSelectDialog extends FragmentActivity {
+public class OpenPgpAppSelectDialog extends K9Activity {
     private static final String EXTRA_ACCOUNT = "account";
 
     private static final String OPENKEYCHAIN_PACKAGE = "org.sufficientlysecure.keychain";
@@ -54,8 +53,6 @@ public class OpenPgpAppSelectDialog extends FragmentActivity {
             String.format("https://play.google.com/store/apps/details?id=%s", OPENKEYCHAIN_PACKAGE)));
 
 
-    private final K9ActivityCommon base = new K9ActivityCommon(this, ThemeType.DIALOG);
-
     private boolean isStopped;
     private Account account;
 
@@ -65,9 +62,12 @@ public class OpenPgpAppSelectDialog extends FragmentActivity {
         context.startActivity(i);
     }
 
+    public OpenPgpAppSelectDialog() {
+        super(ThemeType.DIALOG);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        base.preOnCreate();
         super.onCreate(savedInstanceState);
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
@@ -89,12 +89,6 @@ public class OpenPgpAppSelectDialog extends FragmentActivity {
         } else {
             showOpenPgpSelectDialogFragment();
         }
-    }
-
-    @Override
-    protected void onResume() {
-        base.preOnResume();
-        super.onResume();
     }
 
     @Override

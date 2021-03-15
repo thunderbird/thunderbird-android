@@ -5,8 +5,10 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 
-abstract class K9Activity : AppCompatActivity() {
-    private val base = K9ActivityCommon(this, ThemeType.DEFAULT)
+abstract class K9Activity(themeType: ThemeType) : AppCompatActivity() {
+    constructor() : this(ThemeType.DEFAULT)
+
+    private val base = K9ActivityCommon(this, themeType)
 
     val themeManager: ThemeManager
         get() = base.themeManager
