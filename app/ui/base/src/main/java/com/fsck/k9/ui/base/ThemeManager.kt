@@ -30,9 +30,6 @@ class ThemeManager(
     val appThemeResourceId: Int = themeProvider.appThemeResourceId
 
     @get:StyleRes
-    val appActionBarThemeResourceId: Int = themeProvider.appActionBarThemeResourceId
-
-    @get:StyleRes
     val messageViewThemeResourceId: Int
         get() = getSubThemeResourceId(K9.messageViewTheme)
 

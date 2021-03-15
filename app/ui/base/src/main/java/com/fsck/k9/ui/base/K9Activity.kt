@@ -40,7 +40,6 @@ abstract class K9Activity(private val themeType: ThemeType) : AppCompatActivity(
         currentTheme = themeManager.appTheme
         val theme = when (themeType) {
             ThemeType.DEFAULT -> themeManager.appThemeResourceId
-            ThemeType.ACTION_BAR -> themeManager.appActionBarThemeResourceId
             ThemeType.DIALOG -> themeManager.translucentDialogThemeResourceId
         }
         setTheme(theme)
@@ -78,6 +77,5 @@ abstract class K9Activity(private val themeType: ThemeType) : AppCompatActivity(
 
 enum class ThemeType {
     DEFAULT,
-    ACTION_BAR,
     DIALOG
 }
