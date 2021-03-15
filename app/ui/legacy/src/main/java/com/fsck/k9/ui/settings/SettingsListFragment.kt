@@ -2,10 +2,8 @@ package com.fsck.k9.ui.settings
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +28,6 @@ import com.mikepenz.fastadapter.drag.SimpleDragCallback
 import com.mikepenz.fastadapter.utils.DragDropUtil
 import kotlinx.android.synthetic.main.fragment_settings_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
 
 class SettingsListFragment : Fragment(), ItemTouchCallback {
     private val viewModel: SettingsViewModel by viewModel()
@@ -77,7 +74,6 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
             touchHelper.attachToRecyclerView(this)
         }
     }
-
 
     private fun populateSettingsList() {
         viewModel.accounts.observeNotNull(this) { accounts ->
@@ -203,19 +199,18 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
     }
 
     override fun itemTouchOnMove(oldPosition: Int, newPosition: Int): Boolean {
-        if (numberOfAccounts > 1){
-            val  firstDropPosition = itemAdapter.adapterItems.indexOfFirst { it is AccountItem }
+        if (numberOfAccounts > 1) {
+            val firstDropPosition = itemAdapter.adapterItems.indexOfFirst { it is AccountItem }
             val lastDropPositional = itemAdapter.adapterItems.indexOfLast { it is AccountItem }
             val preferences = Preferences.getPreferences(context)
-            if (oldPosition >=  firstDropPosition && oldPosition <= lastDropPositional &&
-                newPosition >=  firstDropPosition && newPosition <= lastDropPositional){
-                    DragDropUtil.onMove(itemAdapter, oldPosition, newPosition)
-                    val moveUp = oldPosition <= newPosition
-                    val accountItem = itemAdapter.getAdapterItem(oldPosition) as AccountItem
-                    preferences.move(accountItem.account, moveUp)
-                    return true
-                }
-                else return false
+            if (oldPosition >= firstDropPosition && oldPosition <= lastDropPositional &&
+                newPosition >= firstDropPosition && newPosition <= lastDropPositional) {
+                DragDropUtil.onMove(itemAdapter, oldPosition, newPosition)
+                val moveUp = oldPosition <= newPosition
+                val accountItem = itemAdapter.getAdapterItem(oldPosition) as AccountItem
+                preferences.move(accountItem.account, moveUp)
+                return true
+            } else return false
         } else return false
     }
 

@@ -4,7 +4,6 @@ import android.view.View
 import android.widget.TextView
 import com.fsck.k9.Account
 import com.fsck.k9.ui.R
-import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.drag.IDraggable
 import com.mikepenz.fastadapter.items.AbstractItem
