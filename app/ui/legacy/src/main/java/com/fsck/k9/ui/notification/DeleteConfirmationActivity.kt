@@ -3,7 +3,6 @@ package com.fsck.k9.ui.notification
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
@@ -14,21 +13,18 @@ import com.fsck.k9.fragment.ConfirmationDialogFragment
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
 import com.fsck.k9.notification.NotificationActionService
 import com.fsck.k9.ui.R
-import com.fsck.k9.ui.base.K9ActivityCommon
+import com.fsck.k9.ui.base.K9Activity
 import com.fsck.k9.ui.base.ThemeType
 import org.koin.android.ext.android.inject
 
-class DeleteConfirmationActivity : AppCompatActivity(), ConfirmationDialogFragmentListener {
+class DeleteConfirmationActivity : K9Activity(ThemeType.DIALOG), ConfirmationDialogFragmentListener {
     private val preferences: Preferences by inject()
     private val messagingController: MessagingController by inject()
-
-    private val base = K9ActivityCommon(this, ThemeType.DIALOG)
 
     private lateinit var account: Account
     private lateinit var messagesToDelete: List<MessageReference>
 
     public override fun onCreate(savedInstanceState: Bundle?) {
-        base.preOnCreate()
         super.onCreate(savedInstanceState)
 
         extractExtras()
@@ -37,11 +33,6 @@ class DeleteConfirmationActivity : AppCompatActivity(), ConfirmationDialogFragme
             val dialogFragment = createConfirmationDialogFragment()
             dialogFragment.show(supportFragmentManager, DIALOG_TAG)
         }
-    }
-
-    override fun onResume() {
-        base.preOnResume()
-        super.onResume()
     }
 
     private fun extractExtras() {

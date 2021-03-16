@@ -13,9 +13,6 @@ interface ThemeProvider {
     val appDarkThemeResourceId: Int
 
     @get:StyleRes
-    val appActionBarThemeResourceId: Int
-
-    @get:StyleRes
     val dialogThemeResourceId: Int
 
     @get:StyleRes
