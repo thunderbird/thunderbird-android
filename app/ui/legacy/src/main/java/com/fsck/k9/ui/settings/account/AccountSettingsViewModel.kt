@@ -47,7 +47,9 @@ class AccountSettingsViewModel(
         }
     }
 
-    private fun loadAccount(accountUuid: String) = preferences.getAccount(accountUuid)
+    private fun loadAccount(accountUuid: String): Account {
+        return preferences.getAccount(accountUuid) ?: error("Account $accountUuid not found")
+    }
 
     fun getFolders(account: Account): LiveData<RemoteFolderInfo> {
         if (foldersLiveData.value == null) {

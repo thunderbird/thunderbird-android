@@ -1048,7 +1048,7 @@ class MessageListFragment :
     }
 
     private fun groupMessagesByAccount(messages: List<MessageReference>): Map<Account, List<MessageReference>> {
-        return messages.groupBy { preferences.getAccount(it.accountUuid) }
+        return messages.groupBy { preferences.getAccount(it.accountUuid)!! }
     }
 
     private fun onSpam(messages: List<MessageReference>) {

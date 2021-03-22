@@ -434,6 +434,11 @@ open class MessageList :
             if (accountUuid != null) {
                 // We've most likely been started by an old unread widget or accounts shortcut
                 val account = preferences.getAccount(accountUuid)
+                if (account == null) {
+                    Timber.d("Account %s not found.", accountUuid)
+                    return LaunchData(createDefaultLocalSearch())
+                }
+
                 val folderId = defaultFolderProvider.getDefaultFolder(account)
                 val search = LocalSearch().apply {
                     addAccountUuid(accountUuid)
@@ -455,7 +460,7 @@ open class MessageList :
     }
 
     private fun createDefaultLocalSearch(): LocalSearch {
-        val account = preferences.defaultAccount
+        val account = preferences.defaultAccount ?: error("No default account available")
         return LocalSearch().apply {
             addAccountUuid(account.uuid)
             addAllowedFolder(defaultFolderProvider.getDefaultFolder(account))
@@ -1141,7 +1146,7 @@ open class MessageList :
     }
 
     override fun openMessage(messageReference: MessageReference) {
-        val account = preferences.getAccount(messageReference.accountUuid)
+        val account = preferences.getAccount(messageReference.accountUuid) ?: error("Account not found")
         val folderId = messageReference.folderId
 
         val draftsFolderId = account.draftsFolderId

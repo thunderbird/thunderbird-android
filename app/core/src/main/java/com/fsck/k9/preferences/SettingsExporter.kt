@@ -65,8 +65,9 @@ class SettingsExporter(
 
             serializer.startTag(null, ACCOUNTS_ELEMENT)
             for (accountUuid in accountUuids) {
-                val account = preferences.getAccount(accountUuid)
-                writeAccount(serializer, account, prefs)
+                preferences.getAccount(accountUuid)?.let { account ->
+                    writeAccount(serializer, account, prefs)
+                }
             }
             serializer.endTag(null, ACCOUNTS_ELEMENT)
 

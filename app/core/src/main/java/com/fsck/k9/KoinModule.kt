@@ -13,7 +13,15 @@ import com.fsck.k9.setup.ServerNameSuggester
 import org.koin.dsl.module
 
 val mainModule = module {
-    single { Preferences.getPreferences(get()) }
+    single {
+        Preferences(
+            context = get(),
+            storagePersister = get(),
+            localStoreProvider = get(),
+            localKeyStoreManager = get(),
+            accountPreferenceSerializer = get()
+        )
+    }
     single { get<Context>().resources }
     single { get<Context>().contentResolver }
     single { LocalStoreProvider() }
