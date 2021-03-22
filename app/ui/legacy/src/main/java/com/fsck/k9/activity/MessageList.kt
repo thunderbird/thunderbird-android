@@ -1488,6 +1488,7 @@ open class MessageList :
 
     private fun configureDrawer() {
         val drawer = drawer ?: return
+        drawer.selectAccount(account!!.uuid)
         when {
             singleFolderMode -> drawer.selectFolder(search!!.folderIds[0])
             // Don't select any item in the drawer because the Unified Inbox is displayed, but not listed in the drawer
