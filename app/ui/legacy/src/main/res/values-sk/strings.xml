@@ -7,7 +7,20 @@
   <string name="shortcuts_title">K-9 Účty</string>
   <string name="unread_widget_label">K-9 Neprečítaná</string>
   <!--Used in the about dialog-->
+  <string name="app_authors">The K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Autorské práva 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
+  <string name="source_code">Zdrojový kód</string>
+  <string name="app_license">Licencované pod licenciou Apache 2.0.</string>
+  <string name="about_project_title">Projekt s otvoreným zdrojovým kódom</string>
+  <string name="about_website_title">Webová stránka</string>
+  <string name="user_forum_title">Užívateľské fórum</string>
+  <string name="about_fediverse_title">Fediverse</string>
+  <string name="about_twitter_title">tter</string>
+  <string name="about_libraries">Softwarové knižnice</string>
+  <string name="license">Licencia</string>
+  <string name="changelog_title">História zmien</string>
+  <string name="changelog_loading_error">Nepodarilo sa načítať históriu zmien</string>
+  <string name="changelog_version_title">Verzia %s</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Vitajte v K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -45,10 +58,13 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <!--General strings that include the app name-->
   <string name="account_delete_dlg_instructions_fmt">Účet \"<xliff:g id="account">%s</xliff:g>\" bude odstránený z K-9 Mail.</string>
   <!--=== General strings ==================================================================-->
+  <string name="authors">Autori</string>
+  <string name="app_revision">Informácie o revízii</string>
   <string name="read_messages_label">Čítať správy</string>
   <string name="read_messages_desc">Umožňuje tejto aplikácii čítať vaše e-maily.</string>
   <string name="delete_messages_label">Mazať správy</string>
   <string name="delete_messages_desc">Umožňuje tejto aplikácii mazať vaše e-maily.</string>
+  <string name="about_title">O aplikácii K-9 mail </string>
   <string name="accounts_title">Účty</string>
   <string name="folders_title">Priečinky</string>
   <string name="advanced">Pokročilé</string>
@@ -56,6 +72,8 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="compose_title_reply">Odpovedať</string>
   <string name="compose_title_reply_all">Odpovedať všetkým</string>
   <string name="compose_title_forward">Preposlať</string>
+  <string name="compose_title_forward_as_attachment">Preposlať ako prílohu</string>
+  <string name="choose_account_title">Vyberte účet</string>
   <string name="choose_folder_title">Vyberte priečinok</string>
   <string name="status_loading_account_folder">Synchronizácia <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Načítavanie hlavičiek <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -80,7 +98,10 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="archive_action">Archivovať</string>
   <string name="spam_action">Nevyžiadaná pošta</string>
   <string name="forward_action">Preposlať</string>
+  <string name="forward_as_attachment_action">Preposlať ako prílohu</string>
+  <string name="edit_as_new_message_action">Upraviť ako novú správu</string>
   <string name="move_action">Presunúť</string>
+  <string name="move_to_drafts_action">Presunúť do konceptov</string>
   <string name="single_message_options_action">Odoslať…</string>
   <string name="refile_action">Presunúť…</string>
   <string name="done_action">Hotovo</string>
@@ -95,6 +116,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="search_action">Vyhľadať</string>
   <string name="search_results">Výsledky vyhľadávania</string>
   <string name="preferences_action">Nastavenia</string>
+  <string name="folders_action">Spravovať priečinky</string>
   <string name="account_settings_action">Nastavenia účtu</string>
   <string name="remove_account_action">Odstrániť účet</string>
   <string name="mark_as_read_action">Označiť ako prečítané</string>
@@ -129,6 +151,10 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="status_invalid_id_error">Správa nebola nájdená</string>
   <string name="status_loading_error">Chyba otvárania správy</string>
   <string name="load_more_messages_fmt">Načítať ďalších <xliff:g id="messages_to_load">%d</xliff:g> správ</string>
+  <string name="size_format_gigabytes">%.1f GB</string>
+  <string name="size_format_megabytes">%.1f MB</string>
+  <string name="size_format_kilobytes">%.1f kB</string>
+  <string name="size_format_bytes">%d B</string>
   <string name="account_size_changed">Účet \"<xliff:g id="account">%s</xliff:g>\" bol zmenšený z <xliff:g id="oldSize">%s</xliff:g> na <xliff:g id="newSize">%s</xliff:g></string>
   <string name="compacting_account">Zmenšovanie účtu \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Nová správa</string>
@@ -158,13 +184,16 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="notification_bg_send_title">Odosielanie pošty</string>
   <string name="notification_bg_title_separator">:</string>
   <string name="notification_channel_messages_title">Správy</string>
+  <string name="notification_channel_messages_description">Oznámenia súvisiace so správami</string>
   <string name="notification_channel_miscellaneous_title">Rôzne</string>
+  <string name="notification_channel_miscellaneous_description">Rôzne oznámenia, napr. chyby atď.</string>
   <string name="special_mailbox_name_inbox">Doručená</string>
   <string name="special_mailbox_name_outbox">Pošta na odoslanie</string>
   <string name="special_mailbox_name_drafts">Koncepty</string>
   <string name="special_mailbox_name_trash">Kôš</string>
   <string name="special_mailbox_name_sent">Odoslaná</string>
   <string name="send_failure_subject">Nepodarilo sa odoslať niektoré správy</string>
+  <string name="version">Verzia</string>
   <string name="debug_enable_debug_logging_title">Povoliť vytváranie záznamov pre ladenie</string>
   <string name="debug_enable_debug_logging_summary">Zaznamenávať rozšírené diagnostické informácie</string>
   <string name="debug_enable_sensitive_logging_title">Zaznamenávať citlivé informácie</string>
@@ -186,13 +215,18 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="compose_error_incomplete_recipient">Pole príjemcov obsahuje neúplné zadanie!</string>
   <string name="error_contact_address_not_found">Nebola nájdená žiadna e-mailová adresa pre tento kontakt.</string>
   <string name="message_compose_attachments_skipped_toast">Niektoré prílohy nemožno preposlať, pretože neboli stiahnuté.</string>
+  <string name="message_compose_attachments_forward_toast">Správu nie je možné preposlať, pretože sa nestiahli niektoré prílohy.</string>
+  <string name="message_compose_show_quoted_text_action">Zahrnúť citovanú správu</string>
   <string name="message_compose_description_delete_quoted_text">Odstrániť citovaný text</string>
   <string name="message_compose_description_edit_quoted_text">Upraviť citovaný text</string>
+  <string name="remove_attachment_action">Odstrániť prílohu</string>
   <string name="message_view_from_format">Od: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">Komu:</string>
   <string name="message_view_cc_label">Kópia:</string>
+  <string name="message_view_bcc_label">Skrytá kópia (Bcc):</string>
   <string name="message_view_attachment_view_action">Otvoriť</string>
   <string name="message_view_attachment_download_action">Uložiť</string>
+  <string name="message_view_status_attachment_not_saved">Prílohu sa nepodarilo uložiť.</string>
   <string name="message_view_show_pictures_action">Zobraziť obrázky</string>
   <string name="message_view_no_viewer">Nemožno nájsť prehliadač pre <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Stiahnuť kompletnú správu</string>
@@ -202,6 +236,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="message_no_additional_headers_available">Všetky hlavičky boli stiahnuté, ale nie sú žiadne ďalšie hlavičky na zobrazenie.</string>
   <string name="message_additional_headers_retrieval_failed">Načítanie prídavných hlavičiek z databázy alebo poštového servera zlyhalo.</string>
   <string name="from_same_sender">Viac od tohto odosielateľa</string>
+  <string name="search_from_format">Od <xliff:g id="sender">%s</xliff:g></string>
   <string name="debug_delete_local_body">Ladiť / vyčistiť telo správy</string>
   <string name="message_discarded_toast">Správa bola zahodená</string>
   <string name="message_saved_toast">Správa bola uložená ako koncept</string>
@@ -401,6 +436,10 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_settings_notification_opens_unread_summary">Po otvorení oznámenia zobraziť neprečítané správy</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Po otvorení označiť ako prečítané</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Označiť správu ako prečítanú po jej zobrazení</string>
+  <string name="account_settings_mark_message_as_read_on_delete_label">Pri zmazaní označiť za prečítané</string>
+  <string name="account_settings_mark_message_as_read_on_delete_summary">Pri mazaní oznaťič správu ako prečítanú</string>
+  <string name="account_settings_notification_open_system_notifications_label">Nastavenie notifikácií</string>
+  <string name="account_settings_notification_open_system_notifications_summary">Nastavenie notifikácií v operačnom systéme</string>
   <string name="account_settings_show_pictures_label">Vždy zobraziť obrázky</string>
   <string name="account_settings_show_pictures_never">Nie</string>
   <string name="account_settings_show_pictures_only_from_contacts">Od kontaktov</string>
@@ -422,18 +461,45 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_settings_quote_style_label">Štýl citácie odpovedi</string>
   <string name="account_settings_quote_style_prefix">Predpona (ako Gmail)</string>
   <string name="account_settings_quote_style_header">Hlavička (ako Outlook)</string>
+  <string name="account_settings_upload_sent_messages_label">Nahrať odoslané správy</string>
+  <string name="account_settings_upload_sent_messages_summary">Po odoslaní uložiť do priečinka Odoslané</string>
   <string name="account_settings_general_title">Všeobecné nastavenia</string>
   <string name="account_settings_reading_mail">Čítanie pošty</string>
   <string name="account_settings_sync">Sťahovanie pošty</string>
   <string name="account_settings_folders">Priečinky</string>
   <string name="account_settings_quote_prefix_label">Predpona citovaného textu</string>
+  <string name="account_settings_crypto">Koncové šifrovanie</string>
+  <string name="account_settings_crypto_app">Zapnúť podporu OpenPGP</string>
+  <string name="account_settings_crypto_app_select_title">Vybrať aplikáciu pre OpenPGP</string>
+  <string name="account_settings_crypto_key">Nastaviť kľúč pre koncové šifrovanie </string>
+  <string name="account_settings_crypto_summary_off">Nie je nastavená aplikácia pre OpenPGP</string>
+  <string name="account_settings_crypto_summary_on">Pripojené k %s</string>
+  <string name="account_settings_crypto_summary_config">Nastavuje sa...</string>
+  <string name="account_settings_crypto_encrypt_all_drafts">Ukladať všetky koncepty zašifrované </string>
+  <string name="account_settings_crypto_encrypt_all_drafts_on">Všetky koncepty sa budú ukladať zašifrované</string>
+  <string name="account_settings_crypto_encrypt_all_drafts_off">Šifrovať koncepty len keď je zapnuté šifrovanie</string>
   <string name="account_settings_mail_check_frequency_label">Frekvencia synchronizácie priečinkov</string>
   <string name="account_settings_color_label">Farba účtu</string>
   <string name="account_settings_color_summary">Farba účtu v zozname priečinkov a účtov</string>
+  <string name="account_settings_color_none">Žiadna farba</string>
   <string name="account_settings_led_color_label">Farba notifikačnej LED</string>
   <string name="account_settings_led_color_summary">Farba blikania LED pre tento účet</string>
   <string name="account_settings_mail_display_count_label">Veľkosť lokálneho priečinka</string>
   <string name="account_settings_autodownload_message_size_label">Načítať správy do veľkosti</string>
+  <string name="account_settings_autodownload_message_size_1">1 KiB</string>
+  <string name="account_settings_autodownload_message_size_2">2 KiB</string>
+  <string name="account_settings_autodownload_message_size_4">4 KiB</string>
+  <string name="account_settings_autodownload_message_size_8">8 KiB</string>
+  <string name="account_settings_autodownload_message_size_16">16 KiB</string>
+  <string name="account_settings_autodownload_message_size_32">32 KiB</string>
+  <string name="account_settings_autodownload_message_size_64">64 KiB</string>
+  <string name="account_settings_autodownload_message_size_128">128 KiB</string>
+  <string name="account_settings_autodownload_message_size_256">256 KiB</string>
+  <string name="account_settings_autodownload_message_size_512">512 KiB</string>
+  <string name="account_settings_autodownload_message_size_1024">1 MiB</string>
+  <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
+  <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
+  <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
   <string name="account_settings_autodownload_message_size_any">akákoľvek veľkosť (bez obmedzenia)</string>
   <string name="account_settings_message_age_label">Synchronizácia správ</string>
   <string name="account_settings_message_age_any">Akýkoľvek čas (bez obmedzenia)</string>
@@ -472,21 +538,26 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_settings_folder_target_mode_not_second_class">Všetky okrem priečinkov 2. triedy</string>
   <string name="account_settings_sync_remote_deletetions_label">Synchronizácia mazaní na serveri</string>
   <string name="account_settings_sync_remote_deletetions_summary">Odstrániť správy, ktoré boli odstránené na serveri</string>
+  <string name="account_settings_openpgp_missing">Aplikácia pre OpenPGP chýba - bola odinštalovaná?</string>
   <string name="folder_settings_title">Nastavenia priečinku</string>
   <string name="folder_settings_in_top_group_label">Zobraziť v najvyššej skupine</string>
   <string name="folder_settings_in_top_group_summary">Zobraziť v hornej časti zoznamu priečinkov</string>
   <string name="folder_settings_folder_display_mode_label">Trieda zobrazenia priečinka</string>
+  <string name="folder_settings_folder_display_mode_normal">Žiadna trieda</string>
   <string name="folder_settings_folder_display_mode_first_class">1. trieda</string>
   <string name="folder_settings_folder_display_mode_second_class">2. trieda</string>
+  <string name="folder_settings_folder_sync_mode_label">Trieda fondu priečinka</string>
   <string name="folder_settings_folder_sync_mode_normal">Žiadna</string>
   <string name="folder_settings_folder_sync_mode_first_class">1. trieda</string>
   <string name="folder_settings_folder_sync_mode_second_class">2. trieda</string>
   <string name="folder_settings_folder_sync_mode_inherited">Rovnaká ako trieda zobrazenia</string>
   <string name="folder_settings_folder_push_mode_label">Trieda push priečinka</string>
+  <string name="folder_settings_folder_push_mode_normal">Žiadna trieda</string>
   <string name="folder_settings_folder_push_mode_first_class">1. trieda</string>
   <string name="folder_settings_folder_push_mode_second_class">2. trieda</string>
   <string name="folder_settings_folder_push_mode_inherited">Rovnaká ako trieda synchronizácie</string>
   <string name="folder_settings_folder_notify_mode_label">Trieda oznámení priečinkov</string>
+  <string name="folder_settings_folder_notify_mode_normal">Žiadna trieda</string>
   <string name="folder_settings_folder_notify_mode_first_class">1. trieda</string>
   <string name="folder_settings_folder_notify_mode_second_class">2. trieda</string>
   <string name="folder_settings_folder_notify_mode_inherited">Rovnaká ako push trieda</string>
@@ -568,6 +639,9 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_setup_failed_dlg_invalid_certificate_title">Neznámy certifikát</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Prijať kľúč</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Odmietnuť kľúč</string>
+  <string name="message_view_help_key">Delete (Alebo D) – Zmazať\nR – Odpovedať\nA – Odpovedať všetkým\nC – Vytvoriť\nF – Preposlať\nM – Presunúť\nV - Archivovať\nY – Kopírovať\nZ – Označiť (Ne)pprečítané\nG – Hviezdička\nO – Usporiadať podľa typu\nI – Usporiadať podľa poradia\nQ – Späť k priečinkom\nS – Označiť/odznačiť\nJ alebo P – Predošlá správa\nK alebo N – Ďalšia správa</string>
+  <string name="message_list_help_key">Delete (alebo D) – Zmazať\nC – Vytvoriť\nM – presunúť\nV – Archivovať\nY – Skopírovať\nZ – Označiť ako (ne)prečítané\nG – Označit hviezdičkou\nO – Typ zoradenia\nI – Poradie zoradenia\nQ – Návrat na priečinky\nS – Označiť / zrušiť označenie</string>
+  <string name="folder_list_filter_hint">Názov priečinku obsahuje</string>
   <string name="folder_list_display_mode_label">Zobraziť priečinky…</string>
   <string name="folder_list_display_mode_all">Všetky priečinky</string>
   <string name="folder_list_display_mode_first_class">Priečinky 1. triedy</string>
@@ -579,6 +653,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="setting_theme_global">Použiť tému aplikácie</string>
   <string name="setting_theme_dark">Tmavá</string>
   <string name="setting_theme_light">Svetlá</string>
+  <string name="setting_theme_follow_system">Použiť východzie systémové</string>
   <string name="display_preferences">Zobrazenie</string>
   <string name="global_preferences">Všeobecné</string>
   <string name="debug_preferences">Ladenie</string>
@@ -592,6 +667,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="settings_message_theme_label">Téma zobrazenia správy</string>
   <string name="settings_compose_theme_label">Téma pri písaní správy</string>
   <string name="settings_language_label">Jazyk</string>
+  <string name="preference_search_no_results">Nastavenia nenájdené</string>
   <string name="settings_message_theme_selection_label">Pevná téma správ</string>
   <string name="settings_message_theme_selection_summary_off">Vybrať tému pri prehliadaní správ</string>
   <string name="settings_message_theme_selection_summary_on">Použiť pevnú tému pri prehliadaní správ</string>
@@ -602,6 +678,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="background_ops_auto_sync_only">Keď je povolená možnosť \"Automatická synchronizácia\"</string>
   <string name="batch_select_all">Vybrať všetko</string>
   <string name="account_setup_push_limit_label">Maximálny počet priečinkov na kontrolu pomocou push</string>
+  <string name="account_setup_push_limit_5">5 priečinkov</string>
   <string name="account_setup_push_limit_10">10 priečinkov</string>
   <string name="account_setup_push_limit_25">25 priečinkov</string>
   <string name="account_setup_push_limit_50">50 priečinkov</string>
@@ -614,6 +691,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="volume_navigation_title">Navigácia tlačidlami hlasitosti</string>
   <string name="volume_navigation_message">V zobrazení správ</string>
   <string name="volume_navigation_list">V zobrazení zoznamu</string>
+  <string name="show_unified_inbox_title">Ukázať jednotnú schránku</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Neprečítaná</string>
   <string name="search_all_messages_title">Všetky správy</string>
@@ -627,6 +705,7 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_settings_searchable_displayable">Zobraziteľné</string>
   <string name="account_settings_searchable_none">Žiadne</string>
   <string name="account_settings_no_folder_selected">Žiadna</string>
+  <string name="account_settings_automatic_special_folder">Automaticky (%s)</string>
   <string name="font_size_settings_title">Veľkosť písma</string>
   <string name="font_size_settings_description">Nastaviť veľkosť písma</string>
   <string name="font_size_account_list">Zoznam účtov</string>
@@ -668,6 +747,9 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="confirm_discard_draft_message_title">Zahodiť správu?</string>
   <string name="confirm_discard_draft_message">Naozaj chcete zahodiť túto správu?</string>
   <string name="select_text_now">Vyberte text na kopírovanie.</string>
+  <string name="dialog_confirm_clear_local_folder_title">Zmazať lokálne uložené správy?</string>
+  <string name="dialog_confirm_clear_local_folder_message">Týmto odstránite všetky správy z priečinka. Na servi nebude žiadna spŕava zmazaná.</string>
+  <string name="dialog_confirm_clear_local_folder_action">Vyčistiť zprávy</string>
   <string name="dialog_confirm_delete_title">Potvrdiť vymazanie</string>
   <string name="dialog_confirm_delete_message">Chcete vymazať túto správu?</string>
   <plurals name="dialog_confirm_delete_messages">
@@ -680,6 +762,8 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="dialog_confirm_delete_cancel_button">Nie</string>
   <string name="dialog_confirm_mark_all_as_read_title">Potvrdiť označenie</string>
   <string name="dialog_confirm_mark_all_as_read_message">Chcete všetky správy označiť ako prečítané?</string>
+  <string name="dialog_confirm_empty_trash_title">Potvrdiť vyprázdnenie koša</string>
+  <string name="dialog_confirm_empty_trash_message">Naozaj chcete vyprázdniť priečinok Kôš?</string>
   <string name="dialog_confirm_mark_all_as_read_confirm_button">Áno</string>
   <string name="dialog_confirm_mark_all_as_read_cancel_button">Nie</string>
   <string name="dialog_confirm_spam_title">Potvrdiť presun do priečinka Nevyžiadaná</string>
@@ -694,17 +778,48 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="dialog_attachment_progress_title">Sťahovanie prílohy</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
+  <string name="settings_list_backup_category">Záloha</string>
   <string name="settings_list_miscellaneous_category">Rôzne</string>
+  <string name="settings_export_title">Exportovať nastavenia</string>
   <string name="settings_export_button">Exportovať</string>
   <string name="settings_export_share_button">Zdieľať</string>
   <string name="settings_export_progress_text">Exportovanie nastavení…</string>
   <string name="settings_export_success_generic">Export nastavení prebehol úspešne</string>
   <string name="settings_export_failure">Nepodarilo sa exportovať nastavenia</string>
   <string name="settings_import_title">Importovať nastavenia</string>
+  <string name="settings_import_pick_document_button">Vybrať súbor</string>
   <string name="settings_import_button">Importovať</string>
+  <string name="settings_import_success_generic">Nastavenia úspešne importované</string>
+  <string name="settings_import_password_required">Zadajte heslá</string>
+  <string name="settings_import_failure">Import nastavení zlyhal</string>
+  <string name="settings_import_read_failure">Nepodarilo sa prečítať súbor s nastaveniami</string>
+  <string name="settings_import_partial_failure">Import časti nastavení zlyhal</string>
+  <string name="settings_import_status_success">Import prebehol úspešne</string>
+  <string name="settings_import_status_password_required">Vyžadované heslo</string>
+  <string name="settings_import_status_not_imported">Nenaimportované</string>
+  <string name="settings_import_status_error">Zlyhanie pri importe</string>
+  <string name="settings_import_later_button">Neskôr</string>
   <string name="settings_import">Importovať nastavenia</string>
   <string name="settings_importing">Importovanie nastavení…</string>
+  <plurals name="settings_import_password_prompt">
+    <item quantity="one">Pred používaním účtu \"<xliff:g id="account">%s</xliff:g>\"  je potrebné zadať heslo na server.</item>
+    <item quantity="few">Pred používaním účtu \"<xliff:g id="account">%s</xliff:g>\" je potrebné zadať heslo na server.</item>
+    <item quantity="many">Pred používaním účtov \"<xliff:g id="account">%s</xliff:g>\" je potrebné zadať heslo na server.</item>
+    <item quantity="other">Pred používaním účtov „<xliff:g id="account">%s</xliff:g>“ je potrebné zadať heslo na server.</item>
+  </plurals>
+  <string name="settings_import_incoming_server_password_hint">Heslo na server na príjem</string>
+  <string name="settings_import_outgoing_server_password_hint">Heslo na server na odosielanie</string>
+  <string name="settings_import_use_same_password_for_outgoing_server">Použiť rovnaké heslo ako na server na odosielanie </string>
+  <string name="server_name_format">Názov serveru: <xliff:g id="hostname">%s</xliff:g></string>
   <string name="unread_widget_select_account">Zobraziť počet neprečítaných správ pre…</string>
+  <string name="unread_widget_account_title">Účet</string>
+  <string name="unread_widget_unified_inbox_account_summary">Jednotná schránka</string>
+  <string name="unread_widget_folder_enabled_title">Počet v priečinku</string>
+  <string name="unread_widget_folder_enabled_summary">Zobraziť pošet neprečítaných len pre jeden priečinok</string>
+  <string name="unread_widget_folder_title">Priečinok</string>
+  <string name="unread_widget_folder_summary">Priečinok, pre ktorý má byť zobrazený počet neprečítaných</string>
+  <string name="unread_widget_title"><xliff:g id="account_name">%1$s</xliff:g> - <xliff:g id="folder_name">%2$s</xliff:g></string>
+  <string name="unread_widget_folder_not_selected">Nebol vybraný žiaden priečinok</string>
   <string name="webview_empty_message">Žiadny text</string>
   <string name="webview_contextmenu_link_view_action">Otvoriť odkaz</string>
   <string name="webview_contextmenu_link_share_action">Zdieľať odkaz</string>

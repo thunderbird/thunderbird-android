@@ -9,9 +9,18 @@
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Hak Cipta 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Hak Cipta Sebagian 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
+  <string name="source_code">Kode Sumber</string>
   <string name="app_license">Lisensi Apache, Versi 2.0</string>
+  <string name="about_project_title">Proyek Sumber Terbuka</string>
+  <string name="about_website_title">Website</string>
+  <string name="user_forum_title">Forum Pengguna</string>
+  <string name="about_fediverse_title">Fediverse</string>
+  <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">Perpustakaan</string>
   <string name="license">Lisensi</string>
+  <string name="changelog_title">Catatan Perubahan</string>
+  <string name="changelog_loading_error">Tidak dapat memuat catatan perubahan.</string>
+  <string name="changelog_version_title">Versi %s</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Selamat datang di K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -676,6 +685,7 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="volume_navigation_title">Navigasi tombol volume</string>
   <string name="volume_navigation_message">Dalam tampilan pesan</string>
   <string name="volume_navigation_list">Dalam tampilan daftar</string>
+  <string name="show_unified_inbox_title">Tampilkan Kotak Masuk Terpadu</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- Belum dibaca</string>
   <string name="search_all_messages_title">Semua pesan</string>
@@ -803,6 +813,8 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="webview_contextmenu_link_share_action">Bagikan link</string>
   <string name="webview_contextmenu_link_copy_action">Salin link ke clipboard</string>
   <string name="webview_contextmenu_link_clipboard_label">Link</string>
+  <string name="webview_contextmenu_link_text_copy_action">Salin link ke clipboard</string>
+  <string name="webview_contextmenu_link_text_clipboard_label">Teks link</string>
   <string name="webview_contextmenu_image_title">Gambar</string>
   <string name="webview_contextmenu_image_view_action">Lihat gambar</string>
   <string name="webview_contextmenu_image_save_action">Simpan gambar</string>
@@ -877,6 +889,8 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="recipient_bcc">Bcc</string>
   <string name="recipient_to">Kepada</string>
   <string name="recipient_from">Dari</string>
+  <string name="unknown_recipient">&lt;Penerima Tidak Diketahui&gt;</string>
+  <string name="unknown_sender">&lt;Pengirim Tidak Diketahui&gt;</string>
   <string name="address_type_home">Rumah</string>
   <string name="address_type_work">Kerja</string>
   <string name="address_type_other">Lainnya</string>
@@ -1023,4 +1037,5 @@ Anda dapat menyimpan pesan ini dan menggunakannya sebagai cadangan untuk kunci r
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Izinkan akses ke kontak</string>
   <string name="permission_contacts_rationale_message">Untuk dapat memberikan saran kontak dan untuk menampilkan nama kontak dan foto, aplikasi perlu akses ke kontak Anda.</string>
+  <string name="generic_loading_error">Terjadi kesalahan saat memuat data</string>
 </resources>

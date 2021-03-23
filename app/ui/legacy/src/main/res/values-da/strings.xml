@@ -716,6 +716,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="confirm_discard_draft_message">Er du sikker på at du ønsker at annullere denne meddelelse?</string>
   <string name="select_text_now">Vælg tekst som skal kopieres.</string>
   <string name="dialog_confirm_clear_local_folder_title">Ryd lokale beskeder</string>
+  <string name="dialog_confirm_clear_local_folder_message">Dette vil slette alle lokale beskeder fra mappen. Ingen beskeder slettes fra serveren.</string>
   <string name="dialog_confirm_clear_local_folder_action">Rens beskeder</string>
   <string name="dialog_confirm_delete_title">Bekræft sletning</string>
   <string name="dialog_confirm_delete_message">Ønsker du at slette denne mail?</string>
@@ -752,6 +753,13 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="settings_import_title">Importere opsætning</string>
   <string name="settings_import_pick_document_button">Vælg fil</string>
   <string name="settings_import_button">Importer</string>
+  <string name="settings_import_success_generic">Importerede indstillinger</string>
+  <string name="settings_import_password_required">Indtast venligst kodeord</string>
+  <string name="settings_import_failure">Importen af indstillinger fejlede</string>
+  <string name="settings_import_read_failure">Indlæsning af file med indstilling fejlede</string>
+  <string name="settings_import_partial_failure">Import af nogle indstillinger fejlede</string>
+  <string name="settings_import_status_success">Importeret korrrekt</string>
+  <string name="settings_import_status_password_required">Kodeord påkrævet</string>
   <string name="settings_import_status_not_imported">Ikke importeret</string>
   <string name="settings_import_status_error">Import fejlede</string>
   <string name="settings_import_later_button">Senere</string>
