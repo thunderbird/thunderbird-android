@@ -37,6 +37,7 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
+import com.mikepenz.materialdrawer.model.interfaces.IProfile
 import com.mikepenz.materialdrawer.model.interfaces.badgeText
 import com.mikepenz.materialdrawer.model.interfaces.descriptionText
 import com.mikepenz.materialdrawer.model.interfaces.iconDrawable
@@ -79,6 +80,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private var selectedTextColor: ColorStateList? = null
     private var selectedBackgroundColor: Int = 0
     private var folderBadgeStyle: BadgeStyle? = null
+    private var openedAccountUuid: String? = null
     private var openedFolderId: Long? = null
 
     val layout: DrawerLayout
@@ -133,6 +135,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
         headerView.onAccountHeaderListener = { _, profile, _ ->
             val account = (profile as ProfileDrawerItem).tag as Account
+            openedAccountUuid = account.uuid
             parent.openRealAccount(account)
             updateUserAccountsAndFolders(account)
             true
@@ -142,9 +145,9 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private fun setAccounts(accounts: List<Account>) {
         val photoUris = mutableSetOf<Uri>()
 
-        val selectedAccountUuid = (headerView.activeProfile?.tag as? Account)?.uuid
         val oldSelectedBackgroundColor = selectedBackgroundColor
 
+        var newActiveProfile: IProfile? = null
         val accountItems = accounts.map { account ->
             val drawerId = (account.accountNumber + 1 shl DRAWER_ACCOUNT_SHIFT).toLong()
 
@@ -176,8 +179,9 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 }
             }
 
-            if (account.uuid == selectedAccountUuid) {
+            if (account.uuid == openedAccountUuid) {
                 initializeWithAccountColor(account)
+                newActiveProfile = accountItem
             }
 
             accountItem
@@ -185,6 +189,10 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
         headerView.clear()
         headerView.addProfiles(*accountItems)
+
+        newActiveProfile?.let { profile ->
+            headerView.activeProfile = profile
+        }
 
         if (oldSelectedBackgroundColor != selectedBackgroundColor) {
             // Recreate list of folders with updated account color
@@ -335,6 +343,13 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         userFolderDrawerIds.clear()
     }
 
+    fun selectAccount(accountUuid: String) {
+        openedAccountUuid = accountUuid
+        headerView.profiles?.firstOrNull { it.accountUuid == accountUuid }?.let { profile ->
+            headerView.activeProfile = profile
+        }
+    }
+
     fun selectFolder(folderId: Long) {
         deselect()
         openedFolderId = folderId
@@ -413,6 +428,9 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
         return ColorStateList(states, colors)
     }
+
+    private val IProfile.accountUuid: String?
+        get() = (this.tag as? Account)?.uuid
 
     companion object {
         // Bit shift for identifiers of user folders items, to leave space for other items
