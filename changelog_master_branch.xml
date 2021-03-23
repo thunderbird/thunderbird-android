@@ -5,6 +5,11 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.733" versioncode="27033" date="2021-03-23">
+        <change>Added support for In-Reply-To parameter in mailto: URIs</change>
+        <change>Fixed various display bugs related to the drawer</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.732" versioncode="27032" date="2021-03-04">
         <change>Fixed a crash when checking all accounts from the drawer</change>
         <change>Fixed a crash when configuring the outgoing server to not require sign-in</change>
