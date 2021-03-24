@@ -12,6 +12,7 @@ class StorageMigrationTo6(
     fun performLegacyMigrations() {
         rewriteKeyguardPrivacy()
         rewriteTheme()
+        migrateOpenPgpGlobalToAccountSettings()
     }
 
     private fun rewriteKeyguardPrivacy() {
@@ -37,6 +38,26 @@ class StorageMigrationTo6(
         }
 
         migrationsHelper.writeValue(db, "theme", newTheme.toString())
+    }
+
+    private fun migrateOpenPgpGlobalToAccountSettings() {
+        val accountUuidsListValue = migrationsHelper.readValue(db, "accountUuids")
+        if (accountUuidsListValue == null || accountUuidsListValue.isEmpty()) {
+            return
+        }
+
+        val openPgpProvider = migrationsHelper.readValue(db, "openPgpProvider") ?: ""
+        val openPgpSupportSignOnly = migrationsHelper.readValue(db, "openPgpSupportSignOnly")?.toBoolean() ?: false
+        val openPgpHideSignOnly = (!openPgpSupportSignOnly).toString()
+
+        val accountUuids = accountUuidsListValue.split(",")
+        for (accountUuid in accountUuids) {
+            migrationsHelper.writeValue(db, "$accountUuid.openPgpProvider", openPgpProvider)
+            migrationsHelper.writeValue(db, "$accountUuid.openPgpHideSignOnly", openPgpHideSignOnly)
+        }
+
+        migrationsHelper.writeValue(db, "openPgpProvider", null)
+        migrationsHelper.writeValue(db, "openPgpSupportSignOnly", null)
     }
 
     companion object {

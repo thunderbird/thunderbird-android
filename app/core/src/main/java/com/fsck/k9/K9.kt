@@ -21,8 +21,6 @@ object K9 : EarlyInit {
     @JvmField
     val DEVELOPER_MODE = BuildConfig.DEBUG
 
-    private const val VERSION_MIGRATE_OPENPGP_TO_ACCOUNTS = 63
-
     /**
      * Name of the [SharedPreferences] file used to store the last known version of the
      * accounts' databases.
@@ -105,28 +103,6 @@ object K9 : EarlyInit {
         if (cachedVersion >= LocalStore.getDbVersion()) {
             setDatabasesUpToDate(false)
         }
-
-        if (cachedVersion < VERSION_MIGRATE_OPENPGP_TO_ACCOUNTS) {
-            migrateOpenPgpGlobalToAccountSettings()
-        }
-    }
-
-    private fun migrateOpenPgpGlobalToAccountSettings() {
-        val storage = preferences.storage
-
-        val openPgpProvider = storage.getString("openPgpProvider", null)
-        val openPgpSupportSignOnly = storage.getBoolean("openPgpSupportSignOnly", false)
-
-        for (account in preferences.accounts) {
-            account.openPgpProvider = openPgpProvider
-            account.isOpenPgpHideSignOnly = !openPgpSupportSignOnly
-            preferences.saveAccount(account)
-        }
-
-        preferences.createStorageEditor()
-            .remove("openPgpProvider")
-            .remove("openPgpSupportSignOnly")
-            .commit()
     }
 
     @JvmStatic
