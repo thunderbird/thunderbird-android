@@ -35,7 +35,7 @@ class AutocryptKeyTransferPresenter internal constructor(
             return
         }
 
-        account = preferences.getAccount(accountUuid)
+        account = preferences.getAccount(accountUuid) ?: error("Account $accountUuid not found")
 
         openPgpApiManager.setOpenPgpProvider(
             account.openPgpProvider,

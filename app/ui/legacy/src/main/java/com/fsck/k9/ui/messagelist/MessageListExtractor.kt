@@ -24,7 +24,8 @@ class MessageListExtractor(
     ): MessageListItem {
         val position = cursor.position
         val accountUuid = cursor.getString(MLFProjectionInfo.ACCOUNT_UUID_COLUMN)
-        val account = preferences.getAccount(accountUuid)
+        val account = preferences.getAccount(accountUuid) ?: error("Account $accountUuid not found")
+
         val fromList = cursor.getString(MLFProjectionInfo.SENDER_LIST_COLUMN)
         val toList = cursor.getString(MLFProjectionInfo.TO_LIST_COLUMN)
         val ccList = cursor.getString(MLFProjectionInfo.CC_LIST_COLUMN)

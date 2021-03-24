@@ -135,7 +135,9 @@ class UnreadWidgetConfigurationFragment : PreferenceFragmentCompat() {
     }
 
     private fun handleRegularAccount() {
-        val selectedAccount = preferences.getAccount(selectedAccountUuid)
+        val selectedAccount = preferences.getAccount(selectedAccountUuid!!)
+            ?: error("Account $selectedAccountUuid not found")
+
         val accountDescription: String? = selectedAccount.description
         val summary = if (accountDescription.isNullOrEmpty()) selectedAccount.email else accountDescription
 

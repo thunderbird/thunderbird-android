@@ -15,7 +15,7 @@ class AccountActivator(
     private val messagingController: MessagingController
 ) {
     fun enableAccount(accountUuid: String, incomingServerPassword: String?, outgoingServerPassword: String?) {
-        val account = preferences.getAccount(accountUuid)
+        val account = preferences.getAccount(accountUuid) ?: error("Account $accountUuid not found")
 
         setAccountPasswords(account, incomingServerPassword, outgoingServerPassword)
 

@@ -33,8 +33,8 @@ class EditIdentity : K9Activity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         identityIndex = intent.getIntExtra(EXTRA_IDENTITY_INDEX, -1)
-        val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT)
-        account = Preferences.getPreferences(this).getAccount(accountUuid)
+        val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT) ?: error("Missing account UUID")
+        account = Preferences.getPreferences(this).getAccount(accountUuid) ?: error("Couldn't find account")
 
         identity = when {
             savedInstanceState != null -> savedInstanceState.getParcelable(EXTRA_IDENTITY) ?: error("Missing state")
