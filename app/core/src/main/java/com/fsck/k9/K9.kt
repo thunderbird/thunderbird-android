@@ -2,13 +2,15 @@ package com.fsck.k9
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.AsyncTask
 import com.fsck.k9.Account.SortType
 import com.fsck.k9.core.BuildConfig
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
@@ -385,8 +387,7 @@ object K9 : EarlyInit {
         isFixedMessageViewTheme = storage.getBoolean("fixedMessageViewTheme", true)
     }
 
-    @JvmStatic
-    fun save(editor: StorageEditor) {
+    internal fun save(editor: StorageEditor) {
         editor.putBoolean("enableDebugLogging", isDebugLoggingEnabled)
         editor.putBoolean("enableSensitiveLogging", isSensitiveDebugLoggingEnabled)
         editor.putEnum("backgroundOperations", backgroundOps)
@@ -460,15 +461,9 @@ object K9 : EarlyInit {
 
     @JvmStatic
     fun saveSettingsAsync() {
-        object : AsyncTask<Void, Void, Void>() {
-            override fun doInBackground(vararg voids: Void): Void? {
-                val editor = preferences.createStorageEditor()
-                save(editor)
-                editor.commit()
-
-                return null
-            }
-        }.execute()
+        GlobalScope.launch(Dispatchers.IO) {
+            preferences.saveSettings()
+        }
     }
 
     private inline fun <reified T : Enum<T>> Storage.getEnum(key: String, defaultValue: T): T {

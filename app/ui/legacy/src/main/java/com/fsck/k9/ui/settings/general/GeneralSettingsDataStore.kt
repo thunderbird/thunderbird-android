@@ -5,15 +5,11 @@ import androidx.preference.PreferenceDataStore
 import com.fsck.k9.K9
 import com.fsck.k9.K9.AppTheme
 import com.fsck.k9.K9.SubTheme
-import com.fsck.k9.Preferences
 import com.fsck.k9.job.K9JobManager
 import com.fsck.k9.ui.base.ThemeManager
-import java.util.concurrent.ExecutorService
 
 class GeneralSettingsDataStore(
-    private val preferences: Preferences,
     private val jobManager: K9JobManager,
-    private val executorService: ExecutorService,
     private val themeManager: ThemeManager
 ) : PreferenceDataStore() {
     var activity: FragmentActivity? = null
@@ -230,12 +226,7 @@ class GeneralSettingsDataStore(
     }
 
     private fun saveSettings() {
-        val editor = preferences.createStorageEditor()
-        K9.save(editor)
-
-        executorService.execute {
-            editor.commit()
-        }
+        K9.saveSettingsAsync()
     }
 
     private fun setTheme(value: String?) {

@@ -168,6 +168,12 @@ class Preferences internal constructor(
         notifyListeners()
     }
 
+    fun saveSettings() {
+        val editor = createStorageEditor()
+        K9.save(editor)
+        editor.commit()
+    }
+
     private fun ensureAssignedAccountNumber(account: Account) {
         if (account.accountNumber != Account.UNASSIGNED_ACCOUNT_NUMBER) return
 
