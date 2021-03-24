@@ -31,6 +31,7 @@ class Preferences internal constructor(
     @GuardedBy("accountLock")
     private var newAccount: Account? = null
     private val accountsChangeListeners = CopyOnWriteArrayList<AccountsChangeListener>()
+    private val settingsChangeListeners = CopyOnWriteArrayList<SettingsChangeListener>()
 
     val storage = Storage()
 
@@ -132,7 +133,7 @@ class Preferences internal constructor(
             }
         }
 
-        notifyListeners()
+        notifyAccountsChangeListeners()
     }
 
     var defaultAccount: Account?
@@ -165,13 +166,15 @@ class Preferences internal constructor(
         accountPreferenceSerializer.save(editor, storage, account)
         editor.commit()
 
-        notifyListeners()
+        notifyAccountsChangeListeners()
     }
 
     fun saveSettings() {
         val editor = createStorageEditor()
         K9.save(editor)
         editor.commit()
+
+        notifySettingsChangeListeners()
     }
 
     private fun ensureAssignedAccountNumber(account: Account) {
@@ -218,10 +221,10 @@ class Preferences internal constructor(
             loadAccounts()
         }
 
-        notifyListeners()
+        notifyAccountsChangeListeners()
     }
 
-    private fun notifyListeners() {
+    private fun notifyAccountsChangeListeners() {
         for (listener in accountsChangeListeners) {
             listener.onAccountsChanged()
         }
@@ -233,6 +236,20 @@ class Preferences internal constructor(
 
     fun removeOnAccountsChangeListener(accountsChangeListener: AccountsChangeListener) {
         accountsChangeListeners.remove(accountsChangeListener)
+    }
+
+    private fun notifySettingsChangeListeners() {
+        for (listener in settingsChangeListeners) {
+            listener.onSettingsChanged()
+        }
+    }
+
+    fun addSettingsChangeListener(settingsChangeListener: SettingsChangeListener) {
+        settingsChangeListeners.add(settingsChangeListener)
+    }
+
+    fun removeSettingsChangeListener(settingsChangeListener: SettingsChangeListener) {
+        settingsChangeListeners.remove(settingsChangeListener)
     }
 
     companion object {
