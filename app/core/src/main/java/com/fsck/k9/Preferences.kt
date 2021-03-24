@@ -37,14 +37,6 @@ class Preferences internal constructor(
     init {
         val persistedStorageValues = storagePersister.loadValues()
         storage.replaceAll(persistedStorageValues)
-
-        if (storage.isEmpty) {
-            Timber.i("Preferences storage is zero-size, importing from Android-style preferences")
-
-            val editor = createStorageEditor()
-            editor.copy(context.getSharedPreferences("AndroidMail.Main", Context.MODE_PRIVATE))
-            editor.commit()
-        }
     }
 
     fun createStorageEditor(): StorageEditor {
