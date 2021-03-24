@@ -1,7 +1,10 @@
 package com.fsck.k9.account
 
+import com.fsck.k9.Account
 import com.fsck.k9.Core
+import com.fsck.k9.LocalKeyStoreManager
 import com.fsck.k9.Preferences
+import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.mailstore.LocalStoreProvider
 import timber.log.Timber
@@ -12,6 +15,8 @@ import timber.log.Timber
 class AccountRemover(
     private val localStoreProvider: LocalStoreProvider,
     private val messagingController: MessagingController,
+    private val backendManager: BackendManager,
+    private val localKeyStoreManager: LocalKeyStoreManager,
     private val preferences: Preferences
 ) {
 
@@ -25,19 +30,36 @@ class AccountRemover(
         val accountName = account.description
         Timber.v("Removing account '%s'…", accountName)
 
+        removeLocalStore(account)
+        messagingController.deleteAccount(account)
+        removeBackend(account)
+
+        preferences.deleteAccount(account)
+
+        localKeyStoreManager.deleteCertificates(account)
+        Core.setServicesEnabled()
+
+        Timber.v("Finished removing account '%s'.", accountName)
+    }
+
+    private fun removeLocalStore(account: Account) {
         try {
             val localStore = localStoreProvider.getInstance(account)
             localStore.delete()
         } catch (e: Exception) {
-            Timber.w(e, "Error removing message database for account '%s'", accountName)
+            Timber.w(e, "Error removing message database for account '%s'", account.description)
 
             // Ignore, this may lead to localStores on sd-cards that are currently not inserted to be left
         }
 
-        messagingController.deleteAccount(account)
-        preferences.deleteAccount(account)
-        Core.setServicesEnabled()
+        localStoreProvider.removeInstance(account)
+    }
 
-        Timber.v("Finished removing account '%s'.", accountName)
+    private fun removeBackend(account: Account) {
+        try {
+            backendManager.removeBackend(account)
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to reset remote store for account %s", account.uuid)
+        }
     }
 }

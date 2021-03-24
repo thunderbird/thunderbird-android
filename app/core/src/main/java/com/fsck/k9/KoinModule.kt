@@ -18,7 +18,6 @@ val mainModule = module {
             context = get(),
             storagePersister = get(),
             localStoreProvider = get(),
-            localKeyStoreManager = get(),
             accountPreferenceSerializer = get()
         )
     }

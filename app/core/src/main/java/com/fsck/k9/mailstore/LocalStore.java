@@ -228,18 +228,6 @@ public class LocalStore {
         return schemaDefinitionFactory.getDatabaseVersion();
     }
 
-    public static void removeAccount(Account account) {
-        try {
-            removeInstance(account);
-        } catch (Exception e) {
-            Timber.e(e, "Failed to reset local store for account %s", account.getUuid());
-        }
-    }
-
-    private static void removeInstance(Account account) {
-        DI.get(LocalStoreProvider.class).removeInstance(account);
-    }
-
     public void switchLocalStorage(final String newStorageProviderId) throws MessagingException {
         database.switchProvider(newStorageProviderId);
     }

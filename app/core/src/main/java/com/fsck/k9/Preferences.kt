@@ -3,9 +3,7 @@ package com.fsck.k9
 import android.content.Context
 import androidx.annotation.GuardedBy
 import androidx.annotation.RestrictTo
-import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.mail.MessagingException
-import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
@@ -14,19 +12,14 @@ import java.util.HashMap
 import java.util.LinkedList
 import java.util.UUID
 import java.util.concurrent.CopyOnWriteArrayList
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 import timber.log.Timber
 
 class Preferences internal constructor(
     private val context: Context,
     private val storagePersister: StoragePersister,
     private val localStoreProvider: LocalStoreProvider,
-    private val localKeyStoreManager: LocalKeyStoreManager,
     private val accountPreferenceSerializer: AccountPreferenceSerializer
-) : KoinComponent {
-    private val backendManager: BackendManager by inject()
-
+) {
     private val accountLock = Any()
 
     @GuardedBy("accountLock")
@@ -138,19 +131,9 @@ class Preferences internal constructor(
             accountsMap?.remove(account.uuid)
             accountsInOrder.remove(account)
 
-            try {
-                backendManager.removeBackend(account)
-            } catch (e: Exception) {
-                Timber.e(e, "Failed to reset remote store for account %s", account.uuid)
-            }
-
-            LocalStore.removeAccount(account)
-
             val storageEditor = createStorageEditor()
             accountPreferenceSerializer.delete(storageEditor, storage, account)
             storageEditor.commit()
-
-            localKeyStoreManager.deleteCertificates(account)
 
             if (account === newAccount) {
                 newAccount = null
