@@ -3,9 +3,7 @@ package com.fsck.k9
 import android.content.Context
 import androidx.annotation.GuardedBy
 import androidx.annotation.RestrictTo
-import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.mail.MessagingException
-import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
@@ -14,19 +12,14 @@ import java.util.HashMap
 import java.util.LinkedList
 import java.util.UUID
 import java.util.concurrent.CopyOnWriteArrayList
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 import timber.log.Timber
 
 class Preferences internal constructor(
     private val context: Context,
     private val storagePersister: StoragePersister,
     private val localStoreProvider: LocalStoreProvider,
-    private val localKeyStoreManager: LocalKeyStoreManager,
     private val accountPreferenceSerializer: AccountPreferenceSerializer
-) : KoinComponent {
-    private val backendManager: BackendManager by inject()
-
+) {
     private val accountLock = Any()
 
     @GuardedBy("accountLock")
@@ -38,20 +31,13 @@ class Preferences internal constructor(
     @GuardedBy("accountLock")
     private var newAccount: Account? = null
     private val accountsChangeListeners = CopyOnWriteArrayList<AccountsChangeListener>()
+    private val settingsChangeListeners = CopyOnWriteArrayList<SettingsChangeListener>()
 
     val storage = Storage()
 
     init {
         val persistedStorageValues = storagePersister.loadValues()
         storage.replaceAll(persistedStorageValues)
-
-        if (storage.isEmpty) {
-            Timber.i("Preferences storage is zero-size, importing from Android-style preferences")
-
-            val editor = createStorageEditor()
-            editor.copy(context.getSharedPreferences("AndroidMail.Main", Context.MODE_PRIVATE))
-            editor.commit()
-        }
     }
 
     fun createStorageEditor(): StorageEditor {
@@ -138,26 +124,16 @@ class Preferences internal constructor(
             accountsMap?.remove(account.uuid)
             accountsInOrder.remove(account)
 
-            try {
-                backendManager.removeBackend(account)
-            } catch (e: Exception) {
-                Timber.e(e, "Failed to reset remote store for account %s", account.uuid)
-            }
-
-            LocalStore.removeAccount(account)
-
             val storageEditor = createStorageEditor()
             accountPreferenceSerializer.delete(storageEditor, storage, account)
             storageEditor.commit()
-
-            localKeyStoreManager.deleteCertificates(account)
 
             if (account === newAccount) {
                 newAccount = null
             }
         }
 
-        notifyListeners()
+        notifyAccountsChangeListeners()
     }
 
     var defaultAccount: Account?
@@ -190,7 +166,15 @@ class Preferences internal constructor(
         accountPreferenceSerializer.save(editor, storage, account)
         editor.commit()
 
-        notifyListeners()
+        notifyAccountsChangeListeners()
+    }
+
+    fun saveSettings() {
+        val editor = createStorageEditor()
+        K9.save(editor)
+        editor.commit()
+
+        notifySettingsChangeListeners()
     }
 
     private fun ensureAssignedAccountNumber(account: Account) {
@@ -237,10 +221,10 @@ class Preferences internal constructor(
             loadAccounts()
         }
 
-        notifyListeners()
+        notifyAccountsChangeListeners()
     }
 
-    private fun notifyListeners() {
+    private fun notifyAccountsChangeListeners() {
         for (listener in accountsChangeListeners) {
             listener.onAccountsChanged()
         }
@@ -252,6 +236,20 @@ class Preferences internal constructor(
 
     fun removeOnAccountsChangeListener(accountsChangeListener: AccountsChangeListener) {
         accountsChangeListeners.remove(accountsChangeListener)
+    }
+
+    private fun notifySettingsChangeListeners() {
+        for (listener in settingsChangeListeners) {
+            listener.onSettingsChanged()
+        }
+    }
+
+    fun addSettingsChangeListener(settingsChangeListener: SettingsChangeListener) {
+        settingsChangeListeners.add(settingsChangeListener)
+    }
+
+    fun removeSettingsChangeListener(settingsChangeListener: SettingsChangeListener) {
+        settingsChangeListeners.remove(settingsChangeListener)
     }
 
     companion object {

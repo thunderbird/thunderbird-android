@@ -558,9 +558,7 @@ class MessageListFragment :
             K9.setSortAscending(this.sortType, this.sortAscending)
             sortDateAscending = K9.isSortAscending(SortType.SORT_DATE)
 
-            val editor = preferences.createStorageEditor()
-            K9.save(editor)
-            editor.commit()
+            K9.saveSettingsAsync()
         }
 
         reSort()
