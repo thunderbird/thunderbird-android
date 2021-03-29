@@ -12,10 +12,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/windowBackground"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?selectableItemBackground"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingLeft="8dp">
@@ -28,7 +24,8 @@
             app:srcCompat="?attr/iconSettingsAccount" />
 
         <LinearLayout
-            android:layout_width="313dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingLeft="24dp"
@@ -62,7 +59,8 @@
         <ImageView
             android:id="@+id/drag_handle"
             android:layout_width="56dp"
-            android:layout_height="56dp"
+            android:scaleType="center"
+            android:layout_height="match_parent"
             android:contentDescription="drag_handle"
             android:padding="16dp"
             android:src="@drawable/ic_drag_handle"
