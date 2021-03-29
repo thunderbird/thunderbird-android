@@ -1,51 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.fsck.k9.view.DraggableFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clickable="true"
-    android:focusable="true"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:paddingLeft="8dp"
     android:background="?android:attr/windowBackground"
-    android:foreground="?selectableItemBackground">
-
-    <ImageView
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:contentDescription="@string/account_settings_action"
-        android:padding="8dp"
-        app:srcCompat="?attr/iconSettingsAccount" />
+    android:foreground="?attr/selectableItemBackground"
+    android:stateListAnimator="@anim/draggable_state_list_anim"
+    tools:ignore="UnusedAttribute">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="24dp"
-        android:paddingRight="16dp">
+        android:background="?android:attr/windowBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?selectableItemBackground"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp">
 
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:paddingBottom="4dp"
-            android:paddingTop="8dp"
-            android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceListItem"
-            android:fadeScrollbars="true"
-            tools:text="Personal" />
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:contentDescription="@string/account_settings_action"
+            android:padding="8dp"
+            app:srcCompat="?attr/iconSettingsAccount" />
 
-        <TextView
-            android:id="@+id/email"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="313dp"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:paddingBottom="8dp"
-            android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            tools:text="test@example.org" />
+            android:orientation="vertical"
+            android:paddingLeft="24dp"
+            android:paddingRight="16dp">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fadeScrollbars="true"
+                android:paddingTop="8dp"
+                android:paddingBottom="4dp"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceListItem"
+                tools:text="Personal" />
+
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:paddingBottom="8dp"
+                android:singleLine="true"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                tools:text="test@example.org" />
+
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/drag_handle"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:contentDescription="drag_handle"
+            android:padding="16dp"
+            android:src="@drawable/ic_drag_handle"
+            app:tint="?attr/colorControlNormal" />
+
     </LinearLayout>
-</LinearLayout>
+</com.fsck.k9.view.DraggableFrameLayout>

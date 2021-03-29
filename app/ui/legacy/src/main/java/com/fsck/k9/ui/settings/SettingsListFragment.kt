@@ -20,8 +20,10 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.observeNotNull
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity
+import com.fsck.k9.view.DraggableFrameLayout
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.GenericItem
+import com.mikepenz.fastadapter.IAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.drag.ItemTouchCallback
 import com.mikepenz.fastadapter.drag.SimpleDragCallback
@@ -47,21 +49,32 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        initializeSettingsList()
+        initializeSettingsList(recyclerView = view.findViewById(R.id.settings_list))
         populateSettingsList()
         // restore selections (this has to be done after the items were added
         settingsListAdapter.withSavedInstanceState(savedInstanceState)
     }
 
-    private fun initializeSettingsList() {
+    private fun initializeSettingsList(recyclerView: RecyclerView) {
         itemAdapter = ItemAdapter()
 
         settingsListAdapter = FastAdapter.with(itemAdapter).apply {
             setHasStableIds(true)
-            onClickListener = { _, _, item, _ ->
+            addEventHook(
+                DragHandleTouchEvent { position ->
+                    recyclerView.findViewHolderForAdapterPosition(position)?.let { viewHolder ->
+                        // Start dragging
+                        touchHelper.startDrag(viewHolder)
+                    }
+                }
+            )
+        }
+
+        settingsListAdapter.onClickListener = {v: View?, _: IAdapter<GenericItem>, item, _: Int ->
+            if (v != null){
                 handleItemClick(item)
                 true
-            }
+            } else false
         }
 
         touchCallBack = SimpleDragCallback(this)
@@ -198,28 +211,39 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
         fun toList(): List<GenericItem> = settingsList
     }
 
+    override fun itemTouchStartDrag(viewHolder: RecyclerView.ViewHolder) {
+        // Add visual highlight to the dragged item
+        (viewHolder.itemView as DraggableFrameLayout).isDragged = true
+
+    }
+
+    override fun itemTouchStopDrag(viewHolder: RecyclerView.ViewHolder) {
+        // Remove visual highlight from the dropped item
+        (viewHolder.itemView as DraggableFrameLayout).isDragged = false
+    }
+
     override fun itemTouchOnMove(oldPosition: Int, newPosition: Int): Boolean {
-        if (numberOfAccounts > 1) {
-            val firstDropPosition = itemAdapter.adapterItems.indexOfFirst { it is AccountItem }
-            val lastDropPositional = itemAdapter.adapterItems.indexOfLast { it is AccountItem }
-            val preferences = Preferences.getPreferences(context)
-            if (oldPosition >= firstDropPosition && oldPosition <= lastDropPositional &&
-                newPosition >= firstDropPosition && newPosition <= lastDropPositional) {
-                DragDropUtil.onMove(itemAdapter, oldPosition, newPosition)
-                val moveUp = oldPosition <= newPosition
-                val accountItem = itemAdapter.getAdapterItem(oldPosition) as AccountItem
-                preferences.move(accountItem.account, moveUp)
-                return true
-            } else return false
-        } else return false
+        // Determine the "drop area"
+        val firstDropPosition = itemAdapter.adapterItems.indexOfFirst { it is AccountItem }
+        val lastDropPosition = itemAdapter.adapterItems.indexOfLast { it is AccountItem }
+
+        // Only move the item if the new position is inside the "drop area"
+        return if (newPosition in firstDropPosition..lastDropPosition) {
+            // Change the item's position in the adapter
+
+            DragDropUtil.onMove(itemAdapter, oldPosition, newPosition)
+
+            true
+        } else {
+            false
+        }
     }
 
     override fun itemTouchDropped(oldPosition: Int, newPosition: Int) {
-        vh.itemView.translationZ = resources.displayMetrics.density
-    }
-
-    override fun itemTouchStartDrag(viewHolder: RecyclerView.ViewHolder) {
-        viewHolder.itemView.translationZ = 60f * resources.displayMetrics.density
-        vh = viewHolder as AccountItem.ViewHolder
+        // Save the new item order, e.g. in your database
+        val preferences = Preferences.getPreferences(context)
+        val moveUp = oldPosition <= newPosition
+        val accountItem = itemAdapter.getAdapterItem(oldPosition) as AccountItem
+        preferences.move(accountItem.account, moveUp)
     }
 }
