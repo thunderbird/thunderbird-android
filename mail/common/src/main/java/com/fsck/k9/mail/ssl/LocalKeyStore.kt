@@ -1,6 +1,5 @@
 package com.fsck.k9.mail.ssl
 
-import android.content.Context
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -14,12 +13,16 @@ import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
 import timber.log.Timber
 
-class LocalKeyStore private constructor(private val keyStoreDirectory: File) {
+private const val KEY_STORE_FILE_VERSION = 1
+private val PASSWORD = charArrayOf()
+
+class LocalKeyStore(private val directoryProvider: KeyStoreDirectoryProvider) {
     private var keyStoreFile: File? = null
-    private var keyStore: KeyStore? = null
+    private val keyStoreDirectory: File by lazy { directoryProvider.getDirectory() }
+    private val keyStore: KeyStore? by lazy { initializeKeyStore() }
 
     @Synchronized
-    private fun initializeKeyStore() {
+    private fun initializeKeyStore(): KeyStore? {
         upgradeKeyStoreFile()
 
         val file = getKeyStoreFile(KEY_STORE_FILE_VERSION)
@@ -41,18 +44,18 @@ class LocalKeyStore private constructor(private val keyStoreDirectory: File) {
             null
         }
 
-        try {
-            val store = KeyStore.getInstance(KeyStore.getDefaultType())
-            store.load(fileInputStream, PASSWORD)
-
-            keyStore = store
+        return try {
             keyStoreFile = file
+
+            KeyStore.getInstance(KeyStore.getDefaultType()).apply {
+                load(fileInputStream, PASSWORD)
+            }
         } catch (e: Exception) {
             Timber.e(e, "Failed to initialize local key store")
 
             // Use of the local key store is effectively disabled.
-            keyStore = null
             keyStoreFile = null
+            null
         } finally {
             fileInputStream?.close()
         }
@@ -139,17 +142,5 @@ class LocalKeyStore private constructor(private val keyStoreDirectory: File) {
 
     private fun getCertKey(host: String, port: Int): String {
         return "$host:$port"
-    }
-
-    companion object {
-        private const val KEY_STORE_FILE_VERSION = 1
-        private val PASSWORD = charArrayOf()
-
-        fun createInstance(context: Context): LocalKeyStore {
-            val keyStoreDirectory = context.getDir("KeyStore", Context.MODE_PRIVATE)
-            return LocalKeyStore(keyStoreDirectory).apply {
-                initializeKeyStore()
-            }
-        }
     }
 }

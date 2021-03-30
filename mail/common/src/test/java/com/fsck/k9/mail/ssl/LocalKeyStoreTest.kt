@@ -1,9 +1,6 @@
 package com.fsck.k9.mail.ssl
 
-import android.content.Context
 import com.google.common.truth.Truth.assertThat
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
 import java.nio.file.Files
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
@@ -15,10 +12,7 @@ class LocalKeyStoreTest {
     private val port = 587
 
     private val tempDirectory = Files.createTempDirectory("KeyStore").toFile()
-    private val context = mock<Context> {
-        on { getDir("KeyStore", Context.MODE_PRIVATE) } doReturn tempDirectory
-    }
-    private val localKeyStore = LocalKeyStore.createInstance(context)
+    private val localKeyStore = LocalKeyStore(directoryProvider = { tempDirectory })
 
     @After
     fun tearDown() {

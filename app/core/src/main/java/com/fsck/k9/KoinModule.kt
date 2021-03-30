@@ -26,7 +26,7 @@ val mainModule = module {
     single { LocalStoreProvider() }
     single<PowerManager> { TracingPowerManager.getPowerManager(get()) }
     single { Contacts.getInstance(get()) }
-    single { LocalKeyStore.createInstance(get()) }
+    single { LocalKeyStore(directoryProvider = get()) }
     single { TrustManagerFactory.createInstance(get()) }
     single { LocalKeyStoreManager(get()) }
     single<TrustedSocketFactory> { DefaultTrustedSocketFactory(get(), get()) }
