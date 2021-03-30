@@ -28,6 +28,7 @@ import com.fsck.k9.ui.R;
 import com.fsck.k9.mail.Address;
 import com.fsck.k9.view.RecipientSelectView.Recipient;
 import com.fsck.k9.view.RecipientSelectView.RecipientCryptoStatus;
+import org.apache.james.mime4j.util.CharsetUtil;
 import timber.log.Timber;
 
 import static java.lang.String.CASE_INSENSITIVE_ORDER;
@@ -240,13 +241,14 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             Address[] addresses = Address.parseUnencoded(uid);
 
             for (Address address : addresses) {
-                if (recipientMap.containsKey(address.getAddress())) {
+                String emailAddress = address.getAddress();
+                if (!isSupportedEmailAddress(emailAddress) || recipientMap.containsKey(emailAddress)) {
                     continue;
                 }
 
                 Recipient recipient = new Recipient(address);
                 recipients.add(recipient);
-                recipientMap.put(address.getAddress(), recipient);
+                recipientMap.put(emailAddress, recipient);
             }
         }
 
@@ -256,10 +258,12 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
     private void fillContactDataFromAddresses(Address[] addresses, List<Recipient> recipients,
             Map<String, Recipient> recipientMap) {
         for (Address address : addresses) {
-            // TODO actually query contacts - not sure if this is possible in a single query tho :(
-            Recipient recipient = new Recipient(address);
-            recipients.add(recipient);
-            recipientMap.put(address.getAddress(), recipient);
+            if (isSupportedEmailAddress(address.getAddress())) {
+                // TODO actually query contacts - not sure if this is possible in a single query tho :(
+                Recipient recipient = new Recipient(address);
+                recipients.add(recipient);
+                recipientMap.put(address.getAddress(), recipient);
+            }
         }
     }
 
@@ -438,7 +442,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
             String email = cursor.getString(INDEX_EMAIL);
 
             // already exists? just skip then
-            if (email == null || recipientMap.containsKey(email)) {
+            if (email == null || !isSupportedEmailAddress(email) || recipientMap.containsKey(email)) {
                 // TODO We should probably merging contacts with the same email address
                 continue;
             }
@@ -583,4 +587,7 @@ public class RecipientLoader extends AsyncTaskLoader<List<Recipient>> {
         }
     }
 
+    private boolean isSupportedEmailAddress(String address) {
+        return CharsetUtil.isASCII(address);
+    }
 }
