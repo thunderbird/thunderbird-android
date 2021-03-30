@@ -5,6 +5,7 @@ import androidx.annotation.GuardedBy
 import androidx.annotation.RestrictTo
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mailstore.LocalStoreProvider
+import com.fsck.k9.preferences.AccountManager
 import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
 import com.fsck.k9.preferences.StoragePersister
@@ -19,7 +20,7 @@ class Preferences internal constructor(
     private val storagePersister: StoragePersister,
     private val localStoreProvider: LocalStoreProvider,
     private val accountPreferenceSerializer: AccountPreferenceSerializer
-) {
+) : AccountManager {
     private val accountLock = Any()
 
     @GuardedBy("accountLock")
@@ -260,7 +261,7 @@ class Preferences internal constructor(
         }
     }
 
-    fun addAccountRemovedListener(listener: AccountRemovedListener) {
+    override fun addAccountRemovedListener(listener: AccountRemovedListener) {
         accountRemovedListeners.add(listener)
     }
 
