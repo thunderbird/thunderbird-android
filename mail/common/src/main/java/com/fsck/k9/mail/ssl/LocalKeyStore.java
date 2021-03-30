@@ -21,27 +21,27 @@ public class LocalKeyStore {
     private static final int KEY_STORE_FILE_VERSION = 1;
 
     public static LocalKeyStore createInstance(Context context) {
-        String keyStoreLocation = context.getDir("KeyStore", Context.MODE_PRIVATE).toString();
-        LocalKeyStore localKeyStore = new LocalKeyStore(keyStoreLocation);
+        File keyStoreDirectory = context.getDir("KeyStore", Context.MODE_PRIVATE);
+        LocalKeyStore localKeyStore = new LocalKeyStore(keyStoreDirectory);
         localKeyStore.initializeKeyStore();
         return localKeyStore;
     }
 
 
-    private final String keyStoreLocation;
+    private final File keyStoreDirectory;
     private File keyStoreFile;
     private KeyStore keyStore;
 
 
-    private LocalKeyStore(String keyStoreLocation) {
-        this.keyStoreLocation = keyStoreLocation;
+    private LocalKeyStore(File keyStoreDirectory) {
+        this.keyStoreDirectory = keyStoreDirectory;
     }
 
     /** Reinitialize the local key store with stored certificates */
     private synchronized void initializeKeyStore() {
         upgradeKeyStoreFile();
 
-        File file = new File(getKeyStoreFilePath(KEY_STORE_FILE_VERSION));
+        File file = getKeyStoreFile(KEY_STORE_FILE_VERSION);
         if (file.length() == 0) {
             /*
              * The file may be empty (e.g., if it was created with
@@ -78,7 +78,7 @@ public class LocalKeyStore {
     private void upgradeKeyStoreFile() {
         if (KEY_STORE_FILE_VERSION > 0) {
             // Blow away version "0" because certificate aliases have changed.
-            File versionZeroFile = new File(getKeyStoreFilePath(0));
+            File versionZeroFile = getKeyStoreFile(0);
             if (versionZeroFile.exists() && !versionZeroFile.delete()) {
                 Timber.d("Failed to delete old key-store file: %s", versionZeroFile.getAbsolutePath());
             }
@@ -156,11 +156,11 @@ public class LocalKeyStore {
         }
     }
 
-    private String getKeyStoreFilePath(int version) {
+    private File getKeyStoreFile(int version) {
         if (version < 1) {
-            return keyStoreLocation + File.separator + "KeyStore.bks";
+            return new File(keyStoreDirectory, "KeyStore.bks");
         } else {
-            return keyStoreLocation + File.separator + "KeyStore_v" + version + ".bks";
+            return new File(keyStoreDirectory, "KeyStore_v" + version + ".bks");
         }
     }
 }
