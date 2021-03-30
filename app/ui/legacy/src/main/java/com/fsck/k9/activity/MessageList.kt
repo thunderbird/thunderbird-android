@@ -562,6 +562,11 @@ open class MessageList :
     }
 
     fun openFolder(folderId: Long) {
+        if (displayMode == DisplayMode.SPLIT_VIEW) {
+            removeMessageViewFragment()
+            showMessageViewPlaceHolder()
+        }
+
         val search = LocalSearch()
         search.addAccountUuid(account!!.uuid)
         search.addAllowedFolder(folderId)
