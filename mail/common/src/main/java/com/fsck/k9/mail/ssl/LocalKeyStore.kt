@@ -1,166 +1,155 @@
-package com.fsck.k9.mail.ssl;
+package com.fsck.k9.mail.ssl
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
+import android.content.Context
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
+import java.security.KeyStore
+import java.security.KeyStoreException
+import java.security.NoSuchAlgorithmException
+import java.security.cert.Certificate
+import java.security.cert.CertificateException
+import java.security.cert.X509Certificate
+import timber.log.Timber
 
-import android.content.Context;
+class LocalKeyStore private constructor(private val keyStoreDirectory: File) {
+    private var keyStoreFile: File? = null
+    private var keyStore: KeyStore? = null
 
-import org.apache.commons.io.IOUtils;
-import timber.log.Timber;
+    @Synchronized
+    private fun initializeKeyStore() {
+        upgradeKeyStoreFile()
 
-
-public class LocalKeyStore {
-    private static final int KEY_STORE_FILE_VERSION = 1;
-
-    public static LocalKeyStore createInstance(Context context) {
-        File keyStoreDirectory = context.getDir("KeyStore", Context.MODE_PRIVATE);
-        LocalKeyStore localKeyStore = new LocalKeyStore(keyStoreDirectory);
-        localKeyStore.initializeKeyStore();
-        return localKeyStore;
-    }
-
-
-    private final File keyStoreDirectory;
-    private File keyStoreFile;
-    private KeyStore keyStore;
-
-
-    private LocalKeyStore(File keyStoreDirectory) {
-        this.keyStoreDirectory = keyStoreDirectory;
-    }
-
-    /** Reinitialize the local key store with stored certificates */
-    private synchronized void initializeKeyStore() {
-        upgradeKeyStoreFile();
-
-        File file = getKeyStoreFile(KEY_STORE_FILE_VERSION);
-        if (file.length() == 0) {
+        val file = getKeyStoreFile(KEY_STORE_FILE_VERSION)
+        if (file.length() == 0L) {
             /*
              * The file may be empty (e.g., if it was created with
              * File.createTempFile). We can't pass an empty file to
              * Keystore.load. Instead, we let it be created anew.
              */
             if (file.exists() && !file.delete()) {
-                Timber.d("Failed to delete empty keystore file: %s", file.getAbsolutePath());
+                Timber.d("Failed to delete empty keystore file: %s", file.absolutePath)
             }
         }
 
-        FileInputStream fis = null;
-        try {
-            fis = new FileInputStream(file);
-        } catch (FileNotFoundException e) {
+        val fileInputStream = try {
+            FileInputStream(file)
+        } catch (e: FileNotFoundException) {
             // If the file doesn't exist, that's fine, too
+            null
         }
 
         try {
-            KeyStore store = KeyStore.getInstance(KeyStore.getDefaultType());
-            store.load(fis, "".toCharArray());
-            keyStore = store;
-            keyStoreFile = file;
-        } catch (Exception e) {
-            Timber.e(e, "Failed to initialize local key store");
+            val store = KeyStore.getInstance(KeyStore.getDefaultType())
+            store.load(fileInputStream, PASSWORD)
+
+            keyStore = store
+            keyStoreFile = file
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to initialize local key store")
+
             // Use of the local key store is effectively disabled.
-            keyStore = null;
-            keyStoreFile = null;
+            keyStore = null
+            keyStoreFile = null
         } finally {
-            IOUtils.closeQuietly(fis);
+            fileInputStream?.close()
         }
     }
 
-    private void upgradeKeyStoreFile() {
+    private fun upgradeKeyStoreFile() {
         if (KEY_STORE_FILE_VERSION > 0) {
             // Blow away version "0" because certificate aliases have changed.
-            File versionZeroFile = getKeyStoreFile(0);
+            val versionZeroFile = getKeyStoreFile(0)
             if (versionZeroFile.exists() && !versionZeroFile.delete()) {
-                Timber.d("Failed to delete old key-store file: %s", versionZeroFile.getAbsolutePath());
+                Timber.d("Failed to delete old key-store file: %s", versionZeroFile.absolutePath)
             }
         }
     }
 
-    public synchronized void addCertificate(String host, int port,
-            X509Certificate certificate) throws CertificateException {
-        if (keyStore == null) {
-            throw new CertificateException(
-                    "Certificate not added because key store not initialized");
-        }
+    @Synchronized
+    @Throws(CertificateException::class)
+    fun addCertificate(host: String, port: Int, certificate: X509Certificate?) {
+        val keyStore = this.keyStore
+            ?: throw CertificateException("Certificate not added because key store not initialized")
+
         try {
-            keyStore.setCertificateEntry(getCertKey(host, port), certificate);
-        } catch (KeyStoreException e) {
-            throw new CertificateException(
-                    "Failed to add certificate to local key store", e);
+            keyStore.setCertificateEntry(getCertKey(host, port), certificate)
+        } catch (e: KeyStoreException) {
+            throw CertificateException("Failed to add certificate to local key store", e)
         }
-        writeCertificateFile();
+
+        writeCertificateFile()
     }
 
-    private void writeCertificateFile() throws CertificateException {
-        java.io.OutputStream keyStoreStream = null;
-        try {
-            keyStoreStream = new java.io.FileOutputStream(keyStoreFile);
-            keyStore.store(keyStoreStream, "".toCharArray());
-        } catch (FileNotFoundException e) {
-            throw new CertificateException("Unable to write KeyStore: "
-                    + e.getMessage());
-        } catch (CertificateException e) {
-            throw new CertificateException("Unable to write KeyStore: "
-                    + e.getMessage());
-        } catch (IOException e) {
-            throw new CertificateException("Unable to write KeyStore: "
-                    + e.getMessage());
-        } catch (NoSuchAlgorithmException e) {
-            throw new CertificateException("Unable to write KeyStore: "
-                    + e.getMessage());
-        } catch (KeyStoreException e) {
-            throw new CertificateException("Unable to write KeyStore: "
-                    + e.getMessage());
-        } finally {
-            IOUtils.closeQuietly(keyStoreStream);
+    private fun writeCertificateFile() {
+        val keyStore = requireNotNull(this.keyStore)
+
+        FileOutputStream(keyStoreFile).use { keyStoreStream ->
+            try {
+                keyStore.store(keyStoreStream, PASSWORD)
+            } catch (e: FileNotFoundException) {
+                throw CertificateException("Unable to write KeyStore: ${e.message}", e)
+            } catch (e: CertificateException) {
+                throw CertificateException("Unable to write KeyStore: ${e.message}", e)
+            } catch (e: IOException) {
+                throw CertificateException("Unable to write KeyStore: ${e.message}", e)
+            } catch (e: NoSuchAlgorithmException) {
+                throw CertificateException("Unable to write KeyStore: ${e.message}", e)
+            } catch (e: KeyStoreException) {
+                throw CertificateException("Unable to write KeyStore: ${e.message}", e)
+            }
         }
     }
 
-    public synchronized boolean isValidCertificate(Certificate certificate,
-            String host, int port) {
-        if (keyStore == null) {
-            return false;
-        }
-        try {
-            Certificate storedCert = keyStore.getCertificate(getCertKey(host, port));
-            return (storedCert != null && storedCert.equals(certificate));
-        } catch (KeyStoreException e) {
-            return false;
+    @Synchronized
+    fun isValidCertificate(certificate: Certificate, host: String, port: Int): Boolean {
+        val keyStore = this.keyStore ?: return false
+
+        return try {
+            val storedCert = keyStore.getCertificate(getCertKey(host, port))
+            storedCert == certificate
+        } catch (e: KeyStoreException) {
+            false
         }
     }
 
-    private static String getCertKey(String host, int port) {
-        return host + ":" + port;
-    }
+    @Synchronized
+    fun deleteCertificate(oldHost: String, oldPort: Int) {
+        val keyStore = this.keyStore ?: return
 
-    public synchronized void deleteCertificate(String oldHost, int oldPort) {
-        if (keyStore == null) {
-            return;
-        }
         try {
-            keyStore.deleteEntry(getCertKey(oldHost, oldPort));
-            writeCertificateFile();
-        } catch (KeyStoreException e) {
+            keyStore.deleteEntry(getCertKey(oldHost, oldPort))
+            writeCertificateFile()
+        } catch (e: KeyStoreException) {
             // Ignore: most likely there was no cert. found
-        } catch (CertificateException e) {
-            Timber.e(e, "Error updating the local key store file");
+        } catch (e: CertificateException) {
+            Timber.e(e, "Error updating the local key store file")
         }
     }
 
-    private File getKeyStoreFile(int version) {
-        if (version < 1) {
-            return new File(keyStoreDirectory, "KeyStore.bks");
+    private fun getKeyStoreFile(version: Int): File {
+        return if (version < 1) {
+            File(keyStoreDirectory, "KeyStore.bks")
         } else {
-            return new File(keyStoreDirectory, "KeyStore_v" + version + ".bks");
+            File(keyStoreDirectory, "KeyStore_v$version.bks")
+        }
+    }
+
+    private fun getCertKey(host: String, port: Int): String {
+        return "$host:$port"
+    }
+
+    companion object {
+        private const val KEY_STORE_FILE_VERSION = 1
+        private val PASSWORD = charArrayOf()
+
+        fun createInstance(context: Context): LocalKeyStore {
+            val keyStoreDirectory = context.getDir("KeyStore", Context.MODE_PRIVATE)
+            return LocalKeyStore(keyStoreDirectory).apply {
+                initializeKeyStore()
+            }
         }
     }
 }
