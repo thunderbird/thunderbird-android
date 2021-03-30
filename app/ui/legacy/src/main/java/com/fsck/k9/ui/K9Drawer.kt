@@ -4,9 +4,11 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.PorterDuff
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.TypedValue
+import android.widget.ImageView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -15,9 +17,9 @@ import com.fsck.k9.K9
 import com.fsck.k9.activity.MessageList
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.controller.SimpleMessagingListener
-import com.fsck.k9.helper.Contacts
 import com.fsck.k9.mailstore.DisplayFolder
 import com.fsck.k9.mailstore.Folder
+import com.fsck.k9.ui.account.AccountImageLoader
 import com.fsck.k9.ui.account.AccountsViewModel
 import com.fsck.k9.ui.base.Theme
 import com.fsck.k9.ui.base.ThemeManager
@@ -25,12 +27,6 @@ import com.fsck.k9.ui.folders.FolderIconProvider
 import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.folders.FoldersViewModel
 import com.fsck.k9.ui.settings.SettingsActivity
-import com.mikepenz.iconics.IconicsDrawable
-import com.mikepenz.iconics.typeface.library.fontawesome.FontAwesome
-import com.mikepenz.iconics.utils.backgroundColorInt
-import com.mikepenz.iconics.utils.colorRes
-import com.mikepenz.iconics.utils.paddingDp
-import com.mikepenz.iconics.utils.sizeDp
 import com.mikepenz.materialdrawer.holder.BadgeStyle
 import com.mikepenz.materialdrawer.holder.ImageHolder
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
@@ -40,11 +36,12 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem
 import com.mikepenz.materialdrawer.model.interfaces.IProfile
 import com.mikepenz.materialdrawer.model.interfaces.badgeText
 import com.mikepenz.materialdrawer.model.interfaces.descriptionText
-import com.mikepenz.materialdrawer.model.interfaces.iconDrawable
 import com.mikepenz.materialdrawer.model.interfaces.iconRes
 import com.mikepenz.materialdrawer.model.interfaces.nameRes
 import com.mikepenz.materialdrawer.model.interfaces.nameText
 import com.mikepenz.materialdrawer.model.interfaces.selectedColorInt
+import com.mikepenz.materialdrawer.util.AbstractDrawerImageLoader
+import com.mikepenz.materialdrawer.util.DrawerImageLoader
 import com.mikepenz.materialdrawer.util.addItems
 import com.mikepenz.materialdrawer.util.addStickyFooterItem
 import com.mikepenz.materialdrawer.util.getDrawerItem
@@ -64,6 +61,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     private val themeManager: ThemeManager by inject()
     private val resources: Resources by inject()
     private val messagingController: MessagingController by inject()
+    private val accountImageLoader: AccountImageLoader by inject()
 
     private val drawer: DrawerLayout = parent.findViewById(R.id.drawerLayout)
     private val sliderView: MaterialDrawerSliderView = parent.findViewById(R.id.material_drawer_slider)
@@ -92,6 +90,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     init {
         textColor = parent.obtainDrawerTextColor()
 
+        initializeImageLoader()
         configureAccountHeader()
 
         drawer.addDrawerListener(parent.createDrawerListener())
@@ -130,6 +129,24 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         }
     }
 
+    private fun initializeImageLoader() {
+        DrawerImageLoader.init(object : AbstractDrawerImageLoader() {
+            override fun set(imageView: ImageView, uri: Uri, placeholder: Drawable, tag: String?) {
+                val email = uri.getQueryParameter(QUERY_EMAIL) ?: error("Missing '$QUERY_EMAIL' parameter in $uri")
+                val color = uri.getQueryParameter(QUERY_COLOR)?.toInt()
+                    ?: error("Missing '$QUERY_COLOR' parameter in $uri")
+
+                accountImageLoader.setAccountImage(imageView, email, color)
+            }
+
+            override fun cancel(imageView: ImageView) {
+                accountImageLoader.cancel(imageView)
+            }
+        }).apply {
+            handledProtocols = listOf(INTERNAL_URI_SCHEME)
+        }
+    }
+
     private fun configureAccountHeader() {
         headerView.headerBackground = ImageHolder(R.drawable.drawer_header_background)
 
@@ -143,8 +160,6 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
     }
 
     private fun setAccounts(accounts: List<Account>) {
-        val photoUris = mutableSetOf<Uri>()
-
         val oldSelectedBackgroundColor = selectedBackgroundColor
 
         var newActiveProfile: IProfile? = null
@@ -163,20 +178,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 textColor = selectedTextColor
                 descriptionTextColor = selectedTextColor
                 selectedColorInt = drawerColors.selectedColor
-            }
-
-            // TODO: Use DrawerImageLoader to load contact image in background
-            val photoUri = Contacts.getInstance(parent).getPhotoUri(account.email)
-            if (photoUri != null && photoUri !in photoUris) {
-                photoUris.add(photoUri)
-                accountItem.icon = ImageHolder(photoUri)
-            } else {
-                accountItem.iconDrawable = IconicsDrawable(parent, FontAwesome.Icon.faw_user_alt).apply {
-                    colorRes = R.color.material_drawer_profile_icon
-                    backgroundColorInt = account.chipColor
-                    sizeDp = 56
-                    paddingDp = 12
-                }
+                icon = ImageHolder(createAccountImageUri(account))
             }
 
             if (account.uuid == openedAccountUuid) {
@@ -415,6 +417,14 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
     }
 
+    private fun createAccountImageUri(account: Account): Uri {
+        return Uri.parse("$INTERNAL_URI_SCHEME://account-image/")
+            .buildUpon()
+            .appendQueryParameter(QUERY_EMAIL, account.email)
+            .appendQueryParameter(QUERY_COLOR, account.chipColor.toString())
+            .build()
+    }
+
     private fun Int.toSelectedColorStateList(): ColorStateList {
         val states = arrayOf(
             intArrayOf(android.R.attr.state_selected),
@@ -444,6 +454,10 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
 
         private const val PROGRESS_VIEW_END_OFFSET = 32
         private const val PROGRESS_VIEW_SLINGSHOT_DISTANCE = 48
+
+        private const val INTERNAL_URI_SCHEME = "app-internal"
+        private const val QUERY_EMAIL = "email"
+        private const val QUERY_COLOR = "color"
     }
 }
 
