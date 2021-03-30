@@ -11,7 +11,7 @@ import com.fsck.k9.preferences.StoragePersister
 import java.util.HashMap
 import java.util.LinkedList
 import java.util.UUID
-import java.util.concurrent.CopyOnWriteArrayList
+import java.util.concurrent.CopyOnWriteArraySet
 import timber.log.Timber
 
 class Preferences internal constructor(
@@ -30,8 +30,9 @@ class Preferences internal constructor(
 
     @GuardedBy("accountLock")
     private var newAccount: Account? = null
-    private val accountsChangeListeners = CopyOnWriteArrayList<AccountsChangeListener>()
-    private val settingsChangeListeners = CopyOnWriteArrayList<SettingsChangeListener>()
+    private val accountsChangeListeners = CopyOnWriteArraySet<AccountsChangeListener>()
+    private val settingsChangeListeners = CopyOnWriteArraySet<SettingsChangeListener>()
+    private val accountRemovedListeners = CopyOnWriteArraySet<AccountRemovedListener>()
 
     val storage = Storage()
 
@@ -133,6 +134,7 @@ class Preferences internal constructor(
             }
         }
 
+        notifyAccountRemovedListeners(account)
         notifyAccountsChangeListeners()
     }
 
@@ -250,6 +252,20 @@ class Preferences internal constructor(
 
     fun removeSettingsChangeListener(settingsChangeListener: SettingsChangeListener) {
         settingsChangeListeners.remove(settingsChangeListener)
+    }
+
+    private fun notifyAccountRemovedListeners(account: Account) {
+        for (listener in accountRemovedListeners) {
+            listener.onAccountRemoved(account)
+        }
+    }
+
+    fun addAccountRemovedListener(listener: AccountRemovedListener) {
+        accountRemovedListeners.add(listener)
+    }
+
+    fun removeAccountRemovedListener(listener: AccountRemovedListener) {
+        accountRemovedListeners.remove(listener)
     }
 
     companion object {
