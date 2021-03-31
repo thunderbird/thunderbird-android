@@ -29,6 +29,8 @@ import timber.log.Timber;
 
 
 class Pop3Sync {
+    private static final String EXTRA_LATEST_OLD_MESSAGE_SEEN_TIME = "latestOldMessageSeenTime";
+
     private final String accountName;
     private final BackendStorage backendStorage;
     private final Pop3Store remoteStore;
@@ -323,22 +325,27 @@ class Pop3Sync {
 
         Timber.d("SYNC: Synced remote messages for folder %s, %d new messages", folder, newMessages.get());
 
-        // If the oldest message seen on this sync is newer than
-        // the oldest message seen on the previous sync, then
-        // we want to move our high-water mark forward
-        // this is all here just for pop which only syncs inbox
-        // this would be a little wrong for IMAP (we'd want a folder-level pref, not an account level pref.)
-        // fortunately, we just don't care.
+        // If the oldest message seen on this sync is newer than the oldest message seen on the previous sync, then
+        // we want to move our high-water mark forward.
         Date oldestMessageTime = backendFolder.getOldestMessageDate();
-
         if (oldestMessageTime != null) {
             if (oldestMessageTime.before(downloadStarted) &&
-                    oldestMessageTime.after(backendFolder.getLatestOldMessageSeenTime())) {
-                backendFolder.setLatestOldMessageSeenTime(oldestMessageTime);
+                    oldestMessageTime.after(getLatestOldMessageSeenTime(backendFolder))) {
+                setLatestOldMessageSeenTime(backendFolder, oldestMessageTime);
             }
         }
 
         return newMessages.get();
+    }
+
+    private Date getLatestOldMessageSeenTime(BackendFolder backendFolder) {
+        Long latestOldMessageSeenTime = backendFolder.getFolderExtraNumber(EXTRA_LATEST_OLD_MESSAGE_SEEN_TIME);
+        long timestamp = latestOldMessageSeenTime != null ? latestOldMessageSeenTime : 0L;
+        return new Date(timestamp);
+    }
+
+    private void setLatestOldMessageSeenTime(BackendFolder backendFolder, Date oldestMessageTime) {
+        backendFolder.setFolderExtraNumber(EXTRA_LATEST_OLD_MESSAGE_SEEN_TIME, oldestMessageTime.getTime());
     }
 
     private void evaluateMessageForDownload(
@@ -510,7 +517,7 @@ class Pop3Sync {
     }
 
     private boolean isOldMessage(BackendFolder backendFolder, Pop3Message message) {
-        return message.olderThan(backendFolder.getLatestOldMessageSeenTime());
+        return message.olderThan(getLatestOldMessageSeenTime(backendFolder));
     }
 
     private void downloadLargeMessages(
