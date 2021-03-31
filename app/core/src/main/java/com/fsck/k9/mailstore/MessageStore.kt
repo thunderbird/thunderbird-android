@@ -1,6 +1,7 @@
 package com.fsck.k9.mailstore
 
 import com.fsck.k9.mail.Flag
+import com.fsck.k9.mail.Header
 
 /**
  * Functions for accessing and modifying locally stored messages.
@@ -46,4 +47,9 @@ interface MessageStore {
      * @return A mapping of the message database ID to the message server ID.
      */
     fun getMessageServerIds(messageIds: Collection<Long>): Map<Long, String>
+
+    /**
+     * Retrieve the header fields of a message.
+     */
+    fun getHeaders(folderId: Long, messageServerId: String): List<Header>
 }

@@ -97,13 +97,13 @@ class Preferences internal constructor(
     val availableAccounts: Collection<Account>
         get() = accounts.filter { it.isAvailable(context) }
 
-    fun getAccount(uuid: String): Account? {
+    override fun getAccount(accountUuid: String): Account? {
         synchronized(accountLock) {
             if (accountsMap == null) {
                 loadAccounts()
             }
 
-            return accountsMap!![uuid]
+            return accountsMap!![accountUuid]
         }
     }
 

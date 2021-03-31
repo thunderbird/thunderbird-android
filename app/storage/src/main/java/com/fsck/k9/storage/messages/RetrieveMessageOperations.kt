@@ -1,7 +1,11 @@
 package com.fsck.k9.storage.messages
 
+import com.fsck.k9.mail.Header
 import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.mail.internet.MimeHeader
+import com.fsck.k9.mail.message.MessageHeaderParser
 import com.fsck.k9.mailstore.LockableDatabase
+import com.fsck.k9.mailstore.MessageNotFoundException
 
 internal class RetrieveMessageOperations(private val lockableDatabase: LockableDatabase) {
 
@@ -52,6 +56,28 @@ internal class RetrieveMessageOperations(private val lockableDatabase: LockableD
             }
 
             databaseIdToServerIdMapping
+        }
+    }
+
+    fun getHeaders(folderId: Long, messageServerId: String): List<Header> {
+        return lockableDatabase.execute(false) { database ->
+            database.rawQuery(
+                "SELECT message_parts.header FROM messages" +
+                    " LEFT JOIN message_parts ON (messages.message_part_id = message_parts.id)" +
+                    " WHERE messages.folder_id = ? AND messages.uid = ?",
+                arrayOf(folderId.toString(), messageServerId),
+            ).use { cursor ->
+                if (!cursor.moveToFirst()) throw MessageNotFoundException(folderId, messageServerId)
+
+                val headerBytes = cursor.getBlob(0)
+
+                val header = MimeHeader()
+                MessageHeaderParser.parse(headerBytes.inputStream()) { name, value ->
+                    header.addRawHeader(name, value)
+                }
+
+                header.headers
+            }
         }
     }
 }
