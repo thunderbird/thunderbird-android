@@ -332,21 +332,6 @@ class WebDavSync {
 
         Timber.d("SYNC: Synced remote messages for folder %s, %d new messages", folder, newMessages.get());
 
-        // If the oldest message seen on this sync is newer than
-        // the oldest message seen on the previous sync, then
-        // we want to move our high-water mark forward
-        // this is all here just for pop which only syncs inbox
-        // this would be a little wrong for IMAP (we'd want a folder-level pref, not an account level pref.)
-        // fortunately, we just don't care.
-        Date oldestMessageTime = backendFolder.getOldestMessageDate();
-
-        if (oldestMessageTime != null) {
-            if (oldestMessageTime.before(downloadStarted) &&
-                    oldestMessageTime.after(backendFolder.getLatestOldMessageSeenTime())) {
-                backendFolder.setLatestOldMessageSeenTime(oldestMessageTime);
-            }
-        }
-
         return newMessages.get();
     }
 

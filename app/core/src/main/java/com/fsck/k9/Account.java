@@ -115,7 +115,6 @@ public class Account implements BaseAccount {
     private int automaticCheckIntervalMinutes;
     private int displayCount;
     private int chipColor;
-    private long latestOldMessageSeenTime;
     private boolean notifyNewMail;
     private FolderMode folderNotifyNewMailMode;
     private boolean notifySelfNewMail;
@@ -369,14 +368,6 @@ public class Account implements BaseAccount {
         }
 
         changedVisibleLimits = true;
-    }
-
-    public synchronized long getLatestOldMessageSeenTime() {
-        return latestOldMessageSeenTime;
-    }
-
-    public synchronized void setLatestOldMessageSeenTime(long latestOldMessageSeenTime) {
-        this.latestOldMessageSeenTime = latestOldMessageSeenTime;
     }
 
     public synchronized boolean isNotifyNewMail() {
