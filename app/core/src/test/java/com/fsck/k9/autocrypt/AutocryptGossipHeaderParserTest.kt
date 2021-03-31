@@ -1,6 +1,6 @@
 package com.fsck.k9.autocrypt
 
-import com.fsck.k9.crlf
+import com.fsck.k9.mail.crlf
 import com.fsck.k9.mail.filter.Base64
 import com.fsck.k9.mailstore.MimePartStreamParser
 import org.junit.Assert.assertArrayEquals
