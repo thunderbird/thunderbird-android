@@ -116,7 +116,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
 
     fun createBackendFolder(): BackendFolder {
         val localStore: LocalStore = localStoreProvider.getInstance(account)
-        val backendStorage = K9BackendStorage(preferences, account, localStore, emptyList())
+        val backendStorage = K9BackendStorage(account, localStore, emptyList())
         backendStorage.updateFolders {
             createFolders(listOf(FolderInfo(FOLDER_SERVER_ID, FOLDER_NAME, FOLDER_TYPE)))
         }
@@ -124,7 +124,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
         val folderServerIds = backendStorage.getFolderServerIds()
         assertTrue(FOLDER_SERVER_ID in folderServerIds)
 
-        return K9BackendFolder(preferences, account, localStore, FOLDER_SERVER_ID)
+        return K9BackendFolder(localStore, FOLDER_SERVER_ID)
     }
 
     fun createMessageInBackendFolder(messageServerId: String, flags: Set<Flag> = emptySet()) {

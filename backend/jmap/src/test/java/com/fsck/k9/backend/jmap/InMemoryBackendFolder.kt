@@ -120,14 +120,6 @@ class InMemoryBackendFolder(override var name: String, var type: FolderType) : B
         messageFlags[messageServerId] = message.flags.toMutableSet()
     }
 
-    override fun getLatestOldMessageSeenTime(): Date {
-        throw UnsupportedOperationException("not implemented")
-    }
-
-    override fun setLatestOldMessageSeenTime(date: Date) {
-        throw UnsupportedOperationException("not implemented")
-    }
-
     override fun getOldestMessageDate(): Date? {
         throw UnsupportedOperationException("not implemented")
     }

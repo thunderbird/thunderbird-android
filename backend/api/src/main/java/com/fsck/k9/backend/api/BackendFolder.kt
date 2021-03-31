@@ -23,8 +23,6 @@ interface BackendFolder {
     fun setMessageFlag(messageServerId: String, flag: Flag, value: Boolean)
     fun savePartialMessage(message: Message)
     fun saveCompleteMessage(message: Message)
-    fun getLatestOldMessageSeenTime(): Date
-    fun setLatestOldMessageSeenTime(date: Date)
     fun getOldestMessageDate(): Date?
     fun getFolderExtraString(name: String): String?
     fun setFolderExtraString(name: String, value: String?)

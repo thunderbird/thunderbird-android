@@ -74,6 +74,6 @@ class K9BackendStorageTest : K9RobolectricTest() {
 
     private fun createBackendStorage(): BackendStorage {
         val localStore: LocalStore = localStoreProvider.getInstance(account)
-        return K9BackendStorage(preferences, account, localStore, emptyList())
+        return K9BackendStorage(account, localStore, emptyList())
     }
 }

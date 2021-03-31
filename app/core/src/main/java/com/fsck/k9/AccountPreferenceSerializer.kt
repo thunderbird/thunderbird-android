@@ -47,7 +47,6 @@ class AccountPreferenceSerializer(
             if (displayCount < 0) {
                 displayCount = K9.DEFAULT_VISIBLE_LIMIT
             }
-            latestOldMessageSeenTime = storage.getLong("$accountUuid.latestOldMessageSeenTime", 0)
             isNotifyNewMail = storage.getBoolean("$accountUuid.notifyNewMail", false)
 
             folderNotifyNewMailMode = getEnumStringPref<FolderMode>(storage, "$accountUuid.folderNotifyNewMailMode", FolderMode.ALL)
@@ -256,7 +255,6 @@ class AccountPreferenceSerializer(
             editor.putInt("$accountUuid.idleRefreshMinutes", idleRefreshMinutes)
             editor.putBoolean("$accountUuid.pushPollOnConnect", isPushPollOnConnect)
             editor.putInt("$accountUuid.displayCount", displayCount)
-            editor.putLong("$accountUuid.latestOldMessageSeenTime", latestOldMessageSeenTime)
             editor.putBoolean("$accountUuid.notifyNewMail", isNotifyNewMail)
             editor.putString("$accountUuid.folderNotifyNewMailMode", folderNotifyNewMailMode.name)
             editor.putBoolean("$accountUuid.notifySelfNewMail", isNotifySelfNewMail)
@@ -384,7 +382,6 @@ class AccountPreferenceSerializer(
         editor.remove("$accountUuid.pushPollOnConnect")
         editor.remove("$accountUuid.idleRefreshMinutes")
         editor.remove("$accountUuid.lastAutomaticCheckTime")
-        editor.remove("$accountUuid.latestOldMessageSeenTime")
         editor.remove("$accountUuid.notifyNewMail")
         editor.remove("$accountUuid.notifySelfNewMail")
         editor.remove("$accountUuid.deletePolicy")

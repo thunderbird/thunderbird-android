@@ -5,7 +5,6 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import androidx.core.database.getStringOrNull
 import com.fsck.k9.Account
-import com.fsck.k9.Preferences
 import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendFolderUpdater
 import com.fsck.k9.backend.api.BackendStorage
@@ -13,7 +12,6 @@ import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.mail.FolderType as RemoteFolderType
 
 class K9BackendStorage(
-    private val preferences: Preferences,
     private val account: Account,
     private val localStore: LocalStore,
     private val listeners: List<BackendFoldersRefreshListener>
@@ -21,7 +19,7 @@ class K9BackendStorage(
     private val database = localStore.database
 
     override fun getFolder(folderServerId: String): BackendFolder {
-        return K9BackendFolder(preferences, account, localStore, folderServerId)
+        return K9BackendFolder(localStore, folderServerId)
     }
 
     override fun getFolderServerIds(): List<String> {
