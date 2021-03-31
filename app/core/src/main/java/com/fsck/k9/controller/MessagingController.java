@@ -69,7 +69,7 @@ import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStoreProvider;
 import com.fsck.k9.mailstore.MessageStore;
-import com.fsck.k9.mailstore.MessageStoreProvider;
+import com.fsck.k9.mailstore.MessageStoreManager;
 import com.fsck.k9.mailstore.OutboxState;
 import com.fsck.k9.mailstore.OutboxStateRepository;
 import com.fsck.k9.mailstore.SendState;
@@ -115,7 +115,7 @@ public class MessagingController {
     private final LocalStoreProvider localStoreProvider;
     private final BackendManager backendManager;
     private final Preferences preferences;
-    private final MessageStoreProvider messageStoreProvider;
+    private final MessageStoreManager messageStoreManager;
 
     private final Thread controllerThread;
 
@@ -139,7 +139,7 @@ public class MessagingController {
     MessagingController(Context context, NotificationController notificationController,
             NotificationStrategy notificationStrategy, LocalStoreProvider localStoreProvider,
             UnreadMessageCountProvider unreadMessageCountProvider, BackendManager backendManager,
-            Preferences preferences, MessageStoreProvider messageStoreProvider,
+            Preferences preferences, MessageStoreManager messageStoreManager,
             List<ControllerExtension> controllerExtensions) {
         this.context = context;
         this.notificationController = notificationController;
@@ -148,7 +148,7 @@ public class MessagingController {
         this.unreadMessageCountProvider = unreadMessageCountProvider;
         this.backendManager = backendManager;
         this.preferences = preferences;
-        this.messageStoreProvider = messageStoreProvider;
+        this.messageStoreManager = messageStoreManager;
 
         controllerThread = new Thread(new Runnable() {
             @Override
@@ -1629,7 +1629,7 @@ public class MessagingController {
             String sentFolderServerId = sentFolder.getServerId();
             Timber.i("Moving sent message to folder '%s' (%d)", sentFolderServerId, sentFolderId);
 
-            MessageStore messageStore = messageStoreProvider.getMessageStore(account);
+            MessageStore messageStore = messageStoreManager.getMessageStore(account);
             long destinationMessageId = messageStore.moveMessage(message.getDatabaseId(), sentFolderId);
 
             Timber.i("Moved sent message to folder '%s' (%d)", sentFolderServerId, sentFolderId);
@@ -1835,7 +1835,7 @@ public class MessagingController {
                         }
                     }
                 } else {
-                    MessageStore messageStore = messageStoreProvider.getMessageStore(account);
+                    MessageStore messageStore = messageStoreManager.getMessageStore(account);
 
                     List<Long> messageIds = new ArrayList<>();
                     Map<Long, String> messageIdToUidMapping = new HashMap<>();
@@ -2052,7 +2052,7 @@ public class MessagingController {
                 Timber.d("Deleting messages in normal folder, moving");
                 localTrashFolder = localStore.getFolder(trashFolderId);
 
-                MessageStore messageStore = messageStoreProvider.getMessageStore(account);
+                MessageStore messageStore = messageStoreManager.getMessageStore(account);
 
                 List<Long> messageIds = new ArrayList<>();
                 Map<Long, String> messageIdToUidMapping = new HashMap<>();
