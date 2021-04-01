@@ -42,4 +42,8 @@ class K9MessageStore(private val localStore: LocalStore) : MessageStore {
     override fun <T> getFolder(folderId: Long, mapper: FolderMapper<T>): T? {
         return retrieveFolderOperations.getFolder(folderId, mapper)
     }
+
+    override fun <T> getFolders(excludeLocalOnly: Boolean, mapper: FolderMapper<T>): List<T> {
+        return retrieveFolderOperations.getFolders(excludeLocalOnly, mapper)
+    }
 }

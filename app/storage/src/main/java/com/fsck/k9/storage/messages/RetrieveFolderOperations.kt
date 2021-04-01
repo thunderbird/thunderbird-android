@@ -1,6 +1,7 @@
 package com.fsck.k9.storage.messages
 
 import android.database.Cursor
+import com.fsck.k9.helper.map
 import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mailstore.FolderDetailsAccessor
@@ -13,19 +14,7 @@ internal class RetrieveFolderOperations(private val lockableDatabase: LockableDa
         return lockableDatabase.execute(false) { db ->
             db.query(
                 "folders",
-                arrayOf(
-                    "id",
-                    "name",
-                    "type",
-                    "server_id",
-                    "local_only",
-                    "top_group",
-                    "integrate",
-                    "poll_class",
-                    "display_class",
-                    "notify_class",
-                    "push_class"
-                ),
+                FOLDER_COLUMNS,
                 "id = ?",
                 arrayOf(folderId.toString()),
                 null,
@@ -37,6 +26,18 @@ internal class RetrieveFolderOperations(private val lockableDatabase: LockableDa
                     mapper.map(cursorFolderAccessor)
                 } else {
                     null
+                }
+            }
+        }
+    }
+
+    fun <T> getFolders(excludeLocalOnly: Boolean = false, mapper: FolderMapper<T>): List<T> {
+        val selection = if (excludeLocalOnly) "local_only = 0" else null
+        return lockableDatabase.execute(false) { db ->
+            db.query("folders", FOLDER_COLUMNS, selection, null, null, null, "id").use { cursor ->
+                val cursorFolderAccessor = CursorFolderAccessor(cursor)
+                cursor.map {
+                    mapper.map(cursorFolderAccessor)
                 }
             }
         }
@@ -77,3 +78,17 @@ private class CursorFolderAccessor(val cursor: Cursor) : FolderDetailsAccessor {
     override val pushClass: FolderClass
         get() = FolderClass.valueOf(cursor.getString(10))
 }
+
+private val FOLDER_COLUMNS = arrayOf(
+    "id",
+    "name",
+    "type",
+    "server_id",
+    "local_only",
+    "top_group",
+    "integrate",
+    "poll_class",
+    "display_class",
+    "notify_class",
+    "push_class"
+)

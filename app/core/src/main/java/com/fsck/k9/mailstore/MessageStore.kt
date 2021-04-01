@@ -60,4 +60,12 @@ interface MessageStore {
      * @return The value returned by [mapper] or `null` if the folder wasn't found.
      */
     fun <T> getFolder(folderId: Long, mapper: FolderMapper<T>): T?
+
+    /**
+     * Retrieve folders.
+     *
+     * @param mapper A function to map the values read from the store to a domain-specific object.
+     * @return A list of values returned by [mapper].
+     */
+    fun <T> getFolders(excludeLocalOnly: Boolean, mapper: FolderMapper<T>): List<T>
 }

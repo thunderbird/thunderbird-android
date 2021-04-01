@@ -2,10 +2,8 @@ package com.fsck.k9.mailstore
 
 import android.database.sqlite.SQLiteDatabase
 import androidx.core.content.contentValuesOf
-import androidx.core.database.getStringOrNull
 import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
-import com.fsck.k9.helper.map
 import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.FolderType as RemoteFolderType
 
@@ -20,13 +18,6 @@ class FolderRepository(
             .thenByDescending { it.folder.type != FolderType.REGULAR }
             .thenByDescending { it.isInTopGroup }
             .thenBy(String.CASE_INSENSITIVE_ORDER) { it.folder.name }
-
-    fun getRemoteFolders(): List<RemoteFolder> {
-        val folders = localStoreProvider.getInstance(account).getPersonalNamespaces(false)
-        return folders
-            .filterNot { it.isLocalOnly }
-            .map { RemoteFolder(it.databaseId, it.serverId, it.name, it.type.toFolderType()) }
-    }
 
     fun getDisplayFolders(displayMode: FolderMode?): List<DisplayFolder> {
         val database = localStoreProvider.getInstance(account).database
@@ -70,47 +61,35 @@ class FolderRepository(
         }
     }
 
+    fun getRemoteFolders(): List<RemoteFolder> {
+        val messageStore = messageStoreManager.getMessageStore(account)
+        return messageStore.getFolders(excludeLocalOnly = true) { folder ->
+            RemoteFolder(
+                id = folder.id,
+                serverId = folder.serverId,
+                name = folder.name,
+                type = folder.type.toFolderType()
+            )
+        }
+    }
+
     fun getRemoteFolderDetails(): List<RemoteFolderDetails> {
-        val database = localStoreProvider.getInstance(account).database
-        return database.execute(false) { db ->
-            db.query(
-                "folders",
-                arrayOf(
-                    "id",
-                    "server_id",
-                    "name",
-                    "type",
-                    "top_group",
-                    "integrate",
-                    "poll_class",
-                    "display_class",
-                    "notify_class",
-                    "push_class"
+        val messageStore = messageStoreManager.getMessageStore(account)
+        return messageStore.getFolders(excludeLocalOnly = true) { folder ->
+            RemoteFolderDetails(
+                folder = RemoteFolder(
+                    id = folder.id,
+                    serverId = folder.serverId,
+                    name = folder.name,
+                    type = folder.type.toFolderType()
                 ),
-                "local_only = 0",
-                null,
-                null,
-                null,
-                null
-            ).use { cursor ->
-                cursor.map {
-                    val id = cursor.getLong(0)
-                    RemoteFolderDetails(
-                        folder = RemoteFolder(
-                            id = id,
-                            serverId = cursor.getString(1),
-                            name = cursor.getString(2),
-                            type = cursor.getString(3).toFolderType().toFolderType()
-                        ),
-                        isInTopGroup = cursor.getInt(4) == 1,
-                        isIntegrate = cursor.getInt(5) == 1,
-                        syncClass = cursor.getStringOrNull(6).toFolderClass(),
-                        displayClass = cursor.getStringOrNull(7).toFolderClass(),
-                        notifyClass = cursor.getStringOrNull(8).toFolderClass(),
-                        pushClass = cursor.getStringOrNull(9).toFolderClass()
-                    )
-                }
-            }
+                isInTopGroup = folder.isInTopGroup,
+                isIntegrate = folder.isIntegrate,
+                syncClass = folder.syncClass,
+                displayClass = folder.displayClass,
+                notifyClass = folder.notifyClass,
+                pushClass = folder.pushClass
+            )
         }
     }
 
@@ -237,10 +216,6 @@ class FolderRepository(
         RemoteFolderType.TRASH -> FolderType.TRASH
         RemoteFolderType.SPAM -> FolderType.SPAM
         RemoteFolderType.ARCHIVE -> FolderType.ARCHIVE
-    }
-
-    private fun String?.toFolderClass(): FolderClass {
-        return this?.let { FolderClass.valueOf(this) } ?: FolderClass.NO_CLASS
     }
 
     fun setIncludeInUnifiedInbox(folderId: Long, includeInUnifiedInbox: Boolean) {
