@@ -2,6 +2,7 @@ package com.fsck.k9.storage.messages
 
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Header
+import com.fsck.k9.mailstore.FolderMapper
 import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.MessageStore
@@ -13,6 +14,7 @@ class K9MessageStore(private val localStore: LocalStore) : MessageStore {
     private val moveMessageOperations = MoveMessageOperations(database, threadMessageOperations)
     private val flagMessageOperations = FlagMessageOperations(database)
     private val retrieveMessageOperations = RetrieveMessageOperations(database)
+    private val retrieveFolderOperations = RetrieveFolderOperations(database)
 
     override fun moveMessage(messageId: Long, destinationFolderId: Long): Long {
         return moveMessageOperations.moveMessage(messageId, destinationFolderId).also {
@@ -35,5 +37,9 @@ class K9MessageStore(private val localStore: LocalStore) : MessageStore {
 
     override fun getHeaders(folderId: Long, messageServerId: String): List<Header> {
         return retrieveMessageOperations.getHeaders(folderId, messageServerId)
+    }
+
+    override fun <T> getFolder(folderId: Long, mapper: FolderMapper<T>): T? {
+        return retrieveFolderOperations.getFolder(folderId, mapper)
     }
 }
