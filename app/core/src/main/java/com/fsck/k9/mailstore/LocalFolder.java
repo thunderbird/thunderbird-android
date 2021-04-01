@@ -37,7 +37,6 @@ import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.SizeAware;
-import com.fsck.k9.mail.message.MessageHeaderCollector;
 import com.fsck.k9.mail.message.MessageHeaderParser;
 import com.fsck.k9.mailstore.LockableDatabase.DbCallback;
 import com.fsck.k9.mailstore.LockableDatabase.WrappedException;
@@ -47,8 +46,6 @@ import com.fsck.k9.message.extractors.MessageFulltextCreator;
 import com.fsck.k9.message.extractors.MessagePreviewCreator;
 import com.fsck.k9.message.extractors.PreviewResult;
 import com.fsck.k9.message.extractors.PreviewResult.PreviewType;
-import com.fsck.k9.preferences.Storage;
-import com.fsck.k9.preferences.StorageEditor;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.util.MimeUtil;
@@ -276,52 +273,6 @@ public class LocalFolder {
         });
     }
 
-    PreferencesHolder getPreferencesHolder() {
-        PreferencesHolder preferencesHolder = new PreferencesHolder();
-
-        Storage storage = localStore.getPreferences().getStorage();
-        String prefId = getPrefId(serverId);
-
-        String displayModeString = storage.getString(prefId + ".displayMode", null);
-        if (displayModeString != null) {
-            preferencesHolder.displayClass = FolderClass.valueOf(displayModeString);
-        }
-
-        String notifyModeString = storage.getString(prefId + ".notifyMode", null);
-        if (notifyModeString != null) {
-            preferencesHolder.notifyClass = FolderClass.valueOf(notifyModeString);
-        }
-
-        String syncModeString = storage.getString(prefId + ".syncMode", null);
-        if (syncModeString != null) {
-            preferencesHolder.syncClass = FolderClass.valueOf(syncModeString);
-        }
-
-        String pushModeString = storage.getString(prefId + ".pushMode", null);
-        if (pushModeString != null) {
-            preferencesHolder.pushClass = FolderClass.valueOf(pushModeString);
-        }
-
-        if (storage.contains(prefId + ".inTopGroup")) {
-            preferencesHolder.inTopGroup = storage.getBoolean(prefId + ".inTopGroup", isInTopGroup);
-        }
-
-        if (storage.contains(prefId + ".integrate")) {
-            preferencesHolder.integrate = storage.getBoolean(prefId + ".integrate", isIntegrate);
-        }
-
-        return preferencesHolder;
-    }
-
-    class PreferencesHolder {
-        FolderClass displayClass = LocalFolder.this.displayClass;
-        FolderClass syncClass = LocalFolder.this.syncClass;
-        FolderClass notifyClass = LocalFolder.this.notifyClass;
-        FolderClass pushClass = LocalFolder.this.pushClass;
-        boolean inTopGroup = isInTopGroup;
-        boolean integrate = isIntegrate;
-    }
-
     public int getMessageCount() throws MessagingException {
         try {
             return this.localStore.getDatabase().execute(false, new DbCallback<Integer>() {
@@ -510,29 +461,6 @@ public class LocalFolder {
 
     public boolean isLocalOnly() {
         return localOnly;
-    }
-
-    private String getPrefId(String name) {
-        if (prefId == null) {
-            prefId = getAccount().getUuid() + "." + name;
-        }
-
-        return prefId;
-    }
-
-    void deleteSavedSettings() {
-        String id = getPrefId(serverId);
-
-        StorageEditor editor = localStore.getPreferences().createStorageEditor();
-
-        editor.remove(id + ".displayMode");
-        editor.remove(id + ".syncMode");
-        editor.remove(id + ".pushMode");
-        editor.remove(id + ".notifyMode");
-        editor.remove(id + ".inTopGroup");
-        editor.remove(id + ".integrate");
-
-        editor.commit();
     }
 
     public void fetch(final List<LocalMessage> messages, final FetchProfile fp, final MessageRetrievalListener<LocalMessage> listener)

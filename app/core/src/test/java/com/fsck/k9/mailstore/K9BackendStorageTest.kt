@@ -5,7 +5,11 @@ import com.fsck.k9.Account
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.Preferences
 import com.fsck.k9.backend.api.BackendStorage
+import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.provider.EmailProvider
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.mock
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -73,7 +77,23 @@ class K9BackendStorageTest : K9RobolectricTest() {
     }
 
     private fun createBackendStorage(): BackendStorage {
-        val localStore: LocalStore = localStoreProvider.getInstance(account)
-        return K9BackendStorage(account, localStore, emptyList())
+        val localStore = localStoreProvider.getInstance(account)
+        val folderSettingsProvider = createFolderSettingsProvider()
+        return K9BackendStorage(localStore, folderSettingsProvider, emptyList())
+    }
+}
+
+internal fun createFolderSettingsProvider(): FolderSettingsProvider {
+    return mock {
+        on { getFolderSettings(any()) } doReturn
+            FolderSettings(
+                visibleLimit = 25,
+                displayClass = FolderClass.NO_CLASS,
+                syncClass = FolderClass.INHERITED,
+                notifyClass = FolderClass.INHERITED,
+                pushClass = FolderClass.SECOND_CLASS,
+                inTopGroup = false,
+                integrate = false,
+            )
     }
 }

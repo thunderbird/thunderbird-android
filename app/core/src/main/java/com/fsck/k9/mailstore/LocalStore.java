@@ -896,51 +896,28 @@ public class LocalStore {
         public String type;
     }
 
-    public void createFolders(final List<LocalFolder> foldersToCreate, final int visibleLimit) throws MessagingException {
-        database.execute(true, new DbCallback<Void>() {
-            @Override
-            public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
-                for (LocalFolder folder : foldersToCreate) {
-                    String serverId = folder.getServerId();
-                    String name = folder.getName();
-                    boolean localOnly = folder.isLocalOnly();
-                    String databaseFolderType = FolderTypeConverter.toDatabaseFolderType(folder.getType());
+    public void createFolders(List<CreateFolderInfo> foldersToCreate) throws MessagingException {
+        database.execute(true, (DbCallback<Void>) db -> {
+            for (CreateFolderInfo folderInfo : foldersToCreate) {
+                String databaseFolderType = FolderTypeConverter.toDatabaseFolderType(folderInfo.getType());
+                FolderSettings folderSettings = folderInfo.getSettings();
 
-                    if (K9.DEVELOPER_MODE && localOnly) {
-                        Cursor cursor = db.query("folders", new String[] { "id" },
-                                "name = ? AND local_only = 1", new String[] { name },null, null, null);
-                        try {
-                            if (cursor.moveToNext()) {
-                                long folderId = cursor.getLong(0);
+                ContentValues values = new ContentValues();
+                values.put("name", folderInfo.getName());
+                values.put("visible_limit", folderSettings.getVisibleLimit());
+                values.put("integrate", folderSettings.getIntegrate());
+                values.put("top_group", folderSettings.getInTopGroup());
+                values.put("poll_class", folderSettings.getSyncClass().name());
+                values.put("push_class", folderSettings.getPushClass().name());
+                values.put("display_class", folderSettings.getDisplayClass().name());
+                values.put("notify_class", folderSettings.getNotifyClass().name());
+                values.put("server_id", folderInfo.getServerId());
+                values.put("local_only", false);
+                values.put("type", databaseFolderType);
 
-                                throw new AssertionError("Tried to create local folder '" + name + "'" +
-                                        " that already exists in the database with ID " + folderId);
-                            }
-                        } finally {
-                            cursor.close();
-                        }
-                    }
-
-                    final LocalFolder.PreferencesHolder prefHolder = folder.getPreferencesHolder();
-
-                    db.execSQL("INSERT INTO folders (name, visible_limit, top_group, display_class, poll_class, notify_class, push_class, integrate, server_id, local_only, type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", new Object[] {
-                                   name,
-                                   visibleLimit,
-                                   prefHolder.inTopGroup ? 1 : 0,
-                                   prefHolder.displayClass.name(),
-                                   prefHolder.syncClass.name(),
-                                   prefHolder.notifyClass.name(),
-                                   prefHolder.pushClass.name(),
-                                   prefHolder.integrate ? 1 : 0,
-                                   serverId,
-                                   localOnly ? 1 : 0,
-                                   databaseFolderType
-                               });
-
-                    folder.deleteSavedSettings();
-                }
-                return null;
+                db.insert("folders", null, values);
             }
+            return null;
         });
     }
 
