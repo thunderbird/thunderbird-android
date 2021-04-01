@@ -4,7 +4,6 @@ import android.content.ContentValues
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import androidx.core.database.getStringOrNull
-import com.fsck.k9.Account
 import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendFolderUpdater
 import com.fsck.k9.backend.api.BackendStorage
@@ -12,8 +11,8 @@ import com.fsck.k9.backend.api.FolderInfo
 import com.fsck.k9.mail.FolderType as RemoteFolderType
 
 class K9BackendStorage(
-    private val account: Account,
     private val localStore: LocalStore,
+    private val folderSettingsProvider: FolderSettingsProvider,
     private val listeners: List<BackendFoldersRefreshListener>
 ) : BackendStorage {
     private val database = localStore.database
@@ -105,8 +104,15 @@ class K9BackendStorage(
         override fun createFolders(folders: List<FolderInfo>) {
             if (folders.isEmpty()) return
 
-            val localFolders = folders.map { localStore.getFolder(it.serverId, it.name, it.type) }
-            localStore.createFolders(localFolders, account.displayCount)
+            val createFolderInfo = folders.map { folderInfo ->
+                CreateFolderInfo(
+                    serverId = folderInfo.serverId,
+                    name = folderInfo.name,
+                    type = folderInfo.type,
+                    settings = folderSettingsProvider.getFolderSettings(folderInfo.serverId)
+                )
+            }
+            localStore.createFolders(createFolderInfo)
         }
 
         override fun deleteFolders(folderServerIds: List<String>) {
