@@ -11,6 +11,7 @@ import com.fsck.k9.mail.FolderType as RemoteFolderType
 
 class FolderRepository(
     private val localStoreProvider: LocalStoreProvider,
+    private val messageStoreManager: MessageStoreManager,
     private val account: Account
 ) {
     private val sortForDisplay =
@@ -38,77 +39,35 @@ class FolderRepository(
     }
 
     fun getFolder(folderId: Long): Folder? {
-        val database = localStoreProvider.getInstance(account).database
-        return database.execute(false) { db ->
-            db.query(
-                "folders",
-                arrayOf(
-                    "id",
-                    "name",
-                    "local_only"
-                ),
-                "id = ?",
-                arrayOf(folderId.toString()),
-                null,
-                null,
-                null
-            ).use { cursor ->
-                if (cursor.moveToFirst()) {
-                    val id = cursor.getLong(0)
-                    Folder(
-                        id = id,
-                        name = cursor.getString(1),
-                        type = folderTypeOf(id),
-                        isLocalOnly = cursor.getInt(2) == 1
-                    )
-                } else {
-                    null
-                }
-            }
+        val messageStore = messageStoreManager.getMessageStore(account)
+        return messageStore.getFolder(folderId) { folder ->
+            Folder(
+                id = folder.id,
+                name = folder.name,
+                type = folderTypeOf(folder.id),
+                isLocalOnly = folder.isLocalOnly
+            )
         }
     }
 
     fun getFolderDetails(folderId: Long): FolderDetails? {
-        val database = localStoreProvider.getInstance(account).database
-        return database.execute(false) { db ->
-            db.query(
-                "folders",
-                arrayOf(
-                    "id",
-                    "name",
-                    "top_group",
-                    "integrate",
-                    "poll_class",
-                    "display_class",
-                    "notify_class",
-                    "push_class",
-                    "local_only"
+        val messageStore = messageStoreManager.getMessageStore(account)
+        return messageStore.getFolder(folderId) { folder ->
+            FolderDetails(
+                folder = Folder(
+                    id = folder.id,
+                    name = folder.name,
+                    type = folderTypeOf(folder.id),
+                    isLocalOnly = folder.isLocalOnly
                 ),
-                "id = ?",
-                arrayOf(folderId.toString()),
-                null,
-                null,
-                null
-            ).use { cursor ->
-                cursor.map {
-                    val id = cursor.getLong(0)
-                    FolderDetails(
-                        folder = Folder(
-                            id = id,
-                            name = cursor.getString(1),
-                            type = folderTypeOf(id),
-                            isLocalOnly = cursor.getInt(8) == 1
-                        ),
-                        isInTopGroup = cursor.getInt(2) == 1,
-                        isIntegrate = cursor.getInt(3) == 1,
-                        syncClass = cursor.getStringOrNull(4).toFolderClass(),
-                        displayClass = cursor.getStringOrNull(5).toFolderClass(),
-                        notifyClass = cursor.getStringOrNull(6).toFolderClass(),
-                        pushClass = cursor.getStringOrNull(7).toFolderClass()
-                    )
-                }
-            }
-        }.firstOrNull()
+                isInTopGroup = folder.isInTopGroup,
+                isIntegrate = folder.isIntegrate,
+                syncClass = folder.syncClass,
+                displayClass = folder.displayClass,
+                notifyClass = folder.notifyClass,
+                pushClass = folder.pushClass
+            )
+        }
     }
 
     fun getRemoteFolderDetails(): List<RemoteFolderDetails> {
@@ -156,19 +115,9 @@ class FolderRepository(
     }
 
     fun getFolderServerId(folderId: Long): String? {
-        val database = localStoreProvider.getInstance(account).database
-        return database.execute(false) { db ->
-            db.query(
-                "folders",
-                arrayOf("server_id"),
-                "id = ?",
-                arrayOf(folderId.toString()),
-                null,
-                null,
-                null
-            ).use { cursor ->
-                if (cursor.moveToFirst()) cursor.getString(0) else null
-            }
+        val messageStore = messageStoreManager.getMessageStore(account)
+        return messageStore.getFolder(folderId) { folder ->
+            folder.serverId
         }
     }
 
@@ -190,20 +139,8 @@ class FolderRepository(
     }
 
     fun isFolderPresent(folderId: Long): Boolean {
-        val database = localStoreProvider.getInstance(account).database
-        return database.execute(false) { db ->
-            db.query(
-                "folders",
-                arrayOf("id"),
-                "id = ?",
-                arrayOf(folderId.toString()),
-                null,
-                null,
-                null
-            ).use { cursor ->
-                cursor.count != 0
-            }
-        }
+        val messageStore = messageStoreManager.getMessageStore(account)
+        return messageStore.getFolder(folderId) { true } ?: false
     }
 
     fun updateFolderDetails(folderDetails: FolderDetails) {

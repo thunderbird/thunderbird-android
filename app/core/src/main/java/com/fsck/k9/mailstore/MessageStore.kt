@@ -52,4 +52,12 @@ interface MessageStore {
      * Retrieve the header fields of a message.
      */
     fun getHeaders(folderId: Long, messageServerId: String): List<Header>
+
+    /**
+     * Retrieve information about a folder.
+     *
+     * @param mapper A function to map the values read from the store to a domain-specific object.
+     * @return The value returned by [mapper] or `null` if the folder wasn't found.
+     */
+    fun <T> getFolder(folderId: Long, mapper: FolderMapper<T>): T?
 }
