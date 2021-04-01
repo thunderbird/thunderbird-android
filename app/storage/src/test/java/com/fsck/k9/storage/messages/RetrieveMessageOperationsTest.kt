@@ -1,6 +1,8 @@
 package com.fsck.k9.storage.messages
 
+import com.fsck.k9.mail.Header
 import com.fsck.k9.mail.MessagingException
+import com.fsck.k9.mail.crlf
 import com.fsck.k9.storage.RobolectricTest
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
@@ -42,6 +44,32 @@ class RetrieveMessageOperationsTest : RobolectricTest() {
                 messageId2 to "uid2",
                 messageId3 to "uid3",
                 messageId4 to "uid4"
+            )
+        )
+    }
+
+    @Test
+    fun `get headers`() {
+        val messagePartId = sqliteDatabase.createMessagePart(
+            header = """
+                From: <alice@domain.example>
+                To: Bob <bob@domain.example>
+                Date: Thu, 01 Apr 2021 01:23:45 +0200
+                Subject: Test
+                Message-Id: <20210401012345.123456789A@domain.example>
+            """.trimIndent().crlf()
+        )
+        sqliteDatabase.createMessage(folderId = 1, uid = "uid1", messagePartId = messagePartId)
+
+        val headers = retrieveMessageOperations.getHeaders(folderId = 1, messageServerId = "uid1")
+
+        assertThat(headers).isEqualTo(
+            listOf(
+                Header("From", "<alice@domain.example>"),
+                Header("To", "Bob <bob@domain.example>"),
+                Header("Date", "Thu, 01 Apr 2021 01:23:45 +0200"),
+                Header("Subject", "Test"),
+                Header("Message-Id", "<20210401012345.123456789A@domain.example>")
             )
         )
     }

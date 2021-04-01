@@ -1,6 +1,6 @@
 package com.fsck.k9.mailstore
 
-import com.fsck.k9.crlf
+import com.fsck.k9.mail.crlf
 import com.fsck.k9.mail.internet.MimeBodyPart
 import com.fsck.k9.mail.internet.MimeMessage
 import com.fsck.k9.mail.internet.MimeMultipart

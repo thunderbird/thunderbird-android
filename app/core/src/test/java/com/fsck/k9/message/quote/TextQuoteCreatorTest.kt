@@ -3,10 +3,10 @@ package com.fsck.k9.message.quote
 import com.fsck.k9.Account.QuoteStyle
 import com.fsck.k9.RobolectricTest
 import com.fsck.k9.TestCoreResourceProvider
-import com.fsck.k9.crlf
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Message.RecipientType
+import com.fsck.k9.mail.crlf
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.eq

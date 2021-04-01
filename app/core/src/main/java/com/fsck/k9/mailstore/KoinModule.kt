@@ -11,5 +11,5 @@ val mailStoreModule = module {
     single { K9BackendStorageFactory(get(), get(), get(), get()) }
     factory { SpecialLocalFoldersCreator(preferences = get(), localStoreProvider = get()) }
     single { MessageStoreManager(accountManager = get(), messageStoreFactory = get()) }
-    single { MessageRepository(preferences = get(), localStoreProvider = get()) }
+    single { MessageRepository(messageStoreManager = get()) }
 }

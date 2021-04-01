@@ -158,3 +158,45 @@ data class MessageEntry(
     val messagePartId: Long?,
     val encryptionType: String?
 )
+
+fun SQLiteDatabase.createMessagePart(
+    type: Int = 0,
+    root: Int? = null,
+    parent: Int = -1,
+    seq: Int = 0,
+    mimeType: String = "text/plain",
+    decodedBodySize: Int = 0,
+    displayName: String? = null,
+    header: String? = null,
+    encoding: String = "7bit",
+    charset: String? = null,
+    dataLocation: Int = 0,
+    data: ByteArray? = null,
+    preamble: String? = null,
+    epilogue: String? = null,
+    boundary: String? = null,
+    contentId: String? = null,
+    serverExtra: String? = null
+): Long {
+    val values = ContentValues().apply {
+        put("type", type)
+        put("root", root)
+        put("parent", parent)
+        put("seq", seq)
+        put("mime_type", mimeType)
+        put("decoded_body_size", decodedBodySize)
+        put("display_name", displayName)
+        put("header", header)
+        put("encoding", encoding)
+        put("charset", charset)
+        put("data_location", dataLocation)
+        put("data", data)
+        put("preamble", preamble)
+        put("epilogue", epilogue)
+        put("boundary", boundary)
+        put("content_id", contentId)
+        put("server_extra", serverExtra)
+    }
+
+    return insert("message_parts", null, values)
+}

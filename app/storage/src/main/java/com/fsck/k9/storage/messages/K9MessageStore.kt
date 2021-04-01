@@ -1,6 +1,7 @@
 package com.fsck.k9.storage.messages
 
 import com.fsck.k9.mail.Flag
+import com.fsck.k9.mail.Header
 import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.MessageStore
@@ -30,5 +31,9 @@ class K9MessageStore(private val localStore: LocalStore) : MessageStore {
 
     override fun getMessageServerIds(messageIds: Collection<Long>): Map<Long, String> {
         return retrieveMessageOperations.getMessageServerIds(messageIds)
+    }
+
+    override fun getHeaders(folderId: Long, messageServerId: String): List<Header> {
+        return retrieveMessageOperations.getHeaders(folderId, messageServerId)
     }
 }
