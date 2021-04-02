@@ -81,4 +81,9 @@ interface MessageStore {
      * Find a folder with the given server ID and return its store ID.
      */
     fun getFolderId(folderServerId: String): Long?
+
+    /**
+     * Update settings of a single folder.
+     */
+    fun updateFolderSettings(folderDetails: FolderDetails)
 }

@@ -1,6 +1,5 @@
 package com.fsck.k9.mailstore
 
-import androidx.core.content.contentValuesOf
 import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.mail.FolderClass
@@ -119,18 +118,8 @@ class FolderRepository(
     }
 
     fun updateFolderDetails(folderDetails: FolderDetails) {
-        val database = localStoreProvider.getInstance(account).database
-        database.execute(false) { db ->
-            val contentValues = contentValuesOf(
-                "top_group" to folderDetails.isInTopGroup,
-                "integrate" to folderDetails.isIntegrate,
-                "poll_class" to folderDetails.syncClass.name,
-                "display_class" to folderDetails.displayClass.name,
-                "notify_class" to folderDetails.notifyClass.name,
-                "push_class" to folderDetails.pushClass.name
-            )
-            db.update("folders", contentValues, "id = ?", arrayOf(folderDetails.folder.id.toString()))
-        }
+        val messageStore = messageStoreManager.getMessageStore(account)
+        messageStore.updateFolderSettings(folderDetails)
     }
 
     private fun folderTypeOf(folderId: Long) = when (folderId) {
