@@ -1,5 +1,6 @@
 package com.fsck.k9.mailstore
 
+import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Header
 
@@ -68,4 +69,11 @@ interface MessageStore {
      * @return A list of values returned by [mapper].
      */
     fun <T> getFolders(excludeLocalOnly: Boolean, mapper: FolderMapper<T>): List<T>
+
+    /**
+     * Retrieve folders for the given display mode along with their unread count.
+     *
+     * For the Outbox the total number of messages will be returned.
+     */
+    fun <T> getDisplayFolders(displayMode: FolderMode, outboxFolderId: Long?, mapper: FolderMapper<T>): List<T>
 }
