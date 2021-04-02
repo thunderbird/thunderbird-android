@@ -109,20 +109,8 @@ class FolderRepository(
     }
 
     fun getFolderId(folderServerId: String): Long? {
-        val database = localStoreProvider.getInstance(account).database
-        return database.execute(false) { db ->
-            db.query(
-                "folders",
-                arrayOf("id"),
-                "server_id = ?",
-                arrayOf(folderServerId),
-                null,
-                null,
-                null
-            ).use { cursor ->
-                if (cursor.moveToFirst()) cursor.getLong(0) else null
-            }
-        }
+        val messageStore = messageStoreManager.getMessageStore(account)
+        return messageStore.getFolderId(folderServerId)
     }
 
     fun isFolderPresent(folderId: Long): Boolean {

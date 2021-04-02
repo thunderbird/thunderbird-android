@@ -90,6 +90,22 @@ internal class RetrieveFolderOperations(private val lockableDatabase: LockableDa
             }
         }
     }
+
+    fun getFolderId(folderServerId: String): Long? {
+        return lockableDatabase.execute(false) { db ->
+            db.query(
+                "folders",
+                arrayOf("id"),
+                "server_id = ?",
+                arrayOf(folderServerId),
+                null,
+                null,
+                null
+            ).use { cursor ->
+                if (cursor.moveToFirst()) cursor.getLong(0) else null
+            }
+        }
+    }
 }
 
 private class CursorFolderAccessor(val cursor: Cursor) : FolderDetailsAccessor {

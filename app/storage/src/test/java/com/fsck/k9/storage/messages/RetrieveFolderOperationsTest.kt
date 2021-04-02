@@ -207,4 +207,23 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
             )
         )
     }
+
+    @Test
+    fun `get folder id`() {
+        val (_, folderId2) = listOf(
+            sqliteDatabase.createFolder(serverId = "folder1"),
+            sqliteDatabase.createFolder(serverId = "folder2"),
+        )
+
+        val result = retrieveFolderOperations.getFolderId(folderServerId = "folder2")
+
+        assertThat(result).isEqualTo(folderId2)
+    }
+
+    @Test
+    fun `get folder id should return null if no folder was found`() {
+        val result = retrieveFolderOperations.getFolderId(folderServerId = "folderId")
+
+        assertThat(result).isNull()
+    }
 }

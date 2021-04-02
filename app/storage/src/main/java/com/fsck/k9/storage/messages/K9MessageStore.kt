@@ -55,4 +55,8 @@ class K9MessageStore(private val localStore: LocalStore) : MessageStore {
     ): List<T> {
         return retrieveFolderOperations.getDisplayFolders(displayMode, outboxFolderId, mapper)
     }
+
+    override fun getFolderId(folderServerId: String): Long? {
+        return retrieveFolderOperations.getFolderId(folderServerId)
+    }
 }

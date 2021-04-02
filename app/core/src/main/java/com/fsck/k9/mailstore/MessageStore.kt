@@ -76,4 +76,9 @@ interface MessageStore {
      * For the Outbox the total number of messages will be returned.
      */
     fun <T> getDisplayFolders(displayMode: FolderMode, outboxFolderId: Long?, mapper: FolderMapper<T>): List<T>
+
+    /**
+     * Find a folder with the given server ID and return its store ID.
+     */
+    fun getFolderId(folderServerId: String): Long?
 }
