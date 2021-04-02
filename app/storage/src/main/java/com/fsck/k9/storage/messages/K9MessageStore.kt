@@ -1,5 +1,6 @@
 package com.fsck.k9.storage.messages
 
+import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Header
 import com.fsck.k9.mailstore.FolderMapper
@@ -41,5 +42,21 @@ class K9MessageStore(private val localStore: LocalStore) : MessageStore {
 
     override fun <T> getFolder(folderId: Long, mapper: FolderMapper<T>): T? {
         return retrieveFolderOperations.getFolder(folderId, mapper)
+    }
+
+    override fun <T> getFolders(excludeLocalOnly: Boolean, mapper: FolderMapper<T>): List<T> {
+        return retrieveFolderOperations.getFolders(excludeLocalOnly, mapper)
+    }
+
+    override fun <T> getDisplayFolders(
+        displayMode: FolderMode,
+        outboxFolderId: Long?,
+        mapper: FolderMapper<T>
+    ): List<T> {
+        return retrieveFolderOperations.getDisplayFolders(displayMode, outboxFolderId, mapper)
+    }
+
+    override fun getFolderId(folderServerId: String): Long? {
+        return retrieveFolderOperations.getFolderId(folderServerId)
     }
 }
