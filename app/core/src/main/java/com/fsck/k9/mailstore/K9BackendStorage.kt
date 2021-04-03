@@ -12,6 +12,7 @@ import com.fsck.k9.mail.FolderType as RemoteFolderType
 
 class K9BackendStorage(
     private val localStore: LocalStore,
+    private val messageStore: MessageStore,
     private val folderSettingsProvider: FolderSettingsProvider,
     private val listeners: List<BackendFoldersRefreshListener>
 ) : BackendStorage {
@@ -22,14 +23,7 @@ class K9BackendStorage(
     }
 
     override fun getFolderServerIds(): List<String> {
-        return database.query("folders", arrayOf("server_id"), "local_only = 0") { cursor ->
-            val folderServerIds = mutableListOf<String>()
-            while (cursor.moveToNext()) {
-                folderServerIds.add(cursor.getString(0))
-            }
-
-            folderServerIds
-        }
+        return messageStore.getFolders(excludeLocalOnly = true) { folder -> folder.serverId }
     }
 
     override fun createFolderUpdater(): BackendFolderUpdater {

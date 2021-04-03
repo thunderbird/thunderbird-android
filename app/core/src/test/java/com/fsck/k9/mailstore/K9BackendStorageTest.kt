@@ -19,6 +19,7 @@ import org.koin.core.inject
 class K9BackendStorageTest : K9RobolectricTest() {
     val preferences: Preferences by inject()
     val localStoreProvider: LocalStoreProvider by inject()
+    val messageStoreManager: MessageStoreManager by inject()
 
     val account: Account = createAccount()
     val database: LockableDatabase = localStoreProvider.getInstance(account).database
@@ -78,8 +79,9 @@ class K9BackendStorageTest : K9RobolectricTest() {
 
     private fun createBackendStorage(): BackendStorage {
         val localStore = localStoreProvider.getInstance(account)
+        val messageStore = messageStoreManager.getMessageStore(account)
         val folderSettingsProvider = createFolderSettingsProvider()
-        return K9BackendStorage(localStore, folderSettingsProvider, emptyList())
+        return K9BackendStorage(localStore, messageStore, folderSettingsProvider, emptyList())
     }
 }
 
