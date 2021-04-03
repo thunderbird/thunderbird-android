@@ -1,6 +1,5 @@
 package com.fsck.k9.mailstore
 
-import android.content.ContentValues
 import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendFolderUpdater
 import com.fsck.k9.backend.api.BackendStorage
@@ -13,8 +12,6 @@ class K9BackendStorage(
     private val folderSettingsProvider: FolderSettingsProvider,
     private val listeners: List<BackendFoldersRefreshListener>
 ) : BackendStorage {
-    private val database = localStore.database
-
     override fun getFolder(folderServerId: String): BackendFolder {
         return K9BackendFolder(localStore, folderServerId)
     }
@@ -59,7 +56,7 @@ class K9BackendStorage(
                     settings = folderSettingsProvider.getFolderSettings(folderInfo.serverId)
                 )
             }
-            localStore.createFolders(createFolderInfo)
+            messageStore.createFolders(createFolderInfo)
         }
 
         override fun deleteFolders(folderServerIds: List<String>) {
@@ -69,14 +66,7 @@ class K9BackendStorage(
         }
 
         override fun changeFolder(folderServerId: String, name: String, type: RemoteFolderType) {
-            database.execute(false) { db ->
-                val values = ContentValues().apply {
-                    put("name", name)
-                    put("type", type.toDatabaseFolderType())
-                }
-
-                db.update("folders", values, "server_id = ?", arrayOf(folderServerId))
-            }
+            messageStore.changeFolder(folderServerId, name, type)
         }
 
         override fun close() {
