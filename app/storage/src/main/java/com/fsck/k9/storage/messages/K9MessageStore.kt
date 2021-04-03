@@ -2,6 +2,7 @@ package com.fsck.k9.storage.messages
 
 import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.mail.Flag
+import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.Header
 import com.fsck.k9.mailstore.FolderDetails
 import com.fsck.k9.mailstore.FolderMapper
@@ -64,5 +65,21 @@ class K9MessageStore(private val localStore: LocalStore) : MessageStore {
 
     override fun updateFolderSettings(folderDetails: FolderDetails) {
         updateFolderOperations.updateFolderSettings(folderDetails)
+    }
+
+    override fun setIncludeInUnifiedInbox(folderId: Long, includeInUnifiedInbox: Boolean) {
+        updateFolderOperations.setIncludeInUnifiedInbox(folderId, includeInUnifiedInbox)
+    }
+
+    override fun setDisplayClass(folderId: Long, folderClass: FolderClass) {
+        updateFolderOperations.setDisplayClass(folderId, folderClass)
+    }
+
+    override fun setSyncClass(folderId: Long, folderClass: FolderClass) {
+        updateFolderOperations.setSyncClass(folderId, folderClass)
+    }
+
+    override fun setNotificationClass(folderId: Long, folderClass: FolderClass) {
+        updateFolderOperations.setNotificationClass(folderId, folderClass)
     }
 }

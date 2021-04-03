@@ -122,6 +122,26 @@ class FolderRepository(
         messageStore.updateFolderSettings(folderDetails)
     }
 
+    fun setIncludeInUnifiedInbox(folderId: Long, includeInUnifiedInbox: Boolean) {
+        val messageStore = messageStoreManager.getMessageStore(account)
+        messageStore.setIncludeInUnifiedInbox(folderId, includeInUnifiedInbox)
+    }
+
+    fun setDisplayClass(folderId: Long, folderClass: FolderClass) {
+        val messageStore = messageStoreManager.getMessageStore(account)
+        messageStore.setDisplayClass(folderId, folderClass)
+    }
+
+    fun setSyncClass(folderId: Long, folderClass: FolderClass) {
+        val messageStore = messageStoreManager.getMessageStore(account)
+        messageStore.setSyncClass(folderId, folderClass)
+    }
+
+    fun setNotificationClass(folderId: Long, folderClass: FolderClass) {
+        val messageStore = messageStoreManager.getMessageStore(account)
+        messageStore.setNotificationClass(folderId, folderClass)
+    }
+
     private fun folderTypeOf(folderId: Long) = when (folderId) {
         account.inboxFolderId -> FolderType.INBOX
         account.outboxFolderId -> FolderType.OUTBOX
@@ -142,30 +162,6 @@ class FolderRepository(
         RemoteFolderType.TRASH -> FolderType.TRASH
         RemoteFolderType.SPAM -> FolderType.SPAM
         RemoteFolderType.ARCHIVE -> FolderType.ARCHIVE
-    }
-
-    fun setIncludeInUnifiedInbox(folderId: Long, includeInUnifiedInbox: Boolean) {
-        val localStore = localStoreProvider.getInstance(account)
-        val folder = localStore.getFolder(folderId)
-        folder.isIntegrate = includeInUnifiedInbox
-    }
-
-    fun setDisplayClass(folderId: Long, folderClass: FolderClass) {
-        val localStore = localStoreProvider.getInstance(account)
-        val folder = localStore.getFolder(folderId)
-        folder.displayClass = folderClass
-    }
-
-    fun setSyncClass(folderId: Long, folderClass: FolderClass) {
-        val localStore = localStoreProvider.getInstance(account)
-        val folder = localStore.getFolder(folderId)
-        folder.syncClass = folderClass
-    }
-
-    fun setNotificationClass(folderId: Long, folderClass: FolderClass) {
-        val localStore = localStoreProvider.getInstance(account)
-        val folder = localStore.getFolder(folderId)
-        folder.notifyClass = folderClass
     }
 }
 

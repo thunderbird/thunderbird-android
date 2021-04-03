@@ -50,4 +50,48 @@ class UpdateFolderOperationsTest : RobolectricTest() {
         assertThat(folder.notifyClass).isEqualTo("FIRST_CLASS")
         assertThat(folder.pushClass).isEqualTo("FIRST_CLASS")
     }
+
+    @Test
+    fun `update integrate setting`() {
+        val folderId = sqliteDatabase.createFolder(integrate = false)
+
+        updateFolderOperations.setIncludeInUnifiedInbox(folderId = folderId, includeInUnifiedInbox = true)
+
+        val folder = sqliteDatabase.readFolders().first()
+        assertThat(folder.id).isEqualTo(folderId)
+        assertThat(folder.integrate).isEqualTo(1)
+    }
+
+    @Test
+    fun `update display class`() {
+        val folderId = sqliteDatabase.createFolder(displayClass = "FIRST_CLASS")
+
+        updateFolderOperations.setDisplayClass(folderId = folderId, folderClass = FolderClass.SECOND_CLASS)
+
+        val folder = sqliteDatabase.readFolders().first()
+        assertThat(folder.id).isEqualTo(folderId)
+        assertThat(folder.displayClass).isEqualTo("SECOND_CLASS")
+    }
+
+    @Test
+    fun `update sync class`() {
+        val folderId = sqliteDatabase.createFolder(syncClass = "FIRST_CLASS")
+
+        updateFolderOperations.setSyncClass(folderId = folderId, folderClass = FolderClass.NO_CLASS)
+
+        val folder = sqliteDatabase.readFolders().first()
+        assertThat(folder.id).isEqualTo(folderId)
+        assertThat(folder.syncClass).isEqualTo("NO_CLASS")
+    }
+
+    @Test
+    fun `update notification class`() {
+        val folderId = sqliteDatabase.createFolder(syncClass = "FIRST_CLASS")
+
+        updateFolderOperations.setNotificationClass(folderId = folderId, folderClass = FolderClass.INHERITED)
+
+        val folder = sqliteDatabase.readFolders().first()
+        assertThat(folder.id).isEqualTo(folderId)
+        assertThat(folder.notifyClass).isEqualTo("INHERITED")
+    }
 }
