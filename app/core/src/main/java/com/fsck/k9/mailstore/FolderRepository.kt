@@ -6,7 +6,6 @@ import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.FolderType as RemoteFolderType
 
 class FolderRepository(
-    private val localStoreProvider: LocalStoreProvider,
     private val messageStoreManager: MessageStoreManager,
     private val account: Account
 ) {
