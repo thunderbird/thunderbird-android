@@ -19,6 +19,7 @@ class K9MessageStore(private val localStore: LocalStore) : MessageStore {
     private val retrieveMessageOperations = RetrieveMessageOperations(database)
     private val retrieveFolderOperations = RetrieveFolderOperations(database)
     private val updateFolderOperations = UpdateFolderOperations(database)
+    private val keyValueStoreOperations = KeyValueStoreOperations(database)
 
     override fun moveMessage(messageId: Long, destinationFolderId: Long): Long {
         return moveMessageOperations.moveMessage(messageId, destinationFolderId).also {
@@ -81,5 +82,21 @@ class K9MessageStore(private val localStore: LocalStore) : MessageStore {
 
     override fun setNotificationClass(folderId: Long, folderClass: FolderClass) {
         updateFolderOperations.setNotificationClass(folderId, folderClass)
+    }
+
+    override fun getExtraString(name: String): String? {
+        return keyValueStoreOperations.getExtraString(name)
+    }
+
+    override fun setExtraString(name: String, value: String) {
+        keyValueStoreOperations.setExtraString(name, value)
+    }
+
+    override fun getExtraNumber(name: String): Long? {
+        return keyValueStoreOperations.getExtraNumber(name)
+    }
+
+    override fun setExtraNumber(name: String, value: Long) {
+        keyValueStoreOperations.setExtraNumber(name, value)
     }
 }

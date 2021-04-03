@@ -107,4 +107,26 @@ interface MessageStore {
      * Update the notification class of a folder.
      */
     fun setNotificationClass(folderId: Long, folderClass: FolderClass)
+
+    /**
+     * Retrieve a string property by name.
+     *
+     * For everything that doesn't fit into existing structures this message store offers a generic key/value store.
+     */
+    fun getExtraString(name: String): String?
+
+    /**
+     * Create or update a string property.
+     */
+    fun setExtraString(name: String, value: String)
+
+    /**
+     * Retrieve a number property by name.
+     */
+    fun getExtraNumber(name: String): Long?
+
+    /**
+     * Create or update a number property.
+     */
+    fun setExtraNumber(name: String, value: Long)
 }
