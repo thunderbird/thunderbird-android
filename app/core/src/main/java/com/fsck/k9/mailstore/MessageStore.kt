@@ -2,6 +2,7 @@ package com.fsck.k9.mailstore
 
 import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.mail.Flag
+import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.Header
 
 /**
@@ -81,4 +82,29 @@ interface MessageStore {
      * Find a folder with the given server ID and return its store ID.
      */
     fun getFolderId(folderServerId: String): Long?
+
+    /**
+     * Update settings of a single folder.
+     */
+    fun updateFolderSettings(folderDetails: FolderDetails)
+
+    /**
+     * Update the "integrate" setting of a folder.
+     */
+    fun setIncludeInUnifiedInbox(folderId: Long, includeInUnifiedInbox: Boolean)
+
+    /**
+     * Update the display class of a folder.
+     */
+    fun setDisplayClass(folderId: Long, folderClass: FolderClass)
+
+    /**
+     * Update the sync class of a folder.
+     */
+    fun setSyncClass(folderId: Long, folderClass: FolderClass)
+
+    /**
+     * Update the notification class of a folder.
+     */
+    fun setNotificationClass(folderId: Long, folderClass: FolderClass)
 }

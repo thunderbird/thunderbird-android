@@ -2,6 +2,10 @@ package com.fsck.k9.storage.messages
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
+import com.fsck.k9.helper.getIntOrNull
+import com.fsck.k9.helper.getLongOrNull
+import com.fsck.k9.helper.getStringOrNull
+import com.fsck.k9.helper.map
 
 fun SQLiteDatabase.createFolder(
     name: String = "irrelevant",
@@ -42,3 +46,50 @@ fun SQLiteDatabase.createFolder(
 
     return insert("folders", null, values)
 }
+
+fun SQLiteDatabase.readFolders(): List<FolderEntry> {
+    val cursor = rawQuery("SELECT * FROM folders", null)
+    return cursor.use {
+        cursor.map {
+            FolderEntry(
+                id = cursor.getLongOrNull("id"),
+                name = cursor.getStringOrNull("name"),
+                type = cursor.getStringOrNull("type"),
+                serverId = cursor.getStringOrNull("server_id"),
+                isLocalOnly = cursor.getIntOrNull("local_only"),
+                integrate = cursor.getIntOrNull("integrate"),
+                inTopGroup = cursor.getIntOrNull("top_group"),
+                displayClass = cursor.getStringOrNull("display_class"),
+                syncClass = cursor.getStringOrNull("poll_class"),
+                notifyClass = cursor.getStringOrNull("notify_class"),
+                pushClass = cursor.getStringOrNull("push_class"),
+                lastUpdated = cursor.getLongOrNull("last_updated"),
+                unreadCount = cursor.getIntOrNull("unread_count"),
+                visibleLimit = cursor.getIntOrNull("visible_limit"),
+                status = cursor.getStringOrNull("status"),
+                flaggedCount = cursor.getIntOrNull("flagged_count"),
+                moreMessages = cursor.getStringOrNull("more_messages")
+            )
+        }
+    }
+}
+
+data class FolderEntry(
+    val id: Long?,
+    val name: String?,
+    val type: String?,
+    val serverId: String?,
+    val isLocalOnly: Int?,
+    val integrate: Int?,
+    val inTopGroup: Int?,
+    val displayClass: String?,
+    val syncClass: String?,
+    val notifyClass: String?,
+    val pushClass: String?,
+    val lastUpdated: Long?,
+    val unreadCount: Int?,
+    val visibleLimit: Int?,
+    val status: String?,
+    val flaggedCount: Int?,
+    val moreMessages: String?
+)
