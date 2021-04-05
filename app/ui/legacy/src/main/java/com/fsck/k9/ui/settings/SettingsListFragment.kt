@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +29,7 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.drag.ItemTouchCallback
 import com.mikepenz.fastadapter.drag.SimpleDragCallback
 import com.mikepenz.fastadapter.utils.DragDropUtil
+import kotlinx.android.synthetic.main.account_list_item.view.*
 import kotlinx.android.synthetic.main.fragment_settings_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -40,7 +42,6 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
     // drag & drop
     private lateinit var touchCallBack: SimpleDragCallback
     private lateinit var touchHelper: ItemTouchHelper
-    private lateinit var vh: AccountItem.ViewHolder
 
     private var numberOfAccounts = 0
 
@@ -230,9 +231,7 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
         // Only move the item if the new position is inside the "drop area"
         return if (newPosition in firstDropPosition..lastDropPosition) {
             // Change the item's position in the adapter
-
             DragDropUtil.onMove(itemAdapter, oldPosition, newPosition)
-
             true
         } else {
             false

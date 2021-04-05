@@ -61,7 +61,7 @@
             android:layout_width="56dp"
             android:scaleType="center"
             android:layout_height="match_parent"
-            android:contentDescription="drag_handle"
+            android:contentDescription="@null"
             android:padding="16dp"
             android:src="@drawable/ic_drag_handle"
             app:tint="?attr/colorControlNormal" />

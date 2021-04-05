@@ -21,11 +21,11 @@ class AccountItem(val account: Account) : AbstractItem<AccountItem.ViewHolder>()
     override val layoutRes = R.layout.account_list_item
 
     override var isDraggable = true
-
+/*
     fun withIsDraggable(): Boolean {
         return isDraggable
     }
-
+*/
     override fun getViewHolder(v: View) = ViewHolder(v)
 
     class ViewHolder(view: View) : FastAdapter.ViewHolder<AccountItem>(view) {
@@ -33,11 +33,6 @@ class AccountItem(val account: Account) : AbstractItem<AccountItem.ViewHolder>()
         val email: TextView = view.findViewById(R.id.email)
         val drag_handle: ImageView = view.findViewById(R.id.drag_handle)
 
-        /*
-        override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
-        return if (viewHolder is DraggableSingleLineItem.ViewHolder) viewHolder.dragHandle else null
-    }
-         */
         override fun bindView(item: AccountItem, payloads: List<Any>) {
             name.text = item.account.description
             email.text = item.account.email
