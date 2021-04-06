@@ -11,9 +11,14 @@ import com.fsck.k9.mailstore.FolderMapper
 import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.MessageStore
+import com.fsck.k9.mailstore.StorageManager
 
 // TODO: Remove dependency on LocalStore
-class K9MessageStore(private val localStore: LocalStore) : MessageStore {
+class K9MessageStore(
+    private val localStore: LocalStore,
+    storageManager: StorageManager,
+    accountUuid: String
+) : MessageStore {
     private val database: LockableDatabase = localStore.database
     private val threadMessageOperations = ThreadMessageOperations(localStore)
     private val moveMessageOperations = MoveMessageOperations(database, threadMessageOperations)
@@ -22,6 +27,7 @@ class K9MessageStore(private val localStore: LocalStore) : MessageStore {
     private val createFolderOperations = CreateFolderOperations(database)
     private val retrieveFolderOperations = RetrieveFolderOperations(database)
     private val updateFolderOperations = UpdateFolderOperations(database)
+    private val deleteFolderOperations = DeleteFolderOperations(storageManager, database, accountUuid)
     private val keyValueStoreOperations = KeyValueStoreOperations(database)
 
     override fun moveMessage(messageId: Long, destinationFolderId: Long): Long {
@@ -93,6 +99,10 @@ class K9MessageStore(private val localStore: LocalStore) : MessageStore {
 
     override fun setNotificationClass(folderId: Long, folderClass: FolderClass) {
         updateFolderOperations.setNotificationClass(folderId, folderClass)
+    }
+
+    override fun deleteFolders(folderServerIds: List<String>) {
+        deleteFolderOperations.deleteFolders(folderServerIds)
     }
 
     override fun getExtraString(name: String): String? {
