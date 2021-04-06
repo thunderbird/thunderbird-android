@@ -789,10 +789,15 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private void onDiscard() {
         if (draftMessageId != null) {
             messagingController.deleteDraft(account, draftMessageId);
-            draftMessageId = null;
         }
         internalMessageHandler.sendEmptyMessage(MSG_DISCARDED_DRAFT);
+        finishWithoutChanges();
+    }
+
+    private void finishWithoutChanges() {
+        draftMessageId = null;
         changesMadeSinceLastSave = false;
+
         if (navigateUp) {
             openDefaultFolder();
         } else {
@@ -1119,20 +1124,13 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                             });
                 } else {
                     builder
-                            .setMessage(R.string.save_or_discard_draft_message_changes_instructions_fmt)
+                            .setMessage(R.string.save_or_discard_draft_message_changes)
                             .setNegativeButton(R.string.discard_action, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int whichButton) {
                                     dismissDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
-                                    changesMadeSinceLastSave = false;
-                                    draftMessageId = null;
-                                    if (navigateUp) {
-                                        openDefaultFolder();
-                                    } else {
-                                        finish();
-                                    }
+                                    finishWithoutChanges();
                                 }
-
                             });
                 }
                 return builder
