@@ -2,10 +2,23 @@ package com.fsck.k9.storage.messages
 
 import android.content.ContentValues
 import com.fsck.k9.mail.FolderClass
+import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mailstore.FolderDetails
 import com.fsck.k9.mailstore.LockableDatabase
+import com.fsck.k9.mailstore.toDatabaseFolderType
 
 internal class UpdateFolderOperations(private val lockableDatabase: LockableDatabase) {
+    fun changeFolder(folderServerId: String, name: String, type: FolderType) {
+        lockableDatabase.execute(false) { db ->
+            val values = ContentValues().apply {
+                put("name", name)
+                put("type", type.toDatabaseFolderType())
+            }
+
+            db.update("folders", values, "server_id = ?", arrayOf(folderServerId))
+        }
+    }
+
     fun updateFolderSettings(folderDetails: FolderDetails) {
         lockableDatabase.execute(false) { db ->
             val contentValues = ContentValues().apply {

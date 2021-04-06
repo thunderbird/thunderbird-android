@@ -7,11 +7,24 @@ import com.fsck.k9.mailstore.FolderType
 import com.fsck.k9.storage.RobolectricTest
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
+import com.fsck.k9.mail.FolderType as RemoteFolderType
 
 class UpdateFolderOperationsTest : RobolectricTest() {
     private val sqliteDatabase = createDatabase()
     private val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
     private val updateFolderOperations = UpdateFolderOperations(lockableDatabase)
+
+    @Test
+    fun `change folder`() {
+        sqliteDatabase.createFolder(serverId = "folder1", name = "Old", type = "REGULAR")
+
+        updateFolderOperations.changeFolder("folder1", "New", RemoteFolderType.TRASH)
+
+        val folder = sqliteDatabase.readFolders().first()
+        assertThat(folder.serverId).isEqualTo("folder1")
+        assertThat(folder.name).isEqualTo("New")
+        assertThat(folder.type).isEqualTo("trash")
+    }
 
     @Test
     fun `update folder settings`() {

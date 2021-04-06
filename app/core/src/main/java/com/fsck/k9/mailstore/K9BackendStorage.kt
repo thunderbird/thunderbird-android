@@ -1,9 +1,5 @@
 package com.fsck.k9.mailstore
 
-import android.content.ContentValues
-import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
-import androidx.core.database.getStringOrNull
 import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendFolderUpdater
 import com.fsck.k9.backend.api.BackendStorage
@@ -12,24 +8,16 @@ import com.fsck.k9.mail.FolderType as RemoteFolderType
 
 class K9BackendStorage(
     private val localStore: LocalStore,
+    private val messageStore: MessageStore,
     private val folderSettingsProvider: FolderSettingsProvider,
     private val listeners: List<BackendFoldersRefreshListener>
 ) : BackendStorage {
-    private val database = localStore.database
-
     override fun getFolder(folderServerId: String): BackendFolder {
         return K9BackendFolder(localStore, folderServerId)
     }
 
     override fun getFolderServerIds(): List<String> {
-        return database.query("folders", arrayOf("server_id"), "local_only = 0") { cursor ->
-            val folderServerIds = mutableListOf<String>()
-            while (cursor.moveToNext()) {
-                folderServerIds.add(cursor.getString(0))
-            }
-
-            folderServerIds
-        }
+        return messageStore.getFolders(excludeLocalOnly = true) { folder -> folder.serverId }
     }
 
     override fun createFolderUpdater(): BackendFolderUpdater {
@@ -37,64 +25,20 @@ class K9BackendStorage(
     }
 
     override fun getExtraString(name: String): String? {
-        return database.execute(false) { db ->
-            val cursor = db.query(
-                "account_extra_values",
-                arrayOf("value_text"),
-                "name = ?",
-                arrayOf(name),
-                null, null, null
-            )
-            cursor.use {
-                if (it.moveToFirst()) {
-                    it.getStringOrNull(0)
-                } else {
-                    null
-                }
-            }
-        }
+        return messageStore.getExtraString(name)
     }
 
     override fun setExtraString(name: String, value: String) {
-        database.execute(false) { db ->
-            val contentValues = ContentValues().apply {
-                put("name", name)
-                put("value_text", value)
-            }
-            db.insertWithOnConflict("account_extra_values", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE)
-        }
+        messageStore.setExtraString(name, value)
     }
 
     override fun getExtraNumber(name: String): Long? {
-        return database.execute(false) { db ->
-            val cursor = db.query(
-                "account_extra_values",
-                arrayOf("value_integer"),
-                "name = ?",
-                arrayOf(name),
-                null, null, null
-            )
-            cursor.use {
-                if (it.moveToFirst()) {
-                    it.getLongOrNull(0)
-                } else {
-                    null
-                }
-            }
-        }
+        return messageStore.getExtraNumber(name)
     }
 
     override fun setExtraNumber(name: String, value: Long) {
-        database.execute(false) { db ->
-            val contentValues = ContentValues().apply {
-                put("name", name)
-                put("value_integer", value)
-            }
-            db.insertWithOnConflict("account_extra_values", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE)
-        }
+        messageStore.setExtraNumber(name, value)
     }
-
-    private fun Cursor.getLongOrNull(columnIndex: Int): Long? = if (isNull(columnIndex)) null else getLong(columnIndex)
 
     private inner class K9BackendFolderUpdater : BackendFolderUpdater {
         init {
@@ -112,7 +56,7 @@ class K9BackendStorage(
                     settings = folderSettingsProvider.getFolderSettings(folderInfo.serverId)
                 )
             }
-            localStore.createFolders(createFolderInfo)
+            messageStore.createFolders(createFolderInfo)
         }
 
         override fun deleteFolders(folderServerIds: List<String>) {
@@ -122,14 +66,7 @@ class K9BackendStorage(
         }
 
         override fun changeFolder(folderServerId: String, name: String, type: RemoteFolderType) {
-            database.execute(false) { db ->
-                val values = ContentValues().apply {
-                    put("name", name)
-                    put("type", type.toDatabaseFolderType())
-                }
-
-                db.update("folders", values, "server_id = ?", arrayOf(folderServerId))
-            }
+            messageStore.changeFolder(folderServerId, name, type)
         }
 
         override fun close() {

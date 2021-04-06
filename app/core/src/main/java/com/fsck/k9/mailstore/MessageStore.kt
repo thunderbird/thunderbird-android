@@ -3,6 +3,7 @@ package com.fsck.k9.mailstore
 import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderClass
+import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Header
 
 /**
@@ -56,6 +57,11 @@ interface MessageStore {
     fun getHeaders(folderId: Long, messageServerId: String): List<Header>
 
     /**
+     * Create folders.
+     */
+    fun createFolders(folders: List<CreateFolderInfo>)
+
+    /**
      * Retrieve information about a folder.
      *
      * @param mapper A function to map the values read from the store to a domain-specific object.
@@ -84,6 +90,11 @@ interface MessageStore {
     fun getFolderId(folderServerId: String): Long?
 
     /**
+     * Update a folder's name and type.
+     */
+    fun changeFolder(folderServerId: String, name: String, type: FolderType)
+
+    /**
      * Update settings of a single folder.
      */
     fun updateFolderSettings(folderDetails: FolderDetails)
@@ -107,4 +118,26 @@ interface MessageStore {
      * Update the notification class of a folder.
      */
     fun setNotificationClass(folderId: Long, folderClass: FolderClass)
+
+    /**
+     * Retrieve a string property by name.
+     *
+     * For everything that doesn't fit into existing structures this message store offers a generic key/value store.
+     */
+    fun getExtraString(name: String): String?
+
+    /**
+     * Create or update a string property.
+     */
+    fun setExtraString(name: String, value: String)
+
+    /**
+     * Retrieve a number property by name.
+     */
+    fun getExtraNumber(name: String): Long?
+
+    /**
+     * Create or update a number property.
+     */
+    fun setExtraNumber(name: String, value: Long)
 }

@@ -3,7 +3,9 @@ package com.fsck.k9.storage.messages
 import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderClass
+import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Header
+import com.fsck.k9.mailstore.CreateFolderInfo
 import com.fsck.k9.mailstore.FolderDetails
 import com.fsck.k9.mailstore.FolderMapper
 import com.fsck.k9.mailstore.LocalStore
@@ -17,8 +19,10 @@ class K9MessageStore(private val localStore: LocalStore) : MessageStore {
     private val moveMessageOperations = MoveMessageOperations(database, threadMessageOperations)
     private val flagMessageOperations = FlagMessageOperations(database)
     private val retrieveMessageOperations = RetrieveMessageOperations(database)
+    private val createFolderOperations = CreateFolderOperations(database)
     private val retrieveFolderOperations = RetrieveFolderOperations(database)
     private val updateFolderOperations = UpdateFolderOperations(database)
+    private val keyValueStoreOperations = KeyValueStoreOperations(database)
 
     override fun moveMessage(messageId: Long, destinationFolderId: Long): Long {
         return moveMessageOperations.moveMessage(messageId, destinationFolderId).also {
@@ -43,6 +47,10 @@ class K9MessageStore(private val localStore: LocalStore) : MessageStore {
         return retrieveMessageOperations.getHeaders(folderId, messageServerId)
     }
 
+    override fun createFolders(folders: List<CreateFolderInfo>) {
+        createFolderOperations.createFolders(folders)
+    }
+
     override fun <T> getFolder(folderId: Long, mapper: FolderMapper<T>): T? {
         return retrieveFolderOperations.getFolder(folderId, mapper)
     }
@@ -63,6 +71,10 @@ class K9MessageStore(private val localStore: LocalStore) : MessageStore {
         return retrieveFolderOperations.getFolderId(folderServerId)
     }
 
+    override fun changeFolder(folderServerId: String, name: String, type: FolderType) {
+        updateFolderOperations.changeFolder(folderServerId, name, type)
+    }
+
     override fun updateFolderSettings(folderDetails: FolderDetails) {
         updateFolderOperations.updateFolderSettings(folderDetails)
     }
@@ -81,5 +93,21 @@ class K9MessageStore(private val localStore: LocalStore) : MessageStore {
 
     override fun setNotificationClass(folderId: Long, folderClass: FolderClass) {
         updateFolderOperations.setNotificationClass(folderId, folderClass)
+    }
+
+    override fun getExtraString(name: String): String? {
+        return keyValueStoreOperations.getExtraString(name)
+    }
+
+    override fun setExtraString(name: String, value: String) {
+        keyValueStoreOperations.setExtraString(name, value)
+    }
+
+    override fun getExtraNumber(name: String): Long? {
+        return keyValueStoreOperations.getExtraNumber(name)
+    }
+
+    override fun setExtraNumber(name: String, value: Long) {
+        keyValueStoreOperations.setExtraNumber(name, value)
     }
 }

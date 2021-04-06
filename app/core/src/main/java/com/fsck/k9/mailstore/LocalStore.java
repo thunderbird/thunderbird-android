@@ -896,31 +896,6 @@ public class LocalStore {
         public String type;
     }
 
-    public void createFolders(List<CreateFolderInfo> foldersToCreate) throws MessagingException {
-        database.execute(true, (DbCallback<Void>) db -> {
-            for (CreateFolderInfo folderInfo : foldersToCreate) {
-                String databaseFolderType = FolderTypeConverter.toDatabaseFolderType(folderInfo.getType());
-                FolderSettings folderSettings = folderInfo.getSettings();
-
-                ContentValues values = new ContentValues();
-                values.put("name", folderInfo.getName());
-                values.put("visible_limit", folderSettings.getVisibleLimit());
-                values.put("integrate", folderSettings.getIntegrate());
-                values.put("top_group", folderSettings.getInTopGroup());
-                values.put("poll_class", folderSettings.getSyncClass().name());
-                values.put("push_class", folderSettings.getPushClass().name());
-                values.put("display_class", folderSettings.getDisplayClass().name());
-                values.put("notify_class", folderSettings.getNotifyClass().name());
-                values.put("server_id", folderInfo.getServerId());
-                values.put("local_only", false);
-                values.put("type", databaseFolderType);
-
-                db.insert("folders", null, values);
-            }
-            return null;
-        });
-    }
-
     public long createLocalFolder(String folderName, FolderType type) throws MessagingException {
         return database.execute(true, (DbCallback<Long>) db -> {
             ContentValues values = new ContentValues();

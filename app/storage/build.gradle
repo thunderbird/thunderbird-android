@@ -7,6 +7,7 @@ dependencies {
     api "org.koin:koin-core:${versions.koin}"
 
     implementation project(":app:core")
+    implementation "androidx.core:core-ktx:${versions.androidxCore}"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
     implementation "org.apache.james:apache-mime4j-core:${versions.mime4j}"
     implementation "com.squareup.moshi:moshi:${versions.moshi}"
