@@ -789,10 +789,15 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     private void onDiscard() {
         if (draftMessageId != null) {
             messagingController.deleteDraft(account, draftMessageId);
-            draftMessageId = null;
         }
         internalMessageHandler.sendEmptyMessage(MSG_DISCARDED_DRAFT);
+        finishWithoutChanges();
+    }
+
+    private void finishWithoutChanges() {
+        draftMessageId = null;
         changesMadeSinceLastSave = false;
+
         if (navigateUp) {
             openDefaultFolder();
         } else {
@@ -1102,23 +1107,38 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     @Override
     public Dialog onCreateDialog(int id) {
+        final Builder builder;
         switch (id) {
             case DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE:
-                return new AlertDialog.Builder(this)
-                        .setTitle(R.string.save_or_discard_draft_message_dlg_title)
-                        .setMessage(R.string.save_or_discard_draft_message_instructions_fmt)
+                builder = new AlertDialog.Builder(this)
+                        .setTitle(R.string.save_or_discard_draft_message_dlg_title);
+                if (draftMessageId == null) {
+                    builder
+                            .setMessage(R.string.save_or_discard_draft_message_instructions_fmt)
+                            .setNegativeButton(R.string.discard_action, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    dismissDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
+                                    onDiscard();
+                                }
+                            });
+                } else {
+                    builder
+                            .setMessage(R.string.save_or_discard_draft_message_changes)
+                            .setNegativeButton(R.string.discard_action, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    dismissDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
+                                    finishWithoutChanges();
+                                }
+                            });
+                }
+                return builder
                         .setPositiveButton(R.string.save_draft_action, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 dismissDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
                                 checkToSaveDraftAndSave();
-                            }
-                        })
-                        .setNegativeButton(R.string.discard_action, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                dismissDialog(DIALOG_SAVE_OR_DISCARD_DRAFT_MESSAGE);
-                                onDiscard();
                             }
                         })
                         .create();
@@ -1146,7 +1166,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             case DIALOG_CHOOSE_IDENTITY:
                 int dialogThemeResourceId = getThemeManager().getDialogThemeResourceId();
                 Context context = new ContextThemeWrapper(this, dialogThemeResourceId);
-                Builder builder = new AlertDialog.Builder(context);
+                builder = new AlertDialog.Builder(context);
                 builder.setTitle(R.string.send_as);
                 final IdentityAdapter adapter = new IdentityAdapter(context);
                 builder.setAdapter(adapter, new DialogInterface.OnClickListener() {

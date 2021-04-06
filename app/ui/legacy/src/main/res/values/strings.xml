@@ -897,6 +897,7 @@ Please submit bug reports, contribute new features and ask questions at
 
     <string name="save_or_discard_draft_message_dlg_title">Save draft message?</string>
     <string name="save_or_discard_draft_message_instructions_fmt">Save or Discard this message?</string>
+    <string name="save_or_discard_draft_message_changes">Save or Discard changes?</string>
 
     <string name="confirm_discard_draft_message_title">Discard message?</string>
     <string name="confirm_discard_draft_message">Are you sure you want to discard this message?</string>
