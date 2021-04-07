@@ -53,6 +53,10 @@ class K9MessageStore(
         return retrieveMessageOperations.getHeaders(folderId, messageServerId)
     }
 
+    override fun getLastUid(folderId: Long): Long? {
+        return retrieveMessageOperations.getLastUid(folderId)
+    }
+
     override fun createFolders(folders: List<CreateFolderInfo>) {
         createFolderOperations.createFolders(folders)
     }

@@ -18,34 +18,30 @@ class K9BackendFolder(
 ) : BackendFolder {
     private val database = localStore.database
     private val databaseId: String
+    private val folderId: Long
     private val localFolder = localStore.getFolder(folderServerId)
     override val name: String
     override val visibleLimit: Int
 
     init {
-        data class Init(val databaseId: String, val name: String, val visibleLimit: Int)
+        data class Init(val folderId: Long, val name: String, val visibleLimit: Int)
 
         val init = messageStore.getFolder(folderServerId) { folder ->
             Init(
-                databaseId = folder.id.toString(),
+                folderId = folder.id,
                 name = folder.name,
                 visibleLimit = folder.visibleLimit
             )
         } ?: error("Couldn't find folder $folderServerId")
 
-        databaseId = init.databaseId
+        databaseId = init.folderId.toString()
+        folderId = init.folderId
         name = init.name
         visibleLimit = init.visibleLimit
     }
 
     override fun getLastUid(): Long? {
-        return database.rawQuery("SELECT MAX(uid) FROM messages WHERE folder_id = ?", databaseId) { cursor ->
-            if (cursor.moveToFirst()) {
-                cursor.getLongOrNull(0)
-            } else {
-                null
-            }
-        }
+        return messageStore.getLastUid(folderId)
     }
 
     override fun getMessageServerIds(): Set<String> {

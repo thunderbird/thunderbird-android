@@ -57,6 +57,11 @@ interface MessageStore {
     fun getHeaders(folderId: Long, messageServerId: String): List<Header>
 
     /**
+     * Get highest UID (message server ID)
+     */
+    fun getLastUid(folderId: Long): Long?
+
+    /**
      * Create folders.
      */
     fun createFolders(folders: List<CreateFolderInfo>)

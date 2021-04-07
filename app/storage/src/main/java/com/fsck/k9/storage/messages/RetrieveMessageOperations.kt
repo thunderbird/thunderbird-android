@@ -1,5 +1,6 @@
 package com.fsck.k9.storage.messages
 
+import androidx.core.database.getLongOrNull
 import com.fsck.k9.mail.Header
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.internet.MimeHeader
@@ -52,7 +53,6 @@ internal class RetrieveMessageOperations(private val lockableDatabase: LockableD
                         databaseIdToServerIdMapping[databaseId] = serverId
                     }
                 }
-                Unit
             }
 
             databaseIdToServerIdMapping
@@ -77,6 +77,21 @@ internal class RetrieveMessageOperations(private val lockableDatabase: LockableD
                 }
 
                 header.headers
+            }
+        }
+    }
+
+    fun getLastUid(folderId: Long): Long? {
+        return lockableDatabase.execute(false) { database ->
+            database.rawQuery(
+                "SELECT MAX(uid) FROM messages WHERE folder_id = ?",
+                arrayOf(folderId.toString())
+            ).use { cursor ->
+                if (cursor.moveToFirst()) {
+                    cursor.getLongOrNull(0)
+                } else {
+                    null
+                }
             }
         }
     }
