@@ -1451,31 +1451,6 @@ public class LocalFolder {
         });
     }
 
-    public void delete() throws MessagingException {
-        try {
-            this.localStore.getDatabase().execute(false, new DbCallback<Void>() {
-                @Override
-                public Void doDbWork(final SQLiteDatabase db) throws WrappedException, UnavailableStorageException {
-                    try {
-                        // We need to open the folder first to make sure we've got its id
-                        open();
-                        List<LocalMessage> messages = getMessages(null);
-                        for (LocalMessage message : messages) {
-                            deleteMessageDataFromDisk(message.getMessagePartId());
-                        }
-                    } catch (MessagingException e) {
-                        throw new WrappedException(e);
-                    }
-                    db.execSQL("DELETE FROM folders WHERE id = ?", new Object[]
-                               { Long.toString(databaseId), });
-                    return null;
-                }
-            });
-        } catch (WrappedException e) {
-            throw(MessagingException) e.getCause();
-        }
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o instanceof LocalFolder) {

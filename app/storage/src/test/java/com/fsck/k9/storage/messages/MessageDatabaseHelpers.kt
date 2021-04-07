@@ -13,6 +13,7 @@ import com.fsck.k9.storage.K9SchemaDefinitionFactory
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doAnswer
 import com.nhaarman.mockitokotlin2.mock
+import java.io.File
 import org.mockito.ArgumentMatchers
 
 fun createLockableDatabaseMock(sqliteDatabase: SQLiteDatabase): LockableDatabase {
@@ -176,7 +177,8 @@ fun SQLiteDatabase.createMessagePart(
     epilogue: String? = null,
     boundary: String? = null,
     contentId: String? = null,
-    serverExtra: String? = null
+    serverExtra: String? = null,
+    directory: File? = null
 ): Long {
     val values = ContentValues().apply {
         put("type", type)
@@ -198,5 +200,10 @@ fun SQLiteDatabase.createMessagePart(
         put("server_extra", serverExtra)
     }
 
-    return insert("message_parts", null, values)
+    return insert("message_parts", null, values).also { messagePartId ->
+        if (dataLocation == DATA_LOCATION_ON_DISK) {
+            requireNotNull(directory) { "Argument 'directory' can't be null when 'dataLocation = 2'" }
+            File(directory, messagePartId.toString()).createNewFile()
+        }
+    }
 }

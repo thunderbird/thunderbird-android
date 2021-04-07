@@ -120,6 +120,11 @@ interface MessageStore {
     fun setNotificationClass(folderId: Long, folderClass: FolderClass)
 
     /**
+     * Delete folders.
+     */
+    fun deleteFolders(folderServerIds: List<String>)
+
+    /**
      * Retrieve a string property by name.
      *
      * For everything that doesn't fit into existing structures this message store offers a generic key/value store.
