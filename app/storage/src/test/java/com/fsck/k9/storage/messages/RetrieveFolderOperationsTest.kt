@@ -53,6 +53,46 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
     }
 
     @Test
+    fun `get folder by server ID`() {
+        val folderId = sqliteDatabase.createFolder(
+            name = "Folder Name",
+            type = "inbox",
+            serverId = "folder1",
+            isLocalOnly = false,
+            integrate = true,
+            inTopGroup = true,
+            displayClass = "FIRST_CLASS",
+            syncClass = "FIRST_CLASS",
+            notifyClass = "NO_CLASS",
+            pushClass = "NO_CLASS"
+        )
+
+        val result = retrieveFolderOperations.getFolder("folder1") { folder ->
+            assertThat(folder.id).isEqualTo(folderId)
+            assertThat(folder.name).isEqualTo("Folder Name")
+            assertThat(folder.type).isEqualTo(FolderType.INBOX)
+            assertThat(folder.serverId).isEqualTo("folder1")
+            assertThat(folder.isLocalOnly).isEqualTo(false)
+            assertThat(folder.isIntegrate).isEqualTo(true)
+            assertThat(folder.isInTopGroup).isEqualTo(true)
+            assertThat(folder.displayClass).isEqualTo(FolderClass.FIRST_CLASS)
+            assertThat(folder.syncClass).isEqualTo(FolderClass.FIRST_CLASS)
+            assertThat(folder.notifyClass).isEqualTo(FolderClass.NO_CLASS)
+            assertThat(folder.pushClass).isEqualTo(FolderClass.NO_CLASS)
+            true
+        }
+
+        assertThat(result).isTrue()
+    }
+
+    @Test
+    fun `get non-existent folder by server ID should return null`() {
+        val result = retrieveFolderOperations.getFolder("folder_id") { "failed" }
+
+        assertThat(result).isNull()
+    }
+
+    @Test
     fun `get folders should return all fields`() {
         val folderId = sqliteDatabase.createFolder(
             name = "Folder Name",

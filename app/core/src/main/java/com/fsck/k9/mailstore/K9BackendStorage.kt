@@ -13,7 +13,7 @@ class K9BackendStorage(
     private val listeners: List<BackendFoldersRefreshListener>
 ) : BackendStorage {
     override fun getFolder(folderServerId: String): BackendFolder {
-        return K9BackendFolder(localStore, folderServerId)
+        return K9BackendFolder(localStore, messageStore, folderServerId)
     }
 
     override fun getFolderServerIds(): List<String> {

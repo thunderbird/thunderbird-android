@@ -61,6 +61,10 @@ class K9MessageStore(
         return retrieveFolderOperations.getFolder(folderId, mapper)
     }
 
+    override fun <T> getFolder(folderServerId: String, mapper: FolderMapper<T>): T? {
+        return retrieveFolderOperations.getFolder(folderServerId, mapper)
+    }
+
     override fun <T> getFolders(excludeLocalOnly: Boolean, mapper: FolderMapper<T>): List<T> {
         return retrieveFolderOperations.getFolders(excludeLocalOnly, mapper)
     }

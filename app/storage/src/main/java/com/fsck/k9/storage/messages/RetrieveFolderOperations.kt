@@ -12,12 +12,28 @@ import com.fsck.k9.mailstore.toFolderType
 
 internal class RetrieveFolderOperations(private val lockableDatabase: LockableDatabase) {
     fun <T> getFolder(folderId: Long, mapper: FolderMapper<T>): T? {
+        return getFolder(
+            selection = "id = ?",
+            selectionArguments = arrayOf(folderId.toString()),
+            mapper = mapper
+        )
+    }
+
+    fun <T> getFolder(folderServerId: String, mapper: FolderMapper<T>): T? {
+        return getFolder(
+            selection = "server_id = ?",
+            selectionArguments = arrayOf(folderServerId),
+            mapper = mapper
+        )
+    }
+
+    private fun <T> getFolder(selection: String, selectionArguments: Array<String>, mapper: FolderMapper<T>): T? {
         return lockableDatabase.execute(false) { db ->
             db.query(
                 "folders",
                 FOLDER_COLUMNS,
-                "id = ?",
-                arrayOf(folderId.toString()),
+                selection,
+                selectionArguments,
                 null,
                 null,
                 null
@@ -142,8 +158,11 @@ private class CursorFolderAccessor(val cursor: Cursor) : FolderDetailsAccessor {
     override val pushClass: FolderClass
         get() = FolderClass.valueOf(cursor.getString(10))
 
-    override val messageCount: Int
+    override val visibleLimit: Int
         get() = cursor.getInt(11)
+
+    override val messageCount: Int
+        get() = cursor.getInt(12)
 }
 
 private val FOLDER_COLUMNS = arrayOf(
@@ -157,5 +176,6 @@ private val FOLDER_COLUMNS = arrayOf(
     "poll_class",
     "display_class",
     "notify_class",
-    "push_class"
+    "push_class",
+    "visible_limit"
 )

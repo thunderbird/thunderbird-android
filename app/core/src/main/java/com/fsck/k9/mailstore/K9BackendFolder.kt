@@ -13,6 +13,7 @@ import java.util.Date
 
 class K9BackendFolder(
     private val localStore: LocalStore,
+    private val messageStore: MessageStore,
     private val folderServerId: String
 ) : BackendFolder {
     private val database = localStore.database
@@ -24,22 +25,13 @@ class K9BackendFolder(
     init {
         data class Init(val databaseId: String, val name: String, val visibleLimit: Int)
 
-        val init = database.query(
-            "folders",
-            arrayOf("id", "name", "visible_limit"),
-            "server_id = ?",
-            folderServerId
-        ) { cursor ->
-            if (cursor.moveToFirst()) {
-                Init(
-                    databaseId = cursor.getString(0),
-                    name = cursor.getString(1),
-                    visibleLimit = cursor.getInt(2)
-                )
-            } else {
-                throw IllegalStateException("Couldn't find folder $folderServerId")
-            }
-        }
+        val init = messageStore.getFolder(folderServerId) { folder ->
+            Init(
+                databaseId = folder.id.toString(),
+                name = folder.name,
+                visibleLimit = folder.visibleLimit
+            )
+        } ?: error("Couldn't find folder $folderServerId")
 
         databaseId = init.databaseId
         name = init.name
