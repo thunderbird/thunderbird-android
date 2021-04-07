@@ -49,6 +49,10 @@ class K9MessageStore(
         return retrieveMessageOperations.getMessageServerIds(messageIds)
     }
 
+    override fun getMessageServerIds(folderId: Long): Set<String> {
+        return retrieveMessageOperations.getMessageServerIds(folderId)
+    }
+
     override fun getHeaders(folderId: Long, messageServerId: String): List<Header> {
         return retrieveMessageOperations.getHeaders(folderId, messageServerId)
     }

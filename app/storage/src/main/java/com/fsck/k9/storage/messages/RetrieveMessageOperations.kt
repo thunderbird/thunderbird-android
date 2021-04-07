@@ -1,6 +1,7 @@
 package com.fsck.k9.storage.messages
 
 import androidx.core.database.getLongOrNull
+import com.fsck.k9.K9
 import com.fsck.k9.mail.Header
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.internet.MimeHeader
@@ -56,6 +57,23 @@ internal class RetrieveMessageOperations(private val lockableDatabase: LockableD
             }
 
             databaseIdToServerIdMapping
+        }
+    }
+
+    fun getMessageServerIds(folderId: Long): Set<String> {
+        return lockableDatabase.execute(false) { database ->
+            database.rawQuery(
+                "SELECT uid FROM messages" +
+                    " WHERE empty = 0 AND deleted = 0 AND folder_id = ? AND uid NOT LIKE '${K9.LOCAL_UID_PREFIX}%'",
+                arrayOf(folderId.toString())
+            ).use { cursor ->
+                val result = mutableSetOf<String>()
+                while (cursor.moveToNext()) {
+                    val uid = cursor.getString(0)
+                    result.add(uid)
+                }
+                result
+            }
         }
     }
 

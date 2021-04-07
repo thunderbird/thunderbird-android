@@ -49,6 +49,18 @@ class RetrieveMessageOperationsTest : RobolectricTest() {
     }
 
     @Test
+    fun `get all message server ids`() {
+        sqliteDatabase.createMessage(folderId = 1, uid = "uid1")
+        sqliteDatabase.createMessage(folderId = 1, uid = "K9LOCAL:1")
+        sqliteDatabase.createMessage(folderId = 1, uid = "uid3")
+        sqliteDatabase.createMessage(folderId = 1, uid = "uid4")
+
+        val messageServerIds = retrieveMessageOperations.getMessageServerIds(folderId = 1)
+
+        assertThat(messageServerIds).isEqualTo(setOf("uid1", "uid3", "uid4"))
+    }
+
+    @Test
     fun `get headers`() {
         val messagePartId = sqliteDatabase.createMessagePart(
             header = """

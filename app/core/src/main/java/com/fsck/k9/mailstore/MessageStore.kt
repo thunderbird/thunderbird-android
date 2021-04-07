@@ -52,6 +52,11 @@ interface MessageStore {
     fun getMessageServerIds(messageIds: Collection<Long>): Map<Long, String>
 
     /**
+     * Retrieve server IDs for all remote messages in the given folder.
+     */
+    fun getMessageServerIds(folderId: Long): Set<String>
+
+    /**
      * Retrieve the header fields of a message.
      */
     fun getHeaders(folderId: Long, messageServerId: String): List<Header>
