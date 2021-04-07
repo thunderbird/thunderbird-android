@@ -4,7 +4,6 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,7 +28,7 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.drag.ItemTouchCallback
 import com.mikepenz.fastadapter.drag.SimpleDragCallback
 import com.mikepenz.fastadapter.utils.DragDropUtil
-import kotlinx.android.synthetic.main.account_list_item.view.*
+import kotlin.math.abs
 import kotlinx.android.synthetic.main.fragment_settings_list.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -239,10 +238,20 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
     }
 
     override fun itemTouchDropped(oldPosition: Int, newPosition: Int) {
-        // Save the new item order, e.g. in your database
+        // Persist the new account order
         val preferences = Preferences.getPreferences(context)
         val moveUp = oldPosition <= newPosition
-        val accountItem = itemAdapter.getAdapterItem(oldPosition) as AccountItem
-        preferences.move(accountItem.account, moveUp)
+        var rowsToMove = abs(newPosition - oldPosition)
+        var prevPos = oldPosition
+        while (rowsToMove > 0){
+            val accountItem = itemAdapter.getAdapterItem(prevPos) as AccountItem
+            preferences.move(accountItem.account, moveUp)
+            if (moveUp){
+                prevPos++
+            } else {
+                prevPos--
+            }
+            rowsToMove--
+        }
     }
 }
