@@ -53,6 +53,10 @@ class K9MessageStore(
         return retrieveMessageOperations.getMessageServerIds(folderId)
     }
 
+    override fun getAllMessagesAndEffectiveDates(folderId: Long): Map<String, Long?> {
+        return retrieveMessageOperations.getAllMessagesAndEffectiveDates(folderId)
+    }
+
     override fun getHeaders(folderId: Long, messageServerId: String): List<Header> {
         return retrieveMessageOperations.getHeaders(folderId, messageServerId)
     }

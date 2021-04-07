@@ -61,6 +61,23 @@ class RetrieveMessageOperationsTest : RobolectricTest() {
     }
 
     @Test
+    fun `get all message server ids and dates`() {
+        sqliteDatabase.createMessage(folderId = 1, uid = "uid1", date = 23)
+        sqliteDatabase.createMessage(folderId = 1, uid = "K9LOCAL:1")
+        sqliteDatabase.createMessage(folderId = 1, uid = "uid3", date = 42)
+        sqliteDatabase.createMessage(folderId = 1, uid = "uid4", deleted = true)
+
+        val result = retrieveMessageOperations.getAllMessagesAndEffectiveDates(folderId = 1)
+
+        assertThat(result).isEqualTo(
+            mapOf(
+                "uid1" to 23L,
+                "uid3" to 42L
+            )
+        )
+    }
+
+    @Test
     fun `get headers`() {
         val messagePartId = sqliteDatabase.createMessagePart(
             header = """

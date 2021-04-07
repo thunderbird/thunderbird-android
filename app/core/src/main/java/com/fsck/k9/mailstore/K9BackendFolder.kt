@@ -4,7 +4,6 @@ import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import androidx.core.database.getLongOrNull
 import androidx.core.database.getStringOrNull
-import com.fsck.k9.K9
 import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendFolder.MoreMessages
 import com.fsck.k9.mail.Flag
@@ -49,20 +48,7 @@ class K9BackendFolder(
     }
 
     override fun getAllMessagesAndEffectiveDates(): Map<String, Long?> {
-        return database.rawQuery(
-            "SELECT uid, date FROM messages" +
-                " WHERE empty = 0 AND deleted = 0 AND folder_id = ? AND uid NOT LIKE '${K9.LOCAL_UID_PREFIX}%'" +
-                " ORDER BY date DESC",
-            databaseId
-        ) { cursor ->
-            val result = mutableMapOf<String, Long?>()
-            while (cursor.moveToNext()) {
-                val uid = cursor.getString(0)
-                val date = cursor.getLongOrNull(1)
-                result[uid] = date
-            }
-            result
-        }
+        return messageStore.getAllMessagesAndEffectiveDates(folderId)
     }
 
     // TODO: Move implementation from LocalFolder to this class

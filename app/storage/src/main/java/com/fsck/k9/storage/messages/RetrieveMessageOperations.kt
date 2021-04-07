@@ -77,6 +77,24 @@ internal class RetrieveMessageOperations(private val lockableDatabase: LockableD
         }
     }
 
+    fun getAllMessagesAndEffectiveDates(folderId: Long): Map<String, Long?> {
+        return lockableDatabase.execute(false) { database ->
+            database.rawQuery(
+                "SELECT uid, date FROM messages" +
+                    " WHERE empty = 0 AND deleted = 0 AND folder_id = ? AND uid NOT LIKE '${K9.LOCAL_UID_PREFIX}%'",
+                arrayOf(folderId.toString())
+            ).use { cursor ->
+                val result = mutableMapOf<String, Long?>()
+                while (cursor.moveToNext()) {
+                    val uid = cursor.getString(0)
+                    val date = cursor.getLongOrNull(1)
+                    result[uid] = date
+                }
+                result
+            }
+        }
+    }
+
     fun getHeaders(folderId: Long, messageServerId: String): List<Header> {
         return lockableDatabase.execute(false) { database ->
             database.rawQuery(
