@@ -11,6 +11,7 @@ import com.fsck.k9.mailstore.FolderMapper
 import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.MessageStore
+import com.fsck.k9.mailstore.MoreMessages
 import com.fsck.k9.mailstore.StorageManager
 
 // TODO: Remove dependency on LocalStore
@@ -122,6 +123,10 @@ class K9MessageStore(
 
     override fun setNotificationClass(folderId: Long, folderClass: FolderClass) {
         updateFolderOperations.setNotificationClass(folderId, folderClass)
+    }
+
+    override fun setMoreMessages(folderId: Long, moreMessages: MoreMessages) {
+        updateFolderOperations.setMoreMessages(folderId, moreMessages)
     }
 
     override fun deleteFolders(folderServerIds: List<String>) {

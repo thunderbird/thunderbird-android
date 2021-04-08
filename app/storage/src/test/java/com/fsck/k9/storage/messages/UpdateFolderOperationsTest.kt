@@ -4,6 +4,7 @@ import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mailstore.Folder
 import com.fsck.k9.mailstore.FolderDetails
 import com.fsck.k9.mailstore.FolderType
+import com.fsck.k9.mailstore.MoreMessages
 import com.fsck.k9.storage.RobolectricTest
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
@@ -106,5 +107,16 @@ class UpdateFolderOperationsTest : RobolectricTest() {
         val folder = sqliteDatabase.readFolders().first()
         assertThat(folder.id).isEqualTo(folderId)
         assertThat(folder.notifyClass).isEqualTo("INHERITED")
+    }
+
+    @Test
+    fun `update more messages state`() {
+        val folderId = sqliteDatabase.createFolder(moreMessages = "unknown")
+
+        updateFolderOperations.setMoreMessages(folderId = folderId, moreMessages = MoreMessages.TRUE)
+
+        val folder = sqliteDatabase.readFolders().first()
+        assertThat(folder.id).isEqualTo(folderId)
+        assertThat(folder.moreMessages).isEqualTo("true")
     }
 }

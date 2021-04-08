@@ -68,7 +68,7 @@ class K9BackendFolder(
     }
 
     override fun setMoreMessages(moreMessages: MoreMessages) {
-        database.setString(column = "more_messages", value = moreMessages.toDatabaseValue())
+        messageStore.setMoreMessages(folderId, moreMessages.toStoreMoreMessages())
     }
 
     override fun setLastChecked(timestamp: Long) {
@@ -338,10 +338,10 @@ class K9BackendFolder(
         StoreMoreMessages.TRUE -> MoreMessages.TRUE
     }
 
-    private fun MoreMessages.toDatabaseValue(): String = when (this) {
-        MoreMessages.UNKNOWN -> "unknown"
-        MoreMessages.FALSE -> "false"
-        MoreMessages.TRUE -> "true"
+    private fun MoreMessages.toStoreMoreMessages(): StoreMoreMessages = when (this) {
+        MoreMessages.UNKNOWN -> StoreMoreMessages.UNKNOWN
+        MoreMessages.FALSE -> StoreMoreMessages.FALSE
+        MoreMessages.TRUE -> StoreMoreMessages.TRUE
     }
 
     private fun requireMessageServerId(message: Message) {

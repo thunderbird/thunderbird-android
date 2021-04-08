@@ -148,6 +148,11 @@ interface MessageStore {
     fun setNotificationClass(folderId: Long, folderClass: FolderClass)
 
     /**
+     * Update the 'more messages' state of a folder.
+     */
+    fun setMoreMessages(folderId: Long, moreMessages: MoreMessages)
+
+    /**
      * Delete folders.
      */
     fun deleteFolders(folderServerIds: List<String>)
