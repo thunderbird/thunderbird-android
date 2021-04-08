@@ -130,4 +130,15 @@ class UpdateFolderOperationsTest : RobolectricTest() {
         assertThat(folder.id).isEqualTo(folderId)
         assertThat(folder.lastUpdated).isEqualTo(42)
     }
+
+    @Test
+    fun `update folder status`() {
+        val folderId = sqliteDatabase.createFolder(status = null)
+
+        updateFolderOperations.setStatus(folderId = folderId, status = "Sync error")
+
+        val folder = sqliteDatabase.readFolders().first()
+        assertThat(folder.id).isEqualTo(folderId)
+        assertThat(folder.status).isEqualTo("Sync error")
+    }
 }

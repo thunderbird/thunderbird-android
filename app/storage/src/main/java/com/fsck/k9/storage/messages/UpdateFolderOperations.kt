@@ -61,20 +61,28 @@ internal class UpdateFolderOperations(private val lockableDatabase: LockableData
         setString(folderId = folderId, columnName = "more_messages", value = moreMessages.databaseName)
     }
 
-    private fun setString(folderId: Long, columnName: String, value: String) {
+    fun setLastUpdated(folderId: Long, timestamp: Long) {
         lockableDatabase.execute(false) { db ->
             val contentValues = ContentValues().apply {
-                put(columnName, value)
+                put("last_updated", timestamp)
             }
 
             db.update("folders", contentValues, "id = ?", arrayOf(folderId.toString()))
         }
     }
 
-    fun setLastUpdated(folderId: Long, timestamp: Long) {
+    fun setStatus(folderId: Long, status: String?) {
+        setString(folderId = folderId, columnName = "status", value = status)
+    }
+
+    private fun setString(folderId: Long, columnName: String, value: String?) {
         lockableDatabase.execute(false) { db ->
             val contentValues = ContentValues().apply {
-                put("last_updated", timestamp)
+                if (value == null) {
+                    putNull(columnName)
+                } else {
+                    put(columnName, value)
+                }
             }
 
             db.update("folders", contentValues, "id = ?", arrayOf(folderId.toString()))

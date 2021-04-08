@@ -76,7 +76,7 @@ class K9BackendFolder(
     }
 
     override fun setStatus(status: String?) {
-        database.setString(column = "status", value = status)
+        messageStore.setStatus(folderId, status)
     }
 
     override fun isMessagePresent(messageServerId: String): Boolean {

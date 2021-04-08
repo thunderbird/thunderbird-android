@@ -133,6 +133,10 @@ class K9MessageStore(
         updateFolderOperations.setLastUpdated(folderId, timestamp)
     }
 
+    override fun setStatus(folderId: Long, status: String?) {
+        updateFolderOperations.setStatus(folderId, status)
+    }
+
     override fun deleteFolders(folderServerIds: List<String>) {
         deleteFolderOperations.deleteFolders(folderServerIds)
     }

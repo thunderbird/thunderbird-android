@@ -158,6 +158,11 @@ interface MessageStore {
     fun setLastUpdated(folderId: Long, timestamp: Long)
 
     /**
+     * Update folder status message.
+     */
+    fun setStatus(folderId: Long, status: String?)
+
+    /**
      * Delete folders.
      */
     fun deleteFolders(folderServerIds: List<String>)
