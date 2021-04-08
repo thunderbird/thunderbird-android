@@ -9,6 +9,7 @@ import com.fsck.k9.backend.api.BackendFolder.MoreMessages
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
 import java.util.Date
+import com.fsck.k9.mailstore.MoreMessages as StoreMoreMessages
 
 class K9BackendFolder(
     private val localStore: LocalStore,
@@ -61,8 +62,9 @@ class K9BackendFolder(
     }
 
     override fun getMoreMessages(): MoreMessages {
-        val moreMessages = database.getString(column = "more_messages") ?: "unknown"
-        return moreMessages.toMoreMessages()
+        return messageStore.getFolder(folderId) { folder ->
+            folder.moreMessages.toMoreMessages()
+        } ?: MoreMessages.UNKNOWN
     }
 
     override fun setMoreMessages(moreMessages: MoreMessages) {
@@ -330,11 +332,10 @@ class K9BackendFolder(
         }
     }
 
-    private fun String.toMoreMessages(): MoreMessages = when (this) {
-        "unknown" -> MoreMessages.UNKNOWN
-        "false" -> MoreMessages.FALSE
-        "true" -> MoreMessages.TRUE
-        else -> throw AssertionError("Unknown value for MoreMessages: $this")
+    private fun StoreMoreMessages.toMoreMessages(): MoreMessages = when (this) {
+        StoreMoreMessages.UNKNOWN -> MoreMessages.UNKNOWN
+        StoreMoreMessages.FALSE -> MoreMessages.FALSE
+        StoreMoreMessages.TRUE -> MoreMessages.TRUE
     }
 
     private fun MoreMessages.toDatabaseValue(): String = when (this) {
