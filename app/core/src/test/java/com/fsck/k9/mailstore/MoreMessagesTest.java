@@ -1,7 +1,6 @@
 package com.fsck.k9.mailstore;
 
 
-import com.fsck.k9.mailstore.LocalFolder.MoreMessages;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
