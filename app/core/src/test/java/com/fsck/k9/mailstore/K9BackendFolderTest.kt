@@ -126,7 +126,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
         val folderServerIds = backendStorage.getFolderServerIds()
         assertTrue(FOLDER_SERVER_ID in folderServerIds)
 
-        return K9BackendFolder(localStore, FOLDER_SERVER_ID)
+        return K9BackendFolder(localStore, messageStore, FOLDER_SERVER_ID)
     }
 
     fun createMessageInBackendFolder(messageServerId: String, flags: Set<Flag> = emptySet()) {

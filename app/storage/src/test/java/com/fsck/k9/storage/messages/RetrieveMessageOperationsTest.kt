@@ -49,6 +49,35 @@ class RetrieveMessageOperationsTest : RobolectricTest() {
     }
 
     @Test
+    fun `get all message server ids`() {
+        sqliteDatabase.createMessage(folderId = 1, uid = "uid1")
+        sqliteDatabase.createMessage(folderId = 1, uid = "K9LOCAL:1")
+        sqliteDatabase.createMessage(folderId = 1, uid = "uid3")
+        sqliteDatabase.createMessage(folderId = 1, uid = "uid4")
+
+        val messageServerIds = retrieveMessageOperations.getMessageServerIds(folderId = 1)
+
+        assertThat(messageServerIds).isEqualTo(setOf("uid1", "uid3", "uid4"))
+    }
+
+    @Test
+    fun `get all message server ids and dates`() {
+        sqliteDatabase.createMessage(folderId = 1, uid = "uid1", date = 23)
+        sqliteDatabase.createMessage(folderId = 1, uid = "K9LOCAL:1")
+        sqliteDatabase.createMessage(folderId = 1, uid = "uid3", date = 42)
+        sqliteDatabase.createMessage(folderId = 1, uid = "uid4", deleted = true)
+
+        val result = retrieveMessageOperations.getAllMessagesAndEffectiveDates(folderId = 1)
+
+        assertThat(result).isEqualTo(
+            mapOf(
+                "uid1" to 23L,
+                "uid3" to 42L
+            )
+        )
+    }
+
+    @Test
     fun `get headers`() {
         val messagePartId = sqliteDatabase.createMessagePart(
             header = """
@@ -72,5 +101,26 @@ class RetrieveMessageOperationsTest : RobolectricTest() {
                 Header("Message-Id", "<20210401012345.123456789A@domain.example>")
             )
         )
+    }
+
+    @Test
+    fun `get highest message uid`() {
+        val folderId = sqliteDatabase.createFolder()
+        sqliteDatabase.createMessage(uid = "42", folderId = folderId)
+        sqliteDatabase.createMessage(uid = "23", folderId = folderId)
+        sqliteDatabase.createMessage(uid = "27", folderId = folderId)
+
+        val highestUid = retrieveMessageOperations.getLastUid(folderId)
+
+        assertThat(highestUid).isEqualTo(42)
+    }
+
+    @Test
+    fun `get highest message uid should return null if there are no messages`() {
+        val folderId = sqliteDatabase.createFolder()
+
+        val highestUid = retrieveMessageOperations.getLastUid(folderId)
+
+        assertThat(highestUid).isNull()
     }
 }

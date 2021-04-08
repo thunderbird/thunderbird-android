@@ -1,5 +1,7 @@
 package com.fsck.k9.storage.messages
 
+import androidx.core.database.getLongOrNull
+import com.fsck.k9.K9
 import com.fsck.k9.mail.Header
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.internet.MimeHeader
@@ -52,10 +54,44 @@ internal class RetrieveMessageOperations(private val lockableDatabase: LockableD
                         databaseIdToServerIdMapping[databaseId] = serverId
                     }
                 }
-                Unit
             }
 
             databaseIdToServerIdMapping
+        }
+    }
+
+    fun getMessageServerIds(folderId: Long): Set<String> {
+        return lockableDatabase.execute(false) { database ->
+            database.rawQuery(
+                "SELECT uid FROM messages" +
+                    " WHERE empty = 0 AND deleted = 0 AND folder_id = ? AND uid NOT LIKE '${K9.LOCAL_UID_PREFIX}%'",
+                arrayOf(folderId.toString())
+            ).use { cursor ->
+                val result = mutableSetOf<String>()
+                while (cursor.moveToNext()) {
+                    val uid = cursor.getString(0)
+                    result.add(uid)
+                }
+                result
+            }
+        }
+    }
+
+    fun getAllMessagesAndEffectiveDates(folderId: Long): Map<String, Long?> {
+        return lockableDatabase.execute(false) { database ->
+            database.rawQuery(
+                "SELECT uid, date FROM messages" +
+                    " WHERE empty = 0 AND deleted = 0 AND folder_id = ? AND uid NOT LIKE '${K9.LOCAL_UID_PREFIX}%'",
+                arrayOf(folderId.toString())
+            ).use { cursor ->
+                val result = mutableMapOf<String, Long?>()
+                while (cursor.moveToNext()) {
+                    val uid = cursor.getString(0)
+                    val date = cursor.getLongOrNull(1)
+                    result[uid] = date
+                }
+                result
+            }
         }
     }
 
@@ -77,6 +113,21 @@ internal class RetrieveMessageOperations(private val lockableDatabase: LockableD
                 }
 
                 header.headers
+            }
+        }
+    }
+
+    fun getLastUid(folderId: Long): Long? {
+        return lockableDatabase.execute(false) { database ->
+            database.rawQuery(
+                "SELECT MAX(uid) FROM messages WHERE folder_id = ?",
+                arrayOf(folderId.toString())
+            ).use { cursor ->
+                if (cursor.moveToFirst()) {
+                    cursor.getLongOrNull(0)
+                } else {
+                    null
+                }
             }
         }
     }

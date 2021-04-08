@@ -49,8 +49,20 @@ class K9MessageStore(
         return retrieveMessageOperations.getMessageServerIds(messageIds)
     }
 
+    override fun getMessageServerIds(folderId: Long): Set<String> {
+        return retrieveMessageOperations.getMessageServerIds(folderId)
+    }
+
+    override fun getAllMessagesAndEffectiveDates(folderId: Long): Map<String, Long?> {
+        return retrieveMessageOperations.getAllMessagesAndEffectiveDates(folderId)
+    }
+
     override fun getHeaders(folderId: Long, messageServerId: String): List<Header> {
         return retrieveMessageOperations.getHeaders(folderId, messageServerId)
+    }
+
+    override fun getLastUid(folderId: Long): Long? {
+        return retrieveMessageOperations.getLastUid(folderId)
     }
 
     override fun createFolders(folders: List<CreateFolderInfo>) {
@@ -59,6 +71,10 @@ class K9MessageStore(
 
     override fun <T> getFolder(folderId: Long, mapper: FolderMapper<T>): T? {
         return retrieveFolderOperations.getFolder(folderId, mapper)
+    }
+
+    override fun <T> getFolder(folderServerId: String, mapper: FolderMapper<T>): T? {
+        return retrieveFolderOperations.getFolder(folderServerId, mapper)
     }
 
     override fun <T> getFolders(excludeLocalOnly: Boolean, mapper: FolderMapper<T>): List<T> {

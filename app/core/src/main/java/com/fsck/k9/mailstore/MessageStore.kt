@@ -52,9 +52,24 @@ interface MessageStore {
     fun getMessageServerIds(messageIds: Collection<Long>): Map<Long, String>
 
     /**
+     * Retrieve server IDs for all remote messages in the given folder.
+     */
+    fun getMessageServerIds(folderId: Long): Set<String>
+
+    /**
+     * Retrieve server IDs and dates for all remote messages in the given folder.
+     */
+    fun getAllMessagesAndEffectiveDates(folderId: Long): Map<String, Long?>
+
+    /**
      * Retrieve the header fields of a message.
      */
     fun getHeaders(folderId: Long, messageServerId: String): List<Header>
+
+    /**
+     * Get highest UID (message server ID)
+     */
+    fun getLastUid(folderId: Long): Long?
 
     /**
      * Create folders.
@@ -68,6 +83,14 @@ interface MessageStore {
      * @return The value returned by [mapper] or `null` if the folder wasn't found.
      */
     fun <T> getFolder(folderId: Long, mapper: FolderMapper<T>): T?
+
+    /**
+     * Retrieve information about a folder.
+     *
+     * @param mapper A function to map the values read from the store to a domain-specific object.
+     * @return The value returned by [mapper] or `null` if the folder wasn't found.
+     */
+    fun <T> getFolder(folderServerId: String, mapper: FolderMapper<T>): T?
 
     /**
      * Retrieve folders.

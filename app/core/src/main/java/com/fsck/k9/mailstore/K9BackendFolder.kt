@@ -4,7 +4,6 @@ import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import androidx.core.database.getLongOrNull
 import androidx.core.database.getStringOrNull
-import com.fsck.k9.K9
 import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendFolder.MoreMessages
 import com.fsck.k9.mail.Flag
@@ -13,80 +12,43 @@ import java.util.Date
 
 class K9BackendFolder(
     private val localStore: LocalStore,
+    private val messageStore: MessageStore,
     private val folderServerId: String
 ) : BackendFolder {
     private val database = localStore.database
     private val databaseId: String
+    private val folderId: Long
     private val localFolder = localStore.getFolder(folderServerId)
     override val name: String
     override val visibleLimit: Int
 
     init {
-        data class Init(val databaseId: String, val name: String, val visibleLimit: Int)
+        data class Init(val folderId: Long, val name: String, val visibleLimit: Int)
 
-        val init = database.query(
-            "folders",
-            arrayOf("id", "name", "visible_limit"),
-            "server_id = ?",
-            folderServerId
-        ) { cursor ->
-            if (cursor.moveToFirst()) {
-                Init(
-                    databaseId = cursor.getString(0),
-                    name = cursor.getString(1),
-                    visibleLimit = cursor.getInt(2)
-                )
-            } else {
-                throw IllegalStateException("Couldn't find folder $folderServerId")
-            }
-        }
+        val init = messageStore.getFolder(folderServerId) { folder ->
+            Init(
+                folderId = folder.id,
+                name = folder.name,
+                visibleLimit = folder.visibleLimit
+            )
+        } ?: error("Couldn't find folder $folderServerId")
 
-        databaseId = init.databaseId
+        databaseId = init.folderId.toString()
+        folderId = init.folderId
         name = init.name
         visibleLimit = init.visibleLimit
     }
 
     override fun getLastUid(): Long? {
-        return database.rawQuery("SELECT MAX(uid) FROM messages WHERE folder_id = ?", databaseId) { cursor ->
-            if (cursor.moveToFirst()) {
-                cursor.getLongOrNull(0)
-            } else {
-                null
-            }
-        }
+        return messageStore.getLastUid(folderId)
     }
 
     override fun getMessageServerIds(): Set<String> {
-        return database.rawQuery(
-            "SELECT uid FROM messages" +
-                " WHERE empty = 0 AND deleted = 0 AND folder_id = ? AND uid NOT LIKE '${K9.LOCAL_UID_PREFIX}%'" +
-                " ORDER BY date DESC",
-            databaseId
-        ) { cursor ->
-            val result = mutableSetOf<String>()
-            while (cursor.moveToNext()) {
-                val uid = cursor.getString(0)
-                result.add(uid)
-            }
-            result
-        }
+        return messageStore.getMessageServerIds(folderId)
     }
 
     override fun getAllMessagesAndEffectiveDates(): Map<String, Long?> {
-        return database.rawQuery(
-            "SELECT uid, date FROM messages" +
-                " WHERE empty = 0 AND deleted = 0 AND folder_id = ? AND uid NOT LIKE '${K9.LOCAL_UID_PREFIX}%'" +
-                " ORDER BY date DESC",
-            databaseId
-        ) { cursor ->
-            val result = mutableMapOf<String, Long?>()
-            while (cursor.moveToNext()) {
-                val uid = cursor.getString(0)
-                val date = cursor.getLongOrNull(1)
-                result[uid] = date
-            }
-            result
-        }
+        return messageStore.getAllMessagesAndEffectiveDates(folderId)
     }
 
     // TODO: Move implementation from LocalFolder to this class
