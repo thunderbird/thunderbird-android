@@ -24,5 +24,6 @@ object Migrations {
         if (oldVersion < 76) MigrationTo76(db, migrationsHelper).cleanUpSpecialLocalFolders()
         // 77: No longer necessary
         if (oldVersion < 78) MigrationTo78(db).removeServerIdFromLocalFolders()
+        if (oldVersion < 79) MigrationTo79(db).updateDeleteMessageTrigger()
     }
 }

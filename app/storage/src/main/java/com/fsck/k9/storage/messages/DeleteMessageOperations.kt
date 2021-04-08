@@ -146,9 +146,6 @@ internal class DeleteMessageOperations(
 
     private fun SQLiteDatabase.deleteMessageRow(messageId: Long) {
         delete("messages", "id = ?", arrayOf(messageId.toString()))
-
-        // TODO: create trigger for 'messages' table to get rid of the row in 'threads' table
-        delete("threads", "message_id = ?", arrayOf(messageId.toString()))
     }
 
     private fun SQLiteDatabase.hasThreadChildren(messageId: Long): Boolean {

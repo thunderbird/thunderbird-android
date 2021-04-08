@@ -1587,23 +1587,8 @@ public class LocalFolder {
         }
     }
 
-    /**
-     * Delete a message from the 'messages' and 'threads' tables.
-     *
-     * @param db
-     *         {@link SQLiteDatabase} instance to access the database.
-     * @param messageId
-     *         The database ID of the message to delete.
-     */
     private void deleteMessageRow(SQLiteDatabase db, long messageId) {
-        String[] idArg = { Long.toString(messageId) };
-
-        // Delete the message
-        db.delete("messages", "id = ?", idArg);
-
-        // Delete row in 'threads' table
-        // TODO: create trigger for 'messages' table to get rid of the row in 'threads' table
-        db.delete("threads", "message_id = ?", idArg);
+        db.delete("messages", "id = ?", new String[] { Long.toString(messageId) });
     }
 
     void deleteFulltextIndexEntry(SQLiteDatabase db, long messageId) {
