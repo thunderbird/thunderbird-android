@@ -119,4 +119,15 @@ class UpdateFolderOperationsTest : RobolectricTest() {
         assertThat(folder.id).isEqualTo(folderId)
         assertThat(folder.moreMessages).isEqualTo("true")
     }
+
+    @Test
+    fun `update late updated state`() {
+        val folderId = sqliteDatabase.createFolder(lastUpdated = 23)
+
+        updateFolderOperations.setLastUpdated(folderId = folderId, timestamp = 42)
+
+        val folder = sqliteDatabase.readFolders().first()
+        assertThat(folder.id).isEqualTo(folderId)
+        assertThat(folder.lastUpdated).isEqualTo(42)
+    }
 }

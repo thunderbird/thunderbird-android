@@ -70,4 +70,14 @@ internal class UpdateFolderOperations(private val lockableDatabase: LockableData
             db.update("folders", contentValues, "id = ?", arrayOf(folderId.toString()))
         }
     }
+
+    fun setLastUpdated(folderId: Long, timestamp: Long) {
+        lockableDatabase.execute(false) { db ->
+            val contentValues = ContentValues().apply {
+                put("last_updated", timestamp)
+            }
+
+            db.update("folders", contentValues, "id = ?", arrayOf(folderId.toString()))
+        }
+    }
 }

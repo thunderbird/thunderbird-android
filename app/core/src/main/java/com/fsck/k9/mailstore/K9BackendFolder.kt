@@ -72,7 +72,7 @@ class K9BackendFolder(
     }
 
     override fun setLastChecked(timestamp: Long) {
-        database.setLong(column = "last_updated", value = timestamp)
+        messageStore.setLastUpdated(folderId, timestamp)
     }
 
     override fun setStatus(status: String?) {
@@ -314,21 +314,6 @@ class K9BackendFolder(
                 put(column, if (value) 1 else 0)
             }
             db.update("messages", contentValues, "folder_id = ? AND uid = ?", arrayOf(databaseId, messageServerId))
-        }
-    }
-
-    private fun LockableDatabase.setLong(
-        table: String = "folders",
-        column: String,
-        value: Long,
-        selection: String = "id = ?",
-        vararg selectionArgs: String = arrayOf(databaseId)
-    ) {
-        execute(false) { db ->
-            val contentValues = ContentValues().apply {
-                put(column, value)
-            }
-            db.update(table, contentValues, selection, selectionArgs)
         }
     }
 
