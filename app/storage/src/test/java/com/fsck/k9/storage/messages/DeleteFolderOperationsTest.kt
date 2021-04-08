@@ -4,31 +4,23 @@ import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.storage.RobolectricTest
 import com.google.common.truth.Truth.assertThat
 import com.nhaarman.mockitokotlin2.anyOrNull
-import com.nhaarman.mockitokotlin2.doAnswer
+import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock
-import java.io.File
-import java.util.UUID
 import org.junit.After
-import org.junit.Before
 import org.junit.Test
 
 private const val ACCOUNT_UUID = "00000000-0000-4000-0000-000000000000"
 
 class DeleteFolderOperationsTest : RobolectricTest() {
+    private val messagePartDirectory = createRandomTempDirectory()
     private val sqliteDatabase = createDatabase()
     private val storageManager = mock<StorageManager> {
-        on { getAttachmentDirectory(eq(ACCOUNT_UUID), anyOrNull()) } doAnswer { messagePartDirectory }
+        on { getAttachmentDirectory(eq(ACCOUNT_UUID), anyOrNull()) } doReturn messagePartDirectory
     }
     private val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
-    private val deleteFolderOperations = DeleteFolderOperations(storageManager, lockableDatabase, ACCOUNT_UUID)
-
-    private lateinit var messagePartDirectory: File
-
-    @Before
-    fun setUp() {
-        messagePartDirectory = createRandomTempDirectory()
-    }
+    private val attachmentFileManager = AttachmentFileManager(storageManager, ACCOUNT_UUID)
+    private val deleteFolderOperations = DeleteFolderOperations(lockableDatabase, attachmentFileManager)
 
     @After
     fun tearDown() {
@@ -53,12 +45,6 @@ class DeleteFolderOperationsTest : RobolectricTest() {
         val messagePartFiles = messagePartDirectory.listFiles()
         assertThat(messagePartFiles).hasLength(1)
         assertThat(messagePartFiles!!.first().name).isEqualTo(messagePartId.toString())
-    }
-
-    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-    private fun createRandomTempDirectory(): File {
-        val tempDirectory = File(System.getProperty("java.io.tmpdir", "."))
-        return File(tempDirectory, UUID.randomUUID().toString()).also { it.mkdir() }
     }
 
     private fun createFolderWithMessage(folderServerId: String, messageServerId: String): Long {

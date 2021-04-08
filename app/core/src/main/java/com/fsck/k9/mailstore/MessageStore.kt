@@ -72,6 +72,11 @@ interface MessageStore {
     fun getLastUid(folderId: Long): Long?
 
     /**
+     * Remove messages from the store.
+     */
+    fun destroyMessages(folderId: Long, messageServerIds: Collection<String>)
+
+    /**
      * Create folders.
      */
     fun createFolders(folders: List<CreateFolderInfo>)

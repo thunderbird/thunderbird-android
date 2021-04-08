@@ -20,14 +20,16 @@ class K9MessageStore(
     accountUuid: String
 ) : MessageStore {
     private val database: LockableDatabase = localStore.database
+    private val attachmentFileManager = AttachmentFileManager(storageManager, accountUuid)
     private val threadMessageOperations = ThreadMessageOperations(localStore)
     private val moveMessageOperations = MoveMessageOperations(database, threadMessageOperations)
     private val flagMessageOperations = FlagMessageOperations(database)
     private val retrieveMessageOperations = RetrieveMessageOperations(database)
+    private val deleteMessageOperations = DeleteMessageOperations(database, attachmentFileManager)
     private val createFolderOperations = CreateFolderOperations(database)
     private val retrieveFolderOperations = RetrieveFolderOperations(database)
     private val updateFolderOperations = UpdateFolderOperations(database)
-    private val deleteFolderOperations = DeleteFolderOperations(storageManager, database, accountUuid)
+    private val deleteFolderOperations = DeleteFolderOperations(database, attachmentFileManager)
     private val keyValueStoreOperations = KeyValueStoreOperations(database)
 
     override fun moveMessage(messageId: Long, destinationFolderId: Long): Long {
@@ -63,6 +65,11 @@ class K9MessageStore(
 
     override fun getLastUid(folderId: Long): Long? {
         return retrieveMessageOperations.getLastUid(folderId)
+    }
+
+    override fun destroyMessages(folderId: Long, messageServerIds: Collection<String>) {
+        deleteMessageOperations.destroyMessages(folderId, messageServerIds)
+        localStore.notifyChange()
     }
 
     override fun createFolders(folders: List<CreateFolderInfo>) {

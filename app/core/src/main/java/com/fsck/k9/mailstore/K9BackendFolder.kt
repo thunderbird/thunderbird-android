@@ -51,15 +51,13 @@ class K9BackendFolder(
         return messageStore.getAllMessagesAndEffectiveDates(folderId)
     }
 
-    // TODO: Move implementation from LocalFolder to this class
     override fun destroyMessages(messageServerIds: List<String>) {
-        val localMessages = localFolder.getMessagesByUids(messageServerIds)
-        localFolder.destroyMessages(localMessages)
+        messageStore.destroyMessages(folderId, messageServerIds)
     }
 
     override fun clearAllMessages() {
-        val messageServerIds = getMessageServerIds().toList()
-        destroyMessages(messageServerIds)
+        val messageServerIds = messageStore.getMessageServerIds(folderId)
+        messageStore.destroyMessages(folderId, messageServerIds)
     }
 
     override fun getMoreMessages(): MoreMessages {
