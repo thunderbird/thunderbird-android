@@ -57,6 +57,11 @@ interface MessageStore {
     fun getMessageServerIds(folderId: Long): Set<String>
 
     /**
+     * Check if a message is present in the store.
+     */
+    fun isMessagePresent(folderId: Long, messageServerId: String): Boolean
+
+    /**
      * Retrieve server IDs and dates for all remote messages in the given folder.
      */
     fun getAllMessagesAndEffectiveDates(folderId: Long): Map<String, Long?>

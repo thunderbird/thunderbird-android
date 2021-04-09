@@ -80,19 +80,7 @@ class K9BackendFolder(
     }
 
     override fun isMessagePresent(messageServerId: String): Boolean {
-        return database.execute(false) { db ->
-            val cursor = db.query(
-                "messages",
-                arrayOf("id"),
-                "folder_id = ? AND uid = ?",
-                arrayOf(databaseId, messageServerId),
-                null, null, null
-            )
-
-            cursor.use {
-                cursor.moveToFirst()
-            }
-        }
+        return messageStore.isMessagePresent(folderId, messageServerId)
     }
 
     override fun getMessageFlags(messageServerId: String): Set<Flag> {

@@ -77,6 +77,22 @@ internal class RetrieveMessageOperations(private val lockableDatabase: LockableD
         }
     }
 
+    fun isMessagePresent(folderId: Long, messageServerId: String): Boolean {
+        return lockableDatabase.execute(false) { db ->
+            db.query(
+                "messages",
+                arrayOf("id"),
+                "folder_id = ? AND uid = ?",
+                arrayOf(folderId.toString(), messageServerId),
+                null,
+                null,
+                null
+            ).use { cursor ->
+                cursor.moveToFirst()
+            }
+        }
+    }
+
     fun getAllMessagesAndEffectiveDates(folderId: Long): Map<String, Long?> {
         return lockableDatabase.execute(false) { database ->
             database.rawQuery(

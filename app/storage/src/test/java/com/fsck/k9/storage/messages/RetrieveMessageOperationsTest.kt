@@ -61,6 +61,22 @@ class RetrieveMessageOperationsTest : RobolectricTest() {
     }
 
     @Test
+    fun `check if message is present`() {
+        sqliteDatabase.createMessage(folderId = 1, uid = "uid1")
+
+        val result = retrieveMessageOperations.isMessagePresent(folderId = 1, messageServerId = "uid1")
+
+        assertThat(result).isTrue()
+    }
+
+    @Test
+    fun `check if non-existent message is present`() {
+        val result = retrieveMessageOperations.isMessagePresent(folderId = 1, messageServerId = "uid1")
+
+        assertThat(result).isFalse()
+    }
+
+    @Test
     fun `get all message server ids and dates`() {
         sqliteDatabase.createMessage(folderId = 1, uid = "uid1", date = 23)
         sqliteDatabase.createMessage(folderId = 1, uid = "K9LOCAL:1")
