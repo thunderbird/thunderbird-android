@@ -84,46 +84,7 @@ class K9BackendFolder(
     }
 
     override fun getMessageFlags(messageServerId: String): Set<Flag> {
-        fun String?.extractFlags(): MutableSet<Flag> {
-            return if (this == null || this.isBlank()) {
-                mutableSetOf()
-            } else {
-                this.split(',').map { Flag.valueOf(it) }.toMutableSet()
-            }
-        }
-
-        return database.execute(false) { db ->
-            val cursor = db.query(
-                "messages",
-                arrayOf("deleted", "read", "flagged", "answered", "forwarded", "flags"),
-                "folder_id = ? AND uid = ?",
-                arrayOf(databaseId, messageServerId),
-                null, null, null
-            )
-
-            cursor.use {
-                if (!cursor.moveToFirst()) {
-                    throw IllegalStateException("Couldn't read flags for $folderServerId:$messageServerId")
-                }
-
-                val deleted = cursor.getInt(0) == 1
-                val read = cursor.getInt(1) == 1
-                val flagged = cursor.getInt(2) == 1
-                val answered = cursor.getInt(3) == 1
-                val forwarded = cursor.getInt(4) == 1
-                val flagsColumnValue = cursor.getString(5)
-
-                val flags = flagsColumnValue.extractFlags().apply {
-                    if (deleted) add(Flag.DELETED)
-                    if (read) add(Flag.SEEN)
-                    if (flagged) add(Flag.FLAGGED)
-                    if (answered) add(Flag.ANSWERED)
-                    if (forwarded) add(Flag.FORWARDED)
-                }
-
-                flags
-            }
-        }
+        return messageStore.getMessageFlags(folderId, messageServerId)
     }
 
     override fun setMessageFlag(messageServerId: String, flag: Flag, value: Boolean) {

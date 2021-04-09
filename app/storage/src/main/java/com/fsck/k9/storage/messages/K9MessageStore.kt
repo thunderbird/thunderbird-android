@@ -60,6 +60,10 @@ class K9MessageStore(
         return retrieveMessageOperations.isMessagePresent(folderId, messageServerId)
     }
 
+    override fun getMessageFlags(folderId: Long, messageServerId: String): Set<Flag> {
+        return retrieveMessageOperations.getMessageFlags(folderId, messageServerId)
+    }
+
     override fun getAllMessagesAndEffectiveDates(folderId: Long): Map<String, Long?> {
         return retrieveMessageOperations.getAllMessagesAndEffectiveDates(folderId)
     }

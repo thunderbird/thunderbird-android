@@ -62,6 +62,11 @@ interface MessageStore {
     fun isMessagePresent(folderId: Long, messageServerId: String): Boolean
 
     /**
+     * Get the flags associated with a message.
+     */
+    fun getMessageFlags(folderId: Long, messageServerId: String): Set<Flag>
+
+    /**
      * Retrieve server IDs and dates for all remote messages in the given folder.
      */
     fun getAllMessagesAndEffectiveDates(folderId: Long): Map<String, Long?>
