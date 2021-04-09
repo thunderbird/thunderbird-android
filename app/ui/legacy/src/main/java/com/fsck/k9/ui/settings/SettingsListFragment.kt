@@ -238,20 +238,14 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
     }
 
     override fun itemTouchDropped(oldPosition: Int, newPosition: Int) {
-        // Persist the new account order
+        if (oldPosition == newPosition) return
+
+        val account = (itemAdapter.getAdapterItem(newPosition) as AccountItem).account
+        val firstAccountPosition = itemAdapter.adapterItems.indexOfFirst { it is AccountItem }
+        val newAccountPosition = newPosition - firstAccountPosition
+
+        //Persist the new account order
         val preferences = Preferences.getPreferences(context)
-        val moveUp = oldPosition <= newPosition
-        var rowsToMove = abs(newPosition - oldPosition)
-        var prevPos = oldPosition
-        while (rowsToMove > 0){
-            val accountItem = itemAdapter.getAdapterItem(prevPos) as AccountItem
-            preferences.move(accountItem.account, moveUp)
-            if (moveUp){
-                prevPos++
-            } else {
-                prevPos--
-            }
-            rowsToMove--
-        }
+        preferences.move(account, newAccountPosition)
     }
 }

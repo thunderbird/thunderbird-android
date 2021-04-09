@@ -514,30 +514,19 @@ class AccountPreferenceSerializer(
         } while (gotOne)
     }
 
-    fun move(editor: StorageEditor, account: Account, storage: Storage, moveUp: Boolean) {
-        val uuids = storage.getString("accountUuids", "").split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        val newUuids = arrayOfNulls<String>(uuids.size)
-        if (moveUp) {
-            for (i in uuids.indices) {
-                if (i > 0 && uuids[i] == account.uuid) {
-                    newUuids[i] = newUuids[i - 1]
-                    newUuids[i - 1] = account.uuid
-                } else {
-                    newUuids[i] = uuids[i]
-                }
+    fun move(editor: StorageEditor, account: Account, storage: Storage, newPosition: Int) {
+        val accountUuids = storage.getString("accountUuids", "").split(",").filter { it.isNotEmpty() }
+        val oldPosition = accountUuids.indexOf(account.uuid)
+        if (oldPosition == -1 || oldPosition == newPosition) return
+
+        val newAccountUuidsString = accountUuids.toMutableList()
+            .apply {
+                removeAt(oldPosition)
+                add(newPosition, account.uuid)
             }
-        } else {
-            for (i in uuids.indices.reversed()) {
-                if (i < uuids.size - 1 && uuids[i] == account.uuid) {
-                    newUuids[i] = newUuids[i + 1]
-                    newUuids[i + 1] = account.uuid
-                } else {
-                    newUuids[i] = uuids[i]
-                }
-            }
-        }
-        val accountUuids = Utility.combine(newUuids, ',')
-        editor.putString("accountUuids", accountUuids)
+            .joinToString(separator = ",")
+
+        editor.putString("accountUuids", newAccountUuidsString)
     }
 
     private fun <T : Enum<T>> getEnumStringPref(storage: Storage, key: String, defaultEnum: T): T {

@@ -302,10 +302,10 @@ public class Preferences {
         return newAccountNumber;
     }
 
-    public void move(Account account, boolean moveUp) {
+    public void move(Account account, int newPosition) {
         synchronized (accountLock) {
             StorageEditor storageEditor = createStorageEditor();
-            accountPreferenceSerializer.move(storageEditor, account, storage, moveUp);
+            accountPreferenceSerializer.move(storageEditor, account, storage, newPosition);
             storageEditor.commit();
             loadAccounts();
         }
