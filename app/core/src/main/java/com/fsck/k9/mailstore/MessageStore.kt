@@ -40,6 +40,11 @@ interface MessageStore {
     fun setFlag(messageIds: Collection<Long>, flag: Flag, set: Boolean)
 
     /**
+     * Set or remove a flag on a message.
+     */
+    fun setMessageFlag(folderId: Long, messageServerId: String, flag: Flag, set: Boolean)
+
+    /**
      * Retrieve the server ID for a given message.
      */
     fun getMessageServerId(messageId: Long): String

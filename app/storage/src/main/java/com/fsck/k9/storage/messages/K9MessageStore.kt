@@ -44,6 +44,11 @@ class K9MessageStore(
         localStore.notifyChange()
     }
 
+    override fun setMessageFlag(folderId: Long, messageServerId: String, flag: Flag, set: Boolean) {
+        flagMessageOperations.setMessageFlag(folderId, messageServerId, flag, set)
+        localStore.notifyChange()
+    }
+
     override fun getMessageServerId(messageId: Long): String {
         return retrieveMessageOperations.getMessageServerId(messageId)
     }

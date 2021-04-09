@@ -12,9 +12,9 @@ import java.util.Date
 import com.fsck.k9.mailstore.MoreMessages as StoreMoreMessages
 
 class K9BackendFolder(
-    private val localStore: LocalStore,
+    localStore: LocalStore,
     private val messageStore: MessageStore,
-    private val folderServerId: String
+    folderServerId: String
 ) : BackendFolder {
     private val database = localStore.database
     private val databaseId: String
@@ -88,40 +88,7 @@ class K9BackendFolder(
     }
 
     override fun setMessageFlag(messageServerId: String, flag: Flag, value: Boolean) {
-        when (flag) {
-            Flag.DELETED -> database.setMessagesBoolean(messageServerId, "deleted", value)
-            Flag.SEEN -> database.setMessagesBoolean(messageServerId, "read", value)
-            Flag.FLAGGED -> database.setMessagesBoolean(messageServerId, "flagged", value)
-            Flag.ANSWERED -> database.setMessagesBoolean(messageServerId, "answered", value)
-            Flag.FORWARDED -> database.setMessagesBoolean(messageServerId, "forwarded", value)
-            else -> {
-                val flagsColumnValue = database.getString(
-                    table = "messages",
-                    column = "flags",
-                    selection = "folder_id = ? AND uid = ?",
-                    selectionArgs = *arrayOf(databaseId, messageServerId)
-                ) ?: ""
-
-                val flags = flagsColumnValue.split(',').toMutableSet()
-                if (value) {
-                    flags.add(flag.toString())
-                } else {
-                    flags.remove(flag.toString())
-                }
-
-                val serializedFlags = flags.joinToString(separator = ",")
-
-                database.setString(
-                    table = "messages",
-                    column = "flags",
-                    selection = "folder_id = ? AND uid = ?",
-                    selectionArgs = *arrayOf(databaseId, messageServerId),
-                    value = serializedFlags
-                )
-            }
-        }
-
-        localStore.notifyChange()
+        messageStore.setMessageFlag(folderId, messageServerId, flag, value)
     }
 
     // TODO: Move implementation from LocalFolder to this class
@@ -217,52 +184,6 @@ class K9BackendFolder(
                 put("folder_id", databaseId)
             }
             db.insertWithOnConflict("folder_extra_values", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE)
-        }
-    }
-
-    private fun LockableDatabase.getString(
-        table: String = "folders",
-        column: String,
-        selection: String = "id = ?",
-        vararg selectionArgs: String = arrayOf(databaseId)
-    ): String? {
-        return execute(false) { db ->
-            val cursor = db.query(table, arrayOf(column), selection, selectionArgs, null, null, null)
-            cursor.use {
-                if (it.moveToFirst()) {
-                    it.getStringOrNull(0)
-                } else {
-                    throw IllegalStateException("Couldn't find value for column $table.$column")
-                }
-            }
-        }
-    }
-
-    private fun LockableDatabase.setString(
-        table: String = "folders",
-        column: String,
-        value: String?,
-        selection: String = "id = ?",
-        vararg selectionArgs: String = arrayOf(databaseId)
-    ) {
-        execute(false) { db ->
-            val contentValues = ContentValues().apply {
-                put(column, value)
-            }
-            db.update(table, contentValues, selection, selectionArgs)
-        }
-    }
-
-    private fun LockableDatabase.setMessagesBoolean(
-        messageServerId: String,
-        column: String,
-        value: Boolean
-    ) {
-        execute(false) { db ->
-            val contentValues = ContentValues().apply {
-                put(column, if (value) 1 else 0)
-            }
-            db.update("messages", contentValues, "folder_id = ? AND uid = ?", arrayOf(databaseId, messageServerId))
         }
     }
 
