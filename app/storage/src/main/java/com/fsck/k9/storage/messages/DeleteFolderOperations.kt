@@ -1,16 +1,11 @@
 package com.fsck.k9.storage.messages
 
 import android.database.sqlite.SQLiteDatabase
-import com.fsck.k9.K9
 import com.fsck.k9.mailstore.LockableDatabase
-import com.fsck.k9.mailstore.StorageManager
-import java.io.File
-import timber.log.Timber
 
 internal class DeleteFolderOperations(
-    private val storageManager: StorageManager,
     private val lockableDatabase: LockableDatabase,
-    private val accountUuid: String
+    private val attachmentFileManager: AttachmentFileManager
 ) {
     fun deleteFolders(folderServerIds: List<String>) {
         lockableDatabase.execute(true) { db ->
@@ -37,21 +32,13 @@ internal class DeleteFolderOperations(
             arrayOf(folderServerId)
         ).use { cursor ->
             while (cursor.moveToNext()) {
-                val messagePartId = cursor.getString(0)
-                val file = getAttachmentFile(messagePartId)
-                if (file.exists() && !file.delete() && K9.isDebugLoggingEnabled) {
-                    Timber.w("Couldn't delete message part file: %s", file.absolutePath)
-                }
+                val messagePartId = cursor.getLong(0)
+                attachmentFileManager.deleteFile(messagePartId)
             }
         }
     }
 
     private fun SQLiteDatabase.deleteFolder(folderServerId: String) {
         delete("folders", "server_id = ?", arrayOf(folderServerId))
-    }
-
-    private fun getAttachmentFile(messagePartId: String): File {
-        val attachmentDirectory = storageManager.getAttachmentDirectory(accountUuid, lockableDatabase.storageProviderId)
-        return File(attachmentDirectory, messagePartId)
     }
 }
