@@ -4,6 +4,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isGone
 import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.Account
 import com.fsck.k9.ui.R
@@ -12,14 +13,15 @@ import com.mikepenz.fastadapter.drag.IDraggable
 import com.mikepenz.fastadapter.items.AbstractItem
 import com.mikepenz.fastadapter.listeners.TouchEventHook
 
-internal class AccountItem(val account: Account) : AbstractItem<AccountItem.ViewHolder>(), IDraggable {
+internal class AccountItem(
+    val account: Account,
+    override var isDraggable: Boolean
+) : AbstractItem<AccountItem.ViewHolder>(), IDraggable {
     override var identifier = 200L + account.accountNumber
 
     override val type = R.id.settings_list_account_item
 
     override val layoutRes = R.layout.account_list_item
-
-    override var isDraggable = true
 
     override fun getViewHolder(v: View) = ViewHolder(v)
 
@@ -31,6 +33,7 @@ internal class AccountItem(val account: Account) : AbstractItem<AccountItem.View
         override fun bindView(item: AccountItem, payloads: List<Any>) {
             name.text = item.account.description
             email.text = item.account.email
+            dragHandle.isGone = !item.isDraggable
         }
 
         override fun unbindView(item: AccountItem) {

@@ -95,8 +95,9 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
             )
 
             addSection(title = getString(R.string.accounts_title)) {
+                val isDraggable = accounts.size > 1
                 for (account in accounts) {
-                    addAccount(account)
+                    addAccount(account, isDraggable)
                 }
 
                 addAction(
@@ -184,8 +185,8 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
             settingsList.add(UrlActionItem(itemId, text, url, icon))
         }
 
-        fun addAccount(account: Account) {
-            settingsList.add(AccountItem(account))
+        fun addAccount(account: Account, isDraggable: Boolean) {
+            settingsList.add(AccountItem(account, isDraggable))
         }
 
         fun addSection(title: String, block: SettingsListBuilder.() -> Unit) {
