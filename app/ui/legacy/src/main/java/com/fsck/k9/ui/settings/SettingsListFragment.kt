@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.Account
-import com.fsck.k9.Preferences
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.helper.RecyclerViewBackgroundDrawable
 import com.fsck.k9.ui.observeNotNull
@@ -225,7 +224,6 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
         val firstAccountPosition = itemAdapter.adapterItems.indexOfFirst { it is AccountItem }
         val newAccountPosition = newPosition - firstAccountPosition
 
-        val preferences = Preferences.getPreferences(requireContext())
-        preferences.move(account, newAccountPosition)
+        viewModel.moveAccount(account, newAccountPosition)
     }
 }

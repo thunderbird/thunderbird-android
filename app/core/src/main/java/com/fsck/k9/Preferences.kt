@@ -215,7 +215,7 @@ class Preferences internal constructor(
         return newAccountNumber
     }
 
-    fun move(account: Account, newPosition: Int) {
+    override fun moveAccount(account: Account, newPosition: Int) {
         synchronized(accountLock) {
             val storageEditor = createStorageEditor()
             accountPreferenceSerializer.move(storageEditor, account, storage, newPosition)
