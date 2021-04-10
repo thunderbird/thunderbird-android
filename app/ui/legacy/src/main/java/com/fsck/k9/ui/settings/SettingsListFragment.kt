@@ -18,7 +18,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
 import com.fsck.k9.ui.R
+import com.fsck.k9.ui.helper.RecyclerViewBackgroundDrawable
 import com.fsck.k9.ui.observeNotNull
+import com.fsck.k9.ui.resolveColorAttribute
 import com.fsck.k9.ui.settings.account.AccountSettingsActivity
 import com.fsck.k9.view.DraggableFrameLayout
 import com.mikepenz.fastadapter.FastAdapter
@@ -69,6 +71,9 @@ class SettingsListFragment : Fragment(), ItemTouchCallback {
         recyclerView.adapter = settingsListAdapter
         recyclerView.layoutManager = LinearLayoutManager(context)
         touchHelper.attachToRecyclerView(recyclerView)
+
+        val recyclerViewBackgroundColor = recyclerView.context.theme.resolveColorAttribute(R.attr.behindRecyclerView)
+        RecyclerViewBackgroundDrawable(recyclerViewBackgroundColor).attachTo(recyclerView)
     }
 
     private fun populateSettingsList() {
