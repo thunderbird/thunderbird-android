@@ -12,17 +12,26 @@ import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.MessageStore
 import com.fsck.k9.mailstore.MoreMessages
+import com.fsck.k9.mailstore.SaveMessageData
 import com.fsck.k9.mailstore.StorageManager
+import com.fsck.k9.message.extractors.BasicPartInfoExtractor
 
 // TODO: Remove dependency on LocalStore
 class K9MessageStore(
     private val localStore: LocalStore,
     storageManager: StorageManager,
+    basicPartInfoExtractor: BasicPartInfoExtractor,
     accountUuid: String
 ) : MessageStore {
     private val database: LockableDatabase = localStore.database
     private val attachmentFileManager = AttachmentFileManager(storageManager, accountUuid)
     private val threadMessageOperations = ThreadMessageOperations()
+    private val saveMessageOperations = SaveMessageOperations(
+        database,
+        attachmentFileManager,
+        basicPartInfoExtractor,
+        threadMessageOperations
+    )
     private val moveMessageOperations = MoveMessageOperations(database, threadMessageOperations)
     private val flagMessageOperations = FlagMessageOperations(database)
     private val retrieveMessageOperations = RetrieveMessageOperations(database)
@@ -32,6 +41,10 @@ class K9MessageStore(
     private val updateFolderOperations = UpdateFolderOperations(database)
     private val deleteFolderOperations = DeleteFolderOperations(database, attachmentFileManager)
     private val keyValueStoreOperations = KeyValueStoreOperations(database)
+
+    override fun saveRemoteMessage(folderId: Long, messageServerId: String, messageData: SaveMessageData) {
+        saveMessageOperations.saveRemoteMessage(folderId, messageServerId, messageData)
+    }
 
     override fun moveMessage(messageId: Long, destinationFolderId: Long): Long {
         return moveMessageOperations.moveMessage(messageId, destinationFolderId).also {

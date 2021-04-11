@@ -14,12 +14,12 @@ import com.fsck.k9.mailstore.MoreMessages as StoreMoreMessages
 class K9BackendFolder(
     localStore: LocalStore,
     private val messageStore: MessageStore,
+    private val saveMessageDataCreator: SaveMessageDataCreator,
     folderServerId: String
 ) : BackendFolder {
     private val database = localStore.database
     private val databaseId: String
     private val folderId: Long
-    private val localFolder = localStore.getFolder(folderServerId)
     override val name: String
     override val visibleLimit: Int
 
@@ -91,24 +91,19 @@ class K9BackendFolder(
         messageStore.setMessageFlag(folderId, messageServerId, flag, value)
     }
 
-    // TODO: Move implementation from LocalFolder to this class
     override fun saveCompleteMessage(message: Message) {
-        requireMessageServerId(message)
-
-        localFolder.appendMessages(listOf(message))
-
-        val localMessage = localFolder.getMessage(message.uid)
-        localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true)
+        saveMessage(message, partialMessage = false)
     }
 
-    // TODO: Move implementation from LocalFolder to this class
     override fun savePartialMessage(message: Message) {
+        saveMessage(message, partialMessage = true)
+    }
+
+    private fun saveMessage(message: Message, partialMessage: Boolean) {
         requireMessageServerId(message)
 
-        localFolder.appendMessages(listOf(message))
-
-        val localMessage = localFolder.getMessage(message.uid)
-        localMessage.setFlag(Flag.X_DOWNLOADED_PARTIAL, true)
+        val messageData = saveMessageDataCreator.createSaveMessageData(message, partialMessage)
+        messageStore.saveRemoteMessage(folderId, message.uid, messageData)
     }
 
     override fun getOldestMessageDate(): Date? {

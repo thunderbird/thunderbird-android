@@ -40,7 +40,7 @@ fun createDatabase(): SQLiteDatabase {
 fun SQLiteDatabase.createMessage(
     deleted: Boolean = false,
     folderId: Long,
-    uid: String,
+    uid: String? = null,
     subject: String = "",
     date: Long = 0L,
     flags: String = "",

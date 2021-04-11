@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mailstore.LockableDatabase
 
-private val SPECIAL_FLAGS = setOf(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED)
+internal val SPECIAL_FLAGS = setOf(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED)
 
 internal class FlagMessageOperations(private val lockableDatabase: LockableDatabase) {
 

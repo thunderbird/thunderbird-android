@@ -3,6 +3,7 @@ package com.fsck.k9.storage.messages
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import com.fsck.k9.helper.Utility
+import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.message.MessageHeaderParser
 import java.util.Locale
 
@@ -59,7 +60,7 @@ internal class ThreadMessageOperations {
         }
     }
 
-    private fun createThreadEntry(database: SQLiteDatabase, messageId: Long, rootId: Long?, parentId: Long?): Long {
+    fun createThreadEntry(database: SQLiteDatabase, messageId: Long, rootId: Long?, parentId: Long?): Long {
         val values = ContentValues().apply {
             put("message_id", messageId)
             put("root", rootId)
@@ -70,7 +71,7 @@ internal class ThreadMessageOperations {
     }
 
     // TODO: Use MessageIdParser
-    private fun doMessageThreading(database: SQLiteDatabase, folderId: Long, threadHeaders: ThreadHeaders): ThreadInfo {
+    fun doMessageThreading(database: SQLiteDatabase, folderId: Long, threadHeaders: ThreadHeaders): ThreadInfo {
         val messageIdHeader = threadHeaders.messageIdHeader
         val msgThreadInfo = getThreadInfo(database, folderId, messageIdHeader, onlyEmpty = true)
 
@@ -201,3 +202,11 @@ internal data class ThreadHeaders(
     val inReplyToHeader: String?,
     val referencesHeader: String?
 )
+
+internal fun Message.toThreadHeaders(): ThreadHeaders {
+    return ThreadHeaders(
+        messageIdHeader = messageId,
+        inReplyToHeader = getHeader("In-Reply-To").firstOrNull(),
+        referencesHeader = getHeader("References").firstOrNull()
+    )
+}
