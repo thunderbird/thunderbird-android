@@ -1,7 +1,6 @@
 package com.fsck.k9.message;
 
 
-import android.text.TextUtils;
 import timber.log.Timber;
 
 import com.fsck.k9.K9;
@@ -180,7 +179,7 @@ class TextBodyBuilder {
 
     private String getSignature() {
         String signature = "";
-        if (!TextUtils.isEmpty(mSignature)) {
+        if (!isEmpty(mSignature)) {
             signature = "\r\n" + mSignature;
         }
 
@@ -189,7 +188,7 @@ class TextBodyBuilder {
 
     private String getSignatureHtml() {
         String signature = "";
-        if (!TextUtils.isEmpty(mSignature)) {
+        if (!isEmpty(mSignature)) {
             signature = textToHtmlFragment("\r\n" + mSignature);
         }
         return signature;
@@ -197,7 +196,7 @@ class TextBodyBuilder {
 
     private String getQuotedText() {
         String quotedText = "";
-        if (!TextUtils.isEmpty(mQuotedText)) {
+        if (!isEmpty(mQuotedText)) {
             quotedText = mQuotedText;
         }
         return quotedText;
@@ -244,5 +243,9 @@ class TextBodyBuilder {
 
     public void setAppendSignature(boolean appendSignature) {
         mAppendSignature = appendSignature;
+    }
+
+    private static boolean isEmpty(String s) {
+        return s == null || s.length() == 0;
     }
 }
