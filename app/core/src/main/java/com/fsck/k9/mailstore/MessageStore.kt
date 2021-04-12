@@ -40,6 +40,11 @@ interface MessageStore {
     fun setFlag(messageIds: Collection<Long>, flag: Flag, set: Boolean)
 
     /**
+     * Set or remove a flag on a message.
+     */
+    fun setMessageFlag(folderId: Long, messageServerId: String, flag: Flag, set: Boolean)
+
+    /**
      * Retrieve the server ID for a given message.
      */
     fun getMessageServerId(messageId: Long): String
@@ -55,6 +60,16 @@ interface MessageStore {
      * Retrieve server IDs for all remote messages in the given folder.
      */
     fun getMessageServerIds(folderId: Long): Set<String>
+
+    /**
+     * Check if a message is present in the store.
+     */
+    fun isMessagePresent(folderId: Long, messageServerId: String): Boolean
+
+    /**
+     * Get the flags associated with a message.
+     */
+    fun getMessageFlags(folderId: Long, messageServerId: String): Set<Flag>
 
     /**
      * Retrieve server IDs and dates for all remote messages in the given folder.
@@ -146,6 +161,21 @@ interface MessageStore {
      * Update the notification class of a folder.
      */
     fun setNotificationClass(folderId: Long, folderClass: FolderClass)
+
+    /**
+     * Update the 'more messages' state of a folder.
+     */
+    fun setMoreMessages(folderId: Long, moreMessages: MoreMessages)
+
+    /**
+     * Update the 'last updated' state of a folder.
+     */
+    fun setLastUpdated(folderId: Long, timestamp: Long)
+
+    /**
+     * Update folder status message.
+     */
+    fun setStatus(folderId: Long, status: String?)
 
     /**
      * Delete folders.

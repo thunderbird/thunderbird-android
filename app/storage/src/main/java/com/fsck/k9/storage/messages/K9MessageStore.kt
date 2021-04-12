@@ -11,6 +11,7 @@ import com.fsck.k9.mailstore.FolderMapper
 import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.MessageStore
+import com.fsck.k9.mailstore.MoreMessages
 import com.fsck.k9.mailstore.StorageManager
 
 // TODO: Remove dependency on LocalStore
@@ -43,6 +44,11 @@ class K9MessageStore(
         localStore.notifyChange()
     }
 
+    override fun setMessageFlag(folderId: Long, messageServerId: String, flag: Flag, set: Boolean) {
+        flagMessageOperations.setMessageFlag(folderId, messageServerId, flag, set)
+        localStore.notifyChange()
+    }
+
     override fun getMessageServerId(messageId: Long): String {
         return retrieveMessageOperations.getMessageServerId(messageId)
     }
@@ -53,6 +59,14 @@ class K9MessageStore(
 
     override fun getMessageServerIds(folderId: Long): Set<String> {
         return retrieveMessageOperations.getMessageServerIds(folderId)
+    }
+
+    override fun isMessagePresent(folderId: Long, messageServerId: String): Boolean {
+        return retrieveMessageOperations.isMessagePresent(folderId, messageServerId)
+    }
+
+    override fun getMessageFlags(folderId: Long, messageServerId: String): Set<Flag> {
+        return retrieveMessageOperations.getMessageFlags(folderId, messageServerId)
     }
 
     override fun getAllMessagesAndEffectiveDates(folderId: Long): Map<String, Long?> {
@@ -122,6 +136,18 @@ class K9MessageStore(
 
     override fun setNotificationClass(folderId: Long, folderClass: FolderClass) {
         updateFolderOperations.setNotificationClass(folderId, folderClass)
+    }
+
+    override fun setMoreMessages(folderId: Long, moreMessages: MoreMessages) {
+        updateFolderOperations.setMoreMessages(folderId, moreMessages)
+    }
+
+    override fun setLastUpdated(folderId: Long, timestamp: Long) {
+        updateFolderOperations.setLastUpdated(folderId, timestamp)
+    }
+
+    override fun setStatus(folderId: Long, status: String?) {
+        updateFolderOperations.setStatus(folderId, status)
     }
 
     override fun deleteFolders(folderServerIds: List<String>) {

@@ -5,6 +5,7 @@ import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mailstore.FolderDetails
 import com.fsck.k9.mailstore.LockableDatabase
+import com.fsck.k9.mailstore.MoreMessages
 import com.fsck.k9.mailstore.toDatabaseFolderType
 
 internal class UpdateFolderOperations(private val lockableDatabase: LockableDatabase) {
@@ -45,21 +46,43 @@ internal class UpdateFolderOperations(private val lockableDatabase: LockableData
     }
 
     fun setDisplayClass(folderId: Long, folderClass: FolderClass) {
-        setFolderClass(folderId, "display_class", folderClass)
+        setString(folderId = folderId, columnName = "display_class", value = folderClass.name)
     }
 
     fun setSyncClass(folderId: Long, folderClass: FolderClass) {
-        setFolderClass(folderId, "poll_class", folderClass)
+        setString(folderId = folderId, columnName = "poll_class", value = folderClass.name)
     }
 
     fun setNotificationClass(folderId: Long, folderClass: FolderClass) {
-        setFolderClass(folderId, "notify_class", folderClass)
+        setString(folderId = folderId, columnName = "notify_class", value = folderClass.name)
     }
 
-    private fun setFolderClass(folderId: Long, columnName: String, folderClass: FolderClass) {
+    fun setMoreMessages(folderId: Long, moreMessages: MoreMessages) {
+        setString(folderId = folderId, columnName = "more_messages", value = moreMessages.databaseName)
+    }
+
+    fun setLastUpdated(folderId: Long, timestamp: Long) {
         lockableDatabase.execute(false) { db ->
             val contentValues = ContentValues().apply {
-                put(columnName, folderClass.name)
+                put("last_updated", timestamp)
+            }
+
+            db.update("folders", contentValues, "id = ?", arrayOf(folderId.toString()))
+        }
+    }
+
+    fun setStatus(folderId: Long, status: String?) {
+        setString(folderId = folderId, columnName = "status", value = status)
+    }
+
+    private fun setString(folderId: Long, columnName: String, value: String?) {
+        lockableDatabase.execute(false) { db ->
+            val contentValues = ContentValues().apply {
+                if (value == null) {
+                    putNull(columnName)
+                } else {
+                    put(columnName, value)
+                }
             }
 
             db.update("folders", contentValues, "id = ?", arrayOf(folderId.toString()))

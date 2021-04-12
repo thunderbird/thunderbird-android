@@ -1,5 +1,6 @@
 package com.fsck.k9.storage.messages
 
+import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Header
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.crlf
@@ -58,6 +59,70 @@ class RetrieveMessageOperationsTest : RobolectricTest() {
         val messageServerIds = retrieveMessageOperations.getMessageServerIds(folderId = 1)
 
         assertThat(messageServerIds).isEqualTo(setOf("uid1", "uid3", "uid4"))
+    }
+
+    @Test
+    fun `check if message is present`() {
+        sqliteDatabase.createMessage(folderId = 1, uid = "uid1")
+
+        val result = retrieveMessageOperations.isMessagePresent(folderId = 1, messageServerId = "uid1")
+
+        assertThat(result).isTrue()
+    }
+
+    @Test
+    fun `check if non-existent message is present`() {
+        val result = retrieveMessageOperations.isMessagePresent(folderId = 1, messageServerId = "uid1")
+
+        assertThat(result).isFalse()
+    }
+
+    @Test
+    fun `get message flags`() {
+        sqliteDatabase.createMessage(
+            folderId = 1,
+            uid = "uid1",
+            flags = "DRAFT,RECENT,X_DESTROYED,X_SEND_FAILED,X_SEND_IN_PROGRESS,X_DOWNLOADED_FULL," +
+                "X_DOWNLOADED_PARTIAL,X_REMOTE_COPY_STARTED,X_MIGRATED_FROM_V50,X_DRAFT_OPENPGP_INLINE," +
+                "X_SUBJECT_DECRYPTED",
+            deleted = true,
+            read = true,
+            flagged = true,
+            answered = true,
+            forwarded = true
+        )
+
+        val flags = retrieveMessageOperations.getMessageFlags(folderId = 1, messageServerId = "uid1")
+
+        assertThat(flags).isEqualTo(
+            setOf(
+                Flag.DELETED,
+                Flag.SEEN,
+                Flag.ANSWERED,
+                Flag.FLAGGED,
+                Flag.DRAFT,
+                Flag.RECENT,
+                Flag.FORWARDED,
+                Flag.X_DESTROYED,
+                Flag.X_SEND_FAILED,
+                Flag.X_SEND_IN_PROGRESS,
+                Flag.X_DOWNLOADED_FULL,
+                Flag.X_DOWNLOADED_PARTIAL,
+                Flag.X_REMOTE_COPY_STARTED,
+                Flag.X_MIGRATED_FROM_V50,
+                Flag.X_DRAFT_OPENPGP_INLINE,
+                Flag.X_SUBJECT_DECRYPTED
+            )
+        )
+    }
+
+    @Test
+    fun `get message flags without any flags set`() {
+        sqliteDatabase.createMessage(folderId = 1, uid = "uid1", flags = "")
+
+        val flags = retrieveMessageOperations.getMessageFlags(folderId = 1, messageServerId = "uid1")
+
+        assertThat(flags).isEmpty()
     }
 
     @Test

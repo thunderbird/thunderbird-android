@@ -2,6 +2,7 @@ package com.fsck.k9.storage.messages
 
 import androidx.core.database.getLongOrNull
 import com.fsck.k9.K9
+import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Header
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.internet.MimeHeader
@@ -73,6 +74,61 @@ internal class RetrieveMessageOperations(private val lockableDatabase: LockableD
                     result.add(uid)
                 }
                 result
+            }
+        }
+    }
+
+    fun isMessagePresent(folderId: Long, messageServerId: String): Boolean {
+        return lockableDatabase.execute(false) { db ->
+            db.query(
+                "messages",
+                arrayOf("id"),
+                "folder_id = ? AND uid = ?",
+                arrayOf(folderId.toString(), messageServerId),
+                null,
+                null,
+                null
+            ).use { cursor ->
+                cursor.moveToFirst()
+            }
+        }
+    }
+
+    fun getMessageFlags(folderId: Long, messageServerId: String): Set<Flag> {
+        return lockableDatabase.execute(false) { db ->
+            db.query(
+                "messages",
+                arrayOf("deleted", "read", "flagged", "answered", "forwarded", "flags"),
+                "folder_id = ? AND uid = ?",
+                arrayOf(folderId.toString(), messageServerId),
+                null,
+                null,
+                null
+            ).use { cursor ->
+                if (!cursor.moveToFirst()) error("Couldn't read flags for $folderId:$messageServerId")
+
+                val deleted = cursor.getInt(0) == 1
+                val read = cursor.getInt(1) == 1
+                val flagged = cursor.getInt(2) == 1
+                val answered = cursor.getInt(3) == 1
+                val forwarded = cursor.getInt(4) == 1
+                val flagsColumnValue = cursor.getString(5)
+
+                val otherFlags = if (flagsColumnValue.isNullOrBlank()) {
+                    emptySet()
+                } else {
+                    flagsColumnValue.split(',').map { Flag.valueOf(it) }
+                }
+
+                otherFlags
+                    .toMutableSet()
+                    .apply {
+                        if (deleted) add(Flag.DELETED)
+                        if (read) add(Flag.SEEN)
+                        if (flagged) add(Flag.FLAGGED)
+                        if (answered) add(Flag.ANSWERED)
+                        if (forwarded) add(Flag.FORWARDED)
+                    }
             }
         }
     }

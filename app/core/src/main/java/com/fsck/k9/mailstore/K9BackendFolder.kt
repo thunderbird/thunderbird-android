@@ -9,11 +9,12 @@ import com.fsck.k9.backend.api.BackendFolder.MoreMessages
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
 import java.util.Date
+import com.fsck.k9.mailstore.MoreMessages as StoreMoreMessages
 
 class K9BackendFolder(
-    private val localStore: LocalStore,
+    localStore: LocalStore,
     private val messageStore: MessageStore,
-    private val folderServerId: String
+    folderServerId: String
 ) : BackendFolder {
     private val database = localStore.database
     private val databaseId: String
@@ -61,116 +62,33 @@ class K9BackendFolder(
     }
 
     override fun getMoreMessages(): MoreMessages {
-        val moreMessages = database.getString(column = "more_messages") ?: "unknown"
-        return moreMessages.toMoreMessages()
+        return messageStore.getFolder(folderId) { folder ->
+            folder.moreMessages.toMoreMessages()
+        } ?: MoreMessages.UNKNOWN
     }
 
     override fun setMoreMessages(moreMessages: MoreMessages) {
-        database.setString(column = "more_messages", value = moreMessages.toDatabaseValue())
+        messageStore.setMoreMessages(folderId, moreMessages.toStoreMoreMessages())
     }
 
     override fun setLastChecked(timestamp: Long) {
-        database.setLong(column = "last_updated", value = timestamp)
+        messageStore.setLastUpdated(folderId, timestamp)
     }
 
     override fun setStatus(status: String?) {
-        database.setString(column = "status", value = status)
+        messageStore.setStatus(folderId, status)
     }
 
     override fun isMessagePresent(messageServerId: String): Boolean {
-        return database.execute(false) { db ->
-            val cursor = db.query(
-                "messages",
-                arrayOf("id"),
-                "folder_id = ? AND uid = ?",
-                arrayOf(databaseId, messageServerId),
-                null, null, null
-            )
-
-            cursor.use {
-                cursor.moveToFirst()
-            }
-        }
+        return messageStore.isMessagePresent(folderId, messageServerId)
     }
 
     override fun getMessageFlags(messageServerId: String): Set<Flag> {
-        fun String?.extractFlags(): MutableSet<Flag> {
-            return if (this == null || this.isBlank()) {
-                mutableSetOf()
-            } else {
-                this.split(',').map { Flag.valueOf(it) }.toMutableSet()
-            }
-        }
-
-        return database.execute(false) { db ->
-            val cursor = db.query(
-                "messages",
-                arrayOf("deleted", "read", "flagged", "answered", "forwarded", "flags"),
-                "folder_id = ? AND uid = ?",
-                arrayOf(databaseId, messageServerId),
-                null, null, null
-            )
-
-            cursor.use {
-                if (!cursor.moveToFirst()) {
-                    throw IllegalStateException("Couldn't read flags for $folderServerId:$messageServerId")
-                }
-
-                val deleted = cursor.getInt(0) == 1
-                val read = cursor.getInt(1) == 1
-                val flagged = cursor.getInt(2) == 1
-                val answered = cursor.getInt(3) == 1
-                val forwarded = cursor.getInt(4) == 1
-                val flagsColumnValue = cursor.getString(5)
-
-                val flags = flagsColumnValue.extractFlags().apply {
-                    if (deleted) add(Flag.DELETED)
-                    if (read) add(Flag.SEEN)
-                    if (flagged) add(Flag.FLAGGED)
-                    if (answered) add(Flag.ANSWERED)
-                    if (forwarded) add(Flag.FORWARDED)
-                }
-
-                flags
-            }
-        }
+        return messageStore.getMessageFlags(folderId, messageServerId)
     }
 
     override fun setMessageFlag(messageServerId: String, flag: Flag, value: Boolean) {
-        when (flag) {
-            Flag.DELETED -> database.setMessagesBoolean(messageServerId, "deleted", value)
-            Flag.SEEN -> database.setMessagesBoolean(messageServerId, "read", value)
-            Flag.FLAGGED -> database.setMessagesBoolean(messageServerId, "flagged", value)
-            Flag.ANSWERED -> database.setMessagesBoolean(messageServerId, "answered", value)
-            Flag.FORWARDED -> database.setMessagesBoolean(messageServerId, "forwarded", value)
-            else -> {
-                val flagsColumnValue = database.getString(
-                    table = "messages",
-                    column = "flags",
-                    selection = "folder_id = ? AND uid = ?",
-                    selectionArgs = *arrayOf(databaseId, messageServerId)
-                ) ?: ""
-
-                val flags = flagsColumnValue.split(',').toMutableSet()
-                if (value) {
-                    flags.add(flag.toString())
-                } else {
-                    flags.remove(flag.toString())
-                }
-
-                val serializedFlags = flags.joinToString(separator = ",")
-
-                database.setString(
-                    table = "messages",
-                    column = "flags",
-                    selection = "folder_id = ? AND uid = ?",
-                    selectionArgs = *arrayOf(databaseId, messageServerId),
-                    value = serializedFlags
-                )
-            }
-        }
-
-        localStore.notifyChange()
+        messageStore.setMessageFlag(folderId, messageServerId, flag, value)
     }
 
     // TODO: Move implementation from LocalFolder to this class
@@ -269,78 +187,16 @@ class K9BackendFolder(
         }
     }
 
-    private fun LockableDatabase.getString(
-        table: String = "folders",
-        column: String,
-        selection: String = "id = ?",
-        vararg selectionArgs: String = arrayOf(databaseId)
-    ): String? {
-        return execute(false) { db ->
-            val cursor = db.query(table, arrayOf(column), selection, selectionArgs, null, null, null)
-            cursor.use {
-                if (it.moveToFirst()) {
-                    it.getStringOrNull(0)
-                } else {
-                    throw IllegalStateException("Couldn't find value for column $table.$column")
-                }
-            }
-        }
+    private fun StoreMoreMessages.toMoreMessages(): MoreMessages = when (this) {
+        StoreMoreMessages.UNKNOWN -> MoreMessages.UNKNOWN
+        StoreMoreMessages.FALSE -> MoreMessages.FALSE
+        StoreMoreMessages.TRUE -> MoreMessages.TRUE
     }
 
-    private fun LockableDatabase.setString(
-        table: String = "folders",
-        column: String,
-        value: String?,
-        selection: String = "id = ?",
-        vararg selectionArgs: String = arrayOf(databaseId)
-    ) {
-        execute(false) { db ->
-            val contentValues = ContentValues().apply {
-                put(column, value)
-            }
-            db.update(table, contentValues, selection, selectionArgs)
-        }
-    }
-
-    private fun LockableDatabase.setMessagesBoolean(
-        messageServerId: String,
-        column: String,
-        value: Boolean
-    ) {
-        execute(false) { db ->
-            val contentValues = ContentValues().apply {
-                put(column, if (value) 1 else 0)
-            }
-            db.update("messages", contentValues, "folder_id = ? AND uid = ?", arrayOf(databaseId, messageServerId))
-        }
-    }
-
-    private fun LockableDatabase.setLong(
-        table: String = "folders",
-        column: String,
-        value: Long,
-        selection: String = "id = ?",
-        vararg selectionArgs: String = arrayOf(databaseId)
-    ) {
-        execute(false) { db ->
-            val contentValues = ContentValues().apply {
-                put(column, value)
-            }
-            db.update(table, contentValues, selection, selectionArgs)
-        }
-    }
-
-    private fun String.toMoreMessages(): MoreMessages = when (this) {
-        "unknown" -> MoreMessages.UNKNOWN
-        "false" -> MoreMessages.FALSE
-        "true" -> MoreMessages.TRUE
-        else -> throw AssertionError("Unknown value for MoreMessages: $this")
-    }
-
-    private fun MoreMessages.toDatabaseValue(): String = when (this) {
-        MoreMessages.UNKNOWN -> "unknown"
-        MoreMessages.FALSE -> "false"
-        MoreMessages.TRUE -> "true"
+    private fun MoreMessages.toStoreMoreMessages(): StoreMoreMessages = when (this) {
+        MoreMessages.UNKNOWN -> StoreMoreMessages.UNKNOWN
+        MoreMessages.FALSE -> StoreMoreMessages.FALSE
+        MoreMessages.TRUE -> StoreMoreMessages.TRUE
     }
 
     private fun requireMessageServerId(message: Message) {

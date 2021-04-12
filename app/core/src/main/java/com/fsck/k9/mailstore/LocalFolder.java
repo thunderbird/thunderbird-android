@@ -1851,32 +1851,6 @@ public class LocalFolder {
         static final int CHILD_PART_CONTAINS_DATA = 3;
     }
 
-    public enum MoreMessages {
-        UNKNOWN("unknown"),
-        FALSE("false"),
-        TRUE("true");
-
-        private final String databaseName;
-
-        MoreMessages(String databaseName) {
-            this.databaseName = databaseName;
-        }
-
-        public static MoreMessages fromDatabaseName(String databaseName) {
-            for (MoreMessages value : MoreMessages.values()) {
-                if (value.databaseName.equals(databaseName)) {
-                    return value;
-                }
-            }
-
-            throw new IllegalArgumentException("Unknown value: " + databaseName);
-        }
-
-        public String getDatabaseName() {
-            return databaseName;
-        }
-    }
-
     public static boolean isModeMismatch(Account.FolderMode aMode, FolderClass fMode) {
         return aMode == Account.FolderMode.NONE
                 || (aMode == Account.FolderMode.FIRST_CLASS &&

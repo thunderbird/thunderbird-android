@@ -20,5 +20,6 @@ interface FolderDetailsAccessor {
     val notifyClass: FolderClass
     val pushClass: FolderClass
     val visibleLimit: Int
+    val moreMessages: MoreMessages
     val messageCount: Int
 }

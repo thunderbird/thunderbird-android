@@ -8,6 +8,7 @@ import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mailstore.FolderDetailsAccessor
 import com.fsck.k9.mailstore.FolderMapper
 import com.fsck.k9.mailstore.LockableDatabase
+import com.fsck.k9.mailstore.MoreMessages
 import com.fsck.k9.mailstore.toFolderType
 
 internal class RetrieveFolderOperations(private val lockableDatabase: LockableDatabase) {
@@ -161,8 +162,11 @@ private class CursorFolderAccessor(val cursor: Cursor) : FolderDetailsAccessor {
     override val visibleLimit: Int
         get() = cursor.getInt(11)
 
+    override val moreMessages: MoreMessages
+        get() = MoreMessages.fromDatabaseName(cursor.getString(12))
+
     override val messageCount: Int
-        get() = cursor.getInt(12)
+        get() = cursor.getInt(13)
 }
 
 private val FOLDER_COLUMNS = arrayOf(
@@ -177,5 +181,6 @@ private val FOLDER_COLUMNS = arrayOf(
     "display_class",
     "notify_class",
     "push_class",
-    "visible_limit"
+    "visible_limit",
+    "more_messages"
 )
