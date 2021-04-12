@@ -122,6 +122,7 @@
 
         <item name="materialDrawerStyle">@style/Widget.MaterialDrawerStyle.K9.Light</item>
         <item name="materialDrawerHeaderStyle">@style/Widget.MaterialDrawerHeaderStyle.K9.Light</item>
+        <item name="behindRecyclerView">#F0F0F0</item>
     </style>
 
     <style name="Theme.K9.Dark.Common" parent="Theme.K9.Dark.Base">
@@ -238,6 +239,8 @@
 
         <item name="materialDrawerStyle">@style/Widget.MaterialDrawerStyle.K9.Dark</item>
         <item name="materialDrawerHeaderStyle">@style/Widget.MaterialDrawerHeaderStyle.K9.Dark</item>
+
+        <item name="behindRecyclerView">#202020</item>
     </style>
 
     <style name="Theme.K9.Light" parent="Theme.K9.Light.Common" />

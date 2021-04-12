@@ -16,7 +16,7 @@ import org.koin.dsl.module
 
 val settingsUiModule = module {
     single { AccountsLiveData(get()) }
-    viewModel { SettingsViewModel(get()) }
+    viewModel { SettingsViewModel(accountManager = get(), accounts = get()) }
 
     factory { GeneralSettingsDataStore(jobManager = get(), themeManager = get()) }
     single(named("SaveSettingsExecutorService")) {

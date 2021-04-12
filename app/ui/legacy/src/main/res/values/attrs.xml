@@ -106,6 +106,8 @@
         <attr name="openpgp_blue" format="reference|color" />
         <attr name="openpgp_grey" format="reference|color" />
         <attr name="openpgp_dark_grey" format="reference|color" />
+
+        <attr name="behindRecyclerView" format="reference|color" />
     </declare-styleable>
 
     <declare-styleable name="FoldableLinearLayout">
@@ -131,6 +133,11 @@
 
     <declare-styleable name="SimpleHighlightView">
         <attr name="highlightBackgroundColor" format="color|reference" />
+    </declare-styleable>
+
+    <declare-styleable name="DraggableFrameView">
+        <!-- State when a list item is being dragged. -->
+        <attr format="boolean" name="state_dragged"/>
     </declare-styleable>
 
 </resources>
