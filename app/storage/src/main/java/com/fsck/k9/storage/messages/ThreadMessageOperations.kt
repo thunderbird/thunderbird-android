@@ -2,84 +2,190 @@ package com.fsck.k9.storage.messages
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
-import com.fsck.k9.mailstore.LocalFolder
-import com.fsck.k9.mailstore.LocalMessage
-import com.fsck.k9.mailstore.LocalStore
-import com.fsck.k9.mailstore.ThreadInfo as LegacyThreadInfo
+import com.fsck.k9.helper.Utility
+import com.fsck.k9.mail.message.MessageHeaderParser
+import java.util.Locale
 
-// TODO: Remove dependency on LocalStore
-internal class ThreadMessageOperations(private val localStore: LocalStore) {
+internal class ThreadMessageOperations {
 
     fun createOrUpdateParentThreadEntries(
         database: SQLiteDatabase,
         messageId: Long,
         destinationFolderId: Long
     ): ThreadInfo {
-        val message = getLocalMessage(database, messageId) ?: error("Couldn't find local message [ID: $messageId]")
-        val destinationFolder = getLocalFolder(destinationFolderId)
-
-        val legacyThreadInfo: LegacyThreadInfo = destinationFolder.doMessageThreading(database, message)
-        return legacyThreadInfo.toThreadInfo()
+        val threadHeaders = getMessageThreadHeaders(database, messageId)
+        return doMessageThreading(database, destinationFolderId, threadHeaders)
     }
 
-    fun createOrUpdateThreadEntry(
-        database: SQLiteDatabase,
-        destinationMessageId: Long,
-        threadInfo: ThreadInfo
-    ) {
-        val contentValues = ContentValues()
-        contentValues.put("message_id", destinationMessageId)
+    private fun getMessageThreadHeaders(database: SQLiteDatabase, messageId: Long): ThreadHeaders {
+        return database.rawQuery(
+            """
+            SELECT messages.message_id, message_parts.header 
+            FROM messages 
+            LEFT JOIN message_parts ON (messages.message_part_id = message_parts.id) 
+            WHERE messages.id = ?
+            """.trimIndent(),
+            arrayOf(messageId.toString()),
+        ).use { cursor ->
+            if (!cursor.moveToFirst()) error("Message not found: $messageId")
+
+            val messageIdHeader = cursor.getString(0)
+            val headerBytes = cursor.getBlob(1)
+
+            var inReplyToHeader: String? = null
+            var referencesHeader: String? = null
+            if (headerBytes != null) {
+                MessageHeaderParser.parse(headerBytes.inputStream()) { name, value ->
+                    when (name.toLowerCase(Locale.ROOT)) {
+                        "in-reply-to" -> inReplyToHeader = value
+                        "references" -> referencesHeader = value
+                    }
+                }
+            }
+
+            ThreadHeaders(messageIdHeader, inReplyToHeader, referencesHeader)
+        }
+    }
+
+    fun createOrUpdateThreadEntry(database: SQLiteDatabase, messageId: Long, threadInfo: ThreadInfo) {
         if (threadInfo.threadId == null) {
-            if (threadInfo.rootId != null) {
-                contentValues.put("root", threadInfo.rootId)
-            }
-            if (threadInfo.parentId != null) {
-                contentValues.put("parent", threadInfo.parentId)
-            }
-            database.insert("threads", null, contentValues)
+            createThreadEntry(database, messageId, threadInfo.rootId, threadInfo.parentId)
         } else {
+            val contentValues = ContentValues().apply {
+                put("message_id", messageId)
+            }
+
             database.update("threads", contentValues, "id = ?", arrayOf(threadInfo.threadId.toString()))
         }
     }
 
-    private fun getLocalMessage(database: SQLiteDatabase, messageId: Long): LocalMessage? {
-        return database.query(
-            "messages",
-            arrayOf("uid", "folder_id"),
-            "id = ?",
-            arrayOf(messageId.toString()),
-            null, null, null
+    private fun createThreadEntry(database: SQLiteDatabase, messageId: Long, rootId: Long?, parentId: Long?): Long {
+        val values = ContentValues().apply {
+            put("message_id", messageId)
+            put("root", rootId)
+            put("parent", parentId)
+        }
+
+        return database.insert("threads", null, values)
+    }
+
+    // TODO: Use MessageIdParser
+    private fun doMessageThreading(database: SQLiteDatabase, folderId: Long, threadHeaders: ThreadHeaders): ThreadInfo {
+        val messageIdHeader = threadHeaders.messageIdHeader
+        val msgThreadInfo = getThreadInfo(database, folderId, messageIdHeader, onlyEmpty = true)
+
+        val references = threadHeaders.referencesHeader.extractMessageIdValues()
+        val inReplyTo = threadHeaders.inReplyToHeader.extractMessageIdValue()
+
+        val messageIdValues = if (inReplyTo == null || inReplyTo in references) {
+            references
+        } else {
+            references + inReplyTo
+        }
+
+        if (messageIdValues.isEmpty()) {
+            // This is not a reply, nothing to do for us.
+            return msgThreadInfo
+                ?: ThreadInfo(threadId = null, messageId = null, messageIdHeader, rootId = null, parentId = null)
+        }
+
+        var rootId: Long? = null
+        var parentId: Long? = null
+        for (reference in messageIdValues) {
+            val threadInfo = getThreadInfo(database, folderId, reference, onlyEmpty = false)
+            if (threadInfo == null) {
+                parentId = createEmptyMessage(database, folderId, reference, rootId, parentId)
+                if (rootId == null) {
+                    rootId = parentId
+                }
+            } else {
+                if (rootId != null && threadInfo.rootId == null && rootId != threadInfo.threadId) {
+                    // We found an existing root container that is not the root of our current path (References).
+                    updateThreadToNewRoot(database, threadInfo.threadId!!, rootId, parentId)
+                } else {
+                    rootId = threadInfo.rootId ?: threadInfo.threadId
+                }
+                parentId = threadInfo.threadId
+            }
+        }
+
+        // TODO: set in-reply-to "link" even if one already exists
+
+        return ThreadInfo(msgThreadInfo?.threadId, msgThreadInfo?.messageId, messageIdHeader, rootId, parentId)
+    }
+
+    private fun updateThreadToNewRoot(database: SQLiteDatabase, oldRootId: Long, rootId: Long, parentId: Long?) {
+        // Let all children know who's the new root
+        val values = ContentValues()
+        values.put("root", rootId)
+        database.update("threads", values, "root = ?", arrayOf(oldRootId.toString()))
+
+        // Connect the message to the current parent
+        values.put("parent", parentId)
+        database.update("threads", values, "id = ?", arrayOf(oldRootId.toString()))
+    }
+
+    private fun createEmptyMessage(
+        database: SQLiteDatabase,
+        folderId: Long,
+        messageIdHeader: String,
+        rootId: Long?,
+        parentId: Long?
+    ): Long {
+        val messageValues = ContentValues().apply {
+            put("message_id", messageIdHeader)
+            put("folder_id", folderId)
+            put("empty", 1)
+        }
+        val messageId = database.insert("messages", null, messageValues)
+
+        val threadValues = ContentValues().apply {
+            put("message_id", messageId)
+            put("root", rootId)
+            put("parent", parentId)
+        }
+        return database.insert("threads", null, threadValues)
+    }
+
+    private fun getThreadInfo(
+        db: SQLiteDatabase,
+        folderId: Long,
+        messageIdHeader: String?,
+        onlyEmpty: Boolean
+    ): ThreadInfo? {
+        if (messageIdHeader == null) return null
+
+        return db.rawQuery(
+            """
+            SELECT t.id, t.message_id, t.root, t.parent 
+            FROM messages m 
+            LEFT JOIN threads t ON (t.message_id = m.id) 
+            WHERE m.folder_id = ? AND m.message_id = ? 
+            ${if (onlyEmpty) "AND m.empty = 1 " else ""}
+            ORDER BY m.id 
+            LIMIT 1
+            """.trimIndent(),
+            arrayOf(folderId.toString(), messageIdHeader)
         ).use { cursor ->
             if (cursor.moveToFirst()) {
-                val uid = cursor.getString(0)
-                val folderId = cursor.getLong(1)
-
-                val folder = getLocalFolder(folderId)
-                folder.getMessage(uid)
+                val threadId = cursor.getLong(0)
+                val messageId = cursor.getLong(1)
+                val rootId = if (cursor.isNull(2)) null else cursor.getLong(2)
+                val parentId = if (cursor.isNull(3)) null else cursor.getLong(3)
+                ThreadInfo(threadId, messageId, messageIdHeader, rootId, parentId)
             } else {
                 null
             }
         }
     }
 
-    private fun getLocalFolder(destinationFolderId: Long): LocalFolder {
-        val destinationFolder = localStore.getFolder(destinationFolderId)
-        destinationFolder.open()
-
-        return destinationFolder
+    private fun String?.extractMessageIdValues(): List<String> {
+        return this?.let { headerValue -> Utility.extractMessageIds(headerValue) } ?: emptyList()
     }
 
-    private fun LegacyThreadInfo.toThreadInfo(): ThreadInfo {
-        return ThreadInfo(
-            threadId = threadId.minusOneToNull(),
-            messageId = msgId.minusOneToNull(),
-            messageIdHeader = messageId,
-            rootId = rootId.minusOneToNull(),
-            parentId = parentId.minusOneToNull()
-        )
+    private fun String?.extractMessageIdValue(): String? {
+        return this?.let { headerValue -> Utility.extractMessageId(headerValue) }
     }
-
-    private fun Long.minusOneToNull() = if (this == -1L) null else this
 }
 
 internal data class ThreadInfo(
@@ -88,4 +194,10 @@ internal data class ThreadInfo(
     val messageIdHeader: String?,
     val rootId: Long?,
     val parentId: Long?
+)
+
+internal data class ThreadHeaders(
+    val messageIdHeader: String?,
+    val inReplyToHeader: String?,
+    val referencesHeader: String?
 )
