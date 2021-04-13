@@ -284,9 +284,7 @@ public abstract class MessageBuilder {
      *         original message.
      */
     private TextBody buildText(boolean isDraft, SimpleMessageFormat simpleMessageFormat) {
-        String messageText = text;
-
-        TextBodyBuilder textBodyBuilder = new TextBodyBuilder(messageText);
+        TextBodyBuilder textBodyBuilder = new TextBodyBuilder(text);
 
         /*
          * Find out if we need to include the original message as quoted text.

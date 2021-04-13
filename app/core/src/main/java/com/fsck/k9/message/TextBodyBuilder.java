@@ -1,7 +1,6 @@
 package com.fsck.k9.message;
 
 
-import android.text.TextUtils;
 import timber.log.Timber;
 
 import com.fsck.k9.K9;
@@ -12,6 +11,9 @@ import com.fsck.k9.message.quote.InsertableHtmlContent;
 
 
 class TextBodyBuilder {
+    public static final String HTML_AND_BODY_START = "<!DOCTYPE html><html><body>";
+    public static final String HTML_AND_BODY_END = "</body></html>";
+
     private boolean mIncludeQuotedText = true;
     private boolean mReplyAfterQuote = false;
     private boolean mSignatureBeforeQuotedText = false;
@@ -38,7 +40,7 @@ class TextBodyBuilder {
         int composedMessageLength;
 
         // The offset of the user-supplied text/reply in the final text body
-        int composedMessageOffset;
+        int composedMessageOffset = 0;
 
         // Get the user-supplied text
         String text = mMessageContent;
@@ -51,15 +53,16 @@ class TextBodyBuilder {
                 Timber.d("insertable: %s", quotedHtmlContent.toDebugString());
             }
 
-            if (mAppendSignature) {
-                // Append signature to the reply
-                if (mReplyAfterQuote || mSignatureBeforeQuotedText) {
-                    text += getSignature();
-                }
-            }
-
             // Convert the text to HTML
             text = textToHtmlFragment(text);
+
+            // Save length of the body. This is used when thawing drafts.
+            composedMessageLength = text.length();
+
+            // Append signature to the reply
+            if (mAppendSignature && (mReplyAfterQuote || mSignatureBeforeQuotedText)) {
+                text += getSignatureHtml();
+            }
 
             /*
              * Set the insertion location based upon our reply after quote
@@ -73,7 +76,9 @@ class TextBodyBuilder {
                 quotedHtmlContent.setInsertionLocation(
                         InsertableHtmlContent.InsertionLocation.AFTER_QUOTE);
                 if (mInsertSeparator) {
-                    text = "<br clear=\"all\">" + text;
+                    final String separator = "<br clear=\"all\">";
+                    text = separator + text;
+                    composedMessageOffset = separator.length();
                 }
             } else {
                 quotedHtmlContent.setInsertionLocation(
@@ -83,33 +88,30 @@ class TextBodyBuilder {
                 }
             }
 
-            if (mAppendSignature) {
-                // Place signature immediately after the quoted text
-                if (!(mReplyAfterQuote || mSignatureBeforeQuotedText)) {
-                    quotedHtmlContent.insertIntoQuotedFooter(getSignatureHtml());
-                }
+            // Place signature immediately after the quoted text
+            if (mAppendSignature && !(mReplyAfterQuote || mSignatureBeforeQuotedText)) {
+                quotedHtmlContent.insertIntoQuotedFooter(getSignatureHtml());
             }
 
             quotedHtmlContent.setUserContent(text);
 
-            // Save length of the body and its offset.  This is used when thawing drafts.
-            composedMessageLength = text.length();
-            composedMessageOffset = quotedHtmlContent.getInsertionPoint();
+            // Save the body's offset. This is used when thawing drafts.
+            composedMessageOffset += quotedHtmlContent.getInsertionPoint();
             text = quotedHtmlContent.toString();
 
         } else {
-            // There is no text to quote so simply append the signature if available
-            if (mAppendSignature) {
-                text += getSignature();
-            }
-
             // Convert the text to HTML
             text = textToHtmlFragment(text);
 
-            //TODO: Wrap this in proper HTML tags
-
             composedMessageLength = text.length();
-            composedMessageOffset = 0;
+            composedMessageOffset = HTML_AND_BODY_START.length();
+
+            // There is no text to quote so simply append the signature if available
+            if (mAppendSignature) {
+                text += getSignatureHtml();
+            }
+
+            text = HTML_AND_BODY_START + text + HTML_AND_BODY_END;
         }
 
         TextBody body = new TextBody(text);
@@ -143,11 +145,9 @@ class TextBodyBuilder {
         if (mIncludeQuotedText) {
             String quotedText = getQuotedText();
 
-            if (mAppendSignature) {
-                // Append signature to the text/reply
-                if (mReplyAfterQuote || mSignatureBeforeQuotedText) {
-                    text += getSignature();
-                }
+            // Append signature to the text/reply
+            if (mAppendSignature && (mReplyAfterQuote || mSignatureBeforeQuotedText)) {
+                text += getSignature();
             }
 
             if (mReplyAfterQuote) {
@@ -157,11 +157,9 @@ class TextBodyBuilder {
                 text += "\r\n\r\n" + quotedText;
             }
 
-            if (mAppendSignature) {
-                // Place signature immediately after the quoted text
-                if (!(mReplyAfterQuote || mSignatureBeforeQuotedText)) {
-                    text += getSignature();
-                }
+            // Place signature immediately after the quoted text
+            if (mAppendSignature && !(mReplyAfterQuote || mSignatureBeforeQuotedText)) {
+                text += getSignature();
             }
         } else {
             // There is no text to quote so simply append the signature if available
@@ -180,7 +178,7 @@ class TextBodyBuilder {
 
     private String getSignature() {
         String signature = "";
-        if (!TextUtils.isEmpty(mSignature)) {
+        if (!isEmpty(mSignature)) {
             signature = "\r\n" + mSignature;
         }
 
@@ -189,15 +187,15 @@ class TextBodyBuilder {
 
     private String getSignatureHtml() {
         String signature = "";
-        if (!TextUtils.isEmpty(mSignature)) {
-            signature = textToHtmlFragment("\r\n" + mSignature);
+        if (!isEmpty(mSignature)) {
+            signature = "<div style='white-space: pre-wrap'>" + textToHtmlFragment(mSignature) + "</div>";
         }
         return signature;
     }
 
     private String getQuotedText() {
         String quotedText = "";
-        if (!TextUtils.isEmpty(mQuotedText)) {
+        if (!isEmpty(mQuotedText)) {
             quotedText = mQuotedText;
         }
         return quotedText;
@@ -244,5 +242,9 @@ class TextBodyBuilder {
 
     public void setAppendSignature(boolean appendSignature) {
         mAppendSignature = appendSignature;
+    }
+
+    private static boolean isEmpty(String s) {
+        return s == null || s.length() == 0;
     }
 }
