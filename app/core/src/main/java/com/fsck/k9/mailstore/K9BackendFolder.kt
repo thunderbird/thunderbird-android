@@ -107,13 +107,7 @@ class K9BackendFolder(
     }
 
     override fun getOldestMessageDate(): Date? {
-        return database.rawQuery("SELECT MIN(date) FROM messages WHERE folder_id = ?", databaseId) { cursor ->
-            if (cursor.moveToFirst()) {
-                Date(cursor.getLong(0))
-            } else {
-                null
-            }
-        }
+        return messageStore.getOldestMessageDate(folderId)
     }
 
     override fun getFolderExtraString(name: String): String? {

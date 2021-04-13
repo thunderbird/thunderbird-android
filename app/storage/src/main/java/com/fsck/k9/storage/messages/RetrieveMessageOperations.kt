@@ -9,6 +9,7 @@ import com.fsck.k9.mail.internet.MimeHeader
 import com.fsck.k9.mail.message.MessageHeaderParser
 import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.MessageNotFoundException
+import java.util.Date
 
 internal class RetrieveMessageOperations(private val lockableDatabase: LockableDatabase) {
 
@@ -147,6 +148,22 @@ internal class RetrieveMessageOperations(private val lockableDatabase: LockableD
                     result[uid] = date
                 }
                 result
+            }
+        }
+    }
+
+    fun getOldestMessageDate(folderId: Long): Date? {
+        return lockableDatabase.execute(false) { database ->
+            database.rawQuery(
+                "SELECT MIN(date) FROM messages WHERE folder_id = ?",
+                arrayOf(folderId.toString())
+            ).use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val timestamp = cursor.getLong(0)
+                    if (timestamp != 0L) Date(timestamp) else null
+                } else {
+                    null
+                }
             }
         }
     }
