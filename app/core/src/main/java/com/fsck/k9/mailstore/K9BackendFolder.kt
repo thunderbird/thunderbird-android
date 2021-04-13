@@ -8,7 +8,6 @@ import java.util.Date
 import com.fsck.k9.mailstore.MoreMessages as StoreMoreMessages
 
 class K9BackendFolder(
-    localStore: LocalStore,
     private val messageStore: MessageStore,
     private val saveMessageDataCreator: SaveMessageDataCreator,
     folderServerId: String

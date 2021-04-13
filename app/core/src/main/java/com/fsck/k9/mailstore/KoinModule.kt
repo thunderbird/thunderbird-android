@@ -15,7 +15,6 @@ val mailStoreModule = module {
         K9BackendStorageFactory(
             preferences = get(),
             folderRepositoryManager = get(),
-            localStoreProvider = get(),
             messageStoreManager = get(),
             specialFolderSelectionStrategy = get(),
             saveMessageDataCreator = get()
