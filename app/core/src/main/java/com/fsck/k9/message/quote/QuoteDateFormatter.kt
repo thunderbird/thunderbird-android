@@ -1,6 +1,7 @@
 package com.fsck.k9.message.quote
 
 import com.fsck.k9.K9
+import com.fsck.k9.LocaleHelper.Companion.actualLocale
 import java.text.DateFormat
 import java.util.Date
 import java.util.TimeZone
@@ -20,7 +21,7 @@ class QuoteDateFormatter {
     }
 
     private fun createDateFormat(): DateFormat {
-        return DateFormat.getDateTimeInstance(DATE_STYLE, TIME_STYLE).apply {
+        return DateFormat.getDateTimeInstance(DATE_STYLE, TIME_STYLE, actualLocale()).apply {
             if (K9.isHideTimeZone) {
                 timeZone = TimeZone.getTimeZone("UTC")
             }

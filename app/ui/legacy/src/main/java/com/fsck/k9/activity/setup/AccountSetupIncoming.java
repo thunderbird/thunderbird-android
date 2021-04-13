@@ -121,6 +121,8 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setLayout(R.layout.account_setup_incoming);
+        // For some reason we need to set the title, see issue #4407
+        setTitle(R.string.account_setup_incoming_title);
 
         mUsernameView = findViewById(R.id.account_username);
         mPasswordView = findViewById(R.id.account_password);

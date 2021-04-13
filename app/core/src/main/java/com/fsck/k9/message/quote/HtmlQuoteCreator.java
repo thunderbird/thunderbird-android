@@ -4,8 +4,6 @@ package com.fsck.k9.message.quote;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import android.content.res.Resources;
-
 import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.DI;
 import timber.log.Timber;
@@ -44,7 +42,7 @@ public class HtmlQuoteCreator {
      * @param quoteStyle Style of quoting.
      * @return Modified insertable message.
      */
-    public static InsertableHtmlContent quoteOriginalHtmlMessage(Resources resources, Message originalMessage,
+    public static InsertableHtmlContent quoteOriginalHtmlMessage(Message originalMessage,
             String messageBody, QuoteStyle quoteStyle) {
         CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
         InsertableHtmlContent insertable = findInsertionPoints(messageBody);

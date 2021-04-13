@@ -113,8 +113,7 @@ public class QuotedMessagePresenter {
             }
 
             // Add the HTML reply header to the top of the content.
-            quotedHtmlContent = HtmlQuoteCreator.quoteOriginalHtmlMessage(
-                    resources, messageViewInfo.message, content, quoteStyle);
+            quotedHtmlContent = HtmlQuoteCreator.quoteOriginalHtmlMessage(messageViewInfo.message, content, quoteStyle);
 
             // Load the message with the reply header. TODO replace with MessageViewInfo data
             view.setQuotedHtml(quotedHtmlContent.getQuotedContent(),

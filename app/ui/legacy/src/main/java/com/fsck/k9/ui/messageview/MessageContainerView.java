@@ -45,6 +45,7 @@ import com.fsck.k9.view.MessageWebView.OnPageFinishedListener;
 import com.fsck.k9.view.WebViewConfigProvider;
 
 import static android.app.DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED;
+import static com.fsck.k9.LocaleHelper.initializeLocale;
 
 
 public class MessageContainerView extends LinearLayout implements OnCreateContextMenuListener {
@@ -90,6 +91,7 @@ public class MessageContainerView extends LinearLayout implements OnCreateContex
     @Override
     public void onFinishInflate() {
         super.onFinishInflate();
+        initializeLocale(getResources());
 
         mMessageContentView = findViewById(R.id.message_content);
         if (!isInEditMode()) {

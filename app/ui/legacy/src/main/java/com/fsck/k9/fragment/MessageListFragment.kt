@@ -29,6 +29,7 @@ import com.fsck.k9.Account.Expunge
 import com.fsck.k9.Account.SortType
 import com.fsck.k9.Clock
 import com.fsck.k9.K9
+import com.fsck.k9.LocaleHelper.Companion.initializeLocale
 import com.fsck.k9.Preferences
 import com.fsck.k9.activity.FolderInfoHolder
 import com.fsck.k9.activity.misc.ContactPicture
@@ -149,6 +150,8 @@ class MessageListFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // For some reason language is reset, see issue #4407 -> init again
+        initializeLocale(resources)
 
         restoreInstanceState(savedInstanceState)
         decodeArguments()

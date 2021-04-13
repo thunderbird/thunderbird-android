@@ -119,6 +119,8 @@ import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.util.OpenPgpApi;
 import timber.log.Timber;
 
+import static com.fsck.k9.LocaleHelper.initializeLocale;
+
 
 @SuppressWarnings("deprecation") // TODO get rid of activity dialogs and indeterminate progress bars
 public class MessageCompose extends K9Activity implements OnClickListener,
@@ -259,6 +261,8 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         contentContainer.setLayoutInflater(themedLayoutInflater);
 
         View contentView = contentContainer.inflate();
+        // For some reason language is reset, see issue #4407 -> init again
+        initializeLocale(getResources());
 
         // background color needs to be forced
         //TODO: Change themes to use appropriate background colors that don't need overriding.
