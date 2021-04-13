@@ -1,9 +1,5 @@
 package com.fsck.k9.mailstore
 
-import android.content.ContentValues
-import android.database.sqlite.SQLiteDatabase
-import androidx.core.database.getLongOrNull
-import androidx.core.database.getStringOrNull
 import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.backend.api.BackendFolder.MoreMessages
 import com.fsck.k9.mail.Flag
@@ -17,7 +13,6 @@ class K9BackendFolder(
     private val saveMessageDataCreator: SaveMessageDataCreator,
     folderServerId: String
 ) : BackendFolder {
-    private val database = localStore.database
     private val databaseId: String
     private val folderId: Long
     override val name: String
@@ -111,69 +106,19 @@ class K9BackendFolder(
     }
 
     override fun getFolderExtraString(name: String): String? {
-        return database.execute(false) { db ->
-            val cursor = db.query(
-                "folder_extra_values",
-                arrayOf("value_text"),
-                "name = ? AND folder_id = ?",
-                arrayOf(name, databaseId),
-                null, null, null
-            )
-
-            cursor.use {
-                if (it.moveToFirst()) {
-                    it.getStringOrNull(0)
-                } else {
-                    null
-                }
-            }
-        }
+        return messageStore.getFolderExtraString(folderId, name)
     }
 
     override fun setFolderExtraString(name: String, value: String?) {
-        database.execute(false) { db ->
-            val contentValues = ContentValues().apply {
-                put("name", name)
-                if (value != null) {
-                    put("value_text", value)
-                } else {
-                    putNull("value_text")
-                }
-                put("folder_id", databaseId)
-            }
-            db.insertWithOnConflict("folder_extra_values", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE)
-        }
+        messageStore.setFolderExtraString(folderId, name, value)
     }
 
     override fun getFolderExtraNumber(name: String): Long? {
-        return database.execute(false) { db ->
-            val cursor = db.query(
-                "folder_extra_values",
-                arrayOf("value_integer"),
-                "name = ? AND folder_id = ?",
-                arrayOf(name, databaseId),
-                null, null, null
-            )
-
-            cursor.use {
-                if (it.moveToFirst()) {
-                    it.getLongOrNull(0)
-                } else {
-                    null
-                }
-            }
-        }
+        return messageStore.getFolderExtraNumber(folderId, name)
     }
 
     override fun setFolderExtraNumber(name: String, value: Long) {
-        database.execute(false) { db ->
-            val contentValues = ContentValues().apply {
-                put("name", name)
-                put("value_integer", value)
-                put("folder_id", databaseId)
-            }
-            db.insertWithOnConflict("folder_extra_values", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE)
-        }
+        messageStore.setFolderExtraNumber(folderId, name, value)
     }
 
     private fun StoreMoreMessages.toMoreMessages(): MoreMessages = when (this) {

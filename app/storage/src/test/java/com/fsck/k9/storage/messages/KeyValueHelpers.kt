@@ -38,3 +38,40 @@ data class ExtraValueEntry(
     val text: String?,
     val number: Long?
 )
+
+fun SQLiteDatabase.createFolderExtraValue(
+    folderId: Long,
+    name: String = "irrelevant",
+    text: String? = null,
+    number: Long? = null
+): Long {
+    val values = ContentValues().apply {
+        put("folder_id", folderId)
+        put("name", name)
+        put("value_text", text)
+        put("value_integer", number)
+    }
+
+    return insert("folder_extra_values", null, values)
+}
+
+fun SQLiteDatabase.readFolderExtraValues(): List<FolderExtraValueEntry> {
+    val cursor = rawQuery("SELECT * FROM folder_extra_values", null)
+    return cursor.use {
+        cursor.map {
+            FolderExtraValueEntry(
+                folderId = cursor.getLongOrNull("folder_id"),
+                name = cursor.getStringOrNull("name"),
+                text = cursor.getStringOrNull("value_text"),
+                number = cursor.getLongOrNull("value_integer")
+            )
+        }
+    }
+}
+
+data class FolderExtraValueEntry(
+    val folderId: Long?,
+    val name: String?,
+    val text: String?,
+    val number: Long?
+)

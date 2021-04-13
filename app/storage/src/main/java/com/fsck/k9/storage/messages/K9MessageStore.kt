@@ -187,4 +187,20 @@ class K9MessageStore(
     override fun setExtraNumber(name: String, value: Long) {
         keyValueStoreOperations.setExtraNumber(name, value)
     }
+
+    override fun getFolderExtraString(folderId: Long, name: String): String? {
+        return keyValueStoreOperations.getFolderExtraString(folderId, name)
+    }
+
+    override fun setFolderExtraString(folderId: Long, name: String, value: String?) {
+        return keyValueStoreOperations.setFolderExtraString(folderId, name, value)
+    }
+
+    override fun getFolderExtraNumber(folderId: Long, name: String): Long? {
+        return keyValueStoreOperations.getFolderExtraNumber(folderId, name)
+    }
+
+    override fun setFolderExtraNumber(folderId: Long, name: String, value: Long) {
+        return keyValueStoreOperations.setFolderExtraNumber(folderId, name, value)
+    }
 }
