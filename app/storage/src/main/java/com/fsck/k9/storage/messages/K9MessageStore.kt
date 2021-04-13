@@ -22,7 +22,7 @@ class K9MessageStore(
 ) : MessageStore {
     private val database: LockableDatabase = localStore.database
     private val attachmentFileManager = AttachmentFileManager(storageManager, accountUuid)
-    private val threadMessageOperations = ThreadMessageOperations(localStore)
+    private val threadMessageOperations = ThreadMessageOperations()
     private val moveMessageOperations = MoveMessageOperations(database, threadMessageOperations)
     private val flagMessageOperations = FlagMessageOperations(database)
     private val retrieveMessageOperations = RetrieveMessageOperations(database)

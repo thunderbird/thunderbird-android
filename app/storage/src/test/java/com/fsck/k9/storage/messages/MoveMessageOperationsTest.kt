@@ -3,11 +3,7 @@ package com.fsck.k9.storage.messages
 import com.fsck.k9.K9
 import com.fsck.k9.storage.RobolectricTest
 import com.google.common.truth.Truth.assertThat
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
 import org.junit.Test
-import org.mockito.ArgumentMatchers.anyLong
 import org.junit.Assert.fail as junitFail
 
 private const val SOURCE_FOLDER_ID = 3L
@@ -15,8 +11,9 @@ private const val DESTINATION_FOLDER_ID = 23L
 private const val MESSAGE_ID_HEADER = "<00000000-0000-4000-0000-000000000000@domain.example>"
 
 class MoveMessageOperationsTest : RobolectricTest() {
-    val sqliteDatabase = createDatabase()
-    val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
+    private val sqliteDatabase = createDatabase()
+    private val lockableDatabase = createLockableDatabaseMock(sqliteDatabase)
+    private val moveMessageOperations = MoveMessageOperations(lockableDatabase, ThreadMessageOperations())
 
     @Test
     fun `move message not part of a thread`() {
@@ -26,17 +23,8 @@ class MoveMessageOperationsTest : RobolectricTest() {
             subject = "Move me",
             messageIdHeader = MESSAGE_ID_HEADER
         )
+        sqliteDatabase.createThread(messageId = originalMessageId)
         val originalMessage = sqliteDatabase.readMessages().first()
-        val messageThreader = createMessageThreader(
-            ThreadInfo(
-                threadId = null,
-                messageId = null,
-                messageIdHeader = MESSAGE_ID_HEADER,
-                rootId = null,
-                parentId = null
-            )
-        )
-        val moveMessageOperations = MoveMessageOperations(lockableDatabase, messageThreader)
 
         val destinationMessageId = moveMessageOperations.moveMessage(
             messageId = originalMessageId,
@@ -46,15 +34,13 @@ class MoveMessageOperationsTest : RobolectricTest() {
         val messages = sqliteDatabase.readMessages()
         assertThat(messages).hasSize(2)
 
-        val sourceMessage = messages.find { it.id == originalMessageId }
-            ?: fail("Original message not found")
+        val sourceMessage = messages.first { it.id == originalMessageId }
         assertThat(sourceMessage.folderId).isEqualTo(SOURCE_FOLDER_ID)
         assertThat(sourceMessage.uid).isEqualTo("uid1")
         assertThat(sourceMessage.messageId).isEqualTo(MESSAGE_ID_HEADER)
         assertPlaceholderEntry(sourceMessage)
 
-        val destinationMessage = messages.find { it.id == destinationMessageId }
-            ?: fail("Destination message not found")
+        val destinationMessage = messages.first { it.id == destinationMessageId }
         assertThat(destinationMessage.uid).startsWith(K9.LOCAL_UID_PREFIX)
         assertThat(destinationMessage).isEqualTo(
             originalMessage.copy(
@@ -65,6 +51,17 @@ class MoveMessageOperationsTest : RobolectricTest() {
                 empty = 0
             )
         )
+
+        val threads = sqliteDatabase.readThreads()
+        assertThat(threads).hasSize(2)
+
+        val originalMessageThread = threads.first { it.messageId == originalMessageId }
+        assertThat(originalMessageThread.id).isEqualTo(originalMessageThread.root)
+        assertThat(originalMessageThread.parent).isNull()
+
+        val destinationMessageThread = threads.first { it.messageId == destinationMessageId }
+        assertThat(destinationMessageThread.id).isEqualTo(destinationMessageThread.root)
+        assertThat(destinationMessageThread.parent).isNull()
     }
 
     @Test
@@ -76,6 +73,7 @@ class MoveMessageOperationsTest : RobolectricTest() {
             messageIdHeader = MESSAGE_ID_HEADER,
             read = false
         )
+        sqliteDatabase.createThread(messageId = originalMessageId)
         val originalMessage = sqliteDatabase.readMessages().first()
         val placeholderMessageId = sqliteDatabase.createMessage(
             empty = true,
@@ -83,16 +81,17 @@ class MoveMessageOperationsTest : RobolectricTest() {
             messageIdHeader = MESSAGE_ID_HEADER,
             uid = ""
         )
-        val messageThreader = createMessageThreader(
-            ThreadInfo(
-                threadId = null,
-                messageId = placeholderMessageId,
-                messageIdHeader = MESSAGE_ID_HEADER,
-                rootId = null,
-                parentId = null
-            )
+        val placeholderThreadId = sqliteDatabase.createThread(messageId = placeholderMessageId)
+        val childMessageId = sqliteDatabase.createMessage(
+            folderId = DESTINATION_FOLDER_ID,
+            messageIdHeader = "<msg02@domain.example>",
+            uid = "uid2"
         )
-        val moveMessageOperations = MoveMessageOperations(lockableDatabase, messageThreader)
+        sqliteDatabase.createThread(
+            messageId = childMessageId,
+            root = placeholderThreadId,
+            parent = placeholderThreadId
+        )
 
         val destinationMessageId = moveMessageOperations.moveMessage(
             messageId = originalMessageId,
@@ -100,17 +99,15 @@ class MoveMessageOperationsTest : RobolectricTest() {
         )
 
         val messages = sqliteDatabase.readMessages()
-        assertThat(messages).hasSize(2)
+        assertThat(messages).hasSize(3)
 
-        val sourceMessage = messages.find { it.id == originalMessageId }
-            ?: fail("Original message not found in database")
+        val sourceMessage = messages.first { it.id == originalMessageId }
         assertThat(sourceMessage.folderId).isEqualTo(SOURCE_FOLDER_ID)
         assertThat(sourceMessage.uid).isEqualTo("uid1")
         assertThat(sourceMessage.messageId).isEqualTo(MESSAGE_ID_HEADER)
         assertPlaceholderEntry(sourceMessage)
 
-        val destinationMessage = messages.find { it.id == destinationMessageId }
-            ?: fail("Destination message not found in database")
+        val destinationMessage = messages.first { it.id == destinationMessageId }
         assertThat(destinationMessage.uid).startsWith(K9.LOCAL_UID_PREFIX)
         assertThat(destinationMessage).isEqualTo(
             originalMessage.copy(
@@ -121,6 +118,21 @@ class MoveMessageOperationsTest : RobolectricTest() {
                 empty = 0
             )
         )
+
+        val threads = sqliteDatabase.readThreads()
+        assertThat(threads).hasSize(3)
+
+        val originalMessageThread = threads.first { it.messageId == originalMessageId }
+        assertThat(originalMessageThread.id).isEqualTo(originalMessageThread.root)
+        assertThat(originalMessageThread.parent).isNull()
+
+        val destinationMessageThread = threads.first { it.messageId == destinationMessageId }
+        assertThat(destinationMessageThread.id).isEqualTo(destinationMessageThread.root)
+        assertThat(destinationMessageThread.parent).isNull()
+
+        val childMessageThread = threads.first { it.messageId == childMessageId }
+        assertThat(childMessageThread.root).isEqualTo(destinationMessageThread.id)
+        assertThat(childMessageThread.parent).isEqualTo(destinationMessageThread.id)
     }
 
     @Test
@@ -131,17 +143,8 @@ class MoveMessageOperationsTest : RobolectricTest() {
             subject = "Move me",
             messageIdHeader = null
         )
+        sqliteDatabase.createThread(messageId = originalMessageId)
         val originalMessage = sqliteDatabase.readMessages().first()
-        val messageThreader = createMessageThreader(
-            ThreadInfo(
-                threadId = null,
-                messageId = null,
-                messageIdHeader = null,
-                rootId = null,
-                parentId = null
-            )
-        )
-        val moveMessageOperations = MoveMessageOperations(lockableDatabase, messageThreader)
 
         val destinationMessageId = moveMessageOperations.moveMessage(
             messageId = originalMessageId,
@@ -151,14 +154,12 @@ class MoveMessageOperationsTest : RobolectricTest() {
         val messages = sqliteDatabase.readMessages()
         assertThat(messages).hasSize(2)
 
-        val sourceMessage = messages.find { it.id == originalMessageId }
-            ?: fail("Original message not found")
+        val sourceMessage = messages.first { it.id == originalMessageId }
         assertThat(sourceMessage.folderId).isEqualTo(SOURCE_FOLDER_ID)
         assertThat(sourceMessage.uid).isEqualTo("uid1")
         assertPlaceholderEntry(sourceMessage)
 
-        val destinationMessage = messages.find { it.id == destinationMessageId }
-            ?: fail("Destination message not found")
+        val destinationMessage = messages.first { it.id == destinationMessageId }
         assertThat(destinationMessage.uid).startsWith(K9.LOCAL_UID_PREFIX)
         assertThat(destinationMessage).isEqualTo(
             originalMessage.copy(
@@ -169,12 +170,17 @@ class MoveMessageOperationsTest : RobolectricTest() {
                 empty = 0
             )
         )
-    }
 
-    private fun createMessageThreader(threadInfo: ThreadInfo): ThreadMessageOperations {
-        return mock {
-            on { createOrUpdateParentThreadEntries(any(), anyLong(), anyLong()) } doReturn threadInfo
-        }
+        val threads = sqliteDatabase.readThreads()
+        assertThat(threads).hasSize(2)
+
+        val originalMessageThread = threads.first { it.messageId == originalMessageId }
+        assertThat(originalMessageThread.id).isEqualTo(originalMessageThread.root)
+        assertThat(originalMessageThread.parent).isNull()
+
+        val destinationMessageThread = threads.first { it.messageId == destinationMessageId }
+        assertThat(destinationMessageThread.id).isEqualTo(destinationMessageThread.root)
+        assertThat(destinationMessageThread.parent).isNull()
     }
 
     private fun assertPlaceholderEntry(message: MessageEntry) {
