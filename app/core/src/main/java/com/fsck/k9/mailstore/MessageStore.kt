@@ -14,6 +14,11 @@ import com.fsck.k9.mail.Header
  */
 interface MessageStore {
     /**
+     * Save a remote message in this store.
+     */
+    fun saveRemoteMessage(folderId: Long, messageServerId: String, messageData: SaveMessageData)
+
+    /**
      * Move a message to another folder.
      *
      * @return The message's database ID in the destination folder. This will most likely be different from the

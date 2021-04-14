@@ -7,5 +7,7 @@ import org.koin.dsl.module
 
 val storageModule = module {
     single<SchemaDefinitionFactory> { K9SchemaDefinitionFactory() }
-    single<MessageStoreFactory> { K9MessageStoreFactory(localStoreProvider = get(), storageManager = get()) }
+    single<MessageStoreFactory> {
+        K9MessageStoreFactory(localStoreProvider = get(), storageManager = get(), basicPartInfoExtractor = get())
+    }
 }
