@@ -6,6 +6,7 @@ import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.crlf
 import com.fsck.k9.storage.RobolectricTest
 import com.google.common.truth.Truth.assertThat
+import java.util.Date
 import org.junit.Test
 
 class RetrieveMessageOperationsTest : RobolectricTest() {
@@ -187,5 +188,22 @@ class RetrieveMessageOperationsTest : RobolectricTest() {
         val highestUid = retrieveMessageOperations.getLastUid(folderId)
 
         assertThat(highestUid).isNull()
+    }
+
+    @Test
+    fun `get oldest message date`() {
+        sqliteDatabase.createMessage(folderId = 1, date = 42)
+        sqliteDatabase.createMessage(folderId = 1, date = 23)
+
+        val oldestMessageDate = retrieveMessageOperations.getOldestMessageDate(folderId = 1)
+
+        assertThat(oldestMessageDate).isEqualTo(Date(23))
+    }
+
+    @Test
+    fun `get oldest message date without any messages in the store`() {
+        val oldestMessageDate = retrieveMessageOperations.getOldestMessageDate(folderId = 1)
+
+        assertThat(oldestMessageDate).isNull()
     }
 }

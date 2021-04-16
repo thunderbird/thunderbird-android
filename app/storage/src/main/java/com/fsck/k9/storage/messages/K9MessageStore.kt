@@ -15,6 +15,7 @@ import com.fsck.k9.mailstore.MoreMessages
 import com.fsck.k9.mailstore.SaveMessageData
 import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.message.extractors.BasicPartInfoExtractor
+import java.util.Date
 
 // TODO: Remove dependency on LocalStore
 class K9MessageStore(
@@ -84,6 +85,10 @@ class K9MessageStore(
 
     override fun getAllMessagesAndEffectiveDates(folderId: Long): Map<String, Long?> {
         return retrieveMessageOperations.getAllMessagesAndEffectiveDates(folderId)
+    }
+
+    override fun getOldestMessageDate(folderId: Long): Date? {
+        return retrieveMessageOperations.getOldestMessageDate(folderId)
     }
 
     override fun getHeaders(folderId: Long, messageServerId: String): List<Header> {
@@ -181,5 +186,21 @@ class K9MessageStore(
 
     override fun setExtraNumber(name: String, value: Long) {
         keyValueStoreOperations.setExtraNumber(name, value)
+    }
+
+    override fun getFolderExtraString(folderId: Long, name: String): String? {
+        return keyValueStoreOperations.getFolderExtraString(folderId, name)
+    }
+
+    override fun setFolderExtraString(folderId: Long, name: String, value: String?) {
+        return keyValueStoreOperations.setFolderExtraString(folderId, name, value)
+    }
+
+    override fun getFolderExtraNumber(folderId: Long, name: String): Long? {
+        return keyValueStoreOperations.getFolderExtraNumber(folderId, name)
+    }
+
+    override fun setFolderExtraNumber(folderId: Long, name: String, value: Long) {
+        return keyValueStoreOperations.setFolderExtraNumber(folderId, name, value)
     }
 }

@@ -5,6 +5,7 @@ import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Header
+import java.util.Date
 
 /**
  * Functions for accessing and modifying locally stored messages.
@@ -80,6 +81,11 @@ interface MessageStore {
      * Retrieve server IDs and dates for all remote messages in the given folder.
      */
     fun getAllMessagesAndEffectiveDates(folderId: Long): Map<String, Long?>
+
+    /**
+     * Retrieve the date of the oldest message in the given folder.
+     */
+    fun getOldestMessageDate(folderId: Long): Date?
 
     /**
      * Retrieve the header fields of a message.
@@ -208,4 +214,24 @@ interface MessageStore {
      * Create or update a number property.
      */
     fun setExtraNumber(name: String, value: Long)
+
+    /**
+     * Retrieve a string property associated with the given folder.
+     */
+    fun getFolderExtraString(folderId: Long, name: String): String?
+
+    /**
+     * Create or update a string property associated with the given folder.
+     */
+    fun setFolderExtraString(folderId: Long, name: String, value: String?)
+
+    /**
+     * Retrieve a number property associated with the given folder.
+     */
+    fun getFolderExtraNumber(folderId: Long, name: String): Long?
+
+    /**
+     * Create or update a number property associated with the given folder.
+     */
+    fun setFolderExtraNumber(folderId: Long, name: String, value: Long)
 }
