@@ -5,7 +5,6 @@ import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncListener
 import com.fsck.k9.mail.BodyFactory
-import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Part
@@ -21,7 +20,7 @@ class Pop3Backend(
     private val pop3Sync: Pop3Sync = Pop3Sync(accountName, backendStorage, pop3Store)
     private val commandRefreshFolderList = CommandRefreshFolderList(backendStorage)
     private val commandSetFlag = CommandSetFlag(pop3Store)
-    private val commandFetchMessage = CommandFetchMessage(pop3Store)
+    private val commandDownloadMessage = CommandDownloadMessage(backendStorage, pop3Store)
 
     override val supportsFlags = false
     override val supportsExpunge = false
@@ -43,6 +42,14 @@ class Pop3Backend(
 
     override fun downloadMessage(syncConfig: SyncConfig, folderServerId: String, messageServerId: String) {
         throw UnsupportedOperationException("not implemented")
+    }
+
+    override fun downloadMessageStructure(folderServerId: String, messageServerId: String) {
+        throw UnsupportedOperationException("not implemented")
+    }
+
+    override fun downloadCompleteMessage(folderServerId: String, messageServerId: String) {
+        commandDownloadMessage.downloadCompleteMessage(folderServerId, messageServerId)
     }
 
     override fun setFlag(folderServerId: String, messageServerIds: List<String>, flag: Flag, newState: Boolean) {
@@ -101,15 +108,6 @@ class Pop3Backend(
         performFullTextSearch: Boolean
     ): List<String> {
         throw UnsupportedOperationException("not supported")
-    }
-
-    override fun fetchMessage(
-        folderServerId: String,
-        messageServerId: String,
-        fetchProfile: FetchProfile,
-        maxDownloadSize: Int
-    ): Message {
-        return commandFetchMessage.fetchMessage(folderServerId, messageServerId, fetchProfile, maxDownloadSize)
     }
 
     override fun fetchPart(folderServerId: String, messageServerId: String, part: Part, bodyFactory: BodyFactory) {

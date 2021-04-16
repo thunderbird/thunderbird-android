@@ -1,7 +1,6 @@
 package com.fsck.k9.backend.api
 
 import com.fsck.k9.mail.BodyFactory
-import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessagingException
@@ -26,6 +25,12 @@ interface Backend {
 
     @Throws(MessagingException::class)
     fun downloadMessage(syncConfig: SyncConfig, folderServerId: String, messageServerId: String)
+
+    @Throws(MessagingException::class)
+    fun downloadMessageStructure(folderServerId: String, messageServerId: String)
+
+    @Throws(MessagingException::class)
+    fun downloadCompleteMessage(folderServerId: String, messageServerId: String)
 
     @Throws(MessagingException::class)
     fun setFlag(folderServerId: String, messageServerIds: List<String>, flag: Flag, newState: Boolean)
@@ -74,14 +79,6 @@ interface Backend {
         forbiddenFlags: Set<Flag>?,
         performFullTextSearch: Boolean
     ): List<String>
-
-    @Throws(MessagingException::class)
-    fun fetchMessage(
-        folderServerId: String,
-        messageServerId: String,
-        fetchProfile: FetchProfile,
-        maxDownloadSize: Int
-    ): Message
 
     @Throws(MessagingException::class)
     fun fetchPart(folderServerId: String, messageServerId: String, part: Part, bodyFactory: BodyFactory)

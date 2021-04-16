@@ -5,7 +5,6 @@ import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncListener
 import com.fsck.k9.mail.BodyFactory
-import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Part
@@ -28,6 +27,7 @@ class ImapBackend(
     private val commandMoveOrCopyMessages = CommandMoveOrCopyMessages(imapStore)
     private val commandDeleteAll = CommandDeleteAll(imapStore)
     private val commandSearch = CommandSearch(imapStore)
+    private val commandDownloadMessage = CommandDownloadMessage(backendStorage, imapStore)
     private val commandFetchMessage = CommandFetchMessage(imapStore)
     private val commandFindByMessageId = CommandFindByMessageId(imapStore)
     private val commandUploadMessage = CommandUploadMessage(imapStore)
@@ -52,6 +52,14 @@ class ImapBackend(
 
     override fun downloadMessage(syncConfig: SyncConfig, folderServerId: String, messageServerId: String) {
         imapSync.downloadMessage(syncConfig, folderServerId, messageServerId)
+    }
+
+    override fun downloadMessageStructure(folderServerId: String, messageServerId: String) {
+        commandDownloadMessage.downloadMessageStructure(folderServerId, messageServerId)
+    }
+
+    override fun downloadCompleteMessage(folderServerId: String, messageServerId: String) {
+        commandDownloadMessage.downloadCompleteMessage(folderServerId, messageServerId)
     }
 
     override fun setFlag(folderServerId: String, messageServerIds: List<String>, flag: Flag, newState: Boolean) {
@@ -118,15 +126,6 @@ class ImapBackend(
         performFullTextSearch: Boolean
     ): List<String> {
         return commandSearch.search(folderServerId, query, requiredFlags, forbiddenFlags, performFullTextSearch)
-    }
-
-    override fun fetchMessage(
-        folderServerId: String,
-        messageServerId: String,
-        fetchProfile: FetchProfile,
-        maxDownloadSize: Int
-    ): Message {
-        return commandFetchMessage.fetchMessage(folderServerId, messageServerId, fetchProfile, maxDownloadSize)
     }
 
     override fun fetchPart(folderServerId: String, messageServerId: String, part: Part, bodyFactory: BodyFactory) {

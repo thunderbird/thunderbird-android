@@ -303,6 +303,61 @@ class SaveMessageOperationsTest : RobolectricTest() {
         assertThat(message3.uid).isEqualTo("uid1")
     }
 
+    @Test
+    fun `save message with server ID already existing in MessageStore should replace that message`() {
+        val existingMessageData = buildMessage {
+            multipart("alternative") {
+                bodyPart("text/plain") {
+                    textBody("plain")
+                }
+                bodyPart("text/html") {
+                    textBody("html")
+                }
+            }
+        }.toSaveMessageData()
+        saveMessageOperations.saveRemoteMessage(folderId = 1, messageServerId = "uid1", existingMessageData)
+        val messageData = buildMessage {
+            textBody("new")
+        }.toSaveMessageData()
+
+        saveMessageOperations.saveRemoteMessage(folderId = 1, messageServerId = "uid1", messageData)
+
+        val messages = sqliteDatabase.readMessages()
+        assertThat(messages).hasSize(1)
+
+        val messageParts = sqliteDatabase.readMessageParts()
+        assertThat(messageParts).hasSize(1)
+
+        val messagePart = messageParts.first()
+        with(messagePart) {
+            assertThat(type).isEqualTo(MessagePartType.UNKNOWN)
+            assertThat(root).isEqualTo(messagePart.id)
+            assertThat(parent).isEqualTo(-1)
+            assertThat(mimeType).isEqualTo("text/plain")
+            assertThat(displayName).isEqualTo("noname.txt")
+            assertThat(header).isNotNull()
+            assertThat(encoding).isEqualTo("quoted-printable")
+            assertThat(charset).isNull()
+            assertThat(dataLocation).isEqualTo(DataLocation.IN_DATABASE)
+            assertThat(decodedBodySize).isEqualTo(3)
+            assertThat(data?.toString(Charsets.UTF_8)).isEqualTo("new")
+            assertThat(preamble).isNull()
+            assertThat(epilogue).isNull()
+            assertThat(boundary).isNull()
+            assertThat(contentId).isNull()
+            assertThat(serverExtra).isNull()
+        }
+
+        val threads = sqliteDatabase.readThreads()
+        assertThat(threads).hasSize(1)
+
+        val thread = threads.first()
+        val message = messages.first()
+        assertThat(thread.root).isEqualTo(thread.id)
+        assertThat(thread.parent).isNull()
+        assertThat(thread.messageId).isEqualTo(message.id)
+    }
+
     private fun Message.toSaveMessageData(
         subject: String? = getSubject(),
         date: Long = sentDate?.time ?: System.currentTimeMillis(),
