@@ -45,6 +45,20 @@ internal class SaveMessageOperations(
         lockableDatabase.execute(true) { database ->
             val message = messageData.message
 
+            val existingMessageInfo = getMessage(folderId, messageServerId)
+            if (existingMessageInfo != null) {
+                val (existingMessageId, existingRootMessagePartId) = existingMessageInfo
+                replaceMessage(
+                    database,
+                    folderId,
+                    messageServerId,
+                    existingMessageId,
+                    existingRootMessagePartId,
+                    messageData
+                )
+                return@execute
+            }
+
             val threadInfo = threadMessageOperations.doMessageThreading(database, folderId, message.toThreadHeaders())
 
             val rootMessagePartId = saveMessageParts(database, message)
@@ -54,7 +68,7 @@ internal class SaveMessageOperations(
                 messageServerId,
                 rootMessagePartId,
                 messageData,
-                emptyMessageId = threadInfo.messageId
+                replaceMessageId = threadInfo.messageId
             )
 
             if (threadInfo.threadId == null) {
@@ -63,6 +77,31 @@ internal class SaveMessageOperations(
 
             createOrReplaceFulltextEntry(database, messageId, messageData)
         }
+    }
+
+    private fun replaceMessage(
+        database: SQLiteDatabase,
+        folderId: Long,
+        messageServerId: String,
+        existingMessageId: Long,
+        existingRootMessagePartId: Long?,
+        messageData: SaveMessageData
+    ) {
+        if (existingRootMessagePartId != null) {
+            deleteMessagePartsAndDataFromDisk(database, existingRootMessagePartId)
+        }
+
+        val rootMessagePartId = saveMessageParts(database, messageData.message)
+        val messageId = saveMessage(
+            database,
+            folderId,
+            messageServerId,
+            rootMessagePartId,
+            messageData,
+            replaceMessageId = existingMessageId
+        )
+
+        createOrReplaceFulltextEntry(database, messageId, messageData)
     }
 
     private fun saveMessageParts(database: SQLiteDatabase, message: Message): Long {
@@ -289,7 +328,7 @@ internal class SaveMessageOperations(
         messageServerId: String,
         rootMessagePartId: Long,
         messageData: SaveMessageData,
-        emptyMessageId: Long?
+        replaceMessageId: Long?
     ): Long {
         val message = messageData.message
 
@@ -332,10 +371,10 @@ internal class SaveMessageOperations(
             }
         }
 
-        return if (emptyMessageId != null) {
-            values.put("id", emptyMessageId)
+        return if (replaceMessageId != null) {
+            values.put("id", replaceMessageId)
             database.replace("messages", null, values)
-            emptyMessageId
+            replaceMessageId
         } else {
             database.insert("messages", null, values)
         }
@@ -350,6 +389,54 @@ internal class SaveMessageOperations(
         }
 
         database.replace("messages_fulltext", null, values)
+    }
+
+    private fun getMessage(folderId: Long, messageServerId: String): Pair<Long, Long?>? {
+        return lockableDatabase.execute(false) { db ->
+            db.query(
+                "messages",
+                arrayOf("id", "message_part_id"),
+                "folder_id = ? AND uid = ?",
+                arrayOf(folderId.toString(), messageServerId),
+                null,
+                null,
+                null
+            ).use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val messageId = cursor.getLong(0)
+                    val messagePartId = cursor.getLong(1)
+                    messageId to messagePartId
+                } else {
+                    null
+                }
+            }
+        }
+    }
+
+    private fun deleteMessagePartsAndDataFromDisk(database: SQLiteDatabase, rootMessagePartId: Long) {
+        deleteMessageDataFromDisk(database, rootMessagePartId)
+        deleteMessageParts(database, rootMessagePartId)
+    }
+
+    private fun deleteMessageDataFromDisk(database: SQLiteDatabase, rootMessagePartId: Long) {
+        database.query(
+            "message_parts",
+            arrayOf("id"),
+            "root = ? AND data_location = " + DataLocation.ON_DISK,
+            arrayOf(rootMessagePartId.toString()),
+            null,
+            null,
+            null
+        ).use { cursor ->
+            while (cursor.moveToNext()) {
+                val messagePartId = cursor.getLong(0)
+                attachmentFileManager.deleteFile(messagePartId)
+            }
+        }
+    }
+
+    private fun deleteMessageParts(database: SQLiteDatabase, rootMessagePartId: Long) {
+        database.delete("message_parts", "root = ?", arrayOf(rootMessagePartId.toString()))
     }
 }
 

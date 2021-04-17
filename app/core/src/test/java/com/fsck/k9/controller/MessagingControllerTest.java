@@ -16,7 +16,6 @@ import com.fsck.k9.backend.BackendManager;
 import com.fsck.k9.backend.api.Backend;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
-import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
@@ -50,7 +49,6 @@ import org.robolectric.shadows.ShadowLog;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.nullable;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doThrow;
@@ -93,8 +91,6 @@ public class MessagingControllerTest extends K9RobolectricTest {
     private NotificationController notificationController;
     @Mock
     private NotificationStrategy notificationStrategy;
-    @Captor
-    private ArgumentCaptor<FetchProfile> fetchProfileCaptor;
     @Captor
     private ArgumentCaptor<MessageRetrievalListener<LocalMessage>> messageRetrievalListenerCaptor;
 
@@ -232,17 +228,10 @@ public class MessagingControllerTest extends K9RobolectricTest {
                 }
             }
         );
-        doAnswer(new Answer<Void>() {
-             @Override
-             public Void answer(InvocationOnMock invocation) throws Throwable {
-                 hasFetchedMessage = true;
-                 return null;
-             }
-        }).when(backend).fetchMessage(
-            eq(FOLDER_NAME),
-            eq("newMessageUid2"),
-            any(FetchProfile.class),
-            eq(MAXIMUM_SMALL_MESSAGE_SIZE));
+        doAnswer((Answer<Void>) invocation -> {
+            hasFetchedMessage = true;
+            return null;
+        }).when(backend).downloadMessageStructure(eq(FOLDER_NAME), eq("newMessageUid2"));
         reqFlags = Collections.singleton(Flag.ANSWERED);
         forbiddenFlags = Collections.singleton(Flag.DELETED);
 
@@ -300,8 +289,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
         controller.searchRemoteMessagesSynchronous(accountUuid, FOLDER_ID, "query", reqFlags, forbiddenFlags, listener);
 
-        verify(backend).fetchMessage(eq(FOLDER_NAME), eq("newMessageUid2"), fetchProfileCaptor.capture(),
-                eq(MAXIMUM_SMALL_MESSAGE_SIZE));
+        verify(backend).downloadMessageStructure(eq(FOLDER_NAME), eq("newMessageUid2"));
     }
 
     @Test
@@ -310,8 +298,7 @@ public class MessagingControllerTest extends K9RobolectricTest {
 
         controller.searchRemoteMessagesSynchronous(accountUuid, FOLDER_ID, "query", reqFlags, forbiddenFlags, listener);
 
-        verify(backend, never()).fetchMessage(eq(FOLDER_NAME), eq("newMessageUid1"), fetchProfileCaptor.capture(),
-                eq(MAXIMUM_SMALL_MESSAGE_SIZE));
+        verify(backend, never()).downloadMessageStructure(eq(FOLDER_NAME), eq("newMessageUid1"));
     }
 
     @Test

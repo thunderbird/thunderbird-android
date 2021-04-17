@@ -557,11 +557,6 @@ public class MessagingController {
     private void loadSearchResultsSynchronous(Account account, List<String> messageServerIds, LocalFolder localFolder)
             throws MessagingException {
 
-        FetchProfile fetchProfile = new FetchProfile();
-        fetchProfile.add(FetchProfile.Item.FLAGS);
-        fetchProfile.add(FetchProfile.Item.ENVELOPE);
-        fetchProfile.add(FetchProfile.Item.STRUCTURE);
-
         Backend backend = getBackend(account);
         String folderServerId = localFolder.getServerId();
 
@@ -569,9 +564,7 @@ public class MessagingController {
             LocalMessage localMessage = localFolder.getMessage(messageServerId);
 
             if (localMessage == null) {
-                int maxDownloadSize = account.getMaximumAutoDownloadMessageSize();
-                Message message = backend.fetchMessage(folderServerId, messageServerId, fetchProfile, maxDownloadSize);
-                localFolder.appendMessages(Collections.singletonList(message));
+                backend.downloadMessageStructure(folderServerId, messageServerId);
             }
         }
     }
@@ -1252,12 +1245,7 @@ public class MessagingController {
                     SyncConfig syncConfig = createSyncConfig(account);
                     backend.downloadMessage(syncConfig, folderServerId, uid);
                 } else {
-                    FetchProfile fp = new FetchProfile();
-                    fp.add(FetchProfile.Item.BODY);
-                    fp.add(FetchProfile.Item.FLAGS);
-                    int maxDownloadSize = account.getMaximumAutoDownloadMessageSize();
-                    Message remoteMessage = backend.fetchMessage(folderServerId, uid, fp, maxDownloadSize);
-                    localFolder.appendMessages(Collections.singletonList(remoteMessage));
+                    backend.downloadCompleteMessage(folderServerId, uid);
                 }
 
                 message = localFolder.getMessage(uid);

@@ -45,6 +45,7 @@ class K9MessageStore(
 
     override fun saveRemoteMessage(folderId: Long, messageServerId: String, messageData: SaveMessageData) {
         saveMessageOperations.saveRemoteMessage(folderId, messageServerId, messageData)
+        localStore.notifyChange()
     }
 
     override fun moveMessage(messageId: Long, destinationFolderId: Long): Long {

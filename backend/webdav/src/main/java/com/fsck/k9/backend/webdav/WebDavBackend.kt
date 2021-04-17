@@ -5,7 +5,6 @@ import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncListener
 import com.fsck.k9.mail.BodyFactory
-import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessagingException
@@ -24,7 +23,7 @@ class WebDavBackend(
     private val commandGetFolders = CommandRefreshFolderList(backendStorage, webDavStore)
     private val commandSetFlag = CommandSetFlag(webDavStore)
     private val commandMoveOrCopyMessages = CommandMoveOrCopyMessages(webDavStore)
-    private val commandFetchMessage = CommandFetchMessage(webDavStore)
+    private val commandDownloadMessage = CommandDownloadMessage(backendStorage, webDavStore)
     private val commandUploadMessage = CommandUploadMessage(webDavStore)
 
     override val supportsFlags = true
@@ -47,6 +46,14 @@ class WebDavBackend(
 
     override fun downloadMessage(syncConfig: SyncConfig, folderServerId: String, messageServerId: String) {
         throw UnsupportedOperationException("not implemented")
+    }
+
+    override fun downloadMessageStructure(folderServerId: String, messageServerId: String) {
+        throw UnsupportedOperationException("not implemented")
+    }
+
+    override fun downloadCompleteMessage(folderServerId: String, messageServerId: String) {
+        commandDownloadMessage.downloadCompleteMessage(folderServerId, messageServerId)
     }
 
     @Throws(MessagingException::class)
@@ -111,15 +118,6 @@ class WebDavBackend(
         performFullTextSearch: Boolean
     ): List<String> {
         throw UnsupportedOperationException("not supported")
-    }
-
-    override fun fetchMessage(
-        folderServerId: String,
-        messageServerId: String,
-        fetchProfile: FetchProfile,
-        maxDownloadSize: Int
-    ): Message {
-        return commandFetchMessage.fetchMessage(folderServerId, messageServerId, fetchProfile, maxDownloadSize)
     }
 
     override fun fetchPart(folderServerId: String, messageServerId: String, part: Part, bodyFactory: BodyFactory) {
