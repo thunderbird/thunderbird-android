@@ -77,6 +77,7 @@ class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFra
 
         setCategoryTitle(folderSettings)
         updateMenu()
+        setPreferenceVisibility(folderSettings)
     }
 
     private fun updateMenu() {
@@ -106,6 +107,13 @@ class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFra
         dialogFragment.show(requireFragmentManager(), TAG_CLEAR_FOLDER_CONFIRMATION)
     }
 
+    private fun setPreferenceVisibility(folderSettings: FolderSettingsData) {
+        if (folderSettings.folder.isLocalOnly) {
+            requirePreference<Preference>(PREFERENCE_POLL_CLASS).isVisible = false
+            requirePreference<Preference>(PREFERENCE_NOTIFICATION_CLASS).isVisible = false
+        }
+    }
+
     override fun doPositiveClick(dialogId: Int) {
         when (dialogId) {
             DIALOG_CLEAR_FOLDER -> {
@@ -118,6 +126,10 @@ class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFra
 
     override fun dialogCancelled(dialogId: Int) = Unit
 
+    private fun <T : Preference> requirePreference(key: String): T {
+        return findPreference(key) ?: error("Preference '$key' not found")
+    }
+
     companion object {
         const val EXTRA_ACCOUNT = "account"
         const val EXTRA_FOLDER_ID = "folderId"
@@ -127,5 +139,7 @@ class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFra
         private const val TAG_CLEAR_FOLDER_CONFIRMATION = "clear_folder_confirmation"
 
         private const val PREFERENCE_TOP_CATEGORY = "folder_settings"
+        private const val PREFERENCE_POLL_CLASS = "folder_settings_folder_sync_mode"
+        private const val PREFERENCE_NOTIFICATION_CLASS = "folder_settings_folder_notify_mode"
     }
 }

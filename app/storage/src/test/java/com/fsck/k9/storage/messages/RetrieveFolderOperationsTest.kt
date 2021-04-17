@@ -3,6 +3,7 @@ package com.fsck.k9.storage.messages
 import com.fsck.k9.Account.FolderMode
 import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.mail.FolderType
+import com.fsck.k9.mailstore.toDatabaseFolderType
 import com.fsck.k9.storage.RobolectricTest
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
@@ -39,6 +40,40 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
             assertThat(folder.syncClass).isEqualTo(FolderClass.FIRST_CLASS)
             assertThat(folder.notifyClass).isEqualTo(FolderClass.NO_CLASS)
             assertThat(folder.pushClass).isEqualTo(FolderClass.NO_CLASS)
+            true
+        }
+
+        assertThat(result).isTrue()
+    }
+
+    @Test
+    fun `get local folder`() {
+        val name = "Local outbox"
+        val folderId = sqliteDatabase.createFolder(
+            name = name,
+            type = FolderType.OUTBOX.toDatabaseFolderType(),
+            serverId = null,
+            isLocalOnly = true,
+            integrate = true,
+            inTopGroup = true,
+            displayClass = FolderClass.FIRST_CLASS.name,
+            syncClass = null,
+            notifyClass = null,
+            pushClass = null
+        )
+
+        val result = retrieveFolderOperations.getFolder(folderId) { folder ->
+            assertThat(folder.id).isEqualTo(folderId)
+            assertThat(folder.name).isEqualTo(name)
+            assertThat(folder.type).isEqualTo(FolderType.OUTBOX)
+            assertThat(folder.serverId).isNull()
+            assertThat(folder.isLocalOnly).isEqualTo(true)
+            assertThat(folder.isIntegrate).isEqualTo(true)
+            assertThat(folder.isInTopGroup).isEqualTo(true)
+            assertThat(folder.displayClass).isEqualTo(FolderClass.FIRST_CLASS)
+            assertThat(folder.syncClass).isEqualTo(FolderClass.INHERITED)
+            assertThat(folder.notifyClass).isEqualTo(FolderClass.INHERITED)
+            assertThat(folder.pushClass).isEqualTo(FolderClass.SECOND_CLASS)
             true
         }
 

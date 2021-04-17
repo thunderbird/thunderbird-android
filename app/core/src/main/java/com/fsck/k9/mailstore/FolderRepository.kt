@@ -72,7 +72,7 @@ class FolderRepository(
         return messageStore.getFolders(excludeLocalOnly = true) { folder ->
             RemoteFolder(
                 id = folder.id,
-                serverId = folder.serverId,
+                serverId = folder.serverIdOrThrow(),
                 name = folder.name,
                 type = folder.type.toFolderType()
             )
@@ -85,7 +85,7 @@ class FolderRepository(
             RemoteFolderDetails(
                 folder = RemoteFolder(
                     id = folder.id,
-                    serverId = folder.serverId,
+                    serverId = folder.serverIdOrThrow(),
                     name = folder.name,
                     type = folder.type.toFolderType()
                 ),

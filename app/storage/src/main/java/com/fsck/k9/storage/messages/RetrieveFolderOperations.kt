@@ -135,7 +135,7 @@ private class CursorFolderAccessor(val cursor: Cursor) : FolderDetailsAccessor {
     override val type: FolderType
         get() = cursor.getString(2).toFolderType()
 
-    override val serverId: String
+    override val serverId: String?
         get() = cursor.getString(3)
 
     override val isLocalOnly: Boolean
@@ -148,16 +148,16 @@ private class CursorFolderAccessor(val cursor: Cursor) : FolderDetailsAccessor {
         get() = cursor.getInt(6) == 1
 
     override val syncClass: FolderClass
-        get() = FolderClass.valueOf(cursor.getString(7))
+        get() = cursor.getString(7).toFolderClass(FolderClass.INHERITED)
 
     override val displayClass: FolderClass
-        get() = FolderClass.valueOf(cursor.getString(8))
+        get() = cursor.getString(8).toFolderClass(FolderClass.NO_CLASS)
 
     override val notifyClass: FolderClass
-        get() = FolderClass.valueOf(cursor.getString(9))
+        get() = cursor.getString(9).toFolderClass(FolderClass.INHERITED)
 
     override val pushClass: FolderClass
-        get() = FolderClass.valueOf(cursor.getString(10))
+        get() = cursor.getString(10).toFolderClass(FolderClass.SECOND_CLASS)
 
     override val visibleLimit: Int
         get() = cursor.getInt(11)
@@ -167,6 +167,14 @@ private class CursorFolderAccessor(val cursor: Cursor) : FolderDetailsAccessor {
 
     override val messageCount: Int
         get() = cursor.getInt(13)
+
+    override fun serverIdOrThrow(): String {
+        return serverId ?: error("No server ID found for folder '$name' ($id)")
+    }
+}
+
+private fun String?.toFolderClass(defaultValue: FolderClass): FolderClass {
+    return if (this == null) defaultValue else FolderClass.valueOf(this)
 }
 
 private val FOLDER_COLUMNS = arrayOf(
