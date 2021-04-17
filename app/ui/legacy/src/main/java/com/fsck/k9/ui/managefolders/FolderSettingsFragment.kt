@@ -6,7 +6,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.navigation.fragment.findNavController
-import androidx.preference.ListPreference
 import androidx.preference.Preference
 import com.fsck.k9.fragment.ConfirmationDialogFragment
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
@@ -109,10 +108,10 @@ class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFra
     }
 
     private fun setPreferenceVisibility(folderSettings: FolderSettingsData) {
-        val syncModePreference = findPreference<ListPreference>("folder_settings_folder_sync_mode")
-        syncModePreference?.setVisible(!folderSettings.folder.isLocalOnly)
-        val notifyModePreference = findPreference<ListPreference>("folder_settings_folder_notify_mode")
-        notifyModePreference?.setVisible(!folderSettings.folder.isLocalOnly)
+        if (folderSettings.folder.isLocalOnly) {
+            requirePreference<Preference>(PREFERENCE_POLL_CLASS).isVisible = false
+            requirePreference<Preference>(PREFERENCE_NOTIFICATION_CLASS).isVisible = false
+        }
     }
 
     override fun doPositiveClick(dialogId: Int) {
@@ -127,6 +126,10 @@ class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFra
 
     override fun dialogCancelled(dialogId: Int) = Unit
 
+    private fun <T : Preference> requirePreference(key: String): T {
+        return findPreference(key) ?: error("Preference '$key' not found")
+    }
+
     companion object {
         const val EXTRA_ACCOUNT = "account"
         const val EXTRA_FOLDER_ID = "folderId"
@@ -136,5 +139,7 @@ class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFra
         private const val TAG_CLEAR_FOLDER_CONFIRMATION = "clear_folder_confirmation"
 
         private const val PREFERENCE_TOP_CATEGORY = "folder_settings"
+        private const val PREFERENCE_POLL_CLASS = "folder_settings_folder_sync_mode"
+        private const val PREFERENCE_NOTIFICATION_CLASS = "folder_settings_folder_notify_mode"
     }
 }
