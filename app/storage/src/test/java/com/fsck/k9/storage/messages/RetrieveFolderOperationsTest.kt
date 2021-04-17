@@ -66,7 +66,7 @@ class RetrieveFolderOperationsTest : RobolectricTest() {
             assertThat(folder.id).isEqualTo(folderId)
             assertThat(folder.name).isEqualTo(name)
             assertThat(folder.type).isEqualTo(FolderType.OUTBOX)
-            assertThat(folder.serverId).isEqualTo("")
+            assertThat(folder.serverId).isNull()
             assertThat(folder.isLocalOnly).isEqualTo(true)
             assertThat(folder.isIntegrate).isEqualTo(true)
             assertThat(folder.isInTopGroup).isEqualTo(true)

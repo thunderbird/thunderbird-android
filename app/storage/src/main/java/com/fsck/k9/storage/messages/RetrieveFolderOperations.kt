@@ -135,8 +135,8 @@ private class CursorFolderAccessor(val cursor: Cursor) : FolderDetailsAccessor {
     override val type: FolderType
         get() = cursor.getString(2).toFolderType()
 
-    override val serverId: String
-        get() = cursor.getString(3).orEmpty()
+    override val serverId: String?
+        get() = cursor.getString(3)
 
     override val isLocalOnly: Boolean
         get() = cursor.getInt(4) == 1
@@ -167,6 +167,10 @@ private class CursorFolderAccessor(val cursor: Cursor) : FolderDetailsAccessor {
 
     override val messageCount: Int
         get() = cursor.getInt(13)
+
+    override fun serverIdOrThrow(): String {
+        return serverId ?: error("No server ID found for folder '$name' ($id)")
+    }
 }
 
 private fun String?.toFolderClass(defaultValue: FolderClass): FolderClass {

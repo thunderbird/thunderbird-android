@@ -9,7 +9,7 @@ fun interface FolderMapper<T> {
 
 interface FolderDetailsAccessor {
     val id: Long
-    val serverId: String
+    val serverId: String?
     val name: String
     val type: FolderType
     val isLocalOnly: Boolean
@@ -22,4 +22,6 @@ interface FolderDetailsAccessor {
     val visibleLimit: Int
     val moreMessages: MoreMessages
     val messageCount: Int
+
+    fun serverIdOrThrow(): String
 }

@@ -17,7 +17,7 @@ class K9BackendStorage(
     }
 
     override fun getFolderServerIds(): List<String> {
-        return messageStore.getFolders(excludeLocalOnly = true) { folder -> folder.serverId }
+        return messageStore.getFolders(excludeLocalOnly = true) { folder -> folder.serverIdOrThrow() }
     }
 
     override fun createFolderUpdater(): BackendFolderUpdater {
