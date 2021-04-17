@@ -6,6 +6,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.navigation.fragment.findNavController
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import com.fsck.k9.fragment.ConfirmationDialogFragment
 import com.fsck.k9.fragment.ConfirmationDialogFragment.ConfirmationDialogFragmentListener
@@ -77,6 +78,7 @@ class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFra
 
         setCategoryTitle(folderSettings)
         updateMenu()
+        setPreferenceVisibility(folderSettings)
     }
 
     private fun updateMenu() {
@@ -104,6 +106,13 @@ class FolderSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFra
         )
         dialogFragment.setTargetFragment(this, REQUEST_CLEAR_FOLDER)
         dialogFragment.show(requireFragmentManager(), TAG_CLEAR_FOLDER_CONFIRMATION)
+    }
+
+    private fun setPreferenceVisibility(folderSettings: FolderSettingsData) {
+        val syncModePreference = findPreference<ListPreference>("folder_settings_folder_sync_mode")
+        syncModePreference?.setVisible(!folderSettings.folder.isLocalOnly)
+        val notifyModePreference = findPreference<ListPreference>("folder_settings_folder_notify_mode")
+        notifyModePreference?.setVisible(!folderSettings.folder.isLocalOnly)
     }
 
     override fun doPositiveClick(dialogId: Int) {
