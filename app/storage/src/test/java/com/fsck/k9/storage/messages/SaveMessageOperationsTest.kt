@@ -1,5 +1,6 @@
 package com.fsck.k9.storage.messages
 
+import com.fsck.k9.K9
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
@@ -324,6 +325,143 @@ class SaveMessageOperationsTest : RobolectricTest() {
 
         val messages = sqliteDatabase.readMessages()
         assertThat(messages).hasSize(1)
+
+        val messageParts = sqliteDatabase.readMessageParts()
+        assertThat(messageParts).hasSize(1)
+
+        val messagePart = messageParts.first()
+        with(messagePart) {
+            assertThat(type).isEqualTo(MessagePartType.UNKNOWN)
+            assertThat(root).isEqualTo(messagePart.id)
+            assertThat(parent).isEqualTo(-1)
+            assertThat(mimeType).isEqualTo("text/plain")
+            assertThat(displayName).isEqualTo("noname.txt")
+            assertThat(header).isNotNull()
+            assertThat(encoding).isEqualTo("quoted-printable")
+            assertThat(charset).isNull()
+            assertThat(dataLocation).isEqualTo(DataLocation.IN_DATABASE)
+            assertThat(decodedBodySize).isEqualTo(3)
+            assertThat(data?.toString(Charsets.UTF_8)).isEqualTo("new")
+            assertThat(preamble).isNull()
+            assertThat(epilogue).isNull()
+            assertThat(boundary).isNull()
+            assertThat(contentId).isNull()
+            assertThat(serverExtra).isNull()
+        }
+
+        val threads = sqliteDatabase.readThreads()
+        assertThat(threads).hasSize(1)
+
+        val thread = threads.first()
+        val message = messages.first()
+        assertThat(thread.root).isEqualTo(thread.id)
+        assertThat(thread.parent).isNull()
+        assertThat(thread.messageId).isEqualTo(message.id)
+    }
+
+    @Test
+    fun `save local message`() {
+        val messageData = buildMessage {
+            textBody("local")
+        }.toSaveMessageData(
+            subject = "Provided subject",
+            date = 1618191720000L,
+            internalDate = 1618191720000L,
+            previewResult = PreviewResult.text("Preview")
+        )
+
+        val newMessageId = saveMessageOperations.saveLocalMessage(folderId = 1, messageData, existingMessageId = null)
+
+        val messages = sqliteDatabase.readMessages()
+        assertThat(messages).hasSize(1)
+
+        val message = messages.first()
+        with(message) {
+            assertThat(id).isEqualTo(newMessageId)
+            assertThat(deleted).isEqualTo(0)
+            assertThat(folderId).isEqualTo(1)
+            assertThat(uid).startsWith(K9.LOCAL_UID_PREFIX)
+            assertThat(subject).isEqualTo("Provided subject")
+            assertThat(date).isEqualTo(1618191720000L)
+            assertThat(internalDate).isEqualTo(1618191720000L)
+            assertThat(flags).isEqualTo("X_DOWNLOADED_FULL")
+            assertThat(senderList).isEqualTo("")
+            assertThat(toList).isEqualTo("")
+            assertThat(ccList).isEqualTo("")
+            assertThat(bccList).isEqualTo("")
+            assertThat(replyToList).isEqualTo("")
+            assertThat(attachmentCount).isEqualTo(0)
+            assertThat(messageId).isNull()
+            assertThat(previewType).isEqualTo("text")
+            assertThat(preview).isEqualTo("Preview")
+            assertThat(mimeType).isEqualTo("text/plain")
+            assertThat(empty).isEqualTo(0)
+            assertThat(read).isEqualTo(0)
+            assertThat(flagged).isEqualTo(0)
+            assertThat(answered).isEqualTo(0)
+            assertThat(forwarded).isEqualTo(0)
+            assertThat(encryptionType).isNull()
+        }
+
+        val messageParts = sqliteDatabase.readMessageParts()
+        assertThat(messageParts).hasSize(1)
+
+        val messagePart = messageParts.first()
+        with(messagePart) {
+            assertThat(type).isEqualTo(MessagePartType.UNKNOWN)
+            assertThat(root).isEqualTo(messagePart.id)
+            assertThat(parent).isEqualTo(-1)
+            assertThat(mimeType).isEqualTo("text/plain")
+            assertThat(displayName).isEqualTo("noname.txt")
+            assertThat(header).isNotNull()
+            assertThat(encoding).isEqualTo("quoted-printable")
+            assertThat(charset).isNull()
+            assertThat(dataLocation).isEqualTo(DataLocation.IN_DATABASE)
+            assertThat(decodedBodySize).isEqualTo(5)
+            assertThat(data?.toString(Charsets.UTF_8)).isEqualTo("local")
+            assertThat(preamble).isNull()
+            assertThat(epilogue).isNull()
+            assertThat(boundary).isNull()
+            assertThat(contentId).isNull()
+            assertThat(serverExtra).isNull()
+        }
+
+        val threads = sqliteDatabase.readThreads()
+        assertThat(threads).hasSize(1)
+
+        val thread = threads.first()
+        assertThat(thread.root).isEqualTo(thread.id)
+        assertThat(thread.parent).isNull()
+        assertThat(thread.messageId).isEqualTo(message.id)
+    }
+
+    @Test
+    fun `replace local message`() {
+        val existingMessageData = buildMessage {
+            multipart("alternative") {
+                bodyPart("text/plain") {
+                    textBody("plain")
+                }
+                bodyPart("text/html") {
+                    textBody("html")
+                }
+            }
+        }.toSaveMessageData()
+        val existingMessageId = saveMessageOperations.saveLocalMessage(
+            folderId = 1,
+            existingMessageData,
+            existingMessageId = null
+        )
+        val messageData = buildMessage {
+            textBody("new")
+        }.toSaveMessageData()
+
+        val newMessageId = saveMessageOperations.saveLocalMessage(folderId = 1, messageData, existingMessageId)
+
+        val messages = sqliteDatabase.readMessages()
+        assertThat(messages).hasSize(1)
+
+        assertThat(messages.first().id).isEqualTo(newMessageId)
 
         val messageParts = sqliteDatabase.readMessageParts()
         assertThat(messageParts).hasSize(1)

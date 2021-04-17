@@ -12,16 +12,17 @@ class SaveMessageDataCreator(
     private val messageFulltextCreator: MessageFulltextCreator,
     private val attachmentCounter: AttachmentCounter
 ) {
-    fun createSaveMessageData(message: Message, partialMessage: Boolean): SaveMessageData {
+    fun createSaveMessageData(message: Message, partialMessage: Boolean, subject: String? = null): SaveMessageData {
         val now = System.currentTimeMillis()
         val date = message.sentDate?.time ?: now
         val internalDate = message.internalDate?.time ?: now
+        val displaySubject = subject ?: message.subject
 
         val encryptionResult = encryptionExtractor.extractEncryption(message)
         return if (encryptionResult != null) {
             SaveMessageData(
                 message = message,
-                subject = message.subject,
+                subject = displaySubject,
                 date = date,
                 internalDate = internalDate,
                 partialMessage = partialMessage,
@@ -33,7 +34,7 @@ class SaveMessageDataCreator(
         } else {
             SaveMessageData(
                 message = message,
-                subject = message.subject,
+                subject = displaySubject,
                 date = date,
                 internalDate = internalDate,
                 partialMessage = partialMessage,

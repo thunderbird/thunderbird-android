@@ -20,6 +20,14 @@ interface MessageStore {
     fun saveRemoteMessage(folderId: Long, messageServerId: String, messageData: SaveMessageData)
 
     /**
+     * Save a local message in this store.
+     *
+     * @param existingMessageId The message with this ID is replaced if not `null`.
+     * @return The message ID of the saved message.
+     */
+    fun saveLocalMessage(folderId: Long, messageData: SaveMessageData, existingMessageId: Long? = null): Long
+
+    /**
      * Move a message to another folder.
      *
      * @return The message's database ID in the destination folder. This will most likely be different from the

@@ -72,6 +72,7 @@ import com.fsck.k9.mailstore.MessageStore;
 import com.fsck.k9.mailstore.MessageStoreManager;
 import com.fsck.k9.mailstore.OutboxState;
 import com.fsck.k9.mailstore.OutboxStateRepository;
+import com.fsck.k9.mailstore.SaveMessageDataCreator;
 import com.fsck.k9.mailstore.SendState;
 import com.fsck.k9.mailstore.UnavailableStorageException;
 import com.fsck.k9.notification.NotificationController;
@@ -116,6 +117,7 @@ public class MessagingController {
     private final BackendManager backendManager;
     private final Preferences preferences;
     private final MessageStoreManager messageStoreManager;
+    private final SaveMessageDataCreator saveMessageDataCreator;
 
     private final Thread controllerThread;
 
@@ -140,7 +142,7 @@ public class MessagingController {
             NotificationStrategy notificationStrategy, LocalStoreProvider localStoreProvider,
             UnreadMessageCountProvider unreadMessageCountProvider, BackendManager backendManager,
             Preferences preferences, MessageStoreManager messageStoreManager,
-            List<ControllerExtension> controllerExtensions) {
+            SaveMessageDataCreator saveMessageDataCreator, List<ControllerExtension> controllerExtensions) {
         this.context = context;
         this.notificationController = notificationController;
         this.notificationStrategy = notificationStrategy;
@@ -149,6 +151,7 @@ public class MessagingController {
         this.backendManager = backendManager;
         this.preferences = preferences;
         this.messageStoreManager = messageStoreManager;
+        this.saveMessageDataCreator = saveMessageDataCreator;
 
         controllerThread = new Thread(new Runnable() {
             @Override
@@ -162,7 +165,7 @@ public class MessagingController {
 
         initializeControllerExtensions(controllerExtensions);
 
-        draftOperations = new DraftOperations(this);
+        draftOperations = new DraftOperations(this, messageStoreManager, saveMessageDataCreator);
     }
 
     private void initializeControllerExtensions(List<ControllerExtension> controllerExtensions) {

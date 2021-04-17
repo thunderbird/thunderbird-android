@@ -6,14 +6,21 @@ import com.fsck.k9.backend.api.Backend
 import com.fsck.k9.controller.MessagingControllerCommands.PendingAppend
 import com.fsck.k9.controller.MessagingControllerCommands.PendingReplace
 import com.fsck.k9.mail.FetchProfile
-import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mailstore.LocalFolder
 import com.fsck.k9.mailstore.LocalMessage
+import com.fsck.k9.mailstore.MessageStoreManager
+import com.fsck.k9.mailstore.SaveMessageData
+import com.fsck.k9.mailstore.SaveMessageDataCreator
+import org.jetbrains.annotations.NotNull
 import timber.log.Timber
 
-internal class DraftOperations(private val messagingController: MessagingController) {
+internal class DraftOperations(
+    private val messagingController: @NotNull MessagingController,
+    private val messageStoreManager: @NotNull MessageStoreManager,
+    private val saveMessageDataCreator: SaveMessageDataCreator
+) {
 
     fun saveDraft(
         account: Account,
@@ -24,22 +31,13 @@ internal class DraftOperations(private val messagingController: MessagingControl
         return try {
             val draftsFolderId = account.draftsFolderId ?: error("No Drafts folder configured")
 
-            val localStore = messagingController.getLocalStoreOrThrow(account)
-            val localFolder = localStore.getFolder(draftsFolderId)
-            localFolder.open()
-
-            val localMessage = if (messagingController.supportsUpload(account)) {
-                saveAndUploadDraft(account, message, localFolder, existingDraftId)
+            val messageId = if (messagingController.supportsUpload(account)) {
+                saveAndUploadDraft(account, message, draftsFolderId, existingDraftId, plaintextSubject)
             } else {
-                saveDraftLocally(message, localFolder, existingDraftId)
+                saveDraftLocally(account, message, draftsFolderId, existingDraftId, plaintextSubject)
             }
 
-            localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true)
-            if (plaintextSubject != null) {
-                localMessage.setCachedDecryptedSubject(plaintextSubject)
-            }
-
-            localMessage.databaseId
+            messageId
         } catch (e: MessagingException) {
             Timber.e(e, "Unable to save message as draft.")
             null
@@ -49,41 +47,52 @@ internal class DraftOperations(private val messagingController: MessagingControl
     private fun saveAndUploadDraft(
         account: Account,
         message: Message,
-        localFolder: LocalFolder,
-        existingDraftId: Long?
-    ): LocalMessage {
-        localFolder.appendMessages(listOf(message))
+        folderId: Long,
+        existingDraftId: Long?,
+        subject: String?
+    ): Long {
+        val messageStore = messageStoreManager.getMessageStore(account)
 
-        val localMessage = localFolder.getMessage(message.uid)
-        val previousDraftMessage = if (existingDraftId != null) localFolder.getMessage(existingDraftId) else null
+        val messageId = messageStore.saveLocalMessage(folderId, message.toSaveMessageData(subject))
 
-        val folderId = localFolder.databaseId
+        val previousDraftMessage = if (existingDraftId != null) {
+            val localStore = messagingController.getLocalStoreOrThrow(account)
+            val localFolder = localStore.getFolder(folderId)
+            localFolder.open()
+
+            localFolder.getMessage(existingDraftId)
+        } else {
+            null
+        }
+
         if (previousDraftMessage != null) {
             previousDraftMessage.delete()
 
-            val uploadMessageId = localMessage.databaseId
             val deleteMessageId = previousDraftMessage.databaseId
-            val command = PendingReplace.create(folderId, uploadMessageId, deleteMessageId)
+            val command = PendingReplace.create(folderId, messageId, deleteMessageId)
             messagingController.queuePendingCommand(account, command)
         } else {
-            val command = PendingAppend.create(folderId, localMessage.uid)
+            val fakeMessageServerId = messageStore.getMessageServerId(messageId)
+            val command = PendingAppend.create(folderId, fakeMessageServerId)
             messagingController.queuePendingCommand(account, command)
         }
 
         messagingController.processPendingCommands(account)
 
-        return localMessage
+        return messageId
     }
 
-    private fun saveDraftLocally(message: Message, localFolder: LocalFolder, existingDraftId: Long?): LocalMessage {
-        if (existingDraftId != null) {
-            // Setting the UID will cause LocalFolder.appendMessages() to replace the existing draft.
-            message.uid = localFolder.getMessageUidById(existingDraftId)
-        }
+    private fun saveDraftLocally(
+        account: Account,
+        message: Message,
+        folderId: Long,
+        existingDraftId: Long?,
+        plaintextSubject: String?
+    ): Long {
+        val messageStore = messageStoreManager.getMessageStore(account)
+        val messageData = message.toSaveMessageData(plaintextSubject)
 
-        localFolder.appendMessages(listOf(message))
-
-        return localFolder.getMessage(message.uid)
+        return messageStore.saveLocalMessage(folderId, messageData, existingDraftId)
     }
 
     fun processPendingReplace(command: PendingReplace, account: Account) {
@@ -152,5 +161,9 @@ internal class DraftOperations(private val messagingController: MessagingControl
         backend.deleteMessages(folderServerId, messageServerIds)
 
         messagingController.destroyPlaceholderMessages(localFolder, messageServerIds)
+    }
+
+    private fun Message.toSaveMessageData(subject: String?): SaveMessageData {
+        return saveMessageDataCreator.createSaveMessageData(this, partialMessage = false, subject)
     }
 }
