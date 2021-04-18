@@ -795,21 +795,6 @@ public class LocalFolder {
         return folder.appendMessages(msgs, true);
     }
 
-    /**
-     * The method differs slightly from the contract; If an incoming message already has a uid
-     * assigned and it matches the uid of an existing message then this message will replace the
-     * old message. It is implemented as a delete/insert. This functionality is used in saving
-     * of drafts and re-synchronization of updated server messages.
-     *
-     * NOTE that although this method is located in the LocalStore class, it is not guaranteed
-     * that the messages supplied as parameters are actually {@link LocalMessage} instances (in
-     * fact, in most cases, they are not). Therefore, if you want to make local changes only to a
-     * message, retrieve the appropriate local message instance first (if it already exists).
-     */
-    public Map<String, String> appendMessages(List<Message> messages) throws MessagingException {
-        return appendMessages(messages, false);
-    }
-
     public void destroyMessages(final List<LocalMessage> messages) {
         try {
             this.localStore.getDatabase().execute(true, new DbCallback<Void>() {

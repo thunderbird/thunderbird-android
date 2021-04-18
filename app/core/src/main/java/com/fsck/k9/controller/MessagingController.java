@@ -72,6 +72,7 @@ import com.fsck.k9.mailstore.MessageStore;
 import com.fsck.k9.mailstore.MessageStoreManager;
 import com.fsck.k9.mailstore.OutboxState;
 import com.fsck.k9.mailstore.OutboxStateRepository;
+import com.fsck.k9.mailstore.SaveMessageData;
 import com.fsck.k9.mailstore.SaveMessageDataCreator;
 import com.fsck.k9.mailstore.SendState;
 import com.fsck.k9.mailstore.UnavailableStorageException;
@@ -1363,39 +1364,29 @@ public class MessagingController {
     }
 
     /**
-     * Stores the given message in the Outbox and starts a sendPendingMessages command to
-     * attempt to send the message.
+     * Stores the given message in the Outbox and starts a sendPendingMessages command to attempt to send the message.
      */
-    public void sendMessage(final Account account,
-            final Message message,
-            String plaintextSubject,
-            MessagingListener listener) {
+    public void sendMessage(Account account, Message message, String plaintextSubject, MessagingListener listener) {
         try {
-            LocalStore localStore = localStoreProvider.getInstance(account);
-            LocalFolder localFolder = localStore.getFolder(account.getOutboxFolderId());
-            localFolder.open();
-            message.setFlag(Flag.SEEN, true);
-            localFolder.appendMessages(Collections.singletonList(message));
-            LocalMessage localMessage = localFolder.getMessage(message.getUid());
-            long messageId = localMessage.getDatabaseId();
-            localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
-            if (plaintextSubject != null) {
-                localMessage.setCachedDecryptedSubject(plaintextSubject);
+            Long outboxFolderId = account.getOutboxFolderId();
+            if (outboxFolderId == null) {
+                Timber.e("Error sending message. No Outbox folder configured.");
+                return;
             }
 
+            message.setFlag(Flag.SEEN, true);
+
+            MessageStore messageStore = messageStoreManager.getMessageStore(account);
+            SaveMessageData messageData = saveMessageDataCreator.createSaveMessageData(message, false, plaintextSubject);
+            long messageId = messageStore.saveLocalMessage(outboxFolderId, messageData, null);
+
+            LocalStore localStore = localStoreProvider.getInstance(account);
             OutboxStateRepository outboxStateRepository = localStore.getOutboxStateRepository();
             outboxStateRepository.initializeOutboxState(messageId);
 
             sendPendingMessages(account, listener);
         } catch (Exception e) {
-            /*
-            for (MessagingListener l : getListeners())
-            {
-                // TODO general failed
-            }
-            */
             Timber.e(e, "Error sending message");
-
         }
     }
 
