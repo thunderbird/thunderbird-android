@@ -281,7 +281,9 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 relatedMessageReference.getAccountUuid() :
                 intent.getStringExtra(EXTRA_ACCOUNT);
 
-        account = preferences.getAccount(accountUuid);
+        if (accountUuid != null) {
+            account = preferences.getAccount(accountUuid);
+        }
 
         if (account == null) {
             account = preferences.getDefaultAccount();
