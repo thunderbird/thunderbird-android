@@ -13,6 +13,7 @@ dependencies {
 
     implementation "androidx.core:core-ktx:${versions.androidxCore}"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinCoroutines}"
 }
 
 android {

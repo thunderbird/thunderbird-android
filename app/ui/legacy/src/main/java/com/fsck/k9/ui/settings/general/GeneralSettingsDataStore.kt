@@ -1,18 +1,18 @@
 package com.fsck.k9.ui.settings.general
 
-import androidx.fragment.app.FragmentActivity
 import androidx.preference.PreferenceDataStore
 import com.fsck.k9.K9
 import com.fsck.k9.K9.AppTheme
 import com.fsck.k9.K9.SubTheme
 import com.fsck.k9.job.K9JobManager
+import com.fsck.k9.ui.base.AppLanguageManager
 import com.fsck.k9.ui.base.ThemeManager
 
 class GeneralSettingsDataStore(
     private val jobManager: K9JobManager,
-    private val themeManager: ThemeManager
+    private val themeManager: ThemeManager,
+    private val appLanguageManager: AppLanguageManager
 ) : PreferenceDataStore() {
-    var activity: FragmentActivity? = null
 
     override fun getBoolean(key: String, defValue: Boolean): Boolean {
         return when (key) {
@@ -92,7 +92,7 @@ class GeneralSettingsDataStore(
 
     override fun getString(key: String, defValue: String?): String? {
         return when (key) {
-            "language" -> K9.k9Language
+            "language" -> appLanguageManager.getAppLanguage()
             "theme" -> appThemeToString(K9.appTheme)
             "message_compose_theme" -> subThemeToString(K9.messageComposeTheme)
             "messageViewTheme" -> subThemeToString(K9.messageViewTheme)
@@ -128,7 +128,7 @@ class GeneralSettingsDataStore(
         if (value == null) return
 
         when (key) {
-            "language" -> setLanguage(value)
+            "language" -> appLanguageManager.setAppLanguage(value)
             "theme" -> setTheme(value)
             "message_compose_theme" -> K9.messageComposeTheme = stringToSubTheme(value)
             "messageViewTheme" -> K9.messageViewTheme = stringToSubTheme(value)
@@ -234,11 +234,6 @@ class GeneralSettingsDataStore(
         themeManager.updateAppTheme()
     }
 
-    private fun setLanguage(language: String) {
-        K9.k9Language = language
-        recreateActivity()
-    }
-
     private fun appThemeToString(theme: AppTheme) = when (theme) {
         AppTheme.LIGHT -> "light"
         AppTheme.DARK -> "dark"
@@ -271,9 +266,5 @@ class GeneralSettingsDataStore(
             K9.backgroundOps = newBackgroundOps
             jobManager.scheduleAllMailJobs()
         }
-    }
-
-    private fun recreateActivity() {
-        activity?.recreate()
     }
 }

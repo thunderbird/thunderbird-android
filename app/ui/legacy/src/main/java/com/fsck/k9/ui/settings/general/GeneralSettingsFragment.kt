@@ -22,7 +22,6 @@ class GeneralSettingsFragment : PreferenceFragmentCompat() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         activity?.title = preferenceScreen.title
-        dataStore.activity = activity
     }
 
     private fun initializeTheme() {

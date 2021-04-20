@@ -4,4 +4,5 @@ import org.koin.dsl.module
 
 val uiBaseModule = module {
     single { ThemeManager(context = get(), themeProvider = get()) }
+    single { AppLanguageManager() }
 }
