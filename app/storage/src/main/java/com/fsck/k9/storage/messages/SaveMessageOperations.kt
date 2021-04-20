@@ -2,6 +2,7 @@ package com.fsck.k9.storage.messages
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
+import com.fsck.k9.K9
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Body
 import com.fsck.k9.mail.BoundaryGenerator
@@ -28,6 +29,7 @@ import java.io.IOException
 import java.io.InputStream
 import java.util.Locale
 import java.util.Stack
+import java.util.UUID
 import org.apache.commons.io.IOUtils
 import org.apache.james.mime4j.codec.Base64InputStream
 import org.apache.james.mime4j.codec.QuotedPrintableInputStream
@@ -42,11 +44,45 @@ internal class SaveMessageOperations(
     private val threadMessageOperations: ThreadMessageOperations
 ) {
     fun saveRemoteMessage(folderId: Long, messageServerId: String, messageData: SaveMessageData) {
-        lockableDatabase.execute(true) { database ->
+        saveMessage(folderId, messageServerId, messageData)
+    }
+
+    fun saveLocalMessage(folderId: Long, messageData: SaveMessageData, existingMessageId: Long?): Long {
+        return if (existingMessageId == null) {
+            saveLocalMessage(folderId, messageData)
+        } else {
+            replaceLocalMessage(folderId, existingMessageId, messageData)
+        }
+    }
+
+    private fun saveLocalMessage(folderId: Long, messageData: SaveMessageData): Long {
+        val fakeServerId = K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString()
+        return saveMessage(folderId, fakeServerId, messageData)
+    }
+
+    private fun replaceLocalMessage(folderId: Long, messageId: Long, messageData: SaveMessageData): Long {
+        return lockableDatabase.execute(true) { database ->
+            val (messageServerId, rootMessagePartId) = getLocalMessageInfo(folderId, messageId)
+
+            replaceMessage(
+                database,
+                folderId,
+                messageServerId,
+                existingMessageId = messageId,
+                existingRootMessagePartId = rootMessagePartId,
+                messageData
+            )
+
+            messageId
+        }
+    }
+
+    private fun saveMessage(folderId: Long, messageServerId: String, messageData: SaveMessageData): Long {
+        return lockableDatabase.execute(true) { database ->
             val message = messageData.message
 
             val existingMessageInfo = getMessage(folderId, messageServerId)
-            if (existingMessageInfo != null) {
+            return@execute if (existingMessageInfo != null) {
                 val (existingMessageId, existingRootMessagePartId) = existingMessageInfo
                 replaceMessage(
                     database,
@@ -56,27 +92,40 @@ internal class SaveMessageOperations(
                     existingRootMessagePartId,
                     messageData
                 )
-                return@execute
+
+                existingMessageId
+            } else {
+                insertMessage(database, folderId, messageServerId, message, messageData)
             }
-
-            val threadInfo = threadMessageOperations.doMessageThreading(database, folderId, message.toThreadHeaders())
-
-            val rootMessagePartId = saveMessageParts(database, message)
-            val messageId = saveMessage(
-                database,
-                folderId,
-                messageServerId,
-                rootMessagePartId,
-                messageData,
-                replaceMessageId = threadInfo.messageId
-            )
-
-            if (threadInfo.threadId == null) {
-                threadMessageOperations.createThreadEntry(database, messageId, threadInfo.rootId, threadInfo.parentId)
-            }
-
-            createOrReplaceFulltextEntry(database, messageId, messageData)
         }
+    }
+
+    private fun insertMessage(
+        database: SQLiteDatabase,
+        folderId: Long,
+        messageServerId: String,
+        message: Message,
+        messageData: SaveMessageData
+    ): Long {
+        val threadInfo = threadMessageOperations.doMessageThreading(database, folderId, message.toThreadHeaders())
+
+        val rootMessagePartId = saveMessageParts(database, message)
+        val messageId = saveMessage(
+            database,
+            folderId,
+            messageServerId,
+            rootMessagePartId,
+            messageData,
+            replaceMessageId = threadInfo.messageId
+        )
+
+        if (threadInfo.threadId == null) {
+            threadMessageOperations.createThreadEntry(database, messageId, threadInfo.rootId, threadInfo.parentId)
+        }
+
+        createOrReplaceFulltextEntry(database, messageId, messageData)
+
+        return messageId
     }
 
     private fun replaceMessage(
@@ -409,6 +458,26 @@ internal class SaveMessageOperations(
                 } else {
                     null
                 }
+            }
+        }
+    }
+
+    private fun getLocalMessageInfo(folderId: Long, messageId: Long): Pair<String, Long?> {
+        return lockableDatabase.execute(false) { db ->
+            db.query(
+                "messages",
+                arrayOf("uid", "message_part_id"),
+                "folder_id = ? AND id = ?",
+                arrayOf(folderId.toString(), messageId.toString()),
+                null,
+                null,
+                null
+            ).use { cursor ->
+                if (!cursor.moveToFirst()) error("Local message not found $folderId:$messageId")
+
+                val messageServerId = cursor.getString(0)!!
+                val messagePartId = cursor.getLong(1)
+                messageServerId to messagePartId
             }
         }
     }

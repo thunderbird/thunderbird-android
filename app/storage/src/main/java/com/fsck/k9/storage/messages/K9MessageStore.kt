@@ -48,6 +48,10 @@ class K9MessageStore(
         localStore.notifyChange()
     }
 
+    override fun saveLocalMessage(folderId: Long, messageData: SaveMessageData, existingMessageId: Long?): Long {
+        return saveMessageOperations.saveLocalMessage(folderId, messageData, existingMessageId)
+    }
+
     override fun moveMessage(messageId: Long, destinationFolderId: Long): Long {
         return moveMessageOperations.moveMessage(messageId, destinationFolderId).also {
             localStore.notifyChange()

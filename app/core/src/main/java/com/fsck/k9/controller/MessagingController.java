@@ -72,6 +72,8 @@ import com.fsck.k9.mailstore.MessageStore;
 import com.fsck.k9.mailstore.MessageStoreManager;
 import com.fsck.k9.mailstore.OutboxState;
 import com.fsck.k9.mailstore.OutboxStateRepository;
+import com.fsck.k9.mailstore.SaveMessageData;
+import com.fsck.k9.mailstore.SaveMessageDataCreator;
 import com.fsck.k9.mailstore.SendState;
 import com.fsck.k9.mailstore.UnavailableStorageException;
 import com.fsck.k9.notification.NotificationController;
@@ -116,6 +118,7 @@ public class MessagingController {
     private final BackendManager backendManager;
     private final Preferences preferences;
     private final MessageStoreManager messageStoreManager;
+    private final SaveMessageDataCreator saveMessageDataCreator;
 
     private final Thread controllerThread;
 
@@ -140,7 +143,7 @@ public class MessagingController {
             NotificationStrategy notificationStrategy, LocalStoreProvider localStoreProvider,
             UnreadMessageCountProvider unreadMessageCountProvider, BackendManager backendManager,
             Preferences preferences, MessageStoreManager messageStoreManager,
-            List<ControllerExtension> controllerExtensions) {
+            SaveMessageDataCreator saveMessageDataCreator, List<ControllerExtension> controllerExtensions) {
         this.context = context;
         this.notificationController = notificationController;
         this.notificationStrategy = notificationStrategy;
@@ -149,6 +152,7 @@ public class MessagingController {
         this.backendManager = backendManager;
         this.preferences = preferences;
         this.messageStoreManager = messageStoreManager;
+        this.saveMessageDataCreator = saveMessageDataCreator;
 
         controllerThread = new Thread(new Runnable() {
             @Override
@@ -162,7 +166,7 @@ public class MessagingController {
 
         initializeControllerExtensions(controllerExtensions);
 
-        draftOperations = new DraftOperations(this);
+        draftOperations = new DraftOperations(this, messageStoreManager, saveMessageDataCreator);
     }
 
     private void initializeControllerExtensions(List<ControllerExtension> controllerExtensions) {
@@ -1360,39 +1364,29 @@ public class MessagingController {
     }
 
     /**
-     * Stores the given message in the Outbox and starts a sendPendingMessages command to
-     * attempt to send the message.
+     * Stores the given message in the Outbox and starts a sendPendingMessages command to attempt to send the message.
      */
-    public void sendMessage(final Account account,
-            final Message message,
-            String plaintextSubject,
-            MessagingListener listener) {
+    public void sendMessage(Account account, Message message, String plaintextSubject, MessagingListener listener) {
         try {
-            LocalStore localStore = localStoreProvider.getInstance(account);
-            LocalFolder localFolder = localStore.getFolder(account.getOutboxFolderId());
-            localFolder.open();
-            message.setFlag(Flag.SEEN, true);
-            localFolder.appendMessages(Collections.singletonList(message));
-            LocalMessage localMessage = localFolder.getMessage(message.getUid());
-            long messageId = localMessage.getDatabaseId();
-            localMessage.setFlag(Flag.X_DOWNLOADED_FULL, true);
-            if (plaintextSubject != null) {
-                localMessage.setCachedDecryptedSubject(plaintextSubject);
+            Long outboxFolderId = account.getOutboxFolderId();
+            if (outboxFolderId == null) {
+                Timber.e("Error sending message. No Outbox folder configured.");
+                return;
             }
 
+            message.setFlag(Flag.SEEN, true);
+
+            MessageStore messageStore = messageStoreManager.getMessageStore(account);
+            SaveMessageData messageData = saveMessageDataCreator.createSaveMessageData(message, false, plaintextSubject);
+            long messageId = messageStore.saveLocalMessage(outboxFolderId, messageData, null);
+
+            LocalStore localStore = localStoreProvider.getInstance(account);
             OutboxStateRepository outboxStateRepository = localStore.getOutboxStateRepository();
             outboxStateRepository.initializeOutboxState(messageId);
 
             sendPendingMessages(account, listener);
         } catch (Exception e) {
-            /*
-            for (MessagingListener l : getListeners())
-            {
-                // TODO general failed
-            }
-            */
             Timber.e(e, "Error sending message");
-
         }
     }
 
