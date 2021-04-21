@@ -24,7 +24,6 @@ import com.fsck.k9.mailstore.FolderType
 import com.fsck.k9.mailstore.RemoteFolder
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity
-import com.fsck.k9.ui.observe
 import com.fsck.k9.ui.settings.onClick
 import com.fsck.k9.ui.settings.oneTimeClickListener
 import com.fsck.k9.ui.settings.remove

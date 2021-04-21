@@ -13,7 +13,6 @@ import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.K9Activity
 import com.fsck.k9.ui.fragmentTransaction
 import com.fsck.k9.ui.fragmentTransactionWithBackStack
-import com.fsck.k9.ui.observe
 import com.fsck.k9.ui.observeNotNull
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber

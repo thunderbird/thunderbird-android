@@ -13,7 +13,7 @@ buildscript {
                 'kotlinCoroutines': '1.4.3',
                 'androidxAppCompat': '1.2.0',
                 'androidxRecyclerView': '1.1.0',
-                'androidxLifecycle': '2.2.0',
+                'androidxLifecycle': '2.3.1',
                 'androidxAnnotation': '1.1.0',
                 'androidxNavigation': '2.3.1',
                 'androidxConstraintLayout': '2.0.4',
