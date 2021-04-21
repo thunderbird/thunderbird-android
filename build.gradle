@@ -38,7 +38,7 @@ buildscript {
                 'glide': '4.12.0',
 
                 'androidxTestRunner': '1.3.0',
-                'junit': '4.13.1',
+                'junit': '4.13.2',
                 'robolectric': '4.4',
                 'mockito': '3.6.0',
                 'mockitoKotlin': '2.2.0',
