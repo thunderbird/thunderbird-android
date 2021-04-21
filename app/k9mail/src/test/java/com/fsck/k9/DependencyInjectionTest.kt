@@ -6,8 +6,6 @@ import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferPresenter
 import com.fsck.k9.ui.folders.FolderNameFormatter
 import com.fsck.k9.ui.helper.SizeFormatter
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.annotation.KoinInternal
@@ -16,6 +14,8 @@ import org.koin.core.parameter.parametersOf
 import org.koin.java.KoinJavaComponent
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.check.checkModules
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
 import org.openintents.openpgp.OpenPgpApiManager
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
