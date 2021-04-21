@@ -100,17 +100,24 @@ internal class ThreadMessageOperations {
                     rootId = parentId
                 }
             } else {
-                if (rootId != null && threadInfo.rootId == null && rootId != threadInfo.threadId) {
-                    // We found an existing root container that is not the root of our current path (References).
-                    updateThreadToNewRoot(database, threadInfo.threadId!!, rootId, parentId)
-                } else {
-                    rootId = threadInfo.rootId ?: threadInfo.threadId
+                if (rootId == null) {
+                    rootId = threadInfo.rootId!!
+                } else if (threadInfo.rootId != rootId) {
+                    // Merge this thread into our thread
+                    updateThreadToNewRoot(database, threadInfo.rootId!!, rootId, parentId)
                 }
                 parentId = threadInfo.threadId
             }
         }
 
-        // TODO: set in-reply-to "link" even if one already exists
+        msgThreadInfo?.threadId?.let { threadId ->
+            // msgThreadInfo.rootId might be outdated. Fetch current value.
+            val oldRootId = getThreadRoot(database, threadId)
+            if (oldRootId != rootId) {
+                // Connect the existing thread to the newly created thread
+                updateThreadToNewRoot(database, oldRootId, rootId!!, parentId)
+            }
+        }
 
         return ThreadInfo(msgThreadInfo?.threadId, msgThreadInfo?.messageId, messageIdHeader, rootId, parentId)
     }
@@ -176,6 +183,19 @@ internal class ThreadMessageOperations {
                 ThreadInfo(threadId, messageId, messageIdHeader, rootId, parentId)
             } else {
                 null
+            }
+        }
+    }
+
+    private fun getThreadRoot(database: SQLiteDatabase, threadId: Long): Long {
+        return database.rawQuery(
+            "SELECT root FROM threads WHERE id = ?",
+            arrayOf(threadId.toString())
+        ).use { cursor ->
+            if (cursor.moveToFirst()) {
+                cursor.getLong(0)
+            } else {
+                error("Thread with ID $threadId not found")
             }
         }
     }
