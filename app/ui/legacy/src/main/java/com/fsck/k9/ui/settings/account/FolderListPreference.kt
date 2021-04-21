@@ -11,8 +11,8 @@ import androidx.preference.ListPreference
 import com.fsck.k9.mailstore.RemoteFolder
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.folders.FolderNameFormatter
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
 
 /**

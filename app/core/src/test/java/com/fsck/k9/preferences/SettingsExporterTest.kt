@@ -2,7 +2,6 @@ package com.fsck.k9.preferences
 
 import com.fsck.k9.K9RobolectricTest
 import com.fsck.k9.Preferences
-import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.mailstore.FolderRepositoryManager
 import java.io.ByteArrayOutputStream
 import org.jdom2.Document
@@ -11,13 +10,12 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Test
-import org.koin.core.inject
+import org.koin.core.component.inject
 import org.robolectric.RuntimeEnvironment
 
 class SettingsExporterTest : K9RobolectricTest() {
     private val contentResolver = RuntimeEnvironment.application.contentResolver
     private val preferences: Preferences by inject()
-    private val backendManager: BackendManager by inject()
     private val folderSettingsProvider: FolderSettingsProvider by inject()
     private val folderRepositoryManager: FolderRepositoryManager by inject()
     private val settingsExporter = SettingsExporter(

@@ -10,9 +10,10 @@ import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.core.context.KoinContextHandler
+import org.koin.core.annotation.KoinInternal
 import org.koin.core.logger.PrintLogger
 import org.koin.core.parameter.parametersOf
+import org.koin.java.KoinJavaComponent
 import org.koin.test.AutoCloseKoinTest
 import org.koin.test.check.checkModules
 import org.openintents.openpgp.OpenPgpApiManager
@@ -28,9 +29,10 @@ class DependencyInjectionTest : AutoCloseKoinTest() {
     }
     val autocryptTransferView = mock<AutocryptKeyTransferActivity>()
 
+    @KoinInternal
     @Test
     fun testDependencyTree() {
-        KoinContextHandler.get()._logger = PrintLogger()
+        KoinJavaComponent.getKoin().setupLogger(PrintLogger())
 
         getKoin().checkModules {
             create<OpenPgpApiManager> { parametersOf(lifecycleOwner) }
