@@ -28,6 +28,26 @@ interface MessageStore {
     fun saveLocalMessage(folderId: Long, messageData: SaveMessageData, existingMessageId: Long? = null): Long
 
     /**
+     * Copy a message to another folder.
+     *
+     * @return The message's database ID in the destination folder.
+     */
+    fun copyMessage(messageId: Long, destinationFolderId: Long): Long
+
+    /**
+     * Copy messages to another folder.
+     *
+     * @return A mapping of the original message database ID to the new message database ID.
+     */
+    fun copyMessages(messageIds: Collection<Long>, destinationFolderId: Long): Map<Long, Long> {
+        return messageIds
+            .map { messageId ->
+                messageId to copyMessage(messageId, destinationFolderId)
+            }
+            .toMap()
+    }
+
+    /**
      * Move a message to another folder.
      *
      * @return The message's database ID in the destination folder. This will most likely be different from the

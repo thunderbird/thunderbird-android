@@ -18,7 +18,7 @@ internal class ThreadMessageOperations {
         return doMessageThreading(database, destinationFolderId, threadHeaders)
     }
 
-    private fun getMessageThreadHeaders(database: SQLiteDatabase, messageId: Long): ThreadHeaders {
+    fun getMessageThreadHeaders(database: SQLiteDatabase, messageId: Long): ThreadHeaders {
         return database.rawQuery(
             """
             SELECT messages.message_id, message_parts.header 

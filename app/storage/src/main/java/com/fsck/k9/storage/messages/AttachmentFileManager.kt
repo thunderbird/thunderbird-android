@@ -7,7 +7,7 @@ import com.fsck.k9.mailstore.StorageManager.InternalStorageProvider
 import java.io.File
 import timber.log.Timber
 
-class AttachmentFileManager(
+internal class AttachmentFileManager(
     private val storageManager: StorageManager,
     private val accountUuid: String
 ) {
@@ -23,7 +23,13 @@ class AttachmentFileManager(
         FileHelper.renameOrMoveByCopying(temporaryFile, destinationFile)
     }
 
-    private fun getAttachmentFile(messagePartId: Long): File {
+    fun copyFile(sourceMessagePartId: Long, destinationMessagePartId: Long) {
+        val sourceFile = getAttachmentFile(sourceMessagePartId)
+        val destinationFile = getAttachmentFile(destinationMessagePartId)
+        sourceFile.copyTo(destinationFile)
+    }
+
+    fun getAttachmentFile(messagePartId: Long): File {
         val attachmentDirectory = storageManager.getAttachmentDirectory(accountUuid, InternalStorageProvider.ID)
         return File(attachmentDirectory, messagePartId.toString())
     }

@@ -33,6 +33,7 @@ class K9MessageStore(
         basicPartInfoExtractor,
         threadMessageOperations
     )
+    private val copyMessageOperations = CopyMessageOperations(database, attachmentFileManager, threadMessageOperations)
     private val moveMessageOperations = MoveMessageOperations(database, threadMessageOperations)
     private val flagMessageOperations = FlagMessageOperations(database)
     private val retrieveMessageOperations = RetrieveMessageOperations(database)
@@ -50,6 +51,12 @@ class K9MessageStore(
 
     override fun saveLocalMessage(folderId: Long, messageData: SaveMessageData, existingMessageId: Long?): Long {
         return saveMessageOperations.saveLocalMessage(folderId, messageData, existingMessageId)
+    }
+
+    override fun copyMessage(messageId: Long, destinationFolderId: Long): Long {
+        return copyMessageOperations.copyMessage(messageId, destinationFolderId).also {
+            localStore.notifyChange()
+        }
     }
 
     override fun moveMessage(messageId: Long, destinationFolderId: Long): Long {
