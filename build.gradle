@@ -15,7 +15,7 @@ buildscript {
                 'androidxRecyclerView': '1.1.0',
                 'androidxLifecycle': '2.3.1',
                 'androidxAnnotation': '1.2.0',
-                'androidxNavigation': '2.3.1',
+                'androidxNavigation': '2.3.5',
                 'androidxConstraintLayout': '2.0.4',
                 'androidxWorkManager': '2.4.0',
                 'androidxFragment': '1.2.5',
