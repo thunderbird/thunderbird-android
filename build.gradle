@@ -35,7 +35,7 @@ buildscript {
                 'mime4j': '0.8.3',
                 'okhttp': '4.9.1',
                 'minidns': '1.0.0',
-                'glide': '4.11.0',
+                'glide': '4.12.0',
 
                 'androidxTestRunner': '1.3.0',
                 'junit': '4.13.1',
