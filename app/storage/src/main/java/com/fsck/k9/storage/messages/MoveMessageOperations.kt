@@ -20,7 +20,7 @@ internal class MoveMessageOperations(
         return database.execute(true) { database ->
             val threadInfo = threadMessageOperations.createOrUpdateParentThreadEntries(database, messageId, destinationFolderId)
             val destinationMessageId = createMessageEntry(database, messageId, destinationFolderId, threadInfo)
-            threadMessageOperations.createOrUpdateThreadEntry(database, destinationMessageId, threadInfo)
+            threadMessageOperations.createThreadEntryIfNecessary(database, destinationMessageId, threadInfo)
 
             convertOriginalMessageEntryToPlaceholderEntry(database, messageId)
 

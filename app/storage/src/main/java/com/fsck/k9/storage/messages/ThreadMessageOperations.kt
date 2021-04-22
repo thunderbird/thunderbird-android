@@ -48,15 +48,9 @@ internal class ThreadMessageOperations {
         }
     }
 
-    fun createOrUpdateThreadEntry(database: SQLiteDatabase, messageId: Long, threadInfo: ThreadInfo?) {
+    fun createThreadEntryIfNecessary(database: SQLiteDatabase, messageId: Long, threadInfo: ThreadInfo?) {
         if (threadInfo?.threadId == null) {
             createThreadEntry(database, messageId, threadInfo?.rootId, threadInfo?.parentId)
-        } else {
-            val contentValues = ContentValues().apply {
-                put("message_id", messageId)
-            }
-
-            database.update("threads", contentValues, "id = ?", arrayOf(threadInfo.threadId.toString()))
         }
     }
 
