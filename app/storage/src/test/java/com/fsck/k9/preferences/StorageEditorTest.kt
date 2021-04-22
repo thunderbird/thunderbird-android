@@ -1,8 +1,6 @@
 package com.fsck.k9.preferences
 
 import com.fsck.k9.storage.K9RobolectricTest
-import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
-import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -14,6 +12,8 @@ import org.mockito.Mock
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
+import org.mockito.kotlin.verifyNoMoreInteractions
+import org.mockito.kotlin.whenever
 
 class StorageEditorTest : K9RobolectricTest() {
     @Mock private lateinit var storage: Storage

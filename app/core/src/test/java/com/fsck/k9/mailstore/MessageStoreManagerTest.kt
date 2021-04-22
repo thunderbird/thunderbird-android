@@ -4,13 +4,13 @@ import com.fsck.k9.Account
 import com.fsck.k9.AccountRemovedListener
 import com.fsck.k9.preferences.AccountManager
 import com.google.common.truth.Truth.assertThat
-import com.nhaarman.mockitokotlin2.KStubbing
-import com.nhaarman.mockitokotlin2.argumentCaptor
-import com.nhaarman.mockitokotlin2.doNothing
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Test
+import org.mockito.kotlin.KStubbing
+import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.doNothing
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 
 class MessageStoreManagerTest {
     private val account = Account("00000000-0000-4000-0000-000000000000")

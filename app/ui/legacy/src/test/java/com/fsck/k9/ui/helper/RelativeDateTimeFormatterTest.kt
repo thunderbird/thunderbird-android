@@ -3,7 +3,6 @@ package com.fsck.k9.ui.helper
 import android.os.SystemClock
 import com.fsck.k9.Clock
 import com.fsck.k9.RobolectricTest
-import com.nhaarman.mockitokotlin2.whenever
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -12,6 +11,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
+import org.mockito.kotlin.whenever
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 

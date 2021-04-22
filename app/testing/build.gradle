@@ -2,15 +2,13 @@ apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.android'
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
-
     implementation project(':app:core')
 
     api "junit:junit:${versions.junit}"
     api "org.robolectric:robolectric:${versions.robolectric}"
     api "org.koin:koin-core:${versions.koin}"
     api "org.mockito:mockito-core:${versions.mockito}"
-    api "com.nhaarman.mockitokotlin2:mockito-kotlin:${versions.mockitoKotlin}"
+    api "org.mockito.kotlin:mockito-kotlin:${versions.mockitoKotlin}"
 }
 
 android {

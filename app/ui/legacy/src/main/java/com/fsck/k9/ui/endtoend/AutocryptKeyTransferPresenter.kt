@@ -2,7 +2,6 @@ package com.fsck.k9.ui.endtoend
 
 import android.app.PendingIntent
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import com.fsck.k9.Account
 import com.fsck.k9.Preferences
 import kotlinx.coroutines.Dispatchers
@@ -25,8 +24,12 @@ class AutocryptKeyTransferPresenter internal constructor(
     private lateinit var showTransferCodePi: PendingIntent
 
     init {
-        viewModel.autocryptSetupMessageLiveEvent.observe(lifecycleOwner, Observer { msg -> msg?.let { onEventAutocryptSetupMessage(it) } })
-        viewModel.autocryptSetupTransferLiveEvent.observe(lifecycleOwner, Observer { pi -> onLoadedAutocryptSetupTransfer(pi) })
+        viewModel.autocryptSetupMessageLiveEvent.observe(lifecycleOwner) { msg ->
+            msg?.let { onEventAutocryptSetupMessage(it) }
+        }
+        viewModel.autocryptSetupTransferLiveEvent.observe(lifecycleOwner) { pi ->
+            onLoadedAutocryptSetupTransfer(pi)
+        }
     }
 
     fun initFromIntent(accountUuid: String?) {

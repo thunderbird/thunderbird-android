@@ -7,14 +7,14 @@ import com.fsck.k9.Preferences
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.provider.EmailProvider
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.koin.core.inject
+import org.koin.core.component.inject
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
 
 class K9BackendStorageTest : K9RobolectricTest() {
     val preferences: Preferences by inject()

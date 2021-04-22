@@ -3,8 +3,8 @@ package com.fsck.k9.account
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.JobIntentService
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 /**
  * A [JobIntentService] to remove an account in the background.

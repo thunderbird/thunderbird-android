@@ -9,42 +9,42 @@ buildscript {
         ]
 
         versions = [
-                'kotlin': '1.4.31',
-                'kotlinCoroutines': '1.4.1',
+                'kotlin': '1.4.32',
+                'kotlinCoroutines': '1.4.3',
                 'androidxAppCompat': '1.2.0',
                 'androidxRecyclerView': '1.1.0',
-                'androidxLifecycle': '2.2.0',
-                'androidxAnnotation': '1.1.0',
-                'androidxNavigation': '2.3.1',
+                'androidxLifecycle': '2.3.1',
+                'androidxAnnotation': '1.2.0',
+                'androidxNavigation': '2.3.5',
                 'androidxConstraintLayout': '2.0.4',
-                'androidxWorkManager': '2.4.0',
-                'androidxFragment': '1.2.5',
+                'androidxWorkManager': '2.5.0',
+                'androidxFragment': '1.3.3',
                 'androidxLocalBroadcastManager': '1.0.0',
                 'androidxCore': '1.3.2',
                 'androidxCardView': '1.0.0',
                 'androidxPreference': '1.1.1',
                 'androidxTestCore': '1.3.0',
-                'materialComponents': '1.2.1',
-                'fastAdapter': '5.4.0',
+                'materialComponents': '1.3.0',
+                'fastAdapter': '5.4.1',
                 'preferencesFix': '1.1.0',
-                'okio': '2.9.0',
-                'moshi': '1.11.0',
+                'okio': '2.10.0',
+                'moshi': '1.12.0',
                 'timber': '4.7.1',
-                'koin': '2.1.6',
+                'koin': '2.2.2',
                 'commonsIo': '2.6',
                 'mime4j': '0.8.3',
-                'okhttp': '4.9.0',
+                'okhttp': '4.9.1',
                 'minidns': '1.0.0',
-                'glide': '4.11.0',
+                'glide': '4.12.0',
 
                 'androidxTestRunner': '1.3.0',
-                'junit': '4.13.1',
-                'robolectric': '4.4',
-                'mockito': '3.6.0',
-                'mockitoKotlin': '2.2.0',
-                'truth': '1.1',
+                'junit': '4.13.2',
+                'robolectric': '4.5.1',
+                'mockito': '3.9.0',
+                'mockitoKotlin': '3.1.0',
+                'truth': '1.1.2',
 
-                'ktlint': '0.39.0'
+                'ktlint': '0.40.0'
         ]
 
         javaVersion = JavaVersion.VERSION_1_8
@@ -59,9 +59,9 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.1'
+        classpath 'com.android.tools.build:gradle:4.1.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
-        classpath "org.jlleitschuh.gradle:ktlint-gradle:9.4.1"
+        classpath "org.jlleitschuh.gradle:ktlint-gradle:10.0.0"
     }
 }
 

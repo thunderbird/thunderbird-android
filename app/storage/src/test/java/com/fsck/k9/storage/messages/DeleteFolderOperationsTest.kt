@@ -3,12 +3,12 @@ package com.fsck.k9.storage.messages
 import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.storage.RobolectricTest
 import com.google.common.truth.Truth.assertThat
-import com.nhaarman.mockitokotlin2.anyOrNull
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.mock
 import org.junit.After
 import org.junit.Test
+import org.mockito.kotlin.anyOrNull
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.mock
 
 private const val ACCOUNT_UUID = "00000000-0000-4000-0000-000000000000"
 

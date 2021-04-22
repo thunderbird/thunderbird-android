@@ -10,11 +10,11 @@ import com.fsck.k9.mailstore.DatabasePreviewType
 import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.MigrationsHelper
 import com.fsck.k9.storage.K9SchemaDefinitionFactory
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.doAnswer
-import com.nhaarman.mockitokotlin2.mock
 import java.io.File
 import org.mockito.ArgumentMatchers
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doAnswer
+import org.mockito.kotlin.mock
 
 fun createLockableDatabaseMock(sqliteDatabase: SQLiteDatabase): LockableDatabase {
     return mock {

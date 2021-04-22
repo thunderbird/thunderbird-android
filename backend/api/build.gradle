@@ -3,8 +3,6 @@ apply plugin: 'org.jetbrains.kotlin.android'
 
 dependencies {
     api project(":mail:common")
-
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
 }
 
 android {

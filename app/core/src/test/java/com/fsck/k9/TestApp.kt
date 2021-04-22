@@ -10,9 +10,9 @@ import com.fsck.k9.notification.NotificationStrategy
 import com.fsck.k9.preferences.InMemoryStoragePersister
 import com.fsck.k9.preferences.StoragePersister
 import com.fsck.k9.storage.storageModule
-import com.nhaarman.mockitokotlin2.mock
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import org.mockito.kotlin.mock
 
 class TestApp : Application() {
     override fun onCreate() {
