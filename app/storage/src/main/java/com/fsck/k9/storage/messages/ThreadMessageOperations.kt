@@ -13,7 +13,7 @@ internal class ThreadMessageOperations {
         database: SQLiteDatabase,
         messageId: Long,
         destinationFolderId: Long
-    ): ThreadInfo {
+    ): ThreadInfo? {
         val threadHeaders = getMessageThreadHeaders(database, messageId)
         return doMessageThreading(database, destinationFolderId, threadHeaders)
     }
@@ -48,9 +48,9 @@ internal class ThreadMessageOperations {
         }
     }
 
-    fun createOrUpdateThreadEntry(database: SQLiteDatabase, messageId: Long, threadInfo: ThreadInfo) {
-        if (threadInfo.threadId == null) {
-            createThreadEntry(database, messageId, threadInfo.rootId, threadInfo.parentId)
+    fun createOrUpdateThreadEntry(database: SQLiteDatabase, messageId: Long, threadInfo: ThreadInfo?) {
+        if (threadInfo?.threadId == null) {
+            createThreadEntry(database, messageId, threadInfo?.rootId, threadInfo?.parentId)
         } else {
             val contentValues = ContentValues().apply {
                 put("message_id", messageId)
@@ -71,7 +71,7 @@ internal class ThreadMessageOperations {
     }
 
     // TODO: Use MessageIdParser
-    fun doMessageThreading(database: SQLiteDatabase, folderId: Long, threadHeaders: ThreadHeaders): ThreadInfo {
+    fun doMessageThreading(database: SQLiteDatabase, folderId: Long, threadHeaders: ThreadHeaders): ThreadInfo? {
         val messageIdHeader = threadHeaders.messageIdHeader
         val msgThreadInfo = getThreadInfo(database, folderId, messageIdHeader, onlyEmpty = true)
 
@@ -87,7 +87,6 @@ internal class ThreadMessageOperations {
         if (messageIdValues.isEmpty()) {
             // This is not a reply, nothing to do for us.
             return msgThreadInfo
-                ?: ThreadInfo(threadId = null, messageId = null, rootId = null, parentId = null)
         }
 
         var rootId: Long? = null
@@ -101,10 +100,10 @@ internal class ThreadMessageOperations {
                 }
             } else {
                 if (rootId == null) {
-                    rootId = threadInfo.rootId!!
+                    rootId = threadInfo.rootId
                 } else if (threadInfo.rootId != rootId) {
                     // Merge this thread into our thread
-                    updateThreadToNewRoot(database, threadInfo.rootId!!, rootId, parentId)
+                    updateThreadToNewRoot(database, threadInfo.rootId, rootId, parentId)
                 }
                 parentId = threadInfo.threadId
             }
@@ -119,7 +118,7 @@ internal class ThreadMessageOperations {
             }
         }
 
-        return ThreadInfo(msgThreadInfo?.threadId, msgThreadInfo?.messageId, rootId, parentId)
+        return ThreadInfo(msgThreadInfo?.threadId, msgThreadInfo?.messageId, rootId!!, parentId)
     }
 
     private fun updateThreadToNewRoot(database: SQLiteDatabase, oldRootId: Long, rootId: Long, parentId: Long?) {
@@ -178,7 +177,7 @@ internal class ThreadMessageOperations {
             if (cursor.moveToFirst()) {
                 val threadId = cursor.getLong(0)
                 val messageId = cursor.getLong(1)
-                val rootId = if (cursor.isNull(2)) null else cursor.getLong(2)
+                val rootId = cursor.getLong(2)
                 val parentId = if (cursor.isNull(3)) null else cursor.getLong(3)
                 ThreadInfo(threadId, messageId, rootId, parentId)
             } else {
@@ -212,7 +211,7 @@ internal class ThreadMessageOperations {
 internal data class ThreadInfo(
     val threadId: Long?,
     val messageId: Long?,
-    val rootId: Long?,
+    val rootId: Long,
     val parentId: Long?
 )
 

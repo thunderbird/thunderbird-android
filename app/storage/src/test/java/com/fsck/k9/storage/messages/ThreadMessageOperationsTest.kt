@@ -16,14 +16,7 @@ class ThreadMessageOperationsTest : RobolectricTest() {
             ThreadHeaders(messageIdHeader = "<msg001@domain.example>", inReplyToHeader = null, referencesHeader = null)
         )
 
-        assertThat(threadInfo).isEqualTo(
-            ThreadInfo(
-                threadId = null,
-                messageId = null,
-                rootId = null,
-                parentId = null
-            )
-        )
+        assertThat(threadInfo).isNull()
 
         assertThat(sqliteDatabase.readThreads()).isEmpty()
     }
@@ -58,7 +51,7 @@ class ThreadMessageOperationsTest : RobolectricTest() {
             ThreadInfo(
                 threadId = null,
                 messageId = null,
-                rootId = rootThread.id,
+                rootId = rootThread.id!!,
                 parentId = rootThread.id
             )
         )
@@ -186,7 +179,7 @@ class ThreadMessageOperationsTest : RobolectricTest() {
             ThreadInfo(
                 threadId = threadId2,
                 messageId = messageId2,
-                rootId = newRootThread.id,
+                rootId = newRootThread.id!!,
                 parentId = threadId1
             )
         )
@@ -261,7 +254,7 @@ class ThreadMessageOperationsTest : RobolectricTest() {
             ThreadInfo(
                 threadId = threadIdD,
                 messageId = messageIdD,
-                rootId = threadA.id,
+                rootId = threadA.id!!,
                 parentId = threadIdC
             )
         )

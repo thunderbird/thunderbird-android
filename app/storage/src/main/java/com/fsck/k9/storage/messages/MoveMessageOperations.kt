@@ -32,7 +32,7 @@ internal class MoveMessageOperations(
         database: SQLiteDatabase,
         messageId: Long,
         destinationFolderId: Long,
-        threadInfo: ThreadInfo
+        threadInfo: ThreadInfo?
     ): Long {
         val destinationUid = K9.LOCAL_UID_PREFIX + UUID.randomUUID().toString()
 
@@ -81,7 +81,7 @@ internal class MoveMessageOperations(
             }
         }
 
-        val placeHolderMessageId = threadInfo.messageId
+        val placeHolderMessageId = threadInfo?.messageId
         return if (placeHolderMessageId != null) {
             database.update("messages", contentValues, "id = ?", arrayOf(placeHolderMessageId.toString()))
             placeHolderMessageId

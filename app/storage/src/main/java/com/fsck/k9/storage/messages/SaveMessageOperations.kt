@@ -116,11 +116,11 @@ internal class SaveMessageOperations(
             messageServerId,
             rootMessagePartId,
             messageData,
-            replaceMessageId = threadInfo.messageId
+            replaceMessageId = threadInfo?.messageId
         )
 
-        if (threadInfo.threadId == null) {
-            threadMessageOperations.createThreadEntry(database, messageId, threadInfo.rootId, threadInfo.parentId)
+        if (threadInfo?.threadId == null) {
+            threadMessageOperations.createThreadEntry(database, messageId, threadInfo?.rootId, threadInfo?.parentId)
         }
 
         createOrReplaceFulltextEntry(database, messageId, messageData)
