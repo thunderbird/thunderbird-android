@@ -20,7 +20,6 @@ class ThreadMessageOperationsTest : RobolectricTest() {
             ThreadInfo(
                 threadId = null,
                 messageId = null,
-                messageIdHeader = "<msg001@domain.example>",
                 rootId = null,
                 parentId = null
             )
@@ -59,7 +58,6 @@ class ThreadMessageOperationsTest : RobolectricTest() {
             ThreadInfo(
                 threadId = null,
                 messageId = null,
-                messageIdHeader = "<msg002@domain.example>",
                 rootId = rootThread.id,
                 parentId = rootThread.id
             )
@@ -95,7 +93,6 @@ class ThreadMessageOperationsTest : RobolectricTest() {
             ThreadInfo(
                 threadId = null,
                 messageId = null,
-                messageIdHeader = "<msg002@domain.example>",
                 rootId = threadId,
                 parentId = threadId
             )
@@ -137,7 +134,6 @@ class ThreadMessageOperationsTest : RobolectricTest() {
             ThreadInfo(
                 threadId = threadId1,
                 messageId = messageId1,
-                messageIdHeader = "<msg001@domain.example>",
                 rootId = threadId1,
                 parentId = null
             )
@@ -190,7 +186,6 @@ class ThreadMessageOperationsTest : RobolectricTest() {
             ThreadInfo(
                 threadId = threadId2,
                 messageId = messageId2,
-                messageIdHeader = "<msg002@domain.example>",
                 rootId = newRootThread.id,
                 parentId = threadId1
             )
@@ -266,7 +261,6 @@ class ThreadMessageOperationsTest : RobolectricTest() {
             ThreadInfo(
                 threadId = threadIdD,
                 messageId = messageIdD,
-                messageIdHeader = "<msgD@domain.example>",
                 rootId = threadA.id,
                 parentId = threadIdC
             )
