@@ -44,7 +44,7 @@ buildscript {
                 'mockitoKotlin': '3.1.0',
                 'truth': '1.1.2',
 
-                'ktlint': '0.39.0'
+                'ktlint': '0.40.0'
         ]
 
         javaVersion = JavaVersion.VERSION_1_8
@@ -61,7 +61,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
-        classpath "org.jlleitschuh.gradle:ktlint-gradle:9.4.1"
+        classpath "org.jlleitschuh.gradle:ktlint-gradle:10.0.0"
     }
 }
 
