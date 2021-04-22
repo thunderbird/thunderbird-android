@@ -8,7 +8,6 @@ import com.fsck.k9.mail.Header
 import com.fsck.k9.mailstore.CreateFolderInfo
 import com.fsck.k9.mailstore.FolderDetails
 import com.fsck.k9.mailstore.FolderMapper
-import com.fsck.k9.mailstore.LocalStore
 import com.fsck.k9.mailstore.LockableDatabase
 import com.fsck.k9.mailstore.MessageStore
 import com.fsck.k9.mailstore.MoreMessages
@@ -17,14 +16,12 @@ import com.fsck.k9.mailstore.StorageManager
 import com.fsck.k9.message.extractors.BasicPartInfoExtractor
 import java.util.Date
 
-// TODO: Remove dependency on LocalStore
 class K9MessageStore(
-    private val localStore: LocalStore,
+    database: LockableDatabase,
     storageManager: StorageManager,
     basicPartInfoExtractor: BasicPartInfoExtractor,
     accountUuid: String
 ) : MessageStore {
-    private val database: LockableDatabase = localStore.database
     private val attachmentFileManager = AttachmentFileManager(storageManager, accountUuid)
     private val threadMessageOperations = ThreadMessageOperations()
     private val saveMessageOperations = SaveMessageOperations(
@@ -46,7 +43,6 @@ class K9MessageStore(
 
     override fun saveRemoteMessage(folderId: Long, messageServerId: String, messageData: SaveMessageData) {
         saveMessageOperations.saveRemoteMessage(folderId, messageServerId, messageData)
-        localStore.notifyChange()
     }
 
     override fun saveLocalMessage(folderId: Long, messageData: SaveMessageData, existingMessageId: Long?): Long {
@@ -54,25 +50,19 @@ class K9MessageStore(
     }
 
     override fun copyMessage(messageId: Long, destinationFolderId: Long): Long {
-        return copyMessageOperations.copyMessage(messageId, destinationFolderId).also {
-            localStore.notifyChange()
-        }
+        return copyMessageOperations.copyMessage(messageId, destinationFolderId)
     }
 
     override fun moveMessage(messageId: Long, destinationFolderId: Long): Long {
-        return moveMessageOperations.moveMessage(messageId, destinationFolderId).also {
-            localStore.notifyChange()
-        }
+        return moveMessageOperations.moveMessage(messageId, destinationFolderId)
     }
 
     override fun setFlag(messageIds: Collection<Long>, flag: Flag, set: Boolean) {
         flagMessageOperations.setFlag(messageIds, flag, set)
-        localStore.notifyChange()
     }
 
     override fun setMessageFlag(folderId: Long, messageServerId: String, flag: Flag, set: Boolean) {
         flagMessageOperations.setMessageFlag(folderId, messageServerId, flag, set)
-        localStore.notifyChange()
     }
 
     override fun getMessageServerId(messageId: Long): String {
@@ -113,7 +103,6 @@ class K9MessageStore(
 
     override fun destroyMessages(folderId: Long, messageServerIds: Collection<String>) {
         deleteMessageOperations.destroyMessages(folderId, messageServerIds)
-        localStore.notifyChange()
     }
 
     override fun createFolders(folders: List<CreateFolderInfo>) {
