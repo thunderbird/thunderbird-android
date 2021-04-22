@@ -2,8 +2,6 @@ apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.android'
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
-
     api project(":app:ui:base")
     implementation project(":app:core")
     implementation project(":app:autodiscovery:api")

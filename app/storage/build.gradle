@@ -2,8 +2,6 @@ apply plugin: 'com.android.library'
 apply plugin: 'org.jetbrains.kotlin.android'
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
-
     api "org.koin:koin-core:${versions.koin}"
 
     implementation project(":app:core")
