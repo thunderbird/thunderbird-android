@@ -57,7 +57,6 @@ import com.fsck.k9.helper.MutableBoolean;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.CertificateValidationException;
 import com.fsck.k9.mail.FetchProfile;
-import com.fsck.k9.mail.FetchProfile.Item;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.FolderClass;
 import com.fsck.k9.mail.Message;
@@ -105,7 +104,6 @@ import static com.fsck.k9.search.LocalSearchExtensions.getAccountsFromLocalSearc
  * it removes itself. Thus, any commands that that activity submitted are
  * removed from the queue once the activity is no longer active.
  */
-@SuppressWarnings("unchecked") // TODO change architecture to actually work with generics
 public class MessagingController {
     public static final Set<Flag> SYNC_FLAGS = EnumSet.of(Flag.SEEN, Flag.FLAGGED, Flag.ANSWERED, Flag.FORWARDED);
 
@@ -1800,14 +1798,19 @@ public class MessagingController {
                 Timber.i("moveOrCopyMessageSynchronous: source folder = %s, %d messages, destination folder = %s, " +
                         "operation = %s", srcFolderId, messages.size(), destFolderId, operation.name());
 
-                Map<String, String> uidMap;
+                MessageStore messageStore = messageStoreManager.getMessageStore(account);
 
+                List<Long> messageIds = new ArrayList<>();
+                Map<Long, String> messageIdToUidMapping = new HashMap<>();
+                for (LocalMessage message : messages) {
+                    long messageId = message.getDatabaseId();
+                    messageIds.add(messageId);
+                    messageIdToUidMapping.put(messageId, message.getUid());
+                }
+
+                Map<Long, Long> resultIdMapping;
                 if (operation == MoveOrCopyFlavor.COPY) {
-                    FetchProfile fp = new FetchProfile();
-                    fp.add(Item.ENVELOPE);
-                    fp.add(Item.BODY);
-                    localSrcFolder.fetch(messages, fp, null);
-                    uidMap = localSrcFolder.copyMessages(messages, localDestFolder);
+                    resultIdMapping = messageStore.copyMessages(messageIds, destFolderId);
 
                     if (unreadCountAffected) {
                         // If this copy operation changes the unread count in the destination
@@ -1817,30 +1820,8 @@ public class MessagingController {
                         }
                     }
                 } else {
-                    MessageStore messageStore = messageStoreManager.getMessageStore(account);
+                    resultIdMapping = messageStore.moveMessages(messageIds, destFolderId);
 
-                    List<Long> messageIds = new ArrayList<>();
-                    Map<Long, String> messageIdToUidMapping = new HashMap<>();
-                    for (LocalMessage message : messages) {
-                        long messageId = message.getDatabaseId();
-                        messageIds.add(messageId);
-                        messageIdToUidMapping.put(messageId, message.getUid());
-                    }
-
-                    Map<Long, Long> moveMessageIdMapping = messageStore.moveMessages(messageIds, destFolderId);
-
-                    Map<Long, String> destinationMapping =
-                            messageStore.getMessageServerIds(moveMessageIdMapping.values());
-
-                    uidMap = new HashMap<>();
-                    for (Entry<Long, Long> entry : moveMessageIdMapping.entrySet()) {
-                        long sourceMessageId = entry.getKey();
-                        long destinationMessageId = entry.getValue();
-
-                        String sourceUid = messageIdToUidMapping.get(sourceMessageId);
-                        String destinationUid = destinationMapping.get(destinationMessageId);
-                        uidMap.put(sourceUid, destinationUid);
-                    }
                     unsuppressMessages(account, messages);
 
                     if (unreadCountAffected) {
@@ -1851,6 +1832,18 @@ public class MessagingController {
                             l.folderStatusChanged(account, destFolderId);
                         }
                     }
+                }
+
+                Map<Long, String> destinationMapping = messageStore.getMessageServerIds(resultIdMapping.values());
+
+                Map<String, String> uidMap = new HashMap<>();
+                for (Entry<Long, Long> entry : resultIdMapping.entrySet()) {
+                    long sourceMessageId = entry.getKey();
+                    long destinationMessageId = entry.getValue();
+
+                    String sourceUid = messageIdToUidMapping.get(sourceMessageId);
+                    String destinationUid = destinationMapping.get(destinationMessageId);
+                    uidMap.put(sourceUid, destinationUid);
                 }
 
                 queueMoveOrCopy(account, localSrcFolder.getDatabaseId(), localDestFolder.getDatabaseId(),

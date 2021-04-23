@@ -10,8 +10,8 @@ import com.fsck.k9.helper.map
 
 fun SQLiteDatabase.createMessagePart(
     type: Int = MessagePartType.UNKNOWN,
-    root: Int? = null,
-    parent: Int = -1,
+    root: Long? = null,
+    parent: Long = -1,
     seq: Int = 0,
     mimeType: String? = null,
     decodedBodySize: Int? = null,
@@ -77,7 +77,7 @@ fun SQLiteDatabase.readMessageParts(): List<MessagePartEntry> {
     }
 }
 
-class MessagePartEntry(
+data class MessagePartEntry(
     val id: Long?,
     val type: Int?,
     val root: Long?,
@@ -96,7 +96,85 @@ class MessagePartEntry(
     val boundary: String?,
     val contentId: String?,
     val serverExtra: String?
-)
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as MessagePartEntry
+
+        if (id != other.id) return false
+        if (type != other.type) return false
+        if (root != other.root) return false
+        if (parent != other.parent) return false
+        if (seq != other.seq) return false
+        if (mimeType != other.mimeType) return false
+        if (decodedBodySize != other.decodedBodySize) return false
+        if (displayName != other.displayName) return false
+        if (header != null) {
+            if (other.header == null) return false
+            if (!header.contentEquals(other.header)) return false
+        } else if (other.header != null) return false
+        if (encoding != other.encoding) return false
+        if (charset != other.charset) return false
+        if (dataLocation != other.dataLocation) return false
+        if (data != null) {
+            if (other.data == null) return false
+            if (!data.contentEquals(other.data)) return false
+        } else if (other.data != null) return false
+        if (preamble != other.preamble) return false
+        if (epilogue != other.epilogue) return false
+        if (boundary != other.boundary) return false
+        if (contentId != other.contentId) return false
+        if (serverExtra != other.serverExtra) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = id?.hashCode() ?: 0
+        result = 31 * result + (type ?: 0)
+        result = 31 * result + (root?.hashCode() ?: 0)
+        result = 31 * result + (parent?.hashCode() ?: 0)
+        result = 31 * result + (seq ?: 0)
+        result = 31 * result + (mimeType?.hashCode() ?: 0)
+        result = 31 * result + (decodedBodySize ?: 0)
+        result = 31 * result + (displayName?.hashCode() ?: 0)
+        result = 31 * result + (header?.contentHashCode() ?: 0)
+        result = 31 * result + (encoding?.hashCode() ?: 0)
+        result = 31 * result + (charset?.hashCode() ?: 0)
+        result = 31 * result + (dataLocation ?: 0)
+        result = 31 * result + (data?.contentHashCode() ?: 0)
+        result = 31 * result + (preamble?.hashCode() ?: 0)
+        result = 31 * result + (epilogue?.hashCode() ?: 0)
+        result = 31 * result + (boundary?.hashCode() ?: 0)
+        result = 31 * result + (contentId?.hashCode() ?: 0)
+        result = 31 * result + (serverExtra?.hashCode() ?: 0)
+        return result
+    }
+
+    override fun toString(): String {
+        return "MessagePartEntry(" +
+            "id=$id, " +
+            "type=$type, " +
+            "root=$root, " +
+            "parent=$parent, " +
+            "seq=$seq, " +
+            "mimeType=$mimeType, " +
+            "decodedBodySize=$decodedBodySize, " +
+            "displayName=$displayName, " +
+            "header=${header?.decodeToString()}, " +
+            "encoding=$encoding, " +
+            "charset=$charset, " +
+            "dataLocation=$dataLocation, " +
+            "data=${data?.decodeToString()}, " +
+            "preamble=$preamble, " +
+            "epilogue=$epilogue, " +
+            "boundary=$boundary, " +
+            "contentId=$contentId, " +
+            "serverExtra=$serverExtra)"
+    }
+}
 
 private fun Cursor.getBlobOrNull(columnName: String): ByteArray? {
     val columnIndex = getColumnIndex(columnName)
