@@ -69,7 +69,7 @@
         <item name="iconPreferencesFetchMail">@drawable/ic_preferences_check_mail</item>
         <item name="iconPreferencesReadMail">@drawable/ic_opened_envelope</item>
         <item name="iconPreferencesCompose">@drawable/ic_pencil</item>
-        <item name="iconSettingsAbout">@drawable/ic_info_outline</item>
+        <item name="iconSettingsAbout">@drawable/ic_info</item>
         <item name="iconSettingsGeneral">@drawable/ic_cog</item>
         <item name="iconSettingsAccount">@drawable/ic_account</item>
         <item name="iconSettingsAccountAdd">@drawable/ic_account_plus</item>
@@ -186,7 +186,7 @@
         <item name="iconPreferencesFetchMail">@drawable/ic_preferences_check_mail</item>
         <item name="iconPreferencesReadMail">@drawable/ic_opened_envelope</item>
         <item name="iconPreferencesCompose">@drawable/ic_pencil</item>
-        <item name="iconSettingsAbout">@drawable/ic_info_outline</item>
+        <item name="iconSettingsAbout">@drawable/ic_info</item>
         <item name="iconSettingsGeneral">@drawable/ic_cog</item>
         <item name="iconSettingsAccount">@drawable/ic_account</item>
         <item name="iconSettingsAccountAdd">@drawable/ic_account_plus</item>
