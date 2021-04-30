@@ -3,15 +3,24 @@
   <!--=== App-specific strings =============================================================-->
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
-  <string name="app_name">K-9 post</string>
+  <string name="app_name">K-9 Mail</string>
   <string name="shortcuts_title">K-9 konti</string>
   <string name="unread_widget_label">K-9 ulæst</string>
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Visse dele Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
+  <string name="source_code">Kildekode</string>
   <string name="app_license">Apache licens, version 2.0</string>
+  <string name="about_project_title">Opensource Projekt</string>
+  <string name="about_website_title">Websted</string>
+  <string name="user_forum_title">Bruger forum</string>
+  <string name="about_fediverse_title">Fediverse</string>
+  <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">Biblioteker</string>
   <string name="license">Licens</string>
+  <string name="changelog_title">Ændringslog</string>
+  <string name="changelog_loading_error">Kunne ikke indlæse ændringsloggen.</string>
+  <string name="changelog_version_title">Version %s</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Velkommen til K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -52,19 +61,19 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="app_revision">Revision information</string>
   <string name="read_messages_label">Læse e-post</string>
   <string name="read_messages_desc">Tillad dette program at læse dine mails.</string>
-  <string name="delete_messages_label">Slette e-post</string>
+  <string name="delete_messages_label">Slet mails</string>
   <string name="delete_messages_desc">Tillad dette program at slette dine mails.</string>
   <string name="about_title">Om K-9 Mail</string>
   <string name="accounts_title">Konti</string>
   <string name="folders_title">Mapper</string>
   <string name="advanced">Avanceret</string>
   <string name="compose_title_compose">Skrive</string>
-  <string name="compose_title_reply">Svare</string>
-  <string name="compose_title_reply_all">Svare alle</string>
-  <string name="compose_title_forward">Vidersende</string>
-  <string name="compose_title_forward_as_attachment">Videresende som vedhæftet</string>
-  <string name="choose_account_title">Vælge konto</string>
-  <string name="choose_folder_title">Vælge mappe</string>
+  <string name="compose_title_reply">Svar</string>
+  <string name="compose_title_reply_all">Svar alle</string>
+  <string name="compose_title_forward">Videresend</string>
+  <string name="compose_title_forward_as_attachment">Videresend som vedhæftet</string>
+  <string name="choose_account_title">Vælg konto</string>
+  <string name="choose_folder_title">Vælg mappe</string>
   <string name="status_loading_account_folder">Synkroniserer <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_loading_account_folder_headers">Henter headers <xliff:g id="account">%s</xliff:g>:<xliff:g id="folder">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
   <string name="status_sending_account">Sender <xliff:g id="account">%s</xliff:g><xliff:g id="progress">%s</xliff:g></string>
@@ -76,7 +85,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="previous_action">Forrige</string>
   <!--Used to confirm acceptance of dialog boxes, warnings, errors, etc.-->
   <string name="okay_action">O.k.</string>
-  <string name="cancel_action">Annullere</string>
+  <string name="cancel_action">Annullér</string>
   <string name="send_action">Send</string>
   <string name="send_again_action">Send igen</string>
   <string name="empty_subject">Emnefeltet er tomt; klik igen for at sende alligevel</string>
@@ -140,6 +149,10 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="status_loading_error">Fejl ved hentning af meddelelse</string>
   <string name="load_more_messages_fmt">Hent yderligere op
     til <xliff:g id="messages_to_load">%d</xliff:g> mails</string>
+  <string name="size_format_gigabytes">%.1f GB</string>
+  <string name="size_format_megabytes">%.1f MB</string>
+  <string name="size_format_kilobytes">%.1f kB</string>
+  <string name="size_format_bytes">%d B</string>
   <string name="account_size_changed">Konto \"<xliff:g id="account">%s</xliff:g>\" nedbragt fra <xliff:g id="oldSize">%s</xliff:g> til <xliff:g id="newSize">%s</xliff:g></string>
   <string name="compacting_account">Komprimerer konto \"<xliff:g id="account">%s</xliff:g>\"</string>
   <string name="notification_new_title">Ny mail</string>
@@ -469,6 +482,20 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_settings_led_color_summary">Vælg den farve som din telefonens LED skal benytte for denne konto</string>
   <string name="account_settings_mail_display_count_label">Lokal mappestørrelse</string>
   <string name="account_settings_autodownload_message_size_label">Hent automatisk mail hvis indhold fylder op til</string>
+  <string name="account_settings_autodownload_message_size_1">1 KiB</string>
+  <string name="account_settings_autodownload_message_size_2">2 KiB</string>
+  <string name="account_settings_autodownload_message_size_4">4 KiB</string>
+  <string name="account_settings_autodownload_message_size_8">8 KiB</string>
+  <string name="account_settings_autodownload_message_size_16">16 KiB</string>
+  <string name="account_settings_autodownload_message_size_32">32 KiB</string>
+  <string name="account_settings_autodownload_message_size_64">64 KiB</string>
+  <string name="account_settings_autodownload_message_size_128">128 KiB</string>
+  <string name="account_settings_autodownload_message_size_256">256 KiB</string>
+  <string name="account_settings_autodownload_message_size_512">512 KiB</string>
+  <string name="account_settings_autodownload_message_size_1024">1 MiB</string>
+  <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
+  <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
+  <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
   <string name="account_settings_autodownload_message_size_any">Ubegrænset størrelse</string>
   <string name="account_settings_message_age_label">Synkroniser mails fra</string>
   <string name="account_settings_message_age_any">Ethvert tidspunkt (ubegænset)</string>
@@ -660,6 +687,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="volume_navigation_title">Volume-knap navigation</string>
   <string name="volume_navigation_message">Mail-visning</string>
   <string name="volume_navigation_list">Diverse listevisninger</string>
+  <string name="show_unified_inbox_title">Vis Fælles Indbakke</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Ulæste</string>
   <string name="search_all_messages_title">Alle mails</string>
@@ -756,7 +784,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="settings_import_success_generic">Importerede indstillinger</string>
   <string name="settings_import_password_required">Indtast venligst kodeord</string>
   <string name="settings_import_failure">Importen af indstillinger fejlede</string>
-  <string name="settings_import_read_failure">Indlæsning af file med indstilling fejlede</string>
+  <string name="settings_import_read_failure">Indlæsning af fil med indstillinger mislykkedes</string>
   <string name="settings_import_partial_failure">Import af nogle indstillinger fejlede</string>
   <string name="settings_import_status_success">Importeret korrrekt</string>
   <string name="settings_import_status_password_required">Kodeord påkrævet</string>
@@ -765,6 +793,14 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="settings_import_later_button">Senere</string>
   <string name="settings_import">Importere opsætning</string>
   <string name="settings_importing">Importere opsætning…</string>
+  <plurals name="settings_import_password_prompt">
+    <item quantity="one">For at bruge kontoen \"<xliff:g id="account">%s</xliff:g>\" er du nødt til at angive adgangskoden for serveren.</item>
+    <item quantity="other">For at bruge kontoen \"<xliff:g id="account">%s</xliff:g>\" er du nødt til at angive adgangskoderne for serveren.</item>
+  </plurals>
+  <string name="settings_import_incoming_server_password_hint">Indgående server adgangskode</string>
+  <string name="settings_import_outgoing_server_password_hint">Udgående server adgangskode</string>
+  <string name="settings_import_use_same_password_for_outgoing_server">Brug samme adgangskode for udgående server</string>
+  <string name="server_name_format">Server navn: <xliff:g id="hostname">%s</xliff:g></string>
   <string name="unread_widget_select_account">Vis antal ulæste for…</string>
   <string name="unread_widget_account_title">Konto</string>
   <string name="unread_widget_account_summary">Kontoen for hvilken tælleren for ulæste mails skal vises</string>
@@ -782,6 +818,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="webview_contextmenu_link_share_action">Del link</string>
   <string name="webview_contextmenu_link_copy_action">Kopier link til clipboard</string>
   <string name="webview_contextmenu_link_clipboard_label">Link</string>
+  <string name="webview_contextmenu_link_text_copy_action">Kopier link tekst til udklipsholder</string>
   <string name="webview_contextmenu_link_text_clipboard_label">Henvisnings tekst</string>
   <string name="webview_contextmenu_image_title">Bilelde</string>
   <string name="webview_contextmenu_image_view_action">Vis billede</string>
@@ -1007,4 +1044,5 @@ Beskeden kan beholdes og bruges som sikkerhedskopi til den hemmelige nøgle. Hvi
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Tillade adgang til kontakter</string>
   <string name="permission_contacts_rationale_message">For at kunne levere kontaktforslag og vise kontaktnavne og fotos, skal programmet have adgang til kontakter.</string>
+  <string name="generic_loading_error">En fejl opstod under indlæsning af data</string>
 </resources>

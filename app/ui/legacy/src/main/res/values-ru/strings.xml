@@ -4,7 +4,7 @@
   <!--This should make it easier for forks to change the branding-->
   <!--Used in AndroidManifest.xml-->
   <string name="app_name">Почта K-9</string>
-  <string name="shortcuts_title">Почтовые ящики K-9</string>
+  <string name="shortcuts_title">Аккаунты K-9</string>
   <string name="unread_widget_label">Не прочитано</string>
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
@@ -743,6 +743,7 @@ K-9 Mail — почтовый клиент для Android.
   <string name="send_failed_reason">Сбой отправки: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Выберите действие</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Сохранить черновик или отменить сообщение?</string>
+  <string name="save_or_discard_draft_message_changes">Сохранить или отменить изменения?</string>
   <string name="confirm_discard_draft_message_title">Удаление</string>
   <string name="confirm_discard_draft_message">Отменить сообщение?</string>
   <string name="select_text_now">Выберите текст длительным нажатием</string>

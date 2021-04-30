@@ -738,6 +738,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="send_failed_reason">Lähetys epäonnistui: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Tallennetaanko luonnos?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Tallennetaanko vai hylätäänkö tämä viesti?</string>
+  <string name="save_or_discard_draft_message_changes">Tallennetaanko vai hylätäänkö muutokset?</string>
   <string name="confirm_discard_draft_message_title">Hylkää viesti?</string>
   <string name="confirm_discard_draft_message">Haluatko varmasti hylätä tämän viestin?</string>
   <string name="select_text_now">Valitse kopioitava teksti.</string>

@@ -741,6 +741,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="send_failed_reason">Dërgimi dështoi: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Të ruhet skica e mesazhit?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Të ruhet apo të hidhet tej ky mesazh?</string>
+  <string name="save_or_discard_draft_message_changes">Të ruhen apo të Hidhen tej ndryshimet?</string>
   <string name="confirm_discard_draft_message_title">Të hidhet tej mesazhi?</string>
   <string name="confirm_discard_draft_message">Jeni i sigurt se doni të hidhet tej ky mesazh?</string>
   <string name="select_text_now">Përzgjidhni tekst për kopjim.</string>
