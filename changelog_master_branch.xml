@@ -5,6 +5,17 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.734" versioncode="27034" date="2021-05-01">
+        <change>Added support for reordering accounts (in the settings screen)</change>
+        <change>Added the ability to discard changes and keep the original draft</change>
+        <change>Preserve whitespace when converting the message signature to HTML</change>
+        <change>Ignore invalid email addresses in the system contacts database</change>
+        <change>Clear message view when changing folders in split-screen mode</change>
+        <change>Small optimizations to improve the app startup time</change>
+        <change>Fixed crash when trying to compose a message from the message list widget</change>
+        <change>Lots of internal changes – please report any bugs or odd behavior you encounter</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.733" versioncode="27033" date="2021-03-23">
         <change>Added support for In-Reply-To parameter in mailto: URIs</change>
         <change>Fixed various display bugs related to the drawer</change>
