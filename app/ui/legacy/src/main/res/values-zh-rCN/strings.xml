@@ -7,19 +7,19 @@
   <string name="shortcuts_title">K-9 账户</string>
   <string name="unread_widget_label">K-9 未读</string>
   <!--Used in the about dialog-->
-  <string name="app_authors">K-9 用户</string>
+  <string name="app_authors">The K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Portions Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
   <string name="source_code">源代码</string>
   <string name="app_license">Apache许可证，2.0版</string>
   <string name="about_project_title">开源项目</string>
   <string name="about_website_title">网站</string>
   <string name="user_forum_title">用户论坛</string>
-  <string name="about_fediverse_title">Fediverse</string>
+  <string name="about_fediverse_title">多样性</string>
   <string name="about_twitter_title">推特</string>
   <string name="about_libraries">库</string>
   <string name="license">许可</string>
-  <string name="changelog_title">变更记录</string>
-  <string name="changelog_loading_error">无法加载变更记录</string>
+  <string name="changelog_title">修改记录</string>
+  <string name="changelog_loading_error">无法加载修改记录</string>
   <string name="changelog_version_title">版本 %s</string>
   <!--Welcome message-->
   <string name="welcome_message_title">欢迎使用 K-9 Mail</string>
@@ -68,11 +68,11 @@ K-9 Mail 是 Android 上一款功能强大的自由 email 客户端。
   <string name="accounts_title">账户</string>
   <string name="folders_title">文件夹</string>
   <string name="advanced">高级</string>
-  <string name="compose_title_compose">新邮件</string>
+  <string name="compose_title_compose">撰写邮件</string>
   <string name="compose_title_reply">回复</string>
   <string name="compose_title_reply_all">全部回复</string>
   <string name="compose_title_forward">转发</string>
-  <string name="compose_title_forward_as_attachment">转发为附件</string>
+  <string name="compose_title_forward_as_attachment">作为附件转发</string>
   <string name="choose_account_title">切换账户</string>
   <string name="choose_folder_title">选择文件夹</string>
   <string name="status_loading_account_folder">正在接收 <xliff:g id="folder">%s:</xliff:g>: <xliff:g id="progress">%s</xliff:g>, <xliff:g id="account">%s</xliff:g></string>
@@ -738,6 +738,7 @@ K-9 Mail 是 Android 上一款功能强大的自由 email 客户端。
   <string name="send_failed_reason">发送失败：%s</string>
   <string name="save_or_discard_draft_message_dlg_title">保存邮件草稿？</string>
   <string name="save_or_discard_draft_message_instructions_fmt">保存还是丢弃这封邮件？</string>
+  <string name="save_or_discard_draft_message_changes">保存或取消更改？</string>
   <string name="confirm_discard_draft_message_title">丢弃该邮件？</string>
   <string name="confirm_discard_draft_message">确定丢弃该邮件？</string>
   <string name="select_text_now">选择需要拷贝的文本。</string>

@@ -740,6 +740,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="send_failed_reason">Det gick inte att skicka: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Spara utkast?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Spara eller kasta detta meddelande?</string>
+  <string name="save_or_discard_draft_message_changes">Spara eller kassera ändringar?</string>
   <string name="confirm_discard_draft_message_title">Kasta meddelandet?</string>
   <string name="confirm_discard_draft_message">Är du säker på att du vill kasta detta meddelande?</string>
   <string name="select_text_now">Välj text att kopiera.</string>
