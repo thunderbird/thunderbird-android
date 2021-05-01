@@ -22,8 +22,7 @@
                 android:entries="@array/language_entries"
                 android:entryValues="@array/language_values"
                 android:key="language"
-                android:summary="%s"
-                search:summary=""
+                app:useSimpleSummaryProvider="true"
                 android:title="@string/settings_language_label" />
 
             <ListPreference
@@ -31,8 +30,7 @@
                 android:entries="@array/theme_entries"
                 android:entryValues="@array/theme_values"
                 android:key="theme"
-                android:summary="%s"
-                search:summary=""
+                app:useSimpleSummaryProvider="true"
                 android:title="@string/settings_theme_label" />
 
             <CheckBoxPreference
@@ -48,8 +46,7 @@
                 android:entries="@array/message_theme_entries"
                 android:entryValues="@array/message_theme_values"
                 android:key="messageViewTheme"
-                android:summary="%s"
-                search:summary=""
+                app:useSimpleSummaryProvider="true"
                 android:title="@string/settings_message_theme_label" />
 
             <ListPreference
@@ -57,8 +54,7 @@
                 android:entries="@array/message_theme_entries"
                 android:entryValues="@array/message_theme_values"
                 android:key="message_compose_theme"
-                android:summary="%s"
-                search:summary=""
+                app:useSimpleSummaryProvider="true"
                 android:title="@string/settings_compose_theme_label" />
 
             <PreferenceScreen
@@ -73,7 +69,7 @@
                     <ListPreference
                         android:key="account_name_font"
                         android:title="@string/font_size_account_name"
-                        android:summary="%s"
+                        app:useSimpleSummaryProvider="true"
                         android:entries="@array/font_entries"
                         android:entryValues="@array/font_values"
                         android:dialogTitle="@string/font_size_account_name" />
@@ -81,7 +77,7 @@
                     <ListPreference
                         android:key="account_description_font"
                         android:title="@string/font_size_account_description"
-                        android:summary="%s"
+                        app:useSimpleSummaryProvider="true"
                         android:entries="@array/font_entries"
                         android:entryValues="@array/font_values"
                         android:dialogTitle="@string/font_size_account_description" />
@@ -95,7 +91,7 @@
                     <ListPreference
                         android:key="folder_name_font"
                         android:title="@string/font_size_folder_name"
-                        android:summary="%s"
+                        app:useSimpleSummaryProvider="true"
                         android:entries="@array/font_entries"
                         android:entryValues="@array/font_values"
                         android:dialogTitle="@string/font_size_folder_name" />
@@ -103,7 +99,7 @@
                     <ListPreference
                         android:key="folder_status_font"
                         android:title="@string/font_size_folder_status"
-                        android:summary="%s"
+                        app:useSimpleSummaryProvider="true"
                         android:entries="@array/font_entries"
                         android:entryValues="@array/font_values"
                         android:dialogTitle="@string/font_size_folder_status" />
@@ -117,7 +113,7 @@
                     <ListPreference
                         android:key="message_list_subject_font"
                         android:title="@string/font_size_message_list_subject"
-                        android:summary="%s"
+                        app:useSimpleSummaryProvider="true"
                         android:entries="@array/font_entries"
                         android:entryValues="@array/font_values"
                         android:dialogTitle="@string/font_size_message_list_subject" />
@@ -125,7 +121,7 @@
                     <ListPreference
                         android:key="message_list_sender_font"
                         android:title="@string/font_size_message_list_sender"
-                        android:summary="%s"
+                        app:useSimpleSummaryProvider="true"
                         android:entries="@array/font_entries"
                         android:entryValues="@array/font_values"
                         android:dialogTitle="@string/font_size_message_list_sender" />
@@ -133,7 +129,7 @@
                     <ListPreference
                         android:key="message_list_date_font"
                         android:title="@string/font_size_message_list_date"
-                        android:summary="%s"
+                        app:useSimpleSummaryProvider="true"
                         android:entries="@array/font_entries"
                         android:entryValues="@array/font_values"
                         android:dialogTitle="@string/font_size_message_list_date" />
@@ -141,7 +137,7 @@
                     <ListPreference
                         android:key="message_list_preview_font"
                         android:title="@string/font_size_message_list_preview"
-                        android:summary="%s"
+                        app:useSimpleSummaryProvider="true"
                         android:entries="@array/font_entries"
                         android:entryValues="@array/font_values"
                         android:dialogTitle="@string/font_size_message_list_preview" />
@@ -155,7 +151,7 @@
                     <ListPreference
                         android:key="message_view_sender_font"
                         android:title="@string/font_size_message_view_sender"
-                        android:summary="%s"
+                        app:useSimpleSummaryProvider="true"
                         android:entries="@array/font_entries"
                         android:entryValues="@array/font_values"
                         android:dialogTitle="@string/font_size_message_view_sender" />
@@ -163,7 +159,7 @@
                     <ListPreference
                         android:key="message_view_to_font"
                         android:title="@string/font_size_message_view_to"
-                        android:summary="%s"
+                        app:useSimpleSummaryProvider="true"
                         android:entries="@array/font_entries"
                         android:entryValues="@array/font_values"
                         android:dialogTitle="@string/font_size_message_view_to" />
@@ -171,7 +167,7 @@
                     <ListPreference
                         android:key="message_view_cc_font"
                         android:title="@string/font_size_message_view_cc"
-                        android:summary="%s"
+                        app:useSimpleSummaryProvider="true"
                         android:entries="@array/font_entries"
                         android:entryValues="@array/font_values"
                         android:dialogTitle="@string/font_size_message_view_cc" />
@@ -179,7 +175,7 @@
                     <ListPreference
                         android:key="message_view_bcc_font"
                         android:title="@string/font_size_message_view_bcc"
-                        android:summary="%s"
+                        app:useSimpleSummaryProvider="true"
                         android:entries="@array/font_entries"
                         android:entryValues="@array/font_values"
                         android:dialogTitle="@string/font_size_message_view_bcc" />
@@ -187,7 +183,7 @@
                     <ListPreference
                         android:key="message_view_subject_font"
                         android:title="@string/font_size_message_view_subject"
-                        android:summary="%s"
+                        app:useSimpleSummaryProvider="true"
                         android:entries="@array/font_entries"
                         android:entryValues="@array/font_values"
                         android:dialogTitle="@string/font_size_message_view_subject" />
@@ -195,7 +191,7 @@
                     <ListPreference
                         android:key="message_view_date_font"
                         android:title="@string/font_size_message_view_date"
-                        android:summary="%s"
+                        app:useSimpleSummaryProvider="true"
                         android:entries="@array/font_entries"
                         android:entryValues="@array/font_values"
                         android:dialogTitle="@string/font_size_message_view_date" />
@@ -203,7 +199,7 @@
                     <ListPreference
                         android:key="message_view_additional_headers_font"
                         android:title="@string/font_size_message_view_additional_headers"
-                        android:summary="%s"
+                        app:useSimpleSummaryProvider="true"
                         android:entries="@array/font_entries"
                         android:entryValues="@array/font_values"
                         android:dialogTitle="@string/font_size_message_view_additional_headers" />
@@ -224,7 +220,7 @@
                     <ListPreference
                         android:key="message_compose_input_font"
                         android:title="@string/font_size_message_compose_input"
-                        android:summary="%s"
+                        app:useSimpleSummaryProvider="true"
                         android:entries="@array/font_entries"
                         android:entryValues="@array/font_values"
                         android:dialogTitle="@string/font_size_message_compose_input" />
@@ -259,8 +255,7 @@
                 android:entries="@array/preview_lines_entries"
                 android:entryValues="@array/preview_lines_values"
                 android:key="messagelist_preview_lines"
-                android:summary="%s"
-                search:summary=""
+                app:useSimpleSummaryProvider="true"
                 android:title="@string/global_settings_preview_lines_label" />
 
             <CheckBoxPreference
@@ -321,8 +316,7 @@
                 android:entries="@array/splitview_mode_entries"
                 android:entryValues="@array/splitview_mode_values"
                 android:key="splitview_mode"
-                android:summary="%s"
-                search:summary=""
+                app:useSimpleSummaryProvider="true"
                 android:title="@string/global_settings_splitview_mode_label" />
 
         </PreferenceCategory>
@@ -424,8 +418,7 @@
             android:entries="@array/notification_quick_delete_entries"
             android:entryValues="@array/notification_quick_delete_values"
             android:key="notification_quick_delete"
-            android:summary="%s"
-            search:summary=""
+            app:useSimpleSummaryProvider="true"
             android:title="@string/global_settings_notification_quick_delete_title" />
 
         <ListPreference
@@ -433,8 +426,7 @@
             android:entries="@array/lock_screen_notification_visibility_entries"
             android:entryValues="@array/lock_screen_notification_visibility_values"
             android:key="lock_screen_notification_visibility"
-            android:summary="%s"
-            search:summary=""
+            app:useSimpleSummaryProvider="true"
             android:title="@string/global_settings_lock_screen_notification_visibility_title" />
 
     </PreferenceScreen>
@@ -450,8 +442,7 @@
             android:entries="@array/background_ops_entries"
             android:entryValues="@array/background_ops_values"
             android:key="background_ops"
-            android:summary="%s"
-            search:summary=""
+            app:useSimpleSummaryProvider="true"
             android:title="@string/background_ops_label" />
 
     </PreferenceScreen>
@@ -466,8 +457,7 @@
             android:entries="@array/notification_hide_subject_entries"
             android:entryValues="@array/notification_hide_subject_values"
             android:key="notification_hide_subject"
-            android:summary="%s"
-            search:summary=""
+            app:useSimpleSummaryProvider="true"
             android:title="@string/global_settings_notification_hide_subject_title" />
 
         <CheckBoxPreference
