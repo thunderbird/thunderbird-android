@@ -16,7 +16,6 @@ import android.view.animation.AnimationUtils
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener
@@ -88,8 +87,7 @@ open class MessageList :
     private val storageListener: StorageListener = StorageListenerImplementation()
     private val permissionUiHelper: PermissionUiHelper = K9PermissionUiHelper(this)
 
-    private var actionBar: ActionBar? = null
-    private var drawerToggle: ActionBarDrawerToggle? = null
+    private lateinit var actionBar: ActionBar
     private var drawer: K9Drawer? = null
     private var openFolderTransaction: FragmentTransaction? = null
     private var menu: Menu? = null
@@ -522,8 +520,8 @@ open class MessageList :
     }
 
     private fun initializeActionBar() {
-        actionBar = supportActionBar
-        actionBar!!.setDisplayHomeAsUpEnabled(true)
+        actionBar = supportActionBar!!
+        actionBar.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun initializeDrawer(savedInstanceState: Bundle?) {
@@ -534,14 +532,6 @@ open class MessageList :
         }
 
         drawer = K9Drawer(this, savedInstanceState)
-
-        val drawerLayout = drawer!!.layout
-        drawerToggle = ActionBarDrawerToggle(
-            this, drawerLayout, null,
-            R.string.navigation_drawer_open, R.string.navigation_drawer_close
-        )
-        drawerLayout.addDrawerListener(drawerToggle!!)
-        drawerToggle!!.syncState()
     }
 
     fun createDrawerListener(): DrawerListener {
@@ -1133,7 +1123,7 @@ open class MessageList :
     }
 
     fun setActionBarTitle(title: String) {
-        actionBar!!.title = title
+        actionBar.title = title
     }
 
     override fun setMessageListTitle(title: String) {
@@ -1451,12 +1441,12 @@ open class MessageList :
 
     private fun lockDrawer() {
         drawer!!.lock()
-        drawerToggle!!.isDrawerIndicatorEnabled = false
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
     }
 
     private fun unlockDrawer() {
         drawer!!.unlock()
-        drawerToggle!!.isDrawerIndicatorEnabled = true
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu)
     }
 
     private fun initializeFromLocalSearch(search: LocalSearch?) {
