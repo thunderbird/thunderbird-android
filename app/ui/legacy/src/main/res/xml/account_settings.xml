@@ -39,7 +39,7 @@
             android:entries="@array/show_pictures_entries"
             android:entryValues="@array/show_pictures_values"
             android:key="show_pictures_enum"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/account_settings_show_pictures_label" />
 
         <CheckBoxPreference
@@ -59,7 +59,7 @@
             android:entries="@array/display_count_entries"
             android:entryValues="@array/display_count_values"
             android:key="account_display_count"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/account_settings_mail_display_count_label" />
 
         <ListPreference
@@ -67,7 +67,7 @@
             android:entries="@array/message_age_entries"
             android:entryValues="@array/message_age_values"
             android:key="account_message_age"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/account_settings_message_age_label" />
 
         <ListPreference
@@ -75,7 +75,7 @@
             android:entries="@array/autodownload_message_size_entries"
             android:entryValues="@array/autodownload_message_size_values"
             android:key="account_autodownload_size"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/account_settings_autodownload_message_size_label" />
 
         <ListPreference
@@ -83,7 +83,7 @@
             android:entries="@array/check_frequency_entries"
             android:entryValues="@array/check_frequency_values"
             android:key="account_check_frequency"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/account_settings_mail_check_frequency_label" />
 
         <ListPreference
@@ -91,7 +91,7 @@
             android:entries="@array/folder_sync_mode_entries"
             android:entryValues="@array/folder_sync_mode_values"
             android:key="folder_sync_mode"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/account_settings_folder_sync_mode_label" />
 
         <!-- Temporarily disabled. See GH-4253
@@ -100,7 +100,7 @@
             android:entries="@array/folder_push_mode_entries"
             android:entryValues="@array/folder_push_mode_values"
             android:key="folder_push_mode"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/account_settings_folder_push_mode_label" />
         -->
 
@@ -120,7 +120,7 @@
             android:entries="@array/delete_policy_entries"
             android:entryValues="@array/delete_policy_values"
             android:key="delete_policy"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/account_setup_incoming_delete_policy_label" />
 
         <ListPreference
@@ -128,7 +128,7 @@
             android:entries="@array/expunge_policy_entries"
             android:entryValues="@array/expunge_policy_values"
             android:key="expunge_policy"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/account_setup_expunge_policy_label" />
 
         <Preference
@@ -149,14 +149,14 @@
                 android:entries="@array/push_limit_entries"
                 android:entryValues="@array/push_limit_values"
                 android:key="max_push_folders"
-                android:summary="%s"
+                app:useSimpleSummaryProvider="true"
                 android:title="@string/account_setup_push_limit_label" />
 
             <ListPreference
                 android:entries="@array/idle_refresh_period_entries"
                 android:entryValues="@array/idle_refresh_period_values"
                 android:key="idle_refresh_period"
-                android:summary="%s"
+                app:useSimpleSummaryProvider="true"
                 android:title="@string/idle_refresh_period_label" />
 
         </PreferenceScreen>
@@ -183,7 +183,7 @@
             android:entries="@array/message_format_entries"
             android:entryValues="@array/message_format_values"
             android:key="message_format"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/account_settings_message_format_label" />
 
         <CheckBoxPreference
@@ -199,7 +199,7 @@
             android:entries="@array/quote_style_entries"
             android:entryValues="@array/quote_style_values"
             android:key="quote_style"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/account_settings_quote_style_label" />
 
         <CheckBoxPreference
@@ -247,7 +247,7 @@
 
         <com.fsck.k9.ui.settings.account.FolderListPreference
             android:key="account_setup_auto_expand_folder"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/account_setup_auto_expand_folder" />
 
         <ListPreference
@@ -255,7 +255,7 @@
             android:entries="@array/folder_display_mode_entries"
             android:entryValues="@array/folder_display_mode_values"
             android:key="folder_display_mode"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/account_settings_folder_display_mode_label" />
 
         <ListPreference
@@ -263,7 +263,7 @@
             android:entries="@array/folder_target_mode_entries"
             android:entryValues="@array/folder_target_mode_values"
             android:key="folder_target_mode"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/account_settings_folder_target_mode_label" />
 
         <ListPreference
@@ -271,32 +271,32 @@
             android:entries="@array/searchable_entries"
             android:entryValues="@array/searchable_values"
             android:key="searchable_folders"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/account_settings_searchable_label" />
 
         <com.fsck.k9.ui.settings.account.FolderListPreference
             android:key="archive_folder"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/archive_folder_label" />
 
         <com.fsck.k9.ui.settings.account.FolderListPreference
             android:key="drafts_folder"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/drafts_folder_label" />
 
         <com.fsck.k9.ui.settings.account.FolderListPreference
             android:key="sent_folder"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/sent_folder_label" />
 
         <com.fsck.k9.ui.settings.account.FolderListPreference
             android:key="spam_folder"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/spam_folder_label" />
 
         <com.fsck.k9.ui.settings.account.FolderListPreference
             android:key="trash_folder"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/trash_folder_label" />
 
     </PreferenceScreen>
@@ -318,7 +318,7 @@
             android:entries="@array/folder_notify_new_mail_mode_entries"
             android:entryValues="@array/folder_notify_new_mail_mode_values"
             android:key="folder_notify_new_mail_mode"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/account_settings_folder_notify_new_mail_mode_label" />
 
         <CheckBoxPreference
@@ -358,7 +358,7 @@
             android:entryValues="@array/vibrate_pattern_values"
             android:key="account_vibrate_pattern"
             android:layout="?android:attr/preferenceLayoutChild"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/account_settings_vibrate_pattern_label" />
 
         <ListPreference
@@ -368,7 +368,7 @@
             android:entryValues="@array/vibrate_times_label"
             android:key="account_vibrate_times"
             android:layout="?android:attr/preferenceLayoutChild"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/account_settings_vibrate_times" />
 
         <CheckBoxPreference
@@ -419,7 +419,7 @@
             android:entries="@array/remote_search_num_results_entries"
             android:entryValues="@array/remote_search_num_results_values"
             android:key="account_remote_search_num_results"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:title="@string/account_settings_remote_search_num_label" />
 
     </PreferenceScreen>

@@ -14,7 +14,8 @@
      limitations under the License.
 -->
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
         android:key="folder_settings">
@@ -27,7 +28,7 @@
         <ListPreference
             android:key="folder_settings_folder_display_mode"
             android:title="@string/folder_settings_folder_display_mode_label"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:entries="@array/folder_settings_folder_display_mode_entries"
             android:entryValues="@array/folder_settings_folder_display_mode_values"
             android:dialogTitle="@string/folder_settings_folder_display_mode_label" />
@@ -35,7 +36,7 @@
         <ListPreference
             android:key="folder_settings_folder_sync_mode"
             android:title="@string/folder_settings_folder_sync_mode_label"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:entries="@array/folder_settings_folder_sync_mode_entries"
             android:entryValues="@array/folder_settings_folder_sync_mode_values"
             android:dialogTitle="@string/folder_settings_folder_sync_mode_label" />
@@ -44,7 +45,7 @@
         <ListPreference
             android:key="folder_settings_folder_push_mode"
             android:title="@string/folder_settings_folder_push_mode_label"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:entries="@array/folder_settings_folder_push_mode_entries"
             android:entryValues="@array/folder_settings_folder_push_mode_values"
             android:dialogTitle="@string/folder_settings_folder_push_mode_label" />
@@ -53,7 +54,7 @@
         <ListPreference
             android:key="folder_settings_folder_notify_mode"
             android:title="@string/folder_settings_folder_notify_mode_label"
-            android:summary="%s"
+            app:useSimpleSummaryProvider="true"
             android:entries="@array/folder_settings_folder_notify_mode_entries"
             android:entryValues="@array/folder_settings_folder_notify_mode_values"
             android:dialogTitle="@string/folder_settings_folder_notify_mode_label" />
