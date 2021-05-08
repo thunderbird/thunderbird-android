@@ -134,6 +134,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         mCcView.setOnClickListener(this);
         mBccView.setOnClickListener(this);
 
+        mSubjectView.setOnLongClickListener(this);
         mFromView.setOnLongClickListener(this);
         mToView.setOnLongClickListener(this);
         mCcView.setOnLongClickListener(this);
@@ -167,7 +168,10 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     @Override
     public boolean onLongClick(View view) {
         int id = view.getId();
-        if (id == R.id.from) {
+
+        if (id == R.id.subject) {
+            onAddSubjectToClipboard(mMessage.getSubject());
+        } else if (id == R.id.from) {
             onAddAddressesToClipboard(mMessage.getFrom());
         } else if (id == R.id.to) {
             onAddRecipientsToClipboard(Message.RecipientType.TO);
@@ -186,6 +190,12 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         }
     }
 
+    private void onAddSubjectToClipboard(String subject) {
+        clipboardManager.setText("subject", subject);
+
+        Toast.makeText(mContext, createMessageForSubject(subject), Toast.LENGTH_LONG).show();
+    }
+
     private void onAddSenderToContacts() {
         if (mMessage != null) {
             try {
@@ -195,6 +205,10 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
                 Timber.e(e, "Couldn't create contact");
             }
         }
+    }
+
+    public String createMessageForSubject(String subject) {
+        return "Subject ("+subject+") copied to clipboard";
     }
 
     public String createMessage(int addressesCount) {
