@@ -12,6 +12,7 @@ import com.fsck.k9.mail.BodyFactory
 import com.fsck.k9.mail.DefaultBodyFactory
 import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Flag
+import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mail.MessageRetrievalListener
 import com.fsck.k9.mail.internet.MessageExtractor
 import com.fsck.k9.mail.store.imap.ImapFolder
@@ -526,7 +527,7 @@ internal class ImapSync(
                 override fun messageFinished(message: ImapMessage, number: Int, ofTotal: Int) {
                     try {
                         // Store the updated message locally
-                        backendFolder.saveCompleteMessage(message)
+                        backendFolder.saveMessage(message, MessageDownloadState.FULL)
                         progress.incrementAndGet()
 
                         // Increment the number of "new messages" if the newly downloaded message is not marked as read.
@@ -664,7 +665,7 @@ internal class ImapSync(
         remoteFolder.fetch(listOf(message), fetchProfile, null, maxDownloadSize)
 
         // Store the updated message locally
-        backendFolder.savePartialMessage(message)
+        backendFolder.saveMessage(message, MessageDownloadState.PARTIAL)
     }
 
     private fun downloadPartial(
@@ -690,7 +691,7 @@ internal class ImapSync(
         }
 
         // Store the updated message locally
-        backendFolder.savePartialMessage(message)
+        backendFolder.saveMessage(message, MessageDownloadState.PARTIAL)
     }
 
     private fun syncFlags(syncConfig: SyncConfig, backendFolder: BackendFolder, remoteMessage: ImapMessage): Boolean {

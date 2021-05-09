@@ -9,6 +9,7 @@ import com.fsck.k9.mail.BoundaryGenerator
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Message.RecipientType
+import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mail.Multipart
 import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.filter.CountingOutputStream
@@ -381,10 +382,10 @@ internal class SaveMessageOperations(
     ): Long {
         val message = messageData.message
 
-        if (messageData.partialMessage) {
-            message.setFlag(Flag.X_DOWNLOADED_PARTIAL, true)
-        } else {
-            message.setFlag(Flag.X_DOWNLOADED_FULL, true)
+        when (messageData.downloadState) {
+            MessageDownloadState.ENVELOPE -> Unit
+            MessageDownloadState.PARTIAL -> message.setFlag(Flag.X_DOWNLOADED_PARTIAL, true)
+            MessageDownloadState.FULL -> message.setFlag(Flag.X_DOWNLOADED_FULL, true)
         }
 
         val values = ContentValues().apply {

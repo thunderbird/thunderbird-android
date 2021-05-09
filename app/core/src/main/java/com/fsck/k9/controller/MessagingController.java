@@ -67,6 +67,7 @@ import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStoreProvider;
+import com.fsck.k9.mail.MessageDownloadState;
 import com.fsck.k9.mailstore.MessageStore;
 import com.fsck.k9.mailstore.MessageStoreManager;
 import com.fsck.k9.mailstore.OutboxState;
@@ -1375,7 +1376,8 @@ public class MessagingController {
             message.setFlag(Flag.SEEN, true);
 
             MessageStore messageStore = messageStoreManager.getMessageStore(account);
-            SaveMessageData messageData = saveMessageDataCreator.createSaveMessageData(message, false, plaintextSubject);
+            SaveMessageData messageData = saveMessageDataCreator.createSaveMessageData(
+                    message, MessageDownloadState.FULL, plaintextSubject);
             long messageId = messageStore.saveLocalMessage(outboxFolderId, messageData, null);
 
             LocalStore localStore = localStoreProvider.getInstance(account);

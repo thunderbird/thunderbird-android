@@ -4,6 +4,7 @@ import com.fsck.k9.K9
 import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
+import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mail.Multipart
 import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.buildMessage
@@ -500,7 +501,7 @@ class SaveMessageOperationsTest : RobolectricTest() {
         subject: String? = getSubject(),
         date: Long = sentDate?.time ?: System.currentTimeMillis(),
         internalDate: Long = date,
-        partialMessage: Boolean = isPartialMessage(),
+        downloadState: MessageDownloadState = getDownloadState(),
         attachmentCount: Int = 0,
         previewResult: PreviewResult = PreviewResult.none(),
         textForSearchIndex: String? = null,
@@ -511,7 +512,7 @@ class SaveMessageOperationsTest : RobolectricTest() {
             subject,
             date,
             internalDate,
-            partialMessage,
+            downloadState,
             attachmentCount,
             previewResult,
             textForSearchIndex,
@@ -519,14 +520,16 @@ class SaveMessageOperationsTest : RobolectricTest() {
         )
     }
 
-    private fun Message.isPartialMessage(): Boolean {
+    private fun Message.getDownloadState(): MessageDownloadState {
+        if (body == null) return MessageDownloadState.ENVELOPE
+
         val stack = Stack<Part>()
         stack.push(this)
 
         while (stack.isNotEmpty()) {
             val part = stack.pop()
             when (val body = part.body) {
-                null -> return true
+                null -> return MessageDownloadState.PARTIAL
                 is Multipart -> {
                     for (i in 0 until body.count) {
                         stack.push(body.getBodyPart(i))
@@ -535,7 +538,7 @@ class SaveMessageOperationsTest : RobolectricTest() {
             }
         }
 
-        return false
+        return MessageDownloadState.FULL
     }
 
     private fun Message.header(): String {

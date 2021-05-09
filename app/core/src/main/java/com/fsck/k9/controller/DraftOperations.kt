@@ -7,6 +7,7 @@ import com.fsck.k9.controller.MessagingControllerCommands.PendingAppend
 import com.fsck.k9.controller.MessagingControllerCommands.PendingReplace
 import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Message
+import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mailstore.LocalFolder
 import com.fsck.k9.mailstore.LocalMessage
@@ -164,6 +165,6 @@ internal class DraftOperations(
     }
 
     private fun Message.toSaveMessageData(subject: String?): SaveMessageData {
-        return saveMessageDataCreator.createSaveMessageData(this, partialMessage = false, subject)
+        return saveMessageDataCreator.createSaveMessageData(this, MessageDownloadState.FULL, subject)
     }
 }
