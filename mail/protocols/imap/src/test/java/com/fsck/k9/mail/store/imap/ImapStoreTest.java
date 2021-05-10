@@ -61,16 +61,6 @@ public class ImapStoreTest {
     }
 
     @Test
-    public void getFolder_calledTwice_shouldReturnFirstInstance() throws Exception {
-        String folderName = "Trash";
-        ImapFolder imapFolder = imapStore.getFolder(folderName);
-
-        ImapFolder result = imapStore.getFolder(folderName);
-
-        assertEquals(imapFolder, result);
-    }
-
-    @Test
     public void checkSettings_shouldCreateImapConnectionAndCallOpen() throws Exception {
         ImapConnection imapConnection = mock(ImapConnection.class);
         imapStore.enqueueImapConnection(imapConnection);

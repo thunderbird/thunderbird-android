@@ -31,19 +31,13 @@ class ImapFolder internal constructor(
     val serverId: String,
     private val folderNameCodec: FolderNameCodec
 ) {
-    @Volatile
     private var uidNext = -1L
-
-    @Volatile
     private var connection: ImapConnection? = null
-
-    @Volatile
     private var exists = false
     private var inSearch = false
     private var canCreateKeywords = false
     private var uidValidity: Long? = null
 
-    @Volatile
     var messageCount = -1
         private set
 
