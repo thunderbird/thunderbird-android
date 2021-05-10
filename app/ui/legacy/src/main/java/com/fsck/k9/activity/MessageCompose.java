@@ -30,6 +30,7 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -988,7 +989,29 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (id == android.R.id.home) {
             prepareToFinish(true);
         } else if (id == R.id.send) {
-            checkToSendMessage();
+
+            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+            alert.setTitle("Delete");
+            alert.setMessage("Are you sure you want to send?");
+            alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    checkToSendMessage();
+                    dialog.dismiss();
+                }
+            });
+
+            alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            alert.show();
+
+
         } else if (id == R.id.save) {
             checkToSaveDraftAndSave();
         } else if (id == R.id.discard) {
