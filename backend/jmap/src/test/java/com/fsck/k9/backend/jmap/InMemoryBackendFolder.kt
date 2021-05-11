@@ -4,6 +4,7 @@ import com.fsck.k9.backend.api.BackendFolder
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Message
+import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mail.internet.MimeMessage
 import java.util.Date
 import okio.Buffer
@@ -108,16 +109,18 @@ class InMemoryBackendFolder(override var name: String, var type: FolderType) : B
         }
     }
 
-    override fun savePartialMessage(message: Message) {
+    override fun saveMessage(message: Message, downloadState: MessageDownloadState) {
         val messageServerId = checkNotNull(message.uid)
         messages[messageServerId] = message
-        messageFlags[messageServerId] = message.flags.toMutableSet()
-    }
+        val flags = message.flags.toMutableSet()
 
-    override fun saveCompleteMessage(message: Message) {
-        val messageServerId = checkNotNull(message.uid)
-        messages[messageServerId] = message
-        messageFlags[messageServerId] = message.flags.toMutableSet()
+        when (downloadState) {
+            MessageDownloadState.ENVELOPE -> Unit
+            MessageDownloadState.PARTIAL -> flags.add(Flag.X_DOWNLOADED_PARTIAL)
+            MessageDownloadState.FULL -> flags.add(Flag.X_DOWNLOADED_FULL)
+        }
+
+        messageFlags[messageServerId] = flags
     }
 
     override fun getOldestMessageDate(): Date? {

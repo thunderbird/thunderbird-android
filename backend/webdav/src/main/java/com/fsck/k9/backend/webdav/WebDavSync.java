@@ -10,6 +10,7 @@ import com.fsck.k9.helper.ExceptionHelper;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.MessageDownloadState;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.webdav.WebDavFolder;
@@ -364,9 +365,9 @@ class WebDavSync {
                 // Store the updated message locally
                 boolean completeMessage = message.isSet(Flag.X_DOWNLOADED_FULL);
                 if (completeMessage) {
-                    backendFolder.saveCompleteMessage(message);
+                    backendFolder.saveMessage(message, MessageDownloadState.FULL);
                 } else {
-                    backendFolder.savePartialMessage(message);
+                    backendFolder.saveMessage(message, MessageDownloadState.PARTIAL);
                 }
 
                 listener.syncNewMessage(folder, messageServerId, false);
@@ -466,7 +467,7 @@ class WebDavSync {
                         try {
 
                             // Store the updated message locally
-                            backendFolder.saveCompleteMessage(message);
+                            backendFolder.saveMessage(message, MessageDownloadState.FULL);
                             progress.incrementAndGet();
 
                             // Increment the number of "new messages" if the newly downloaded message is
@@ -582,9 +583,9 @@ class WebDavSync {
 
         // Store the updated message locally
         if (completeMessage) {
-            backendFolder.saveCompleteMessage(message);
+            backendFolder.saveMessage(message, MessageDownloadState.FULL);
         } else {
-            backendFolder.savePartialMessage(message);
+            backendFolder.saveMessage(message, MessageDownloadState.PARTIAL);
         }
     }
 

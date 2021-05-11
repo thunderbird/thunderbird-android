@@ -10,6 +10,7 @@ import com.fsck.k9.helper.ExceptionHelper;
 import com.fsck.k9.mail.AuthenticationFailedException;
 import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
+import com.fsck.k9.mail.MessageDownloadState;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.pop3.Pop3Folder;
@@ -377,9 +378,9 @@ class Pop3Sync {
                 // Store the updated message locally
                 boolean completeMessage = message.isSet(Flag.X_DOWNLOADED_FULL);
                 if (completeMessage) {
-                    backendFolder.saveCompleteMessage(message);
+                    backendFolder.saveMessage(message, MessageDownloadState.FULL);
                 } else {
-                    backendFolder.savePartialMessage(message);
+                    backendFolder.saveMessage(message, MessageDownloadState.PARTIAL);
                 }
 
                 boolean isOldMessage = isOldMessage(backendFolder, message);
@@ -480,7 +481,7 @@ class Pop3Sync {
                         try {
 
                             // Store the updated message locally
-                            backendFolder.saveCompleteMessage(message);
+                            backendFolder.saveMessage(message, MessageDownloadState.FULL);
                             progress.incrementAndGet();
 
                             // Increment the number of "new messages" if the newly downloaded message is
@@ -603,9 +604,9 @@ class Pop3Sync {
 
         // Store the updated message locally
         if (completeMessage) {
-            backendFolder.saveCompleteMessage(message);
+            backendFolder.saveMessage(message, MessageDownloadState.FULL);
         } else {
-            backendFolder.savePartialMessage(message);
+            backendFolder.saveMessage(message, MessageDownloadState.PARTIAL);
         }
     }
 }

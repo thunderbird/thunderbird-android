@@ -6,6 +6,7 @@ import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncListener
 import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.Flag
+import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mail.internet.MimeMessage
 import java.util.Date
 import okhttp3.HttpUrl
@@ -192,7 +193,7 @@ class CommandSync(
                     setFlags(messageInfo.flags, true)
                 }
 
-                backendFolder.saveCompleteMessage(message)
+                backendFolder.saveMessage(message, MessageDownloadState.FULL)
             } else {
                 Timber.d("Failed to download message: %s", messageInfo.serverId)
             }

@@ -13,6 +13,7 @@ import com.fsck.k9.mail.Address
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.Message
+import com.fsck.k9.mail.MessageDownloadState
 import com.fsck.k9.mail.internet.MimeMessage
 import com.fsck.k9.mail.internet.MimeMessageHelper
 import com.fsck.k9.mail.internet.TextBody
@@ -92,7 +93,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
         val message = createMessage(messageServerId = null)
 
         try {
-            backendFolder.saveCompleteMessage(message)
+            backendFolder.saveMessage(message, MessageDownloadState.FULL)
             fail("Expected exception")
         } catch (e: IllegalStateException) {
         }
@@ -103,7 +104,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
         val message = createMessage(messageServerId = null)
 
         try {
-            backendFolder.savePartialMessage(message)
+            backendFolder.saveMessage(message, MessageDownloadState.PARTIAL)
             fail("Expected exception")
         } catch (e: IllegalStateException) {
         }
@@ -136,7 +137,7 @@ class K9BackendFolderTest : K9RobolectricTest() {
 
     fun createMessageInBackendFolder(messageServerId: String, flags: Set<Flag> = emptySet()) {
         val message = createMessage(messageServerId, flags)
-        backendFolder.saveCompleteMessage(message)
+        backendFolder.saveMessage(message, MessageDownloadState.FULL)
 
         val messageServerIds = backendFolder.getMessageServerIds()
         assertTrue(messageServerId in messageServerIds)
