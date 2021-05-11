@@ -4,7 +4,6 @@ import com.fsck.k9.mail.Body
 import com.fsck.k9.mail.BodyFactory
 import com.fsck.k9.mail.FetchProfile
 import com.fsck.k9.mail.Flag
-import com.fsck.k9.mail.FolderType
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.MessageRetrievalListener
@@ -23,7 +22,6 @@ import java.util.Date
 import java.util.HashMap
 import java.util.LinkedHashSet
 import java.util.Locale
-import java.util.concurrent.ConcurrentHashMap
 import kotlin.math.max
 import kotlin.math.min
 import timber.log.Timber
@@ -33,24 +31,15 @@ class ImapFolder internal constructor(
     val serverId: String,
     private val folderNameCodec: FolderNameCodec
 ) {
-    @Volatile
     private var uidNext = -1L
-
-    @Volatile
     private var connection: ImapConnection? = null
-    private var msgSeqUidMap: MutableMap<Long, String> = ConcurrentHashMap()
-
-    @Volatile
     private var exists = false
     private var inSearch = false
     private var canCreateKeywords = false
     private var uidValidity: Long? = null
 
-    @Volatile
     var messageCount = -1
         private set
-
-    var type = FolderType.REGULAR
 
     var mode = 0
         private set
@@ -122,8 +111,6 @@ class ImapFolder internal constructor(
         }
 
         try {
-            msgSeqUidMap.clear()
-
             val openCommand = if (mode == OPEN_MODE_RW) "SELECT" else "EXAMINE"
             val encodedFolderName = folderNameCodec.encode(prefixedName)
             val escapedFolderName = ImapUtility.encodeString(encodedFolderName)
@@ -596,17 +583,6 @@ class ImapFolder internal constructor(
                     if (response.tag == null && ImapResponseParser.equalsIgnoreCase(response[1], "FETCH")) {
                         val fetchList = response.getKeyedValue("FETCH") as ImapList
                         val uid = fetchList.getKeyedString("UID")
-                        val msgSeq = response.getLong(0)
-                        if (uid != null) {
-                            try {
-                                msgSeqUidMap[msgSeq] = uid
-                                if (K9MailLib.isDebug()) {
-                                    Timber.v("Stored uid '%s' for msgSeq %d into map", uid, msgSeq)
-                                }
-                            } catch (e: Exception) {
-                                Timber.e("Unable to store uid '%s' for msgSeq %d", uid, msgSeq)
-                            }
-                        }
 
                         val message = messageMap[uid]
                         if (message == null) {

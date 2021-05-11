@@ -53,14 +53,6 @@ public class ImapStore {
     private final Deque<ImapConnection> connections = new LinkedList<>();
     private FolderNameCodec folderNameCodec;
 
-    /**
-     * Cache of ImapFolder objects. ImapFolders are attached to a given folder on the server
-     * and as long as their associated connection remains open they are reusable between
-     * requests. This cache lets us make sure we always reuse, if possible, for a given
-     * folder name.
-     */
-    private final Map<String, ImapFolder> folderCache = new HashMap<>();
-
 
     public ImapStore(ServerSettings serverSettings, ImapStoreConfig config,
             TrustedSocketFactory trustedSocketFactory, ConnectivityManager connectivityManager,
@@ -90,16 +82,7 @@ public class ImapStore {
     }
 
     public ImapFolder getFolder(String name) {
-        ImapFolder folder;
-        synchronized (folderCache) {
-            folder = folderCache.get(name);
-            if (folder == null) {
-                folder = new ImapFolder(this, name);
-                folderCache.put(name, folder);
-            }
-        }
-
-        return folder;
+        return new ImapFolder(this, name);
     }
 
     String getCombinedPrefix() {
