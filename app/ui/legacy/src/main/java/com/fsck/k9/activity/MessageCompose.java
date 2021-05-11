@@ -991,7 +991,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         } else if (id == R.id.send) {
 
             AlertDialog.Builder alert = new AlertDialog.Builder(this);
-            alert.setTitle("Delete");
+            alert.setTitle("Send Mail");
             alert.setMessage("Are you sure you want to send?");
             alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
