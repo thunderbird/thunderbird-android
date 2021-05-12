@@ -1,6 +1,5 @@
 package com.fsck.k9.ui
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.Resources
@@ -8,10 +7,8 @@ import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.text.TextUtils
 import android.util.TypedValue
 import android.widget.ImageView
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -285,25 +282,6 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         }
     }
 
-    /**
-     * Custom layout for PrimaryDrawerItem allowing 2 lines
-     * and elipsize="middle" to keep the start+end of deep subfolder trees
-     * on screen.
-     *
-     * Can be replaced after
-     * https://github.com/mikepenz/MaterialDrawer/issues/2724
-     */
-    private class PrimaryFolderDrawerItem : PrimaryDrawerItem() {
-
-        @SuppressLint("MissingSuperCall") // Lint false positive, super IS called
-        override fun bindView(holder: ViewHolder, payloads: List<Any>) {
-            super.bindView(holder, payloads)
-            holder.itemView.findViewById<AppCompatTextView>(R.id.material_drawer_name)?.let { text ->
-                text.ellipsize = TextUtils.TruncateAt.MIDDLE
-            }
-        }
-    }
-
     private fun setUserFolders(folders: List<DisplayFolder>?) {
         clearUserFolders()
 
@@ -335,12 +313,11 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
             val folder = displayFolder.folder
             val drawerId = folder.id shl DRAWER_FOLDER_SHIFT
 
-            val drawerItem = PrimaryFolderDrawerItem().apply {
+            val drawerItem = FolderDrawerItem().apply {
                 iconRes = folderIconProvider.getFolderIcon(folder.type)
                 identifier = drawerId
                 tag = folder
                 nameText = getFolderDisplayName(folder)
-                // TODO: set elipsize=middle after https://github.com/mikepenz/MaterialDrawer/issues/2724 is fixed
                 displayFolder.unreadCount.takeIf { it > 0 }?.let {
                     badgeText = it.toString()
                     badgeStyle = folderBadgeStyle
@@ -498,3 +475,9 @@ private fun Context.obtainDrawerTextColor(): Int {
 }
 
 private class FixedDividerDrawerItem(override var identifier: Long) : DividerDrawerItem()
+
+// We ellipsize long folder names in the middle for better readability
+private class FolderDrawerItem : PrimaryDrawerItem() {
+    override val type: Int = R.id.drawer_list_folder_item
+    override val layoutRes: Int = R.layout.drawer_folder_list_item
+}
