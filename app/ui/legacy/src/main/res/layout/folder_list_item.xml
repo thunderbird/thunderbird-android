@@ -30,6 +30,6 @@
         android:paddingBottom="12dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="?android:attr/textColorPrimary"
-        tools:text="Folder name" />
+        tools:text="Parent Folder/Sub Folder/Sub Folder/Folder name" />
 
 </LinearLayout>

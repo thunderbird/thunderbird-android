@@ -313,7 +313,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
             val folder = displayFolder.folder
             val drawerId = folder.id shl DRAWER_FOLDER_SHIFT
 
-            val drawerItem = PrimaryDrawerItem().apply {
+            val drawerItem = FolderDrawerItem().apply {
                 iconRes = folderIconProvider.getFolderIcon(folder.type)
                 identifier = drawerId
                 tag = folder
@@ -475,3 +475,9 @@ private fun Context.obtainDrawerTextColor(): Int {
 }
 
 private class FixedDividerDrawerItem(override var identifier: Long) : DividerDrawerItem()
+
+// We ellipsize long folder names in the middle for better readability
+private class FolderDrawerItem : PrimaryDrawerItem() {
+    override val type: Int = R.id.drawer_list_folder_item
+    override val layoutRes: Int = R.layout.drawer_folder_list_item
+}
