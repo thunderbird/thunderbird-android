@@ -11,7 +11,6 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.TypedValue
 import android.widget.ImageView
-import androidx.annotation.LayoutRes
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -341,7 +340,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 identifier = drawerId
                 tag = folder
                 nameText = getFolderDisplayName(folder)
-                //TODO: set elipsize=middle after https://github.com/mikepenz/MaterialDrawer/issues/2724 is fixed
+                // TODO: set elipsize=middle after https://github.com/mikepenz/MaterialDrawer/issues/2724 is fixed
                 displayFolder.unreadCount.takeIf { it > 0 }?.let {
                     badgeText = it.toString()
                     badgeStyle = folderBadgeStyle
