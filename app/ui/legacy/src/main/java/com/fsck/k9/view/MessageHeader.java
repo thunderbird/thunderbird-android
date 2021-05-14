@@ -170,7 +170,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         int id = view.getId();
 
         if (id == R.id.subject) {
-            onAddSubjectToClipboard(mMessage.getSubject());
+            onAddSubjectToClipboard(mSubjectView.getText().toString());
         } else if (id == R.id.from) {
             onAddAddressesToClipboard(mMessage.getFrom());
         } else if (id == R.id.to) {
@@ -193,7 +193,7 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
     private void onAddSubjectToClipboard(String subject) {
         clipboardManager.setText("subject", subject);
 
-        Toast.makeText(mContext, createMessageForSubject(subject), Toast.LENGTH_LONG).show();
+        Toast.makeText(mContext, createMessageForSubject(), Toast.LENGTH_LONG).show();
     }
 
     private void onAddSenderToContacts() {
@@ -207,8 +207,8 @@ public class MessageHeader extends LinearLayout implements OnClickListener, OnLo
         }
     }
 
-    public String createMessageForSubject(String subject) {
-        return "Subject ("+subject+") copied to clipboard";
+    public String createMessageForSubject() {
+        return  mContext.getResources().getString(R.string.copy_subject_to_clipboard);
     }
 
     public String createMessage(int addressesCount) {
