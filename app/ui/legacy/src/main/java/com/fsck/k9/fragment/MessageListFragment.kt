@@ -1,10 +1,8 @@
 package com.fsck.k9.fragment
 
 import android.app.Activity
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.LayoutInflater
@@ -22,7 +20,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.fsck.k9.Account
 import com.fsck.k9.Account.Expunge
@@ -32,7 +29,6 @@ import com.fsck.k9.K9
 import com.fsck.k9.Preferences
 import com.fsck.k9.activity.FolderInfoHolder
 import com.fsck.k9.activity.misc.ContactPicture
-import com.fsck.k9.cache.EmailProviderCache
 import com.fsck.k9.controller.MessageReference
 import com.fsck.k9.controller.MessagingController
 import com.fsck.k9.controller.SimpleMessagingListener
@@ -73,7 +69,6 @@ class MessageListFragment :
     private val folderNameFormatter: FolderNameFormatter by lazy { folderNameFormatterFactory.create(requireContext()) }
     private val messagingController: MessagingController by inject()
     private val preferences: Preferences by inject()
-    private val localBroadcastManager: LocalBroadcastManager by inject()
 
     private val handler = MessageListHandler(this)
     private val activityListener = MessageListActivityListener()
@@ -129,13 +124,6 @@ class MessageListFragment :
      */
     var isInitialized = false
         private set
-
-    private val cacheIntentFilter = IntentFilter(EmailProviderCache.ACTION_CACHE_UPDATED)
-    private val cacheBroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            adapter.notifyDataSetChanged()
-        }
-    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -471,7 +459,6 @@ class MessageListFragment :
             hasConnectivity = Utility.hasConnectivity(requireActivity().application)
         }
 
-        localBroadcastManager.registerReceiver(cacheBroadcastReceiver, cacheIntentFilter)
         messagingController.addListener(activityListener)
 
         for (account in localSearch.getAccounts(preferences)) {
@@ -484,7 +471,6 @@ class MessageListFragment :
     override fun onPause() {
         super.onPause()
 
-        localBroadcastManager.unregisterReceiver(cacheBroadcastReceiver)
         messagingController.removeListener(activityListener)
     }
 
