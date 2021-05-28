@@ -144,7 +144,6 @@ public class Account implements BaseAccount {
     private FolderMode folderPushMode;
     private FolderMode folderTargetMode;
     private int accountNumber;
-    private boolean pushPollOnConnect;
     private boolean notifySync;
     private SortType sortType;
     private Map<SortType, Boolean> sortAscending = new HashMap<>();
@@ -794,14 +793,6 @@ public class Account implements BaseAccount {
 
     public synchronized void setIdleRefreshMinutes(int idleRefreshMinutes) {
         this.idleRefreshMinutes = idleRefreshMinutes;
-    }
-
-    public synchronized boolean isPushPollOnConnect() {
-        return pushPollOnConnect;
-    }
-
-    public synchronized void setPushPollOnConnect(boolean pushPollOnConnect) {
-        this.pushPollOnConnect = pushPollOnConnect;
     }
 
     public synchronized boolean isGoToUnreadMessageSearch() {
