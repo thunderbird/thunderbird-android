@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+
 buildscript {
     ext {
         buildConfig = [
@@ -83,6 +85,12 @@ subprojects {
             showCauses true
             showExceptions true
             showStackTraces true
+        }
+    }
+
+    tasks.withType(KotlinCompile) {
+        kotlinOptions {
+            freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
         }
     }
 

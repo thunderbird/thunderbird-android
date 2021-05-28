@@ -6,7 +6,7 @@ import com.fsck.k9.message.extractors.MessagePreviewCreator
 import org.koin.dsl.module
 
 val mailStoreModule = module {
-    single { FolderRepositoryManager(messageStoreManager = get()) }
+    single { FolderRepositoryManager(messageStoreManager = get(), accountManager = get()) }
     single { MessageViewInfoExtractorFactory(get(), get(), get()) }
     single { StorageManager.getInstance(get()) }
     single { SearchStatusManager() }
