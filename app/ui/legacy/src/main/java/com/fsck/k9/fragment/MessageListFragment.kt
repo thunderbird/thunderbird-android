@@ -38,6 +38,7 @@ import com.fsck.k9.helper.Utility
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.search.LocalSearch
+import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.search.getAccounts
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
@@ -175,7 +176,11 @@ class MessageListFragment :
         isThreadDisplay = arguments.getBoolean(ARG_IS_THREAD_DISPLAY, false)
         localSearch = arguments.getParcelable(ARG_SEARCH)!!
 
-        title = localSearch.name
+        if (SearchAccount.UNIFIED_INBOX == localSearch.id) {
+            title = resources.getString(R.string.integrated_inbox_title)
+        } else {
+            title = localSearch.name
+        }
 
         allAccounts = localSearch.searchAllAccounts()
         val searchAccounts = localSearch.getAccounts(preferences)

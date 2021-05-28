@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -23,7 +22,7 @@
             android:paddingTop="12dp"
             android:textSize="20sp"
             android:textColor="@color/message_list_widget_header_text"
-            tools:text="Unified Inbox" />
+            android:text="@string/integrated_inbox_title" />
 
         <ImageButton
             android:id="@+id/new_message"
