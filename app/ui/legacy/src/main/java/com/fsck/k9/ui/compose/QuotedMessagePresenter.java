@@ -3,7 +3,6 @@ package com.fsck.k9.ui.compose;
 
 import java.util.Map;
 
-import android.content.res.Resources;
 import android.os.Bundle;
 
 import com.fsck.k9.DI;
@@ -44,7 +43,6 @@ public class QuotedMessagePresenter {
     private final TextQuoteCreator textQuoteCreator = DI.get(TextQuoteCreator.class);
     private final QuotedMessageMvpView view;
     private final MessageCompose messageCompose;
-    private final Resources resources;
 
     private QuotedTextMode quotedTextMode;
     private QuoteStyle quoteStyle;
@@ -59,7 +57,6 @@ public class QuotedMessagePresenter {
     public QuotedMessagePresenter(
             MessageCompose messageCompose, QuotedMessageMvpView quotedMessageMvpView, Account account) {
         this.messageCompose = messageCompose;
-        this.resources = messageCompose.getResources();
         this.view = quotedMessageMvpView;
         onSwitchAccount(account);
 
@@ -113,8 +110,7 @@ public class QuotedMessagePresenter {
             }
 
             // Add the HTML reply header to the top of the content.
-            quotedHtmlContent = HtmlQuoteCreator.quoteOriginalHtmlMessage(
-                    resources, messageViewInfo.message, content, quoteStyle);
+            quotedHtmlContent = HtmlQuoteCreator.quoteOriginalHtmlMessage(messageViewInfo.message, content, quoteStyle);
 
             // Load the message with the reply header. TODO replace with MessageViewInfo data
             view.setQuotedHtml(quotedHtmlContent.getQuotedContent(),
