@@ -5,7 +5,7 @@ import com.fsck.k9.preferences.AccountManager
 import java.util.concurrent.ConcurrentHashMap
 
 class MessageStoreManager(private val accountManager: AccountManager, private val messageStoreFactory: MessageStoreFactory) {
-    private val messageStores = ConcurrentHashMap<String, MessageStore>()
+    private val messageStores = ConcurrentHashMap<String, ListenableMessageStore>()
 
     init {
         accountManager.addAccountRemovedListener { account ->
@@ -13,12 +13,12 @@ class MessageStoreManager(private val accountManager: AccountManager, private va
         }
     }
 
-    fun getMessageStore(accountUuid: String): MessageStore {
+    fun getMessageStore(accountUuid: String): ListenableMessageStore {
         val account = accountManager.getAccount(accountUuid) ?: error("Account not found: $accountUuid")
         return getMessageStore(account)
     }
 
-    fun getMessageStore(account: Account): MessageStore {
+    fun getMessageStore(account: Account): ListenableMessageStore {
         return messageStores.getOrPut(account.uuid) { messageStoreFactory.create(account) }
     }
 

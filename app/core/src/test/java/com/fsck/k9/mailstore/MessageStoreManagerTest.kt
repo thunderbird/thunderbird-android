@@ -14,8 +14,8 @@ import org.mockito.kotlin.whenever
 
 class MessageStoreManagerTest {
     private val account = Account("00000000-0000-4000-0000-000000000000")
-    private val messageStore1 = mock<MessageStore>(name = "messageStore1")
-    private val messageStore2 = mock<MessageStore>(name = "messageStore2")
+    private val messageStore1 = mock<ListenableMessageStore>(name = "messageStore1")
+    private val messageStore2 = mock<ListenableMessageStore>(name = "messageStore2")
     private val messageStoreFactory = mock<MessageStoreFactory> {
         on { create(account) } doReturn messageStore1 doReturn messageStore2
     }

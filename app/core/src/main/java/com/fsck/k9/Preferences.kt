@@ -233,11 +233,11 @@ class Preferences internal constructor(
         }
     }
 
-    fun addOnAccountsChangeListener(accountsChangeListener: AccountsChangeListener) {
+    override fun addOnAccountsChangeListener(accountsChangeListener: AccountsChangeListener) {
         accountsChangeListeners.add(accountsChangeListener)
     }
 
-    fun removeOnAccountsChangeListener(accountsChangeListener: AccountsChangeListener) {
+    override fun removeOnAccountsChangeListener(accountsChangeListener: AccountsChangeListener) {
         accountsChangeListeners.remove(accountsChangeListener)
     }
 
