@@ -42,7 +42,6 @@ class AccountPreferenceSerializer(
             alwaysBcc = storage.getString("$accountUuid.alwaysBcc", alwaysBcc)
             automaticCheckIntervalMinutes = storage.getInt("$accountUuid.automaticCheckIntervalMinutes", DEFAULT_SYNC_INTERVAL)
             idleRefreshMinutes = storage.getInt("$accountUuid.idleRefreshMinutes", 24)
-            isPushPollOnConnect = storage.getBoolean("$accountUuid.pushPollOnConnect", true)
             displayCount = storage.getInt("$accountUuid.displayCount", K9.DEFAULT_VISIBLE_LIMIT)
             if (displayCount < 0) {
                 displayCount = K9.DEFAULT_VISIBLE_LIMIT
@@ -253,7 +252,6 @@ class AccountPreferenceSerializer(
             editor.putString("$accountUuid.alwaysBcc", alwaysBcc)
             editor.putInt("$accountUuid.automaticCheckIntervalMinutes", automaticCheckIntervalMinutes)
             editor.putInt("$accountUuid.idleRefreshMinutes", idleRefreshMinutes)
-            editor.putBoolean("$accountUuid.pushPollOnConnect", isPushPollOnConnect)
             editor.putInt("$accountUuid.displayCount", displayCount)
             editor.putBoolean("$accountUuid.notifyNewMail", isNotifyNewMail)
             editor.putString("$accountUuid.folderNotifyNewMailMode", folderNotifyNewMailMode.name)
@@ -379,7 +377,6 @@ class AccountPreferenceSerializer(
         editor.remove("$accountUuid.email")
         editor.remove("$accountUuid.alwaysBcc")
         editor.remove("$accountUuid.automaticCheckIntervalMinutes")
-        editor.remove("$accountUuid.pushPollOnConnect")
         editor.remove("$accountUuid.idleRefreshMinutes")
         editor.remove("$accountUuid.lastAutomaticCheckTime")
         editor.remove("$accountUuid.notifyNewMail")
@@ -550,7 +547,6 @@ class AccountPreferenceSerializer(
             localStorageProviderId = storageManager.defaultProviderId
             automaticCheckIntervalMinutes = DEFAULT_SYNC_INTERVAL
             idleRefreshMinutes = 24
-            isPushPollOnConnect = true
             displayCount = K9.DEFAULT_VISIBLE_LIMIT
             accountNumber = UNASSIGNED_ACCOUNT_NUMBER
             isNotifyNewMail = true

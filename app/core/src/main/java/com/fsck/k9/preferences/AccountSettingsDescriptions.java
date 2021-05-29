@@ -150,9 +150,6 @@ public class AccountSettingsDescriptions {
         s.put("notifySelfNewMail", Settings.versions(
                 new V(1, new BooleanSetting(true))
         ));
-        s.put("pushPollOnConnect", Settings.versions(
-                new V(1, new BooleanSetting(true))
-        ));
         s.put("quotePrefix", Settings.versions(
                 new V(1, new StringSetting(AccountPreferenceSerializer.DEFAULT_QUOTE_PREFIX))
         ));

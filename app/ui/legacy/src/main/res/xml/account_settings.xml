@@ -141,10 +141,6 @@
             android:key="push_advanced"
             android:title="@string/account_settings_push_advanced_title">
 
-            <CheckBoxPreference
-                android:key="push_poll_on_connect"
-                android:title="@string/push_poll_on_connect_label" />
-
             <ListPreference
                 android:entries="@array/push_limit_entries"
                 android:entryValues="@array/push_limit_values"
