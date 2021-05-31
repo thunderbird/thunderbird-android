@@ -13,6 +13,7 @@ import org.junit.Test
 class QuoteDateFormatterTest {
     private lateinit var originalLocale: Locale
     private var originalTimeZone: TimeZone? = null
+    private lateinit var originalK9language: String
     private val quoteDateFormatter = QuoteDateFormatter()
 
     @Before
@@ -20,12 +21,15 @@ class QuoteDateFormatterTest {
         originalLocale = Locale.getDefault()
         originalTimeZone = TimeZone.getDefault()
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+02:00"))
+        originalK9language = K9.k9Language
+        K9.k9Language = Locale.US.language
     }
 
     @After
     fun tearDown() {
         Locale.setDefault(originalLocale)
         TimeZone.setDefault(originalTimeZone)
+        K9.k9Language = originalK9language
     }
 
     @Test
@@ -42,6 +46,7 @@ class QuoteDateFormatterTest {
     fun hideTimeZoneEnabled_GermanyLocale() {
         K9.isHideTimeZone = true
         Locale.setDefault(Locale.GERMANY)
+        K9.k9Language = Locale.GERMANY.language
 
         val formattedDate = quoteDateFormatter.format("2020-09-19T20:00:00+00:00".toDate())
 
@@ -62,6 +67,7 @@ class QuoteDateFormatterTest {
     fun hideTimeZoneDisabled_GermanyLocale() {
         K9.isHideTimeZone = false
         Locale.setDefault(Locale.GERMANY)
+        K9.k9Language = Locale.GERMANY.language
 
         val formattedDate = quoteDateFormatter.format("2020-09-19T20:00:00+00:00".toDate())
 
