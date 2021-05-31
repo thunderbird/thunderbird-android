@@ -16,6 +16,7 @@ class OnboardingActivity : K9Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setLayout(R.layout.activity_onboarding)
+        setTitle(R.string.account_setup_basics_title)
 
         initializeActionBar()
     }
