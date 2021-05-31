@@ -251,11 +251,6 @@ public class MessageViewFragment extends Fragment implements ConfirmationDialogF
         }
     }
 
-    private void showUnableToDecodeError() {
-        Context context = getActivity().getApplicationContext();
-        Toast.makeText(context, R.string.message_view_toast_unable_to_display_message, Toast.LENGTH_SHORT).show();
-    }
-
     private void showMessage(MessageViewInfo messageViewInfo) {
         hideKeyboard();
 
