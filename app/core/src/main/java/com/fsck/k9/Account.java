@@ -152,7 +152,6 @@ public class Account implements BaseAccount {
     private Expunge expungePolicy = Expunge.EXPUNGE_IMMEDIATELY;
     private int maxPushFolders;
     private int idleRefreshMinutes;
-    private boolean goToUnreadMessageSearch;
     private final Map<NetworkType, Boolean> compressionMap = new ConcurrentHashMap<>();
     private Searchable searchableFolders;
     private boolean subscribedFoldersOnly;
@@ -793,14 +792,6 @@ public class Account implements BaseAccount {
 
     public synchronized void setIdleRefreshMinutes(int idleRefreshMinutes) {
         this.idleRefreshMinutes = idleRefreshMinutes;
-    }
-
-    public synchronized boolean isGoToUnreadMessageSearch() {
-        return goToUnreadMessageSearch;
-    }
-
-    public synchronized void setGoToUnreadMessageSearch(boolean goToUnreadMessageSearch) {
-        this.goToUnreadMessageSearch = goToUnreadMessageSearch;
     }
 
     public synchronized boolean isSubscribedFoldersOnly() {

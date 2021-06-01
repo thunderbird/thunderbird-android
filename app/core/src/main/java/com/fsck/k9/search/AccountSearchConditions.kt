@@ -2,7 +2,6 @@ package com.fsck.k9.search
 
 import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
-import com.fsck.k9.BaseAccount
 import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.search.SearchSpecification.Attribute
 import com.fsck.k9.search.SearchSpecification.SearchCondition
@@ -108,24 +107,5 @@ class AccountSearchConditions {
         if (folderId != null) {
             search.and(SearchField.FOLDER, folderId.toString(), Attribute.NOT_EQUALS)
         }
-    }
-
-    fun createUnreadSearch(account: BaseAccount, searchTitle: String): LocalSearch {
-        val search: LocalSearch
-        if (account is SearchAccount) {
-            search = account.relatedSearch.clone()
-            search.name = searchTitle
-        } else {
-            search = LocalSearch(searchTitle)
-            search.addAccountUuid(account.uuid)
-
-            val realAccount = account as Account
-            excludeSpecialFolders(realAccount, search)
-            limitToDisplayableFolders(realAccount, search)
-        }
-
-        search.and(SearchField.READ, "1", Attribute.NOT_EQUALS)
-
-        return search
     }
 }

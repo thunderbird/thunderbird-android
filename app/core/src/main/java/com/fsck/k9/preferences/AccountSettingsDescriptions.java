@@ -99,9 +99,6 @@ public class AccountSettingsDescriptions {
         s.put("folderTargetMode", Settings.versions(
                 new V(1, new EnumSetting<>(FolderMode.class, FolderMode.NOT_SECOND_CLASS))
         ));
-        s.put("goToUnreadMessageSearch", Settings.versions(
-                new V(1, new BooleanSetting(false))
-        ));
         s.put("idleRefreshMinutes", Settings.versions(
                 new V(1, new IntegerResourceSetting(24, R.array.idle_refresh_period_values))
         ));
