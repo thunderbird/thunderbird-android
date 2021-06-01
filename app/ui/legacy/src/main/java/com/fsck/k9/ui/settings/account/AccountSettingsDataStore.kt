@@ -31,7 +31,6 @@ class AccountSettingsDataStore(
             "account_vibrate" -> account.notificationSetting.isVibrateEnabled
             "account_led" -> account.notificationSetting.isLedEnabled
             "account_notify_sync" -> account.isNotifySync
-            "notification_opens_unread" -> account.isGoToUnreadMessageSearch
             "openpgp_hide_sign_only" -> account.isOpenPgpHideSignOnly
             "openpgp_encrypt_subject" -> account.isOpenPgpEncryptSubject
             "openpgp_encrypt_all_drafts" -> account.isOpenPgpEncryptAllDrafts
@@ -64,7 +63,6 @@ class AccountSettingsDataStore(
             "account_vibrate" -> account.notificationSetting.isVibrateEnabled = value
             "account_led" -> account.notificationSetting.setLed(value)
             "account_notify_sync" -> account.isNotifySync = value
-            "notification_opens_unread" -> account.isGoToUnreadMessageSearch = value
             "remote_search_enabled" -> account.isAllowRemoteSearch = value
             "openpgp_hide_sign_only" -> account.isOpenPgpHideSignOnly = value
             "openpgp_encrypt_subject" -> account.isOpenPgpEncryptSubject = value

@@ -10,7 +10,6 @@ import android.content.Intent;
 import com.fsck.k9.Account;
 import com.fsck.k9.DI;
 import com.fsck.k9.K9;
-import com.fsck.k9.R;
 import com.fsck.k9.activity.MessageList;
 import com.fsck.k9.controller.MessageReference;
 import com.fsck.k9.ui.notification.DeleteConfirmationActivity;
@@ -34,7 +33,6 @@ import com.fsck.k9.ui.messagelist.DefaultFolderProvider;
  */
 class K9NotificationActionCreator implements NotificationActionCreator {
     private final Context context;
-    private final AccountSearchConditions accountSearchConditions = DI.get(AccountSearchConditions.class);
     private final DefaultFolderProvider defaultFolderProvider = DI.get(DefaultFolderProvider.class);
 
 
@@ -58,17 +56,13 @@ class K9NotificationActionCreator implements NotificationActionCreator {
     public PendingIntent createViewMessagesPendingIntent(Account account, List<MessageReference> messageReferences,
             int notificationId) {
 
-        Intent intent;
-        if (account.isGoToUnreadMessageSearch()) {
-            intent = createUnreadIntent(account);
-        } else {
-            Long folderServerId = getFolderIdOfAllMessages(messageReferences);
+        Long folderServerId = getFolderIdOfAllMessages(messageReferences);
 
-            if (folderServerId == null) {
-                intent = createMessageListIntent(account);
-            } else {
-                intent = createMessageListIntent(account, folderServerId);
-            }
+        Intent intent;
+        if (folderServerId == null) {
+            intent = createMessageListIntent(account);
+        } else {
+            intent = createMessageListIntent(account, folderServerId);
         }
 
         return PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -202,12 +196,6 @@ class K9NotificationActionCreator implements NotificationActionCreator {
         Intent intent = NotificationActionService.createMarkMessageAsSpamIntent(context, messageReference);
 
         return PendingIntent.getService(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
-    private Intent createUnreadIntent(final Account account) {
-        String searchTitle = context.getString(R.string.search_title, account.getDescription(), context.getString(R.string.unread_modifier));
-        LocalSearch search = accountSearchConditions.createUnreadSearch(account, searchTitle);
-        return MessageList.intentDisplaySearch(context, search, true, false, false);
     }
 
     private Intent createMessageListIntent(Account account) {

@@ -104,7 +104,6 @@ class AccountPreferenceSerializer(
             isSyncRemoteDeletions = storage.getBoolean("$accountUuid.syncRemoteDeletions", true)
 
             maxPushFolders = storage.getInt("$accountUuid.maxPushFolders", 10)
-            isGoToUnreadMessageSearch = storage.getBoolean("$accountUuid.goToUnreadMessageSearch", false)
             isSubscribedFoldersOnly = storage.getBoolean("$accountUuid.subscribedFoldersOnly", false)
             maximumPolledMessageAge = storage.getInt("$accountUuid.maximumPolledMessageAge", -1)
             maximumAutoDownloadMessageSize = storage.getInt("$accountUuid.maximumAutoDownloadMessageSize", 32768)
@@ -293,7 +292,6 @@ class AccountPreferenceSerializer(
             editor.putInt("$accountUuid.maxPushFolders", maxPushFolders)
             editor.putString("$accountUuid.searchableFolders", searchableFolders.name)
             editor.putInt("$accountUuid.chipColor", chipColor)
-            editor.putBoolean("$accountUuid.goToUnreadMessageSearch", isGoToUnreadMessageSearch)
             editor.putBoolean("$accountUuid.subscribedFoldersOnly", isSubscribedFoldersOnly)
             editor.putInt("$accountUuid.maximumPolledMessageAge", maximumPolledMessageAge)
             editor.putInt("$accountUuid.maximumAutoDownloadMessageSize", maximumAutoDownloadMessageSize)
@@ -411,7 +409,6 @@ class AccountPreferenceSerializer(
         editor.remove("$accountUuid.chipColor")
         editor.remove("$accountUuid.led")
         editor.remove("$accountUuid.ledColor")
-        editor.remove("$accountUuid.goToUnreadMessageSearch")
         editor.remove("$accountUuid.subscribedFoldersOnly")
         editor.remove("$accountUuid.maximumPolledMessageAge")
         editor.remove("$accountUuid.maximumAutoDownloadMessageSize")
@@ -566,7 +563,6 @@ class AccountPreferenceSerializer(
             importedAutoExpandFolder = null
             legacyInboxFolder = null
             maxPushFolders = 10
-            isGoToUnreadMessageSearch = false
             isSubscribedFoldersOnly = false
             maximumPolledMessageAge = -1
             maximumAutoDownloadMessageSize = 32768
