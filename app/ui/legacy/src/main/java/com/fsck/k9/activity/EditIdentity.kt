@@ -30,6 +30,7 @@ class EditIdentity : K9Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setLayout(R.layout.edit_identity)
+        setTitle(R.string.edit_identity_title)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         identityIndex = intent.getIntExtra(EXTRA_IDENTITY_INDEX, -1)

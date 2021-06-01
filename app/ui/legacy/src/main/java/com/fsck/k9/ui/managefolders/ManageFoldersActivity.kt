@@ -18,6 +18,7 @@ class ManageFoldersActivity : K9Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setLayout(R.layout.activity_manage_folders)
+        setTitle(R.string.folders_action)
 
         val accountUuid = intent.getStringExtra(EXTRA_ACCOUNT) ?: error("Missing Intent extra '$EXTRA_ACCOUNT'")
 

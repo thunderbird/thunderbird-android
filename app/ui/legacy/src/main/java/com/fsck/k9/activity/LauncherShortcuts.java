@@ -13,6 +13,7 @@ public class LauncherShortcuts extends AccountList {
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+        setTitle(R.string.shortcuts_title);
 
         // finish() immediately if we aren't supposed to be here
         if (!Intent.ACTION_CREATE_SHORTCUT.equals(getIntent().getAction())) {

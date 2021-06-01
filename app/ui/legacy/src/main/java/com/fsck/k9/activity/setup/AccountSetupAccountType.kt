@@ -33,6 +33,7 @@ class AccountSetupAccountType : K9Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setLayout(R.layout.account_setup_account_type)
+        setTitle(R.string.account_setup_account_type_title)
 
         decodeArguments()
 
