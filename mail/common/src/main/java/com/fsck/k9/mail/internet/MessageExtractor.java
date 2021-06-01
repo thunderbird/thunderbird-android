@@ -44,27 +44,33 @@ public class MessageExtractor {
     }
 
     public static String getTextFromPart(Part part, long textSizeLimit) {
-        try {
-            if ((part != null) && (part.getBody() != null)) {
-                final Body body = part.getBody();
-                if (body instanceof TextBody) {
-                    return ((TextBody) body).getRawText();
-                }
-                final String mimeType = part.getMimeType();
-                if (mimeType != null && MimeUtility.mimeTypeMatches(mimeType, "text/*") ||
-                        part.isMimeType("application/pgp")) {
-                    return getTextFromTextPart(part, body, mimeType, textSizeLimit);
-                } else {
-                    throw new MessagingException("Provided non-text part: " + mimeType);
-                }
-            } else {
-                throw new MessagingException("Provided invalid part");
-            }
-        } catch (IOException e) {
-            Timber.e(e, "Unable to getTextFromPart");
-        } catch (MessagingException e) {
-            Timber.e("Unable to getTextFromPart");
+        if (part == null) {
+            throw new IllegalArgumentException("Argument 'part' must not be null");
         }
+
+        try {
+            Body body = part.getBody();
+            if (body == null) {
+                Timber.v("No body present for this message part");
+                return null;
+            }
+
+            if (body instanceof TextBody) {
+                TextBody textBody = (TextBody) body;
+                return textBody.getRawText();
+            }
+
+            String mimeType = part.getMimeType();
+            if (mimeType != null && MimeUtility.mimeTypeMatches(mimeType, "text/*") ||
+                    part.isMimeType("application/pgp")) {
+                return getTextFromTextPart(part, body, mimeType, textSizeLimit);
+            }
+
+            Timber.w("Provided non-text part: %s", mimeType);
+        } catch (IOException | MessagingException e) {
+            Timber.e(e, "Unable to getTextFromPart");
+        }
+
         return null;
     }
 
