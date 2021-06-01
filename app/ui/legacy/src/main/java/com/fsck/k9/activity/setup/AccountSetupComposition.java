@@ -46,6 +46,7 @@ public class AccountSetupComposition extends K9Activity {
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);
 
         setLayout(R.layout.account_setup_composition);
+        setTitle(R.string.account_settings_composition_title);
 
         /*
          * If we're being reloaded we override the original account with the one

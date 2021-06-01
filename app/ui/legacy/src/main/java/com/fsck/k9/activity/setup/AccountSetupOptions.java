@@ -43,6 +43,7 @@ public class AccountSetupOptions extends K9Activity implements OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setLayout(R.layout.account_setup_options);
+        setTitle(R.string.account_setup_options_title);
 
         mCheckFrequencyView = findViewById(R.id.account_check_frequency);
         mDisplayCountView = findViewById(R.id.account_display_count);

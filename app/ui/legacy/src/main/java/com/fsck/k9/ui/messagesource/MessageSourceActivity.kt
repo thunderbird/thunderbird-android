@@ -16,6 +16,7 @@ class MessageSourceActivity : K9Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setLayout(R.layout.message_view_headers_activity)
+        setTitle(R.string.show_headers_action)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         if (savedInstanceState == null) {

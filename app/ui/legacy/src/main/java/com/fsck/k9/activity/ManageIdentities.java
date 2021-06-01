@@ -31,6 +31,7 @@ public class ManageIdentities extends ChooseIdentity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(R.string.manage_identities_title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 

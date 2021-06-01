@@ -75,6 +75,7 @@ public class AccountSetupBasics extends K9Activity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setLayout(R.layout.account_setup_basics);
+        setTitle(R.string.account_setup_basics_title);
         mEmailView = findViewById(R.id.account_email);
         mPasswordView = findViewById(R.id.account_password);
         mClientCertificateCheckBox = findViewById(R.id.account_client_certificate);

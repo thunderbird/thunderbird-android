@@ -96,6 +96,7 @@ public class AccountSetupOutgoing extends K9Activity implements OnClickListener,
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setLayout(R.layout.account_setup_outgoing);
+        setTitle(R.string.account_setup_outgoing_title);
 
         String accountUuid = getIntent().getStringExtra(EXTRA_ACCOUNT);
         mAccount = Preferences.getPreferences(this).getAccount(accountUuid);

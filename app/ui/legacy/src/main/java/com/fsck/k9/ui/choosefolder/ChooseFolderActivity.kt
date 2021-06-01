@@ -51,6 +51,7 @@ class ChooseFolderActivity : K9Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setLayout(R.layout.folder_list)
+        setTitle(R.string.choose_folder_title)
 
         if (!decodeArguments(savedInstanceState)) {
             finish()
