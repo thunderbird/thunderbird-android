@@ -247,7 +247,17 @@ class RealImapConnection implements ImapConnection {
     }
 
     private void configureSocket() throws SocketException {
-        socket.setSoTimeout(socketReadTimeout);
+        setSocketDefaultReadTimeout();
+    }
+
+    @Override
+    public void setSocketDefaultReadTimeout() throws SocketException {
+        setSocketReadTimeout(socketReadTimeout);
+    }
+
+    @Override
+    public void setSocketReadTimeout(int timeout) throws SocketException {
+        socket.setSoTimeout(timeout);
     }
 
     private void setUpStreamsAndParserFromSocket() throws IOException {
@@ -894,5 +904,10 @@ class RealImapConnection implements ImapConnection {
 
     int getLineLengthLimit() throws IOException, MessagingException {
         return isCondstoreCapable() ? LENGTH_LIMIT_WITH_CONDSTORE : LENGTH_LIMIT_WITHOUT_CONDSTORE;
+    }
+
+    @Override
+    public boolean isDataAvailable() throws IOException {
+        return inputStream.available() > 0;
     }
 }

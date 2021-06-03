@@ -33,7 +33,8 @@ internal class RealImapFolder(
     private val folderNameCodec: FolderNameCodec
 ) : ImapFolder {
     private var uidNext = -1L
-    private var connection: ImapConnection? = null
+    internal var connection: ImapConnection? = null
+        private set
     private var exists = false
     private var inSearch = false
     private var canCreateKeywords = false

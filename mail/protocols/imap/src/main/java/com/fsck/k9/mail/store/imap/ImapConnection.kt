@@ -3,6 +3,7 @@ package com.fsck.k9.mail.store.imap
 import com.fsck.k9.mail.MessagingException
 import java.io.IOException
 import java.io.OutputStream
+import java.net.SocketException
 
 internal interface ImapConnection {
     val logId: String
@@ -36,4 +37,13 @@ internal interface ImapConnection {
 
     @Throws(IOException::class)
     fun readResponse(callback: ImapResponseCallback?): ImapResponse
+
+    @Throws(SocketException::class)
+    fun setSocketDefaultReadTimeout()
+
+    @Throws(SocketException::class)
+    fun setSocketReadTimeout(timeout: Int)
+
+    @Throws(IOException::class)
+    fun isDataAvailable(): Boolean
 }
