@@ -457,7 +457,7 @@ class ImapFolder internal constructor(
 
     @Throws(MessagingException::class)
     internal fun getMessages(
-        mesgSeqs: Set<Long?>?,
+        mesgSeqs: Set<Long>,
         includeDeleted: Boolean,
         listener: MessageRetrievalListener<ImapMessage>?
     ): List<ImapMessage> {

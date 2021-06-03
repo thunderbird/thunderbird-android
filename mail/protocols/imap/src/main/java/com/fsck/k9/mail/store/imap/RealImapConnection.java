@@ -47,6 +47,8 @@ import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZOutputStream;
 import javax.net.ssl.SSLException;
 import org.apache.commons.io.IOUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import timber.log.Timber;
 
 import static com.fsck.k9.mail.ConnectionSecurity.STARTTLS_REQUIRED;
@@ -59,7 +61,7 @@ import static com.fsck.k9.mail.store.imap.ImapResponseParser.equalsIgnoreCase;
 /**
  * A cacheable class that stores the details for a single IMAP connection.
  */
-class ImapConnection {
+class RealImapConnection implements ImapConnection {
     private static final int BUFFER_SIZE = 1024;
 
     /* The below limits are 20 octets less than the recommended limits, in order to compensate for
@@ -93,7 +95,7 @@ class ImapConnection {
     private boolean retryXoauth2WithNewToken = true;
 
 
-    public ImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
+    public RealImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
             ConnectivityManager connectivityManager, OAuth2TokenProvider oauthTokenProvider) {
         this.settings = settings;
         this.socketFactory = socketFactory;
@@ -103,7 +105,7 @@ class ImapConnection {
         this.socketReadTimeout = SOCKET_READ_TIMEOUT;
     }
 
-    ImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
+    RealImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
             ConnectivityManager connectivityManager, OAuth2TokenProvider oauthTokenProvider,
             int socketConnectTimeout, int socketReadTimeout) {
         this.settings = settings;
@@ -114,6 +116,7 @@ class ImapConnection {
         this.socketReadTimeout = socketReadTimeout;
     }
 
+    @Override
     public void open() throws IOException, MessagingException {
         if (open) {
             return;
@@ -182,6 +185,7 @@ class ImapConnection {
         }
     }
 
+    @Override
     public boolean isConnected() {
         return inputStream != null && outputStream != null && socket != null &&
                 socket.isConnected() && !socket.isClosed();
@@ -685,7 +689,8 @@ class ImapConnection {
         return isListResponse && hierarchyDelimiterValid;
     }
 
-    protected boolean hasCapability(String capability) throws IOException, MessagingException {
+    @Override
+    public boolean hasCapability(@NotNull String capability) throws IOException, MessagingException {
         if (!open) {
             open();
         }
@@ -697,7 +702,8 @@ class ImapConnection {
         return hasCapability(Capabilities.CONDSTORE);
     }
 
-    protected boolean isIdleCapable() {
+    @Override
+    public boolean isIdleCapable() {
         if (K9MailLib.isDebug()) {
             Timber.v("Connection %s has %d capabilities", getLogId(), capabilities.size());
         }
@@ -705,10 +711,12 @@ class ImapConnection {
         return capabilities.contains(Capabilities.IDLE);
     }
 
-    boolean isUidPlusCapable() {
+    @Override
+    public boolean isUidPlusCapable() {
         return capabilities.contains(Capabilities.UID_PLUS);
     }
 
+    @Override
     public void close() {
         if (!open) {
             return;
@@ -726,15 +734,21 @@ class ImapConnection {
         socket = null;
     }
 
+    @Override
+    @NotNull
     public OutputStream getOutputStream() {
         return outputStream;
     }
 
-    protected String getLogId() {
+    @Override
+    @NotNull
+    public String getLogId() {
         return "conn" + hashCode();
     }
 
-    public List<ImapResponse> executeSimpleCommand(String command) throws IOException, MessagingException {
+    @Override
+    @NotNull
+    public List<ImapResponse> executeSimpleCommand(@NotNull String command) throws IOException, MessagingException {
         return executeSimpleCommand(command, false);
     }
 
@@ -756,8 +770,10 @@ class ImapConnection {
         }
     }
 
-    List<ImapResponse> executeCommandWithIdSet(String commandPrefix, String commandSuffix, Set<Long> ids)
-            throws IOException, MessagingException {
+    @Override
+    @NotNull
+    public List<ImapResponse> executeCommandWithIdSet(@NotNull String commandPrefix, @NotNull String commandSuffix,
+            @NotNull Set<Long> ids) throws IOException, MessagingException {
 
         GroupedIds groupedIds = IdGrouper.groupIds(ids);
         List<String> splitCommands = ImapCommandSplitter.splitCommand(
@@ -796,7 +812,9 @@ class ImapConnection {
         }
     }
 
-    public String sendCommand(String command, boolean sensitive) throws MessagingException, IOException {
+    @Override
+    @NotNull
+    public String sendCommand(@NotNull String command, boolean sensitive) throws MessagingException, IOException {
         try {
             open();
 
@@ -820,7 +838,8 @@ class ImapConnection {
         }
     }
 
-    public void sendContinuation(String continuation) throws IOException {
+    @Override
+    public void sendContinuation(@NotNull String continuation) throws IOException {
         outputStream.write(continuation.getBytes());
         outputStream.write('\r');
         outputStream.write('\n');
@@ -831,11 +850,15 @@ class ImapConnection {
         }
     }
 
-    public ImapResponse readResponse() throws IOException, MessagingException {
+    @Override
+    @NotNull
+    public ImapResponse readResponse() throws IOException {
         return readResponse(null);
     }
 
-    public ImapResponse readResponse(ImapResponseCallback callback) throws IOException {
+    @Override
+    @NotNull
+    public ImapResponse readResponse(@Nullable ImapResponseCallback callback) throws IOException {
         try {
             ImapResponse response = responseParser.readResponse(callback);
 

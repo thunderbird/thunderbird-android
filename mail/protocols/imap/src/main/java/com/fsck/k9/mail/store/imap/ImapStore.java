@@ -297,7 +297,7 @@ public class ImapStore {
     }
 
     ImapConnection createImapConnection() {
-        return new ImapConnection(
+        return new RealImapConnection(
                 new StoreImapSettings(),
                 trustedSocketFactory,
                 connectivityManager,

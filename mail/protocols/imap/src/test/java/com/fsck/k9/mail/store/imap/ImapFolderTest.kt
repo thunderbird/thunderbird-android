@@ -47,7 +47,7 @@ class ImapFolderTest {
         on { combinedPrefix } doReturn ""
         on { logLabel } doReturn "Account"
     }
-    private val imapConnection = mock<ImapConnection>()
+    private val imapConnection = mock<RealImapConnection>()
 
     @Before
     fun setUp() {
