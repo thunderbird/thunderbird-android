@@ -21,6 +21,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.internal.util.collections.Sets;
@@ -433,7 +434,8 @@ public class RealImapStoreTest {
         }
 
         @Override
-        String getCombinedPrefix() {
+        @NotNull
+        public String getCombinedPrefix() {
             return testCombinedPrefix != null ? testCombinedPrefix : super.getCombinedPrefix();
         }
 

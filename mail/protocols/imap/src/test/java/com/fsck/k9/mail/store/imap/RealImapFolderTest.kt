@@ -11,6 +11,7 @@ import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.internet.BinaryTempFileBody
 import com.fsck.k9.mail.internet.MimeHeader
 import com.fsck.k9.mail.store.imap.ImapResponseHelper.createImapResponse
+import com.google.common.truth.Truth.assertThat
 import java.io.IOException
 import java.util.Date
 import java.util.TimeZone
@@ -43,11 +44,13 @@ import org.robolectric.RuntimeEnvironment
 
 @RunWith(K9LibRobolectricTestRunner::class)
 class RealImapFolderTest {
-    private val imapStore = mock<ImapStore> {
-        on { combinedPrefix } doReturn ""
-        on { logLabel } doReturn "Account"
+    private val internalImapStore = object : InternalImapStore {
+        override val logLabel = "Account"
+        override fun getCombinedPrefix() = ""
+        override fun getPermanentFlagsIndex() = mutableSetOf<Flag>()
     }
     private val imapConnection = mock<RealImapConnection>()
+    private val testConnectionManager = TestConnectionManager(imapConnection)
 
     @Before
     fun setUp() {
@@ -123,7 +126,7 @@ class RealImapFolderTest {
 
         imapFolder.open(OpenMode.READ_WRITE)
 
-        verify(imapStore, times(1)).connection
+        assertThat(testConnectionManager.numberOfGetConnectionCalls).isEqualTo(1)
     }
 
     @Test
@@ -135,13 +138,12 @@ class RealImapFolderTest {
         doThrow(IOException::class).whenever(imapConnection).executeSimpleCommand(Commands.NOOP)
         imapFolder.open(OpenMode.READ_WRITE)
 
-        verify(imapStore, times(2)).connection
+        assertThat(testConnectionManager.numberOfGetConnectionCalls).isEqualTo(2)
     }
 
     @Test
     fun open_withIoException_shouldThrowMessagingException() {
         val imapFolder = createFolder("Folder")
-        whenever(imapStore.connection).thenReturn(imapConnection)
         doThrow(IOException::class).whenever(imapConnection).executeSimpleCommand("SELECT \"Folder\"")
 
         try {
@@ -156,7 +158,6 @@ class RealImapFolderTest {
     @Test
     fun open_withMessagingException_shouldThrowMessagingException() {
         val imapFolder = createFolder("Folder")
-        whenever(imapStore.connection).thenReturn(imapConnection)
         doThrow(MessagingException::class).whenever(imapConnection).executeSimpleCommand("SELECT \"Folder\"")
 
         try {
@@ -169,7 +170,6 @@ class RealImapFolderTest {
     @Test
     fun open_withoutExistsResponse_shouldThrowMessagingException() {
         val imapFolder = createFolder("Folder")
-        whenever(imapStore.connection).thenReturn(imapConnection)
         val selectResponses = listOf(
             createImapResponse("* OK [UIDNEXT 57576] Predicted next UID"),
             createImapResponse("2 OK [READ-WRITE] Select completed.")
@@ -198,7 +198,6 @@ class RealImapFolderTest {
     @Test
     fun exists_withClosedFolder_shouldOpenConnectionAndIssueStatusCommand() {
         val imapFolder = createFolder("Folder")
-        whenever(imapStore.connection).thenReturn(imapConnection)
 
         imapFolder.exists()
 
@@ -208,7 +207,6 @@ class RealImapFolderTest {
     @Test
     fun exists_withoutNegativeImapResponse_shouldReturnTrue() {
         val imapFolder = createFolder("Folder")
-        whenever(imapStore.connection).thenReturn(imapConnection)
 
         val folderExists = imapFolder.exists()
 
@@ -218,7 +216,6 @@ class RealImapFolderTest {
     @Test
     fun exists_withNegativeImapResponse_shouldReturnFalse() {
         val imapFolder = createFolder("Folder")
-        whenever(imapStore.connection).thenReturn(imapConnection)
         doThrow(NegativeImapResponseException::class)
             .whenever(imapConnection).executeSimpleCommand("STATUS \"Folder\" (UIDVALIDITY)")
 
@@ -230,7 +227,6 @@ class RealImapFolderTest {
     @Test
     fun create_withClosedFolder_shouldOpenConnectionAndIssueCreateCommand() {
         val imapFolder = createFolder("Folder")
-        whenever(imapStore.connection).thenReturn(imapConnection)
 
         imapFolder.create()
 
@@ -240,7 +236,6 @@ class RealImapFolderTest {
     @Test
     fun create_withoutNegativeImapResponse_shouldReturnTrue() {
         val imapFolder = createFolder("Folder")
-        whenever(imapStore.connection).thenReturn(imapConnection)
 
         val success = imapFolder.create()
 
@@ -250,7 +245,6 @@ class RealImapFolderTest {
     @Test
     fun create_withNegativeImapResponse_shouldReturnFalse() {
         val imapFolder = createFolder("Folder")
-        whenever(imapStore.connection).thenReturn(imapConnection)
         doThrow(NegativeImapResponseException::class).whenever(imapConnection).executeSimpleCommand("CREATE \"Folder\"")
 
         val success = imapFolder.create()
@@ -273,8 +267,6 @@ class RealImapFolderTest {
     fun copyMessages_withClosedFolder_shouldThrow() {
         val sourceFolder = createFolder("Source")
         val destinationFolder = createFolder("Destination")
-        whenever(imapStore.connection).thenReturn(imapConnection)
-        whenever(imapStore.combinedPrefix).thenReturn("")
         val messages = listOf(mock<ImapMessage>())
 
         try {
@@ -342,7 +334,7 @@ class RealImapFolderTest {
     @Test
     fun getUnreadMessageCount_withClosedFolder_shouldThrow() {
         val folder = createFolder("Folder")
-        whenever(imapStore.connection).thenReturn(imapConnection)
+
         try {
             folder.unreadMessageCount
             fail("Expected exception")
@@ -382,7 +374,6 @@ class RealImapFolderTest {
     @Test
     fun getFlaggedMessageCount_withClosedFolder_shouldThrow() {
         val folder = createFolder("Folder")
-        whenever(imapStore.connection).thenReturn(imapConnection)
 
         try {
             folder.flaggedMessageCount
@@ -528,7 +519,6 @@ class RealImapFolderTest {
     @Test
     fun getMessages_withClosedFolder_shouldThrow() {
         val folder = createFolder("Folder")
-        whenever(imapStore.connection).thenReturn(imapConnection)
 
         try {
             folder.getMessages(1, 5, null, null)
@@ -541,7 +531,6 @@ class RealImapFolderTest {
     @Test
     fun getMessages_sequenceNumbers_withClosedFolder_shouldThrow() {
         val folder = createFolder("Folder")
-        whenever(imapStore.connection).thenReturn(imapConnection)
 
         try {
             folder.getMessages(setOf(1L, 2L, 5L), false, null)
@@ -582,7 +571,6 @@ class RealImapFolderTest {
     @Test
     fun getMessagesFromUids_withClosedFolder_shouldThrow() {
         val folder = createFolder("Folder")
-        whenever(imapStore.connection).thenReturn(imapConnection)
 
         try {
             folder.getMessagesFromUids(listOf("11", "22", "25"))
@@ -608,7 +596,6 @@ class RealImapFolderTest {
     @Test
     fun areMoreMessagesAvailable_withClosedFolder_shouldThrow() {
         val folder = createFolder("Folder")
-        whenever(imapStore.connection).thenReturn(imapConnection)
 
         try {
             folder.areMoreMessagesAvailable(10, Date())
@@ -675,7 +662,7 @@ class RealImapFolderTest {
 
         folder.fetch(emptyList(), fetchProfile, null, MAX_DOWNLOAD_SIZE)
 
-        verifyNoMoreInteractions(imapStore)
+        assertThat(testConnectionManager.numberOfGetConnectionCalls).isEqualTo(0)
     }
 
     @Test
@@ -1027,7 +1014,7 @@ class RealImapFolderTest {
     private fun extractMessageUids(messages: List<ImapMessage>) = messages.map { it.uid }.toSet()
 
     private fun createFolder(folderName: String): RealImapFolder {
-        return RealImapFolder(imapStore, folderName, FolderNameCodec.newInstance())
+        return RealImapFolder(internalImapStore, testConnectionManager, folderName, FolderNameCodec.newInstance())
     }
 
     private fun createImapMessage(uid: String): ImapMessage {
@@ -1049,7 +1036,6 @@ class RealImapFolderTest {
     private fun createMessageRetrievalListener() = mock<MessageRetrievalListener<ImapMessage>>()
 
     private fun prepareImapFolderForOpen(openMode: OpenMode) {
-        whenever(imapStore.connection).thenReturn(imapConnection)
         val imapResponses = listOf(
             createImapResponse("* FLAGS (\\Answered \\Flagged \\Deleted \\Seen \\Draft NonJunk \$MDNSent)"),
             createImapResponse(
@@ -1129,4 +1115,16 @@ class RealImapFolderTest {
     companion object {
         private const val MAX_DOWNLOAD_SIZE = -1
     }
+}
+
+internal class TestConnectionManager(private val connection: ImapConnection) : ImapConnectionManager {
+    var numberOfGetConnectionCalls = 0
+        private set
+
+    override fun getConnection(): ImapConnection {
+        numberOfGetConnectionCalls++
+        return connection
+    }
+
+    override fun releaseConnection(connection: ImapConnection?) = Unit
 }

@@ -27,7 +27,8 @@ import kotlin.math.min
 import timber.log.Timber
 
 internal class RealImapFolder(
-    private var store: RealImapStore,
+    private val internalImapStore: InternalImapStore,
+    private val connectionManager: ImapConnectionManager,
     override val serverId: String,
     private val folderNameCodec: FolderNameCodec
 ) : ImapFolder {
@@ -58,7 +59,7 @@ internal class RealImapFolder(
             var prefixedName = ""
             if (!INBOX.equals(serverId, ignoreCase = true)) {
                 val connection = synchronized(this) {
-                    this.connection ?: store.connection
+                    this.connection ?: connectionManager.getConnection()
                 }
 
                 try {
@@ -67,10 +68,10 @@ internal class RealImapFolder(
                     throw MessagingException("Unable to get IMAP prefix", ioe)
                 } finally {
                     if (this.connection == null) {
-                        store.releaseConnection(connection)
+                        connectionManager.releaseConnection(connection)
                     }
                 }
-                prefixedName = store.combinedPrefix
+                prefixedName = internalImapStore.getCombinedPrefix()
             }
             prefixedName += serverId
 
@@ -102,10 +103,10 @@ internal class RealImapFolder(
             }
         }
 
-        store.releaseConnection(connection)
+        connectionManager.releaseConnection(connection)
 
         synchronized(this) {
-            connection = store.connection
+            connection = connectionManager.getConnection()
         }
 
         try {
@@ -149,7 +150,7 @@ internal class RealImapFolder(
     private fun handlePermanentFlags(response: ImapResponse) {
         val permanentFlagsResponse = PermanentFlagsResponse.parse(response) ?: return
 
-        val permanentFlags = store.permanentFlagsIndex
+        val permanentFlags = internalImapStore.getPermanentFlagsIndex()
         permanentFlags.addAll(permanentFlagsResponse.flags)
         canCreateKeywords = permanentFlagsResponse.canCreateKeywords()
     }
@@ -174,7 +175,7 @@ internal class RealImapFolder(
                 Timber.i("IMAP search was aborted, shutting down connection.")
                 connection!!.close()
             } else {
-                store.releaseConnection(connection)
+                connectionManager.releaseConnection(connection)
             }
 
             connection = null
@@ -209,7 +210,7 @@ internal class RealImapFolder(
          * not calling checkOpen() since we don't care if the folder is open.
          */
         val connection = synchronized(this) {
-            this.connection ?: store.connection
+            this.connection ?: connectionManager.getConnection()
         }
 
         return try {
@@ -226,7 +227,7 @@ internal class RealImapFolder(
             throw ioExceptionHandler(connection, ioe)
         } finally {
             if (this.connection == null) {
-                store.releaseConnection(connection)
+                connectionManager.releaseConnection(connection)
             }
         }
     }
@@ -239,7 +240,7 @@ internal class RealImapFolder(
          * not calling checkOpen() since we don't care if the folder is open.
          */
         val connection = synchronized(this) {
-            this.connection ?: store.connection
+            this.connection ?: connectionManager.getConnection()
         }
 
         return try {
@@ -254,7 +255,7 @@ internal class RealImapFolder(
             throw ioExceptionHandler(this.connection, ioe)
         } finally {
             if (this.connection == null) {
-                store.releaseConnection(connection)
+                connectionManager.releaseConnection(connection)
             }
         }
     }
@@ -724,7 +725,7 @@ internal class RealImapFolder(
                         flag.equals("\$Forwarded", ignoreCase = true) -> {
                             message.setFlag(Flag.FORWARDED, true)
                             // a message contains FORWARDED FLAG -> so we can also create them
-                            store.permanentFlagsIndex.add(Flag.FORWARDED)
+                            internalImapStore.getPermanentFlagsIndex().add(Flag.FORWARDED)
                         }
                         flag.equals("\\Draft", ignoreCase = true) -> {
                             message.setFlag(Flag.DRAFT, true)
@@ -968,7 +969,7 @@ internal class RealImapFolder(
                 val escapedFolderName = ImapUtility.encodeString(encodeFolderName)
                 val combinedFlags = ImapUtility.combineFlags(
                     message.flags,
-                    canCreateKeywords || store.permanentFlagsIndex.contains(Flag.FORWARDED)
+                    canCreateKeywords || internalImapStore.getPermanentFlagsIndex().contains(Flag.FORWARDED)
                 )
                 val command = String.format(
                     Locale.US, "APPEND %s (%s) {%d}",
@@ -1094,7 +1095,7 @@ internal class RealImapFolder(
         open(OpenMode.READ_WRITE)
         checkOpen()
 
-        val canCreateForwardedFlag = canCreateKeywords || store.permanentFlagsIndex.contains(Flag.FORWARDED)
+        val canCreateForwardedFlag = canCreateKeywords || internalImapStore.getPermanentFlagsIndex().contains(Flag.FORWARDED)
         try {
             val combinedFlags = ImapUtility.combineFlags(flags, canCreateForwardedFlag)
             val command = String.format(
@@ -1116,7 +1117,7 @@ internal class RealImapFolder(
         checkOpen()
 
         val uids = messages.map { it.uid.toLong() }.toSet()
-        val canCreateForwardedFlag = canCreateKeywords || store.permanentFlagsIndex.contains(Flag.FORWARDED)
+        val canCreateForwardedFlag = canCreateKeywords || internalImapStore.getPermanentFlagsIndex().contains(Flag.FORWARDED)
         val combinedFlags = ImapUtility.combineFlags(flags, canCreateForwardedFlag)
         val commandSuffix = String.format("%sFLAGS.SILENT (%s)", if (value) "+" else "-", combinedFlags)
         try {
@@ -1153,7 +1154,7 @@ internal class RealImapFolder(
 
     private val logId: String
         get() {
-            var id = store.logLabel + ":" + serverId + "/" + Thread.currentThread().name
+            var id = internalImapStore.logLabel + ":" + serverId + "/" + Thread.currentThread().name
             if (connection != null) {
                 id += "/" + connection!!.logId
             }

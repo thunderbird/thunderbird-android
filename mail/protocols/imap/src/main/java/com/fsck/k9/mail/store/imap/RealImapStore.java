@@ -25,6 +25,7 @@ import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
+import org.jetbrains.annotations.NotNull;
 import timber.log.Timber;
 
 
@@ -33,7 +34,7 @@ import timber.log.Timber;
  * TODO Need a default response handler for things like folder updates
  * </pre>
  */
-public class RealImapStore implements ImapStore {
+class RealImapStore implements ImapStore, ImapConnectionManager, InternalImapStore {
     private final ImapStoreConfig config;
     private final TrustedSocketFactory trustedSocketFactory;
     private Set<Flag> permanentFlagsIndex = EnumSet.noneOf(Flag.class);
@@ -82,10 +83,12 @@ public class RealImapStore implements ImapStore {
     }
 
     public ImapFolder getFolder(String name) {
-        return new RealImapFolder(this, name, folderNameCodec);
+        return new RealImapFolder(this, this, name, folderNameCodec);
     }
 
-    String getCombinedPrefix() {
+    @Override
+    @NotNull
+    public String getCombinedPrefix() {
         if (combinedPrefix == null) {
             if (pathPrefix != null) {
                 String tmpPrefix = pathPrefix.trim();
@@ -264,7 +267,9 @@ public class RealImapStore implements ImapStore {
         }
     }
 
-    ImapConnection getConnection() throws MessagingException {
+    @Override
+    @NotNull
+    public ImapConnection getConnection() throws MessagingException {
         ImapConnection connection;
         while ((connection = pollConnection()) != null) {
             try {
@@ -288,7 +293,8 @@ public class RealImapStore implements ImapStore {
         }
     }
 
-    void releaseConnection(ImapConnection connection) {
+    @Override
+    public void releaseConnection(ImapConnection connection) {
         if (connection != null && connection.isConnected()) {
             synchronized (connections) {
                 connections.offer(connection);
@@ -304,11 +310,15 @@ public class RealImapStore implements ImapStore {
                 oauthTokenProvider);
     }
 
-    String getLogLabel() {
+    @Override
+    @NotNull
+    public String getLogLabel() {
         return config.getLogLabel();
     }
 
-    Set<Flag> getPermanentFlagsIndex() {
+    @Override
+    @NotNull
+    public Set<Flag> getPermanentFlagsIndex() {
         return permanentFlagsIndex;
     }
 
