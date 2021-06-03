@@ -57,9 +57,9 @@ class ImapFolderTest {
     @Test
     fun open_readWrite_shouldOpenFolder() {
         val imapFolder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
 
-        imapFolder.open(ImapFolder.OPEN_MODE_RW)
+        imapFolder.open(OpenMode.READ_WRITE)
 
         assertTrue(imapFolder.isOpen)
     }
@@ -67,9 +67,9 @@ class ImapFolderTest {
     @Test
     fun open_readOnly_shouldOpenFolder() {
         val imapFolder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RO)
+        prepareImapFolderForOpen(OpenMode.READ_ONLY)
 
-        imapFolder.open(ImapFolder.OPEN_MODE_RO)
+        imapFolder.open(OpenMode.READ_ONLY)
 
         assertTrue(imapFolder.isOpen)
     }
@@ -77,9 +77,9 @@ class ImapFolderTest {
     @Test
     fun open_shouldFetchMessageCount() {
         val imapFolder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
 
-        imapFolder.open(ImapFolder.OPEN_MODE_RW)
+        imapFolder.open(OpenMode.READ_WRITE)
 
         assertEquals(23, imapFolder.messageCount)
     }
@@ -87,29 +87,29 @@ class ImapFolderTest {
     @Test
     fun open_readWrite_shouldMakeGetModeReturnReadWrite() {
         val imapFolder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
 
-        imapFolder.open(ImapFolder.OPEN_MODE_RW)
+        imapFolder.open(OpenMode.READ_WRITE)
 
-        assertEquals(ImapFolder.OPEN_MODE_RW, imapFolder.mode)
+        assertEquals(OpenMode.READ_WRITE, imapFolder.mode)
     }
 
     @Test
     fun open_readOnly_shouldMakeGetModeReturnReadOnly() {
         val imapFolder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RO)
+        prepareImapFolderForOpen(OpenMode.READ_ONLY)
 
-        imapFolder.open(ImapFolder.OPEN_MODE_RO)
+        imapFolder.open(OpenMode.READ_ONLY)
 
-        assertEquals(ImapFolder.OPEN_MODE_RO, imapFolder.mode)
+        assertEquals(OpenMode.READ_ONLY, imapFolder.mode)
     }
 
     @Test
     fun open_shouldMakeExistReturnTrueWithoutExecutingAdditionalCommands() {
         val imapFolder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
 
-        imapFolder.open(ImapFolder.OPEN_MODE_RW)
+        imapFolder.open(OpenMode.READ_WRITE)
 
         assertTrue(imapFolder.exists())
         verify(imapConnection, times(1)).executeSimpleCommand(anyString())
@@ -118,10 +118,10 @@ class ImapFolderTest {
     @Test
     fun open_calledTwice_shouldReuseSameImapConnection() {
         val imapFolder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
-        imapFolder.open(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
+        imapFolder.open(OpenMode.READ_WRITE)
 
-        imapFolder.open(ImapFolder.OPEN_MODE_RW)
+        imapFolder.open(OpenMode.READ_WRITE)
 
         verify(imapStore, times(1)).connection
     }
@@ -129,11 +129,11 @@ class ImapFolderTest {
     @Test
     fun open_withConnectionThrowingOnReUse_shouldCreateNewImapConnection() {
         val imapFolder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
-        imapFolder.open(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
+        imapFolder.open(OpenMode.READ_WRITE)
 
         doThrow(IOException::class).whenever(imapConnection).executeSimpleCommand(Commands.NOOP)
-        imapFolder.open(ImapFolder.OPEN_MODE_RW)
+        imapFolder.open(OpenMode.READ_WRITE)
 
         verify(imapStore, times(2)).connection
     }
@@ -145,7 +145,7 @@ class ImapFolderTest {
         doThrow(IOException::class).whenever(imapConnection).executeSimpleCommand("SELECT \"Folder\"")
 
         try {
-            imapFolder.open(ImapFolder.OPEN_MODE_RW)
+            imapFolder.open(OpenMode.READ_WRITE)
             fail("Expected exception")
         } catch (e: MessagingException) {
             assertNotNull(e.cause)
@@ -160,7 +160,7 @@ class ImapFolderTest {
         doThrow(MessagingException::class).whenever(imapConnection).executeSimpleCommand("SELECT \"Folder\"")
 
         try {
-            imapFolder.open(ImapFolder.OPEN_MODE_RW)
+            imapFolder.open(OpenMode.READ_WRITE)
             fail("Expected exception")
         } catch (ignored: MessagingException) {
         }
@@ -177,7 +177,7 @@ class ImapFolderTest {
         whenever(imapConnection.executeSimpleCommand("SELECT \"Folder\"")).thenReturn(selectResponses)
 
         try {
-            imapFolder.open(ImapFolder.OPEN_MODE_RW)
+            imapFolder.open(OpenMode.READ_WRITE)
             fail("Expected exception")
         } catch (e: MessagingException) {
             assertEquals("Did not find message count during open", e.message)
@@ -187,8 +187,8 @@ class ImapFolderTest {
     @Test
     fun close_shouldCloseImapFolder() {
         val imapFolder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
-        imapFolder.open(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
+        imapFolder.open(OpenMode.READ_WRITE)
 
         imapFolder.close()
 
@@ -288,11 +288,11 @@ class ImapFolderTest {
     @Test
     fun copyMessages() {
         val sourceFolder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
         val destinationFolder = createFolder("Destination")
         val messages = listOf(createImapMessage("1"))
         setupCopyResponse("x OK [COPYUID 23 1 101] Success")
-        sourceFolder.open(ImapFolder.OPEN_MODE_RW)
+        sourceFolder.open(OpenMode.READ_WRITE)
 
         val uidMapping = sourceFolder.copyMessages(messages, destinationFolder)
 
@@ -303,11 +303,11 @@ class ImapFolderTest {
     @Test
     fun moveMessages_shouldCopyMessages() {
         val sourceFolder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
         val destinationFolder = createFolder("Destination")
         val messages = listOf(createImapMessage("1"))
         setupCopyResponse("x OK [COPYUID 23 1 101] Success")
-        sourceFolder.open(ImapFolder.OPEN_MODE_RW)
+        sourceFolder.open(OpenMode.READ_WRITE)
 
         val uidMapping = sourceFolder.moveMessages(messages, destinationFolder)
 
@@ -318,10 +318,10 @@ class ImapFolderTest {
     @Test
     fun moveMessages_shouldDeleteMessagesFromSourceFolder() {
         val sourceFolder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
         val destinationFolder = createFolder("Destination")
         val messages = listOf(createImapMessage("1"))
-        sourceFolder.open(ImapFolder.OPEN_MODE_RW)
+        sourceFolder.open(OpenMode.READ_WRITE)
 
         sourceFolder.moveMessages(messages, destinationFolder)
 
@@ -354,9 +354,9 @@ class ImapFolderTest {
     @Test
     fun getUnreadMessageCount_connectionThrowsIOException_shouldThrowMessagingException() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
         whenever(imapConnection.executeSimpleCommand("SEARCH 1:* UNSEEN NOT DELETED")).thenThrow(IOException())
-        folder.open(ImapFolder.OPEN_MODE_RW)
+        folder.open(OpenMode.READ_WRITE)
 
         try {
             folder.unreadMessageCount
@@ -369,10 +369,10 @@ class ImapFolderTest {
     @Test
     fun getUnreadMessageCount() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
         val imapResponses = listOf(createImapResponse("* SEARCH 1 2 3"))
         whenever(imapConnection.executeSimpleCommand("SEARCH 1:* UNSEEN NOT DELETED")).thenReturn(imapResponses)
-        folder.open(ImapFolder.OPEN_MODE_RW)
+        folder.open(OpenMode.READ_WRITE)
 
         val unreadMessageCount = folder.unreadMessageCount
 
@@ -395,13 +395,13 @@ class ImapFolderTest {
     @Test
     fun getFlaggedMessageCount() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
         val imapResponses = listOf(
             createImapResponse("* SEARCH 1 2"),
             createImapResponse("* SEARCH 23 42")
         )
         whenever(imapConnection.executeSimpleCommand("SEARCH 1:* FLAGGED NOT DELETED")).thenReturn(imapResponses)
-        folder.open(ImapFolder.OPEN_MODE_RW)
+        folder.open(OpenMode.READ_WRITE)
 
         val flaggedMessageCount = folder.flaggedMessageCount
 
@@ -411,9 +411,9 @@ class ImapFolderTest {
     @Test
     fun getHighestUid() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
         setupUidSearchResponses("* SEARCH 42")
-        folder.open(ImapFolder.OPEN_MODE_RW)
+        folder.open(OpenMode.READ_WRITE)
 
         val highestUid = folder.highestUid
 
@@ -423,9 +423,9 @@ class ImapFolderTest {
     @Test
     fun getHighestUid_imapConnectionThrowsNegativesResponse_shouldReturnMinusOne() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
         doThrow(NegativeImapResponseException::class).whenever(imapConnection).executeSimpleCommand("UID SEARCH *:*")
-        folder.open(ImapFolder.OPEN_MODE_RW)
+        folder.open(OpenMode.READ_WRITE)
 
         val highestUid = folder.highestUid
 
@@ -435,9 +435,9 @@ class ImapFolderTest {
     @Test
     fun getHighestUid_imapConnectionThrowsIOException_shouldThrowMessagingException() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
         doThrow(IOException::class).whenever(imapConnection).executeSimpleCommand("UID SEARCH *:*")
-        folder.open(ImapFolder.OPEN_MODE_RW)
+        folder.open(OpenMode.READ_WRITE)
 
         try {
             folder.highestUid
@@ -450,9 +450,9 @@ class ImapFolderTest {
     @Test
     fun getMessages_withoutDateConstraint() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
         setupUidSearchResponses("* SEARCH 3", "* SEARCH 5", "* SEARCH 6")
-        folder.open(ImapFolder.OPEN_MODE_RW)
+        folder.open(OpenMode.READ_WRITE)
 
         val messages = folder.getMessages(1, 10, null, null)
 
@@ -464,9 +464,9 @@ class ImapFolderTest {
     fun getMessages_withDateConstraint() {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
         setupUidSearchResponses("* SEARCH 47", "* SEARCH 18")
-        folder.open(ImapFolder.OPEN_MODE_RW)
+        folder.open(OpenMode.READ_WRITE)
 
         val messages = folder.getMessages(1, 10, Date(1454719826000L), null)
 
@@ -477,9 +477,9 @@ class ImapFolderTest {
     @Test
     fun getMessages_withListener_shouldCallListener() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
         setupUidSearchResponses("* SEARCH 99")
-        folder.open(ImapFolder.OPEN_MODE_RW)
+        folder.open(OpenMode.READ_WRITE)
         val listener = createMessageRetrievalListener()
 
         val messages = folder.getMessages(1, 10, null, listener)
@@ -554,9 +554,9 @@ class ImapFolderTest {
     @Test
     fun getMessages_sequenceNumbers() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
         setupUidSearchResponses("* SEARCH 17", "* SEARCH 18", "* SEARCH 49")
-        folder.open(ImapFolder.OPEN_MODE_RW)
+        folder.open(OpenMode.READ_WRITE)
 
         val messages = folder.getMessages(setOf(1L, 2L, 5L), false, null)
 
@@ -567,9 +567,9 @@ class ImapFolderTest {
     @Test
     fun getMessages_sequenceNumbers_withListener_shouldCallListener() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
         setupUidSearchResponses("* SEARCH 99")
-        folder.open(ImapFolder.OPEN_MODE_RW)
+        folder.open(OpenMode.READ_WRITE)
         val listener = createMessageRetrievalListener()
 
         val messages = folder.getMessages(setOf(1L), true, listener)
@@ -595,9 +595,9 @@ class ImapFolderTest {
     @Test
     fun getMessagesFromUids() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
         setupUidSearchResponses("* SEARCH 11", "* SEARCH 22", "* SEARCH 25")
-        folder.open(ImapFolder.OPEN_MODE_RW)
+        folder.open(OpenMode.READ_WRITE)
 
         val messages = folder.getMessagesFromUids(listOf("11", "22", "25"))
 
@@ -621,9 +621,9 @@ class ImapFolderTest {
     @Test
     fun areMoreMessagesAvailable_withAdditionalMessages_shouldReturnTrue() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
         setupSearchResponses("* SEARCH 42")
-        folder.open(ImapFolder.OPEN_MODE_RW)
+        folder.open(OpenMode.READ_WRITE)
 
         val areMoreMessagesAvailable = folder.areMoreMessagesAvailable(10, null)
 
@@ -633,9 +633,9 @@ class ImapFolderTest {
     @Test
     fun areMoreMessagesAvailable_withoutAdditionalMessages_shouldReturnFalse() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
         setupSearchResponses("1 OK SEARCH completed")
-        folder.open(ImapFolder.OPEN_MODE_RW)
+        folder.open(OpenMode.READ_WRITE)
 
         val areMoreMessagesAvailable = folder.areMoreMessagesAvailable(600, null)
 
@@ -645,8 +645,8 @@ class ImapFolderTest {
     @Test
     fun areMoreMessagesAvailable_withIndexOfOne_shouldReturnFalseWithoutPerformingSearch() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
-        folder.open(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
+        folder.open(OpenMode.READ_WRITE)
 
         val areMoreMessagesAvailable = folder.areMoreMessagesAvailable(1, null)
 
@@ -658,9 +658,9 @@ class ImapFolderTest {
     @Test
     fun areMoreMessagesAvailable_withoutAdditionalMessages_shouldIssueSearchCommandsUntilAllMessagesSearched() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
         setupSearchResponses("1 OK SEARCH Completed")
-        folder.open(ImapFolder.OPEN_MODE_RW)
+        folder.open(OpenMode.READ_WRITE)
 
         folder.areMoreMessagesAvailable(600, null)
 
@@ -691,8 +691,8 @@ class ImapFolderTest {
     @Test
     fun fetch_withFlagsFetchProfile_shouldIssueRespectiveCommand() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RO)
-        folder.open(ImapFolder.OPEN_MODE_RO)
+        prepareImapFolderForOpen(OpenMode.READ_ONLY)
+        folder.open(OpenMode.READ_ONLY)
         whenever(imapConnection.readResponse(anyOrNull())).thenReturn(createImapResponse("x OK"))
         val messages = createImapMessages("1")
         val fetchProfile = createFetchProfile(FetchProfile.Item.FLAGS)
@@ -705,8 +705,8 @@ class ImapFolderTest {
     @Test
     fun fetch_withEnvelopeFetchProfile_shouldIssueRespectiveCommand() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RO)
-        folder.open(ImapFolder.OPEN_MODE_RO)
+        prepareImapFolderForOpen(OpenMode.READ_ONLY)
+        folder.open(OpenMode.READ_ONLY)
         whenever(imapConnection.readResponse(anyOrNull())).thenReturn(createImapResponse("x OK"))
         val messages = createImapMessages("1")
         val fetchProfile = createFetchProfile(FetchProfile.Item.ENVELOPE)
@@ -723,8 +723,8 @@ class ImapFolderTest {
     @Test
     fun fetch_withStructureFetchProfile_shouldIssueRespectiveCommand() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RO)
-        folder.open(ImapFolder.OPEN_MODE_RO)
+        prepareImapFolderForOpen(OpenMode.READ_ONLY)
+        folder.open(OpenMode.READ_ONLY)
         whenever(imapConnection.readResponse(anyOrNull())).thenReturn(createImapResponse("x OK"))
         val messages = createImapMessages("1")
         val fetchProfile = createFetchProfile(FetchProfile.Item.STRUCTURE)
@@ -737,8 +737,8 @@ class ImapFolderTest {
     @Test
     fun fetch_withStructureFetchProfile_shouldSetContentType() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RO)
-        folder.open(ImapFolder.OPEN_MODE_RO)
+        prepareImapFolderForOpen(OpenMode.READ_ONLY)
+        folder.open(OpenMode.READ_ONLY)
         val bodyStructure = "(\"TEXT\" \"PLAIN\" (\"CHARSET\" \"US-ASCII\") NIL NIL \"7BIT\" 2279 48)"
         whenever(imapConnection.readResponse(anyOrNull()))
             .thenReturn(createImapResponse("* 1 FETCH (BODYSTRUCTURE $bodyStructure UID 1)"))
@@ -754,8 +754,8 @@ class ImapFolderTest {
     @Test
     fun fetch_withBodySaneFetchProfile_shouldIssueRespectiveCommand() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RO)
-        folder.open(ImapFolder.OPEN_MODE_RO)
+        prepareImapFolderForOpen(OpenMode.READ_ONLY)
+        folder.open(OpenMode.READ_ONLY)
         whenever(imapConnection.readResponse(anyOrNull())).thenReturn(createImapResponse("x OK"))
         val messages = createImapMessages("1")
         val fetchProfile = createFetchProfile(FetchProfile.Item.BODY_SANE)
@@ -768,8 +768,8 @@ class ImapFolderTest {
     @Test
     fun fetch_withBodySaneFetchProfileAndNoMaximumDownloadSize_shouldIssueRespectiveCommand() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RO)
-        folder.open(ImapFolder.OPEN_MODE_RO)
+        prepareImapFolderForOpen(OpenMode.READ_ONLY)
+        folder.open(OpenMode.READ_ONLY)
         whenever(imapConnection.readResponse(anyOrNull())).thenReturn(createImapResponse("x OK"))
         val messages = createImapMessages("1")
         val fetchProfile = createFetchProfile(FetchProfile.Item.BODY_SANE)
@@ -782,8 +782,8 @@ class ImapFolderTest {
     @Test
     fun fetch_withBodyFetchProfileAndNoMaximumDownloadSize_shouldIssueRespectiveCommand() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RO)
-        folder.open(ImapFolder.OPEN_MODE_RO)
+        prepareImapFolderForOpen(OpenMode.READ_ONLY)
+        folder.open(OpenMode.READ_ONLY)
         whenever(imapConnection.readResponse(anyOrNull())).thenReturn(createImapResponse("x OK"))
         val messages = createImapMessages("1")
         val fetchProfile = createFetchProfile(FetchProfile.Item.BODY)
@@ -796,8 +796,8 @@ class ImapFolderTest {
     @Test
     fun fetch_withFlagsFetchProfile_shouldSetFlags() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RO)
-        folder.open(ImapFolder.OPEN_MODE_RO)
+        prepareImapFolderForOpen(OpenMode.READ_ONLY)
+        folder.open(OpenMode.READ_ONLY)
         val messages = createImapMessages("1")
         val fetchProfile = createFetchProfile(FetchProfile.Item.FLAGS)
         whenever(imapConnection.readResponse(anyOrNull()))
@@ -812,8 +812,8 @@ class ImapFolderTest {
     @Test
     fun fetchPart_withTextSection_shouldIssueRespectiveCommand() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RO)
-        folder.open(ImapFolder.OPEN_MODE_RO)
+        prepareImapFolderForOpen(OpenMode.READ_ONLY)
+        folder.open(OpenMode.READ_ONLY)
         val message = createImapMessage("1")
         val part = createPart("TEXT")
         whenever(imapConnection.readResponse(anyOrNull())).thenReturn(createImapResponse("x OK"))
@@ -826,8 +826,8 @@ class ImapFolderTest {
     @Test
     fun fetchPart_withNonTextSection_shouldIssueRespectiveCommand() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RO)
-        folder.open(ImapFolder.OPEN_MODE_RO)
+        prepareImapFolderForOpen(OpenMode.READ_ONLY)
+        folder.open(OpenMode.READ_ONLY)
         val message = createImapMessage("1")
         val part = createPart("1.1")
         whenever(imapConnection.readResponse(anyOrNull())).thenReturn(createImapResponse("x OK"))
@@ -840,8 +840,8 @@ class ImapFolderTest {
     @Test
     fun fetchPart_withTextSection_shouldProcessImapResponses() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RO)
-        folder.open(ImapFolder.OPEN_MODE_RO)
+        prepareImapFolderForOpen(OpenMode.READ_ONLY)
+        folder.open(OpenMode.READ_ONLY)
         val message = createImapMessage("1")
         val part = createPlainTextPart("1.1")
         setupSingleFetchResponseToCallback()
@@ -859,8 +859,8 @@ class ImapFolderTest {
     @Test
     fun appendMessages_shouldIssueRespectiveCommand() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
-        folder.open(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
+        folder.open(OpenMode.READ_WRITE)
         val messages = listOf(createImapMessage("1"))
         whenever(imapConnection.readResponse()).thenReturn(createImapResponse("x OK [APPENDUID 1 23]"))
 
@@ -872,8 +872,8 @@ class ImapFolderTest {
     @Test
     fun appendMessages_withNegativeResponse_shouldThrow() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
-        folder.open(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
+        folder.open(OpenMode.READ_WRITE)
         val messages = listOf(createImapMessage("1"))
         whenever(imapConnection.readResponse()).thenReturn(createImapResponse("x NO Can't append to this folder"))
 
@@ -889,8 +889,8 @@ class ImapFolderTest {
     @Test
     fun appendMessages_withBadResponse_shouldThrow() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
-        folder.open(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
+        folder.open(OpenMode.READ_WRITE)
         val messages = listOf(createImapMessage("1"))
         whenever(imapConnection.readResponse()).thenReturn(createImapResponse("x BAD [TOOBIG] Message too large."))
 
@@ -906,8 +906,8 @@ class ImapFolderTest {
     @Test
     fun getUidFromMessageId_withMessageIdHeader_shouldIssueUidSearchCommand() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
-        folder.open(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
+        folder.open(OpenMode.READ_WRITE)
         setupUidSearchResponses("1 OK SEARCH Completed")
 
         folder.getUidFromMessageId("<00000000.0000000@example.org>")
@@ -918,8 +918,8 @@ class ImapFolderTest {
     @Test
     fun getUidFromMessageId() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
-        folder.open(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
+        folder.open(OpenMode.READ_WRITE)
         setupUidSearchResponses("* SEARCH 23")
 
         val uid = folder.getUidFromMessageId("<00000000.0000000@example.org>")
@@ -930,7 +930,7 @@ class ImapFolderTest {
     @Test
     fun expunge_shouldIssueExpungeCommand() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
 
         folder.expunge()
 
@@ -940,7 +940,7 @@ class ImapFolderTest {
     @Test
     fun expungeUids_withUidPlus_shouldIssueUidExpungeCommand() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
         whenever(imapConnection.isUidPlusCapable).thenReturn(true)
 
         folder.expungeUids(listOf("1"))
@@ -951,7 +951,7 @@ class ImapFolderTest {
     @Test
     fun expungeUids_withoutUidPlus_shouldIssueExpungeCommand() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
         whenever(imapConnection.isUidPlusCapable).thenReturn(false)
 
         folder.expungeUids(listOf("1"))
@@ -962,7 +962,7 @@ class ImapFolderTest {
     @Test
     fun setFlags_shouldIssueUidStoreCommand() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RW)
+        prepareImapFolderForOpen(OpenMode.READ_WRITE)
 
         folder.setFlags(setOf(Flag.SEEN), true)
 
@@ -972,7 +972,7 @@ class ImapFolderTest {
     @Test
     fun search_withFullTextSearchEnabled_shouldIssueRespectiveCommand() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RO)
+        prepareImapFolderForOpen(OpenMode.READ_ONLY)
         setupUidSearchResponses("1 OK SEARCH completed")
 
         folder.search("query", setOf(Flag.SEEN), emptySet(), true)
@@ -983,7 +983,7 @@ class ImapFolderTest {
     @Test
     fun search_withFullTextSearchDisabled_shouldIssueRespectiveCommand() {
         val folder = createFolder("Folder")
-        prepareImapFolderForOpen(ImapFolder.OPEN_MODE_RO)
+        prepareImapFolderForOpen(OpenMode.READ_ONLY)
         setupUidSearchResponses("1 OK SEARCH completed")
 
         folder.search("query", emptySet(), emptySet(), false)
@@ -1058,7 +1058,7 @@ class ImapFolderTest {
 
     private fun createMessageRetrievalListener() = mock<MessageRetrievalListener<ImapMessage>>()
 
-    private fun prepareImapFolderForOpen(openMode: Int) {
+    private fun prepareImapFolderForOpen(openMode: OpenMode) {
         whenever(imapStore.connection).thenReturn(imapConnection)
         val imapResponses = listOf(
             createImapResponse("* FLAGS (\\Answered \\Flagged \\Deleted \\Seen \\Draft NonJunk \$MDNSent)"),
@@ -1070,14 +1070,14 @@ class ImapFolderTest {
             createImapResponse("* 0 RECENT"),
             createImapResponse("* OK [UIDVALIDITY 1125022061] UIDs valid"),
             createImapResponse("* OK [UIDNEXT 57576] Predicted next UID"),
-            if (openMode == ImapFolder.OPEN_MODE_RW) {
+            if (openMode == OpenMode.READ_WRITE) {
                 createImapResponse("2 OK [READ-WRITE] Select completed.")
             } else {
                 createImapResponse("2 OK [READ-ONLY] Examine completed.")
             }
         )
 
-        if (openMode == ImapFolder.OPEN_MODE_RW) {
+        if (openMode == OpenMode.READ_WRITE) {
             whenever(imapConnection.executeSimpleCommand("SELECT \"Folder\"")).thenReturn(imapResponses)
         } else {
             whenever(imapConnection.executeSimpleCommand("EXAMINE \"Folder\"")).thenReturn(imapResponses)

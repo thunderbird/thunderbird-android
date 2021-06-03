@@ -18,6 +18,7 @@ import com.fsck.k9.mail.internet.MessageExtractor
 import com.fsck.k9.mail.store.imap.ImapFolder
 import com.fsck.k9.mail.store.imap.ImapMessage
 import com.fsck.k9.mail.store.imap.ImapStore
+import com.fsck.k9.mail.store.imap.OpenMode
 import java.util.Collections
 import java.util.Date
 import java.util.concurrent.atomic.AtomicInteger
@@ -76,7 +77,7 @@ internal class ImapSync(
                 remoteFolder.expunge()
             }
 
-            remoteFolder.open(ImapFolder.OPEN_MODE_RO)
+            remoteFolder.open(OpenMode.READ_ONLY)
 
             listener.syncAuthenticationSuccess()
 
@@ -246,7 +247,7 @@ internal class ImapSync(
         val backendFolder = backendStorage.getFolder(folderServerId)
         val remoteFolder = imapStore.getFolder(folderServerId)
         try {
-            remoteFolder.open(ImapFolder.OPEN_MODE_RO)
+            remoteFolder.open(OpenMode.READ_ONLY)
             val remoteMessage = remoteFolder.getMessage(messageServerId)
 
             downloadMessages(

@@ -19,6 +19,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.store.imap.ImapFolder;
 import com.fsck.k9.mail.store.imap.ImapMessage;
 import com.fsck.k9.mail.store.imap.ImapStore;
+import com.fsck.k9.mail.store.imap.OpenMode;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -119,7 +120,7 @@ public class ImapSyncTest {
 
         imapSync.sync(FOLDER_NAME, syncConfig, listener);
 
-        verify(remoteFolder).open(ImapFolder.OPEN_MODE_RO);
+        verify(remoteFolder).open(OpenMode.READ_ONLY);
     }
 
     @Test

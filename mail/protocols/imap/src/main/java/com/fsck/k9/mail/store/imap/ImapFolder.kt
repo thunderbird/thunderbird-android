@@ -41,7 +41,7 @@ class ImapFolder internal constructor(
     var messageCount = -1
         private set
 
-    var mode = 0
+    var mode: OpenMode? = null
         private set
 
     val isOpen: Boolean
@@ -85,7 +85,7 @@ class ImapFolder internal constructor(
     }
 
     @Throws(MessagingException::class)
-    fun open(mode: Int) {
+    fun open(mode: OpenMode) {
         internalOpen(mode)
 
         if (messageCount == -1) {
@@ -94,7 +94,7 @@ class ImapFolder internal constructor(
     }
 
     @Throws(MessagingException::class)
-    private fun internalOpen(mode: Int): List<ImapResponse> {
+    private fun internalOpen(mode: OpenMode): List<ImapResponse> {
         if (isOpen && this.mode == mode) {
             // Make sure the connection is valid. If it's not we'll close it down and continue on to get a new one.
             try {
@@ -111,7 +111,7 @@ class ImapFolder internal constructor(
         }
 
         try {
-            val openCommand = if (mode == OPEN_MODE_RW) "SELECT" else "EXAMINE"
+            val openCommand = if (mode == OpenMode.READ_WRITE) "SELECT" else "EXAMINE"
             val encodedFolderName = folderNameCodec.encode(prefixedName)
             val escapedFolderName = ImapUtility.encodeString(encodedFolderName)
             val command = String.format("%s %s", openCommand, escapedFolderName)
@@ -956,7 +956,7 @@ class ImapFolder internal constructor(
      */
     @Throws(MessagingException::class)
     fun appendMessages(messages: List<Message>): Map<String, String>? {
-        open(OPEN_MODE_RW)
+        open(OpenMode.READ_WRITE)
         checkOpen()
 
         return try {
@@ -1060,7 +1060,7 @@ class ImapFolder internal constructor(
 
     @Throws(MessagingException::class)
     fun expunge() {
-        open(OPEN_MODE_RW)
+        open(OpenMode.READ_WRITE)
         checkOpen()
 
         try {
@@ -1074,7 +1074,7 @@ class ImapFolder internal constructor(
     fun expungeUids(uids: List<String>) {
         require(uids.isNotEmpty()) { "expungeUids() must be called with a non-empty set of UIDs" }
 
-        open(OPEN_MODE_RW)
+        open(OpenMode.READ_WRITE)
         checkOpen()
 
         try {
@@ -1091,7 +1091,7 @@ class ImapFolder internal constructor(
 
     @Throws(MessagingException::class)
     fun setFlags(flags: Set<Flag?>?, value: Boolean) {
-        open(OPEN_MODE_RW)
+        open(OpenMode.READ_WRITE)
         checkOpen()
 
         val canCreateForwardedFlag = canCreateKeywords || store.permanentFlagsIndex.contains(Flag.FORWARDED)
@@ -1112,7 +1112,7 @@ class ImapFolder internal constructor(
 
     @Throws(MessagingException::class)
     fun setFlags(messages: List<ImapMessage>, flags: Set<Flag?>?, value: Boolean) {
-        open(OPEN_MODE_RW)
+        open(OpenMode.READ_WRITE)
         checkOpen()
 
         val uids = messages.map { it.uid.toLong() }.toSet()
@@ -1171,7 +1171,7 @@ class ImapFolder internal constructor(
         performFullTextSearch: Boolean
     ): List<ImapMessage> {
         try {
-            open(OPEN_MODE_RO)
+            open(OpenMode.READ_ONLY)
             checkOpen()
 
             inSearch = true
@@ -1200,8 +1200,6 @@ class ImapFolder internal constructor(
         private const val MORE_MESSAGES_WINDOW_SIZE = 500
         private const val FETCH_WINDOW_SIZE = 100
 
-        const val OPEN_MODE_RW = 0
-        const val OPEN_MODE_RO = 1
         const val INBOX = "INBOX"
 
         private val RFC3501_DATE: ThreadLocal<SimpleDateFormat> = object : ThreadLocal<SimpleDateFormat>() {
@@ -1210,4 +1208,9 @@ class ImapFolder internal constructor(
             }
         }
     }
+}
+
+enum class OpenMode {
+    READ_WRITE,
+    READ_ONLY
 }
