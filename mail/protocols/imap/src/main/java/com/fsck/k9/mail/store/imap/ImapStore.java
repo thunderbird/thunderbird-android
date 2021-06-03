@@ -82,7 +82,7 @@ public class ImapStore {
     }
 
     public ImapFolder getFolder(String name) {
-        return new ImapFolder(this, name);
+        return new RealImapFolder(this, name);
     }
 
     String getCombinedPrefix() {
@@ -171,7 +171,7 @@ public class ImapStore {
                 combinedPrefix = null;
             }
 
-            if (ImapFolder.INBOX.equalsIgnoreCase(serverId)) {
+            if (RealImapFolder.INBOX.equalsIgnoreCase(serverId)) {
                 continue;
             } else if (listResponse.hasAttribute("\\NoSelect")) {
                 continue;
@@ -202,7 +202,7 @@ public class ImapStore {
         }
 
         List<FolderListItem> folders = new ArrayList<>(folderMap.size() + 1);
-        folders.add(new FolderListItem(ImapFolder.INBOX, ImapFolder.INBOX, FolderType.INBOX, ImapFolder.INBOX));
+        folders.add(new FolderListItem(RealImapFolder.INBOX, RealImapFolder.INBOX, FolderType.INBOX, RealImapFolder.INBOX));
         folders.addAll(folderMap.values());
 
         return folders;

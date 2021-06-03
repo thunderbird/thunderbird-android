@@ -42,7 +42,7 @@ import org.mockito.kotlin.whenever
 import org.robolectric.RuntimeEnvironment
 
 @RunWith(K9LibRobolectricTestRunner::class)
-class ImapFolderTest {
+class RealImapFolderTest {
     private val imapStore = mock<ImapStore> {
         on { combinedPrefix } doReturn ""
         on { logLabel } doReturn "Account"
@@ -669,16 +669,6 @@ class ImapFolderTest {
     }
 
     @Test
-    fun fetch_withNullMessageListArgument_shouldDoNothing() {
-        val folder = createFolder("Folder")
-        val fetchProfile = createFetchProfile()
-
-        folder.fetch(null, fetchProfile, null, MAX_DOWNLOAD_SIZE)
-
-        verifyNoMoreInteractions(imapStore)
-    }
-
-    @Test
     fun fetch_withEmptyMessageListArgument_shouldDoNothing() {
         val folder = createFolder("Folder")
         val fetchProfile = createFetchProfile()
@@ -1036,8 +1026,8 @@ class ImapFolderTest {
 
     private fun extractMessageUids(messages: List<ImapMessage>) = messages.map { it.uid }.toSet()
 
-    private fun createFolder(folderName: String): ImapFolder {
-        return ImapFolder(imapStore, folderName, FolderNameCodec.newInstance())
+    private fun createFolder(folderName: String): RealImapFolder {
+        return RealImapFolder(imapStore, folderName, FolderNameCodec.newInstance())
     }
 
     private fun createImapMessage(uid: String): ImapMessage {

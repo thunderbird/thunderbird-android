@@ -26,11 +26,11 @@ import kotlin.math.max
 import kotlin.math.min
 import timber.log.Timber
 
-class ImapFolder internal constructor(
+internal class RealImapFolder(
     private var store: ImapStore,
-    val serverId: String,
+    override val serverId: String,
     private val folderNameCodec: FolderNameCodec
-) {
+) : ImapFolder {
     private var uidNext = -1L
     private var connection: ImapConnection? = null
     private var exists = false
@@ -38,10 +38,10 @@ class ImapFolder internal constructor(
     private var canCreateKeywords = false
     private var uidValidity: Long? = null
 
-    var messageCount = -1
+    override var messageCount = -1
         private set
 
-    var mode: OpenMode? = null
+    override var mode: OpenMode? = null
         private set
 
     val isOpen: Boolean
@@ -49,7 +49,7 @@ class ImapFolder internal constructor(
 
     constructor(store: ImapStore, name: String) : this(store, name, store.folderNameCodec)
 
-    fun getUidValidity(): Long? {
+    override fun getUidValidity(): Long? {
         check(isOpen) { "ImapFolder needs to be open" }
         return uidValidity
     }
@@ -85,7 +85,7 @@ class ImapFolder internal constructor(
     }
 
     @Throws(MessagingException::class)
-    fun open(mode: OpenMode) {
+    override fun open(mode: OpenMode) {
         internalOpen(mode)
 
         if (messageCount == -1) {
@@ -163,7 +163,7 @@ class ImapFolder internal constructor(
         }
     }
 
-    fun close() {
+    override fun close() {
         messageCount = -1
 
         if (!isOpen) {
@@ -200,7 +200,7 @@ class ImapFolder internal constructor(
     }
 
     @Throws(MessagingException::class)
-    fun exists(): Boolean {
+    override fun exists(): Boolean {
         if (exists) {
             return true
         }
@@ -274,7 +274,9 @@ class ImapFolder internal constructor(
      * @return The mapping of original message UIDs to the new server UIDs.
      */
     @Throws(MessagingException::class)
-    fun copyMessages(messages: List<ImapMessage>, folder: ImapFolder): Map<String, String>? {
+    override fun copyMessages(messages: List<ImapMessage>, folder: ImapFolder): Map<String, String>? {
+        require(folder is RealImapFolder) { "'folder' needs to be a RealImapFolder instance" }
+
         if (messages.isEmpty()) {
             return null
         }
@@ -311,7 +313,7 @@ class ImapFolder internal constructor(
     }
 
     @Throws(MessagingException::class)
-    fun moveMessages(messages: List<ImapMessage>, folder: ImapFolder): Map<String, String>? {
+    override fun moveMessages(messages: List<ImapMessage>, folder: ImapFolder): Map<String, String>? {
         if (messages.isEmpty()) {
             return null
         }
@@ -367,12 +369,12 @@ class ImapFolder internal constructor(
         return searchResponse.numbers.max() ?: -1L
     }
 
-    fun getMessage(uid: String): ImapMessage {
+    override fun getMessage(uid: String): ImapMessage {
         return ImapMessage(uid)
     }
 
     @Throws(MessagingException::class)
-    fun getMessages(
+    override fun getMessages(
         start: Int,
         end: Int,
         earliestDate: Date?,
@@ -422,7 +424,7 @@ class ImapFolder internal constructor(
     }
 
     @Throws(IOException::class, MessagingException::class)
-    fun areMoreMessagesAvailable(indexOfOldestMessage: Int, earliestDate: Date?): Boolean {
+    override fun areMoreMessagesAvailable(indexOfOldestMessage: Int, earliestDate: Date?): Boolean {
         checkOpen()
 
         if (indexOfOldestMessage == 1) {
@@ -512,13 +514,13 @@ class ImapFolder internal constructor(
     }
 
     @Throws(MessagingException::class)
-    fun fetch(
-        messages: List<ImapMessage>?,
+    override fun fetch(
+        messages: List<ImapMessage>,
         fetchProfile: FetchProfile,
         listener: MessageRetrievalListener<ImapMessage>?,
         maxDownloadSize: Int
     ) {
-        if (messages == null || messages.isEmpty()) {
+        if (messages.isEmpty()) {
             return
         }
 
@@ -626,10 +628,10 @@ class ImapFolder internal constructor(
     }
 
     @Throws(MessagingException::class)
-    fun fetchPart(
+    override fun fetchPart(
         message: ImapMessage,
         part: Part,
-        listener: MessageRetrievalListener<ImapMessage?>?,
+        listener: MessageRetrievalListener<ImapMessage>?,
         bodyFactory: BodyFactory,
         maxDownloadSize: Int
     ) {
@@ -955,7 +957,7 @@ class ImapFolder internal constructor(
      * @return The mapping of original message UIDs to the new server UIDs.
      */
     @Throws(MessagingException::class)
-    fun appendMessages(messages: List<Message>): Map<String, String>? {
+    override fun appendMessages(messages: List<Message>): Map<String, String>? {
         open(OpenMode.READ_WRITE)
         checkOpen()
 
@@ -1042,7 +1044,7 @@ class ImapFolder internal constructor(
     }
 
     @Throws(MessagingException::class)
-    fun getUidFromMessageId(messageId: String?): String? {
+    override fun getUidFromMessageId(messageId: String): String? {
         if (K9MailLib.isDebug()) {
             Timber.d("Looking for UID for message with message-id %s for %s", messageId, logId)
         }
@@ -1059,7 +1061,7 @@ class ImapFolder internal constructor(
     }
 
     @Throws(MessagingException::class)
-    fun expunge() {
+    override fun expunge() {
         open(OpenMode.READ_WRITE)
         checkOpen()
 
@@ -1071,7 +1073,7 @@ class ImapFolder internal constructor(
     }
 
     @Throws(MessagingException::class)
-    fun expungeUids(uids: List<String>) {
+    override fun expungeUids(uids: List<String>) {
         require(uids.isNotEmpty()) { "expungeUids() must be called with a non-empty set of UIDs" }
 
         open(OpenMode.READ_WRITE)
@@ -1090,7 +1092,7 @@ class ImapFolder internal constructor(
     }
 
     @Throws(MessagingException::class)
-    fun setFlags(flags: Set<Flag?>?, value: Boolean) {
+    override fun setFlags(flags: Set<Flag>, value: Boolean) {
         open(OpenMode.READ_WRITE)
         checkOpen()
 
@@ -1111,7 +1113,7 @@ class ImapFolder internal constructor(
     }
 
     @Throws(MessagingException::class)
-    fun setFlags(messages: List<ImapMessage>, flags: Set<Flag?>?, value: Boolean) {
+    override fun setFlags(messages: List<ImapMessage>, flags: Set<Flag>, value: Boolean) {
         open(OpenMode.READ_WRITE)
         checkOpen()
 
@@ -1164,10 +1166,10 @@ class ImapFolder internal constructor(
      * Search the remote ImapFolder.
      */
     @Throws(MessagingException::class)
-    fun search(
+    override fun search(
         queryString: String?,
-        requiredFlags: Set<Flag?>?,
-        forbiddenFlags: Set<Flag?>?,
+        requiredFlags: Set<Flag>?,
+        forbiddenFlags: Set<Flag>?,
         performFullTextSearch: Boolean
     ): List<ImapMessage> {
         try {

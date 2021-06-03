@@ -54,13 +54,6 @@ public class ImapStoreTest {
     }
 
     @Test
-    public void getFolder_shouldReturnImapFolderInstance() throws Exception {
-        ImapFolder result = imapStore.getFolder("INBOX");
-
-        assertEquals(ImapFolder.class, result.getClass());
-    }
-
-    @Test
     public void checkSettings_shouldCreateImapConnectionAndCallOpen() throws Exception {
         ImapConnection imapConnection = mock(ImapConnection.class);
         imapStore.enqueueImapConnection(imapConnection);
