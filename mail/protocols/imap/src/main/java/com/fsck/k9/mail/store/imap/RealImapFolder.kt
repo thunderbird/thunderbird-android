@@ -27,7 +27,7 @@ import kotlin.math.min
 import timber.log.Timber
 
 internal class RealImapFolder(
-    private var store: ImapStore,
+    private var store: RealImapStore,
     override val serverId: String,
     private val folderNameCodec: FolderNameCodec
 ) : ImapFolder {
@@ -46,8 +46,6 @@ internal class RealImapFolder(
 
     val isOpen: Boolean
         get() = connection != null
-
-    constructor(store: ImapStore, name: String) : this(store, name, store.folderNameCodec)
 
     override fun getUidValidity(): Long? {
         check(isOpen) { "ImapFolder needs to be open" }

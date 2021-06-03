@@ -14,7 +14,7 @@ internal class CommandRefreshFolderList(
     fun refreshFolderList() {
         // TODO: Start using the proper server ID.
         //  For now we still use the old server ID format (decoded, with prefix removed).
-        val foldersOnServer = imapStore.folders.toLegacyFolderList()
+        val foldersOnServer = imapStore.getFolders().toLegacyFolderList()
         val oldFolderServerIds = backendStorage.getFolderServerIds()
 
         backendStorage.updateFolders {

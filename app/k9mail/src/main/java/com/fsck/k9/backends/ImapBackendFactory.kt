@@ -32,7 +32,7 @@ class ImapBackendFactory(
     private fun createImapStore(account: Account): ImapStore {
         val oAuth2TokenProvider: OAuth2TokenProvider? = null
         val config = createImapStoreConfig(account)
-        return ImapStore(
+        return ImapStore.create(
             account.incomingServerSettings,
             config,
             trustedSocketFactory,

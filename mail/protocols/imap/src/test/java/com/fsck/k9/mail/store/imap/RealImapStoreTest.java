@@ -38,7 +38,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-public class ImapStoreTest {
+public class RealImapStoreTest {
     private ImapStoreConfig config = mock(ImapStoreConfig.class);
     private TestImapStore imapStore;
 
@@ -410,7 +410,7 @@ public class ImapStoreTest {
     }
 
 
-    static class TestImapStore extends ImapStore {
+    static class TestImapStore extends RealImapStore {
         private Deque<ImapConnection> imapConnections = new ArrayDeque<>();
         private String testCombinedPrefix;
 

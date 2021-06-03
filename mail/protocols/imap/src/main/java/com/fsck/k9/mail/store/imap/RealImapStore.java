@@ -33,7 +33,7 @@ import timber.log.Timber;
  * TODO Need a default response handler for things like folder updates
  * </pre>
  */
-public class ImapStore {
+public class RealImapStore implements ImapStore {
     private final ImapStoreConfig config;
     private final TrustedSocketFactory trustedSocketFactory;
     private Set<Flag> permanentFlagsIndex = EnumSet.noneOf(Flag.class);
@@ -54,7 +54,7 @@ public class ImapStore {
     private FolderNameCodec folderNameCodec;
 
 
-    public ImapStore(ServerSettings serverSettings, ImapStoreConfig config,
+    public RealImapStore(ServerSettings serverSettings, ImapStoreConfig config,
             TrustedSocketFactory trustedSocketFactory, ConnectivityManager connectivityManager,
             OAuth2TokenProvider oauthTokenProvider) {
         this.config = config;
@@ -82,7 +82,7 @@ public class ImapStore {
     }
 
     public ImapFolder getFolder(String name) {
-        return new RealImapFolder(this, name);
+        return new RealImapFolder(this, name, folderNameCodec);
     }
 
     String getCombinedPrefix() {
@@ -302,10 +302,6 @@ public class ImapStore {
                 trustedSocketFactory,
                 connectivityManager,
                 oauthTokenProvider);
-    }
-
-    FolderNameCodec getFolderNameCodec() {
-        return folderNameCodec;
     }
 
     String getLogLabel() {
