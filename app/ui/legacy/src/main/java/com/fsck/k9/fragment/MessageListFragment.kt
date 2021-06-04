@@ -119,6 +119,9 @@ class MessageListFragment :
     var isRemoteSearch = false
         private set
 
+    private val isUnifiedInbox: Boolean
+        get() = localSearch.id == SearchAccount.UNIFIED_INBOX
+
     /**
      * `true` after [.onCreate] was executed. Used in [.updateTitle] to
      * make sure we don't access member variables before initialization is complete.
@@ -320,23 +323,15 @@ class MessageListFragment :
     }
 
     private fun setWindowTitle() {
-        // regular folder content display
-        if (!isManualSearch && isSingleFolderMode) {
-            fragmentListener.setMessageListTitle(currentFolder!!.displayName)
-        } else {
-            // query result display.  This may be for a search folder as opposed to a user-initiated search.
-            var title = this.threadTitle
-            if (SearchAccount.UNIFIED_INBOX == localSearch.id) {
-                title = resources.getString(R.string.integrated_inbox_title)
-            }
-            if (title != null) {
-                // This was a search folder; the search folder has overridden our title.
-                fragmentListener.setMessageListTitle(title)
-            } else {
-                // This is a search result; set it to the default search result line.
-                fragmentListener.setMessageListTitle(getString(R.string.search_results))
-            }
+        val title = when {
+            isUnifiedInbox -> getString(R.string.integrated_inbox_title)
+            isManualSearch -> getString(R.string.search_results)
+            isThreadDisplay -> threadTitle ?: ""
+            isSingleFolderMode -> currentFolder!!.displayName
+            else -> ""
         }
+
+        fragmentListener.setMessageListTitle(title)
     }
 
     fun progress(progress: Boolean) {
