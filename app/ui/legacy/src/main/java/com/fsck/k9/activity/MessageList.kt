@@ -385,7 +385,7 @@ open class MessageList :
             // Query was received from Search Dialog
             val query = queryString.trim()
 
-            val search = LocalSearch(getString(R.string.search_results)).apply {
+            val search = LocalSearch().apply {
                 isManualSearch = true
                 or(SearchCondition(SearchField.SENDER, SearchSpecification.Attribute.CONTAINS, query))
                 or(SearchCondition(SearchField.SUBJECT, SearchSpecification.Attribute.CONTAINS, query))

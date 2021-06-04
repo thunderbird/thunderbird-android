@@ -38,6 +38,7 @@ import com.fsck.k9.helper.Utility
 import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.search.LocalSearch
+import com.fsck.k9.search.SearchAccount
 import com.fsck.k9.search.getAccounts
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.choosefolder.ChooseFolderActivity
@@ -88,7 +89,7 @@ class MessageListFragment :
     private var currentFolder: FolderInfoHolder? = null
     private var remoteSearchFuture: Future<*>? = null
     private var extraSearchResults: List<String>? = null
-    private var title: String? = null
+    private var threadTitle: String? = null
     private var allAccounts = false
     private var sortType = SortType.SORT_DATE
     private var sortAscending = true
@@ -117,6 +118,9 @@ class MessageListFragment :
         private set
     var isRemoteSearch = false
         private set
+
+    private val isUnifiedInbox: Boolean
+        get() = localSearch.id == SearchAccount.UNIFIED_INBOX
 
     /**
      * `true` after [.onCreate] was executed. Used in [.updateTitle] to
@@ -174,8 +178,6 @@ class MessageListFragment :
         showingThreadedList = arguments.getBoolean(ARG_THREADED_LIST, false)
         isThreadDisplay = arguments.getBoolean(ARG_IS_THREAD_DISPLAY, false)
         localSearch = arguments.getParcelable(ARG_SEARCH)!!
-
-        title = localSearch.name
 
         allAccounts = localSearch.searchAllAccounts()
         val searchAccounts = localSearch.getAccounts(preferences)
@@ -321,20 +323,15 @@ class MessageListFragment :
     }
 
     private fun setWindowTitle() {
-        // regular folder content display
-        if (!isManualSearch && isSingleFolderMode) {
-            fragmentListener.setMessageListTitle(currentFolder!!.displayName)
-        } else {
-            // query result display.  This may be for a search folder as opposed to a user-initiated search.
-            val title = this.title
-            if (title != null) {
-                // This was a search folder; the search folder has overridden our title.
-                fragmentListener.setMessageListTitle(title)
-            } else {
-                // This is a search result; set it to the default search result line.
-                fragmentListener.setMessageListTitle(getString(R.string.search_results))
-            }
+        val title = when {
+            isUnifiedInbox -> getString(R.string.integrated_inbox_title)
+            isManualSearch -> getString(R.string.search_results)
+            isThreadDisplay -> threadTitle ?: ""
+            isSingleFolderMode -> currentFolder!!.displayName
+            else -> ""
         }
+
+        fragmentListener.setMessageListTitle(title)
     }
 
     fun progress(progress: Boolean) {
@@ -1418,7 +1415,7 @@ class MessageListFragment :
         if (isThreadDisplay) {
             if (messageListItems.isNotEmpty()) {
                 val strippedSubject = messageListItems.first().subject?.let { Utility.stripSubject(it) }
-                title = if (strippedSubject.isNullOrEmpty()) {
+                threadTitle = if (strippedSubject.isNullOrEmpty()) {
                     getString(R.string.general_no_subject)
                 } else {
                     strippedSubject

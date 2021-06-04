@@ -19,11 +19,11 @@ public class SearchAccount implements BaseAccount {
     // create the unified inbox meta account ( all accounts is default when none specified )
     public static SearchAccount createUnifiedInboxAccount() {
         CoreResourceProvider resourceProvider = DI.get(CoreResourceProvider.class);
-        String name = resourceProvider.searchUnifiedInboxTitle();
-        LocalSearch tmpSearch = new LocalSearch(name);
+        LocalSearch tmpSearch = new LocalSearch();
         tmpSearch.setId(UNIFIED_INBOX);
         tmpSearch.and(SearchField.INTEGRATE, "1", Attribute.EQUALS);
-        return new SearchAccount(UNIFIED_INBOX, tmpSearch, name, resourceProvider.searchUnifiedInboxDetail());
+        return new SearchAccount(UNIFIED_INBOX, tmpSearch, resourceProvider.searchUnifiedInboxTitle(),
+                resourceProvider.searchUnifiedInboxDetail());
     }
 
     private String mId;

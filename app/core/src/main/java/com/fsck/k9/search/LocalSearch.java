@@ -24,7 +24,6 @@ import android.os.Parcelable;
 public class LocalSearch implements SearchSpecification {
 
     private String id;
-    private String mName;
     private boolean mPredefined;
     private boolean mManualSearch = false;
 
@@ -44,25 +43,14 @@ public class LocalSearch implements SearchSpecification {
     public LocalSearch() {}
 
     /**
-     *
-     * @param name
-     */
-    public LocalSearch(String name) {
-        this.mName = name;
-    }
-
-    /**
      * Use this constructor when you know what you're doing. Normally it's only used
      * when restoring these search objects from the database.
      *
-     * @param name Name of the search
      * @param searchConditions SearchConditions, may contains flags and folders
      * @param accounts Relative Account's uuid's
      * @param predefined Is this a predefined search or a user created one?
      */
-    protected LocalSearch(String name, ConditionsTreeNode searchConditions,
-            String accounts, boolean predefined) {
-        this(name);
+    protected LocalSearch(ConditionsTreeNode searchConditions, String accounts, boolean predefined) {
         mConditions = searchConditions;
         mPredefined = predefined;
         mLeafSet = new HashSet<>();
@@ -84,7 +72,7 @@ public class LocalSearch implements SearchSpecification {
     public LocalSearch clone() {
         ConditionsTreeNode conditions = (mConditions == null) ? null : mConditions.cloneTree();
 
-        LocalSearch copy = new LocalSearch(mName, conditions, null, mPredefined);
+        LocalSearch copy = new LocalSearch(conditions, null, mPredefined);
         copy.mManualSearch = mManualSearch;
         copy.mAccountUuids = new HashSet<>(mAccountUuids);
 
@@ -94,16 +82,6 @@ public class LocalSearch implements SearchSpecification {
     ///////////////////////////////////////////////////////////////
     // Public manipulation methods
     ///////////////////////////////////////////////////////////////
-    /**
-     * Sets the name of the saved search. If one existed it will
-     * be overwritten.
-     *
-     * @param name Name to be set.
-     */
-    public void setName(String name) {
-        this.mName = name;
-    }
-
     /**
      * Set the ID of the search. This is used to identify a unified inbox
      * search
@@ -285,16 +263,6 @@ public class LocalSearch implements SearchSpecification {
     }
 
     /**
-     * Returns the name of the saved search.
-     *
-     * @return Name of the search.
-     */
-    @Override
-    public String getName() {
-        return (mName == null) ? "" : mName;
-    }
-
-    /**
      * Returns the ID of the search
      *
      * @return The ID of the search
@@ -361,7 +329,6 @@ public class LocalSearch implements SearchSpecification {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
-        dest.writeString(mName);
         dest.writeByte((byte) (mPredefined ? 1 : 0));
         dest.writeByte((byte) (mManualSearch ? 1 : 0));
         dest.writeStringList(new ArrayList<>(mAccountUuids));
@@ -384,7 +351,6 @@ public class LocalSearch implements SearchSpecification {
 
     public LocalSearch(Parcel in) {
         id = in.readString();
-        mName = in.readString();
         mPredefined = (in.readByte() == 1);
         mManualSearch = (in.readByte() == 1);
         mAccountUuids.addAll(in.createStringArrayList());

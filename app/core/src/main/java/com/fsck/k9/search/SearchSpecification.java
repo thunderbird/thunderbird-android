@@ -12,12 +12,6 @@ public interface SearchSpecification extends Parcelable {
     String[] getAccountUuids();
 
     /**
-     * Returns the search's name if it was named.
-     * @return Name of the search.
-     */
-    String getName();
-
-    /**
      * Returns the root node of the condition tree accompanying
      * the search.
      *
