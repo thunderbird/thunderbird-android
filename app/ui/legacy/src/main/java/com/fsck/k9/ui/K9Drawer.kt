@@ -165,8 +165,8 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
         val oldSelectedBackgroundColor = selectedBackgroundColor
 
         var newActiveProfile: IProfile? = null
-        val accountItems = displayAccounts.map { accountAndUnread ->
-            val account = accountAndUnread.account
+        val accountItems = displayAccounts.map { displayAccount ->
+            val account = displayAccount.account
             val drawerId = (account.accountNumber + 1 shl DRAWER_ACCOUNT_SHIFT).toLong()
 
             val drawerColors = getDrawerColorsForAccount(account)
@@ -182,7 +182,7 @@ class K9Drawer(private val parent: MessageList, savedInstanceState: Bundle?) : K
                 descriptionTextColor = selectedTextColor
                 selectedColorInt = drawerColors.selectedColor
                 icon = ImageHolder(createAccountImageUri(account))
-                accountAndUnread.unreadCount.takeIf { it > 0 }?.let { unreadCount ->
+                displayAccount.unreadCount.takeIf { it > 0 }?.let { unreadCount ->
                     badgeText = unreadCount.toString()
                     badgeStyle = BadgeStyle().apply {
                         textColorStateList = selectedTextColor

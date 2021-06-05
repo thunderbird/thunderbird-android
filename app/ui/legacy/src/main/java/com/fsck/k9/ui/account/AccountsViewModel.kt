@@ -24,12 +24,10 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class AccountsViewModel(
-    val preferences: Preferences,
-    val unreadMessageCountProvider: UnreadMessageCountProvider,
+    private val preferences: Preferences,
+    private val unreadMessageCountProvider: UnreadMessageCountProvider,
     private val contentResolver: ContentResolver
-) :
-    ViewModel() {
-
+) : ViewModel() {
     private val accountsFlow: Flow<List<Account>> =
         callbackFlow {
             send(preferences.accounts)
@@ -40,6 +38,7 @@ class AccountsViewModel(
                 }
             }
             preferences.addOnAccountsChangeListener(accountsChangeListener)
+
             awaitClose {
                 preferences.removeOnAccountsChangeListener(accountsChangeListener)
             }
@@ -47,7 +46,6 @@ class AccountsViewModel(
 
     private val displayAccountFlow: Flow<List<DisplayAccount>> = accountsFlow
         .flatMapLatest { accounts ->
-
             val unreadCountFlows: List<Flow<Int>> = accounts.map { account ->
                 getUnreadCountFlow(account)
             }
@@ -61,7 +59,6 @@ class AccountsViewModel(
 
     private fun getUnreadCountFlow(account: Account): Flow<Int> {
         return callbackFlow {
-
             val notificationUri = EmailProvider.getNotificationUri(account.uuid)
 
             send(unreadMessageCountProvider.getUnreadMessageCount(account))
@@ -73,7 +70,6 @@ class AccountsViewModel(
                     }
                 }
             }
-
             contentResolver.registerContentObserver(notificationUri, false, contentObserver)
 
             awaitClose {
