@@ -55,7 +55,8 @@ Please make sure you read the [Code Style Guidelines](https://github.com/k9mail/
 Aside from discussing changes in [pull requests](https://github.com/k9mail/k-9/pulls) and
 [issues](https://github.com/k9mail/k-9/issues) we use the following communication services:
 
-- IRC chat, [#k-9 on the Freenode network](https://webchat.freenode.net/?channels=%23k-9)
+- Matrix: [#k9mail:matrix.org](https://matrix.to/#/#k9mail:matrix.org)
+- IRC: [#k9mail on Libera Chat](https://web.libera.chat/#k9mail)
 - [Developer mailing list](https://groups.google.com/forum/#!forum/k-9-dev)
 
 
