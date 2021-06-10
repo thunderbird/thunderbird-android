@@ -25,6 +25,7 @@ import com.fsck.k9.mail.NetworkType;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
+import org.jetbrains.annotations.NotNull;
 import timber.log.Timber;
 
 
@@ -33,7 +34,7 @@ import timber.log.Timber;
  * TODO Need a default response handler for things like folder updates
  * </pre>
  */
-public class ImapStore {
+class RealImapStore implements ImapStore, ImapConnectionManager, InternalImapStore {
     private final ImapStoreConfig config;
     private final TrustedSocketFactory trustedSocketFactory;
     private Set<Flag> permanentFlagsIndex = EnumSet.noneOf(Flag.class);
@@ -54,7 +55,7 @@ public class ImapStore {
     private FolderNameCodec folderNameCodec;
 
 
-    public ImapStore(ServerSettings serverSettings, ImapStoreConfig config,
+    public RealImapStore(ServerSettings serverSettings, ImapStoreConfig config,
             TrustedSocketFactory trustedSocketFactory, ConnectivityManager connectivityManager,
             OAuth2TokenProvider oauthTokenProvider) {
         this.config = config;
@@ -82,10 +83,12 @@ public class ImapStore {
     }
 
     public ImapFolder getFolder(String name) {
-        return new ImapFolder(this, name);
+        return new RealImapFolder(this, this, name, folderNameCodec);
     }
 
-    String getCombinedPrefix() {
+    @Override
+    @NotNull
+    public String getCombinedPrefix() {
         if (combinedPrefix == null) {
             if (pathPrefix != null) {
                 String tmpPrefix = pathPrefix.trim();
@@ -171,7 +174,7 @@ public class ImapStore {
                 combinedPrefix = null;
             }
 
-            if (ImapFolder.INBOX.equalsIgnoreCase(serverId)) {
+            if (RealImapFolder.INBOX.equalsIgnoreCase(serverId)) {
                 continue;
             } else if (listResponse.hasAttribute("\\NoSelect")) {
                 continue;
@@ -202,7 +205,7 @@ public class ImapStore {
         }
 
         List<FolderListItem> folders = new ArrayList<>(folderMap.size() + 1);
-        folders.add(new FolderListItem(ImapFolder.INBOX, ImapFolder.INBOX, FolderType.INBOX, ImapFolder.INBOX));
+        folders.add(new FolderListItem(RealImapFolder.INBOX, RealImapFolder.INBOX, FolderType.INBOX, RealImapFolder.INBOX));
         folders.addAll(folderMap.values());
 
         return folders;
@@ -264,7 +267,9 @@ public class ImapStore {
         }
     }
 
-    ImapConnection getConnection() throws MessagingException {
+    @Override
+    @NotNull
+    public ImapConnection getConnection() throws MessagingException {
         ImapConnection connection;
         while ((connection = pollConnection()) != null) {
             try {
@@ -288,7 +293,8 @@ public class ImapStore {
         }
     }
 
-    void releaseConnection(ImapConnection connection) {
+    @Override
+    public void releaseConnection(ImapConnection connection) {
         if (connection != null && connection.isConnected()) {
             synchronized (connections) {
                 connections.offer(connection);
@@ -297,22 +303,22 @@ public class ImapStore {
     }
 
     ImapConnection createImapConnection() {
-        return new ImapConnection(
+        return new RealImapConnection(
                 new StoreImapSettings(),
                 trustedSocketFactory,
                 connectivityManager,
                 oauthTokenProvider);
     }
 
-    FolderNameCodec getFolderNameCodec() {
-        return folderNameCodec;
-    }
-
-    String getLogLabel() {
+    @Override
+    @NotNull
+    public String getLogLabel() {
         return config.getLogLabel();
     }
 
-    Set<Flag> getPermanentFlagsIndex() {
+    @Override
+    @NotNull
+    public Set<Flag> getPermanentFlagsIndex() {
         return permanentFlagsIndex;
     }
 

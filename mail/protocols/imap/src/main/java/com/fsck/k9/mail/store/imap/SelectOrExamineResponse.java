@@ -44,11 +44,11 @@ class SelectOrExamineResponse {
         return readWriteMode != null;
     }
 
-    public int getOpenMode() {
+    public OpenMode getOpenMode() {
         if (!hasOpenMode()) {
             throw new IllegalStateException("Called getOpenMode() despite hasOpenMode() returning false");
         }
 
-        return readWriteMode ? ImapFolder.OPEN_MODE_RW : ImapFolder.OPEN_MODE_RO;
+        return readWriteMode ? OpenMode.READ_WRITE : OpenMode.READ_ONLY;
     }
 }

@@ -3,8 +3,6 @@ package com.fsck.k9.mail.store.imap;
 
 import org.junit.Test;
 
-import static com.fsck.k9.mail.store.imap.ImapFolder.OPEN_MODE_RO;
-import static com.fsck.k9.mail.store.imap.ImapFolder.OPEN_MODE_RW;
 import static com.fsck.k9.mail.store.imap.ImapResponseHelper.createImapResponse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -21,7 +19,7 @@ public class SelectOrExamineResponseTest {
 
         assertNotNull(result);
         assertEquals(true, result.hasOpenMode());
-        assertEquals(OPEN_MODE_RW, result.getOpenMode());
+        assertEquals(OpenMode.READ_WRITE, result.getOpenMode());
     }
 
     @Test
@@ -32,7 +30,7 @@ public class SelectOrExamineResponseTest {
 
         assertNotNull(result);
         assertEquals(true, result.hasOpenMode());
-        assertEquals(OPEN_MODE_RO, result.getOpenMode());
+        assertEquals(OpenMode.READ_ONLY, result.getOpenMode());
     }
 
     @Test

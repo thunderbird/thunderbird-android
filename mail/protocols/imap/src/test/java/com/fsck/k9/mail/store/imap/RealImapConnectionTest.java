@@ -37,7 +37,7 @@ import static org.mockito.Mockito.mock;
 
 
 @RunWith(K9LibRobolectricTestRunner.class)
-public class ImapConnectionTest {
+public class RealImapConnectionTest {
     private static final boolean DEBUGGING = false;
 
     private static final String USERNAME = "user";
@@ -974,7 +974,7 @@ public class ImapConnectionTest {
 
     private ImapConnection createImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
             ConnectivityManager connectivityManager, OAuth2TokenProvider oAuth2TokenProvider) {
-        return new ImapConnection(settings, socketFactory, connectivityManager, oAuth2TokenProvider,
+        return new RealImapConnection(settings, socketFactory, connectivityManager, oAuth2TokenProvider,
                 SOCKET_CONNECT_TIMEOUT, SOCKET_READ_TIMEOUT);
     }
 

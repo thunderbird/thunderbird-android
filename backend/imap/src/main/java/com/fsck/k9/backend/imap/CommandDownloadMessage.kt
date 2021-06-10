@@ -11,13 +11,14 @@ import com.fsck.k9.mail.helper.fetchProfileOf
 import com.fsck.k9.mail.store.imap.ImapFolder
 import com.fsck.k9.mail.store.imap.ImapMessage
 import com.fsck.k9.mail.store.imap.ImapStore
+import com.fsck.k9.mail.store.imap.OpenMode
 
 internal class CommandDownloadMessage(private val backendStorage: BackendStorage, private val imapStore: ImapStore) {
 
     fun downloadMessageStructure(folderServerId: String, messageServerId: String) {
         val folder = imapStore.getFolder(folderServerId)
         try {
-            folder.open(ImapFolder.OPEN_MODE_RO)
+            folder.open(OpenMode.READ_ONLY)
 
             val message = folder.getMessage(messageServerId)
 
@@ -35,7 +36,7 @@ internal class CommandDownloadMessage(private val backendStorage: BackendStorage
     fun downloadCompleteMessage(folderServerId: String, messageServerId: String) {
         val folder = imapStore.getFolder(folderServerId)
         try {
-            folder.open(ImapFolder.OPEN_MODE_RO)
+            folder.open(OpenMode.READ_ONLY)
 
             val message = folder.getMessage(messageServerId)
             fetchMessage(folder, message, fetchProfileOf(FLAGS, BODY))

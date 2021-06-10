@@ -21,6 +21,7 @@ import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.ServerSettings;
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider;
 import com.fsck.k9.mail.ssl.TrustedSocketFactory;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.internal.util.collections.Sets;
@@ -38,7 +39,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-public class ImapStoreTest {
+public class RealImapStoreTest {
     private ImapStoreConfig config = mock(ImapStoreConfig.class);
     private TestImapStore imapStore;
 
@@ -51,13 +52,6 @@ public class ImapStoreTest {
 
         imapStore = new TestImapStore(serverSettings, config, trustedSocketFactory, connectivityManager,
                 oauth2TokenProvider);
-    }
-
-    @Test
-    public void getFolder_shouldReturnImapFolderInstance() throws Exception {
-        ImapFolder result = imapStore.getFolder("INBOX");
-
-        assertEquals(ImapFolder.class, result.getClass());
     }
 
     @Test
@@ -417,7 +411,7 @@ public class ImapStoreTest {
     }
 
 
-    static class TestImapStore extends ImapStore {
+    static class TestImapStore extends RealImapStore {
         private Deque<ImapConnection> imapConnections = new ArrayDeque<>();
         private String testCombinedPrefix;
 
@@ -440,7 +434,8 @@ public class ImapStoreTest {
         }
 
         @Override
-        String getCombinedPrefix() {
+        @NotNull
+        public String getCombinedPrefix() {
             return testCombinedPrefix != null ? testCombinedPrefix : super.getCombinedPrefix();
         }
 
