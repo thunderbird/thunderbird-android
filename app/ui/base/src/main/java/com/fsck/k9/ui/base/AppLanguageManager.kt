@@ -45,6 +45,12 @@ class AppLanguageManager(
         setLocale(appLanguage)
     }
 
+    fun applyOverrideLocale() {
+        currentOverrideLocale?.let { overrideLocale ->
+            Locale.setDefault(overrideLocale)
+        }
+    }
+
     private fun setLocale(appLanguage: String) {
         val overrideLocale = getOverrideLocaleForLanguage(appLanguage)
         currentOverrideLocale = overrideLocale
