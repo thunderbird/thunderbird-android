@@ -1,6 +1,8 @@
 package com.fsck.k9.backend.webdav
 
 import com.fsck.k9.backend.api.Backend
+import com.fsck.k9.backend.api.BackendPusher
+import com.fsck.k9.backend.api.BackendPusherCallback
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncListener
@@ -142,5 +144,9 @@ class WebDavBackend(
 
     override fun checkOutgoingServerSettings() {
         webDavTransport.checkSettings()
+    }
+
+    override fun createPusher(callback: BackendPusherCallback): BackendPusher {
+        throw UnsupportedOperationException("not implemented")
     }
 }

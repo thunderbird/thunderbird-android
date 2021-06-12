@@ -1,6 +1,8 @@
 package com.fsck.k9.backend.jmap
 
 import com.fsck.k9.backend.api.Backend
+import com.fsck.k9.backend.api.BackendPusher
+import com.fsck.k9.backend.api.BackendPusherCallback
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncListener
@@ -138,6 +140,10 @@ class JmapBackend(
 
     override fun checkOutgoingServerSettings() {
         checkIncomingServerSettings()
+    }
+
+    override fun createPusher(callback: BackendPusherCallback): BackendPusher {
+        throw UnsupportedOperationException("not implemented")
     }
 
     private fun JmapConfig.toHttpAuthentication(): HttpAuthentication {
