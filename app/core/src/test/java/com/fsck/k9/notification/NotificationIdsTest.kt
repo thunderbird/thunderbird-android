@@ -7,6 +7,20 @@ import org.junit.Test
 
 class NotificationIdsTest {
     @Test
+    fun `all general notification IDs are unique`() {
+        val notificationIds = getGeneralNotificationIds()
+
+        assertThat(notificationIds).containsNoDuplicates()
+    }
+
+    @Test
+    fun `avoid notification ID 0`() {
+        val notificationIds = getGeneralNotificationIds()
+
+        assertThat(notificationIds).doesNotContain(0)
+    }
+
+    @Test
     fun `all notification IDs of an account are unique`() {
         val account = createAccount(0)
 
@@ -24,6 +38,20 @@ class NotificationIdsTest {
         val notificationIds2 = getAccountNotificationIds(account2)
 
         assertWithMessage("Reused notification IDs").that(notificationIds1 intersect notificationIds2).isEmpty()
+    }
+
+    @Test
+    // We avoid gaps. So this test failing is an indication that getGeneralNotificationIds() and/or
+    // getAccountNotificationIds() need to be updated.
+    fun `no gaps between general and account notification IDs`() {
+        val account = createAccount(0)
+
+        val generalNotificationIds = getGeneralNotificationIds()
+        val accountNotificationIds = getAccountNotificationIds(account)
+
+        val maxGeneralNotificationId = requireNotNull(generalNotificationIds.maxOrNull())
+        val minAccountNotificationId = requireNotNull(accountNotificationIds.minOrNull())
+        assertThat(maxGeneralNotificationId + 1).isEqualTo(minAccountNotificationId)
     }
 
     @Test
@@ -51,6 +79,10 @@ class NotificationIdsTest {
         val maxNotificationId1 = requireNotNull(notificationIds1.maxOrNull())
         val minNotificationId2 = requireNotNull(notificationIds2.minOrNull())
         assertThat(maxNotificationId1 + 1).isEqualTo(minNotificationId2)
+    }
+
+    fun getGeneralNotificationIds(): List<Int> {
+        return listOf(NotificationIds.PUSH_NOTIFICATION_ID)
     }
 
     fun getAccountNotificationIds(account: Account): List<Int> {

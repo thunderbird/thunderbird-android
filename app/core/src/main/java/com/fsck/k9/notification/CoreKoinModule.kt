@@ -35,4 +35,12 @@ val coreNotificationModule = module {
     single { WearNotifications(get(), get(), get()) }
     single { DeviceNotifications(get(), get(), get(), get(), get()) }
     single { LockScreenNotification(get(), get()) }
+    single {
+        PushNotificationManager(
+            context = get(),
+            resourceProvider = get(),
+            notificationChannelManager = get(),
+            notificationManager = get()
+        )
+    }
 }
