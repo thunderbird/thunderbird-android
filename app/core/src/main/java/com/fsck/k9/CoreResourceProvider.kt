@@ -1,5 +1,7 @@
 package com.fsck.k9
 
+import com.fsck.k9.notification.PushNotificationState
+
 interface CoreResourceProvider {
     fun defaultSignature(): String
     fun defaultIdentityDescription(): String
@@ -31,4 +33,7 @@ interface CoreResourceProvider {
     fun searchUnifiedInboxDetail(): String
 
     fun outboxFolderName(): String
+
+    val iconPushNotification: Int
+    fun pushNotificationText(notificationState: PushNotificationState): String
 }

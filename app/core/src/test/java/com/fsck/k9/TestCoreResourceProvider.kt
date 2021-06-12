@@ -1,5 +1,7 @@
 package com.fsck.k9
 
+import com.fsck.k9.notification.PushNotificationState
+
 class TestCoreResourceProvider : CoreResourceProvider {
     override fun defaultSignature() = "\n--\nbrevity!"
 
@@ -38,4 +40,11 @@ class TestCoreResourceProvider : CoreResourceProvider {
     override fun searchUnifiedInboxDetail() = "All messages in unified folders"
 
     override fun outboxFolderName() = "Outbox"
+
+    override val iconPushNotification: Int
+        get() = throw UnsupportedOperationException("not implemented")
+
+    override fun pushNotificationText(notificationState: PushNotificationState): String {
+        throw UnsupportedOperationException("not implemented")
+    }
 }

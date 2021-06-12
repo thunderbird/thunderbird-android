@@ -5,6 +5,9 @@ import com.fsck.k9.Account;
 
 
 class NotificationIds {
+    public static final int PUSH_NOTIFICATION_ID = 1;
+    private static final int NUMBER_OF_GENERAL_NOTIFICATIONS = 1;
+
     private static final int OFFSET_SEND_FAILED_NOTIFICATION = 0;
     private static final int OFFSET_CERTIFICATE_ERROR_INCOMING = 1;
     private static final int OFFSET_CERTIFICATE_ERROR_OUTGOING = 2;
@@ -52,6 +55,7 @@ class NotificationIds {
     }
 
     private static int getBaseNotificationId(Account account) {
-        return account.getAccountNumber() * NUMBER_OF_NOTIFICATIONS_PER_ACCOUNT;
+        return 1 /* skip notification ID 0 */ + NUMBER_OF_GENERAL_NOTIFICATIONS +
+                account.getAccountNumber() * NUMBER_OF_NOTIFICATIONS_PER_ACCOUNT;
     }
 }

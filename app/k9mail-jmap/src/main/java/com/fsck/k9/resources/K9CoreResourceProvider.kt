@@ -3,6 +3,7 @@ package com.fsck.k9.resources
 import android.content.Context
 import com.fsck.k9.CoreResourceProvider
 import com.fsck.k9.jmap.R
+import com.fsck.k9.notification.PushNotificationState
 
 class K9CoreResourceProvider(private val context: Context) : CoreResourceProvider {
     override fun defaultSignature(): String = context.getString(R.string.default_signature)
@@ -42,4 +43,16 @@ class K9CoreResourceProvider(private val context: Context) : CoreResourceProvide
     override fun searchUnifiedInboxDetail(): String = context.getString(R.string.integrated_inbox_detail)
 
     override fun outboxFolderName(): String = context.getString(R.string.special_mailbox_name_outbox)
+
+    override val iconPushNotification: Int = R.drawable.ic_push_notification
+
+    override fun pushNotificationText(notificationState: PushNotificationState): String {
+        val resId = when (notificationState) {
+            PushNotificationState.INITIALIZING -> R.string.push_notification_state_initializing
+            PushNotificationState.LISTENING -> R.string.push_notification_state_listening
+            PushNotificationState.WAIT_BACKGROUND_SYNC -> R.string.push_notification_state_wait_background_sync
+            PushNotificationState.WAIT_NETWORK -> R.string.push_notification_state_wait_network
+        }
+        return context.getString(resId)
+    }
 }

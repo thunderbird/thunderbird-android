@@ -2,6 +2,7 @@ package com.fsck.k9
 
 import com.fsck.k9.autocrypt.autocryptModule
 import com.fsck.k9.controller.controllerModule
+import com.fsck.k9.controller.push.controllerPushModule
 import com.fsck.k9.crypto.openPgpModule
 import com.fsck.k9.helper.helperModule
 import com.fsck.k9.job.jobModule
@@ -24,6 +25,7 @@ val coreModules = listOf(
     quoteModule,
     coreNotificationModule,
     controllerModule,
+    controllerPushModule,
     jobModule,
     helperModule,
     preferencesModule
