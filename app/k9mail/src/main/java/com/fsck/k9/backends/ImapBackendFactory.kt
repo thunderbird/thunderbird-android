@@ -10,6 +10,7 @@ import com.fsck.k9.mail.NetworkType
 import com.fsck.k9.mail.oauth.OAuth2TokenProvider
 import com.fsck.k9.mail.power.PowerManager
 import com.fsck.k9.mail.ssl.TrustedSocketFactory
+import com.fsck.k9.mail.store.imap.IdleRefreshManager
 import com.fsck.k9.mail.store.imap.ImapStore
 import com.fsck.k9.mail.store.imap.ImapStoreConfig
 import com.fsck.k9.mail.transport.smtp.SmtpTransport
@@ -18,6 +19,7 @@ import com.fsck.k9.mailstore.K9BackendStorageFactory
 class ImapBackendFactory(
     private val context: Context,
     private val powerManager: PowerManager,
+    private val idleRefreshManager: IdleRefreshManager,
     private val backendStorageFactory: K9BackendStorageFactory,
     private val trustedSocketFactory: TrustedSocketFactory
 ) : BackendFactory {
@@ -26,7 +28,8 @@ class ImapBackendFactory(
         val backendStorage = backendStorageFactory.createBackendStorage(account)
         val imapStore = createImapStore(account)
         val smtpTransport = createSmtpTransport(account)
-        return ImapBackend(accountName, backendStorage, imapStore, powerManager, smtpTransport)
+
+        return ImapBackend(accountName, backendStorage, imapStore, powerManager, idleRefreshManager, smtpTransport)
     }
 
     private fun createImapStore(account: Account): ImapStore {

@@ -11,14 +11,16 @@ import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.power.PowerManager
+import com.fsck.k9.mail.store.imap.IdleRefreshManager
 import com.fsck.k9.mail.store.imap.ImapStore
 import com.fsck.k9.mail.transport.smtp.SmtpTransport
 
 class ImapBackend(
-    accountName: String,
+    private val accountName: String,
     backendStorage: BackendStorage,
     private val imapStore: ImapStore,
     private val powerManager: PowerManager,
+    private val idleRefreshManager: IdleRefreshManager,
     private val smtpTransport: SmtpTransport
 ) : Backend {
     private val imapSync = ImapSync(accountName, backendStorage, imapStore)
@@ -155,6 +157,6 @@ class ImapBackend(
     }
 
     override fun createPusher(callback: BackendPusherCallback): BackendPusher {
-        TODO("implement")
+        return ImapBackendPusher(imapStore, powerManager, idleRefreshManager, callback, accountName)
     }
 }
