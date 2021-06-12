@@ -1,0 +1,299 @@
+package com.fsck.k9.mail.store.imap
+
+import com.fsck.k9.mail.AuthenticationFailedException
+import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth.assertWithMessage
+import java.io.IOException
+import java.net.SocketException
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
+import kotlin.concurrent.thread
+import org.junit.Assert.fail
+import org.junit.Test
+
+private const val FOLDER_SERVER_ID = "folder"
+private const val TEST_TIMEOUT_SECONDS = 5L
+private const val IDLE_TIMEOUT_MS = 28 * 60 * 1000L
+
+class RealImapFolderIdlerTest {
+    private val idleRefreshManager = TestIdleRefreshManager()
+    private val wakeLock = TestWakeLock(timeoutSeconds = TEST_TIMEOUT_SECONDS, isHeld = true)
+    private val imapConnection = TestImapConnection(timeout = TEST_TIMEOUT_SECONDS)
+    private val imapFolder = TestImapFolder(FOLDER_SERVER_ID, imapConnection)
+    private val imapStore = TestImapStore(imapFolder)
+    private val idler = RealImapFolderIdler(
+        idleRefreshManager,
+        wakeLock,
+        imapStore,
+        imapStore,
+        FOLDER_SERVER_ID,
+        IDLE_TIMEOUT_MS
+    )
+
+    @Test
+    fun `new message during IDLE`() {
+        val latch = CountDownLatch(1)
+
+        thread {
+            val idleResult = idler.idle()
+
+            assertThat(idleResult).isEqualTo(IdleResult.SYNC)
+            latch.countDown()
+        }
+
+        imapConnection.waitForCommand("IDLE")
+        imapConnection.enqueueContinuationServerResponse()
+        imapConnection.enqueueUntaggedServerResponse("1 EXISTS")
+        imapConnection.waitForCommand("DONE")
+        imapConnection.enqueueTaggedServerResponse("OK")
+
+        latch.awaitWithTimeout()
+        assertThat(imapFolder.isOpen).isFalse()
+    }
+
+    @Test
+    fun `flag change during IDLE`() {
+        val latch = CountDownLatch(1)
+
+        thread {
+            val idleResult = idler.idle()
+
+            assertThat(idleResult).isEqualTo(IdleResult.SYNC)
+            latch.countDown()
+        }
+
+        imapConnection.waitForCommand("IDLE")
+        imapConnection.enqueueContinuationServerResponse()
+        imapConnection.enqueueUntaggedServerResponse("42 FETCH (FLAGS (\\Seen))")
+        imapConnection.waitForCommand("DONE")
+        imapConnection.enqueueTaggedServerResponse("OK")
+
+        latch.awaitWithTimeout()
+        assertThat(imapFolder.isOpen).isFalse()
+    }
+
+    @Test
+    fun `expunge during IDLE`() {
+        val latch = CountDownLatch(1)
+
+        thread {
+            val idleResult = idler.idle()
+
+            assertThat(idleResult).isEqualTo(IdleResult.SYNC)
+            latch.countDown()
+        }
+
+        imapConnection.waitForCommand("IDLE")
+        imapConnection.enqueueContinuationServerResponse()
+        imapConnection.enqueueUntaggedServerResponse("23 EXPUNGE")
+        imapConnection.waitForCommand("DONE")
+        imapConnection.enqueueTaggedServerResponse("OK")
+
+        latch.awaitWithTimeout()
+        assertThat(imapFolder.isOpen).isFalse()
+    }
+
+    @Test
+    fun `refresh IDLE connection`() {
+        val latch = CountDownLatch(1)
+
+        thread {
+            val idleResult = idler.idle()
+
+            assertThat(idleResult).isEqualTo(IdleResult.SYNC)
+            latch.countDown()
+        }
+
+        imapConnection.waitForCommand("IDLE")
+        assertThat(wakeLock.isHeld).isTrue()
+        imapConnection.enqueueContinuationServerResponse()
+        wakeLock.waitForRelease()
+        idleRefreshManager.resetTimers()
+        imapConnection.waitForCommand("DONE")
+        imapConnection.enqueueTaggedServerResponse("OK")
+
+        imapConnection.waitForCommand("IDLE")
+        assertThat(wakeLock.isHeld).isTrue()
+        imapConnection.enqueueContinuationServerResponse()
+        wakeLock.waitForRelease()
+        imapConnection.enqueueUntaggedServerResponse("1 EXISTS")
+        imapConnection.waitForCommand("DONE")
+        assertThat(wakeLock.isHeld).isTrue()
+        imapConnection.enqueueTaggedServerResponse("OK")
+
+        latch.awaitWithTimeout()
+        assertThat(imapFolder.isOpen).isFalse()
+        assertThat(wakeLock.isHeld).isTrue()
+    }
+
+    @Test
+    fun `stop ImapFolderIdler while IDLE`() {
+        val latch = CountDownLatch(1)
+
+        thread {
+            val idleResult = idler.idle()
+
+            assertThat(idleResult).isEqualTo(IdleResult.STOPPED)
+            latch.countDown()
+        }
+
+        imapConnection.waitForCommand("IDLE")
+        imapConnection.enqueueContinuationServerResponse()
+        wakeLock.waitForRelease()
+        idler.stop()
+        imapConnection.waitForCommand("DONE")
+        imapConnection.enqueueTaggedServerResponse("OK")
+
+        latch.awaitWithTimeout()
+        assertThat(imapFolder.isOpen).isFalse()
+    }
+
+    @Test
+    fun `idle refresh timeout`() {
+        val latch = CountDownLatch(1)
+
+        thread {
+            val idleResult = idler.idle()
+
+            assertThat(idleResult).isEqualTo(IdleResult.STOPPED)
+            latch.countDown()
+        }
+
+        imapConnection.waitForCommand("IDLE")
+        imapConnection.enqueueContinuationServerResponse()
+        wakeLock.waitForRelease()
+        assertThat(idleRefreshManager.getTimeoutValue()).isEqualTo(IDLE_TIMEOUT_MS)
+        idler.stop()
+        imapConnection.waitForCommand("DONE")
+        imapConnection.enqueueTaggedServerResponse("OK")
+
+        latch.awaitWithTimeout()
+        assertThat(imapFolder.isOpen).isFalse()
+    }
+
+    @Test
+    fun `socket read timeouts`() {
+        val latch = CountDownLatch(1)
+
+        thread {
+            val idleResult = idler.idle()
+
+            assertThat(idleResult).isEqualTo(IdleResult.STOPPED)
+            latch.countDown()
+        }
+
+        imapConnection.waitForCommand("IDLE")
+        imapConnection.enqueueContinuationServerResponse()
+        wakeLock.waitForRelease()
+        assertThat(imapConnection.currentSocketReadTimeout).isGreaterThan(IDLE_TIMEOUT_MS.toInt())
+        idler.stop()
+        imapConnection.waitForCommand("DONE")
+        assertThat(imapConnection.currentSocketReadTimeout).isEqualTo(imapConnection.defaultSocketReadTimeout)
+        imapConnection.enqueueTaggedServerResponse("OK")
+
+        latch.awaitWithTimeout()
+        assertThat(imapFolder.isOpen).isFalse()
+    }
+
+    @Test
+    fun `IDLE not supported`() {
+        val latch = CountDownLatch(1)
+        imapConnection.setIdleNotSupported()
+
+        thread {
+            val idleResult = idler.idle()
+
+            assertThat(idleResult).isEqualTo(IdleResult.NOT_SUPPORTED)
+            latch.countDown()
+        }
+
+        latch.awaitWithTimeout()
+        assertThat(imapFolder.isOpen).isFalse()
+    }
+
+    @Test
+    fun `authentication error`() {
+        val latch = CountDownLatch(1)
+        imapFolder.throwOnOpen { throw AuthenticationFailedException("Authentication failure for test") }
+
+        thread {
+            try {
+                idler.idle()
+                fail("Expected exception")
+            } catch (e: AuthenticationFailedException) {
+                assertThat(e).hasMessageThat().isEqualTo("Authentication failure for test")
+            }
+
+            latch.countDown()
+        }
+
+        latch.awaitWithTimeout()
+        assertThat(imapFolder.isOpen).isFalse()
+    }
+
+    @Test
+    fun `network error on folder open`() {
+        val latch = CountDownLatch(1)
+        imapFolder.throwOnOpen { throw IOException("I/O error for test") }
+
+        thread {
+            try {
+                idler.idle()
+                fail("Expected exception")
+            } catch (e: IOException) {
+                assertThat(e).hasMessageThat().isEqualTo("I/O error for test")
+            }
+
+            latch.countDown()
+        }
+
+        latch.awaitWithTimeout()
+        assertThat(imapFolder.isOpen).isFalse()
+    }
+
+    @Test
+    fun `network error on IDLE`() {
+        val latch = CountDownLatch(1)
+
+        thread {
+            try {
+                idler.idle()
+                fail("Expected exception")
+            } catch (e: IOException) {
+                assertThat(e).hasMessageThat().isEqualTo("Socket closed during IDLE")
+            }
+
+            latch.countDown()
+        }
+
+        imapConnection.waitForCommand("IDLE")
+        imapConnection.enqueueContinuationServerResponse()
+        imapConnection.waitForBlockingRead()
+        imapConnection.throwOnRead { throw SocketException("Socket closed during IDLE") }
+
+        latch.awaitWithTimeout()
+        assertThat(imapFolder.isOpen).isFalse()
+    }
+
+    @Test
+    fun `NO response to IDLE command`() {
+        val latch = CountDownLatch(1)
+
+        thread {
+            val idleResult = idler.idle()
+
+            assertThat(idleResult).isEqualTo(IdleResult.NOT_SUPPORTED)
+            latch.countDown()
+        }
+
+        imapConnection.waitForCommand("IDLE")
+        imapConnection.enqueueTaggedServerResponse("NO")
+
+        latch.awaitWithTimeout()
+        assertThat(imapFolder.isOpen).isFalse()
+    }
+}
+
+private fun CountDownLatch.awaitWithTimeout() {
+    assertWithMessage("Test timed out").that(await(TEST_TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue()
+}
