@@ -218,6 +218,8 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="notification_bg_send_title">Sending mail</string>
     <string name="notification_bg_title_separator">:</string>
 
+    <string name="notification_channel_push_title">Synchronize (Push)</string>
+    <string name="notification_channel_push_description">Displayed while waiting for new messages</string>
     <string name="notification_channel_messages_title">Messages</string>
     <string name="notification_channel_messages_description">Notifications related to messages</string>
     <string name="notification_channel_miscellaneous_title">Miscellaneous</string>
