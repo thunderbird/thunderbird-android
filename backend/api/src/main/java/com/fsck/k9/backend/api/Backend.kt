@@ -97,4 +97,6 @@ interface Backend {
 
     @Throws(MessagingException::class)
     fun checkOutgoingServerSettings()
+
+    fun createPusher(callback: BackendPusherCallback): BackendPusher
 }

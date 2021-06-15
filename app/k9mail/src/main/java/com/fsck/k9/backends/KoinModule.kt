@@ -1,6 +1,8 @@
 package com.fsck.k9.backends
 
 import com.fsck.k9.backend.BackendManager
+import com.fsck.k9.backend.imap.BackendIdleRefreshManager
+import com.fsck.k9.mail.store.imap.IdleRefreshManager
 import org.koin.dsl.module
 
 val backendsModule = module {
@@ -13,7 +15,16 @@ val backendsModule = module {
             )
         )
     }
-    single { ImapBackendFactory(get(), get(), get(), get()) }
+    single {
+        ImapBackendFactory(
+            context = get(),
+            powerManager = get(),
+            idleRefreshManager = get(),
+            backendStorageFactory = get(),
+            trustedSocketFactory = get()
+        )
+    }
+    single<IdleRefreshManager> { BackendIdleRefreshManager() }
     single { Pop3BackendFactory(get(), get()) }
     single { WebDavBackendFactory(get(), get(), get()) }
 }

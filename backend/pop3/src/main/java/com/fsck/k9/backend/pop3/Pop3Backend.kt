@@ -1,6 +1,8 @@
 package com.fsck.k9.backend.pop3
 
 import com.fsck.k9.backend.api.Backend
+import com.fsck.k9.backend.api.BackendPusher
+import com.fsck.k9.backend.api.BackendPusherCallback
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncListener
@@ -132,5 +134,9 @@ class Pop3Backend(
 
     override fun checkOutgoingServerSettings() {
         smtpTransport.checkSettings()
+    }
+
+    override fun createPusher(callback: BackendPusherCallback): BackendPusher {
+        throw UnsupportedOperationException("not implemented")
     }
 }

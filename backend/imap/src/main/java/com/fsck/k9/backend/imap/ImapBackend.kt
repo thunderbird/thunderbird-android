@@ -1,6 +1,8 @@
 package com.fsck.k9.backend.imap
 
 import com.fsck.k9.backend.api.Backend
+import com.fsck.k9.backend.api.BackendPusher
+import com.fsck.k9.backend.api.BackendPusherCallback
 import com.fsck.k9.backend.api.BackendStorage
 import com.fsck.k9.backend.api.SyncConfig
 import com.fsck.k9.backend.api.SyncListener
@@ -9,14 +11,16 @@ import com.fsck.k9.mail.Flag
 import com.fsck.k9.mail.Message
 import com.fsck.k9.mail.Part
 import com.fsck.k9.mail.power.PowerManager
+import com.fsck.k9.mail.store.imap.IdleRefreshManager
 import com.fsck.k9.mail.store.imap.ImapStore
 import com.fsck.k9.mail.transport.smtp.SmtpTransport
 
 class ImapBackend(
-    accountName: String,
+    private val accountName: String,
     backendStorage: BackendStorage,
     private val imapStore: ImapStore,
     private val powerManager: PowerManager,
+    private val idleRefreshManager: IdleRefreshManager,
     private val smtpTransport: SmtpTransport
 ) : Backend {
     private val imapSync = ImapSync(accountName, backendStorage, imapStore)
@@ -150,5 +154,9 @@ class ImapBackend(
 
     override fun checkOutgoingServerSettings() {
         smtpTransport.checkSettings()
+    }
+
+    override fun createPusher(callback: BackendPusherCallback): BackendPusher {
+        return ImapBackendPusher(imapStore, powerManager, idleRefreshManager, callback, accountName)
     }
 }
