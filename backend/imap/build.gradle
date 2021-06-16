@@ -15,6 +15,7 @@ dependencies {
     testImplementation project(":mail:testing")
     testImplementation "junit:junit:${versions.junit}"
     testImplementation "org.mockito:mockito-core:${versions.mockito}"
+    testImplementation "com.google.truth:truth:${versions.truth}"
 }
 
 android {

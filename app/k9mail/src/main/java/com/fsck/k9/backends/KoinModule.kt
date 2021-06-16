@@ -2,6 +2,7 @@ package com.fsck.k9.backends
 
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.backend.imap.BackendIdleRefreshManager
+import com.fsck.k9.backend.imap.SystemAlarmManager
 import com.fsck.k9.mail.store.imap.IdleRefreshManager
 import org.koin.dsl.module
 
@@ -24,7 +25,8 @@ val backendsModule = module {
             trustedSocketFactory = get()
         )
     }
-    single<IdleRefreshManager> { BackendIdleRefreshManager() }
+    single<SystemAlarmManager> { AndroidAlarmManager() }
+    single<IdleRefreshManager> { BackendIdleRefreshManager(alarmManager = get()) }
     single { Pop3BackendFactory(get(), get()) }
     single { WebDavBackendFactory(get(), get(), get()) }
 }
