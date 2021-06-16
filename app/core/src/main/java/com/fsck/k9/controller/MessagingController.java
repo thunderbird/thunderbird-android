@@ -26,9 +26,9 @@ import android.content.Context;
 import android.os.PowerManager;
 import android.os.Process;
 import android.os.SystemClock;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
-
 import com.fsck.k9.Account;
 import com.fsck.k9.Account.DeletePolicy;
 import com.fsck.k9.Account.Expunge;
@@ -60,6 +60,7 @@ import com.fsck.k9.mail.FetchProfile;
 import com.fsck.k9.mail.Flag;
 import com.fsck.k9.mail.FolderClass;
 import com.fsck.k9.mail.Message;
+import com.fsck.k9.mail.MessageDownloadState;
 import com.fsck.k9.mail.MessageRetrievalListener;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.Part;
@@ -67,7 +68,6 @@ import com.fsck.k9.mailstore.LocalFolder;
 import com.fsck.k9.mailstore.LocalMessage;
 import com.fsck.k9.mailstore.LocalStore;
 import com.fsck.k9.mailstore.LocalStoreProvider;
-import com.fsck.k9.mail.MessageDownloadState;
 import com.fsck.k9.mailstore.MessageStore;
 import com.fsck.k9.mailstore.MessageStoreManager;
 import com.fsck.k9.mailstore.OutboxState;
@@ -595,6 +595,25 @@ public class MessagingController {
         );
     }
 
+    public void synchronizeMailboxBlocking(Account account, String folderServerId) throws MessagingException {
+        long folderId = getFolderId(account, folderServerId);
+
+        final CountDownLatch latch = new CountDownLatch(1);
+        putBackground("synchronizeMailbox", null, () -> {
+            try {
+                synchronizeMailboxSynchronous(account, folderId, null);
+            } finally {
+                latch.countDown();
+            }
+        });
+
+        try {
+            latch.await();
+        } catch (Exception e) {
+            Timber.e(e, "Interrupted while awaiting latch release");
+        }
+    }
+
     /**
      * Start foreground synchronization of the specified folder. This is generally only called
      * by synchronizeMailbox.
@@ -681,6 +700,14 @@ public class MessagingController {
 
     public void handleAuthenticationFailure(Account account, boolean incoming) {
         notificationController.showAuthenticationErrorNotification(account, incoming);
+    }
+
+    public void handleException(Account account, Exception exception) {
+        if (exception instanceof AuthenticationFailedException) {
+            handleAuthenticationFailure(account, true);
+        } else {
+            notifyUserIfCertificateProblem(account, exception, true);
+        }
     }
 
     void queuePendingCommand(Account account, PendingCommand command) {
