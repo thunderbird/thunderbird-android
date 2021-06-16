@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -16,6 +17,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.loader.app.LoaderManager;
 import android.view.Menu;
 
@@ -337,10 +339,7 @@ public class RecipientPresenter {
             menu.findItem(R.id.openpgp_sign_only_disable).setVisible(false);
         }
 
-        boolean noContactPickerAvailable = !hasContactPicker();
-        if (noContactPickerAvailable) {
-            menu.findItem(R.id.add_from_contacts).setVisible(false);
-        }
+        menu.findItem(R.id.add_from_contacts).setVisible(hasContactPicker() && hasContactPermission());
     }
 
     public void onSwitchAccount(Account account) {
@@ -729,6 +728,11 @@ public class RecipientPresenter {
         }
 
         return hasContactPicker;
+    }
+
+    private boolean hasContactPermission() {
+        return ContextCompat.checkSelfPermission(context,
+                Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
     }
 
     public void showPgpSendError(SendErrorState sendErrorState) {
