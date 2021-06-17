@@ -1009,6 +1009,10 @@ public class MessagingController {
         String folderServerId = getFolderServerId(account, folderId);
         backend.deleteMessages(folderServerId, uids);
 
+        if (backend.getSupportsExpunge() && account.getExpungePolicy() == Expunge.EXPUNGE_IMMEDIATELY) {
+            backend.expungeMessages(folderServerId, uids);
+        }
+
         LocalStore localStore = localStoreProvider.getInstance(account);
         LocalFolder localFolder = localStore.getFolder(folderId);
         localFolder.open();
