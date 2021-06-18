@@ -338,6 +338,15 @@
                 android:resource="@xml/message_list_widget_info" />
         </receiver>
 
+        <receiver
+            android:name=".controller.push.BootCompleteReceiver"
+            android:exported="false"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
         <service
             android:name=".widget.list.MessageListWidgetService"
             android:enabled="true"
