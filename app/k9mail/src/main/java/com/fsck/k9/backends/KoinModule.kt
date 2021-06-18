@@ -25,7 +25,7 @@ val backendsModule = module {
             trustedSocketFactory = get()
         )
     }
-    single<SystemAlarmManager> { AndroidAlarmManager() }
+    single<SystemAlarmManager> { AndroidAlarmManager(context = get(), alarmManager = get()) }
     single<IdleRefreshManager> { BackendIdleRefreshManager(alarmManager = get()) }
     single { Pop3BackendFactory(get(), get()) }
     single { WebDavBackendFactory(get(), get(), get()) }
