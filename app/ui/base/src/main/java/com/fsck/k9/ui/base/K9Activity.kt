@@ -6,12 +6,14 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.asLiveData
+import com.fsck.k9.controller.push.PushController
 import java.util.Locale
 import org.koin.android.ext.android.inject
 
 abstract class K9Activity(private val themeType: ThemeType) : AppCompatActivity() {
     constructor() : this(ThemeType.DEFAULT)
 
+    private val pushController: PushController by inject()
     protected val themeManager: ThemeManager by inject()
     private val appLanguageManager: AppLanguageManager by inject()
 
@@ -29,6 +31,7 @@ abstract class K9Activity(private val themeType: ThemeType) : AppCompatActivity(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         initializeTheme()
+        initializePushController()
         super.onCreate(savedInstanceState)
 
         listenForAppLanguageChanges()
@@ -48,6 +51,10 @@ abstract class K9Activity(private val themeType: ThemeType) : AppCompatActivity(
             ThemeType.DIALOG -> themeManager.translucentDialogThemeResourceId
         }
         setTheme(theme)
+    }
+
+    private fun initializePushController() {
+        pushController.init()
     }
 
     protected fun setLayout(@LayoutRes layoutResId: Int) {
