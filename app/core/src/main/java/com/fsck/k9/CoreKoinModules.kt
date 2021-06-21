@@ -10,6 +10,7 @@ import com.fsck.k9.mailstore.mailStoreModule
 import com.fsck.k9.message.extractors.extractorModule
 import com.fsck.k9.message.html.htmlModule
 import com.fsck.k9.message.quote.quoteModule
+import com.fsck.k9.network.connectivityModule
 import com.fsck.k9.notification.coreNotificationModule
 import com.fsck.k9.preferences.preferencesModule
 import com.fsck.k9.search.searchModule
@@ -28,5 +29,6 @@ val coreModules = listOf(
     controllerPushModule,
     jobModule,
     helperModule,
-    preferencesModule
+    preferencesModule,
+    connectivityModule
 )
