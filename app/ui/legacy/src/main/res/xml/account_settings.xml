@@ -94,7 +94,6 @@
             app:useSimpleSummaryProvider="true"
             android:title="@string/account_settings_folder_sync_mode_label" />
 
-        <!-- Temporarily disabled. See GH-4253
         <ListPreference
             android:dialogTitle="@string/account_settings_folder_push_mode_label"
             android:entries="@array/folder_push_mode_entries"
@@ -102,7 +101,6 @@
             android:key="folder_push_mode"
             app:useSimpleSummaryProvider="true"
             android:title="@string/account_settings_folder_push_mode_label" />
-        -->
 
         <CheckBoxPreference
             android:defaultValue="true"
