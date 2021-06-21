@@ -66,6 +66,8 @@ public class Attachment implements Parcelable, com.fsck.k9.message.Attachment {
      */
     public final String filename;
 
+    public final boolean internalAttachment;
+
     @NotNull
     @Override
     public LoadingState getState() {
@@ -96,6 +98,11 @@ public class Attachment implements Parcelable, com.fsck.k9.message.Attachment {
         return size;
     }
 
+    @Override
+    public boolean isInternalAttachment() {
+        return internalAttachment;
+    }
+
     public boolean isSupportedImage() {
         if (contentType == null) {
             return false;
@@ -107,7 +114,7 @@ public class Attachment implements Parcelable, com.fsck.k9.message.Attachment {
     }
 
     private Attachment(Uri uri, LoadingState state, int loaderId, String contentType, boolean allowMessageType,
-            String name, Long size, String filename) {
+            String name, Long size, String filename, boolean internalAttachment) {
         this.uri = uri;
         this.state = state;
         this.loaderId = loaderId;
@@ -116,6 +123,7 @@ public class Attachment implements Parcelable, com.fsck.k9.message.Attachment {
         this.name = name;
         this.size = size;
         this.filename = filename;
+        this.internalAttachment = internalAttachment;
     }
 
     private Attachment(Parcel in) {
@@ -131,11 +139,12 @@ public class Attachment implements Parcelable, com.fsck.k9.message.Attachment {
             size = null;
         }
         filename = in.readString();
+        internalAttachment = in.readInt() != 0;
     }
 
-    public static Attachment createAttachment(Uri uri, int loaderId, String contentType, boolean allowMessageType) {
+    public static Attachment createAttachment(Uri uri, int loaderId, String contentType, boolean allowMessageType, boolean internalAttachment) {
         return new Attachment(uri, Attachment.LoadingState.URI_ONLY, loaderId, contentType, allowMessageType, null,
-                null, null);
+                null, null, internalAttachment);
     }
 
     public Attachment deriveWithMetadataLoaded(String usableContentType, String name, long size) {
@@ -143,7 +152,7 @@ public class Attachment implements Parcelable, com.fsck.k9.message.Attachment {
             throw new IllegalStateException("deriveWithMetadataLoaded can only be called on a URI_ONLY attachment!");
         }
         return new Attachment(uri, Attachment.LoadingState.METADATA, loaderId, usableContentType, allowMessageType,
-                name, size, null);
+                name, size, null, internalAttachment);
     }
 
     public Attachment deriveWithLoadCancelled() {
@@ -151,7 +160,7 @@ public class Attachment implements Parcelable, com.fsck.k9.message.Attachment {
             throw new IllegalStateException("deriveWitLoadCancelled can only be called on a METADATA attachment!");
         }
         return new Attachment(uri, Attachment.LoadingState.CANCELLED, loaderId, contentType, allowMessageType, name,
-                size, null);
+                size, null, internalAttachment);
     }
 
     public Attachment deriveWithLoadComplete(String absolutePath) {
@@ -159,7 +168,7 @@ public class Attachment implements Parcelable, com.fsck.k9.message.Attachment {
             throw new IllegalStateException("deriveWithLoadComplete can only be called on a METADATA attachment!");
         }
         return new Attachment(uri, Attachment.LoadingState.COMPLETE, loaderId, contentType, allowMessageType, name,
-                size, absolutePath);
+                size, absolutePath, internalAttachment);
     }
 
     // === Parcelable ===
@@ -184,6 +193,7 @@ public class Attachment implements Parcelable, com.fsck.k9.message.Attachment {
             dest.writeInt(0);
         }
         dest.writeString(filename);
+        dest.writeInt(internalAttachment ? 1 : 0);
     }
 
     public static final Parcelable.Creator<Attachment> CREATOR =

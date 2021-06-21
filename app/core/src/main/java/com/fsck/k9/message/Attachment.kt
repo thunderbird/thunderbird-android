@@ -6,6 +6,7 @@ interface Attachment {
     val contentType: String?
     val name: String?
     val size: Long?
+    val isInternalAttachment: Boolean
 
     enum class LoadingState {
         URI_ONLY,

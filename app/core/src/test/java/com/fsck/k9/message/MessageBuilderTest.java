@@ -388,6 +388,11 @@ public class MessageBuilderTest extends RobolectricTest {
             public LoadingState getState() {
                 return LoadingState.COMPLETE;
             }
+
+            @Override
+            public boolean isInternalAttachment() {
+                return true;
+            }
         };
     }
 

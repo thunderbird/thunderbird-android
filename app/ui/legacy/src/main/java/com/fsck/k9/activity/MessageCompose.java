@@ -545,7 +545,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             if (Intent.ACTION_SEND.equals(action)) {
                 Uri stream = intent.getParcelableExtra(Intent.EXTRA_STREAM);
                 if (stream != null) {
-                    attachmentPresenter.addAttachment(stream, type);
+                    attachmentPresenter.addExternalAttachment(stream, type);
                 }
             } else {
                 List<Parcelable> list = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
@@ -553,7 +553,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     for (Parcelable parcelable : list) {
                         Uri stream = (Uri) parcelable;
                         if (stream != null) {
-                            attachmentPresenter.addAttachment(stream, type);
+                            attachmentPresenter.addExternalAttachment(stream, type);
                         }
                     }
                 }
