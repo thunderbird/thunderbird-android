@@ -226,4 +226,10 @@
         app:showAsAction="never"
         android:title="@string/message_view_theme_action_dark"/>
 
+    <!-- MessageList -->
+    <item
+        android:id="@+id/search_everywhere"
+        app:showAsAction="never"
+        android:title="@string/search_everywhere_action"/>
+
 </menu>

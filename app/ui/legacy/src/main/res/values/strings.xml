@@ -136,6 +136,7 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="add_account_action">Add account</string>
     <string name="compose_action">Compose</string>
     <string name="search_action">Search</string>
+    <string name="search_everywhere_action">Search everywhere</string>
     <string name="search_results">Search results</string>
     <string name="preferences_action">Settings</string>
     <string name="folders_action">Manage folders</string>
