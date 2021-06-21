@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import androidx.loader.content.AsyncTaskLoader;
 
@@ -58,8 +59,15 @@ public class AttachmentContentLoader extends AsyncTaskLoader<Attachment> {
 
             Timber.v("Saving attachment to %s", file.getAbsolutePath());
 
-            SafeContentResolver safeContentResolver = SafeContentResolver.newInstance(context);
-            InputStream in = safeContentResolver.openInputStream(sourceAttachment.uri);
+            InputStream in;
+
+            if (sourceAttachment.internalAttachment) {
+                ContentResolver unsafeContentResolver = context.getContentResolver();
+                in = unsafeContentResolver.openInputStream(sourceAttachment.uri);
+            } else {
+                SafeContentResolver safeContentResolver = SafeContentResolver.newInstance(context);
+                in = safeContentResolver.openInputStream(sourceAttachment.uri);
+            }
             if (in == null) {
                 Timber.w("Error opening attachment for reading: %s", sourceAttachment.uri);
 
