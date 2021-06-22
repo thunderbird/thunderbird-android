@@ -163,6 +163,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     public static final int MSG_SAVED_DRAFT = 4;
     private static final int MSG_DISCARDED_DRAFT = 5;
 
+    private static final int REQUEST_CODE_MASK = 0xFFFF0000;
     private static final int REQUEST_MASK_RECIPIENT_PRESENTER = (1 << 8);
     private static final int REQUEST_MASK_LOADER_HELPER = (1 << 9);
     private static final int REQUEST_MASK_ATTACHMENT_PRESENTER = (1 << 10);
@@ -831,33 +832,36 @@ public class MessageCompose extends K9Activity implements OnClickListener,
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         isInSubActivity = false;
 
-        if ((requestCode & REQUEST_MASK_MESSAGE_BUILDER) == REQUEST_MASK_MESSAGE_BUILDER) {
-            requestCode ^= REQUEST_MASK_MESSAGE_BUILDER;
-            if (currentMessageBuilder == null) {
-                Timber.e("Got a message builder activity result for no message builder, " +
-                        "this is an illegal state!");
+        // Only if none of the high 16 bits are set it might be one of our request codes
+        if ((requestCode & REQUEST_CODE_MASK) == 0) {
+            if ((requestCode & REQUEST_MASK_MESSAGE_BUILDER) == REQUEST_MASK_MESSAGE_BUILDER) {
+                requestCode ^= REQUEST_MASK_MESSAGE_BUILDER;
+                if (currentMessageBuilder == null) {
+                    Timber.e("Got a message builder activity result for no message builder, " +
+                            "this is an illegal state!");
+                    return;
+                }
+                currentMessageBuilder.onActivityResult(requestCode, resultCode, data, this);
                 return;
             }
-            currentMessageBuilder.onActivityResult(requestCode, resultCode, data, this);
-            return;
-        }
 
-        if ((requestCode & REQUEST_MASK_RECIPIENT_PRESENTER) == REQUEST_MASK_RECIPIENT_PRESENTER) {
-            requestCode ^= REQUEST_MASK_RECIPIENT_PRESENTER;
-            recipientPresenter.onActivityResult(requestCode, resultCode, data);
-            return;
-        }
+            if ((requestCode & REQUEST_MASK_RECIPIENT_PRESENTER) == REQUEST_MASK_RECIPIENT_PRESENTER) {
+                requestCode ^= REQUEST_MASK_RECIPIENT_PRESENTER;
+                recipientPresenter.onActivityResult(requestCode, resultCode, data);
+                return;
+            }
 
-        if ((requestCode & REQUEST_MASK_LOADER_HELPER) == REQUEST_MASK_LOADER_HELPER) {
-            requestCode ^= REQUEST_MASK_LOADER_HELPER;
-            messageLoaderHelper.onActivityResult(requestCode, resultCode, data);
-            return;
-        }
+            if ((requestCode & REQUEST_MASK_LOADER_HELPER) == REQUEST_MASK_LOADER_HELPER) {
+                requestCode ^= REQUEST_MASK_LOADER_HELPER;
+                messageLoaderHelper.onActivityResult(requestCode, resultCode, data);
+                return;
+            }
 
-        if ((requestCode & REQUEST_MASK_ATTACHMENT_PRESENTER) == REQUEST_MASK_ATTACHMENT_PRESENTER) {
-            requestCode ^= REQUEST_MASK_ATTACHMENT_PRESENTER;
-            attachmentPresenter.onActivityResult(resultCode, requestCode, data);
-            return;
+            if ((requestCode & REQUEST_MASK_ATTACHMENT_PRESENTER) == REQUEST_MASK_ATTACHMENT_PRESENTER) {
+                requestCode ^= REQUEST_MASK_ATTACHMENT_PRESENTER;
+                attachmentPresenter.onActivityResult(resultCode, requestCode, data);
+                return;
+            }
         }
 
         super.onActivityResult(requestCode, resultCode, data);

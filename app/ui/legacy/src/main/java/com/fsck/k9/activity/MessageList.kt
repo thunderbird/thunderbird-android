@@ -1421,15 +1421,24 @@ open class MessageList :
         flagsValues: Int,
         extraFlags: Int
     ) {
-        val modifiedRequestCode = requestCode or REQUEST_MASK_PENDING_INTENT
+        // If any of the high 16 bits are set it is not one of our request codes
+        if (requestCode and REQUEST_CODE_MASK != 0) {
+            super.startIntentSenderForResult(intent, requestCode, fillInIntent, flagsMask, flagsValues, extraFlags)
+            return
+        }
+
+        val modifiedRequestCode = requestCode or REQUEST_FLAG_PENDING_INTENT
         super.startIntentSenderForResult(intent, modifiedRequestCode, fillInIntent, flagsMask, flagsValues, extraFlags)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode and REQUEST_MASK_PENDING_INTENT == REQUEST_MASK_PENDING_INTENT) {
-            val originalRequestCode = requestCode xor REQUEST_MASK_PENDING_INTENT
+        // If any of the high 16 bits are set it is not one of our request codes
+        if (requestCode and REQUEST_CODE_MASK != 0) return
+
+        if (requestCode and REQUEST_FLAG_PENDING_INTENT != 0) {
+            val originalRequestCode = requestCode xor REQUEST_FLAG_PENDING_INTENT
             if (messageViewFragment != null) {
                 messageViewFragment!!.onPendingIntentResult(originalRequestCode, resultCode, data)
             }
@@ -1554,7 +1563,8 @@ open class MessageList :
         private const val PREVIOUS = 1
         private const val NEXT = 2
 
-        const val REQUEST_MASK_PENDING_INTENT = 1 shl 15
+        private const val REQUEST_CODE_MASK = 0xFFFF0000.toInt()
+        private const val REQUEST_FLAG_PENDING_INTENT = 1 shl 15
 
         private val defaultFolderProvider: DefaultFolderProvider by inject()
 
