@@ -876,6 +876,9 @@ open class MessageList :
         } else if (id == R.id.search_remote) {
             messageListFragment!!.onRemoteSearch()
             return true
+        } else if (id == R.id.search_everywhere) {
+            searchEverywhere()
+            return true
         } else if (id == R.id.mark_all_as_read) {
             messageListFragment!!.confirmMarkAllAsRead()
             return true
@@ -952,6 +955,14 @@ open class MessageList :
                 super.onOptionsItemSelected(item)
             }
         }
+    }
+
+    private fun searchEverywhere() {
+        val searchIntent = Intent(this, Search::class.java).apply {
+            action = Intent.ACTION_SEARCH
+            putExtra(SearchManager.QUERY, intent.getStringExtra(SearchManager.QUERY))
+        }
+        onNewIntent(searchIntent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -1078,9 +1089,10 @@ open class MessageList :
 
         // Set visibility of menu items related to the message list
 
-        // Hide both search menu items by default and enable one when appropriate
+        // Hide search menu items by default and enable one when appropriate
         menu.findItem(R.id.search).isVisible = false
         menu.findItem(R.id.search_remote).isVisible = false
+        menu.findItem(R.id.search_everywhere).isVisible = false
 
         if (displayMode == DisplayMode.MESSAGE_VIEW || messageListFragment == null ||
             !messageListFragment!!.isInitialized
@@ -1112,6 +1124,11 @@ open class MessageList :
                 menu.findItem(R.id.search_remote).isVisible = true
             } else if (!messageListFragment!!.isManualSearch) {
                 menu.findItem(R.id.search).isVisible = true
+            }
+
+            val messageListFragment = messageListFragment!!
+            if (messageListFragment.isManualSearch && !messageListFragment.localSearch.searchAllAccounts()) {
+                menu.findItem(R.id.search_everywhere).isVisible = true
             }
         }
     }
