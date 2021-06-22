@@ -89,7 +89,7 @@ internal class ImapBackendPusher(
 
     private fun createImapFolderPusher(folderServerId: String): ImapFolderPusher {
         // TODO: use value from account settings
-        val idleRefreshTimeoutMs = 25 * 60 * 1000L
+        val idleRefreshTimeoutMs = 15 * 60 * 1000L
         return ImapFolderPusher(
             imapStore,
             powerManager,

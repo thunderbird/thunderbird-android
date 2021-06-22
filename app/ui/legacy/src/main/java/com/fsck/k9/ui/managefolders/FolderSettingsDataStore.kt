@@ -36,6 +36,7 @@ class FolderSettingsDataStore(
             "folder_settings_folder_display_mode" -> folder.displayClass.name
             "folder_settings_folder_sync_mode" -> folder.syncClass.name
             "folder_settings_folder_notify_mode" -> folder.notifyClass.name
+            "folder_settings_folder_push_mode" -> folder.pushClass.name
             else -> error("Unknown key: $key")
         }
     }
@@ -52,6 +53,9 @@ class FolderSettingsDataStore(
             }
             "folder_settings_folder_notify_mode" -> {
                 updateFolder(folder.copy(notifyClass = FolderClass.valueOf(newValue)))
+            }
+            "folder_settings_folder_push_mode" -> {
+                updateFolder(folder.copy(pushClass = FolderClass.valueOf(newValue)))
             }
             else -> error("Unknown key: $key")
         }
