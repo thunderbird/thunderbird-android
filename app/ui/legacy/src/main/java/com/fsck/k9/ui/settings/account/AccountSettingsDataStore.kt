@@ -165,11 +165,7 @@ class AccountSettingsDataStore(
                     reschedulePoll()
                 }
             }
-            "folder_push_mode" -> {
-                if (account.setFolderPushMode(Account.FolderMode.valueOf(value))) {
-                    restartPushers()
-                }
-            }
+            "folder_push_mode" -> account.folderPushMode = Account.FolderMode.valueOf(value)
             "delete_policy" -> account.deletePolicy = Account.DeletePolicy.valueOf(value)
             "expunge_policy" -> account.expungePolicy = Account.Expunge.valueOf(value)
             "max_push_folders" -> account.maxPushFolders = value.toInt()
@@ -212,10 +208,6 @@ class AccountSettingsDataStore(
 
     private fun reschedulePoll() {
         jobManager.scheduleMailSync(account)
-    }
-
-    private fun restartPushers() {
-        jobManager.schedulePusherRefresh()
     }
 
     private fun extractFolderId(preferenceValue: String): Long? {

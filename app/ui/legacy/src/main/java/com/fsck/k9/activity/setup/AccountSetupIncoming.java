@@ -534,10 +534,6 @@ public class AccountSetupIncoming extends K9Activity implements OnClickListener 
 
         if (resultCode == RESULT_OK) {
             if (Intent.ACTION_EDIT.equals(getIntent().getAction())) {
-                boolean isPushCapable = messagingController.isPushCapable(mAccount);
-                if (isPushCapable && mAccount.getFolderPushMode() != FolderMode.NONE) {
-                    jobManager.schedulePusherRefresh();
-                }
                 Preferences.getPreferences(getApplicationContext()).saveAccount(mAccount);
                 finish();
             } else {
