@@ -609,11 +609,8 @@ public class Account implements BaseAccount {
         return folderPushMode;
     }
 
-    public synchronized boolean setFolderPushMode(FolderMode pushMode) {
-        FolderMode oldPushMode = folderPushMode;
-
+    public synchronized void setFolderPushMode(FolderMode pushMode) {
         folderPushMode = pushMode;
-        return pushMode != oldPushMode;
     }
 
     public synchronized boolean isNotifySync() {
