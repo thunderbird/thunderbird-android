@@ -13,13 +13,24 @@ import java.util.HashMap
 import java.util.LinkedList
 import java.util.UUID
 import java.util.concurrent.CopyOnWriteArraySet
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.channels.sendBlocking
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.buffer
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flowOn
 import timber.log.Timber
 
 class Preferences internal constructor(
     private val context: Context,
     private val storagePersister: StoragePersister,
     private val localStoreProvider: LocalStoreProvider,
-    private val accountPreferenceSerializer: AccountPreferenceSerializer
+    private val accountPreferenceSerializer: AccountPreferenceSerializer,
+    private val backgroundDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : AccountManager {
     private val accountLock = Any()
 
@@ -105,6 +116,33 @@ class Preferences internal constructor(
 
             return accountsMap!![accountUuid]
         }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override fun getAccountFlow(accountUuid: String): Flow<Account> {
+        return callbackFlow<Account> {
+            val initialAccount = getAccount(accountUuid) ?: return@callbackFlow
+            send(initialAccount)
+
+            val listener = AccountsChangeListener {
+                val account = getAccount(accountUuid)
+                if (account != null) {
+                    try {
+                        sendBlocking(account)
+                    } catch (e: Exception) {
+                        Timber.w(e, "Error while trying to send to channel")
+                    }
+                } else {
+                    channel.close()
+                }
+            }
+            addOnAccountsChangeListener(listener)
+
+            awaitClose {
+                removeOnAccountsChangeListener(listener)
+            }
+        }.buffer(capacity = Channel.CONFLATED)
+            .flowOn(backgroundDispatcher)
     }
 
     fun newAccount(): Account {

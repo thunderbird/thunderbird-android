@@ -2,7 +2,6 @@ package com.fsck.k9.mailstore
 
 import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
-import com.fsck.k9.AccountsChangeListener
 import com.fsck.k9.mail.FolderClass
 import com.fsck.k9.preferences.AccountManager
 import kotlinx.coroutines.CoroutineDispatcher
@@ -16,6 +15,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import com.fsck.k9.mail.FolderType as RemoteFolderType
 
@@ -229,22 +229,7 @@ class FolderRepository(
     }
 
     private fun Account.getFolderPushModeFlow(): Flow<FolderMode> {
-        val account = this@getFolderPushModeFlow
-        return callbackFlow {
-            send(account.folderPushMode)
-
-            val listener = AccountsChangeListener {
-                launch {
-                    send(account.folderPushMode)
-                }
-            }
-            accountManager.addOnAccountsChangeListener(listener)
-
-            awaitClose {
-                accountManager.removeOnAccountsChangeListener(listener)
-            }
-        }.distinctUntilChanged()
-            .flowOn(ioDispatcher)
+        return accountManager.getAccountFlow(uuid).map { it.folderPushMode }
     }
 
     private val RemoteFolderDetails.effectivePushClass: FolderClass
