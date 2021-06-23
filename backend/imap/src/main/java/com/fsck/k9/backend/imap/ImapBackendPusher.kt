@@ -6,6 +6,7 @@ import com.fsck.k9.mail.AuthenticationFailedException
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.power.PowerManager
 import com.fsck.k9.mail.store.imap.IdleRefreshManager
+import com.fsck.k9.mail.store.imap.IdleRefreshTimeoutProvider
 import com.fsck.k9.mail.store.imap.IdleRefreshTimer
 import com.fsck.k9.mail.store.imap.ImapStore
 import java.io.IOException
@@ -88,8 +89,10 @@ internal class ImapBackendPusher(
     }
 
     private fun createImapFolderPusher(folderServerId: String): ImapFolderPusher {
-        // TODO: use value from account settings
-        val idleRefreshTimeoutMs = 15 * 60 * 1000L
+        val idleRefreshTimeoutProvider = object : IdleRefreshTimeoutProvider {
+            // TODO: use value from account settings
+            override val idleRefreshTimeoutMs = 15 * 60 * 1000L
+        }
         return ImapFolderPusher(
             imapStore,
             powerManager,
@@ -97,7 +100,7 @@ internal class ImapBackendPusher(
             this,
             accountName,
             folderServerId,
-            idleRefreshTimeoutMs
+            idleRefreshTimeoutProvider
         )
     }
 
