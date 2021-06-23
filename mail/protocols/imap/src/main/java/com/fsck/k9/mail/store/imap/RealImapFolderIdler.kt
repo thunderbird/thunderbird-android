@@ -44,10 +44,19 @@ internal class RealImapFolderIdler(
     }
 
     @Synchronized
+    override fun refresh() {
+        Timber.v("%s.refresh()", logTag)
+        endIdle()
+    }
+
+    @Synchronized
     override fun stop() {
         Timber.v("%s.stop()", logTag)
         stopIdle = true
+        endIdle()
+    }
 
+    private fun endIdle() {
         if (idleSent && !doneSent) {
             idleRefreshTimer?.cancel()
             sendDone()

@@ -39,6 +39,12 @@ class ImapFolderPusher(
         }
     }
 
+    fun refresh() {
+        Timber.v("Refreshing ImapFolderPusher for %s / %s", accountName, folderServerId)
+
+        folderIdler?.refresh()
+    }
+
     fun stop() {
         Timber.v("Stopping ImapFolderPusher for %s / %s", accountName, folderServerId)
 
