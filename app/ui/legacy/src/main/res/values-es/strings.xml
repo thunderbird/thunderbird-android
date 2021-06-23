@@ -374,7 +374,6 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="account_setup_options_mail_check_frequency_6hour">Cada 6 horas</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Cada 12 horas</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Cada 24 horas</string>
-  <string name="push_poll_on_connect_label">Comprobar automáticamente</string>
   <string name="account_setup_options_enable_push_label">Activar push para esta cuenta</string>
   <string name="account_setup_options_enable_push_summary">Si su servidor lo permite, los mensajes aparecerán de forma instantánea. Esta opción puede ralentizar el sistema.</string>
   <string name="idle_refresh_period_label">Refrescar conexión IDLE</string>
@@ -427,8 +426,6 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="account_settings_notify_self_summary">Mostrar notificaciones durante el envío de correo</string>
   <string name="account_notify_contacts_mail_only_label">Solamente contactos</string>
   <string name="account_notify_contacts_mail_only_summary">Mostrar notificaciones solamente para mensajes de contactos conocidos</string>
-  <string name="account_settings_notification_opens_unread_label">Abrir correo no leído</string>
-  <string name="account_settings_notification_opens_unread_summary">Abrir correo no leído desde la notificación</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marcar mensaje como leído al abrirlo</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marcar mensaje como leído cuando se abre para verlo</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Marcar como leído al borrar</string>
@@ -739,6 +736,7 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="send_failed_reason">Fallo de envío: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">¿Guardar como borrador?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">¿Guardar o descartar este mensaje?</string>
+  <string name="save_or_discard_draft_message_changes">¿Guardar o descartar cambios?</string>
   <string name="confirm_discard_draft_message_title">¿Descartar mensaje?</string>
   <string name="confirm_discard_draft_message">¿Está seguro de descartar este mensaje?</string>
   <string name="select_text_now">Seleccionar texto a copiar.</string>

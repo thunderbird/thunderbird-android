@@ -114,6 +114,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="add_account_action">Aggiungi account</string>
   <string name="compose_action">Componi</string>
   <string name="search_action">Cerca</string>
+  <string name="search_everywhere_action">Cerca ovunque</string>
   <string name="search_results">Risultati della ricerca</string>
   <string name="preferences_action">Impostazioni</string>
   <string name="folders_action">Gestisci cartelle</string>
@@ -130,6 +131,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
     <item quantity="one">Indirizzo copiato negli appunti </item>
     <item quantity="other">IndirizzI copiati negli appunti</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">Testo dell\'oggetto copiato negli appunti</string>
   <string name="message_view_theme_action_dark">Passa al tema scuro</string>
   <string name="message_view_theme_action_light">Passa al tema chiaro</string>
   <string name="mark_as_unread_action">Marca come da leggere</string>
@@ -180,6 +182,8 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="notification_bg_send_ticker">Invio posta: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Invio posta</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_push_title">Sincronizza (Push)</string>
+  <string name="notification_channel_push_description">Visualizzato in attesa di nuovi messaggi</string>
   <string name="notification_channel_messages_title">Messaggi</string>
   <string name="notification_channel_messages_description">Notifiche relative ai messaggi</string>
   <string name="notification_channel_miscellaneous_title">Varie</string>
@@ -376,7 +380,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_setup_options_mail_check_frequency_6hour">Ogni 6 ore</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Ogni 12 ore</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Ogni 24 ore</string>
-  <string name="push_poll_on_connect_label">Recupera durante la connessione per l\'invio</string>
   <string name="account_setup_options_enable_push_label">Abilita email push per questo account</string>
   <string name="account_setup_options_enable_push_summary">Se il server lo supporta, i nuovi messaggi appariranno istantaneamente. Questa opzione può migliorare o peggiorare notevolmente le prestazioni.</string>
   <string name="idle_refresh_period_label">Aggiorna connessione inattiva</string>
@@ -429,8 +432,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_settings_notify_self_summary">Mostra una notifica per i messaggi che ho inviato</string>
   <string name="account_notify_contacts_mail_only_label">Solo contatti</string>
   <string name="account_notify_contacts_mail_only_summary">Mostra notifiche solo per i messaggi da contatti conosciuti</string>
-  <string name="account_settings_notification_opens_unread_label">Notifica apre i messaggi non letti</string>
-  <string name="account_settings_notification_opens_unread_summary">Ricerca non letti quando Notifiche è aperto</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marca come letto all\'apertura</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marca un messaggio come letto quando viene aperto per la visualizzazione</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Marca come letto all\'eliminazione </string>
@@ -1047,4 +1048,8 @@ Puoi conservare questo messaggio e utilizza come una copia di sicurezza della tu
   <string name="permission_contacts_rationale_title">Consenti l\'accesso ai contatti</string>
   <string name="permission_contacts_rationale_message">Per poter fornire suggerimenti sui contatti e per visualizzare i nomi e le foto dei contatti, l\'applicazione ha bisogno di accedere ai tuoi contatti.</string>
   <string name="generic_loading_error">Si è verificato un errore durante il caricamento dei dati</string>
+  <string name="push_notification_state_initializing">Inizializzazione…</string>
+  <string name="push_notification_state_listening">In attesa di nuove email</string>
+  <string name="push_notification_state_wait_background_sync">Inattivo fino a quando la sincronizzazione in background non sarà consentita</string>
+  <string name="push_notification_state_wait_network">Inattivo fino a quando la rete non sarà disponibile</string>
 </resources>

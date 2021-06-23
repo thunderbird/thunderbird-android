@@ -398,8 +398,6 @@
   <string name="account_settings_notify_self_summary">إظهار إشعارات للرسائل التي أبعثُها</string>
   <string name="account_notify_contacts_mail_only_label">جهات الإتصال فقط</string>
   <string name="account_notify_contacts_mail_only_summary">إظهار الإشعارات فقط عند تلقي رسائل مِن طرف مراسلين معروفين</string>
-  <string name="account_settings_notification_opens_unread_label">الإشعار يفتح الرسائل غير المقروءة</string>
-  <string name="account_settings_notification_opens_unread_summary">القيام بالبحث عن الرسائل غير المقروءة عندما يُفتح الإشعار</string>
   <string name="account_settings_mark_message_as_read_on_view_label">تحديد الرسالة كمقروءة بعد فتحها</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">تحديد الرسالة كمقروءة بعد فتحها الإطلاع عليها</string>
   <string name="account_settings_notification_open_system_notifications_label">إعدادات الإشعار</string>

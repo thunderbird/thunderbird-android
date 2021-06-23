@@ -368,7 +368,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_setup_options_mail_check_frequency_6hour">Кожні 6 годин</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Кожні 12 годин</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Кожні 24 години</string>
-  <string name="push_poll_on_connect_label">Опитувати при з’єднанні для надсилання</string>
   <string name="account_setup_options_enable_push_label">Використовувати push для цього облікового запису</string>
   <string name="account_setup_options_enable_push_summary">Якщо ваш сервер підтримує таку можливість, то нові повідомлення з\'являтимуться моментально. Цей параметр може істотно покращити або погіршити швидкодію.</string>
   <string name="idle_refresh_period_label">Оновлювати з’єднання IMAP IDLE</string>
@@ -421,8 +420,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_settings_notify_self_summary">Показати сповіщення про надіслані мною повідомлення</string>
   <string name="account_notify_contacts_mail_only_label">Лише контактам</string>
   <string name="account_notify_contacts_mail_only_summary">Показувати сповіщення лише для повідомлень від вже відомих контактів</string>
-  <string name="account_settings_notification_opens_unread_label">Сповіщення відкриває непрочитані повідомлення</string>
-  <string name="account_settings_notification_opens_unread_summary">Шукає непрочитані повідомлення, коли відкрито сповіщення</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Позначати повідомлення прочитаним після відкриття</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Позначати повідомлення прочитаним після відкриття для перегляду</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Позначити прочитаним після видалення</string>

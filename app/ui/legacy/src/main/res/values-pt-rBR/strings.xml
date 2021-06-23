@@ -129,6 +129,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
     <item quantity="one">Endereço copiado para área de transferência</item>
     <item quantity="other">Endereços copiados para a área de transferência</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">Texto do assunto copiado para a área de transferência</string>
   <string name="message_view_theme_action_dark">Mudar para o tema escuro</string>
   <string name="message_view_theme_action_light">Mudar para o tema claro</string>
   <string name="mark_as_unread_action">Marcar como não lida</string>
@@ -178,6 +179,8 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="notification_bg_send_ticker">Enviando mensagem: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Enviando mensagem</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_push_title">Sincronizar (Push)</string>
+  <string name="notification_channel_push_description">Exibido enquanto se espera por novas mensagens</string>
   <string name="notification_channel_messages_title">Mensagens</string>
   <string name="notification_channel_messages_description">Notificações relacionadas a mensagens</string>
   <string name="notification_channel_miscellaneous_title">Diversos</string>
@@ -374,7 +377,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="account_setup_options_mail_check_frequency_6hour">A cada 6 horas</string>
   <string name="account_setup_options_mail_check_frequency_12hour">A cada 12 horas</string>
   <string name="account_setup_options_mail_check_frequency_24hour">A cada 24 horas</string>
-  <string name="push_poll_on_connect_label">Verificar quando conectar para sincronizar</string>
   <string name="account_setup_options_enable_push_label">Habilitar sincronização de mensagens para esta conta</string>
   <string name="account_setup_options_enable_push_summary">Se seu servidor suportar, novas mensagens aparecerão instantaneamente. Esta opção pode melhorar ou piorar a performance dramaticamente.</string>
   <string name="idle_refresh_period_label">Atualizar conexão IDLE</string>
@@ -427,8 +429,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="account_settings_notify_self_summary">Exibe uma notificação para mensagens enviadas</string>
   <string name="account_notify_contacts_mail_only_label">Apenas contatos</string>
   <string name="account_notify_contacts_mail_only_summary">Exibe notificações somente para mensagens de contatos conhecidos</string>
-  <string name="account_settings_notification_opens_unread_label">Notificações abrem mensagens não lidas</string>
-  <string name="account_settings_notification_opens_unread_summary">Procurar por mensagens não lidas quando uma notificação for aberta</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marcar como lida ao abrir</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marcar a mensagem como lida quando ela for aberta para visualização</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Marcar como lida ao excluir</string>
@@ -1045,4 +1045,8 @@ Você pode manter esta mensagem e usá-la como um backup para a sua chave secret
   <string name="permission_contacts_rationale_title">Permitir acesso aos contatos</string>
   <string name="permission_contacts_rationale_message">Para fornecer sugestões e exibir nomes e fotos de contatos, o app precisa de ter acesso aos seus contatos.</string>
   <string name="generic_loading_error">Um erro ocorreu durante o carregamento dos dados</string>
+  <string name="push_notification_state_initializing">Inicializando...</string>
+  <string name="push_notification_state_listening">Monitorando a chegada de novos e-mails</string>
+  <string name="push_notification_state_wait_background_sync">Suspenso até que a sincronização em segundo plano seja permitida</string>
+  <string name="push_notification_state_wait_network">Suspenso até que a rede esteja disponível</string>
 </resources>

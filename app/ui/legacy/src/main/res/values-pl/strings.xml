@@ -13,8 +13,10 @@
   <string name="app_license">Licencja Apache, Wersja 2.0</string>
   <string name="about_project_title">Projekt otwartoźródłowy</string>
   <string name="about_website_title">Strona internetowa</string>
+  <string name="user_forum_title">Forum użytkowników</string>
   <string name="about_libraries">Biblioteki</string>
   <string name="license">Licencja</string>
+  <string name="changelog_version_title">Wersja %s</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Witaj w K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -125,6 +127,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
     <item quantity="many">Adresy skopiowane do schowka</item>
     <item quantity="other">Adresy skopiowane do schowka</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">Skopiowano do schowka</string>
   <string name="message_view_theme_action_dark">Przełącz na ciemny styl</string>
   <string name="message_view_theme_action_light">Przełącz na jasny styl</string>
   <string name="mark_as_unread_action">Oznacz jako nieprzeczytane</string>
@@ -372,7 +375,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="account_setup_options_mail_check_frequency_6hour">Co 6 godzin</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Co 12 godzin</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Co 24 godziny</string>
-  <string name="push_poll_on_connect_label">Pobieraj podczas połączeń Push</string>
   <string name="account_setup_options_enable_push_label">Włącz obsługę Push mail dla tego konta</string>
   <string name="account_setup_options_enable_push_summary">Jeżeli Twój serwer to obsługuje, nowe wiadomości pojawią się natychmiast. Ta opcja może znacznie obniżyć lub zwiększyć wydajność.</string>
   <string name="idle_refresh_period_label">Odśwież połączenie IDLE</string>
@@ -425,8 +427,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="account_settings_notify_self_summary">Pokaż powiadomienie dla wiadomości wysłanych przeze mnie</string>
   <string name="account_notify_contacts_mail_only_label">Tylko kontakty</string>
   <string name="account_notify_contacts_mail_only_summary">Pokaż powiadomienia tylko dla wiadomości od znanych kontaktów</string>
-  <string name="account_settings_notification_opens_unread_label">Nowe nieprzeczytane</string>
-  <string name="account_settings_notification_opens_unread_summary">Powiadomienie o nieprzeczytanych wiadomościach</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Oznacz jako przeczytane</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Oznacz wiadomość jako przeczytaną przy otwieraniu</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Oznacz jako przeczytane po usunięciu</string>
@@ -684,6 +684,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="volume_navigation_title">Nawigacja przyciskiem głośności</string>
   <string name="volume_navigation_message">Wygląd wiadomości</string>
   <string name="volume_navigation_list">Różne widoki list</string>
+  <string name="show_unified_inbox_title">Pokaż zintegrowaną skrzynkę odbiorczą</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Nieprzeczytane</string>
   <string name="search_all_messages_title">Wszystkie wiadomości</string>
@@ -736,6 +737,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="send_failed_reason">Wysyłanie nieudane: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Zapisać szkic?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Zapisać czy porzucić wiadomość?</string>
+  <string name="save_or_discard_draft_message_changes">Zapisać czy odrzucić zmiany?</string>
   <string name="confirm_discard_draft_message_title">Usunąć wiadomość?</string>
   <string name="confirm_discard_draft_message">Czy na pewno chcesz usunąć tą wiadomość?</string>
   <string name="select_text_now">Wybierz tekst do skopiowania.</string>
@@ -900,6 +902,8 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="recipient_bcc">UDW</string>
   <string name="recipient_to">Do</string>
   <string name="recipient_from">Od</string>
+  <string name="unknown_recipient">&lt;Nieznany odbiorca&gt;</string>
+  <string name="unknown_sender">&lt;Nieznany nadawca&gt;</string>
   <string name="address_type_home">Dom</string>
   <string name="address_type_work">Praca</string>
   <string name="address_type_other">Inne</string>
@@ -1046,4 +1050,5 @@ Tą wiadomość można zachować i użyć w formie kopii zapasowej twojego klucz
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Pozwól na dostęp do kontaktów</string>
   <string name="permission_contacts_rationale_message">Aby włączyć sugestie kontaktów i wyświetlać nazwy oraz zdjęcia aplikacja wymaga dostępu do kontaktów.</string>
+  <string name="generic_loading_error">Podczas ładowania danych wystąpił błąd</string>
 </resources>

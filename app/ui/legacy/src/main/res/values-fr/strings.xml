@@ -114,6 +114,7 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="compose_action">Rédiger
 </string>
   <string name="search_action">Rechercher</string>
+  <string name="search_everywhere_action">Chercher partout</string>
   <string name="search_results">Résultats de la recherche</string>
   <string name="preferences_action">Paramètres</string>
   <string name="folders_action">Gérer les dossiers</string>
@@ -127,9 +128,10 @@ Rapportez les bogues, recommandez de nouvelles fonctions et posez vos questions 
   <string name="copy_action">Copier</string>
   <string name="show_headers_action">Afficher les en-têtes</string>
   <plurals name="copy_address_to_clipboard">
-    <item quantity="one">Adresse copiée dans le presse-papiers</item>
-    <item quantity="other">Adresses copiées dans le presse-papiers</item>
+    <item quantity="one">L’adresse a été copiée dans le presse-papiers</item>
+    <item quantity="other">Les adresses ont été copiées dans le presse-papiers</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">Le texte de l’objet a été copié dans le presse-papiers</string>
   <string name="message_view_theme_action_dark">Basculer vers le thème foncé</string>
   <string name="message_view_theme_action_light">Basculer vers le thème clair</string>
   <string name="mark_as_unread_action">Marquer comme non lu</string>
@@ -180,6 +182,8 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="notification_bg_send_ticker">Envoi du courriel : <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Envoi du courriel</string>
   <string name="notification_bg_title_separator"> :</string>
+  <string name="notification_channel_push_title">Synchroniser (pousser)</string>
+  <string name="notification_channel_push_description">Affiché lors de l’attente de nouveaux messages</string>
   <string name="notification_channel_messages_title">Courriels</string>
   <string name="notification_channel_messages_description">Notifications relatives aux courriels</string>
   <string name="notification_channel_miscellaneous_title">Divers</string>
@@ -376,7 +380,6 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="account_setup_options_mail_check_frequency_6hour">Toutes les 6 heures</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Toutes les 12 heures</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Toutes les 24 heures</string>
-  <string name="push_poll_on_connect_label">Récupération lors d’une connexion pour le pousser</string>
   <string name="account_setup_options_enable_push_label">Activer le courriel poussé pour ce compte</string>
   <string name="account_setup_options_enable_push_summary">Si votre serveur le prend an charge, les nouveaux courriels apparaîtront instantanément. Cette option peut considérablement améliorer ou dégrader les performances.</string>
   <string name="idle_refresh_period_label">Actualiser la connexion IDLE</string>
@@ -429,8 +432,6 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="account_settings_notify_self_summary">Afficher une notification pour les courriels que j’ai envoyés</string>
   <string name="account_notify_contacts_mail_only_label">Contacts seulement</string>
   <string name="account_notify_contacts_mail_only_summary">N’afficher des notifications que pour les courriels de contacts connus</string>
-  <string name="account_settings_notification_opens_unread_label">La notification ouvre les courriels non lus</string>
-  <string name="account_settings_notification_opens_unread_summary">Recherche des courriels non lus lors de l’accès aux notifications</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marquer comme lu à l’ouverture</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marquer un courriel comme lu quand il est ouvert pour être visualisé</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Marquer comme lu lors de la suppression</string>
@@ -1042,4 +1043,8 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="permission_contacts_rationale_title">Autoriser l’accès au contact</string>
   <string name="permission_contacts_rationale_message">Afin de fournir des suggestions de contact et d’afficher les noms et les photos des contacts, l’appli a besoin d’accéder à vos contacts.</string>
   <string name="generic_loading_error">Une erreur est survenue lors du chargement des données</string>
+  <string name="push_notification_state_initializing">Initialisation…</string>
+  <string name="push_notification_state_listening">En attente de nouveaux courriels</string>
+  <string name="push_notification_state_wait_background_sync">Inactif tant que la synchronisation en arrière-plan n’est pas autorisée</string>
+  <string name="push_notification_state_wait_network">Inactif tant que le réseau n’est pas disponible</string>
 </resources>

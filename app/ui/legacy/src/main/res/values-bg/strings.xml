@@ -358,7 +358,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_setup_options_mail_check_frequency_6hour">На всеки 6 часа</string>
   <string name="account_setup_options_mail_check_frequency_12hour">На всеки 12 часа</string>
   <string name="account_setup_options_mail_check_frequency_24hour">На всеки 24 часа</string>
-  <string name="push_poll_on_connect_label">Poll-ване, когато се свързва за push</string>
   <string name="account_setup_options_enable_push_label">Включи push доставяне за този профил</string>
   <string name="account_setup_options_enable_push_summary">Ако сървърът позволява, новите съобщения се показват веднага. Тази опция може драматично да подобри или влоши работата на у-вото.</string>
   <string name="idle_refresh_period_label">Обновяване на неактивни връзки</string>
@@ -411,8 +410,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_settings_notify_self_summary">Покажи известия за съобщенията които изпращам</string>
   <string name="account_notify_contacts_mail_only_label">Само контакти</string>
   <string name="account_notify_contacts_mail_only_summary">Показвай известия само за съобщения от познати контакти</string>
-  <string name="account_settings_notification_opens_unread_label">Уведомлението отваря непрочетеното съобщение</string>
-  <string name="account_settings_notification_opens_unread_summary">Търси за непрочетени съобщения когато Уведомления е отворено</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Маркирай като прочетено, когато се отвори</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Маркирай съобщението като прочетено, когато се отвори за разглеждане</string>
   <string name="account_settings_notification_open_system_notifications_label">Настройки на известия</string>

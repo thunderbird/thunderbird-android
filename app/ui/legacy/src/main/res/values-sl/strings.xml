@@ -131,6 +131,7 @@ Poročila o napakah, predloge za nove funkcije in vprašanja lahko pošljete na
     <item quantity="few">Naslovi so kopirani v odložišče</item>
     <item quantity="other">Naslovi so kopirani v odložišče</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">Tekst zadeve kopiran v odložišče</string>
   <string name="message_view_theme_action_dark">Preklop na temno barvno shemo</string>
   <string name="message_view_theme_action_light">Preklop na svetlo barvno shemo</string>
   <string name="mark_as_unread_action">Označi kot neprebrano</string>
@@ -183,6 +184,8 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="notification_bg_send_ticker">Pošiljanje pošte: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Pošiljanje pošte</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_push_title">Sinhronizacija (potisk)</string>
+  <string name="notification_channel_push_description">Prikazano med čakanjem na nova sporočila</string>
   <string name="notification_channel_messages_title">Sporočila</string>
   <string name="notification_channel_messages_description">Obvestila v zvezi s sporočili</string>
   <string name="notification_channel_miscellaneous_title">Razno</string>
@@ -379,7 +382,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="account_setup_options_mail_check_frequency_6hour">Vsakih 6 ur</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Vsakih 12 ur</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Vsakih 24 ur</string>
-  <string name="push_poll_on_connect_label">Izvedi izpraševanje med povezavo za potisk</string>
   <string name="account_setup_options_enable_push_label">Omogoči potisno pošto za ta račun</string>
   <string name="account_setup_options_enable_push_summary">Če strežnik možnost podpira, bodo nova sporočila prikazala takoj. Nastavitev lahko močno izboljša ali poslabša hitrost delovanja.</string>
   <string name="idle_refresh_period_label">Obnovi nedejavno povezavo</string>
@@ -432,8 +434,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="account_settings_notify_self_summary">Pokaže obvestilo tudi za poslana sporočila</string>
   <string name="account_notify_contacts_mail_only_label">Pokaži obvestila le za sporočila znanih stikov</string>
   <string name="account_notify_contacts_mail_only_summary">Pokažejo se le obvestila za prispela sporočila od stikov, ki so v krajevnem imeniku</string>
-  <string name="account_settings_notification_opens_unread_label">S pritiskom na obvestilo se odpre neprebrano sporočilo</string>
-  <string name="account_settings_notification_opens_unread_summary">Odpre se neprebrano sporočilo, prikazana pa so tudi druga neprebrana sporočila</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Ob odpiranju označi kot prebrano</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Ko se sporočilo prvič odpre, naj bo označeno kot prebrano</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Ob izbrisu označi kot prebrano</string>
@@ -744,6 +744,7 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="send_failed_reason">Pošiljanje je spodletelo: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Ali želite shraniti osnutek sporočila?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Ali želite sporočilo shraniti ali zavreči?</string>
+  <string name="save_or_discard_draft_message_changes">Želiš shraniti ali zavreči spremembe?</string>
   <string name="confirm_discard_draft_message_title">Ali želite zavreči sporočilo?</string>
   <string name="confirm_discard_draft_message">Ali ste prepričani, da želite zavreči to sporočilo?</string>
   <string name="select_text_now">Izberite besedilo za kopiranje.</string>
@@ -1059,4 +1060,8 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
   <string name="permission_contacts_rationale_title">Dovoli dostop do stikov</string>
   <string name="permission_contacts_rationale_message">Če hočete dobiti predloge za stike in prikazati imena in fotografije stikov, aplikacija potrebuje dostop do vaših stikov.</string>
   <string name="generic_loading_error">Med nalaganjem podatkov je prišlo do napake</string>
+  <string name="push_notification_state_initializing">Inicializacija …</string>
+  <string name="push_notification_state_listening">Poslušanje novih e-poštnih sporočil</string>
+  <string name="push_notification_state_wait_background_sync">Spanje, dokler ni dovoljena sinhronizacija v ozadju </string>
+  <string name="push_notification_state_wait_network">Spanje, dokler ni na voljo omrežja</string>
 </resources>

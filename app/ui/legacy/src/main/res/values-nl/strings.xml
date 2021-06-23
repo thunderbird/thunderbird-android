@@ -109,6 +109,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="add_account_action">Account toevoegen</string>
   <string name="compose_action">Nieuw bericht</string>
   <string name="search_action">Zoeken</string>
+  <string name="search_everywhere_action">Overal zoeken</string>
   <string name="search_results">Zoekresultaten</string>
   <string name="preferences_action">Instellingen</string>
   <string name="folders_action">Beheer mappen</string>
@@ -125,6 +126,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
     <item quantity="one">Adres naar klembord gekopieerd</item>
     <item quantity="other">Adressen naar klembord gekopieerd</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">De onderwerpsregel is naar het klembord gekopieerd</string>
   <string name="message_view_theme_action_dark">Schakel naar donker thema</string>
   <string name="message_view_theme_action_light">Schakel naar licht thema</string>
   <string name="mark_as_unread_action">Markeer als ongelezen</string>
@@ -174,6 +176,8 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="notification_bg_send_ticker">Versturen van berichten: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Berichten versturen</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_push_title">Synchroniseren (Push)</string>
+  <string name="notification_channel_push_description">Wordt weergeven in afwachting op nieuwe berichten</string>
   <string name="notification_channel_messages_title">Beeld berichten</string>
   <string name="notification_channel_messages_description">Meldingen gerelateerd aan berichten</string>
   <string name="notification_channel_miscellaneous_title">Diversen</string>
@@ -370,7 +374,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_setup_options_mail_check_frequency_6hour">Elke 6 uur</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Elke 12 uur</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Elke 24 uur</string>
-  <string name="push_poll_on_connect_label">Poll bij verbinden voor push</string>
   <string name="account_setup_options_enable_push_label">Push mail voor dit account toestaan</string>
   <string name="account_setup_options_enable_push_summary">Als uw server dit ondersteunt, zullen nieuwe berichten direct verschijnen. Deze optie kan drastisch verbeteringen of verslechteringen van prestaties teweeg brengen.</string>
   <string name="idle_refresh_period_label">Vernieuw inactieve verbinding</string>
@@ -423,8 +426,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_settings_notify_self_summary">Notificatie ook voor e-mail verzonden vanaf een identiteit</string>
   <string name="account_notify_contacts_mail_only_label">Alleen contacten</string>
   <string name="account_notify_contacts_mail_only_summary">Notificaties alleen weergeven voor bekende contacten</string>
-  <string name="account_settings_notification_opens_unread_label">Notificatie opent ongelezen berichten</string>
-  <string name="account_settings_notification_opens_unread_summary">Zoekt voor ongelezen berichten wanneer Notificatie is geopend</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Markeer als gelezen als geopend</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Markeer als gelezen wanneer ingezien</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Als gelezen markeren bij wissen</string>
@@ -1041,4 +1042,8 @@ U kunt dit bericht bewaren als backup voor uw geheime sleutel. Als u dit wilt do
   <string name="permission_contacts_rationale_title">Sta toegang tot contacten toe</string>
   <string name="permission_contacts_rationale_message">Om contact suggesties te kunnen bieden en om namen en/of foto\'s van contacten weer te geven, heeft de app toegang nodig tot je contactenlijst.</string>
   <string name="generic_loading_error">Er is een fout opgetreden bij het laden van de gegevens</string>
+  <string name="push_notification_state_initializing">Aan het initialiseren …</string>
+  <string name="push_notification_state_listening">Nieuwe e-mails aan het afwachten</string>
+  <string name="push_notification_state_wait_background_sync">Doet niets totdat achtergrondsynchronisatie wordt toegestaan</string>
+  <string name="push_notification_state_wait_network">Doet niets totdat er een netwerk beschikbaar is</string>
 </resources>

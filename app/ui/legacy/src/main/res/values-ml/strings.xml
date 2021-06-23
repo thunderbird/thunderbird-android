@@ -374,7 +374,6 @@
   <string name="account_setup_options_mail_check_frequency_6hour">ഓരോ 6 മണിക്കൂറിലും</string>
   <string name="account_setup_options_mail_check_frequency_12hour">ഓരോ 12 മണിക്കൂറിലും</string>
   <string name="account_setup_options_mail_check_frequency_24hour">ഓരോ 24 മണിക്കൂറിലും</string>
-  <string name="push_poll_on_connect_label">പുഷിനായി കണക്റ്റുചെയ്യുമ്പോൾ പോൾ ചെയ്യുക</string>
   <string name="account_setup_options_enable_push_label">ഈ അക്കൗണ്ടിനായി പുഷ് മെയിൽ പ്രവർത്തനക്ഷമമാക്കുക</string>
   <string name="account_setup_options_enable_push_summary">നിങ്ങളുടെ സെർവർ ഇതിനെ പിന്തുണയ്ക്കുന്നുവെങ്കിൽ, പുതിയ സന്ദേശങ്ങൾ തൽക്ഷണം ദൃശ്യമാകും. ഈ ഓപ്ഷന് പ്രകടനം നാടകീയമായി മെച്ചപ്പെടുത്താനോ കുറയ്ക്കാനോ കഴിയും.</string>
   <string name="idle_refresh_period_label">IDLE കണക്ഷൻ പുതുക്കുക</string>
@@ -427,8 +426,6 @@
   <string name="account_settings_notify_self_summary">ഞാൻ അയച്ച സന്ദേശങ്ങൾക്കായി ഒരു അറിയിപ്പ് കാണിക്കുക</string>
   <string name="account_notify_contacts_mail_only_label">കോൺ‌ടാക്റ്റുകൾ‌ മാത്രം</string>
   <string name="account_notify_contacts_mail_only_summary">അറിയപ്പെടുന്ന കോൺടാക്റ്റുകളിൽ നിന്നുള്ള സന്ദേശങ്ങൾക്കായി മാത്രം അറിയിപ്പുകൾ കാണിക്കുക</string>
-  <string name="account_settings_notification_opens_unread_label">അറിയിപ്പ് വായിക്കാത്ത സന്ദേശങ്ങൾ തുറക്കുന്നു</string>
-  <string name="account_settings_notification_opens_unread_summary">അറിയിപ്പ് തുറക്കുമ്പോൾ വായിക്കാത്ത സന്ദേശങ്ങൾക്കായി തിരയുന്നു</string>
   <string name="account_settings_mark_message_as_read_on_view_label">തുറക്കുമ്പോൾ വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">ഒരു സന്ദേശം കാണാനായി തുറക്കുമ്പോൾ വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">ഇല്ലാതാക്കുമ്പോൾ വായിച്ചതായി അടയാളപ്പെടുത്തുക</string>

@@ -9,9 +9,18 @@
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> a The K-9 Dog Walkers. Részleges Copyright 2006-<xliff:g>%s</xliff:g> az Android Nyílt Forráskódú Projekt.</string>
+  <string name="source_code">Forráskód</string>
   <string name="app_license">Apache licensz, 2.0 verzió</string>
+  <string name="about_project_title">Nyílt Forráskódú Projekt</string>
+  <string name="about_website_title">Weboldal</string>
+  <string name="user_forum_title">Felhasználói fórum</string>
+  <string name="about_fediverse_title">Fediverzum</string>
+  <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">Programkönyvtárak</string>
   <string name="license">Licensz</string>
+  <string name="changelog_title">Változáslista</string>
+  <string name="changelog_loading_error">A változáslista betöltése sikertelen.</string>
+  <string name="changelog_version_title">Verzió %s</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Üdvözlet a K-9 Mail alkalmazásban.</string>
   <string name="accounts_welcome"><![CDATA[
@@ -119,6 +128,7 @@ Hibajelentések beküldésével hozzájárulhatunk új funkciókhoz és kérdés
     <item quantity="one">Cím a vágólapra másolva</item>
     <item quantity="other">A címek a vágólapra kerültek.</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">Tárgy szöveg a vágólapra másolva</string>
   <string name="message_view_theme_action_dark">Váltás sötét témára</string>
   <string name="message_view_theme_action_light">Váltás világos témára</string>
   <string name="mark_as_unread_action">Megjelölés olvasatlanként</string>
@@ -364,7 +374,6 @@ Hibajelentések beküldésével hozzájárulhatunk új funkciókhoz és kérdés
   <string name="account_setup_options_mail_check_frequency_6hour">6 óránként</string>
   <string name="account_setup_options_mail_check_frequency_12hour">12 óránként</string>
   <string name="account_setup_options_mail_check_frequency_24hour">24 óránként</string>
-  <string name="push_poll_on_connect_label">Lekérdezés küldéshez kapcsolódáskor</string>
   <string name="account_setup_options_enable_push_label">Levél küldésének engedélyezése ennél a fióknál</string>
   <string name="account_setup_options_enable_push_summary">Ha a kiszolgáló támogatja, akkor az új üzenetek azonnal megjelennek. Ez az lehetőség drámaian növelheti vagy csökkenti a teljesítményt.</string>
   <string name="idle_refresh_period_label">IDLE kapcsolat frissítése</string>
@@ -417,8 +426,6 @@ Hibajelentések beküldésével hozzájárulhatunk új funkciókhoz és kérdés
   <string name="account_settings_notify_self_summary">Értesítés megjelenítése az elküldött üzeneteknél</string>
   <string name="account_notify_contacts_mail_only_label">Csak partnerek</string>
   <string name="account_notify_contacts_mail_only_summary">Értesítések megjelenítése csak az ismert partnerektől érkező üzeneteknél</string>
-  <string name="account_settings_notification_opens_unread_label">Az értesítés megnyitja az olvasatlan üzeneteket</string>
-  <string name="account_settings_notification_opens_unread_summary">Olvasatlan üzenetek keresése értesítés megnyitásakor</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Megjelölés olvasottként megnyitáskor</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Üzenet megjelölése olvasottként megtekintésre megnyitáskor</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Megjelölés olvasottként törléskor</string>
@@ -676,6 +683,7 @@ Hibajelentések beküldésével hozzájárulhatunk új funkciókhoz és kérdés
   <string name="volume_navigation_title">Hangerő gomb navigáció</string>
   <string name="volume_navigation_message">Üzenetnézetekben</string>
   <string name="volume_navigation_list">Listanézetekben</string>
+  <string name="show_unified_inbox_title">Egységesített Beérkezett üzenetek mutatása</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">– Olvasatlan</string>
   <string name="search_all_messages_title">Összes üzenet</string>
@@ -728,6 +736,7 @@ Hibajelentések beküldésével hozzájárulhatunk új funkciókhoz és kérdés
   <string name="send_failed_reason">A küldés sikertelen: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Menti piszkozat üzenetként?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Menti vagy elveti ezt az üzenetet?</string>
+  <string name="save_or_discard_draft_message_changes">Menti vagy elveti a változtatásokat?</string>
   <string name="confirm_discard_draft_message_title">Elveti az üzenet?</string>
   <string name="confirm_discard_draft_message">Biztosan el szeretné vetni ezt az üzenetet?</string>
   <string name="select_text_now">Szöveg kijelölése a másoláshoz.</string>
@@ -1032,4 +1041,5 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Hozzáférés engedélyezése a partnerekhez</string>
   <string name="permission_contacts_rationale_message">Ahhoz, hogy partnerjavaslatokat tudjon tenni és meg tudja jeleníteni a partner nevét és fényképeit, az alkalmazásnak hozzáférésre van szüksége a partnereihez.</string>
+  <string name="generic_loading_error">Hiba történt az adatok betöltése során</string>
 </resources>

@@ -129,6 +129,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
     <item quantity="one">Adresler panoya kopyalandı</item>
     <item quantity="other">Adresler panoya kopyalandı</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">Konu metni panoya kopyalandı</string>
   <string name="message_view_theme_action_dark">Koyu temaya çevir</string>
   <string name="message_view_theme_action_light">Aydınlık temaya çevir</string>
   <string name="mark_as_unread_action">Okunmadı Olarak İşaretle</string>
@@ -374,7 +375,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_setup_options_mail_check_frequency_6hour">Her 6 saatte bir</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Her 12 saatte bir</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Her 24 saatte bir</string>
-  <string name="push_poll_on_connect_label">Göndermek için bağlandığında </string>
   <string name="account_setup_options_enable_push_label">Bu hesap için posta gönderme etkin</string>
   <string name="account_setup_options_enable_push_summary">Eğer sunucunuz destekliyorsa, yeni mesajlar anında belirecek. Bu seçenek dramatik olarak performansı arttırabilir veya zarar verebilir.</string>
   <string name="idle_refresh_period_label">IDLE bağlantıyı yenile</string>
@@ -427,8 +427,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_settings_notify_self_summary">Gönderdiğim mesajlar için bir bildirim göster</string>
   <string name="account_notify_contacts_mail_only_label">Sadece kişiler</string>
   <string name="account_notify_contacts_mail_only_summary">Sadece bilinen kişilerden gelen mesajlar için bildirim göster</string>
-  <string name="account_settings_notification_opens_unread_label">Okunmamış mesaj bildirimi açık</string>
-  <string name="account_settings_notification_opens_unread_summary">Bildirim açık olduğunda okunmamış mesajlar için arama yap</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Açılan iletiyi okundu olarak işaretle</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Mesaj okunmak üzere açıldığında okundu olarak işaretle</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Silindiğinde okundu olarak işaretle</string>
@@ -739,6 +737,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="send_failed_reason">Gönderilemedi: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Taslak iletiyi kaydetsin mi?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Bu mesajı kaydet veya sil?</string>
+  <string name="save_or_discard_draft_message_changes">Değişikliklerden vazgeç veya kaydet?</string>
   <string name="confirm_discard_draft_message_title">İleti silinsin mi?</string>
   <string name="confirm_discard_draft_message">Bu mesajı silmek istediğinizden emin misiniz?</string>
   <string name="select_text_now">Kopyalamak için metni seç.</string>
@@ -1043,4 +1042,5 @@ Bu iletiyi saklayabilir ve gizli anahtarınız için bir yedekleme olarak kullan
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Kişilere erişime izin ver</string>
   <string name="permission_contacts_rationale_message">Kişilerle ilgili öneriler sunabilmek, kişi adlarını ve fotoğraflarını görüntüleyebilmek için uygulamanın kişilerinize erişmesi gerekir.</string>
+  <string name="generic_loading_error">Veriler yüklenirken bir hata oluştu </string>
 </resources>

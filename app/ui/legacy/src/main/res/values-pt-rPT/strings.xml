@@ -366,7 +366,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_setup_options_mail_check_frequency_6hour">A cada 6 horas</string>
   <string name="account_setup_options_mail_check_frequency_12hour">A cada 12 horas</string>
   <string name="account_setup_options_mail_check_frequency_24hour">A cada 24 horas</string>
-  <string name="push_poll_on_connect_label">Verificar quando feita uma ligação para push</string>
   <string name="account_setup_options_enable_push_label">Ativar push de emails para esta conta</string>
   <string name="account_setup_options_enable_push_summary">Se o seu servidor suportar, novas mensagens aparecerão automaticamente. Esta opção pode melhorar ou piorar drasticamente a performance.</string>
   <string name="idle_refresh_period_label">Atualizar ligação IDLE</string>
@@ -419,8 +418,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_settings_notify_self_summary">Mostrar uma notificação para as mensagens que envio</string>
   <string name="account_notify_contacts_mail_only_label">Apenas contactos</string>
   <string name="account_notify_contacts_mail_only_summary">Mostrar notificações apenas para mensagens de contactos conhecidos</string>
-  <string name="account_settings_notification_opens_unread_label">A notificação abre mensagens não lidas</string>
-  <string name="account_settings_notification_opens_unread_summary">Procurar por mensagens não lidas ao abrir a notificação</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marcar como lido ao abrir</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marcar uma mensagem como lida ao abrir para visualização</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Marcar como lida quando apagada</string>

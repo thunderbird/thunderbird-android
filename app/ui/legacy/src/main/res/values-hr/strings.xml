@@ -337,7 +337,6 @@
   <string name="account_setup_options_mail_check_frequency_6hour">Svakih 6 sati</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Svakih 12 sati</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Svaka 24 sata</string>
-  <string name="push_poll_on_connect_label">Provjeri prilikom povezivanja za guranje</string>
   <string name="account_setup_options_enable_push_label">Omogući poštu guranja za ovaj račun</string>
   <string name="account_setup_options_enable_push_summary">Ako vaš poslužitelj podržava, nove poruke će se prikazivati odmah. Ova opcija može dramatično poboljšati ili pogoršati performanse.</string>
   <string name="idle_refresh_period_label">Osvježi BESPOSLENU vezu</string>
@@ -390,8 +389,6 @@
   <string name="account_settings_notify_self_summary">Prikaži obavijest za poruke koje ja pošaljem</string>
   <string name="account_notify_contacts_mail_only_label">Samo kontakti</string>
   <string name="account_notify_contacts_mail_only_summary">Prikaži obavijesti samo za poruke od poznatih kontakata</string>
-  <string name="account_settings_notification_opens_unread_label">Obavijest otvara nepročitane poruke</string>
-  <string name="account_settings_notification_opens_unread_summary">Pretraga za nepročitanim porukama nakon otvaranja Obavijesti</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Označi pročitanim prilikom otvaranja</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Označava poruke pročitanima nakon otvaranja za pregled</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Označi kao pročitano prilikom brisanja</string>

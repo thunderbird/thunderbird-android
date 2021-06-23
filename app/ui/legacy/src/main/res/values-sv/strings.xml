@@ -129,6 +129,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
     <item quantity="one">Adress kopierad till urklipp</item>
     <item quantity="other">Adresser kopierade till urklipp</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">Ämnestext kopierad till urklipp</string>
   <string name="message_view_theme_action_dark">Växla till mörkt tema</string>
   <string name="message_view_theme_action_light">Växla till ljust tema</string>
   <string name="mark_as_unread_action">Markera som oläst</string>
@@ -179,6 +180,8 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="notification_bg_send_ticker">Skickar e-post: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Skickar e-post</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_push_title">Synkronisera (Push)</string>
+  <string name="notification_channel_push_description">Visas i väntan på nya meddelanden</string>
   <string name="notification_channel_messages_title">Meddelanden</string>
   <string name="notification_channel_messages_description">Aviseringar relaterade till meddelanden</string>
   <string name="notification_channel_miscellaneous_title">Diverse</string>
@@ -375,7 +378,6 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_setup_options_mail_check_frequency_6hour">Var 6:e timme</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Var 12:e timme</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Var 24:e timme</string>
-  <string name="push_poll_on_connect_label">Kontrollera vid anslutning för push</string>
   <string name="account_setup_options_enable_push_label">Aktivera push-mail för detta konto</string>
   <string name="account_setup_options_enable_push_summary">Om det stöds av din server så kommer nya meddelanden att levereras omedelbart. Den här inställningen kan dramatiskt förbättra eller försämra prestanda.</string>
   <string name="idle_refresh_period_label">Förnya IDLE-anslutning</string>
@@ -428,8 +430,6 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_settings_notify_self_summary">Visa avisering även för e-post som jag själv skickat</string>
   <string name="account_notify_contacts_mail_only_label">Endast kontakter</string>
   <string name="account_notify_contacts_mail_only_summary">Visa aviseringar endast för meddelanden från kända kontakter</string>
-  <string name="account_settings_notification_opens_unread_label">Aviseringen öppnar oläst e-post</string>
-  <string name="account_settings_notification_opens_unread_summary">Letar efter oläst e-post när aviseringen öppnas</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Markera som läst vid öppning</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Markera ett meddelande som läst när det visas</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Markera som läst när det tas bort</string>
@@ -1046,4 +1046,8 @@ Du kan behålla det här meddelandet och använda det som en säkerhetskopia fö
   <string name="permission_contacts_rationale_title">Tillåt åtkomst till kontakter</string>
   <string name="permission_contacts_rationale_message">För att kunna ge kontaktförslag och visa kontaktnamn och foton behöver appen tillgång till dina kontakter.</string>
   <string name="generic_loading_error">Ett fel uppstod när data lästes in</string>
+  <string name="push_notification_state_initializing">Initierar...</string>
+  <string name="push_notification_state_listening">Lyssnar efter nya e-postmeddelanden</string>
+  <string name="push_notification_state_wait_background_sync">Sover tills bakgrundssynkronisering är tillåten</string>
+  <string name="push_notification_state_wait_network">Sover tills nätverket är tillgängligt</string>
 </resources>

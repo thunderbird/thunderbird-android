@@ -377,7 +377,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_setup_options_mail_check_frequency_6hour">Každých 6 hodin</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Každých 12 hodin</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Každé 24 hodiny</string>
-  <string name="push_poll_on_connect_label">Dotazovat se při PUSH připojení</string>
   <string name="account_setup_options_enable_push_label">Povolit připojení PUSH pro tento účet</string>
   <string name="account_setup_options_enable_push_summary">Pokud to váš server podporuje, nové zprávy se objeví okamžitě. Tato volba může dramaticky zlepšit nebo zhoršit výkon.</string>
   <string name="idle_refresh_period_label">Obnovit připojení IDLE</string>
@@ -430,8 +429,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_settings_notify_self_summary">Zobrazovat oznámení pro vlastní odeslanou poštu</string>
   <string name="account_notify_contacts_mail_only_label">Pouze kontakty</string>
   <string name="account_notify_contacts_mail_only_summary">Zobrazovat oznámení pouze na zprávy od známých kontaktů</string>
-  <string name="account_settings_notification_opens_unread_label">Oznámení otevírá nepřečtené zprávy</string>
-  <string name="account_settings_notification_opens_unread_summary">Vyhledává nepřečtené zprávy, je-li otevřeno oznámení</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Označit jako přečtenou po otevření</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Označit zprávu jako přečtenou po otevření</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Při smazání označit jako přečtené</string>
