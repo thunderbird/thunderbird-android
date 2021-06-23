@@ -134,7 +134,6 @@
             android:summary="@string/account_settings_incoming_summary"
             android:title="@string/account_settings_incoming_label" />
 
-        <!-- Temporarily disabled. See GH-4253
         <PreferenceScreen
             android:key="push_advanced"
             android:title="@string/account_settings_push_advanced_title">
@@ -154,7 +153,6 @@
                 android:title="@string/idle_refresh_period_label" />
 
         </PreferenceScreen>
-        -->
 
     </PreferenceScreen>
 
