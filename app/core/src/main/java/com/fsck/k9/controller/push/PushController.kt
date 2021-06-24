@@ -174,9 +174,10 @@ class PushController internal constructor(
     }
 
     private fun getPushAccounts(): List<Account> {
-        return preferences.accounts.filter { it.folderPushMode != FolderMode.NONE }
+        return preferences.accounts.filter { account ->
+            account.folderPushMode != FolderMode.NONE && backendManager.getBackend(account).isPushCapable
+        }
     }
-
     private fun setPushNotificationState(notificationState: PushNotificationState) {
         pushNotificationManager.notificationState = notificationState
     }

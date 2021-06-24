@@ -169,13 +169,11 @@ class AccountSettingsFragment : PreferenceFragmentCompat(), ConfirmationDialogFr
     }
 
     private fun initializeAdvancedPushSettings(account: Account) {
-        /* Temporarily disabled. See GH-4253
         if (!messagingController.isPushCapable(account)) {
-            findPreference(PREFERENCE_PUSH_MODE)?.remove()
-            findPreference(PREFERENCE_ADVANCED_PUSH_SETTINGS)?.remove()
-            findPreference(PREFERENCE_REMOTE_SEARCH)?.remove()
+            findPreference<Preference>(PREFERENCE_PUSH_MODE)?.remove()
+            findPreference<Preference>(PREFERENCE_ADVANCED_PUSH_SETTINGS)?.remove()
+            findPreference<Preference>(PREFERENCE_REMOTE_SEARCH)?.remove()
         }
-         */
     }
 
     private fun initializeNotifications() {
