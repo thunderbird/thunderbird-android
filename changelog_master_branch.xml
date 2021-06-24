@@ -5,6 +5,10 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.736" versioncode="27036" date="2021-06-24">
+        <change>Fixed Push-related crash with non-IMAP accounts</change>
+        <change>Don't show Push-related settings for non-IMAP accounts</change>
+    </release>
     <release version="5.735" versioncode="27035" date="2021-06-24">
         <change>Added back support for IMAP IDLE (Push)</change>
         <change>Show unread count on account list in drawer</change>
