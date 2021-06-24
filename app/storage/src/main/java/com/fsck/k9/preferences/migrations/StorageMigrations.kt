@@ -19,5 +19,6 @@ internal object StorageMigrations {
         if (oldVersion < 11) StorageMigrationTo11(db, migrationsHelper).upgradeMessageViewContentFontSize()
         if (oldVersion < 12) StorageMigrationTo12(db, migrationsHelper).removeStoreAndTransportUri()
         if (oldVersion < 13) StorageMigrationTo13(db, migrationsHelper).renameHideSpecialAccounts()
+        if (oldVersion < 14) StorageMigrationTo14(db, migrationsHelper).disablePushFoldersForNonImapAccounts()
     }
 }
