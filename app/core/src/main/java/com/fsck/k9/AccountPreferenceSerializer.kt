@@ -150,7 +150,7 @@ class AccountPreferenceSerializer(
 
             folderSyncMode = getEnumStringPref<FolderMode>(storage, "$accountUuid.folderSyncMode", FolderMode.FIRST_CLASS)
 
-            folderPushMode = getEnumStringPref<FolderMode>(storage, "$accountUuid.folderPushMode", FolderMode.FIRST_CLASS)
+            folderPushMode = getEnumStringPref<FolderMode>(storage, "$accountUuid.folderPushMode", FolderMode.NONE)
 
             folderTargetMode = getEnumStringPref<FolderMode>(storage, "$accountUuid.folderTargetMode", FolderMode.NOT_SECOND_CLASS)
 
@@ -553,7 +553,7 @@ class AccountPreferenceSerializer(
             isNotifyContactsMailOnly = false
             folderDisplayMode = FolderMode.NOT_SECOND_CLASS
             folderSyncMode = FolderMode.FIRST_CLASS
-            folderPushMode = FolderMode.FIRST_CLASS
+            folderPushMode = FolderMode.NONE
             folderTargetMode = FolderMode.NOT_SECOND_CLASS
             sortType = DEFAULT_SORT_TYPE
             setSortAscending(DEFAULT_SORT_TYPE, DEFAULT_SORT_ASCENDING)

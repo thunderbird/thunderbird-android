@@ -91,7 +91,8 @@ public class AccountSettingsDescriptions {
                 new V(1, new EnumSetting<>(FolderMode.class, FolderMode.NOT_SECOND_CLASS))
         ));
         s.put("folderPushMode", Settings.versions(
-                new V(1, new EnumSetting<>(FolderMode.class, FolderMode.FIRST_CLASS))
+                new V(1, new EnumSetting<>(FolderMode.class, FolderMode.FIRST_CLASS)),
+                new V(72, new EnumSetting<>(FolderMode.class, FolderMode.NONE))
         ));
         s.put("folderSyncMode", Settings.versions(
                 new V(1, new EnumSetting<>(FolderMode.class, FolderMode.FIRST_CLASS))
