@@ -5,6 +5,19 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.735" versioncode="27035" date="2021-06-24">
+        <change>Added back support for IMAP IDLE (Push)</change>
+        <change>Show unread count on account list in drawer</change>
+        <change>Added 'search everywhere' to menu when displaying results of a search in a single folder</change>
+        <change>Long-pressing the subject when viewing a message now copies the text to the clipboard</change>
+        <change>Removed "Notification opens unread messages" setting</change>
+        <change>Honor expunge policy when deleting messages without Trash folder (IMAP)</change>
+        <change>Fixed multiple bugs related to remote search (IMAP)</change>
+        <change>Fixed instances where the system language instead of the app language was used for some texts</change>
+        <change>Fixed bug that prevented forwarding encrypted attachments</change>
+        <change>Fixed various crashes</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.734" versioncode="27034" date="2021-05-01">
         <change>Added support for reordering accounts (in the settings screen)</change>
         <change>Added the ability to discard changes and keep the original draft</change>
