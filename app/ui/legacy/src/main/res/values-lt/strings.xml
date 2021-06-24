@@ -265,7 +265,6 @@
   <string name="account_setup_options_mail_check_frequency_6hour">Kas 6 valandas</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Kas 12 valandų</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Kas 24 valandas</string>
-  <string name="push_poll_on_connect_label">Siunčiant patikrinti ar nėra naujų laiškų</string>
   <string name="account_setup_options_enable_push_label">Įgalinti šios paskyros pašto siuntimą</string>
   <string name="account_setup_options_enable_push_summary">Jei jūsų serveris tai palaiko, nauji laiškai pasirodys iškart. Ši galimybė gali drastiškai pagerinti ar pabloginti greitaveiką.</string>
   <string name="idle_refresh_period_label">Atnaujinti IDLE prisijungimą</string>
@@ -309,8 +308,6 @@
   <string name="account_settings_notify_sync_summary">Tikrinant paštą pranešti apie tai būsenos juostoje</string>
   <string name="account_settings_notify_self_label">Įtraukti siunčiamus laiškus</string>
   <string name="account_settings_notify_self_summary">Rodyti pranešimą mano išsiųstiems laiškams</string>
-  <string name="account_settings_notification_opens_unread_label">Pranešimas atveria neskaitytus laiškus</string>
-  <string name="account_settings_notification_opens_unread_summary">Atvėrus pranešimą ieško neskaitytų laiškų</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Atvėrus pažymėti kaip skaitytą</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Kai laiškas atveriamas peržiūrai pažymėti jį kaip skaitytą</string>
   <string name="account_settings_show_pictures_label">Visada rodyti paveikslėlius</string>

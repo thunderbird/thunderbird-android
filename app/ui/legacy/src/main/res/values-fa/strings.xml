@@ -365,7 +365,6 @@
   <string name="account_setup_options_mail_check_frequency_6hour">هر ۶ ساعت</string>
   <string name="account_setup_options_mail_check_frequency_12hour">هر ۱۲ ساعت</string>
   <string name="account_setup_options_mail_check_frequency_24hour">هر ۲۴ ساعت</string>
-  <string name="push_poll_on_connect_label">در هنگام اتصال برای پیشرانی (Push) سرکشی (Poll) انجام شود</string>
   <string name="account_setup_options_enable_push_label">پیشرانی رایانامه (Push Mail) برای این حساب فعال شود</string>
   <string name="account_setup_options_enable_push_summary">اگر کارساز شما آن را پشتیبانی کند پیام‌های جدید بلافاصله ظاهر می‌شوند. این گزینه می‌تواند کارایی را به‌شدت افزایش یا کاهش دهد.</string>
   <string name="idle_refresh_period_label">تازه‌کردن اتصال IDLE</string>
@@ -418,8 +417,6 @@
   <string name="account_settings_notify_self_summary">برای پیام‌هایی که فرستادم یک اعلان نمایش بده</string>
   <string name="account_notify_contacts_mail_only_label">فقط مخاطبان</string>
   <string name="account_notify_contacts_mail_only_summary">فقط برای پیام مخاطبانِ شناس، اعلان بده</string>
-  <string name="account_settings_notification_opens_unread_label">اعلان، پیام‌های نخوانده را باز می‌کند</string>
-  <string name="account_settings_notification_opens_unread_summary">زمانی که اعلان باز شود برای پیام‌های نخوانده جستجو می‌کند</string>
   <string name="account_settings_mark_message_as_read_on_view_label">اگر باز شد نشان بزن که خواندم</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">زمانی که یک پیام را باز کردید به‌عنوان خوانده علامت بخورد</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">هنگام حذف، نشان بزن که خواندم</string>

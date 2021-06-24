@@ -375,7 +375,6 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="account_setup_options_mail_check_frequency_6hour">Pob 6 awr</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Pob 12 awr</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Pob 24 awr</string>
-  <string name="push_poll_on_connect_label">Gwirio wrth gysylltu i wthio</string>
   <string name="account_setup_options_enable_push_label">Galluogi anfon negeseuon ar gyfer y cyfrif hwn.</string>
   <string name="account_setup_options_enable_push_summary">Os yw dy weinydd yn ei gefnogi, bydd negeseuon newydd yn ymddangos yn syth. Gall yr opsiwn hwn wella neu ddirywio perfformiad yn sylweddol.</string>
   <string name="idle_refresh_period_label">Ail-lwytho cysylltiad IDLE</string>
@@ -428,8 +427,6 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="account_settings_notify_self_summary">Dangos hysbysiadau ar gyfer negeseuon rwy\'n eu hanfon</string>
   <string name="account_notify_contacts_mail_only_label">Cysyllteion yn unig</string>
   <string name="account_notify_contacts_mail_only_summary">Dangos hysbysiadau dim ond ar gyfer negeseuon gan fy nghysylltiadau i</string>
-  <string name="account_settings_notification_opens_unread_label">Hysbysiad yn agor negeseuon heb eu darllen</string>
-  <string name="account_settings_notification_opens_unread_summary">Mae\'n chwilio am negeseuon heb eu darllen pan mae Hysbysiad yn cael ei agor</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Nodi fel wedi ei darllen wrth agor</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Nodi neges fel ei bod wedi ei darllen wrth ei hagor i\'w darllen.</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Nodi wedi\'i darllen wrth dileu</string>

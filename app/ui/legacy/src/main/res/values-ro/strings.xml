@@ -9,9 +9,18 @@
   <!--Used in the about dialog-->
   <string name="app_authors">K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Anumite porțiuni Copyright 2006-<xliff:g>%s</xliff:g> Proiectul Android Open Source.</string>
+  <string name="source_code">Codul sursă</string>
   <string name="app_license">Licență Apache, Versiune 2.0</string>
+  <string name="about_project_title">Proiect Open Source</string>
+  <string name="about_website_title">Website</string>
+  <string name="user_forum_title">Forum utilizatori</string>
+  <string name="about_fediverse_title">Fediverse</string>
+  <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">Biblioteci</string>
   <string name="license">Licență</string>
+  <string name="changelog_title">Jurnal de schimbări</string>
+  <string name="changelog_loading_error">Nu s-a putut încărca jurnalul de modificări.</string>
+  <string name="changelog_version_title">Versiune %s</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Bun venit la K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -91,6 +100,7 @@ Vă rugăm să ne raportați defecte, să contribuiți cu funcționalități noi
   <string name="forward_as_attachment_action">Trimite atașat</string>
   <string name="edit_as_new_message_action">Editează ca și mesaj nou</string>
   <string name="move_action">Mută</string>
+  <string name="move_to_drafts_action">Mutarea în proiecte</string>
   <string name="single_message_options_action">Trimite…</string>
   <string name="refile_action">Reîndosariază…</string>
   <string name="done_action">Realizat</string>
@@ -120,6 +130,7 @@ Vă rugăm să ne raportați defecte, să contribuiți cu funcționalități noi
     <item quantity="few">Adresele au fost copiate în clipboard</item>
     <item quantity="other">Adresele au fost copiate în clipboard</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">Textul subiectului copiat în clipboard</string>
   <string name="message_view_theme_action_dark">Comută la tema închisă</string>
   <string name="message_view_theme_action_light">Comută la tema deschisă</string>
   <string name="mark_as_unread_action">Marchează ca necitit</string>
@@ -367,7 +378,6 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
   <string name="account_setup_options_mail_check_frequency_6hour">La fiecare 6 ore</string>
   <string name="account_setup_options_mail_check_frequency_12hour">La fiecare 12 ore</string>
   <string name="account_setup_options_mail_check_frequency_24hour">La fiecare 24 de ore</string>
-  <string name="push_poll_on_connect_label">Interoghează la conectarea push</string>
   <string name="account_setup_options_enable_push_label">Activează Push e-mail pentru acest cont</string>
   <string name="account_setup_options_enable_push_summary">Dacă serverul suportă, noile mesaje apar instantaneu. Această opțiune poate îmbunătăți sau diminua serios performanța</string>
   <string name="idle_refresh_period_label">Împrospătează conexiune IDLE</string>
@@ -422,8 +432,6 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="account_settings_notify_self_summary">Arată o notificare pentru mesajele pe care le-am trimis</string>
   <string name="account_notify_contacts_mail_only_label">Doar contacte</string>
   <string name="account_notify_contacts_mail_only_summary">Arată notificări doar pentru mesaje de la persoane cunoscute</string>
-  <string name="account_settings_notification_opens_unread_label">Notificarea deschide mesajele necitite</string>
-  <string name="account_settings_notification_opens_unread_summary">Caută mesaje necitite când Notificarea e deschisă</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marchează ca citit la deschidere</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marchează mesaj ca citit când e deschis pentru vizualizare</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Marchează ca citit la ștergere</string>
@@ -681,6 +689,7 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="volume_navigation_title">Navigare prin butonu de volum</string>
   <string name="volume_navigation_message">Vizualizări în mesaj</string>
   <string name="volume_navigation_list">Vizualizări în listă</string>
+  <string name="show_unified_inbox_title">Afișați Cutia poștală de intrare unificată</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Necitite</string>
   <string name="search_all_messages_title">Toate mesajele</string>
@@ -733,6 +742,7 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="send_failed_reason">Trimitere eșuată: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Salvezi ca ciornă?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Salvezi sau Renunți la mesaj?</string>
+  <string name="save_or_discard_draft_message_changes">Salvați sau respingeți modificările?</string>
   <string name="confirm_discard_draft_message_title">Renunți la mesaj?</string>
   <string name="confirm_discard_draft_message">Sigur dorești să renunți la mesaj?</string>
   <string name="select_text_now">Selectează textul de copiat.</string>
@@ -814,6 +824,8 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="webview_contextmenu_link_share_action">Distribuie legătură</string>
   <string name="webview_contextmenu_link_copy_action">Copiază legătura în clipboard</string>
   <string name="webview_contextmenu_link_clipboard_label">Legătură</string>
+  <string name="webview_contextmenu_link_text_copy_action">Copiați textul legăturii în clipboard</string>
+  <string name="webview_contextmenu_link_text_clipboard_label">Textul linkului</string>
   <string name="webview_contextmenu_image_title">Imagine</string>
   <string name="webview_contextmenu_image_view_action">Vezi imaginea</string>
   <string name="webview_contextmenu_image_save_action">Salvează imaginea</string>
@@ -892,6 +904,8 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="recipient_bcc">Bcc</string>
   <string name="recipient_to">Către</string>
   <string name="recipient_from">De la</string>
+  <string name="unknown_recipient">&lt;Unknown Recipient&gt;</string>
+  <string name="unknown_sender">&lt;Unknown Sender&gt;</string>
   <string name="address_type_home">Acasă</string>
   <string name="address_type_work">Birou</string>
   <string name="address_type_other">Alta</string>
@@ -1038,4 +1052,5 @@ Poți păstra acest mesaj și să îl folosești drept copie de siguranță a ch
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Permite accesul contactelor</string>
   <string name="permission_contacts_rationale_message">Pentru a putea oferi sugestii de contacte și a afișa numele și pozele contactelor, aplicația are nevoie de acces la contactele tale.</string>
+  <string name="generic_loading_error">A apărut o eroare la încărcarea datelor</string>
 </resources>

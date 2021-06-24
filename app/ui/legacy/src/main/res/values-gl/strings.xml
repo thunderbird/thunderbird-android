@@ -346,7 +346,6 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="account_setup_options_mail_check_frequency_6hour">Cada 6 horas</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Cada 12 horas</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Cada 24 horas</string>
-  <string name="push_poll_on_connect_label">Comprobar automáticamente</string>
   <string name="account_setup_options_enable_push_label">Activar subscripción para esta conta</string>
   <string name="account_setup_options_enable_push_summary">Se se soporta polo teu servidor, as mensaxes aparecerán de xeito instantáneo. Esta opción pode provocar lentitude no sistema</string>
   <string name="idle_refresh_period_label">Refrescar conexión</string>
@@ -399,8 +398,6 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="account_settings_notify_self_summary">Amosar notificacións durante o envío de correo</string>
   <string name="account_notify_contacts_mail_only_label">Só contactos</string>
   <string name="account_notify_contacts_mail_only_summary">Mostrar notificacións só das mensaxes de contactos coñecidos</string>
-  <string name="account_settings_notification_opens_unread_label">Abrir correo non lido</string>
-  <string name="account_settings_notification_opens_unread_summary">Abrir correo non lido dende a notificación</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marcar como lido ao abrir</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marcas unha mensaxe como lida cando se abre para vela</string>
   <string name="account_settings_show_pictures_label">Amosar imaxes</string>

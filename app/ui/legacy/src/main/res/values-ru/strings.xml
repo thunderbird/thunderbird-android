@@ -378,7 +378,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_setup_options_mail_check_frequency_6hour">6 часов</string>
   <string name="account_setup_options_mail_check_frequency_12hour">12 часов</string>
   <string name="account_setup_options_mail_check_frequency_24hour">1 сутки</string>
-  <string name="push_poll_on_connect_label">Проверка при push</string>
   <string name="account_setup_options_enable_push_label">Push-уведомления</string>
   <string name="account_setup_options_enable_push_summary">Мгновенное извещение о новых сообщениях, при поддержке сервером</string>
   <string name="idle_refresh_period_label">Интервал обновления IDLE</string>
@@ -431,8 +430,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_settings_notify_self_summary">Показать уведомление при отправке почты</string>
   <string name="account_notify_contacts_mail_only_label">Для контактов</string>
   <string name="account_notify_contacts_mail_only_summary">Уведомлять только о сообщениях от контактов</string>
-  <string name="account_settings_notification_opens_unread_label">Перейти в непрочитанные</string>
-  <string name="account_settings_notification_opens_unread_summary">Перейти к непрочитанным сообщениям при нажатии на уведомление</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Открытое прочитано</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Отметить сообщение прочитанным после просмотра</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Отметить как прочитанное при удалении</string>

@@ -373,7 +373,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_setup_options_mail_check_frequency_6hour">Setiap 6 jam</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Setiap 12 jam</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Setiap 24 jam</string>
-  <string name="push_poll_on_connect_label">Tarik ketika konek untuk dorong</string>
   <string name="account_setup_options_enable_push_label">Aktifkan push mail untuk akun ini</string>
   <string name="account_setup_options_enable_push_summary">Jika server Anda mendukungnya, pesan baru akan segera muncul. Pilihan ini dapat secara dramatis memperbaiki atau melukai kinerja.</string>
   <string name="idle_refresh_period_label">Segarkan koneksi IDLE</string>
@@ -426,8 +425,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_settings_notify_self_summary">Tampilkan pemberitahuan untuk pesan yang saya kirim</string>
   <string name="account_notify_contacts_mail_only_label">Hanya kontak</string>
   <string name="account_notify_contacts_mail_only_summary">Tampilkan notifikasi hanya untuk pesan dari kontak yang diketahui</string>
-  <string name="account_settings_notification_opens_unread_label">Pemberitahuan akan membuka pesan yang belum dibaca</string>
-  <string name="account_settings_notification_opens_unread_summary">Mencari pesan yang belum dibaca saat Pemberitahuan dibuka</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Tandai sudah dibaca saat dibuka</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Tandai pesan sebagai telah dibaca saat dibuka untuk dilihat</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Tandai sebagai terbaca saat dihapus</string>

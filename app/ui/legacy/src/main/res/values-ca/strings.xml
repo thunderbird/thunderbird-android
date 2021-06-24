@@ -113,6 +113,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="add_account_action">Afegeix un compte nou</string>
   <string name="compose_action">Redacta</string>
   <string name="search_action">Cerca</string>
+  <string name="search_everywhere_action">Cerca-ho pertot arreu</string>
   <string name="search_results">Cerca resultats</string>
   <string name="preferences_action">Configuració</string>
   <string name="folders_action">Gestioneu les carpetes</string>
@@ -129,6 +130,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
     <item quantity="one">Adreça copiada al porta-retalls</item>
     <item quantity="other">Adreces copiades al porta-retalls</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">Text de l\'assumpte copiat al porta-retalls</string>
   <string name="message_view_theme_action_dark">Canvia a la vista fosca</string>
   <string name="message_view_theme_action_light">Canvia a la vista clara</string>
   <string name="mark_as_unread_action">Marca com a no llegit</string>
@@ -179,6 +181,8 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="notification_bg_send_ticker">Enviant correu: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Enviant correu</string>
   <string name="notification_bg_title_separator">.</string>
+  <string name="notification_channel_push_title">Sincronitza-ho (Empeny)</string>
+  <string name="notification_channel_push_description">Mostrat mentre s\'esperen missatges nous</string>
   <string name="notification_channel_messages_title">Missatges</string>
   <string name="notification_channel_messages_description">Notificacions relacionades amb missatges</string>
   <string name="notification_channel_miscellaneous_title">Miscel·lània</string>
@@ -375,7 +379,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_setup_options_mail_check_frequency_6hour">Cada 6 hores</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Cada 12 hores</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Cada 24 hores</string>
-  <string name="push_poll_on_connect_label">Comprova quan es connecti per trametre</string>
   <string name="account_setup_options_enable_push_label">Habilita la tramesa de correu per a aquest compte</string>
   <string name="account_setup_options_enable_push_summary">Si el vostre servidor ho admet, els missatges arribaran automàticament. Aquesta opció pot millorar o empitjorar el rendiment.</string>
   <string name="idle_refresh_period_label">Refresca la connexió IDLE</string>
@@ -428,8 +431,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_settings_notify_self_summary">Mostra una notificació per als missatges que enviïs</string>
   <string name="account_notify_contacts_mail_only_label">Només els contactes</string>
   <string name="account_notify_contacts_mail_only_summary">Mostra notificacions només per als missatges de contactes coneguts</string>
-  <string name="account_settings_notification_opens_unread_label">La notificació obre missatges no llegits</string>
-  <string name="account_settings_notification_opens_unread_summary">Cerca missatges no llegits quan s\'ha obert la notificació.</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Marca el missatge obert com a llegit</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Marca el missatge com a llegit després d\'haver-lo obert.</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Marca com a llegit quan se suprimeixi</string>
@@ -740,6 +741,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="send_failed_reason">Ha fallat l\'enviament: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Deso l\'esborrany?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Deso o descarto aquest missatge?</string>
+  <string name="save_or_discard_draft_message_changes">Voleu desar o descartar els canvis?</string>
   <string name="confirm_discard_draft_message_title">Descarto el missatge?</string>
   <string name="confirm_discard_draft_message">Segur que voleu descartar aquest missatge?</string>
   <string name="select_text_now">Seleccioneu el text a copiar.</string>
@@ -1045,4 +1047,8 @@ Podeu guardar aquest missatge i usar-lo com a còpia de seguretat per a la vostr
   <string name="permission_contacts_rationale_title">Permet l\'accés als contactes</string>
   <string name="permission_contacts_rationale_message">Per poder proporcionar suggeriments de contactes i mostrar-ne els noms i fotografies, l\'aplicació necessita accés als vostres contactes.</string>
   <string name="generic_loading_error">S\'ha produït un error en carregar les dades</string>
+  <string name="push_notification_state_initializing">S\'inicia...</string>
+  <string name="push_notification_state_listening">Es mira si hi ha missatges nous.</string>
+  <string name="push_notification_state_wait_background_sync">Inactiu fins que es permeti la sincronització</string>
+  <string name="push_notification_state_wait_network">Inactiu fins que la xarxa estigui disponible</string>
 </resources>

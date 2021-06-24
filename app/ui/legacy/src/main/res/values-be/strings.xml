@@ -378,7 +378,6 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_setup_options_mail_check_frequency_6hour">Кожныя 6 гадзін</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Кожныя 12 гадзін</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Кожныя 24 гадзіны</string>
-  <string name="push_poll_on_connect_label">Праверка пры злучэнні для push-апавяшчэнняў</string>
   <string name="account_setup_options_enable_push_label">Уключыць push-апавяшчэнні для гэтага акаўнта</string>
   <string name="account_setup_options_enable_push_summary">Імгненнае апавяшчэнне пра новыя лісты, калі гэта падтрымліваецца серверам.</string>
   <string name="idle_refresh_period_label">Інтэрвал абнаўлення IDLE</string>
@@ -431,8 +430,6 @@ K-9 Mail - шматфункцыянальны свабодны паштовы к
   <string name="account_settings_notify_self_summary">Паказваць апавяшчэнні пры атрыманні пошты</string>
   <string name="account_notify_contacts_mail_only_label">Толькі кантакты</string>
   <string name="account_notify_contacts_mail_only_summary">Апавяшчаць толькі пра лісты ад кантактаў</string>
-  <string name="account_settings_notification_opens_unread_label">Пераходзіць з апавяшчэння да непрачытаных лістоў</string>
-  <string name="account_settings_notification_opens_unread_summary">Пераходзіць да непрачытаных лістоў пры націсканні на апавяшчэнне</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Пазначаць прачытаным пры адкрыцці</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Пазначаць ліст прачытаным пасля прагляду</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Пазначаць як прачытанае пры выдаленні</string>

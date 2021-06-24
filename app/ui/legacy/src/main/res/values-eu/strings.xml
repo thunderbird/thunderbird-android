@@ -358,7 +358,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_setup_options_mail_check_frequency_6hour">6 orduero</string>
   <string name="account_setup_options_mail_check_frequency_12hour">12 orduero</string>
   <string name="account_setup_options_mail_check_frequency_24hour">24 orduero</string>
-  <string name="push_poll_on_connect_label">Atzitu bidaltzeko konektatzerakoan</string>
   <string name="account_setup_options_enable_push_label">Gaitu \"push\" posta kontu honetarako</string>
   <string name="account_setup_options_enable_push_summary">Zure zerbitzariak onartzen badu, mezu berriak berehala agertuko dira. Aukera honek errendimendua izugarri hobetu edo kaltetu dezake.</string>
   <string name="idle_refresh_period_label">Freskatu IDLE konexioa</string>
@@ -411,8 +410,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_settings_notify_self_summary">Erakutsi jakinarazpen bat bidaltzen ditudan mezuetarako</string>
   <string name="account_notify_contacts_mail_only_label">Kontaktuak bakarrik</string>
   <string name="account_notify_contacts_mail_only_summary">Erakutsi kontaktu ezagunen mezuen jakinarazpenak bakarrik</string>
-  <string name="account_settings_notification_opens_unread_label">Jakinarazpenak irakurri gabeko mezuak irekitzen ditu</string>
-  <string name="account_settings_notification_opens_unread_summary">Jakinarazpena irekitzean irakurri gabeko mezuak bilatu</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Markatu irakurritako gisa irekitzean</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Markatu mezua irakurritako gisa ikusteko irekitzerakoan</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Markatu irakurritako gisa ezabatzean</string>

@@ -114,6 +114,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="add_account_action">Shtoni llogari</string>
   <string name="compose_action">Hartoni</string>
   <string name="search_action">Kërko</string>
+  <string name="search_everywhere_action">Kërko kudo</string>
   <string name="search_results">Përfundime kërkimi</string>
   <string name="preferences_action">Rregullime</string>
   <string name="folders_action">Administroni dosje</string>
@@ -130,6 +131,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
     <item quantity="one">Adresa u kopjua në të papastër</item>
     <item quantity="other">Adresat u kopjuan në të papastër</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">Teksti i subjektit u kopjua në të papastër</string>
   <string name="message_view_theme_action_dark">Kalo te tema e errët</string>
   <string name="message_view_theme_action_light">Kalo te tema e çelët</string>
   <string name="mark_as_unread_action">Shënoje si të palexuar</string>
@@ -180,6 +182,8 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="notification_bg_send_ticker">Po dërgohet postë: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Dërgim poste</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_push_title">Njëkohëso (Push)</string>
+  <string name="notification_channel_push_description">Shfaqur teksa pritet për mesazhe të reja</string>
   <string name="notification_channel_messages_title">Mesazhe</string>
   <string name="notification_channel_messages_description">Njoftime lidhur me mesazhe</string>
   <string name="notification_channel_miscellaneous_title">Të ndryshme</string>
@@ -376,7 +380,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_setup_options_mail_check_frequency_6hour">Çdo 6 orë</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Çdo 12 orë</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Çdo 24 orë</string>
-  <string name="push_poll_on_connect_label">Vil kur lidhesh për dërgim push</string>
   <string name="account_setup_options_enable_push_label">Aktivizo dërgim poste push për këtë llogari</string>
   <string name="account_setup_options_enable_push_summary">Nëse mbulohet nga shërbyesi juaj, mesazhet e rinj do të shfaqen menjëherë. Kjo mundësi mundet të përmirësojë ose dëmtojë mjaft punimin.</string>
   <string name="idle_refresh_period_label">Rifresko lidhjen IDLE</string>
@@ -429,8 +432,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_settings_notify_self_summary">Shfaq një njoftim për mesazhet që dërgoj</string>
   <string name="account_notify_contacts_mail_only_label">Vetëm kontaktet</string>
   <string name="account_notify_contacts_mail_only_summary">Shfaq njoftime vetëm për mesazhe nga kontakte të njohur</string>
-  <string name="account_settings_notification_opens_unread_label">Njoftimi hap mesazhet e palexuar</string>
-  <string name="account_settings_notification_opens_unread_summary">Kërkon për mesazhe të palexuar, kur hapet Njoftime</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Shënoje si të lexuar kur hapet</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Shënoje një mesazh të lexuar, kur hapet për parje</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Vëri shenjë si i lexuar, kur fshihet</string>
@@ -1047,4 +1048,8 @@ Mund ta mbani këtë mesazh dhe ta përdorni si një kopjeruatje të kyçit tuaj
   <string name="permission_contacts_rationale_title">Lejo hyrje te kontaktet</string>
   <string name="permission_contacts_rationale_message">Për të qenë në gjendje të jepen sugjerime kontaktesh dhe të shfaqen emra dhe telefona kontaktesh, aplikacioni ka nevojë të hyjë te kontaktet tuaja.</string>
   <string name="generic_loading_error">Ndodhi një gabim teksa ngarkoheshin të dhënat</string>
+  <string name="push_notification_state_initializing">Po fillohet…</string>
+  <string name="push_notification_state_listening">Po përgjohet për email-e të rinj</string>
+  <string name="push_notification_state_wait_background_sync">Po dremitet, deri sa të lejohet njëkohësimi në prapaskenë</string>
+  <string name="push_notification_state_wait_network">Po dremitet, deri sa të ketë rrjet</string>
 </resources>

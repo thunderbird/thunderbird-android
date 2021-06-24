@@ -373,7 +373,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_setup_options_mail_check_frequency_6hour">6時間毎</string>
   <string name="account_setup_options_mail_check_frequency_12hour">12時間毎</string>
   <string name="account_setup_options_mail_check_frequency_24hour">24時間毎</string>
-  <string name="push_poll_on_connect_label">プッシュ接続時の同期</string>
   <string name="account_setup_options_enable_push_label">このアカウントにプッシュメールを有効化</string>
   <string name="account_setup_options_enable_push_summary">メールサーバがサポートしていれば新しいメッセージは即座に表示されます。当オプションはパフォーマンスが改善もしくは低下します。</string>
   <string name="idle_refresh_period_label">IMAP IDLE（プッシュ）接続のリフレッシュ</string>
@@ -426,8 +425,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_settings_notify_self_summary">このアカウントからのメールも通知する</string>
   <string name="account_notify_contacts_mail_only_label">連絡先のみ</string>
   <string name="account_notify_contacts_mail_only_summary">既知の連絡先からのメッセージのみ通知を表示します</string>
-  <string name="account_settings_notification_opens_unread_label">未読メール通知の動作</string>
-  <string name="account_settings_notification_opens_unread_summary">通知を開いた際に未読メールを検索する</string>
   <string name="account_settings_mark_message_as_read_on_view_label">開くと同時に既読にする</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">メッセージを参照したときに既読にする</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">削除時に既読にする</string>
@@ -738,6 +735,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="send_failed_reason">送信失敗: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">メッセージの下書き保存</string>
   <string name="save_or_discard_draft_message_instructions_fmt">メッセージを保存しますか？</string>
+  <string name="save_or_discard_draft_message_changes">変更を保存しますか？</string>
   <string name="confirm_discard_draft_message_title">メッセージ破棄？</string>
   <string name="confirm_discard_draft_message">このメッセージを破棄しますか？</string>
   <string name="select_text_now">選択したテキストをコピーします</string>

@@ -129,6 +129,7 @@ K-9 Mail 是 Android 上一款功能強大，免費而自由的電子郵件用�
   <plurals name="copy_address_to_clipboard">
     <item quantity="other">位址已複製到剪貼簿</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">主題文字已複製到剪貼簿</string>
   <string name="message_view_theme_action_dark">切換為黑色主題</string>
   <string name="message_view_theme_action_light">切換為白色主題</string>
   <string name="mark_as_unread_action">標記為未讀</string>
@@ -373,7 +374,6 @@ K-9 Mail 是 Android 上一款功能強大，免費而自由的電子郵件用�
   <string name="account_setup_options_mail_check_frequency_6hour">6 小時一次</string>
   <string name="account_setup_options_mail_check_frequency_12hour">12 小時一次</string>
   <string name="account_setup_options_mail_check_frequency_24hour">24 小時一次</string>
-  <string name="push_poll_on_connect_label">推送時檢查郵件</string>
   <string name="account_setup_options_enable_push_label">在這個帳戶上啟用推送郵件</string>
   <string name="account_setup_options_enable_push_summary">如果你的郵件伺服器支援此功能，那麼新郵件將會立刻顯示在手機上。這個選項可能大幅的提升性能，也可能嚴重的影響性能。</string>
   <string name="idle_refresh_period_label">重整間隔連接</string>
@@ -426,8 +426,6 @@ K-9 Mail 是 Android 上一款功能強大，免費而自由的電子郵件用�
   <string name="account_settings_notify_self_summary">寄送郵件時顯示通知</string>
   <string name="account_notify_contacts_mail_only_label">僅限聯絡人</string>
   <string name="account_notify_contacts_mail_only_summary">僅限顥示通訊錄中已有聯絡人郵件</string>
-  <string name="account_settings_notification_opens_unread_label">點擊通知後打開未讀郵件</string>
-  <string name="account_settings_notification_opens_unread_summary">點擊通知後搜尋未讀郵件</string>
   <string name="account_settings_mark_message_as_read_on_view_label">開啟自動標記已讀</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">開啟檢視郵件內容時自動標記為已讀</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">刪除後標記為已讀</string>
@@ -738,6 +736,7 @@ K-9 Mail 是 Android 上一款功能強大，免費而自由的電子郵件用�
   <string name="send_failed_reason">寄送失敗：%s</string>
   <string name="save_or_discard_draft_message_dlg_title">儲存郵件草稿？</string>
   <string name="save_or_discard_draft_message_instructions_fmt">儲存還是捨棄這封郵件？</string>
+  <string name="save_or_discard_draft_message_changes">儲存還是捨棄變更？</string>
   <string name="confirm_discard_draft_message_title">捨棄郵件？</string>
   <string name="confirm_discard_draft_message">是否確定捨棄儲存目前的郵件？</string>
   <string name="select_text_now">選擇需要複製的文字內容。</string>
@@ -950,7 +949,7 @@ K-9 Mail 是 Android 上一款功能強大，免費而自由的電子郵件用�
   <string name="crypto_msg_encrypted_sign_expired">然而端到端金鑰已過期</string>
   <string name="crypto_msg_encrypted_sign_revoked">然而端到端金鑰已被吊銷</string>
   <string name="crypto_msg_encrypted_sign_insecure">然而端到端金鑰被認為是不安全的</string>
-  <string name="crypto_msg_encrypted_sign_error">然而端到端數據存在錯誤</string>
+  <string name="crypto_msg_encrypted_sign_error">然而端到端資料存在錯誤</string>
   <string name="crypto_msg_encrypted_insecure">但加密不被視為安全</string>
   <string name="crypto_info_ok">確定</string>
   <string name="crypto_info_search_key">搜尋金鑰</string>
@@ -1037,4 +1036,5 @@ K-9 Mail 是 Android 上一款功能強大，免費而自由的電子郵件用�
   <!--permissions-->
   <string name="permission_contacts_rationale_title">允許訪問聯絡人</string>
   <string name="permission_contacts_rationale_message">為了能夠提供聯絡人建議，並顯示聯絡人姓名和照片，應用程式需要訪問你的聯絡人。</string>
+  <string name="generic_loading_error">載入資料時發生錯誤</string>
 </resources>

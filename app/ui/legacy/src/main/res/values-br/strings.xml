@@ -365,7 +365,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="account_setup_options_mail_check_frequency_6hour">Bep 6 eur</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Bep 12 eur</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Bep 24 eur</string>
-  <string name="push_poll_on_connect_label">Kerc’hat pa vez kennasket d’ar push</string>
   <string name="account_setup_options_enable_push_label">Gweredekaat ar push postel evit ar gont-mañ</string>
   <string name="account_setup_options_enable_push_summary">Mard eo skoret gant ho tafariad, kemennadennoù nevez a vo skrammet  diouzhtu. An dibarzh-mañ a c’hall gwellaat pe fallaat an digonusted a-galz.</string>
   <string name="idle_refresh_period_label">Azgrenaat ar c’hennask IDLE</string>
@@ -418,8 +417,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="account_settings_notify_self_summary">Diskouez ur rebuzadur evit kemennadennoù a gasan</string>
   <string name="account_notify_contacts_mail_only_label">Darempredoù nemetken</string>
   <string name="account_notify_contacts_mail_only_summary">Diskouez rebuzadurioù evit kemennadennoù darempredoù a anavezan hepken</string>
-  <string name="account_settings_notification_opens_unread_label">Rebuzadurioù a zigor kemennadennoù anlennet</string>
-  <string name="account_settings_notification_opens_unread_summary">Klask kemennadennoù anlennet pa vez digoret ar rebuzadurioù</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Merkañ evel lennet pa vez digoret</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Merkañ ar gemennadenn evel lennet pa vez digoret anezho d’he gwelet</string>
   <string name="account_settings_notification_open_system_notifications_label">Arventennoù rebuziñ</string>

@@ -336,7 +336,6 @@
   <string name="account_setup_options_mail_check_frequency_6hour">Iga 6 tunni tagant</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Iga 12 tunni tagant</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Iga 24 tunni tagant</string>
-  <string name="push_poll_on_connect_label">Kontrolli kui ühendub tõukeühenduseks</string>
   <string name="account_setup_options_enable_push_label">Luba sellele kontole tõukemeil</string>
   <string name="account_setup_options_enable_push_summary">Kui Sinu server võimaldab seda, ilmuvad uued kirjad koheselt. See valik võib oluliselt parandada või halvendada süsteemi jõudlust.</string>
   <string name="idle_refresh_period_label">Värskenda ootel ühendust</string>
@@ -391,8 +390,6 @@
   <string name="account_settings_notify_self_summary">Näita teadet minu saadetud sõnumite kohta</string>
   <string name="account_notify_contacts_mail_only_label">Ainult kontaktide</string>
   <string name="account_notify_contacts_mail_only_summary">Näita teateid ainult tuntud kontaktidelt saabunud sõnumite kohta</string>
-  <string name="account_settings_notification_opens_unread_label">Teatis avab lugemata sõnimi</string>
-  <string name="account_settings_notification_opens_unread_summary">Teatise avamisel otsi lugemata sõnumeid</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Pärast avamist märgi loetuks</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Märgi sõnum loetuks, kui see on vaatamiseks avatud</string>
   <string name="account_settings_notification_open_system_notifications_label">Teadete sätted</string>

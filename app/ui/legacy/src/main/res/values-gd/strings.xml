@@ -346,7 +346,6 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="account_setup_options_mail_check_frequency_6hour">Gach 6 uairean a thìde</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Gach 12 uair a thìde</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Gach 24 uair a thìde</string>
-  <string name="push_poll_on_connect_label">Ceasnaich nuair a nithear ceangal airson push</string>
   <string name="account_setup_options_enable_push_label">Cuir post push an comas airson a’ chunntais seo</string>
   <string name="account_setup_options_enable_push_summary">Ma bheir am frithealaiche agad taic dha, nochdaidh teachdaireachdan ùra sa bhad. Faodaidh buaidh mhòr (math no dona) a bhith aig an roghainn seo air dèanadas.</string>
   <string name="idle_refresh_period_label">Ath-nuadhaich an ceangal IDLE</string>
@@ -399,8 +398,6 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="account_settings_notify_self_summary">Seall brath nuair a bhios mi air teachdaireachd a chur</string>
   <string name="account_notify_contacts_mail_only_label">Luchd-aithne a-mhàin</string>
   <string name="account_notify_contacts_mail_only_summary">Na seall brathan ach ma thig teachdaireachd o neach-aithne agam</string>
-  <string name="account_settings_notification_opens_unread_label">Fosglaidh brath na teachdaireachdan gun leughadh</string>
-  <string name="account_settings_notification_opens_unread_summary">Lorgaidh seo teachdaireachdan gun leughadh nuair a dh’fhosglar brath</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Comharraich gun deach a leughadh nuair a dh’fhosglas mi e</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Comharraich gun deach an teachdaireachd a leughadh nuair a dh’fhosglas mi e a choimhead air</string>
   <string name="account_settings_show_pictures_label">Seall dealbhan an-còmhnaidh</string>

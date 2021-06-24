@@ -14,6 +14,7 @@
   <string name="about_project_title">Avoimen lähdekoodin projekti</string>
   <string name="about_website_title">Verkkosivusto</string>
   <string name="user_forum_title">Käyttäjäfoorumi</string>
+  <string name="about_fediverse_title">Fediverse</string>
   <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">Kirjastot</string>
   <string name="license">Lisenssi</string>
@@ -112,6 +113,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="add_account_action">Lisää tili</string>
   <string name="compose_action">Kirjoita</string>
   <string name="search_action">Etsi</string>
+  <string name="search_everywhere_action">Etsi kaikkialta</string>
   <string name="search_results">Hakutulokset</string>
   <string name="preferences_action">Asetukset</string>
   <string name="folders_action">Hallitse kansioita</string>
@@ -128,6 +130,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
     <item quantity="one">Osoite kopioitu leikepöydälle</item>
     <item quantity="other">Osoitteet kopioitu leikepöydälle</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">Aiheen teksti kopioitu leikepöydälle</string>
   <string name="message_view_theme_action_dark">Vaihda tummaan teemaan</string>
   <string name="message_view_theme_action_light">Vaihda vaaleaan teemaan</string>
   <string name="mark_as_unread_action">Merkitse Lukemattomaksi</string>
@@ -177,6 +180,8 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="notification_bg_send_ticker">Lähetetään viestejä: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Lähetetään viestejä</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_push_title">Synkronoi (Push)</string>
+  <string name="notification_channel_push_description">Näytetään kun odotetaan uusia viestejä</string>
   <string name="notification_channel_messages_title">Viestit</string>
   <string name="notification_channel_messages_description">Viesteihin liittyvät ilmoitukset</string>
   <string name="notification_channel_miscellaneous_title">Muut</string>
@@ -373,7 +378,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_setup_options_mail_check_frequency_6hour">Joka 6 tunti</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Joka 12 tunti</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Joka 24 tunti</string>
-  <string name="push_poll_on_connect_label">Tarkista yhdistettäessä push-tilaan</string>
   <string name="account_setup_options_enable_push_label">Ota käyttöön push-viestit tälle tilille</string>
   <string name="account_setup_options_enable_push_summary">Jos palvelin tukee ominaisuutta, uudet viestit tulevat välittömästi. Tämä valinta saattaa parantaa tai huonontaa suorituskykyä huomattavasti.</string>
   <string name="idle_refresh_period_label">Päivitä IDLE-yhteys</string>
@@ -426,8 +430,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_settings_notify_self_summary">Näytä ilmoitus lähettämistäni viesteistä</string>
   <string name="account_notify_contacts_mail_only_label">Vain yhteystiedot</string>
   <string name="account_notify_contacts_mail_only_summary">Näytä ilmoitukset vain niistä viesteistä, jotka tulevat tunnetuilta yhteystiedoilta</string>
-  <string name="account_settings_notification_opens_unread_label">Ilmoitus avaa lukemattomat viestit</string>
-  <string name="account_settings_notification_opens_unread_summary">Etsii lukemattomia viestejä, kun ilmoitus avataan</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Merkitse viesti luetuksi avattaessa</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Merkitse viesti luetuksi, kun se avataan katseltavaksi</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Merkitse luetuksi poistettaessa</string>
@@ -1044,4 +1046,8 @@ Voit säilyttää tämän viestin ja käyttää sitä varmuuskopioina salausavai
   <string name="permission_contacts_rationale_title">Salli pääsy yhteystietoihin</string>
   <string name="permission_contacts_rationale_message">Tämä sovellus vaatii käyttöoikeuden yhteystietoihisi, jotta sovellus voi tehdä ehdotuksia yhteystietoihin liittyen ja näyttää yhteystietojen nimiä sekä kuvia.</string>
   <string name="generic_loading_error">Tietoja ladatessa tapahtui virhe</string>
+  <string name="push_notification_state_initializing">Alustetaan…</string>
+  <string name="push_notification_state_listening">Kuunnellaan uusia viestejä</string>
+  <string name="push_notification_state_wait_background_sync">Nukutaan kunnes taustasynkronointi on sallittu</string>
+  <string name="push_notification_state_wait_network">Nukutaan kunnes verkko on käytettävissä</string>
 </resources>
