@@ -21,6 +21,7 @@ class ImapBackend(
     private val imapStore: ImapStore,
     private val powerManager: PowerManager,
     private val idleRefreshManager: IdleRefreshManager,
+    private val pushConfigProvider: ImapPushConfigProvider,
     private val smtpTransport: SmtpTransport
 ) : Backend {
     private val imapSync = ImapSync(accountName, backendStorage, imapStore)
@@ -157,6 +158,6 @@ class ImapBackend(
     }
 
     override fun createPusher(callback: BackendPusherCallback): BackendPusher {
-        return ImapBackendPusher(imapStore, powerManager, idleRefreshManager, callback, accountName)
+        return ImapBackendPusher(imapStore, powerManager, idleRefreshManager, pushConfigProvider, callback, accountName)
     }
 }

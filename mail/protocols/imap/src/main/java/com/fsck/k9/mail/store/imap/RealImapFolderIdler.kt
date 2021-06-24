@@ -12,7 +12,7 @@ internal class RealImapFolderIdler(
     private val imapStore: ImapStore,
     private val connectionProvider: ImapConnectionProvider,
     private val folderServerId: String,
-    private val idleRefreshTimeoutMs: Long
+    private val idleRefreshTimeoutProvider: IdleRefreshTimeoutProvider
 ) : ImapFolderIdler {
     private val logTag = "ImapFolderIdler[$folderServerId]"
 
@@ -44,10 +44,19 @@ internal class RealImapFolderIdler(
     }
 
     @Synchronized
+    override fun refresh() {
+        Timber.v("%s.refresh()", logTag)
+        endIdle()
+    }
+
+    @Synchronized
     override fun stop() {
         Timber.v("%s.stop()", logTag)
         stopIdle = true
+        endIdle()
+    }
 
+    private fun endIdle() {
         if (idleSent && !doneSent) {
             idleRefreshTimer?.cancel()
             sendDone()
@@ -89,7 +98,7 @@ internal class RealImapFolderIdler(
                 val expectSleeping = !connection.isDataAvailable() && !stopIdle
 
                 idleRefreshTimer = if (expectSleeping) {
-                    idleRefreshManager.startTimer(idleRefreshTimeoutMs) { idleRefresh() }
+                    idleRefreshManager.startTimer(idleRefreshTimeoutProvider.idleRefreshTimeoutMs) { idleRefresh() }
                 } else {
                     null
                 }
@@ -149,7 +158,7 @@ internal class RealImapFolderIdler(
     }
 
     private fun ImapConnection.setSocketIdleReadTimeout() {
-        setSocketReadTimeout((idleRefreshTimeoutMs + SOCKET_EXTRA_TIMEOUT_MS).toInt())
+        setSocketReadTimeout((idleRefreshTimeoutProvider.idleRefreshTimeoutMs + SOCKET_EXTRA_TIMEOUT_MS).toInt())
     }
 
     private val ImapResponse.isRelevant: Boolean

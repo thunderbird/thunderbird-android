@@ -2,6 +2,7 @@ package com.fsck.k9.backend.imap
 
 import com.fsck.k9.mail.power.PowerManager
 import com.fsck.k9.mail.store.imap.IdleRefreshManager
+import com.fsck.k9.mail.store.imap.IdleRefreshTimeoutProvider
 import com.fsck.k9.mail.store.imap.IdleResult
 import com.fsck.k9.mail.store.imap.ImapFolderIdler
 import com.fsck.k9.mail.store.imap.ImapStore
@@ -18,7 +19,7 @@ class ImapFolderPusher(
     private val callback: ImapPusherCallback,
     private val accountName: String,
     private val folderServerId: String,
-    private val idleRefreshTimeoutMs: Long
+    private val idleRefreshTimeoutProvider: IdleRefreshTimeoutProvider
 ) {
     @Volatile
     private var folderIdler: ImapFolderIdler? = null
@@ -36,6 +37,12 @@ class ImapFolderPusher(
 
             Timber.v("Exiting ImapFolderPusher thread for %s / %s", accountName, folderServerId)
         }
+    }
+
+    fun refresh() {
+        Timber.v("Refreshing ImapFolderPusher for %s / %s", accountName, folderServerId)
+
+        folderIdler?.refresh()
     }
 
     fun stop() {
@@ -56,7 +63,7 @@ class ImapFolderPusher(
             wakeLock,
             imapStore,
             folderServerId,
-            idleRefreshTimeoutMs
+            idleRefreshTimeoutProvider
         ).also {
             folderIdler = it
         }

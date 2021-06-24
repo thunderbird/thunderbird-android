@@ -10,6 +10,7 @@ dependencies {
     api project(":mail:protocols:imap")
     api project(":mail:protocols:smtp")
 
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.kotlinCoroutines}"
     implementation "com.jakewharton.timber:timber:${versions.timber}"
 
     testImplementation project(":mail:testing")

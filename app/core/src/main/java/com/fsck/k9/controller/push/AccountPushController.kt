@@ -51,7 +51,9 @@ internal class AccountPushController(
 
     private fun startBackendPusher() {
         val backend = backendManager.getBackend(account)
-        backendPusher = backend.createPusher(backendPusherCallback)
+        backendPusher = backend.createPusher(backendPusherCallback).also { backendPusher ->
+            backendPusher.start()
+        }
     }
 
     private fun stopBackendPusher() {

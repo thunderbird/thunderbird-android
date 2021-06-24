@@ -4,7 +4,7 @@ import com.fsck.k9.mail.power.WakeLock
 
 interface ImapFolderIdler {
     fun idle(): IdleResult
-
+    fun refresh()
     fun stop()
 
     companion object {
@@ -20,7 +20,7 @@ interface ImapFolderIdler {
             wakeLock: WakeLock,
             imapStore: ImapStore,
             folderServerId: String,
-            idleRefreshTimeoutMs: Long
+            idleRefreshTimeoutProvider: IdleRefreshTimeoutProvider
         ): ImapFolderIdler {
             return RealImapFolderIdler(
                 idleRefreshManager,
@@ -28,7 +28,7 @@ interface ImapFolderIdler {
                 imapStore,
                 connectionProvider,
                 folderServerId,
-                idleRefreshTimeoutMs
+                idleRefreshTimeoutProvider
             )
         }
     }

@@ -21,13 +21,16 @@ class RealImapFolderIdlerTest {
     private val imapConnection = TestImapConnection(timeout = TEST_TIMEOUT_SECONDS)
     private val imapFolder = TestImapFolder(FOLDER_SERVER_ID, imapConnection)
     private val imapStore = TestImapStore(imapFolder)
+    private val idleRefreshTimeoutProvider = object : IdleRefreshTimeoutProvider {
+        override val idleRefreshTimeoutMs = IDLE_TIMEOUT_MS
+    }
     private val idler = RealImapFolderIdler(
         idleRefreshManager,
         wakeLock,
         imapStore,
         imapStore,
         FOLDER_SERVER_ID,
-        IDLE_TIMEOUT_MS
+        idleRefreshTimeoutProvider
     )
 
     @Test
