@@ -5,6 +5,9 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.737" versioncode="27037" date="2021-06-26">
+        <change>Fixed a bug in the network connectivity detection code for Push</change>
+    </release>
     <release version="5.736" versioncode="27036" date="2021-06-24">
         <change>Fixed Push-related crash with non-IMAP accounts</change>
         <change>Don't show Push-related settings for non-IMAP accounts</change>
