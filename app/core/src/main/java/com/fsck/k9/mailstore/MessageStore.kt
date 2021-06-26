@@ -197,6 +197,11 @@ interface MessageStore {
     fun setSyncClass(folderId: Long, folderClass: FolderClass)
 
     /**
+     * Update the push class of a folder.
+     */
+    fun setPushClass(folderId: Long, folderClass: FolderClass)
+
+    /**
      * Update the notification class of a folder.
      */
     fun setNotificationClass(folderId: Long, folderClass: FolderClass)

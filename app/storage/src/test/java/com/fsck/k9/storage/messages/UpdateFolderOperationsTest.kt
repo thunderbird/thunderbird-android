@@ -99,6 +99,17 @@ class UpdateFolderOperationsTest : RobolectricTest() {
     }
 
     @Test
+    fun `update push class`() {
+        val folderId = sqliteDatabase.createFolder(pushClass = "FIRST_CLASS")
+
+        updateFolderOperations.setPushClass(folderId = folderId, folderClass = FolderClass.NO_CLASS)
+
+        val folder = sqliteDatabase.readFolders().first()
+        assertThat(folder.id).isEqualTo(folderId)
+        assertThat(folder.pushClass).isEqualTo("NO_CLASS")
+    }
+
+    @Test
     fun `update notification class`() {
         val folderId = sqliteDatabase.createFolder(syncClass = "FIRST_CLASS")
 
