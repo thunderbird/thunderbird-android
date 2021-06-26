@@ -49,6 +49,7 @@ class SpecialFolderUpdater(
             folderRepository.setIncludeInUnifiedInbox(newInboxId, true)
             folderRepository.setDisplayClass(newInboxId, FolderClass.FIRST_CLASS)
             folderRepository.setSyncClass(newInboxId, FolderClass.FIRST_CLASS)
+            folderRepository.setPushClass(newInboxId, FolderClass.FIRST_CLASS)
             folderRepository.setNotificationClass(newInboxId, FolderClass.FIRST_CLASS)
         }
     }

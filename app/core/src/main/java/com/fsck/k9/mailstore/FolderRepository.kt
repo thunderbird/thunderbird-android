@@ -201,6 +201,11 @@ class FolderRepository(
         messageStore.setSyncClass(folderId, folderClass)
     }
 
+    fun setPushClass(folderId: Long, folderClass: FolderClass) {
+        val messageStore = messageStoreManager.getMessageStore(account)
+        messageStore.setPushClass(folderId, folderClass)
+    }
+
     fun setNotificationClass(folderId: Long, folderClass: FolderClass) {
         val messageStore = messageStoreManager.getMessageStore(account)
         messageStore.setNotificationClass(folderId, folderClass)
