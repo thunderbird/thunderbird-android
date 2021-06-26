@@ -118,11 +118,12 @@ class PushController internal constructor(
         val backgroundSyncDisabledViaSystem = autoSyncManager.isAutoSyncDisabled
         val backgroundSyncDisabledInApp = K9.backgroundOps == K9.BACKGROUND_OPS.NEVER
         val networkNotAvailable = !connectivityManager.isNetworkAvailable()
+        val realPushAccounts = getPushAccounts()
 
         val pushAccounts = if (backgroundSyncDisabledViaSystem || backgroundSyncDisabledInApp || networkNotAvailable) {
             emptyList()
         } else {
-            getPushAccounts()
+            realPushAccounts
         }
         val pushAccountUuids = pushAccounts.map { it.uuid }
 
@@ -155,6 +156,9 @@ class PushController internal constructor(
         }
 
         when {
+            realPushAccounts.isEmpty() -> {
+                stopServices()
+            }
             backgroundSyncDisabledViaSystem -> {
                 setPushNotificationState(WAIT_BACKGROUND_SYNC)
                 startServices()
