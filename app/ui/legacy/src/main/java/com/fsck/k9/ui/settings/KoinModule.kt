@@ -15,7 +15,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val settingsUiModule = module {
-    single { AccountsLiveData(get()) }
+    factory { AccountsLiveData(get()) }
     viewModel { SettingsViewModel(accountManager = get(), accounts = get()) }
 
     factory { GeneralSettingsDataStore(jobManager = get(), themeManager = get(), appLanguageManager = get()) }
