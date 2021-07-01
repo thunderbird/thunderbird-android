@@ -43,7 +43,6 @@ class Preferences internal constructor(
     @GuardedBy("accountLock")
     private var newAccount: Account? = null
     private val accountsChangeListeners = CopyOnWriteArraySet<AccountsChangeListener>()
-    private val settingsChangeListeners = CopyOnWriteArraySet<SettingsChangeListener>()
     private val accountRemovedListeners = CopyOnWriteArraySet<AccountRemovedListener>()
 
     val storage = Storage()
@@ -210,14 +209,6 @@ class Preferences internal constructor(
         notifyAccountsChangeListeners()
     }
 
-    fun saveSettings() {
-        val editor = createStorageEditor()
-        K9.save(editor)
-        editor.commit()
-
-        notifySettingsChangeListeners()
-    }
-
     private fun ensureAssignedAccountNumber(account: Account) {
         if (account.accountNumber != Account.UNASSIGNED_ACCOUNT_NUMBER) return
 
@@ -277,20 +268,6 @@ class Preferences internal constructor(
 
     override fun removeOnAccountsChangeListener(accountsChangeListener: AccountsChangeListener) {
         accountsChangeListeners.remove(accountsChangeListener)
-    }
-
-    private fun notifySettingsChangeListeners() {
-        for (listener in settingsChangeListeners) {
-            listener.onSettingsChanged()
-        }
-    }
-
-    fun addSettingsChangeListener(settingsChangeListener: SettingsChangeListener) {
-        settingsChangeListeners.add(settingsChangeListener)
-    }
-
-    fun removeSettingsChangeListener(settingsChangeListener: SettingsChangeListener) {
-        settingsChangeListeners.remove(settingsChangeListener)
     }
 
     private fun notifyAccountRemovedListeners(account: Account) {

@@ -1,6 +1,8 @@
 package com.fsck.k9.preferences
 
 import com.fsck.k9.Preferences
+import org.koin.core.qualifier.named
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val preferencesModule = module {
@@ -14,5 +16,10 @@ val preferencesModule = module {
     }
     factory { FolderSettingsProvider(folderRepositoryManager = get()) }
     factory<AccountManager> { get<Preferences>() }
-    single<GeneralSettingsManager> { RealGeneralSettingsManager(preferences = get()) }
+    single {
+        RealGeneralSettingsManager(
+            preferences = get(),
+            coroutineScope = get(named("AppCoroutineScope"))
+        )
+    } bind GeneralSettingsManager::class
 }

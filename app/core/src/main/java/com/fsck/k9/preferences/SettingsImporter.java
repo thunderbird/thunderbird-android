@@ -291,7 +291,7 @@ public class SettingsImporter {
                 localFoldersCreator.createSpecialLocalFolders(account);
             }
 
-            K9.loadPrefs(preferences);
+            DI.get(RealGeneralSettingsManager.class).loadSettings();
             Core.setServicesEnabled(context);
 
             return new ImportResults(globalSettingsImported, importedAccounts, erroneousAccounts);

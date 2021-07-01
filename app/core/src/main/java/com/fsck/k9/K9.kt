@@ -6,17 +6,15 @@ import com.fsck.k9.Account.SortType
 import com.fsck.k9.core.BuildConfig
 import com.fsck.k9.mail.K9MailLib
 import com.fsck.k9.mailstore.LocalStore
+import com.fsck.k9.preferences.RealGeneralSettingsManager
 import com.fsck.k9.preferences.Storage
 import com.fsck.k9.preferences.StorageEditor
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
 @Deprecated("Use GeneralSettingsManager and GeneralSettings instead")
 object K9 : EarlyInit {
-    private val preferences: Preferences by inject()
+    private val generalSettingsManager: RealGeneralSettingsManager by inject()
 
     /**
      * If this is `true`, various development settings will be enabled.
@@ -298,20 +296,11 @@ object K9 : EarlyInit {
 
         checkCachedDatabaseVersion(context)
 
-        loadPrefs(preferences)
+        loadPrefs(generalSettingsManager.storage)
     }
 
-    /**
-     * Load preferences into our statics.
-     *
-     * If you're adding a preference here, odds are you'll need to add it to
-     * [com.fsck.k9.preferences.GeneralSettingsDescriptions], too.
-     *
-     * @param prefs Preferences to load
-     */
     @JvmStatic
-    fun loadPrefs(prefs: Preferences) {
-        val storage = prefs.storage
+    fun loadPrefs(storage: Storage) {
         isDebugLoggingEnabled = storage.getBoolean("enableDebugLogging", DEVELOPER_MODE)
         isSensitiveDebugLoggingEnabled = storage.getBoolean("enableSensitiveLogging", false)
         isShowAnimations = storage.getBoolean("animations", true)
@@ -462,9 +451,7 @@ object K9 : EarlyInit {
 
     @JvmStatic
     fun saveSettingsAsync() {
-        GlobalScope.launch(Dispatchers.IO) {
-            preferences.saveSettings()
-        }
+        generalSettingsManager.saveSettingsAsync()
     }
 
     private inline fun <reified T : Enum<T>> Storage.getEnum(key: String, defaultValue: T): T {
