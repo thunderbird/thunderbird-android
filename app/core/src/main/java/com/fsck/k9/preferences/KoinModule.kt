@@ -14,4 +14,5 @@ val preferencesModule = module {
     }
     factory { FolderSettingsProvider(folderRepositoryManager = get()) }
     factory<AccountManager> { get<Preferences>() }
+    single<GeneralSettingsManager> { RealGeneralSettingsManager(preferences = get()) }
 }

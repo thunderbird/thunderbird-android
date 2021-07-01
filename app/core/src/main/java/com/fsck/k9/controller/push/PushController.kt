@@ -2,9 +2,7 @@ package com.fsck.k9.controller.push
 
 import com.fsck.k9.Account
 import com.fsck.k9.Account.FolderMode
-import com.fsck.k9.K9
 import com.fsck.k9.Preferences
-import com.fsck.k9.SettingsChangeListener
 import com.fsck.k9.backend.BackendManager
 import com.fsck.k9.network.ConnectivityChangeListener
 import com.fsck.k9.network.ConnectivityManager
@@ -13,10 +11,16 @@ import com.fsck.k9.notification.PushNotificationState
 import com.fsck.k9.notification.PushNotificationState.LISTENING
 import com.fsck.k9.notification.PushNotificationState.WAIT_BACKGROUND_SYNC
 import com.fsck.k9.notification.PushNotificationState.WAIT_NETWORK
+import com.fsck.k9.preferences.BackgroundSync
+import com.fsck.k9.preferences.GeneralSettingsManager
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -25,6 +29,7 @@ import timber.log.Timber
  */
 class PushController internal constructor(
     private val preferences: Preferences,
+    private val generalSettingsManager: GeneralSettingsManager,
     private val backendManager: BackendManager,
     private val pushServiceManager: PushServiceManager,
     private val bootCompleteManager: BootCompleteManager,
@@ -41,18 +46,6 @@ class PushController internal constructor(
 
     private val autoSyncListener = AutoSyncListener(::onAutoSyncChanged)
     private val connectivityChangeListener = ConnectivityChangeListener(::onConnectivityChanged)
-    private val settingsChangeListener = object : SettingsChangeListener {
-        @Volatile
-        private var previousBackgroundSync: K9.BACKGROUND_OPS? = null
-
-        override fun onSettingsChanged() {
-            val backgroundSync = K9.backgroundOps
-            if (backgroundSync != previousBackgroundSync) {
-                previousBackgroundSync = backgroundSync
-                launchUpdatePushers()
-            }
-        }
-    }
 
     /**
      * Initialize [PushController].
@@ -77,10 +70,20 @@ class PushController internal constructor(
         Timber.v("PushController.initInBackground()")
 
         preferences.addOnAccountsChangeListener(::onAccountsChanged)
-        preferences.addSettingsChangeListener(settingsChangeListener)
+        listenForBackgroundSyncChanges()
         backendManager.addListener(::onBackendChanged)
 
         updatePushers()
+    }
+
+    private fun listenForBackgroundSyncChanges() {
+        generalSettingsManager.getSettingsFlow()
+            .map { it.backgroundSync }
+            .distinctUntilChanged()
+            .onEach {
+                launchUpdatePushers()
+            }
+            .launchIn(coroutineScope)
     }
 
     private fun onAccountsChanged() {
@@ -115,8 +118,10 @@ class PushController internal constructor(
     private fun updatePushers() {
         Timber.v("PushController.updatePushers()")
 
+        val generalSettings = generalSettingsManager.getSettings()
+
         val backgroundSyncDisabledViaSystem = autoSyncManager.isAutoSyncDisabled
-        val backgroundSyncDisabledInApp = K9.backgroundOps == K9.BACKGROUND_OPS.NEVER
+        val backgroundSyncDisabledInApp = generalSettings.backgroundSync == BackgroundSync.NEVER
         val networkNotAvailable = !connectivityManager.isNetworkAvailable()
         val realPushAccounts = getPushAccounts()
 
