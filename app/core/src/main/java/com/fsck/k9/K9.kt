@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
+@Deprecated("Use GeneralSettingsManager and GeneralSettings instead")
 object K9 : EarlyInit {
     private val preferences: Preferences by inject()
 
