@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
@@ -11,13 +12,17 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.fsck.k9.ui.R
 import com.fsck.k9.ui.base.loader.observeLoading
 import de.cketti.changelog.ReleaseItem
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 /**
  * Displays the changelog entries in a scrolling list
  */
 class ChangelogFragment : Fragment() {
-    private val viewModel: ChangelogViewModel by inject()
+    private val viewModel: ChangelogViewModel by viewModel {
+        val mode = arguments?.getSerializable(ARG_MODE) as? ChangeLogMode ?: error("Missing argument '$ARG_MODE'")
+        parametersOf(mode)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_changelog, container, false)
@@ -34,6 +39,28 @@ class ChangelogFragment : Fragment() {
         ) { changeLog ->
             listView.adapter = ChangelogAdapter(changeLog)
         }
+
+        setUpShowRecentChangesCheckbox(view)
+    }
+
+    private fun setUpShowRecentChangesCheckbox(view: View) {
+        val showRecentChangesCheckBox = view.findViewById<CheckBox>(R.id.show_recent_changes_checkbox)
+        var isInitialValue = true
+        viewModel.showRecentChangesState.observe(viewLifecycleOwner) { showRecentChanges ->
+            showRecentChangesCheckBox.isChecked = showRecentChanges
+            if (isInitialValue) {
+                // Don't animate when setting initial value
+                showRecentChangesCheckBox.jumpDrawablesToCurrentState()
+                isInitialValue = false
+            }
+        }
+        showRecentChangesCheckBox.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.setShowRecentChanges(isChecked)
+        }
+    }
+
+    companion object {
+        const val ARG_MODE = "mode"
     }
 }
 

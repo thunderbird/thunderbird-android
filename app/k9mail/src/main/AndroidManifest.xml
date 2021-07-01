@@ -290,6 +290,10 @@
             android:name=".ui.messagesource.MessageSourceActivity"
             android:label="@string/show_headers_action" />
 
+        <activity
+            android:name=".ui.changelog.RecentChangesActivity"
+            android:label="@string/changelog_recent_changes_title" />
+
         <receiver
             android:name=".service.StorageReceiver"
             android:enabled="true">
