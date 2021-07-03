@@ -26,6 +26,9 @@
     <string name="changelog_title">Changelog</string>
     <string name="changelog_loading_error">Couldn\'t load the changelog.</string>
     <string name="changelog_version_title">Version %s</string>
+    <string name="changelog_recent_changes_title">What\'s new</string>
+    <string name="changelog_show_recent_changes">Show recent changes when app was updated</string>
+    <string name="changelog_snackbar_text">Find out what\'s new in this release</string>
 
 
     <!-- Welcome message -->

@@ -10,9 +10,13 @@ import com.fsck.k9.mail.ssl.TrustedSocketFactory
 import com.fsck.k9.mailstore.LocalStoreProvider
 import com.fsck.k9.power.TracingPowerManager
 import com.fsck.k9.setup.ServerNameSuggester
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.GlobalScope
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val mainModule = module {
+    single<CoroutineScope>(named("AppCoroutineScope")) { GlobalScope }
     single {
         Preferences(
             context = get(),

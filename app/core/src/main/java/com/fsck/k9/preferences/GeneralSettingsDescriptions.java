@@ -280,6 +280,9 @@ public class GeneralSettingsDescriptions {
                 new V(49, new BooleanSetting(false)),
                 new V(56, null)
         ));
+        s.put("showRecentChanges", Settings.versions(
+                new V(73, new BooleanSetting(true))
+        ));
 
         SETTINGS = Collections.unmodifiableMap(s);
 

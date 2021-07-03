@@ -3,10 +3,16 @@ package com.fsck.k9.preferences
 /**
  * Stores a snapshot of the app's general settings.
  *
- * TODO: Add more settings as needed.
+ * When adding a setting here, make sure to also add it in these places:
+ * - [GeneralSettingsManager] (write function)
+ * - [RealGeneralSettingsManager.loadGeneralSettings]
+ * - [RealGeneralSettingsManager.writeSettings]
+ * - [GeneralSettingsDescriptions]
  */
+// TODO: Move over settings from K9
 data class GeneralSettings(
-    val backgroundSync: BackgroundSync
+    val backgroundSync: BackgroundSync,
+    val showRecentChanges: Boolean
 )
 
 enum class BackgroundSync {

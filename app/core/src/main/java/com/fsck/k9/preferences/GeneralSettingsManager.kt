@@ -3,11 +3,13 @@ package com.fsck.k9.preferences
 import kotlinx.coroutines.flow.Flow
 
 /**
- * Retrieve general settings.
+ * Retrieve and modify general settings.
  *
- * TODO: Add a way to mutate general settings.
+ * TODO: Add more settings as needed.
  */
 interface GeneralSettingsManager {
     fun getSettings(): GeneralSettings
     fun getSettingsFlow(): Flow<GeneralSettings>
+
+    fun setShowRecentChanges(showRecentChanges: Boolean)
 }

@@ -2,6 +2,8 @@ package com.fsck.k9
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import com.fsck.k9.ui.changelog.ChangeLogMode
+import com.fsck.k9.ui.changelog.ChangelogViewModel
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferActivity
 import com.fsck.k9.ui.endtoend.AutocryptKeyTransferPresenter
 import com.fsck.k9.ui.folders.FolderNameFormatter
@@ -39,6 +41,7 @@ class DependencyInjectionTest : AutoCloseKoinTest() {
             create<AutocryptKeyTransferPresenter> { parametersOf(lifecycleOwner, autocryptTransferView) }
             create<FolderNameFormatter> { parametersOf(RuntimeEnvironment.application) }
             create<SizeFormatter> { parametersOf(RuntimeEnvironment.application) }
+            create<ChangelogViewModel> { parametersOf(ChangeLogMode.CHANGE_LOG) }
         }
     }
 }
