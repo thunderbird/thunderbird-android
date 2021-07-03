@@ -17,4 +17,8 @@ internal class TestImapStore(private val folder: ImapFolder) : ImapStore, ImapCo
         if (folder !is TestImapFolder) throw AssertionError("getConnection() called with unknown ImapFolder instance")
         return folder.connection
     }
+
+    override fun closeAllConnections() {
+        throw UnsupportedOperationException("not implemented")
+    }
 }

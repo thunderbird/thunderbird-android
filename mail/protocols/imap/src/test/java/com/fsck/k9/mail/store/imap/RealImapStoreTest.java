@@ -56,7 +56,7 @@ public class RealImapStoreTest {
 
     @Test
     public void checkSettings_shouldCreateImapConnectionAndCallOpen() throws Exception {
-        ImapConnection imapConnection = mock(ImapConnection.class);
+        ImapConnection imapConnection = createMockConnection();
         imapStore.enqueueImapConnection(imapConnection);
 
         imapStore.checkSettings();
@@ -66,7 +66,7 @@ public class RealImapStoreTest {
 
     @Test
     public void checkSettings_withOpenThrowing_shouldThrowMessagingException() throws Exception {
-        ImapConnection imapConnection = mock(ImapConnection.class);
+        ImapConnection imapConnection = createMockConnection();
         doThrow(IOException.class).when(imapConnection).open();
         imapStore.enqueueImapConnection(imapConnection);
 
@@ -82,7 +82,7 @@ public class RealImapStoreTest {
 
     @Test
     public void getFolders_withSpecialUseCapability_shouldReturnSpecialFolderInfo() throws Exception {
-        ImapConnection imapConnection = mock(ImapConnection.class);
+        ImapConnection imapConnection = createMockConnection();
         when(imapConnection.hasCapability(Capabilities.LIST_EXTENDED)).thenReturn(true);
         when(imapConnection.hasCapability(Capabilities.SPECIAL_USE)).thenReturn(true);
         List<ImapResponse> imapResponses = Arrays.asList(
@@ -113,7 +113,7 @@ public class RealImapStoreTest {
 
     @Test
     public void getFolders_withoutSpecialUseCapability_shouldUseSimpleListCommand() throws Exception {
-        ImapConnection imapConnection = mock(ImapConnection.class);
+        ImapConnection imapConnection = createMockConnection();
         when(imapConnection.hasCapability(Capabilities.LIST_EXTENDED)).thenReturn(true);
         when(imapConnection.hasCapability(Capabilities.SPECIAL_USE)).thenReturn(false);
         imapStore.enqueueImapConnection(imapConnection);
@@ -126,7 +126,7 @@ public class RealImapStoreTest {
 
     @Test
     public void getFolders_withoutListExtendedCapability_shouldUseSimpleListCommand() throws Exception {
-        ImapConnection imapConnection = mock(ImapConnection.class);
+        ImapConnection imapConnection = createMockConnection();
         when(imapConnection.hasCapability(Capabilities.LIST_EXTENDED)).thenReturn(false);
         when(imapConnection.hasCapability(Capabilities.SPECIAL_USE)).thenReturn(true);
         imapStore.enqueueImapConnection(imapConnection);
@@ -140,7 +140,7 @@ public class RealImapStoreTest {
     @Test
     public void getFolders_withoutSubscribedFoldersOnly() throws Exception {
         when(config.isSubscribedFoldersOnly()).thenReturn(false);
-        ImapConnection imapConnection = mock(ImapConnection.class);
+        ImapConnection imapConnection = createMockConnection();
         List<ImapResponse> imapResponses = Arrays.asList(
                 createImapResponse("* LIST (\\HasNoChildren) \".\" \"INBOX\""),
                 createImapResponse("* LIST (\\Noselect \\HasChildren) \".\" \"Folder\""),
@@ -160,7 +160,7 @@ public class RealImapStoreTest {
     public void getFolders_withSubscribedFoldersOnly_shouldOnlyReturnExistingSubscribedFolders()
             throws Exception {
         when(config.isSubscribedFoldersOnly()).thenReturn(true);
-        ImapConnection imapConnection = mock(ImapConnection.class);
+        ImapConnection imapConnection = createMockConnection();
         List<ImapResponse> lsubResponses = Arrays.asList(
                 createImapResponse("* LSUB (\\HasNoChildren) \".\" \"INBOX\""),
                 createImapResponse("* LSUB (\\Noselect \\HasChildren) \".\" \"Folder\""),
@@ -186,7 +186,7 @@ public class RealImapStoreTest {
 
     @Test
     public void getFolders_withNamespacePrefix() throws Exception {
-        ImapConnection imapConnection = mock(ImapConnection.class);
+        ImapConnection imapConnection = createMockConnection();
         List<ImapResponse> imapResponses = Arrays.asList(
                 createImapResponse("* LIST () \".\" \"INBOX\""),
                 createImapResponse("* LIST () \".\" \"INBOX.FolderOne\""),
@@ -207,7 +207,7 @@ public class RealImapStoreTest {
 
     @Test
     public void getFolders_withFolderNotMatchingNamespacePrefix() throws Exception {
-        ImapConnection imapConnection = mock(ImapConnection.class);
+        ImapConnection imapConnection = createMockConnection();
         List<ImapResponse> imapResponses = Arrays.asList(
                 createImapResponse("* LIST () \".\" \"INBOX\""),
                 createImapResponse("* LIST () \".\" \"INBOX.FolderOne\""),
@@ -229,7 +229,7 @@ public class RealImapStoreTest {
     @Test
     public void getFolders_withDuplicateFolderNames_shouldRemoveDuplicatesAndKeepFolderType()
             throws Exception {
-        ImapConnection imapConnection = mock(ImapConnection.class);
+        ImapConnection imapConnection = createMockConnection();
         when(imapConnection.hasCapability(Capabilities.LIST_EXTENDED)).thenReturn(true);
         when(imapConnection.hasCapability(Capabilities.SPECIAL_USE)).thenReturn(true);
         List<ImapResponse> imapResponses = Arrays.asList(
@@ -253,7 +253,7 @@ public class RealImapStoreTest {
 
     @Test
     public void getFolders_withoutException_shouldLeaveImapConnectionOpen() throws Exception {
-        ImapConnection imapConnection = mock(ImapConnection.class);
+        ImapConnection imapConnection = createMockConnection();
         List<ImapResponse> imapResponses = Collections.singletonList(createImapResponse("5 OK Success"));
         when(imapConnection.executeSimpleCommand(anyString())).thenReturn(imapResponses);
         imapStore.enqueueImapConnection(imapConnection);
@@ -265,7 +265,7 @@ public class RealImapStoreTest {
 
     @Test
     public void getFolders_withIoException_shouldCloseImapConnection() throws Exception {
-        ImapConnection imapConnection = mock(ImapConnection.class);
+        ImapConnection imapConnection = createMockConnection();
         doThrow(IOException.class).when(imapConnection).executeSimpleCommand("LIST \"\" \"*\"");
         imapStore.enqueueImapConnection(imapConnection);
 
@@ -280,7 +280,7 @@ public class RealImapStoreTest {
 
     @Test
     public void getConnection_shouldCreateImapConnection() throws Exception {
-        ImapConnection imapConnection = mock(ImapConnection.class);
+        ImapConnection imapConnection = createMockConnection();
         imapStore.enqueueImapConnection(imapConnection);
 
         ImapConnection result = imapStore.getConnection();
@@ -290,8 +290,8 @@ public class RealImapStoreTest {
 
     @Test
     public void getConnection_calledTwiceWithoutRelease_shouldCreateTwoImapConnection() throws Exception {
-        ImapConnection imapConnectionOne = mock(ImapConnection.class);
-        ImapConnection imapConnectionTwo = mock(ImapConnection.class);
+        ImapConnection imapConnectionOne = createMockConnection();
+        ImapConnection imapConnectionTwo = createMockConnection();
         imapStore.enqueueImapConnection(imapConnectionOne);
         imapStore.enqueueImapConnection(imapConnectionTwo);
 
@@ -304,7 +304,7 @@ public class RealImapStoreTest {
 
     @Test
     public void getConnection_calledAfterRelease_shouldReturnCachedImapConnection() throws Exception {
-        ImapConnection imapConnection = mock(ImapConnection.class);
+        ImapConnection imapConnection = createMockConnection();
         when(imapConnection.isConnected()).thenReturn(true);
         imapStore.enqueueImapConnection(imapConnection);
         ImapConnection connection = imapStore.getConnection();
@@ -318,8 +318,8 @@ public class RealImapStoreTest {
     @Test
     public void getConnection_calledAfterReleaseWithAClosedConnection_shouldReturnNewImapConnectionInstance()
             throws Exception {
-        ImapConnection imapConnectionOne = mock(ImapConnection.class);
-        ImapConnection imapConnectionTwo = mock(ImapConnection.class);
+        ImapConnection imapConnectionOne = createMockConnection();
+        ImapConnection imapConnectionTwo = createMockConnection();
         imapStore.enqueueImapConnection(imapConnectionOne);
         imapStore.enqueueImapConnection(imapConnectionTwo);
         imapStore.getConnection();
@@ -333,8 +333,8 @@ public class RealImapStoreTest {
 
     @Test
     public void getConnection_withDeadConnectionInPool_shouldReturnNewImapConnectionInstance() throws Exception {
-        ImapConnection imapConnectionOne = mock(ImapConnection.class);
-        ImapConnection imapConnectionTwo = mock(ImapConnection.class);
+        ImapConnection imapConnectionOne = createMockConnection();
+        ImapConnection imapConnectionTwo = createMockConnection();
         imapStore.enqueueImapConnection(imapConnectionOne);
         imapStore.enqueueImapConnection(imapConnectionTwo);
         imapStore.getConnection();
@@ -345,6 +345,53 @@ public class RealImapStoreTest {
         ImapConnection result = imapStore.getConnection();
 
         assertSame(imapConnectionTwo, result);
+    }
+
+    @Test
+    public void getConnection_withConnectionInPoolAndCloseAllConnections_shouldReturnNewImapConnectionInstance()
+            throws Exception {
+        ImapConnection imapConnectionOne = createMockConnection(1);
+        ImapConnection imapConnectionTwo = createMockConnection(2);
+        imapStore.enqueueImapConnection(imapConnectionOne);
+        imapStore.enqueueImapConnection(imapConnectionTwo);
+        imapStore.getConnection();
+        when(imapConnectionOne.isConnected()).thenReturn(true);
+        imapStore.releaseConnection(imapConnectionOne);
+        imapStore.closeAllConnections();
+
+        ImapConnection result = imapStore.getConnection();
+
+        assertSame(imapConnectionTwo, result);
+    }
+
+    @Test
+    public void getConnection_withConnectionOutsideOfPoolAndCloseAllConnections_shouldReturnNewImapConnectionInstance()
+            throws Exception {
+        ImapConnection imapConnectionOne = createMockConnection(1);
+        ImapConnection imapConnectionTwo = createMockConnection(2);
+        imapStore.enqueueImapConnection(imapConnectionOne);
+        imapStore.enqueueImapConnection(imapConnectionTwo);
+        imapStore.getConnection();
+        when(imapConnectionOne.isConnected()).thenReturn(true);
+        imapStore.closeAllConnections();
+        imapStore.releaseConnection(imapConnectionOne);
+
+        ImapConnection result = imapStore.getConnection();
+
+        assertSame(imapConnectionTwo, result);
+    }
+
+
+    private ImapConnection createMockConnection() {
+        ImapConnection imapConnection = mock(ImapConnection.class);
+        when(imapConnection.getConnectionGeneration()).thenReturn(1);
+        return imapConnection;
+    }
+
+    private ImapConnection createMockConnection(int connectionGeneration) {
+        ImapConnection imapConnection = mock(ImapConnection.class);
+        when(imapConnection.getConnectionGeneration()).thenReturn(connectionGeneration);
+        return imapConnection;
     }
 
 

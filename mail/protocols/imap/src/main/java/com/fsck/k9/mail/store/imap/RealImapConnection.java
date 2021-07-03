@@ -82,6 +82,7 @@ class RealImapConnection implements ImapConnection {
     private final TrustedSocketFactory socketFactory;
     private final int socketConnectTimeout;
     private final int socketReadTimeout;
+    private final int connectionGeneration;
 
     private Socket socket;
     private PeekableInputStream inputStream;
@@ -96,24 +97,27 @@ class RealImapConnection implements ImapConnection {
 
 
     public RealImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
-            ConnectivityManager connectivityManager, OAuth2TokenProvider oauthTokenProvider) {
+            ConnectivityManager connectivityManager, OAuth2TokenProvider oauthTokenProvider, int connectionGeneration) {
         this.settings = settings;
         this.socketFactory = socketFactory;
         this.connectivityManager = connectivityManager;
         this.oauthTokenProvider = oauthTokenProvider;
         this.socketConnectTimeout = SOCKET_CONNECT_TIMEOUT;
         this.socketReadTimeout = SOCKET_READ_TIMEOUT;
+        this.connectionGeneration = connectionGeneration;
     }
 
-    RealImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
+    public RealImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
             ConnectivityManager connectivityManager, OAuth2TokenProvider oauthTokenProvider,
-            int socketConnectTimeout, int socketReadTimeout) {
+            int socketConnectTimeout, int socketReadTimeout,
+            int connectionGeneration) {
         this.settings = settings;
         this.socketFactory = socketFactory;
         this.connectivityManager = connectivityManager;
         this.oauthTokenProvider = oauthTokenProvider;
         this.socketConnectTimeout = socketConnectTimeout;
         this.socketReadTimeout = socketReadTimeout;
+        this.connectionGeneration = connectionGeneration;
     }
 
     @Override
@@ -909,5 +913,10 @@ class RealImapConnection implements ImapConnection {
     @Override
     public boolean isDataAvailable() throws IOException {
         return inputStream.available() > 0;
+    }
+
+    @Override
+    public int getConnectionGeneration() {
+        return connectionGeneration;
     }
 }

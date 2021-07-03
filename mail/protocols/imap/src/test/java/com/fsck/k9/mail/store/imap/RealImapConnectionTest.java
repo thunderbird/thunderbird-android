@@ -975,7 +975,7 @@ public class RealImapConnectionTest {
     private ImapConnection createImapConnection(ImapSettings settings, TrustedSocketFactory socketFactory,
             ConnectivityManager connectivityManager, OAuth2TokenProvider oAuth2TokenProvider) {
         return new RealImapConnection(settings, socketFactory, connectivityManager, oAuth2TokenProvider,
-                SOCKET_CONNECT_TIMEOUT, SOCKET_READ_TIMEOUT);
+                SOCKET_CONNECT_TIMEOUT, SOCKET_READ_TIMEOUT, 1);
     }
 
     private ImapConnection startServerAndCreateImapConnection(MockImapServer server) throws IOException {
