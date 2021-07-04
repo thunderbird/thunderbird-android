@@ -13,10 +13,11 @@ import com.fsck.k9.notification.PushNotificationState.WAIT_BACKGROUND_SYNC
 import com.fsck.k9.notification.PushNotificationState.WAIT_NETWORK
 import com.fsck.k9.preferences.BackgroundSync
 import com.fsck.k9.preferences.GeneralSettingsManager
+import java.util.concurrent.Executors
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
@@ -38,7 +39,7 @@ class PushController internal constructor(
     private val connectivityManager: ConnectivityManager,
     private val accountPushControllerFactory: AccountPushControllerFactory,
     private val coroutineScope: CoroutineScope = GlobalScope,
-    private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val coroutineDispatcher: CoroutineDispatcher = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
 ) {
     private val lock = Any()
     private var initializationStarted = false
@@ -47,7 +48,7 @@ class PushController internal constructor(
     private val autoSyncListener = AutoSyncListener(::onAutoSyncChanged)
     private val connectivityChangeListener = object : ConnectivityChangeListener {
         override fun onConnectivityChanged() = this@PushController.onConnectivityChanged()
-        override fun onConnectivityLost() = this@PushController.onConnectivityChanged()
+        override fun onConnectivityLost() = this@PushController.onConnectivityLost()
     }
 
     /**
@@ -98,6 +99,16 @@ class PushController internal constructor(
     }
 
     private fun onConnectivityChanged() {
+        coroutineScope.launch(coroutineDispatcher) {
+            synchronized(lock) {
+                for (accountPushController in pushers.values) {
+                    accountPushController.reconnect()
+                }
+            }
+        }
+    }
+
+    private fun onConnectivityLost() {
         launchUpdatePushers()
     }
 

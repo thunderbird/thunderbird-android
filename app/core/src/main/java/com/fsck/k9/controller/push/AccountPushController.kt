@@ -49,6 +49,11 @@ internal class AccountPushController(
         stopBackendPusher()
     }
 
+    fun reconnect() {
+        Timber.v("AccountPushController(%s).reconnect()", account.uuid)
+        backendPusher?.reconnect()
+    }
+
     private fun startBackendPusher() {
         val backend = backendManager.getBackend(account)
         backendPusher = backend.createPusher(backendPusherCallback).also { backendPusher ->

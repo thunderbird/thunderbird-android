@@ -151,6 +151,26 @@ internal class ImapBackendPusher(
         }
     }
 
+    override fun reconnect() {
+        Timber.v("ImapBackendPusher.reconnect()")
+
+        synchronized(lock) {
+            for (pushFolder in pushFolders.values) {
+                pushFolder.stop()
+            }
+            pushFolders.clear()
+
+            for (retryTimer in pushFolderSleeping.values) {
+                retryTimer.cancel()
+            }
+            pushFolderSleeping.clear()
+        }
+
+        imapStore.closeAllConnections()
+
+        updateFolders()
+    }
+
     private fun createImapFolderPusher(folderServerId: String): ImapFolderPusher {
         return ImapFolderPusher(
             imapStore,
