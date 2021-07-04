@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
-internal open class TestImapConnection(val timeout: Long) : ImapConnection {
+internal open class TestImapConnection(val timeout: Long, override val connectionGeneration: Int = 1) : ImapConnection {
     override val logId: String = "testConnection"
     override var isConnected: Boolean = false
         protected set

@@ -53,6 +53,7 @@ class RealImapStore implements ImapStore, ImapConnectionManager, InternalImapSto
     private String pathDelimiter = null;
     private final Deque<ImapConnection> connections = new LinkedList<>();
     private FolderNameCodec folderNameCodec;
+    private volatile int connectionGeneration = 1;
 
 
     public RealImapStore(ServerSettings serverSettings, ImapStoreConfig config,
@@ -296,9 +297,29 @@ class RealImapStore implements ImapStore, ImapConnectionManager, InternalImapSto
     @Override
     public void releaseConnection(ImapConnection connection) {
         if (connection != null && connection.isConnected()) {
-            synchronized (connections) {
-                connections.offer(connection);
+            if (connection.getConnectionGeneration() == connectionGeneration) {
+                synchronized (connections) {
+                    connections.offer(connection);
+                }
+            } else {
+                connection.close();
             }
+        }
+    }
+
+    @Override
+    public void closeAllConnections() {
+        Timber.v("ImapStore.closeAllConnections()");
+
+        List<ImapConnection> connectionsToClose;
+        synchronized (connections) {
+            connectionGeneration++;
+            connectionsToClose = new ArrayList<>(connections);
+            connections.clear();
+        }
+
+        for (ImapConnection connection : connectionsToClose) {
+            connection.close();
         }
     }
 
@@ -307,7 +328,8 @@ class RealImapStore implements ImapStore, ImapConnectionManager, InternalImapSto
                 new StoreImapSettings(),
                 trustedSocketFactory,
                 connectivityManager,
-                oauthTokenProvider);
+                oauthTokenProvider,
+                connectionGeneration);
     }
 
     @Override

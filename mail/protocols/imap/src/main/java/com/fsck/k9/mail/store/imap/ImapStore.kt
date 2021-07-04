@@ -15,6 +15,8 @@ interface ImapStore {
     @Throws(MessagingException::class)
     fun getFolders(): List<FolderListItem>
 
+    fun closeAllConnections()
+
     companion object {
         fun create(
             serverSettings: ServerSettings,

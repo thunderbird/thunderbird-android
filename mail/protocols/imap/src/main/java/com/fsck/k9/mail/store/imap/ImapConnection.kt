@@ -7,6 +7,7 @@ import java.net.SocketException
 
 internal interface ImapConnection {
     val logId: String
+    val connectionGeneration: Int
     val isConnected: Boolean
     val outputStream: OutputStream
     val isUidPlusCapable: Boolean
