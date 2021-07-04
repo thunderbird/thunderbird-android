@@ -16,9 +16,16 @@ internal abstract class ConnectivityManagerBase : ConnectivityManager {
     }
 
     @Synchronized
-    protected fun notifyListeners() {
+    protected fun notifyOnConnectivityChanged() {
         for (listener in listeners) {
             listener.onConnectivityChanged()
+        }
+    }
+
+    @Synchronized
+    protected fun notifyOnConnectivityLost() {
+        for (listener in listeners) {
+            listener.onConnectivityLost()
         }
     }
 }

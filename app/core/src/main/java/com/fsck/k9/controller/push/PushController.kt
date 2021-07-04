@@ -45,7 +45,10 @@ class PushController internal constructor(
     private val pushers = mutableMapOf<String, AccountPushController>()
 
     private val autoSyncListener = AutoSyncListener(::onAutoSyncChanged)
-    private val connectivityChangeListener = ConnectivityChangeListener(::onConnectivityChanged)
+    private val connectivityChangeListener = object : ConnectivityChangeListener {
+        override fun onConnectivityChanged() = this@PushController.onConnectivityChanged()
+        override fun onConnectivityLost() = this@PushController.onConnectivityChanged()
+    }
 
     /**
      * Initialize [PushController].

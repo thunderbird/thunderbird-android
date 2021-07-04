@@ -33,7 +33,11 @@ internal class ConnectivityManagerApi21(
                 if (networkType != lastNetworkType || isConnected != wasConnected) {
                     lastNetworkType = networkType
                     wasConnected = isConnected
-                    notifyListeners()
+                    if (isConnected) {
+                        notifyOnConnectivityChanged()
+                    } else {
+                        notifyOnConnectivityLost()
+                    }
                 }
             }
         }

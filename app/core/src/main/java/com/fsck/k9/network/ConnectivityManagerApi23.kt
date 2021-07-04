@@ -36,7 +36,11 @@ internal class ConnectivityManagerApi23(
                 if (activeNetwork != lastActiveNetwork || isConnected != wasConnected) {
                     lastActiveNetwork = activeNetwork
                     wasConnected = isConnected
-                    notifyListeners()
+                    if (isConnected) {
+                        notifyOnConnectivityChanged()
+                    } else {
+                        notifyOnConnectivityLost()
+                    }
                 }
             }
         }
