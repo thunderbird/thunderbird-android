@@ -134,7 +134,6 @@
     </string-array>
 
     <string-array name="idle_refresh_period_entries">
-        <item>@string/idle_refresh_period_1min</item>
         <item>@string/idle_refresh_period_2min</item>
         <item>@string/idle_refresh_period_3min</item>
         <item>@string/idle_refresh_period_6min</item>

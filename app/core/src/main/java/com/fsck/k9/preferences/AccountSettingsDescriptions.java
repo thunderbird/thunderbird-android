@@ -101,7 +101,8 @@ public class AccountSettingsDescriptions {
                 new V(1, new EnumSetting<>(FolderMode.class, FolderMode.NOT_SECOND_CLASS))
         ));
         s.put("idleRefreshMinutes", Settings.versions(
-                new V(1, new IntegerResourceSetting(24, R.array.idle_refresh_period_values))
+                new V(1, new IntegerArraySetting(24, new int[] { 1, 2, 3, 6, 12, 24, 36, 48, 60 })),
+                new V(74, new IntegerResourceSetting(24, R.array.idle_refresh_period_values))
         ));
         s.put("led", Settings.versions(
                 new V(1, new BooleanSetting(true))
@@ -268,6 +269,7 @@ public class AccountSettingsDescriptions {
         Map<Integer, SettingsUpgrader> u = new HashMap<>();
         u.put(53, new SettingsUpgraderV53());
         u.put(54, new SettingsUpgraderV54());
+        u.put(74, new SettingsUpgraderV74());
 
         UPGRADERS = Collections.unmodifiableMap(u);
     }
@@ -321,6 +323,31 @@ public class AccountSettingsDescriptions {
         public Integer fromString(String value) throws InvalidSettingValueException {
             try {
                 return Integer.parseInt(value);
+            } catch (NumberFormatException e) {
+                throw new InvalidSettingValueException();
+            }
+        }
+    }
+
+    private static class IntegerArraySetting extends SettingsDescription<Integer> {
+        private final int[] values;
+
+        IntegerArraySetting(int defaultValue, int[] values) {
+            super(defaultValue);
+            this.values = values;
+        }
+
+        @Override
+        public Integer fromString(String value) throws InvalidSettingValueException {
+            try {
+                int number = Integer.parseInt(value);
+                for (int validValue : values) {
+                    if (number == validValue) {
+                        return number;
+                    }
+                }
+
+                throw new InvalidSettingValueException();
             } catch (NumberFormatException e) {
                 throw new InvalidSettingValueException();
             }
@@ -464,6 +491,23 @@ public class AccountSettingsDescriptions {
             settings.put("sentFolderSelection", FOLDER_SELECTION_MANUAL);
             settings.put("spamFolderSelection", FOLDER_SELECTION_MANUAL);
             settings.put("trashFolderSelection", FOLDER_SELECTION_MANUAL);
+
+            return null;
+        }
+    }
+
+    /**
+     * Upgrades settings from version 73 to 74
+     *
+     * Rewrites 'idleRefreshMinutes' from '1' to '2' if necessary
+     */
+    private static class SettingsUpgraderV74 implements SettingsUpgrader {
+        @Override
+        public Set<String> upgrade(Map<String, Object> settings) {
+            Integer idleRefreshMinutes = (Integer) settings.get("idleRefreshMinutes");
+            if (idleRefreshMinutes == 1) {
+                settings.put("idleRefreshMinutes", 2);
+            }
 
             return null;
         }

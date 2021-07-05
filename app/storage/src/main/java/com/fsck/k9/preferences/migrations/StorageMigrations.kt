@@ -20,5 +20,6 @@ internal object StorageMigrations {
         if (oldVersion < 12) StorageMigrationTo12(db, migrationsHelper).removeStoreAndTransportUri()
         if (oldVersion < 13) StorageMigrationTo13(db, migrationsHelper).renameHideSpecialAccounts()
         if (oldVersion < 14) StorageMigrationTo14(db, migrationsHelper).disablePushFoldersForNonImapAccounts()
+        if (oldVersion < 15) StorageMigrationTo15(db, migrationsHelper).rewriteIdleRefreshInterval()
     }
 }

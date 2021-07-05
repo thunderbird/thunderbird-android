@@ -462,7 +462,6 @@ Please submit bug reports, contribute new features and ask questions at
     <string name="account_setup_options_enable_push_label">Enable push mail for this account</string>
     <string name="account_setup_options_enable_push_summary">If your server supports it, new messages will appear instantly. This option can dramatically improve or hurt performance.</string>
     <string name="idle_refresh_period_label">Refresh IDLE connection</string>
-    <string name="idle_refresh_period_1min">Every minute</string>
     <string name="idle_refresh_period_2min">Every 2 minutes</string>
     <string name="idle_refresh_period_3min">Every 3 minutes</string>
     <string name="idle_refresh_period_6min">Every 6 minutes</string>
