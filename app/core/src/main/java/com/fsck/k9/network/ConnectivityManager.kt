@@ -11,8 +11,9 @@ interface ConnectivityManager {
     fun removeListener(listener: ConnectivityChangeListener)
 }
 
-fun interface ConnectivityChangeListener {
+interface ConnectivityChangeListener {
     fun onConnectivityChanged()
+    fun onConnectivityLost()
 }
 
 internal fun ConnectivityManager(systemConnectivityManager: SystemConnectivityManager): ConnectivityManager {

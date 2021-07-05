@@ -20,7 +20,7 @@ internal class ConnectivityManagerApi24(
             Timber.v("Network available: $network")
             synchronized(this@ConnectivityManagerApi24) {
                 isNetworkAvailable = true
-                notifyListeners()
+                notifyOnConnectivityChanged()
             }
         }
 
@@ -28,7 +28,7 @@ internal class ConnectivityManagerApi24(
             Timber.v("Network lost: $network")
             synchronized(this@ConnectivityManagerApi24) {
                 isNetworkAvailable = false
-                notifyListeners()
+                notifyOnConnectivityLost()
             }
         }
     }
