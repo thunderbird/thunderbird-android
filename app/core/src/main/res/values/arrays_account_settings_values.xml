@@ -157,7 +157,6 @@
     </string-array>
 
     <string-array name="idle_refresh_period_values" translatable="false">
-        <item>1</item>
         <item>2</item>
         <item>3</item>
         <item>6</item>
