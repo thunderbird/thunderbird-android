@@ -85,7 +85,13 @@ internal class RealGeneralSettingsManager(
     private fun GeneralSettings.persist() {
         generalSettings = this
         updateSettingsFlow(this)
-        saveSettings(this)
+        saveSettingsAsync(this)
+    }
+
+    private fun saveSettingsAsync(generalSettings: GeneralSettings) {
+        coroutineScope.launch(backgroundDispatcher) {
+            saveSettings(generalSettings)
+        }
     }
 
     @Synchronized
