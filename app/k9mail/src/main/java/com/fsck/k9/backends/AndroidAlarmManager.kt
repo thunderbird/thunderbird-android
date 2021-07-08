@@ -9,13 +9,17 @@ import android.os.Build
 import android.os.SystemClock
 import com.fsck.k9.backend.imap.SystemAlarmManager
 import com.fsck.k9.helper.AlarmManagerCompat
+import java.util.concurrent.atomic.AtomicReference
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 private const val ALARM_ACTION = "com.fsck.k9.backends.ALARM"
 private const val REQUEST_CODE = 1
+
+private typealias Callback = () -> Unit
 
 class AndroidAlarmManager(
     private val context: Context,
@@ -33,17 +37,20 @@ class AndroidAlarmManager(
         PendingIntent.getBroadcast(context, REQUEST_CODE, intent, flags)
     }
 
-    @Volatile
-    private var callback: (() -> Unit)? = null
+    private val callback = AtomicReference<Callback?>(null)
 
     init {
         val intentFilter = IntentFilter(ALARM_ACTION)
         context.registerReceiver(
             object : BroadcastReceiver() {
                 override fun onReceive(context: Context?, intent: Intent?) {
-                    coroutineScope.launch {
-                        callback?.invoke()
-                        callback = null
+                    val callback = callback.getAndSet(null)
+                    if (callback == null) {
+                        Timber.w("Alarm triggered but 'callback' was null")
+                    } else {
+                        coroutineScope.launch {
+                            callback.invoke()
+                        }
                     }
                 }
             },
@@ -51,12 +58,13 @@ class AndroidAlarmManager(
         )
     }
 
-    override fun setAlarm(triggerTime: Long, callback: () -> Unit) {
-        this.callback = callback
+    override fun setAlarm(triggerTime: Long, callback: Callback) {
+        this.callback.set(callback)
         alarmManager.scheduleAlarm(triggerTime, pendingIntent)
     }
 
     override fun cancelAlarm() {
+        callback.set(null)
         alarmManager.cancelAlarm(pendingIntent)
     }
 
