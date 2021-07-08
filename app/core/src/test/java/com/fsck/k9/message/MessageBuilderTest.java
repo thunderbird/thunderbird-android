@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.fsck.k9.Account.QuoteStyle;
 import com.fsck.k9.CoreResourceProvider;
@@ -23,6 +25,7 @@ import com.fsck.k9.mail.Message;
 import com.fsck.k9.mail.Message.RecipientType;
 import com.fsck.k9.mail.MessagingException;
 import com.fsck.k9.mail.internet.MessageIdGenerator;
+import com.fsck.k9.mail.internet.MimeHeader;
 import com.fsck.k9.mail.internet.MimeMessage;
 import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.message.MessageBuilder.Callback;
@@ -273,6 +276,33 @@ public class MessageBuilderTest extends RobolectricTest {
         //RFC 2046 - 5.1.4. - Best type is last displayable
         assertEquals("text/plain", parts.get(0).getMimeType());
         assertEquals("text/html", parts.get(1).getMimeType());
+    }
+
+    @Test
+    public void build_usingHtmlFormatWithInlineAttachment_shouldUseMultipartAlternativeInCorrectOrder() throws Exception {
+        String contentId = "contentId";
+        String attachmentMimeType = "image/png";
+
+        Map<String, Attachment> inlineAttachments = new HashMap<>();
+        inlineAttachments.put(contentId, createAttachmentWithContent(attachmentMimeType, "1x1.png",
+                "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVQI12P4//8/AAX+Av7czFnnAAAAAElFTkSuQmCC"));
+        MessageBuilder messageBuilder = createHtmlMessageBuilder().setInlineAttachments(inlineAttachments);
+
+        messageBuilder.buildAsync(callback);
+
+        MimeMessage message = getMessageFromCallback();
+        assertEquals(MimeMultipart.class, message.getBody().getClass());
+        assertEquals("multipart/alternative", ((MimeMultipart) message.getBody()).getMimeType());
+        List<BodyPart> parts =  ((MimeMultipart) message.getBody()).getBodyParts();
+        //RFC 2046 - 5.1.4. - Best type is last displayable
+        assertEquals("text/plain", parts.get(0).getMimeType());
+        assertEquals("multipart/related", parts.get(1).getMimeType());
+        List<BodyPart> partWithInlineAttachment =  ((MimeMultipart) parts.get(1).getBody()).getBodyParts();
+        assertEquals("text/html", partWithInlineAttachment.get(0).getMimeType());
+        assertEquals(attachmentMimeType, partWithInlineAttachment.get(1).getMimeType());
+        String[] attachmentHeaders = partWithInlineAttachment.get(1).getHeader(MimeHeader.HEADER_CONTENT_ID);
+        assertEquals(1, attachmentHeaders.length);
+        assertEquals(contentId, attachmentHeaders[0]);
     }
 
     @Test

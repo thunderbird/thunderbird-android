@@ -713,6 +713,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 .setMessageFormat(currentMessageFormat)
                 .setText(CrLfConverter.toCrLf(messageContentView.getText()))
                 .setAttachments(attachmentPresenter.getAttachments())
+                .setInlineAttachments(attachmentPresenter.getInlineAttachments())
                 .setSignature(CrLfConverter.toCrLf(signatureView.getText()))
                 .setSignatureBeforeQuotedText(account.isSignatureBeforeQuotedText())
                 .setIdentityChanged(identityChanged)
@@ -1369,7 +1370,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         if (!relatedMessageProcessed) {
-            attachmentPresenter.loadNonInlineAttachments(messageViewInfo);
+            attachmentPresenter.loadAllAvailableAttachments(messageViewInfo);
         }
 
         // Decode the identity header when loading a draft.
