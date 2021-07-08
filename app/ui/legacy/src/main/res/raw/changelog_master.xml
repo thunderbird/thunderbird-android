@@ -5,6 +5,13 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.738" versioncode="27038" date="2021-07-08">
+        <change>Inline attachments are now included in forwarded messages</change>
+        <change>Quick access to the "What's new" screen when the app was updated</change>
+        <change>Close and reopen Push connections when the active network has changed</change>
+        <change>Fixed a bug that lead to Push not working properly</change>
+        <change>Fixed some minor bugs</change>
+    </release>
     <release version="5.737" versioncode="27037" date="2021-06-26">
         <change>Fixed a bug in the network connectivity detection code for Push</change>
     </release>
