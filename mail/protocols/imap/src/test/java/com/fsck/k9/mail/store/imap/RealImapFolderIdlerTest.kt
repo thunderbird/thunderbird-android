@@ -121,7 +121,6 @@ class RealImapFolderIdlerTest {
         wakeLock.waitForRelease()
         imapConnection.enqueueUntaggedServerResponse("1 EXISTS")
         imapConnection.waitForCommand("DONE")
-        assertThat(wakeLock.isHeld).isTrue()
         imapConnection.enqueueTaggedServerResponse("OK")
 
         latch.awaitWithTimeout()
