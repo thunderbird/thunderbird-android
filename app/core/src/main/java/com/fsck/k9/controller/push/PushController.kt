@@ -105,6 +105,8 @@ class PushController internal constructor(
                     accountPushController.reconnect()
                 }
             }
+
+            updatePushers()
         }
     }
 
