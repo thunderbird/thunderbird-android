@@ -95,25 +95,18 @@ internal class RealImapFolderIdler(
 
             var response: ImapResponse
             do {
-                val expectSleeping = !connection.isDataAvailable() && !stopIdle
+                idleRefreshTimer = idleRefreshManager.startTimer(
+                    timeout = idleRefreshTimeoutProvider.idleRefreshTimeoutMs,
+                    callback = ::idleRefresh
+                )
 
-                idleRefreshTimer = if (expectSleeping) {
-                    idleRefreshManager.startTimer(idleRefreshTimeoutProvider.idleRefreshTimeoutMs) { idleRefresh() }
-                } else {
-                    null
-                }
-
-                if (expectSleeping) {
-                    wakeLock.release()
-                }
+                wakeLock.release()
 
                 try {
                     response = connection.readResponse()
                 } finally {
-                    if (expectSleeping) {
-                        wakeLock.acquire()
-                        idleRefreshTimer?.cancel()
-                    }
+                    wakeLock.acquire()
+                    idleRefreshTimer?.cancel()
                 }
 
                 if (response.isRelevant && !stopIdle) {

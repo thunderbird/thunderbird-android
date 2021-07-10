@@ -911,11 +911,6 @@ class RealImapConnection implements ImapConnection {
     }
 
     @Override
-    public boolean isDataAvailable() throws IOException {
-        return inputStream.available() > 0;
-    }
-
-    @Override
     public int getConnectionGeneration() {
         return connectionGeneration;
     }

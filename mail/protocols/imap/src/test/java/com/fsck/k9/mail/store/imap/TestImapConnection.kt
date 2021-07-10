@@ -94,8 +94,6 @@ internal open class TestImapConnection(val timeout: Long, override val connectio
         currentSocketReadTimeout = timeout
     }
 
-    override fun isDataAvailable(): Boolean = false
-
     fun waitForCommand(command: String) {
         do {
             val receivedCommand = receivedCommands.poll(timeout, TimeUnit.SECONDS) ?: throw AssertionError("Timeout")

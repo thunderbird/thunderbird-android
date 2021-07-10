@@ -44,7 +44,4 @@ internal interface ImapConnection {
 
     @Throws(SocketException::class)
     fun setSocketReadTimeout(timeout: Int)
-
-    @Throws(IOException::class)
-    fun isDataAvailable(): Boolean
 }
