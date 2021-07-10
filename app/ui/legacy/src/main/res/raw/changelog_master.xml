@@ -5,6 +5,11 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.739" versioncode="27039" date="2021-07-10">
+        <change>Fixed bug that could prevent the device from going to sleep when Push was active</change>
+        <change>Fixed bug that lead to Push not being restarted when network connectivity returned</change>
+        <change>Fixed some issues with displaying the "What's new" notice</change>
+    </release>
     <release version="5.738" versioncode="27038" date="2021-07-08">
         <change>Inline attachments are now included in forwarded messages</change>
         <change>Quick access to the "What's new" screen when the app was updated</change>
