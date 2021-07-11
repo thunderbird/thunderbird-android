@@ -1268,7 +1268,7 @@ You can keep this message and use it as a backup for your secret key. If you wan
     <string name="generic_loading_error">An error occurred while loading the data</string>
 
     <string name="push_notification_state_initializing">Initializing…</string>
-    <string name="push_notification_state_listening">Listening for new emails</string>
+    <string name="push_notification_state_listening">Waiting for new emails</string>
     <string name="push_notification_state_wait_background_sync">Sleeping until background sync is allowed</string>
     <string name="push_notification_state_wait_network">Sleeping until network is available</string>
 </resources>
