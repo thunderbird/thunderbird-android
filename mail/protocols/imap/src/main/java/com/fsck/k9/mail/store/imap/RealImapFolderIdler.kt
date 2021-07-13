@@ -2,6 +2,7 @@ package com.fsck.k9.mail.store.imap
 
 import com.fsck.k9.mail.MessagingException
 import com.fsck.k9.mail.power.WakeLock
+import java.io.IOException
 import timber.log.Timber
 
 private const val SOCKET_EXTRA_TIMEOUT_MS = 2 * 60 * 1000L
@@ -59,7 +60,12 @@ internal class RealImapFolderIdler(
     private fun endIdle() {
         if (idleSent && !doneSent) {
             idleRefreshTimer?.cancel()
-            sendDone()
+
+            try {
+                sendDone()
+            } catch (e: IOException) {
+                Timber.v(e, "%s: IOException while sending DONE", logTag)
+            }
         }
     }
 
@@ -136,7 +142,11 @@ internal class RealImapFolderIdler(
             return
         }
 
-        sendDone()
+        try {
+            sendDone()
+        } catch (e: IOException) {
+            Timber.v(e, "%s: IOException while sending DONE", logTag)
+        }
     }
 
     @Synchronized
