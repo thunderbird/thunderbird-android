@@ -82,8 +82,7 @@ internal class AccountPushController(
     private fun updatePushFolders(folderServerIds: List<String>) {
         Timber.v("AccountPushController(%s).updatePushFolders(): %s", account.uuid, folderServerIds)
 
-        val backendPusher = this.backendPusher ?: error("BackendPusher not initialized")
-        backendPusher.updateFolders(folderServerIds)
+        backendPusher?.updateFolders(folderServerIds)
     }
 
     private fun syncFolders(folderServerId: String) {
