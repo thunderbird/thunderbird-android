@@ -294,6 +294,18 @@
             android:name=".ui.changelog.RecentChangesActivity"
             android:label="@string/changelog_recent_changes_title" />
 
+        <activity
+            android:name=".ui.push.PushInfoActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:label="@string/push_info_title"
+            android:taskAffinity="${applicationId}.push_info">
+            <intent-filter>
+                <action android:name="app.k9mail.action.PUSH_INFO" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <receiver
             android:name=".service.StorageReceiver"
             android:enabled="true">

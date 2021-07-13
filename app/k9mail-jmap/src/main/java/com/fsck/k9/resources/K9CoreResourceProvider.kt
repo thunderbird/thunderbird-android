@@ -55,4 +55,6 @@ class K9CoreResourceProvider(private val context: Context) : CoreResourceProvide
         }
         return context.getString(resId)
     }
+
+    override fun pushNotificationInfoText(): String = context.getString(R.string.push_notification_info)
 }
