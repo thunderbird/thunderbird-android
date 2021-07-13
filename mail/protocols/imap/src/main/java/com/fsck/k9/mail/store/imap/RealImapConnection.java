@@ -121,7 +121,7 @@ class RealImapConnection implements ImapConnection {
     }
 
     @Override
-    public void open() throws IOException, MessagingException {
+    public synchronized void open() throws IOException, MessagingException {
         if (open) {
             return;
         } else if (stacktraceForClose != null) {
@@ -190,7 +190,7 @@ class RealImapConnection implements ImapConnection {
     }
 
     @Override
-    public boolean isConnected() {
+    public synchronized boolean isConnected() {
         return inputStream != null && outputStream != null && socket != null &&
                 socket.isConnected() && !socket.isClosed();
     }
@@ -260,8 +260,10 @@ class RealImapConnection implements ImapConnection {
     }
 
     @Override
-    public void setSocketReadTimeout(int timeout) throws SocketException {
-        socket.setSoTimeout(timeout);
+    public synchronized void setSocketReadTimeout(int timeout) throws SocketException {
+        if (socket != null) {
+            socket.setSoTimeout(timeout);
+        }
     }
 
     private void setUpStreamsAndParserFromSocket() throws IOException {
@@ -731,7 +733,7 @@ class RealImapConnection implements ImapConnection {
     }
 
     @Override
-    public void close() {
+    public synchronized void close() {
         if (!open) {
             return;
         }
@@ -750,7 +752,7 @@ class RealImapConnection implements ImapConnection {
 
     @Override
     @NotNull
-    public OutputStream getOutputStream() {
+    public synchronized OutputStream getOutputStream() {
         return outputStream;
     }
 
@@ -762,7 +764,8 @@ class RealImapConnection implements ImapConnection {
 
     @Override
     @NotNull
-    public List<ImapResponse> executeSimpleCommand(@NotNull String command) throws IOException, MessagingException {
+    public synchronized List<ImapResponse> executeSimpleCommand(@NotNull String command)
+            throws IOException, MessagingException {
         return executeSimpleCommand(command, false);
     }
 
@@ -786,8 +789,8 @@ class RealImapConnection implements ImapConnection {
 
     @Override
     @NotNull
-    public List<ImapResponse> executeCommandWithIdSet(@NotNull String commandPrefix, @NotNull String commandSuffix,
-            @NotNull Set<Long> ids) throws IOException, MessagingException {
+    public synchronized List<ImapResponse> executeCommandWithIdSet(@NotNull String commandPrefix,
+            @NotNull String commandSuffix, @NotNull Set<Long> ids) throws IOException, MessagingException {
 
         GroupedIds groupedIds = IdGrouper.groupIds(ids);
         List<String> splitCommands = ImapCommandSplitter.splitCommand(
@@ -828,7 +831,8 @@ class RealImapConnection implements ImapConnection {
 
     @Override
     @NotNull
-    public String sendCommand(@NotNull String command, boolean sensitive) throws MessagingException, IOException {
+    public synchronized String sendCommand(@NotNull String command, boolean sensitive)
+            throws MessagingException, IOException {
         try {
             open();
 
@@ -853,7 +857,7 @@ class RealImapConnection implements ImapConnection {
     }
 
     @Override
-    public void sendContinuation(@NotNull String continuation) throws IOException {
+    public synchronized void sendContinuation(@NotNull String continuation) throws IOException {
         outputStream.write(continuation.getBytes());
         outputStream.write('\r');
         outputStream.write('\n');

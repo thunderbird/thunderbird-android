@@ -153,10 +153,13 @@ internal class RealImapFolderIdler(
     private fun sendDone() {
         val folder = folder ?: return
         val connection = connectionProvider.getConnection(folder) ?: return
-        if (connection.isConnected) {
-            doneSent = true
-            connection.setSocketDefaultReadTimeout()
-            connection.sendContinuation("DONE")
+
+        synchronized(connection) {
+            if (connection.isConnected) {
+                doneSent = true
+                connection.setSocketDefaultReadTimeout()
+                connection.sendContinuation("DONE")
+            }
         }
     }
 
