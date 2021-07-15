@@ -1278,6 +1278,6 @@ You can keep this message and use it as a backup for your secret key. If you wan
     <string name="push_info_configure_notification_text">However, Android also allows you to hide the notification.</string>
     <string name="push_info_learn_more_text">Learn more</string>
     <string name="push_info_configure_notification_action">Configure notification</string>
-    <string name="push_info_disable_push_text">If you don\'t need instant notifications about new messages you should disable Push and use polling. Polling checks for new mail at regular intervals and does not need the notification.</string>
+    <string name="push_info_disable_push_text">If you don\'t need instant notifications about new messages, you should disable Push and use Polling. Polling checks for new mail at regular intervals and does not need the notification.</string>
     <string name="push_info_disable_push_action">Disable Push</string>
 </resources>
