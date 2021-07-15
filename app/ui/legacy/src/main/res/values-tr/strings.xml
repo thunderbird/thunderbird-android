@@ -21,6 +21,9 @@
   <string name="changelog_title">Değişim günlüğü</string>
   <string name="changelog_loading_error">Değişim günlüğü yüklenemedi. </string>
   <string name="changelog_version_title">Sürüm %s</string>
+  <string name="changelog_recent_changes_title">Yeni ne var?</string>
+  <string name="changelog_show_recent_changes">Uygulama güncellendiğinde son değişiklikleri göster </string>
+  <string name="changelog_snackbar_text">Bu sürümdeki yenilikleri öğrenin </string>
   <!--Welcome message-->
   <string name="welcome_message_title">K-9 Posta\'ya Hoşgeldiniz</string>
   <string name="accounts_welcome"><![CDATA[
@@ -113,6 +116,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="add_account_action">Hesap Ekle</string>
   <string name="compose_action">Oluştur</string>
   <string name="search_action">Arama</string>
+  <string name="search_everywhere_action">Her yerde ara</string>
   <string name="search_results">Arama Sonuçları</string>
   <string name="preferences_action">Ayarlar</string>
   <string name="folders_action">Klasörleri yönet</string>
@@ -179,6 +183,7 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="notification_bg_send_ticker">Posta gönderiliyor: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Posta gönderiliyor</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_push_title">Eşzamanla (İttir)</string>
   <string name="notification_channel_messages_title">İletiler</string>
   <string name="notification_channel_messages_description">İletilerle ilgili bildirimler</string>
   <string name="notification_channel_miscellaneous_title">Çeşitli</string>
@@ -378,7 +383,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="account_setup_options_enable_push_label">Bu hesap için posta gönderme etkin</string>
   <string name="account_setup_options_enable_push_summary">Eğer sunucunuz destekliyorsa, yeni mesajlar anında belirecek. Bu seçenek dramatik olarak performansı arttırabilir veya zarar verebilir.</string>
   <string name="idle_refresh_period_label">IDLE bağlantıyı yenile</string>
-  <string name="idle_refresh_period_1min">Her dakika</string>
   <string name="idle_refresh_period_2min">Her 2 dakikada bir</string>
   <string name="idle_refresh_period_3min">Her 3 dakikada bir</string>
   <string name="idle_refresh_period_6min">Her 6 dakikada bir</string>
@@ -548,7 +552,6 @@ Microsoft Exchange ile konuşurken bazı tuhaflıklar yaşadığını not ediniz
   <string name="folder_settings_folder_push_mode_normal">Sınıflama yok</string>
   <string name="folder_settings_folder_push_mode_first_class">1. Sınıf</string>
   <string name="folder_settings_folder_push_mode_second_class">2. Sınıf</string>
-  <string name="folder_settings_folder_push_mode_inherited">Aynı senkranizayon sınıfı</string>
   <string name="folder_settings_folder_notify_mode_label">Klasör bildirim sınıfı</string>
   <string name="folder_settings_folder_notify_mode_normal">Sınıflama yok</string>
   <string name="folder_settings_folder_notify_mode_first_class">1. Sınıf</string>
@@ -1043,4 +1046,5 @@ Bu iletiyi saklayabilir ve gizli anahtarınız için bir yedekleme olarak kullan
   <string name="permission_contacts_rationale_title">Kişilere erişime izin ver</string>
   <string name="permission_contacts_rationale_message">Kişilerle ilgili öneriler sunabilmek, kişi adlarını ve fotoğraflarını görüntüleyebilmek için uygulamanın kişilerinize erişmesi gerekir.</string>
   <string name="generic_loading_error">Veriler yüklenirken bir hata oluştu </string>
+  <string name="push_notification_state_initializing">Başlatılıyor...</string>
 </resources>

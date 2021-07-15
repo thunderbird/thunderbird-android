@@ -21,6 +21,9 @@
   <string name="changelog_title">Ændringslog</string>
   <string name="changelog_loading_error">Kunne ikke indlæse ændringsloggen.</string>
   <string name="changelog_version_title">Version %s</string>
+  <string name="changelog_recent_changes_title">Hvad er nyt</string>
+  <string name="changelog_show_recent_changes">Vis ændringer efter opdatering</string>
+  <string name="changelog_snackbar_text">Find ud af hvad der er nyt i denne version</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Velkommen til K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -113,9 +116,10 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="add_account_action">Tilføj konto</string>
   <string name="compose_action">Skriv</string>
   <string name="search_action">Søg</string>
+  <string name="search_everywhere_action">Søg overalt</string>
   <string name="search_results">Søgeresultater</string>
   <string name="preferences_action">Indstillinger</string>
-  <string name="folders_action">Håndtere mapper</string>
+  <string name="folders_action">Håndtér mapper</string>
   <string name="account_settings_action">Kontoindstillinger</string>
   <string name="remove_account_action">Slet konto</string>
   <string name="mark_as_read_action">Marker som læst</string>
@@ -129,8 +133,9 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
     <item quantity="one">Adresse kopieret til udklipsholder</item>
     <item quantity="other">Adresser kopieret til udklipsholder</item>
   </plurals>
-  <string name="message_view_theme_action_dark">Skift til mørkt theme</string>
-  <string name="message_view_theme_action_light">Skift til lyst theme</string>
+  <string name="copy_subject_to_clipboard">Emne kopieret til udklipsholder</string>
+  <string name="message_view_theme_action_dark">Skift til mørkt tema</string>
+  <string name="message_view_theme_action_light">Skift til lyst tema</string>
   <string name="mark_as_unread_action">Marker som ulæst</string>
   <string name="read_receipt">Kvittering for modtagelse</string>
   <string name="read_receipt_enabled">Der vil blive anmodet om kvittering for modtagelse</string>
@@ -179,6 +184,8 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="notification_bg_send_ticker">Sender mail: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Sender post</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_push_title">Synkronisér (Push)</string>
+  <string name="notification_channel_push_description">Vist når der lyttes efter nye emails</string>
   <string name="notification_channel_messages_title">Meddelelse</string>
   <string name="notification_channel_messages_description">Påmindelser med forbindelse til beskeder</string>
   <string name="notification_channel_miscellaneous_title">Diverse</string>
@@ -190,9 +197,9 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="special_mailbox_name_sent">Sendt</string>
   <string name="send_failure_subject">Mislykkedes med at sende nogle beskeder</string>
   <string name="version">Version</string>
-  <string name="debug_enable_debug_logging_title">Aktivere fejllogning</string>
+  <string name="debug_enable_debug_logging_title">Aktivér fejllogning</string>
   <string name="debug_enable_debug_logging_summary">Log ekstra diagnostik information</string>
-  <string name="debug_enable_sensitive_logging_title">Logge følsom information</string>
+  <string name="debug_enable_sensitive_logging_title">Log følsom information</string>
   <string name="debug_enable_sensitive_logging_summary">Kan eksponere adgangskoder i log.</string>
   <string name="message_list_load_more_messages_action">Hent flere beskeder</string>
   <string name="message_to_fmt">Til:<xliff:g id="counterParty">%s</xliff:g></string>
@@ -238,7 +245,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="message_saved_toast">Mail gemt som kladde</string>
   <string name="global_settings_flag_label">Vis stjerner</string>
   <string name="global_settings_flag_summary">Stjerne indikerer mails med flag</string>
-  <string name="global_settings_preview_lines_label">Linier i forhåndsvisning</string>
+  <string name="global_settings_preview_lines_label">Linjer i forhåndsvisning</string>
   <string name="global_settings_show_correspondent_names_label">Vis afsenders navne</string>
   <string name="global_settings_show_correspondent_names_summary">Vis afsendernavn fremfor deres mailaddresse</string>
   <string name="global_settings_sender_above_subject_label">Afsender over emne</string>
@@ -249,7 +256,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="global_settings_registered_name_color_changed">Farvelæg navne i kontaklisten</string>
   <string name="global_settings_messageview_fixedwidth_label">Tegnsæt med fast bredde</string>
   <string name="global_settings_messageview_fixedwidth_summary">Benyt tegnsæt med fast bredde til visning af mails med ren tekst</string>
-  <string name="global_settings_messageview_autofit_width_label">Auto tilpas størrelse på meddelser</string>
+  <string name="global_settings_messageview_autofit_width_label">Auto tilpas størrelse på meddelelser</string>
   <string name="global_settings_messageview_autofit_width_summary">Afkort meddelser så de passer til skærm</string>
   <string name="global_settings_messageview_return_to_list_label">Retur til liste efter sletning</string>
   <string name="global_settings_messageview_return_to_list_summary">Returner til mailliste efter sletning af mail</string>
@@ -378,7 +385,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_setup_options_enable_push_label">Aktiver push-mail for denne konto</string>
   <string name="account_setup_options_enable_push_summary">Hvis din server understøtter dette, vil nye mails blive leveret øjeblikkeligt. Denne indstilling kan både indebære forbedret og forringet performance.</string>
   <string name="idle_refresh_period_label">Forny IDLE forbindelse</string>
-  <string name="idle_refresh_period_1min">Hvert minut</string>
   <string name="idle_refresh_period_2min">Hver 2 minut</string>
   <string name="idle_refresh_period_3min">Hver 3 minut</string>
   <string name="idle_refresh_period_6min">Hver 6 minut</string>
@@ -431,8 +437,8 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_settings_mark_message_as_read_on_view_summary">Marker som læst når meddelses åbnes for læsning</string>
   <string name="account_settings_mark_message_as_read_on_delete_label">Marker som læst ved sletning</string>
   <string name="account_settings_mark_message_as_read_on_delete_summary">Marker en besked som læst når den bliver slettet</string>
-  <string name="account_settings_notification_open_system_notifications_label">Påmindelse opsætning</string>
-  <string name="account_settings_notification_open_system_notifications_summary">Åbne system påmindelse opsætning</string>
+  <string name="account_settings_notification_open_system_notifications_label">Opsætning af notifikationer</string>
+  <string name="account_settings_notification_open_system_notifications_summary">Åbn opsætning for notifikationer</string>
   <string name="account_settings_show_pictures_label">Vis altid billeder</string>
   <string name="account_settings_show_pictures_never">Aldrig</string>
   <string name="account_settings_show_pictures_only_from_contacts">Kun når afsender findes i Kontakter</string>
@@ -454,8 +460,8 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="account_settings_quote_style_label">Citationsstil ved svar</string>
   <string name="account_settings_quote_style_prefix">Prefix (som Gmail, Pine)</string>
   <string name="account_settings_quote_style_header">Header (som Outlook, Yahoo!, Hotmail)</string>
-  <string name="account_settings_upload_sent_messages_label">Overføre sendte beskeder</string>
-  <string name="account_settings_upload_sent_messages_summary">Overføre beskeder til sendt mappe efter afsending</string>
+  <string name="account_settings_upload_sent_messages_label">Overfør sendte beskeder</string>
+  <string name="account_settings_upload_sent_messages_summary">Overfør beskeder til sendt mappe efter afsending</string>
   <string name="account_settings_general_title">Generel opsætning</string>
   <string name="account_settings_reading_mail">Læsning af mail</string>
   <string name="account_settings_sync">Hentning af mail</string>
@@ -548,7 +554,6 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="folder_settings_folder_push_mode_normal">Ingen</string>
   <string name="folder_settings_folder_push_mode_first_class">Primær</string>
   <string name="folder_settings_folder_push_mode_second_class">Sekundær</string>
-  <string name="folder_settings_folder_push_mode_inherited">Samme som synkroniserings klasse</string>
   <string name="folder_settings_folder_notify_mode_label">Klasse for mappe-besked</string>
   <string name="folder_settings_folder_notify_mode_normal">Ingen</string>
   <string name="folder_settings_folder_notify_mode_first_class">Primære</string>
@@ -603,7 +608,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="edit_identity_signature_hint">(Frivilligt)</string>
   <string name="account_settings_signature_use_label">Benyt signatur</string>
   <string name="account_settings_signature_label">Signatur</string>
-  <string name="default_identity_description">Oprindelige identitet</string>
+  <string name="default_identity_description">Oprindelig identitet</string>
   <string name="choose_identity_title">Vælg identitet</string>
   <string name="send_as">Send som</string>
   <string name="no_removable_identity">Du kan ikke slette din eneste identitet</string>
@@ -661,9 +666,9 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="settings_compose_theme_label">Editor-tema</string>
   <string name="settings_language_label">Sprog</string>
   <string name="preference_search_no_results">Ingen indstillinger fundet</string>
-  <string name="settings_message_theme_selection_label">Fixed meddelelses-tema</string>
-  <string name="settings_message_theme_selection_summary_off">Benyt meddelelsesvisnings-tema når meddelelser læses</string>
-  <string name="settings_message_theme_selection_summary_on">Benyt et fixed meddelelsesvisnings-tema</string>
+  <string name="settings_message_theme_selection_label">Fast tema for meddelelser</string>
+  <string name="settings_message_theme_selection_summary_off">Vælg tema under læsning af meddelelse</string>
+  <string name="settings_message_theme_selection_summary_on">Benyt et fast meddelelsesvisnings-tema</string>
   <string name="setting_language_system">System standard</string>
   <string name="background_ops_label">Baggrundssynkronisering</string>
   <string name="background_ops_never">Aldrig</string>
@@ -770,13 +775,13 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_backup_category">Sikkerhedskopi</string>
   <string name="settings_list_miscellaneous_category">Diverse</string>
-  <string name="settings_export_title">Eksportere opsætning</string>
-  <string name="settings_export_button">Eksporter</string>
+  <string name="settings_export_title">Eksportér opsætning</string>
+  <string name="settings_export_button">Eksportér</string>
   <string name="settings_export_share_button">Del</string>
-  <string name="settings_export_progress_text">Eksportere opsætning...</string>
+  <string name="settings_export_progress_text">Eksporterer opsætning...</string>
   <string name="settings_export_success_generic">Indstillinger succesfuldt eksporteret</string>
   <string name="settings_export_failure">Eksport af indstillinger fejlede</string>
-  <string name="settings_import_title">Importere opsætning</string>
+  <string name="settings_import_title">Importér opsætning</string>
   <string name="settings_import_pick_document_button">Vælg fil</string>
   <string name="settings_import_button">Importer</string>
   <string name="settings_import_success_generic">Importerede indstillinger</string>
@@ -789,8 +794,8 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="settings_import_status_not_imported">Ikke importeret</string>
   <string name="settings_import_status_error">Import fejlede</string>
   <string name="settings_import_later_button">Senere</string>
-  <string name="settings_import">Importere opsætning</string>
-  <string name="settings_importing">Importere opsætning…</string>
+  <string name="settings_import">Importér opsætning</string>
+  <string name="settings_importing">Importerer opsætning…</string>
   <plurals name="settings_import_password_prompt">
     <item quantity="one">For at bruge kontoen \"<xliff:g id="account">%s</xliff:g>\" er du nødt til at angive adgangskoden for serveren.</item>
     <item quantity="other">For at bruge kontoen \"<xliff:g id="account">%s</xliff:g>\" er du nødt til at angive adgangskoderne for serveren.</item>
@@ -873,7 +878,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="mark_all_as_read">Marker alle som læst</string>
   <string name="global_settings_colorize_missing_contact_pictures_label">Farvelægning af kontakter</string>
   <string name="global_settings_colorize_missing_contact_pictures_summary">Benyt farver hvis der ikke findes billede af kontakter</string>
-  <string name="global_settings_messageview_visible_refile_actions_title">Visning af handlinger for valgte meddelelses</string>
+  <string name="global_settings_messageview_visible_refile_actions_title">Visning af handlinger for valgte meddelelser</string>
   <string name="global_settings_messageview_visible_refile_actions_summary">Vis handlinger for valgte meddelelser i Visnings menu</string>
   <string name="loading_attachment">Henter vedhæftning…</string>
   <string name="fetching_attachment_dialog_title_send">Sender meddelelse</string>
@@ -1043,4 +1048,8 @@ Beskeden kan beholdes og bruges som sikkerhedskopi til den hemmelige nøgle. Hvi
   <string name="permission_contacts_rationale_title">Tillade adgang til kontakter</string>
   <string name="permission_contacts_rationale_message">For at kunne levere kontaktforslag og vise kontaktnavne og fotos, skal programmet have adgang til kontakter.</string>
   <string name="generic_loading_error">En fejl opstod under indlæsning af data</string>
+  <string name="push_notification_state_initializing">Initialiserer...</string>
+  <string name="push_notification_state_listening">Venter på nye emails</string>
+  <string name="push_notification_state_wait_background_sync">I dvale indtil baggrundssynkronisering er tilladt</string>
+  <string name="push_notification_state_wait_network">I dvale indtil netværk er tilgængelig</string>
 </resources>

@@ -21,6 +21,9 @@
   <string name="changelog_title">Regjistër ndryshimesh</string>
   <string name="changelog_loading_error">S’u ngarkua dot regjistri i ndryshimeve.</string>
   <string name="changelog_version_title">Version %s</string>
+  <string name="changelog_recent_changes_title">Ç’ka të re</string>
+  <string name="changelog_show_recent_changes">Shfaq ndryshime së fundi, kur përditësohet aplikacioni</string>
+  <string name="changelog_snackbar_text">Mësoni ç’ka të re në këtë hedhje në qarkullim</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Mirë se vini te K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -383,7 +386,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="account_setup_options_enable_push_label">Aktivizo dërgim poste push për këtë llogari</string>
   <string name="account_setup_options_enable_push_summary">Nëse mbulohet nga shërbyesi juaj, mesazhet e rinj do të shfaqen menjëherë. Kjo mundësi mundet të përmirësojë ose dëmtojë mjaft punimin.</string>
   <string name="idle_refresh_period_label">Rifresko lidhjen IDLE</string>
-  <string name="idle_refresh_period_1min">Çdo minutë</string>
   <string name="idle_refresh_period_2min">Çdo 2 minuta</string>
   <string name="idle_refresh_period_3min">Çdo 3 minuta</string>
   <string name="idle_refresh_period_6min">Çdo 6 minuta</string>
@@ -553,7 +555,6 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="folder_settings_folder_push_mode_normal">Pa Klasë</string>
   <string name="folder_settings_folder_push_mode_first_class">Klasë e 1-rë</string>
   <string name="folder_settings_folder_push_mode_second_class">Klasë e 2-të</string>
-  <string name="folder_settings_folder_push_mode_inherited">Njësoj si klasa e njëkohësimit</string>
   <string name="folder_settings_folder_notify_mode_label">Klasë njoftimesh dosjeje</string>
   <string name="folder_settings_folder_notify_mode_normal">Pa Klasë</string>
   <string name="folder_settings_folder_notify_mode_first_class">Klasa e 1-rë</string>
@@ -1049,7 +1050,7 @@ Mund ta mbani këtë mesazh dhe ta përdorni si një kopjeruatje të kyçit tuaj
   <string name="permission_contacts_rationale_message">Për të qenë në gjendje të jepen sugjerime kontaktesh dhe të shfaqen emra dhe telefona kontaktesh, aplikacioni ka nevojë të hyjë te kontaktet tuaja.</string>
   <string name="generic_loading_error">Ndodhi një gabim teksa ngarkoheshin të dhënat</string>
   <string name="push_notification_state_initializing">Po fillohet…</string>
-  <string name="push_notification_state_listening">Po përgjohet për email-e të rinj</string>
+  <string name="push_notification_state_listening">Po pritet për email-e të rinj</string>
   <string name="push_notification_state_wait_background_sync">Po dremitet, deri sa të lejohet njëkohësimi në prapaskenë</string>
   <string name="push_notification_state_wait_network">Po dremitet, deri sa të ketë rrjet</string>
 </resources>

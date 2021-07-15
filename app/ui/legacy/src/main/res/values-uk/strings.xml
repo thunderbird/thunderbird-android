@@ -371,7 +371,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="account_setup_options_enable_push_label">Використовувати push для цього облікового запису</string>
   <string name="account_setup_options_enable_push_summary">Якщо ваш сервер підтримує таку можливість, то нові повідомлення з\'являтимуться моментально. Цей параметр може істотно покращити або погіршити швидкодію.</string>
   <string name="idle_refresh_period_label">Оновлювати з’єднання IMAP IDLE</string>
-  <string name="idle_refresh_period_1min">Кожної хвилини</string>
   <string name="idle_refresh_period_2min">Кожні 2 хвилини</string>
   <string name="idle_refresh_period_3min">Кожні 3 хвилини</string>
   <string name="idle_refresh_period_6min">Кожні 6 хвилин</string>
@@ -527,7 +526,6 @@ K-9 Mail — це вільний клієнт електронної пошти 
   <string name="folder_settings_folder_push_mode_normal">Без класу</string>
   <string name="folder_settings_folder_push_mode_first_class">1-ий клас</string>
   <string name="folder_settings_folder_push_mode_second_class">2-ий клас</string>
-  <string name="folder_settings_folder_push_mode_inherited">Такий самий, як і клас синхронізації</string>
   <string name="folder_settings_folder_notify_mode_label">Клас сповіщення теки</string>
   <string name="folder_settings_folder_notify_mode_normal">Без класу</string>
   <string name="folder_settings_folder_notify_mode_first_class">1-й клас</string>

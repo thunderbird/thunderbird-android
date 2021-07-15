@@ -385,7 +385,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="account_setup_options_enable_push_label">Omogoči potisno pošto za ta račun</string>
   <string name="account_setup_options_enable_push_summary">Če strežnik možnost podpira, bodo nova sporočila prikazala takoj. Nastavitev lahko močno izboljša ali poslabša hitrost delovanja.</string>
   <string name="idle_refresh_period_label">Obnovi nedejavno povezavo</string>
-  <string name="idle_refresh_period_1min">Vsako minuto</string>
   <string name="idle_refresh_period_2min">Vsaki 2 minuti</string>
   <string name="idle_refresh_period_3min">Vsake 3 minute</string>
   <string name="idle_refresh_period_6min">Vsakih 6 minut</string>
@@ -555,7 +554,6 @@ dodatnih <xliff:g id="messages_to_load">%d</xliff:g> sporočil</string>
   <string name="folder_settings_folder_push_mode_normal">Brez ravni</string>
   <string name="folder_settings_folder_push_mode_first_class">Potisni mape 1. ravni</string>
   <string name="folder_settings_folder_push_mode_second_class">Potisni mape 2. ravni</string>
-  <string name="folder_settings_folder_push_mode_inherited">Potisni mape, ki se usklajujejo</string>
   <string name="folder_settings_folder_notify_mode_label">Objava obvestil map</string>
   <string name="folder_settings_folder_notify_mode_normal">Brez ravni</string>
   <string name="folder_settings_folder_notify_mode_first_class">Objavljaj obvestila map 1. ravni</string>
@@ -1061,7 +1059,6 @@ Sporočilo lahko shranite in ga uporabite kot varno kopijo šifrirnega ključa. 
   <string name="permission_contacts_rationale_message">Če hočete dobiti predloge za stike in prikazati imena in fotografije stikov, aplikacija potrebuje dostop do vaših stikov.</string>
   <string name="generic_loading_error">Med nalaganjem podatkov je prišlo do napake</string>
   <string name="push_notification_state_initializing">Inicializacija …</string>
-  <string name="push_notification_state_listening">Poslušanje novih e-poštnih sporočil</string>
   <string name="push_notification_state_wait_background_sync">Spanje, dokler ni dovoljena sinhronizacija v ozadju </string>
   <string name="push_notification_state_wait_network">Spanje, dokler ni na voljo omrežja</string>
 </resources>

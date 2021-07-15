@@ -21,6 +21,9 @@
   <string name="changelog_title">Registro de mudanças</string>
   <string name="changelog_loading_error">Não foi possível ler o registro de mudanças</string>
   <string name="changelog_version_title">Versão %s</string>
+  <string name="changelog_recent_changes_title">Novidades</string>
+  <string name="changelog_show_recent_changes">Exibir as alterações recentes, quando o aplicativo for atualizado</string>
+  <string name="changelog_snackbar_text">Descubra as novidades dessa versão</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Bem-vindo ao K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -113,6 +116,7 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="add_account_action">Adicionar conta</string>
   <string name="compose_action">Escrever</string>
   <string name="search_action">Pesquisar</string>
+  <string name="search_everywhere_action">Pesquisar em todos os lugares</string>
   <string name="search_results">Resultados da pesquisa</string>
   <string name="preferences_action">Configurações</string>
   <string name="folders_action">Gerenciar pastas</string>
@@ -380,7 +384,6 @@ Por favor encaminhe relatórios de bugs, contribua com novos recursos e tire dú
   <string name="account_setup_options_enable_push_label">Habilitar sincronização de mensagens para esta conta</string>
   <string name="account_setup_options_enable_push_summary">Se seu servidor suportar, novas mensagens aparecerão instantaneamente. Esta opção pode melhorar ou piorar a performance dramaticamente.</string>
   <string name="idle_refresh_period_label">Atualizar conexão IDLE</string>
-  <string name="idle_refresh_period_1min">A cada minuto</string>
   <string name="idle_refresh_period_2min">A cada 2 minutos</string>
   <string name="idle_refresh_period_3min">A cada 3 minutos</string>
   <string name="idle_refresh_period_6min">A cada 6 minutos</string>
@@ -1046,7 +1049,7 @@ Você pode manter esta mensagem e usá-la como um backup para a sua chave secret
   <string name="permission_contacts_rationale_message">Para fornecer sugestões e exibir nomes e fotos de contatos, o app precisa de ter acesso aos seus contatos.</string>
   <string name="generic_loading_error">Um erro ocorreu durante o carregamento dos dados</string>
   <string name="push_notification_state_initializing">Inicializando...</string>
-  <string name="push_notification_state_listening">Monitorando a chegada de novos e-mails</string>
+  <string name="push_notification_state_listening">Aguardando por novas mensgens</string>
   <string name="push_notification_state_wait_background_sync">Suspenso até que a sincronização em segundo plano seja permitida</string>
   <string name="push_notification_state_wait_network">Suspenso até que a rede esteja disponível</string>
 </resources>

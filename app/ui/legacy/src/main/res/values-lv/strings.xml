@@ -9,9 +9,18 @@
   <!--Used in the about dialog-->
   <string name="app_authors">K-9 Suņa Staigātāji</string>
   <string name="app_copyright_fmt">Autortiesības 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Daļējas autortiesības 2006-<xliff:g>%s</xliff:g> Android atvērtā koda projekts.</string>
+  <string name="source_code">Avota kods</string>
   <string name="app_license">Apache licence, Versija 2.0</string>
+  <string name="about_project_title">Atvērtā koda projekts</string>
+  <string name="about_website_title">Tīmekļvietne</string>
+  <string name="user_forum_title">Lietotāju forums</string>
+  <string name="about_fediverse_title">Fediverse</string>
+  <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">Vārdnīcas</string>
   <string name="license">Licence</string>
+  <string name="changelog_title">Izmaiņu žurnāls</string>
+  <string name="changelog_loading_error">Nevarēja ielādēt izmaiņu žurnālu.</string>
+  <string name="changelog_version_title">Versija %s</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Laipni lūdzam K-9 Pastā</string>
   <string name="accounts_welcome"><![CDATA[
@@ -104,6 +113,7 @@ Lūdzu, iesniedziet kļūdu ziņojumus, ierosiniet jaunas iespējas un uzdodiet 
   <string name="add_account_action">Pievienot kontu</string>
   <string name="compose_action">Rakstīt vēstuli</string>
   <string name="search_action">Meklēt</string>
+  <string name="search_everywhere_action">Meklēt visur</string>
   <string name="search_results">Meklēšanas rezultāti</string>
   <string name="preferences_action">Iestatījumi</string>
   <string name="folders_action">Pārvaldīt mapes</string>
@@ -121,6 +131,7 @@ Lūdzu, iesniedziet kļūdu ziņojumus, ierosiniet jaunas iespējas un uzdodiet 
     <item quantity="one">Adrese nokopēta starpliktuvē</item>
     <item quantity="other">Adreses nokopētas starpliktuvē</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">Temata teksts nokopēts uz starpliktuvi</string>
   <string name="message_view_theme_action_dark">Pārslēgt uz tumšo motīvu</string>
   <string name="message_view_theme_action_light">Pārslēgt uz gaišo motīvu</string>
   <string name="mark_as_unread_action">Atzīmēt kā nelasītu</string>
@@ -172,6 +183,8 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="notification_bg_send_ticker">Sūta pastu: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Sūta pastu</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_push_title">Sinhronizēt (lejupielādēt)</string>
+  <string name="notification_channel_push_description">Tiek rādīts, kamēr gaida jaunas vēstules</string>
   <string name="notification_channel_messages_title">Vēstules</string>
   <string name="notification_channel_messages_description">Paziņojumi par vēstulēm</string>
   <string name="notification_channel_miscellaneous_title">Dažādi</string>
@@ -371,7 +384,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="account_setup_options_enable_push_label">Iestatīt pasta lejupielādēšanu šim kontam</string>
   <string name="account_setup_options_enable_push_summary">Ja Jūsu serveris to atbalstīs, jaunas vēstules parādīsies nekavējotes. Šī iespēja var gan ievērojami uzlabot, gan arī samazināt veiktspēju.</string>
   <string name="idle_refresh_period_label">Atsvaidzināt IDLE savienojumu</string>
-  <string name="idle_refresh_period_1min">Katru minūti</string>
   <string name="idle_refresh_period_2min">Katras 2 minūtes</string>
   <string name="idle_refresh_period_3min">Katras 3 minūtes</string>
   <string name="idle_refresh_period_6min">Katras 6 minūtes</string>
@@ -541,7 +553,6 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="folder_settings_folder_push_mode_normal">Bez kategorijas</string>
   <string name="folder_settings_folder_push_mode_first_class">1. kategorija</string>
   <string name="folder_settings_folder_push_mode_second_class">2. kategorija</string>
-  <string name="folder_settings_folder_push_mode_inherited">Tāda pati kā sinhronizēšanas kategorija</string>
   <string name="folder_settings_folder_notify_mode_label">Mapes paziņojumu kategorija</string>
   <string name="folder_settings_folder_notify_mode_normal">Bez kategorijas</string>
   <string name="folder_settings_folder_notify_mode_first_class">1. kategorija</string>
@@ -677,6 +688,7 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="volume_navigation_title">Skaļuma pogas navigācija</string>
   <string name="volume_navigation_message">Vēstuļu skatā</string>
   <string name="volume_navigation_list">Saraksta skatā</string>
+  <string name="show_unified_inbox_title">Rādīt apvienoto pastkasti</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- nelasīts</string>
   <string name="search_all_messages_title">Visas vēstules</string>
@@ -729,6 +741,7 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="send_failed_reason">Sūtīšana neizdevās: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Saglabāt vēstuli melnrakstos?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Saglabāt vai izmest šo vēstuli?</string>
+  <string name="save_or_discard_draft_message_changes">Saglabāt vai atcelt izmaiņas?</string>
   <string name="confirm_discard_draft_message_title">Izmest vēstuli?</string>
   <string name="confirm_discard_draft_message">Vai tiešām izmest šo vēstuli?</string>
   <string name="select_text_now">Iezīmēt tekstu, lai kopētu.</string>
@@ -890,6 +903,8 @@ pat <xliff:g id="messages_to_load">%d</xliff:g> vairāk</string>
   <string name="recipient_bcc">Bcc</string>
   <string name="recipient_to">Kam</string>
   <string name="recipient_from">No kā</string>
+  <string name="unknown_recipient">&lt;Nezināms saņēmējs&gt;</string>
+  <string name="unknown_sender">&lt;Nezināms sūtītājs&gt;</string>
   <string name="address_type_home">Mājas</string>
   <string name="address_type_work">Darbs</string>
   <string name="address_type_other">Cits</string>
@@ -1036,4 +1051,8 @@ Lai jaunajā ierīcē iestatītu automātisko šifrēšanu, lūdzu sekojiet nor�
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Atļaut piekļuvi kontaktiem</string>
   <string name="permission_contacts_rationale_message">Lai ieteiktu kontaktus un parādītu to vārdus un attēlus, lietotnei nepieciešama atļauja piekļūt Jūsu kontaktiem.</string>
+  <string name="generic_loading_error">Lejupielādējot datus notika kāda kļūda</string>
+  <string name="push_notification_state_initializing">Inicializē...</string>
+  <string name="push_notification_state_wait_background_sync">Snaust, kamēr atļauta fona sinhronizēšana</string>
+  <string name="push_notification_state_wait_network">Snaust, kamēr pieejams tīkls</string>
 </resources>

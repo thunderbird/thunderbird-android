@@ -380,7 +380,6 @@
   <string name="account_setup_options_enable_push_label">Омогући гурање поште за овај налог</string>
   <string name="account_setup_options_enable_push_summary">Ако ваш сервер подржава, нове поруке ће се приказивати одмах. Ово може драматично да побољша или погорша перформансе.</string>
   <string name="idle_refresh_period_label">Освежавање неактивне везе</string>
-  <string name="idle_refresh_period_1min">сваке минуте</string>
   <string name="idle_refresh_period_2min">на 2 минута</string>
   <string name="idle_refresh_period_3min">на 3 минута</string>
   <string name="idle_refresh_period_6min">на 6 минута</string>
@@ -550,7 +549,6 @@
   <string name="folder_settings_folder_push_mode_normal">без класе</string>
   <string name="folder_settings_folder_push_mode_first_class">I класа</string>
   <string name="folder_settings_folder_push_mode_second_class">II класа</string>
-  <string name="folder_settings_folder_push_mode_inherited">иста као класа синх.</string>
   <string name="folder_settings_folder_notify_mode_label">Класа обавештења фасцикле</string>
   <string name="folder_settings_folder_notify_mode_normal">без класе</string>
   <string name="folder_settings_folder_notify_mode_first_class">I класа</string>

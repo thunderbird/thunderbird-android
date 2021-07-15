@@ -381,7 +381,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="account_setup_options_enable_push_label">Push-уведомления</string>
   <string name="account_setup_options_enable_push_summary">Мгновенное извещение о новых сообщениях, при поддержке сервером</string>
   <string name="idle_refresh_period_label">Интервал обновления IDLE</string>
-  <string name="idle_refresh_period_1min">1 минута</string>
   <string name="idle_refresh_period_2min">2 минуты</string>
   <string name="idle_refresh_period_3min">3 минуты</string>
   <string name="idle_refresh_period_6min">6 минут</string>
@@ -551,7 +550,6 @@ K-9 Mail — почтовый клиент для Android.
   <string name="folder_settings_folder_push_mode_normal">Нет класса</string>
   <string name="folder_settings_folder_push_mode_first_class">1 класс</string>
   <string name="folder_settings_folder_push_mode_second_class">2 класс</string>
-  <string name="folder_settings_folder_push_mode_inherited">Как синхронизации</string>
   <string name="folder_settings_folder_notify_mode_label">Уведомление</string>
   <string name="folder_settings_folder_notify_mode_normal">Нет класса</string>
   <string name="folder_settings_folder_notify_mode_first_class">1 класс</string>

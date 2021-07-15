@@ -279,7 +279,6 @@
   <string name="account_setup_options_enable_push_label">אפשר דחיפת דואר עבור חשבון זה</string>
   <string name="account_setup_options_enable_push_summary">אם השרת שלך תומך בכך, ההודעות החדשות יופיעו באופן מיידי. אפשרות זו יכולה לשפר באופן דרמטי או לפגוע בביצועים.</string>
   <string name="idle_refresh_period_label">רענן חיבור IDLE</string>
-  <string name="idle_refresh_period_1min">כל דקה</string>
   <string name="idle_refresh_period_2min">כל 2 דקות</string>
   <string name="idle_refresh_period_3min">כל 3 דקות</string>
   <string name="idle_refresh_period_6min">כל 6 דקות</string>

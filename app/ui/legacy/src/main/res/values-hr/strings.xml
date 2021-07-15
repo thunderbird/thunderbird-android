@@ -340,7 +340,6 @@
   <string name="account_setup_options_enable_push_label">Omogući poštu guranja za ovaj račun</string>
   <string name="account_setup_options_enable_push_summary">Ako vaš poslužitelj podržava, nove poruke će se prikazivati odmah. Ova opcija može dramatično poboljšati ili pogoršati performanse.</string>
   <string name="idle_refresh_period_label">Osvježi BESPOSLENU vezu</string>
-  <string name="idle_refresh_period_1min">Svake minute</string>
   <string name="idle_refresh_period_2min">Svake 2 minute</string>
   <string name="idle_refresh_period_3min">Svake 3 minute</string>
   <string name="idle_refresh_period_6min">Svakih 6 minuta</string>
@@ -510,7 +509,6 @@
   <string name="folder_settings_folder_push_mode_normal">Bez razreda</string>
   <string name="folder_settings_folder_push_mode_first_class">1. Ratreda</string>
   <string name="folder_settings_folder_push_mode_second_class">2. Razreda</string>
-  <string name="folder_settings_folder_push_mode_inherited">Isto kao i razred sinhronizacije</string>
   <string name="folder_settings_folder_notify_mode_label">razred obavijesti mape</string>
   <string name="folder_settings_folder_notify_mode_normal">Bez razreda</string>
   <string name="folder_settings_folder_notify_mode_first_class">1. Razreda</string>

@@ -349,7 +349,6 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="account_setup_options_enable_push_label">Activar subscripción para esta conta</string>
   <string name="account_setup_options_enable_push_summary">Se se soporta polo teu servidor, as mensaxes aparecerán de xeito instantáneo. Esta opción pode provocar lentitude no sistema</string>
   <string name="idle_refresh_period_label">Refrescar conexión</string>
-  <string name="idle_refresh_period_1min">Cada minuto</string>
   <string name="idle_refresh_period_2min">Cada 2 minutos</string>
   <string name="idle_refresh_period_3min">Cada 3 minutos</string>
   <string name="idle_refresh_period_6min">Cada 6 minutos</string>
@@ -487,7 +486,6 @@ Por favor envíen informes de fallos, contribúa con novas características e co
   <string name="folder_settings_folder_push_mode_normal">Sen Clase</string>
   <string name="folder_settings_folder_push_mode_first_class">1a Clase</string>
   <string name="folder_settings_folder_push_mode_second_class">2a Clase</string>
-  <string name="folder_settings_folder_push_mode_inherited">A mesma que en sincronización</string>
   <string name="folder_settings_folder_notify_mode_label">Clase de notificación de cartafol</string>
   <string name="folder_settings_folder_notify_mode_normal">Sen Clase</string>
   <string name="folder_settings_folder_notify_mode_first_class">1a Clase</string>

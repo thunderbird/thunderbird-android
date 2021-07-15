@@ -7,8 +7,8 @@
   <string name="shortcuts_title">Comptes K-9</string>
   <string name="unread_widget_label">K-9 non lus</string>
   <!--Used in the about dialog-->
-  <string name="app_authors">Les auteurs de K-9</string>
-  <string name="app_copyright_fmt">Tous droits réservés 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Parties protégées par droits d’auteur 2006-<xliff:g>%s</xliff:g> le projet libre Android.</string>
+  <string name="app_authors">Les auteurs de K-9 (« The K-9 Dog Walkers »)</string>
+  <string name="app_copyright_fmt">Tous droits réservés 2008 à <xliff:g>%s</xliff:g> The K-9 Dog Walkers. Parties protégées par droits d’auteur 2006 à<xliff:g>%s</xliff:g> le projet à code source ouvert Android.</string>
   <string name="source_code">Code source</string>
   <string name="app_license">Licence Apache, Version 2.0</string>
   <string name="about_project_title">Projet à code source ouvert</string>
@@ -21,6 +21,9 @@
   <string name="changelog_title">Journal des changements</string>
   <string name="changelog_loading_error">Impossible de charger le journal des changements</string>
   <string name="changelog_version_title">Version %s</string>
+  <string name="changelog_recent_changes_title">Nouveautés</string>
+  <string name="changelog_show_recent_changes">Afficher les changements récents quand l’appli a été mise à jour</string>
+  <string name="changelog_snackbar_text">Découvrez les nouveautés de cette version</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Bienvenue sur Courriel K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -383,7 +386,6 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="account_setup_options_enable_push_label">Activer le courriel poussé pour ce compte</string>
   <string name="account_setup_options_enable_push_summary">Si votre serveur le prend an charge, les nouveaux courriels apparaîtront instantanément. Cette option peut considérablement améliorer ou dégrader les performances.</string>
   <string name="idle_refresh_period_label">Actualiser la connexion IDLE</string>
-  <string name="idle_refresh_period_1min">Toutes les minutes</string>
   <string name="idle_refresh_period_2min">Toutes les 2 minutes</string>
   <string name="idle_refresh_period_3min">Toutes les 3 minutes</string>
   <string name="idle_refresh_period_6min">Toutes les 6 minutes</string>
@@ -553,7 +555,7 @@ jusqu’à <xliff:g id="messages_to_load">%d</xliff:g> de plus</string>
   <string name="folder_settings_folder_push_mode_normal">Aucune classe</string>
   <string name="folder_settings_folder_push_mode_first_class">1re classe</string>
   <string name="folder_settings_folder_push_mode_second_class">2e classe</string>
-  <string name="folder_settings_folder_push_mode_inherited">Identique à la classe de synchronisation</string>
+  <string name="folder_settings_folder_push_mode_inherited">Identique à la classe de récupération</string>
   <string name="folder_settings_folder_notify_mode_label">Classe de notification de dossier</string>
   <string name="folder_settings_folder_notify_mode_normal">Aucune classe</string>
   <string name="folder_settings_folder_notify_mode_first_class">1re classe</string>

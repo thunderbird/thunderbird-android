@@ -368,7 +368,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="account_setup_options_enable_push_label">Gweredekaat ar push postel evit ar gont-mañ</string>
   <string name="account_setup_options_enable_push_summary">Mard eo skoret gant ho tafariad, kemennadennoù nevez a vo skrammet  diouzhtu. An dibarzh-mañ a c’hall gwellaat pe fallaat an digonusted a-galz.</string>
   <string name="idle_refresh_period_label">Azgrenaat ar c’hennask IDLE</string>
-  <string name="idle_refresh_period_1min">Pep munutenn</string>
   <string name="idle_refresh_period_2min">Bep 2 vunutenn</string>
   <string name="idle_refresh_period_3min">Bep 3 munutenn</string>
   <string name="idle_refresh_period_6min">Bep 6 munutenn</string>
@@ -522,7 +521,6 @@ Danevellit beugoù, kenlabourit war keweriusterioù nevez ha savit goulennoù wa
   <string name="folder_settings_folder_push_mode_normal">Rummad ebet</string>
   <string name="folder_settings_folder_push_mode_first_class">1añ rummad</string>
   <string name="folder_settings_folder_push_mode_second_class">Eil rummad</string>
-  <string name="folder_settings_folder_push_mode_inherited">Hevelep rummad hag hini goubredañ</string>
   <string name="folder_settings_folder_notify_mode_label">Rummad rebuziñ an teuliad</string>
   <string name="folder_settings_folder_notify_mode_normal">Rummad ebet</string>
   <string name="folder_settings_folder_notify_mode_first_class">1añ rummad</string>
