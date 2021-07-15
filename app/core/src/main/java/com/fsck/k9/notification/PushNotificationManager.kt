@@ -1,10 +1,15 @@
 package com.fsck.k9.notification
 
 import android.app.Notification
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
+import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.fsck.k9.CoreResourceProvider
+
+private const val PUSH_INFO_ACTION = "app.k9mail.action.PUSH_INFO"
 
 internal class PushNotificationManager(
     private val context: Context,
@@ -44,9 +49,19 @@ internal class PushNotificationManager(
     }
 
     private fun createNotification(): Notification {
+        val intent = Intent(PUSH_INFO_ACTION).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            setPackage(context.packageName)
+        }
+        val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else 0
+        val contentIntent = PendingIntent.getActivity(context, 1, intent, flag)
+
         return NotificationCompat.Builder(context, notificationChannelManager.pushChannelId)
             .setSmallIcon(resourceProvider.iconPushNotification)
             .setContentTitle(resourceProvider.pushNotificationText(notificationState))
+            .setContentText(resourceProvider.pushNotificationInfoText())
+            .setContentIntent(contentIntent)
             .setOngoing(true)
             .setNotificationSilent()
             .setBadgeIconType(NotificationCompat.BADGE_ICON_NONE)

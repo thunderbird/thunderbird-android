@@ -70,6 +70,17 @@ class PushController internal constructor(
         }
     }
 
+    fun disablePush() {
+        Timber.v("PushController.disablePush()")
+
+        coroutineScope.launch(coroutineDispatcher) {
+            for (account in preferences.accounts) {
+                account.folderPushMode = FolderMode.NONE
+                preferences.saveAccount(account)
+            }
+        }
+    }
+
     private fun initInBackground() {
         Timber.v("PushController.initInBackground()")
 

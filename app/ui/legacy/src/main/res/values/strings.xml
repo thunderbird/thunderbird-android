@@ -1271,4 +1271,13 @@ You can keep this message and use it as a backup for your secret key. If you wan
     <string name="push_notification_state_listening">Waiting for new emails</string>
     <string name="push_notification_state_wait_background_sync">Sleeping until background sync is allowed</string>
     <string name="push_notification_state_wait_network">Sleeping until network is available</string>
+    <string name="push_notification_info">Tap to learn more.</string>
+
+    <string name="push_info_title">Push Info</string>
+    <string name="push_info_notification_explanation_text">When using Push, K-9 Mail maintains a connection to the mail server. Android requires displaying an ongoing notification while the app is active in the background. %s</string>
+    <string name="push_info_configure_notification_text">However, Android also allows you to hide the notification.</string>
+    <string name="push_info_learn_more_text">Learn more</string>
+    <string name="push_info_configure_notification_action">Configure notification</string>
+    <string name="push_info_disable_push_text">If you don\'t need instant notifications about new messages you should disable Push and use polling. Polling checks for new mail at regular intervals and does not need the notification.</string>
+    <string name="push_info_disable_push_action">Disable Push</string>
 </resources>
