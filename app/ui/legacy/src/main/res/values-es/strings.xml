@@ -21,6 +21,9 @@
   <string name="changelog_title">Registro de cambios</string>
   <string name="changelog_loading_error">No se pudo cargar el registro de cambios.</string>
   <string name="changelog_version_title">Versión %s</string>
+  <string name="changelog_recent_changes_title">Novedades</string>
+  <string name="changelog_show_recent_changes">Muestra cambios recientes cuando se actualiza la aplicación</string>
+  <string name="changelog_snackbar_text">Descubra las novedades de esta versión</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Bienvenido a K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -113,6 +116,7 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="add_account_action">Añadir cuenta</string>
   <string name="compose_action">Redactar</string>
   <string name="search_action">Buscar</string>
+  <string name="search_everywhere_action">Buscar en todas partes</string>
   <string name="search_results">Resultados búsqueda</string>
   <string name="preferences_action">Configuración</string>
   <string name="folders_action">Administrar carpetas</string>
@@ -129,6 +133,7 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
     <item quantity="one">Se ha copiado la dirección al portapapeles</item>
     <item quantity="other">Se han copiado las direcciones al portapeles</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">Texto copiado en el portapapeles</string>
   <string name="message_view_theme_action_dark">Cambiar a tema oscuro</string>
   <string name="message_view_theme_action_light">Cambiar a tema claro</string>
   <string name="mark_as_unread_action">Marcar como no leído</string>
@@ -178,11 +183,13 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="notification_bg_send_ticker">Enviando correo: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Enviando correo</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_push_title">Sincronizar (Push)</string>
+  <string name="notification_channel_push_description">Se muestra en espera de nuevos mensajes</string>
   <string name="notification_channel_messages_title">Mensajes</string>
   <string name="notification_channel_messages_description">Notificaciones relacionadas a los mensajes</string>
   <string name="notification_channel_miscellaneous_title">Varios</string>
   <string name="notification_channel_miscellaneous_description">Notificaciones misceláneas como errores, etc.</string>
-  <string name="special_mailbox_name_inbox">Entrada</string>
+  <string name="special_mailbox_name_inbox">Bandeja de Entrada</string>
   <string name="special_mailbox_name_outbox">Salida</string>
   <string name="special_mailbox_name_drafts">Borradores</string>
   <string name="special_mailbox_name_trash">Papelera</string>
@@ -377,7 +384,6 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="account_setup_options_enable_push_label">Activar push para esta cuenta</string>
   <string name="account_setup_options_enable_push_summary">Si su servidor lo permite, los mensajes aparecerán de forma instantánea. Esta opción puede ralentizar el sistema.</string>
   <string name="idle_refresh_period_label">Refrescar conexión IDLE</string>
-  <string name="idle_refresh_period_1min">Cada minuto</string>
   <string name="idle_refresh_period_2min">Cada 2 minutos</string>
   <string name="idle_refresh_period_3min">Cada 3 minutos</string>
   <string name="idle_refresh_period_6min">Cada 6 minutos</string>
@@ -547,7 +553,6 @@ Por favor informe de fallos, aporte nueva funcionalidad o envíe sus preguntas a
   <string name="folder_settings_folder_push_mode_normal">Sin Clase</string>
   <string name="folder_settings_folder_push_mode_first_class">1ª Clase</string>
   <string name="folder_settings_folder_push_mode_second_class">2a Clase</string>
-  <string name="folder_settings_folder_push_mode_inherited">La misma que en sincronización</string>
   <string name="folder_settings_folder_notify_mode_label">Clase de la carpeta de notificaciones</string>
   <string name="folder_settings_folder_notify_mode_normal">Sin Clase</string>
   <string name="folder_settings_folder_notify_mode_first_class">1ª clase</string>
@@ -1042,4 +1047,7 @@ Puede mantener este mensaje y usarlo como copia de seguridad de su clave secreta
   <string name="permission_contacts_rationale_title">Permitir acceso a contactos</string>
   <string name="permission_contacts_rationale_message">Para poder proveer sugerencias de contactos y mostrar sus nombres, la app necesita acceso a éstos.</string>
   <string name="generic_loading_error">Se produjo un error al cargar los datos</string>
+  <string name="push_notification_state_initializing">Iniciando...</string>
+  <string name="push_notification_state_wait_background_sync">Esperar hasta que se permita la sincronización en segundo plano</string>
+  <string name="push_notification_state_wait_network">Esperar hasta que la red esté disponible</string>
 </resources>

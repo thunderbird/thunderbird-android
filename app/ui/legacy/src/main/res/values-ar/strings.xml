@@ -354,7 +354,6 @@
   <string name="account_setup_options_mail_check_frequency_6hour">كل 6 ساعات</string>
   <string name="account_setup_options_mail_check_frequency_12hour">كل 12 ساعة</string>
   <string name="account_setup_options_mail_check_frequency_24hour">كل 24 ساعة</string>
-  <string name="idle_refresh_period_1min">كُل دقيقة</string>
   <string name="idle_refresh_period_2min">كل دقيقتين</string>
   <string name="idle_refresh_period_3min">كل 3 دقائق</string>
   <string name="idle_refresh_period_6min">كل 6 دقائق</string>
@@ -482,7 +481,6 @@
   <string name="folder_settings_folder_push_mode_normal">دون تصنيف</string>
   <string name="folder_settings_folder_push_mode_first_class">الفئة الأولى</string>
   <string name="folder_settings_folder_push_mode_second_class">الفئة الثانية</string>
-  <string name="folder_settings_folder_push_mode_inherited">مثل فئة التزامن</string>
   <string name="folder_settings_folder_notify_mode_label">فئة تنبيهات المجلد</string>
   <string name="folder_settings_folder_notify_mode_normal">دون تصنيف</string>
   <string name="folder_settings_folder_notify_mode_first_class">الفئة الأولى</string>

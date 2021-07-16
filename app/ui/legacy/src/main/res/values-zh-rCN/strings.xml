@@ -21,6 +21,9 @@
   <string name="changelog_title">修改记录</string>
   <string name="changelog_loading_error">无法加载修改记录</string>
   <string name="changelog_version_title">版本 %s</string>
+  <string name="changelog_recent_changes_title">最新消息</string>
+  <string name="changelog_show_recent_changes">显示应用更新后的最新更改</string>
+  <string name="changelog_snackbar_text">了解此版本的新增功能</string>
   <!--Welcome message-->
   <string name="welcome_message_title">欢迎使用 K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -114,6 +117,7 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="add_account_action">添加账户</string>
   <string name="compose_action">新邮件</string>
   <string name="search_action">搜索</string>
+  <string name="search_everywhere_action">在每个地方搜索</string>
   <string name="search_results">搜索结果</string>
   <string name="preferences_action">设置</string>
   <string name="folders_action">管理文件夹</string>
@@ -379,7 +383,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="account_setup_options_enable_push_label">在这个账户上启用推送邮件</string>
   <string name="account_setup_options_enable_push_summary">如果你的邮件服务器支持这个功能，那么新邮件将会立刻显示在手机上。这个选项可能大幅的提升性能，也可能严重的影响性能。</string>
   <string name="idle_refresh_period_label">刷新IDLE连接</string>
-  <string name="idle_refresh_period_1min">每分钟一次</string>
   <string name="idle_refresh_period_2min">2 分钟一次</string>
   <string name="idle_refresh_period_3min">3 分钟一次</string>
   <string name="idle_refresh_period_6min">6 分钟一次</string>
@@ -549,7 +552,6 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="folder_settings_folder_push_mode_normal">不分类</string>
   <string name="folder_settings_folder_push_mode_first_class">初级</string>
   <string name="folder_settings_folder_push_mode_second_class">次级</string>
-  <string name="folder_settings_folder_push_mode_inherited">使用与同步级别相同的级别</string>
   <string name="folder_settings_folder_notify_mode_label">文件夹提醒级别</string>
   <string name="folder_settings_folder_notify_mode_normal">不分类</string>
   <string name="folder_settings_folder_notify_mode_first_class">1 级</string>
@@ -1040,7 +1042,7 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="permission_contacts_rationale_message">为了能够提供联系人建议，并显示联系人姓名和照片，应用程序需要访问你的联系人。</string>
   <string name="generic_loading_error">加载数据期间发生了一个错误</string>
   <string name="push_notification_state_initializing">初始化·...</string>
-  <string name="push_notification_state_listening">监听新邮件</string>
+  <string name="push_notification_state_listening">正在等待新消息</string>
   <string name="push_notification_state_wait_background_sync">等待后台同步许可</string>
   <string name="push_notification_state_wait_network">等待网络可用</string>
 </resources>

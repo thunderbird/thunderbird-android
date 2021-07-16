@@ -376,7 +376,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="account_setup_options_enable_push_label">Aktifkan push mail untuk akun ini</string>
   <string name="account_setup_options_enable_push_summary">Jika server Anda mendukungnya, pesan baru akan segera muncul. Pilihan ini dapat secara dramatis memperbaiki atau melukai kinerja.</string>
   <string name="idle_refresh_period_label">Segarkan koneksi IDLE</string>
-  <string name="idle_refresh_period_1min">Setiap menit</string>
   <string name="idle_refresh_period_2min">Setiap 2 Menit</string>
   <string name="idle_refresh_period_3min">Setiap 3 Menit</string>
   <string name="idle_refresh_period_6min">Setiap 6 Menit</string>
@@ -546,7 +545,6 @@ Kirimkan laporan bug, kontribusikan fitur baru dan ajukan pertanyaan di
   <string name="folder_settings_folder_push_mode_normal">Tak ada kelas</string>
   <string name="folder_settings_folder_push_mode_first_class">Kelas 1</string>
   <string name="folder_settings_folder_push_mode_second_class">Kelas 2</string>
-  <string name="folder_settings_folder_push_mode_inherited">Sama seperti kelas sinkronisasi</string>
   <string name="folder_settings_folder_notify_mode_label">Kelas notifikasi folder</string>
   <string name="folder_settings_folder_notify_mode_normal">Tak ada kelas</string>
   <string name="folder_settings_folder_notify_mode_first_class">Kelas 1</string>

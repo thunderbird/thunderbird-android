@@ -21,6 +21,9 @@
   <string name="changelog_title">Wijzigingslog</string>
   <string name="changelog_loading_error">Het laden van het wijzigingslog is mislukt.</string>
   <string name="changelog_version_title">Versie %s</string>
+  <string name="changelog_recent_changes_title">Wat is er nieuw</string>
+  <string name="changelog_show_recent_changes">Laat recente veranderingen zien als de app is bijgewerkt</string>
+  <string name="changelog_snackbar_text">Ontdek wat er nieuw is in deze uitgave</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Welkom bij K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[ <p> K-9 Mail is een gratis krachtige e-mail client voor Android. </p><p> De verbeterde mogelijkheden bestaan uit ondermeer:
@@ -377,7 +380,6 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="account_setup_options_enable_push_label">Push mail voor dit account toestaan</string>
   <string name="account_setup_options_enable_push_summary">Als uw server dit ondersteunt, zullen nieuwe berichten direct verschijnen. Deze optie kan drastisch verbeteringen of verslechteringen van prestaties teweeg brengen.</string>
   <string name="idle_refresh_period_label">Vernieuw inactieve verbinding</string>
-  <string name="idle_refresh_period_1min">Elke minuut</string>
   <string name="idle_refresh_period_2min">Elke 2 minuten</string>
   <string name="idle_refresh_period_3min">Elke 3 minuten</string>
   <string name="idle_refresh_period_6min">Elke 6 minuten</string>
@@ -547,7 +549,7 @@ Graag foutrapporten sturen, bijdragen voor nieuwe functies en vragen stellen op
   <string name="folder_settings_folder_push_mode_normal">Geen klasse</string>
   <string name="folder_settings_folder_push_mode_first_class">1e klasse</string>
   <string name="folder_settings_folder_push_mode_second_class">2e klasse</string>
-  <string name="folder_settings_folder_push_mode_inherited">Zelfde als sync klasse</string>
+  <string name="folder_settings_folder_push_mode_inherited">Zelfde als poll klasse</string>
   <string name="folder_settings_folder_notify_mode_label">Map notificatie klasse</string>
   <string name="folder_settings_folder_notify_mode_normal">Geen klasse</string>
   <string name="folder_settings_folder_notify_mode_first_class">1e klasse</string>
@@ -1043,7 +1045,11 @@ U kunt dit bericht bewaren als backup voor uw geheime sleutel. Als u dit wilt do
   <string name="permission_contacts_rationale_message">Om contact suggesties te kunnen bieden en om namen en/of foto\'s van contacten weer te geven, heeft de app toegang nodig tot je contactenlijst.</string>
   <string name="generic_loading_error">Er is een fout opgetreden bij het laden van de gegevens</string>
   <string name="push_notification_state_initializing">Aan het initialiseren …</string>
-  <string name="push_notification_state_listening">Nieuwe e-mails aan het afwachten</string>
+  <string name="push_notification_state_listening">In afwachting van nieuwe e-mails</string>
   <string name="push_notification_state_wait_background_sync">Doet niets totdat achtergrondsynchronisatie wordt toegestaan</string>
   <string name="push_notification_state_wait_network">Doet niets totdat er een netwerk beschikbaar is</string>
+  <string name="push_notification_info">Tik hier om er meer over te leren.</string>
+  <string name="push_info_title">Duw informatie</string>
+  <string name="push_info_learn_more_text">Meer leren hierover</string>
+  <string name="push_info_disable_push_action">Duw uitschakelen</string>
 </resources>

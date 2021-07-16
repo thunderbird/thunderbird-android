@@ -376,7 +376,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="account_setup_options_enable_push_label">このアカウントにプッシュメールを有効化</string>
   <string name="account_setup_options_enable_push_summary">メールサーバがサポートしていれば新しいメッセージは即座に表示されます。当オプションはパフォーマンスが改善もしくは低下します。</string>
   <string name="idle_refresh_period_label">IMAP IDLE（プッシュ）接続のリフレッシュ</string>
-  <string name="idle_refresh_period_1min">1分毎</string>
   <string name="idle_refresh_period_2min">2分毎</string>
   <string name="idle_refresh_period_3min">3分毎</string>
   <string name="idle_refresh_period_6min">6分毎</string>
@@ -546,7 +545,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="folder_settings_folder_push_mode_normal">クラスなし</string>
   <string name="folder_settings_folder_push_mode_first_class">1st クラス</string>
   <string name="folder_settings_folder_push_mode_second_class">2nd クラス</string>
-  <string name="folder_settings_folder_push_mode_inherited">同期クラスと同一設定</string>
   <string name="folder_settings_folder_notify_mode_label">フォルダ通知クラス</string>
   <string name="folder_settings_folder_notify_mode_normal">クラスなし</string>
   <string name="folder_settings_folder_notify_mode_first_class">1st クラス</string>

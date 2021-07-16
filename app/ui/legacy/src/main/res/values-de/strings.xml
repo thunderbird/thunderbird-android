@@ -22,6 +22,9 @@ Teile \u00a9 2006-<xliff:g>%s</xliff:g> Android Open Source Project.</string>
   <string name="changelog_title">Changelog</string>
   <string name="changelog_loading_error">Changelog konnte nicht geladen werden.</string>
   <string name="changelog_version_title">Version %s</string>
+  <string name="changelog_recent_changes_title">Was gibt es Neues</string>
+  <string name="changelog_show_recent_changes">Zeige die neuesten Änderungen nach einem App-Update</string>
+  <string name="changelog_snackbar_text">Finde heraus, was es Neues in diesem Release gibt</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Willkommen bei K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -382,7 +385,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="account_setup_options_enable_push_label">Push-Mail für dieses Konto aktivieren</string>
   <string name="account_setup_options_enable_push_summary">Neue Nachrichten werden nach dem Eintreffen umgehend abgerufen, falls Ihr Server dies unterstützt. Diese Einstellung kann die Akkulaufzeit des Gerätes stark beeinflussen.</string>
   <string name="idle_refresh_period_label">Push-Verbindung erneuern</string>
-  <string name="idle_refresh_period_1min">Jede Minute</string>
   <string name="idle_refresh_period_2min">Alle 2 Minuten</string>
   <string name="idle_refresh_period_3min">Alle 3 Minuten</string>
   <string name="idle_refresh_period_6min">Alle 6 Minuten</string>
@@ -553,7 +555,6 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="folder_settings_folder_push_mode_normal">Keine Klasse</string>
   <string name="folder_settings_folder_push_mode_first_class">Hauptordner</string>
   <string name="folder_settings_folder_push_mode_second_class">Nebenordner</string>
-  <string name="folder_settings_folder_push_mode_inherited">Wie Synchronisationsklasse</string>
   <string name="folder_settings_folder_notify_mode_label">Benachrichtigungsklasse</string>
   <string name="folder_settings_folder_notify_mode_normal">Keine Klasse</string>
   <string name="folder_settings_folder_notify_mode_first_class">Hauptordner</string>
@@ -1050,7 +1051,6 @@ Sie können diese Nachricht aufheben und sie als Backup für Ihren geheimen Schl
   <string name="permission_contacts_rationale_message">Damit die App Kontakte vorschlagen sowie Namen und Fotos der Kontakte anzeigen kann, benötigt sie Zugriff auf Ihre Kontakte.</string>
   <string name="generic_loading_error">Beim Laden der Daten ist ein Fehler aufgetreten</string>
   <string name="push_notification_state_initializing">Initialisieren...</string>
-  <string name="push_notification_state_listening">Neue E-Mails abfragen</string>
   <string name="push_notification_state_wait_background_sync">Wartet, bis die Hintergrundsynchronisation erlaubt ist</string>
   <string name="push_notification_state_wait_network">Wartet, bis ein Netzwerk verfügbar ist</string>
 </resources>

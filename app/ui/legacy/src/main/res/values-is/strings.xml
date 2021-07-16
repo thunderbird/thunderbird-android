@@ -369,7 +369,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="account_setup_options_enable_push_label">Virkja ýtipóst fyrir þennan aðgang</string>
   <string name="account_setup_options_enable_push_summary">Ef póstþjónninn þinn styður þennan eiginleika, munu ný skilaboð birtast jafnóðum. Þessi valkostur getur haft gríðarleg áhrif á afköst - bætt þau eða hamlað.</string>
   <string name="idle_refresh_period_label">Endurnýja IDLE-tengingu</string>
-  <string name="idle_refresh_period_1min">Á hverri mínútu</string>
   <string name="idle_refresh_period_2min">Á 2 mínútna fresti</string>
   <string name="idle_refresh_period_3min">Á 3 mínútna fresti</string>
   <string name="idle_refresh_period_6min">Á 6 mínútna fresti</string>
@@ -539,7 +538,6 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="folder_settings_folder_push_mode_normal">Enginn flokkur</string>
   <string name="folder_settings_folder_push_mode_first_class">1. flokkur</string>
   <string name="folder_settings_folder_push_mode_second_class">2. flokkur</string>
-  <string name="folder_settings_folder_push_mode_inherited">Sami og samstillingarflokkur</string>
   <string name="folder_settings_folder_notify_mode_label">Tilkynningaflokkur möppu</string>
   <string name="folder_settings_folder_notify_mode_normal">Enginn flokkur</string>
   <string name="folder_settings_folder_notify_mode_first_class">1. flokkur</string>

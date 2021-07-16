@@ -314,7 +314,6 @@
   <string name="account_setup_options_enable_push_label">이 계정의 푸시 메일 사용</string>
   <string name="account_setup_options_enable_push_summary">만약 해당 계정 서버가 푸시를 지원할 경우 새로운 메시지가 있을 경우 바로 보여질 것입니다. 이 기능은 성능을 매우 향상시킬 수 있습니다.</string>
   <string name="idle_refresh_period_label">IDLE 연결 새로고침</string>
-  <string name="idle_refresh_period_1min">1분마다</string>
   <string name="idle_refresh_period_2min">2분마다</string>
   <string name="idle_refresh_period_3min">3분마다</string>
   <string name="idle_refresh_period_6min">6분마다</string>
@@ -452,7 +451,6 @@
   <string name="folder_settings_folder_push_mode_label">폴더의 푸시 클래스</string>
   <string name="folder_settings_folder_push_mode_first_class">제 1종</string>
   <string name="folder_settings_folder_push_mode_second_class">제 2종</string>
-  <string name="folder_settings_folder_push_mode_inherited">동기화 클래스와 같음</string>
   <string name="folder_settings_folder_notify_mode_label">폴더 알림 클래스</string>
   <string name="folder_settings_folder_notify_mode_first_class">제 1종</string>
   <string name="folder_settings_folder_notify_mode_second_class">제 2종</string>

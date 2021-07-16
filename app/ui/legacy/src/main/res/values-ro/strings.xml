@@ -381,7 +381,6 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
   <string name="account_setup_options_enable_push_label">Activează Push e-mail pentru acest cont</string>
   <string name="account_setup_options_enable_push_summary">Dacă serverul suportă, noile mesaje apar instantaneu. Această opțiune poate îmbunătăți sau diminua serios performanța</string>
   <string name="idle_refresh_period_label">Împrospătează conexiune IDLE</string>
-  <string name="idle_refresh_period_1min">La fiecare minut</string>
   <string name="idle_refresh_period_2min">La fiecare 2 minute</string>
   <string name="idle_refresh_period_3min">La fiecare 3 minute</string>
   <string name="idle_refresh_period_6min">La fiecare 6 minute</string>
@@ -553,7 +552,6 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="folder_settings_folder_push_mode_normal">Niciunul</string>
   <string name="folder_settings_folder_push_mode_first_class">Nivel 1</string>
   <string name="folder_settings_folder_push_mode_second_class">Nivel 2</string>
-  <string name="folder_settings_folder_push_mode_inherited">Același cu nivelul sincronizat</string>
   <string name="folder_settings_folder_notify_mode_label">Nivel notificare dosar</string>
   <string name="folder_settings_folder_notify_mode_normal">Niciunul</string>
   <string name="folder_settings_folder_notify_mode_first_class">Nivel 1</string>

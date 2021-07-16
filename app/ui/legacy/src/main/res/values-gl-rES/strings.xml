@@ -291,7 +291,6 @@
   <string name="account_setup_options_enable_push_label">Habilitar o correo push para esta conta</string>
   <string name="account_setup_options_enable_push_summary">Se o teu servidor o admite, as mensaxes aparecerán ao instante. Esta opción pode provocar un enlentecemento do sistema.</string>
   <string name="idle_refresh_period_label">Recargar conexión IDLE</string>
-  <string name="idle_refresh_period_1min">Cada minuto</string>
   <string name="idle_refresh_period_2min">Cada 2 minutos</string>
   <string name="idle_refresh_period_3min">Cada 3 minutos</string>
   <string name="idle_refresh_period_6min">Cada 6 minutos</string>

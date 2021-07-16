@@ -378,7 +378,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="account_setup_options_enable_push_label">Włącz obsługę Push mail dla tego konta</string>
   <string name="account_setup_options_enable_push_summary">Jeżeli Twój serwer to obsługuje, nowe wiadomości pojawią się natychmiast. Ta opcja może znacznie obniżyć lub zwiększyć wydajność.</string>
   <string name="idle_refresh_period_label">Odśwież połączenie IDLE</string>
-  <string name="idle_refresh_period_1min">Co 1 minutę</string>
   <string name="idle_refresh_period_2min">Co 2 minuty</string>
   <string name="idle_refresh_period_3min">co 3 minuty</string>
   <string name="idle_refresh_period_6min">Co 6 minut</string>
@@ -548,7 +547,6 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="folder_settings_folder_push_mode_normal">Bez klasy</string>
   <string name="folder_settings_folder_push_mode_first_class">Klasa 1</string>
   <string name="folder_settings_folder_push_mode_second_class">Klasa 2</string>
-  <string name="folder_settings_folder_push_mode_inherited">Taka sama jak klasa synchronizacji</string>
   <string name="folder_settings_folder_notify_mode_label">Klasa powiadamiania</string>
   <string name="folder_settings_folder_notify_mode_normal">Bez klasy</string>
   <string name="folder_settings_folder_notify_mode_first_class">Klasa 1</string>

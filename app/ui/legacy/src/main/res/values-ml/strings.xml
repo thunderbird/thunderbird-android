@@ -377,7 +377,6 @@
   <string name="account_setup_options_enable_push_label">ഈ അക്കൗണ്ടിനായി പുഷ് മെയിൽ പ്രവർത്തനക്ഷമമാക്കുക</string>
   <string name="account_setup_options_enable_push_summary">നിങ്ങളുടെ സെർവർ ഇതിനെ പിന്തുണയ്ക്കുന്നുവെങ്കിൽ, പുതിയ സന്ദേശങ്ങൾ തൽക്ഷണം ദൃശ്യമാകും. ഈ ഓപ്ഷന് പ്രകടനം നാടകീയമായി മെച്ചപ്പെടുത്താനോ കുറയ്ക്കാനോ കഴിയും.</string>
   <string name="idle_refresh_period_label">IDLE കണക്ഷൻ പുതുക്കുക</string>
-  <string name="idle_refresh_period_1min">ഓരോ മിനിറ്റിലും</string>
   <string name="idle_refresh_period_2min">ഓരോ 2 മിനിറ്റിലും</string>
   <string name="idle_refresh_period_3min">ഓരോ 3 മിനിറ്റിലും</string>
   <string name="idle_refresh_period_6min">ഓരോ 6 മിനിറ്റിലും</string>
@@ -547,7 +546,6 @@
   <string name="folder_settings_folder_push_mode_normal">ക്ലാസ് ഇല്ല</string>
   <string name="folder_settings_folder_push_mode_first_class">1 ആം ക്ലാസ്</string>
   <string name="folder_settings_folder_push_mode_second_class">2 ആം ക്ലാസ്സ്</string>
-  <string name="folder_settings_folder_push_mode_inherited">സമന്വയ ക്ലാസ്സിന് സമാനമാണ്</string>
   <string name="folder_settings_folder_notify_mode_label">ഫോൾഡർ അറിയിപ്പ് ക്ലാസ്</string>
   <string name="folder_settings_folder_notify_mode_normal">ക്ലാസ് ഇല്ല</string>
   <string name="folder_settings_folder_notify_mode_first_class">1 ആം ക്ലാസ്</string>
