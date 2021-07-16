@@ -21,6 +21,9 @@
   <string name="changelog_title">Muutosloki</string>
   <string name="changelog_loading_error">Muutoslokia ei voitu ladata.</string>
   <string name="changelog_version_title">Versio %s</string>
+  <string name="changelog_recent_changes_title">Mitä uutta</string>
+  <string name="changelog_show_recent_changes">Näytä viimeisimmät muutokset kun sovellus päivitettiin</string>
+  <string name="changelog_snackbar_text">Selvitä mitä uutta tämä julkaisu sisältää</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Tervetuloa K-9 Mailiin</string>
   <string name="accounts_welcome"><![CDATA[
@@ -381,7 +384,6 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="account_setup_options_enable_push_label">Ota käyttöön push-viestit tälle tilille</string>
   <string name="account_setup_options_enable_push_summary">Jos palvelin tukee ominaisuutta, uudet viestit tulevat välittömästi. Tämä valinta saattaa parantaa tai huonontaa suorituskykyä huomattavasti.</string>
   <string name="idle_refresh_period_label">Päivitä IDLE-yhteys</string>
-  <string name="idle_refresh_period_1min">Joka minuutti</string>
   <string name="idle_refresh_period_2min">Joka 2 minuutti</string>
   <string name="idle_refresh_period_3min">Joka 3 minuutti</string>
   <string name="idle_refresh_period_6min">Joka 6 minuutti</string>
@@ -551,7 +553,7 @@ Ilmoita virheistä, ota osaa sovelluskehitykseen ja esitä kysymyksiä osoittees
   <string name="folder_settings_folder_push_mode_normal">Ei luokkaa</string>
   <string name="folder_settings_folder_push_mode_first_class">1. Luokka</string>
   <string name="folder_settings_folder_push_mode_second_class">2. Luokka</string>
-  <string name="folder_settings_folder_push_mode_inherited">Sama kuin synkronointiluokka</string>
+  <string name="folder_settings_folder_push_mode_inherited">Sama kuin poll-luokka</string>
   <string name="folder_settings_folder_notify_mode_label">Kansion ilmoitusluokka</string>
   <string name="folder_settings_folder_notify_mode_normal">Ei luokkaa</string>
   <string name="folder_settings_folder_notify_mode_first_class">1. luokka</string>
@@ -1047,7 +1049,15 @@ Voit säilyttää tämän viestin ja käyttää sitä varmuuskopioina salausavai
   <string name="permission_contacts_rationale_message">Tämä sovellus vaatii käyttöoikeuden yhteystietoihisi, jotta sovellus voi tehdä ehdotuksia yhteystietoihin liittyen ja näyttää yhteystietojen nimiä sekä kuvia.</string>
   <string name="generic_loading_error">Tietoja ladatessa tapahtui virhe</string>
   <string name="push_notification_state_initializing">Alustetaan…</string>
-  <string name="push_notification_state_listening">Kuunnellaan uusia viestejä</string>
+  <string name="push_notification_state_listening">Odotetaan uusia viestejä</string>
   <string name="push_notification_state_wait_background_sync">Nukutaan kunnes taustasynkronointi on sallittu</string>
   <string name="push_notification_state_wait_network">Nukutaan kunnes verkko on käytettävissä</string>
+  <string name="push_notification_info">Napauta saadaksesi lisätietoja.</string>
+  <string name="push_info_title">Push-tietoa</string>
+  <string name="push_info_notification_explanation_text">Kun push on käytössä, K-9 Mail ylläpitää yhteyden sähköpostipalvelimeen. Android vaatii ilmoituksen näyttämisen, kun sovellus on aktiivinen taustalla. %s</string>
+  <string name="push_info_configure_notification_text">Android kuitenkin mahdollistaa ilmoituksen piilottamisen.</string>
+  <string name="push_info_learn_more_text">Lisätietoja</string>
+  <string name="push_info_configure_notification_action">Ilmoitusten asetukset</string>
+  <string name="push_info_disable_push_text">Jos et tarvitse välitöntä ilmoitusta uudesta viestistä, pushin sijaan on suositeltavaa käyttää pollausta. Pollaus tarkistaa uudet viestit määrätyin aikavälein, eikä tämä vaadi ilmoituksen näyttämistä.</string>
+  <string name="push_info_disable_push_action">Poista push käytöstä</string>
 </resources>

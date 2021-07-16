@@ -268,7 +268,6 @@
   <string name="account_setup_options_enable_push_label">Įgalinti šios paskyros pašto siuntimą</string>
   <string name="account_setup_options_enable_push_summary">Jei jūsų serveris tai palaiko, nauji laiškai pasirodys iškart. Ši galimybė gali drastiškai pagerinti ar pabloginti greitaveiką.</string>
   <string name="idle_refresh_period_label">Atnaujinti IDLE prisijungimą</string>
-  <string name="idle_refresh_period_1min">Kas minutę</string>
   <string name="idle_refresh_period_2min">Kas 2 minutes</string>
   <string name="idle_refresh_period_3min">Kas 3 minutes</string>
   <string name="idle_refresh_period_6min">Kas 6 minutes</string>
@@ -394,7 +393,6 @@
   <string name="folder_settings_folder_push_mode_label">Aplankų gavimo klasė</string>
   <string name="folder_settings_folder_push_mode_first_class">1 klasė</string>
   <string name="folder_settings_folder_push_mode_second_class">2 klasė</string>
-  <string name="folder_settings_folder_push_mode_inherited">Taip pat kaip ir sinchronizacijos klasė</string>
   <string name="folder_settings_folder_notify_mode_first_class">1 klasė</string>
   <string name="folder_settings_folder_notify_mode_second_class">2 klasė</string>
   <string name="folder_settings_clear_local_folder_action">Išvalyti vietinius laiškus</string>

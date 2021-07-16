@@ -361,7 +361,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_setup_options_enable_push_label">Gaitu \"push\" posta kontu honetarako</string>
   <string name="account_setup_options_enable_push_summary">Zure zerbitzariak onartzen badu, mezu berriak berehala agertuko dira. Aukera honek errendimendua izugarri hobetu edo kaltetu dezake.</string>
   <string name="idle_refresh_period_label">Freskatu IDLE konexioa</string>
-  <string name="idle_refresh_period_1min">Minutuero</string>
   <string name="idle_refresh_period_2min">2 minutuero</string>
   <string name="idle_refresh_period_3min">3 minutuero</string>
   <string name="idle_refresh_period_6min">6 minutuero</string>
@@ -517,7 +516,6 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="folder_settings_folder_push_mode_normal">Klaserik ez</string>
   <string name="folder_settings_folder_push_mode_first_class">1. klasea</string>
   <string name="folder_settings_folder_push_mode_second_class">2. klasea</string>
-  <string name="folder_settings_folder_push_mode_inherited">Sinkronizatzeko klasearen berdina</string>
   <string name="folder_settings_folder_notify_mode_label">Jakinarazpenen karpeta klasea</string>
   <string name="folder_settings_folder_notify_mode_normal">Klaserik ez</string>
   <string name="folder_settings_folder_notify_mode_first_class">1. klasea</string>

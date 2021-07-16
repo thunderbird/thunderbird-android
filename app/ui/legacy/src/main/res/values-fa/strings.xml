@@ -368,7 +368,6 @@
   <string name="account_setup_options_enable_push_label">پیشرانی رایانامه (Push Mail) برای این حساب فعال شود</string>
   <string name="account_setup_options_enable_push_summary">اگر کارساز شما آن را پشتیبانی کند پیام‌های جدید بلافاصله ظاهر می‌شوند. این گزینه می‌تواند کارایی را به‌شدت افزایش یا کاهش دهد.</string>
   <string name="idle_refresh_period_label">تازه‌کردن اتصال IDLE</string>
-  <string name="idle_refresh_period_1min">هر دقیقه</string>
   <string name="idle_refresh_period_2min">هر ۲ دقیقه</string>
   <string name="idle_refresh_period_3min">هر ۳ دقیقه</string>
   <string name="idle_refresh_period_6min">هر ۶ دقیقه</string>
@@ -538,7 +537,6 @@
   <string name="folder_settings_folder_push_mode_normal">بدون سطح</string>
   <string name="folder_settings_folder_push_mode_first_class">سطح ۱</string>
   <string name="folder_settings_folder_push_mode_second_class">سطح ۲</string>
-  <string name="folder_settings_folder_push_mode_inherited">همانند سطح همگام‌سازی</string>
   <string name="folder_settings_folder_notify_mode_label">سطح اعلان پوشه</string>
   <string name="folder_settings_folder_notify_mode_normal">بدون سطح</string>
   <string name="folder_settings_folder_notify_mode_first_class">سطح ۱</string>
@@ -606,8 +604,8 @@
   <string name="sort_sender_re_alpha">معکوس الفبایی فرستنده</string>
   <string name="sort_flagged_first">ابتدا، پیام‌های ستاره‌دار</string>
   <string name="sort_flagged_last">ابتدا، پیام‌های بی‌ستاره</string>
-  <string name="sort_unread_first">ابتدا، پیام‌های خوانده</string>
-  <string name="sort_unread_last">ابتدا، پیام‌های نخوانده</string>
+  <string name="sort_unread_first">ابتدا، پیام‌های نخوانده</string>
+  <string name="sort_unread_last">ابتدا، پیام‌های خوانده</string>
   <string name="sort_attach_first">ابتدا، پیام‌های پیوست‌دار</string>
   <string name="sort_unattached_first">ابتدا، پیام‌های بی‌پیوست</string>
   <string name="sort_by">به ترتیبِ...</string>

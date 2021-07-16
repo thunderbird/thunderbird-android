@@ -349,7 +349,6 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="account_setup_options_enable_push_label">Cuir post push an comas airson a’ chunntais seo</string>
   <string name="account_setup_options_enable_push_summary">Ma bheir am frithealaiche agad taic dha, nochdaidh teachdaireachdan ùra sa bhad. Faodaidh buaidh mhòr (math no dona) a bhith aig an roghainn seo air dèanadas.</string>
   <string name="idle_refresh_period_label">Ath-nuadhaich an ceangal IDLE</string>
-  <string name="idle_refresh_period_1min">Gach mionaid</string>
   <string name="idle_refresh_period_2min">Gach 2 mhionaid</string>
   <string name="idle_refresh_period_3min">Gach 3 mionaidean</string>
   <string name="idle_refresh_period_6min">Gach 6 mionaidean</string>
@@ -486,7 +485,6 @@ Fàilte air bugaichean, com-pàirteachas, iarrtasan airson gleusan ùra is ceist
   <string name="folder_settings_folder_push_mode_normal">Gun chlas</string>
   <string name="folder_settings_folder_push_mode_first_class">1ad ìre</string>
   <string name="folder_settings_folder_push_mode_second_class">2na ìre</string>
-  <string name="folder_settings_folder_push_mode_inherited">Co-ionnann ris an ìre sioncronachaidh</string>
   <string name="folder_settings_folder_notify_mode_label">Ìre brathan a’ phasgain</string>
   <string name="folder_settings_folder_notify_mode_normal">Gun chlas</string>
   <string name="folder_settings_folder_notify_mode_first_class">1ad ìre</string>

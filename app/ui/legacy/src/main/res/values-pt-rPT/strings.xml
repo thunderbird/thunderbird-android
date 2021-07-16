@@ -369,7 +369,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="account_setup_options_enable_push_label">Ativar push de emails para esta conta</string>
   <string name="account_setup_options_enable_push_summary">Se o seu servidor suportar, novas mensagens aparecerão automaticamente. Esta opção pode melhorar ou piorar drasticamente a performance.</string>
   <string name="idle_refresh_period_label">Atualizar ligação IDLE</string>
-  <string name="idle_refresh_period_1min">A cada minuto</string>
   <string name="idle_refresh_period_2min">A cada 2 minutos</string>
   <string name="idle_refresh_period_3min">A cada 3 minutos</string>
   <string name="idle_refresh_period_6min">A cada 6 minutos</string>
@@ -539,7 +538,6 @@ Por favor envie relatórios de falhas, contribua com novas funcionalidades e col
   <string name="folder_settings_folder_push_mode_normal">Sem Classe</string>
   <string name="folder_settings_folder_push_mode_first_class">1ª classe</string>
   <string name="folder_settings_folder_push_mode_second_class">2ª classe</string>
-  <string name="folder_settings_folder_push_mode_inherited">A mesma que a classe de sincronização</string>
   <string name="folder_settings_folder_notify_mode_label">Classe de notificação da pasta</string>
   <string name="folder_settings_folder_notify_mode_normal">Sem Classe</string>
   <string name="folder_settings_folder_notify_mode_first_class">1ª classe</string>

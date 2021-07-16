@@ -382,7 +382,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="account_setup_options_enable_push_label">Povoliť push poštu pre tento účet</string>
   <string name="account_setup_options_enable_push_summary">Ak server podporuje push poštu, nové správy sa objavia okamžite. Táto možnosť môže dramaticky zlepšiť alebo poškodiť výkon.</string>
   <string name="idle_refresh_period_label">Obnovovať IDLE spojenie</string>
-  <string name="idle_refresh_period_1min">Každú minútu</string>
   <string name="idle_refresh_period_2min">Každé 2 minúty</string>
   <string name="idle_refresh_period_3min">Každé 3 minúty</string>
   <string name="idle_refresh_period_6min">Každých 6 minút</string>
@@ -552,7 +551,6 @@ Prosím, nahlasujte prípadné chyby, prispievajte novými funkciami a pýtajte 
   <string name="folder_settings_folder_push_mode_normal">Žiadna trieda</string>
   <string name="folder_settings_folder_push_mode_first_class">1. trieda</string>
   <string name="folder_settings_folder_push_mode_second_class">2. trieda</string>
-  <string name="folder_settings_folder_push_mode_inherited">Rovnaká ako trieda synchronizácie</string>
   <string name="folder_settings_folder_notify_mode_label">Trieda oznámení priečinkov</string>
   <string name="folder_settings_folder_notify_mode_normal">Žiadna trieda</string>
   <string name="folder_settings_folder_notify_mode_first_class">1. trieda</string>

@@ -379,7 +379,6 @@
   <string name="account_setup_options_enable_push_label">Ενεργοποίηση σπρωξίματος για αυτό το λογαριασμό</string>
   <string name="account_setup_options_enable_push_summary">Αν το υποστηρίζει ο εξυπηρετητής σας, θα εμφανιστούν αμέσως τα νέα μηνύματα. Αυτή η επιλογή μπορεί, είτε να βελτιώσει δραματικά είτε να βλάψει δραματικά τις επιδόσεις.</string>
   <string name="idle_refresh_period_label">Ανανέωση της σύνδεσης IDLE</string>
-  <string name="idle_refresh_period_1min">Κάθε 1 λεπτό</string>
   <string name="idle_refresh_period_2min">Κάθε 2 λεπτά</string>
   <string name="idle_refresh_period_3min">Κάθε 3 λεπτά</string>
   <string name="idle_refresh_period_6min">Κάθε 2 λεπτά</string>
@@ -549,7 +548,6 @@
   <string name="folder_settings_folder_push_mode_normal">Χωρίς Επίπεδο</string>
   <string name="folder_settings_folder_push_mode_first_class">Πρώτο επίπεδο</string>
   <string name="folder_settings_folder_push_mode_second_class">Δεύτερο επίπεδο</string>
-  <string name="folder_settings_folder_push_mode_inherited">Όπως το επίπεδο συγχρονισμού</string>
   <string name="folder_settings_folder_notify_mode_label">Επίπεδο ειδοποίησης φακέλου</string>
   <string name="folder_settings_folder_notify_mode_normal">Χωρίς Επίπεδο</string>
   <string name="folder_settings_folder_notify_mode_first_class">Πρώτο επίπεδο</string>

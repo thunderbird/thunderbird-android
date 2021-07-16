@@ -21,6 +21,9 @@
   <string name="changelog_title">Novità</string>
   <string name="changelog_loading_error">Impossibile caricare le novità.</string>
   <string name="changelog_version_title">Versione %s</string>
+  <string name="changelog_recent_changes_title">Cosa c\'è di nuovo</string>
+  <string name="changelog_show_recent_changes">Mostra le modifiche recenti quando l\'applicazione è stata aggiornata</string>
+  <string name="changelog_snackbar_text">Scopri le novità di questa versione </string>
   <!--Welcome message-->
   <string name="welcome_message_title">Benvenuto in K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -383,7 +386,6 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="account_setup_options_enable_push_label">Abilita email push per questo account</string>
   <string name="account_setup_options_enable_push_summary">Se il server lo supporta, i nuovi messaggi appariranno istantaneamente. Questa opzione può migliorare o peggiorare notevolmente le prestazioni.</string>
   <string name="idle_refresh_period_label">Aggiorna connessione inattiva</string>
-  <string name="idle_refresh_period_1min">Ogni minuto</string>
   <string name="idle_refresh_period_2min">Ogni 2 minuti</string>
   <string name="idle_refresh_period_3min">Ogni 3 minuti</string>
   <string name="idle_refresh_period_6min">Ogni 6 minuti</string>
@@ -553,7 +555,7 @@ Invia segnalazioni di bug, contribuisci con nuove funzionalità e poni domande s
   <string name="folder_settings_folder_push_mode_normal">Nessuna classe</string>
   <string name="folder_settings_folder_push_mode_first_class">1a classe</string>
   <string name="folder_settings_folder_push_mode_second_class">2a classe</string>
-  <string name="folder_settings_folder_push_mode_inherited">Uguale alla classe di sincronizzazione</string>
+  <string name="folder_settings_folder_push_mode_inherited">Uguale alla classe di poll</string>
   <string name="folder_settings_folder_notify_mode_label">Classe di notifica delle cartelle</string>
   <string name="folder_settings_folder_notify_mode_normal">Nessuna classe</string>
   <string name="folder_settings_folder_notify_mode_first_class">1a classe</string>
@@ -1052,4 +1054,12 @@ Puoi conservare questo messaggio e utilizza come una copia di sicurezza della tu
   <string name="push_notification_state_listening">In attesa di nuove email</string>
   <string name="push_notification_state_wait_background_sync">Inattivo fino a quando la sincronizzazione in background non sarà consentita</string>
   <string name="push_notification_state_wait_network">Inattivo fino a quando la rete non sarà disponibile</string>
+  <string name="push_notification_info">Tocca per saperne di più.</string>
+  <string name="push_info_title">Push Info</string>
+  <string name="push_info_notification_explanation_text">Quando si utilizza Push, K-9 Mail mantiene una connessione al server di posta. Android richiede la visualizzazione di una notifica in corso mentre l\'applicazione è attiva in background. %s</string>
+  <string name="push_info_configure_notification_text">Tuttavia, Android ti consente anche di nascondere la notifica.</string>
+  <string name="push_info_learn_more_text">Per saperne di più</string>
+  <string name="push_info_configure_notification_action">Configura notifica</string>
+  <string name="push_info_disable_push_text">Se non hai bisogno di notifiche istantanee sui nuovi messaggi, dovresti disabilitare Push e usare Polling. Il polling verifica la presenza di nuova posta a intervalli regolari e non necessita di notifica.</string>
+  <string name="push_info_disable_push_action">Disabilita Push</string>
 </resources>

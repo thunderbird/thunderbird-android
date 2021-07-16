@@ -361,7 +361,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_setup_options_enable_push_label">Включи push доставяне за този профил</string>
   <string name="account_setup_options_enable_push_summary">Ако сървърът позволява, новите съобщения се показват веднага. Тази опция може драматично да подобри или влоши работата на у-вото.</string>
   <string name="idle_refresh_period_label">Обновяване на неактивни връзки</string>
-  <string name="idle_refresh_period_1min">На всяка минута</string>
   <string name="idle_refresh_period_2min">На всеки 2 минути</string>
   <string name="idle_refresh_period_3min">На всеки 3 минути</string>
   <string name="idle_refresh_period_6min">На всеки 6 минути</string>
@@ -515,7 +514,6 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="folder_settings_folder_push_mode_normal">Без клас</string>
   <string name="folder_settings_folder_push_mode_first_class">1-ви Клас</string>
   <string name="folder_settings_folder_push_mode_second_class">2-ри Клас</string>
-  <string name="folder_settings_folder_push_mode_inherited">Същия като класа за синхронизация</string>
   <string name="folder_settings_folder_notify_mode_label">Ниво на известия на папките</string>
   <string name="folder_settings_folder_notify_mode_normal">Без клас</string>
   <string name="folder_settings_folder_notify_mode_first_class">1-ви Клас</string>

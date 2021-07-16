@@ -21,6 +21,9 @@
   <string name="changelog_title">Ändringslogg</string>
   <string name="changelog_loading_error">Det gick inte att läsa in ändringsloggen.</string>
   <string name="changelog_version_title">Version %s</string>
+  <string name="changelog_recent_changes_title">Vad är nytt</string>
+  <string name="changelog_show_recent_changes">Visa senaste ändringar när appen uppdaterades</string>
+  <string name="changelog_snackbar_text">Ta reda på vad som är nytt i denna utgåva</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Välkommen till K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -34,7 +37,7 @@ Några av funktionerna som förbättrats är:
   <li>Bättre prestanda</li>
   <li>Meddelandelagring</li>
   <li>E-postsignaturer</li>
-  <li>Blindkopia-till-själv</li>
+  <li>Blindkopia-till-dig-själv</li>
   <li>Mapprenumerationer</li>
   <li>Synkronisera alla mappar</li>
   <li>Inställning av svarsadress</li>
@@ -46,7 +49,7 @@ Några av funktionerna som förbättrats är:
   <li>…och mycket annat</li>
 </ul>
 <p>
-Observera att K-9 inte stödjer gratiskonton på Hotmail och har, som så många andra e-postklienter, svårt att prata med Microsoft Exchange.
+Observera att K-9 inte stödjer gratiskonton på Hotmail och har, som så många andra e-postklienter, några svårigheter att prata med Microsoft Exchange.
 </p><p>
 Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på 
 <a href="https://github.com/k9mail/k-9/">https://github.com/k9mail/k-9/</a>.
@@ -60,9 +63,9 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="authors">Upphovsmän</string>
   <string name="app_revision">Revisionsinformation</string>
   <string name="read_messages_label">Läs e-post</string>
-  <string name="read_messages_desc">Ger applikationen tillåtelse att läsa din e-post.</string>
+  <string name="read_messages_desc">Tillåter att denna applikation läser dina e-postmeddelanden.</string>
   <string name="delete_messages_label">Ta bort e-post</string>
-  <string name="delete_messages_desc">Ger applikationen tillåtelse att ta bort din e-post.</string>
+  <string name="delete_messages_desc">Tillåter att denna applikation tar bort dina e-postmeddelanden.</string>
   <string name="about_title">Om K-9 Mail</string>
   <string name="accounts_title">Konton</string>
   <string name="folders_title">Mappar</string>
@@ -88,7 +91,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="cancel_action">Avbryt</string>
   <string name="send_action">Skicka</string>
   <string name="send_again_action">Skicka igen</string>
-  <string name="empty_subject">Ämne är tomt, klicka igen för att skicka ändå</string>
+  <string name="empty_subject">Ämnet är tomt, klicka igen för att skicka ändå</string>
   <string name="select_action">Välj</string>
   <string name="deselect_action">Välj bort</string>
   <string name="reply_action">Svara</string>
@@ -104,7 +107,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="single_message_options_action">Skicka…</string>
   <string name="refile_action">Omarkivera…</string>
   <string name="done_action">Klar</string>
-  <string name="discard_action">Kasta</string>
+  <string name="discard_action">Kassera</string>
   <string name="save_draft_action">Spara som utkast</string>
   <string name="check_mail_action">Kontrollera e-post</string>
   <string name="send_messages_action">Skicka meddelanden</string>
@@ -113,6 +116,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="add_account_action">Lägg till konto</string>
   <string name="compose_action">Skriv</string>
   <string name="search_action">Sök</string>
+  <string name="search_everywhere_action">Sök överallt</string>
   <string name="search_results">Sökresultat</string>
   <string name="preferences_action">Inställningar</string>
   <string name="folders_action">Hantera mappar</string>
@@ -156,7 +160,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="size_format_bytes">%d B</string>
   <string name="account_size_changed">Kontot \"<xliff:g id="account">%s</xliff:g>\" har krympt från <xliff:g id="oldSize">%s</xliff:g> till <xliff:g id="newSize">%s</xliff:g></string>
   <string name="compacting_account">Komprimerar kontot \"<xliff:g id="account">%s</xliff:g>\"</string>
-  <string name="notification_new_title">Nytt meddelande</string>
+  <string name="notification_new_title">Ny e-post</string>
   <plurals name="notification_new_messages_title">
     <item quantity="one"><xliff:g id="new_message_count">%d</xliff:g> nytt meddelande</item>
     <item quantity="other"><xliff:g id="new_message_count">%d</xliff:g> nya meddelanden</item>
@@ -212,7 +216,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="message_compose_reply_header_fmt_with_date"><xliff:g id="sender">%2$s</xliff:g> skrev: (<xliff:g id="sent_date">%1$s</xliff:g>)</string>
   <string name="message_compose_error_no_recipients">Du måste ange minst en mottagare.</string>
   <string name="compose_error_incomplete_recipient">Mottagarfältet är inte komplett!</string>
-  <string name="error_contact_address_not_found">Hittar ingen e-postadress för den här kontakten.</string>
+  <string name="error_contact_address_not_found">Hittar ingen e-postadress för denna kontakt.</string>
   <string name="message_compose_attachments_skipped_toast">Vissa bilagor kan inte vidarebefordras eftersom de inte har hämtats.</string>
   <string name="message_compose_attachments_forward_toast">Meddelandet kan inte vidarebefordras eftersom vissa bilagor inte har hämtats.</string>
   <string name="message_compose_show_quoted_text_action">Inkludera citerat meddelande</string>
@@ -225,7 +229,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="message_view_bcc_label">Blindkopia:</string>
   <string name="message_view_attachment_view_action">Öppna</string>
   <string name="message_view_attachment_download_action">Spara</string>
-  <string name="message_view_status_attachment_not_saved">Det går inte att spara bifogad fil.</string>
+  <string name="message_view_status_attachment_not_saved">Det går inte att spara bilaga.</string>
   <string name="message_view_show_pictures_action">Visa bilder</string>
   <string name="message_view_no_viewer">Kan inte hitta visare för <xliff:g id="mimetype">%s</xliff:g>.</string>
   <string name="message_view_download_remainder">Hämta hela meddelandet</string>
@@ -234,10 +238,10 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <!--NOTE: The following message refers to strings with id account_setup_incoming_save_all_headers_label and account_setup_incoming_title-->
   <string name="message_no_additional_headers_available">Hela meddelanderubriken har hämtats, men det det finns inga ytterligare meddelanderubriker att visa.</string>
   <string name="message_additional_headers_retrieval_failed">Det gick inte att hämta ytterligare meddelanderubriker från databas eller e-postserver.</string>
-  <string name="from_same_sender">Mer från den här avsändaren</string>
+  <string name="from_same_sender">Mer från denna avsändare</string>
   <string name="search_from_format">Från <xliff:g id="sender">%s</xliff:g></string>
   <string name="debug_delete_local_body">Felsök / Rensa meddelandets brödtext</string>
-  <string name="message_discarded_toast">Meddelandet kastat</string>
+  <string name="message_discarded_toast">Meddelandet kasserat</string>
   <string name="message_saved_toast">Meddelandet sparat som utkast</string>
   <string name="global_settings_flag_label">Visa stjärnor</string>
   <string name="global_settings_flag_summary">Stjärnor indikerar flaggade meddelanden</string>
@@ -250,8 +254,8 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="global_settings_show_contact_name_summary">Använd mottagarnas namn från Kontakter om tillgängligt</string>
   <string name="global_settings_registered_name_color_label">Färglägg kontakter</string>
   <string name="global_settings_registered_name_color_changed">Färglägg namn i kontaktlistan</string>
-  <string name="global_settings_messageview_fixedwidth_label">Typsnitt med fast bredd</string>
-  <string name="global_settings_messageview_fixedwidth_summary">Använd ett typsnitt med fast bredd för att visa meddelanden med enbart text</string>
+  <string name="global_settings_messageview_fixedwidth_label">Teckensnitt med fast bredd</string>
+  <string name="global_settings_messageview_fixedwidth_summary">Använd ett teckensnitt med fast bredd när meddelanden med enbart text visas</string>
   <string name="global_settings_messageview_autofit_width_label">Anpassa automatiskt meddelanden</string>
   <string name="global_settings_messageview_autofit_width_summary">Krymp meddelanden så att de får plats på skärmen</string>
   <string name="global_settings_messageview_return_to_list_label">Återvänd till listan efter borttagning</string>
@@ -263,11 +267,11 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="global_settings_confirm_action_delete">Ta bort</string>
   <string name="global_settings_confirm_action_delete_starred">Ta bort stjärnmarkerade (i meddelandevyn)</string>
   <string name="global_settings_confirm_action_spam">Skräp</string>
-  <string name="global_settings_confirm_menu_discard">Kasta meddelandet</string>
+  <string name="global_settings_confirm_menu_discard">Kassera meddelandet</string>
   <string name="global_settings_confirm_menu_mark_all_read">Markera alla meddelanden som lästa</string>
   <string name="global_settings_confirm_action_delete_notif">Ta bort (från avisering)</string>
   <string name="global_settings_privacy_hide_useragent">Dölj e-postklient</string>
-  <string name="global_settings_privacy_hide_useragent_detail">Ta bort K-9 User Agent från meddelanderubriker</string>
+  <string name="global_settings_privacy_hide_useragent_detail">Ta bort K-9-användaragent från meddelanderubriker</string>
   <string name="global_settings_privacy_hide_timezone">Dölj tidszon</string>
   <string name="global_settings_privacy_hide_timezone_detail">Använd UTC istället för lokal tidszon i postrubriker och svarrubriker</string>
   <string name="global_settings_notification_hide_subject_title">Dölj ämne i aviseringar</string>
@@ -341,7 +345,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_setup_expunge_policy_immediately">Direkt</string>
   <string name="account_setup_expunge_policy_on_poll">Vid e-postkontroll</string>
   <string name="account_setup_expunge_policy_manual">Manuellt</string>
-  <string name="account_setup_incoming_autodetect_namespace_label">Auto-detektera namnområde för IMAP</string>
+  <string name="account_setup_incoming_autodetect_namespace_label">Detektera automatiskt namnområde för IMAP</string>
   <string name="account_setup_incoming_imap_path_prefix_label">Sökvägsprefix för IMAP</string>
   <string name="drafts_folder_label">Namn på utkastmapp</string>
   <string name="sent_folder_label">Namn på skickatmapp</string>
@@ -349,7 +353,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="archive_folder_label">Namn på arkivmapp</string>
   <string name="spam_folder_label">Namn på skräpmapp</string>
   <string name="account_setup_incoming_subscribed_folders_only_label">Visa endast prenumererade mappar</string>
-  <string name="account_setup_auto_expand_folder">Auto-expandera mapp</string>
+  <string name="account_setup_auto_expand_folder">Expandera automatiskt mappen</string>
   <string name="account_setup_incoming_webdav_path_prefix_label">Sökväg för Outlook Web App</string>
   <string name="account_setup_incoming_webdav_path_prefix_hint">valfritt</string>
   <string name="account_setup_incoming_webdav_auth_path_label">Sökväg för autentisering</string>
@@ -378,10 +382,9 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_setup_options_mail_check_frequency_6hour">Var 6:e timme</string>
   <string name="account_setup_options_mail_check_frequency_12hour">Var 12:e timme</string>
   <string name="account_setup_options_mail_check_frequency_24hour">Var 24:e timme</string>
-  <string name="account_setup_options_enable_push_label">Aktivera push-mail för detta konto</string>
-  <string name="account_setup_options_enable_push_summary">Om det stöds av din server så kommer nya meddelanden att levereras omedelbart. Den här inställningen kan dramatiskt förbättra eller försämra prestanda.</string>
+  <string name="account_setup_options_enable_push_label">Aktivera push-e-post för detta konto</string>
+  <string name="account_setup_options_enable_push_summary">Om det stöds av din server så kommer nya meddelanden att levereras omedelbart. Denna inställning kan dramatiskt förbättra eller försämra prestanda.</string>
   <string name="idle_refresh_period_label">Förnya IDLE-anslutning</string>
-  <string name="idle_refresh_period_1min">Varje minut</string>
   <string name="idle_refresh_period_2min">Varannan minut</string>
   <string name="idle_refresh_period_3min">Var 3:e minut</string>
   <string name="idle_refresh_period_6min">Var 6:e minut</string>
@@ -390,8 +393,8 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="idle_refresh_period_36min">Var 36:e minut</string>
   <string name="idle_refresh_period_48min">Var 48:e minut</string>
   <string name="idle_refresh_period_60min">Var 60:e minut</string>
-  <string name="account_setup_options_notify_label">Meddela mig vid ny e-post</string>
-  <string name="account_setup_options_notify_sync_label">Meddela mig vid kontroll efter ny e-post</string>
+  <string name="account_setup_options_notify_label">Meddela mig vid ankomst av e-post</string>
+  <string name="account_setup_options_notify_sync_label">Meddela mig vid kontroll av e-post</string>
   <string name="account_setup_options_mail_display_count_label">Antal meddelanden att visa</string>
   <string name="account_setup_options_mail_display_count_10">10 meddelanden</string>
   <string name="account_setup_options_mail_display_count_25">25 meddelanden</string>
@@ -415,7 +418,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_settings_title_fmt">Kontoinställningar</string>
   <string name="account_settings_default_label">Standardkonto</string>
   <string name="account_settings_default_summary">Skicka e-post från detta konto som standard</string>
-  <string name="account_settings_notify_label">Avisering för ny e-post</string>
+  <string name="account_settings_notify_label">Aviseringar vid ny e-post</string>
   <string name="account_settings_folder_notify_new_mail_mode_label">Aviseringsmappar</string>
   <string name="account_settings_folder_notify_new_mail_mode_all">Alla</string>
   <string name="account_settings_folder_notify_new_mail_mode_first_class">Endast första klassens mappar</string>
@@ -424,9 +427,9 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_settings_folder_notify_new_mail_mode_none">Inga</string>
   <string name="account_settings_notify_sync_label">Avisering vid synkronisering</string>
   <string name="account_settings_email_label">Din e-postadress</string>
-  <string name="account_settings_notify_summary">Visa avisering i statusraden vid ny e-post</string>
-  <string name="account_settings_notify_sync_summary">Visa avisering i statusraden vid kontroll efter ny e-post</string>
-  <string name="account_settings_notify_self_label">Inkludera utgående meddelande</string>
+  <string name="account_settings_notify_summary">Visa avisering i statusraden vid ankomst av e-post</string>
+  <string name="account_settings_notify_sync_summary">Visa avisering i statusraden vid kontroll av e-post</string>
+  <string name="account_settings_notify_self_label">Inkludera utgående e-post</string>
   <string name="account_settings_notify_self_summary">Visa avisering även för e-post som jag själv skickat</string>
   <string name="account_notify_contacts_mail_only_label">Endast kontakter</string>
   <string name="account_notify_contacts_mail_only_summary">Visa aviseringar endast för meddelanden från kända kontakter</string>
@@ -440,7 +443,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_settings_show_pictures_never">Nej</string>
   <string name="account_settings_show_pictures_only_from_contacts">Från kontakter</string>
   <string name="account_settings_show_pictures_always">Från alla</string>
-  <string name="account_settings_composition">Skickar meddelande</string>
+  <string name="account_settings_composition">Skickar e-post</string>
   <string name="account_settings_default_quoted_text_shown_label">Citera meddelandet när du svarar</string>
   <string name="account_settings_default_quoted_text_shown_summary">Inkludera orginalmeddelandet i ditt svar.</string>
   <string name="account_settings_reply_after_quote_label">Skriv svar efter citerad text</string>
@@ -464,10 +467,10 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_settings_sync">E-posthämtning</string>
   <string name="account_settings_folders">Mappar</string>
   <string name="account_settings_quote_prefix_label">Citatprefix</string>
-  <string name="account_settings_crypto">End-to-end kryptering</string>
+  <string name="account_settings_crypto">Ände-till-ände-kryptering</string>
   <string name="account_settings_crypto_app">Aktivera OpenPGP-stöd</string>
   <string name="account_settings_crypto_app_select_title">Välj OpenPGP-app</string>
-  <string name="account_settings_crypto_key">Konfigurera end-to-end-nyckel</string>
+  <string name="account_settings_crypto_key">Konfigurera ände-till-ände-nyckel</string>
   <string name="account_settings_crypto_summary_off">Ingen OpenPGP-app konfigurerad</string>
   <string name="account_settings_crypto_summary_on">Ansluten till %s</string>
   <string name="account_settings_crypto_summary_config">Konfigurerar…</string>
@@ -551,7 +554,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="folder_settings_folder_push_mode_normal">Ingen klassning</string>
   <string name="folder_settings_folder_push_mode_first_class">1:a klass</string>
   <string name="folder_settings_folder_push_mode_second_class">2:a klass</string>
-  <string name="folder_settings_folder_push_mode_inherited">Samma som synkroniseringsklass</string>
+  <string name="folder_settings_folder_push_mode_inherited">Samma som push-klass</string>
   <string name="folder_settings_folder_notify_mode_label">Aviseringsklass för mapp</string>
   <string name="folder_settings_folder_notify_mode_normal">Ingen klassning</string>
   <string name="folder_settings_folder_notify_mode_first_class">1:a klass</string>
@@ -561,12 +564,12 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_settings_incoming_label">Inkommande server</string>
   <string name="account_settings_incoming_summary">Konfigurera servern för inkommande e-post</string>
   <string name="account_settings_outgoing_label">Utgående server</string>
-  <string name="account_settings_outgoing_summary">Konfigurera server för utgående e-post (SMTP)</string>
+  <string name="account_settings_outgoing_summary">Konfigurera servern för utgående e-post (SMTP)</string>
   <string name="account_settings_description_label">Kontonamn</string>
   <string name="account_settings_name_label">Ditt namn</string>
   <string name="notifications_title">Aviseringar</string>
   <string name="account_settings_vibrate_enable">Vibrera</string>
-  <string name="account_settings_vibrate_summary">Vibrera när det kommer e-post</string>
+  <string name="account_settings_vibrate_summary">Vibrera vid ankomst av e-post</string>
   <string name="account_settings_vibrate_pattern_label">Vibrationsmönster</string>
   <string name="account_settings_vibrate_pattern_default">standard</string>
   <string name="account_settings_vibrate_pattern_1">mönster 1</string>
@@ -577,7 +580,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_settings_vibrate_times">Antal vibrationer</string>
   <string name="account_settings_ringtone">Ljudsignal för ny e-post</string>
   <string name="account_settings_led_label">Blinkande LED</string>
-  <string name="account_settings_led_summary">Blinkande LED när det kommer ny e-post</string>
+  <string name="account_settings_led_summary">Blinkande LED vid ankomst av e-post</string>
   <string name="account_settings_composition_title">Inställningar för meddelandekomponering</string>
   <string name="account_settings_composition_label">Standardinställningar</string>
   <string name="account_settings_composition_summary">Standardinställningar för avsändare, blindkopia och signatur</string>
@@ -610,7 +613,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="choose_identity_title">Välj identitet</string>
   <string name="send_as">Skicka som</string>
   <string name="no_removable_identity">Du kan inte ta bort din enda identitet</string>
-  <string name="identity_has_no_email">Du kan inte använda en identitet utan e-postadress</string>
+  <string name="identity_has_no_email">Du kan inte använda en identitet utan en e-postadress</string>
   <string name="sort_earliest_first">Äldsta meddelanden överst</string>
   <string name="sort_latest_first">Nyaste meddelanden överst</string>
   <string name="sort_subject_alpha">Ämnesrad i bokstavsordning</string>
@@ -635,7 +638,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="account_setup_failed_dlg_invalid_certificate_title">Okänt certifikat</string>
   <string name="account_setup_failed_dlg_invalid_certificate_accept">Acceptera nyckel</string>
   <string name="account_setup_failed_dlg_invalid_certificate_reject">Neka nyckel</string>
-  <string name="message_view_help_key">Del (or D) - Ta bort\nR - Svara\nA - Svara alla\nC - Skriva\nF - Vidarebefordra\nM - Flytta\nV - Arkivera\nY - Kopiera\nZ - Markera (o)lästa\nG - Stjärna\nO - Sorteringstyp\nI - Sorteringsordning\nQ - Återgå till mappar\nS - Välj/välj bort\nJ or P - Föregående meddelande\nK or N - Nästa meddelande</string>
+  <string name="message_view_help_key">Del (eller D) - Ta bort\nR - Svara\nA - Svara alla\nC - Skriva\nF - Vidarebefordra\nM - Flytta\nV - Arkivera\nY - Kopiera\nZ - Markera (o)lästa\nG - Stjärna\nO - Sorteringstyp\nI - Sorteringsordning\nQ - Återgå till mappar\nS - Välj/välj bort\nJ eller P - Föregående meddelande\nK eller N - Nästa meddelande</string>
   <string name="message_list_help_key">Del (or D) - Ta bort\nC - Skriva\nM - Flytta\nV - Arkivera\nY - Kopiera\nZ - Markera (o)lästa\nG - Stjärna\nO - Sorteringstyp\nI - Sorteringsordning\nQ - Återgå till mappar\nS - Välj/välj bort</string>
   <string name="folder_list_filter_hint">Mappnamn innehåller</string>
   <string name="folder_list_display_mode_label">Visa mappar…</string>
@@ -671,7 +674,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="background_ops_label">Bakgrundssynkronisering</string>
   <string name="background_ops_never">Aldrig</string>
   <string name="background_ops_always">Alltid</string>
-  <string name="background_ops_auto_sync_only">När \"Auto-sync\" är aktiverad</string>
+  <string name="background_ops_auto_sync_only">När \"Automatisk synkronisering\" är aktiverad</string>
   <string name="batch_select_all">Välj alla</string>
   <string name="account_setup_push_limit_label">Max antal mappar att kontrollera med push</string>
   <string name="account_setup_push_limit_5">5 mappar</string>
@@ -736,13 +739,13 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="font_size_medium">Stor</string>
   <string name="font_size_large">Större</string>
   <string name="font_size_larger">Störst</string>
-  <string name="error_activity_not_found">Hittade ingen passande applikation för den här åtgärden.</string>
+  <string name="error_activity_not_found">Hittade ingen passande applikation för denna åtgärd.</string>
   <string name="send_failed_reason">Det gick inte att skicka: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Spara utkast?</string>
-  <string name="save_or_discard_draft_message_instructions_fmt">Spara eller kasta detta meddelande?</string>
+  <string name="save_or_discard_draft_message_instructions_fmt">Spara eller kassera detta meddelande?</string>
   <string name="save_or_discard_draft_message_changes">Spara eller kassera ändringar?</string>
-  <string name="confirm_discard_draft_message_title">Kasta meddelandet?</string>
-  <string name="confirm_discard_draft_message">Är du säker på att du vill kasta detta meddelande?</string>
+  <string name="confirm_discard_draft_message_title">Kassera meddelandet?</string>
+  <string name="confirm_discard_draft_message">Är du säker på att du vill kassera detta meddelande?</string>
   <string name="select_text_now">Välj text att kopiera.</string>
   <string name="dialog_confirm_clear_local_folder_title">Rensa lokala meddelanden?</string>
   <string name="dialog_confirm_clear_local_folder_message">Detta tar bort alla lokala meddelanden från mappen. Inga meddelanden tas bort från servern.</string>
@@ -907,14 +910,14 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="compose_error_no_key_configured">Ingen nyckel konfigurerad för detta konto! Kontrollera dina inställningar.</string>
   <string name="error_crypto_provider_incompatible">Crypto-leverantören använder inkompatibel version. Kontrollera dina inställningar!</string>
   <string name="error_crypto_provider_connect">Kan inte ansluta till crypto leverantör, granska dina inställningar eller klicka på crypto ikonen för nytt försök.</string>
-  <string name="error_crypto_provider_ui_required">Det gick inte att initiera end-to-end-kryptering, vänligen kontrollera dina inställningar</string>
+  <string name="error_crypto_provider_ui_required">Det gick inte att initiera ände-till-ände-kryptering, vänligen kontrollera dina inställningar</string>
   <string name="error_crypto_inline_attach">PGP/INLINE läge stöder inte bilagor!</string>
   <string name="enable_inline_pgp">Aktivera PGP/INLINE</string>
   <string name="disable_inline_pgp">Inaktivera PGP/INLINE</string>
   <string name="enable_sign_only">Aktivera PGP signera-endast</string>
   <string name="disable_sign_only">Inaktivera PGP signera-endast</string>
   <string name="openpgp_inline_title">PGP/INLINE läge</string>
-  <string name="openpgp_inline_text">Det här e-postmeddelandet sänds i PGP/INLINE format.\nDetta bör endast användas för kompatibilitet:</string>
+  <string name="openpgp_inline_text">Detta e-postmeddelande skickas i PGP/INLINE-format.\nDetta bör endast användas för kompatibilitet:</string>
   <string name="openpgp_inline_plus_compat">Vissa klienter stöder endast detta format</string>
   <string name="openpgp_inline_minus_transit">Signaturer kan brytas under transport</string>
   <string name="openpgp_inline_minus_attach">Bilagor stöds inte</string>
@@ -925,40 +928,40 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="openpgp_sign_only_disable">Inaktivera</string>
   <string name="openpgp_sign_only_keep_enabled">Förbli aktiverad</string>
   <string name="openpgp_dialog_sign_only_title">PGP signera-endast läge</string>
-  <string name="openpgp_dialog_sign_only_text">I det här läget kommer din PGP-nyckel användas för att skapa en kryptografisk signatur av en okrypterad e-post.</string>
-  <string name="openpgp_dialog_sign_only_plus_verified">Detta krypterar inte e-postmeddelandet, men bekräftar att det skickades från din nyckel.</string>
+  <string name="openpgp_dialog_sign_only_text">I detta läge kommer din PGP-nyckel att användas för att skapa en kryptografisk signatur för ett okrypterad e-postmeddelande.</string>
+  <string name="openpgp_dialog_sign_only_plus_verified">Detta krypterar inte e-postmeddelandet, men verifierar att det skickades från din nyckel.</string>
   <string name="openpgp_dialog_sign_only_minus_break">Signaturer kan brytas när de skickas till e-postlistor.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">Signaturer kan visas som \"signature.asc\" bilagor i vissa klienter.</string>
   <string name="openpgp_dialog_sign_only_neutral_encsigned">Krypterade meddelanden inkluderar alltid en signatur.</string>
   <string name="crypto_msg_title_plaintext">Oformatterad text</string>
-  <string name="crypto_msg_unencrypted_sign_error">end-to-end-signatur innehöll ett fel</string>
+  <string name="crypto_msg_unencrypted_sign_error">ände-till-ände-signatur innehöll ett fel</string>
   <string name="crypto_msg_incomplete_signed">måste hämta meddelandet fullständigt för att behandla signaturen</string>
-  <string name="crypto_msg_unsupported_signed">innehåller icke-stödd end-to-end-signatur</string>
+  <string name="crypto_msg_unsupported_signed">innehåller icke-stödd ände-till-ände-signatur</string>
   <string name="crypto_msg_unsupported_encrypted">Meddelandet är krypterat, men är i ett format som inte stöds.</string>
   <string name="crypto_msg_cancelled">Meddelandet är krypterat, men dekrypteringen avbröts.</string>
-  <string name="crypto_msg_title_unencrypted_signed_e2e">End-to-end signerad oformaterad text</string>
+  <string name="crypto_msg_title_unencrypted_signed_e2e">Ände-till-ände signerad oformaterad text</string>
   <string name="crypto_msg_unencrypted_sign_verified">från verifierad signatör</string>
   <string name="crypto_msg_title_unencrypted_signed">Undertecknad oformaterad text</string>
-  <string name="crypto_msg_unencrypted_sign_mismatch">men end-to-end-nyckeln matchade inte avsändaren</string>
-  <string name="crypto_msg_unencrypted_sign_expired">men end-to-end-nyckeln har löpt ut</string>
-  <string name="crypto_msg_unencrypted_sign_revoked">men end-to-end-nyckeln är återkallad</string>
-  <string name="crypto_msg_unencrypted_sign_insecure">men end-to-end-nyckeln anses inte säker</string>
-  <string name="crypto_msg_unencrypted_sign_unknown">från okänd end-to-end-nyckel</string>
+  <string name="crypto_msg_unencrypted_sign_mismatch">men ände-till-ände-nyckeln matchade inte avsändaren</string>
+  <string name="crypto_msg_unencrypted_sign_expired">men ände-till-ände-nyckeln har löpt ut</string>
+  <string name="crypto_msg_unencrypted_sign_revoked">men ände-till-ände-nyckeln är återkallad</string>
+  <string name="crypto_msg_unencrypted_sign_insecure">men ände-till-ände-nyckeln anses inte säker</string>
+  <string name="crypto_msg_unencrypted_sign_unknown">från okänd ände-till-ände-nyckel</string>
   <string name="crypto_msg_title_encrypted_unknown">Krypterad</string>
   <string name="crypto_msg_encrypted_error">men det fanns ett dekrypteringsfel</string>
   <string name="crypto_msg_encrypted_incomplete">måste hämta meddelandet fullständigt för dekryptering</string>
   <string name="crypto_msg_encrypted_no_provider">men ingen crypto app är konfigurerad</string>
   <string name="crypto_msg_title_encrypted_unsigned">Krypterad</string>
-  <string name="crypto_msg_encrypted_unsigned">men inte end-to-end</string>
-  <string name="crypto_msg_title_encrypted_signed_e2e">End-to-end krypterad</string>
+  <string name="crypto_msg_encrypted_unsigned">men inte ände-till-ände</string>
+  <string name="crypto_msg_title_encrypted_signed_e2e">Ände-till-ände krypterad</string>
   <string name="crypto_msg_encrypted_sign_verified">från verifierad avsändare</string>
   <string name="crypto_msg_title_encrypted_signed">Krypterad</string>
-  <string name="crypto_msg_encrypted_sign_unknown">från okänd end-to-end-nyckel</string>
-  <string name="crypto_msg_encrypted_sign_mismatch">men end-to-end-nyckeln matchade inte avsändaren</string>
-  <string name="crypto_msg_encrypted_sign_expired">men end-to-end-nyckeln har löpt ut</string>
-  <string name="crypto_msg_encrypted_sign_revoked">men end-to-end-nyckeln är återkallad</string>
-  <string name="crypto_msg_encrypted_sign_insecure">men end-to-end-nyckeln anses inte säker</string>
-  <string name="crypto_msg_encrypted_sign_error">men end-to-end-data har fel</string>
+  <string name="crypto_msg_encrypted_sign_unknown">från okänd ände-till-ände-nyckel</string>
+  <string name="crypto_msg_encrypted_sign_mismatch">men ände-till-ände-nyckeln matchade inte avsändaren</string>
+  <string name="crypto_msg_encrypted_sign_expired">men ände-till-ände-nyckeln har löpt ut</string>
+  <string name="crypto_msg_encrypted_sign_revoked">men ände-till-ände-nyckeln är återkallad</string>
+  <string name="crypto_msg_encrypted_sign_insecure">men ände-till-ände-nyckeln anses inte säker</string>
+  <string name="crypto_msg_encrypted_sign_error">men ände-till-ände-data har fel</string>
   <string name="crypto_msg_encrypted_insecure">men kryptering anses inte säker</string>
   <string name="crypto_info_ok">OK</string>
   <string name="crypto_info_search_key">Sök nyckel</string>
@@ -966,7 +969,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="crypto_info_view_sender">Visa avsändare</string>
   <string name="crypto_info_view_security_warning">Detaljer</string>
   <string name="locked_attach_unlock">Lås upp</string>
-  <string name="locked_attach_unencrypted">Den här delen var inte krypterad och kan vara osäker.</string>
+  <string name="locked_attach_unencrypted">Denna del var inte krypterad och kan vara osäker.</string>
   <string name="locked_attach_title">Oskyddad bilaga</string>
   <string name="message_progress_text">Läser in…</string>
   <string name="messageview_decrypt_cancelled">Dekryptering avbröts.</string>
@@ -988,20 +991,20 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="apg_learn_more">Du kan <a href="https://k9mail.github.io/2017/01/13/Why-APG-is-no-longer-supported.html">klicka här</a> för att lära dig mera.</string>
   <string name="apg_deprecated_ok">Uppfattat!</string>
   <string name="apg">APG</string>
-  <string name="crypto_no_provider_title">Det här e-postmeddelandet är krypterat</string>
-  <string name="crypto_no_provider_message">Det här e-postmeddelandet har krypterats med OpenPGP.\nFör att läsa det, måste du installera och konfigurera en kompatibel OpenPGP-app.</string>
+  <string name="crypto_no_provider_title">Detta e-postmeddelande är krypterat</string>
+  <string name="crypto_no_provider_message">Detta e-postmeddelande har krypterats med OpenPGP.\nFör att läsa det, måste du installera och konfigurera en kompatibel OpenPGP-app.</string>
   <string name="crypto_no_provider_button">Gå till inställningar</string>
   <string name="mail_list_widget_text">K-9 Meddelandelista</string>
   <string name="mail_list_widget_loading">Läser in meddelanden…</string>
   <string name="fetching_folders_failed">Det gick inte att hämta mapplista</string>
   <string name="error_recipient_crypto_retrieve">Fel vid hämtning av mottagarens status från OpenPGP-leverantör!</string>
   <string name="openpgp_enabled_error_title">Kryptering inte möjligt</string>
-  <string name="openpgp_enabled_error_msg">Några av de valda mottagarna stöder inte den här funktionen!</string>
+  <string name="openpgp_enabled_error_msg">Några av de valda mottagarna stöder inte denna funktion!</string>
   <string name="enable_encryption">Aktivera kryptering</string>
   <string name="disable_encryption">Inaktivera kryptering</string>
   <string name="openpgp_description_text1">Krypterande meddelanden säkerställer att de kan läsas av mottagaren, och ingen annan.</string>
   <string name="openpgp_description_text3">Kryptering visas endast om den stöds av alla mottagare, och de måste ha skickat ett e-postmeddelande till dig innan.</string>
-  <string name="openpgp_description_text2">Växla kryptering genom att klicka på den här ikonen.</string>
+  <string name="openpgp_description_text2">Växla kryptering genom att klicka på denna ikon.</string>
   <string name="openpgp_enabled_error_gotit">Uppfattat</string>
   <string name="openpgp_enabled_error_back">Bakåt</string>
   <string name="openpgp_enabled_error_disable">Inaktivera kryptering</string>
@@ -1014,16 +1017,16 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
   <string name="general_settings_title">Allmänna inställningar</string>
   <string name="dialog_openkeychain_info_title">Ingen OpenPGP-app installerad</string>
   <string name="dialog_openkeychain_info_install">Installera</string>
-  <string name="dialog_openkeychain_info_text">K-9 Mail kräver OpenKeychain för end-to-end kryptering.</string>
+  <string name="dialog_openkeychain_info_text">K-9 Mail kräver OpenKeychain för ände-till-ände-kryptering.</string>
   <string name="encrypted_subject">Krypterat meddelande</string>
   <string name="account_settings_crypto_encrypt_subject">Kryptera meddelandeämnen</string>
   <string name="account_settings_crypto_encrypt_subject_subtitle">Kanske inte stöds av vissa mottagare</string>
   <string name="toast_account_not_found">Internt fel: Ogiltigt konto!</string>
   <string name="toast_openpgp_provider_error">Fel vid anslutning till %s!</string>
   <string name="ac_transfer_setting_title">Skicka Autocrypt-inställningsmeddelande</string>
-  <string name="ac_transfer_setting_summary">Dela end-to-end-inställning med andra enheter på ett säkert sätt</string>
+  <string name="ac_transfer_setting_summary">Dela ände-till-ände-inställning med andra enheter på ett säkert sätt</string>
   <string name="ac_transfer_title">Autocrypt-inställningsmeddelande</string>
-  <string name="ac_transfer_intro">Ett Autocrypt-inställningsmeddelande delar säkert din end-to-end-inställning med andra enheter.</string>
+  <string name="ac_transfer_intro">Ett Autocrypt-inställningsmeddelande delar säkert din ände-till-ände-inställning med andra enheter.</string>
   <string name="ac_transfer_button_send">Skicka inställningsmeddelande</string>
   <string name="ac_transfer_will_be_sent">Meddelandet skickas till din adress:</string>
   <string name="ac_transfer_generating">Genererar installationsmeddelande...</string>
@@ -1035,7 +1038,7 @@ Skicka gärna in felrapporter, bidra med nya funktioner och ställ frågor på
 
 För att ställa in din nya enhet för Autocrypt, följ instruktionerna som bör presenteras av din nya enhet.
 
-Du kan behålla det här meddelandet och använda det som en säkerhetskopia för din hemliga nyckel. Om du vill göra det ska du skriva ner lösenordet och lagra det säkert.
+Du kan behålla detta meddelande och använda det som en säkerhetskopia för din hemliga nyckel. Om du vill göra det ska du skriva ner lösenordet och lagra det säkert.
 </string>
   <string name="ac_transfer_error_send">Ett fel uppstod under tiden meddelandet skickades. Kontrollera din nätverksanslutning och utgående serverkonfiguration.</string>
   <string name="switch_on">På</string>
@@ -1047,7 +1050,7 @@ Du kan behålla det här meddelandet och använda det som en säkerhetskopia fö
   <string name="permission_contacts_rationale_message">För att kunna ge kontaktförslag och visa kontaktnamn och foton behöver appen tillgång till dina kontakter.</string>
   <string name="generic_loading_error">Ett fel uppstod när data lästes in</string>
   <string name="push_notification_state_initializing">Initierar...</string>
-  <string name="push_notification_state_listening">Lyssnar efter nya e-postmeddelanden</string>
+  <string name="push_notification_state_listening">Väntar på nya e-postmeddelanden</string>
   <string name="push_notification_state_wait_background_sync">Sover tills bakgrundssynkronisering är tillåten</string>
   <string name="push_notification_state_wait_network">Sover tills nätverket är tillgängligt</string>
 </resources>

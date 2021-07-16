@@ -21,6 +21,9 @@
   <string name="changelog_title">變更記錄檔</string>
   <string name="changelog_loading_error">無法載入變更記錄檔</string>
   <string name="changelog_version_title">第%s版</string>
+  <string name="changelog_recent_changes_title">最新消息</string>
+  <string name="changelog_show_recent_changes">顯示應用程式更新後的最新變更</string>
+  <string name="changelog_snackbar_text">了解此版本的新增功能</string>
   <!--Welcome message-->
   <string name="welcome_message_title">歡迎使用 K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -114,6 +117,7 @@ K-9 Mail 是 Android 上一款功能強大，免費而自由的電子郵件用�
   <string name="add_account_action">新增帳號</string>
   <string name="compose_action">新郵件</string>
   <string name="search_action">搜尋</string>
+  <string name="search_everywhere_action">在所有地方搜尋</string>
   <string name="search_results">搜尋結果</string>
   <string name="preferences_action">設定</string>
   <string name="folders_action">整理信件匣</string>
@@ -178,6 +182,8 @@ K-9 Mail 是 Android 上一款功能強大，免費而自由的電子郵件用�
   <string name="notification_bg_send_ticker">正在寄送郵件：<xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">正在寄送郵件</string>
   <string name="notification_bg_title_separator">：</string>
+  <string name="notification_channel_push_title">同步（推播）</string>
+  <string name="notification_channel_push_description">等待新郵件時顯示</string>
   <string name="notification_channel_messages_title">郵件</string>
   <string name="notification_channel_messages_description">與郵件相關的通知</string>
   <string name="notification_channel_miscellaneous_title">偏好設定</string>
@@ -377,7 +383,6 @@ K-9 Mail 是 Android 上一款功能強大，免費而自由的電子郵件用�
   <string name="account_setup_options_enable_push_label">在這個帳戶上啟用推送郵件</string>
   <string name="account_setup_options_enable_push_summary">如果你的郵件伺服器支援此功能，那麼新郵件將會立刻顯示在手機上。這個選項可能大幅的提升性能，也可能嚴重的影響性能。</string>
   <string name="idle_refresh_period_label">重整間隔連接</string>
-  <string name="idle_refresh_period_1min">每分鐘一次</string>
   <string name="idle_refresh_period_2min">2 分鐘一次</string>
   <string name="idle_refresh_period_3min">3 分鐘一次</string>
   <string name="idle_refresh_period_6min">6 分鐘一次</string>
@@ -547,7 +552,6 @@ K-9 Mail 是 Android 上一款功能強大，免費而自由的電子郵件用�
   <string name="folder_settings_folder_push_mode_normal">不分類</string>
   <string name="folder_settings_folder_push_mode_first_class">上層</string>
   <string name="folder_settings_folder_push_mode_second_class">下層</string>
-  <string name="folder_settings_folder_push_mode_inherited">使用與同步層別相同的層別</string>
   <string name="folder_settings_folder_notify_mode_label">信件匣提醒層別</string>
   <string name="folder_settings_folder_notify_mode_normal">不分類</string>
   <string name="folder_settings_folder_notify_mode_first_class">上層</string>
@@ -1037,4 +1041,8 @@ K-9 Mail 是 Android 上一款功能強大，免費而自由的電子郵件用�
   <string name="permission_contacts_rationale_title">允許訪問聯絡人</string>
   <string name="permission_contacts_rationale_message">為了能夠提供聯絡人建議，並顯示聯絡人姓名和照片，應用程式需要訪問你的聯絡人。</string>
   <string name="generic_loading_error">載入資料時發生錯誤</string>
+  <string name="push_notification_state_initializing">初始化...</string>
+  <string name="push_notification_state_listening">正在等待新郵件</string>
+  <string name="push_notification_state_wait_background_sync">等待背景同步允許</string>
+  <string name="push_notification_state_wait_network">等待網路可用</string>
 </resources>

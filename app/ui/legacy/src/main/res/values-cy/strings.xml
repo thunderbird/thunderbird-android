@@ -378,7 +378,6 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="account_setup_options_enable_push_label">Galluogi anfon negeseuon ar gyfer y cyfrif hwn.</string>
   <string name="account_setup_options_enable_push_summary">Os yw dy weinydd yn ei gefnogi, bydd negeseuon newydd yn ymddangos yn syth. Gall yr opsiwn hwn wella neu ddirywio perfformiad yn sylweddol.</string>
   <string name="idle_refresh_period_label">Ail-lwytho cysylltiad IDLE</string>
-  <string name="idle_refresh_period_1min">Pob munud</string>
   <string name="idle_refresh_period_2min">Pob 2 funud</string>
   <string name="idle_refresh_period_3min">Pob 3 munud</string>
   <string name="idle_refresh_period_6min">Pob 6 munud</string>
@@ -548,7 +547,6 @@ Plîs rho wybod am unrhyw wallau, syniadau am nodweddion newydd, neu ofyn cwesti
   <string name="folder_settings_folder_push_mode_normal">Dim Rhenc</string>
   <string name="folder_settings_folder_push_mode_first_class">Rhenc 1af</string>
   <string name="folder_settings_folder_push_mode_second_class">2ail renc</string>
-  <string name="folder_settings_folder_push_mode_inherited">Fel ei rhenc cydweddu</string>
   <string name="folder_settings_folder_notify_mode_label">Rhenc hysbysiadau\'r ffolder</string>
   <string name="folder_settings_folder_notify_mode_normal">Dim rhenc</string>
   <string name="folder_settings_folder_notify_mode_first_class">Rhenc 1af</string>

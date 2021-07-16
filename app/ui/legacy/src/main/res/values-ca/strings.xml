@@ -21,6 +21,9 @@
   <string name="changelog_title">Registre de canvis</string>
   <string name="changelog_loading_error">No s\'ha pogut carregar el registre de canvis.</string>
   <string name="changelog_version_title">Versió %s</string>
+  <string name="changelog_recent_changes_title">Novetats</string>
+  <string name="changelog_show_recent_changes">Mostra els canvis recents quan s\'ha actualitzat l\'aplicació.</string>
+  <string name="changelog_snackbar_text">Esbrineu les novetats d’aquesta versió.</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Us donem la benvinguda al K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -382,7 +385,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="account_setup_options_enable_push_label">Habilita la tramesa de correu per a aquest compte</string>
   <string name="account_setup_options_enable_push_summary">Si el vostre servidor ho admet, els missatges arribaran automàticament. Aquesta opció pot millorar o empitjorar el rendiment.</string>
   <string name="idle_refresh_period_label">Refresca la connexió IDLE</string>
-  <string name="idle_refresh_period_1min">Cada minut</string>
   <string name="idle_refresh_period_2min">Cada 2 minuts</string>
   <string name="idle_refresh_period_3min">Cada 3 minuts</string>
   <string name="idle_refresh_period_6min">Cada 6 minuts</string>
@@ -552,7 +554,6 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="folder_settings_folder_push_mode_normal">Sense classe</string>
   <string name="folder_settings_folder_push_mode_first_class">1a classe</string>
   <string name="folder_settings_folder_push_mode_second_class">2a classe</string>
-  <string name="folder_settings_folder_push_mode_inherited">El mateix que la classe de sincronització</string>
   <string name="folder_settings_folder_notify_mode_label">Classe de notificació de la carpeta</string>
   <string name="folder_settings_folder_notify_mode_normal">Sense classe</string>
   <string name="folder_settings_folder_notify_mode_first_class">1a classe</string>
@@ -1048,7 +1049,6 @@ Podeu guardar aquest missatge i usar-lo com a còpia de seguretat per a la vostr
   <string name="permission_contacts_rationale_message">Per poder proporcionar suggeriments de contactes i mostrar-ne els noms i fotografies, l\'aplicació necessita accés als vostres contactes.</string>
   <string name="generic_loading_error">S\'ha produït un error en carregar les dades</string>
   <string name="push_notification_state_initializing">S\'inicia...</string>
-  <string name="push_notification_state_listening">Es mira si hi ha missatges nous.</string>
   <string name="push_notification_state_wait_background_sync">Inactiu fins que es permeti la sincronització</string>
   <string name="push_notification_state_wait_network">Inactiu fins que la xarxa estigui disponible</string>
 </resources>

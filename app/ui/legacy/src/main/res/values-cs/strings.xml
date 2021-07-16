@@ -380,7 +380,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="account_setup_options_enable_push_label">Povolit připojení PUSH pro tento účet</string>
   <string name="account_setup_options_enable_push_summary">Pokud to váš server podporuje, nové zprávy se objeví okamžitě. Tato volba může dramaticky zlepšit nebo zhoršit výkon.</string>
   <string name="idle_refresh_period_label">Obnovit připojení IDLE</string>
-  <string name="idle_refresh_period_1min">Každou minutu</string>
   <string name="idle_refresh_period_2min">Každé 2 minuty</string>
   <string name="idle_refresh_period_3min">Každé 3 minuty</string>
   <string name="idle_refresh_period_6min">Každých 6 minut</string>
@@ -536,7 +535,6 @@ Hlášení o chyb, úpravy pro nové funkce a dotazy zadávejte prostřednictví
   <string name="folder_settings_folder_push_mode_normal">Žádná třída</string>
   <string name="folder_settings_folder_push_mode_first_class">1. třída</string>
   <string name="folder_settings_folder_push_mode_second_class">2. třída</string>
-  <string name="folder_settings_folder_push_mode_inherited">Stejná jako třída synchronizace</string>
   <string name="folder_settings_folder_notify_mode_label">Třída oznámení složky</string>
   <string name="folder_settings_folder_notify_mode_normal">Žádná třída</string>
   <string name="folder_settings_folder_notify_mode_first_class">1. třída</string>
