@@ -5,6 +5,12 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.740" versioncode="27040" date="2021-07-16">
+        <change>Added an info screen when tapping the Push notification</change>
+        <change>Fixed a couple of crashes related to Push</change>
+        <change>Various small user interface fixes</change>
+        <change>Updated translations</change>
+    </release>
     <release version="5.739" versioncode="27039" date="2021-07-10">
         <change>Fixed bug that could prevent the device from going to sleep when Push was active</change>
         <change>Fixed bug that lead to Push not being restarted when network connectivity returned</change>
