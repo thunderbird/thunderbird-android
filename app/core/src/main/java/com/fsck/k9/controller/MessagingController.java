@@ -2526,52 +2526,6 @@ public class MessagingController {
         });
     }
 
-    public void clear(final Account account, final MessagingListener ml) {
-        putBackground("clear:" + account.getDescription(), ml, new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    LocalStore localStore = localStoreProvider.getInstance(account);
-                    long oldSize = localStore.getSize();
-                    localStore.clear();
-                    localStore.resetVisibleLimits(account.getDisplayCount());
-                    long newSize = localStore.getSize();
-                    for (MessagingListener l : getListeners(ml)) {
-                        l.accountSizeChanged(account, oldSize, newSize);
-                    }
-                } catch (UnavailableStorageException e) {
-                    Timber.i("Failed to clear account because storage is not available - trying again later.");
-                    throw new UnavailableAccountException(e);
-                } catch (Exception e) {
-                    Timber.e(e, "Failed to clear account %s", account.getDescription());
-                }
-            }
-        });
-    }
-
-    public void recreate(final Account account, final MessagingListener ml) {
-        putBackground("recreate:" + account.getDescription(), ml, new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    LocalStore localStore = localStoreProvider.getInstance(account);
-                    long oldSize = localStore.getSize();
-                    localStore.recreate();
-                    localStore.resetVisibleLimits(account.getDisplayCount());
-                    long newSize = localStore.getSize();
-                    for (MessagingListener l : getListeners(ml)) {
-                        l.accountSizeChanged(account, oldSize, newSize);
-                    }
-                } catch (UnavailableStorageException e) {
-                    Timber.i("Failed to recreate an account because storage is not available - trying again later.");
-                    throw new UnavailableAccountException(e);
-                } catch (Exception e) {
-                    Timber.e(e, "Failed to recreate account %s", account.getDescription());
-                }
-            }
-        });
-    }
-
     public void deleteAccount(Account account) {
         notificationController.clearNewMailNotifications(account);
         memorizingMessagingListener.removeAccount(account);
