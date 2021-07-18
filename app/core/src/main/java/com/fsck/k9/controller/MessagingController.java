@@ -289,18 +289,13 @@ public class MessagingController {
         return localStore.getFolderServerId(folderId);
     }
 
-    private long getFolderId(Account account, String folderServerId) throws MessagingException {
-        LocalStore localStore = getLocalStoreOrThrow(account);
-        return localStore.getFolderId(folderServerId);
-    }
-
-    private long getFolderIdOrThrow(Account account, String folderServerId) {
-        LocalStore localStore = getLocalStoreOrThrow(account);
-        try {
-            return localStore.getFolderId(folderServerId);
-        } catch (MessagingException e) {
-            throw new IllegalStateException(e);
+    private long getFolderId(Account account, String folderServerId) {
+        MessageStore messageStore = messageStoreManager.getMessageStore(account);
+        Long folderId = messageStore.getFolderId(folderServerId);
+        if (folderId == null) {
+            throw new IllegalStateException("Folder not found (server ID: " + folderServerId + ")");
         }
+        return folderId;
     }
 
     public void addListener(MessagingListener listener) {
@@ -604,7 +599,7 @@ public class MessagingController {
         );
     }
 
-    public void synchronizeMailboxBlocking(Account account, String folderServerId) throws MessagingException {
+    public void synchronizeMailboxBlocking(Account account, String folderServerId) {
         long folderId = getFolderId(account, folderServerId);
 
         account.setRingNotified(false);
@@ -2685,7 +2680,7 @@ public class MessagingController {
 
         @Override
         public void syncStarted(@NotNull String folderServerId) {
-            long folderId = getFolderIdOrThrow(account, folderServerId);
+            long folderId = getFolderId(account, folderServerId);
             for (MessagingListener messagingListener : getListeners(listener)) {
                 messagingListener.synchronizeMailboxStarted(account, folderId);
             }
@@ -2721,7 +2716,7 @@ public class MessagingController {
 
         @Override
         public void syncProgress(@NotNull String folderServerId, int completed, int total) {
-            long folderId = getFolderIdOrThrow(account, folderServerId);
+            long folderId = getFolderId(account, folderServerId);
             for (MessagingListener messagingListener : getListeners(listener)) {
                 messagingListener.synchronizeMailboxProgress(account, folderId, completed, total);
             }
@@ -2755,7 +2750,7 @@ public class MessagingController {
             }
 
             String accountUuid = account.getUuid();
-            long folderId = getFolderIdOrThrow(account, folderServerId);
+            long folderId = getFolderId(account, folderServerId);
             MessageReference messageReference = new MessageReference(accountUuid, folderId, messageServerId, null);
             notificationController.removeNewMailNotification(account, messageReference);
         }
@@ -2782,7 +2777,7 @@ public class MessagingController {
 
         @Override
         public void syncFinished(@NotNull String folderServerId) {
-            long folderId = getFolderIdOrThrow(account, folderServerId);
+            long folderId = getFolderId(account, folderServerId);
             for (MessagingListener messagingListener : getListeners(listener)) {
                 messagingListener.synchronizeMailboxFinished(account, folderId);
             }
@@ -2798,7 +2793,7 @@ public class MessagingController {
                 notifyUserIfCertificateProblem(account, exception, true);
             }
 
-            long folderId = getFolderIdOrThrow(account, folderServerId);
+            long folderId = getFolderId(account, folderServerId);
             for (MessagingListener messagingListener : getListeners(listener)) {
                 messagingListener.synchronizeMailboxFailed(account, folderId, message);
             }
@@ -2806,7 +2801,7 @@ public class MessagingController {
 
         @Override
         public void folderStatusChanged(@NotNull String folderServerId) {
-            long folderId = getFolderIdOrThrow(account, folderServerId);
+            long folderId = getFolderId(account, folderServerId);
             for (MessagingListener messagingListener : getListeners(listener)) {
                 messagingListener.folderStatusChanged(account, folderId);
             }
