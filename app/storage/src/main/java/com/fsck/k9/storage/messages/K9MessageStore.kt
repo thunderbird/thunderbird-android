@@ -40,6 +40,7 @@ class K9MessageStore(
     private val updateFolderOperations = UpdateFolderOperations(database)
     private val deleteFolderOperations = DeleteFolderOperations(database, attachmentFileManager)
     private val keyValueStoreOperations = KeyValueStoreOperations(database)
+    private val databaseOperations = DatabaseOperations(database, storageManager, accountUuid)
 
     override fun saveRemoteMessage(folderId: Long, messageServerId: String, messageData: SaveMessageData) {
         saveMessageOperations.saveRemoteMessage(folderId, messageServerId, messageData)
@@ -133,6 +134,10 @@ class K9MessageStore(
         return retrieveFolderOperations.getFolderId(folderServerId)
     }
 
+    override fun getSize(): Long {
+        return databaseOperations.getSize()
+    }
+
     override fun changeFolder(folderServerId: String, name: String, type: FolderType) {
         updateFolderOperations.changeFolder(folderServerId, name, type)
     }
@@ -207,5 +212,9 @@ class K9MessageStore(
 
     override fun setFolderExtraNumber(folderId: Long, name: String, value: Long) {
         return keyValueStoreOperations.setFolderExtraNumber(folderId, name, value)
+    }
+
+    override fun compact() {
+        return databaseOperations.compact()
     }
 }

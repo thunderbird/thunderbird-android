@@ -2509,16 +2509,13 @@ public class MessagingController {
             @Override
             public void run() {
                 try {
-                    LocalStore localStore = localStoreProvider.getInstance(account);
-                    long oldSize = localStore.getSize();
-                    localStore.compact();
-                    long newSize = localStore.getSize();
+                    MessageStore messageStore = messageStoreManager.getMessageStore(account);
+                    long oldSize = messageStore.getSize();
+                    messageStore.compact();
+                    long newSize = messageStore.getSize();
                     for (MessagingListener l : getListeners(ml)) {
                         l.accountSizeChanged(account, oldSize, newSize);
                     }
-                } catch (UnavailableStorageException e) {
-                    Timber.i("Failed to compact account because storage is not available - trying again later.");
-                    throw new UnavailableAccountException(e);
                 } catch (Exception e) {
                     Timber.e(e, "Failed to compact account %s", account.getDescription());
                 }

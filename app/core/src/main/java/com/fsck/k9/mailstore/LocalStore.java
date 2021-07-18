@@ -30,7 +30,6 @@ import android.text.TextUtils;
 import com.fsck.k9.Account;
 import com.fsck.k9.Clock;
 import com.fsck.k9.DI;
-import com.fsck.k9.K9;
 import com.fsck.k9.controller.MessageCounts;
 import com.fsck.k9.Preferences;
 import com.fsck.k9.controller.MessagingControllerCommands.PendingCommand;
@@ -233,50 +232,6 @@ public class LocalStore {
 
     public OutboxStateRepository getOutboxStateRepository() {
         return outboxStateRepository;
-    }
-
-    public long getSize() throws MessagingException {
-
-        final StorageManager storageManager = StorageManager.getInstance(context);
-
-        final File attachmentDirectory = storageManager.getAttachmentDirectory(account.getUuid(),
-                                         database.getStorageProviderId());
-
-        return database.execute(false, new DbCallback<Long>() {
-            @Override
-            public Long doDbWork(final SQLiteDatabase db) {
-                final File[] files = attachmentDirectory.listFiles();
-                long attachmentLength = 0;
-                if (files != null) {
-                    for (File file : files) {
-                        if (file.exists()) {
-                            attachmentLength += file.length();
-                        }
-                    }
-                }
-
-                final File dbFile = storageManager.getDatabase(account.getUuid(), database.getStorageProviderId());
-                return dbFile.length() + attachmentLength;
-            }
-        });
-    }
-
-    public void compact() throws MessagingException {
-        if (K9.isDebugLoggingEnabled()) {
-            Timber.i("Before compaction size = %d", getSize());
-        }
-
-        database.execute(false, new DbCallback<Void>() {
-            @Override
-            public Void doDbWork(final SQLiteDatabase db) throws WrappedException {
-                db.execSQL("VACUUM");
-                return null;
-            }
-        });
-
-        if (K9.isDebugLoggingEnabled()) {
-            Timber.i("After compaction size = %d", getSize());
-        }
     }
 
     public LocalFolder getFolder(String serverId) {

@@ -126,6 +126,11 @@ interface MessageStore {
     fun getLastUid(folderId: Long): Long?
 
     /**
+     * Return the size of this message store in bytes.
+     */
+    fun getSize(): Long
+
+    /**
      * Remove messages from the store.
      */
     fun destroyMessages(folderId: Long, messageServerIds: Collection<String>)
@@ -267,4 +272,9 @@ interface MessageStore {
      * Create or update a number property associated with the given folder.
      */
     fun setFolderExtraNumber(folderId: Long, name: String, value: Long)
+
+    /**
+     * Optimize the message store with the goal of using the minimal amount of disk space.
+     */
+    fun compact()
 }
