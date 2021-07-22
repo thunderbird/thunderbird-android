@@ -5,6 +5,9 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.741" versioncode="27041" date="2021-07-22">
+        <change>Updated translations</change>
+    </release>
     <release version="5.740" versioncode="27040" date="2021-07-16">
         <change>Added an info screen when tapping the Push notification</change>
         <change>Fixed a couple of crashes related to Push</change>
