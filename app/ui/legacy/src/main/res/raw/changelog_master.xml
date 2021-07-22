@@ -5,6 +5,21 @@
      Locale-specific versions are kept in res/raw-<locale qualifier>/changelog.xml.
 -->
 <changelog>
+    <release version="5.800" versioncode="28000" date="2021-07-24">
+        <change>Major redesign of the user interface</change>
+        <change>Changed periodic background sync and push implementations to work much more reliably</change>
+        <change>Deprecated support for the WebDAV protocol; new accounts can no longer be added</change>
+        <change>K-9 Mail now requires Android 5.0 and newer</change>
+        <change>Added support for Autocrypt setup message</change>
+        <change>Added support for encrypted subjects</change>
+        <change>Don't use default signature when setting up a new account</change>
+        <change>Allow installation on external media (Android 6+ with adopted storage)</change>
+        <change>Removed keyboard shortcuts for menu items; on some devices they conflicted with system shortcuts</change>
+        <change>Removed the broken option to store the message database on external storage</change>
+        <change>Removed the 'remote control' interface third-party apps could use to change some settings in K-9 Mail</change>
+        <change>A lot of other bug fixes, internal changes, and improvements</change>
+        <change>Check out the changelog entries for 5.7xx versions for a lot more details</change>
+    </release>
     <release version="5.741" versioncode="27041" date="2021-07-22">
         <change>Updated translations</change>
     </release>
