@@ -401,7 +401,7 @@ public class MessagingController {
             preferences.saveAccount(account);
         } catch (Exception e) {
             Timber.e(e);
-            notificationController.showSyncErrorNotification(account,e.getCause().getLocalizedMessage());
+            notificationController.showSyncErrorNotification(account,(e.getCause() == null ) ? "" : e.getCause().getLocalizedMessage());
         }
     }
 

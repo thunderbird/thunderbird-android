@@ -94,8 +94,7 @@ class SyncNotifications {
 
         String tickerText = resourceProvider.checkingMailTicker(accountName, folderName);
         String title = resourceProvider.checkingMailTitle();
-        //TODO: Use format string from resources
-        String text = accountName + resourceProvider.checkingMailSeparator() + folderName;
+        String text = resourceProvider.checkingMailContent(accountName, folderName);
 
         int notificationId = NotificationIds.getFetchingMailNotificationId(account);
         PendingIntent showMessageListPendingIntent = actionBuilder.createViewFolderPendingIntent(

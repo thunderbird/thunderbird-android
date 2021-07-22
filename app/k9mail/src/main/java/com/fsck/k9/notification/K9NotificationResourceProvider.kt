@@ -77,8 +77,7 @@ class K9NotificationResourceProvider(private val context: Context) : Notificatio
     override fun checkingMailTitle(): String =
         context.getString(R.string.notification_bg_sync_title)
 
-    override fun checkingMailSeparator(): String =
-        context.getString(R.string.notification_bg_title_separator)
+    override fun checkingMailContent(accountName: String, folderName: String): String = context.getString(R.string.notification_bg_sync_content, accountName, folderName)
 
     override fun checkingMailErrorTitle(): String =
         context.getString(R.string.notification_bg_sync_error_title)

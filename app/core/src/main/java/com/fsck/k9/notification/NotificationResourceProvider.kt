@@ -42,7 +42,7 @@ interface NotificationResourceProvider {
 
     fun checkingMailTicker(accountName: String, folderName: String): String
     fun checkingMailTitle(): String
-    fun checkingMailSeparator(): String
+    fun checkingMailContent(accountName: String, folderName: String): String
     fun checkingMailErrorTitle(): String
 
     fun actionMarkAsRead(): String
