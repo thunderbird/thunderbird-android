@@ -60,6 +60,8 @@ class TestNotificationResourceProvider : NotificationResourceProvider {
     override fun checkingMailTicker(accountName: String, folderName: String): String =
         "Checking mail: $accountName:$folderName"
 
+    override fun checkingMailErrorTitle(): String = "Checking mail failed"
+
     override fun checkingMailTitle(): String = "Checking mail"
 
     override fun checkingMailSeparator(): String = ":"

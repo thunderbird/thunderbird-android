@@ -62,6 +62,31 @@ class SyncNotifications {
         getNotificationManager().cancel(notificationId);
     }
 
+    public void showSyncErrorNotification(Account account, String cause) {
+        String title = resourceProvider.checkingMailErrorTitle();
+        String tickerText = resourceProvider.checkingMailErrorTitle();
+
+        NotificationCompat.Builder builder = notificationHelper.createNotificationBuilder(account,
+                NotificationChannelManager.ChannelType.MISCELLANEOUS)
+                .setSmallIcon(resourceProvider.getIconWarning())
+                .setWhen(System.currentTimeMillis())
+                .setOngoing(false)
+                .setTicker(tickerText)
+                .setContentTitle(title)
+                .setContentText(cause)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setCategory(NotificationCompat.CATEGORY_ERROR);
+
+        int notificationId = NotificationIds.getFetchingMailNotificationId(account);
+
+        if (NOTIFICATION_LED_WHILE_SYNCING) {
+            notificationHelper.configureNotification(builder, null, null,
+                    account.getNotificationSetting().getLedColor(),
+                    NOTIFICATION_LED_BLINK_FAST, true);
+        }
+
+        getNotificationManager().notify(notificationId, builder.build());
+    }
     public void showFetchingMailNotification(Account account, LocalFolder folder) {
         String accountName = account.getDescription();
         long folderId = folder.getDatabaseId();

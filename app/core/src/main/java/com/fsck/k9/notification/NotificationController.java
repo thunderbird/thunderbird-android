@@ -61,6 +61,9 @@ public class NotificationController {
         sendFailedNotifications.clearSendFailedNotification(account);
     }
 
+    public void showSyncErrorNotification(Account account, String cause) {
+        syncNotifications.showSyncErrorNotification(account,cause);
+    }
     public void showFetchingMailNotification(Account account, LocalFolder folder) {
         syncNotifications.showFetchingMailNotification(account, folder);
     }

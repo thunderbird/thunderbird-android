@@ -80,6 +80,9 @@ class K9NotificationResourceProvider(private val context: Context) : Notificatio
     override fun checkingMailSeparator(): String =
         context.getString(R.string.notification_bg_title_separator)
 
+    override fun checkingMailErrorTitle(): String =
+        context.getString(R.string.notification_bg_sync_error_title)
+
     override fun actionMarkAsRead(): String = context.getString(R.string.notification_action_mark_as_read)
 
     override fun actionMarkAllAsRead(): String = context.getString(R.string.notification_action_mark_all_as_read)

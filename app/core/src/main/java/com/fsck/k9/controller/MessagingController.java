@@ -26,6 +26,7 @@ import android.content.Context;
 import android.os.PowerManager;
 import android.os.Process;
 import android.os.SystemClock;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
@@ -400,6 +401,7 @@ public class MessagingController {
             preferences.saveAccount(account);
         } catch (Exception e) {
             Timber.e(e);
+            notificationController.showSyncErrorNotification(account,e.getCause().getLocalizedMessage());
         }
     }
 
@@ -623,8 +625,8 @@ public class MessagingController {
     @VisibleForTesting
     void synchronizeMailboxSynchronous(Account account, long folderId, MessagingListener listener) {
         refreshFolderListIfStale(account);
-
         Backend backend = getBackend(account);
+
         syncFolder(account, folderId, listener, backend);
     }
 
@@ -700,6 +702,10 @@ public class MessagingController {
 
     public void handleAuthenticationFailure(Account account, boolean incoming) {
         notificationController.showAuthenticationErrorNotification(account, incoming);
+    }
+
+    public void handleSyncFailure(Account account, String cause) {
+        notificationController.showSyncErrorNotification(account,cause);
     }
 
     public void handleException(Account account, Exception exception) {
@@ -2811,6 +2817,7 @@ public class MessagingController {
                 handleAuthenticationFailure(account, true);
             } else {
                 notifyUserIfCertificateProblem(account, exception, true);
+                handleSyncFailure(account,exception.getCause() == null ? "" : exception.getCause().getLocalizedMessage());
             }
 
             long folderId = getFolderIdOrThrow(account, folderServerId);
