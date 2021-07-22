@@ -10,17 +10,20 @@
   <string name="app_authors">The K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> a The K-9 Dog Walkers. Részleges Copyright 2006-<xliff:g>%s</xliff:g> az Android Nyílt Forráskódú Projekt.</string>
   <string name="source_code">Forráskód</string>
-  <string name="app_license">Apache licensz, 2.0 verzió</string>
-  <string name="about_project_title">Nyílt Forráskódú Projekt</string>
+  <string name="app_license">Apache licenc, 2.0-s verzió</string>
+  <string name="about_project_title">Nyílt forráskódú Projekt</string>
   <string name="about_website_title">Weboldal</string>
   <string name="user_forum_title">Felhasználói fórum</string>
-  <string name="about_fediverse_title">Fediverzum</string>
+  <string name="about_fediverse_title">Födiverzum</string>
   <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">Programkönyvtárak</string>
-  <string name="license">Licensz</string>
-  <string name="changelog_title">Változáslista</string>
-  <string name="changelog_loading_error">A változáslista betöltése sikertelen.</string>
-  <string name="changelog_version_title">Verzió %s</string>
+  <string name="license">Licenc</string>
+  <string name="changelog_title">Változásnapl</string>
+  <string name="changelog_loading_error">A változásnapló betöltése sikertelen.</string>
+  <string name="changelog_version_title">Verzió: %s</string>
+  <string name="changelog_recent_changes_title">Újdonságok</string>
+  <string name="changelog_show_recent_changes">Friss változások megjelenítése az alkalmazás frissítésekor</string>
+  <string name="changelog_snackbar_text">Tudja meg, hogy mik az újdonságok ebben a kiadásban</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Üdvözlet a K-9 Mail alkalmazásban.</string>
   <string name="accounts_welcome"><![CDATA[
@@ -58,11 +61,11 @@ Hibajelentések beküldésével hozzájárulhatunk új funkciókhoz és kérdés
   <!--=== General strings ==================================================================-->
   <string name="authors">Szerzők</string>
   <string name="app_revision">Felülvizsgálati információk</string>
-  <string name="read_messages_label">Emailek olvasása</string>
+  <string name="read_messages_label">E-mailek olvasása</string>
   <string name="read_messages_desc">Az alkalmazás olvashatja az emaileket.</string>
-  <string name="delete_messages_label">Emailek törlése</string>
-  <string name="delete_messages_desc">Az alkalmazás törölheti ez emaileket.</string>
-  <string name="about_title">K-9 Mail névjegy</string>
+  <string name="delete_messages_label">E-mailek törlése</string>
+  <string name="delete_messages_desc">Az alkalmazás törölheti ez e-maileket.</string>
+  <string name="about_title">A K-9 Mail névjegye</string>
   <string name="accounts_title">Fiókok</string>
   <string name="folders_title">Mappák</string>
   <string name="advanced">Bővített</string>
@@ -112,6 +115,7 @@ Hibajelentések beküldésével hozzájárulhatunk új funkciókhoz és kérdés
   <string name="add_account_action">Fiók hozzáadása</string>
   <string name="compose_action">Írás</string>
   <string name="search_action">Keresés</string>
+  <string name="search_everywhere_action">Keresés mindenhol</string>
   <string name="search_results">Keresési eredmények</string>
   <string name="preferences_action">Beállítások</string>
   <string name="folders_action">Mappák kezelése</string>
@@ -169,7 +173,7 @@ Hibajelentések beküldésével hozzájárulhatunk új funkciókhoz és kérdés
   <string name="notification_action_archive">Archiválás</string>
   <string name="notification_action_archive_all">Összes archiválása</string>
   <string name="notification_action_spam">Levélszemét</string>
-  <string name="notification_certificate_error_title">Tanúsítvány hiba: <xliff:g id="account">%s</xliff:g></string>
+  <string name="notification_certificate_error_title">Tanúsítványhiba: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_certificate_error_text">Ellenőrizzük a kiszolgáló beállításait.</string>
   <string name="notification_authentication_error_title">A hitelesítés sikertelen.</string>
   <string name="notification_authentication_error_text">A hitelesítés sikertelen: <xliff:g id="account">%s</xliff:g>. Frissítsük a kiszolgáló beállításait.</string>
@@ -178,6 +182,8 @@ Hibajelentések beküldésével hozzájárulhatunk új funkciókhoz és kérdés
   <string name="notification_bg_send_ticker">Levél küldése: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Levél küldése</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_push_title">Szinkronizálás (Leküldés)</string>
+  <string name="notification_channel_push_description">Az új levelekre várakozáskor jelenik meg</string>
   <string name="notification_channel_messages_title">Üzenetek</string>
   <string name="notification_channel_messages_description">Az üzenetekkel kapcsolatos értesítések</string>
   <string name="notification_channel_miscellaneous_title">Egyebek</string>
@@ -546,6 +552,7 @@ Hibajelentések beküldésével hozzájárulhatunk új funkciókhoz és kérdés
   <string name="folder_settings_folder_push_mode_normal">Nincs osztály</string>
   <string name="folder_settings_folder_push_mode_first_class">1. osztály</string>
   <string name="folder_settings_folder_push_mode_second_class">2. osztály</string>
+  <string name="folder_settings_folder_push_mode_inherited">Ugyanaz, mint a lekérés osztálya</string>
   <string name="folder_settings_folder_notify_mode_label">Mappa értesítésének osztálya</string>
   <string name="folder_settings_folder_notify_mode_normal">Nincs osztály</string>
   <string name="folder_settings_folder_notify_mode_first_class">1. osztály</string>
@@ -1040,4 +1047,16 @@ Megtarthatja ezt az üzenetet, és felhasználhatja a titkos kulcs biztonsági m
   <string name="permission_contacts_rationale_title">Hozzáférés engedélyezése a partnerekhez</string>
   <string name="permission_contacts_rationale_message">Ahhoz, hogy partnerjavaslatokat tudjon tenni és meg tudja jeleníteni a partner nevét és fényképeit, az alkalmazásnak hozzáférésre van szüksége a partnereihez.</string>
   <string name="generic_loading_error">Hiba történt az adatok betöltése során</string>
+  <string name="push_notification_state_initializing">Előkészítés…</string>
+  <string name="push_notification_state_listening">Várakozás az új e-mailekre</string>
+  <string name="push_notification_state_wait_background_sync">Alvás addig, amíg a háttérbeli szinkronizálás engedélyezésre nem kerül</string>
+  <string name="push_notification_state_wait_network">Alvás addig, amíg a hálózat elérhetővé nem válik</string>
+  <string name="push_notification_info">Koppintson ide a további tudnivalókért.</string>
+  <string name="push_info_title">Leküldési információk</string>
+  <string name="push_info_notification_explanation_text">Amikor leküldést használ, a K-9 Mail egy kapcsolatot tart fenn a levelezőkiszolgálóval. Az Android megköveteli, hogy értesítést jelenítsen meg az alkalmazás, ha aktív a háttérben. %s</string>
+  <string name="push_info_configure_notification_text">Viszont az Android azt is lehetővé teszi, hogy elrejtse az értesítést.</string>
+  <string name="push_info_learn_more_text">További tudnivaló</string>
+  <string name="push_info_configure_notification_action">Értesítés beállítása</string>
+  <string name="push_info_disable_push_text">Ha nincs szüksége azonnali értesítésekre az új levelekről, akkor letilthatja a leküldést, és használhat lekérést. A lekérés rendszeres időközönként ellenőrzi, hogy vannak-e új levelek, és nincs szüksége értesítés megjelenítésére.</string>
+  <string name="push_info_disable_push_action">Leküldés letiltása</string>
 </resources>

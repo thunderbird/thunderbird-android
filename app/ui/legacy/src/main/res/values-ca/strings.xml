@@ -116,7 +116,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="add_account_action">Afegeix un compte nou</string>
   <string name="compose_action">Redacta</string>
   <string name="search_action">Cerca</string>
-  <string name="search_everywhere_action">Cerca-ho pertot arreu</string>
+  <string name="search_everywhere_action">Cerca-ho per tot arreu</string>
   <string name="search_results">Cerca resultats</string>
   <string name="preferences_action">Configuració</string>
   <string name="folders_action">Gestioneu les carpetes</string>
@@ -205,7 +205,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="message_to_fmt">A: <xliff:g id="counterParty">%s</xliff:g></string>
   <string name="message_compose_subject_hint">Assumpte</string>
   <string name="message_compose_content_hint">Text del missatge</string>
-  <string name="message_compose_signature_hint">Firma</string>
+  <string name="message_compose_signature_hint">Signatura</string>
   <string name="message_compose_quote_header_separator">-------- Missatge Original --------</string>
   <string name="message_compose_quote_header_subject">Assumpte:</string>
   <string name="message_compose_quote_header_send_date">Enviat:</string>
@@ -273,7 +273,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="global_settings_privacy_hide_useragent">Amaga el client de correu</string>
   <string name="global_settings_privacy_hide_useragent_detail">Suprimeix el nom K-9 User-Agent de les capçaleres del missatge</string>
   <string name="global_settings_privacy_hide_timezone">Amaga el fus horari</string>
-  <string name="global_settings_privacy_hide_timezone_detail">Usa UTC en comptes de l\'hora local a les capçaleres dels missatges i a la capçalera de resposta</string>
+  <string name="global_settings_privacy_hide_timezone_detail">Fes servir UTC en comptes de l\'hora local a les capçaleres dels missatges i a la capçalera de resposta</string>
   <string name="global_settings_notification_hide_subject_title">Amaga l\'assumpte a les notificacions</string>
   <string name="global_settings_notification_hide_subject_never">Mai</string>
   <string name="global_settings_notification_hide_subject_when_locked">Quan el telèfon està bloquejat</string>
@@ -554,6 +554,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="folder_settings_folder_push_mode_normal">Sense classe</string>
   <string name="folder_settings_folder_push_mode_first_class">1a classe</string>
   <string name="folder_settings_folder_push_mode_second_class">2a classe</string>
+  <string name="folder_settings_folder_push_mode_inherited">Igual que la classe de comprovació</string>
   <string name="folder_settings_folder_notify_mode_label">Classe de notificació de la carpeta</string>
   <string name="folder_settings_folder_notify_mode_normal">Sense classe</string>
   <string name="folder_settings_folder_notify_mode_first_class">1a classe</string>
@@ -651,7 +652,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="setting_theme_global">Utilitza el tema de l\'aplicació</string>
   <string name="setting_theme_dark">Fosc</string>
   <string name="setting_theme_light">Clar</string>
-  <string name="setting_theme_follow_system">Usa el valor per defecte del sistema</string>
+  <string name="setting_theme_follow_system">Fes servir el valor per defecte del sistema</string>
   <string name="display_preferences">Visualització</string>
   <string name="global_preferences">Global</string>
   <string name="debug_preferences">Depura</string>
@@ -770,7 +771,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   </plurals>
   <string name="dialog_confirm_spam_confirm_button">Sí</string>
   <string name="dialog_confirm_spam_cancel_button">No</string>
-  <string name="dialog_attachment_progress_title">Baixant l\'adjunt</string>
+  <string name="dialog_attachment_progress_title">S\'està baixant l\'adjunt</string>
   <string name="messagelist_sent_to_me_sigil">»</string>
   <string name="messagelist_sent_cc_me_sigil">›</string>
   <string name="settings_list_backup_category">Còpia de seguretat</string>
@@ -778,7 +779,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="settings_export_title">Configuració de l\'exportació</string>
   <string name="settings_export_button">Exporta</string>
   <string name="settings_export_share_button">Comparteix</string>
-  <string name="settings_export_progress_text">Exportant la configuració...</string>
+  <string name="settings_export_progress_text">S\'està exportant la configuració...</string>
   <string name="settings_export_success_generic">La configuració s\'ha exportat correctament.</string>
   <string name="settings_export_failure">Ha fallat exportar la configuració.</string>
   <string name="settings_import_title">Importa la configuració</string>
@@ -798,11 +799,11 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="settings_importing">Important la configuració...</string>
   <plurals name="settings_import_password_prompt">
     <item quantity="one">Per poder usar el compte <xliff:g id="account">%s</xliff:g> heu de proporcionar la contrasenya del servidor. </item>
-    <item quantity="other">Per poder usar el compte <xliff:g id="account">%s</xliff:g> heu de proporcionar les contrasenyes del servidor. </item>
+    <item quantity="other">Per poder fer servir el compte <xliff:g id="account">%s</xliff:g> heu de proporcionar les contrasenyes del servidor. </item>
   </plurals>
   <string name="settings_import_incoming_server_password_hint">Contrasenya del servidor d\'entrada</string>
   <string name="settings_import_outgoing_server_password_hint">Contrasenya del servidor de sortida</string>
-  <string name="settings_import_use_same_password_for_outgoing_server">Usa la mateixa contrasenya per al servidor de sortida.</string>
+  <string name="settings_import_use_same_password_for_outgoing_server">Fes servir la mateixa contrasenya per al servidor de sortida.</string>
   <string name="server_name_format">Nom del servidor: <xliff:g id="hostname">%s</xliff:g></string>
   <string name="unread_widget_select_account">Mostra el recompte de no llegits per a...</string>
   <string name="unread_widget_account_title">Compte</string>
@@ -827,7 +828,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="webview_contextmenu_image_view_action">Mostra la imatge</string>
   <string name="webview_contextmenu_image_save_action">Desa la imatge</string>
   <string name="webview_contextmenu_image_download_action">Baixa la imatge</string>
-  <string name="webview_contextmenu_image_copy_action">Copia l\'areça de la imatge</string>
+  <string name="webview_contextmenu_image_copy_action">Copia l\'adreça de la imatge</string>
   <string name="webview_contextmenu_image_clipboard_label">Adreça de la imatge</string>
   <string name="webview_contextmenu_phone_call_action">Marca aquest número</string>
   <string name="webview_contextmenu_phone_save_action">Desa\'l a contactes</string>
@@ -907,7 +908,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="address_type_mobile">Mòbil</string>
   <string name="compose_error_no_draft_folder">No s\'ha configurat la carpeta d\'esborranys en aquest compte!</string>
   <string name="compose_error_no_key_configured">No hi ha cap clau configurada per a aquest compte! Comproveu la configuració.</string>
-  <string name="error_crypto_provider_incompatible">El proveïdor de criptografia usa una versió no compatible. Si us plau, comproveu la configuració!</string>
+  <string name="error_crypto_provider_incompatible">El proveïdor de criptografia fa servir una versió no compatible. Si us plau, comproveu la configuració!</string>
   <string name="error_crypto_provider_connect">No es pot connectar al proveïdor de criptografia, comproveu la configuració o cliqueu a la icona de criptografia per tornar-ho a provar!</string>
   <string name="error_crypto_provider_ui_required">Ha fallat iniciar l\'encriptació d\'extrem a extrem. Si us plau, comproveu-ne la configuració.</string>
   <string name="error_crypto_inline_attach">El mode PGP/INLINE no admet adjunts!</string>
@@ -927,7 +928,7 @@ Si us plau, envieu informes d\'errors, contribuïu-hi amb noves millores i feu p
   <string name="openpgp_sign_only_disable">Desactiva</string>
   <string name="openpgp_sign_only_keep_enabled">Mantén activat</string>
   <string name="openpgp_dialog_sign_only_title">Mode PGP de només signar</string>
-  <string name="openpgp_dialog_sign_only_text">En aquest mode, la clau PGP s\'usarà per crear una signatura criptogràfica d\'un missatge no encriptat.</string>
+  <string name="openpgp_dialog_sign_only_text">En aquest mode, la clau PGP es farà servir per crear una signatura criptogràfica d\'un missatge no encriptat.</string>
   <string name="openpgp_dialog_sign_only_plus_verified">Això no encripta el missatge, però verifica que s\'ha enviat des de la vostra clau.</string>
   <string name="openpgp_dialog_sign_only_minus_break">Les signatures es poden trencar quan s\'envien a llistes de correu.</string>
   <string name="openpgp_dialog_sign_only_minus_attach">Les signatures es poden mostrar com a adjunts \"signature.asc\" en alguns clients.</string>
@@ -1049,6 +1050,15 @@ Podeu guardar aquest missatge i usar-lo com a còpia de seguretat per a la vostr
   <string name="permission_contacts_rationale_message">Per poder proporcionar suggeriments de contactes i mostrar-ne els noms i fotografies, l\'aplicació necessita accés als vostres contactes.</string>
   <string name="generic_loading_error">S\'ha produït un error en carregar les dades</string>
   <string name="push_notification_state_initializing">S\'inicia...</string>
+  <string name="push_notification_state_listening">S\'està esperant nous correus electrònics</string>
   <string name="push_notification_state_wait_background_sync">Inactiu fins que es permeti la sincronització</string>
   <string name="push_notification_state_wait_network">Inactiu fins que la xarxa estigui disponible</string>
+  <string name="push_notification_info">Toca per obtenir més informació.</string>
+  <string name="push_info_title">Informació de Tramesa</string>
+  <string name="push_info_notification_explanation_text">Quan es fa servir Tramesa, K-9 Mail manté una connexió amb el servidor de correu. L\'Android requereix mostrar una notificació en curs mentre l’aplicació estigui activa en segon pla. %s</string>
+  <string name="push_info_configure_notification_text">Tot i això, l\'Android també us permet ocultar la notificació.</string>
+  <string name="push_info_learn_more_text">Apreneu-ne més</string>
+  <string name="push_info_configure_notification_action">Configureu la notificació</string>
+  <string name="push_info_disable_push_text">Si no necessiteu notificacions instantànies sobre missatges nous, haureu de desactivar Tramesa i utilitzar Sondeig. El sondeig comprova si hi ha correus nous a intervals regulars i no necessita la notificació.</string>
+  <string name="push_info_disable_push_action">Desactiva la Tramesa</string>
 </resources>

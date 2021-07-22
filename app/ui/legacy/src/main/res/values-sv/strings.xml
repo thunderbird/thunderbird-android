@@ -33,7 +33,7 @@ K-9 Mail är en kraftfull fri e-postklient för Android.
 Några av funktionerna som förbättrats är:
 </p>
 <ul>
-  <li>Pusha med IMAP IDLE</li>
+  <li>Push med IMAP IDLE</li>
   <li>Bättre prestanda</li>
   <li>Meddelandelagring</li>
   <li>E-postsignaturer</li>
@@ -1053,4 +1053,12 @@ Du kan behålla detta meddelande och använda det som en säkerhetskopia för di
   <string name="push_notification_state_listening">Väntar på nya e-postmeddelanden</string>
   <string name="push_notification_state_wait_background_sync">Sover tills bakgrundssynkronisering är tillåten</string>
   <string name="push_notification_state_wait_network">Sover tills nätverket är tillgängligt</string>
+  <string name="push_notification_info">Tryck för att lära dig mer.</string>
+  <string name="push_info_title">Push-info</string>
+  <string name="push_info_notification_explanation_text">När du använder Push upprätthåller K-9 Mail en anslutning till e-postservern. Android kräver att ett pågående meddelande visas medan appen är aktiv i bakgrunden. %s</string>
+  <string name="push_info_configure_notification_text">Men Android låter dig också dölja aviseringen.</string>
+  <string name="push_info_learn_more_text">Lär dig mer</string>
+  <string name="push_info_configure_notification_action">Anpassa avisering</string>
+  <string name="push_info_disable_push_text">Om du inte behöver omedelbara meddelanden om nya meddelanden bör du inaktivera Push och använda Polling. Polling kontrollerar regelbundet efter ny post och behöver inte meddelandet.</string>
+  <string name="push_info_disable_push_action">Inaktivera Push</string>
 </resources>

@@ -9,9 +9,19 @@
   <!--Used in the about dialog-->
   <string name="app_authors">The K-9 Dog Walkers</string>
   <string name="app_copyright_fmt">Правата запазени 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Част от правата 2006-<xliff:g>%s</xliff:g> на Android Open Source Project.</string>
+  <string name="source_code">Изходен код</string>
   <string name="app_license">Apache License, Version 2.0</string>
-  <string name="about_libraries">Libraries</string>
-  <string name="license">License</string>
+  <string name="about_project_title">Проект с отворен код</string>
+  <string name="about_website_title">Уебстраница</string>
+  <string name="user_forum_title">Потребителски форум</string>
+  <string name="about_libraries">Библиотеки</string>
+  <string name="license">Лиценз</string>
+  <string name="changelog_title">Списък на промените</string>
+  <string name="changelog_loading_error">Не може да зареди списъка с промените.</string>
+  <string name="changelog_version_title">Версия %s</string>
+  <string name="changelog_recent_changes_title">Какво ново</string>
+  <string name="changelog_show_recent_changes">Показване на последните промени при обновяване на програмата</string>
+  <string name="changelog_snackbar_text">Разбери какво ново в тази варсия</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Добре дошли в K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -50,18 +60,18 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <!--=== General strings ==================================================================-->
   <string name="authors">Автори</string>
   <string name="app_revision">Преглед на информацията</string>
-  <string name="read_messages_label">Прочитане на имейли</string>
+  <string name="read_messages_label">Прочети писмата</string>
   <string name="read_messages_desc">Позволи на тази програма да чете вашите Писма.</string>
   <string name="delete_messages_label">Изтрий Писмата</string>
-  <string name="delete_messages_desc">Позволи на тази програма да изтрие Писма</string>
+  <string name="delete_messages_desc">Позволи на тази програма да изтрива вашите Писма.</string>
   <string name="about_title">Относно K-9 Mail</string>
   <string name="accounts_title">Профили</string>
   <string name="folders_title">Папки</string>
-  <string name="advanced">Допълнителни</string>
+  <string name="advanced">Разширени</string>
   <string name="compose_title_compose">Създай</string>
   <string name="compose_title_reply">Отговори</string>
   <string name="compose_title_reply_all">Отговори до всички</string>
-  <string name="compose_title_forward">Напред</string>
+  <string name="compose_title_forward">Препрати</string>
   <string name="compose_title_forward_as_attachment">Препрати като прикачен файл</string>
   <string name="choose_account_title">Изберете Профил</string>
   <string name="choose_folder_title">Избери Папка</string>
@@ -87,9 +97,11 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="delete_action">Изтрий</string>
   <string name="archive_action">Архивирай</string>
   <string name="spam_action">Спам</string>
-  <string name="forward_action">Напред</string>
+  <string name="forward_action">Препрати</string>
   <string name="forward_as_attachment_action">Препрати като прикачен файл</string>
+  <string name="edit_as_new_message_action">Редактирай като ново съобщение</string>
   <string name="move_action">Премести</string>
+  <string name="move_to_drafts_action">Премести в Чернови</string>
   <string name="single_message_options_action">Изпрати…</string>
   <string name="refile_action">Премести…</string>
   <string name="done_action">Готово</string>
@@ -102,11 +114,12 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="add_account_action">Добави профил</string>
   <string name="compose_action">Състави</string>
   <string name="search_action">Търси</string>
+  <string name="search_everywhere_action">Търси навсякъде</string>
   <string name="search_results">Резултати от търсенето</string>
   <string name="preferences_action">Настройки</string>
   <string name="folders_action">Управление на папки</string>
   <string name="account_settings_action">Настройки на профила</string>
-  <string name="remove_account_action">Премахни профила</string>
+  <string name="remove_account_action">Премахни профил</string>
   <string name="mark_as_read_action">Маркирай като прочетено</string>
   <string name="send_alternate_action">Сподели</string>
   <string name="send_alternate_chooser_title">Избери изпращащ</string>
@@ -118,9 +131,10 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
     <item quantity="one">Адресът е копиран</item>
     <item quantity="other">Адресите са копирани</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">Текстът от полето Тема е копирано</string>
   <string name="message_view_theme_action_dark">Превключи към тъмна тема</string>
   <string name="message_view_theme_action_light">Превключи към светла тема</string>
-  <string name="mark_as_unread_action">Маркирай като нечетено</string>
+  <string name="mark_as_unread_action">Маркирай като непрочетено</string>
   <string name="read_receipt">Доклад за прочитане</string>
   <string name="read_receipt_enabled">Ще поиска доклад за прочитане</string>
   <string name="read_receipt_disabled">Няма да поиска доклад за прочитане</string>
@@ -163,6 +177,8 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="notification_bg_send_ticker">Изпраща писмо: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Изпраща писмо</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_push_title">Синхронизирай (Push)</string>
+  <string name="notification_channel_push_description">Да се показва докато чака за нови съобщения</string>
   <string name="notification_channel_messages_title">Съобщения</string>
   <string name="notification_channel_messages_description">Известия свързани със съобщения</string>
   <string name="notification_channel_miscellaneous_title">Разни</string>
@@ -199,6 +215,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="message_compose_show_quoted_text_action">Включване на цитирани съобщения</string>
   <string name="message_compose_description_delete_quoted_text">Премахни цитираният текст</string>
   <string name="message_compose_description_edit_quoted_text">Редактирай цитираният текст</string>
+  <string name="remove_attachment_action">Премахни прикачени файлове</string>
   <string name="message_view_from_format">От: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">До:</string>
   <string name="message_view_cc_label">Копие:</string>
@@ -411,6 +428,8 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_notify_contacts_mail_only_summary">Показвай известия само за съобщения от познати контакти</string>
   <string name="account_settings_mark_message_as_read_on_view_label">Маркирай като прочетено, когато се отвори</string>
   <string name="account_settings_mark_message_as_read_on_view_summary">Маркирай съобщението като прочетено, когато се отвори за разглеждане</string>
+  <string name="account_settings_mark_message_as_read_on_delete_label">Маркирай като прочетено при изтриване</string>
+  <string name="account_settings_mark_message_as_read_on_delete_summary">Маркира съобщението като прочетено при изтриване</string>
   <string name="account_settings_notification_open_system_notifications_label">Настройки на известия</string>
   <string name="account_settings_notification_open_system_notifications_summary">Отвори системните настройките за известия</string>
   <string name="account_settings_show_pictures_label">Винаги показвай картинките</string>
@@ -484,7 +503,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="account_settings_folder_sync_mode_first_and_second_class">1-ви и 2-ри Клас папки</string>
   <string name="account_settings_folder_sync_mode_not_second_class">Всички освен 2-ри Клас папки</string>
   <string name="account_settings_folder_sync_mode_none">Никой</string>
-  <string name="account_settings_folder_push_mode_label">Изпращане на папките</string>
+  <string name="account_settings_folder_push_mode_label">Push папките</string>
   <string name="account_settings_folder_push_mode_all">Всички</string>
   <string name="account_settings_folder_push_mode_first_class">Само 1-ви Клас папки</string>
   <string name="account_settings_folder_push_mode_first_and_second_class">1-ви и 2-ри Клас папки</string>
@@ -510,7 +529,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="folder_settings_folder_sync_mode_first_class">1-ви Клас</string>
   <string name="folder_settings_folder_sync_mode_second_class">2-ри Клас</string>
   <string name="folder_settings_folder_sync_mode_inherited">Същия като класа на показване</string>
-  <string name="folder_settings_folder_push_mode_label">Пусх ниво на папките </string>
+  <string name="folder_settings_folder_push_mode_label">Push ниво на папките </string>
   <string name="folder_settings_folder_push_mode_normal">Без клас</string>
   <string name="folder_settings_folder_push_mode_first_class">1-ви Клас</string>
   <string name="folder_settings_folder_push_mode_second_class">2-ри Клас</string>
@@ -625,6 +644,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="settings_message_theme_label">Тема при преглед на съобщенията</string>
   <string name="settings_compose_theme_label">Тема на композитора</string>
   <string name="settings_language_label">Език</string>
+  <string name="preference_search_no_results">На са намерени настройки</string>
   <string name="settings_message_theme_selection_label">Тема на фиксирани съобщения</string>
   <string name="settings_message_theme_selection_summary_off">Задава тема за изглед на съобщенията, в режим преглед</string>
   <string name="settings_message_theme_selection_summary_on">Използване на тема с фиксиран размр на съобщението</string>
@@ -648,6 +668,7 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="volume_navigation_title">Навигация с клавиш за звука</string>
   <string name="volume_navigation_message">В преглед на съобщението</string>
   <string name="volume_navigation_list">В списъка със съобщения</string>
+  <string name="show_unified_inbox_title">Покажи унифицирана папка Входящи</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Не прочетени</string>
   <string name="search_all_messages_title">Всички съобщения</string>
@@ -700,9 +721,13 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="send_failed_reason">Изпращенето неуспешно: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Запазване в папка чернови?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Запзване или изтриване на това съобщение?</string>
+  <string name="save_or_discard_draft_message_changes">Запази или Откажи промените?</string>
   <string name="confirm_discard_draft_message_title">Изтриване на съобщението?</string>
   <string name="confirm_discard_draft_message">Сигурен ли сте, че желаете да изтрието това съобщение?</string>
   <string name="select_text_now">Изберете текст за копиране.</string>
+  <string name="dialog_confirm_clear_local_folder_title">Изчисти локалните съобщения?</string>
+  <string name="dialog_confirm_clear_local_folder_message">Това ще премахне всички локални съобщения от папката. Няма да бъдат изтрити съобщения от сървара.</string>
+  <string name="dialog_confirm_clear_local_folder_action">Изчисти съобщения</string>
   <string name="dialog_confirm_delete_title">Потвърдете изтриването</string>
   <string name="dialog_confirm_delete_message">Желаете ли да изтриете това съобщение?</string>
   <plurals name="dialog_confirm_delete_messages">
@@ -775,6 +800,8 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="webview_contextmenu_link_share_action">Споделяне на връзка</string>
   <string name="webview_contextmenu_link_copy_action">Копиране на връзка</string>
   <string name="webview_contextmenu_link_clipboard_label">Връзка</string>
+  <string name="webview_contextmenu_link_text_copy_action">Копирай текста на връзката</string>
+  <string name="webview_contextmenu_link_text_clipboard_label">Текста на връзката</string>
   <string name="webview_contextmenu_image_title">Изображение</string>
   <string name="webview_contextmenu_image_view_action">Разглеждане на изображение</string>
   <string name="webview_contextmenu_image_save_action">Запазване на изображение</string>
@@ -851,6 +878,8 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <string name="recipient_bcc">Bcc</string>
   <string name="recipient_to">До</string>
   <string name="recipient_from">От</string>
+  <string name="unknown_recipient">&lt;Неизвестен Получател&gt;</string>
+  <string name="unknown_sender">&lt;Неизвестен подател&gt;</string>
   <string name="address_type_home">Домашен</string>
   <string name="address_type_work">Работен</string>
   <string name="address_type_other">Друг</string>
@@ -997,4 +1026,17 @@ K-9 Mail е мощен, безплатен имейл клиент за Андр
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Позволи достъп до контакти</string>
   <string name="permission_contacts_rationale_message">За да може да предоставя предложения за контакти и да показва имена на контакти и снимки, приложението се нуждае от достъп до вашите контакти.</string>
+  <string name="generic_loading_error">Възникна грешка при зареждането на данните</string>
+  <string name="push_notification_state_initializing">Инициализира...</string>
+  <string name="push_notification_state_listening">Изчаква за нови съобщения</string>
+  <string name="push_notification_state_wait_background_sync">Заспива докато синхронизирането на заден фон е разрешено</string>
+  <string name="push_notification_state_wait_network">Заспива докато има мрежа</string>
+  <string name="push_notification_info">Натиснете за да научите повече.</string>
+  <string name="push_info_title">Push информация</string>
+  <string name="push_info_notification_explanation_text">Когато използвате Push, K-9 Поща създава връзка до пощенския сървър. Андроид изисква показване на известие докато програмата е активна на заден фон. %s</string>
+  <string name="push_info_configure_notification_text">Както и да е, Андроид също позволява да скривате известия.</string>
+  <string name="push_info_learn_more_text">Научете повече</string>
+  <string name="push_info_configure_notification_action">Конфигурирайте известия</string>
+  <string name="push_info_disable_push_text">Ако нямате нужда от мигновени известия, трябва да деактивирате Push и да използвате Polling. Polling проверява за нови писма на регулярни интервали и не се нуждае от известия.</string>
+  <string name="push_info_disable_push_action">Изключи Push</string>
 </resources>

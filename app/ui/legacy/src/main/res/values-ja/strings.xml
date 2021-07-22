@@ -21,6 +21,8 @@
   <string name="changelog_title">変更履歴</string>
   <string name="changelog_loading_error">変更履歴を読み込みできませんでした。</string>
   <string name="changelog_version_title">バージョン %s</string>
+  <string name="changelog_recent_changes_title">新着</string>
+  <string name="changelog_show_recent_changes">アプリの更新後に更新内容を表示する</string>
   <!--Welcome message-->
   <string name="welcome_message_title">K-9 Mailへようこそ</string>
   <string name="accounts_welcome"><![CDATA[
@@ -129,6 +131,7 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <plurals name="copy_address_to_clipboard">
     <item quantity="other">アドレスをクリップボードにコピーしました</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">件名をクリップボードにコピーしました</string>
   <string name="message_view_theme_action_dark">ダークテーマに切り替え</string>
   <string name="message_view_theme_action_light">ライトテーマに切り替え</string>
   <string name="mark_as_unread_action">未読にする</string>
@@ -1035,4 +1038,6 @@ K-9 は大多数のメールクライアントと同様に、ほとんどのフ�
   <string name="permission_contacts_rationale_title">連絡先へのアクセスを許可</string>
   <string name="permission_contacts_rationale_message">連絡先の提案をできるようにし、連絡先の名前と写真を表示するには、アプリが連絡先にアクセスする必要があります。</string>
   <string name="generic_loading_error">データの読み込み中にエラーが発生しました</string>
+  <string name="push_notification_state_initializing">初期化しています…</string>
+  <string name="push_info_configure_notification_action">通知設定</string>
 </resources>

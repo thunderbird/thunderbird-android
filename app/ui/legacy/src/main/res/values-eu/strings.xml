@@ -9,9 +9,21 @@
   <!--Used in the about dialog-->
   <string name="app_authors">K-9 Txakur-paseatzaileak</string>
   <string name="app_copyright_fmt">Copyright 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Copyright 2006-<xliff:g>%s</xliff:g> the Android Open Source Project-en zatiak.</string>
+  <string name="source_code">Iturburu-kodea</string>
   <string name="app_license">Apache lizentzia, 2.0 bertsioa</string>
+  <string name="about_project_title">Kode Irekiko Proiektua</string>
+  <string name="about_website_title">Webgunea</string>
+  <string name="user_forum_title">Erabiltzaileen foroa</string>
+  <string name="about_fediverse_title">Fedibertsoa</string>
+  <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">Liburutegiak</string>
   <string name="license">Lizentziak</string>
+  <string name="changelog_title">Aldaketen egunkaria</string>
+  <string name="changelog_loading_error">Ezin izan aldaketen egunkaria kargatu</string>
+  <string name="changelog_version_title">%s bertsioa</string>
+  <string name="changelog_recent_changes_title">Zer berri</string>
+  <string name="changelog_show_recent_changes">Erakutsi azken aldaketak aplikazioa eguneratu ostean</string>
+  <string name="changelog_snackbar_text">Ikusi zer den berria bertsio honetan</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Ongi etorri K-9 Mail-era</string>
   <string name="accounts_welcome"><![CDATA[
@@ -89,7 +101,9 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="spam_action">Spam</string>
   <string name="forward_action">Birbidali</string>
   <string name="forward_as_attachment_action">Birbidali eranskin gisa</string>
+  <string name="edit_as_new_message_action">Editatu mezu berri gisa</string>
   <string name="move_action">Mugitu</string>
+  <string name="move_to_drafts_action">Mugitu Zirriboroetara</string>
   <string name="single_message_options_action">Bidali…</string>
   <string name="refile_action">Artxibatu…</string>
   <string name="done_action">Eginda</string>
@@ -102,6 +116,7 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="add_account_action">Gehitu kontua</string>
   <string name="compose_action">Idatzi</string>
   <string name="search_action">Bilatu</string>
+  <string name="search_everywhere_action">Bilatu leku guztietan</string>
   <string name="search_results">Bilaketaren emaitzak</string>
   <string name="preferences_action">Ezarpenak</string>
   <string name="folders_action">Kudeatu karpetak</string>
@@ -118,6 +133,7 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
     <item quantity="one">Helbidea arbelera kopiatuta</item>
     <item quantity="other">Helbideak arbelera kopiatuta</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">Gaiaren testua arbelean kopiatu da</string>
   <string name="message_view_theme_action_dark">Aldatu itxura ilunera</string>
   <string name="message_view_theme_action_light">Aldatu itxura argira</string>
   <string name="mark_as_unread_action">Markatu irakurri gabeko gisa</string>
@@ -137,6 +153,10 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="status_invalid_id_error">Ez da mezua aurkitu</string>
   <string name="status_loading_error">Akatsa mezua kargatzean</string>
   <string name="load_more_messages_fmt"><xliff:g id="messages_to_load">%d</xliff:g> gehiago kargatu</string>
+  <string name="size_format_gigabytes">%.1f GB</string>
+  <string name="size_format_megabytes">%.1f MB</string>
+  <string name="size_format_kilobytes">%.1f kB</string>
+  <string name="size_format_bytes">%d B</string>
   <string name="account_size_changed">\"<xliff:g id="account">%s</xliff:g>\" kontua <xliff:g id="oldSize">%s</xliff:g>-(e)tik <xliff:g id="newSize">%s</xliff:g>-(e)ra txikiagotu da</string>
   <string name="compacting_account">\"<xliff:g id="account">%s</xliff:g>\" kontua trinkotzen</string>
   <string name="notification_new_title">Posta berria</string>
@@ -163,6 +183,8 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="notification_bg_send_ticker">Posta bidaltzen: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Posta bidaltzea</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_push_title">Sinkronizatu (Push)</string>
+  <string name="notification_channel_push_description">Bistaratuta mezu berrien zain geundenean</string>
   <string name="notification_channel_messages_title">Mezuak</string>
   <string name="notification_channel_messages_description">Mezuekin erlazionatutako jakinarazpenak</string>
   <string name="notification_channel_miscellaneous_title">Denetarik</string>
@@ -199,6 +221,7 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="message_compose_show_quoted_text_action">Sartu aipatutako mezua</string>
   <string name="message_compose_description_delete_quoted_text">Kendu aipua</string>
   <string name="message_compose_description_edit_quoted_text">Editatu aipua</string>
+  <string name="remove_attachment_action">Kendu eranskina</string>
   <string name="message_view_from_format">Nondik: <xliff:g id="name">%s</xliff:g> &lt;<xliff:g id="email">%s</xliff:g>&gt;</string>
   <string name="message_to_label">Nori:</string>
   <string name="message_view_cc_label">Cc:</string>
@@ -461,6 +484,20 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="account_settings_led_color_summary">Kontu honetarako zure gailuaren LEDak keinatu beharko lukeen kolorea</string>
   <string name="account_settings_mail_display_count_label">Karpeta lokalaren tamaina</string>
   <string name="account_settings_autodownload_message_size_label">Honenbesterainoko mezuak eskuratu</string>
+  <string name="account_settings_autodownload_message_size_1">1 KiB</string>
+  <string name="account_settings_autodownload_message_size_2">2 KiB</string>
+  <string name="account_settings_autodownload_message_size_4">4 KiB</string>
+  <string name="account_settings_autodownload_message_size_8">8 KiB</string>
+  <string name="account_settings_autodownload_message_size_16">16 KiB</string>
+  <string name="account_settings_autodownload_message_size_32">32 KiB</string>
+  <string name="account_settings_autodownload_message_size_64">64 KiB</string>
+  <string name="account_settings_autodownload_message_size_128">128 KiB</string>
+  <string name="account_settings_autodownload_message_size_256">256 KiB</string>
+  <string name="account_settings_autodownload_message_size_512">512 KiB</string>
+  <string name="account_settings_autodownload_message_size_1024">1 MiB</string>
+  <string name="account_settings_autodownload_message_size_2048">2 MiB</string>
+  <string name="account_settings_autodownload_message_size_5120">5 MiB</string>
+  <string name="account_settings_autodownload_message_size_10240">10 MiB</string>
   <string name="account_settings_autodownload_message_size_any">edozein tamaina (mugarik ez)</string>
   <string name="account_settings_message_age_label">Mezuak hemendik sinkronizatu</string>
   <string name="account_settings_message_age_any">edonoizkoak (mugarik ez)</string>
@@ -627,6 +664,7 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="settings_message_theme_label">Mezua ikusteko itxura</string>
   <string name="settings_compose_theme_label">Mezua idazteko itxura</string>
   <string name="settings_language_label">Hizkuntza</string>
+  <string name="preference_search_no_results">Ez dago ezarpenik</string>
   <string name="settings_message_theme_selection_label">Mezuentzako itxura finkoa</string>
   <string name="settings_message_theme_selection_summary_off">Hautatu mezua ikusteko itxura mezua ikusi bitartean</string>
   <string name="settings_message_theme_selection_summary_on">Erabili mezua ikusteko itxura finkoa</string>
@@ -650,6 +688,7 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="volume_navigation_title">Bolumen teklekin nabigatu</string>
   <string name="volume_navigation_message">Mezu barruko ikuspegiak</string>
   <string name="volume_navigation_list">Zerrenda barruko ikuspegiak</string>
+  <string name="show_unified_inbox_title">Erakutsi Sarrera Ontzi Bateratua</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier"> - Irakurri gabe</string>
   <string name="search_all_messages_title">Mezu guztiak</string>
@@ -702,9 +741,13 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="send_failed_reason">Bidalketak huts egin du: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Gorde zirriborroa?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Gorde edo baztertu mezu hau?</string>
+  <string name="save_or_discard_draft_message_changes">Gorde edo baztertu aldaketak?</string>
   <string name="confirm_discard_draft_message_title">Baztertu mezua?</string>
   <string name="confirm_discard_draft_message">Ziur mezu hau baztertu nahi duzula?</string>
   <string name="select_text_now">Hautatu kopiatzeko testua.</string>
+  <string name="dialog_confirm_clear_local_folder_title">Garbitu mezu lokalak?</string>
+  <string name="dialog_confirm_clear_local_folder_message">Honek tokiko mezu guztiak kenduko ditu karpetatik. Ez da mezurik ezabatuko zerbitzarian.</string>
+  <string name="dialog_confirm_clear_local_folder_action">Garbitu mezuak</string>
   <string name="dialog_confirm_delete_title">Berretsi ezabatzea</string>
   <string name="dialog_confirm_delete_message">Mezu hau ezabatu nahi duzu?</string>
   <plurals name="dialog_confirm_delete_messages">
@@ -777,6 +820,8 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="webview_contextmenu_link_share_action">Partekatu esteka</string>
   <string name="webview_contextmenu_link_copy_action">Kopiatu esteka arbelera</string>
   <string name="webview_contextmenu_link_clipboard_label">Esteka</string>
+  <string name="webview_contextmenu_link_text_copy_action">Kopiatu estekaren testua arbelean</string>
+  <string name="webview_contextmenu_link_text_clipboard_label">Estekaren testua</string>
   <string name="webview_contextmenu_image_title">Irudia</string>
   <string name="webview_contextmenu_image_view_action">Ikusi irudia</string>
   <string name="webview_contextmenu_image_save_action">Gorde irudia</string>
@@ -853,6 +898,8 @@ Mesedez akatsen berri emateko, ezaugarri berriak gehitzeko eta galderak egiteko
   <string name="recipient_bcc">Bcc</string>
   <string name="recipient_to">Nori</string>
   <string name="recipient_from">Nork</string>
+  <string name="unknown_recipient">&lt;Hartzaile ezezaguna&gt;</string>
+  <string name="unknown_sender">&lt;Bidaltzaile ezezaguna&gt;</string>
   <string name="address_type_home">Etxekoa</string>
   <string name="address_type_work">Lanekoa</string>
   <string name="address_type_other">Bestelakoak</string>
@@ -998,4 +1045,12 @@ Mezu hau gorde dezakezu eta zure gako sekretuaren babes-kopia gisa erabili. Hau 
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Baimendu kontaktuak atzitzea</string>
   <string name="permission_contacts_rationale_message">Kontaktuak proposatu ahal izateko eta kontaktuen izenak eta argazkiak bistaratzeko, aplikazioak zure kontaktuak atzitzeko baimena behar du.</string>
+  <string name="generic_loading_error">Akats bat gertatu da datuak kargatzean</string>
+  <string name="push_notification_state_initializing">Hasieratzen...</string>
+  <string name="push_notification_state_listening">e-posta berrien zain</string>
+  <string name="push_notification_info">Sakatu informazio gehiago lortzeko</string>
+  <string name="push_info_notification_explanation_text">Push erabiltzean, K-9 Mailek posta zerbitzariarekiko konexioa mantentzen du. Androidek jakinarazpen bat erakutsi behar du, aplikazioa atzeko planoan martxan dagoen bitartean. %s</string>
+  <string name="push_info_configure_notification_text">Androidek ere jakinarazpena ezkutatzen uzten dizu.</string>
+  <string name="push_info_learn_more_text">Informazio gehiago</string>
+  <string name="push_info_configure_notification_action">Konfiguratu jakinarazpena</string>
 </resources>

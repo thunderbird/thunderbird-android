@@ -9,9 +9,21 @@
   <!--Used in the about dialog-->
   <string name="app_authors">K-9 hundatemjararnir</string>
   <string name="app_copyright_fmt">Höfundarréttur 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Höfundarréttur að hluta 2006-<xliff:g>%s</xliff:g> til Android Open Source verkefnisins.</string>
+  <string name="source_code">Grunnkóði</string>
   <string name="app_license">Apache notkunarleyfi, útgáfa 2.0</string>
+  <string name="about_project_title">Verkefni með opnum grunnkóða</string>
+  <string name="about_website_title">Vefsvæði</string>
+  <string name="user_forum_title">Spjallsvæði notenda</string>
+  <string name="about_fediverse_title">Samfélagsmiðlun</string>
+  <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">Aðgerðasöfn</string>
   <string name="license">Notkunarleyfi</string>
+  <string name="changelog_title">Breytingaskrá</string>
+  <string name="changelog_loading_error">Gat ekki hlaðið inn breytingaskránni.</string>
+  <string name="changelog_version_title">Útgáfa %s</string>
+  <string name="changelog_recent_changes_title">Nýtt á döfinni</string>
+  <string name="changelog_show_recent_changes">Birta nýlegar breytingar þegar forritið er uppfært</string>
+  <string name="changelog_snackbar_text">Skoðaðu hvað sé nýtt við þessa útgáfu</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Velkomin í K-9 póstinn</string>
   <string name="accounts_welcome"><![CDATA[
@@ -104,6 +116,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="add_account_action">Bæta við aðgangi</string>
   <string name="compose_action">Semja</string>
   <string name="search_action">Leita</string>
+  <string name="search_everywhere_action">Leita allsstaðar</string>
   <string name="search_results">Leitarniðurstöður</string>
   <string name="preferences_action">Stillingar</string>
   <string name="folders_action">Sýsla með möppur</string>
@@ -120,6 +133,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
     <item quantity="one">Netfang afritað á klippispjald</item>
     <item quantity="other">Netföng afrituð á klippispjald</item>
   </plurals>
+  <string name="copy_subject_to_clipboard">Texti viðfangsefnis afritaður á klippispjald</string>
   <string name="message_view_theme_action_dark">Skipta yfir í dekkra þema</string>
   <string name="message_view_theme_action_light">Skipta yfir í ljósara þema</string>
   <string name="mark_as_unread_action">Merkja sem ólesið</string>
@@ -170,6 +184,8 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="notification_bg_send_ticker">Sendi póst: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Sendi póst</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_push_title">Samstilla (Ýta)</string>
+  <string name="notification_channel_push_description">Birtist á meðan beðið er eftir nýjum skilaboðum</string>
   <string name="notification_channel_messages_title">Skilaboð</string>
   <string name="notification_channel_messages_description">Tilkynning tengdar skilaboðum</string>
   <string name="notification_channel_miscellaneous_title">Ýmislegt</string>
@@ -533,16 +549,17 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="folder_settings_folder_sync_mode_normal">Engin</string>
   <string name="folder_settings_folder_sync_mode_first_class">1. flokkur</string>
   <string name="folder_settings_folder_sync_mode_second_class">2. flokkur</string>
-  <string name="folder_settings_folder_sync_mode_inherited">Sami og birtingarflokkur</string>
+  <string name="folder_settings_folder_sync_mode_inherited">Sama og birtingarflokkur</string>
   <string name="folder_settings_folder_push_mode_label">Ýtingarflokkur möppu</string>
   <string name="folder_settings_folder_push_mode_normal">Enginn flokkur</string>
   <string name="folder_settings_folder_push_mode_first_class">1. flokkur</string>
   <string name="folder_settings_folder_push_mode_second_class">2. flokkur</string>
+  <string name="folder_settings_folder_push_mode_inherited">Sama og flokkur möppuvöktunar</string>
   <string name="folder_settings_folder_notify_mode_label">Tilkynningaflokkur möppu</string>
   <string name="folder_settings_folder_notify_mode_normal">Enginn flokkur</string>
   <string name="folder_settings_folder_notify_mode_first_class">1. flokkur</string>
   <string name="folder_settings_folder_notify_mode_second_class">2. flokkur</string>
-  <string name="folder_settings_folder_notify_mode_inherited">Sami og ýtingarflokkur</string>
+  <string name="folder_settings_folder_notify_mode_inherited">Sama og ýtingarflokkur</string>
   <string name="folder_settings_clear_local_folder_action">Hreinsa staðvær skilaboð</string>
   <string name="account_settings_incoming_label">Inn-póstþjónn</string>
   <string name="account_settings_incoming_summary">Stilla móttöku-póstþjón</string>
@@ -673,6 +690,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="volume_navigation_title">Flakk með hljóðstyrkshnöppum</string>
   <string name="volume_navigation_message">Í skilaboðasýnum</string>
   <string name="volume_navigation_list">Í listasýnum</string>
+  <string name="show_unified_inbox_title">Birta sameinað innhólf</string>
   <string name="search_title"><xliff:g id="search_name">%s</xliff:g> <xliff:g id="modifier">%s</xliff:g></string>
   <string name="unread_modifier">- Ólesið</string>
   <string name="search_all_messages_title">Öll skilaboð</string>
@@ -725,6 +743,7 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="send_failed_reason">Sending mistókst: %s</string>
   <string name="save_or_discard_draft_message_dlg_title">Vista skilaboðin sem drög?</string>
   <string name="save_or_discard_draft_message_instructions_fmt">Vista eða henda þessum skilaboðum?</string>
+  <string name="save_or_discard_draft_message_changes">Vista eða henda breytingum?</string>
   <string name="confirm_discard_draft_message_title">Henda skilaboðum?</string>
   <string name="confirm_discard_draft_message">Ertu viss um að þú viljir henda þessum skilaboðum?</string>
   <string name="select_text_now">Veldu texta til að afrita.</string>
@@ -803,6 +822,8 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="webview_contextmenu_link_share_action">Deila tengil</string>
   <string name="webview_contextmenu_link_copy_action">Afrita tengil á klippispjald</string>
   <string name="webview_contextmenu_link_clipboard_label">Tengill</string>
+  <string name="webview_contextmenu_link_text_copy_action">Afrita texta tengils á klippispjald</string>
+  <string name="webview_contextmenu_link_text_clipboard_label">Texti tengils</string>
   <string name="webview_contextmenu_image_title">Mynd</string>
   <string name="webview_contextmenu_image_view_action">Skoða mynd</string>
   <string name="webview_contextmenu_image_save_action">Vista mynd</string>
@@ -879,6 +900,8 @@ Sendu inn villuskýrslur, leggðu fram nýja eiginleika og spurðu spurninga á
   <string name="recipient_bcc">Falið afrit</string>
   <string name="recipient_to">Til</string>
   <string name="recipient_from">Frá</string>
+  <string name="unknown_recipient">&lt;Óþekktur viðtakandi&gt;</string>
+  <string name="unknown_sender">&lt;Óþekktur sendandi&gt;</string>
   <string name="address_type_home">Heima</string>
   <string name="address_type_work">Vinna</string>
   <string name="address_type_other">Annað</string>
@@ -1025,4 +1048,17 @@ Til að setja Autocrypt upp á nýju tæki, farðu þá eftir leiðbeiningunum s
   <!--permissions-->
   <string name="permission_contacts_rationale_title">Leyfa aðgang að tengiliðum</string>
   <string name="permission_contacts_rationale_message">Til að geta komið með uppástungur um tengiliði og til að birta nöfn tengiliða og myndir, þá þarf forritið aðganga að tengiliðunum þínum.</string>
+  <string name="generic_loading_error">Villa kom upp við að hlaða inn gögnunum</string>
+  <string name="push_notification_state_initializing">Frumstilli…</string>
+  <string name="push_notification_state_listening">Bíð eftir nýjum tölvupóstum</string>
+  <string name="push_notification_state_wait_background_sync">Í dvala þar til samstilling í bakgrunni er heimil</string>
+  <string name="push_notification_state_wait_network">Í dvala þar til netkerfi er til taks</string>
+  <string name="push_notification_info">Ýttu til að kanna nánar.</string>
+  <string name="push_info_title">Upplýsingar um ýtitilkynningar</string>
+  <string name="push_info_notification_explanation_text">Þegar ýtitilkynningar (push-notifications) eru notaðar, heldur K-9 póstforritið virkri tengingu við póstþjóninn. Android krefst þess að þá sé birt í sífellu tilkynning um þetta á meðan forritið er virkt í bakgrunni. %s</string>
+  <string name="push_info_configure_notification_text">Hinsvegar leyfir Android einnig að tilkynningin sé falin.</string>
+  <string name="push_info_learn_more_text">Kanna nánar</string>
+  <string name="push_info_configure_notification_action">Stilla tilkynningu</string>
+  <string name="push_info_disable_push_text">Ef þú þarft ekki tilkynningar jafnharðan um ný skilaboð, ættirðu að gera ýtitilkynningar óvirkar og nota frekar vöktun (polling). Vöktun þýðir að athugað er með nýjan póst með reglulegu millibili og þarfnast ekki tilkynningarinnar.</string>
+  <string name="push_info_disable_push_action">Gera ýtitilkynningar óvirkar</string>
 </resources>

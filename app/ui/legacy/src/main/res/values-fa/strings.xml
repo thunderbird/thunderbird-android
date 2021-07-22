@@ -103,6 +103,7 @@
   <string name="add_account_action">افزودن حساب</string>
   <string name="compose_action">نوشتن</string>
   <string name="search_action">جستجو</string>
+  <string name="search_everywhere_action">جستجو در همه پوشه‌ها</string>
   <string name="search_results">نتایج جستجو</string>
   <string name="preferences_action">تنظیمات</string>
   <string name="folders_action">مدیریت پوشه‌ها</string>

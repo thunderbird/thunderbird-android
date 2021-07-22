@@ -21,6 +21,9 @@
   <string name="changelog_title">Jurnal de schimbări</string>
   <string name="changelog_loading_error">Nu s-a putut încărca jurnalul de modificări.</string>
   <string name="changelog_version_title">Versiune %s</string>
+  <string name="changelog_recent_changes_title">Ce este nou</string>
+  <string name="changelog_show_recent_changes">Afișați modificările recente atunci când aplicația a fost actualizată</string>
+  <string name="changelog_snackbar_text">Aflați ce este nou în această versiune</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Bun venit la K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -113,6 +116,7 @@ Vă rugăm să ne raportați defecte, să contribuiți cu funcționalități noi
   <string name="add_account_action">Adaugă cont</string>
   <string name="compose_action">Compune</string>
   <string name="search_action">Caută</string>
+  <string name="search_everywhere_action">Căutați peste tot</string>
   <string name="search_results">Rezultate căutare</string>
   <string name="preferences_action">Opțiuni</string>
   <string name="folders_action">Gestionează dosarele</string>
@@ -182,6 +186,8 @@ cel mult încă <xliff:g id="messages_to_load">%d</xliff:g></string>
   <string name="notification_bg_send_ticker">Se trimite emailul: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Se trimite emailul</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_push_title">Sincronizare (Push)</string>
+  <string name="notification_channel_push_description">Afișat când se așteaptă mesaje noi</string>
   <string name="notification_channel_messages_title">Mesaje</string>
   <string name="notification_channel_messages_description">Notificări asociate cu mesaje</string>
   <string name="notification_channel_miscellaneous_title">Diverse</string>
@@ -552,6 +558,7 @@ Uneori datorită faptului că cineva încearcă să te atace pe tine sau serveru
   <string name="folder_settings_folder_push_mode_normal">Niciunul</string>
   <string name="folder_settings_folder_push_mode_first_class">Nivel 1</string>
   <string name="folder_settings_folder_push_mode_second_class">Nivel 2</string>
+  <string name="folder_settings_folder_push_mode_inherited">Same as poll class</string>
   <string name="folder_settings_folder_notify_mode_label">Nivel notificare dosar</string>
   <string name="folder_settings_folder_notify_mode_normal">Niciunul</string>
   <string name="folder_settings_folder_notify_mode_first_class">Nivel 1</string>
@@ -1051,4 +1058,16 @@ Poți păstra acest mesaj și să îl folosești drept copie de siguranță a ch
   <string name="permission_contacts_rationale_title">Permite accesul contactelor</string>
   <string name="permission_contacts_rationale_message">Pentru a putea oferi sugestii de contacte și a afișa numele și pozele contactelor, aplicația are nevoie de acces la contactele tale.</string>
   <string name="generic_loading_error">A apărut o eroare la încărcarea datelor</string>
+  <string name="push_notification_state_initializing">Inițializare...</string>
+  <string name="push_notification_state_listening">Așteptând noi e-mailuri</string>
+  <string name="push_notification_state_wait_background_sync">Adormire până când este permisă sincronizarea în fundal</string>
+  <string name="push_notification_state_wait_network">În așteptare până când rețeaua este disponibilă</string>
+  <string name="push_notification_info">Apăsați pentru a afla mai multe.</string>
+  <string name="push_info_title">Informații despre Push </string>
+  <string name="push_info_notification_explanation_text">Atunci când se utilizează Push, K-9 Mail menține o conexiune cu serverul de e-mail. Android necesită afișarea unei notificări în curs de desfășurare în timp ce aplicația este activă în fundal. %s</string>
+  <string name="push_info_configure_notification_text">Cu toate acestea, Android vă permite, de asemenea, să ascundeți notificarea.</string>
+  <string name="push_info_learn_more_text">Aflați mai multe</string>
+  <string name="push_info_configure_notification_action">Configurați notificarea</string>
+  <string name="push_info_disable_push_text">Dacă nu aveți nevoie de notificări instantanee cu privire la mesajele noi, dezactivați funcția Push și utilizați funcția Polling. Polling verifică dacă există mesaje noi la intervale regulate și nu are nevoie de notificare.</string>
+  <string name="push_info_disable_push_action">Dezactivați Push</string>
 </resources>
