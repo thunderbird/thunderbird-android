@@ -554,6 +554,7 @@ Rapporter venligst fejl, forslag til nye funktioner eller stil spørgsmål på:
   <string name="folder_settings_folder_push_mode_normal">Ingen</string>
   <string name="folder_settings_folder_push_mode_first_class">Primær</string>
   <string name="folder_settings_folder_push_mode_second_class">Sekundær</string>
+  <string name="folder_settings_folder_push_mode_inherited">Samme som test klasse</string>
   <string name="folder_settings_folder_notify_mode_label">Klasse for mappe-besked</string>
   <string name="folder_settings_folder_notify_mode_normal">Ingen</string>
   <string name="folder_settings_folder_notify_mode_first_class">Primære</string>
@@ -1052,4 +1053,12 @@ Beskeden kan beholdes og bruges som sikkerhedskopi til den hemmelige nøgle. Hvi
   <string name="push_notification_state_listening">Venter på nye emails</string>
   <string name="push_notification_state_wait_background_sync">I dvale indtil baggrundssynkronisering er tilladt</string>
   <string name="push_notification_state_wait_network">I dvale indtil netværk er tilgængelig</string>
+  <string name="push_notification_info">Tryk for at lære mere.</string>
+  <string name="push_info_title">Skub handling</string>
+  <string name="push_info_notification_explanation_text">Når skub handling bruges, opretholder K-9 Mail en forbindelse til post server. Android kræver, at der vises en løbende påmindelse, når app er aktiv i baggrunden. %s</string>
+  <string name="push_info_configure_notification_text">Android giver dog også mulighed for at skjule påmindelsen.</string>
+  <string name="push_info_learn_more_text">Lær mere</string>
+  <string name="push_info_configure_notification_action">Indstille påmindelse</string>
+  <string name="push_info_disable_push_text">Hvis der ikke er brug for hurtig påmindelse om nye beskeder, skal skub handling deaktiveres og test bruges. Test kontrollerer regelmæssigt efter ny post og har ikke brug for påmindelsen.</string>
+  <string name="push_info_disable_push_action">Deaktivere skub handling </string>
 </resources>

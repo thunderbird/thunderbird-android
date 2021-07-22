@@ -14,9 +14,16 @@
   <string name="about_project_title">Projekt otwartoźródłowy</string>
   <string name="about_website_title">Strona internetowa</string>
   <string name="user_forum_title">Forum użytkowników</string>
+  <string name="about_fediverse_title">Fediverse</string>
+  <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">Biblioteki</string>
   <string name="license">Licencja</string>
+  <string name="changelog_title">Dziennik zmian</string>
+  <string name="changelog_loading_error">Nie udało się wczytać dziennika zmian.</string>
   <string name="changelog_version_title">Wersja %s</string>
+  <string name="changelog_recent_changes_title">Co nowego</string>
+  <string name="changelog_show_recent_changes">Pokaż ostatnie zmiany po aktualizacji aplikacji.</string>
+  <string name="changelog_snackbar_text">Dowiedz się, co nowego w tej wersji</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Witaj w K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[
@@ -97,6 +104,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="forward_as_attachment_action">Przekaż jako załącznik</string>
   <string name="edit_as_new_message_action">Edytuj jako nową wiadomość</string>
   <string name="move_action">Przenieś</string>
+  <string name="move_to_drafts_action">Przenieś do Wersji roboczych</string>
   <string name="single_message_options_action">Wyślij…</string>
   <string name="refile_action">Operacje…</string>
   <string name="done_action">Gotowe</string>
@@ -109,6 +117,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="add_account_action">Dodaj konto</string>
   <string name="compose_action">Nowa wiadomość</string>
   <string name="search_action">Szukaj</string>
+  <string name="search_everywhere_action">Szukaj wszędzie</string>
   <string name="search_results">Wyniki</string>
   <string name="preferences_action">Ustawienia</string>
   <string name="folders_action">Zarządzaj folderami</string>
@@ -179,6 +188,8 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="notification_bg_send_ticker">Wysyłam: <xliff:g id="account">%s</xliff:g></string>
   <string name="notification_bg_send_title">Wysyłam</string>
   <string name="notification_bg_title_separator">:</string>
+  <string name="notification_channel_push_title">Synchronizuj (Powiadomienia push)</string>
+  <string name="notification_channel_push_description">Wyświetlane podczas oczekiwania na nowe wiadomości</string>
   <string name="notification_channel_messages_title">Wiadomości</string>
   <string name="notification_channel_messages_description">Powiadomienia związane z wiadomościami</string>
   <string name="notification_channel_miscellaneous_title">Różne</string>
@@ -547,6 +558,7 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="folder_settings_folder_push_mode_normal">Bez klasy</string>
   <string name="folder_settings_folder_push_mode_first_class">Klasa 1</string>
   <string name="folder_settings_folder_push_mode_second_class">Klasa 2</string>
+  <string name="folder_settings_folder_push_mode_inherited">Taka sama jak klasa ankiety</string>
   <string name="folder_settings_folder_notify_mode_label">Klasa powiadamiania</string>
   <string name="folder_settings_folder_notify_mode_normal">Bez klasy</string>
   <string name="folder_settings_folder_notify_mode_first_class">Klasa 1</string>
@@ -820,6 +832,8 @@ Wysłane z urządzenia Android za pomocą K-9 Mail. Proszę wybaczyć moją zwi�
   <string name="webview_contextmenu_link_share_action">Udostępnij link</string>
   <string name="webview_contextmenu_link_copy_action">Kopiuj link do schowka</string>
   <string name="webview_contextmenu_link_clipboard_label">Link</string>
+  <string name="webview_contextmenu_link_text_copy_action">Skopiuj tekst linku do schowka</string>
+  <string name="webview_contextmenu_link_text_clipboard_label">Tekst linku</string>
   <string name="webview_contextmenu_image_title">Obraz</string>
   <string name="webview_contextmenu_image_view_action">Pokaż obraz</string>
   <string name="webview_contextmenu_image_save_action">Zapisz obraz</string>
@@ -1049,4 +1063,16 @@ Tą wiadomość można zachować i użyć w formie kopii zapasowej twojego klucz
   <string name="permission_contacts_rationale_title">Pozwól na dostęp do kontaktów</string>
   <string name="permission_contacts_rationale_message">Aby włączyć sugestie kontaktów i wyświetlać nazwy oraz zdjęcia aplikacja wymaga dostępu do kontaktów.</string>
   <string name="generic_loading_error">Podczas ładowania danych wystąpił błąd</string>
+  <string name="push_notification_state_initializing">Inicjowanie...</string>
+  <string name="push_notification_state_listening">Oczekiwanie na nowe emaile</string>
+  <string name="push_notification_state_wait_background_sync">Uśpione, dopóki synchronizacja w tle nie będzie dozwolona</string>
+  <string name="push_notification_state_wait_network">Uśpione, dopóki sieć nie będzie dostępna</string>
+  <string name="push_notification_info">Dotknij, aby dowiedzieć się więcej.</string>
+  <string name="push_info_title">Informacje push</string>
+  <string name="push_info_notification_explanation_text">Podczas korzystania z funkcji powiadomień push, K-9 Mail utrzymuje połączenie z serwerem pocztowym. Android wymaga wyświetlania ciągłego, gdy aplikacja jest aktywna w tle. %s</string>
+  <string name="push_info_configure_notification_text">Jednak Android pozwala również ukryć powiadomienie.</string>
+  <string name="push_info_learn_more_text">Dowiedz się więcej</string>
+  <string name="push_info_configure_notification_action">Skonfiguruj powiadomienie</string>
+  <string name="push_info_disable_push_text">Jeśli nie potrzebujesz natychmiastowych powiadomień o nowych wiadomościach, wyłącz notyfikacje push i użyj regularnego odpytywania. Odpytywanie w regularnych odstępach czasu sprawdza nową pocztę i nie wymaga powiadomienia.</string>
+  <string name="push_info_disable_push_action">Wyłącz powiadomienia push</string>
 </resources>

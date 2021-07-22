@@ -555,6 +555,7 @@ Ju lutemi, parashtrim njoftimesh për të meta, kontribute për veçori të reaj
   <string name="folder_settings_folder_push_mode_normal">Pa Klasë</string>
   <string name="folder_settings_folder_push_mode_first_class">Klasë e 1-rë</string>
   <string name="folder_settings_folder_push_mode_second_class">Klasë e 2-të</string>
+  <string name="folder_settings_folder_push_mode_inherited">Njësoj si klasa poll</string>
   <string name="folder_settings_folder_notify_mode_label">Klasë njoftimesh dosjeje</string>
   <string name="folder_settings_folder_notify_mode_normal">Pa Klasë</string>
   <string name="folder_settings_folder_notify_mode_first_class">Klasa e 1-rë</string>

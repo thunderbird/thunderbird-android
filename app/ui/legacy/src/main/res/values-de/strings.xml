@@ -546,7 +546,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="folder_settings_folder_display_mode_normal">Keine Klasse</string>
   <string name="folder_settings_folder_display_mode_first_class">Hauptordner</string>
   <string name="folder_settings_folder_display_mode_second_class">Nebenordner</string>
-  <string name="folder_settings_folder_sync_mode_label">Synchronisationsklasse</string>
+  <string name="folder_settings_folder_sync_mode_label">Abfrageklasse</string>
   <string name="folder_settings_folder_sync_mode_normal">Keine</string>
   <string name="folder_settings_folder_sync_mode_first_class">Hauptordner</string>
   <string name="folder_settings_folder_sync_mode_second_class">Nebenordner</string>
@@ -555,6 +555,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
   <string name="folder_settings_folder_push_mode_normal">Keine Klasse</string>
   <string name="folder_settings_folder_push_mode_first_class">Hauptordner</string>
   <string name="folder_settings_folder_push_mode_second_class">Nebenordner</string>
+  <string name="folder_settings_folder_push_mode_inherited">Wie Abfrageklasse</string>
   <string name="folder_settings_folder_notify_mode_label">Benachrichtigungsklasse</string>
   <string name="folder_settings_folder_notify_mode_normal">Keine Klasse</string>
   <string name="folder_settings_folder_notify_mode_first_class">Hauptordner</string>
@@ -1051,6 +1052,15 @@ Sie können diese Nachricht aufheben und sie als Backup für Ihren geheimen Schl
   <string name="permission_contacts_rationale_message">Damit die App Kontakte vorschlagen sowie Namen und Fotos der Kontakte anzeigen kann, benötigt sie Zugriff auf Ihre Kontakte.</string>
   <string name="generic_loading_error">Beim Laden der Daten ist ein Fehler aufgetreten</string>
   <string name="push_notification_state_initializing">Initialisieren...</string>
+  <string name="push_notification_state_listening">Warte auf neue E-Mails</string>
   <string name="push_notification_state_wait_background_sync">Wartet, bis die Hintergrundsynchronisation erlaubt ist</string>
   <string name="push_notification_state_wait_network">Wartet, bis ein Netzwerk verfügbar ist</string>
+  <string name="push_notification_info">Antippen, um mehr zu erfahren.</string>
+  <string name="push_info_title">Push-Information</string>
+  <string name="push_info_notification_explanation_text">Bei der Verwendung von Push hält K-9 Mail eine Verbindung zum E-Mail-Server aufrecht. Bei Android muss eine laufende Benachrichtigung angezeigt werden, während die App im Hintergrund aktiv ist. %s</string>
+  <string name="push_info_configure_notification_text">Allerdings erlaubt Android auch, dass die Benachrichtigung ausgeblendet wird.</string>
+  <string name="push_info_learn_more_text">Mehr erfahren</string>
+  <string name="push_info_configure_notification_action">Benachrichtigung einstellen</string>
+  <string name="push_info_disable_push_text">Wenn du keine sofortigen Benachrichtigungen über neue Nachrichten benötigst, solltest du Push deaktivieren und die Abfrage verwenden. Die Abfrage prüft in regelmäßigen Abständen auf neue Mails und benötigt die Benachrichtigung nicht.</string>
+  <string name="push_info_disable_push_action">Push deaktivieren</string>
 </resources>

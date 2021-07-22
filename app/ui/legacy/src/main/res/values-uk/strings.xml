@@ -7,11 +7,17 @@
   <string name="shortcuts_title">Облікові записи K-9 Mail</string>
   <string name="unread_widget_label">K-9 Непрочитані</string>
   <!--Used in the about dialog-->
-  <string name="app_authors">The K-9 Dog Walkers</string>
+  <string name="app_authors">Дресирувальники K-9</string>
   <string name="app_copyright_fmt">Авторське право 2008-<xliff:g>%s</xliff:g> The K-9 Dog Walkers. Часткові авторські права 2006-<xliff:g>%s</xliff:g> the Android Open Source Project.</string>
+  <string name="source_code">Програмний код</string>
   <string name="app_license">Ліцензія Apache версії 2.0</string>
+  <string name="about_website_title">Сайт</string>
+  <string name="user_forum_title">Форум</string>
+  <string name="about_fediverse_title">Соцмережі</string>
+  <string name="about_twitter_title">Twitter</string>
   <string name="about_libraries">Бібліотеки</string>
   <string name="license">Ліцензія</string>
+  <string name="changelog_title">Журнал змін</string>
   <!--Welcome message-->
   <string name="welcome_message_title">Ласкаво просимо до K-9 Mail</string>
   <string name="accounts_welcome"><![CDATA[

@@ -552,6 +552,7 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="folder_settings_folder_push_mode_normal">不分类</string>
   <string name="folder_settings_folder_push_mode_first_class">初级</string>
   <string name="folder_settings_folder_push_mode_second_class">次级</string>
+  <string name="folder_settings_folder_push_mode_inherited">与分类级别相同</string>
   <string name="folder_settings_folder_notify_mode_label">文件夹提醒级别</string>
   <string name="folder_settings_folder_notify_mode_normal">不分类</string>
   <string name="folder_settings_folder_notify_mode_first_class">1 级</string>
@@ -1045,4 +1046,12 @@ K-9 Mail 是 Android 上一款功能强大的免费邮件客户端。
   <string name="push_notification_state_listening">正在等待新消息</string>
   <string name="push_notification_state_wait_background_sync">等待后台同步许可</string>
   <string name="push_notification_state_wait_network">等待网络可用</string>
+  <string name="push_notification_info">轻按了解更多</string>
+  <string name="push_info_title">推送信息</string>
+  <string name="push_info_notification_explanation_text">使用 Push 时，K-9 Mail 会保持与邮件服务器的连接。 当应用程序在后台处于活动状态时，Android 需要显示持续的通知。%s</string>
+  <string name="push_info_configure_notification_text">不过，Android 也允许您隐藏通知。</string>
+  <string name="push_info_learn_more_text">了解更多</string>
+  <string name="push_info_configure_notification_action">配置通知</string>
+  <string name="push_info_disable_push_text">如果您不需要新消息的即时通知，则应禁用推送并使用轮询。 轮询会定期检查新邮件，不需要通知。</string>
+  <string name="push_info_disable_push_action">禁用推送</string>
 </resources>
