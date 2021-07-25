@@ -803,7 +803,7 @@ Bitte senden Sie Fehlerberichte, Ideen für neue Funktionen und stellen Sie Frag
     <item quantity="other">Um das Konto \"<xliff:g id="account">%s</xliff:g>\" nutzen zu können, müssen Sie die Serverpasswörter eingeben.</item>
   </plurals>
   <string name="settings_import_incoming_server_password_hint">Passwort des Posteingangsservers</string>
-  <string name="settings_import_outgoing_server_password_hint">Passwort des Posteingangsservers</string>
+  <string name="settings_import_outgoing_server_password_hint">Passwort des Postausgangsservers</string>
   <string name="settings_import_use_same_password_for_outgoing_server">Gleiches Passwort für den Postausgangsserver verwenden</string>
   <string name="server_name_format">Servername: <xliff:g id="hostname">%s</xliff:g></string>
   <string name="unread_widget_select_account">Anzahl ungelesener Nachrichten anzeigen für…</string>
